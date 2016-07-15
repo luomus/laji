@@ -1,3 +1,4 @@
 {
+  "api_base": "https://apitest.laji.fi",
   "access_token": "<INSERT YOUR KEY HERE>"
 }
