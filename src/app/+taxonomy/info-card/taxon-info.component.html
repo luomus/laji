@@ -1,0 +1,61 @@
+<table class="table table-condensed naks" *ngIf="taxon">
+  <tbody>
+  <tr>
+    <th class="plop">{{ 'taxonomy.card.id' | translate }}</th>
+    <td class="plop">{{taxon.id}}</td>
+  </tr>
+  <tr>
+    <th>{{ 'taxonomy.scientific.name' | translate }}</th>
+    <td>{{taxon.scientificName}}</td>
+  </tr>
+  <tr>
+    <th>{{ 'taxonomy.author' | translate }}</th>
+    <td>{{taxon.scientificNameAuthorship}}</td>
+  </tr>
+  <tr *ngIf="taxon.invasiveSpeciesCategory">
+    <th>
+      <img src="/static/images/vieraslaji.png" class="img-responsive" />
+    </th>
+    <td>
+      {{ 'taxonomy.invasive.phrase' | translate }}
+      <a href="http://vieraslajit.fi"> {{ 'taxonomy.invasive.title' | translate }}</a>
+      <table class="table table-condenced">
+        <tbody>
+        <tr>
+          <th>{{ 'taxonomy.invasive.category' | translate }}</th>
+          <td></td>
+        </tr>
+        <tr>
+          <th>{{ 'taxonomy.invasive.establishment' | translate }}</th>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <th>{{ 'taxonomy.redListStatus2010Finland' | translate }}</th>
+    <td id="graphics">
+      <!--
+      <IucnElement width={this.state.graphics.width} height={60}
+                   selected={this.props.data.redListStatus2010Finland.qname.slice(-2)} />
+                   -->
+      <br />
+
+    </td>
+  </tr>
+  <tr>
+    <th>{{ 'taxonomy.checklist' | translate }}</th>
+    <td></td>
+  </tr>
+  <tr>
+    <th>
+      <!--
+      <FormattedMessage id="experts" values={{ experts: this.props.data.experts.length }} />
+      -->
+    </th>
+    <td>
+    </td>
+  </tr>
+  </tbody>
+</table>

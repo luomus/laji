@@ -1,0 +1,16 @@
+<div class="panel-group" role="tablist" aria-multiselectable="true">
+  <laji-info-section
+    [title]="'taxonomy.card' | translate"
+    [open]="active == 0"
+    [index]="0"
+    (activate)="setActive($event)">
+    <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
+  </laji-info-section>
+  <laji-info-section
+    [title]="'taxonomy.map' | translate"
+    [open]="active == 1"
+    [index]="1"
+    (activate)="setActive($event)">
+    Uusi kartta....
+  </laji-info-section>
+</div>

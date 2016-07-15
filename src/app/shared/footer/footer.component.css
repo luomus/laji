@@ -1,0 +1,9 @@
+#layout-footer {
+  position: absolute;
+  bottom: 0;
+  height: 226px;
+  color: #fff;
+  background-color: #3498DB;
+  margin-top: 10px;
+  width: 100%;
+}

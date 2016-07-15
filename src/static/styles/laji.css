@@ -1,0 +1,24 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Roboto','Helvetica Neue',Helvetica,Arial,sans-serif;
+  padding-top: 50px;
+  margin-bottom: 226px;
+}
+
+.breadcrumb {
+  margin-top: 15px;
+}
+
+.news-panel {
+  background-color: #ECF0F1;
+  padding-bottom: 15px;
+}
+
+.link {
+  cursor: pointer;
+  cursor: hand;
+}

@@ -1,0 +1,16 @@
+<ol class="breadcrumb">
+  <li *ngFor="let taxon of parents$ | async">
+    <a [routerLink]="['/taxon/' + taxon.id]">
+      <strong>
+        {{ taxon.vernacularName }}
+      </strong>
+      {{ taxon.scientificName }}
+    </a>
+  </li>
+  <li *ngIf="includeCurrent">
+    <strong>
+      {{ current.vernacularName }}
+    </strong>
+    {{ current.scientificName }}
+  </li>
+</ol>

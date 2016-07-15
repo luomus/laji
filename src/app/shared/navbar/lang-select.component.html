@@ -1,0 +1,11 @@
+<div class="navbar-right navbar-language-selection">
+  <p class="navbar-text" *ngIf="'fi' !== translate.currentLang">
+    <a class="navbar-link link" (click)="translate.use('fi')">Suomeksi</a>
+  </p>
+  <p class="navbar-text" *ngIf="'sv' !== translate.currentLang">
+    <a class="navbar-link link" (click)="translate.use('sv')">På Svenska</a>
+  </p>
+  <p class="navbar-text" *ngIf="'en' !== translate.currentLang">
+    <a class="navbar-link link" (click)="translate.use('en')">In English</a>
+  </p>
+</div>

@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="col-md-8">
+    <ol class="breadcrumb">
+      <li class="active">{{ 'news.title' | translate }}</li>
+    </ol>
+    <div class="page-header">
+      <h3>
+        {{ newsItem?.title }}<br>
+        <small>
+          {{ newsItem?.posted | date:'dd.MM.yyyy HH.mm' }}
+          - {{ newsItem?.author }}
+          <span *ngIf="newsItem?.modified">
+            ({{ 'news.updated' | translate }}: {{ newsItem?.modified | date:'dd.MM.yyyy HH.mm' }})
+          </span>
+        </small>
+      </h3>
+    </div>
+
+    <div [innerHtml]="newsItem?.content"></div>
+  </div>
+  <div class="col-sm-4">
+    <div class="news-panel">
+      <laji-news-list></laji-news-list>
+    </div>
+  </div>
+</div>
+

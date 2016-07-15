@@ -1,0 +1,53 @@
+<div class="laji-news">
+  <laji-image-header></laji-image-header>
+  <laji-search-bar></laji-search-bar>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        <h1>{{ 'home.main-page.title' | translate }}</h1>
+        <p>{{ 'home.main-page.text' | translate }}</p>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <laji-navigation-thumbnail
+                [name]="'home.navigation-thumbnail.species'"
+                [icon]="'glyphicon-tree-conifer'"
+                [path]="'taxonomy'"></laji-navigation-thumbnail>
+              <laji-navigation-thumbnail
+                [name]="'home.navigation-thumbnail.science'"
+                [icon]="'glyphicon-blackboard'"
+                [path]="'observation'"></laji-navigation-thumbnail>
+              <laji-navigation-thumbnail
+                [name]="'home.navigation-thumbnail.info'"
+                [icon]="'glyphicon-bullhorn'"
+                [path]="'information'"></laji-navigation-thumbnail>
+              <laji-navigation-thumbnail
+                [name]="'home.navigation-thumbnail.sources'"
+                [icon]="'glyphicon-book'"
+                [path]="'collection'"></laji-navigation-thumbnail>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-body resent-map">
+                <iframe
+                  src="http://ws.luomus.fi/Balticdiversity/map?time=-1%2F-0&area=Suomi&area=Finland&limit=2000&locale=fi&"></iframe>
+              </div>
+              <div class="panel-footer">
+                <h2 class="panel-title">{{ 'home.main-page.recent' | translate }}</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="news-panel">
+          <laji-news-list></laji-news-list>
+        </div>
+        <div>
+          <!--<Sponsors /> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id={`heading${id}`}>
+    <h4 class="panel-title">
+      <a role="button" aria-expanded="true" (click)="activateCurrent()">
+        {{ title }}
+      </a>
+    </h4>
+  </div>
+  <div class="panel-collapse collapse" [ngClass]="open ? 'in' : ''" role="tabpanel" aria-labelledby="">
+    <div class="panel-body">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

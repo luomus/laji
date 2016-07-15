@@ -1,0 +1,10 @@
+<ul class="taxon-children">
+  <li *ngFor="let taxon of children$ | async">
+    <a [routerLink]="['/taxon/' + taxon.id]">
+      <strong>
+        {{ taxon.vernacularName }}
+      </strong>
+      {{ taxon.scientificName }}
+    </a>
+  </li>
+</ul>

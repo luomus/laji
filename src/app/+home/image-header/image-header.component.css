@@ -1,0 +1,23 @@
+.img-responsive {
+  margin: 45px 0
+}
+
+.header-image {
+  background-clip: border-box;
+  background: url(/static/images/bg_small.jpg) center / cover;
+}
+
+.header-image, .carousel .item {
+  height: 300px;
+}
+
+@media (min-width: 1200px) {
+  .header-image {
+    background-clip: border-box;
+    background: url(/static/images/bg.jpg) center / cover;
+  }
+
+  .header-image, .carousel .item {
+    height: 400px;
+  }
+}

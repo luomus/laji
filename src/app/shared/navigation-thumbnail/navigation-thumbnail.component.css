@@ -1,0 +1,13 @@
+.tile {
+  margin-top: 15px;
+  text-align: center;
+  height: 130px;
+}
+
+.thumbnail {
+  text-decoration: none;
+}
+/** Angular takes care of that this will stay within the component! **/
+.glyphicon {
+  font-size: 4em;
+}

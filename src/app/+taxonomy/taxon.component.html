@@ -1,0 +1,17 @@
+<div class="container" *ngIf="taxon">
+  <h1>{{taxon.scientificName}}
+    <small *ngIf="taxon.vernacularName">{{taxon.vernacularName}}</small>
+  </h1>
+  <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
+  <div class="row">
+    <!-- <LajiImageGallery class="col-sm-6" url={url} qname={data.id} /> -->
+    <div class="col-sm-6">
+      <laji-info-card [taxon]="taxon"></laji-info-card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <laji-children-list [parentId]="taxon.id"></laji-children-list>
+    </div>
+  </div>
+</div>
