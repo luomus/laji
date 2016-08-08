@@ -2,6 +2,7 @@
 /dist/
 /npm-debug.log
 /typings/
+config.json
 
 .idea
 .project
