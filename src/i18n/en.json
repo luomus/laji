@@ -7,7 +7,8 @@
   "navigation.observation": "Observations & specimen",
   "navigation.information": "Information",
   "navigation.collection": "Information sources",
-  "navigation.haseka": "Report",
+  "navigation.haseka": "Reportingservice",
+  "navigation.user": "User settings",
 
   "home.image-header.observations": "observations and specimen",
   "home.image-header.species": "species",
@@ -27,6 +28,11 @@
   "home.search.exact": "Exact matches",
   "home.search.likely": "Likely matches",
   "home.search.partial": "Partial matches",
+  "home.carousel.species": "species",
+  "home.carousel.observations": "observations",
+  "home.carousel.collections": "information sources",
+  "home.carousel.digitized": "Digitized specimens",
+  "home.carousel.preserved": "Preserved specimens",
   "search-bar.input": "Search",
 
   "taxonomy.card.id": "Id",

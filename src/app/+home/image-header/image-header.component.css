@@ -7,7 +7,7 @@
   background: url(/static/images/bg_small.jpg) center / cover;
 }
 
-.header-image, .carousel .item {
+.header-image, :host .carousel .item {
   height: 300px;
 }
 
@@ -17,7 +17,7 @@
     background: url(/static/images/bg.jpg) center / cover;
   }
 
-  .header-image, .carousel .item {
+  .header-image, :host .carousel .item {
     height: 400px;
   }
 }

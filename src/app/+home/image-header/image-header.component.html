@@ -1,4 +1,21 @@
 <div class="header-image" role="main">
+
+  <carousel>
+    <slide [active]="true">
+      <div class="carousel-caption">
+        <laji-stat-item [value]="'67856'" [description]="'home.carousel.species' | translate"></laji-stat-item>
+        <laji-stat-item [value]="'14839205'" [description]="'home.carousel.observations' | translate"></laji-stat-item>
+        <laji-stat-item [value]="'388'" [description]="'home.carousel.collections' | translate"></laji-stat-item>
+      </div>
+    </slide>
+    <slide>
+      <div class="carousel-caption">
+        <laji-stat-item [value]="'199000'" [description]="'home.carousel.digitized' | translate"></laji-stat-item>
+        <laji-stat-item [value]="'6620491'" [description]="'home.carousel.preserved' | translate"></laji-stat-item>
+      </div>
+    </slide>
+  </carousel>
+<!--
   <div id="carousel-example-generic" class="carousel slide carousel-fade"
        data-ride="carousel" data-interval="">
     <ol class="carousel-indicators">
@@ -12,7 +29,9 @@
           <img src="/static/images/LAJI_FI_valk.png" class="img-responsive" alt="Responsive image" />
           <div class="row">
             <div class="visible-lg-block">
-              <laji-stat-item [value]="5" [description]="testi"></laji-stat-item>
+              <laji-stat-item [value]="'67856'" [description]="'home.carousel.species' | translate"></laji-stat-item>
+              <laji-stat-item [value]="'14839205'" [description]="'home.carousel.observations' | translate"></laji-stat-item>
+              <laji-stat-item [value]="'388'" [description]="'home.carousel.collections' | translate"></laji-stat-item>
             </div>
           </div>
         </div>
@@ -41,4 +60,5 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
+-->
 </div>

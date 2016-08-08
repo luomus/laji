@@ -1,3 +1,6 @@
 .navbar-link {
   color: #ffffff;
 }
+:host .dropdown-menu .navbar-link {
+  color: #000000;
+}

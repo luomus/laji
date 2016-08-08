@@ -5,9 +5,10 @@
 
   "navigation.taxonomy": "Lajiluettelo",
   "navigation.observation": "Havainnot ja kokoelmanäytteet",
-  "navigation.information": "Yleistä ja ajankohtaista",
+  "navigation.information": "Suomen Lajitietokeskus",
   "navigation.collection": "Aineistot",
-  "navigation.haseka": "Ilmoita",
+  "navigation.haseka": "Havaintopalvelu",
+  "navigation.user": "Käyttäjäasetukset",
 
   "home.image-header.observations": "havaintoja ja näytteitä",
   "home.image-header.species": "lajeja",
@@ -27,6 +28,11 @@
   "home.search.exact": "Tarkat tulokset",
   "home.search.likely": "Todennäköiset tulokset",
   "home.search.partial": "Osittaiset tulokset",
+  "home.carousel.species": "lajeja",
+  "home.carousel.observations": "havaintoja",
+  "home.carousel.collections": "aineistoja",
+  "home.carousel.digitized": "Digitoituja näytteitä",
+  "home.carousel.preserved": "Lajinäytteitä kokoelmissa",
   "search-bar.input": "Hae",
 
   "taxonomy.card.id": "Tunniste",
