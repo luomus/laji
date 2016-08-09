@@ -30,6 +30,6 @@ export class NewsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subTrans.subscribe();
+    this.subTrans.unsubscribe();
   }
 }
