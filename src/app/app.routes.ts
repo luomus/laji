@@ -6,6 +6,8 @@ import { ObservationRoutes } from './+observation';
 import { CollectionRoutes } from './+collection';
 import { InformationRoutes } from './+information';
 import { NewsRoutes } from './+news';
+import { HaSeKaRoutes } from './+haseka';
+import { UserRoutes } from './+user';
 
 const routes: RouterConfig = [
   ...HomeRoutes,
@@ -13,7 +15,9 @@ const routes: RouterConfig = [
   ...ObservationRoutes,
   ...CollectionRoutes,
   ...InformationRoutes,
-  ...NewsRoutes
+  ...NewsRoutes,
+  ...HaSeKaRoutes,
+  ...UserRoutes
 ];
 
 export const APP_ROUTER_PROVIDERS = [

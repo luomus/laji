@@ -4,6 +4,10 @@
   border-color: #2980B9;
 }
 
+.navbar .navbar-nav {
+  float: left;
+}
+
 .navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-brand:hover {
   background-color: #2980B9;
 }

@@ -1,6 +1,6 @@
-<div class="navbar-right navbar-language-selection">
+<div class="navbar-language-selection">
   <div dropdown>
-    <a dropdownToggle class="navbar-link link navbar-text">
+    <a dropdownToggle class="link language-toggle">
       <span *ngIf="'fi' === translate.currentLang">
         Suomeksi
       </span>
@@ -13,9 +13,15 @@
       <span class="caret"></span>
     </a>
     <ul dropdownMenu role="menu" aria-labelledby="single-button">
-      <li *ngIf="'fi' !== translate.currentLang" role="menuitem"><a class="navbar-link link" (click)="translate.use('fi')">Suomeksi</a></li>
-      <li *ngIf="'sv' !== translate.currentLang" role="menuitem"><a class="navbar-link link" (click)="translate.use('sv')">På Svenska</a></li>
-      <li *ngIf="'en' !== translate.currentLang" role="menuitem"><a class="navbar-link link" (click)="translate.use('en')">In English</a></li>
+      <li *ngIf="'fi' !== translate.currentLang" role="menuitem">
+        <a class="navbar-link link" (click)="translate.use('fi')">Suomeksi</a>
+      </li>
+      <li *ngIf="'sv' !== translate.currentLang" role="menuitem">
+        <a class="navbar-link link" (click)="translate.use('sv')">På Svenska</a>
+      </li>
+      <li *ngIf="'en' !== translate.currentLang" role="menuitem">
+        <a class="navbar-link link" (click)="translate.use('en')">In English</a>
+      </li>
     </ul>
   </div>
 </div>

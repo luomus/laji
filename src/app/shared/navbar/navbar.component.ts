@@ -9,4 +9,10 @@ import { LangSelectComponent } from './lang-select.component'
   styleUrls: ['./navbar.component.css'],
   templateUrl: './navbar.component.html'
 })
-export class NavbarComponent { }
+export class NavbarComponent {
+  openMenu:Boolean = false;
+
+  toggleMenu() {
+    this.openMenu = !this.openMenu;
+  }
+}
