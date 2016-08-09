@@ -6,5 +6,8 @@ export const InformationRoutes: RouterConfig = [
   {
     path: 'information',
     component: InformationComponent
-  }
+  },  {
+    path: 'information/:id',
+    component: InformationComponent
+  },
 ];

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from 'ng2-translate/ng2-translate';
+import { Subscription } from 'rxjs/Subscription';
 
 import { TaxonomyApi, Taxonomy } from '../shared';
 import { ParentsComponent } from './parents';
@@ -14,10 +15,12 @@ import { InfoCardComponent } from './info-card';
   providers: [ TaxonomyApi ],
   directives: [ ParentsComponent, ChildrenListComponent, InfoCardComponent ]
 })
-export class TaxonComponent {
+export class TaxonComponent implements OnInit, OnDestroy {
 
-  private active:string;
   public taxon:Taxonomy;
+  private active:string;
+  private subParam:Subscription;
+  private subTrans:Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,15 +29,20 @@ export class TaxonComponent {
   ) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.subParam = this.route.params.subscribe(params => {
       this.active = params['id'];
       this.getTaxon(this.active);
     });
-    this.translate.onLangChange.subscribe(
+    this.subTrans = this.translate.onLangChange.subscribe(
       () => {
         this.getTaxon(this.active);
       }
     )
+  }
+
+  ngOnDestroy() {
+    this.subParam.unsubscribe();
+    this.subTrans.unsubscribe();
   }
 
   private getTaxon(id) {

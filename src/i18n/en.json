@@ -57,5 +57,7 @@
 
   "news.title": "News",
   "news.earlier": "earlier",
-  "news.newer": "newer"
+  "news.newer": "newer",
+
+  "information.more": "More information"
 }

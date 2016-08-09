@@ -1,14 +1,29 @@
 <div class="container">
   <div class="row">
-  <!--<GeneralInformation page={page} breadcrumb={breadcrumb} hasChildren={visible} />-->
-  <div class="col-md-4">
+    <div class="col-md-8">
+      <ol class="breadcrumb">
+        <li *ngFor="let parent of information?.parents">
+          <a [routerLink]="['/information/' + parent.id]">
+            {{parent.menuTitle}}
+          </a>
+        </li>
+        <li class="active">{{information?.title}}</li>
+      </ol>
+      <div [innerHtml]="information?.content"></div>
+    </div>
+  <div class="col-md-4 more-info" *ngIf="information?.children">
     <div class="media">
       <div class="media-body">
-        <a>
-          <h4 class="media-heading">
-            {menuTitle}
-          </h4>
-        </a>
+        <h4 class="media-heading">
+          {{'information.more' | translate }}
+        </h4>
+        <ul>
+          <li *ngFor="let child of information?.children">
+            <a [routerLink]="['/information/' + child.id]">
+              {{child.menuTitle}}
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
