@@ -5,3 +5,5 @@ export * from './News';
 export * from './PagedResult';
 export * from './Information';
 export * from './InformationItem';
+export * from './WarehouseQueryInterface';
+
