@@ -61,5 +61,20 @@
   "news.earlier": "aikaisemmat",
   "news.newer": "tuoreemmat",
 
-  "information.more": "Lisätietoa"
+  "information.more": "Lisätietoa",
+
+  "paginator.first": "ensimmäinen",
+  "paginator.last": "viimeinen",
+  "paginator.previous": "edellinen",
+  "paginator.next": "seuraava",
+
+  "search.result.list": "Luettelo",
+  "search.result.images": "Kuvat",
+  "search.result.stats": "Tilastot",
+  "search.result.load": "Lataa tiedostona",
+
+  "result.unit.linkings.taxon": "Laji",
+  "result.gathering.team": "Henkilö",
+  "result.gathering.eventDate": "Aika",
+  "result.document.documentId": "Lisää"
 }

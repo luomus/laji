@@ -1,0 +1,15 @@
+<tabset>
+  <tab [heading]="'search.result.list' | translate">
+    <laji-search-result-list [query]="query" [pageSize]="20"></laji-search-result-list>
+  </tab>
+  <tab [heading]="'search.result.images' | translate" (select)="loadImages()">
+    loading...
+  </tab>
+  <tab [heading]="'search.result.stats' | translate" (select)="loadStats()">
+    loading...
+  </tab>
+  <tab [heading]="'search.result.load' | translate">
+    Clicking this button sends the whole result set to your email (note that you'll have to be logged in for this to work)
+    <button class="btn btn-default">load</button>
+  </tab>
+</tabset>

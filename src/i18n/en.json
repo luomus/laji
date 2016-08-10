@@ -59,5 +59,20 @@
   "news.earlier": "earlier",
   "news.newer": "newer",
 
-  "information.more": "More information"
+  "information.more": "More information",
+
+  "paginator.first": "first",
+  "paginator.last": "last",
+  "paginator.previous": "previous",
+  "paginator.next": "next",
+
+  "search.result.list": "List",
+  "search.result.images": "Images",
+  "search.result.stats": "Statistics",
+  "search.result.load": "Load as file",
+
+  "result.unit.linkings.taxon": "Species",
+  "result.gathering.team": "Gatherer",
+  "result.gathering.eventDate": "Time",
+  "result.document.documentId": "More"
 }

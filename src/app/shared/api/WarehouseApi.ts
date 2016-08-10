@@ -25,7 +25,7 @@
 import {Http, Headers, RequestOptionsArgs, Response, URLSearchParams} from '@angular/http';
 import {Injectable, Optional} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {WarehouseQueryInterface} from '../model';
+import {WarehouseQueryInterface, PagedResult} from '../model';
 import 'rxjs/Rx';
 
 /* tslint:disable:no-unused-variable member-ordering */
@@ -237,7 +237,8 @@ export class WarehouseApi {
         } else {
           return response.json();
         }
-      });
+      })
+      .cache();
   }
 
   /**
@@ -273,7 +274,8 @@ export class WarehouseApi {
         } else {
           return response.json();
         }
-      });
+      })
+      .cache();
   }
 
   /**
@@ -306,7 +308,8 @@ export class WarehouseApi {
         } else {
           return response.json();
         }
-      });
+      })
+      .cache();
   }
 
   /**
@@ -319,7 +322,7 @@ export class WarehouseApi {
    * @param pageSize Set number of results in one page.
    * @param page Set current page.
    */
-  public warehouseQueryListGet(query:WarehouseQueryInterface, includeNonValidTaxons?:boolean, selected?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, extraHttpRequestParams?:any):Observable<string> {
+  public warehouseQueryListGet(query:WarehouseQueryInterface, includeNonValidTaxons?:boolean, selected?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, extraHttpRequestParams?:any):Observable<PagedResult<any>> {
     const path = this.basePath + '/warehouse/query/list';
 
     let queryParameters = new URLSearchParams();

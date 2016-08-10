@@ -61,5 +61,21 @@
   "news.earlier": "...",
   "news.newer": "...",
 
-  "information.more": "information.more"
+  "information.more": "information.more",
+
+  "paginator.first": "paginator.first",
+  "paginator.last": "paginator.last",
+  "paginator.previous": "paginator.previous",
+  "paginator.next": "paginator.next",
+
+
+  "search.result.list": "search.result.list",
+  "search.result.images": "search.result.images",
+  "search.result.stats": "search.result.stats",
+  "search.result.load": "search.result.load",
+
+  "result.unit.linkings.taxon": "result.unit.linkings.taxon",
+  "result.gathering.team": "result.gathering.team",
+  "result.gathering.eventDate": "result.gathering.eventDate",
+  "result.document.documentId": "result.document.documentId"
 }
