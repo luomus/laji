@@ -2,7 +2,7 @@
   <tab [heading]="'search.result.list' | translate"
        (select)="activate('list')"
        [active]="active === 'list'">
-    <laji-search-result-list *ngIf="activated['list']" [query]="query" [pageSize]="20" [page]="page"></laji-search-result-list>
+    <laji-observation-result-list *ngIf="activated['list']" [query]="query" [pageSize]="20" [page]="page"></laji-observation-result-list>
   </tab>
   <tab [heading]="'search.result.images' | translate"
        (select)="activate('images')"

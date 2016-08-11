@@ -2,12 +2,12 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Subscription} from "rxjs";
 import {ActivatedRoute, ROUTER_DIRECTIVES} from "@angular/router";
 
-import { SearchQueryService, WarehouseQueryInterface, SearchResultComponent } from '../shared';
+import { SearchQueryService, ObservationResultComponent } from '../shared';
 
 @Component({
   selector: 'laji-observation',
   templateUrl: './observation.component.html',
-  directives: [ SearchResultComponent, ROUTER_DIRECTIVES ],
+  directives: [ ObservationResultComponent, ROUTER_DIRECTIVES ],
   providers: [ SearchQueryService ]
 })
 export class ObservationComponent implements OnInit, OnDestroy {

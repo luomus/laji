@@ -1,3 +1,3 @@
-export * from './results/search-results.component';
-export * from './result-list/search-result-list.component';
-export * from './query.service';
+export * from '../../+observation/result/observation-result.component';
+export * from '../../+observation/result-list/search-result-list.component';
+export * from '../../+observation/query.service';

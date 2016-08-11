@@ -31,7 +31,7 @@ import 'rxjs/Rx';
 /* tslint:disable:no-unused-variable member-ordering */
 
 'use strict';
-import {SearchQueryService} from "../search/query.service";
+import {SearchQueryService} from "../../+observation/query.service";
 
 @Injectable()
 export class WarehouseApi {

@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {WarehouseQueryInterface} from "../model/WarehouseQueryInterface";
+import {WarehouseQueryInterface} from "../shared/model/WarehouseQueryInterface";
 import {URLSearchParams} from "@angular/http";
 
 @Injectable()

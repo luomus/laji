@@ -2,22 +2,22 @@ import {Component, OnInit, Input} from '@angular/core';
 import { PAGINATION_DIRECTIVES } from 'ng2-bootstrap/ng2-bootstrap';
 import {FORM_DIRECTIVES} from '@angular/forms';
 import {Subscription} from "rxjs";
+import {Location} from "@angular/common";
 
-import {WarehouseQueryInterface, PagedResult} from "../../model";
-import {WarehouseApi} from "../../api";
+import {WarehouseApi, WarehouseQueryInterface, PagedResult} from "../../shared";
 import {ValueDecoratorService} from './value-decorator.sevice';
 import {SearchQueryService} from "../query.service";
-import {Location} from "@angular/common";
+
 
 
 
 @Component({
-  selector: 'laji-search-result-list',
+  selector: 'laji-observation-result-list',
   templateUrl: 'search-result-list.component.html',
   directives: [ PAGINATION_DIRECTIVES, FORM_DIRECTIVES ],
   providers: [WarehouseApi, ValueDecoratorService]
 })
-export class SearchResultListComponent implements OnInit {
+export class ObservationResultListComponent implements OnInit {
 
   @Input() columns: any = [
     {field: 'unit.linkings.taxon'},

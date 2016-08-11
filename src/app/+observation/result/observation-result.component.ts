@@ -2,16 +2,16 @@ import {Component, Input, OnInit} from '@angular/core';
 import {TAB_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {Location} from '@angular/common';
 
-import { SearchResultListComponent } from "../result-list/search-result-list.component";
+import { ObservationResultListComponent } from "../result-list/search-result-list.component";
 import { SearchQueryService } from "../query.service";
 
 
 @Component({
-  selector: 'laji-search-result',
-  templateUrl: 'search-result.component.html',
-  directives: [ TAB_DIRECTIVES, SearchResultListComponent ]
+  selector: 'laji-observation-result',
+  templateUrl: 'observation-result.component.html',
+  directives: [ TAB_DIRECTIVES, ObservationResultListComponent ]
 })
-export class SearchResultComponent implements OnInit {
+export class ObservationResultComponent implements OnInit {
 
   @Input() active:string = 'list';
 
