@@ -1,0 +1,10 @@
+/**
+ * Count query interface for warehouse
+ *
+ * @property total count results.
+ * @property totalMaximumForList how many items can be shown as a list.
+ */
+export interface WarehouseCountResultInterface {
+  total?: Array<number>;
+  totalMaximumForList?: Array<string>;
+}

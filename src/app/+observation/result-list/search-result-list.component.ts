@@ -1,20 +1,17 @@
 import {Component, OnInit, Input} from '@angular/core';
-import { PAGINATION_DIRECTIVES } from 'ng2-bootstrap/ng2-bootstrap';
+import {PAGINATION_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {FORM_DIRECTIVES} from '@angular/forms';
 import {Subscription} from "rxjs";
 import {Location} from "@angular/common";
 
-import {WarehouseApi, WarehouseQueryInterface, PagedResult} from "../../shared";
+import {WarehouseApi, PagedResult} from "../../shared";
 import {ValueDecoratorService} from './value-decorator.sevice';
-import {SearchQueryService} from "../query.service";
-
-
-
+import {SearchQueryService} from "../search-query.service";
 
 @Component({
   selector: 'laji-observation-result-list',
   templateUrl: 'search-result-list.component.html',
-  directives: [ PAGINATION_DIRECTIVES, FORM_DIRECTIVES ],
+  directives: [PAGINATION_DIRECTIVES, FORM_DIRECTIVES],
   providers: [WarehouseApi, ValueDecoratorService]
 })
 export class ObservationResultListComponent implements OnInit {
@@ -26,20 +23,18 @@ export class ObservationResultListComponent implements OnInit {
     {field: 'gathering.conversions.wgs84CenterPoint'},
     {field: 'document.documentId'}
   ];
-  @Input() showPager:boolean = true;
+  @Input() showPager: boolean = true;
 
   public result: PagedResult<any>;
 
-  public loading:boolean = true;
+  public loading: boolean = true;
 
-  private sub:Subscription;
+  private sub: Subscription;
 
-  constructor(
-    private warehouseService:WarehouseApi,
-    private decorator:ValueDecoratorService,
-    private searchQuery: SearchQueryService,
-    private location: Location
-  ) {
+  constructor(private warehouseService: WarehouseApi,
+              private decorator: ValueDecoratorService,
+              private searchQuery: SearchQueryService,
+              private location: Location) {
 
   }
 
@@ -50,46 +45,52 @@ export class ObservationResultListComponent implements OnInit {
       currentPage: this.searchQuery.page,
       results: []
     };
-    this.fetchRows(this.searchQuery.page, this.searchQuery.pageSize);
+    this.fetchRows(this.searchQuery.page);
   }
 
-  pageChanged(event:any):void {
+  pageChanged(event: any): void {
     if (this.searchQuery.page !== event.page) {
-      this.fetchRows(event.page, this.searchQuery.pageSize);
+      this.fetchRows(event.page);
     }
   }
 
-  fetchRows(page:number, pageSize:number):void {
-    let fields = this.columns.map((column) => column.field);
+  fetchRows(page: number): void {
+    this.searchQuery.selected = this.columns.map((column) => column.field);
     this.loading = true;
     if (this.sub) {
       this.sub.unsubscribe();
     }
     this.sub = this.warehouseService
-      .warehouseQueryListGet(this.searchQuery.query, true, fields, ['gathering.eventDate.begin desc'], pageSize, page)
+      .warehouseQueryListGet(
+        this.searchQuery.query,
+        this.searchQuery.selected,
+        this.searchQuery.orderBy,
+        this.searchQuery.pageSize,
+        page)
       .subscribe(
-      results => {
-        this.searchQuery.page = results.currentPage;
-        this.result = results;
-        this.loading = false;
-        let query = this.searchQuery.getQueryString().toString().replace(/&/g,';');
-        query = query.length > 0 ? ';' + query : '';
-        this.location.go(this.location.path(false).split(';')[0] + query);
-      },
-      error => {
-        console.log(error);
-        this.result.results = [];
-        this.loading = false;
-      }
-    )
+        results => {
+          this.searchQuery.page = results.currentPage;
+          this.result = results;
+          this.loading = false;
+          let query = this.searchQuery.getQueryString().toString().replace(/&/g, ';');
+          query = query.length > 0 ? ';' + query : '';
+          this.location.go(this.location.path(false).split(';')[0] + query);
+        },
+        error => {
+          console.log(error);
+          this.result.results = [];
+          this.loading = false;
+        }
+      )
   }
 
-  getData(row:any, propertyName:string):string {
+  getData(row: any, propertyName: string): string {
     let val = '';
     try {
-      val = propertyName.split('.').reduce((prev:any, curr:any) => prev[curr], row);
+      val = propertyName.split('.').reduce((prev: any, curr: any) => prev[curr], row);
       val = this.decorator.decorate(propertyName, val, row)
-    } catch(e) {}
+    } catch (e) {
+    }
     return val;
   }
 }

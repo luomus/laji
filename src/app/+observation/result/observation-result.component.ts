@@ -3,7 +3,7 @@ import {TAB_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {Location} from '@angular/common';
 
 import { ObservationResultListComponent } from "../result-list/search-result-list.component";
-import { SearchQueryService } from "../query.service";
+import { SearchQueryService } from "../search-query.service";
 
 
 @Component({

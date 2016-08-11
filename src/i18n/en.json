@@ -75,5 +75,7 @@
   "result.gathering.team": "Gatherer",
   "result.gathering.eventDate": "Time",
   "result.document.documentId": "More",
-  "result.gathering.conversions.wgs84CenterPoint": "Spot"
+  "result.gathering.conversions.wgs84CenterPoint": "Spot",
+
+  "observation.results": "hits"
 }

@@ -31,7 +31,8 @@ import 'rxjs/Rx';
 /* tslint:disable:no-unused-variable member-ordering */
 
 'use strict';
-import {SearchQueryService} from "../../+observation/query.service";
+import {SearchQueryService} from "../../+observation/search-query.service";
+import {WarehouseCountResultInterface} from "../model/WarehouseCountResultInterface";
 
 @Injectable()
 export class WarehouseApi {
@@ -74,19 +75,18 @@ export class WarehouseApi {
    * Perform aggregation query using given filters and aggregation
    * Aggregates the results of the query based on given \&quot;aggregateBy\&quot; parameter or parameters. Returns count of units, individual count sum and maximum and min and max date.
    * @param query query to make to ware house
-   * @param includeNonValidTaxons By default, query results include also entries where target name does not match taxonomy. To get only entries where one and only one taxon matches given target name, set this parameter to false.
    * @param aggregateBy Define fields to aggregate by. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
    * @param orderBy Define order of fields. Defaults to count of units (desc). Give number of the column, first is 1. aggregateBy -fields are first, followed by count of units, individual count sum and maximum and min and max date. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
    * @param pageSize Set number of results in one page.
    * @param page Set current page.
    */
-  public warehousePrivateQueryAggregateGet(query:WarehouseQueryInterface, includeNonValidTaxons?:boolean, aggregateBy?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, extraHttpRequestParams?:any):Observable<string> {
+  public warehousePrivateQueryAggregateGet(query:WarehouseQueryInterface, aggregateBy?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, extraHttpRequestParams?:any):Observable<string> {
     const path = this.basePath + '/warehouse/private-query/aggregate';
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
 
-    this.addMetaToQuery(includeNonValidTaxons, undefined, orderBy, pageSize, page);
+    this.addMetaToQuery(aggregateBy, orderBy, pageSize, page);
     this.addQueryToQueryParams(query, queryParameters);
 
     //headerParams.set('accept', accept);
@@ -143,19 +143,18 @@ export class WarehouseApi {
    * Get list of results using given filters
    * Get list of results. Maximum number of results is 10000. Before making a list query, you should check with /count how many results the query yields. Application/json and application/xml responses respect the \&quot;selected\&quot; parameter, but application/dwc+xml does not support all fields.
    * @param query query to make to ware house
-   * @param includeNonValidTaxons By default, query results include also entries where target name does not match taxonomy. To get only entries where one and only one taxon matches given target name, set this parameter to false.
    * @param selected Define what fields to include to the result. Defaults to [document.documentId, gathering.gatheringId, unit.unitId, document.sourceId, document.collectionId, document.namedPlaceId, document.secureLevel, document.secureReason, document.keywords, gathering.team, gathering.eventDate.begin, gathering.eventDate.end, gathering.timeBegin, gathering.timeEnd, gathering.higherGeography, gathering.country, gathering.province, gathering.municipality, gathering.locality, gathering.conversions.wgs84CenterPoint.lat, gathering.conversions.wgs84CenterPoint.lon, gathering.interpretations.coordinateAccuracy, gathering.interpretations.sourceOfCoordinates, unit.linkings.taxon.qname, unit.linkings.taxon.species, unit.linkings.taxon.scientificName, unit.linkings.taxon.vernacularName, unit.taxonVerbatim, unit.abundanceString, unit.recordBasis, unit.mediaCount, unit.notes] Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
    * @param orderBy Define what fields to use when sorting results. If using default select, defaults to [gathering.eventDate.begin DESC, document.loadDate DESC, unit.taxonVerbatim ASC]. If using custom select there is no default order. Each fieldname given as parameter defaults to ASC - if you want to sort using descending order, add \&quot; DESC\&quot; to the end of the field name. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
    * @param pageSize Set number of results in one page.
    * @param page Set current page.
    */
-  public warehousePrivateQueryListGet(query:WarehouseQueryInterface, includeNonValidTaxons?:boolean, selected?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, extraHttpRequestParams?:any):Observable<string> {
+  public warehousePrivateQueryListGet(query:WarehouseQueryInterface, selected?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, extraHttpRequestParams?:any):Observable<string> {
     const path = this.basePath + '/warehouse/private-query/list';
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
 
-    this.addMetaToQuery(includeNonValidTaxons, undefined, orderBy, pageSize, page);
+    this.addMetaToQuery(selected, orderBy, pageSize, page);
     this.addQueryToQueryParams(query, queryParameters);
 
     //    headerParams.set('accept', accept);
@@ -246,19 +245,18 @@ export class WarehouseApi {
    * Perform aggregation query using given filters and aggregation
    * Aggregates the results of the query based on given \&quot;aggregateBy\&quot; parameter or parameters. Returns count of units, individual count sum and maximum and min and max date.
    * @param query to make to the warehouse
-   * @param includeNonValidTaxons By default, query results include also entries where target name does not match taxonomy. To get only entries where one and only one taxon matches given target name, set this parameter to false.
    * @param aggregateBy Define fields to aggregate by. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
    * @param orderBy Define order of fields. Defaults to count of units (desc). Give number of the column, first is 1. aggregateBy -fields are first, followed by count of units, individual count sum and maximum and min and max date. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
    * @param pageSize Set number of results in one page.
    * @param page Set current page.
    */
-  public warehouseQueryAggregateGet(query:WarehouseQueryInterface, includeNonValidTaxons?:boolean, aggregateBy?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, taxonId?:Array<string>, target?:Array<string>, informalTaxonGroupId?:Array<string>, administrativeStatusId?:Array<string>, redListStatusId?:Array<string>, finnish?:boolean, invasive?:boolean, countryId?:Array<string>, finnishMunicipalityId?:Array<string>, biogeographicalProvinceId?:Array<string>, area?:Array<string>, time?:Array<string>, dayOfYearBegin?:number, dayOfYearEnd?:number, keyword?:Array<string>, collectionId?:Array<string>, sourceId?:Array<string>, recordBasis?:Array<string>, lifeStage?:Array<string>, sex?:Array<string>, documentId?:Array<string>, unitId?:Array<string>, individualId?:Array<string>, individualCountMin?:number, individualCountMax?:number, loadedLaterThan?:Date, coordinates?:Array<string>, typeSpecimen?:boolean, hasDocumentMedia?:boolean, hasGatheringMedia?:boolean, hasUnittMedia?:boolean, hasMedia?:boolean, secureReason?:Array<string>, editorId?:Array<string>, extraHttpRequestParams?:any):Observable<string> {
+  public warehouseQueryAggregateGet(query:WarehouseQueryInterface, aggregateBy?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, taxonId?:Array<string>, target?:Array<string>, informalTaxonGroupId?:Array<string>, administrativeStatusId?:Array<string>, redListStatusId?:Array<string>, finnish?:boolean, invasive?:boolean, countryId?:Array<string>, finnishMunicipalityId?:Array<string>, biogeographicalProvinceId?:Array<string>, area?:Array<string>, time?:Array<string>, dayOfYearBegin?:number, dayOfYearEnd?:number, keyword?:Array<string>, collectionId?:Array<string>, sourceId?:Array<string>, recordBasis?:Array<string>, lifeStage?:Array<string>, sex?:Array<string>, documentId?:Array<string>, unitId?:Array<string>, individualId?:Array<string>, individualCountMin?:number, individualCountMax?:number, loadedLaterThan?:Date, coordinates?:Array<string>, typeSpecimen?:boolean, hasDocumentMedia?:boolean, hasGatheringMedia?:boolean, hasUnittMedia?:boolean, hasMedia?:boolean, secureReason?:Array<string>, editorId?:Array<string>, extraHttpRequestParams?:any):Observable<string> {
     const path = this.basePath + '/warehouse/query/aggregate';
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
 
-    this.addMetaToQuery(includeNonValidTaxons, undefined, orderBy, pageSize, page);
+    this.addMetaToQuery(aggregateBy, orderBy, pageSize, page);
     this.addQueryToQueryParams(query, queryParameters);
 
     //  headerParams.set('accept', accept);
@@ -284,15 +282,13 @@ export class WarehouseApi {
    * Get count of results using given filters
    * Use this API to test how many results your query would return and then proceed with list query. Also returns max result count allowed for list queries.
    * @param query to make to the warehouse
-   * @param includeNonValidTaxons By default, query results include also entries where target name does not match taxonomy. To get only entries where one and only one taxon matches given target name, set this parameter to false.
    */
-  public warehouseQueryCountGet(query:WarehouseQueryInterface, includeNonValidTaxons?:boolean, extraHttpRequestParams?:any):Observable<string> {
+  public warehouseQueryCountGet(query:WarehouseQueryInterface, extraHttpRequestParams?:any):Observable<WarehouseCountResultInterface> {
     const path = this.basePath + '/warehouse/query/count';
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
 
-    this.addMetaToQuery(includeNonValidTaxons);
     this.addQueryToQueryParams(query, queryParameters);
 
     // headerParams.set('accept', accept);
@@ -318,19 +314,18 @@ export class WarehouseApi {
    * Get list of results using given filters
    * Get list of results. Maximum number of results is 10000. Before making a list query, you should check with /count how many results the query yields. Application/json and application/xml responses respect the \&quot;selected\&quot; parameter, but application/dwc+xml does not support all fields.
    * @param query to make to the warehouse
-   * @param includeNonValidTaxons By default, query results include also entries where target name does not match taxonomy. To get only entries where one and only one taxon matches given target name, set this parameter to false.
    * @param selected Define what fields to include to the result. Defaults to [document.documentId, gathering.gatheringId, unit.unitId, document.sourceId, document.collectionId, document.namedPlaceId, document.secureLevel, document.secureReason, document.keywords, gathering.team, gathering.eventDate.begin, gathering.eventDate.end, gathering.timeBegin, gathering.timeEnd, gathering.higherGeography, gathering.country, gathering.province, gathering.municipality, gathering.locality, gathering.conversions.wgs84CenterPoint.lat, gathering.conversions.wgs84CenterPoint.lon, gathering.interpretations.coordinateAccuracy, gathering.interpretations.sourceOfCoordinates, unit.linkings.taxon.qname, unit.linkings.taxon.species, unit.linkings.taxon.scientificName, unit.linkings.taxon.vernacularName, unit.taxonVerbatim, unit.abundanceString, unit.recordBasis, unit.mediaCount, unit.notes] Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
    * @param orderBy Define what fields to use when sorting results. If using default select, defaults to [gathering.eventDate.begin DESC, document.loadDate DESC, unit.taxonVerbatim ASC]. If using custom select there is no default order. Each fieldname given as parameter defaults to ASC - if you want to sort using descending order, add \&quot; DESC\&quot; to the end of the field name. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
    * @param pageSize Set number of results in one page.
    * @param page Set current page.
    */
-  public warehouseQueryListGet(query:WarehouseQueryInterface, includeNonValidTaxons?:boolean, selected?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, extraHttpRequestParams?:any):Observable<PagedResult<any>> {
+  public warehouseQueryListGet(query:WarehouseQueryInterface, selected?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, extraHttpRequestParams?:any):Observable<PagedResult<any>> {
     const path = this.basePath + '/warehouse/query/list';
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
 
-    this.addMetaToQuery(includeNonValidTaxons, selected, orderBy, pageSize, page);
+    this.addMetaToQuery(selected, orderBy, pageSize, page);
     this.addQueryToQueryParams(query, queryParameters);
 
     //   headerParams.set('accept', accept);
@@ -386,9 +381,9 @@ export class WarehouseApi {
       });
   }
 
-  private addMetaToQuery(includeNonValidTaxons?:boolean, selected?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number):void {
-    this.queryService.includeNonValidTaxons = includeNonValidTaxons;
-    this.queryService.selected = selected;
+  private addMetaToQuery(selectedOrAggregatedBy?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number):void {
+    this.queryService.aggregateBy = selectedOrAggregatedBy;
+    this.queryService.selected = selectedOrAggregatedBy;
     this.queryService.orderBy = orderBy;
     this.queryService.pageSize = pageSize;
     this.queryService.page = page;

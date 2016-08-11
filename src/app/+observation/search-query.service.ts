@@ -6,10 +6,11 @@ import {URLSearchParams} from "@angular/http";
 export class SearchQueryService {
   public query:WarehouseQueryInterface = {};
   public page:number;
-  public pageSize:number;
-  public includeNonValidTaxons:boolean;
+  public pageSize:number = 20;
+  public includeNonValidTaxons:boolean = false;
   public selected:string[];
   public orderBy:string[];
+  public aggregateBy:string[];
 
   arrayTypes = [
     'taxonId',
@@ -37,6 +38,7 @@ export class SearchQueryService {
   ];
 
   booleanTypes = [
+    'includeNonValidTaxons',
     'finnish',
     'invasive',
     'typeSpecimen',
@@ -83,13 +85,13 @@ export class SearchQueryService {
       //queryParameters.set('loadedLaterThan', this.query.loadedLaterThan);
     }
 
-    // Non query parameters
-    if (this.includeNonValidTaxons !== undefined) {
-      queryParameters.set('includeNonValidTaxons', this.includeNonValidTaxons ? 'true' : 'false');
-    }
-
+    // Non query parameters (these will not have effect on result count)
     if (this.selected !== undefined) {
       //queryParameters.set('selected', this.selected.join(','));
+    }
+
+    if (this.aggregateBy !== undefined) {
+      queryParameters.set('aggregateBy', this.aggregateBy.join(','));
     }
 
     if (this.orderBy !== undefined) {

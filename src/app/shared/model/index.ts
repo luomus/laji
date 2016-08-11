@@ -6,4 +6,5 @@ export * from './PagedResult';
 export * from './Information';
 export * from './InformationItem';
 export * from './WarehouseQueryInterface';
+export * from './WarehouseCountResultInterface';
 

@@ -2,13 +2,16 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Subscription} from "rxjs";
 import {ActivatedRoute, ROUTER_DIRECTIVES} from "@angular/router";
 
-import { SearchQueryService, ObservationResultComponent } from '../shared';
+import { ObservationHeaderComponent } from "./header/observation-header.component";
+import { WarehouseApi } from "../shared/api/WarehouseApi";
+import {ObservationResultComponent} from "./result/observation-result.component";
+import {SearchQueryService} from "./search-query.service";
 
 @Component({
   selector: 'laji-observation',
   templateUrl: './observation.component.html',
-  directives: [ ObservationResultComponent, ROUTER_DIRECTIVES ],
-  providers: [ SearchQueryService ]
+  directives: [ ObservationResultComponent, ObservationHeaderComponent, ROUTER_DIRECTIVES ],
+  providers: [ SearchQueryService, WarehouseApi ]
 })
 export class ObservationComponent implements OnInit, OnDestroy {
   public tab:string;
@@ -18,11 +21,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute, public searchQuery: SearchQueryService) {
     this.searchQuery.query = {
-      finnish: true,
-      invasive: true,
-      lifeStage: ['ADULT']
     };
-    this.searchQuery.pageSize = 20;
   }
 
   ngOnInit() {

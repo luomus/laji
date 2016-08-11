@@ -5,4 +5,3 @@ export * from './api';
 export * from './model';
 export * from './news-list';
 export * from './pipe';
-export * from './search';
