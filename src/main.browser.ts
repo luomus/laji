@@ -1,4 +1,5 @@
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { disableDeprecatedForms, provideForms } from '@angular/forms';
 import { bootstrap } from '@angular/platform-browser-dynamic';
 import { HTTP_PROVIDERS, Http } from '@angular/http';
 //import { enableProdMode } from '@angular/core';
@@ -13,6 +14,8 @@ import { NewsApi } from './app/shared'
 //enableProdMode();
 
 bootstrap(AppComponent, [
+  disableDeprecatedForms(),
+  provideForms(),
   HTTP_PROVIDERS,
   APP_ROUTER_PROVIDERS,
   { provide: LocationStrategy, useClass: PathLocationStrategy },

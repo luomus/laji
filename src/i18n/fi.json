@@ -76,5 +76,6 @@
   "result.unit.linkings.taxon": "Laji",
   "result.gathering.team": "Henkilö",
   "result.gathering.eventDate": "Aika",
-  "result.document.documentId": "Lisää"
+  "result.document.documentId": "Lisää",
+  "result.gathering.conversions.wgs84CenterPoint": "Paikka"
 }

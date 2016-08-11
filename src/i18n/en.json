@@ -74,5 +74,6 @@
   "result.unit.linkings.taxon": "Species",
   "result.gathering.team": "Gatherer",
   "result.gathering.eventDate": "Time",
-  "result.document.documentId": "More"
+  "result.document.documentId": "More",
+  "result.gathering.conversions.wgs84CenterPoint": "Spot"
 }

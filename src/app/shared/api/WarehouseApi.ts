@@ -31,11 +31,13 @@ import 'rxjs/Rx';
 /* tslint:disable:no-unused-variable member-ordering */
 
 'use strict';
+import {SearchQueryService} from "../search/query.service";
 
 @Injectable()
 export class WarehouseApi {
   protected basePath = '/api';
   public defaultHeaders:Headers = new Headers();
+  private queryService:SearchQueryService = new SearchQueryService();
 
   constructor(protected http:Http, @Optional() basePath:string) {
     if (basePath) {
@@ -84,8 +86,8 @@ export class WarehouseApi {
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
 
+    this.addMetaToQuery(includeNonValidTaxons, undefined, orderBy, pageSize, page);
     this.addQueryToQueryParams(query, queryParameters);
-    this.addMetaToQuery(queryParameters, includeNonValidTaxons, undefined, orderBy, pageSize, page);
 
     //headerParams.set('accept', accept);
 
@@ -153,9 +155,8 @@ export class WarehouseApi {
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
 
+    this.addMetaToQuery(includeNonValidTaxons, undefined, orderBy, pageSize, page);
     this.addQueryToQueryParams(query, queryParameters);
-    this.addMetaToQuery(queryParameters, includeNonValidTaxons, undefined, orderBy, pageSize, page);
-
 
     //    headerParams.set('accept', accept);
 
@@ -257,8 +258,9 @@ export class WarehouseApi {
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
 
+    this.addMetaToQuery(includeNonValidTaxons, undefined, orderBy, pageSize, page);
     this.addQueryToQueryParams(query, queryParameters);
-    this.addMetaToQuery(queryParameters, includeNonValidTaxons, undefined, orderBy, pageSize, page);
+
     //  headerParams.set('accept', accept);
 
     let requestOptions:RequestOptionsArgs = {
@@ -289,9 +291,9 @@ export class WarehouseApi {
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
-    this.addQueryToQueryParams(query, queryParameters);
-    this.addMetaToQuery(queryParameters, includeNonValidTaxons);
 
+    this.addMetaToQuery(includeNonValidTaxons);
+    this.addQueryToQueryParams(query, queryParameters);
 
     // headerParams.set('accept', accept);
 
@@ -327,9 +329,9 @@ export class WarehouseApi {
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
-    this.addQueryToQueryParams(query, queryParameters);
-    this.addMetaToQuery(queryParameters, includeNonValidTaxons, selected, orderBy, pageSize, page);
 
+    this.addMetaToQuery(includeNonValidTaxons, selected, orderBy, pageSize, page);
+    this.addQueryToQueryParams(query, queryParameters);
 
     //   headerParams.set('accept', accept);
 
@@ -384,164 +386,17 @@ export class WarehouseApi {
       });
   }
 
-  private addMetaToQuery(queryParameters:URLSearchParams, includeNonValidTaxons?:boolean, selected?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number):void {
-    if (includeNonValidTaxons !== undefined) {
-      queryParameters.set('includeNonValidTaxons', includeNonValidTaxons ? 'true' : 'false');
-    }
-
-    if (selected !== undefined) {
-      queryParameters.set('selected', selected.join(','));
-    }
-
-    if (orderBy !== undefined) {
-      queryParameters.set('orderBy', orderBy.join(',m'));
-    }
-
-    if (pageSize !== undefined) {
-      queryParameters.set('pageSize', String(pageSize));
-    }
-
-    if (page !== undefined) {
-      queryParameters.set('page', String(page));
-    }
+  private addMetaToQuery(includeNonValidTaxons?:boolean, selected?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number):void {
+    this.queryService.includeNonValidTaxons = includeNonValidTaxons;
+    this.queryService.selected = selected;
+    this.queryService.orderBy = orderBy;
+    this.queryService.pageSize = pageSize;
+    this.queryService.page = page;
   }
 
   private addQueryToQueryParams(query:WarehouseQueryInterface, queryParameters:URLSearchParams):void {
-    if (query.taxonId !== undefined) {
-      queryParameters.set('taxonId', query.taxonId.join(','));
-    }
-
-    if (query.target !== undefined) {
-      queryParameters.set('target', query.target.join(','));
-    }
-
-    if (query.informalTaxonGroupId !== undefined) {
-      queryParameters.set('informalTaxonGroupId', query.informalTaxonGroupId.join(','));
-    }
-
-    if (query.administrativeStatusId !== undefined) {
-      queryParameters.set('administrativeStatusId', query.administrativeStatusId.join(','));
-    }
-
-    if (query.redListStatusId !== undefined) {
-      queryParameters.set('redListStatusId', query.redListStatusId.join(','));
-    }
-
-    if (query.finnish !== undefined) {
-      queryParameters.set('finnish', query.finnish ? 'true' : 'false');
-    }
-
-    if (query.invasive !== undefined) {
-      queryParameters.set('invasive', query.invasive ? 'true' : 'false');
-    }
-
-    if (query.countryId !== undefined) {
-      queryParameters.set('countryId', query.countryId.join(','));
-    }
-
-    if (query.finnishMunicipalityId !== undefined) {
-      queryParameters.set('finnishMunicipalityId', query.finnishMunicipalityId.join(','));
-    }
-
-    if (query.biogeographicalProvinceId !== undefined) {
-      queryParameters.set('biogeographicalProvinceId', query.biogeographicalProvinceId.join(','));
-    }
-
-    if (query.area !== undefined) {
-      queryParameters.set('area', query.area.join(','));
-    }
-
-    if (query.time !== undefined) {
-      queryParameters.set('time', query.time.join(','));
-    }
-
-    if (query.dayOfYearBegin !== undefined) {
-      queryParameters.set('dayOfYearBegin', String(query.dayOfYearBegin));
-    }
-
-    if (query.dayOfYearEnd !== undefined) {
-      queryParameters.set('dayOfYearEnd', String(query.dayOfYearEnd));
-    }
-
-    if (query.keyword !== undefined) {
-      queryParameters.set('keyword', query.keyword.join(','));
-    }
-
-    if (query.collectionId !== undefined) {
-      queryParameters.set('collectionId', query.collectionId.join(','));
-    }
-
-    if (query.sourceId !== undefined) {
-      queryParameters.set('sourceId', query.sourceId.join(','));
-    }
-
-    if (query.recordBasis !== undefined) {
-      queryParameters.set('recordBasis', query.recordBasis.join(','));
-    }
-
-    if (query.lifeStage !== undefined) {
-      queryParameters.set('lifeStage', query.lifeStage.join(','));
-    }
-
-    if (query.sex !== undefined) {
-      queryParameters.set('sex', query.sex.join(','));
-    }
-
-    if (query.documentId !== undefined) {
-      queryParameters.set('documentId', query.documentId.join(','));
-    }
-
-    if (query.unitId !== undefined) {
-      queryParameters.set('unitId', query.unitId.join(','));
-    }
-
-    if (query.individualId !== undefined) {
-      queryParameters.set('individualId', query.individualId.join(','));
-    }
-
-    if (query.individualCountMin !== undefined) {
-      queryParameters.set('individualCountMin', String(query.individualCountMin));
-    }
-
-    if (query.individualCountMax !== undefined) {
-      queryParameters.set('individualCountMax', String(query.individualCountMax));
-    }
-
-    if (query.loadedLaterThan !== undefined) {
-      //queryParameters.set('loadedLaterThan', query.loadedLaterThan);
-    }
-
-    if (query.coordinates !== undefined) {
-      queryParameters.set('coordinates', query.coordinates.join(','));
-    }
-
-    if (query.typeSpecimen !== undefined) {
-      queryParameters.set('typeSpecimen', String(query.typeSpecimen));
-    }
-
-    if (query.hasDocumentMedia !== undefined) {
-      queryParameters.set('hasDocumentMedia', query.hasDocumentMedia ? 'true' : 'false');
-    }
-
-    if (query.hasGatheringMedia !== undefined) {
-      queryParameters.set('hasGatheringMedia', query.hasGatheringMedia ? 'true' : 'false');
-    }
-
-    if (query.hasUnittMedia !== undefined) {
-      queryParameters.set('hasUnittMedia', query.hasUnittMedia ? 'true' : 'false');
-    }
-
-    if (query.hasMedia !== undefined) {
-      queryParameters.set('hasMedia', query.hasMedia ? 'true' : 'false');
-    }
-
-    if (query.secureReason !== undefined) {
-      queryParameters.set('secureReason', query.secureReason.join(','));
-    }
-
-    if (query.editorId !== undefined) {
-      queryParameters.set('editorId', query.editorId.join(','));
-    }
+    this.queryService.query = query;
+    this.queryService.getQueryString(queryParameters);
   }
 
 }

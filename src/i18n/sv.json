@@ -77,5 +77,6 @@
   "result.unit.linkings.taxon": "result.unit.linkings.taxon",
   "result.gathering.team": "result.gathering.team",
   "result.gathering.eventDate": "result.gathering.eventDate",
-  "result.document.documentId": "result.document.documentId"
+  "result.document.documentId": "result.document.documentId",
+  "result.gathering.conversions.wgs84CenterPoint": "result.gathering.wgs84CenterPoint"
 }

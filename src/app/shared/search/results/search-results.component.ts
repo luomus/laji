@@ -1,31 +1,40 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {TAB_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
+import {Location} from '@angular/common';
 
-import { WarehouseApi, WarehouseQueryInterface } from '../../../shared';
 import { SearchResultListComponent } from "../result-list/search-result-list.component";
+import { SearchQueryService } from "../query.service";
+
 
 @Component({
   selector: 'laji-search-result',
   templateUrl: 'search-result.component.html',
-  directives: [ TAB_DIRECTIVES, SearchResultListComponent ],
-  providers: [ WarehouseApi ]
+  directives: [ TAB_DIRECTIVES, SearchResultListComponent ]
 })
 export class SearchResultComponent implements OnInit {
 
-  @Input() query:WarehouseQueryInterface;
+  @Input() active:string = 'list';
 
-  constructor(private warehouseService:WarehouseApi) {
+  public activated = {
+    list: false,
+    images: false,
+    stats: false
+  };
 
-  }
+  constructor(private location: Location, private searchQuery: SearchQueryService) {}
 
   ngOnInit() {
-
+    this.activated[this.active] = true;
   }
 
-  loadStats() {
+  activate(tab:string) {
+    if (this.active === tab) {
+      return;
+    }
+    this.active = tab;
+    this.activated[tab] = true;
+    let query = this.searchQuery.getQueryString().toString().replace(/&/g,';');
+    query = query.length > 0 ? ';' + query : '';
+    this.location.go('/observation/' + tab + query);
   }
-
-  loadImages(e) {
-  }
-
 }

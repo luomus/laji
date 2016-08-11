@@ -6,5 +6,9 @@ export const ObservationRoutes: RouterConfig = [
   {
     path: 'observation',
     component: ObservationComponent
+  },
+  {
+    path: 'observation/:tab',
+    component: ObservationComponent
   }
 ];

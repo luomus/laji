@@ -1,3 +1,6 @@
+import { Injectable } from '@angular/core';
+
+@Injectable()
 export class ValueDecoratorService {
 
   private lang = 'fi';
@@ -6,7 +9,8 @@ export class ValueDecoratorService {
     'document.documentId':'makeId',
     'gathering.eventDate':'makeDateRange',
     'gathering.team': 'makeArrayToBr',
-    'unit.linkings.taxon': 'makeTaxon'
+    'unit.linkings.taxon': 'makeTaxon',
+    'gathering.conversions.wgs84CenterPoint': 'makeMapPoint'
   };
 
   public isDecoratable(field:string) {
@@ -28,11 +32,16 @@ export class ValueDecoratorService {
   }
 
   protected makeId(value) {
-    return `<a href="${value}">link</a>`
+    return `<a href="${value}">link</a><iframe src="http://laji.fi" style="width:100px; height: 100px"></iframe>`
   }
 
   protected makeArrayToBr(value) {
     return value.join('<br>')
+  }
+
+  protected makeMapPoint(value) {
+    //TODO: return image with center marked to these coordinates
+    return (+value.lat.toFixed(6)) + ' : ' + (+value.lon.toFixed(6));
   }
 
   protected makeTaxon(value) {

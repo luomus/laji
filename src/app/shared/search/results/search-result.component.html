@@ -1,14 +1,22 @@
 <tabset>
-  <tab [heading]="'search.result.list' | translate">
-    <laji-search-result-list [query]="query" [pageSize]="20"></laji-search-result-list>
+  <tab [heading]="'search.result.list' | translate"
+       (select)="activate('list')"
+       [active]="active === 'list'">
+    <laji-search-result-list *ngIf="activated['list']" [query]="query" [pageSize]="20" [page]="page"></laji-search-result-list>
   </tab>
-  <tab [heading]="'search.result.images' | translate" (select)="loadImages()">
-    loading...
+  <tab [heading]="'search.result.images' | translate"
+       (select)="activate('images')"
+       [active]="active === 'images'">
+    todo
   </tab>
-  <tab [heading]="'search.result.stats' | translate" (select)="loadStats()">
-    loading...
+  <tab [heading]="'search.result.stats' | translate"
+       (select)="activate('stats')"
+       [active]="active === 'stats'">
+    todo
   </tab>
-  <tab [heading]="'search.result.load' | translate">
+  <tab [heading]="'search.result.load' | translate"
+       (select)="activate('load')"
+       [active]="active === 'load'">
     Clicking this button sends the whole result set to your email (note that you'll have to be logged in for this to work)
     <button class="btn btn-default">load</button>
   </tab>
