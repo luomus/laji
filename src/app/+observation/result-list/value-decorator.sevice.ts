@@ -9,7 +9,7 @@ export class ValueDecoratorService {
     'document.documentId':'makeId',
     'gathering.eventDate':'makeDateRange',
     'gathering.team': 'makeArrayToBr',
-    'unit.linkings.taxon': 'makeTaxon',
+    'unit.taxonVerbatim': 'makeTaxon',
     'gathering.conversions.wgs84CenterPoint': 'makeMapPoint'
   };
 
@@ -44,10 +44,14 @@ export class ValueDecoratorService {
     return (+value.lat.toFixed(6)) + ' : ' + (+value.lon.toFixed(6));
   }
 
-  protected makeTaxon(value) {
-    if (typeof value.vernacularName[this.lang] !== "undefined") {
-      return `${value.scientificName} (${value.vernacularName[this.lang]})`;
+  protected makeTaxon(value, context) {
+    if (context.unit.linkings && context.unit.linkings.scientificName) {
+      let taxon = context.unit.linkings;
+      if (typeof taxon.vernacularName[this.lang] !== "undefined") {
+        return `${taxon.scientificName} (${taxon.vernacularName[this.lang]})`;
+      }
+      return `${taxon.scientificName}`;
     }
-    return `${value.scientificName}`;
+    return value;
   }
 }

@@ -12,12 +12,23 @@
   <tab [heading]="'search.result.stats' | translate"
        (select)="activate('stats')"
        [active]="active === 'stats'">
-    todo
+    <div class="form-group" *ngIf="activated['stats']">
+      <div class="col-md-6">
+        <laji-observation-aggregate [field]="'unit.linkings.taxon.scientificName'" [title]="'taxon'" [limit]="20"></laji-observation-aggregate>
+      </div>
+      <div class="col-md-6">
+        <laji-observation-aggregate [field]="'unit.recordBasis'" [title]="'Tietue tyyppi'" [addPrefix]="true"></laji-observation-aggregate>
+      </div>
+    </div>
   </tab>
   <tab [heading]="'search.result.load' | translate"
        (select)="activate('load')"
        [active]="active === 'load'">
-    Clicking this button sends the whole result set to your email (note that you'll have to be logged in for this to work)
-    <button class="btn btn-default">load</button>
+    <div class="form-group">
+      <div class="col-sm-12">
+        Clicking this button sends the whole result set to your email (note that you'll have to be logged in for this to work)
+        <button class="btn btn-xs btn-default">load</button>
+      </div>
+    </div>
   </tab>
 </tabset>

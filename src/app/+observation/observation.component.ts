@@ -5,13 +5,19 @@ import {ActivatedRoute, ROUTER_DIRECTIVES} from "@angular/router";
 import { ObservationHeaderComponent } from "./header/observation-header.component";
 import { WarehouseApi } from "../shared/api/WarehouseApi";
 import {ObservationResultComponent} from "./result/observation-result.component";
-import {SearchQueryService} from "./search-query.service";
+import {SearchQuery} from "./search-query.model";
+import {ObservationFormComponent} from "./form/observation-form.component";
 
 @Component({
   selector: 'laji-observation',
   templateUrl: './observation.component.html',
-  directives: [ ObservationResultComponent, ObservationHeaderComponent, ROUTER_DIRECTIVES ],
-  providers: [ SearchQueryService, WarehouseApi ]
+  directives: [
+    ObservationResultComponent,
+    ObservationHeaderComponent,
+    ROUTER_DIRECTIVES,
+    ObservationFormComponent
+  ],
+  providers: [ SearchQuery, WarehouseApi ]
 })
 export class ObservationComponent implements OnInit, OnDestroy {
   public tab:string;
@@ -19,9 +25,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
 
   private subParam:Subscription;
 
-  constructor(private route: ActivatedRoute, public searchQuery: SearchQueryService) {
-    this.searchQuery.query = {
-    };
+  constructor(private route: ActivatedRoute, public searchQuery: SearchQuery) {
   }
 
   ngOnInit() {

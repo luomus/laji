@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {PAGINATION_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {FORM_DIRECTIVES} from '@angular/forms';
 import {Subscription} from "rxjs";
@@ -6,18 +6,18 @@ import {Location} from "@angular/common";
 
 import {WarehouseApi, PagedResult} from "../../shared";
 import {ValueDecoratorService} from './value-decorator.sevice';
-import {SearchQueryService} from "../search-query.service";
+import {SearchQuery} from "../search-query.model";
 
 @Component({
   selector: 'laji-observation-result-list',
-  templateUrl: 'search-result-list.component.html',
+  templateUrl: 'observation-result-list.component.html',
   directives: [PAGINATION_DIRECTIVES, FORM_DIRECTIVES],
   providers: [WarehouseApi, ValueDecoratorService]
 })
-export class ObservationResultListComponent implements OnInit {
+export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   @Input() columns: any = [
-    {field: 'unit.linkings.taxon'},
+    {field: 'unit.taxonVerbatim'},
     {field: 'gathering.team'},
     {field: 'gathering.eventDate'},
     {field: 'gathering.conversions.wgs84CenterPoint'},
@@ -29,11 +29,12 @@ export class ObservationResultListComponent implements OnInit {
 
   public loading: boolean = true;
 
-  private sub: Subscription;
+  private subFetch: Subscription;
+  private subUpdate: Subscription;
 
   constructor(private warehouseService: WarehouseApi,
               private decorator: ValueDecoratorService,
-              private searchQuery: SearchQueryService,
+              private searchQuery: SearchQuery,
               private location: Location) {
 
   }
@@ -45,7 +46,22 @@ export class ObservationResultListComponent implements OnInit {
       currentPage: this.searchQuery.page,
       results: []
     };
+    this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
+      query => {
+        this.searchQuery.page = 1;
+        this.fetchRows(this.searchQuery.page);
+      }
+    );
     this.fetchRows(this.searchQuery.page);
+  }
+
+  ngOnDestroy() {
+    if (this.subUpdate) {
+      this.subUpdate.unsubscribe();
+    }
+    if (this.subFetch) {
+      this.subFetch.unsubscribe();
+    }
   }
 
   pageChanged(event: any): void {
@@ -57,10 +73,10 @@ export class ObservationResultListComponent implements OnInit {
   fetchRows(page: number): void {
     this.searchQuery.selected = this.columns.map((column) => column.field);
     this.loading = true;
-    if (this.sub) {
-      this.sub.unsubscribe();
+    if (this.subFetch) {
+      this.subFetch.unsubscribe();
     }
-    this.sub = this.warehouseService
+    this.subFetch = this.warehouseService
       .warehouseQueryListGet(
         this.searchQuery.query,
         this.searchQuery.selected,
@@ -72,9 +88,9 @@ export class ObservationResultListComponent implements OnInit {
           this.searchQuery.page = results.currentPage;
           this.result = results;
           this.loading = false;
-          let query = this.searchQuery.getQueryString().toString().replace(/&/g, ';');
-          query = query.length > 0 ? ';' + query : '';
-          this.location.go(this.location.path(false).split(';')[0] + query);
+          let query = this.searchQuery.getQueryString().toString();
+          query = query.length > 0 ? '?' + query : '';
+          this.location.go(this.location.path(false).split('?')[0] + query);
         },
         error => {
           console.log(error);

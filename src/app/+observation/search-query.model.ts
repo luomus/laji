@@ -1,9 +1,15 @@
 import {Injectable} from "@angular/core";
 import {WarehouseQueryInterface} from "../shared/model/WarehouseQueryInterface";
 import {URLSearchParams} from "@angular/http";
+import {Subject} from "rxjs";
 
 @Injectable()
-export class SearchQueryService {
+export class SearchQuery {
+
+  private queryUpdatedSource = new Subject<WarehouseQueryInterface>();
+
+  public queryUpdated$ = this.queryUpdatedSource.asObservable();
+
   public query:WarehouseQueryInterface = {};
   public page:number;
   public pageSize:number = 20;
@@ -55,17 +61,49 @@ export class SearchQueryService {
     'individualCountMax'
   ];
 
-  public setQueryFromQueryString() {
+  public setQueryFromURLSearchParams(queryParameters: URLSearchParams) {
+    for(let i of this.arrayTypes) {
+      if (queryParameters.has(i)) {
+        this.query[i] = queryParameters.get(i)
+          .split(',')
+          .map(value => decodeURIComponent(value));
+      } else {
+        this.query[i] = undefined;
+      }
+    }
 
+    for(let i of this.booleanTypes) {
+      if (queryParameters.has(i)) {
+        this.query[i] = queryParameters.get(i) === 'true';
+      } else {
+        this.query[i] = undefined;
+      }
+    }
+
+    for(let i of this.numericTypes) {
+      if (queryParameters.has(i)) {
+        this.query[i] = +queryParameters.get(i);
+      } else {
+        this.query[i] = undefined;
+      }
+    }
   }
 
-  public getQueryString(queryParameters?: URLSearchParams) {
+  public getQueryString(queryParameters?: URLSearchParams):URLSearchParams {
     if (!queryParameters) {
       queryParameters = new URLSearchParams();
     }
     for(let i of this.arrayTypes) {
       if (this.query[i] !== undefined) {
-        queryParameters.set(i, this.query[i].join(','));
+        if (this.query[i].length < 1 || this.query[0] === '') {
+          continue;
+        }
+        let query = this.query[i]
+          .filter(val => val.trim().length > 0)
+          .join(',');
+        if (query.length > 0) {
+          queryParameters.set(i, query);
+        }
       }
     }
 
@@ -107,5 +145,9 @@ export class SearchQueryService {
     }
 
     return queryParameters;
+  }
+
+  public queryUpdate() {
+    this.queryUpdatedSource.next(this.query);
   }
 }

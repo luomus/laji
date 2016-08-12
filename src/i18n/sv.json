@@ -74,11 +74,20 @@
   "search.result.stats": "search.result.stats",
   "search.result.load": "search.result.load",
 
-  "result.unit.linkings.taxon": "result.unit.linkings.taxon",
+  "result.unit.taxonVerbatim": "result.unit.linkings.taxon",
   "result.gathering.team": "result.gathering.team",
   "result.gathering.eventDate": "result.gathering.eventDate",
   "result.document.documentId": "result.document.documentId",
   "result.gathering.conversions.wgs84CenterPoint": "result.gathering.wgs84CenterPoint",
+
+  "observation.form.filter": "Filter",
+  "observation.form.specimen": "Species",
+  "observation.form.date": "Observation date",
+  "observation.form.thisYear": "This year",
+  "observation.form.preservedSpecimens": "Preserved specimens",
+  "observation.form.typeSpecimens": "Type specimens",
+  "observation.form.search": "Search",
+  "observation.form.empty": "Clear filters",
 
   "observation.results": "observation.results"
 }

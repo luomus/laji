@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Subscription} from "rxjs";
 
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
-import {SearchQueryService} from "../search-query.service";
+import {SearchQuery} from "../search-query.model";
 import {FormattedNumber} from "../../shared/pipe/formated-number.pipe";
 import {HtmlAsIs} from "../../shared/pipe/html-as-is.pipe";
 
@@ -12,24 +12,37 @@ import {HtmlAsIs} from "../../shared/pipe/html-as-is.pipe";
   template: `<h1><span [innerHtml]="hits | formattedNumber:'&nbsp' | htmlAsIs"></span> {{'observation.results' | translate}}</h1>`,
   pipes: [FormattedNumber, HtmlAsIs]
 })
-export class ObservationHeaderComponent implements OnInit {
+export class ObservationHeaderComponent implements OnInit, OnDestroy {
 
   public hits:string = '';
 
-  private sub:Subscription;
+  private subCount:Subscription;
+  private subUpdate:Subscription;
 
-  constructor(private warehouseService: WarehouseApi, private searchQuery: SearchQueryService) {
+  constructor(private warehouseService: WarehouseApi, private searchQuery: SearchQuery) {
   }
 
   ngOnInit() {
     this.updateCount();
+    this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
+      query => this.updateCount()
+    )
+  }
+
+  ngOnDestroy() {
+    if (this.subUpdate) {
+      this.subUpdate.unsubscribe();
+    }
+    if (this.subCount) {
+      this.subCount.unsubscribe();
+    }
   }
 
   public updateCount() {
-    if (this.sub) {
-      this.sub.unsubscribe();
+    if (this.subCount) {
+      this.subCount.unsubscribe();
     }
-    this.sub = this.warehouseService
+    this.subCount = this.warehouseService
       .warehouseQueryCountGet(this.searchQuery.query)
       .subscribe(
         result => {

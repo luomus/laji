@@ -73,11 +73,20 @@
   "search.result.stats": "Tilastot",
   "search.result.load": "Lataa tiedostona",
 
-  "result.unit.linkings.taxon": "Laji",
+  "result.unit.taxonVerbatim": "Laji",
   "result.gathering.team": "Henkilö",
   "result.gathering.eventDate": "Aika",
   "result.document.documentId": "Lisää",
   "result.gathering.conversions.wgs84CenterPoint": "Paikka",
+
+  "observation.form.filter": "Rajaa",
+  "observation.form.specimen": "Lajilla",
+  "observation.form.date": "Havaintopäivällä",
+  "observation.form.thisYear": "Tänä vuonna",
+  "observation.form.preservedSpecimens": "Kokoelmanäytteitä",
+  "observation.form.typeSpecimens": "Tyyppinäytteitä",
+  "observation.form.search": "Hae",
+  "observation.form.empty": "Tyhjennä rajaukset",
 
   "observation.results": "osumaa"
 }

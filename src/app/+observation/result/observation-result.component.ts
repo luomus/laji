@@ -2,14 +2,21 @@ import {Component, Input, OnInit} from '@angular/core';
 import {TAB_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {Location} from '@angular/common';
 
-import { ObservationResultListComponent } from "../result-list/search-result-list.component";
-import { SearchQueryService } from "../search-query.service";
+import { ObservationResultListComponent } from "../result-list/observation-result-list.component";
+import { SearchQuery } from "../search-query.model";
+import {ObservationCountComponent} from "../count/obesrvation-cont.component";
+import {ObservationAggregateComponent} from "../aggregate/observation-aggregate.component";
 
 
 @Component({
   selector: 'laji-observation-result',
   templateUrl: 'observation-result.component.html',
-  directives: [ TAB_DIRECTIVES, ObservationResultListComponent ]
+  directives: [
+    TAB_DIRECTIVES,
+    ObservationResultListComponent,
+    ObservationCountComponent,
+    ObservationAggregateComponent
+  ]
 })
 export class ObservationResultComponent implements OnInit {
 
@@ -21,7 +28,7 @@ export class ObservationResultComponent implements OnInit {
     stats: false
   };
 
-  constructor(private location: Location, private searchQuery: SearchQueryService) {}
+  constructor(private location: Location, private searchQuery: SearchQuery) {}
 
   ngOnInit() {
     this.activated[this.active] = true;

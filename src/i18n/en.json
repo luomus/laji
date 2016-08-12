@@ -71,11 +71,20 @@
   "search.result.stats": "Statistics",
   "search.result.load": "Load as file",
 
-  "result.unit.linkings.taxon": "Species",
+  "result.unit.taxonVerbatim": "Species",
   "result.gathering.team": "Gatherer",
   "result.gathering.eventDate": "Time",
   "result.document.documentId": "More",
   "result.gathering.conversions.wgs84CenterPoint": "Spot",
+
+  "observation.form.filter": "Filter",
+  "observation.form.specimen": "Species",
+  "observation.form.date": "Observation date",
+  "observation.form.thisYear": "This year",
+  "observation.form.preservedSpecimens": "Preserved specimens",
+  "observation.form.typeSpecimens": "Type specimens",
+  "observation.form.search": "Search",
+  "observation.form.empty": "Clear filters",
 
   "observation.results": "hits"
 }

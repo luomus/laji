@@ -31,14 +31,14 @@ import 'rxjs/Rx';
 /* tslint:disable:no-unused-variable member-ordering */
 
 'use strict';
-import {SearchQueryService} from "../../+observation/search-query.service";
+import {SearchQuery} from "../../+observation/search-query.model";
 import {WarehouseCountResultInterface} from "../model/WarehouseCountResultInterface";
 
 @Injectable()
 export class WarehouseApi {
   protected basePath = '/api';
   public defaultHeaders:Headers = new Headers();
-  private queryService:SearchQueryService = new SearchQueryService();
+  private queryService:SearchQuery = new SearchQuery();
 
   constructor(protected http:Http, @Optional() basePath:string) {
     if (basePath) {
@@ -250,7 +250,7 @@ export class WarehouseApi {
    * @param pageSize Set number of results in one page.
    * @param page Set current page.
    */
-  public warehouseQueryAggregateGet(query:WarehouseQueryInterface, aggregateBy?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, taxonId?:Array<string>, target?:Array<string>, informalTaxonGroupId?:Array<string>, administrativeStatusId?:Array<string>, redListStatusId?:Array<string>, finnish?:boolean, invasive?:boolean, countryId?:Array<string>, finnishMunicipalityId?:Array<string>, biogeographicalProvinceId?:Array<string>, area?:Array<string>, time?:Array<string>, dayOfYearBegin?:number, dayOfYearEnd?:number, keyword?:Array<string>, collectionId?:Array<string>, sourceId?:Array<string>, recordBasis?:Array<string>, lifeStage?:Array<string>, sex?:Array<string>, documentId?:Array<string>, unitId?:Array<string>, individualId?:Array<string>, individualCountMin?:number, individualCountMax?:number, loadedLaterThan?:Date, coordinates?:Array<string>, typeSpecimen?:boolean, hasDocumentMedia?:boolean, hasGatheringMedia?:boolean, hasUnittMedia?:boolean, hasMedia?:boolean, secureReason?:Array<string>, editorId?:Array<string>, extraHttpRequestParams?:any):Observable<string> {
+  public warehouseQueryAggregateGet(query:WarehouseQueryInterface, aggregateBy?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, taxonId?:Array<string>, target?:Array<string>, informalTaxonGroupId?:Array<string>, administrativeStatusId?:Array<string>, redListStatusId?:Array<string>, finnish?:boolean, invasive?:boolean, countryId?:Array<string>, finnishMunicipalityId?:Array<string>, biogeographicalProvinceId?:Array<string>, area?:Array<string>, time?:Array<string>, dayOfYearBegin?:number, dayOfYearEnd?:number, keyword?:Array<string>, collectionId?:Array<string>, sourceId?:Array<string>, recordBasis?:Array<string>, lifeStage?:Array<string>, sex?:Array<string>, documentId?:Array<string>, unitId?:Array<string>, individualId?:Array<string>, individualCountMin?:number, individualCountMax?:number, loadedLaterThan?:Date, coordinates?:Array<string>, typeSpecimen?:boolean, hasDocumentMedia?:boolean, hasGatheringMedia?:boolean, hasUnittMedia?:boolean, hasMedia?:boolean, secureReason?:Array<string>, editorId?:Array<string>, extraHttpRequestParams?:any):Observable<PagedResult<any>> {
     const path = this.basePath + '/warehouse/query/aggregate';
 
     let queryParameters = new URLSearchParams();
