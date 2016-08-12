@@ -40,8 +40,6 @@ export class ObservationResultComponent implements OnInit {
     }
     this.active = tab;
     this.activated[tab] = true;
-    let query = this.searchQuery.getQueryString().toString().replace(/&/g,';');
-    query = query.length > 0 ? ';' + query : '';
-    this.location.go('/observation/' + tab + query);
+    this.searchQuery.updateUrl(this.location, '/observation/' + tab);
   }
 }

@@ -88,9 +88,8 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
           this.searchQuery.page = results.currentPage;
           this.result = results;
           this.loading = false;
-          let query = this.searchQuery.getQueryString().toString();
-          query = query.length > 0 ? '?' + query : '';
-          this.location.go(this.location.path(false).split('?')[0] + query);
+
+          this.searchQuery.updateUrl(this.location);
         },
         error => {
           console.log(error);

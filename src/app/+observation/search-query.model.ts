@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {WarehouseQueryInterface} from "../shared/model/WarehouseQueryInterface";
 import {URLSearchParams} from "@angular/http";
 import {Subject} from "rxjs";
+import {Location} from "@angular/common";
 
 @Injectable()
 export class SearchQuery {
@@ -145,6 +146,15 @@ export class SearchQuery {
     }
 
     return queryParameters;
+  }
+
+  public updateUrl(location:Location, path?:string):void {
+    if (!path) {
+      path = location.path(false).split('?')[0];
+    }
+    let query = this.getQueryString().toString();
+    query = query.length > 0 ? '?' + query : '';
+    location.go(path + query);
   }
 
   public queryUpdate() {
