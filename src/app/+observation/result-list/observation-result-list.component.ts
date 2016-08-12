@@ -95,6 +95,8 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
           console.log(error);
           this.result.results = [];
           this.loading = false;
+          //TODO: remove when limit for the searches is removed
+          this.searchQuery.updateUrl(this.location);
         }
       )
   }

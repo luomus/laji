@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {FORM_DIRECTIVES, NgModel}   from '@angular/forms';
+import {FORM_DIRECTIVES}   from '@angular/forms';
+import {Location} from "@angular/common";
 
 import {SearchQuery} from "../search-query.model";
 import {ObservationCountComponent} from "../count/obesrvation-cont.component";
@@ -14,7 +15,7 @@ export class ObservationFormComponent implements OnInit {
 
   public query;
 
-  constructor(public searchQuery: SearchQuery) {
+  constructor(public searchQuery: SearchQuery, private location:Location) {
   }
 
   ngOnInit() {
@@ -65,6 +66,7 @@ export class ObservationFormComponent implements OnInit {
     this.searchQuery.query.recordBasis = this.query.specimen ? ['PRESERVED_SPECIMEN'] : undefined;
 
     this.searchQuery.queryUpdate();
+    this.searchQuery.updateUrl(this.location);
     return false;
   }
 
