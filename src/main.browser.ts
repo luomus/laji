@@ -9,7 +9,7 @@ import {TRANSLATE_PROVIDERS, TranslatePipe } from 'ng2-translate/ng2-translate';
 
 import { APP_ROUTER_PROVIDERS } from './app/app.routes';
 import { AppComponent } from './app/app.component';
-import { NewsApi } from './app/shared'
+import { NewsApi, UserService } from './app/shared'
 
 //enableProdMode();
 
@@ -21,6 +21,7 @@ bootstrap(AppComponent, [
   { provide: LocationStrategy, useClass: PathLocationStrategy },
   TRANSLATE_PROVIDERS,
   NewsApi,
+  UserService,
   { provide: PLATFORM_PIPES, useValue: TranslatePipe, multi: true }
 ])
 .catch(err => console.error(err));

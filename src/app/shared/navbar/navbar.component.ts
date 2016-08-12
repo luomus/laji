@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 
 import { LangSelectComponent } from './lang-select.component'
+import { UserService } from "../service/user.service";
 
 @Component({
   selector: 'laji-navbar',
@@ -11,6 +12,8 @@ import { LangSelectComponent } from './lang-select.component'
 })
 export class NavbarComponent {
   openMenu:Boolean = false;
+
+  constructor(public userService:UserService) {}
 
   toggleMenu() {
     this.openMenu = !this.openMenu;

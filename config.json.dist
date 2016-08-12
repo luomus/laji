@@ -1,4 +1,5 @@
 {
   "api_base": "https://apitest.laji.fi",
-  "access_token": ""
+  "access_token": "",
+  "login_url": ""
 }

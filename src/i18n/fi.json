@@ -9,6 +9,7 @@
   "navigation.collection": "Aineistot",
   "navigation.haseka": "Havaintopalvelu",
   "navigation.user": "Käyttäjäasetukset",
+  "navigation.user.login": "Kirjaudu",
 
   "home.image-header.observations": "havaintoja ja näytteitä",
   "home.image-header.species": "lajeja",

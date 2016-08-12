@@ -9,6 +9,7 @@
   "navigation.collection": "Information sources",
   "navigation.haseka": "Reportingservice",
   "navigation.user": "User settings",
+  "navigation.user.login": "Login",
 
   "home.image-header.observations": "observations and specimen",
   "home.image-header.species": "species",

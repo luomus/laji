@@ -9,6 +9,7 @@
   "navigation.collection": "Informationskällör",
   "navigation.haseka": "navigation.haseka",
   "navigation.user": "navigation.user",
+  "navigation.user.login": "Login",
 
   "home.image-header.observations": "observationer och exemplar",
   "home.image-header.species": "arter",
