@@ -88,6 +88,10 @@ export class SearchQuery {
         this.query[i] = undefined;
       }
     }
+
+    if (queryParameters.has('page')) {
+      this.page = +queryParameters.get('page');
+    }
   }
 
   public getQueryString(queryParameters?: URLSearchParams):URLSearchParams {

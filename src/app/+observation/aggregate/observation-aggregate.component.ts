@@ -47,12 +47,11 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
       this.subCount.unsubscribe();
     }
     this.subCount = this.warehouseService
-      .warehouseQueryAggregateGet(this.searchQuery.query, [this.field])
+      .warehouseQueryAggregateGet(this.searchQuery.query, [this.field], undefined, this.limit)
       .subscribe(
         result => {
           if (result.results) {
             this.items = result.results
-              .splice(0, this.limit)
               .map(item => { return {count: item.count, value: item.aggregateBy[this.field]} });
           }
         }

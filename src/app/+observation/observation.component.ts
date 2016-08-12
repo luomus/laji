@@ -1,12 +1,16 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Subscription} from "rxjs";
 import {ActivatedRoute, ROUTER_DIRECTIVES} from "@angular/router";
+import {Location} from "@angular/common";
+import {URLSearchParams} from "@angular/http";
 
 import { ObservationHeaderComponent } from "./header/observation-header.component";
 import { WarehouseApi } from "../shared/api/WarehouseApi";
 import {ObservationResultComponent} from "./result/observation-result.component";
 import {SearchQuery} from "./search-query.model";
 import {ObservationFormComponent} from "./form/observation-form.component";
+
+
 
 @Component({
   selector: 'laji-observation',
@@ -25,7 +29,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
 
   private subParam:Subscription;
 
-  constructor(private route: ActivatedRoute, public searchQuery: SearchQuery) {
+  constructor(private route: ActivatedRoute, public searchQuery: SearchQuery, private location: Location) {
   }
 
   ngOnInit() {
@@ -33,6 +37,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
       this.tab = params['tab'] || 'list';
       this.searchQuery.page = +params['page'] || 1;
     });
+    this.searchQuery.setQueryFromURLSearchParams(new URLSearchParams(this.location.path(true).replace('?','?skip=true&')));
   }
 
   ngOnDestroy() {

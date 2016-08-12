@@ -3,18 +3,22 @@ import {FORM_DIRECTIVES, NgModel}   from '@angular/forms';
 
 import {SearchQuery} from "../search-query.model";
 import {ObservationCountComponent} from "../count/obesrvation-cont.component";
+import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
 
 @Component({
   selector: 'laji-observation-form',
   templateUrl: 'observation-form.component.html',
   directives: [ FORM_DIRECTIVES, ObservationCountComponent ]
 })
-export class ObservationFormComponent {
+export class ObservationFormComponent implements OnInit {
 
   public query;
 
   constructor(public searchQuery: SearchQuery) {
-    this.empty();
+  }
+
+  ngOnInit() {
+    this.empty(this.searchQuery.query);
   }
 
   updateTime(dates) {
@@ -32,7 +36,16 @@ export class ObservationFormComponent {
     this.onSubmit();
   }
 
-  empty() {
+  empty(query?:WarehouseQueryInterface) {
+    if (query) {
+      this.query = {
+        taxon: query.target && query.target[0] ? query.target[0] : '',
+        time: query.time && query.time[0] ? query.time[0] : '',
+        specimen: query.recordBasis && query.recordBasis[0] && query.recordBasis[0] === 'PRESERVED_SPECIMEN' ? true : false,
+        typeSpecimen: query.typeSpecimen || false
+      };
+      return;
+    }
     this.query = {
       taxon:'',
       time:'',
