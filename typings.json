@@ -1,7 +1,10 @@
 {
   "name": "angular2-seed",
   "version": false,
-  "dependencies": {},
+  "dependencies": {
+    "d3": "registry:npm/d3#3.0.0+20160723033700",
+    "nvd3": "registry:npm/nvd3#1.8.3+20160711175044"
+  },
   "globalDependencies": {
     "core-js": "registry:dt/core-js#0.0.0+20160602141332",
     "node": "registry:dt/node#6.0.0+20160621231320"

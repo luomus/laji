@@ -9,8 +9,8 @@ import { WarehouseApi } from "../shared/api/WarehouseApi";
 import {ObservationResultComponent} from "./result/observation-result.component";
 import {SearchQuery} from "./search-query.model";
 import {ObservationFormComponent} from "./form/observation-form.component";
-
-
+import {PieChartComponent} from "../shared/chart/pie/pie-chart.component";
+declare let d3:any;
 
 @Component({
   selector: 'laji-observation',
@@ -19,7 +19,8 @@ import {ObservationFormComponent} from "./form/observation-form.component";
     ObservationResultComponent,
     ObservationHeaderComponent,
     ROUTER_DIRECTIVES,
-    ObservationFormComponent
+    ObservationFormComponent,
+    PieChartComponent
   ],
   providers: [ SearchQuery, WarehouseApi ]
 })
@@ -28,6 +29,9 @@ export class ObservationComponent implements OnInit, OnDestroy {
   public page:number;
 
   private subParam:Subscription;
+
+  public options:any;
+  public data:any;
 
   constructor(private route: ActivatedRoute, public searchQuery: SearchQuery, private location: Location) {
   }

@@ -5,15 +5,17 @@ import {Location} from "@angular/common";
 import {SearchQuery} from "../search-query.model";
 import {ObservationCountComponent} from "../count/obesrvation-cont.component";
 import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
+import {ObservationChartComponent} from "../chart/observation-chart.component";
 
 @Component({
   selector: 'laji-observation-form',
   templateUrl: 'observation-form.component.html',
-  directives: [ FORM_DIRECTIVES, ObservationCountComponent ]
+  directives: [ FORM_DIRECTIVES, ObservationCountComponent, ObservationChartComponent ]
 })
 export class ObservationFormComponent implements OnInit {
 
   public query;
+  public pieData:any;
 
   constructor(public searchQuery: SearchQuery, private location:Location) {
   }
