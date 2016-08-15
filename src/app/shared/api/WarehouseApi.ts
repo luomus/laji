@@ -104,7 +104,9 @@ export class WarehouseApi {
         } else {
           return response.json();
         }
-      });
+      })
+      .cache()
+      .share();
   }
 
   /**
@@ -136,7 +138,9 @@ export class WarehouseApi {
         } else {
           return response.json();
         }
-      });
+      })
+      .cache()
+      .share();
   }
 
   /**
@@ -172,7 +176,9 @@ export class WarehouseApi {
         } else {
           return response.json();
         }
-      });
+      })
+      .cache()
+      .share();
   }
 
   /**
@@ -206,7 +212,9 @@ export class WarehouseApi {
         } else {
           return response.json();
         }
-      });
+      })
+      .cache()
+      .share();
   }
 
   /**
@@ -237,8 +245,7 @@ export class WarehouseApi {
         } else {
           return response.json();
         }
-      })
-      .cache();
+      });
   }
 
   /**
@@ -275,7 +282,8 @@ export class WarehouseApi {
           return response.json();
         }
       })
-      .cache();
+      .cache()
+      .share();
   }
 
   /**
@@ -307,7 +315,8 @@ export class WarehouseApi {
           return response.json();
         }
       })
-      .cache();
+      .cache()
+      .share();
   }
 
   /**
@@ -343,7 +352,9 @@ export class WarehouseApi {
         } else {
           return response.json();
         }
-      });
+      })
+      .cache()
+      .share();
   }
 
   /**
