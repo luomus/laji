@@ -19,9 +19,9 @@ var Hello = React.createClass({
 })
 export class HaSeKaFormComponent {
   constructor(@Inject(ElementRef) elementRef: ElementRef) {
-    console.log(LajiForm);
     /*
-    ReactDOM.render(
+     console.log(LajiForm);
+     ReactDOM.render(
       React.createElement(LajiForm.default,
         {
           schema: schema.schema,
