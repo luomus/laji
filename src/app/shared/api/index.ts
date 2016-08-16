@@ -3,3 +3,4 @@ export * from './NewsApi';
 export * from './InformationApi';
 export * from './WarehouseApi';
 export * from './FormApi';
+export * from './FormApiClient';

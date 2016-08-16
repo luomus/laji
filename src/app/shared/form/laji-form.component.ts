@@ -1,38 +1,28 @@
-import {Component, OnInit, ElementRef, Inject, OnDestroy} from '@angular/core';
+import {Component, OnInit, ElementRef, Inject, OnDestroy, Input} from '@angular/core';
+import {FormApiClient} from "../api/FormApiClient";
 
-declare let LajiForm: any;
-declare let React: any;
-declare let ReactDOM: any;
+let React = require('react');
+let ReactDOM = require('react-dom');
+let LajiForm = require('laji-form');
 
-//let schema = require('./schema.json');
-
-var Hello = React.createClass({
-  tick:null,
-  displayName: 'Hello',
-  componentDidMount() {
-    this.tick = setInterval(function() {
-      console.log('Tick');
-    }, 1000);
-  },
-  componentWillUnmount() {
-    console.log('unMount');
-    clearInterval(this.tick);
-  },
-  render: function () {
-    return React.createElement("div", null, "Hello ", this.props.name);
-  }
-});
+let schema = require('./schema.json');
 
 @Component({
   selector: 'laji-form',
-  template: ''
+  template: '',
+  providers: [ FormApiClient ]
 })
-export class LajiFormComponent implements OnDestroy {
+export class LajiFormComponent implements OnInit, OnDestroy {
+
+  @Input() formId:string;
 
   elem:ElementRef;
 
-  constructor(@Inject(ElementRef) elementRef: ElementRef) {
+  constructor(@Inject(ElementRef) elementRef: ElementRef, private apiClient:FormApiClient) {
     this.elem = elementRef.nativeElement;
+  }
+
+  ngOnInit() {
     this.mount();
   }
 
@@ -49,29 +39,21 @@ export class LajiFormComponent implements OnDestroy {
   }
 
   mount() {
-    /*
      ReactDOM.render(
-     React.createElement(LajiForm.default,
-     {
-     schema: schema.schema,
-     uiSchema: schema.uiSchema,
-     formData: {gatheringEvent: {leg: ['MA.97']}, editors: ['MA.97']},
-     onChange: this.onChange,
-     onSubmit: this.onSubmit,
-     lang: 'fi'
-     }
-     ),
-     this.elem
+       React.createElement(LajiForm.default,
+       {
+         schema: schema.schema,
+         uiSchema: schema.uiSchema,
+         uiSchemaContext: schema.uiSchemaContext,
+         formData: {gatheringEvent: {leg: ['MA.97']}, editors: ['MA.97']},
+         onChange: this.onChange,
+         onSubmit: this.onSubmit,
+         apiClient: this.apiClient,
+         lang: 'fi'
+       }
+       ),
+       this.elem
      );
-     */
-    ReactDOM.render(
-      React.createElement(Hello,
-        {
-          name: ' from react!'
-        }
-      ),
-      this.elem
-    );
   }
 
   unMount() {

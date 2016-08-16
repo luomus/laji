@@ -1,5 +1,8 @@
 <div class="container">
   <h1>{{form?.title}}</h1>
   <p>{{form?.description}}</p>
-  <laji-form></laji-form>
+  <div class="laji-form" *ngIf="form?.id">
+    <laji-form></laji-form>
+  </div>
+  <div id="laji-map"></div>
 </div>

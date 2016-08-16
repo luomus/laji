@@ -1,16 +1,16 @@
 import {Component, OnInit, ElementRef, Inject, OnDestroy } from '@angular/core';
 import {TranslateService} from 'ng2-translate/ng2-translate';
-
-import {LajiFormComponent} from "../../shared";
-import {FormApi} from "../../shared/api/FormApi";
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
+
+import {LajiFormComponent, FormApi} from "../../shared";
 
 @Component({
   selector: 'laji-haseka-form',
   templateUrl: './haseka-form.component.html',
   directives: [ LajiFormComponent ],
-  providers: [ FormApi ]
+  providers: [ FormApi ],
+  styleUrls: ['./haseka-form.component.css']
 })
 export class HaSeKaFormComponent implements OnInit {
 
