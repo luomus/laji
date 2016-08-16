@@ -1,39 +1,49 @@
-import {Component, OnInit, ElementRef, Inject, OnDestroy} from '@angular/core';
+import {Component, OnInit, ElementRef, Inject, OnDestroy } from '@angular/core';
+import {TranslateService} from 'ng2-translate/ng2-translate';
 
-declare let LajiForm: any;
-declare let React: any;
-declare let ReactDOM: any;
-
-let schema = require('./schema.json');
-
-var Hello = React.createClass({
-  tick:null,
-  displayName: 'Hello',
-  componentDidMount() {
-    this.tick = setInterval(function() {
-      console.log('Tick');
-    }, 1000);
-  },
-  componentWillUnmount() {
-    console.log('unMount');
-    clearInterval(this.tick);
-  },
-  render: function () {
-    return React.createElement("div", null, "Hello ", this.props.name);
-  }
-});
+import {LajiFormComponent} from "../../shared";
+import {FormApi} from "../../shared/api/FormApi";
+import {Subscription} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'laji-haseka-form',
-  template: ''
+  templateUrl: './haseka-form.component.html',
+  directives: [ LajiFormComponent ],
+  providers: [ FormApi ]
 })
-export class HaSeKaFormComponent implements OnDestroy {
+export class HaSeKaFormComponent implements OnInit {
 
-  elem:ElementRef;
+  public form:any;
+  public formId:string;
 
-  constructor(@Inject(ElementRef) elementRef: ElementRef) {
-    this.elem = elementRef.nativeElement;
-    this.mount();
+  private subParam:Subscription;
+  private subTrans:Subscription;
+  private subFetch:Subscription;
+
+  constructor(
+    private route: ActivatedRoute,
+    private formService:FormApi,
+    private translate: TranslateService
+  ) {
+  }
+
+  ngOnDestroy() {
+    if (this.subFetch) {
+      this.subFetch.unsubscribe();
+    }
+    this.subParam.unsubscribe();
+    this.subTrans.unsubscribe();
+  }
+
+  ngOnInit() {
+    this.subParam = this.route.params.subscribe(params => {
+      this.formId = params['formId'];
+      this.fetchFormInstructions();
+    });
+    this.subTrans = this.translate.onLangChange.subscribe(
+      () => this.fetchFormInstructions()
+    );
   }
 
   onChange(value) {
@@ -44,38 +54,17 @@ export class HaSeKaFormComponent implements OnDestroy {
     console.log(data);
   }
 
-  ngOnDestroy() {
-    this.unMount();
-  }
 
-  mount() {
-    /*
-    ReactDOM.render(
-      React.createElement(LajiForm.default,
-        {
-          schema: schema.schema,
-          uiSchema: schema.uiSchema,
-          formData: {gatheringEvent: {leg: ['MA.97']}, editors: ['MA.97']},
-          onChange: this.onChange,
-          onSubmit: this.onSubmit,
-          lang: 'fi'
-        }
-      ),
-      this.elem
-    );
-    */
-    ReactDOM.render(
-      React.createElement(Hello,
-        {
-          name: ' from react!'
-        }
-      ),
-      this.elem
-    );
-  }
-
-  unMount() {
-    ReactDOM.unmountComponentAtNode(this.elem);
+  fetchFormInstructions() {
+    if (this.subFetch) {
+      this.subFetch.unsubscribe();
+    }
+    this.subFetch = this.formService
+      .formFindById(this.formId, this.translate.currentLang)
+      .subscribe(
+        data => this.form = data,
+        err => console.log(err)
+      );
   }
 
 }

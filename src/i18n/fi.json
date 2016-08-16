@@ -89,5 +89,9 @@
   "observation.form.search": "Hae",
   "observation.form.empty": "Tyhjennä rajaukset",
 
-  "observation.results": "osumaa"
+  "observation.results": "osumaa",
+
+  "haseka.title": "Havainto ilmoitin",
+  "haseka.forms.title": "Lomakeet",
+  "haseka.latest.title": "Viimeisimmät ilmoitukseni"
 }

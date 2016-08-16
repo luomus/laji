@@ -90,5 +90,9 @@
   "observation.form.search": "Search",
   "observation.form.empty": "Clear filters",
 
-  "observation.results": "observation.results"
+  "observation.results": "observation.results",
+
+  "haseka.title": "haseka.title",
+  "haseka.forms.title": "haseka.forms.title",
+  "haseka.latest.title": "haseka.latest.title"
 }

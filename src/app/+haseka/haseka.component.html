@@ -1,2 +1,26 @@
-<h1>HaSeKa</h1>
-<laji-haseka-form></laji-haseka-form>
+<div class="container">
+  <h1>{{'haseka.title' | translate}}</h1>
+  <div *ngIf="userService.isLoggedIn">
+    <div class="row">
+      <div class="col-sm-12">
+        Welcome to HaSeKa! Your personal assistant to gather data about the species of the world
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!userService.isLoggedIn">
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          Please login to see more information.
+          You can still send us data using forms bellow, but to do so you'll have to provide your email here
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <input class="form-control" type="text" placeholder="email" name="email" [(ngModel)]="email">
+      </div>
+    </div>
+  </div>
+  <laji-haseka-form-list></laji-haseka-form-list>
+</div>
