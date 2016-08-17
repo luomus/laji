@@ -45,8 +45,12 @@ export class ValueDecoratorService {
   }
 
   protected makeTaxon(value, context) {
-    if (context.unit.linkings && context.unit.linkings.scientificName) {
-      let taxon = context.unit.linkings;
+    if (
+      context.unit.linkings &&
+      context.unit.linkings.taxon &&
+      context.unit.linkings.taxon.scientificName
+    ) {
+      let taxon = context.unit.linkings.taxon;
       if (typeof taxon.vernacularName[this.lang] !== "undefined") {
         return `${taxon.scientificName} (${taxon.vernacularName[this.lang]})`;
       }
