@@ -55,7 +55,7 @@ var defaultConfig = {
   devServer: {
     historyApiFallback: {
       rewrites: [
-        {from: /.*\.[^(json|js|png|jpg|ico|ts|css)]$/, to: '/index.html'}
+        {from: /.*\.[^(json|js|png|jpg|ico|ts|css|svg)]$/, to: '/index.html'}
       ]
     },
     watchOptions: { aggregateTimeout: 300, poll: 1000 },
