@@ -2,6 +2,6 @@
   <h1>{{form?.title}}</h1>
   <p>{{form?.description}}</p>
   <div class="laji-form" *ngIf="form?.id">
-    <laji-form [formId]="formId" [formData]="form" [lang]="'fi'" (onSubmit)="onSubmit($event)"></laji-form>
+    <laji-form [formId]="formId" [formData]="form" [lang]="lang" (onSubmit)="onSubmit($event)"></laji-form>
   </div>
 </div>

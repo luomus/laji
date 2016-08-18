@@ -16,6 +16,7 @@ export class HaSeKaFormComponent implements OnInit {
 
   public form:any;
   public formId:string;
+  public lang:string;
 
   private subParam:Subscription;
   private subTrans:Subscription;
@@ -61,7 +62,10 @@ export class HaSeKaFormComponent implements OnInit {
     this.subFetch = this.formService
       .formFindById(this.formId, this.translate.currentLang)
       .subscribe(
-        data => this.form = data,
+        data =>  {
+          this.form = data;
+          this.lang = this.translate.currentLang
+        },
         err => console.log(err)
       );
   }
