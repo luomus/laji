@@ -1,19 +1,26 @@
 import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-import {TranslateService, TranslatePipe, TRANSLATE_PROVIDERS} from 'ng2-translate/ng2-translate';
+import { TranslateService } from 'ng2-translate/ng2-translate';
+import { LocalStorageService } from "angular2-localstorage/LocalStorageEmitter";
+import {LocalStorage } from "angular2-localstorage/WebStorage";
 
 import { NavbarComponent, FooterComponent } from './shared';
 
 @Component({
   selector: 'laji-app',
   pipes: [],
-  providers: [],
+  providers: [LocalStorageService],
   directives: [ ROUTER_DIRECTIVES, NavbarComponent, FooterComponent ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(public translate: TranslateService) {
-    translate.use('fi');
+  @LocalStorage() public defaultLang = 'fi';
+
+  constructor(public translate: TranslateService, private storageService: LocalStorageService) {
+    translate.use(this.defaultLang);
+    this.translate.onLangChange.subscribe(
+      lang => this.defaultLang = this.translate.currentLang
+    );
   }
 }
