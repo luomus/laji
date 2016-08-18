@@ -4,12 +4,12 @@ import { TranslateService } from 'ng2-translate/ng2-translate';
 import { LocalStorageService } from "angular2-localstorage/LocalStorageEmitter";
 import {LocalStorage } from "angular2-localstorage/WebStorage";
 
-import { NavbarComponent, FooterComponent } from './shared';
+import { NavbarComponent, FooterComponent, WarehouseApi } from './shared';
 
 @Component({
   selector: 'laji-app',
   pipes: [],
-  providers: [LocalStorageService],
+  providers: [LocalStorageService, WarehouseApi],
   directives: [ ROUTER_DIRECTIVES, NavbarComponent, FooterComponent ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

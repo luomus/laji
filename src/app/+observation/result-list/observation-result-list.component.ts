@@ -12,7 +12,7 @@ import {SearchQuery} from "../search-query.model";
   selector: 'laji-observation-result-list',
   templateUrl: 'observation-result-list.component.html',
   directives: [PAGINATION_DIRECTIVES, FORM_DIRECTIVES],
-  providers: [WarehouseApi, ValueDecoratorService]
+  providers: [ValueDecoratorService]
 })
 export class ObservationResultListComponent implements OnInit, OnDestroy {
 

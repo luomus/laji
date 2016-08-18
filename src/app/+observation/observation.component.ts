@@ -22,7 +22,7 @@ declare let d3:any;
     ObservationFormComponent,
     PieChartComponent
   ],
-  providers: [ SearchQuery, WarehouseApi ]
+  providers: [ SearchQuery ]
 })
 export class ObservationComponent implements OnInit, OnDestroy {
   public tab:string;
