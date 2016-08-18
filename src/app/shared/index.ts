@@ -7,3 +7,4 @@ export * from './news-list';
 export * from './pipe';
 export * from './service/user.service';
 export * from './form';
+export * from './panel';

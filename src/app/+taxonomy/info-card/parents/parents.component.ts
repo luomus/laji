@@ -3,7 +3,7 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Observable } from "rxjs/Rx";
 import { TranslateService } from "ng2-translate/ng2-translate";
 
-import { Taxonomy, TaxonomyApi } from "../../shared";
+import { Taxonomy, TaxonomyApi } from "../../../shared";
 
 
 

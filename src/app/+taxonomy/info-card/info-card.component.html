@@ -1,16 +1,32 @@
-<div class="panel-group" role="tablist" aria-multiselectable="true">
-  <laji-info-section
-    [title]="'taxonomy.card' | translate"
-    [open]="active == 0"
-    [index]="0"
-    (activate)="setActive($event)">
-    <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
-  </laji-info-section>
-  <laji-info-section
-    [title]="'taxonomy.map' | translate"
-    [open]="active == 1"
-    [index]="1"
-    (activate)="setActive($event)">
-    Uusi kartta....
-  </laji-info-section>
+<div class="container" *ngIf="taxon">
+  <h1>{{taxon.scientificName}}
+    <small *ngIf="taxon.vernacularName">{{taxon.vernacularName}}</small>
+  </h1>
+  <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="panel-group" role="tablist" aria-multiselectable="true">
+        <laji-panel
+          [title]="'taxonomy.card' | translate"
+          [open]="activePanel == 0"
+          [index]="0"
+          (activate)="setActive($event)">
+          <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
+        </laji-panel>
+        <laji-panel
+          [title]="'taxonomy.map' | translate"
+          [open]="activePanel == 1"
+          [index]="1"
+          (activate)="setActive($event)">
+          Uusi kartta....
+        </laji-panel>
+      </div>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <laji-children-list [parentId]="taxon.id"></laji-children-list>
+    </div>
+  </div>
 </div>

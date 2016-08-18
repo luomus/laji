@@ -20,7 +20,6 @@ bootstrap(AppComponent, [
   APP_ROUTER_PROVIDERS,
   { provide: LocationStrategy, useClass: PathLocationStrategy },
   TRANSLATE_PROVIDERS,
-  NewsApi,
   UserService,
   { provide: PLATFORM_PIPES, useValue: TranslatePipe, multi: true }
 ])
