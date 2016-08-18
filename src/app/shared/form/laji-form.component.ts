@@ -20,6 +20,7 @@ export class LajiFormComponent implements OnInit, OnDestroy, OnChanges {
   @Input() formData: any = {};
 
   @Output() onSubmit = new EventEmitter();
+  @Output() onChange = new EventEmitter();
 
   elem: ElementRef;
   reactElem:any;
@@ -50,11 +51,6 @@ export class LajiFormComponent implements OnInit, OnDestroy, OnChanges {
     this.mount();
   }
 
-  onChange(formData, errors) {
-    console.log('form data changed');
-    console.log(formData);
-  }
-
   mount() {
     if (!this.formData || !this.lang) {
       return;
@@ -65,8 +61,8 @@ export class LajiFormComponent implements OnInit, OnDestroy, OnChanges {
         schema: this.formData.schema,
         uiSchema: this.formData.uiSchema,
         uiSchemaContext: this.formData.uiSchemaContext,
-        formData: this.formData.updateForm,
-        onChange: this.onChange,
+        formData: this.formData.formData,
+        onChange: data => this.onChange.emit(data),
         onSubmit: data => this.onSubmit.emit(data),
         apiClient: this.apiClient,
         lang: this.lang

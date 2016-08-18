@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { LocalStorageService } from "angular2-localstorage/LocalStorageEmitter";
-import {LocalStorage } from "angular2-localstorage/WebStorage";
+import { LocalStorage } from "angular2-localstorage/WebStorage";
 
 import { NavbarComponent, FooterComponent, WarehouseApi } from './shared';
 

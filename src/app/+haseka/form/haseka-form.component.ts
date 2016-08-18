@@ -2,6 +2,7 @@ import {Component, OnInit, ElementRef, Inject, OnDestroy } from '@angular/core';
 import {TranslateService} from 'ng2-translate/ng2-translate';
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
+import { LocalStorage } from "angular2-localstorage/WebStorage";
 
 import {LajiFormComponent, FormApi} from "../../shared";
 
@@ -13,6 +14,8 @@ import {LajiFormComponent, FormApi} from "../../shared";
   styleUrls: ['./haseka-form.component.css']
 })
 export class HaSeKaFormComponent implements OnInit {
+
+  @LocalStorage() private formStorage = {};
 
   public form:any;
   public formId:string;
@@ -47,12 +50,14 @@ export class HaSeKaFormComponent implements OnInit {
     );
   }
 
-  onChange(value) {
-    console.log(value);
+  onChange(formData) {
+    this.formStorage[this.formId] = formData;
   }
 
-  onSubmit(data) {
-    console.log(data);
+  onSubmit(formData) {
+    console.log('saving data');
+    console.log(formData);
+    delete this.formStorage[this.formId];
   }
 
   updateForm() {
@@ -63,8 +68,11 @@ export class HaSeKaFormComponent implements OnInit {
       .formFindById(this.formId, this.translate.currentLang)
       .subscribe(
         data =>  {
+          if (this.formStorage[this.formId]) {
+            data.formData = this.formStorage[this.formId];
+          }
           this.form = data;
-          this.lang = this.translate.currentLang
+          this.lang = this.translate.currentLang;
         },
         err => console.log(err)
       );
