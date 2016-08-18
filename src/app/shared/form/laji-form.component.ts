@@ -57,7 +57,7 @@ export class LajiFormComponent implements OnInit, OnDestroy {
           onChange: this.onChange,
           onSubmit: data => this.onSubmit.emit(data),
           apiClient: this.apiClient,
-          lang: 'fi'
+          lang: this.lang
         }
       ),
       this.elem
