@@ -2,7 +2,6 @@
   <h1>{{form?.title}}</h1>
   <p>{{form?.description}}</p>
   <div class="laji-form" *ngIf="form?.id">
-    <laji-form></laji-form>
+    <laji-form [formId]="formId" [formData]="form" [lang]="'fi'" (onSubmit)="onSubmit($event)"></laji-form>
   </div>
-  <div id="laji-map"></div>
 </div>

@@ -24,7 +24,7 @@ export class HaSeKaFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private formService:FormApi,
-    private translate: TranslateService
+    public translate: TranslateService
   ) {
   }
 
@@ -39,10 +39,10 @@ export class HaSeKaFormComponent implements OnInit {
   ngOnInit() {
     this.subParam = this.route.params.subscribe(params => {
       this.formId = params['formId'];
-      this.fetchFormInstructions();
+      this.updateForm();
     });
     this.subTrans = this.translate.onLangChange.subscribe(
-      () => this.fetchFormInstructions()
+      () => this.updateForm()
     );
   }
 
@@ -54,8 +54,7 @@ export class HaSeKaFormComponent implements OnInit {
     console.log(data);
   }
 
-
-  fetchFormInstructions() {
+  updateForm() {
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }

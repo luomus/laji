@@ -2,7 +2,6 @@ var webpack = require('webpack');
 var path = require('path');
 var config = require('./config');
 
-
 // Webpack Config
 var webpackConfig = {
   entry: {
@@ -28,7 +27,9 @@ var webpackConfig = {
       { test: /\.css$/, loaders: ['to-string-loader', 'css-loader'] },
       { test: /\.html$/, loader: 'raw-loader' },
       { test: /\.json$/, loader: 'json-loader' },
-
+      { test: /\.png$/, loader: "url-loader?limit=100000" },
+      { test: /\.jpg$/,loader: "file-loader" },
+      { test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/, loader: "file-loader?name=[name].[ext]" },
     ]
   }
 };
