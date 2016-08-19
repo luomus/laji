@@ -1,7 +1,8 @@
 import {Component, OnInit, Input, ElementRef} from '@angular/core';
-import * as d3 from 'd3';
 import {Taxonomy} from "../../shared/model/Taxonomy";
 import {Router} from "@angular/router";
+
+declare var d3:any;
 
 const taxonTreeUri = '/api/taxonomy/%taxonId%?maxLevel=2&selectedFields=qname%2C%20scientificName';
 
