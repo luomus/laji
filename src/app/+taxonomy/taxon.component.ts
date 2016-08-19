@@ -7,13 +7,14 @@ import { TaxonomyApi, Taxonomy, InformalTaxonGroupApi, InformalTaxonGroup } from
 import {InformalListComponent} from "./informal-list/informal-list.component";
 import {SpeciesListComponent} from "./species-list/species-list.component";
 import {InformalListItemInterface} from "./informal-list/informal-list-item.model";
+import {TreeOfLifeComponent} from "./tree-of-life/tree-of-life.component";
 
 
 @Component({
   selector: 'laji-taxonomy',
   templateUrl: './taxon.component.html',
   providers: [ InformalTaxonGroupApi, TaxonomyApi ],
-  directives: [ InformalListComponent, SpeciesListComponent ],
+  directives: [ InformalListComponent, SpeciesListComponent, TreeOfLifeComponent ],
   styleUrls: [ 'taxon.component.css' ]
 })
 export class TaxonComponent implements OnInit, OnDestroy{

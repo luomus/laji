@@ -220,3 +220,35 @@ body .laji-form {
   margin: auto;
 }
 
+/** taxon tree **/
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+  cursor: pointer;
+  cursor: hand;
+}
+
+.node circle:hover {
+  fill: #bce9ff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+  cursor: pointer;
+  cursor: hand;
+}
+
+.node {
+  font: 10px sans-serif;
+}
+
+.node:hover {
+  font: 10px sans-serif;
+  text-decoration: underline;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+/** /taxon tree **/

@@ -1,11 +1,16 @@
 <div class="container">
   <h1>Lajit</h1>
   <div class="row">
-    <div class="col-md-6 informal-group-list">
+    <div class="col-md-4 informal-group-list">
       <laji-infomal-list [tree]="tree" (onSelect)="onGroupSelect($event)"></laji-infomal-list>
     </div>
     <div class="col-md-6 taxon-list">
       <laji-species-list [informalGroup]="selectedInformalGroup"></laji-species-list>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <laji-tree-of-life></laji-tree-of-life>
     </div>
   </div>
 </div>
