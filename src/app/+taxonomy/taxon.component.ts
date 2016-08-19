@@ -3,33 +3,53 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs/Subscription';
 
-import { TaxonomyApi, Taxonomy } from '../shared';
-import { ParentsComponent } from './info-card/parents';
-import { ChildrenListComponent } from './info-card/children-list';
-import { InfoCardComponent } from './info-card';
+import { TaxonomyApi, Taxonomy, InformalTaxonGroupApi, InformalTaxonGroup } from '../shared';
+import {InformalListComponent} from "./informal-list/informal-list.component";
+import {SpeciesListComponent} from "./species-list/species-list.component";
+import {InformalListItemInterface} from "./informal-list/informal-list-item.model";
 
 
 @Component({
   selector: 'laji-taxonomy',
   templateUrl: './taxon.component.html',
-  providers: [ ],
-  directives: [ ParentsComponent, ChildrenListComponent, InfoCardComponent ]
+  providers: [ InformalTaxonGroupApi, TaxonomyApi ],
+  directives: [ InformalListComponent, SpeciesListComponent ],
+  styleUrls: [ 'taxon.component.css' ]
 })
-export class TaxonComponent {
+export class TaxonComponent implements OnInit, OnDestroy{
 
-  public taxon:Taxonomy;
-  private active:string;
-  private subParam:Subscription;
+  public tree:InformalTaxonGroup[];
+  public selectedInformalGroup:string;
+
   private subTrans:Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private taxonService:TaxonomyApi,
-    private translate:TranslateService
+    private translate:TranslateService,
+    private informalTaxonService:InformalTaxonGroupApi
   ) {}
 
-  ngOnInit() {
-
+  onGroupSelect(group:InformalListItemInterface) {
+    console.log(group);
+    this.selectedInformalGroup = group.id;
   }
 
+  ngOnInit() {
+    this.subTrans = this.translate.onLangChange.subscribe(
+      () => this.refreshInformalGroups()
+    );
+    this.refreshInformalGroups();
+  }
+
+  ngOnDestroy() {
+    this.subTrans.unsubscribe();
+  }
+
+  refreshInformalGroups() {
+    this.informalTaxonService.informalTaxonGroupGetTree(this.translate.currentLang)
+      .subscribe(
+        data => this.tree = data.results
+      )
+  }
 }

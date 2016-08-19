@@ -57,6 +57,7 @@
   "taxonomy.other": "Muut",
   "taxonomy.card": "lajikortti",
   "taxonomy.map": "kartta",
+  "taxonomy.speciesList.found": "lajia löytyi",
 
   "news.title": "Uutiset",
   "news.earlier": "aikaisemmat",

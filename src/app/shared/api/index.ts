@@ -4,3 +4,4 @@ export * from './InformationApi';
 export * from './WarehouseApi';
 export * from './FormApi';
 export * from './FormApiClient';
+export * from './InformalTaxonGroupApi';

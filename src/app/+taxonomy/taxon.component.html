@@ -1,1 +1,11 @@
-<laji-info-card></laji-info-card>
+<div class="container">
+  <h1>Lajit</h1>
+  <div class="row">
+    <div class="col-md-6 informal-group-list">
+      <laji-infomal-list [tree]="tree" (onSelect)="onGroupSelect($event)"></laji-infomal-list>
+    </div>
+    <div class="col-md-6 taxon-list">
+      <laji-species-list [informalGroup]="selectedInformalGroup"></laji-species-list>
+    </div>
+  </div>
+</div>

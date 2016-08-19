@@ -31,6 +31,7 @@ import 'rxjs/Rx';
 /* tslint:disable:no-unused-variable member-ordering */
 
 'use strict';
+import {PagedResult} from "../model/PagedResult";
 
 @Injectable()
 export class TaxonomyApi {
@@ -241,7 +242,7 @@ export class TaxonomyApi {
      * @param page Page number
      * @param pageSize Page size
      */
-    public taxonomyFindSpecies (id: string, lang?: string, informalGroupFilters?: string, adminStatusFilters?: string, redListStatusFilters?: string, typesOfOccurrenceFilters?: string, invasiveSpeciesFilter?: boolean, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<Array<models.Taxonomy>> {
+    public taxonomyFindSpecies (id: string, lang?: string, informalGroupFilters?: string, adminStatusFilters?: string, redListStatusFilters?: string, typesOfOccurrenceFilters?: string, invasiveSpeciesFilter?: boolean, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<Array<models.Taxonomy>>> {
         const path = this.basePath + '/taxonomy/{id}/species'
             .replace('{' + 'id' + '}', String(id));
 

@@ -55,6 +55,7 @@
   "taxonomy.rank": "Taxon rank",
   "taxonomy.distribution": "Distribution",
   "taxonomy.other": "Other",
+  "taxonomy.speciesList.found": "species found",
 
   "news.title": "News",
   "news.earlier": "earlier",

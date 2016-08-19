@@ -1,12 +1,11 @@
-import {Component, Input, SimpleChange} from '@angular/core';
-import { DomSanitizationService } from "@angular/platform-browser";
+import { Component, Input } from '@angular/core';
 import { TranslateService } from "ng2-translate/ng2-translate";
+import { Subscription } from "rxjs";
+import { ActivatedRoute } from "@angular/router";
 
 import { Taxonomy, TaxonomyApi, PanelComponent } from '../../shared';
 import { TaxonInfoComponent } from "./taxon/taxon-info.component";
-import {Subscription} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
-import {ParentsComponent} from "./parents/parents.component";
+import { ParentsComponent } from "./parents/parents.component";
 import {ChildrenListComponent} from "./children-list/children-list.component";
 
 @Component({

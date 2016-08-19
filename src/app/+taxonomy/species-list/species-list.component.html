@@ -1,0 +1,16 @@
+<div *ngIf="loading">
+  loading...
+</div>
+<div *ngIf="!loading && speciesPage">
+  {{speciesPage.total}} {{'taxonomy.speciesList.found'| translate}}
+  <ul class="species-list" *ngIf="speciesPage.results && speciesPage.results.length > 0">
+    <li *ngFor="let taxon of speciesPage.results">
+      <a [routerLink]="['/taxon/' + taxon.id]">
+        {{taxon.scientificName}}
+        <span *ngIf="taxon.vernacularName">
+          ({{taxon.vernacularName}})
+        </span>
+      </a>
+    </li>
+  </ul>
+</div>

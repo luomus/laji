@@ -8,4 +8,5 @@ export * from './InformationItem';
 export * from './WarehouseQueryInterface';
 export * from './WarehouseCountResultInterface';
 export * from './FormListInterface';
+export * from './InformalTaxonGroup';
 
