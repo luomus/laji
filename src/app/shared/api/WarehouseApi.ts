@@ -266,6 +266,10 @@ export class WarehouseApi {
     this.addMetaToQuery(aggregateBy, orderBy, pageSize, page);
     this.addQueryToQueryParams(query, queryParameters);
 
+    if (informalTaxonGroupId !== undefined) {
+      queryParameters.set('page', informalTaxonGroupId.join(','));
+    }
+
     //  headerParams.set('accept', accept);
 
     let requestOptions:RequestOptionsArgs = {

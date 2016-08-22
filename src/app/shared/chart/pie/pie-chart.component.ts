@@ -8,15 +8,17 @@ declare let d3:any;
   template: '<nvd3 [options]="options" [data]="data"></nvd3>',
   directives: [nvD3]
 })
-export class PieChartComponent implements OnInit{
+export class PieChartComponent implements OnInit, OnChanges{
   @Input() data: {label:string, value:number}[];
   @Input() height: number = 400;
   @Output() sectionSelect = new EventEmitter();
 
   public options:any;
 
-  constructor() {
+  constructor() {}
 
+  ngOnChanges() {
+    this.refreshOptions();
   }
 
   ngOnInit() {
@@ -28,7 +30,6 @@ export class PieChartComponent implements OnInit{
       chart: {
         callback: (chart) => {
           chart.pie.dispatch.on("elementClick", (e) => {
-            //console.log('elem clicked');
             //console.log(e.data);
             this.sectionSelect.emit(e.data || {});
           });

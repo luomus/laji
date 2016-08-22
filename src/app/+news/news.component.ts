@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { TranslateService } from 'ng2-translate/ng2-translate';
 
 import { News, NewsApi, NewsListComponent } from "../shared";
 
@@ -16,7 +15,6 @@ export class NewsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private translate: TranslateService,
     private newsService: NewsApi
   ) {}
 
@@ -24,7 +22,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     this.subTrans = this.route.params.subscribe(params => {
       this.newsService.findById(params['id']).subscribe(
         newsItem => this.newsItem = newsItem,
-        error => console.log(error)
+        err => console.log(err)
       )
     });
   }

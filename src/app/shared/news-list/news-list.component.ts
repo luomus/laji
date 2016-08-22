@@ -38,8 +38,8 @@ export class NewsListComponent {
 
   private initNews() {
     this.newsService.findAll(this.translate.currentLang, '' + this.currentPage, this.pageSize).subscribe(
-      (news) => { this.news = news },
-      (error) => console.log(error)
+      news => { this.news = news },
+      err => console.log(err)
     );
   }
 

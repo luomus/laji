@@ -161,7 +161,7 @@ export class SearchQuery {
     location.go(path + query);
   }
 
-  public queryUpdate() {
+  public queryUpdate():void {
     this.queryUpdatedSource.next(this.query);
   }
 }

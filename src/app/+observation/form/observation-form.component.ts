@@ -21,7 +21,7 @@ export class ObservationFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.empty(this.searchQuery.query);
+    this.empty(false, this.searchQuery.query);
   }
 
   updateTime(dates) {
@@ -39,13 +39,14 @@ export class ObservationFormComponent implements OnInit {
     this.onSubmit();
   }
 
-  empty(query?:WarehouseQueryInterface) {
+  empty(refresh:boolean, query?:WarehouseQueryInterface) {
     if (query) {
       this.query = {
         taxon: query.target && query.target[0] ? query.target[0] : '',
         time: query.time && query.time[0] ? query.time[0] : '',
         specimen: query.recordBasis && query.recordBasis[0] && query.recordBasis[0] === 'PRESERVED_SPECIMEN' ? true : false,
-        typeSpecimen: query.typeSpecimen || false
+        typeSpecimen: query.typeSpecimen || false,
+        informalTaxonGroupId: query.informalTaxonGroupId || ''
       };
       return;
     }
@@ -53,8 +54,12 @@ export class ObservationFormComponent implements OnInit {
       taxon:'',
       time:'',
       specimen: false,
-      typeSpecimen: false
+      typeSpecimen: false,
+      informalTaxonGroupId:''
     };
+    if (refresh) {
+      this.onSubmit();
+    }
   }
 
   onSubmit() {
@@ -66,6 +71,7 @@ export class ObservationFormComponent implements OnInit {
     this.searchQuery.query.time = time.length > 0 ? [time] : undefined;
     this.searchQuery.query.typeSpecimen = this.query.typeSpecimen ? true : undefined;
     this.searchQuery.query.recordBasis = this.query.specimen ? ['PRESERVED_SPECIMEN'] : undefined;
+    this.searchQuery.query.informalTaxonGroupId = this.query.informalTaxonGroupId ? this.query.informalTaxonGroupId : undefined;
 
     this.searchQuery.queryUpdate();
     this.searchQuery.updateUrl(this.location);
