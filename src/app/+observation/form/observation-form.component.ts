@@ -15,7 +15,6 @@ import {ObservationChartComponent} from "../chart/observation-chart.component";
 export class ObservationFormComponent implements OnInit {
 
   public query;
-  public pieData:any;
 
   constructor(public searchQuery: SearchQuery, private location:Location) {
   }
@@ -27,7 +26,7 @@ export class ObservationFormComponent implements OnInit {
   updateTime(dates) {
     if (dates === 365) {
       let today = new Date();
-      var oneJan = new Date(today.getFullYear(),0,1);
+      let oneJan = new Date(today.getFullYear(),0,1);
       dates = Math.ceil(((+today) - (+oneJan)) / 86400000);
     }
     this.query.time = '-' + dates + '/0';

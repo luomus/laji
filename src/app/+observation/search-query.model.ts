@@ -130,7 +130,7 @@ export class SearchQuery {
 
     // Non query parameters (these will not have effect on result count)
     if (this.selected !== undefined) {
-      //queryParameters.set('selected', this.selected.join(','));
+      queryParameters.set('selected', this.selected.join(','));
     }
 
     if (this.aggregateBy !== undefined) {
