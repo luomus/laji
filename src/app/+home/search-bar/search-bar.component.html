@@ -2,20 +2,7 @@
   <div class="container">
     <div class="col-sm-8">
       <div class="row">
-        <form>
-          <div class="form-group">
-            <label class="sr-only" for="search-box">Email address</label>
-            <div class="input-group">
-              <input type="text" class="form-control" id="search-box"
-                     placeholder="{{ 'search-bar.input' | translate }}" autoComplete="off"/>
-              <span class="input-group-btn">
-                  <button class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                  </button>
-                </span>
-            </div>
-          </div>
-        </form>
+        <laji-omni-search [placeholder]="'search-bar.input' | translate"></laji-omni-search>
       </div>
     </div>
   </div>

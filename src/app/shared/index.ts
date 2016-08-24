@@ -9,3 +9,4 @@ export * from './service/user.service';
 export * from './form';
 export * from './panel';
 export * from './spinner/spinner.component';
+export * from './omni-search';
