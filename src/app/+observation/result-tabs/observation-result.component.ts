@@ -4,7 +4,7 @@ import {Location} from '@angular/common';
 
 import { ObservationResultListComponent } from "../result-list/observation-result-list.component";
 import { SearchQuery } from "../search-query.model";
-import {ObservationCountComponent} from "../count/obesrvation-cont.component";
+import {ObservationCountComponent} from "../count/observation-cont.component";
 import {ObservationAggregateComponent} from "../aggregate/observation-aggregate.component";
 
 

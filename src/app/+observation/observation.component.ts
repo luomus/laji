@@ -6,7 +6,7 @@ import {URLSearchParams} from "@angular/http";
 
 import { ObservationHeaderComponent } from "./header/observation-header.component";
 import { WarehouseApi } from "../shared/api/WarehouseApi";
-import {ObservationResultComponent} from "./result/observation-result.component";
+import {ObservationResultComponent} from "./result-tabs/observation-result.component";
 import {SearchQuery} from "./search-query.model";
 import {ObservationFormComponent} from "./form/observation-form.component";
 import {PieChartComponent} from "../shared/chart/pie/pie-chart.component";

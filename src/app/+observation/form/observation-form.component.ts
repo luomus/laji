@@ -3,7 +3,7 @@ import {FORM_DIRECTIVES}   from '@angular/forms';
 import {Location} from "@angular/common";
 
 import {SearchQuery} from "../search-query.model";
-import {ObservationCountComponent} from "../count/obesrvation-cont.component";
+import {ObservationCountComponent} from "../count/observation-cont.component";
 import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
 import {ObservationChartComponent} from "../chart/observation-chart.component";
 
