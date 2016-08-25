@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 
 import {PieChartComponent} from "../../shared/chart/pie/pie-chart.component";
@@ -7,14 +7,24 @@ import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {Subscription, Observable} from "rxjs";
 import {InformalTaxonGroup} from "../../shared/model/InformalTaxonGroup";
 import {InformalTaxonGroupApi} from "../../shared/api/InformalTaxonGroupApi";
-import {Subscribable} from "rxjs/Observable";
 
 @Component({
   moduleId: module.id,
   selector: 'laji-observation-chart',
-  template: `<div *ngIf="data">
-                <laji-pie-chart [data]="data" [height]="300" (sectionSelect)="onPieClick($event)"></laji-pie-chart>
+  template: `<div class="observation-chart">
+                <laji-pie-chart 
+                  *ngIf="data" 
+                  [data]="data" 
+                  [height]="150" 
+                  [showLegend]="false" 
+                  (sectionSelect)="onPieClick($event)">
+                </laji-pie-chart>
             </div>`,
+  styles: [`
+    .observation-chart {
+      height: 200px;
+    }
+  `],
   directives: [ PieChartComponent ],
   providers: [ InformalTaxonGroupApi ]
 })

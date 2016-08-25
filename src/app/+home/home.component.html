@@ -1,6 +1,14 @@
 <div class="laji-news">
   <laji-image-header></laji-image-header>
-  <laji-search-bar></laji-search-bar>
+  <div class="searchBar">
+    <div class="container">
+      <div class="col-sm-8">
+        <div class="row">
+          <laji-omni-search [placeholder]="'search-bar.input' | translate"></laji-omni-search>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="container">
     <div class="row">
       <div class="col-sm-8">

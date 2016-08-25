@@ -1,17 +1,26 @@
 <div class="header-image" role="main">
-
   <carousel>
     <slide [active]="true">
       <div class="carousel-caption">
-        <laji-stat-item [value]="'67856'" [description]="'home.carousel.species' | translate"></laji-stat-item>
-        <laji-stat-item [value]="'388'" [description]="'home.carousel.collections' | translate"></laji-stat-item>
-        <laji-stat-item [value]="'14839205'" [description]="'home.carousel.observations' | translate"></laji-stat-item>
+        <laji-stat-item [description]="'home.carousel.species' | translate">
+          67856
+        </laji-stat-item>
+        <laji-stat-item [description]="'home.carousel.collections' | translate">
+          388
+        </laji-stat-item>
+        <laji-stat-item [description]="'home.carousel.observations' | translate">
+          14839205
+        </laji-stat-item>
       </div>
     </slide>
     <slide>
       <div class="carousel-caption">
-        <laji-stat-item [value]="'199000'" [description]="'home.carousel.digitized' | translate"></laji-stat-item>
-        <laji-stat-item [value]="'6620491'" [description]="'home.carousel.preserved' | translate"></laji-stat-item>
+        <laji-stat-item [description]="'home.carousel.digitized' | translate">
+          199000
+        </laji-stat-item>
+        <laji-stat-item [description]="'home.carousel.preserved' | translate">
+          6620491
+        </laji-stat-item>
       </div>
     </slide>
   </carousel>

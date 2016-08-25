@@ -7,3 +7,9 @@
   height: 279px;
   border: 0;
 }
+
+.searchBar {
+  height: 63px;
+  background-color: #2C3E50;
+  padding-top: 14px;
+}

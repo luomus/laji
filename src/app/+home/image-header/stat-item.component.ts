@@ -5,7 +5,8 @@ import { FormattedNumber } from "../../shared";
   selector: 'laji-stat-item',
   template: `
   <div class="col-sm-3 text-left">
-    <span class="stat-item-value" [innerHtml]="value | formattedNumber:'&nbsp'">
+    <span class="stat-item-value">
+      <ng-content></ng-content>
     </span>
     <br />
     <span class="stat-item-description">

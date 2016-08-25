@@ -1,7 +1,5 @@
 <h1>
-  <laji-spinner [spinning]="loading">
-    <span
-      [innerHtml]="hits | formattedNumber:'&nbsp' | htmlAsIs">
-    </span>
-  </laji-spinner> {{'observation.results' | translate}}
+  {{'observation.results.title' | translate}}
+  <laji-observation-count></laji-observation-count>
+  {{'observation.results' | translate}}
 </h1>

@@ -1,14 +1,19 @@
 import { Component } from '@angular/core';
 
 import { NavigationThumbnailComponent, NewsListComponent } from '../shared';
-import { SearchBarComponent } from './search-bar';
 import { ImageHeaderComponent } from './image-header';
+import {OmniSearchComponent} from "../shared/omni-search/omni-search.component";
 
 @Component({
   selector: 'laji-home',
   pipes: [],
   providers: [],
-  directives: [ SearchBarComponent, ImageHeaderComponent, NavigationThumbnailComponent, NewsListComponent],
+  directives: [
+    ImageHeaderComponent,
+    NavigationThumbnailComponent,
+    NewsListComponent,
+    OmniSearchComponent
+  ],
   styleUrls: ['./home.component.css'],
   templateUrl: './home.component.html'
 })

@@ -1,72 +1,73 @@
-<h3>{{'observation.form.filter' | translate}}</h3>
 <form (ngSubmit)="onSubmit()" #observationForm="ngForm" class="form-horizontal">
-  <div class="form-group">
-    <div class="col-sm-5" style="height: 300px; background: #fafafa;">
-      Kartta
-    </div>
-    <div class="col-sm-5">
-      <laji-observation-chart></laji-observation-chart>
-    </div>
-    <div class="col-sm-2">
-      <div class="form-group">
-        <div class="col-md-12">
-          {{'observation.form.preservedSpecimens' | translate }}<br>
-          <strong>
-            <laji-observation-count
-              [field]="'unit.recordBasis'"
-              [pick]="'PRESERVED_SPECIMEN'">
-            </laji-observation-count>
-          </strong>
-          <a class="btn btn-xs"
-             [ngClass]="{'btn-success': query.specimen, 'btn-default': !query.specimen}"
-            (click)="toggle('specimen')">
-            vain näytteet
-          </a>
+<div class="row">
+  <div class="col-sm-10">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label class="col-md-2 control-label">{{'observation.form.specimen' | translate}}:</label>
+          <div class="col-md-3">
+            <input type="text" class="form-control input-sm" name="target" [(ngModel)]="query.taxon">
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <div class="col-md-12">
-          {{'observation.form.typeSpecimens' | translate }}<br>
-          <strong>
-            <laji-observation-count
-              [field]="'unit.typeSpecimen'"
-              [pick]="'true'">
-            </laji-observation-count>
-          </strong>
-          <a class="btn btn-xs"
-             [ngClass]="{'btn-success': searchQuery.query.typeSpecimen, 'btn-default': !searchQuery.query.typeSpecimen}"
-             (click)="toggle('typeSpecimen')">
-            vain tyyppinäytteet
-          </a>
+        <div class="form-group">
+          <label class="col-md-2 control-label">{{'observation.form.date' | translate}}:</label>
+          <div class="col-md-3">
+            <input type="text" #timeLimit="ngModel" class="form-control input-sm" name="time" [(ngModel)]="query.time">
+          </div>
+          <div class="col-md-3">
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1)">1d</button>
+              <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7)">7d</button>
+              <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365)">{{'observation.form.thisYear' | translate}}</button>
+            </div>
+          </div>
         </div>
+        <div class="form-group">
+          <div class="col-md-offset-2 col-md-1 col-sm-4">
+            <button (click)="onSubmit()" class="btn btn-sm btn-default">{{'observation.form.search' | translate}}</button>
+          </div>
+          <div class="col-md-1 col-sm-4">
+            <button type="button" (click)="empty(true)" class="btn btn-sm btn-default">{{'observation.form.empty' | translate}}</button>
+          </div>
+        </div>
+        <laji-observation-result [active]="tab"></laji-observation-result>
       </div>
     </div>
   </div>
-  <div class="form-group">
-    <label class="col-md-2 control-label">{{'observation.form.specimen' | translate}}:</label>
-    <div class="col-md-3">
-      <input type="text" class="form-control input-sm" name="target" [(ngModel)]="query.taxon">
+  <div class="col-sm-2">
+    <laji-observation-chart></laji-observation-chart>
+    <div class="form-group">
+      <div class="col-md-12">
+        {{'observation.form.preservedSpecimens' | translate }}<br>
+        <strong>
+          <laji-observation-count
+            [field]="'unit.recordBasis'"
+            [pick]="'PRESERVED_SPECIMEN'">
+          </laji-observation-count>
+        </strong>
+        <a class="btn btn-xs"
+           [ngClass]="{'btn-success': query.specimen, 'btn-default': !query.specimen}"
+           (click)="toggle('specimen')">
+          vain näytteet
+        </a>
+      </div>
     </div>
-  </div>
-  <div class="form-group">
-    <label class="col-md-2 control-label">{{'observation.form.date' | translate}}:</label>
-    <div class="col-md-3">
-      <input type="text" #timeLimit="ngModel" class="form-control input-sm" name="time" [(ngModel)]="query.time">
-    </div>
-    <div class="col-md-3">
-      <div class="btn-group">
-        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1)">1d</button>
-        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7)">7d</button>
-        <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365)">{{'observation.form.thisYear' | translate}}</button>
+    <div class="form-group">
+      <div class="col-md-12">
+        {{'observation.form.typeSpecimens' | translate }}<br>
+        <strong>
+          <laji-observation-count
+            [field]="'unit.typeSpecimen'"
+            [pick]="'true'">
+          </laji-observation-count>
+        </strong>
+        <a class="btn btn-xs"
+           [ngClass]="{'btn-success': searchQuery.query.typeSpecimen, 'btn-default': !searchQuery.query.typeSpecimen}"
+           (click)="toggle('typeSpecimen')">
+          vain tyyppinäytteet
+        </a>
       </div>
     </div>
   </div>
-  <div class="form-group">
-    <div class="col-md-offset-2 col-md-1 col-sm-4">
-      <button (click)="onSubmit()" class="btn btn-sm btn-default">{{'observation.form.search' | translate}}</button>
-    </div>
-    <div class="col-md-1 col-sm-4">
-      <button type="button" (click)="empty(true)" class="btn btn-sm btn-default">{{'observation.form.empty' | translate}}</button>
-    </div>
-  </div>
+</div>
 </form>

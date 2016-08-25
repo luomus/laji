@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 import {FORM_DIRECTIVES}   from '@angular/forms';
 import {Location} from "@angular/common";
 
@@ -6,15 +6,23 @@ import {SearchQuery} from "../search-query.model";
 import {ObservationCountComponent} from "../count/observation-cont.component";
 import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
 import {ObservationChartComponent} from "../chart/observation-chart.component";
+import {ObservationResultListComponent} from "../result-list/observation-result-list.component";
+import {ObservationResultComponent} from "../result-tabs/observation-result.component";
 
 @Component({
   selector: 'laji-observation-form',
   templateUrl: 'observation-form.component.html',
-  directives: [ FORM_DIRECTIVES, ObservationCountComponent, ObservationChartComponent ]
+  directives: [
+    FORM_DIRECTIVES,
+    ObservationCountComponent,
+    ObservationChartComponent,
+    ObservationResultComponent
+  ]
 })
 export class ObservationFormComponent implements OnInit {
 
   public query;
+  @Input() tab:string;
 
   constructor(public searchQuery: SearchQuery, private location:Location) {
   }

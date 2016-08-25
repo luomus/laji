@@ -11,6 +11,7 @@ import {SearchQuery} from "../search-query.model";
 @Component({
   selector: 'laji-observation-result-list',
   templateUrl: 'observation-result-list.component.html',
+  styleUrls: ['./observation-result-list.component.css'],
   directives: [PAGINATION_DIRECTIVES, FORM_DIRECTIVES],
   providers: [ValueDecoratorService]
 })

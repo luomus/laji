@@ -38,7 +38,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subParam = this.route.params.subscribe(params => {
-      this.tab = params['tab'] || 'list';
+      this.tab = params['tab'] || 'map';
       this.searchQuery.page = +params['page'] || 1;
     });
     this.searchQuery.setQueryFromURLSearchParams(new URLSearchParams(this.location.path(true).replace('?','?skip=true&')));

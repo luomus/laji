@@ -1,13 +1,15 @@
 <tabset>
+  <tab [heading]="'search.result.map' | translate"
+       (select)="activate('map')"
+       [active]="active === 'map'">
+    <div style="background-color: #2C3E50; height: 800px; width: 100%; text-align: center;">
+      <h1 style="color: #fff; padding-top: 300px;">Kartta</h1>
+    </div>
+  </tab>
   <tab [heading]="'search.result.list' | translate"
        (select)="activate('list')"
        [active]="active === 'list'">
     <laji-observation-result-list *ngIf="activated['list']" [query]="query" [pageSize]="20" [page]="page"></laji-observation-result-list>
-  </tab>
-  <tab [heading]="'search.result.images' | translate"
-       (select)="activate('images')"
-       [active]="active === 'images'">
-    todo
   </tab>
   <tab [heading]="'search.result.stats' | translate"
        (select)="activate('stats')"
@@ -30,5 +32,10 @@
         <button class="btn btn-xs btn-default">load</button>
       </div>
     </div>
+  </tab>
+  <tab [heading]="'search.result.species' | translate"
+       (select)="activate('species')"
+       [active]="active === 'species'">
+    todo
   </tab>
 </tabset>
