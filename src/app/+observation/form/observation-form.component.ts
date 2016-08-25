@@ -6,7 +6,6 @@ import {SearchQuery} from "../search-query.model";
 import {ObservationCountComponent} from "../count/observation-cont.component";
 import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
 import {ObservationChartComponent} from "../chart/observation-chart.component";
-import {ObservationResultListComponent} from "../result-list/observation-result-list.component";
 import {ObservationResultComponent} from "../result-tabs/observation-result.component";
 
 @Component({
@@ -21,7 +20,7 @@ import {ObservationResultComponent} from "../result-tabs/observation-result.comp
 })
 export class ObservationFormComponent implements OnInit {
 
-  public query;
+  public formQuery;
   @Input() tab:string;
 
   constructor(public searchQuery: SearchQuery, private location:Location) {
@@ -37,29 +36,29 @@ export class ObservationFormComponent implements OnInit {
       let oneJan = new Date(today.getFullYear(),0,1);
       dates = Math.ceil(((+today) - (+oneJan)) / 86400000);
     }
-    this.query.time = '-' + dates + '/0';
+    this.formQuery.timeStart = '-' + dates + '/0';
     this.onSubmit();
   }
 
   toggle(field:string) {
-    this.query[field] = !this.query[field];
+    this.formQuery[field] = !this.formQuery[field];
     this.onSubmit();
   }
 
   empty(refresh:boolean, query?:WarehouseQueryInterface) {
     if (query) {
-      this.query = {
+      this.formQuery = {
         taxon: query.target && query.target[0] ? query.target[0] : '',
-        time: query.time && query.time[0] ? query.time[0] : '',
+        timeStart: query.time && query.time[0] ? query.time[0] : '',
         specimen: query.recordBasis && query.recordBasis[0] && query.recordBasis[0] === 'PRESERVED_SPECIMEN' ? true : false,
         typeSpecimen: query.typeSpecimen || false,
         informalTaxonGroupId: query.informalTaxonGroupId || ''
       };
       return;
     }
-    this.query = {
+    this.formQuery = {
       taxon:'',
-      time:'',
+      timeStart:'',
       specimen: false,
       typeSpecimen: false,
       informalTaxonGroupId:''
@@ -71,14 +70,14 @@ export class ObservationFormComponent implements OnInit {
 
   onSubmit() {
 
-    let taxon = this.query.taxon.trim();
-    let time = this.query.time.trim();
+    let taxon = this.formQuery.taxon.trim();
+    let time = this.formQuery.timeStart.trim();
 
     this.searchQuery.query.target = taxon.length > 0 ? [taxon] : undefined;
     this.searchQuery.query.time = time.length > 0 ? [time] : undefined;
-    this.searchQuery.query.typeSpecimen = this.query.typeSpecimen ? true : undefined;
-    this.searchQuery.query.recordBasis = this.query.specimen ? ['PRESERVED_SPECIMEN'] : undefined;
-    this.searchQuery.query.informalTaxonGroupId = this.query.informalTaxonGroupId ? this.query.informalTaxonGroupId : undefined;
+    this.searchQuery.query.typeSpecimen = this.formQuery.typeSpecimen ? true : undefined;
+    this.searchQuery.query.recordBasis = this.formQuery.specimen ? ['PRESERVED_SPECIMEN'] : undefined;
+    this.searchQuery.query.informalTaxonGroupId = this.formQuery.informalTaxonGroupId ? this.formQuery.informalTaxonGroupId : undefined;
 
     this.searchQuery.queryUpdate();
     this.searchQuery.updateUrl(this.location);

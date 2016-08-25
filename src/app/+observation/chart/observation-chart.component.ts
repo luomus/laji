@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input, OnChanges} from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 
 import {PieChartComponent} from "../../shared/chart/pie/pie-chart.component";
@@ -11,29 +11,24 @@ import {InformalTaxonGroupApi} from "../../shared/api/InformalTaxonGroupApi";
 @Component({
   moduleId: module.id,
   selector: 'laji-observation-chart',
-  template: `<div class="observation-chart">
-                <laji-pie-chart 
-                  *ngIf="data" 
-                  [data]="data" 
-                  [height]="150" 
-                  [showLegend]="false" 
-                  (sectionSelect)="onPieClick($event)">
-                </laji-pie-chart>
-            </div>`,
-  styles: [`
-    .observation-chart {
-      height: 200px;
-    }
-  `],
+  templateUrl: 'observation-char.component.html',
+  styleUrls: ['./observation-char.component.css'],
   directives: [ PieChartComponent ],
   providers: [ InformalTaxonGroupApi ]
 })
-export class ObservationChartComponent implements OnInit, OnDestroy {
+export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
 
-  informalGroups:InformalTaxonGroup[] = [];
+  @Input() height: number = 150;
+  @Input() showLegend:boolean = false;
+  @Input() legendPosition:string = 'top';
+  @Input() active:boolean = true;
 
+
+  public informalGroups:InformalTaxonGroup[] = [];
   public data:any;
   private group:string;
+  private lastQuery:string;
+  private loading:boolean = false;
 
   private subDataQuery: Subscription;
   private subInformal: Subscription;
@@ -55,6 +50,10 @@ export class ObservationChartComponent implements OnInit, OnDestroy {
     this.subDataQuery = this.searchQuery.queryUpdated$.subscribe(
       () => this.updateData()
     );
+    this.updateData();
+  }
+
+  ngOnChanges() {
     this.updateData();
   }
 
@@ -93,9 +92,19 @@ export class ObservationChartComponent implements OnInit, OnDestroy {
   }
 
   private updateData() {
+    let query = this.searchQuery.query;
+    let cacheKey = JSON.stringify(query) + this.translate.currentLang;
+    if (this.lastQuery == cacheKey) {
+      return;
+    }
     if (this.subData) {
       this.subData.unsubscribe();
     }
+    if (!this.active) {
+      return;
+    }
+    this.lastQuery = cacheKey;
+    this.loading = true;
     let sources = [];
     sources.push(this.getGroupsSub());
     sources.push(this.warehouseService
@@ -113,8 +122,8 @@ export class ObservationChartComponent implements OnInit, OnDestroy {
             .informalTaxonGroupFindById(this.group, this.translate.currentLang)
             .subscribe(
               result => {
+                this.loading = false;
                 this.informalGroups = [result];
-                console.log(this.informalGroups);
                 let groups = this.informalGroups.map(group => group.id);
                 this.data = data[1].results
                   .map(item => {
@@ -130,6 +139,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy {
               err => console.log(err)
             )
         } else {
+          this.loading = false;
           this.informalGroups = data[0].results;
           let groups = this.informalGroups.map(group => group.id);
           this.data = data[1].results

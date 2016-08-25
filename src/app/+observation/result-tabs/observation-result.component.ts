@@ -6,6 +6,8 @@ import { ObservationResultListComponent } from "../result-list/observation-resul
 import { SearchQuery } from "../search-query.model";
 import {ObservationCountComponent} from "../count/observation-cont.component";
 import {ObservationAggregateComponent} from "../aggregate/observation-aggregate.component";
+import {ObservationChartComponent} from "../chart/observation-chart.component";
+import {TranslateService} from "ng2-translate";
 
 
 @Component({
@@ -15,12 +17,15 @@ import {ObservationAggregateComponent} from "../aggregate/observation-aggregate.
     TAB_DIRECTIVES,
     ObservationResultListComponent,
     ObservationCountComponent,
-    ObservationAggregateComponent
+    ObservationAggregateComponent,
+    ObservationChartComponent
   ]
 })
 export class ObservationResultComponent implements OnInit {
 
   @Input() active:string = 'list';
+
+  lang = 'fi';
 
   public activated = {
     list: false,
@@ -28,10 +33,26 @@ export class ObservationResultComponent implements OnInit {
     stats: false
   };
 
-  constructor(private location: Location, private searchQuery: SearchQuery) {}
+  constructor(
+    private location: Location,
+    private searchQuery: SearchQuery
+  ) {}
 
   ngOnInit() {
     this.activated[this.active] = true;
+  }
+
+  pickValue(aggr, lang) {
+    console.log(aggr, lang);
+    switch (lang) {
+      case 'fi':
+        return aggr['unit.linkings.taxon.nameFinnish'] || aggr['unit.linkings.taxon.scientificName'];
+      case 'en':
+        return aggr['unit.linkings.taxon.nameEnglish'] || aggr['unit.linkings.taxon.scientificName'];
+      case 'sv':
+        return aggr['unit.linkings.taxon.nameSwedish'] || aggr['unit.linkings.taxon.scientificName'];
+    }
+    return aggr['unit.linkings.taxon.scientificName'];
   }
 
   activate(tab:string) {

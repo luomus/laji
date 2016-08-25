@@ -3,6 +3,7 @@ import {Subscription} from "rxjs";
 
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {SearchQuery} from "../search-query.model";
+import {TranslateService} from "ng2-translate";
 
 @Component({
   moduleId: module.id,
@@ -15,7 +16,9 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
   @Input() field:string;
   @Input() limit:number = 10;
   @Input() hideOnEmpty:boolean = false;
+  @Input() updateOnLangChange:boolean = false;
   @Input() addPrefix:boolean = false;
+  @Input() valuePicker:any;
 
   public items:Array<{
     count:number,
@@ -25,11 +28,22 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
   private subQueryUpdate:Subscription;
   private subCount:Subscription;
 
-  constructor(private warehouseService: WarehouseApi, private searchQuery: SearchQuery) {
+  constructor(
+    private warehouseService: WarehouseApi,
+    private searchQuery: SearchQuery,
+    private translate: TranslateService
+  ) {
   }
 
   ngOnInit() {
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(query => this.updateCount());
+    this.translate.onLangChange.subscribe(
+      () => {
+        if (this.updateOnLangChange) {
+          this.updateCount();
+        }
+      }
+    );
     this.updateCount();
   }
 
@@ -52,7 +66,12 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
         result => {
           if (result.results) {
             this.items = result.results
-              .map(item => { return {count: item.count, value: item.aggregateBy[this.field]} });
+              .map(item => {
+                let value = this.valuePicker ?
+                  this.valuePicker(item.aggregateBy, this.translate.currentLang) :
+                  item.aggregateBy[this.field];
+                return {count: item.count, value: value}
+              });
           }
         }
       );

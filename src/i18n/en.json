@@ -88,7 +88,9 @@
   "observation.form.search": "Search",
   "observation.form.empty": "Clear filters",
 
-  "observation.results": "hits",
+  "observation.results.title": "Observation search",
+  "observation.results.observation": "hists",
+  "observation.results.species": "species",
 
   "haseka.title": "Observation notifier",
   "haseka.forms.title": "Forms",

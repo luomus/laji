@@ -5,14 +5,17 @@
       <div class="col-sm-12">
         <div class="form-group">
           <label class="col-md-2 control-label">{{'observation.form.specimen' | translate}}:</label>
-          <div class="col-md-3">
-            <input type="text" class="form-control input-sm" name="target" [(ngModel)]="query.taxon">
+          <div class="col-md-6">
+            <input type="text" class="form-control input-sm" name="target" [(ngModel)]="formQuery.taxon">
           </div>
         </div>
         <div class="form-group">
           <label class="col-md-2 control-label">{{'observation.form.date' | translate}}:</label>
           <div class="col-md-3">
-            <input type="text" #timeLimit="ngModel" class="form-control input-sm" name="time" [(ngModel)]="query.time">
+            <input type="text" #timeLimit="ngModel" class="form-control input-sm" name="timeStart" [(ngModel)]="formQuery.timeStart">
+          </div>
+          <div class="col-md-3">
+            <input type="text" #timeLimit="ngModel" class="form-control input-sm" name="timeEnd" [(ngModel)]="formQuery.timeEnd">
           </div>
           <div class="col-md-3">
             <div class="btn-group">
@@ -46,7 +49,7 @@
           </laji-observation-count>
         </strong>
         <a class="btn btn-xs"
-           [ngClass]="{'btn-success': query.specimen, 'btn-default': !query.specimen}"
+           [ngClass]="{'btn-success': formQuery.specimen, 'btn-default': !formQuery.specimen}"
            (click)="toggle('specimen')">
           vain näytteet
         </a>

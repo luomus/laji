@@ -5,6 +5,8 @@ import {FormattedNumber, SpinnerComponent} from "../../shared";
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {SearchQuery} from "../search-query.model";
 import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
+import {cache} from "rxjs/operator/cache";
+import {TranslateService} from "ng2-translate";
 
 
 @Component({
@@ -23,11 +25,15 @@ export class ObservationCountComponent implements OnInit, OnDestroy, OnChanges {
   public count: string = '';
   public loading:boolean = true;
 
-  private lastResult:WarehouseQueryInterface;
+  private lastQuery:WarehouseQueryInterface;
+
   private subQueryUpdate: Subscription;
   private subCount: Subscription;
 
-  constructor(private warehouseService: WarehouseApi, private searchQuery: SearchQuery) {
+  constructor(
+    private warehouseService: WarehouseApi,
+    private searchQuery: SearchQuery
+  ) {
   }
 
   ngOnInit() {
@@ -49,16 +55,16 @@ export class ObservationCountComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   update() {
+    let query = this.query ? this.query : this.searchQuery.query;
+    let cacheKey = JSON.stringify(query);
+    if (this.lastQuery == cacheKey) {
+      return;
+    }
     if (this.subCount) {
       this.subCount.unsubscribe();
     }
+    this.lastQuery = cacheKey;
     this.loading = true;
-    let query = this.query ? this.query : this.searchQuery.query;
-    if (JSON.stringify(query) == this.query) {
-      console.log('Skipping since same query');
-      this.loading = false;
-      return;
-    }
     if (this.field) {
       this.updateAggregated(query);
     } else {
@@ -71,7 +77,6 @@ export class ObservationCountComponent implements OnInit, OnDestroy, OnChanges {
       .warehouseQueryCountGet(this.searchQuery.query)
       .subscribe(
         result => {
-          this.lastResult = JSON.stringify(query);
           this.loading = false;
           this.count = '' + result.total;
         },
@@ -85,7 +90,6 @@ export class ObservationCountComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe(
         result => {
           if (result.results) {
-            this.lastResult = JSON.stringify(query);
             this.loading = false;
             this.count = '' + result.results
                 .filter(value => value.aggregateBy[this.field] === this.pick)
