@@ -7,23 +7,50 @@ import {ObservationCountComponent} from "../count/observation-cont.component";
 import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
 import {ObservationChartComponent} from "../chart/observation-chart.component";
 import {ObservationResultComponent} from "../result-tabs/observation-result.component";
+import {Observable} from "rxjs";
+import {TYPEAHEAD_DIRECTIVES} from "ng2-bootstrap";
+import {AutocompleteApi} from "../../shared/api/AutocompleteApi";
+import {TranslateService} from "ng2-translate";
 
 @Component({
   selector: 'laji-observation-form',
   templateUrl: 'observation-form.component.html',
+  providers: [AutocompleteApi],
   directives: [
     FORM_DIRECTIVES,
     ObservationCountComponent,
     ObservationChartComponent,
-    ObservationResultComponent
+    ObservationResultComponent,
+    TYPEAHEAD_DIRECTIVES
   ]
 })
 export class ObservationFormComponent implements OnInit {
 
+  public limit = 10;
   public formQuery;
+  public dataSource:Observable<any>;
+  public typeaheadLoading:boolean = false;
   @Input() tab:string;
 
-  constructor(public searchQuery: SearchQuery, private location:Location) {
+  constructor(
+    public searchQuery: SearchQuery,
+    private location:Location,
+    private autocompleteService:AutocompleteApi,
+    private translate: TranslateService
+  ) {
+    this.dataSource = Observable.create((observer:any) => {
+      observer.next(this.formQuery.taxon);
+    }).mergeMap((token:string) => this.getTaxa(token));
+  }
+
+  public getTaxa(token:string):Observable<any> {
+    return this.autocompleteService.autocompleteFindByField(
+      'taxon',
+      token,
+      '' + this.limit,
+      true,
+      this.translate.currentLang
+    )
   }
 
   ngOnInit() {
@@ -69,7 +96,6 @@ export class ObservationFormComponent implements OnInit {
   }
 
   onSubmit() {
-
     let taxon = this.formQuery.taxon.trim();
     let time = this.formQuery.timeStart.trim();
 
@@ -82,6 +108,14 @@ export class ObservationFormComponent implements OnInit {
     this.searchQuery.queryUpdate();
     this.searchQuery.updateUrl(this.location);
     return false;
+  }
+
+  public changeTypeaheadLoading(e:boolean):void {
+    this.typeaheadLoading = e;
+  }
+
+  public typeaheadOnSelect(e:any):void {
+    console.log('Selected value: ',e.item);
   }
 
 }

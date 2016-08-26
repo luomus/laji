@@ -86,8 +86,10 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
         page)
       .subscribe(
         results => {
-          this.searchQuery.page = results.currentPage;
-          this.result = results;
+          this.searchQuery.page = results.currentPage || 1;
+          if (results) {
+            this.result = results;
+          }
           this.loading = false;
 
           this.searchQuery.updateUrl(this.location);

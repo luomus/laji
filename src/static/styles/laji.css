@@ -23,6 +23,14 @@ body {
   cursor: hand;
 }
 
+.loading {
+  background-color: #ffffff;
+  background-image: url("http://loadinggif.com/images/image-selection/3.gif");
+  background-size: 23px 23px;
+  background-position: right center;
+  background-repeat: no-repeat;
+}
+
 /** Laji form **/
 body .laji-form {
   background: #eeeeee;

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
-import { DROPDOWN_DIRECTIVES } from 'ng2-bootstrap/ng2-bootstrap';
+import { DROPDOWN_DIRECTIVES } from 'ng2-bootstrap/components/dropdown';
 
 @Component({
   selector:'laji-lang-select',

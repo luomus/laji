@@ -58,10 +58,18 @@ var defaultConfig = {
     },
     watchOptions: { aggregateTimeout: 300, poll: 1000 },
     proxy: {
-      '/api/*': {
+      '/api/**': {
         target: config['api_base'],
         changeOrigin: true,
         xfwd: true,
+        pathRewrite: {
+          '^/api/': 'v0/'
+        },
+        onProxyReq: function(proxyRes, req, res) {
+          proxyRes.path = proxyRes.path  + (proxyRes.path.indexOf('?') === -1 ? '?' : '&' ) +
+            'access_token=' + config['access_token'];
+          console.log(proxyRes);
+        },
         rewrite: function(req) {
           req.url = req.url.replace(/^\/api/, 'v0') +
             (req.url.indexOf('?') === -1 ? '?' : '&' ) +

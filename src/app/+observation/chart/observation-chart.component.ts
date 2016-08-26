@@ -141,6 +141,9 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
         } else {
           this.loading = false;
           this.informalGroups = data[0].results;
+          if (!this.informalGroups) {
+            return;
+          }
           let groups = this.informalGroups.map(group => group.id);
           this.data = data[1].results
             .map(item => {

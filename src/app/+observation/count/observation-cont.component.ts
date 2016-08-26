@@ -78,7 +78,7 @@ export class ObservationCountComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe(
         result => {
           this.loading = false;
-          this.count = '' + result.total;
+          this.count = '' + (result.total || 0);
         },
         err => console.log(err)
       )
@@ -90,11 +90,13 @@ export class ObservationCountComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe(
         result => {
           if (result.results) {
-            this.loading = false;
             this.count = '' + result.results
                 .filter(value => value.aggregateBy[this.field] === this.pick)
                 .reduce((pre, cur) =>  cur['count'], 0);
+          } else {
+            this.count = '0';
           }
+          this.loading = false;
         },
         err => console.log(err)
       );
