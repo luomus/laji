@@ -31,6 +31,11 @@ body {
   background-repeat: no-repeat;
 }
 
+/** generic **/
+.pagination {
+  margin: 0 0 20px 0;
+}
+
 /** Laji form **/
 body .laji-form {
   background: #eeeeee;

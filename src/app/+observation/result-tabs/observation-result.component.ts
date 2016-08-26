@@ -54,6 +54,11 @@ export class ObservationResultComponent implements OnInit {
     return aggr['unit.linkings.taxon.scientificName'] || '';
   }
 
+  pickLink(aggr) {
+    return aggr['unit.linkings.taxon.id'] ?
+      '/taxon/' + aggr['unit.linkings.taxon.id'].replace('http://tun.fi/','') : '';
+  }
+
   activate(tab:string) {
     if (this.active === tab) {
       return;

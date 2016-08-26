@@ -18,9 +18,11 @@ export class ValueDecoratorService {
   }
 
   public decorate(field:string, value:any, context:any) {
+    console.log(field);
     if (!this.isDecoratable(field)) {
       return value;
     }
+    console.log(this[this.decoratable[field]]);
     return this[this.decoratable[field]](value, context);
   }
 
@@ -45,6 +47,8 @@ export class ValueDecoratorService {
   }
 
   protected makeTaxon(value, context) {
+    console.log(value);
+    console.log(context);
     if (
       context.unit.linkings &&
       context.unit.linkings.taxon &&

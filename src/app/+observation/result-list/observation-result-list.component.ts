@@ -18,7 +18,7 @@ import {SearchQuery} from "../search-query.model";
 export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   @Input() columns: any = [
-    {field: 'unit.taxonVerbatim'},
+    {field: 'unit.taxonVerbatim,unit.linkings', translation: 'result.unit.taxonVerbatim'},
     {field: 'gathering.team'},
     {field: 'gathering.eventDate'},
     {field: 'gathering.conversions.wgs84CenterPoint'},
@@ -106,9 +106,10 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   getData(row: any, propertyName: string): string {
     let val = '';
+    let first = propertyName.split(',')[0];
     try {
-      val = propertyName.split('.').reduce((prev: any, curr: any) => prev[curr], row);
-      val = this.decorator.decorate(propertyName, val, row)
+      val = first.split('.').reduce((prev: any, curr: any) => prev[curr], row);
+      val = this.decorator.decorate(first, val, row)
     } catch (e) {
     }
     return val;

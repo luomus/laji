@@ -74,6 +74,8 @@
   "search.result.images": "Kuvat",
   "search.result.stats": "Tilastot",
   "search.result.load": "Lataa tiedostona",
+  "search.result.species": "lajit",
+  "search.result.map": "kartta",
 
   "result.unit.taxonVerbatim": "Laji",
   "result.gathering.team": "Henkilö",

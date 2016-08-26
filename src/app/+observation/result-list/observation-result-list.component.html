@@ -6,7 +6,7 @@
     <thead>
     <tr role="row">
       <th *ngFor="let column of columns">
-        {{'result.' + column.field | translate}}
+        {{(column.translation || 'result.' + column.field) | translate}}
         <i *ngIf="column.sort" class="pull-right fa"
            [ngClass]="{'fa-chevron-down': column.sort === 'desc', 'fa-chevron-up': column.sort === 'asc'}"></i>
       </th>

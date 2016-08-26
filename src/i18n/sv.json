@@ -74,6 +74,8 @@
   "search.result.images": "search.result.images",
   "search.result.stats": "search.result.stats",
   "search.result.load": "search.result.load",
+  "search.result.species": "search.result.species",
+  "search.result.map": "search.result.map",
 
   "result.unit.taxonVerbatim": "result.unit.linkings.taxon",
   "result.gathering.team": "result.gathering.team",

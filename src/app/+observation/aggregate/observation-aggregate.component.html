@@ -11,8 +11,30 @@
   </thead>
   <tbody>
   <tr *ngFor="let item of items">
-    <td>{{(addPrefix ? 'warehouse.' : '') + item.value | translate }}</td>
+    <td>
+      <span *ngIf="item.link">
+        <a [routerLink]="[item.link]">
+          {{(addPrefix ? 'warehouse.' : '') + item.value | translate }}
+        </a>
+      </span>
+      <span *ngIf="!item.link">
+        {{(addPrefix ? 'warehouse.' : '') + item.value | translate }}
+      </span>
+    </td>
     <td>{{item.count}}</td>
   </tr>
   </tbody>
 </table>
+<pagination
+  *ngIf="showPager"
+  [totalItems]="total"
+  [itemsPerPage]="limit"
+  [(ngModel)]="page"
+  (pageChanged)="pageChanged($event)"
+  [maxSize]="7"
+  [boundaryLinks]="true"
+  [firstText]="'paginator.first' | translate"
+  [lastText]="'paginator.last' | translate"
+  [previousText]="'paginator.previous' | translate"
+  [nextText]="'paginator.next' | translate"
+></pagination>

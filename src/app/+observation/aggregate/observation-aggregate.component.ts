@@ -1,14 +1,18 @@
 import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {Subscription} from "rxjs";
+import {PAGINATION_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
+import {FORM_DIRECTIVES} from '@angular/forms';
 
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {SearchQuery} from "../search-query.model";
 import {TranslateService} from "ng2-translate";
+import {ROUTER_DIRECTIVES} from "@angular/router";
 
 @Component({
   moduleId: module.id,
   selector: 'laji-observation-aggregate',
-  templateUrl: 'observation-aggregate.component.html'
+  templateUrl: 'observation-aggregate.component.html',
+  directives: [PAGINATION_DIRECTIVES, FORM_DIRECTIVES, ROUTER_DIRECTIVES]
 })
 export class ObservationAggregateComponent implements OnInit, OnDestroy {
 
@@ -19,10 +23,16 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
   @Input() updateOnLangChange:boolean = false;
   @Input() addPrefix:boolean = false;
   @Input() valuePicker:any;
+  @Input() linkPicker:any;
+  @Input() showPager:boolean = false;
+
+  public page:number = 1;
+  public total:number = 400;
 
   public items:Array<{
     count:number,
-    value:string
+    value:string,
+    link:string
   }> = [];
 
   private subQueryUpdate:Subscription;
@@ -56,25 +66,33 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
     }
   }
 
+  pageChanged(page) {
+    this.page = page.page;
+    this.items = [];
+    this.updateCount();
+  }
+
   updateCount() {
     if (this.subCount) {
       this.subCount.unsubscribe();
     }
+    let query = this.searchQuery.query;
+    query.includeNonValidTaxons = false;
     this.subCount = this.warehouseService
-      .warehouseQueryAggregateGet(this.searchQuery.query, [this.field], undefined, this.limit)
+      .warehouseQueryAggregateGet(query, [this.field], undefined, this.limit, this.page)
       .subscribe(
         result => {
           if (result.results) {
             this.items = result.results
               .map(item => {
+                let link = this.linkPicker ? this.linkPicker(item.aggregateBy) : '';
                 let value = this.valuePicker ?
                   this.valuePicker(item.aggregateBy, this.translate.currentLang) :
                   (item.aggregateBy[this.field] || '');
-                return {count: item.count, value: value}
+                return {count: item.count, value: value, link: link}
               });
           }
         }
       );
   }
-
 }

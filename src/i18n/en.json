@@ -72,6 +72,8 @@
   "search.result.images": "Images",
   "search.result.stats": "Statistics",
   "search.result.load": "Load as file",
+  "search.result.species": "species",
+  "search.result.map": "map",
 
   "result.unit.taxonVerbatim": "Species",
   "result.gathering.team": "Gatherer",
