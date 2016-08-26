@@ -69,7 +69,7 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
               .map(item => {
                 let value = this.valuePicker ?
                   this.valuePicker(item.aggregateBy, this.translate.currentLang) :
-                  item.aggregateBy[this.field];
+                  (item.aggregateBy[this.field] || '');
                 return {count: item.count, value: value}
               });
           }
