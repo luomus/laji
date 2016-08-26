@@ -43,16 +43,15 @@ export class ObservationResultComponent implements OnInit {
   }
 
   pickValue(aggr, lang) {
-    console.log(aggr, lang);
     switch (lang) {
       case 'fi':
-        return aggr['unit.linkings.taxon.nameFinnish'] || aggr['unit.linkings.taxon.scientificName'];
+        return aggr['unit.linkings.taxon.nameFinnish'] || aggr['unit.linkings.taxon.scientificName'] || '';
       case 'en':
-        return aggr['unit.linkings.taxon.nameEnglish'] || aggr['unit.linkings.taxon.scientificName'];
+        return aggr['unit.linkings.taxon.nameEnglish'] || aggr['unit.linkings.taxon.scientificName'] || '';
       case 'sv':
-        return aggr['unit.linkings.taxon.nameSwedish'] || aggr['unit.linkings.taxon.scientificName'];
+        return aggr['unit.linkings.taxon.nameSwedish'] || aggr['unit.linkings.taxon.scientificName'] || '';
     }
-    return aggr['unit.linkings.taxon.scientificName'];
+    return aggr['unit.linkings.taxon.scientificName'] || '';
   }
 
   activate(tab:string) {
