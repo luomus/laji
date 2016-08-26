@@ -7,7 +7,7 @@ import { SearchQuery } from "../search-query.model";
 import {ObservationCountComponent} from "../count/observation-cont.component";
 import {ObservationAggregateComponent} from "../aggregate/observation-aggregate.component";
 import {ObservationChartComponent} from "../chart/observation-chart.component";
-import {TranslateService} from "ng2-translate";
+import {ObservationMapComponent} from "../map/observation-map.component";
 
 
 @Component({
@@ -18,7 +18,8 @@ import {TranslateService} from "ng2-translate";
     ObservationResultListComponent,
     ObservationCountComponent,
     ObservationAggregateComponent,
-    ObservationChartComponent
+    ObservationChartComponent,
+    ObservationMapComponent
   ]
 })
 export class ObservationResultComponent implements OnInit {

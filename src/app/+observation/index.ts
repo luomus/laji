@@ -7,3 +7,4 @@ export * from './form/observation-form.component';
 export * from './count/observation-cont.component';
 export * from './aggregate/observation-aggregate.component';
 export * from './filters/observation-filters.component';
+export * from './map/observation-map.component';

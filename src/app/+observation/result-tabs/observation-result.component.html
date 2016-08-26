@@ -2,8 +2,8 @@
   <tab [heading]="'search.result.map' | translate"
        (select)="activate('map')"
        [active]="active === 'map'">
-    <div style="background-color: #2C3E50; height: 800px; width: 100%; text-align: center;">
-      <h1 style="color: #fff; padding-top: 300px;">Kartta</h1>
+    <div>
+      <laji-observation-map></laji-observation-map>
     </div>
   </tab>
   <tab [heading]="'search.result.list' | translate"
