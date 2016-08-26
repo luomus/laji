@@ -2,9 +2,11 @@ import {Component, OnInit, ElementRef, Inject, OnDestroy, Input, Output, EventEm
 import {FormApiClient, FormApi} from "../api";
 
 //let styles = require('laji-form/lib/styles');
-let React = require('react');
-let ReactDOM = require('react-dom');
-let LajiForm = require('laji-form').default;
+
+// TODO: remove debug!
+//let React = require('react');
+//let ReactDOM = require('react-dom');
+//let LajiForm = require('laji-form').default;
 
 let schema = require('./schema.json');
 
@@ -52,6 +54,7 @@ export class LajiFormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   mount() {
+    /*
     if (!this.formData || !this.lang) {
       return;
     }
@@ -72,10 +75,11 @@ export class LajiFormComponent implements OnInit, OnDestroy, OnChanges {
       this.reactElem,
       this.elem
     );
+    */
   }
 
   unMount() {
-    ReactDOM.unmountComponentAtNode(this.elem);
-    delete this.reactElem;
+    //ReactDOM.unmountComponentAtNode(this.elem);
+    //delete this.reactElem;
   }
 }
