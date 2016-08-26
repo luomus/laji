@@ -33,7 +33,6 @@ export class MapComponent implements OnDestroy, OnChanges {
       data: this.data,
       rootElem: this.elemRef.nativeElement
     });
-    console.log(this.map.drawnItems);
   }
 
   ngOnDestroy() {
