@@ -5,8 +5,8 @@
     <laji-observation-count></laji-observation-count>
     {{'observation.results.observation' | translate}}
     <laji-observation-count
-      [field]="'unit.linkings.taxon.taxonRank'"
-      [pick]="'http://tun.fi/MX.species'"
+      [field]="'unit.linkings.taxon.id'"
+      [overrideInQuery]="{taxonRankId: 'MX.species'}"
     >
     </laji-observation-count>
     {{'observation.results.species' | translate}}

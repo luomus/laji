@@ -62,6 +62,10 @@ export class SearchQuery {
     'individualCountMax'
   ];
 
+  stringTypes = [
+    'taxonRank'
+  ];
+
   public setQueryFromURLSearchParams(queryParameters: URLSearchParams) {
     for(let i of this.arrayTypes) {
       if (queryParameters.has(i)) {
@@ -84,6 +88,14 @@ export class SearchQuery {
     for(let i of this.numericTypes) {
       if (queryParameters.has(i)) {
         this.query[i] = +queryParameters.get(i);
+      } else {
+        this.query[i] = undefined;
+      }
+    }
+
+    for(let i of this.stringTypes) {
+      if (queryParameters.has(i)) {
+        this.query[i] = queryParameters.get(i);
       } else {
         this.query[i] = undefined;
       }
@@ -121,6 +133,12 @@ export class SearchQuery {
     for(let i of this.numericTypes) {
       if (this.query[i] !== undefined) {
         queryParameters.set(i, String(this.query[i]));
+      }
+    }
+
+    for(let i of this.stringTypes) {
+      if (this.query[i] !== undefined) {
+        queryParameters.set(i, this.query[i]);
       }
     }
 
