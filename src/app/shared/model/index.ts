@@ -10,3 +10,6 @@ export * from './WarehouseCountResultInterface';
 export * from './FormListInterface';
 export * from './InformalTaxonGroup';
 export * from './Autocomplete';
+export * from './PersonToken';
+export * from './Person';
+export * from './Profile';

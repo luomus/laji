@@ -11,6 +11,8 @@ import {TRANSLATE_PROVIDERS, TranslatePipe } from 'ng2-translate/ng2-translate';
 import { APP_ROUTER_PROVIDERS } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { NewsApi, UserService } from './app/shared'
+import {PersonTokenApi} from "./app/shared/api/PersonTokenApi";
+import {PersonApi} from "./app/shared/api/PersonApi";
 
 //enableProdMode();
 
@@ -22,6 +24,8 @@ bootstrap(AppComponent, [
   APP_ROUTER_PROVIDERS,
   { provide: LocationStrategy, useClass: PathLocationStrategy },
   TRANSLATE_PROVIDERS,
+  PersonTokenApi,
+  PersonApi,
   UserService,
   { provide: PLATFORM_PIPES, useValue: TranslatePipe, multi: true }
 ])

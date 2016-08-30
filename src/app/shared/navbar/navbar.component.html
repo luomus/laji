@@ -37,8 +37,8 @@
           <a [routerLink]="['/information']">{{ 'navigation.information' | translate }}</a>
         </li>
         <li [routerLinkActive]="['active']">
-          <a *ngIf="userService.isLoggedIn" [routerLink]="['/user']">{{ 'navigation.user' | translate }}</a>
-          <a *ngIf="!userService.isLoggedIn" href="{{userService.getLoginUrl()}}">{{ 'navigation.user.login' | translate }}</a>
+          <a *ngIf="userService.isLoggedIn()" [routerLink]="['/user/logout']">{{ 'navigation.user.logout' | translate }}</a>
+          <a *ngIf="!userService.isLoggedIn()" href="{{userService.getLoginUrl()}}">{{ 'navigation.user.login' | translate }}</a>
         </li>
         <li>
           <laji-lang-select></laji-lang-select>
