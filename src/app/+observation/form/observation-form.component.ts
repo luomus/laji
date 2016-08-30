@@ -1,6 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {FORM_DIRECTIVES}   from '@angular/forms';
-import {Location} from "@angular/common";
+import {Location, NgModel} from "@angular/common";
 
 import {SearchQuery} from "../search-query.model";
 import {ObservationCountComponent} from "../count/observation-cont.component";
@@ -11,26 +11,77 @@ import {Observable} from "rxjs";
 import {TYPEAHEAD_DIRECTIVES} from "ng2-bootstrap";
 import {AutocompleteApi} from "../../shared/api/AutocompleteApi";
 import {TranslateService} from "ng2-translate";
+import {ObservationFilterComponent} from "../filters/observation-filters.component";
+import {ObservationFilterInterface, FilterDataInterface} from "../filters/observation-filters.interface";
+import {DatePickerComponent} from "../../shared/datepicker/datepicker.component";
+import {ObservationFormQuery} from "./observation-form-query.interface";
 
 @Component({
   selector: 'laji-observation-form',
   templateUrl: 'observation-form.component.html',
   providers: [AutocompleteApi],
   directives: [
-    FORM_DIRECTIVES,
     ObservationCountComponent,
     ObservationChartComponent,
     ObservationResultComponent,
-    TYPEAHEAD_DIRECTIVES
+    ObservationFilterComponent,
+    TYPEAHEAD_DIRECTIVES,
+    FORM_DIRECTIVES
   ]
 })
 export class ObservationFormComponent implements OnInit {
 
   public limit = 10;
-  public formQuery;
+  public formQuery:ObservationFormQuery = {
+    taxon:'',
+    timeStart:'2010-10-10',
+    timeEnd:'2010-12-10',
+    informalTaxonGroupId:''
+  };
   public dataSource:Observable<any>;
   public typeaheadLoading:boolean = false;
   @Input() tab:string;
+
+  public filters:ObservationFilterInterface[] = [
+    {
+      title: 'observation.filterBy.recordBasis',
+      field: 'unit.recordBasis',
+      pick: [
+        'HUMAN_OBSERVATION_UNSPECIFIED',
+        'PRESERVED_SPECIMEN'
+      ],
+      filter: 'recordBasis',
+      type: 'array',
+      selected:[]
+    },
+    {
+      title: 'observation.filterBy.image',
+      field: 'unit.media.mediaType',
+      pick: [
+        'IMAGE',
+        ''
+      ],
+      valueMap: {
+        '': 'NO_IMAGE'
+      },
+      booleanMap: {
+        'NO_IMAGE': false,
+        'IMAGE': true
+      },
+      size: 10,
+      filter: 'hasUnitMedia',
+      type: 'boolean',
+      selected:[]
+    },
+    {
+      title: 'observation.filterBy.collectionId',
+      field: 'document.collectionId',
+      size: 10,
+      filter: 'collectionId',
+      type: 'array',
+      selected:[]
+    }
+  ];
 
   constructor(
     public searchQuery: SearchQuery,
@@ -74,20 +125,13 @@ export class ObservationFormComponent implements OnInit {
 
   empty(refresh:boolean, query?:WarehouseQueryInterface) {
     if (query) {
-      this.formQuery = {
-        taxon: query.target && query.target[0] ? query.target[0] : '',
-        timeStart: query.time && query.time[0] ? query.time[0] : '',
-        specimen: query.recordBasis && query.recordBasis[0] && query.recordBasis[0] === 'PRESERVED_SPECIMEN' ? true : false,
-        typeSpecimen: query.typeSpecimen || false,
-        informalTaxonGroupId: query.informalTaxonGroupId || ''
-      };
+      this.queryToFormQuery(query);
       return;
     }
     this.formQuery = {
       taxon:'',
-      timeStart:'',
-      specimen: false,
-      typeSpecimen: false,
+      timeStart:'2010-10-10',
+      timeEnd:'10.10.2010',
       informalTaxonGroupId:''
     };
     if (refresh) {
@@ -95,19 +139,57 @@ export class ObservationFormComponent implements OnInit {
     }
   }
 
+  private queryToFormQuery(query:WarehouseQueryInterface) {
+    let time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
+    this.formQuery = {
+      taxon: query.target && query.target[0] ? query.target[0] : '',
+      timeStart: time[0] || '',
+      timeEnd: time[1] || '',
+      informalTaxonGroupId: query.informalTaxonGroupId && query.recordBasis[0] ?
+        query.recordBasis[0] : ''
+    };
+  }
+
+  private formQueryToQuery(formQuery:ObservationFormQuery) {
+    let taxon = formQuery.taxon.trim();
+    let time = formQuery.timeStart.trim();
+
+    this.searchQuery.query.target = taxon.length > 0 ?
+      [taxon] : undefined;
+    this.searchQuery.query.time = time.length > 0 ?
+      [time] : undefined;
+    this.searchQuery.query.informalTaxonGroupId = formQuery.informalTaxonGroupId ?
+      [formQuery.informalTaxonGroupId] : undefined;
+
+  }
+
   onSubmit() {
-    let taxon = this.formQuery.taxon.trim();
-    let time = this.formQuery.timeStart.trim();
-
-    this.searchQuery.query.target = taxon.length > 0 ? [taxon] : undefined;
-    this.searchQuery.query.time = time.length > 0 ? [time] : undefined;
-    this.searchQuery.query.typeSpecimen = this.formQuery.typeSpecimen ? true : undefined;
-    this.searchQuery.query.recordBasis = this.formQuery.specimen ? ['PRESERVED_SPECIMEN'] : undefined;
-    this.searchQuery.query.informalTaxonGroupId = this.formQuery.informalTaxonGroupId ? this.formQuery.informalTaxonGroupId : undefined;
-
+    this.formQueryToQuery(this.formQuery);
+    this.searchQuery.updateUrl(this.location, undefined, [
+      'selected',
+      'pageSize',
+      'includeNonValidTaxons'
+    ]);
     this.searchQuery.queryUpdate();
-    this.searchQuery.updateUrl(this.location);
+
     return false;
+  }
+
+  onFilterSelect(itemValue:FilterDataInterface) {
+    this.onSubmit();
+  }
+
+  onFilterUpdate(filters:ObservationFilterInterface) {
+    let index = -1;
+    this.filters.map((filter, idx) => {
+      if (filter.field !== filters.field) {
+        return;
+      }
+      index = idx;
+    });
+    if (index > -1) {
+      this.filters[index] = filters;
+    }
   }
 
   public changeTypeaheadLoading(e:boolean):void {

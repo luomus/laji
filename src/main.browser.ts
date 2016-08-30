@@ -1,4 +1,5 @@
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { FORM_DIRECTIVES }   from '@angular/forms';
 import { disableDeprecatedForms, provideForms } from '@angular/forms';
 import { bootstrap } from '@angular/platform-browser-dynamic';
 import { HTTP_PROVIDERS, Http } from '@angular/http';
@@ -17,6 +18,7 @@ bootstrap(AppComponent, [
   disableDeprecatedForms(),
   provideForms(),
   HTTP_PROVIDERS,
+  FORM_DIRECTIVES,
   APP_ROUTER_PROVIDERS,
   { provide: LocationStrategy, useClass: PathLocationStrategy },
   TRANSLATE_PROVIDERS,

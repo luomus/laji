@@ -66,6 +66,10 @@ export class ObservationResultComponent implements OnInit {
     }
     this.active = tab;
     this.activated[tab] = true;
-    this.searchQuery.updateUrl(this.location, '/observation/' + tab);
+    this.searchQuery.updateUrl(this.location, '/observation/' + tab, [
+      'selected',
+      'pageSize',
+      'includeNonValidTaxons'
+    ]);
   }
 }

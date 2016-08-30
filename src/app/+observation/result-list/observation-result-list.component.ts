@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, OnDestroy} from '@angular/core';
+import {Component, OnInit, Input, OnDestroy, Output, EventEmitter} from '@angular/core';
 import {PAGINATION_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {FORM_DIRECTIVES} from '@angular/forms';
 import {Subscription} from "rxjs";
@@ -21,10 +21,11 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     {field: 'unit.taxonVerbatim,unit.linkings', translation: 'result.unit.taxonVerbatim'},
     {field: 'gathering.team'},
     {field: 'gathering.eventDate'},
-    {field: 'gathering.conversions.wgs84CenterPoint'},
+    {field: 'gathering.municipality'},
     {field: 'document.documentId'}
   ];
   @Input() showPager: boolean = true;
+  @Output() onSelect:EventEmitter<string> = new EventEmitter<string>();
 
   public result: PagedResult<any>;
 
@@ -90,17 +91,17 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
           if (results) {
             this.result = results;
           }
-          this.loading = false;
-
-          this.searchQuery.updateUrl(this.location);
+          this.searchQuery.updateUrl(this.location, undefined, [
+            'selected',
+            'pageSize',
+            'includeNonValidTaxons'
+          ]);
         },
         error => {
           console.log(error);
           this.result.results = [];
-          this.loading = false;
-          //TODO: remove when limit for the searches is removed
-          this.searchQuery.updateUrl(this.location);
-        }
+        },
+        () => this.loading = false
       )
   }
 
