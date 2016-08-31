@@ -11,13 +11,12 @@ import {Subscription} from "rxjs";
 })
 export class ObservationFilterComponent implements OnInit {
   @Input() filters:ObservationFilterInterface;
-  @Output() filtersChanged:EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
+  @Output() filtersChange:EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
   @Output() onSelect:EventEmitter<any> = new EventEmitter();
 
   public loading:boolean = false;
 
   private subData: Subscription;
-  private selected:any;
 
   constructor(
     private warehouseService:WarehouseApi,
@@ -28,12 +27,6 @@ export class ObservationFilterComponent implements OnInit {
   ngOnInit() {
     this.update();
     this.searchQuery.queryUpdated$.subscribe(() => {
-      let query = this.searchQuery.query;
-      if (typeof query[this.filters.filter] !== 'undefined') {
-        this.selected = query[this.filters.filter];
-      } else {
-        this.selected = undefined;
-      }
       this.update();
     });
   }
@@ -60,13 +53,12 @@ export class ObservationFilterComponent implements OnInit {
             return true;
           })
           .map((result) => {
-            let sel = false;
             let val = result.aggregateBy[this.filters['field']];
             if (this.filters.valueMap && typeof this.filters.valueMap[val] !== 'undefined') {
               val = this.filters.valueMap[val];
             }
-            sel = this.filters.selected.filter((filter) => {
-              return filter.value !== val;
+            let sel = this.filters.selected.filter((value) => {
+              return value === val;
             }).length > 0;
             return {
               value: val,
@@ -80,44 +72,20 @@ export class ObservationFilterComponent implements OnInit {
   }
 
   toggle(item:any) {
-    let value = item.value;
     item.selected = !item.selected;
-
-    switch (this.filters.type) {
-      case 'array':
-        value = [value];
-            break;
-      case 'boolean':
-        if (this.filters.booleanMap) {
-          value = this.filters.booleanMap[value];
-        } else {
-          value = value && value !== 'false' ? true : false;
-        }
-    }
     if (item.selected) {
-      this.filters.selected.push(item);
+      this.filters.selected.push(item.value);
     } else {
-      this.filters.selected = this.filters.selected.filter(filter => {
-        return filter.value !== item.value;
+      this.filters.selected = this.filters.selected.filter(value => {
+        return value !== item.value;
       });
     }
-    this.filtersChanged.emit(this.filters);
+    this.filtersChange.emit(this.filters);
     this.onSelect.emit(item);
   }
 
   isSelected(value):boolean {
-    switch (this.filters.type) {
-      case 'array':
-        return this.selected.indexOf(value) > -1;
-      case 'boolean':
-        if (this.filters.booleanMap) {
-          value = this.filters.booleanMap[value];
-        } else {
-          value = value && value !== 'false' ? true : false;
-        }
-        return this.selected === value;
-    }
-    return false;
+    return this.filters.selected && this.filters.selected.indexOf(value) > -1
   }
 
 }

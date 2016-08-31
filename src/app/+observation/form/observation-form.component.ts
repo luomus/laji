@@ -32,12 +32,7 @@ import {ObservationFormQuery} from "./observation-form-query.interface";
 export class ObservationFormComponent implements OnInit {
 
   public limit = 10;
-  public formQuery:ObservationFormQuery = {
-    taxon:'',
-    timeStart:'2010-10-10',
-    timeEnd:'2010-12-10',
-    informalTaxonGroupId:''
-  };
+  public formQuery:ObservationFormQuery;
   public dataSource:Observable<any>;
   public typeaheadLoading:boolean = false;
   @Input() tab:string;
@@ -118,11 +113,6 @@ export class ObservationFormComponent implements OnInit {
     this.onSubmit();
   }
 
-  toggle(field:string) {
-    this.formQuery[field] = !this.formQuery[field];
-    this.onSubmit();
-  }
-
   empty(refresh:boolean, query?:WarehouseQueryInterface) {
     if (query) {
       this.queryToFormQuery(query);
@@ -130,10 +120,13 @@ export class ObservationFormComponent implements OnInit {
     }
     this.formQuery = {
       taxon:'',
-      timeStart:'2010-10-10',
-      timeEnd:'10.10.2010',
+      timeStart:'',
+      timeEnd:'',
       informalTaxonGroupId:''
     };
+    this.filters.map((filter, idx) => {
+      this.filters[idx]['selected'] = [];
+    });
     if (refresh) {
       this.onSubmit();
     }
@@ -148,19 +141,63 @@ export class ObservationFormComponent implements OnInit {
       informalTaxonGroupId: query.informalTaxonGroupId && query.recordBasis[0] ?
         query.recordBasis[0] : ''
     };
+    this.filters.map((filterSet, idx) => {
+      let queryFilter = filterSet.filter;
+      this.filters[idx].selected = [];
+      if (typeof query[queryFilter] === "undefined") {
+        return;
+      }
+      switch (filterSet.type) {
+        case 'array':
+          this.filters[idx].selected = query[queryFilter];
+          break;
+        case 'boolean':
+          if (filterSet.booleanMap) {
+            for(let key in filterSet.booleanMap) {
+              if (!filterSet.booleanMap.hasOwnProperty(key)) {
+                continue;
+              }
+              if (query[queryFilter] === filterSet.booleanMap[key]) {
+                this.filters[idx].selected.push(key);
+              }
+            }
+          } else {
+            this.filters[idx].selected = [(query[queryFilter] ? 'true' : 'false')];
+          }
+      }
+    })
   }
 
   private formQueryToQuery(formQuery:ObservationFormQuery) {
     let taxon = formQuery.taxon.trim();
     let time = formQuery.timeStart.trim();
+    let query = this.searchQuery.query;
 
-    this.searchQuery.query.target = taxon.length > 0 ?
+    query.target = taxon.length > 0 ?
       [taxon] : undefined;
-    this.searchQuery.query.time = time.length > 0 ?
+    query.time = time.length > 0 ?
       [time] : undefined;
-    this.searchQuery.query.informalTaxonGroupId = formQuery.informalTaxonGroupId ?
+    query.informalTaxonGroupId = formQuery.informalTaxonGroupId ?
       [formQuery.informalTaxonGroupId] : undefined;
 
+    this.filters.map((filterSet) => {
+      let queryFilter = filterSet.filter;
+      if (filterSet.selected.length == 0) {
+        query[queryFilter] = undefined;
+        return;
+      }
+      if (filterSet.type === 'array') {
+        query[queryFilter] = filterSet.selected;
+      } else if (filterSet.type === 'boolean') {
+        filterSet.selected.map((value) => {
+          if (filterSet.booleanMap) {
+            query[queryFilter] = filterSet.booleanMap[value];
+          } else {
+            query[queryFilter] = value && value !== 'false' ? true : false;
+          }
+        })
+      }
+    });
   }
 
   onSubmit() {
@@ -177,19 +214,6 @@ export class ObservationFormComponent implements OnInit {
 
   onFilterSelect(itemValue:FilterDataInterface) {
     this.onSubmit();
-  }
-
-  onFilterUpdate(filters:ObservationFilterInterface) {
-    let index = -1;
-    this.filters.map((filter, idx) => {
-      if (filter.field !== filters.field) {
-        return;
-      }
-      index = idx;
-    });
-    if (index > -1) {
-      this.filters[index] = filters;
-    }
   }
 
   public changeTypeaheadLoading(e:boolean):void {

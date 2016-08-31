@@ -8,7 +8,7 @@ export interface ObservationFilterInterface {
   booleanMap?:any;
   size?:number;
   data?:FilterDataInterface[];
-  selected:FilterDataInterface[];
+  selected:string[];
   total?:number;
 }
 

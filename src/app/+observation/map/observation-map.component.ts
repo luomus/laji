@@ -5,6 +5,7 @@ import {SearchQuery} from "../search-query.model";
 import {Subscription} from "rxjs";
 
 declare var d3:any;
+let observationMapColorScale;
 
 @Component({
   moduleId: module.id,
@@ -25,7 +26,6 @@ export class ObservationMapComponent implements OnInit {
   public mapData;
 
   private spots:any[];
-  private scale:any;
   private subDataFetch: Subscription;
   private subQueryChange: Subscription;
 
@@ -83,7 +83,7 @@ export class ObservationMapComponent implements OnInit {
         }
       });
     });
-    this.scale = d3.scale.linear()
+    observationMapColorScale = d3.scale.linear()
       .domain([0,+maxIndividuals])
       .range(["white","red"]);
 
@@ -95,8 +95,13 @@ export class ObservationMapComponent implements OnInit {
 
   getStyle(idx) {
     let color = "#0a0";
-    if (typeof this.scale !== "undefined" && typeof idx !== "undefined") {
-      color = this.scale(this.spots[idx]["title"]);
+    if (
+      typeof observationMapColorScale !== "undefined" &&
+      typeof idx !== "undefined" &&
+      typeof this.spots !== "undefined" &&
+      typeof this.spots[idx] !== "undefined"
+    ) {
+      color = observationMapColorScale(this.spots[idx]["title"]);
     }
     return {
       weight: 1,
