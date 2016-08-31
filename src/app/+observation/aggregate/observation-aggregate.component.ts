@@ -76,7 +76,7 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
     if (this.subCount) {
       this.subCount.unsubscribe();
     }
-    let query = this.searchQuery.query;
+    let query = Object.assign({}, this.searchQuery.query);
     query.includeNonValidTaxons = false;
     this.subCount = this.warehouseService
       .warehouseQueryAggregateGet(query, [this.field], undefined, this.limit, this.page)
