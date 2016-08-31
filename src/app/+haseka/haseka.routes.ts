@@ -13,5 +13,10 @@ export const HaSeKaRoutes: RouterConfig = [
     path: 'haseka/:formId',
     pathMatch: 'full',
     component: HaSeKaFormComponent
+  },
+  {
+    path: 'haseka/:formId/:documentId',
+    pathMatch: 'full',
+    component: HaSeKaFormComponent
   }
 ];

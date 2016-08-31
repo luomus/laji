@@ -279,15 +279,15 @@ export class WarehouseApi {
     };
 
     return this.http.request(path, requestOptions)
+      .share()
+      .cache()
       .map((response:Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
           return response.json();
         }
-      })
-      .cache()
-      .share();
+      });
   }
 
   /**
@@ -312,15 +312,15 @@ export class WarehouseApi {
     };
 
     return this.http.request(path, requestOptions)
+      .share()
+      .cache()
       .map((response:Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
           return response.json();
         }
-      })
-      .cache()
-      .share();
+      });
   }
 
   /**
@@ -350,15 +350,15 @@ export class WarehouseApi {
     };
 
     return this.http.request(path, requestOptions)
+      .share()
+      .cache()
       .map((response:Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
           return response.json();
         }
-      })
-      .cache()
-      .share();
+      });
   }
 
   /**

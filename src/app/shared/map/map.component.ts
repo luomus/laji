@@ -19,6 +19,7 @@ let LajiMap = require('laji-map').default;
 export class MapComponent implements OnDestroy, OnChanges {
 
   @Input() data: any = {};
+  @Input() visible: boolean;
 
   @Output() onSelect = new EventEmitter();
   @ViewChild('map') elemRef: ElementRef;
@@ -31,18 +32,31 @@ export class MapComponent implements OnDestroy, OnChanges {
       activeIdx: null,
       zoom: 3,
       data: this.data,
-      rootElem: this.elemRef.nativeElement
+      rootElem: this.elemRef.nativeElement,
+      controlSettings: {
+        draw: false,
+        layers: true,
+        zoom: true,
+        location: false
+      }
     });
   }
 
   ngOnDestroy() {
+    this.map.destroy();
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes) {
     if (!this.map) {
       return;
     }
-    this.map.map.invalidateSize();
+    this.map.setData(this.data);
+    if (this.visible) {
+      setTimeout(() => {
+        this.map.map.invalidateSize();
+      }, 500);
+    }
+
   }
 
 }

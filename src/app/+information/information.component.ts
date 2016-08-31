@@ -13,7 +13,7 @@ import {InformationApi, Information} from "../shared";
   providers: [ InformationApi ],
   directives: [ ROUTER_DIRECTIVES ]
 })
-export class InformationComponent implements OnInit, OnDestroy {
+export class InformationComponent implements OnDestroy {
 
   information:Information;
   private paramSub:Subscription;
@@ -24,19 +24,14 @@ export class InformationComponent implements OnInit, OnDestroy {
     private informationService:InformationApi,
     private translate:TranslateService
   ) {
-
-  }
-
-  ngOnInit() {
     this.paramSub = this.route.params.subscribe(params => {
       this.getInformation(params['id'] || null);
     });
-
     this.transSub = this.translate.onLangChange.subscribe(
       () => {
         this.getInformation();
       }
-    )
+    );
   }
 
   ngOnDestroy() {

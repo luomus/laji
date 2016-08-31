@@ -1,7 +1,7 @@
 import {Injectable, Inject} from "@angular/core";
 import { LocalStorage } from "angular2-localstorage/WebStorage";
 import {PersonTokenApi} from "../api/PersonTokenApi";
-import {Subscription} from "rxjs";
+import {Subscription, Observable} from "rxjs";
 import {Person} from "../model/Person";
 import {PersonApi} from "../api/PersonApi";
 
@@ -15,6 +15,7 @@ export class UserService {
 
   private subUser:Subscription;
   private subLogout:Subscription;
+  private observable: Observable<Person>;
 
   constructor(
     private tokenService:PersonTokenApi,
@@ -33,15 +34,12 @@ export class UserService {
   }
 
   private loadUserInfo(token:string) {
-    this.subUser = this.userService.personFindByToken(token)
+    this.token = token;
+    this.getUser()
       .subscribe(
-        user => {
-          this.token = token;
-          this.user = user;
-          console.log(this.user);
-        },
+        user => this.user = user,
         err => {
-          this.token = '';
+          this.logout();
           console.log(err);
         }
       );
@@ -49,12 +47,11 @@ export class UserService {
 
   public logout() {
     if (this.token === '' || this.subLogout) {
-      console.log('not login out!');
       return;
     }
     let token = this.token;
     this.token = '';
-    console.log('loggin out!!!!');
+    this.user = undefined;
     this.subLogout = this.tokenService.personTokenDeleteToken(token)
       .subscribe(
         () => {},
@@ -62,8 +59,18 @@ export class UserService {
       )
   }
 
-  public getUser():Person|boolean {
-    return this.user || false;
+  public getToken():string {
+    return this.token;
+  }
+
+  public getUser():Observable<Person> {
+    if (this.user) {
+      return Observable.of(this.user);
+    } else if (this.observable) {
+      return this.observable;
+    }
+    this.observable = this.userService.personFindByToken(this.token).share();
+    return this.observable;
   }
 
   public isLoggedIn() {

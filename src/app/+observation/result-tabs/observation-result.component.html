@@ -3,7 +3,7 @@
        (select)="activate('map')"
        [active]="active === 'map'">
     <div>
-      <laji-observation-map *ngIf="activated['map']"></laji-observation-map>
+      <laji-observation-map *ngIf="active === 'map'" [visible]="active === 'map'"></laji-observation-map>
     </div>
   </tab>
   <tab [heading]="'search.result.list' | translate"
