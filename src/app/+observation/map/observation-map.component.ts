@@ -53,7 +53,7 @@ export class ObservationMapComponent implements OnInit {
   }
 
   private dataToGeo(data) {
-    this.spots = [];
+    let features = [];
     let maxIndividuals = 0;
     data.map((agg) => {
       let lat = parseFloat(agg['aggregateBy']['gathering.conversions.wgs84Grid05.lat']);
@@ -67,13 +67,14 @@ export class ObservationMapComponent implements OnInit {
       coords.push([lon + 1, lat + 0.5]);
       coords.push([lon + 1, lat]);
       coords.push([lon, lat]);
-      if (maxIndividuals < agg['individualCountSum']) {
-        maxIndividuals = agg['individualCountSum'];
+      console.log(agg);
+      if (maxIndividuals < agg.count) {
+        maxIndividuals = agg.count;
       }
-      this.spots.push({
+      features.push({
         "type": "Feature",
         "properties":{
-          "title": agg['individualCountSum']
+          "title": agg.count
         },
         "geometry": {
           "type": "Polygon",
@@ -83,25 +84,40 @@ export class ObservationMapComponent implements OnInit {
         }
       });
     });
-    observationMapColorScale = d3.scale.linear()
-      .domain([0,+maxIndividuals])
-      .range(["white","red"]);
+    observationMapColorScale = d3.scale.quantize()
+      .domain([
+        0,
+        100,
+        1000,
+        10000,
+        100000
+      ])
+      .range(["#c0ffff","#80ff40", "#ffff00", '#ff8000', '#c00000']);
 
     this.mapData = [{
-      data: this.spots,
+      featureCollection: {
+        type: "featureCollection",
+        features: features
+      },
       getFeatureStyle: this.getStyle
     }];
   }
 
-  getStyle(idx) {
+  getStyle(data:{
+    dataIdx:number;
+    feature:{
+      geometry:any;
+      properties:{
+        title:string
+      }
+    };
+    featureIdx:number
+  }) {
     let color = "#0a0";
     if (
-      typeof observationMapColorScale !== "undefined" &&
-      typeof idx !== "undefined" &&
-      typeof this.spots !== "undefined" &&
-      typeof this.spots[idx] !== "undefined"
+      data.feature.properties.title
     ) {
-      color = observationMapColorScale(this.spots[idx]["title"]);
+      color = observationMapColorScale(data.feature.properties.title);
     }
     return {
       weight: 1,

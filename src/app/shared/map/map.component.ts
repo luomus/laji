@@ -29,8 +29,8 @@ export class MapComponent implements OnDestroy, OnChanges {
 
   ngAfterViewInit() {
     this.map = new LajiMap({
-      activeIdx: null,
-      zoom: 3,
+      activeIdx: 0,
+      zoom: 1,
       data: this.data,
       rootElem: this.elemRef.nativeElement,
       controlSettings: {
@@ -50,6 +50,7 @@ export class MapComponent implements OnDestroy, OnChanges {
     if (!this.map) {
       return;
     }
+    console.log(this.data);
     this.map.setData(this.data);
     if (this.visible) {
       setTimeout(() => {

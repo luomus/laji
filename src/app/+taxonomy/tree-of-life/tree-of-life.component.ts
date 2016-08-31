@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 
 declare var d3:any;
 
-const taxonTreeUri = '/api/taxonomy/%taxonId%?maxLevel=2&selectedFields=qname%2C%20scientificName';
+const taxonTreeUri = '/api/taxonomy/%taxonId%?maxLevel=2&selectedFields=id%2CscientificName';
 
 @Component({
   moduleId: module.id,
