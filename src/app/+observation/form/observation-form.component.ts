@@ -138,8 +138,8 @@ export class ObservationFormComponent implements OnInit {
       taxon: query.target && query.target[0] ? query.target[0] : '',
       timeStart: time[0] || '',
       timeEnd: time[1] || '',
-      informalTaxonGroupId: query.informalTaxonGroupId && query.recordBasis[0] ?
-        query.recordBasis[0] : ''
+      informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
+        query.informalTaxonGroupId[0] : ''
     };
     this.filters.map((filterSet, idx) => {
       let queryFilter = filterSet.filter;
