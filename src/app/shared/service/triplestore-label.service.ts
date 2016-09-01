@@ -17,19 +17,21 @@ export class TriplestoreLabelService {
   ) {
     this.translate.onLangChange.subscribe(
       lang => {
-        if (this.translate.currentLang) {
-          this.labels = null;
-          this.getLang(this.translate.currentLang);
-        }
+        this.labels = null;
+        this.getLang(this.translate.currentLang);
       }
     );
-    this.getLang('fi');
+    if (this.translate.currentLang) {
+      this.labels = null;
+      this.getLang(this.translate.currentLang);
+    }
   };
 
   private getLang(lang) {
     this.pending = Observable.forkJoin(
       this.metadataService.metadataFindAllRanges(lang, true),
-      this.metadataService.metadataAllProperties(lang)
+      this.metadataService.metadataAllProperties(lang),
+      this.metadataService.metadataAllClasses(lang)
     ).share();
     this.currentLang = lang;
   }
@@ -61,6 +63,9 @@ export class TriplestoreLabelService {
     result[1].results.map(property => {
       this.labels[property['shortname']] = property.label || '';
       this.labels[property['property']] = property.label || '';
+    });
+    result[2].results.map(data => {
+      this.labels[data['class']] = data['label'];
     });
   }
 }

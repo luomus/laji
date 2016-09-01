@@ -53,14 +53,9 @@ export class ObservationFormComponent implements OnInit {
       title: 'observation.filterBy.image',
       field: 'unit.media.mediaType',
       pick: [
-        'IMAGE',
-        ''
+        'IMAGE'
       ],
-      valueMap: {
-        '': 'NO_IMAGE'
-      },
       booleanMap: {
-        'NO_IMAGE': false,
         'IMAGE': true
       },
       size: 10,
