@@ -13,6 +13,11 @@ import { AppComponent } from './app/app.component';
 import { NewsApi, UserService } from './app/shared'
 import {PersonTokenApi} from "./app/shared/api/PersonTokenApi";
 import {PersonApi} from "./app/shared/api/PersonApi";
+import {TriplestorePipe} from "./app/shared/pipe/triplestore.pipe";
+import {MetadataApi} from "./app/shared/api/MetadataApi";
+import {TriplestoreLabelService} from "./app/shared/service/triplestore-label.service";
+import {WarehouseValueMappingService} from "./app/shared/service/warehouse-value-mapping.service";
+import {WarehouseApi} from "./app/shared/api/WarehouseApi";
 
 //enableProdMode();
 
@@ -27,6 +32,11 @@ bootstrap(AppComponent, [
   PersonTokenApi,
   PersonApi,
   UserService,
+  MetadataApi,
+  WarehouseApi,
+  TriplestoreLabelService,
+  WarehouseValueMappingService,
+  { provide: PLATFORM_PIPES, useValue: TriplestorePipe, multi: true },
   { provide: PLATFORM_PIPES, useValue: TranslatePipe, multi: true }
 ])
 .catch(err => console.error(err));

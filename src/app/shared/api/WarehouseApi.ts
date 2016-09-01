@@ -396,6 +396,34 @@ export class WarehouseApi {
       });
   }
 
+  /**
+   * Enumeration labels.
+   * Get descriptions of enumerations that are used in query parameters and responses.
+   */
+  public warehouseEnumerationLabels(extraHttpRequestParams?:any):Observable<any> {
+    const path = this.basePath + '/warehouse/enumeration-labels';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+
+    // headerParams.set('accept', accept);
+
+    let requestOptions:RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response:Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
   private addMetaToQuery(selectedOrAggregatedBy?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number):void {
     this.queryService.aggregateBy = selectedOrAggregatedBy;
     this.queryService.selected = selectedOrAggregatedBy;

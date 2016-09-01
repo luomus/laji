@@ -6,3 +6,4 @@ export * from './FormApi';
 export * from './FormApiClient';
 export * from './InformalTaxonGroupApi';
 export * from './DocumentApi';
+export * from './MetadataApi';

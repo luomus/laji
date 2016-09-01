@@ -19,3 +19,5 @@ export * from './Units';
 export * from './Identifications';
 export * from './TypeSpecimens';
 export * from './Geometry';
+export * from './Metadata';
+export * from './Property';
