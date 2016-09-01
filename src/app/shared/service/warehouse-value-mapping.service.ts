@@ -11,10 +11,13 @@ export class WarehouseValueMappingService {
 
   constructor(private warehouseService: WarehouseApi) {
     this.pending = this.warehouseService.warehouseEnumerationLabels().share();
+    this.pending.subscribe(
+      res => this.parseResult(res)
+    );
   };
 
   public get(value):Observable<string> {
-    if (this.pending) {
+    if (!this.mapping && this.pending) {
       return Observable.create((observer: Observer<string>) => {
         var onComplete = (res: string) => {
           observer.next(res);
@@ -26,7 +29,7 @@ export class WarehouseValueMappingService {
         });
       });
     } else {
-      Observable.of(this.mapping[value])
+      return Observable.of(this.mapping[value])
     }
   }
 

@@ -18,7 +18,7 @@ export class TriplestoreLabelService {
     this.translate.onLangChange.subscribe(
       lang => {
         if (this.translate.currentLang) {
-          console.log('TRANSLATE');
+          this.labels = null;
           this.getLang(this.translate.currentLang);
         }
       }
@@ -35,7 +35,9 @@ export class TriplestoreLabelService {
   }
 
   public get(key):Observable<string> {
-    if (this.pending) {
+    if (this.labels) {
+      return Observable.of(this.labels[key])
+    } else if (this.pending) {
       return Observable.create((observer: Observer<string>) => {
         var onComplete = (res: string) => {
           observer.next(res);
@@ -49,8 +51,6 @@ export class TriplestoreLabelService {
           err => console.log(err)
         );
       });
-    } else if (this.labels) {
-      return Observable.of(this.labels[key])
     } else {
       return Observable.of(key)
     }

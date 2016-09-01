@@ -4,7 +4,7 @@
     <ul>
       <li *ngFor="let item of filters.data">
         <a (click)="toggle(item)" class="link">
-          {{item.value | translate}}
+          {{item.value | translate | triplestore }}
           <small>
             {{item.count}}
             <span *ngIf="item.selected" class="label label-success">
