@@ -13,13 +13,15 @@ import {AutocompleteApi} from "../../shared/api/AutocompleteApi";
 import {TranslateService} from "ng2-translate";
 import {ObservationFilterComponent} from "../filters/observation-filters.component";
 import {ObservationFilterInterface, FilterDataInterface} from "../filters/observation-filters.interface";
-import {DatePickerComponent} from "../../shared/datepicker/datepicker.component";
 import {ObservationFormQuery} from "./observation-form-query.interface";
+import {CollectionApi} from "../../shared/api/CollectionApi";
+import {Collection} from "../../shared/model/Collection";
+import {IdService} from "../../shared/service/id.service";
 
 @Component({
   selector: 'laji-observation-form',
   templateUrl: 'observation-form.component.html',
-  providers: [AutocompleteApi],
+  providers: [AutocompleteApi,CollectionApi],
   directives: [
     ObservationCountComponent,
     ObservationChartComponent,
@@ -69,7 +71,8 @@ export class ObservationFormComponent implements OnInit {
       size: 10,
       filter: 'collectionId',
       type: 'array',
-      selected:[]
+      selected:[],
+      map: this.fetchCollectionName.bind(this)
     }
   ];
 
@@ -77,7 +80,8 @@ export class ObservationFormComponent implements OnInit {
     public searchQuery: SearchQuery,
     private location:Location,
     private autocompleteService:AutocompleteApi,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public collectionService: CollectionApi
   ) {
     this.dataSource = Observable.create((observer:any) => {
       observer.next(this.formQuery.taxon);
@@ -192,6 +196,22 @@ export class ObservationFormComponent implements OnInit {
           }
         })
       }
+    });
+  }
+
+  fetchCollectionName(data) {
+    return this.collectionService.findAll(
+      this.translate.currentLang,
+      data.map(col => IdService.getId(col.value)).join(',')
+    ).map(res => {
+      let lookUp = {};
+      res.results.map((collection:Collection) => {
+        lookUp[IdService.getUri(collection.id)] = collection.collectionName;
+      });
+      return data.map(col => {
+        col['label'] = lookUp[col['value']];
+        return col;
+      });
     });
   }
 

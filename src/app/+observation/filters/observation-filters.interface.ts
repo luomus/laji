@@ -1,3 +1,5 @@
+import {Observable} from "rxjs";
+
 export interface ObservationFilterInterface {
   title:string;
   field:string;
@@ -10,6 +12,7 @@ export interface ObservationFilterInterface {
   data?:FilterDataInterface[];
   selected:string[];
   total?:number;
+  map?:(data:any) => Observable<any>
 }
 
 export interface FilterDataInterface {

@@ -1,15 +1,16 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {SearchQuery} from "../search-query.model";
 import {ObservationFilterInterface, FilterDataInterface} from "./observation-filters.interface";
 import {Subscription} from "rxjs";
+import {TranslateService} from "ng2-translate";
 
 @Component({
   selector: 'laji-observation-filters',
   templateUrl: 'observation-filters.component.html',
   styleUrls: ['observation-filters.component.css']
 })
-export class ObservationFilterComponent implements OnInit {
+export class ObservationFilterComponent implements OnInit, OnDestroy {
   @Input() filters:ObservationFilterInterface;
   @Output() filtersChange:EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
   @Output() onSelect:EventEmitter<any> = new EventEmitter();
@@ -17,18 +18,30 @@ export class ObservationFilterComponent implements OnInit {
   public loading:boolean = false;
 
   private subData: Subscription;
+  private subTrans: Subscription;
 
   constructor(
     private warehouseService:WarehouseApi,
-    private searchQuery:SearchQuery
+    private searchQuery:SearchQuery,
+    private translate: TranslateService
   ) {
   }
 
   ngOnInit() {
     this.update();
-    this.searchQuery.queryUpdated$.subscribe(() => {
-      this.update();
-    });
+    this.searchQuery.queryUpdated$.subscribe(() => this.update());
+    if (this.filters.map) {
+      this.subTrans = this.translate.onLangChange.subscribe(() => this.update())
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.subData) {
+      this.subData.unsubscribe();
+    }
+    if (this.subTrans) {
+      this.subTrans.unsubscribe();
+    }
   }
 
   update() {
@@ -45,7 +58,7 @@ export class ObservationFilterComponent implements OnInit {
       this.filters.size || 20
     ).subscribe(
       data => {
-        this.filters.data = (data.results || [])
+        let filtersData = (data.results || [])
           .filter((result) => {
             if (this.filters.pick) {
               return this.filters.pick.indexOf(result.aggregateBy[this.filters['field']]) > -1
@@ -66,6 +79,13 @@ export class ObservationFilterComponent implements OnInit {
               selected: sel
             };
           });
+        if (this.filters.map) {
+          this.filters.map(filtersData).subscribe(
+            res => this.filters.data = res
+          )
+        } else {
+          this.filters.data = filtersData;
+        }
         this.filters.total = data.total;
       }
     );
@@ -87,5 +107,4 @@ export class ObservationFilterComponent implements OnInit {
   isSelected(value):boolean {
     return this.filters.selected && this.filters.selected.indexOf(value) > -1
   }
-
 }

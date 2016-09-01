@@ -21,3 +21,4 @@ export * from './TypeSpecimens';
 export * from './Geometry';
 export * from './Metadata';
 export * from './Property';
+export * from './Collection';

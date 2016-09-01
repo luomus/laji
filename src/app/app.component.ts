@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-import {TranslateService, TranslatePipe} from 'ng2-translate/ng2-translate';
+import { TranslateService } from 'ng2-translate/ng2-translate';
 import { LocalStorageService } from "angular2-localstorage/LocalStorageEmitter";
 import { LocalStorage } from "angular2-localstorage/WebStorage";
 
-import { NavbarComponent, FooterComponent, WarehouseApi, TaxonomyApi, NewsApi } from './shared';
-import {TriplestoreLabelService} from "./shared/service/triplestore-label.service";
-import {WarehouseValueMappingService} from "./shared/service/warehouse-value-mapping.service";
-import {TriplestorePipe} from "./shared/pipe/triplestore.pipe";
-import {MetadataApi} from "./shared/api/MetadataApi";
+import {
+  NavbarComponent,
+  FooterComponent,
+  TaxonomyApi,
+  NewsApi,
+  CollectionApi
+} from './shared';
 
 @Component({
   selector: 'laji-app',
@@ -16,7 +18,8 @@ import {MetadataApi} from "./shared/api/MetadataApi";
   providers: [
     LocalStorageService,
     TaxonomyApi,
-    NewsApi
+    NewsApi,
+    CollectionApi
   ],
   directives: [ ROUTER_DIRECTIVES, NavbarComponent, FooterComponent ],
   templateUrl: './app.component.html',

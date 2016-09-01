@@ -7,6 +7,7 @@ import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {Subscription, Observable} from "rxjs";
 import {InformalTaxonGroup} from "../../shared/model/InformalTaxonGroup";
 import {InformalTaxonGroupApi} from "../../shared/api/InformalTaxonGroupApi";
+import {IdService} from "../../shared/service/id.service";
 
 @Component({
   moduleId: module.id,
@@ -128,7 +129,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
                 this.data = data[1].results
                   .map(item => {
                     return {
-                      id: item.aggregateBy['unit.linkings.taxon.informalTaxonGroup'].replace('http://tun.fi/',''),
+                      id: IdService.getId(item.aggregateBy['unit.linkings.taxon.informalTaxonGroup']),
                       value: item.count,
                       label: ''
                     }
@@ -148,7 +149,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
           this.data = data[1].results
             .map(item => {
               return {
-                id: item.aggregateBy['unit.linkings.taxon.informalTaxonGroup'].replace('http://tun.fi/',''),
+                id: IdService.getId(item.aggregateBy['unit.linkings.taxon.informalTaxonGroup']),
                 value: item.count,
                 label: ''
               }

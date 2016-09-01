@@ -8,7 +8,6 @@
 }
 .observation-chart {
   z-index: 0;
-  height: 200px;
 }
 .observation-chart-wrapper {
   position: relative;
