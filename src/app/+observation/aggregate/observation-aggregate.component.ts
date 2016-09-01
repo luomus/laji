@@ -21,7 +21,6 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
   @Input() limit:number = 10;
   @Input() hideOnEmpty:boolean = false;
   @Input() updateOnLangChange:boolean = false;
-  @Input() addPrefix:boolean = false;
   @Input() valuePicker:any;
   @Input() linkPicker:any;
   @Input() showPager:boolean = false;

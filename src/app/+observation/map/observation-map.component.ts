@@ -67,7 +67,6 @@ export class ObservationMapComponent implements OnInit {
       coords.push([lon + 1, lat + 0.5]);
       coords.push([lon + 1, lat]);
       coords.push([lon, lat]);
-      console.log(agg);
       if (maxIndividuals < agg.count) {
         maxIndividuals = agg.count;
       }

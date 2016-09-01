@@ -50,7 +50,6 @@ export class MapComponent implements OnDestroy, OnChanges {
     if (!this.map) {
       return;
     }
-    console.log(this.data);
     this.map.setData(this.data);
     if (this.visible) {
       setTimeout(() => {

@@ -32,7 +32,6 @@ export class TaxonComponent implements OnInit, OnDestroy{
   ) {}
 
   onGroupSelect(group:InformalListItemInterface) {
-    console.log(group);
     this.selectedInformalGroup = group.id;
   }
 
