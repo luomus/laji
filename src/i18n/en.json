@@ -94,6 +94,10 @@
   "observation.results.observation": "hists",
   "observation.results.species": "species",
 
+  "observation.filterBy.recordBasis": "Type",
+  "observation.filterBy.image": "Image",
+  "observation.filterBy.collectionId": "",
+
   "haseka.title": "Observation notifier",
   "haseka.forms.title": "Forms",
   "haseka.latest.title": "Latest submissions"
