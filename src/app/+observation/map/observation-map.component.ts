@@ -46,7 +46,7 @@ export class ObservationMapComponent implements OnInit {
       this.searchQuery.query,
       ['gathering.conversions.wgs84Grid05.lat,gathering.conversions.wgs84Grid1.lon'],
       undefined,
-      1000
+      10000
     ).subscribe(
       (data) => this.dataToGeo(data.results)
     );
@@ -84,15 +84,15 @@ export class ObservationMapComponent implements OnInit {
         }
       });
     });
-    observationMapColorScale = d3.scale.quantize()
+    observationMapColorScale = d3.scale.threshold()
       .domain([
-        0,
-        100,
-        1000,
-        10000,
-        100000
+        maxIndividuals*.2,
+        maxIndividuals*.4,
+        maxIndividuals*.6,
+        maxIndividuals*.8,
+        maxIndividuals+1
       ])
-      .range(["#c0ffff","#80ff40", "#ffff00", '#ff8000', '#c00000']);
+      .range(['#ffffb2','#fecc5c', '#fd8d3c', '#f03b20', '#bd0026']);
 
     this.mapData = [{
       featureCollection: {
@@ -122,7 +122,7 @@ export class ObservationMapComponent implements OnInit {
     return {
       weight: 1,
       opacity: 1,
-      fillOpacity: .3,
+      fillOpacity: .5,
       color: color
     }
   }
