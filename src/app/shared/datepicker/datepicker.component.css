@@ -1,7 +1,15 @@
 .ng-datepicker-input {
   position: relative;
   width: 100%;
-  cursor: pointer;
+}
+
+.clear {
+  position: absolute;
+  z-index: 2;
+  right: 45px;
+  width: 10px;
+  background: none;
+  border: none;
 }
 
 .ng-datepicker {
@@ -25,7 +33,7 @@
 }
 
 .ng-datepicker > .controls i {
-  font-size: 25px;
+  font-size: 15px;
   cursor: pointer;
 }
 

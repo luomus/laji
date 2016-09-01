@@ -50,7 +50,7 @@ export interface CalendarDate {
 }
 
 @Component({
-  selector: 'laji-datepicker[ngModel]',
+  selector: 'laji-datepicker',
   templateUrl: 'datepicker.component.html',
   styleUrls: ['./datepicker.component.css'],
   directives: [NgModel],
@@ -139,7 +139,11 @@ export class DatePickerComponent implements ControlValueAccessor, AfterViewInit,
     this.changed.emit(selectedDate.toDate());
   }
 
-  private generateCalendar(date: moment.Moment): void {
+  public clear() {
+    this.setValue('');
+  }
+
+  private generateCalendar(date: any): void {
     let lastDayOfMonth = date.endOf('month').date();
     let month = date.month();
     let year = date.year();
@@ -194,16 +198,20 @@ export class DatePickerComponent implements ControlValueAccessor, AfterViewInit,
   }
 
   private setValue(value: any): void {
-    let val = moment(value, this.modelFormat || 'YYYY-MM-DD');
-    this.viewValue = val.format(this.viewFormat || 'Do MMMM YYYY');
-    this.cd.viewToModelUpdate(val.format(this.modelFormat || 'YYYY-MM-DD'));
-    this.cannonical = val.toDate().getTime();
+    if (value !== '') {
+      let val = moment(value, this.modelFormat || 'YYYY-MM-DD');
+      this.viewValue = val.format(this.viewFormat || 'Do MMMM YYYY');
+      this.cd.viewToModelUpdate(val.format(this.modelFormat || 'YYYY-MM-DD'));
+      this.cannonical = val.toDate().getTime();
+    } else {
+      this.viewValue = '';
+    }
   }
 
   private initValue(): void {
     setTimeout(() => {
       if (!this.initDate) {
-        this.setValue(moment().format(this.modelFormat || 'YYYY-MM-DD'));
+        this.setValue('');
       } else {
         this.setValue(moment(this.initDate, this.modelFormat || 'YYYY-MM-DD'));
       }
@@ -211,7 +219,6 @@ export class DatePickerComponent implements ControlValueAccessor, AfterViewInit,
   }
 
   writeValue(value: string): void {
-    if (!value) return;
     this.setValue(value);
   }
 

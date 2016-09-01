@@ -1,22 +1,26 @@
-<input type="text"
-       class="ng-datepicker-input"
-       (focus)="openDatepicker()"
-       [value]="viewValue"
-       [hidden]="isStatic"
-       readonly>
+<div class="input-group">
+  <input type="text"
+         class="ng-datepicker-input form-control input-sm"
+         [value]="viewValue"
+         [hidden]="isStatic">
+  <span *ngIf="viewValue !== ''" class="input-group-addon link clear" (click)="clear()">x</span>
+  <span class="input-group-addon link" (click)="openDatepicker()"><i class="glyphicon glyphicon-calendar"></i></span>
+</div>
 
 <div class="ng-datepicker" *ngIf="isStatic || isOpened" [ngClass]="{ static: isStatic }">
   <div class="controls">
     <div class="left">
-      <i class="ion-arrow-left-b prev-year-btn" (click)="prevYear()"></i>
-      <i class="ion-arrow-left-a prev-month-btn" (click)="prevMonth()"></i>
+      <i class="glyphicon glyphicon-backward" (click)="prevYear()"></i>
+      &nbsp;
+      <i class="glyphicon glyphicon-chevron-left" (click)="prevMonth()"></i>
     </div>
     <span class="date">
         {{ dateValue }}
       </span>
     <div class="right">
-      <i class="ion-arrow-right-a next-month-btn" (click)="nextMonth()"></i>
-      <i class="ion-arrow-right-b next-year-btn" (click)="nextYear()"></i>
+      <i class="glyphicon glyphicon-chevron-right" (click)="nextMonth()"></i>
+      &nbsp;
+      <i class="glyphicon glyphicon-forward" (click)="nextYear()"></i>
     </div>
   </div>
   <div class="day-names">

@@ -31,8 +31,11 @@
         <div class="form-group">
           <label class="col-md-2 control-label">{{'observation.form.date' | translate}}:</label>
           <div class="col-md-3">
-            <!--<laji-datepicker [(ngModel)]="formQuery.timeStart"></laji-datepicker>-->
-            <input type="text" #timeLimit="ngModel" class="form-control input-sm" name="timeStart" [(ngModel)]="formQuery.timeStart">
+            <laji-datepicker
+              [(ngModel)]="formQuery.timeStart"
+              [view-format]="'DD.MM.YYYY'"
+              [model-format]="'YYYY-MM-DD'"
+              name="timeStart"></laji-datepicker>
           </div>
           <div class="col-md-3">
             <input type="text" #timeLimit="ngModel" class="form-control input-sm" name="timeEnd" [(ngModel)]="formQuery.timeEnd">

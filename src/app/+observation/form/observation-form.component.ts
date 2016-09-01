@@ -17,16 +17,18 @@ import {ObservationFormQuery} from "./observation-form-query.interface";
 import {CollectionApi} from "../../shared/api/CollectionApi";
 import {Collection} from "../../shared/model/Collection";
 import {IdService} from "../../shared/service/id.service";
+import {DatePickerComponent} from "../../shared/datepicker/datepicker.component";
 
 @Component({
   selector: 'laji-observation-form',
   templateUrl: 'observation-form.component.html',
-  providers: [AutocompleteApi,CollectionApi],
+  providers: [AutocompleteApi,CollectionApi, NgModel],
   directives: [
     ObservationCountComponent,
     ObservationChartComponent,
     ObservationResultComponent,
     ObservationFilterComponent,
+    DatePickerComponent,
     TYPEAHEAD_DIRECTIVES,
     FORM_DIRECTIVES
   ]
