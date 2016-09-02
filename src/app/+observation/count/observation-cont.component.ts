@@ -5,9 +5,6 @@ import {FormattedNumber, SpinnerComponent} from "../../shared";
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {SearchQuery} from "../search-query.model";
 import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
-import {cache} from "rxjs/operator/cache";
-import {TranslateService} from "ng2-translate";
-
 
 @Component({
   moduleId: module.id,
@@ -27,24 +24,18 @@ export class ObservationCountComponent implements OnInit, OnDestroy, OnChanges {
   public loading:boolean = true;
 
   private lastQuery:WarehouseQueryInterface;
-  private searchQuery:SearchQuery;
 
   private subQueryUpdate: Subscription;
   private subCount: Subscription;
 
   constructor(
-    @Optional() searchQuery:SearchQuery,
+    private searchQuery:SearchQuery,
     private warehouseService: WarehouseApi
   ) {
-    if (!searchQuery) {
-      this.searchQuery = searchQuery;
-    }
   }
 
   ngOnInit() {
-    if (this.searchQuery) {
-      this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(query => this.update());
-    }
+    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(query => this.update());
     this.update();
   }
 
@@ -62,9 +53,6 @@ export class ObservationCountComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   update() {
-    if (!this.query && !this.searchQuery) {
-      return;
-    }
     let query = this.query ?
       Object.assign({}, this.query) :
       Object.assign({}, this.searchQuery.query);

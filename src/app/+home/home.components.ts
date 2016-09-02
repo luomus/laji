@@ -3,11 +3,12 @@ import { Component } from '@angular/core';
 import { NavigationThumbnailComponent, NewsListComponent } from '../shared';
 import { ImageHeaderComponent } from './image-header';
 import {OmniSearchComponent} from "../shared/omni-search/omni-search.component";
+import {SearchQuery} from "../+observation/search-query.model";
 
 @Component({
   selector: 'laji-home',
   pipes: [],
-  providers: [],
+  providers: [SearchQuery],
   directives: [
     ImageHeaderComponent,
     NavigationThumbnailComponent,
