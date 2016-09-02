@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'laji-panel',
+  selector: '[laji-panel]',
   templateUrl: './panel.component.html'
 })
 export class PanelComponent {

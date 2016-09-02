@@ -23,7 +23,7 @@
  */
 
 'use strict';
-import * as models from './index';
+import { Taxonomy, TaxonomyDescriptionVariable } from './index';
 
 export interface Taxonomy {
 
@@ -131,9 +131,9 @@ export interface Taxonomy {
 
     occurrences?: Array<any>;
 
-    synonyms?: Array<models.Taxonomy>;
+    synonyms?: Array<Taxonomy>;
 
-    children?: Array<models.Taxonomy>;
+    children?: Array<Taxonomy>;
 
     /**
      * occurs in Finland
@@ -149,4 +149,30 @@ export interface Taxonomy {
      * true if has children
      */
     hasChildren?: boolean;
+}
+
+export interface TaxonomyDescriptionVariable {
+
+    title?: string;
+    
+    content?: string;
+
+}
+
+export interface TaxonomyDescriptionGroup {
+
+    title?: string;
+    
+    variables?: Array<TaxonomyDescriptionVariable>;
+
+}
+
+export interface TaxonomyDescription {
+
+    id?: string;
+
+    title?: string;
+
+    groups?: Array<TaxonomyDescriptionGroup>;
+
 }
