@@ -49,9 +49,6 @@ export interface CalendarDate {
   enabled: boolean;
 }
 
-const noop = () => {
-};
-
 @Component({
   selector: 'laji-datepicker',
   templateUrl: 'datepicker.component.html',
@@ -213,23 +210,23 @@ export class DatePickerComponent implements ControlValueAccessor, AfterViewInit,
   }
 
   private setValue(value: any): void {
-    if (value !== '') {
-      let val = moment(value, this.modelFormat || 'YYYY-MM-DD');
+    console.log('picker value');
+    console.log(value);
+    let val = moment(value, this.modelFormat || 'YYYY-MM-DD', true);
+    if (val == null || !val.isValid()) {
+      this.viewValue = value;
+    } else {
       this.viewValue = val.format(this.viewFormat || 'Do MMMM YYYY');
       this.cd.viewToModelUpdate(val.format(this.modelFormat || 'YYYY-MM-DD'));
       this.ngModelChange.emit(val.format(this.modelFormat || 'YYYY-MM-DD'));
       this.cannonical = val.toDate().getTime();
-    } else {
-      this.viewValue = '';
-      this.ngModelChange.emit('');
     }
+    this.ngModelChange.emit(value);
   }
 
   private initValue(): void {
     setTimeout(() => {
-      if (!this.initDate) {
-        this.setValue('');
-      } else {
+      if (this.viewValue.length > 0 && this.initDate) {
         this.setValue(moment(this.initDate, this.modelFormat || 'YYYY-MM-DD'));
       }
     });
@@ -253,7 +250,4 @@ export class DatePickerComponent implements ControlValueAccessor, AfterViewInit,
     this.generateDayNames();
     this.initMouseEvents();
   }
-
-  private onTouchedCallback: () => void = noop;
-  private onChangeCallback: (_: any) => void = noop;
 }
