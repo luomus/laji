@@ -186,12 +186,12 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
           value: value.value,
           label: this.getInformalGroupName(value.id)
         }
-      })
-      .sort((a,b) => {
-        if (a.label < b.label)
-          return -1;
-        return (a.label > b.label) ? 1 : 0;
       });
+      //.sort((a,b) => {
+      //  if (a.label < b.label)
+      //    return -1;
+      //  return (a.label > b.label) ? 1 : 0;
+      //});
   }
 
   onPieClick(group) {
