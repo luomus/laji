@@ -1,8 +1,9 @@
 <div class="input-group">
   <input type="text"
          class="ng-datepicker-input form-control input-sm"
-         [value]="viewValue"
-         [hidden]="isStatic">
+         [(ngModel)]="value"
+         [hidden]="isStatic"
+         name="{{name}}">
   <span *ngIf="viewValue !== ''" class="input-group-addon link clear" (click)="clear()">x</span>
   <span class="input-group-addon link" (click)="openDatepicker()"><i class="glyphicon glyphicon-calendar"></i></span>
 </div>

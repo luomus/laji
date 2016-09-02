@@ -38,7 +38,11 @@
               name="timeStart"></laji-datepicker>
           </div>
           <div class="col-md-3">
-            <input type="text" #timeLimit="ngModel" class="form-control input-sm" name="timeEnd" [(ngModel)]="formQuery.timeEnd">
+            <laji-datepicker
+              [(ngModel)]="formQuery.timeEnd"
+              [view-format]="'DD.MM.YYYY'"
+              [model-format]="'YYYY-MM-DD'"
+              name="timeEnd"></laji-datepicker>
           </div>
           <div class="col-md-3">
             <div class="btn-group">

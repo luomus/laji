@@ -49,11 +49,13 @@ export interface CalendarDate {
   enabled: boolean;
 }
 
+const noop = () => {
+};
+
 @Component({
   selector: 'laji-datepicker',
   templateUrl: 'datepicker.component.html',
   styleUrls: ['./datepicker.component.css'],
-  directives: [NgModel],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -75,13 +77,16 @@ export class DatePickerComponent implements ControlValueAccessor, AfterViewInit,
   private onTouched: Function;
   private cd: any;
   private cannonical: number;
+  private innerValue: any = '';
 
   @Input('model-format') modelFormat: string;
   @Input('view-format') viewFormat: string;
   @Input('init-date') initDate: string;
   @Input('first-week-day-sunday') firstWeekDaySunday: boolean;
   @Input('static') isStatic: boolean;
+  @Input() name: string;
 
+  @Output() ngModelChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() changed: EventEmitter<Date> = new EventEmitter<Date>();
 
   constructor(cd: NgModel, viewContainer: ViewContainerRef) {
@@ -99,6 +104,16 @@ export class DatePickerComponent implements ControlValueAccessor, AfterViewInit,
   ngOnInit() {
     this.date = moment(this.initDate);
     this.generateCalendar(this.date);
+  }
+
+  get value():any {
+    return this.viewValue;
+  }
+
+  set value(value:any) {
+    if (value !== this.viewValue) {
+      this.setValue(value);
+    }
   }
 
   public openDatepicker(): void {
@@ -202,9 +217,11 @@ export class DatePickerComponent implements ControlValueAccessor, AfterViewInit,
       let val = moment(value, this.modelFormat || 'YYYY-MM-DD');
       this.viewValue = val.format(this.viewFormat || 'Do MMMM YYYY');
       this.cd.viewToModelUpdate(val.format(this.modelFormat || 'YYYY-MM-DD'));
+      this.ngModelChange.emit(val.format(this.modelFormat || 'YYYY-MM-DD'));
       this.cannonical = val.toDate().getTime();
     } else {
       this.viewValue = '';
+      this.ngModelChange.emit('');
     }
   }
 
@@ -236,4 +253,7 @@ export class DatePickerComponent implements ControlValueAccessor, AfterViewInit,
     this.generateDayNames();
     this.initMouseEvents();
   }
+
+  private onTouchedCallback: () => void = noop;
+  private onChangeCallback: (_: any) => void = noop;
 }

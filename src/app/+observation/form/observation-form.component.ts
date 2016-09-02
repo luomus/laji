@@ -110,7 +110,7 @@ export class ObservationFormComponent implements OnInit {
       let oneJan = new Date(today.getFullYear(),0,1);
       dates = Math.ceil(((+today) - (+oneJan)) / 86400000);
     }
-    this.formQuery.timeStart = '-' + dates + '/0';
+    this.formQuery.timeStart = '2016-03-20';
     this.onSubmit();
   }
 
@@ -171,7 +171,7 @@ export class ObservationFormComponent implements OnInit {
 
   private formQueryToQuery(formQuery:ObservationFormQuery) {
     let taxon = formQuery.taxon.trim();
-    let time = formQuery.timeStart.trim();
+    let time = formQuery.timeStart.trim() + '/2017-01-01';
     let query = this.searchQuery.query;
 
     query.target = taxon.length > 0 ?
@@ -218,6 +218,7 @@ export class ObservationFormComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.formQuery);
     this.formQueryToQuery(this.formQuery);
     this.searchQuery.updateUrl(this.location, undefined, [
       'selected',
