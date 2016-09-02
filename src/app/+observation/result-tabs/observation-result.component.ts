@@ -8,6 +8,7 @@ import {ObservationCountComponent} from "../count/observation-cont.component";
 import {ObservationAggregateComponent} from "../aggregate/observation-aggregate.component";
 import {ObservationChartComponent} from "../chart/observation-chart.component";
 import {ObservationMapComponent} from "../map/observation-map.component";
+import {IdService} from "../../shared/service/id.service";
 
 
 @Component({
@@ -57,7 +58,7 @@ export class ObservationResultComponent implements OnInit {
 
   pickLink(aggr) {
     return aggr['unit.linkings.taxon.id'] ?
-      '/taxon/' + aggr['unit.linkings.taxon.id'].replace('http://tun.fi/','') : '';
+      '/taxon/' + IdService.getId(aggr['unit.linkings.taxon.id']) : '';
   }
 
   activate(tab:string) {
@@ -66,6 +67,10 @@ export class ObservationResultComponent implements OnInit {
     }
     this.active = tab;
     this.activated[tab] = true;
-    this.searchQuery.updateUrl(this.location, '/observation/' + tab);
+    this.searchQuery.updateUrl(this.location, '/observation/' + tab, [
+      'selected',
+      'pageSize',
+      'includeNonValidTaxons'
+    ]);
   }
 }

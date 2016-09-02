@@ -1,0 +1,11 @@
+<a [routerLink]="['/haseka/JX.519/' + document.id]">
+  {{document.id}} {{document.dateEdited}}
+  {{'haseka.users.latest.gathered' | translate }}:<br>
+  <span *ngIf="gatheringDates.start || gatheringDates.end">
+    {{gatheringDates.start | date:'d.M.y'}} - {{gatheringDates.end | date:'d.M.y'}}
+  </span>
+  <ul>
+    <li *ngFor="let taxon of taxa">{{taxon.name}} <small>{{taxon.id}}</small>&nbsp;</li>
+  </ul>
+
+</a>

@@ -1,13 +1,13 @@
 <div class="container">
   <h1>{{'haseka.title' | translate}}</h1>
-  <div *ngIf="userService.isLoggedIn">
+  <div *ngIf="userService.isLoggedIn()">
     <div class="row">
       <div class="col-sm-12">
         Welcome to HaSeKa! Your personal assistant to gather data about the species of the world
       </div>
     </div>
   </div>
-  <div *ngIf="!userService.isLoggedIn">
+  <div *ngIf="!userService.isLoggedIn()">
     <div class="row">
       <div class="col-sm-12">
         <p>
@@ -22,5 +22,12 @@
       </div>
     </div>
   </div>
-  <laji-haseka-form-list></laji-haseka-form-list>
+  <div class="row">
+    <div class="col-sm-8">
+      <laji-haseka-form-list></laji-haseka-form-list>
+    </div>
+    <div class="col-sm-4 well" *ngIf="userService.isLoggedIn()">
+      <laji-haseka-latest [userToken]="userService.token"></laji-haseka-latest>
+    </div>
+  </div>
 </div>

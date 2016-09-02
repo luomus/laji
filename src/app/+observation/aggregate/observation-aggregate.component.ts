@@ -21,7 +21,6 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
   @Input() limit:number = 10;
   @Input() hideOnEmpty:boolean = false;
   @Input() updateOnLangChange:boolean = false;
-  @Input() addPrefix:boolean = false;
   @Input() valuePicker:any;
   @Input() linkPicker:any;
   @Input() showPager:boolean = false;
@@ -76,7 +75,7 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
     if (this.subCount) {
       this.subCount.unsubscribe();
     }
-    let query = this.searchQuery.query;
+    let query = Object.assign({}, this.searchQuery.query);
     query.includeNonValidTaxons = false;
     this.subCount = this.warehouseService
       .warehouseQueryAggregateGet(query, [this.field], undefined, this.limit, this.page)

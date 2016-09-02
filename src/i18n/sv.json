@@ -96,6 +96,10 @@
   "observation.results.observation": "observation.results.observation",
   "observation.results.species": "observation.results.species",
 
+  "observation.filterBy.recordBasis": "",
+  "observation.filterBy.image": "",
+  "observation.filterBy.collectionId": "",
+
   "haseka.title": "haseka.title",
   "haseka.forms.title": "haseka.forms.title",
   "haseka.latest.title": "haseka.latest.title"

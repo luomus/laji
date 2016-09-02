@@ -1,30 +1,32 @@
-<table class="table table-striped table-bordered table-condensed dataTable">
-  <thead>
-  <tr>
-    <th style="width:50%">
-      {{title}}
-    </th>
-    <th>
-      {{'observation.count' | translate }}
-    </th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let item of items">
-    <td>
-      <span *ngIf="item.link">
-        <a [routerLink]="[item.link]">
-          {{(addPrefix ? 'warehouse.' : '') + item.value | translate }}
-        </a>
-      </span>
-      <span *ngIf="!item.link">
-        {{(addPrefix ? 'warehouse.' : '') + item.value | translate }}
-      </span>
-    </td>
-    <td>{{item.count}}</td>
-  </tr>
-  </tbody>
-</table>
+<div class="responsive">
+  <table class="table table-striped table-bordered table-condensed dataTable">
+    <thead>
+    <tr>
+      <th style="width:50%">
+        {{title}}
+      </th>
+      <th>
+        {{'observation.count' | translate }}
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of items">
+      <td>
+        <span *ngIf="item.link">
+          <a [routerLink]="[item.link]">
+            {{ item.value | label }}
+          </a>
+        </span>
+        <span *ngIf="!item.link">
+          {{ item.value | label }}
+        </span>
+      </td>
+      <td>{{item.count}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 <pagination
   *ngIf="showPager"
   [totalItems]="total"

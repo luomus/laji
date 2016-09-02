@@ -1,31 +1,83 @@
-import {Injectable} from "@angular/core";
+import {Injectable, Inject} from "@angular/core";
+import { LocalStorage } from "angular2-localstorage/WebStorage";
+import {PersonTokenApi} from "../api/PersonTokenApi";
+import {Subscription, Observable} from "rxjs";
+import {Person} from "../model/Person";
+import {PersonApi} from "../api/PersonApi";
+
 var config = require('../../../../config.json');
 
 @Injectable()
 export class UserService {
 
-  private _isLoggedIn:boolean = false;
-  private _token:string;
+  @LocalStorage() private token = '';
+  private user:Person;
 
-  public get isLoggedIn() {
-    return this._isLoggedIn;
+  private subUser:Subscription;
+  private subLogout:Subscription;
+  private observable: Observable<Person>;
+
+  constructor(
+    private tokenService:PersonTokenApi,
+    private userService:PersonApi
+  ) {
+    if (this.token) {
+      this.loadUserInfo(this.token);
+    }
   }
 
-  public set isLoggedIn(value) {
-    throw new Error('Set user token to login!');
+  public login(userToken:string) {
+    if (this.user === userToken || this.subUser) {
+      return;
+    }
+    this.loadUserInfo(userToken);
   }
 
-  public get token() {
-    return this._token;
+  private loadUserInfo(token:string) {
+    this.token = token;
+    this.getUser()
+      .subscribe(
+        user => this.user = user,
+        err => {
+          this.logout();
+          console.log(err);
+        }
+      );
   }
 
-  public set token(token) {
-    this._isLoggedIn = true;
-    this._token = token;
+  public logout() {
+    if (this.token === '' || this.subLogout) {
+      return;
+    }
+    let token = this.token;
+    this.token = '';
+    this.user = undefined;
+    this.subLogout = this.tokenService.personTokenDeleteToken(token)
+      .subscribe(
+        () => {},
+        err => console.log(err)
+      )
+  }
+
+  public getToken():string {
+    return this.token;
+  }
+
+  public getUser():Observable<Person> {
+    if (this.user) {
+      return Observable.of(this.user);
+    } else if (this.observable) {
+      return this.observable;
+    }
+    this.observable = this.userService.personFindByToken(this.token).share();
+    return this.observable;
+  }
+
+  public isLoggedIn() {
+    return this.token !== '';
   }
 
   public getLoginUrl():string {
     return config.login_url;
   }
-
 }

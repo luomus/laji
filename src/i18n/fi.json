@@ -96,6 +96,10 @@
   "observation.results.observation": "osumaa",
   "observation.results.species": "lajista",
 
+  "observation.filterBy.recordBasis": "Tyyppi",
+  "observation.filterBy.image": "Kuva",
+  "observation.filterBy.collectionId": "Aineistot",
+
   "haseka.title": "Havainto ilmoitin",
   "haseka.forms.title": "Lomakeet",
   "haseka.latest.title": "Viimeisimmät ilmoitukseni"

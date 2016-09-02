@@ -16,6 +16,7 @@
                 [typeaheadOptionsLimit]="limit"
                 [typeaheadOptionField]="'value'"
                 [typeaheadWaitMs]="200"
+                [typeaheadMinLength]="4"
                 [typeaheadOptionField]="'target'"
                 (typeaheadLoading)="changeTypeaheadLoading($event)"
                 (typeaheadOnSelect)="typeaheadOnSelect($event)"
@@ -30,10 +31,18 @@
         <div class="form-group">
           <label class="col-md-2 control-label">{{'observation.form.date' | translate}}:</label>
           <div class="col-md-3">
-            <input type="text" #timeLimit="ngModel" class="form-control input-sm" name="timeStart" [(ngModel)]="formQuery.timeStart">
+            <laji-datepicker
+              [(ngModel)]="formQuery.timeStart"
+              [view-format]="'DD.MM.YYYY'"
+              [model-format]="warehouseDateFormat"
+              name="timeStart"></laji-datepicker>
           </div>
           <div class="col-md-3">
-            <input type="text" #timeLimit="ngModel" class="form-control input-sm" name="timeEnd" [(ngModel)]="formQuery.timeEnd">
+            <laji-datepicker
+              [(ngModel)]="formQuery.timeEnd"
+              [view-format]="'DD.MM.YYYY'"
+              [model-format]="warehouseDateFormat"
+              name="timeEnd"></laji-datepicker>
           </div>
           <div class="col-md-3">
             <div class="btn-group">
@@ -57,37 +66,8 @@
   </div>
   <div class="col-sm-2">
     <laji-observation-chart></laji-observation-chart>
-    <div class="form-group">
-      <div class="col-md-12">
-        {{'observation.form.preservedSpecimens' | translate }}<br>
-        <strong>
-          <laji-observation-count
-            [field]="'unit.recordBasis'"
-            [pick]="'PRESERVED_SPECIMEN'">
-          </laji-observation-count>
-        </strong>
-        <a class="btn btn-xs"
-           [ngClass]="{'btn-success': formQuery.specimen, 'btn-default': !formQuery.specimen}"
-           (click)="toggle('specimen')">
-          vain näytteet
-        </a>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-md-12">
-        {{'observation.form.typeSpecimens' | translate }}<br>
-        <strong>
-          <laji-observation-count
-            [field]="'unit.typeSpecimen'"
-            [pick]="'true'">
-          </laji-observation-count>
-        </strong>
-        <a class="btn btn-xs"
-           [ngClass]="{'btn-success': searchQuery.query.typeSpecimen, 'btn-default': !searchQuery.query.typeSpecimen}"
-           (click)="toggle('typeSpecimen')">
-          vain tyyppinäytteet
-        </a>
-      </div>
+    <div *ngFor="let filter of filters; let i = index;">
+      <laji-observation-filters [(filters)]="filters[i]" (onSelect)="onFilterSelect($event)"></laji-observation-filters>
     </div>
   </div>
 </div>

@@ -51,7 +51,7 @@ export class SearchQuery {
     'typeSpecimen',
     'hasDocumentMedia',
     'hasGatheringMedia',
-    'hasUnittMedia',
+    'hasUnitMedia',
     'hasMedia'
   ];
 
@@ -60,6 +60,10 @@ export class SearchQuery {
     'dayOfYearEnd',
     'individualCountMin',
     'individualCountMax'
+  ];
+
+  stringTypes = [
+    'taxonRank'
   ];
 
   public setQueryFromURLSearchParams(queryParameters: URLSearchParams) {
@@ -89,16 +93,27 @@ export class SearchQuery {
       }
     }
 
+    for(let i of this.stringTypes) {
+      if (queryParameters.has(i)) {
+        this.query[i] = queryParameters.get(i);
+      } else {
+        this.query[i] = undefined;
+      }
+    }
+
     if (queryParameters.has('page')) {
       this.page = +queryParameters.get('page');
     }
   }
 
-  public getQueryString(queryParameters?: URLSearchParams):URLSearchParams {
+  public getQueryString(queryParameters?: URLSearchParams, skipParams:string[] = []):URLSearchParams {
     if (!queryParameters) {
       queryParameters = new URLSearchParams();
     }
     for(let i of this.arrayTypes) {
+      if (skipParams.indexOf(i) > -1) {
+        continue;
+      }
       if (this.query[i] !== undefined) {
         if (this.query[i].length < 1 || this.query[0] === '') {
           continue;
@@ -113,14 +128,29 @@ export class SearchQuery {
     }
 
     for(let i of this.booleanTypes) {
+      if (skipParams.indexOf(i) > -1) {
+        continue;
+      }
       if (this.query[i] !== undefined) {
         queryParameters.set(i, this.query[i] ? 'true' : 'false');
       }
     }
 
     for(let i of this.numericTypes) {
+      if (skipParams.indexOf(i) > -1) {
+        continue;
+      }
       if (this.query[i] !== undefined) {
         queryParameters.set(i, String(this.query[i]));
+      }
+    }
+
+    for(let i of this.stringTypes) {
+      if (skipParams.indexOf(i) > -1) {
+        continue;
+      }
+      if (this.query[i] !== undefined) {
+        queryParameters.set(i, this.query[i]);
       }
     }
 
@@ -129,34 +159,34 @@ export class SearchQuery {
     }
 
     // Non query parameters (these will not have effect on result count)
-    if (this.selected !== undefined) {
+    if (this.selected !== undefined && skipParams.indexOf('selected') == -1) {
       queryParameters.set('selected', this.selected.join(','));
     }
 
-    if (this.aggregateBy !== undefined) {
+    if (this.aggregateBy !== undefined && skipParams.indexOf('aggregateBy') == -1) {
       queryParameters.set('aggregateBy', this.aggregateBy.join(','));
     }
 
-    if (this.orderBy !== undefined) {
+    if (this.orderBy !== undefined && skipParams.indexOf('orderBy') == -1) {
       queryParameters.set('orderBy', this.orderBy.join(','));
     }
 
-    if (this.pageSize !== undefined) {
+    if (this.pageSize !== undefined && skipParams.indexOf('pageSize') == -1) {
       queryParameters.set('pageSize', String(this.pageSize));
     }
 
-    if (this.page !== undefined) {
+    if (this.page !== undefined && skipParams.indexOf('page') == -1) {
       queryParameters.set('page', String(this.page));
     }
 
     return queryParameters;
   }
 
-  public updateUrl(location:Location, path?:string):void {
+  public updateUrl(location:Location, path?:string, skipParams?:string[]):void {
     if (!path) {
       path = location.path(false).split('?')[0];
     }
-    let query = this.getQueryString().toString();
+    let query = this.getQueryString(undefined, skipParams).toString();
     query = query.length > 0 ? '?' + query : '';
     location.go(path + query);
   }

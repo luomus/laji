@@ -1,11 +1,14 @@
 <h1>
   {{'observation.results.title' | translate}}
-  <laji-observation-count></laji-observation-count>
-  {{'observation.results.observation' | translate}}
-  <laji-observation-count
-    [field]="'unit.linkings.taxon.taxonRank'"
-    [pick]="'http://tun.fi/MX.species'"
-  >
-  </laji-observation-count>
-  {{'observation.results.species' | translate}}
+  <small>
+    <br>
+    <laji-observation-count></laji-observation-count>
+    {{'observation.results.observation' | translate}}
+    <laji-observation-count
+      [field]="'unit.linkings.taxon.id'"
+      [overrideInQuery]="{taxonRankId: 'MX.species'}"
+    >
+    </laji-observation-count>
+    {{'observation.results.species' | translate}}
+  </small>
 </h1>

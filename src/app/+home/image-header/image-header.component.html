@@ -3,13 +3,17 @@
     <slide [active]="true">
       <div class="carousel-caption">
         <laji-stat-item [description]="'home.carousel.species' | translate">
-          67856
+          <laji-observation-count
+            [field]="'unit.linkings.taxon.id'"
+            [query]="{taxonRankId: 'MX.species'}"
+          >
+          </laji-observation-count>
         </laji-stat-item>
         <laji-stat-item [description]="'home.carousel.collections' | translate">
-          388
+          <laji-observation-count [field]="'document.collectionId'" [query]="{}"></laji-observation-count>
         </laji-stat-item>
         <laji-stat-item [description]="'home.carousel.observations' | translate">
-          14839205
+          <laji-observation-count [query]="{}"></laji-observation-count>
         </laji-stat-item>
       </div>
     </slide>

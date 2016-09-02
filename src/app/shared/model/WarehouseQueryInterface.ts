@@ -1,3 +1,5 @@
+export const DATE_FORMAT = 'YYYY-MM-DD';
+
 /**
  * Query interface for warehouse
  *
@@ -41,6 +43,7 @@ export interface WarehouseQueryInterface {
   includeNonValidTaxons?: boolean;
   taxonId?: Array<string>;
   target?: Array<string>;
+  taxonRank?: string;
   informalTaxonGroupId?: Array<string>;
   administrativeStatusId?: Array<string>;
   redListStatusId?: Array<string>;
