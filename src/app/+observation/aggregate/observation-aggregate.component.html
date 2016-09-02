@@ -15,11 +15,11 @@
       <td>
         <span *ngIf="item.link">
           <a [routerLink]="[item.link]">
-            {{ item.value | triplestore }}
+            {{ item.value | label }}
           </a>
         </span>
         <span *ngIf="!item.link">
-          {{ item.value | triplestore }}
+          {{ item.value | label }}
         </span>
       </td>
       <td>{{item.count}}</td>

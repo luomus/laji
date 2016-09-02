@@ -11,10 +11,10 @@ import {TriplestoreLabelService} from "../service/triplestore-label.service";
  *   value | formattedNumber
  */
 @Pipe({
-  name: 'triplestore',
+  name: 'label',
   pure: false
 })
-export class TriplestorePipe implements PipeTransform, OnDestroy {
+export class LabelPipe implements PipeTransform, OnDestroy {
   value: string = '';
   lastKey: string;
   onLangChange: EventEmitter<LangChangeEvent>;

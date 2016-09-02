@@ -5,7 +5,7 @@
       <li *ngFor="let item of filters.data">
         <a (click)="toggle(item)" class="link">
           <span *ngIf="item.label">{{item.label}}</span>
-          <span *ngIf="!item.label">{{item.value | triplestore }}</span>
+          <span *ngIf="!item.label">{{item.value | label }}</span>
           <small>
             {{item.count}}
             <span *ngIf="item.selected" class="label label-success">
