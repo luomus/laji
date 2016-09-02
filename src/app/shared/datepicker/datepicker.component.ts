@@ -210,18 +210,16 @@ export class DatePickerComponent implements ControlValueAccessor, AfterViewInit,
   }
 
   private setValue(value: any): void {
-    console.log('picker value');
-    console.log(value);
     let val = moment(value, this.modelFormat || 'YYYY-MM-DD', true);
     if (val == null || !val.isValid()) {
       this.viewValue = value;
+      this.ngModelChange.emit(value);
     } else {
       this.viewValue = val.format(this.viewFormat || 'Do MMMM YYYY');
       this.cd.viewToModelUpdate(val.format(this.modelFormat || 'YYYY-MM-DD'));
       this.ngModelChange.emit(val.format(this.modelFormat || 'YYYY-MM-DD'));
       this.cannonical = val.toDate().getTime();
     }
-    this.ngModelChange.emit(value);
   }
 
   private initValue(): void {

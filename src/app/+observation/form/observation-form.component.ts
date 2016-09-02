@@ -1,10 +1,11 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {FORM_DIRECTIVES}   from '@angular/forms';
 import {Location, NgModel} from "@angular/common";
+import * as moment from 'moment';
 
 import {SearchQuery} from "../search-query.model";
 import {ObservationCountComponent} from "../count/observation-cont.component";
-import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
+import {WarehouseQueryInterface, DATE_FORMAT} from "../../shared/model/WarehouseQueryInterface";
 import {ObservationChartComponent} from "../chart/observation-chart.component";
 import {ObservationResultComponent} from "../result-tabs/observation-result.component";
 import {Observable} from "rxjs";
@@ -39,6 +40,7 @@ export class ObservationFormComponent implements OnInit {
   public formQuery:ObservationFormQuery;
   public dataSource:Observable<any>;
   public typeaheadLoading:boolean = false;
+  public warehouseDateFormat = DATE_FORMAT;
   @Input() tab:string;
 
   public filters:ObservationFilterInterface[] = [
@@ -108,9 +110,10 @@ export class ObservationFormComponent implements OnInit {
     if (dates === 365) {
       let today = new Date();
       let oneJan = new Date(today.getFullYear(),0,1);
-      dates = Math.ceil(((+today) - (+oneJan)) / 86400000);
+      dates = Math.ceil(((+today) - (+oneJan)) / 86400000) - 1;
     }
-    this.formQuery.timeStart = '2016-03-20';
+    let today = moment();
+    this.formQuery.timeStart = today.subtract(dates, "days").format(DATE_FORMAT);
     this.onSubmit();
   }
 
@@ -170,8 +173,8 @@ export class ObservationFormComponent implements OnInit {
   }
 
   private formQueryToQuery(formQuery:ObservationFormQuery) {
-    let taxon = formQuery.taxon.trim();
-    let time = formQuery.timeStart.trim() + '/2017-01-01';
+    let taxon = formQuery.taxon;
+    let time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
     let query = this.searchQuery.query;
 
     query.target = taxon.length > 0 ?
@@ -201,6 +204,16 @@ export class ObservationFormComponent implements OnInit {
     });
   }
 
+  private parseDate(start, end) {
+    if (start || end) {
+      end = end || moment().format(DATE_FORMAT);
+      start = start || moment().format(DATE_FORMAT);
+    } else {
+      return '';
+    }
+    return start + '/' + end;
+  }
+
   fetchCollectionName(data) {
     return this.collectionService.findAll(
       this.translate.currentLang,
@@ -218,7 +231,6 @@ export class ObservationFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.formQuery);
     this.formQueryToQuery(this.formQuery);
     this.searchQuery.updateUrl(this.location, undefined, [
       'selected',

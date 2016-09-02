@@ -34,14 +34,14 @@
             <laji-datepicker
               [(ngModel)]="formQuery.timeStart"
               [view-format]="'DD.MM.YYYY'"
-              [model-format]="'YYYY-MM-DD'"
+              [model-format]="warehouseDateFormat"
               name="timeStart"></laji-datepicker>
           </div>
           <div class="col-md-3">
             <laji-datepicker
               [(ngModel)]="formQuery.timeEnd"
               [view-format]="'DD.MM.YYYY'"
-              [model-format]="'YYYY-MM-DD'"
+              [model-format]="warehouseDateFormat"
               name="timeEnd"></laji-datepicker>
           </div>
           <div class="col-md-3">
