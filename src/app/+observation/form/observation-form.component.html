@@ -65,7 +65,6 @@
     </div>
   </div>
   <div class="col-sm-2">
-    <laji-observation-chart></laji-observation-chart>
     <div *ngFor="let filter of filters; let i = index;">
       <laji-observation-filters [(filters)]="filters[i]" (onSelect)="onFilterSelect($event)"></laji-observation-filters>
     </div>
