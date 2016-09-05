@@ -4,24 +4,46 @@
   </h1>
   <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-8" *ngIf="taxonDescription">
       <div class="panel-group" role="tablist" aria-multiselectable="true">
-        <laji-panel
-          [title]="'taxonomy.card' | translate"
-          [open]="activePanel == 0"
-          [index]="0"
-          (activate)="setActive($event)">
-          <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
-        </laji-panel>
-        <laji-panel
-          [title]="'taxonomy.map' | translate"
-          [open]="activePanel == 1"
-          [index]="1"
-          (activate)="setActive($event)">
-          Uusi kartta....
-        </laji-panel>
+        <div class="panel panel-default" *ngFor="let group of taxonDescription.groups; let i = index" [title]="group.title" [open]="activePanel == i"
+          [index]="i" (activate)="setActive($event)" laji-panel>
+          <div class="row">
+            <div class="col-md-6" *ngFor="let variable of group.variables">
+              <h4>{{ variable.title }}</h4>
+              <span [innerHTML]="variable.content"></span>
+            </div>
+          </div>
+        </div>
       </div>
-
+    </div>
+    <div class="col-sm-4">
+      <div class="panel-group" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">{{ 'taxonomy.map' | translate }}</h4>
+          </div>
+          <div class="panel-body">
+            Uusi kuvakaruselli....
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">{{ 'taxonomy.card' | translate }}</h4>
+          </div>
+          <div class="panel-body">
+            <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">{{ 'taxonomy.map' | translate }}</h4>
+          </div>
+          <div class="panel-body">
+            Uusi kartta....
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="row">

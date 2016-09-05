@@ -3,10 +3,10 @@ import { TranslateService } from "ng2-translate/ng2-translate";
 import { Subscription } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 
-import { Taxonomy, TaxonomyApi, PanelComponent } from '../../shared';
+import { Taxonomy, TaxonomyDescription, TaxonomyApi, PanelComponent } from '../../shared';
 import { TaxonInfoComponent } from "./taxon/taxon-info.component";
 import { ParentsComponent } from "./parents/parents.component";
-import {ChildrenListComponent} from "./children-list/children-list.component";
+import { ChildrenListComponent } from "./children-list/children-list.component";
 
 @Component({
   selector: 'laji-info-card',
@@ -17,6 +17,7 @@ import {ChildrenListComponent} from "./children-list/children-list.component";
 export class InfoCardComponent {
 
   public taxon:Taxonomy;
+  public taxonDescription:TaxonomyDescription;
   private subParam:Subscription;
   private subTrans:Subscription;
 
@@ -36,12 +37,14 @@ export class InfoCardComponent {
       this.subParam = this.route.params.subscribe(params => {
         this.taxonId = params['id'];
         this.getTaxon(this.taxonId);
+        this.getTaxonDescription(this.taxonId);
       });
     }
 
     this.subTrans = this.translate.onLangChange.subscribe(
       () => {
         this.getTaxon(this.taxonId);
+        this.getTaxonDescription(this.taxonId);
       }
     )
   }
@@ -64,5 +67,15 @@ export class InfoCardComponent {
         taxonomy => this.taxon = taxonomy,
         err => console.log(err)
       );
+  }
+
+  private getTaxonDescription(id) {
+    this.taxonService
+      .taxonomyFindDescriptions(id, this.translate.currentLang)
+      .subscribe(
+        descriptions => this.taxonDescription = descriptions[0],
+        err => console.error(err)
+      )
+
   }
 }
