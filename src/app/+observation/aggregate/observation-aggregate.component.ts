@@ -21,12 +21,13 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
   @Input() limit:number = 10;
   @Input() hideOnEmpty:boolean = false;
   @Input() updateOnLangChange:boolean = false;
+  @Input() queryOverride:any;
   @Input() valuePicker:any;
   @Input() linkPicker:any;
   @Input() showPager:boolean = false;
 
   public page:number = 1;
-  public total:number = 400;
+  public total:number = 1;
 
   public items:Array<{
     count:number,
@@ -76,12 +77,16 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
       this.subCount.unsubscribe();
     }
     let query = Object.assign({}, this.searchQuery.query);
+    if (this.queryOverride) {
+      query = Object.assign(query, this.queryOverride);
+    }
     query.includeNonValidTaxons = false;
     this.subCount = this.warehouseService
       .warehouseQueryAggregateGet(query, [this.field], undefined, this.limit, this.page)
       .subscribe(
         result => {
           if (result.results) {
+            this.total = result.total;
             this.items = result.results
               .map(item => {
                 let link = this.linkPicker ? this.linkPicker(item.aggregateBy) : '';
