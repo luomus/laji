@@ -65,9 +65,8 @@ var defaultConfig = {
         pathRewrite: {
           '^/api/': 'v0/'
         },
-        onProxyReq: function(proxyRes, req, res) {
-          proxyRes.path = proxyRes.path  + (proxyRes.path.indexOf('?') === -1 ? '?' : '&' ) +
-            'access_token=' + config['access_token'];
+        headers: {
+          Authorization: config['access_token']
         },
         rewrite: function(req) {
           req.url = req.url.replace(/^\/api/, 'v0') +
