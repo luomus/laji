@@ -6,17 +6,10 @@ import {FormApiClient, FormApi} from "../api";
 // TODO: remove debug!
 let React = require('react');
 let ReactDOM = require('react-dom');
-//let LajiForm = require('laji-form').default;
+let LajiForm = require('../../../../node_modules/laji-form/lib/components/LajiForm').default;
 
 let schema = require('./schema.json');
 
-let hello = React.createClass({
-  render() {
-    return (
-      React.createElement("h3", null, "FORM")
-    );
-  }
-});
 
 @Component({
   selector: 'laji-form',
@@ -46,6 +39,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.unMount();
+    delete this.reactElem;
   }
 
   ngOnChanges() {
@@ -57,8 +51,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
     this.reactElem.props['schema'] = this.formData.schema;
     this.reactElem.props['uiSchema'] = this.formData.uiSchema;
     this.reactElem.props['uiSchemaContext'] = this.formData.uiSchemaContext;
-    this.unMount();
-    this.mount();
   }
 
   mount() {
@@ -66,27 +58,34 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
       return;
     }
     this.apiClient.lang = this.lang;
-    //this.reactElem = React.createElement(LajiForm,
-    this.reactElem = React.createElement(hello,
-      {
-        schema: this.formData.schema,
-        uiSchema: this.formData.uiSchema,
-        uiSchemaContext: this.formData.uiSchemaContext,
-        formData: this.formData.formData,
-        onChange: data => this.onChange.emit(data),
-        onSubmit: data => this.onSubmit.emit(data),
-        apiClient: this.apiClient,
-        lang: this.lang
-      }
-    );
-    ReactDOM.render(
-      this.reactElem,
-      this.elem
-    );
+    try {
+      this.reactElem = React.createElement(LajiForm,
+        {
+          schema: this.formData.schema,
+          uiSchema: this.formData.uiSchema,
+          uiSchemaContext: this.formData.uiSchemaContext,
+          formData: this.formData.formData,
+          onChange: data => this.onChange.emit(data),
+          onSubmit: data => this.onSubmit.emit(data),
+          apiClient: this.apiClient,
+          lang: this.lang
+        }
+      );
+      ReactDOM.render(
+        this.reactElem,
+        this.elem
+      );
+    } catch (err) {
+      console.log(err);
+    }
+
   }
 
   unMount() {
-    ReactDOM.unmountComponentAtNode(this.elem);
-    delete this.reactElem;
+    try {
+      ReactDOM.unmountComponentAtNode(this.elem);
+    } catch(err) {
+      console.log(err);
+    }
   }
 }
