@@ -7,7 +7,8 @@
   "navigation.observation": "Observationer",
   "navigation.information": "Allmänt och aktuellt",
   "navigation.collection": "Informationskällör",
-  "navigation.haseka": "navigation.haseka",
+  "navigation.haseka": "Tallenna havaintoja",
+  "navigation.notify": "Ilmoita havainto",
   "navigation.user": "navigation.user",
   "navigation.user.login": "Login",
 
