@@ -4,7 +4,6 @@ import {Location} from '@angular/common';
 
 import { ObservationResultListComponent } from "../result-list/observation-result-list.component";
 import { SearchQuery } from "../search-query.model";
-import {ObservationCountComponent} from "../count/observation-cont.component";
 import {ObservationAggregateComponent} from "../aggregate/observation-aggregate.component";
 import {ObservationChartComponent} from "../chart/observation-chart.component";
 import {ObservationMapComponent} from "../map/observation-map.component";
@@ -17,7 +16,6 @@ import {IdService} from "../../shared/service/id.service";
   directives: [
     TAB_DIRECTIVES,
     ObservationResultListComponent,
-    ObservationCountComponent,
     ObservationAggregateComponent,
     ObservationChartComponent,
     ObservationMapComponent

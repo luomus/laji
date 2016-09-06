@@ -72,6 +72,7 @@
       <div class="col-sm-12">
         <h4>Karkeistettuja</h4>
         <laji-observation-count
+          [query]="searchQuery.query"
           [field]="'document.secureLevel'"
           [pick]="['HIGHEST','KM100','KM50','KM25', 'KM10']"
           [overrideInQuery]="{taxonRankId: 'MX.species'}"
