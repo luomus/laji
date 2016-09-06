@@ -68,6 +68,18 @@
     <div *ngFor="let filter of filters; let i = index;">
       <laji-observation-filters [(filters)]="filters[i]" (onSelect)="onFilterSelect($event)"></laji-observation-filters>
     </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <h4>Karkeistettuja</h4>
+        <laji-observation-count
+          [field]="'document.secureLevel'"
+          [pick]="['HIGHEST','KM100','KM50','KM25', 'KM10']"
+          [overrideInQuery]="{taxonRankId: 'MX.species'}"
+        >
+        </laji-observation-count><br>
+        <a href="https://rfclipart.com/image/preview/c3-ff-34/work-in-progress-website-under-construction-page-Download-Royalty-free-Vector-File-EPS-141817.jpg">tee aineisto pyyntö</a>
+      </div>
+    </div>
   </div>
 </div>
 </form>

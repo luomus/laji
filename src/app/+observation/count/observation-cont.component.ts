@@ -1,10 +1,12 @@
 import {Component, OnInit, Input, OnDestroy, OnChanges, Optional} from '@angular/core';
 import {Subscription} from "rxjs";
+import {isArray} from "@angular/core/src/facade/lang";
 
 import {FormattedNumber, SpinnerComponent} from "../../shared";
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {SearchQuery} from "../search-query.model";
 import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
+
 
 @Component({
   moduleId: module.id,
@@ -88,7 +90,12 @@ export class ObservationCountComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateAggregated(query) {
-    let pageSize = this.pick ? undefined : 1;
+    let pageSize = 1;
+    if (this.pick) {
+      pageSize = 100;
+      this.pick = isArray(this.pick) ? this.pick : [this.pick];
+    }
+
     this.subCount = this.warehouseService
       .warehouseQueryAggregateGet(query, [this.field], undefined, pageSize)
       .subscribe(
@@ -96,8 +103,8 @@ export class ObservationCountComponent implements OnInit, OnDestroy, OnChanges {
           let total = result.total || 0;
           if (result.results && this.pick) {
             this.count = '' + result.results
-                .filter(value => value.aggregateBy[this.field] === this.pick)
-                .reduce((pre, cur) =>  cur['count'], 0);
+                .filter(value => this.pick.indexOf(value.aggregateBy[this.field]) > -1)
+                .reduce((pre, cur) =>  pre + cur['count'], 0);
           } else {
             this.count = '' + total;
           }
