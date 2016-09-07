@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 import {FormattedNumber} from "../../shared/pipe/formated-number.pipe";
 import {HtmlAsIs} from "../../shared/pipe/html-as-is.pipe";
 import {SpinnerComponent} from "../../shared/spinner/spinner.component";
-import {ObservationCountComponent} from "../count/observation-cont.component";
+import {ObservationCountComponent} from "../count/observation-count.component";
 import {SearchQuery} from "../search-query.model";
 
 @Component({

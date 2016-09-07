@@ -4,23 +4,23 @@ import {isArray} from "@angular/core/src/facade/lang";
 
 import {FormattedNumber, SpinnerComponent} from "../../shared";
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
-import {SearchQuery} from "../search-query.model";
 import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
 
 
 @Component({
   moduleId: module.id,
   selector: 'laji-observation-count',
-  templateUrl: 'observation-cont.component.html',
+  templateUrl: 'observation-count.component.html',
   directives: [ SpinnerComponent ],
   pipes: [ FormattedNumber ]
 })
-export class ObservationCountComponent implements OnInit, OnDestroy, OnChanges {
+export class ObservationCountComponent implements OnDestroy {
 
   @Input() field: string;
   @Input() pick: any;
   @Input() query: WarehouseQueryInterface;
   @Input() overrideInQuery:any;
+  @Input() pageSize:number = 20;
 
   public count: string = '';
   public loading:boolean = true;
@@ -31,17 +31,16 @@ export class ObservationCountComponent implements OnInit, OnDestroy, OnChanges {
   private subCount: Subscription;
 
   constructor(
-    private searchQuery:SearchQuery,
     private warehouseService: WarehouseApi
   ) {
   }
 
-  ngOnInit() {
-    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(query => this.update());
-    this.update();
-  }
-
-  ngOnChanges() {
+  ngDoCheck() {
+    let cacheKey = JSON.stringify(this.query);
+    if (this.lastQuery == cacheKey) {
+      return;
+    }
+    this.lastQuery = cacheKey;
     this.update();
   }
 
@@ -55,26 +54,15 @@ export class ObservationCountComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   update() {
-    let query = this.query ?
-      Object.assign({}, this.query) :
-      Object.assign({}, this.searchQuery.query);
+    let query = Object.assign({}, this.query);
     if (this.overrideInQuery) {
       query = Object.assign(query, this.overrideInQuery);
-    }
-    let cacheKey = JSON.stringify(query);
-    if (this.lastQuery == cacheKey) {
-      return;
     }
     if (this.subCount) {
       this.subCount.unsubscribe();
     }
-    this.lastQuery = cacheKey;
     this.loading = true;
-    if (this.field) {
-      this.updateAggregated(query);
-    } else {
-      this.updateCount(query);
-    }
+    this.field ? this.updateAggregated(query) : this.updateCount(query);
   }
 
   private updateCount(query) {
@@ -90,9 +78,9 @@ export class ObservationCountComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateAggregated(query) {
-    let pageSize = 1;
+    let pageSize = 1; // if no pick present we're only interested of the total
     if (this.pick) {
-      pageSize = 100;
+      pageSize = this.pageSize;
       this.pick = isArray(this.pick) ? this.pick : [this.pick];
     }
 
