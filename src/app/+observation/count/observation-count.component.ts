@@ -5,6 +5,7 @@ import {isArray} from "@angular/core/src/facade/lang";
 import {FormattedNumber, SpinnerComponent} from "../../shared";
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
+import {Util} from "../../shared/service/util.service";
 
 
 @Component({
@@ -54,7 +55,7 @@ export class ObservationCountComponent implements OnDestroy {
   }
 
   update() {
-    let query = Object.assign({}, this.query);
+    let query = Util.clone(this.query);
     if (this.overrideInQuery) {
       query = Object.assign(query, this.overrideInQuery);
     }

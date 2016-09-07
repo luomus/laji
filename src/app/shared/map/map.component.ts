@@ -60,12 +60,10 @@ export class MapComponent implements OnDestroy, OnChanges {
       return;
     }
     this.map.setData(this.data);
-    console.log(this.map.dataLayerGroups);
     if (this.map.dataLayerGroups && this.map.dataLayerGroups[0]) {
       this.map.dataLayerGroups[0].addEventListener({
         click: e => {
-          console.log('MAP CLICK');
-          this.select.emit(e)
+          this.select.emit(e);
         }
       })
     }
