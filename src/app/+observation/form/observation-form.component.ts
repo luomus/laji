@@ -8,12 +8,12 @@ import {ObservationCountComponent} from "../count/observation-count.component";
 import {WarehouseQueryInterface, DATE_FORMAT} from "../../shared/model/WarehouseQueryInterface";
 import {ObservationChartComponent} from "../chart/observation-chart.component";
 import {ObservationResultComponent} from "../result-tabs/observation-result.component";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {TYPEAHEAD_DIRECTIVES} from "ng2-bootstrap";
 import {AutocompleteApi} from "../../shared/api/AutocompleteApi";
 import {TranslateService} from "ng2-translate";
 import {ObservationFilterComponent} from "../filters/observation-filters.component";
-import {ObservationFilterInterface, FilterDataInterface} from "../filters/observation-filters.interface";
+import {ObservationFilterInterface } from "../filters/observation-filters.interface";
 import {ObservationFormQuery} from "./observation-form-query.interface";
 import {CollectionApi} from "../../shared/api/CollectionApi";
 import {Collection} from "../../shared/model/Collection";
@@ -36,12 +36,15 @@ import {DatePickerComponent} from "../../shared/datepicker/datepicker.component"
 })
 export class ObservationFormComponent implements OnInit {
 
+  @Input() tab:string;
+
   public limit = 10;
   public formQuery:ObservationFormQuery;
   public dataSource:Observable<any>;
   public typeaheadLoading:boolean = false;
   public warehouseDateFormat = DATE_FORMAT;
-  @Input() tab:string;
+
+  private subUpdate:Subscription;
 
   public filters:ObservationFilterInterface[] = [
     {
@@ -104,6 +107,18 @@ export class ObservationFormComponent implements OnInit {
 
   ngOnInit() {
     this.empty(false, this.searchQuery.query);
+    this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
+      res => {
+        if (res && res.formSubmit) {
+          this.onSubmit(false);
+        }
+      })
+  }
+
+  ngOnDestroy() {
+    if (this.subUpdate) {
+      this.subUpdate.unsubscribe();
+    }
   }
 
   updateTime(dates) {
@@ -122,6 +137,7 @@ export class ObservationFormComponent implements OnInit {
       this.queryToFormQuery(query);
       return;
     }
+    this.searchQuery.query.coordinates = undefined;
     this.formQuery = {
       taxon:'',
       timeStart:'',
@@ -230,19 +246,20 @@ export class ObservationFormComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(updateQuery = true) {
     this.formQueryToQuery(this.formQuery);
     this.searchQuery.updateUrl(this.location, undefined, [
       'selected',
       'pageSize',
       'includeNonValidTaxons'
     ]);
-    this.searchQuery.queryUpdate();
-
+    if (updateQuery) {
+      this.searchQuery.queryUpdate({});
+    }
     return false;
   }
 
-  onFilterSelect(itemValue:FilterDataInterface) {
+  onFilterSelect() {
     this.onSubmit();
   }
 

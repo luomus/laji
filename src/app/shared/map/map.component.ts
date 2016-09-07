@@ -21,7 +21,7 @@ export class MapComponent implements OnDestroy, OnChanges {
   @Input() data: any = {};
   @Input() visible: boolean;
 
-  @Output() onSelect = new EventEmitter();
+  @Output() select = new EventEmitter();
   @ViewChild('map') elemRef: ElementRef;
 
   map:any;
@@ -31,7 +31,7 @@ export class MapComponent implements OnDestroy, OnChanges {
     this.map = new LajiMap({
       activeIdx: 0,
       zoom: 1,
-      data: this.data,
+      data: [],
       rootElem: this.elemRef.nativeElement,
       controlSettings: {
         draw: false,
@@ -40,6 +40,11 @@ export class MapComponent implements OnDestroy, OnChanges {
         location: false
       }
     });
+    this.updateData();
+  }
+
+  onClick(elem) {
+
   }
 
   ngOnDestroy() {
@@ -47,16 +52,27 @@ export class MapComponent implements OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes) {
+    this.updateData();
+  }
+
+  updateData() {
     if (!this.map) {
       return;
     }
     this.map.setData(this.data);
+    console.log(this.map.dataLayerGroups);
+    if (this.map.dataLayerGroups && this.map.dataLayerGroups[0]) {
+      this.map.dataLayerGroups[0].addEventListener({
+        click: e => {
+          console.log('MAP CLICK');
+          this.select.emit(e)
+        }
+      })
+    }
     if (this.visible) {
       setTimeout(() => {
         this.map.map.invalidateSize();
       }, 500);
     }
-
   }
-
 }

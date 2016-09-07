@@ -1,3 +1,7 @@
 <div class="observation-map" *ngIf="mapData">
-  <laji-map [visible]="visible" [data]="mapData"></laji-map>
+  <laji-map
+    [visible]="visible"
+    [data]="mapData"
+    (select)="pickLocation($event)"
+  ></laji-map>
 </div>

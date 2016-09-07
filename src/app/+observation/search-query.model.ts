@@ -7,7 +7,7 @@ import {Location} from "@angular/common";
 @Injectable()
 export class SearchQuery {
 
-  private queryUpdatedSource = new Subject<WarehouseQueryInterface>();
+  private queryUpdatedSource = new Subject<any>();
 
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
 
@@ -191,7 +191,7 @@ export class SearchQuery {
     location.go(path + query);
   }
 
-  public queryUpdate():void {
-    this.queryUpdatedSource.next(this.query);
+  public queryUpdate(data = {}):void {
+    this.queryUpdatedSource.next(data);
   }
 }

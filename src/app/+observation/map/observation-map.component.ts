@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {MapComponent} from "../../shared/map/map.component";
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {SearchQuery} from "../search-query.model";
@@ -22,10 +22,11 @@ let observationMapColorScale;
 export class ObservationMapComponent implements OnInit {
 
   @Input() visible:boolean = false;
+  @Output() select = new EventEmitter();
 
   public mapData;
 
-  private spots:any[];
+  private prev:string = '';
   private subDataFetch: Subscription;
   private subQueryChange: Subscription;
 
@@ -41,9 +42,34 @@ export class ObservationMapComponent implements OnInit {
     this.updateMapData();
   }
 
+  pickLocation(e) {
+    if (e.layer && e.layer.feature && e.layer.feature.geometry && e.layer.feature.geometry.coordinates && e.layer.feature.geometry.coordinates.length > 0) {
+      let coordinates = e.layer.feature.geometry.coordinates;
+      this.searchQuery.query.coordinates = [[
+        coordinates[0][0][1],
+        coordinates[0][2][1],
+        coordinates[0][0][0],
+        coordinates[0][2][0]
+      ].join(':') + ':WGS84'];
+      this.searchQuery.queryUpdate({formSubmit: true});
+    }
+  }
+
   private updateMapData() {
+    let query = Object.assign({}, this.searchQuery.query);
+    if (query.coordinates) {
+      delete query.coordinates;
+    }
+    let cacheKey = JSON.stringify(query);
+    if (this.prev === cacheKey) {
+      return;
+    }
+    this.prev = cacheKey;
+    if (this.subDataFetch) {
+      this.subDataFetch.unsubscribe();
+    }
     this.subDataFetch = this.warehouseService.warehouseQueryAggregateGet(
-      this.searchQuery.query,
+      query,
       ['gathering.conversions.wgs84Grid05.lat,gathering.conversions.wgs84Grid1.lon'],
       undefined,
       1000
