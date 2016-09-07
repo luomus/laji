@@ -7,7 +7,10 @@ import { News, NewsApi, NewsListComponent } from "../shared";
 @Component({
   selector: 'laij-news',
   templateUrl: './news.component.html',
-  directives: [ NewsListComponent]
+  directives: [ NewsListComponent],
+  providers: [
+    NewsApi
+  ]
 })
 export class NewsComponent implements OnInit, OnDestroy {
   public newsItem:News;

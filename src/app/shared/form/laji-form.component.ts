@@ -1,21 +1,22 @@
-import {Component, OnInit, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges} from '@angular/core';
+import {Component, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges} from '@angular/core';
 import {FormApiClient, FormApi} from "../api";
 
 //let styles = require('laji-form/lib/styles');
 
 // TODO: remove debug!
-//let React = require('react');
-//let ReactDOM = require('react-dom');
-//let LajiForm = require('laji-form').default;
+let React = require('react');
+let ReactDOM = require('react-dom');
+let LajiForm = require('../../../../node_modules/laji-form/lib/components/LajiForm').default;
 
 let schema = require('./schema.json');
+
 
 @Component({
   selector: 'laji-form',
   template: '',
   providers: [FormApiClient]
 })
-export class LajiFormComponent implements OnInit, OnDestroy, OnChanges {
+export class LajiFormComponent implements OnDestroy, OnChanges {
 
   @Input() formId: string;
   @Input() lang: string;
@@ -32,54 +33,59 @@ export class LajiFormComponent implements OnInit, OnDestroy, OnChanges {
     this.elem = elementRef.nativeElement;
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.mount();
   }
 
   ngOnDestroy() {
     this.unMount();
+    delete this.reactElem;
   }
 
   ngOnChanges() {
     if (!this.reactElem) {
       return;
     }
-    //this.apiClient.lang = this.lang;
-    //this.reactElem.props['lang'] = this.lang;
-    //this.reactElem.props['schema'] = this.formData.schema;
-    //this.reactElem.props['uiSchema'] = this.formData.uiSchema;
-    //this.reactElem.props['uiSchemaContext'] = this.formData.uiSchemaContext;
-    this.unMount();
-    this.mount();
+    this.apiClient.lang = this.lang;
+    this.reactElem.props['lang'] = this.lang;
+    this.reactElem.props['schema'] = this.formData.schema;
+    this.reactElem.props['uiSchema'] = this.formData.uiSchema;
+    this.reactElem.props['uiSchemaContext'] = this.formData.uiSchemaContext;
   }
 
   mount() {
-    /*
     if (!this.formData || !this.lang) {
       return;
     }
     this.apiClient.lang = this.lang;
-    this.reactElem = React.createElement(LajiForm,
-      {
-        schema: this.formData.schema,
-        uiSchema: this.formData.uiSchema,
-        uiSchemaContext: this.formData.uiSchemaContext,
-        formData: this.formData.formData,
-        onChange: data => this.onChange.emit(data),
-        onSubmit: data => this.onSubmit.emit(data),
-        apiClient: this.apiClient,
-        lang: this.lang
-      }
-    );
-    ReactDOM.render(
-      this.reactElem,
-      this.elem
-    );
-    */
+    try {
+      this.reactElem = React.createElement(LajiForm,
+        {
+          schema: this.formData.schema,
+          uiSchema: this.formData.uiSchema,
+          uiSchemaContext: this.formData.uiSchemaContext,
+          formData: this.formData.formData,
+          onChange: data => this.onChange.emit(data),
+          onSubmit: data => this.onSubmit.emit(data),
+          apiClient: this.apiClient,
+          lang: this.lang
+        }
+      );
+      ReactDOM.render(
+        this.reactElem,
+        this.elem
+      );
+    } catch (err) {
+      console.log(err);
+    }
+
   }
 
   unMount() {
-    //ReactDOM.unmountComponentAtNode(this.elem);
-    //delete this.reactElem;
+    try {
+      ReactDOM.unmountComponentAtNode(this.elem);
+    } catch(err) {
+      console.log(err);
+    }
   }
 }

@@ -18,7 +18,6 @@ import {
   providers: [
     LocalStorageService,
     TaxonomyApi,
-    NewsApi,
     CollectionApi
   ],
   directives: [ ROUTER_DIRECTIVES, NavbarComponent, FooterComponent ],

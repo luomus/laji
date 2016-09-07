@@ -2,9 +2,10 @@
   {{'observation.results.title' | translate}}
   <small>
     <br>
-    <laji-observation-count></laji-observation-count>
+    <laji-observation-count [query]="searchQuery.query"></laji-observation-count>
     {{'observation.results.observation' | translate}}
     <laji-observation-count
+      [query]="searchQuery.query"
       [field]="'unit.linkings.taxon.id'"
       [overrideInQuery]="{taxonRankId: 'MX.species'}"
     >

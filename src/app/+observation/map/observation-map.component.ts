@@ -46,7 +46,7 @@ export class ObservationMapComponent implements OnInit {
       this.searchQuery.query,
       ['gathering.conversions.wgs84Grid05.lat,gathering.conversions.wgs84Grid1.lon'],
       undefined,
-      10000
+      1000
     ).subscribe(
       (data) => this.dataToGeo(data.results)
     );

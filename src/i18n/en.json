@@ -4,10 +4,11 @@
   "en": "english",
 
   "navigation.taxonomy": "Taxonomy",
-  "navigation.observation": "Observations & specimen",
+  "navigation.observation": "Observations",
   "navigation.information": "Information",
   "navigation.collection": "Information sources",
-  "navigation.haseka": "Reportingservice",
+  "navigation.haseka": "Tallenna havaintoja",
+  "navigation.notify": "Ilmoita havainto",
   "navigation.user": "User settings",
   "navigation.user.login": "Login",
 

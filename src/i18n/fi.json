@@ -4,10 +4,11 @@
   "en": "englanti",
 
   "navigation.taxonomy": "Lajit",
-  "navigation.observation": "Havainnot ja kokoelmanäytteet",
-  "navigation.information": "Suomen Lajitietokeskus",
+  "navigation.observation": "Havainnot",
+  "navigation.information": "Lajitietokeskus",
   "navigation.collection": "Aineistot",
-  "navigation.haseka": "Havaintopalvelu",
+  "navigation.haseka": "Tallenna havaintoja",
+  "navigation.notify": "Ilmoita havainto",
   "navigation.user": "Käyttäjäasetukset",
   "navigation.user.login": "Kirjaudu",
 

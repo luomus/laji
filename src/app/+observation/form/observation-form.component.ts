@@ -4,7 +4,7 @@ import {Location, NgModel} from "@angular/common";
 import * as moment from 'moment';
 
 import {SearchQuery} from "../search-query.model";
-import {ObservationCountComponent} from "../count/observation-cont.component";
+import {ObservationCountComponent} from "../count/observation-count.component";
 import {WarehouseQueryInterface, DATE_FORMAT} from "../../shared/model/WarehouseQueryInterface";
 import {ObservationChartComponent} from "../chart/observation-chart.component";
 import {ObservationResultComponent} from "../result-tabs/observation-result.component";

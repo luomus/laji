@@ -31,7 +31,8 @@
         </li>
         -->
         <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/haseka']">{{ 'navigation.haseka' | translate }}</a>
+          <a *ngIf="userService.isLoggedIn()"  [routerLink]="['/haseka']">{{ 'navigation.haseka' | translate }}</a>
+          <a *ngIf="!userService.isLoggedIn()" [routerLink]="['/haseka']">{{ 'navigation.notify' | translate }}</a>
         </li>
         <li [routerLinkActive]="['active']">
           <a [routerLink]="['/information']">{{ 'navigation.information' | translate }}</a>

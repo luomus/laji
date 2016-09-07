@@ -61,6 +61,7 @@ export class HaSeKaFormComponent implements OnInit {
   }
 
   onSubmit(formData) {
+    console.log(formData);
     delete this.formDataStorage[this.formId];
   }
 
