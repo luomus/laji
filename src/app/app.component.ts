@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { LocalStorageService } from "angular2-localstorage/LocalStorageEmitter";
@@ -28,10 +28,13 @@ import {
 export class AppComponent {
   @LocalStorage() public defaultLang = 'fi';
 
-  constructor(public translate: TranslateService, private storageService: LocalStorageService) {
+  public viewContainerRef:ViewContainerRef;
+
+  constructor(public translate: TranslateService, private storageService: LocalStorageService, viewContainerRef:ViewContainerRef) {
     translate.use(this.defaultLang);
     this.translate.onLangChange.subscribe(
       lang => this.defaultLang = this.translate.currentLang
     );
+    this.viewContainerRef = viewContainerRef;
   }
 }

@@ -176,3 +176,21 @@ export interface TaxonomyDescription {
     groups?: Array<TaxonomyDescriptionGroup>;
 
 }
+
+export interface TaxonomyImage {
+    
+    author?: string;
+    
+    copyrightOwner?: string;
+    
+    fullURL?: string;
+    
+    licenceAbbreviation?: string;
+    
+    licenceDescription?: string;
+    
+    source?: string;
+    
+    thumbnailURL?: string;
+
+}

@@ -3,7 +3,7 @@ import { TranslateService } from "ng2-translate/ng2-translate";
 import { Subscription } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 
-import { Taxonomy, TaxonomyDescription, TaxonomyApi, PanelComponent } from '../../shared';
+import { Taxonomy, TaxonomyDescription, TaxonomyImage, TaxonomyApi, PanelComponent, ImageGalleryComponent } from '../../shared';
 import { TaxonInfoComponent } from "./taxon/taxon-info.component";
 import { ParentsComponent } from "./parents/parents.component";
 import { ChildrenListComponent } from "./children-list/children-list.component";
@@ -12,18 +12,28 @@ import { ChildrenListComponent } from "./children-list/children-list.component";
   selector: 'laji-info-card',
   templateUrl: './info-card.component.html',
   styleUrls: ['./info-card.component.css'],
-  directives: [ PanelComponent, TaxonInfoComponent, ParentsComponent, ChildrenListComponent, InfoCardComponent ]
+  directives: [
+    PanelComponent,
+    TaxonInfoComponent,
+    ParentsComponent,
+    ChildrenListComponent,
+    InfoCardComponent,
+    ImageGalleryComponent
+  ]
 })
 export class InfoCardComponent {
 
   public taxon:Taxonomy;
   public taxonDescription:TaxonomyDescription;
+  public taxonImages:Array<TaxonomyImage>;
   private subParam:Subscription;
   private subTrans:Subscription;
 
   private mapUrl = 'http://ws.luomus.fi/Balticdiversity/aggregated-map?mapPosition=markerBoundsNorthEastFixed&target=Parus%20major&locale=en';
 
   public activePanel:number = 0;
+  public activeImage:number = 0;
+  
   @Input() public taxonId:string;
 
   constructor(
@@ -38,6 +48,9 @@ export class InfoCardComponent {
         this.taxonId = params['id'];
         this.getTaxon(this.taxonId);
         this.getTaxonDescription(this.taxonId);
+        this.getTaxonMedia(this.taxonId);
+        this.taxonImages = [];
+        this.activeImage = 0;
       });
     }
 
@@ -45,6 +58,7 @@ export class InfoCardComponent {
       () => {
         this.getTaxon(this.taxonId);
         this.getTaxonDescription(this.taxonId);
+        this.getTaxonMedia(this.taxonId);
       }
     )
   }
@@ -77,5 +91,13 @@ export class InfoCardComponent {
         err => console.error(err)
       )
 
+  }
+
+  private getTaxonMedia(id) {
+    this.taxonService.taxonomyFindMedia(id, this.translate.currentLang)
+    .subscribe(
+      media => this.taxonImages = media,
+      err => console.error(err)
+    )
   }
 }

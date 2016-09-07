@@ -24,7 +24,7 @@
             <h4 class="panel-title">{{ 'taxonomy.map' | translate }}</h4>
           </div>
           <div class="panel-body">
-            Uusi kuvakaruselli....
+            <laji-image-gallery [(activeImage)]="activeImage" [images]="taxonImages"></laji-image-gallery>
           </div>
         </div>
         <div class="panel panel-default">

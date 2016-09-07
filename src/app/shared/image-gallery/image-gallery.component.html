@@ -1,0 +1,33 @@
+<div style="margin-bottom: 8px;">
+    <button class="btn btn-default" (click)="setActive(activeImage - 1)">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+    </button>
+    <button class="btn btn-default pull-right" (click)="setActive(activeImage + 1)">
+        <span class="glyphicon glyphicon-arrow-right"></span>
+    </button>
+</div>
+<div style="margin-bottom: 8px; width: 100%">
+    <img (click)="childModal.show()" class="img-responsive img-thumbnail" *ngIf="images.length > 0" style="display: block; margin: 0 auto; width: 60%; min-width: 60%;"
+        src="{{ getCurrentImage().thumbnailURL }}">
+</div>
+<div style="text-align: center">
+    <span *ngIf="images.length > 0">{{ activeImage + 1 }} / {{ images.length }}</span>
+</div>
+<div bsModal #childModal="bs-modal" class="modal fade" tabIndex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="childModal.hide()">
+                    <span>&times;</span>
+                </button>
+                <h4 class="modal-title">Title</h4>
+            </div>
+            <div class="modal-body">
+                <img *ngIf="images.length > 0" class="img-responsive img-thumbnail" style="display: block; margin: 0 auto;" src="{{ getCurrentImage().thumbnailURL }}">
+            </div>
+            <div class="modal-footer">
+                gg
+            </div>
+        </div>
+    </div>
+</div>
