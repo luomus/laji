@@ -4,10 +4,8 @@ import {
   Component, OnInit, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges,
   ViewChild
 } from '@angular/core';
-import {timeout} from "rxjs/operator/timeout";
 
-//let LajiMap = require('laji-map').default;
-let LajiMap = require('../../../../node_modules/laji-form/node_modules/laji-map').default;
+let LajiMap = require('laji-map').default;
 
 @Component({
   selector: 'laji-map',

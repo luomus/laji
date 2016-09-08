@@ -36,7 +36,7 @@ import {PagedResult} from "../model/PagedResult";
 @Injectable()
 export class DocumentApi {
     protected basePath = '/api';
-    public defaultHeaders : Headers = new Headers();
+    public defaultHeaders : Headers = new Headers({'Content-Type': 'application/json'});
 
     constructor(protected http: Http, @Optional() basePath: string) {
         if (basePath) {
@@ -203,6 +203,7 @@ export class DocumentApi {
             search: queryParameters
         };
         requestOptions.body = JSON.stringify(data);
+        console.log(requestOptions);
 
         return this.http.request(path, requestOptions)
             .map((response: Response) => {

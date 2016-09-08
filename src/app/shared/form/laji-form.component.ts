@@ -1,9 +1,6 @@
 import {Component, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges} from '@angular/core';
 import {FormApiClient, FormApi} from "../api";
 
-//let styles = require('laji-form/lib/styles');
-
-// TODO: remove debug!
 let React = require('react');
 let ReactDOM = require('react-dom');
 let LajiForm = require('../../../../node_modules/laji-form/lib/components/LajiForm').default;

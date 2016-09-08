@@ -61,8 +61,31 @@ export class HaSeKaFormComponent implements OnInit {
   }
 
   onSubmit(formData) {
+    let data = formData.formData;
+    if (data.id) {
+      this.documentService
+        .update(data.id,data, this.userService.getToken())
+        .subscribe(
+          data => {
+            console.log('success');
+          },
+          err => {
+            console.log(err);
+          }
+        );
+    } else {
+      this.documentService
+        .create(data, this.userService.getToken())
+        .subscribe(
+          data => {
+            this.form.formData = data
+          },
+          err => {
+            console.log(err);
+          }
+        );
+    }
     console.log(formData);
-    delete this.formDataStorage[this.formId];
   }
 
   fetchForm() {
