@@ -7,6 +7,7 @@ import { Taxonomy, TaxonomyDescription, TaxonomyImage, TaxonomyApi, PanelCompone
 import { TaxonInfoComponent } from "./taxon/taxon-info.component";
 import { ParentsComponent } from "./parents/parents.component";
 import { ChildrenListComponent } from "./children-list/children-list.component";
+import { ObservationMapComponent } from "../../+observation/map/observation-map.component";
 
 @Component({
   selector: 'laji-info-card',
@@ -18,7 +19,8 @@ import { ChildrenListComponent } from "./children-list/children-list.component";
     ParentsComponent,
     ChildrenListComponent,
     InfoCardComponent,
-    ImageGalleryComponent
+    ImageGalleryComponent,
+    ObservationMapComponent
   ]
 })
 export class InfoCardComponent {
@@ -33,7 +35,7 @@ export class InfoCardComponent {
 
   public activePanel:number = 0;
   public activeImage:number = 0;
-  
+
   @Input() public taxonId:string;
 
   constructor(

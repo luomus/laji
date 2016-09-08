@@ -21,7 +21,7 @@
       <div class="panel-group" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
-            <h4 class="panel-title">{{ 'taxonomy.map' | translate }}</h4>
+            <h4 class="panel-title">{{ 'taxonomy.images' | translate }}</h4>
           </div>
           <div class="panel-body">
             <laji-image-gallery [(activeImage)]="activeImage" [images]="taxonImages"></laji-image-gallery>
@@ -40,7 +40,13 @@
             <h4 class="panel-title">{{ 'taxonomy.map' | translate }}</h4>
           </div>
           <div class="panel-body">
-            Uusi kartta....
+            <laji-observation-map
+              [color]="'#009900'"
+              [query]="{taxonId: [taxon.id], counteryId: ['ML.206']}"
+              [height]="300"
+              [disableSelect]="true"
+            >
+            </laji-observation-map>
           </div>
         </div>
       </div>
