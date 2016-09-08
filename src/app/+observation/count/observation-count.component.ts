@@ -63,7 +63,7 @@ export class ObservationCountComponent implements OnDestroy {
       this.subCount.unsubscribe();
     }
     this.loading = true;
-    (this.field && this.pick) ? this.updateAggregated(query) : this.updateCount(query);
+    this.field ? this.updateAggregated(query) : this.updateCount(query);
   }
 
   private updateCount(query) {
@@ -79,16 +79,24 @@ export class ObservationCountComponent implements OnDestroy {
   }
 
   private updateAggregated(query) {
-    this.pick = isArray(this.pick) ? this.pick : [this.pick];
+    let pageSize = this.pageSize;
+    if (this.pick) {
+      pageSize = 1;
+      this.pick = isArray(this.pick) ? this.pick : [this.pick];
+    }
 
     this.subCount = this.warehouseService
-      .warehouseQueryAggregateGet(query, [this.field], undefined, this.pageSize)
+      .warehouseQueryAggregateGet(query, [this.field], undefined, pageSize)
       .subscribe(
         result => {
-          if (result.results) {
-            this.count = '' + result.results
-                .filter(value => this.pick.indexOf(value.aggregateBy[this.field]) > -1)
-                .reduce((pre, cur) =>  pre + cur['count'], 0);
+          if (this.pick) {
+            if (result.results) {
+              this.count = '' + result.results
+                  .filter(value => this.pick.indexOf(value.aggregateBy[this.field]) > -1)
+                  .reduce((pre, cur) =>  pre + cur['count'], 0);
+            }
+          } else {
+            this.count = '' + (result.total || 0);
           }
           this.loading = false;
         },
