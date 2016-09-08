@@ -9,9 +9,7 @@
             <span *ngIf="!item.label">{{item.value | label }}</span>
             <small>
               {{item.count}}
-              <span *ngIf="item.selected" class="label label-success">
-                <i class="glyphicon glyphicon-ok"></i>
-              </span>
+              <span *ngIf="item.selected" class="label label-success"><i class="glyphicon glyphicon-ok"></i></span>
             </small>
           </a>
         </li>

@@ -8,18 +8,20 @@ import {WarehouseApi, PagedResult} from "../../shared";
 import {ValueDecoratorService} from './value-decorator.sevice';
 import {SearchQuery} from "../search-query.model";
 import {SpinnerComponent} from "../../shared/spinner/spinner.component";
+import {ResultListElementComponent} from "./result-list-element.component";
 
 @Component({
   selector: 'laji-observation-result-list',
   templateUrl: 'observation-result-list.component.html',
   styleUrls: ['./observation-result-list.component.css'],
-  directives: [PAGINATION_DIRECTIVES, FORM_DIRECTIVES, SpinnerComponent],
+  directives: [PAGINATION_DIRECTIVES, FORM_DIRECTIVES, SpinnerComponent, ResultListElementComponent],
   providers: [ValueDecoratorService]
 })
 export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   @Input() columns: any = [
-    {field: 'unit.taxonVerbatim,unit.linkings', translation: 'result.unit.taxonVerbatim'},
+    {field: 'unit.taxonVerbatim,unit.linkings.taxon', translation: 'result.unit.taxonVerbatim'},
+    {field: 'unit.linkings.taxon', translation: 'result.scientificName'},
     {field: 'gathering.team'},
     {field: 'gathering.eventDate'},
     {field: 'gathering.municipality'},
@@ -111,7 +113,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     let first = propertyName.split(',')[0];
     try {
       val = first.split('.').reduce((prev: any, curr: any) => prev[curr], row);
-      val = this.decorator.decorate(first, val, row)
+      val = this.decorator.decorate(first, val, row);
     } catch (e) {
     }
     return val;

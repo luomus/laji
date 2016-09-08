@@ -15,8 +15,8 @@
       <tr *ngFor="let item of items">
         <td>
           <span *ngIf="item.link">
-            <a [routerLink]="[item.link]">
-              {{ item.value | label }}
+            {{ item.value | label }}
+            <a [routerLink]="[item.link.local]" [innerHtml]="item.link.content || 'link'">
             </a>
           </span>
           <span *ngIf="!item.link">

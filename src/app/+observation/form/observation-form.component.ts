@@ -19,6 +19,7 @@ import {CollectionApi} from "../../shared/api/CollectionApi";
 import {Collection} from "../../shared/model/Collection";
 import {IdService} from "../../shared/service/id.service";
 import {DatePickerComponent} from "../../shared/datepicker/datepicker.component";
+import {ObservationActiveComponent} from "../active/observation-active.component";
 
 @Component({
   selector: 'laji-observation-form',
@@ -31,7 +32,8 @@ import {DatePickerComponent} from "../../shared/datepicker/datepicker.component"
     ObservationFilterComponent,
     DatePickerComponent,
     TYPEAHEAD_DIRECTIVES,
-    FORM_DIRECTIVES
+    FORM_DIRECTIVES,
+    ObservationActiveComponent
   ]
 })
 export class ObservationFormComponent implements OnInit {
@@ -43,8 +45,18 @@ export class ObservationFormComponent implements OnInit {
   public dataSource:Observable<any>;
   public typeaheadLoading:boolean = false;
   public warehouseDateFormat = DATE_FORMAT;
+  public showFilter = false;
 
   private subUpdate:Subscription;
+
+  public activeMap = {
+    coordinates:'observation.active.coordinates',
+    collectionId:'observation.active.collection',
+    recordBasis:'observation.active.recordBasis',
+    hasUnitMedia:'observation.active.image',
+    time:'observation.active.time',
+    informalTaxonGroupId:'observation.active.informalTaxonGroup'
+  };
 
   public filters:ObservationFilterInterface[] = [
     {
@@ -110,6 +122,7 @@ export class ObservationFormComponent implements OnInit {
     this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
       res => {
         if (res && res.formSubmit) {
+          this.queryToFormQuery(this.searchQuery.query);
           this.onSubmit(false);
         }
       })
@@ -129,6 +142,7 @@ export class ObservationFormComponent implements OnInit {
     }
     let today = moment();
     this.formQuery.timeStart = today.subtract(dates, "days").format(DATE_FORMAT);
+    this.formQuery.timeEnd = '';
     this.onSubmit();
   }
 
@@ -150,6 +164,10 @@ export class ObservationFormComponent implements OnInit {
     if (refresh) {
       this.onSubmit();
     }
+  }
+
+  toggleFilters() {
+    this.showFilter = !this.showFilter;
   }
 
   private queryToFormQuery(query:WarehouseQueryInterface) {

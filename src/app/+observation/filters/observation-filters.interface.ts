@@ -6,8 +6,8 @@ export interface ObservationFilterInterface {
   pick?:string[],
   filter:string;
   type:string;
-  valueMap?:any;
-  booleanMap?:any;
+  valueMap?:{[field:string]:string};
+  booleanMap?:{[field:string]:boolean};
   size?:number;
   data?:FilterDataInterface[];
   selected:string[];

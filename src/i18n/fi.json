@@ -83,7 +83,9 @@
   "result.gathering.team": "Henkilö",
   "result.gathering.eventDate": "Aika",
   "result.document.documentId": "Lisää",
+  "result.scientificName": "Tieteellinen nimi",
   "result.gathering.conversions.wgs84CenterPoint": "Paikka",
+  "result.gathering.municipality": "Paikka",
 
   "observation.form.filter": "Rajaa",
   "observation.form.specimen": "Lajilla",
@@ -93,14 +95,24 @@
   "observation.form.typeSpecimens": "Tyyppinäytteitä",
   "observation.form.search": "Hae",
   "observation.form.empty": "Tyhjennä rajaukset",
+  "observation.form.more": "Lisää hakuehtoja",
 
   "observation.results.title": "Havaintohaku",
   "observation.results.observation": "osumaa",
   "observation.results.species": "lajista",
 
-  "observation.filterBy.recordBasis": "Tyyppi",
-  "observation.filterBy.image": "Kuva",
+  "observation.filterBy.recordBasis": "Havainnon tyyppi",
+  "observation.filterBy.image": "Kuvia",
   "observation.filterBy.collectionId": "Aineistot",
+
+  "observation.active": "Rajattu",
+  "observation.active.time": "ajalla",
+  "observation.active.image": "kuvalla",
+  "observation.active.coordinates": "paikalla",
+  "observation.active.collection": "aineistolla",
+  "observation.active.recordBasis": "havainnon tyypillä",
+  "observation.active.informalTaxonGroup": "lajiryhmällä",
+
 
   "haseka.title": "Havainto ilmoitin",
   "haseka.forms.title": "Lomakeet",

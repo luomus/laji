@@ -29,8 +29,11 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
   @Input() updateOnLangChange:boolean = false;
   @Input() queryOverride:any;
   @Input() valuePicker:any;
-  @Input() linkPicker:any;
   @Input() showPager:boolean = false;
+  @Input() linkPicker:(any)=>{
+    local:string,
+    content:string
+  };
 
   public page:number = 1;
   public total:number = 1;
@@ -39,7 +42,11 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
   public items:Array<{
     count:number,
     value:string,
-    link:string
+    link?:{
+      local:string,
+      content:string
+    },
+    linkContent?:string
   }> = [];
 
   private subQueryUpdate:Subscription;
@@ -97,11 +104,15 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
             this.total = result.total;
             this.items = result.results
               .map(item => {
-                let link = this.linkPicker ? this.linkPicker(item.aggregateBy) : '';
+                let link = undefined;
                 let value = this.valuePicker ?
                   this.valuePicker(item.aggregateBy, this.translate.currentLang) :
                   (item.aggregateBy[this.field] || '');
-                return {count: item.count, value: value, link: link}
+                if (this.linkPicker) {
+                  link = this.linkPicker(item.aggregateBy);
+                }
+                console.log(link);
+                return {count: item.count, value: value, link: link};
               });
           }
         },

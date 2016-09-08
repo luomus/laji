@@ -12,7 +12,9 @@
       </thead>
       <tbody>
       <tr *ngFor="let row of result?.results">
-        <td *ngFor="let column of columns" [innerHtml]="getData(row, column.field)"></td>
+        <td *ngFor="let column of columns">
+          <result-list-element [data]="getData(row, column.field)"></result-list-element>
+        </td>
       </tr>
       </tbody>
     </table>

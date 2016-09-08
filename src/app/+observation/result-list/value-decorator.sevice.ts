@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {IdService} from "../../shared/service/id.service";
 
 @Injectable()
 export class ValueDecoratorService {
@@ -9,7 +10,8 @@ export class ValueDecoratorService {
     'document.documentId':'makeId',
     'gathering.eventDate':'makeDateRange',
     'gathering.team': 'makeArrayToBr',
-    'unit.taxonVerbatim': 'makeTaxon',
+    'unit.taxonVerbatim': 'makeTaxonLocal',
+    'unit.linkings.taxon': 'makeTaxon',
     'gathering.conversions.wgs84CenterPoint': 'makeMapPoint'
   };
 
@@ -32,7 +34,10 @@ export class ValueDecoratorService {
   }
 
   protected makeId(value) {
-    return `<a href="${value}">link</a><iframe src="http://laji.fi" style="width:100px; height: 100px"></iframe>`
+    return {
+      linkContent: 'link',
+      linkExternal: value
+    }
   }
 
   protected makeArrayToBr(value) {
@@ -44,18 +49,27 @@ export class ValueDecoratorService {
     return (+value.lat.toFixed(6)) + ' : ' + (+value.lon.toFixed(6));
   }
 
-  protected makeTaxon(value, context) {
+  protected makeTaxonLocal(value, context) {
     if (
       context.unit.linkings &&
-      context.unit.linkings.taxon &&
-      context.unit.linkings.taxon.scientificName
+      context.unit.linkings.taxon
     ) {
       let taxon = context.unit.linkings.taxon;
       if (typeof taxon.vernacularName[this.lang] !== "undefined") {
         return taxon.vernacularName[this.lang];
       }
-      return taxon.scientificName;
     }
     return value;
+  }
+
+  protected makeTaxon(value):any {
+    if (value.qname) {
+      return {
+        text: value.scientificName || '',
+        linkInternal:'/taxon/' + IdService.getId(value.qname),
+        linkContent: '<i class="glyphicon glyphicon-modal-window"></i>'
+      }
+    }
+    return '';
   }
 }

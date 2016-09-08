@@ -1,0 +1,10 @@
+<span *ngIf="isPlain()">{{data}}</span>
+<div *ngIf="!isPlain()">
+  {{data.text}}
+  <span>
+    <a *ngIf="data.linkInternal" [routerLink]="[data.linkInternal]" [innerHtml]="data.linkContent || ''">
+    </a>
+    <a *ngIf="data.linkExternal" href="{{data.linkExternal}}" [innerHtml]="data.linkContent || ''">
+    </a>
+  </span>
+</div>

@@ -57,8 +57,14 @@ export class ObservationResultComponent implements OnInit {
   }
 
   pickLink(aggr) {
-    return aggr['unit.linkings.taxon.id'] ?
-      '/taxon/' + IdService.getId(aggr['unit.linkings.taxon.id']) : '';
+    if (!aggr['unit.linkings.taxon.id']) {
+      return undefined;
+    }
+    return {
+      local: '/taxon/' + IdService.getId(aggr['unit.linkings.taxon.id']),
+      content: '<i class="glyphicon glyphicon-modal-window"></i>'
+    }
+
   }
 
   pickLocation(e) {

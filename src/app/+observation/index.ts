@@ -8,3 +8,4 @@ export * from './count/observation-count.component';
 export * from './aggregate/observation-aggregate.component';
 export * from './filters';
 export * from './map/observation-map.component';
+export * from './active/observation-active.component';
