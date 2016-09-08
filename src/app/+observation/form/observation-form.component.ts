@@ -269,7 +269,7 @@ export class ObservationFormComponent implements OnInit {
     this.searchQuery.updateUrl(this.location, undefined, [
       'selected',
       'pageSize',
-      'includeNonValidTaxons'
+      'includeNonValidTaxa'
     ]);
     if (updateQuery) {
       this.searchQuery.queryUpdate({});

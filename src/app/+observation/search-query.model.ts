@@ -14,7 +14,7 @@ export class SearchQuery {
   public query:WarehouseQueryInterface = {};
   public page:number;
   public pageSize:number = 20;
-  public includeNonValidTaxons:boolean = false;
+  public includeNonValidTaxa:boolean = false;
   public selected:string[];
   public orderBy:string[];
   public aggregateBy:string[];
@@ -45,7 +45,7 @@ export class SearchQuery {
   ];
 
   booleanTypes = [
-    'includeNonValidTaxons',
+    'includeNonValidTaxa',
     'finnish',
     'invasive',
     'typeSpecimen',

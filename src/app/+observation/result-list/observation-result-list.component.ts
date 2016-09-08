@@ -97,7 +97,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
           this.searchQuery.updateUrl(this.location, undefined, [
             'selected',
             'pageSize',
-            'includeNonValidTaxons'
+            'includeNonValidTaxa'
           ]);
         },
         error => {

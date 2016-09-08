@@ -8,7 +8,7 @@
       [query]="searchQuery.query"
       [field]="'unit.linkings.taxon.taxonRank'"
       [pick]="'http://tun.fi/MX.species'"
-      [overrideInQuery]="{taxonRankId: 'MX.species'}"
+      [overrideInQuery]="{taxonRankId: 'MX.species', includeNonValidTaxa: false}"
     >
     </laji-observation-count>
     {{'observation.results.species' | translate}}

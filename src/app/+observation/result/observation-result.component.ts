@@ -102,7 +102,7 @@ export class ObservationResultComponent implements OnInit {
     this.searchQuery.updateUrl(this.location, '/observation/' + tab, [
       'selected',
       'pageSize',
-      'includeNonValidTaxons'
+      'includeNonValidTaxa'
     ]);
   }
 }

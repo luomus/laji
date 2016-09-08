@@ -8,6 +8,7 @@ import {SearchQuery} from "../search-query.model";
 import {TranslateService} from "ng2-translate";
 import {ROUTER_DIRECTIVES} from "@angular/router";
 import {SpinnerComponent} from "../../shared/spinner/spinner.component";
+import {Util} from "../../shared/service/util.service";
 
 @Component({
   moduleId: module.id,
@@ -90,11 +91,11 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
     if (this.subCount) {
       this.subCount.unsubscribe();
     }
-    let query = Object.assign({}, this.searchQuery.query);
+    let query = Util.clone(this.searchQuery.query);
     if (this.queryOverride) {
       query = Object.assign(query, this.queryOverride);
     }
-    query.includeNonValidTaxons = false;
+    query.includeNonValidTaxa = false;
     this.loading = true;
     this.subCount = this.warehouseService
       .warehouseQueryAggregateGet(query, [this.field], undefined, this.limit, this.page)
