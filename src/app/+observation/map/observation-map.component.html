@@ -1,7 +1,8 @@
-<div class="observation-map" *ngIf="mapData">
+<div class="observation-map" *ngIf="mapData" [ngStyle]="{height: height + 'px', width:'100%'}">
   <laji-map
     [visible]="visible"
     [data]="mapData"
-    (select)="pickLocation($event)"
+    [disableSelect]="disableSelect"
+    (select)="onSelect($event)"
   ></laji-map>
 </div>

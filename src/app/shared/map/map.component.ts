@@ -20,6 +20,7 @@ export class MapComponent implements OnDestroy, OnChanges {
 
   @Input() data: any = {};
   @Input() visible: boolean;
+  @Input() disableSelect:boolean = false;
 
   @Output() select = new EventEmitter();
   @ViewChild('map') elemRef: ElementRef;
@@ -59,8 +60,9 @@ export class MapComponent implements OnDestroy, OnChanges {
     if (!this.map) {
       return;
     }
+    this.map.map.off('click');
     this.map.setData(this.data);
-    if (this.map.dataLayerGroups && this.map.dataLayerGroups[0]) {
+    if (!this.disableSelect && this.map.dataLayerGroups && this.map.dataLayerGroups[0]) {
       this.map.dataLayerGroups[0].addEventListener({
         click: e => {
           this.select.emit(e);

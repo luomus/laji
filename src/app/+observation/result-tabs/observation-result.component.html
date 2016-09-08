@@ -5,7 +5,11 @@
     <div>
       <laji-observation-map
         *ngIf="active === 'map'"
+        [color]="'#AA0000'"
         [visible]="active === 'map'"
+        [height]="800"
+        [query]="searchQuery.query"
+        (select)="pickLocation($event)"
       ></laji-observation-map>
     </div>
   </tab>
