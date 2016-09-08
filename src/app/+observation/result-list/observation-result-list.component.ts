@@ -7,12 +7,13 @@ import {Location} from "@angular/common";
 import {WarehouseApi, PagedResult} from "../../shared";
 import {ValueDecoratorService} from './value-decorator.sevice';
 import {SearchQuery} from "../search-query.model";
+import {SpinnerComponent} from "../../shared/spinner/spinner.component";
 
 @Component({
   selector: 'laji-observation-result-list',
   templateUrl: 'observation-result-list.component.html',
   styleUrls: ['./observation-result-list.component.css'],
-  directives: [PAGINATION_DIRECTIVES, FORM_DIRECTIVES],
+  directives: [PAGINATION_DIRECTIVES, FORM_DIRECTIVES, SpinnerComponent],
   providers: [ValueDecoratorService]
 })
 export class ObservationResultListComponent implements OnInit, OnDestroy {

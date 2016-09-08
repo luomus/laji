@@ -5,7 +5,8 @@
     <div>
       <laji-observation-map
         *ngIf="active === 'map'"
-        [color]="'#AA0000'"
+        [color]="'#AA00BB'"
+        [opacity]="0.2"
         [visible]="active === 'map'"
         [height]="800"
         [query]="searchQuery.query"
@@ -17,6 +18,18 @@
        (select)="activate('list')"
        [active]="active === 'list'">
     <laji-observation-result-list *ngIf="activated['list']" [query]="formQuery" [pageSize]="20" [page]="page"></laji-observation-result-list>
+  </tab>
+  <tab [heading]="'search.result.species' | translate"
+       (select)="activate('species')"
+       [active]="active === 'species'">
+    <laji-observation-aggregate
+      [field]="'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameEnglish,unit.linkings.taxon.nameFinnish,unit.linkings.taxon.nameSwedish,unit.linkings.taxon.id'"
+      [title]="'taxon'"
+      [valuePicker]="pickValue"
+      [linkPicker]="pickLink"
+      [queryOverride]="{includeNonValidTaxons: false, taxonRankId: 'MX.species'}"
+      [limit]="50"
+      [showPager]="true"></laji-observation-aggregate>
   </tab>
   <tab [heading]="'search.result.stats' | translate"
        (select)="activate('stats')"
@@ -45,17 +58,5 @@
         <button class="btn btn-xs btn-default">load</button>
       </div>
     </div>
-  </tab>
-  <tab [heading]="'search.result.species' | translate"
-       (select)="activate('species')"
-       [active]="active === 'species'">
-    <laji-observation-aggregate
-      [field]="'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameEnglish,unit.linkings.taxon.nameFinnish,unit.linkings.taxon.nameSwedish,unit.linkings.taxon.id'"
-      [title]="'taxon'"
-      [valuePicker]="pickValue"
-      [linkPicker]="pickLink"
-      [queryOverride]="{includeNonValidTaxons: false, taxonRankId: 'MX.species'}"
-      [limit]="50"
-      [showPager]="true"></laji-observation-aggregate>
   </tab>
 </tabset>

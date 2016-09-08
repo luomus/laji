@@ -7,7 +7,7 @@ import {SearchQuery} from "../search-query.model";
 import {ObservationCountComponent} from "../count/observation-count.component";
 import {WarehouseQueryInterface, DATE_FORMAT} from "../../shared/model/WarehouseQueryInterface";
 import {ObservationChartComponent} from "../chart/observation-chart.component";
-import {ObservationResultComponent} from "../result-tabs/observation-result.component";
+import {ObservationResultComponent} from "../result/observation-result.component";
 import {Observable, Subscription} from "rxjs";
 import {TYPEAHEAD_DIRECTIVES} from "ng2-bootstrap";
 import {AutocompleteApi} from "../../shared/api/AutocompleteApi";

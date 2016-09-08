@@ -1,19 +1,21 @@
-  <div class="row">
+<div class="row">
   <div class="col-sm-12" *ngIf="filters?.data">
     <h4>{{filters.title | translate}}</h4>
-    <ul>
-      <li *ngFor="let item of filters.data">
-        <a (click)="toggle(item)" class="link">
-          <span *ngIf="item.label">{{item.label}}</span>
-          <span *ngIf="!item.label">{{item.value | label }}</span>
-          <small>
-            {{item.count}}
-            <span *ngIf="item.selected" class="label label-success">
-              <i class="glyphicon glyphicon-ok"></i>
-            </span>
-          </small>
-        </a>
-      </li>
-    </ul>
+    <laji-spinner [spinning]="loading">
+      <ul>
+        <li *ngFor="let item of filters.data">
+          <a (click)="toggle(item)" class="link">
+            <span *ngIf="item.label">{{item.label}}</span>
+            <span *ngIf="!item.label">{{item.value | label }}</span>
+            <small>
+              {{item.count}}
+              <span *ngIf="item.selected" class="label label-success">
+                <i class="glyphicon glyphicon-ok"></i>
+              </span>
+            </small>
+          </a>
+        </li>
+      </ul>
+    </laji-spinner>
   </div>
 </div>

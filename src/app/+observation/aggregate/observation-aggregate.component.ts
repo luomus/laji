@@ -7,12 +7,18 @@ import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {SearchQuery} from "../search-query.model";
 import {TranslateService} from "ng2-translate";
 import {ROUTER_DIRECTIVES} from "@angular/router";
+import {SpinnerComponent} from "../../shared/spinner/spinner.component";
 
 @Component({
   moduleId: module.id,
   selector: 'laji-observation-aggregate',
   templateUrl: 'observation-aggregate.component.html',
-  directives: [PAGINATION_DIRECTIVES, FORM_DIRECTIVES, ROUTER_DIRECTIVES]
+  directives: [
+    PAGINATION_DIRECTIVES,
+    FORM_DIRECTIVES,
+    ROUTER_DIRECTIVES,
+    SpinnerComponent
+  ]
 })
 export class ObservationAggregateComponent implements OnInit, OnDestroy {
 
@@ -28,6 +34,7 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
 
   public page:number = 1;
   public total:number = 1;
+  public loading:boolean = false;
 
   public items:Array<{
     count:number,
@@ -81,6 +88,7 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
       query = Object.assign(query, this.queryOverride);
     }
     query.includeNonValidTaxons = false;
+    this.loading = true;
     this.subCount = this.warehouseService
       .warehouseQueryAggregateGet(query, [this.field], undefined, this.limit, this.page)
       .subscribe(
@@ -96,7 +104,9 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
                 return {count: item.count, value: value, link: link}
               });
           }
-        }
+        },
+        err => console.log(err),
+        () => this.loading = false
       );
   }
 }

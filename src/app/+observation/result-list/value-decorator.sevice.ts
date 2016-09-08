@@ -52,9 +52,9 @@ export class ValueDecoratorService {
     ) {
       let taxon = context.unit.linkings.taxon;
       if (typeof taxon.vernacularName[this.lang] !== "undefined") {
-        return `${taxon.scientificName} (${taxon.vernacularName[this.lang]})`;
+        return taxon.vernacularName[this.lang];
       }
-      return `${taxon.scientificName}`;
+      return taxon.scientificName;
     }
     return value;
   }

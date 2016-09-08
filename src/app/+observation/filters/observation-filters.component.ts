@@ -1,14 +1,16 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {SearchQuery} from "../search-query.model";
-import {ObservationFilterInterface, FilterDataInterface} from "./observation-filters.interface";
+import {ObservationFilterInterface} from "./observation-filters.interface";
 import {Subscription} from "rxjs";
 import {TranslateService} from "ng2-translate";
+import {SpinnerComponent} from "../../shared/spinner/spinner.component";
 
 @Component({
   selector: 'laji-observation-filters',
   templateUrl: 'observation-filters.component.html',
-  styleUrls: ['observation-filters.component.css']
+  styleUrls: ['observation-filters.component.css'],
+  directives: [SpinnerComponent]
 })
 export class ObservationFilterComponent implements OnInit, OnDestroy {
   @Input() filters:ObservationFilterInterface;
@@ -51,6 +53,7 @@ export class ObservationFilterComponent implements OnInit, OnDestroy {
     if (this.subData) {
       this.subData.unsubscribe();
     }
+    this.loading = true;
     this.subData = this.warehouseService.warehouseQueryAggregateGet(
       this.searchQuery.query,
       [this.filters.field],
@@ -87,7 +90,9 @@ export class ObservationFilterComponent implements OnInit, OnDestroy {
           this.filters.data = filtersData;
         }
         this.filters.total = data.total;
-      }
+      },
+      err => console.log(err),
+      () => this.loading = false
     );
   }
 
