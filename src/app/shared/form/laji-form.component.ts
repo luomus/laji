@@ -24,6 +24,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
 
   elem: ElementRef;
   reactElem:any;
+  renderElem:any;
 
   constructor(@Inject(ElementRef) elementRef: ElementRef,
               private apiClient: FormApiClient) {
@@ -36,18 +37,16 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.unMount();
-    delete this.reactElem;
+    this.reactElem = undefined;
+    this.renderElem = undefined;
   }
 
   ngOnChanges() {
-    if (!this.reactElem) {
+    if (!this.renderElem) {
       return;
     }
-    this.apiClient.lang = this.lang;
-    this.reactElem.props['lang'] = this.lang;
-    this.reactElem.props['schema'] = this.formData.schema;
-    this.reactElem.props['uiSchema'] = this.formData.uiSchema;
-    this.reactElem.props['uiSchemaContext'] = this.formData.uiSchemaContext;
+    this.unMount();
+    this.mount();
   }
 
   mount() {
@@ -68,7 +67,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
           lang: this.lang
         }
       );
-      ReactDOM.render(
+      this.renderElem = ReactDOM.render(
         this.reactElem,
         this.elem
       );
