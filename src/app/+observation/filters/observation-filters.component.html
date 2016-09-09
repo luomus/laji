@@ -7,8 +7,7 @@
           <a (click)="toggle(item)" class="link">
             <span *ngIf="item.label">{{item.label}}</span>
             <span *ngIf="!item.label">{{item.value | label }}</span>
-            <small>
-              {{item.count}}
+            <small [innerHtml]="item.count | formattedNumber:'&nbsp'">
               <span *ngIf="item.selected" class="label label-success"><i class="glyphicon glyphicon-ok"></i></span>
             </small>
           </a>
