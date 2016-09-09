@@ -3,10 +3,8 @@ import {InformalTaxonGroup} from "../../shared";
 import {InformalListItemInterface} from "./informal-list-item.model";
 
 @Component({
-  moduleId: module.id,
   selector: 'laji-infomal-list',
-  templateUrl: 'informal-list.component.html',
-  directives: [InformalListComponent]
+  templateUrl: 'informal-list.component.html'
 })
 export class InformalListComponent {
 

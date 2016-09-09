@@ -1,4 +1,4 @@
-import { provideRouter, RouterConfig } from '@angular/router';
+import {Routes} from '@angular/router';
 
 import { HomeRoutes } from './+home';
 import { TaxonomyRoutes } from './+taxonomy';
@@ -9,7 +9,7 @@ import { NewsRoutes } from './+news';
 import { HaSeKaRoutes } from './+haseka';
 import { UserRoutes } from './+user';
 
-const routes: RouterConfig = [
+export const rootRouterConfig: Routes = [
   ...HomeRoutes,
   ...TaxonomyRoutes,
   ...ObservationRoutes,
@@ -20,6 +20,3 @@ const routes: RouterConfig = [
   ...UserRoutes
 ];
 
-export const APP_ROUTER_PROVIDERS = [
-  provideRouter(routes)
-];

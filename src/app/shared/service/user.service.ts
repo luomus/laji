@@ -1,5 +1,4 @@
 import {Injectable, Inject} from "@angular/core";
-import { LocalStorage } from "angular2-localstorage/WebStorage";
 import {PersonTokenApi} from "../api/PersonTokenApi";
 import {Subscription, Observable} from "rxjs";
 import {Person} from "../model/Person";
@@ -10,7 +9,7 @@ var config = require('../../../../config.json');
 @Injectable()
 export class UserService {
 
-  @LocalStorage() private token = '';
+  private token = '';
   private user:Person;
 
   private subUser:Subscription;

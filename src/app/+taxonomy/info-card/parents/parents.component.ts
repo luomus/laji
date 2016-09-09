@@ -1,5 +1,4 @@
 import { Component, Input, SimpleChange } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Observable } from "rxjs/Rx";
 import { TranslateService } from "ng2-translate/ng2-translate";
 
@@ -10,8 +9,7 @@ import { Taxonomy, TaxonomyApi } from "../../../shared";
 @Component({
   selector: 'laji-parents',
   templateUrl: './parents.component.html',
-  providers: [ TaxonomyApi ],
-  directives: [ ROUTER_DIRECTIVES ]
+  providers: [ TaxonomyApi ]
 })
 export class ParentsComponent {
   @Input() current:Taxonomy;

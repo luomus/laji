@@ -1,3 +1,10 @@
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {AppModule} from './app/app.module';
+
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch(err => console.error(err));
+
+/*
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { FORM_DIRECTIVES }   from '@angular/forms';
 import { disableDeprecatedForms, provideForms } from '@angular/forms';
@@ -42,3 +49,4 @@ bootstrap(AppComponent, [
   { provide: PLATFORM_PIPES, useValue: TranslatePipe, multi: true }
 ])
 .catch(err => console.error(err));
+*/

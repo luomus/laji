@@ -1,15 +1,13 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {TranslateService} from 'ng2-translate/ng2-translate';
 import {Subscription} from "rxjs";
-import {ROUTER_DIRECTIVES} from "@angular/router";
 
 import {FormApi} from "../../shared/api/FormApi";
 import {FormListInterface} from "../../shared/model/FormListInterface";
 
 @Component({
   selector: 'laji-haseka-form-list',
-  templateUrl: 'haseka-form-list.component.html',
-  directives: [ ROUTER_DIRECTIVES ]
+  templateUrl: 'haseka-form-list.component.html'
 })
 export class HaSeKaFormListComponent implements OnInit, OnDestroy {
 

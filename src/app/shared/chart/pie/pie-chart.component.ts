@@ -1,12 +1,10 @@
 import {Component, OnInit, Inject, ElementRef, Input, OnChanges, Output, EventEmitter} from '@angular/core';
-import { nvD3 } from "ng2-nvd3";
 
 declare let d3:any;
 
 @Component({
   selector: 'laji-pie-chart',
-  template: '<nvd3 [options]="options" [data]="data"></nvd3>',
-  directives: [nvD3]
+  template: '<nvd3 [options]="options" [data]="data"></nvd3>'
 })
 export class PieChartComponent implements OnInit, OnChanges{
   @Input() data: {label:string, value:number}[];

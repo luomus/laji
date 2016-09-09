@@ -1,5 +1,4 @@
 import { Component, Input, SimpleChange } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Observable } from "rxjs/Rx";
 
@@ -9,8 +8,7 @@ import { TaxonomyApi, Taxonomy } from "../../../shared";
 @Component({
   selector: 'laji-children-list',
   templateUrl: './children-list.component.html',
-  providers: [ TaxonomyApi ],
-  directives: [ ROUTER_DIRECTIVES ]
+  providers: [ TaxonomyApi ]
 })
 export class ChildrenListComponent {
   @Input() parentId:string;

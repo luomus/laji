@@ -1,10 +1,10 @@
-import { RouterConfig } from '@angular/router';
+import {Routes} from '@angular/router';
 
 import {UserComponent } from "./user.component";
 import {UserLoginComponent} from "./login/user-login.component";
 import {UserLogoutComponent} from "./logout/user-logout.component";
 
-export const UserRoutes:RouterConfig = [
+export const UserRoutes:Routes = [
   {
     path: 'user',
     pathMatch: 'full',

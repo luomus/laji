@@ -2,7 +2,6 @@ import {Component, OnInit, ElementRef, Inject, OnDestroy } from '@angular/core';
 import {TranslateService} from 'ng2-translate/ng2-translate';
 import {Subscription, Observable} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
-import { LocalStorage } from "angular2-localstorage/WebStorage";
 
 import {LajiFormComponent, FormApi} from "../../shared";
 import {DocumentApi} from "../../shared/api/DocumentApi";
@@ -12,13 +11,12 @@ import {AlertComponent} from "ng2-bootstrap";
 @Component({
   selector: 'laji-haseka-form',
   templateUrl: './haseka-form.component.html',
-  directives: [ LajiFormComponent, AlertComponent ],
   providers: [ FormApi, DocumentApi ],
   styleUrls: ['./haseka-form.component.css']
 })
 export class HaSeKaFormComponent implements OnInit {
 
-  @LocalStorage() private formDataStorage = {};
+  private formDataStorage = {};
 
   public form:any;
   public formId:string;

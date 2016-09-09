@@ -4,15 +4,11 @@ import {SearchQuery} from "../search-query.model";
 import {ObservationFilterInterface} from "./observation-filters.interface";
 import {Subscription} from "rxjs";
 import {TranslateService} from "ng2-translate";
-import {SpinnerComponent} from "../../shared/spinner/spinner.component";
-import {FormattedNumber} from "../../shared/pipe/formated-number.pipe";
 
 @Component({
   selector: 'laji-observation-filters',
   templateUrl: 'observation-filters.component.html',
-  styleUrls: ['observation-filters.component.css'],
-  directives: [SpinnerComponent],
-  pipes: [ FormattedNumber ]
+  styleUrls: ['observation-filters.component.css']
 })
 export class ObservationFilterComponent implements OnInit, OnDestroy {
   @Input() filters:ObservationFilterInterface;

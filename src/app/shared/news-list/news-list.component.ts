@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router'
 import { TranslateService } from 'ng2-translate/ng2-translate';
 
 import { NewsApi } from "../api/NewsApi";
@@ -10,7 +9,6 @@ import { PagedResult } from "../model/PagedResult";
   selector:'laji-news-list',
   templateUrl: './news-list.component.html',
   styleUrls: ['./news-list.component.css'],
-  directives: [ ROUTER_DIRECTIVES ],
   providers: [ ]
 })
 export class NewsListComponent {

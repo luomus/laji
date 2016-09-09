@@ -1,9 +1,9 @@
-import { RouterConfig } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import {HaSeKaComponent} from "./haseka.component";
 import {HaSeKaFormComponent} from "./form/haseka-form.component";
 
-export const HaSeKaRoutes: RouterConfig = [
+export const HaSeKaRoutes: Routes = [
   {
     path: 'haseka',
     pathMatch: 'full',

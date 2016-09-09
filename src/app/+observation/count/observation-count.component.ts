@@ -1,19 +1,14 @@
 import {Component, OnInit, Input, OnDestroy, OnChanges, Optional} from '@angular/core';
 import {Subscription} from "rxjs";
-import {isArray} from "@angular/core/src/facade/lang";
 
-import {FormattedNumber, SpinnerComponent} from "../../shared";
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
 import {Util} from "../../shared/service/util.service";
 
 
 @Component({
-  moduleId: module.id,
   selector: 'laji-observation-count',
   templateUrl: 'observation-count.component.html',
-  directives: [ SpinnerComponent ],
-  pipes: [ FormattedNumber ]
 })
 export class ObservationCountComponent implements OnDestroy {
 
@@ -82,7 +77,7 @@ export class ObservationCountComponent implements OnDestroy {
     let pageSize = this.pageSize;
     if (this.pick) {
       pageSize = 1;
-      this.pick = isArray(this.pick) ? this.pick : [this.pick];
+      this.pick = Array.isArray(this.pick) ? this.pick : [this.pick];
     }
 
     this.subCount = this.warehouseService

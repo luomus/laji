@@ -1,5 +1,4 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {MapComponent} from "../../shared/map/map.component";
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {SearchQuery} from "../search-query.model";
 import {Subscription} from "rxjs";
@@ -11,10 +10,8 @@ declare var d3:any;
 let observationMapColorScale;
 
 @Component({
-  moduleId: module.id,
   selector: 'laji-observation-map',
-  templateUrl: 'observation-map.component.html',
-  directives: [MapComponent]
+  templateUrl: 'observation-map.component.html'
 })
 export class ObservationMapComponent implements OnInit {
 

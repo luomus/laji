@@ -1,6 +1,5 @@
 import {Pipe, PipeTransform, OnDestroy, ChangeDetectorRef, EventEmitter} from '@angular/core';
 import {WarehouseValueMappingService} from "../service/warehouse-value-mapping.service";
-import {isPresent, isArray} from "@angular/core/src/facade/lang";
 import {LangChangeEvent, TranslateService } from "ng2-translate";
 import {TriplestoreLabelService} from "../service/triplestore-label.service";
 
@@ -86,7 +85,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
    * @private
    */
   _dispose(): void {
-    if(isPresent(this.onLangChange)) {
+    if(this.onLangChange) {
       this.onLangChange.unsubscribe();
       this.onLangChange = undefined;
     }

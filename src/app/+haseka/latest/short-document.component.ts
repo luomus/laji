@@ -1,13 +1,9 @@
 import {Component, OnInit, Input, OnChanges} from '@angular/core';
 import {Document} from "../../shared/model/Document";
-import {Gatherings} from "../../shared/model/Gatherings";
-import {ROUTER_DIRECTIVES} from "@angular/router";
 
 @Component({
-  moduleId: module.id,
   selector: 'laji-short-document',
-  templateUrl: 'short.component.html',
-  directives: [ROUTER_DIRECTIVES]
+  templateUrl: 'short.component.html'
 })
 export class ShortDocumentComponent implements OnInit, OnChanges{
   @Input() document:Document;

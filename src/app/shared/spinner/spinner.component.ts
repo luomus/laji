@@ -1,7 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 
 @Component({
-  moduleId: module.id,
   selector: 'laji-spinner',
   template: `<span *ngIf="spinning">...</span><ng-content *ngIf="!spinning"></ng-content>`
 })

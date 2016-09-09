@@ -1,26 +1,14 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TAB_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {Location} from '@angular/common';
 
-import { ObservationResultListComponent } from "../result-list/observation-result-list.component";
 import { SearchQuery } from "../search-query.model";
-import {ObservationAggregateComponent} from "../aggregate/observation-aggregate.component";
-import {ObservationChartComponent} from "../chart/observation-chart.component";
-import {ObservationMapComponent} from "../map/observation-map.component";
 import {IdService} from "../../shared/service/id.service";
 import {CoordinateService} from "../../shared/service/coordinate.service";
 
 
 @Component({
   selector: 'laji-observation-result',
-  templateUrl: 'observation-result.component.html',
-  directives: [
-    TAB_DIRECTIVES,
-    ObservationResultListComponent,
-    ObservationAggregateComponent,
-    ObservationChartComponent,
-    ObservationMapComponent
-  ]
+  templateUrl: 'observation-result.component.html'
 })
 export class ObservationResultComponent implements OnInit {
 

@@ -3,7 +3,6 @@ import {SearchQuery} from "../search-query.model";
 import {Subscription} from "rxjs";
 
 @Component({
-  moduleId: module.id,
   selector: 'laji-observation-active',
   templateUrl: 'observation-active.component.html',
   styleUrls: ['./observation-active.component.css']

@@ -2,12 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
-import { News, NewsApi, NewsListComponent } from "../shared";
+import { News, NewsApi } from "../shared";
 
 @Component({
   selector: 'laij-news',
   templateUrl: './news.component.html',
-  directives: [ NewsListComponent],
   providers: [
     NewsApi
   ]

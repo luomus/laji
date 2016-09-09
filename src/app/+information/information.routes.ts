@@ -1,8 +1,8 @@
-import { RouterConfig } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { InformationComponent } from './information.component';
 
-export const InformationRoutes: RouterConfig = [
+export const InformationRoutes: Routes = [
   {
     path: 'information',
     pathMatch: 'full',

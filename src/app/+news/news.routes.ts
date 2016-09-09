@@ -1,8 +1,8 @@
-import { RouterConfig } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { NewsComponent } from './news.component';
 
-export const NewsRoutes:RouterConfig = [
+export const NewsRoutes:Routes = [
   {
     path: 'news/:id',
     pathMatch: 'full',

@@ -1,25 +1,14 @@
 import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {Subscription} from "rxjs";
-import {PAGINATION_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
-import {FORM_DIRECTIVES} from '@angular/forms';
 
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {SearchQuery} from "../search-query.model";
 import {TranslateService} from "ng2-translate";
-import {ROUTER_DIRECTIVES} from "@angular/router";
-import {SpinnerComponent} from "../../shared/spinner/spinner.component";
 import {Util} from "../../shared/service/util.service";
 
 @Component({
-  moduleId: module.id,
   selector: 'laji-observation-aggregate',
-  templateUrl: 'observation-aggregate.component.html',
-  directives: [
-    PAGINATION_DIRECTIVES,
-    FORM_DIRECTIVES,
-    ROUTER_DIRECTIVES,
-    SpinnerComponent
-  ]
+  templateUrl: 'observation-aggregate.component.html'
 })
 export class ObservationAggregateComponent implements OnInit, OnDestroy {
 

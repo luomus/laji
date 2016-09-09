@@ -5,7 +5,6 @@ import {URLSearchParams} from "@angular/http";
 import {Router} from "@angular/router";
 
 @Component({
-    moduleId: module.id,
     selector: 'laji-user-login',
     templateUrl: 'user-login.component.html'
 })

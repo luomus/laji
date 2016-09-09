@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from 'ng2-translate/ng2-translate';
@@ -10,8 +9,7 @@ import {InformationApi, Information} from "../shared";
   selector: 'laji-information',
   templateUrl: './information.component.html',
   styleUrls: ['./information.component.css'],
-  providers: [ InformationApi ],
-  directives: [ ROUTER_DIRECTIVES ]
+  providers: [ InformationApi ]
 })
 export class InformationComponent implements OnDestroy {
 

@@ -1,9 +1,9 @@
-import { RouterConfig } from '@angular/router';
+import {Routes} from '@angular/router';
 
 import { TaxonComponent } from './taxon.component';
 import {InfoCardComponent} from "./info-card/info-card.component";
 
-export const TaxonomyRoutes: RouterConfig = [
+export const TaxonomyRoutes: Routes = [
   {
     path: 'taxon/:id',
     pathMatch: 'full',

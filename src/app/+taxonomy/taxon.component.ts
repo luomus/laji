@@ -14,7 +14,6 @@ import {TreeOfLifeComponent} from "./tree-of-life/tree-of-life.component";
   selector: 'laji-taxonomy',
   templateUrl: './taxon.component.html',
   providers: [ InformalTaxonGroupApi, TaxonomyApi ],
-  directives: [ InformalListComponent, SpeciesListComponent, TreeOfLifeComponent ],
   styleUrls: [ 'taxon.component.css' ]
 })
 export class TaxonComponent implements OnInit, OnDestroy{

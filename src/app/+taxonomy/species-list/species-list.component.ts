@@ -1,6 +1,5 @@
 import {Component, OnInit, Input, OnChanges} from '@angular/core';
 import {Subscription} from "rxjs";
-import {ROUTER_DIRECTIVES} from "@angular/router";
 
 import {TaxonomyApi} from "../../shared/api/TaxonomyApi";
 import {Taxonomy} from "../../shared/model/Taxonomy";
@@ -9,11 +8,9 @@ import {PagedResult} from "../../shared/model/PagedResult";
 
 
 @Component({
-  moduleId: module.id,
   selector: 'laji-species-list',
   templateUrl: 'species-list.component.html',
-  providers: [ ],
-  directives: [ ROUTER_DIRECTIVES ]
+  providers: [ ]
 })
 export class SpeciesListComponent implements OnChanges {
 

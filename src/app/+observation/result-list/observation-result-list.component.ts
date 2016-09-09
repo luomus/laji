@@ -1,20 +1,15 @@
 import {Component, OnInit, Input, OnDestroy, Output, EventEmitter} from '@angular/core';
-import {PAGINATION_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
-import {FORM_DIRECTIVES} from '@angular/forms';
 import {Subscription} from "rxjs";
 import {Location} from "@angular/common";
 
 import {WarehouseApi, PagedResult} from "../../shared";
 import {ValueDecoratorService} from './value-decorator.sevice';
 import {SearchQuery} from "../search-query.model";
-import {SpinnerComponent} from "../../shared/spinner/spinner.component";
-import {ResultListElementComponent} from "./result-list-element.component";
 
 @Component({
   selector: 'laji-observation-result-list',
   templateUrl: 'observation-result-list.component.html',
   styleUrls: ['./observation-result-list.component.css'],
-  directives: [PAGINATION_DIRECTIVES, FORM_DIRECTIVES, SpinnerComponent, ResultListElementComponent],
   providers: [ValueDecoratorService]
 })
 export class ObservationResultListComponent implements OnInit, OnDestroy {

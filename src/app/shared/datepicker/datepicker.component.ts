@@ -35,11 +35,10 @@ import {
   Output,
   EventEmitter,
   AfterViewInit,
-  provide,
   forwardRef
 } from '@angular/core';
-import {NgModel, ControlValueAccessor} from '@angular/common';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
+import { ControlValueAccessor, NgModel } from '@angular/forms';
 import * as moment from 'moment';
 
 export interface CalendarDate {
@@ -52,14 +51,7 @@ export interface CalendarDate {
 @Component({
   selector: 'laji-datepicker',
   templateUrl: 'datepicker.component.html',
-  styleUrls: ['./datepicker.component.css'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DatePickerComponent),
-      multi: true
-    }
-  ]
+  styleUrls: ['./datepicker.component.css']
 })
 export class DatePickerComponent implements ControlValueAccessor, AfterViewInit, OnInit {
   public isOpened: boolean;

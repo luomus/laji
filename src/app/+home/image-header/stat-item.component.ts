@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { FormattedNumber } from "../../shared";
 
 @Component({
   selector: 'laji-stat-item',
@@ -14,8 +13,7 @@ import { FormattedNumber } from "../../shared";
     </span>
   </div>
 `,
-  styleUrls: ['./stat-item.component.css'],
-  pipes: [FormattedNumber]
+  styleUrls: ['./stat-item.component.css']
 })
 export class StatItemComponent {
   @Input() value: number;

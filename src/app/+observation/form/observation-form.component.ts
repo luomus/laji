@@ -1,6 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {FORM_DIRECTIVES}   from '@angular/forms';
-import {Location, NgModel} from "@angular/common";
+import {Location} from "@angular/common";
 import * as moment from 'moment';
 
 import {SearchQuery} from "../search-query.model";
@@ -9,32 +8,18 @@ import {WarehouseQueryInterface, DATE_FORMAT} from "../../shared/model/Warehouse
 import {ObservationChartComponent} from "../chart/observation-chart.component";
 import {ObservationResultComponent} from "../result/observation-result.component";
 import {Observable, Subscription} from "rxjs";
-import {TYPEAHEAD_DIRECTIVES} from "ng2-bootstrap";
 import {AutocompleteApi} from "../../shared/api/AutocompleteApi";
 import {TranslateService} from "ng2-translate";
-import {ObservationFilterComponent} from "../filters/observation-filters.component";
 import {ObservationFilterInterface } from "../filters/observation-filters.interface";
 import {ObservationFormQuery} from "./observation-form-query.interface";
 import {CollectionApi} from "../../shared/api/CollectionApi";
 import {Collection} from "../../shared/model/Collection";
 import {IdService} from "../../shared/service/id.service";
-import {DatePickerComponent} from "../../shared/datepicker/datepicker.component";
-import {ObservationActiveComponent} from "../active/observation-active.component";
 
 @Component({
   selector: 'laji-observation-form',
   templateUrl: 'observation-form.component.html',
-  providers: [AutocompleteApi,CollectionApi, NgModel],
-  directives: [
-    ObservationCountComponent,
-    ObservationChartComponent,
-    ObservationResultComponent,
-    ObservationFilterComponent,
-    DatePickerComponent,
-    TYPEAHEAD_DIRECTIVES,
-    FORM_DIRECTIVES,
-    ObservationActiveComponent
-  ]
+  providers: [AutocompleteApi,CollectionApi]
 })
 export class ObservationFormComponent implements OnInit {
 

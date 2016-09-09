@@ -1,7 +1,6 @@
 import {Component, OnInit, OnDestroy, Input, OnChanges} from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 
-import {PieChartComponent} from "../../shared/chart/pie/pie-chart.component";
 import {SearchQuery} from "../search-query.model";
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {Subscription, Observable} from "rxjs";
@@ -10,11 +9,9 @@ import {InformalTaxonGroupApi} from "../../shared/api/InformalTaxonGroupApi";
 import {IdService} from "../../shared/service/id.service";
 
 @Component({
-  moduleId: module.id,
   selector: 'laji-observation-chart',
   templateUrl: 'observation-char.component.html',
   styleUrls: ['./observation-char.component.css'],
-  directives: [ PieChartComponent ],
   providers: [ InformalTaxonGroupApi ]
 })
 export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
@@ -117,6 +114,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
       ));
     this.subData = Observable.forkJoin(sources).subscribe(
       data => {
+        /*
         if (data[0].total === 0 && this.group !== '') {
           this.subData = this
             .informalGroupService
@@ -157,6 +155,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
             .filter(item => groups.indexOf(item.id) !== -1);
           this.updateLabels();
         }
+        */
       },
       err => console.log(err)
     );

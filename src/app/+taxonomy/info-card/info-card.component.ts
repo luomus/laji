@@ -4,24 +4,11 @@ import { Subscription } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 
 import { Taxonomy, TaxonomyDescription, TaxonomyImage, TaxonomyApi, PanelComponent, ImageGalleryComponent } from '../../shared';
-import { TaxonInfoComponent } from "./taxon/taxon-info.component";
-import { ParentsComponent } from "./parents/parents.component";
-import { ChildrenListComponent } from "./children-list/children-list.component";
-import { ObservationMapComponent } from "../../+observation/map/observation-map.component";
 
 @Component({
   selector: 'laji-info-card',
   templateUrl: './info-card.component.html',
-  styleUrls: ['./info-card.component.css'],
-  directives: [
-    PanelComponent,
-    TaxonInfoComponent,
-    ParentsComponent,
-    ChildrenListComponent,
-    InfoCardComponent,
-    ImageGalleryComponent,
-    ObservationMapComponent
-  ]
+  styleUrls: ['./info-card.component.css']
 })
 export class InfoCardComponent {
 

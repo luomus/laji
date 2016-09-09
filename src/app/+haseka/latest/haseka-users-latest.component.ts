@@ -1,12 +1,9 @@
 import {Component, OnInit, Input, OnChanges} from '@angular/core';
 import {Document, DocumentApi} from "../../shared";
-import {ShortDocumentComponent} from "./short-document.component";
 
 @Component({
-  moduleId: module.id,
   selector: 'laji-haseka-latest',
-  templateUrl: 'haseka-users-latest.component.html',
-  directives: [ ShortDocumentComponent ]
+  templateUrl: 'haseka-users-latest.component.html'
 })
 export class UsersLatestComponent implements OnChanges {
 

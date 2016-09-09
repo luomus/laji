@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {UserService} from "../../shared/service/user.service";
 
 @Component({
-    moduleId: module.id,
     selector: 'laji-logout',
     templateUrl: 'user-logout.component.html'
 })

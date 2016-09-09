@@ -7,7 +7,6 @@ declare var d3:any;
 const taxonTreeUri = '/api/taxonomy/%taxonId%?maxLevel=2&selectedFields=id%2CscientificName';
 
 @Component({
-  moduleId: module.id,
   selector: 'laji-tree-of-life',
   templateUrl: 'tree-of-life.component.html',
   styleUrls: ['./tree-of-life.component.css']
