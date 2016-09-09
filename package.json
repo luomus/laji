@@ -40,7 +40,7 @@
     "angular2-localstorage": "^0.4.0",
     "core-js": "^2.2.0",
     "ie-shim": "^0.1.0",
-    "laji-form": "0.0.6",
+    "laji-form": "0.0.8",
     "laji-map": "1.0.5",
     "ng2-bootstrap": "1.0.24",
     "ng2-nvd3": "^1.1.3",
