@@ -7,11 +7,12 @@ import { LocalStorage } from "angular2-localstorage/WebStorage";
 import {LajiFormComponent, FormApi} from "../../shared";
 import {DocumentApi} from "../../shared/api/DocumentApi";
 import {UserService} from "../../shared/service/user.service";
+import {AlertComponent} from "ng2-bootstrap";
 
 @Component({
   selector: 'laji-haseka-form',
   templateUrl: './haseka-form.component.html',
-  directives: [ LajiFormComponent ],
+  directives: [ LajiFormComponent, AlertComponent ],
   providers: [ FormApi, DocumentApi ],
   styleUrls: ['./haseka-form.component.css']
 })
@@ -27,6 +28,9 @@ export class HaSeKaFormComponent implements OnInit {
   private subParam:Subscription;
   private subTrans:Subscription;
   private subFetch:Subscription;
+  private success:string = '';
+  private error:any;
+  private isEdit:boolean = false;
 
   constructor(
     private formService:FormApi,
@@ -57,20 +61,24 @@ export class HaSeKaFormComponent implements OnInit {
   }
 
   onChange(formData) {
-    this.formDataStorage[this.formId] = formData;
+    if (!this.isEdit) {
+      this.formDataStorage[this.formId] = formData;
+    }
   }
 
   onSubmit(formData) {
     let data = formData.formData;
-    if (data.id) {
+    if (this.isEdit) {
       this.documentService
-        .update(data.id,data, this.userService.getToken())
+        .update(data.id || this.documentId,data, this.userService.getToken())
         .subscribe(
           data => {
-            console.log('success');
+            this.success = 'haseka.form.success';
+            setTimeout(() => this.success = '', 5000)
           },
           err => {
-            console.log(err);
+            this.error = err;
+            setTimeout(() => this.error = undefined, 5000)
           }
         );
     } else {
@@ -78,14 +86,33 @@ export class HaSeKaFormComponent implements OnInit {
         .create(data, this.userService.getToken())
         .subscribe(
           data => {
-            this.form.formData = data
+            this.success = 'haseka.form.success';
+            this.form.formData = data;
+            this.documentId = data.id;
+            this.isEdit = true;
+            this.formDataStorage[this.formId] = {};
+            setTimeout(() => this.success = '', 5000)
           },
           err => {
-            console.log(err);
+            this.error = this.parseErrorMessage(err);
+            setTimeout(() => this.error = undefined, 5000)
           }
         );
     }
-    console.log(formData);
+  }
+
+  private parseErrorMessage(err) {
+    let detail = '';
+    if (err._body) {
+      let data = JSON.parse(err._body);
+      console.log(data);
+      detail = data && data.error && data.error.message && data.error.message.detail ?
+        data.error.message.detail : '';
+    }
+    return {
+      title: 'haseka.form.failure',
+      detail: detail
+    };
   }
 
   fetchForm() {
@@ -115,6 +142,7 @@ export class HaSeKaFormComponent implements OnInit {
       this.documentService.findById(this.documentId, this.userService.getToken())
     ]).subscribe(
       data => {
+        this.isEdit = true;
         this.form = data[0];
         this.form.formData = data[1];
         this.formDataStorage[this.formId] = this.form.formData;

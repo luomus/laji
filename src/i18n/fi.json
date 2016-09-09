@@ -116,5 +116,7 @@
 
   "haseka.title": "Havainto ilmoitin",
   "haseka.forms.title": "Lomakeet",
+  "haseka.form.success": "Havainnot tallennettu!",
+  "haseka.form.failure": "Tallennus epäonnistui!",
   "haseka.latest.title": "Viimeisimmät ilmoitukseni"
 }

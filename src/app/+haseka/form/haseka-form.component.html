@@ -8,6 +8,15 @@
       [lang]="lang"
       (onChange)="onChange($event)"
       (onSubmit)="onSubmit($event)"></laji-form>
-    <!-- Toistaiseksi poissa käytöstä -->
   </div>
+  <alert
+    *ngIf="success"
+    [type]="'success'">
+    {{'haseka.form.success'|translate}}
+  </alert>
+  <alert
+    *ngIf="error">
+    <strong>{{error.title | translate}}</strong><br>
+    {{error.detail}}
+  </alert>
 </div>
