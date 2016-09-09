@@ -2087,9 +2087,7 @@ body .laji-form {
   left: 0;
   background: white;
   z-index: 1;
-  -webkit-box-shadow: -2px 18px 43px -18px rgba(0,0,0,0.75);
-  -moz-box-shadow: -2px 18px 43px -18px rgba(0,0,0,0.75);
-  box-shadow: -2px 18px 43px -18px rgba(0,0,0,0.75);
+  border-bottom: 2px solid #aaa;
 }
 .laji-form .form-map-inline-container {
   overflow: hidden;
