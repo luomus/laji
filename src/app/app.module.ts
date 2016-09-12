@@ -1,15 +1,15 @@
 import {NgModule} from '@angular/core'
 import {RouterModule} from "@angular/router";
-import {rootRouterConfig} from "./app.routes";
-import {AppComponent} from "./app.component";
 import {FormsModule} from "@angular/forms";
 import {BrowserModule} from "@angular/platform-browser";
 import {HttpModule} from "@angular/http";
 import {LocationStrategy, PathLocationStrategy} from '@angular/common';
 import {TranslateModule} from 'ng2-translate/ng2-translate';
-import { Ng2BootstrapModule } from 'ng2-bootstrap/ng2-bootstrap';
-import { TabsModule } from 'ng2-bootstrap/ng2-bootstrap';
+import { TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule } from 'ng2-bootstrap/ng2-bootstrap';
 
+
+import {routing, appRoutingProviders} from "./app.routes";
+import {AppComponent} from "./app.component";
 import {NavbarComponent, FooterComponent} from "./shared";
 import {LangSelectComponent} from "./shared/navbar/lang-select.component";
 import {HomeComponent} from "./+home/home.components";
@@ -80,17 +80,18 @@ import {WarehouseApi} from "./shared/api/WarehouseApi";
     UserLogoutComponent, NewsComponent, InformationComponent, HaSeKaComponent,
     HaSeKaFormComponent, HaSeKaFormListComponent, ShortDocumentComponent,
     UsersLatestComponent, PanelComponent, ImageGalleryComponent, LajiFormComponent,
-    TaxonComponent, CollectionComponent, ObservationComponent
+    TaxonComponent, CollectionComponent, ObservationComponent,LabelPipe
   ],
   imports: [
     BrowserModule, FormsModule, HttpModule,
-    Ng2BootstrapModule,TabsModule,
-    RouterModule.forRoot(rootRouterConfig),
+    TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule,
+    routing,
     TranslateModule.forRoot()
   ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },
-    UserService, PersonTokenApi, PersonApi, WarehouseApi
+    UserService, PersonTokenApi, PersonApi, WarehouseApi,
+    appRoutingProviders
   ],
   bootstrap: [
     AppComponent
