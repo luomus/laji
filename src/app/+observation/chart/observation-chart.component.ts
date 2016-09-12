@@ -113,8 +113,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
         1000
       ));
     this.subData = Observable.forkJoin(sources).subscribe(
-      data => {
-        /*
+      (data:any) => {
         if (data[0].total === 0 && this.group !== '') {
           this.subData = this
             .informalGroupService
@@ -155,7 +154,6 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
             .filter(item => groups.indexOf(item.id) !== -1);
           this.updateLabels();
         }
-        */
       },
       err => console.log(err)
     );

@@ -4,6 +4,7 @@ import {Location} from '@angular/common';
 import { SearchQuery } from "../search-query.model";
 import {IdService} from "../../shared/service/id.service";
 import {CoordinateService} from "../../shared/service/coordinate.service";
+import {UserService} from "../../shared/service/user.service";
 
 
 @Component({
@@ -25,6 +26,7 @@ export class ObservationResultComponent implements OnInit {
 
   constructor(
     public searchQuery: SearchQuery,
+    public userService:UserService,
     private location: Location
   ) {}
 

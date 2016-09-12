@@ -74,9 +74,9 @@ export class ObservationCountComponent implements OnDestroy {
   }
 
   private updateAggregated(query) {
-    let pageSize = this.pageSize;
+    let pageSize = 1;
     if (this.pick) {
-      pageSize = 1;
+      pageSize = this.pageSize;
       this.pick = Array.isArray(this.pick) ? this.pick : [this.pick];
     }
 
