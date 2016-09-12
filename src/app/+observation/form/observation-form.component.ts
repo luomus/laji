@@ -46,11 +46,7 @@ export class ObservationFormComponent implements OnInit {
   public filters:ObservationFilterInterface[] = [
     {
       title: 'observation.filterBy.recordBasis',
-      field: 'unit.recordBasis',
-      pick: [
-        'HUMAN_OBSERVATION_UNSPECIFIED',
-        'PRESERVED_SPECIMEN'
-      ],
+      field: 'unit.superRecordBasis',
       filter: 'recordBasis',
       type: 'array',
       selected:[]
