@@ -62,6 +62,10 @@ import {UserService} from "./shared/service/user.service";
 import {PersonTokenApi} from "./shared/api/PersonTokenApi";
 import {PersonApi} from "./shared/api/PersonApi";
 import {WarehouseApi} from "./shared/api/WarehouseApi";
+import {WarehouseValueMappingService} from "./shared/service/warehouse-value-mapping.service";
+import {TriplestoreLabelService} from "./shared/service/triplestore-label.service";
+import {MetadataApi} from "./shared/api/MetadataApi";
+import {DatePickerComponent} from "./shared/datepicker/datepicker.component";
 
 
 @NgModule({
@@ -80,7 +84,8 @@ import {WarehouseApi} from "./shared/api/WarehouseApi";
     UserLogoutComponent, NewsComponent, InformationComponent, HaSeKaComponent,
     HaSeKaFormComponent, HaSeKaFormListComponent, ShortDocumentComponent,
     UsersLatestComponent, PanelComponent, ImageGalleryComponent, LajiFormComponent,
-    TaxonComponent, CollectionComponent, ObservationComponent,LabelPipe
+    TaxonComponent, CollectionComponent, ObservationComponent,DatePickerComponent,
+    LabelPipe
   ],
   imports: [
     BrowserModule, FormsModule, HttpModule,
@@ -91,6 +96,7 @@ import {WarehouseApi} from "./shared/api/WarehouseApi";
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     UserService, PersonTokenApi, PersonApi, WarehouseApi,
+    WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
     appRoutingProviders
   ],
   bootstrap: [

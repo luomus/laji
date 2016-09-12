@@ -101,7 +101,6 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
                 if (this.linkPicker) {
                   link = this.linkPicker(item.aggregateBy);
                 }
-                console.log(link);
                 return {count: item.count, value: value, link: link};
               });
           }

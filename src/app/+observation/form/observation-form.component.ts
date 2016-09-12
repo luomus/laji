@@ -23,7 +23,7 @@ import {IdService} from "../../shared/service/id.service";
 })
 export class ObservationFormComponent implements OnInit {
 
-  @Input() tab:string;
+  @Input() activeTab:string;
 
   public limit = 10;
   public formQuery:ObservationFormQuery;

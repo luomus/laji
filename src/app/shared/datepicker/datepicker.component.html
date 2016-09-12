@@ -2,13 +2,12 @@
   <input type="text"
          class="ng-datepicker-input form-control input-sm"
          [(ngModel)]="value"
-         [hidden]="isStatic"
          name="{{name}}">
-  <span *ngIf="viewValue !== ''" class="input-group-addon link clear" (click)="clear()">x</span>
-  <span class="input-group-addon link" (click)="openDatepicker()"><i class="glyphicon glyphicon-calendar"></i></span>
+  <span *ngIf="viewDate !== ''" class="input-group-addon link clear" (click)="clear()">x</span>
+  <span class="input-group-addon link" (click)="toggle()"><i class="glyphicon glyphicon-calendar"></i></span>
 </div>
 
-<div class="ng-datepicker" *ngIf="isStatic || isOpened" [ngClass]="{ static: isStatic }">
+<div class="ng-datepicker" *ngIf="opened">
   <div class="controls">
     <div class="left">
       <i class="glyphicon glyphicon-backward" (click)="prevYear()"></i>
@@ -16,8 +15,8 @@
       <i class="glyphicon glyphicon-chevron-left" (click)="prevMonth()"></i>
     </div>
     <span class="date">
-        {{ dateValue }}
-      </span>
+      {{ date.format('MMMM YYYY') }}
+    </span>
     <div class="right">
       <i class="glyphicon glyphicon-chevron-right" (click)="nextMonth()"></i>
       &nbsp;
@@ -25,13 +24,17 @@
     </div>
   </div>
   <div class="day-names">
-      <span *ngFor="let dn of dayNames">
-        <span>{{ dn }}</span>
-      </span>
+    <span>Mon</span>
+    <span>Tue</span>
+    <span>Wed</span>
+    <span>Thu</span>
+    <span>Fri</span>
+    <span>Sat</span>
+    <span>Sun</span>
   </div>
   <div class="calendar">
       <span *ngFor="let d of days; let i = index">
-        <span class="day" [ngClass]="{'disabled': !d.enabled, 'selected': isSelected(d)}" (click)="selectDate($event, d)">
+        <span class="day" [ngClass]="{'disabled': !d.enabled, 'selected': d.selected && d.enabled}" (click)="selectDate($event, i)">
           {{ d.day }}
         </span>
       </span>

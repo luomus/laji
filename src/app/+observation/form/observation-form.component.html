@@ -51,22 +51,18 @@
           <div class="form-group">
             <label class="col-md-2 control-label">{{'observation.form.date' | translate}}:</label>
             <div class="col-md-3">
-              <!--
               <laji-datepicker
                 [(ngModel)]="formQuery.timeStart"
-                [view-format]="'DD.MM.YYYY'"
-                [model-format]="warehouseDateFormat"
+                [viewFormat]="'DD.MM.YYYY'"
+                [format]="warehouseDateFormat"
                 name="timeStart"></laji-datepicker>
-              -->
             </div>
             <div class="col-md-3">
-              <!--
               <laji-datepicker
                 [(ngModel)]="formQuery.timeEnd"
-                [view-format]="'DD.MM.YYYY'"
-                [model-format]="warehouseDateFormat"
+                [viewFormat]="'DD.MM.YYYY'"
+                [format]="warehouseDateFormat"
                 name="timeEnd"></laji-datepicker>
-              -->
             </div>
             <div class="col-md-3">
               <div class="btn-group">
@@ -85,13 +81,15 @@
             <button type="button" (click)="empty(true)" class="btn btn-sm btn-default">{{'observation.form.empty' | translate}}</button>
           </div>
         </div>
-        <laji-observation-result [active]="tab"></laji-observation-result>
+        <laji-observation-result [active]="activeTab"></laji-observation-result>
       </div>
     </div>
   </div>
   <div class="col-sm-2">
     <div *ngFor="let filter of filters; let i = index;">
-      <laji-observation-filters [(filters)]="filters[i]" (onSelect)="onFilterSelect($event)"></laji-observation-filters>
+      <laji-observation-filters
+        [filters]="filters[i]"
+        (onSelect)="onFilterSelect($event)"></laji-observation-filters>
     </div>
     <div class="row">
       <div class="col-sm-12">
