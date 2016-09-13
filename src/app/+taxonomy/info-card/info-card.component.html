@@ -17,8 +17,8 @@
         </div>
       </div>
     </div>
-    <div [class.col-sm-6]="taxonDescription != null">
-      <div [class.col-sm-4]="taxonDescription == null">
+    <div [class.col-sm-6]="taxonDescription">
+      <div [class.col-sm-4]="!taxonDescription">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">{{ 'taxonomy.images' | translate }}</h4>
@@ -28,7 +28,7 @@
           </div>
         </div>
       </div>
-      <div [class.col-sm-4]="taxonDescription == null">
+      <div [class.col-sm-4]="!taxonDescription">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">{{ 'taxonomy.card' | translate }}</h4>
@@ -38,7 +38,7 @@
           </div>
         </div>
       </div>
-      <div [class.col-sm-4]="taxonDescription == null">
+      <div [class.col-sm-4]="!taxonDescription">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">{{ 'taxonomy.map' | translate }}</h4>

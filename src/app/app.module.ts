@@ -40,6 +40,7 @@ import {InfoCardComponent} from "./+taxonomy/info-card/info-card.component";
 import {TaxonInfoComponent} from "./+taxonomy/info-card/taxon/taxon-info.component";
 import {ParentsComponent} from "./+taxonomy/info-card/parents/parents.component";
 import {ChildrenListComponent} from "./+taxonomy/info-card/children-list/children-list.component";
+import {InformalListBreadcrumbComponent} from "./+taxonomy/informal-list-breadcrumb/informal-list-breadcrumb.component";
 import {InformalListComponent} from "./+taxonomy/informal-list/informal-list.component";
 import {SpeciesListComponent} from "./+taxonomy/species-list/species-list.component";
 import {TreeOfLifeComponent} from "./+taxonomy/tree-of-life/tree-of-life.component";
@@ -79,7 +80,7 @@ import {DatePickerComponent} from "./shared/datepicker/datepicker.component";
     MapComponent, ObservationActiveComponent, ObservationResultComponent,
     LabelPipe, PieChartComponent, ObservationResultListComponent,
     nvD3, ResultListElementComponent, InfoCardComponent, TaxonInfoComponent,
-    ParentsComponent, ChildrenListComponent, InformalListComponent,
+    ParentsComponent, ChildrenListComponent, InformalListBreadcrumbComponent, InformalListComponent,
     SpeciesListComponent, TreeOfLifeComponent, UserComponent, UserLoginComponent,
     UserLogoutComponent, NewsComponent, InformationComponent, HaSeKaComponent,
     HaSeKaFormComponent, HaSeKaFormListComponent, ShortDocumentComponent,

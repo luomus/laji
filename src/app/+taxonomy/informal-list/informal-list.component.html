@@ -1,16 +1,7 @@
-<ul *ngIf="tree">
-  <li *ngFor="let group of tree">
-    <a (click)="onClick(group)">
-      {{group.name}}
-      <span *ngIf="group.hasSubGroup">
-        <i class="glyphicon glyphicon-triangle-right" *ngIf="!group.open"></i>
-        <i class="glyphicon glyphicon-triangle-bottom" *ngIf="group.open"></i>
-      </span>
+<div class="row poks">
+  <div *ngFor="let group of tree" class="col-xs-6 col-md-3">
+    <a href="#" class="thumbnail naks" (click)="onClick(group)">
+      <span class="niks">{{group.name}}</span>
     </a>
-    <div class="children" *ngIf="group.open">
-      <laji-infomal-list
-        [tree]="group.hasSubGroup"
-        (onSelect)="onChildSelect($event)"></laji-infomal-list>
-    </div>
-  </li>
-</ul>
+  </div>
+</div>

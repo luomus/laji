@@ -1,12 +1,11 @@
 <div class="container">
   <h1>Lajit</h1>
-  <div class="row">
-    <div class="col-md-4 informal-group-list">
-      <laji-infomal-list [tree]="tree" (onSelect)="onGroupSelect($event)"></laji-infomal-list>
-    </div>
-    <div class="col-md-6 taxon-list">
-      <laji-species-list [informalGroup]="selectedInformalGroup"></laji-species-list>
-    </div>
+  <div>
+    <laji-informal-list-breadcrumb [groups]="groups" (onSelect)="onBreadcrumSelect($event)"></laji-informal-list-breadcrumb>
+    <laji-informal-list [tree]="selectedInformalGroup ? selectedInformalGroup.hasSubGroup : tree" (onSelect)="onGroupSelect($event)"></laji-informal-list>
+  </div>
+  <div>
+    <laji-species-list *ngIf="selectedInformalGroup" [informalGroup]="selectedInformalGroup"></laji-species-list>
   </div>
   <div class="row">
     <div class="col-md-12">

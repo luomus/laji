@@ -1,0 +1,7 @@
+<ol *ngIf="groups.length > 0" class="breadcrumb">
+  <li><a href="#" (click)="onClick(null)">..</a></li>
+  <li [class.active]="active" *ngFor="let group of groups; let i = index; let active = last;">
+    <a *ngIf="!active" href="#" (click)="onClick(group)">{{group.name}}</a>
+    <span *ngIf="active">{{group.name}}</span>
+  </li>
+</ol>
