@@ -89,4 +89,10 @@ export class InfoCardComponent {
       err => console.error(err)
     )
   }
+
+  setClasses() {
+    return {
+      'col-md-4': this.taxonDescription == null,
+    }
+  }
 }

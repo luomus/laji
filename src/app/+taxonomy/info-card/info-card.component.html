@@ -4,7 +4,7 @@
   </h1>
   <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
   <div class="row">
-    <div class="col-sm-8" *ngIf="taxonDescription">
+    <div class="col-sm-6" *ngIf="taxonDescription">
       <div class="panel-group" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default" *ngFor="let group of taxonDescription.groups; let i = index" [title]="group.title" [open]="activePanel == i"
           [index]="i" (activate)="setActive($event)" laji-panel>
@@ -17,8 +17,8 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-4">
-      <div class="panel-group" role="tablist" aria-multiselectable="true">
+    <div [class.col-sm-6]="taxonDescription != null">
+      <div [class.col-sm-4]="taxonDescription == null">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">{{ 'taxonomy.images' | translate }}</h4>
@@ -27,6 +27,8 @@
             <laji-image-gallery [(activeImage)]="activeImage" [images]="taxonImages"></laji-image-gallery>
           </div>
         </div>
+      </div>
+      <div [class.col-sm-4]="taxonDescription == null">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">{{ 'taxonomy.card' | translate }}</h4>
@@ -35,17 +37,14 @@
             <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
           </div>
         </div>
+      </div>
+      <div [class.col-sm-4]="taxonDescription == null">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">{{ 'taxonomy.map' | translate }}</h4>
           </div>
           <div class="panel-body">
-            <laji-observation-map
-              [color]="'#009900'"
-              [query]="{taxonId: [taxon.id], counteryId: ['ML.206']}"
-              [height]="300"
-              [disableSelect]="true"
-            >
+            <laji-observation-map [color]="'#009900'" [query]="{taxonId: [taxon.id], counteryId: ['ML.206']}" [height]="300" [disableSelect]="true">
             </laji-observation-map>
           </div>
         </div>

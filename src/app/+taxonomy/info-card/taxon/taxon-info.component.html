@@ -1,9 +1,6 @@
-<table class="table table-condensed naks" *ngIf="taxon">
+<table class="table table-condensed" *ngIf="taxon">
   <tbody>
-  <tr>
-    <th class="plop">{{ 'taxonomy.card.id' | translate }}</th>
-    <td class="plop">{{taxon.id}}</td>
-  </tr>
+  
   <tr>
     <th>{{ 'taxonomy.scientific.name' | translate }}</th>
     <td>{{taxon.scientificName}}</td>
@@ -11,6 +8,10 @@
   <tr>
     <th>{{ 'taxonomy.author' | translate }}</th>
     <td>{{taxon.scientificNameAuthorship}}</td>
+  </tr>
+  <tr *ngIf="taxon.vernacularName">
+    <th>{{ 'taxonomy.vernacular.name' | translate }}</th>
+    <td>{{taxon.vernacularName}}</td>
   </tr>
   <tr *ngIf="taxon.invasiveSpeciesCategory">
     <th>
@@ -23,39 +24,23 @@
         <tbody>
         <tr>
           <th>{{ 'taxonomy.invasive.category' | translate }}</th>
-          <td></td>
-        </tr>
-        <tr>
-          <th>{{ 'taxonomy.invasive.establishment' | translate }}</th>
-          <td></td>
+          <td>{{taxon.invasiveSpeciesCategory | label}}</td>
         </tr>
         </tbody>
       </table>
     </td>
   </tr>
-  <tr>
+  <tr *ngIf="taxon.hasAdminStatus">
+    <th>{{ 'taxonomy.administrative.statuses' | translate  }}</th>
+    <td>{{taxon.hasAdminStatus.join(', ')}}
+  </tr>
+  <tr *ngIf="taxon.redListStatus2010Finland">
     <th>{{ 'taxonomy.redListStatus2010Finland' | translate }}</th>
-    <td id="graphics">
-      <!--
-      <IucnElement width={this.state.graphics.width} height={60}
-                   selected={this.props.data.redListStatus2010Finland.qname.slice(-2)} />
-                   -->
-      <br />
-
-    </td>
+    <td>{{taxon.redListStatus2010Finland | label}}</td>
   </tr>
   <tr>
-    <th>{{ 'taxonomy.checklist' | translate }}</th>
-    <td></td>
-  </tr>
-  <tr>
-    <th>
-      <!--
-      <FormattedMessage id="experts" values={{ experts: this.props.data.experts.length }} />
-      -->
-    </th>
-    <td>
-    </td>
+    <th>{{ 'taxonomy.card.id' | translate }}</th>
+    <td><a href="//tun.fi/{{taxon.id}}">tun.fi/{{taxon.id}}</a></td>
   </tr>
   </tbody>
 </table>
