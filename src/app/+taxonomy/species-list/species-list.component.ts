@@ -5,6 +5,7 @@ import {TaxonomyApi} from "../../shared/api/TaxonomyApi";
 import {Taxonomy} from "../../shared/model/Taxonomy";
 import {TranslateService} from "ng2-translate";
 import {PagedResult} from "../../shared/model/PagedResult";
+import {InformalTaxonGroup} from "../../shared";
 
 
 @Component({
@@ -14,7 +15,7 @@ import {PagedResult} from "../../shared/model/PagedResult";
 })
 export class SpeciesListComponent implements OnChanges {
 
-  @Input() informalGroup;
+  @Input() informalGroup:InformalTaxonGroup;
 
   loading:boolean = false;
   speciesPage:PagedResult<Taxonomy[]>;
@@ -42,10 +43,9 @@ export class SpeciesListComponent implements OnChanges {
       this.subFetch.unsubscribe();
     }
     this.subFetch = this.taxonomyService
-      .taxonomyFindSpecies(
-        'MX.37600',
+      .taxonomyFindSpecies('MX.37600',
         this.translate.currentLang,
-        this.informalGroup
+        this.informalGroup.id
       )
       .subscribe(
         data => {
