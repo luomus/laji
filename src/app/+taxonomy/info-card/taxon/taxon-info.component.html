@@ -1,6 +1,5 @@
 <table class="table table-condensed" *ngIf="taxon">
   <tbody>
-  
   <tr>
     <th>{{ 'taxonomy.scientific.name' | translate }}</th>
     <td>{{taxon.scientificName}}</td>
@@ -32,7 +31,9 @@
   </tr>
   <tr *ngIf="taxon.administrativeStatuses">
     <th>{{ 'taxonomy.administrative.statuses' | translate  }}</th>
-    <td>{{taxon.administrativeStatuses.join(', ')}}
+    <td>
+      <span *ngFor="let status of taxon.administrativeStatuses">{{ status | label }}, </span>
+    </td>
   </tr>
   <tr *ngIf="taxon.redListStatus2010Finland">
     <th>{{ 'taxonomy.redListStatus2010Finland' | translate }}</th>
