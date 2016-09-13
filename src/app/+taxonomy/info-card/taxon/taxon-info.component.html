@@ -30,9 +30,9 @@
       </table>
     </td>
   </tr>
-  <tr *ngIf="taxon.hasAdminStatus">
+  <tr *ngIf="taxon.administrativeStatuses">
     <th>{{ 'taxonomy.administrative.statuses' | translate  }}</th>
-    <td>{{taxon.hasAdminStatus.join(', ')}}
+    <td>{{taxon.administrativeStatuses.join(', ')}}
   </tr>
   <tr *ngIf="taxon.redListStatus2010Finland">
     <th>{{ 'taxonomy.redListStatus2010Finland' | translate }}</th>
