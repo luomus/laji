@@ -16,7 +16,7 @@ export class TriplestoreLabelService {
     private translate: TranslateService
   ) {
     this.translate.onLangChange.subscribe(
-      lang => {
+      _ => {
         this.labels = null;
         this.getLang(this.translate.currentLang);
       }
@@ -32,7 +32,9 @@ export class TriplestoreLabelService {
       this.metadataService.metadataFindAllRanges(lang, true),
       this.metadataService.metadataAllProperties(lang),
       this.metadataService.metadataAllClasses(lang)
-    ).share();
+    )
+      .map(data => this.parseResult(data))
+      .share();
     this.currentLang = lang;
   }
 
@@ -46,8 +48,7 @@ export class TriplestoreLabelService {
           observer.complete();
         };
         this.pending.subscribe(
-          (res: any) => {
-            this.parseResult(res);
+          (_: any) => {
             onComplete(this.labels[key]);
           },
           err => console.log(err)

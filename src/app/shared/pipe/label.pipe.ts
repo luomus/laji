@@ -26,17 +26,19 @@ export class LabelPipe implements PipeTransform, OnDestroy {
   ) {
   }
 
-  updateValue(key: string, mapWarehouse:boolean = true): void {
+  updateValue(key: string, mapWarehouse:boolean = false): void {
     if (mapWarehouse) {
-      this.warehouseService.get(key).subscribe((res: string) => {
-        if (res) {
-          this._updateValue(res);
-        } else {
-          this.value = key;
-          this.lastKey = key;
-          this._ref.markForCheck();
+      this.warehouseService.get(key).subscribe(
+        (res: string) => {
+          if (res) {
+            this._updateValue(res);
+          } else {
+            this.value = key;
+            this.lastKey = key;
+            this._ref.markForCheck();
+          }
         }
-      })
+      )
     } else {
       this._updateValue(key)
     }
@@ -59,7 +61,6 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     if(value === this.lastKey) {
       return this.value;
     }
-
     // store the query, in case it changes
     this.lastKey = value;
 
