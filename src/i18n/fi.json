@@ -98,6 +98,12 @@
   "observation.form.search": "Hae",
   "observation.form.empty": "Tyhjennä rajaukset",
   "observation.form.more": "Lisää hakuehtoja",
+  "observation.form.countMin": "Yksilömäärä min",
+  "observation.form.countMax": "max",
+  "observation.form.lifeStage": "Elinvaihe",
+  "observation.form.sex": "Sukupuoli",
+  "observation.form.administrativeStatus": "administrativestatus",
+  "observation.form.redListStatusId": "Uhanalaisuus",
 
   "observation.results.title": "Havaintohaku",
   "observation.results.observation": "osumaa",

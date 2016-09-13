@@ -1,0 +1,7 @@
+<select class="form-control input-sm"
+        [(ngModel)]="value"
+        (blur)="onBlur()">
+  <option value=""></option>
+  <option *ngFor="let option of options"
+          [value]="option">{{option | label}}</option>
+</select>

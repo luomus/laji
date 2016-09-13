@@ -127,7 +127,7 @@ export class InformalTaxonGroupApi {
      * @param page Page number
      * @param pageSize Page size
      */
-    public informalTaxonGroupFindRoots (lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<Array<models.InformalTaxonGroup>>> {
+    public informalTaxonGroupFindRoots (lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<models.InformalTaxonGroup>> {
         const path = this.basePath + '/informal-taxon-groups/roots';
 
         let queryParameters = new URLSearchParams();

@@ -1914,7 +1914,7 @@ body .laji-form {
   width: 0px;
 }
 
-.laji-form input[type=text], select {
+.laji-form input[type=text], .laji-form select {
   border-radius: 2px !important;
   padding: 0px 5px;
   height: 25px !important;

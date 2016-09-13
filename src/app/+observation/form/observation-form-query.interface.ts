@@ -5,4 +5,10 @@ export interface ObservationFormQuery {
   timeStart: string;
   timeEnd: string;
   informalTaxonGroupId: string;
+  individualCountMin:string;
+  individualCountMax:string;
+  administrativeStatusId:string;
+  redListStatusId:string;
+  lifeStage:string;
+  sex:string;
 }

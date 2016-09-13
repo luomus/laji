@@ -1,0 +1,25 @@
+.informal-group-container {
+  position: absolute;
+  z-index: 9999;
+  width:500px;
+  right:0;
+  background: #ffffff;
+  border: 1px solid #e3e3e3;
+  margin:0 10px 10px 10px;
+}
+
+.informal-group-container .item {
+  padding-top: 7px;
+  height: 35px;
+  border-left: 1px solid #e3e3e3;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.informal-group-container .item:hover {
+  background-color: #f5f5f5;
+}
+
+.informal-group-container .item.active {
+  border: 1px solid #66afe9;
+  background-color: #f1f4ff;
+}

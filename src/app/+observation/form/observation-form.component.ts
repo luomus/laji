@@ -31,6 +31,7 @@ export class ObservationFormComponent implements OnInit {
   public typeaheadLoading:boolean = false;
   public warehouseDateFormat = DATE_FORMAT;
   public showFilter = false;
+  public loadFilters = true;
 
   private subUpdate:Subscription;
 
@@ -76,11 +77,14 @@ export class ObservationFormComponent implements OnInit {
     }
   ];
 
+  public lifeStages = ['ADULT','JUVENILE','EGG','TADPOLE','PUPA','NYMPH','SUBIMAGO','LARVA','SNAG','SEED','LIVE_PLANT'];
+  public sexes = ['MALE','FEMALE','WORKER'];
+
   constructor(
     public searchQuery: SearchQuery,
     private location:Location,
     private autocompleteService:AutocompleteApi,
-    private translate: TranslateService,
+    public translate: TranslateService,
     public collectionService: CollectionApi
   ) {
     this.dataSource = Observable.create((observer:any) => {
@@ -137,7 +141,13 @@ export class ObservationFormComponent implements OnInit {
       taxon:'',
       timeStart:'',
       timeEnd:'',
-      informalTaxonGroupId:''
+      informalTaxonGroupId:'',
+      individualCountMin:'',
+      individualCountMax:'',
+      sex:'',
+      lifeStage:'',
+      redListStatusId:'',
+      administrativeStatusId:''
     };
     this.filters.map((filter, idx) => {
       this.filters[idx]['selected'] = [];
@@ -148,6 +158,7 @@ export class ObservationFormComponent implements OnInit {
   }
 
   toggleFilters() {
+    this.loadFilters = true;
     this.showFilter = !this.showFilter;
   }
 
@@ -158,7 +169,13 @@ export class ObservationFormComponent implements OnInit {
       timeStart: time[0] || '',
       timeEnd: time[1] || '',
       informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
-        query.informalTaxonGroupId[0] : ''
+        query.informalTaxonGroupId[0] : '',
+      individualCountMin: '' + query.individualCountMin,
+      individualCountMax: '' + query.individualCountMax,
+      sex: query.sex && query.sex[0] ? query.sex[0] : '',
+      lifeStage: query.lifeStage && query.lifeStage[0] ? query.lifeStage[0] : '',
+      redListStatusId: query.redListStatusId && query.redListStatusId[0] ? query.redListStatusId[0] : '',
+      administrativeStatusId: query.administrativeStatusId && query.administrativeStatusId[0] ? query.administrativeStatusId[0] : ''
     };
     this.filters.map((filterSet, idx) => {
       let queryFilter = filterSet.filter;
@@ -198,6 +215,12 @@ export class ObservationFormComponent implements OnInit {
       [time] : undefined;
     query.informalTaxonGroupId = formQuery.informalTaxonGroupId ?
       [formQuery.informalTaxonGroupId] : undefined;
+    query.individualCountMin = +formQuery.individualCountMin || undefined;
+    query.individualCountMax = +formQuery.individualCountMax || undefined;
+    query.sex = formQuery.sex ? [formQuery.sex] : undefined;
+    query.lifeStage = formQuery.lifeStage ? [formQuery.lifeStage] : undefined;
+    query.redListStatusId = formQuery.redListStatusId ? [formQuery.redListStatusId] : undefined;
+    query.administrativeStatusId = formQuery.administrativeStatusId ? [formQuery.administrativeStatusId] : undefined;
 
     this.filters.map((filterSet) => {
       let queryFilter = filterSet.filter;
@@ -266,8 +289,11 @@ export class ObservationFormComponent implements OnInit {
     this.typeaheadLoading = e;
   }
 
-  public typeaheadOnSelect(e:any):void {
-    console.log('Selected value: ',e.item);
+  public getTaxonGroup(obj:any, field, join = ' ') {
+    if (obj.informalTaxonGroups) {
+      return obj.informalTaxonGroups.map(group => group[field]).join(join)
+    }
+    return '';
   }
 
 }

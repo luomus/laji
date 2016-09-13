@@ -1,5 +1,4 @@
-import {NgModule} from '@angular/core'
-import {RouterModule} from "@angular/router";
+import {NgModule} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {BrowserModule} from "@angular/platform-browser";
 import {HttpModule} from "@angular/http";
@@ -66,12 +65,16 @@ import {WarehouseValueMappingService} from "./shared/service/warehouse-value-map
 import {TriplestoreLabelService} from "./shared/service/triplestore-label.service";
 import {MetadataApi} from "./shared/api/MetadataApi";
 import {DatePickerComponent} from "./shared/datepicker/datepicker.component";
+import {MetadataSelectComponent} from "./shared/metadata-select/metadata-select.component";
+import {WarehouseSelectComponent} from "./shared/warehouse-select/warehouse-select.component";
+import {ObservationGroupSelectComponent} from "./+observation/group-select/group-select.component";
 
 
 @NgModule({
   declarations: [
     AppComponent, NavbarComponent, FooterComponent, LangSelectComponent,
     HomeComponent, ImageHeaderComponent, OmniSearchComponent,
+    ObservationGroupSelectComponent,
     ObservationCountComponent, ObservationMapComponent, NavigationThumbnailComponent,
     NewsListComponent, ObservationHeaderComponent, ObservationFormComponent,
     ObservationAggregateComponent, ObservationChartComponent, ObservationFilterComponent,
@@ -85,7 +88,7 @@ import {DatePickerComponent} from "./shared/datepicker/datepicker.component";
     HaSeKaFormComponent, HaSeKaFormListComponent, ShortDocumentComponent,
     UsersLatestComponent, PanelComponent, ImageGalleryComponent, LajiFormComponent,
     TaxonComponent, CollectionComponent, ObservationComponent,DatePickerComponent,
-    LabelPipe
+    LabelPipe,MetadataSelectComponent, WarehouseSelectComponent,
   ],
   imports: [
     BrowserModule, FormsModule, HttpModule,
