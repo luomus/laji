@@ -5,6 +5,7 @@ import {Location} from "@angular/common";
 import {WarehouseApi, PagedResult} from "../../shared";
 import {ValueDecoratorService} from './value-decorator.sevice';
 import {SearchQuery} from "../search-query.model";
+import {Util} from "../../shared/service/util.service";
 
 @Component({
   selector: 'laji-observation-result-list',
@@ -76,9 +77,14 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
+    let query = Util.clone(this.searchQuery.query);
+    if (Object.keys(query).length === 0) {
+      query.includeNonValidTaxa = false;
+    }
+
     this.subFetch = this.warehouseService
       .warehouseQueryListGet(
-        this.searchQuery.query,
+        query,
         this.searchQuery.selected,
         this.searchQuery.orderBy,
         this.searchQuery.pageSize,

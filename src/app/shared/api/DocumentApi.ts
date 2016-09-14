@@ -203,7 +203,6 @@ export class DocumentApi {
             search: queryParameters
         };
         requestOptions.body = JSON.stringify(data);
-        console.log(requestOptions);
 
         return this.http.request(path, requestOptions)
             .map((response: Response) => {

@@ -3,7 +3,7 @@ export const DATE_FORMAT = 'YYYY-MM-DD';
 /**
  * Query interface for warehouse
  *
- * @property includeNonValidTaxons By default, query results include also entries where target name does not match taxonomy. To get only entries where one and only one taxon matches given target name, set this parameter to false.
+ * @property includeNonValidTaxa By default, query results include also entries where target name does not match taxonomy. To get only entries where one and only one taxon matches given target name, set this parameter to false.
  * @property taxonId Filter based on URI or Qname identifier of a taxon. Use Taxonomy-API to find identifiers. Will only return entries where reported target name matches one of the names given to this and only this taxon. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times. When multiple values are given, this is an OR search.
  * @property target Same as taxon, but system resolves identifier of the taxon based on the given target name.  Will only return entries where reported target name matches one of the names given to a taxa and only that taxa. If no such match can be resolved (name does not exist in taxonomy), will filter based on the given verbatim target name (case insensitive). Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times. When multiple values are given, this is an OR search.
  * @property informalTaxonGroupId Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries of taxons that belong to the groups. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times. When multiple values are given, this is an OR search.
@@ -40,7 +40,7 @@ export const DATE_FORMAT = 'YYYY-MM-DD';
  * @property editorId Filter based on \&quot;owner\&quot; of records. Only available in private-query-API. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times. When multiple values are given, this is an OR search.
  */
 export interface WarehouseQueryInterface {
-  includeNonValidTaxons?: boolean;
+  includeNonValidTaxa?: boolean;
   taxonId?: Array<string>;
   target?: Array<string>;
   taxonRank?: string;
