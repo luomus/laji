@@ -126,5 +126,12 @@
   "haseka.forms.title": "Lomakeet",
   "haseka.form.success": "Havainnot tallennettu!",
   "haseka.form.failure": "Tallennus epäonnistui!",
-  "haseka.latest.title": "Viimeisimmät ilmoitukseni"
+  "haseka.latest.title": "Viimeisimmät ilmoitukseni",
+
+  "omniSearch.matches": "Tietoa lajista",
+  "omniSearch.rank": "taksonominen taso",
+  "omniSearch.rank": "taksonominen taso",
+  "omniSearch.groups": "muoto ryhmät",
+  "omniSearch.allObservation": "havaintoa"
+
 }

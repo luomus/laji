@@ -1,7 +1,7 @@
 .informal-group-container {
   position: absolute;
   z-index: 9999;
-  width:500px;
+  width:550px;
   right:0;
   background: #ffffff;
   border: 1px solid #e3e3e3;
@@ -10,9 +10,12 @@
 
 .informal-group-container .item {
   padding-top: 7px;
-  height: 35px;
+  height: 40px;
   border-left: 1px solid #e3e3e3;
   border-bottom: 1px solid #e3e3e3;
+  background-size: auto 35px;
+  background-position: center left;
+  padding-left: 35px;
 }
 
 .informal-group-container .item:hover {

@@ -19,7 +19,7 @@ import {IdService} from "../../shared/service/id.service";
 @Component({
   selector: 'laji-observation-form',
   templateUrl: 'observation-form.component.html',
-  providers: [AutocompleteApi,CollectionApi]
+  providers: [CollectionApi]
 })
 export class ObservationFormComponent implements OnInit {
 

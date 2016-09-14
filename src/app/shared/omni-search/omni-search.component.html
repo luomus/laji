@@ -1,12 +1,55 @@
-<div class="form-group">
+<div class="form-group" (keyup)="keyEvent($event)">
   <label class="sr-only" for="search-box">Search</label>
-  <div class="input-group">
-    <input type="text" class="form-control" id="search-box"
+  <div class="input-group" [ngClass]="{'input-group': search.length > 0}">
+    <input type="text"
+           class="form-control"
+           id="search-box"
+           [ngClass]="{loading: loading}"
+           [value]="search"
+           [formControl]="searchControl"
            placeholder="{{placeholder}}" autoComplete="off"/>
-    <span class="input-group-btn">
-      <button class="btn btn-default" type="button">
-        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+    <span class="input-group-btn" *ngIf="search.length > 0">
+      <button class="btn btn-default" type="button" (click)="close()">
+        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
       </button>
     </span>
+  </div>
+  <div class="omni-search-results" *ngIf="taxa.length > 0">
+    <div class="row" *ngIf="getActive()">
+      <div class="col-md-3 matches">
+        <h5
+          class="match"
+          *ngFor="let taxon of taxa; let i=index"
+          [ngClass]="{active: i === active, link: i !== active}"
+          (click)="activate(i)">
+          {{taxon.value}}
+        </h5>
+      </div>
+      <div class="col-md-5 first-col">
+        {{'omniSearch.matches' | translate}}
+        <div class="row">
+          <div class="col-md-12 taxon-match informal-group-image {{getClass()}}">
+            <a [routerLink]="['/taxon/' + getActive().key]"><span class="vernacularName" *ngIf="taxon">{{taxon.vernacularName}}</span></a><br>
+            <a [routerLink]="['/taxon/' + getActive().key]"><span class="scientificName {{getActive().payload.taxonRank}}">{{getActive().payload.scientificName}}</span></a><br>
+            {{'omniSearch.rank'|translate}}: {{getActive().payload.taxonRank | label}}<br>
+            {{'omniSearch.groups'|translate}}:<br>
+            <ul>
+              <li *ngFor="let group of getGroups()">{{group}}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 second-col">
+        {{ 'navigation.observation' | translate }}
+        <div class="row">
+          <div class="col-md-offset-1 col-md-11 observations" *ngIf="getActive()">
+            <!--<laji-observation-count [query]="{taxonId:[getActive().key], counteryId: ['ML.206']}"></laji-observation-count>{{'omniSearch.finnish-observation'|translate}}<br>-->
+            <a [routerLink]="['/observation', {target: getActive().payload.scientificName}]">
+              <laji-observation-count [query]="{taxonId:[getActive().key]}"></laji-observation-count>{{'omniSearch.allObservation'|translate}}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

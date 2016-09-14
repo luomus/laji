@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserModule} from "@angular/platform-browser";
 import {HttpModule} from "@angular/http";
 import {LocationStrategy, PathLocationStrategy} from '@angular/common';
@@ -69,6 +69,7 @@ import {DatePickerComponent} from "./shared/datepicker/datepicker.component";
 import {MetadataSelectComponent} from "./shared/metadata-select/metadata-select.component";
 import {WarehouseSelectComponent} from "./shared/warehouse-select/warehouse-select.component";
 import {ObservationGroupSelectComponent} from "./+observation/group-select/group-select.component";
+import {AutocompleteApi} from "./shared/api/AutocompleteApi";
 
 
 @NgModule({
@@ -92,7 +93,7 @@ import {ObservationGroupSelectComponent} from "./+observation/group-select/group
     LabelPipe,MetadataSelectComponent, WarehouseSelectComponent,
   ],
   imports: [
-    BrowserModule, FormsModule, HttpModule,
+    BrowserModule, FormsModule, ReactiveFormsModule, HttpModule,
     TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule,
     routing,
     TranslateModule.forRoot()
@@ -101,7 +102,7 @@ import {ObservationGroupSelectComponent} from "./+observation/group-select/group
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     UserService, PersonTokenApi, PersonApi, WarehouseApi,
     WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
-    appRoutingProviders
+    appRoutingProviders, AutocompleteApi
   ],
   bootstrap: [
     AppComponent

@@ -1,0 +1,49 @@
+.omni-search-results {
+  position: absolute;
+  left: 0;
+  right: 1px;
+  background-color: #ffffff;
+  padding: 5px;
+  z-index: 9999;
+  border-right: 1px solid #999;
+  border-left: 1px solid #999;
+  border-bottom: 1px solid #999;
+  color: #aaa;
+}
+
+.omni-search-results .first-col {
+  border-left: 1px solid #999;
+}
+.omni-search-results .matches .active {
+  color: #2C3E50;
+  font-weight: bold;
+}
+.omni-search-results .MX\.species {
+  font-style: italic;
+}
+
+.taxon-match {
+  padding-left: 65px;
+}
+
+.btn-default {
+  border-left-color: #fff;
+}
+
+.btn-default:hover {
+  border-left-color: #fff;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  color: #b40003;
+}
+
+.omni-search-results .taxon-match, .omni-search-results .observations {
+  color: #2c2c2c;
+}
+
+.omni-search-results .informal-group-image {
+  background-size: auto 65px;
+  background-position: top left;
+}

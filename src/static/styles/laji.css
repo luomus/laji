@@ -69,4 +69,57 @@ body {
 }
 /** /taxon tree **/
 
+/** informal taxon groups **/
+.informal-group-image {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100% auto;
+}
+
+.informal-group-image.MVL\.1 {
+  background-image: url('/static/images/informalGroups/MVL.1.svg');
+}
+
+.informal-group-image.MVL\.2 {
+  background-image: url('/static/images/informalGroups/MVL.2.svg');
+}
+
+.informal-group-image.MVL\.21 {
+  background-image: url('/static/images/informalGroups/MVL.21.svg');
+}
+
+.informal-group-image.MVL\.22 {
+  background-image: url('/static/images/informalGroups/MVL.22.svg');
+}
+
+.informal-group-image.MVL\.26 {
+  background-image: url('/static/images/informalGroups/MVL.26.svg');
+}
+
+.informal-group-image.MVL\.27 {
+  background-image: url('/static/images/informalGroups/MVL.27.svg');
+}
+
+.informal-group-image.MVL\.37 {
+  background-image: url('/static/images/informalGroups/MVL.37.svg');
+}
+
+.informal-group-image.MVL\.39 {
+  background-image: url('/static/images/informalGroups/MVL.39.svg');
+}
+
+.informal-group-image.MVL\.40 {
+  background-image: url('/static/images/informalGroups/MVL.40.svg');
+}
+
+.informal-group-image.MVL\.232 {
+  background-image: url('/static/images/informalGroups/MVL.232.svg');
+}
+
+.informal-group-image.MVL\.233 {
+  background-image: url('/static/images/informalGroups/MVL.233.svg');
+}
+
+/** /informal taxon groups **/
+
 

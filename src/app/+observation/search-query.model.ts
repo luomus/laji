@@ -184,7 +184,7 @@ export class SearchQuery {
 
   public updateUrl(location:Location, path?:string, skipParams?:string[]):void {
     if (!path) {
-      path = location.path(false).split('?')[0];
+      path = location.path(false).split('?')[0].split(';')[0];
     }
     let query = this.getQueryString(undefined, skipParams).toString();
     query = query.length > 0 ? '?' + query : '';
