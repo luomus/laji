@@ -105,6 +105,7 @@ export class OmniSearchComponent implements OnInit, OnChanges {
       this.subTaxon.unsubscribe();
     }
     if (this.search.length < 4) {
+      this.loading = false;
       return;
     }
     this.loading = true;
