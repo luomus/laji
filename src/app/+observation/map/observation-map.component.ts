@@ -55,9 +55,6 @@ export class ObservationMapComponent implements OnInit {
 
   private updateMapData() {
     let query = Util.clone(this.query);
-    if (query.coordinates) {
-      delete query.coordinates;
-    }
     let cacheKey = JSON.stringify(query);
     if (this.prev === cacheKey) {
       return;

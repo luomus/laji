@@ -1,6 +1,6 @@
 <div class="form-group" (keyup)="keyEvent($event)">
   <label class="sr-only" for="search-box">Search</label>
-  <div class="input-group" [ngClass]="{'input-group': search.length > 0}">
+  <div class="input-group input-group">
     <input type="text"
            class="form-control"
            id="search-box"
@@ -8,9 +8,15 @@
            [value]="search"
            [formControl]="searchControl"
            placeholder="{{placeholder}}" autoComplete="off"/>
-    <span class="input-group-btn" *ngIf="search.length > 0">
+    <span class="input-group-btn">
       <button class="btn btn-default" type="button" (click)="close()">
-        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+        <span
+          [ngClass]="{
+            'glyphicon-search': search.length == 0,
+            'glyphicon-remove-circle': search.length > 0
+          }"
+          class="glyphicon glyphicon-remove-circle"
+          aria-hidden="true"></span>
       </button>
     </span>
   </div>

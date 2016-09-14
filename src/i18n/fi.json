@@ -119,7 +119,8 @@
   "observation.active.coordinates": "paikalla",
   "observation.active.collection": "aineistolla",
   "observation.active.recordBasis": "havainnon tyypillä",
-  "observation.active.informalTaxonGroup": "lajiryhmällä",
+  "observation.active.informalTaxonGroup": "Lajiryhmällä",
+  "observation.active.informalTaxonGroupAll": "kaikilla",
 
 
   "haseka.title": "Havainto ilmoitin",
