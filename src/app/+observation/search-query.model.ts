@@ -45,7 +45,7 @@ export class SearchQuery {
   ];
 
   booleanTypes = [
-    'validTaxa',
+    'includeNonValidTaxa',
     'finnish',
     'invasive',
     'typeSpecimen',

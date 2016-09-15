@@ -96,7 +96,7 @@
   "observation.form.preservedSpecimens": "Kokoelmanäytteitä",
   "observation.form.typeSpecimen": "vain tyyppinäytteet",
   "observation.form.invasive": "vain invasive",
-  "observation.form.includeNonValidTaxa": "tunnetut lajit",
+  "observation.form.includeNonValidTaxa": "myös ei tunnetut lajit",
   "observation.form.search": "Hae",
   "observation.form.empty": "Tyhjennä rajaukset",
   "observation.form.more": "Lisää hakuehtoja",

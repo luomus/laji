@@ -9,7 +9,7 @@ export interface ObservationFormQuery {
   redListStatusId:string;
   lifeStage:string;
   sex:string;
-  validTaxa:boolean;
+  includeNonValidTaxa:boolean;
   invasive:boolean;
   typeSpecimen:boolean;
   hasMedia:boolean;

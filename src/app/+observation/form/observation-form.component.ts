@@ -151,7 +151,7 @@ export class ObservationFormComponent implements OnInit {
       lifeStage:'',
       redListStatusId:'',
       administrativeStatusId:'',
-      validTaxa:false,
+      includeNonValidTaxa:false,
       hasMedia:false,
       invasive:false,
       typeSpecimen:false
@@ -183,7 +183,7 @@ export class ObservationFormComponent implements OnInit {
       lifeStage: query.lifeStage && query.lifeStage[0] ? query.lifeStage[0] : '',
       redListStatusId: query.redListStatusId && query.redListStatusId[0] ? query.redListStatusId[0] : '',
       administrativeStatusId: query.administrativeStatusId && query.administrativeStatusId[0] ? query.administrativeStatusId[0] : '',
-      validTaxa: query.includeNonValidTaxa,
+      includeNonValidTaxa: query.includeNonValidTaxa,
       invasive: query.invasive,
       typeSpecimen: query.typeSpecimen,
       hasMedia: query.hasMedia
@@ -234,7 +234,7 @@ export class ObservationFormComponent implements OnInit {
     query.administrativeStatusId = formQuery.administrativeStatusId ? [formQuery.administrativeStatusId] : undefined;
     query.invasive = formQuery.invasive || undefined;
     query.typeSpecimen = formQuery.typeSpecimen || undefined;
-    query.includeNonValidTaxa = formQuery.validTaxa ? undefined : true;
+    query.includeNonValidTaxa = formQuery.includeNonValidTaxa || undefined;
     query.hasMedia = formQuery.hasMedia || undefined;
 
     this.filters.map((filterSet) => {
@@ -288,7 +288,7 @@ export class ObservationFormComponent implements OnInit {
     this.searchQuery.updateUrl(this.location, undefined, [
       'selected',
       'pageSize',
-      'validTaxa'
+      'includeNonValidTaxa'
     ]);
     if (updateQuery) {
       this.searchQuery.queryUpdate({});
