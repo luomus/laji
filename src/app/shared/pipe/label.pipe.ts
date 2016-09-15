@@ -28,13 +28,12 @@ export class LabelPipe implements PipeTransform, OnDestroy {
 
   updateValue(key: string, mapWarehouse:boolean = false): void {
     if (mapWarehouse) {
-      this.warehouseService.get(key).subscribe(
+      this.warehouseService.getOriginalKey(key).subscribe(
         (res: string) => {
           if (res) {
             this._updateValue(res);
           } else {
             this.value = key;
-            this.lastKey = key;
             this._ref.markForCheck();
           }
         }
@@ -48,7 +47,6 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     this.triplestoreLabelService.get(key)
       .subscribe((res:string) => {
         this.value = res ? res : key;
-        this.lastKey = key;
         this._ref.markForCheck();
       });
   }
