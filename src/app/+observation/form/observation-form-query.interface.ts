@@ -1,5 +1,3 @@
-import {FilterDataInterface} from "../filters/observation-filters.interface";
-
 export interface ObservationFormQuery {
   taxon:string;
   timeStart: string;
@@ -11,4 +9,8 @@ export interface ObservationFormQuery {
   redListStatusId:string;
   lifeStage:string;
   sex:string;
+  validTaxa:boolean;
+  invasive:boolean;
+  typeSpecimen:boolean;
+  hasMedia:boolean;
 }

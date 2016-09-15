@@ -77,8 +77,11 @@ export class ObservationFormComponent implements OnInit {
     }
   ];
 
-  public lifeStages = ['ADULT','JUVENILE','EGG','TADPOLE','PUPA','NYMPH','SUBIMAGO','LARVA','SNAG','SEED','LIVE_PLANT'];
-  public sexes = ['MALE','FEMALE','WORKER'];
+  public pickSex = {
+    'MY.sexM':'',
+    'MY.sexF':'',
+    'MY.sexW':''
+  };
 
   constructor(
     public searchQuery: SearchQuery,
@@ -147,7 +150,11 @@ export class ObservationFormComponent implements OnInit {
       sex:'',
       lifeStage:'',
       redListStatusId:'',
-      administrativeStatusId:''
+      administrativeStatusId:'',
+      validTaxa:false,
+      hasMedia:false,
+      invasive:false,
+      typeSpecimen:false
     };
     this.filters.map((filter, idx) => {
       this.filters[idx]['selected'] = [];
@@ -175,7 +182,11 @@ export class ObservationFormComponent implements OnInit {
       sex: query.sex && query.sex[0] ? query.sex[0] : '',
       lifeStage: query.lifeStage && query.lifeStage[0] ? query.lifeStage[0] : '',
       redListStatusId: query.redListStatusId && query.redListStatusId[0] ? query.redListStatusId[0] : '',
-      administrativeStatusId: query.administrativeStatusId && query.administrativeStatusId[0] ? query.administrativeStatusId[0] : ''
+      administrativeStatusId: query.administrativeStatusId && query.administrativeStatusId[0] ? query.administrativeStatusId[0] : '',
+      validTaxa: query.includeNonValidTaxa,
+      invasive: query.invasive,
+      typeSpecimen: query.typeSpecimen,
+      hasMedia: query.hasMedia
     };
     this.filters.map((filterSet, idx) => {
       let queryFilter = filterSet.filter;
@@ -221,6 +232,10 @@ export class ObservationFormComponent implements OnInit {
     query.lifeStage = formQuery.lifeStage ? [formQuery.lifeStage] : undefined;
     query.redListStatusId = formQuery.redListStatusId ? [formQuery.redListStatusId] : undefined;
     query.administrativeStatusId = formQuery.administrativeStatusId ? [formQuery.administrativeStatusId] : undefined;
+    query.invasive = formQuery.invasive || undefined;
+    query.typeSpecimen = formQuery.typeSpecimen || undefined;
+    query.includeNonValidTaxa = formQuery.validTaxa ? undefined : true;
+    query.hasMedia = formQuery.hasMedia || undefined;
 
     this.filters.map((filterSet) => {
       let queryFilter = filterSet.filter;
@@ -273,7 +288,7 @@ export class ObservationFormComponent implements OnInit {
     this.searchQuery.updateUrl(this.location, undefined, [
       'selected',
       'pageSize',
-      'includeNonValidTaxa'
+      'validTaxa'
     ]);
     if (updateQuery) {
       this.searchQuery.queryUpdate({});

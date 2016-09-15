@@ -7,6 +7,7 @@ import {Subscription, Observable} from "rxjs";
 import {InformalTaxonGroup} from "../../shared/model/InformalTaxonGroup";
 import {InformalTaxonGroupApi} from "../../shared/api/InformalTaxonGroupApi";
 import {IdService} from "../../shared/service/id.service";
+import {PagedResult} from "../../shared/model/PagedResult";
 
 @Component({
   selector: 'laji-observation-chart',
@@ -77,7 +78,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
       .reduce((pre, cur) => cur.name, '');
   }
 
-  private getGroupsSub() {
+  private getGroupsSub():Observable<PagedResult<InformalTaxonGroup>> {
     let lang = this.translate.currentLang;
     this.group = (
       this.searchQuery.query.informalTaxonGroupId &&
@@ -184,11 +185,6 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
           label: this.getInformalGroupName(value.id)
         }
       });
-      //.sort((a,b) => {
-      //  if (a.label < b.label)
-      //    return -1;
-      //  return (a.label > b.label) ? 1 : 0;
-      //});
   }
 
   onPieClick(group) {

@@ -67,7 +67,6 @@ import {TriplestoreLabelService} from "./shared/service/triplestore-label.servic
 import {MetadataApi} from "./shared/api/MetadataApi";
 import {DatePickerComponent} from "./shared/datepicker/datepicker.component";
 import {MetadataSelectComponent} from "./shared/metadata-select/metadata-select.component";
-import {WarehouseSelectComponent} from "./shared/warehouse-select/warehouse-select.component";
 import {ObservationGroupSelectComponent} from "./+observation/group-select/group-select.component";
 import {AutocompleteApi} from "./shared/api/AutocompleteApi";
 
@@ -90,7 +89,7 @@ import {AutocompleteApi} from "./shared/api/AutocompleteApi";
     HaSeKaFormComponent, HaSeKaFormListComponent, ShortDocumentComponent,
     UsersLatestComponent, PanelComponent, ImageGalleryComponent, LajiFormComponent,
     TaxonComponent, CollectionComponent, ObservationComponent,DatePickerComponent,
-    LabelPipe,MetadataSelectComponent, WarehouseSelectComponent,
+    LabelPipe,MetadataSelectComponent
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpModule,

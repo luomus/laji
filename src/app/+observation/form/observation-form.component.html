@@ -1,161 +1,193 @@
 <form (ngSubmit)="onSubmit()" #observationForm="ngForm" class="form-horizontal">
-<div class="row">
-  <div class="col-sm-10">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="well" *ngIf="loadFilters">
-          <div class="form-group">
-            <label class="col-md-2 control-label">
-              {{'observation.active.informalTaxonGroup' | translate}}:
-            </label>
-            <div class="col-sm-10">
-              <observation-group-select
-                [(ngModel)]="formQuery.informalTaxonGroupId"
-                name="informalTaxonGroupId"
-                [lang]="translate.currentLang"
-                (onSelect)="onSubmit()">
-                {{'observation.active.informalTaxonGroupAll'|translate}}
-              </observation-group-select>
+  <div class="row">
+    <div class="col-sm-10">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="well" *ngIf="loadFilters">
+            <div class="form-group">
+              <label class="col-md-2 control-label">
+                {{'observation.active.informalTaxonGroup' | translate}}:
+              </label>
+              <div class="col-sm-10">
+                <observation-group-select
+                  [(ngModel)]="formQuery.informalTaxonGroupId"
+                  name="informalTaxonGroupId"
+                  [lang]="translate.currentLang"
+                  (onSelect)="onSubmit()">
+                  {{'observation.active.informalTaxonGroupAll'|translate}}
+                </observation-group-select>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label class="col-md-2 control-label">
-              {{'observation.form.specimen' | translate}}:
-            </label>
-            <div class="col-md-6">
-              <input
-                [ngClass]="{loading: typeaheadLoading}"
-                type="text"
-                class="form-control input-sm"
-                name="target"
-                [(ngModel)]="formQuery.taxon"
-                [typeahead]="dataSource"
-                [typeaheadOptionsLimit]="limit"
-                [typeaheadOptionField]="'value'"
-                [typeaheadWaitMs]="200"
-                [typeaheadMinLength]="4"
-                [typeaheadOptionField]="'target'"
-                [typeaheadItemTemplate]="taxonItem"
-                (typeaheadLoading)="changeTypeaheadLoading($event)"
-                autocomplete="off"
-                autocorrect="off"
-              >
-              <template #taxonItem let-model="item">
-                <h5 class="autosuggest-value {{getTaxonGroup(model.payload, 'id')}}">{{model.value}}
-                  <small class="pull-right">{{getTaxonGroup(model.payload, 'name', ', ')}}</small>
-                </h5>
-              </template>
+            <div class="form-group">
+              <label class="col-md-2 control-label">
+                {{'observation.form.specimen' | translate}}:
+              </label>
+              <div class="col-md-6">
+                <input
+                  [ngClass]="{loading: typeaheadLoading}"
+                  type="text"
+                  class="form-control input-sm"
+                  name="target"
+                  [(ngModel)]="formQuery.taxon"
+                  [typeahead]="dataSource"
+                  [typeaheadOptionsLimit]="limit"
+                  [typeaheadOptionField]="'value'"
+                  [typeaheadWaitMs]="200"
+                  [typeaheadMinLength]="4"
+                  [typeaheadOptionField]="'target'"
+                  [typeaheadItemTemplate]="taxonItem"
+                  (typeaheadLoading)="changeTypeaheadLoading($event)"
+                  autocomplete="off"
+                  autocorrect="off"
+                >
+                <template #taxonItem let-model="item">
+                  <h5 class="autosuggest-value {{getTaxonGroup(model.payload, 'id')}}">{{model.value}}
+                    <small class="pull-right">{{getTaxonGroup(model.payload, 'name', ', ')}}</small>
+                  </h5>
+                </template>
+              </div>
+              <div class="col-sm-10 col-sm-offset-2">
+                <laji-observation-active
+                  *ngIf="!showFilter"
+                  [skip]="['target', 'informalTaxonGroupId']"
+                  [fieldMap]="activeMap"
+                ></laji-observation-active>
+              </div>
             </div>
-            <div class="col-sm-10 col-sm-offset-2">
-              <laji-observation-active
-                *ngIf="!showFilter"
-                [skip]="['target', 'informalTaxonGroupId']"
-                [fieldMap]="activeMap"
-              ></laji-observation-active>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-3 col-sm-offset-2">
-              <button type="button" (click)="toggleFilters()" class="btn btn-sm btn-default">
-                {{'observation.form.more' | translate}}
-                <i class="glyphicon"
-                   [ngClass]="{
+            <div class="form-group">
+              <div class="col-sm-3 col-sm-offset-2">
+                <button type="button" (click)="toggleFilters()" class="btn btn-sm btn-default">
+                  {{'observation.form.more' | translate}}
+                  <i class="glyphicon"
+                     [ngClass]="{
                  'glyphicon-triangle-bottom': showFilter,
                  'glyphicon-triangle-right': !showFilter
                  }"
-                ></i>
-              </button>
+                  ></i>
+                </button>
+              </div>
             </div>
-          </div>
-          <div [hidden]="!showFilter">
-            <div class="form-group">
-              <label class="col-md-2 control-label">{{'observation.form.date' | translate}}:</label>
-              <div class="col-md-3">
-                <laji-datepicker
-                  [(ngModel)]="formQuery.timeStart"
-                  [viewFormat]="'DD.MM.YYYY'"
-                  [format]="warehouseDateFormat"
-                  name="timeStart"></laji-datepicker>
+            <div [hidden]="!showFilter">
+              <div class="form-group">
+                <label class="col-md-2 control-label">{{'observation.form.date' | translate}}:</label>
+                <div class="col-md-3">
+                  <laji-datepicker
+                    [(ngModel)]="formQuery.timeStart"
+                    [viewFormat]="'DD.MM.YYYY'"
+                    [format]="warehouseDateFormat"
+                    name="timeStart"></laji-datepicker>
+                </div>
+                <div class="col-md-3">
+                  <laji-datepicker
+                    [(ngModel)]="formQuery.timeEnd"
+                    [viewFormat]="'DD.MM.YYYY'"
+                    [format]="warehouseDateFormat"
+                    name="timeEnd"></laji-datepicker>
+                </div>
+                <div class="col-md-3">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1)">1d</button>
+                    <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7)">7d</button>
+                    <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365)">
+                      {{'observation.form.thisYear' | translate}}
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div class="col-md-3">
-                <laji-datepicker
-                  [(ngModel)]="formQuery.timeEnd"
-                  [viewFormat]="'DD.MM.YYYY'"
-                  [format]="warehouseDateFormat"
-                  name="timeEnd"></laji-datepicker>
+              <div class="form-group">
+                <label class="col-md-2 control-label">{{'observation.form.countMin' | translate}}:</label>
+                <div class="col-md-3">
+                  <input type="number" name="individualCountMin" class="form-control input-sm"
+                         [(ngModel)]="formQuery.individualCountMin">
+                </div>
+                <label class="col-md-2 control-label">{{'observation.form.countMax' | translate}}:</label>
+                <div class="col-md-3">
+                  <input type="number" name="individualCountMax" class="form-control input-sm"
+                         [(ngModel)]="formQuery.individualCountMax">
+                </div>
               </div>
-              <div class="col-md-3">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1)">1d</button>
-                  <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7)">7d</button>
-                  <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365)">{{'observation.form.thisYear' | translate}}</button>
+              <div class="form-group">
+                <label class="col-md-2 control-label">{{'observation.form.sex' | translate}}:</label>
+                <div class="col-md-3">
+                  <metadata-select
+                    [(ngModel)]="formQuery.sex"
+                    [field]="'MY.sex'"
+                    [pick]="pickSex"
+                    [mapToWarehouse]="true"
+                    name="sex"
+                    [lang]="translate.currentLang"></metadata-select>
+                </div>
+                <label class="col-md-2 control-label">{{'MY.lifeStage' | label}}:</label>
+                <div class="col-md-3">
+                  <metadata-select
+                    [(ngModel)]="formQuery.lifeStage"
+                    [field]="'MY.lifeStage'"
+                    [mapToWarehouse]="true"
+                    name="lifeStage"
+                    [lang]="translate.currentLang"></metadata-select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-2 control-label">{{'MX.hasAdminStatus' | label}}:</label>
+                <div class="col-md-3">
+                  <metadata-select
+                    [(ngModel)]="formQuery.administrativeStatusId"
+                    name="administrativeStatusId"
+                    [field]="'MX.hasAdminStatus'"
+                    [lang]="translate.currentLang"></metadata-select>
+                </div>
+                <label class="col-md-2 control-label">{{'observation.form.redListStatusId' | translate}}:</label>
+                <div class="col-md-3">
+                  <metadata-select
+                    [(ngModel)]="formQuery.redListStatusId"
+                    name="redListStatusId"
+                    [field]="'MKV.redListStatus'"
+                    [lang]="translate.currentLang"></metadata-select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-2 control-label">{{'observation.form.typeSpecimen' | translate}}:</label>
+                <div class="col-md-1">
+                  <input type="checkbox" class="form-control input-sm"
+                         [(ngModel)]="formQuery.typeSpecimen"
+                         name="includeNonValidTaxa">
+                </div>
+                <label class="col-md-2 control-label">{{'observation.form.invasive' | translate}}:</label>
+                <div class="col-md-1">
+                  <input type="checkbox" class="form-control input-sm"
+                         [(ngModel)]="formQuery.invasive"
+                         name="includeNonValidTaxa">
+                </div>
+                <label class="col-md-2 control-label">{{'observation.form.includeNonValidTaxa' | translate}}:</label>
+                <div class="col-md-1">
+                  <input type="checkbox" class="form-control input-sm"
+                         [(ngModel)]="formQuery.includeNonValidTaxa"
+                         name="includeNonValidTaxa">
                 </div>
               </div>
             </div>
             <div class="form-group">
-              <label class="col-md-2 control-label">{{'observation.form.countMin' | translate}}:</label>
-              <div class="col-md-3">
-                <input type="number" name="individualCountMin" class="form-control input-sm" [(ngModel)]="formQuery.individualCountMin">
+              <div class="col-md-offset-2 col-md-1 col-sm-4">
+                <button (click)="onSubmit()" class="btn btn-sm btn-default">{{'observation.form.search' | translate}}
+                </button>
               </div>
-              <label class="col-md-2 control-label">{{'observation.form.countMax' | translate}}:</label>
-              <div class="col-md-3">
-                <input type="number" name="individualCountMax" class="form-control input-sm" [(ngModel)]="formQuery.individualCountMax">
+              <div class="col-md-1 col-sm-4">
+                <button type="button" (click)="empty(true)" class="btn btn-sm btn-default">{{'observation.form.empty' |
+                  translate}}
+                </button>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="col-md-2 control-label">{{'observation.form.sex' | translate}}:</label>
-              <div class="col-md-3">
-                <warehouse-select
-                  [(ngModel)]="formQuery.sex"
-                  name="sex"
-                  [options]="sexes"></warehouse-select>
-              </div>
-              <label class="col-md-2 control-label">{{'observation.form.lifeStage' | translate}}:</label>
-              <div class="col-md-3">
-                <warehouse-select
-                  [(ngModel)]="formQuery.lifeStage"
-                  name="lifeStage"
-                  [options]="lifeStages"></warehouse-select>
-              </div>
-            </div>
-            <div class="form-group">
-            <label class="col-md-2 control-label">{{'MX.hasAdminStatus' | label}}:</label>
-            <div class="col-md-3">
-              <metadata-select
-                [(ngModel)]="formQuery.administrativeStatusId"
-                name="administrativeStatusId"
-                [field]="'MX.hasAdminStatus'"
-                [lang]="translate.currentLang"></metadata-select>
-            </div>
-            <label class="col-md-2 control-label">{{'observation.form.redListStatusId' | translate}}:</label>
-            <div class="col-md-3">
-              <metadata-select
-                [(ngModel)]="formQuery.redListStatusId"
-                name="redListStatusId"
-                [field]="'MKV.redListStatus'"
-                [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
-          </div>
-          <div class="form-group">
-            <div class="col-md-offset-2 col-md-1 col-sm-4">
-              <button (click)="onSubmit()" class="btn btn-sm btn-default">{{'observation.form.search' | translate}}</button>
-            </div>
-            <div class="col-md-1 col-sm-4">
-              <button type="button" (click)="empty(true)" class="btn btn-sm btn-default">{{'observation.form.empty' | translate}}</button>
-            </div>
-          </div>
+          <laji-observation-result [active]="activeTab"></laji-observation-result>
         </div>
-        <laji-observation-result [active]="activeTab"></laji-observation-result>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div *ngFor="let filter of filters; let i = index;">
+        <laji-observation-filters
+          [filters]="filters[i]"
+          (onSelect)="onFilterSelect($event)"></laji-observation-filters>
       </div>
     </div>
   </div>
-  <div class="col-sm-2">
-    <div *ngFor="let filter of filters; let i = index;">
-      <laji-observation-filters
-        [filters]="filters[i]"
-        (onSelect)="onFilterSelect($event)"></laji-observation-filters>
-    </div>
-  </div>
-</div>
 </form>
