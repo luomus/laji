@@ -53,7 +53,7 @@ export class AutocompleteApi {
      * @param lang Language of fields that have multiple languages.
      * @param userToken User authentication token
      */
-    public autocompleteFindByField (field: string, q?: string, limit?: string, includePayload?: boolean, lang?: string, userToken?: string, extraHttpRequestParams?: any ) : Observable<Array<models.Autocomplete>> {
+    public autocompleteFindByField (field: string, q?: string, limit?: string, includePayload?: boolean, lang?: string, checklist?:string, informalTaxonGroup?:string, userToken?: string, extraHttpRequestParams?: any) : Observable<Array<models.Autocomplete>> {
         const path = this.basePath + '/autocomplete/{field}'
             .replace('{' + 'field' + '}', String(field));
 
@@ -73,6 +73,14 @@ export class AutocompleteApi {
 
         if (includePayload !== undefined) {
             queryParameters.set('includePayload', includePayload ? 'true' : 'false');
+        }
+
+        if (checklist !== undefined) {
+            queryParameters.set('checklist', checklist);
+        }
+
+        if (informalTaxonGroup !== undefined) {
+           queryParameters.set('informalTaxonGroup', informalTaxonGroup);
         }
 
         if (lang !== undefined) {

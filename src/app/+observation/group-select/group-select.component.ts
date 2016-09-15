@@ -94,6 +94,12 @@ export class ObservationGroupSelectComponent implements OnInit, OnChanges {
     this.onTouched = fn;
   }
 
+  empty() {
+    this.value = '';
+    this.open = false;
+    this.onSelect.emit(this.value);
+  }
+
   toggle() {
     this.open = !this.open;
   }

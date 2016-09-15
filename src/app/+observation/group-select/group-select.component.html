@@ -4,12 +4,13 @@
     <ng-content></ng-content>
   </span>
   <span *ngIf="hasRootLabel()">
-      {{getLabel(value) | translate}}
+    {{getLabel(value) | translate}}
   </span>
   <i class="glyphicon"
      [ngClass]="{'glyphicon-triangle-bottom': open,'glyphicon-triangle-right': !open}">
   </i>
 </button>
+<span *ngIf="hasRootLabel()" (click)="empty()" class="label label-danger link"><i class="glyphicon glyphicon-remove"></i></span>
 <div class="informal-group-container" [ngClass]="{hidden: !open}">
   <div *ngFor="let group of groups"
        (click)="onClick(group.id)"

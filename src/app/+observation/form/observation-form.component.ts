@@ -19,6 +19,7 @@ import {IdService} from "../../shared/service/id.service";
 @Component({
   selector: 'laji-observation-form',
   templateUrl: 'observation-form.component.html',
+  styleUrls: ['./observation-form.component.css'],
   providers: [CollectionApi]
 })
 export class ObservationFormComponent implements OnInit {
@@ -101,7 +102,9 @@ export class ObservationFormComponent implements OnInit {
       token,
       '' + this.limit,
       true,
-      this.translate.currentLang
+      this.translate.currentLang,
+      undefined,
+      this.formQuery.informalTaxonGroupId
     )
   }
 
