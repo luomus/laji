@@ -1873,231 +1873,318 @@ Version: 0.0.6
   100% { opacity: 0.15; }
 }
 body .laji-form {
-  background: #eeeeee;
-  font-size: 13px;
+	font-size: 13px;
 }
 
 .laji-form .autosuggest-wrapper {
-  position: relative;
+	position: relative;
 }
 .laji-form .autosuggest-wrapper input {
-  padding-right: 27px;
+	padding-right: 27px;
 }
 .laji-form .autosuggest-container {
-  position: absolute;
-  z-index: 1;
+	position: absolute;
+	z-index: 1;
 }
 .laji-form .autosuggest-container ul {
-  padding-left: 0px;
+	padding-left: 0px;
 }
 
 .laji-form .map-array-directionless-enter {
-  opacity: 0.01;
+	opacity: 0.01;
 }
 .laji-form .map-array-directionless-enter.map-array-directionless-enter-active {
-  opacity: 1;
-  transition: opacity .3s ease-in;
+	opacity: 1;
+	transition: opacity .3s ease-in;
 }
 .laji-form .map-array-left-enter {
-  transform: translate3d(-100%, 0, 0);
+	transform: translate3d(-100%, 0, 0);
 }
 .laji-form .map-array-right-enter {
-  transform: translate3d(100%, 0, 0);
+	transform: translate3d(100%, 0, 0);
 }
 .laji-form .map-array-left-enter.map-array-left-enter-active, .map-array-right-enter.map-array-right-enter-active {
-  transform: translate3d(0, 0, 0);
-  transition: all 300ms;
+	transform: translate3d(0, 0, 0);
+	transition: all 300ms;
 }
 .laji-form .map-array-directionless-leave, .map-array-left-leave, .map-array-right-leave {
-  visibility: hidden;
-  height: 0px;
-  width: 0px;
+	visibility: hidden;
+	height: 0px;
+	width: 0px;
 }
 
+.laji-form input, .laji-form select, .laji-form textarea {
+	border-radius: 2px !important;
+}
 .laji-form input[type=text], .laji-form select {
-  border-radius: 2px !important;
-  padding: 0px 5px;
-  height: 25px !important;
+	padding: 0px 5px;
+	height: 25px !important;
 }
 .laji-form select {
-  padding: 3px 6px !important;
+	padding: 3px 6px !important;
 }
 
 .laji-form .form-group {
-  margin-bottom: 7px;
+	margin-bottom: 7px;
 }
 .laji-form .form-inline .form-group {
-  padding-left: 5px;
+	padding-left: 5px;
 }
 
 .laji-form button {
-  height: 100%;
-  line-height: 14px;
-  white-space: normal;
+	line-height: 14px;
+	white-space: normal;
 }
 .laji-form button:not(.list-group-item) {
-  border-radius: 2px;
+	border-radius: 2px;
 }
 
 .laji-form legend {
-  font-size: 18px;
+	font-size: 18px;
 }
 .laji-form label {
-  font-size: 13px;
+	font-size: 13px;
+	white-space: nowrap;
 }
 .laji-form .field-description {
-  font-size: 13px;
+	font-size: 13px;
 }
 
 .laji-form .input-meta {
-  font-size: 11px;
+	font-size: 11px;
 }
 .laji-form .input-meta button {
-  font-size: 11px;
-  padding: 0;
-  margin: 0;
+	font-size: 11px;
+	padding: 0;
+	margin: 0;
 }
 .laji-form .taxon-widget.input-meta {
-  margin-top: -7px;
+	margin-top: -7px;
 }
 .laji-form .meta-info-taxon {
-  display: inline-block;
+	display: inline-block;
 }
 .laji-form .input-meta ul {
-  padding-left: 15px;
+	padding-left: 15px;
 }
 
 .laji-form .laji-form-help-glyph {
-  margin-left: 5px;
-  border-radius:9px;
-  color: white;
-  padding: 2px 5px;
-  color: white;
-  padding: 2px 5px;
+	margin-left: 5px;
+	border-radius:9px;
+	color: white;
+	padding: 2px 5px;
+	color: white;
+	padding: 2px 5px;
 }
 
 .laji-form .laji-form-map {
-  z-index: 1;
-  height: 600px;
+	z-index: 1;
+	height: 600px;
+	margin-bottom: 10px;
 }
 .laji-form .map-field .field-description {
-  padding-bottom: 15px;
+	padding-bottom: 15px;
 }
 
 .laji-form .leaflet-popup-content-wrapper {
-  border-radius: 5px;
+	border-radius: 2px;
 }
 .map-data-tooltip {
-  list-style: none;
-  padding: 0;
-  text-align: initial;
+	list-style: none;
+	padding: 0;
+	text-align: initial;
 }
 
-
-.laji-form :not(.btn-group) > .btn-danger {
-  width: auto;
-  float: right;
-  line-height: 5px;
-  font-size: 11px;
-  padding: 5px;
+.laji-form :not(.btn-group) > .btn-danger, .laji-form .laji-form-scope-field-glyph {
+	width: auto;
+	float: right;
+	line-height: 5px;
+	font-size: 11px;
+	padding: 5px;
+	margin: 2px;
+}
+.laji-form .laji-form-scope-field-glyph {
+	line-height: 9px;
 }
 
 .laji-form label strong:not(:empty)+.rc-switch {
-  display: table;
-  margin-top: 4px;
+	display: table;
+	margin-top: 4px;
 }
 
 .laji-form .rc-switch {
-  width: 60px;
+	width: 60px;
 }
 
 .laji-form .rc-switch-checked:after {
-  left: 37px;
+	left: 37px;
 }
 .laji-form .rc-switch-toggled-false .rc-switch-inner {
-  right: 7px;
-  left: initial;
+	right: 7px;
+	left: initial;
 }
 .laji-form .rc-switch-disabled .rc-switch-inner {
-  color: #9e9e9e;
+	color: #9e9e9e;
 }
 
 .laji-form .dropdown-header {
-  font-size: 14px;
-  font-weight: bold;
-  color: black;
-  text-decoration: underline;
+	font-size: 14px;
+	font-weight: bold;
+	color: black;
+	text-decoration: underline;
 }
 
 .laji-form .react-spinner_bar {
-  background-color: black;
+	background-color: black;
 }
 .laji-form .react-spinner {
-  position: absolute;
-  left: initial;
-  top: initial;
-  float: right;
+	position: absolute;
+	left: initial;
+	top: initial;
+	float: right;
 }
 .laji-form .autosuggest-wrapper .react-spinner {
-  width: 25px;
-  right: -9px;
-  bottom: -20px;
+	width: 25px;
+	right: -9px;
+	bottom: -20px;
 }
 .laji-form .input-meta .react-spinner {
-  width: 20px;
-  left: 11px;
-  top: 10px;
-  position: relative;
+	width: 20px;
+	left: 11px;
+	top: 10px;
+	position: relative;
 }
 
 .laji-form .scope-field-modal-item .react-spinner {
-  left: 50%;
-  width: 25px;
-  top: 20px;
-  float: none;
-  position: relative;
+	left: 50%;
+	width: 25px;
+	top: 20px;
+	float: none;
+	position: relative;
 }
 
 .laji-form .scope-field-modal-item {
-  width: 130px;
-  padding: 5px;
+	width: 130px;
+	padding: 5px;
 }
 .laji-form .scope-field-modal-item .list-group-item {
-  height: 8px;
-  line-height: 0px;
+	height: 8px;
+	line-height: 0px;
 }
 .laji-form .scope-field-modal-item span {
-  font-weight: bold;
+	font-weight: bold;
 }
 .laji-form .scope-field-search {
-  width: 40%;
-  display: block;
-  margin: auto;
+	width: 40%;
+	display: block;
+	margin: auto;
+}
+.laji-form .list-group-item:first-child {
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+.laji-form .dropdown-menu {
+	padding: 0px;
+	border-radius: 2px;
 }
 
 .laji-form button.button-right {
-  float: right;
-  white-space: nowrap;
+	float: right;
+	white-space: nowrap;
 }
 
 .laji-form .out-of-view {
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background: white;
-  z-index: 1;
-  border-bottom: 2px solid #aaa;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	background: white;
+	z-index: 1;
+	-webkit-box-shadow: -2px 18px 43px -18px rgba(0,0,0,0.75);
+	-moz-box-shadow: -2px 18px 43px -18px rgba(0,0,0,0.75);
+	box-shadow: -2px 18px 43px -18px rgba(0,0,0,0.75);
 }
 .laji-form .form-map-inline-container {
-  overflow: hidden;
+	overflow: hidden;
+}
+.laji-form .form-map-inline-container {
+	overflow: hidden;
 }
 .laji-form .map-array-inline-schema {
-  overflow-y: auto;
-  overflow-x: hidden;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 .laji-form .nav-tabs>li.hover>a {
-  border-color: #eee #eee #ddd;
-  text-decoration: none;
-  background-color: #eee;
+	border-color: #eee #eee #ddd;
+	text-decoration: none;
+	background-color: #eee;
 }
+.laji-form .laji-form-map-navi {
+	margin-bottom: 5px;
+}
+
+.laji-form .laji-form-images img, .laji-form .laji-form-images div {
+	padding: 4px;
+	width: 120px;
+	height: 120px;
+	float: left;
+	cursor: pointer;
+}
+
+.laji-form .laji-form-drop-zone {
+	border: 2px dashed black;
+	width: 112px !important;
+	height: 112px !important;
+	margin: 4px;
+	margin-top: 8px;
+	margin-left: 8px;
+}
+
+.laji-form  .laji-form-drop-zone:hover, .laji-form .laji-form-drop-zone.dragging  {
+	background-color: #d8fbc6;
+}
+
+.laji-form.image-modal {
+	width: 90vmin;
+}
+
+.laji-form.image-modal img {
+	width: 100%;
+}
+
+.laji-form .img-container {
+	position: relative;
+}
+.laji-form .img-remove {
+	border-radius: 7px !important;
+	top: 0;
+	position: absolute;
+	padding: 4px 2px !important;
+	right: -8px;
+}
+
+.laji-form .auto-array-item {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+.laji-form .auto-array-schema {
+	-webkit-flex-grow: 1;
+	-ms-flex-grow: 1;
+	flex-grow: 1;
+}
+.laji-form .auto-array-delete-container {
+	width: 25px;
+}
+
+.laji-form .list-group-item.disabled {
+	opacity: .65;
+}
+
+.laji-form .modal-title {
+	text-align: center;
+}
+
