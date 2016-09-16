@@ -70,7 +70,9 @@ export class MapComponent implements OnDestroy, OnChanges {
     }
     if (this.visible) {
       setTimeout(() => {
-        this.map.map.invalidateSize();
+        try {
+          this.map.map.invalidateSize();
+        } catch (e) {}
       }, 500);
     }
   }

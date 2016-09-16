@@ -55,19 +55,41 @@
     [active]="active === 'load'">
     <div class="form-group">
       <div class="col-sm-12">
-        <strong>Karkeistettuja</strong>
-        <laji-observation-count
-          [query]="searchQuery.query"
-          [field]="'document.secureLevel'"
-          [pick]="['HIGHEST','KM100','KM50','KM25', 'KM10']"
-        >
-        </laji-observation-count><br>
         <div *ngIf="userService.isLoggedIn()">
-          Clicking this button sends the whole result set to your email
-          <button class="btn btn-xs btn-default">load</button>
+          <strong>Karkeistettuja</strong>
+          <laji-observation-count
+            [query]="searchQuery.query"
+            [field]="'document.secureLevel'"
+            [pick]="['HIGHEST','KM100','KM50','KM25', 'KM10']"
+          >
+          </laji-observation-count><br>
+          <div class="row">
+            <div class="col-sm-6">
+              <p>
+                {{'result.load.introPublic' | translate}}
+              </p>
+              <div *ngIf="!requests['public']">
+                <button class="btn btn-default" (click)="makePublicRequest()">lataa aineisto</button>
+              </div>
+              <div *ngIf="requests['public']">
+                {{'result.load.thanksPublic' | translate}}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <p>
+                {{'result.load.introPrivate' | translate}}
+              </p>
+              <div *ngIf="!requests['downloadApprovalRequest']">
+                <button class="btn btn-default" (click)="makePrivateRequest()">tee pyyntö</button>
+              </div>
+              <div *ngIf="requests['downloadApprovalRequest']">
+                {{'result.load.thanksRequest' | translate}}
+              </div>
+            </div>
+          </div>
         </div>
         <div *ngIf="!userService.isLoggedIn()">
-          You'll need to login to make...
+          {{'force.login' | translate}}
         </div>
       </div>
     </div>

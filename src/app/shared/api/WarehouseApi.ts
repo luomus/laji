@@ -290,6 +290,86 @@ export class WarehouseApi {
       });
   }
 
+  public downloadApprovalRequest(userToken:string, downloadFormat:string, includes:string, query:WarehouseQueryInterface, extraHttpRequestParams?:any):Observable<string> {
+    const path = this.basePath + '/warehouse//private-query/downloadApprovalRequest';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+
+    if (userToken === null || userToken === undefined) {
+      throw new Error('Required parameter userToken was null or undefined when calling warehouse download.');
+    }
+
+    if (downloadFormat === null || downloadFormat === undefined) {
+      throw new Error('Required parameter downloadFormat was null or undefined when calling warehouse download.');
+    }
+
+    if (includes === null || includes === undefined) {
+      throw new Error('Required parameter includes was null or undefined when calling warehouse download.');
+    }
+
+    queryParameters.set('userToken', userToken);
+    queryParameters.set('downloadFormat', downloadFormat);
+    queryParameters.set('downloadIncludes', includes);
+
+    this.addQueryToQueryParams(query, queryParameters);
+
+    let requestOptions:RequestOptionsArgs = {
+      method: 'POST',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response:Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  public download(userToken:string, downloadFormat:string, includes:string, query:WarehouseQueryInterface, extraHttpRequestParams?:any):Observable<string> {
+    const path = this.basePath + '/warehouse/query/download';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+
+    if (userToken === null || userToken === undefined) {
+      throw new Error('Required parameter userToken was null or undefined when calling warehouse download.');
+    }
+
+    if (downloadFormat === null || downloadFormat === undefined) {
+      throw new Error('Required parameter downloadFormat was null or undefined when calling warehouse download.');
+    }
+
+    if (includes === null || includes === undefined) {
+      throw new Error('Required parameter includes was null or undefined when calling warehouse download.');
+    }
+
+    queryParameters.set('userToken', userToken);
+    queryParameters.set('downloadFormat', downloadFormat);
+    queryParameters.set('downloadIncludes', includes);
+
+    this.addQueryToQueryParams(query, queryParameters);
+
+    let requestOptions:RequestOptionsArgs = {
+      method: 'POST',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response:Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
   /**
    * Get count of results using given filters
    * Use this API to test how many results your query would return and then proceed with list query. Also returns max result count allowed for list queries.

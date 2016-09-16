@@ -5,6 +5,8 @@ import { SearchQuery } from "../search-query.model";
 import {IdService} from "../../shared/service/id.service";
 import {CoordinateService} from "../../shared/service/coordinate.service";
 import {UserService} from "../../shared/service/user.service";
+import {WarehouseApi} from "../../shared/api/WarehouseApi";
+import {Observable} from "rxjs";
 
 
 @Component({
@@ -24,10 +26,18 @@ export class ObservationResultComponent implements OnInit {
     stats: false
   };
 
+  public requests:any = {};
+  public privateRequestSent:boolean = false;
+  public publicRequestSent:boolean = false;
+
+  private privateRequest:string;
+  private publicRequest:string;
+
   constructor(
     public searchQuery: SearchQuery,
     public userService:UserService,
-    private location: Location
+    private location: Location,
+    private warehouseService:WarehouseApi
   ) {}
 
   ngOnInit() {
@@ -95,4 +105,28 @@ export class ObservationResultComponent implements OnInit {
       'includeNonValidTaxa'
     ]);
   }
+
+  makePrivateRequest() {
+    this.makeRequest('downloadApprovalRequest');
+  }
+
+  makePublicRequest() {
+    this.makeRequest('download');
+  }
+
+  makeRequest(type:string) {
+    let cacheKey = JSON.stringify(this.searchQuery.query);
+    if (this.requests[type] == cacheKey) {
+      //return;
+    }
+    this.requests[type] = cacheKey;
+    this.userService.getToken();
+    this.warehouseService[type](
+      this.userService.getToken(),
+      'CSV_FLAT',
+      'UNIT_FACTS',
+      this.searchQuery.query
+    ).subscribe()
+  }
+
 }
