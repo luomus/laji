@@ -1,17 +1,19 @@
-<div style="margin-bottom: 8px;">
-    <button class="btn btn-default" (click)="setActive(activeImage - 1)">
-        <span class="glyphicon glyphicon-arrow-left"></span>
-    </button>
-    <button class="btn btn-default pull-right" (click)="setActive(activeImage + 1)">
-        <span class="glyphicon glyphicon-arrow-right"></span>
-    </button>
+<div class="text-center">
+    <pagination *ngIf="images.length > 0"
+        [totalItems]="images.length"
+        [itemsPerPage]="itemsPerPage"
+        [(ngModel)]="activeImage"
+        [maxSize]="3"
+        previousText="&lsaquo;"
+        nextText="&rsaquo;"
+        (pageChanged)="pageChanged($event)"></pagination>
 </div>
 <div style="margin-bottom: 8px; width: 100%">
-    <img (click)="childModal.show()" class="img-responsive img-thumbnail" *ngIf="images.length > 0" style="display: block; margin: 0 auto; width: 40%; min-width: 40%;"
-        src="{{ getCurrentImage().thumbnailURL }}">
-</div>
-<div style="text-align: center">
-    <span *ngIf="images.length > 0">{{ activeImage + 1 }} / {{ images.length }}</span>
+    <a href="#" (click)="naks($event)">
+        <img class="img-responsive img-thumbnail" *ngIf="images.length > 0"
+            style="display: block; margin: 0 auto; width: 60%; min-width: 60%;"
+            src="{{ images[activeImage - 1].thumbnailURL }}">
+    </a>
 </div>
 <div bsModal #childModal="bs-modal" class="modal fade" tabIndex="-1" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -20,13 +22,13 @@
                 <button type="button" class="close" (click)="childModal.hide()">
                     <span>&times;</span>
                 </button>
-                <h4 class="modal-title">{{images[activeImage].fullURL}}</h4>
+                <h4 class="modal-title">{{images[activeImage - 1].fullURL}}</h4>
             </div>
             <div class="modal-body">
-                <img *ngIf="childModal.isShown" class="img-responsive" style="display: block; margin: 0 auto;" src="{{ getCurrentImage().fullURL }}">
+                <img *ngIf="childModal.isShown" class="img-responsive" style="display: block; margin: 0 auto;" src="{{ images[activeImage - 1].fullURL }}">
             </div>
             <div class="modal-footer">
-                {{images[activeImage].copyrightOwner}} - {{images[activeImage].licenseAbbreviation}}
+                {{images[activeImage - 1].copyrightOwner}} - {{images[activeImage - 1].licenseAbbreviation}}
             </div>
         </div>
     </div>

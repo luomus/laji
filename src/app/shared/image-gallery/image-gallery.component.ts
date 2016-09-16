@@ -12,22 +12,24 @@ import { TaxonomyImage } from '../../shared';
 export class ImageGalleryComponent {
     @Input() public images: Array<TaxonomyImage>;
 
-    @Input() public activeImage: number;
+    @Input() public activeImage:number;
     @Output() activeImageChange: EventEmitter<number> = new EventEmitter<number>();
 
     @ViewChild('childModal') public childModal: ModalDirective;
 
-    getCurrentImage() {
-        return this.images[this.activeImage];
-    }
+    public itemsPerPage: number = 1;
+    public maxSize: number = 3;
 
     getImageLength() {
         return this.images.length;
     }
 
-    setActive(id) {
-        if (id >= 0 && id < this.images.length) {
-            this.activeImageChange.emit(id);
-        }
+    public naks(event) {
+        this.childModal.show();
+        event.preventDefault();
+    }
+
+    public pageChanged(event:any):void {
+        this.activeImageChange.emit(event.page);
     }
 }
