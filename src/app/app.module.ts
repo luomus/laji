@@ -69,6 +69,7 @@ import {DatePickerComponent} from "./shared/datepicker/datepicker.component";
 import {MetadataSelectComponent} from "./shared/metadata-select/metadata-select.component";
 import {ObservationGroupSelectComponent} from "./+observation/group-select/group-select.component";
 import {AutocompleteApi} from "./shared/api/AutocompleteApi";
+import {IUCNComponent} from "./+taxonomy/iucn/iucn.component";
 
 
 @NgModule({
@@ -89,7 +90,7 @@ import {AutocompleteApi} from "./shared/api/AutocompleteApi";
     HaSeKaFormComponent, HaSeKaFormListComponent, ShortDocumentComponent,
     UsersLatestComponent, PanelComponent, ImageGalleryComponent, LajiFormComponent,
     TaxonComponent, CollectionComponent, ObservationComponent,DatePickerComponent,
-    LabelPipe,MetadataSelectComponent
+    LabelPipe,MetadataSelectComponent, IUCNComponent
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpModule,

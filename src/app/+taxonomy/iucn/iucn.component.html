@@ -1,0 +1,49 @@
+<svg [attr.width]="width" [attr.height]="height">
+  <rect [attr.fill]="color"
+        [attr.width]="width"
+        [attr.height]="height / 2" x=0 y=0 />
+  <g *ngFor="let item of plop; let i=index">
+    <g *ngIf="item.value !== selected">
+      <text [attr.x]="(i + 0.5) * (width / 7)" [attr.y]="height / 5" fill="#FFFFFF" text-anchor="middle" font-size="10">
+        {{item.title.first}}
+      </text>
+      <text [attr.x]="(i + 0.5) * (width / 7)" [attr.y]="2 * (height / 5)" fill="#FFFFFF" text-anchor="middle" font-size="10">
+        {{item.title.last}}
+      </text>
+      <text [attr.x]="(i + 0.5) * (width / 7)" [attr.y]="3 * (height / 4)" [attr.fill]="color" text-anchor="middle" font-size="12">
+        {{item.value}}
+      </text>
+    </g>
+    <g *ngIf="item.value === selected">
+      <g>
+        <circle
+          [attr.cx]="(i + 0.5) * (width / 7)"
+          [attr.cy]="height / 2"
+          [attr.r]="(height / 2) - 1"
+          fill="#FFFFFF" />
+        <rect
+          [attr.width]="(height / 2) - 1"
+          [attr.height]="(height / 2) - 1"
+          [attr.x]="(i + 0.5) * (width / 7)"
+          y="1"
+          fill="#FFFFFF" />
+      </g>
+      <g>
+        <circle
+          [attr.cx]="(i + 0.5) * (width / 7)"
+          [attr.cy]="height / 2"
+          [attr.r]="(height / 2) - 3"
+          [attr.fill]="color" />
+        <rect
+          [attr.width]="(height / 2) - 3"
+          [attr.height]="(height / 2) - 3"
+          [attr.x]="(i + 0.5) * (width / 7)"
+          y="3"
+          [attr.fill]="color" />
+      </g>
+      <text [attr.x]="(i + 0.5) * (width / 7)" [attr.y]="3 * (height / 5)" fill="#FFFFFF" text-anchor="middle" font-size="18">
+        {{item.value}}
+      </text>
+    </g>
+  </g>
+</svg>
