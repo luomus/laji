@@ -21,7 +21,7 @@ export class InfoCardComponent {
   private mapUrl = 'http://ws.luomus.fi/Balticdiversity/aggregated-map?mapPosition=markerBoundsNorthEastFixed&target=Parus%20major&locale=en';
 
   public activePanel:number = 0;
-  public activeImage:number = 0;
+  public activeImage:number = 1;
 
   @Input() public taxonId:string;
 
@@ -39,7 +39,7 @@ export class InfoCardComponent {
         this.getTaxonDescription(this.taxonId);
         this.getTaxonMedia(this.taxonId);
         this.taxonImages = [];
-        this.activeImage = 0;
+        this.activeImage = 1;
       });
     }
 

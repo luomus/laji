@@ -1,15 +1,21 @@
 <div class="container">
   <h1>Lajit</h1>
-  <div>
-    <laji-informal-list-breadcrumb [groups]="groups" (onSelect)="onBreadcrumSelect($event)"></laji-informal-list-breadcrumb>
-    <laji-informal-list [tree]="selectedInformalGroup ? selectedInformalGroup.hasSubGroup : tree" (onSelect)="onGroupSelect($event)"></laji-informal-list>
-  </div>
-  <div>
-    <laji-species-list *ngIf="selectedInformalGroup" [informalGroup]="selectedInformalGroup"></laji-species-list>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <laji-tree-of-life></laji-tree-of-life>
-    </div>
-  </div>
+  <tabset [justified]="true">
+    <tab heading="plop">
+      <div style="margin-top: 12px;" class="row">
+        <div class="col-md-12">
+          <laji-informal-list-breadcrumb [groups]="groups" (onSelect)="onBreadcrumSelect($event)"></laji-informal-list-breadcrumb>
+          <laji-informal-list [tree]="selectedInformalGroup ? selectedInformalGroup.hasSubGroup : tree" (onSelect)="onGroupSelect($event)"></laji-informal-list>
+          <laji-species-list *ngIf="selectedInformalGroup" [informalGroup]="selectedInformalGroup"></laji-species-list>
+        </div>
+      </div>
+    </tab>
+    <tab heading="naks">
+      <div class="row">
+        <div class="col-md-12">
+          <laji-tree-of-life></laji-tree-of-life>
+        </div>
+      </div>
+    </tab>
+  </tabset>
 </div>

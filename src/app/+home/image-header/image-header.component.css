@@ -4,7 +4,7 @@
 
 .header-image {
   background-clip: border-box;
-  background: url(/static/images/bg_small.jpg) center / cover;
+  background: url(/static/images/bg1_small.jpg) center / cover;
 }
 
 .header-image, .carousel .item {
@@ -18,7 +18,7 @@
 @media (min-width: 1200px) {
   .header-image {
     background-clip: border-box;
-    background: url(/static/images/bg.jpg) center / cover;
+    background: url(/static/images/bg1.jpg) center / cover;
   }
 
   .header-image, .carousel .item {

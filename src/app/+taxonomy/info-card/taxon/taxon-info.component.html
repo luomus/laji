@@ -32,7 +32,9 @@
   <tr *ngIf="taxon.administrativeStatuses">
     <th>{{ 'taxonomy.administrative.statuses' | translate  }}</th>
     <td>
-      <span *ngFor="let status of taxon.administrativeStatuses">{{ status | label }}, </span>
+      <ul>
+        <li *ngFor="let status of taxon.administrativeStatuses">{{ status | label }}</li>
+      </ul>
     </td>
   </tr>
   <tr *ngIf="taxon.redListStatus2010Finland">
@@ -41,7 +43,7 @@
   </tr>
   <tr>
     <th>{{ 'taxonomy.card.id' | translate }}</th>
-    <td><a href="//tun.fi/{{taxon.id}}">tun.fi/{{taxon.id}}</a></td>
+    <td><a href="http://tun.fi/{{taxon.id}}">http://tun.fi/{{taxon.id}}</a></td>
   </tr>
   </tbody>
 </table>
