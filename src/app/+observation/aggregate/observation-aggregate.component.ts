@@ -41,6 +41,7 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
 
   private subQueryUpdate:Subscription;
   private subCount:Subscription;
+  private lastCache:string;
 
   constructor(
     private warehouseService: WarehouseApi,
@@ -84,7 +85,11 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
     if (this.queryOverride) {
       query = Object.assign(query, this.queryOverride);
     }
-    query.includeNonValidTaxa = false;
+    let cache = JSON.stringify(query);
+    if (this.lastCache === cache) {
+      return;
+    }
+    this.lastCache = cache;
     this.loading = true;
     this.subCount = this.warehouseService
       .warehouseQueryAggregateGet(query, [this.field], undefined, this.limit, this.page)

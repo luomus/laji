@@ -32,6 +32,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   private subFetch: Subscription;
   private subUpdate: Subscription;
+  private lastQuery:string;
 
   constructor(private warehouseService: WarehouseApi,
               private decorator: ValueDecoratorService,
@@ -73,15 +74,20 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   fetchRows(page: number): void {
     this.searchQuery.selected = this.columns.map((column) => column.field);
-    this.loading = true;
-    if (this.subFetch) {
-      this.subFetch.unsubscribe();
-    }
+
+    let cache = JSON.stringify(this.searchQuery.query) + page;
     let query = Util.clone(this.searchQuery.query);
     if (Object.keys(query).length === 0) {
       query.includeNonValidTaxa = false;
     }
-
+    if (this.lastQuery == cache) {
+      return;
+    }
+    if (this.subFetch) {
+      this.subFetch.unsubscribe();
+    }
+    this.lastQuery = cache;
+    this.loading = true;
     this.subFetch = this.warehouseService
       .warehouseQueryListGet(
         query,
