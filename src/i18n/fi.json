@@ -91,6 +91,8 @@
   "result.gathering.municipality": "Paikka",
   "result.load.introPublic": "Voit ladata julkisen aineston itsellesei painamalla \"lataa aineisto\"-nappia. Aineisto toimitetaan hetken päästä sähköpostiisi.",
   "result.load.introPrivate": "Voit myös halutessasi tehdä pyynnön salattuun materiaaliin. Tällöin pyyntösi käsitellään yksilöllisesti ja saat lisäohjeita sähköpostitse.",
+  "result.load.thanksPublic": "Kiitos, saat linkin aineistoon sähköpostitse",
+  "result.load.thanksRequest": "Kiitos, saat ohjeita sähköpostitse",
 
   "force.login": "Sinun pitää kirjautua jotta voit käyttää tätä osiota",
 

@@ -68,10 +68,13 @@
               <p>
                 {{'result.load.introPublic' | translate}}
               </p>
-              <div *ngIf="!requests['public']">
+              <div *ngIf="requests['download'] !== 'sent'">
+                <alert *ngIf="requests['download'] === 'error'" [dismissible]="true">
+                  Could not make the request!
+                </alert>
                 <button class="btn btn-default" (click)="makePublicRequest()">lataa aineisto</button>
               </div>
-              <div *ngIf="requests['public']">
+              <div *ngIf="requests['download'] === 'sent'">
                 {{'result.load.thanksPublic' | translate}}
               </div>
             </div>
@@ -79,10 +82,13 @@
               <p>
                 {{'result.load.introPrivate' | translate}}
               </p>
-              <div *ngIf="!requests['downloadApprovalRequest']">
+              <div *ngIf="requests['downloadApprovalRequest'] !== 'sent'">
+                <alert *ngIf="requests['downloadApprovalRequest'] === 'error'" [dismissible]="true">
+                  Could not make the request!
+                </alert>
                 <button class="btn btn-default" (click)="makePrivateRequest()">tee pyyntö</button>
               </div>
-              <div *ngIf="requests['downloadApprovalRequest']">
+              <div *ngIf="requests['downloadApprovalRequest'] === 'sent'">
                 {{'result.load.thanksRequest' | translate}}
               </div>
             </div>

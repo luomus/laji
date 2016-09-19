@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {Location} from '@angular/common';
 
 import { SearchQuery } from "../search-query.model";
@@ -6,14 +6,14 @@ import {IdService} from "../../shared/service/id.service";
 import {CoordinateService} from "../../shared/service/coordinate.service";
 import {UserService} from "../../shared/service/user.service";
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 
 
 @Component({
   selector: 'laji-observation-result',
   templateUrl: 'observation-result.component.html'
 })
-export class ObservationResultComponent implements OnInit {
+export class ObservationResultComponent implements OnInit, OnDestroy {
 
   @Input() active:string = 'list';
 
@@ -27,11 +27,8 @@ export class ObservationResultComponent implements OnInit {
   };
 
   public requests:any = {};
-  public privateRequestSent:boolean = false;
-  public publicRequestSent:boolean = false;
-
-  private privateRequest:string;
-  private publicRequest:string;
+  private queryCache:string;
+  private subQueryUpdate: Subscription;
 
   constructor(
     public searchQuery: SearchQuery,
@@ -42,6 +39,19 @@ export class ObservationResultComponent implements OnInit {
 
   ngOnInit() {
     this.activated[this.active] = true;
+    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
+      _ => {
+        if (this.queryCache !== JSON.stringify(this.searchQuery.query)) {
+          this.requests = {}
+        }
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    if (this.subQueryUpdate) {
+      this.subQueryUpdate.unsubscribe();
+    }
   }
 
   pickValue(aggr, lang) {
@@ -115,18 +125,27 @@ export class ObservationResultComponent implements OnInit {
   }
 
   makeRequest(type:string) {
-    let cacheKey = JSON.stringify(this.searchQuery.query);
-    if (this.requests[type] == cacheKey) {
-      //return;
+    this.queryCache = JSON.stringify(this.searchQuery.query);
+    console.log(this.requests);
+    if (this.requests[type] == this.queryCache) {
+      return;
     }
-    this.requests[type] = cacheKey;
+    this.requests[type] = this.queryCache;
     this.userService.getToken();
     this.warehouseService[type](
       this.userService.getToken(),
       'CSV_FLAT',
       'UNIT_FACTS',
       this.searchQuery.query
-    ).subscribe()
+    ).subscribe(
+      _ => {
+        this.requests[type] = 'sent';
+      },
+      err => {
+        this.requests[type] = 'error';
+        console.log(err);
+      }
+    )
   }
 
 }
