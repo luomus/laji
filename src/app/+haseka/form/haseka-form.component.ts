@@ -117,14 +117,13 @@ export class HaSeKaFormComponent implements OnInit {
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
-    this.subFetch = this.formService
-      .formFindById(this.formId, this.translate.currentLang)
-      .subscribe(
-        form =>  {
-          if (this.formDataStorage[this.formId]) {
-            form.formData = this.formDataStorage[this.formId];
-          }
-          this.form = form;
+    this.subFetch = Observable.forkJoin(
+      this.formService.formFindById(this.formId, this.translate.currentLang),
+      this.userService.getDefaultFormData()
+    ).subscribe(
+        data =>  {
+          data[0].formData = data[1];
+          this.form = data[0];
           this.lang = this.translate.currentLang;
         },
         err => console.log(err)

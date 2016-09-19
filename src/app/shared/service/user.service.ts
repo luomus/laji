@@ -11,10 +11,12 @@ export class UserService {
 
   private token = '';
   private user:Person;
+  private defaultFormData:any;
 
   private subUser:Subscription;
   private subLogout:Subscription;
   private observable: Observable<Person>;
+  private formDefaultObservable: Observable<any>;
 
   constructor(
     private tokenService:PersonTokenApi,
@@ -79,4 +81,23 @@ export class UserService {
   public getLoginUrl():string {
     return config.login_url;
   }
+
+  public getDefaultFormData():Observable<any> {
+    if (this.defaultFormData) {
+      return Observable.of(this.defaultFormData);
+    } else if (this.formDefaultObservable) {
+      return this.formDefaultObservable;
+    }
+    this.formDefaultObservable = this.getUser().map(data => {
+      return {
+        'editors': [data.id],
+        'gatheringEvent': {
+          'leg': [data.id]
+        }
+      }
+    });
+
+    return this.formDefaultObservable;
+  }
+
 }
