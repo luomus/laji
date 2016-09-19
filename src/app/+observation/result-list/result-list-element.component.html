@@ -1,4 +1,4 @@
-<span *ngIf="isPlain()">{{data}}</span>
+<span *ngIf="isPlain()" [innerHtml]="data"></span>
 <div *ngIf="!isPlain()">
   {{data.text}}
   <span>
