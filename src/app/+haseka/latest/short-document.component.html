@@ -1,0 +1,30 @@
+<a [routerLink]="['/haseka/JX.519/' + document.id]">
+  {{document.id}} {{document.dateEdited}}
+</a>
+<span
+  *ngIf="taxa.length > 0"
+  class="link"
+  (click)="showList = !showList">
+  details
+  <i class="glyphicon"
+     style="font-size:0.8em"
+     [ngClass]="{
+             'glyphicon-triangle-bottom': showList,
+             'glyphicon-triangle-right': !showList
+             }"
+  ></i>
+</span>
+<br>
+{{'haseka.users.latest.gathered' | translate }}:
+<span *ngIf="gatheringDates.start || gatheringDates.end">
+  <a [routerLink]="['/haseka/JX.519/' + document.id]">
+    {{gatheringDates.start | date:'d.M.y'}} - {{gatheringDates.end | date:'d.M.y'}}
+  </a>
+</span>
+<ul *ngIf="showList">
+  <li *ngFor="let taxon of taxa">
+    <a [routerLink]="['/haseka/JX.519/' + document.id]">
+      {{taxon.name}} <small>{{taxon.id}}</small>
+    </a>
+  </li>
+</ul>

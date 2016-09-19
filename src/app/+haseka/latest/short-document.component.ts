@@ -3,10 +3,11 @@ import {Document} from "../../shared/model/Document";
 
 @Component({
   selector: 'laji-short-document',
-  templateUrl: 'short.component.html'
+  templateUrl: 'short-document.component.html'
 })
 export class ShortDocumentComponent implements OnInit, OnChanges{
   @Input() document:Document;
+  @Input() showList:boolean = false;
 
   public taxa:Array<{ name:string,id:string }>;
   public gatheringDates:{ start:string,end:string };
