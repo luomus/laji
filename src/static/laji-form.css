@@ -1925,10 +1925,7 @@ body .laji-form {
 }
 
 .laji-form .form-group {
-	margin-bottom: 7px;
-}
-.laji-form .form-inline .form-group {
-	padding-left: 5px;
+	margin-bottom: 3px;
 }
 
 .laji-form button {
@@ -1940,11 +1937,14 @@ body .laji-form {
 }
 
 .laji-form legend {
-	font-size: 18px;
+	font-size: 15px;
 }
 .laji-form label {
 	font-size: 13px;
 	white-space: nowrap;
+	margin-bottom: 0px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .laji-form .field-description {
 	font-size: 13px;
@@ -2009,7 +2009,6 @@ body .laji-form {
 
 .laji-form label strong:not(:empty)+.rc-switch {
 	display: table;
-	margin-top: 4px;
 }
 
 .laji-form .rc-switch {
@@ -2123,22 +2122,28 @@ body .laji-form {
 .laji-form .laji-form-map-navi {
 	margin-bottom: 5px;
 }
-
-.laji-form .laji-form-images img, .laji-form .laji-form-images div {
-	padding: 4px;
+.laji-form .laji-form-images {
+	margin-top: 5px;
+}
+.laji-form .laji-form-images div  {
+	margin-right: 7px;
 	width: 120px;
 	height: 120px;
 	float: left;
 	cursor: pointer;
 }
+.laji-form .laji-form-images a {
+	width: inherit;
+	height: inherit;
+}
+.laji-form .laji-form-images img {
+	width: inherit;
+	height: inherit;
+}
 
 .laji-form .laji-form-drop-zone {
 	border: 2px dashed black;
-	width: 112px !important;
-	height: 112px !important;
-	margin: 4px;
-	margin-top: 8px;
-	margin-left: 8px;
+	padding: 7px;
 }
 
 .laji-form  .laji-form-drop-zone:hover, .laji-form .laji-form-drop-zone.dragging  {
@@ -2158,20 +2163,20 @@ body .laji-form {
 }
 .laji-form .img-remove {
 	border-radius: 7px !important;
-	top: 0;
+	top: -9px;
 	position: absolute;
 	padding: 4px 2px !important;
 	right: -8px;
 }
 
-.laji-form .auto-array-item {
+.laji-form .auto-array-item, .laji-form .scope-field  {
 	display: -webkit-box;
 	display: -moz-box;
 	display: -ms-flexbox;
 	display: -webkit-flex;
 	display: flex;
 }
-.laji-form .auto-array-schema {
+.laji-form .auto-array-schema, .laji-form .scope-field-schema {
 	-webkit-flex-grow: 1;
 	-ms-flex-grow: 1;
 	flex-grow: 1;
@@ -2186,5 +2191,17 @@ body .laji-form {
 
 .laji-form .modal-title {
 	text-align: center;
+}
+
+.laji-form .col-lg-1, .laji-form .col-lg-10, .laji-form .col-lg-11, .laji-form .col-lg-12, .laji-form .col-lg-2, .laji-form .col-lg-3, .laji-form .col-lg-4, .laji-form .col-lg-5, .laji-form .col-lg-6, .laji-form .col-lg-7, .laji-form .col-lg-8, .laji-form .col-lg-9,
+.laji-form .col-md-1, .laji-form .col-md-10, .laji-form .col-md-11, .laji-form .col-md-12, .laji-form .col-md-2, .laji-form .col-md-3, .laji-form .col-md-4, .laji-form .col-md-5, .laji-form .col-md-6, .laji-form .col-md-7, .laji-form .col-md-8, .laji-form .laji-form .col-md-9,
+.laji-form .col-sm-1, .laji-form .col-sm-10, .laji-form .col-sm-11, .laji-form .col-sm-12, .laji-form .col-sm-2, .laji-form .col-sm-3, .laji-form .col-sm-4, .laji-form .col-sm-5, .laji-form .col-sm-6, .laji-form .col-sm-7, .laji-form .col-sm-8, .laji-form .col-sm-9,
+.laji-form .col-xs-1, .laji-form .col-xs-10, .laji-form .col-xs-11, .laji-form .col-xs-12, .laji-form .col-xs-2, .laji-form .col-xs-3, .laji-form .col-xs-4, .laji-form .col-xs-5, .laji-form .col-xs-6, .laji-form .col-xs-7, .laji-form .col-xs-8, .laji-form .col-xs-9 {
+	padding-right:1px;
+	padding-left:1px;
+}
+.laji-form .row {
+	margin-left: 1px;
+	margin-right: 1px;
 }
 
