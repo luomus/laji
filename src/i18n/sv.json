@@ -11,6 +11,7 @@
   "navigation.notify": "Ilmoita havainto",
   "navigation.user": "navigation.user",
   "navigation.user.login": "Login",
+  "navigation.user.logout": "Logout",
 
   "home.image-header.observations": "observationer och exemplar",
   "home.image-header.species": "arter",
@@ -104,5 +105,5 @@
 
   "haseka.title": "haseka.title",
   "haseka.forms.title": "haseka.forms.title",
-  "haseka.latest.title": "haseka.latest.title"
+  "haseka.users.latest": "haseka.users.latest"
 }

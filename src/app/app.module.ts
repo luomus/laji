@@ -70,6 +70,7 @@ import {MetadataSelectComponent} from "./shared/metadata-select/metadata-select.
 import {ObservationGroupSelectComponent} from "./+observation/group-select/group-select.component";
 import {AutocompleteApi} from "./shared/api/AutocompleteApi";
 import {IUCNComponent} from "./+taxonomy/iucn/iucn.component";
+import {HaSeKaTermsOfServiceComponent} from "./+haseka/terms-of-service/terms-of-service.component";
 
 
 @NgModule({
@@ -86,7 +87,7 @@ import {IUCNComponent} from "./+taxonomy/iucn/iucn.component";
     nvD3, ResultListElementComponent, InfoCardComponent, TaxonInfoComponent,
     ParentsComponent, ChildrenListComponent, InformalListBreadcrumbComponent, InformalListComponent,
     SpeciesListComponent, TreeOfLifeComponent, UserComponent, UserLoginComponent,
-    UserLogoutComponent, NewsComponent, InformationComponent, HaSeKaComponent,
+    UserLogoutComponent, NewsComponent, InformationComponent, HaSeKaComponent, HaSeKaTermsOfServiceComponent,
     HaSeKaFormComponent, HaSeKaFormListComponent, ShortDocumentComponent,
     UsersLatestComponent, PanelComponent, ImageGalleryComponent, LajiFormComponent,
     TaxonComponent, CollectionComponent, ObservationComponent,DatePickerComponent,

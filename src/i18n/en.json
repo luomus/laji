@@ -11,6 +11,7 @@
   "navigation.notify": "Ilmoita havainto",
   "navigation.user": "User settings",
   "navigation.user.login": "Login",
+  "navigation.user.logout": "Logout",
 
   "home.image-header.observations": "observations and specimen",
   "home.image-header.species": "species",
@@ -100,7 +101,10 @@
   "observation.filterBy.image": "Image",
   "observation.filterBy.collectionId": "",
 
-  "haseka.title": "Observation notifier",
+  "haseka.title": "Observation service",
   "haseka.forms.title": "Forms",
-  "haseka.latest.title": "Latest submissions"
+  "haseka.users.latest": "Latest submissions",
+  "haseka.pleaseLogin": "Please login to use this service",
+  "haseka.terms": "terms of use",
+  "haseka.users.latest.gathered": "observed"
 }

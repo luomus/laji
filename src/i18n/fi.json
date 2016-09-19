@@ -11,6 +11,7 @@
   "navigation.notify": "Ilmoita havainto",
   "navigation.user": "Käyttäjäasetukset",
   "navigation.user.login": "Kirjaudu",
+  "navigation.user.logout": "Kirjaudu ulos",
 
   "home.image-header.observations": "havaintoja ja näytteitä",
   "home.image-header.species": "lajeja",
@@ -128,11 +129,14 @@
   "observation.active.informalTaxonGroup": "Lajiryhmällä",
   "observation.active.informalTaxonGroupAll": "kaikilla",
 
-  "haseka.title": "Havainto ilmoitin",
+  "haseka.title": "Havaintopalvelu",
   "haseka.forms.title": "Lomakeet",
   "haseka.form.success": "Havainnot tallennettu!",
   "haseka.form.failure": "Tallennus epäonnistui!",
-  "haseka.latest.title": "Viimeisimmät ilmoitukseni",
+  "haseka.users.latest": "Viimeisimmät ilmoitukseni",
+  "haseka.pleaseLogin": "Sinun täytyy kirjautua käyttääksesi tätä palvelua",
+  "haseka.terms": "käyttöehdot",
+  "haseka.users.latest.gathered": "havaittu",
 
   "omniSearch.matches": "Tietoa lajista",
   "omniSearch.rank": "taksonominen taso",
