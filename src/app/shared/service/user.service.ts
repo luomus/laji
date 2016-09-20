@@ -89,6 +89,7 @@ export class UserService {
       return this.formDefaultObservable;
     }
     this.formDefaultObservable = this.getUser().map(data => {
+      /*
       return {
         'editors': [data.id],
         'gatheringEvent': {
@@ -97,6 +98,13 @@ export class UserService {
         'gatherings': [{
           'units': []
         }]
+      }
+      */
+      return {
+        'editors': [data.id],
+        'gatheringEvent': {
+          'leg': [data.id]
+        }
       }
     });
 
