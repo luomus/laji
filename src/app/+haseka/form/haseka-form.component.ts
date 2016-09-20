@@ -1,12 +1,11 @@
-import {Component, OnInit, ElementRef, Inject, OnDestroy } from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import {TranslateService} from 'ng2-translate/ng2-translate';
 import {Subscription, Observable} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 
-import {LajiFormComponent, FormApi} from "../../shared";
+import {FormApi} from "../../shared";
 import {DocumentApi} from "../../shared/api/DocumentApi";
 import {UserService} from "../../shared/service/user.service";
-import {AlertComponent} from "ng2-bootstrap";
 
 @Component({
   selector: 'laji-haseka-form',
@@ -64,8 +63,10 @@ export class HaSeKaFormComponent implements OnInit {
     }
   }
 
-  onSubmit(formData) {
-    let data = formData.formData;
+  onSubmit(event) {
+    console.log(event);
+    //event.makeBlock();
+    let data = event.data.formData;
     if (this.isEdit) {
       this.documentService
         .update(data.id || this.documentId,data, this.userService.getToken())
@@ -78,6 +79,7 @@ export class HaSeKaFormComponent implements OnInit {
             this.error = err;
             setTimeout(() => this.error = undefined, 5000)
           }
+          //event.clearBlock()
         );
     } else {
       this.documentService
@@ -95,6 +97,7 @@ export class HaSeKaFormComponent implements OnInit {
             this.error = this.parseErrorMessage(err);
             setTimeout(() => this.error = undefined, 5000)
           }
+          //event.clearBlock()
         );
     }
   }

@@ -1,7 +1,5 @@
 import {Http, Headers, RequestOptionsArgs, Response, URLSearchParams} from '@angular/http';
 import {Injectable, Optional} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import * as models from '../model';
 import 'rxjs/Rx';
 
 @Injectable()
@@ -9,7 +7,7 @@ export class FormApiClient {
   protected basePath = '/api';
   public defaultHeaders: Headers = new Headers();
   private _lang:string;
-  private _userToken:string;
+  private _personToken:string;
 
   constructor(protected http: Http) {
   }
@@ -22,15 +20,15 @@ export class FormApiClient {
     return this._lang;
   }
 
-  public set userToken(token) {
-    this._userToken = token;
+  public set personToken(token) {
+    this._personToken = token;
   }
 
-  public get userToken() {
-    return this._userToken;
+  public get personToken() {
+    return this._personToken;
   }
 
-  public fetch(resource: string, query: any): Promise<any> {
+  public fetch(resource: string, query: any, options?:RequestOptionsArgs): Promise<any> {
     const path = this.basePath + resource;
 
     let queryParameters = new URLSearchParams();
@@ -39,8 +37,8 @@ export class FormApiClient {
     if (this._lang !== undefined) {
       queryParameters.set('lang', this._lang);
     }
-    if (this._userToken !== undefined) {
-      queryParameters.set('userToken', this._userToken);
+    if (this._personToken !== undefined) {
+      queryParameters.set('personToken', this._personToken);
     }
 
     for (let param in query) {
@@ -57,6 +55,11 @@ export class FormApiClient {
       headers: headerParams,
       search: queryParameters
     };
+
+    if (options) {
+      requestOptions['method'] = options['method'] || 'GET';
+      requestOptions['body'] = options['body'] || undefined;
+    }
 
     return this.http.request(path, requestOptions)
       .map((response: Response) => {

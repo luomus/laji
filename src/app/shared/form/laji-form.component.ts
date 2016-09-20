@@ -1,5 +1,6 @@
 import {Component, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges} from '@angular/core';
 import {FormApiClient, FormApi} from "../api";
+import {UserService} from "../service/user.service";
 
 let React = require('react');
 let ReactDOM = require('react-dom');
@@ -19,7 +20,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
   @Input() lang: string;
   @Input() formData: any = {};
 
-  @Output() onSubmit = new EventEmitter();
+  @Output() onSubmit = new EventEmitter ();
   @Output() onChange = new EventEmitter();
 
   elem: ElementRef;
@@ -27,7 +28,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
   renderElem:any;
 
   constructor(@Inject(ElementRef) elementRef: ElementRef,
-              private apiClient: FormApiClient) {
+              private apiClient: FormApiClient,
+              private userService:UserService
+  ) {
     this.elem = elementRef.nativeElement;
   }
 
@@ -54,6 +57,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
       return;
     }
     this.apiClient.lang = this.lang;
+    this.apiClient.personToken = this.userService.getToken();
     try {
       this.reactElem = React.createElement(LajiForm,
         {
@@ -62,7 +66,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
           uiSchemaContext: this.formData.uiSchemaContext,
           formData: this.formData.formData,
           onChange: data => this.onChange.emit(data),
-          onSubmit: data => this.onSubmit.emit(data),
+          onSubmit: this._onSubmit.bind(this),
           apiClient: this.apiClient,
           lang: this.lang
         }
@@ -74,7 +78,14 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
     } catch (err) {
       console.log(err);
     }
+  }
 
+  _onSubmit(data) {
+    this.onSubmit.emit({
+      data:data,
+      makeBlock: LajiForm.pushBlockingLoader,
+      clearBlock: LajiForm.popBlockingLoader
+    })
   }
 
   unMount() {

@@ -59,12 +59,12 @@ export class DocumentApi {
         if (data === null || data === undefined) {
             throw new Error('Required parameter data was null or undefined when calling documentCreateWithUser.');
         }
-        // verify required parameter 'userToken' is not null or undefined
+        // verify required parameter 'personToken' is not null or undefined
         if (userToken === null || userToken === undefined) {
-            throw new Error('Required parameter userToken was null or undefined when calling documentCreateWithUser.');
+            throw new Error('Required parameter personToken was null or undefined when calling documentCreateWithUser.');
         }
         if (userToken !== undefined) {
-            queryParameters.set('userToken', userToken);
+            queryParameters.set('personToken', userToken);
         }
 
         let requestOptions: RequestOptionsArgs = {
@@ -100,12 +100,12 @@ export class DocumentApi {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling documentFindByIdWithUser.');
         }
-        // verify required parameter 'userToken' is not null or undefined
+        // verify required parameter 'personToken' is not null or undefined
         if (userToken === null || userToken === undefined) {
-            throw new Error('Required parameter userToken was null or undefined when calling documentFindByIdWithUser.');
+            throw new Error('Required parameter personToken was null or undefined when calling documentFindByIdWithUser.');
         }
         if (userToken !== undefined) {
-            queryParameters.set('userToken', userToken);
+            queryParameters.set('personToken', userToken);
         }
 
         let requestOptions: RequestOptionsArgs = {
@@ -136,9 +136,9 @@ export class DocumentApi {
 
         let queryParameters = new URLSearchParams();
         let headerParams = this.defaultHeaders;
-        // verify required parameter 'userToken' is not null or undefined
+        // verify required parameter 'personToken' is not null or undefined
         if (userToken === null || userToken === undefined) {
-            throw new Error('Required parameter userToken was null or undefined when calling documentFindWithUser.');
+            throw new Error('Required parameter personToken was null or undefined when calling documentFindWithUser.');
         }
         if (page !== undefined) {
             queryParameters.set('page', page);
@@ -149,7 +149,7 @@ export class DocumentApi {
         }
 
         if (userToken !== undefined) {
-            queryParameters.set('userToken', userToken);
+            queryParameters.set('personToken', userToken);
         }
 
         let requestOptions: RequestOptionsArgs = {
@@ -189,12 +189,12 @@ export class DocumentApi {
         if (data === null || data === undefined) {
             throw new Error('Required parameter data was null or undefined when calling documentUpdateWithUser.');
         }
-        // verify required parameter 'userToken' is not null or undefined
+        // verify required parameter 'personToken' is not null or undefined
         if (userToken === null || userToken === undefined) {
-            throw new Error('Required parameter userToken was null or undefined when calling documentUpdateWithUser.');
+            throw new Error('Required parameter personToken was null or undefined when calling documentUpdateWithUser.');
         }
         if (userToken !== undefined) {
-            queryParameters.set('userToken', userToken);
+            queryParameters.set('personToken', userToken);
         }
 
         let requestOptions: RequestOptionsArgs = {

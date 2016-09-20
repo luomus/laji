@@ -297,7 +297,7 @@ export class WarehouseApi {
     let headerParams = this.defaultHeaders;
 
     if (userToken === null || userToken === undefined) {
-      throw new Error('Required parameter userToken was null or undefined when calling warehouse download.');
+      throw new Error('Required parameter personToken was null or undefined when calling warehouse download.');
     }
 
     if (downloadFormat === null || downloadFormat === undefined) {
@@ -308,7 +308,7 @@ export class WarehouseApi {
       throw new Error('Required parameter includes was null or undefined when calling warehouse download.');
     }
 
-    queryParameters.set('userToken', userToken);
+    queryParameters.set('personToken', userToken);
     queryParameters.set('downloadFormat', downloadFormat);
     queryParameters.set('downloadIncludes', includes);
 
@@ -337,7 +337,7 @@ export class WarehouseApi {
     let headerParams = this.defaultHeaders;
 
     if (userToken === null || userToken === undefined) {
-      throw new Error('Required parameter userToken was null or undefined when calling warehouse download.');
+      throw new Error('Required parameter personToken was null or undefined when calling warehouse download.');
     }
 
     if (downloadFormat === null || downloadFormat === undefined) {
@@ -348,7 +348,7 @@ export class WarehouseApi {
       throw new Error('Required parameter includes was null or undefined when calling warehouse download.');
     }
 
-    queryParameters.set('userToken', userToken);
+    queryParameters.set('personToken', userToken);
     queryParameters.set('downloadFormat', downloadFormat);
     queryParameters.set('downloadIncludes', includes);
 

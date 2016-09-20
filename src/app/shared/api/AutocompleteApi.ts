@@ -88,7 +88,7 @@ export class AutocompleteApi {
         }
 
         if (userToken !== undefined) {
-            queryParameters.set('userToken', userToken);
+            queryParameters.set('personToken', userToken);
         }
 
         let requestOptions: RequestOptionsArgs = {
