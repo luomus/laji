@@ -93,7 +93,10 @@ export class UserService {
         'editors': [data.id],
         'gatheringEvent': {
           'leg': [data.id]
-        }
+        },
+        'gatherings': [{
+          'units': []
+        }]
       }
     });
 
