@@ -3,13 +3,14 @@ import {PersonTokenApi} from "../api/PersonTokenApi";
 import {Subscription, Observable} from "rxjs";
 import {Person} from "../model/Person";
 import {PersonApi} from "../api/PersonApi";
+import {LocalStorage} from "angular2-localstorage/dist";
 
 var config = require('../../../../config.json');
 
 @Injectable()
 export class UserService {
 
-  private token = '';
+  @LocalStorage() private token = '';
   private user:Person;
   private defaultFormData:any;
 

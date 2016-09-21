@@ -72,6 +72,7 @@ import {AutocompleteApi} from "./shared/api/AutocompleteApi";
 import {IUCNComponent} from "./+taxonomy/iucn/iucn.component";
 import {HaSeKaTermsOfServiceComponent} from "./+haseka/terms-of-service/terms-of-service.component";
 import {FooterService} from "./shared/service/footer.service";
+import {LocalStorageService} from "angular2-localstorage/dist";
 
 
 @NgModule({
@@ -104,7 +105,7 @@ import {FooterService} from "./shared/service/footer.service";
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     UserService, PersonTokenApi, PersonApi, WarehouseApi,
     WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
-    appRoutingProviders, AutocompleteApi, FooterService
+    appRoutingProviders, AutocompleteApi, FooterService, LocalStorageService
   ],
   bootstrap: [
     AppComponent
