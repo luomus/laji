@@ -78,16 +78,16 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
   }
 
   updateCount() {
-    if (this.subCount) {
-      this.subCount.unsubscribe();
-    }
     let query = Util.clone(this.searchQuery.query);
-    if (this.queryOverride) {
-      query = Object.assign(query, this.queryOverride);
-    }
     let cache = JSON.stringify(query);
     if (this.lastCache === cache) {
       return;
+    }
+    if (this.subCount) {
+      this.subCount.unsubscribe();
+    }
+    if (this.queryOverride) {
+      query = Object.assign(query, this.queryOverride);
     }
     this.lastCache = cache;
     this.loading = true;
