@@ -71,6 +71,7 @@ import {ObservationGroupSelectComponent} from "./+observation/group-select/group
 import {AutocompleteApi} from "./shared/api/AutocompleteApi";
 import {IUCNComponent} from "./+taxonomy/iucn/iucn.component";
 import {HaSeKaTermsOfServiceComponent} from "./+haseka/terms-of-service/terms-of-service.component";
+import {FooterService} from "./shared/service/footer.service";
 
 
 @NgModule({
@@ -103,7 +104,7 @@ import {HaSeKaTermsOfServiceComponent} from "./+haseka/terms-of-service/terms-of
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     UserService, PersonTokenApi, PersonApi, WarehouseApi,
     WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
-    appRoutingProviders, AutocompleteApi
+    appRoutingProviders, AutocompleteApi, FooterService
   ],
   bootstrap: [
     AppComponent

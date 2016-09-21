@@ -6,6 +6,7 @@ import {ActivatedRoute} from "@angular/router";
 import {FormApi} from "../../shared";
 import {DocumentApi} from "../../shared/api/DocumentApi";
 import {UserService} from "../../shared/service/user.service";
+import {FooterService} from "../../shared/service/footer.service";
 
 @Component({
   selector: 'laji-haseka-form',
@@ -34,6 +35,7 @@ export class HaSeKaFormComponent implements OnInit {
     private documentService:DocumentApi,
     private route: ActivatedRoute,
     private userService: UserService,
+    private footerService: FooterService,
     public translate: TranslateService
   ) {
   }
@@ -44,9 +46,11 @@ export class HaSeKaFormComponent implements OnInit {
     }
     this.subParam.unsubscribe();
     this.subTrans.unsubscribe();
+    this.footerService.footerVisible = true;
   }
 
   ngOnInit() {
+    this.footerService.footerVisible = false;
     this.subParam = this.route.params.subscribe(params => {
       this.formId = params['formId'];
       this.documentId = params['documentId'] || null;
@@ -58,9 +62,7 @@ export class HaSeKaFormComponent implements OnInit {
   }
 
   onChange(formData) {
-    if (!this.isEdit) {
-      this.formDataStorage[this.formId] = formData;
-    }
+
   }
 
   onSubmit(event) {

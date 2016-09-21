@@ -5,6 +5,7 @@ import {Location} from "@angular/common";
 import {URLSearchParams} from "@angular/http";
 
 import {SearchQuery} from "./search-query.model";
+import {FooterService} from "../shared/service/footer.service";
 declare let d3:any;
 
 @Component({
@@ -21,10 +22,16 @@ export class ObservationComponent implements OnInit, OnDestroy {
   public options:any;
   public data:any;
 
-  constructor(private route: ActivatedRoute, public searchQuery: SearchQuery, private location: Location) {
+  constructor(
+    private route: ActivatedRoute,
+    public searchQuery: SearchQuery,
+    private location: Location,
+    private footerService:FooterService
+  ) {
   }
 
   ngOnInit() {
+    this.footerService.footerVisible = false;
     this.subParam = this.route.params.subscribe(params => {
       this.tab = params['tab'] || 'map';
       this.searchQuery.page = +params['page'] || 1;
@@ -39,6 +46,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.footerService.footerVisible = true;
     this.subParam.unsubscribe();
   }
 }
