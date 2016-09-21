@@ -9,7 +9,7 @@ export class ValueDecoratorService {
   private decoratable = {
     'document.documentId':'makeId',
     'gathering.eventDate':'makeDateRange',
-    'gathering.team': 'makeArrayToBr',
+    'gathering.team': 'makeArrayToSemiColon',
     'unit.taxonVerbatim': 'makeTaxonLocal',
     'unit.linkings.taxon': 'makeTaxon',
     'gathering.conversions.wgs84CenterPoint': 'makeMapPoint'
@@ -40,6 +40,9 @@ export class ValueDecoratorService {
     }
   }
 
+  protected makeArrayToSemiColon(value) {
+    return value.join('; ')
+  }
   protected makeArrayToBr(value) {
     return value.join('<br>')
   }

@@ -140,7 +140,7 @@ export class HaSeKaFormComponent implements OnInit {
       this.subFetch.unsubscribe();
     }
     Observable.forkJoin([
-      this.formService.formFindById(this.formId),
+      this.formService.formFindById(this.formId, this.translate.currentLang),
       this.documentService.findById(this.documentId, this.userService.getToken())
     ]).subscribe(
       data => {
