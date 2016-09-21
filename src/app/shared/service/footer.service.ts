@@ -13,5 +13,4 @@ export class FooterService {
   get footerVisible() {
     return this._footerVisible;
   }
-
 }
