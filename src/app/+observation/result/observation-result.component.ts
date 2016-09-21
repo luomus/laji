@@ -55,15 +55,23 @@ export class ObservationResultComponent implements OnInit, OnDestroy {
   }
 
   pickValue(aggr, lang) {
+    let vernacular = '';
+    let scientific = aggr['unit.linkings.taxon.scientificName'] || '';
     switch (lang) {
       case 'fi':
-        return aggr['unit.linkings.taxon.nameFinnish'] || aggr['unit.linkings.taxon.scientificName'] || '';
+        vernacular = aggr['unit.linkings.taxon.nameFinnish'] || '';
+        break;
       case 'en':
-        return aggr['unit.linkings.taxon.nameEnglish'] || aggr['unit.linkings.taxon.scientificName'] || '';
+        vernacular = aggr['unit.linkings.taxon.nameEnglish'] || '';
+        break;
       case 'sv':
-        return aggr['unit.linkings.taxon.nameSwedish'] || aggr['unit.linkings.taxon.scientificName'] || '';
+        vernacular = aggr['unit.linkings.taxon.nameSwedish'] || '';
     }
-    return aggr['unit.linkings.taxon.scientificName'] || '';
+
+    if (vernacular) {
+      return vernacular + ' (<i>' + scientific + '</i>)';
+    }
+    return scientific;
   }
 
   pickLink(aggr) {
