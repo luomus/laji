@@ -24,7 +24,7 @@
        [active]="active === 'species'">
     <laji-observation-aggregate
       [field]="'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameEnglish,unit.linkings.taxon.nameFinnish,unit.linkings.taxon.nameSwedish,unit.linkings.taxon.id'"
-      [title]="'taxon'"
+      [title]="'search.result.species' | translate"
       [valuePicker]="pickValue"
       [linkPicker]="pickLink"
       [queryOverride]="{includeNonValidTaxa: false, taxonRankId: 'MX.species'}"
@@ -56,13 +56,6 @@
     <div class="form-group">
       <div class="col-sm-12">
         <div *ngIf="userService.isLoggedIn()">
-          <strong>Karkeistettuja</strong>
-          <laji-observation-count
-            [query]="searchQuery.query"
-            [field]="'document.secureLevel'"
-            [pick]="['HIGHEST','KM100','KM50','KM25', 'KM10']"
-          >
-          </laji-observation-count><br>
           <div class="row">
             <div class="col-sm-6">
               <p>
@@ -80,6 +73,15 @@
             </div>
             <div class="col-sm-6">
               <p>
+                {{'result.load.privateCount' | translate}}
+                <strong>
+                  <laji-observation-count
+                    [query]="searchQuery.query"
+                    [field]="'document.secureLevel'"
+                    [pick]="['HIGHEST','KM100','KM50','KM25', 'KM10']"
+                  >.
+                  </laji-observation-count>
+                </strong>
                 {{'result.load.introPrivate' | translate}}
               </p>
               <div *ngIf="requests['downloadApprovalRequest'] !== 'sent'">
