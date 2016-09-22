@@ -1,13 +1,11 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
-import {SearchQuery} from "../search-query.model";
 import {Subscription} from "rxjs";
 import {Util} from "../../shared/service/util.service";
 import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
 import {CoordinateService} from "../../shared/service/coordinate.service";
 
 declare var d3:any;
-let observationMapColorScale;
 
 @Component({
   selector: 'laji-observation-map',
@@ -23,9 +21,9 @@ export class ObservationMapComponent implements OnInit {
   @Input() lat:string = 'gathering.conversions.wgs84Grid05.lat';
   @Input() lon:string = 'gathering.conversions.wgs84Grid1.lon';
   @Input() size:number = 1000;
-  @Input() disableSelect:boolean = false;
+  @Input() draw:boolean = false;
   @Input() height:number;
-  @Output() select = new EventEmitter();
+  @Output() create = new EventEmitter();
   public mapData;
 
   private prev:string = '';
@@ -49,8 +47,8 @@ export class ObservationMapComponent implements OnInit {
     this.updateMapData();
   }
 
-  onSelect(e) {
-    this.select.emit(e);
+  onCreate(e) {
+    this.create.emit(e);
   }
 
   private updateMapData() {
@@ -67,9 +65,19 @@ export class ObservationMapComponent implements OnInit {
       query,
       [this.lat + ',' + this.lon],
       undefined,
-      this.size
+      this.size,
+      undefined,
+      false
     ).subscribe(
-      (data) => this.dataToGeo(data.results)
+      (data) => {
+        this.dataToGeo(data.results);
+        //if (data.featureCollection) {
+        //  this.mapData = [{
+        //    featureCollection: data.featureCollection,
+        //    getFeatureStyle: this.getStyle.bind(this)
+        //  }];
+        //}
+      }
     );
   }
 

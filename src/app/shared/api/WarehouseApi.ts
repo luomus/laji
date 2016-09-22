@@ -256,8 +256,9 @@ export class WarehouseApi {
    * @param orderBy Define order of fields. Defaults to count of units (desc). Give number of the column, first is 1. aggregateBy -fields are first, followed by count of units, individual count sum and maximum and min and max date. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
    * @param pageSize Set number of results in one page.
    * @param page Set current page.
+   * @param geoJSON returns data as geojson.
    */
-  public warehouseQueryAggregateGet(query:WarehouseQueryInterface, aggregateBy?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, taxonId?:Array<string>, target?:Array<string>, informalTaxonGroupId?:Array<string>, administrativeStatusId?:Array<string>, redListStatusId?:Array<string>, finnish?:boolean, invasive?:boolean, countryId?:Array<string>, finnishMunicipalityId?:Array<string>, biogeographicalProvinceId?:Array<string>, area?:Array<string>, time?:Array<string>, dayOfYearBegin?:number, dayOfYearEnd?:number, keyword?:Array<string>, collectionId?:Array<string>, sourceId?:Array<string>, recordBasis?:Array<string>, lifeStage?:Array<string>, sex?:Array<string>, documentId?:Array<string>, unitId?:Array<string>, individualId?:Array<string>, individualCountMin?:number, individualCountMax?:number, loadedLaterThan?:Date, coordinates?:Array<string>, typeSpecimen?:boolean, hasDocumentMedia?:boolean, hasGatheringMedia?:boolean, hasUnittMedia?:boolean, hasMedia?:boolean, secureReason?:Array<string>, editorId?:Array<string>, extraHttpRequestParams?:any):Observable<PagedResult<any>> {
+  public warehouseQueryAggregateGet(query:WarehouseQueryInterface, aggregateBy?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, geoJSON?:boolean):Observable<PagedResult<any>|any> {
     const path = this.basePath + '/warehouse/query/aggregate';
 
     let queryParameters = new URLSearchParams();
@@ -266,11 +267,9 @@ export class WarehouseApi {
     this.addMetaToQuery(aggregateBy, orderBy, pageSize, page);
     this.addQueryToQueryParams(query, queryParameters);
 
-    if (informalTaxonGroupId !== undefined) {
-      queryParameters.set('page', informalTaxonGroupId.join(','));
+    if (geoJSON !== undefined) {
+      queryParameters.set('geoJSON', geoJSON ? 'true' : 'false');
     }
-
-    //  headerParams.set('accept', accept);
 
     let requestOptions:RequestOptionsArgs = {
       method: 'GET',

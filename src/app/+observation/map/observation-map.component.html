@@ -2,7 +2,7 @@
   <laji-map
     [visible]="visible"
     [data]="mapData"
-    [disableSelect]="disableSelect"
-    (select)="onSelect($event)"
+    [draw]="draw"
+    (onCreate)="onCreate($event)"
   ></laji-map>
 </div>

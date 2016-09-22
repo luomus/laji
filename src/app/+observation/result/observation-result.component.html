@@ -10,7 +10,8 @@
         [visible]="active === 'map'"
         [height]="800"
         [query]="searchQuery.query"
-        (select)="pickLocation($event)"
+        [draw]="true"
+        (create)="pickLocation($event)"
       ></laji-observation-map>
     </div>
   </tab>

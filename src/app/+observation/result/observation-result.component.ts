@@ -82,31 +82,17 @@ export class ObservationResultComponent implements OnInit, OnDestroy {
       local: '/taxon/' + IdService.getId(aggr['unit.linkings.taxon.id']),
       content: '<i class="glyphicon glyphicon-modal-window"></i>'
     }
-
   }
 
   pickLocation(e) {
-    if (e.layer.feature.properties.selected) {
-      e.layer.setStyle({ color: e.layer.options.origColor });
-      e.layer.feature.properties.selected = false;
-      this.searchQuery.query.coordinates = undefined;
-    } else {
-      this.searchQuery.query.coordinates = [];
-      e.target.eachLayer((layer) => {
-        if (layer.feature.properties.selected) {
-          layer.feature.properties.selected = false;
-          layer.setStyle({ color: layer.options.origColor })
-        }
-      });
-      e.layer.setStyle({ color: this.selectColor });
-      e.layer.feature.properties.selected = true;
-      if (
-        e.layer.feature &&
-        e.layer.feature.geometry &&
-        e.layer.feature.geometry.coordinates
-      ) {
-        this.searchQuery.query.coordinates.push(CoordinateService.getWarehouseQuery(e.layer.feature.geometry.coordinates));
-      }
+    if (
+      e.type === 'Polygon' &&
+      e.coordinates && e.coordinates.length === 1 && e.coordinates[0].length === 5
+    ) {
+      this.searchQuery.query.coordinates = [
+        e.coordinates[0][0][1] + ':' + e.coordinates[0][2][1] + ':' +
+        e.coordinates[0][0][0] + ':' + e.coordinates[0][2][0] + ':WGS84'
+      ];
     }
     this.searchQuery.queryUpdate({formSubmit: true});
   }
@@ -134,7 +120,6 @@ export class ObservationResultComponent implements OnInit, OnDestroy {
 
   makeRequest(type:string) {
     this.queryCache = JSON.stringify(this.searchQuery.query);
-    console.log(this.requests);
     if (this.requests[type] == this.queryCache) {
       return;
     }
@@ -155,5 +140,4 @@ export class ObservationResultComponent implements OnInit, OnDestroy {
       }
     )
   }
-
 }
