@@ -51,15 +51,18 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(query => this.updateCount());
+    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(query => {
+      this.page = 1;
+      this.updateList()
+    });
     this.translate.onLangChange.subscribe(
       () => {
         if (this.updateOnLangChange) {
-          this.updateCount();
+          this.updateList();
         }
       }
     );
-    this.updateCount();
+    this.updateList();
   }
 
   ngOnDestroy() {
@@ -74,10 +77,10 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
   pageChanged(page) {
     this.page = page.page;
     this.items = [];
-    this.updateCount();
+    this.updateList();
   }
 
-  updateCount() {
+  updateList() {
     let query = Util.clone(this.searchQuery.query);
     let cache = JSON.stringify(query) + this.page;
     if (this.lastCache === cache) {
