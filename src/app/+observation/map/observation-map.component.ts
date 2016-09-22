@@ -14,15 +14,16 @@ declare var d3:any;
 export class ObservationMapComponent implements OnInit {
 
   @Input() visible:boolean = false;
-  @Input() color:any;
+  @Input() color:any = ['#ffffb2','#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
   @Input() selectColor:string = '#009900';
   @Input() query:WarehouseQueryInterface;
   @Input() opacity:number = .5;
   @Input() lat:string = 'gathering.conversions.wgs84Grid05.lat';
   @Input() lon:string = 'gathering.conversions.wgs84Grid1.lon';
-  @Input() size:number = 1000;
+  @Input() size:number = 10000;
   @Input() draw:boolean = false;
   @Input() height:number;
+  @Input() heatThreshholds = [ 1,10,1000,10000,100000 ];
   @Output() create = new EventEmitter();
   public mapData;
 
@@ -36,6 +37,7 @@ export class ObservationMapComponent implements OnInit {
   ngOnInit() {
     this.lastQuery = JSON.stringify(this.query);
     this.updateMapData();
+    this.initColorScale();
   }
 
   ngDoCheck() {
@@ -49,6 +51,19 @@ export class ObservationMapComponent implements OnInit {
 
   onCreate(e) {
     this.create.emit(e);
+  }
+
+  private initColorScale() {
+    let colorType = typeof this.color;
+    if (colorType === 'string') {
+      this.style = () => {
+        return this.color;
+      }
+    } else {
+      this.style = d3.scale.quantize()
+        .domain(this.heatThreshholds)
+        .range(this.color);
+    }
   }
 
   private updateMapData() {
@@ -67,16 +82,15 @@ export class ObservationMapComponent implements OnInit {
       undefined,
       this.size,
       undefined,
-      false
+      true
     ).subscribe(
       (data) => {
-        this.dataToGeo(data.results);
-        //if (data.featureCollection) {
-        //  this.mapData = [{
-        //    featureCollection: data.featureCollection,
-        //    getFeatureStyle: this.getStyle.bind(this)
-        //  }];
-        //}
+        if (data.featureCollection) {
+          this.mapData = [{
+            featureCollection: data.featureCollection,
+            getFeatureStyle: this.getStyle.bind(this)
+          }];
+        }
       }
     );
   }
@@ -92,81 +106,17 @@ export class ObservationMapComponent implements OnInit {
     return +step[1];
   }
 
-  private dataToGeo(data) {
-    let features = [];
-    let maxIndividuals = 0;
-    let selected = this.query.coordinates ? this.query.coordinates.slice(0) : [];
-    let latStep = this.getStepping(this.lat);
-    let lonStep = this.getStepping(this.lon);
-    data.map((agg) => {
-      let lat = parseFloat(agg['aggregateBy'][this.lat]);
-      let lon = parseFloat(agg['aggregateBy'][this.lon]);
-      if (!lat || !lon) {
-        return;
-      }
-      let coords = [[
-        [lon, lat],
-        [lon, lat + latStep],
-        [lon + lonStep, lat + latStep],
-        [lon + lonStep, lat],
-        [lon, lat]
-      ]];
-      if (maxIndividuals < agg.count) {
-        maxIndividuals = agg.count;
-      }
-      let select = false;
-      if (selected.length > 0) {
-        let idx = selected.indexOf(CoordinateService.getWarehouseQuery(coords));
-        if (idx > -1) {
-          selected.splice(idx, 1);
-          select = true;
-        }
-      }
-      features.push({
-        "type": "Feature",
-        "properties":{"title": agg.count, "selected": select },
-        "geometry": {"type": "Polygon", "coordinates": coords }
-      });
-    });
-    let colorType = typeof this.color;
-    if (colorType === 'string') {
-      this.style = () => {
-        return this.color;
-      }
-    } else {
-      this.style = d3.scale.threshold()
-        .domain([
-          maxIndividuals*.2,
-          maxIndividuals*.4,
-          maxIndividuals*.6,
-          maxIndividuals*.8,
-          maxIndividuals+1
-        ])
-        .range(['#ffffb2','#fecc5c', '#fd8d3c', '#f03b20', '#bd0026']);
-    }
-
-    this.mapData = [{
-      featureCollection: {
-        type: "featureCollection",
-        features: features
-      },
-      getFeatureStyle: this.getStyle.bind(this)
-    }];
-  }
-
   private getStyle(data:StyleParam) {
     let currentColor = "#00aa0", origColor = "#00aa0";
+    console.log();
     if (data.feature.properties.title) {
-      currentColor = origColor = this.style(+data.feature.properties.title);
+      currentColor = this.style(+data.feature.properties.title);
     }
-    if (data.feature.properties.selected) {
-      currentColor = this.selectColor;
-    }
+
     return {
       weight: 1,
       opacity: 1,
       fillOpacity: this.opacity,
-      origColor: origColor,
       color: currentColor
     }
   }
