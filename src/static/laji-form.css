@@ -1963,6 +1963,7 @@ body .laji-form {
 
 .laji-form .input-meta {
 	font-size: 11px;
+	white-space: nowrap;
 }
 .laji-form .input-meta button {
 	font-size: 11px;
