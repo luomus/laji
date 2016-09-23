@@ -1,7 +1,10 @@
-<ol *ngIf="groups.length > 0" class="breadcrumb">
-  <li><a href="#" (click)="onClick(null)">..</a></li>
+<ol class="breadcrumb">
+  <li [class.active]="groups.length == 0">
+    <a *ngIf="groups.length > 0" href="#">{{'omniSearch.groups' | translate}}</a>
+    <span *ngIf="groups.length == 0">{{'omniSearch.groups' | translate}}</span>
+    </li>
   <li [class.active]="active" *ngFor="let group of groups; let i = index; let active = last;">
-    <a *ngIf="!active" href="#" (click)="onClick(group)">{{group.name}}</a>
+    <a *ngIf="!active" href="#">{{group.name}}</a>
     <span *ngIf="active">{{group.name}}</span>
   </li>
 </ol>

@@ -10,16 +10,6 @@ import {InformalListItemInterface} from "../informal-list/informal-list-item.mod
 
 export class InformalListBreadcrumbComponent {
   
-  constructor() {
-  }
-
   @Input() groups:Array<InformalTaxonGroup>;
-
-  @Output() onSelect:EventEmitter<InformalTaxonGroup> = new EventEmitter();
-
-  onClick(group:InformalListItemInterface) {
-    this.onSelect.emit(group);
-    return false;
-  }
 
 }
