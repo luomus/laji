@@ -2,7 +2,9 @@
   <laji-map
     [visible]="visible"
     [data]="mapData"
+    [drawData]="drawData"
     [draw]="draw"
     (onCreate)="onCreate($event)"
+    (onMove)="onMove($event)"
   ></laji-map>
 </div>

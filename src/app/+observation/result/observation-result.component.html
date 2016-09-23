@@ -5,9 +5,9 @@
     <div>
       <laji-observation-map
         *ngIf="active === 'map'"
-        [opacity]="0.2"
+        [opacity]="0.5"
         [visible]="active === 'map'"
-        [height]="800"
+        [height]="500"
         [query]="searchQuery.query"
         [draw]="true"
         (create)="pickLocation($event)"

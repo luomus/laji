@@ -18,6 +18,7 @@ let LajiMap = require('laji-map').default;
 export class MapComponent implements OnDestroy, OnChanges {
 
   @Input() data: any = {};
+  @Input() drawData:any;
   @Input() visible: boolean;
   @Input() draw:boolean = false;
   @Input() lang:string = 'fi';
@@ -25,6 +26,7 @@ export class MapComponent implements OnDestroy, OnChanges {
 
   @Output() select = new EventEmitter();
   @Output() onCreate = new EventEmitter();
+  @Output() onMove = new EventEmitter();
   @ViewChild('map') elemRef: ElementRef;
 
   map:any;
@@ -49,7 +51,17 @@ export class MapComponent implements OnDestroy, OnChanges {
         location: false
       }
     });
+    this.map.map.on('moveend', _ => { this.moveEvent() });
     this.updateData();
+    this.initDrawData();
+    this.moveEvent();
+  }
+
+  moveEvent() {
+    this.onMove.emit({
+      zoom: this.map.map.getZoom(),
+      bounds: this.map.map.getBounds()
+    });
   }
 
   onChange(events) {
@@ -65,19 +77,19 @@ export class MapComponent implements OnDestroy, OnChanges {
   ngOnDestroy() {
     try {
       this.map.destroy();
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (e) { console.log(e) }
   }
 
   ngOnChanges(changes) {
     this.updateData();
+    this.initDrawData();
   }
 
   updateData() {
     if (!this.map) {
       return;
     }
+    try {
       this.map.map.off('click');
       this.map.setData(this.data);
       if (this.drawSingleShape) {
@@ -85,29 +97,33 @@ export class MapComponent implements OnDestroy, OnChanges {
       }
       if (this.visible) {
         setTimeout(() => {
-          try {
-            this.map.map.invalidateSize();
-          } catch (e) {}
+          this.map.map.invalidateSize();
         }, 500);
       }
-
+    } catch (e) { console.log(e) }
   }
 
   initSingleShape() {
     try {
       this.map.map.addEventListener({
-        "draw:drawstart": e => this.clearDrawLayer(e)
+        "draw:drawstart": event => this.clearDrawLayer()
       });
-    } catch (e) {
-      console.log(e);
+    } catch (e) { console.log(e) }
+  }
+
+  initDrawData() {
+    if (this.map && this.drawData) {
+      this.map.setDrawData(this.drawData);
     }
   }
 
-  clearDrawLayer(e) {
+  clearDrawLayer() {
     try {
-      this.map.setDrawData({featureCollection: {type: "featureCollection", features: []}});
-    } catch (err) {
-      console.log(err);
-    }
+      if (!this.drawData) {
+        this.drawData = {featureCollection: {type: "featureCollection", features: []}};
+      }
+      this.drawData.featureCollection = {type: "featureCollection", features: []};
+      this.map.setDrawData(this.drawData);
+    } catch (e) { console.log(e) }
   }
 }

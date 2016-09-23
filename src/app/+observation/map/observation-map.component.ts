@@ -3,9 +3,7 @@ import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {Subscription} from "rxjs";
 import {Util} from "../../shared/service/util.service";
 import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
-import {CoordinateService} from "../../shared/service/coordinate.service";
-
-declare var d3:any;
+import LatLngBounds = L.LatLngBounds;
 
 @Component({
   selector: 'laji-observation-map',
@@ -14,23 +12,29 @@ declare var d3:any;
 export class ObservationMapComponent implements OnInit {
 
   @Input() visible:boolean = false;
-  @Input() color:any = ['#ffffb2','#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
-  @Input() selectColor:string = '#009900';
   @Input() query:WarehouseQueryInterface;
   @Input() opacity:number = .5;
-  @Input() lat:string = 'gathering.conversions.wgs84Grid05.lat';
-  @Input() lon:string = 'gathering.conversions.wgs84Grid1.lon';
+  @Input() lat:string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid01.lat'];
+  @Input() lon:string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
+  @Input() zoomThresholds:number[] = [5]; // zoom levels from lowest to highest when to move to more accurate grid
+  @Input() onlyViewPortThreshold:number = 0; // when active level is higher or equal to this will be using viewport coordinates to show grid
   @Input() size:number = 10000;
   @Input() draw:boolean = false;
   @Input() height:number;
-  @Input() heatThreshholds = [ 1,10,1000,10000,100000 ];
+  @Input() selectColor:string = '#00aa00';
+  @Input() color:string|string[] = ['#ffffb2','#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
+  @Input() colorThresholds = [ 10, 100, 1000, 10000 ]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
   @Output() create = new EventEmitter();
-  public mapData;
 
+  public mapData;
+  public drawData:any = {featureCollection: {type: "featureCollection", features: []}};
   private prev:string = '';
   private subDataFetch: Subscription;
   private style:(count:number)=>string;
   private lastQuery:WarehouseQueryInterface;
+  private viewBound:LatLngBounds;
+  private activeLevel = 0;
+  private activeBounds:LatLngBounds;
 
   constructor(private warehouseService:WarehouseApi) { }
 
@@ -53,22 +57,84 @@ export class ObservationMapComponent implements OnInit {
     this.create.emit(e);
   }
 
+  onMove(e) {
+    let curActive = this.activeLevel;
+    this.viewBound = e.bounds;
+    this.activeLevel = 0;
+    for(let i = 0, len = this.zoomThresholds.length; i < len; i++) {
+      if (this.zoomThresholds[i] < e.zoom) {
+        this.activeLevel = i + 1;
+      }
+    }
+    if (
+      curActive !== this.activeLevel ||
+      (this.activeLevel >= this.onlyViewPortThreshold && (!this.activeBounds || !this.activeBounds.contains(e.bounds)))
+    ) {
+      this.activeBounds = e.bounds.pad(0.3);
+      this.updateMapData();
+    }
+  }
+
   private initColorScale() {
-    let colorType = typeof this.color;
-    if (colorType === 'string') {
-      this.style = () => {
-        return this.color;
+    if (this.color instanceof String) {
+      this.style = _ => {
+        return String(this.color);
       }
     } else {
-      this.style = d3.scale.quantize()
-        .domain(this.heatThreshholds)
-        .range(this.color);
+      let i, len = this.colorThresholds.length;
+      this.style = (count) => {
+        for (i = 0; i < len; i++) {
+          if (count <= this.colorThresholds[i]) {
+            return this.color[i];
+          }
+        }
+        return this.color[len];
+      };
+    }
+  }
+
+  private initDrawData() {
+    this.drawData.getFeatureStyle = () => {
+      return {
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0,
+        color: this.selectColor
+      }
+    };
+    if (!this.query.coordinates) {
+      return;
+    }
+    let features = [];
+    this.query.coordinates.map(coord => {
+      let parts = coord.split(':');
+      let system = parts.pop();
+      if (system === 'WGS84' && parts.length == 4) {
+        features.push(this.getFeature({
+          type: "Polygon",
+          coordinates: [[
+            [parts[2], parts[0]], [parts[2], parts[1]],
+            [parts[3], parts[1]], [parts[3], parts[0]],
+            [parts[2], parts[0]]
+          ]]
+        }));
+      }
+    });
+    if (features.length) {
+      this.drawData.featureCollection.features = features
+    }
+  }
+
+  private getFeature(geometry:Object) {
+    return {
+      type: "Feature",
+      geometry: geometry
     }
   }
 
   private updateMapData() {
     let query = Util.clone(this.query);
-    let cacheKey = JSON.stringify(query);
+    let cacheKey = this.getCacheKey(query);
     if (this.prev === cacheKey) {
       return;
     }
@@ -76,13 +142,19 @@ export class ObservationMapComponent implements OnInit {
     if (this.subDataFetch) {
       this.subDataFetch.unsubscribe();
     }
+    this.drawData.featureCollection.features = [];
+    if (query.coordinates) {
+      this.initDrawData();
+    }
+    if (!query.coordinates && this.activeBounds && this.activeLevel >= this.onlyViewPortThreshold) {
+      query.coordinates = [
+        this.activeBounds.getSouthWest().lat + ':' + this.activeBounds.getNorthEast().lat + ':' +
+        this.activeBounds.getSouthWest().lng + ':' + this.activeBounds.getNorthEast().lng + ':WGS84'
+      ];
+    }
     this.subDataFetch = this.warehouseService.warehouseQueryAggregateGet(
-      query,
-      [this.lat + ',' + this.lon],
-      undefined,
-      this.size,
-      undefined,
-      true
+      query, [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
+      undefined, this.size, undefined, true
     ).subscribe(
       (data) => {
         if (data.featureCollection) {
@@ -95,24 +167,19 @@ export class ObservationMapComponent implements OnInit {
     );
   }
 
-  private getStepping(field) {
-    let step = field.match(/\d+/g);
-    if (!step[1]) {
-      return 0.1;
+  private getCacheKey(query:WarehouseQueryInterface) {
+    let cache = JSON.stringify(query);
+    if (!this.activeBounds || this.activeLevel < this.onlyViewPortThreshold) {
+      return cache;
     }
-    if (step[1].charAt(0) == '0') {
-      return (+step[1].substring(1))/10;
-    }
-    return +step[1];
+    return cache + this.activeBounds.toBBoxString() + this.activeLevel;
   }
 
   private getStyle(data:StyleParam) {
-    let currentColor = "#00aa0", origColor = "#00aa0";
-    console.log();
+    let currentColor = "#00aa00";
     if (data.feature.properties.title) {
       currentColor = this.style(+data.feature.properties.title);
     }
-
     return {
       weight: 1,
       opacity: 1,
@@ -126,7 +193,7 @@ interface StyleParam {
   dataIdx:number;
   feature:{
     geometry:any;
-    properties:{title:string,selected:boolean}
+    properties:{title:string}
   };
   featureIdx:number
 }
