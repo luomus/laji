@@ -2,7 +2,7 @@
 <strong *ngIf="active.length">{{'observation.active' | translate}}</strong>
 <span *ngFor="let item of active">
   <span>
-    {{ mapField(item.field) | translate }}
+    {{ 'observation.active.' + item.field | translate }}
     <span (click)="remove(item)" class="label label-danger link"><i class="glyphicon glyphicon-remove"></i></span>
   </span>
 </span>

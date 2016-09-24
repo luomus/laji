@@ -10,6 +10,7 @@
         [height]="500"
         [query]="searchQuery.query"
         [draw]="true"
+        [legend]="true"
         (create)="pickLocation($event)"
       ></laji-observation-map>
     </div>
@@ -34,18 +35,35 @@
   <tab [heading]="'search.result.stats' | translate"
        (select)="activate('stats')"
        [active]="active === 'stats'">
-    <div class="form-group" *ngIf="activated['stats']">
-      <div class="col-md-6">
-        <laji-observation-chart
-          [height]="300"
-          [showLegend]="true"
-          [active]="active === 'stats'"
-        ></laji-observation-chart>
+    <div *ngIf="activated['stats']">
+      <div class="form-group">
+        <div class="col-md-6">
+          <laji-observation-chart
+            [height]="300"
+            [showLegend]="true"
+            [active]="active === 'stats'"
+          ></laji-observation-chart>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <laji-observation-filter [(filter)]="filters.recordBasis" (onSelect)="onFilterSelect.emit($event)"></laji-observation-filter>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <laji-observation-filter [(filter)]="filters.image" (onSelect)="onFilterSelect.emit($event)"></laji-observation-filter>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6">
-        <laji-observation-aggregate
-          [field]="'unit.recordBasis'"
-          [title]="'Tietue tyyppi'"></laji-observation-aggregate>
+      <div class="form-group">
+        <div class="col-md-6">
+          <laji-observation-filter [(filter)]="filters.source" (onSelect)="onFilterSelect.emit($event)"></laji-observation-filter>
+        </div>
+        <div class="col-md-6">
+          <laji-observation-filter [(filter)]="filters.collection" (onSelect)="onFilterSelect.emit($event)"></laji-observation-filter>
+        </div>
       </div>
     </div>
   </tab>

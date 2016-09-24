@@ -23,7 +23,7 @@ import {ObservationHeaderComponent} from "./+observation/header/observation-head
 import {ObservationFormComponent} from "./+observation/form/observation-form.component";
 import {ObservationAggregateComponent} from "./+observation/aggregate/observation-aggregate.component";
 import {ObservationChartComponent} from "./+observation/chart/observation-chart.component";
-import {ObservationFilterComponent} from "./+observation/filters/observation-filters.component";
+import {ObservationFilterComponent} from "./+observation/filter/observation-filter.component";
 import {StatItemComponent} from "./+home/image-header/stat-item.component";
 import {SpinnerComponent} from "./shared/spinner/spinner.component";
 import {FormattedNumber} from "./shared/pipe/formated-number.pipe";

@@ -10,8 +10,9 @@ let LajiMap = require('laji-map').default;
 @Component({
   selector: 'laji-map',
   template: `
-<div style="width:100%; height: 100%;">
+<div style="width:100%; height: 100%; position: relative">
   <div #map style="height:100%;width:100%"></div>
+  <ng-content></ng-content>
 </div>`,
   providers: []
 })
@@ -23,6 +24,7 @@ export class MapComponent implements OnDestroy, OnChanges {
   @Input() draw:boolean = false;
   @Input() lang:string = 'fi';
   @Input() drawSingleShape:boolean = true;
+  @Input() tick:any;
 
   @Output() select = new EventEmitter();
   @Output() onCreate = new EventEmitter();
@@ -59,7 +61,7 @@ export class MapComponent implements OnDestroy, OnChanges {
 
   moveEvent() {
     this.onMove.emit({
-      zoom: this.map.map.getZoom(),
+      zoom: this.map.getNormalizedZoom(),
       bounds: this.map.map.getBounds()
     });
   }
@@ -97,7 +99,7 @@ export class MapComponent implements OnDestroy, OnChanges {
       }
       if (this.visible) {
         setTimeout(() => {
-          this.map.map.invalidateSize();
+          try{ this.map.map.invalidateSize() } catch(e) {}
         }, 500);
       }
     } catch (e) { console.log(e) }

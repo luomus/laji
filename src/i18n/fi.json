@@ -95,6 +95,7 @@
   "result.load.thanksRequest": "Kiitos, saat ohjeita sähköpostitse",
   "result.load.privateCount": "Karkeistettuja",
   "observation.count": "Havaintojen määrä",
+  "result.allObservation": "havaintoa",
 
   "force.login": "Sinun pitää kirjautua jotta voit käyttää tätä osiota",
 
@@ -104,7 +105,7 @@
   "observation.form.thisYear": "Tänä vuonna",
   "observation.form.preservedSpecimens": "Kokoelmanäytteitä",
   "observation.form.typeSpecimen": "vain tyyppinäytteet",
-  "observation.form.invasive": "vain invasive",
+  "observation.form.invasive": "vain vieraslajit",
   "observation.form.includeNonValidTaxa": "myös ei tunnetut lajit",
   "observation.form.search": "Hae",
   "observation.form.empty": "Tyhjennä rajaukset",
@@ -123,14 +124,19 @@
   "observation.filterBy.recordBasis": "Havainnon tyyppi",
   "observation.filterBy.image": "Kuvia",
   "observation.filterBy.collectionId": "Aineistot",
+  "observation.filterBy.sourceId": "Lähteet",
 
   "observation.active": "Rajattu",
   "observation.active.time": "ajalla",
-  "observation.active.image": "kuvalla",
+  "observation.active.hasUnitMedia": "kuvallisiin",
   "observation.active.coordinates": "paikalla",
-  "observation.active.collection": "aineistolla",
+  "observation.active.collectionId": "aineistolla",
+  "observation.active.typeSpecimen": "tyyppinäytteisiin",
+  "observation.active.sourceId": "lähteellä",
+  "observation.active.sex": "sukupuolella",
+  "observation.active.invasive": "vieraslajeihin",
   "observation.active.recordBasis": "havainnon tyypillä",
-  "observation.active.informalTaxonGroup": "Lajiryhmällä",
+  "observation.active.informalTaxonGroupId": "Lajiryhmällä",
   "observation.active.informalTaxonGroupAll": "kaikilla",
 
   "haseka.title": "Havaintopalvelu",
@@ -144,7 +150,5 @@
 
   "omniSearch.matches": "Tietoa lajista",
   "omniSearch.rank": "taksonominen taso",
-  "omniSearch.groups": "lajiryhmä",
-  "omniSearch.allObservation": "havaintoa"
-
+  "omniSearch.groups": "lajiryhmä"
 }

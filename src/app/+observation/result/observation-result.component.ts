@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnDestroy} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy, Output, EventEmitter} from '@angular/core';
 import {Location} from '@angular/common';
 
 import { SearchQuery } from "../search-query.model";
@@ -7,6 +7,7 @@ import {CoordinateService} from "../../shared/service/coordinate.service";
 import {UserService} from "../../shared/service/user.service";
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {Observable, Subscription} from "rxjs";
+import {ObservationFilterInterface} from "../filter/observation-filter.interface";
 
 
 @Component({
@@ -16,6 +17,9 @@ import {Observable, Subscription} from "rxjs";
 export class ObservationResultComponent implements OnInit, OnDestroy {
 
   @Input() active:string = 'list';
+  @Input() filters:{[name:string]:ObservationFilterInterface};
+  @Output() filtersChange:EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
+  @Output() onFilterSelect:EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
 
   public lang = 'fi';
   public selectColor = '#009900';

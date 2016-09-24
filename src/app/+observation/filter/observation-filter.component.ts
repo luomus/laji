@@ -1,24 +1,28 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {SearchQuery} from "../search-query.model";
-import {ObservationFilterInterface} from "./observation-filters.interface";
+import {ObservationFilterInterface} from "./observation-filter.interface";
 import {Subscription} from "rxjs";
 import {TranslateService} from "ng2-translate";
 
+
 @Component({
-  selector: 'laji-observation-filters',
-  templateUrl: 'observation-filters.component.html',
-  styleUrls: ['observation-filters.component.css']
+  selector: 'laji-observation-filter',
+  templateUrl: 'observation-filter.component.html',
+  styleUrls: ['observation-filter.component.css']
 })
 export class ObservationFilterComponent implements OnInit, OnDestroy {
-  @Input() filters:ObservationFilterInterface;
-  @Output() filtersChange:EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
+  @Input() filter:ObservationFilterInterface;
+  @Output() filterChange:EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
   @Output() onSelect:EventEmitter<any> = new EventEmitter();
 
   public loading:boolean = false;
+  public page:number = 1;
+  public total:number = 0;
 
   private subData: Subscription;
   private subTrans: Subscription;
+  private lastQuery:string;
 
   constructor(
     private warehouseService:WarehouseApi,
@@ -28,9 +32,9 @@ export class ObservationFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.update();
-    this.searchQuery.queryUpdated$.subscribe(() => this.update());
-    if (this.filters.map) {
+    this.init();
+    this.searchQuery.queryUpdated$.subscribe(() => this.init());
+    if (this.filter.map) {
       this.subTrans = this.translate.onLangChange.subscribe(() => this.update())
     }
   }
@@ -44,34 +48,47 @@ export class ObservationFilterComponent implements OnInit, OnDestroy {
     }
   }
 
+  init() {
+    this.page = 1;
+    this.total = 0;
+    this.update()
+  }
+
   update() {
-    if (!this.filters) {
+    if (!this.filter) {
       return;
     }
+    let cacheKey = JSON.stringify(this.searchQuery.query);
+    if (this.lastQuery === cacheKey) {
+      return;
+    }
+    this.lastQuery = cacheKey;
     if (this.subData) {
       this.subData.unsubscribe();
     }
     this.loading = true;
     this.subData = this.warehouseService.warehouseQueryAggregateGet(
       this.searchQuery.query,
-      [this.filters.field],
+      [this.filter.field],
       undefined,
-      this.filters.size || 20
+      this.filter.size,
+      this.page
     ).subscribe(
       data => {
+        this.total = data.total || 0;
         let filtersData = (data.results || [])
           .filter((result) => {
-            if (this.filters.pick) {
-              return this.filters.pick.indexOf(result.aggregateBy[this.filters['field']]) > -1
+            if (this.filter.pick) {
+              return this.filter.pick.indexOf(result.aggregateBy[this.filter['field']]) > -1
             }
             return true;
           })
           .map((result) => {
-            let val = result.aggregateBy[this.filters['field']];
-            if (this.filters.valueMap && typeof this.filters.valueMap[val] !== 'undefined') {
-              val = this.filters.valueMap[val];
+            let val = result.aggregateBy[this.filter['field']];
+            if (this.filter.valueMap && typeof this.filter.valueMap[val] !== 'undefined') {
+              val = this.filter.valueMap[val];
             }
-            let sel = this.filters.selected.filter((value) => {
+            let sel = this.filter.selected.filter((value) => {
               return value === val;
             }).length > 0;
             return {
@@ -80,14 +97,14 @@ export class ObservationFilterComponent implements OnInit, OnDestroy {
               selected: sel
             };
           });
-        if (this.filters.map) {
-          this.filters.map(filtersData).subscribe(
-            res => this.filters.data = res
+        if (this.filter.map) {
+          this.filter.map(filtersData).subscribe(
+            res => this.filter.data = res
           )
         } else {
-          this.filters.data = filtersData;
+          this.filter.data = filtersData;
         }
-        this.filters.total = data.total;
+        this.filter.total = data.total;
       },
       err => console.log(err),
       () => this.loading = false
@@ -97,17 +114,22 @@ export class ObservationFilterComponent implements OnInit, OnDestroy {
   toggle(item:any) {
     item.selected = !item.selected;
     if (item.selected) {
-      this.filters.selected.push(item.value);
+      this.filter.selected.push(item.value);
     } else {
-      this.filters.selected = this.filters.selected.filter(value => {
+      this.filter.selected = this.filter.selected.filter(value => {
         return value !== item.value;
       });
     }
-    this.filtersChange.emit(this.filters);
+    this.filterChange.emit(this.filter);
     this.onSelect.emit(item);
   }
 
-  isSelected(value):boolean {
-    return this.filters.selected && this.filters.selected.indexOf(value) > -1
+  showPager():boolean {
+    return this.filter.pager && (this.total > this.filter.size)
+  }
+
+  pageChanged(page) {
+    this.page = page.page;
+    this.update();
   }
 }

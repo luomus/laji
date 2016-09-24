@@ -8,10 +8,11 @@ export interface ObservationFilterInterface {
   type:string;
   valueMap?:{[field:string]:string};
   booleanMap?:{[field:string]:boolean};
-  size?:number;
+  size:number;
   data?:FilterDataInterface[];
   selected:string[];
   total?:number;
+  pager?:boolean;
   map?:(data:any) => Observable<any>
 }
 

@@ -10,17 +10,19 @@ import {ObservationResultComponent} from "../result/observation-result.component
 import {Observable, Subscription} from "rxjs";
 import {AutocompleteApi} from "../../shared/api/AutocompleteApi";
 import {TranslateService} from "ng2-translate";
-import {ObservationFilterInterface } from "../filters/observation-filters.interface";
+import {ObservationFilterInterface } from "../filter/observation-filter.interface";
 import {ObservationFormQuery} from "./observation-form-query.interface";
 import {CollectionApi} from "../../shared/api/CollectionApi";
 import {Collection} from "../../shared/model/Collection";
 import {IdService} from "../../shared/service/id.service";
+import {SourceApi} from "../../shared/api/SourceApi";
+import {Source} from "../../shared/model/Source";
 
 @Component({
   selector: 'laji-observation-form',
   templateUrl: 'observation-form.component.html',
   styleUrls: ['./observation-form.component.css'],
-  providers: [CollectionApi]
+  providers: [CollectionApi, SourceApi]
 })
 export class ObservationFormComponent implements OnInit {
 
@@ -36,24 +38,16 @@ export class ObservationFormComponent implements OnInit {
 
   private subUpdate:Subscription;
 
-  public activeMap = {
-    coordinates:'observation.active.coordinates',
-    collectionId:'observation.active.collection',
-    recordBasis:'observation.active.recordBasis',
-    hasUnitMedia:'observation.active.image',
-    time:'observation.active.time',
-    informalTaxonGroupId:'observation.active.informalTaxonGroup'
-  };
-
-  public filters:ObservationFilterInterface[] = [
-    {
+  public filters:{[name:string]:ObservationFilterInterface} = {
+    recordBasis: {
       title: 'observation.filterBy.recordBasis',
       field: 'unit.superRecordBasis',
       filter: 'recordBasis',
       type: 'array',
-      selected:[]
+      size: 10,
+      selected: []
     },
-    {
+    image: {
       title: 'observation.filterBy.image',
       field: 'unit.media.mediaType',
       pick: [
@@ -65,18 +59,29 @@ export class ObservationFormComponent implements OnInit {
       size: 10,
       filter: 'hasUnitMedia',
       type: 'boolean',
-      selected:[]
+      selected: []
     },
-    {
+    source: {
+      title: 'observation.filterBy.sourceId',
+      field: 'document.sourceId',
+      size: 10,
+      filter: 'sourceId',
+      type: 'array',
+      selected: [],
+      pager: true,
+      map: this.fetchSourceName.bind(this)
+    },
+    collection: {
       title: 'observation.filterBy.collectionId',
       field: 'document.collectionId',
       size: 10,
       filter: 'collectionId',
       type: 'array',
-      selected:[],
+      selected: [],
+      pager: true,
       map: this.fetchCollectionName.bind(this)
     }
-  ];
+  };
 
   public pickSex = {
     'MY.sexM':'',
@@ -86,10 +91,11 @@ export class ObservationFormComponent implements OnInit {
 
   constructor(
     public searchQuery: SearchQuery,
+    public translate: TranslateService,
+    public collectionService: CollectionApi,
     private location:Location,
     private autocompleteService:AutocompleteApi,
-    public translate: TranslateService,
-    public collectionService: CollectionApi
+    private sourceService:SourceApi
   ) {
     this.dataSource = Observable.create((observer:any) => {
       observer.next(this.formQuery.taxon);
@@ -159,9 +165,10 @@ export class ObservationFormComponent implements OnInit {
       invasive:false,
       typeSpecimen:false
     };
-    this.filters.map((filter, idx) => {
-      this.filters[idx]['selected'] = [];
+    Object.keys(this.filters).map(name => {
+      this.filters[name]['selected'] = [];
     });
+
     if (refresh) {
       this.onSubmit();
     }
@@ -191,31 +198,31 @@ export class ObservationFormComponent implements OnInit {
       typeSpecimen: query.typeSpecimen,
       hasMedia: query.hasMedia
     };
-    this.filters.map((filterSet, idx) => {
-      let queryFilter = filterSet.filter;
-      this.filters[idx].selected = [];
+    Object.keys(this.filters).map(name => {
+      let queryFilter = this.filters[name].filter;
+      this.filters[name].selected = [];
       if (typeof query[queryFilter] === "undefined") {
         return;
       }
-      switch (filterSet.type) {
+      switch (this.filters[name].type) {
         case 'array':
-          this.filters[idx].selected = query[queryFilter];
+          this.filters[name].selected = query[queryFilter];
           break;
         case 'boolean':
-          if (filterSet.booleanMap) {
-            for(let key in filterSet.booleanMap) {
-              if (!filterSet.booleanMap.hasOwnProperty(key)) {
+          if (this.filters[name].booleanMap) {
+            for(let key in this.filters[name].booleanMap) {
+              if (!this.filters[name].booleanMap.hasOwnProperty(key)) {
                 continue;
               }
-              if (query[queryFilter] === filterSet.booleanMap[key]) {
-                this.filters[idx].selected.push(key);
+              if (query[queryFilter] === this.filters[name].booleanMap[key]) {
+                this.filters[name].selected.push(key);
               }
             }
           } else {
-            this.filters[idx].selected = [(query[queryFilter] ? 'true' : 'false')];
+            this.filters[name].selected = [(query[queryFilter] ? 'true' : 'false')];
           }
       }
-    })
+    });
   }
 
   private formQueryToQuery(formQuery:ObservationFormQuery) {
@@ -240,18 +247,18 @@ export class ObservationFormComponent implements OnInit {
     query.includeNonValidTaxa = formQuery.includeNonValidTaxa || undefined;
     query.hasMedia = formQuery.hasMedia || undefined;
 
-    this.filters.map((filterSet) => {
-      let queryFilter = filterSet.filter;
-      if (filterSet.selected.length == 0) {
+    Object.keys(this.filters).map(name => {
+      let queryFilter = this.filters[name].filter;
+      if (this.filters[name].selected.length == 0) {
         query[queryFilter] = undefined;
         return;
       }
-      if (filterSet.type === 'array') {
-        query[queryFilter] = filterSet.selected;
-      } else if (filterSet.type === 'boolean') {
-        filterSet.selected.map((value) => {
-          if (filterSet.booleanMap) {
-            query[queryFilter] = filterSet.booleanMap[value];
+      if (this.filters[name].type === 'array') {
+        query[queryFilter] = this.filters[name].selected;
+      } else if (this.filters[name].type === 'boolean') {
+        this.filters[name].selected.map((value) => {
+          if (this.filters[name].booleanMap) {
+            query[queryFilter] = this.filters[name].booleanMap[value];
           } else {
             query[queryFilter] = value && value !== 'false' ? true : false;
           }
@@ -278,6 +285,22 @@ export class ObservationFormComponent implements OnInit {
       let lookUp = {};
       res.results.map((collection:Collection) => {
         lookUp[IdService.getUri(collection.id)] = collection.collectionName;
+      });
+      return data.map(col => {
+        col['label'] = lookUp[col['value']];
+        return col;
+      });
+    });
+  }
+
+  fetchSourceName(data) {
+    return this.sourceService.findAll(
+      this.translate.currentLang,
+      data.map(col => IdService.getId(col.value)).join(',')
+    ).map(res => {
+      let lookUp = {};
+      res.results.map((source:Source) => {
+        lookUp[IdService.getUri(source.id)] = source.name;
       });
       return data.map(col => {
         col['label'] = lookUp[col['value']];

@@ -10,7 +10,6 @@ import {Subscription} from "rxjs";
 export class ObservationActiveComponent implements OnInit, OnDestroy {
 
   @Input() skip:string[] = [];
-  @Input() fieldMap:{[field:string]:string} = {};
   public active:ActiveList[] = [];
 
   private subQueryUpdate: Subscription;
@@ -28,13 +27,6 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
     if (this.subQueryUpdate) {
       this.subQueryUpdate.unsubscribe();
     }
-  }
-
-  mapField(field) {
-    if (this.fieldMap[field]) {
-      return this.fieldMap[field];
-    }
-    return field;
   }
 
   remove(item:ActiveList) {

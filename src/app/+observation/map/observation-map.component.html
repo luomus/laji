@@ -6,5 +6,13 @@
     [draw]="draw"
     (onCreate)="onCreate($event)"
     (onMove)="onMove($event)"
-  ></laji-map>
+    [tick]="tack"
+  >
+    <div class="loading-map loading" *ngIf="loading"></div>
+    <ul class="legend" *ngIf="legend" [ngStyle]="{'margin-top': getLegendTopMargin()}">
+      <li *ngFor="let leg of getLegends()">
+        <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{leg.range}}
+      </li>
+    </ul>
+  </laji-map>
 </div>

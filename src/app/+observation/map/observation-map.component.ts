@@ -4,10 +4,12 @@ import {Subscription} from "rxjs";
 import {Util} from "../../shared/service/util.service";
 import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
 import LatLngBounds = L.LatLngBounds;
+import {TranslateService} from "ng2-translate";
 
 @Component({
   selector: 'laji-observation-map',
-  templateUrl: 'observation-map.component.html'
+  templateUrl: 'observation-map.component.html',
+  styleUrls: ['./observation-map.component.css']
 })
 export class ObservationMapComponent implements OnInit {
 
@@ -17,17 +19,20 @@ export class ObservationMapComponent implements OnInit {
   @Input() lat:string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid01.lat'];
   @Input() lon:string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
   @Input() zoomThresholds:number[] = [5]; // zoom levels from lowest to highest when to move to more accurate grid
-  @Input() onlyViewPortThreshold:number = 0; // when active level is higher or equal to this will be using viewport coordinates to show grid
+  @Input() onlyViewPortThreshold:number = 1; // when active level is higher or equal to this will be using viewport coordinates to show grid
   @Input() size:number = 10000;
   @Input() draw:boolean = false;
   @Input() height:number;
   @Input() selectColor:string = '#00aa00';
-  @Input() color:string|string[] = ['#ffffb2','#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
+  @Input() color:any = ['#ffffb2','#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
+  @Input() legend:boolean = false;
   @Input() colorThresholds = [ 10, 100, 1000, 10000 ]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
   @Output() create = new EventEmitter();
 
   public mapData;
   public drawData:any = {featureCollection: {type: "featureCollection", features: []}};
+  public tack = 0;
+  public loading = false;
   private prev:string = '';
   private subDataFetch: Subscription;
   private style:(count:number)=>string;
@@ -35,8 +40,12 @@ export class ObservationMapComponent implements OnInit {
   private viewBound:LatLngBounds;
   private activeLevel = 0;
   private activeBounds:LatLngBounds;
+  private reset = true;
 
-  constructor(private warehouseService:WarehouseApi) { }
+  constructor(
+    private warehouseService:WarehouseApi,
+    public translate: TranslateService
+  ) { }
 
   ngOnInit() {
     this.lastQuery = JSON.stringify(this.query);
@@ -75,8 +84,32 @@ export class ObservationMapComponent implements OnInit {
     }
   }
 
+  getLegendTopMargin():string {
+    let top = 20, items = this.color instanceof Array ? this.color.length : 1;
+    return '-' + (top + (items * 20)) + 'px';
+  }
+
+  getLegends():{color:string, range:string}[] {
+    let legends = [], start = 1;
+    if (this.color instanceof Array) {
+      this.color.map((color, idx) => {
+        let end = '+', newStart;
+        if (this.colorThresholds[idx]) {
+          newStart = this.colorThresholds[idx];
+          end = '-' + newStart
+        }
+        legends.push({
+          color:color,
+          range: start + end
+        });
+        start = newStart + 1;
+      });
+    }
+    return legends;
+  }
+
   private initColorScale() {
-    if (this.color instanceof String) {
+    if (typeof this.color === 'string') {
       this.style = _ => {
         return String(this.color);
       }
@@ -152,33 +185,56 @@ export class ObservationMapComponent implements OnInit {
         this.activeBounds.getSouthWest().lng + ':' + this.activeBounds.getNorthEast().lng + ':WGS84'
       ];
     }
+    this.reset = true;
+    this.loading = true;
+    this.addToMap(query);
+  }
+
+  private addToMap(query:WarehouseQueryInterface, page = 1) {
     this.subDataFetch = this.warehouseService.warehouseQueryAggregateGet(
       query, [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
-      undefined, this.size, undefined, true
+      undefined, this.size, page, true
     ).subscribe(
       (data) => {
         if (data.featureCollection) {
-          this.mapData = [{
-            featureCollection: data.featureCollection,
-            getFeatureStyle: this.getStyle.bind(this)
-          }];
+          if (this.reset) {
+            this.loading = false;
+            this.reset = false;
+            this.mapData = [{
+              featureCollection: data.featureCollection,
+              getFeatureStyle: this.getStyle.bind(this),
+              getPopup: this.getPopup.bind(this)
+            }];
+          } else {
+            this.mapData[0].featureCollection.features =
+              this.mapData[0].featureCollection.features.concat(data.featureCollection.features);
+          }
         }
+        this.tack++;
+        if (this.tack > 1000) {
+          this.tack = 0;
+        }
+        //if (data.lastPage > page) {
+        //  page++;
+        //  this.addToMap(query, page);
+        //}
       }
     );
   }
 
   private getCacheKey(query:WarehouseQueryInterface) {
     let cache = JSON.stringify(query);
-    if (!this.activeBounds || this.activeLevel < this.onlyViewPortThreshold) {
-      return cache;
+    if ((!this.activeBounds || this.activeLevel < this.onlyViewPortThreshold) || query.coordinates) {
+      return cache + this.activeLevel;
     }
     return cache + this.activeBounds.toBBoxString() + this.activeLevel;
   }
 
   private getStyle(data:StyleParam) {
     let currentColor = "#00aa00";
-    if (data.feature.properties.title) {
-      currentColor = this.style(+data.feature.properties.title);
+    let feature = this.mapData[data.dataIdx].featureCollection.features[data.featureIdx];
+    if (feature.properties.title) {
+      currentColor = this.style(+feature.properties.title);
     }
     return {
       weight: 1,
@@ -187,13 +243,18 @@ export class ObservationMapComponent implements OnInit {
       color: currentColor
     }
   }
+
+
+  private getPopup(idx:number, cb:Function) {
+    try {
+      let cnt = this.mapData[0].featureCollection.features[idx].properties.title;
+      this.translate.get("result.allObservation")
+        .subscribe(translation => cb(`${cnt} ${translation}`));
+    } catch (e) {}
+  }
 }
 
 interface StyleParam {
   dataIdx:number;
-  feature:{
-    geometry:any;
-    properties:{title:string}
-  };
   featureIdx:number
 }

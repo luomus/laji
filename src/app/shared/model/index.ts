@@ -22,3 +22,4 @@ export * from './Geometry';
 export * from './Metadata';
 export * from './Property';
 export * from './Collection';
+export * from './Source';
