@@ -74,6 +74,7 @@ import {HaSeKaTermsOfServiceComponent} from "./+haseka/terms-of-service/terms-of
 import {FooterService} from "./shared/service/footer.service";
 import {LocalStorageService} from "angular2-localstorage/dist";
 import {ProfileComponent} from "./+user/profile/profile.component";
+import {FriendsComponent} from "./+user/friends/friends.component";
 
 
 @NgModule({
@@ -89,7 +90,7 @@ import {ProfileComponent} from "./+user/profile/profile.component";
     LabelPipe, PieChartComponent, ObservationResultListComponent,
     nvD3, ResultListElementComponent, InfoCardComponent, TaxonInfoComponent,
     ParentsComponent, ChildrenListComponent, InformalListBreadcrumbComponent, InformalListComponent,
-    SpeciesListComponent, TreeOfLifeComponent, UserComponent, ProfileComponent, UserLoginComponent,
+    SpeciesListComponent, TreeOfLifeComponent, UserComponent, ProfileComponent, FriendsComponent, UserLoginComponent,
     UserLogoutComponent, NewsComponent, InformationComponent, HaSeKaComponent, HaSeKaTermsOfServiceComponent,
     HaSeKaFormComponent, HaSeKaFormListComponent, ShortDocumentComponent,
     UsersLatestComponent, PanelComponent, ImageGalleryComponent, LajiFormComponent,

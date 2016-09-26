@@ -153,6 +153,12 @@
   "omniSearch.rank": "taksonominen taso",
   "omniSearch.groups": "lajiryhmä",
 
+  "friend.ask": "Pyydä ystäväksi",
+  "friend.friends": "Ystävät",
+  "friend.requests": "Ystävä pyynnöt",
+  "friend.requestSent": "Ystäväpyyntö lähetetty",
+
   "profile.friends": "Ystävät",
+  "profile.friendsInfo": "Voit pyytää ystäviäsi lähettämään sinulle linkin omalle profillisi sivulleen. Linkin saatuasi voit pyytää heitä ystäväksesi ja kun he ovat hyväksyneet pyyntösi näet linkin heidän profiiliin täällä.",
   "profile.accountSettings": "Käyttäjä tilini"
 }

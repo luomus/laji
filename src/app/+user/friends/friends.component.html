@@ -1,0 +1,32 @@
+<h3>{{'profile.friends' | translate}}</h3>
+<div *ngIf="currentlUser">
+  <div *ngIf="profile.friendRequests && profile.friendRequests.length > 0" class="friendRequests">
+    <h4>
+      {{'friend.requests' | translate}}
+    </h4>
+    <ul>
+      <li *ngFor="let friend of profile.friendRequests">
+        <a (click)="acceptFriendRequest(friend)">{{friend}}</a>
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="profile.friends && profile.friends.length > 0" class="friends">
+    <h4>
+      {{'friend.friends' | translate}}
+    </h4>
+    <ul>
+      <li *ngFor="let friend of profile.friends">
+        <a [routerLink]="['/user/' + friend]">{{friend}}</a>
+      </li>
+    </ul>
+  </div>
+  <p>{{'profile.friendsInfo'|translate}}</p>
+</div>
+<div *ngIf="!currentlUser">
+  <div *ngIf="requestSend">
+    {{'friend.requestSent' | translate}}
+  </div>
+  <div *ngIf="!requestSend">
+    <a class="btn btn-success" (click)="sendFriendRequest(profile.profileKey)">{{'friend.ask'|translate}}</a>
+  </div>
+</div>

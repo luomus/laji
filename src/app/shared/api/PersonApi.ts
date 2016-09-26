@@ -216,6 +216,37 @@ export class PersonApi {
             });
     }
 
+  /**
+   * Find persons profile by user id
+   *
+   * @param id
+   */
+  public personFindProfileByUserId (id: string, extraHttpRequestParams?: any ) : Observable<models.Profile> {
+    const path = this.basePath + '/person/by-id/{id}/profile'
+        .replace('{' + 'id' + '}', String(id));
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling personFindByUserId.');
+    }
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
     /**
      * Show persons profile
      *

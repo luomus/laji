@@ -2,7 +2,7 @@
   <h1>{{'navigation.user.profile' | translate}}</h1>
   <div class="row">
     <div class="col-md-8">
-      <h3>{{(userService.getUser()|async)?.preferredName}} {{(userService.getUser()|async)?.inheritedName}}</h3>
+      <h3>{{person.preferredName}} {{person.inheritedName}}</h3>
       <div class="profile-image">
         <img *ngIf="profile.image" [src]="profile.image" alt="profile image" class="img-rounded">
       </div>
@@ -27,9 +27,7 @@
     <div class="col-md-4">
       <div class="form-group">
         <div class="col-sm-12 well">
-          <h3>Friends</h3>
-          
-          {{profile.friends|json}}
+          <friends [profile]="profile" [currentlUser]="isCurenntUesr"></friends>
         </div>
       </div>
       <div class="form-group">
