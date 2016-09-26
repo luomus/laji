@@ -12,6 +12,7 @@
   "navigation.user": "Käyttäjäasetukset",
   "navigation.user.login": "Kirjaudu",
   "navigation.user.logout": "Kirjaudu ulos",
+  "navigation.user.profile": "Profiili",
 
   "home.image-header.observations": "havaintoja ja näytteitä",
   "home.image-header.species": "lajeja",
@@ -150,5 +151,8 @@
 
   "omniSearch.matches": "Tietoa lajista",
   "omniSearch.rank": "taksonominen taso",
-  "omniSearch.groups": "lajiryhmä"
+  "omniSearch.groups": "lajiryhmä",
+
+  "profile.friends": "Ystävät",
+  "profile.accountSettings": "Käyttäjä tilini"
 }

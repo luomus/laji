@@ -37,8 +37,25 @@
         <li [routerLinkActive]="['active']">
           <a [routerLink]="['/information']">{{ 'navigation.information' | translate }}</a>
         </li>
+      </ul>
+      <ul class="nav navbar-nav pull-right">
         <li [routerLinkActive]="['active']">
-          <a *ngIf="userService.isLoggedIn()" [routerLink]="['/user/logout']">{{ 'navigation.user.logout' | translate }}</a>
+          <div class="navbar-profile" *ngIf="userService.isLoggedIn()">
+            <div dropdown>
+              <a dropdownToggle class="link language-toggle">
+                {{(userService.getUser()|async)?.preferredName}} {{(userService.getUser()|async)?.inheritedName}}
+                <i class="glyphicon glyphicon-user"></i>
+              </a>
+              <ul dropdownMenu role="menu" aria-labelledby="single-button">
+                <li role="menuitem">
+                  <a [routerLink]="['/user']" class="navbar-link link" >{{ 'navigation.user.profile' | translate }}</a>
+                </li>
+                <li role="menuitem">
+                  <a [routerLink]="['/user/logout']" class="navbar-link link" >{{ 'navigation.user.logout' | translate }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
           <a *ngIf="!userService.isLoggedIn()" href="{{userService.getLoginUrl()}}">{{ 'navigation.user.login' | translate }}</a>
         </li>
         <li>

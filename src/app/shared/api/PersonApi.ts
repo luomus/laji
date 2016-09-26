@@ -35,7 +35,7 @@ import 'rxjs/Rx';
 @Injectable()
 export class PersonApi {
     protected basePath = '/api';
-    public defaultHeaders : Headers = new Headers();
+    public defaultHeaders : Headers = new Headers({'Content-Type': 'application/json'});
 
     constructor(protected http: Http, @Optional() basePath: string) {
         if (basePath) {
@@ -310,6 +310,7 @@ export class PersonApi {
             search: queryParameters
         };
         requestOptions.body = JSON.stringify(profile);
+      console.log(path, profile, requestOptions);
 
         return this.http.request(path, requestOptions)
             .map((response: Response) => {

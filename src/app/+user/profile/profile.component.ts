@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from "../shared/service/user.service";
-import {PersonApi} from "../shared/api/PersonApi";
-import {Profile} from "../shared/model/Profile";
+import {UserService} from "../../shared/service/user.service";
+import {PersonApi} from "../../shared/api/PersonApi";
+import {Profile} from "../../shared/model/Profile";
 
 @Component({
   selector: 'laji-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.css']
 })
-export class UserComponent implements OnInit {
+export class ProfileComponent implements OnInit {
 
   profile:Profile = {
     image: "",
