@@ -1,18 +1,13 @@
 <div class="text-center">
-    <pagination *ngIf="images.length > 0"
-        [totalItems]="images.length"
-        [itemsPerPage]="itemsPerPage"
-        [(ngModel)]="activeImage"
-        [maxSize]="3"
-        previousText="&lsaquo;"
-        nextText="&rsaquo;"
-        (pageChanged)="pageChanged($event)"></pagination>
+    <pagination *ngIf="images.length > 0" [totalItems]="images.length" [itemsPerPage]="itemsPerPage" [(ngModel)]="activeImage"
+        [maxSize]="3" previousText="&lsaquo;" nextText="&rsaquo;" (pageChanged)="pageChanged($event)"></pagination>
 </div>
 <div style="margin-bottom: 8px; width: 100%">
-    <a href="#" (click)="naks($event)">
-        <img class="img-responsive img-thumbnail" *ngIf="images.length > 0"
-            style="display: block; margin: 0 auto; width: 60%; min-width: 60%;"
-            src="{{ images[activeImage - 1].thumbnailURL }}">
+    <div *ngIf="images.length == 0" class="no-image">
+        <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+    </div>
+    <a *ngIf="images.length > 0" href="#" (click)="naks($event)">
+        <img class="img-responsive img-thumbnail" style="display: block; margin: 0 auto; width: 60%; min-width: 60%;" src="{{ images[activeImage - 1].thumbnailURL }}">
     </a>
 </div>
 <div bsModal #childModal="bs-modal" class="modal fade" tabIndex="-1" role="dialog">

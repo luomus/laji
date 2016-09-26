@@ -59,10 +59,17 @@ export class TaxonComponent implements OnInit, OnDestroy {
           this.setSelectedInformalGroup(data);
         });
       this.groups = [];
+      this.selectedInformalGroup = null;
     });
 
     this.id.filter(id => id != null).forEach(id => {
       this.informalTaxonService.informalTaxonGroupGetChildren(id, this.translate.currentLang)
+        .zip(this.informalTaxonService.informalTaxonGroupFindById(id, this.translate.currentLang))
+        .map(data => ({
+          id: data[1].id,
+          name: data[1].name,
+          results: data[0].results
+        }))
         .subscribe(data => {
           this.setSelectedInformalGroup(data);
         });
@@ -87,7 +94,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
       });
   }
 
-  setSelectedInformalGroup(data) {
+  setSelectedInformalGroup(data: InformalTaxonGroup) {
     this.selectedInformalGroup = data;
   }
 }
