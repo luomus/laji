@@ -1,21 +1,29 @@
 <div class="container">
   <h1>Lajit</h1>
-  <tabset [justified]="true">
-    <tab heading="plop">
-      <div style="margin-top: 12px;" class="row">
-        <div class="col-md-12">
-          <laji-informal-list-breadcrumb [groups]="groups" (onSelect)="onBreadcrumSelect($event)"></laji-informal-list-breadcrumb>
-          <laji-informal-list [tree]="selectedInformalGroup ? selectedInformalGroup.hasSubGroup : tree" (onSelect)="onGroupSelect($event)"></laji-informal-list>
-          <laji-species-list *ngIf="selectedInformalGroup" [informalGroup]="selectedInformalGroup"></laji-species-list>
-        </div>
-      </div>
-    </tab>
-    <tab heading="naks">
-      <div class="row">
-        <div class="col-md-12">
-          <laji-tree-of-life></laji-tree-of-life>
-        </div>
-      </div>
-    </tab>
-  </tabset>
+  <ul class="nav nav-tabs nav-justified">
+    <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+      <a routerLink="/taxon/browse/informal">
+        <span style="font-size: 150%" class="glyphicon glyphicon-th-list"></span>
+        <h3>Muotoryhmillä</h3>
+      </a>
+    </li>
+    <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+      <a routerLink="/taxon/browse/taxonomy">
+        <span style="font-size: 150%" class="glyphicon glyphicon-picture"></span>
+        <h3>Taksonomialla</h3>
+      </a>
+    </li>
+  </ul>
+  <div *ngIf="(type | async) == 'informal'" class="row">
+    <div class="col-md-12">
+      <laji-informal-list-breadcrumb *ngIf="groups" [groups]="groups"></laji-informal-list-breadcrumb>
+      <laji-informal-list *ngIf="selectedInformalGroup" [tree]="selectedInformalGroup"></laji-informal-list>
+      <laji-species-list *ngIf="selectedInformalGroup" [informalGroup]="selectedInformalGroup"></laji-species-list>
+    </div>
+  </div>
+  <div *ngIf="(type | async) == 'taxonomy'" class="row">
+    <div class="col-md-12">
+      <laji-tree-of-life></laji-tree-of-life>
+    </div>
+  </div>
 </div>

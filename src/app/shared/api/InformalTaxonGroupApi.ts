@@ -207,6 +207,42 @@ export class InformalTaxonGroupApi {
     }
 
     /**
+     * Get parents for a informal group
+     *
+     * @param id
+     * @param lang Language of fields that have multiple languages. Return english if asked language not found.
+     */
+    public informalTaxonGroupGetParents (id: string, lang?: string, extraHttpRequestParams?: any ) : Observable<Array<models.InformalTaxonGroup>> {
+        const path = this.basePath + '/informal-taxon-groups/{id}/parents'
+            .replace('{' + 'id' + '}', String(id));
+
+        let queryParameters = new URLSearchParams();
+        let headerParams = this.defaultHeaders;
+        // verify required parameter 'id' is not null or undefined
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetChildren.');
+        }
+        if (lang !== undefined) {
+            queryParameters.set('lang', lang);
+        }
+
+        let requestOptions: RequestOptionsArgs = {
+            method: 'GET',
+            headers: headerParams,
+            search: queryParameters
+        };
+
+        return this.http.request(path, requestOptions)
+            .map((response: Response) => {
+                if (response.status === 204) {
+                    return undefined;
+                } else {
+                    return response.json();
+                }
+            });
+    }
+
+    /**
      * Get current groups parents and parents siblings
      *
      * @param id

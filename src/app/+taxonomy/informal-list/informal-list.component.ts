@@ -11,16 +11,5 @@ import {InformalListItemInterface} from "./informal-list-item.model";
 export class InformalListComponent {
 
   @Input() tree:Array<InformalTaxonGroup>;
-  
-  @Output() onSelect:EventEmitter<InformalTaxonGroup> = new EventEmitter();
-
-  onChildSelect(group) {
-    this.onSelect.emit(group);
-  }
-
-  onClick(group:InformalListItemInterface) {
-    this.onSelect.emit(group);
-    return false;
-  }
 
 }

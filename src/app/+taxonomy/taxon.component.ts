@@ -1,7 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+
+import 'rxjs/add/operator/map';
 
 import { TaxonomyApi, Taxonomy, InformalTaxonGroupApi, InformalTaxonGroup } from '../shared';
 import { InformalListBreadcrumbComponent } from "./informal-list-breadcrumb/informal-list-breadcrumb.component";
@@ -19,44 +23,57 @@ import { TreeOfLifeComponent } from "./tree-of-life/tree-of-life.component";
 })
 export class TaxonComponent implements OnInit, OnDestroy {
 
-  public tree: InformalTaxonGroup[];
-
-  public groups: Array<InformalTaxonGroup> = [];
+  public groups: Array<InformalTaxonGroup>;
 
   public selectedInformalGroup: InformalTaxonGroup;
 
   private subTrans: Subscription;
 
+  private type: Observable<string>;
+
+  private id: Observable<string>;
+
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private taxonService: TaxonomyApi,
     private translate: TranslateService,
-    private informalTaxonService: InformalTaxonGroupApi
-  ) { }
-
-  onGroupSelect(group: InformalListItemInterface) {
-    this.groups.push(group);
-    this.selectedInformalGroup = group;
-  }
-
-  onBreadcrumSelect(group: InformalListItemInterface) {
-    if (group != null) {
-      let curr = this.groups.pop();
-      while (group.id != curr.id) {
-        curr = this.groups.pop();
-      }
-      this.groups.push(curr);
-    } else {
-      this.groups = [];
-    }
-    this.selectedInformalGroup = group;
-  }
+    private informalTaxonService: InformalTaxonGroupApi,
+    private location: Location,
+  ) {}
 
   ngOnInit() {
-    this.subTrans = this.translate.onLangChange.subscribe(
-      () => this.refreshInformalGroups()
-    );
-    this.refreshInformalGroups();
+
+    this.subTrans = this.translate.onLangChange
+      .subscribe(() => {
+        this.refreshInformalGroups();
+      });
+
+    this.type = this.route.params.map(params => params['type']);
+
+    this.id = this.route.params.distinctUntilChanged().map(params => params['id']);
+
+    this.id.filter(id => id == null).forEach(id => {
+      this.informalTaxonService.informalTaxonGroupFindRoots(this.translate.currentLang)
+        .subscribe(data => {
+          this.setSelectedInformalGroup(data);
+        });
+      this.groups = [];
+    });
+
+    this.id.filter(id => id != null).forEach(id => {
+      this.informalTaxonService.informalTaxonGroupGetChildren(id, this.translate.currentLang)
+        .subscribe(data => {
+          this.setSelectedInformalGroup(data);
+        });
+      this.informalTaxonService.informalTaxonGroupGetParents(id, this.translate.currentLang)
+        .subscribe(data => {
+          this.groups = data;
+        }, (error) => {
+          this.groups = [];
+        });
+    });
+
   }
 
   ngOnDestroy() {
@@ -64,9 +81,13 @@ export class TaxonComponent implements OnInit, OnDestroy {
   }
 
   refreshInformalGroups() {
-    this.informalTaxonService.informalTaxonGroupGetTree(this.translate.currentLang)
-      .subscribe(
-      data => this.tree = data.results
-      )
+    this.informalTaxonService.informalTaxonGroupFindRoots(this.translate.currentLang)
+      .subscribe(data => {
+        this.setSelectedInformalGroup(data);
+      });
+  }
+
+  setSelectedInformalGroup(data) {
+    this.selectedInformalGroup = data;
   }
 }
