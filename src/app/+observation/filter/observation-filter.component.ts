@@ -129,7 +129,6 @@ export class ObservationFilterComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(page) {
-    console.log(page);
     this.page = page.page;
     this.update();
   }
