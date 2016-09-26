@@ -58,7 +58,7 @@ export class ObservationFilterComponent implements OnInit, OnDestroy {
     if (!this.filter) {
       return;
     }
-    let cacheKey = JSON.stringify(this.searchQuery.query);
+    let cacheKey = JSON.stringify(this.searchQuery.query) + this.page;
     if (this.lastQuery === cacheKey) {
       return;
     }
@@ -129,6 +129,7 @@ export class ObservationFilterComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(page) {
+    console.log(page);
     this.page = page.page;
     this.update();
   }
