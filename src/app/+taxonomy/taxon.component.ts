@@ -39,8 +39,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
     private taxonService: TaxonomyApi,
     private translate: TranslateService,
     private informalTaxonService: InformalTaxonGroupApi,
-    private location: Location,
-  ) {}
+    private location: Location) {}
 
   ngOnInit() {
 

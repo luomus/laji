@@ -1,79 +1,21 @@
 import {Component, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
+
 import {UserService} from "../shared/service/user.service";
-import {PersonApi} from "../shared/api/PersonApi";
-import {Profile} from "../shared/model/Profile";
 
 @Component({
   selector: 'laji-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  template: '',
 })
 export class UserComponent implements OnInit {
-
-  profile:Profile = {
-    image: "",
-    profileDescription: "",
-    friendRequests: [],
-    friends: [],
-    blocked: []
-  };
-
-  public editing = false;
-  private isCreate = false;
-
   constructor(
     private userService:UserService,
-    private personService:PersonApi
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.initProfile();
-  }
-
-  initProfile() {
-    this.personService
-      .personFindProfileByToken(this.userService.getToken())
-      .subscribe(
-        profile => this.profile = profile,
-        err => {
-          console.log(err);
-          this.isCreate = true;
-        }
-      )
-  }
-
-  toggleEditing() {
-    this.editing = !this.editing;
-  }
-
-  saveProfile() {
-    if (this.isCreate) {
-      this.personService.personCreateProfileByToken(this.getProfile(), this.userService.getToken())
-        .subscribe(
-          profile => {
-            this.isCreate = false;
-            this.profile = profile
-            this.editing = false;
-          },
-          err => console.log(err)
-        )
-    } else {
-      console.log(this.getProfile());
-      this.personService.personUpdateProfileByToken(this.getProfile(), this.userService.getToken())
-        .subscribe(
-          profile => {
-            this.profile = profile;
-            this.editing = false;
-          },
-          err => console.log(err)
-        )
-    }
-  }
-
-  private getProfile():Profile {
-    return {
-      image: this.profile.image,
-      profileDescription: this.profile.profileDescription
-    };
+    this.userService.getUser().subscribe(
+      user => this.router.navigate(['/user/' + user.id])
+    )
   }
 }
