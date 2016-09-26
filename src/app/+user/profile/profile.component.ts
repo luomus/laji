@@ -26,7 +26,9 @@ export class ProfileComponent implements OnInit ,OnDestroy {
     inheritedName: ''
   };
 
-  public isCurenntUesr = false;
+  public isCurenntUser = false;
+  public isCreate = true;
+  public editing = false;
 
   private subProfile:Subscription;
 
@@ -46,9 +48,10 @@ export class ProfileComponent implements OnInit ,OnDestroy {
       ))
       .subscribe(
         data => {
+          this.isCreate = !data[0];
           this.profile = data[0];
           this.person = data[1];
-          this.isCurenntUesr = data[1].id === data[2].id
+          this.isCurenntUser = data[1].id === data[2].id
         },
         err => console.log(err)
       )
@@ -58,5 +61,29 @@ export class ProfileComponent implements OnInit ,OnDestroy {
     if (this.subProfile) {
       this.subProfile.unsubscribe();
     }
+  }
+
+  toggleEditing() {
+    this.editing = !this.editing;
+  }
+
+  saveProfile() {
+    let method = this.isCreate ? 'personCreateProfileByToken': 'personUpdateProfileByToken';
+    this.personService[method](this.getProfile(), this.userService.getToken())
+      .subscribe(
+        profile => {
+          this.isCreate = false;
+          this.profile = profile;
+          this.editing = false;
+        },
+        err => console.log(err)
+      )
+  }
+
+  private getProfile():Profile {
+    return {
+      image: this.profile.image,
+      profileDescription: this.profile.profileDescription
+    };
   }
 }

@@ -1,12 +1,18 @@
 <div class="container">
   <h1>{{'navigation.user.profile' | translate}}</h1>
-  <div class="row">
+  <div class="row" *ngIf="!profile.profileKey">
+    {{'profile.missing'|translate}}
+  </div>
+  <div class="row" *ngIf="profile.profileKey">
     <div class="col-md-8">
       <h3>{{person.preferredName}} {{person.inheritedName}}</h3>
       <div class="profile-image">
         <img *ngIf="profile.image" [src]="profile.image" alt="profile image" class="img-rounded">
       </div>
-      <div class="btn-default btn btn-sm edit-text" (click)="toggleEditing()"><i class="glyphicon glyphicon-cog"></i></div>
+      <div *ngIf="isCurenntUser"
+        class="btn-default btn btn-sm edit-text"
+        (click)="toggleEditing()"><i class="glyphicon glyphicon-cog"></i>
+      </div>
       <div *ngIf="!editing">
         <p>{{profile.profileDescription}}</p>
       </div>
@@ -27,7 +33,7 @@
     <div class="col-md-4">
       <div class="form-group">
         <div class="col-sm-12 well">
-          <friends [profile]="profile" [currentlUser]="isCurenntUesr"></friends>
+          <friends [profile]="profile" [currentlUser]="isCurenntUser"></friends>
         </div>
       </div>
       <div class="form-group">
