@@ -12,11 +12,6 @@ export const UserRoutes:Routes = [
     component: UserComponent
   },
   {
-    path: 'user/:userId',
-    pathMatch: 'full',
-    component: ProfileComponent
-  },
-  {
     path: 'user/login',
     pathMatch: 'full',
     component: UserLoginComponent
@@ -25,5 +20,10 @@ export const UserRoutes:Routes = [
     path: 'user/logout',
     pathMatch: 'full',
     component: UserLogoutComponent
+  },
+  {
+    path: 'user/:userId',
+    pathMatch: 'full',
+    component: ProfileComponent
   }
 ];
