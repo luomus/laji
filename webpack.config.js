@@ -21,6 +21,7 @@ var webpackConfig = {
   ],
 
   module: {
+    noParse: /\laji-map.js$/,
     loaders: [
       // .ts files for TypeScript
       { test: /\.ts$/, loaders: ['awesome-typescript-loader', 'angular2-template-loader'] },
