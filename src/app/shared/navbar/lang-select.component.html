@@ -10,6 +10,9 @@
       <span *ngIf="'en' === translate.currentLang">
         In English
       </span>
+      <span *ngIf="'dev' === translate.currentLang">
+        Development
+      </span>
       <i class="glyphicon glyphicon-globe"></i>
     </a>
     <ul dropdownMenu role="menu" aria-labelledby="single-button">
@@ -21,6 +24,9 @@
       </li>
       <li *ngIf="'en' !== translate.currentLang" role="menuitem">
         <a class="navbar-link link" (click)="translate.use('en')">In English</a>
+      </li>
+      <li *ngIf="'dev' !== translate.currentLang" role="menuitem">
+        <a class="navbar-link link" (click)="translate.use('dev')">Development</a>
       </li>
     </ul>
   </div>
