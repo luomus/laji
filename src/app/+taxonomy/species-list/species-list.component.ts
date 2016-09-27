@@ -11,7 +11,8 @@ import {InformalTaxonGroup} from "../../shared";
 @Component({
   selector: 'laji-species-list',
   templateUrl: 'species-list.component.html',
-  providers: [ ]
+  styleUrls: ['species-list.component.css'],
+  providers: []
 })
 export class SpeciesListComponent implements OnChanges {
 

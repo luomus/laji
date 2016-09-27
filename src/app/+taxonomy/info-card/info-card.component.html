@@ -8,11 +8,9 @@
       <div class="panel-group" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default" *ngFor="let group of taxonDescription.groups; let i = index" [title]="group.title" [open]="activePanel == i"
           [index]="i" (activate)="setActive($event)" laji-panel>
-          <div>
-            <div *ngFor="let variable of group.variables">
-              <h4>{{ variable.title }}</h4>
-              <span [innerHTML]="variable.content"></span>
-            </div>
+          <div *ngFor="let variable of group.variables">
+            <h4>{{ variable.title }}</h4>
+            <span [innerHTML]="variable.content"></span>
           </div>
         </div>
       </div>
