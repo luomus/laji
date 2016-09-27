@@ -2,19 +2,23 @@
   <carousel>
     <slide [active]="true">
       <div class="carousel-caption">
-        <laji-stat-item [description]="'home.carousel.species' | translate">
-          <laji-observation-count
-            [field]="'unit.linkings.taxon.id'"
-            [query]="{taxonRankId: 'MX.species'}"
-          >
-          </laji-observation-count>
-        </laji-stat-item>
-        <laji-stat-item [description]="'home.carousel.collections' | translate">
-          <laji-observation-count [field]="'document.collectionId'" [query]="{}"></laji-observation-count>
-        </laji-stat-item>
-        <laji-stat-item [description]="'home.carousel.observations' | translate">
-          <laji-observation-count [query]="{}"></laji-observation-count>
-        </laji-stat-item>
+        <div class="row">
+          <div class="col-sm-12">
+            <img class="pull-left" src="/static/images/LAJI_FI_valk.png" />
+          </div>
+        </div>
+        <div style="margin-top: 20px;" class="row">
+          <laji-stat-item [description]="'home.carousel.species' | translate">
+            <laji-observation-count [field]="'unit.linkings.taxon.id'" [query]="{taxonRankId: 'MX.species'}">
+            </laji-observation-count>
+          </laji-stat-item>
+          <laji-stat-item [description]="'home.carousel.collections' | translate">
+            <laji-observation-count [field]="'document.collectionId'" [query]="{}"></laji-observation-count>
+          </laji-stat-item>
+          <laji-stat-item [description]="'home.carousel.observations' | translate">
+            <laji-observation-count [query]="{}"></laji-observation-count>
+          </laji-stat-item>
+        </div>
       </div>
     </slide>
     <slide>
