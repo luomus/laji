@@ -1,10 +1,12 @@
 <ol class="breadcrumb">
-  <li [class.active]="groups.length == 0">
-    <a *ngIf="groups.length > 0" href="#">{{'omniSearch.groups' | translate}}</a>
-    <span *ngIf="groups.length == 0">{{'omniSearch.groups' | translate}}</span>
-    </li>
-  <li [class.active]="active" *ngFor="let group of groups; let i = index; let active = last;">
-    <a *ngIf="!active" href="#">{{group.name}}</a>
-    <span *ngIf="active">{{group.name}}</span>
+  <li *ngIf="informalGroup" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+    <a *ngIf="informalGroup.id" routerLink="/taxon/browse/informal">..</a>
+    <span *ngIf="!informalGroup.id">..</span>
   </li>
+  <li *ngFor="let group of groups; let i = index; let active = last;">
+    <a [routerLink]="['/taxon/browse/informal/' + group.id]">{{group.name}}</a>
+  </li>
+  <li *ngIf="informalGroup" class="active">
+    <span >{{informalGroup.name}}</span>
+  </li> 
 </ol>

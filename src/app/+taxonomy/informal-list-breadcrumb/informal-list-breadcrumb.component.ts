@@ -10,6 +10,7 @@ import {InformalListItemInterface} from "../informal-list/informal-list-item.mod
 
 export class InformalListBreadcrumbComponent {
   
+  @Input() informalGroup:InformalTaxonGroup;
   @Input() groups:Array<InformalTaxonGroup>;
 
 }
