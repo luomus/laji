@@ -2,8 +2,8 @@
 <div *ngIf="isCurrentUser()">
   <div *ngIf="usersProfile.friends && usersProfile.friends.length > 0" class="friends">
     <ul>
-      <li *ngFor="let friend of usersProfile.friends">
-        <a [routerLink]="['/user/' + friend]">{{friend}}</a>
+      <li *ngFor="let friend of friends">
+        <a [routerLink]="['/user/' + friend.id]">{{friend.preferredName}} {{friend.inheritedName}}</a>
       </li>
     </ul>
   </div>
@@ -22,10 +22,13 @@
   <p>{{'profile.friendsInfo'|translate}}</p>
 </div>
 <div *ngIf="!isCurrentUser() && isLoggedIn()">
+  <div *ngIf="alreadyFriends()">
+    {{'friend.alreadyFriends' | translate}}
+  </div>
   <div *ngIf="requestSend">
     {{'friend.requestSent' | translate}}
   </div>
-  <div *ngIf="!requestSend">
+  <div *ngIf="!requestSend && !alreadyFriends()">
     <a class="btn btn-success" (click)="sendFriendRequest(profile.profileKey)">{{'friend.ask'|translate}}</a>
   </div>
 </div>
