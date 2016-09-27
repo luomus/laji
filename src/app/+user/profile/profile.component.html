@@ -9,7 +9,7 @@
       <div class="profile-image">
         <img *ngIf="profile.image" [src]="profile.image" alt="profile image" class="img-rounded">
       </div>
-      <div *ngIf="isCurenntUser"
+      <div *ngIf="isCurrentUser"
         class="btn-default btn btn-sm edit-text"
         (click)="toggleEditing()"><i class="glyphicon glyphicon-cog"></i>
       </div>
@@ -33,7 +33,7 @@
     <div class="col-md-4">
       <div class="form-group">
         <div class="col-sm-12 well">
-          <friends [profile]="profile" [currentlUser]="isCurenntUser"></friends>
+          <friends [profile]="profile" [usersProfile]="usersProfile"></friends>
         </div>
       </div>
       <div class="form-group">

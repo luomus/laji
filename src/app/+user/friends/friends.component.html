@@ -1,32 +1,34 @@
 <h3>{{'profile.friends' | translate}}</h3>
-<div *ngIf="currentlUser">
-  <div *ngIf="profile.friendRequests && profile.friendRequests.length > 0" class="friendRequests">
+<div *ngIf="isCurrentUser()">
+  <div *ngIf="usersProfile.friends && usersProfile.friends.length > 0" class="friends">
+    <ul>
+      <li *ngFor="let friend of usersProfile.friends">
+        <a [routerLink]="['/user/' + friend]">{{friend}}</a>
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="usersProfile.friendRequests && usersProfile.friendRequests.length > 0" class="friendRequests">
     <h4>
       {{'friend.requests' | translate}}
     </h4>
     <ul>
-      <li *ngFor="let friend of profile.friendRequests">
-        <a (click)="acceptFriendRequest(friend)">{{friend}}</a>
-      </li>
-    </ul>
-  </div>
-  <div *ngIf="profile.friends && profile.friends.length > 0" class="friends">
-    <h4>
-      {{'friend.friends' | translate}}
-    </h4>
-    <ul>
-      <li *ngFor="let friend of profile.friends">
-        <a [routerLink]="['/user/' + friend]">{{friend}}</a>
+      <li *ngFor="let friend of usersProfile.friendRequests">
+        {{friend}}
+        <a (click)="acceptFriendRequest(friend)"><i class="glyphicon glyphicon-ok"></i></a>
+        <a (click)="blockFriendRequest(friend)"><i class="glyphicon glyphicon-ban-circle"></i></a>
       </li>
     </ul>
   </div>
   <p>{{'profile.friendsInfo'|translate}}</p>
 </div>
-<div *ngIf="!currentlUser">
+<div *ngIf="!isCurrentUser() && isLoggedIn()">
   <div *ngIf="requestSend">
     {{'friend.requestSent' | translate}}
   </div>
   <div *ngIf="!requestSend">
     <a class="btn btn-success" (click)="sendFriendRequest(profile.profileKey)">{{'friend.ask'|translate}}</a>
   </div>
+</div>
+<div *ngIf="!isLoggedIn()">
+  Sinun tulee kirjautua pyytääksesi ystäväksi
 </div>

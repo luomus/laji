@@ -10,7 +10,7 @@ import {PersonApi} from "../../shared/api/PersonApi";
 export class FriendsComponent implements OnInit {
 
   @Input() profile:Profile;
-  @Input() currentlUser:boolean = false;
+  @Input() usersProfile:Profile;
 
   public user;
   public requestSend = false;
@@ -23,10 +23,14 @@ export class FriendsComponent implements OnInit {
 
   ngOnInit() {
     this.requestSend = false;
-    this.userService.getUser().subscribe(
-      user => this.user = user,
-      err => console.log(err)
-    )
+  }
+
+  isLoggedIn() {
+    return !!this.usersProfile.id
+  }
+
+  isCurrentUser() {
+    return this.profile.userID === this.usersProfile.userID
   }
 
   sendFriendRequest(profileKy:string) {
@@ -41,8 +45,16 @@ export class FriendsComponent implements OnInit {
 
   acceptFriendRequest(userId:string) {
     this.personService.personAcceptFriendRequest(
-      this.userService.getToken(),
-      userId
-    )
+        this.userService.getToken(),
+        userId
+      )
+      .subscribe(
+        profile => this.profile = profile,
+        err => console.log(err)
+      )
+  }
+
+  blockFriendRequest(userId:string) {
+
   }
 }
