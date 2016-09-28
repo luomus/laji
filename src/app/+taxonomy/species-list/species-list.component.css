@@ -1,0 +1,39 @@
+table {
+    width: 100%;
+}
+
+thead, tbody, tr, td, th {
+    display: block;
+}
+
+tbody tr:first-child td, tbody tr:first-child th {
+    border-top: none;
+}
+
+tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+
+thead th, thead td, tbody th, tbody td {
+    height: 38px;
+}
+
+tbody {
+    height: 240px;
+    overflow-y: auto;
+}
+
+thead {
+
+}
+
+tbody td, thead td {
+    width: 200px;
+    float: left;
+    margin-right: 8px;
+}
+
