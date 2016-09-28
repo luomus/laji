@@ -73,7 +73,7 @@
           <div class="col-sm-10 col-sm-offset-2">
             <laji-observation-active
               *ngIf="!showFilter"
-              [skip]="['target', 'includeNonValidTaxa']"
+              [skip]="['target', 'includeNonValidTaxa', 'informalTaxonGroupId', 'time']"
             ></laji-observation-active>
           </div>
         </div>

@@ -168,7 +168,7 @@ export class InformalTaxonGroupApi {
      * @param page Page number
      * @param pageSize Page size
      */
-    public informalTaxonGroupGetChildren (id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<Array<models.InformalTaxonGroup>>> {
+    public informalTaxonGroupGetChildren (id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<models.InformalTaxonGroup>> {
         const path = this.basePath + '/informal-taxon-groups/{id}/children'
             .replace('{' + 'id' + '}', String(id));
 
@@ -336,7 +336,7 @@ export class InformalTaxonGroupApi {
      * @param page Page number
      * @param pageSize Page size
      */
-    public informalTaxonGroupGetWithSiblings (id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<Array<models.InformalTaxonGroup>>> {
+    public informalTaxonGroupGetWithSiblings (id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<models.InformalTaxonGroup>> {
         const path = this.basePath + '/informal-taxon-groups/{id}/siblings'
             .replace('{' + 'id' + '}', String(id));
 
