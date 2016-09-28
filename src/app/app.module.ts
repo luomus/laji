@@ -4,7 +4,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {HttpModule} from "@angular/http";
 import {LocationStrategy, PathLocationStrategy} from '@angular/common';
 import {TranslateModule} from 'ng2-translate/ng2-translate';
-import { TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule } from 'ng2-bootstrap/ng2-bootstrap';
+import { TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule, TooltipModule } from 'ng2-bootstrap/ng2-bootstrap';
 
 
 import {routing, appRoutingProviders} from "./app.routes";
@@ -100,7 +100,7 @@ import {UsersPipe} from "./shared/pipe/users.pipe";
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpModule,
-    TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule,
+    TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule,TooltipModule,
     routing,
     TranslateModule.forRoot()
   ],
