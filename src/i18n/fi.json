@@ -90,7 +90,7 @@
   "result.scientificName": "Tieteellinen nimi",
   "result.gathering.conversions.wgs84CenterPoint": "Paikka",
   "result.gathering.municipality": "Paikka",
-  "result.load.introPublic": "Voit ladata julkisen aineston itsellesei painamalla \"lataa aineisto\"-nappia. Aineisto toimitetaan hetken päästä sähköpostiisi.",
+  "result.load.introPublic": "Voit ladata julkisen aineiston itsellesei painamalla \"lataa aineisto\"-nappia. Aineisto toimitetaan hetken päästä sähköpostiisi.",
   "result.load.introPrivate": "Voit halutessasi tehdä pyynnön salattuun materiaaliin. Tällöin pyyntösi käsitellään yksilöllisesti ja saat lisäohjeita sähköpostitse.",
   "result.load.thanksPublic": "Kiitos, saat linkin aineistoon sähköpostitse",
   "result.load.thanksRequest": "Kiitos, saat ohjeita sähköpostitse",
@@ -98,16 +98,16 @@
   "observation.count": "Havaintojen määrä",
   "result.allObservation": "havaintoa",
 
-  "force.login": "Sinun pitää kirjautua jotta voit käyttää tätä osiota",
+  "force.login": "Sinun pitää kirjautua käyttääksesi tätä osiota",
 
   "observation.form.filter": "Rajaa",
-  "observation.form.specimen": "Lajilla",
-  "observation.form.date": "Havaintopäivällä",
+  "observation.form.specimen": "Nimi",
+  "observation.form.date": "Aika",
   "observation.form.thisYear": "Tänä vuonna",
   "observation.form.preservedSpecimens": "Kokoelmanäytteitä",
   "observation.form.typeSpecimen": "vain tyyppinäytteet",
   "observation.form.invasive": "vain vieraslajit",
-  "observation.form.includeNonValidTaxa": "myös ei tunnetut lajit",
+  "observation.form.includeNonValidTaxa": "myös ei-tunnetut lajit",
   "observation.form.search": "Hae",
   "observation.form.empty": "Tyhjennä rajaukset",
   "observation.form.more": "Lisää hakuehtoja",
@@ -115,7 +115,7 @@
   "observation.form.countMax": "max",
   "observation.form.lifeStage": "Elinvaihe",
   "observation.form.sex": "Sukupuoli",
-  "observation.form.administrativeStatus": "administrativestatus",
+  "observation.form.administrativeStatus": "Hallinnollinen tila",
   "observation.form.redListStatusId": "Uhanalaisuus",
 
   "observation.results.title": "Havaintohaku",
@@ -137,11 +137,11 @@
   "observation.active.sex": "sukupuolella",
   "observation.active.invasive": "vieraslajeihin",
   "observation.active.recordBasis": "havainnon tyypillä",
-  "observation.active.informalTaxonGroupId": "Lajiryhmällä",
-  "observation.active.informalTaxonGroupAll": "kaikilla",
+  "observation.active.informalTaxonGroupId": "Lajiryhmä",
+  "observation.active.informalTaxonGroupAll": "kaikki",
 
   "haseka.title": "Havaintopalvelu",
-  "haseka.forms.title": "Lomakeet",
+  "haseka.forms.title": "Lomakkeet",
   "haseka.form.success": "Havainnot tallennettu!",
   "haseka.form.failure": "Tallennus epäonnistui!",
   "haseka.users.latest": "Viimeisimmät ilmoitukseni",
@@ -155,10 +155,10 @@
 
   "friend.ask": "Pyydä ystäväksi",
   "friend.friends": "Ystävät",
-  "friend.requests": "Ystävä pyynnöt",
+  "friend.requests": "Ystäväpyynnöt",
   "friend.requestSent": "Ystäväpyyntö lähetetty",
 
   "profile.friends": "Ystävät",
-  "profile.friendsInfo": "Voit pyytää ystäviäsi lähettämään sinulle linkin omalle profillisi sivulleen. Linkin saatuasi voit pyytää heitä ystäväksesi ja kun he ovat hyväksyneet pyyntösi näet linkin heidän profiiliin täällä.",
-  "profile.accountSettings": "Käyttäjä tilini"
+  "profile.friendsInfo": "Voit pyytää ystäviäsi lähettämään sinulle linkin omalle profiilisivulleen. Linkin saatuasi voit pyytää heitä ystäväksesi ja kun he ovat hyväksyneet pyyntösi, näet täällä linkin heidän profiiliinsa.",
+  "profile.accountSettings": "Käyttäjätilini"
 }
