@@ -21,17 +21,13 @@ export class ProfileComponent implements OnInit ,OnDestroy {
     blocked: []
   };
 
-  usersProfile:Profile = {};
-
-  public person:Person = {
-    preferredName: '',
-    inheritedName: ''
-  };
+  personsProfile:Profile = {};
 
   public isCurrentUser = false;
   public userId = '';
   public isCreate = true;
   public editing = false;
+  public loading = true;
 
   private subProfile:Subscription;
 
@@ -43,30 +39,32 @@ export class ProfileComponent implements OnInit ,OnDestroy {
 
   ngOnInit() {
     this.subProfile = this.route.params
+      .do((_)=> this.loading = true)
       .map(params => params['userId'])
-      .do(id => this.userId = id)
-      .switchMap(id => this.userService.isLoggedIn() ? this.userService.getUser() : Observable.of(''))
-      .map(idOrUser => idOrUser.id ? idOrUser.id : idOrUser)
-      .switchMap(id =>  {
-        this.isCurrentUser = this.userId === id;
+      .combineLatest(this.userService.getUser(), (id, user) => ({id: id, currentUser:user}))
+      .flatMap((data) => {
+        let currentActive = data.currentUser.id === data.id;
+        let empty$ = Observable.of({});
+        let false$ = Observable.of(false);
         return Observable.forkJoin(
-          this.isCurrentUser ?
-          [
-            this.personService.personFindProfileByToken(this.userService.getToken()),
-            this.userService.getUser()
-          ]:[
-            this.personService.personFindProfileByUserId(this.userId),
-            this.personService.personFindByUserId(this.userId),
-            id ? this.personService.personFindProfileByToken(this.userService.getToken()) : Observable.of({})
-          ]
-        )
-      })
+          data.currentUser.id ? this.personService.personFindProfileByToken(this.userService.getToken()).catch((e) => false$) : empty$,
+          currentActive ? false$ : this.personService.personFindProfileByUserId(data.id).catch((e) => empty$)
+        )},
+        (data, profiles) => ({
+          id: data.id,
+          currentUser: data.currentUser,
+          currentProfile: profiles[0],
+          profile: profiles[1] || profiles[0]
+        })
+      )
       .subscribe(
         data => {
-          this.isCreate = !data[0];
-          this.profile = data[0];
-          this.person = data[1];
-          this.usersProfile = data[2] ? data[2] : data[0];
+          this.isCurrentUser = data.id === data.currentUser.id;
+          this.userId = data.id;
+          this.isCreate = !data.currentProfile;
+          this.profile = data.profile || {};
+          this.personsProfile = data.currentProfile || {};
+          this.loading = false;
         },
         err => console.log(err)
       )
@@ -89,6 +87,7 @@ export class ProfileComponent implements OnInit ,OnDestroy {
         profile => {
           this.isCreate = false;
           this.profile = profile;
+          this.personsProfile = profile;
           this.editing = false;
         },
         err => console.log(err)

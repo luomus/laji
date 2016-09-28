@@ -43,7 +43,7 @@
           <div class="navbar-profile" *ngIf="userService.isLoggedIn()">
             <div dropdown>
               <a dropdownToggle class="link language-toggle">
-                {{(userService.getUser()|async)?.preferredName}} {{(userService.getUser()|async)?.inheritedName}}
+                {{(userService.getUser()|async)?.id | users}}
                 <i class="glyphicon glyphicon-user"></i>
               </a>
               <ul dropdownMenu role="menu" aria-labelledby="single-button">

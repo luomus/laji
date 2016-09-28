@@ -75,6 +75,7 @@ import {FooterService} from "./shared/service/footer.service";
 import {LocalStorageService} from "angular2-localstorage/dist";
 import {ProfileComponent} from "./+user/profile/profile.component";
 import {FriendsComponent} from "./+user/friends/friends.component";
+import {UsersPipe} from "./shared/pipe/users.pipe";
 
 
 @NgModule({
@@ -87,7 +88,7 @@ import {FriendsComponent} from "./+user/friends/friends.component";
     ObservationAggregateComponent, ObservationChartComponent, ObservationFilterComponent,
     StatItemComponent, SpinnerComponent, FormattedNumber,
     MapComponent, ObservationActiveComponent, ObservationResultComponent,
-    LabelPipe, PieChartComponent, ObservationResultListComponent,
+    LabelPipe, UsersPipe, PieChartComponent, ObservationResultListComponent,
     nvD3, ResultListElementComponent, InfoCardComponent, TaxonInfoComponent,
     ParentsComponent, ChildrenListComponent, InformalListBreadcrumbComponent, InformalListComponent,
     SpeciesListComponent, TreeOfLifeComponent, UserComponent, ProfileComponent, FriendsComponent, UserLoginComponent,
@@ -95,7 +96,7 @@ import {FriendsComponent} from "./+user/friends/friends.component";
     HaSeKaFormComponent, HaSeKaFormListComponent, ShortDocumentComponent,
     UsersLatestComponent, PanelComponent, ImageGalleryComponent, LajiFormComponent,
     TaxonComponent, CollectionComponent, ObservationComponent,DatePickerComponent,
-    LabelPipe,MetadataSelectComponent, IUCNComponent
+    MetadataSelectComponent, IUCNComponent
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpModule,

@@ -1,6 +1,6 @@
 import {Injectable, Inject} from "@angular/core";
 import {PersonTokenApi} from "../api/PersonTokenApi";
-import {Subscription, Observable} from "rxjs";
+import {Subscription, Observable, Observer} from "rxjs";
 import {Person} from "../model/Person";
 import {PersonApi} from "../api/PersonApi";
 import {LocalStorage} from "angular2-localstorage/dist";
@@ -12,6 +12,8 @@ export class UserService {
 
   @LocalStorage() private token = '';
   private user:Person;
+  private users:{[id:string]:Person} = {};
+  private usersFetch:{[id:string]:Observable<Person>} = {};
   private defaultFormData:any;
 
   private subUser:Subscription;
@@ -65,13 +67,44 @@ export class UserService {
     return this.token;
   }
 
-  public getUser():Observable<Person> {
+  public getUser(id?:string):Observable<Person> {
+    if (!id) {
+      return this.getCurrentUser();
+    }
+    if (this.users[id]) {
+      return Observable.of(this.users[id]);
+    } else if (!this.usersFetch[id]) {
+      this.usersFetch[id] = Observable.create((observer: Observer<Person>) => {
+        var onComplete = (user: Person) => {
+          this.users[id] = user;
+          observer.next(user);
+          observer.complete();
+          delete this.usersFetch[id];
+        };
+        this.userService.personFindByUserId(id)
+          .catch((e) => Observable.of({}))
+          .subscribe(
+            (user: Person) => {
+              onComplete(user);
+            }
+          );
+      }).share();
+    }
+    return this.usersFetch[id];
+  }
+
+  private getCurrentUser() {
     if (this.user) {
       return Observable.of(this.user);
     } else if (this.observable) {
       return this.observable;
     }
-    this.observable = this.userService.personFindByToken(this.token).share();
+    if (!this.token) {
+      return Observable.of({});
+    }
+    this.observable = this.userService.personFindByToken(this.token)
+      .do(u => this.users[u.id] = u)
+      .share();
     return this.observable;
   }
 
@@ -90,25 +123,13 @@ export class UserService {
       return this.formDefaultObservable;
     }
     this.formDefaultObservable = this.getUser().map(data => {
-      /*
-      return {
-        'editors': [data.id],
-        'gatheringEvent': {
-          'leg': [data.id]
-        },
-        'gatherings': [{
-          'units': []
-        }]
-      }
-      */
       return {
         'editors': [data.id],
         'gatheringEvent': {
           'leg': [data.id]
         }
       }
-    });
-
+    }).share();
     return this.formDefaultObservable;
   }
 

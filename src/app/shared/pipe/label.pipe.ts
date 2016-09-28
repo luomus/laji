@@ -4,10 +4,10 @@ import {LangChangeEvent, TranslateService } from "ng2-translate";
 import {TriplestoreLabelService} from "../service/triplestore-label.service";
 
 /**
- * Format a numeric string
- * Takes the numeric string and adds spaces to it.
+ * Triplestores label maker
+ * Takes a triplestore id of type alt|property|class and returns it's label
  * Usage:
- *   value | formattedNumber
+ *   value | label
  */
 @Pipe({
   name: 'label',

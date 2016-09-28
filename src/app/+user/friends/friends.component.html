@@ -2,8 +2,8 @@
 <div *ngIf="isCurrentUser()">
   <div *ngIf="usersProfile.friends && usersProfile.friends.length > 0" class="friends">
     <ul>
-      <li *ngFor="let friend of friends">
-        <a [routerLink]="['/user/' + friend.id]">{{friend.preferredName}} {{friend.inheritedName}}</a>
+      <li *ngFor="let id of usersProfile.friends">
+        <a [routerLink]="['/user/' + id]">{{id|users}}</a>
       </li>
     </ul>
   </div>
