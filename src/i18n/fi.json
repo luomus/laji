@@ -18,8 +18,8 @@
   "home.image-header.species": "lajeja",
   "home.image-header.sources": "aineistoja",
   "home.main-page.title": "Suomen Lajitietokeskus",
-  "home.main-page.recent": "Uusimpia tietoja Suomesta",
-  "home.main-page.text": "Suomen Lajitietokeskus kokoaa eliölajeja koskevaa tietoa saataville yhteen paikkaan. Eliölajeja koskeva tieto on tärkeää yhteiskunnalliselle päätöksenteolle, tieteelliselle tutkimukselle ja ympäristöstä kiinnostuneille kansalaisille.",
+  "home.main-page.recent": "Uusimpia havaintoja Suomesta",
+  "home.main-page.text": "Suomen Lajitietokeskus kokoaa eliölajeja koskevaa tietoa saataville yhteen paikkaan. Lajitieto on tärkeää yhteiskunnalliselle päätöksenteolle, tieteelliselle tutkimukselle ja ympäristöstä kiinnostuneille kansalaisille.",
   "home.news-list.current": "Ajankohtaista",
   "home.navigation-thumbnail.species": "Suomen lajit",
   "home.navigation-thumbnail.science": "Kansalaistiede",
@@ -36,7 +36,7 @@
   "home.carousel.observations": "havaintoa",
   "home.carousel.collections": "aineistoa",
   "home.carousel.digitized": "digitoitua näytettä",
-  "home.carousel.preserved": "lajinäytettä kokoelmissa",
+  "home.carousel.preserved": "kokoelmanäytettä",
   "search-bar.input": "Hae",
 
   "taxonomy.card.id": "Tunniste",
@@ -66,8 +66,8 @@
   "taxonomy.administrative.statuses": "Hallinnolliset lajitiedot",
 
   "news.title": "Uutiset",
-  "news.earlier": "aikaisemmat",
-  "news.newer": "tuoreemmat",
+  "news.earlier": "edelliset",
+  "news.newer": "seuraavat",
 
   "information.more": "Lisätietoa",
 
