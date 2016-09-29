@@ -3,7 +3,7 @@
   <div *ngIf="userService.isLoggedIn()">
     <div class="row">
       <div class="col-sm-8">
-        <p>Havaintopalvelu tarjoaa suoraviivaisen kanavan julkaista eliölajihavaintoja laji.fi-sivuston kautta. Rekisteröityneelle käyttäjälle palvelu tarjoaa tietokannan omien havaintotietojensa tallentamiseen ja hallintaan sekä väylän niiden jakamiseen. Käyttäjät voivat perustaa tietokantaan projekteja, joihin kutsutut osallistujat tallentavat haluttua lajitietoa. Perustetun projektin keräämiä tietoja hallinnoi sen omistaja ja tiedon jakaminen laji.fi-sivuston kautta on helppoa. Palvelun mukautuva lomakkeisto antaa käyttäjälle mahdollisuuden valita itselleen sopivan tavan tallentaa, hallita ja jakaa havaintojaan muiden käyttöön.</p>
+        <div [innerHtml]="'haseka.intro' | translate"></div>
         <a routerLink="/haseka/termsOfService">käyttöehdot</a>
 
         <laji-haseka-form-list></laji-haseka-form-list>
