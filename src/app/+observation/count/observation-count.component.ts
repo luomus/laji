@@ -10,18 +10,17 @@ import {Util} from "../../shared/service/util.service";
   selector: 'laji-observation-count',
   templateUrl: 'observation-count.component.html',
 })
-export class ObservationCountComponent implements OnDestroy {
+export class ObservationCountComponent implements OnDestroy, OnChanges {
 
   @Input() field: string;
   @Input() pick: any;
   @Input() query: WarehouseQueryInterface;
   @Input() overrideInQuery:any;
   @Input() pageSize:number = 20;
+  @Input() tick:number;
 
   public count: string = '';
   public loading:boolean = true;
-
-  private lastQuery:WarehouseQueryInterface;
 
   private subQueryUpdate: Subscription;
   private subCount: Subscription;
@@ -31,12 +30,7 @@ export class ObservationCountComponent implements OnDestroy {
   ) {
   }
 
-  ngDoCheck() {
-    let cacheKey = JSON.stringify(this.query);
-    if (this.lastQuery == cacheKey) {
-      return;
-    }
-    this.lastQuery = cacheKey;
+  ngOnChanges() {
     this.update();
   }
 

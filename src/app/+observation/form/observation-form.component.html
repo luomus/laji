@@ -110,7 +110,7 @@
             <label class="col-md-2 control-label">{{'observation.form.sex' | translate}}:</label>
             <div class="col-md-3">
               <metadata-select
-                [(ngModel)]="formQuery.sex"
+                [(ngModel)]="searchQuery.query.sex"
                 [field]="'MY.sex'"
                 [pick]="pickSex"
                 [mapToWarehouse]="true"
@@ -120,7 +120,7 @@
             <label class="col-md-2 control-label">{{'MY.lifeStage' | label}}:</label>
             <div class="col-md-3">
               <metadata-select
-                [(ngModel)]="formQuery.lifeStage"
+                [(ngModel)]="searchQuery.query.lifeStage"
                 [field]="'MY.lifeStage'"
                 [mapToWarehouse]="true"
                 name="lifeStage"
@@ -131,7 +131,7 @@
             <label class="col-md-2 control-label">{{'MX.hasAdminStatus' | label}}:</label>
             <div class="col-md-3">
               <metadata-select
-                [(ngModel)]="formQuery.administrativeStatusId"
+                [(ngModel)]="searchQuery.query.administrativeStatusId"
                 name="administrativeStatusId"
                 [field]="'MX.hasAdminStatus'"
                 [lang]="translate.currentLang"></metadata-select>
@@ -139,7 +139,8 @@
             <label class="col-md-2 control-label">{{'observation.form.redListStatusId' | translate}}:</label>
             <div class="col-md-3">
               <metadata-select
-                [(ngModel)]="formQuery.redListStatusId"
+                [(ngModel)]="searchQuery.query.redListStatusId"
+                [multiple]="true"
                 name="redListStatusId"
                 [field]="'MKV.redListStatus'"
                 [lang]="translate.currentLang"></metadata-select>

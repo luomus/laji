@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnChanges} from '@angular/core';
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {Subscription} from "rxjs";
 import {Util} from "../../shared/service/util.service";
@@ -13,7 +13,7 @@ import {ValueDecoratorService} from "../result-list/value-decorator.sevice";
   styleUrls: ['./observation-map.component.css'],
   providers: [ValueDecoratorService]
 })
-export class ObservationMapComponent implements OnInit {
+export class ObservationMapComponent implements OnInit, OnChanges {
 
   @Input() visible:boolean = false;
   @Input() query:WarehouseQueryInterface;
@@ -32,6 +32,7 @@ export class ObservationMapComponent implements OnInit {
   @Input() colorThresholds = [ 10, 100, 1000, 10000 ]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
   @Output() create = new EventEmitter();
   @Input() showItemsWhenLessThan:number = 0;
+  @Input() tick:number;
   @Input() itemFields:string[] = [
     'unit.linkings.taxon',
     'gathering.team',
@@ -64,12 +65,7 @@ export class ObservationMapComponent implements OnInit {
     this.initColorScale();
   }
 
-  ngDoCheck() {
-    let cacheKey = JSON.stringify(this.query);
-    if (this.lastQuery == cacheKey) {
-      return;
-    }
-    this.lastQuery = cacheKey;
+  ngOnChanges() {
     this.decorator.lang = this.translate.currentLang;
     this.updateMapData();
   }

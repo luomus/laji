@@ -23,11 +23,14 @@ export const METADATA_SELECT_VALUE_ACCESSOR: any = {
 export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
   @Input() field:string;
   @Input() name:string;
+  @Input() multiple:boolean = false;
   @Input() lang:string = 'fi';
+  @Input() placeholder = '';
   @Input() mapToWarehouse = false;
   @Input() pick:MetadataSelectPick;
 
   options = [];
+  active = [];
 
   onChange = (_:any) => {};
   onTouched = () => {};
@@ -93,25 +96,28 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
             data[idx]['id'] = result[idx];
           });
           this.options = data;
+          this.initActive();
         })
     } else {
       this.options = data;
+      this.initActive();
     }
   }
 
   private pickValue(data) {
     if (!this.pick) {
-      return data;
+      return data.map(value => ({
+        id: value.id,
+        text: value.value
+      }));
     }
     let result = [];
     data.map(item => {
       if (typeof this.pick[item.id] !== 'undefined') {
         if (this.pick[item.id] === '') {
-          result.push(item);
-        } else {
           result.push({
             id: item.id,
-            value: item.value
+            text: item.value
           })
         }
       }
@@ -121,6 +127,40 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
 
   onBlur() {
     this.onChange(this.value);
+  }
+
+  public selected(value:any):void {
+  }
+
+  public removed(value:any):void {
+  }
+
+  public typed(value:any):void {
+  }
+
+  initActive():any {
+    if (!this.value) {
+      return '';
+    }
+    if (typeof this.value === 'string') {
+      this.active = this.options.filter(option => this.value === option.id);
+    } else {
+      this.active = this.options.filter(option => this.value.indexOf(option.id) > -1);
+    }
+  }
+
+  public refreshValue(value:any):void {
+    if (value.id) {
+      this.value = value.id;
+    } else if (typeof value === 'string') {
+      this.value = value;
+    }else {
+      try {
+        this.value = value.map(item => item.id);
+      } catch (e) {
+        this.value = ''
+      }
+    }
   }
 
   writeValue(value: any): void {

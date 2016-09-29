@@ -47,7 +47,7 @@ export class WarehouseValueMappingService {
       let key = translation.enumeration || '';
       let value = translation.property || '';
       this.mapping[key] = value;
-      this.reverse[value] = [key];
+      this.reverse[value] = key;
     });
   }
 }

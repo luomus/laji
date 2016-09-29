@@ -10,6 +10,7 @@ export class SearchQuery {
   private queryUpdatedSource = new Subject<any>();
 
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
+  public tack:number = 0;
 
   public query:WarehouseQueryInterface = {};
   public page:number;
@@ -69,13 +70,16 @@ export class SearchQuery {
   public setQueryFromURLSearchParams(queryParameters: URLSearchParams) {
     for(let i of this.arrayTypes) {
       if (queryParameters.has(i)) {
-        this.query[i] = queryParameters.get(i)
+        this.query[i] = decodeURIComponent(queryParameters.get(i))
           .split(',')
-          .map(value => decodeURIComponent(value));
+          .map(value => value);
       } else {
         this.query[i] = undefined;
       }
     }
+
+    console.log('QUERY PARAMS');
+    console.log(this.query);
 
     for(let i of this.booleanTypes) {
       if (queryParameters.has(i)) {
@@ -117,6 +121,9 @@ export class SearchQuery {
       if (this.query[i] !== undefined) {
         if (this.query[i].length < 1 || this.query[0] === '') {
           continue;
+        }
+        if (typeof this.query[i] === 'string') {
+          this.query[i] = [this.query[i]]
         }
         let query = this.query[i]
           .filter(val => val.trim().length > 0)
@@ -187,6 +194,7 @@ export class SearchQuery {
       path = location.path(false).split('?')[0].split(';')[0];
     }
     let query = this.getQueryString(undefined, skipParams).toString();
+    console.log(query);
     query = query.length > 0 ? '?' + query : '';
     location.go(path + query);
   }

@@ -36,6 +36,7 @@ export class ObservationFormComponent implements OnInit {
 
   private subUpdate:Subscription;
   private window:Window;
+  private lastQuery:string;
 
   public filters:{[name:string]:ObservationFilterInterface} = {
     recordBasis: {
@@ -159,6 +160,9 @@ export class ObservationFormComponent implements OnInit {
       return;
     }
     this.searchQuery.query.coordinates = undefined;
+    this.searchQuery.query.sex = [];
+    this.searchQuery.query.redListStatusId = [];
+    this.searchQuery.query.administrativeStatusId = [];
     this.formQuery = {
       taxon:'',
       timeStart:'',
@@ -166,10 +170,6 @@ export class ObservationFormComponent implements OnInit {
       informalTaxonGroupId:'',
       individualCountMin:'',
       individualCountMax:'',
-      sex:'',
-      lifeStage:'',
-      redListStatusId:'',
-      administrativeStatusId:'',
       includeNonValidTaxa:false,
       hasMedia:false,
       invasive:false,
@@ -199,10 +199,6 @@ export class ObservationFormComponent implements OnInit {
         query.informalTaxonGroupId[0] : '',
       individualCountMin: '' + query.individualCountMin,
       individualCountMax: '' + query.individualCountMax,
-      sex: query.sex && query.sex[0] ? query.sex[0] : '',
-      lifeStage: query.lifeStage && query.lifeStage[0] ? query.lifeStage[0] : '',
-      redListStatusId: query.redListStatusId && query.redListStatusId[0] ? query.redListStatusId[0] : '',
-      administrativeStatusId: query.administrativeStatusId && query.administrativeStatusId[0] ? query.administrativeStatusId[0] : '',
       includeNonValidTaxa: query.includeNonValidTaxa,
       invasive: query.invasive,
       typeSpecimen: query.typeSpecimen,
@@ -248,10 +244,6 @@ export class ObservationFormComponent implements OnInit {
       [formQuery.informalTaxonGroupId] : undefined;
     query.individualCountMin = +formQuery.individualCountMin || undefined;
     query.individualCountMax = +formQuery.individualCountMax || undefined;
-    query.sex = formQuery.sex ? [formQuery.sex] : undefined;
-    query.lifeStage = formQuery.lifeStage ? [formQuery.lifeStage] : undefined;
-    query.redListStatusId = formQuery.redListStatusId ? [formQuery.redListStatusId] : undefined;
-    query.administrativeStatusId = formQuery.administrativeStatusId ? [formQuery.administrativeStatusId] : undefined;
     query.invasive = formQuery.invasive || undefined;
     query.typeSpecimen = formQuery.typeSpecimen || undefined;
     query.includeNonValidTaxa = formQuery.includeNonValidTaxa || undefined;
@@ -321,6 +313,12 @@ export class ObservationFormComponent implements OnInit {
 
   onSubmit(updateQuery = true) {
     this.formQueryToQuery(this.formQuery);
+    let cacheKey = JSON.stringify(this.searchQuery.query);
+    if (this.lastQuery === cacheKey) {
+      return;
+    }
+    this.lastQuery = cacheKey;
+    this.searchQuery.tack++;
     this.searchQuery.updateUrl(this.location, undefined, [
       'selected',
       'pageSize',

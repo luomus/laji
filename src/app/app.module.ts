@@ -4,7 +4,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {HttpModule} from "@angular/http";
 import {LocationStrategy, PathLocationStrategy, DatePipe} from '@angular/common';
 import {TranslateModule} from 'ng2-translate/ng2-translate';
-import { TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule, TooltipModule } from 'ng2-bootstrap/ng2-bootstrap';
+import {TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule, TooltipModule } from 'ng2-bootstrap/ng2-bootstrap';
 
 
 import {routing, appRoutingProviders} from "./app.routes";
@@ -76,6 +76,7 @@ import {LocalStorageService} from "angular2-localstorage/dist";
 import {ProfileComponent} from "./+user/profile/profile.component";
 import {FriendsComponent} from "./+user/friends/friends.component";
 import {UsersPipe} from "./shared/pipe/users.pipe";
+import {SelectModule} from "ng2-select";
 
 
 @NgModule({
@@ -101,7 +102,7 @@ import {UsersPipe} from "./shared/pipe/users.pipe";
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpModule,
     TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule,TooltipModule,
-    routing,
+    routing, SelectModule,
     TranslateModule.forRoot()
   ],
   providers: [
