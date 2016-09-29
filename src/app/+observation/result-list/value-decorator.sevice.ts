@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import {IdService} from "../../shared/service/id.service";
+import {DatePipe} from "@angular/common";
 
 @Injectable()
 export class ValueDecoratorService {
 
-  private lang = 'fi';
+  public lang = 'fi';
 
   private decoratable = {
     'document.documentId':'makeId',
@@ -14,6 +15,8 @@ export class ValueDecoratorService {
     'unit.linkings.taxon': 'makeTaxon',
     'gathering.conversions.wgs84CenterPoint': 'makeMapPoint'
   };
+
+  constructor(private datePipe:DatePipe) {}
 
   public isDecoratable(field:string) {
     return typeof this.decoratable[field] !== "undefined";
@@ -28,9 +31,9 @@ export class ValueDecoratorService {
 
   protected makeDateRange(value) {
     if (value.begin !== value.end) {
-      return `${value.begin} - ${value.end}`
+      return `${this.datePipe.transform(value.begin, 'dd.MM.yyyy')} - ${this.datePipe.transform(value.end, 'dd.MM.yyyy')}`
     }
-    return `${value.begin}`
+    return `${this.datePipe.transform(value.begin, 'dd.MM.yyyy')}`
   }
 
   protected makeId(value) {
@@ -66,13 +69,11 @@ export class ValueDecoratorService {
   }
 
   protected makeTaxon(value):any {
+    let result = '';
     if (value.qname) {
-      return {
-        text: value.scientificName || '',
-        linkInternal:'/taxon/' + IdService.getId(value.qname),
-        linkContent: '<i class="glyphicon glyphicon-modal-window"></i>'
-      }
+      result += value.vernacularName[this.lang] || '';
+      result += ' <i>(' + value.scientificName + ')</i>'
     }
-    return '';
+    return result;
   }
 }

@@ -53,16 +53,21 @@ export class MapComponent implements OnDestroy, OnChanges {
         location: false
       }
     });
-    this.map.map.on('moveend', _ => { this.moveEvent() });
+    this.map.map.scrollWheelZoom.disable();
+    this.map.map.on('moveend', _ => { this.moveEvent('moveend') });
+    this.map.map.on('movestart', _ => { this.moveEvent('movestart') });
+    this.map.map.on('focus', () => { this.map.map.scrollWheelZoom.enable(); });
+    this.map.map.on('blur', () => { this.map.map.scrollWheelZoom.disable(); });
     this.updateData();
     this.initDrawData();
-    this.moveEvent();
+    this.moveEvent('moveend');
   }
 
-  moveEvent() {
+  moveEvent(type:string) {
     this.onMove.emit({
       zoom: this.map.getNormalizedZoom(),
-      bounds: this.map.map.getBounds()
+      bounds: this.map.map.getBounds(),
+      type:type
     });
   }
 

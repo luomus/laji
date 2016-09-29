@@ -1,12 +1,9 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, Inject, ViewChild} from '@angular/core';
 import {Location} from "@angular/common";
 import * as moment from 'moment';
 
 import {SearchQuery} from "../search-query.model";
-import {ObservationCountComponent} from "../count/observation-count.component";
 import {WarehouseQueryInterface, DATE_FORMAT} from "../../shared/model/WarehouseQueryInterface";
-import {ObservationChartComponent} from "../chart/observation-chart.component";
-import {ObservationResultComponent} from "../result/observation-result.component";
 import {Observable, Subscription} from "rxjs";
 import {AutocompleteApi} from "../../shared/api/AutocompleteApi";
 import {TranslateService} from "ng2-translate";
@@ -27,6 +24,7 @@ import {Source} from "../../shared/model/Source";
 export class ObservationFormComponent implements OnInit {
 
   @Input() activeTab:string;
+  @ViewChild('tabs') tabs;
 
   public limit = 10;
   public formQuery:ObservationFormQuery;
@@ -37,6 +35,7 @@ export class ObservationFormComponent implements OnInit {
   public loadFilters = true;
 
   private subUpdate:Subscription;
+  private window:Window;
 
   public filters:{[name:string]:ObservationFilterInterface} = {
     recordBasis: {
@@ -95,8 +94,10 @@ export class ObservationFormComponent implements OnInit {
     public collectionService: CollectionApi,
     private location:Location,
     private autocompleteService:AutocompleteApi,
-    private sourceService:SourceApi
+    private sourceService:SourceApi,
+    @Inject('Window') window: Window
   ) {
+    this.window = window;
     this.dataSource = Observable.create((observer:any) => {
       observer.next(this.formQuery.taxon);
     }).mergeMap((token:string) => this.getTaxa(token));
@@ -129,6 +130,15 @@ export class ObservationFormComponent implements OnInit {
     if (this.subUpdate) {
       this.subUpdate.unsubscribe();
     }
+  }
+
+  gotToMap() {
+    this.activeTab = 'map';
+    this.window.scrollTo(0, this.tabs.nativeElement.offsetTop + 150);
+  }
+
+  getTabHeight() {
+    return (this.window.innerHeight || 0) + 'px'
   }
 
   updateTime(dates) {

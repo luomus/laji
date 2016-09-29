@@ -17,11 +17,10 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   @Input() columns: any = [
     {field: 'unit.taxonVerbatim,unit.linkings.taxon', translation: 'result.unit.taxonVerbatim'},
-    {field: 'unit.linkings.taxon', translation: 'result.scientificName'},
+    {field: 'unit.linkings.taxon.scientificName', translation: 'result.scientificName'},
     {field: 'gathering.team'},
     {field: 'gathering.eventDate'},
-    {field: 'gathering.municipality'},
-    {field: 'document.documentId'}
+    {field: 'gathering.municipality'}
   ];
   @Input() showPager: boolean = true;
   @Output() onSelect:EventEmitter<string> = new EventEmitter<string>();
@@ -37,9 +36,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   constructor(private warehouseService: WarehouseApi,
               private decorator: ValueDecoratorService,
               private searchQuery: SearchQuery,
-              private location: Location) {
-
-  }
+              private location: Location) {}
 
   ngOnInit() {
     this.result = {

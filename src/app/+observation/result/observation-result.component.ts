@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnDestroy, Output, EventEmitter} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy, Output, EventEmitter, OnChanges} from '@angular/core';
 import {Location} from '@angular/common';
 
 import { SearchQuery } from "../search-query.model";
@@ -14,10 +14,11 @@ import {ObservationFilterInterface} from "../filter/observation-filter.interface
   selector: 'laji-observation-result',
   templateUrl: 'observation-result.component.html'
 })
-export class ObservationResultComponent implements OnInit, OnDestroy {
+export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges {
 
-  @Input() active:string = 'list';
   @Input() filters:{[name:string]:ObservationFilterInterface};
+  @Input() active:string = 'list';
+  @Output() activeChange:EventEmitter<string> = new EventEmitter<string>();
   @Output() filtersChange:EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
   @Output() onFilterSelect:EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
 
@@ -50,6 +51,11 @@ export class ObservationResultComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  ngOnChanges() {
+    console.log(this.active);
+    this.activated[this.active] = true;
   }
 
   ngOnDestroy() {
@@ -107,6 +113,7 @@ export class ObservationResultComponent implements OnInit, OnDestroy {
     }
     this.active = tab;
     this.activated[tab] = true;
+    this.activeChange.emit(this.active);
     this.searchQuery.updateUrl(this.location, '/observation/' + tab, [
       'selected',
       'pageSize',

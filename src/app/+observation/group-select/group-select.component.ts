@@ -86,6 +86,8 @@ export class ObservationGroupSelectComponent implements OnChanges {
     this.activeGroup = group;
     if (!!group.hasSubGroup) {
       this.initGroups();
+    } else {
+      this.close();
     }
   }
 

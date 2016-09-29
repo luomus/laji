@@ -5,6 +5,7 @@
     <div>
       <laji-observation-map
         *ngIf="active === 'map'"
+        [showItemsWhenLessThan]="500"
         [opacity]="0.5"
         [visible]="active === 'map'"
         [height]="500"

@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserModule} from "@angular/platform-browser";
 import {HttpModule} from "@angular/http";
-import {LocationStrategy, PathLocationStrategy} from '@angular/common';
+import {LocationStrategy, PathLocationStrategy, DatePipe} from '@angular/common';
 import {TranslateModule} from 'ng2-translate/ng2-translate';
 import { TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule, TooltipModule } from 'ng2-bootstrap/ng2-bootstrap';
 
@@ -105,10 +105,12 @@ import {UsersPipe} from "./shared/pipe/users.pipe";
     TranslateModule.forRoot()
   ],
   providers: [
+    { provide: 'Window',  useValue: window },
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     UserService, PersonTokenApi, PersonApi, WarehouseApi,
     WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
-    appRoutingProviders, AutocompleteApi, FooterService, LocalStorageService
+    appRoutingProviders, AutocompleteApi, FooterService, LocalStorageService,
+    DatePipe
   ],
   bootstrap: [
     AppComponent

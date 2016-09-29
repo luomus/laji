@@ -89,6 +89,9 @@
               ></i>
             </button>
           </div>
+          <div class="col-sm-2">
+            <button type="button" class="btn btn-sm btn-default" (click)="gotToMap()">Rajaa kartalla</button>
+          </div>
         </div>
         <div [hidden]="!showFilter">
           <div class="form-group">
@@ -175,7 +178,9 @@
           </div>
         </div>
       </div>
-      <laji-observation-result [active]="activeTab" [(filters)]="filters" (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>
+      <div [ngStyle]="{'min-height': getTabHeight()}" #tabs>
+        <laji-observation-result [(active)]="activeTab" [(filters)]="filters" (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>
+      </div>
     </div>
   </div>
 </form>
