@@ -54,7 +54,6 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
   }
 
   ngOnChanges() {
-    console.log(this.active);
     this.activated[this.active] = true;
   }
 

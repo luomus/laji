@@ -240,7 +240,6 @@ export class ObservationMapComponent implements OnInit {
             },
             "properties": properties
           });
-          console.log(coordinates);
         })
       }
       return {featureCollection: {

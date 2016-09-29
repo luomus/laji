@@ -104,8 +104,8 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
             'includeNonValidTaxa'
           ]);
         },
-        error => {
-          console.log(error);
+        err => {
+          console.log(err);
           this.result.results = [];
         },
         () => this.loading = false

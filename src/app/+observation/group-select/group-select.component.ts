@@ -55,7 +55,6 @@ export class ObservationGroupSelectComponent implements OnChanges {
     if (!this.open || !target) {
       return;
     }
-    console.log(target);
     if (this.el !== target && !this.el.contains((<any>target))) {
       this.close();
     }
