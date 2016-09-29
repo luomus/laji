@@ -25,6 +25,7 @@ export class MapComponent implements OnDestroy, OnChanges {
   @Input() lang:string = 'fi';
   @Input() drawSingleShape:boolean = true;
   @Input() tick:any;
+  @Input() bringDrawLayerToBack:boolean = true;
 
   @Output() select = new EventEmitter();
   @Output() onCreate = new EventEmitter();
@@ -121,6 +122,9 @@ export class MapComponent implements OnDestroy, OnChanges {
   initDrawData() {
     if (this.map && this.drawData) {
       this.map.setDrawData(this.drawData);
+      if (this.bringDrawLayerToBack) {
+        this.map.drawLayerGroup.bringToBack();
+      }
     }
   }
 
