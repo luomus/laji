@@ -224,6 +224,9 @@ export class ObservationMapComponent implements OnInit {
             this.getValue(row, 'gathering.conversions.wgs84CenterPoint.lon'),
             this.getValue(row, 'gathering.conversions.wgs84CenterPoint.lat')
             ];
+          if (!coordinates[0] || !coordinates[0]) {
+            return;
+          }
           let properties = {title: 1};
           this.itemFields.map(field => {
             let name = field.split('.').pop();
@@ -236,7 +239,8 @@ export class ObservationMapComponent implements OnInit {
               "coordinates": coordinates
             },
             "properties": properties
-          })
+          });
+          console.log(coordinates);
         })
       }
       return {featureCollection: {
