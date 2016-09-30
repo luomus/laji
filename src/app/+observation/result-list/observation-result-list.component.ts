@@ -20,7 +20,8 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     {field: 'unit.linkings.taxon.scientificName', translation: 'result.scientificName'},
     {field: 'gathering.team'},
     {field: 'gathering.eventDate'},
-    {field: 'gathering.municipality'}
+    {field: 'gathering.municipality'},
+    {field: 'unit.individualId'}
   ];
   @Input() showPager: boolean = true;
   @Output() onSelect:EventEmitter<string> = new EventEmitter<string>();

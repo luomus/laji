@@ -59,6 +59,7 @@ export interface WarehouseQueryInterface {
   keyword?: Array<string>;
   collectionId?: Array<string>;
   sourceId?: Array<string>;
+  superRecordBasis?: Array<string>;
   recordBasis?: Array<string>;
   lifeStage?: Array<string>;
   sex?: Array<string>;

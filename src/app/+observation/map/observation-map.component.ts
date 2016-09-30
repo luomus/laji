@@ -28,6 +28,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() height:number;
   @Input() selectColor:string = '#00aa00';
   @Input() color:any = ['#ffffb2','#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
+  @Input() showLoadMore:boolean = true;
   @Input() legend:boolean = false;
   @Input() colorThresholds = [ 10, 100, 1000, 10000 ]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
   @Output() create = new EventEmitter();
@@ -125,14 +126,23 @@ export class ObservationMapComponent implements OnInit, OnChanges {
         return String(this.color);
       }
     } else {
-      let i, len = this.colorThresholds.length;
+      let i, len = this.colorThresholds.length, memory = {};
       this.style = (count) => {
+        if (memory[count]) {
+          return memory[count];
+        }
+        let found = false;
         for (i = 0; i < len; i++) {
           if (count <= this.colorThresholds[i]) {
-            return this.color[i];
+            memory[count] = this.color[i];
+            found = true;
+            break;
           }
         }
-        return this.color[len];
+        if (!found) {
+          memory[count] = this.color[len];
+        }
+        return memory[count];
       };
     }
   }

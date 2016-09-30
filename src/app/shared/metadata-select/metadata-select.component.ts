@@ -22,6 +22,7 @@ export const METADATA_SELECT_VALUE_ACCESSOR: any = {
 })
 export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
   @Input() field:string;
+  @Input() alt:string;
   @Input() name:string;
   @Input() multiple:boolean = false;
   @Input() lang:string = 'fi';
@@ -59,7 +60,8 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
     this.initOptions();
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes) {
+    console.log(JSON.stringify(changes));
     this.initOptions();
   }
 
@@ -70,77 +72,57 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   }
 
   initOptions() {
-    if (!this.field) {
+    if (!this.field && !this.alt) {
       return;
     }
-    this.subOptions = this.metadataService.metadataFindPropertiesRanges(this.field, this.lang).subscribe(
-      data => this.parseData(data),
-      err => console.log(err)
-    )
-  }
 
-  private parseData(data) {
-    if (!data) {
-      return;
-    }
-    data = this.pickValue(data);
-    if (this.mapToWarehouse) {
-      let requests = [];
-      data.map(item => {
-        requests.push(this.warehouseMapper.getWarehouseKey(item.id))
-      });
-      this.subKeyMap = Observable
-        .forkJoin(requests)
-        .subscribe(result => {
-          data.map((item, idx) => {
-            data[idx]['id'] = result[idx];
+    const options$ = this.field ?
+      this.metadataService.metadataFindPropertiesRanges(this.field, this.lang) :
+      this.metadataService.metadataFindRange(this.alt, this.lang);
+
+    this.subOptions = options$
+      .map(result => this.pickValue(result))
+      .switchMap(options => {
+        if (this.mapToWarehouse) {
+          let requests = [];
+          options.map(item => {
+            requests.push(this.warehouseMapper.getWarehouseKey(item.id))
           });
-          this.options = data;
+          return Observable
+            .forkJoin(requests)
+            .map(mapping => options.map((item, idx) => ({id:mapping[idx], text: item.text})));
+        } else {
+          return Observable.of(options);
+        }
+      })
+      .subscribe(
+        options => {
+          this.options = options;
           this.initActive();
-        })
-    } else {
-      this.options = data;
-      this.initActive();
-    }
+        },
+        err => console.log(err)
+      )
   }
 
   private pickValue(data) {
     if (!this.pick) {
-      return data.map(value => ({
-        id: value.id,
-        text: value.value
-      }));
+      return data.map(value => ({id: value.id,text: value.value}));
     }
     let result = [];
     data.map(item => {
       if (typeof this.pick[item.id] !== 'undefined') {
         if (this.pick[item.id] === '') {
-          result.push({
-            id: item.id,
-            text: item.value
-          })
+          result.push({id: item.id,text: item.value})
         }
       }
     });
     return result;
   }
 
-  onBlur() {
-    this.onChange(this.value);
-  }
-
-  public selected(value:any):void {
-  }
-
-  public removed(value:any):void {
-  }
-
-  public typed(value:any):void {
-  }
-
   initActive():any {
     if (!this.value) {
-      return '';
+      this.active = [];
+      return;
     }
     if (typeof this.value === 'string') {
       this.active = this.options.filter(option => this.value === option.id);
@@ -166,6 +148,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   writeValue(value: any): void {
     if (value !== this.innerValue) {
       this.innerValue = value;
+      this.initActive()
     }
   }
 

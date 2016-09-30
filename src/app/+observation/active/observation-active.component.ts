@@ -44,7 +44,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
       if (!query.hasOwnProperty(i) || this.skip.indexOf(i) > -1) {
         continue;
       }
-      if (typeof query[i] !== "undefined") {
+      if (typeof query[i] !== "undefined" && query[i].length > 0) {
         this.active.push({field: i, value: query[i]})
       }
     }
