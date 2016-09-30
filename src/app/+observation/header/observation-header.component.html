@@ -6,9 +6,9 @@
     {{'observation.results.observation' | translate}}
     <laji-observation-count
       [query]="searchQuery.query"
+      [tick]="searchQuery.tack"
       [field]="'unit.linkings.taxon.id'"
-      [overrideInQuery]="{taxonRankId: 'MX.species', includeNonValidTaxa: false}"
-    >
+      [overrideInQuery]="{taxonRankId: 'MX.species', includeNonValidTaxa: false}">
     </laji-observation-count>
     {{'observation.results.species' | translate}}
   </small>

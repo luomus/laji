@@ -8,7 +8,7 @@ export class ValueDecoratorService {
   public lang = 'fi';
 
   private decoratable = {
-    'document.documentId':'makeId',
+    'unit.individualId': 'makeId',
     'gathering.eventDate':'makeDateRange',
     'gathering.team': 'makeArrayToSemiColon',
     'unit.taxonVerbatim': 'makeTaxonLocal',
@@ -37,10 +37,10 @@ export class ValueDecoratorService {
   }
 
   protected makeId(value) {
-    return {
-      linkContent: 'link',
-      linkExternal: value
+    if (!value) {
+      return '';
     }
+    return `<span class="individualId">${value}</span>`
   }
 
   protected makeArrayToSemiColon(value) {

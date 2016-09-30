@@ -42,7 +42,7 @@ export class ObservationFormComponent implements OnInit {
     recordBasis: {
       title: 'observation.filterBy.recordBasis',
       field: 'unit.superRecordBasis',
-      filter: 'recordBasis',
+      filter: 'superRecordBasis',
       type: 'array',
       size: 10,
       selected: []
@@ -163,6 +163,7 @@ export class ObservationFormComponent implements OnInit {
     this.searchQuery.query.sex = [];
     this.searchQuery.query.redListStatusId = [];
     this.searchQuery.query.administrativeStatusId = [];
+    this.searchQuery.query.recordBasis = [];
     this.formQuery = {
       taxon:'',
       timeStart:'',
@@ -312,8 +313,10 @@ export class ObservationFormComponent implements OnInit {
   }
 
   onSubmit(updateQuery = true) {
+    console.log(this.searchQuery.query);
     this.formQueryToQuery(this.formQuery);
     let cacheKey = JSON.stringify(this.searchQuery.query);
+    console.log(this.searchQuery.query);
     if (this.lastQuery === cacheKey) {
       return;
     }
