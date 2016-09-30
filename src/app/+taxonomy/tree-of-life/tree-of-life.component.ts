@@ -1,6 +1,7 @@
-import {Component, OnInit, Input, ElementRef} from '@angular/core';
+import {Component, OnInit, Input, ElementRef, HostListener} from '@angular/core';
 import {Taxonomy} from "../../shared/model/Taxonomy";
 import {Router} from "@angular/router";
+import {debounce} from 'underscore';
 
 declare var d3:any;
 
@@ -24,20 +25,31 @@ export class TreeOfLifeComponent {
   private active:string;
   private parents:string[] = [];
 
+  private plop;
+  private taxonId:string;
+
   constructor(
     private element: ElementRef,
     private router:Router
   ) {
     this.htmlElement = this.element.nativeElement;
-    this.host = d3.select(this.element.nativeElement);
+    this.host = d3.select(this.htmlElement);
+    this.plop = debounce(() => this.setup(this.taxonId, this.htmlElement.offsetWidth), 300);
   }
+  
+  @HostListener('window:resize', ['$event'])
+  onResize(event) { this.plop(); }
 
+  lazySetup() {
+      this.setup(undefined, this.htmlElement.offsetWidth);
+  }
+  
   ngOnInit() {
-    this.setup();
+    this.setup(undefined, this.htmlElement.offsetWidth);
   }
 
   ngOnChanges(): void {
-    this.setup();
+    this.setup(undefined, this.htmlElement.offsetWidth);
   }
 
   private getTaxonTreeUri(taxonId) {
@@ -45,39 +57,42 @@ export class TreeOfLifeComponent {
   }
 
   updateData(taxon:Taxonomy) {
-    let taxonId = taxon.id;
-    if (taxonId === this.active) {
+    this.taxonId = taxon.id;
+    if (this.taxonId === this.active) {
       if (this.parents.length > 0) {
-        taxonId = this.parents.pop();
+        this.taxonId = this.parents.pop();
       } else {
-        taxonId = undefined;
+        this.taxonId = undefined;
       }
     } else {
       this.parents.push(this.active);
     }
-    this.setup(taxonId);
+    this.setup(this.taxonId, this.htmlElement.offsetWidth);
   }
 
   goToTaxon(taxon:Taxonomy) {
     this.router.navigate(['/taxon/' + taxon.id]);
   }
 
-  private setup(taxonId:string = 'MX.53761'): void {
-    var diameter = 730;
+  private setup(taxonId:string = 'MX.53761', diameter:number = 600): void {
 
     var tree = d3.layout.tree()
       .size([360, diameter / 2 - 120])
-      .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
+      .separation(function(a, b) {
+        return (a.parent == b.parent ? 1 : 2) / a.depth;
+      });
 
     this.diagonal = d3.svg.diagonal.radial()
-      .projection(function(d) { return [d.y, (d.x | 0) / 180 * Math.PI]; });
+      .projection(function(d) {
+        return [d.y, (d.x | 0) / 180 * Math.PI];
+      });
 
     d3.json(this.getTaxonTreeUri(taxonId), (error, root) => {
       this.active = taxonId;
       this.host.html('');
       this.svg = this.host.append("svg")
         .attr("width", diameter)
-        .attr("height", diameter + 50)
+        .attr("height", diameter)
         .append("g")
         .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
@@ -101,7 +116,7 @@ export class TreeOfLifeComponent {
         .attr("transform", function(d) { return "rotate(" + ((d.x | 0) - 90) + ")translate(" + d.y + ")"; })
 
       label.append("circle")
-        .attr("r", 4.5)
+        .attr("r", 5)
         .on("click", (d) => {
           this.updateData(d);
         });
@@ -116,6 +131,6 @@ export class TreeOfLifeComponent {
         });
     });
 
-    this.host.style("height", diameter - 150 + "px");
+    this.host.style("height", diameter + "px");
   }
 }

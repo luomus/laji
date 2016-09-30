@@ -10,6 +10,7 @@
     "geojson": "registry:dt/geojson#0.0.0+20160619034323",
     "leaflet": "registry:dt/leaflet#1.0.0+20160630180443",
     "leaflet-draw": "registry:dt/leaflet-draw#0.2.4+20160316171810",
-    "node": "registry:dt/node#6.0.0+20160621231320"
+    "node": "registry:dt/node#6.0.0+20160621231320",
+    "underscore": "registry:dt/underscore#1.8.3+20160908111004"
   }
 }
