@@ -5,6 +5,6 @@
  * @property totalMaximumForList how many items can be shown as a list.
  */
 export interface WarehouseCountResultInterface {
-  total?: Array<number>;
-  totalMaximumForList?: Array<string>;
+  total?: number;
+  totalMaximumForList?: string;
 }

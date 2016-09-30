@@ -2,9 +2,9 @@ import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserModule} from "@angular/platform-browser";
 import {HttpModule} from "@angular/http";
-import {LocationStrategy, PathLocationStrategy} from '@angular/common';
+import {LocationStrategy, PathLocationStrategy, DatePipe} from '@angular/common';
 import {TranslateModule} from 'ng2-translate/ng2-translate';
-import { TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule } from 'ng2-bootstrap/ng2-bootstrap';
+import {TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule, TooltipModule } from 'ng2-bootstrap/ng2-bootstrap';
 
 
 import {routing, appRoutingProviders} from "./app.routes";
@@ -76,6 +76,7 @@ import {LocalStorageService} from "angular2-localstorage/dist";
 import {ProfileComponent} from "./+user/profile/profile.component";
 import {FriendsComponent} from "./+user/friends/friends.component";
 import {UsersPipe} from "./shared/pipe/users.pipe";
+import {SelectModule} from "ng2-select";
 
 
 @NgModule({
@@ -100,15 +101,17 @@ import {UsersPipe} from "./shared/pipe/users.pipe";
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpModule,
-    TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule,
-    routing,
+    TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule,TooltipModule,
+    routing, SelectModule,
     TranslateModule.forRoot()
   ],
   providers: [
+    { provide: 'Window',  useValue: window },
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     UserService, PersonTokenApi, PersonApi, WarehouseApi,
     WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
-    appRoutingProviders, AutocompleteApi, FooterService, LocalStorageService
+    appRoutingProviders, AutocompleteApi, FooterService, LocalStorageService,
+    DatePipe
   ],
   bootstrap: [
     AppComponent

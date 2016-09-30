@@ -5,10 +5,6 @@ export interface ObservationFormQuery {
   informalTaxonGroupId: string;
   individualCountMin:string;
   individualCountMax:string;
-  administrativeStatusId:string;
-  redListStatusId:string;
-  lifeStage:string;
-  sex:string;
   includeNonValidTaxa:boolean;
   invasive:boolean;
   typeSpecimen:boolean;

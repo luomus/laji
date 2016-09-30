@@ -18,8 +18,8 @@
   "home.image-header.species": "lajeja",
   "home.image-header.sources": "aineistoja",
   "home.main-page.title": "Suomen Lajitietokeskus",
-  "home.main-page.recent": "Uusimpia tietoja Suomesta",
-  "home.main-page.text": "Suomen Lajitietokeskus kokoaa eliölajeja koskevaa tietoa saataville yhteen paikkaan. Eliölajeja koskeva tieto on tärkeää yhteiskunnalliselle päätöksenteolle, tieteelliselle tutkimukselle ja ympäristöstä kiinnostuneille kansalaisille.",
+  "home.main-page.recent": "Uusimpia havaintoja Suomesta",
+  "home.main-page.text": "Suomen Lajitietokeskus kokoaa eliölajeja koskevaa tietoa saataville yhteen paikkaan. Lajitieto on tärkeää yhteiskunnalliselle päätöksenteolle, tieteelliselle tutkimukselle ja ympäristöstä kiinnostuneille kansalaisille.",
   "home.news-list.current": "Ajankohtaista",
   "home.navigation-thumbnail.species": "Suomen lajit",
   "home.navigation-thumbnail.science": "Kansalaistiede",
@@ -36,7 +36,7 @@
   "home.carousel.observations": "havaintoa",
   "home.carousel.collections": "aineistoa",
   "home.carousel.digitized": "digitoitua näytettä",
-  "home.carousel.preserved": "lajinäytettä kokoelmissa",
+  "home.carousel.preserved": "kokoelmanäytettä",
   "search-bar.input": "Hae",
 
   "taxonomy.card.id": "Tunniste",
@@ -66,8 +66,8 @@
   "taxonomy.administrative.statuses": "Hallinnolliset lajitiedot",
 
   "news.title": "Uutiset",
-  "news.earlier": "aikaisemmat",
-  "news.newer": "tuoreemmat",
+  "news.earlier": "edelliset",
+  "news.newer": "seuraavat",
 
   "information.more": "Lisätietoa",
 
@@ -100,6 +100,7 @@
 
   "force.login": "Sinun pitää kirjautua käyttääksesi tätä osiota",
 
+  "observation.intro": "<p>Suomen Lajitietokeskuksen Havainnot-palvelun avulla voit hakea monipuolisten hakutoimintojen avulla käyttöösi tietoja maassamme tehdyistä lajihavainnoista.</p><p>Havaintoja kertyy niin yksittäisiltä harrastajilta, kansalaistiedehankkeiden kautta kuin tieteellisen työn tuloksena. Haettavat aineistot sisältävät myös tieteellisten kokoelma-aineistojen näytteiden havaintotiedot ja seurannoissa tehdyt havainnot.</p>",
   "observation.form.filter": "Rajaa",
   "observation.form.specimen": "Nimi",
   "observation.form.date": "Aika",
@@ -117,6 +118,7 @@
   "observation.form.sex": "Sukupuoli",
   "observation.form.administrativeStatus": "Hallinnollinen tila",
   "observation.form.redListStatusId": "Uhanalaisuus",
+  "observation.form.map": "Rajaa kartalla",
 
   "observation.results.title": "Havaintohaku",
   "observation.results.observation": "osumaa",
@@ -141,6 +143,7 @@
   "observation.active.informalTaxonGroupAll": "kaikki",
 
   "haseka.title": "Havaintopalvelu",
+  "haseka.intro": "<p>Havaintopalvelu tarjoaa suoraviivaisen kanavan julkaista eliölajihavaintoja laji.fi-sivuston kautta. Rekisteröityneelle käyttäjälle palvelu tarjoaa tietokannan omien havaintotietojensa tallentamiseen ja hallintaan sekä väylän niiden jakamiseen. Käyttäjät voivat perustaa tietokantaan projekteja, joihin kutsutut osallistujat tallentavat haluttua lajitietoa. Perustetun projektin keräämiä tietoja hallinnoi sen omistaja ja tiedon jakaminen laji.fi-sivuston kautta on helppoa. Palvelun mukautuva lomakkeisto antaa käyttäjälle mahdollisuuden valita itselleen sopivan tavan tallentaa, hallita ja jakaa havaintojaan muiden käyttöön.</p>",
   "haseka.forms.title": "Lomakkeet",
   "haseka.form.success": "Havainnot tallennettu!",
   "haseka.form.failure": "Tallennus epäonnistui!",

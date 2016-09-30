@@ -5,7 +5,9 @@
     <div>
       <laji-observation-map
         *ngIf="active === 'map'"
+        [showItemsWhenLessThan]="500"
         [opacity]="0.5"
+        [tick]="searchQuery.tack"
         [visible]="active === 'map'"
         [height]="500"
         [query]="searchQuery.query"

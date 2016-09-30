@@ -1,12 +1,9 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, Inject, ViewChild} from '@angular/core';
 import {Location} from "@angular/common";
 import * as moment from 'moment';
 
 import {SearchQuery} from "../search-query.model";
-import {ObservationCountComponent} from "../count/observation-count.component";
 import {WarehouseQueryInterface, DATE_FORMAT} from "../../shared/model/WarehouseQueryInterface";
-import {ObservationChartComponent} from "../chart/observation-chart.component";
-import {ObservationResultComponent} from "../result/observation-result.component";
 import {Observable, Subscription} from "rxjs";
 import {AutocompleteApi} from "../../shared/api/AutocompleteApi";
 import {TranslateService} from "ng2-translate";
@@ -27,6 +24,7 @@ import {Source} from "../../shared/model/Source";
 export class ObservationFormComponent implements OnInit {
 
   @Input() activeTab:string;
+  @ViewChild('tabs') tabs;
 
   public limit = 10;
   public formQuery:ObservationFormQuery;
@@ -37,6 +35,8 @@ export class ObservationFormComponent implements OnInit {
   public loadFilters = true;
 
   private subUpdate:Subscription;
+  private window:Window;
+  private lastQuery:string;
 
   public filters:{[name:string]:ObservationFilterInterface} = {
     recordBasis: {
@@ -95,8 +95,10 @@ export class ObservationFormComponent implements OnInit {
     public collectionService: CollectionApi,
     private location:Location,
     private autocompleteService:AutocompleteApi,
-    private sourceService:SourceApi
+    private sourceService:SourceApi,
+    @Inject('Window') window: Window
   ) {
+    this.window = window;
     this.dataSource = Observable.create((observer:any) => {
       observer.next(this.formQuery.taxon);
     }).mergeMap((token:string) => this.getTaxa(token));
@@ -131,6 +133,15 @@ export class ObservationFormComponent implements OnInit {
     }
   }
 
+  gotToMap() {
+    this.activeTab = 'map';
+    this.window.scrollTo(0, this.tabs.nativeElement.offsetTop + 150);
+  }
+
+  getTabHeight() {
+    return (this.window.innerHeight || 0) + 'px'
+  }
+
   updateTime(dates) {
     if (dates === 365) {
       let today = new Date();
@@ -149,6 +160,9 @@ export class ObservationFormComponent implements OnInit {
       return;
     }
     this.searchQuery.query.coordinates = undefined;
+    this.searchQuery.query.sex = [];
+    this.searchQuery.query.redListStatusId = [];
+    this.searchQuery.query.administrativeStatusId = [];
     this.formQuery = {
       taxon:'',
       timeStart:'',
@@ -156,10 +170,6 @@ export class ObservationFormComponent implements OnInit {
       informalTaxonGroupId:'',
       individualCountMin:'',
       individualCountMax:'',
-      sex:'',
-      lifeStage:'',
-      redListStatusId:'',
-      administrativeStatusId:'',
       includeNonValidTaxa:false,
       hasMedia:false,
       invasive:false,
@@ -189,10 +199,6 @@ export class ObservationFormComponent implements OnInit {
         query.informalTaxonGroupId[0] : '',
       individualCountMin: '' + query.individualCountMin,
       individualCountMax: '' + query.individualCountMax,
-      sex: query.sex && query.sex[0] ? query.sex[0] : '',
-      lifeStage: query.lifeStage && query.lifeStage[0] ? query.lifeStage[0] : '',
-      redListStatusId: query.redListStatusId && query.redListStatusId[0] ? query.redListStatusId[0] : '',
-      administrativeStatusId: query.administrativeStatusId && query.administrativeStatusId[0] ? query.administrativeStatusId[0] : '',
       includeNonValidTaxa: query.includeNonValidTaxa,
       invasive: query.invasive,
       typeSpecimen: query.typeSpecimen,
@@ -238,10 +244,6 @@ export class ObservationFormComponent implements OnInit {
       [formQuery.informalTaxonGroupId] : undefined;
     query.individualCountMin = +formQuery.individualCountMin || undefined;
     query.individualCountMax = +formQuery.individualCountMax || undefined;
-    query.sex = formQuery.sex ? [formQuery.sex] : undefined;
-    query.lifeStage = formQuery.lifeStage ? [formQuery.lifeStage] : undefined;
-    query.redListStatusId = formQuery.redListStatusId ? [formQuery.redListStatusId] : undefined;
-    query.administrativeStatusId = formQuery.administrativeStatusId ? [formQuery.administrativeStatusId] : undefined;
     query.invasive = formQuery.invasive || undefined;
     query.typeSpecimen = formQuery.typeSpecimen || undefined;
     query.includeNonValidTaxa = formQuery.includeNonValidTaxa || undefined;
@@ -311,6 +313,12 @@ export class ObservationFormComponent implements OnInit {
 
   onSubmit(updateQuery = true) {
     this.formQueryToQuery(this.formQuery);
+    let cacheKey = JSON.stringify(this.searchQuery.query);
+    if (this.lastQuery === cacheKey) {
+      return;
+    }
+    this.lastQuery = cacheKey;
+    this.searchQuery.tack++;
     this.searchQuery.updateUrl(this.location, undefined, [
       'selected',
       'pageSize',

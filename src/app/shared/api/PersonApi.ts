@@ -283,8 +283,9 @@ export class PersonApi {
      *
      * @param token User token
      * @param userId Accept this user as a friend
+     * @param block if the removed friend should be blocked also
      */
-    public personRemoveFriend (token: string, userId: string, extraHttpRequestParams?: any ) : Observable<models.Profile> {
+    public personRemoveFriend (token: string, userId: string, block: boolean = false,extraHttpRequestParams?: any ) : Observable<models.Profile> {
         const path = this.basePath + '/person/{token}/friends/{userId}'
             .replace('{' + 'token' + '}', String(token))
             .replace('{' + 'userId' + '}', String(userId));
@@ -299,7 +300,11 @@ export class PersonApi {
         if (userId === null || userId === undefined) {
             throw new Error('Required parameter userId was null or undefined when calling personRemoveFriend.');
         }
-        let requestOptions: RequestOptionsArgs = {
+      if (block !== undefined) {
+        queryParameters.set('block', block ? 'true': 'false');
+      }
+
+      let requestOptions: RequestOptionsArgs = {
             method: 'DELETE',
             headers: headerParams,
             search: queryParameters

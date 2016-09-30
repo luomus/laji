@@ -73,7 +73,7 @@
           <div class="col-sm-10 col-sm-offset-2">
             <laji-observation-active
               *ngIf="!showFilter"
-              [skip]="['target', 'includeNonValidTaxa']"
+              [skip]="['target', 'includeNonValidTaxa', 'informalTaxonGroupId', 'time']"
             ></laji-observation-active>
           </div>
         </div>
@@ -88,6 +88,9 @@
              }"
               ></i>
             </button>
+          </div>
+          <div class="col-sm-2">
+            <button type="button" class="btn btn-sm btn-default" (click)="gotToMap()">{{'observation.form.map'|translate}}</button>
           </div>
         </div>
         <div [hidden]="!showFilter">
@@ -107,7 +110,7 @@
             <label class="col-md-2 control-label">{{'observation.form.sex' | translate}}:</label>
             <div class="col-md-3">
               <metadata-select
-                [(ngModel)]="formQuery.sex"
+                [(ngModel)]="searchQuery.query.sex"
                 [field]="'MY.sex'"
                 [pick]="pickSex"
                 [mapToWarehouse]="true"
@@ -117,7 +120,7 @@
             <label class="col-md-2 control-label">{{'MY.lifeStage' | label}}:</label>
             <div class="col-md-3">
               <metadata-select
-                [(ngModel)]="formQuery.lifeStage"
+                [(ngModel)]="searchQuery.query.lifeStage"
                 [field]="'MY.lifeStage'"
                 [mapToWarehouse]="true"
                 name="lifeStage"
@@ -128,7 +131,7 @@
             <label class="col-md-2 control-label">{{'MX.hasAdminStatus' | label}}:</label>
             <div class="col-md-3">
               <metadata-select
-                [(ngModel)]="formQuery.administrativeStatusId"
+                [(ngModel)]="searchQuery.query.administrativeStatusId"
                 name="administrativeStatusId"
                 [field]="'MX.hasAdminStatus'"
                 [lang]="translate.currentLang"></metadata-select>
@@ -136,7 +139,8 @@
             <label class="col-md-2 control-label">{{'observation.form.redListStatusId' | translate}}:</label>
             <div class="col-md-3">
               <metadata-select
-                [(ngModel)]="formQuery.redListStatusId"
+                [(ngModel)]="searchQuery.query.redListStatusId"
+                [multiple]="true"
                 name="redListStatusId"
                 [field]="'MKV.redListStatus'"
                 [lang]="translate.currentLang"></metadata-select>
@@ -175,7 +179,9 @@
           </div>
         </div>
       </div>
-      <laji-observation-result [active]="activeTab" [(filters)]="filters" (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>
+      <div [ngStyle]="{'min-height': getTabHeight()}" #tabs>
+        <laji-observation-result [(active)]="activeTab" [(filters)]="filters" (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>
+      </div>
     </div>
   </div>
 </form>

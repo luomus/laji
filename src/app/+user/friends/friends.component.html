@@ -4,6 +4,7 @@
     <ul>
       <li *ngFor="let id of usersProfile.friends">
         <a [routerLink]="['/user/' + id]">{{id|users}}</a>
+        <a (click)="removeFriend(id)" [tooltip]="'firend.remove' | translate"><i class="glyphicon glyphicon-remove"></i></a>
       </li>
     </ul>
   </div>
@@ -12,10 +13,22 @@
       {{'friend.requests' | translate}}
     </h4>
     <ul>
-      <li *ngFor="let friend of usersProfile.friendRequests">
-        {{friend}}
-        <a (click)="acceptFriendRequest(friend)"><i class="glyphicon glyphicon-ok"></i></a>
-        <a (click)="blockFriendRequest(friend)"><i class="glyphicon glyphicon-ban-circle"></i></a>
+      <li *ngFor="let id of usersProfile.friendRequests">
+        <a [routerLink]="['/user/' + id]">{{id|users}}</a>
+        <a (click)="acceptFriendRequest(id)" [tooltip]="'firend.accept' | translate"><i class="glyphicon glyphicon-ok"></i></a>
+        <a (click)="removeFriend(id)" [tooltip]="'firend.remove' | translate"><i class="glyphicon glyphicon-remove"></i></a>
+        <a (click)="removeFriend(id, true)" [tooltip]="'firend.block' | translate"><i class="glyphicon glyphicon-ban-circle"></i></a>
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="usersProfile.blocked && usersProfile.blocked.length > 0" class="friendRequests">
+    <h4>
+      {{'friend.blocked' | translate}} <small>({{usersProfile.blocked.length}})</small>
+    </h4>
+    <ul>
+      <li *ngFor="let id of usersProfile.blocked">
+        <a [routerLink]="['/user/' + id]">{{id|users}}</a>
+        <a (click)="removeBlock(id)" [tooltip]="'firend.removeBlock' | translate"><i class="glyphicon glyphicon-remove"></i></a>
       </li>
     </ul>
   </div>

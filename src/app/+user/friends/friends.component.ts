@@ -48,18 +48,28 @@ export class FriendsComponent implements OnInit {
     )
   }
 
-  acceptFriendRequest(userId:string) {
-    this.personService.personAcceptFriendRequest(
-        this.userService.getToken(),
-        userId
-      )
+  removeFriend(userId, block = false) {
+    this.personService.personRemoveFriend(this.userService.getToken(), userId, block)
       .subscribe(
-        profile => this.profile = profile,
+        profile => this.usersProfile = profile,
         err => console.log(err)
       )
   }
 
-  blockFriendRequest(userId:string) {
+  removeBlock(userId) {
+    this.usersProfile.blocked = this.usersProfile.blocked.filter(id => id !== userId);
+    this.personService.personUpdateProfileByToken(this.usersProfile, this.userService.getToken())
+      .subscribe(
+        profile => this.usersProfile = profile,
+        err => console.log(err)
+      )
+  }
 
+  acceptFriendRequest(userId:string) {
+    this.personService.personAcceptFriendRequest(this.userService.getToken(),userId)
+      .subscribe(
+        profile => this.usersProfile = profile,
+        err => console.log(err)
+      )
   }
 }
