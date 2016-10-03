@@ -14,6 +14,7 @@ import {Collection} from "../../shared/model/Collection";
 import {IdService} from "../../shared/service/id.service";
 import {SourceApi} from "../../shared/api/SourceApi";
 import {Source} from "../../shared/model/Source";
+import {MultiRadioOption} from "../multi-radio/multi-radio.component";
 
 @Component({
   selector: 'laji-observation-form',
@@ -33,6 +34,21 @@ export class ObservationFormComponent implements OnInit {
   public warehouseDateFormat = DATE_FORMAT;
   public showFilter = false;
   public loadFilters = true;
+  public invasiveOptions: MultiRadioOption[] = [
+    { value: true, label: 'observation.form.multi-true' },
+    { value: false, label: 'observation.form.multi-false' },
+    { value: undefined, label: 'observation.form.multi-all' },
+  ];
+  public finnishOptions: MultiRadioOption[] = [
+    { value: true, label: 'observation.form.multi-true' },
+    { value: false, label: 'observation.form.multi-false' },
+    { value: undefined, label: 'observation.form.multi-all' },
+  ];
+  public mediaOptions: MultiRadioOption[] = [
+    { value: true, label: 'observation.form.multi-true' },
+    { value: false, label: 'observation.form.multi-false' },
+    { value: undefined, label: 'observation.form.multi-all' },
+  ];
 
   private subUpdate:Subscription;
   private window:Window;
@@ -133,6 +149,12 @@ export class ObservationFormComponent implements OnInit {
     }
   }
 
+  checkboxSelect(selected, loc) {
+    if (selected.length == 0) {
+      this.formQuery[loc] = [0, 1];
+    }
+  }
+
   gotToMap() {
     this.activeTab = 'map';
     this.window.scrollTo(0, this.tabs.nativeElement.offsetTop + 150);
@@ -164,6 +186,10 @@ export class ObservationFormComponent implements OnInit {
     this.searchQuery.query.redListStatusId = [];
     this.searchQuery.query.administrativeStatusId = [];
     this.searchQuery.query.recordBasis = [];
+    this.searchQuery.query.documentId = undefined;
+    this.searchQuery.query.finnish = undefined;
+    this.searchQuery.query.invasive = undefined;
+    this.searchQuery.query.hasMedia = undefined;
     this.formQuery = {
       taxon:'',
       timeStart:'',
@@ -172,8 +198,6 @@ export class ObservationFormComponent implements OnInit {
       individualCountMin:'',
       individualCountMax:'',
       includeNonValidTaxa:false,
-      hasMedia:false,
-      invasive:false,
       typeSpecimen:false
     };
     Object.keys(this.filters).map(name => {
@@ -201,9 +225,7 @@ export class ObservationFormComponent implements OnInit {
       individualCountMin: '' + query.individualCountMin,
       individualCountMax: '' + query.individualCountMax,
       includeNonValidTaxa: query.includeNonValidTaxa,
-      invasive: query.invasive,
       typeSpecimen: query.typeSpecimen,
-      hasMedia: query.hasMedia
     };
     Object.keys(this.filters).map(name => {
       let queryFilter = this.filters[name].filter;
@@ -232,6 +254,13 @@ export class ObservationFormComponent implements OnInit {
     });
   }
 
+  private parseMultiBoolean(value):boolean {
+    if (typeof value === 'undefined' || value.length == 0 || value.length == 2  || typeof value[0] === 'undefined') {
+      return undefined;
+    }
+    return value[0] === 0 ? false : true
+  }
+
   private formQueryToQuery(formQuery:ObservationFormQuery) {
     let taxon = formQuery.taxon;
     let time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
@@ -245,10 +274,8 @@ export class ObservationFormComponent implements OnInit {
       [formQuery.informalTaxonGroupId] : undefined;
     query.individualCountMin = +formQuery.individualCountMin || undefined;
     query.individualCountMax = +formQuery.individualCountMax || undefined;
-    query.invasive = formQuery.invasive || undefined;
     query.typeSpecimen = formQuery.typeSpecimen || undefined;
     query.includeNonValidTaxa = formQuery.includeNonValidTaxa || undefined;
-    query.hasMedia = formQuery.hasMedia || undefined;
 
     Object.keys(this.filters).map(name => {
       let queryFilter = this.filters[name].filter;
@@ -313,10 +340,8 @@ export class ObservationFormComponent implements OnInit {
   }
 
   onSubmit(updateQuery = true) {
-    console.log(this.searchQuery.query);
     this.formQueryToQuery(this.formQuery);
     let cacheKey = JSON.stringify(this.searchQuery.query);
-    console.log(this.searchQuery.query);
     if (this.lastQuery === cacheKey) {
       return;
     }

@@ -21,7 +21,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     {field: 'gathering.team'},
     {field: 'gathering.eventDate'},
     {field: 'gathering.municipality'},
-    {field: 'unit.individualId'}
+    {field: 'document.documentId'}
   ];
   @Input() showPager: boolean = true;
   @Output() onSelect:EventEmitter<string> = new EventEmitter<string>();

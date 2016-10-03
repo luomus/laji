@@ -31,7 +31,6 @@ export class PieChartComponent implements OnInit, OnChanges{
       chart: {
         callback: (chart) => {
           chart.pie.dispatch.on("elementClick", (e) => {
-            //console.log(e.data);
             this.sectionSelect.emit(e.data || {});
           });
         },

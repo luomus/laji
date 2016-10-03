@@ -66,7 +66,6 @@ export class HaSeKaFormComponent implements OnInit {
   }
 
   onSubmit(event) {
-    console.log(event);
     //event.makeBlock();
     let data = event.data.formData;
     if (this.isEdit) {
@@ -108,7 +107,6 @@ export class HaSeKaFormComponent implements OnInit {
     let detail = '';
     if (err._body) {
       let data = JSON.parse(err._body);
-      console.log(data);
       detail = data && data.error && data.error.message && data.error.message.detail ?
         data.error.message.detail : '';
     }

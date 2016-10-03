@@ -346,7 +346,6 @@ export class PersonApi {
             search: queryParameters
         };
         requestOptions.body = JSON.stringify(profile);
-      console.log(path, profile, requestOptions);
 
         return this.http.request(path, requestOptions)
             .map((response: Response) => {

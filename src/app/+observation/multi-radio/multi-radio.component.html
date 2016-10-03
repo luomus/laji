@@ -1,0 +1,11 @@
+<div class="input-sm">
+  <span *ngFor="let option of options" class="radio-group">
+    <label>
+      <input type="radio"
+             [(ngModel)]="value"
+             [name]="name"
+             [value]="option.value">
+      {{option.label | translate}}
+    </label>
+  </span>
+</div>

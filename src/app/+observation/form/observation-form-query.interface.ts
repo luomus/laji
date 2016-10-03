@@ -6,7 +6,5 @@ export interface ObservationFormQuery {
   individualCountMin:string;
   individualCountMax:string;
   includeNonValidTaxa:boolean;
-  invasive:boolean;
   typeSpecimen:boolean;
-  hasMedia:boolean;
 }

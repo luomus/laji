@@ -22,7 +22,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() lon:string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
   @Input() zoomThresholds:number[] = [5]; // zoom levels from lowest to highest when to move to more accurate grid
   @Input() onlyViewPortThreshold:number = 1; // when active level is higher or equal to this will be using viewport coordinates to show grid
-  @Input() size:number = 1000;
+  @Input() size:number = 5000;
   @Input() lastPage:number = 7; // 0 = no page limit
   @Input() draw:boolean = false;
   @Input() height:number;

@@ -37,7 +37,6 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   onTouched = () => {};
 
   private subOptions:Subscription;
-  private subKeyMap:Subscription;
   private innerValue:string = '';
 
   constructor(
@@ -61,7 +60,6 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   }
 
   ngOnChanges(changes) {
-    console.log(JSON.stringify(changes));
     this.initOptions();
   }
 
@@ -77,7 +75,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
     }
 
     const options$ = this.field ?
-      this.metadataService.metadataFindPropertiesRanges(this.field, this.lang) :
+      this.metadataService.metadataFindPropertiesRanges(this.field, this.lang, false, true) :
       this.metadataService.metadataFindRange(this.alt, this.lang);
 
     this.subOptions = options$

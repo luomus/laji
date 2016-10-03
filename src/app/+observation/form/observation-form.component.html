@@ -94,19 +94,29 @@
           </div>
         </div>
         <div [hidden]="!showFilter">
-          <div class="form-group">
-            <label class="col-md-2 control-label">{{'observation.form.countMin' | translate}}:</label>
-            <div class="col-md-3">
-              <input type="number" name="individualCountMin" class="form-control input-sm"
-                     [(ngModel)]="formQuery.individualCountMin">
-            </div>
-            <label class="col-md-2 control-label">{{'observation.form.countMax' | translate}}:</label>
-            <div class="col-md-3">
-              <input type="number" name="individualCountMax" class="form-control input-sm"
-                     [(ngModel)]="formQuery.individualCountMax">
+          <div class="row">
+            <div class="col-sm-12">
+              <h3>{{'observation.filters.unit'}}</h3>
             </div>
           </div>
           <div class="form-group">
+            <label class="col-md-2 control-label">{{'observation.form.count' | translate}}:</label>
+            <div class="col-md-3">
+              <div class="row">
+                <div class="col-sm-6">
+                  <input type="number" name="individualCountMin"
+                         class="form-control input-sm"
+                         placeholder="{{'observation.form.countMin' | translate}}"
+                         [(ngModel)]="formQuery.individualCountMin">
+                </div>
+                <div class="col-sm-6">
+                  <input type="number" name="individualCountMax"
+                         class="form-control input-sm"
+                         placeholder="{{'observation.form.countMax' | translate}}"
+                         [(ngModel)]="formQuery.individualCountMax">
+                </div>
+              </div>
+            </div>
             <label class="col-md-2 control-label">{{'observation.form.sex' | translate}}:</label>
             <div class="col-md-3">
               <metadata-select
@@ -117,6 +127,8 @@
                 name="sex"
                 [lang]="translate.currentLang"></metadata-select>
             </div>
+          </div>
+          <div class="form-group">
             <label class="col-md-2 control-label">{{'MY.lifeStage' | label}}:</label>
             <div class="col-md-3">
               <metadata-select
@@ -125,6 +137,53 @@
                 [mapToWarehouse]="true"
                 name="lifeStage"
                 [lang]="translate.currentLang"></metadata-select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <h3>{{'observation.filters.collection'}}</h3>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label">{{'MY.recordBasis' | label}}:</label>
+            <div class="col-md-3">
+              <metadata-select
+                [(ngModel)]="searchQuery.query.recordBasis"
+                [multiple]="true"
+                name="recordBasis"
+                [mapToWarehouse]="true"
+                [field]="'MY.recordBasis'"
+                [lang]="translate.currentLang"></metadata-select>
+            </div>
+            <label class="col-md-2 control-label">{{'observation.form.documentId' | translate}}:</label>
+            <div class="col-md-3">
+              <input
+                class="form-control input-sm"
+                type="text"
+                name="documentId"
+                [(ngModel)]="searchQuery.query.documentId"
+              >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-2 control-label">{{'MY.collectionID' | label}}:</label>
+            <div class="col-md-3">
+              <metadata-select
+                [(ngModel)]="searchQuery.query.collectionId"
+                [field]="'MY.collectionID'"
+                name="collectionID"
+                [lang]="translate.currentLang"></metadata-select>
+            </div>
+            <label class="col-md-2 control-label">{{'observation.form.typeSpecimen' | translate}}:</label>
+            <div class="col-md-1">
+              <input type="checkbox" class="input-sm"
+                     [(ngModel)]="formQuery.typeSpecimen"
+                     name="typeSpecimen">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <h3>{{'observation.filters.administrative'}}</h3>
             </div>
           </div>
           <div class="form-group">
@@ -147,42 +206,37 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="col-md-2 control-label">{{'MY.recordBasis' | label}}:</label>
+            <label class="col-md-2 control-label">{{'observation.form.invasive' | translate}}:</label>
             <div class="col-md-3">
-              <metadata-select
-                [(ngModel)]="searchQuery.query.recordBasis"
-                [multiple]="true"
-                name="recordBasis"
-                [mapToWarehouse]="true"
-                [field]="'MY.recordBasis'"
-                [lang]="translate.currentLang"></metadata-select>
+              <multi-radio
+                [options]="invasiveOptions"
+                [(ngModel)]="searchQuery.query.invasive"
+                name="invasive"></multi-radio>
             </div>
-            <label class="col-md-2 control-label">{{'observation.form.individualId' | translate}}:</label>
+            <label class="col-md-2 control-label">{{'observation.form.finnish' | translate}}:</label>
             <div class="col-md-3">
-              <input
-                class="form-control input-sm"
-                type="text"
-                name="individualId"
-                [(ngModel)]="searchQuery.query.individualId"
-              >
+              <multi-radio
+                [options]="finnishOptions"
+                [(ngModel)]="searchQuery.query.finnish"
+                name="finnish"></multi-radio>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <h3>{{'observation.filters.other'}}</h3>
             </div>
           </div>
           <div class="form-group">
-            <label class="col-md-2 control-label">{{'observation.form.typeSpecimen' | translate}}:</label>
-            <div class="col-md-1">
-              <input type="checkbox" class="form-control input-sm checkbox"
-                     [(ngModel)]="formQuery.typeSpecimen"
-                     name="includeNonValidTaxa">
-            </div>
-            <label class="col-md-2 control-label">{{'observation.form.invasive' | translate}}:</label>
-            <div class="col-md-1">
-              <input type="checkbox" class="form-control input-sm"
-                     [(ngModel)]="formQuery.invasive"
-                     name="includeNonValidTaxa">
+            <label class="col-md-2 control-label">{{'observation.form.hasMedia' | translate}}:</label>
+            <div class="col-md-3">
+              <multi-radio
+                [options]="mediaOptions"
+                [(ngModel)]="searchQuery.query.hasMedia"
+                name="hasMedia"></multi-radio>
             </div>
             <label class="col-md-2 control-label">{{'observation.form.includeNonValidTaxa' | translate}}:</label>
             <div class="col-md-1">
-              <input type="checkbox" class="form-control input-sm"
+              <input type="checkbox" class="input-sm"
                      [(ngModel)]="formQuery.includeNonValidTaxa"
                      name="includeNonValidTaxa">
             </div>

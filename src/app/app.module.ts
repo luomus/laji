@@ -6,7 +6,6 @@ import {LocationStrategy, PathLocationStrategy, DatePipe} from '@angular/common'
 import {TranslateModule} from 'ng2-translate/ng2-translate';
 import {TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule, TooltipModule } from 'ng2-bootstrap/ng2-bootstrap';
 
-
 import {routing, appRoutingProviders} from "./app.routes";
 import {AppComponent} from "./app.component";
 import {NavbarComponent, FooterComponent} from "./shared";
@@ -77,6 +76,7 @@ import {ProfileComponent} from "./+user/profile/profile.component";
 import {FriendsComponent} from "./+user/friends/friends.component";
 import {UsersPipe} from "./shared/pipe/users.pipe";
 import {SelectModule} from "ng2-select";
+import {MultiRadioComponent} from "./+observation/multi-radio/multi-radio.component";
 
 
 @NgModule({
@@ -97,7 +97,7 @@ import {SelectModule} from "ng2-select";
     HaSeKaFormComponent, HaSeKaFormListComponent, ShortDocumentComponent,
     UsersLatestComponent, PanelComponent, ImageGalleryComponent, LajiFormComponent,
     TaxonComponent, CollectionComponent, ObservationComponent,DatePickerComponent,
-    MetadataSelectComponent, IUCNComponent
+    MetadataSelectComponent, IUCNComponent, MultiRadioComponent
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpModule,

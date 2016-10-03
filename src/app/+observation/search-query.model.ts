@@ -79,9 +79,6 @@ export class SearchQuery {
       }
     }
 
-    console.log('QUERY PARAMS');
-    console.log(this.query);
-
     for(let i of this.booleanTypes) {
       if (queryParameters.has(i)) {
         this.query[i] = queryParameters.get(i) === 'true';
@@ -195,7 +192,6 @@ export class SearchQuery {
       path = location.path(false).split('?')[0].split(';')[0];
     }
     let query = this.getQueryString(undefined, skipParams).toString();
-    console.log(query);
     query = query.length > 0 ? '?' + query : '';
     location.go(path + query);
   }

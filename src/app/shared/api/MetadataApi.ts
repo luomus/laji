@@ -258,8 +258,9 @@ export class MetadataApi {
      * @param property
      * @param lang
      * @param asLookupObject return select values as key value object instead of a list
+     * @param classTypeAsList Try to intemperate class types as list instead of string.
      */
-    public metadataFindPropertiesRanges (property: string, lang?: string, asLookupObject?: boolean, extraHttpRequestParams?: any ) : Observable<any> {
+    public metadataFindPropertiesRanges (property: string, lang?: string, asLookupObject?: boolean, classTypeAsList?:boolean, extraHttpRequestParams?: any ) : Observable<any> {
         const path = this.basePath + '/metadata/properties/{property}/ranges'
             .replace('{' + 'property' + '}', String(property));
 
@@ -275,6 +276,10 @@ export class MetadataApi {
 
         if (asLookupObject !== undefined) {
             queryParameters.set('asLookupObject', asLookupObject ? 'true' : 'false');
+        }
+
+        if (classTypeAsList !== undefined) {
+            queryParameters.set('classTypeAsList', classTypeAsList ? 'true' : 'false');
         }
 
         let requestOptions: RequestOptionsArgs = {

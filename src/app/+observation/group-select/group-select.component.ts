@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import {InformalTaxonGroupApi} from "../../shared/api/InformalTaxonGroupApi";
 import {InformalTaxonGroup} from "../../shared/model/InformalTaxonGroup";
-import {NG_VALUE_ACCESSOR} from "@angular/forms";
+import {NG_VALUE_ACCESSOR, ControlValueAccessor} from "@angular/forms";
 import {Observable, Subscription} from "rxjs";
 import {PagedResult} from "../../shared/model/PagedResult";
 
@@ -20,7 +20,7 @@ export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
   styleUrls: ['./group-select.component.css'],
   providers: [ InformalTaxonGroupApi, OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR ]
 })
-export class ObservationGroupSelectComponent implements OnChanges {
+export class ObservationGroupSelectComponent implements ControlValueAccessor, OnChanges {
   @Input() lang = 'fi';
   @Output() onSelect = new EventEmitter();
 
