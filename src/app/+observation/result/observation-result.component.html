@@ -49,12 +49,18 @@
         <div class="col-md-6">
           <div class="form-group">
             <div class="col-sm-12">
-              <laji-observation-filter [(filter)]="filters.recordBasis" (onSelect)="onFilterSelect.emit($event)"></laji-observation-filter>
+              <laji-observation-filter
+                [(filter)]="filters.recordBasis"
+                (onSelect)="onFilterSelect.emit($event)"
+                [lang]="translate.currentLang"></laji-observation-filter>
             </div>
           </div>
           <div class="form-group">
             <div class="col-sm-12">
-              <laji-observation-filter [(filter)]="filters.image" (onSelect)="onFilterSelect.emit($event)"></laji-observation-filter>
+              <laji-observation-filter
+                [(filter)]="filters.image"
+                (onSelect)="onFilterSelect.emit($event)"
+                [lang]="translate.currentLang"></laji-observation-filter>
             </div>
           </div>
         </div>
@@ -64,7 +70,10 @@
 
         </div>
         <div class="col-md-6">
-          <laji-observation-filter [(filter)]="filters.collection" (onSelect)="onFilterSelect.emit($event)"></laji-observation-filter>
+          <laji-observation-filter
+            [(filter)]="filters.collection"
+            (onSelect)="onFilterSelect.emit($event)"
+            [lang]="translate.currentLang"></laji-observation-filter>
         </div>
       </div>
     </div>
@@ -73,10 +82,20 @@
     [heading]="'search.result.load' | translate"
     (select)="activate('load')"
     [active]="active === 'load'">
-    <div class="form-group">
+    <div class="form-group" style="padding-top: 20px;">
       <div class="col-sm-12">
         <div *ngIf="userService.isLoggedIn()">
-          <div class="row">
+          <div class="row" *ngIf="loadLimit < itemCount">
+            <div class="col-sm-12">
+              {{'observation.export.tooMany' | translate}}
+            </div>
+          </div>
+          <div class="row" *ngIf="itemCount == 0">
+            <div class="col-sm-12">
+              {{'observation.export.tooLittle' | translate}}
+            </div>
+          </div>
+          <div class="row" *ngIf="loadLimit >= itemCount && itemCount > 0">
             <div class="col-sm-6">
               <p>
                 {{'result.load.introPublic' | translate}}

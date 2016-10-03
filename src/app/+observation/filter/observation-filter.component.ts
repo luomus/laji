@@ -1,4 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges} from '@angular/core';
+import {isArray} from 'underscore';
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
 import {SearchQuery} from "../search-query.model";
 import {ObservationFilterInterface} from "./observation-filter.interface";
@@ -11,7 +12,8 @@ import {TranslateService} from "ng2-translate";
   templateUrl: 'observation-filter.component.html',
   styleUrls: ['observation-filter.component.css']
 })
-export class ObservationFilterComponent implements OnInit, OnDestroy {
+export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() lang:string;
   @Input() filter:ObservationFilterInterface;
   @Output() filterChange:EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
   @Output() onSelect:EventEmitter<any> = new EventEmitter();
@@ -21,30 +23,26 @@ export class ObservationFilterComponent implements OnInit, OnDestroy {
   public total:number = 0;
 
   private subData: Subscription;
-  private subTrans: Subscription;
   private lastQuery:string;
 
   constructor(
     private warehouseService:WarehouseApi,
-    private searchQuery:SearchQuery,
-    private translate: TranslateService
+    private searchQuery:SearchQuery
   ) {
   }
 
   ngOnInit() {
     this.init();
     this.searchQuery.queryUpdated$.subscribe(() => this.init());
-    if (this.filter.map) {
-      this.subTrans = this.translate.onLangChange.subscribe(() => this.update())
-    }
+  }
+
+  ngOnChanges() {
+    this.update();
   }
 
   ngOnDestroy() {
     if (this.subData) {
       this.subData.unsubscribe();
-    }
-    if (this.subTrans) {
-      this.subTrans.unsubscribe();
     }
   }
 
@@ -112,16 +110,70 @@ export class ObservationFilterComponent implements OnInit, OnDestroy {
   }
 
   toggle(item:any) {
-    item.selected = !item.selected;
-    if (item.selected) {
-      this.filter.selected.push(item.value);
+    let selected = this.isActive(item);
+    let value = this.getQueryValue(item);
+    let query = this.searchQuery.query;
+    let filter = this.filter['filter'];
+    if (selected) {
+      switch (this.filter.type) {
+        case'array':
+          if (!query[filter]) {
+            break;
+          }
+          let idx = query[filter].indexOf(value);
+          if (idx > -1) {
+            query[filter].splice(idx, 1);
+          }
+          if (query[filter].length == 0) {
+            query[filter] = undefined;
+          }
+          break;
+        case 'boolean':
+          query[filter] = undefined;
+          break;
+      }
     } else {
-      this.filter.selected = this.filter.selected.filter(value => {
-        return value !== item.value;
-      });
+      switch (this.filter.type) {
+        case'array':
+          if (!query[filter]) {
+            query[filter] = [];
+          }
+          if (query[filter].indexOf(value) == -1) {
+            query[filter].push(value);
+          }
+          break;
+        case 'boolean':
+          query[filter] = value;
+          break;
+      }
     }
-    this.filterChange.emit(this.filter);
+    console.log(this.searchQuery.query);
     this.onSelect.emit(item);
+  }
+
+  isActive(item:FilterItem) {
+    let filter = this.searchQuery.query[this.filter['filter']];
+    let type = typeof filter;
+    if (type === 'undefined') {
+      return false;
+    }
+    let value = this.getQueryValue(item);
+    if (isArray(filter)) {
+      return filter.indexOf(value) > -1;
+    }
+    return filter === value;
+  }
+
+  private getQueryValue(item:FilterItem) {
+    let value = item.value;
+    if (this.filter['booleanMap']) {
+      if (typeof this.filter['booleanMap'] === 'function') {
+        value = this.filter['booleanMap'](value);
+      } else if (this.filter['booleanMap'][String(value)]) {
+        value = this.filter['booleanMap'][String(value)];
+      }
+    }
+    return value;
   }
 
   showPager():boolean {
@@ -132,4 +184,9 @@ export class ObservationFilterComponent implements OnInit, OnDestroy {
     this.page = page.page;
     this.update();
   }
+}
+
+export interface FilterItem {
+  value: string|number|boolean,
+  count: number,
 }

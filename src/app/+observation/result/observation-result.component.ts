@@ -3,11 +3,11 @@ import {Location} from '@angular/common';
 
 import { SearchQuery } from "../search-query.model";
 import {IdService} from "../../shared/service/id.service";
-import {CoordinateService} from "../../shared/service/coordinate.service";
 import {UserService} from "../../shared/service/user.service";
 import {WarehouseApi} from "../../shared/api/WarehouseApi";
-import {Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {ObservationFilterInterface} from "../filter/observation-filter.interface";
+import {TranslateService} from "ng2-translate";
 
 
 @Component({
@@ -16,14 +16,14 @@ import {ObservationFilterInterface} from "../filter/observation-filter.interface
 })
 export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges {
 
+  @Input() loadLimit = 200000;
   @Input() filters:{[name:string]:ObservationFilterInterface};
   @Input() active:string = 'list';
   @Output() activeChange:EventEmitter<string> = new EventEmitter<string>();
-  @Output() filtersChange:EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
   @Output() onFilterSelect:EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
 
   public lang = 'fi';
-  public selectColor = '#009900';
+  public itemCount = 0;
 
   public activated = {
     list: false,
@@ -38,6 +38,7 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
   constructor(
     public searchQuery: SearchQuery,
     public userService:UserService,
+    public translate: TranslateService,
     private location: Location,
     private warehouseService:WarehouseApi
   ) {}
@@ -47,10 +48,12 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       _ => {
         if (this.queryCache !== JSON.stringify(this.searchQuery.query)) {
-          this.requests = {}
+          this.requests = {};
+          this.updateCount();
         }
       }
     );
+    this.updateCount();
   }
 
   ngOnChanges() {
@@ -61,6 +64,11 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
     if (this.subQueryUpdate) {
       this.subQueryUpdate.unsubscribe();
     }
+  }
+
+  updateCount() {
+    this.warehouseService.warehouseQueryCountGet(this.searchQuery.query)
+      .subscribe(res => this.itemCount = res.total )
   }
 
   pickValue(aggr, lang) {

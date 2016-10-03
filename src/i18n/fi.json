@@ -123,7 +123,7 @@
   "observation.form.administrativeStatus": "Hallinnollinen tila",
   "observation.form.redListStatusId": "Uhanalaisuus",
   "observation.form.map": "Rajaa kartalla",
-  "observation.form.multi-all": "kyllä ja ei",
+  "observation.form.multi-all": "molemmat",
   "observation.form.multi-true": "kyllä",
   "observation.form.multi-false": "ei",
 
@@ -165,6 +165,8 @@
   "haseka.pleaseLogin": "Sinun täytyy kirjautua käyttääksesi tätä palvelua",
   "haseka.terms": "käyttöehdot",
   "haseka.users.latest.gathered": "havaittu",
+  "observation.export.tooMany": "Liian paljon havaintoja. Maksimi on 200 000 joten rajaa hakua lisää",
+  "observation.export.tooLittle": "Ei havaintoja joita voisit ladata",
 
   "omniSearch.matches": "Tietoa lajista",
   "omniSearch.rank": "taksonominen taso",

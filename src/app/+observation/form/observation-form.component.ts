@@ -73,7 +73,7 @@ export class ObservationFormComponent implements OnInit {
         'IMAGE': true
       },
       size: 10,
-      filter: 'hasUnitMedia',
+      filter: 'hasMedia',
       type: 'boolean',
       selected: []
     },
@@ -92,6 +92,7 @@ export class ObservationFormComponent implements OnInit {
       field: 'document.collectionId',
       size: 10,
       filter: 'collectionId',
+      booleanMap: IdService.getId,
       type: 'array',
       selected: [],
       pager: true,
@@ -182,10 +183,11 @@ export class ObservationFormComponent implements OnInit {
       return;
     }
     this.searchQuery.query.coordinates = undefined;
-    this.searchQuery.query.sex = [];
-    this.searchQuery.query.redListStatusId = [];
-    this.searchQuery.query.administrativeStatusId = [];
-    this.searchQuery.query.recordBasis = [];
+    this.searchQuery.query.sex = undefined;
+    this.searchQuery.query.redListStatusId = undefined;
+    this.searchQuery.query.administrativeStatusId = undefined;
+    this.searchQuery.query.recordBasis = undefined;
+    this.searchQuery.query.superRecordBasis = undefined;
     this.searchQuery.query.documentId = undefined;
     this.searchQuery.query.finnish = undefined;
     this.searchQuery.query.invasive = undefined;
@@ -200,9 +202,6 @@ export class ObservationFormComponent implements OnInit {
       includeNonValidTaxa:false,
       typeSpecimen:false
     };
-    Object.keys(this.filters).map(name => {
-      this.filters[name]['selected'] = [];
-    });
 
     if (refresh) {
       this.onSubmit();
@@ -227,31 +226,6 @@ export class ObservationFormComponent implements OnInit {
       includeNonValidTaxa: query.includeNonValidTaxa,
       typeSpecimen: query.typeSpecimen,
     };
-    Object.keys(this.filters).map(name => {
-      let queryFilter = this.filters[name].filter;
-      this.filters[name].selected = [];
-      if (typeof query[queryFilter] === "undefined") {
-        return;
-      }
-      switch (this.filters[name].type) {
-        case 'array':
-          this.filters[name].selected = query[queryFilter];
-          break;
-        case 'boolean':
-          if (this.filters[name].booleanMap) {
-            for(let key in this.filters[name].booleanMap) {
-              if (!this.filters[name].booleanMap.hasOwnProperty(key)) {
-                continue;
-              }
-              if (query[queryFilter] === this.filters[name].booleanMap[key]) {
-                this.filters[name].selected.push(key);
-              }
-            }
-          } else {
-            this.filters[name].selected = [(query[queryFilter] ? 'true' : 'false')];
-          }
-      }
-    });
   }
 
   private parseMultiBoolean(value):boolean {
@@ -276,25 +250,6 @@ export class ObservationFormComponent implements OnInit {
     query.individualCountMax = +formQuery.individualCountMax || undefined;
     query.typeSpecimen = formQuery.typeSpecimen || undefined;
     query.includeNonValidTaxa = formQuery.includeNonValidTaxa || undefined;
-
-    Object.keys(this.filters).map(name => {
-      let queryFilter = this.filters[name].filter;
-      if (this.filters[name].selected.length == 0) {
-        query[queryFilter] = undefined;
-        return;
-      }
-      if (this.filters[name].type === 'array') {
-        query[queryFilter] = this.filters[name].selected;
-      } else if (this.filters[name].type === 'boolean') {
-        this.filters[name].selected.map((value) => {
-          if (this.filters[name].booleanMap) {
-            query[queryFilter] = this.filters[name].booleanMap[value];
-          } else {
-            query[queryFilter] = value && value !== 'false' ? true : false;
-          }
-        })
-      }
-    });
   }
 
   private parseDate(start, end) {
