@@ -127,6 +127,11 @@
   "observation.form.multi-true": "kyllä",
   "observation.form.multi-false": "ei",
 
+  "observation.filters.unit": "Näytteen tietoja",
+  "observation.filters.collection": "Kokoelman tietoja",
+  "observation.filters.administrative": "Hallinnolliset",
+  "observation.filters.other": "Muut",
+
   "observation.results.title": "Havaintohaku",
   "observation.results.observation": "osumaa",
   "observation.results.species": "lajista",
