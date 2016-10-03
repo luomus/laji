@@ -17,7 +17,7 @@
   "home.image-header.species": "arter",
   "home.image-header.sources": "informationskällor",
   "home.main-page.title": "Finlands Artdatacenter",
-  "home.main-page.recent": "Nyaste uppgifter från Finland",
+  "home.main-page.recent": "Senaste uppgifter från Finland",
   "home.main-page.text": "Finlands Artdatacenter samlar information av arter tillgänglig till ett ställe. Artinformation är viktig för samhällelig beslutsfattande, vetenskaplig forskning och för medborgare som är intresserade av miljön.",
   "home.news-list.current": "Aktuellt",
   "home.navigation-thumbnail.species": "Finska arter",
@@ -30,12 +30,12 @@
   "home.sponsors.title": "Våra partners",
   "home.search.exact": "Exakta resultat",
   "home.search.likely": "Sannolika resultat",
-  "home.search.partial": "Partiell resultat",
+  "home.search.partial": "Partiella resultat",
   "home.carousel.species": "arter",
   "home.carousel.observations": "observationer",
   "home.carousel.collections": "informationskällor",
-  "home.carousel.digitized": "home.carousel.digitized",
-  "home.carousel.preserved": "home.carousel.preserved",
+  "home.carousel.digitized": "digitaliserad",
+  "home.carousel.preserved": "exemplar",
 
   "search-bar.input": "Sök",
 
@@ -46,7 +46,7 @@
   "taxonomy.vernacular.names": "Folkspråkliga namn",
   "taxonomy.alternative.vernacular.names": "Alternativa folkspråkliga namn",
   "taxonomy.occurrenceInFinland": "Förekommer i Finland",
-  "taxonomy.typesOfOccurrenceInFinland": "Typ av förekommer",
+  "taxonomy.typesOfOccurrenceInFinland": "Typ av förekomst",
   "taxonomy.redListStatus2010Finland": "Bevarandestatus i Finland",
   "taxonomy.checklist": "Artlista",
   "taxonomy.experts": "{experts, plural, one {Expert} other {Experter}}",
@@ -61,9 +61,9 @@
   "taxonomy.distribution": "Fördelning",
   "taxonomy.other": "Andra",
 
-  "news.title": "News",
-  "news.earlier": "...",
-  "news.newer": "...",
+  "news.title": "Nyheter",
+  "news.earlier": "föregående",
+  "news.newer": "nästa",
 
   "information.more": "information.more",
 
