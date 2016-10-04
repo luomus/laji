@@ -18,6 +18,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   @Input() overrideInQuery:any;
   @Input() pageSize:number = 20;
   @Input() tick:number;
+  @Input() lightLoader:boolean = false;
 
   public count: string = '';
   public loading:boolean = true;

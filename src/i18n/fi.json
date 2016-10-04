@@ -151,6 +151,8 @@
   "observation.active.sex": "sukupuolella",
   "observation.active.invasive": "vieraslajeilla",
   "observation.active.recordBasis": "havainnon tyypillä",
+  "observation.active.superRecordBasis": "havainnon yleisellä tyypillä",
+  "observation.active.administrativeStatusId": "hallinnollisella statuksella",
   "observation.active.informalTaxonGroupId": "Lajiryhmä",
   "observation.active.informalTaxonGroupAll": "kaikki",
   "observation.active.finnish": "suomalaisilla",
