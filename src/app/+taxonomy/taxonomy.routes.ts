@@ -10,6 +10,11 @@ export const TaxonomyRoutes: Routes = [
     redirectTo: 'taxon/browse/informal'
   },
   {
+    path: 'taxon/browse/taxonomy',
+    pathMatch: 'full',
+    redirectTo: 'taxon/browse/taxonomy/MX.53761'
+  },
+  {
     path: 'taxon/browse/:type',
     pathMatch: 'full',
     component: TaxonComponent
