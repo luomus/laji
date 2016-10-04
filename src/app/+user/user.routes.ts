@@ -1,29 +1,32 @@
-import {Routes} from '@angular/router';
+import {Routes, RouterModule} from '@angular/router';
 
 import { UserComponent } from "./user.component";
 import { UserLoginComponent } from "./login/user-login.component";
 import { UserLogoutComponent } from "./logout/user-logout.component";
 import { ProfileComponent } from "./profile/profile.component";
+import {ModuleWithProviders} from "@angular/core";
 
 export const UserRoutes:Routes = [
   {
-    path: 'user',
+    path: '',
     pathMatch: 'full',
     component: UserComponent
   },
   {
-    path: 'user/login',
+    path: 'login',
     pathMatch: 'full',
     component: UserLoginComponent
   },
   {
-    path: 'user/logout',
+    path: 'logout',
     pathMatch: 'full',
     component: UserLogoutComponent
   },
   {
-    path: 'user/:userId',
+    path: ':userId',
     pathMatch: 'full',
     component: ProfileComponent
   }
 ];
+
+export const routing: ModuleWithProviders = RouterModule.forChild(UserRoutes);

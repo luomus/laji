@@ -1,22 +1,32 @@
 import {NgModule} from "@angular/core";
 import {HttpModule} from "@angular/http";
+import {TooltipModule} from "ng2-bootstrap";
 import {TranslateModule, TranslateService} from "ng2-translate";
 import {NewsListComponent} from "./news-list/news-list.component";
 import {RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {LocalStorage} from "angular2-localstorage/dist";
+import {SpinnerComponent} from "./spinner/spinner.component";
+import {UsersPipe} from "./pipe/users.pipe";
 
 @NgModule({
   declarations: [
-    NewsListComponent
+    NewsListComponent,
+    SpinnerComponent,
+    UsersPipe
   ],
   imports: [
     CommonModule,
     HttpModule,
     RouterModule,
-    TranslateModule.forRoot()
+    TranslateModule.forRoot(),
+    TooltipModule
   ],
-  exports: [CommonModule, HttpModule, TranslateModule, NewsListComponent],
+  exports: [
+    CommonModule, HttpModule, TranslateModule,
+    NewsListComponent, SpinnerComponent, UsersPipe,
+    TooltipModule
+  ],
 })
 export class SharedModule {
   @LocalStorage() public static defaultLang;

@@ -4,7 +4,8 @@ import {PersonApi} from "../../shared/api/PersonApi";
 import {Profile} from "../../shared/model/Profile";
 import {ActivatedRoute} from "@angular/router";
 import {Subscription, Observable} from "rxjs";
-import {Person} from "../../shared/model/Person";
+import {SharedModule} from "../../shared/shared.module";
+import {TranslateService} from "ng2-translate";
 
 @Component({
   selector: 'laji-user',
@@ -34,10 +35,13 @@ export class ProfileComponent implements OnInit ,OnDestroy {
   constructor(
     private userService:UserService,
     private personService:PersonApi,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
+    // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed
+    this.translate.use(SharedModule.currentLang);
     this.subProfile = this.route.params
       .do((_)=> this.loading = true)
       .map(params => params['userId'])
