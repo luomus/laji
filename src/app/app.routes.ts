@@ -11,12 +11,12 @@ import { HaSeKaRoutes } from './+haseka';
 import { UserRoutes } from './+user';
 
 export const appRoutes: Routes = [
+  { path: 'news', loadChildren: './+news/news.module#NewsModule'},
   ...HomeRoutes,
   ...TaxonomyRoutes,
   ...ObservationRoutes,
   ...CollectionRoutes,
   ...InformationRoutes,
-  ...NewsRoutes,
   ...HaSeKaRoutes,
   ...UserRoutes
 ];

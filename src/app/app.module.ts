@@ -1,9 +1,6 @@
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {BrowserModule} from "@angular/platform-browser";
-import {HttpModule} from "@angular/http";
 import {LocationStrategy, PathLocationStrategy, DatePipe} from '@angular/common';
-import {TranslateModule} from 'ng2-translate/ng2-translate';
 import {TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule, TooltipModule } from 'ng2-bootstrap/ng2-bootstrap';
 
 import {routing, appRoutingProviders} from "./app.routes";
@@ -17,7 +14,6 @@ import {OmniSearchComponent} from "./shared/omni-search/omni-search.component";
 import {ObservationCountComponent} from "./+observation/count/observation-count.component";
 import {ObservationMapComponent} from "./+observation/map/observation-map.component";
 import {NavigationThumbnailComponent} from "./shared/navigation-thumbnail/navigation-thumbnail.component";
-import {NewsListComponent} from "./shared/news-list/news-list.component";
 import {ObservationHeaderComponent} from "./+observation/header/observation-header.component";
 import {ObservationFormComponent} from "./+observation/form/observation-form.component";
 import {ObservationAggregateComponent} from "./+observation/aggregate/observation-aggregate.component";
@@ -77,6 +73,8 @@ import {FriendsComponent} from "./+user/friends/friends.component";
 import {UsersPipe} from "./shared/pipe/users.pipe";
 import {SelectModule} from "ng2-select";
 import {MultiRadioComponent} from "./+observation/multi-radio/multi-radio.component";
+import {SharedModule} from "./shared/shared.module";
+import {BrowserModule} from "@angular/platform-browser";
 
 
 @NgModule({
@@ -85,7 +83,7 @@ import {MultiRadioComponent} from "./+observation/multi-radio/multi-radio.compon
     HomeComponent, ImageHeaderComponent, OmniSearchComponent,
     ObservationGroupSelectComponent,
     ObservationCountComponent, ObservationMapComponent, NavigationThumbnailComponent,
-    NewsListComponent, ObservationHeaderComponent, ObservationFormComponent,
+    ObservationHeaderComponent, ObservationFormComponent,
     ObservationAggregateComponent, ObservationChartComponent, ObservationFilterComponent,
     StatItemComponent, SpinnerComponent, FormattedNumber,
     MapComponent, ObservationActiveComponent, ObservationResultComponent,
@@ -93,17 +91,18 @@ import {MultiRadioComponent} from "./+observation/multi-radio/multi-radio.compon
     nvD3, ResultListElementComponent, InfoCardComponent, TaxonInfoComponent,
     ParentsComponent, ChildrenListComponent, InformalListBreadcrumbComponent, InformalListComponent,
     SpeciesListComponent, TreeOfLifeComponent, UserComponent, ProfileComponent, FriendsComponent, UserLoginComponent,
-    UserLogoutComponent, NewsComponent, InformationComponent, HaSeKaComponent, HaSeKaTermsOfServiceComponent,
+    UserLogoutComponent, InformationComponent, HaSeKaComponent, HaSeKaTermsOfServiceComponent,
     HaSeKaFormComponent, HaSeKaFormListComponent, ShortDocumentComponent,
     UsersLatestComponent, PanelComponent, ImageGalleryComponent, LajiFormComponent,
     TaxonComponent, CollectionComponent, ObservationComponent,DatePickerComponent,
     MetadataSelectComponent, IUCNComponent, MultiRadioComponent
   ],
   imports: [
-    BrowserModule, FormsModule, ReactiveFormsModule, HttpModule,
-    TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule,TooltipModule,
-    routing, SelectModule,
-    TranslateModule.forRoot()
+    BrowserModule,
+    SharedModule, FormsModule, ReactiveFormsModule,
+    TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,
+    PaginationModule,TypeaheadModule,TooltipModule,
+    routing, SelectModule
   ],
   providers: [
     { provide: 'Window',  useValue: window },

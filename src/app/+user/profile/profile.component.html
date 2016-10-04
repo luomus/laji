@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container container-relative">
   <h1>{{'navigation.user.profile' | translate}}</h1>
-  <laji-spinner [spinning]="loading">
+  <laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
     <div class="row" *ngIf="!profile.profileKey">
       {{'profile.missing'|translate}}
     </div>

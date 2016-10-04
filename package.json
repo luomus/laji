@@ -40,6 +40,7 @@
     "@angular/router": "3.0.0",
     "angular-2-dropdown-multiselect": "^0.2.0",
     "angular2-localstorage": "git+https://github.com/brennerdvaz/angular2-localstorage.git",
+    "angular2-router-loader": "^0.2.2",
     "core-js": "^2.4.0",
     "ie-shim": "^0.1.0",
     "laji-form": "*",

@@ -17,16 +17,16 @@
     </a>
     <ul dropdownMenu role="menu" aria-labelledby="single-button">
       <li *ngIf="'fi' !== translate.currentLang" role="menuitem">
-        <a class="navbar-link link" (click)="translate.use('fi')">Suomeksi</a>
+        <a class="navbar-link link" (click)="switchLang('fi')">Suomeksi</a>
       </li>
       <li *ngIf="'sv' !== translate.currentLang" role="menuitem">
-        <a class="navbar-link link" (click)="translate.use('sv')">På Svenska</a>
+        <a class="navbar-link link" (click)="switchLang('sv')">På Svenska</a>
       </li>
       <li *ngIf="'en' !== translate.currentLang" role="menuitem">
-        <a class="navbar-link link" (click)="translate.use('en')">In English</a>
+        <a class="navbar-link link" (click)="switchLang('en')">In English</a>
       </li>
       <li *ngIf="'dev' !== translate.currentLang" role="menuitem">
-        <a class="navbar-link link" (click)="translate.use('dev')">Development</a>
+        <a class="navbar-link link" (click)="switchLang('dev')">Development</a>
       </li>
     </ul>
   </div>

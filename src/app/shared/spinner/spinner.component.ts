@@ -9,7 +9,7 @@ import {Component, OnInit, Input} from '@angular/core';
   <div class="bounce2"></div>
   <div class="bounce3"></div>
 </div>
-<ng-content></ng-content>`
+<ng-content *ngIf="!hideContentWhileLoading || !spinning"></ng-content>`
 
 })
 export class SpinnerComponent implements OnInit {
@@ -17,6 +17,7 @@ export class SpinnerComponent implements OnInit {
   @Input() spinning:boolean = true;
   @Input() overlay:boolean = false;
   @Input() light:boolean = false;
+  @Input() hideContentWhileLoading = false;
 
   constructor() {
   }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
+import {SharedModule} from "../shared.module";
 
 @Component({
   selector:'laji-lang-select',
@@ -8,4 +9,9 @@ import { TranslateService } from 'ng2-translate/ng2-translate';
 })
 export class LangSelectComponent {
   constructor(public translate: TranslateService) {}
+
+  switchLang(lang) {
+    SharedModule.currentLang = lang;
+    this.translate.use(lang);
+  }
 }

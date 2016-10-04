@@ -1,16 +1,14 @@
-import { Routes } from '@angular/router';
+import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
 import { NewsComponent } from './news.component';
 
 export const NewsRoutes:Routes = [
   {
-    path: 'news/:id',
+    path: ':id',
     pathMatch: 'full',
     component: NewsComponent
-  },
-  {
-    path: 'news',
-    pathMatch: 'full',
-    redirectTo: '/',
   }
 ];
+
+export const routing: ModuleWithProviders = RouterModule.forChild(NewsRoutes);
