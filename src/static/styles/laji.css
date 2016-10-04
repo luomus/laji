@@ -204,6 +204,11 @@ body > .select2-container.open {
 .ui-select-container[theme="select2"].direction-up.select2-dropdown-open .ui-select-match {
   border-bottom-color: #5897fb;
 }
+.ui-select-container .ui-select-match-text {
+  overflow: hidden;
+  width: 80%;
+  width: calc(100% - 30px);
+}
 
 /* Selectize theme */
 

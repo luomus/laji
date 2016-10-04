@@ -182,16 +182,7 @@ export class ObservationFormComponent implements OnInit {
       this.queryToFormQuery(query);
       return;
     }
-    this.searchQuery.query.coordinates = undefined;
-    this.searchQuery.query.sex = undefined;
-    this.searchQuery.query.redListStatusId = undefined;
-    this.searchQuery.query.administrativeStatusId = undefined;
-    this.searchQuery.query.recordBasis = undefined;
-    this.searchQuery.query.superRecordBasis = undefined;
-    this.searchQuery.query.documentId = undefined;
-    this.searchQuery.query.finnish = undefined;
-    this.searchQuery.query.invasive = undefined;
-    this.searchQuery.query.hasMedia = undefined;
+    Object.keys(this.searchQuery.query).map(key => this.searchQuery.query[key] = undefined);
     this.formQuery = {
       taxon:'',
       timeStart:'',
