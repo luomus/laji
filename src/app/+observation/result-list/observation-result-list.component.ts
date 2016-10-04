@@ -84,6 +84,9 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
+    if (this.result && this.result.results) {
+      this.result.results = [];
+    }
     this.lastQuery = cache;
     this.loading = true;
     this.subFetch = this.warehouseService

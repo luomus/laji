@@ -35,6 +35,9 @@ body {
 .pagination {
   margin: 0 0 20px 0;
 }
+.tab-content, .container-relative {
+  position: relative;
+}
 
 /** taxon tree **/
 .node circle {

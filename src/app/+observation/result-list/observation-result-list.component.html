@@ -1,35 +1,38 @@
-<laji-spinner [spinning]="loading">
-  <div class="table-responsive" *ngIf="!loading">
-    <table class="table table-striped table-bordered table-condensed dataTable">
-      <thead>
-      <tr role="row">
-        <th *ngFor="let column of columns">
-          {{(column.translation || 'result.' + column.field) | translate}}
-          <i *ngIf="column.sort" class="pull-right fa"
-             [ngClass]="{'fa-chevron-down': column.sort === 'desc', 'fa-chevron-up': column.sort === 'asc'}"></i>
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let row of result?.results">
-        <td *ngFor="let column of columns">
-          <result-list-element [data]="getData(row, column.field)"></result-list-element>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <pagination
-    *ngIf="showPager"
-    [totalItems]="result?.total"
-    [itemsPerPage]="result?.pageSize"
-    [(ngModel)]="searchQuery.page"
-    (pageChanged)="pageChanged($event)"
-    [maxSize]="7"
-    [boundaryLinks]="true"
-    [firstText]="'paginator.first' | translate"
-    [lastText]="'paginator.last' | translate"
-    [previousText]="'paginator.previous' | translate"
-    [nextText]="'paginator.next' | translate"
-  ></pagination>
-</laji-spinner>
+<div class="container-relative" style="min-height: 100px">
+  <laji-spinner [spinning]="loading" [overlay]="true">
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered table-condensed dataTable">
+        <thead>
+        <tr role="row">
+          <th *ngFor="let column of columns">
+            {{(column.translation || 'result.' + column.field) | translate}}
+            <i *ngIf="column.sort" class="pull-right fa"
+               [ngClass]="{'fa-chevron-down': column.sort === 'desc', 'fa-chevron-up': column.sort === 'asc'}"></i>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let row of result?.results">
+          <td *ngFor="let column of columns">
+            <result-list-element [data]="getData(row, column.field)"></result-list-element>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </laji-spinner>
+</div>
+<pagination
+  *ngIf="showPager"
+  [totalItems]="result?.total"
+  [itemsPerPage]="result?.pageSize"
+  [(ngModel)]="searchQuery.page"
+  (pageChanged)="pageChanged($event)"
+  [maxSize]="7"
+  [boundaryLinks]="true"
+  [firstText]="'paginator.first' | translate"
+  [lastText]="'paginator.last' | translate"
+  [previousText]="'paginator.previous' | translate"
+  [nextText]="'paginator.next' | translate"
+></pagination>
+
