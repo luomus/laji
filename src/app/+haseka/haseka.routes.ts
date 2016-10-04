@@ -1,28 +1,31 @@
-import { Routes } from '@angular/router';
+import {Routes, RouterModule} from '@angular/router';
+import {ModuleWithProviders} from "@angular/core";
 
-import {HaSeKaComponent} from "./haseka.component";
-import {HaSeKaFormComponent} from "./form/haseka-form.component";
-import {HaSeKaTermsOfServiceComponent} from "./terms-of-service/terms-of-service.component";
+import { HasekaComponent } from './haseka.component';
+import { HaSeKaTermsOfServiceComponent } from "./terms-of-service/terms-of-service.component";
+import { HaSeKaFormComponent } from "./form/haseka-form.component";
 
-export const HaSeKaRoutes: Routes = [
+export const HasekaRoutes: Routes = [
   {
-    path: 'haseka',
+    path: '',
     pathMatch: 'full',
-    component: HaSeKaComponent
+    component: HasekaComponent
   },
   {
-    path: 'haseka/termsOfService',
+    path: 'termsOfService',
     pathMatch: 'full',
     component: HaSeKaTermsOfServiceComponent
   },
   {
-    path: 'haseka/:formId',
+    path: ':formId',
     pathMatch: 'full',
     component: HaSeKaFormComponent
   },
   {
-    path: 'haseka/:formId/:documentId',
+    path: ':formId/:documentId',
     pathMatch: 'full',
     component: HaSeKaFormComponent
   }
 ];
+
+export const routing: ModuleWithProviders = RouterModule.forChild(HasekaRoutes);

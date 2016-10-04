@@ -8,12 +8,16 @@ import {CommonModule} from "@angular/common";
 import {LocalStorage} from "angular2-localstorage/dist";
 import {SpinnerComponent} from "./spinner/spinner.component";
 import {UsersPipe} from "./pipe/users.pipe";
+import {UserService} from "./service/user.service";
 
 @NgModule({
   declarations: [
     NewsListComponent,
     SpinnerComponent,
     UsersPipe
+  ],
+  providers: [
+    UserService
   ],
   imports: [
     CommonModule,
@@ -26,7 +30,7 @@ import {UsersPipe} from "./pipe/users.pipe";
     CommonModule, HttpModule, TranslateModule,
     NewsListComponent, SpinnerComponent, UsersPipe,
     TooltipModule
-  ],
+  ]
 })
 export class SharedModule {
   @LocalStorage() public static defaultLang;

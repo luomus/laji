@@ -3,16 +3,16 @@ import {TranslateService} from 'ng2-translate/ng2-translate';
 import {Subscription, Observable} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 
-import {FormApi} from "../../shared";
 import {DocumentApi} from "../../shared/api/DocumentApi";
 import {UserService} from "../../shared/service/user.service";
 import {FooterService} from "../../shared/service/footer.service";
+import {FormApi} from "../../shared/api/FormApi";
 
 @Component({
   selector: 'laji-haseka-form',
-  templateUrl: './haseka-form.component.html',
+  templateUrl: 'haseka-form.component.html',
   providers: [ FormApi, DocumentApi ],
-  styleUrls: ['./haseka-form.component.css']
+  styleUrls: ['haseka-form.component.css']
 })
 export class HaSeKaFormComponent implements OnInit {
 

@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {LocationStrategy, PathLocationStrategy, DatePipe} from '@angular/common';
-import {TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule, TooltipModule } from 'ng2-bootstrap/ng2-bootstrap';
+import {TabsModule,CarouselModule,AlertModule,DropdownModule,ModalModule,PaginationModule,TypeaheadModule } from 'ng2-bootstrap/ng2-bootstrap';
 
 import {routing, appRoutingProviders} from "./app.routes";
 import {AppComponent} from "./app.component";
@@ -20,7 +20,6 @@ import {ObservationAggregateComponent} from "./+observation/aggregate/observatio
 import {ObservationChartComponent} from "./+observation/chart/observation-chart.component";
 import {ObservationFilterComponent} from "./+observation/filter/observation-filter.component";
 import {StatItemComponent} from "./+home/image-header/stat-item.component";
-import {SpinnerComponent} from "./shared/spinner/spinner.component";
 import {FormattedNumber} from "./shared/pipe/formated-number.pipe";
 import {MapComponent} from "./shared/map/map.component";
 import {ObservationActiveComponent} from "./+observation/active/observation-active.component";
@@ -38,19 +37,8 @@ import {InformalListBreadcrumbComponent} from "./+taxonomy/informal-list-breadcr
 import {InformalListComponent} from "./+taxonomy/informal-list/informal-list.component";
 import {SpeciesListComponent} from "./+taxonomy/species-list/species-list.component";
 import {TreeOfLifeComponent} from "./+taxonomy/tree-of-life/tree-of-life.component";
-import {UserComponent} from "./+user/user.component";
-import {UserLoginComponent} from "./+user/login/user-login.component";
-import {UserLogoutComponent} from "./+user/logout/user-logout.component";
-import {NewsComponent} from "./+news/news.component";
-import {InformationComponent} from "./+information/information.component";
-import {HaSeKaComponent} from "./+haseka/haseka.component";
-import {HaSeKaFormComponent} from "./+haseka/form/haseka-form.component";
-import {HaSeKaFormListComponent} from "./+haseka/form-list/haseka-form-list";
-import {ShortDocumentComponent} from "./+haseka/latest/short-document.component";
-import {UsersLatestComponent} from "./+haseka/latest/haseka-users-latest.component";
 import {PanelComponent} from "./shared/panel/panel.component";
 import {ImageGalleryComponent} from "./shared/image-gallery/image-gallery.component";
-import {LajiFormComponent} from "./shared/form/laji-form.component";
 import {TaxonComponent} from "./+taxonomy/taxon.component";
 import {CollectionComponent} from "./+collection/collection.component";
 import {UserService} from "./shared/service/user.service";
@@ -65,12 +53,8 @@ import {MetadataSelectComponent} from "./shared/metadata-select/metadata-select.
 import {ObservationGroupSelectComponent} from "./+observation/group-select/group-select.component";
 import {AutocompleteApi} from "./shared/api/AutocompleteApi";
 import {IUCNComponent} from "./+taxonomy/iucn/iucn.component";
-import {HaSeKaTermsOfServiceComponent} from "./+haseka/terms-of-service/terms-of-service.component";
 import {FooterService} from "./shared/service/footer.service";
 import {LocalStorageService} from "angular2-localstorage/dist";
-import {ProfileComponent} from "./+user/profile/profile.component";
-import {FriendsComponent} from "./+user/friends/friends.component";
-import {UsersPipe} from "./shared/pipe/users.pipe";
 import {SelectModule} from "ng2-select";
 import {MultiRadioComponent} from "./+observation/multi-radio/multi-radio.component";
 import {SharedModule} from "./shared/shared.module";
@@ -90,9 +74,8 @@ import {BrowserModule} from "@angular/platform-browser";
     LabelPipe, PieChartComponent, ObservationResultListComponent,
     nvD3, ResultListElementComponent, InfoCardComponent, TaxonInfoComponent,
     ParentsComponent, ChildrenListComponent, InformalListBreadcrumbComponent, InformalListComponent,
-    SpeciesListComponent, TreeOfLifeComponent, HaSeKaComponent, HaSeKaTermsOfServiceComponent,
-    HaSeKaFormComponent, HaSeKaFormListComponent, ShortDocumentComponent,
-    UsersLatestComponent, PanelComponent, ImageGalleryComponent, LajiFormComponent,
+    SpeciesListComponent, TreeOfLifeComponent,
+    PanelComponent, ImageGalleryComponent,
     TaxonComponent, CollectionComponent, ObservationComponent,DatePickerComponent,
     MetadataSelectComponent, IUCNComponent, MultiRadioComponent
   ],
@@ -106,7 +89,7 @@ import {BrowserModule} from "@angular/platform-browser";
   providers: [
     { provide: 'Window',  useValue: window },
     { provide: LocationStrategy, useClass: PathLocationStrategy },
-    UserService, PersonTokenApi, PersonApi, WarehouseApi,
+    PersonTokenApi, PersonApi, WarehouseApi,
     WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
     appRoutingProviders, AutocompleteApi, FooterService, LocalStorageService,
     DatePipe
