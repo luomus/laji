@@ -12,6 +12,7 @@ export class LangSelectComponent {
 
   switchLang(lang) {
     SharedModule.currentLang = lang;
+    SharedModule.defaultLang = lang;
     this.translate.use(lang);
   }
 }

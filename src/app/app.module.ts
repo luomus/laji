@@ -91,7 +91,7 @@ import {BrowserModule} from "@angular/platform-browser";
     nvD3, ResultListElementComponent, InfoCardComponent, TaxonInfoComponent,
     ParentsComponent, ChildrenListComponent, InformalListBreadcrumbComponent, InformalListComponent,
     SpeciesListComponent, TreeOfLifeComponent, UserComponent, ProfileComponent, FriendsComponent, UserLoginComponent,
-    UserLogoutComponent, InformationComponent, HaSeKaComponent, HaSeKaTermsOfServiceComponent,
+    UserLogoutComponent, HaSeKaComponent, HaSeKaTermsOfServiceComponent,
     HaSeKaFormComponent, HaSeKaFormListComponent, ShortDocumentComponent,
     UsersLatestComponent, PanelComponent, ImageGalleryComponent, LajiFormComponent,
     TaxonComponent, CollectionComponent, ObservationComponent,DatePickerComponent,
