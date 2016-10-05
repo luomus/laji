@@ -7,6 +7,7 @@ import {InformationApi, Information} from "../shared";
 import {UserService} from "../shared/service/user.service";
 import {FormApi} from "../shared/api/FormApi";
 import {DocumentApi} from "../shared/api/DocumentApi";
+import {SharedModule} from "../shared/shared.module";
 
 @Component({
   selector: 'haseka',
@@ -20,9 +21,12 @@ export class HasekaComponent {
 
   constructor(
     public userService:UserService,
-    private formService:FormApi
+    private formService:FormApi,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
+    // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed
+    this.translate.use(SharedModule.currentLang);
   }
 }
