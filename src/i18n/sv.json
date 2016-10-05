@@ -109,7 +109,7 @@
   "observation.form.date": "Observationsdatum",
   "observation.form.thisYear": "Detta år",
   "observation.form.preservedSpecimens": "Prover",
-  "observation.form.typeSpecimens": "Typprover",
+  "observation.form.typeSpecimen": "Typprover",
   "observation.form.invasive": "Främmander arter",
   "observation.form.includeNonValidTaxa": "Underkända arter",
   "observation.form.search": "Sök",
