@@ -104,7 +104,7 @@
   
   
   "observation.intro": "<p>Suomen Lajitietokeskuksen Havainnot-palvelun avulla voit hakea monipuolisten hakutoimintojen avulla käyttöösi tietoja maassamme tehdyistä lajihavainnoista.</p><p>Havaintoja kertyy niin yksittäisiltä harrastajilta, kansalaistiedehankkeiden kautta kuin tieteellisen työn tuloksena. Haettavat aineistot sisältävät myös tieteellisten kokoelma-aineistojen näytteiden havaintotiedot ja seurannoissa tehdyt havainnot.</p>",
-  "observation.form.filter": "Filter",
+  "observation.form.filter": "Sökparametrar",
   "observation.form.specimen": "Arter",
   "observation.form.date": "Observationsdatum",
   "observation.form.thisYear": "Detta år",
@@ -114,7 +114,7 @@
   "observation.form.includeNonValidTaxa": "också okända arter",
   "observation.form.search": "Sök",
   "observation.form.empty": "Återställ filter",
-  "observation.form.more": "Mera filter",
+  "observation.form.more": "Fler sökparametrar",
   "observation.form.hasMedia": "bild",
   "observation.form.finnish": "finska",
   "observation.form.documentId": "ID",
@@ -124,7 +124,7 @@
   "observation.form.lifeStage": "Livsfas",
   "observation.form.sex": "Kön",
   "observation.form.administrativeStatus": "Administrativ status",
-  "observation.form.redListStatusId": "Bevarandestatus i Finland",
+  "observation.form.redListStatusId": "Rödlistekategori i Finland",
   "observation.form.map": "Sök med karta",
   "observation.form.multi-all": "båda",
   "observation.form.multi-true": "ja",
@@ -144,7 +144,7 @@
   "observation.filterBy.collectionId": "Data",
   "observation.filterBy.sourceId": "Informationskällor",
   
-  "observation.active": "Filtrerat",
+  "observation.active": "Sökparametrar:",
   "observation.active.time": "tid",
   "observation.active.hasUnitMedia": "bild",
   "observation.active.coordinates": "plats",
@@ -170,7 +170,7 @@
   "haseka.pleaseLogin": "Sinun täytyy kirjautua käyttääksesi tätä palvelua",
   "haseka.terms": "käyttöehdot",
   "haseka.users.latest.gathered": "observerad",
-  "observation.export.tooMany": "Liian paljon havaintoja. Maksimi on 200 000 joten rajaa hakua lisää",
+  "observation.export.tooMany": "För många observationer. Maksimiantal är 200 000. Sökningen måste begränsas.",
   "observation.export.tooLittle": "Ei havaintoja joita voisit ladata",
 
   "omniSearch.matches": "Tietoa lajista",
