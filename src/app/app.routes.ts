@@ -13,7 +13,7 @@ export const appRoutes: Routes = [
   { path: 'haseka', loadChildren: './+haseka/haseka.module#HasekaModule'},
   { path: 'observation', loadChildren: './+observation/observation.module#ObservationModule'},
   { path: 'taxon', loadChildren: './+taxonomy/taxonomy.module#TaxonomyModule'},
-  ...HomeRoutes,
+  { path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule'},
   ...CollectionRoutes
 ];
 

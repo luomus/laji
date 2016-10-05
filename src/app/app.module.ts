@@ -40,13 +40,11 @@ import {BrowserModule} from "@angular/platform-browser";
 @NgModule({
   declarations: [
     AppComponent, NavbarComponent, FooterComponent, LangSelectComponent,
-    HomeComponent, ImageHeaderComponent, OmniSearchComponent,
-    NavigationThumbnailComponent,CollectionComponent, StatItemComponent,
+    CollectionComponent,
   ],
   imports: [
     BrowserModule,
-    SharedModule, FormsModule, ReactiveFormsModule,
-    CarouselModule,
+    SharedModule,
     routing
   ],
   providers: [

@@ -1,11 +1,13 @@
 import {NgModule} from "@angular/core";
 import {HttpModule} from "@angular/http";
-import {TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule} from "ng2-bootstrap";
-import {TranslateModule, TranslateService} from "ng2-translate";
-import {NewsListComponent} from "./news-list/news-list.component";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {LocalStorage} from "angular2-localstorage/dist";
+import {TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule} from "ng2-bootstrap";
+import {TranslateModule, TranslateService} from "ng2-translate";
+
+import {NewsListComponent} from "./news-list/news-list.component";
 import {SpinnerComponent} from "./spinner/spinner.component";
 import {UsersPipe} from "./pipe/users.pipe";
 import {UserService} from "./service/user.service";
@@ -15,6 +17,8 @@ import {ObservationCountComponent} from "../+observation/count/observation-count
 import {ObservationMapComponent} from "../+observation/map/observation-map.component";
 import {MapComponent} from "./map/map.component";
 import {PanelComponent} from "./panel/panel.component";
+import {OmniSearchComponent} from "./omni-search/omni-search.component";
+
 
 @NgModule({
   declarations: [
@@ -22,12 +26,14 @@ import {PanelComponent} from "./panel/panel.component";
     SpinnerComponent,
     UsersPipe, LabelPipe, FormattedNumber,
     ObservationCountComponent, ObservationMapComponent, MapComponent,
-    PanelComponent
+    PanelComponent, OmniSearchComponent
   ],
   providers: [
     UserService
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     HttpModule,
     RouterModule,
@@ -39,7 +45,7 @@ import {PanelComponent} from "./panel/panel.component";
     NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe,
     TooltipModule, TabsModule, PaginationModule,DropdownModule, AlertModule, ModalModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, MapComponent,
-    PanelComponent
+    PanelComponent, OmniSearchComponent
   ]
 })
 export class SharedModule {
