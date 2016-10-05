@@ -54,7 +54,9 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
     this.id = this.route.params.distinctUntilChanged().map(params => params['id']);
 
-    this.id.filter(id => id == null).forEach(id => {
+    const naks = this.type.filter(type => type == 'informal').switchMap((type) => this.id.distinctUntilChanged());    
+
+    naks.filter(id => id == null).forEach(id => {
       this.informalTaxonService.informalTaxonGroupFindRoots(this.translate.currentLang)
         .subscribe(data => {
           this.setSelectedInformalGroup(data);
@@ -63,7 +65,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
       this.selectedInformalGroup = null;
     });
 
-    this.id.filter(id => id != null).forEach(id => {
+    naks.filter(id => id != null).forEach(id => {
       this.informalTaxonService.informalTaxonGroupGetChildren(id, this.translate.currentLang)
         .zip(this.informalTaxonService.informalTaxonGroupFindById(id, this.translate.currentLang))
         .map(data => ({
@@ -81,6 +83,10 @@ export class TaxonComponent implements OnInit, OnDestroy {
           this.groups = [];
         });
     });
+
+    naks.filter((id) => id == undefined).subscribe((x) => console.log('not set'));
+    
+    naks.filter((id) => id != undefined).subscribe((x) => console.log('set', x));
 
   }
 

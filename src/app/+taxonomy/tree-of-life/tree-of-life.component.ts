@@ -1,6 +1,7 @@
 import {Component, OnInit, Input, ElementRef, HostListener} from '@angular/core';
+import {Location} from '@angular/common';
 import {Taxonomy} from "../../shared/model/Taxonomy";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {debounce} from 'underscore';
 
 declare var d3:any;
@@ -30,7 +31,9 @@ export class TreeOfLifeComponent {
 
   constructor(
     private element: ElementRef,
-    private router:Router
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location
   ) {
     this.htmlElement = this.element.nativeElement;
     this.host = d3.select(this.htmlElement);
@@ -39,39 +42,21 @@ export class TreeOfLifeComponent {
   
   @HostListener('window:resize', ['$event'])
   onResize(event) { this.plop(); }
-
-  lazySetup() {
-      this.setup(undefined, this.htmlElement.offsetWidth);
-  }
   
   ngOnInit() {
-    this.setup(undefined, this.htmlElement.offsetWidth);
-  }
-
-  ngOnChanges(): void {
+    this.route.params.filter((route) => route['type'] == 'taxonomy').subscribe((route) => {
+      if(route['id'] == this.taxonId){
+        this.location.back();
+      } else {
+      this.taxonId = route['id'];
+      this.setup(this.taxonId, this.htmlElement.offsetWidth);
+      }
+    });
     this.setup(undefined, this.htmlElement.offsetWidth);
   }
 
   private getTaxonTreeUri(taxonId) {
     return taxonTreeUri.replace('%taxonId%', taxonId);
-  }
-
-  updateData(taxon:Taxonomy) {
-    this.taxonId = taxon.id;
-    if (this.taxonId === this.active) {
-      if (this.parents.length > 0) {
-        this.taxonId = this.parents.pop();
-      } else {
-        this.taxonId = undefined;
-      }
-    } else {
-      this.parents.push(this.active);
-    }
-    this.setup(this.taxonId, this.htmlElement.offsetWidth);
-  }
-
-  goToTaxon(taxon:Taxonomy) {
-    this.router.navigate(['/taxon/' + taxon.id]);
   }
 
   private setup(taxonId:string = 'MX.53761', diameter:number = 600): void {
@@ -115,20 +100,32 @@ export class TreeOfLifeComponent {
         .attr("class", "node")
         .attr("transform", function(d) { return "rotate(" + ((d.x | 0) - 90) + ")translate(" + d.y + ")"; })
 
-      label.append("circle")
-        .attr("r", 5)
+      label
+        .append("a")
+        .attr("href", (d) => {
+          return `/taxon/browse/taxonomy/${d.id}`
+        })
         .on("click", (d) => {
-          this.updateData(d);
-        });
+          this.router.navigate(['taxon','browse','taxonomy', d.id])
+          d3.event.preventDefault();
+        })
+        .append("circle")
+        .attr("r", 5);
 
-      label.append("text")
+      label
+        .append("a")
+        .attr("href", (d) => {
+          return `/taxon/${d.id}`
+        })
+        .on("click", (d) => {
+          this.router.navigate(['taxon', d.id]);
+          d3.event.preventDefault();
+        })
+        .append("text")
         .attr("dy", ".31em")
         .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
         .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
-        .text(function(d) { return d.scientificName; })
-        .on("click", (d) => {
-          this.goToTaxon(d)
-        });
+        .text(function(d) { return d.scientificName; });
     });
 
     this.host.style("height", diameter + "px");
