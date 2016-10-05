@@ -39,7 +39,7 @@
   "home.carousel.preserved": "preserved specimens",
   "search-bar.input": "Search",
 
-  "taxonomy.card.id": "Id",
+  "taxonomy.card.id": "ID",
   "taxonomy.scientific.name": "Scientific Name",
   "taxonomy.author": "Author",
   "taxonomy.vernacular.name": "Vernacular name",
@@ -59,9 +59,9 @@
   "taxonomy.rank": "Taxon rank",
   "taxonomy.distribution": "Distribution",
   "taxonomy.other": "Other",
-  "taxonomy.card": "species card",
-  "taxonomy.map": "map",
-  "taxonomy.images": "pictures",
+  "taxonomy.card": "Species card",
+  "taxonomy.map": "Map",
+  "taxonomy.images": "Images",
   "taxonomy.speciesList.found": "species found",
   "taxonomy.administrative.statuses": "Administrative status",
 
