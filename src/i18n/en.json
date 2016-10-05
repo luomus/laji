@@ -125,6 +125,11 @@
   "observation.form.multi-all": "both",
   "observation.form.multi-true": "yes",
   "observation.form.multi-false": "no",
+  
+  "observation.filters.unit": "Specimen",
+  "observation.filters.collection": "Collection",
+  "observation.filters.administrative": "Administrative",
+  "observation.filters.other": "Others",
 
   "observation.results.title": "Observation search",
   "observation.results.observation": "hits of",
