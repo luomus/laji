@@ -13,6 +13,7 @@ import { InformalListComponent } from "./informal-list/informal-list.component";
 import { SpeciesListComponent } from "./species-list/species-list.component";
 import { InformalListItemInterface } from "./informal-list/informal-list-item.model";
 import { TreeOfLifeComponent } from "./tree-of-life/tree-of-life.component";
+import {SharedModule} from "../shared/shared.module";
 
 
 @Component({
@@ -42,7 +43,8 @@ export class TaxonComponent implements OnInit, OnDestroy {
     private location: Location) {}
 
   ngOnInit() {
-
+    // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed
+    this.translate.use(SharedModule.currentLang);
     this.subTrans = this.translate.onLangChange
       .subscribe(() => {
         this.refreshInformalGroups();

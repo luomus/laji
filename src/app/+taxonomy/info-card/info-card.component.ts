@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 
 import { Taxonomy, TaxonomyDescription, TaxonomyImage, TaxonomyApi, PanelComponent, ImageGalleryComponent } from '../../shared';
+import {SharedModule} from "../../shared/shared.module";
 
 @Component({
   selector: 'laji-info-card',
@@ -32,6 +33,8 @@ export class InfoCardComponent {
   ) {}
 
   ngOnInit() {
+    // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed
+    this.translate.use(SharedModule.currentLang);
     if (!this.taxonId) {
       this.subParam = this.route.params.subscribe(params => {
         this.taxonId = params['id'];

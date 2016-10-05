@@ -36,23 +36,17 @@ import {FooterService} from "./shared/service/footer.service";
 import {LocalStorageService} from "angular2-localstorage/dist";
 import {SharedModule} from "./shared/shared.module";
 import {BrowserModule} from "@angular/platform-browser";
-import {ObservationModule} from "./+observation/observation.module";
-
 
 @NgModule({
   declarations: [
     AppComponent, NavbarComponent, FooterComponent, LangSelectComponent,
     HomeComponent, ImageHeaderComponent, OmniSearchComponent,
-    NavigationThumbnailComponent,
-    StatItemComponent, InfoCardComponent, TaxonInfoComponent,
-    ParentsComponent, ChildrenListComponent, InformalListBreadcrumbComponent, InformalListComponent,
-    SpeciesListComponent, TreeOfLifeComponent, IUCNComponent,
-    PanelComponent, ImageGalleryComponent, TaxonComponent, CollectionComponent
+    NavigationThumbnailComponent,CollectionComponent, StatItemComponent,
   ],
   imports: [
     BrowserModule,
     SharedModule, FormsModule, ReactiveFormsModule,
-    CarouselModule,ModalModule,
+    CarouselModule,
     routing
   ],
   providers: [

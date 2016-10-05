@@ -1,27 +1,29 @@
-import { Routes } from '@angular/router';
+import {Routes, RouterModule} from '@angular/router';
 
 import { TaxonComponent } from './taxon.component';
 import { InfoCardComponent } from "./info-card/info-card.component";
+import {ModuleWithProviders} from "@angular/core";
 
 export const TaxonomyRoutes: Routes = [
   {
-    path: 'taxon',
+    path: '',
     pathMatch: 'full',
-    redirectTo: 'taxon/browse/informal'
+    redirectTo: 'browse/informal'
   },
   {
-    path: 'taxon/browse/:type',
-    pathMatch: 'full',
-    component: TaxonComponent
-  },
-  {
-    path: 'taxon/browse/:type/:id',
+    path: 'browse/:type',
     pathMatch: 'full',
     component: TaxonComponent
   },
   {
-    path: 'taxon/:id',
+    path: 'browse/:type/:id',
+    pathMatch: 'full',
+    component: TaxonComponent
+  },
+  {
+    path: ':id',
     pathMatch: 'full',
     component: InfoCardComponent
   },
 ];
+export const routing: ModuleWithProviders = RouterModule.forChild(TaxonomyRoutes);
