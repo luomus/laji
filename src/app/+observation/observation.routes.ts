@@ -1,16 +1,19 @@
-import { Routes } from '@angular/router';
+import {Routes, RouterModule} from '@angular/router';
 
 import { ObservationComponent } from './observation.component';
+import {ModuleWithProviders} from "@angular/core";
 
 export const ObservationRoutes: Routes = [
   {
-    path: 'observation',
+    path: '',
     pathMatch: 'full',
     component: ObservationComponent
   },
   {
-    path: 'observation/:tab',
+    path: ':tab',
     pathMatch: 'full',
     component: ObservationComponent
   }
 ];
+
+export const routing: ModuleWithProviders = RouterModule.forChild(ObservationRoutes);

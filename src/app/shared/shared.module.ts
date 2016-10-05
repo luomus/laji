@@ -1,6 +1,6 @@
 import {NgModule} from "@angular/core";
 import {HttpModule} from "@angular/http";
-import {TooltipModule} from "ng2-bootstrap";
+import {TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule} from "ng2-bootstrap";
 import {TranslateModule, TranslateService} from "ng2-translate";
 import {NewsListComponent} from "./news-list/news-list.component";
 import {RouterModule} from "@angular/router";
@@ -9,12 +9,18 @@ import {LocalStorage} from "angular2-localstorage/dist";
 import {SpinnerComponent} from "./spinner/spinner.component";
 import {UsersPipe} from "./pipe/users.pipe";
 import {UserService} from "./service/user.service";
+import {LabelPipe} from "./pipe/label.pipe";
+import {FormattedNumber} from "./pipe/formated-number.pipe";
+import {ObservationCountComponent} from "../+observation/count/observation-count.component";
+import {ObservationMapComponent} from "../+observation/map/observation-map.component";
+import {MapComponent} from "./map/map.component";
 
 @NgModule({
   declarations: [
     NewsListComponent,
     SpinnerComponent,
-    UsersPipe
+    UsersPipe, LabelPipe, FormattedNumber,
+    ObservationCountComponent, ObservationMapComponent, MapComponent
   ],
   providers: [
     UserService
@@ -24,12 +30,13 @@ import {UserService} from "./service/user.service";
     HttpModule,
     RouterModule,
     TranslateModule.forRoot(),
-    TooltipModule
+    TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule
   ],
   exports: [
     CommonModule, HttpModule, TranslateModule,
-    NewsListComponent, SpinnerComponent, UsersPipe,
-    TooltipModule
+    NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe,
+    TooltipModule, TabsModule, PaginationModule,DropdownModule, AlertModule,
+    FormattedNumber, ObservationCountComponent, ObservationMapComponent, MapComponent
   ]
 })
 export class SharedModule {

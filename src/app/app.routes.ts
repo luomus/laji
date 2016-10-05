@@ -11,9 +11,9 @@ export const appRoutes: Routes = [
   { path: 'information', loadChildren: './+information/information.module#InformationModule'},
   { path: 'user', loadChildren: './+user/user.module#UserModule'},
   { path: 'haseka', loadChildren: './+haseka/haseka.module#HasekaModule'},
+  { path: 'observation', loadChildren: './+observation/observation.module#ObservationModule'},
   ...HomeRoutes,
   ...TaxonomyRoutes,
-  ...ObservationRoutes,
   ...CollectionRoutes
 ];
 
