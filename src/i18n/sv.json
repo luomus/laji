@@ -111,7 +111,7 @@
   "observation.form.preservedSpecimens": "Prover",
   "observation.form.typeSpecimens": "Typprover",
   "observation.form.invasive": "Främmander arter",
-  "observation.form.includeNonValidTaxa": "också okända arter"
+  "observation.form.includeNonValidTaxa": "också okända arter",
   "observation.form.search": "Sök",
   "observation.form.empty": "Återställ filter",
   "observation.form.more": "Mera filter",
