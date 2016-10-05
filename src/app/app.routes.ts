@@ -1,10 +1,5 @@
-import {Routes, RouterModule} from '@angular/router';
-import {ModuleWithProviders} from "@angular/core";
-
-import { HomeRoutes } from './+home';
-import { TaxonomyRoutes } from './+taxonomy';
-import { ObservationRoutes } from './+observation';
-import { CollectionRoutes } from './+collection';
+import { Routes, RouterModule } from '@angular/router';
+import { ModuleWithProviders } from '@angular/core';
 
 export const appRoutes: Routes = [
   { path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule'},

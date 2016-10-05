@@ -1,5 +1,5 @@
 export class CoordinateService {
-  public static getWarehouseQuery(coordinates:Array<Array<Array<number>>>) {
+  public static getWarehouseQuery(coordinates: Array<Array<Array<number>>>) {
     if (!coordinates || !coordinates[0] || !coordinates[0][2] || !coordinates[0][2][1]) {
       return '';
     }

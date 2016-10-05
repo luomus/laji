@@ -1,8 +1,8 @@
 import { Component, Input, SimpleChange } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
-import { Observable } from "rxjs/Rx";
+import { Observable } from 'rxjs/Rx';
 
-import { TaxonomyApi, Taxonomy } from "../../../shared";
+import { TaxonomyApi, Taxonomy } from '../../../shared';
 
 
 @Component({
@@ -11,11 +11,11 @@ import { TaxonomyApi, Taxonomy } from "../../../shared";
   providers: [ TaxonomyApi ]
 })
 export class ChildrenListComponent {
-  @Input() parentId:string;
+  @Input() parentId: string;
 
   children$: Observable<Taxonomy[]>;
 
-  constructor(private translate:TranslateService, private taxonService: TaxonomyApi) {}
+  constructor(private translate: TranslateService, private taxonService: TaxonomyApi) {}
 
   ngOnInit() {
     this.translate.onLangChange.subscribe(
@@ -24,11 +24,11 @@ export class ChildrenListComponent {
           .taxonService
           .taxonomyFindChildren(this.parentId, this.translate.currentLang);
       }
-    )
+    );
   }
 
   ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
-    if (changes['parentId']){
+    if (changes['parentId']) {
       this.children$ = this
         .taxonService
         .taxonomyFindChildren(this.parentId, this.translate.currentLang);

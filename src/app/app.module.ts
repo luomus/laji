@@ -1,21 +1,21 @@
-import {NgModule} from '@angular/core';
-import {LocationStrategy, PathLocationStrategy, DatePipe} from '@angular/common';
+import { NgModule } from '@angular/core';
+import { LocationStrategy, PathLocationStrategy, DatePipe } from '@angular/common';
 
-import {routing, appRoutingProviders} from "./app.routes";
-import {AppComponent} from "./app.component";
-import {NavbarComponent, FooterComponent} from "./shared";
-import {LangSelectComponent} from "./shared/navbar/lang-select.component";
-import {PersonTokenApi} from "./shared/api/PersonTokenApi";
-import {PersonApi} from "./shared/api/PersonApi";
-import {WarehouseApi} from "./shared/api/WarehouseApi";
-import {WarehouseValueMappingService} from "./shared/service/warehouse-value-mapping.service";
-import {TriplestoreLabelService} from "./shared/service/triplestore-label.service";
-import {MetadataApi} from "./shared/api/MetadataApi";
-import {AutocompleteApi} from "./shared/api/AutocompleteApi";
-import {FooterService} from "./shared/service/footer.service";
-import {LocalStorageService} from "angular2-localstorage/dist";
-import {SharedModule} from "./shared/shared.module";
-import {BrowserModule} from "@angular/platform-browser";
+import { routing, appRoutingProviders } from './app.routes';
+import { AppComponent } from './app.component';
+import { NavbarComponent, FooterComponent } from './shared';
+import { LangSelectComponent } from './shared/navbar/lang-select.component';
+import { PersonTokenApi } from './shared/api/PersonTokenApi';
+import { PersonApi } from './shared/api/PersonApi';
+import { WarehouseApi } from './shared/api/WarehouseApi';
+import { WarehouseValueMappingService } from './shared/service/warehouse-value-mapping.service';
+import { TriplestoreLabelService } from './shared/service/triplestore-label.service';
+import { MetadataApi } from './shared/api/MetadataApi';
+import { AutocompleteApi } from './shared/api/AutocompleteApi';
+import { FooterService } from './shared/service/footer.service';
+import { LocalStorageService } from 'angular2-localstorage/dist';
+import { SharedModule } from './shared/shared.module';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [

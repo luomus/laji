@@ -23,7 +23,6 @@
  */
 
 'use strict';
-import * as models from './index';
 
 export interface Collection {
 

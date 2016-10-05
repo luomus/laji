@@ -16,10 +16,10 @@ import {
 })
 export class AppComponent {
 
-  public viewContainerRef:ViewContainerRef;
+  public viewContainerRef: ViewContainerRef;
 
   constructor(
-    viewContainerRef:ViewContainerRef
+    viewContainerRef: ViewContainerRef
   ) {
     this.viewContainerRef = viewContainerRef;
   }

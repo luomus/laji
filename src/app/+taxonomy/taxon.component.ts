@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Location } from "@angular/common";
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs/Subscription';
@@ -7,12 +7,7 @@ import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/map';
 
-import { TaxonomyApi, Taxonomy, InformalTaxonGroupApi, InformalTaxonGroup } from '../shared';
-import { InformalListBreadcrumbComponent } from "./informal-list-breadcrumb/informal-list-breadcrumb.component";
-import { InformalListComponent } from "./informal-list/informal-list.component";
-import { SpeciesListComponent } from "./species-list/species-list.component";
-import { InformalListItemInterface } from "./informal-list/informal-list-item.model";
-import { TreeOfLifeComponent } from "./tree-of-life/tree-of-life.component";
+import { TaxonomyApi, InformalTaxonGroupApi, InformalTaxonGroup } from '../shared';
 import {SharedModule} from "../shared/shared.module";
 
 
@@ -54,7 +49,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
     this.id = this.route.params.distinctUntilChanged().map(params => params['id']);
 
-    const naks = this.type.filter(type => type == 'informal').switchMap((type) => this.id.distinctUntilChanged());    
+    const naks = this.type.filter(type => type == 'informal').switchMap((type) => this.id.distinctUntilChanged());
 
     naks.filter(id => id == null).forEach(id => {
       this.informalTaxonService.informalTaxonGroupFindRoots(this.translate.currentLang)
@@ -85,7 +80,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
     });
 
     naks.filter((id) => id == undefined).subscribe((x) => console.log('not set'));
-    
+
     naks.filter((id) => id != undefined).subscribe((x) => console.log('set', x));
 
   }

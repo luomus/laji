@@ -39,10 +39,10 @@ export class TreeOfLifeComponent {
     this.host = d3.select(this.htmlElement);
     this.plop = debounce(() => this.setup(this.taxonId, this.htmlElement.offsetWidth), 300);
   }
-  
+
   @HostListener('window:resize', ['$event'])
   onResize(event) { this.plop(); }
-  
+
   ngOnInit() {
     this.route.params.filter((route) => route['type'] == 'taxonomy').subscribe((route) => {
       if(route['id'] == this.taxonId){

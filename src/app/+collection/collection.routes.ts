@@ -1,7 +1,7 @@
 import {Routes, RouterModule} from '@angular/router';
 
 import { CollectionComponent } from './collection.component';
-import {ModuleWithProviders} from "@angular/core";
+import {ModuleWithProviders} from '@angular/core';
 
 export const CollectionRoutes: Routes = [
   {

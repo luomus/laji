@@ -30,11 +30,11 @@ import * as _ from 'lodash'
  */
 
 // Alias legacy import/exports pre rc
-declare module "angular2/core" {
+declare module 'angular2/core' {
   export * from '@angular/core';
 }
 
-declare module "angular2/http" {
+declare module 'angular2/http' {
   export * from '@angular/http';
 }
 

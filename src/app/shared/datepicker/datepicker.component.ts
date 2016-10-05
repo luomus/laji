@@ -31,10 +31,7 @@ import {
   Component,
   OnInit,
   ViewContainerRef,
-  Input,
-  Output,
-  EventEmitter,
-  AfterViewInit, forwardRef, OnDestroy
+  Input,forwardRef, OnDestroy
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import * as moment from 'moment';
@@ -69,13 +66,11 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   @Input() firstWeekdaySunday: boolean;
 
   private date: any = moment();
-  private onChange: Function;
-  private onTouched: Function;
   private el: Element;
   private bodyEl: Element;
   private viewDate: string = null;
   private days: CalendarDate[] = [];
-  private cbFunc:any;
+  private cbFunc: any;
 
   private onTouchedCallback: () => void = () => { };
   private onChangeCallback: (_: any) => void = () => { };
@@ -143,7 +138,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     let date = moment(this.date);
     let month = date.month();
     let year = date.year();
-    let n: number = 1;
+    let n = 1;
     let firstWeekDay: number = (this.firstWeekdaySunday) ? date.date(2).day() : date.date(1).day();
 
     if (firstWeekDay !== 1) {
@@ -171,7 +166,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
           day: null,
           month: null,
           year: null,
-          enabled:false,
+          enabled: false,
           today: false,
           selected: selected
         });

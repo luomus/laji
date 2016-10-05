@@ -3,8 +3,6 @@ import {Injectable, Optional} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {PagedResult, News} from '../model';
 import 'rxjs/Rx';
-import {Subject} from "rxjs/Rx";
-import create = require("core-js/fn/object/create");
 
 @Injectable()
 export class NewsApi {

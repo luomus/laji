@@ -22,20 +22,18 @@
  * limitations under the License.
  */
 
-import {Http, Headers, RequestOptionsArgs, Response, URLSearchParams} from '@angular/http';
-import {Injectable, Optional} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Injectable, Optional } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
 import 'rxjs/Rx';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
-'use strict';
-
 @Injectable()
 export class AutocompleteApi {
     protected basePath = '/api';
-    public defaultHeaders : Headers = new Headers();
+    public defaultHeaders: Headers = new Headers();
 
     constructor(protected http: Http, @Optional() basePath: string) {
         if (basePath) {
@@ -53,7 +51,7 @@ export class AutocompleteApi {
      * @param lang Language of fields that have multiple languages.
      * @param userToken User authentication token
      */
-    public autocompleteFindByField (field: string, q?: string, limit?: string, includePayload?: boolean, lang?: string, checklist?:string, informalTaxonGroup?:string, userToken?: string, extraHttpRequestParams?: any) : Observable<Array<models.Autocomplete>> {
+    public autocompleteFindByField (field: string, q?: string, limit?: string, includePayload?: boolean, lang?: string, checklist?: string, informalTaxonGroup?: string, userToken?: string, extraHttpRequestParams?: any): Observable<Array<models.Autocomplete>> {
         const path = this.basePath + '/autocomplete/{field}'
             .replace('{' + 'field' + '}', String(field));
 

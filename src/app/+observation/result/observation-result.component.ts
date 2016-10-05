@@ -1,5 +1,5 @@
-import {Component, Input, OnInit, OnDestroy, Output, EventEmitter, OnChanges} from '@angular/core';
-import {Location} from '@angular/common';
+import {Component, Input, OnInit, OnDestroy, Output, EventEmitter, OnChanges} from "@angular/core";
+import {Location} from "@angular/common";
 
 import { SearchQuery } from "../search-query.model";
 import {IdService} from "../../shared/service/id.service";

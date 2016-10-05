@@ -1,13 +1,10 @@
-import {Component, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges} from '@angular/core';
-import {FormApiClient, FormApi} from "../api";
-import {UserService} from "../service/user.service";
+import {
+  Component, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges
+} from '@angular/core';
+import { FormApiClient } from '../api';
+import { UserService } from '../service/user.service';
 
-let React = require('react');
-let ReactDOM = require('react-dom');
-let LajiForm = require('../../../../node_modules/laji-form/lib/components/LajiForm').default;
-
-let schema = require('./schema.json');
-
+const lajiFormWrapper = require('laji-form/dist/laji-form').default;
 
 @Component({
   selector: 'laji-form',
@@ -24,12 +21,13 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
   @Output() onChange = new EventEmitter();
 
   elem: ElementRef;
-  reactElem:any;
-  renderElem:any;
+  lajiFormWrapper: any;
+  reactElem: any;
+  renderElem: any;
 
   constructor(@Inject(ElementRef) elementRef: ElementRef,
               private apiClient: FormApiClient,
-              private userService:UserService
+              private userService: UserService
   ) {
     this.elem = elementRef.nativeElement;
   }
@@ -56,24 +54,19 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
     if (!this.formData || !this.lang) {
       return;
     }
-    this.apiClient.lang = this.lang;
-    this.apiClient.personToken = this.userService.getToken();
     try {
-      this.reactElem = React.createElement(LajiForm,
-        {
-          schema: this.formData.schema,
-          uiSchema: this.formData.uiSchema,
-          uiSchemaContext: this.formData.uiSchemaContext,
-          formData: this.formData.formData,
-          onSubmit: this._onSubmit.bind(this),
-          apiClient: this.apiClient,
-          lang: this.lang
-        }
-      );
-      this.renderElem = ReactDOM.render(
-        this.reactElem,
-        this.elem
-      );
+      this.apiClient.lang = this.lang;
+      this.apiClient.personToken = this.userService.getToken();
+      this.lajiFormWrapper = new lajiFormWrapper({
+        rootElem: this.elem,
+        schema: this.formData.schema,
+        uiSchema: this.formData.uiSchema,
+        uiSchemaContext: this.formData.uiSchemaContext,
+        formData: this.formData.formData,
+        onSubmit: this._onSubmit.bind(this),
+        apiClient: this.apiClient,
+        lang: this.lang
+      });
     } catch (err) {
       console.log(err);
     }
@@ -81,16 +74,16 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
 
   _onSubmit(data) {
     this.onSubmit.emit({
-      data:data,
-      makeBlock: LajiForm.pushBlockingLoader,
-      clearBlock: LajiForm.popBlockingLoader
-    })
+      data: data,
+      makeBlock: this.lajiFormWrapper.pushBlockingLoader,
+      clearBlock: this.lajiFormWrapper.popBlockingLoader
+    });
   }
 
   unMount() {
     try {
-      ReactDOM.unmountComponentAtNode(this.elem);
-    } catch(err) {
+      this.lajiFormWrapper.unmount();
+    } catch (err) {
       console.log(err);
     }
   }
