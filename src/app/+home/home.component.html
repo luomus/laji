@@ -4,7 +4,8 @@
     <div class="container">
       <div class="col-sm-8">
         <div class="row">
-          <laji-omni-search [placeholder]="'search-bar.input' | translate" [lang]="translate.currentLang"></laji-omni-search>
+          <laji-omni-search [placeholder]="'search-bar.input' | translate"
+                            [lang]="translate.currentLang"></laji-omni-search>
         </div>
       </div>
     </div>
@@ -19,8 +20,10 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="row">
-                  <laji-navigation-thumbnail [name]="'navigation.taxonomy'" [icon]="'glyphicon-tree-conifer'" [path]="'taxonomy'"></laji-navigation-thumbnail>
-                  <laji-navigation-thumbnail [name]="'navigation.observation'" [icon]="'glyphicon-blackboard'" [path]="'observation'"></laji-navigation-thumbnail>
+                  <laji-navigation-thumbnail [name]="'navigation.taxonomy'" [icon]="'glyphicon-tree-conifer'"
+                                             [path]="'taxonomy'"></laji-navigation-thumbnail>
+                  <laji-navigation-thumbnail [name]="'navigation.observation'" [icon]="'glyphicon-blackboard'"
+                                             [path]="'observation'"></laji-navigation-thumbnail>
                 </div>
               </div>
               <div class="col-md-12">
@@ -36,7 +39,7 @@
                         <form>
                           <div class="form-group">
                             <label for="hasekaInput">Ilmoita havaintosi</label>
-                            <input type="text" class="form-control" id="hasekaInput" placeholder="laji" />
+                            <input type="text" class="form-control" id="hasekaInput" placeholder="laji"/>
                           </div>
                           <button type="submit" class="btn btn-default pull-right">Lähetä</button>
                         </form>

@@ -23,67 +23,66 @@
  */
 
 'use strict';
-import * as models from './index';
 
 export interface Property {
 
 
-    /**
-     * property name
-     */
-    property?: string;
+  /**
+   * property name
+   */
+  property?: string;
 
-    /**
-     * short property name
-     */
-    shortName?: string;
+  /**
+   * short property name
+   */
+  shortName?: string;
 
-    /**
-     * label for the property
-     */
-    label?: string;
+  /**
+   * label for the property
+   */
+  label?: string;
 
-    /**
-     * comment for the property
-     */
-    comment?: string;
+  /**
+   * comment for the property
+   */
+  comment?: string;
 
-    range?: Array<string>;
+  range?: Array<string>;
 
-    domain?: Array<string>;
+  domain?: Array<string>;
 
-    /**
-     * min occurrence
-     */
-    minOccurs?: string;
+  /**
+   * min occurrence
+   */
+  minOccurs?: string;
 
-    /**
-     * max occurrence
-     */
-    maxOccurs?: string;
+  /**
+   * max occurrence
+   */
+  maxOccurs?: string;
 
-    /**
-     * is required (interpreted from occurrence fields)
-     */
-    required?: boolean;
+  /**
+   * is required (interpreted from occurrence fields)
+   */
+  required?: boolean;
 
-    /**
-     * is an array (interpreted from occurrence fields)
-     */
-    hasMany?: boolean;
+  /**
+   * is an array (interpreted from occurrence fields)
+   */
+  hasMany?: boolean;
 
-    /**
-     * has multiple languages
-     */
-    multiLang?: boolean;
+  /**
+   * has multiple languages
+   */
+  multiLang?: boolean;
 
-    /**
-     * range object can be embedded
-     */
-    embedded?: boolean;
+  /**
+   * range object can be embedded
+   */
+  embedded?: boolean;
 
-    /**
-     * Property position in the class
-     */
-    sortOrder?: number;
+  /**
+   * Property position in the class
+   */
+  sortOrder?: number;
 }

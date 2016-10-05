@@ -32,77 +32,77 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class AutocompleteApi {
-    protected basePath = '/api';
-    public defaultHeaders: Headers = new Headers();
+  protected basePath = '/api';
+  public defaultHeaders: Headers = new Headers();
 
-    constructor(protected http: Http, @Optional() basePath: string) {
-        if (basePath) {
-            this.basePath = basePath;
-        }
+  constructor(protected http: Http, @Optional() basePath: string) {
+    if (basePath) {
+      this.basePath = basePath;
+    }
+  }
+
+  /**
+   * Returns autocomplete object
+   *
+   * @param field Field to be used for autocomplete
+   * @param q Partial query
+   * @param limit limit the pageSize of results (defaults to 10)
+   * @param includePayload Include payload in response (default is false)
+   * @param lang Language of fields that have multiple languages.
+   * @param userToken User authentication token
+   */
+  public autocompleteFindByField(field: string, q?: string, limit?: string, includePayload?: boolean, lang?: string, checklist?: string, informalTaxonGroup?: string, userToken?: string, extraHttpRequestParams?: any): Observable<Array<models.Autocomplete>> {
+    const path = this.basePath + '/autocomplete/{field}'
+        .replace('{' + 'field' + '}', String(field));
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'field' is not null or undefined
+    if (field === null || field === undefined) {
+      throw new Error('Required parameter field was null or undefined when calling autocompleteFindByField.');
+    }
+    if (q !== undefined) {
+      queryParameters.set('q', q);
     }
 
-    /**
-     * Returns autocomplete object
-     *
-     * @param field Field to be used for autocomplete
-     * @param q Partial query
-     * @param limit limit the pageSize of results (defaults to 10)
-     * @param includePayload Include payload in response (default is false)
-     * @param lang Language of fields that have multiple languages.
-     * @param userToken User authentication token
-     */
-    public autocompleteFindByField (field: string, q?: string, limit?: string, includePayload?: boolean, lang?: string, checklist?: string, informalTaxonGroup?: string, userToken?: string, extraHttpRequestParams?: any): Observable<Array<models.Autocomplete>> {
-        const path = this.basePath + '/autocomplete/{field}'
-            .replace('{' + 'field' + '}', String(field));
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'field' is not null or undefined
-        if (field === null || field === undefined) {
-            throw new Error('Required parameter field was null or undefined when calling autocompleteFindByField.');
-        }
-        if (q !== undefined) {
-            queryParameters.set('q', q);
-        }
-
-        if (limit !== undefined) {
-            queryParameters.set('limit', limit);
-        }
-
-        if (includePayload !== undefined) {
-            queryParameters.set('includePayload', includePayload ? 'true' : 'false');
-        }
-
-        if (checklist !== undefined) {
-            queryParameters.set('checklist', checklist);
-        }
-
-        if (informalTaxonGroup !== undefined) {
-           queryParameters.set('informalTaxonGroup', informalTaxonGroup);
-        }
-
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
-
-        if (userToken !== undefined) {
-            queryParameters.set('personToken', userToken);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (limit !== undefined) {
+      queryParameters.set('limit', limit);
     }
+
+    if (includePayload !== undefined) {
+      queryParameters.set('includePayload', includePayload ? 'true' : 'false');
+    }
+
+    if (checklist !== undefined) {
+      queryParameters.set('checklist', checklist);
+    }
+
+    if (informalTaxonGroup !== undefined) {
+      queryParameters.set('informalTaxonGroup', informalTaxonGroup);
+    }
+
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
+    }
+
+    if (userToken !== undefined) {
+      queryParameters.set('personToken', userToken);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
 
 }

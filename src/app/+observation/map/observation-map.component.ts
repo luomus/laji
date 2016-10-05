@@ -1,11 +1,11 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges} from '@angular/core';
-import {WarehouseApi} from "../../shared/api/WarehouseApi";
-import {Subscription} from "rxjs";
-import {Util} from "../../shared/service/util.service";
-import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { WarehouseApi } from '../../shared/api/WarehouseApi';
+import { Subscription } from 'rxjs';
+import { Util } from '../../shared/service/util.service';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { TranslateService } from 'ng2-translate';
+import { ValueDecoratorService } from '../result-list/value-decorator.sevice';
 import LatLngBounds = L.LatLngBounds;
-import {TranslateService} from "ng2-translate";
-import {ValueDecoratorService} from "../result-list/value-decorator.sevice";
 
 @Component({
   selector: 'laji-observation-map',
@@ -15,50 +15,49 @@ import {ValueDecoratorService} from "../result-list/value-decorator.sevice";
 })
 export class ObservationMapComponent implements OnInit, OnChanges {
 
-  @Input() visible:boolean = false;
-  @Input() query:WarehouseQueryInterface;
-  @Input() opacity:number = .5;
-  @Input() lat:string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid01.lat'];
-  @Input() lon:string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
-  @Input() zoomThresholds:number[] = [5]; // zoom levels from lowest to highest when to move to more accurate grid
-  @Input() onlyViewPortThreshold:number = 1; // when active level is higher or equal to this will be using viewport coordinates to show grid
-  @Input() size:number = 5000;
-  @Input() lastPage:number = 7; // 0 = no page limit
-  @Input() draw:boolean = false;
-  @Input() height:number;
-  @Input() selectColor:string = '#00aa00';
-  @Input() color:any = ['#ffffb2','#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
-  @Input() showLoadMore:boolean = true;
-  @Input() legend:boolean = false;
-  @Input() colorThresholds = [ 10, 100, 1000, 10000 ]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
+  @Input() visible: boolean = false;
+  @Input() query: WarehouseQueryInterface;
+  @Input() opacity: number = .5;
+  @Input() lat: string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid01.lat'];
+  @Input() lon: string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
+  @Input() zoomThresholds: number[] = [5]; // zoom levels from lowest to highest when to move to more accurate grid
+  @Input() onlyViewPortThreshold: number = 1; // when active level is higher or equal to this will be using viewport coordinates to show grid
+  @Input() size: number = 5000;
+  @Input() lastPage: number = 7; // 0 = no page limit
+  @Input() draw: boolean = false;
+  @Input() height: number;
+  @Input() selectColor: string = '#00aa00';
+  @Input() color: any = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
+  @Input() showLoadMore: boolean = true;
+  @Input() legend: boolean = false;
+  @Input() colorThresholds = [10, 100, 1000, 10000]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
   @Output() create = new EventEmitter();
-  @Input() showItemsWhenLessThan:number = 0;
-  @Input() tick:number;
-  @Input() itemFields:string[] = [
+  @Input() showItemsWhenLessThan: number = 0;
+  @Input() tick: number;
+  @Input() itemFields: string[] = [
     'unit.linkings.taxon',
     'gathering.team',
     'gathering.eventDate'
   ];
 
   public mapData;
-  public drawData:any = {featureCollection: {type: "featureCollection", features: []}};
+  public drawData: any = {featureCollection: {type: "featureCollection", features: []}};
   public tack = 0;
   public loading = false;
-  private prev:string = '';
+  private prev: string = '';
   private subDataFetch: Subscription;
-  private style:(count:number)=>string;
-  private lastQuery:WarehouseQueryInterface;
-  private viewBound:LatLngBounds;
+  private style: (count: number)=>string;
+  private lastQuery: WarehouseQueryInterface;
+  private viewBound: LatLngBounds;
   private activeLevel = 0;
-  private activeBounds:LatLngBounds;
+  private activeBounds: LatLngBounds;
   private reset = true;
   private showingItems = false;
 
-  constructor(
-    private warehouseService:WarehouseApi,
-    public translate: TranslateService,
-    private decorator: ValueDecoratorService
-  ) { }
+  constructor(private warehouseService: WarehouseApi,
+              public translate: TranslateService,
+              private decorator: ValueDecoratorService) {
+  }
 
   ngOnInit() {
     this.lastQuery = JSON.stringify(this.query);
@@ -79,7 +78,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     let curActive = this.activeLevel;
     this.viewBound = e.bounds;
     this.activeLevel = 0;
-    for(let i = 0, len = this.zoomThresholds.length; i < len; i++) {
+    for (let i = 0, len = this.zoomThresholds.length; i < len; i++) {
       if (this.zoomThresholds[i] < e.zoom) {
         this.activeLevel = i + 1;
       }
@@ -88,7 +87,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       !this.showingItems &&
       e.type === 'moveend' && (
         curActive !== this.activeLevel ||
-        (this.activeLevel >= this.onlyViewPortThreshold && (!this.activeBounds || !this.activeBounds.contains(e.bounds)))
+        (this.activeLevel >= this.onlyViewPortThreshold && (!this.activeBounds || !this.activeBounds.contains(e.bounds)))
       )
     ) {
       this.activeBounds = e.bounds.pad(1);
@@ -96,12 +95,12 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     }
   }
 
-  getLegendTopMargin():string {
+  getLegendTopMargin(): string {
     let top = 20, items = this.color instanceof Array ? this.color.length : 1;
     return '-' + (top + (items * 20)) + 'px';
   }
 
-  getLegends():{color:string, range:string}[] {
+  getLegends(): {color: string, range: string}[] {
     let legends = [], start = 1;
     if (this.color instanceof Array) {
       this.color.map((color, idx) => {
@@ -111,7 +110,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           end = '-' + newStart
         }
         legends.push({
-          color:color,
+          color: color,
           range: start + end
         });
         start = newStart + 1;
@@ -179,7 +178,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     }
   }
 
-  private getFeature(geometry:Object) {
+  private getFeature(geometry: Object) {
     return {
       type: "Feature",
       geometry: geometry
@@ -212,13 +211,13 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     this.addToMap(query);
   }
 
-  private addToMap(query:WarehouseQueryInterface, page = 1) {
+  private addToMap(query: WarehouseQueryInterface, page = 1) {
     const geoJson$ = this.warehouseService.warehouseQueryAggregateGet(
       query, [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
       undefined, this.size, page, true
     );
 
-    const items$ = this.warehouseService.warehouseQueryListGet(query,  [
+    const items$ = this.warehouseService.warehouseQueryListGet(query, [
       'gathering.conversions.wgs84CenterPoint.lon',
       'gathering.conversions.wgs84CenterPoint.lat',
       ...this.itemFields
@@ -229,7 +228,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           let coordinates = [
             this.getValue(row, 'gathering.conversions.wgs84CenterPoint.lon'),
             this.getValue(row, 'gathering.conversions.wgs84CenterPoint.lat')
-            ];
+          ];
           if (!coordinates[0] || !coordinates[0]) {
             return;
           }
@@ -248,10 +247,12 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           });
         })
       }
-      return {featureCollection: {
-        "type": "FeatureCollection",
-        "features": features
-      }};
+      return {
+        featureCollection: {
+          "type": "FeatureCollection",
+          "features": features
+        }
+      };
     }).do(() => {
       if (this.activeLevel < this.onlyViewPortThreshold) {
         this.showingItems = true
@@ -264,32 +265,32 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
     this.subDataFetch = (this.showItemsWhenLessThan > 0 ? count$ : geoJson$)
       .subscribe(
-      (data) => {
-        if (data.featureCollection) {
-          if (this.reset) {
-            this.reset = false;
-            this.mapData = [{
-              featureCollection: data.featureCollection,
-              getFeatureStyle: this.getStyle.bind(this),
-              getPopup: this.getPopup.bind(this)
-            }];
+        (data) => {
+          if (data.featureCollection) {
+            if (this.reset) {
+              this.reset = false;
+              this.mapData = [{
+                featureCollection: data.featureCollection,
+                getFeatureStyle: this.getStyle.bind(this),
+                getPopup: this.getPopup.bind(this)
+              }];
+            } else {
+              this.mapData[0].featureCollection.features =
+                this.mapData[0].featureCollection.features.concat(data.featureCollection.features);
+            }
+          }
+          this.tack++;
+          if (this.tack > 1000) {
+            this.tack = 0;
+          }
+          if (data.lastPage > page && (this.lastPage == 0 || page <= this.lastPage)) {
+            page++;
+            this.addToMap(query, page);
           } else {
-            this.mapData[0].featureCollection.features =
-              this.mapData[0].featureCollection.features.concat(data.featureCollection.features);
+            this.loading = false;
           }
         }
-        this.tack++;
-        if (this.tack > 1000) {
-          this.tack = 0;
-        }
-        if (data.lastPage > page && (this.lastPage == 0 || page <= this.lastPage)) {
-          page++;
-          this.addToMap(query, page);
-        } else {
-          this.loading = false;
-        }
-      }
-    );
+      );
   }
 
   getValue(row: any, propertyName: string): string {
@@ -302,7 +303,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     return val;
   }
 
-  private getCacheKey(query:WarehouseQueryInterface) {
+  private getCacheKey(query: WarehouseQueryInterface) {
     let cache = JSON.stringify(query);
     if ((!this.activeBounds || this.activeLevel < this.onlyViewPortThreshold) || query.coordinates) {
       return cache + this.activeLevel;
@@ -310,7 +311,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     return cache + this.activeBounds.toBBoxString() + this.activeLevel;
   }
 
-  private getStyle(data:StyleParam) {
+  private getStyle(data: StyleParam) {
     let currentColor = "#00aa00";
     let feature = this.mapData[data.dataIdx].featureCollection.features[data.featureIdx];
     if (feature.properties.title) {
@@ -325,7 +326,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
 
-  private getPopup(idx:number, cb:Function) {
+  private getPopup(idx: number, cb: Function) {
     try {
       const properties = this.mapData[0].featureCollection.features[idx].properties;
       let cnt = properties.title;
@@ -333,7 +334,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       this.itemFields.map(field => {
         let name = field.split('.').pop();
         if (properties[name]) {
-          description += this.decorator.decorate(field, properties[name],{}) + '<br>';
+          description += this.decorator.decorate(field, properties[name], {}) + '<br>';
         }
       });
       if (description) {
@@ -342,11 +343,12 @@ export class ObservationMapComponent implements OnInit, OnChanges {
         this.translate.get("result.allObservation")
           .subscribe(translation => cb(`${cnt} ${translation}`));
       }
-    } catch (e) {}
+    } catch (e) {
+    }
   }
 }
 
 interface StyleParam {
-  dataIdx:number;
-  featureIdx:number
+  dataIdx: number;
+  featureIdx: number
 }

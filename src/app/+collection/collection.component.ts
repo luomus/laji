@@ -4,4 +4,5 @@ import { Component } from '@angular/core';
   selector: 'laji-collection',
   templateUrl: './collection.component.html'
 })
-export class CollectionComponent {}
+export class CollectionComponent {
+}

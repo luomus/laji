@@ -1,9 +1,8 @@
-import {Routes, RouterModule} from '@angular/router';
-
+import { Routes, RouterModule } from '@angular/router';
 import { CollectionComponent } from './collection.component';
-import {ModuleWithProviders} from '@angular/core';
+import { ModuleWithProviders } from '@angular/core';
 
-export const CollectionRoutes: Routes = [
+export const collectionRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
@@ -11,4 +10,4 @@ export const CollectionRoutes: Routes = [
   }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(CollectionRoutes);
+export const routing: ModuleWithProviders = RouterModule.forChild(collectionRoutes);

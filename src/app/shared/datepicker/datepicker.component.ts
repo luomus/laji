@@ -1,38 +1,32 @@
 /**
- Originally from here: https://github.com/jkuri/ng2-datepicker
-
- Modified to meet our needs
-
- Original license:
- The MIT License (MIT)
-
- Copyright (c) 2015 Jan Kuri
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
+ * Originally from here: https://github.com/jkuri/ng2-datepicker
+ *
+ * Modified to meet our needs
+ *
+ * Original license:
+ * The MIT License (MIT)
+ * Copyright (c) 2015 Jan Kuri
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
-import {
-  Component,
-  OnInit,
-  ViewContainerRef,
-  Input,forwardRef, OnDestroy
-} from '@angular/core';
+import { Component, OnInit, ViewContainerRef, Input, forwardRef, OnDestroy } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import * as moment from 'moment';
 
@@ -72,10 +66,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   private days: CalendarDate[] = [];
   private cbFunc: any;
 
-  private onTouchedCallback: () => void = () => { };
-  private onChangeCallback: (_: any) => void = () => { };
-
-  constructor(viewContainerRef: ViewContainerRef) {
+  constructor(private viewContainerRef: ViewContainerRef) {
     this.el = viewContainerRef.element.nativeElement;
   }
 
@@ -149,7 +140,8 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     let selectedDate = moment(this.value, this.viewFormat);
     for (let i = n; i <= date.endOf('month').date(); i += 1) {
       let currentDate = moment(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
-      let today = (moment().isSame(currentDate, 'day') && moment().isSame(currentDate, 'month')) ? true : false;
+      let today = (moment().isSame(currentDate, 'day') && moment().isSame(currentDate, 'month'))
+        ? true : false;
       let selected = (selectedDate.isSame(currentDate, 'day')) ? true : false;
 
       if (i > 0) {
@@ -240,4 +232,9 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   clear() {
     this.value = '';
   }
+
+  private onTouchedCallback: () => void = () => {
+  };
+  private onChangeCallback: (_: any) => void = () => {
+  };
 }

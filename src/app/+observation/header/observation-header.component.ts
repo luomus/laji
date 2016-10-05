@@ -1,6 +1,5 @@
-import {Component} from '@angular/core';
-
-import {SearchQuery} from "../search-query.model";
+import { Component } from '@angular/core';
+import { SearchQuery } from '../search-query.model';
 
 @Component({
   selector: 'laji-observation-header',
@@ -8,7 +7,8 @@ import {SearchQuery} from "../search-query.model";
 })
 export class ObservationHeaderComponent {
 
-  constructor(public searchQuery:SearchQuery) {}
+  constructor(public searchQuery: SearchQuery) {
+  }
 
 }
 

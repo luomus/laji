@@ -1,9 +1,9 @@
-import {Injectable, Inject} from "@angular/core";
-import {PersonTokenApi} from "../api/PersonTokenApi";
-import {Subscription, Observable, Observer} from "rxjs";
-import {Person} from "../model/Person";
-import {PersonApi} from "../api/PersonApi";
-import {LocalStorage} from "angular2-localstorage/dist";
+import { Injectable } from '@angular/core';
+import { PersonTokenApi } from '../api/PersonTokenApi';
+import { Subscription, Observable, Observer } from 'rxjs';
+import { Person } from '../model/Person';
+import { PersonApi } from '../api/PersonApi';
+import { LocalStorage } from 'angular2-localstorage/dist';
 
 var config = require('../../../../config.json');
 
@@ -11,33 +11,31 @@ var config = require('../../../../config.json');
 export class UserService {
 
   @LocalStorage() private token = '';
-  private user:Person;
-  private users:{[id:string]:Person} = {};
-  private usersFetch:{[id:string]:Observable<Person>} = {};
-  private defaultFormData:any;
+  private user: Person;
+  private users: {[id: string]: Person} = {};
+  private usersFetch: {[id: string]: Observable<Person>} = {};
+  private defaultFormData: any;
 
-  private subUser:Subscription;
-  private subLogout:Subscription;
+  private subUser: Subscription;
+  private subLogout: Subscription;
   private observable: Observable<Person>;
   private formDefaultObservable: Observable<any>;
 
-  constructor(
-    private tokenService:PersonTokenApi,
-    private userService:PersonApi
-  ) {
+  constructor(private tokenService: PersonTokenApi,
+              private userService: PersonApi) {
     if (this.token) {
       this.loadUserInfo(this.token);
     }
   }
 
-  public login(userToken:string) {
+  public login(userToken: string) {
     if (this.user === userToken || this.subUser) {
       return;
     }
     this.loadUserInfo(userToken);
   }
 
-  private loadUserInfo(token:string) {
+  private loadUserInfo(token: string) {
     this.token = token;
     this.getUser()
       .subscribe(
@@ -50,7 +48,7 @@ export class UserService {
   }
 
   public logout() {
-    if (this.token === '' || this.subLogout) {
+    if (this.token === '' || this.subLogout) {
       return;
     }
     let token = this.token;
@@ -58,16 +56,17 @@ export class UserService {
     this.user = undefined;
     this.subLogout = this.tokenService.personTokenDeleteToken(token)
       .subscribe(
-        () => {},
+        () => {
+        },
         err => console.log(err)
       )
   }
 
-  public getToken():string {
+  public getToken(): string {
     return this.token;
   }
 
-  public getUser(id?:string):Observable<Person> {
+  public getUser(id?: string): Observable<Person> {
     if (!id) {
       return this.getCurrentUser();
     }
@@ -112,11 +111,11 @@ export class UserService {
     return this.token !== '';
   }
 
-  public getLoginUrl():string {
+  public getLoginUrl(): string {
     return config.login_url;
   }
 
-  public getDefaultFormData():Observable<any> {
+  public getDefaultFormData(): Observable<any> {
     if (this.defaultFormData) {
       return Observable.of(this.defaultFormData);
     } else if (this.formDefaultObservable) {

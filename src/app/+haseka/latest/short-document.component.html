@@ -2,9 +2,9 @@
   {{document.id}} {{document.dateEdited}}
 </a>
 <span
-  *ngIf="taxa.length > 0"
-  class="link"
-  (click)="showList = !showList">
+        *ngIf="taxa.length > 0"
+        class="link"
+        (click)="showList = !showList">
   details
   <i class="glyphicon"
      style="font-size:0.8em"
@@ -24,7 +24,8 @@
 <ul *ngIf="showList">
   <li *ngFor="let taxon of taxa">
     <a [routerLink]="['/haseka/JX.519/' + document.id]">
-      {{taxon.name}} <small>{{taxon.id}}</small>
+      {{taxon.name}}
+      <small>{{taxon.id}}</small>
     </a>
   </li>
 </ul>

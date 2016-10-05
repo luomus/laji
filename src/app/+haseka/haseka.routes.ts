@@ -1,9 +1,8 @@
-import {Routes, RouterModule} from '@angular/router';
-import {ModuleWithProviders} from "@angular/core";
-
+import { Routes, RouterModule } from '@angular/router';
+import { ModuleWithProviders } from '@angular/core';
 import { HasekaComponent } from './haseka.component';
-import { HaSeKaTermsOfServiceComponent } from "./terms-of-service/terms-of-service.component";
-import { HaSeKaFormComponent } from "./form/haseka-form.component";
+import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
+import { HaSeKaFormComponent } from './form/haseka-form.component';
 
 export const HasekaRoutes: Routes = [
   {

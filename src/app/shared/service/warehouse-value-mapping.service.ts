@@ -1,14 +1,13 @@
-import {Observable, Observer} from "rxjs";
-
-import {WarehouseApi} from "../api/WarehouseApi";
-import {Injectable } from "@angular/core";
+import { Observable, Observer } from 'rxjs';
+import { WarehouseApi } from '../api/WarehouseApi';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class WarehouseValueMappingService {
 
   private mapping;
   private reverse;
-  private pending:Observable<any>;
+  private pending: Observable<any>;
 
   constructor(private warehouseService: WarehouseApi) {
     this.pending = this.warehouseService.warehouseEnumerationLabels()
@@ -16,15 +15,15 @@ export class WarehouseValueMappingService {
       .share();
   };
 
-  public getOriginalKey(value):Observable<string> {
+  public getOriginalKey(value): Observable<string> {
     return this.get(value, 'mapping');
   }
 
-  public getWarehouseKey(value):Observable<string> {
+  public getWarehouseKey(value): Observable<string> {
     return this.get(value, 'reverse');
   }
 
-  public get(value, list):Observable<string> {
+  public get(value, list): Observable<string> {
     if (!this[list] && this.pending) {
       return Observable.create((observer: Observer<string>) => {
         var onComplete = (res: string) => {
@@ -44,8 +43,8 @@ export class WarehouseValueMappingService {
     this.mapping = {};
     this.reverse = {};
     result.results.map(translation => {
-      let key = translation.enumeration || '';
-      let value = translation.property || '';
+      let key = translation.enumeration || '';
+      let value = translation.property || '';
       this.mapping[key] = value;
       this.reverse[value] = key;
     });

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FooterService} from "../service/footer.service";
+import { FooterService } from '../service/footer.service';
 
 @Component({
   selector: 'laji-footer',
@@ -7,5 +7,6 @@ import {FooterService} from "../service/footer.service";
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent {
-  constructor(public footerService:FooterService) {}
+  constructor(public footerService: FooterService) {
+  }
 }

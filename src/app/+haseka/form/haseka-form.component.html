@@ -3,19 +3,19 @@
   <p>{{form?.description}}</p>
   <div class="laji-form" *ngIf="form?.id">
     <laji-form
-      [formId]="formId"
-      [formData]="form"
-      [lang]="lang"
-      (onChange)="onChange($event)"
-      (onSubmit)="onSubmit($event)"></laji-form>
+            [formId]="formId"
+            [formData]="form"
+            [lang]="lang"
+            (onChange)="onChange($event)"
+            (onSubmit)="onSubmit($event)"></laji-form>
   </div>
   <alert
-    *ngIf="success"
-    [type]="'success'">
+          *ngIf="success"
+          [type]="'success'">
     {{'haseka.form.success'|translate}}
   </alert>
   <alert
-    *ngIf="error">
+          *ngIf="error">
     <strong>{{error.title | translate}}</strong><br>
     {{error.detail}}
   </alert>

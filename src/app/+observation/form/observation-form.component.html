@@ -8,10 +8,10 @@
           </label>
           <div class="col-sm-10">
             <observation-group-select
-              [(ngModel)]="formQuery.informalTaxonGroupId"
-              name="informalTaxonGroupId"
-              [lang]="translate.currentLang"
-              (onSelect)="onSubmit()">
+                    [(ngModel)]="formQuery.informalTaxonGroupId"
+                    name="informalTaxonGroupId"
+                    [lang]="translate.currentLang"
+                    (onSelect)="onSubmit()">
               {{'observation.active.informalTaxonGroupAll'|translate}}
             </observation-group-select>
           </div>
@@ -22,21 +22,21 @@
           </label>
           <div class="col-md-6">
             <input
-              [ngClass]="{loading: typeaheadLoading}"
-              type="text"
-              class="form-control input-sm"
-              name="target"
-              [(ngModel)]="formQuery.taxon"
-              [typeahead]="dataSource"
-              [typeaheadOptionsLimit]="limit"
-              [typeaheadOptionField]="'value'"
-              [typeaheadWaitMs]="200"
-              [typeaheadMinLength]="4"
-              [typeaheadOptionField]="'target'"
-              [typeaheadItemTemplate]="taxonItem"
-              (typeaheadLoading)="changeTypeaheadLoading($event)"
-              autocomplete="off"
-              autocorrect="off"
+                    [ngClass]="{loading: typeaheadLoading}"
+                    type="text"
+                    class="form-control input-sm"
+                    name="target"
+                    [(ngModel)]="formQuery.taxon"
+                    [typeahead]="dataSource"
+                    [typeaheadOptionsLimit]="limit"
+                    [typeaheadOptionField]="'value'"
+                    [typeaheadWaitMs]="200"
+                    [typeaheadMinLength]="4"
+                    [typeaheadOptionField]="'target'"
+                    [typeaheadItemTemplate]="taxonItem"
+                    (typeaheadLoading)="changeTypeaheadLoading($event)"
+                    autocomplete="off"
+                    autocorrect="off"
             >
             <template #taxonItem let-model="item">
               <h5 class="autosuggest-value {{getTaxonGroup(model.payload, 'id')}} informal-group-image">
@@ -49,17 +49,17 @@
           <label class="col-md-2 control-label">{{'observation.form.date' | translate}}:</label>
           <div class="col-md-3">
             <laji-datepicker
-              [(ngModel)]="formQuery.timeStart"
-              [viewFormat]="'DD.MM.YYYY'"
-              [format]="warehouseDateFormat"
-              name="timeStart"></laji-datepicker>
+                    [(ngModel)]="formQuery.timeStart"
+                    [viewFormat]="'DD.MM.YYYY'"
+                    [format]="warehouseDateFormat"
+                    name="timeStart"></laji-datepicker>
           </div>
           <div class="col-md-3">
             <laji-datepicker
-              [(ngModel)]="formQuery.timeEnd"
-              [viewFormat]="'DD.MM.YYYY'"
-              [format]="warehouseDateFormat"
-              name="timeEnd"></laji-datepicker>
+                    [(ngModel)]="formQuery.timeEnd"
+                    [viewFormat]="'DD.MM.YYYY'"
+                    [format]="warehouseDateFormat"
+                    name="timeEnd"></laji-datepicker>
           </div>
           <div class="col-md-3">
             <div class="btn-group">
@@ -72,8 +72,8 @@
           </div>
           <div class="col-sm-10 col-sm-offset-2">
             <laji-observation-active
-              *ngIf="!showFilter"
-              [skip]="['target', 'includeNonValidTaxa', 'informalTaxonGroupId']"
+                    *ngIf="!showFilter"
+                    [skip]="['target', 'includeNonValidTaxa', 'informalTaxonGroupId']"
             ></laji-observation-active>
           </div>
         </div>
@@ -90,7 +90,9 @@
             </button>
           </div>
           <div class="col-sm-2">
-            <button type="button" class="btn btn-sm btn-default" (click)="gotToMap()">{{'observation.form.map'|translate}}</button>
+            <button type="button" class="btn btn-sm btn-default" (click)="gotToMap()">
+              {{'observation.form.map'|translate}}
+            </button>
           </div>
         </div>
         <div [hidden]="!showFilter">
@@ -120,23 +122,23 @@
             <label class="col-md-2 control-label">{{'observation.form.sex' | translate}}:</label>
             <div class="col-md-3">
               <metadata-select
-                [(ngModel)]="searchQuery.query.sex"
-                [field]="'MY.sex'"
-                [pick]="pickSex"
-                [mapToWarehouse]="true"
-                name="sex"
-                [lang]="translate.currentLang"></metadata-select>
+                      [(ngModel)]="searchQuery.query.sex"
+                      [field]="'MY.sex'"
+                      [pick]="pickSex"
+                      [mapToWarehouse]="true"
+                      name="sex"
+                      [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
           <div class="form-group">
             <label class="col-md-2 control-label">{{'MY.lifeStage' | label}}:</label>
             <div class="col-md-3">
               <metadata-select
-                [(ngModel)]="searchQuery.query.lifeStage"
-                [field]="'MY.lifeStage'"
-                [mapToWarehouse]="true"
-                name="lifeStage"
-                [lang]="translate.currentLang"></metadata-select>
+                      [(ngModel)]="searchQuery.query.lifeStage"
+                      [field]="'MY.lifeStage'"
+                      [mapToWarehouse]="true"
+                      name="lifeStage"
+                      [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
           <div class="row">
@@ -148,20 +150,20 @@
             <label class="col-md-2 control-label">{{'MY.recordBasis' | label}}:</label>
             <div class="col-md-3">
               <metadata-select
-                [(ngModel)]="searchQuery.query.recordBasis"
-                [multiple]="true"
-                name="recordBasis"
-                [mapToWarehouse]="true"
-                [field]="'MY.recordBasis'"
-                [lang]="translate.currentLang"></metadata-select>
+                      [(ngModel)]="searchQuery.query.recordBasis"
+                      [multiple]="true"
+                      name="recordBasis"
+                      [mapToWarehouse]="true"
+                      [field]="'MY.recordBasis'"
+                      [lang]="translate.currentLang"></metadata-select>
             </div>
             <label class="col-md-2 control-label">{{'observation.form.documentId' | translate}}:</label>
             <div class="col-md-3">
               <input
-                class="form-control input-sm"
-                type="text"
-                name="documentId"
-                [(ngModel)]="searchQuery.query.documentId"
+                      class="form-control input-sm"
+                      type="text"
+                      name="documentId"
+                      [(ngModel)]="searchQuery.query.documentId"
               >
             </div>
           </div>
@@ -169,10 +171,10 @@
             <label class="col-md-2 control-label">{{'MY.collectionID' | label}}:</label>
             <div class="col-md-3">
               <metadata-select
-                [(ngModel)]="searchQuery.query.collectionId"
-                [field]="'MY.collectionID'"
-                name="collectionID"
-                [lang]="translate.currentLang"></metadata-select>
+                      [(ngModel)]="searchQuery.query.collectionId"
+                      [field]="'MY.collectionID'"
+                      name="collectionID"
+                      [lang]="translate.currentLang"></metadata-select>
             </div>
             <label class="col-md-2 control-label">{{'observation.form.typeSpecimen' | translate}}:</label>
             <div class="col-md-1">
@@ -190,35 +192,35 @@
             <label class="col-md-2 control-label">{{'MX.hasAdminStatus' | label}}:</label>
             <div class="col-md-3">
               <metadata-select
-                [(ngModel)]="searchQuery.query.administrativeStatusId"
-                name="administrativeStatusId"
-                [field]="'MX.hasAdminStatus'"
-                [lang]="translate.currentLang"></metadata-select>
+                      [(ngModel)]="searchQuery.query.administrativeStatusId"
+                      name="administrativeStatusId"
+                      [field]="'MX.hasAdminStatus'"
+                      [lang]="translate.currentLang"></metadata-select>
             </div>
             <label class="col-md-2 control-label">{{'observation.form.redListStatusId' | translate}}:</label>
             <div class="col-md-3">
               <metadata-select
-                [(ngModel)]="searchQuery.query.redListStatusId"
-                [multiple]="true"
-                name="redListStatusId"
-                [field]="'MKV.redListStatus'"
-                [lang]="translate.currentLang"></metadata-select>
+                      [(ngModel)]="searchQuery.query.redListStatusId"
+                      [multiple]="true"
+                      name="redListStatusId"
+                      [field]="'MKV.redListStatus'"
+                      [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
           <div class="form-group">
             <label class="col-md-2 control-label">{{'observation.form.invasive' | translate}}:</label>
             <div class="col-md-3">
               <multi-radio
-                [options]="invasiveOptions"
-                [(ngModel)]="searchQuery.query.invasive"
-                name="invasive"></multi-radio>
+                      [options]="invasiveOptions"
+                      [(ngModel)]="searchQuery.query.invasive"
+                      name="invasive"></multi-radio>
             </div>
             <label class="col-md-2 control-label">{{'observation.form.finnish' | translate}}:</label>
             <div class="col-md-3">
               <multi-radio
-                [options]="finnishOptions"
-                [(ngModel)]="searchQuery.query.finnish"
-                name="finnish"></multi-radio>
+                      [options]="finnishOptions"
+                      [(ngModel)]="searchQuery.query.finnish"
+                      name="finnish"></multi-radio>
             </div>
           </div>
           <div class="row">
@@ -230,9 +232,9 @@
             <label class="col-md-2 control-label">{{'observation.form.hasMedia' | translate}}:</label>
             <div class="col-md-3">
               <multi-radio
-                [options]="mediaOptions"
-                [(ngModel)]="searchQuery.query.hasMedia"
-                name="hasMedia"></multi-radio>
+                      [options]="mediaOptions"
+                      [(ngModel)]="searchQuery.query.hasMedia"
+                      name="hasMedia"></multi-radio>
             </div>
             <label class="col-md-2 control-label">{{'observation.form.includeNonValidTaxa' | translate}}:</label>
             <div class="col-md-1">
@@ -255,7 +257,8 @@
         </div>
       </div>
       <div [ngStyle]="{'min-height': getTabHeight()}" #tabs>
-        <laji-observation-result [(active)]="activeTab" [(filters)]="filters" (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>
+        <laji-observation-result [(active)]="activeTab" [(filters)]="filters"
+                                 (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>
       </div>
     </div>
   </div>

@@ -27,16 +27,16 @@
     </table>
   </div>
   <pagination
-    *ngIf="showPager"
-    [totalItems]="total"
-    [itemsPerPage]="limit"
-    [(ngModel)]="page"
-    (pageChanged)="pageChanged($event)"
-    [maxSize]="7"
-    [boundaryLinks]="true"
-    [firstText]="'paginator.first' | translate"
-    [lastText]="'paginator.last' | translate"
-    [previousText]="'paginator.previous' | translate"
-    [nextText]="'paginator.next' | translate"
+          *ngIf="showPager"
+          [totalItems]="total"
+          [itemsPerPage]="limit"
+          [(ngModel)]="page"
+          (pageChanged)="pageChanged($event)"
+          [maxSize]="7"
+          [boundaryLinks]="true"
+          [firstText]="'paginator.first' | translate"
+          [lastText]="'paginator.last' | translate"
+          [previousText]="'paginator.previous' | translate"
+          [nextText]="'paginator.next' | translate"
   ></pagination>
 </laji-spinner>

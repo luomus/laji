@@ -1,12 +1,12 @@
-import {NgModule} from '@angular/core';
-import {RouterModule} from "@angular/router";
-
-import { NewsComponent, routing }   from './index';
-import { SharedModule } from "../shared/shared.module";
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { NewsComponent, routing } from './index';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule],
   declarations: [NewsComponent]
 })
-export class NewsModule {}
+export class NewsModule {
+}

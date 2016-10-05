@@ -28,195 +28,195 @@ import * as models from './index';
 export interface Gatherings {
 
 
-    /**
-     * Unique ID for the object. (if none given id will be auto generated during insert)
-     */
-    id?: string;
+  /**
+   * Unique ID for the object. (if none given id will be auto generated during insert)
+   */
+  id?: string;
 
-    /**
-     * AFE grid name
-     */
-    aFEQuadrat?: string;
+  /**
+   * AFE grid name
+   */
+  aFEQuadrat?: string;
 
-    /**
-     * UTM grid name
-     */
-    uTMQuadrat?: string;
+  /**
+   * UTM grid name
+   */
+  uTMQuadrat?: string;
 
-    /**
-     * Separate multiple names with commas, from generic to specific. (E.g. Etelä-Suomen lääni, Uusimaa)
-     */
-    administrativeProvince?: string;
+  /**
+   * Separate multiple names with commas, from generic to specific. (E.g. Etelä-Suomen lääni, Uusimaa)
+   */
+  administrativeProvince?: string;
 
-    /**
-     * Altitude form sea level in meters, or range (E.g. 90, or 80-100). No GPS altitude here.
-     */
-    alt?: string;
+  /**
+   * Altitude form sea level in meters, or range (E.g. 90, or 80-100). No GPS altitude here.
+   */
+  alt?: string;
 
-    areaDetail?: string;
+  areaDetail?: string;
 
-    /**
-     * Write associated taxa names here, separated by a semicolon (;). E.g.: \\\"Betula pendula; Betula pubescens; Poaceae\\\".
-     */
-    associatedObservationTaxa?: string;
+  /**
+   * Write associated taxa names here, separated by a semicolon (;). E.g.: \\\"Betula pendula; Betula pubescens; Poaceae\\\".
+   */
+  associatedObservationTaxa?: string;
 
-    associatedSpecimenTaxa?: string;
+  associatedSpecimenTaxa?: string;
 
-    /**
-     * Formal abbreviation. For Finnish eliömaakunnat, use Finnish abbreviation.
-     */
-    biologicalProvince?: string;
+  /**
+   * Formal abbreviation. For Finnish eliömaakunnat, use Finnish abbreviation.
+   */
+  biologicalProvince?: string;
 
-    /**
-     * Name of an expedition or such
-     */
-    collectingEventName?: string;
+  /**
+   * Name of an expedition or such
+   */
+  collectingEventName?: string;
 
-    /**
-     * Informal notes about the coordinates
-     */
-    coordinateNotes?: string;
+  /**
+   * Informal notes about the coordinates
+   */
+  coordinateNotes?: string;
 
-    /**
-     * Maximum error of coordinates in meters
-     */
-    coordinateRadius?: string;
+  /**
+   * Maximum error of coordinates in meters
+   */
+  coordinateRadius?: string;
 
-    /**
-     * Use for NEW SPECIMENS: Where the coordinates have been acquired
-     */
-    coordinateSource?: string;
+  /**
+   * Use for NEW SPECIMENS: Where the coordinates have been acquired
+   */
+  coordinateSource?: string;
 
-    /**
-     * Examples of different coordinate styles are at https://wiki.helsinki.fi/display/digit/Entering+specimen+data
-     */
-    coordinateSystem?: string;
+  /**
+   * Examples of different coordinate styles are at https://wiki.helsinki.fi/display/digit/Entering+specimen+data
+   */
+  coordinateSystem?: string;
 
-    coordinatesGridYKJ?: string;
+  coordinatesGridYKJ?: string;
 
-    coordinatesVerbatim?: string;
+  coordinatesVerbatim?: string;
 
-    /**
-     * Country name in English, or 2-letter country code, or name from label
-     */
-    country?: string;
+  /**
+   * Country name in English, or 2-letter country code, or name from label
+   */
+  country?: string;
 
-    dateBegin?: string;
+  dateBegin?: string;
 
-    dateEnd?: string;
+  dateEnd?: string;
 
-    /**
-     * Date just as it appears on the label or other original source, no interpretation, errors and all
-     */
-    dateVerbatim?: string;
+  /**
+   * Date just as it appears on the label or other original source, no interpretation, errors and all
+   */
+  dateVerbatim?: string;
 
-    /**
-     * Depth in meters, or range (E.g. 0.9, or 0.8-1.0)
-     */
-    depth?: string;
+  /**
+   * Depth in meters, or range (E.g. 0.9, or 0.8-1.0)
+   */
+  depth?: string;
 
-    eventDate?: string;
+  eventDate?: string;
 
-    forestVegetationZone?: string;
+  forestVegetationZone?: string;
 
-    /**
-     * Geological information about gathering
-     */
-    geometry?: models.Geometry;
+  /**
+   * Geological information about gathering
+   */
+  geometry?: models.Geometry;
 
-    /**
-     * Use for OLD SPECIMENS: What source was used to get coordinates from locality name
-     */
-    georeferenceSource?: string;
+  /**
+   * Use for OLD SPECIMENS: What source was used to get coordinates from locality name
+   */
+  georeferenceSource?: string;
 
-    /**
-     * Formal habitat name or abbreviation. If several, separate with semicolons (E.g. 'OMT; OMaT')
-     */
-    habitatClassification?: string;
+  /**
+   * Formal habitat name or abbreviation. If several, separate with semicolons (E.g. 'OMT; OMaT')
+   */
+  habitatClassification?: string;
 
-    /**
-     * Informal description of the habitat
-     */
-    habitatDescription?: string;
+  /**
+   * Informal description of the habitat
+   */
+  habitatDescription?: string;
 
-    /**
-     * If country is not known or not applicable, for example continent, ocean or large island
-     */
-    higherGeography?: string;
+  /**
+   * If country is not known or not applicable, for example continent, ocean or large island
+   */
+  higherGeography?: string;
 
-    /**
-     * Latitude. For southern latitudes, use negative value.
-     */
-    latitude?: string;
+  /**
+   * Latitude. For southern latitudes, use negative value.
+   */
+  latitude?: string;
 
-    leg?: Array<string>;
+  leg?: Array<string>;
 
-    /**
-     * Leg just as it appears in the label or other original source, no interpretation, errors and all
-     */
-    legVerbatim?: string;
+  /**
+   * Leg just as it appears in the label or other original source, no interpretation, errors and all
+   */
+  legVerbatim?: string;
 
-    /**
-     * Official name of the locality. Separate multiple names with commas, from generic to specific. No informal description here!
-     */
-    locality?: string;
+  /**
+   * Official name of the locality. Separate multiple names with commas, from generic to specific. No informal description here!
+   */
+  locality?: string;
 
-    /**
-     * Informal description of the exact locality, e.g. '5 km NE of city X, under stone bridge'
-     */
-    localityDescription?: string;
+  /**
+   * Informal description of the exact locality, e.g. '5 km NE of city X, under stone bridge'
+   */
+  localityDescription?: string;
 
-    /**
-     * An unique identifier or code for the locality, if the locality has one (e.g. from SAPO-ontology)
-     */
-    localityID?: string;
+  /**
+   * An unique identifier or code for the locality, if the locality has one (e.g. from SAPO-ontology)
+   */
+  localityID?: string;
 
-    /**
-     * Locality word-to-word as it appears on the label or other original source, errors and all
-     */
-    localityVerbatim?: string;
+  /**
+   * Locality word-to-word as it appears on the label or other original source, errors and all
+   */
+  localityVerbatim?: string;
 
-    /**
-     * Longitude. For western longitudes, use negative value.
-     */
-    longitude?: string;
+  /**
+   * Longitude. For western longitudes, use negative value.
+   */
+  longitude?: string;
 
-    /**
-     * Municipality, commune or county
-     */
-    municipality?: string;
+  /**
+   * Municipality, commune or county
+   */
+  municipality?: string;
 
-    /**
-     * Free-text notes
-     */
-    notes?: string;
+  /**
+   * Free-text notes
+   */
+  notes?: string;
 
-    projectTitle?: string;
+  projectTitle?: string;
 
-    province?: string;
+  province?: string;
 
-    /**
-     * PUBLIC: all data can be published; PROTECTED: exact locality is hidden; PRIVATE: most of the data is hidden. If blank means same as public
-     */
-    publicityRestrictions?: string;
+  /**
+   * PUBLIC: all data can be published; PROTECTED: exact locality is hidden; PRIVATE: most of the data is hidden. If blank means same as public
+   */
+  publicityRestrictions?: string;
 
-    samplingMethod?: string;
+  samplingMethod?: string;
 
-    substrate?: string;
+  substrate?: string;
 
-    temperature?: number;
+  temperature?: number;
 
-    /**
-     * Array of units
-     */
-    units?: Array<models.Units>;
+  /**
+   * Array of units
+   */
+  units?: Array<models.Units>;
 
-    /**
-     * Geological information about gathering in wgs84 format
-     */
-    wgs84Geometry?: models.Geometry;
+  /**
+   * Geological information about gathering in wgs84 format
+   */
+  wgs84Geometry?: models.Geometry;
 
-    wgs84Latitude?: string;
+  wgs84Latitude?: string;
 
-    wgs84Longitude?: string;
+  wgs84Longitude?: string;
 }

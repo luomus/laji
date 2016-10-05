@@ -31,9 +31,9 @@
 export interface Autocomplete {
 
 
-    key?: string;
+  key?: string;
 
-    value?: string;
+  value?: string;
 
-    payload?: any;
+  payload?: any;
 }

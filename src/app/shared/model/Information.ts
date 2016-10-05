@@ -28,21 +28,21 @@ import * as models from './index';
 export interface Information {
 
 
-    id?: string;
+  id?: string;
 
-    content?: string;
+  content?: string;
 
-    title?: string;
+  title?: string;
 
-    menuTitle?: string;
+  menuTitle?: string;
 
-    author?: string;
+  author?: string;
 
-    posted?: string;
+  posted?: string;
 
-    modified?: string;
+  modified?: string;
 
-    children?: Array<models.InformationItem>;
+  children?: Array<models.InformationItem>;
 
-    parents?: Array<models.InformationItem>;
+  parents?: Array<models.InformationItem>;
 }

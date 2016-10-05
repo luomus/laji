@@ -22,25 +22,25 @@
  * limitations under the License.
  */
 
-import {Http, Headers, RequestOptionsArgs, Response, URLSearchParams} from '@angular/http';
-import {Injectable, Optional} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {WarehouseQueryInterface, PagedResult} from '../model';
+import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Injectable, Optional } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { WarehouseQueryInterface, PagedResult } from '../model';
 import 'rxjs/Rx';
+import { SearchQuery } from '../../+observation/search-query.model';
+import { WarehouseCountResultInterface } from '../model/WarehouseCountResultInterface';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
 'use strict';
-import {SearchQuery} from "../../+observation/search-query.model";
-import {WarehouseCountResultInterface} from "../model/WarehouseCountResultInterface";
 
 @Injectable()
 export class WarehouseApi {
   protected basePath = '/api';
-  public defaultHeaders:Headers = new Headers();
-  private queryService:SearchQuery = new SearchQuery();
+  public defaultHeaders: Headers = new Headers();
+  private queryService: SearchQuery = new SearchQuery();
 
-  constructor(protected http:Http, @Optional() basePath:string) {
+  constructor(protected http: Http, @Optional() basePath: string) {
     if (basePath) {
       this.basePath = basePath;
     }
@@ -50,19 +50,19 @@ export class WarehouseApi {
    * PLACEHOLDER - Not Yet implemented
    * Get loaded documents from your data source that have not been processed successfully. Requires that API key has load permissions.
    */
-  public warehouseErrorsGet(extraHttpRequestParams?:any):Observable<string> {
+  public warehouseErrorsGet(extraHttpRequestParams?: any): Observable<string> {
     const path = this.basePath + '/warehouse/errors';
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
       search: queryParameters
     };
 
     return this.http.request(path, requestOptions)
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -80,7 +80,7 @@ export class WarehouseApi {
    * @param pageSize Set number of results in one page.
    * @param page Set current page.
    */
-  public warehousePrivateQueryAggregateGet(query:WarehouseQueryInterface, aggregateBy?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, extraHttpRequestParams?:any):Observable<string> {
+  public warehousePrivateQueryAggregateGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<string> {
     const path = this.basePath + '/warehouse/private-query/aggregate';
 
     let queryParameters = new URLSearchParams();
@@ -91,14 +91,14 @@ export class WarehouseApi {
 
     //headerParams.set('accept', accept);
 
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
       search: queryParameters
     };
 
     return this.http.request(path, requestOptions)
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -114,7 +114,7 @@ export class WarehouseApi {
    * Use this API to test how many results your query would return and then proceed with list query. Also returns max result count allowed for list queries.
    * @param query query to make to ware house
    */
-  public warehousePrivateQueryCountGet(query:WarehouseQueryInterface, extraHttpRequestParams?:any):Observable<string> {
+  public warehousePrivateQueryCountGet(query: WarehouseQueryInterface, extraHttpRequestParams?: any): Observable<string> {
     const path = this.basePath + '/warehouse/private-query/count';
 
     let queryParameters = new URLSearchParams();
@@ -125,14 +125,14 @@ export class WarehouseApi {
 
     // headerParams.set('accept', accept);
 
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
       search: queryParameters
     };
 
     return this.http.request(path, requestOptions)
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -152,7 +152,7 @@ export class WarehouseApi {
    * @param pageSize Set number of results in one page.
    * @param page Set current page.
    */
-  public warehousePrivateQueryListGet(query:WarehouseQueryInterface, selected?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, extraHttpRequestParams?:any):Observable<string> {
+  public warehousePrivateQueryListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<string> {
     const path = this.basePath + '/warehouse/private-query/list';
 
     let queryParameters = new URLSearchParams();
@@ -163,14 +163,14 @@ export class WarehouseApi {
 
     //    headerParams.set('accept', accept);
 
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
       search: queryParameters
     };
 
     return this.http.request(path, requestOptions)
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -186,7 +186,7 @@ export class WarehouseApi {
    * Get single full document by document URI. Contains the document, gatherings and units, including facts, media etc
    * @param documentId Full document ID (URI identifier)
    */
-  public warehousePrivateQuerySingleGet(documentId:string, extraHttpRequestParams?:any):Observable<string> {
+  public warehousePrivateQuerySingleGet(documentId: string, extraHttpRequestParams?: any): Observable<string> {
     const path = this.basePath + '/warehouse/private-query/single';
 
     let queryParameters = new URLSearchParams();
@@ -199,14 +199,14 @@ export class WarehouseApi {
 
     //  headerParams.set('accept', accept);
 
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
       search: queryParameters
     };
 
     return this.http.request(path, requestOptions)
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -222,7 +222,7 @@ export class WarehouseApi {
    * Requires that API key has load permissions. Data is given in request body. Supports multiple data formats. See [documentation](https://laji.fi/information/node/1234) (TODO) for complete reference. Accepts all payloads that pass format validation (for example is valid XML), but that does not mean the data will be processed succesfully. Use error-api to get feedback about processing failures.
    * @param documents See [documentation](https://laji.fi/information/node/1234) (TODO) for complete reference. Can contain multiple documents.
    */
-  public warehousePushPost(documents:string, extraHttpRequestParams?:any):Observable<string> {
+  public warehousePushPost(documents: string, extraHttpRequestParams?: any): Observable<string> {
     const path = this.basePath + '/warehouse/push';
 
     let queryParameters = new URLSearchParams();
@@ -231,7 +231,7 @@ export class WarehouseApi {
     if (documents === null || documents === undefined) {
       throw new Error('Required parameter documents was null or undefined when calling warehousePushPost.');
     }
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'POST',
       headers: headerParams,
       search: queryParameters
@@ -239,7 +239,7 @@ export class WarehouseApi {
     requestOptions.body = JSON.stringify(documents);
 
     return this.http.request(path, requestOptions)
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -258,7 +258,7 @@ export class WarehouseApi {
    * @param page Set current page.
    * @param geoJSON returns data as geojson.
    */
-  public warehouseQueryAggregateGet(query:WarehouseQueryInterface, aggregateBy?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, geoJSON?:boolean):Observable<PagedResult<any>|any> {
+  public warehouseQueryAggregateGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean): Observable<PagedResult<any>|any> {
     const path = this.basePath + '/warehouse/query/aggregate';
 
     let queryParameters = new URLSearchParams();
@@ -271,7 +271,7 @@ export class WarehouseApi {
       queryParameters.set('geoJSON', geoJSON ? 'true' : 'false');
     }
 
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
       search: queryParameters
@@ -280,7 +280,7 @@ export class WarehouseApi {
     return this.http.request(path, requestOptions)
       .share()
       .cache()
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -289,7 +289,7 @@ export class WarehouseApi {
       });
   }
 
-  public downloadApprovalRequest(userToken:string, downloadFormat:string, includes:string, query:WarehouseQueryInterface, extraHttpRequestParams?:any):Observable<string> {
+  public downloadApprovalRequest(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, extraHttpRequestParams?: any): Observable<string> {
     const path = this.basePath + '/warehouse//private-query/downloadApprovalRequest';
 
     let queryParameters = new URLSearchParams();
@@ -313,14 +313,14 @@ export class WarehouseApi {
 
     this.addQueryToQueryParams(query, queryParameters);
 
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'POST',
       headers: headerParams,
       search: queryParameters
     };
 
     return this.http.request(path, requestOptions)
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -329,7 +329,7 @@ export class WarehouseApi {
       });
   }
 
-  public download(userToken:string, downloadFormat:string, includes:string, query:WarehouseQueryInterface, extraHttpRequestParams?:any):Observable<string> {
+  public download(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, extraHttpRequestParams?: any): Observable<string> {
     const path = this.basePath + '/warehouse/query/download';
 
     let queryParameters = new URLSearchParams();
@@ -353,14 +353,14 @@ export class WarehouseApi {
 
     this.addQueryToQueryParams(query, queryParameters);
 
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'POST',
       headers: headerParams,
       search: queryParameters
     };
 
     return this.http.request(path, requestOptions)
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -374,7 +374,7 @@ export class WarehouseApi {
    * Use this API to test how many results your query would return and then proceed with list query. Also returns max result count allowed for list queries.
    * @param query to make to the warehouse
    */
-  public warehouseQueryCountGet(query:WarehouseQueryInterface, extraHttpRequestParams?:any):Observable<WarehouseCountResultInterface> {
+  public warehouseQueryCountGet(query: WarehouseQueryInterface, extraHttpRequestParams?: any): Observable<WarehouseCountResultInterface> {
     const path = this.basePath + '/warehouse/query/count';
 
     let queryParameters = new URLSearchParams();
@@ -384,7 +384,7 @@ export class WarehouseApi {
 
     // headerParams.set('accept', accept);
 
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
       search: queryParameters
@@ -393,7 +393,7 @@ export class WarehouseApi {
     return this.http.request(path, requestOptions)
       .share()
       .cache()
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -411,7 +411,7 @@ export class WarehouseApi {
    * @param pageSize Set number of results in one page.
    * @param page Set current page.
    */
-  public warehouseQueryListGet(query:WarehouseQueryInterface, selected?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number, extraHttpRequestParams?:any):Observable<PagedResult<any>> {
+  public warehouseQueryListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<PagedResult<any>> {
     const path = this.basePath + '/warehouse/query/list';
 
     let queryParameters = new URLSearchParams();
@@ -422,7 +422,7 @@ export class WarehouseApi {
 
     //   headerParams.set('accept', accept);
 
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
       search: queryParameters
@@ -431,7 +431,7 @@ export class WarehouseApi {
     return this.http.request(path, requestOptions)
       .share()
       .cache()
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -445,7 +445,7 @@ export class WarehouseApi {
    * Get single full document by document URI. Contains the document, gatherings and units, including facts, media etc
    * @param documentId Full document ID (URI identifier)
    */
-  public warehouseQuerySingleGet(documentId:string, extraHttpRequestParams?:any):Observable<string> {
+  public warehouseQuerySingleGet(documentId: string, extraHttpRequestParams?: any): Observable<string> {
     const path = this.basePath + '/warehouse/query/single';
 
     let queryParameters = new URLSearchParams();
@@ -459,14 +459,14 @@ export class WarehouseApi {
 
     // headerParams.set('accept', accept);
 
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
       search: queryParameters
     };
 
     return this.http.request(path, requestOptions)
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -479,7 +479,7 @@ export class WarehouseApi {
    * Enumeration labels.
    * Get descriptions of enumerations that are used in query parameters and responses.
    */
-  public warehouseEnumerationLabels(extraHttpRequestParams?:any):Observable<any> {
+  public warehouseEnumerationLabels(extraHttpRequestParams?: any): Observable<any> {
     const path = this.basePath + '/warehouse/enumeration-labels';
 
     let queryParameters = new URLSearchParams();
@@ -487,14 +487,14 @@ export class WarehouseApi {
 
     // headerParams.set('accept', accept);
 
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
       search: queryParameters
     };
 
     return this.http.request(path, requestOptions)
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -503,7 +503,7 @@ export class WarehouseApi {
       });
   }
 
-  private addMetaToQuery(selectedOrAggregatedBy?:Array<string>, orderBy?:Array<string>, pageSize?:number, page?:number):void {
+  private addMetaToQuery(selectedOrAggregatedBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number): void {
     this.queryService.aggregateBy = selectedOrAggregatedBy;
     this.queryService.selected = selectedOrAggregatedBy;
     this.queryService.orderBy = orderBy;
@@ -511,7 +511,7 @@ export class WarehouseApi {
     this.queryService.page = page;
   }
 
-  private addQueryToQueryParams(query:WarehouseQueryInterface, queryParameters:URLSearchParams):void {
+  private addQueryToQueryParams(query: WarehouseQueryInterface, queryParameters: URLSearchParams): void {
     this.queryService.query = query;
     this.queryService.getQueryString(queryParameters);
   }

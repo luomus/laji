@@ -1,4 +1,5 @@
 <laji-spinner [spinning]="loading" [light]="lightLoader">
-  <span [innerHtml]="count | formattedNumber:'&nbsp'" *ngIf="!loading"></span><ng-content></ng-content>
+  <span [innerHtml]="count | formattedNumber:'&nbsp'" *ngIf="!loading"></span>
+  <ng-content></ng-content>
 </laji-spinner>
 

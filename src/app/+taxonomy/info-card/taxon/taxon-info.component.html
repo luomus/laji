@@ -14,7 +14,7 @@
   </tr>
   <tr *ngIf="taxon.invasiveSpeciesCategory">
     <th>
-      <img src="/static/images/vieraslaji.png" class="img-responsive" />
+      <img src="/static/images/vieraslaji.png" class="img-responsive"/>
     </th>
     <td>
       {{ 'taxonomy.invasive.phrase' | translate }}
@@ -30,7 +30,7 @@
     </td>
   </tr>
   <tr *ngIf="taxon.administrativeStatuses">
-    <th>{{ 'taxonomy.administrative.statuses' | translate  }}</th>
+    <th>{{ 'taxonomy.administrative.statuses' | translate }}</th>
     <td>
       <ul>
         <li *ngFor="let status of taxon.administrativeStatuses">{{ status | label }}</li>

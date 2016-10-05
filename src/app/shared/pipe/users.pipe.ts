@@ -1,7 +1,6 @@
-import {Pipe, PipeTransform, ChangeDetectorRef} from '@angular/core';
-
-import {UserService} from "../service/user.service";
-import {Person} from "../model/Person";
+import { Pipe, PipeTransform, ChangeDetectorRef } from '@angular/core';
+import { UserService } from '../service/user.service';
+import { Person } from '../model/Person';
 
 /**
  * Return users data from strings
@@ -20,15 +19,13 @@ export class UsersPipe implements PipeTransform {
   lastId: string;
   lastFormat: string;
 
-  constructor(
-    private userService:UserService,
-    private _ref: ChangeDetectorRef
-  ) {
+  constructor(private userService: UserService,
+              private _ref: ChangeDetectorRef) {
   }
 
-  private updateValue(id: string, format:string): void {
+  private updateValue(id: string, format: string): void {
     this.userService.getUser(id)
-      .subscribe((user:Person) => {
+      .subscribe((user: Person) => {
         if (format === 'fullname') {
           this.value = (user.preferredName || '') + ' ' + (user.inheritedName || '');
         } else {
@@ -38,12 +35,12 @@ export class UsersPipe implements PipeTransform {
       });
   }
 
-  transform(value: string, format:string = 'fullname'): any {
-    if(!value || value.length === 0) {
+  transform(value: string, format: string = 'fullname'): any {
+    if (!value || value.length === 0) {
       return value;
     }
     // if we ask another time for the same key, return the last value
-    if(value === this.lastId && format === this.lastFormat) {
+    if (value === this.lastId && format === this.lastFormat) {
       return this.value;
     }
     // store the id and format, in case they change

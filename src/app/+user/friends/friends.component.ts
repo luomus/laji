@@ -1,7 +1,7 @@
-import {Component, OnInit, Input, OnChanges} from '@angular/core';
-import {Profile} from "../../shared/model/Profile";
-import {UserService} from "../../shared/service/user.service";
-import {PersonApi} from "../../shared/api/PersonApi";
+import { Component, OnInit, Input } from '@angular/core';
+import { Profile } from '../../shared/model/Profile';
+import { UserService } from '../../shared/service/user.service';
+import { PersonApi } from '../../shared/api/PersonApi';
 
 @Component({
   selector: 'friends',
@@ -9,17 +9,15 @@ import {PersonApi} from "../../shared/api/PersonApi";
 })
 export class FriendsComponent implements OnInit {
 
-  @Input() profile:Profile;
-  @Input() usersProfile:Profile;
+  @Input() profile: Profile;
+  @Input() usersProfile: Profile;
 
   public user;
   public requestSend = false;
   public friends = [];
 
-  constructor(
-    private userService:UserService,
-    private personService:PersonApi
-  ) {
+  constructor(private userService: UserService,
+              private personService: PersonApi) {
   }
 
   ngOnInit() {
@@ -38,7 +36,7 @@ export class FriendsComponent implements OnInit {
     return this.usersProfile.friends && this.usersProfile.friends.indexOf(this.profile.userID) > -1;
   }
 
-  sendFriendRequest(profileKy:string) {
+  sendFriendRequest(profileKy: string) {
     this.personService.personAddFriendRequest(
       this.userService.getToken(),
       profileKy
@@ -65,8 +63,8 @@ export class FriendsComponent implements OnInit {
       )
   }
 
-  acceptFriendRequest(userId:string) {
-    this.personService.personAcceptFriendRequest(this.userService.getToken(),userId)
+  acceptFriendRequest(userId: string) {
+    this.personService.personAcceptFriendRequest(this.userService.getToken(), userId)
       .subscribe(
         profile => this.usersProfile = profile,
         err => console.log(err)

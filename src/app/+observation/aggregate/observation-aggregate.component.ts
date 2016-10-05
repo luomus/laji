@@ -1,10 +1,9 @@
-import {Component, OnInit, Input, OnDestroy} from '@angular/core';
-import {Subscription} from "rxjs";
-
-import {WarehouseApi} from "../../shared/api/WarehouseApi";
-import {SearchQuery} from "../search-query.model";
-import {TranslateService} from "ng2-translate";
-import {Util} from "../../shared/service/util.service";
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { WarehouseApi } from '../../shared/api/WarehouseApi';
+import { SearchQuery } from '../search-query.model';
+import { TranslateService } from 'ng2-translate';
+import { Util } from '../../shared/service/util.service';
 
 @Component({
   selector: 'laji-observation-aggregate',
@@ -12,42 +11,40 @@ import {Util} from "../../shared/service/util.service";
 })
 export class ObservationAggregateComponent implements OnInit, OnDestroy {
 
-  @Input() title:string = '';
-  @Input() field:string;
-  @Input() limit:number = 10;
-  @Input() hideOnEmpty:boolean = false;
-  @Input() updateOnLangChange:boolean = false;
-  @Input() queryOverride:any;
-  @Input() valuePicker:any;
-  @Input() showPager:boolean = false;
-  @Input() linkPicker:(any)=>{
-    local:string,
-    content:string
+  @Input() title: string = '';
+  @Input() field: string;
+  @Input() limit: number = 10;
+  @Input() hideOnEmpty: boolean = false;
+  @Input() updateOnLangChange: boolean = false;
+  @Input() queryOverride: any;
+  @Input() valuePicker: any;
+  @Input() showPager: boolean = false;
+  @Input() linkPicker: (any)=>{
+    local: string,
+    content: string
   };
 
-  public page:number = 1;
-  public total:number = 1;
-  public loading:boolean = false;
+  public page: number = 1;
+  public total: number = 1;
+  public loading: boolean = false;
 
-  public items:Array<{
-    count:number,
-    value:string,
-    link?:{
-      local:string,
-      content:string
+  public items: Array<{
+    count: number,
+    value: string,
+    link?: {
+      local: string,
+      content: string
     },
-    linkContent?:string
+    linkContent?: string
   }> = [];
 
-  private subQueryUpdate:Subscription;
-  private subCount:Subscription;
-  private lastCache:string;
+  private subQueryUpdate: Subscription;
+  private subCount: Subscription;
+  private lastCache: string;
 
-  constructor(
-    private warehouseService: WarehouseApi,
-    private searchQuery: SearchQuery,
-    private translate: TranslateService
-  ) {
+  constructor(private warehouseService: WarehouseApi,
+              private searchQuery: SearchQuery,
+              private translate: TranslateService) {
   }
 
   ngOnInit() {

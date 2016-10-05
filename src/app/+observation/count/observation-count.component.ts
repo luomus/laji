@@ -1,9 +1,8 @@
-import {Component, OnInit, Input, OnDestroy, OnChanges, Optional} from '@angular/core';
-import {Subscription} from "rxjs";
-
-import {WarehouseApi} from "../../shared/api/WarehouseApi";
-import {WarehouseQueryInterface} from "../../shared/model/WarehouseQueryInterface";
-import {Util} from "../../shared/service/util.service";
+import { Component, Input, OnDestroy, OnChanges } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { WarehouseApi } from '../../shared/api/WarehouseApi';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { Util } from '../../shared/service/util.service';
 
 
 @Component({
@@ -15,20 +14,18 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   @Input() field: string;
   @Input() pick: any;
   @Input() query: WarehouseQueryInterface;
-  @Input() overrideInQuery:any;
-  @Input() pageSize:number = 20;
-  @Input() tick:number;
-  @Input() lightLoader:boolean = false;
+  @Input() overrideInQuery: any;
+  @Input() pageSize: number = 20;
+  @Input() tick: number;
+  @Input() lightLoader: boolean = false;
 
   public count: string = '';
-  public loading:boolean = true;
+  public loading: boolean = true;
 
   private subQueryUpdate: Subscription;
   private subCount: Subscription;
 
-  constructor(
-    private warehouseService: WarehouseApi
-  ) {
+  constructor(private warehouseService: WarehouseApi) {
   }
 
   ngOnChanges() {
@@ -83,7 +80,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
             if (result.results) {
               this.count = '' + result.results
                   .filter(value => this.pick.indexOf(value.aggregateBy[this.field]) > -1)
-                  .reduce((pre, cur) =>  pre + cur['count'], 0);
+                  .reduce((pre, cur) => pre + cur['count'], 0);
             }
           } else {
             this.count = '' + (result.total || 0);

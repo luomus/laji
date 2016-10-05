@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'laji-spinner',
@@ -14,9 +14,9 @@ import {Component, OnInit, Input} from '@angular/core';
 })
 export class SpinnerComponent implements OnInit {
 
-  @Input() spinning:boolean = true;
-  @Input() overlay:boolean = false;
-  @Input() light:boolean = false;
+  @Input() spinning: boolean = true;
+  @Input() overlay: boolean = false;
+  @Input() light: boolean = false;
   @Input() hideContentWhileLoading = false;
 
   constructor() {

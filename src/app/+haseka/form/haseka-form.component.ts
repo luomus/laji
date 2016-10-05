@@ -1,43 +1,40 @@
-import {Component, OnInit } from '@angular/core';
-import {TranslateService} from 'ng2-translate/ng2-translate';
-import {Subscription, Observable} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
-
-import {DocumentApi} from "../../shared/api/DocumentApi";
-import {UserService} from "../../shared/service/user.service";
-import {FooterService} from "../../shared/service/footer.service";
-import {FormApi} from "../../shared/api/FormApi";
+import { Component, OnInit } from '@angular/core';
+import { TranslateService } from 'ng2-translate/ng2-translate';
+import { Subscription, Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { DocumentApi } from '../../shared/api/DocumentApi';
+import { UserService } from '../../shared/service/user.service';
+import { FooterService } from '../../shared/service/footer.service';
+import { FormApi } from '../../shared/api/FormApi';
 
 @Component({
   selector: 'laji-haseka-form',
   templateUrl: 'haseka-form.component.html',
-  providers: [ FormApi, DocumentApi ],
+  providers: [FormApi, DocumentApi],
   styleUrls: ['haseka-form.component.css']
 })
 export class HaSeKaFormComponent implements OnInit {
 
   private formDataStorage = {};
 
-  public form:any;
-  public formId:string;
-  public documentId:string;
-  public lang:string;
+  public form: any;
+  public formId: string;
+  public documentId: string;
+  public lang: string;
 
-  private subParam:Subscription;
-  private subTrans:Subscription;
-  private subFetch:Subscription;
-  private success:string = '';
-  private error:any;
-  private isEdit:boolean = false;
+  private subParam: Subscription;
+  private subTrans: Subscription;
+  private subFetch: Subscription;
+  private success: string = '';
+  private error: any;
+  private isEdit: boolean = false;
 
-  constructor(
-    private formService:FormApi,
-    private documentService:DocumentApi,
-    private route: ActivatedRoute,
-    private userService: UserService,
-    private footerService: FooterService,
-    public translate: TranslateService
-  ) {
+  constructor(private formService: FormApi,
+              private documentService: DocumentApi,
+              private route: ActivatedRoute,
+              private userService: UserService,
+              private footerService: FooterService,
+              public translate: TranslateService) {
   }
 
   ngOnDestroy() {
@@ -70,7 +67,7 @@ export class HaSeKaFormComponent implements OnInit {
     let data = event.data.formData;
     if (this.isEdit) {
       this.documentService
-        .update(data.id || this.documentId,data, this.userService.getToken())
+        .update(data.id || this.documentId, data, this.userService.getToken())
         .subscribe(
           data => {
             this.success = 'haseka.form.success';
@@ -124,13 +121,13 @@ export class HaSeKaFormComponent implements OnInit {
       this.formService.formFindById(this.formId, this.translate.currentLang),
       this.userService.getDefaultFormData()
     ).subscribe(
-        data =>  {
-          data[0].formData = data[1];
-          this.form = data[0];
-          this.lang = this.translate.currentLang;
-        },
-        err => console.log(err)
-      );
+      data => {
+        data[0].formData = data[1];
+        this.form = data[0];
+        this.lang = this.translate.currentLang;
+      },
+      err => console.log(err)
+    );
   }
 
   fetchFormAndDocument() {

@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { TranslateService } from "ng2-translate/ng2-translate";
-import { Subscription } from "rxjs";
-import { ActivatedRoute } from "@angular/router";
-
-import { Taxonomy, TaxonomyDescription, TaxonomyImage, TaxonomyApi, PanelComponent, ImageGalleryComponent } from '../../shared';
-import {SharedModule} from "../../shared/shared.module";
+import { TranslateService } from 'ng2-translate/ng2-translate';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { Taxonomy, TaxonomyDescription, TaxonomyImage, TaxonomyApi } from '../../shared';
+import { SharedModule } from '../../shared/shared.module';
 
 @Component({
   selector: 'laji-info-card',
@@ -13,24 +12,23 @@ import {SharedModule} from "../../shared/shared.module";
 })
 export class InfoCardComponent {
 
-  public taxon:Taxonomy;
-  public taxonDescription:TaxonomyDescription;
-  public taxonImages:Array<TaxonomyImage>;
-  private subParam:Subscription;
-  private subTrans:Subscription;
+  public taxon: Taxonomy;
+  public taxonDescription: TaxonomyDescription;
+  public taxonImages: Array<TaxonomyImage>;
+  private subParam: Subscription;
+  private subTrans: Subscription;
 
   private mapUrl = 'http://ws.luomus.fi/Balticdiversity/aggregated-map?mapPosition=markerBoundsNorthEastFixed&target=Parus%20major&locale=en';
 
-  public activePanel:number = 0;
-  public activeImage:number = 1;
+  public activePanel: number = 0;
+  public activeImage: number = 1;
 
-  @Input() public taxonId:string;
+  @Input() public taxonId: string;
 
-  constructor(
-    private taxonService: TaxonomyApi,
-    private translate:TranslateService,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private taxonService: TaxonomyApi,
+              private translate: TranslateService,
+              private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed
@@ -87,10 +85,10 @@ export class InfoCardComponent {
 
   private getTaxonMedia(id) {
     this.taxonService.taxonomyFindMedia(id, this.translate.currentLang)
-    .subscribe(
-      media => this.taxonImages = media,
-      err => console.error(err)
-    )
+      .subscribe(
+        media => this.taxonImages = media,
+        err => console.error(err)
+      )
   }
 
   setClasses() {

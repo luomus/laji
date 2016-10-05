@@ -1,20 +1,17 @@
-import {Observable, Observer} from "rxjs";
-import {Injectable} from "@angular/core";
-import {TranslateService} from "ng2-translate";
-
-import {MetadataApi} from "../api/MetadataApi";
+import { Observable, Observer } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { TranslateService } from 'ng2-translate';
+import { MetadataApi } from '../api/MetadataApi';
 
 @Injectable()
 export class TriplestoreLabelService {
 
   private labels;
   private currentLang;
-  private pending:Observable<any>;
+  private pending: Observable<any>;
 
-  constructor(
-    private metadataService: MetadataApi,
-    private translate: TranslateService
-  ) {
+  constructor(private metadataService: MetadataApi,
+              private translate: TranslateService) {
     this.translate.onLangChange.subscribe(
       _ => {
         this.labels = null;
@@ -38,7 +35,7 @@ export class TriplestoreLabelService {
     this.currentLang = lang;
   }
 
-  public get(key):Observable<string> {
+  public get(key): Observable<string> {
     if (this.labels) {
       return Observable.of(this.labels[key])
     } else if (this.pending) {
@@ -62,8 +59,8 @@ export class TriplestoreLabelService {
   private parseResult(result) {
     this.labels = result[0];
     result[1].results.map(property => {
-      this.labels[property['shortname']] = property.label || '';
-      this.labels[property['property']] = property.label || '';
+      this.labels[property['shortname']] = property.label || '';
+      this.labels[property['property']] = property.label || '';
     });
     result[2].results.map(data => {
       this.labels[data['class']] = data['label'];

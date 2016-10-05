@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, OnChanges} from '@angular/core';
-import {Document, DocumentApi} from "../../shared";
+import { Component, Input, OnChanges } from '@angular/core';
+import { Document, DocumentApi } from '../../shared';
 
 @Component({
   selector: 'laji-haseka-latest',
@@ -7,14 +7,14 @@ import {Document, DocumentApi} from "../../shared";
 })
 export class UsersLatestComponent implements OnChanges {
 
-  @Input() userToken:string;
+  @Input() userToken: string;
 
-  public documents:Document[];
+  public documents: Document[];
   public total = 0;
   public page = 1;
   public pageSize = 10;
 
-  constructor(private documentService:DocumentApi) {
+  constructor(private documentService: DocumentApi) {
   }
 
   ngOnChanges() {

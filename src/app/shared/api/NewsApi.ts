@@ -1,16 +1,16 @@
-import {Http, Headers, RequestOptionsArgs, Response, URLSearchParams} from '@angular/http';
-import {Injectable, Optional} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {PagedResult, News} from '../model';
+import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Injectable, Optional } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { PagedResult, News } from '../model';
 import 'rxjs/Rx';
 
 @Injectable()
 export class NewsApi {
-  private lastResult:PagedResult<News>;
+  private lastResult: PagedResult<News>;
   protected basePath = '/api';
-  public defaultHeaders:Headers = new Headers();
+  public defaultHeaders: Headers = new Headers();
 
-  constructor(protected http:Http, @Optional() basePath:string) {
+  constructor(protected http: Http, @Optional() basePath: string) {
     if (basePath) {
       this.basePath = basePath;
     }
@@ -23,7 +23,7 @@ export class NewsApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findAll(lang?:string,  page?: string, pageSize?: string, extraHttpRequestParams?:any):Observable<PagedResult<News>> {
+  public findAll(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<News>> {
     const path = this.basePath + '/news';
 
     let queryParameters = new URLSearchParams();
@@ -40,14 +40,14 @@ export class NewsApi {
       queryParameters.set('pageSize', pageSize);
     }
 
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
       search: queryParameters
     };
 
     return this.http.request(path, requestOptions)
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -62,7 +62,7 @@ export class NewsApi {
    *
    * @param id id of the taxon
    */
-  public findById(id:string, extraHttpRequestParams?:any):Observable<News> {
+  public findById(id: string, extraHttpRequestParams?: any): Observable<News> {
     const path = this.basePath + '/news/{id}'
         .replace('{' + 'id' + '}', String(id));
 
@@ -75,7 +75,9 @@ export class NewsApi {
 
     // TODO: this can be removed when finding with id is working again and move from the bootstrap to components
     if (this.lastResult) {
-      let item = this.lastResult.results.filter((item) => { return item.id === id });
+      let item = this.lastResult.results.filter((item) => {
+        return item.id === id
+      });
       if (item.length > 0) {
         return Observable.create(observer => {
           observer.next(item[0]);
@@ -84,14 +86,14 @@ export class NewsApi {
       }
     }
 
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
       search: queryParameters
     };
 
     return this.http.request(path, requestOptions)
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {
@@ -104,19 +106,19 @@ export class NewsApi {
    * return tags used in news
    *
    */
-  public getTags(extraHttpRequestParams?:any):Observable<Array<string>> {
+  public getTags(extraHttpRequestParams?: any): Observable<Array<string>> {
     const path = this.basePath + '/news/tags';
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
-    let requestOptions:RequestOptionsArgs = {
+    let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
       search: queryParameters
     };
 
     return this.http.request(path, requestOptions)
-      .map((response:Response) => {
+      .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
         } else {

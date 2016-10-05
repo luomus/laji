@@ -23,28 +23,27 @@
  */
 
 'use strict';
-import * as models from './index';
 
 export interface Person {
 
 
-    /**
-     * Full uri identification for the user
-     */
-    id?: string;
+  /**
+   * Full uri identification for the user
+   */
+  id?: string;
 
-    /**
-     * Last name of the user
-     */
-    inheritedName?: string;
+  /**
+   * Last name of the user
+   */
+  inheritedName?: string;
 
-    /**
-     * First name of the user
-     */
-    preferredName?: string;
+  /**
+   * First name of the user
+   */
+  preferredName?: string;
 
-    /**
-     * Email address for the user
-     */
-    emailAddress?: Array<string>;
+  /**
+   * Email address for the user
+   */
+  emailAddress?: Array<string>;
 }

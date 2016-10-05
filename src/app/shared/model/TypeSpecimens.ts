@@ -23,51 +23,50 @@
  */
 
 'use strict';
-import * as models from './index';
 
 export interface TypeSpecimens {
 
 
-    /**
-     * Unique ID for the object. (if none given id will be auto generated during insert)
-     */
-    id?: string;
+  /**
+   * Unique ID for the object. (if none given id will be auto generated during insert)
+   */
+  id?: string;
 
-    /**
-     * PUBLIC: all data can be published; PROTECTED: exact locality is hidden; PRIVATE: most of the data is hidden. If blank means same as public
-     */
-    publicityRestrictions?: string;
+  /**
+   * PUBLIC: all data can be published; PROTECTED: exact locality is hidden; PRIVATE: most of the data is hidden. If blank means same as public
+   */
+  publicityRestrictions?: string;
 
-    typeAuthor?: string;
+  typeAuthor?: string;
 
-    /**
-     * Publication reference for original description or basionyme
-     */
-    typeBasionymePubl?: string;
+  /**
+   * Publication reference for original description or basionyme
+   */
+  typeBasionymePubl?: string;
 
-    typeNotes?: string;
+  typeNotes?: string;
 
-    typePubl?: string;
+  typePubl?: string;
 
-    typeSeriesID?: string;
+  typeSeriesID?: string;
 
-    typeSpecies?: string;
+  typeSpecies?: string;
 
-    /**
-     * Is this holotype, paratype, syntype etc...
-     */
-    typeStatus?: string;
+  /**
+   * Is this holotype, paratype, syntype etc...
+   */
+  typeStatus?: string;
 
-    typeSubspecies?: string;
+  typeSubspecies?: string;
 
-    typeSubspeciesAuthor?: string;
+  typeSubspeciesAuthor?: string;
 
-    /**
-     * Verification whether this really is a type?
-     */
-    typeVerification?: string;
+  /**
+   * Verification whether this really is a type?
+   */
+  typeVerification?: string;
 
-    typif?: string;
+  typif?: string;
 
-    typifDate?: string;
+  typifDate?: string;
 }

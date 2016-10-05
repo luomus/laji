@@ -1,7 +1,7 @@
-import {Pipe, PipeTransform, OnDestroy, ChangeDetectorRef, EventEmitter} from '@angular/core';
-import {WarehouseValueMappingService} from "../service/warehouse-value-mapping.service";
-import {LangChangeEvent, TranslateService } from "ng2-translate";
-import {TriplestoreLabelService} from "../service/triplestore-label.service";
+import { Pipe, PipeTransform, OnDestroy, ChangeDetectorRef, EventEmitter } from '@angular/core';
+import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
+import { LangChangeEvent, TranslateService } from 'ng2-translate';
+import { TriplestoreLabelService } from '../service/triplestore-label.service';
 
 /**
  * Triplestores label maker
@@ -18,15 +18,13 @@ export class LabelPipe implements PipeTransform, OnDestroy {
   lastKey: string;
   onLangChange: EventEmitter<LangChangeEvent>;
 
-  constructor(
-    private translate: TranslateService,
-    private warehouseService:WarehouseValueMappingService,
-    private triplestoreLabelService:TriplestoreLabelService,
-    private _ref: ChangeDetectorRef
-  ) {
+  constructor(private translate: TranslateService,
+              private warehouseService: WarehouseValueMappingService,
+              private triplestoreLabelService: TriplestoreLabelService,
+              private _ref: ChangeDetectorRef) {
   }
 
-  updateValue(key: string, mapWarehouse:boolean = false): void {
+  updateValue(key: string, mapWarehouse: boolean = false): void {
     if (mapWarehouse) {
       this.warehouseService.getOriginalKey(key).subscribe(
         (res: string) => {
@@ -43,20 +41,20 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     }
   }
 
-  private _updateValue(key: string):void {
+  private _updateValue(key: string): void {
     this.triplestoreLabelService.get(key)
-      .subscribe((res:string) => {
+      .subscribe((res: string) => {
         this.value = res ? res : key;
         this._ref.markForCheck();
       });
   }
 
-  transform(value: string, mapWarehouse:boolean = true): any {
-    if(!value || value.length === 0) {
+  transform(value: string, mapWarehouse: boolean = true): any {
+    if (!value || value.length === 0) {
       return value;
     }
     // if we ask another time for the same key, return the last value
-    if(value === this.lastKey) {
+    if (value === this.lastKey) {
       return this.value;
     }
     // store the query, in case it changes
@@ -69,7 +67,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     this._dispose();
 
     // subscribe to onLangChange event, in case the language changes
-    if(!this.onLangChange) {
+    if (!this.onLangChange) {
       this.onLangChange = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
         this.lastKey = null; // we want to make sure it doesn't return the same value until it's been updated
         this.updateValue(value, mapWarehouse);
@@ -84,7 +82,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
    * @private
    */
   _dispose(): void {
-    if(this.onLangChange) {
+    if (this.onLangChange) {
       this.onLangChange.unsubscribe();
       this.onLangChange = undefined;
     }

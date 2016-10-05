@@ -9,13 +9,13 @@
   float: right;
 }
 
-.profile-edit  {
+.profile-edit {
   margin-left: 160px;
   margin-right: 30px;
   width: auto;
   width: calc(100% - 200px);
 }
 
-.profile-edit-row + .profile-edit-row{
+.profile-edit-row + .profile-edit-row {
   padding-top: 10px;
 }

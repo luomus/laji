@@ -2,12 +2,12 @@
   <div class="loading-mask" *ngIf="loading">...</div>
   <div class="observation-chart">
     <laji-pie-chart
-      *ngIf="data"
-      [data]="data"
-      [height]="height"
-      [showLegend]="showLegend"
-      [legendPosition]="legendPosition"
-      (sectionSelect)="onPieClick($event)">
+            *ngIf="data"
+            [data]="data"
+            [height]="height"
+            [showLegend]="showLegend"
+            [legendPosition]="legendPosition"
+            (sectionSelect)="onPieClick($event)">
     </laji-pie-chart>
   </div>
 </div>

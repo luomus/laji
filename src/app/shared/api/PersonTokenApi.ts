@@ -22,9 +22,9 @@
  * limitations under the License.
  */
 
-import {Http, Headers, RequestOptionsArgs, Response, URLSearchParams} from '@angular/http';
-import {Injectable, Optional} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Injectable, Optional } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
 import 'rxjs/Rx';
 
@@ -34,75 +34,75 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class PersonTokenApi {
-    protected basePath = '/api';
-    public defaultHeaders : Headers = new Headers();
+  protected basePath = '/api';
+  public defaultHeaders: Headers = new Headers();
 
-    constructor(protected http: Http, @Optional() basePath: string) {
-        if (basePath) {
-            this.basePath = basePath;
-        }
+  constructor(protected http: Http, @Optional() basePath: string) {
+    if (basePath) {
+      this.basePath = basePath;
     }
+  }
 
-    /**
-     * deletes the token
-     *
-     * @param token User token
-     */
-    public personTokenDeleteToken (token: string, extraHttpRequestParams?: any ) : Observable<{}> {
-        const path = this.basePath + '/person-token/{token}'
-            .replace('{' + 'token' + '}', String(token));
+  /**
+   * deletes the token
+   *
+   * @param token User token
+   */
+  public personTokenDeleteToken(token: string, extraHttpRequestParams?: any): Observable<{}> {
+    const path = this.basePath + '/person-token/{token}'
+        .replace('{' + 'token' + '}', String(token));
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'token' is not null or undefined
-        if (token === null || token === undefined) {
-            throw new Error('Required parameter token was null or undefined when calling personTokenDeleteToken.');
-        }
-        let requestOptions: RequestOptionsArgs = {
-            method: 'DELETE',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'token' is not null or undefined
+    if (token === null || token === undefined) {
+      throw new Error('Required parameter token was null or undefined when calling personTokenDeleteToken.');
     }
+    let requestOptions: RequestOptionsArgs = {
+      method: 'DELETE',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-    /**
-     * Returns information about the token
-     *
-     * @param token
-     */
-    public personTokenGetInfo (token: string, extraHttpRequestParams?: any ) : Observable<models.PersonToken> {
-        const path = this.basePath + '/person-token/{token}'
-            .replace('{' + 'token' + '}', String(token));
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'token' is not null or undefined
-        if (token === null || token === undefined) {
-            throw new Error('Required parameter token was null or undefined when calling personTokenGetInfo.');
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
+      });
+  }
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+  /**
+   * Returns information about the token
+   *
+   * @param token
+   */
+  public personTokenGetInfo(token: string, extraHttpRequestParams?: any): Observable<models.PersonToken> {
+    const path = this.basePath + '/person-token/{token}'
+        .replace('{' + 'token' + '}', String(token));
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'token' is not null or undefined
+    if (token === null || token === undefined) {
+      throw new Error('Required parameter token was null or undefined when calling personTokenGetInfo.');
     }
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
 
 }

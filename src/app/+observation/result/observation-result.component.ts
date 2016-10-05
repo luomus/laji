@@ -1,13 +1,12 @@
-import {Component, Input, OnInit, OnDestroy, Output, EventEmitter, OnChanges} from "@angular/core";
-import {Location} from "@angular/common";
-
-import { SearchQuery } from "../search-query.model";
-import {IdService} from "../../shared/service/id.service";
-import {UserService} from "../../shared/service/user.service";
-import {WarehouseApi} from "../../shared/api/WarehouseApi";
-import {Subscription} from "rxjs";
-import {ObservationFilterInterface} from "../filter/observation-filter.interface";
-import {TranslateService} from "ng2-translate";
+import { Component, Input, OnInit, OnDestroy, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Location } from '@angular/common';
+import { SearchQuery } from '../search-query.model';
+import { IdService } from '../../shared/service/id.service';
+import { UserService } from '../../shared/service/user.service';
+import { WarehouseApi } from '../../shared/api/WarehouseApi';
+import { Subscription } from 'rxjs';
+import { ObservationFilterInterface } from '../filter/observation-filter.interface';
+import { TranslateService } from 'ng2-translate';
 
 
 @Component({
@@ -17,10 +16,10 @@ import {TranslateService} from "ng2-translate";
 export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() loadLimit = 200000;
-  @Input() filters:{[name:string]:ObservationFilterInterface};
-  @Input() active:string = 'list';
-  @Output() activeChange:EventEmitter<string> = new EventEmitter<string>();
-  @Output() onFilterSelect:EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
+  @Input() filters: {[name: string]: ObservationFilterInterface};
+  @Input() active: string = 'list';
+  @Output() activeChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() onFilterSelect: EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
 
   public lang = 'fi';
   public itemCount = 0;
@@ -31,17 +30,16 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
     stats: false
   };
 
-  public requests:any = {};
-  private queryCache:string;
+  public requests: any = {};
+  private queryCache: string;
   private subQueryUpdate: Subscription;
 
-  constructor(
-    public searchQuery: SearchQuery,
-    public userService:UserService,
-    public translate: TranslateService,
-    private location: Location,
-    private warehouseService:WarehouseApi
-  ) {}
+  constructor(public searchQuery: SearchQuery,
+              public userService: UserService,
+              public translate: TranslateService,
+              private location: Location,
+              private warehouseService: WarehouseApi) {
+  }
 
   ngOnInit() {
     this.activated[this.active] = true;
@@ -68,12 +66,12 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
 
   updateCount() {
     this.warehouseService.warehouseQueryCountGet(this.searchQuery.query)
-      .subscribe(res => this.itemCount = res.total )
+      .subscribe(res => this.itemCount = res.total)
   }
 
   pickValue(aggr, lang) {
     let vernacular = '';
-    let scientific = aggr['unit.linkings.taxon.scientificName'] || '';
+    let scientific = aggr['unit.linkings.taxon.scientificName'] || '';
     switch (lang) {
       case 'fi':
         vernacular = aggr['unit.linkings.taxon.nameFinnish'] || '';
@@ -114,7 +112,7 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
     this.searchQuery.queryUpdate({formSubmit: true});
   }
 
-  activate(tab:string) {
+  activate(tab: string) {
     if (this.active === tab) {
       return;
     }
@@ -136,7 +134,7 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
     this.makeRequest('download');
   }
 
-  makeRequest(type:string) {
+  makeRequest(type: string) {
     this.queryCache = JSON.stringify(this.searchQuery.query);
     if (this.requests[type] == this.queryCache) {
       return;

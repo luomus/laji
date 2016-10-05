@@ -21,8 +21,8 @@
   <table>
     <tr *ngFor="let idx of getRange()">
       <td
-        (click)="onClick(groups[(idx * 2)])"
-        class="item link informal-group-image {{groups[(idx * 2)]?.id}}">
+              (click)="onClick(groups[(idx * 2)])"
+              class="item link informal-group-image {{groups[(idx * 2)]?.id}}">
         <span [ngClass]="{active: groups[(idx * 2)] && groups[(idx * 2)].id && groups[(idx * 2)].id === innerValue}">
           {{groups[(idx * 2)]?.name}}
         </span>
@@ -31,8 +31,8 @@
         </span>
       </td>
       <td
-        (click)="onClick(groups[(idx * 2 + 1)])"
-        class="item link informal-group-image {{groups[(idx * 2 + 1)]?.id}}">
+              (click)="onClick(groups[(idx * 2 + 1)])"
+              class="item link informal-group-image {{groups[(idx * 2 + 1)]?.id}}">
         <span [ngClass]="{active: groups[(idx * 2 + 1)] && groups[(idx * 2 + 1)].id && groups[(idx * 2 + 1)].id === innerValue}">
           {{groups[(idx * 2 + 1)]?.name}}
         </span>

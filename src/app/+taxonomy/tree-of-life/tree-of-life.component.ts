@@ -1,10 +1,9 @@
-import {Component, OnInit, Input, ElementRef, HostListener} from '@angular/core';
-import {Location} from '@angular/common';
-import {Taxonomy} from "../../shared/model/Taxonomy";
-import {Router, ActivatedRoute} from "@angular/router";
-import {debounce} from 'underscore';
+import { Component, ElementRef, HostListener } from '@angular/core';
+import { Location } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
+import { debounce } from 'underscore';
 
-declare var d3:any;
+declare var d3: any;
 
 const taxonTreeUri = '/api/taxonomy/%taxonId%?maxLevel=2&selectedFields=id%2CscientificName';
 
@@ -23,33 +22,33 @@ export class TreeOfLifeComponent {
   private diagonal;
   private htmlElement: HTMLElement;
 
-  private active:string;
-  private parents:string[] = [];
+  private active: string;
+  private parents: string[] = [];
 
   private plop;
-  private taxonId:string;
+  private taxonId: string;
 
-  constructor(
-    private element: ElementRef,
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location
-  ) {
+  constructor(private element: ElementRef,
+              private route: ActivatedRoute,
+              private router: Router,
+              private location: Location) {
     this.htmlElement = this.element.nativeElement;
     this.host = d3.select(this.htmlElement);
     this.plop = debounce(() => this.setup(this.taxonId, this.htmlElement.offsetWidth), 300);
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event) { this.plop(); }
+  onResize(event) {
+    this.plop();
+  }
 
   ngOnInit() {
     this.route.params.filter((route) => route['type'] == 'taxonomy').subscribe((route) => {
-      if(route['id'] == this.taxonId){
+      if (route['id'] == this.taxonId) {
         this.location.back();
       } else {
-      this.taxonId = route['id'];
-      this.setup(this.taxonId, this.htmlElement.offsetWidth);
+        this.taxonId = route['id'];
+        this.setup(this.taxonId, this.htmlElement.offsetWidth);
       }
     });
     this.setup(undefined, this.htmlElement.offsetWidth);
@@ -59,16 +58,16 @@ export class TreeOfLifeComponent {
     return taxonTreeUri.replace('%taxonId%', taxonId);
   }
 
-  private setup(taxonId:string = 'MX.53761', diameter:number = 600): void {
+  private setup(taxonId: string = 'MX.53761', diameter: number = 600): void {
 
     var tree = d3.layout.tree()
       .size([360, diameter / 2 - 120])
-      .separation(function(a, b) {
+      .separation(function (a, b) {
         return (a.parent == b.parent ? 1 : 2) / a.depth;
       });
 
     this.diagonal = d3.svg.diagonal.radial()
-      .projection(function(d) {
+      .projection(function (d) {
         return [d.y, (d.x | 0) / 180 * Math.PI];
       });
 
@@ -98,7 +97,9 @@ export class TreeOfLifeComponent {
       var label = node
         .enter().append("g")
         .attr("class", "node")
-        .attr("transform", function(d) { return "rotate(" + ((d.x | 0) - 90) + ")translate(" + d.y + ")"; })
+        .attr("transform", function (d) {
+          return "rotate(" + ((d.x | 0) - 90) + ")translate(" + d.y + ")";
+        });
 
       label
         .append("a")
@@ -106,7 +107,7 @@ export class TreeOfLifeComponent {
           return `/taxon/browse/taxonomy/${d.id}`
         })
         .on("click", (d) => {
-          this.router.navigate(['taxon','browse','taxonomy', d.id])
+          this.router.navigate(['taxon', 'browse', 'taxonomy', d.id]);
           d3.event.preventDefault();
         })
         .append("circle")
@@ -123,9 +124,15 @@ export class TreeOfLifeComponent {
         })
         .append("text")
         .attr("dy", ".31em")
-        .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-        .attr("transform", function(d) { return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)"; })
-        .text(function(d) { return d.scientificName; });
+        .attr("text-anchor", function (d) {
+          return d.x < 180 ? "start" : "end";
+        })
+        .attr("transform", function (d) {
+          return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)";
+        })
+        .text(function (d) {
+          return d.scientificName;
+        });
     });
 
     this.host.style("height", diameter + "px");

@@ -2,18 +2,18 @@
   <div class="container">
     <div class="navbar-header">
       <button
-        type="button"
-        class="navbar-toggle collapsed"
-        data-toggle="collapse"
-        data-target="#navbar"
-        aria-expanded="false"
-        aria-controls="navbar"
-        (click)="toggleMenu()"
+              type="button"
+              class="navbar-toggle collapsed"
+              data-toggle="collapse"
+              data-target="#navbar"
+              aria-expanded="false"
+              aria-controls="navbar"
+              (click)="toggleMenu()"
       >
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" [routerLink]="['/']">LAJI.FI</a>
     </div>
@@ -31,7 +31,7 @@
         </li>
         -->
         <li [routerLinkActive]="['active']">
-          <a *ngIf="userService.isLoggedIn()"  [routerLink]="['/haseka']">{{ 'navigation.haseka' | translate }}</a>
+          <a *ngIf="userService.isLoggedIn()" [routerLink]="['/haseka']">{{ 'navigation.haseka' | translate }}</a>
           <a *ngIf="!userService.isLoggedIn()" [routerLink]="['/haseka']">{{ 'navigation.notify' | translate }}</a>
         </li>
         <li [routerLinkActive]="['active']">
@@ -48,15 +48,17 @@
               </a>
               <ul dropdownMenu role="menu" aria-labelledby="single-button">
                 <li role="menuitem">
-                  <a [routerLink]="['/user']" class="navbar-link link" >{{ 'navigation.user.profile' | translate }}</a>
+                  <a [routerLink]="['/user']" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
                 </li>
                 <li role="menuitem">
-                  <a [routerLink]="['/user/logout']" class="navbar-link link" >{{ 'navigation.user.logout' | translate }}</a>
+                  <a [routerLink]="['/user/logout']" class="navbar-link link">{{ 'navigation.user.logout' | translate
+                    }}</a>
                 </li>
               </ul>
             </div>
           </div>
-          <a *ngIf="!userService.isLoggedIn()" href="{{userService.getLoginUrl()}}">{{ 'navigation.user.login' | translate }}</a>
+          <a *ngIf="!userService.isLoggedIn()" href="{{userService.getLoginUrl()}}">{{ 'navigation.user.login' |
+            translate }}</a>
         </li>
         <li>
           <laji-lang-select></laji-lang-select>

@@ -28,114 +28,114 @@ import * as models from './index';
 export interface Units {
 
 
-    /**
-     * Unique ID for the object. (if none given id will be auto generated during insert)
-     */
-    id?: string;
+  /**
+   * Unique ID for the object. (if none given id will be auto generated during insert)
+   */
+  id?: string;
 
-    /**
-     * Diameter at breast height, in centimeters
-     */
-    dBH?: string;
+  /**
+   * Diameter at breast height, in centimeters
+   */
+  dBH?: string;
 
-    /**
-     * Leave empty if no sample taken, or if the sample was recorded separately
-     */
-    dNASampleLocation?: string;
+  /**
+   * Leave empty if no sample taken, or if the sample was recorded separately
+   */
+  dNASampleLocation?: string;
 
-    abundanceString?: string;
+  abundanceString?: string;
 
-    age?: string;
+  age?: string;
 
-    ageNotes?: string;
+  ageNotes?: string;
 
-    ankleInMillimeters?: Array<string>;
+  ankleInMillimeters?: Array<string>;
 
-    beakInMillimeters?: Array<string>;
+  beakInMillimeters?: Array<string>;
 
-    causeOfDeath?: string;
+  causeOfDeath?: string;
 
-    chemistry?: string;
+  chemistry?: string;
 
-    /**
-     * Numeric or other description on the amount of individuals (or sprouts, fruiting bodies or such) in the specimen. Sexes and juveniles can be specified like so: 1m2f3j (=1 male, 2 females, 3 juveniles)
-     */
-    count?: string;
+  /**
+   * Numeric or other description on the amount of individuals (or sprouts, fruiting bodies or such) in the specimen. Sexes and juveniles can be specified like so: 1m2f3j (=1 male, 2 females, 3 juveniles)
+   */
+  count?: string;
 
-    decayStage?: string;
+  decayStage?: string;
 
-    genotype?: string;
+  genotype?: string;
 
-    gonadInMillimeters?: Array<string>;
+  gonadInMillimeters?: Array<string>;
 
-    growthMediumName?: string;
+  growthMediumName?: string;
 
-    growthOtherConditions?: string;
+  growthOtherConditions?: string;
 
-    growthTemperature?: string;
+  growthTemperature?: string;
 
-    /**
-     * Array of identifications
-     */
-    identifications?: Array<models.Identifications>;
+  /**
+   * Array of identifications
+   */
+  identifications?: Array<models.Identifications>;
 
-    individualCount?: number;
+  individualCount?: number;
 
-    informalNameString?: string;
+  informalNameString?: string;
 
-    infrasubspecificSubdivision?: string;
+  infrasubspecificSubdivision?: string;
 
-    lengthInMillimeters?: Array<string>;
+  lengthInMillimeters?: Array<string>;
 
-    lifeStage?: string;
+  lifeStage?: string;
 
-    lifeStageDescription?: string;
+  lifeStageDescription?: string;
 
-    macroscopy?: string;
+  macroscopy?: string;
 
-    measurement?: Array<string>;
+  measurement?: Array<string>;
 
-    microscopy?: string;
+  microscopy?: string;
 
-    mutant?: string;
+  mutant?: string;
 
-    /**
-     * Free-text notes
-     */
-    notes?: string;
+  /**
+   * Free-text notes
+   */
+  notes?: string;
 
-    /**
-     * Abundance of the taxon in the field
-     */
-    populationAbundance?: string;
+  /**
+   * Abundance of the taxon in the field
+   */
+  populationAbundance?: string;
 
-    preparations?: string;
+  preparations?: string;
 
-    /**
-     * PUBLIC: all data can be published; PROTECTED: exact locality is hidden; PRIVATE: most of the data is hidden. If blank means same as public
-     */
-    publicityRestrictions?: string;
+  /**
+   * PUBLIC: all data can be published; PROTECTED: exact locality is hidden; PRIVATE: most of the data is hidden. If blank means same as public
+   */
+  publicityRestrictions?: string;
 
-    recordBasis?: string;
+  recordBasis?: string;
 
-    recordParts?: Array<string>;
+  recordParts?: Array<string>;
 
-    ring?: string;
+  ring?: string;
 
-    sex?: string;
+  sex?: string;
 
-    sexNotes?: string;
+  sexNotes?: string;
 
-    tailInMillimeters?: Array<string>;
+  tailInMillimeters?: Array<string>;
 
-    typeSpecimen?: Array<string>;
+  typeSpecimen?: Array<string>;
 
-    /**
-     * Array of typeSpecimens
-     */
-    typeSpecimens?: Array<models.TypeSpecimens>;
+  /**
+   * Array of typeSpecimens
+   */
+  typeSpecimens?: Array<models.TypeSpecimens>;
 
-    weightInGrams?: Array<string>;
+  weightInGrams?: Array<string>;
 
-    wingInMillimeters?: Array<string>;
+  wingInMillimeters?: Array<string>;
 }

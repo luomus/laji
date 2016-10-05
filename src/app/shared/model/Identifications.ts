@@ -23,73 +23,72 @@
  */
 
 'use strict';
-import * as models from './index';
 
 export interface Identifications {
 
 
-    /**
-     * Unique ID for the object. (if none given id will be auto generated during insert)
-     */
-    id?: string;
+  /**
+   * Unique ID for the object. (if none given id will be auto generated during insert)
+   */
+  id?: string;
 
-    /**
-     * Write associated taxa names here, separated by a semicolon (;). E.g.: \\\"Betula pendula; Betula pubescens; Poaceae\\\".
-     */
-    associatedObservationTaxa?: string;
+  /**
+   * Write associated taxa names here, separated by a semicolon (;). E.g.: \\\"Betula pendula; Betula pubescens; Poaceae\\\".
+   */
+  associatedObservationTaxa?: string;
 
-    author?: string;
+  author?: string;
 
-    /**
-     * Name of the identifier (person)
-     */
-    det?: string;
+  /**
+   * Name of the identifier (person)
+   */
+  det?: string;
 
-    detDate?: string;
+  detDate?: string;
 
-    detVerbatim?: string;
+  detVerbatim?: string;
 
-    genusQualifier?: string;
+  genusQualifier?: string;
 
-    identificationDate?: string;
+  identificationDate?: string;
 
-    identificationNotes?: string;
+  identificationNotes?: string;
 
-    infraAuthor?: string;
+  infraAuthor?: string;
 
-    infraEpithet?: string;
+  infraEpithet?: string;
 
-    infraRank?: string;
+  infraRank?: string;
 
-    infrasubspecificSubdivision?: string;
+  infrasubspecificSubdivision?: string;
 
-    /**
-     * This can be used to select one of the identifications as 'recommended', which is the used as default when displaying information about the specimen.
-     */
-    preferredIdentification?: string;
+  /**
+   * This can be used to select one of the identifications as 'recommended', which is the used as default when displaying information about the specimen.
+   */
+  preferredIdentification?: string;
 
-    /**
-     * PUBLIC: all data can be published; PROTECTED: exact locality is hidden; PRIVATE: most of the data is hidden. If blank means same as public
-     */
-    publicityRestrictions?: string;
+  /**
+   * PUBLIC: all data can be published; PROTECTED: exact locality is hidden; PRIVATE: most of the data is hidden. If blank means same as public
+   */
+  publicityRestrictions?: string;
 
-    /**
-     * Publication reference for the taxon concept, that was used in identification
-     */
-    sec?: string;
+  /**
+   * Publication reference for the taxon concept, that was used in identification
+   */
+  sec?: string;
 
-    sortOrder?: number;
+  sortOrder?: number;
 
-    speciesQualifier?: string;
+  speciesQualifier?: string;
 
-    taxon?: string;
+  taxon?: string;
 
-    taxonID?: string;
+  taxonID?: string;
 
-    taxonRank?: string;
+  taxonRank?: string;
 
-    /**
-     * Taxon name in original format (e.g. from the label), errors and all
-     */
-    taxonVerbatim?: string;
+  /**
+   * Taxon name in original format (e.g. from the label), errors and all
+   */
+  taxonVerbatim?: string;
 }

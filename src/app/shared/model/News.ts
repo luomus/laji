@@ -23,30 +23,29 @@
  */
 
 'use strict';
-import * as models from './index';
 
 export interface News {
 
 
-    id: string;
+  id: string;
 
-    external?: boolean;
+  external?: boolean;
 
-    externalURL?: string;
+  externalURL?: string;
 
-    title?: string;
+  title?: string;
 
-    content?: string;
+  content?: string;
 
-    /**
-     * timestamp for when the news was posted
-     */
-    posted?: string;
+  /**
+   * timestamp for when the news was posted
+   */
+  posted?: string;
 
-    /**
-     * timestamp for when the news was edited
-     */
-    modified?: string;
+  /**
+   * timestamp for when the news was edited
+   */
+  modified?: string;
 
-    tag?: string;
+  tag?: string;
 }

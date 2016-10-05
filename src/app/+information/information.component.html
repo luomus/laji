@@ -11,21 +11,21 @@
       </ol>
       <div [innerHtml]="information?.content"></div>
     </div>
-  <div class="col-md-4 more-info" *ngIf="information?.children">
-    <div class="media">
-      <div class="media-body">
-        <h4 class="media-heading">
-          {{'information.more' | translate }}
-        </h4>
-        <ul>
-          <li *ngFor="let child of information?.children">
-            <a [routerLink]="['/information/' + child.id]">
-              {{child.menuTitle}}
-            </a>
-          </li>
-        </ul>
+    <div class="col-md-4 more-info" *ngIf="information?.children">
+      <div class="media">
+        <div class="media-body">
+          <h4 class="media-heading">
+            {{'information.more' | translate }}
+          </h4>
+          <ul>
+            <li *ngFor="let child of information?.children">
+              <a [routerLink]="['/information/' + child.id]">
+                {{child.menuTitle}}
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>

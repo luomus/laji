@@ -22,196 +22,196 @@
  * limitations under the License.
  */
 
-import {Http, Headers, RequestOptionsArgs, Response, URLSearchParams} from '@angular/http';
-import {Injectable, Optional} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Injectable, Optional } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
 import 'rxjs/Rx';
+import { PagedResult } from '../model/PagedResult';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
 'use strict';
-import {PagedResult} from "../model/PagedResult";
 
 @Injectable()
 export class DocumentApi {
-    protected basePath = '/api';
-    public defaultHeaders : Headers = new Headers({'Content-Type': 'application/json'});
+  protected basePath = '/api';
+  public defaultHeaders: Headers = new Headers({'Content-Type': 'application/json'});
 
-    constructor(protected http: Http, @Optional() basePath: string) {
-        if (basePath) {
-            this.basePath = basePath;
-        }
+  constructor(protected http: Http, @Optional() basePath: string) {
+    if (basePath) {
+      this.basePath = basePath;
+    }
+  }
+
+  /**
+   * Create a new document and persist it
+   *
+   * @param data Model instance data
+   * @param userToken User authentication token
+   */
+  public create(data: models.Document, userToken: string, extraHttpRequestParams?: any): Observable<models.Document> {
+    const path = this.basePath + '/documents';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'data' is not null or undefined
+    if (data === null || data === undefined) {
+      throw new Error('Required parameter data was null or undefined when calling documentCreateWithUser.');
+    }
+    // verify required parameter 'personToken' is not null or undefined
+    if (userToken === null || userToken === undefined) {
+      throw new Error('Required parameter personToken was null or undefined when calling documentCreateWithUser.');
+    }
+    if (userToken !== undefined) {
+      queryParameters.set('personToken', userToken);
     }
 
-    /**
-     * Create a new document and persist it
-     *
-     * @param data Model instance data
-     * @param userToken User authentication token
-     */
-    public create(data: models.Document, userToken: string, extraHttpRequestParams?: any ) : Observable<models.Document> {
-        const path = this.basePath + '/documents';
+    let requestOptions: RequestOptionsArgs = {
+      method: 'POST',
+      headers: headerParams,
+      search: queryParameters
+    };
+    requestOptions.body = JSON.stringify(data);
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'data' is not null or undefined
-        if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling documentCreateWithUser.');
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
-        // verify required parameter 'personToken' is not null or undefined
-        if (userToken === null || userToken === undefined) {
-            throw new Error('Required parameter personToken was null or undefined when calling documentCreateWithUser.');
-        }
-        if (userToken !== undefined) {
-            queryParameters.set('personToken', userToken);
-        }
+      });
+  }
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'POST',
-            headers: headerParams,
-            search: queryParameters
-        };
-        requestOptions.body = JSON.stringify(data);
+  /**
+   * Find a document with id
+   *
+   * @param id Find document with the id
+   * @param userToken User authentication token
+   */
+  public findById(id: string, userToken: string, extraHttpRequestParams?: any): Observable<models.Document> {
+    const path = this.basePath + '/documents/{id}'
+        .replace('{' + 'id' + '}', String(id));
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling documentFindByIdWithUser.');
+    }
+    // verify required parameter 'personToken' is not null or undefined
+    if (userToken === null || userToken === undefined) {
+      throw new Error('Required parameter personToken was null or undefined when calling documentFindByIdWithUser.');
+    }
+    if (userToken !== undefined) {
+      queryParameters.set('personToken', userToken);
     }
 
-    /**
-     * Find a document with id
-     *
-     * @param id Find document with the id
-     * @param userToken User authentication token
-     */
-    public findById(id: string, userToken: string, extraHttpRequestParams?: any ) : Observable<models.Document> {
-        const path = this.basePath + '/documents/{id}'
-            .replace('{' + 'id' + '}', String(id));
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling documentFindByIdWithUser.');
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
-        // verify required parameter 'personToken' is not null or undefined
-        if (userToken === null || userToken === undefined) {
-            throw new Error('Required parameter personToken was null or undefined when calling documentFindByIdWithUser.');
-        }
-        if (userToken !== undefined) {
-            queryParameters.set('personToken', userToken);
-        }
+      });
+  }
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
+  /**
+   * Get all documents
+   *
+   * @param userToken User authentication token
+   * @param page Page number
+   * @param pageSize Page size
+   */
+  public findAll(userToken: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Document>>> {
+    const path = this.basePath + '/documents';
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'personToken' is not null or undefined
+    if (userToken === null || userToken === undefined) {
+      throw new Error('Required parameter personToken was null or undefined when calling documentFindWithUser.');
+    }
+    if (page !== undefined) {
+      queryParameters.set('page', page);
     }
 
-    /**
-     * Get all documents
-     *
-     * @param userToken User authentication token
-     * @param page Page number
-     * @param pageSize Page size
-     */
-    public findAll(userToken: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<Array<models.Document>>> {
-        const path = this.basePath + '/documents';
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'personToken' is not null or undefined
-        if (userToken === null || userToken === undefined) {
-            throw new Error('Required parameter personToken was null or undefined when calling documentFindWithUser.');
-        }
-        if (page !== undefined) {
-            queryParameters.set('page', page);
-        }
-
-        if (pageSize !== undefined) {
-            queryParameters.set('pageSize', pageSize);
-        }
-
-        if (userToken !== undefined) {
-            queryParameters.set('personToken', userToken);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (pageSize !== undefined) {
+      queryParameters.set('pageSize', pageSize);
     }
 
-    /**
-     * Update existing document
-     *
-     * @param id Id for the document
-     * @param data Model instance data
-     * @param userToken User authentication token
-     */
-    public update(id: string, data: models.Document, userToken: string, extraHttpRequestParams?: any ) : Observable<models.Document> {
-        const path = this.basePath + '/documents/{id}'
-            .replace('{' + 'id' + '}', String(id));
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');
-        }
-        // verify required parameter 'data' is not null or undefined
-        if (data === null || data === undefined) {
-            throw new Error('Required parameter data was null or undefined when calling documentUpdateWithUser.');
-        }
-        // verify required parameter 'personToken' is not null or undefined
-        if (userToken === null || userToken === undefined) {
-            throw new Error('Required parameter personToken was null or undefined when calling documentUpdateWithUser.');
-        }
-        if (userToken !== undefined) {
-            queryParameters.set('personToken', userToken);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'PUT',
-            headers: headerParams,
-            search: queryParameters
-        };
-        requestOptions.body = JSON.stringify(data);
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (userToken !== undefined) {
+      queryParameters.set('personToken', userToken);
     }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  /**
+   * Update existing document
+   *
+   * @param id Id for the document
+   * @param data Model instance data
+   * @param userToken User authentication token
+   */
+  public update(id: string, data: models.Document, userToken: string, extraHttpRequestParams?: any): Observable<models.Document> {
+    const path = this.basePath + '/documents/{id}'
+        .replace('{' + 'id' + '}', String(id));
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');
+    }
+    // verify required parameter 'data' is not null or undefined
+    if (data === null || data === undefined) {
+      throw new Error('Required parameter data was null or undefined when calling documentUpdateWithUser.');
+    }
+    // verify required parameter 'personToken' is not null or undefined
+    if (userToken === null || userToken === undefined) {
+      throw new Error('Required parameter personToken was null or undefined when calling documentUpdateWithUser.');
+    }
+    if (userToken !== undefined) {
+      queryParameters.set('personToken', userToken);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'PUT',
+      headers: headerParams,
+      search: queryParameters
+    };
+    requestOptions.body = JSON.stringify(data);
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
 
 }

@@ -1,43 +1,43 @@
 table {
-    width: 100%;
-    border-left: none;
+  width: 100%;
+  border-left: none;
 }
 
 thead, tbody, tr, td, th {
-    display: block;
+  display: block;
 }
 
 tbody tr:first-child td, tbody tr:first-child th {
-    border-top: none;
+  border-top: none;
 }
 
 tr:after {
-    content: ' ';
-    display: block;
-    visibility: hidden;
-    clear: both;
+  content: ' ';
+  display: block;
+  visibility: hidden;
+  clear: both;
 }
 
 thead th {
-    border-right: 0px;
+  border-right: 0px;
 }
 
 thead th, thead td {
-    border-bottom-width: 1px;
+  border-bottom-width: 1px;
 }
 
 thead th, thead td, tbody th, tbody td {
-    height: 38px;
+  height: 38px;
 }
 
 tbody {
-    height: 240px;
-    overflow-y: auto;
+  height: 240px;
+  overflow-y: auto;
 }
 
 tbody td, thead td {
-    width: 160px;
-    float: left;
-    margin-right: 8px;
+  width: 160px;
+  float: left;
+  margin-right: 8px;
 }
 

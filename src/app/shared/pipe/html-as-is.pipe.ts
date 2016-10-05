@@ -1,5 +1,5 @@
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
-import {PipeTransform, Pipe} from "@angular/core";
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { PipeTransform, Pipe } from '@angular/core';
 
 /**
  * Marks the sting safe for rendering
@@ -10,10 +10,11 @@ import {PipeTransform, Pipe} from "@angular/core";
 @Pipe({
   name: 'htmlAsIs'
 })
-export class HtmlAsIs implements PipeTransform  {
-  constructor(private _sanitizer: DomSanitizer){}
+export class HtmlAsIs implements PipeTransform {
+  constructor(private _sanitizer: DomSanitizer) {
+  }
 
-  transform(v: string) : SafeHtml {
+  transform(v: string): SafeHtml {
     return this._sanitizer.bypassSecurityTrustHtml(v);
   }
 }

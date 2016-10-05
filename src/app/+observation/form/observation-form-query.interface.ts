@@ -1,10 +1,10 @@
 export interface ObservationFormQuery {
-  taxon:string;
+  taxon: string;
   timeStart: string;
   timeEnd: string;
   informalTaxonGroupId: string;
-  individualCountMin:string;
-  individualCountMax:string;
-  includeNonValidTaxa:boolean;
-  typeSpecimen:boolean;
+  individualCountMin: string;
+  individualCountMax: string;
+  includeNonValidTaxa: boolean;
+  typeSpecimen: boolean;
 }

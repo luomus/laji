@@ -22,192 +22,191 @@
  * limitations under the License.
  */
 
-import {Http, Headers, RequestOptionsArgs, Response, URLSearchParams} from '@angular/http';
-import {Injectable, Optional} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Injectable, Optional } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
 import 'rxjs/Rx';
+import { PagedResult } from '../model/PagedResult';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
-import {PagedResult} from '../model/PagedResult';
-
 @Injectable()
 export class CollectionApi {
-    protected basePath = '/api';
-    public defaultHeaders: Headers = new Headers();
+  protected basePath = '/api';
+  public defaultHeaders: Headers = new Headers();
 
-    constructor(protected http: Http, @Optional() basePath: string) {
-        if (basePath) {
-            this.basePath = basePath;
-        }
+  constructor(protected http: Http, @Optional() basePath: string) {
+    if (basePath) {
+      this.basePath = basePath;
+    }
+  }
+
+  /**
+   * Get all collections
+   *
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
+   * @param idIn Include only items with there ids. Multiple values are separated by a comma (,)
+   * @param page Page number
+   * @param pageSize Page size
+   */
+  public findAll(lang?: string, idIn?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Collection>>> {
+    const path = this.basePath + '/collections';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Get all collections
-     *
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
-     * @param idIn Include only items with there ids. Multiple values are separated by a comma (,)
-     * @param page Page number
-     * @param pageSize Page size
-     */
-    public findAll(lang?: string, idIn?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ): Observable<PagedResult<Array<models.Collection>>> {
-        const path = this.basePath + '/collections';
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
-
-        if (idIn !== undefined) {
-            queryParameters.set('idIn', idIn);
-        }
-
-        if (page !== undefined) {
-            queryParameters.set('page', page);
-        }
-
-        if (pageSize !== undefined) {
-            queryParameters.set('pageSize', pageSize);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (idIn !== undefined) {
+      queryParameters.set('idIn', idIn);
     }
 
-    /**
-     * Find collection by id
-     *
-     * @param id
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
-     */
-    public findById (id: string, lang?: string, extraHttpRequestParams?: any ): Observable<models.Collection> {
-        const path = this.basePath + '/collections/{id}'
-            .replace('{' + 'id' + '}', String(id));
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling collectionFindBySubject.');
-        }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (page !== undefined) {
+      queryParameters.set('page', page);
     }
 
-    /**
-     * Get all collections belonging to the given id
-     *
-     * @param id
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
-     * @param page Page number
-     * @param pageSize Page size
-     */
-    public findChildren (id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ): Observable<PagedResult<Array<models.Collection>>> {
-        const path = this.basePath + '/collections/{id}/children'
-            .replace('{' + 'id' + '}', String(id));
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling collectionFindChildren.');
-        }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
-
-        if (page !== undefined) {
-            queryParameters.set('page', page);
-        }
-
-        if (pageSize !== undefined) {
-            queryParameters.set('pageSize', pageSize);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (pageSize !== undefined) {
+      queryParameters.set('pageSize', pageSize);
     }
 
-    /**
-     * Get all root collections
-     *
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
-     * @param page Page number
-     * @param pageSize Page size
-     */
-    public findRoots (lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ): Observable<PagedResult<Array<models.Collection>>> {
-        const path = this.basePath + '/collections/roots';
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
+      });
+  }
 
-        if (page !== undefined) {
-            queryParameters.set('page', page);
-        }
+  /**
+   * Find collection by id
+   *
+   * @param id
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
+   */
+  public findById(id: string, lang?: string, extraHttpRequestParams?: any): Observable<models.Collection> {
+    const path = this.basePath + '/collections/{id}'
+        .replace('{' + 'id' + '}', String(id));
 
-        if (pageSize !== undefined) {
-            queryParameters.set('pageSize', pageSize);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling collectionFindBySubject.');
     }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  /**
+   * Get all collections belonging to the given id
+   *
+   * @param id
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
+   * @param page Page number
+   * @param pageSize Page size
+   */
+  public findChildren(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Collection>>> {
+    const path = this.basePath + '/collections/{id}/children'
+        .replace('{' + 'id' + '}', String(id));
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling collectionFindChildren.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
+    }
+
+    if (page !== undefined) {
+      queryParameters.set('page', page);
+    }
+
+    if (pageSize !== undefined) {
+      queryParameters.set('pageSize', pageSize);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  /**
+   * Get all root collections
+   *
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
+   * @param page Page number
+   * @param pageSize Page size
+   */
+  public findRoots(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Collection>>> {
+    const path = this.basePath + '/collections/roots';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
+    }
+
+    if (page !== undefined) {
+      queryParameters.set('page', page);
+    }
+
+    if (pageSize !== undefined) {
+      queryParameters.set('pageSize', pageSize);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
 
 }

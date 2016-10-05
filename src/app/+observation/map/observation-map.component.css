@@ -12,20 +12,23 @@
   left: 10px;
   bottom: 10px;
   background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 }
+
 .legend .color {
   display: inline-block;
   height: 12px;
   width: 12px;
-  margin-right:5px;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  margin-right: 5px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 }
+
 .legend li {
   list-style: none;
-  padding:0;
+  padding: 0;
   margin: 0;
 }
+
 .loading-map {
   z-index: 1000;
   position: absolute;

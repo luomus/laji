@@ -23,28 +23,27 @@
  */
 
 'use strict';
-import * as models from './index';
 
 export interface LajiInformalGroup {
 
 
-    /**
-     * Unique identifier for the informal group
-     */
-    id?: string;
+  /**
+   * Unique identifier for the informal group
+   */
+  id?: string;
 
-    /**
-     * Name of the informal group in finnish
-     */
-    fi?: string;
+  /**
+   * Name of the informal group in finnish
+   */
+  fi?: string;
 
-    /**
-     * Name of the informal group in english
-     */
-    en?: string;
+  /**
+   * Name of the informal group in english
+   */
+  en?: string;
 
-    /**
-     * Name of the informal group in swedish
-     */
-    sv?: string;
+  /**
+   * Name of the informal group in swedish
+   */
+  sv?: string;
 }

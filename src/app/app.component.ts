@@ -1,9 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
-
-import {
-  TaxonomyApi,
-  CollectionApi
-} from './shared';
+import { TaxonomyApi, CollectionApi } from './shared';
 
 @Component({
   selector: 'laji-app',
@@ -18,9 +14,7 @@ export class AppComponent {
 
   public viewContainerRef: ViewContainerRef;
 
-  constructor(
-    viewContainerRef: ViewContainerRef
-  ) {
+  constructor(viewContainerRef: ViewContainerRef) {
     this.viewContainerRef = viewContainerRef;
   }
 }

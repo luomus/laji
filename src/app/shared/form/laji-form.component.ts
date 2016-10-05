@@ -1,6 +1,4 @@
-import {
-  Component, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges
-} from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { FormApiClient } from '../api';
 import { UserService } from '../service/user.service';
 
@@ -17,7 +15,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
   @Input() lang: string;
   @Input() formData: any = {};
 
-  @Output() onSubmit = new EventEmitter ();
+  @Output() onSubmit = new EventEmitter();
   @Output() onChange = new EventEmitter();
 
   elem: ElementRef;
@@ -27,8 +25,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
 
   constructor(@Inject(ElementRef) elementRef: ElementRef,
               private apiClient: FormApiClient,
-              private userService: UserService
-  ) {
+              private userService: UserService) {
     this.elem = elementRef.nativeElement;
   }
 

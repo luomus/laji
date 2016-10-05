@@ -22,9 +22,9 @@
  * limitations under the License.
  */
 
-import {Http, Headers, RequestOptionsArgs, Response, URLSearchParams} from '@angular/http';
-import {Injectable, Optional} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Injectable, Optional } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
 import 'rxjs/Rx';
 
@@ -34,84 +34,84 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class FormApi {
-    protected basePath = '/api';
-    public defaultHeaders : Headers = new Headers();
+  protected basePath = '/api';
+  public defaultHeaders: Headers = new Headers();
 
-    constructor(protected http: Http, @Optional() basePath: string) {
-        if (basePath) {
-            this.basePath = basePath;
-        }
+  constructor(protected http: Http, @Optional() basePath: string) {
+    if (basePath) {
+      this.basePath = basePath;
+    }
+  }
+
+  /**
+   * Find all forms
+   *
+   * @param lang forms language
+   */
+  public formFindAll(lang?: string, extraHttpRequestParams?: any): Observable<models.FormListInterface> {
+    const path = this.basePath + '/forms';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Find all forms
-     *
-     * @param lang forms language
-     */
-    public formFindAll (lang?: string, extraHttpRequestParams?: any ) : Observable<models.FormListInterface> {
-        const path = this.basePath + '/forms';
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
+      });
+  }
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
+  /**
+   * Find a form by id
+   *
+   * @param id
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
+   * @param format Response format
+   */
+  public formFindById(id: string, lang?: string, format?: string, extraHttpRequestParams?: any): Observable<any> {
+    const path = this.basePath + '/forms/{id}'
+        .replace('{' + 'id' + '}', String(id));
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling formFindById.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Find a form by id
-     *
-     * @param id
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found.
-     * @param format Response format
-     */
-    public formFindById (id: string, lang?: string, format?: string, extraHttpRequestParams?: any ) : Observable<any> {
-        const path = this.basePath + '/forms/{id}'
-            .replace('{' + 'id' + '}', String(id));
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling formFindById.');
-        }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
-
-        if (format !== undefined) {
-            queryParameters.set('format', format);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (format !== undefined) {
+      queryParameters.set('format', format);
     }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
 
 }

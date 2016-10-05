@@ -1,12 +1,12 @@
 .informal-group-container {
   position: absolute;
   z-index: 9999;
-  width:550px;
-  left:0;
+  width: 550px;
+  left: 0;
   background: #ffffff;
   border: 1px solid #e3e3e3;
-  margin:0 10px 10px 10px;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  margin: 0 10px 10px 10px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 }
 
 .informal-group-container table {
@@ -23,6 +23,6 @@
 }
 
 .informal-group-container .item:hover,
-.informal-group-container .item .active{
+.informal-group-container .item .active {
   color: #2C3E50;
 }

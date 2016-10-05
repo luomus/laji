@@ -1,12 +1,17 @@
 import {
-  Component, OnInit, Input, OnChanges, forwardRef, EventEmitter, Output, HostListener,
+  Component,
+  Input,
+  OnChanges,
+  forwardRef,
+  EventEmitter,
+  Output,
+  HostListener,
   ViewContainerRef
 } from '@angular/core';
-import {InformalTaxonGroupApi} from "../../shared/api/InformalTaxonGroupApi";
-import {InformalTaxonGroup} from "../../shared/model/InformalTaxonGroup";
-import {NG_VALUE_ACCESSOR, ControlValueAccessor} from "@angular/forms";
-import {Observable, Subscription} from "rxjs";
-import {PagedResult} from "../../shared/model/PagedResult";
+import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
+import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -18,22 +23,24 @@ export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
   selector: 'observation-group-select',
   templateUrl: 'group-select.component.html',
   styleUrls: ['./group-select.component.css'],
-  providers: [ InformalTaxonGroupApi, OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR ]
+  providers: [InformalTaxonGroupApi, OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR]
 })
 export class ObservationGroupSelectComponent implements ControlValueAccessor, OnChanges {
   @Input() lang = 'fi';
   @Output() onSelect = new EventEmitter();
 
-  public groups:InformalTaxonGroup[] = [];
-  public activeGroup:InformalTaxonGroup;
-  public open:boolean = false;
-  public innerValue:string = '';
+  public groups: InformalTaxonGroup[] = [];
+  public activeGroup: InformalTaxonGroup;
+  public open: boolean = false;
+  public innerValue: string = '';
   private el: Element;
 
-  private subLabel:any;
+  private subLabel: any;
 
-  onChange = (_:any) => {};
-  onTouched = () => {};
+  onChange = (_: any) => {
+  };
+  onTouched = () => {
+  };
 
   get value(): any {
     return this.innerValue;
@@ -46,7 +53,7 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
     }
   }
 
-  constructor(viewContainerRef: ViewContainerRef, private informalTaxonService:InformalTaxonGroupApi) {
+  constructor(viewContainerRef: ViewContainerRef, private informalTaxonService: InformalTaxonGroupApi) {
     this.el = viewContainerRef.element.nativeElement;
   }
 
@@ -80,7 +87,7 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
       )
   }
 
-  onClick(group:InformalTaxonGroup) {
+  onClick(group: InformalTaxonGroup) {
     this.value = group.id;
     this.activeGroup = group;
     if (!!group.hasSubGroup) {
@@ -92,7 +99,7 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
 
   getRange() {
     let items = [], i, len;
-    for(i = 0, len = Math.ceil(this.groups.length / 2); i<len; i++) {
+    for (i = 0, len = Math.ceil(this.groups.length / 2); i < len; i++) {
       items.push(i);
     }
     return items;
@@ -115,7 +122,7 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
     this.onTouched = fn;
   }
 
-  getLabel(groupId:string) {
+  getLabel(groupId: string) {
     if (!groupId) {
       return Observable.of('');
     }

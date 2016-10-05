@@ -2,7 +2,6 @@
   "fi": "finska",
   "sv": "svenska",
   "en": "engelska",
-
   "navigation.taxonomy": "Artlista",
   "navigation.observation": "Observationer",
   "navigation.information": "Allmänt och aktuellt",
@@ -13,7 +12,6 @@
   "navigation.user.login": "Login",
   "navigation.user.logout": "Logout",
   "navigation.user.profile": "Profil",
-
   "home.image-header.observations": "observationer och prover",
   "home.image-header.species": "arter",
   "home.image-header.sources": "informationskällor",
@@ -37,9 +35,7 @@
   "home.carousel.collections": "informationskällor",
   "home.carousel.digitized": "digitaliserade prover",
   "home.carousel.preserved": "prover",
-
   "search-bar.input": "Sök",
-
   "taxonomy.card.id": "ID",
   "taxonomy.scientific.name": "Vetenskapligt namn",
   "taxonomy.author": "Auktor",
@@ -55,7 +51,6 @@
   "taxonomy.invasive.establishment": "Typ av förekomst",
   "taxonomy.invasive.phrase": "Denna art är",
   "taxonomy.invasive.title": "en invasiv art",
-
   "taxonomy.list.onlyFinnish": "Endast finska taxonen",
   "taxonomy.map.summary": "Sammanfattande karta",
   "taxonomy.rank": "Taxonomisk nivå",
@@ -66,26 +61,20 @@
   "taxonomy.images": "bilder",
   "taxonomy.speciesList.found": "arter hittades",
   "taxonomy.administrative.statuses": "Administrativa status",
-
   "news.title": "Nyheter",
   "news.earlier": "föregående",
   "news.newer": "nästa",
-
   "information.more": "ytterligare information",
-
   "paginator.first": "första",
   "paginator.last": "sista",
   "paginator.previous": "föregående",
   "paginator.next": "nästa",
-
-
   "search.result.list": "Lista",
   "search.result.images": "Bilder",
   "search.result.stats": "Statistik",
   "search.result.load": "Ladda ner som en fil",
   "search.result.species": "Arter",
   "search.result.map": "Karta",
-
   "result.unit.taxonVerbatim": "Art",
   "result.gathering.team": "Person",
   "result.gathering.eventDate": "Tid",
@@ -99,10 +88,7 @@
   "result.load.privateCount": "Förgrovade",
   "observation.count": "Antal av observationer",
   "result.allObservation": "observationer",
-  
   "force.login": "Du måste logga in för att använda den här uppdelningen",
-  
-  
   "observation.intro": "<p>Suomen Lajitietokeskuksen Havainnot-palvelun avulla voit hakea monipuolisten hakutoimintojen avulla käyttöösi tietoja maassamme tehdyistä lajihavainnoista.</p><p>Havaintoja kertyy niin yksittäisiltä harrastajilta, kansalaistiedehankkeiden kautta kuin tieteellisen työn tuloksena. Haettavat aineistot sisältävät myös tieteellisten kokoelma-aineistojen näytteiden havaintotiedot ja seurannoissa tehdyt havainnot.</p>",
   "observation.form.filter": "Filter",
   "observation.form.specimen": "Arter",
@@ -129,21 +115,17 @@
   "observation.form.multi-all": "båda",
   "observation.form.multi-true": "ja",
   "observation.form.multi-false": "nej",
-  
   "observation.filters.unit": "Näytteen tietoja",
   "observation.filters.collection": "Kokoelman tietoja",
   "observation.filters.administrative": "Hallinnolliset",
   "observation.filters.other": "Muut",
-
   "observation.results.title": "Sök observationer",
   "observation.results.observation": "fynd",
   "observation.results.species": "artlista",
-
   "observation.filterBy.recordBasis": "Observations typ",
   "observation.filterBy.image": "Bilder",
   "observation.filterBy.collectionId": "Data",
   "observation.filterBy.sourceId": "Informationskällor",
-  
   "observation.active": "Filtrerat",
   "observation.active.time": "tid",
   "observation.active.hasUnitMedia": "bild",
@@ -160,7 +142,6 @@
   "observation.active.informalTaxonGroupAll": "alla",
   "observation.active.finnish": "finska",
   "observation.active.hasMedia": "bild",
-
   "haseka.title": "Havaintopalvelu",
   "haseka.intro": "<p>Havaintopalvelu tarjoaa suoraviivaisen kanavan julkaista eliölajihavaintoja laji.fi-sivuston kautta. Rekisteröityneelle käyttäjälle palvelu tarjoaa tietokannan omien havaintotietojensa tallentamiseen ja hallintaan sekä väylän niiden jakamiseen. Käyttäjät voivat perustaa tietokantaan projekteja, joihin kutsutut osallistujat tallentavat haluttua lajitietoa. Perustetun projektin keräämiä tietoja hallinnoi sen omistaja ja tiedon jakaminen laji.fi-sivuston kautta on helppoa. Palvelun mukautuva lomakkeisto antaa käyttäjälle mahdollisuuden valita itselleen sopivan tavan tallentaa, hallita ja jakaa havaintojaan muiden käyttöön.</p>",
   "haseka.forms.title": "Lomakkeet",
@@ -172,16 +153,13 @@
   "haseka.users.latest.gathered": "observerad",
   "observation.export.tooMany": "Liian paljon havaintoja. Maksimi on 200 000 joten rajaa hakua lisää",
   "observation.export.tooLittle": "Ei havaintoja joita voisit ladata",
-
   "omniSearch.matches": "Tietoa lajista",
   "omniSearch.rank": "taksonomisk nivå",
   "omniSearch.groups": "organismgrupp",
-
   "friend.ask": "Pyydä ystäväksi",
   "friend.friends": "Ystävät",
   "friend.requests": "Ystäväpyynnöt",
   "friend.requestSent": "Ystäväpyyntö lähetetty",
-
   "profile.friends": "Ystävät",
   "profile.friendsInfo": "Voit pyytää ystäviäsi lähettämään sinulle linkin omalle profiilisivulleen. Linkin saatuasi voit pyytää heitä ystäväksesi ja kun he ovat hyväksyneet pyyntösi, näet täällä linkin heidän profiiliinsa.",
   "profile.accountSettings": "Käyttäjätilini"

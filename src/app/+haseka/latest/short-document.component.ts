@@ -1,16 +1,16 @@
-import {Component, OnInit, Input, OnChanges} from '@angular/core';
-import {Document} from "../../shared/model/Document";
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Document } from '../../shared/model/Document';
 
 @Component({
   selector: 'laji-short-document',
   templateUrl: 'short-document.component.html'
 })
-export class ShortDocumentComponent implements OnInit, OnChanges{
-  @Input() document:Document;
-  @Input() showList:boolean = false;
+export class ShortDocumentComponent implements OnInit, OnChanges {
+  @Input() document: Document;
+  @Input() showList: boolean = false;
 
-  public taxa:Array<{ name:string,id:string }>;
-  public gatheringDates:{ start:string,end:string };
+  public taxa: Array<{ name: string,id: string }>;
+  public gatheringDates: { start: string,end: string };
 
   ngOnInit() {
     this.updateTaxa();
@@ -22,7 +22,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges{
     this.updateGatheredDates();
   }
 
-  updateTaxa(max:number = 10) {
+  updateTaxa(max: number = 10) {
     let result = [];
     if (!this.document.gatherings) {
       return result;
@@ -42,7 +42,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges{
   }
 
   updateGatheredDates() {
-    this.gatheringDates = {start: null, end:null};
+    this.gatheringDates = {start: null, end: null};
     if (!this.document.gatherings) {
       return;
     }

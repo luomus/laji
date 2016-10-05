@@ -22,356 +22,356 @@
  * limitations under the License.
  */
 
-import {Http, Headers, RequestOptionsArgs, Response, URLSearchParams} from '@angular/http';
-import {Injectable, Optional} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Injectable, Optional } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
 import 'rxjs/Rx';
+import { PagedResult } from '../model/PagedResult';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
 'use strict';
-import {PagedResult} from "../model/PagedResult";
 
 @Injectable()
 export class InformalTaxonGroupApi {
-    protected basePath = '/api';
-    public defaultHeaders : Headers = new Headers();
+  protected basePath = '/api';
+  public defaultHeaders: Headers = new Headers();
 
-    constructor(protected http: Http, @Optional() basePath: string) {
-        if (basePath) {
-            this.basePath = basePath;
-        }
+  constructor(protected http: Http, @Optional() basePath: string) {
+    if (basePath) {
+      this.basePath = basePath;
+    }
+  }
+
+  /**
+   * Get all InformalTaxonGroups
+   *
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
+   * @param page Page number
+   * @param pageSize Page size
+   */
+  public informalTaxonGroupFind(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.InformalTaxonGroup>> {
+    const path = this.basePath + '/informal-taxon-groups';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Get all InformalTaxonGroups
-     *
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
-     * @param page Page number
-     * @param pageSize Page size
-     */
-    public informalTaxonGroupFind (lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<models.InformalTaxonGroup>> {
-        const path = this.basePath + '/informal-taxon-groups';
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
-
-        if (page !== undefined) {
-            queryParameters.set('page', page);
-        }
-
-        if (pageSize !== undefined) {
-            queryParameters.set('pageSize', pageSize);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (page !== undefined) {
+      queryParameters.set('page', page);
     }
 
-    /**
-     * Find InformalTaxonGroup by id
-     *
-     * @param id
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
-     */
-    public informalTaxonGroupFindById (id: string, lang?: string, extraHttpRequestParams?: any ) : Observable<models.InformalTaxonGroup> {
-        const path = this.basePath + '/informal-taxon-groups/{id}'
-            .replace('{' + 'id' + '}', String(id));
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupFindById.');
-        }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (pageSize !== undefined) {
+      queryParameters.set('pageSize', pageSize);
     }
 
-    /**
-     * Get root informal taxon groups
-     *
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found.
-     * @param page Page number
-     * @param pageSize Page size
-     */
-    public informalTaxonGroupFindRoots (lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<models.InformalTaxonGroup>> {
-        const path = this.basePath + '/informal-taxon-groups/roots';
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
+      });
+  }
 
-        if (page !== undefined) {
-            queryParameters.set('page', page);
-        }
+  /**
+   * Find InformalTaxonGroup by id
+   *
+   * @param id
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
+   */
+  public informalTaxonGroupFindById(id: string, lang?: string, extraHttpRequestParams?: any): Observable<models.InformalTaxonGroup> {
+    const path = this.basePath + '/informal-taxon-groups/{id}'
+        .replace('{' + 'id' + '}', String(id));
 
-        if (pageSize !== undefined) {
-            queryParameters.set('pageSize', pageSize);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupFindById.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Get immediate children of the informal group
-     *
-     * @param id
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found.
-     * @param page Page number
-     * @param pageSize Page size
-     */
-    public informalTaxonGroupGetChildren (id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<models.InformalTaxonGroup>> {
-        const path = this.basePath + '/informal-taxon-groups/{id}/children'
-            .replace('{' + 'id' + '}', String(id));
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetChildren.');
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
+      });
+  }
 
-        if (page !== undefined) {
-            queryParameters.set('page', page);
-        }
+  /**
+   * Get root informal taxon groups
+   *
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
+   * @param page Page number
+   * @param pageSize Page size
+   */
+  public informalTaxonGroupFindRoots(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.InformalTaxonGroup>> {
+    const path = this.basePath + '/informal-taxon-groups/roots';
 
-        if (pageSize !== undefined) {
-            queryParameters.set('pageSize', pageSize);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Get parents for a informal group
-     *
-     * @param id
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found.
-     */
-    public informalTaxonGroupGetParents (id: string, lang?: string, extraHttpRequestParams?: any ) : Observable<Array<models.InformalTaxonGroup>> {
-        const path = this.basePath + '/informal-taxon-groups/{id}/parents'
-            .replace('{' + 'id' + '}', String(id));
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetChildren.');
-        }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (page !== undefined) {
+      queryParameters.set('page', page);
     }
 
-    /**
-     * Get current groups parents and parents siblings
-     *
-     * @param id
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found.
-     * @param page Page number
-     * @param pageSize Page size
-     */
-    public informalTaxonGroupGetParentLevel (id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<Array<models.InformalTaxonGroup>>> {
-        const path = this.basePath + '/informal-taxon-groups/{id}/parentLevel'
-            .replace('{' + 'id' + '}', String(id));
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetParentLevel.');
-        }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
-
-        if (page !== undefined) {
-            queryParameters.set('page', page);
-        }
-
-        if (pageSize !== undefined) {
-            queryParameters.set('pageSize', pageSize);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (pageSize !== undefined) {
+      queryParameters.set('pageSize', pageSize);
     }
 
-    /**
-     * Get full tree of informal groups with hasSubGroup extended
-     *
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found.
-     * @param page Page number
-     * @param pageSize Page size
-     */
-    public informalTaxonGroupGetTree (lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<Array<models.InformalTaxonGroup>>> {
-        const path = this.basePath + '/informal-taxon-groups/tree';
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
+      });
+  }
 
-        if (page !== undefined) {
-            queryParameters.set('page', page);
-        }
+  /**
+   * Get immediate children of the informal group
+   *
+   * @param id
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
+   * @param page Page number
+   * @param pageSize Page size
+   */
+  public informalTaxonGroupGetChildren(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.InformalTaxonGroup>> {
+    const path = this.basePath + '/informal-taxon-groups/{id}/children'
+        .replace('{' + 'id' + '}', String(id));
 
-        if (pageSize !== undefined) {
-            queryParameters.set('pageSize', pageSize);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetChildren.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Get current groups with it&#39;s siblings
-     *
-     * @param id
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found.
-     * @param page Page number
-     * @param pageSize Page size
-     */
-    public informalTaxonGroupGetWithSiblings (id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<models.InformalTaxonGroup>> {
-        const path = this.basePath + '/informal-taxon-groups/{id}/siblings'
-            .replace('{' + 'id' + '}', String(id));
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetWithSiblings.');
-        }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
-
-        if (page !== undefined) {
-            queryParameters.set('page', page);
-        }
-
-        if (pageSize !== undefined) {
-            queryParameters.set('pageSize', pageSize);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (page !== undefined) {
+      queryParameters.set('page', page);
     }
+
+    if (pageSize !== undefined) {
+      queryParameters.set('pageSize', pageSize);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  /**
+   * Get parents for a informal group
+   *
+   * @param id
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
+   */
+  public informalTaxonGroupGetParents(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<models.InformalTaxonGroup>> {
+    const path = this.basePath + '/informal-taxon-groups/{id}/parents'
+        .replace('{' + 'id' + '}', String(id));
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetChildren.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  /**
+   * Get current groups parents and parents siblings
+   *
+   * @param id
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
+   * @param page Page number
+   * @param pageSize Page size
+   */
+  public informalTaxonGroupGetParentLevel(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.InformalTaxonGroup>>> {
+    const path = this.basePath + '/informal-taxon-groups/{id}/parentLevel'
+        .replace('{' + 'id' + '}', String(id));
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetParentLevel.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
+    }
+
+    if (page !== undefined) {
+      queryParameters.set('page', page);
+    }
+
+    if (pageSize !== undefined) {
+      queryParameters.set('pageSize', pageSize);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  /**
+   * Get full tree of informal groups with hasSubGroup extended
+   *
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
+   * @param page Page number
+   * @param pageSize Page size
+   */
+  public informalTaxonGroupGetTree(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.InformalTaxonGroup>>> {
+    const path = this.basePath + '/informal-taxon-groups/tree';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
+    }
+
+    if (page !== undefined) {
+      queryParameters.set('page', page);
+    }
+
+    if (pageSize !== undefined) {
+      queryParameters.set('pageSize', pageSize);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  /**
+   * Get current groups with it&#39;s siblings
+   *
+   * @param id
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found.
+   * @param page Page number
+   * @param pageSize Page size
+   */
+  public informalTaxonGroupGetWithSiblings(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.InformalTaxonGroup>> {
+    const path = this.basePath + '/informal-taxon-groups/{id}/siblings'
+        .replace('{' + 'id' + '}', String(id));
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetWithSiblings.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
+    }
+
+    if (page !== undefined) {
+      queryParameters.set('page', page);
+    }
+
+    if (pageSize !== undefined) {
+      queryParameters.set('pageSize', pageSize);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
 
 }

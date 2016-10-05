@@ -4,16 +4,18 @@
       <div class="carousel-caption">
         <div class="row">
           <div class="col-sm-12">
-            <img class="pull-left" src="/static/images/LAJI_FI_valk.png" />
+            <img class="pull-left" src="/static/images/LAJI_FI_valk.png"/>
           </div>
         </div>
         <div style="margin-top: 20px;" class="row">
           <laji-stat-item [description]="'home.carousel.species' | translate">
-            <laji-observation-count [lightLoader]="true" [field]="'unit.linkings.taxon.id'" [query]="{taxonRankId: 'MX.species'}">
+            <laji-observation-count [lightLoader]="true" [field]="'unit.linkings.taxon.id'"
+                                    [query]="{taxonRankId: 'MX.species'}">
             </laji-observation-count>
           </laji-stat-item>
           <laji-stat-item [description]="'home.carousel.collections' | translate">
-            <laji-observation-count [lightLoader]="true" [field]="'document.collectionId'" [query]="{}"></laji-observation-count>
+            <laji-observation-count [lightLoader]="true" [field]="'document.collectionId'"
+                                    [query]="{}"></laji-observation-count>
           </laji-stat-item>
           <laji-stat-item [description]="'home.carousel.observations' | translate">
             <laji-observation-count [lightLoader]="true" [query]="{}"></laji-observation-count>

@@ -1,11 +1,10 @@
-import {Component, OnInit, Input, OnDestroy, Output, EventEmitter} from '@angular/core';
-import {Subscription} from "rxjs";
-import {Location} from "@angular/common";
-
-import {WarehouseApi, PagedResult} from "../../shared";
-import {ValueDecoratorService} from './value-decorator.sevice';
-import {SearchQuery} from "../search-query.model";
-import {Util} from "../../shared/service/util.service";
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Location } from '@angular/common';
+import { WarehouseApi, PagedResult } from '../../shared';
+import { ValueDecoratorService } from './value-decorator.sevice';
+import { SearchQuery } from '../search-query.model';
+import { Util } from '../../shared/service/util.service';
 
 @Component({
   selector: 'laji-observation-result-list',
@@ -24,7 +23,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     {field: 'document.documentId'}
   ];
   @Input() showPager: boolean = true;
-  @Output() onSelect:EventEmitter<string> = new EventEmitter<string>();
+  @Output() onSelect: EventEmitter<string> = new EventEmitter<string>();
 
   public result: PagedResult<any>;
 
@@ -32,12 +31,13 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   private subFetch: Subscription;
   private subUpdate: Subscription;
-  private lastQuery:string;
+  private lastQuery: string;
 
   constructor(private warehouseService: WarehouseApi,
               private decorator: ValueDecoratorService,
               private searchQuery: SearchQuery,
-              private location: Location) {}
+              private location: Location) {
+  }
 
   ngOnInit() {
     this.result = {
@@ -98,7 +98,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
         page)
       .subscribe(
         results => {
-          this.searchQuery.page = results.currentPage || 1;
+          this.searchQuery.page = results.currentPage || 1;
           if (results) {
             this.result = results;
           }

@@ -1,9 +1,8 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { NewsComponent } from './news.component';
 
-export const NewsRoutes:Routes = [
+export const NewsRoutes: Routes = [
   {
     path: ':id',
     pathMatch: 'full',

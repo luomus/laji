@@ -17,9 +17,9 @@
   border-color: #2980B9;
 }
 
-.navbar-inverse .navbar-nav>.active>a,
-.navbar-inverse .navbar-nav>.active>a:focus,
-.navbar-inverse .navbar-nav>.active>a:hover {
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:focus,
+.navbar-inverse .navbar-nav > .active > a:hover {
   background-color: #2980B9;
 }
 
@@ -61,9 +61,11 @@
   color: #ffffff;
   background: none !important;
 }
+
 .dropdown-menu .navbar-link {
   color: #333 !important;
 }
+
 .navbar-profile .language-toggle,
 .navbar-language-selection .language-toggle {
   display: inline-block;

@@ -2,7 +2,6 @@
   "fi": "finnish",
   "sv": "swedish",
   "en": "english",
-
   "navigation.taxonomy": "Taxonomy",
   "navigation.observation": "Observations",
   "navigation.information": "Information",
@@ -13,7 +12,6 @@
   "navigation.user.login": "Login",
   "navigation.user.logout": "Logout",
   "navigation.user.profile": "Profile",
-
   "home.image-header.observations": "observations and specimen",
   "home.image-header.species": "species",
   "home.image-header.sources": "information sources",
@@ -38,7 +36,6 @@
   "home.carousel.digitized": "digitized specimens",
   "home.carousel.preserved": "preserved specimens",
   "search-bar.input": "Search",
-
   "taxonomy.card.id": "ID",
   "taxonomy.scientific.name": "Scientific Name",
   "taxonomy.author": "Author",
@@ -64,25 +61,20 @@
   "taxonomy.images": "Images",
   "taxonomy.speciesList.found": "species found",
   "taxonomy.administrative.statuses": "Administrative status",
-
   "news.title": "News",
   "news.earlier": "previous",
   "news.newer": "next",
-
   "information.more": "More information",
-
   "paginator.first": "first",
   "paginator.last": "last",
   "paginator.previous": "previous",
   "paginator.next": "next",
-
   "search.result.list": "List",
   "search.result.images": "Images",
   "search.result.stats": "Statistics",
   "search.result.load": "Load as a file",
   "search.result.species": "species",
   "search.result.map": "map",
-
   "result.unit.taxonVerbatim": "Species",
   "result.gathering.team": "Gatherer",
   "result.gathering.eventDate": "Time",
@@ -96,9 +88,7 @@
   "result.load.privateCount": "Coarsened",
   "observation.count": "Number of observations",
   "result.allObservation": "observation",
-  
   "force.login": "You'll need to login to use this section",
-
   "observation.intro": "<p>Suomen Lajitietokeskuksen Havainnot-palvelun avulla voit hakea monipuolisten hakutoimintojen avulla käyttöösi tietoja maassamme tehdyistä lajihavainnoista.</p><p>Havaintoja kertyy niin yksittäisiltä harrastajilta, kansalaistiedehankkeiden kautta kuin tieteellisen työn tuloksena. Haettavat aineistot sisältävät myös tieteellisten kokoelma-aineistojen näytteiden havaintotiedot ja seurannoissa tehdyt havainnot.</p>",
   "observation.form.filter": "Filter",
   "observation.form.specimen": "Species",
@@ -125,21 +115,17 @@
   "observation.form.multi-all": "both",
   "observation.form.multi-true": "yes",
   "observation.form.multi-false": "no",
-  
   "observation.filters.unit": "Specimen",
   "observation.filters.collection": "Collection",
   "observation.filters.administrative": "Administrative",
   "observation.filters.other": "Others",
-
   "observation.results.title": "Observation search",
   "observation.results.observation": "hits of",
   "observation.results.species": "species",
-
   "observation.filterBy.recordBasis": "Type",
   "observation.filterBy.image": "Image",
   "observation.filterBy.collectionId": "Data",
   "observation.filterBy.sourceId": "Sources",
-  
   "observation.active": "Filtered",
   "observation.active.time": "time",
   "observation.active.hasUnitMedia": "image",
@@ -152,7 +138,6 @@
   "observation.active.recordBasis": "observation type",
   "observation.active.informalTaxonGroupId": "Informal group",
   "observation.active.informalTaxonGroupAll": "all",
-
   "haseka.title": "Observation service",
   "haseka.forms.title": "Forms",
   "haseka.users.latest": "Latest submissions",
@@ -163,12 +148,10 @@
   "omniSearch.matches": "Information about species",
   "omniSearch.rank": "taxonomic rank",
   "omniSearch.groups": "species group",
-  
   "friend.ask": "Ask for a friend",
   "friend.friends": "Friends",
   "friend.requests": "Friend request",
   "friend.requestSent": "Friend request sent",
-
   "profile.friends": "Friends",
   "profile.friendsInfo": "You can ask your friends to send you a link to their profile pages. When you have received the link you can ask them to be your friends and when they have accepted your request, you'll see here a link to their profile.",
   "profile.accountSettings": "My account"

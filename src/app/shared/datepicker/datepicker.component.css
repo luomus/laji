@@ -182,7 +182,7 @@
 }
 
 .ng-datepicker.static > .day-names > span {
-  width: calc(100%/7);
+  width: calc(100% / 7);
 }
 
 .ng-datepicker.static > .calendar {
@@ -190,7 +190,7 @@
 }
 
 .ng-datepicker.static > .calendar > span > span.day {
-  width: calc(100%/7 - 1px);
+  width: calc(100% / 7 - 1px);
   height: 50px;
   line-height: 50px;
 }

@@ -23,11 +23,10 @@
  */
 
 'use strict';
-import * as models from './index';
 
 export interface InformationItem {
 
-    id?: string;
+  id?: string;
 
-    menuTitle?: string;
+  menuTitle?: string;
 }

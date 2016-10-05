@@ -1,12 +1,11 @@
-import {Routes, RouterModule} from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
+import { UserComponent } from './user.component';
+import { UserLoginComponent } from './login/user-login.component';
+import { UserLogoutComponent } from './logout/user-logout.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ModuleWithProviders } from '@angular/core';
 
-import { UserComponent } from "./user.component";
-import { UserLoginComponent } from "./login/user-login.component";
-import { UserLogoutComponent } from "./logout/user-logout.component";
-import { ProfileComponent } from "./profile/profile.component";
-import {ModuleWithProviders} from "@angular/core";
-
-export const UserRoutes:Routes = [
+export const UserRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',

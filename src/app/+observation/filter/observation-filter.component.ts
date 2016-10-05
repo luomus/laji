@@ -1,10 +1,9 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges} from '@angular/core';
-import {isArray} from 'underscore';
-import {WarehouseApi} from "../../shared/api/WarehouseApi";
-import {SearchQuery} from "../search-query.model";
-import {ObservationFilterInterface} from "./observation-filter.interface";
-import {Subscription} from "rxjs";
-import {TranslateService} from "ng2-translate";
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges } from '@angular/core';
+import { isArray } from 'underscore';
+import { WarehouseApi } from '../../shared/api/WarehouseApi';
+import { SearchQuery } from '../search-query.model';
+import { ObservationFilterInterface } from './observation-filter.interface';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -13,22 +12,20 @@ import {TranslateService} from "ng2-translate";
   styleUrls: ['observation-filter.component.css']
 })
 export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() lang:string;
-  @Input() filter:ObservationFilterInterface;
-  @Output() filterChange:EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
-  @Output() onSelect:EventEmitter<any> = new EventEmitter();
+  @Input() lang: string;
+  @Input() filter: ObservationFilterInterface;
+  @Output() filterChange: EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
+  @Output() onSelect: EventEmitter<any> = new EventEmitter();
 
-  public loading:boolean = false;
-  public page:number = 1;
-  public total:number = 0;
+  public loading: boolean = false;
+  public page: number = 1;
+  public total: number = 0;
 
   private subData: Subscription;
-  private lastQuery:string;
+  private lastQuery: string;
 
-  constructor(
-    private warehouseService:WarehouseApi,
-    private searchQuery:SearchQuery
-  ) {
+  constructor(private warehouseService: WarehouseApi,
+              private searchQuery: SearchQuery) {
   }
 
   ngOnInit() {
@@ -87,8 +84,8 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
               val = this.filter.valueMap[val];
             }
             let sel = this.filter.selected.filter((value) => {
-              return value === val;
-            }).length > 0;
+                return value === val;
+              }).length > 0;
             return {
               value: val,
               count: result['count'] || 0,
@@ -109,7 +106,7 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
     );
   }
 
-  toggle(item:any) {
+  toggle(item: any) {
     let selected = this.isActive(item);
     let value = this.getQueryValue(item);
     let query = this.searchQuery.query;
@@ -151,7 +148,7 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
     this.onSelect.emit(item);
   }
 
-  isActive(item:FilterItem) {
+  isActive(item: FilterItem) {
     let filter = this.searchQuery.query[this.filter['filter']];
     let type = typeof filter;
     if (type === 'undefined') {
@@ -164,7 +161,7 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
     return filter === value;
   }
 
-  private getQueryValue(item:FilterItem) {
+  private getQueryValue(item: FilterItem) {
     let value = item.value;
     if (this.filter['booleanMap']) {
       if (typeof this.filter['booleanMap'] === 'function') {
@@ -176,7 +173,7 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
     return value;
   }
 
-  showPager():boolean {
+  showPager(): boolean {
     return this.filter.pager && (this.total > this.filter.size)
   }
 

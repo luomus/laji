@@ -27,30 +27,30 @@
 export interface Collection {
 
 
-    /**
-     * Whether or not this collection has sub collections
-     */
-    hasChildren?: boolean;
+  /**
+   * Whether or not this collection has sub collections
+   */
+  hasChildren?: boolean;
 
-    id?: string;
+  id?: string;
 
-    /**
-     * Name of the collection in different languages. (Not name of collection database.) If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
-     */
-    collectionName?: string;
+  /**
+   * Name of the collection in different languages. (Not name of collection database.) If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
+   */
+  collectionName?: string;
 
-    /**
-     *  If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
-     */
-    description?: string;
+  /**
+   *  If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
+   */
+  description?: string;
 
-    /**
-     * Quarantine period in years after which data is opened
-     */
-    dataQuarantinePeriod?: number;
+  /**
+   * Quarantine period in years after which data is opened
+   */
+  dataQuarantinePeriod?: number;
 
-    /**
-     * Type
-     */
-    collectionType?: string;
+  /**
+   * Type
+   */
+  collectionType?: string;
 }

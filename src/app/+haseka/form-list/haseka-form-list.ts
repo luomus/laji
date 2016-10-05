@@ -1,9 +1,8 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {TranslateService} from 'ng2-translate/ng2-translate';
-import {Subscription} from "rxjs";
-
-import {FormApi} from "../../shared/api/FormApi";
-import {FormListInterface} from "../../shared/model/FormListInterface";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { TranslateService } from 'ng2-translate/ng2-translate';
+import { Subscription } from 'rxjs';
+import { FormApi } from '../../shared/api/FormApi';
+import { FormListInterface } from '../../shared/model/FormListInterface';
 
 @Component({
   selector: 'laji-haseka-form-list',
@@ -11,9 +10,9 @@ import {FormListInterface} from "../../shared/model/FormListInterface";
 })
 export class HaSeKaFormListComponent implements OnInit, OnDestroy {
 
-  public formList:FormListInterface;
-  private subTrans:Subscription;
-  private subFetch:Subscription;
+  public formList: FormListInterface;
+  private subTrans: Subscription;
+  private subFetch: Subscription;
 
   constructor(private formService: FormApi,
               private translate: TranslateService) {

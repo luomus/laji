@@ -1,16 +1,16 @@
 <div *ngIf="(children$ | async)?.length" class="table-responsive">
   <table class="table table-bordered table-striped">
     <thead>
-      <tr>
-        <td>{{ 'taxonomy.vernacular.name' | translate }}</td>
-        <th>{{ 'taxonomy.scientific.name' | translate }}</th>
-      </tr>
+    <tr>
+      <td>{{ 'taxonomy.vernacular.name' | translate }}</td>
+      <th>{{ 'taxonomy.scientific.name' | translate }}</th>
+    </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let taxon of children$ | async">
-        <td>{{ taxon.vernacularName }}</td>
-        <th><a [routerLink]="['/taxon/' + taxon.id]">{{ taxon.scientificName }}</a></th>
-      </tr>
+    <tr *ngFor="let taxon of children$ | async">
+      <td>{{ taxon.vernacularName }}</td>
+      <th><a [routerLink]="['/taxon/' + taxon.id]">{{ taxon.scientificName }}</a></th>
+    </tr>
     </tbody>
   </table>
 </div>

@@ -6,8 +6,9 @@
   <div class="row">
     <div class="col-sm-6" *ngIf="taxonDescription">
       <div class="panel-group" role="tablist" aria-multiselectable="true">
-        <div class="panel panel-default" *ngFor="let group of taxonDescription.groups; let i = index" [title]="group.title" [open]="activePanel == i"
-          [index]="i" (activate)="setActive($event)" laji-panel>
+        <div class="panel panel-default" *ngFor="let group of taxonDescription.groups; let i = index"
+             [title]="group.title" [open]="activePanel == i"
+             [index]="i" (activate)="setActive($event)" laji-panel>
           <div *ngFor="let variable of group.variables">
             <h4>{{ variable.title }}</h4>
             <span [innerHTML]="variable.content"></span>
@@ -42,7 +43,8 @@
             <h4 class="panel-title">{{ 'taxonomy.map' | translate }}</h4>
           </div>
           <div class="panel-body">
-            <laji-observation-map [color]="'#009900'" [query]="{taxonId: [taxon.id], counteryId: ['ML.206']}" [height]="300" [draw]="false">
+            <laji-observation-map [color]="'#009900'" [query]="{taxonId: [taxon.id], counteryId: ['ML.206']}"
+                                  [height]="300" [draw]="false">
             </laji-observation-map>
           </div>
         </div>

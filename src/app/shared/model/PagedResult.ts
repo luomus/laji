@@ -1,20 +1,18 @@
-
 'use strict';
-import * as models from './index';
 
 export interface PagedResult<T> {
 
-    currentPage: number;
+  currentPage: number;
 
-    lastPage?: number;
+  lastPage?: number;
 
-    nextPage?: number;
+  nextPage?: number;
 
-    pageSize: number;
+  pageSize: number;
 
-    prevPage?: number;
+  prevPage?: number;
 
-    results:T[];
+  results: T[];
 
-    total: number;
+  total: number;
 }

@@ -1,11 +1,10 @@
-import {Component, OnInit, Input, OnChanges} from '@angular/core';
-import {Subscription} from "rxjs";
-
-import {TaxonomyApi} from "../../shared/api/TaxonomyApi";
-import {Taxonomy} from "../../shared/model/Taxonomy";
-import {TranslateService} from "ng2-translate";
-import {PagedResult} from "../../shared/model/PagedResult";
-import {InformalTaxonGroup} from "../../shared";
+import { Component, Input, OnChanges } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
+import { Taxonomy } from '../../shared/model/Taxonomy';
+import { TranslateService } from 'ng2-translate';
+import { PagedResult } from '../../shared/model/PagedResult';
+import { InformalTaxonGroup } from '../../shared';
 
 
 @Component({
@@ -16,17 +15,15 @@ import {InformalTaxonGroup} from "../../shared";
 })
 export class SpeciesListComponent implements OnChanges {
 
-  @Input() informalGroup:InformalTaxonGroup;
+  @Input() informalGroup: InformalTaxonGroup;
 
-  loading:boolean = false;
-  speciesPage:PagedResult<Taxonomy[]>;
+  loading: boolean = false;
+  speciesPage: PagedResult<Taxonomy[]>;
 
-  private subFetch:Subscription;
+  private subFetch: Subscription;
 
-  constructor(
-    private taxonomyService:TaxonomyApi,
-    private translate:TranslateService
-  ) {
+  constructor(private taxonomyService: TaxonomyApi,
+              private translate: TranslateService) {
   }
 
   ngOnInit() {

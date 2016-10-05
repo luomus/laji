@@ -1,20 +1,20 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {UserService} from "../../shared/service/user.service";
-import {PersonApi} from "../../shared/api/PersonApi";
-import {Profile} from "../../shared/model/Profile";
-import {ActivatedRoute} from "@angular/router";
-import {Subscription, Observable} from "rxjs";
-import {SharedModule} from "../../shared/shared.module";
-import {TranslateService} from "ng2-translate";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { UserService } from '../../shared/service/user.service';
+import { PersonApi } from '../../shared/api/PersonApi';
+import { Profile } from '../../shared/model/Profile';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription, Observable } from 'rxjs';
+import { SharedModule } from '../../shared/shared.module';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   selector: 'laji-user',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit ,OnDestroy {
+export class ProfileComponent implements OnInit,OnDestroy {
 
-  profile:Profile = {
+  profile: Profile = {
     image: "",
     profileDescription: "",
     friendRequests: [],
@@ -22,7 +22,7 @@ export class ProfileComponent implements OnInit ,OnDestroy {
     blocked: []
   };
 
-  personsProfile:Profile = {};
+  personsProfile: Profile = {};
 
   public isCurrentUser = false;
   public userId = '';
@@ -30,14 +30,13 @@ export class ProfileComponent implements OnInit ,OnDestroy {
   public editing = false;
   public loading = true;
 
-  private subProfile:Subscription;
+  private subProfile: Subscription;
 
-  constructor(
-    private userService:UserService,
-    private personService:PersonApi,
-    private route: ActivatedRoute,
-    private translate: TranslateService
-  ) {}
+  constructor(private userService: UserService,
+              private personService: PersonApi,
+              private route: ActivatedRoute,
+              private translate: TranslateService) {
+  }
 
   ngOnInit() {
     // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed
@@ -45,20 +44,21 @@ export class ProfileComponent implements OnInit ,OnDestroy {
     this.subProfile = this.route.params
       .do((_)=> this.loading = true)
       .map(params => params['userId'])
-      .combineLatest(this.userService.getUser(), (id, user) => ({id: id, currentUser:user}))
+      .combineLatest(this.userService.getUser(), (id, user) => ({id: id, currentUser: user}))
       .flatMap((data) => {
-        let currentActive = data.currentUser.id === data.id;
-        let empty$ = Observable.of({});
-        let false$ = Observable.of(false);
-        return Observable.forkJoin(
-          data.currentUser.id ? this.personService.personFindProfileByToken(this.userService.getToken()).catch((e) => false$) : empty$,
-          currentActive ? false$ : this.personService.personFindProfileByUserId(data.id).catch((e) => empty$)
-        )},
+          let currentActive = data.currentUser.id === data.id;
+          let empty$ = Observable.of({});
+          let false$ = Observable.of(false);
+          return Observable.forkJoin(
+            data.currentUser.id ? this.personService.personFindProfileByToken(this.userService.getToken()).catch((e) => false$) : empty$,
+            currentActive ? false$ : this.personService.personFindProfileByUserId(data.id).catch((e) => empty$)
+          )
+        },
         (data, profiles) => ({
           id: data.id,
           currentUser: data.currentUser,
           currentProfile: profiles[0],
-          profile: profiles[1] || profiles[0]
+          profile: profiles[1] || profiles[0]
         })
       )
       .subscribe(
@@ -85,7 +85,7 @@ export class ProfileComponent implements OnInit ,OnDestroy {
   }
 
   saveProfile() {
-    let method = this.isCreate ? 'personCreateProfileByToken': 'personUpdateProfileByToken';
+    let method = this.isCreate ? 'personCreateProfileByToken' : 'personUpdateProfileByToken';
     this.personService[method](this.getProfile(), this.userService.getToken())
       .subscribe(
         profile => {
@@ -98,7 +98,7 @@ export class ProfileComponent implements OnInit ,OnDestroy {
       )
   }
 
-  private getProfile():Profile {
+  private getProfile(): Profile {
     return {
       image: this.profile.image,
       profileDescription: this.profile.profileDescription

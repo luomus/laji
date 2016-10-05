@@ -11,8 +11,8 @@
           <img *ngIf="profile.image" [src]="profile.image" alt="profile image" class="img-rounded">
         </div>
         <div *ngIf="isCurrentUser"
-          class="btn-default btn btn-sm edit-text"
-          (click)="toggleEditing()"><i class="glyphicon glyphicon-cog"></i>
+             class="btn-default btn btn-sm edit-text"
+             (click)="toggleEditing()"><i class="glyphicon glyphicon-cog"></i>
         </div>
         <div *ngIf="!editing">
           <p>{{profile.profileDescription}}</p>

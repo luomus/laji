@@ -1,8 +1,7 @@
-import {Routes, RouterModule} from '@angular/router';
-
+import { Routes, RouterModule } from '@angular/router';
 import { TaxonComponent } from './taxon.component';
-import { InfoCardComponent } from "./info-card/info-card.component";
-import {ModuleWithProviders} from "@angular/core";
+import { InfoCardComponent } from './info-card/info-card.component';
+import { ModuleWithProviders } from '@angular/core';
 
 export const TaxonomyRoutes: Routes = [
   {

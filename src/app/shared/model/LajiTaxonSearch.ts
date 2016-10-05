@@ -28,43 +28,43 @@ import * as models from './index';
 export interface LajiTaxonSearch {
 
 
-    /**
-     * Unique identifier for the taxon
-     */
-    id?: string;
+  /**
+   * Unique identifier for the taxon
+   */
+  id?: string;
 
-    /**
-     * What kind of match this is
-     */
+  /**
+   * What kind of match this is
+   */
     type?: string;
 
-    /**
-     * Name that the search matches to
-     */
-    matchingName?: string;
+  /**
+   * Name that the search matches to
+   */
+  matchingName?: string;
 
-    /**
-     * Scientific name for the match
-     */
-    scientificName?: string;
+  /**
+   * Scientific name for the match
+   */
+  scientificName?: string;
 
-    /**
-     * Author
-     */
-    scientificNameAuthorship?: string;
+  /**
+   * Author
+   */
+  scientificNameAuthorship?: string;
 
-    /**
-     * Taxon rank
-     */
-    taxonRank?: string;
+  /**
+   * Taxon rank
+   */
+  taxonRank?: string;
 
-    /**
-     * Score for the match
-     */
-    similarity?: string;
+  /**
+   * Score for the match
+   */
+  similarity?: string;
 
-    /**
-     * Informal group
-     */
-    informalGroup?: Array<models.LajiInformalGroup>;
+  /**
+   * Informal group
+   */
+  informalGroup?: Array<models.LajiInformalGroup>;
 }

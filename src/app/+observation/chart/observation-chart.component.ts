@@ -1,33 +1,32 @@
-import {Component, OnInit, OnDestroy, Input, OnChanges} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
-
-import {SearchQuery} from "../search-query.model";
-import {WarehouseApi} from "../../shared/api/WarehouseApi";
-import {Subscription, Observable} from "rxjs";
-import {InformalTaxonGroup} from "../../shared/model/InformalTaxonGroup";
-import {InformalTaxonGroupApi} from "../../shared/api/InformalTaxonGroupApi";
-import {IdService} from "../../shared/service/id.service";
-import {PagedResult} from "../../shared/model/PagedResult";
+import { SearchQuery } from '../search-query.model';
+import { WarehouseApi } from '../../shared/api/WarehouseApi';
+import { Subscription, Observable } from 'rxjs';
+import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
+import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
+import { IdService } from '../../shared/service/id.service';
+import { PagedResult } from '../../shared/model/PagedResult';
 
 @Component({
   selector: 'laji-observation-chart',
   templateUrl: 'observation-char.component.html',
   styleUrls: ['./observation-char.component.css'],
-  providers: [ InformalTaxonGroupApi ]
+  providers: [InformalTaxonGroupApi]
 })
 export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() height: number = 150;
-  @Input() showLegend:boolean = false;
-  @Input() legendPosition:string = 'top';
-  @Input() active:boolean = true;
+  @Input() showLegend: boolean = false;
+  @Input() legendPosition: string = 'top';
+  @Input() active: boolean = true;
 
 
-  public informalGroups:InformalTaxonGroup[] = [];
-  public data:any;
-  private group:string;
-  private lastQuery:string;
-  private loading:boolean = false;
+  public informalGroups: InformalTaxonGroup[] = [];
+  public data: any;
+  private group: string;
+  private lastQuery: string;
+  private loading: boolean = false;
 
   private subDataQuery: Subscription;
   private subInformal: Subscription;
@@ -35,12 +34,11 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
   private subTrans: Subscription;
   private subData: Subscription;
 
-  constructor(
-    public searchQuery: SearchQuery,
-    private warehouseService: WarehouseApi,
-    private informalGroupService: InformalTaxonGroupApi,
-    private translate: TranslateService
-  ) {}
+  constructor(public searchQuery: SearchQuery,
+              private warehouseService: WarehouseApi,
+              private informalGroupService: InformalTaxonGroupApi,
+              private translate: TranslateService) {
+  }
 
   ngOnInit() {
     this.subTrans = this.translate.onLangChange.subscribe(
@@ -78,7 +76,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
       .reduce((pre, cur) => cur.name, '');
   }
 
-  private getGroupsSub():Observable<PagedResult<InformalTaxonGroup>> {
+  private getGroupsSub(): Observable<PagedResult<InformalTaxonGroup>> {
     let lang = this.translate.currentLang;
     this.group = (
       this.searchQuery.query.informalTaxonGroupId &&
@@ -114,7 +112,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
         1000
       ));
     this.subData = Observable.forkJoin(sources).subscribe(
-      (data:any) => {
+      (data: any) => {
         if (data[0].total === 0 && this.group !== '') {
           this.subData = this
             .informalGroupService

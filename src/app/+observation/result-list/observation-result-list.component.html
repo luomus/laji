@@ -23,16 +23,16 @@
   </laji-spinner>
 </div>
 <pagination
-  *ngIf="showPager"
-  [totalItems]="result?.total"
-  [itemsPerPage]="result?.pageSize"
-  [(ngModel)]="searchQuery.page"
-  (pageChanged)="pageChanged($event)"
-  [maxSize]="7"
-  [boundaryLinks]="true"
-  [firstText]="'paginator.first' | translate"
-  [lastText]="'paginator.last' | translate"
-  [previousText]="'paginator.previous' | translate"
-  [nextText]="'paginator.next' | translate"
+        *ngIf="showPager"
+        [totalItems]="result?.total"
+        [itemsPerPage]="result?.pageSize"
+        [(ngModel)]="searchQuery.page"
+        (pageChanged)="pageChanged($event)"
+        [maxSize]="7"
+        [boundaryLinks]="true"
+        [firstText]="'paginator.first' | translate"
+        [lastText]="'paginator.last' | translate"
+        [previousText]="'paginator.previous' | translate"
+        [nextText]="'paginator.next' | translate"
 ></pagination>
 

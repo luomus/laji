@@ -27,170 +27,170 @@ import { Taxonomy, TaxonomyDescriptionVariable } from './index';
 
 export interface Taxonomy {
 
-    id?: string;
+  id?: string;
 
-    redListStatus2000Finland?: string;
+  redListStatus2000Finland?: string;
 
-    redListStatus2010Finland?: string;
+  redListStatus2010Finland?: string;
 
-    redListStatus2015Finland?: string;
+  redListStatus2015Finland?: string;
 
-    alsoKnownAs?: Array<string>;
+  alsoKnownAs?: Array<string>;
 
-    birdlifeCode?: string;
+  birdlifeCode?: string;
 
-    breedingSecureLevel?: string;
+  breedingSecureLevel?: string;
 
-    circumscription?: string;
+  circumscription?: string;
 
-    customReportFormLink?: string;
+  customReportFormLink?: string;
 
-    distributionMapFinland?: string;
+  distributionMapFinland?: string;
 
-    euringCode?: string;
+  euringCode?: string;
 
-    euringNumber?: number;
+  euringNumber?: number;
 
-    externalLinkURL?: string;
+  externalLinkURL?: string;
 
-    hasAdminStatus?: Array<string>;
+  hasAdminStatus?: Array<string>;
 
-    ingressText?: string;
+  ingressText?: string;
 
-    winteringSecureLevel?: string;
+  winteringSecureLevel?: string;
 
-    typeOfOccurrenceInFinlandNotes?: string;
+  typeOfOccurrenceInFinlandNotes?: string;
 
-    typeOfOccurrenceInFinland?: Array<string>;
+  typeOfOccurrenceInFinland?: Array<string>;
 
-    tradeName?: Array<string>;
+  tradeName?: Array<string>;
 
-    invasiveCitizenActionsText?: string;
+  invasiveCitizenActionsText?: string;
 
-    secureLevel?: string;
+  secureLevel?: string;
 
-    reproduction?: string;
+  reproduction?: string;
 
-    originalPublication?: Array<string>;
+  originalPublication?: Array<string>;
 
-    /**
-     *  If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
-     */
-    obsoleteVernacularName?: Array<string>;
+  /**
+   *  If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
+   */
+  obsoleteVernacularName?: Array<string>;
 
-    notes?: string;
+  notes?: string;
 
-    nestSiteSecureLevel?: string;
+  nestSiteSecureLevel?: string;
 
-    invasiveEffectText?: string;
+  invasiveEffectText?: string;
 
-    naturaAreaSecureLevel?: string;
+  naturaAreaSecureLevel?: string;
 
-    nameDecidedBy?: string;
+  nameDecidedBy?: string;
 
-    misappliedNameNotes?: string;
+  misappliedNameNotes?: string;
 
-    isPartOfInformalTaxonGroup?: Array<string>;
+  isPartOfInformalTaxonGroup?: Array<string>;
 
-    invasivePreventionMethodsText?: string;
+  invasivePreventionMethodsText?: string;
 
-    invasiveSpeciesCategory?: string;
+  invasiveSpeciesCategory?: string;
 
-    taxonRank?: string;
+  taxonRank?: string;
 
-    isPartOf?: string;
+  isPartOf?: string;
 
-    scientificName?: string;
+  scientificName?: string;
 
-    scientificNameAuthorship?: string;
+  scientificNameAuthorship?: string;
 
-    nameAccordingTo?: string;
+  nameAccordingTo?: string;
 
-    /**
-     *  If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
-     */
-    vernacularName?: string;
+  /**
+   *  If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
+   */
+  vernacularName?: string;
 
-    misappliedName?: Array<string>;
+  misappliedName?: Array<string>;
 
-    occurrenceInFinland?: string;
+  occurrenceInFinland?: string;
 
-    checklistStatus?: string;
+  checklistStatus?: string;
 
-    higherTaxaStatus?: boolean;
+  higherTaxaStatus?: boolean;
 
-    finnishSpeciesTaggingStatus?: boolean;
+  finnishSpeciesTaggingStatus?: boolean;
 
-    taxonExpert?: Array<string>;
+  taxonExpert?: Array<string>;
 
-    taxonEditor?: Array<string>;
+  taxonEditor?: Array<string>;
 
-    informalTaxonGroups?: Array<string>;
+  informalTaxonGroups?: Array<string>;
 
-    alternativeVernacularNames?: Array<string>;
+  alternativeVernacularNames?: Array<string>;
 
-    occurrences?: Array<any>;
+  occurrences?: Array<any>;
 
-    synonyms?: Array<Taxonomy>;
+  synonyms?: Array<Taxonomy>;
 
-    children?: Array<Taxonomy>;
+  children?: Array<Taxonomy>;
 
-    /**
-     * occurs in Finland
-     */
-    finnishSpecies?: boolean;
+  /**
+   * occurs in Finland
+   */
+  finnishSpecies?: boolean;
 
-    /**
-     * true if has parents
-     */
-    hasParent?: boolean;
+  /**
+   * true if has parents
+   */
+  hasParent?: boolean;
 
-    /**
-     * true if has children
-     */
-    hasChildren?: boolean;
+  /**
+   * true if has children
+   */
+  hasChildren?: boolean;
 }
 
 export interface TaxonomyDescriptionVariable {
 
-    title?: string;
-    
-    content?: string;
+  title?: string;
+
+  content?: string;
 
 }
 
 export interface TaxonomyDescriptionGroup {
 
-    title?: string;
-    
-    variables?: Array<TaxonomyDescriptionVariable>;
+  title?: string;
+
+  variables?: Array<TaxonomyDescriptionVariable>;
 
 }
 
 export interface TaxonomyDescription {
 
-    id?: string;
+  id?: string;
 
-    title?: string;
+  title?: string;
 
-    groups?: Array<TaxonomyDescriptionGroup>;
+  groups?: Array<TaxonomyDescriptionGroup>;
 
 }
 
 export interface TaxonomyImage {
-    
-    author?: string;
-    
-    copyrightOwner?: string;
-    
-    fullURL?: string;
-    
-    licenceAbbreviation?: string;
-    
-    licenceDescription?: string;
-    
-    source?: string;
-    
-    thumbnailURL?: string;
+
+  author?: string;
+
+  copyrightOwner?: string;
+
+  fullURL?: string;
+
+  licenceAbbreviation?: string;
+
+  licenceDescription?: string;
+
+  source?: string;
+
+  thumbnailURL?: string;
 
 }

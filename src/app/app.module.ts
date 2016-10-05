@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { LocationStrategy, PathLocationStrategy, DatePipe } from '@angular/common';
-
 import { routing, appRoutingProviders } from './app.routes';
 import { AppComponent } from './app.component';
 import { NavbarComponent, FooterComponent } from './shared';
@@ -27,8 +26,8 @@ import { BrowserModule } from '@angular/platform-browser';
     routing
   ],
   providers: [
-    { provide: 'Window',  useValue: window },
-    { provide: LocationStrategy, useClass: PathLocationStrategy },
+    {provide: 'Window', useValue: window},
+    {provide: LocationStrategy, useClass: PathLocationStrategy},
     PersonTokenApi, PersonApi, WarehouseApi,
     WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
     appRoutingProviders, AutocompleteApi, FooterService, LocalStorageService,
@@ -38,4 +37,5 @@ import { BrowserModule } from '@angular/platform-browser';
     AppComponent
   ]
 })
-export class AppModule {}
+export class AppModule {
+}

@@ -1,12 +1,12 @@
 <div class="observation-map" *ngIf="mapData" [ngStyle]="{height: height + 'px', width:'100%'}">
   <laji-map
-    [visible]="visible"
-    [data]="mapData"
-    [drawData]="drawData"
-    [draw]="draw"
-    (onCreate)="onCreate($event)"
-    (onMove)="onMove($event)"
-    [tick]="tack"
+          [visible]="visible"
+          [data]="mapData"
+          [drawData]="drawData"
+          [draw]="draw"
+          (onCreate)="onCreate($event)"
+          (onMove)="onMove($event)"
+          [tick]="tack"
   >
     <div class="loading-map loading" *ngIf="loading"></div>
     <ul class="legend" *ngIf="legend" [ngStyle]="{'margin-top': getLegendTopMargin()}">

@@ -1,13 +1,13 @@
-import {Http, Headers, RequestOptionsArgs, Response, URLSearchParams} from '@angular/http';
-import {Injectable, Optional} from '@angular/core';
+import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
 
 @Injectable()
 export class FormApiClient {
   protected basePath = '/api';
   public defaultHeaders: Headers = new Headers();
-  private _lang:string;
-  private _personToken:string;
+  private _lang: string;
+  private _personToken: string;
 
   constructor(protected http: Http) {
   }
@@ -28,7 +28,7 @@ export class FormApiClient {
     return this._personToken;
   }
 
-  public fetch(resource: string, query: any, options?:RequestOptionsArgs): Promise<any> {
+  public fetch(resource: string, query: any, options?: RequestOptionsArgs): Promise<any> {
     const path = this.basePath + resource;
 
     let queryParameters = new URLSearchParams();
@@ -57,8 +57,8 @@ export class FormApiClient {
     };
 
     if (options) {
-      requestOptions['method'] = options['method'] || 'GET';
-      requestOptions['body'] = options['body'] || undefined;
+      requestOptions['method'] = options['method'] || 'GET';
+      requestOptions['body'] = options['body'] || undefined;
     }
 
     return this.http.request(path, requestOptions)

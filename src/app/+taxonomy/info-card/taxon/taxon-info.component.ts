@@ -1,6 +1,5 @@
-import {Component, Input, SimpleChange} from '@angular/core'
-
-import { Taxonomy } from "../../../shared";
+import { Component, Input } from '@angular/core';
+import { Taxonomy } from '../../../shared';
 
 @Component({
   selector: 'laji-taxon-info',

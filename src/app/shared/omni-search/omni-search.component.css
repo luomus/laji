@@ -14,10 +14,12 @@
 .omni-search-results .first-col {
   border-left: 1px solid #999;
 }
+
 .omni-search-results .matches .active {
   color: #2C3E50;
   font-weight: bold;
 }
+
 .omni-search-results .MX\.species {
   font-style: italic;
 }

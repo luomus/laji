@@ -2,7 +2,6 @@
   "fi": "suomi",
   "sv": "ruotsi",
   "en": "englanti",
-
   "navigation.taxonomy": "Lajit",
   "navigation.observation": "Havainnot",
   "navigation.information": "Lajitietokeskus",
@@ -13,7 +12,6 @@
   "navigation.user.login": "Kirjaudu",
   "navigation.user.logout": "Kirjaudu ulos",
   "navigation.user.profile": "Profiili",
-
   "home.image-header.observations": "havaintoja ja näytteitä",
   "home.image-header.species": "lajeja",
   "home.image-header.sources": "aineistoja",
@@ -38,7 +36,6 @@
   "home.carousel.digitized": "digitoitua näytettä",
   "home.carousel.preserved": "kokoelmanäytettä",
   "search-bar.input": "Hae",
-
   "taxonomy.card.id": "Tunniste",
   "taxonomy.scientific.name": "Tieteellinen nimi",
   "taxonomy.author": "Auktorit",
@@ -64,25 +61,20 @@
   "taxonomy.images": "Kuvat",
   "taxonomy.speciesList.found": "lajia löytyi",
   "taxonomy.administrative.statuses": "Hallinnolliset lajitiedot",
-
   "news.title": "Uutiset",
   "news.earlier": "edelliset",
   "news.newer": "seuraavat",
-
   "information.more": "Lisätietoa",
-
   "paginator.first": "ensimmäinen",
   "paginator.last": "viimeinen",
   "paginator.previous": "edellinen",
   "paginator.next": "seuraava",
-
   "search.result.list": "Luettelo",
   "search.result.images": "Kuvat",
   "search.result.stats": "Tilastot",
   "search.result.load": "Lataa tiedostona",
   "search.result.species": "Lajit",
   "search.result.map": "Kartta",
-
   "result.unit.taxonVerbatim": "Laji",
   "result.gathering.team": "Henkilö",
   "result.gathering.eventDate": "Aika",
@@ -97,9 +89,7 @@
   "result.load.privateCount": "Karkeistettuja",
   "observation.count": "Havaintojen määrä",
   "result.allObservation": "havaintoa",
-
   "force.login": "Sinun pitää kirjautua käyttääksesi tätä osiota",
-
   "observation.intro": "<p>Suomen Lajitietokeskuksen Havainnot-palvelun avulla voit hakea monipuolisten hakutoimintojen avulla käyttöösi tietoja maassamme tehdyistä lajihavainnoista.</p><p>Havaintoja kertyy niin yksittäisiltä harrastajilta, kansalaistiedehankkeiden kautta kuin tieteellisen työn tuloksena. Haettavat aineistot sisältävät myös tieteellisten kokoelma-aineistojen näytteiden havaintotiedot ja seurannoissa tehdyt havainnot.</p>",
   "observation.form.filter": "Rajaa",
   "observation.form.specimen": "Nimi",
@@ -126,21 +116,17 @@
   "observation.form.multi-all": "molemmat",
   "observation.form.multi-true": "kyllä",
   "observation.form.multi-false": "ei",
-
   "observation.filters.unit": "Näyte",
   "observation.filters.collection": "Kokoelma",
   "observation.filters.administrative": "Hallinnolliset",
   "observation.filters.other": "Muut",
-
   "observation.results.title": "Havaintohaku",
   "observation.results.observation": "osumaa",
   "observation.results.species": "lajista",
-
   "observation.filterBy.recordBasis": "Havainnon tyyppi",
   "observation.filterBy.image": "Kuvia",
   "observation.filterBy.collectionId": "Aineistot",
   "observation.filterBy.sourceId": "Lähteet",
-
   "observation.active": "Rajausehdot:",
   "observation.active.time": "aika",
   "observation.active.hasUnitMedia": "kuva",
@@ -157,7 +143,6 @@
   "observation.active.informalTaxonGroupAll": "kaikki",
   "observation.active.finnish": "suomalainen",
   "observation.active.hasMedia": "kuva",
-
   "haseka.title": "Havaintopalvelu",
   "haseka.intro": "<p>Havaintopalvelu tarjoaa suoraviivaisen kanavan julkaista eliölajihavaintoja laji.fi-sivuston kautta. Rekisteröityneelle käyttäjälle palvelu tarjoaa tietokannan omien havaintotietojensa tallentamiseen ja hallintaan sekä väylän niiden jakamiseen. Käyttäjät voivat perustaa tietokantaan projekteja, joihin kutsutut osallistujat tallentavat haluttua lajitietoa. Perustetun projektin keräämiä tietoja hallinnoi sen omistaja ja tiedon jakaminen laji.fi-sivuston kautta on helppoa. Palvelun mukautuva lomakkeisto antaa käyttäjälle mahdollisuuden valita itselleen sopivan tavan tallentaa, hallita ja jakaa havaintojaan muiden käyttöön.</p>",
   "haseka.forms.title": "Lomakkeet",
@@ -169,16 +154,13 @@
   "haseka.users.latest.gathered": "havaittu",
   "observation.export.tooMany": "Liian paljon havaintoja. Maksimi on 200 000 joten rajaa hakua lisää",
   "observation.export.tooLittle": "Ei havaintoja joita voisit ladata",
-
   "omniSearch.matches": "Tietoa lajista",
   "omniSearch.rank": "taksonominen taso",
   "omniSearch.groups": "lajiryhmä",
-
   "friend.ask": "Pyydä ystäväksi",
   "friend.friends": "Ystävät",
   "friend.requests": "Ystäväpyynnöt",
   "friend.requestSent": "Ystäväpyyntö lähetetty",
-
   "profile.friends": "Ystävät",
   "profile.friendsInfo": "Voit pyytää ystäviäsi lähettämään sinulle linkin omalle profiilisivulleen. Linkin saatuasi voit pyytää heitä ystäväksesi ja kun he ovat hyväksyneet pyyntösi, näet täällä linkin heidän profiiliinsa.",
   "profile.accountSettings": "Käyttäjätilini"

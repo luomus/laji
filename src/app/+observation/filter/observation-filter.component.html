@@ -17,15 +17,15 @@
         </tr>
       </table>
       <pagination
-        *ngIf="showPager()"
-        [totalItems]="total"
-        [itemsPerPage]="filter.size"
-        [(ngModel)]="page"
-        (pageChanged)="pageChanged($event)"
-        [maxSize]="7"
-        [boundaryLinks]="false"
-        [previousText]="'<'"
-        [nextText]="'>'"
+              *ngIf="showPager()"
+              [totalItems]="total"
+              [itemsPerPage]="filter.size"
+              [(ngModel)]="page"
+              (pageChanged)="pageChanged($event)"
+              [maxSize]="7"
+              [boundaryLinks]="false"
+              [previousText]="'<'"
+              [nextText]="'>'"
       ></pagination>
     </laji-spinner>
   </div>

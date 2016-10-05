@@ -1,9 +1,6 @@
 /// <reference path="../../../../typings/globals/leaflet/index.d.ts" />
 
-import {
-  Component, OnInit, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, OnDestroy, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
 
 let LajiMap = require('laji-map').default;
 
@@ -19,20 +16,20 @@ let LajiMap = require('laji-map').default;
 export class MapComponent implements OnDestroy, OnChanges {
 
   @Input() data: any = {};
-  @Input() drawData:any;
+  @Input() drawData: any;
   @Input() visible: boolean;
-  @Input() draw:boolean = false;
-  @Input() lang:string = 'fi';
-  @Input() drawSingleShape:boolean = true;
-  @Input() tick:any;
-  @Input() bringDrawLayerToBack:boolean = true;
+  @Input() draw: boolean = false;
+  @Input() lang: string = 'fi';
+  @Input() drawSingleShape: boolean = true;
+  @Input() tick: any;
+  @Input() bringDrawLayerToBack: boolean = true;
 
   @Output() select = new EventEmitter();
   @Output() onCreate = new EventEmitter();
   @Output() onMove = new EventEmitter();
   @ViewChild('map') elemRef: ElementRef;
 
-  map:any;
+  map: any;
 
   ngAfterViewInit() {
     this.map = new LajiMap({
@@ -45,9 +42,9 @@ export class MapComponent implements OnDestroy, OnChanges {
       controlSettings: {
         draw: this.draw,
         polygon: false,
-        polyline:false,
-        point:false,
-        circle:false,
+        polyline: false,
+        point: false,
+        circle: false,
         marker: false,
         layers: true,
         zoom: true,
@@ -55,20 +52,28 @@ export class MapComponent implements OnDestroy, OnChanges {
       }
     });
     this.map.map.scrollWheelZoom.disable();
-    this.map.map.on('moveend', _ => { this.moveEvent('moveend') });
-    this.map.map.on('movestart', _ => { this.moveEvent('movestart') });
-    this.map.map.on('focus', () => { this.map.map.scrollWheelZoom.enable(); });
-    this.map.map.on('blur', () => { this.map.map.scrollWheelZoom.disable(); });
+    this.map.map.on('moveend', _ => {
+      this.moveEvent('moveend')
+    });
+    this.map.map.on('movestart', _ => {
+      this.moveEvent('movestart')
+    });
+    this.map.map.on('focus', () => {
+      this.map.map.scrollWheelZoom.enable();
+    });
+    this.map.map.on('blur', () => {
+      this.map.map.scrollWheelZoom.disable();
+    });
     this.updateData();
     this.initDrawData();
     this.moveEvent('moveend');
   }
 
-  moveEvent(type:string) {
+  moveEvent(type: string) {
     this.onMove.emit({
       zoom: this.map.getNormalizedZoom(),
       bounds: this.map.map.getBounds(),
-      type:type
+      type: type
     });
   }
 
@@ -85,7 +90,9 @@ export class MapComponent implements OnDestroy, OnChanges {
   ngOnDestroy() {
     try {
       this.map.destroy();
-    } catch (e) { console.log(e) }
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   ngOnChanges(changes) {
@@ -105,10 +112,15 @@ export class MapComponent implements OnDestroy, OnChanges {
       }
       if (this.visible) {
         setTimeout(() => {
-          try{ this.map.map.invalidateSize() } catch(e) {}
+          try {
+            this.map.map.invalidateSize()
+          } catch (e) {
+          }
         }, 500);
       }
-    } catch (e) { console.log(e) }
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   initSingleShape() {
@@ -116,7 +128,9 @@ export class MapComponent implements OnDestroy, OnChanges {
       this.map.map.addEventListener({
         "draw:drawstart": event => this.clearDrawLayer()
       });
-    } catch (e) { console.log(e) }
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   initDrawData() {
@@ -135,6 +149,8 @@ export class MapComponent implements OnDestroy, OnChanges {
       }
       this.drawData.featureCollection = {type: "featureCollection", features: []};
       this.map.setDrawData(this.drawData);
-    } catch (e) { console.log(e) }
+    } catch (e) {
+      console.log(e)
+    }
   }
 }

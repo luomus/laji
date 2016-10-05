@@ -16,7 +16,8 @@
   </ul>
   <div *ngIf="(type | async) == 'informal'" class="row">
     <div class="col-md-12">
-      <laji-informal-list-breadcrumb [groups]="groups" [informalGroup]="selectedInformalGroup"></laji-informal-list-breadcrumb>
+      <laji-informal-list-breadcrumb [groups]="groups"
+                                     [informalGroup]="selectedInformalGroup"></laji-informal-list-breadcrumb>
       <laji-informal-list *ngIf="selectedInformalGroup" [tree]="selectedInformalGroup"></laji-informal-list>
       <laji-species-list *ngIf="selectedInformalGroup" [informalGroup]="selectedInformalGroup"></laji-species-list>
     </div>

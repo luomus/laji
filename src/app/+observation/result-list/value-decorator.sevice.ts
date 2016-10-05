@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import {IdService} from "../../shared/service/id.service";
-import {DatePipe} from "@angular/common";
+import { DatePipe } from '@angular/common';
 
 @Injectable()
 export class ValueDecoratorService {
@@ -9,20 +8,21 @@ export class ValueDecoratorService {
 
   private decoratable = {
     'unit.individualId': 'makeId',
-    'gathering.eventDate':'makeDateRange',
+    'gathering.eventDate': 'makeDateRange',
     'gathering.team': 'makeArrayToSemiColon',
     'unit.taxonVerbatim': 'makeTaxonLocal',
     'unit.linkings.taxon': 'makeTaxon',
     'gathering.conversions.wgs84CenterPoint': 'makeMapPoint'
   };
 
-  constructor(private datePipe:DatePipe) {}
+  constructor(private datePipe: DatePipe) {
+  }
 
-  public isDecoratable(field:string) {
+  public isDecoratable(field: string) {
     return typeof this.decoratable[field] !== "undefined";
   }
 
-  public decorate(field:string, value:any, context:any) {
+  public decorate(field: string, value: any, context: any) {
     if (!this.isDecoratable(field)) {
       return value;
     }
@@ -46,6 +46,7 @@ export class ValueDecoratorService {
   protected makeArrayToSemiColon(value) {
     return value.join('; ')
   }
+
   protected makeArrayToBr(value) {
     return value.join('<br>')
   }
@@ -68,10 +69,10 @@ export class ValueDecoratorService {
     return value;
   }
 
-  protected makeTaxon(value):any {
+  protected makeTaxon(value): any {
     let result = '';
     if (value.qname) {
-      result += value.vernacularName[this.lang] || '';
+      result += value.vernacularName[this.lang] || '';
       result += ' <i>(' + value.scientificName + ')</i>'
     }
     return result;

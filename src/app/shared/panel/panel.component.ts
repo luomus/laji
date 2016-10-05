@@ -5,9 +5,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   templateUrl: './panel.component.html'
 })
 export class PanelComponent {
-  @Input() title:string;
-  @Input() index:number;
-  @Input() open:boolean = false;
+  @Input() title: string;
+  @Input() index: number;
+  @Input() open: boolean = false;
   @Output() activate = new EventEmitter();
 
   activateCurrent() {

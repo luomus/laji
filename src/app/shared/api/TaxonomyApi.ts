@@ -22,326 +22,326 @@
  * limitations under the License.
  */
 
-import {Http, Headers, RequestOptionsArgs, Response, URLSearchParams} from '@angular/http';
-import {Injectable, Optional} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Injectable, Optional } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import * as models from '../model/index';
 import 'rxjs/Rx';
+import { PagedResult } from '../model/PagedResult';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
 'use strict';
-import {PagedResult} from "../model/PagedResult";
 
 @Injectable()
 export class TaxonomyApi {
-    protected basePath = '/api';
-    public defaultHeaders : Headers = new Headers();
+  protected basePath = '/api';
+  public defaultHeaders: Headers = new Headers();
 
-    constructor(protected http: Http, @Optional() basePath: string) {
-        if (basePath) {
-            this.basePath = basePath;
-        }
+  constructor(protected http: Http, @Optional() basePath: string) {
+    if (basePath) {
+      this.basePath = basePath;
+    }
+  }
+
+  /**
+   * return taxon data with the given query
+   *
+   * @param id id of the taxon
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
+   */
+  public taxonomyFindBySubject(id: string, lang?: string, extraHttpRequestParams?: any): Observable<models.Taxonomy> {
+    const path = this.basePath + '/taxonomy/{id}'
+        .replace('{' + 'id' + '}', String(id));
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling taxonomyFindBySubject.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * return taxon data with the given query
-     *
-     * @param id id of the taxon
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
-     */
-    public taxonomyFindBySubject (id: string, lang?: string, extraHttpRequestParams?: any ) : Observable<models.Taxonomy> {
-        const path = this.basePath + '/taxonomy/{id}'
-            .replace('{' + 'id' + '}', String(id));
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling taxonomyFindBySubject.');
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
+      });
+  }
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
+  /**
+   * return children of the given taxon
+   *
+   * @param id id of the taxon
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
+   * @param maxLevel How many levels of children to show (default: 1)
+   */
+  public taxonomyFindChildren(id: string, lang?: string, maxLevel?: string, extraHttpRequestParams?: any): Observable<Array<models.Taxonomy>> {
+    const path = this.basePath + '/taxonomy/{id}/children'
+        .replace('{' + 'id' + '}', String(id));
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling taxonomyFindChildren.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * return children of the given taxon
-     *
-     * @param id id of the taxon
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
-     * @param maxLevel How many levels of children to show (default: 1)
-     */
-    public taxonomyFindChildren (id: string, lang?: string, maxLevel?: string, extraHttpRequestParams?: any ) : Observable<Array<models.Taxonomy>> {
-        const path = this.basePath + '/taxonomy/{id}/children'
-            .replace('{' + 'id' + '}', String(id));
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling taxonomyFindChildren.');
-        }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
-
-        if (maxLevel !== undefined) {
-            queryParameters.set('maxLevel', maxLevel);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (maxLevel !== undefined) {
+      queryParameters.set('maxLevel', maxLevel);
     }
 
-    /**
-     * return description texts from Laji.fi taxonomy database, EOL, Naturforskaren, etc.
-     *
-     * @param id id of the taxon
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
-     */
-    public taxonomyFindDescriptions (id: string, lang?: string, extraHttpRequestParams?: any ) : Observable<Array<any>> {
-        const path = this.basePath + '/taxonomy/{id}/descriptions'
-            .replace('{' + 'id' + '}', String(id));
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling taxonomyFindDescriptions.');
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
+      });
+  }
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
+  /**
+   * return description texts from Laji.fi taxonomy database, EOL, Naturforskaren, etc.
+   *
+   * @param id id of the taxon
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
+   */
+  public taxonomyFindDescriptions(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<any>> {
+    const path = this.basePath + '/taxonomy/{id}/descriptions'
+        .replace('{' + 'id' + '}', String(id));
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling taxonomyFindDescriptions.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * return media object of the given taxon
-     *
-     * @param id id of the taxon
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
-     */
-    public taxonomyFindMedia (id: string, lang?: string, extraHttpRequestParams?: any ) : Observable<Array<any>> {
-        const path = this.basePath + '/taxonomy/{id}/media'
-            .replace('{' + 'id' + '}', String(id));
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling taxonomyFindMedia.');
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
+      });
+  }
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
+  /**
+   * return media object of the given taxon
+   *
+   * @param id id of the taxon
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
+   */
+  public taxonomyFindMedia(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<any>> {
+    const path = this.basePath + '/taxonomy/{id}/media'
+        .replace('{' + 'id' + '}', String(id));
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling taxonomyFindMedia.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * return taxons parents all the way up to biota
-     *
-     * @param id id of the taxon
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
-     */
-    public taxonomyFindParents (id: string, lang?: string, extraHttpRequestParams?: any ) : Observable<Array<models.Taxonomy>> {
-        const path = this.basePath + '/taxonomy/{id}/parents'
-            .replace('{' + 'id' + '}', String(id));
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling taxonomyFindParents.');
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
+      });
+  }
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
+  /**
+   * return taxons parents all the way up to biota
+   *
+   * @param id id of the taxon
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
+   */
+  public taxonomyFindParents(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<models.Taxonomy>> {
+    const path = this.basePath + '/taxonomy/{id}/parents'
+        .replace('{' + 'id' + '}', String(id));
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling taxonomyFindParents.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * return species belonging to the given taxon
-     *
-     * @param id id of the taxon
-     * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
-     * @param informalGroupFilters Filter based on given informal groups
-     * @param adminStatusFilters Filter based on administrative statuses
-     * @param redListStatusFilters Filter based on the latest IUCN status
-     * @param typesOfOccurrenceFilters Filter based on types of occurrence
-     * @param invasiveSpeciesFilter Will include only invasive species
-     * @param page Page number
-     * @param pageSize Page size
-     */
-    public taxonomyFindSpecies (id: string, lang?: string, informalGroupFilters?: string, adminStatusFilters?: string, redListStatusFilters?: string, typesOfOccurrenceFilters?: string, invasiveSpeciesFilter?: boolean, page?: string, pageSize?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<Array<models.Taxonomy>>> {
-        const path = this.basePath + '/taxonomy/{id}/species'
-            .replace('{' + 'id' + '}', String(id));
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling taxonomyFindSpecies.');
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
+      });
+  }
 
-        if (informalGroupFilters !== undefined) {
-            queryParameters.set('informalGroupFilters', informalGroupFilters);
-        }
+  /**
+   * return species belonging to the given taxon
+   *
+   * @param id id of the taxon
+   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
+   * @param informalGroupFilters Filter based on given informal groups
+   * @param adminStatusFilters Filter based on administrative statuses
+   * @param redListStatusFilters Filter based on the latest IUCN status
+   * @param typesOfOccurrenceFilters Filter based on types of occurrence
+   * @param invasiveSpeciesFilter Will include only invasive species
+   * @param page Page number
+   * @param pageSize Page size
+   */
+  public taxonomyFindSpecies(id: string, lang?: string, informalGroupFilters?: string, adminStatusFilters?: string, redListStatusFilters?: string, typesOfOccurrenceFilters?: string, invasiveSpeciesFilter?: boolean, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Taxonomy>>> {
+    const path = this.basePath + '/taxonomy/{id}/species'
+        .replace('{' + 'id' + '}', String(id));
 
-        if (adminStatusFilters !== undefined) {
-            queryParameters.set('adminStatusFilters', adminStatusFilters);
-        }
-
-        if (redListStatusFilters !== undefined) {
-            queryParameters.set('redListStatusFilters', redListStatusFilters);
-        }
-
-        if (typesOfOccurrenceFilters !== undefined) {
-            queryParameters.set('typesOfOccurrenceFilters', typesOfOccurrenceFilters);
-        }
-
-        if (invasiveSpeciesFilter !== undefined) {
-            queryParameters.set('invasiveSpeciesFilter', invasiveSpeciesFilter ? 'true' : 'false');
-        }
-
-        if (page !== undefined) {
-            queryParameters.set('page', page);
-        }
-
-        if (pageSize !== undefined) {
-            queryParameters.set('pageSize', pageSize);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling taxonomyFindSpecies.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Search taxon data with the given query
-     *
-     * @param query search string
-     * @param limit limit the pageSize of results (defaults to 10)
-     * @param checklist search taxon from specified checklist (defaults to master)
-     */
-    public taxonomySearch (query: string, limit?: string, checklist?: string, extraHttpRequestParams?: any ) : Observable<models.LajiTaxonSearch> {
-        const path = this.basePath + '/taxonomy/search';
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'query' is not null or undefined
-        if (query === null || query === undefined) {
-            throw new Error('Required parameter query was null or undefined when calling taxonomySearch.');
-        }
-        if (query !== undefined) {
-            queryParameters.set('query', query);
-        }
-
-        if (limit !== undefined) {
-            queryParameters.set('limit', limit);
-        }
-
-        if (checklist !== undefined) {
-            queryParameters.set('checklist', checklist);
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (informalGroupFilters !== undefined) {
+      queryParameters.set('informalGroupFilters', informalGroupFilters);
     }
+
+    if (adminStatusFilters !== undefined) {
+      queryParameters.set('adminStatusFilters', adminStatusFilters);
+    }
+
+    if (redListStatusFilters !== undefined) {
+      queryParameters.set('redListStatusFilters', redListStatusFilters);
+    }
+
+    if (typesOfOccurrenceFilters !== undefined) {
+      queryParameters.set('typesOfOccurrenceFilters', typesOfOccurrenceFilters);
+    }
+
+    if (invasiveSpeciesFilter !== undefined) {
+      queryParameters.set('invasiveSpeciesFilter', invasiveSpeciesFilter ? 'true' : 'false');
+    }
+
+    if (page !== undefined) {
+      queryParameters.set('page', page);
+    }
+
+    if (pageSize !== undefined) {
+      queryParameters.set('pageSize', pageSize);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  /**
+   * Search taxon data with the given query
+   *
+   * @param query search string
+   * @param limit limit the pageSize of results (defaults to 10)
+   * @param checklist search taxon from specified checklist (defaults to master)
+   */
+  public taxonomySearch(query: string, limit?: string, checklist?: string, extraHttpRequestParams?: any): Observable<models.LajiTaxonSearch> {
+    const path = this.basePath + '/taxonomy/search';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'query' is not null or undefined
+    if (query === null || query === undefined) {
+      throw new Error('Required parameter query was null or undefined when calling taxonomySearch.');
+    }
+    if (query !== undefined) {
+      queryParameters.set('query', query);
+    }
+
+    if (limit !== undefined) {
+      queryParameters.set('limit', limit);
+    }
+
+    if (checklist !== undefined) {
+      queryParameters.set('checklist', checklist);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
 
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, OnChanges, HostListener, ElementRef} from '@angular/core';
+import { Component, OnInit, Input, OnChanges, HostListener, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'iucn',
@@ -12,36 +12,37 @@ export class IUCNComponent implements OnInit, OnChanges {
   public color;
   public plop = [
     {
-      title: { first: 'Least', last: 'Concern' },
+      title: {first: 'Least', last: 'Concern'},
       value: 'LC'
     },
     {
-      title: { first:'Near', last: 'Threatend' },
+      title: {first: 'Near', last: 'Threatend'},
       value: 'NT'
     },
     {
-      title: { first:'Vulnurable', last: '' },
+      title: {first: 'Vulnurable', last: ''},
       value: 'VU'
     },
     {
-      title: { first:'Endangered', last: '' },
+      title: {first: 'Endangered', last: ''},
       value: 'EN'
     },
     {
-      title: { first:'Critically', last: 'Endangered' },
+      title: {first: 'Critically', last: 'Endangered'},
       value: 'CR'
     },
     {
-      title: { first:'Extinct', last: 'In The Wild' },
+      title: {first: 'Extinct', last: 'In The Wild'},
       value: 'EW'
     },
     {
-      title: { first:'Extinct', last: '' },
+      title: {first: 'Extinct', last: ''},
       value: 'EX'
     }
   ];
 
-  constructor(private el: ElementRef){}
+  constructor(private el: ElementRef) {
+  }
 
   @HostListener('window:resize')
   onResize() {
@@ -58,7 +59,7 @@ export class IUCNComponent implements OnInit, OnChanges {
   }
 
   private initColor() {
-    switch(this.selected) {
+    switch (this.selected) {
       case 'LC':
         this.color = '#96CEB4';
         break;

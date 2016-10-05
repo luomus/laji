@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-
-import {SearchQuery} from "../+observation/search-query.model";
-import {NewsApi} from "../shared/api/NewsApi";
-import {TranslateService} from "ng2-translate";
-import {SharedModule} from "../shared/shared.module";
+import { SearchQuery } from '../+observation/search-query.model';
+import { NewsApi } from '../shared/api/NewsApi';
+import { TranslateService } from 'ng2-translate';
+import { SharedModule } from '../shared/shared.module';
 
 @Component({
   selector: 'laji-home',
@@ -15,7 +14,8 @@ import {SharedModule} from "../shared/shared.module";
   templateUrl: './home.component.html'
 })
 export class HomeComponent {
-  constructor(public translate: TranslateService) {}
+  constructor(public translate: TranslateService) {
+  }
 
   ngOnInit() {
     // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed

@@ -22,10 +22,10 @@
  * limitations under the License.
  */
 
-import {Http, Headers, RequestOptionsArgs, Response, URLSearchParams} from '@angular/http';
-import {Injectable, Optional} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Information} from '../model';
+import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Injectable, Optional } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Information } from '../model';
 import 'rxjs/Rx';
 
 /* tslint:disable:no-unused-variable member-ordering */
@@ -34,74 +34,74 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class InformationApi {
-    protected basePath = '/api';
-    public defaultHeaders : Headers = new Headers();
+  protected basePath = '/api';
+  public defaultHeaders: Headers = new Headers();
 
-    constructor(protected http: Http, @Optional() basePath: string) {
-        if (basePath) {
-            this.basePath = basePath;
-        }
+  constructor(protected http: Http, @Optional() basePath: string) {
+    if (basePath) {
+      this.basePath = basePath;
+    }
+  }
+
+  /**
+   * return information
+   *
+   * @param lang Language of the information. Defaults to en.
+   */
+  public informationFindAll(lang?: string, extraHttpRequestParams?: any): Observable<Information> {
+    const path = this.basePath + '/information';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * return information
-     *
-     * @param lang Language of the information. Defaults to en.
-     */
-    public informationFindAll (lang?: string, extraHttpRequestParams?: any ) : Observable<Information> {
-        const path = this.basePath + '/information';
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
+      });
+  }
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
+  /**
+   * return information with the given id
+   *
+   * @param id id of the information
+   */
+  public informationFindById(id: string, extraHttpRequestParams?: any): Observable<Information> {
+    const path = this.basePath + '/information/{id}'
+        .replace('{' + 'id' + '}', String(id));
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling informationFindBySubject.');
     }
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-    /**
-     * return information with the given id
-     *
-     * @param id id of the information
-     */
-    public informationFindById (id: string, extraHttpRequestParams?: any ) : Observable<Information> {
-        const path = this.basePath + '/information/{id}'
-            .replace('{' + 'id' + '}', String(id));
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'id' is not null or undefined
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling informationFindBySubject.');
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
-    }
+      });
+  }
 
 }

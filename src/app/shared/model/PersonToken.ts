@@ -27,13 +27,13 @@
 export interface PersonToken {
 
 
-    /**
-     * users identifier
-     */
-    personId?: string;
+  /**
+   * users identifier
+   */
+  personId?: string;
 
-    /**
-     * target system to witch user token was issued to
-     */
-    target?: string;
+  /**
+   * target system to witch user token was issued to
+   */
+  target?: string;
 }

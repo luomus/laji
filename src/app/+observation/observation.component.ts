@@ -1,36 +1,33 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Subscription} from "rxjs";
-import {ActivatedRoute } from "@angular/router";
-import {Location} from "@angular/common";
-import {URLSearchParams} from "@angular/http";
-
-import {SearchQuery} from "./search-query.model";
-import {FooterService} from "../shared/service/footer.service";
-import {SharedModule} from "../shared/shared.module";
-import {TranslateService} from "ng2-translate";
-declare let d3:any;
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { URLSearchParams } from '@angular/http';
+import { SearchQuery } from './search-query.model';
+import { FooterService } from '../shared/service/footer.service';
+import { SharedModule } from '../shared/shared.module';
+import { TranslateService } from 'ng2-translate';
+declare let d3: any;
 
 @Component({
   selector: 'laji-observation',
   templateUrl: './observation.component.html',
-  providers: [ SearchQuery ]
+  providers: [SearchQuery]
 })
 export class ObservationComponent implements OnInit, OnDestroy {
-  public tab:string;
-  public page:number;
+  public tab: string;
+  public page: number;
 
-  private subParam:Subscription;
+  private subParam: Subscription;
 
-  public options:any;
-  public data:any;
+  public options: any;
+  public data: any;
 
-  constructor(
-    private route: ActivatedRoute,
-    public searchQuery: SearchQuery,
-    private location: Location,
-    private translate: TranslateService,
-    private footerService:FooterService
-  ) {
+  constructor(private route: ActivatedRoute,
+              public searchQuery: SearchQuery,
+              private location: Location,
+              private translate: TranslateService,
+              private footerService: FooterService) {
   }
 
   ngOnInit() {
@@ -46,7 +43,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
     });
     let location = this.location.path(true);
     if (location.indexOf('?') > -1) {
-      this.searchQuery.setQueryFromURLSearchParams(new URLSearchParams(this.location.path(true).replace('?','?skip=true&')));
+      this.searchQuery.setQueryFromURLSearchParams(new URLSearchParams(this.location.path(true).replace('?', '?skip=true&')));
     }
   }
 

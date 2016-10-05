@@ -22,357 +22,357 @@
  * limitations under the License.
  */
 
-import {Http, Headers, RequestOptionsArgs, Response, URLSearchParams} from '@angular/http';
-import {Injectable, Optional} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Injectable, Optional } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
 import 'rxjs/Rx';
+import { PagedResult } from '../model/PagedResult';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
 'use strict';
-import {PagedResult} from "../model/PagedResult";
 
 @Injectable()
 export class MetadataApi {
-    protected basePath = '/api';
-    public defaultHeaders : Headers = new Headers();
+  protected basePath = '/api';
+  public defaultHeaders: Headers = new Headers();
 
-    constructor(protected http: Http, @Optional() basePath: string) {
-        if (basePath) {
-            this.basePath = basePath;
-        }
+  constructor(protected http: Http, @Optional() basePath: string) {
+    if (basePath) {
+      this.basePath = basePath;
+    }
+  }
+
+  /**
+   * Returns info about all the classes
+   *
+   * @param lang
+   */
+  public metadataAllClasses(lang?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Metadata>>> {
+    const path = this.basePath + '/metadata/classes';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Returns info about all the classes
-     *
-     * @param lang
-     */
-    public metadataAllClasses (lang?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<Array<models.Metadata>>> {
-        const path = this.basePath + '/metadata/classes';
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
+      });
+  }
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
+  /**
+   * Returns info about all the properties
+   *
+   * @param lang
+   */
+  public metadataAllProperties(lang?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Property>>> {
+    const path = this.basePath + '/metadata/properties';
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Returns info about all the properties
-     *
-     * @param lang
-     */
-    public metadataAllProperties (lang?: string, extraHttpRequestParams?: any ) : Observable<PagedResult<Array<models.Property>>> {
-        const path = this.basePath + '/metadata/properties';
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
+      });
+  }
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
+  /**
+   * Returns all ranges that are of select (alt) type
+   *
+   * @param lang
+   * @param asLookupObject return select values as key value object instead of a list
+   */
+  public metadataFindAllRanges(lang?: string, asLookupObject?: boolean, extraHttpRequestParams?: any): Observable<any> {
+    const path = this.basePath + '/metadata/ranges';
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Returns all ranges that are of select (alt) type
-     *
-     * @param lang
-     * @param asLookupObject return select values as key value object instead of a list
-     */
-    public metadataFindAllRanges (lang?: string, asLookupObject?: boolean, extraHttpRequestParams?: any ) : Observable<any> {
-        const path = this.basePath + '/metadata/ranges';
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
-
-        if (asLookupObject !== undefined) {
-            queryParameters.set('asLookupObject', asLookupObject ? 'true' : 'false');
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (asLookupObject !== undefined) {
+      queryParameters.set('asLookupObject', asLookupObject ? 'true' : 'false');
     }
 
-    /**
-     * Returns info about the class
-     *
-     * @param _class
-     * @param lang
-     */
-    public metadataFindClass (_class: string, lang?: string, extraHttpRequestParams?: any ) : Observable<models.Metadata> {
-        const path = this.basePath + '/metadata/classes/{class}'
-            .replace('{' + 'class' + '}', String(_class));
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter '_class' is not null or undefined
-        if (_class === null || _class === undefined) {
-            throw new Error('Required parameter _class was null or undefined when calling metadataFindClass.');
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
+      });
+  }
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
+  /**
+   * Returns info about the class
+   *
+   * @param _class
+   * @param lang
+   */
+  public metadataFindClass(_class: string, lang?: string, extraHttpRequestParams?: any): Observable<models.Metadata> {
+    const path = this.basePath + '/metadata/classes/{class}'
+        .replace('{' + 'class' + '}', String(_class));
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter '_class' is not null or undefined
+    if (_class === null || _class === undefined) {
+      throw new Error('Required parameter _class was null or undefined when calling metadataFindClass.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Returns info all classes properties
-     *
-     * @param _class
-     * @param lang
-     */
-    public metadataFindClassProperties (_class: string, lang?: string, extraHttpRequestParams?: any ) : Observable<Array<models.Metadata>> {
-        const path = this.basePath + '/metadata/classes/{class}/properties'
-            .replace('{' + 'class' + '}', String(_class));
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter '_class' is not null or undefined
-        if (_class === null || _class === undefined) {
-            throw new Error('Required parameter _class was null or undefined when calling metadataFindClassProperties.');
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
+      });
+  }
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
+  /**
+   * Returns info all classes properties
+   *
+   * @param _class
+   * @param lang
+   */
+  public metadataFindClassProperties(_class: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<models.Metadata>> {
+    const path = this.basePath + '/metadata/classes/{class}/properties'
+        .replace('{' + 'class' + '}', String(_class));
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter '_class' is not null or undefined
+    if (_class === null || _class === undefined) {
+      throw new Error('Required parameter _class was null or undefined when calling metadataFindClassProperties.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Returns classes properties with key values of ranges used that are of select (alt) type
-     *
-     * @param _class
-     * @param lang
-     * @param asLookupObject return select values as key value object instead of a list
-     */
-    public metadataFindClassRanges (_class: string, lang?: string, asLookupObject?: boolean, extraHttpRequestParams?: any ) : Observable<any> {
-        const path = this.basePath + '/metadata/classes/{class}/ranges'
-            .replace('{' + 'class' + '}', String(_class));
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter '_class' is not null or undefined
-        if (_class === null || _class === undefined) {
-            throw new Error('Required parameter _class was null or undefined when calling metadataFindClassRanges.');
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
+      });
+  }
 
-        if (asLookupObject !== undefined) {
-            queryParameters.set('asLookupObject', asLookupObject ? 'true' : 'false');
-        }
+  /**
+   * Returns classes properties with key values of ranges used that are of select (alt) type
+   *
+   * @param _class
+   * @param lang
+   * @param asLookupObject return select values as key value object instead of a list
+   */
+  public metadataFindClassRanges(_class: string, lang?: string, asLookupObject?: boolean, extraHttpRequestParams?: any): Observable<any> {
+    const path = this.basePath + '/metadata/classes/{class}/ranges'
+        .replace('{' + 'class' + '}', String(_class));
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter '_class' is not null or undefined
+    if (_class === null || _class === undefined) {
+      throw new Error('Required parameter _class was null or undefined when calling metadataFindClassRanges.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Returns key value list of properties range that are of select (alt) type
-     *
-     * @param property
-     * @param lang
-     * @param asLookupObject return select values as key value object instead of a list
-     * @param classTypeAsList Try to intemperate class types as list instead of string.
-     */
-    public metadataFindPropertiesRanges (property: string, lang?: string, asLookupObject?: boolean, classTypeAsList?:boolean, extraHttpRequestParams?: any ) : Observable<any> {
-        const path = this.basePath + '/metadata/properties/{property}/ranges'
-            .replace('{' + 'property' + '}', String(property));
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'property' is not null or undefined
-        if (property === null || property === undefined) {
-            throw new Error('Required parameter property was null or undefined when calling metadataFindPropertiesRanges.');
-        }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
-
-        if (asLookupObject !== undefined) {
-            queryParameters.set('asLookupObject', asLookupObject ? 'true' : 'false');
-        }
-
-        if (classTypeAsList !== undefined) {
-            queryParameters.set('classTypeAsList', classTypeAsList ? 'true' : 'false');
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (asLookupObject !== undefined) {
+      queryParameters.set('asLookupObject', asLookupObject ? 'true' : 'false');
     }
 
-    /**
-     * Returns info about all the properties
-     *
-     * @param property
-     * @param lang
-     */
-    public metadataFindProperty (property: string, lang?: string, extraHttpRequestParams?: any ) : Observable<models.Property> {
-        const path = this.basePath + '/metadata/properties/{property}'
-            .replace('{' + 'property' + '}', String(property));
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'property' is not null or undefined
-        if (property === null || property === undefined) {
-            throw new Error('Required parameter property was null or undefined when calling metadataFindProperty.');
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
         }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
+      });
+  }
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
+  /**
+   * Returns key value list of properties range that are of select (alt) type
+   *
+   * @param property
+   * @param lang
+   * @param asLookupObject return select values as key value object instead of a list
+   * @param classTypeAsList Try to intemperate class types as list instead of string.
+   */
+  public metadataFindPropertiesRanges(property: string, lang?: string, asLookupObject?: boolean, classTypeAsList?: boolean, extraHttpRequestParams?: any): Observable<any> {
+    const path = this.basePath + '/metadata/properties/{property}/ranges'
+        .replace('{' + 'property' + '}', String(property));
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'property' is not null or undefined
+    if (property === null || property === undefined) {
+      throw new Error('Required parameter property was null or undefined when calling metadataFindPropertiesRanges.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
     }
 
-    /**
-     * Returns range that is of type select (alt)
-     *
-     * @param range
-     * @param lang
-     * @param asLookupObject return select values as key value object instead of a list
-     */
-    public metadataFindRange (range: string, lang?: string, asLookupObject?: boolean, extraHttpRequestParams?: any ) : Observable<any> {
-        const path = this.basePath + '/metadata/ranges/{range}'
-            .replace('{' + 'range' + '}', String(range));
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        // verify required parameter 'range' is not null or undefined
-        if (range === null || range === undefined) {
-            throw new Error('Required parameter range was null or undefined when calling metadataFindRange.');
-        }
-        if (lang !== undefined) {
-            queryParameters.set('lang', lang);
-        }
-
-        if (asLookupObject !== undefined) {
-            queryParameters.set('asLookupObject', asLookupObject ? 'true' : 'false');
-        }
-
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    if (asLookupObject !== undefined) {
+      queryParameters.set('asLookupObject', asLookupObject ? 'true' : 'false');
     }
+
+    if (classTypeAsList !== undefined) {
+      queryParameters.set('classTypeAsList', classTypeAsList ? 'true' : 'false');
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  /**
+   * Returns info about all the properties
+   *
+   * @param property
+   * @param lang
+   */
+  public metadataFindProperty(property: string, lang?: string, extraHttpRequestParams?: any): Observable<models.Property> {
+    const path = this.basePath + '/metadata/properties/{property}'
+        .replace('{' + 'property' + '}', String(property));
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'property' is not null or undefined
+    if (property === null || property === undefined) {
+      throw new Error('Required parameter property was null or undefined when calling metadataFindProperty.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  /**
+   * Returns range that is of type select (alt)
+   *
+   * @param range
+   * @param lang
+   * @param asLookupObject return select values as key value object instead of a list
+   */
+  public metadataFindRange(range: string, lang?: string, asLookupObject?: boolean, extraHttpRequestParams?: any): Observable<any> {
+    const path = this.basePath + '/metadata/ranges/{range}'
+        .replace('{' + 'range' + '}', String(range));
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'range' is not null or undefined
+    if (range === null || range === undefined) {
+      throw new Error('Required parameter range was null or undefined when calling metadataFindRange.');
+    }
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
+    }
+
+    if (asLookupObject !== undefined) {
+      queryParameters.set('asLookupObject', asLookupObject ? 'true' : 'false');
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
 
 }

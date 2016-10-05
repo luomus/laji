@@ -1,14 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Location } from "@angular/common";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-
 import 'rxjs/add/operator/map';
-
 import { TaxonomyApi, InformalTaxonGroupApi, InformalTaxonGroup } from '../shared';
-import {SharedModule} from "../shared/shared.module";
+import { SharedModule } from '../shared/shared.module';
 
 
 @Component({
@@ -29,13 +27,13 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   private id: Observable<string>;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private taxonService: TaxonomyApi,
-    private translate: TranslateService,
-    private informalTaxonService: InformalTaxonGroupApi,
-    private location: Location) {}
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private taxonService: TaxonomyApi,
+              private translate: TranslateService,
+              private informalTaxonService: InformalTaxonGroupApi,
+              private location: Location) {
+  }
 
   ngOnInit() {
     // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed
@@ -49,7 +47,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
     this.id = this.route.params.distinctUntilChanged().map(params => params['id']);
 
-    const naks = this.type.filter(type => type == 'informal').switchMap((type) => this.id.distinctUntilChanged());
+    const naks = this.type.filter(type => type === 'informal').switchMap((type) => this.id.distinctUntilChanged());
 
     naks.filter(id => id == null).forEach(id => {
       this.informalTaxonService.informalTaxonGroupFindRoots(this.translate.currentLang)
@@ -79,9 +77,9 @@ export class TaxonComponent implements OnInit, OnDestroy {
         });
     });
 
-    naks.filter((id) => id == undefined).subscribe((x) => console.log('not set'));
+    naks.filter((id) => id === undefined).subscribe((x) => console.log('not set'));
 
-    naks.filter((id) => id != undefined).subscribe((x) => console.log('set', x));
+    naks.filter((id) => id !== undefined).subscribe((x) => console.log('set', x));
 
   }
 

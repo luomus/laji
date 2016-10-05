@@ -1,6 +1,6 @@
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
-import {SearchQuery} from "../search-query.model";
-import {Subscription} from "rxjs";
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { SearchQuery } from '../search-query.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-observation-active',
@@ -9,12 +9,13 @@ import {Subscription} from "rxjs";
 })
 export class ObservationActiveComponent implements OnInit, OnDestroy {
 
-  @Input() skip:string[] = [];
-  public active:ActiveList[] = [];
+  @Input() skip: string[] = [];
+  public active: ActiveList[] = [];
 
   private subQueryUpdate: Subscription;
 
-  constructor(public searchQuery: SearchQuery) {}
+  constructor(public searchQuery: SearchQuery) {
+  }
 
   ngOnInit() {
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
@@ -29,7 +30,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
     }
   }
 
-  remove(item:ActiveList) {
+  remove(item: ActiveList) {
     let query = this.searchQuery.query;
     if (query[item.field]) {
       query[item.field] = undefined;
@@ -56,6 +57,6 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
 }
 
 interface ActiveList {
-  field:string;
-  value:any;
+  field: string;
+  value: any;
 }

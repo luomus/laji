@@ -1,8 +1,8 @@
-import {Injectable} from "@angular/core";
-import {WarehouseQueryInterface} from "../shared/model/WarehouseQueryInterface";
-import {URLSearchParams} from "@angular/http";
-import {Subject} from "rxjs";
-import {Location} from "@angular/common";
+import { Injectable } from '@angular/core';
+import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
+import { URLSearchParams } from '@angular/http';
+import { Subject } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Injectable()
 export class SearchQuery {
@@ -10,15 +10,15 @@ export class SearchQuery {
   private queryUpdatedSource = new Subject<any>();
 
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
-  public tack:number = 0;
+  public tack: number = 0;
 
-  public query:WarehouseQueryInterface = {};
-  public page:number;
-  public pageSize:number = 20;
-  public includeNonValidTaxa:boolean = false;
-  public selected:string[];
-  public orderBy:string[];
-  public aggregateBy:string[];
+  public query: WarehouseQueryInterface = {};
+  public page: number;
+  public pageSize: number = 20;
+  public includeNonValidTaxa: boolean = false;
+  public selected: string[];
+  public orderBy: string[];
+  public aggregateBy: string[];
 
   arrayTypes = [
     'taxonId',
@@ -69,7 +69,7 @@ export class SearchQuery {
   ];
 
   public setQueryFromURLSearchParams(queryParameters: URLSearchParams) {
-    for(let i of this.arrayTypes) {
+    for (let i of this.arrayTypes) {
       if (queryParameters.has(i)) {
         this.query[i] = decodeURIComponent(queryParameters.get(i))
           .split(',')
@@ -79,7 +79,7 @@ export class SearchQuery {
       }
     }
 
-    for(let i of this.booleanTypes) {
+    for (let i of this.booleanTypes) {
       if (queryParameters.has(i)) {
         this.query[i] = queryParameters.get(i) === 'true';
       } else {
@@ -87,7 +87,7 @@ export class SearchQuery {
       }
     }
 
-    for(let i of this.numericTypes) {
+    for (let i of this.numericTypes) {
       if (queryParameters.has(i)) {
         this.query[i] = +queryParameters.get(i);
       } else {
@@ -95,7 +95,7 @@ export class SearchQuery {
       }
     }
 
-    for(let i of this.stringTypes) {
+    for (let i of this.stringTypes) {
       if (queryParameters.has(i)) {
         this.query[i] = queryParameters.get(i);
       } else {
@@ -108,11 +108,11 @@ export class SearchQuery {
     }
   }
 
-  public getQueryString(queryParameters?: URLSearchParams, skipParams:string[] = []):URLSearchParams {
+  public getQueryString(queryParameters?: URLSearchParams, skipParams: string[] = []): URLSearchParams {
     if (!queryParameters) {
       queryParameters = new URLSearchParams();
     }
-    for(let i of this.arrayTypes) {
+    for (let i of this.arrayTypes) {
       if (skipParams.indexOf(i) > -1) {
         continue;
       }
@@ -121,7 +121,7 @@ export class SearchQuery {
           continue;
         }
         if (typeof this.query[i] === 'string') {
-          this.query[i] = [this.query[i]]
+          this.query[i] = [this.query[i]];
         }
         let query = this.query[i]
           .filter(val => val.trim().length > 0)
@@ -132,7 +132,7 @@ export class SearchQuery {
       }
     }
 
-    for(let i of this.booleanTypes) {
+    for (let i of this.booleanTypes) {
       if (skipParams.indexOf(i) > -1) {
         continue;
       }
@@ -141,7 +141,7 @@ export class SearchQuery {
       }
     }
 
-    for(let i of this.numericTypes) {
+    for (let i of this.numericTypes) {
       if (skipParams.indexOf(i) > -1) {
         continue;
       }
@@ -150,7 +150,7 @@ export class SearchQuery {
       }
     }
 
-    for(let i of this.stringTypes) {
+    for (let i of this.stringTypes) {
       if (skipParams.indexOf(i) > -1) {
         continue;
       }
@@ -160,34 +160,34 @@ export class SearchQuery {
     }
 
     if (this.query.loadedLaterThan !== undefined) {
-      //queryParameters.set('loadedLaterThan', this.query.loadedLaterThan);
+      // queryParameters.set('loadedLaterThan', this.query.loadedLaterThan);
     }
 
     // Non query parameters (these will not have effect on result count)
-    if (this.selected !== undefined && skipParams.indexOf('selected') == -1) {
+    if (this.selected !== undefined && skipParams.indexOf('selected') === -1) {
       queryParameters.set('selected', this.selected.join(','));
     }
 
-    if (this.aggregateBy !== undefined && skipParams.indexOf('aggregateBy') == -1) {
+    if (this.aggregateBy !== undefined && skipParams.indexOf('aggregateBy') === -1) {
       queryParameters.set('aggregateBy', this.aggregateBy.join(','));
     }
 
-    if (this.orderBy !== undefined && skipParams.indexOf('orderBy') == -1) {
+    if (this.orderBy !== undefined && skipParams.indexOf('orderBy') === -1) {
       queryParameters.set('orderBy', this.orderBy.join(','));
     }
 
-    if (this.pageSize !== undefined && skipParams.indexOf('pageSize') == -1) {
+    if (this.pageSize !== undefined && skipParams.indexOf('pageSize') === -1) {
       queryParameters.set('pageSize', String(this.pageSize));
     }
 
-    if (this.page !== undefined && skipParams.indexOf('page') == -1) {
+    if (this.page !== undefined && skipParams.indexOf('page') === -1) {
       queryParameters.set('page', String(this.page));
     }
 
     return queryParameters;
   }
 
-  public updateUrl(location:Location, path?:string, skipParams?:string[]):void {
+  public updateUrl(location: Location, path?: string, skipParams?: string[]): void {
     if (!path) {
       path = location.path(false).split('?')[0].split(';')[0];
     }
@@ -196,7 +196,7 @@ export class SearchQuery {
     location.go(path + query);
   }
 
-  public queryUpdate(data = {}):void {
+  public queryUpdate(data = {}): void {
     this.queryUpdatedSource.next(data);
   }
 }

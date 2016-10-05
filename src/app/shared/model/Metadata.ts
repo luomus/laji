@@ -23,28 +23,27 @@
  */
 
 'use strict';
-import * as models from './index';
 
 export interface Metadata {
 
 
-    /**
-     * Class name
-     */
+  /**
+   * Class name
+   */
     class?: string;
 
-    /**
-     * showrt class name
-     */
-    shortName?: string;
+  /**
+   * showrt class name
+   */
+  shortName?: string;
 
-    /**
-     * label for the class
-     */
-    label?: string;
+  /**
+   * label for the class
+   */
+  label?: string;
 
-    /**
-     * comment for the class
-     */
-    comment?: string;
+  /**
+   * comment for the class
+   */
+  comment?: string;
 }

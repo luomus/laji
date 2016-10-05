@@ -23,17 +23,16 @@
  */
 
 'use strict';
-import * as models from './index';
 
 export interface InformalTaxonGroup {
 
 
-    id?: string;
+  id?: string;
 
-    /**
-     *  If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
-     */
-    name?: string;
+  /**
+   *  If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
+   */
+  name?: string;
 
-    hasSubGroup?: Array<string|InformalTaxonGroup>;
+  hasSubGroup?: Array<string|InformalTaxonGroup>;
 }

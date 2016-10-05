@@ -2,9 +2,11 @@
   color: #ffffff;
   background: none !important;
 }
-:host >>> .dropdown-menu .navbar-link {
+
+:host > > > .dropdown-menu .navbar-link {
   color: #333;
 }
+
 .navbar-language-selection .language-toggle {
   display: inline-block;
   padding: 15px 15px 0 15px;
