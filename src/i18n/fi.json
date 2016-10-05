@@ -127,8 +127,8 @@
   "observation.form.multi-true": "kyllä",
   "observation.form.multi-false": "ei",
 
-  "observation.filters.unit": "Näytteen tietoja",
-  "observation.filters.collection": "Kokoelman tietoja",
+  "observation.filters.unit": "Näyte",
+  "observation.filters.collection": "Kokoelma",
   "observation.filters.administrative": "Hallinnolliset",
   "observation.filters.other": "Muut",
 
