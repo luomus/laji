@@ -116,7 +116,7 @@
   "observation.form.redListStatusId": "Red List Status",
 
   "observation.results.title": "Observation search",
-  "observation.results.observation": "hits",
+  "observation.results.observation": "hits of",
   "observation.results.species": "species",
 
   "observation.filterBy.recordBasis": "Type",
@@ -134,7 +134,7 @@
   "observation.active.sex": "sex",
   "observation.active.invasive": "invasive species",
   "observation.active.recordBasis": "observation type",
-  "observation.active.informalTaxonGroupId": "informal group",
+  "observation.active.informalTaxonGroupId": "Informal group",
   "observation.active.informalTaxonGroupAll": "all",
 
   "haseka.title": "Observation service",
