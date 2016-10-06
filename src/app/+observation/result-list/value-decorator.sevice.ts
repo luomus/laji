@@ -7,6 +7,7 @@ export class ValueDecoratorService {
   public lang = 'fi';
 
   private decoratable = {
+    'document.documentId': 'makeId',
     'unit.individualId': 'makeId',
     'gathering.eventDate': 'makeDateRange',
     'gathering.team': 'makeArrayToSemiColon',

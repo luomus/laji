@@ -3,7 +3,7 @@
   background: none !important;
 }
 
-:host > > > .dropdown-menu .navbar-link {
+:host .dropdown-menu .navbar-link {
   color: #333;
 }
 
