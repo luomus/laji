@@ -169,7 +169,7 @@ module.exports = function makeWebpackConfig() {
     config.plugins.push(
       new webpack.NoErrorsPlugin(),
 
-      new webpack.optimize.UglifyJsPlugin({sourceMap: false, mangle: { keep_fnames: true }})
+      new webpack.optimize.UglifyJsPlugin({sourceMap: true, mangle: { keep_fnames: true }})
     );
   }
 
