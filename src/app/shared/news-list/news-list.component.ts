@@ -12,10 +12,10 @@ import { Subscription } from 'rxjs';
   providers: []
 })
 export class NewsListComponent implements OnInit, OnDestroy {
+  public news: PagedResult<News>;
+
   private pageSize = '5';
   private currentPage = 1;
-
-  public news: PagedResult<News>;
 
   private subLang: Subscription;
   private subNews: Subscription;
@@ -27,7 +27,7 @@ export class NewsListComponent implements OnInit, OnDestroy {
     this.subLang = this.translate.onLangChange.subscribe(
       () => {
         this.currentPage = 1;
-        this.initNews()
+        this.initNews();
       }
     );
     this.initNews();
@@ -52,9 +52,7 @@ export class NewsListComponent implements OnInit, OnDestroy {
     this.subNews = this.newsService
       .findAll(this.translate.currentLang, '' + this.currentPage, this.pageSize)
       .subscribe(
-        news => {
-          this.news = news
-        },
+        news => this.news = news,
         err => console.log(err)
       );
   }

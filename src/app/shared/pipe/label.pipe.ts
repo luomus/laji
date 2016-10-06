@@ -35,18 +35,10 @@ export class LabelPipe implements PipeTransform, OnDestroy {
             this._ref.markForCheck();
           }
         }
-      )
+      );
     } else {
-      this._updateValue(key)
+      this._updateValue(key);
     }
-  }
-
-  private _updateValue(key: string): void {
-    this.triplestoreLabelService.get(key)
-      .subscribe((res: string) => {
-        this.value = res ? res : key;
-        this._ref.markForCheck();
-      });
   }
 
   transform(value: string, mapWarehouse: boolean = true): any {
@@ -73,7 +65,6 @@ export class LabelPipe implements PipeTransform, OnDestroy {
         this.updateValue(value, mapWarehouse);
       });
     }
-
     return this.value;
   }
 
@@ -90,5 +81,13 @@ export class LabelPipe implements PipeTransform, OnDestroy {
 
   ngOnDestroy(): void {
     this._dispose();
+  }
+
+  private _updateValue(key: string): void {
+    this.triplestoreLabelService.get(key)
+      .subscribe((res: string) => {
+        this.value = res ? res : key;
+        this._ref.markForCheck();
+      });
   }
 }

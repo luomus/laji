@@ -43,7 +43,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     this.subFetch = this.formService.formFindAll(this.translate.currentLang).subscribe(
       result => this.formList = result,
       err => console.log(err)
-    )
+    );
   }
 
 }

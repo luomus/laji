@@ -4,7 +4,9 @@ import { Component, OnInit, Input } from '@angular/core';
   selector: 'laji-spinner',
   styleUrls: ['./spinner.component.css'],
   template: `
-<div class="spinner three-bounce-spinner" *ngIf="spinning" [ngClass]="{'overlay-spinner': overlay, 'inline-spinner': !overlay, 'light': light}">
+<div class="spinner three-bounce-spinner" 
+  *ngIf="spinning" 
+  [ngClass]="{'overlay-spinner': overlay, 'inline-spinner': !overlay, 'light': light}">
   <div class="bounce1"></div>
   <div class="bounce2"></div>
   <div class="bounce3"></div>

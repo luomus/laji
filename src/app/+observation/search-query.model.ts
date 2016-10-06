@@ -7,8 +7,7 @@ import { Location } from '@angular/common';
 @Injectable()
 export class SearchQuery {
 
-  private queryUpdatedSource = new Subject<any>();
-
+  public queryUpdatedSource = new Subject<any>();
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
   public tack: number = 0;
 

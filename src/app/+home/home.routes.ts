@@ -2,7 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home.components';
 import { ModuleWithProviders } from '@angular/core';
 
-export const HomeRoutes: Routes = [
+export const homeRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
@@ -10,4 +10,4 @@ export const HomeRoutes: Routes = [
   }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(HomeRoutes);
+export const routing: ModuleWithProviders = RouterModule.forChild(homeRoutes);

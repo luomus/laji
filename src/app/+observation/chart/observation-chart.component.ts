@@ -25,7 +25,6 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
   public informalGroups: InformalTaxonGroup[] = [];
   public data: any;
   private group: string;
-  private lastQuery: string;
   private loading: boolean = false;
 
   private subDataQuery: Subscription;
@@ -67,9 +66,14 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  onPieClick(group) {
+    this.searchQuery.query.informalTaxonGroupId = [group.id];
+    this.searchQuery.queryUpdate();
+  }
+
   private getInformalGroupName(id) {
     if (id === 'null') {
-      return '(empty)'
+      return '(empty)';
     }
     return this.informalGroups
       .filter(group => group.id === id)
@@ -89,18 +93,12 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateData() {
-    let query = this.searchQuery.query;
-    let cacheKey = JSON.stringify(query) + this.translate.currentLang;
-    if (this.lastQuery == cacheKey) {
-      return;
-    }
     if (this.subData) {
       this.subData.unsubscribe();
     }
     if (!this.active) {
       return;
     }
-    this.lastQuery = cacheKey;
     this.loading = true;
     let sources = [];
     sources.push(this.getGroupsSub());
@@ -128,13 +126,13 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
                       id: IdService.getId(item.aggregateBy['unit.linkings.taxon.informalTaxonGroup']),
                       value: item.count,
                       label: ''
-                    }
+                    };
                   })
                   .filter(item => groups.indexOf(item.id) !== -1);
                 this.updateLabels();
               },
               err => console.log(err)
-            )
+            );
         } else {
           this.loading = false;
           this.informalGroups = data[0].results;
@@ -148,7 +146,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
                 id: IdService.getId(item.aggregateBy['unit.linkings.taxon.informalTaxonGroup']),
                 value: item.count,
                 label: ''
-              }
+              };
             })
             .filter(item => groups.indexOf(item.id) !== -1);
           this.updateLabels();
@@ -181,13 +179,9 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
           id: value.id,
           value: value.value,
           label: this.getInformalGroupName(value.id)
-        }
+        };
       });
   }
 
-  onPieClick(group) {
-    this.searchQuery.query.informalTaxonGroupId = [group.id];
-    this.searchQuery.queryUpdate();
-  }
 
 }

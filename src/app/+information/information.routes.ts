@@ -2,7 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { InformationComponent } from './information.component';
 import { ModuleWithProviders } from '@angular/core';
 
-export const InformationRoutes: Routes = [
+export const informationRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
@@ -14,4 +14,4 @@ export const InformationRoutes: Routes = [
   },
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(InformationRoutes);
+export const routing: ModuleWithProviders = RouterModule.forChild(informationRoutes);

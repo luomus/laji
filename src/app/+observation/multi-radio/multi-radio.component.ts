@@ -17,12 +17,12 @@ export class MultiRadioComponent implements ControlValueAccessor, OnInit {
   @Input() options: MultiRadioOption[];
   @Input() name: string;
 
+  private innerValue = undefined;
+
   onChange = (_: any) => {
   };
   onTouched = () => {
   };
-
-  private innerValue = undefined;
 
   ngOnInit() {
   }

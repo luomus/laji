@@ -10,7 +10,7 @@ export class IdService {
     if (typeof value !== 'string' || value === '') {
       return value;
     }
-    if (value.indexOf('http') == 0) {
+    if (value.indexOf('http') === 0) {
       return value.replace(DEFAULT_DOMAIN, '');
     }
     return value;
@@ -20,7 +20,7 @@ export class IdService {
     if (typeof value !== 'string' || value === '') {
       return value;
     }
-    if (value.indexOf('http') == 0) {
+    if (value.indexOf('http') === 0) {
       return value;
     }
     return DEFAULT_DOMAIN + value;

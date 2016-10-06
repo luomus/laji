@@ -8,6 +8,6 @@ export interface FormListInterface {
     description: string;
     supportedLanguage: string[];
     category: string;
-  }[],
+  }[];
   language: string;
 }

@@ -12,8 +12,7 @@ export class TriplestoreLabelService {
 
   constructor(private metadataService: MetadataApi,
               private translate: TranslateService) {
-    this.translate.onLangChange.subscribe(
-      _ => {
+    this.translate.onLangChange.subscribe(() => {
         this.labels = null;
         this.getLang(this.translate.currentLang);
       }
@@ -24,6 +23,27 @@ export class TriplestoreLabelService {
     }
   };
 
+  public get(key): Observable<string> {
+    if (this.labels) {
+      return Observable.of(this.labels[key]);
+    } else if (this.pending) {
+      return Observable.create((observer: Observer<string>) => {
+        const onComplete = (res: string) => {
+          observer.next(res);
+          observer.complete();
+        };
+        this.pending.subscribe(
+          () => {
+            onComplete(this.labels[key]);
+          },
+          err => console.log(err)
+        );
+      });
+    } else {
+      return Observable.of(key);
+    }
+  }
+
   private getLang(lang) {
     this.pending = Observable.forkJoin(
       this.metadataService.metadataFindAllRanges(lang, true),
@@ -33,27 +53,6 @@ export class TriplestoreLabelService {
       .map(data => this.parseResult(data))
       .share();
     this.currentLang = lang;
-  }
-
-  public get(key): Observable<string> {
-    if (this.labels) {
-      return Observable.of(this.labels[key])
-    } else if (this.pending) {
-      return Observable.create((observer: Observer<string>) => {
-        var onComplete = (res: string) => {
-          observer.next(res);
-          observer.complete();
-        };
-        this.pending.subscribe(
-          (_: any) => {
-            onComplete(this.labels[key]);
-          },
-          err => console.log(err)
-        );
-      });
-    } else {
-      return Observable.of(key)
-    }
   }
 
   private parseResult(result) {

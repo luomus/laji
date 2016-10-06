@@ -23,18 +23,6 @@ export class UsersPipe implements PipeTransform {
               private _ref: ChangeDetectorRef) {
   }
 
-  private updateValue(id: string, format: string): void {
-    this.userService.getUser(id)
-      .subscribe((user: Person) => {
-        if (format === 'fullname') {
-          this.value = (user.preferredName || '') + ' ' + (user.inheritedName || '');
-        } else {
-          this.value = '';
-        }
-        this._ref.markForCheck();
-      });
-  }
-
   transform(value: string, format: string = 'fullname'): any {
     if (!value || value.length === 0) {
       return value;
@@ -51,5 +39,17 @@ export class UsersPipe implements PipeTransform {
     this.updateValue(value, format);
 
     return this.value;
+  }
+
+  private updateValue(id: string, format: string): void {
+    this.userService.getUser(id)
+      .subscribe((user: Person) => {
+        if (format === 'fullname') {
+          this.value = (user.preferredName || '') + ' ' + (user.inheritedName || '');
+        } else {
+          this.value = '';
+        }
+        this._ref.markForCheck();
+      });
   }
 }

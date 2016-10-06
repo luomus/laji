@@ -19,13 +19,11 @@ export class ParentsComponent {
   }
 
   ngOnInit() {
-    this.translate.onLangChange.subscribe(
-      () => {
-        this.parents$ = this
-          .taxonService
-          .taxonomyFindParents(this.current.id, this.translate.currentLang);
-      }
-    )
+    this.translate.onLangChange.subscribe(() => {
+      this.parents$ = this
+        .taxonService
+        .taxonomyFindParents(this.current.id, this.translate.currentLang);
+    });
   }
 
   ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {

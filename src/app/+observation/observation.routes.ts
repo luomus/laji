@@ -2,7 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ObservationComponent } from './observation.component';
 import { ModuleWithProviders } from '@angular/core';
 
-export const ObservationRoutes: Routes = [
+export const observationRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
@@ -15,4 +15,4 @@ export const ObservationRoutes: Routes = [
   }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(ObservationRoutes);
+export const routing: ModuleWithProviders = RouterModule.forChild(observationRoutes);

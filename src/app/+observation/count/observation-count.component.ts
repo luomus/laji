@@ -56,13 +56,12 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   private updateCount(query) {
     this.subCount = this.warehouseService
       .warehouseQueryCountGet(query)
-      .subscribe(
-        result => {
+      .subscribe(result => {
           this.loading = false;
           this.count = '' + (result.total || 0);
         },
         err => console.log(err)
-      )
+      );
   }
 
   private updateAggregated(query) {

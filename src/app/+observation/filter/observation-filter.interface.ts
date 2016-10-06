@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 export interface ObservationFilterInterface {
   title: string;
   field: string;
-  pick?: string[],
+  pick?: string[];
   filter: string;
   type: 'array'|'boolean';
   valueMap?: {[field: string]: string};
@@ -13,7 +13,7 @@ export interface ObservationFilterInterface {
   selected: string[];
   total?: number;
   pager?: boolean;
-  map?: (data: any) => Observable<any>
+  map?: (data: any) => Observable<any>;
 }
 
 export interface FilterDataInterface {

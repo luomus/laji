@@ -8,7 +8,6 @@ export class ResultListElementComponent {
   @Input() data: string|{};
 
   isPlain() {
-    return typeof this.data !== 'object'
+    return typeof this.data !== 'object';
   }
-
 }

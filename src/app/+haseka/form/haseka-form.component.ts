@@ -15,13 +15,12 @@ import { FormApi } from '../../shared/api/FormApi';
 })
 export class HaSeKaFormComponent implements OnInit {
 
-  private formDataStorage = {};
-
   public form: any;
   public formId: string;
   public documentId: string;
   public lang: string;
 
+  private formDataStorage = {};
   private subParam: Subscription;
   private subTrans: Subscription;
   private subFetch: Subscription;
@@ -63,54 +62,41 @@ export class HaSeKaFormComponent implements OnInit {
   }
 
   onSubmit(event) {
-    //event.makeBlock();
+    // event.makeBlock();
     let data = event.data.formData;
     if (this.isEdit) {
       this.documentService
         .update(data.id || this.documentId, data, this.userService.getToken())
         .subscribe(
-          data => {
+          result => {
+            this.form.formData = result;
             this.success = 'haseka.form.success';
-            setTimeout(() => this.success = '', 5000)
+            setTimeout(() => this.success = '', 5000);
           },
           err => {
             this.error = err;
-            setTimeout(() => this.error = undefined, 5000)
+            setTimeout(() => this.error = undefined, 5000);
           }
-          //event.clearBlock()
+          // event.clearBlock()
         );
     } else {
       this.documentService
         .create(data, this.userService.getToken())
-        .subscribe(
-          data => {
+        .subscribe(result => {
             this.success = 'haseka.form.success';
-            this.form.formData = data;
-            this.documentId = data.id;
+            this.form.formData = result;
+            this.documentId = result.id;
             this.isEdit = true;
             this.formDataStorage[this.formId] = {};
-            setTimeout(() => this.success = '', 5000)
+            setTimeout(() => this.success = '', 5000);
           },
           err => {
             this.error = this.parseErrorMessage(err);
-            setTimeout(() => this.error = undefined, 5000)
+            setTimeout(() => this.error = undefined, 5000);
           }
-          //event.clearBlock()
+          // event.clearBlock()
         );
     }
-  }
-
-  private parseErrorMessage(err) {
-    let detail = '';
-    if (err._body) {
-      let data = JSON.parse(err._body);
-      detail = data && data.error && data.error.message && data.error.message.detail ?
-        data.error.message.detail : '';
-    }
-    return {
-      title: 'haseka.form.failure',
-      detail: detail
-    };
   }
 
   fetchForm() {
@@ -149,4 +135,16 @@ export class HaSeKaFormComponent implements OnInit {
     );
   }
 
+  private parseErrorMessage(err) {
+    let detail = '';
+    if (err._body) {
+      let data = JSON.parse(err._body);
+      detail = data && data.error && data.error.message && data.error.message.detail ?
+        data.error.message.detail : '';
+    }
+    return {
+      title: 'haseka.form.failure',
+      detail: detail
+    };
+  }
 }

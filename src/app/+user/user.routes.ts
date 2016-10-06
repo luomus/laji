@@ -5,7 +5,7 @@ import { UserLogoutComponent } from './logout/user-logout.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ModuleWithProviders } from '@angular/core';
 
-export const UserRoutes: Routes = [
+export const userRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
@@ -28,4 +28,4 @@ export const UserRoutes: Routes = [
   }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(UserRoutes);
+export const routing: ModuleWithProviders = RouterModule.forChild(userRoutes);

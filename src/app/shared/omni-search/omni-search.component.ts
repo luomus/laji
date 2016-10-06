@@ -35,8 +35,8 @@ export class OmniSearchComponent implements OnInit, OnChanges {
       .distinctUntilChanged();
     inputStream.subscribe(value => {
       this.search = value;
-      this.updateTaxa()
-    })
+      this.updateTaxa();
+    });
   }
 
 
@@ -120,8 +120,8 @@ export class OmniSearchComponent implements OnInit, OnChanges {
         },
         err => console.log(err),
         () => {
-          this.loading = false
+          this.loading = false;
         }
-      )
+      );
   }
 }

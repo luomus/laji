@@ -51,6 +51,6 @@ export class SpeciesListComponent implements OnChanges {
           this.loading = false;
         },
         err => console.log(err)
-      )
+      );
   }
 }

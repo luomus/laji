@@ -15,11 +15,10 @@ declare let d3: any;
 export class ObservationComponent implements OnInit, OnDestroy {
   public tab: string;
   public page: number;
-
-  private subParam: Subscription;
-
   public options: any;
   public data: any;
+
+  private subParam: Subscription;
 
   constructor(private route: ActivatedRoute,
               public searchQuery: SearchQuery,
