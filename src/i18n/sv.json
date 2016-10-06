@@ -104,7 +104,7 @@
   "force.login": "Du måste logga in för att använda den här uppdelningen.",
   
   
-  "observation.intro": "<p>Suomen Lajitietokeskuksen Havainnot-palvelun avulla voit hakea monipuolisten hakutoimintojen avulla käyttöösi tietoja maassamme tehdyistä lajihavainnoista.</p><p>Havaintoja kertyy niin yksittäisiltä harrastajilta, kansalaistiedehankkeiden kautta kuin tieteellisen työn tuloksena. Haettavat aineistot sisältävät myös tieteellisten kokoelma-aineistojen näytteiden havaintotiedot ja seurannoissa tehdyt havainnot.</p>",
+  "observation.intro": "<p>Med hjälp av Finlands Artdatacenters Observationstjäntens mångsidiga sök kan du söka information av artobservationer från Finland. Observationer samlas av enstaka naturintresserade, via medborgarvetenskapprojekter och vetenkaplig arbete.</p>",
   "observation.form.filter": "Sökparametrar",
   "observation.form.specimen": "Arter",
   "observation.form.date": "Observationsdatum",
