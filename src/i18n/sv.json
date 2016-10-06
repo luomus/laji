@@ -8,7 +8,7 @@
   "navigation.information": "Allmänt och aktuellt",
   "navigation.collection": "Informationskällör",
   "navigation.haseka": "Rapportera observationer",
-  "navigation.notify": "Rapoortera observationer",
+  "navigation.notify": "Rapportera observationer",
   "navigation.user": "Användarinställning",
   "navigation.user.login": "Login",
   "navigation.user.logout": "Logout",
@@ -101,7 +101,7 @@
   "observation.count": "Antal av observationer",
   "result.allObservation": "observationer",
   
-  "force.login": "Du måste logga in för att använda den här uppdelningen",
+  "force.login": "Du måste logga in för att använda den här uppdelningen.",
   
   
   "observation.intro": "<p>Suomen Lajitietokeskuksen Havainnot-palvelun avulla voit hakea monipuolisten hakutoimintojen avulla käyttöösi tietoja maassamme tehdyistä lajihavainnoista.</p><p>Havaintoja kertyy niin yksittäisiltä harrastajilta, kansalaistiedehankkeiden kautta kuin tieteellisen työn tuloksena. Haettavat aineistot sisältävät myös tieteellisten kokoelma-aineistojen näytteiden havaintotiedot ja seurannoissa tehdyt havainnot.</p>",
@@ -162,8 +162,8 @@
   "observation.active.finnish": "finska",
   "observation.active.hasMedia": "bild",
 
-  "haseka.title": "Havaintopalvelu",
-  "haseka.intro": "<p>Havaintopalvelu tarjoaa suoraviivaisen kanavan julkaista eliölajihavaintoja laji.fi-sivuston kautta. Rekisteröityneelle käyttäjälle palvelu tarjoaa tietokannan omien havaintotietojensa tallentamiseen ja hallintaan sekä väylän niiden jakamiseen. Käyttäjät voivat perustaa tietokantaan projekteja, joihin kutsutut osallistujat tallentavat haluttua lajitietoa. Perustetun projektin keräämiä tietoja hallinnoi sen omistaja ja tiedon jakaminen laji.fi-sivuston kautta on helppoa. Palvelun mukautuva lomakkeisto antaa käyttäjälle mahdollisuuden valita itselleen sopivan tavan tallentaa, hallita ja jakaa havaintojaan muiden käyttöön.</p>",
+  "haseka.title": "Observationstjänst",
+  "haseka.intro": "<p>Observationstjänst erbjuder en enkel kanal för att publicera artobservationer via sidan Laji.fi. För registrerade användaren tjänsten erbjuder en databas för att spara och administrera egna observationer och kanalen för att dela ut dem. Användarna kan grunda projekter som samlar önskad artinformation med hjälp av projektens deltagarna. Projektens ägare administerar data samlats via projekten och det är lätt att dela ut data via Laji.fi. Tjänstens anpasslig formulär ger användaren möjligheten att välja bästa sättet att spara, administera och dela ut observationer.</p>",
   "haseka.forms.title": "Formulär",
   "haseka.form.success": "Observationerna sparat!",
   "haseka.form.failure": "Sparning misslyckades!",
@@ -172,18 +172,18 @@
   "haseka.terms": "Användarvillkor",
   "haseka.users.latest.gathered": "observerad",
   "observation.export.tooMany": "För många observationer. Maksimiantal är 200 000. Sökningen måste begränsas.",
-  "observation.export.tooLittle": "Ei havaintoja joita voisit ladata",
+  "observation.export.tooLittle": "Inga observationer som kan laddas ner.",
 
-  "omniSearch.matches": "Tietoa lajista",
+  "omniSearch.matches": "Information om art",
   "omniSearch.rank": "taksonomisk nivå",
   "omniSearch.groups": "organismgrupp",
 
-  "friend.ask": "Pyydä ystäväksi",
-  "friend.friends": "Ystävät",
-  "friend.requests": "Ystäväpyynnöt",
-  "friend.requestSent": "Ystäväpyyntö lähetetty",
+  "friend.ask": "Be om en vän",
+  "friend.friends": "Vänner",
+  "friend.requests": "Vänbegäran",
+  "friend.requestSent": "Vänbegäran sänt",
 
-  "profile.friends": "Ystävät",
-  "profile.friendsInfo": "Voit pyytää ystäviäsi lähettämään sinulle linkin omalle profiilisivulleen. Linkin saatuasi voit pyytää heitä ystäväksesi ja kun he ovat hyväksyneet pyyntösi, näet täällä linkin heidän profiiliinsa.",
-  "profile.accountSettings": "Käyttäjätilini"
+  "profile.friends": "Vänner",
+  "profile.friendsInfo": "Du kan be att dina vänner skickar dig länken till deras profilsidor. När du har fått länken, kan du be dem att bli dina vänner. När din begäran är godkänt, ser du här länken till deras profil.",
+  "profile.accountSettings": "Min användarkonto"
 }  
