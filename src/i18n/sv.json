@@ -162,7 +162,7 @@
   "observation.active.finnish": "finska",
   "observation.active.hasMedia": "bild",
 
-  "haseka.title": "Havaintopalvelu",
+  "haseka.title": "Observationstjänst",
   "haseka.intro": "<p>Havaintopalvelu tarjoaa suoraviivaisen kanavan julkaista eliölajihavaintoja laji.fi-sivuston kautta. Rekisteröityneelle käyttäjälle palvelu tarjoaa tietokannan omien havaintotietojensa tallentamiseen ja hallintaan sekä väylän niiden jakamiseen. Käyttäjät voivat perustaa tietokantaan projekteja, joihin kutsutut osallistujat tallentavat haluttua lajitietoa. Perustetun projektin keräämiä tietoja hallinnoi sen omistaja ja tiedon jakaminen laji.fi-sivuston kautta on helppoa. Palvelun mukautuva lomakkeisto antaa käyttäjälle mahdollisuuden valita itselleen sopivan tavan tallentaa, hallita ja jakaa havaintojaan muiden käyttöön.</p>",
   "haseka.forms.title": "Formulär",
   "haseka.form.success": "Observationerna sparat!",
@@ -172,18 +172,18 @@
   "haseka.terms": "Användarvillkor",
   "haseka.users.latest.gathered": "observerad",
   "observation.export.tooMany": "För många observationer. Maksimiantal är 200 000. Sökningen måste begränsas.",
-  "observation.export.tooLittle": "Ei havaintoja joita voisit ladata",
+  "observation.export.tooLittle": "Inga observationer som kan laddas ner.",
 
-  "omniSearch.matches": "Tietoa lajista",
+  "omniSearch.matches": "Information om art",
   "omniSearch.rank": "taksonomisk nivå",
   "omniSearch.groups": "organismgrupp",
 
-  "friend.ask": "Pyydä ystäväksi",
-  "friend.friends": "Ystävät",
-  "friend.requests": "Ystäväpyynnöt",
-  "friend.requestSent": "Ystäväpyyntö lähetetty",
+  "friend.ask": "Be om en vän",
+  "friend.friends": "Vänner",
+  "friend.requests": "Vänbegäran",
+  "friend.requestSent": "Vänbegäran sänt",
 
-  "profile.friends": "Ystävät",
-  "profile.friendsInfo": "Voit pyytää ystäviäsi lähettämään sinulle linkin omalle profiilisivulleen. Linkin saatuasi voit pyytää heitä ystäväksesi ja kun he ovat hyväksyneet pyyntösi, näet täällä linkin heidän profiiliinsa.",
-  "profile.accountSettings": "Käyttäjätilini"
+  "profile.friends": "Vänner",
+  "profile.friendsInfo": "Du kan be att dina vänner skickar dig länken till deras profilsidor. När du har fått länken, kan du be dem att bli dina vänner. När din begäran är godkänt, ser du här länken till deras profil.",
+  "profile.accountSettings": "Min användarkonto"
 }  
