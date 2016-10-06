@@ -49,10 +49,6 @@ export class ObservationFormComponent implements OnInit {
     {value: undefined, label: 'observation.form.multi-all'},
   ];
 
-  private subUpdate: Subscription;
-  private window: Window;
-  private lastQuery: string;
-
   public filters: {[name: string]: ObservationFilterInterface} = {
     recordBasis: {
       title: 'observation.filterBy.recordBasis',
@@ -105,6 +101,11 @@ export class ObservationFormComponent implements OnInit {
     'MY.sexW': ''
   };
 
+
+  private subUpdate: Subscription;
+  private window: Window;
+  private lastQuery: string;
+
   constructor(public searchQuery: SearchQuery,
               public translate: TranslateService,
               public collectionService: CollectionApi,
@@ -127,7 +128,7 @@ export class ObservationFormComponent implements OnInit {
       this.translate.currentLang,
       undefined,
       this.formQuery.informalTaxonGroupId
-    )
+    );
   }
 
   ngOnInit() {
@@ -138,7 +139,7 @@ export class ObservationFormComponent implements OnInit {
           this.queryToFormQuery(this.searchQuery.query);
           this.onSubmit(false);
         }
-      })
+      });
   }
 
   ngOnDestroy() {
@@ -148,7 +149,7 @@ export class ObservationFormComponent implements OnInit {
   }
 
   checkboxSelect(selected, loc) {
-    if (selected.length == 0) {
+    if (selected.length === 0) {
       this.formQuery[loc] = [0, 1];
     }
   }
@@ -159,7 +160,7 @@ export class ObservationFormComponent implements OnInit {
   }
 
   getTabHeight() {
-    return (this.window.innerHeight || 0) + 'px'
+    return (this.window.innerHeight || 0) + 'px';
   }
 
   updateTime(dates) {
@@ -169,7 +170,7 @@ export class ObservationFormComponent implements OnInit {
       dates = Math.ceil(((+today) - (+oneJan)) / 86400000) - 1;
     }
     let today = moment();
-    this.formQuery.timeStart = today.subtract(dates, "days").format(DATE_FORMAT);
+    this.formQuery.timeStart = today.subtract(dates, 'days').format(DATE_FORMAT);
     this.formQuery.timeEnd = '';
     this.onSubmit();
   }
@@ -199,55 +200,6 @@ export class ObservationFormComponent implements OnInit {
   toggleFilters() {
     this.loadFilters = true;
     this.showFilter = !this.showFilter;
-  }
-
-  private queryToFormQuery(query: WarehouseQueryInterface) {
-    let time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
-    this.formQuery = {
-      taxon: query.target && query.target[0] ? query.target[0] : '',
-      timeStart: time[0] || '',
-      timeEnd: time[1] || '',
-      informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
-        query.informalTaxonGroupId[0] : '',
-      individualCountMin: '' + query.individualCountMin,
-      individualCountMax: '' + query.individualCountMax,
-      includeNonValidTaxa: query.includeNonValidTaxa,
-      typeSpecimen: query.typeSpecimen,
-    };
-  }
-
-  private parseMultiBoolean(value): boolean {
-    if (typeof value === 'undefined' || value.length == 0 || value.length == 2 || typeof value[0] === 'undefined') {
-      return undefined;
-    }
-    return value[0] === 0 ? false : true
-  }
-
-  private formQueryToQuery(formQuery: ObservationFormQuery) {
-    let taxon = formQuery.taxon;
-    let time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
-    let query = this.searchQuery.query;
-
-    query.target = taxon.length > 0 ?
-      [taxon] : undefined;
-    query.time = time.length > 0 ?
-      [time] : undefined;
-    query.informalTaxonGroupId = formQuery.informalTaxonGroupId ?
-      [formQuery.informalTaxonGroupId] : undefined;
-    query.individualCountMin = +formQuery.individualCountMin || undefined;
-    query.individualCountMax = +formQuery.individualCountMax || undefined;
-    query.typeSpecimen = formQuery.typeSpecimen || undefined;
-    query.includeNonValidTaxa = formQuery.includeNonValidTaxa || undefined;
-  }
-
-  private parseDate(start, end) {
-    if (start || end) {
-      end = end || moment().format(DATE_FORMAT);
-      start = start || moment().format(DATE_FORMAT);
-    } else {
-      return '';
-    }
-    return start + '/' + end;
   }
 
   fetchCollectionName(data) {
@@ -311,9 +263,57 @@ export class ObservationFormComponent implements OnInit {
 
   public getTaxonGroup(obj: any, field, join = ' ') {
     if (obj.informalTaxonGroups) {
-      return obj.informalTaxonGroups.map(group => group[field]).join(join)
+      return obj.informalTaxonGroups.map(group => group[field]).join(join);
     }
     return '';
   }
 
+  private queryToFormQuery(query: WarehouseQueryInterface) {
+    let time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
+    this.formQuery = {
+      taxon: query.target && query.target[0] ? query.target[0] : '',
+      timeStart: time[0] || '',
+      timeEnd: time[1] || '',
+      informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
+        query.informalTaxonGroupId[0] : '',
+      individualCountMin: '' + query.individualCountMin,
+      individualCountMax: '' + query.individualCountMax,
+      includeNonValidTaxa: query.includeNonValidTaxa,
+      typeSpecimen: query.typeSpecimen,
+    };
+  }
+
+  private parseMultiBoolean(value): boolean {
+    if (typeof value === 'undefined' || value.length === 0 || value.length === 2 || typeof value[0] === 'undefined') {
+      return undefined;
+    }
+    return value[0] === 0 ? false : true;
+  }
+
+  private formQueryToQuery(formQuery: ObservationFormQuery) {
+    let taxon = formQuery.taxon;
+    let time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
+    let query = this.searchQuery.query;
+
+    query.target = taxon.length > 0 ?
+      [taxon] : undefined;
+    query.time = time.length > 0 ?
+      [time] : undefined;
+    query.informalTaxonGroupId = formQuery.informalTaxonGroupId ?
+      [formQuery.informalTaxonGroupId] : undefined;
+    query.individualCountMin = +formQuery.individualCountMin || undefined;
+    query.individualCountMax = +formQuery.individualCountMax || undefined;
+    query.typeSpecimen = formQuery.typeSpecimen || undefined;
+    query.includeNonValidTaxa = formQuery.includeNonValidTaxa || undefined;
+  }
+
+  private parseDate(start, end) {
+    if (start || end) {
+      end = end || moment().format(DATE_FORMAT);
+      start = start || moment().format(DATE_FORMAT);
+    } else {
+      return '';
+    }
+    return start + '/' + end;
+  }
 }

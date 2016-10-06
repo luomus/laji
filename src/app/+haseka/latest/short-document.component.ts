@@ -9,8 +9,8 @@ export class ShortDocumentComponent implements OnInit, OnChanges {
   @Input() document: Document;
   @Input() showList: boolean = false;
 
-  public taxa: Array<{ name: string,id: string }>;
-  public gatheringDates: { start: string,end: string };
+  public taxa: Array<{ name: string, id: string }>;
+  public gatheringDates: { start: string, end: string };
 
   ngOnInit() {
     this.updateTaxa();

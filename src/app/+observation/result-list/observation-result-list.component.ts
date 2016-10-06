@@ -78,7 +78,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     if (Object.keys(query).length === 0) {
       query.includeNonValidTaxa = false;
     }
-    if (this.lastQuery == cache) {
+    if (this.lastQuery === cache) {
       return;
     }
     if (this.subFetch) {
@@ -113,7 +113,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
           this.result.results = [];
         },
         () => this.loading = false
-      )
+      );
   }
 
   getData(row: any, propertyName: string): string {

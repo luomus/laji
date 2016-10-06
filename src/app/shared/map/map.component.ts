@@ -2,7 +2,7 @@
 
 import { Component, ElementRef, OnDestroy, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
 
-let LajiMap = require('laji-map').default;
+const lajiMap = require('laji-map').default;
 
 @Component({
   selector: 'laji-map',
@@ -32,7 +32,7 @@ export class MapComponent implements OnDestroy, OnChanges {
   map: any;
 
   ngAfterViewInit() {
-    this.map = new LajiMap({
+    this.map = new lajiMap({
       activeIdx: 0,
       zoom: 1,
       lang: this.lang,
@@ -53,10 +53,10 @@ export class MapComponent implements OnDestroy, OnChanges {
     });
     this.map.map.scrollWheelZoom.disable();
     this.map.map.on('moveend', _ => {
-      this.moveEvent('moveend')
+      this.moveEvent('moveend');
     });
     this.map.map.on('movestart', _ => {
-      this.moveEvent('movestart')
+      this.moveEvent('movestart');
     });
     this.map.map.on('focus', () => {
       this.map.map.scrollWheelZoom.enable();
@@ -83,6 +83,7 @@ export class MapComponent implements OnDestroy, OnChanges {
         case 'create':
           this.onCreate.emit(event.feature.geometry);
           break;
+        default:
       }
     });
   }
@@ -90,8 +91,8 @@ export class MapComponent implements OnDestroy, OnChanges {
   ngOnDestroy() {
     try {
       this.map.destroy();
-    } catch (e) {
-      console.log(e)
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -113,23 +114,23 @@ export class MapComponent implements OnDestroy, OnChanges {
       if (this.visible) {
         setTimeout(() => {
           try {
-            this.map.map.invalidateSize()
+            this.map.map.invalidateSize();
           } catch (e) {
           }
         }, 500);
       }
-    } catch (e) {
-      console.log(e)
+    } catch (err) {
+      console.log(err);
     }
   }
 
   initSingleShape() {
     try {
       this.map.map.addEventListener({
-        "draw:drawstart": event => this.clearDrawLayer()
+        'draw:drawstart': event => this.clearDrawLayer()
       });
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
@@ -145,12 +146,12 @@ export class MapComponent implements OnDestroy, OnChanges {
   clearDrawLayer() {
     try {
       if (!this.drawData) {
-        this.drawData = {featureCollection: {type: "featureCollection", features: []}};
+        this.drawData = {featureCollection: {type: 'featureCollection', features: []}};
       }
-      this.drawData.featureCollection = {type: "featureCollection", features: []};
+      this.drawData.featureCollection = {type: 'featureCollection', features: []};
       this.map.setDrawData(this.drawData);
-    } catch (e) {
-      console.log(e)
+    } catch (err) {
+      console.log(err);
     }
   }
 }

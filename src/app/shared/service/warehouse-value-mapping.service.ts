@@ -26,7 +26,7 @@ export class WarehouseValueMappingService {
   public get(value, list): Observable<string> {
     if (!this[list] && this.pending) {
       return Observable.create((observer: Observer<string>) => {
-        var onComplete = (res: string) => {
+        const onComplete = (res: string) => {
           observer.next(res);
           observer.complete();
         };
@@ -35,7 +35,7 @@ export class WarehouseValueMappingService {
         });
       });
     } else {
-      return Observable.of(this[list][value] || value)
+      return Observable.of(this[list][value] || value);
     }
   }
 

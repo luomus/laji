@@ -67,48 +67,48 @@ export class TreeOfLifeComponent {
     var tree = d3.layout.tree()
       .size([360, diameter / 2 - 120])
       .separation(function (a, b) {
-        return (a.parent == b.parent ? 1 : 2) / a.depth;
+        return (a.parent === b.parent ? 1 : 2) / a.depth;
       });
 
     this.diagonal = d3.svg.diagonal.radial()
       .projection(function (d) {
-        return [d.y, (d.x | 0) / 180 * Math.PI];
+        return [d.y, (d.x || 0) / 180 * Math.PI];
       });
 
     d3.json(this.getTaxonTreeUri(taxonId), (error, root) => {
       this.active = taxonId;
       this.host.html('');
-      this.svg = this.host.append("svg")
-        .attr("width", diameter)
-        .attr("height", diameter)
-        .append("g")
-        .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+      this.svg = this.host.append('svg')
+        .attr('width', diameter)
+        .attr('height', diameter)
+        .append('g')
+        .attr('transform', 'translate(' + diameter / 2 + ',' + diameter / 2 + ')');
 
       if (error) throw error;
 
-      var nodes = tree.nodes(root),
+      let nodes = tree.nodes(root),
         links = tree.links(nodes);
 
-      var link = this.svg.selectAll(".link").data(links);
+      let link = this.svg.selectAll('.link').data(links);
 
       link.enter()
-        .append("path")
-        .attr("class", "link")
-        .attr("d", this.diagonal);
+        .append('path')
+        .attr('class', 'link')
+        .attr('d', this.diagonal);
 
-      var node = this.svg.selectAll(".node").data(nodes);
+      let node = this.svg.selectAll('.node').data(nodes);
 
-      var label = node
-        .enter().append("g")
-        .attr("class", "node")
-        .attr("transform", function (d) {
-          return "rotate(" + ((d.x | 0) - 90) + ")translate(" + d.y + ")";
+      let label = node
+        .enter().append('g')
+        .attr('class', 'node')
+        .attr('transform', function (d) {
+          return 'rotate(' + ((d.x || 0) - 90) + ')translate(' + d.y + ')';
         });
 
       label
-        .append("a")
-        .attr("href", (d) => {
-          return `/taxon/browse/taxonomy/${d.id}`
+        .append('a')
+        .attr('href', (d) => {
+          return `/taxon/browse/taxonomy/${d.id}`;
         })
         .on("click", (d) => {
           if(d.id == taxonId){
@@ -124,27 +124,27 @@ export class TreeOfLifeComponent {
         .attr("r", 5);
 
       label
-        .append("a")
-        .attr("href", (d) => {
-          return `/taxon/${d.id}`
+        .append('a')
+        .attr('href', (d) => {
+          return `/taxon/${d.id}`;
         })
-        .on("click", (d) => {
+        .on('click', (d) => {
           this.router.navigate(['taxon', d.id]);
           d3.event.preventDefault();
         })
-        .append("text")
-        .attr("dy", ".31em")
-        .attr("text-anchor", function (d) {
-          return d.x < 180 ? "start" : "end";
+        .append('text')
+        .attr('dy', '.31em')
+        .attr('text-anchor', function (d) {
+          return d.x < 180 ? 'start' : 'end';
         })
-        .attr("transform", function (d) {
-          return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)";
+        .attr('transform', function (d) {
+          return d.x < 180 ? 'translate(8)' : 'rotate(180)translate(-8)';
         })
         .text(function (d) {
           return d.scientificName;
         });
     });
 
-    this.host.style("height", diameter + "px");
+    this.host.style('height', diameter + 'px');
   }
 }

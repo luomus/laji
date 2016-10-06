@@ -66,7 +66,7 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
 
   updateCount() {
     this.warehouseService.warehouseQueryCountGet(this.searchQuery.query)
-      .subscribe(res => this.itemCount = res.total)
+      .subscribe(res => this.itemCount = res.total);
   }
 
   pickValue(aggr, lang) {
@@ -81,6 +81,9 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
         break;
       case 'sv':
         vernacular = aggr['unit.linkings.taxon.nameSwedish'] || '';
+        break;
+      default:
+        vernacular = '';
     }
 
     if (vernacular) {
@@ -96,7 +99,7 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
     return {
       local: '/taxon/' + IdService.getId(aggr['unit.linkings.taxon.id']),
       content: '<i class="glyphicon glyphicon-modal-window"></i>'
-    }
+    };
   }
 
   pickLocation(e) {
@@ -136,7 +139,7 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
 
   makeRequest(type: string) {
     this.queryCache = JSON.stringify(this.searchQuery.query);
-    if (this.requests[type] == this.queryCache) {
+    if (this.requests[type] === this.queryCache) {
       return;
     }
     this.requests[type] = this.queryCache;
@@ -154,6 +157,6 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
         this.requests[type] = 'error';
         console.log(err);
       }
-    )
+    );
   }
 }

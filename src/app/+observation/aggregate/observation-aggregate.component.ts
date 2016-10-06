@@ -19,7 +19,7 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
   @Input() queryOverride: any;
   @Input() valuePicker: any;
   @Input() showPager: boolean = false;
-  @Input() linkPicker: (any)=>{
+  @Input() linkPicker: (item: any) => {
     local: string,
     content: string
   };
@@ -50,7 +50,7 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(query => {
       this.page = 1;
-      this.updateList()
+      this.updateList();
     });
     this.translate.onLangChange.subscribe(
       () => {

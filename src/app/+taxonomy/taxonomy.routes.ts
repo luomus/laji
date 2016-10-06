@@ -3,7 +3,7 @@ import { TaxonComponent } from './taxon.component';
 import { InfoCardComponent } from './info-card/info-card.component';
 import { ModuleWithProviders } from '@angular/core';
 
-export const TaxonomyRoutes: Routes = [
+export const taxonomyRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
@@ -35,4 +35,4 @@ export const TaxonomyRoutes: Routes = [
     component: InfoCardComponent
   },
 ];
-export const routing: ModuleWithProviders = RouterModule.forChild(TaxonomyRoutes);
+export const routing: ModuleWithProviders = RouterModule.forChild(taxonomyRoutes);

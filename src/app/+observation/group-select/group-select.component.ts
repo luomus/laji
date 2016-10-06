@@ -76,7 +76,7 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
     let children$ = this.informalTaxonService.informalTaxonGroupGetChildren(this.value, this.lang);
     (this.value ? children$ : roots$)
       .switchMap(data => {
-        return (!data.results || data.results.length == 0) ?
+        return (!data.results || data.results.length === 0) ?
           this.informalTaxonService.informalTaxonGroupGetWithSiblings(this.value, this.lang) :
           Observable.of(data);
       })
@@ -84,7 +84,7 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
       .subscribe(
         groups => this.groups = groups,
         err => console.log(err)
-      )
+      );
   }
 
   onClick(group: InformalTaxonGroup) {

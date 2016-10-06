@@ -46,9 +46,9 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
         return;
       }
       let type = typeof query[i];
-      if (type !== "undefined") {
+      if (type !== 'undefined') {
         if (type === 'boolean' || query[i].length > 0) {
-          this.active.push({field: i, value: query[i]})
+          this.active.push({field: i, value: query[i]});
         }
       }
     });

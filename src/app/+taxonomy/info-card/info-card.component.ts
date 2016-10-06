@@ -18,10 +18,10 @@ export class InfoCardComponent {
   public activePanel: number = 0;
   public activeImage: number = 1;
 
+  @Input() public taxonId: string;
+
   private subParam: Subscription;
   private subTrans: Subscription;
-
-  @Input() public taxonId: string;
 
   constructor(private taxonService: TaxonomyApi,
               private translate: TranslateService,

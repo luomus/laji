@@ -6,9 +6,9 @@ import 'rxjs/Rx';
 
 @Injectable()
 export class NewsApi {
-  private lastResult: PagedResult<News>;
-  protected basePath = '/api';
   public defaultHeaders: Headers = new Headers();
+  protected basePath = '/api';
+  private lastResult: PagedResult<News>;
 
   constructor(protected http: Http, @Optional() basePath: string) {
     if (basePath) {
@@ -23,7 +23,7 @@ export class NewsApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findAll(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<News>> {
+  public findAll(lang?: string, page?: string, pageSize?: string): Observable<PagedResult<News>> {
     const path = this.basePath + '/news';
 
     let queryParameters = new URLSearchParams();
@@ -61,8 +61,9 @@ export class NewsApi {
    * return news with the given id
    *
    * @param id id of the taxon
+   * @oaram extraHttpRequestParams extra header params
    */
-  public findById(id: string, extraHttpRequestParams?: any): Observable<News> {
+  public findById(id: string): Observable<News> {
     const path = this.basePath + '/news/{id}'
         .replace('{' + 'id' + '}', String(id));
 
@@ -76,7 +77,7 @@ export class NewsApi {
     // TODO: this can be removed when finding with id is working again and move from the bootstrap to components
     if (this.lastResult) {
       let item = this.lastResult.results.filter((item) => {
-        return item.id === id
+        return item.id === id;
       });
       if (item.length > 0) {
         return Observable.create(observer => {
@@ -106,7 +107,7 @@ export class NewsApi {
    * return tags used in news
    *
    */
-  public getTags(extraHttpRequestParams?: any): Observable<Array<string>> {
+  public getTags(): Observable<Array<string>> {
     const path = this.basePath + '/news/tags';
 
     let queryParameters = new URLSearchParams();

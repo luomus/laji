@@ -32,17 +32,17 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   options = [];
   active = [];
 
-  onChange = (_: any) => {
-  };
-  onTouched = () => {
-  };
-
   private subOptions: Subscription;
   private innerValue: string = '';
 
   constructor(public warehouseMapper: WarehouseValueMappingService,
               private metadataService: MetadataApi) {
   }
+
+  onChange = (_: any) => {
+  };
+  onTouched = () => {
+  };
 
   get value(): any {
     return this.innerValue;
@@ -84,7 +84,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
         if (this.mapToWarehouse) {
           let requests = [];
           options.map(item => {
-            requests.push(this.warehouseMapper.getWarehouseKey(item.id))
+            requests.push(this.warehouseMapper.getWarehouseKey(item.id));
           });
           return Observable
             .forkJoin(requests)
@@ -99,22 +99,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
           this.initActive();
         },
         err => console.log(err)
-      )
-  }
-
-  private pickValue(data) {
-    if (!this.pick) {
-      return data.map(value => ({id: value.id, text: value.value}));
-    }
-    let result = [];
-    data.map(item => {
-      if (typeof this.pick[item.id] !== 'undefined') {
-        if (this.pick[item.id] === '') {
-          result.push({id: item.id, text: item.value})
-        }
-      }
-    });
-    return result;
+      );
   }
 
   initActive(): any {
@@ -138,7 +123,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
       try {
         this.value = value.map(item => item.id);
       } catch (e) {
-        this.value = ''
+        this.value = '';
       }
     }
   }
@@ -146,7 +131,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   writeValue(value: any): void {
     if (value !== this.innerValue) {
       this.innerValue = value;
-      this.initActive()
+      this.initActive();
     }
   }
 
@@ -156,5 +141,20 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
 
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
+  }
+
+  private pickValue(data) {
+    if (!this.pick) {
+      return data.map(value => ({id: value.id, text: value.value}));
+    }
+    let result = [];
+    data.map(item => {
+      if (typeof this.pick[item.id] !== 'undefined') {
+        if (this.pick[item.id] === '') {
+          result.push({id: item.id, text: item.value});
+        }
+      }
+    });
+    return result;
   }
 }

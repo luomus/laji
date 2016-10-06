@@ -163,7 +163,7 @@
   "observation.active.hasMedia": "bild",
 
   "haseka.title": "Observationstjänst",
-  "haseka.intro": "<p>Havaintopalvelu tarjoaa suoraviivaisen kanavan julkaista eliölajihavaintoja laji.fi-sivuston kautta. Rekisteröityneelle käyttäjälle palvelu tarjoaa tietokannan omien havaintotietojensa tallentamiseen ja hallintaan sekä väylän niiden jakamiseen. Käyttäjät voivat perustaa tietokantaan projekteja, joihin kutsutut osallistujat tallentavat haluttua lajitietoa. Perustetun projektin keräämiä tietoja hallinnoi sen omistaja ja tiedon jakaminen laji.fi-sivuston kautta on helppoa. Palvelun mukautuva lomakkeisto antaa käyttäjälle mahdollisuuden valita itselleen sopivan tavan tallentaa, hallita ja jakaa havaintojaan muiden käyttöön.</p>",
+  "haseka.intro": "<p>Observationstjänst erbjuder en enkel kanal för att publicera artobservationer via sidan Laji.fi. För registrerade användaren tjänsten erbjuder en databas för att spara och administrera egna observationer och kanalen för att dela ut dem. Användarna kan grunda projekter som samlar önskad artinformation med hjälp av projektens deltagarna. Projektens ägare administerar data samlats via projekten och det är lätt att dela ut data via Laji.fi. Tjänstens anpasslig formulär ger användaren möjligheten att välja bästa sättet att spara, administera och dela ut observationer.</p>",
   "haseka.forms.title": "Formulär",
   "haseka.form.success": "Observationerna sparat!",
   "haseka.form.failure": "Sparning misslyckades!",

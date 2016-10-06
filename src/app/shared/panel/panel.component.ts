@@ -13,6 +13,6 @@ export class PanelComponent {
   activateCurrent() {
     this.activate.emit({
       value: this.index
-    })
+    });
   }
 }

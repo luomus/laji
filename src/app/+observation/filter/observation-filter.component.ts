@@ -46,7 +46,7 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
   init() {
     this.page = 1;
     this.total = 0;
-    this.update()
+    this.update();
   }
 
   update() {
@@ -74,7 +74,7 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
         let filtersData = (data.results || [])
           .filter((result) => {
             if (this.filter.pick) {
-              return this.filter.pick.indexOf(result.aggregateBy[this.filter['field']]) > -1
+              return this.filter.pick.indexOf(result.aggregateBy[this.filter['field']]) > -1;
             }
             return true;
           })
@@ -95,7 +95,7 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
         if (this.filter.map) {
           this.filter.map(filtersData).subscribe(
             res => this.filter.data = res
-          )
+          );
         } else {
           this.filter.data = filtersData;
         }
@@ -121,13 +121,14 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
           if (idx > -1) {
             query[filter].splice(idx, 1);
           }
-          if (query[filter].length == 0) {
+          if (query[filter].length === 0) {
             query[filter] = undefined;
           }
           break;
         case 'boolean':
           query[filter] = undefined;
           break;
+        default:
       }
     } else {
       switch (this.filter.type) {
@@ -135,13 +136,14 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
           if (!query[filter]) {
             query[filter] = [];
           }
-          if (query[filter].indexOf(value) == -1) {
+          if (query[filter].indexOf(value) === -1) {
             query[filter].push(value);
           }
           break;
         case 'boolean':
           query[filter] = value;
           break;
+        default:
       }
     }
     console.log(this.searchQuery.query);
@@ -161,6 +163,16 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
     return filter === value;
   }
 
+
+  showPager(): boolean {
+    return this.filter.pager && (this.total > this.filter.size);
+  }
+
+  pageChanged(page) {
+    this.page = page.page;
+    this.update();
+  }
+
   private getQueryValue(item: FilterItem) {
     let value = item.value;
     if (this.filter['booleanMap']) {
@@ -172,18 +184,9 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
     }
     return value;
   }
-
-  showPager(): boolean {
-    return this.filter.pager && (this.total > this.filter.size)
-  }
-
-  pageChanged(page) {
-    this.page = page.page;
-    this.update();
-  }
 }
 
 export interface FilterItem {
-  value: string|number|boolean,
-  count: number,
+  value: string|number|boolean;
+  count: number;
 }

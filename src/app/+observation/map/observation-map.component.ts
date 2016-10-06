@@ -20,8 +20,10 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() opacity: number = .5;
   @Input() lat: string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid01.lat'];
   @Input() lon: string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
-  @Input() zoomThresholds: number[] = [5]; // zoom levels from lowest to highest when to move to more accurate grid
-  @Input() onlyViewPortThreshold: number = 1; // when active level is higher or equal to this will be using viewport coordinates to show grid
+  // zoom levels from lowest to highest when to move to more accurate grid
+  @Input() zoomThresholds: number[] = [5];
+  // when active level is higher or equal to this will be using viewport coordinates to show grid
+  @Input() onlyViewPortThreshold: number = 1;
   @Input() size: number = 5000;
   @Input() lastPage: number = 7; // 0 = no page limit
   @Input() draw: boolean = false;
@@ -41,18 +43,36 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   ];
 
   public mapData;
-  public drawData: any = {featureCollection: {type: "featureCollection", features: []}};
+  public drawData: any = {featureCollection: {type: 'featureCollection', features: []}};
   public tack = 0;
   public loading = false;
   private prev: string = '';
   private subDataFetch: Subscription;
-  private style: (count: number)=>string;
+  private style: (count: number) => string;
   private lastQuery: WarehouseQueryInterface;
   private viewBound: LatLngBounds;
   private activeLevel = 0;
   private activeBounds: LatLngBounds;
   private reset = true;
   private showingItems = false;
+
+
+  private static getValue(row: any, propertyName: string): string {
+    let val = '';
+    let first = propertyName.split(',')[0];
+    try {
+      val = first.split('.').reduce((prev: any, curr: any) => prev[curr], row);
+    } catch (e) {
+    }
+    return val;
+  }
+
+  private static getFeature(geometry: Object) {
+    return {
+      type: 'Feature',
+      geometry: geometry
+    };
+  }
 
   constructor(private warehouseService: WarehouseApi,
               public translate: TranslateService,
@@ -107,7 +127,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
         let end = '+', newStart;
         if (this.colorThresholds[idx]) {
           newStart = this.colorThresholds[idx];
-          end = '-' + newStart
+          end = '-' + newStart;
         }
         legends.push({
           color: color,
@@ -121,9 +141,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
   private initColorScale() {
     if (typeof this.color === 'string') {
-      this.style = _ => {
-        return String(this.color);
-      }
+      this.style = () => String(this.color);
     } else {
       let i, len = this.colorThresholds.length, memory = {};
       this.style = (count) => {
@@ -153,7 +171,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
         opacity: 1,
         fillOpacity: 0,
         color: this.selectColor
-      }
+      };
     };
     if (!this.query.coordinates) {
       return;
@@ -162,9 +180,9 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     this.query.coordinates.map(coord => {
       let parts = coord.split(':');
       let system = parts.pop();
-      if (system === 'WGS84' && parts.length == 4) {
-        features.push(this.getFeature({
-          type: "Polygon",
+      if (system === 'WGS84' && parts.length === 4) {
+        features.push(ObservationMapComponent.getFeature({
+          type: 'Polygon',
           coordinates: [[
             [parts[2], parts[0]], [parts[2], parts[1]],
             [parts[3], parts[1]], [parts[3], parts[0]],
@@ -174,14 +192,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       }
     });
     if (features.length) {
-      this.drawData.featureCollection.features = features
-    }
-  }
-
-  private getFeature(geometry: Object) {
-    return {
-      type: "Feature",
-      geometry: geometry
+      this.drawData.featureCollection.features = features;
     }
   }
 
@@ -226,8 +237,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       if (data.results) {
         data.results.map(row => {
           let coordinates = [
-            this.getValue(row, 'gathering.conversions.wgs84CenterPoint.lon'),
-            this.getValue(row, 'gathering.conversions.wgs84CenterPoint.lat')
+            ObservationMapComponent.getValue(row, 'gathering.conversions.wgs84CenterPoint.lon'),
+            ObservationMapComponent.getValue(row, 'gathering.conversions.wgs84CenterPoint.lat')
           ];
           if (!coordinates[0] || !coordinates[0]) {
             return;
@@ -235,27 +246,27 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           let properties = {title: 1};
           this.itemFields.map(field => {
             let name = field.split('.').pop();
-            properties[name] = this.getValue(row, field);
+            properties[name] = ObservationMapComponent.getValue(row, field);
           });
           features.push({
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": coordinates
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Point',
+              'coordinates': coordinates
             },
-            "properties": properties
+            'properties': properties
           });
-        })
+        });
       }
       return {
         featureCollection: {
-          "type": "FeatureCollection",
-          "features": features
+          'type': 'FeatureCollection',
+          'features': features
         }
       };
     }).do(() => {
       if (this.activeLevel < this.onlyViewPortThreshold) {
-        this.showingItems = true
+        this.showingItems = true;
       }
     });
 
@@ -283,7 +294,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           if (this.tack > 1000) {
             this.tack = 0;
           }
-          if (data.lastPage > page && (this.lastPage == 0 || page <= this.lastPage)) {
+          if (data.lastPage > page && (this.lastPage === 0 || page <= this.lastPage)) {
             page++;
             this.addToMap(query, page);
           } else {
@@ -291,16 +302,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           }
         }
       );
-  }
-
-  getValue(row: any, propertyName: string): string {
-    let val = '';
-    let first = propertyName.split(',')[0];
-    try {
-      val = first.split('.').reduce((prev: any, curr: any) => prev[curr], row);
-    } catch (e) {
-    }
-    return val;
   }
 
   private getCacheKey(query: WarehouseQueryInterface) {
@@ -312,7 +313,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   private getStyle(data: StyleParam) {
-    let currentColor = "#00aa00";
+    let currentColor = '#00aa00';
     let feature = this.mapData[data.dataIdx].featureCollection.features[data.featureIdx];
     if (feature.properties.title) {
       currentColor = this.style(+feature.properties.title);
@@ -322,7 +323,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       opacity: 1,
       fillOpacity: this.opacity,
       color: currentColor
-    }
+    };
   }
 
 
@@ -340,7 +341,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       if (description) {
         cb(description);
       } else if (cnt) {
-        this.translate.get("result.allObservation")
+        this.translate.get('result.allObservation')
           .subscribe(translation => cb(`${cnt} ${translation}`));
       }
     } catch (e) {
@@ -350,5 +351,5 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
 interface StyleParam {
   dataIdx: number;
-  featureIdx: number
+  featureIdx: number;
 }

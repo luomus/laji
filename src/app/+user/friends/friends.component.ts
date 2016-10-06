@@ -25,11 +25,11 @@ export class FriendsComponent implements OnInit {
   }
 
   isLoggedIn() {
-    return !!this.usersProfile.id
+    return !!this.usersProfile.id;
   }
 
   isCurrentUser() {
-    return this.profile.userID === this.usersProfile.userID
+    return this.profile.userID === this.usersProfile.userID;
   }
 
   alreadyFriends() {
@@ -43,7 +43,7 @@ export class FriendsComponent implements OnInit {
     ).subscribe(
       _ => this.requestSend = true,
       err => this.requestSend = true
-    )
+    );
   }
 
   removeFriend(userId, block = false) {
@@ -51,7 +51,7 @@ export class FriendsComponent implements OnInit {
       .subscribe(
         profile => this.usersProfile = profile,
         err => console.log(err)
-      )
+      );
   }
 
   removeBlock(userId) {
@@ -60,7 +60,7 @@ export class FriendsComponent implements OnInit {
       .subscribe(
         profile => this.usersProfile = profile,
         err => console.log(err)
-      )
+      );
   }
 
   acceptFriendRequest(userId: string) {
@@ -68,6 +68,6 @@ export class FriendsComponent implements OnInit {
       .subscribe(
         profile => this.usersProfile = profile,
         err => console.log(err)
-      )
+      );
   }
 }

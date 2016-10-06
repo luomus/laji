@@ -4,7 +4,7 @@ import { HasekaComponent } from './haseka.component';
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { HaSeKaFormComponent } from './form/haseka-form.component';
 
-export const HasekaRoutes: Routes = [
+export const hasekaRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
@@ -27,4 +27,4 @@ export const HasekaRoutes: Routes = [
   }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(HasekaRoutes);
+export const routing: ModuleWithProviders = RouterModule.forChild(hasekaRoutes);

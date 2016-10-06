@@ -64,7 +64,7 @@ export class FormApiClient {
     return this.http.request(path, requestOptions)
       .map((response: Response) => {
         if (response.status === 204 || response.status >= 400) {
-          throw new Error("Request failed");
+          throw new Error('Request failed');
         } else {
           return response.json();
         }
