@@ -28,16 +28,11 @@ export class TaxonComponent implements OnInit, OnDestroy {
   private id: Observable<string>;
 
   constructor(private route: ActivatedRoute,
-              private router: Router,
-              private taxonService: TaxonomyApi,
               private translate: TranslateService,
-              private informalTaxonService: InformalTaxonGroupApi,
-              private location: Location) {
+              private informalTaxonService: InformalTaxonGroupApi) {
   }
 
   ngOnInit() {
-    // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed
-    this.translate.use(SharedModule.currentLang);
     this.subTrans = this.translate.onLangChange
       .subscribe(() => {
         this.refreshInformalGroups();

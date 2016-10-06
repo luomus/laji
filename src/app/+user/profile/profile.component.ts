@@ -4,19 +4,17 @@ import { PersonApi } from '../../shared/api/PersonApi';
 import { Profile } from '../../shared/model/Profile';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
-import { SharedModule } from '../../shared/shared.module';
-import { TranslateService } from 'ng2-translate';
 
 @Component({
   selector: 'laji-user',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit,OnDestroy {
+export class ProfileComponent implements OnInit, OnDestroy {
 
   profile: Profile = {
-    image: "",
-    profileDescription: "",
+    image: '',
+    profileDescription: '',
     friendRequests: [],
     friends: [],
     blocked: []
@@ -34,15 +32,12 @@ export class ProfileComponent implements OnInit,OnDestroy {
 
   constructor(private userService: UserService,
               private personService: PersonApi,
-              private route: ActivatedRoute,
-              private translate: TranslateService) {
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed
-    this.translate.use(SharedModule.currentLang);
     this.subProfile = this.route.params
-      .do((_)=> this.loading = true)
+      .do((_) => this.loading = true)
       .map(params => params['userId'])
       .combineLatest(this.userService.getUser(), (id, user) => ({id: id, currentUser: user}))
       .flatMap((data) => {
@@ -52,7 +47,7 @@ export class ProfileComponent implements OnInit,OnDestroy {
           return Observable.forkJoin(
             data.currentUser.id ? this.personService.personFindProfileByToken(this.userService.getToken()).catch((e) => false$) : empty$,
             currentActive ? false$ : this.personService.personFindProfileByUserId(data.id).catch((e) => empty$)
-          )
+          );
         },
         (data, profiles) => ({
           id: data.id,
@@ -71,7 +66,7 @@ export class ProfileComponent implements OnInit,OnDestroy {
           this.loading = false;
         },
         err => console.log(err)
-      )
+      );
   }
 
   ngOnDestroy() {
@@ -95,7 +90,7 @@ export class ProfileComponent implements OnInit,OnDestroy {
           this.editing = false;
         },
         err => console.log(err)
-      )
+      );
   }
 
   private getProfile(): Profile {

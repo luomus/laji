@@ -17,8 +17,5 @@ export class HomeComponent {
   constructor(public translate: TranslateService) {
   }
 
-  ngOnInit() {
-    // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed
-    this.translate.use(SharedModule.currentLang);
-  }
+  ngOnInit() { }
 }

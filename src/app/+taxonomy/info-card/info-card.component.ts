@@ -15,13 +15,11 @@ export class InfoCardComponent {
   public taxon: Taxonomy;
   public taxonDescription: TaxonomyDescription;
   public taxonImages: Array<TaxonomyImage>;
-  private subParam: Subscription;
-  private subTrans: Subscription;
-
-  private mapUrl = 'http://ws.luomus.fi/Balticdiversity/aggregated-map?mapPosition=markerBoundsNorthEastFixed&target=Parus%20major&locale=en';
-
   public activePanel: number = 0;
   public activeImage: number = 1;
+
+  private subParam: Subscription;
+  private subTrans: Subscription;
 
   @Input() public taxonId: string;
 
@@ -31,8 +29,6 @@ export class InfoCardComponent {
   }
 
   ngOnInit() {
-    // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed
-    this.translate.use(SharedModule.currentLang);
     if (!this.taxonId) {
       this.subParam = this.route.params.subscribe(params => {
         this.taxonId = params['id'];
@@ -50,7 +46,7 @@ export class InfoCardComponent {
         this.getTaxonDescription(this.taxonId);
         this.getTaxonMedia(this.taxonId);
       }
-    )
+    );
   }
 
   setActive(event) {
@@ -62,6 +58,12 @@ export class InfoCardComponent {
       this.subParam.unsubscribe();
     }
     this.subTrans.unsubscribe();
+  }
+
+  setClasses() {
+    return {
+      'col-md-4': this.taxonDescription == null,
+    };
   }
 
   private getTaxon(id) {
@@ -79,7 +81,7 @@ export class InfoCardComponent {
       .subscribe(
         descriptions => this.taxonDescription = descriptions[0],
         err => console.error(err)
-      )
+      );
 
   }
 
@@ -88,12 +90,6 @@ export class InfoCardComponent {
       .subscribe(
         media => this.taxonImages = media,
         err => console.error(err)
-      )
-  }
-
-  setClasses() {
-    return {
-      'col-md-4': this.taxonDescription == null,
-    }
+      );
   }
 }

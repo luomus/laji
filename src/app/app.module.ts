@@ -15,6 +15,8 @@ import { FooterService } from './shared/service/footer.service';
 import { LocalStorageService } from 'angular2-localstorage/dist';
 import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
+import { TranslateModule } from 'ng2-translate';
+import { CoreModule } from './shared/core.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { BrowserModule } from '@angular/platform-browser';
   imports: [
     BrowserModule,
     SharedModule,
+    TranslateModule.forRoot(),
+    CoreModule.forRoot(),
     routing
   ],
   providers: [

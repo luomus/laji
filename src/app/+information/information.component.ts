@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { InformationApi, Information } from '../shared';
-import { SharedModule } from '../shared/shared.module';
 
 @Component({
   selector: 'laji-information',
@@ -20,8 +19,6 @@ export class InformationComponent implements OnDestroy {
   constructor(private route: ActivatedRoute,
               private informationService: InformationApi,
               private translate: TranslateService) {
-    // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed
-    this.translate.use(SharedModule.currentLang);
     this.paramSub = this.route.params.subscribe(params => {
       this.getInformation(params['id'] || null);
     });

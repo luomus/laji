@@ -27,16 +27,13 @@ import { OmniSearchComponent } from './omni-search/omni-search.component';
     ObservationCountComponent, ObservationMapComponent, MapComponent,
     PanelComponent, OmniSearchComponent
   ],
-  providers: [
-    UserService
-  ],
   imports: [
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
     HttpModule,
     RouterModule,
-    TranslateModule.forRoot(),
+    TranslateModule,
     TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule
   ],
   exports: [
@@ -49,12 +46,10 @@ import { OmniSearchComponent } from './omni-search/omni-search.component';
 })
 export class SharedModule {
   @LocalStorage() public static defaultLang;
-  public static currentLang = 'fi';
 
   constructor(translate: TranslateService) {
-    let userLang = SharedModule.defaultLang || translate.getBrowserLang();
+    let userLang = SharedModule.defaultLang || 'fi';
     translate.setDefaultLang('fi');
     translate.use(userLang);
-    SharedModule.currentLang = translate.currentLang;
   }
 }

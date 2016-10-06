@@ -5,7 +5,7 @@ import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
 import { LocalStorage } from 'angular2-localstorage/dist';
 
-var config = require('../../../../config.json');
+const config = require('../../../../config.json');
 
 @Injectable()
 export class UserService {
@@ -35,18 +35,6 @@ export class UserService {
     this.loadUserInfo(userToken);
   }
 
-  private loadUserInfo(token: string) {
-    this.token = token;
-    this.getUser()
-      .subscribe(
-        user => this.user = user,
-        err => {
-          this.logout();
-          console.log(err);
-        }
-      );
-  }
-
   public logout() {
     if (this.token === '' || this.subLogout) {
       return;
@@ -59,7 +47,7 @@ export class UserService {
         () => {
         },
         err => console.log(err)
-      )
+      );
   }
 
   public getToken(): string {
@@ -74,7 +62,7 @@ export class UserService {
       return Observable.of(this.users[id]);
     } else if (!this.usersFetch[id]) {
       this.usersFetch[id] = Observable.create((observer: Observer<Person>) => {
-        var onComplete = (user: Person) => {
+        const onComplete = (user: Person) => {
           this.users[id] = user;
           observer.next(user);
           observer.complete();
@@ -92,21 +80,6 @@ export class UserService {
     return this.usersFetch[id];
   }
 
-  private getCurrentUser() {
-    if (this.user) {
-      return Observable.of(this.user);
-    } else if (this.observable) {
-      return this.observable;
-    }
-    if (!this.token) {
-      return Observable.of({});
-    }
-    this.observable = this.userService.personFindByToken(this.token)
-      .do(u => this.users[u.id] = u)
-      .share();
-    return this.observable;
-  }
-
   public isLoggedIn() {
     return this.token !== '';
   }
@@ -121,15 +94,39 @@ export class UserService {
     } else if (this.formDefaultObservable) {
       return this.formDefaultObservable;
     }
-    this.formDefaultObservable = this.getUser().map(data => {
-      return {
+    this.formDefaultObservable = this.getUser().map(data => ({
         'editors': [data.id],
         'gatheringEvent': {
           'leg': [data.id]
         }
-      }
-    }).share();
+      })).share();
     return this.formDefaultObservable;
   }
 
+  private loadUserInfo(token: string) {
+    this.token = token;
+    this.getUser()
+      .subscribe(
+        user => this.user = user,
+        err => {
+          this.logout();
+          console.log(err);
+        }
+      );
+  }
+
+  private getCurrentUser() {
+    if (this.user) {
+      return Observable.of(this.user);
+    } else if (this.observable) {
+      return this.observable;
+    }
+    if (!this.token) {
+      return Observable.of({});
+    }
+    this.observable = this.userService.personFindByToken(this.token)
+      .do(u => this.users[u.id] = u)
+      .share();
+    return this.observable;
+  }
 }

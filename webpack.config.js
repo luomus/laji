@@ -68,36 +68,20 @@ module.exports = function makeWebpackConfig() {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file?name=fonts/[name].[hash].[ext]?'
       },
-      {test: /\.json$/, loader: 'json'},
-
-      // Support for CSS as raw text
-      // use 'null' loader in test mode (https://github.com/webpack/null-loader)
-      // all css in src/style will be bundled in an external css file
       {
-        test: /\.css$/,
-        exclude: root('src', 'app'),
-        loader: isTest ? 'null' : ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: ['css', 'postcss']})
+        test: /\.json$/,
+        loader: 'json'
       },
       // all css required in src/app files will be merged in js files
       {
         test: /\.css$/,
         include: root('src', 'app'),
-        loader: 'raw!postcss'
-      },
-      {
-        test: /\.scss$/,
-        exclude: root('src', 'app'),
-        loader: isTest ? 'null' : ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: ['css', 'postcss', 'sass']})
-      },
-      {
-        test: /\.scss$/,
-        exclude: root('src', 'style'),
-        loader: 'raw!postcss!sass'
+        loader: 'to-string!css-loader!postcss-loader'
       },
       {
         test: /\.html$/,
         loader: 'raw',
-        exclude: root('src', 'public')
+        exclude: root('src', 'index.html')
       }
     ]
   };
@@ -142,8 +126,8 @@ module.exports = function makeWebpackConfig() {
           //includePaths: [path.resolve(__dirname, "node_modules/foundation-sites/scss")]
         },
         postcss: [
-          autoprefixer({
-            browsers: ['last 2 version']
+          require('postcss-cssnext')({
+            browsers: ['ie >= 9', 'last 2 versions']
           })
         ]
       }
@@ -185,7 +169,7 @@ module.exports = function makeWebpackConfig() {
     config.plugins.push(
       new webpack.NoErrorsPlugin(),
 
-      new webpack.optimize.UglifyJsPlugin({sourceMap: true, mangle: { keep_fnames: true }})
+      new webpack.optimize.UglifyJsPlugin({sourceMap: false, mangle: { keep_fnames: true }})
     );
   }
 

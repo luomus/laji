@@ -5,8 +5,6 @@ import { Location } from '@angular/common';
 import { URLSearchParams } from '@angular/http';
 import { SearchQuery } from './search-query.model';
 import { FooterService } from '../shared/service/footer.service';
-import { SharedModule } from '../shared/shared.module';
-import { TranslateService } from 'ng2-translate';
 declare let d3: any;
 
 @Component({
@@ -26,13 +24,10 @@ export class ObservationComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               public searchQuery: SearchQuery,
               private location: Location,
-              private translate: TranslateService,
               private footerService: FooterService) {
   }
 
   ngOnInit() {
-    // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed
-    this.translate.use(SharedModule.currentLang);
     this.footerService.footerVisible = false;
     this.subParam = this.route.params.subscribe(params => {
       this.tab = params['tab'] || 'map';

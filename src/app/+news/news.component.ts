@@ -2,8 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { News, NewsApi } from '../shared';
-import { TranslateService } from 'ng2-translate';
-import { SharedModule } from '../shared/shared.module';
 
 @Component({
   selector: 'laij-news',
@@ -17,13 +15,10 @@ export class NewsComponent implements OnInit, OnDestroy {
   private subTrans: Subscription;
 
   constructor(private route: ActivatedRoute,
-              private newsService: NewsApi,
-              private translate: TranslateService) {
+              private newsService: NewsApi) {
   }
 
   ngOnInit() {
-    // TODO remove when https://github.com/ocombe/ng2-translate/issues/232 is fixed
-    this.translate.use(SharedModule.currentLang);
     this.subTrans = this.route.params.subscribe(params => {
       this.newsService.findById(params['id']).subscribe(
         newsItem => this.newsItem = newsItem,
