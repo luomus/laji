@@ -8,7 +8,7 @@
   "navigation.information": "Allmänt och aktuellt",
   "navigation.collection": "Informationskällör",
   "navigation.haseka": "Rapportera observationer",
-  "navigation.notify": "Rapoortera observationer",
+  "navigation.notify": "Rapportera observationer",
   "navigation.user": "Användarinställning",
   "navigation.user.login": "Login",
   "navigation.user.logout": "Logout",
@@ -101,7 +101,7 @@
   "observation.count": "Antal av observationer",
   "result.allObservation": "observationer",
   
-  "force.login": "Du måste logga in för att använda den här uppdelningen",
+  "force.login": "Du måste logga in för att använda den här uppdelningen.",
   
   
   "observation.intro": "<p>Suomen Lajitietokeskuksen Havainnot-palvelun avulla voit hakea monipuolisten hakutoimintojen avulla käyttöösi tietoja maassamme tehdyistä lajihavainnoista.</p><p>Havaintoja kertyy niin yksittäisiltä harrastajilta, kansalaistiedehankkeiden kautta kuin tieteellisen työn tuloksena. Haettavat aineistot sisältävät myös tieteellisten kokoelma-aineistojen näytteiden havaintotiedot ja seurannoissa tehdyt havainnot.</p>",
