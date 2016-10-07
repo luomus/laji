@@ -82,7 +82,7 @@
   "result.scientificName": "Tieteellinen nimi",
   "result.gathering.conversions.wgs84CenterPoint": "Paikka",
   "result.gathering.municipality": "Paikka",
-  "result.load.introPublic": "Voit ladata julkisen aineiston itsellesi painamalla \"lataa aineisto\"-nappia. Aineisto toimitetaan hetken päästä sähköpostiisi.",
+  "result.load.introPublic": "Voit ladata julkisen aineiston itsellesi painamalla \"lataa aineisto\"-nappia. Saat hetken päästä sähköpostiisi linkin aineiston lataussivulle.",
   "result.load.introPrivate": "Voit halutessasi tehdä pyynnön salattuun materiaaliin. Tällöin pyyntösi käsitellään yksilöllisesti ja saat lisäohjeita sähköpostitse.",
   "result.load.thanksPublic": "Kiitos, saat linkin aineistoon sähköpostitse.",
   "result.load.thanksRequest": "Kiitos, saat ohjeita sähköpostitse.",
