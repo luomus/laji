@@ -153,11 +153,13 @@
   "omniSearch.matches": "Information about species",
   "omniSearch.rank": "taxonomic rank",
   "omniSearch.groups": "species group",
+  "omniSearch.allObservation": "observations",
   "friend.ask": "Ask for a friend",
   "friend.friends": "Friends",
   "friend.requests": "Friend request",
   "friend.requestSent": "Friend request sent",
   "profile.friends": "Friends",
   "profile.friendsInfo": "You can ask your friends to send you a link to their profile pages. When you have received the link you can ask them to be your friends and when they have accepted your request, you'll see here a link to their profile.",
-  "profile.accountSettings": "My account"
+  "profile.accountSettings": "My account",
+  "profile.missing": "User dosn't have a public profile"
 }

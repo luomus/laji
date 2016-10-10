@@ -162,11 +162,13 @@
   "omniSearch.matches": "Tietoa lajista",
   "omniSearch.rank": "taksonominen taso",
   "omniSearch.groups": "lajiryhmä",
+  "omniSearch.allObservation": "havaintoa",
   "friend.ask": "Pyydä ystäväksi",
   "friend.friends": "Ystävät",
   "friend.requests": "Ystäväpyynnöt",
   "friend.requestSent": "Ystäväpyyntö lähetetty",
   "profile.friends": "Ystävät",
   "profile.friendsInfo": "Voit pyytää ystäviäsi lähettämään sinulle linkin omalle profiilisivulleen. Linkin saatuasi voit pyytää heitä ystäväksesi ja kun he ovat hyväksyneet pyyntösi, näet täällä linkin heidän profiiliinsa.",
-  "profile.accountSettings": "Käyttäjätilini"
+  "profile.accountSettings": "Käyttäjätilini",
+  "profile.missing": "Käyttäjällä ei ole vielä julkista laji.fi profiilia"
 }
