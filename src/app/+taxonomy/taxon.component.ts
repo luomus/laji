@@ -87,12 +87,12 @@ export class TaxonComponent implements OnInit, OnDestroy {
     this.taxonSubscription = this.taxonService
       .taxonomyFindChildren(id, this.translate.currentLang)
       .subscribe((data) => {
-        this.selected = data;        
+        this.selected = data;
       });
   }
 
   onTaxonOut() {
-    if(this.taxonSubscription){
+    if (this.taxonSubscription) {
       this.taxonSubscription.unsubscribe();
     }
     this.selected = [];

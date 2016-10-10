@@ -14,6 +14,9 @@ const taxonTreeUri = '/api/taxonomy/%taxonId%?maxLevel=1&selectedFields=id%2Csci
 })
 export class TreeOfLifeComponent {
 
+  @Output() onTaxonHover = new EventEmitter<string>();
+  @Output() onTaxonOut = new EventEmitter();
+
   private host;
   private width;
   private height;
@@ -27,9 +30,6 @@ export class TreeOfLifeComponent {
 
   private plop;
   private taxonId: string;
-
-  @Output() onTaxonHover = new EventEmitter<string>();
-  @Output() onTaxonOut = new EventEmitter();
 
   constructor(private element: ElementRef,
               private route: ActivatedRoute,
@@ -46,8 +46,8 @@ export class TreeOfLifeComponent {
   }
 
   ngOnInit() {
-    this.route.params.filter((route) => route['type'] == 'taxonomy').subscribe((route) => {
-      if (route['id'] == this.taxonId) {
+    this.route.params.filter((route) => route['type'] === 'taxonomy').subscribe((route) => {
+      if (route['id'] === this.taxonId) {
       } else {
         this.taxonId = route['id'];
         this.setup(this.taxonId, this.htmlElement.offsetWidth);
@@ -64,7 +64,7 @@ export class TreeOfLifeComponent {
 
     this.onTaxonOut.emit();
 
-    var tree = d3.layout.tree()
+    const tree = d3.layout.tree()
       .size([360, diameter / 2 - 120])
       .separation(function (a, b) {
         return (a.parent === b.parent ? 1 : 2) / a.depth;
@@ -110,18 +110,18 @@ export class TreeOfLifeComponent {
         .attr('href', (d) => {
           return `/taxon/browse/taxonomy/${d.id}`;
         })
-        .on("click", (d) => {
-          if(d.id == taxonId){
+        .on('click', (d) => {
+          if (d.id === taxonId) {
             this.location.back();
           } else {
             this.router.navigate(['taxon', 'browse', 'taxonomy', d.id]);
           }
           d3.event.preventDefault();
         })
-        .on("mouseover", (d) => this.onTaxonHover.emit(d.id))
-        .on("mouseout", (d) => this.onTaxonOut.emit())
-        .append("circle")
-        .attr("r", 5);
+        .on('mouseover', (d) => this.onTaxonHover.emit(d.id))
+        .on('mouseout', (d) => this.onTaxonOut.emit())
+        .append('circle')
+        .attr('r', 5);
 
       label
         .append('a')
