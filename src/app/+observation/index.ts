@@ -6,6 +6,7 @@ export * from './result-list/observation-result-list.component';
 export * from './form/observation-form.component';
 export * from './count/observation-count.component';
 export * from './aggregate/observation-aggregate.component';
+export * from './download/observation-download.component';
 export * from './filter';
 export * from './map/observation-map.component';
 export * from './active/observation-active.component';

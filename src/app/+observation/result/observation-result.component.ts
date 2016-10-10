@@ -13,7 +13,7 @@ import { TranslateService } from 'ng2-translate';
   selector: 'laji-observation-result',
   templateUrl: 'observation-result.component.html'
 })
-export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges {
+export class ObservationResultComponent implements OnInit, OnChanges {
 
   @Input() loadLimit = 200000;
   @Input() filters: {[name: string]: ObservationFilterInterface};
@@ -21,52 +21,24 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
   @Output() activeChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() onFilterSelect: EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
 
-  public lang = 'fi';
-  public itemCount = 0;
-
   public activated = {
     list: false,
     images: false,
     stats: false
   };
 
-  public requests: any = {};
-  private queryCache: string;
-  private subQueryUpdate: Subscription;
-
   constructor(public searchQuery: SearchQuery,
               public userService: UserService,
               public translate: TranslateService,
-              private location: Location,
-              private warehouseService: WarehouseApi) {
+              private location: Location) {
   }
 
   ngOnInit() {
     this.activated[this.active] = true;
-    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
-      _ => {
-        if (this.queryCache !== JSON.stringify(this.searchQuery.query)) {
-          this.requests = {};
-          this.updateCount();
-        }
-      }
-    );
-    this.updateCount();
   }
 
   ngOnChanges() {
     this.activated[this.active] = true;
-  }
-
-  ngOnDestroy() {
-    if (this.subQueryUpdate) {
-      this.subQueryUpdate.unsubscribe();
-    }
-  }
-
-  updateCount() {
-    this.warehouseService.warehouseQueryCountGet(this.searchQuery.query)
-      .subscribe(res => this.itemCount = res.total);
   }
 
   pickValue(aggr, lang) {
@@ -127,36 +99,5 @@ export class ObservationResultComponent implements OnInit, OnDestroy, OnChanges 
       'pageSize',
       'includeNonValidTaxa'
     ]);
-  }
-
-  makePrivateRequest() {
-    this.makeRequest('downloadApprovalRequest');
-  }
-
-  makePublicRequest() {
-    this.makeRequest('download');
-  }
-
-  makeRequest(type: string) {
-    this.queryCache = JSON.stringify(this.searchQuery.query);
-    if (this.requests[type] === this.queryCache) {
-      return;
-    }
-    this.requests[type] = this.queryCache;
-    this.userService.getToken();
-    this.warehouseService[type](
-      this.userService.getToken(),
-      'CSV_FLAT',
-      'UNIT_FACTS',
-      this.searchQuery.query
-    ).subscribe(
-      _ => {
-        this.requests[type] = 'sent';
-      },
-      err => {
-        this.requests[type] = 'error';
-        console.log(err);
-      }
-    );
   }
 }

@@ -137,7 +137,12 @@
   "observation.active.invasive": "invasive species",
   "observation.active.recordBasis": "observation type",
   "observation.active.informalTaxonGroupId": "Informal group",
-  "observation.active.informalTaxonGroupAll": "all",
+  "observation.download.publicTitle": "Public data request",
+  "observation.download.privateTitle": "Private data request",
+  "observation.download.loadPublic": "request material",
+  "observation.download.loadPrivate": "request material",
+  "observation.download.error": "Could not make the request!",
+
   "haseka.title": "Observation service",
   "haseka.forms.title": "Forms",
   "haseka.users.latest": "Latest submissions",

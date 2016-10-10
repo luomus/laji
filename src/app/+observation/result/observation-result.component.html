@@ -83,62 +83,9 @@
           [heading]="'search.result.load' | translate"
           (select)="activate('load')"
           [active]="active === 'load'">
-    <div class="form-group" style="padding-top: 20px;">
-      <div class="col-sm-12">
-        <div *ngIf="userService.isLoggedIn()">
-          <div class="row" *ngIf="loadLimit < itemCount">
-            <div class="col-sm-12">
-              {{'observation.export.tooMany' | translate}}
-            </div>
-          </div>
-          <div class="row" *ngIf="itemCount == 0">
-            <div class="col-sm-12">
-              {{'observation.export.tooLittle' | translate}}
-            </div>
-          </div>
-          <div class="row" *ngIf="loadLimit >= itemCount && itemCount > 0">
-            <div class="col-sm-6">
-              <p>
-                {{'result.load.introPublic' | translate}}
-              </p>
-              <div *ngIf="requests['download'] !== 'sent'">
-                <alert *ngIf="requests['download'] === 'error'" [dismissible]="true">
-                  Could not make the request!
-                </alert>
-                <button class="btn btn-default" (click)="makePublicRequest()">lataa aineisto</button>
-              </div>
-              <div *ngIf="requests['download'] === 'sent'">
-                {{'result.load.thanksPublic' | translate}}
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <p>
-                {{'result.load.privateCount' | translate}}
-                <strong>
-                  <laji-observation-count
-                          [query]="searchQuery.query"
-                          [field]="'document.secureLevel'"
-                          [pick]="['HIGHEST','KM100','KM50','KM25', 'KM10']"
-                  >.
-                  </laji-observation-count>
-                </strong>
-                {{'result.load.introPrivate' | translate}}
-              </p>
-              <div *ngIf="requests['downloadApprovalRequest'] !== 'sent'">
-                <alert *ngIf="requests['downloadApprovalRequest'] === 'error'" [dismissible]="true">
-                  Could not make the request!
-                </alert>
-                <button class="btn btn-default" (click)="makePrivateRequest()">tee pyyntö</button>
-              </div>
-              <div *ngIf="requests['downloadApprovalRequest'] === 'sent'">
-                {{'result.load.thanksRequest' | translate}}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="!userService.isLoggedIn()">
-          {{'force.login' | translate}}
-        </div>
+    <div class="form-group">
+      <div class="col-sm-7">
+        <observation-download [loadLimit]="loadLimit"></observation-download>
       </div>
     </div>
   </tab>
