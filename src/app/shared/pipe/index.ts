@@ -1,3 +1,3 @@
 export * from './formated-number.pipe';
-export * from './html-as-is.pipe';
+export * from './safe.pipe';
 export * from './label.pipe';

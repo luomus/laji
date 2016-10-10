@@ -3,13 +3,11 @@ import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LocalStorage } from 'angular2-localstorage/dist';
 import { TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule } from 'ng2-bootstrap';
-import { TranslateModule, TranslateService } from 'ng2-translate';
+import { TranslateModule } from 'ng2-translate';
 import { NewsListComponent } from './news-list/news-list.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { UsersPipe } from './pipe/users.pipe';
-import { UserService } from './service/user.service';
 import { LabelPipe } from './pipe/label.pipe';
 import { FormattedNumber } from './pipe/formated-number.pipe';
 import { ObservationCountComponent } from '../+observation/count/observation-count.component';
@@ -45,11 +43,5 @@ import { OmniSearchComponent } from './omni-search/omni-search.component';
   ]
 })
 export class SharedModule {
-  @LocalStorage() public static defaultLang;
 
-  constructor(translate: TranslateService) {
-    let userLang = SharedModule.defaultLang || 'fi';
-    translate.setDefaultLang('fi');
-    translate.use(userLang);
-  }
 }
