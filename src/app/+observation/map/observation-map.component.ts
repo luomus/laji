@@ -266,7 +266,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
         },
         cluster: {
           spiderfyOnMaxZoom: true,
-          showCoverageOnHover: true
+          showCoverageOnHover: true,
+          singleMarkerMode: true
         }
       };
     }).do(() => {

@@ -61,7 +61,7 @@
           <div class="col-md-6">
             <div class="panel panel-default">
               <div class="panel-body resent-map">
-                <iframe src="https://ws.luomus.fi/Balticdiversity/map?time=-1%2F-0&area=Suomi&area=Finland&limit=2000&locale=fi&"></iframe>
+                <laji-observation-map [height]="280" [initWithWorldMap]="true" [showItemsWhenLessThan]="500" [draw]="false" [query]="{time:'-1/0', finnish: true}"></laji-observation-map>
               </div>
               <div class="panel-footer">
                 <h2 class="panel-title">{{ 'home.main-page.recent' | translate }}</h2>
