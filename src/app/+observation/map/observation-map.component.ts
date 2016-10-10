@@ -263,6 +263,11 @@ export class ObservationMapComponent implements OnInit, OnChanges {
         featureCollection: {
           'type': 'FeatureCollection',
           'features': features
+        },
+        cluster: {
+          spiderfyOnMaxZoom: true,
+          showCoverageOnHover: true,
+          singleMarkerMode: true
         }
       };
     }).do(() => {
@@ -284,7 +289,9 @@ export class ObservationMapComponent implements OnInit, OnChanges {
               this.mapData = [{
                 featureCollection: data.featureCollection,
                 getFeatureStyle: this.getStyle.bind(this),
-                getPopup: this.getPopup.bind(this)
+                getClusterStyle: this.getClusterStyle.bind(this),
+                getPopup: this.getPopup.bind(this),
+                cluster: data.cluster || false
               }];
             } else {
               this.mapData[0].featureCollection.features =
@@ -311,6 +318,15 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       return cache + this.activeLevel;
     }
     return cache + this.activeBounds.toBBoxString() + this.activeLevel;
+  }
+
+  private getClusterStyle(count) {
+    return {
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 1,
+      color: this.style(count)
+    };
   }
 
   private getStyle(data: StyleParam) {

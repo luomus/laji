@@ -21,6 +21,7 @@ import { SelectModule } from 'ng2-select';
 import { ObservationCountComponent } from './count/observation-count.component';
 import { DatePickerComponent } from '../shared/datepicker/datepicker.component';
 import { ObservationAggregateComponent } from './aggregate/observation-aggregate.component';
+import { ObservationDownloadComponent } from './download/observation-download.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, TypeaheadModule, SelectModule],
@@ -29,7 +30,7 @@ import { ObservationAggregateComponent } from './aggregate/observation-aggregate
     ObservationFilterComponent, ObservationFormComponent, ObservationGroupSelectComponent,
     MultiRadioComponent, ObservationResultComponent,
     ObservationResultListComponent, ResultListElementComponent, MetadataSelectComponent,
-    PieChartComponent, nvD3, DatePickerComponent],
+    PieChartComponent, nvD3, DatePickerComponent, ObservationDownloadComponent],
   exports: [ObservationCountComponent, ObservationMapComponent]
 })
 export class ObservationModule {

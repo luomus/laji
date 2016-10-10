@@ -1,6 +1,6 @@
 <h3>{{'haseka.forms.title' | translate}}</h3>
 <ul>
-  <li *ngFor="let form of formList?.forms">
+  <li *ngFor="let form of formList">
     <a [routerLink]="['/haseka/' + form.id]">
       {{form.title}}
     </a>

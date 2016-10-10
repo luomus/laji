@@ -29,9 +29,6 @@ import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
 import 'rxjs/Rx';
 
-
-'use strict';
-
 @Injectable()
 export class FormApi {
   protected basePath = '/api';
@@ -48,7 +45,7 @@ export class FormApi {
    *
    * @param lang forms language
    */
-  public formFindAll(lang?: string, extraHttpRequestParams?: any): Observable<models.FormListInterface> {
+  public formFindAll(lang?: string, extraHttpRequestParams?: any): Observable<models.PagedResult<models.FormListInterface>> {
     const path = this.basePath + '/forms';
 
     let queryParameters = new URLSearchParams();
@@ -96,6 +93,8 @@ export class FormApi {
 
     if (format !== undefined) {
       queryParameters.set('format', format);
+    } else {
+      queryParameters.set('format', 'schema');
     }
 
     let requestOptions: RequestOptionsArgs = {

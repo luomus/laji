@@ -10,7 +10,7 @@ import { FormListInterface } from '../../shared/model/FormListInterface';
 })
 export class HaSeKaFormListComponent implements OnInit, OnDestroy {
 
-  public formList: FormListInterface;
+  public formList: FormListInterface[] = [];
   private subTrans: Subscription;
   private subFetch: Subscription;
 
@@ -41,7 +41,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       this.subFetch.unsubscribe();
     }
     this.subFetch = this.formService.formFindAll(this.translate.currentLang).subscribe(
-      result => this.formList = result,
+      result => this.formList = result.results,
       err => console.log(err)
     );
   }
