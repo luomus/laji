@@ -1,11 +1,11 @@
-import { Component, ElementRef, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { debounce } from 'underscore';
 
 declare var d3: any;
 
-const taxonTreeUri = '/api/taxonomy/%taxonId%?maxLevel=2&selectedFields=id%2CscientificName';
+const taxonTreeUri = '/api/taxonomy/%taxonId%?maxLevel=1&selectedFields=id%2CscientificName';
 
 @Component({
   selector: 'laji-tree-of-life',
@@ -28,6 +28,9 @@ export class TreeOfLifeComponent {
   private plop;
   private taxonId: string;
 
+  @Output() onTaxonHover = new EventEmitter<string>();
+  @Output() onTaxonOut = new EventEmitter();
+
   constructor(private element: ElementRef,
               private route: ActivatedRoute,
               private router: Router,
@@ -43,9 +46,8 @@ export class TreeOfLifeComponent {
   }
 
   ngOnInit() {
-    this.route.params.filter((route) => route['type'] === 'taxonomy').subscribe((route) => {
-      if (route['id'] === this.taxonId) {
-        this.location.back();
+    this.route.params.filter((route) => route['type'] == 'taxonomy').subscribe((route) => {
+      if (route['id'] == this.taxonId) {
       } else {
         this.taxonId = route['id'];
         this.setup(this.taxonId, this.htmlElement.offsetWidth);
@@ -60,7 +62,9 @@ export class TreeOfLifeComponent {
 
   private setup(taxonId: string = 'MX.53761', diameter: number = 600): void {
 
-    let tree = d3.layout.tree()
+    this.onTaxonOut.emit();
+
+    var tree = d3.layout.tree()
       .size([360, diameter / 2 - 120])
       .separation(function (a, b) {
         return (a.parent === b.parent ? 1 : 2) / a.depth;
@@ -106,12 +110,18 @@ export class TreeOfLifeComponent {
         .attr('href', (d) => {
           return `/taxon/browse/taxonomy/${d.id}`;
         })
-        .on('click', (d) => {
-          this.router.navigate(['taxon', 'browse', 'taxonomy', d.id]);
+        .on("click", (d) => {
+          if(d.id == taxonId){
+            this.location.back();
+          } else {
+            this.router.navigate(['taxon', 'browse', 'taxonomy', d.id]);
+          }
           d3.event.preventDefault();
         })
-        .append('circle')
-        .attr('r', 5);
+        .on("mouseover", (d) => this.onTaxonHover.emit(d.id))
+        .on("mouseout", (d) => this.onTaxonOut.emit())
+        .append("circle")
+        .attr("r", 5);
 
       label
         .append('a')

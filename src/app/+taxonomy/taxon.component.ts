@@ -5,7 +5,7 @@ import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { TaxonomyApi, InformalTaxonGroupApi, InformalTaxonGroup } from '../shared';
+import { TaxonomyApi, InformalTaxonGroupApi, InformalTaxonGroup, Taxonomy } from '../shared';
 import { SharedModule } from '../shared/shared.module';
 
 
@@ -27,9 +27,14 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   private id: Observable<string>;
 
+  private selected: Array<Taxonomy>;
+
+  private taxonSubscription: Subscription;
+
   constructor(private route: ActivatedRoute,
               private translate: TranslateService,
-              private informalTaxonService: InformalTaxonGroupApi) {
+              private informalTaxonService: InformalTaxonGroupApi,
+              private taxonService: TaxonomyApi) {
   }
 
   ngOnInit() {
@@ -76,6 +81,21 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
     naks.filter((id) => id !== undefined).subscribe((x) => console.log('set', x));
 
+  }
+
+  onTaxonHover(id) {
+    this.taxonSubscription = this.taxonService
+      .taxonomyFindChildren(id, this.translate.currentLang)
+      .subscribe((data) => {
+        this.selected = data;        
+      });
+  }
+
+  onTaxonOut() {
+    if(this.taxonSubscription){
+      this.taxonSubscription.unsubscribe();
+    }
+    this.selected = [];
   }
 
   ngOnDestroy() {

@@ -24,10 +24,13 @@
   </div>
   <div *ngIf="(type | async) == 'taxonomy'" class="row">
     <div class="col-lg-8">
-      <laji-tree-of-life style="display: block; width: 100%;"></laji-tree-of-life>
+      <laji-tree-of-life
+        (onTaxonHover)="onTaxonHover($event)"
+        (onTaxonOut)="onTaxonOut()"
+        style="display: block; width: 100%;"></laji-tree-of-life>
     </div>
     <div class="col-lg-4">
-      <span>tree</span>
+      <div *ngFor="let taxon of selected">{{taxon.scientificName}}</div>
     </div>
   </div>
 </div>
