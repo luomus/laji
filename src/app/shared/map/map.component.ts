@@ -60,12 +60,6 @@ export class MapComponent implements OnDestroy, OnChanges {
     this.map.map.on('movestart', _ => {
       this.moveEvent('movestart');
     });
-    this.map.map.on('focus', () => {
-      this.map.map.scrollWheelZoom.enable();
-    });
-    this.map.map.on('blur', () => {
-      this.map.map.scrollWheelZoom.disable();
-    });
     this.updateData();
     this.initDrawData();
     this.moveEvent('moveend');
