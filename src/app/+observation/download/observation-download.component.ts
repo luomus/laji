@@ -49,7 +49,6 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     this.warehouseService.warehouseQueryCountGet(this.searchQuery.query)
       .combineLatest(
         this.warehouseService.warehouseQueryAggregateGet(this.searchQuery.query, ['document.secureLevel'])
-          .do(aggr => console.log(aggr))
           .map(aggrs => {
             const pick = ['HIGHEST', 'KM100', 'KM50', 'KM25', 'KM10'];
             let cnt = 0;
