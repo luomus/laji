@@ -21,6 +21,7 @@ export class MapComponent implements OnDestroy, OnChanges {
   @Input() draw: boolean = false;
   @Input() lang: string = 'fi';
   @Input() drawSingleShape: boolean = true;
+  @Input() initWithWorldMap: boolean = false;
   @Input() tick: any;
   @Input() bringDrawLayerToBack: boolean = true;
 
@@ -33,8 +34,9 @@ export class MapComponent implements OnDestroy, OnChanges {
 
   ngAfterViewInit() {
     this.map = new lajiMap({
+      tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
       activeIdx: 0,
-      zoom: 1,
+      zoom: this.initWithWorldMap ? 3 : 1,
       lang: this.lang,
       data: [],
       onChange: e => this.onChange(e),

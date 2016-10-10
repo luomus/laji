@@ -25,6 +25,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   // when active level is higher or equal to this will be using viewport coordinates to show grid
   @Input() onlyViewPortThreshold: number = 1;
   @Input() size: number = 5000;
+  @Input() initWithWorldMap: boolean = false;
   @Input() lastPage: number = 7; // 0 = no page limit
   @Input() draw: boolean = false;
   @Input() height: number;

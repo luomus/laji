@@ -83,19 +83,14 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
             if (this.filter.valueMap && typeof this.filter.valueMap[val] !== 'undefined') {
               val = this.filter.valueMap[val];
             }
-            let sel = this.filter.selected.filter((value) => {
-                return value === val;
-              }).length > 0;
             return {
               value: val,
               count: result['count'] || 0,
-              selected: sel
+              selected: this.filter.selected.filter(value => value === val ).length > 0
             };
           });
         if (this.filter.map) {
-          this.filter.map(filtersData).subscribe(
-            res => this.filter.data = res
-          );
+          this.filter.map(filtersData).subscribe(res => this.filter.data = res);
         } else {
           this.filter.data = filtersData;
         }

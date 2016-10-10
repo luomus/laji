@@ -6,6 +6,7 @@
           [draw]="draw"
           (onCreate)="onCreate($event)"
           (onMove)="onMove($event)"
+          [initWithWorldMap]="initWithWorldMap"
           [tick]="tack"
   >
     <div class="loading-map loading" *ngIf="loading"></div>
