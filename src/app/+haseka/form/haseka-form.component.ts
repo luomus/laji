@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -6,6 +6,7 @@ import { DocumentApi } from '../../shared/api/DocumentApi';
 import { UserService } from '../../shared/service/user.service';
 import { FooterService } from '../../shared/service/footer.service';
 import { FormApi } from '../../shared/api/FormApi';
+import { LajiFormComponent } from '../../shared/form/laji-form.component';
 
 @Component({
   selector: 'laji-haseka-form',
@@ -14,6 +15,7 @@ import { FormApi } from '../../shared/api/FormApi';
   styleUrls: ['haseka-form.component.css']
 })
 export class HaSeKaFormComponent implements OnInit {
+  @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
 
   public form: any;
   public formId: string;
@@ -70,6 +72,7 @@ export class HaSeKaFormComponent implements OnInit {
         .subscribe(
           result => {
             this.form.formData = result;
+            this.lajiForm.clearState();
             this.success = 'haseka.form.success';
             setTimeout(() => this.success = '', 5000);
           },
@@ -88,6 +91,7 @@ export class HaSeKaFormComponent implements OnInit {
             this.documentId = result.id;
             this.isEdit = true;
             this.formDataStorage[this.formId] = {};
+            this.lajiForm.clearState();
             setTimeout(() => this.success = '', 5000);
           },
           err => {

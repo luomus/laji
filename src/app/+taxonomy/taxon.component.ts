@@ -83,16 +83,20 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   }
 
+  get filteredSelected() {
+    return this.selected.filter((item, index) => index < 10);
+  }
+
   onTaxonHover(id) {
     this.taxonSubscription = this.taxonService
       .taxonomyFindChildren(id, this.translate.currentLang)
       .subscribe((data) => {
-        this.selected = data;        
+        this.selected = data;
       });
   }
 
   onTaxonOut() {
-    if(this.taxonSubscription){
+    if (this.taxonSubscription) {
       this.taxonSubscription.unsubscribe();
     }
     this.selected = [];

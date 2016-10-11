@@ -1,0 +1,55 @@
+<div *ngIf="userService.isLoggedIn()">
+  <h3>{{'observation.download.publicTitle' | translate}}</h3>
+  <div class="form-group">
+    <div class="col-sm-12" *ngIf="loadLimit < count.count">
+      {{'observation.export.tooMany' | translate}}
+    </div>
+    <div class="col-sm-12" *ngIf="count.count == 0">
+      {{'observation.export.tooLittle' | translate}}
+    </div>
+    <div class="col-sm-12" *ngIf="loadLimit >= count.count && count.count > 0">
+      <p>
+        {{'result.load.introPublic' | translate}}
+      </p>
+      <div *ngIf="requests['download'] !== 'sent'">
+        <alert *ngIf="requests['download'] === 'error'" [dismissible]="true">
+          {{'observation.download.error' | translate}}
+        </alert>
+        <button class="btn btn-default" (click)="makePublicRequest()">{{'observation.download.loadPublic' | translate}}</button>
+      </div>
+      <div *ngIf="requests['download'] === 'sent'">
+        {{'result.load.thanksPublic' | translate}}
+      </div>
+    </div>
+  </div>
+  <h3>{{'observation.download.privateTitle' | translate}}</h3>
+  <div class="form-group">
+    <div class="col-sm-12" *ngIf="loadLimit < count.private">
+      {{'observation.export.tooMany' | translate}}
+    </div>
+    <div class="col-sm-12" *ngIf="count.private == 0">
+      {{'observation.export.tooLittle' | translate}}
+    </div>
+    <div class="col-sm-12" *ngIf="loadLimit >= count.private && count.private > 0">
+      <p>
+        {{'result.load.privateCount' | translate}}
+        <strong>
+          {{count.private}}
+        </strong>
+        {{'result.load.introPrivate' | translate}}
+      </p>
+      <div *ngIf="requests['downloadApprovalRequest'] !== 'sent'">
+        <alert *ngIf="requests['downloadApprovalRequest'] === 'error'" [dismissible]="true">
+          {{'observation.download.error' | translate}}
+        </alert>
+        <button class="btn btn-default" (click)="makePrivateRequest()">{{'observation.download.loadPrivate' | translate}}</button>
+      </div>
+      <div *ngIf="requests['downloadApprovalRequest'] === 'sent'">
+        {{'result.load.thanksRequest' | translate}}
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="!userService.isLoggedIn()">
+  {{'force.login' | translate}}
+</div>

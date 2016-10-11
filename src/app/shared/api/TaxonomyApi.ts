@@ -52,7 +52,7 @@ export class TaxonomyApi {
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
   public taxonomyFindBySubject(id: string, lang?: string, extraHttpRequestParams?: any): Observable<models.Taxonomy> {
-    const path = this.basePath + '/taxonomy/{id}'
+    const path = this.basePath + '/taxa/{id}'
         .replace('{' + 'id' + '}', String(id));
 
     let queryParameters = new URLSearchParams();
@@ -89,7 +89,7 @@ export class TaxonomyApi {
    * @param maxLevel How many levels of children to show (default: 1)
    */
   public taxonomyFindChildren(id: string, lang?: string, maxLevel?: string, extraHttpRequestParams?: any): Observable<Array<models.Taxonomy>> {
-    const path = this.basePath + '/taxonomy/{id}/children'
+    const path = this.basePath + '/taxa/{id}/children'
         .replace('{' + 'id' + '}', String(id));
 
     let queryParameters = new URLSearchParams();
@@ -129,7 +129,7 @@ export class TaxonomyApi {
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
   public taxonomyFindDescriptions(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<any>> {
-    const path = this.basePath + '/taxonomy/{id}/descriptions'
+    const path = this.basePath + '/taxa/{id}/descriptions'
         .replace('{' + 'id' + '}', String(id));
 
     let queryParameters = new URLSearchParams();
@@ -165,7 +165,7 @@ export class TaxonomyApi {
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
   public taxonomyFindMedia(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<any>> {
-    const path = this.basePath + '/taxonomy/{id}/media'
+    const path = this.basePath + '/taxa/{id}/media'
         .replace('{' + 'id' + '}', String(id));
 
     let queryParameters = new URLSearchParams();
@@ -201,7 +201,7 @@ export class TaxonomyApi {
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
   public taxonomyFindParents(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<models.Taxonomy>> {
-    const path = this.basePath + '/taxonomy/{id}/parents'
+    const path = this.basePath + '/taxa/{id}/parents'
         .replace('{' + 'id' + '}', String(id));
 
     let queryParameters = new URLSearchParams();
@@ -244,7 +244,7 @@ export class TaxonomyApi {
    * @param pageSize Page size
    */
   public taxonomyFindSpecies(id: string, lang?: string, informalGroupFilters?: string, adminStatusFilters?: string, redListStatusFilters?: string, typesOfOccurrenceFilters?: string, invasiveSpeciesFilter?: boolean, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Taxonomy>>> {
-    const path = this.basePath + '/taxonomy/{id}/species'
+    const path = this.basePath + '/taxa/{id}/species'
         .replace('{' + 'id' + '}', String(id));
 
     let queryParameters = new URLSearchParams();
@@ -309,7 +309,7 @@ export class TaxonomyApi {
    * @param checklist search taxon from specified checklist (defaults to master)
    */
   public taxonomySearch(query: string, limit?: string, checklist?: string, extraHttpRequestParams?: any): Observable<models.LajiTaxonSearch> {
-    const path = this.basePath + '/taxonomy/search';
+    const path = this.basePath + '/taxa/search';
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;

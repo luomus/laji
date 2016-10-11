@@ -47,6 +47,12 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
     this.mount();
   }
 
+  clearState() {
+    if (this.lajiFormWrapper) {
+      // this.lajiFormWrapper.clearState();
+    }
+  }
+
   mount() {
     if (!this.formData || !this.lang) {
       return;
@@ -55,6 +61,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
       this.apiClient.lang = this.lang;
       this.apiClient.personToken = this.userService.getToken();
       this.lajiFormWrapper = new lajiFormWrapper({
+        staticImgPath: '/static/lajiForm/',
         rootElem: this.elem,
         schema: this.formData.schema,
         uiSchema: this.formData.uiSchema,

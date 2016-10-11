@@ -143,6 +143,11 @@
   "observation.active.informalTaxonGroupAll": "kaikki",
   "observation.active.finnish": "suomalainen",
   "observation.active.hasMedia": "kuva",
+  "observation.download.publicTitle": "Julkinen data",
+  "observation.download.privateTitle": "Salattu data",
+  "observation.download.loadPublic": "lataa aineisto",
+  "observation.download.loadPrivate": "tee pyyntö",
+  "observation.download.error": "Could not make the request!",
   "haseka.title": "Havaintopalvelu",
   "haseka.intro": "<p>Havaintopalvelu tarjoaa suoraviivaisen kanavan julkaista eliölajihavaintoja laji.fi-sivuston kautta. Rekisteröityneelle käyttäjälle palvelu tarjoaa tietokannan omien havaintotietojensa tallentamiseen ja hallintaan sekä väylän niiden jakamiseen. Käyttäjät voivat perustaa tietokantaan projekteja, joihin kutsutut osallistujat tallentavat haluttua lajitietoa. Perustetun projektin keräämiä tietoja hallinnoi sen omistaja ja tiedon jakaminen laji.fi-sivuston kautta on helppoa. Palvelun mukautuva lomakkeisto antaa käyttäjälle mahdollisuuden valita itselleen sopivan tavan tallentaa, hallita ja jakaa havaintojaan muiden käyttöön.</p>",
   "haseka.forms.title": "Lomakkeet",
@@ -157,11 +162,13 @@
   "omniSearch.matches": "Tietoa lajista",
   "omniSearch.rank": "taksonominen taso",
   "omniSearch.groups": "lajiryhmä",
+  "omniSearch.allObservation": "havaintoa",
   "friend.ask": "Pyydä ystäväksi",
   "friend.friends": "Ystävät",
   "friend.requests": "Ystäväpyynnöt",
   "friend.requestSent": "Ystäväpyyntö lähetetty",
   "profile.friends": "Ystävät",
   "profile.friendsInfo": "Voit pyytää ystäviäsi lähettämään sinulle linkin omalle profiilisivulleen. Linkin saatuasi voit pyytää heitä ystäväksesi ja kun he ovat hyväksyneet pyyntösi, näet täällä linkin heidän profiiliinsa.",
-  "profile.accountSettings": "Käyttäjätilini"
+  "profile.accountSettings": "Käyttäjätilini",
+  "profile.missing": "Käyttäjällä ei ole vielä julkista laji.fi profiilia"
 }
