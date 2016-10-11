@@ -142,6 +142,7 @@
   "observation.download.loadPublic": "request material",
   "observation.download.loadPrivate": "request material",
   "observation.download.error": "Could not make the request!",
+  "observation.download.wip": "Work in progress<br><br>Viranomaisille tai muille aineistojen omistajille voi toistaiseksi tehdä aineiston luovutuspyynnön nykyisten käytäntöjen tapaan. Yhteystiedot ovat metatietolomakkeella",
 
   "haseka.title": "Observation service",
   "haseka.forms.title": "Forms",
