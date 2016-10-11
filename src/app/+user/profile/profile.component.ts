@@ -75,6 +75,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
+  getCurrentUser() {
+    return this.userService.getUser();
+  }
+
   toggleEditing() {
     this.editing = !this.editing;
   }

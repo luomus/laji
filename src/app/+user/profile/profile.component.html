@@ -37,7 +37,7 @@
             <friends [profile]="profile" [usersProfile]="personsProfile"></friends>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" *ngIf="(getCurrentUser() | async).id === userId">
           <div class="col-sm-12 well">
             <a href="https://login.laji.fi" class="btn btn-success">{{'profile.accountSettings'|translate}}</a>
           </div>
