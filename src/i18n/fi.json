@@ -169,7 +169,7 @@
   "friend.requests": "Kaveripyynnöt",
   "friend.requestSent": "Kaveripyyntö lähetetty",
   "profile.friends": "Kaverit",
-  "profile.friendsInfo": "Voit pyytää kaveriasi lähettämään sinulle linkin omalle profiilisivulleen. Linkin saatuasi voit pyytää heitä kaveriksi ja kun he ovat hyväksyneet pyyntösi, näet täällä linkin heidän profiiliinsa.",
+  "profile.friendsInfo": "Voit pyytää toista käyttäjää kaveriksesi menemällä hänen profiiliinsa (pyydä linkki kaveriltasi) ja klikkaamalla \"Lisää kaveriksi\". Jos kaveripyyntösi hyväksytään, näet kaverisi tällä listalla.",
   "profile.accountSettings": "Käyttäjätilini",
   "profile.missing": "Käyttäjällä ei ole vielä julkista laji.fi profiilia"
 }

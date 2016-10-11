@@ -160,7 +160,7 @@
   "friend.requests": "Friend request",
   "friend.requestSent": "Friend request sent",
   "profile.friends": "Friends",
-  "profile.friendsInfo": "You can ask your friends to send you a link to their profile pages. When you have received the link you can ask them to be your friends and when they have accepted your request, you'll see here a link to their profile.",
+  "profile.friendsInfo": "You can ask user to be your friend by going to his or hers profile page (ask a link from you friend) and clicking \"Friend request\" button. If the request is accepted you'll see your frien on this list.",
   "profile.accountSettings": "My account",
   "profile.missing": "User dosn't have a public profile"
 }
