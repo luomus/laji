@@ -112,7 +112,7 @@
   "observation.form.sex": "Sukupuoli",
   "observation.form.administrativeStatus": "Hallinnollinen tila",
   "observation.form.redListStatusId": "Uhanalaisuus",
-  "observation.form.map": "Rajaa kartalla",
+  "observation.form.map": "Paikka",
   "observation.form.multi-all": "molemmat",
   "observation.form.multi-true": "kyllä",
   "observation.form.multi-false": "ei",
