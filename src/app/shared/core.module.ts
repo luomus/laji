@@ -25,7 +25,8 @@ export class CoreModule {
         'CoreModule is already loaded. Import it in the AppModule only!');
     }
     let userLang = CoreModule.defaultLang || 'fi';
-    translate.setDefaultLang('fi');
+    // Todo: uncomment whne all the translations are done
+    // translate.setDefaultLang('fi');
     translate.use(userLang);
   }
 }
