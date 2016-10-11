@@ -2245,12 +2245,17 @@ body .laji-form {
 	width: 0px;
 }
 
-.laji-form .form-control, .laji-form .rw-input {
+.laji-form .form-control, .laji-form .rw-datetimepicker {
 	border-radius: 2px !important;
+}
+.laji-form .form-control:not(textarea) {
+	height: 25px !important;
+}
+.laji-form .rw-input {
+	height: 23px !important;
 }
 .laji-form .form-control:not(textarea), .laji-form .rw-input {
 	padding: 0px 5px;
-	height: 25px !important;
 }
 .laji-form select {
 	padding: 3px 6px !important;
@@ -2305,9 +2310,7 @@ body .laji-form {
 	margin-left: 5px;
 	border-radius:9px;
 	color: white;
-	padding: 2px 5px;
-	color: white;
-	padding: 2px 5px;
+	padding: 1px 5px;
 }
 
 .laji-form .laji-form-map {
@@ -2437,6 +2440,11 @@ body .laji-form {
 	display: block;
 	margin: auto;
 }
+
+.laji-form .scope-field-search  .glyphicon {
+	top: -3px
+}
+
 .laji-form .list-group-item:first-child {
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
@@ -2490,10 +2498,7 @@ body .laji-form {
 	height: 120px;
 	float: left;
 	cursor: pointer;
-}
-.laji-form .laji-form-images a {
-	width: inherit;
-	height: inherit;
+	display: table;
 }
 .laji-form .laji-form-images img {
 	width: inherit;
@@ -2501,15 +2506,32 @@ body .laji-form {
 }
 
 .laji-form .laji-form-drop-zone {
-	border: 2px dashed black;
-	padding: 7px;
+	border: 2px dashed #cacaca;
 }
 .laji-form  .laji-form-drop-zone:hover, .laji-form .laji-form-drop-zone.dragging  {
 	background-color: #d8fbc6;
+	border-color: #a7d490;
 }
 .laji-form .laji-form-images a:hover, .laji-form .laji-form-images a:active {
 	text-decoration: none;
 	color: #337ab7;
+}
+.laji-form .laji-form-drop-zone:hover span, .laji-form .laji-form-drop-zone.dragging span {
+	color: #a7d490;
+}
+.laji-form .laji-form-images a {
+	text-align: center;
+	vertical-align: middle;
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+.laji-form .laji-form-images .glyphicon {
+	font-size: 78px;
+	color: #dedede;
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
 }
 
 .laji-form.image-modal {
@@ -2612,4 +2634,8 @@ body .laji-form {
 	outline: 0;
 	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
 	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+}
+
+.laji-form .date-time-buttons {
+	width: 130px;
 }
