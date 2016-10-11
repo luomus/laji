@@ -171,5 +171,6 @@
   "profile.friends": "Kaverit",
   "profile.friendsInfo": "Voit pyytää toista käyttäjää kaveriksesi menemällä hänen profiiliinsa (pyydä linkki kaveriltasi) ja klikkaamalla \"Lisää kaveriksi\". Jos kaveripyyntösi hyväksytään, näet kaverisi tällä listalla.",
   "profile.accountSettings": "Käyttäjätilini",
+  "profile.friends.needProfile": "Sinun tarvitsee ensin tehdä oma profiili jotta voit pyytää ystäviä",
   "profile.missing": "Käyttäjällä ei ole vielä julkista laji.fi profiilia"
 }

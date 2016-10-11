@@ -162,5 +162,6 @@
   "profile.friends": "Friends",
   "profile.friendsInfo": "You can ask user to be your friend by going to his or hers profile page (ask a link from you friend) and clicking \"Friend request\" button. If the request is accepted you'll see your frien on this list.",
   "profile.accountSettings": "My account",
+  "profile.friends.needProfile": "You need to make first your own profile to be able to as friends",
   "profile.missing": "User dosn't have a public profile"
 }

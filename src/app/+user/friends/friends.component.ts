@@ -24,7 +24,7 @@ export class FriendsComponent implements OnInit {
     this.requestSend = false;
   }
 
-  isLoggedIn() {
+  hasProfile() {
     return !!this.usersProfile.id;
   }
 

@@ -38,7 +38,7 @@
   </div>
   <p>{{'profile.friendsInfo'|translate}}</p>
 </div>
-<div *ngIf="!isCurrentUser() && isLoggedIn()">
+<div *ngIf="!isCurrentUser() && hasProfile()">
   <div *ngIf="alreadyFriends()">
     {{'friend.alreadyFriends' | translate}}
   </div>
@@ -49,6 +49,6 @@
     <a class="btn btn-success" (click)="sendFriendRequest(profile.profileKey)">{{'friend.ask'|translate}}</a>
   </div>
 </div>
-<div *ngIf="!isLoggedIn()">
-  Sinun tulee kirjautua pyytääksesi ystäväksi
+<div *ngIf="!hasProfile()">
+  {{'profile.friends.needProfile' | translate}}
 </div>
