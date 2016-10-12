@@ -137,6 +137,7 @@
   "observation.active.invasive": "invasive species",
   "observation.active.recordBasis": "observation type",
   "observation.active.informalTaxonGroupId": "Informal group",
+  "observation.active.informalTaxonGroupAll": "All",
   "observation.download.publicTitle": "Public data request",
   "observation.download.privateTitle": "Private data request",
   "observation.download.loadPublic": "request material",
