@@ -1,38 +1,48 @@
 <div class="container">
-  <h1>Lajit</h1>
-  <ul class="nav nav-tabs nav-justified">
-    <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-      <a routerLink="/taxon/browse/informal">
-        <span style="font-size: 150%" class="glyphicon glyphicon-th-list"></span>
-        <h3>Lajiryhmät</h3>
-      </a>
-    </li>
-    <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-      <a routerLink="/taxon/browse/taxonomy">
-        <span style="font-size: 150%" class="glyphicon glyphicon-picture"></span>
-        <h3>Taksonomia</h3>
-      </a>
-    </li>
-  </ul>
-  <div *ngIf="(type | async) == 'informal'" class="row">
-    <div class="col-md-12">
-      <laji-informal-list-breadcrumb [groups]="groups" [informalGroup]="selectedInformalGroup"></laji-informal-list-breadcrumb>
-      <laji-informal-list *ngIf="selectedInformalGroup" [tree]="selectedInformalGroup"></laji-informal-list>
-      <laji-species-list *ngIf="selectedInformalGroup" [informalGroup]="selectedInformalGroup"></laji-species-list>
-    </div>
-  </div>
-  <div *ngIf="(type | async) == 'taxonomy'" class="row">
-    <div class="col-lg-8">
-      <laji-tree-of-life (onTaxonHover)="onTaxonHover($event)" (onTaxonOut)="onTaxonOut()" style="display: block; width: 100%;"></laji-tree-of-life>
-    </div>
-    <div class="col-lg-4 row">
-      <h3 *ngIf="selected.length" class="col-md-12">Alemmat taksonit</h3>
-      <div class="col-md-6" *ngFor="let taxon of filteredSelected">
-        <div style="height: 50px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis" class="thumbnail">
-          <span>{{taxon.scientificName}}<br><small>{{taxon.vernacularName}}</small></span>
-        </div>
-      </div>
-      <span *ngIf="selected.length > 10" class="col-md-12">Ja {{ selected.length - 10 }} muuta...</span>
-    </div>
-  </div>
+	<h1>Lajit<br><small>Hae tietoa maamme eläimistä, kasveista ja sienistä.</small></h1>
+	<div class="well well-sm">
+		Suomen Lajitietokeskuksen Lajit-hakupalvelujen avulla pääset tutustumaan Suomen eliölajiston ominaispiirteisiin ja levinneisyyteen
+		tietotaulujen, karttojen ja kuvien avulla. Hakutoiminnon avulla löydät etsimäsi lajin ja saat käyttöösi viimeisintä tietoa
+		kiinnostuksesi kohteesta.
+	</div>
+		<div class="col-md-12">
+			<div class="row">
+				<laji-omni-search [placeholder]="'search-bar.input' | translate" [lang]="translate.currentLang"></laji-omni-search>
+			</div>
+		</div>
+	<ul class="nav nav-tabs nav-justified">
+		<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+			<a routerLink="/taxon/browse/informal">
+				<span style="font-size: 150%" class="glyphicon glyphicon-th-list"></span>
+				<h3>Lajiryhmät</h3>
+			</a>
+		</li>
+		<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+			<a routerLink="/taxon/browse/taxonomy">
+				<span style="font-size: 150%" class="glyphicon glyphicon-picture"></span>
+				<h3>Taksonomia</h3>
+			</a>
+		</li>
+	</ul>
+	<div *ngIf="(type | async) == 'informal'" class="row">
+		<div class="col-md-12">
+			<laji-informal-list-breadcrumb [groups]="groups" [informalGroup]="selectedInformalGroup"></laji-informal-list-breadcrumb>
+			<laji-informal-list *ngIf="selectedInformalGroup" [tree]="selectedInformalGroup"></laji-informal-list>
+			<laji-species-list *ngIf="selectedInformalGroup" [informalGroup]="selectedInformalGroup"></laji-species-list>
+		</div>
+	</div>
+	<div *ngIf="(type | async) == 'taxonomy'" class="row">
+		<div class="col-lg-12">
+			<laji-tree-of-life (onTaxonHover)="onTaxonHover($event)" (onTaxonOut)="onTaxonOut()" style="display: block; width: 100%;"></laji-tree-of-life>
+		</div>
+		<!--div class="col-lg-4 row">
+			<h3 *ngIf="selected.length" class="col-md-12">Alemmat taksonit</h3>
+			<div class="col-md-6" *ngFor="let taxon of filteredSelected">
+				<div style="height: 50px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis" class="thumbnail">
+					<span>{{taxon.scientificName}}<br><small>{{taxon.vernacularName}}</small></span>
+				</div>
+			</div>
+			<span *ngIf="selected.length > 10" class="col-md-12">Ja {{ selected.length - 10 }} muuta...</span>
+		</div-->
+	</div>
 </div>

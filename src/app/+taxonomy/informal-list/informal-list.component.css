@@ -1,17 +1,9 @@
 .naks {
   height: 120px;
-  padding: 4px 2px;
+  padding: 12px 8px;
   margin-bottom: 12px;
 }
 
 .poks {
   text-align: center;
-}
-
-@media only screen and (min-width: 992px) {
-  .naks {
-    height: 120px;
-    padding: 12px 2px;
-    margin-bottom: 18px;
-  }
 }

@@ -5,7 +5,7 @@ import { debounce } from 'underscore';
 
 declare var d3: any;
 
-const taxonTreeUri = '/api/taxa/%taxonId%?maxLevel=1&selectedFields=id%2CscientificName';
+const taxonTreeUri = '/api/taxa/%taxonId%?maxLevel=2&selectedFields=id%2CscientificName';
 
 @Component({
   selector: 'laji-tree-of-life',

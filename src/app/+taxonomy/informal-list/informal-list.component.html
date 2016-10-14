@@ -1,7 +1,8 @@
 <div class="row poks">
-  <div *ngFor="let group of tree.results" class="col-xs-6 col-md-2">
+  <div *ngFor="let group of tree.results" class="col-xs-6 col-md-3 col-sm-4">
     <a [routerLink]="['/taxon/browse/informal/' + group.id]" class="thumbnail naks">
-      <span class="niks">{{group.name}}</span>
+      <div style="height: 40px;" class="niks">{{group.name}}</div>
+      <div style="margin: 5px auto; width: 50px; height: 50px;" class="informal-group-image {{group.id}}"></div>      
     </a>
   </div>
 </div>
