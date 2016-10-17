@@ -23,8 +23,9 @@
     </div>
   </div>
   <h3>{{'observation.download.privateTitle' | translate}}</h3>
-  <span [innerHtml]="'observation.download.wip' | translate"></span>
   <!--
+  <span [innerHtml]="'observation.download.wip' | translate"></span>
+  -->
   <div class="form-group">
     <div class="col-sm-12" *ngIf="loadLimit < count.private">
       {{'observation.export.tooMany' | translate}}
@@ -51,7 +52,6 @@
       </div>
     </div>
   </div>
-  -->
 </div>
 <div *ngIf="!userService.isLoggedIn()">
   {{'force.login' | translate}}
