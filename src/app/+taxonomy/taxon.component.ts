@@ -23,11 +23,19 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   private subTrans: Subscription;
 
+  private subTaxon: Subscription;
+
+  private subParents: Subscription;
+
   private type: Observable<string>;
 
   private id: Observable<string>;
 
   private selected: Array<Taxonomy>;
+
+  private taxon: Observable<Taxonomy>;
+
+  private parents: Observable<Array<Taxonomy>>;
 
   private taxonSubscription: Subscription;
 
@@ -38,18 +46,17 @@ export class TaxonComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subTrans = this.translate.onLangChange
-      .subscribe(() => {
-        this.refreshInformalGroups();
-      });
+    this.subTrans = this.translate.onLangChange.subscribe(this.refreshInformalGroups);
 
     this.type = this.route.params.map(params => params['type']);
 
     this.id = this.route.params.distinctUntilChanged().map(params => params['id']);
 
-    const naks = this.type.filter(type => type === 'informal').switchMap((type) => this.id.distinctUntilChanged());
+    const informal = this.type.filter(type => type === 'informal').switchMap((type) => this.id.distinctUntilChanged());
 
-    naks.filter(id => id == null).forEach(id => {
+    const taxonomy = this.type.filter(type => type === 'taxonomy').switchMap((type) => this.id.distinctUntilChanged());
+
+    informal.filter(id => id == null).forEach(id => {
       this.informalTaxonService.informalTaxonGroupFindRoots(this.translate.currentLang)
         .subscribe(data => {
           this.setSelectedInformalGroup(data);
@@ -58,7 +65,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
       this.selectedInformalGroup = null;
     });
 
-    naks.filter(id => id != null).forEach(id => {
+    informal.filter(id => id != null).forEach(id => {
       this.informalTaxonService.informalTaxonGroupGetChildren(id, this.translate.currentLang)
         .zip(this.informalTaxonService.informalTaxonGroupFindById(id, this.translate.currentLang))
         .map(data => ({
@@ -77,33 +84,16 @@ export class TaxonComponent implements OnInit, OnDestroy {
         });
     });
 
-    naks.filter((id) => id === undefined).subscribe((x) => console.log('not set'));
-
-    naks.filter((id) => id !== undefined).subscribe((x) => console.log('set', x));
-
-  }
-
-  get filteredSelected() {
-    return this.selected.filter((item, index) => index < 10);
-  }
-
-  onTaxonHover(id) {
-    this.taxonSubscription = this.taxonService
-      .taxonomyFindChildren(id, this.translate.currentLang)
-      .subscribe((data) => {
-        this.selected = data;
-      });
-  }
-
-  onTaxonOut() {
-    if (this.taxonSubscription) {
-      this.taxonSubscription.unsubscribe();
-    }
-    this.selected = [];
+    this.taxon = taxonomy.switchMap((id) => this.taxonService.taxonomyFindBySubject(id, this.translate.currentLang));
+    this.parents = taxonomy.switchMap((id) => this.taxonService.taxonomyFindParents(id, this.translate.currentLang));
+    this.subTaxon = this.taxon.subscribe();
+    this.subParents = this.parents.subscribe();
   }
 
   ngOnDestroy() {
     this.subTrans.unsubscribe();
+    this.subTaxon.unsubscribe();
+    this.subParents.unsubscribe();
   }
 
   refreshInformalGroups() {
