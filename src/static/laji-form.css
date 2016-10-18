@@ -2477,7 +2477,6 @@ body .laji-form {
 	height: 120px;
 	float: left;
 	cursor: pointer;
-	display: table;
 }
 .laji-form .laji-form-images img {
 	width: inherit;
