@@ -56,6 +56,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   private activeBounds: LatLngBounds;
   private reset = true;
   private showingItems = false;
+  private legendsCache: any;
 
 
   private static getValue(row: any, propertyName: string): string {
@@ -122,22 +123,25 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   getLegends(): {color: string, range: string}[] {
-    let legends = [], start = 1;
-    if (this.color instanceof Array) {
-      this.color.map((color, idx) => {
-        let end = '+', newStart;
-        if (this.colorThresholds[idx]) {
-          newStart = this.colorThresholds[idx];
-          end = '-' + newStart;
-        }
-        legends.push({
-          color: color,
-          range: start + end
+    if (!this.legendsCache)  {
+      this.legendsCache = [];
+      let start = 1;
+      if (this.color instanceof Array) {
+        this.color.map((color, idx) => {
+          let end = '+', newStart;
+          if (this.colorThresholds[idx]) {
+            newStart = this.colorThresholds[idx];
+            end = '-' + newStart;
+          }
+          this.legendsCache.push({
+            color: color,
+            range: start + end
+          });
+          start = newStart + 1;
         });
-        start = newStart + 1;
-      });
+      }
     }
-    return legends;
+    return this.legendsCache;
   }
 
   private initColorScale() {
