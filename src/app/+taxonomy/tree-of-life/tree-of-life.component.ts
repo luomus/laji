@@ -1,7 +1,8 @@
-import { Component, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, ElementRef, HostListener, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { debounce } from 'underscore';
+import { Taxonomy } from '../../shared';
+
 
 declare var d3: any;
 
@@ -13,9 +14,6 @@ const taxonTreeUri = '/api/taxa/%taxonId%?maxLevel=2&selectedFields=id%2Cscienti
   styleUrls: ['./tree-of-life.component.css']
 })
 export class TreeOfLifeComponent {
-
-  @Output() onTaxonHover = new EventEmitter<string>();
-  @Output() onTaxonOut = new EventEmitter();
 
   private host;
   private width;
@@ -33,8 +31,7 @@ export class TreeOfLifeComponent {
 
   constructor(private element: ElementRef,
               private route: ActivatedRoute,
-              private router: Router,
-              private location: Location) {
+              private router: Router) {
     this.htmlElement = this.element.nativeElement;
     this.host = d3.select(this.htmlElement);
     this.plop = debounce(() => this.setup(this.taxonId, this.htmlElement.offsetWidth), 300);
@@ -47,8 +44,7 @@ export class TreeOfLifeComponent {
 
   ngOnInit() {
     this.route.params.filter((route) => route['type'] === 'taxonomy').subscribe((route) => {
-      if (route['id'] === this.taxonId) {
-      } else {
+      if (route['id'] !== this.taxonId) {
         this.taxonId = route['id'];
         this.setup(this.taxonId, this.htmlElement.offsetWidth);
       }
@@ -56,33 +52,33 @@ export class TreeOfLifeComponent {
     this.setup(undefined, this.htmlElement.offsetWidth);
   }
 
+
+  @Input()
+  set taxon(taxon: Taxonomy) {
+    console.log(taxon);
+  };
+
   private getTaxonTreeUri(taxonId) {
     return taxonTreeUri.replace('%taxonId%', taxonId);
   }
 
   private setup(taxonId: string = 'MX.53761', diameter: number = 600): void {
 
-    this.onTaxonOut.emit();
-
     const tree = d3.layout.tree()
       .size([360, diameter / 2 - 120])
-      .separation(function (a, b) {
-        return (a.parent === b.parent ? 1 : 2) / a.depth;
-      });
+      .separation((a, b) => (a.parent === b.parent ? 1 : 2) / a.depth);
 
     this.diagonal = d3.svg.diagonal.radial()
-      .projection(function (d) {
-        return [d.y, (d.x || 0) / 180 * Math.PI];
-      });
+      .projection((d) => [d.y, (d.x || 0) / 180 * Math.PI]);
 
     d3.json(this.getTaxonTreeUri(taxonId), (error, root) => {
       this.active = taxonId;
       this.host.html('');
       this.svg = this.host.append('svg')
         .attr('width', diameter)
-        .attr('height', diameter)
+        .attr('height', diameter + 40)
         .append('g')
-        .attr('transform', 'translate(' + diameter / 2 + ',' + diameter / 2 + ')');
+        .attr('transform', 'translate(' + diameter / 2 + ',' + (diameter + 40) / 2 + ')');
 
       if (error) throw error;
 
@@ -101,50 +97,32 @@ export class TreeOfLifeComponent {
       let label = node
         .enter().append('g')
         .attr('class', 'node')
-        .attr('transform', function (d) {
-          return 'rotate(' + ((d.x || 0) - 90) + ')translate(' + d.y + ')';
-        });
+        .attr('transform', (d) => 'rotate(' + ((d.x || 0) - 90) + ')translate(' + d.y + ')');
 
       label
         .append('a')
-        .attr('href', (d) => {
-          return `/taxon/browse/taxonomy/${d.id}`;
-        })
+        .attr('href', (d) => `/taxon/browse/taxonomy/${d.id}`)
         .on('click', (d) => {
-          if (d.id === taxonId) {
-            this.location.back();
-          } else {
-            this.router.navigate(['taxon', 'browse', 'taxonomy', d.id]);
-          }
+          this.router.navigate(['taxon', 'browse', 'taxonomy', d.id]);
           d3.event.preventDefault();
         })
-        .on('mouseover', (d) => this.onTaxonHover.emit(d.id))
-        .on('mouseout', (d) => this.onTaxonOut.emit())
         .append('circle')
         .attr('r', 5);
 
       label
         .append('a')
-        .attr('href', (d) => {
-          return `/taxon/${d.id}`;
-        })
+        .attr('href', (d) => `/taxon/${d.id}`)
         .on('click', (d) => {
           this.router.navigate(['taxon', d.id]);
           d3.event.preventDefault();
         })
         .append('text')
         .attr('dy', '.31em')
-        .attr('text-anchor', function (d) {
-          return d.x < 180 ? 'start' : 'end';
-        })
-        .attr('transform', function (d) {
-          return d.x < 180 ? 'translate(8)' : 'rotate(180)translate(-8)';
-        })
-        .text(function (d) {
-          return d.scientificName;
-        });
+        .attr('text-anchor', (d) => d.x < 180 ? 'start' : 'end')
+        .attr('transform', (d) => d.x < 180 ? 'translate(8)' : 'rotate(180)translate(-8)')
+        .text((d) => d.scientificName);
     });
 
-    this.host.style('height', diameter + 'px');
+    this.host.style('height', `${diameter + 40}px`);
   }
 }

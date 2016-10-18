@@ -25,24 +25,21 @@
 		</li>
 	</ul>
 	<div *ngIf="(type | async) == 'informal'" class="row">
-		<div class="col-md-12">
+		<div class="col-xs-12">
 			<laji-informal-list-breadcrumb [groups]="groups" [informalGroup]="selectedInformalGroup"></laji-informal-list-breadcrumb>
 			<laji-informal-list *ngIf="selectedInformalGroup" [tree]="selectedInformalGroup"></laji-informal-list>
 			<laji-species-list *ngIf="selectedInformalGroup" [informalGroup]="selectedInformalGroup"></laji-species-list>
 		</div>
 	</div>
 	<div *ngIf="(type | async) == 'taxonomy'" class="row">
-		<div class="col-lg-12">
-			<laji-tree-of-life (onTaxonHover)="onTaxonHover($event)" (onTaxonOut)="onTaxonOut()" style="display: block; width: 100%;"></laji-tree-of-life>
+		<div class="col-xs-12">
+			<ol class="breadcrumb">
+				<li *ngFor="let parent of parents | async" >
+					<a [routerLink]="['/','taxon','browse','taxonomy',parent.id]">{{ parent.scientificName }}</a>
+				</li>
+				<li class="active">{{ (taxon | async)?.scientificName }}</li>
+			</ol>
+			<laji-tree-of-life style="display: block; width: 100%;"></laji-tree-of-life>
 		</div>
-		<!--div class="col-lg-4 row">
-			<h3 *ngIf="selected.length" class="col-md-12">Alemmat taksonit</h3>
-			<div class="col-md-6" *ngFor="let taxon of filteredSelected">
-				<div style="height: 50px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis" class="thumbnail">
-					<span>{{taxon.scientificName}}<br><small>{{taxon.vernacularName}}</small></span>
-				</div>
-			</div>
-			<span *ngIf="selected.length > 10" class="col-md-12">Ja {{ selected.length - 10 }} muuta...</span>
-		</div-->
 	</div>
 </div>

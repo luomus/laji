@@ -27,7 +27,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() size: number = 5000;
   @Input() initWithWorldMap: boolean = false;
   @Input() lastPage: number = 7; // 0 = no page limit
-  @Input() draw: boolean = false;
+  @Input() draw: any = false;
   @Input() height: number;
   @Input() selectColor: string = '#00aa00';
   @Input() color: any = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
