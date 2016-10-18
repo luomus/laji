@@ -67,6 +67,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
         uiSchema: this.formData.uiSchema,
         uiSchemaContext: this.formData.uiSchemaContext,
         formData: this.formData.formData,
+        validators: this.formData.validators,
         onSubmit: this._onSubmit.bind(this),
         apiClient: this.apiClient,
         lang: this.lang
