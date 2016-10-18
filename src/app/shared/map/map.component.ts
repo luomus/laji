@@ -1,6 +1,9 @@
 /// <reference path="../../../../typings/globals/leaflet/index.d.ts" />
 
-import { Component, ElementRef, OnDestroy, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
+import {
+  Component, ElementRef, OnDestroy, Input, Output, EventEmitter, OnChanges, ViewChild,
+  OnInit
+} from '@angular/core';
 
 const lajiMap = require('laji-map').default;
 
@@ -13,7 +16,7 @@ const lajiMap = require('laji-map').default;
 </div>`,
   providers: []
 })
-export class MapComponent implements OnDestroy, OnChanges {
+export class MapComponent implements OnDestroy, OnChanges, OnInit {
 
   @Input() data: any = {};
   @Input() drawData: any;
@@ -32,7 +35,7 @@ export class MapComponent implements OnDestroy, OnChanges {
 
   map: any;
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.map = new lajiMap({
       tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
       activeIdx: 0,
@@ -65,6 +68,11 @@ export class MapComponent implements OnDestroy, OnChanges {
     this.moveEvent('moveend');
   }
 
+  ngAfterViewInit() {
+    this.updateData();
+    this.initDrawData();
+  }
+
   moveEvent(type: string) {
     this.onMove.emit({
       zoom: this.map.getNormalizedZoom(),
@@ -86,6 +94,7 @@ export class MapComponent implements OnDestroy, OnChanges {
 
   ngOnDestroy() {
     try {
+      this.map.map.off('click');
       this.map.destroy();
     } catch (err) {
       console.log(err);
@@ -93,8 +102,20 @@ export class MapComponent implements OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes) {
-    this.updateData();
-    this.initDrawData();
+    if (changes.visible) {
+      setTimeout(() => {
+        try {
+          if (this.map) {
+            this.map.map.invalidateSize();
+          }
+        } catch (e) {
+        }
+      }, 200);
+    }
+    if (changes.data || changes.drawData || changes.tick) {
+      this.updateData();
+      this.initDrawData();
+    }
   }
 
   updateData() {
@@ -106,14 +127,6 @@ export class MapComponent implements OnDestroy, OnChanges {
       this.map.setData(this.data);
       if (this.drawSingleShape) {
         this.initSingleShape();
-      }
-      if (this.visible) {
-        setTimeout(() => {
-          try {
-            this.map.map.invalidateSize();
-          } catch (e) {
-          }
-        }, 500);
       }
     } catch (err) {
       console.log(err);

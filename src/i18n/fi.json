@@ -113,6 +113,7 @@
   "observation.form.administrativeStatus": "Hallinnollinen tila",
   "observation.form.redListStatusId": "Uhanalaisuus",
   "observation.form.map": "Paikka",
+  "observation.form.mapLink": "Rajaa alue kartalta",
   "observation.form.multi-all": "molemmat",
   "observation.form.multi-true": "kyllä",
   "observation.form.multi-false": "ei",

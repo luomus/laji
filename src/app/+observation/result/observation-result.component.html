@@ -2,9 +2,8 @@
   <tab [heading]="'search.result.map' | translate"
        (select)="activate('map')"
        [active]="active === 'map'">
-    <div>
+    <div *ngIf="activated['map']">
       <laji-observation-map
-              *ngIf="active === 'map'"
               [showItemsWhenLessThan]="500"
               [opacity]="0.5"
               [tick]="searchQuery.tack"
