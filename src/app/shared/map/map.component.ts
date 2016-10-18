@@ -18,7 +18,7 @@ export class MapComponent implements OnDestroy, OnChanges {
   @Input() data: any = {};
   @Input() drawData: any;
   @Input() visible: boolean;
-  @Input() draw: boolean = false;
+  @Input() draw: any = false;
   @Input() lang: string = 'fi';
   @Input() drawSingleShape: boolean = true;
   @Input() initWithWorldMap: boolean = false;
@@ -43,11 +43,6 @@ export class MapComponent implements OnDestroy, OnChanges {
       rootElem: this.elemRef.nativeElement,
       controlSettings: {
         draw: this.draw,
-        polygon: false,
-        polyline: false,
-        point: false,
-        circle: false,
-        marker: false,
         layers: true,
         zoom: true,
         location: false
