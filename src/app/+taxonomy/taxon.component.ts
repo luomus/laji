@@ -8,7 +8,6 @@ import 'rxjs/add/operator/map';
 import { TaxonomyApi, InformalTaxonGroupApi, InformalTaxonGroup, Taxonomy } from '../shared';
 import { SharedModule } from '../shared/shared.module';
 
-
 @Component({
   selector: 'laji-taxonomy',
   templateUrl: './taxon.component.html',
@@ -39,11 +38,12 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   private taxonSubscription: Subscription;
 
-  constructor(private route: ActivatedRoute,
-              private translate: TranslateService,
-              private informalTaxonService: InformalTaxonGroupApi,
-              private taxonService: TaxonomyApi) {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private translate: TranslateService,
+    private informalTaxonService: InformalTaxonGroupApi,
+    private taxonService: TaxonomyApi
+  ) { }
 
   ngOnInit() {
     this.subTrans = this.translate.onLangChange.subscribe(this.refreshInformalGroups);
@@ -57,10 +57,9 @@ export class TaxonComponent implements OnInit, OnDestroy {
     const taxonomy = this.type.filter(type => type === 'taxonomy').switchMap((type) => this.id.distinctUntilChanged());
 
     informal.filter(id => id == null).forEach(id => {
-      this.informalTaxonService.informalTaxonGroupFindRoots(this.translate.currentLang)
-        .subscribe(data => {
-          this.setSelectedInformalGroup(data);
-        });
+      this.informalTaxonService
+        .informalTaxonGroupFindRoots(this.translate.currentLang)
+        .subscribe(this.setSelectedInformalGroup.bind(this));
       this.groups = [];
       this.selectedInformalGroup = null;
     });
@@ -68,14 +67,8 @@ export class TaxonComponent implements OnInit, OnDestroy {
     informal.filter(id => id != null).forEach(id => {
       this.informalTaxonService.informalTaxonGroupGetChildren(id, this.translate.currentLang)
         .zip(this.informalTaxonService.informalTaxonGroupFindById(id, this.translate.currentLang))
-        .map(data => ({
-          id: data[1].id,
-          name: data[1].name,
-          results: data[0].results
-        }))
-        .subscribe(data => {
-          this.setSelectedInformalGroup(data);
-        });
+        .map(this.parseInformalTaxonGroup.bind(this))
+        .subscribe(this.setSelectedInformalGroup.bind(this));
       this.informalTaxonService.informalTaxonGroupGetParents(id, this.translate.currentLang)
         .subscribe(data => {
           this.groups = data;
@@ -96,11 +89,16 @@ export class TaxonComponent implements OnInit, OnDestroy {
     this.subParents.unsubscribe();
   }
 
+  parseInformalTaxonGroup(data) {
+    const { results } = data[0];
+    const { id, name } = data[1];
+    return { results, id, name };
+  };
+
   refreshInformalGroups() {
-    this.informalTaxonService.informalTaxonGroupFindRoots(this.translate.currentLang)
-      .subscribe(data => {
-        this.setSelectedInformalGroup(data);
-      });
+    this.informalTaxonService
+      .informalTaxonGroupFindRoots(this.translate.currentLang)
+      .subscribe(this.setSelectedInformalGroup.bind(this));
   }
 
   setSelectedInformalGroup(data: InformalTaxonGroup) {

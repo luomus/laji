@@ -22,12 +22,12 @@ export class SpeciesListComponent implements OnChanges {
 
   private subFetch: Subscription;
 
-  constructor(private taxonomyService: TaxonomyApi,
-              private translate: TranslateService) {
-  }
+  constructor(
+    private taxonomyService: TaxonomyApi,
+    private translate: TranslateService
+  ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   ngOnChanges() {
     if (this.informalGroup) {
@@ -36,21 +36,28 @@ export class SpeciesListComponent implements OnChanges {
     }
   }
 
-  refreshSpeciesList() {
+  pageChanged(event) {
+    this.refreshSpeciesList(event.page);
+  }
+
+  refreshSpeciesList(page: number = 1) {
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
     this.subFetch = this.taxonomyService
-      .taxonomyFindSpecies('MX.37600',
-        this.translate.currentLang,
-        this.informalGroup.id
+      .taxonomyFindSpecies(
+      'MX.37600',
+      this.translate.currentLang,
+      this.informalGroup.id,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      `${page}`
       )
-      .subscribe(
-        data => {
-          this.speciesPage = data;
-          this.loading = false;
-        },
-        err => console.log(err)
-      );
+      .subscribe(data => {
+        this.speciesPage = data;
+        this.loading = false;
+      }, console.log.bind(this));
   }
 }

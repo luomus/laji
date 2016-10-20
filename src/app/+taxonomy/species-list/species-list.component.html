@@ -1,19 +1,29 @@
 <div *ngIf="loading">
-  loading...
+	loading...
 </div>
 <div *ngIf="!loading && speciesPage">
-  <table class="table table-bordered table-striped">
-    <thead>
-    <tr>
-      <td>{{ 'taxonomy.vernacular.name' | translate }}</td>
-      <th>{{ 'taxonomy.scientific.name' | translate }}</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let taxon of speciesPage.results">
-      <td>{{ taxon.vernacularName }}</td>
-      <th><a [routerLink]="['/taxon/' + taxon.id]">{{ taxon.scientificName }}</a></th>
-    </tr>
-    </tbody>
-  </table>
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<td>{{ 'taxonomy.vernacular.name' | translate }}</td>
+				<th>{{ 'taxonomy.scientific.name' | translate }}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let taxon of speciesPage.results">
+				<td>{{ taxon.vernacularName }}</td>
+				<th><a [routerLink]="['/taxon/' + taxon.id]">{{ taxon.scientificName }}</a></th>
+			</tr>
+		</tbody>
+	</table>
+  <pagination
+  [totalItems]="speciesPage.total"
+  [ngModel]="speciesPage.currentPage"
+  [itemsPerPage]="speciesPage.pageSize"
+  [maxSize]="10"
+  [rotate]="false"
+  [boundaryLinks]="true"
+  [directionLinks]="false"
+  (pageChanged)="pageChanged($event)">
+  </pagination>
 </div>
