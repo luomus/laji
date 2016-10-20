@@ -18,7 +18,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() visible: boolean = false;
   @Input() query: WarehouseQueryInterface;
   @Input() opacity: number = .5;
-  @Input() lat: string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid01.lat'];
+  @Input() lat: string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid005.lat'];
   @Input() lon: string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
   // zoom levels from lowest to highest when to move to more accurate grid
   @Input() zoomThresholds: number[] = [5];
