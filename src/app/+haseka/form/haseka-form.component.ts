@@ -7,6 +7,7 @@ import { UserService } from '../../shared/service/user.service';
 import { FooterService } from '../../shared/service/footer.service';
 import { FormApi } from '../../shared/api/FormApi';
 import { LajiFormComponent } from '../../shared/form/laji-form.component';
+import { LocalStorage } from 'angular2-localstorage/dist';
 
 @Component({
   selector: 'laji-haseka-form',
@@ -21,8 +22,9 @@ export class HaSeKaFormComponent implements OnInit {
   public formId: string;
   public documentId: string;
   public lang: string;
+  public tick: number = 0;
 
-  private formDataStorage = {};
+  @LocalStorage() private formDataStorage = {};
   private subParam: Subscription;
   private subTrans: Subscription;
   private subFetch: Subscription;
@@ -60,47 +62,39 @@ export class HaSeKaFormComponent implements OnInit {
   }
 
   onChange(formData) {
-
+    if (this.isEdit) {
+      this.formDataStorage[this.documentId] = formData;
+    } else {
+      this.formDataStorage[this.formId] = formData;
+    }
   }
 
   onSubmit(event) {
-    // event.makeBlock();
     let data = event.data.formData;
-    if (this.isEdit) {
-      this.documentService
-        .update(data.id || this.documentId, data, this.userService.getToken())
+    let edit$ = this.documentService
+      .update(data.id || this.documentId, data, this.userService.getToken());
+    let create$ = this.documentService
+      .create(data, this.userService.getToken());
+    (this.isEdit ? edit$ : create$)
         .subscribe(
-          result => {
-            this.form.formData = result;
-            this.lajiForm.clearState();
-            this.success = 'haseka.form.success';
-            setTimeout(() => this.success = '', 5000);
-          },
-          err => {
-            this.error = err;
-            setTimeout(() => this.error = undefined, 5000);
-          }
-          // event.clearBlock()
-        );
-    } else {
-      this.documentService
-        .create(data, this.userService.getToken())
-        .subscribe(result => {
+          (result) => {
+            this.tick = this.tick + 1;
             this.success = 'haseka.form.success';
             this.form.formData = result;
             this.documentId = result.id;
-            this.isEdit = true;
-            this.formDataStorage[this.formId] = {};
             this.lajiForm.clearState();
             setTimeout(() => this.success = '', 5000);
+            if (this.isEdit) {
+              delete this.formDataStorage[this.formId];
+            } else {
+              delete this.formDataStorage[this.documentId];
+            }
+            this.isEdit = true;
           },
-          err => {
+          (err) => {
             this.error = this.parseErrorMessage(err);
             setTimeout(() => this.error = undefined, 5000);
-          }
-          // event.clearBlock()
-        );
-    }
+        });
   }
 
   fetchForm() {
@@ -114,6 +108,9 @@ export class HaSeKaFormComponent implements OnInit {
       data => {
         data[0].formData = data[1];
         this.form = data[0];
+        if (this.formDataStorage[this.formId]) {
+          this.form.formData = this.formDataStorage[this.formId];
+        }
         this.lang = this.translate.currentLang;
       },
       err => console.log(err)
@@ -132,10 +129,38 @@ export class HaSeKaFormComponent implements OnInit {
         this.isEdit = true;
         this.form = data[0];
         this.form.formData = data[1];
-        this.formDataStorage[this.formId] = this.form.formData;
+        if (this.formDataStorage[this.documentId] && this.isLocalNewest(
+            this.formDataStorage[this.documentId],
+            this.form.formData
+          )) {
+          this.form.formData = this.formDataStorage[this.documentId];
+        }
         this.lang = this.translate.currentLang;
       },
       err => console.log(err)
+    );
+  }
+
+  isLocalNewest(local, remote) {
+    if (remote.dateEdited) {
+      if (!local.dateEdited ||
+        this.getDateFromString(local.dateEdited) < this.getDateFromString(remote.dateEdited)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private getDateFromString(dateString) {
+    const reggie = /(\d{4})-(\d{2})-(\d{2})[T\s](\d{2}):(\d{2}):(\d{2})/;
+    let dateArray = reggie.exec(dateString);
+    return new Date(
+      (+dateArray[1]),
+      (+dateArray[2]) - 1, // Careful, month starts at 0!
+      (+dateArray[3]),
+      (+dateArray[4]),
+      (+dateArray[5]),
+      (+dateArray[6])
     );
   }
 

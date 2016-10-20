@@ -14,6 +14,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
   @Input() formId: string;
   @Input() lang: string;
   @Input() formData: any = {};
+  @Input() tick: number;
 
   @Output() onSubmit = new EventEmitter();
   @Output() onChange = new EventEmitter();
@@ -40,7 +41,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
   }
 
   ngOnChanges() {
-    if (!this.renderElem) {
+    if (!this.lajiFormWrapper) {
       return;
     }
     this.unMount();
@@ -49,7 +50,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
 
   clearState() {
     if (this.lajiFormWrapper) {
-      // this.lajiFormWrapper.clearState();
+      this.lajiFormWrapper.clearState();
     }
   }
 
@@ -69,12 +70,17 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
         formData: this.formData.formData,
         validators: this.formData.validators,
         onSubmit: this._onSubmit.bind(this),
+        onChange: this._onChange.bind(this),
         apiClient: this.apiClient,
         lang: this.lang
       });
     } catch (err) {
       console.log(err);
     }
+  }
+
+  _onChange(formData) {
+    this.onChange.emit(formData);
   }
 
   _onSubmit(data) {
