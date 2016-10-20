@@ -290,8 +290,8 @@ export class WarehouseApi {
       });
   }
 
-  public downloadApprovalRequest(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, extraHttpRequestParams?: any): Observable<string> {
-    const path = this.basePath + '/warehouse//private-query/downloadApprovalRequest';
+  public downloadApprovalRequest(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, description: string, extraHttpRequestParams?: any): Observable<string> {
+    const path = this.basePath + '/warehouse/private-query/downloadApprovalRequest';
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
@@ -312,6 +312,15 @@ export class WarehouseApi {
     queryParameters.set('downloadFormat', downloadFormat);
     queryParameters.set('downloadIncludes', includes);
 
+    if (locale !== undefined) {
+      queryParameters.set('locale', locale);
+    }
+
+    if (description !== undefined) {
+      queryParameters.set('description', description);
+    }
+
+
     this.addQueryToQueryParams(query, queryParameters);
 
     let requestOptions: RequestOptionsArgs = {
@@ -330,7 +339,7 @@ export class WarehouseApi {
       });
   }
 
-  public download(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, extraHttpRequestParams?: any): Observable<string> {
+  public download(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, description: string, extraHttpRequestParams?: any): Observable<string> {
     const path = this.basePath + '/warehouse/query/download';
 
     let queryParameters = new URLSearchParams();
@@ -351,6 +360,15 @@ export class WarehouseApi {
     queryParameters.set('personToken', userToken);
     queryParameters.set('downloadFormat', downloadFormat);
     queryParameters.set('downloadIncludes', includes);
+
+    if (locale !== undefined) {
+      queryParameters.set('locale', locale);
+    }
+
+    if (description !== undefined) {
+      queryParameters.set('description', description);
+    }
+
 
     this.addQueryToQueryParams(query, queryParameters);
 

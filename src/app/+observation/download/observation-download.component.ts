@@ -18,6 +18,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     'count': 0,
     'private': 0
   };
+  public description: string = '';
   private queryCache: string;
   private subQueryUpdate: Subscription;
 
@@ -67,14 +68,14 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   }
 
   makePrivateRequest() {
-    this.makeRequest('downloadApprovalRequest');
+    this.makeRequest('downloadApprovalRequest', this.description);
   }
 
   makePublicRequest() {
-    this.makeRequest('download');
+    this.makeRequest('download', '');
   }
 
-  makeRequest(type: string) {
+  makeRequest(type: string, description) {
     this.queryCache = JSON.stringify(this.searchQuery.query);
     if (this.requests[type] === this.queryCache) {
       return;
@@ -85,7 +86,9 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
       this.userService.getToken(),
       'CSV_FLAT',
       'UNIT_FACTS',
-      this.searchQuery.query
+      this.searchQuery.query,
+      this.translate.currentLang,
+      description
     ).subscribe(
       _ => {
         this.requests[type] = 'sent';
