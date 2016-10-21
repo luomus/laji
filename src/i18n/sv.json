@@ -200,9 +200,9 @@
   "footer.title1": "Finlands Artdatacenter",
   "footer.intro1": "Finlands Artdatacenter samlar information av arter tillgänglig till ett ställe. Läs mer om projektet.",
   "footer.title2": "Tiedonhallinta",
-  "footer.intro2": "<ul><li>Aineistopolitiikka</li><li>Tietovarasto</li><li>Pitkäaikaissäilytys</li><li>Taksonominen tietokanta</li><li>Laadunvarmistus</li><li>Annotointi -keskustelu</li><li>Sensitiivinen aineisto</li><li>Käyttölisenssit</li></ul>",
-  "footer.title3": "Tietotekniset palvelut",
-  "footer.intro3": "<ul><li>Kokoelmahallinta</li><li>Havaintopalvelu</li><li>Analyysipalvelut</li><li>Aineistojen metatiedot</li><li>Viranomaispalvelut</li><li>Digitointi</li><li>Rajapinnat / API</li></ul>",
-  "footer.title4": "Muut palvelut",
-  "footer.intro4": "<ul><li>Vieraslaji.fi</li><li>BirdLife -Tiira</li><li>Hyönteistietokanta</li></ul>"
+  "footer.intro2": "<ul><li>Data policy</li><li>Datalager</li><li>Långtidsbevaring</li><li>Taxondatabas</li><li>Kvalitetssäkring</li><li>Annotering</li><li>Sensitiv data</li><li>Licenser</li></ul>",
+  "footer.title3": "IT tjänster",
+  "footer.intro3": "<ul><li>Samlingsförvaltning</li><li>Observationstjänst</li><li>Analystjänst</li><li>Metadata</li><li>Myndighetstjänster</li><li>Digitalisering</li><li>API</li></ul>",
+  "footer.title4": "Övriga tjänster",
+  "footer.intro4": "<ul><li>Vieraslajit.fi</li><li>Tiira - Birdlife</li><li>Insektsdatabas</li></ul>"
 }  
