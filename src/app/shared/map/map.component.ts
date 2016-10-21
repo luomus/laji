@@ -90,7 +90,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   ngOnDestroy() {
     try {
       this.map.map.off();
-      this.map.remove();
+      this.map.map.remove();
     } catch (err) {
       console.log(err);
     }
