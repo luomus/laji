@@ -150,6 +150,8 @@
   "observation.download.loadPrivate": "tee pyyntö",
   "observation.download.error": "Could not make the request!",
   "observation.download.wip": "Tulossa<br><br>Viranomaisille tai muille aineistojen omistajille voi toistaiseksi tehdä aineiston luovutuspyynnön nykyisten käytäntöjen tapaan. Yhteystiedot ovat metatietolomakkeella",
+  "observation.download.label": "Vapaavalintainen kuvaus aineistopyynnölle",
+  "observation.download.description.left": "merkkejä jäljellä",
   "haseka.title": "Havaintopalvelu",
   "haseka.slogan": "Tallenna, hallinoi ja jaa lajihavaintojasi",
   "haseka.intro": "<p>Havaintopalvelu tarjoaa suoraviivaisen kanavan julkaista eliölajihavaintoja laji.fi-sivuston kautta. Rekisteröityneelle käyttäjälle palvelu tarjoaa tietokannan omien havaintotietojensa tallentamiseen ja hallintaan sekä väylän niiden jakamiseen. Käyttäjät voivat perustaa tietokantaan projekteja, joihin kutsutut osallistujat tallentavat haluttua lajitietoa. Perustetun projektin keräämiä tietoja hallinnoi sen omistaja ja tiedon jakaminen laji.fi-sivuston kautta on helppoa. Palvelun mukautuva lomakkeisto antaa käyttäjälle mahdollisuuden valita itselleen sopivan tavan tallentaa, hallita ja jakaa havaintojaan muiden käyttöön.</p>",
