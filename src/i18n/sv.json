@@ -193,4 +193,12 @@
   "profile.friends": "Vänner",
   "profile.friendsInfo": "Du kan be att dina vänner skickar dig länken till deras profilsidor. När du har fått länken, kan du be dem att bli dina vänner. När din begäran är godkänt, ser du här länken till deras profil.",
   "profile.accountSettings": "Min användarkonto"
+  "footer.title1": "Finlands Artdatacenter",
+  "footer.intro1": "Finlands Artdatacenter samlar information av arter tillgänglig till ett ställe. Läs mer om projektet.",
+  "footer.title2": "Tiedonhallinta",
+  "footer.intro2": "<ul><li>Aineistopolitiikka</li><li>Tietovarasto</li><li>Pitkäaikaissäilytys</li><li>Taksonominen tietokanta</li><li>Laadunvarmistus</li><li>Annotointi -keskustelu</li><li>Sensitiivinen aineisto</li><li>Käyttölisenssit</li></ul>",
+  "footer.title3": "Tietotekniset palvelut",
+  "footer.intro3": "<ul><li>Kokoelmahallinta</li><li>Havaintopalvelu</li><li>Analyysipalvelut</li><li>Aineistojen metatiedot</li><li>Viranomaispalvelut</li><li>Digitointi</li><li>Rajapinnat / API</li></ul>",
+  "footer.title4": "Muut palvelut",
+  "footer.intro4": "<ul><li>Vieraslaji.fi</li><li>BirdLife -Tiira</li><li>Hyönteistietokanta</li></ul>"
 }  
