@@ -169,5 +169,13 @@
   "profile.friendsInfo": "You can ask user to be your friend by going to his or hers profile page (ask a link from you friend) and clicking \"Friend request\" button. If the request is accepted you'll see your frien on this list.",
   "profile.accountSettings": "My account",
   "profile.friends.needProfile": "You need to make first your own profile to be able to as friends",
-  "profile.missing": "User dosn't have a public profile"
+  "profile.missing": "User dosn't have a public profile",
+  "footer.title1": "Finnish Biodiversity Info Facility",
+  "footer.intro1": "Finnish Biodiversity Information Facility (FinBIF) collects biodiversity data from Finland to one place. Read more about the project.",
+  "footer.title2": "Data management",
+  "footer.intro2": "<ul><li>Data policy</li><li>Data warehouse</li><li>Long-term preservation</li><li>Taxon database</li><li>Quality assurance</li><li>Annotation</li><li>Sensitive data/li><li>Licenses</li></ul>",
+  "footer.title3": "IT services",
+  "footer.intro3": "<ul><li>Collection management</li><li>Record observations -service</li><li>Analysis service</li><li>Metadata</li><li>Government services</li><li>Digitation</li><li>API</li></ul>",
+  "footer.title4": "Other services",
+  "footer.intro4": "<ul><li>Vieraslajit.fi</li><li>Tiira - BirdLife</li><li>Insects database</li></ul>"
 }
