@@ -153,6 +153,7 @@
   "observation.download.label": "Vapaavalintainen kuvaus aineistopyynnölle",
   "observation.download.description.left": "merkkejä jäljellä",
   "haseka.title": "Havaintopalvelu",
+  "haseka.slogan": "Tallenna, hallinoi ja jaa lajihavaintojasi",
   "haseka.intro": "<p>Havaintopalvelu tarjoaa suoraviivaisen kanavan julkaista eliölajihavaintoja laji.fi-sivuston kautta. Rekisteröityneelle käyttäjälle palvelu tarjoaa tietokannan omien havaintotietojensa tallentamiseen ja hallintaan sekä väylän niiden jakamiseen. Käyttäjät voivat perustaa tietokantaan projekteja, joihin kutsutut osallistujat tallentavat haluttua lajitietoa. Perustetun projektin keräämiä tietoja hallinnoi sen omistaja ja tiedon jakaminen laji.fi-sivuston kautta on helppoa. Palvelun mukautuva lomakkeisto antaa käyttäjälle mahdollisuuden valita itselleen sopivan tavan tallentaa, hallita ja jakaa havaintojaan muiden käyttöön.</p>",
   "haseka.termsOfService": "Käyttöehdot",
   "haseka.forms.title": "Lomakkeet",
@@ -162,6 +163,7 @@
   "haseka.users.latest.more": "lisätietoja",
   "haseka.pleaseLogin": "Sinun täytyy kirjautua käyttääksesi tätä palvelua",
   "haseka.terms": "käyttöehdot",
+  "haseka.button": "Lähetä",
   "haseka.users.latest.gathered": "havaittu",
   "observation.export.tooMany": "Liian paljon havaintoja. Maksimi on 200 000 joten rajaa hakua lisää",
   "observation.export.tooLittle": "Ei havaintoja joita voisit ladata",
@@ -182,9 +184,13 @@
   "footer.title1": "Suomen Lajitietokeskus",
   "footer.intro1": "Suomen Lajitietokeskus -hanke kokoaa Suomen eliölajistosta tietoa yhteen paikkaan –avoimeen käyttöön. Lue lisää hankkeesta ja sen tavoitteista ja aikatauluista.",
   "footer.title2": "Tiedonhallinta",
-  "footer.intro2": "<ul><li>Aineistopolitiikka</li><li>Tietovarasto</li><li>Pitkäaikaissäilytys</li><li>Taksonitietokanta</li><li>Laadunvarmistus</li><li>Annotointi -keskustelu</li><li>Sensitiivinen aineisto</li><li>Käyttölisenssit</li></ul>",
+  "footer.intro2": "<ul><li>Aineistopolitiikka</li><li>Tietovarasto</li><li>Pitkäaikaissäilytys</li><li>Taksonitietokanta</li><li>Laadunvarmistus</li><li>Annotointi-keskustelu</li><li>Sensitiivinen aineisto</li><li>Käyttölisenssit</li></ul>",
   "footer.title3": "Tietotekniset palvelut",
   "footer.intro3": "<ul><li>Kokoelmahallinta</li><li>Havaintopalvelu</li><li>Analyysipalvelut</li><li>Aineistojen metatiedot</li><li>Viranomaispalvelut</li><li>Digitointi</li><li>Rajapinnat / API</li></ul>",
   "footer.title4": "Muut palvelut",
-  "footer.intro4": "<ul><li>Vieraslaji.fi</li><li>BirdLife -Tiira</li><li>Hyönteistietokanta</li></ul>"
+  "footer.intro4": "<ul><li>Vieraslaji.fi</li><li>Tiira - BirdLife</li><li>Hyönteistietokanta</li></ul>",
+  "species.groups": "Lajiryhmät",
+  "species.taxa": "Taksonomia",
+  "species.title.short": "Hae tietoa maamme eläimistä, kasveista ja sienistä.",
+  "species.title.long": "Suomen Lajitietokeskuksen Lajit-hakupalvelujen avulla pääset tutustumaan Suomen eliölajiston ominaispiirteisiin ja levinneisyyteen tietotaulujen, karttojen ja kuvien avulla. Hakutoiminnon avulla löydät etsimäsi lajin ja saat käyttöösi viimeisintä tietoa kiinnostuksesi kohteesta."
 }
