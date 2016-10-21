@@ -237,7 +237,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       'gathering.conversions.wgs84CenterPoint.lon',
       'gathering.conversions.wgs84CenterPoint.lat',
       ...this.itemFields
-    ]).map(data => {
+    ], undefined, this.showItemsWhenLessThan).map(data => {
       let features = [];
       if (data.results) {
         data.results.map(row => {
@@ -271,7 +271,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
         cluster: {
           spiderfyOnMaxZoom: true,
           showCoverageOnHover: true,
-          singleMarkerMode: true
+          singleMarkerMode: true,
+          maxClusterRadius: 60
         }
       };
     }).do(() => {
