@@ -12,7 +12,9 @@ import { Subscription } from 'rxjs';
 export class ObservationDownloadComponent implements OnInit, OnDestroy {
 
   @Input() loadLimit = 200000;
+  @Input() descriptionLimit = 200;
 
+  public charactersLeft;
   public requests: any = {};
   public count = {
     'count': 0,
@@ -38,6 +40,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
       }
     );
     this.updateCount();
+    this.cntCharactersLeft();
   }
 
   ngOnDestroy() {
@@ -73,6 +76,10 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
 
   makePublicRequest() {
     this.makeRequest('download', '');
+  }
+
+  cntCharactersLeft() {
+    this.charactersLeft = this.descriptionLimit - (this.description.length);
   }
 
   makeRequest(type: string, description) {

@@ -38,7 +38,8 @@
         </strong>
         {{'result.load.introPrivate' | translate}}
       </p>
-      <textarea [(ngModel)]="description" class="form-control"></textarea>
+      <label for="download-description">{{'observation.download.label' | translate}}:</label> ({{'observation.download.description.left' | translate}} {{charactersLeft}})
+      <textarea id="download-description" (keyup)="cntCharactersLeft()" [maxLength]="descriptionLimit" [(ngModel)]="description" class="form-control"></textarea>
       <div *ngIf="requests['downloadApprovalRequest'] !== 'sent'">
         <alert *ngIf="requests['downloadApprovalRequest'] === 'error'" [dismissible]="true">
           {{'observation.download.error' | translate}}
