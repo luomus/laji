@@ -1,12 +1,34 @@
 html {
   position: relative;
-  min-height: 100%;
+  height: 100%;
 }
 
 body {
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   padding-top: 50px;
-  margin-bottom: 226px;
+  height: 100%;
+}
+
+#lajiApp {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#content {
+  flex: 1;
+}
+
+#footer, #navbar {
+  flex: none;
+}
+
+#footer footer {
+  flex: none;
+  color: #fff;
+  background-color: #3498DB;
+  margin-top: 10px;
+  width: 100%;
 }
 
 .breadcrumb {

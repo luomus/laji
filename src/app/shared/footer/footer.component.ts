@@ -3,8 +3,7 @@ import { FooterService } from '../service/footer.service';
 
 @Component({
   selector: 'laji-footer',
-  templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css']
+  templateUrl: './footer.component.html'
 })
 export class FooterComponent {
   constructor(public footerService: FooterService) {
