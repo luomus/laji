@@ -96,12 +96,11 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
         this.searchQuery.orderBy,
         this.searchQuery.pageSize,
         page)
+      .map(result => this.prepareData(result))
       .subscribe(
         results => {
           this.searchQuery.page = results.currentPage || 1;
-          if (results) {
-            this.result = results;
-          }
+          this.result = results;
           this.searchQuery.updateUrl(this.location, undefined, [
             'selected',
             'pageSize',
@@ -114,6 +113,22 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
         },
         () => this.loading = false
       );
+  }
+
+  prepareData(data) {
+    if (!data.results) {
+      return data;
+    }
+    let colLen = this.columns.length;
+    let results: any = [];
+    for (let i = 0, len = data.results.length; i < len; i++) {
+      results[i] = {};
+      for (let j = 0; j < colLen; j++) {
+        results[i][this.columns[j].field] = this.getData(data.results[i], this.columns[j].field);
+      }
+    }
+    data.results = results;
+    return data;
   }
 
   getData(row: any, propertyName: string): string {

@@ -12,7 +12,6 @@ import { ObservationMapComponent } from './map/observation-map.component';
 import { MultiRadioComponent } from './multi-radio/multi-radio.component';
 import { ObservationResultComponent } from './result/observation-result.component';
 import { ObservationResultListComponent } from './result-list/observation-result-list.component';
-import { ResultListElementComponent } from './result-list/result-list-element.component';
 import { MetadataSelectComponent } from '../shared/metadata-select/metadata-select.component';
 import { PieChartComponent } from '../shared/chart/pie/pie-chart.component';
 import { nvD3 } from 'ng2-nvd3';
@@ -29,7 +28,7 @@ import { ObservationDownloadComponent } from './download/observation-download.co
     ObservationAggregateComponent, ObservationChartComponent,
     ObservationFilterComponent, ObservationFormComponent, ObservationGroupSelectComponent,
     MultiRadioComponent, ObservationResultComponent,
-    ObservationResultListComponent, ResultListElementComponent, MetadataSelectComponent,
+    ObservationResultListComponent, MetadataSelectComponent,
     PieChartComponent, nvD3, DatePickerComponent, ObservationDownloadComponent],
   exports: [ObservationCountComponent, ObservationMapComponent]
 })

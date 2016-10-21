@@ -89,8 +89,8 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
 
   ngOnDestroy() {
     try {
-      this.map.map.off('click');
-      this.map.destroy();
+      this.map.map.off();
+      this.map.remove();
     } catch (err) {
       console.log(err);
     }
@@ -98,6 +98,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
 
   ngOnChanges(changes) {
     if (changes.visible) {
+      console.log('visibility change');
       setTimeout(() => {
         try {
           if (this.map) {
@@ -108,6 +109,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
       }, 200);
     }
     if (changes.data || changes.drawData || changes.tick) {
+      console.log('data change');
       this.updateData();
       this.initDrawData();
     }
@@ -118,7 +120,6 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
       return;
     }
     try {
-      this.map.map.off('click');
       this.map.setData(this.data);
       if (this.drawSingleShape) {
         this.initSingleShape();

@@ -14,7 +14,7 @@
         <tbody>
         <tr *ngFor="let row of result?.results">
           <td *ngFor="let column of columns">
-            <result-list-element [data]="getData(row, column.field)"></result-list-element>
+            <span [innerHtml]="row[column.field]"></span>
           </td>
         </tr>
         </tbody>
