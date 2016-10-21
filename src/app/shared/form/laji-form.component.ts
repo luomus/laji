@@ -54,6 +54,12 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
     }
   }
 
+  submit() {
+    if (this.lajiFormWrapper) {
+      this.lajiFormWrapper.submit();
+    }
+  }
+
   mount() {
     if (!this.formData || !this.lang) {
       return;

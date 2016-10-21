@@ -159,6 +159,7 @@
   "haseka.form.success": "Havainnot tallennettu!",
   "haseka.form.failure": "Tallennus epäonnistui!",
   "haseka.users.latest": "Viimeisimmät ilmoitukseni",
+  "haseka.users.latest.more": "lisätietoja",
   "haseka.pleaseLogin": "Sinun täytyy kirjautua käyttääksesi tätä palvelua",
   "haseka.terms": "käyttöehdot",
   "haseka.users.latest.gathered": "havaittu",

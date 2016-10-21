@@ -11,7 +11,7 @@ export class ValueDecoratorService {
     'unit.individualId': 'makeId',
     'gathering.eventDate': 'makeDateRange',
     'gathering.team': 'makeArrayToSemiColon',
-    'unit.linkings.taxon.vernacularName': 'makeTaxonLocal',
+    'unit.taxonVerbatim': 'makeTaxonLocal',
     'unit.linkings.taxon': 'makeTaxon',
     'gathering.conversions.wgs84CenterPoint': 'makeMapPoint'
   };
@@ -57,11 +57,18 @@ export class ValueDecoratorService {
     return (+value.lat.toFixed(6)) + ' : ' + (+value.lon.toFixed(6));
   }
 
-  protected makeTaxonLocal(value) {
-    if (value && typeof value[this.lang] !== 'undefined') {
-      return value[this.lang];
+  protected makeTaxonLocal(value, context) {
+    if (
+      context.unit.linkings &&
+      context.unit.linkings.taxon &&
+      context.unit.linkings.taxon.vernacularName) {
+      if (context.unit.linkings.taxon.vernacularName[this.lang]) {
+        return context.unit.linkings.taxon.vernacularName[this.lang];
+      } else {
+        return '';
+      }
     }
-    return '';
+    return value;
   }
 
   protected makeTaxon(value): any {

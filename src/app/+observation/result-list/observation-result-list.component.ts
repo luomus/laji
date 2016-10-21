@@ -16,7 +16,7 @@ import { TranslateService } from 'ng2-translate';
 export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   @Input() columns: any = [
-    {field: 'unit.linkings.taxon.vernacularName', translation: 'result.unit.taxonVerbatim'},
+    {field: 'unit.taxonVerbatim,unit.linkings.taxon.vernacularName', translation: 'result.unit.taxonVerbatim'},
     {field: 'unit.linkings.taxon.scientificName', translation: 'result.scientificName'},
     {field: 'gathering.team'},
     {field: 'gathering.eventDate'},
