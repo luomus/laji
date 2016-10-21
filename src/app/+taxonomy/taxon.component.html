@@ -1,10 +1,6 @@
 <div class="container">
-	<h1>Lajit<br><small>Hae tietoa maamme eläimistä, kasveista ja sienistä.</small></h1>
-	<div class="well well-sm">
-		Suomen Lajitietokeskuksen Lajit-hakupalvelujen avulla pääset tutustumaan Suomen eliölajiston ominaispiirteisiin ja levinneisyyteen
-		tietotaulujen, karttojen ja kuvien avulla. Hakutoiminnon avulla löydät etsimäsi lajin ja saat käyttöösi viimeisintä tietoa
-		kiinnostuksesi kohteesta.
-	</div>
+	<h1>{{ 'navigation.taxonomy' | translate }}<br><small>{{ 'species.title.short' | translate }}</small></h1>
+	<div class="well well-sm">{{ 'species.title.long' | translate }}</div>
 		<div class="col-md-12">
 			<div class="row">
 				<laji-omni-search [placeholder]="'search-bar.input' | translate" [lang]="translate.currentLang"></laji-omni-search>
@@ -14,13 +10,13 @@
 		<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
 			<a routerLink="/taxon/browse/informal">
 				<span style="font-size: 150%" class="glyphicon glyphicon-th-list"></span>
-				<h3>Lajiryhmät</h3>
+				<h3>{{ 'species.groups' | translate }}</h3>
 			</a>
 		</li>
 		<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
 			<a routerLink="/taxon/browse/taxonomy">
 				<span style="font-size: 150%" class="glyphicon glyphicon-picture"></span>
-				<h3>Taksonomia</h3>
+				<h3>{{ 'species.taxa' | translate }}</h3>
 			</a>
 		</li>
 	</ul>

@@ -46,7 +46,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subTrans = this.translate.onLangChange.subscribe(this.refreshInformalGroups);
+    this.subTrans = this.translate.onLangChange.subscribe(this.refreshInformalGroups.bind(this));
 
     this.type = this.route.params.map(params => params['type']);
 

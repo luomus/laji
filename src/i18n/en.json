@@ -177,5 +177,9 @@
   "footer.title3": "IT services",
   "footer.intro3": "<ul><li>Collection management</li><li>Record observations -service</li><li>Analysis service</li><li>Metadata</li><li>Government services</li><li>Digitation</li><li>API</li></ul>",
   "footer.title4": "Other services",
-  "footer.intro4": "<ul><li>Vieraslajit.fi</li><li>Tiira - BirdLife</li><li>Insects database</li></ul>"
+  "footer.intro4": "<ul><li>Vieraslajit.fi</li><li>Tiira - BirdLife</li><li>Insects database</li></ul>",
+  "species.groups": "Informal groups",
+  "species.taxa": "Taxonomy",
+  "species.title.short": "Hae tietoa maamme eläimistä, kasveista ja sienistä.",
+  "species.title.long": "Suomen Lajitietokeskuksen Lajit-hakupalvelujen avulla pääset tutustumaan Suomen eliölajiston ominaispiirteisiin ja levinneisyyteen tietotaulujen, karttojen ja kuvien avulla. Hakutoiminnon avulla löydät etsimäsi lajin ja saat käyttöösi viimeisintä tietoa kiinnostuksesi kohteesta."
 }
