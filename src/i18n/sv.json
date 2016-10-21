@@ -179,6 +179,9 @@
   "haseka.pleaseLogin": "Du måste logga in för att använda den här tjänsten.",
   "haseka.terms": "Användarvillkor",
   "haseka.users.latest.gathered": "observerad",
+  "haseka.button": "Skicka",
+
+
   "observation.export.tooMany": "För många observationer. Maksimiantal är 200 000. Sökningen måste begränsas.",
   "observation.export.tooLittle": "Inga observationer som kan laddas ner.",
 

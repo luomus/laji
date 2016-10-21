@@ -162,6 +162,7 @@
   "haseka.users.latest": "Viimeisimmät ilmoitukseni",
   "haseka.pleaseLogin": "Sinun täytyy kirjautua käyttääksesi tätä palvelua",
   "haseka.terms": "käyttöehdot",
+  "haseka.button": "Lähetä",
   "haseka.users.latest.gathered": "havaittu",
   "observation.export.tooMany": "Liian paljon havaintoja. Maksimi on 200 000 joten rajaa hakua lisää",
   "observation.export.tooLittle": "Ei havaintoja joita voisit ladata",
