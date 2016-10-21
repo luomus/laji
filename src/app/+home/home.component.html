@@ -32,14 +32,14 @@
                     <div style="height: 170px;" class="panel panel-default">
                       <div class="panel-heading">
                         <a routerLink="/haseka">
-                          <h3 class="panel-title">Haseka</h3>
+                          <h3 class="panel-title">{{ 'haseka.title' | translate }}</h3>
                         </a>
                       </div>
                       <div class="panel-body">
                         <form>
                           <div class="form-group">
-                            <label for="hasekaInput">Ilmoita havaintosi</label>
-                            <input type="text" class="form-control" id="hasekaInput" placeholder="laji"/>
+                            <label for="hasekaInput">{{ 'haseka.slogan' | translate }}</label>
+                            <input type="text" class="form-control" id="hasekaInput" [placeholder]="'result.unit.taxonVerbatim' | translate"/>
                           </div>
                           <button type="submit" class="btn btn-default pull-right">Lähetä</button>
                         </form>
@@ -48,14 +48,6 @@
                   </div>
                 </div>
               </div>
-              <!--laji-navigation-thumbnail
-                [name]="'home.navigation-thumbnail.info'"
-                [icon]="'glyphicon-bullhorn'"
-                [path]="'information'"></laji-navigation-thumbnail>
-              <laji-navigation-thumbnail
-                [name]="'home.navigation-thumbnail.sources'"
-                [icon]="'glyphicon-book'"
-                [path]="'collection'"></laji-navigation-thumbnail-->
             </div>
           </div>
           <div class="col-md-6">

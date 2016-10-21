@@ -170,6 +170,7 @@
   "observation.download.wip": "Work in progress<br><br>Viranomaisille tai muille aineistojen omistajille voi toistaiseksi tehdä aineiston luovutuspyynnön nykyisten käytäntöjen tapaan. Yhteystiedot ovat metatietolomakkeella",
 
   "haseka.title": "Observationstjänst",
+  "haseka.slogan": "Record, manage, share your species observations",
   "haseka.intro": "<p>Observationstjänst erbjuder en enkel kanal för att publicera artobservationer via sidan Laji.fi. För registrerade användaren tjänsten erbjuder en databas för att spara och administrera egna observationer och kanalen för att dela ut dem. Användarna kan grunda projekter som samlar önskad artinformation med hjälp av projektens deltagarna. Projektens ägare administerar data samlats via projekten och det är lätt att dela ut data via Laji.fi. Tjänstens anpasslig formulär ger användaren möjligheten att välja bästa sättet att spara, administera och dela ut observationer.</p>",
   "haseka.forms.title": "Formulär",
   "haseka.form.success": "Observationerna sparat!",
@@ -192,7 +193,7 @@
 
   "profile.friends": "Vänner",
   "profile.friendsInfo": "Du kan be att dina vänner skickar dig länken till deras profilsidor. När du har fått länken, kan du be dem att bli dina vänner. När din begäran är godkänt, ser du här länken till deras profil.",
-  "profile.accountSettings": "Min användarkonto"
+  "profile.accountSettings": "Min användarkonto",
   "footer.title1": "Finlands Artdatacenter",
   "footer.intro1": "Finlands Artdatacenter samlar information av arter tillgänglig till ett ställe. Läs mer om projektet.",
   "footer.title2": "Tiedonhallinta",
