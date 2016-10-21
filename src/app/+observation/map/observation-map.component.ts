@@ -215,12 +215,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     if (query.coordinates) {
       this.initDrawData();
     }
-    if (!query.coordinates && this.activeBounds && this.activeLevel >= this.onlyViewPortThreshold) {
-      query.coordinates = [
-        this.activeBounds.getSouthWest().lat + ':' + this.activeBounds.getNorthEast().lat + ':' +
-        this.activeBounds.getSouthWest().lng + ':' + this.activeBounds.getNorthEast().lng + ':WGS84'
-      ];
-    }
     this.reset = true;
     this.loading = true;
     this.showingItems = false;
@@ -283,7 +277,15 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
     const count$ = this.warehouseService
       .warehouseQueryCountGet(query)
-      .switchMap(cnt => cnt.total < this.showItemsWhenLessThan ? items$ : geoJson$);
+      .switchMap(cnt => {
+        if (!query.coordinates && this.activeBounds && this.activeLevel >= this.onlyViewPortThreshold) {
+          query.coordinates = [
+            this.activeBounds.getSouthWest().lat + ':' + this.activeBounds.getNorthEast().lat + ':' +
+            this.activeBounds.getSouthWest().lng + ':' + this.activeBounds.getNorthEast().lng + ':WGS84'
+          ];
+        }
+        return cnt.total < this.showItemsWhenLessThan ? items$ : geoJson$;
+      });
 
     this.subDataFetch = (this.showItemsWhenLessThan > 0 ? count$ : geoJson$)
       .subscribe(
