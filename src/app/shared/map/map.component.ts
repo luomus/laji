@@ -98,7 +98,6 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
 
   ngOnChanges(changes) {
     if (changes.visible) {
-      console.log('visibility change');
       setTimeout(() => {
         try {
           if (this.map) {
@@ -109,7 +108,6 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
       }, 200);
     }
     if (changes.data || changes.drawData || changes.tick) {
-      console.log('data change');
       this.updateData();
       this.initDrawData();
     }

@@ -141,7 +141,6 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
         default:
       }
     }
-    console.log(this.searchQuery.query);
     this.onSelect.emit(item);
   }
 

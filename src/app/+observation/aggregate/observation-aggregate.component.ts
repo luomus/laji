@@ -1,18 +1,18 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { SearchQuery } from '../search-query.model';
-import { TranslateService } from 'ng2-translate';
 import { Util } from '../../shared/service/util.service';
 
 @Component({
   selector: 'laji-observation-aggregate',
   templateUrl: 'observation-aggregate.component.html'
 })
-export class ObservationAggregateComponent implements OnInit, OnDestroy {
+export class ObservationAggregateComponent implements OnInit, OnDestroy, OnChanges {
 
+  @Input() lang: string = 'fi';
   @Input() title: string = '';
-  @Input() field: string;
+  @Input() field: string|{'en': string, 'sv': string, 'fi': string};
   @Input() limit: number = 10;
   @Input() hideOnEmpty: boolean = false;
   @Input() updateOnLangChange: boolean = false;
@@ -43,8 +43,7 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
   private lastCache: string;
 
   constructor(private warehouseService: WarehouseApi,
-              private searchQuery: SearchQuery,
-              private translate: TranslateService) {
+              private searchQuery: SearchQuery) {
   }
 
   ngOnInit() {
@@ -52,13 +51,6 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
       this.page = 1;
       this.updateList();
     });
-    this.translate.onLangChange.subscribe(
-      () => {
-        if (this.updateOnLangChange) {
-          this.updateList();
-        }
-      }
-    );
     this.updateList();
   }
 
@@ -71,6 +63,12 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngOnChanges(changes) {
+    if (changes.lang) {
+      this.updateList();
+    }
+  }
+
   pageChanged(page) {
     this.page = page.page;
     this.items = [];
@@ -79,7 +77,7 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
 
   updateList() {
     let query = Util.clone(this.searchQuery.query);
-    let cache = JSON.stringify(query) + this.page;
+    let cache = JSON.stringify(query) + this.page + this.lang;
     if (this.lastCache === cache) {
       return;
     }
@@ -91,8 +89,14 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
       query = Object.assign(query, this.queryOverride);
     }
     this.loading = true;
+    let fields: any = '';
+    if (typeof this.field === 'string') {
+      fields = this.field;
+    } else if (this.field[this.lang]) {
+      fields = this.field[this.lang];
+    }
     this.subCount = this.warehouseService
-      .warehouseQueryAggregateGet(query, [this.field], undefined, this.limit, this.page)
+      .warehouseQueryAggregateGet(query, [fields], undefined, this.limit, this.page)
       .subscribe(
         result => {
           if (result.results) {
@@ -101,8 +105,8 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy {
               .map(item => {
                 let link = undefined;
                 let value = this.valuePicker ?
-                  this.valuePicker(item.aggregateBy, this.translate.currentLang) :
-                  (item.aggregateBy[this.field] || '');
+                  this.valuePicker(item.aggregateBy, this.lang) :
+                  (item.aggregateBy[fields] || '');
                 if (this.linkPicker) {
                   link = this.linkPicker(item.aggregateBy);
                 }

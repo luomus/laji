@@ -5,6 +5,7 @@ import { WarehouseApi, PagedResult } from '../../shared';
 import { ValueDecoratorService } from './value-decorator.sevice';
 import { SearchQuery } from '../search-query.model';
 import { Util } from '../../shared/service/util.service';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   selector: 'laji-observation-result-list',
@@ -15,7 +16,7 @@ import { Util } from '../../shared/service/util.service';
 export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   @Input() columns: any = [
-    {field: 'unit.taxonVerbatim,unit.linkings.taxon', translation: 'result.unit.taxonVerbatim'},
+    {field: 'unit.linkings.taxon.vernacularName', translation: 'result.unit.taxonVerbatim'},
     {field: 'unit.linkings.taxon.scientificName', translation: 'result.scientificName'},
     {field: 'gathering.team'},
     {field: 'gathering.eventDate'},
@@ -31,11 +32,14 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   private subFetch: Subscription;
   private subUpdate: Subscription;
+  private subTrans: Subscription;
   private lastQuery: string;
+  private resultCache: PagedResult<any>;
 
   constructor(private warehouseService: WarehouseApi,
               private decorator: ValueDecoratorService,
               private searchQuery: SearchQuery,
+              private translate: TranslateService,
               private location: Location) {
   }
 
@@ -46,6 +50,13 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
       currentPage: this.searchQuery.page,
       results: []
     };
+    this.subTrans = this.translate.onLangChange.subscribe(
+      () => {
+        if (this.resultCache) {
+          this.result = this.prepareData(Util.clone(this.resultCache));
+        }
+      }
+    );
     this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
       query => {
         this.searchQuery.page = 1;
@@ -61,6 +72,9 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     }
     if (this.subFetch) {
       this.subFetch.unsubscribe();
+    }
+    if (this.subTrans) {
+      this.subTrans.unsubscribe();
     }
   }
 
@@ -96,6 +110,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
         this.searchQuery.orderBy,
         this.searchQuery.pageSize,
         page)
+      .do(result => this.resultCache = Util.clone(result))
       .map(result => this.prepareData(result))
       .subscribe(
         results => {
@@ -121,6 +136,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     }
     let colLen = this.columns.length;
     let results: any = [];
+    this.decorator.lang = this.translate.currentLang;
     for (let i = 0, len = data.results.length; i < len; i++) {
       results[i] = {};
       for (let j = 0; j < colLen; j++) {

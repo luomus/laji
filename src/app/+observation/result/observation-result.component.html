@@ -26,10 +26,15 @@
        (select)="activate('species')"
        [active]="active === 'species'">
     <laji-observation-aggregate
-            [field]="'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameEnglish,unit.linkings.taxon.nameFinnish,unit.linkings.taxon.nameSwedish,unit.linkings.taxon.id'"
+            [field]="{
+              'en': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameEnglish,unit.linkings.taxon.id',
+              'fi': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameFinnish,unit.linkings.taxon.id',
+              'sv': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameSwedish,unit.linkings.taxon.id'
+            }"
             [title]="'search.result.species' | translate"
             [valuePicker]="pickValue"
             [linkPicker]="pickLink"
+            [lang]="translate.currentLang"
             [queryOverride]="{includeNonValidTaxa: false, taxonRankId: 'MX.species'}"
             [limit]="50"
             [showPager]="true"></laji-observation-aggregate>
