@@ -183,9 +183,9 @@
   "footer.title1": "Suomen Lajitietokeskus",
   "footer.intro1": "Suomen Lajitietokeskus -hanke kokoaa Suomen eliölajistosta tietoa yhteen paikkaan –avoimeen käyttöön. Lue lisää hankkeesta ja sen tavoitteista ja aikatauluista.",
   "footer.title2": "Tiedonhallinta",
-  "footer.intro2": "<ul><li>Aineistopolitiikka</li><li>Tietovarasto</li><li>Pitkäaikaissäilytys</li><li>Taksonitietokanta</li><li>Laadunvarmistus</li><li>Annotointi -keskustelu</li><li>Sensitiivinen aineisto</li><li>Käyttölisenssit</li></ul>",
+  "footer.intro2": "<ul><li>Aineistopolitiikka</li><li>Tietovarasto</li><li>Pitkäaikaissäilytys</li><li>Taksonitietokanta</li><li>Laadunvarmistus</li><li>Annotointi-keskustelu</li><li>Sensitiivinen aineisto</li><li>Käyttölisenssit</li></ul>",
   "footer.title3": "Tietotekniset palvelut",
   "footer.intro3": "<ul><li>Kokoelmahallinta</li><li>Havaintopalvelu</li><li>Analyysipalvelut</li><li>Aineistojen metatiedot</li><li>Viranomaispalvelut</li><li>Digitointi</li><li>Rajapinnat / API</li></ul>",
   "footer.title4": "Muut palvelut",
-  "footer.intro4": "<ul><li>Vieraslaji.fi</li><li>BirdLife -Tiira</li><li>Hyönteistietokanta</li></ul>"
+  "footer.intro4": "<ul><li>Vieraslaji.fi</li><li>Tiira - BirdLife</li><li>Hyönteistietokanta</li></ul>"
 }
