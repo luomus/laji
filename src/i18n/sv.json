@@ -170,8 +170,9 @@
   "observation.download.wip": "Work in progress<br><br>Viranomaisille tai muille aineistojen omistajille voi toistaiseksi tehdä aineiston luovutuspyynnön nykyisten käytäntöjen tapaan. Yhteystiedot ovat metatietolomakkeella",
 
   "haseka.title": "Observationstjänst",
-  "haseka.slogan": "Record, manage, share your species observations",
+  "haseka.slogan": "Spara, administrera, dela dina observationer",
   "haseka.intro": "<p>Observationstjänst erbjuder en enkel kanal för att publicera artobservationer via sidan Laji.fi. För registrerade användaren tjänsten erbjuder en databas för att spara och administrera egna observationer och kanalen för att dela ut dem. Användarna kan grunda projekter som samlar önskad artinformation med hjälp av projektens deltagarna. Projektens ägare administerar data samlats via projekten och det är lätt att dela ut data via Laji.fi. Tjänstens anpasslig formulär ger användaren möjligheten att välja bästa sättet att spara, administera och dela ut observationer.</p>",
+  "haseka.termsOfService": "Användarvillkor",
   "haseka.forms.title": "Formulär",
   "haseka.form.success": "Observationerna sparat!",
   "haseka.form.failure": "Sparning misslyckades!",

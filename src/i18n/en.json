@@ -147,6 +147,7 @@
   "observation.download.error": "Could not make the request!",
   "observation.download.wip": "Work in progress<br><br>Viranomaisille tai muille aineistojen omistajille voi toistaiseksi tehdä aineiston luovutuspyynnön nykyisten käytäntöjen tapaan. Yhteystiedot ovat metatietolomakkeella",
   "haseka.title": "Record observations-service",
+  "haseka.termsOfService": "Terms of Service",
   "haseka.slogan": "Record, manage, share your species observations",
   "haseka.forms.title": "Forms",
   "haseka.users.latest": "Latest submissions",
