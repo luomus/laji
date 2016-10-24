@@ -25,7 +25,6 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   @Input() lang: string = 'fi';
   @Input() drawSingleShape: boolean = true;
   @Input() initWithWorldMap: boolean = false;
-  @Input() tick: any;
   @Input() bringDrawLayerToBack: boolean = true;
 
   @Output() select = new EventEmitter();
@@ -107,7 +106,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
         }
       }, 200);
     }
-    if (changes.data || changes.drawData || changes.tick) {
+    if (changes.data || changes.drawData) {
       this.updateData();
       this.initDrawData();
     }

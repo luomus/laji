@@ -45,7 +45,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
   public mapData;
   public drawData: any = {featureCollection: {type: 'featureCollection', features: []}};
-  public tack = 0;
   public loading = false;
   private prev: string = '';
   private subDataFetch: Subscription;
@@ -57,6 +56,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   private reset = true;
   private showingItems = false;
   private legendsCache: any;
+  private dataCache: any;
 
 
   private static getValue(row: any, propertyName: string): string {
@@ -222,11 +222,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   private addToMap(query: WarehouseQueryInterface, page = 1) {
-    const geoJson$ = this.warehouseService.warehouseQueryAggregateGet(
-      query, [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
-      undefined, this.size, page, true
-    );
-
     const items$ = this.warehouseService.warehouseQueryListGet(query, [
       'gathering.conversions.wgs84CenterPoint.lon',
       'gathering.conversions.wgs84CenterPoint.lat',
@@ -278,45 +273,52 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     const count$ = this.warehouseService
       .warehouseQueryCountGet(query)
       .switchMap(cnt => {
-        if (!query.coordinates && this.activeBounds && this.activeLevel >= this.onlyViewPortThreshold) {
-          query.coordinates = [
-            this.activeBounds.getSouthWest().lat + ':' + this.activeBounds.getNorthEast().lat + ':' +
-            this.activeBounds.getSouthWest().lng + ':' + this.activeBounds.getNorthEast().lng + ':WGS84'
-          ];
-        }
-        return cnt.total < this.showItemsWhenLessThan ? items$ : geoJson$;
+        return cnt.total < this.showItemsWhenLessThan ? items$ : (this.warehouseService.warehouseQueryAggregateGet(
+          this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
+          undefined, this.size, page, true
+        ));
       });
 
-    this.subDataFetch = (this.showItemsWhenLessThan > 0 ? count$ : geoJson$)
+    this.subDataFetch = (this.showItemsWhenLessThan > 0 ? count$ : (this.warehouseService.warehouseQueryAggregateGet(
+      this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
+      undefined, this.size, page, true
+    )))
       .subscribe(
         (data) => {
           if (data.featureCollection) {
             if (this.reset) {
               this.reset = false;
-              this.mapData = [{
-                featureCollection: data.featureCollection,
-                getFeatureStyle: this.getStyle.bind(this),
-                getClusterStyle: this.getClusterStyle.bind(this),
-                getPopup: this.getPopup.bind(this),
-                cluster: data.cluster || false
-              }];
+              this.dataCache = data.featureCollection;
             } else {
-              this.mapData[0].featureCollection.features =
-                this.mapData[0].featureCollection.features.concat(data.featureCollection.features);
+              this.dataCache.features =
+                this.dataCache.features.concat(data.featureCollection.features);
             }
-          }
-          this.tack++;
-          if (this.tack > 1000) {
-            this.tack = 0;
           }
           if (data.lastPage > page && (this.lastPage === 0 || page <= this.lastPage)) {
             page++;
             this.addToMap(query, page);
           } else {
+            this.mapData = [{
+              featureCollection: Util.clone(this.dataCache),
+              getFeatureStyle: this.getStyle.bind(this),
+              getClusterStyle: this.getClusterStyle.bind(this),
+              getPopup: this.getPopup.bind(this),
+              cluster: data.cluster || false
+            }];
             this.loading = false;
           }
         }
       );
+  }
+
+  private addViewPortCoordinates(query: WarehouseQueryInterface) {
+    if (!query.coordinates && this.activeBounds && this.activeLevel >= this.onlyViewPortThreshold) {
+      query.coordinates = [
+        this.activeBounds.getSouthWest().lat + ':' + this.activeBounds.getNorthEast().lat + ':' +
+        this.activeBounds.getSouthWest().lng + ':' + this.activeBounds.getNorthEast().lng + ':WGS84'
+      ];
+    }
+    return query;
   }
 
   private getCacheKey(query: WarehouseQueryInterface) {

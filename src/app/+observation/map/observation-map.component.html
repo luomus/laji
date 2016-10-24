@@ -6,9 +6,7 @@
           [draw]="draw"
           (onCreate)="onCreate($event)"
           (onMove)="onMove($event)"
-          [initWithWorldMap]="initWithWorldMap"
-          [tick]="tack"
-  >
+          [initWithWorldMap]="initWithWorldMap">
     <div class="loading-map loading" *ngIf="loading"></div>
     <ul class="legend" *ngIf="legend" [ngStyle]="{'margin-top': getLegendTopMargin()}">
       <li *ngFor="let leg of getLegends()">
