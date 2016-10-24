@@ -62,11 +62,6 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     this.moveEvent('moveend');
   }
 
-  ngAfterViewInit() {
-    this.updateData();
-    this.initDrawData();
-  }
-
   moveEvent(type: string) {
     this.onMove.emit({
       zoom: this.map.getNormalizedZoom(),
