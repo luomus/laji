@@ -89,14 +89,18 @@ export class HaSeKaFormComponent implements OnInit {
   }
 
   onSubmit(event) {
+    console.log('submit event');
+    console.log(this.isEdit);
     this.saving = true;
     let data = event.data.formData;
-    let edit$ = this.documentService
-      .update(data.id || this.documentId, data, this.userService.getToken());
-    let create$ = this.documentService
-      .create(data, this.userService.getToken());
-    (this.isEdit ? edit$ : create$)
-        .subscribe(
+    let doc$;
+    if (this.isEdit) {
+      doc$ = this.documentService
+        .update(data.id || this.documentId, data, this.userService.getToken());
+    } else {
+      doc$ = this.documentService.create(data, this.userService.getToken());
+    }
+    doc$.subscribe(
           (result) => {
             this.tick = this.tick + 1;
             this.status = 'success';
@@ -148,6 +152,7 @@ export class HaSeKaFormComponent implements OnInit {
       this.userService.getDefaultFormData()
     ).subscribe(
       data => {
+        this.isEdit = false;
         data[0].formData = data[1];
         this.origFormData = Util.clone(data[1]);
         this.form = data[0];
