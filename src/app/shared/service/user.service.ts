@@ -1,20 +1,26 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { PersonTokenApi } from '../api/PersonTokenApi';
 import { Subscription, Observable, Observer } from 'rxjs';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
 import { LocalStorage } from 'angular2-localstorage/dist';
+import { Location } from '@angular/common';
 
 const config = require('../../../../config.json');
 
 @Injectable()
 export class UserService {
 
+  public isLoggedIn = false;
+
   @LocalStorage() private token = '';
+  @LocalStorage() private returnUrl = '/';
   private user: Person;
   private users: {[id: string]: Person} = {};
   private usersFetch: {[id: string]: Observable<Person>} = {};
   private defaultFormData: any;
+  private window;
 
   private subUser: Subscription;
   private subLogout: Subscription;
@@ -22,9 +28,14 @@ export class UserService {
   private formDefaultObservable: Observable<any>;
 
   constructor(private tokenService: PersonTokenApi,
-              private userService: PersonApi) {
+              private userService: PersonApi,
+              private router: Router,
+              private location: Location,
+              @Inject('Window') window: Window) {
+    this.window = window;
     if (this.token) {
       this.loadUserInfo(this.token);
+      this.isLoggedIn = true;
     }
   }
 
@@ -32,6 +43,7 @@ export class UserService {
     if (this.user === userToken || this.subUser) {
       return;
     }
+    this.isLoggedIn = true;
     this.loadUserInfo(userToken);
   }
 
@@ -41,6 +53,7 @@ export class UserService {
     }
     let token = this.token;
     this.token = '';
+    this.isLoggedIn = false;
     this.user = undefined;
     this.subLogout = this.tokenService.personTokenDeleteToken(token)
       .subscribe(
@@ -80,12 +93,13 @@ export class UserService {
     return this.usersFetch[id];
   }
 
-  public isLoggedIn() {
-    return this.token !== '';
+  public doLogin(): void {
+    this.returnUrl = this.location.path(true);
+    this.window.location.href = config.login_url;
   }
 
-  public getLoginUrl(): string {
-    return config.login_url;
+  public returnToPageBeforeLogin(): void {
+    this.router.navigateByUrl(this.returnUrl);
   }
 
   public getDefaultFormData(): Observable<any> {

@@ -31,8 +31,8 @@
         </li>
         -->
         <li [routerLinkActive]="['active']">
-          <a *ngIf="userService.isLoggedIn()" [routerLink]="['/haseka']">{{ 'navigation.haseka' | translate }}</a>
-          <a *ngIf="!userService.isLoggedIn()" [routerLink]="['/haseka']">{{ 'navigation.notify' | translate }}</a>
+          <a *ngIf="userService.isLoggedIn" [routerLink]="['/haseka']">{{ 'navigation.haseka' | translate }}</a>
+          <a *ngIf="!userService.isLoggedIn" [routerLink]="['/haseka']">{{ 'navigation.notify' | translate }}</a>
         </li>
         <li [routerLinkActive]="['active']">
           <a [routerLink]="['/information']">{{ 'navigation.information' | translate }}</a>
@@ -40,7 +40,7 @@
       </ul>
       <ul class="nav navbar-nav pull-right">
         <li [routerLinkActive]="['active']">
-          <div class="navbar-profile" *ngIf="userService.isLoggedIn()">
+          <div class="navbar-profile" *ngIf="userService.isLoggedIn">
             <div dropdown>
               <a dropdownToggle class="link language-toggle">
                 {{(userService.getUser()|async)?.id | users}}
@@ -57,7 +57,7 @@
               </ul>
             </div>
           </div>
-          <a *ngIf="!userService.isLoggedIn()" href="{{userService.getLoginUrl()}}">{{ 'navigation.user.login' |
+          <a *ngIf="!userService.isLoggedIn" (click)="userService.doLogin()">{{ 'navigation.user.login' |
             translate }}</a>
         </li>
         <li>
