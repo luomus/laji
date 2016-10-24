@@ -61,12 +61,6 @@ export class InfoCardComponent {
     this.subTrans.unsubscribe();
   }
 
-  setClasses() {
-    return {
-      'col-md-4': this.taxonDescription == null,
-    };
-  }
-
   private getTaxon(id) {
     this.taxonService
       .taxonomyFindBySubject(id, this.translate.currentLang)

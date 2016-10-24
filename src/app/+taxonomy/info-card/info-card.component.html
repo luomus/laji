@@ -4,7 +4,7 @@
   </h1>
   <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
   <div class="row">
-    <div class="col-sm-6" *ngIf="taxonDescription">
+    <div class="col-sm-6" *ngIf="taxonDescription && taxonDescription.length > 0">
       <select style="margin-bottom: 8px;" class="form-control" [(ngModel)]="activeDescription">
         <option *ngFor="let description of taxonDescription; let i = index" [value]="i">{{ description.title ? description.title[translate.currentLang] ? description.title[translate.currentLang] : description.id : description.id }}</option>
       </select>
@@ -19,8 +19,8 @@
         </div>
       </div>
     </div>
-    <div [class.col-sm-6]="taxonDescription">
-      <div [class.col-sm-3]="!taxonDescription">
+    <div [class.col-sm-6]="taxonDescription && taxonDescription.length > 0">
+      <div [class.col-sm-3]="taxonDescription && taxonDescription.length < 1">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">{{ 'taxonomy.images' | translate }}</h4>
@@ -30,7 +30,7 @@
           </div>
         </div>
       </div>
-      <div [class.col-sm-5]="!taxonDescription">
+      <div [class.col-sm-5]="taxonDescription && taxonDescription.length < 1">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">{{ 'taxonomy.card' | translate }}</h4>
@@ -40,7 +40,7 @@
           </div>
         </div>
       </div>
-      <div [class.col-sm-4]="!taxonDescription">
+      <div [class.col-sm-4]="taxonDescription && taxonDescription.length < 1">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">{{ 'taxonomy.map' | translate }}</h4>
