@@ -16,14 +16,16 @@
 			</tr>
 		</tbody>
 	</table>
-  <pagination
-  [totalItems]="speciesPage.total"
-  [ngModel]="speciesPage.currentPage"
-  [itemsPerPage]="speciesPage.pageSize"
-  [maxSize]="10"
-  [rotate]="false"
-  [boundaryLinks]="true"
-  [directionLinks]="false"
-  (pageChanged)="pageChanged($event)">
-  </pagination>
+	<pagination
+		[totalItems]="speciesPage.total"
+		[ngModel]="speciesPage.currentPage"
+		[itemsPerPage]="speciesPage.pageSize"
+		[maxSize]="10"
+		[rotate]="false"
+		[boundaryLinks]="true"
+		[directionLinks]="false"
+		firstText="&laquo"
+		lastText="&raquo"
+		(pageChanged)="pageChanged($event)">
+	</pagination>
 </div>
