@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <h1>{{form?.title}}</h1>
   <p>{{form?.description}}</p>
   <div class="laji-form" *ngIf="form?.id">
@@ -9,15 +9,31 @@
             [tick]="tick"
             (onChange)="onChange($event)"
             (onSubmit)="onSubmit($event)"></laji-form>
+    <div class="form-footer" [@visibilityChanged]="saveVisibility">
+      <div class="row">
+        <div class="col-xs-4 col-sm-2">
+          <button class="btn btn-default" [disabled]="saving" type="submit" (click)="submit()">{{'haseka.form.save'|translate}}</button>
+        </div>
+        <div class="col-xs-8 col-sm-10 form-control-static info" [ngSwitch]="status">
+          <div *ngSwitchCase="'success'" class="success status">
+            {{'haseka.form.success'|translate}}
+          </div>
+          <div *ngSwitchCase="'error'" class="error status">
+            {{'haseka.form.error' | translate}}
+          </div>
+          <div *ngSwitchCase="'unsaved'" class="unsaved status">
+            <span *ngIf="form.formData.dateEdited">
+              {{'haseka.form.unsaved' | translate:{saveTime: form.formData.dateEdited | date:'d.M.y HH:mm'} }}
+            </span>
+            <span *ngIf="!form.formData.dateEdited">
+              {{'haseka.form.unsavedNever' | translate}}
+            </span>&nbsp;&nbsp;
+            <span class="label label-danger link" (click)="discard()">
+              <i class="glyphicon glyphicon-remove" [tooltip]="'haseka.form.discard' | translate"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <alert
-          *ngIf="success"
-          [type]="'success'">
-    {{'haseka.form.success'|translate}}
-  </alert>
-  <alert
-          *ngIf="error">
-    <strong>{{error.title | translate}}</strong><br>
-    {{error.detail}}
-  </alert>
 </div>

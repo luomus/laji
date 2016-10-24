@@ -78,7 +78,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
         onSubmit: this._onSubmit.bind(this),
         onChange: this._onChange.bind(this),
         apiClient: this.apiClient,
-        lang: this.lang
+        lang: this.lang,
+        renderSubmit: false
       });
     } catch (err) {
       console.log(err);

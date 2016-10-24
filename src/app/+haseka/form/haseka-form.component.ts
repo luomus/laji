@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, trigger, state, style, transition, animate, Inject } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -8,12 +8,21 @@ import { FooterService } from '../../shared/service/footer.service';
 import { FormApi } from '../../shared/api/FormApi';
 import { LajiFormComponent } from '../../shared/form/laji-form.component';
 import { LocalStorage } from 'angular2-localstorage/dist';
+import { Util } from '../../shared/service/util.service';
 
 @Component({
   selector: 'laji-haseka-form',
   templateUrl: 'haseka-form.component.html',
   providers: [FormApi, DocumentApi],
-  styleUrls: ['haseka-form.component.css']
+  styleUrls: ['haseka-form.component.css'],
+  animations: [
+    trigger('visibilityChanged', [
+      state('shown' , style({ opacity: 1 })),
+      state('hidden', style({ opacity: 0 })),
+      transition('shown => hidden', animate('600ms')),
+      transition('hidden => shown', animate('300ms'))
+    ])
+  ]
 })
 export class HaSeKaFormComponent implements OnInit {
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
@@ -23,6 +32,9 @@ export class HaSeKaFormComponent implements OnInit {
   public documentId: string;
   public lang: string;
   public tick: number = 0;
+  public status: string = '';
+  public saveVisibility: string = 'hidden';
+  public saving: boolean = false;
 
   @LocalStorage() private formDataStorage = {};
   private subParam: Subscription;
@@ -31,13 +43,17 @@ export class HaSeKaFormComponent implements OnInit {
   private success: string = '';
   private error: any;
   private isEdit: boolean = false;
+  private origFormData: any;
+  private window;
 
   constructor(private formService: FormApi,
               private documentService: DocumentApi,
               private route: ActivatedRoute,
               private userService: UserService,
               private footerService: FooterService,
-              public translate: TranslateService) {
+              public translate: TranslateService,
+              @Inject('Window') window: Window) {
+    this.window = window;
   }
 
   ngOnDestroy() {
@@ -62,6 +78,9 @@ export class HaSeKaFormComponent implements OnInit {
   }
 
   onChange(formData) {
+    this.saveVisibility = 'shown';
+    this.status = 'unsaved';
+    this.saving = false;
     if (this.isEdit) {
       this.formDataStorage[this.documentId] = formData;
     } else {
@@ -70,6 +89,7 @@ export class HaSeKaFormComponent implements OnInit {
   }
 
   onSubmit(event) {
+    this.saving = true;
     let data = event.data.formData;
     let edit$ = this.documentService
       .update(data.id || this.documentId, data, this.userService.getToken());
@@ -79,22 +99,44 @@ export class HaSeKaFormComponent implements OnInit {
         .subscribe(
           (result) => {
             this.tick = this.tick + 1;
-            this.success = 'haseka.form.success';
+            this.status = 'success';
             this.form.formData = result;
             this.documentId = result.id;
             this.lajiForm.clearState();
-            setTimeout(() => this.success = '', 5000);
-            if (this.isEdit) {
-              delete this.formDataStorage[this.formId];
-            } else {
-              delete this.formDataStorage[this.documentId];
-            }
+            setTimeout(() => {
+              this.saveVisibility = 'hidden';
+              this.status = '';
+            }, 5000);
+            let deleteKey = this.isEdit ? this.documentId : this.formId;
+            delete this.formDataStorage[deleteKey];
             this.isEdit = true;
           },
           (err) => {
+            this.saving = false;
+            this.saveVisibility = 'shown';
             this.error = this.parseErrorMessage(err);
-            setTimeout(() => this.error = undefined, 5000);
+            this.status = 'error';
+            setTimeout(() => this.status = '', 5000);
         });
+  }
+
+  submit() {
+    this.lajiForm.submit();
+  }
+
+  discard() {
+    this.translate.get('haseka.form.discardConfirm').subscribe(
+      (confirm) => {
+        if (this.window.confirm(confirm)) {
+          let deleteKey = this.isEdit ? this.documentId : this.formId;
+          delete this.formDataStorage[deleteKey];
+          this.form.formData = this.origFormData;
+          this.status = '';
+          this.saveVisibility = 'hidden';
+          this.tick = this.tick + 1;
+        }
+      }
+    );
   }
 
   fetchForm() {
@@ -107,8 +149,11 @@ export class HaSeKaFormComponent implements OnInit {
     ).subscribe(
       data => {
         data[0].formData = data[1];
+        this.origFormData = Util.clone(data[1]);
         this.form = data[0];
         if (this.formDataStorage[this.formId]) {
+          this.saveVisibility = 'shown';
+          this.status = 'unsaved';
           this.form.formData = this.formDataStorage[this.formId];
         }
         this.lang = this.translate.currentLang;
@@ -129,10 +174,13 @@ export class HaSeKaFormComponent implements OnInit {
         this.isEdit = true;
         this.form = data[0];
         this.form.formData = data[1];
+        this.origFormData = Util.clone(data[1]);
         if (this.formDataStorage[this.documentId] && this.isLocalNewest(
             this.formDataStorage[this.documentId],
             this.form.formData
           )) {
+          this.saveVisibility = 'shown';
+          this.status = 'unsaved';
           this.form.formData = this.formDataStorage[this.documentId];
         }
         this.lang = this.translate.currentLang;
@@ -171,9 +219,6 @@ export class HaSeKaFormComponent implements OnInit {
       detail = data && data.error && data.error.message && data.error.message.detail ?
         data.error.message.detail : '';
     }
-    return {
-      title: 'haseka.form.failure',
-      detail: detail
-    };
+    return detail;
   }
 }

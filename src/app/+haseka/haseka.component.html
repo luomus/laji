@@ -1,6 +1,6 @@
 <div class="container">
   <h1>{{'haseka.title' | translate}}</h1>
-  <div *ngIf="userService.isLoggedIn()">
+  <div *ngIf="userService.isLoggedIn">
     <div class="row">
       <div class="col-sm-8">
         <div [innerHtml]="'haseka.intro' | translate"></div>
@@ -8,12 +8,12 @@
 
         <laji-haseka-form-list></laji-haseka-form-list>
       </div>
-      <div class="col-sm-4 well" *ngIf="userService.isLoggedIn()">
+      <div class="col-sm-4 well" *ngIf="userService.isLoggedIn">
         <laji-haseka-latest [userToken]="userService.token"></laji-haseka-latest>
       </div>
     </div>
   </div>
-  <div *ngIf="!userService.isLoggedIn()">
+  <div *ngIf="!userService.isLoggedIn">
     <div class="row">
       <div class="col-sm-12">
         <p>

@@ -1,4 +1,4 @@
-<div *ngIf="userService.isLoggedIn()">
+<div *ngIf="userService.isLoggedIn">
   <h3>{{'observation.download.publicTitle' | translate}}</h3>
   <div class="form-group">
     <div class="col-sm-12" *ngIf="loadLimit < count.count">
@@ -52,6 +52,6 @@
     </div>
   </div>
 </div>
-<div *ngIf="!userService.isLoggedIn()">
+<div *ngIf="!userService.isLoggedIn">
   {{'force.login' | translate}}
 </div>

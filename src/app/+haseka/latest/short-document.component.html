@@ -1,5 +1,5 @@
 <a [routerLink]="['/haseka/JX.519/' + document.id]">
-  {{document.id}} {{document.dateEdited | date:'YYYY-MM-dd'}}
+  {{document.id}} <small>{{document.dateEdited | date:'d.M.y HH:mm'}}</small>
 </a>
 <br>
 {{'haseka.users.latest.gathered' | translate }}:
