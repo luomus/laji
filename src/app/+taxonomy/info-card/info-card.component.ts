@@ -13,10 +13,11 @@ import { SharedModule } from '../../shared/shared.module';
 export class InfoCardComponent {
 
   public taxon: Taxonomy;
-  public taxonDescription: TaxonomyDescription;
+  public taxonDescription: Array<TaxonomyDescription>;
   public taxonImages: Array<TaxonomyImage>;
   public activePanel: number = 0;
   public activeImage: number = 1;
+  public activeDescription: number = 0;
 
   @Input() public taxonId: string;
 
@@ -77,9 +78,9 @@ export class InfoCardComponent {
 
   private getTaxonDescription(id) {
     this.taxonService
-      .taxonomyFindDescriptions(id, this.translate.currentLang)
+      .taxonomyFindDescriptions(id, 'multi')
       .subscribe(
-        descriptions => this.taxonDescription = descriptions[0],
+        descriptions => this.taxonDescription = descriptions,
         err => console.error(err)
       );
 

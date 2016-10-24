@@ -5,13 +5,16 @@
   <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
   <div class="row">
     <div class="col-sm-6" *ngIf="taxonDescription">
+      <select style="margin-bottom: 8px;" class="form-control" [(ngModel)]="activeDescription">
+        <option *ngFor="let description of taxonDescription; let i = index" [value]="i">{{ description.title ? description.title[translate.currentLang] ? description.title[translate.currentLang] : description.id : description.id }}</option>
+      </select>
       <div class="panel-group" role="tablist" aria-multiselectable="true">
-        <div class="panel panel-default" *ngFor="let group of taxonDescription.groups; let i = index"
-             [title]="group.title" [open]="activePanel == i"
+        <div class="panel panel-default" *ngFor="let group of taxonDescription[activeDescription].groups; let i = index"
+             [title]="group.title[translate.currentLang]" [open]="activePanel == i"
              [index]="i" (activate)="setActive($event)" laji-panel>
           <div *ngFor="let variable of group.variables">
-            <h4>{{ variable.title }}</h4>
-            <span [innerHTML]="variable.content"></span>
+            <h4>{{ variable.title[translate.currentLang] }}</h4>
+            <span [innerHTML]="variable.content[translate.currentLang]"></span>
           </div>
         </div>
       </div>
