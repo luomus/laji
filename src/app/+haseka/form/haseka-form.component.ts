@@ -89,8 +89,6 @@ export class HaSeKaFormComponent implements OnInit {
   }
 
   onSubmit(event) {
-    console.log('submit event');
-    console.log(this.isEdit);
     this.saving = true;
     let data = event.data.formData;
     let doc$;
