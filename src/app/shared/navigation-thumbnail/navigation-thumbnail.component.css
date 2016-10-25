@@ -1,7 +1,14 @@
 .tile {
-  margin-top: 15px;
+  margin-top: 5px;
   text-align: center;
-  height: 115px;
+  height: 125px;
+}
+
+.icon {
+  width: 80px;
+  height: 80px;
+  background-repeat: no-repeat;
+  margin: 0 auto;
 }
 
 .thumbnail {

@@ -6,15 +6,14 @@ import { Component, Input } from '@angular/core';
   <div class="col-md-6">
     <a class="thumbnail">
       <div class="tile">
-        <span class="glyphicon {{icon}}" ></span>
+        <div class="icon" [style.background-image]="'url(/static/images/icons/' + icon + '.svg)'"></div>
         <div class="caption">
           <h5>{{ name | translate }}</h5>
         </div>
       </div>
     </a>
   </div>
-`,
-  styleUrls: ['./navigation-thumbnail.component.css'],
+`, styleUrls: ['./navigation-thumbnail.component.css'],
 
 })
 export class NavigationThumbnailComponent {

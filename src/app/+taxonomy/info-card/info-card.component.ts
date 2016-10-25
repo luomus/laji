@@ -36,10 +36,12 @@ export class InfoCardComponent {
         this.getTaxon(this.taxonId);
         this.getTaxonDescription(this.taxonId);
         this.getTaxonMedia(this.taxonId);
-        this.taxonImages = [];
         this.activeImage = 1;
       });
     }
+
+    this.taxonDescription = [];
+    this.taxonImages = [];
 
     this.subTrans = this.translate.onLangChange.subscribe(
       () => {
