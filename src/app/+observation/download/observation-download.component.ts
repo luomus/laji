@@ -4,6 +4,7 @@ import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from 'ng2-translate';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Subscription } from 'rxjs';
+const config = require('../../../../config.json');
 
 @Component({
   selector: 'observation-download',
@@ -21,6 +22,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     'private': 0
   };
   public description: string = '';
+  public showRequest = true;
   private queryCache: string;
   private subQueryUpdate: Subscription;
 
@@ -28,6 +30,9 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
               public userService: UserService,
               public translate: TranslateService,
               private warehouseService: WarehouseApi) {
+    if (config.env && config.env === 'prod') {
+      this.showRequest = false;
+    }
   }
 
   ngOnInit() {
