@@ -155,7 +155,7 @@
   "haseka.pleaseLogin": "Please login to use this service",
   "haseka.terms": "terms of use",
   "haseka.users.latest.gathered": "observed",
-  "haseka.button": "Send",
+  "haseka.button": "Go to the observation service",
   "observation.export.tooMany": "Too many results. Max is 200 000, you'll need to narrow the search.",
   "observation.export.tooLittle": "No results for download.",
   "omniSearch.matches": "Information about species",
