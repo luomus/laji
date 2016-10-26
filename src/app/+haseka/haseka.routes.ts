@@ -11,7 +11,7 @@ export const hasekaRoutes: Routes = [
     component: HasekaComponent
   },
   {
-    path: 'termsOfService',
+    path: 'terms-of-service',
     pathMatch: 'full',
     component: HaSeKaTermsOfServiceComponent
   },

@@ -1,5 +1,5 @@
 .laji-form {
-  padding-bottom: 30px;
+  margin-bottom: 50px;
 }
 .form-footer {
   position: fixed;
@@ -8,7 +8,7 @@
   right: 0;
   height: 50px;
   padding:10px;
-  z-index: 1000;
+  z-index: 999;
   background-color: rgba(44, 62, 80, 0.9);
 }
 
