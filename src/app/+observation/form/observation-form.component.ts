@@ -209,7 +209,7 @@ export class ObservationFormComponent implements OnInit {
     ).map(res => {
       let lookUp = {};
       res.results.map((collection: Collection) => {
-        lookUp[IdService.getUri(collection.id)] = collection.collectionName;
+        lookUp[IdService.getUri(collection.id)] = collection.longName;
       });
       return data.map(col => {
         col['label'] = lookUp[col['value']];
