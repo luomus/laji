@@ -15,13 +15,14 @@ import { ObservationMapComponent } from '../+observation/map/observation-map.com
 import { MapComponent } from './map/map.component';
 import { PanelComponent } from './panel/panel.component';
 import { OmniSearchComponent } from './omni-search/omni-search.component';
+import { SafePipe } from './pipe/safe.pipe';
 
 
 @NgModule({
   declarations: [
     NewsListComponent,
     SpinnerComponent,
-    UsersPipe, LabelPipe, FormattedNumber,
+    UsersPipe, LabelPipe, SafePipe, FormattedNumber,
     ObservationCountComponent, ObservationMapComponent, MapComponent,
     PanelComponent, OmniSearchComponent
   ],
@@ -36,7 +37,7 @@ import { OmniSearchComponent } from './omni-search/omni-search.component';
   ],
   exports: [
     CommonModule, HttpModule, TranslateModule,
-    NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe,
+    NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe,
     TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, MapComponent,
     PanelComponent, OmniSearchComponent

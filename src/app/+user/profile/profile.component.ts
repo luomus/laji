@@ -4,6 +4,7 @@ import { PersonApi } from '../../shared/api/PersonApi';
 import { Profile } from '../../shared/model/Profile';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
+const config = require('../../../../config.json');
 
 @Component({
   selector: 'laji-user',
@@ -27,12 +28,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public isCreate = true;
   public editing = false;
   public loading = true;
+  public personSelfUrl = '/';
 
   private subProfile: Subscription;
 
   constructor(private userService: UserService,
               private personService: PersonApi,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute
+  ) {
+    if (config.person_self_url) {
+      this.personSelfUrl = config.person_self_url;
+    }
   }
 
   ngOnInit() {

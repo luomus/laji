@@ -2,5 +2,6 @@
   "env": "dev",
   "api_base": "https://apitest.laji.fi",
   "access_token": "//DO NOT Include this in production build!!!",
+  "person_self_url": "",
   "login_url": ""
 }
