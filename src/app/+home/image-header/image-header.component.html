@@ -25,12 +25,22 @@
     </slide>
     <slide>
       <div class="carousel-caption">
-        <laji-stat-item [description]="'home.carousel.digitized' | translate">
-          199000
-        </laji-stat-item>
-        <laji-stat-item [description]="'home.carousel.preserved' | translate">
-          6620491
-        </laji-stat-item>
+        <div class="row">
+          <div class="col-sm-12">
+            <img class="pull-left" src="/static/images/LAJI_FI_valk.png"/>
+          </div>
+        </div>
+        <div style="margin-top: 20px;" class="row">
+          <laji-stat-item [description]="'home.carousel.preserved' | translate" colClass="col-sm-4">
+            <laji-observation-count [lightLoader]="true"
+                                    [query]="{superRecordBasis: 'PRESERVED_SPECIMEN'}"></laji-observation-count>
+          </laji-stat-item>
+          <laji-stat-item [description]="'home.carousel.digitized' | translate" colClass="col-sm-4">
+            <laji-observation-count [lightLoader]="true"
+                                    [query]="{superRecordBasis: 'PRESERVED_SPECIMEN', hasMedia: true}">
+            </laji-observation-count>
+          </laji-stat-item>
+        </div>
       </div>
     </slide>
   </carousel>

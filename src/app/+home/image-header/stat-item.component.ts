@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'laji-stat-item',
   template: `
-  <div class="col-sm-3 text-left">
+  <div class="{{colClass}} text-left">
     <span class="stat-item-value">
       <ng-content></ng-content>
     </span>
@@ -18,4 +18,5 @@ import { Component, Input } from '@angular/core';
 export class StatItemComponent {
   @Input() value: number;
   @Input() description: string;
+  @Input() colClass: string = 'col-sm-3';
 }
