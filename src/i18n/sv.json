@@ -94,15 +94,13 @@
   "result.gathering.conversions.wgs84CenterPoint": "Observationsplats",
   "result.gathering.municipality": "Observationsplats",
   "result.load.introPublic": "Du kan ladda ner offentliga data via \"Ladda ner data\"-knappen. Data ska skickas snart till din e-post.",
-  "result.load.introPrivate": "Du kan be dolda data. Din anhållan ska behandlas individuell och du får anvisningar via e-post.",
+  "result.load.introPrivate": "Förgrovade <strong>{{count}}</strong>. Du kan be dolda data. Din anhållan ska behandlas individuell och du får anvisningar via e-post.",
   "result.load.thanksPublic": "Tack, du får länken till data via e-post.",
   "result.load.thanksRequest": "Tack, du får anvisningar via e-post.",
-  "result.load.privateCount": "Förgrovade",
   "observation.count": "Antal av observationer",
   "result.allObservation": "observationer",
-  
+
   "force.login": "Du måste logga in för att använda den här uppdelningen.",
-  
   
   "observation.intro": "<p>Suomen Lajitietokeskuksen Havainnot-palvelun avulla voit hakea monipuolisten hakutoimintojen avulla käyttöösi tietoja maassamme tehdyistä lajihavainnoista.</p><p>Havaintoja kertyy niin yksittäisiltä harrastajilta, kansalaistiedehankkeiden kautta kuin tieteellisen työn tuloksena. Haettavat aineistot sisältävät myös tieteellisten kokoelma-aineistojen näytteiden havaintotiedot ja seurannoissa tehdyt havainnot.</p>",
   "observation.form.filter": "Sökparametrar",
