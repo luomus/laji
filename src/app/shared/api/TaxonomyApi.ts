@@ -128,7 +128,7 @@ export class TaxonomyApi {
    * @param id id of the taxon
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
-  public taxonomyFindDescriptions(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<any>> {
+  public taxonomyFindDescriptions(id: string, lang?: string, langFallback?: boolean, extraHttpRequestParams?: any): Observable<Array<any>> {
     const path = this.basePath + '/taxa/{id}/descriptions'
         .replace('{' + 'id' + '}', String(id));
 
@@ -140,6 +140,9 @@ export class TaxonomyApi {
     }
     if (lang !== undefined) {
       queryParameters.set('lang', lang);
+    }
+    if (langFallback !== undefined) {
+      queryParameters.set('langFallback', langFallback ? 'true' : 'false');
     }
 
     let requestOptions: RequestOptionsArgs = {
