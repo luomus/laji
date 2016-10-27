@@ -148,7 +148,7 @@
   "observation.download.privateTitle": "Salattu data",
   "observation.download.loadPublic": "lataa aineisto",
   "observation.download.loadPrivate": "tee pyyntö",
-  "observation.download.error": "Could not make the request!",
+  "observation.download.error": "Pyynnön lähetys epäonnistui!",
   "observation.download.wip": "Tulossa<br><br>Viranomaisille tai muille aineistojen omistajille voi toistaiseksi tehdä aineiston luovutuspyynnön nykyisten käytäntöjen tapaan. Yhteystiedot ovat metatietolomakkeella",
   "observation.download.label": "Vapaavalintainen kuvaus aineistopyynnölle",
   "observation.download.description.left": "merkkejä jäljellä",
