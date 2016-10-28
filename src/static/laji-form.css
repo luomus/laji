@@ -3343,6 +3343,7 @@ Version: 0.0.6
   100% { opacity: 0.15; }
 }
 
+
 body .laji-form {
 	font-size: 13px;
 	position: relative;
@@ -3430,7 +3431,7 @@ body .laji-form {
 .laji-form .rw-input {
 	height: 23px !important;
 }
-.laji-form .form-control:not(textarea), .laji-form .rw-input {
+.laji-form .form-control:not(textarea), .laji-form .rw-input  {
 	padding: 0px 5px;
 }
 .laji-form select {
@@ -3511,7 +3512,7 @@ body .laji-form {
 	text-align: center;
 }
 
-.laji-form .leaflet-popup-content-wrapper {
+.laji-form .leaflet-rrose-content-wrapper {
 	border-radius: 2px;
 }
 .map-data-tooltip {
@@ -3527,22 +3528,15 @@ body .laji-form {
 	padding: 5px;
 	margin: 2px;
 }
-.laji-form .glyph-button {
+.laji-form .glyph-button, .laji-form .laji-form-field-template-buttons button {
 	width: 22px;
 	height: 22px;
-	line-height: 5px;
 	font-size: 11px;
-	padding: 5px;
+	padding: 4px 5px;
 	margin: 2px;
 }
 .laji-form .laji-form-scope-field-glyph {
 	line-height: 9px;
-}
-.laji-form .glyphicon {
-	top: 0;
-}
-.laji-form .vector-marker .glyphicon {
-	top: 8px;
 }
 
 .laji-form label strong:not(:empty)+.rc-switch {
@@ -3634,6 +3628,10 @@ body .laji-form {
 .laji-form button.button-right {
 	float: right;
 	white-space: nowrap;
+}
+
+.laji-form .dropdown-menu>.disabled>a {
+	color: #d4d4d4;
 }
 
 .laji-form .out-of-view {
@@ -3728,22 +3726,6 @@ body .laji-form {
 	right: -8px;
 }
 
-.laji-form .auto-array-item, .laji-form .scope-field  {
-	display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
-}
-.laji-form .auto-array-schema, .laji-form .scope-field-schema {
-	-webkit-flex-grow: 1;
-	-ms-flex-grow: 1;
-	flex-grow: 1;
-}
-.laji-form .auto-array-buttons-container {
-	width: 25px;
-}
-
 .laji-form .list-group-item.disabled {
 	opacity: .65;
 }
@@ -3814,3 +3796,44 @@ body .laji-form {
 .laji-form .date-time-buttons {
 	width: 130px;
 }
+
+
+.laji-form .laji-form-field-template-item, .laji-form .array-item  {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+.laji-form .laji-form-field-template-schema, .laji-form .array-item .col-xs-10 {
+	-webkit-flex-grow: 1;
+	-ms-flex-grow: 1;
+	flex-grow: 1;
+}
+.laji-form .laji-form-field-template-buttons, .laji-form .array-item .array-item-toolbox {
+	width: 25px;
+}
+
+.laji-form .date-widget {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+.laji-form .date-widget .date-picker {
+	flex: 1;
+}
+.laji-form .date-widget .btn-group {
+	margin-left: 1px;
+}
+.laji-form .date-widget .btn-group .btn {
+	height: 25px;
+	line-height: 12.5px;
+}
+.array-item-add {
+	width: 28px;
+	float: right;
+	margin-right: -3px;
+}
+
