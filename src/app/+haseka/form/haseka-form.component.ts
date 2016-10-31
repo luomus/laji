@@ -216,9 +216,11 @@ export class HaSeKaFormComponent implements OnInit {
   }
 
   private parseErrorMessage(err) {
-    let detail = '';
+    let detail = '', data;
     if (err._body) {
-      let data = JSON.parse(err._body);
+      try {
+        data = JSON.parse(err._body);
+      } catch (e) {}
       detail = data && data.error && data.error.message && data.error.message.detail ?
         data.error.message.detail : '';
     }
