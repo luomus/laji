@@ -65,7 +65,7 @@ export class InfoCardComponent {
 
   private getTaxon(id) {
     this.taxonService
-      .taxonomyFindBySubject(id, this.translate.currentLang)
+      .taxonomyFindBySubject(id, 'multi')
       .subscribe(
         taxonomy => this.taxon = taxonomy,
         err => console.log(err)

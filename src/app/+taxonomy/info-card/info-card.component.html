@@ -1,6 +1,6 @@
 <div class="container" *ngIf="taxon">
   <h1>{{taxon.scientificName}}
-    <small *ngIf="taxon.vernacularName">{{taxon.vernacularName}}</small>
+    <small *ngIf="taxon.vernacularName">{{taxon.vernacularName | multiLang}}</small>
   </h1>
   <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
   <div class="row">

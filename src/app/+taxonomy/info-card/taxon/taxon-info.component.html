@@ -10,7 +10,7 @@
   </tr>
   <tr *ngIf="taxon.vernacularName">
     <th>{{ 'taxonomy.vernacular.name' | translate }}</th>
-    <td>{{taxon.vernacularName}}</td>
+    <td>{{taxon.vernacularName | multiLang}}</td>
   </tr>
   <tr *ngIf="taxon.invasiveSpeciesCategory">
     <th>

@@ -50,7 +50,6 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
         location: false
       }
     });
-    this.map.map.scrollWheelZoom.disable();
     this.map.map.on('moveend', _ => {
       this.moveEvent('moveend');
     });
