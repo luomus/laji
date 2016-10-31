@@ -97,12 +97,12 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     this.warehouseService[type](
       this.userService.getToken(),
       'CSV_FLAT',
-      'UNIT_FACTS',
+      'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
       this.searchQuery.query,
       this.translate.currentLang,
       description
     ).subscribe(
-      _ => {
+      () => {
         this.requests[type] = 'sent';
       },
       err => {
