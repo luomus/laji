@@ -8,8 +8,7 @@
       {{'observation.export.tooLittle' | translate}}
     </div>
     <div class="col-sm-12" *ngIf="loadLimit >= count.count && count.count > 0">
-      <p>
-        {{'result.load.introPublic' | translate}}
+      <p [innerHtml]="'result.load.introPublic' | translate:{private: (count.private | formattedNumber:'&nbsp;'), count: (count.count | formattedNumber:'&nbsp;')} ">
       </p>
       <div *ngIf="requests['download'] !== 'sent'">
         <alert *ngIf="requests['download'] === 'error'" [dismissible]="true">
@@ -32,9 +31,7 @@
         {{'observation.export.tooMany' | translate}}
       </div>
       <div class="col-sm-12" *ngIf="loadLimit >= count.private">
-        <p [innerHtml]="'result.load.introPrivate' | translate:{count: count.private}"></p>
-        <label for="download-description">{{'observation.download.label' | translate}}:</label> ({{'observation.download.description.left' | translate}} {{charactersLeft}})
-        <textarea id="download-description" (keyup)="cntCharactersLeft()" [maxLength]="descriptionLimit" [(ngModel)]="description" class="form-control"></textarea>
+        <p [innerHtml]="'result.load.introPrivate' | translate:{private: (count.private | formattedNumber:'&nbsp;'), count: (count.count | formattedNumber:'&nbsp;')}"></p>
         <div *ngIf="requests['downloadApprovalRequest'] !== 'sent'">
           <alert *ngIf="requests['downloadApprovalRequest'] === 'error'" [dismissible]="true">
             {{'observation.download.error' | translate}}
