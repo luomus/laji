@@ -5,7 +5,9 @@ import 'rxjs/Rx';
 @Injectable()
 export class FormApiClient {
   protected basePath = '/api';
-  public defaultHeaders: Headers = new Headers();
+  public defaultHeaders: Headers = new Headers({
+    'content-type': 'application/json'
+  });
   private _lang: string;
   private _personToken: string;
 
