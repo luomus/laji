@@ -179,7 +179,13 @@
   "haseka.terms": "Användarvillkor",
   "haseka.users.latest.gathered": "observerad",
   "haseka.button": "Gå till observationstjänsten",
-
+  "haseka.form.save": "Tallenna",
+  "haseka.form.unsaved": "Viimeksi tallennettu {{saveTime}}",
+  "haseka.form.unsavedNever": "Sivulla on muutoksia joita ei ole tallennettu",
+  "haseka.form.hasChanges": "Havaintoerässä on muutoksia joita ei ole vielä tallennettu",
+  "haseka.form.discard": "Hylkää muutokset",
+  "haseka.form.discardConfirm": "Haluatko varmasti hylätä tekemäsi muutokset",
+  "haseka.users.latest.more": "lisätietoja",
 
   "observation.export.tooMany": "För många observationer. Maksimiantal är 200 000. Sökningen måste begränsas.",
   "observation.export.tooLittle": "Inga observationer som kan laddas ner.",

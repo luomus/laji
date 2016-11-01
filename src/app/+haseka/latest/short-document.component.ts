@@ -3,7 +3,8 @@ import { Document } from '../../shared/model/Document';
 
 @Component({
   selector: 'laji-short-document',
-  templateUrl: 'short-document.component.html'
+  templateUrl: 'short-document.component.html',
+  styleUrls: ['./short-document.component.css']
 })
 export class ShortDocumentComponent implements OnInit, OnChanges {
   @Input() document: Document;

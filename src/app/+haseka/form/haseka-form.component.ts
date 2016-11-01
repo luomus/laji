@@ -9,11 +9,11 @@ import { FormApi } from '../../shared/api/FormApi';
 import { LajiFormComponent } from '../../shared/form/laji-form.component';
 import { LocalStorage } from 'angular2-localstorage/dist';
 import { Util } from '../../shared/service/util.service';
+import { FormService } from './form.service';
 
 @Component({
   selector: 'laji-haseka-form',
   templateUrl: 'haseka-form.component.html',
-  providers: [FormApi, DocumentApi],
   styleUrls: ['haseka-form.component.css'],
   animations: [
     trigger('visibilityChanged', [
@@ -36,19 +36,17 @@ export class HaSeKaFormComponent implements OnInit {
   public saveVisibility: string = 'hidden';
   public saving: boolean = false;
 
-  @LocalStorage() private formDataStorage = {};
   private subParam: Subscription;
   private subTrans: Subscription;
   private subFetch: Subscription;
   private success: string = '';
   private error: any;
   private isEdit: boolean = false;
-  private origFormData: any;
   private window;
 
-  constructor(private formService: FormApi,
-              private documentService: DocumentApi,
+  constructor(private documentService: DocumentApi,
               private route: ActivatedRoute,
+              private formService: FormService,
               private userService: UserService,
               private footerService: FooterService,
               public translate: TranslateService,
@@ -81,11 +79,7 @@ export class HaSeKaFormComponent implements OnInit {
     this.saveVisibility = 'shown';
     this.status = 'unsaved';
     this.saving = false;
-    if (this.isEdit) {
-      this.formDataStorage[this.documentId] = formData;
-    } else {
-      this.formDataStorage[this.formId] = formData;
-    }
+    this.formService.store(formData);
   }
 
   onSubmit(event) {
@@ -109,8 +103,7 @@ export class HaSeKaFormComponent implements OnInit {
               this.saveVisibility = 'hidden';
               this.status = '';
             }, 5000);
-            let deleteKey = this.isEdit ? this.documentId : this.formId;
-            delete this.formDataStorage[deleteKey];
+            this.formService.discard();
             this.isEdit = true;
           },
           (err) => {
@@ -130,9 +123,8 @@ export class HaSeKaFormComponent implements OnInit {
     this.translate.get('haseka.form.discardConfirm').subscribe(
       (confirm) => {
         if (this.window.confirm(confirm)) {
-          let deleteKey = this.isEdit ? this.documentId : this.formId;
-          delete this.formDataStorage[deleteKey];
-          this.form.formData = this.origFormData;
+          this.formService.discard();
+          this.form.formData = this.formService.getDataWithoutChanges();
           this.status = '';
           this.saveVisibility = 'hidden';
           this.tick = this.tick + 1;
@@ -145,74 +137,41 @@ export class HaSeKaFormComponent implements OnInit {
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
-    this.subFetch = Observable.forkJoin(
-      this.formService.formFindById(this.formId, this.translate.currentLang),
-      this.userService.getDefaultFormData()
-    ).subscribe(
-      data => {
-        this.isEdit = false;
-        data[0].formData = data[1];
-        this.origFormData = Util.clone(data[1]);
-        this.form = data[0];
-        if (this.formDataStorage[this.formId]) {
-          this.saveVisibility = 'shown';
-          this.status = 'unsaved';
-          this.form.formData = this.formDataStorage[this.formId];
-        }
-        this.lang = this.translate.currentLang;
-      },
-      err => console.log(err)
-    );
+    this.subFetch = this.formService
+      .load(this.formId, this.translate.currentLang)
+      .subscribe(
+        data => {
+          console.log(data);
+          this.isEdit = false;
+          this.form = data;
+          if (this.formService.hasUnsavedData()) {
+            this.saveVisibility = 'shown';
+            this.status = 'unsaved';
+          }
+          this.lang = this.translate.currentLang;
+        },
+        err => console.log(err)
+      );
   }
 
   fetchFormAndDocument() {
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
-    Observable.forkJoin([
-      this.formService.formFindById(this.formId, this.translate.currentLang),
-      this.documentService.findById(this.documentId, this.userService.getToken())
-    ]).subscribe(
-      data => {
-        this.isEdit = true;
-        this.form = data[0];
-        this.form.formData = data[1];
-        this.origFormData = Util.clone(data[1]);
-        if (this.formDataStorage[this.documentId] && this.isLocalNewest(
-            this.formDataStorage[this.documentId],
-            this.form.formData
-          )) {
-          this.saveVisibility = 'shown';
-          this.status = 'unsaved';
-          this.form.formData = this.formDataStorage[this.documentId];
-        }
-        this.lang = this.translate.currentLang;
-      },
-      err => console.log(err)
-    );
-  }
-
-  isLocalNewest(local, remote) {
-    if (remote.dateEdited) {
-      if (!local.dateEdited ||
-        this.getDateFromString(local.dateEdited) < this.getDateFromString(remote.dateEdited)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  private getDateFromString(dateString) {
-    const reggie = /(\d{4})-(\d{2})-(\d{2})[T\s](\d{2}):(\d{2}):(\d{2})/;
-    let dateArray = reggie.exec(dateString);
-    return new Date(
-      (+dateArray[1]),
-      (+dateArray[2]) - 1, // Careful, month starts at 0!
-      (+dateArray[3]),
-      (+dateArray[4]),
-      (+dateArray[5]),
-      (+dateArray[6])
-    );
+    this.formService
+      .load(this.formId, this.translate.currentLang, this.documentId)
+      .subscribe(
+        data => {
+          this.isEdit = true;
+          this.form = data;
+          if (this.formService.hasUnsavedData()) {
+            this.saveVisibility = 'shown';
+            this.status = 'unsaved';
+          }
+          this.lang = this.translate.currentLang;
+        },
+        err => console.log(err)
+      );
   }
 
   private parseErrorMessage(err) {

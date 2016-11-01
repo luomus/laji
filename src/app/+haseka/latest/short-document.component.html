@@ -1,6 +1,9 @@
 <a [routerLink]="['/record/JX.519/' + document.id]">
   {{document.id}} <small>{{document.dateEdited | date:'d.M.y HH:mm'}}</small>
 </a>
+<span class="label label-danger" *ngIf="document.hasChanges">
+  <i class="glyphicon glyphicon-warning-sign" [tooltip]="'haseka.form.hasChanges' | translate"></i>
+</span>
 <br>
 {{'haseka.users.latest.gathered' | translate }}:
 <span *ngIf="gatheringDates.start || gatheringDates.end">

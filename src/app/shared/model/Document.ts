@@ -233,6 +233,11 @@ export interface Document {
    * Information about the quality of the specimen
    */
   verificationStatus?: Document.VerificationStatusEnum;
+
+  /**
+   * Fields that tels if there is local changes on the form
+   */
+  hasChanges?: boolean;
 }
 export namespace Document {
 

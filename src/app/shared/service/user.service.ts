@@ -113,7 +113,7 @@ export class UserService {
         'gatheringEvent': {
           'leg': [data.id]
         }
-      })).share();
+      }));
     return this.formDefaultObservable;
   }
 
