@@ -9,7 +9,7 @@ import '@angular/router';
 
 
 // RxJS 5
-// import 'rxjs/Rx';
+import 'rxjs/Rx';
 
 
 // For vendors for example jQuery, Lodash, angular2-jwt import them here
