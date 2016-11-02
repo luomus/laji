@@ -46,6 +46,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   public mapData;
   public drawData: any = {featureCollection: {type: 'featureCollection', features: []}};
   public loading = false;
+  public topMargin: string = '0';
+  public legendList: {color: string, range: string}[] = [];
   private prev: string = '';
   private subDataFetch: Subscription;
   private style: (count: number) => string;
@@ -90,6 +92,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.decorator.lang = this.translate.currentLang;
     this.updateMapData();
+    this.initLegendTopMargin();
+    this.initLegend();
   }
 
   onCreate(e) {
@@ -117,31 +121,29 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     }
   }
 
-  getLegendTopMargin(): string {
+  initLegendTopMargin(): void {
     let top = 20, items = this.color instanceof Array ? this.color.length : 1;
-    return '-' + (top + (items * 20)) + 'px';
+    this.topMargin = '-' + (top + (items * 20)) + 'px';
   }
 
-  getLegends(): {color: string, range: string}[] {
-    if (!this.legendsCache)  {
-      this.legendsCache = [];
-      let start = 1;
-      if (this.color instanceof Array) {
-        this.color.map((color, idx) => {
-          let end = '+', newStart;
-          if (this.colorThresholds[idx]) {
-            newStart = this.colorThresholds[idx];
-            end = '-' + newStart;
-          }
-          this.legendsCache.push({
-            color: color,
-            range: start + end
-          });
-          start = newStart + 1;
+  initLegend(): void {
+    let legend = [];
+    let start = 1;
+    if (this.color instanceof Array) {
+      this.color.map((color, idx) => {
+        let end = '+', newStart;
+        if (this.colorThresholds[idx]) {
+          newStart = this.colorThresholds[idx];
+          end = '-' + newStart;
+        }
+        legend.push({
+          color: color,
+          range: start + end
         });
-      }
+        start = newStart + 1;
+      });
     }
-    return this.legendsCache;
+    this.legendList = legend;
   }
 
   private initColorScale() {

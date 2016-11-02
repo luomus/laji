@@ -8,8 +8,8 @@
           (onMove)="onMove($event)"
           [initWithWorldMap]="initWithWorldMap">
     <div class="loading-map loading" *ngIf="loading"></div>
-    <ul class="legend" *ngIf="legend" [ngStyle]="{'margin-top': getLegendTopMargin()}">
-      <li *ngFor="let leg of getLegends()">
+    <ul class="legend" *ngIf="legend" [ngStyle]="{'margin-top': topMargin }">
+      <li *ngFor="let leg of legendList">
         <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{leg.range}}
       </li>
     </ul>

@@ -153,7 +153,7 @@ module.exports = function makeWebpackConfig() {
       new ForkCheckerPlugin(),
 
       new CommonsChunkPlugin({
-        name: ['polyfills','vendor']
+        name: ['vendor', 'polyfills']
       }),
 
       new HtmlWebpackPlugin({
