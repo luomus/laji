@@ -6,7 +6,7 @@ import { Taxonomy } from '../../shared';
 
 declare var d3: any;
 
-const taxonTreeUri = '/api/taxa/%taxonId%?maxLevel=2&selectedFields=id%2CscientificName';
+const taxonTreeUri = '/api/taxa/%taxonId%?maxLevel=2&selectedFields=id%2CscientificName%2CvernacularName';
 
 @Component({
   selector: 'laji-tree-of-life',
@@ -24,7 +24,7 @@ export class TreeOfLifeComponent {
   private htmlElement: HTMLElement;
 
   private active: string;
-  private parents: string[] = [];
+  private parents: Array<string> = [];
 
   private plop;
   private taxonId: string;
@@ -34,12 +34,12 @@ export class TreeOfLifeComponent {
               private router: Router) {
     this.htmlElement = this.element.nativeElement;
     this.host = d3.select(this.htmlElement);
-    this.plop = debounce(() => this.setup(this.taxonId, this.htmlElement.offsetWidth), 300);
+    this.plop = debounce(this.setup, 300);
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.plop();
+    this.plop(this.taxonId, this.htmlElement.offsetWidth);
   }
 
   ngOnInit() {
@@ -120,6 +120,16 @@ export class TreeOfLifeComponent {
         .attr('dy', '.31em')
         .attr('text-anchor', (d) => d.x < 180 ? 'start' : 'end')
         .attr('transform', (d) => d.x < 180 ? 'translate(8)' : 'rotate(180)translate(-8)')
+        .on('mouseover', function(d) {
+          d3.select(this)
+          .style('fill', '#1a1a1a')
+          .text((data) => `${data.scientificName} ${data.vernacularName ? '- ' + data.vernacularName : ''}`);
+        })
+        .on('mouseout', function(d) {
+          d3.select(this)
+          .style('fill', 'black')
+          .text((data) => data.scientificName);
+        })
         .text((d) => d.scientificName);
     });
 

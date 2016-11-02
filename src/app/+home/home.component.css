@@ -13,3 +13,7 @@
   background-color: #2C3E50;
   padding-top: 14px;
 }
+
+.panel-body .btn {
+  margin-top: 30px;
+} 
