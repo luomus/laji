@@ -13,8 +13,9 @@ export class FormService {
   @LocalStorage() private formDataStorage = {};
   private currentData: any;
   private currentKey: string;
-  private formSchema: any;
-  private formCache: string;
+  private currentLang: string;
+  private formCache: {[key: string]: any} = {};
+  private allForms: any[];
 
   constructor(
     private formApi: FormApi,
@@ -48,10 +49,6 @@ export class FormService {
     return result;
   }
 
-  getFormSchema() {
-    return this.formSchema;
-  }
-
   getDataWithoutChanges() {
     return this.currentData;
   }
@@ -60,34 +57,24 @@ export class FormService {
     this.currentData = Util.clone(data);
   }
 
-  getOriginalData() {
-    if (!this.currentData) {
-      throw new Error('No current form data found!');
-    }
-    return this.currentData;
-  }
-
   load(formId: string, lang: string, documentId?: string): Observable<any> {
-    let cacheKey = formId + lang;
-    let data$ = this.userService.getDefaultFormData();
-    let form$ = this.formApi.formFindById(formId, lang)
-      .do((schema) => {
-        this.formSchema = schema;
-        this.formCache = cacheKey;
-      });
-    if (this.formCache === cacheKey) {
-      form$ = Observable.of(this.formSchema);
-    }
-    if (documentId) {
-      data$ = this.documentApi.findById(documentId, this.userService.getToken());
-    }
+    this.setLang(lang);
+    let form$ = this.formCache[formId] ?
+      Observable.of(this.formCache[formId]) :
+      this.formApi.formFindById(formId, lang)
+        .do((schema) => {
+          this.formCache[formId] = schema;
+        });
+    let data$ = documentId ?
+        this.documentApi.findById(documentId, this.userService.getToken()) :
+        this.userService.getDefaultFormData();
+
     return data$
       .do(data => this.setCurrentData(data))
       .switchMap(data => {
-        this.setCurrentData(data);
         return form$
           .combineLatest(
-            this.getDefaultData(formId, documentId, this.currentData),
+            this.getDefaultData(formId, documentId, data),
             (form, current) => {
               form.formData = current;
               return form;
@@ -101,6 +88,23 @@ export class FormService {
       return this.defaultFormData(formId);
     }
     return this.localFrmDataIfNoNewer(documentId, current);
+  }
+
+  getAllForms(lang: string): Observable<any> {
+    this.setLang(lang);
+    return this.allForms ?
+      Observable.of(this.allForms) :
+      this.formApi.formFindAll(this.currentLang)
+        .map((forms) => forms.results)
+        .do((forms) => this.allForms = forms)
+  }
+
+  private setLang(lang: string) {
+    if (this.currentLang !== lang) {
+      this.formCache = {};
+      this.allForms = undefined;
+      this.currentLang = lang;
+    }
   }
 
   private localFrmDataIfNoNewer(documentId: string, current?: any) {
