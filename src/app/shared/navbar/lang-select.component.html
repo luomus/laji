@@ -1,5 +1,6 @@
 <div class="navbar-language-selection">
   <div dropdown>
+    <i class="glyphicon glyphicon-globe"></i>
     <a dropdownToggle class="link language-toggle">
       <span *ngIf="'fi' === translate.currentLang">
         FI
@@ -10,7 +11,6 @@
       <span *ngIf="'en' === translate.currentLang">
         EN
       </span>
-      <i class="glyphicon glyphicon-globe"></i>
     </a>
     <ul dropdownMenu role="menu" aria-labelledby="single-button">
       <li *ngIf="'fi' !== translate.currentLang" role="menuitem">

@@ -57,8 +57,7 @@
               </ul>
             </div>
           </div>
-          <a *ngIf="!userService.isLoggedIn" (click)="userService.doLogin()">{{ 'navigation.user.login' |
-            translate }}</a>
+          <a href="#login" *ngIf="!userService.isLoggedIn" (click)="clicked($event)">{{ 'navigation.user.login' | translate }}</a>
         </li>
         <li>
           <laji-lang-select></laji-lang-select>

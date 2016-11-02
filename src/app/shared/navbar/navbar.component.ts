@@ -7,12 +7,17 @@ import { UserService } from '../service/user.service';
   templateUrl: './navbar.component.html'
 })
 export class NavbarComponent {
+
   openMenu: Boolean = false;
 
-  constructor(public userService: UserService) {
-  }
+  constructor(public userService: UserService) { }
 
   toggleMenu() {
     this.openMenu = !this.openMenu;
+  }
+
+  clicked(event: Event) {
+    event.preventDefault();
+    this.userService.doLogin();
   }
 }

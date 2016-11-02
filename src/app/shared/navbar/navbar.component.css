@@ -65,9 +65,3 @@
 .dropdown-menu .navbar-link {
   color: #333 !important;
 }
-
-.navbar-profile .language-toggle,
-.navbar-language-selection .language-toggle {
-  display: inline-block;
-  padding: 15px 15px 0 15px;
-}
