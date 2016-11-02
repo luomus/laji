@@ -19,11 +19,9 @@ export class MultiLangPipe implements PipeTransform {
   }
 
   transform(value: any, useFallback: boolean = true): string {
-    console.log(value, typeof value);
     if (typeof value === 'string' || typeof value !== 'object') {
       return value;
     }
-    console.log('FOO');
     let lang = this.translate.currentLang;
     if (value[lang] || !useFallback) {
       return value[lang] || '';
@@ -33,7 +31,6 @@ export class MultiLangPipe implements PipeTransform {
         continue;
       }
       if (value[this.fallback[i]]) {
-        console.log('using fallback');
         return value[this.fallback[i]] + ' (' + this.fallback[i] + ')';
       }
     }
