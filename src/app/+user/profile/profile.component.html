@@ -5,7 +5,7 @@
       {{'profile.missing'|translate}}
     </div>
     <div class="row" *ngIf="profile.profileKey || isCurrentUser">
-      <div class="col-md-8">
+      <div class="col-md-8 col-xs-12">
         <h3>{{profile.userID | users}}</h3>
         <div class="profile-image">
           <img *ngIf="profile.image" [src]="profile.image" alt="profile image" class="img-rounded">
@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 col-xs-12">
         <div class="form-group">
           <div class="col-sm-12 well">
             <friends [profile]="profile" [usersProfile]="personsProfile"></friends>
