@@ -1,4 +1,6 @@
+
 <div class="container-fluid">
+  <laji-spinner [spinning]="loading" [overlay]="true"></laji-spinner>
   <h1>{{form?.title}}</h1>
   <p>{{form?.description}}</p>
   <div class="laji-form" *ngIf="form?.id">

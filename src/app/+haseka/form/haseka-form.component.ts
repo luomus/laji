@@ -35,6 +35,7 @@ export class HaSeKaFormComponent implements OnInit {
   public status: string = '';
   public saveVisibility: string = 'hidden';
   public saving: boolean = false;
+  public loading: boolean = false;
 
   private subParam: Subscription;
   private subTrans: Subscription;
@@ -64,6 +65,7 @@ export class HaSeKaFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.footerService.footerVisible = false;
     this.subParam = this.route.params.subscribe(params => {
       this.formId = params['formId'];
@@ -149,6 +151,7 @@ export class HaSeKaFormComponent implements OnInit {
             this.status = 'unsaved';
           }
           this.lang = this.translate.currentLang;
+          this.loading = false;
         },
         err => console.log(err)
       );
@@ -169,6 +172,7 @@ export class HaSeKaFormComponent implements OnInit {
             this.status = 'unsaved';
           }
           this.lang = this.translate.currentLang;
+          this.loading = false;
         },
         err => console.log(err)
       );
