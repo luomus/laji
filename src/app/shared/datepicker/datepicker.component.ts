@@ -198,7 +198,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   }
 
   writeValue(value: any) {
-    this.viewDate = value;
+    this.value = value;
   }
 
   registerOnChange(fn: any) {
