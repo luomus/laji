@@ -32,7 +32,6 @@ module.exports = function makeWebpackConfig() {
   }
 
   config.entry = isTest ? {} : {
-    'polyfills': './src/polyfills.browser.ts',
     'vendor': './src/vendor.browser.ts',
     'main': './src/main.browser.ts'
   };
@@ -153,7 +152,7 @@ module.exports = function makeWebpackConfig() {
       new ForkCheckerPlugin(),
 
       new CommonsChunkPlugin({
-        name: ['vendor', 'polyfills']
+        name: ['vendor']
       }),
 
       new HtmlWebpackPlugin({
