@@ -263,7 +263,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           spiderfyOnMaxZoom: true,
           showCoverageOnHover: true,
           singleMarkerMode: true,
-          maxClusterRadius: 60
+          maxClusterRadius: 20
         }
       };
     }).do(() => {
