@@ -1,8 +1,15 @@
 <a [routerLink]="['/record/' + (document.formID || 'JX.519') + '/' + document.id]">
   {{document.id}} <small>{{document.dateEdited | date:'d.M.y HH:mm'}}</small>
 </a>
-<span class="label label-danger" *ngIf="document.hasChanges">
-  <i class="glyphicon glyphicon-warning-sign" [tooltip]="'haseka.form.hasChanges' | translate"></i>
+<span *ngIf="document.publicityRestrictions === 'MZ.publicityRestrictionsPrivate'">
+  <span class="label label-warning"
+        [tooltip]="'haseka.form.private' | translate">
+    <i class="glyphicon glyphicon-eye-close"></i>
+  </span>
+  &nbsp;
+</span>
+<span class="label label-danger" *ngIf="document.hasChanges" [tooltip]="'haseka.form.hasChanges' | translate">
+  <i class="glyphicon glyphicon-warning-sign"></i>
 </span>
 <br>
 {{'haseka.users.latest.gathered' | translate }}:

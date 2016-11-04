@@ -115,7 +115,7 @@ export class HaSeKaFormComponent implements OnInit {
           (result) => {
             this.formService.discard();
             this.formService.setCurrentData(result, true);
-            this.router.navigate(['/record']);
+            this.gotoFrontPage();
           },
           (err) => {
             this.saving = false;
@@ -141,10 +141,14 @@ export class HaSeKaFormComponent implements OnInit {
       (confirm) => {
         if (this.window.confirm(confirm)) {
           this.formService.discard();
-          this.form.formData = this.formService.getDataWithoutChanges();
-          this.status = '';
-          this.saveVisibility = 'hidden';
-          this.tick = this.tick + 1;
+          if (this.formService.isTmpId(this.documentId)) {
+            this.gotoFrontPage();
+          } else {
+            this.form.formData = this.formService.getDataWithoutChanges();
+            this.status = '';
+            this.saveVisibility = 'hidden';
+            this.tick = this.tick + 1;
+          }
         }
       }
     );
@@ -191,6 +195,10 @@ export class HaSeKaFormComponent implements OnInit {
         },
         err => console.log(err)
       );
+  }
+
+  private gotoFrontPage() {
+    this.router.navigate(['/record']);
   }
 
   private parseErrorMessage(err) {
