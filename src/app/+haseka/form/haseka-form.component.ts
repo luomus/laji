@@ -1,14 +1,14 @@
-import { Component, OnInit, ViewChild, trigger, state, style, transition, animate, Inject } from '@angular/core';
+import {
+  Component, OnInit, ViewChild, trigger, state, style, transition, animate, Inject,
+  HostListener
+} from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { UserService } from '../../shared/service/user.service';
 import { FooterService } from '../../shared/service/footer.service';
-import { FormApi } from '../../shared/api/FormApi';
 import { LajiFormComponent } from '../../shared/form/laji-form.component';
-import { LocalStorage } from 'angular2-localstorage/dist';
-import { Util } from '../../shared/service/util.service';
 import { FormService } from './form.service';
 
 @Component({
@@ -44,6 +44,7 @@ export class HaSeKaFormComponent implements OnInit {
   private error: any;
   private isEdit: boolean = false;
   private window;
+  private leaveMsg;
 
   constructor(private documentService: DocumentApi,
               private route: ActivatedRoute,
@@ -73,8 +74,15 @@ export class HaSeKaFormComponent implements OnInit {
       this.documentId ? this.fetchFormAndDocument() : this.fetchForm();
     });
     this.subTrans = this.translate.onLangChange.subscribe(
-      () => this.documentId ? this.fetchFormAndDocument() : this.fetchForm()
+      () => this.onLangChange()
     );
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  preventLeave($event) {
+    if (this.status === 'unsaved') {
+      $event.returnValue = this.leaveMsg;
+    }
   }
 
   onChange(formData) {
@@ -82,6 +90,12 @@ export class HaSeKaFormComponent implements OnInit {
     this.status = 'unsaved';
     this.saving = false;
     this.formService.store(formData);
+  }
+
+  onLangChange() {
+    this.translate.get('haseka.leave.unsaved')
+      .subscribe((msg) => this.leaveMsg = msg);
+    this.documentId ? this.fetchFormAndDocument() : this.fetchForm();
   }
 
   onSubmit(event) {
@@ -106,6 +120,7 @@ export class HaSeKaFormComponent implements OnInit {
               this.status = '';
             }, 5000);
             this.formService.discard();
+            this.formService.setCurrentData(result, true);
             this.isEdit = true;
           },
           (err) => {
@@ -143,13 +158,8 @@ export class HaSeKaFormComponent implements OnInit {
       .load(this.formId, this.translate.currentLang)
       .subscribe(
         data => {
-          console.log(data);
           this.isEdit = false;
           this.form = data;
-          if (this.formService.hasUnsavedData()) {
-            this.saveVisibility = 'shown';
-            this.status = 'unsaved';
-          }
           this.lang = this.translate.currentLang;
           this.loading = false;
         },
@@ -166,6 +176,11 @@ export class HaSeKaFormComponent implements OnInit {
       .subscribe(
         data => {
           this.isEdit = true;
+          if (this.formService.isTmpId(this.documentId)) {
+            this.isEdit = false;
+            data.formData.id = undefined;
+            data.formData.hasChanges = undefined;
+          }
           this.form = data;
           if (this.formService.hasUnsavedData()) {
             this.saveVisibility = 'shown';

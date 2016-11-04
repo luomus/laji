@@ -5,12 +5,15 @@ import { UserService } from '../../shared/service/user.service';
 import { Util } from '../../shared/service/util.service';
 import { FormApi } from '../../shared/api/FormApi';
 import { DocumentApi } from '../../shared/api/DocumentApi';
+import { Document } from '../../shared/model/Document';
 
 
 @Injectable()
 export class FormService {
 
   @LocalStorage() private formDataStorage = {};
+  @LocalStorage() private tmpDocId = 0;
+  private tmpNs = 'T';
   private currentData: any;
   private currentKey: string;
   private currentLang: string;
@@ -53,8 +56,37 @@ export class FormService {
     return this.currentData;
   }
 
-  setCurrentData(data: any) {
+  setCurrentData(data: any, storeIdAsCurrentKey: boolean = false) {
+    if (storeIdAsCurrentKey) {
+      if (data.id) {
+        this.currentKey = data.id;
+      }
+    }
     this.currentData = Util.clone(data);
+  }
+
+  generateTmpId() {
+    if (this.tmpDocId >= (Number.MAX_SAFE_INTEGER - 1009) ) {
+      this.tmpDocId = 0;
+    }
+    this.tmpDocId = this.tmpDocId + 1;
+    return this.getTmpId(this.tmpDocId);
+  }
+
+  isTmpId(id: string) {
+    return id.indexOf(this.tmpNs + ':') === 0;
+  }
+
+  getAllTempDocuments(): Document[] {
+    return Object.keys(this.formDataStorage)
+      .filter((key) => this.isTmpId(key))
+      .map((key) => {
+        let document = this.formDataStorage[key];
+        document.id = key;
+
+        return document;
+      })
+      .reverse();
   }
 
   load(formId: string, lang: string, documentId?: string): Observable<any> {
@@ -66,7 +98,9 @@ export class FormService {
           this.formCache[formId] = schema;
         });
     let data$ = documentId ?
-        this.documentApi.findById(documentId, this.userService.getToken()) :
+      ( this.isTmpId(documentId) ?
+        Observable.of(this.formDataStorage[documentId]) :
+        this.documentApi.findById(documentId, this.userService.getToken()) ) :
         this.userService.getDefaultFormData();
 
     return data$
@@ -96,7 +130,11 @@ export class FormService {
       Observable.of(this.allForms) :
       this.formApi.formFindAll(this.currentLang)
         .map((forms) => forms.results)
-        .do((forms) => this.allForms = forms)
+        .do((forms) => this.allForms = forms);
+  }
+
+  private getTmpId(num: number) {
+    return this.tmpNs + ':' + num;
   }
 
   private setLang(lang: string) {
@@ -124,10 +162,7 @@ export class FormService {
   }
 
   private defaultFormData(formId: string) {
-    this.currentKey = formId;
-    if (this.formDataStorage[formId]) {
-      return Observable.of(this.formDataStorage[formId]);
-    }
+    this.currentKey = this.generateTmpId();
     return this.userService.getDefaultFormData()
       .map((data) => {
         data['formID'] = formId;

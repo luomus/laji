@@ -12,7 +12,7 @@
   </a>
 </span>
 <span
-        *ngIf="taxa.length > 0"
+        *ngIf="taxa && taxa.length > 0"
         class="link"
         (click)="showList = !showList">
   {{'haseka.users.latest.more' | translate}}

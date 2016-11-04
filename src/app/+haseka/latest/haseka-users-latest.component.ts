@@ -10,6 +10,7 @@ export class UsersLatestComponent implements OnChanges {
 
   @Input() userToken: string;
 
+  public unsavedDocuments: Document[];
   public documents: Document[];
   public total = 0;
   public page = 1;
@@ -29,6 +30,10 @@ export class UsersLatestComponent implements OnChanges {
     if (!this.userToken) {
       return;
     }
+    this.unsavedDocuments = this.formService.getAllTempDocuments().map(document => {
+      document.hasChanges = true;
+      return document;
+    });
     this.documentService.findAll(this.userToken, String(this.page), String(this.pageSize))
       .subscribe(
         result => {
