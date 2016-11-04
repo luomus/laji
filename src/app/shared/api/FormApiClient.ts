@@ -5,9 +5,7 @@ import 'rxjs/Rx';
 @Injectable()
 export class FormApiClient {
   protected basePath = '/api';
-  public defaultHeaders: Headers = new Headers({
-    'content-type': 'application/json'
-  });
+  public defaultHeaders: Headers = new Headers();
   private _lang: string;
   private _personToken: string;
 
@@ -34,7 +32,6 @@ export class FormApiClient {
     const path = this.basePath + resource;
 
     let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
 
     if (this._lang !== undefined) {
       queryParameters.set('lang', this._lang);
@@ -51,17 +48,16 @@ export class FormApiClient {
         queryParameters.set(param, query[param]);
       }
     }
+    if (!options) {
+      options = {};
+    }
 
     let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
+      method: options['method'] || 'GET',
+      headers: options['headers'] ? new Headers(options['headers']) : this.defaultHeaders,
+      search: queryParameters,
+      body: options['body'] || undefined
     };
-
-    if (options) {
-      requestOptions['method'] = options['method'] || 'GET';
-      requestOptions['body'] = options['body'] || undefined;
-    }
 
     return this.http.request(path, requestOptions)
       .map((response: Response) => {
