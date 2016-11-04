@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { UserService } from '../../shared/service/user.service';
 import { FooterService } from '../../shared/service/footer.service';
@@ -45,9 +45,11 @@ export class HaSeKaFormComponent implements OnInit {
   private isEdit: boolean = false;
   private window;
   private leaveMsg;
+  private publicityRestrictions;
 
   constructor(private documentService: DocumentApi,
               private route: ActivatedRoute,
+              private router: Router,
               private formService: FormService,
               private userService: UserService,
               private footerService: FooterService,
@@ -101,6 +103,7 @@ export class HaSeKaFormComponent implements OnInit {
   onSubmit(event) {
     this.saving = true;
     let data = event.data.formData;
+    data['publicityRestrictions'] = this.publicityRestrictions;
     let doc$;
     if (this.isEdit) {
       doc$ = this.documentService
@@ -110,18 +113,9 @@ export class HaSeKaFormComponent implements OnInit {
     }
     doc$.subscribe(
           (result) => {
-            this.tick = this.tick + 1;
-            this.status = 'success';
-            this.form.formData = result;
-            this.documentId = result.id;
-            this.lajiForm.clearState();
-            setTimeout(() => {
-              this.saveVisibility = 'hidden';
-              this.status = '';
-            }, 5000);
             this.formService.discard();
             this.formService.setCurrentData(result, true);
-            this.isEdit = true;
+            this.router.navigate(['/record']);
           },
           (err) => {
             this.saving = false;
@@ -132,7 +126,13 @@ export class HaSeKaFormComponent implements OnInit {
         });
   }
 
-  submit() {
+  submitPublic() {
+    this.publicityRestrictions = 'MZ.publicityRestrictionsPublic';
+    this.lajiForm.submit();
+  }
+
+  submitPrivate() {
+    this.publicityRestrictions = 'MZ.publicityRestrictionsPrivate';
     this.lajiForm.submit();
   }
 

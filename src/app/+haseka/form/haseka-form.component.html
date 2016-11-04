@@ -11,12 +11,15 @@
             [tick]="tick"
             (onChange)="onChange($event)"
             (onSubmit)="onSubmit($event)"></laji-form>
-    <div class="form-footer" [@visibilityChanged]="saveVisibility">
+    <div class="form-footer">
       <div class="row">
-        <div class="col-xs-4 col-sm-2">
-          <button class="btn btn-default" [disabled]="saving" type="submit" (click)="submit()">{{'haseka.form.save'|translate}}</button>
+        <div class="col-xs-3 col-sm-2">
+          <button class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPrivate()">{{'haseka.form.savePrivate'|translate}}</button>
         </div>
-        <div class="col-xs-8 col-sm-10 form-control-static info" [ngSwitch]="status">
+        <div class="col-xs-3 col-sm-2">
+          <button class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPublic()">{{'haseka.form.savePublic'|translate}}</button>
+        </div>
+        <div class="col-xs-6 col-sm-8 form-control-static info" [ngSwitch]="status">
           <div *ngSwitchCase="'success'" class="success status">
             {{'haseka.form.success'|translate}}
           </div>
