@@ -17,6 +17,7 @@ import { PanelComponent } from './panel/panel.component';
 import { OmniSearchComponent } from './omni-search/omni-search.component';
 import { SafePipe } from './pipe/safe.pipe';
 import { MultiLangPipe } from './pipe/multi-lang.pipe';
+import { NewsService } from './service/news.service';
 
 
 @NgModule({
@@ -35,6 +36,9 @@ import { MultiLangPipe } from './pipe/multi-lang.pipe';
     RouterModule,
     TranslateModule,
     TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule
+  ],
+  providers: [
+    NewsService
   ],
   exports: [
     CommonModule, HttpModule, TranslateModule,

@@ -4,6 +4,7 @@ import { NewsApi } from '../api/NewsApi';
 import { News } from '../model/News';
 import { PagedResult } from '../model/PagedResult';
 import { Subscription } from 'rxjs';
+import { NewsService } from '../service/news.service';
 
 @Component({
   selector: 'laji-news-list',
@@ -14,13 +15,13 @@ import { Subscription } from 'rxjs';
 export class NewsListComponent implements OnInit, OnDestroy {
   public news: PagedResult<News>;
 
-  private pageSize = '5';
+  private pageSize = 5;
   private currentPage = 1;
 
   private subLang: Subscription;
   private subNews: Subscription;
 
-  constructor(private newsService: NewsApi, private translate: TranslateService) {
+  constructor(private newsService: NewsService, private translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -50,7 +51,7 @@ export class NewsListComponent implements OnInit, OnDestroy {
       this.subNews.unsubscribe();
     }
     this.subNews = this.newsService
-      .findAll(this.translate.currentLang, '' + this.currentPage, this.pageSize)
+      .getPage(this.translate.currentLang, this.currentPage, this.pageSize)
       .subscribe(
         news => this.news = news,
         err => console.log(err)
