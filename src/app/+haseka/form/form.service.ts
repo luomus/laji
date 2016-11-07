@@ -98,7 +98,7 @@ export class FormService {
           this.formCache[formId] = schema;
         });
     let data$ = documentId ?
-      ( this.isTmpId(documentId) ?
+      ( this.isTmpId(documentId) && this.formDataStorage[documentId] ?
         Observable.of(this.formDataStorage[documentId]) :
         this.documentApi.findById(documentId, this.userService.getToken()) ) :
         this.userService.getDefaultFormData();

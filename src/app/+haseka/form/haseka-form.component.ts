@@ -42,6 +42,7 @@ export class HaSeKaFormComponent implements OnInit {
   private subFetch: Subscription;
   private success: string = '';
   private error: any;
+  private errorMsg: string;
   private isEdit: boolean = false;
   private window;
   private leaveMsg;
@@ -167,7 +168,12 @@ export class HaSeKaFormComponent implements OnInit {
           this.lang = this.translate.currentLang;
           this.loading = false;
         },
-        err => console.log(err)
+        err => {
+          this.loading = false;
+          let msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
+          this.translate.get(msgKey, {formId: this.formId})
+            .subscribe(data => this.errorMsg = data);
+        }
       );
   }
 
@@ -193,7 +199,12 @@ export class HaSeKaFormComponent implements OnInit {
           this.lang = this.translate.currentLang;
           this.loading = false;
         },
-        err => console.log(err)
+        err => {
+          this.loading = false;
+          let msgKey = err.status === 404 ? 'haseka.form.documentNotFound' : 'haseka.form.genericError';
+          this.translate.get(msgKey, {documentId: this.documentId})
+            .subscribe(data => this.errorMsg = data);
+        }
       );
   }
 
