@@ -143,6 +143,8 @@
   "observation.active.administrativeStatusId": "hallinnollinen tila",
   "observation.active.informalTaxonGroupId": "Lajiryhmä",
   "observation.active.informalTaxonGroupAll": "kaikki",
+  "observation.active.individualCountMax": "maksimi yksilömäärä",
+  "observation.active.individualCountMin": "minimi yksilömäärä",
   "observation.active.finnish": "suomalainen",
   "observation.active.hasMedia": "kuva",
   "observation.download.loadPublic": "lataa aineisto",
