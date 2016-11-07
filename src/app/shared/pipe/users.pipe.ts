@@ -45,7 +45,7 @@ export class UsersPipe implements PipeTransform {
     this.userService.getUser(id)
       .subscribe((user: Person) => {
         if (format === 'fullname') {
-          this.value = (user.preferredName || '') + ' ' + (user.inheritedName || '');
+          this.value = user.fullName || '';
         } else {
           this.value = '';
         }

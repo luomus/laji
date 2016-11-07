@@ -34,14 +34,9 @@ export interface Person {
   id?: string;
 
   /**
-   * Last name of the user
+   * Full name of the user
    */
-  inheritedName?: string;
-
-  /**
-   * First name of the user
-   */
-  preferredName?: string;
+  fullName?: string;
 
   /**
    * Email address for the user
