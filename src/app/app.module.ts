@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { LocationStrategy, PathLocationStrategy, DatePipe } from '@angular/common';
 import { routing, appRoutingProviders } from './app.routes';
 import { AppComponent } from './app.component';
@@ -17,6 +17,7 @@ import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { TranslateModule } from 'ng2-translate';
 import { CoreModule } from './shared/core.module';
+import { LajiErrorHandler } from './shared/laji-error-handler';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { CoreModule } from './shared/core.module';
   ],
   providers: [
     {provide: 'Window', useValue: window},
+    {provide: ErrorHandler, useClass: LajiErrorHandler},
     {provide: LocationStrategy, useClass: PathLocationStrategy},
     PersonTokenApi, PersonApi, WarehouseApi,
     WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
