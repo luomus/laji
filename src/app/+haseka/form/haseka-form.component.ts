@@ -116,6 +116,8 @@ export class HaSeKaFormComponent implements OnInit {
           (result) => {
             this.formService.discard();
             this.formService.setCurrentData(result, true);
+            this.translate.get('haseka.form.success')
+              .subscribe(value => this.formService.setSuccessMessage(value));
             this.gotoFrontPage();
           },
           (err) => {
@@ -123,7 +125,11 @@ export class HaSeKaFormComponent implements OnInit {
             this.saveVisibility = 'shown';
             this.error = this.parseErrorMessage(err);
             this.status = 'error';
-            setTimeout(() => this.status = '', 5000);
+            setTimeout(() => {
+              if (this.status === 'error') {
+                this.status = ''
+              }
+            }, 5000);
         });
   }
 

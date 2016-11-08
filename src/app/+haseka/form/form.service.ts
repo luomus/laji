@@ -19,6 +19,7 @@ export class FormService {
   private currentLang: string;
   private formCache: {[key: string]: any} = {};
   private allForms: any[];
+  private successMsg;
 
   constructor(
     private formApi: FormApi,
@@ -33,6 +34,19 @@ export class FormService {
     if (this.formDataStorage[id]) {
       delete this.formDataStorage[id];
     }
+  }
+
+  setSuccessMessage(msg: string) {
+    this.successMsg = msg;
+  }
+
+  getSuccessMessage() {
+    let message = '';
+    if (this.successMsg) {
+      message = this.successMsg;
+      this.successMsg = '';
+    }
+    return message;
   }
 
   store(formData) {

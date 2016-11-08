@@ -1,5 +1,8 @@
 <div class="container">
   <h1>{{'haseka.title' | translate}}</h1>
+  <alert type="success" *ngIf="successMsg" [dismissible]="true">
+    {{successMsg}}
+  </alert>
   <div *ngIf="userService.isLoggedIn">
     <div class="row">
       <div class="col-sm-8">

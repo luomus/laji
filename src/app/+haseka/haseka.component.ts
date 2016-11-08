@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from '../shared/service/user.service';
 import { FormApi } from '../shared/api/FormApi';
 import { DocumentApi } from '../shared/api/DocumentApi';
+import { FormService } from './form/form.service';
 
 @Component({
   selector: 'haseka',
@@ -12,9 +13,12 @@ import { DocumentApi } from '../shared/api/DocumentApi';
 export class HasekaComponent {
 
   public email: string;
+  public successMsg;
 
-  constructor(public userService: UserService) {
+  constructor(public userService: UserService, private formService: FormService) {
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.successMsg = this.formService.getSuccessMessage();
+  }
 }
