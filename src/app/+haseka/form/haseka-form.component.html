@@ -14,12 +14,12 @@
     <div class="form-footer">
       <div class="row">
         <div class="col-xs-3 col-sm-2">
-          <button class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPrivate()">{{'haseka.form.savePrivate'|translate}}</button>
-        </div>
-        <div class="col-xs-3 col-sm-2">
           <button class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPublic()">{{'haseka.form.savePublic'|translate}}</button>
         </div>
-        <div class="col-xs-6 col-sm-8 form-control-static info" [ngSwitch]="status">
+        <div class="col-xs-3 col-sm-2">
+          <button class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPrivate()">{{'haseka.form.savePrivate'|translate}}</button>
+        </div>
+        <div class="col-xs-3 col-sm-6 form-control-static info" [ngSwitch]="status">
           <div *ngSwitchCase="'success'" class="success status">
             {{'haseka.form.success'|translate}}
           </div>
@@ -32,11 +32,11 @@
             </span>
             <span *ngIf="!form.formData.dateEdited">
               {{'haseka.form.unsavedNever' | translate}}
-            </span>&nbsp;&nbsp;
-            <span class="label label-danger link" (click)="discard()">
-              <i class="glyphicon glyphicon-remove" [tooltip]="'haseka.form.discard' | translate"></i>
             </span>
           </div>
+        </div>
+        <div class="col-xs-3 col-sm-2">
+          <button class="btn btn-default pull-right" [disabled]="saving" type="submit" (click)="discard()">{{'haseka.form.back'|translate}}</button>
         </div>
       </div>
     </div>

@@ -159,7 +159,7 @@
   "haseka.form.failure": "Failed to save!",
   "haseka.form.save": "save changes",
   "haseka.form.unsaved": "last saved at {{saveTime}}",
-  "haseka.form.unsavedNever": "Page has changes that are not yet stored",
+  "haseka.form.unsavedNever": "All the changes have not yet been saved",
   "haseka.form.hasChanges": "Sumbission has local changes that are not yet saved",
   "haseka.form.discard": "Discard changes",
   "haseka.form.discardConfirm": "Are you sure that you want to discard your local changes",

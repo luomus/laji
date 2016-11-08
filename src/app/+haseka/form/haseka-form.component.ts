@@ -148,14 +148,7 @@ export class HaSeKaFormComponent implements OnInit {
       (confirm) => {
         if (this.window.confirm(confirm)) {
           this.formService.discard();
-          if (this.formService.isTmpId(this.documentId)) {
-            this.gotoFrontPage();
-          } else {
-            this.form.formData = this.formService.getDataWithoutChanges();
-            this.status = '';
-            this.saveVisibility = 'hidden';
-            this.tick = this.tick + 1;
-          }
+          this.gotoFrontPage();
         }
       }
     );
