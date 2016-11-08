@@ -1,5 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
+import { NotFoundComponent } from './shared/not-found/not-found.component';
 
 export const appRoutes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule'},
@@ -9,7 +10,9 @@ export const appRoutes: Routes = [
   {path: 'record', loadChildren: './+haseka/haseka.module#HasekaModule'},
   {path: 'observation', loadChildren: './+observation/observation.module#ObservationModule'},
   {path: 'taxon', loadChildren: './+taxonomy/taxonomy.module#TaxonomyModule'},
-  {path: 'collection', loadChildren: './+collection/collection.module#CollectionModule'}
+  {path: 'collection', loadChildren: './+collection/collection.module#CollectionModule'},
+  {path: 'error', loadChildren: './+error/error.module#ErrorModule'},
+  {path: '**', component: NotFoundComponent}
 ];
 
 export const appRoutingProviders: any[] = [];

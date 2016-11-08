@@ -18,12 +18,13 @@ import { OmniSearchComponent } from './omni-search/omni-search.component';
 import { SafePipe } from './pipe/safe.pipe';
 import { MultiLangPipe } from './pipe/multi-lang.pipe';
 import { NewsService } from './service/news.service';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 @NgModule({
   declarations: [
     NewsListComponent,
-    SpinnerComponent,
+    SpinnerComponent, NotFoundComponent,
     UsersPipe, LabelPipe, SafePipe, MultiLangPipe, FormattedNumber,
     ObservationCountComponent, ObservationMapComponent, MapComponent,
     PanelComponent, OmniSearchComponent

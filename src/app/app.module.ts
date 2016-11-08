@@ -17,7 +17,7 @@ import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { TranslateModule } from 'ng2-translate';
 import { CoreModule } from './shared/core.module';
-import { LajiErrorHandler } from './shared/laji-error-handler';
+import { LajiErrorHandler } from './shared/error/laji-error-handler';
 
 @NgModule({
   declarations: [
