@@ -129,8 +129,7 @@ export class TaxonomyApi {
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
   public taxonomyFindDescriptions(id: string, lang?: string, langFallback?: boolean, extraHttpRequestParams?: any): Observable<Array<any>> {
-    const path = this.basePath + '/taxa/{id}/descriptions'
-        .replace('{' + 'id' + '}', String(id));
+    const path = `${this.basePath}/taxa/${id}/descriptions?blacklist=eol%3Aapi`;
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
@@ -168,8 +167,7 @@ export class TaxonomyApi {
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
   public taxonomyFindMedia(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<any>> {
-    const path = this.basePath + '/taxa/{id}/media'
-        .replace('{' + 'id' + '}', String(id));
+    const path = `${this.basePath}/taxa/${id}/media?blacklist=eol%3Aapi`;
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
