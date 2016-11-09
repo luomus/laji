@@ -27,7 +27,7 @@ export class TreeOfLifeComponent {
   private active: string;
   private parents: Array<string> = [];
 
-  private plop;
+  private delayedSetup;
   private taxonId: string;
 
   constructor(
@@ -37,34 +37,34 @@ export class TreeOfLifeComponent {
   ) {
     this.htmlElement = this.element.nativeElement;
     this.host = d3.select(this.htmlElement);
-    this.plop = debounce(this.setup, 300);
+    this.delayedSetup = debounce(this.setup, 300);
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.plop(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
+    this.delayedSetup(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
   }
 
   ngOnInit() {
     this.route.params.filter((route) => route['type'] === 'taxonomy').subscribe((route) => {
       if (route['id'] !== this.taxonId) {
         this.taxonId = route['id'];
-        this.setup(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
+        this.delayedSetup(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
       }
     });
-    this.setup(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
+    this.delayedSetup(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
   }
 
   @Input()
   set onlyFinnish(isOnlyFinnish: Boolean) {
     this._onlyFinnish = isOnlyFinnish;
-    this.setup(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
+    this.delayedSetup(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
   };
 
   @Input()
   set vernacularNames(isVernacularNames: Boolean) {
     this._vernacularNames = isVernacularNames;
-    this.setup(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
+    this.delayedSetup(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
   };
 
   get onlyFinnish() {
@@ -81,7 +81,7 @@ export class TreeOfLifeComponent {
 
   private setup(taxonId: string = 'MX.53761', finnish: Boolean, vernacular: Boolean, diameter: number = 600): void {
 
-    this.host.html('');
+    this.host.html('<span>...</span>');
 
     const tree = d3.layout.tree()
       .size([360, diameter / 2 - 120])
