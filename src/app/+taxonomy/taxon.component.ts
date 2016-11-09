@@ -20,6 +20,10 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   public selectedInformalGroup: InformalTaxonGroup;
 
+  public onlyFinnish: Boolean;
+
+  public vernacularNames: boolean;
+
   private subTrans: Subscription;
 
   private subTaxon: Subscription;
@@ -51,6 +55,10 @@ export class TaxonComponent implements OnInit, OnDestroy {
     this.type = this.route.params.map(params => params['type']);
 
     this.id = this.route.params.distinctUntilChanged().map(params => params['id']);
+
+    this.onlyFinnish = false;
+
+    this.vernacularNames = false;
 
     const informal = this.type.filter(type => type === 'informal').switchMap((type) => this.id.distinctUntilChanged());
 

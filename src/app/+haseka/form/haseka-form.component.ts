@@ -127,7 +127,7 @@ export class HaSeKaFormComponent implements OnInit {
             this.status = 'error';
             setTimeout(() => {
               if (this.status === 'error') {
-                this.status = ''
+                this.status = '';
               }
             }, 5000);
         });

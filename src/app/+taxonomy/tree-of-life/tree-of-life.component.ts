@@ -6,8 +6,6 @@ import { Taxonomy } from '../../shared';
 
 declare var d3: any;
 
-const taxonTreeUri = '/api/taxa/%taxonId%?maxLevel=2&selectedFields=id%2CscientificName%2CvernacularName';
-
 @Component({
   selector: 'laji-tree-of-life',
   templateUrl: 'tree-of-life.component.html',
@@ -23,15 +21,20 @@ export class TreeOfLifeComponent {
   private diagonal;
   private htmlElement: HTMLElement;
 
+  private _onlyFinnish: Boolean;
+  private _vernacularNames: Boolean;
+
   private active: string;
   private parents: Array<string> = [];
 
   private plop;
   private taxonId: string;
 
-  constructor(private element: ElementRef,
-              private route: ActivatedRoute,
-              private router: Router) {
+  constructor(
+    private element: ElementRef,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.htmlElement = this.element.nativeElement;
     this.host = d3.select(this.htmlElement);
     this.plop = debounce(this.setup, 300);
@@ -39,30 +42,46 @@ export class TreeOfLifeComponent {
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.plop(this.taxonId, this.htmlElement.offsetWidth);
+    this.plop(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
   }
 
   ngOnInit() {
     this.route.params.filter((route) => route['type'] === 'taxonomy').subscribe((route) => {
       if (route['id'] !== this.taxonId) {
         this.taxonId = route['id'];
-        this.setup(this.taxonId, this.htmlElement.offsetWidth);
+        this.setup(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
       }
     });
-    this.setup(undefined, this.htmlElement.offsetWidth);
+    this.setup(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
   }
-
 
   @Input()
-  set taxon(taxon: Taxonomy) {
-    console.log(taxon);
+  set onlyFinnish(isOnlyFinnish: Boolean) {
+    this._onlyFinnish = isOnlyFinnish;
+    this.setup(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
   };
 
-  private getTaxonTreeUri(taxonId) {
-    return taxonTreeUri.replace('%taxonId%', taxonId);
+  @Input()
+  set vernacularNames(isVernacularNames: Boolean) {
+    this._vernacularNames = isVernacularNames;
+    this.setup(this.taxonId, this.onlyFinnish, this.vernacularNames, this.htmlElement.offsetWidth);
+  };
+
+  get onlyFinnish() {
+    return this._onlyFinnish;
   }
 
-  private setup(taxonId: string = 'MX.53761', diameter: number = 600): void {
+  get vernacularNames() {
+    return this._vernacularNames;
+  }
+
+  private getTaxonTreeUri(taxonId: String, naks: Boolean) {
+    return `/api/taxa/${taxonId}?maxLevel=2&onlyFinnish=${naks}&selectedFields=id,scientificName,vernacularName,finnishSpecies`;
+  }
+
+  private setup(taxonId: string = 'MX.53761', finnish: Boolean, vernacular: Boolean, diameter: number = 600): void {
+
+    this.host.html('');
 
     const tree = d3.layout.tree()
       .size([360, diameter / 2 - 120])
@@ -71,7 +90,8 @@ export class TreeOfLifeComponent {
     this.diagonal = d3.svg.diagonal.radial()
       .projection((d) => [d.y, (d.x || 0) / 180 * Math.PI]);
 
-    d3.json(this.getTaxonTreeUri(taxonId), (error, root) => {
+    d3.json(this.getTaxonTreeUri(taxonId, finnish), (error, root) => {
+
       this.active = taxonId;
       this.host.html('');
       this.svg = this.host.append('svg')
@@ -80,7 +100,7 @@ export class TreeOfLifeComponent {
         .append('g')
         .attr('transform', 'translate(' + diameter / 2 + ',' + (diameter + 40) / 2 + ')');
 
-      if (error) throw error;
+      if (error) return;
 
       let nodes = tree.nodes(root),
         links = tree.links(nodes);
@@ -120,17 +140,7 @@ export class TreeOfLifeComponent {
         .attr('dy', '.31em')
         .attr('text-anchor', (d) => d.x < 180 ? 'start' : 'end')
         .attr('transform', (d) => d.x < 180 ? 'translate(8)' : 'rotate(180)translate(-8)')
-        .on('mouseover', function(d) {
-          d3.select(this)
-          .style('fill', '#1a1a1a')
-          .text((data) => `${data.scientificName} ${data.vernacularName ? '- ' + data.vernacularName : ''}`);
-        })
-        .on('mouseout', function(d) {
-          d3.select(this)
-          .style('fill', 'black')
-          .text((data) => data.scientificName);
-        })
-        .text((d) => d.scientificName);
+        .text((d) => vernacular ? d.vernacularName : d.scientificName);
     });
 
     this.host.style('height', `${diameter + 40}px`);
