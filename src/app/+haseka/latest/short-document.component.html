@@ -8,7 +8,7 @@
   </span>
   &nbsp;
 </span>
-<span class="label label-danger" *ngIf="document.hasChanges" [tooltip]="'haseka.form.hasChanges' | translate">
+<span class="label label-danger" *ngIf="formService.hasUnsavedData(document.id, document) | async" [tooltip]="'haseka.form.hasChanges' | translate">
   <i class="glyphicon glyphicon-warning-sign"></i>
 </span>
 <br>

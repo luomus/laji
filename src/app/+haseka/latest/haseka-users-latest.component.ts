@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Document, DocumentApi } from '../../shared';
 import { FormService } from '../form/form.service';
+import { subscribeOn } from 'rxjs/operator/subscribeOn';
 
 @Component({
   selector: 'laji-haseka-latest',
@@ -30,17 +31,17 @@ export class UsersLatestComponent implements OnChanges {
     if (!this.userToken) {
       return;
     }
-    this.unsavedDocuments = this.formService.getAllTempDocuments().map(document => {
-      document.hasChanges = true;
-      return document;
-    });
+    this.formService.getAllTempDocuments()
+      .subscribe(documents => {
+        this.unsavedDocuments = documents.map(document => {
+          document.hasChanges = true;
+          return document;
+        });
+      });
     this.documentService.findAll(this.userToken, String(this.page), String(this.pageSize))
       .subscribe(
         result => {
-          this.documents = (result.results || []).map((document) => {
-            document.hasChanges = this.formService.hasUnsavedData(document.id, document);
-            return document;
-          });
+          this.documents = (result.results || []);
           this.total = result.total || 0;
         },
         err => console.log(err)

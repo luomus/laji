@@ -20,6 +20,7 @@ export class FormService {
   private formCache: {[key: string]: any} = {};
   private allForms: any[];
   private successMsg;
+  private subUpdate: Subscription;
 
   constructor(
     private formApi: FormApi,
@@ -27,13 +28,23 @@ export class FormService {
     private documentApi: DocumentApi
   ) {}
 
-  discard(id?: string) {
+  getUserId(): Observable<string> {
+    return this.userService.getUser()
+      .map(person => person.id);
+  }
+
+  discard(id?: string): void {
     if (!id) {
       id = this.currentKey;
     }
-    if (this.formDataStorage[id]) {
-      delete this.formDataStorage[id];
-    }
+    this.getUserId()
+      .switchMap(userID => {
+        if (this.formDataStorage[userID] && this.formDataStorage[userID][id]) {
+          delete this.formDataStorage[userID][id];
+        }
+        return Observable.of(true);
+      })
+      .subscribe();
   }
 
   setSuccessMessage(msg: string) {
@@ -51,19 +62,39 @@ export class FormService {
 
   store(formData) {
     if (this.currentKey) {
-      this.formDataStorage[this.currentKey] = formData;
+      if (this.subUpdate) {
+        this.subUpdate.unsubscribe();
+      }
+      this.subUpdate = this.getUserId()
+        .switchMap(userID => {
+          if (!this.formDataStorage[userID]) {
+            this.formDataStorage[userID] = {};
+          }
+          this.formDataStorage[userID][this.currentKey] = formData;
+          return Observable.of(true);
+        })
+        .subscribe();
     }
   }
 
-  hasUnsavedData(id?: string, document?: any): boolean {
+  hasUnsavedData(id?: string, document?: any): Observable<boolean> {
     if (!id) {
       id = this.currentKey;
     }
-    let result = typeof this.formDataStorage[id] !== 'undefined';
-    if (document && result) {
-      return this.isLocalNewest(this.formDataStorage[id], document);
+    if (this.isTmpId(id)) {
+      return Observable.of(true);
     }
-    return result;
+    return this.getUserId()
+      .switchMap(userID => {
+        let result = typeof this.formDataStorage[userID] !== 'undefined' &&
+          typeof this.formDataStorage[userID][id] !== 'undefined';
+        if (document && result) {
+          return Observable.of(
+            this.isLocalNewest(this.formDataStorage[userID][id], document)
+          );
+        }
+        return Observable.of(result);
+      });
   }
 
   getDataWithoutChanges() {
@@ -91,16 +122,23 @@ export class FormService {
     return id.indexOf(this.tmpNs + ':') === 0;
   }
 
-  getAllTempDocuments(): Document[] {
-    return Object.keys(this.formDataStorage)
-      .filter((key) => this.isTmpId(key))
-      .map((key) => {
-        let document = this.formDataStorage[key];
-        document.id = key;
-
-        return document;
-      })
-      .reverse();
+  getAllTempDocuments(): Observable<Document[]> {
+    return this.getUserId()
+      .switchMap(userID => {
+        if (!this.formDataStorage[userID]) {
+          return Observable.of([]);
+        }
+        return Observable.of(
+          Object.keys(this.formDataStorage[userID])
+            .filter((key) => this.isTmpId(key))
+            .map((key) => {
+              let document = this.formDataStorage[userID][key];
+              document.id = key;
+              return document;
+            })
+            .reverse()
+        );
+      });
   }
 
   load(formId: string, lang: string, documentId?: string): Observable<any> {
@@ -112,9 +150,11 @@ export class FormService {
           this.formCache[formId] = schema;
         });
     let data$ = documentId ?
-      ( this.isTmpId(documentId) && this.formDataStorage[documentId] ?
-        Observable.of(this.formDataStorage[documentId]) :
-        this.documentApi.findById(documentId, this.userService.getToken()) ) :
+        this.getUserId().switchMap(userID => {
+          return this.isTmpId(documentId) && this.formDataStorage[userID][documentId] ?
+            Observable.of(this.formDataStorage[userID][documentId]) :
+            this.documentApi.findById(documentId, this.userService.getToken());
+        }) :
         this.userService.getDefaultFormData();
 
     return data$
@@ -135,7 +175,7 @@ export class FormService {
     if (!documentId) {
       return this.defaultFormData(formId);
     }
-    return this.localFrmDataIfNoNewer(documentId, current);
+    return this.localFormDataIfNoNewerInRemote(documentId, current);
   }
 
   getAllForms(lang: string): Observable<any> {
@@ -159,20 +199,23 @@ export class FormService {
     }
   }
 
-  private localFrmDataIfNoNewer(documentId: string, current?: any) {
+  private localFormDataIfNoNewerInRemote(documentId: string, current?: any) {
     if (!current) {
       throw new Error('No current form data given!');
     }
     this.currentKey = documentId;
     this.setCurrentData(current);
-    if (!this.formDataStorage[documentId]) {
-      return Observable.of(current);
-    }
-    if (this.isLocalNewest(this.formDataStorage[documentId], current)) {
-      return Observable.of(this.formDataStorage[documentId]);
-    }
-    delete this.formDataStorage[documentId];
-    return Observable.of(current);
+    return this.getUserId()
+      .switchMap(userID => {
+        if (!this.formDataStorage[userID] || !this.formDataStorage[userID][documentId]) {
+          return Observable.of(current);
+        }
+        if (this.isLocalNewest(this.formDataStorage[userID][documentId], current)) {
+          return Observable.of(this.formDataStorage[userID][documentId]);
+        }
+        delete this.formDataStorage[userID][documentId];
+        return Observable.of(current);
+      });
   }
 
   private defaultFormData(formId: string) {

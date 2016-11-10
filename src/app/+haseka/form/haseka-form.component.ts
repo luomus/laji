@@ -146,7 +146,9 @@ export class HaSeKaFormComponent implements OnInit {
   discard() {
     this.translate.get('haseka.form.discardConfirm').subscribe(
       (confirm) => {
-        if (this.window.confirm(confirm)) {
+        if (this.status !== 'unsaved') {
+          this.gotoFrontPage();
+        } else if (this.window.confirm(confirm)) {
           this.formService.discard();
           this.gotoFrontPage();
         }
@@ -191,10 +193,13 @@ export class HaSeKaFormComponent implements OnInit {
             data.formData.hasChanges = undefined;
           }
           this.form = data;
-          if (this.formService.hasUnsavedData()) {
-            this.saveVisibility = 'shown';
-            this.status = 'unsaved';
-          }
+          this.formService.hasUnsavedData()
+            .subscribe(hasChanges => {
+              if (hasChanges) {
+                this.saveVisibility = 'shown';
+                this.status = 'unsaved';
+              }
+            });
           this.lang = this.translate.currentLang;
           this.loading = false;
         },
