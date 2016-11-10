@@ -8,9 +8,13 @@ export class PanelComponent {
   @Input() title: string;
   @Input() index: number;
   @Input() open: boolean = false;
+  @Input() autoToggle: boolean = false;
   @Output() activate = new EventEmitter();
 
   activateCurrent() {
+    if (this.autoToggle) {
+      this.open = !this.open;
+    }
     this.activate.emit({
       value: this.index
     });
