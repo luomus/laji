@@ -164,10 +164,10 @@ export class HaSeKaFormComponent implements OnInit {
       .load(this.formId, this.translate.currentLang)
       .subscribe(
         data => {
+          this.loading = false;
           this.isEdit = false;
           this.form = data;
           this.lang = this.translate.currentLang;
-          this.loading = false;
         },
         err => {
           this.loading = false;
@@ -186,6 +186,7 @@ export class HaSeKaFormComponent implements OnInit {
       .load(this.formId, this.translate.currentLang, this.documentId)
       .subscribe(
         data => {
+          this.loading = false;
           this.isEdit = true;
           if (this.formService.isTmpId(this.documentId)) {
             this.isEdit = false;
@@ -201,7 +202,6 @@ export class HaSeKaFormComponent implements OnInit {
               }
             });
           this.lang = this.translate.currentLang;
-          this.loading = false;
         },
         err => {
           this.loading = false;
