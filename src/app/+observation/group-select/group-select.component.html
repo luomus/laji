@@ -4,7 +4,7 @@
     <ng-content></ng-content>
   </span>
   <span *ngIf="innerValue">
-    {{getLabel(value) | async}}
+    {{label}}
   </span>
   <i class="glyphicon"
      [ngClass]="{'glyphicon-triangle-bottom': open,'glyphicon-triangle-right': !open}">
@@ -19,7 +19,7 @@
 </span>
 <div class="informal-group-container" [ngClass]="{hidden: !open}">
   <table>
-    <tr *ngFor="let idx of getRange()">
+    <tr *ngFor="let idx of range">
       <td
               (click)="onClick(groups[(idx * 2)])"
               class="item link informal-group-image {{groups[(idx * 2)]?.id}}">

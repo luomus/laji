@@ -1,13 +1,14 @@
 <div class="observation-chart-wrapper">
-  <div class="loading-mask" *ngIf="loading">...</div>
-  <div class="observation-chart">
-    <laji-pie-chart
+  <div class="observation-chart" style="min-height: 100px">
+    <laji-spinner [spinning]="loading" [overlay]="true">
+      <laji-pie-chart
             *ngIf="data"
             [data]="data"
             [height]="height"
             [showLegend]="showLegend"
             [legendPosition]="legendPosition"
             (sectionSelect)="onPieClick($event)">
-    </laji-pie-chart>
+      </laji-pie-chart>
+    </laji-spinner>
   </div>
 </div>

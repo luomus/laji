@@ -68,7 +68,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
 
   onPieClick(group) {
     this.searchQuery.query.informalTaxonGroupId = [group.id];
-    this.searchQuery.queryUpdate();
+    this.searchQuery.queryUpdate({'formSubmit': true});
   }
 
   private getInformalGroupName(id) {

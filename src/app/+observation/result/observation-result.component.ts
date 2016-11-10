@@ -1,10 +1,8 @@
-import { Component, Input, OnInit, OnDestroy, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges } from '@angular/core';
 import { Location } from '@angular/common';
 import { SearchQuery } from '../search-query.model';
 import { IdService } from '../../shared/service/id.service';
 import { UserService } from '../../shared/service/user.service';
-import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Subscription } from 'rxjs';
 import { ObservationFilterInterface } from '../filter/observation-filter.interface';
 import { TranslateService } from 'ng2-translate';
 

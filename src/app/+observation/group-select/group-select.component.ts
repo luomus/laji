@@ -33,6 +33,8 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
   public activeGroup: InformalTaxonGroup;
   public open: boolean = false;
   public innerValue: string = '';
+  public label: string = '';
+  public range: number[];
   private el: Element;
 
   private subLabel: any;
@@ -82,13 +84,17 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
       })
       .map(data => data.results.map(item => ({id: item.id, name: item.name, hasSubGroup: item.hasSubGroup})))
       .subscribe(
-        groups => this.groups = groups,
+        groups => {
+          this.groups = groups;
+          this.initRange();
+        },
         err => console.log(err)
       );
   }
 
   onClick(group: InformalTaxonGroup) {
     this.value = group.id;
+    this.setLabel(group.id);
     this.activeGroup = group;
     if (!!group.hasSubGroup) {
       this.initGroups();
@@ -97,17 +103,19 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
     }
   }
 
-  getRange() {
-    let items = [], i, len;
+  initRange() {
+    this.range = [];
+    let i, len;
     for (i = 0, len = Math.ceil(this.groups.length / 2); i < len; i++) {
-      items.push(i);
+      this.range.push(i);
     }
-    return items;
+    return this.range;
   }
 
   writeValue(value: any): void {
     if (value !== this.innerValue) {
       this.innerValue = value;
+      this.setLabel(value);
       if (value) {
         this.initGroups();
       }
@@ -122,23 +130,27 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
     this.onTouched = fn;
   }
 
-  getLabel(groupId: string) {
+  setLabel(groupId: string) {
     if (!groupId) {
-      return Observable.of('');
+      this.label = '';
+      return;
     }
     if (this.activeGroup && this.activeGroup.id === groupId) {
-      return Observable.of(this.activeGroup.name);
+      this.label = this.activeGroup.name;
+      return;
     }
+    let found = false;
     this.groups.map(group => {
       if (group.id === groupId) {
-        return Observable.of(group.name);
+        found = true;
+        this.label = group.name;
       }
     });
-    if (!this.subLabel) {
+    if (!found && !this.subLabel) {
       this.subLabel = this.informalTaxonService.informalTaxonGroupFindById(groupId, this.lang)
-        .map(group => group.name);
+        .map(group => group.name)
+        .subscribe(name => this.label = name);
     }
-    return this.subLabel;
   }
 
   empty() {
