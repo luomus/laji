@@ -3,6 +3,11 @@
   "sv": "svenska",
   "en": "engelska",
 
+  "error.500.title": "Ups error occurred",
+  "error.500.intro": "Unfortunately an unexpected error occurred. Place wait a while and try again in a little while. If the error doesn't go away please contact support.",
+  "error.404.title": "This is not the page you are looking for",
+  "error.404.intro": "Please check that url is written correctly",
+
   "navigation.taxonomy": "Artlista",
   "navigation.observation": "Observationer",
   "navigation.information": "Allmänt och aktuellt",
