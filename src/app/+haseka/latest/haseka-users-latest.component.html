@@ -27,14 +27,14 @@
   </div>
 </div>
 <pagination
-  [totalItems]="total"
-  [itemsPerPage]="pageSize"
-  [(ngModel)]="page"
-  (pageChanged)="pageChanged($event)"
-  [maxSize]="5"
-  [boundaryLinks]="false"
-  [firstText]="'paginator.first' | translate"
-  [lastText]="'paginator.last' | translate"
-  [previousText]="'paginator.previous' | translate"
-  [nextText]="'paginator.next' | translate"
+        [totalItems]="total"
+        [itemsPerPage]="pageSize"
+        [(ngModel)]="page"
+        (pageChanged)="pageChanged($event)"
+        [maxSize]="5"
+        [boundaryLinks]="false"
+        [firstText]="'paginator.first' | translate"
+        [lastText]="'paginator.last' | translate"
+        [previousText]="'paginator.previous' | translate"
+        [nextText]="'paginator.next' | translate"
 ></pagination>
