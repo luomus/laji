@@ -16,6 +16,7 @@ export class UsersLatestComponent implements OnChanges {
   public total = 0;
   public page = 1;
   public pageSize = 10;
+  public loading: boolean = true;
 
   constructor(
     private documentService: DocumentApi,
@@ -24,10 +25,17 @@ export class UsersLatestComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.updateList();
+    this.updateDocumentList();
+    this.updateTempDocumentList();
   }
 
-  updateList() {
+
+  pageChanged(page) {
+    this.page = page.page;
+    this.loading = true;
+    this.updateDocumentList();
+  }
+  updateTempDocumentList() {
     if (!this.userToken) {
       return;
     }
@@ -38,14 +46,20 @@ export class UsersLatestComponent implements OnChanges {
           return document;
         });
       });
+  }
+
+  updateDocumentList() {
+    if (!this.userToken) {
+      return;
+    }
     this.documentService.findAll(this.userToken, String(this.page), String(this.pageSize))
       .subscribe(
         result => {
+          this.loading = false;
           this.documents = (result.results || []);
           this.total = result.total || 0;
         },
         err => console.log(err)
       );
   }
-
 }

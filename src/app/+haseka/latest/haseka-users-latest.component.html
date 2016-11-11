@@ -10,14 +10,31 @@
     </tbody>
   </table>
 </div>
-
 <h4>{{'haseka.users.latest' | translate}}</h4>
-<table class="table table-striped table-bordered table-condensed dataTable">
-  <tbody>
-  <tr *ngFor="let document of documents">
-    <td>
-      <laji-short-document [document]="document"></laji-short-document>
-    </td>
-  </tr>
-  </tbody>
-</table>
+<div class="row">
+  <div class="col-xs-12">
+    <laji-spinner [spinning]="loading" [overlay]="true">
+      <table class="table table-striped table-bordered table-condensed dataTable">
+        <tbody>
+        <tr *ngFor="let document of documents">
+          <td>
+            <laji-short-document [document]="document"></laji-short-document>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </laji-spinner>
+  </div>
+</div>
+<pagination
+  [totalItems]="total"
+  [itemsPerPage]="pageSize"
+  [(ngModel)]="page"
+  (pageChanged)="pageChanged($event)"
+  [maxSize]="5"
+  [boundaryLinks]="false"
+  [firstText]="'paginator.first' | translate"
+  [lastText]="'paginator.last' | translate"
+  [previousText]="'paginator.previous' | translate"
+  [nextText]="'paginator.next' | translate"
+></pagination>
