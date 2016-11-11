@@ -1,19 +1,12 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
+  <div class="container-fluid">
     <div class="navbar-header">
-      <button
-              type="button"
-              class="navbar-toggle collapsed"
-              data-toggle="collapse"
-              data-target="#navbar"
-              aria-expanded="false"
-              aria-controls="navbar"
-              (click)="toggleMenu()"
-      >
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+        aria-controls="navbar" (click)="toggleMenu()">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" [routerLink]="['/']">LAJI.FI</a>
     </div>
@@ -25,11 +18,6 @@
         <li [routerLinkActive]="['active']">
           <a [routerLink]="['/observation']">{{ 'navigation.observation' | translate }}</a>
         </li>
-        <!--
-        <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/collection']">{{ 'navigation.collection' | translate }}</a>
-        </li>
-        -->
         <li [routerLinkActive]="['active']">
           <a *ngIf="userService.isLoggedIn" [routerLink]="['/record']">{{ 'navigation.haseka' | translate }}</a>
           <a *ngIf="!userService.isLoggedIn" [routerLink]="['/record']">{{ 'navigation.notify' | translate }}</a>
