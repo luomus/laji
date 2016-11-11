@@ -19,6 +19,7 @@ import { SafePipe } from './pipe/safe.pipe';
 import { MultiLangPipe } from './pipe/multi-lang.pipe';
 import { NewsService } from './service/news.service';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { OnlyLoggedComponent } from './only-logged/only-logged.component';
 
 
 @NgModule({
@@ -27,7 +28,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     SpinnerComponent, NotFoundComponent,
     UsersPipe, LabelPipe, SafePipe, MultiLangPipe, FormattedNumber,
     ObservationCountComponent, ObservationMapComponent, MapComponent,
-    PanelComponent, OmniSearchComponent
+    PanelComponent, OmniSearchComponent, OnlyLoggedComponent
   ],
   imports: [
     FormsModule,
@@ -46,7 +47,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe, MultiLangPipe,
     TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, MapComponent,
-    PanelComponent, OmniSearchComponent
+    PanelComponent, OmniSearchComponent, OnlyLoggedComponent
   ]
 })
 export class SharedModule {

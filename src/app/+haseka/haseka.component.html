@@ -1,28 +1,26 @@
 <div class="container">
   <h1>{{'haseka.title' | translate}}</h1>
-  <alert type="success" *ngIf="successMsg" [dismissible]="true">
-    {{successMsg}}
-  </alert>
-  <div *ngIf="userService.isLoggedIn">
-    <div class="row">
-      <div class="col-sm-8">
-        <div [innerHtml]="'haseka.intro' | translate"></div>
-        <a routerLink="/record/terms-of-service">{{'haseka.termsOfService' | translate}}</a>
+  <only-logged>
+    <div out>
+      <p>
+        {{'haseka.pleaseLogin' | translate}}
+      </p>
+    </div>
+    <div in>
+      <alert type="success" *ngIf="successMsg" [dismissible]="true">
+        {{successMsg}}
+      </alert>
+      <div class="row">
+        <div class="col-sm-8">
+          <div [innerHtml]="'haseka.intro' | translate"></div>
+          <a routerLink="/record/terms-of-service">{{'haseka.termsOfService' | translate}}</a>
 
-        <laji-haseka-form-list></laji-haseka-form-list>
-      </div>
-      <div class="col-sm-4 well" *ngIf="userService.isLoggedIn">
-        <laji-haseka-latest [userToken]="userService.token"></laji-haseka-latest>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="!userService.isLoggedIn">
-    <div class="row">
-      <div class="col-sm-12">
-        <p>
-          {{'haseka.pleaseLogin' | translate}}
-        </p>
+          <laji-haseka-form-list></laji-haseka-form-list>
+        </div>
+        <div class="col-sm-4 well" *ngIf="userService.isLoggedIn">
+          <laji-haseka-latest [userToken]="userService.token"></laji-haseka-latest>
+        </div>
       </div>
     </div>
-  </div>
+  </only-logged>
 </div>

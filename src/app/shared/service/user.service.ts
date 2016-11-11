@@ -16,7 +16,7 @@ export class UserService {
 
   @LocalStorage() private token = '';
   @LocalStorage() private returnUrl = '/';
-  private user: Person;
+  private currentUserId: string;
   private users: {[id: string]: Person} = {};
   private usersFetch: {[id: string]: Observable<Person>} = {};
   private defaultFormData: any;
@@ -40,7 +40,7 @@ export class UserService {
   }
 
   public login(userToken: string) {
-    if (this.user === userToken || this.subUser) {
+    if (this.token === userToken || this.subUser) {
       return;
     }
     this.isLoggedIn = true;
@@ -54,11 +54,10 @@ export class UserService {
     let token = this.token;
     this.token = '';
     this.isLoggedIn = false;
-    this.user = undefined;
+    this.currentUserId = undefined;
     this.subLogout = this.tokenService.personTokenDeleteToken(token)
       .subscribe(
-        () => {
-        },
+        () => {},
         err => console.log(err)
       );
   }
@@ -76,7 +75,6 @@ export class UserService {
     } else if (!this.usersFetch[id]) {
       this.usersFetch[id] = Observable.create((observer: Observer<Person>) => {
         const onComplete = (user: Person) => {
-          this.users[id] = user;
           observer.next(user);
           observer.complete();
           delete this.usersFetch[id];
@@ -85,6 +83,7 @@ export class UserService {
           .catch((e) => Observable.of({}))
           .subscribe(
             (user: Person) => {
+              this.addUser(user);
               onComplete(user);
             }
           );
@@ -108,12 +107,15 @@ export class UserService {
     } else if (this.formDefaultObservable) {
       return this.formDefaultObservable;
     }
-    this.formDefaultObservable = this.getUser().map(data => ({
+    this.formDefaultObservable = this.getUser()
+      .map(data => ({
         'editors': [data.id],
         'gatheringEvent': {
           'leg': [data.id]
         }
-      }));
+      }))
+      .do(data => this.defaultFormData = data)
+      .share();
     return this.formDefaultObservable;
   }
 
@@ -121,7 +123,7 @@ export class UserService {
     this.token = token;
     this.getUser()
       .subscribe(
-        user => this.user = user,
+        user => this.addUser(user, true),
         err => {
           this.logout();
           console.log(err);
@@ -130,8 +132,8 @@ export class UserService {
   }
 
   private getCurrentUser() {
-    if (this.user) {
-      return Observable.of(this.user);
+    if (this.currentUserId && this.users[this.currentUserId]) {
+      return Observable.of(this.users[this.currentUserId]);
     } else if (this.observable) {
       return this.observable;
     }
@@ -139,8 +141,15 @@ export class UserService {
       return Observable.of({});
     }
     this.observable = this.userService.personFindByToken(this.token)
-      .do(u => this.users[u.id] = u)
+      .do(u => this.addUser(u, true))
       .share();
     return this.observable;
+  }
+
+  private addUser(user: Person, asCurrent: boolean = false) {
+    if (asCurrent) {
+      this.currentUserId = user.id;
+    }
+    this.users[user.id] = user;
   }
 }
