@@ -1,272 +1,280 @@
 <form (ngSubmit)="onSubmit()" #observationForm="ngForm" class="form-horizontal">
   <div class="row">
-    <div class="col-sm-12">
-      <div class="well" *ngIf="loadFilters">
-        <div class="form-group">
-          <label class="col-md-2 control-label">
-            {{'observation.active.informalTaxonGroupId' | translate}}:
-          </label>
-          <div class="col-md-10">
-            <observation-group-select
-                    [(ngModel)]="formQuery.informalTaxonGroupId"
-                    name="informalTaxonGroupId"
-                    [lang]="translate.currentLang"
-                    (onSelect)="onSubmit()">
-              {{'observation.active.informalTaxonGroupAll'|translate}}
-            </observation-group-select>
-          </div>
+    <div class="form-filters col-sm-4 col-sm-push-8 col-md-3 col-md-push-9 col-lg-2 col-lg-push-10">
+      <div class="form-group">
+        <div class="col-xs-12">
+
         </div>
-        <div class="form-group">
-          <label class="col-md-2 control-label">
-            {{'observation.form.specimen' | translate}}:
-          </label>
-          <div class="col-md-6">
-            <input
-                    [ngClass]="{loading: typeaheadLoading}"
-                    type="text"
-                    class="form-control input-sm"
-                    name="target"
-                    [(ngModel)]="formQuery.taxon"
-                    [typeahead]="dataSource"
-                    [typeaheadOptionsLimit]="limit"
-                    [typeaheadOptionField]="'value'"
-                    [typeaheadWaitMs]="200"
-                    [typeaheadMinLength]="4"
-                    [typeaheadOptionField]="'target'"
-                    [typeaheadItemTemplate]="taxonItem"
-                    (typeaheadLoading)="changeTypeaheadLoading($event)"
-                    autocomplete="off"
-                    autocorrect="off"
-            >
-            <template #taxonItem let-model="item">
-              <h5 class="autosuggest-value {{getTaxonGroup(model.payload, 'id')}} informal-group-image">
-                {{model.value}}
-              </h5>
-            </template>
-          </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-12">
+          <laji-observation-active
+                  [skip]="['target']"
+          ></laji-observation-active>
         </div>
-        <div class="form-group">
-          <label class="col-md-2 control-label">{{'observation.form.date' | translate}}:</label>
-          <div class="col-md-3">
-            <laji-datepicker
-                    [(ngModel)]="formQuery.timeStart"
-                    [viewFormat]="'DD.MM.YYYY'"
-                    [format]="warehouseDateFormat"
-                    name="timeStart"></laji-datepicker>
-          </div>
-          <div class="col-md-3">
-            <laji-datepicker
-                    [(ngModel)]="formQuery.timeEnd"
-                    [viewFormat]="'DD.MM.YYYY'"
-                    [format]="warehouseDateFormat"
-                    name="timeEnd"></laji-datepicker>
-          </div>
-          <div class="col-md-3">
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1)">1d</button>
-              <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7)">7d</button>
-              <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365)">
-                {{'observation.form.thisYear' | translate}}
+      </div>
+      <div class="form-group">
+        <label class="col-lg-12">
+          {{'observation.active.informalTaxonGroupId' | translate}}:
+        </label>
+        <div class="col-lg-12">
+          <observation-group-select
+                  [(ngModel)]="formQuery.informalTaxonGroupId"
+                  name="informalTaxonGroupId"
+                  [lang]="translate.currentLang"
+                  (onSelect)="onQueryChange()">
+            {{'observation.active.informalTaxonGroupAll'|translate}}
+          </observation-group-select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-lg-3 control-label">
+          {{'observation.form.specimen' | translate}}:
+        </label>
+        <div class="col-lg-9">
+          <input
+                  [ngClass]="{loading: typeaheadLoading}"
+                  type="text"
+                  class="form-control input-sm"
+                  name="target"
+                  [(ngModel)]="formQuery.taxon"
+                  [typeahead]="dataSource"
+                  [typeaheadOptionsLimit]="limit"
+                  [typeaheadWaitMs]="200"
+                  [typeaheadMinLength]="4"
+                  [typeaheadOptionField]="'value'"
+                  [typeaheadItemTemplate]="taxonItem"
+                  (typeaheadLoading)="changeTypeaheadLoading($event)"
+                  (typeaheadOnSelect)="onQueryChange()"
+                  autocomplete="off"
+                  autocorrect="off"
+          >
+          <template #taxonItem let-model="item">
+            <h5 class="autosuggest-value {{getTaxonGroup(model.payload, 'id')}} informal-group-image">
+              {{model.value}}
+            </h5>
+          </template>
+        </div>
+      </div>
+      <!--
+      <div class="row">
+        <label class="col-lg-3 control-label">{{'observation.form.map'|translate}}:</label>
+        <div class="col-lg-9">
+          <div class="form-group">
+            <div class="col-xs-12">
+              <button type="button" class="btn btn-sm btn-default" (click)="gotToMap()">
+                {{'observation.form.mapLink'|translate}}
               </button>
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <label class="col-md-2 control-label">{{'observation.form.map'|translate}}:</label>
-          <div class="col-md-2">
-            <div class="form-group">
-              <div class="col-xs-12">
-                <button type="button" class="btn btn-sm btn-default" (click)="gotToMap()">
-                  {{'observation.form.mapLink'|translate}}
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <div class="col-xs-12">
-                <button type="button" (click)="toggleFilters()" class="btn btn-sm btn-default">
-                  {{'observation.form.more' | translate}}
-                  <i class="glyphicon"
-                     [ngClass]="{
-                       'glyphicon-triangle-bottom': showFilter,
-                       'glyphicon-triangle-right': !showFilter
-                     }"
-                  ></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group" *ngIf="!showFilter">
-          <div class="col-md-10 col-md-offset-2">
-            <laji-observation-active
-                    [skip]="['target', 'includeNonValidTaxa', 'informalTaxonGroupId']"
-            ></laji-observation-active>
-          </div>
-        </div>
-        <div [hidden]="!showFilter">
+      </div>
+      -->
+      <div class="row">
+        <div laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true">
           <div class="row">
-            <div class="col-sm-12">
-              <h3>{{'observation.filters.unit' | translate}}</h3>
+            <div class="col-lg-12">
+              <laji-datepicker
+                      [(ngModel)]="formQuery.timeStart"
+                      [viewFormat]="'DD.MM.YYYY'"
+                      [format]="warehouseDateFormat"
+                      (onSelect)="onQueryChange()"
+                      name="timeStart"></laji-datepicker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <laji-datepicker
+                      [(ngModel)]="formQuery.timeEnd"
+                      [viewFormat]="'DD.MM.YYYY'"
+                      [format]="warehouseDateFormat"
+                      (onSelect)="onQueryChange()"
+                      name="timeEnd"></laji-datepicker>
             </div>
           </div>
           <div class="form-group">
-            <label class="col-md-2 control-label">{{'observation.form.count' | translate}}:</label>
-            <div class="col-md-3">
-              <div class="row">
-                <div class="col-sm-6">
-                  <input type="number" name="individualCountMin"
-                         class="form-control input-sm"
-                         placeholder="{{'observation.form.countMin' | translate}}"
-                         [(ngModel)]="formQuery.individualCountMin">
-                </div>
-                <div class="col-sm-6">
-                  <input type="number" name="individualCountMax"
-                         class="form-control input-sm"
-                         placeholder="{{'observation.form.countMax' | translate}}"
-                         [(ngModel)]="formQuery.individualCountMax">
-                </div>
+            <div class="col-lg-12">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1)">1d</button>
+                <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7)">7d</button>
+                <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365)">
+                  {{'observation.form.thisYear' | translate}}
+                </button>
               </div>
             </div>
-            <label class="col-md-2 control-label">{{'observation.form.sex' | translate}}:</label>
-            <div class="col-md-3">
+          </div>
+        </div>
+        <div laji-panel [title]="'observation.form.count' | translate" [autoToggle]="true">
+          <div class="row">
+            <div class="col-sm-6">
+              <input type="number" name="individualCountMin"
+                     class="form-control input-sm"
+                     placeholder="{{'observation.form.countMin' | translate}}"
+                     (ngModelChange)="onQueryChange()"
+                     [(ngModel)]="formQuery.individualCountMin">
+            </div>
+            <div class="col-sm-6">
+              <input type="number" name="individualCountMax"
+                     class="form-control input-sm"
+                     placeholder="{{'observation.form.countMax' | translate}}"
+                     (ngModelChange)="onQueryChange()"
+                     [(ngModel)]="formQuery.individualCountMax">
+            </div>
+          </div>
+        </div>
+        <div laji-panel [title]="'observation.form.sex' | translate" [autoToggle]="true">
+          <div class="row">
+            <div class="col-sm-12">
               <metadata-select
                       [(ngModel)]="searchQuery.query.sex"
                       [field]="'MY.sex'"
                       [pick]="pickSex"
+                      (ngModelChange)="onQueryChange()"
                       [mapToWarehouse]="true"
                       name="sex"
                       [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-md-2 control-label">{{'MY.lifeStage' | label}}:</label>
-            <div class="col-md-3">
+        </div>
+        <div laji-panel [title]="'MY.lifeStage' | label" [autoToggle]="true">
+          <div class="row">
+            <div class="col-sm-12">
               <metadata-select
                       [(ngModel)]="searchQuery.query.lifeStage"
+                      (ngModelChange)="onQueryChange()"
                       [field]="'MY.lifeStage'"
                       [mapToWarehouse]="true"
                       name="lifeStage"
                       [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
+        </div>
+        <div laji-panel [title]="'MY.recordBasis' | label" [autoToggle]="true">
           <div class="row">
             <div class="col-sm-12">
-              <h3>{{'observation.filters.collection' | translate}}</h3>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-md-2 control-label">{{'MY.recordBasis' | label}}:</label>
-            <div class="col-md-3">
               <metadata-select
                       [(ngModel)]="searchQuery.query.recordBasis"
+                      (ngModelChange)="onQueryChange()"
                       [multiple]="true"
                       name="recordBasis"
                       [mapToWarehouse]="true"
                       [field]="'MY.recordBasis'"
                       [lang]="translate.currentLang"></metadata-select>
             </div>
-            <label class="col-md-2 control-label">{{'observation.form.documentId' | translate}}:</label>
-            <div class="col-md-3">
+          </div>
+        </div>
+        <div laji-panel [title]="'observation.form.documentId' | translate" [autoToggle]="true">
+          <div class="row">
+            <div class="col-sm-12">
               <input
                       class="form-control input-sm"
                       type="text"
                       name="documentId"
-                      [(ngModel)]="searchQuery.query.documentId"
-              >
+                      (ngModelChange)="onQueryChange()"
+                      [(ngModel)]="searchQuery.query.documentId">
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-md-2 control-label">{{'MY.collectionID' | label}}:</label>
-            <div class="col-md-3">
+        </div>
+        <div laji-panel [title]="'MY.collectionID' | label" [autoToggle]="true">
+          <div class="row">
+            <div class="col-sm-12">
               <metadata-select
                       [(ngModel)]="searchQuery.query.collectionId"
+                      (ngModelChange)="onQueryChange()"
                       [field]="'MY.collectionID'"
                       name="collectionID"
                       [lang]="translate.currentLang"></metadata-select>
             </div>
-            <label class="col-md-2 control-label">{{'observation.form.typeSpecimen' | translate}}:</label>
-            <div class="col-md-1">
-              <input type="checkbox" class="input-sm"
-                     [(ngModel)]="formQuery.typeSpecimen"
-                     name="typeSpecimen">
-            </div>
           </div>
+        </div>
+        <div laji-panel [title]="'MX.hasAdminStatus' | label" [autoToggle]="true">
           <div class="row">
             <div class="col-sm-12">
-              <h3>{{'observation.filters.administrative' | translate}}</h3>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-md-2 control-label">{{'MX.hasAdminStatus' | label}}:</label>
-            <div class="col-md-3">
               <metadata-select
                       [(ngModel)]="searchQuery.query.administrativeStatusId"
+                      (ngModelChange)="onQueryChange()"
                       name="administrativeStatusId"
                       [field]="'MX.hasAdminStatus'"
                       [lang]="translate.currentLang"></metadata-select>
             </div>
-            <label class="col-md-2 control-label">{{'observation.form.redListStatusId' | translate}}:</label>
-            <div class="col-md-3">
+          </div>
+        </div>
+        <div laji-panel [title]="'observation.form.redListStatusId' | translate" [autoToggle]="true">
+          <div class="row">
+            <div class="col-sm-12">
               <metadata-select
                       [(ngModel)]="searchQuery.query.redListStatusId"
+                      (ngModelChange)="onQueryChange()"
                       [multiple]="true"
                       name="redListStatusId"
                       [field]="'MKV.redListStatus'"
                       [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-md-2 control-label">{{'observation.form.invasive' | translate}}:</label>
-            <div class="col-md-3">
-              <multi-radio
-                      [options]="invasiveOptions"
-                      [(ngModel)]="searchQuery.query.invasive"
-                      name="invasive"></multi-radio>
-            </div>
-            <label class="col-md-2 control-label">{{'observation.form.finnish' | translate}}:</label>
-            <div class="col-md-3">
-              <multi-radio
-                      [options]="finnishOptions"
-                      [(ngModel)]="searchQuery.query.finnish"
-                      name="finnish"></multi-radio>
+        </div>
+        <div laji-panel [title]="'observation.form.other' | translate" [autoToggle]="true">
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [(ngModel)]="searchQuery.query.typeSpecimen"
+                       (ngModelChange)="onCheckBoxToggle('typeSpecimen')"
+                       name="typeSpecimen">
+                {{'observation.form.typeSpecimen' | translate}}
+              </label>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-12">
-              <h3>{{'observation.filters.other' | translate}}</h3>
+              <label>
+                <input type="checkbox"
+                       [(ngModel)]="searchQuery.query.invasive"
+                       (ngModelChange)="onCheckBoxToggle('invasive')"
+                       name="invasive">
+                {{'observation.form.invasive' | translate}}
+              </label>
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-md-2 control-label">{{'observation.form.hasMedia' | translate}}:</label>
-            <div class="col-md-3">
-              <multi-radio
-                      [options]="mediaOptions"
-                      [(ngModel)]="searchQuery.query.hasMedia"
-                      name="hasMedia"></multi-radio>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [(ngModel)]="searchQuery.query.finnish"
+                       (ngModelChange)="onCheckBoxToggle('finnish')"
+                       name="finnish">
+                {{'observation.form.finnish' | translate}}
+              </label>
             </div>
-            <label class="col-md-2 control-label">{{'observation.form.includeNonValidTaxa' | translate}}:</label>
-            <div class="col-md-1">
-              <input type="checkbox" class="input-sm"
-                     [(ngModel)]="formQuery.includeNonValidTaxa"
-                     name="includeNonValidTaxa">
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [(ngModel)]="searchQuery.query.hasMedia"
+                       (ngModelChange)="onCheckBoxToggle('hasMedia')"
+                       name="hasMedia">
+                {{'observation.form.hasMedia' | translate}}
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [(ngModel)]="searchQuery.query.includeNonValidTaxa"
+                       (ngModelChange)="onCheckBoxToggle('includeNonValidTaxa')"
+                       name="includeNonValidTaxa">
+                {{'observation.form.includeNonValidTaxa' | translate}}
+              </label>
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <div class="col-md-offset-2 col-md-1 col-sm-4">
-            <button (click)="onSubmit()" class="btn btn-sm btn-default">{{'observation.form.search' | translate}}
-            </button>
-          </div>
-          <div class="col-md-1 col-sm-4">
-            <button type="button" (click)="empty(true)" class="btn btn-sm btn-default">{{'observation.form.empty' |
-              translate}}
-            </button>
-          </div>
-        </div>
-      </div>
-      <div [ngStyle]="{'min-height': getTabHeight()}" #tabs>
+      </div><!-- filters end -->
+    </div>
+    <div class="result-list col-sm-8 col-sm-pull-4 col-md-9 col-md-pull-3 col-lg-10 col-lg-pull-2">
+      <laji-observation-header></laji-observation-header>
+      <div [innerHtml]="'observation.intro' | translate"></div>
+      <div #tabs>
         <laji-observation-result [(active)]="activeTab" [(filters)]="filters"
                                  (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>
       </div>

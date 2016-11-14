@@ -57,7 +57,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   private activeBounds: LatLngBounds;
   private reset = true;
   private showingItems = false;
-  private legendsCache: any;
   private dataCache: any;
 
 
@@ -357,6 +356,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
   private getPopup(idx: number, cb: Function) {
     try {
+      console.log('loading POPUP');
       const properties = this.mapData[0].featureCollection.features[idx].properties;
       let cnt = properties.title;
       let description = '';
@@ -373,6 +373,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           .subscribe(translation => cb(`${cnt} ${translation}`));
       }
     } catch (e) {
+      console.log(e);
     }
   }
 }

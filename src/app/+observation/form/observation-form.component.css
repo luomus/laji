@@ -4,3 +4,30 @@
   background-size: 20px auto;
   background-position: center right;
 }
+.result-list {
+  padding-right: 0;
+}
+.form-filters {
+  z-index: 1001;
+  padding-top: 20px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+.checkbox-label {
+  padding-left:0;
+}
+
+:host >>> .panel-heading {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  background-color: #ECF0F1;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+:host >>> .panel-heading a:hover {
+  text-decoration: none;
+}
+
+:host >>> .panel-body {
+  padding-top: 6px;
+  margin-top: 0;
+}

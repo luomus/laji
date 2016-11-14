@@ -1,5 +1,5 @@
 <input type="hidden" [(ngModel)]="value">
-<button class="btn btn-default" type="button" (click)="toggle()">
+<button class="btn btn-default informal-group-select" type="button" (click)="toggle()">
   <span *ngIf="!innerValue">
     <ng-content></ng-content>
   </span>
@@ -14,7 +14,7 @@
   <i class="glyphicon glyphicon-ok"></i>
 </span>
 &nbsp;
-<span [ngClass]="{hidden: !innerValue}" (click)="empty()" class="label label-danger link">
+<span [ngClass]="{hidden: !open}" (click)="empty()" class="label label-danger link">
   <i class="glyphicon glyphicon-remove"></i>
 </span>
 <div class="informal-group-container" [ngClass]="{hidden: !open}">

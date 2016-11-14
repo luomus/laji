@@ -26,7 +26,7 @@
  * SOFTWARE.
  */
 
-import { Component, OnInit, ViewContainerRef, Input, forwardRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, Input, forwardRef, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import * as moment from 'moment';
 
@@ -58,6 +58,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   @Input() format: string;
   @Input() viewFormat: string;
   @Input() firstWeekdaySunday: boolean;
+  @Output() onSelect = new EventEmitter();
 
   private date: any = moment();
   private el: Element;
@@ -174,6 +175,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     this.value = selectedDate.format(this.format);
     this.viewDate = selectedDate.format(this.viewFormat);
     this.close();
+    this.onSelect.emit(this.value);
     this.generateCalendar();
   }
 

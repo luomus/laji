@@ -5,6 +5,4 @@ export interface ObservationFormQuery {
   informalTaxonGroupId: string;
   individualCountMin: string;
   individualCountMax: string;
-  includeNonValidTaxa: boolean;
-  typeSpecimen: boolean;
 }

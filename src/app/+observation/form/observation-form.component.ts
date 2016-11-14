@@ -14,6 +14,7 @@ import { IdService } from '../../shared/service/id.service';
 import { SourceApi } from '../../shared/api/SourceApi';
 import { Source } from '../../shared/model/Source';
 import { MultiRadioOption } from '../multi-radio/multi-radio.component';
+import { debounce } from 'underscore';
 
 @Component({
   selector: 'laji-observation-form',
@@ -32,7 +33,6 @@ export class ObservationFormComponent implements OnInit {
   public typeaheadLoading: boolean = false;
   public warehouseDateFormat = DATE_FORMAT;
   public showFilter = false;
-  public loadFilters = true;
   public invasiveOptions: MultiRadioOption[] = [
     {value: true, label: 'observation.form.multi-true'},
     {value: false, label: 'observation.form.multi-false'},
@@ -105,6 +105,7 @@ export class ObservationFormComponent implements OnInit {
   private subUpdate: Subscription;
   private window: Window;
   private lastQuery: string;
+  private delayedSearch;
 
   constructor(public searchQuery: SearchQuery,
               public translate: TranslateService,
@@ -113,6 +114,7 @@ export class ObservationFormComponent implements OnInit {
               private autocompleteService: AutocompleteApi,
               private sourceService: SourceApi,
               @Inject('Window') window: Window) {
+    this.delayedSearch = debounce(this.onSubmit, 500);
     this.window = window;
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.formQuery.taxon);
@@ -187,9 +189,7 @@ export class ObservationFormComponent implements OnInit {
       timeEnd: '',
       informalTaxonGroupId: '',
       individualCountMin: '',
-      individualCountMax: '',
-      includeNonValidTaxa: false,
-      typeSpecimen: false
+      individualCountMax: ''
     };
 
     if (refresh) {
@@ -198,7 +198,6 @@ export class ObservationFormComponent implements OnInit {
   }
 
   toggleFilters() {
-    this.loadFilters = true;
     this.showFilter = !this.showFilter;
   }
 
@@ -234,6 +233,16 @@ export class ObservationFormComponent implements OnInit {
     });
   }
 
+  onCheckBoxToggle(field) {
+    this.searchQuery.query[field] = this.searchQuery.query[field] ?
+      true : undefined;
+    this.onQueryChange();
+  }
+
+  onQueryChange() {
+    this.delayedSearch(true);
+  }
+
   onSubmit(updateQuery = true) {
     this.formQueryToQuery(this.formQuery);
     let cacheKey = JSON.stringify(this.searchQuery.query);
@@ -244,8 +253,7 @@ export class ObservationFormComponent implements OnInit {
     this.searchQuery.tack++;
     this.searchQuery.updateUrl(this.location, undefined, [
       'selected',
-      'pageSize',
-      'includeNonValidTaxa'
+      'pageSize'
     ]);
     if (updateQuery) {
       this.searchQuery.queryUpdate({});
@@ -277,9 +285,7 @@ export class ObservationFormComponent implements OnInit {
       informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
         query.informalTaxonGroupId[0] : '',
       individualCountMin: '' + query.individualCountMin,
-      individualCountMax: '' + query.individualCountMax,
-      includeNonValidTaxa: query.includeNonValidTaxa,
-      typeSpecimen: query.typeSpecimen,
+      individualCountMax: '' + query.individualCountMax
     };
   }
 
@@ -303,8 +309,6 @@ export class ObservationFormComponent implements OnInit {
       [formQuery.informalTaxonGroupId] : undefined;
     query.individualCountMin = +formQuery.individualCountMin || undefined;
     query.individualCountMax = +formQuery.individualCountMax || undefined;
-    query.typeSpecimen = formQuery.typeSpecimen || undefined;
-    query.includeNonValidTaxa = formQuery.includeNonValidTaxa || undefined;
   }
 
   private parseDate(start, end) {

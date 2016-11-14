@@ -22,12 +22,10 @@ export class ObservationComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
               public searchQuery: SearchQuery,
-              private location: Location,
-              private footerService: FooterService) {
+              private location: Location) {
   }
 
   ngOnInit() {
-    this.footerService.footerVisible = false;
     this.subParam = this.route.params.subscribe(params => {
       this.tab = params['tab'] || 'map';
       this.searchQuery.page = +params['page'] || 1;
@@ -42,7 +40,6 @@ export class ObservationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.footerService.footerVisible = true;
     this.subParam.unsubscribe();
   }
 }

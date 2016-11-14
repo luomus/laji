@@ -94,8 +94,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     this.activeChange.emit(this.active);
     this.searchQuery.updateUrl(this.location, '/observation/' + tab, [
       'selected',
-      'pageSize',
-      'includeNonValidTaxa'
+      'pageSize'
     ]);
   }
 }
