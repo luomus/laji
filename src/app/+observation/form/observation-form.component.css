@@ -9,18 +9,25 @@
 }
 .form-filters {
   z-index: 1001;
-  padding-top: 20px;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 }
 .checkbox-label {
   padding-left:0;
 }
 
-:host >>> .panel-heading {
-  padding-top: 3px;
-  padding-bottom: 3px;
+:host >>> .panel-heading, .form-title {
   background-color: #ECF0F1;
   border-bottom: 1px solid #e1e1e1;
+}
+
+.toggle-intro {
+  padding: 10px 10px 0 0;
+  font-size: 13px;
+  color: #3498DB;
+}
+
+.form-title h2 {
+  font-size: 16px;
 }
 
 :host >>> .panel-heading a:hover {

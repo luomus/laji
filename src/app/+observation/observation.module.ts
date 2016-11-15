@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ObservationComponent, routing } from './index';
 import { SharedModule } from '../shared/shared.module';
-import { ObservationHeaderComponent } from './header/observation-header.component';
 import { ObservationActiveComponent } from './active/observation-active.component';
 import { ObservationChartComponent } from './chart/observation-chart.component';
 import { ObservationFilterComponent } from './filter/observation-filter.component';
@@ -24,7 +23,7 @@ import { ObservationDownloadComponent } from './download/observation-download.co
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, TypeaheadModule, SelectModule],
-  declarations: [ObservationComponent, ObservationHeaderComponent, ObservationActiveComponent,
+  declarations: [ObservationComponent, ObservationActiveComponent,
     ObservationAggregateComponent, ObservationChartComponent,
     ObservationFilterComponent, ObservationFormComponent, ObservationGroupSelectComponent,
     MultiRadioComponent, ObservationResultComponent,

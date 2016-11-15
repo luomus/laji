@@ -11,6 +11,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
 
   @Input() skip: string[] = [];
   public active: ActiveList[] = [];
+  public showList: boolean = false;
 
   private subQueryUpdate: Subscription;
 
@@ -30,11 +31,33 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
     }
   }
 
+  toggleActiveList() {
+    if (!this.showList && this.active.length === 0) {
+      return;
+    }
+    this.showList = !this.showList;
+  }
+
   remove(item: ActiveList) {
     let query = this.searchQuery.query;
     if (query[item.field]) {
       query[item.field] = undefined;
     }
+    if (this.active.length < 2) {
+      this.showList = false;
+    }
+    this.searchQuery.queryUpdate({formSubmit: true});
+  }
+
+  removeAll() {
+    let query = this.searchQuery.query;
+    this.active.map((item) => {
+      if (query[item.field]) {
+        query[item.field] = undefined;
+      }
+    });
+    this.active = [];
+    this.showList = false;
     this.searchQuery.queryUpdate({formSubmit: true});
   }
 

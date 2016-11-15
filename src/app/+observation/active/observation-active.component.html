@@ -1,8 +1,20 @@
-<strong *ngIf="!active.length">&nbsp;</strong>
-<strong *ngIf="active.length">{{'observation.active' | translate}}</strong>
-<span *ngFor="let item of active">
-  <span>
-    {{ 'observation.active.' + item.field | translate }}
-    <span (click)="remove(item)" class="label label-danger link"><i class="glyphicon glyphicon-remove"></i></span>
-  </span>
-</span>
+<strong class="title link" (click)="toggleActiveList()">
+  <span class="badge" *ngIf="active.length > 0">{{active.length}}</span>
+  <i class="glyphicon glyphicon-trash"></i>
+</strong>
+<div class="active-list" *ngIf="showList">
+  <ul>
+    <li>
+      <span>
+        {{ 'observation.form.empty' | translate }}
+        <span (click)="removeAll()" class="label label-danger link"><i class="glyphicon glyphicon-remove"></i></span>
+      </span>
+    </li>
+    <li *ngFor="let item of active">
+      <span>
+        {{ 'observation.active.' + item.field | translate }}
+        <span (click)="remove(item)" class="label label-danger link"><i class="glyphicon glyphicon-remove"></i></span>
+      </span>
+    </li>
+  </ul>
+</div>

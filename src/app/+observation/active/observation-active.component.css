@@ -1,5 +1,35 @@
-ul {
+.title {
+  position: absolute;
+  right: 20px;
+}
+.title i {
+  font-size: 20px;
+}
+.title .badge {
+  z-index: 10;
+  margin-right: -15px;
+  position: relative;
+  background-color: #d9534f;
+}
+.active-list {
+  position: absolute;
+  margin-top: 10px;
+  right: 10px;
+  z-index: 1001;
+  background-color: #fff;
+  padding: 6px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+.active-list ul {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+.active-list ul li {
+  font-size: 12px;
+  font-weight: normal;
+  padding: 3px;
+}
+.active-list .label {
+  display: inline-block;
 }

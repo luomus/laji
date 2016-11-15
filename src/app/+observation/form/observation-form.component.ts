@@ -15,6 +15,7 @@ import { SourceApi } from '../../shared/api/SourceApi';
 import { Source } from '../../shared/model/Source';
 import { MultiRadioOption } from '../multi-radio/multi-radio.component';
 import { debounce } from 'underscore';
+import { LocalStorage } from 'angular2-localstorage/dist';
 
 @Component({
   selector: 'laji-observation-form',
@@ -24,6 +25,7 @@ import { debounce } from 'underscore';
 })
 export class ObservationFormComponent implements OnInit {
 
+  @LocalStorage() public settings = {showIntro: true};
   @Input() activeTab: string;
   @ViewChild('tabs') tabs;
 
@@ -199,6 +201,10 @@ export class ObservationFormComponent implements OnInit {
 
   toggleFilters() {
     this.showFilter = !this.showFilter;
+  }
+
+  toggleInfo() {
+    this.settings.showIntro = !this.settings.showIntro;
   }
 
   fetchCollectionName(data) {
