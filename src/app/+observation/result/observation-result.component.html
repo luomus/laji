@@ -68,17 +68,14 @@
                       [lang]="translate.currentLang"></laji-observation-filter>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-md-6">
-
-        </div>
-        <div class="col-md-6">
-          <laji-observation-filter
-                  [(filter)]="filters.collection"
-                  (onSelect)="onFilterSelect.emit($event)"
-                  [lang]="translate.currentLang"></laji-observation-filter>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <laji-observation-filter
+                      [(filter)]="filters.collection"
+                      (onSelect)="onFilterSelect.emit($event)"
+                      [lang]="translate.currentLang"></laji-observation-filter>
+            </div>
+          </div>
         </div>
       </div>
     </div>
