@@ -70,17 +70,17 @@ module.exports = function makeWebpackConfig() {
       },
       {
         test: /\.json$/,
-        loader: 'json'
+        loader: 'json-loader'
       },
       // all css required in src/app files will be merged in js files
       {
         test: /\.css$/,
         include: root('src', 'app'),
-        loader: 'to-string!css-loader!postcss-loader'
+        loader: 'to-string-loader!css-loader!postcss-loader'
       },
       {
         test: /\.html$/,
-        loader: 'raw',
+        loader: 'raw-loader',
         exclude: root('src', 'index.html')
       }
     ]
@@ -100,7 +100,7 @@ module.exports = function makeWebpackConfig() {
     config.module.rules.push({
       test: /\.ts$/,
       enforce: 'pre',
-      loader: 'tslint'
+      loader: 'tslint-loader'
     });
   }
 
