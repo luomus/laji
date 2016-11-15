@@ -74,9 +74,9 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
   }
 
   initGroups() {
-    let roots$ = this.informalTaxonService.informalTaxonGroupFindRoots(this.lang);
-    let children$ = this.informalTaxonService.informalTaxonGroupGetChildren(this.value, this.lang);
-    (this.value ? children$ : roots$)
+    (this.value ?
+      this.informalTaxonService.informalTaxonGroupGetChildren(this.value, this.lang) :
+      this.informalTaxonService.informalTaxonGroupFindRoots(this.lang))
       .switchMap(data => {
         return (!data.results || data.results.length === 0) ?
           this.informalTaxonService.informalTaxonGroupGetWithSiblings(this.value, this.lang) :
@@ -116,9 +116,7 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
     if (value !== this.innerValue) {
       this.innerValue = value;
       this.setLabel(value);
-      if (value) {
-        this.initGroups();
-      }
+      this.initGroups();
     }
   }
 
