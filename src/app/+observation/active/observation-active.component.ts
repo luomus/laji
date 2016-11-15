@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, HostListener, ViewContainerRef } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
 import { Subscription } from 'rxjs';
 
@@ -14,8 +14,10 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   public showList: boolean = false;
 
   private subQueryUpdate: Subscription;
+  private el: Element;
 
-  constructor(public searchQuery: SearchQuery) {
+  constructor(viewContainerRef: ViewContainerRef, public searchQuery: SearchQuery) {
+    this.el = viewContainerRef.element.nativeElement;
   }
 
   ngOnInit() {
@@ -28,6 +30,16 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.subQueryUpdate) {
       this.subQueryUpdate.unsubscribe();
+    }
+  }
+
+  @HostListener('body:click', ['$event.target'])
+  onHostClick(target) {
+    if (!this.showList || !target) {
+      return;
+    }
+    if (this.el !== target && !this.el.contains((<any>target))) {
+      this.toggleActiveList();
     }
   }
 
