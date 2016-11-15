@@ -107,14 +107,14 @@
                      class="form-control input-sm"
                      placeholder="{{'observation.form.countMin' | translate}}"
                      (ngModelChange)="onQueryChange()"
-                     [(ngModel)]="formQuery.individualCountMin">
+                     [(ngModel)]="searchQuery.query.individualCountMin">
             </div>
             <div class="col-sm-6">
               <input type="number" name="individualCountMax"
                      class="form-control input-sm"
                      placeholder="{{'observation.form.countMax' | translate}}"
                      (ngModelChange)="onQueryChange()"
-                     [(ngModel)]="formQuery.individualCountMax">
+                     [(ngModel)]="searchQuery.query.individualCountMax">
             </div>
           </div>
         </div>

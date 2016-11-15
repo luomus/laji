@@ -3,6 +3,4 @@ export interface ObservationFormQuery {
   timeStart: string;
   timeEnd: string;
   informalTaxonGroupId: string;
-  individualCountMin: string;
-  individualCountMax: string;
 }

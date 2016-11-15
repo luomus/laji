@@ -76,7 +76,11 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   updateSelectedList() {
     let query = this.searchQuery.query;
     this.active = [];
-    Object.keys(query).map((i) => {
+    let keys = Object.keys(query);
+    if (keys.length === 0) {
+      return;
+    }
+    keys.map((i) => {
       if (this.skip.indexOf(i) > -1) {
         return;
       }

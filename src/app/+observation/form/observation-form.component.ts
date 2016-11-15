@@ -189,9 +189,7 @@ export class ObservationFormComponent implements OnInit {
       taxon: '',
       timeStart: '',
       timeEnd: '',
-      informalTaxonGroupId: '',
-      individualCountMin: '',
-      individualCountMax: ''
+      informalTaxonGroupId: ''
     };
 
     if (refresh) {
@@ -289,9 +287,7 @@ export class ObservationFormComponent implements OnInit {
       timeStart: time[0] || '',
       timeEnd: time[1] || '',
       informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
-        query.informalTaxonGroupId[0] : '',
-      individualCountMin: '' + query.individualCountMin,
-      individualCountMax: '' + query.individualCountMax
+        query.informalTaxonGroupId[0] : ''
     };
   }
 
@@ -313,8 +309,6 @@ export class ObservationFormComponent implements OnInit {
       [time] : undefined;
     query.informalTaxonGroupId = formQuery.informalTaxonGroupId ?
       [formQuery.informalTaxonGroupId] : undefined;
-    query.individualCountMin = +formQuery.individualCountMin || undefined;
-    query.individualCountMax = +formQuery.individualCountMax || undefined;
   }
 
   private parseDate(start, end) {

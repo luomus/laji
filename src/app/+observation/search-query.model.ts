@@ -88,7 +88,10 @@ export class SearchQuery {
 
     for (let i of this.numericTypes) {
       if (queryParameters.has(i)) {
-        this.query[i] = +queryParameters.get(i);
+        let value = +queryParameters.get(i);
+        if (!isNaN(value)) {
+          this.query[i] = value;
+        }
       } else {
         this.query[i] = undefined;
       }
@@ -144,7 +147,8 @@ export class SearchQuery {
       if (skipParams.indexOf(i) > -1) {
         continue;
       }
-      if (this.query[i] !== undefined) {
+      let type = typeof this.query[i];
+      if (type === 'number' || type === 'string') {
         queryParameters.set(i, String(this.query[i]));
       }
     }
