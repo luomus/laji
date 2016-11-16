@@ -45,7 +45,7 @@ export interface WarehouseQueryInterface {
   includeNonValidTaxa?: boolean;
   taxonId?: Array<string>;
   target?: Array<string>;
-  taxonRank?: string;
+  taxonRankId?: string;
   informalTaxonGroupId?: Array<string>;
   administrativeStatusId?: Array<string>;
   redListStatusId?: Array<string>;

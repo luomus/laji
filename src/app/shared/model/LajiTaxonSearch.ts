@@ -57,7 +57,7 @@ export interface LajiTaxonSearch {
   /**
    * Taxon rank
    */
-  taxonRank?: string;
+  taxonRankId?: string;
 
   /**
    * Score for the match

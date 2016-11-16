@@ -65,7 +65,7 @@ export class SearchQuery {
   ];
 
   stringTypes = [
-    'taxonRank'
+    'taxonRankId'
   ];
 
   constructor(private router: Router) {
