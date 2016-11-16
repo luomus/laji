@@ -52,7 +52,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
 
   remove(item: ActiveList) {
     let query = this.searchQuery.query;
-    if (query[item.field]) {
+    if (typeof query[item.field] !== 'undefined') {
       query[item.field] = undefined;
     }
     if (this.active.length < 2) {
@@ -63,9 +63,9 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
 
   removeAll() {
     let query = this.searchQuery.query;
-    this.active.map((item) => {
-      if (query[item.field]) {
-        query[item.field] = undefined;
+    Object.keys(query).map((key) => {
+      if (typeof query[key] !== 'undefined') {
+        query[key] = undefined;
       }
     });
     this.active = [];

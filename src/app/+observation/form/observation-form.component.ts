@@ -139,7 +139,7 @@ export class ObservationFormComponent implements OnInit {
     this.empty(false, this.searchQuery.query);
     this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
       res => {
-        if (res && res.formSubmit) {
+        if (res.formSubmit) {
           this.queryToFormQuery(this.searchQuery.query);
           this.onSubmit(false);
         }
@@ -189,7 +189,10 @@ export class ObservationFormComponent implements OnInit {
       taxon: '',
       timeStart: '',
       timeEnd: '',
-      informalTaxonGroupId: ''
+      informalTaxonGroupId: '',
+      isNotFinnish: undefined,
+      isNotInvasive: undefined,
+      hasNotMedia: undefined
     };
 
     if (refresh) {
@@ -237,9 +240,17 @@ export class ObservationFormComponent implements OnInit {
     });
   }
 
-  onCheckBoxToggle(field) {
-    this.searchQuery.query[field] = this.searchQuery.query[field] ?
-      true : undefined;
+  onCheckBoxToggle(field, selectValue: boolean = true, isDirect: boolean = true) {
+    if (isDirect) {
+      this.searchQuery.query[field] = this.searchQuery.query[field] ?
+        selectValue : undefined;
+    } else {
+      let value = this.searchQuery.query[field];
+      this.searchQuery.query[field] =
+        typeof value === 'undefined' ||  value !==  selectValue ?
+          selectValue : undefined;
+    }
+    this.queryToFormQuery(this.searchQuery.query);
     this.onQueryChange();
   }
 
@@ -287,7 +298,10 @@ export class ObservationFormComponent implements OnInit {
       timeStart: time[0] || '',
       timeEnd: time[1] || '',
       informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
-        query.informalTaxonGroupId[0] : ''
+        query.informalTaxonGroupId[0] : '',
+      isNotFinnish: query.finnish === false ? true : undefined,
+      isNotInvasive: query.invasive === false ? true : undefined,
+      hasNotMedia: query.hasMedia === false ? true : undefined
     };
   }
 
@@ -309,6 +323,9 @@ export class ObservationFormComponent implements OnInit {
       [time] : undefined;
     query.informalTaxonGroupId = formQuery.informalTaxonGroupId ?
       [formQuery.informalTaxonGroupId] : undefined;
+    query.invasive = formQuery.isNotInvasive ? false : query.invasive;
+    query.finnish = formQuery.isNotFinnish ? false : query.finnish;
+    query.hasMedia = formQuery.hasNotMedia ? false : query.hasMedia;
   }
 
   private parseDate(start, end) {

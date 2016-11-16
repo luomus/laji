@@ -3,4 +3,7 @@ export interface ObservationFormQuery {
   timeStart: string;
   timeEnd: string;
   informalTaxonGroupId: string;
+  hasNotMedia: boolean;
+  isNotFinnish: boolean;
+  isNotInvasive: boolean;
 }
