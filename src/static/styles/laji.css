@@ -40,6 +40,10 @@ body {
   padding-bottom: 15px;
 }
 
+.toast-top-right {
+  top: 60px;
+}
+
 .link {
   cursor: pointer;
   cursor: hand;
@@ -53,6 +57,9 @@ body {
   background-repeat: no-repeat;
 }
 
+.ui-select-choices-row a {
+  white-space: normal !important;
+}
 /** generic **/
 .pagination {
   margin: 0 0 20px 0;
