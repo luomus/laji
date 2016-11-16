@@ -11,7 +11,6 @@ export class LajiErrorHandler implements ErrorHandler {
 
   handleError(error) {
     console.log(error);
-    console.log(this.getActiveRoute().toString());
   }
 
   private getRouter(): Router {
