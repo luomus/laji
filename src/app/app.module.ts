@@ -18,6 +18,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { TranslateModule } from 'ng2-translate';
 import { CoreModule } from './shared/core.module';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
+import { SearchQuery } from './+observation/search-query.model';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { LajiErrorHandler } from './shared/error/laji-error-handler';
     {provide: 'Window', useValue: window},
     {provide: ErrorHandler, useClass: LajiErrorHandler},
     {provide: LocationStrategy, useClass: PathLocationStrategy},
-    PersonTokenApi, PersonApi, WarehouseApi,
+    PersonTokenApi, PersonApi, SearchQuery, WarehouseApi,
     WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
     appRoutingProviders, AutocompleteApi, FooterService, LocalStorageService,
     DatePipe

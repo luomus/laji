@@ -260,7 +260,7 @@ export class ObservationFormComponent implements OnInit {
       'pageSize'
     ]);
     if (updateQuery) {
-      this.searchQuery.queryUpdate({});
+      this.searchQuery.queryUpdate();
     }
     return false;
   }

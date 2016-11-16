@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { URLSearchParams } from '@angular/http';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class SearchQuery {
@@ -67,6 +68,52 @@ export class SearchQuery {
     'taxonRank'
   ];
 
+  constructor(private router: Router) {
+  }
+
+  public setQueryFromQueryObject(query) {
+    for (let i of this.arrayTypes) {
+      if (typeof query[i] !== 'undefined') {
+        this.query[i] = decodeURIComponent(query[i])
+          .split(',')
+          .map(value => value);
+      } else {
+        this.query[i] = undefined;
+      }
+    }
+
+    for (let i of this.booleanTypes) {
+      if (typeof query[i] !== 'undefined') {
+        this.query[i] = query[i] === 'true';
+      } else {
+        this.query[i] = undefined;
+      }
+    }
+
+    for (let i of this.numericTypes) {
+      if (typeof query[i] !== 'undefined') {
+        let value = +query[i];
+        if (!isNaN(value)) {
+          this.query[i] = value;
+        }
+      } else {
+        this.query[i] = undefined;
+      }
+    }
+
+    for (let i of this.stringTypes) {
+      if (typeof query[i] !== 'undefined') {
+        this.query[i] = query[i];
+      } else {
+        this.query[i] = undefined;
+      }
+    }
+
+    if (typeof query['page'] !== 'undefined') {
+      this.page = +query['page'];
+    }
+  }
+
   public setQueryFromURLSearchParams(queryParameters: URLSearchParams) {
     for (let i of this.arrayTypes) {
       if (queryParameters.has(i)) {
@@ -110,10 +157,8 @@ export class SearchQuery {
     }
   }
 
-  public getQueryString(queryParameters?: URLSearchParams, skipParams: string[] = []): URLSearchParams {
-    if (!queryParameters) {
-      queryParameters = new URLSearchParams();
-    }
+  public getQueryObject(skipParams: string[] = []) {
+    let result = {};
     for (let i of this.arrayTypes) {
       if (skipParams.indexOf(i) > -1) {
         continue;
@@ -129,7 +174,7 @@ export class SearchQuery {
           .filter(val => val.trim().length > 0)
           .join(',');
         if (query.length > 0) {
-          queryParameters.set(i, query);
+          result[i] = query;
         }
       }
     }
@@ -139,7 +184,7 @@ export class SearchQuery {
         continue;
       }
       if (this.query[i] !== undefined) {
-        queryParameters.set(i, this.query[i] ? 'true' : 'false');
+        result[i] = this.query[i] ? 'true' : 'false';
       }
     }
 
@@ -149,7 +194,7 @@ export class SearchQuery {
       }
       let type = typeof this.query[i];
       if (type === 'number' || type === 'string') {
-        queryParameters.set(i, String(this.query[i]));
+        result[i] = String(this.query[i]);
       }
     }
 
@@ -158,7 +203,7 @@ export class SearchQuery {
         continue;
       }
       if (this.query[i] !== undefined) {
-        queryParameters.set(i, this.query[i]);
+        result[i] =  this.query[i];
       }
     }
 
@@ -168,24 +213,36 @@ export class SearchQuery {
 
     // Non query parameters (these will not have effect on result count)
     if (this.selected !== undefined && skipParams.indexOf('selected') === -1) {
-      queryParameters.set('selected', this.selected.join(','));
+      result['selected'] = this.selected.join(',');
     }
 
     if (this.aggregateBy !== undefined && skipParams.indexOf('aggregateBy') === -1) {
-      queryParameters.set('aggregateBy', this.aggregateBy.join(','));
+      result['aggregateBy'] = this.aggregateBy.join(',');
     }
 
     if (this.orderBy !== undefined && skipParams.indexOf('orderBy') === -1) {
-      queryParameters.set('orderBy', this.orderBy.join(','));
+      result['orderBy'] = this.orderBy.join(',');
     }
 
     if (this.pageSize !== undefined && skipParams.indexOf('pageSize') === -1) {
-      queryParameters.set('pageSize', String(this.pageSize));
+      result['pageSize'] = String(this.pageSize);
     }
 
     if (this.page !== undefined && skipParams.indexOf('page') === -1) {
-      queryParameters.set('page', String(this.page));
+      result['page'] = String(this.page);
     }
+
+    return result;
+  }
+
+  public getURLSearchParams(queryParameters?: URLSearchParams, skipParams: string[] = []): URLSearchParams {
+    if (!queryParameters) {
+      queryParameters = new URLSearchParams();
+    }
+    let query = this.getQueryObject(skipParams);
+    Object.keys(query).map((key) => {
+      queryParameters.set(key, query[key]);
+    });
 
     return queryParameters;
   }
@@ -194,9 +251,15 @@ export class SearchQuery {
     if (!path) {
       path = location.path(false).split('?')[0].split(';')[0];
     }
-    let query = this.getQueryString(undefined, skipParams).toString();
-    query = query.length > 0 ? '?' + query : '';
-    location.go(path + query);
+    let query = this.getQueryObject(skipParams);
+    let extra = {};
+    if (Object.keys(query).length > 0) {
+      console.log(query);
+      extra['queryParams'] = this.getQueryObject(skipParams);
+    } else {
+      extra['preserveQueryParams'] = true;
+    }
+    this.router.navigate(path.split('/'), extra);
   }
 
   public queryUpdate(data = {}): void {

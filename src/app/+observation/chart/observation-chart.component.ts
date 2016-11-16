@@ -20,6 +20,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
   @Input() showLegend: boolean = false;
   @Input() legendPosition: string = 'top';
   @Input() active: boolean = true;
+  @Input() public visible: boolean = true;
 
 
   public informalGroups: InformalTaxonGroup[] = [];
@@ -44,13 +45,19 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
       () => this.updateInformalGroups()
     );
     this.subDataQuery = this.searchQuery.queryUpdated$.subscribe(
-      () => this.updateData()
+      (data) => {
+        if (data && data.formSubmit) {
+          this.updateData();
+        }
+      }
     );
     this.updateData();
   }
 
-  ngOnChanges() {
-    this.updateData();
+  ngOnChanges(changes) {
+    if (!changes.visible) {
+      this.updateData();
+    }
   }
 
   ngOnDestroy() {

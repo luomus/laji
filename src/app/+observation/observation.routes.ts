@@ -5,8 +5,7 @@ import { ModuleWithProviders } from '@angular/core';
 export const observationRoutes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
-    component: ObservationComponent
+    redirectTo: 'map'
   },
   {
     path: ':tab',

@@ -39,12 +39,9 @@ import { WarehouseCountResultInterface } from '../model/WarehouseCountResultInte
 export class WarehouseApi {
   protected basePath = '/api';
   public defaultHeaders: Headers = new Headers();
-  private queryService: SearchQuery = new SearchQuery();
 
-  constructor(protected http: Http, @Optional() basePath: string) {
-    if (basePath) {
-      this.basePath = basePath;
-    }
+  constructor(protected http: Http, private queryService: SearchQuery) {
+
   }
 
   /**
@@ -532,7 +529,7 @@ export class WarehouseApi {
 
   private addQueryToQueryParams(query: WarehouseQueryInterface, queryParameters: URLSearchParams): void {
     this.queryService.query = query;
-    this.queryService.getQueryString(queryParameters);
+    this.queryService.getURLSearchParams(queryParameters);
   }
 
 }

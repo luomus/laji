@@ -56,6 +56,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   private updateCount(query) {
     this.subCount = this.warehouseService
       .warehouseQueryCountGet(query)
+      .delay(100)
       .subscribe(result => {
           this.loading = false;
           this.count = '' + (result.total || 0);
@@ -73,6 +74,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
 
     this.subCount = this.warehouseService
       .warehouseQueryAggregateGet(query, [this.field], undefined, pageSize)
+      .delay(100)
       .subscribe(
         result => {
           if (this.pick) {

@@ -1,17 +1,18 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { SearchQuery } from '../search-query.model';
 import { IdService } from '../../shared/service/id.service';
 import { UserService } from '../../shared/service/user.service';
 import { ObservationFilterInterface } from '../filter/observation-filter.interface';
 import { TranslateService } from 'ng2-translate';
+import { Subscription } from 'rxjs';
 
 
 @Component({
   selector: 'laji-observation-result',
   templateUrl: 'observation-result.component.html'
 })
-export class ObservationResultComponent implements OnInit, OnChanges {
+export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() loadLimit = 200000;
   @Input() filters: {[name: string]: ObservationFilterInterface};
@@ -19,11 +20,10 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   @Output() activeChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() onFilterSelect: EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
 
-  public activated = {
-    list: false,
-    images: false,
-    stats: false
-  };
+  public activated = {};
+  public queryParams = {};
+
+  private subQuery: Subscription;
 
   constructor(public searchQuery: SearchQuery,
               public userService: UserService,
@@ -33,10 +33,22 @@ export class ObservationResultComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.activated[this.active] = true;
+    this.searchQuery.queryUpdated$.subscribe(data => {
+        if (data['formSubmit']) {
+          this.queryParams = this.searchQuery.getQueryObject();
+          this.activated = {};
+          this.activated[this.active] = true;
+        }
+      }
+    );
   }
 
   ngOnChanges() {
     this.activated[this.active] = true;
+  }
+
+  ngOnDestroy() {
+    this.subQuery.unsubscribe();
   }
 
   pickValue(aggr, lang) {

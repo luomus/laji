@@ -284,6 +284,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
       undefined, this.size, page, true
     )))
+      .delay(100)
       .subscribe(
         (data) => {
           if (data.featureCollection) {

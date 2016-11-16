@@ -33,6 +33,7 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
   public activeGroup: InformalTaxonGroup;
   public open: boolean = false;
   public innerValue: string = '';
+  public currentValue: string = '';
   public label: string = '';
   public range: number[];
   private el: Element;
@@ -74,12 +75,18 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
   }
 
   initGroups() {
-    (this.value ?
-      this.informalTaxonService.informalTaxonGroupGetChildren(this.value, this.lang) :
+    let newValue = this.value;
+    newValue = newValue ? newValue : '';
+    if (this.currentValue === newValue) {
+      return;
+    }
+    this.currentValue = newValue;
+    (newValue ?
+      this.informalTaxonService.informalTaxonGroupGetChildren(newValue, this.lang) :
       this.informalTaxonService.informalTaxonGroupFindRoots(this.lang))
       .switchMap(data => {
         return (!data.results || data.results.length === 0) ?
-          this.informalTaxonService.informalTaxonGroupGetWithSiblings(this.value, this.lang) :
+          this.informalTaxonService.informalTaxonGroupGetWithSiblings(newValue, this.lang) :
           Observable.of(data);
       })
       .map(data => data.results.map(item => ({id: item.id, name: item.name, hasSubGroup: item.hasSubGroup})))

@@ -3,6 +3,7 @@
     <laji-spinner [spinning]="loading" [overlay]="true">
       <laji-pie-chart
             *ngIf="data"
+            [visible]="visible"
             [data]="data"
             [height]="height"
             [showLegend]="showLegend"

@@ -1,93 +1,101 @@
-<tabset>
-  <tab [heading]="'search.result.map' | translate"
-       (select)="activate('map')"
-       [active]="active === 'map'">
-    <div *ngIf="activated['map']">
-      <laji-observation-map
-              [showItemsWhenLessThan]="500"
-              [opacity]="0.5"
-              [tick]="searchQuery.tack"
-              [visible]="active === 'map'"
-              [height]="500"
-              [query]="searchQuery.query"
-              [draw]="{rectangle: true, marker: false, polygon: false, polyline: false, circle: false}"
-              [legend]="true"
-              [initWithWorldMap]="true"
-              (create)="pickLocation($event)"
-      ></laji-observation-map>
-    </div>
-  </tab>
-  <tab [heading]="'search.result.list' | translate"
-       (select)="activate('list')"
-       [active]="active === 'list'">
-    <laji-observation-result-list *ngIf="activated['list']"></laji-observation-result-list>
-  </tab>
-  <tab [heading]="'search.result.species' | translate"
-       (select)="activate('species')"
-       [active]="active === 'species'">
-    <laji-observation-aggregate
-            [field]="{
+<ul class="nav nav-tabs nav-justified">
+  <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+    <a routerLink="/observation/map" [queryParams]="queryParams">
+      {{ 'search.result.map' | translate }}
+    </a>
+  </li>
+  <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+    <a routerLink="/observation/list" [queryParams]="queryParams">
+      {{ 'search.result.list' | translate }}
+    </a>
+  </li>
+  <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+    <a routerLink="/observation/species" [queryParams]="queryParams">
+      {{ 'search.result.species' | translate }}
+    </a>
+  </li>
+  <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+    <a routerLink="/observation/stats" [queryParams]="queryParams">
+      {{ 'search.result.stats' | translate }}
+    </a>
+  </li>
+  <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+    <a routerLink="/observation/load" [queryParams]="queryParams">
+      {{ 'search.result.load' | translate }}
+    </a>
+  </li>
+</ul>
+<div [hidden]="active !== 'map'" *ngIf="activated['map']">
+  <laji-observation-map
+          [showItemsWhenLessThan]="500"
+          [opacity]="0.5"
+          [tick]="searchQuery.tack"
+          [visible]="active === 'map'"
+          [height]="500"
+          [query]="searchQuery.query"
+          [draw]="{rectangle: true, marker: false, polygon: false, polyline: false, circle: false}"
+          [legend]="true"
+          [initWithWorldMap]="true"
+          (create)="pickLocation($event)"
+  ></laji-observation-map>
+</div>
+<div [hidden]="active !== 'list'" *ngIf="activated['list']">
+  <laji-observation-result-list *ngIf="activated['list']"></laji-observation-result-list>
+</div>
+<div [hidden]="active !== 'species'" *ngIf="activated['species']" style="min-height: 250px;">
+  <laji-observation-aggregate
+          [field]="{
               'en': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameEnglish,unit.linkings.taxon.id',
               'fi': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameFinnish,unit.linkings.taxon.id',
               'sv': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameSwedish,unit.linkings.taxon.id'
             }"
-            [title]="'search.result.species' | translate"
-            [valuePicker]="pickValue"
-            [linkPicker]="pickLink"
-            [lang]="translate.currentLang"
-            [queryOverride]="{includeNonValidTaxa: false, taxonRankId: 'MX.species'}"
-            [limit]="50"
-            [showPager]="true"></laji-observation-aggregate>
-  </tab>
-  <tab [heading]="'search.result.stats' | translate"
-       (select)="activate('stats')"
-       [active]="active === 'stats'">
-    <div *ngIf="activated['stats']">
-      <div class="form-group">
-        <div class="col-md-6">
-          <laji-observation-chart
-                  [height]="300"
-                  [showLegend]="true"
-                  [active]="active === 'stats'"
-          ></laji-observation-chart>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <div class="col-sm-12">
-              <laji-observation-filter
-                      [(filter)]="filters.recordBasis"
-                      (onSelect)="onFilterSelect.emit($event)"
-                      [lang]="translate.currentLang"></laji-observation-filter>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-12">
-              <laji-observation-filter
-                      [(filter)]="filters.image"
-                      (onSelect)="onFilterSelect.emit($event)"
-                      [lang]="translate.currentLang"></laji-observation-filter>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-12">
-              <laji-observation-filter
-                      [(filter)]="filters.collection"
-                      (onSelect)="onFilterSelect.emit($event)"
-                      [lang]="translate.currentLang"></laji-observation-filter>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </tab>
-  <tab
-          [heading]="'search.result.load' | translate"
-          (select)="activate('load')"
-          [active]="active === 'load'">
+          [title]="'search.result.species' | translate"
+          [valuePicker]="pickValue"
+          [linkPicker]="pickLink"
+          [lang]="translate.currentLang"
+          [queryOverride]="{includeNonValidTaxa: false, taxonRankId: 'MX.species'}"
+          [limit]="searchQuery.pageSize"
+          [showPager]="true"></laji-observation-aggregate>
+</div>
+<div [hidden]="active !== 'stats'" *ngIf="activated['stats']">
+  <div *ngIf="activated['stats']">
     <div class="form-group">
-      <div class="col-md-12" style="padding-top: 10px;">
-        <observation-download [loadLimit]="loadLimit"></observation-download>
+      <div class="col-md-6">
+        <laji-observation-chart
+                [height]="300"
+                [showLegend]="true"
+                [visible]="active === 'stats'"
+        ></laji-observation-chart>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="col-sm-12">
+            <laji-observation-filter
+                    [(filter)]="filters.recordBasis"
+                    (onSelect)="onFilterSelect.emit($event)"
+                    [lang]="translate.currentLang"></laji-observation-filter>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-12">
+            <laji-observation-filter
+                    [(filter)]="filters.image"
+                    (onSelect)="onFilterSelect.emit($event)"
+                    [lang]="translate.currentLang"></laji-observation-filter>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-12">
+            <laji-observation-filter
+                    [(filter)]="filters.collection"
+                    (onSelect)="onFilterSelect.emit($event)"
+                    [lang]="translate.currentLang"></laji-observation-filter>
+          </div>
+        </div>
       </div>
     </div>
-  </tab>
-</tabset>
+  </div>
+</div>
+<div [hidden]="active !== 'load'" *ngIf="activated['load']" style="padding-top: 10px">
+  <observation-download [loadLimit]="loadLimit"></observation-download>
+</div>

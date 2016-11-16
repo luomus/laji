@@ -4,23 +4,31 @@ declare let d3: any;
 
 @Component({
   selector: 'laji-pie-chart',
-  template: '<nvd3 [options]="options" [data]="data"></nvd3>'
+  template: '<nvd3 *ngIf="innerVisibility" [options]="options" [data]="data"></nvd3>'
 })
 export class PieChartComponent implements OnInit, OnChanges {
   @Input() data: {label: string, value: number}[];
   @Input() height: number = 100;
   @Input() showLegend: boolean = false;
+  @Input() visible: boolean = false;
   @Input() legendPosition: string = 'top';
 
   @Output() sectionSelect = new EventEmitter();
 
+  public innerVisibility: boolean = true;
   public options: any;
 
   constructor() {
   }
 
-  ngOnChanges() {
-    this.refreshOptions();
+  ngOnChanges(changes) {
+    if (changes.visible) {
+      setTimeout(() => {
+        this.innerVisibility = changes.visible.currentValue;
+      }, 100);
+    } else {
+      this.refreshOptions();
+    }
   }
 
   ngOnInit() {
