@@ -171,7 +171,7 @@
           </div>
         </div>
         <div laji-panel [title]="'observation.form.collection' | translate" [autoToggle]="true">
-          <div class="row">
+          <div class="form-group">
             <label class="col-lg-12">
               {{'observation.form.documentId' | translate}}:
             </label>
@@ -212,6 +212,7 @@
               <metadata-select
                       [(ngModel)]="searchQuery.query.administrativeStatusId"
                       (ngModelChange)="onQueryChange()"
+                      [multiple]="true"
                       name="administrativeStatusId"
                       [field]="'MX.hasAdminStatus'"
                       [lang]="translate.currentLang"></metadata-select>

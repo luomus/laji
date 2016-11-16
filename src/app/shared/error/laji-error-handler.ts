@@ -1,30 +1,38 @@
 import { ErrorHandler, Injectable, Injector } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ToastsService } from '../service/toasts.service';
+import { TranslateService } from 'ng2-translate';
 
 @Injectable()
 export class LajiErrorHandler implements ErrorHandler {
 
-  private router;
-  private route;
+  private toastsService;
+  private translate;
 
   constructor(private injector: Injector) {}
 
   handleError(error) {
     console.log(error);
+    this.getTranslateService()
+      .get(['error.500.title', 'error.500.intro'])
+      .subscribe(tranlations => {
+        this.getToastsService().showError(
+          tranlations['error.500.intro'],
+          tranlations['error.500.title']
+        );
+      });
   }
 
-  private getRouter(): Router {
-    if (!this.router) {
-      this.router = this.injector.get(Router);
+  private getToastsService(): ToastsService {
+    if (!this.toastsService) {
+      this.toastsService = this.injector.get(ToastsService);
     }
-    return this.router;
+    return this.toastsService;
   }
 
-  private getActiveRoute(): ActivatedRoute {
-    if (!this.route) {
-      this.route = this.injector.get(ActivatedRoute);
+  private getTranslateService(): TranslateService {
+    if (!this.translate) {
+      this.translate = this.injector.get(TranslateService);
     }
-    return this.route;
+    return this.translate;
   }
-
 }

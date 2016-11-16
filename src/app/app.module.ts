@@ -19,6 +19,8 @@ import { TranslateModule } from 'ng2-translate';
 import { CoreModule } from './shared/core.module';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
 import { SearchQuery } from './+observation/search-query.model';
+import { ToastsService } from './shared/service/toasts.service';
+import { ToastModule } from 'ng2-toastr';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import { SearchQuery } from './+observation/search-query.model';
   imports: [
     BrowserModule,
     SharedModule,
+    ToastModule,
     TranslateModule.forRoot(),
     CoreModule.forRoot(),
     routing
@@ -35,6 +38,7 @@ import { SearchQuery } from './+observation/search-query.model';
     {provide: 'Window', useValue: window},
     {provide: ErrorHandler, useClass: LajiErrorHandler},
     {provide: LocationStrategy, useClass: PathLocationStrategy},
+    ToastsService,
     PersonTokenApi, PersonApi, SearchQuery, WarehouseApi,
     WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
     appRoutingProviders, AutocompleteApi, FooterService, LocalStorageService,

@@ -3,6 +3,7 @@ import { UserService } from '../shared/service/user.service';
 import { FormApi } from '../shared/api/FormApi';
 import { DocumentApi } from '../shared/api/DocumentApi';
 import { FormService } from './form/form.service';
+import { ToastsService } from '../shared/service/toasts.service';
 
 @Component({
   selector: 'haseka',
@@ -13,12 +14,18 @@ import { FormService } from './form/form.service';
 export class HasekaComponent {
 
   public email: string;
-  public successMsg;
 
-  constructor(public userService: UserService, private formService: FormService) {
+  constructor(
+    public userService: UserService,
+    private formService: FormService,
+    private toastsService: ToastsService
+  ) {
   }
 
   ngOnInit() {
-    this.successMsg = this.formService.getSuccessMessage();
+    let success = this.formService.getSuccessMessage();
+    if (success) {
+      this.toastsService.showSuccess(success);
+    }
   }
 }

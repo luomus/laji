@@ -14,12 +14,6 @@
       <div class="col-sm-12" *ngIf="loadLimit >= count.count && count.count > 0">
         <p [innerHtml]="'result.load.introPublic' | translate:{private: (count.private | formattedNumber:'&nbsp;'), count: (count.count | formattedNumber:'&nbsp;')} ">
         </p>
-        <alert *ngIf="requests['download'] === 'error'" [dismissible]="true" >
-          {{'observation.download.error' | translate}}
-        </alert>
-        <alert *ngIf="requests['download'] === 'sent'" [dismissible]="true" type="success">
-          {{'result.load.thanksPublic' | translate}}
-        </alert>
         <button [disabled]="requests['download'] === 'sent'" class="btn btn-default" (click)="makePublicRequest()">{{'observation.download.loadPublic' | translate}}</button>
       </div>
     </div>
@@ -34,12 +28,6 @@
         </div>
         <div class="col-sm-12" *ngIf="loadLimit >= count.private">
           <p [innerHtml]="'result.load.introPrivate' | translate:{private: (count.private | formattedNumber:'&nbsp;'), count: (count.count | formattedNumber:'&nbsp;')}"></p>
-          <alert *ngIf="requests['downloadApprovalRequest'] === 'error'" [dismissible]="true">
-            {{'observation.download.error' | translate}}
-          </alert>
-          <alert *ngIf="requests['downloadApprovalRequest'] === 'sent'" [dismissible]="true" type="success">
-            {{'result.load.thanksRequest' | translate}}
-          </alert>
           <button [disabled]="requests['downloadApprovalRequest'] === 'sent'" class="btn btn-default" (click)="makePrivateRequest()">{{'observation.download.loadPrivate' | translate}}</button>
         </div>
       </div>

@@ -3,7 +3,8 @@ import { SearchQuery } from '../search-query.model';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from 'ng2-translate';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
+import { ToastsService } from '../../shared/service/toasts.service';
 const config = require('../../../../config.json');
 
 @Component({
@@ -25,10 +26,13 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   public showRequest = true;
   private queryCache: string;
   private subQueryUpdate: Subscription;
+  private subLang: Subscription;
+  private messages = {};
 
   constructor(public searchQuery: SearchQuery,
               public userService: UserService,
               public translate: TranslateService,
+              private toastsService: ToastsService,
               private warehouseService: WarehouseApi) {
     if (config.env && config.env === 'prod') {
       this.showRequest = false;
@@ -36,6 +40,13 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.subLang = this.translate.get([
+      'observation.download.error',
+      'result.load.thanksPublic',
+      'result.load.thanksRequest'
+    ]).subscribe((translations) => {
+      this.messages = translations;
+    });
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
         if (this.queryCache !== JSON.stringify(this.searchQuery.query)) {
@@ -49,6 +60,9 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.subLang) {
+      this.subLang.unsubscribe();
+    }
     if (this.subQueryUpdate) {
       this.subQueryUpdate.unsubscribe();
     }
@@ -103,10 +117,14 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
       description
     ).subscribe(
       () => {
+        this.toastsService.showSuccess(this.messages[type === 'download' ?
+          'result.load.thanksPublic' : 'result.load.thanksRequest'
+        ]);
         this.requests[type] = 'sent';
       },
       err => {
         this.requests[type] = 'error';
+        this.toastsService.showError(this.messages['observation.download.error']);
         console.log(err);
       }
     );
