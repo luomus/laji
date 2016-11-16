@@ -85,8 +85,6 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   }
 
   fetchRows(page: number): void {
-    this.searchQuery.selected = this.columns.map((column) => column.field);
-
     let cache = JSON.stringify(this.searchQuery.query) + page;
     let query = Util.clone(this.searchQuery.query);
     if (Object.keys(query).length === 0) {
@@ -101,6 +99,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     if (this.result && this.result.results) {
       this.result.results = [];
     }
+    query.selected = this.columns.map((column) => column.field);
     this.lastQuery = cache;
     this.loading = true;
     this.subFetch = this.warehouseService
@@ -118,8 +117,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
           this.result = results;
           this.searchQuery.updateUrl(this.location, undefined, [
             'selected',
-            'pageSize',
-            'includeNonValidTaxa'
+            'pageSize'
           ]);
         },
         err => {
