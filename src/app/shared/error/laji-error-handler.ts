@@ -12,9 +12,6 @@ export class LajiErrorHandler implements ErrorHandler {
   handleError(error) {
     console.log(error);
     console.log(this.getActiveRoute().toString());
-    // if (this.getActiveRoute().snapshot.pathFromRoot !== 'error/500') {
-      this.getRouter().navigate(['/error/500']);
-    // }
   }
 
   private getRouter(): Router {
