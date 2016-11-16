@@ -21,7 +21,7 @@
     </span>
   </div>
   <div class="omni-search-results" *ngIf="taxa.length > 0 && search.length > 0">
-    <div class="row" *ngIf="getActive()">
+    <div class="row" *ngIf="taxon">
       <div class="col-md-3 matches">
         <h5
                 class="match"
@@ -34,14 +34,14 @@
       <div class="col-md-5 first-col">
         {{'omniSearch.matches' | translate}}
         <div class="row">
-          <div class="col-md-12 taxon-match informal-group-image {{getClass()}}">
-            <a [routerLink]="['/taxon/' + getActive().key]"><span class="vernacularName" *ngIf="taxon">{{taxon.vernacularName}}</span></a><br>
-            <a [routerLink]="['/taxon/' + getActive().key]"><span
-                    class="scientificName {{getActive().payload.taxonRank}}">{{getActive().payload.scientificName}}</span></a><br>
-            {{'omniSearch.rank'|translate}}: {{getActive().payload.taxonRank | label}}<br>
+          <div class="col-md-12 taxon-match informal-group-image {{taxon.informalTaxonGroupsClass}}">
+            <a [routerLink]="['/taxon/' + taxon.key]"><span class="vernacularName">{{taxon?.vernacularName}}</span></a><br>
+            <a [routerLink]="['/taxon/' + taxon.key]"><span
+                    class="scientificName {{taxon.payload.taxonRank}}">{{taxon.payload.scientificName}}</span></a><br>
+            {{'omniSearch.rank'|translate}}: {{taxon.payload.taxonRank | label}}<br>
             {{'omniSearch.groups'|translate}}:<br>
             <ul>
-              <li *ngFor="let group of getGroups()">{{group}}</li>
+              <li *ngFor="let group of taxon.informalTaxonGroups">{{group}}</li>
             </ul>
           </div>
         </div>
@@ -49,10 +49,10 @@
       <div class="col-md-3 second-col">
         {{ 'navigation.observation' | translate }}
         <div class="row">
-          <div class="col-md-offset-1 col-md-11 observations" *ngIf="getActive()">
+          <div class="col-md-offset-1 col-md-11 observations" *ngIf="taxon">
             <!--<laji-observation-count [query]="{taxonId:[getActive().key], counteryId: ['ML.206']}"></laji-observation-count>{{'omniSearch.finnish-observation'|translate}}<br>-->
-            <a [routerLink]="['/observation', {target: getActive().payload.scientificName}]">
-              <laji-observation-count [query]="{taxonId:[getActive().key]}"></laji-observation-count>
+            <a [routerLink]="['/observation']" [queryParams]="{target: taxon.payload.scientificName}">
+              {{taxon?.count}}
               {{'omniSearch.allObservation'|translate}}
             </a>
           </div>
