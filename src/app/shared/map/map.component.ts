@@ -41,6 +41,8 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
       zoom: this.initWithWorldMap ? 3 : 1,
       lang: this.lang,
       data: [],
+      markerPopupOffset: 5,
+      featurePopupOffset: 0,
       onChange: e => this.onChange(e),
       rootElem: this.elemRef.nativeElement,
       controlSettings: {
