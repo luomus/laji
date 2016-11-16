@@ -357,7 +357,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
   private getPopup(idx: number, cb: Function) {
     try {
-      console.log('loading POPUP');
       const properties = this.mapData[0].featureCollection.features[idx].properties;
       let cnt = properties.title;
       let description = '';

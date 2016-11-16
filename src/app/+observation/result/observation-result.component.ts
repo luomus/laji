@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   selector: 'laji-observation-result',
   templateUrl: 'observation-result.component.html'
 })
-export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy {
+export class ObservationResultComponent implements OnInit, OnChanges {
 
   @Input() loadLimit = 200000;
   @Input() filters: {[name: string]: ObservationFilterInterface};
@@ -22,8 +22,6 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
 
   public activated = {};
   public queryParams = {};
-
-  private subQuery: Subscription;
 
   constructor(public searchQuery: SearchQuery,
               public userService: UserService,
@@ -45,10 +43,6 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
 
   ngOnChanges() {
     this.activated[this.active] = true;
-  }
-
-  ngOnDestroy() {
-    this.subQuery.unsubscribe();
   }
 
   pickValue(aggr, lang) {

@@ -254,7 +254,6 @@ export class SearchQuery {
     let query = this.getQueryObject(skipParams);
     let extra = {};
     if (Object.keys(query).length > 0) {
-      console.log(query);
       extra['queryParams'] = this.getQueryObject(skipParams);
     } else {
       extra['preserveQueryParams'] = true;
