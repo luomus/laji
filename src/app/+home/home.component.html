@@ -3,22 +3,22 @@
   <div class="searchBar">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-5 col-sm-offset-1">
+        <div class="col-sm-9">
           <laji-omni-search [placeholder]="'search-bar.input' | translate" [lang]="translate.currentLang"></laji-omni-search>
         </div>
-        <div class="col-sm-5">
-          <span class="glyphicon glyphicon-search pull-right" aria-hidden="true"></span>
+        <div class="col-sm-3">
+          <!--span class="glyphicon glyphicon-search pull-right" aria-hidden="true"></span-->
         </div>
       </div>
     </div>
   </div>
-  <div class="container-fluid">
+  <div style="background-color: #ECF0F1;" class="container-fluid">
     <div class="row">
-      <div class="col-sm-7 col-sm-offset-1">
-        <h1>{{ 'home.main-page.title' | translate }}</h1>
-        <p>{{ 'home.main-page.text' | translate }}</p>
+      <div style="background-color: #ffffff;" class="col-sm-9">
         <div class="row">
           <div class="col-md-7">
+            <h1>{{ 'home.main-page.title' | translate }}</h1>
+            <p>{{ 'home.main-page.text' | translate }}</p>
             <div class="row">
               <laji-navigation-thumbnail name="navigation.taxonomy" icon="species" path="taxon"></laji-navigation-thumbnail>
               <laji-navigation-thumbnail name="navigation.observation" icon="observations" path="observation"></laji-navigation-thumbnail>
@@ -28,14 +28,14 @@
                 <h3 class="panel-title">{{ 'haseka.slogan' | translate }}</h3>
               </div>
               <div class="panel-body">
-                <a class="btn btn-default center-block" routerLink="/record" role="button">{{ 'haseka.button' | translate }}</a>
+                <a class="btn btn-primary center-block" routerLink="/record" role="button">{{ 'haseka.button' | translate }}</a>
               </div>
             </div>
           </div>
           <div class="col-md-5">
-            <div class="panel panel-default">
+            <div style="margin-top: 20px;" class="panel panel-default">
               <div class="panel-body resent-map">
-                <laji-observation-map [height]="280" [initWithWorldMap]="true" [showItemsWhenLessThan]="500" [draw]="false" [query]="{time:'-1/0', finnish: true}"></laji-observation-map>
+                <laji-observation-map [height]="405" [initWithWorldMap]="true" [showItemsWhenLessThan]="500" [draw]="false" [query]="{time:'-1/0', finnish: true}"></laji-observation-map>
               </div>
               <div class="panel-footer">
                 <h2 class="panel-title">{{ 'home.main-page.recent' | translate }}</h2>
@@ -44,7 +44,7 @@
           </div>
         </div>
       </div>
-        <div style="padding-right: 0;" class="col-sm-3 col-sm-offset-1">
+        <div class="col-sm-3">
           <div class="news-panel">
             <laji-news-list></laji-news-list>
           </div>

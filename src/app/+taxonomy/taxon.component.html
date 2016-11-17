@@ -1,56 +1,54 @@
-<div class="container">
-	<h1>{{ 'navigation.taxonomy' | translate }}
-		<!--br><small>{{ 'species.title.short' | translate }}</small--></h1>
-	<!--div class="well well-sm">{{ 'species.title.long' | translate }}</div-->
-	<div class="col-md-12">
-		<div class="row">
+<div style="background-color: #ECF0F1;" class="container-fluid">
+	<div class="row">
+		<div style="background-color: #ECF0F1;" class="col-sm-3">
+			<h1>{{ 'navigation.taxonomy' | translate }} <small>{{ 'species.title.short' | translate }}</small></h1>
 			<laji-omni-search [placeholder]="'search-bar.input' | translate" [lang]="translate.currentLang"></laji-omni-search>
+			<div>{{ 'species.title.long' | translate }}</div>
 		</div>
-	</div>
-	<ul class="nav nav-tabs nav-justified">
-		<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-			<a routerLink="/taxon/browse/informal">
-				<span style="font-size: 150%" class="glyphicon glyphicon-th-list"></span>
-				<h3>{{ 'species.groups' | translate }}</h3>
-			</a>
-		</li>
-		<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-			<a routerLink="/taxon/browse/taxonomy">
-				<span style="font-size: 150%" class="glyphicon glyphicon-picture"></span>
-				<h3>{{ 'species.taxa' | translate }}</h3>
-			</a>
-		</li>
-	</ul>
-	<div *ngIf="(type | async) == 'informal'" class="row">
-		<div class="col-xs-12">
-			<laji-informal-list-breadcrumb [groups]="groups" [informalGroup]="selectedInformalGroup"></laji-informal-list-breadcrumb>
-			<laji-informal-list *ngIf="selectedInformalGroup" [tree]="selectedInformalGroup"></laji-informal-list>
-			<laji-species-list *ngIf="(id | async) && selectedInformalGroup" [informalGroup]="selectedInformalGroup"></laji-species-list>
-		</div>
-	</div>
-	<div *ngIf="(type | async) == 'taxonomy'" class="row">
-		<div class="col-sm-6">
-			<ol class="breadcrumb">
-				<li *ngFor="let parent of parents | async">
-					<a [routerLink]="['/','taxon','browse','taxonomy',parent.id]">{{ parent.scientificName }}</a>
+		<div style="background-color: #fff;" class="col-sm-9">
+			<ul style="margin-top: 12px;" class="nav nav-tabs nav-justified">
+				<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+					<a routerLink="/taxon/browse/informal">
+						<span style="font-size: 150%" class="glyphicon glyphicon-th-list"></span>
+						<h3>{{ 'species.groups' | translate }}</h3>
+					</a>
 				</li>
-				<li class="active">{{ (taxon | async)?.scientificName }}</li>
-			</ol>
-		</div>
-		<div class="col-sm-6">
-			<div class="row" style="margin-top: 20px;">
-				<div class="col-xs-6 ">
-					<label class="pull-right"><input type="checkbox" [(ngModel)]="onlyFinnish"> {{ 'taxonomy.list.onlyFinnish' | translate }}</label>
-				</div>
-				<div class="col-xs-6 ">
-					<label class="pull-right"><input type="checkbox" [(ngModel)]="vernacularNames"> {{ 'taxonomy.vernacular.name' | translate }}</label>
+				<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+					<a routerLink="/taxon/browse/taxonomy">
+						<span style="font-size: 150%" class="glyphicon glyphicon-picture"></span>
+						<h3>{{ 'species.taxa' | translate }}</h3>
+					</a>
+				</li>
+			</ul>
+			<div *ngIf="(type | async) == 'informal'" class="row">
+				<div class="col-xs-12">
+					<laji-informal-list-breadcrumb [groups]="groups" [informalGroup]="selectedInformalGroup"></laji-informal-list-breadcrumb>
+					<laji-informal-list *ngIf="selectedInformalGroup" [tree]="selectedInformalGroup"></laji-informal-list>
+					<laji-species-list *ngIf="(id | async) && selectedInformalGroup" [informalGroup]="selectedInformalGroup"></laji-species-list>
 				</div>
 			</div>
+			<div *ngIf="(type | async) == 'taxonomy'" class="row">
+				<div class="col-sm-6">
+					<ol class="breadcrumb">
+						<li *ngFor="let parent of parents | async">
+							<a [routerLink]="['/','taxon','browse','taxonomy',parent.id]">{{ parent.scientificName }}</a>
+						</li>
+						<li class="active">{{ (taxon | async)?.scientificName }}</li>
+					</ol>
+				</div>
+				<div class="col-sm-6">
+					<div class="row" style="margin-top: 20px;">
+						<div class="col-xs-6 ">
+							<label class="pull-right"><input type="checkbox" [(ngModel)]="onlyFinnish"> {{ 'taxonomy.list.onlyFinnish' | translate }}</label>
+						</div>
+						<div class="col-xs-6 ">
+							<label class="pull-right"><input type="checkbox" [(ngModel)]="vernacularNames"> {{ 'taxonomy.vernacular.name' | translate }}</label>
+						</div>
+					</div>
+				</div>
+				<laji-tree-of-life style="display: block; width: 100%;" [onlyFinnish]="onlyFinnish" [vernacularNames]="vernacularNames">
+				</laji-tree-of-life>
+			</div>
 		</div>
-		<laji-tree-of-life
-			style="display: block; width: 100%;"
-			[onlyFinnish]="onlyFinnish"
-			[vernacularNames]="vernacularNames">
-			</laji-tree-of-life>
 	</div>
 </div>
