@@ -6,6 +6,10 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { TranslateService } from 'ng2-translate';
 import { ValueDecoratorService } from '../result-list/value-decorator.sevice';
 import LatLngBounds = L.LatLngBounds;
+import LatLng = L.LatLng;
+
+const minCoordinateAccuracy = 10;
+const maxCoordinateAccuracy = 50000;
 
 @Component({
   selector: 'laji-observation-map',
@@ -24,7 +28,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() zoomThresholds: number[] = [5];
   // when active level is higher or equal to this will be using viewport coordinates to show grid
   @Input() onlyViewPortThreshold: number = 1;
-  @Input() size: number = 5000;
+  @Input() size: number = 10000;
   @Input() initWithWorldMap: boolean = false;
   @Input() lastPage: number = 7; // 0 = no page limit
   @Input() draw: any = false;
@@ -40,7 +44,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() itemFields: string[] = [
     'unit.linkings.taxon',
     'gathering.team',
-    'gathering.eventDate'
+    'gathering.eventDate',
+    'document.documentId'
   ];
 
   public mapData;
@@ -58,6 +63,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   private reset = true;
   private showingItems = false;
   private dataCache: any;
+  private accuracy;
 
 
   private static getValue(row: any, propertyName: string): string {
@@ -180,6 +186,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       };
     };
     if (!this.query.coordinates) {
+      this.accuracy = maxCoordinateAccuracy;
       return;
     }
     let features = [];
@@ -187,6 +194,16 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       let parts = coord.split(':');
       let system = parts.pop();
       if (system === 'WGS84' && parts.length === 4) {
+        let spot1 = new LatLng(+parts[2], +parts[0]);
+        let spot2 = new LatLng(+parts[2], +parts[1]);
+        let spot3 = new LatLng(+parts[3], +parts[1]);
+        this.accuracy = Math.floor(
+          Math.min(
+            spot1.distanceTo(spot3),
+            spot1.distanceTo(spot2),
+            maxCoordinateAccuracy
+          )
+        );
         features.push(ObservationMapComponent.getFeature({
           type: 'Polygon',
           coordinates: [[
@@ -223,6 +240,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   private addToMap(query: WarehouseQueryInterface, page = 1) {
+    query.coordinateAccuracyMax = this.accuracy;
     const items$ = this.warehouseService.warehouseQueryListGet(query, [
       'gathering.conversions.wgs84CenterPoint.lon',
       'gathering.conversions.wgs84CenterPoint.lat',
