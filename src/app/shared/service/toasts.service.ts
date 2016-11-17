@@ -12,24 +12,28 @@ export class ToastsService {
     return this.toastr;
   }
 
-  showSuccess(message: string, title?: string) {
-    let time = 2000 + ((message + title).length * 100);
-    this.toastr.success(message, title, {toastLife: time, showCloseButton: true});
+  showSuccess(message: string, title?: string, options?: Object) {
+    this.toast('success', message, title, options);
   }
 
-  showError(message: string, title?: string) {
-    let time = 2000 + ((message + title).length * 100);
-    this.toastr.error(message, title, {toastLife: time, showCloseButton: true});
+  showError(message: string, title?: string, options?: Object) {
+    this.toast('error', message, title, options);
   }
 
-  showWarning(message: string, title?: string) {
-    let time = 2000 + ((message + title).length * 100);
-    this.toastr.warning(message, title, {toastLife: time, showCloseButton: true});
+  showWarning(message: string, title?: string, options?: Object) {
+    this.toast('warning', message, title, options);
   }
 
-  showInfo(message, title?: string) {
-    let time = 2000 + ((message + title).length * 100);
-    this.toastr.info(message, title, {toastLife: time, showCloseButton: true});
+  showInfo(message: string, title?: string, options?: Object) {
+    this.toast('info', message, title, options);
+  }
+
+  private toast(type, message, title?: string, options?: Object) {
+    if (!options) {
+      let time = 2000 + ((message + title).length * 100);
+      options = {toastLife: time, showCloseButton: true};
+    }
+    this.toastr[type](message, title, options);
   }
 
 }
