@@ -61,7 +61,8 @@ export class SearchQuery {
     'dayOfYearBegin',
     'dayOfYearEnd',
     'individualCountMin',
-    'individualCountMax'
+    'individualCountMax',
+    'coordinateAccuracyMax'
   ];
 
   stringTypes = [

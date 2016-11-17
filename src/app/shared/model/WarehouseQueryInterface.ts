@@ -60,6 +60,7 @@ export interface WarehouseQueryInterface {
   dayOfYearEnd?: number;
   keyword?: Array<string>;
   collectionId?: Array<string>;
+  coordinateAccuracyMax?: number;
   sourceId?: Array<string>;
   superRecordBasis?: Array<string>;
   recordBasis?: Array<string>;
