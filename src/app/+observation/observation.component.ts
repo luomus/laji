@@ -40,7 +40,9 @@ export class ObservationComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    this.subParam.unsubscribe();
+    if (this.subParam) {
+      this.subParam.unsubscribe();
+    }
     if (this.subQuery) {
       this.subQuery.unsubscribe();
     }

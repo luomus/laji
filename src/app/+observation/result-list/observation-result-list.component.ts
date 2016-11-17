@@ -58,8 +58,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
       }
     );
     this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
-      query => {
-        this.searchQuery.page = 1;
+      () => {
         this.fetchRows(this.searchQuery.page);
       }
     );

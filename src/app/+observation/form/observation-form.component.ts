@@ -265,6 +265,7 @@ export class ObservationFormComponent implements OnInit {
       return;
     }
     this.lastQuery = cacheKey;
+    this.searchQuery.page = 1;
     this.searchQuery.tack++;
     this.searchQuery.updateUrl(this.location, undefined, [
       'selected',

@@ -33,7 +33,10 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     this.activated[this.active] = true;
     this.searchQuery.queryUpdated$.subscribe(data => {
         if (data['formSubmit']) {
-          this.queryParams = this.searchQuery.getQueryObject();
+          this.queryParams = this.searchQuery.getQueryObject([
+            'selected',
+            'pageSize'
+          ]);
           this.activated = {};
           this.activated[this.active] = true;
         }

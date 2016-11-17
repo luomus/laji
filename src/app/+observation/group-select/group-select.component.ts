@@ -151,7 +151,10 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
         this.label = group.name;
       }
     });
-    if (!found && !this.subLabel) {
+    if (!found) {
+      if (this.subLabel) {
+        this.subLabel.unsubscribe();
+      }
       this.subLabel = this.informalTaxonService.informalTaxonGroupFindById(groupId, this.lang)
         .map(group => group.name)
         .subscribe(name => this.label = name);
