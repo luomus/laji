@@ -9,7 +9,7 @@ declare let d3: any;
   templateUrl: './observation.component.html',
   providers: [SearchQuery]
 })
-export class ObservationComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ObservationComponent implements OnInit, OnDestroy {
   public tab: string;
   public page: number;
   public options: any;
@@ -26,9 +26,6 @@ export class ObservationComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subParam = this.route.params.subscribe(params => {
       this.tab = params['tab'] || 'map';
     });
-  }
-
-  ngAfterViewInit() {
     this.subQuery = this.route.queryParams.subscribe(params => {
       this.searchQuery.page = +params['page'] || 1;
       if (params['target']) {
