@@ -34,7 +34,7 @@ export class ObservationFormComponent implements OnInit {
   public dataSource: Observable<any>;
   public typeaheadLoading: boolean = false;
   public warehouseDateFormat = DATE_FORMAT;
-  public showFilter = false;
+  public showFilter = true;
   public invasiveOptions: MultiRadioOption[] = [
     {value: true, label: 'observation.form.multi-true'},
     {value: false, label: 'observation.form.multi-false'},
@@ -202,6 +202,9 @@ export class ObservationFormComponent implements OnInit {
 
   toggleFilters() {
     this.showFilter = !this.showFilter;
+    if (this.activeTab === 'map') {
+      this.window.dispatchEvent(new Event('resize'));
+    }
   }
 
   toggleInfo() {

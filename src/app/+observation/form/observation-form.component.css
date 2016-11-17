@@ -26,6 +26,24 @@
   color: #3498DB;
 }
 
+.filter-toggle {
+  position: absolute;
+  font-size: 16px;
+  color: #777;
+  margin-left: -37px;
+  margin-top: 10px;
+  background-color: #ECF0F1;
+  z-index: 1;
+  padding: 5px;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+.form-title {
+  z-index: 2;
+}
+
 .form-title h2 {
   font-size: 16px;
 }

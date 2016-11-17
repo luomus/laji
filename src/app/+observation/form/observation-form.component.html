@@ -1,6 +1,21 @@
+<h1 class="hidden-sm hidden-md hidden-lg">
+  {{'observation.results.title' | translate}}
+</h1>
 <form (ngSubmit)="onSubmit()" #observationForm="ngForm" class="form-horizontal">
   <div class="row">
-    <div class="form-filters col-sm-4 col-sm-push-8 col-md-3 col-md-push-9 col-lg-2 col-lg-push-10">
+    <div class="form-filters"
+      [ngClass]="{
+        'col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10': showFilter,
+        'hidden-xs hidden-sm hidden-md hidden-lg': !showFilter
+      }">
+      <div class="filter-toggle link" (click)="toggleFilters()">
+        <i class="glyphicon"
+           [ngClass]="{
+            'glyphicon-arrow-right': showFilter,
+            'glyphicon-arrow-left': !showFilter
+           }"
+        ></i>
+      </div>
       <div class="form-group">
         <div class="col-xs-12 form-title">
           <h2>
@@ -313,13 +328,32 @@
         </div>
       </div><!-- filters end -->
     </div>
-    <div class="result-list col-sm-8 col-sm-pull-4 col-md-9 col-md-pull-3 col-lg-10 col-lg-pull-2">
+    <div
+     [ngClass]="{
+       'result-list col-sm-8 col-sm-pull-4 col-md-9 col-md-pull-3 col-lg-10 col-lg-pull-2': showFilter,
+       'col-sm-12': !showFilter
+     }"
+    >
+      <div *ngIf="!showFilter"
+           class="filter-toggle link"
+           style="right: 0"
+           (click)="toggleFilters()"
+      >
+        <i class="glyphicon"
+           [ngClass]="{
+            'glyphicon-arrow-right': showFilter,
+            'glyphicon-arrow-left': !showFilter
+           }"
+        ></i>
+      </div>
       <div class="row">
         <div class="col-xs-12">
           <h1>
-            {{'observation.results.title' | translate}}
-            <small>
+            <span class="hidden-xs">
+              {{'observation.results.title' | translate}}
               <br>
+            </span>
+            <small>
               <div class="pull-right toggle-intro" *ngIf="!settings.showIntro">
                 <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
               </div>
