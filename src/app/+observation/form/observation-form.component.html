@@ -320,7 +320,7 @@
             {{'observation.results.title' | translate}}
             <small>
               <br>
-              <div class="pull-right toggle-intro">
+              <div class="pull-right toggle-intro" *ngIf="!settings.showIntro">
                 <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
               </div>
               <laji-observation-count [query]="searchQuery.query" [tick]="searchQuery.tack"></laji-observation-count>
@@ -336,7 +336,9 @@
           </h1>
         </div>
       </div>
-      <div [innerHtml]="'observation.intro' | translate" *ngIf="settings.showIntro"></div>
+      <alert *ngIf="settings.showIntro" style="margin-right: 10px;" [dismissible]="true" (close)="toggleInfo()">
+      <div [innerHtml]="'observation.intro' | translate"></div>
+      </alert>
       <div #tabs>
         <laji-observation-result [(active)]="activeTab" [(filters)]="filters"
                                  (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>

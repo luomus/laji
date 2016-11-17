@@ -30,6 +30,10 @@
   font-size: 16px;
 }
 
+:host >>> .alert-warning {
+  margin-right: 10px;
+}
+
 :host >>> .panel-heading a:hover {
   text-decoration: none;
 }
