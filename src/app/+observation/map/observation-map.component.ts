@@ -240,8 +240,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   private addToMap(query: WarehouseQueryInterface, page = 1) {
-    query.coordinateAccuracyMax = this.accuracy;
-    const items$ = this.warehouseService.warehouseQueryListGet(query, [
+   const items$ = this.warehouseService.warehouseQueryListGet(query, [
       'gathering.conversions.wgs84CenterPoint.lon',
       'gathering.conversions.wgs84CenterPoint.lat',
       ...this.itemFields
@@ -292,10 +291,17 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     const count$ = this.warehouseService
       .warehouseQueryCountGet(query)
       .switchMap(cnt => {
-        return cnt.total < this.showItemsWhenLessThan ? items$ : (this.warehouseService.warehouseQueryAggregateGet(
-          this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
-          undefined, this.size, page, true
-        ));
+        if (typeof query.coordinates !== 'undefined') {
+          query.coordinateAccuracyMax = this.accuracy;
+        }
+        if (cnt.total < this.showItemsWhenLessThan) {
+          return items$;
+        } else {
+          return (this.warehouseService.warehouseQueryAggregateGet(
+            this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
+            undefined, this.size, page, true
+          ));
+        }
       });
 
     this.subDataFetch = (this.showItemsWhenLessThan > 0 ? count$ : (this.warehouseService.warehouseQueryAggregateGet(
