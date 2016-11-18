@@ -3,7 +3,6 @@ import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Taxonomy, TaxonomyDescription, TaxonomyImage, TaxonomyApi } from '../../shared';
-import { SharedModule } from '../../shared/shared.module';
 
 @Component({
   selector: 'laji-info-card',

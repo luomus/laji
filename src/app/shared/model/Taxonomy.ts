@@ -186,9 +186,9 @@ export interface TaxonomyImage {
 
   fullURL?: string;
 
-  licenceAbbreviation?: string;
+  licenseAbbreviation?: string;
 
-  licenceDescription?: string;
+  licenseDescription?: string;
 
   source?: string;
 
