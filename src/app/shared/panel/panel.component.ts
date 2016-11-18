@@ -1,8 +1,16 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, trigger, state, transition, animate, style } from '@angular/core';
 
 @Component({
   selector: '[laji-panel]',
-  templateUrl: './panel.component.html'
+  templateUrl: './panel.component.html',
+  styleUrls: ['./panel.component.css'],
+  animations: [
+    trigger('visibilityState', [
+      state('in' , style({ height: '*' })),
+      state('out', style({ height: 0 })),
+      transition('in <=> out', animate('200ms'))
+    ])
+  ]
 })
 export class PanelComponent {
   @Input() title: string;

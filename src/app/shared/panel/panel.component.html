@@ -5,7 +5,7 @@
     </a>
   </h4>
 </div>
-<div class="panel-collapse collapse" [ngClass]="open ? 'in' : ''" role="tabpanel" aria-labelledby="">
+<div class="panel-collapse" [@visibilityState]="open ? 'in' : 'out'" role="tabpanel" aria-labelledby="">
   <div class="panel-body">
     <ng-content></ng-content>
   </div>
