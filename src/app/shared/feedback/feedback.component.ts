@@ -13,9 +13,11 @@ import { TranslateService } from 'ng2-translate';
 })
 export class FeedbackComponent {
 
-  @SessionStorage() public subject: string = '';
-  @SessionStorage() public other: string = '';
-  @SessionStorage() public message: string = '';
+  @SessionStorage() public feedback: IFeedback = {
+    subject: '',
+    other: '',
+    message: ''
+  };
   public error: boolean = false;
 
   @ViewChild('childModal') public modal: ModalDirective;
@@ -33,8 +35,9 @@ export class FeedbackComponent {
   }
 
   sendFeedback() {
-    let subject = this.subject === 'other' ? this.other : this.subject;
-    let message = this.message;
+    let subject = this.feedback.subject === 'other' ?
+      this.feedback.other : this.feedback.subject;
+    let message = this.feedback.message;
     if (!subject || !message) {
       this.error = true;
       return;
@@ -46,9 +49,11 @@ export class FeedbackComponent {
           user.emailAddress ? this.userService.getToken() : undefined
         ).subscribe(
           () => {
-            this.subject = '';
-            this.other = '';
-            this.message = '';
+            this.feedback = {
+              subject: '',
+              other: '',
+              message: ''
+            };
             this.modal.hide();
             this.sendMessage('showSuccess', 'feedback.success');
           },
@@ -65,4 +70,10 @@ export class FeedbackComponent {
         this.toastsService[type](msg);
       });
   }
+}
+
+export interface IFeedback {
+  subject: string;
+  other: string;
+  message: string;
 }

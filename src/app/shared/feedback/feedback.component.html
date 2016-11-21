@@ -27,7 +27,7 @@
         <div class="row subject">
           <div class="col-sm-12">
             {{'feedback.topic' | translate}}:
-            <select [(ngModel)]="subject" class="form-control">
+            <select [(ngModel)]="feedback.subject" class="form-control">
               <option value="">{{'feedback.topic.empty' | translate}}</option>
               <option value="{{'feedback.topic.good' | translate}}">{{'feedback.topic.good' | translate}}</option>
               <option value="{{'feedback.topic.bad' | translate}}">{{'feedback.topic.bad' | translate}}</option>
@@ -35,15 +35,15 @@
             </select>
           </div>
         </div>
-        <div class="row other" *ngIf="subject === 'other'">
+        <div class="row other" *ngIf="feedback.subject === 'other'">
           <div class="col-sm-12">
-            <input [(ngModel)]="other" type="text" placeholder="{{'feedback.topic.other' | translate}}" class="form-control">
+            <input [(ngModel)]="feedback.other" type="text" placeholder="{{'feedback.topic.other' | translate}}" class="form-control">
           </div>
         </div>
         <div class="row message">
           <div class="col-sm-12">
             {{'feedback.message' | translate}}:
-            <textarea class="form-control" [(ngModel)]="message"></textarea>
+            <textarea class="form-control" [(ngModel)]="feedback.message"></textarea>
           </div>
         </div>
       </div>
