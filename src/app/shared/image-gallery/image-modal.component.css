@@ -158,6 +158,10 @@ img.ng-thumb {
   text-shadow: 0 1px 5px #000;
 }
 
+.ng-gallery-content > span.info-text a {
+  color: #fff;
+}
+
 .ng-gallery-content > .ng-thumbnails-wrapper {
   width: 400px;
   height: 70px;

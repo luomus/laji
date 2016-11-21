@@ -1,4 +1,5 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
+  <div *ngIf="!loading && images.length === 0">{{'observation.form.noImages' | translate}}</div>
   <ImageModal [modalImages]="images"></ImageModal>
   <pagination
           [totalItems]="total"

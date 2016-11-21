@@ -104,6 +104,7 @@
   "observation.form.specimen": "Nimi",
   "observation.form.place": "Paikka",
   "observation.form.date": "Aika",
+  "observation.form.noImages": "Annetuilla hakuehdoilla ei löytynyt yhtään kuvaa.",
   "observation.form.thisYear": "Tänä vuonna",
   "observation.form.preservedSpecimens": "Kokoelmanäytteitä",
   "observation.form.typeSpecimen": "vain tyyppinäytteet",

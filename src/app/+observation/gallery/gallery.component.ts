@@ -47,6 +47,7 @@ export class GalleryComponent implements OnInit {
         'unit.media',
         'gathering.media',
         'document.media',
+        'document.documentId'
       ], undefined, this.pageSize, this.page)
       .map((data) => {
         let images = [];
@@ -55,7 +56,10 @@ export class GalleryComponent implements OnInit {
           data.results.map((items) => {
             ['document', 'gathering', 'unit'].map((key) => {
               if (items[key] && items[key].media) {
-                images.push(...items[key].media);
+                items[key].media.map(media => {
+                  media['documentId'] = items['document']['documentId'];
+                  images.push(media);
+                });
               }
             });
           });
