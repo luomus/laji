@@ -18,6 +18,7 @@ export class PanelComponent {
   @Input() open: boolean = false;
   @Input() autoToggle: boolean = false;
   @Output() activate = new EventEmitter();
+  public hideInside = true;
 
   activateCurrent() {
     if (this.autoToggle) {
@@ -26,5 +27,17 @@ export class PanelComponent {
     this.activate.emit({
       value: this.index
     });
+  }
+
+  animationStart(event) {
+    if (event.toState === 'out') {
+      this.hideInside = true;
+    }
+  }
+
+  animationDone(event) {
+    if (event.toState === 'in') {
+      this.hideInside = false;
+    }
   }
 }
