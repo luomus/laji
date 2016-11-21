@@ -1,0 +1,26 @@
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class AppConfig {
+  config: any;
+
+  constructor() {
+    try {
+    this.config = require('../../config.json');
+    } catch (e) {
+      throw 'Place add config.json for your application!';
+    }
+  }
+
+  getEnv() {
+    return this.config.env || 'dev';
+  }
+
+  getLoginUrl() {
+    return this.config.login_url || '';
+  }
+
+  getPersonSelfUrl() {
+    return this.config.person_self_url || '';
+  }
+}

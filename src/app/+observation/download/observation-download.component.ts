@@ -7,7 +7,6 @@ import { Subscription, Observable } from 'rxjs';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { AppConfig } from '../../app.config';
-const config = require('../../../../config.json');
 
 @Component({
   selector: 'observation-download',

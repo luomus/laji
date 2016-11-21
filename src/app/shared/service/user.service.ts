@@ -7,8 +7,7 @@ import { PersonApi } from '../api/PersonApi';
 import { LocalStorage } from 'angular2-localstorage/dist';
 import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
-
-const config = require('../../../../config.json');
+import { AppConfig } from '../../app.config';
 
 @Injectable()
 export class UserService {
@@ -33,6 +32,7 @@ export class UserService {
               private router: Router,
               private location: Location,
               private logger: Logger,
+              private appConfig: AppConfig,
               @Inject('Window') window: Window) {
     this.window = window;
     if (this.token) {
@@ -96,7 +96,7 @@ export class UserService {
 
   public doLogin(): void {
     this.returnUrl = this.location.path(true);
-    this.window.location.href = config.login_url;
+    this.window.location.href = this.appConfig.getLoginUrl();
   }
 
   public returnToPageBeforeLogin(): void {
