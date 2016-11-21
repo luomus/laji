@@ -1,51 +1,41 @@
 <div class="laji-news">
   <laji-image-header></laji-image-header>
   <div class="searchBar">
-    <div class="container">
-      <div class="col-sm-8">
-        <div class="row">
-          <laji-omni-search [placeholder]="'search-bar.input' | translate"
-                            [lang]="translate.currentLang"></laji-omni-search>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
+          <laji-omni-search [placeholder]="'search-bar.input' | translate" [lang]="translate.currentLang"></laji-omni-search>
+        </div>
+        <div class="col-sm-3">
+          <!--span class="glyphicon glyphicon-search pull-right" aria-hidden="true"></span-->
         </div>
       </div>
     </div>
   </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-8">
+  <div class="container-fluid">
+    <div id="wrapper" class="row">
+      <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
         <h1>{{ 'home.main-page.title' | translate }}</h1>
         <p>{{ 'home.main-page.text' | translate }}</p>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-7">
             <div class="row">
-              <div class="col-md-12">
-                <div class="row">
-                  <laji-navigation-thumbnail name="navigation.taxonomy" icon="species"
-                                             path="taxon"></laji-navigation-thumbnail>
-                  <laji-navigation-thumbnail name="navigation.observation" icon="observations"
-                                             path="observation"></laji-navigation-thumbnail>
-                </div>
+              <laji-navigation-thumbnail name="navigation.taxonomy" icon="species" path="taxon"></laji-navigation-thumbnail>
+              <laji-navigation-thumbnail name="navigation.observation" icon="observations" path="observation"></laji-navigation-thumbnail>
+            </div>
+            <div style="height: 170px;" class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">{{ 'haseka.slogan' | translate }}</h3>
               </div>
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div style="height: 170px;" class="panel panel-default">
-                      <div class="panel-heading">
-                        <h3 class="panel-title">{{ 'haseka.slogan' | translate }}</h3>
-                      </div>
-                      <div class="panel-body">
-                        <a class="btn btn-default center-block" routerLink="/record" role="button">{{ 'haseka.button' | translate }}</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="panel-body">
+                <a class="btn btn-primary center-block" routerLink="/record" role="button">{{ 'haseka.button' | translate }}</a>
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-5">
             <div class="panel panel-default">
               <div class="panel-body resent-map">
-                <laji-observation-map [height]="280" [initWithWorldMap]="true" [showItemsWhenLessThan]="500" [draw]="false" [query]="{time:'-1/0', finnish: true}"></laji-observation-map>
+                <laji-observation-map [height]="305" [initWithWorldMap]="true" [showItemsWhenLessThan]="500" [draw]="false" [query]="{time:'-1/0', finnish: true}"></laji-observation-map>
               </div>
               <div class="panel-footer">
                 <h2 class="panel-title">{{ 'home.main-page.recent' | translate }}</h2>
@@ -54,13 +44,13 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-4">
+      <div style="background-color: #ECF0F1;" class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1">
         <div class="news-panel">
           <laji-news-list></laji-news-list>
         </div>
-        <div>
-          <!--<Sponsors /> -->
-        </div>
+        <!--div>
+            <Sponsors />
+          </div-->
       </div>
     </div>
   </div>
