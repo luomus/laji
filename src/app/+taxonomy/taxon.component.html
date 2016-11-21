@@ -1,12 +1,12 @@
-<div style="background-color: #ECF0F1;" class="container-fluid">
-	<div class="row">
-		<div style="background-color: #ECF0F1;" class="col-sm-3">
-			<h1>{{ 'navigation.taxonomy' | translate }} <small>{{ 'species.title.short' | translate }}</small></h1>
+<div class="container-fluid">
+	<div id="wrapper" class="row">
+		<div style="background-color: #ECF0F1;" class="col-sm-4 col-md-3 col-lg-2">
+			<h1>{{ 'navigation.taxonomy' | translate }}<br><small>{{ 'species.title.short' | translate }}</small></h1>
 			<laji-omni-search [placeholder]="'search-bar.input' | translate" [lang]="translate.currentLang"></laji-omni-search>
 			<div>{{ 'species.title.long' | translate }}</div>
 		</div>
-		<div style="background-color: #fff;" class="col-sm-9">
-			<ul style="margin-top: 12px;" class="nav nav-tabs nav-justified">
+		<div  class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
+			<ul style="margin-top: 24px;" class="nav nav-tabs nav-justified">
 				<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
 					<a routerLink="/taxon/browse/informal">
 						<span style="font-size: 150%" class="glyphicon glyphicon-th-list"></span>

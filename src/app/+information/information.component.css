@@ -3,3 +3,9 @@
   padding-top: 15px;
   background-color: rgb(236, 240, 241);
 }
+
+@media only screen and (min-width : 768px) {
+  #wrapper {
+    display: flex;
+  } 
+}

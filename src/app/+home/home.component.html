@@ -3,7 +3,7 @@
   <div class="searchBar">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
           <laji-omni-search [placeholder]="'search-bar.input' | translate" [lang]="translate.currentLang"></laji-omni-search>
         </div>
         <div class="col-sm-3">
@@ -12,13 +12,13 @@
       </div>
     </div>
   </div>
-  <div style="background-color: #ECF0F1;" class="container-fluid">
-    <div class="row">
-      <div style="background-color: #ffffff;" class="col-sm-9">
+  <div class="container-fluid">
+    <div id="wrapper" class="row">
+      <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
+        <h1>{{ 'home.main-page.title' | translate }}</h1>
+        <p>{{ 'home.main-page.text' | translate }}</p>
         <div class="row">
           <div class="col-md-7">
-            <h1>{{ 'home.main-page.title' | translate }}</h1>
-            <p>{{ 'home.main-page.text' | translate }}</p>
             <div class="row">
               <laji-navigation-thumbnail name="navigation.taxonomy" icon="species" path="taxon"></laji-navigation-thumbnail>
               <laji-navigation-thumbnail name="navigation.observation" icon="observations" path="observation"></laji-navigation-thumbnail>
@@ -33,9 +33,9 @@
             </div>
           </div>
           <div class="col-md-5">
-            <div style="margin-top: 20px;" class="panel panel-default">
+            <div class="panel panel-default">
               <div class="panel-body resent-map">
-                <laji-observation-map [height]="405" [initWithWorldMap]="true" [showItemsWhenLessThan]="500" [draw]="false" [query]="{time:'-1/0', finnish: true}"></laji-observation-map>
+                <laji-observation-map [height]="305" [initWithWorldMap]="true" [showItemsWhenLessThan]="500" [draw]="false" [query]="{time:'-1/0', finnish: true}"></laji-observation-map>
               </div>
               <div class="panel-footer">
                 <h2 class="panel-title">{{ 'home.main-page.recent' | translate }}</h2>
@@ -44,14 +44,14 @@
           </div>
         </div>
       </div>
-        <div class="col-sm-3">
-          <div class="news-panel">
-            <laji-news-list></laji-news-list>
-          </div>
-          <!--div>
+      <div style="background-color: #ECF0F1;" class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1">
+        <div class="news-panel">
+          <laji-news-list></laji-news-list>
+        </div>
+        <!--div>
             <Sponsors />
           </div-->
-        </div>
+      </div>
     </div>
   </div>
 </div>
