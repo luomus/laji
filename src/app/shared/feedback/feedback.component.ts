@@ -5,6 +5,8 @@ import { UserService } from '../service/user.service';
 import { SessionStorage } from 'angular2-localstorage/dist';
 import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from 'ng2-translate';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-feedback',
@@ -16,7 +18,8 @@ export class FeedbackComponent {
   @SessionStorage() public feedback: IFeedback = {
     subject: '',
     other: '',
-    message: ''
+    message: '',
+    meta: ''
   };
   public error: boolean = false;
 
@@ -26,8 +29,9 @@ export class FeedbackComponent {
     public userService: UserService,
     private feedbackApi: FeedbackApi,
     private toastsService: ToastsService,
-    private translate: TranslateService
-  ) {
+    private translate: TranslateService,
+    private location: Location
+) {
   }
 
   closeError() {
@@ -42,17 +46,19 @@ export class FeedbackComponent {
       this.error = true;
       return;
     }
+    let meta = this.location.prepareExternalUrl(location.path());
     this.userService.getUser()
       .subscribe(user => {
         this.feedbackApi.send(
-          {subject, message},
+          {subject, message, meta},
           user.emailAddress ? this.userService.getToken() : undefined
         ).subscribe(
           () => {
             this.feedback = {
               subject: '',
               other: '',
-              message: ''
+              message: '',
+              meta: ''
             };
             this.modal.hide();
             this.sendMessage('showSuccess', 'feedback.success');
@@ -76,4 +82,5 @@ export interface IFeedback {
   subject: string;
   other: string;
   message: string;
+  meta: string;
 }
