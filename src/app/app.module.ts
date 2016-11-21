@@ -26,6 +26,7 @@ import { FeedbackApi } from './shared/api/FeedbackApi';
 import { Logger, ConsoleLogger, HttpLogger } from './shared/logger/index';
 import { LoggerApi } from './shared/api/LoggerApi';
 import { AppConfig } from './app.config';
+import { ILogger } from './shared/logger/logger.interface';
 
 @NgModule({
   declarations: [
@@ -46,8 +47,9 @@ import { AppConfig } from './app.config';
     {
       provide: Logger,
       deps: [LoggerApi, AppConfig],
-      useFactory: function(loggerApi: LoggerApi, appConfig: AppConfig) {
-        if (appConfig.getEnv() === 'prod' || appConfig.getEnv() === 'staging') {
+      useFactory: function(loggerApi: LoggerApi, appConfig: AppConfig): ILogger {
+        const env = appConfig.getEnv();
+        if (env === 'prod' || env === 'staging') {
           return new HttpLogger(loggerApi);
         }
         return new ConsoleLogger();
