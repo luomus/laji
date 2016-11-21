@@ -46,7 +46,7 @@ export class FeedbackComponent {
       this.error = true;
       return;
     }
-    let meta = this.location.prepareExternalUrl(location.path());
+    let meta = this.location.prepareExternalUrl(this.location.path());
     this.userService.getUser()
       .subscribe(user => {
         this.feedbackApi.send(
