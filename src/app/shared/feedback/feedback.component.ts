@@ -53,7 +53,7 @@ export class FeedbackComponent {
             this.sendMessage('showSuccess', 'feedback.success');
           },
           () => {
-            this.sendMessage('showSuccess', 'feedback.failure');
+            this.sendMessage('showError', 'feedback.failure');
           }
         );
       });
