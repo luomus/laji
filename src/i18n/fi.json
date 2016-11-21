@@ -101,6 +101,7 @@
   "observation.form.collection": "Kokoelmanäytteet",
   "observation.form.filter": "Rajaa",
   "observation.form.specimen": "Nimi",
+  "observation.form.place": "Paikka",
   "observation.form.date": "Aika",
   "observation.form.thisYear": "Tänä vuonna",
   "observation.form.preservedSpecimens": "Kokoelmanäytteitä",
