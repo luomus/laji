@@ -20,11 +20,12 @@ import { ObservationCountComponent } from './count/observation-count.component';
 import { DatePickerComponent } from '../shared/datepicker/datepicker.component';
 import { ObservationAggregateComponent } from './aggregate/observation-aggregate.component';
 import { ObservationDownloadComponent } from './download/observation-download.component';
+import { GalleryComponent } from './gallery/gallery.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, TypeaheadModule, SelectModule],
   declarations: [ObservationComponent, ObservationActiveComponent,
-    ObservationAggregateComponent, ObservationChartComponent,
+    ObservationAggregateComponent, ObservationChartComponent, GalleryComponent,
     ObservationFilterComponent, ObservationFormComponent, ObservationGroupSelectComponent,
     MultiRadioComponent, ObservationResultComponent,
     ObservationResultListComponent, MetadataSelectComponent,
