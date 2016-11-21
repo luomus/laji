@@ -6,6 +6,7 @@ import { TaxonomyApi } from '../api/TaxonomyApi';
 import { Taxonomy } from '../model/Taxonomy';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-omni-search',
@@ -31,6 +32,7 @@ export class OmniSearchComponent implements OnInit, OnChanges {
   constructor(private autocompleteService: AutocompleteApi,
               private warehouseApi: WarehouseApi,
               private taxonService: TaxonomyApi,
+              private router: Router,
               private logger: Logger
   ) {
   }
@@ -100,6 +102,11 @@ export class OmniSearchComponent implements OnInit, OnChanges {
     if (e.keyCode === 40) { // down
       if (this.taxa[this.active + 1]) {
         this.activate(this.active + 1);
+      }
+    }
+    if (e.keyCode === 13) {
+      if (this.taxa[this.active]) {
+        this.router.navigate(['/taxon', this.taxa[this.active].key]);
       }
     }
   }
