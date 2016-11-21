@@ -12,6 +12,7 @@ import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { Logger } from '../../shared/logger/logger.service';
 
 export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -56,7 +57,11 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
     }
   }
 
-  constructor(viewContainerRef: ViewContainerRef, private informalTaxonService: InformalTaxonGroupApi) {
+  constructor(
+    viewContainerRef: ViewContainerRef,
+    private informalTaxonService: InformalTaxonGroupApi,
+    private logger: Logger
+  ) {
     this.el = viewContainerRef.element.nativeElement;
   }
 
@@ -95,7 +100,7 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
           this.groups = groups;
           this.initRange();
         },
-        err => console.log(err)
+        err => this.logger.warn('Was unable to fetch informal taxon group data', err)
       );
   }
 
@@ -157,11 +162,17 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
       }
       this.subLabel = this.informalTaxonService.informalTaxonGroupFindById(groupId, this.lang)
         .map(group => group.name)
-        .subscribe(name => this.label = name);
+        .subscribe(
+          name => this.label = name,
+          err => this.logger.warn('Unable to find taxon group by id', err)
+        );
     }
   }
 
   empty() {
+    if (this.value === '') {
+      return this.close();
+    }
     this.value = '';
     if (!this.open) {
       this.onSelect.emit(this.value);
@@ -174,6 +185,10 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
     this.onTouched();
     this.open = false;
     this.onSelect.emit(this.innerValue);
+  }
+
+  openMenu() {
+    this.open = true;
   }
 
   toggle() {

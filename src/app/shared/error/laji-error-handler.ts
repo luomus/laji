@@ -1,6 +1,7 @@
 import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from 'ng2-translate';
+import { Logger } from '../logger/logger.service';
 
 const pauseBeforeResendError = 1000;
 
@@ -9,15 +10,16 @@ export class LajiErrorHandler implements ErrorHandler {
 
   private toastsService;
   private translate;
+  private logger;
   private pause = false;
 
   constructor(private injector: Injector) {}
 
   handleError(error) {
-    console.log(error);
     if (this.pause) {
       return;
     }
+    this.getLogger().error('Guru Meditation!', error);
     this.pause = true;
     setTimeout(() => {
       this.pause = false;
@@ -44,5 +46,12 @@ export class LajiErrorHandler implements ErrorHandler {
       this.translate = this.injector.get(TranslateService);
     }
     return this.translate;
+  }
+
+  private getLogger(): Logger {
+    if (!this.logger) {
+      this.logger = this.injector.get(Logger);
+    }
+    return this.logger;
   }
 }

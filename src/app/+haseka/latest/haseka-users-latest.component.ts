@@ -2,6 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { Document, DocumentApi } from '../../shared';
 import { FormService } from '../form/form.service';
 import { subscribeOn } from 'rxjs/operator/subscribeOn';
+import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-haseka-latest',
@@ -20,7 +21,8 @@ export class UsersLatestComponent implements OnChanges {
 
   constructor(
     private documentService: DocumentApi,
-    private formService: FormService
+    private formService: FormService,
+    private logger: Logger
   ) {
   }
 
@@ -59,7 +61,7 @@ export class UsersLatestComponent implements OnChanges {
           this.documents = (result.results || []);
           this.total = result.total || 0;
         },
-        err => console.log(err)
+        err => this.logger.warn('Unable to fetch users documents', err)
       );
   }
 }

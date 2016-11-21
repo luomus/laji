@@ -4,6 +4,7 @@ import {
   Component, ElementRef, OnDestroy, Input, Output, EventEmitter, OnChanges, ViewChild,
   OnInit
 } from '@angular/core';
+import { Logger } from '../logger/logger.service';
 
 const lajiMap = require('laji-map').default;
 
@@ -33,6 +34,9 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   @ViewChild('map') elemRef: ElementRef;
 
   map: any;
+
+  constructor(private logger: Logger) {
+  }
 
   ngOnInit() {
     this.map = new lajiMap({
@@ -88,7 +92,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
       this.map.map.off();
       this.map.map.remove();
     } catch (err) {
-      console.log(err);
+      this.logger.log('Unmounting map failed', err);
     }
   }
 
@@ -119,7 +123,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
         this.initSingleShape();
       }
     } catch (err) {
-      console.log(err);
+      this.logger.error('Failed to add map data', err);
     }
   }
 
@@ -128,8 +132,8 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
       this.map.map.addEventListener({
         'draw:drawstart': event => this.clearDrawLayer()
       });
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      this.logger.warn('Failed to add event listener', err);
     }
   }
 
@@ -150,7 +154,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
       this.drawData.featureCollection = {type: 'featureCollection', features: []};
       this.map.setDrawData(this.drawData);
     } catch (err) {
-      console.log(err);
+      this.logger.warn('Failed to clear draw layer', err);
     }
   }
 }

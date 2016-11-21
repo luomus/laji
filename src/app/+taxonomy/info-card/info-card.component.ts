@@ -3,6 +3,7 @@ import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Taxonomy, TaxonomyDescription, TaxonomyImage, TaxonomyApi } from '../../shared';
+import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-info-card',
@@ -25,7 +26,9 @@ export class InfoCardComponent {
 
   constructor(private taxonService: TaxonomyApi,
               private translate: TranslateService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private logger: Logger
+  ) {
   }
 
   ngOnInit() {
@@ -67,7 +70,7 @@ export class InfoCardComponent {
       .taxonomyFindBySubject(id, 'multi')
       .subscribe(
         taxonomy => this.taxon = taxonomy,
-        err => console.log(err)
+        err => this.logger.warn('Failed to fetch taxon by id', err)
       );
   }
 
@@ -76,7 +79,7 @@ export class InfoCardComponent {
       .taxonomyFindDescriptions(id, 'multi')
       .subscribe(
         descriptions => this.taxonDescription = descriptions,
-        err => console.error(err)
+        err => this.logger.warn('Failed to fetch taxon description by id', err)
       );
 
   }
@@ -85,7 +88,7 @@ export class InfoCardComponent {
     this.taxonService.taxonomyFindMedia(id, this.translate.currentLang)
       .subscribe(
         media => this.taxonImages = media,
-        err => console.error(err)
+        err => this.logger.warn('Failed to fetch taxon media by id', err)
       );
   }
 }

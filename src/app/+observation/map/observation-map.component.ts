@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { Util } from '../../shared/service/util.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { TranslateService } from 'ng2-translate';
 import { ValueDecoratorService } from '../result-list/value-decorator.sevice';
 import LatLngBounds = L.LatLngBounds;
 import LatLng = L.LatLng;
+import { Logger } from '../../shared/logger/logger.service';
 
 const minCoordinateAccuracy = 10;
 const maxCoordinateAccuracy = 50000;
@@ -85,7 +86,9 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
   constructor(private warehouseService: WarehouseApi,
               public translate: TranslateService,
-              private decorator: ValueDecoratorService) {
+              private decorator: ValueDecoratorService,
+              private logger: Logger
+  ) {
   }
 
   ngOnInit() {
@@ -303,11 +306,13 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           ));
         }
       });
-
-    this.subDataFetch = (this.showItemsWhenLessThan > 0 ? count$ : (this.warehouseService.warehouseQueryAggregateGet(
-      this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
-      undefined, this.size, page, true
-    )))
+    this.subDataFetch = Observable.of(this.showItemsWhenLessThan)
+      .switchMap((less) => {
+        return less > 0 ? count$ : this.warehouseService.warehouseQueryAggregateGet(
+          this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
+          undefined, this.size, page, true
+        );
+      })
       .delay(100)
       .subscribe(
         (data) => {
@@ -397,7 +402,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           .subscribe(translation => cb(`${cnt} ${translation}`));
       }
     } catch (e) {
-      console.log(e);
+      this.logger.log('Failed to display popup for the map', e);
     }
   }
 }

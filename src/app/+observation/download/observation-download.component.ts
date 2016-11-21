@@ -5,6 +5,8 @@ import { TranslateService } from 'ng2-translate';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Subscription, Observable } from 'rxjs';
 import { ToastsService } from '../../shared/service/toasts.service';
+import { Logger } from '../../shared/logger/logger.service';
+import { AppConfig } from '../../app.config';
 const config = require('../../../../config.json');
 
 @Component({
@@ -33,8 +35,11 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
               public userService: UserService,
               public translate: TranslateService,
               private toastsService: ToastsService,
-              private warehouseService: WarehouseApi) {
-    if (config.env && config.env === 'prod') {
+              private warehouseService: WarehouseApi,
+              private logger: Logger,
+              private appConfig: AppConfig
+  ) {
+    if (appConfig.getEnv() === 'prod') {
       this.showRequest = false;
     }
   }
@@ -125,7 +130,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
       err => {
         this.requests[type] = 'error';
         this.toastsService.showError(this.messages['observation.download.error']);
-        console.log(err);
+        this.logger.warn('Failed to make download request', err);
       }
     );
   }

@@ -5,6 +5,7 @@ import { News } from '../model/News';
 import { PagedResult } from '../model/PagedResult';
 import { Subscription } from 'rxjs';
 import { NewsService } from '../service/news.service';
+import { Logger } from '../logger/logger.service';
 
 @Component({
   selector: 'laji-news-list',
@@ -21,7 +22,11 @@ export class NewsListComponent implements OnInit, OnDestroy {
   private subLang: Subscription;
   private subNews: Subscription;
 
-  constructor(private newsService: NewsService, private translate: TranslateService) {
+  constructor(
+    private newsService: NewsService,
+    private translate: TranslateService,
+    private logger: Logger
+  ) {
   }
 
   ngOnInit() {
@@ -54,7 +59,7 @@ export class NewsListComponent implements OnInit, OnDestroy {
       .getPage(this.translate.currentLang, this.currentPage, this.pageSize)
       .subscribe(
         news => this.news = news,
-        err => console.log(err)
+        err => this.logger.warn('Failed to fetch news', err)
       );
   }
 }

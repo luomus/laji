@@ -1,3 +1,10 @@
+.label {
+  display: inline-block;
+  z-index: 100;
+}
+.btn {
+  text-align: left;
+}
 .informal-group-container {
   position: absolute;
   z-index: 9999;

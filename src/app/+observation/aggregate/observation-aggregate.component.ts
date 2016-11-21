@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { SearchQuery } from '../search-query.model';
 import { Util } from '../../shared/service/util.service';
+import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-observation-aggregate',
@@ -43,7 +44,9 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy, OnChang
   private lastCache: string;
 
   constructor(private warehouseService: WarehouseApi,
-              private searchQuery: SearchQuery) {
+              private searchQuery: SearchQuery,
+              private logger: Logger
+  ) {
   }
 
   ngOnInit() {
@@ -114,7 +117,7 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy, OnChang
               });
           }
         },
-        err => console.log(err),
+        err => this.logger.warn('Observation aggregation fetching failed', err),
         () => this.loading = false
       );
   }

@@ -21,10 +21,15 @@ import { LajiErrorHandler } from './shared/error/laji-error-handler';
 import { SearchQuery } from './+observation/search-query.model';
 import { ToastsService } from './shared/service/toasts.service';
 import { ToastModule } from 'ng2-toastr';
+import { FeedbackComponent } from './shared/feedback/feedback.component';
+import { FeedbackApi } from './shared/api/FeedbackApi';
+import { Logger, ConsoleLogger, HttpLogger } from './shared/logger/index';
+import { LoggerApi } from './shared/api/LoggerApi';
+import { AppConfig } from './app.config';
 
 @NgModule({
   declarations: [
-    AppComponent, NavbarComponent, FooterComponent, LangSelectComponent
+    AppComponent, NavbarComponent, FooterComponent, FeedbackComponent, LangSelectComponent
   ],
   imports: [
     BrowserModule,
@@ -38,8 +43,18 @@ import { ToastModule } from 'ng2-toastr';
     {provide: 'Window', useValue: window},
     {provide: ErrorHandler, useClass: LajiErrorHandler},
     {provide: LocationStrategy, useClass: PathLocationStrategy},
-    ToastsService,
-    PersonTokenApi, PersonApi, SearchQuery, WarehouseApi,
+    {
+      provide: Logger,
+      deps: [LoggerApi, AppConfig],
+      useFactory: function(loggerApi: LoggerApi, appConfig: AppConfig) {
+        if (appConfig.getEnv() === 'prod' || appConfig.getEnv() === 'staging') {
+          return new HttpLogger(loggerApi);
+        }
+        return new ConsoleLogger();
+      }
+    },
+    ToastsService, AppConfig,
+    PersonTokenApi, PersonApi, SearchQuery, WarehouseApi, FeedbackApi, LoggerApi,
     WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
     appRoutingProviders, AutocompleteApi, FooterService, LocalStorageService,
     DatePipe

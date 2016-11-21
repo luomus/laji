@@ -6,6 +6,7 @@ import { ValueDecoratorService } from './value-decorator.sevice';
 import { SearchQuery } from '../search-query.model';
 import { Util } from '../../shared/service/util.service';
 import { TranslateService } from 'ng2-translate';
+import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-observation-result-list',
@@ -40,7 +41,9 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
               private decorator: ValueDecoratorService,
               private searchQuery: SearchQuery,
               private translate: TranslateService,
-              private location: Location) {
+              private location: Location,
+              private logger: Logger
+  ) {
   }
 
   ngOnInit() {
@@ -120,7 +123,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
           ]);
         },
         err => {
-          console.log(err);
+          this.logger.warn('Failed to fetch list result', err);
           this.result.results = [];
         },
         () => this.loading = false

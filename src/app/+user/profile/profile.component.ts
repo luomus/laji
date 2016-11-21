@@ -4,6 +4,7 @@ import { PersonApi } from '../../shared/api/PersonApi';
 import { Profile } from '../../shared/model/Profile';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
+import { Logger } from '../../shared/logger/logger.service';
 const config = require('../../../../config.json');
 
 @Component({
@@ -34,7 +35,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService,
               private personService: PersonApi,
-              private route: ActivatedRoute
+              private route: ActivatedRoute,
+              private logger: Logger
   ) {
     if (config.person_self_url) {
       this.personSelfUrl = config.person_self_url;
@@ -71,7 +73,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.personsProfile = data.currentProfile || {};
           this.loading = false;
         },
-        err => console.log(err)
+        err => this.logger.warn('Failed to init profile', err)
       );
   }
 
@@ -99,7 +101,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.personsProfile = profile;
           this.editing = false;
         },
-        err => console.log(err)
+        err => this.logger.warn('Failed to save profile', err)
       );
   }
 

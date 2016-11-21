@@ -7,6 +7,7 @@ import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { IdService } from '../../shared/service/id.service';
 import { PagedResult } from '../../shared/model/PagedResult';
+import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-observation-chart',
@@ -37,7 +38,9 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
   constructor(public searchQuery: SearchQuery,
               private warehouseService: WarehouseApi,
               private informalGroupService: InformalTaxonGroupApi,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private logger: Logger
+  ) {
   }
 
   ngOnInit() {
@@ -138,7 +141,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
                   .filter(item => groups.indexOf(item.id) !== -1);
                 this.updateLabels();
               },
-              err => console.log(err)
+              err => this.logger.warn('Failed to fetch informal taxon group by id in chart', err)
             );
         } else {
           this.loading = false;
@@ -159,7 +162,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
           this.updateLabels();
         }
       },
-      err => console.log(err)
+      err => this.logger.warn('Failed to build informal taxon pie', err)
     );
   }
 

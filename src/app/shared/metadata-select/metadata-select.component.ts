@@ -3,6 +3,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { MetadataApi } from '../api/MetadataApi';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
+import { Logger } from '../logger/logger.service';
 
 export interface MetadataSelectPick {
   [field: string]: string;
@@ -36,7 +37,9 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   private innerValue: string = '';
 
   constructor(public warehouseMapper: WarehouseValueMappingService,
-              private metadataService: MetadataApi) {
+              private metadataService: MetadataApi,
+              private logger: Logger
+  ) {
   }
 
   onChange = (_: any) => {
@@ -98,7 +101,12 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
           this.options = options;
           this.initActive();
         },
-        err => console.log(err)
+        err => this.logger.warn('Failed to fetch metadata select', {
+          field: this.field,
+          alt: this.alt,
+          lang: this.lang,
+          err: err
+        })
       );
   }
 

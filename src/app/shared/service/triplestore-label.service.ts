@@ -2,6 +2,7 @@ import { Observable, Observer } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { TranslateService } from 'ng2-translate';
 import { MetadataApi } from '../api/MetadataApi';
+import { Logger } from '../logger/logger.service';
 
 @Injectable()
 export class TriplestoreLabelService {
@@ -11,7 +12,9 @@ export class TriplestoreLabelService {
   private pending: Observable<any>;
 
   constructor(private metadataService: MetadataApi,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private logger: Logger
+  ) {
     this.translate.onLangChange.subscribe(() => {
         this.labels = null;
         this.getLang(this.translate.currentLang);
@@ -36,7 +39,7 @@ export class TriplestoreLabelService {
           () => {
             onComplete(this.labels[key]);
           },
-          err => console.log(err)
+          err => this.logger.warn('Failed to fetch label for ' + key, err)
         );
       });
     } else {

@@ -221,5 +221,19 @@
   "species.groups": "Lajiryhmät",
   "species.taxa": "Taksonomia",
   "species.title.short": "Hae tietoa maamme eläimistä, kasveista ja sienistä.",
-  "species.title.long": "Suomen Lajitietokeskuksen Lajit-hakupalvelujen avulla pääset tutustumaan Suomen eliölajiston ominaispiirteisiin ja levinneisyyteen tietotaulujen, karttojen ja kuvien avulla. Hakutoiminnon avulla löydät etsimäsi lajin ja saat käyttöösi viimeisintä tietoa kiinnostuksesi kohteesta."
+  "species.title.long": "Suomen Lajitietokeskuksen Lajit-hakupalvelujen avulla pääset tutustumaan Suomen eliölajiston ominaispiirteisiin ja levinneisyyteen tietotaulujen, karttojen ja kuvien avulla. Hakutoiminnon avulla löydät etsimäsi lajin ja saat käyttöösi viimeisintä tietoa kiinnostuksesi kohteesta.",
+  "feedback": "Palaute",
+  "feedback.intro.loggedIn": "Sähköposti osoitteesi liitetään automaattisesti tähän palautteeseen",
+  "feedback.intro.guest": "Jos kirjaudut sisään niin palautteeseen pystytään vastaamaan suoraan",
+  "feedback.topic": "Aihe",
+  "feedback.message": "Viesti",
+  "feedback.topic.empty": "Valitse aihe",
+  "feedback.topic.good": "risuja",
+  "feedback.topic.bad": "ruusuja",
+  "feedback.topic.other": "muu",
+  "feedback.send": "lähetä",
+  "feedback.invalid": "Sekä aihe ja viesti tulee olla täytettynä",
+  "feedback.cancel": "peruuta",
+  "feedback.success": "Kiitos palautteestasi",
+  "feedback.failure": "Valitettavasti palautteen lähettäminen epäonnistui. Voit yrittää hetken kuluttua uudestaan, jos ongelma ei katoa voit lähettää palautetta suoraan osoitteeseen helpdesk@laji.fi."
 }

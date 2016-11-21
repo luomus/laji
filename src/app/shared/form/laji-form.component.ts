@@ -1,6 +1,7 @@
 import { Component, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { FormApiClient } from '../api';
 import { UserService } from '../service/user.service';
+import { Logger } from '../logger/logger.service';
 
 const lajiFormWrapper = require('laji-form/dist/laji-form').default;
 
@@ -26,7 +27,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
 
   constructor(@Inject(ElementRef) elementRef: ElementRef,
               private apiClient: FormApiClient,
-              private userService: UserService) {
+              private userService: UserService,
+              private logger: Logger
+  ) {
     this.elem = elementRef.nativeElement;
   }
 
@@ -82,7 +85,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
         renderSubmit: false
       });
     } catch (err) {
-      console.log(err);
+      this.logger.error('Failed to load kajiform', err);
     }
   }
 
@@ -102,7 +105,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
     try {
       this.lajiFormWrapper.unmount();
     } catch (err) {
-      console.log(err);
+      this.logger.warn('Unmounting failed', err);
     }
   }
 }

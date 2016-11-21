@@ -3,6 +3,7 @@ import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs';
 import { FormListInterface } from '../../shared/model/FormListInterface';
 import { FormService } from '../form/form.service';
+import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-haseka-form-list',
@@ -15,7 +16,9 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
   private subFetch: Subscription;
 
   constructor(private formService: FormService,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private logger: Logger
+  ) {
   }
 
   ngOnInit() {
@@ -43,7 +46,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     this.subFetch = this.formService.getAllForms(this.translate.currentLang)
       .subscribe(
         forms => this.formList = forms,
-        err => console.log(err)
+        err => this.logger.log('Failed to fetch all forms', err)
       );
   }
 

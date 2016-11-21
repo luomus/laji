@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Profile } from '../../shared/model/Profile';
 import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
+import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'friends',
@@ -17,7 +18,9 @@ export class FriendsComponent implements OnInit {
   public friends = [];
 
   constructor(private userService: UserService,
-              private personService: PersonApi) {
+              private personService: PersonApi,
+              private logger: Logger
+  ) {
   }
 
   ngOnInit() {
@@ -50,7 +53,7 @@ export class FriendsComponent implements OnInit {
     this.personService.personRemoveFriend(this.userService.getToken(), userId, block)
       .subscribe(
         profile => this.usersProfile = profile,
-        err => console.log(err)
+        err => this.logger.warn('Failed remove friend', err)
       );
   }
 
@@ -59,7 +62,7 @@ export class FriendsComponent implements OnInit {
     this.personService.personUpdateProfileByToken(this.usersProfile, this.userService.getToken())
       .subscribe(
         profile => this.usersProfile = profile,
-        err => console.log(err)
+        err => this.logger.warn('Failed remove block', err)
       );
   }
 
@@ -67,7 +70,7 @@ export class FriendsComponent implements OnInit {
     this.personService.personAcceptFriendRequest(this.userService.getToken(), userId)
       .subscribe(
         profile => this.usersProfile = profile,
-        err => console.log(err)
+        err => this.logger.warn('Failed accept friend request', err)
       );
   }
 }

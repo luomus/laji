@@ -4,6 +4,7 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { SearchQuery } from '../search-query.model';
 import { ObservationFilterInterface } from './observation-filter.interface';
 import { Subscription } from 'rxjs';
+import { Logger } from '../../shared/logger/logger.service';
 
 
 @Component({
@@ -25,7 +26,9 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
   private lastQuery: string;
 
   constructor(private warehouseService: WarehouseApi,
-              private searchQuery: SearchQuery) {
+              private searchQuery: SearchQuery,
+              private logger: Logger
+  ) {
   }
 
   ngOnInit() {
@@ -96,7 +99,7 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
         }
         this.filter.total = data.total;
       },
-      err => console.log(err),
+      err => this.logger.warn('Observation filter was not able to fetch data from the warehouse', err),
       () => this.loading = false
     );
   }

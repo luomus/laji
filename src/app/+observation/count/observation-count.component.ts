@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Util } from '../../shared/service/util.service';
+import { Logger } from '../../shared/logger/logger.service';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   private subQueryUpdate: Subscription;
   private subCount: Subscription;
 
-  constructor(private warehouseService: WarehouseApi) {
+  constructor(private warehouseService: WarehouseApi, private logger: Logger) {
   }
 
   ngOnChanges() {
@@ -61,7 +62,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
           this.loading = false;
           this.count = '' + (result.total || 0);
         },
-        err => console.log(err)
+        err => this.logger.warn('Failed to update count', err)
       );
   }
 
@@ -88,7 +89,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
           }
           this.loading = false;
         },
-        err => console.log(err)
+        err => this.logger.warn('Failed to update aggregated count', err)
       );
   }
 }

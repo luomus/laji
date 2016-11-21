@@ -10,6 +10,11 @@
     </a>
   </li>
   <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+    <a routerLink="/observation/images" [queryParams]="queryParams">
+      {{ 'search.result.images' | translate }}
+    </a>
+  </li>
+  <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
     <a routerLink="/observation/species" [queryParams]="queryParams">
       {{ 'search.result.species' | translate }}
     </a>
@@ -56,6 +61,9 @@
           [queryOverride]="{includeNonValidTaxa: false, taxonRankId: 'MX.species'}"
           [limit]="searchQuery.pageSize"
           [showPager]="true"></laji-observation-aggregate>
+</div>
+<div [hidden]="active !== 'images'" *ngIf="activated['images']" style="min-height: 250px; padding: 10px 10px 0 0">
+  <laji-gallery></laji-gallery>
 </div>
 <div [hidden]="active !== 'stats'" *ngIf="activated['stats']">
   <div *ngIf="activated['stats']">

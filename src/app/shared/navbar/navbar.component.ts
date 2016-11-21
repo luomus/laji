@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from '../service/user.service';
+import { AppConfig } from '../../app.config';
 
 @Component({
   selector: 'laji-navbar',
@@ -9,8 +10,11 @@ import { UserService } from '../service/user.service';
 export class NavbarComponent {
 
   openMenu: Boolean = false;
+  env: string = 'beta';
 
-  constructor(public userService: UserService) { }
+  constructor(public userService: UserService, appConfig: AppConfig) {
+    this.env = appConfig.getEnv();
+  }
 
   toggleMenu() {
     this.openMenu = !this.openMenu;

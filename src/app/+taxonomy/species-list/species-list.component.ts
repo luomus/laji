@@ -5,6 +5,7 @@ import { Taxonomy } from '../../shared/model/Taxonomy';
 import { TranslateService } from 'ng2-translate';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { InformalTaxonGroup } from '../../shared';
+import { Logger } from '../../shared/logger/logger.service';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class SpeciesListComponent implements OnChanges {
 
   constructor(
     private taxonomyService: TaxonomyApi,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private logger: Logger
   ) { }
 
   ngOnInit() { }
@@ -56,8 +58,10 @@ export class SpeciesListComponent implements OnChanges {
       `${page}`
       )
       .subscribe(data => {
-        this.speciesPage = data;
-        this.loading = false;
-      }, console.log.bind(this));
+          this.speciesPage = data;
+          this.loading = false;
+        },
+        err => this.logger.warn('Failed to fetch species list', err)
+      );
   }
 }

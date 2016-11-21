@@ -5,6 +5,7 @@ import { AutocompleteApi } from '../api/AutocompleteApi';
 import { TaxonomyApi } from '../api/TaxonomyApi';
 import { Taxonomy } from '../model/Taxonomy';
 import { WarehouseApi } from '../api/WarehouseApi';
+import { Logger } from '../logger/logger.service';
 
 @Component({
   selector: 'laji-omni-search',
@@ -29,7 +30,9 @@ export class OmniSearchComponent implements OnInit, OnChanges {
 
   constructor(private autocompleteService: AutocompleteApi,
               private warehouseApi: WarehouseApi,
-              private taxonService: TaxonomyApi) {
+              private taxonService: TaxonomyApi,
+              private logger: Logger
+  ) {
   }
 
   ngOnInit() {
@@ -123,7 +126,12 @@ export class OmniSearchComponent implements OnInit, OnChanges {
           this.taxa = data;
           this.activate(0);
         },
-        err => console.log(err),
+        err => this.logger.warn('OmniSearch failed to find data', {
+          taxon: this.search,
+          lang: this.lang,
+          limit: this.limit,
+          err: err
+        }),
         () => {
           this.loading = false;
         }

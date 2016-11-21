@@ -6,6 +6,7 @@ import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
 import { LocalStorage } from 'angular2-localstorage/dist';
 import { Location } from '@angular/common';
+import { Logger } from '../logger/logger.service';
 
 const config = require('../../../../config.json');
 
@@ -31,6 +32,7 @@ export class UserService {
               private userService: PersonApi,
               private router: Router,
               private location: Location,
+              private logger: Logger,
               @Inject('Window') window: Window) {
     this.window = window;
     if (this.token) {
@@ -58,7 +60,7 @@ export class UserService {
     this.subLogout = this.tokenService.personTokenDeleteToken(token)
       .subscribe(
         () => {},
-        err => console.log(err)
+        err => this.logger.warn('Failed to logout', err)
       );
   }
 
@@ -126,7 +128,7 @@ export class UserService {
         user => this.addUser(user, true),
         err => {
           this.logout();
-          console.log(err);
+          this.logger.warn('Failed to load user info with token', err);
         }
       );
   }

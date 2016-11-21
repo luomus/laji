@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { InformationApi, Information } from '../shared';
+import { Logger } from '../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-information',
@@ -18,7 +19,9 @@ export class InformationComponent implements OnDestroy {
 
   constructor(private route: ActivatedRoute,
               private informationService: InformationApi,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private logger: Logger
+  ) {
     this.paramSub = this.route.params.subscribe(params => {
       this.getInformation(params['id'] || null);
     });
@@ -46,14 +49,14 @@ export class InformationComponent implements OnDestroy {
               this.information = information;
             }
           },
-          err => console.log(err)
+          err => this.logger.warn('Failed to fetch information page', err)
         );
     } else {
       this.informationService
         .informationFindAll(this.translate.currentLang)
         .subscribe(
           information => this.information = information,
-          err => console.log(err)
+          err => this.logger.warn('Failed to fetch root informations', err)
         );
     }
   }
