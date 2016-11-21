@@ -64,7 +64,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   removeAll() {
     let query = this.searchQuery.query;
     Object.keys(query).map((key) => {
-      if (typeof query[key] !== 'undefined') {
+      if (this.skip.indexOf(key) === -1 && typeof query[key] !== 'undefined') {
         query[key] = undefined;
       }
     });

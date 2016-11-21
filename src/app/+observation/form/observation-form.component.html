@@ -20,7 +20,7 @@
         <div class="col-xs-12 form-title">
           <h2>
             {{'observation.form.title' | translate}}
-            <laji-observation-active></laji-observation-active>
+            <laji-observation-active [skip]="['coordinateAccuracyMax']"></laji-observation-active>
           </h2>
         </div>
       </div>
@@ -117,10 +117,16 @@
         </div>
         <div laji-panel [title]="'observation.form.place' | translate" [autoToggle]="true">
           <div class="row">
+            <label class="col-sm-12">
+              {{'observation.form.coordinateAccuracyMax' | translate}}:
+              {{searchQuery.query.coordinateAccuracyMax}}m
+            </label>
             <div class="col-sm-12">
-              <input type="number" name="coordinateAccuracyMax"
+              <input id="coordinateAccuracyMax"
+                     type="range" name="coordinateAccuracyMax"
                      class="form-control input-sm"
-                     placeholder="{{'observation.form.coordinateAccuracyMax' | translate}}"
+                     min="10"
+                     max="100000"
                      (ngModelChange)="onQueryChange()"
                      [(ngModel)]="searchQuery.query.coordinateAccuracyMax">
             </div>

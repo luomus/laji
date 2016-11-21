@@ -99,6 +99,7 @@
   "observation.form.title": "Hakuehdot",
   "observation.form.unit": "Yksilö",
   "observation.form.collection": "Kokoelmanäytteet",
+  "observation.form.coordinateAccuracyMax": "Koordinaatin tarkkuus vähintään",
   "observation.form.filter": "Rajaa",
   "observation.form.specimen": "Nimi",
   "observation.form.place": "Paikka",

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { SearchQuery } from './search-query.model';
+import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 declare let d3: any;
 
 @Component({
@@ -32,6 +33,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
         this.searchQuery.query.target = [params['target']];
       }
       this.searchQuery.setQueryFromQueryObject(params);
+      this.addDefaultValuesTo(this.searchQuery.query);
       this.searchQuery.queryUpdate({formSubmit: true, newData: true});
     });
   }
@@ -42,6 +44,12 @@ export class ObservationComponent implements OnInit, OnDestroy {
     }
     if (this.subQuery) {
       this.subQuery.unsubscribe();
+    }
+  }
+
+  private addDefaultValuesTo(query: WarehouseQueryInterface) {
+    if (!query.coordinateAccuracyMax) {
+      query.coordinateAccuracyMax = 1000;
     }
   }
 }
