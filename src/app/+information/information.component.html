@@ -1,6 +1,6 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-8">
+<div class="container-fluid">
+  <div id="wrapper" class="row">
+    <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
       <ol class="breadcrumb">
         <li *ngFor="let parent of information?.parents">
           <a [routerLink]="['/information/' + parent.id]">
@@ -11,7 +11,7 @@
       </ol>
       <div [innerHtml]="information?.content"></div>
     </div>
-    <div class="col-md-4 more-info" *ngIf="information?.children">
+    <div class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1 more-info" *ngIf="information?.children">
       <div class="media">
         <div class="media-body">
           <h4 class="media-heading">

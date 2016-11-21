@@ -8,8 +8,7 @@
 }
 
 .navbar-language-selection {
-  padding-top: 15px;
-  padding-left: 6px;
+  padding: 16px 15px 0 0;
 }
 
 .navbar-language-selection .language-toggle {

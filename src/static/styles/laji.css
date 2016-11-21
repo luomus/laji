@@ -27,7 +27,6 @@ body {
   flex: none;
   color: #fff;
   background-color: #3498DB;
-  margin-top: 10px;
   width: 100%;
 }
 
@@ -36,7 +35,6 @@ body {
 }
 
 .news-panel {
-  background-color: #ECF0F1;
   padding-bottom: 15px;
 }
 
