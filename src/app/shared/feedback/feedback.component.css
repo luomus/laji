@@ -1,0 +1,27 @@
+.feed-back-button {
+  height: 40px;
+  color: #fff;
+  border: solid 3px #CCCCCC;
+  background: #2C3E50;
+  padding: 0 16px;
+  line-height: 32px;
+  font-weight: 600;
+  transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  text-align: center;
+  font-size: 17px;
+  position: fixed;
+  right: -40px;
+  top: 30%;
+  z-index: 9999;
+}
+
+.modal-header {
+  color: #2C3E50;
+}
+
+.message, .other {
+  margin-top: 10px;
+}

@@ -1,0 +1,56 @@
+<div class="feed-back-button link" (click)="modal.show()">
+  {{'feedback' | translate}}
+</div>
+<div bsModal #childModal="bs-modal" class="modal fade" tabIndex="-1" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="modal.hide()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <h4 class="modal-title">{{'feedback' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <p *ngIf="userService.isLoggedIn">
+              {{'feedback.intro.loggedIn' | translate}}
+            </p>
+            <p *ngIf="!userService.isLoggedIn">
+              {{'feedback.intro.guest' | translate}}
+            </p>
+          </div>
+        </div>
+        <alert *ngIf="error" type="danger" [dismissible]="true" (close)="closeError()">
+          {{'feedback.invalid' | translate}}
+        </alert>
+        <div class="row subject">
+          <div class="col-sm-12">
+            {{'feedback.topic' | translate}}:
+            <select [(ngModel)]="subject" class="form-control">
+              <option value="">{{'feedback.topic.empty' | translate}}</option>
+              <option value="{{'feedback.topic.good' | translate}}">{{'feedback.topic.good' | translate}}</option>
+              <option value="{{'feedback.topic.bad' | translate}}">{{'feedback.topic.bad' | translate}}</option>
+              <option value="other">{{'feedback.topic.other' | translate}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row other" *ngIf="subject === 'other'">
+          <div class="col-sm-12">
+            <input [(ngModel)]="other" type="text" placeholder="{{'feedback.topic.other' | translate}}" class="form-control">
+          </div>
+        </div>
+        <div class="row message">
+          <div class="col-sm-12">
+            {{'feedback.message' | translate}}:
+            <textarea class="form-control" [(ngModel)]="message"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-success" (click)="sendFeedback()">{{'feedback.send' | translate}}</a>
+        <a class="btn btn-danger" (click)="modal.hide()">{{'feedback.cancel' | translate}}</a>
+      </div>
+    </div>
+  </div>
+</div>
