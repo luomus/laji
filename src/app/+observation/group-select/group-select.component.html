@@ -1,5 +1,5 @@
 <input type="hidden" [(ngModel)]="value">
-<button class="btn btn-default btn-block informal-group-select" type="button" (click)="openMenu()">
+<a class="btn btn-default btn-block informal-group-select" type="button" (click)="openMenu()">
   <span *ngIf="!innerValue">
     <ng-content></ng-content>
   </span>
@@ -16,7 +16,7 @@
       <i class="glyphicon glyphicon-remove"></i>
     </span>
   </span>
-</button>
+</a>
 <div class="informal-group-container" [ngClass]="{hidden: !open}">
   <table>
     <tr *ngFor="let idx of range">
