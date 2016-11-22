@@ -1,3 +1,7 @@
+#logCoordinateAccuracyMax:focus {
+  border: none;
+  box-shadow: none;
+}
 .autosuggest-value {
   height: 20px;
   padding-right: 30px;

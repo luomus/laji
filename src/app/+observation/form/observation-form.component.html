@@ -116,19 +116,54 @@
           </div>
         </div>
         <div laji-panel [title]="'observation.form.place' | translate" [autoToggle]="true">
-          <div class="row">
+          <div class="form-group">
+            <div class="col-sm-12" *ngIf="activeTab !== 'map'">
+              <button type="button" class="btn btn-sm btn-default" (click)="gotToMap()">
+                {{'observation.form.mapLink'|translate}}
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
             <label class="col-sm-12">
               {{'observation.form.coordinateAccuracyMax' | translate}}:
-              {{searchQuery.query.coordinateAccuracyMax}}m
+              <div class="input-group" style="max-width: 110px;">
+                <input type="number" name="coordinateAccuracyMax"
+                       style="padding: 3px 7px;"
+                       class="form-control input-sm"
+                       (change)="onAccuracyValueChange()"
+                       [(ngModel)]="searchQuery.query.coordinateAccuracyMax">
+                <span class="input-group-addon">m</span>
+              </div>
             </label>
             <div class="col-sm-12">
-              <input id="coordinateAccuracyMax"
-                     type="range" name="coordinateAccuracyMax"
+              <input id="logCoordinateAccuracyMax"
+                     type="range" name="logCoordinateAccuracyMax"
                      class="form-control input-sm"
-                     min="10"
-                     max="100000"
-                     (ngModelChange)="onQueryChange()"
-                     [(ngModel)]="searchQuery.query.coordinateAccuracyMax">
+                     step="1"
+                     min="0"
+                     max="5"
+                     list="accuracyPowers"
+                     (change)="onAccuracySliderChange()"
+                     [(ngModel)]="logCoordinateAccuracyMax">
+              <datalist id="accuracyPowers">
+                <option value="0">
+                <option value="1">
+                <option value="2">
+                <option value="3">
+                <option value="4">
+                <option value="5">
+              </datalist>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [(ngModel)]="formQuery.inclusiveCoordinates"
+                       (ngModelChange)="onCheckBoxToggle('inclusiveCoordinates')"
+                       name="inclusiveCoordinates">
+                {{'observation.form.inclusiveCoordinates' | translate}}
+              </label>
             </div>
           </div>
         </div>

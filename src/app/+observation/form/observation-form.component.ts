@@ -34,6 +34,7 @@ export class ObservationFormComponent implements OnInit {
   public dataSource: Observable<any>;
   public typeaheadLoading: boolean = false;
   public warehouseDateFormat = DATE_FORMAT;
+  public logCoordinateAccuracyMax: number = 4;
   public showFilter = true;
   public invasiveOptions: MultiRadioOption[] = [
     {value: true, label: 'observation.form.multi-true'},
@@ -260,6 +261,16 @@ export class ObservationFormComponent implements OnInit {
     this.delayedSearch(true);
   }
 
+  onAccuracySliderChange() {
+    this.searchQuery.query.coordinateAccuracyMax = Math.pow(10, this.logCoordinateAccuracyMax);
+    this.onQueryChange();
+  }
+
+  onAccuracyValueChange() {
+    this.logCoordinateAccuracyMax = Math.log10(this.searchQuery.query.coordinateAccuracyMax);
+    this.onQueryChange();
+  }
+
   onSubmit(updateQuery = true) {
     this.formQueryToQuery(this.formQuery);
     let cacheKey = JSON.stringify(this.searchQuery.query);
@@ -295,6 +306,7 @@ export class ObservationFormComponent implements OnInit {
   }
 
   private queryToFormQuery(query: WarehouseQueryInterface) {
+    this.onAccuracyValueChange();
     let time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
     this.formQuery = {
       taxon: query.target && query.target[0] ? query.target[0] : '',
