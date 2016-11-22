@@ -132,7 +132,7 @@
   "observation.form.multi-all": "molemmat",
   "observation.form.multi-true": "kyllä",
   "observation.form.multi-false": "ei",
-  "observation.form.inclusiveCoordinates": "Näytä vain täysin valitun alueen sisälle mahtuvat havainnot",
+  "observation.form.inclusiveCoordinates": "Näytä myös havainnot, jotka sijaitsevat vain osittain valitulla alueella",
   "observation.filters.unit": "Näyte",
   "observation.filters.collection": "Kokoelma",
   "observation.filters.administrative": "Hallinnolliset",
