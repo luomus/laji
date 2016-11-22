@@ -9,8 +9,7 @@ import LatLngBounds = L.LatLngBounds;
 import LatLng = L.LatLng;
 import { Logger } from '../../shared/logger/logger.service';
 
-const minCoordinateAccuracy = 10;
-const maxCoordinateAccuracy = 50000;
+const maxCoordinateAccuracy = 100000;
 
 @Component({
   selector: 'laji-observation-map',
@@ -197,16 +196,22 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       let parts = coord.split(':');
       let system = parts.pop();
       if (system === 'WGS84' && parts.length === 4) {
-        let spot1 = new LatLng(+parts[2], +parts[0]);
-        let spot2 = new LatLng(+parts[2], +parts[1]);
-        let spot3 = new LatLng(+parts[3], +parts[1]);
-        this.accuracy = Math.floor(
-          Math.min(
-            spot1.distanceTo(spot3),
-            spot1.distanceTo(spot2),
-            maxCoordinateAccuracy
-          )
-        );
+        if (!this.query.coordinateAccuracyMax) {
+          let spot1 = new LatLng(+parts[2], +parts[0]);
+          let spot2 = new LatLng(+parts[2], +parts[1]);
+          let spot3 = new LatLng(+parts[3], +parts[1]);
+          setTimeout(() => {
+            if (!this.query.coordinateAccuracyMax) {
+              this.query.coordinateAccuracyMax = Math.pow(10, Math.floor(
+                Math.log10(Math.min(
+                  spot1.distanceTo(spot3),
+                  spot1.distanceTo(spot2),
+                  maxCoordinateAccuracy
+                )))
+              );
+            }
+          });
+        }
         features.push(ObservationMapComponent.getFeature({
           type: 'Polygon',
           coordinates: [[

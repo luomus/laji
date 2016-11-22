@@ -21,6 +21,7 @@ import { NewsService } from './service/news.service';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { OnlyLoggedComponent } from './only-logged/only-logged.component';
 import { ImageModal } from './image-gallery/image-modal.component';
+import { MapService } from './map/map.service';
 
 
 @NgModule({
@@ -41,7 +42,7 @@ import { ImageModal } from './image-gallery/image-modal.component';
     TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule
   ],
   providers: [
-    NewsService
+    NewsService, MapService
   ],
   exports: [
     CommonModule, HttpModule, TranslateModule,

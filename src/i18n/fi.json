@@ -149,6 +149,7 @@
   "observation.active.time": "aika",
   "observation.active.hasUnitMedia": "kuva",
   "observation.active.coordinates": "paikka",
+  "observation.active.coordinateAccuracyMax": "Paikan tarkkuus",
   "observation.active.documentId": "tunniste",
   "observation.active.collectionId": "aineisto",
   "observation.active.typeSpecimen": "tyyppinäyte",

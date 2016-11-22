@@ -16,6 +16,7 @@ import { Source } from '../../shared/model/Source';
 import { MultiRadioOption } from '../multi-radio/multi-radio.component';
 import { debounce } from 'underscore';
 import { LocalStorage } from 'angular2-localstorage/dist';
+import { MapService } from '../../shared/map/map.service';
 
 @Component({
   selector: 'laji-observation-form',
@@ -35,6 +36,7 @@ export class ObservationFormComponent implements OnInit {
   public typeaheadLoading: boolean = false;
   public warehouseDateFormat = DATE_FORMAT;
   public logCoordinateAccuracyMax: number = 4;
+  public showPlace = false;
   public showFilter = true;
   public invasiveOptions: MultiRadioOption[] = [
     {value: true, label: 'observation.form.multi-true'},
@@ -106,6 +108,7 @@ export class ObservationFormComponent implements OnInit {
 
 
   private subUpdate: Subscription;
+  private subMap: Subscription;
   private window: Window;
   private lastQuery: string;
   private delayedSearch;
@@ -116,6 +119,7 @@ export class ObservationFormComponent implements OnInit {
               private location: Location,
               private autocompleteService: AutocompleteApi,
               private sourceService: SourceApi,
+              private mapService: MapService,
               @Inject('Window') window: Window) {
     this.delayedSearch = debounce(this.onSubmit, 500);
     this.window = window;
@@ -145,11 +149,19 @@ export class ObservationFormComponent implements OnInit {
           this.onSubmit(false);
         }
       });
+    this.subMap = this.mapService.map$.subscribe((event) => {
+      if (event === 'startDraw' && !this.showPlace) {
+        this.showPlace = true;
+      }
+    });
   }
 
   ngOnDestroy() {
     if (this.subUpdate) {
       this.subUpdate.unsubscribe();
+    }
+    if (this.subMap) {
+      this.subMap.unsubscribe();
     }
   }
 
@@ -211,6 +223,10 @@ export class ObservationFormComponent implements OnInit {
     this.settings.showIntro = !this.settings.showIntro;
   }
 
+  togglePlace() {
+    this.showPlace = !this.showPlace;
+  }
+
   fetchCollectionName(data) {
     return this.collectionService.findAll(
       this.translate.currentLang,
@@ -259,6 +275,13 @@ export class ObservationFormComponent implements OnInit {
 
   onQueryChange() {
     this.delayedSearch(true);
+  }
+
+  enableAccuracySlider() {
+    if (!this.searchQuery.query.coordinateAccuracyMax) {
+      this.searchQuery.query.coordinateAccuracyMax = 1000;
+      this.onAccuracySliderChange();
+    }
   }
 
   onAccuracySliderChange() {

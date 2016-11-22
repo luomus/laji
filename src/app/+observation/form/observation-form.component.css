@@ -8,6 +8,9 @@
   background-size: 20px auto;
   background-position: center right;
 }
+.faded {
+  color: #fff;
+}
 .result-list {
   padding-right: 0;
 }

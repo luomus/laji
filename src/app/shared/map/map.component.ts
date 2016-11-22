@@ -5,6 +5,7 @@ import {
   OnInit
 } from '@angular/core';
 import { Logger } from '../logger/logger.service';
+import { MapService } from './map.service';
 
 const lajiMap = require('laji-map').default;
 
@@ -34,8 +35,12 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   @ViewChild('map') elemRef: ElementRef;
 
   map: any;
+  private initSinge = false;
 
-  constructor(private logger: Logger) {
+  constructor(
+    private mapService: MapService,
+    private logger: Logger
+  ) {
   }
 
   ngOnInit() {
@@ -128,10 +133,14 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   }
 
   initSingleShape() {
+    if (this.initSinge) {
+      return;
+    }
     try {
       this.map.map.addEventListener({
-        'draw:drawstart': event => this.clearDrawLayer()
+        'draw:drawstart': event => this.onStartDraw()
       });
+      this.initSinge = true;
     } catch (err) {
       this.logger.warn('Failed to add event listener', err);
     }
@@ -146,7 +155,8 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     }
   }
 
-  clearDrawLayer() {
+  onStartDraw() {
+    this.mapService.startDraw();
     try {
       if (!this.drawData) {
         this.drawData = {featureCollection: {type: 'featureCollection', features: []}};
