@@ -5,7 +5,6 @@ import { IdService } from '../../shared/service/id.service';
 import { UserService } from '../../shared/service/user.service';
 import { ObservationFilterInterface } from '../filter/observation-filter.interface';
 import { TranslateService } from 'ng2-translate';
-import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -30,22 +29,21 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.updateQueryParams();
     this.activated[this.active] = true;
     this.searchQuery.queryUpdated$.subscribe(data => {
-        if (data['formSubmit']) {
-          this.queryParams = this.searchQuery.getQueryObject([
-            'selected',
-            'pageSize'
-          ]);
-          this.activated = {};
-          this.activated[this.active] = true;
-        }
+      if (data['formSubmit']) {
+        this.updateQueryParams();
+        this.activated = {};
+        this.activated[this.active] = true;
       }
-    );
+    });
   }
 
-  ngOnChanges() {
-    this.activated[this.active] = true;
+  ngOnChanges(changes) {
+    if (changes.active) {
+      this.activate(this.active, true);
+    }
   }
 
   pickValue(aggr, lang) {
@@ -94,14 +92,21 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     this.searchQuery.queryUpdate({formSubmit: true});
   }
 
-  activate(tab: string) {
-    if (this.active === tab) {
+  activate(tab: string, forceUpdate: boolean = false) {
+    if (!forceUpdate && this.active === tab) {
       return;
     }
     this.active = tab;
     this.activated[tab] = true;
     this.activeChange.emit(this.active);
     this.searchQuery.updateUrl(this.location, '/observation/' + tab, [
+      'selected',
+      'pageSize'
+    ]);
+  }
+
+  private updateQueryParams() {
+    this.queryParams = this.searchQuery.getQueryObject([
       'selected',
       'pageSize'
     ]);
