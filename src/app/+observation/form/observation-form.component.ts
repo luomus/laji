@@ -160,7 +160,6 @@ export class ObservationFormComponent implements OnInit {
 
   gotToMap() {
     this.activeTab = 'map';
-    this.window.scrollTo(0, this.tabs.nativeElement.offsetTop + 150);
   }
 
   getTabHeight() {
