@@ -3,7 +3,7 @@ import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from 'ng2-translate';
 import { Logger } from '../logger/logger.service';
 
-const pauseBeforeResendError = 1000;
+const pauseBeforeResendError = 3000;
 
 @Injectable()
 export class LajiErrorHandler implements ErrorHandler {
