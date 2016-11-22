@@ -45,8 +45,8 @@ export class GalleryComponent implements OnInit {
     query.hasMedia = true;
     this.warehouseApi.warehouseQueryListGet(query, [
         'unit.media',
-        'gathering.media',
-        'document.media',
+        // 'gathering.media',
+        // 'document.media',
         'document.documentId'
       ], undefined, this.pageSize, this.page)
       .map((data) => {
@@ -54,7 +54,7 @@ export class GalleryComponent implements OnInit {
         this.total = data.total;
         if (data.results) {
           data.results.map((items) => {
-            ['document', 'gathering', 'unit'].map((key) => {
+            ['unit'].map((key) => {
               if (items[key] && items[key].media) {
                 items[key].media.map(media => {
                   media['documentId'] = items['document']['documentId'];
