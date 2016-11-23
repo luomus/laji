@@ -186,6 +186,8 @@ export interface TaxonomyImage {
 
   fullURL?: string;
 
+  licenseId?: string;
+
   licenseAbbreviation?: string;
 
   licenseDescription?: string;

@@ -22,12 +22,13 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { OnlyLoggedComponent } from './only-logged/only-logged.component';
 import { ImageModal } from './image-gallery/image-modal.component';
 import { MapService } from './map/map.service';
+import { ToQNamePipe } from './pipe/to-qname.pipe';
 
 
 @NgModule({
   declarations: [
     NewsListComponent,
-    SpinnerComponent, NotFoundComponent,
+    SpinnerComponent, NotFoundComponent, ToQNamePipe,
     UsersPipe, LabelPipe, SafePipe, MultiLangPipe, FormattedNumber,
     ObservationCountComponent, ObservationMapComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal
@@ -46,7 +47,7 @@ import { MapService } from './map/map.service';
   ],
   exports: [
     CommonModule, HttpModule, TranslateModule,
-    NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe, MultiLangPipe,
+    NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe, MultiLangPipe, ToQNamePipe,
     TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal

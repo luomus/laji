@@ -46,7 +46,7 @@ import { TaxonomyImage } from '../model/Taxonomy';
    <div class="ng-gallery" *ngIf="showRepeat"> 
      <div *ngFor ="let i of modalImages; let index = index">
        <img src="{{ i.thumbnailURL || i.fullURL }}" class="ng-thumb" (click)="openGallery(index)" alt="Image {{ index + 1 }}" />
-      </div>
+     </div>
    </div>
    <div class="ng-overlay" *ngIf="opened">
     <div class="ng-gallery-content" >
@@ -56,7 +56,9 @@ import { TaxonomyImage } from '../model/Taxonomy';
      <img *ngIf="!loading" src="{{img.fullURL}}" (click)="nextImage()" class="effect" />
      <a class="nav-right" *ngIf="modalImages.length >1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
      <span class="info-text">
-      {{img.copyrightOwner}} <span *ngIf="img.copyrightOwner && img.licenseAbbreviation">-</span> {{img.licenseAbbreviation}}<br>
+      {{img.copyrightOwner}} <span *ngIf="img.copyrightOwner && (img.licenseAbbreviation || img.licenceId)">-</span> 
+      <span *ngIf="img.licenceId">{{img.licenceId | toQName | label}}</span> 
+      <span *ngIf="img.licenseAbbreviation && !img.licenceId">{{img.licenseAbbreviation}}</span><br>
         <a *ngIf="img.documentId" routerLink="/observation/list" [queryParams]="{'documentId':img.documentId}">{{img.documentId}}</a>
      ({{ currentImageIndex + 1 }}/{{ modalImages.length }})
      </span>
@@ -80,8 +82,8 @@ export class ImageModal implements OnInit {
   }
 
   ngOnInit() {
-      this.loading = true;
-      if (this.imagePointer >= 0) {
+    this.loading = true;
+    if (this.imagePointer >= 0) {
       this.showRepeat = false;
       this.openGallery(this.imagePointer);
     } else {
