@@ -202,12 +202,12 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           let spot3 = new LatLng(+parts[3], +parts[1]);
           setTimeout(() => {
             if (!this.query.coordinateAccuracyMax) {
-              this.query.coordinateAccuracyMax = Math.pow(10, Math.floor(
+              this.query.coordinateAccuracyMax = Math.max(Math.pow(10, Math.floor(
                 Math.log10(Math.min(
                   spot1.distanceTo(spot3),
                   spot1.distanceTo(spot2),
                   maxCoordinateAccuracy
-                )))
+                )))), 1
               );
             }
           });
