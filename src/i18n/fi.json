@@ -240,7 +240,7 @@
   "feedback.topic.other": "muu",
   "feedback.topic.what": "mikä?",
   "feedback.send": "lähetä",
-  "feedback.invalid": "Sekä aihe ja viesti tulee olla täytettynä",
+  "feedback.invalid": "Sekä kuvaus että viesti tulee olla täytettynä",
   "feedback.cancel": "peruuta",
   "feedback.success": "Kiitos palautteestasi",
   "feedback.failure": "Valitettavasti palautteen lähettäminen epäonnistui. Voit yrittää hetken kuluttua uudestaan, jos ongelma ei katoa voit lähettää palautetta suoraan osoitteeseen helpdesk@laji.fi."

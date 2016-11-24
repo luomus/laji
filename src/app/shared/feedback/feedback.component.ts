@@ -6,7 +6,6 @@ import { SessionStorage } from 'angular2-localstorage/dist';
 import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from 'ng2-translate';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-feedback',
@@ -39,7 +38,7 @@ export class FeedbackComponent {
   }
 
   sendFeedback() {
-    let subject = (this.feedback.subject === 'other' ? '' : (this.feedback.subject + ': ')) +
+    let subject = (['other', ''].includes(this.feedback.subject) ?  '' : (this.feedback.subject + ': ')) +
       this.feedback.other;
     let message = this.feedback.message;
     if (!this.feedback.other || !message) {
