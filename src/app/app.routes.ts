@@ -7,7 +7,7 @@ export const appRoutes: Routes = [
   {path: 'news', loadChildren: './+news/news.module#NewsModule'},
   {path: 'information', loadChildren: './+information/information.module#InformationModule'},
   {path: 'user', loadChildren: './+user/user.module#UserModule'},
-  {path: 'record', loadChildren: './+haseka/haseka.module#HasekaModule'},
+  {path: 'vihko', loadChildren: './+haseka/haseka.module#HasekaModule'},
   {path: 'observation', loadChildren: './+observation/observation.module#ObservationModule'},
   {path: 'taxon', loadChildren: './+taxonomy/taxonomy.module#TaxonomyModule'},
   {path: 'collection', loadChildren: './+collection/collection.module#CollectionModule'},

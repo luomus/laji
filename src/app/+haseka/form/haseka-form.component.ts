@@ -213,7 +213,7 @@ export class HaSeKaFormComponent implements OnInit {
   }
 
   private gotoFrontPage() {
-    this.router.navigate(['/record']);
+    this.router.navigate(['/vihko']);
   }
 
   private parseErrorMessage(err) {

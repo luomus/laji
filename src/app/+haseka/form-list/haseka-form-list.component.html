@@ -1,7 +1,7 @@
 <h3>{{'haseka.forms.title' | translate}}</h3>
 <ul>
   <li *ngFor="let form of formList">
-    <a [routerLink]="['/record/' + form.id]">
+    <a [routerLink]="['/vihko/' + form.id]">
       {{form.title}}
     </a>
   </li>
