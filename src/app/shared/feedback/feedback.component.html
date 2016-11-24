@@ -1,8 +1,8 @@
-<div class="feed-back-button link" (click)="modal.show()">
-  {{'feedback' | translate}}
+<div id="feedback">
+  <a class="link" (click)="modal.show()">{{'feedback' | translate}}</a>
 </div>
 <div bsModal #childModal="bs-modal" class="modal fade" tabIndex="-1" role="dialog">
-  <div class="modal-dialog modal-sm">
+  <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" (click)="modal.hide()">
@@ -43,13 +43,13 @@
         <div class="row message">
           <div class="col-sm-12">
             {{'feedback.message' | translate}}:
-            <textarea class="form-control" [(ngModel)]="feedback.message"></textarea>
+            <textarea class="form-control feedback-text" [(ngModel)]="feedback.message"></textarea>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <a class="btn btn-success" (click)="sendFeedback()">{{'feedback.send' | translate}}</a>
         <a class="btn btn-danger" (click)="modal.hide()">{{'feedback.cancel' | translate}}</a>
+        <a class="btn btn-success" (click)="sendFeedback()">{{'feedback.send' | translate}}</a>
       </div>
     </div>
   </div>
