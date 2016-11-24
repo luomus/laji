@@ -45,7 +45,7 @@ import { TaxonomyImage } from '../model/Taxonomy';
   template: `
    <div class="ng-gallery" *ngIf="showRepeat"> 
      <div *ngFor ="let i of modalImages; let index = index">
-       <img src="{{ i.thumbnailURL || i.fullURL }}" class="ng-thumb" (click)="openGallery(index)" alt="Image {{ index + 1 }}" />
+       <img src="{{ i.thumbnailURL || i.largeURL || i.fullURL }}" class="ng-thumb" (click)="openGallery(index)" alt="Image {{ index + 1 }}" />
      </div>
    </div>
    <div class="ng-overlay" *ngIf="opened">
@@ -53,7 +53,7 @@ import { TaxonomyImage } from '../model/Taxonomy';
     <div class="uil-ring-css" *ngIf="loading"><div></div></div>         
     <a class="close-popup" (click)="closeGallery()"><i class="glyphicon glyphicon-remove"></i></a>
      <a class="nav-left" *ngIf="modalImages.length >1" (click)="prevImage()"><i class="glyphicon glyphicon-chevron-left"></i></a>
-     <img *ngIf="!loading" src="{{img.fullURL}}" (click)="nextImage()" class="effect" />
+     <img *ngIf="!loading" src="{{img.largeURL || img.fullURL}}" (click)="nextImage()" class="effect" />
      <a class="nav-right" *ngIf="modalImages.length >1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
      <span class="info-text">
       {{img.copyrightOwner}} <span *ngIf="img.copyrightOwner && (img.licenseAbbreviation || img.licenceId)">-</span> 
