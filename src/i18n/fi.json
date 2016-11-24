@@ -127,6 +127,7 @@
   "observation.form.sex": "Sukupuoli",
   "observation.form.administrativeStatus": "Hallinnollinen tila",
   "observation.form.redListStatusId": "Uhanalaisuus",
+  "observation.form.map.intro": "Rajaa paikka tai anna koordinaatit karttatyökaluilla",
   "observation.form.map": "Paikka",
   "observation.form.mapLink": "Rajaa alue kartalta",
   "observation.form.multi-all": "molemmat",

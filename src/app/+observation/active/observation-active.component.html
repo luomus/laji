@@ -1,6 +1,7 @@
-<strong class="title link" (click)="toggleActiveList()">
-  <span class="badge" *ngIf="active.length > 0">{{active.length}}</span>
-  <i class="glyphicon glyphicon-trash"></i>
+<strong class="title link" (click)="toggleActiveList()" [ngClass]="{link: active.length > 0}">
+  Rajauksia
+  <span class="badge has" *ngIf="active.length > 0">{{active.length}}</span>
+  <span class="badge" *ngIf="active.length === 0">{{active.length}}</span>
 </strong>
 <div class="active-list" *ngIf="showList">
   <ul>
