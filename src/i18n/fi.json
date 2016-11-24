@@ -145,7 +145,7 @@
   "observation.filterBy.image": "Kuvia",
   "observation.filterBy.collectionId": "Aineistot",
   "observation.filterBy.sourceId": "Lähteet",
-  "observation.active": "Rajausehdot:",
+  "observation.active": "Rajauksia",
   "observation.active.target": "nimi",
   "observation.active.time": "aika",
   "observation.active.hasUnitMedia": "kuva",
