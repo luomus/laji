@@ -232,6 +232,7 @@
   "feedback.intro.loggedIn": "Sähköposti osoitteesi liitetään automaattisesti tähän palautteeseen",
   "feedback.intro.guest": "Jos kirjaudut sisään niin palautteeseen pystytään vastaamaan suoraan",
   "feedback.topic": "Aihe",
+  "feedback.topic.description": "Kuvaus",
   "feedback.message": "Viesti",
   "feedback.topic.empty": "Valitse aihe",
   "feedback.topic.good": "risuja",

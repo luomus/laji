@@ -39,10 +39,10 @@ export class FeedbackComponent {
   }
 
   sendFeedback() {
-    let subject = this.feedback.subject === 'other' ?
-      this.feedback.other : this.feedback.subject;
+    let subject = (this.feedback.subject === 'other' ? '' : (this.feedback.subject + ': ')) +
+      this.feedback.other;
     let message = this.feedback.message;
-    if (!subject || !message) {
+    if (!this.feedback.other || !message) {
       this.error = true;
       return;
     }

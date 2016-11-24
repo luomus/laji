@@ -35,9 +35,9 @@
             </select>
           </div>
         </div>
-        <div class="row other" *ngIf="feedback.subject === 'other'">
+        <div class="row other" *ngIf="feedback.subject !== ''">
           <div class="col-sm-12">
-            <input [(ngModel)]="feedback.other" type="text" placeholder="{{'feedback.topic.what' | translate}}" class="form-control">
+            <input [(ngModel)]="feedback.other" type="text" placeholder="{{'feedback.topic.description' | translate}}" class="form-control">
           </div>
         </div>
         <div class="row message">
