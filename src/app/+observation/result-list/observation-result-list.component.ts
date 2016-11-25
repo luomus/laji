@@ -7,6 +7,13 @@ import { SearchQuery } from '../search-query.model';
 import { Util } from '../../shared/service/util.service';
 import { TranslateService } from 'ng2-translate';
 import { Logger } from '../../shared/logger/logger.service';
+import { SessionStorage } from 'angular2-localstorage/dist';
+
+interface Column {
+  field: string;
+  translation?: string;
+  sort?: 'ASC' | 'DESC';
+}
 
 @Component({
   selector: 'laji-observation-result-list',
@@ -16,7 +23,11 @@ import { Logger } from '../../shared/logger/logger.service';
 })
 export class ObservationResultListComponent implements OnInit, OnDestroy {
 
-  @Input() columns: any = [
+  @SessionStorage() userColumns: Column[] = [];
+  @Input() showPager: boolean = true;
+  @Output() onSelect: EventEmitter<string> = new EventEmitter<string>();
+
+  public columns: Column[] = [
     {field: 'unit.taxonVerbatim,unit.linkings.taxon.vernacularName', translation: 'result.unit.taxonVerbatim'},
     {field: 'unit.linkings.taxon.scientificName', translation: 'result.scientificName'},
     {field: 'gathering.team'},
@@ -24,8 +35,6 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     {field: 'gathering.municipality'},
     {field: 'document.documentId'}
   ];
-  @Input() showPager: boolean = true;
-  @Output() onSelect: EventEmitter<string> = new EventEmitter<string>();
 
   public result: PagedResult<any>;
 
@@ -47,6 +56,11 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    let cols = this.userColumns;
+    if (cols.length === 0) {
+      console.log(cols);
+      this.userColumns = Util.clone(this.columns);
+    }
     this.result = {
       total: this.searchQuery.page * this.searchQuery.pageSize,
       pageSize: this.searchQuery.pageSize,
@@ -86,29 +100,38 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     }
   }
 
-  fetchRows(page: number): void {
-    let cache = JSON.stringify(this.searchQuery.query) + page;
+  fetchRows(page: number, forceUpdate: boolean = false): void {
     let query = Util.clone(this.searchQuery.query);
+    if (!forceUpdate) {
+      let cache = [
+        JSON.stringify(query),
+        page
+      ].join(':');
+      if (this.lastQuery === cache) {
+        return;
+      }
+      this.lastQuery = cache;
+    }
     if (Object.keys(query).length === 0) {
       query.includeNonValidTaxa = false;
-    }
-    if (this.lastQuery === cache) {
-      return;
     }
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
-    if (this.result && this.result.results) {
-      this.result.results = [];
-    }
-    query.selected = this.columns.map((column) => column.field);
-    this.lastQuery = cache;
+    query.selected = this.userColumns.map((column) => column.field);
+    let sort = this.userColumns.reduce((prev, cur) => {
+      if (!cur.sort) return prev;
+      let cols = cur.field.split(',').map((field) => {
+        return field + ' ' + cur.sort;
+      });
+      return [...cols, ...prev];
+    }, []);
     this.loading = true;
     this.subFetch = this.warehouseService
       .warehouseQueryListGet(
         query,
         this.searchQuery.selected,
-        this.searchQuery.orderBy,
+        sort.length > 0 ? sort : undefined,
         this.searchQuery.pageSize,
         page)
       .do(result => this.resultCache = Util.clone(result))
@@ -130,17 +153,34 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
       );
   }
 
+  setSort(col: Column) {
+    this.userColumns.map((column) => {
+      if (col.field === column.field) {
+        return;
+      }
+      column.sort = undefined;
+    });
+    if (!col.sort) {
+      col.sort = 'ASC';
+    } else if (col.sort === 'ASC') {
+      col.sort = 'DESC';
+    } else {
+      col.sort = undefined;
+    }
+    this.fetchRows(this.searchQuery.page, true);
+  }
+
   prepareData(data) {
     if (!data.results) {
       return data;
     }
-    let colLen = this.columns.length;
+    let colLen = this.userColumns.length;
     let results: any = [];
     this.decorator.lang = this.translate.currentLang;
     for (let i = 0, len = data.results.length; i < len; i++) {
       results[i] = {};
       for (let j = 0; j < colLen; j++) {
-        results[i][this.columns[j].field] = this.getData(data.results[i], this.columns[j].field);
+        results[i][this.userColumns[j].field] = this.getData(data.results[i], this.userColumns[j].field);
       }
     }
     data.results = results;
