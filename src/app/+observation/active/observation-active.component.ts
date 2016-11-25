@@ -44,7 +44,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   }
 
   toggleActiveList() {
-    if (!this.showList && this.active.length === 0) {
+    if (!this.showList && this.active && this.active.length === 0) {
       return;
     }
     this.showList = !this.showList;
@@ -55,7 +55,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
     if (typeof query[item.field] !== 'undefined') {
       query[item.field] = undefined;
     }
-    if (this.active.length < 2) {
+    if (this.active && this.active.length < 2) {
       this.showList = false;
     }
     this.searchQuery.queryUpdate({formSubmit: true});
@@ -77,7 +77,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
     let query = this.searchQuery.query;
     this.active = [];
     let keys = Object.keys(query);
-    if (keys.length === 0) {
+    if (!keys || keys.length === 0) {
       return;
     }
     keys.map((i) => {
@@ -86,7 +86,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
       }
       let type = typeof query[i];
       if (type !== 'undefined') {
-        if (type === 'boolean' || type === 'number' || query[i].length > 0) {
+        if (type === 'boolean' || type === 'number' || (query[i] && query[i].length > 0)) {
           this.active.push({field: i, value: query[i]});
         }
       }

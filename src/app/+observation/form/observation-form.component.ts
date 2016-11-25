@@ -223,7 +223,10 @@ export class ObservationFormComponent implements OnInit {
     this.settings.showIntro = !this.settings.showIntro;
   }
 
-  togglePlace() {
+  togglePlace(event) {
+    if (!event || !event.hasOwnProperty('value')) {
+      return;
+    }
     this.showPlace = !this.showPlace;
   }
 
