@@ -21,10 +21,6 @@ export class PanelComponent {
   public hideInside = true;
 
   activateCurrent(event) {
-    console.log(event);
-    if (!event.target.classList.contains('link')) {
-      return;
-    }
     if (this.autoToggle) {
       this.open = !this.open;
     }
