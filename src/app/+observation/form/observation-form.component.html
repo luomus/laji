@@ -67,20 +67,6 @@
           </template>
         </div>
       </div>
-      <!--
-      <div class="row">
-        <label class="col-lg-3 control-label">{{'observation.form.map'|translate}}:</label>
-        <div class="col-lg-9">
-          <div class="form-group">
-            <div class="col-xs-12">
-              <button type="button" class="btn btn-sm btn-default" (click)="gotToMap()">
-                {{'observation.form.mapLink'|translate}}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      -->
       <div class="row">
         <div laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true">
           <div class="row">
@@ -118,8 +104,7 @@
         <div laji-panel
              [open]="showPlace"
              (activate)="togglePlace()"
-             [title]="'observation.form.place' | translate"
-        >
+             [title]="'observation.form.place' | translate">
           <div class="form-group">
             <div class="col-sm-12">
               {{'observation.form.map.intro'|translate}}
