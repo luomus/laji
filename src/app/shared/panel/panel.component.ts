@@ -20,7 +20,7 @@ export class PanelComponent {
   @Output() activate = new EventEmitter();
   public hideInside = true;
 
-  activateCurrent(event) {
+  activateCurrent() {
     if (this.autoToggle) {
       this.open = !this.open;
     }
