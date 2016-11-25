@@ -1,6 +1,7 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { TaxonomyApi, CollectionApi } from './shared';
 import { ToastsManager } from 'ng2-toastr';
+import { ComponentsHelper } from 'ng2-bootstrap';
 
 @Component({
   selector: 'laji-app',
@@ -15,8 +16,13 @@ export class AppComponent {
 
   public viewContainerRef: ViewContainerRef;
 
-  constructor(public toastr: ToastsManager, viewContainerRef: ViewContainerRef) {
+  constructor(
+    componentsHelper: ComponentsHelper,
+    toastr: ToastsManager,
+    viewContainerRef: ViewContainerRef
+  ) {
     this.viewContainerRef = viewContainerRef;
-    this.toastr.setRootViewContainerRef(viewContainerRef);
+    componentsHelper.setRootViewContainerRef(viewContainerRef);
+    toastr.setRootViewContainerRef(viewContainerRef);
   }
 }

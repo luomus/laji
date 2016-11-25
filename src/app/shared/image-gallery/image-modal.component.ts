@@ -45,7 +45,10 @@ import { TaxonomyImage } from '../model/Taxonomy';
   template: `
    <div class="ng-gallery" *ngIf="showRepeat"> 
      <div *ngFor ="let i of modalImages; let index = index">
-       <img src="{{ i.thumbnailURL || i.largeURL || i.fullURL }}" class="ng-thumb" (click)="openGallery(index)" alt="Image {{ index + 1 }}" />
+       <img src="{{ i.thumbnailURL || i.largeURL || i.fullURL }}" 
+        class="ng-thumb" 
+        (click)="openGallery(index)" 
+        alt="Image {{ index + 1 }}" />
      </div>
    </div>
    <div class="ng-overlay" *ngIf="opened">

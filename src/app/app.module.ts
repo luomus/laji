@@ -27,6 +27,7 @@ import { Logger, ConsoleLogger, HttpLogger } from './shared/logger/index';
 import { LoggerApi } from './shared/api/LoggerApi';
 import { AppConfig } from './app.config';
 import { ILogger } from './shared/logger/logger.interface';
+import { ComponentsHelper } from 'ng2-bootstrap/ng2-bootstrap';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { ILogger } from './shared/logger/logger.interface';
   providers: [
     {provide: 'Window', useValue: window},
     {provide: ErrorHandler, useClass: LajiErrorHandler},
+    {provide: ComponentsHelper, useClass: ComponentsHelper},
     {provide: LocationStrategy, useClass: PathLocationStrategy},
     {
       provide: Logger,
