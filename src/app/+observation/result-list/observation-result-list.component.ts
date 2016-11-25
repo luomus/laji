@@ -140,6 +140,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
         results => {
           this.searchQuery.page = results.currentPage || 1;
           this.result = results;
+          this.loading = false;
           this.searchQuery.updateUrl(this.location, undefined, [
             'selected',
             'pageSize'
@@ -148,8 +149,8 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
         err => {
           this.logger.warn('Failed to fetch list result', err);
           this.result.results = [];
-        },
-        () => this.loading = false
+          this.loading = false;
+        }
       );
   }
 
