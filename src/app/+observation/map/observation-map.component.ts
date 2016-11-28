@@ -280,6 +280,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
         });
       }
       return {
+        lastPage: 1,
         featureCollection: {
           'type': 'FeatureCollection',
           'features': features

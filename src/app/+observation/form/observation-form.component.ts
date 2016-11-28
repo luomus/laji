@@ -224,6 +224,7 @@ export class ObservationFormComponent implements OnInit {
   }
 
   togglePlace(event) {
+    // IE triggers this event even when not given by the
     if (!event || !event.hasOwnProperty('value')) {
       return;
     }
