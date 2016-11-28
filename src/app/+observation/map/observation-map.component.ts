@@ -378,9 +378,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
   private getStyle(data: StyleParam) {
     let currentColor = '#00aa00';
-    let feature = this.mapData[data.dataIdx].featureCollection.features[data.featureIdx];
-    if (feature.properties.title) {
-      currentColor = this.style(+feature.properties.title);
+    if (data.feature && data.feature.properties && data.feature.properties.title) {
+      currentColor = this.style(+data.feature.properties.title);
     }
     return {
       weight: 1,
@@ -416,5 +415,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
 interface StyleParam {
   dataIdx: number;
+  feature: any;
   featureIdx: number;
 }
