@@ -79,6 +79,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   private static getFeature(geometry: Object) {
     return {
       type: 'Feature',
+      properties: {},
       geometry: geometry
     };
   }

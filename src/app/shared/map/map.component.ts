@@ -118,7 +118,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   }
 
   updateData() {
-    if (!this.map) {
+    if (!this.map || !this.data) {
       return;
     }
     try {
