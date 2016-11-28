@@ -13,6 +13,8 @@ interface Column {
   field: string;
   translation?: string;
   sort?: 'ASC' | 'DESC';
+  visible: boolean;
+  sortBy?: string | boolean;
 }
 
 @Component({
@@ -28,12 +30,17 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   @Output() onSelect: EventEmitter<string> = new EventEmitter<string>();
 
   public columns: Column[] = [
-    {field: 'unit.taxonVerbatim,unit.linkings.taxon.vernacularName', translation: 'result.unit.taxonVerbatim'},
-    {field: 'unit.linkings.taxon.scientificName', translation: 'result.scientificName'},
-    {field: 'gathering.team'},
-    {field: 'gathering.eventDate'},
-    {field: 'gathering.municipality'},
-    {field: 'document.documentId'}
+    {
+      field: 'unit.taxonVerbatim,unit.linkings.taxon.vernacularName',
+      translation: 'result.unit.taxonVerbatim', visible: true, sortBy: false
+    },
+    {field: 'unit.linkings.taxon.scientificName', translation: 'result.scientificName', visible: true},
+    {field: 'gathering.team', visible: true, sortBy: false},
+    {field: 'gathering.eventDate', visible: true, sortBy: 'gathering.eventDate.begin,gathering.eventDate.end'},
+    {field: 'gathering.municipality', visible: true},
+    {field: 'gathering.locality', visible: false},
+    {field: 'document.documentId', visible: false},
+    {field: 'gathering.interpretations.coordinateAccuracy', visible: false, sortBy: false}
   ];
 
   public result: PagedResult<any>;
@@ -56,10 +63,8 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    let cols = this.userColumns;
-    if (cols.length === 0) {
-      console.log(cols);
-      this.userColumns = Util.clone(this.columns);
+    if (this.userColumns.length === 0) {
+      this.updateUserCols();
     }
     this.result = {
       total: this.searchQuery.page * this.searchQuery.pageSize,
@@ -94,6 +99,12 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateUserCols() {
+    let current = JSON.stringify(this.userColumns);
+    this.userColumns = this.columns.filter((col) => col.visible !== false);
+    return current !== JSON.stringify(this.userColumns);
+  }
+
   pageChanged(event: any): void {
     if (this.searchQuery.page !== event.page) {
       this.fetchRows(event.page);
@@ -120,9 +131,10 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     }
     query.selected = this.userColumns.map((column) => column.field);
     let sort = this.userColumns.reduce((prev, cur) => {
-      if (!cur.sort) return prev;
-      let cols = cur.field.split(',').map((field) => {
-        return field + ' ' + cur.sort;
+      if (!cur.sort || cur.sortBy === false) return prev;
+      let field = '' + (cur.sortBy || cur.field);
+      let cols = field.split(',').map((value) => {
+        return value + ' ' + cur.sort;
       });
       return [...cols, ...prev];
     }, []);
@@ -155,6 +167,9 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   }
 
   setSort(col: Column) {
+    if (col.sortBy === false) {
+      return;
+    }
     this.userColumns.map((column) => {
       if (col.field === column.field) {
         return;
@@ -197,5 +212,26 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     } catch (e) {
     }
     return val;
+  }
+
+  toggledFieldSelect(event) {
+    if (event === false) { // when closing
+      if (this.updateUserCols()) {
+        this.fetchRows(this.searchQuery.page, true);
+      }
+    } else {               // when opening
+      this.columns.map((col, idx) => {
+        let userCol = this.userColumns.filter((src) => src.field === col.field);
+        if (userCol.length !== 1) {
+          this.columns[idx].visible = false;
+          return;
+        }
+        this.columns[idx].visible = typeof userCol[0].visible === 'undefined' || userCol[0].visible;
+      });
+    }
+  }
+
+  toggleColumn(col: Column) {
+    col.visible = !col.visible;
   }
 }

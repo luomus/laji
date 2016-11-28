@@ -1,3 +1,13 @@
 :host >>> .individualId {
   font-size: x-small;
 }
+
+.setting-menu {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+}
+
+.table th:last-child {
+  padding-right: 40px;
+}

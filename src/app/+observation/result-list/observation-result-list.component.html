@@ -1,10 +1,23 @@
 <div class="container-relative" style="min-height: 100px">
+  <span dropdown autoClose="outsideClick" (onToggle)="toggledFieldSelect($event)" class="setting-menu pull-right">
+    <a class="btn btn-primary btn-sm" dropdownToggle><i class="glyphicon glyphicon-cog"></i></a>
+    <ul class="dropdown-menu" dropdownMenu>
+      <li *ngFor="let column of columns" [ngClass]="{active: column.visible}">
+        <a class="dropdown-item link" (click)="toggleColumn(column)">
+          {{(column.translation || 'result.' + column.field) | translate}}
+        </a>
+      </li>
+    </ul>
+  </span>
+
   <laji-spinner [spinning]="loading" [overlay]="true">
     <div class="table-responsive">
       <table class="table table-striped table-bordered table-condensed dataTable">
         <thead>
         <tr role="row">
-          <th *ngFor="let column of userColumns" (click)="setSort(column)" class="link">
+          <th *ngFor="let column of userColumns"
+              (click)="setSort(column)"
+              [ngClass]="{link: column.sortBy !== false}">
             {{(column.translation || 'result.' + column.field) | translate}}
             <i *ngIf="column.sort" class="pull-right glyphicon"
                [ngClass]="{'glyphicon-triangle-bottom': column.sort === 'DESC', 'glyphicon-triangle-top': column.sort === 'ASC'}"></i>
