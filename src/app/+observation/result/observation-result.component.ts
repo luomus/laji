@@ -81,6 +81,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
 
   pickLocation(e) {
     if (
+      e &&
       e.type === 'Polygon' &&
       e.coordinates && e.coordinates.length === 1 && e.coordinates[0].length === 5
     ) {
