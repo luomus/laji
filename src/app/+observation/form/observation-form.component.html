@@ -56,7 +56,7 @@
                   [typeaheadOptionField]="'value'"
                   [typeaheadItemTemplate]="taxonItem"
                   (typeaheadLoading)="changeTypeaheadLoading($event)"
-                  (typeaheadOnSelect)="onQueryChange()"
+                  (change)="onQueryChange()"
                   autocomplete="off"
                   autocorrect="off"
           >
