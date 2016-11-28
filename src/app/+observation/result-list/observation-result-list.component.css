@@ -6,6 +6,7 @@
   position: absolute;
   top: 1px;
   right: 1px;
+  z-index: 1;
 }
 
 .table th:last-child {
