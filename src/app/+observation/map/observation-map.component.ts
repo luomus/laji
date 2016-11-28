@@ -377,7 +377,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   private getStyle(data: StyleParam) {
-    console.log(data);
     let currentColor = '#00aa00';
     if (data.feature && data.feature.properties && data.feature.properties.title) {
       currentColor = this.style(+data.feature.properties.title);
