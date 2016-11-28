@@ -59,7 +59,10 @@ import { TaxonomyImage } from '../model/Taxonomy';
      <img *ngIf="!loading" src="{{img.largeURL || img.fullURL}}" (click)="nextImage()" class="effect" />
      <a class="nav-right" *ngIf="modalImages.length >1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
      <span class="info-text">
-      {{img.copyrightOwner}} <span *ngIf="img.copyrightOwner && (img.licenseAbbreviation || img.licenseId)">-</span> 
+      <span *ngIf="img.author">{{img.author}},</span>
+      <span *ngIf="img.copyrightOwner && (!img.author || img.author.indexOf(img.copyrightOwner) === -1)">
+        {{img.copyrightOwner}},
+      </span> 
       <span *ngIf="img.licenseId">{{img.licenseId | toQName | label}}</span> 
       <span *ngIf="img.licenseAbbreviation && !img.licenseId">{{img.licenseAbbreviation}}</span><br>
         <a *ngIf="img.documentId" routerLink="/observation/list" [queryParams]="{'documentId':img.documentId}">{{img.documentId}}</a>
