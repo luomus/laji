@@ -1,5 +1,5 @@
 <div class="container" *ngIf="taxon">
-  <h1>{{taxon.scientificName}}
+  <h1><i>{{taxon.scientificName}}</i>
     <small *ngIf="taxon.vernacularName">{{taxon.vernacularName | multiLang}}</small>
   </h1>
   <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
@@ -56,6 +56,7 @@
   </div>
   <div class="row">
     <div class="col-xs-12">
+      <h3>{{ 'taxonomy.group' | translate }} {{ taxon.vernacularName | multiLang }} {{ 'taxonomy.belongs.to' | translate }}</h3>
       <laji-children-list [parentId]="taxon.id"></laji-children-list>
     </div>
   </div>
