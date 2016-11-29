@@ -202,7 +202,7 @@
   "haseka.terms": "käyttöehdot",
   "haseka.button": "Siirry havaintopalveluun",
   "haseka.users.latest.gathered": "havaittu",
-  "observation.export.tooMany": "Liian paljon havaintoja. Maksimi on 200 000 joten rajaa hakua lisää",
+  "observation.export.tooMany": "Liian paljon havaintoja. Maksimi on {{max}} joten rajaa hakua lisää",
   "observation.export.tooLittle": "Ei havaintoja joita voisit ladata",
   "omniSearch.matches": "Tietoa lajista",
   "omniSearch.rank": "taksonominen taso",

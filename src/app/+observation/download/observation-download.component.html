@@ -6,7 +6,7 @@
     <h3>{{'observation.download.publicTitle' | translate}}</h3>
     <div class="form-group">
       <div class="col-sm-12" *ngIf="loadLimit < count.count">
-        {{'observation.export.tooMany' | translate}}
+        {{'observation.export.tooMany' | translate:{max:(loadLimit | formattedNumber:'&nbsp;')} }}
       </div>
       <div class="col-sm-12" *ngIf="count.count == 0">
         {{'observation.export.tooLittle' | translate}}
@@ -24,7 +24,7 @@
     <div *ngIf="showRequest">
       <div class="form-group">
         <div class="col-sm-12" *ngIf="loadLimit < count.private">
-          {{'observation.export.tooMany' | translate}}
+          {{'observation.export.tooMany' | translate:{max:(loadLimit | formattedNumber:'&nbsp;')} }}
         </div>
         <div class="col-sm-12" *ngIf="loadLimit >= count.private">
           <p [innerHtml]="'result.load.introPrivate' | translate:{private: (count.private | formattedNumber:'&nbsp;'), count: (count.count | formattedNumber:'&nbsp;')}"></p>

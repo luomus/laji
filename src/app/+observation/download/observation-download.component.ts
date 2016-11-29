@@ -14,7 +14,7 @@ import { AppConfig } from '../../app.config';
 })
 export class ObservationDownloadComponent implements OnInit, OnDestroy {
 
-  @Input() loadLimit = 200000;
+  @Input() loadLimit = 2000000;
   @Input() descriptionLimit = 200;
 
   public charactersLeft;
