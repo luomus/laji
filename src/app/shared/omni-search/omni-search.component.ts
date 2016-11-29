@@ -72,7 +72,7 @@ export class OmniSearchComponent implements OnInit, OnChanges {
           this.taxa.map(auto => {
             if (auto.key === data.id ) {
               auto['vernacularName'] = data['vernacularName'];
-              auto['isCursiveName'] = data['isCursiveName'] || false;
+              auto['isCursiveName'] = data['isCursiveName'] || false;
             }
           });
         });
