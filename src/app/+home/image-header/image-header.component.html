@@ -2,7 +2,7 @@
   <carousel>
     <slide [active]="true">
       <div class="carousel-caption">
-        <div class="row">
+        <div class="row hidden-xs">
           <div class="col-sm-12">
             <img class="pull-left" src="/static/images/LAJI_FI_valk.png"/>
           </div>
@@ -13,12 +13,12 @@
                                     [query]="{taxonRankId: 'MX.species'}">
             </laji-observation-count>
           </laji-stat-item>
+          <laji-stat-item [colClass]="'col-sm-4'" [description]="'home.carousel.observations' | translate">
+            <laji-observation-count [lightLoader]="true" [query]="{}"></laji-observation-count>
+          </laji-stat-item>
           <laji-stat-item [description]="'home.carousel.collections' | translate">
             <laji-observation-count [lightLoader]="true" [field]="'document.collectionId'"
                                     [query]="{}"></laji-observation-count>
-          </laji-stat-item>
-          <laji-stat-item [description]="'home.carousel.observations' | translate">
-            <laji-observation-count [lightLoader]="true" [query]="{}"></laji-observation-count>
           </laji-stat-item>
         </div>
       </div>

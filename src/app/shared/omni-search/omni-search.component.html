@@ -38,7 +38,7 @@
             <div class="col-md-12 taxon-match informal-group-image {{taxon.informalTaxonGroupsClass}}">
               <a [routerLink]="['/taxon/' + taxon.key]"><span class="vernacularName">{{taxon?.vernacularName}}</span></a><br>
               <a [routerLink]="['/taxon/' + taxon.key]"><span
-                      class="scientificName {{taxon.payload.taxonRankId}}">{{taxon.payload.scientificName}}</span></a><br>
+                      class="scientificName" [ngClass]="{cursive: taxon.payload.isCursiveName}">{{taxon.payload.scientificName}}</span></a><br>
               {{'omniSearch.rank'|translate}}: {{taxon.payload.taxonRankId | label}}<br>
               {{'omniSearch.groups'|translate}}:<br>
               <ul>

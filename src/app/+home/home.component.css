@@ -16,7 +16,19 @@
 
 .panel-body .btn {
   margin-top: 30px;
-} 
+}
+
+.some-links {
+  padding-top: 5px;
+}
+
+.some-links a {
+  padding-left: 5px;
+}
+.some-links a svg {
+  height: 20px;
+  width: 20px;
+}
 
 @media only screen and (min-width : 768px) {
   #wrapper {
