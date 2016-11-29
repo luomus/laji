@@ -25,6 +25,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   @Input() visible: boolean;
   @Input() draw: any = false;
   @Input() lang: string = 'fi';
+  @Input() showLayers: boolean = true;
   @Input() drawSingleShape: boolean = true;
   @Input() initWithWorldMap: boolean = false;
   @Input() bringDrawLayerToBack: boolean = true;
@@ -44,6 +45,16 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   }
 
   ngOnInit() {
+    let controlSettings: any = {
+      draw: this.draw,
+      edit: false,
+      layers: true,
+      zoom: true,
+      location: false,
+    };
+    if (this.showLayers === false) {
+      controlSettings.layer = false;
+    }
     this.map = new lajiMap({
       tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
       activeIdx: 0,
@@ -54,12 +65,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
       featurePopupOffset: 0,
       onChange: e => this.onChange(e),
       rootElem: this.elemRef.nativeElement,
-      controlSettings: {
-        draw: this.draw,
-        layers: true,
-        zoom: true,
-        location: false
-      }
+      controlSettings: controlSettings
     });
     this.map.map.on('moveend', _ => {
       this.moveEvent('moveend');
