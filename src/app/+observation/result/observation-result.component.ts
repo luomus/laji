@@ -13,7 +13,6 @@ import { TranslateService } from 'ng2-translate';
 })
 export class ObservationResultComponent implements OnInit, OnChanges {
 
-  @Input() loadLimit = 200000;
   @Input() filters: {[name: string]: ObservationFilterInterface};
   @Input() active: string = 'list';
   @Output() activeChange: EventEmitter<string> = new EventEmitter<string>();
