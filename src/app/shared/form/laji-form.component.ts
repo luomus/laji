@@ -3,7 +3,9 @@ import { FormApiClient } from '../api';
 import { UserService } from '../service/user.service';
 import { Logger } from '../logger/logger.service';
 
-const lajiFormWrapper = require('laji-form/dist/laji-form').default;
+import LajiFormWrapper from 'laji-form';
+
+// const lajiFormWrapper = require('laji-form/dist/laji-form').default;
 
 @Component({
   selector: 'laji-form',
@@ -70,7 +72,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges {
     try {
       this.apiClient.lang = this.lang;
       this.apiClient.personToken = this.userService.getToken();
-      this.lajiFormWrapper = new lajiFormWrapper({
+      this.lajiFormWrapper = new LajiFormWrapper({
         staticImgPath: '/static/lajiForm/',
         rootElem: this.elem,
         schema: this.formData.schema,

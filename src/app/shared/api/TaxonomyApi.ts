@@ -30,6 +30,8 @@ import * as models from '../model/index';
 import 'rxjs/Rx';
 import { PagedResult } from '../model/PagedResult';
 
+import * as _ from 'underscore';
+
 /* tslint:disable:no-unused-variable member-ordering */
 
 'use strict';
@@ -64,6 +66,10 @@ export class TaxonomyApi {
     if (lang !== undefined) {
       queryParameters.set('lang', lang);
     }
+
+    _.each(extraHttpRequestParams, (value, key: any) => {
+      queryParameters.set(key, value)
+    });
 
     let requestOptions: RequestOptionsArgs = {
       method: 'GET',
