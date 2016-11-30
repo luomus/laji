@@ -4,13 +4,13 @@
       <strong>
         {{ taxon.vernacularName }}
       </strong>
-      {{ taxon.scientificName }}
+      <i>{{ taxon.scientificName }}</i>
     </a>
   </li>
   <li *ngIf="includeCurrent">
     <strong>
       {{ current.vernacularName }}
     </strong>
-    {{ current.scientificName }}
+    <i>{{ current.scientificName }}</i>
   </li>
 </ol>
