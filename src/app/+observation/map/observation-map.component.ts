@@ -8,6 +8,8 @@ import { ValueDecoratorService } from '../result-list/value-decorator.sevice';
 import LatLngBounds = L.LatLngBounds;
 import LatLng = L.LatLng;
 import { Logger } from '../../shared/logger/logger.service';
+import { LabelPipe } from '../../shared/pipe/label.pipe';
+import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 
 const maxCoordinateAccuracy = 100000;
 
@@ -15,7 +17,7 @@ const maxCoordinateAccuracy = 100000;
   selector: 'laji-observation-map',
   templateUrl: 'observation-map.component.html',
   styleUrls: ['./observation-map.component.css'],
-  providers: [ValueDecoratorService]
+  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe]
 })
 export class ObservationMapComponent implements OnInit, OnChanges {
 
