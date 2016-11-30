@@ -23,6 +23,7 @@ import { OnlyLoggedComponent } from './only-logged/only-logged.component';
 import { ImageModal } from './image-gallery/image-modal.component';
 import { MapService } from './map/map.service';
 import { ToQNamePipe } from './pipe/to-qname.pipe';
+import { ValueDecoratorService } from '../+observation/result-list/value-decorator.sevice';
 
 
 @NgModule({

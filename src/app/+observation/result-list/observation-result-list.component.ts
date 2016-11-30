@@ -8,6 +8,8 @@ import { Util } from '../../shared/service/util.service';
 import { TranslateService } from 'ng2-translate';
 import { Logger } from '../../shared/logger/logger.service';
 import { SessionStorage } from 'angular2-localstorage/dist';
+import { LabelPipe } from '../../shared/pipe/label.pipe';
+import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 
 interface Column {
   field: string;
@@ -21,7 +23,7 @@ interface Column {
   selector: 'laji-observation-result-list',
   templateUrl: 'observation-result-list.component.html',
   styleUrls: ['./observation-result-list.component.css'],
-  providers: [ValueDecoratorService]
+  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe]
 })
 export class ObservationResultListComponent implements OnInit, OnDestroy {
 
@@ -36,11 +38,23 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     },
     {field: 'unit.linkings.taxon.scientificName', translation: 'result.scientificName', visible: true},
     {field: 'gathering.team', visible: true, sortBy: false},
+    {field: 'document.createdDate', visible: false, sortBy: false},
     {field: 'gathering.eventDate', visible: true, sortBy: 'gathering.eventDate.begin,gathering.eventDate.end'},
+    {field: 'gathering.country', visible: false, sortBy: false},
+    {field: 'gathering.biogeographicalProvince', visible: false, sortBy: false},
     {field: 'gathering.municipality', visible: true},
     {field: 'gathering.locality', visible: false},
+    {field: 'gathering.conversions.ykj', visible: false, sortBy: false},
+    {field: 'gathering.coordinatesVerbatim', visible: false, sortBy: false},
+    {field: 'unit.lifeStage', visible: false, sortBy: false, translation: 'observation.form.lifeStage'},
+    {field: 'unit.sex', visible: false, sortBy: false, translation: 'observation.form.sex'},
+    {field: 'unit.recordBasis', visible: false, sortBy: false, translation: 'observation.filterBy.recordBasis'},
+    {field: 'document.notes', visible: false},
     {field: 'document.documentId', visible: false},
-    {field: 'gathering.interpretations.coordinateAccuracy', visible: false, sortBy: false}
+    {field: 'gathering.interpretations.coordinateAccuracy', visible: false, sortBy: false},
+    {field: 'document.secureLevel', visible: false, sortBy: false},
+    {field: 'document.secureReasons', visible: false, sortBy: false}
+    // {field: 'document.sourceId', visible: false}
   ];
 
   public result: PagedResult<any>;
@@ -142,7 +156,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     this.subFetch = this.warehouseService
       .warehouseQueryListGet(
         query,
-        this.searchQuery.selected,
+        query.selected,
         sort.length > 0 ? sort : undefined,
         this.searchQuery.pageSize,
         page)
@@ -187,6 +201,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   }
 
   prepareData(data) {
+    console.log(data.results);
     if (!data.results) {
       return data;
     }
