@@ -70,7 +70,12 @@ export class UserService {
 
   public getUser(id?: string): Observable<Person> {
     if (!id) {
-      return this.getCurrentUser();
+      return this.getCurrentUser()
+        .catch((err) => {
+          this.logger.warn('Failed to fetch current users information', err);
+          this.logout();
+          return Observable.of({});
+        });
     }
     if (this.users[id]) {
       return Observable.of(this.users[id]);
