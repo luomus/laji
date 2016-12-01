@@ -5,11 +5,11 @@ import { Util } from '../../shared/service/util.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { TranslateService } from 'ng2-translate';
 import { ValueDecoratorService } from '../result-list/value-decorator.sevice';
-import LatLngBounds = L.LatLngBounds;
-import LatLng = L.LatLng;
 import { Logger } from '../../shared/logger/logger.service';
 import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
+import LatLngBounds = L.LatLngBounds;
+import LatLng = L.LatLng;
 
 const maxCoordinateAccuracy = 100000;
 
