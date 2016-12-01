@@ -13,7 +13,7 @@
              [title]="group.title[translate.currentLang]" [open]="activePanel == i"
              [index]="i" (activate)="setActive($event)" laji-panel>
           <div *ngFor="let variable of group.variables">
-            <h4>{{ variable.title[translate.currentLang] }}</h4>
+            <h4 *ngIf="variable.title.fi.toLowerCase().localeCompare('ingressi', { sensitivity: 'accent' }) != 0">{{ variable.title[translate.currentLang] }}</h4>
             <span [innerHTML]="variable.content[translate.currentLang]"></span>
           </div>
         </div>
