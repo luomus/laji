@@ -1,5 +1,5 @@
 import { Component, Input, Output, ElementRef, EventEmitter, OnInit, HostListener } from '@angular/core';
-import { TaxonomyImage } from '../model/Taxonomy';
+import { Image } from './image.interface';
 
 /**
  * Originally from here https://github.com/vimalavinisha/angular2-image-popup
@@ -59,13 +59,15 @@ import { TaxonomyImage } from '../model/Taxonomy';
      <img *ngIf="!loading" src="{{img.largeURL || img.fullURL}}" (click)="nextImage()" class="effect" />
      <a class="nav-right" *ngIf="modalImages.length >1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
      <span class="info-text">
+     <span *ngIf="img.vernacularName">{{img.vernacularName}}<br></span>
       <span *ngIf="img.author">{{img.author}},</span>
       <span *ngIf="img.copyrightOwner && (!img.author || img.author.indexOf(img.copyrightOwner) === -1)">
         {{img.copyrightOwner}},
       </span> 
       <span *ngIf="img.licenseId">{{img.licenseId | toQName | label}}</span> 
-      <span *ngIf="img.licenseAbbreviation && !img.licenseId">{{img.licenseAbbreviation}}</span><br>
-        <a *ngIf="img.documentId" routerLink="/observation/list" [queryParams]="{'documentId':img.documentId}">{{img.documentId}}</a>
+      <span *ngIf="img.licenseAbbreviation && !img.licenseId">{{img.licenseAbbreviation}}</span>
+      <br *ngIf="img.author || img.copyrightOwner || img.licenseId || img.licenseAbbreviation">
+      <a *ngIf="img.documentId" routerLink="/observation/list" [queryParams]="{'documentId':img.documentId}">{{img.documentId}}</a>
      ({{ currentImageIndex + 1 }}/{{ modalImages.length }})
      </span>
    </div>
@@ -75,11 +77,11 @@ import { TaxonomyImage } from '../model/Taxonomy';
 export class ImageModal implements OnInit {
   public _element: any;
   public opened: boolean = false;
-  public img: TaxonomyImage;
+  public img: Image;
   public currentImageIndex: number;
   public loading: boolean= false;
   public showRepeat: boolean= false;
-  @Input('modalImages') public modalImages: TaxonomyImage[];
+  @Input('modalImages') public modalImages: Image[];
   @Input('imagePointer') public imagePointer: number;
   @Output('cancelEvent') cancelEvent = new EventEmitter<any>();
 

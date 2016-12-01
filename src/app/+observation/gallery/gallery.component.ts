@@ -3,11 +3,16 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { SearchQuery } from '../search-query.model';
 import { Util } from '../../shared/service/util.service';
 import { TaxonomyImage } from '../../shared/model/Taxonomy';
+import { ValueDecoratorService } from '../result-list/value-decorator.sevice';
+import { LabelPipe } from '../../shared/pipe/label.pipe';
+import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
+import { TranslateService } from 'ng2-translate';
 
 @Component({
   selector: 'laji-gallery',
   styleUrls: ['./gallery.component.css'],
-  templateUrl: 'gallery.component.html'
+  templateUrl: 'gallery.component.html',
+  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe]
 })
 export class GalleryComponent implements OnInit {
 
@@ -19,7 +24,9 @@ export class GalleryComponent implements OnInit {
 
   constructor(
     private warehouseApi: WarehouseApi,
-    private searchQuery: SearchQuery
+    private searchQuery: SearchQuery,
+    private translate: TranslateService,
+    private valueDecorator: ValueDecoratorService
   ) {
   }
 
@@ -44,6 +51,7 @@ export class GalleryComponent implements OnInit {
     this.loading = true;
     query.hasMedia = true;
     this.warehouseApi.warehouseQueryListGet(query, [
+        'unit.taxonVerbatim,unit.linkings.taxon.vernacularName',
         'unit.media',
         // 'gathering.media',
         // 'document.media',
@@ -53,11 +61,15 @@ export class GalleryComponent implements OnInit {
         let images = [];
         this.total = data.total;
         if (data.results) {
+          this.valueDecorator.lang = this.translate.currentLang;
           data.results.map((items) => {
+            let vernacularName = this.valueDecorator
+              .decorate('unit.taxonVerbatim', items['unit']['taxonVerbatim'], items);
             ['unit'].map((key) => {
               if (items[key] && items[key].media) {
                 items[key].media.map(media => {
                   media['documentId'] = items['document']['documentId'];
+                  media['vernacularName'] = vernacularName;
                   images.push(media);
                 });
               }
