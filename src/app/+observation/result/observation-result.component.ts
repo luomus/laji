@@ -88,6 +88,8 @@ export class ObservationResultComponent implements OnInit, OnChanges {
         e.coordinates[0][0][1] + ':' + e.coordinates[0][2][1] + ':' +
         e.coordinates[0][0][0] + ':' + e.coordinates[0][2][0] + ':WGS84'
       ];
+    } else {
+      this.searchQuery.query.coordinates = undefined;
     }
     this.searchQuery.queryUpdate({formSubmit: true});
   }

@@ -93,6 +93,9 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
         case 'create':
           this.onCreate.emit(event.feature.geometry);
           break;
+        case 'delete':
+          this.onCreate.emit();
+          break;
         default:
       }
     });
