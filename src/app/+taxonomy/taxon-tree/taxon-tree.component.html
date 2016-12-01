@@ -4,7 +4,7 @@
             <ol class="breadcrumb">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Library</a></li>
-                <li class="active">Data</li>
+                <li class="active">{{ (taxonList | async)?.scientificName }}</li>
             </ol>
         </div>
         <div class="col-sm-4">
@@ -16,5 +16,5 @@
             </div>
         </div>
     </div>
-    <Tree #tree [nodes]="(taxonList | async)" [options]="options"></Tree>
+    <Tree #tree [nodes]="(taxonList | async)?.children" [options]="options"></Tree>
 </div>

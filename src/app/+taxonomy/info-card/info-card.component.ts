@@ -24,12 +24,12 @@ export class InfoCardComponent {
   private subParam: Subscription;
   private subTrans: Subscription;
 
-  constructor(private taxonService: TaxonomyApi,
-              private translate: TranslateService,
-              private route: ActivatedRoute,
-              private logger: Logger
-  ) {
-  }
+  constructor(
+    private taxonService: TaxonomyApi,
+    private translate: TranslateService,
+    private route: ActivatedRoute,
+    private logger: Logger
+  ) { }
 
   ngOnInit() {
     if (!this.taxonId) {
@@ -69,8 +69,8 @@ export class InfoCardComponent {
     this.taxonService
       .taxonomyFindBySubject(id, 'multi')
       .subscribe(
-        taxonomy => this.taxon = taxonomy,
-        err => this.logger.warn('Failed to fetch taxon by id', err)
+      taxonomy => this.taxon = taxonomy,
+      err => this.logger.warn('Failed to fetch taxon by id', err)
       );
   }
 
@@ -78,8 +78,8 @@ export class InfoCardComponent {
     this.taxonService
       .taxonomyFindDescriptions(id, 'multi')
       .subscribe(
-        descriptions => this.taxonDescription = descriptions,
-        err => this.logger.warn('Failed to fetch taxon description by id', err)
+      descriptions => this.taxonDescription = descriptions,
+      err => this.logger.warn('Failed to fetch taxon description by id', err)
       );
 
   }
@@ -87,8 +87,8 @@ export class InfoCardComponent {
   private getTaxonMedia(id) {
     this.taxonService.taxonomyFindMedia(id, this.translate.currentLang)
       .subscribe(
-        media => this.taxonImages = media,
-        err => this.logger.warn('Failed to fetch taxon media by id', err)
+      media => this.taxonImages = media,
+      err => this.logger.warn('Failed to fetch taxon media by id', err)
       );
   }
 }
