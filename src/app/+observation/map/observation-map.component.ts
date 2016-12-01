@@ -304,9 +304,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     const count$ = this.warehouseService
       .warehouseQueryCountGet(query)
       .switchMap(cnt => {
-        if (typeof query.coordinates !== 'undefined' && typeof query.coordinateAccuracyMax === 'undefined') {
-          query.coordinateAccuracyMax = this.accuracy;
-        }
         if (cnt.total < this.showItemsWhenLessThan) {
           return items$;
         } else {
