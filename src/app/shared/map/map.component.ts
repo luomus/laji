@@ -144,7 +144,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     }
     try {
       this.map.map.addEventListener({
-        'draw:drawstart': event => this.onStartDraw()
+        'draw:drawstart': event => this.mapService.startDraw()
       });
       this.initSinge = true;
     } catch (err) {
@@ -158,19 +158,6 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
       if (this.bringDrawLayerToBack) {
         this.map.drawLayerGroup.bringToBack();
       }
-    }
-  }
-
-  onStartDraw() {
-    this.mapService.startDraw();
-    try {
-      if (!this.drawData) {
-        this.drawData = {featureCollection: {type: 'featureCollection', features: []}};
-      }
-      this.drawData.featureCollection = {type: 'featureCollection', features: []};
-      this.map.setDrawData(this.drawData);
-    } catch (err) {
-      this.logger.warn('Failed to clear draw layer', err);
     }
   }
 }
