@@ -1,5 +1,3 @@
-/// <reference path="../../../../typings/globals/leaflet/index.d.ts" />
-
 import {
   Component, ElementRef, OnDestroy, Input, Output, EventEmitter, OnChanges, ViewChild,
   OnInit

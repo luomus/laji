@@ -1,7 +1,8 @@
-import { Component, Input, SimpleChange } from '@angular/core';
+import { Component, Input, SimpleChange, OnInit, OnChanges } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Observable } from 'rxjs/Rx';
-import { TaxonomyApi, Taxonomy } from '../../../shared';
+import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
+import { Taxonomy } from '../../../shared/model/Taxonomy';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { TaxonomyApi, Taxonomy } from '../../../shared';
   templateUrl: './children-list.component.html',
   providers: [TaxonomyApi]
 })
-export class ChildrenListComponent {
+export class ChildrenListComponent implements OnInit, OnChanges {
   @Input() parentId: string;
 
   children$: Observable<Taxonomy[]>;

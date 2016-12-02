@@ -1,5 +1,5 @@
-import { Injectable, Inject } from '@angular/core';
-import { Subscription, Observable, Observer } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Subscription, Observable } from 'rxjs';
 import { LocalStorage } from 'angular2-localstorage/dist';
 import { UserService } from '../../shared/service/user.service';
 import { Util } from '../../shared/service/util.service';
@@ -101,7 +101,7 @@ export class FormService {
     return this.currentData;
   }
 
-  setCurrentData(data: any, storeIdAsCurrentKey: boolean = false) {
+  setCurrentData(data: any, storeIdAsCurrentKey = false) {
     if (storeIdAsCurrentKey) {
       if (data.id) {
         this.currentKey = data.id;
@@ -221,8 +221,8 @@ export class FormService {
   private defaultFormData(formId: string) {
     this.currentKey = this.generateTmpId();
     return this.userService.getDefaultFormData()
-      .map((data) => {
-        data['formID'] = formId;
+      .map((data: Document) => {
+        data.formID = formId;
         return data;
       })
       .do((data) => this.currentData = Util.clone(data));

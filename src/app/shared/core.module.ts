@@ -6,7 +6,6 @@ import { UserService } from './service/user.service';
 import { NewsApi } from './api/NewsApi';
 
 @NgModule({
-  imports: [TranslateModule]
 })
 export class CoreModule {
 

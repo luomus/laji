@@ -2,8 +2,9 @@ import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from 'ng2-translate/ng2-translate';
-import { InformationApi, Information } from '../shared';
 import { Logger } from '../shared/logger/logger.service';
+import { InformationApi } from '../shared/api/InformationApi';
+import { Information } from '../shared/model/Information';
 
 @Component({
   selector: 'laji-information',

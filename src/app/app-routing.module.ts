@@ -1,10 +1,8 @@
-// Deprecated
-
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ModuleWithProviders } from '@angular/core';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 
-export const appRoutes: Routes = [
+const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule'},
   {path: 'news', loadChildren: './+news/news.module#NewsModule'},
   {path: 'information', loadChildren: './+information/information.module#InformationModule'},
@@ -17,6 +15,9 @@ export const appRoutes: Routes = [
   {path: '**', component: NotFoundComponent}
 ];
 
-export const appRoutingProviders: any[] = [];
-
-export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+  providers: []
+})
+export class AppRoutingModule { }

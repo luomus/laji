@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ObservationComponent, routing } from './index';
 import { SharedModule } from '../shared/shared.module';
 import { ObservationActiveComponent } from './active/observation-active.component';
 import { ObservationChartComponent } from './chart/observation-chart.component';
@@ -13,7 +12,6 @@ import { ObservationResultComponent } from './result/observation-result.componen
 import { ObservationResultListComponent } from './result-list/observation-result-list.component';
 import { MetadataSelectComponent } from '../shared/metadata-select/metadata-select.component';
 import { PieChartComponent } from '../shared/chart/pie/pie-chart.component';
-import { nvD3 } from 'ng2-nvd3';
 import { TypeaheadModule } from 'ng2-bootstrap';
 import { SelectModule } from 'ng2-select';
 import { ObservationCountComponent } from './count/observation-count.component';
@@ -21,6 +19,9 @@ import { DatePickerComponent } from '../shared/datepicker/datepicker.component';
 import { ObservationAggregateComponent } from './aggregate/observation-aggregate.component';
 import { ObservationDownloadComponent } from './download/observation-download.component';
 import { GalleryComponent } from './gallery/gallery.component';
+import { routing } from './observation.routes';
+import { ObservationComponent } from './observation.component';
+import { nvD3 } from 'ng2-nvd3';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, TypeaheadModule, SelectModule],

@@ -1,8 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { Document, DocumentApi } from '../../shared';
 import { FormService } from '../form/form.service';
-import { subscribeOn } from 'rxjs/operator/subscribeOn';
 import { Logger } from '../../shared/logger/logger.service';
+import { DocumentApi } from '../../shared/api/DocumentApi';
 
 @Component({
   selector: 'laji-haseka-latest',
@@ -43,7 +42,7 @@ export class UsersLatestComponent implements OnChanges {
     }
     this.formService.getAllTempDocuments()
       .subscribe(documents => {
-        this.unsavedDocuments = documents.map(document => {
+        this.unsavedDocuments = <Document[]>documents.map(document => {
           document.hasChanges = true;
           return document;
         });
@@ -58,7 +57,7 @@ export class UsersLatestComponent implements OnChanges {
       .subscribe(
         result => {
           this.loading = false;
-          this.documents = (result.results || []);
+          this.documents = <Document[]>(result.results || []);
           this.total = result.total || 0;
         },
         err => this.logger.warn('Unable to fetch users documents', err)

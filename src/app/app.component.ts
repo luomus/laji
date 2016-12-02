@@ -1,7 +1,8 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { TaxonomyApi, CollectionApi } from './shared';
 import { ToastsManager } from 'ng2-toastr';
 import { ComponentsHelper } from 'ng2-bootstrap';
+import { TaxonomyApi } from './shared/api/TaxonomyApi';
+import { CollectionApi } from './shared/api/CollectionApi';
 
 @Component({
   selector: 'laji-app',

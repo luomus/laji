@@ -17,7 +17,7 @@
           <a [routerLink]="['/taxon']">{{ 'navigation.taxonomy' | translate }}</a>
         </li>
         <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/observation']">{{ 'navigation.observation' | translate }}</a>
+          <a [routerLink]="['/observation']" [queryParams]="{page: 1}">{{ 'navigation.observation' | translate }}</a>
         </li>
         <li [routerLinkActive]="['active']">
           <a *ngIf="userService.isLoggedIn" [routerLink]="['/vihko']">{{ 'navigation.haseka' | translate }}</a>

@@ -195,7 +195,7 @@
   "species.taxa": "Taxonomy",
   "species.title.short": "Hae tietoa maamme eläimistä, kasveista ja sienistä.",
   "species.title.long": "Suomen Lajitietokeskuksen Lajit-hakupalvelujen avulla pääset tutustumaan Suomen eliölajiston ominaispiirteisiin ja levinneisyyteen tietotaulujen, karttojen ja kuvien avulla. Hakutoiminnon avulla löydät etsimäsi lajin ja saat käyttöösi viimeisintä tietoa kiinnostuksesi kohteesta.",
-  "feedback": "Palaute",
+  "feedback": "FeedBack",
   "feedback.intro.loggedIn": "Sähköposti osoitteesi liitetään automaattisesti palautteeseen",
   "feedback.intro.guest": "Jos kirjaudut sisään niin palautteeseen pystytään vastaamaan suoraan",
   "feedback.topic": "Aihe",

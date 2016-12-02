@@ -39,7 +39,7 @@ export class FeedbackComponent {
 
   sendFeedback() {
     this.error = false;
-    let subject = (['other', ''].includes(this.feedback.subject) ?  '' : (this.feedback.subject + ': ')) +
+    let subject = (['other', ''].indexOf(this.feedback.subject) > -1 ?  '' : (this.feedback.subject + ': ')) +
       this.feedback.other;
     let message = this.feedback.message;
     if (!this.feedback.other || !message) {

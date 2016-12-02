@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Util } from '../../shared/service/util.service';
 import { Logger } from '../../shared/logger/logger.service';
 
@@ -14,7 +13,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
 
   @Input() field: string;
   @Input() pick: any;
-  @Input() query: WarehouseQueryInterface;
+  @Input() query: any;
   @Input() overrideInQuery: any;
   @Input() pageSize: number = 20;
   @Input() tick: number;
@@ -23,20 +22,22 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   public count: string = '';
   public loading: boolean = true;
 
-  private subQueryUpdate: Subscription;
   private subCount: Subscription;
+  private cache: string;
 
   constructor(private warehouseService: WarehouseApi, private logger: Logger) {
   }
 
   ngOnChanges() {
+    let key = JSON.stringify(this.query);
+    if (this.cache === key) {
+      return;
+    }
+    this.cache = key;
     this.update();
   }
 
   ngOnDestroy() {
-    if (this.subQueryUpdate) {
-      this.subQueryUpdate.unsubscribe();
-    }
     if (this.subCount) {
       this.subCount.unsubscribe();
     }

@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Location } from '@angular/common';
-import { WarehouseApi, PagedResult } from '../../shared';
 import { ValueDecoratorService } from './value-decorator.sevice';
 import { SearchQuery } from '../search-query.model';
 import { Util } from '../../shared/service/util.service';
@@ -10,6 +9,8 @@ import { Logger } from '../../shared/logger/logger.service';
 import { SessionStorage } from 'angular2-localstorage/dist';
 import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
+import { PagedResult } from '../../shared/model/PagedResult';
+import { WarehouseApi } from '../../shared/api/WarehouseApi';
 
 interface Column {
   field: string;
@@ -125,7 +126,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     }
   }
 
-  fetchRows(page: number, forceUpdate: boolean = false): void {
+  fetchRows(page: number, forceUpdate = false): void {
     let query = Util.clone(this.searchQuery.query);
     if (!forceUpdate) {
       let cache = [
@@ -145,7 +146,9 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     }
     query.selected = this.userColumns.map((column) => column.field);
     let sort = this.userColumns.reduce((prev, cur) => {
-      if (!cur.sort || cur.sortBy === false) return prev;
+      if (!cur.sort || cur.sortBy === false) {
+        return prev;
+      }
       let field = '' + (cur.sortBy || cur.field);
       let cols = field.split(',').map((value) => {
         return value + ' ' + cur.sort;

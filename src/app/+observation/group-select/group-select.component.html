@@ -8,12 +8,11 @@
   </span>
   <span *ngIf="open">
     <br>
-    <span [ngClass]="{hidden: !open}" (click)="toggle()" class="label label-success link">
-      <i class="glyphicon glyphicon-ok"></i>
-    </span>
-      &nbsp;
     <span [ngClass]="{hidden: !open}" (click)="empty()" class="label label-danger link">
       <i class="glyphicon glyphicon-remove"></i>
+    </span>
+    <span [ngClass]="{hidden: !open}" (click)="toggle()" class="label label-success link">
+      <i class="glyphicon glyphicon-ok"></i>
     </span>
   </span>
 </a>

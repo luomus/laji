@@ -35,6 +35,11 @@ export interface Document {
   id?: string;
 
   /**
+   *  Id of the form that was used for the document,
+   */
+  formID?: string;
+
+  /**
    * Leave empty if no sample taken, or if the sample was recorded separately
    */
   dNASampleLocation?: string;

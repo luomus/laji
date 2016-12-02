@@ -1,16 +1,17 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { Taxonomy, TaxonomyDescription, TaxonomyImage, TaxonomyApi } from '../../shared';
 import { Logger } from '../../shared/logger/logger.service';
+import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../shared/model/Taxonomy';
+import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 
 @Component({
   selector: 'laji-info-card',
   templateUrl: './info-card.component.html',
   styleUrls: ['./info-card.component.css']
 })
-export class InfoCardComponent {
+export class InfoCardComponent implements OnInit, OnDestroy {
 
   public taxon: Taxonomy;
   public taxonDescription: Array<TaxonomyDescription>;

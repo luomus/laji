@@ -2,16 +2,16 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angu
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Subscription, Observable } from 'rxjs';
 import { Util } from '../../shared/service/util.service';
-import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { TranslateService } from 'ng2-translate';
 import { ValueDecoratorService } from '../result-list/value-decorator.sevice';
 import { Logger } from '../../shared/logger/logger.service';
 import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
+import 'leaflet';
 import LatLngBounds = L.LatLngBounds;
-import LatLng = L.LatLng;
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
-const maxCoordinateAccuracy = 100000;
+const maxCoordinateAccuracy = 10000;
 
 @Component({
   selector: 'laji-observation-map',
@@ -22,7 +22,7 @@ const maxCoordinateAccuracy = 100000;
 export class ObservationMapComponent implements OnInit, OnChanges {
 
   @Input() visible: boolean = false;
-  @Input() query: WarehouseQueryInterface;
+  @Input() query: any;
   @Input() opacity: number = .5;
   @Input() lat: string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid005.lat'];
   @Input() lon: string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
@@ -59,7 +59,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   private prev: string = '';
   private subDataFetch: Subscription;
   private style: (count: number) => string;
-  private lastQuery: WarehouseQueryInterface;
+  private lastQuery: any;
   private viewBound: LatLngBounds;
   private activeLevel = 0;
   private activeBounds: LatLngBounds;
@@ -201,17 +201,17 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       let system = parts.pop();
       if (system === 'WGS84' && parts.length === 4) {
         if (!this.query.coordinateAccuracyMax) {
-          let spot1 = new LatLng(+parts[2], +parts[0]);
-          let spot2 = new LatLng(+parts[2], +parts[1]);
-          let spot3 = new LatLng(+parts[3], +parts[1]);
+          let spot1 = new (L as any).LatLng(+parts[2], +parts[0]);
+          let spot2 = new (L as any).LatLng(+parts[2], +parts[1]);
+          let spot3 = new (L as any).LatLng(+parts[3], +parts[1]);
           setTimeout(() => {
             if (!this.query.coordinateAccuracyMax) {
               this.query.coordinateAccuracyMax = Math.max(Math.pow(10, Math.floor(
-                Math.log10(Math.min(
+                Math.log(Math.min(
                   spot1.distanceTo(spot3),
                   spot1.distanceTo(spot2),
                   maxCoordinateAccuracy
-                )))), 1
+                )) * Math.LOG10E)), 1
               );
             }
           });
@@ -321,8 +321,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
         );
       })
       .delay(100)
-      .subscribe(
-        (data) => {
+      .subscribe((data: any) => {
           if (data.featureCollection) {
             if (this.reset) {
               this.reset = false;

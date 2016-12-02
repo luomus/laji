@@ -1,9 +1,37 @@
-/node_modules/
-/npm-debug.log
-/typings/
-config.json
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
-.idea
+# compiled output
+/dist
+/tmp
+
+# dependencies
+/node_modules
+/bower_components
+
+# IDEs and editors
+/.idea
+/.vscode
 .project
+.classpath
+.c9/
+*.launch
+.settings/
 
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/typings
+config.json
 settings.json
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+
+#System Files
+.DS_Store
+Thumbs.db

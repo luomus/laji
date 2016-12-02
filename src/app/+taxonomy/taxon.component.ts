@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Location } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import { TaxonomyApi, InformalTaxonGroupApi, InformalTaxonGroup, Taxonomy } from '../shared';
-import { SharedModule } from '../shared/shared.module';
+import { InformalTaxonGroupApi } from '../shared/api/InformalTaxonGroupApi';
+import { TaxonomyApi } from '../shared/api/TaxonomyApi';
+import { InformalTaxonGroup } from '../shared/model/InformalTaxonGroup';
+import { Taxonomy } from '../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxonomy',
@@ -34,13 +35,9 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   private id: Observable<string>;
 
-  private selected: Array<Taxonomy>;
-
   private taxon: Observable<Taxonomy>;
 
   private parents: Observable<Array<Taxonomy>>;
-
-  private taxonSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
