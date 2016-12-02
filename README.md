@@ -6,9 +6,9 @@ found at [api.laji.fi](https://apitest.laji.fi/explorer/).
 This repo contains 3 main branches. Follow guidelines set in [wiki](http://wiki.helsinki.fi/display/luomusict/Laji.fi+front+kehitysohjeet) for developing.
 
 ## Development server
-1) checkout development branch with command `git checkout development`
-2) Copy `config.json.dist` to `config.json` and fill in in the blanks.
-3) Run `ng serve` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
+1. checkout development branch with command `git checkout development`
+2. Copy `config.json.dist` to `config.json` and fill in in the blanks.
+3. Run `npm start` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
