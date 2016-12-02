@@ -116,9 +116,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
       this.userService.getToken(),
       'CSV_FLAT',
       'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
-      this.searchQuery.query,
-      this.translate.currentLang,
-      description
+      this.searchQuery.query
     ).subscribe(
       () => {
         this.toastsService.showSuccess(this.messages[type === 'download' ?
