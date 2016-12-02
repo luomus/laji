@@ -106,6 +106,7 @@ export class ValueDecoratorService {
 
   protected makeTaxonLocal(value, context) {
     if (
+      context.unit &&
       context.unit.linkings &&
       context.unit.linkings.taxon &&
       context.unit.linkings.taxon.vernacularName) {

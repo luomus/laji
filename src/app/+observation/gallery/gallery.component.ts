@@ -63,8 +63,10 @@ export class GalleryComponent implements OnInit {
         if (data.results) {
           this.valueDecorator.lang = this.translate.currentLang;
           data.results.map((items) => {
+            let name = (items['unit'] && items['unit']['taxonVerbatim']) ?
+              items['unit']['taxonVerbatim'] : '';
             let vernacularName = this.valueDecorator
-              .decorate('unit.taxonVerbatim', items['unit']['taxonVerbatim'] || '', items);
+              .decorate('unit.taxonVerbatim', name, items);
             ['unit'].map((key) => {
               if (items[key] && items[key].media) {
                 items[key].media.map(media => {
