@@ -1,0 +1,496 @@
+body .laji-form {
+	font-size: 13px;
+	position: relative;
+}
+
+.laji-form .blocking-loader {
+	width: 100%;
+	height: 100%;
+	background: #000000;
+	position: absolute;
+	opacity: 0.5;
+	top: 0;
+	z-index: 1;
+}
+.blocking-loader-transition-enter {
+	opacity: 0 !important;
+}
+
+.blocking-loader-transition-enter.blocking-loader-transition-enter-active {
+	transition: opacity 200ms ease-in;
+}
+
+.blocking-loader-transition-enter-active{
+	opacity: 0.5 !important;
+}
+
+.blocking-loader-transition-leave-active{
+	transition: opacity 200ms ease-in;
+	opacity: 0 !important;
+}
+
+.laji-form .pass-block {
+	z-index: 2 !important;
+}
+
+.laji-form .pass-block, .laji-form .pass-block .panel {
+	-webkit-box-shadow: 13px 18px 43px -18px rgba(0,0,0,0.75);
+	-moz-box-shadow: 13px 18px 43px -18px rgba(0,0,0,0.75);
+	box-shadow: 13px 18px 43px -18px rgba(0,0,0,0.75);
+}
+
+.laji-form .autosuggest-wrapper {
+	position: relative;
+}
+.laji-form .autosuggest-wrapper input {
+	padding-right: 27px;
+}
+.laji-form .autosuggest-container {
+	position: absolute;
+	z-index: 1;
+}
+.laji-form .autosuggest-container ul {
+	padding-left: 0px;
+}
+
+.laji-form .map-array-directionless-enter {
+	opacity: 0.01;
+}
+.laji-form .map-array-directionless-enter.map-array-directionless-enter-active {
+	opacity: 1;
+	transition: opacity .3s ease-in;
+}
+.laji-form .map-array-left-enter {
+	transform: translate3d(-100%, 0, 0);
+}
+.laji-form .map-array-right-enter {
+	transform: translate3d(100%, 0, 0);
+}
+.laji-form .map-array-left-enter.map-array-left-enter-active, .map-array-right-enter.map-array-right-enter-active {
+	transform: translate3d(0, 0, 0);
+	transition: all 300ms;
+}
+.laji-form .map-array-directionless-leave, .map-array-left-leave, .map-array-right-leave {
+	visibility: hidden;
+	height: 0px;
+	width: 0px;
+}
+
+.laji-form .form-control, .laji-form .rw-datetimepicker {
+	border-radius: 2px !important;
+}
+.laji-form .form-control:not(textarea) {
+	height: 25px !important;
+}
+.laji-form .rw-input {
+	height: 23px !important;
+}
+.laji-form .form-control:not(textarea), .laji-form .rw-input  {
+	padding: 0px 5px;
+}
+.laji-form select {
+	padding: 3px 6px !important;
+}
+
+.laji-form .form-group {
+	margin-bottom: 3px;
+}
+
+.laji-form button {
+	line-height: 14px;
+	white-space: normal;
+}
+.laji-form button:not(.list-group-item) {
+	border-radius: 2px;
+}
+
+.laji-form legend {
+	font-size: 15px;
+}
+.laji-form label {
+	font-size: 13px;
+	white-space: nowrap;
+	margin-bottom: 0px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.laji-form .field-description {
+	font-size: 13px;
+}
+
+.laji-form .input-meta {
+	font-size: 11px;
+	white-space: nowrap;
+}
+.laji-form .input-meta button {
+	font-size: 11px;
+	padding: 0;
+	margin: 0;
+}
+.laji-form .taxon-widget.input-meta {
+	margin-top: -7px;
+}
+.laji-form .meta-info-taxon {
+	display: inline-block;
+}
+.laji-form .input-meta ul {
+	padding-left: 15px;
+}
+
+.laji-form .laji-form-help-glyph {
+	margin-left: 5px;
+	border-radius:9px;
+	color: white;
+	padding: 1px 5px;
+}
+
+.laji-form .laji-form-map {
+	position: relative;
+	z-index: 1;
+	height: 600px;
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+.laji-form .map-field .field-description {
+	padding-bottom: 15px;
+}
+
+.laji-form .pass-block .panel {
+	position: absolute;
+	z-index: 3 !important;
+	top: 3%;
+	width: 300px;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+	text-align: center;
+}
+
+.laji-form .leaflet-rrose-content-wrapper {
+	border-radius: 2px;
+}
+.map-data-tooltip {
+	list-style: none;
+	padding: 0;
+	text-align: initial;
+}
+.laji-form .laji-form-images .btn-danger {
+	width: auto;
+	height: auto;
+	line-height: 5px;
+	font-size: 11px;
+	padding: 5px;
+	margin: 2px;
+}
+.laji-form .glyph-button, .laji-form .laji-form-field-template-buttons button {
+	width: 22px;
+	height: 22px;
+	font-size: 11px;
+	padding: 4px 5px;
+	margin: 2px;
+}
+.laji-form .laji-form-scope-field-glyph {
+	line-height: 9px;
+}
+
+.laji-form label strong:not(:empty)+.rc-switch {
+	display: table;
+}
+.laji-form .rc-switch {
+	width: 60px;
+}
+.laji-form .rc-switch-checked:after {
+	left: 37px;
+}
+.laji-form .rc-switch-toggled-false .rc-switch-inner {
+	right: 7px;
+	left: initial;
+}
+.laji-form .rc-switch-disabled .rc-switch-inner {
+	color: #9e9e9e;
+}
+.laji-form .rc-switch:focus {
+	border-color: #66afe9;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+}
+
+.laji-form .dropdown-header {
+	font-size: 14px;
+	font-weight: bold;
+	color: black;
+	text-decoration: underline;
+}
+
+.laji-form .react-spinner_bar {
+	background-color: black;
+}
+.laji-form .react-spinner {
+	position: absolute;
+	left: initial;
+	top: initial;
+	float: right;
+}
+.laji-form .autosuggest-wrapper .react-spinner {
+	width: 25px;
+	right: -9px;
+	bottom: -20px;
+}
+.laji-form .input-meta .react-spinner {
+	width: 20px;
+	left: 11px;
+	top: 10px;
+	position: relative;
+}
+
+.laji-form .scope-field-modal-item .react-spinner {
+	left: 50%;
+	width: 25px;
+	top: 20px;
+	float: none;
+	position: relative;
+}
+
+.laji-form .scope-field-modal-item {
+	width: 130px;
+	padding: 5px;
+}
+.laji-form .scope-field-modal-item .list-group-item {
+	height: 8px;
+	line-height: 0px;
+}
+.laji-form .scope-field-modal-item span {
+	font-weight: bold;
+}
+.laji-form .scope-field-search {
+	width: 40%;
+	display: block;
+	margin: auto;
+}
+
+.laji-form .scope-field-search  .glyphicon {
+	top: -3px
+}
+
+.laji-form .list-group-item:first-child {
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+.laji-form .dropdown-menu {
+	padding: 0px;
+	border-radius: 2px;
+}
+
+.laji-form button.button-right {
+	float: right;
+	white-space: nowrap;
+}
+
+.laji-form .dropdown-menu>.disabled>a {
+	color: #d4d4d4;
+}
+
+.laji-form .out-of-view {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	background: white;
+	z-index: 1;
+	-webkit-box-shadow: -2px 18px 43px -18px rgba(0,0,0,0.75);
+	-moz-box-shadow: -2px 18px 43px -18px rgba(0,0,0,0.75);
+	box-shadow: -2px 18px 43px -18px rgba(0,0,0,0.75);
+}
+.laji-form .form-map-inline-container {
+	overflow: hidden;
+}
+.laji-form .form-map-inline-container {
+	overflow: hidden;
+}
+.laji-form .map-array-inline-schema {
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+.laji-form .nav-tabs>li.hover>a {
+	border-color: #eee #eee #ddd;
+	text-decoration: none;
+	background-color: #eee;
+}
+.laji-form .laji-form-map-navi {
+	margin-bottom: 5px;
+}
+.laji-form .laji-form-images {
+	margin-top: 5px;
+}
+.laji-form .laji-form-images div  {
+	margin-right: 7px;
+	width: 120px;
+	height: 120px;
+	float: left;
+	cursor: pointer;
+}
+.laji-form .laji-form-images img {
+	width: inherit;
+	height: inherit;
+}
+
+.laji-form .laji-form-drop-zone {
+	border: 2px dashed #cacaca;
+}
+.laji-form  .laji-form-drop-zone:hover, .laji-form .laji-form-drop-zone.dragging  {
+	background-color: #d8fbc6;
+	border-color: #a7d490;
+}
+.laji-form .laji-form-images a:hover, .laji-form .laji-form-images a:active {
+	text-decoration: none;
+	color: #337ab7;
+}
+.laji-form .laji-form-drop-zone:hover span, .laji-form .laji-form-drop-zone.dragging span {
+	color: #a7d490;
+}
+.laji-form .laji-form-images a {
+	text-align: center;
+	vertical-align: middle;
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+.laji-form .laji-form-images .glyphicon {
+	font-size: 78px;
+	color: #dedede;
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.laji-form.image-modal {
+	width: 90vmin;
+}
+
+.laji-form.image-modal img {
+	width: 100%;
+}
+
+.laji-form .img-container {
+	position: relative;
+}
+.laji-form .img-remove {
+	border-radius: 7px !important;
+	top: -9px;
+	position: absolute;
+	padding: 4px 2px !important;
+	right: -8px;
+}
+
+.laji-form .list-group-item.disabled {
+	opacity: .65;
+}
+
+.laji-form .modal-title {
+	text-align: center;
+}
+
+.laji-form .col-lg-1, .laji-form .col-lg-10, .laji-form .col-lg-11, .laji-form .col-lg-12, .laji-form .col-lg-2, .laji-form .col-lg-3, .laji-form .col-lg-4, .laji-form .col-lg-5, .laji-form .col-lg-6, .laji-form .col-lg-7, .laji-form .col-lg-8, .laji-form .col-lg-9,
+.laji-form .col-md-1, .laji-form .col-md-10, .laji-form .col-md-11, .laji-form .col-md-12, .laji-form .col-md-2, .laji-form .col-md-3, .laji-form .col-md-4, .laji-form .col-md-5, .laji-form .col-md-6, .laji-form .col-md-7, .laji-form .col-md-8, .laji-form .col-md-9,
+.laji-form .col-sm-1, .laji-form .col-sm-10, .laji-form .col-sm-11, .laji-form .col-sm-12, .laji-form .col-sm-2, .laji-form .col-sm-3, .laji-form .col-sm-4, .laji-form .col-sm-5, .laji-form .col-sm-6, .laji-form .col-sm-7, .laji-form .col-sm-8, .laji-form .col-sm-9,
+.laji-form .col-xs-1, .laji-form .col-xs-10, .laji-form .col-xs-11, .laji-form .col-xs-12, .laji-form .col-xs-2, .laji-form .col-xs-3, .laji-form .col-xs-4, .laji-form .col-xs-5, .laji-form .col-xs-6, .laji-form .col-xs-7, .laji-form .col-xs-8, .laji-form .col-xs-9 {
+	padding-right:1px;
+	padding-left:1px;
+}
+.laji-form .row {
+	margin-left: 1px;
+	margin-right: 1px;
+}
+.laji-form .laji-form-image-select .dropdown svg, .laji-form .laji-form-image-select .dropdown img {
+	max-height: 20px;
+	max-width: 20px;
+}
+.laji-form .laji-form-image-select .height-normalizer {
+	height: 20px
+}
+.laji-form .laji-form-image-select .dropdown-menu svg, .laji-form .laji-form-image-select .dropdown-menu svg {
+	max-height: 30px;
+	max-width: 30px;
+}
+.laji-form .laji-form-image-select .dropdown-menu .isvg {
+	display: inline-block;
+	vertical-align: middle;
+}
+.laji-form .laji-form-image-select .dropdown-menu .image-select-label {
+	margin-left: 5px;
+}
+.laji-form .laji-form-image-select .dropdown {
+	width: 100%;
+}
+.laji-form .laji-form-image-select .dropdown-toggle {
+	height: 25px;
+}
+.laji-form .laji-form-image-select .height-normalizer {
+	left: 5px
+}
+.laji-form .laji-form-image-select .input-content {
+	position: absolute;
+}
+.laji-form .laji-form-image-select .caret {
+	right: 5px;
+	top: 9px;
+}
+.laji-form .laji-form-image-select .img-value {
+	left: 6px;
+	top: 3px
+}
+.laji-form .laji-form-image-select li.active svg path {
+	fill: white !important;
+}
+.laji-form .form-control.focused {
+	border-color: #66afe9;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+}
+
+.laji-form .date-time-buttons {
+	width: 130px;
+}
+
+
+.laji-form .laji-form-field-template-item, .laji-form .array-item  {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+.laji-form .laji-form-field-template-schema, .laji-form .array-item .col-xs-10 {
+	-webkit-flex-grow: 1;
+	-ms-flex-grow: 1;
+	flex-grow: 1;
+}
+.laji-form .laji-form-field-template-buttons, .laji-form .array-item .array-item-toolbox {
+	width: 25px;
+}
+
+.laji-form .date-widget {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+.laji-form .date-widget .date-picker {
+	flex: 1;
+}
+.laji-form .date-widget .btn-group {
+	margin-left: 1px;
+}
+.laji-form .date-widget .btn-group .btn {
+	height: 25px;
+	line-height: 12.5px;
+}
+.laji-form .array-item-add {
+	width: 28px;
+	float: right;
+	margin-right: -3px;
+}

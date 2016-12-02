@@ -19,9 +19,10 @@
       "prefix": "app",
       "mobile": false,
       "styles": [
-        "static/styles/laji.css",
-        "static/styles/ng2-toastr.min.css",
-        "../node_modules/laji-form/dist/styles.css"
+        "styles/ng2-toastr.min.css",
+        "styles/laji-form.css",
+        "../node_modules/laji-form/dist/styles.css",
+        "styles/laji.css"
       ],
       "scripts": [],
       "environments": {
