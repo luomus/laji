@@ -76,7 +76,7 @@
                       [(ngModel)]="formQuery.timeStart"
                       [viewFormat]="'DD.MM.YYYY'"
                       [format]="warehouseDateFormat"
-                      (change)="onQueryChange()"
+                      (onSelect)="onQueryChange()"
                       (change)="onQueryChange()"
                       name="timeStart"></laji-datepicker>
             </div>
