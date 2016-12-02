@@ -63,7 +63,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
       data: [],
       markerPopupOffset: 5,
       featurePopupOffset: 0,
-      enableDblClickEdit: false,
+      enableDrawEditing: false,
       onChange: e => this.onChange(e),
       rootElem: this.elemRef.nativeElement,
       controlSettings: controlSettings
