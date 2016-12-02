@@ -10,7 +10,7 @@ This repo contains 3 main branches. Follow guidelines set in [wiki](http://wiki.
 
 2) Copy `config.json.dist` to `config.json` and fill in in the blanks.
 
-3) Run `ng serve` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
+3) Run `npm start` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
