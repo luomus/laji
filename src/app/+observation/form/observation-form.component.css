@@ -11,9 +11,6 @@
 .faded {
   color: #fff;
 }
-.result-list {
-  padding-right: 0;
-}
 .form-filters {
   z-index: 1001;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
@@ -66,4 +63,9 @@
 :host >>> .panel-body {
   padding-top: 6px;
   margin-top: 0;
+}
+@media only screen and (min-width : 768px) {
+  .result-list {
+    padding-right: 0;
+  }
 }
