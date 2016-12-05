@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -18,12 +18,12 @@ import 'rxjs/add/observable/fromEvent';
   templateUrl: 'taxon-tree.component.html',
   styleUrls: ['./taxon-tree.component.css']
 })
-export class TaxonTree implements OnInit {
+export class TaxonTree {
 
   private static LEVEL = 2;
 
-  private nodes = null;
   private options = null;
+  private nodes = [];
 
   private taxonList: Observable<Array<Taxonomy>>;
 
@@ -36,39 +36,39 @@ export class TaxonTree implements OnInit {
   constructor(
     private taxonService: TaxonomyApi,
     private translate: TranslateService,
-    private route: ActivatedRoute,
     private router: Router
   ) {
     this.options = {
       actionMapping: {
         mouse: {
           click: (tree, node, $event) => {
-            console.log(node);
-          },
-          expanderClick: (tree, node, $event) => {
-            if (node.level < TaxonTree.LEVEL) {
-              return TREE_ACTIONS.TOGGLE_EXPANDED(tree, node, $event);
-            } else {
-              this.router.navigate(['taxon', 'browse', 'taxonomy', node.id]);
-            }
+            router.navigate(['taxon', node.data.id]);
           }
         }
       },
-      displayField: 'scientificName'
+      displayField: 'scientificName',
+      getChildren: this.getChildren.bind(this)
     };
   }
 
-  ngOnInit() {
-
-    let naks = this.translate.onLangChange.map((data) => data.lang).startWith(this.translate.currentLang)
-      .combineLatest(this.route.params.map((data) => (data as any).id).startWith('MX.53761'), (a, b) => ({ a, b }));
-
-    this.taxonList = naks.switchMap((ev) => {
-        return this.taxonService
-          .taxonomyFindBySubject(ev.b, ev.a, {
-            maxLevel: TaxonTree.LEVEL
-          });
+  ngAfterViewInit() {
+    this.translate.onLangChange
+      .map((data) => data.lang)
+      .startWith(this.translate.currentLang)
+      .switchMap((data) => this.taxonService
+        .taxonomyFindBySubject('MX.37600', data, {
+          maxLevel: TaxonTree.LEVEL
+        }).map((data) => [data]))
+      .subscribe((data) => {
+        (data[0] as any).isExpanded = true;
+        this.nodes = data;
       });
+  }
+
+  getChildren(node: TreeNode) {
+    return this.taxonService
+      .taxonomyFindChildren(node.id, 'fi')
+      .toPromise();
   }
 
 }

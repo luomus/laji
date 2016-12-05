@@ -12,12 +12,12 @@ export const taxonomyRoutes: Routes = [
   {
     path: 'browse/taxonomy',
     pathMatch: 'full',
-    redirectTo: 'browse/taxonomy/MX.53761'
+    redirectTo: 'browse/taxonomy/MX.37600'
   },
   {
     path: 'browse/taxonomy/',
     pathMatch: 'full',
-    redirectTo: 'browse/taxonomy/MX.53761'
+    redirectTo: 'browse/taxonomy/MX.37600'
   },
   {
     path: 'browse/:type',

@@ -1,20 +1,7 @@
 <div>
-    <div class="row">
-        <div class="col-sm-8">
-            <ol class="breadcrumb">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Library</a></li>
-                <li class="active">{{ (taxonList | async)?.scientificName }}</li>
-            </ol>
-        </div>
-        <div class="col-sm-4">
-            <div class="input-group">
-                <input #input type="text" class="form-control" placeholder="Search for...">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">Go!</button>
-                </span>
-            </div>
-        </div>
-    </div>
-    <Tree #tree [nodes]="(taxonList | async)?.children" [options]="options"></Tree>
+    <Tree #tree [nodes]="nodes" [options]="options">
+        <template #treeNodeTemplate let-node>
+            <span>{{ node.data.scientificName }}{{ node.data.vernacularName ? ' - ' + node.data.vernacularName: '' }}</span>
+        </template>
+    </Tree>
 </div>
