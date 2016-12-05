@@ -30,9 +30,6 @@ export class TaxonTree {
   @ViewChild(TreeComponent)
   private tree: TreeComponent;
 
-  @ViewChild('input')
-  private inputElRef: ElementRef;
-
   constructor(
     private taxonService: TaxonomyApi,
     private translate: TranslateService,
@@ -55,19 +52,20 @@ export class TaxonTree {
     this.translate.onLangChange
       .map((data) => data.lang)
       .startWith(this.translate.currentLang)
-      .switchMap((data) => this.taxonService
-        .taxonomyFindBySubject('MX.37600', data, {
+      .switchMap((lang) => this.taxonService
+        .taxonomyFindBySubject('MX.37600', lang, {
           maxLevel: TaxonTree.LEVEL
-        }).map((data) => [data]))
+        }))
       .subscribe((data) => {
-        (data[0] as any).isExpanded = true;
-        this.nodes = data;
+        this.nodes = [data];
+      }, (error) => {
+        console.error(error);
       });
   }
 
   getChildren(node: TreeNode) {
     return this.taxonService
-      .taxonomyFindChildren(node.id, 'fi')
+      .taxonomyFindChildren(node.id, this.translate.currentLang)
       .toPromise();
   }
 
