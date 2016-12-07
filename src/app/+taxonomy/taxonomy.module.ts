@@ -10,7 +10,7 @@ import { IUCNComponent } from './iucn/iucn.component';
 import { InformalListComponent } from './informal-list/informal-list.component';
 import { InformalListBreadcrumbComponent } from './informal-list-breadcrumb/informal-list-breadcrumb.component';
 import { TreeOfLifeComponent } from './tree-of-life/tree-of-life.component';
-import { TaxonTree } from './taxon-tree/taxon-tree.component';
+import { TaxonTreeComponent } from './taxon-tree/taxon-tree.component';
 import { SpeciesListComponent } from './species-list/species-list.component';
 import { ImageGalleryComponent } from '../shared/image-gallery/image-gallery.component';
 import { ChildrenListComponent } from './info-card/children-list/children-list.component';
@@ -23,7 +23,7 @@ import { TreeModule } from 'angular2-tree-component';
   imports: [routing, SharedModule, RouterModule, FormsModule, TreeModule],
   providers: [TaxonomyApi, InformalTaxonGroupApi],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
-    InformalListComponent, InformalListBreadcrumbComponent, TreeOfLifeComponent, TaxonTree, SpeciesListComponent,
+    InformalListComponent, InformalListBreadcrumbComponent, TreeOfLifeComponent, TaxonTreeComponent, SpeciesListComponent,
     ImageGalleryComponent, ChildrenListComponent
   ],
 })

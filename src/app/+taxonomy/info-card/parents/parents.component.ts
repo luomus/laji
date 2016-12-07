@@ -7,8 +7,7 @@ import { Taxonomy } from '../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-parents',
-  templateUrl: './parents.component.html',
-  providers: [TaxonomyApi]
+  templateUrl: './parents.component.html'
 })
 export class ParentsComponent implements OnInit, OnChanges {
   @Input() current: Taxonomy;

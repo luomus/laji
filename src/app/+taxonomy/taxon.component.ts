@@ -12,7 +12,6 @@ import { Taxonomy } from '../shared/model/Taxonomy';
 @Component({
   selector: 'laji-taxonomy',
   templateUrl: './taxon.component.html',
-  providers: [InformalTaxonGroupApi, TaxonomyApi],
   styleUrls: ['taxon.component.css']
 })
 export class TaxonComponent implements OnInit, OnDestroy {

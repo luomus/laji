@@ -1,24 +1,20 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-
-import { Router, ActivatedRoute } from '@angular/router';
-
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from 'ng2-translate/ng2-translate';
-
 import { Observable } from 'rxjs/Observable';
-
-import { TreeComponent, TreeNode, IActionMapping, TREE_ACTIONS } from 'angular2-tree-component';
-
-import { TaxonomyApi, Taxonomy } from '../../shared';
+import { TreeComponent, TreeNode } from 'angular2-tree-component';
+import { Taxonomy } from '../../shared/model/Taxonomy';
+import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/observable/fromEvent';
 
 @Component({
-  selector: 'taxon-tree',
+  selector: 'laji-tree',
   templateUrl: 'taxon-tree.component.html',
   styleUrls: ['./taxon-tree.component.css']
 })
-export class TaxonTree {
+export class TaxonTreeComponent implements AfterViewInit {
 
   private static LEVEL = 2;
 
@@ -54,7 +50,7 @@ export class TaxonTree {
       .startWith(this.translate.currentLang)
       .switchMap((lang) => this.taxonService
         .taxonomyFindBySubject('MX.37600', lang, {
-          maxLevel: TaxonTree.LEVEL
+          maxLevel: TaxonTreeComponent.LEVEL
         }))
       .subscribe((data) => {
         this.nodes = [data];

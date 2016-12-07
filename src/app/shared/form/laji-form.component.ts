@@ -1,4 +1,7 @@
-import { Component, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import {
+  Component, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges,
+  AfterViewInit
+} from '@angular/core';
 import { FormApiClient } from '../api';
 import { UserService } from '../service/user.service';
 import { Logger } from '../logger/logger.service';
@@ -12,7 +15,7 @@ import LajiFormWrapper from 'laji-form';
   template: '',
   providers: [FormApiClient]
 })
-export class LajiFormComponent implements OnDestroy, OnChanges {
+export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   @Input() formId: string;
   @Input() lang: string;
