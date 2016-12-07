@@ -139,6 +139,10 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     }
   }
 
+  addData(data) {
+    this.map.addData(data);
+  }
+
   initSingleShape() {
     if (this.initSinge) {
       return;

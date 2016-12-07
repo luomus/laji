@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Subscription, Observable } from 'rxjs';
 import { Util } from '../../shared/service/util.service';
@@ -10,6 +10,7 @@ import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import 'leaflet';
 import LatLngBounds = L.LatLngBounds;
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { MapComponent } from '../../shared/map/map.component';
 
 const maxCoordinateAccuracy = 10000;
 
@@ -20,6 +21,7 @@ const maxCoordinateAccuracy = 10000;
   providers: [ValueDecoratorService, LabelPipe, ToQNamePipe]
 })
 export class ObservationMapComponent implements OnInit, OnChanges {
+  @ViewChild(MapComponent) lajiMap: MapComponent;
 
   @Input() visible: boolean = false;
   @Input() query: any;
@@ -32,7 +34,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() onlyViewPortThreshold: number = 1;
   @Input() size: number = 10000;
   @Input() initWithWorldMap: boolean = false;
-  @Input() lastPage: number = 7; // 0 = no page limit
+  @Input() lastPage: number = 0; // 0 = no page limit
   @Input() draw: any = false;
   @Input() showLayers: boolean = true;
   @Input() height: number;
@@ -346,6 +348,34 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           }
         }
       );
+  }
+
+  /**
+   * This cannot be used at the moment since addData method in the map is working like set data
+   * @param query
+   * @param page
+   */
+  private addData(query: WarehouseQueryInterface, page) {
+    this.warehouseService.warehouseQueryAggregateGet(
+      this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
+      undefined, this.size, page, true
+    ).subscribe(data => {
+      if (data.featureCollection) {
+        this.lajiMap.addData([{
+          featureCollection: data.featureCollection,
+          getFeatureStyle: this.getStyle.bind(this),
+          getClusterStyle: this.getClusterStyle.bind(this),
+          getPopup: this.getPopup.bind(this),
+          cluster: data.cluster || false
+        }]);
+      }
+      if (data.lastPage > page && (this.lastPage === 0 || page <= this.lastPage)) {
+        page++;
+        this.addData(query, page);
+      } else {
+        this.loading = false;
+      }
+    });
   }
 
   private addViewPortCoordinates(query: WarehouseQueryInterface) {
