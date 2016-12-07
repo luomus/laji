@@ -48,7 +48,6 @@ export class InfoCardComponent implements OnInit, OnDestroy {
 
     this.subTrans = this.translate.onLangChange.subscribe(
       () => {
-        this.getTaxon(this.taxonId);
         this.getTaxonDescription(this.taxonId);
         this.getTaxonMedia(this.taxonId);
       }
@@ -56,7 +55,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   }
 
   setActive(event) {
-    this.activePanel = event.value;
+    this.activePanel = this.activePanel === event.value ? null : event.value;
   }
 
   ngOnDestroy() {
@@ -70,17 +69,25 @@ export class InfoCardComponent implements OnInit, OnDestroy {
     this.taxonService
       .taxonomyFindBySubject(id, 'multi')
       .subscribe(
-      taxonomy => this.taxon = taxonomy,
-      err => this.logger.warn('Failed to fetch taxon by id', err)
+        taxonomy => this.taxon = taxonomy,
+        err => this.logger.warn('Failed to fetch taxon by id', err)
       );
   }
 
   private getTaxonDescription(id) {
     this.taxonService
-      .taxonomyFindDescriptions(id, 'multi')
+      .taxonomyFindDescriptions(id, this.translate.currentLang, false)
+      .map(descriptions => descriptions.reduce((prev, current) => {
+          if (!current.title) {
+            return prev;
+          }
+          prev.push(current);
+          return prev;
+        }, [])
+      )
       .subscribe(
-      descriptions => this.taxonDescription = descriptions,
-      err => this.logger.warn('Failed to fetch taxon description by id', err)
+        descriptions => this.taxonDescription = descriptions,
+        err => this.logger.warn('Failed to fetch taxon description by id', err)
       );
 
   }
