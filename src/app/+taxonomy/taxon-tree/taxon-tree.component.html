@@ -1,0 +1,7 @@
+<div>
+    <Tree #tree [nodes]="nodes" [options]="options">
+        <template #treeNodeTemplate let-node>
+            <span>{{ node.data.scientificName }}{{ node.data.vernacularName ? ' - ' + node.data.vernacularName: '' }}</span>
+        </template>
+    </Tree>
+</div>
