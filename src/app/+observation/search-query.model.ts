@@ -248,17 +248,18 @@ export class SearchQuery {
     return queryParameters;
   }
 
-  public updateUrl(location: Location, path?: string, skipParams?: string[]): void {
+  public updateUrl(location: Location, path?: string, skipParams?: string[], skipHistory = true): void {
     if (!path) {
       path = location.path(false).split('?')[0].split(';')[0];
     }
     let query = this.getQueryObject(skipParams);
-    let extra = {};
+    let extra = {skipLocationChange: skipHistory};
     if (Object.keys(query).length > 0) {
       extra['queryParams'] = this.getQueryObject(skipParams);
     } else {
       extra['preserveQueryParams'] = true;
     }
+    console.log(extra);
     this.router.navigate(path.split('/'), extra);
   }
 

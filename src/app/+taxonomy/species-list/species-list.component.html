@@ -2,6 +2,7 @@
 	loading...
 </div>
 <div *ngIf="!loading && speciesPage">
+  <h3>{{'species.list.header' | translate:{informalGroup: informalGroup.name} }}</h3>
 	<table class="table table-bordered table-striped">
 		<thead>
 			<tr>
@@ -12,7 +13,7 @@
 		<tbody>
 			<tr *ngFor="let taxon of speciesPage.results">
 				<td>{{ taxon.vernacularName }}</td>
-				<th><a [routerLink]="['/taxon/' + taxon.id]">{{ taxon.scientificName }}</a></th>
+        <th><a [routerLink]="['/taxon/' + taxon.id]"><em>{{ taxon.scientificName }}</em></a></th>
 			</tr>
 		</tbody>
 	</table>

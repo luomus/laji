@@ -14,9 +14,9 @@
         <div class="panel panel-default"
              *ngFor="let group of taxonDescription[activeDescription]?.groups; let i = index"
              [title]="group.title"
-             [open]="activePanel == i"
+             [open]="true"
              [index]="i"
-             (activate)="setActive($event)"
+             [headerLink]="false"
              laji-panel>
           <div *ngFor="let variable of group.variables">
             <h4 *ngIf="variable.title !== 'Ingressi'">
@@ -45,6 +45,21 @@
           </div>
           <div class="panel-body">
             <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">{{ 'taxonomy.browse.title' | translate }}</h4>
+          </div>
+          <div class="panel-body">
+            <p>
+              <a [routerLink]="'/observation/map'" [queryParams]="{page: 1, target: taxon.scientificName}">
+                {{ 'taxonomy.browse' | translate }}
+              </a><br>
+              <a [routerLink]="'/observation/load'" [queryParams]="{target: taxon.scientificName, page: 1}">
+                {{ 'taxonomy.browse.download' | translate }}
+              </a><br>
+            </p>
           </div>
         </div>
       </div>

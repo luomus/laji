@@ -17,6 +17,7 @@ export class PanelComponent {
   @Input() index: number;
   @Input() open: boolean = false;
   @Input() autoToggle: boolean = false;
+  @Input() headerLink: boolean = true;
   @Output() activate = new EventEmitter();
   public hideInside = true;
 

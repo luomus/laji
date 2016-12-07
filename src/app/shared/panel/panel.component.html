@@ -1,8 +1,6 @@
-<div class="panel-heading link" aria-expanded="true" role="tab" (click)="activateCurrent()">
+<div class="panel-heading" [ngClass]="{link: headerLink}" aria-expanded="true" role="tab" (click)="activateCurrent()">
   <h4 class="panel-title">
-    <a role="button">
-      {{ title }}
-    </a>
+    {{ title }}
   </h4>
 </div>
 <div class="panel-collapse" [ngClass]="{closed: hideInside}"
