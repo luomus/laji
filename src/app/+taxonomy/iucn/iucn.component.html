@@ -1,7 +1,7 @@
 <svg [attr.width]="width" [attr.height]="height">
   <rect [attr.fill]="color"
         [attr.width]="width"
-        [attr.height]="height / 2" x=0 y=0/>
+        [attr.height]="height / 2" x=0 y=0 />
     <g *ngFor="let item of plop; let i=index">
       <g *ngIf="item.value !== selected">
         <text [attr.x]="(i + 0.5) * (width / 7)" [attr.y]="height / 5" fill="#FFFFFF" text-anchor="middle"
