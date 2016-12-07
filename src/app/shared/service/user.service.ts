@@ -8,6 +8,7 @@ import { LocalStorage } from 'angular2-localstorage/dist';
 import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
 import { AppConfig } from '../../app.config';
+import { WindowRef } from '../windows-ref';
 
 @Injectable()
 export class UserService {
@@ -20,7 +21,6 @@ export class UserService {
   private users: {[id: string]: Person} = {};
   private usersFetch: {[id: string]: Observable<Person>} = {};
   private defaultFormData: any;
-  private window;
 
   private subUser: Subscription;
   private subLogout: Subscription;
@@ -33,8 +33,7 @@ export class UserService {
               private location: Location,
               private logger: Logger,
               private appConfig: AppConfig,
-              @Inject('Window') window: Window) {
-    this.window = window;
+              private winRef: WindowRef) {
     if (this.token) {
       this.loadUserInfo(this.token);
       this.isLoggedIn = true;
@@ -101,7 +100,7 @@ export class UserService {
 
   public doLogin(): void {
     this.returnUrl = this.location.path(true);
-    this.window.location.href = this.appConfig.getLoginUrl();
+    this.winRef.nativeWindow.location.href = this.appConfig.getLoginUrl();
   }
 
   public returnToPageBeforeLogin(): void {

@@ -1,6 +1,6 @@
 import {
   Component, OnInit, ViewChild, trigger, state, style, transition, animate, Inject,
-  HostListener
+  HostListener, OnDestroy
 } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs';
@@ -10,6 +10,7 @@ import { UserService } from '../../shared/service/user.service';
 import { FooterService } from '../../shared/service/footer.service';
 import { LajiFormComponent } from '../../shared/form/laji-form.component';
 import { FormService } from './form.service';
+import { WindowRef } from '../../shared/windows-ref';
 
 @Component({
   selector: 'laji-haseka-form',
@@ -24,7 +25,7 @@ import { FormService } from './form.service';
     ])
   ]
 })
-export class HaSeKaFormComponent implements OnInit {
+export class HaSeKaFormComponent implements OnInit, OnDestroy {
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
 
   public form: any;
@@ -44,7 +45,6 @@ export class HaSeKaFormComponent implements OnInit {
   private error: any;
   private errorMsg: string;
   private isEdit: boolean = false;
-  private window;
   private leaveMsg;
   private publicityRestrictions;
 
@@ -55,8 +55,7 @@ export class HaSeKaFormComponent implements OnInit {
               private userService: UserService,
               private footerService: FooterService,
               public translate: TranslateService,
-              @Inject('Window') window: Window) {
-    this.window = window;
+              private winRef: WindowRef) {
   }
 
   ngOnDestroy() {
@@ -148,7 +147,7 @@ export class HaSeKaFormComponent implements OnInit {
       (confirm) => {
         if (this.status !== 'unsaved') {
           this.gotoFrontPage();
-        } else if (this.window.confirm(confirm)) {
+        } else if (this.winRef.nativeWindow.confirm(confirm)) {
           this.formService.discard();
           this.gotoFrontPage();
         }

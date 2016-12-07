@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Inject, ViewChild, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import * as moment from 'moment';
 import { SearchQuery } from '../search-query.model';
@@ -17,6 +17,7 @@ import { MultiRadioOption } from '../multi-radio/multi-radio.component';
 import { debounce } from 'underscore';
 import { LocalStorage } from 'angular2-localstorage/dist';
 import { MapService } from '../../shared/map/map.service';
+import { WindowRef } from '../../shared/windows-ref';
 
 @Component({
   selector: 'laji-observation-form',
@@ -24,7 +25,7 @@ import { MapService } from '../../shared/map/map.service';
   styleUrls: ['./observation-form.component.css'],
   providers: [CollectionApi, SourceApi]
 })
-export class ObservationFormComponent implements OnInit {
+export class ObservationFormComponent implements OnInit, OnDestroy {
 
   @LocalStorage() public settings = {showIntro: true};
   @Input() activeTab: string;
@@ -109,7 +110,6 @@ export class ObservationFormComponent implements OnInit {
 
   private subUpdate: Subscription;
   private subMap: Subscription;
-  private window: Window;
   private lastQuery: string;
   private delayedSearch;
 
@@ -120,9 +120,8 @@ export class ObservationFormComponent implements OnInit {
               private autocompleteService: AutocompleteApi,
               private sourceService: SourceApi,
               private mapService: MapService,
-              @Inject('Window') window: Window) {
+              private winRef: WindowRef) {
     this.delayedSearch = debounce(this.onSubmit, 500);
-    this.window = window;
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.formQuery.taxon);
     }).mergeMap((token: string) => this.getTaxa(token));
@@ -176,7 +175,7 @@ export class ObservationFormComponent implements OnInit {
   }
 
   getTabHeight() {
-    return (this.window.innerHeight || 0) + 'px';
+    return (this.winRef.nativeWindow.innerHeight || 0) + 'px';
   }
 
   updateTime(dates) {
@@ -215,7 +214,7 @@ export class ObservationFormComponent implements OnInit {
   toggleFilters() {
     this.showFilter = !this.showFilter;
     if (this.activeTab === 'map') {
-      this.window.dispatchEvent(new Event('resize'));
+      this.winRef.nativeWindow.dispatchEvent(new Event('resize'));
     }
   }
 
@@ -263,9 +262,9 @@ export class ObservationFormComponent implements OnInit {
     });
   }
 
-  onCheckBoxToggle(field, selectValue: boolean = true, isDirect: boolean = true) {
+  onCheckBoxToggle(field, selectValue = true, isDirect = true) {
     if (isDirect) {
-      this.searchQuery.query[field] = this.searchQuery.query[field] ?
+      this.searchQuery.query[field] = typeof this.searchQuery.query[field] === 'undefined' ?
         selectValue : undefined;
     } else {
       let value = this.searchQuery.query[field];

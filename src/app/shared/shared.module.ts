@@ -23,6 +23,7 @@ import { OnlyLoggedComponent } from './only-logged/only-logged.component';
 import { ImageModal } from './image-gallery/image-modal.component';
 import { MapService } from './map/map.service';
 import { ToQNamePipe } from './pipe/to-qname.pipe';
+import { WindowRef } from './windows-ref';
 
 
 @NgModule({
@@ -43,7 +44,7 @@ import { ToQNamePipe } from './pipe/to-qname.pipe';
     TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule
   ],
   providers: [
-    NewsService, MapService
+    NewsService, MapService, WindowRef
   ],
   exports: [
     CommonModule, HttpModule, TranslateModule,
