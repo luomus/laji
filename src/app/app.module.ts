@@ -1,6 +1,5 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { LocationStrategy, PathLocationStrategy, DatePipe } from '@angular/common';
-import { routing, appRoutingProviders } from './app.routes';
 import { AppComponent } from './app.component';
 import { LangSelectComponent } from './shared/navbar/lang-select.component';
 import { PersonTokenApi } from './shared/api/PersonTokenApi';
@@ -14,7 +13,7 @@ import { FooterService } from './shared/service/footer.service';
 import { LocalStorageService } from 'angular2-localstorage/dist';
 import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { TranslateModule, TranslateStaticLoader, TranslateLoader } from 'ng2-translate';
+import { TranslateModule, TranslateLoader } from 'ng2-translate';
 import { CoreModule } from './shared/core.module';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
 import { SearchQuery } from './+observation/search-query.model';
@@ -29,11 +28,11 @@ import { ILogger } from './shared/logger/logger.interface';
 import { ComponentsHelper } from 'ng2-bootstrap/ng2-bootstrap';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
-import { Http } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
+import { TranslateFileLoader } from './shared/translate/translate-file-loader';
 
-export function createTranslateLoader(http: Http) {
-  return new TranslateStaticLoader(http, './i18n', '.json');
+export function createTranslateLoader(): TranslateLoader {
+  return new TranslateFileLoader();
 }
 
 export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): ILogger {
@@ -50,21 +49,19 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
   ],
   imports: [
     BrowserModule,
-    SharedModule,
     ToastModule,
     TranslateModule.forRoot({
       provide: TranslateLoader,
-      useFactory: (createTranslateLoader),
-      deps: [Http]
+      useFactory: createTranslateLoader
     }),
     CoreModule.forRoot(),
+    SharedModule,
     AppRoutingModule
   ],
   exports: [
     TranslateModule
   ],
   providers: [
-    {provide: 'Window', useValue: window},
     {provide: ErrorHandler, useClass: LajiErrorHandler},
     {provide: ComponentsHelper, useClass: ComponentsHelper},
     {provide: LocationStrategy, useClass: PathLocationStrategy},

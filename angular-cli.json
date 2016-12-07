@@ -9,14 +9,13 @@
       "outDir": "dist",
       "assets": [
         "static",
-        "i18n",
         "favicon.ico"
       ],
       "index": "index.html",
       "main": "main.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.json",
-      "prefix": "app",
+      "prefix": "laji",
       "mobile": false,
       "styles": [
         "styles/ng2-toastr.min.css",
