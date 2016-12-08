@@ -259,7 +259,6 @@ export class SearchQuery {
     } else {
       extra['preserveQueryParams'] = true;
     }
-    console.log(extra);
     this.router.navigate(path.split('/'), extra);
   }
 
