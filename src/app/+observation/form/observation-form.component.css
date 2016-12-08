@@ -64,6 +64,11 @@
   padding-top: 6px;
   margin-top: 0;
 }
+
+:host >>> .panel-body .close {
+  margin: 0 -10px 0 0;
+}
+
 @media only screen and (min-width : 768px) {
   .result-list {
     padding-right: 0;
