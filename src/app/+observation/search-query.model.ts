@@ -208,6 +208,10 @@ export class SearchQuery {
       }
     }
 
+    if (result['target']) {
+      result['target'] = result['target'].replace(/http:\/\/tun\.fi\//g, '');
+    }
+
     if (this.query.loadedLaterThan !== undefined) {
       // queryParameters.set('loadedLaterThan', this.query.loadedLaterThan);
     }

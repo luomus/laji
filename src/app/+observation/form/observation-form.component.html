@@ -62,10 +62,14 @@
                   autocorrect="off"
           >
           <template #taxonItem let-model="item">
-            <h5 class="autosuggest-value {{getTaxonGroup(model.payload, 'id')}} informal-group-image">
+            <h5 class="autosuggest-value {{model.groups}} informal-group-image">
               {{model.value}}
             </h5>
           </template>
+          <span *ngIf="taxonName && taxonName.value" style="margin-left: 5px;">
+            <em *ngIf="taxonName.payload.isCursiveName">{{taxonName.value}}</em>
+            <span *ngIf="!taxonName.payload.isCursiveName">{{taxonName.value}}</span>
+          </span>
         </div>
       </div>
       <div class="row">

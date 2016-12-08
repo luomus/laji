@@ -29,8 +29,6 @@ export class SpeciesListComponent implements OnChanges {
     private logger: Logger
   ) { }
 
-  ngOnInit() { }
-
   ngOnChanges() {
     if (this.informalGroup) {
       this.loading = true;
@@ -42,7 +40,7 @@ export class SpeciesListComponent implements OnChanges {
     this.refreshSpeciesList(event.page);
   }
 
-  refreshSpeciesList(page: number = 1) {
+  refreshSpeciesList(page = 1) {
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }

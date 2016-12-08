@@ -18,6 +18,7 @@ import { LocalStorage } from 'angular2-localstorage/dist';
 import { MapService } from '../../shared/map/map.service';
 import { WindowRef } from '../../shared/windows-ref';
 import { ObservationResultComponent } from '../result/observation-result.component';
+import { Autocomplete } from '../../shared/model/Autocomplete';
 
 @Component({
   selector: 'laji-observation-form',
@@ -40,6 +41,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   public logCoordinateAccuracyMax: number = 4;
   public showPlace = false;
   public showFilter = true;
+  public taxonName: Autocomplete;
 
   public filters: {[name: string]: ObservationFilterInterface} = {
     recordBasis: {
@@ -115,16 +117,31 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }).mergeMap((token: string) => this.getTaxa(token));
   }
 
-  public getTaxa(token: string): Observable<any> {
+  public getTaxa(token: string, onlyFirstMatch = false): Observable<any> {
     return this.autocompleteService.autocompleteFindByField(
-      'taxon',
-      token,
-      '' + this.limit,
-      true,
-      this.translate.currentLang,
-      undefined,
-      this.formQuery.informalTaxonGroupId
-    );
+        'taxon',
+        token,
+        onlyFirstMatch ? '1' : '' + this.limit,
+        true,
+        this.translate.currentLang,
+        undefined,
+        this.formQuery.informalTaxonGroupId
+      )
+      .map(data => {
+        if (onlyFirstMatch) {
+          return data[0] || {};
+        }
+        return data.map(item => {
+          let groups = '';
+          if (item.payload && item.payload.informalTaxonGroups) {
+            groups = item.payload.informalTaxonGroups.reduce((prev, curr) => {
+              return prev + ' ' + curr.id;
+            }, groups);
+          }
+          item['groups'] = groups;
+          return item;
+        });
+      });
   }
 
   ngOnInit() {
@@ -156,16 +173,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  checkboxSelect(selected, loc) {
-    if (selected.length === 0) {
-      this.formQuery[loc] = [0, 1];
-    }
-  }
-
-  gotToMap() {
-    this.activeTab = 'map';
-  }
-
   draw(type: string) {
     this.drawingShape = type;
     if (this.activeTab !== 'map') {
@@ -174,10 +181,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.results.observationMap.drawToMap(type);
     }, 100);
-  }
-
-  getTabHeight() {
-    return (this.winRef.nativeWindow.innerHeight || 0) + 'px';
   }
 
   updateTime(dates) {
@@ -326,13 +329,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.typeaheadLoading = e;
   }
 
-  public getTaxonGroup(obj: any, field, join = ' ') {
-    if (obj.informalTaxonGroups) {
-      return obj.informalTaxonGroups.map(group => group[field]).join(join);
-    }
-    return '';
-  }
-
   private queryToFormQuery(query: WarehouseQueryInterface) {
     this.onAccuracyValueChange();
     let time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
@@ -346,6 +342,12 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       isNotInvasive: query.invasive === false ? true : undefined,
       hasNotMedia: query.hasMedia === false ? true : undefined
     };
+    if (this.formQuery.taxon && (
+      this.formQuery.taxon.indexOf('MX.') === 0 || this.formQuery.taxon.indexOf('http:') === 0)) {
+      this.getTaxa(this.formQuery.taxon, true).subscribe(data => this.taxonName = data);
+    } else {
+      this.taxonName = null;
+    }
   }
 
   private parseMultiBoolean(value): boolean {

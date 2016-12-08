@@ -5,7 +5,8 @@
   <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
   <div class="row">
     <div class="col-sm-6" *ngIf="taxonDescription && taxonDescription.length > 0">
-      <select style="margin-bottom: 8px;" class="form-control" [(ngModel)]="activeDescription">
+      <select style="margin-bottom: 8px;" class="form-control" [(ngModel)]="activeDescription"
+              *ngIf="taxonDescription.length > 1">
         <option *ngFor="let description of taxonDescription; let i = index" [value]="i">
           {{ description.title ? description.title : description.id }}
         </option>
@@ -53,10 +54,10 @@
           </div>
           <div class="panel-body">
             <p>
-              <a [routerLink]="'/observation/map'" [queryParams]="{page: 1, target: taxon.scientificName}">
+              <a [routerLink]="'/observation/map'" [queryParams]="{page: 1, target: taxon.id}">
                 {{ 'taxonomy.browse' | translate }}
               </a><br>
-              <a [routerLink]="'/observation/load'" [queryParams]="{target: taxon.scientificName, page: 1}">
+              <a [routerLink]="'/observation/load'" [queryParams]="{target: taxon.id, page: 1}">
                 {{ 'taxonomy.browse.download' | translate }}
               </a><br>
             </p>

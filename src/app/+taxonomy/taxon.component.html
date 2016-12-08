@@ -7,14 +7,14 @@
 		</div>
 		<div  class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
 			<ul style="margin-top: 24px;" class="nav nav-tabs nav-justified">
-				<li role="presentation" class="informal" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+				<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
 					<a routerLink="/taxon/browse/informal">
-						<h3>{{ 'species.groups' | translate }}</h3>
+						<h3>{{ 'species.groups' | translate }}<br><small>{{ 'species.groups.short' | translate }}</small></h3>
 					</a>
 				</li>
-				<li role="presentation" class="taxonomy" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+				<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
 					<a routerLink="/taxon/browse/taxonomy">
-						<h3>{{ 'species.taxa' | translate }}</h3>
+						<h3>{{ 'species.taxa' | translate }}<br><small>{{ 'species.taxa.short' | translate }}</small></h3>
 					</a>
 				</li>
 			</ul>

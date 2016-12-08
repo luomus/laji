@@ -3,7 +3,6 @@ import { Subscription, Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { AutocompleteApi } from '../api/AutocompleteApi';
 import { TaxonomyApi } from '../api/TaxonomyApi';
-import { Taxonomy } from '../model/Taxonomy';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
 import { Router } from '@angular/router';

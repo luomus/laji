@@ -51,8 +51,7 @@
           {{ 'navigation.observation' | translate }}
           <div class="row">
             <div class="col-md-offset-1 col-md-11 observations" *ngIf="taxon">
-              <!--<laji-observation-count [query]="{taxonId:[getActive().key], counteryId: ['ML.206']}"></laji-observation-count>{{'omniSearch.finnish-observation'|translate}}<br>-->
-              <a [routerLink]="['/observation']" [queryParams]="{target: taxon.payload.scientificName}">
+              <a [routerLink]="['/observation']" [queryParams]="{target: (taxon.key | toFullUri) }">
                 {{taxon?.count}}
                 {{'omniSearch.allObservation'|translate}}
               </a>

@@ -61,7 +61,7 @@ export class AutocompleteApi {
       throw new Error('Required parameter field was null or undefined when calling autocompleteFindByField.');
     }
     if (q !== undefined) {
-      queryParameters.set('q', q);
+      queryParameters.set('q', q.replace('http://tun.fi/', ''));
     }
 
     if (limit !== undefined) {

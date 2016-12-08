@@ -24,12 +24,13 @@ import { ImageModal } from './image-gallery/image-modal.component';
 import { MapService } from './map/map.service';
 import { ToQNamePipe } from './pipe/to-qname.pipe';
 import { WindowRef } from './windows-ref';
+import { ToFullUriPipe } from './pipe/to-full-uri';
 
 
 @NgModule({
   declarations: [
     NewsListComponent,
-    SpinnerComponent, NotFoundComponent, ToQNamePipe,
+    SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe,
     UsersPipe, LabelPipe, SafePipe, MultiLangPipe, FormattedNumber,
     ObservationCountComponent, ObservationMapComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal
@@ -49,7 +50,7 @@ import { WindowRef } from './windows-ref';
   exports: [
     CommonModule, HttpModule, TranslateModule,
     NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe, MultiLangPipe, ToQNamePipe,
-    TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
+    ToFullUriPipe, TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal
   ]
