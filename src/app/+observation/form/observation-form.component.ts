@@ -208,7 +208,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       informalTaxonGroupId: '',
       isNotFinnish: undefined,
       isNotInvasive: undefined,
-      hasNotMedia: undefined
+      hasNotMedia: undefined,
+      includeOnlyValid: undefined
     };
 
     if (refresh) {
@@ -269,8 +270,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   onCheckBoxToggle(field, selectValue = true, isDirect = true) {
     if (isDirect) {
-      this.searchQuery.query[field] = typeof this.searchQuery.query[field] === 'undefined' ?
-        selectValue : undefined;
+      this.searchQuery.query[field] = typeof this.searchQuery.query[field] === 'undefined'
+      ||  this.searchQuery.query[field] !== selectValue
+        ? selectValue : undefined;
     } else {
       let value = this.searchQuery.query[field];
       this.searchQuery.query[field] =
@@ -340,6 +342,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
         query.informalTaxonGroupId[0] : '',
       isNotFinnish: query.finnish === false ? true : undefined,
       isNotInvasive: query.invasive === false ? true : undefined,
+      includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
       hasNotMedia: query.hasMedia === false ? true : undefined
     };
     if (this.formQuery.taxon && (
@@ -371,6 +374,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     query.invasive = formQuery.isNotInvasive ? false : query.invasive;
     query.finnish = formQuery.isNotFinnish ? false : query.finnish;
     query.hasMedia = formQuery.hasNotMedia ? false : query.hasMedia;
+    query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
   }
 
   private parseDate(start, end) {

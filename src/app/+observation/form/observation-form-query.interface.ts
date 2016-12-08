@@ -6,4 +6,5 @@ export interface ObservationFormQuery {
   hasNotMedia: boolean;
   isNotFinnish: boolean;
   isNotInvasive: boolean;
+  includeOnlyValid: boolean;
 }

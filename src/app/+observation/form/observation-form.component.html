@@ -68,7 +68,7 @@
           </template>
           <span *ngIf="taxonName && taxonName.value" style="margin-left: 5px;">
             <em *ngIf="taxonName.payload.isCursiveName">{{taxonName.value}}</em>
-            <span *ngIf="!taxonName.payload.isCursiveName">{{taxonName.value}}</span>
+
           </span>
         </div>
       </div>
@@ -318,7 +318,7 @@
             <div class="col-sm-12">
               <label>
                 <input type="checkbox"
-                       [(ngModel)]="searchQuery.query.invasive"
+                       [ngModel]="searchQuery.query.invasive"
                        (ngModelChange)="onCheckBoxToggle('invasive')"
                        name="invasive">
                 {{'observation.form.invasive' | translate}}
@@ -329,7 +329,7 @@
             <div class="col-sm-12">
               <label>
                 <input type="checkbox"
-                       [(ngModel)]="formQuery.isNotInvasive"
+                       [ngModel]="formQuery.isNotInvasive"
                        (ngModelChange)="onCheckBoxToggle('invasive', false, false)"
                        name="isNotInvasive">
                 {{'observation.form.nonInvasive' | translate}}
@@ -340,7 +340,7 @@
             <div class="col-sm-12">
               <label>
                 <input type="checkbox"
-                       [(ngModel)]="searchQuery.query.finnish"
+                       [ngModel]="searchQuery.query.finnish"
                        (ngModelChange)="onCheckBoxToggle('finnish')"
                        name="finnish">
                 {{'observation.form.finnish' | translate}}
@@ -351,7 +351,7 @@
             <div class="col-sm-12">
               <label>
                 <input type="checkbox"
-                       [(ngModel)]="formQuery.isNotFinnish"
+                       [ngModel]="formQuery.isNotFinnish"
                        (ngModelChange)="onCheckBoxToggle('finnish', false, false)"
                        name="isNotFinnish">
                 {{'observation.form.nonFinnish' | translate}}
@@ -362,7 +362,7 @@
             <div class="col-sm-12">
               <label>
                 <input type="checkbox"
-                       [(ngModel)]="searchQuery.query.hasMedia"
+                       [ngModel]="searchQuery.query.hasMedia"
                        (ngModelChange)="onCheckBoxToggle('hasMedia')"
                        name="hasMedia">
                 {{'observation.form.hasMedia' | translate}}
@@ -373,7 +373,7 @@
             <div class="col-sm-12">
               <label>
                 <input type="checkbox"
-                       [(ngModel)]="formQuery.hasNotMedia"
+                       [ngModel]="formQuery.hasNotMedia"
                        (ngModelChange)="onCheckBoxToggle('hasMedia', false, false)"
                        name="hasNotMedia">
                 {{'observation.form.hasNotMedia' | translate}}
@@ -384,10 +384,11 @@
             <div class="col-sm-12">
               <label>
                 <input type="checkbox"
-                       [ngModel]="searchQuery.query.includeNonValidTaxa === false"
-                       (ngModelChange)="onCheckBoxToggle('includeNonValidTaxa', false)"
-                       name="includeNonValidTaxa">
+                       [ngModel]="formQuery.includeOnlyValid"
+                       (ngModelChange)="onCheckBoxToggle('includeNonValidTaxa', false, false)"
+                       name="includeOnlyValid">
                 {{'observation.form.includeNonValidTaxa' | translate}}
+                {{'' + formQuery.includeOnlyValid}}
               </label>
             </div>
           </div>
