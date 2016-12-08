@@ -61,6 +61,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
       markerPopupOffset: 5,
       featurePopupOffset: 0,
       enableDrawEditing: false,
+      getDrawingDraftStyle: this.getDrawingDraftStyle,
       onChange: e => this.onChange(e),
       rootElem: this.elemRef.nativeElement,
       controlSettings: controlSettings
@@ -98,11 +99,19 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     });
   }
 
+  getDrawingDraftStyle(type): any {
+    if (type === 'marker') {
+      return {};
+    } else {
+      return {shapeOptions: {color: '#00aa00', opacity: 1, fillOpacity: 0}};
+    }
+  }
+
   drawToMap(type) {
     if (type === 'Coordinates') {
       this.map.openCoordinatesDialog();
     } else if (['Rectangle'].indexOf(type) > -1) {
-      new L.Draw[type](this.map.map, {shapeOptions: {color: '#00aa00', opacity: 1, fillOpacity: 0}})
+      new L.Draw[type](this.map.map, this.getDrawingDraftStyle(type))
         .enable();
     }
   }
