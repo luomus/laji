@@ -143,7 +143,6 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
         return;
       }
       this.initEvents = true;
-      console.log('ADD EVENTS!!!!!');
       this.map.map.addEventListener({
         'draw:drawstop': event => this.mapService.stopDraw()
       });

@@ -204,7 +204,6 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   }
 
   prepareData(data) {
-    console.log(data.results);
     if (!data.results) {
       return data;
     }

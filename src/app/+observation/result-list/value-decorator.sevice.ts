@@ -78,7 +78,6 @@ export class ValueDecoratorService {
   }
 
   protected makeYkj(value) {
-    console.log(value);
     if (value && value.latMin) {
       let lat = this.getYkjCoord(value.latMin, value.latMax);
       return lat + ':' + this.getYkjCoord(value.lonMin, value.lonMax, lat.split('-')[0].length);

@@ -137,7 +137,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
         }
       });
     this.subMap = this.mapService.map$.subscribe((event) => {
-      console.log(event);
       if (event === 'drawstart') {
         this.drawing = true;
         this.showPlace = true;
