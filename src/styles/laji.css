@@ -455,3 +455,23 @@ body > .ui-select-bootstrap.open {
 .ui-select-match .btn-default:hover {
   background-color: #fff;
 }
+
+/** Laji Icons **/
+.lji-icon {
+  position: relative;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+
+.lji-btn-sm {
+  padding: 3px 4px 0 4px;
+  height: 31px;
+}
+
+.lji-numeric {
+  background-image: url('/static/images/icons/numeric.svg');
+}
+.lji-crop {
+  background-image: url('/static/images/icons/crop.svg');
+}

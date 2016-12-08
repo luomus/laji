@@ -113,6 +113,10 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     this.create.emit(e);
   }
 
+  drawToMap(type) {
+    this.lajiMap.drawToMap(type);
+  }
+
   onMove(e) {
     let curActive = this.activeLevel;
     this.viewBound = e.bounds;

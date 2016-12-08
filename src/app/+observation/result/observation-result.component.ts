@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges, OnDestroy, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { SearchQuery } from '../search-query.model';
 import { IdService } from '../../shared/service/id.service';
 import { UserService } from '../../shared/service/user.service';
 import { ObservationFilterInterface } from '../filter/observation-filter.interface';
 import { TranslateService } from 'ng2-translate';
+import { ObservationMapComponent } from '../map/observation-map.component';
 
 
 @Component({
@@ -17,6 +18,8 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   @Input() active: string = 'list';
   @Output() activeChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() onFilterSelect: EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
+
+  @ViewChild(ObservationMapComponent) observationMap: ObservationMapComponent;
 
   public activated = {};
   public queryParams = {};

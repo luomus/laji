@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import * as moment from 'moment';
 import { SearchQuery } from '../search-query.model';
@@ -13,11 +13,11 @@ import { Collection } from '../../shared/model/Collection';
 import { IdService } from '../../shared/service/id.service';
 import { SourceApi } from '../../shared/api/SourceApi';
 import { Source } from '../../shared/model/Source';
-import { MultiRadioOption } from '../multi-radio/multi-radio.component';
 import { debounce } from 'underscore';
 import { LocalStorage } from 'angular2-localstorage/dist';
 import { MapService } from '../../shared/map/map.service';
 import { WindowRef } from '../../shared/windows-ref';
+import { ObservationResultComponent } from '../result/observation-result.component';
 
 @Component({
   selector: 'laji-observation-form',
@@ -30,6 +30,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   @LocalStorage() public settings = {showIntro: true};
   @Input() activeTab: string;
   @ViewChild('tabs') tabs;
+  @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
 
   public limit = 10;
   public formQuery: ObservationFormQuery;
@@ -39,21 +40,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   public logCoordinateAccuracyMax: number = 4;
   public showPlace = false;
   public showFilter = true;
-  public invasiveOptions: MultiRadioOption[] = [
-    {value: true, label: 'observation.form.multi-true'},
-    {value: false, label: 'observation.form.multi-false'},
-    {value: undefined, label: 'observation.form.multi-all'},
-  ];
-  public finnishOptions: MultiRadioOption[] = [
-    {value: true, label: 'observation.form.multi-true'},
-    {value: false, label: 'observation.form.multi-false'},
-    {value: undefined, label: 'observation.form.multi-all'},
-  ];
-  public mediaOptions: MultiRadioOption[] = [
-    {value: true, label: 'observation.form.multi-true'},
-    {value: false, label: 'observation.form.multi-false'},
-    {value: undefined, label: 'observation.form.multi-all'},
-  ];
 
   public filters: {[name: string]: ObservationFilterInterface} = {
     recordBasis: {
@@ -107,6 +93,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     'MY.sexW': ''
   };
 
+  public drawing = false;
+  public drawingShape: string;
 
   private subUpdate: Subscription;
   private subMap: Subscription;
@@ -149,8 +137,13 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
         }
       });
     this.subMap = this.mapService.map$.subscribe((event) => {
-      if (event === 'startDraw' && !this.showPlace) {
+      console.log(event);
+      if (event === 'drawstart') {
+        this.drawing = true;
         this.showPlace = true;
+      }
+      if (event === 'drawstop') {
+        this.drawing = false;
       }
     });
   }
@@ -172,6 +165,16 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   gotToMap() {
     this.activeTab = 'map';
+  }
+
+  draw(type: string) {
+    this.drawingShape = type;
+    if (this.activeTab !== 'map') {
+      this.activeTab = 'map';
+    }
+    setTimeout(() => {
+      this.results.observationMap.drawToMap(type);
+    }, 100);
   }
 
   getTabHeight() {

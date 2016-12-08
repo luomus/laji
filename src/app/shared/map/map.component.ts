@@ -4,8 +4,7 @@ import {
 } from '@angular/core';
 import { Logger } from '../logger/logger.service';
 import { MapService } from './map.service';
-
-const lajiMap = require('laji-map').default;
+import LajiMap from 'laji-map';
 
 @Component({
   selector: 'laji-map',
@@ -24,7 +23,6 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   @Input() draw: any = false;
   @Input() lang: string = 'fi';
   @Input() showLayers: boolean = true;
-  @Input() drawSingleShape: boolean = true;
   @Input() initWithWorldMap: boolean = false;
   @Input() bringDrawLayerToBack: boolean = true;
 
@@ -34,7 +32,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   @ViewChild('map') elemRef: ElementRef;
 
   map: any;
-  private initSinge = false;
+  private initEvents = false;
 
   constructor(
     private mapService: MapService,
@@ -48,12 +46,13 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
       edit: false,
       layers: true,
       zoom: true,
+      coordinateInput: false,
       location: false,
     };
     if (this.showLayers === false) {
       controlSettings.layer = false;
     }
-    this.map = new lajiMap({
+    this.map = new LajiMap({
       tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
       activeIdx: 0,
       zoom: this.initWithWorldMap ? 3 : 1,
@@ -99,6 +98,14 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     });
   }
 
+  drawToMap(type) {
+    if (type === 'Coordinates') {
+      this.map.openCoordinatesDialog();
+    } else if (['Rectangle'].indexOf(type) > -1) {
+      new L.Draw[type](this.map.map, {}).enable();
+    }
+  }
+
   ngOnDestroy() {
     try {
       this.map.map.off();
@@ -131,9 +138,17 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     }
     try {
       this.map.setData(this.data);
-      if (this.drawSingleShape) {
-        this.initSingleShape();
+      if (this.initEvents) {
+        return;
       }
+      this.initEvents = true;
+      console.log('ADD EVENTS!!!!!');
+      this.map.map.addEventListener({
+        'draw:drawstop': event => this.mapService.stopDraw()
+      });
+      this.map.map.addEventListener({
+        'draw:drawstart': event => this.mapService.startDraw()
+      });
     } catch (err) {
       this.logger.error('Failed to add map data', err);
     }
@@ -141,20 +156,6 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
 
   addData(data) {
     this.map.addData(data);
-  }
-
-  initSingleShape() {
-    if (this.initSinge) {
-      return;
-    }
-    try {
-      this.map.map.addEventListener({
-        'draw:drawstart': event => this.mapService.startDraw()
-      });
-      this.initSinge = true;
-    } catch (err) {
-      this.logger.warn('Failed to add event listener', err);
-    }
   }
 
   initDrawData() {

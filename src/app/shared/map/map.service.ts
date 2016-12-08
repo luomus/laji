@@ -10,7 +10,10 @@ export class MapService {
   constructor() { }
 
   public startDraw() {
-    this.mapUpdatedSource.next('startDraw');
+    this.mapUpdatedSource.next('drawstart');
   }
 
+  public stopDraw() {
+    this.mapUpdatedSource.next('drawstop');
+  }
 }
