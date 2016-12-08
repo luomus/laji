@@ -49,7 +49,7 @@ export class GalleryComponent implements OnInit {
   updateImages() {
     let query = Util.clone(this.searchQuery.query);
     this.loading = true;
-    query.hasMedia = true;
+    query.hasUnitMedia = true;
     this.warehouseApi.warehouseQueryListGet(query, [
         'unit.taxonVerbatim,unit.linkings.taxon.vernacularName',
         'unit.media',
