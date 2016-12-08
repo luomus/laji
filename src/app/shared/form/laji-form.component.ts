@@ -90,7 +90,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
         renderSubmit: false
       });
     } catch (err) {
-      this.logger.error('Failed to load kajiform', err);
+      this.logger.error('Failed to load lajiForm', err);
     }
   }
 
