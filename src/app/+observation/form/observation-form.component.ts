@@ -378,12 +378,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   private parseDate(start, end) {
-    if (start || end) {
-      end = end || moment().format(DATE_FORMAT);
-      start = start || moment().format(DATE_FORMAT);
-    } else {
+    if (!start && !end) {
       return '';
     }
-    return start + '/' + end;
+    return (start || '') + '/' + (end || '');
   }
 }

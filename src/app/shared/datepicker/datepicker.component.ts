@@ -233,6 +233,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
 
   clear() {
     this.value = '';
+    this.onSelect.emit(undefined);
   }
 
   private onTouchedCallback: () => void = () => {
