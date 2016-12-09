@@ -353,13 +353,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private parseMultiBoolean(value): boolean {
-    if (typeof value === 'undefined' || value.length === 0 || value.length === 2 || typeof value[0] === 'undefined') {
-      return undefined;
-    }
-    return value[0] === 0 ? false : true;
-  }
-
   private formQueryToQuery(formQuery: ObservationFormQuery) {
     let taxon = formQuery.taxon;
     let time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
