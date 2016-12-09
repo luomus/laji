@@ -1,22 +1,117 @@
 <footer *ngIf="footerService.footerVisible">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-5 col-md-2 col-sm-offset-1">
+        <h3>{{'footer.title1' | translate}}</h3>
+        <p [innerHtml]="'footer.intro1' | translate"></p>
+      </div>
+      <div class="col-sm-5 col-md-2 col-sm-offset-1">
+        <h3>{{'footer.title2' | translate}}</h3>
+        <ul>
+          <li>{{'footer.dataPolicy' | translate}}</li>
+          <li>{{'footer.sensitiveData' | translate}}</li>
+          <li>{{'footer.qualityAssurance' | translate}}</li>
+          <li>{{'footer.coreKnowledge' | translate}}</li>
+          <li>{{'footer.longTerm' | translate}}</li>
+          <li>{{'footer.metadata' | translate}}</li>
+          <li>{{'footer.licenses' | translate}}</li>
+        </ul>
+      </div>
+      <div class="col-sm-5 col-md-2 col-sm-offset-1">
+        <h3>{{'footer.title3' | translate}}</h3>
+        <ul>
+          <li>{{'footer.portal' | translate}}</li>
+          <li>{{'footer.vihko' | translate}}</li>
+          <li>{{'footer.kotka' | translate}}</li>
+          <li>{{'footer.dataWarehouse' | translate}}</li>
+          <li>{{'footer.geoServices' | translate}}</li>
+          <li>{{'footer.api' | translate}}</li>
+        </ul>
+      </div>
+      <div class="col-sm-5 col-md-2 col-sm-offset-1">
+        <h3>{{'footer.title4' | translate}}</h3>
+        <ul>
+          <li>{{'footer.citizenScience' | translate}}</li>
+          <li>{{'footer.conservation' | translate}}</li>
+          <li>{{'footer.speciesTracking' | translate}}</li>
+          <li>{{'footer.observationService' | translate}}</li>
+          <li [innerHtml]="'footer.conservationSociety' | translate"></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="partners-footer">
     <div class="container">
-      <div class="row">
-        <div class="col-sm-5 col-md-2 col-sm-offset-1">
-          <h3>{{'footer.title1' | translate}}</h3>
-          <p [innerHtml]="'footer.intro1' | translate"></p>
-        </div>
-        <div class="col-sm-5 col-md-2 col-sm-offset-1">
-          <h3>{{'footer.title2' | translate}}</h3>
-          <p [innerHtml]="'footer.intro2' | translate"></p>
-        </div>
-        <div class="col-sm-5 col-md-2 col-sm-offset-1">
-          <h3>{{'footer.title3' | translate}}</h3>
-          <p [innerHtml]="'footer.intro3' | translate"></p>
-        </div>
-        <div class="col-sm-5 col-md-2 col-sm-offset-1">
-          <h3>{{'footer.title4' | translate}}</h3>
-          <p [innerHtml]="'footer.intro4' | translate"></p>
+      <div cĺass="row">
+        <div class="col-sm-12 partners"
+             routerLinkActive="front"
+             [routerLink]="'/'"
+             [routerLinkActiveOptions]="{exact: true}">
+          <span class="title">{{'footer.partners' | translate }}</span>
+          <ul>
+            <li>
+              <a href="http://luomus.fi">
+                <img src="http://laji.fi/static/img/luomus_fi_blue_smaller.gif" alt="LUOMUS - Luonnontieteellinen keskusmuseo">
+              </a>
+            </li>
+            <li>
+              <a href="http://www.syke.fi">
+                <img src="http://laji.fi/static/img/logos/syke_logo.png" alt="SYKE">
+              </a>
+            </li>
+            <li>
+              <a href="http://www.luke.fi/">
+                <img src="http://laji.fi/static/img/logos/logo_luke.png" alt="LUKE">
+              </a>
+            </li>
+            <li>
+              <a href="http://www.mmm.fi">
+                <img src="http://laji.fi/static/img/logos/mmm_logo.jpg" alt="MMM">
+              </a>
+            </li>
+            <li>
+              <a href="http://www.ymparisto.fi/envibase">
+                <img src="http://laji.fi/static/img/logos/envibase_logo.png" alt="Envibase">
+              </a>
+            </li>
+            <li>
+              <a href="http://digitarium.fi/">
+                <img src="http://laji.fi/static/img/logos/digitarium.png" alt="Digitarium">
+              </a>
+            </li>
+            <li>
+              <a href="http://www.utu.fi">
+                <img src="http://laji.fi/static/img/logos/turun_yliopisto_logo_rgb.png" alt="UTU">
+              </a>
+            </li>
+            <li>
+              <a href="http://www.oulu.fi/yliopisto/">
+                <img src="http://laji.fi/static/img/logos/oulun_yo_rgb_pysty_fin.png" alt="Oulun yliopisto">
+              </a>
+            </li>
+            <li>
+              <a href="https://www.jyu.fi/">
+                <img src="/static/images/partner-logos/jyu.png" alt="Oulun yliopisto">
+              </a>
+            </li>
+            <li>
+              <a href="http://www.uef.fi">
+                <img src="http://laji.fi/static/img/logos/UEF_musta_logo-engl.jpg" alt="UEF">
+              </a>
+            </li>
+            <li>
+              <a href="http://www.aka.fi/fi/A/Ohjelmat-ja-yhteistyo/Tutkimusinfrastruktuuri/">
+                <img src="http://laji.fi/static/img/logos/AKA_FIR1.png" alt="FIRI">
+              </a>
+            </li>
+            <li>
+              <a href="http://www.centralbaltic.eu/">
+                <img src="http://laji.fi/static/img/logos/euinterreg.png" alt="Central Baltic Interreg Programme">
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
+  </div>
 </footer>
