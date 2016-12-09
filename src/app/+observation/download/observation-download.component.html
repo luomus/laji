@@ -43,7 +43,7 @@
       <div class="col-sm-12" *ngIf="taxaLimit >= speciesCount && speciesCount > 0">
         <p [innerHtml]="'result.load.introSpecies' | translate">
         </p>
-        <a [ngClass]="{disabled: requests['species'] === 'sent'}" href="/api/warehouse/query/aggregate?{{csvParams}}&format=csv">{{'observation.download.loadSpecies' | translate}}</a>
+        <a [ngClass]="{disabled: requests['species'] === 'sent'}" href="{{apiBase}}/warehouse/query/aggregate?{{csvParams}}&format=csv">{{'observation.download.loadSpecies' | translate}}</a>
       </div>
     </div>
   </div>

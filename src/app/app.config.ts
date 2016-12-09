@@ -6,10 +6,14 @@ export class AppConfig {
 
   constructor() {
     try {
-    this.config = require('../../config.json');
+      this.config = require('../../config.json');
     } catch (e) {
       throw 'Place add config.json for your application!';
     }
+  }
+
+  getApiClientBase() {
+    return this.config.api_client_base || '/api';
   }
 
   getEnv() {

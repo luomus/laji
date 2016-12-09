@@ -9,20 +9,17 @@ import { Logger } from '../../shared/logger/logger.service';
 import { AppConfig } from '../../app.config';
 import { Util } from '../../shared/service/util.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { URLSearchParams } from '@angular/http';
 import queryString from 'query-string';
 
 @Component({
-  selector: 'observation-download',
+  selector: 'laji-observation-download',
   templateUrl: 'observation-download.component.html'
 })
 export class ObservationDownloadComponent implements OnInit, OnDestroy {
 
   @Input() taxaLimit = 1000;
   @Input() loadLimit = 2000000;
-  @Input() descriptionLimit = 200;
 
-  public charactersLeft;
   public requests: any = {};
   public count = {
     'count': 0,
@@ -32,6 +29,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   public description: string = '';
   public csvParams: string = '';
   public showRequest = true;
+  public apiBase: string;
   private taxaDownloadAggregateBy = {
     'en': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameEnglish,unit.linkings.taxon.id',
     'fi': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameFinnish,unit.linkings.taxon.id',
@@ -53,16 +51,18 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     if (appConfig.getEnv() === 'prod') {
       this.showRequest = false;
     }
+    this.apiBase = appConfig.getApiClientBase();
   }
 
   ngOnInit() {
-    this.subLang = this.translate.get([
+    this.translate.get([
       'observation.download.error',
       'result.load.thanksPublic',
       'result.load.thanksRequest'
     ]).subscribe((translations) => {
       this.messages = translations;
     });
+    this.subLang = this.translate.onLangChange.subscribe(() => this.updateCsvLink());
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
         if (this.queryCache !== JSON.stringify(this.searchQuery.query)) {
@@ -72,7 +72,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
       }
     );
     this.updateCount();
-    this.cntCharactersLeft();
+    this.updateCsvLink();
   }
 
   ngOnDestroy() {
@@ -110,7 +110,9 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     this.warehouseService.warehouseQueryAggregateGet(
       speciesQuery, ['unit.linkings.taxon.id'], undefined, 1
     ).subscribe(cnt => this.speciesCount = cnt.total);
+  }
 
+  updateCsvLink() {
     let queryParams = this.searchQuery.getQueryObject();
     queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang];
     queryParams['includeNonValidTaxa'] = 'false';
@@ -118,18 +120,14 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   }
 
   makePrivateRequest() {
-    this.makeRequest('downloadApprovalRequest', this.description);
+    this.makeRequest('downloadApprovalRequest');
   }
 
   makePublicRequest() {
-    this.makeRequest('download', '');
+    this.makeRequest('download');
   }
 
-  cntCharactersLeft() {
-    this.charactersLeft = this.descriptionLimit - (this.description.length);
-  }
-
-  makeRequest(type: string, description) {
+  makeRequest(type: string) {
     this.queryCache = JSON.stringify(this.searchQuery.query);
     if (this.requests[type] === this.queryCache) {
       return;
