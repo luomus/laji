@@ -1,11 +1,18 @@
 <footer *ngIf="footerService.footerVisible">
   <div class="container info-footer">
     <div class="row">
-      <div class="col-sm-5 col-md-2 col-sm-offset-1">
+      <div class="col-sm-7 col-md-4">
         <h3>{{'footer.title1' | translate}}</h3>
         <p [innerHtml]="'footer.intro1' | translate"></p>
+        <ul>
+          <li>{{'footer.general' | translate}}</li>
+          <li>{{'footer.inANutshell' | translate}}</li>
+          <li>{{'footer.introduction' | translate}}</li>
+          <li>{{'footer.generalPrincipals' | translate}}</li>
+          <li>{{'footer.principalsInDepth' | translate}}</li>
+        </ul>
       </div>
-      <div class="col-sm-5 col-md-2 col-sm-offset-1">
+      <div class="col-sm-5 col-md-2">
         <h3>{{'footer.title2' | translate}}</h3>
         <ul>
           <li>{{'footer.dataPolicy' | translate}}</li>
@@ -17,7 +24,7 @@
           <li>{{'footer.licenses' | translate}}</li>
         </ul>
       </div>
-      <div class="col-sm-5 col-md-2 col-sm-offset-1">
+      <div class="col-sm-7 col-md-2 col-md-offset-1">
         <h3>{{'footer.title3' | translate}}</h3>
         <ul>
           <li>{{'footer.portal' | translate}}</li>
@@ -28,7 +35,7 @@
           <li>{{'footer.api' | translate}}</li>
         </ul>
       </div>
-      <div class="col-sm-5 col-md-2 col-sm-offset-1">
+      <div class="col-sm-5 col-md-2 col-md-offset-1">
         <h3>{{'footer.title4' | translate}}</h3>
         <ul>
           <li><a [routerLink]="'/information/citizen-science'">{{'footer.citizenScience' | translate}}</a></li>
