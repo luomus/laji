@@ -1,3 +1,12 @@
+.info-footer a {
+  color: #fff;
+}
+
+.info-footer a:hover, .info-footer a:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
 .partners-footer {
   background-color: #fff;
 }

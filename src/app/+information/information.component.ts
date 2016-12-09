@@ -17,6 +17,13 @@ export class InformationComponent implements OnDestroy {
   information: Information;
   private paramSub: Subscription;
   private transSub: Subscription;
+  private mappging = {
+    'citizen-science': {
+      'en': 76,
+      'fi': 76,
+      'sv': 76
+    }
+  };
 
   constructor(private route: ActivatedRoute,
               private informationService: InformationApi,
@@ -40,6 +47,9 @@ export class InformationComponent implements OnDestroy {
 
   private getInformation(id?) {
     if (id) {
+      if (this.mappging[id]) {
+        id = this.mappging[id][this.translate.currentLang];
+      }
       this.informationService
         .informationFindById(id, this.translate.currentLang)
         .subscribe(
