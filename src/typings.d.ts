@@ -3,3 +3,4 @@
 
 declare module 'laji-form';
 declare module 'laji-map';
+declare module 'query-string';

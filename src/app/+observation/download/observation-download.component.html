@@ -32,5 +32,19 @@
         </div>
       </div>
     </div>
+    <h3>{{'observation.download.specimenTitle' | translate}}</h3>
+    <div class="form-group">
+      <div class="col-sm-12" *ngIf="taxaLimit < speciesCount">
+        {{'observation.export.tooManySpecies' | translate:{max:(taxaLimit | formattedNumber:'&nbsp;')} }}
+      </div>
+      <div class="col-sm-12" *ngIf="speciesCount == 0">
+        {{'observation.export.tooLittle' | translate}}
+      </div>
+      <div class="col-sm-12" *ngIf="taxaLimit >= speciesCount && speciesCount > 0">
+        <p [innerHtml]="'result.load.introSpecies' | translate">
+        </p>
+        <a [ngClass]="{disabled: requests['species'] === 'sent'}" href="/api/warehouse/query/aggregate?{{csvParams}}&format=csv">{{'observation.download.loadSpecies' | translate}}</a>
+      </div>
+    </div>
   </div>
 </only-logged>

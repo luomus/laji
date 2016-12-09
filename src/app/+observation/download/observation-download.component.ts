@@ -3,10 +3,14 @@ import { SearchQuery } from '../search-query.model';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from 'ng2-translate';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { AppConfig } from '../../app.config';
+import { Util } from '../../shared/service/util.service';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { URLSearchParams } from '@angular/http';
+import queryString from 'query-string';
 
 @Component({
   selector: 'observation-download',
@@ -14,6 +18,7 @@ import { AppConfig } from '../../app.config';
 })
 export class ObservationDownloadComponent implements OnInit, OnDestroy {
 
+  @Input() taxaLimit = 1000;
   @Input() loadLimit = 2000000;
   @Input() descriptionLimit = 200;
 
@@ -23,8 +28,15 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     'count': 0,
     'private': 0
   };
+  public speciesCount = 0;
   public description: string = '';
+  public csvParams: string = '';
   public showRequest = true;
+  private taxaDownloadAggregateBy = {
+    'en': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameEnglish,unit.linkings.taxon.id',
+    'fi': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameFinnish,unit.linkings.taxon.id',
+    'sv': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameSwedish,unit.linkings.taxon.id'
+  };
   private queryCache: string;
   private subQueryUpdate: Subscription;
   private subLang: Subscription;
@@ -91,6 +103,18 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
           }),
         (count, priva) => ({'count': count.total, 'private': priva}))
       .subscribe(res => this.count = res);
+
+    let speciesQuery: WarehouseQueryInterface = Util.clone(this.searchQuery.query);
+    speciesQuery.taxonRankId = 'MX.species';
+    speciesQuery.includeNonValidTaxa = false;
+    this.warehouseService.warehouseQueryAggregateGet(
+      speciesQuery, ['unit.linkings.taxon.id'], undefined, 1
+    ).subscribe(cnt => this.speciesCount = cnt.total);
+
+    let queryParams = this.searchQuery.getQueryObject();
+    queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang];
+    queryParams['includeNonValidTaxa'] = 'false';
+    this.csvParams = queryString.stringify(queryParams);
   }
 
   makePrivateRequest() {
