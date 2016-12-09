@@ -30,6 +30,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TranslateFileLoader } from './shared/translate/translate-file-loader';
+import { WhatsNewComponent } from './shared/whats-new/whats-new.component';
 
 export function createTranslateLoader(): TranslateLoader {
   return new TranslateFileLoader();
@@ -45,7 +46,8 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
 
 @NgModule({
   declarations: [
-    AppComponent, NavbarComponent, FooterComponent, FeedbackComponent, LangSelectComponent
+    AppComponent, NavbarComponent, FooterComponent, FeedbackComponent, LangSelectComponent,
+    WhatsNewComponent
   ],
   imports: [
     BrowserModule,

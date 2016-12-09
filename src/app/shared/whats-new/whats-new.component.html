@@ -1,0 +1,22 @@
+<div bsModal #whatsNewModal="bs-modal" class="modal fade" tabIndex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="modal.hide()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <h4 class="modal-title">{{'whatsNew' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row message">
+          <div class="col-sm-12">
+            <span [innerHtml]="'whatsNew.message' | translate"></span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-success" (click)="acknowledge()">{{'whatsNew.acknowledge' | translate}}</a>
+      </div>
+    </div>
+  </div>
+</div>

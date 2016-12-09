@@ -272,5 +272,8 @@
   "feedback.invalid": "Sekä kuvaus että viesti tulee olla täytettynä",
   "feedback.cancel": "peruuta",
   "feedback.success": "Kiitos palautteestasi",
-  "feedback.failure": "Valitettavasti palautteen lähettäminen epäonnistui. Voit yrittää hetken kuluttua uudestaan, jos ongelma ei katoa voit lähettää palautetta suoraan osoitteeseen helpdesk@laji.fi."
+  "feedback.failure": "Valitettavasti palautteen lähettäminen epäonnistui. Voit yrittää hetken kuluttua uudestaan, jos ongelma ei katoa voit lähettää palautetta suoraan osoitteeseen helpdesk@laji.fi.",
+  "whatsNew": "Uutta sivustolla",
+  "whatsNew.message": "beta.laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!",
+  "whatsNew.acknowledge": "Kiitos tiedosta"
 }
