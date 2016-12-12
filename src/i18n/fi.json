@@ -174,7 +174,7 @@
   "observation.active.coordinates": "Paikka",
   "observation.active.coordinateAccuracyMax": "Paikan tarkkuus",
   "observation.active.documentId": "Tunniste",
-  "observation.active.collectionId": "Aineisto",
+  "observation.active.collectionId": "Kokoelma",
   "observation.active.typeSpecimen": "Tyyppinäyte",
   "observation.active.redListStatusId": "Uhanalaisuus",
   "observation.active.sourceId": "Lähde",
