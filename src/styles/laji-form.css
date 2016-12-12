@@ -1,8 +1,8 @@
 body .laji-form {
 	font-size: 13px;
 	position: relative;
+  z-index:1;
 }
-
 .laji-form .blocking-loader {
 	width: 100%;
 	height: 100%;
