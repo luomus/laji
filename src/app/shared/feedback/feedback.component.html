@@ -1,5 +1,8 @@
 <div id="feedback">
-  <a class="link" (click)="modal.show()">{{'feedback' | translate}}</a>
+  <a class="link" (click)="modal.show()">
+    <img *ngIf="translate.currentLang !== 'fi'" src="/static/images/feedback.png" alt="feedback">
+    <img *ngIf="translate.currentLang === 'fi'" src="/static/images/feedback_fi.png" alt="feedback">
+  </a>
 </div>
 <div bsModal #childModal="bs-modal" class="modal fade" tabIndex="-1" role="dialog">
   <div class="modal-dialog modal-md">

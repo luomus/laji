@@ -1,31 +1,7 @@
 #feedback {
-  height: 104px;
-  width: 104px;
   position: fixed;
   bottom: 90px;
   z-index: 1002;
-  transform: rotate(-90deg);
-  -webkit-transform: rotate(-90deg);
-  -moz-transform: rotate(-90deg);
-  -o-transform: rotate(-90deg);
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-}
-
-#feedback a {
-  display: block;
-  background: #2C3E50;
-  height: 30px;
-  width: 100px;
-  text-align: center;
-  padding: 1px 16px;
-  color: #fff;
-  font-family: Arial, sans-serif;
-  font-size: 17px;
-  font-weight: bold;
-  text-decoration: none;
-  border-bottom: solid 3px #CCC;
-  border-left: solid 3px #CCC;
-  border-right: solid 3px #CCC;
 }
 
 .feedback-text {

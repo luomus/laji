@@ -26,9 +26,9 @@ export class FeedbackComponent {
 
   constructor(
     public userService: UserService,
+    public translate: TranslateService,
     private feedbackApi: FeedbackApi,
     private toastsService: ToastsService,
-    private translate: TranslateService,
     private location: Location
 ) {
   }
