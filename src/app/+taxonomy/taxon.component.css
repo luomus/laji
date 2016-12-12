@@ -4,15 +4,6 @@
   display: inline-block;
 }
 
-.taxonomy h3 {
-  background-size: 35px;
-}
-
-.informal h3 {
-  background: url('/static/images/icons/species.svg') right center no-repeat;
-  background-size: 35px;
-}
-
 :host >>> .species-list, .informal-group-list {
   height: 500px;
   overflow: auto;
