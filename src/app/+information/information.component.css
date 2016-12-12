@@ -5,6 +5,10 @@
 }
 
 @media only screen and (min-width : 768px) {
+  .more-info .media {
+    position: fixed;
+  }
+
   #wrapper {
     display: flex;
   } 

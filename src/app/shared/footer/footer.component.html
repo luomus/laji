@@ -5,8 +5,7 @@
         <h3>{{'footer.title1' | translate}}</h3>
         <p [innerHtml]="'footer.intro1' | translate"></p>
         <ul>
-          <li>{{'footer.general' | translate}}</li>
-          <li>{{'footer.inANutshell' | translate}}</li>
+          <li><a [routerLink]="'/information'">{{'footer.inANutshell' | translate}}</a></li>
           <li>{{'footer.introduction' | translate}}</li>
           <li>{{'footer.generalPrincipals' | translate}}</li>
           <li>{{'footer.principalsInDepth' | translate}}</li>
@@ -50,10 +49,8 @@
   <div class="partners-footer">
     <div class="container">
       <div cĺass="row">
-        <div class="col-sm-12 partners"
-             routerLinkActive="front"
-             [routerLink]="'/'"
-             [routerLinkActiveOptions]="{exact: true}">
+        <div class="col-sm-12 partners front"
+             [ngClass]="{hidden: !showPartners}">
           <span class="title">{{'footer.partners' | translate }}</span>
           <ul>
             <li>

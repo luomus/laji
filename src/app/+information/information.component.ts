@@ -5,6 +5,7 @@ import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Logger } from '../shared/logger/logger.service';
 import { InformationApi } from '../shared/api/InformationApi';
 import { Information } from '../shared/model/Information';
+import { InformationService } from './information.service';
 
 @Component({
   selector: 'laji-information',
@@ -17,17 +18,11 @@ export class InformationComponent implements OnDestroy {
   information: Information;
   private paramSub: Subscription;
   private transSub: Subscription;
-  private mappging = {
-    'citizen-science': {
-      'en': 76,
-      'fi': 76,
-      'sv': 76
-    }
-  };
 
   constructor(private route: ActivatedRoute,
-              private informationService: InformationApi,
+              private informationApi: InformationApi,
               private translate: TranslateService,
+              private informationService: InformationService,
               private logger: Logger
   ) {
     this.paramSub = this.route.params.subscribe(params => {
@@ -46,30 +41,24 @@ export class InformationComponent implements OnDestroy {
   }
 
   private getInformation(id?) {
-    if (id) {
-      if (this.mappging[id]) {
-        id = this.mappging[id][this.translate.currentLang];
-      }
-      this.informationService
-        .informationFindById(id, this.translate.currentLang)
-        .subscribe(
-          information => {
-            if (information.id === null) {
-
-            } else {
-              this.information = information;
-            }
-          },
-          err => this.logger.warn('Failed to fetch information page', err)
-        );
-    } else {
-      this.informationService
-        .informationFindAll(this.translate.currentLang)
-        .subscribe(
-          information => this.information = information,
-          err => this.logger.warn('Failed to fetch root informations', err)
-        );
-    }
+    let lang = this.translate.currentLang;
+    (id ?
+      (this.informationApi.informationFindById(this.informationService.resolveId(id, lang), lang)) :
+      (this.informationApi.informationFindAll(lang)))
+      .map(data => {
+        if (data.children) {
+          data.children = data.children.map(item => {
+            item.id = this.informationService.getNiceUrl(item.id);
+            return item;
+          });
+        }
+        console.log(data);
+        return data;
+      })
+      .subscribe(
+        information => this.information = information,
+        err => this.logger.warn('Failed to fetch root informations', err)
+      );
   }
 
 }
