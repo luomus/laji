@@ -52,7 +52,6 @@ export class InformationComponent implements OnDestroy {
             return item;
           });
         }
-        console.log(data);
         return data;
       })
       .subscribe(
