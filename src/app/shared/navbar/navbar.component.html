@@ -24,7 +24,7 @@
           <a *ngIf="!userService.isLoggedIn" [routerLink]="['/vihko']">{{ 'navigation.notify' | translate }}</a>
         </li>
         <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/information']">{{ 'navigation.information' | translate }}</a>
+          <a [routerLink]="['/about']">{{ 'navigation.information' | translate }}</a>
         </li>
       </ul>
       <ul class="nav navbar-nav pull-right">
