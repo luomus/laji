@@ -63,7 +63,10 @@
           [showPager]="true"></laji-observation-aggregate>
 </div>
 <div [hidden]="active !== 'images'" *ngIf="activated['images']" style="min-height: 180px; padding: 10px 10px 0 0">
-  <laji-gallery></laji-gallery>
+  <laji-gallery
+          [tick]="searchQuery.tack"
+          [query]="searchQuery.query">
+  </laji-gallery>
 </div>
 <div [hidden]="active !== 'stats'" *ngIf="activated['stats']">
   <div *ngIf="activated['stats']">

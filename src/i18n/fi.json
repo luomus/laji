@@ -57,6 +57,8 @@
   "taxonomy.invasive.title": "vieraslaji",
   "taxonomy.list.onlyFinnish": "Vain suomalaiset taksonit",
   "taxonomy.map.summary": "Yhteenvetokartta",
+  "taxonomy.images.taxon": "Valitut",
+  "taxonomy.images.collection": "Kokoelmanäytteiden",
   "taxonomy.rank": "Taksonominen taso",
   "taxonomy.distribution": "Jakauma",
   "taxonomy.other": "Muut",

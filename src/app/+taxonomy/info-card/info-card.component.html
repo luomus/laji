@@ -4,7 +4,7 @@
   </h1>
   <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
   <div class="row">
-    <div class="col-sm-6" *ngIf="taxonDescription && taxonDescription.length > 0">
+    <div class="col-sm-6" *ngIf="hasDescription">
       <select style="margin-bottom: 8px;" class="form-control" [(ngModel)]="activeDescription"
               *ngIf="taxonDescription.length > 1">
         <option *ngFor="let description of taxonDescription; let i = index" [value]="i">
@@ -28,18 +28,45 @@
         </div>
       </div>
     </div>
-    <div [class.col-sm-6]="taxonDescription && taxonDescription.length > 0">
-      <div [class.col-sm-3]="taxonDescription && taxonDescription.length < 1">
+    <div [class.col-sm-6]="hasDescription">
+      <div [ngClass]="{
+              'col-sm-4': !hasDescription
+              }"
+           [hidden]="!hasTaxonImages && !hasCollectionImages">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">{{ 'taxonomy.images' | translate }}</h4>
           </div>
           <div class="panel-body">
-            <ImageModal [modalImages]="taxonImages"></ImageModal>
+            <ul class="nav nav-tabs">
+              <li role="presentation"
+                  [ngClass]="{active: activeImageTab === 'taxon'}"
+                  *ngIf="hasTaxonImages">
+                <a (click)="setActiveImageTab('taxon')">
+                  {{ 'taxonomy.images.taxon' | translate }}
+                </a>
+              </li>
+              <li role="presentation"
+                  [ngClass]="{active: activeImageTab === 'collection'}"
+                  *ngIf="hasCollectionImages">
+                <a (click)="setActiveImageTab('collection')">
+                  {{ 'taxonomy.images.collection' | translate }}
+                </a>
+              </li>
+            </ul>
+            <div [hidden]="activeImageTab !== 'taxon'" *ngIf="hasTaxonImages">
+              <ImageModal [modalImages]="taxonImages"></ImageModal>
+            </div>
+            <div [hidden]="activeImageTab !== 'collection' || !hasCollectionImages">
+              <laji-gallery (hasData)="hasData($event)" [query]="{target: taxon.id, superRecordBasis: 'PRESERVED_SPECIMEN'}" [pageSize]="10"></laji-gallery>
+            </div>
           </div>
         </div>
       </div>
-      <div [class.col-sm-5]="taxonDescription && taxonDescription.length < 1">
+      <div [ngClass]="{
+            'col-sm-5': !hasDescription && (hasCollectionImages || hasTaxonImages),
+            'col-sm-6': !hasDescription && (!hasCollectionImages && !hasTaxonImages)
+          }">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">{{ 'taxonomy.card' | translate }}</h4>
@@ -64,7 +91,10 @@
           </div>
         </div>
       </div>
-      <div [class.col-sm-4]="taxonDescription && taxonDescription.length < 1">
+      <div [ngClass]="{
+            'col-sm-3': !hasDescription && (hasCollectionImages || hasTaxonImages),
+            'col-sm-6': !hasDescription && (!hasCollectionImages && !hasTaxonImages)
+          }">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">{{ 'taxonomy.map' | translate }}</h4>

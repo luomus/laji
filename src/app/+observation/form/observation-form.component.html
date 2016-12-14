@@ -67,8 +67,7 @@
             </h5>
           </template>
           <span *ngIf="taxonName && taxonName.value" style="margin-left: 5px;">
-            <em *ngIf="taxonName.payload.isCursiveName">{{taxonName.value}}</em>
-
+            <em *ngIf="taxonName.payload.cursiveName">{{taxonName.value}}</em>
           </span>
         </div>
       </div>

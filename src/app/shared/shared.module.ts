@@ -25,6 +25,7 @@ import { MapService } from './map/map.service';
 import { ToQNamePipe } from './pipe/to-qname.pipe';
 import { WindowRef } from './windows-ref';
 import { ToFullUriPipe } from './pipe/to-full-uri';
+import { GalleryComponent } from '../+observation/gallery/gallery.component';
 
 
 @NgModule({
@@ -32,7 +33,7 @@ import { ToFullUriPipe } from './pipe/to-full-uri';
     NewsListComponent,
     SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe,
     UsersPipe, LabelPipe, SafePipe, MultiLangPipe, FormattedNumber,
-    ObservationCountComponent, ObservationMapComponent, MapComponent,
+    ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal
   ],
   imports: [
@@ -51,7 +52,7 @@ import { ToFullUriPipe } from './pipe/to-full-uri';
     CommonModule, HttpModule, TranslateModule,
     NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe, MultiLangPipe, ToQNamePipe,
     ToFullUriPipe, TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
-    FormattedNumber, ObservationCountComponent, ObservationMapComponent, MapComponent,
+    FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal
   ]
 })

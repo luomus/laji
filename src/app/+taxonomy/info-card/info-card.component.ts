@@ -18,6 +18,10 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   public taxonImages: Array<TaxonomyImage>;
   public activePanel: number = 0;
   public activeImage: number = 1;
+  public activeImageTab: string;
+  public hasCollectionImages = true;
+  public hasTaxonImages = true;
+  public hasDescription = true;
   public activeDescription: number = 0;
 
   @Input() public taxonId: string;
@@ -54,8 +58,16 @@ export class InfoCardComponent implements OnInit, OnDestroy {
     );
   }
 
+  hasData(event) {
+    this.hasCollectionImages = event;
+  }
+
   setActive(event) {
     this.activePanel = this.activePanel === event.value ? null : event.value;
+  }
+
+  setActiveImageTab(tab: string) {
+    this.activeImageTab = tab;
   }
 
   ngOnDestroy() {
@@ -86,17 +98,24 @@ export class InfoCardComponent implements OnInit, OnDestroy {
         }, [])
       )
       .subscribe(
-        descriptions => this.taxonDescription = descriptions,
+        descriptions => {
+          this.taxonDescription = descriptions;
+          this.hasDescription = descriptions.length > 0;
+        },
         err => this.logger.warn('Failed to fetch taxon description by id', err)
       );
 
   }
 
   private getTaxonMedia(id) {
-    this.taxonService.taxonomyFindMedia(id, this.translate.currentLang)
-      .subscribe(
-      media => this.taxonImages = media,
-      err => this.logger.warn('Failed to fetch taxon media by id', err)
+    this.taxonService
+      .taxonomyFindMedia(id, this.translate.currentLang)
+      .subscribe(media => {
+          this.hasTaxonImages = media.length > 0;
+          this.activeImageTab = this.hasTaxonImages ? 'taxon' : 'collection';
+          this.taxonImages = media;
+        },
+        err => this.logger.warn('Failed to fetch taxon media by id', err)
       );
   }
 }
