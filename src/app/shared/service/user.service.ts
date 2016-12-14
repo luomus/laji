@@ -115,7 +115,7 @@ export class UserService {
     }
     this.formDefaultObservable = this.getUser()
       .map(data => ({
-        'editors': [data.id],
+        'creator': data.id,
         'gatheringEvent': {
           'leg': [data.id]
         }
