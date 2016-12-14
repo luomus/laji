@@ -212,7 +212,7 @@
   "haseka.form.unsaved": "senast sparade på {{saveTime}}",
   "haseka.form.unsavedNever": "Ändringarna har ännu inte sparats.",
   "haseka.form.hasChanges": "Observationbatch har lokala ändringar som ännu inte har sparats.",
-  "haseka.form.back": "Lämna utan att spara",
+  "haseka.form.back": "Avbryt utan att spara",
   "haseka.form.discard": "Ignorera ändringar",
   "haseka.form.discardConfirm": "Är du säker på att du vill ignorera ändgringar som gjort efter senaste sparande?",
   "haseka.form.documentNotFound": "Det hittades ingen observationbatch med id {{documentId}}.",
@@ -220,6 +220,7 @@
   "haseka.form.genericError": "Tyvärr ett oväntat fel inträffade. Vänta ett tag och försök igen om en liten stund. Om felet inte försvinner, kontakta support.",
   "haseka.users.latest": "Mina senaste observationer",
   "haseka.users.latest.more": "mera",
+  "haseka.users.unsaved": "Osparade observationer"
   "haseka.pleaseLogin": "Du måste logga in för att använda den här tjänsten.",
   "haseka.terms": "Användarvillkor",
   "haseka.button": "Gå till observationstjänsten",
