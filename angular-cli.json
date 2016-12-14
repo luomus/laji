@@ -19,7 +19,6 @@
       "mobile": false,
       "styles": [
         "styles/ng2-toastr.min.css",
-        "styles/laji-form.css",
         "../node_modules/laji-form/dist/styles.css",
         "styles/laji.css"
       ],
