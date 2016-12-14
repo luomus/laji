@@ -1,47 +1,13 @@
 <footer *ngIf="footerService.footerVisible">
   <div class="container info-footer">
     <div class="row">
-      <div class="col-sm-7 col-md-4">
-        <h3>{{'footer.title1' | translate}}</h3>
-        <p [innerHtml]="'footer.intro1' | translate"></p>
-        <ul>
-          <li><a [routerLink]="'/about'">{{'footer.inANutshell' | translate}}</a></li>
-          <li>{{'footer.introduction' | translate}}</li>
-          <li>{{'footer.generalPrincipals' | translate}}</li>
-          <li>{{'footer.principalsInDepth' | translate}}</li>
-        </ul>
-      </div>
-      <div class="col-sm-5 col-md-2">
-        <h3>{{'footer.title2' | translate}}</h3>
-        <ul>
-          <li>{{'footer.dataPolicy' | translate}}</li>
-          <li>{{'footer.sensitiveData' | translate}}</li>
-          <li>{{'footer.qualityAssurance' | translate}}</li>
-          <li>{{'footer.coreKnowledge' | translate}}</li>
-          <li>{{'footer.longTerm' | translate}}</li>
-          <li>{{'footer.metadata' | translate}}</li>
-          <li>{{'footer.licenses' | translate}}</li>
-        </ul>
-      </div>
-      <div class="col-sm-7 col-md-2 col-md-offset-1">
-        <h3>{{'footer.title3' | translate}}</h3>
-        <ul>
-          <li>{{'footer.portal' | translate}}</li>
-          <li>{{'footer.vihko' | translate}}</li>
-          <li>{{'footer.kotka' | translate}}</li>
-          <li>{{'footer.dataWarehouse' | translate}}</li>
-          <li>{{'footer.geoServices' | translate}}</li>
-          <li>{{'footer.api' | translate}}</li>
-        </ul>
-      </div>
-      <div class="col-sm-5 col-md-2 col-md-offset-1">
-        <h3>{{'footer.title4' | translate}}</h3>
-        <ul>
-          <li><a [routerLink]="'/about/citizen-science'">{{'footer.citizenScience' | translate}}</a></li>
-          <li>{{'footer.conservation' | translate}}</li>
-          <li>{{'footer.speciesTracking' | translate}}</li>
-          <li>{{'footer.observationService' | translate}}</li>
-          <li [innerHtml]="'footer.conservationSociety' | translate"></li>
+      <div *ngFor="let item of tree; let i=index" class="{{columns[i] || ''}}">
+        <h3>{{item.title}}</h3>
+        <p *ngIf="i === 0" [innerHtml]="'footer.intro1' | translate"></p>
+        <ul *ngIf="item.children">
+          <li *ngFor="let child of item.children">
+            <a [routerLink]="'/about/' + child.id">{{child.title}}</a>
+          </li>
         </ul>
       </div>
     </div>

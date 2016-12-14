@@ -5,6 +5,7 @@ import { TaxonomyApi } from './shared/api/TaxonomyApi';
 import { CollectionApi } from './shared/api/CollectionApi';
 import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
+import { InformationApi } from './shared/api/InformationApi';
 
 declare const ga: Function;
 
@@ -12,7 +13,8 @@ declare const ga: Function;
   selector: 'laji-app',
   providers: [
     TaxonomyApi,
-    CollectionApi
+    CollectionApi,
+    InformationApi
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

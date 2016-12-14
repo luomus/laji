@@ -43,6 +43,36 @@ export class InformationApi {
   }
 
   /**
+   * Returns index of the information
+   *
+   * @param lang Language of the information. Defaults to en.
+   */
+  public informationIndex(lang?: string, extraHttpRequestParams?: any): Observable<any> {
+    const path = this.basePath + '/information/index';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    if (lang !== undefined) {
+      queryParameters.set('lang', lang);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  /**
    * return information
    *
    * @param lang Language of the information. Defaults to en.
