@@ -1,7 +1,21 @@
 <div>
-    <Tree #tree [nodes]="nodes" [options]="options">
-        <template #treeNodeTemplate let-node>
-            <span>{{ node.data.scientificName }}{{ node.data.vernacularName ? ' - ' + node.data.vernacularName: '' }}</span>
-        </template>
-    </Tree>
+  <Tree #tree
+        (onToggleExpanded)="onToggle($event)"
+        [nodes]="nodes"
+        [focused]="true"
+        [options]="options">
+    <template #treeNodeTemplate let-node>
+      <span class="rank">
+        [{{node.data.taxonRank | label}}]
+      </span>
+      <span class="name">
+        <i *ngIf="node.data.cursiveName">{{ node.data.scientificName }}</i>
+        <span *ngIf="!node.data.cursiveName">{{ node.data.scientificName }}</span>
+        {{ node.data.vernacularName ? ' - ' + (node.data.vernacularName | multiLang) : '' }}
+      </span>
+      <a [routerLink]="'/taxon/' + node.data.id">
+        <i class="glyphicon glyphicon-modal-window"></i>
+      </a>
+    </template>
+  </Tree>
 </div>

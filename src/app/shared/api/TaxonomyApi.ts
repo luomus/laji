@@ -112,6 +112,10 @@ export class TaxonomyApi {
       queryParameters.set('maxLevel', maxLevel);
     }
 
+    _.each(extraHttpRequestParams, (value, key: any) => {
+      queryParameters.set(key, value)
+    });
+
     let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,

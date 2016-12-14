@@ -24,7 +24,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
               private _ref: ChangeDetectorRef) {
   }
 
-  updateValue(key: string, mapWarehouse: boolean = false): void {
+  updateValue(key: string, mapWarehouse = false): void {
     if (mapWarehouse) {
       this.warehouseService.getOriginalKey(key).subscribe(
         (res: string) => {
@@ -41,7 +41,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     }
   }
 
-  transform(value: string, mapWarehouse: boolean = true): any {
+  transform(value: string, mapWarehouse = true): any {
     if (!value || value.length === 0) {
       return value;
     }

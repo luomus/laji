@@ -2,18 +2,18 @@
 	<div id="wrapper" class="row">
 		<div style="background-color: #ECF0F1;" class="col-sm-4 col-md-3 col-lg-2">
 			<h1>{{ 'species.search' | translate }}<br><small>{{ 'species.title.short' | translate }}</small></h1>
-			<laji-omni-search [placeholder]="'search-bar.input' | translate" [lang]="translate.currentLang"></laji-omni-search>
+			<laji-omni-search [selectTo]="'/taxon/taxonomy/'" [placeholder]="'search-bar.input' | translate" [lang]="translate.currentLang"></laji-omni-search>
 			<div>{{ 'species.title.long' | translate }}</div>
 		</div>
 		<div  class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
 			<ul style="margin-top: 24px;" class="nav nav-tabs nav-justified">
 				<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-					<a routerLink="/taxon/browse/informal">
+					<a routerLink="/taxon/informal">
 						<h3>{{ 'species.groups' | translate }}<br><small>{{ 'species.groups.short' | translate }}</small></h3>
 					</a>
 				</li>
 				<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-					<a routerLink="/taxon/browse/taxonomy">
+					<a routerLink="/taxon/taxonomy">
 						<h3>{{ 'species.taxa' | translate }}<br><small>{{ 'species.taxa.short' | translate }}</small></h3>
 					</a>
 				</li>
@@ -27,7 +27,7 @@
 			</div>
 			<div *ngIf="(type | async) == 'taxonomy'" class="row">
 				<div class="col-sm-12">
-					<laji-tree></laji-tree>
+					<laji-tree [openId]="id | async"></laji-tree>
 				</div>
 			</div>
 		</div>

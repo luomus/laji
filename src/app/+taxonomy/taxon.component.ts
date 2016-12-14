@@ -28,15 +28,11 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   private subTaxon: Subscription;
 
-  private subParents: Subscription;
-
   private type: Observable<string>;
 
   private id: Observable<string>;
 
   private taxon: Observable<Taxonomy>;
-
-  private parents: Observable<Array<Taxonomy>>;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,7 +46,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
     this.type = this.route.params.map(params => params['type']);
 
-    this.id = this.route.params.distinctUntilChanged().map(params => params['id']);
+    this.id = this.route.params.map(params => params['id']);
 
     this.onlyFinnish = false;
 
@@ -58,7 +54,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
     const informal = this.type.filter(type => type === 'informal').switchMap((type) => this.id.distinctUntilChanged());
 
-    const taxonomy = this.type.filter(type => type === 'taxonomy').switchMap((type) => this.id.distinctUntilChanged());
+    const taxonomy = this.type.filter(type => type === 'taxonomy').switchMap((type) => this.id);
 
     informal.filter(id => id == null).forEach(id => {
       this.informalTaxonService
@@ -81,16 +77,13 @@ export class TaxonComponent implements OnInit, OnDestroy {
         });
     });
 
-    this.taxon = taxonomy.switchMap((id) => this.taxonService.taxonomyFindBySubject(id, this.translate.currentLang));
-    this.parents = taxonomy.switchMap((id) => this.taxonService.taxonomyFindParents(id, this.translate.currentLang));
+    this.taxon = taxonomy.switchMap((id) => this.taxonService.taxonomyFindBySubject(id || 'MX.37600', this.translate.currentLang));
     this.subTaxon = this.taxon.subscribe();
-    this.subParents = this.parents.subscribe();
   }
 
   ngOnDestroy() {
     this.subTrans.unsubscribe();
     this.subTaxon.unsubscribe();
-    this.subParents.unsubscribe();
   }
 
   parseInformalTaxonGroup(data) {

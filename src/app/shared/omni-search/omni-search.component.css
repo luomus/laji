@@ -9,7 +9,7 @@
   background-color: #ffffff;
   padding: 5px;
   z-index: 1040;
-  min-width: 500px;
+  min-width: 727px;
   border-right: 1px solid #999;
   border-left: 1px solid #999;
   border-bottom: 1px solid #999;
@@ -45,7 +45,7 @@
   border-bottom: 1px solid #ccc;
 }
 
-.omni-search-results .taxon-match, .omni-search-results .observations {
+.taxon-match, .observations, .taxonomy {
   color: #2c2c2c;
 }
 

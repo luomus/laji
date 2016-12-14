@@ -18,6 +18,7 @@ export class OmniSearchComponent implements OnInit, OnChanges {
   @Input() lang: string;
   @Input() limit: number = 10;
   @Input() delay: number = 200;
+  @Input() selectTo: string  = '/taxon';
   public search = '';
   public searchControl = new FormControl();
   public active = 0;
@@ -71,7 +72,7 @@ export class OmniSearchComponent implements OnInit, OnChanges {
           this.taxa.map(auto => {
             if (auto.key === data.id ) {
               auto['vernacularName'] = data['vernacularName'];
-              auto['isCursiveName'] = data['isCursiveName'] || false;
+              auto['cursiveName'] = data['cursiveName'] || false;
             }
           });
         });
@@ -106,7 +107,8 @@ export class OmniSearchComponent implements OnInit, OnChanges {
     }
     if (e.keyCode === 13) {
       if (this.taxa[this.active]) {
-        this.router.navigate(['/taxon', this.taxa[this.active].key]);
+        this.router.navigate([this.selectTo, this.taxa[this.active].key]);
+        this.close();
       }
     }
   }

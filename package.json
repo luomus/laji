@@ -29,7 +29,7 @@
     "@angular/router": "3.2.4",
     "angular-2-dropdown-multiselect": "^0.3.1",
     "angular2-localstorage": "git+https://github.com/brennerdvaz/angular2-localstorage.git#81c1a38fbbca8a6bbe5e5dfc6102ae35cd2dbba6",
-    "angular2-tree-component": "^2.1.0",
+    "angular2-tree-component": "^2.5.0",
     "core-js": "^2.4.0",
     "ie-shim": "^0.1.0",
     "intl": "^1.2.5",

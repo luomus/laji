@@ -121,9 +121,9 @@ export class TreeOfLifeComponent {
 
       label
         .append('a')
-        .attr('href', (d) => `/taxon/browse/taxonomy/${d.id}`)
+        .attr('href', (d) => `/taxon/taxonomy/${d.id}`)
         .on('click', (d) => {
-          this.router.navigate(['taxon', 'browse', 'taxonomy', d.id]);
+          this.router.navigate(['taxon', 'taxonomy', d.id]);
           d3.event.preventDefault();
         })
         .append('circle')
