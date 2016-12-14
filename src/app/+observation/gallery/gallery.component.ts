@@ -18,6 +18,7 @@ export class GalleryComponent implements OnChanges {
   @Input() query: WarehouseQueryInterface;
   @Input() tick;
   @Input() pageSize: number = 50;
+  @Input() shortPager = false;
   @Output() hasData = new EventEmitter<boolean>();
 
   images: TaxonomyImage[] = [];

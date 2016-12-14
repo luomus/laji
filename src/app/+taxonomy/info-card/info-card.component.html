@@ -58,7 +58,10 @@
               <ImageModal [modalImages]="taxonImages"></ImageModal>
             </div>
             <div [hidden]="activeImageTab !== 'collection' || !hasCollectionImages">
-              <laji-gallery (hasData)="hasData($event)" [query]="{target: taxon.id, superRecordBasis: 'PRESERVED_SPECIMEN'}" [pageSize]="10"></laji-gallery>
+              <laji-gallery
+                      [shortPager]="true"
+                      (hasData)="hasData($event)"
+                      [query]="{target: taxon.id, superRecordBasis: 'PRESERVED_SPECIMEN', source: 'KE.3'}" [pageSize]="10"></laji-gallery>
             </div>
           </div>
         </div>
@@ -81,10 +84,10 @@
           </div>
           <div class="panel-body">
             <p>
-              <a [routerLink]="'/observation/map'" [queryParams]="{page: 1, target: taxon.id}">
+              <a [routerLink]="'/observation/map'" [queryParams]="{target: taxon.id}">
                 {{ 'taxonomy.browse' | translate }}
               </a><br>
-              <a [routerLink]="'/observation/load'" [queryParams]="{target: taxon.id, page: 1}">
+              <a [routerLink]="'/observation/load'" [queryParams]="{target: taxon.id}">
                 {{ 'taxonomy.browse.download' | translate }}
               </a><br>
             </p>
