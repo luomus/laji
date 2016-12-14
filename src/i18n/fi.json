@@ -222,6 +222,7 @@
   "haseka.form.genericError": "Odottamaton virhe tapahtui. Yritä hetken kuluttua uudestaan, jos virhe ei ole korjaantunut ota yhteyttä ylläpitoon.",
   "haseka.users.latest": "Uusimmat havaintoeräni",
   "haseka.users.latest.more": "lisätietoja",
+  "haseka.users.unsaved": "Tallentamattomat havaintoerät",
   "haseka.pleaseLogin": "Sinun täytyy kirjautua käyttääksesi tätä palvelua",
   "haseka.terms": "Käyttöehdot",
   "haseka.button": "Siirry havaintopalveluun",
