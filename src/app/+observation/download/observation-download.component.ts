@@ -116,6 +116,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     let queryParams = this.searchQuery.getQueryObject();
     queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang];
     queryParams['includeNonValidTaxa'] = 'false';
+    queryParams['pageSize'] = this.taxaLimit;
     this.csvParams = queryString.stringify(queryParams);
   }
 
