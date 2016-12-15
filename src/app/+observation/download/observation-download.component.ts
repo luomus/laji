@@ -31,9 +31,9 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   public showRequest = true;
   public apiBase: string;
   private taxaDownloadAggregateBy = {
-    'en': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameEnglish,unit.linkings.taxon.id',
-    'fi': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameFinnish,unit.linkings.taxon.id',
-    'sv': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameSwedish,unit.linkings.taxon.id'
+    'en': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameEnglish,unit.linkings.taxon.speciesId',
+    'fi': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameFinnish,unit.linkings.taxon.speciesId',
+    'sv': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameSwedish,unit.linkings.taxon.speciesId'
   };
   private queryCache: string;
   private subQueryUpdate: Subscription;

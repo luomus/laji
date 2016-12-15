@@ -50,16 +50,16 @@ export class ObservationResultComponent implements OnInit, OnChanges {
 
   pickValue(aggr, lang) {
     let vernacular = '';
-    let scientific = aggr['unit.linkings.taxon.scientificName'] || '';
+    let scientific = aggr['unit.linkings.taxon.speciesScientificName'] || '';
     switch (lang) {
       case 'fi':
-        vernacular = aggr['unit.linkings.taxon.nameFinnish'] || '';
+        vernacular = aggr['unit.linkings.taxon.speciesNameFinnish'] || '';
         break;
       case 'en':
-        vernacular = aggr['unit.linkings.taxon.nameEnglish'] || '';
+        vernacular = aggr['unit.linkings.taxon.speciesNameEnglish'] || '';
         break;
       case 'sv':
-        vernacular = aggr['unit.linkings.taxon.nameSwedish'] || '';
+        vernacular = aggr['unit.linkings.taxon.speciesNameSwedish'] || '';
         break;
       default:
         vernacular = '';
@@ -72,11 +72,11 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   }
 
   pickLink(aggr) {
-    if (!aggr['unit.linkings.taxon.id']) {
+    if (!aggr['unit.linkings.taxon.speciesId']) {
       return undefined;
     }
     return {
-      local: '/taxon/' + IdService.getId(aggr['unit.linkings.taxon.id']),
+      local: '/taxon/' + IdService.getId(aggr['unit.linkings.taxon.speciesId']),
       content: '<i class="glyphicon glyphicon-modal-window"></i>'
     };
   }

@@ -427,8 +427,8 @@
               <laji-observation-count
                       [query]="searchQuery.query"
                       [tick]="searchQuery.tack"
-                      [field]="'unit.linkings.taxon.id'"
-                      [overrideInQuery]="{taxonRankId: 'MX.species', includeNonValidTaxa: false}">
+                      [field]="'unit.linkings.taxon.speciesId'"
+                      [overrideInQuery]="{includeNonValidTaxa: false}">
               </laji-observation-count>
               {{'observation.results.species' | translate}}
             </small>

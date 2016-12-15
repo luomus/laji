@@ -50,15 +50,15 @@
 <div [hidden]="active !== 'species'" *ngIf="activated['species']" style="min-height: 250px;">
   <laji-observation-aggregate
           [field]="{
-              'en': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameEnglish,unit.linkings.taxon.id',
-              'fi': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameFinnish,unit.linkings.taxon.id',
-              'sv': 'unit.linkings.taxon.scientificName,unit.linkings.taxon.nameSwedish,unit.linkings.taxon.id'
+              'en': 'unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish,unit.linkings.taxon.speciesId',
+              'fi': 'unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesId',
+              'sv': 'unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameSwedish,unit.linkings.taxon.speciesId'
             }"
           [title]="'search.result.species' | translate"
           [valuePicker]="pickValue"
           [linkPicker]="pickLink"
           [lang]="translate.currentLang"
-          [queryOverride]="{includeNonValidTaxa: false, taxonRankId: 'MX.species'}"
+          [queryOverride]="{includeNonValidTaxa: false}"
           [limit]="searchQuery.pageSize"
           [showPager]="true"></laji-observation-aggregate>
 </div>
