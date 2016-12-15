@@ -168,6 +168,14 @@ body {
   height: 100%;
 }
 
+.laji-form {
+  z-index:1;
+}
+
+.laji-form .blocking-loader {
+	z-index: 2;
+}
+
 /** /forms **/
 
 /* Style when highlighting a search. */
