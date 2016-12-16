@@ -42,6 +42,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
   private subParam: Subscription;
   private subTrans: Subscription;
   private subFetch: Subscription;
+  private subForm: Subscription;
   private success: string = '';
   private error: any;
   private errorMsg: string;
@@ -100,7 +101,15 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
   onLangChange() {
     this.translate.get('haseka.leave.unsaved')
       .subscribe((msg) => this.leaveMsg = msg);
-    this.documentId ? this.fetchFormAndDocument() : this.fetchForm();
+    if (this.subForm) {
+      this.subForm.unsubscribe();
+    }
+    this.subForm = this.formService
+      .getForm(this.formId, this.translate.currentLang)
+      .subscribe(form => {
+        form['formData'] = this.form.formData;
+        this.form = form;
+      });
   }
 
   onSubmit(event) {

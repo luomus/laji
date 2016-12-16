@@ -6,6 +6,7 @@ import { Util } from '../../shared/service/util.service';
 import { FormApi } from '../../shared/api/FormApi';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
+import { Form } from '@angular/forms';
 
 
 @Injectable()
@@ -139,6 +140,16 @@ export class FormService {
             .reverse()
         );
       });
+  }
+
+  getForm(formId: string, lang: string): Observable<Form> {
+    this.setLang(lang);
+    return this.formCache[formId] ?
+      Observable.of(this.formCache[formId]) :
+      this.formApi.formFindById(formId, lang)
+        .do((schema) => {
+          this.formCache[formId] = schema;
+        });
   }
 
   load(formId: string, lang: string, documentId?: string): Observable<any> {
