@@ -68,6 +68,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
         if (this.queryCache !== JSON.stringify(this.searchQuery.query)) {
           this.requests = {};
           this.updateCount();
+          this.updateCsvLink();
         }
       }
     );
