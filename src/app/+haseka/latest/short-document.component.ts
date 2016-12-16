@@ -36,8 +36,16 @@ export class ShortDocumentComponent implements OnInit, OnChanges {
         return;
       }
       return gathering.units.map((unit) => {
+        let taxon = unit.informalNameString || '';
+        if (unit.identifications) {
+          taxon = unit.identifications.reduce(
+            (acc, cur) => {
+              let curTaxon = cur.taxon || cur.taxonVerbatim;
+              return acc ? acc + ', ' + curTaxon : curTaxon;
+            }, taxon );
+        }
         result.push({
-          name: unit.informalNameString,
+          name: taxon,
           id: unit.id
         });
       });
