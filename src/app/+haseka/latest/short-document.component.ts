@@ -26,7 +26,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges {
     this.updateGatheredDates();
   }
 
-  updateTaxa(max: number = 10) {
+  updateTaxa(max = 10) {
     let result = [];
     if (!this.document.gatherings) {
       return result;
