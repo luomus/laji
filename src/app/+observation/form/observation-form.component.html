@@ -435,7 +435,7 @@
           </h1>
         </div>
       </div>
-      <alert *ngIf="settings.showIntro" style="margin-right: 10px;" [dismissible]="true" (close)="toggleInfo()">
+      <alert *ngIf="settings.showIntro" [dismissible]="true" (close)="toggleInfo()" [type]="'info'">
       <div [innerHtml]="'observation.intro' | translate"></div>
       </alert>
       <div #tabs>

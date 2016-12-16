@@ -18,7 +18,9 @@
 .checkbox-label {
   padding-left:0;
 }
-
+:host >>> .alert.alert-info {
+  margin-right: 10px;
+}
 :host >>> .panel-heading, .form-title {
   background-color: #ECF0F1;
   border-bottom: 1px solid #e1e1e1;
