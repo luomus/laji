@@ -50,9 +50,9 @@
 <div [hidden]="active !== 'species'" *ngIf="activated['species']" style="min-height: 250px;">
   <laji-observation-aggregate
           [field]="{
-              'en': 'unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish,unit.linkings.taxon.speciesId',
-              'fi': 'unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish,unit.linkings.taxon.speciesId',
-              'sv': 'unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameSwedish,unit.linkings.taxon.speciesId'
+              'en': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish',
+              'fi': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
+              'sv': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameSwedish'
             }"
           [title]="'search.result.species' | translate"
           [valuePicker]="pickValue"
