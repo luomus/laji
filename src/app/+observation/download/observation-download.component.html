@@ -14,7 +14,7 @@
       <div class="col-sm-12" *ngIf="loadLimit >= count.count && count.count > 0">
         <p [innerHtml]="'result.load.introPublic' | translate:{private: (count.private | formattedNumber:'&nbsp;'), count: (count.count | formattedNumber:'&nbsp;')} ">
         </p>
-        <button [disabled]="requests['download'] === 'sent'" class="btn btn-default" (click)="makePublicRequest()">{{'observation.download.loadPublic' | translate}}</button>
+        <a [ngClass]="{disabled: requests['download'] === 'sent'}" class="btn btn-default" (click)="makePublicRequest()">{{'observation.download.loadPublic' | translate}}</a>
       </div>
     </div>
     <h3>{{'observation.download.privateTitle' | translate}}</h3>
@@ -28,7 +28,7 @@
         </div>
         <div class="col-sm-12" *ngIf="loadLimit >= count.private">
           <p [innerHtml]="'result.load.introPrivate' | translate:{private: (count.private | formattedNumber:'&nbsp;'), count: (count.count | formattedNumber:'&nbsp;')}"></p>
-          <button [disabled]="requests['downloadApprovalRequest'] === 'sent'" class="btn btn-default" (click)="makePrivateRequest()">{{'observation.download.loadPrivate' | translate}}</button>
+          <a [ngClass]="{disabled: requests['downloadApprovalRequest'] === 'sent'}" class="btn btn-default" (click)="makePrivateRequest()">{{'observation.download.loadPrivate' | translate}}</a>
         </div>
       </div>
     </div>
