@@ -1,3 +1,10 @@
+.forum, .forum:hover, .forum:visited, .forum:active {
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
 .resent-map {
   padding: 6px;
 }
@@ -19,6 +26,7 @@
 }
 
 .some-links {
+  position: relative;
   padding-top: 5px;
 }
 

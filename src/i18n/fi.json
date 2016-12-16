@@ -2,6 +2,7 @@
   "fi": "suomi",
   "sv": "ruotsi",
   "en": "englanti",
+  "Forum": "Foorumi",
   "error.500.title": "Hups, jotain meni pieleen",
   "error.500.intro": "Valitettavasti jotain odottomatonta tapahtui. Odota hetki ja yritä uudestaan, jos ongelma jatkuu ota yhteyttä ylläpitoon.",
   "error.404.title": "Tämä ei ole sivu, jota etsit",
