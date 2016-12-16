@@ -29,6 +29,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   lajiFormWrapper: any;
   reactElem: any;
   renderElem: any;
+  private _block = false;
 
   constructor(@Inject(ElementRef) elementRef: ElementRef,
               private apiClient: FormApiClient,
@@ -59,6 +60,20 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   clearState() {
     if (this.lajiFormWrapper) {
       this.lajiFormWrapper.clearState();
+    }
+  }
+
+  block() {
+    if (!this._block) {
+      this.lajiFormWrapper.pushBlockingLoader();
+      this._block = true;
+    }
+  }
+
+  unBlock() {
+    if (this._block) {
+      this.lajiFormWrapper.popBlockingLoader();
+      this._block = false;
     }
   }
 

@@ -11,6 +11,7 @@ import { FooterService } from '../../shared/service/footer.service';
 import { LajiFormComponent } from '../../shared/form/laji-form.component';
 import { FormService } from './form.service';
 import { WindowRef } from '../../shared/windows-ref';
+import { ToastsService } from '../../shared/service/toasts.service';
 
 @Component({
   selector: 'laji-haseka-form',
@@ -55,6 +56,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
               private userService: UserService,
               private footerService: FooterService,
               public translate: TranslateService,
+              private toastsService: ToastsService,
               private winRef: WindowRef) {
   }
 
@@ -91,6 +93,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
     this.saveVisibility = 'shown';
     this.status = 'unsaved';
     this.saving = false;
+    this.form['formData'] = formData;
     this.formService.store(formData);
   }
 
@@ -102,6 +105,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
 
   onSubmit(event) {
     this.saving = true;
+    this.lajiForm.block();
     let data = event.data.formData;
     data['publicityRestrictions'] = this.publicityRestrictions;
     let doc$;
@@ -113,13 +117,17 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
     }
     doc$.subscribe(
           (result) => {
+            this.lajiForm.unBlock();
             this.formService.discard();
             this.formService.setCurrentData(result, true);
             this.translate.get('haseka.form.success')
-              .subscribe(value => this.formService.setSuccessMessage(value));
+              .subscribe(value => {
+                this.toastsService.showSuccess(value);
+              });
             this.gotoFrontPage();
           },
           (err) => {
+            this.lajiForm.unBlock();
             this.saving = false;
             this.saveVisibility = 'shown';
             this.error = this.parseErrorMessage(err);
