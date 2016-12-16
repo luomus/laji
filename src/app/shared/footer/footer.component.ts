@@ -19,8 +19,8 @@ export class FooterComponent implements OnInit, OnDestroy{
   public columns = [
     'col-sm-7 col-md-4',
     'col-sm-5 col-md-2',
-    'col-sm-7 col-md-2 col-md-offset-1',
-    'col-sm-5 col-md-2 col-md-offset-1'
+    'col-sm-7 col-md-3',
+    'col-sm-5 col-md-3'
   ];
 
   constructor(
