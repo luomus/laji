@@ -21,7 +21,7 @@ export class ValueDecoratorService {
     'unit.sex': 'makeLabel',
     'unit.lifeStage': 'makeLabel',
     'unit.recordBasis': 'makeLabel',
-    'document.secureReasons': 'makeLabel',
+    'document.secureReasons': 'makeLabelFromArray',
     'document.sourceId': 'makeLabelFromFullUri',
     'gathering.conversions.ykj': 'makeYkj'
   };
@@ -71,6 +71,10 @@ export class ValueDecoratorService {
 
   protected makeLabelFromFullUri(value) {
     return this.makeLabel(this.toQNamePipe.transform(value));
+  }
+
+  protected makeLabelFromArray(value) {
+    return value.map(val => this.makeLabel(val));
   }
 
   protected makeLabel(value) {
