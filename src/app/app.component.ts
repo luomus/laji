@@ -6,6 +6,7 @@ import { CollectionApi } from './shared/api/CollectionApi';
 import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 import { InformationApi } from './shared/api/InformationApi';
+import { WindowRef } from './shared/windows-ref';
 
 declare const ga: Function;
 
@@ -29,7 +30,8 @@ export class AppComponent {
     location: Location,
     componentsHelper: ComponentsHelper,
     toastr: ToastsManager,
-    viewContainerRef: ViewContainerRef
+    viewContainerRef: ViewContainerRef,
+    windowRef: WindowRef
   ) {
     this.viewContainerRef = viewContainerRef;
     componentsHelper.setRootViewContainerRef(viewContainerRef);
@@ -38,6 +40,7 @@ export class AppComponent {
       if (event instanceof NavigationEnd) {
         let newRoute = '/' + location.path() || '/';
         if (this.currentRoute !== newRoute && newRoute.indexOf('/user') !== 0) {
+          windowRef.nativeWindow.scroll(0, 0);
           ga('send', 'pageview', newRoute);
           this.currentRoute = newRoute;
         }
