@@ -139,6 +139,10 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     }
   }
 
+  invalidateSize() {
+    this.lajiMap.invalidateSize();
+  }
+
   initLegendTopMargin(): void {
     let top = 20, items = this.color instanceof Array ? this.color.length : 1;
     this.topMargin = '-' + (top + (items * 20)) + 'px';

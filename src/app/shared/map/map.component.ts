@@ -130,17 +130,21 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   ngOnChanges(changes) {
     if (changes.visible) {
       setTimeout(() => {
-        try {
-          if (this.map) {
-            this.map.map.invalidateSize();
-          }
-        } catch (e) {
-        }
+        this.invalidateSize();
       }, 200);
     }
     if (changes.data || changes.drawData) {
       this.updateData();
       this.initDrawData();
+    }
+  }
+
+  invalidateSize() {
+    try {
+      if (this.map) {
+        this.map.map.invalidateSize();
+      }
+    } catch (e) {
     }
   }
 

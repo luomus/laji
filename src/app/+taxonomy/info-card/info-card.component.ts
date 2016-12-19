@@ -1,10 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Logger } from '../../shared/logger/logger.service';
 import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
+import { ObservationMapComponent } from '../../+observation/map/observation-map.component';
 
 @Component({
   selector: 'laji-info-card',
@@ -12,6 +13,7 @@ import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
   styleUrls: ['./info-card.component.css']
 })
 export class InfoCardComponent implements OnInit, OnDestroy {
+  @ViewChild(ObservationMapComponent) map: ObservationMapComponent;
 
   public taxon: Taxonomy;
   public taxonDescription: Array<TaxonomyDescription>;
@@ -101,6 +103,9 @@ export class InfoCardComponent implements OnInit, OnDestroy {
         descriptions => {
           this.taxonDescription = descriptions;
           this.hasDescription = descriptions.length > 0;
+          setTimeout(() => {
+            this.map.invalidateSize();
+          }, 100);
         },
         err => this.logger.warn('Failed to fetch taxon description by id', err)
       );
@@ -114,6 +119,9 @@ export class InfoCardComponent implements OnInit, OnDestroy {
           this.hasTaxonImages = media.length > 0;
           this.activeImageTab = this.hasTaxonImages ? 'taxon' : 'collection';
           this.taxonImages = media;
+          setTimeout(() => {
+            this.map.invalidateSize();
+          }, 100);
         },
         err => this.logger.warn('Failed to fetch taxon media by id', err)
       );
