@@ -30,7 +30,7 @@ export class ToastsService {
 
   private toast(type, message, title?: string, options?: Object) {
     if (!options) {
-      let time = 2000 + ((message + title).length * 100);
+      let time = 4000 + ((message + title).length * 100);
       options = {toastLife: time, showCloseButton: true};
     }
     this.toastr[type](message, title, options);
