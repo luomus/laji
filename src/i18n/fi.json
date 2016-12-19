@@ -243,7 +243,7 @@
   "friend.requestSent": "Kaveripyyntö lähetetty",
   "friend.alreadyFriends": "Olette jo kavereita",
   "profile.friends": "Kaverit",
-  "profile.friendsInfo": "Voit pyytää toista käyttäjää kaveriksesi klikkaamalla \"Lisää kaveriksi\"-linkkiä hänen profiilissaan (pyydä linkki profiiliin kaveriltasi). Jos kaveripyyntösi hyväksytään, näet kaverisi tällä listalla.",
+  "profile.friendsInfo": "Voit pyytää toista käyttäjää kaveriksesi kopioimalla selaimen osoitekentästä oman profiilisi osoitteen ja lähettämällä sen kaverillesi sähköpostilla. Sen jälkeen kun kaverisi on klikannut \"Lisää kaveriksi\" -painiketta, ja olet vahvistanut hänen pyyntönsä omassa profiilissasi, olette kavereita ja voitte esim. Vihko-palvelussa tallentaa yhteisiä havaintoja.",
   "profile.accountSettings": "Käyttäjätilini",
   "profile.friends.needProfile": "Voit pyytää kavereita luotuasi ensin oman profiilisivun.",
   "profile.missing": "Julkista Laji.fi-profiilia ei ole vielä luotu.",
