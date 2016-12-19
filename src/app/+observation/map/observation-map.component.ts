@@ -36,6 +36,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() initWithWorldMap: boolean = false;
   @Input() lastPage: number = 0; // 0 = no page limit
   @Input() draw: any = false;
+  @Input() center: [number, number];
   @Input() showLayers: boolean = true;
   @Input() height: number;
   @Input() selectColor: string = '#00aa00';

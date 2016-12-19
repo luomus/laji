@@ -22,6 +22,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   @Input() visible: boolean;
   @Input() draw: any = false;
   @Input() lang: string = 'fi';
+  @Input() center: [number, number];
   @Input() showLayers: boolean = true;
   @Input() initWithWorldMap: boolean = false;
   @Input() bringDrawLayerToBack: boolean = true;
@@ -55,7 +56,8 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     this.map = new LajiMap({
       tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
       activeIdx: 0,
-      zoom: this.initWithWorldMap ? 3 : 1,
+      zoom: this.getInitialZoomLevel(),
+      center: this.center || [65, 26],
       lang: this.lang,
       data: [],
       markerPopupOffset: 5,
@@ -174,5 +176,9 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
         this.map.drawLayerGroup.bringToBack();
       }
     }
+  }
+
+  private getInitialZoomLevel() {
+    return this.initWithWorldMap ? 3 : 1;
   }
 }
