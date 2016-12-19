@@ -84,10 +84,12 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   mount() {
-    if (!this.formData || !this.lang) {
+    if (!this.formData || !this.formData.formData || !this.lang) {
       return;
     }
     try {
+      let uiSchemaContext = this.formData.uiSchemaContext || {};
+      uiSchemaContext['creator'] = this.formData.formData.creator;
       this.apiClient.lang = this.lang;
       this.apiClient.personToken = this.userService.getToken();
       this.lajiFormWrapper = new LajiFormWrapper({
@@ -95,7 +97,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
         rootElem: this.elem,
         schema: this.formData.schema,
         uiSchema: this.formData.uiSchema,
-        uiSchemaContext: this.formData.uiSchemaContext,
+        uiSchemaContext: uiSchemaContext,
         formData: this.formData.formData,
         validators: this.formData.validators,
         onSubmit: this._onSubmit.bind(this),
