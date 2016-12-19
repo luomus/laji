@@ -1,5 +1,5 @@
 <footer *ngIf="footerService.footerVisible">
-  <div class="container info-footer">
+  <div class="container-fluid info-footer">
     <div class="row">
       <div *ngFor="let item of tree; let i=index" class="{{columns[i] || ''}}">
         <h3><a [routerLink]="'/about/' + item.id">{{item.title}}</a></h3>
@@ -11,12 +11,19 @@
         </ul>
       </div>
     </div>
+    <div class="row" *ngIf="onFrontPage">
+      <div class="col-sm-11 col-sm-offset-1">
+        <div class="pull-right">
+          Kuva: <a href="https://www.flickr.com/photos/timo_w2s/15517459434/">Timo Newton-Syms</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/"> Creative Commons BY-SA 2.0</a>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="partners-footer">
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-12 partners front"
-             [ngClass]="{hidden: !showPartners}">
+        <div class="col-sm-offset-1 col-sm-11 partners front"
+             [ngClass]="{hidden: !onFrontPage}">
           <span class="title">{{'footer.partners' | translate }}</span>
           <ul>
             <li>

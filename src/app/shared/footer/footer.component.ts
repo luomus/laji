@@ -12,14 +12,14 @@ import { TranslateService } from 'ng2-translate';
 })
 export class FooterComponent implements OnInit, OnDestroy{
 
-  public showPartners = true;
+  public onFrontPage = true;
   public subRouteEvent: Subscription;
   public subLangChange: Subscription;
   public tree = [];
   public columns = [
-    'col-sm-7 col-md-4',
+    'col-sm-offset-1 col-sm-6 col-md-3',
     'col-sm-5 col-md-2',
-    'col-sm-7 col-md-3',
+    'col-sm-offset-1 col-md-offset-0 col-sm-6 col-md-3',
     'col-sm-5 col-md-3'
   ];
 
@@ -32,9 +32,9 @@ export class FooterComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit() {
-    this.showPartners = this.router.isActive('/', true);
+    this.onFrontPage = this.router.isActive('/', true);
     this.subRouteEvent = this.router.events.subscribe(() => {
-      this.showPartners = this.router.isActive('/', true);
+      this.onFrontPage = this.router.isActive('/', true);
     });
     this.fetchTreeData();
     this.subLangChange = this.translate.onLangChange.subscribe(() => {

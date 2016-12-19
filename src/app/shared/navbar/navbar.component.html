@@ -1,56 +1,60 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="env {{env}}"></div>
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-        aria-controls="navbar" (click)="toggleMenu()">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" [routerLink]="['/']">LAJI.FI</a>
-    </div>
-    <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
-      <ul class="nav navbar-nav">
-        <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/taxon']">{{ 'navigation.taxonomy' | translate }}</a>
-        </li>
-        <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/observation']" [queryParams]="{page: 1}">{{ 'navigation.observation' | translate }}</a>
-        </li>
-        <li [routerLinkActive]="['active']">
-          <a *ngIf="userService.isLoggedIn" [routerLink]="['/vihko']">{{ 'navigation.haseka' | translate }}</a>
-          <a *ngIf="!userService.isLoggedIn" [routerLink]="['/vihko']">{{ 'navigation.notify' | translate }}</a>
-        </li>
-        <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/about']">{{ 'navigation.information' | translate }}</a>
-        </li>
-      </ul>
-      <ul class="nav navbar-nav pull-right">
-        <li [routerLinkActive]="['active']">
-          <div class="navbar-profile" *ngIf="userService.isLoggedIn">
-            <div dropdown>
-              <a dropdownToggle class="link language-toggle">
-                {{(userService.getUser()|async)?.id | users}}
-                <i class="glyphicon glyphicon-user"></i>
-              </a>
-              <ul dropdownMenu role="menu" aria-labelledby="single-button">
-                <li role="menuitem">
-                  <a [routerLink]="['/user']" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
-                </li>
-                <li role="menuitem">
-                  <a [routerLink]="['/user/logout']" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <a href="#login" *ngIf="!userService.isLoggedIn" (click)="clicked($event)">{{ 'navigation.user.login' | translate }}</a>
-        </li>
-        <li>
-          <laji-lang-select></laji-lang-select>
-        </li>
-      </ul>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-11 col-sm-offset-1">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+            aria-controls="navbar" (click)="toggleMenu()">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" [routerLink]="['/']">LAJI.FI</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
+          <ul class="nav navbar-nav">
+            <li [routerLinkActive]="['active']">
+              <a [routerLink]="['/taxon']">{{ 'navigation.taxonomy' | translate }}</a>
+            </li>
+            <li [routerLinkActive]="['active']">
+              <a [routerLink]="['/observation']" [queryParams]="{page: 1}">{{ 'navigation.observation' | translate }}</a>
+            </li>
+            <li [routerLinkActive]="['active']">
+              <a *ngIf="userService.isLoggedIn" [routerLink]="['/vihko']">{{ 'navigation.haseka' | translate }}</a>
+              <a *ngIf="!userService.isLoggedIn" [routerLink]="['/vihko']">{{ 'navigation.notify' | translate }}</a>
+            </li>
+            <li [routerLinkActive]="['active']">
+              <a [routerLink]="['/about']">{{ 'navigation.information' | translate }}</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav pull-right">
+            <li [routerLinkActive]="['active']">
+              <div class="navbar-profile" *ngIf="userService.isLoggedIn">
+                <div dropdown>
+                  <a dropdownToggle class="link language-toggle">
+                    {{(userService.getUser()|async)?.id | users}}
+                    <i class="glyphicon glyphicon-user"></i>
+                  </a>
+                  <ul dropdownMenu role="menu" aria-labelledby="single-button">
+                    <li role="menuitem">
+                      <a [routerLink]="['/user']" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
+                    </li>
+                    <li role="menuitem">
+                      <a [routerLink]="['/user/logout']" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <a href="#login" *ngIf="!userService.isLoggedIn" (click)="clicked($event)">{{ 'navigation.user.login' | translate }}</a>
+            </li>
+            <li>
+              <laji-lang-select></laji-lang-select>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </nav>
