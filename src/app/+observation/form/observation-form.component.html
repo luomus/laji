@@ -280,6 +280,7 @@
               <metadata-select
                       [(ngModel)]="searchQuery.query.collectionId"
                       (ngModelChange)="onQueryChange()"
+                      [multiple]="true"
                       [field]="'MY.collectionID'"
                       name="collectionID"
                       [lang]="translate.currentLang"></metadata-select>
