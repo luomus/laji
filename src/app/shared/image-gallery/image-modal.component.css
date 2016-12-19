@@ -49,12 +49,6 @@ img.ng-thumb {
   background: rgba(0, 0, 0, 0.8);
   /*opacity: 0.85;*/
   z-index: 9999;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-user-drag: none;
 }
 
 .ng-gallery-content {
@@ -97,6 +91,12 @@ img.ng-thumb {
   font-size: 50px;
   cursor: pointer;
   outline: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .ng-gallery-content > a.nav-left {
