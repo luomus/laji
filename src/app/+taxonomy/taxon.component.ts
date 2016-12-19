@@ -10,7 +10,7 @@ import { InformalTaxonGroup } from '../shared/model/InformalTaxonGroup';
 import { Taxonomy } from '../shared/model/Taxonomy';
 
 @Component({
-  selector: 'laji-taxonomy',
+  selector: '[laji-taxonomy]',
   templateUrl: './taxon.component.html',
   styleUrls: ['taxon.component.css']
 })
