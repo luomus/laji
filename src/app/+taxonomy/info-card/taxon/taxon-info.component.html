@@ -2,7 +2,10 @@
   <tbody>
   <tr>
     <th>{{ 'taxonomy.scientific.name' | translate }}</th>
-    <td><i>{{taxon.scientificName}}</i></td>
+    <td>
+      <i *ngIf="taxon.cursiveName">{{taxon.scientificName}}</i>
+      <span *ngIf="!taxon.cursiveName">{{taxon.scientificName}}</span>
+    </td>
   </tr>
   <tr>
     <th>{{ 'taxonomy.author' | translate }}</th>
@@ -11,6 +14,10 @@
   <tr *ngIf="taxon.vernacularName">
     <th>{{ 'taxonomy.vernacular.name' | translate }}</th>
     <td>{{taxon.vernacularName | multiLang}}</td>
+  </tr>
+  <tr>
+    <th>{{ 'MX.taxonRank' | label}}</th>
+    <td>{{taxon.taxonRank | label}}</td>
   </tr>
   <tr *ngIf="taxon.invasiveSpeciesCategory">
     <th>

@@ -1,5 +1,7 @@
 <div class="container" *ngIf="taxon">
-  <h1><i>{{taxon.scientificName}}</i>
+  <h1>
+    <i *ngIf="taxon.cursiveName">{{taxon.scientificName}}</i>
+    <span *ngIf="!taxon.cursiveName">{{taxon.scientificName}}</span>
     <small *ngIf="taxon.vernacularName">{{taxon.vernacularName | multiLang}}</small>
   </h1>
   <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
@@ -58,10 +60,17 @@
               <ImageModal [modalImages]="taxonImages"></ImageModal>
             </div>
             <div [hidden]="activeImageTab !== 'collection' || !hasCollectionImages">
+              {{taxon.species | json}}
               <laji-gallery
+                      *ngIf="taxon.species"
                       [shortPager]="true"
                       (hasData)="hasData($event)"
-                      [query]="{target: taxon.id, superRecordBasis: 'PRESERVED_SPECIMEN', source: 'KE.3'}" [pageSize]="10"></laji-gallery>
+                      [query]="{taxonId: taxon.id, taxonRankId: taxon.taxonRank, superRecordBasis: 'PRESERVED_SPECIMEN', source: 'KE.3'}" [pageSize]="10"></laji-gallery>
+              <laji-gallery
+                      *ngIf="!taxon.species"
+                      [shortPager]="true"
+                      (hasData)="hasData($event)"
+                      [query]="{taxonId: taxon.id, superRecordBasis: 'PRESERVED_SPECIMEN', source: 'KE.3'}" [pageSize]="10"></laji-gallery>
             </div>
           </div>
         </div>

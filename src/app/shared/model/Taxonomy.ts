@@ -1,7 +1,10 @@
-/* tslint:disable */
 /**
  * API documentation
- * To use this api you need an access token. To get the token, send a post request with your email address to api-users resource and one will be send to your. See below for information on how to use this api and if you have any questions you can contact us at helpdesk@laji.fi.  Place refer to [schema.laji.fi](http://schema.laji.fi/) for more information about the used vocabulary
+ * To use this api you need an access token. To get the token, send a post
+ * request with your email address to api-users resource and one will be send to your.
+ * See below for information on how to use this api and if you have any questions you
+ * can contact us at helpdesk@laji.fi.  Place refer to [schema.laji.fi](http://schema.laji.fi/)
+ * for more information about the used vocabulary
  *
  * OpenAPI spec version: 0.0.1
  *
@@ -24,39 +27,17 @@
  */
 
 'use strict';
-import { Taxonomy, TaxonomyDescriptionVariable } from './index';
-
 export interface Taxonomy {
 
   id?: string;
+
+  customReportFormLink?: string;
 
   redListStatus2000Finland?: string;
 
   redListStatus2010Finland?: string;
 
   redListStatus2015Finland?: string;
-
-  alsoKnownAs?: Array<string>;
-
-  birdlifeCode?: string;
-
-  breedingSecureLevel?: string;
-
-  circumscription?: string;
-
-  customReportFormLink?: string;
-
-  distributionMapFinland?: string;
-
-  euringCode?: string;
-
-  euringNumber?: number;
-
-  externalLinkURL?: string;
-
-  hasAdminStatus?: Array<string>;
-
-  ingressText?: string;
 
   winteringSecureLevel?: string;
 
@@ -66,9 +47,7 @@ export interface Taxonomy {
 
   tradeName?: Array<string>;
 
-  invasiveCitizenActionsText?: string;
-
-  secureLevel?: string;
+  taxonomyText?: string;
 
   reproduction?: string;
 
@@ -83,8 +62,6 @@ export interface Taxonomy {
 
   nestSiteSecureLevel?: string;
 
-  invasiveEffectText?: string;
-
   naturaAreaSecureLevel?: string;
 
   nameDecidedBy?: string;
@@ -93,9 +70,35 @@ export interface Taxonomy {
 
   isPartOfInformalTaxonGroup?: Array<string>;
 
+  invasiveSpeciesCategory?: string;
+
   invasivePreventionMethodsText?: string;
 
-  invasiveSpeciesCategory?: string;
+  invasiveEffectText?: string;
+
+  invasiveCitizenActionsText?: string;
+
+  ingressText?: string;
+
+  hasAdminStatus?: Array<string>;
+
+  externalLinkURL?: string;
+
+  euringNumber?: number;
+
+  euringCode?: string;
+
+  etymologyText?: string;
+
+  distributionMapFinland?: string;
+
+  circumscription?: string;
+
+  breedingSecureLevel?: string;
+
+  birdlifeCode?: string;
+
+  alsoKnownAs?: Array<string>;
 
   taxonRank?: string;
 
@@ -126,6 +129,8 @@ export interface Taxonomy {
 
   taxonEditor?: Array<string>;
 
+  secureLevel?: string;
+
   informalTaxonGroups?: Array<string>;
 
   alternativeVernacularNames?: Array<string>;
@@ -136,10 +141,32 @@ export interface Taxonomy {
 
   children?: Array<Taxonomy>;
 
+  administrativeStatuses?: Array<string>;
+
+  species?: boolean;
+
+  cursiveName: boolean;
+
+  countOfSpecies?: number;
+
+  countOfFinnishSpecies?: number;
+
   /**
    * occurs in Finland
    */
   finnishSpecies?: boolean;
+
+  /**
+   * stable in Finland
+   */
+  stableInFinland?: boolean;
+
+  expertChangesFromParent?: boolean;
+
+  /**
+   * sort order for taxonomic sorting
+   */
+  taxonomicSortOrder?: number;
 
   /**
    * true if has parents
@@ -150,52 +177,4 @@ export interface Taxonomy {
    * true if has children
    */
   hasChildren?: boolean;
-}
-
-export interface TaxonomyDescriptionVariable {
-
-  title?: string;
-
-  content?: string;
-
-}
-
-export interface TaxonomyDescriptionGroup {
-
-  title?: string;
-
-  variables?: Array<TaxonomyDescriptionVariable>;
-
-}
-
-export interface TaxonomyDescription {
-
-  id?: string;
-
-  title?: string;
-
-  groups?: Array<TaxonomyDescriptionGroup>;
-
-}
-
-export interface TaxonomyImage {
-
-  author?: string;
-
-  copyrightOwner?: string;
-
-  largeURL?: string;
-
-  fullURL?: string;
-
-  licenseId?: string;
-
-  licenseAbbreviation?: string;
-
-  licenseDescription?: string;
-
-  source?: string;
-
-  thumbnailURL?: string;
-
 }
