@@ -8,7 +8,7 @@
       <laji-spinner [spinning]="loading" [overlay]="true"></laji-spinner>
       <h1>{{form?.title}}</h1>
       <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
-      <p>{{form?.description}}</p>
+      <div [innerHtml]="form?.description"></div>
       <div class="laji-form" *ngIf="form?.id">
         <laji-form
                 [formId]="formId"
