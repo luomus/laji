@@ -184,7 +184,7 @@
   "observation.active.sex": "Sukupuoli",
   "observation.active.invasive": "Vieraslajistatus",
   "observation.active.lifeStage": "Elinvaihe",
-  "observation.active.recordBasis": "Tietueen tyyppi",
+  "observation.active.recordBasis": "Havaintotapa",
   "observation.active.superRecordBasis": "Tietueen yleinen tyyppi",
   "observation.active.administrativeStatusId": "Hallinnollinen asema",
   "observation.active.informalTaxonGroupId": "Lajiryhmä",
