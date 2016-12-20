@@ -28,7 +28,7 @@ declare const moment: any;
 })
 export class ObservationFormComponent implements OnInit, OnDestroy {
 
-  @LocalStorage() public settings = {showIntro: true};
+  @LocalStorage() public observationSettings = {showIntro: true};
   @Input() activeTab: string;
   @ViewChild('tabs') tabs;
   @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
@@ -226,7 +226,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   toggleInfo() {
-    this.settings.showIntro = !this.settings.showIntro;
+    this.observationSettings.showIntro = !this.observationSettings.showIntro;
   }
 
   togglePlace(event) {

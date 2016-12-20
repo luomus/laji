@@ -420,7 +420,7 @@
               <br>
             </span>
             <small>
-              <div class="pull-right toggle-intro" *ngIf="!settings.showIntro">
+              <div class="pull-right toggle-intro" *ngIf="!observationSettings.showIntro">
                 <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
               </div>
               <laji-observation-count [query]="searchQuery.query" [tick]="searchQuery.tack"></laji-observation-count>
@@ -436,7 +436,7 @@
           </h1>
         </div>
       </div>
-      <alert *ngIf="settings.showIntro" [dismissible]="true" (close)="toggleInfo()" [type]="'info'">
+      <alert *ngIf="observationSettings.showIntro" [dismissible]="true" (close)="toggleInfo()" [type]="'info'">
       <div [innerHtml]="'observation.intro' | translate"></div>
       </alert>
       <div #tabs>

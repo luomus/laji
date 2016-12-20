@@ -3,3 +3,9 @@
   padding-top: 15px;
   background-color: rgb(236, 240, 241);
 }
+
+.toggle-intro {
+  padding: 10px 10px 0 0;
+  font-size: 13px;
+  color: #3498DB;
+}
