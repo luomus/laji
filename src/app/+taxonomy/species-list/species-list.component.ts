@@ -46,14 +46,16 @@ export class SpeciesListComponent implements OnChanges {
     }
     this.subFetch = this.taxonomyService
       .taxonomyFindSpecies(
-      'MX.37600',
-      this.translate.currentLang,
-      this.informalGroup.id,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      `${page}`
+        'MX.37600',
+        this.translate.currentLang,
+        this.informalGroup.id,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        `${page}`,
+        undefined,
+        // 'finnish_name'
       )
       .subscribe(data => {
           this.speciesPage = data;

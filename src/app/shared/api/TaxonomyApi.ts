@@ -253,8 +253,9 @@ export class TaxonomyApi {
    * @param invasiveSpeciesFilter Will include only invasive species
    * @param page Page number
    * @param pageSize Page size
+   * @param sortOrder Sort order
    */
-  public taxonomyFindSpecies(id: string, lang?: string, informalGroupFilters?: string, adminStatusFilters?: string, redListStatusFilters?: string, typesOfOccurrenceFilters?: string, invasiveSpeciesFilter?: boolean, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Taxonomy>>> {
+  public taxonomyFindSpecies(id: string, lang?: string, informalGroupFilters?: string, adminStatusFilters?: string, redListStatusFilters?: string, typesOfOccurrenceFilters?: string, invasiveSpeciesFilter?: boolean, page?: string, pageSize?: string, sortOrder?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Taxonomy>>> {
     const path = this.basePath + '/taxa/{id}/species'
         .replace('{' + 'id' + '}', String(id));
 
@@ -294,6 +295,10 @@ export class TaxonomyApi {
 
     if (pageSize !== undefined) {
       queryParameters.set('pageSize', pageSize);
+    }
+
+    if (sortOrder !== undefined) {
+      queryParameters.set('sortOrder', sortOrder);
     }
 
     let requestOptions: RequestOptionsArgs = {
