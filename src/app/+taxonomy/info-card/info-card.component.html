@@ -127,7 +127,7 @@
   </div>
   <div *ngIf="taxon.hasChildren" class="row">
     <div class="col-xs-12">
-      <h3>{{ 'taxonomy.group' | translate }} <b>{{ taxon.vernacularName | multiLang }}</b> {{ 'taxonomy.belongs.to' | translate }}</h3>
+      <h3>{{ 'taxonomy.belongs.to' | translate }}</h3>
       <laji-children-list [parentId]="taxon.id"></laji-children-list>
     </div>
   </div>
