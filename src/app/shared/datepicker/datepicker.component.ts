@@ -28,7 +28,7 @@
 
 import { Component, OnInit, ViewContainerRef, Input, forwardRef, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import * as moment from 'moment';
+declare const moment: any;
 
 export interface CalendarDate {
   day: number;
@@ -52,7 +52,7 @@ export const CALENDAR_VALUE_ACCESSOR: any = {
   providers: [CALENDAR_VALUE_ACCESSOR]
 })
 export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDestroy {
-  @Input() class: string;
+  @Input() classAttr: string;
   @Input() expanded: boolean;
   @Input() opened: boolean;
   @Input() format: string;
@@ -60,6 +60,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   @Input() firstWeekdaySunday: boolean;
   @Output() onSelect = new EventEmitter();
 
+  public validDate = true;
   private date: any = moment();
   private el: Element;
   private bodyEl: Element;
@@ -78,8 +79,10 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   set value(value: any) {
     let date = (value instanceof moment) ? value : moment(value, this.format, true);
     if (!date.isValid()) {
+      this.validDate = !value;
       date = moment(value, this.viewFormat, true);
       if (date.isValid()) {
+        this.validDate = true;
         this.value = date.format(this.format);
         return;
       }
@@ -94,7 +97,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   }
 
   ngOnInit() {
-    this.class = `ui-kit-calendar-container ${this.class}`;
+    this.classAttr = `ui-kit-calendar-container ${this.classAttr}`;
     this.opened = this.opened || false;
     this.format = this.format || 'YYYY-MM-DD';
     this.viewFormat = this.viewFormat || 'D MMMM YYYY';

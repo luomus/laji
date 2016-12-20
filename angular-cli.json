@@ -22,7 +22,9 @@
         "../node_modules/laji-form/dist/styles.css",
         "styles/laji.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/moment/moment.js"
+      ],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",

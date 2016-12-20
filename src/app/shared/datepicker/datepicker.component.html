@@ -1,4 +1,4 @@
-<div class="input-group">
+<div class="input-group" [ngClass]="{'has-error': !validDate}">
   <input type="text"
          class="ng-datepicker-input form-control input-sm"
          [(ngModel)]="value"

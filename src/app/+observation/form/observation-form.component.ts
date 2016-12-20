@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import * as moment from 'moment';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseQueryInterface, DATE_FORMAT } from '../../shared/model/WarehouseQueryInterface';
 import { Observable, Subscription } from 'rxjs';
@@ -19,6 +18,7 @@ import { MapService } from '../../shared/map/map.service';
 import { WindowRef } from '../../shared/windows-ref';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Autocomplete } from '../../shared/model/Autocomplete';
+declare const moment: any;
 
 @Component({
   selector: 'laji-observation-form',
@@ -97,6 +97,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   public drawing = false;
   public drawingShape: string;
+  public dateFormat: string = 'YYYY-MM-DD';
 
   private subUpdate: Subscription;
   private subMap: Subscription;
@@ -336,8 +337,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     let time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
     this.formQuery = {
       taxon: query.target && query.target[0] ? query.target[0] : '',
-      timeStart: time[0] || '',
-      timeEnd: time[1] || '',
+      timeStart: this.getValidDate(time[0]),
+      timeEnd: this.getValidDate(time[1]),
       informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
         query.informalTaxonGroupId[0] : '',
       isNotFinnish: query.finnish === false ? true : undefined,
@@ -370,8 +371,21 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
   }
 
+  private getValidDate(date) {
+    if (!date || !moment(date, this.dateFormat, true).isValid()) {
+      return '';
+    }
+    return date;
+  }
+
   private parseDate(start, end) {
     if (!start && !end) {
+      return '';
+    }
+    if (
+      (start && !moment(start, this.dateFormat, true).isValid()) ||
+      (end && !moment(end, this.dateFormat, true).isValid())
+    ) {
       return '';
     }
     return (start || '') + '/' + (end || '');
