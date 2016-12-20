@@ -73,7 +73,7 @@
   "taxonomy.speciesList.found": "lajia löytyi",
   "taxonomy.administrative.statuses": "Hallinnolliset lajitiedot",
   "taxonomy.group": "Ryhmään",
-  "taxonomy.belongs.to": "kuuluvat taksonit",
+  "taxonomy.belongs.to": "Alemmat taksonit",
   "news.title": "Uutiset",
   "news.earlier": "edelliset",
   "news.newer": "seuraavat",

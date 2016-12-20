@@ -70,7 +70,7 @@
   "taxonomy.speciesList.found": "species found",
   "taxonomy.administrative.statuses": "Administrative status",
   "taxonomy.group": "To organismgroup",
-  "taxonomy.belongs.to": "belonging taxons",
+  "taxonomy.belongs.to": "Subordinate taxa",
   "news.title": "News",
   "news.earlier": "previous",
   "news.newer": "next",
