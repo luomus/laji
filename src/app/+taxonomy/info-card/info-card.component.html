@@ -60,7 +60,6 @@
               <ImageModal [modalImages]="taxonImages"></ImageModal>
             </div>
             <div [hidden]="activeImageTab !== 'collection' || !hasCollectionImages">
-              {{taxon.species | json}}
               <laji-gallery
                       *ngIf="taxon.species"
                       [shortPager]="true"
