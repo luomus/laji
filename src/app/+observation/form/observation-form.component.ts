@@ -89,12 +89,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
   };
 
-  public pickSex = {
-    'MY.sexM': '',
-    'MY.sexF': '',
-    'MY.sexW': ''
-  };
-
   public drawing = false;
   public drawingShape: string;
   public dateFormat: string = 'YYYY-MM-DD';

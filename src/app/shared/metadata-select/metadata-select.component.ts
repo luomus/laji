@@ -91,7 +91,15 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
           });
           return Observable
             .forkJoin(requests)
-            .map(mapping => options.map((item, idx) => ({id: mapping[idx], text: item.text})));
+            .map(mapping => options.reduce((prev, curr, idx) => {
+              if (mapping[idx] !== options[idx].id) {
+                prev.push({id: mapping[idx], text: curr.text});
+              } else {
+                this.logger.log('No ETL mapping for', mapping[idx]);
+              }
+              return prev;
+            }, [])
+          );
         } else {
           return Observable.of(options);
         }
