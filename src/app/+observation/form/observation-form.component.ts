@@ -215,7 +215,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   toggleFilters() {
     this.showFilter = !this.showFilter;
     if (this.activeTab === 'map') {
-      this.winRef.nativeWindow.dispatchEvent(new Event('resize'));
+      try {
+        this.winRef.nativeWindow.dispatchEvent(new Event('resize'));
+      } catch (e) {}
     }
   }
 
