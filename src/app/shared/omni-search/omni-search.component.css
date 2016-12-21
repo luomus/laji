@@ -9,15 +9,10 @@
   background-color: #ffffff;
   padding: 5px;
   z-index: 1040;
-  min-width: 727px;
   border-right: 1px solid #999;
   border-left: 1px solid #999;
   border-bottom: 1px solid #999;
   color: #aaa;
-}
-
-.omni-search-results .first-col {
-  border-left: 1px solid #999;
 }
 
 .omni-search-results .matches .active {
@@ -52,4 +47,14 @@
 .omni-search-results .informal-group-image {
   background-size: auto 65px;
   background-position: top left;
+}
+
+@media only screen and (min-width : 992px) {
+  .omni-search-results {
+    min-width: 727px;
+  }
+
+  .omni-search-results .first-col {
+    border-left: 1px solid #999;
+  }
 }
