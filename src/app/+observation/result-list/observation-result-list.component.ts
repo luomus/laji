@@ -43,7 +43,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     {field: 'gathering.eventDate', visible: true, sortBy: 'gathering.eventDate.begin,gathering.eventDate.end'},
     {field: 'gathering.country', visible: false, sortBy: false},
     {field: 'gathering.biogeographicalProvince', visible: false, sortBy: false},
-    {field: 'gathering.municipality', visible: true},
+    {field: 'gathering.municipality', visible: true, sortBy: false},
     {field: 'gathering.locality', visible: false},
     {field: 'gathering.conversions.ykj', visible: false, sortBy: false},
     {field: 'gathering.coordinatesVerbatim', visible: false, sortBy: false},
