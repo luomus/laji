@@ -28,13 +28,11 @@ export class AppComponent {
   constructor(
     router: Router,
     location: Location,
-    componentsHelper: ComponentsHelper,
     toastr: ToastsManager,
     viewContainerRef: ViewContainerRef,
     windowRef: WindowRef
   ) {
     this.viewContainerRef = viewContainerRef;
-    componentsHelper.setRootViewContainerRef(viewContainerRef);
     toastr.setRootViewContainerRef(viewContainerRef);
     router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {

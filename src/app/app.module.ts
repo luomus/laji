@@ -25,7 +25,6 @@ import { Logger, ConsoleLogger, HttpLogger } from './shared/logger/index';
 import { LoggerApi } from './shared/api/LoggerApi';
 import { AppConfig } from './app.config';
 import { ILogger } from './shared/logger/logger.interface';
-import { ComponentsHelper } from 'ng2-bootstrap/ng2-bootstrap';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -65,7 +64,6 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
   ],
   providers: [
     {provide: ErrorHandler, useClass: LajiErrorHandler},
-    {provide: ComponentsHelper, useClass: ComponentsHelper},
     {provide: LocationStrategy, useClass: PathLocationStrategy},
     {
       provide: Logger,
