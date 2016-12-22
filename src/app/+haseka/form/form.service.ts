@@ -144,7 +144,7 @@ export class FormService {
   }
 
   getForm(formId: string, lang: string): Observable<any> {
-    if (this.appConfig.isFormAllowed(formId) ) {
+    if (!this.appConfig.isFormAllowed(formId) ) {
       return Observable.of({});
     }
     this.setLang(lang);
@@ -157,7 +157,7 @@ export class FormService {
   }
 
   load(formId: string, lang: string, documentId?: string): Observable<any> {
-    if (this.appConfig.isFormAllowed(formId) ) {
+    if (!this.appConfig.isFormAllowed(formId) ) {
       return Observable.of({});
     }
     this.setLang(lang);
