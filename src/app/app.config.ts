@@ -27,4 +27,11 @@ export class AppConfig {
   getPersonSelfUrl() {
     return this.config.person_self_url || '';
   }
+
+  isFormAllowed(formId: string) {
+    if (!this.config.form_whitelist) {
+      return true;
+    }
+    return this.config.form_whitelist.indexOf(formId) !== -1;
+  }
 }

@@ -6,7 +6,7 @@ import { Util } from '../../shared/service/util.service';
 import { FormApi } from '../../shared/api/FormApi';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
-import { Form } from '@angular/forms';
+import { AppConfig } from '../../app.config';
 
 
 @Injectable()
@@ -26,7 +26,8 @@ export class FormService {
   constructor(
     private formApi: FormApi,
     private userService: UserService,
-    private documentApi: DocumentApi
+    private documentApi: DocumentApi,
+    private appConfig: AppConfig
   ) {}
 
   getUserId(): Observable<string> {
@@ -142,7 +143,10 @@ export class FormService {
       });
   }
 
-  getForm(formId: string, lang: string): Observable<Form> {
+  getForm(formId: string, lang: string): Observable<any> {
+    if (this.appConfig.isFormAllowed(formId) ) {
+      return Observable.of({});
+    }
     this.setLang(lang);
     return this.formCache[formId] ?
       Observable.of(this.formCache[formId]) :
@@ -153,6 +157,9 @@ export class FormService {
   }
 
   load(formId: string, lang: string, documentId?: string): Observable<any> {
+    if (this.appConfig.isFormAllowed(formId) ) {
+      return Observable.of({});
+    }
     this.setLang(lang);
     let form$ = this.formCache[formId] ?
       Observable.of(this.formCache[formId]) :
@@ -194,7 +201,7 @@ export class FormService {
     return this.allForms ?
       Observable.of(this.allForms) :
       this.formApi.formFindAll(this.currentLang)
-        .map((forms) => forms.results)
+        .map((forms) => forms.results.filter(form => this.appConfig.isFormAllowed(form.id)))
         .do((forms) => this.allForms = forms);
   }
 
