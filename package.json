@@ -1,6 +1,6 @@
 {
   "name": "laji-front",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "laji.fi frontend",
   "scripts": {
     "start": "ng serve --proxy-config proxy.conf.js",
