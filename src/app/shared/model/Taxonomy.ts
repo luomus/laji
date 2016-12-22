@@ -178,3 +178,51 @@ export interface Taxonomy {
    */
   hasChildren?: boolean;
 }
+
+export interface TaxonomyDescriptionVariable {
+
+  title?: string;
+
+  content?: string;
+
+}
+
+export interface TaxonomyDescriptionGroup {
+
+  title?: string;
+
+  variables?: Array<TaxonomyDescriptionVariable>;
+
+}
+
+export interface TaxonomyDescription {
+
+  id?: string;
+
+  title?: string;
+
+  groups?: Array<TaxonomyDescriptionGroup>;
+
+}
+
+export interface TaxonomyImage {
+
+  author?: string;
+
+  copyrightOwner?: string;
+
+  largeURL?: string;
+
+  fullURL?: string;
+
+  licenseId?: string;
+
+  licenseAbbreviation?: string;
+
+  licenseDescription?: string;
+
+  source?: string;
+
+  thumbnailURL?: string;
+
+}
