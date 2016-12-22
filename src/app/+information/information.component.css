@@ -4,6 +4,10 @@
   background-color: rgb(236, 240, 241);
 }
 
+.about {
+  padding-bottom: 30px;
+}
+
 @media only screen and (min-width : 768px) {
   .more-info .media {
     position: fixed;
