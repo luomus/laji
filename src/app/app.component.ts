@@ -1,6 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
-import { ComponentsHelper } from 'ng2-bootstrap';
 import { TaxonomyApi } from './shared/api/TaxonomyApi';
 import { CollectionApi } from './shared/api/CollectionApi';
 import { Router, NavigationEnd } from '@angular/router';

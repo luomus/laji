@@ -9,7 +9,7 @@ export const OBSERVATION_MULTI_RADIO_VALUE_ACCESSOR: any = {
 
 @Component({
   selector: 'multi-radio',
-  templateUrl: 'multi-radio.component.html',
+  templateUrl: './multi-radio.component.html',
   styleUrls: ['./multi-radio.component.css'],
   providers: [OBSERVATION_MULTI_RADIO_VALUE_ACCESSOR]
 })

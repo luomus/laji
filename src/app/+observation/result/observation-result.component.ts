@@ -10,7 +10,7 @@ import { ObservationMapComponent } from '../map/observation-map.component';
 
 @Component({
   selector: 'laji-observation-result',
-  templateUrl: 'observation-result.component.html'
+  templateUrl: './observation-result.component.html'
 })
 export class ObservationResultComponent implements OnInit, OnChanges {
 

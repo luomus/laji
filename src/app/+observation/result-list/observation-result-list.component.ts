@@ -22,7 +22,7 @@ interface Column {
 
 @Component({
   selector: 'laji-observation-result-list',
-  templateUrl: 'observation-result-list.component.html',
+  templateUrl: './observation-result-list.component.html',
   styleUrls: ['./observation-result-list.component.css'],
   providers: [ValueDecoratorService, LabelPipe, ToQNamePipe]
 })

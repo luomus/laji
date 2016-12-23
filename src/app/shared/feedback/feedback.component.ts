@@ -10,7 +10,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'laji-feedback',
   styleUrls: ['./feedback.component.css'],
-  templateUrl: 'feedback.component.html'
+  templateUrl: './feedback.component.html'
 })
 export class FeedbackComponent {
 

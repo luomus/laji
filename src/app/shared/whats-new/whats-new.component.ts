@@ -5,7 +5,7 @@ import { LocalStorage } from 'angular2-localstorage/dist';
 @Component({
   selector: 'laji-whats-new',
   styleUrls: ['./whats-new.component.css'],
-  templateUrl: 'whats-new.component.html'
+  templateUrl: './whats-new.component.html'
 })
 export class WhatsNewComponent implements OnInit {
 

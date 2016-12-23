@@ -11,7 +11,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 @Component({
   selector: 'laji-gallery',
   styleUrls: ['./gallery.component.css'],
-  templateUrl: 'gallery.component.html',
+  templateUrl: './gallery.component.html',
   providers: [ValueDecoratorService, LabelPipe, ToQNamePipe]
 })
 export class GalleryComponent implements OnChanges {

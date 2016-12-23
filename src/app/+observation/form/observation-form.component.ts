@@ -22,7 +22,7 @@ import * as moment from 'moment';
 
 @Component({
   selector: 'laji-observation-form',
-  templateUrl: 'observation-form.component.html',
+  templateUrl: './m.component.html',
   styleUrls: ['./observation-form.component.css'],
   providers: [CollectionApi, SourceApi]
 })

@@ -7,7 +7,7 @@ import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-observation-count',
-  templateUrl: 'observation-count.component.html',
+  templateUrl: './observation-count.component.html',
 })
 export class ObservationCountComponent implements OnDestroy, OnChanges {
 

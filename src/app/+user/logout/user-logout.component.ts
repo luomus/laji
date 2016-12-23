@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-logout',
-  templateUrl: 'user-logout.component.html'
+  templateUrl: './user-logout.component.html'
 })
 export class UserLogoutComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) {

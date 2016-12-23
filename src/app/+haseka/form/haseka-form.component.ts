@@ -15,8 +15,8 @@ import { ToastsService } from '../../shared/service/toasts.service';
 
 @Component({
   selector: 'laji-haseka-form',
-  templateUrl: 'haseka-form.component.html',
-  styleUrls: ['haseka-form.component.css'],
+  templateUrl: './haseka-form.component.html',
+  styleUrls: ['./haseka-form.component.css'],
   animations: [
     trigger('visibilityChanged', [
       state('shown' , style({ opacity: 1 })),

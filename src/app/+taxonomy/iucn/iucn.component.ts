@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, HostListener, ElementRef } from '@
 
 @Component({
   selector: 'iucn',
-  templateUrl: 'iucn.component.html'
+  templateUrl: './iucn.component.html'
 })
 export class IUCNComponent implements OnInit, OnChanges {
   @Input() height = 60;

@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-omni-search',
-  templateUrl: 'omni-search.component.html',
+  templateUrl: './omni-search.component.html',
   styleUrls: ['./omni-search.component.css']
 })
 export class OmniSearchComponent implements OnInit, OnChanges {

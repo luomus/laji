@@ -5,7 +5,7 @@ import { DocumentApi } from '../../shared/api/DocumentApi';
 
 @Component({
   selector: 'laji-haseka-latest',
-  templateUrl: 'haseka-users-latest.component.html'
+  templateUrl: './haseka-users-latest.component.html'
 })
 export class UsersLatestComponent implements OnChanges {
 
