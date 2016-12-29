@@ -13,7 +13,7 @@ import queryString from 'query-string';
 
 @Component({
   selector: 'laji-observation-download',
-  templateUrl: './d.component.html'
+  templateUrl: './observation-download.component.html'
 })
 export class ObservationDownloadComponent implements OnInit, OnDestroy {
 

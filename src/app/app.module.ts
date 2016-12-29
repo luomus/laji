@@ -1,25 +1,11 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { LocationStrategy, PathLocationStrategy, DatePipe } from '@angular/common';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { LangSelectComponent } from './shared/navbar/lang-select.component';
-import { PersonTokenApi } from './shared/api/PersonTokenApi';
-import { PersonApi } from './shared/api/PersonApi';
-import { WarehouseApi } from './shared/api/WarehouseApi';
-import { WarehouseValueMappingService } from './shared/service/warehouse-value-mapping.service';
-import { TriplestoreLabelService } from './shared/service/triplestore-label.service';
-import { MetadataApi } from './shared/api/MetadataApi';
-import { AutocompleteApi } from './shared/api/AutocompleteApi';
-import { FooterService } from './shared/service/footer.service';
-import { LocalStorageService } from 'angular2-localstorage/dist';
 import { SharedModule } from './shared/shared.module';
-import { BrowserModule } from '@angular/platform-browser';
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
-import { SearchQuery } from './+observation/search-query.model';
-import { ToastsService } from './shared/service/toasts.service';
-import { ToastModule } from 'ng2-toastr';
 import { FeedbackComponent } from './shared/feedback/feedback.component';
-import { FeedbackApi } from './shared/api/FeedbackApi';
 import { Logger, ConsoleLogger, HttpLogger } from './shared/logger/index';
 import { LoggerApi } from './shared/api/LoggerApi';
 import { AppConfig } from './app.config';
@@ -29,6 +15,8 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TranslateFileLoader } from './shared/translate/translate-file-loader';
 import { WhatsNewComponent } from './shared/whats-new/whats-new.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 export function createTranslateLoader(): TranslateLoader {
   return new TranslateFileLoader();
@@ -48,14 +36,15 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
     WhatsNewComponent
   ],
   imports: [
-    BrowserModule,
-    ToastModule,
     TranslateModule.forRoot({
       provide: TranslateLoader,
       useFactory: createTranslateLoader
     }),
     SharedModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     TranslateModule
@@ -68,11 +57,6 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
       deps: [LoggerApi, AppConfig],
       useFactory: (createLoggerLoader)
     },
-    ToastsService, AppConfig,
-    PersonTokenApi, PersonApi, SearchQuery, WarehouseApi, FeedbackApi, LoggerApi,
-    WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
-    AutocompleteApi, FooterService, LocalStorageService,
-    DatePipe
   ],
   bootstrap: [
     AppComponent

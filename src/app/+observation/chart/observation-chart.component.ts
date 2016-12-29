@@ -11,7 +11,7 @@ import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-observation-chart',
-  templateUrl: './r.component.html',
+  templateUrl: './observation-char.component.html',
   styleUrls: ['./observation-char.component.css'],
   providers: [InformalTaxonGroupApi]
 })

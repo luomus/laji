@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule } from 'ng2-bootstrap';
 import { TranslateModule } from 'ng2-translate';
 import { NewsListComponent } from './news-list/news-list.component';
@@ -28,6 +28,22 @@ import { ToFullUriPipe } from './pipe/to-full-uri';
 import { GalleryComponent } from '../+observation/gallery/gallery.component';
 import { UserService } from './service/user.service';
 import { NewsApi } from './api/NewsApi';
+import { BrowserModule } from '@angular/platform-browser';
+import { ToastModule } from 'ng2-toastr';
+import { ToastsService } from './service/toasts.service';
+import { AppConfig } from '../app.config';
+import { PersonTokenApi } from './api/PersonTokenApi';
+import { PersonApi } from './api/PersonApi';
+import { SearchQuery } from '../+observation/search-query.model';
+import { WarehouseApi } from './api/WarehouseApi';
+import { FeedbackApi } from './api/FeedbackApi';
+import { LoggerApi } from './api/LoggerApi';
+import { WarehouseValueMappingService } from './service/warehouse-value-mapping.service';
+import { TriplestoreLabelService } from './service/triplestore-label.service';
+import { MetadataApi } from './api/MetadataApi';
+import { LocalStorageService } from 'angular2-localstorage/dist';
+import { FooterService } from './service/footer.service';
+import { AutocompleteApi } from './api/AutocompleteApi';
 
 
 @NgModule({
@@ -39,8 +55,7 @@ import { NewsApi } from './api/NewsApi';
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal
   ],
   imports: [
-    FormsModule,
-    ReactiveFormsModule,
+    ToastModule,
     CommonModule,
     HttpModule,
     RouterModule,
@@ -65,7 +80,12 @@ export class SharedModule {
         NewsApi,
         NewsService,
         MapService,
-        WindowRef
+        WindowRef,
+        ToastsService, AppConfig,
+        PersonTokenApi, PersonApi, SearchQuery, WarehouseApi, FeedbackApi, LoggerApi,
+        WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
+        AutocompleteApi, FooterService, LocalStorageService,
+        DatePipe
       ]
     };
   }
