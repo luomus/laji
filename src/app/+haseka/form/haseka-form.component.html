@@ -6,9 +6,20 @@
     </div>
     <div in>
       <laji-spinner [spinning]="loading" [overlay]="true"></laji-spinner>
-      <h1>{{form?.title}}</h1>
-      <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
-      <div [innerHtml]="form?.description"></div>
+      <div class="row">
+        <div [ngClass]="{
+          'col-sm-8': form?.logo,
+          'col-sm-12': !form?.logo
+        }">
+          <h1>{{form?.title}}</h1>
+          <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
+          <div [innerHtml]="form?.description"></div>
+        </div>
+        <div class="col-sm-4" *ngIf="form?.logo">
+          <img src="{{form.logo}}">
+        </div>
+      </div>
+
       <div class="laji-form" *ngIf="form?.id">
         <laji-form
                 [formId]="formId"
