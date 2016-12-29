@@ -194,7 +194,12 @@ export interface Taxonomy {
    */
   hasChildren?: boolean;
 
-  latestRedListStatusFinland?: string;
+  latestRedListStatusFinland?: LatestRedListStatusFinland;
+}
+
+export interface LatestRedListStatusFinland {
+  status: string;
+  year: number;
 }
 
 export interface TaxonomyDescriptionVariable {
