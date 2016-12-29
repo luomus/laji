@@ -31,7 +31,9 @@ export interface Taxonomy {
 
   id?: string;
 
-  customReportFormLink?: string;
+  distributionMapFinland?: string;
+
+  sortOrder?: number;
 
   redListStatus2000Finland?: string;
 
@@ -53,6 +55,8 @@ export interface Taxonomy {
 
   originalPublication?: Array<string>;
 
+  occurrenceInFinlandPublication?: Array<string>;
+
   /**
    *  If lang parameter is 'multi' this will be a lang object instead of a string or an array of strings!
    */
@@ -64,11 +68,15 @@ export interface Taxonomy {
 
   naturaAreaSecureLevel?: string;
 
+  nameDecidedDate?: Date;
+
   nameDecidedBy?: string;
 
   misappliedNameNotes?: string;
 
   isPartOfInformalTaxonGroup?: Array<string>;
+
+  invasiveSpeciesEstablishment?: string;
 
   invasiveSpeciesCategory?: string;
 
@@ -90,7 +98,7 @@ export interface Taxonomy {
 
   etymologyText?: string;
 
-  distributionMapFinland?: string;
+  customReportFormLink?: string;
 
   circumscription?: string;
 
@@ -133,8 +141,6 @@ export interface Taxonomy {
 
   informalTaxonGroups?: Array<string>;
 
-  alternativeVernacularNames?: Array<string>;
-
   occurrences?: Array<any>;
 
   synonyms?: Array<Taxonomy>;
@@ -145,16 +151,26 @@ export interface Taxonomy {
 
   species?: boolean;
 
-  cursiveName: boolean;
+  invasiveSpecies?: boolean;
+
+  /**
+   * should the name appear cursive
+   */
+  cursiveName?: boolean;
 
   countOfSpecies?: number;
 
   countOfFinnishSpecies?: number;
 
   /**
-   * occurs in Finland
+   * is taxon species or subspecies or etc and occurs in Finland
    */
   finnishSpecies?: boolean;
+
+  /**
+   * taxon occurs in Finland
+   */
+  finnish?: boolean;
 
   /**
    * stable in Finland
@@ -177,6 +193,13 @@ export interface Taxonomy {
    * true if has children
    */
   hasChildren?: boolean;
+
+  latestRedListStatusFinland?: LatestRedListStatusFinland;
+}
+
+export interface LatestRedListStatusFinland {
+  status: string;
+  year: number;
 }
 
 export interface TaxonomyDescriptionVariable {

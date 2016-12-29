@@ -44,9 +44,9 @@
       </ul>
     </td>
   </tr>
-  <tr *ngIf="taxon.redListStatus2010Finland">
+  <tr *ngIf="taxon.latestRedListStatusFinland">
     <th>{{ 'taxonomy.redListStatus2010Finland' | translate }}</th>
-    <td>{{taxon.redListStatus2010Finland | label}}</td>
+    <td>{{taxon.latestRedListStatusFinland.status | label}}</td>
   </tr>
   <tr>
     <th>{{ 'taxonomy.card.id' | translate }}</th>
