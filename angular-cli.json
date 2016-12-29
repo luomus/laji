@@ -23,6 +23,7 @@
         "styles/laji.css"
       ],
       "scripts": [
+        "../node_modules/moment/moment.js"
       ],
       "environments": {
         "source": "environments/environment.ts",

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -26,6 +26,8 @@ import { ToQNamePipe } from './pipe/to-qname.pipe';
 import { WindowRef } from './windows-ref';
 import { ToFullUriPipe } from './pipe/to-full-uri';
 import { GalleryComponent } from '../+observation/gallery/gallery.component';
+import { UserService } from './service/user.service';
+import { NewsApi } from './api/NewsApi';
 
 
 @NgModule({
@@ -45,9 +47,7 @@ import { GalleryComponent } from '../+observation/gallery/gallery.component';
     TranslateModule,
     TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule
   ],
-  providers: [
-    NewsService, MapService, WindowRef
-  ],
+  providers: [ ], // keep this empty!
   exports: [
     CommonModule, HttpModule, TranslateModule,
     NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe, MultiLangPipe, ToQNamePipe,
@@ -57,5 +57,16 @@ import { GalleryComponent } from '../+observation/gallery/gallery.component';
   ]
 })
 export class SharedModule {
-
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: SharedModule,
+      providers: [
+        UserService,
+        NewsApi,
+        NewsService,
+        MapService,
+        WindowRef
+      ]
+    };
+  }
 }

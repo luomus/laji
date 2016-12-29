@@ -14,7 +14,6 @@ import { LocalStorageService } from 'angular2-localstorage/dist';
 import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { TranslateModule, TranslateLoader } from 'ng2-translate';
-import { CoreModule } from './shared/core.module';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
 import { SearchQuery } from './+observation/search-query.model';
 import { ToastsService } from './shared/service/toasts.service';
@@ -55,8 +54,7 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
       provide: TranslateLoader,
       useFactory: createTranslateLoader
     }),
-    CoreModule.forRoot(),
-    SharedModule,
+    SharedModule.forRoot(),
     AppRoutingModule
   ],
   exports: [

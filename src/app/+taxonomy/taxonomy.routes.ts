@@ -21,10 +21,6 @@ export const taxonomyRoutes: Routes = [
     redirectTo: 'informal'
   },
   {
-    matcher: typeMatcher,
-    component: TaxonComponent
-  },
-  {
     path: ':type/:id',
     pathMatch: 'full',
     component: TaxonComponent
