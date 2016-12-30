@@ -108,6 +108,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
       .getForm(this.formId, this.translate.currentLang)
       .subscribe(form => {
         form['formData'] = this.form.formData;
+        this.lang = this.translate.currentLang;
         this.form = form;
       });
   }
