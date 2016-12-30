@@ -1,6 +1,6 @@
 import {
   Component, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges,
-  AfterViewInit
+  AfterViewInit, SimpleChanges
 } from '@angular/core';
 import { FormApiClient } from '../api';
 import { UserService } from '../service/user.service';
@@ -17,7 +17,6 @@ import LajiFormWrapper from 'laji-form';
 })
 export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
 
-  @Input() formId: string;
   @Input() lang: string;
   @Input() formData: any = {};
   @Input() tick: number;
@@ -49,12 +48,21 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.renderElem = undefined;
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (!this.lajiFormWrapper) {
       return;
     }
-    this.unMount();
-    this.mount();
+    if (changes['lang']) {
+      this.lajiFormWrapper.setState({lang: this.lang});
+    }
+    if (changes['formData']) {
+      this.lajiFormWrapper.setState({
+        schema: this.formData.schema,
+        uiSchema: this.formData.uiSchema,
+        formData: this.formData.formData,
+        validators: this.formData.validators
+      });
+    }
   }
 
   clearState() {
