@@ -34,4 +34,16 @@ export class AppConfig {
     }
     return this.config.form_whitelist.indexOf(formId) !== -1;
   }
+
+  isAnalyticsDisabled() {
+    return !!this.config.disable_analytics;
+  }
+
+  isForcedLogin() {
+    return !!this.config.force_login;
+  }
+
+  isForAuthorities() {
+    return !!this.config.for_authorities;
+  }
 }

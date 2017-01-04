@@ -15,17 +15,20 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
           <ul class="nav navbar-nav">
-            <li [routerLinkActive]="['active']">
+            <li [routerLinkActive]="['active']" *lajiAuthorities="false">
               <a [routerLink]="['/taxon']">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']">
               <a [routerLink]="['/observation']" [queryParams]="{page: 1}">{{ 'navigation.observation' | translate }}</a>
             </li>
+            <li [routerLinkActive]="['active']" *lajiAuthorities="true">
+              <a [routerLink]="['/about']">{{ 'navigation.information' | translate }}</a>
+            </li>
             <li [routerLinkActive]="['active']">
               <a *ngIf="userService.isLoggedIn" [routerLink]="['/vihko']">{{ 'navigation.haseka' | translate }}</a>
               <a *ngIf="!userService.isLoggedIn" [routerLink]="['/vihko']">{{ 'navigation.notify' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']">
+            <li [routerLinkActive]="['active']" *lajiAuthorities="false">
               <a [routerLink]="['/about']">{{ 'navigation.information' | translate }}</a>
             </li>
           </ul>
