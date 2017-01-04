@@ -15,7 +15,7 @@
             <i class="glyphicon glyphicon-modal-window"></i>
           </a>
           <span *ngIf="cnt[taxon.id]" class="pull-right">
-            {{'invasive.exists' | translate}}
+            {{cnt[taxon.id]}} {{'invasive.exists' | translate}}
           </span>
         </div>
       </div>
