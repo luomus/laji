@@ -7,6 +7,7 @@ const routes: Routes = [
   {path: 'news', loadChildren: './+news/news.module#NewsModule'},
   {path: 'about', loadChildren: './+information/information.module#InformationModule'},
   {path: 'user', loadChildren: './+user/user.module#UserModule'},
+  {path: 'invasive', loadChildren: './+invasive/invasive.module#InvasiveModule'},
   {path: 'vihko', loadChildren: './+haseka/haseka.module#HasekaModule'},
   {path: 'observation', loadChildren: './+observation/observation.module#ObservationModule'},
   {path: 'taxon', loadChildren: './+taxonomy/taxonomy.module#TaxonomyModule'},
