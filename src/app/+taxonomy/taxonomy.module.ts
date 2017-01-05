@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { routing } from './index';
 import { SharedModule } from '../shared/shared.module';
 import { TaxonComponent } from './taxon.component';
@@ -20,7 +19,7 @@ import { TaxonInfoComponent } from './info-card/taxon/taxon-info.component';
 import { TreeModule } from 'angular2-tree-component';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, FormsModule, TreeModule],
+  imports: [routing, SharedModule, RouterModule, TreeModule],
   providers: [TaxonomyApi, InformalTaxonGroupApi],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TreeOfLifeComponent, TaxonTreeComponent, SpeciesListComponent,

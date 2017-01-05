@@ -16,7 +16,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { TranslateFileLoader } from './shared/translate/translate-file-loader';
 import { WhatsNewComponent } from './shared/whats-new/whats-new.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule } from 'ng2-bootstrap';
+import { CoreModule } from './shared/core.module';
 
 export function createTranslateLoader(): TranslateLoader {
   return new TranslateFileLoader();
@@ -40,11 +42,14 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
       provide: TranslateLoader,
       useFactory: createTranslateLoader
     }),
+    CoreModule,
     SharedModule.forRoot(),
+    PaginationModule.forRoot(),
+    ModalModule.forRoot(),
+    DropdownModule.forRoot(),
+    TooltipModule.forRoot(),
     AppRoutingModule,
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule
+    BrowserModule
   ],
   exports: [
     TranslateModule
@@ -55,7 +60,7 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
     {
       provide: Logger,
       deps: [LoggerApi, AppConfig],
-      useFactory: (createLoggerLoader)
+      useClass: ConsoleLogger
     },
   ],
   bootstrap: [

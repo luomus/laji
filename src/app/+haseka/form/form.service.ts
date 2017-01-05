@@ -121,7 +121,7 @@ export class FormService {
   }
 
   isTmpId(id: string) {
-    return id.indexOf(this.tmpNs + ':') === 0;
+    return id && id.indexOf(this.tmpNs + ':') === 0;
   }
 
   getAllTempDocuments(): Observable<Document[]> {

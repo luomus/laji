@@ -1,6 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
-import { ComponentsHelper } from 'ng2-bootstrap';
 import { TaxonomyApi } from './shared/api/TaxonomyApi';
 import { CollectionApi } from './shared/api/CollectionApi';
 import { Router, NavigationEnd } from '@angular/router';
@@ -30,7 +29,6 @@ export class AppComponent {
   constructor(
     router: Router,
     location: Location,
-    componentsHelper: ComponentsHelper,
     toastr: ToastsManager,
     viewContainerRef: ViewContainerRef,
     windowRef: WindowRef,
@@ -38,7 +36,6 @@ export class AppComponent {
   ) {
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !appConfig.isAnalyticsDisabled();
-    componentsHelper.setRootViewContainerRef(viewContainerRef);
     toastr.setRootViewContainerRef(viewContainerRef);
     router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {

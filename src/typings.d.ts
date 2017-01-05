@@ -4,4 +4,5 @@
 declare module 'laji-form';
 declare module 'laji-map';
 declare module 'query-string';
-declare module 'nvD3';
+declare let d3: any;
+declare var moment: any;

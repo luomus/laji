@@ -18,7 +18,6 @@ import { MapService } from '../../shared/map/map.service';
 import { WindowRef } from '../../shared/windows-ref';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Autocomplete } from '../../shared/model/Autocomplete';
-import * as moment from 'moment';
 
 @Component({
   selector: 'laji-observation-form',

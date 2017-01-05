@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 
-declare let d3: any;
-
 @Component({
   selector: 'laji-pie-chart',
   template: '<nvd3 *ngIf="innerVisibility" [options]="options" [data]="data"></nvd3>'

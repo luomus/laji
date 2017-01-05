@@ -3,8 +3,8 @@ import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
-import { TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule } from 'ng2-bootstrap';
-import { TranslateModule } from 'ng2-translate';
+import { TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule } from 'ng2-bootstrap';
+import { TranslateModule, TranslateService } from 'ng2-translate';
 import { NewsListComponent } from './news-list/news-list.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { UsersPipe } from './pipe/users.pipe';
@@ -58,17 +58,19 @@ import { AutocompleteApi } from './api/AutocompleteApi';
   ],
   imports: [
     ToastModule,
+    FormsModule,
     CommonModule,
     HttpModule,
     RouterModule,
     TranslateModule,
-    TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule
+    ReactiveFormsModule,
+    TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule
   ],
   providers: [ ], // keep this empty!
   exports: [
-    CommonModule, HttpModule, TranslateModule,
+    CommonModule, HttpModule, TranslateModule, FormsModule, ReactiveFormsModule,
     NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe, MultiLangPipe, ToQNamePipe,
-    ToFullUriPipe, TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
+    ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal,
     AuthoritiesDirective

@@ -3,7 +3,7 @@ import { TaxonComponent } from './taxon.component';
 import { InfoCardComponent } from './info-card/info-card.component';
 import { ModuleWithProviders } from '@angular/core';
 
-export const typeMatcher = function htmlFiles(url: UrlSegment[]) {
+export function decideTaxonFront(url: UrlSegment[]) {
   if (url.length === 1) {
     if (url[0].path.startsWith('informal')) {
       return {consumed: url, posParams: {'type': new UrlSegment('informal', {})}};
@@ -19,6 +19,10 @@ export const taxonomyRoutes: Routes = [
     path: '',
     pathMatch: 'full',
     redirectTo: 'informal'
+  },
+  {
+    matcher: decideTaxonFront,
+    component: TaxonComponent
   },
   {
     path: ':type/:id',
