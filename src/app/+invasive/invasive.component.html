@@ -1,0 +1,22 @@
+<div class="container-fluid">
+  <h1>{{ 'invasive.title' | translate }}</h1>
+  <p>{{ 'invasive.description' | translate }}</p>
+  <ul class="invasive-list">
+    <li *ngFor="let taxon of taxa | async" [ngClass]="{danger: cnt[taxon.id]}">
+      <div class="row">
+        <div class="col-sm-12">
+          <a [routerLink]="['/observation']" [queryParams]="{target: taxon.id, time:'-' + daysBack + '/' }">
+            {{taxon.vernacularName | multiLang}}
+            (<i *ngIf="taxon.cursiveName">{{taxon.scientificName}}</i>)
+          </a>
+          <a [routerLink]="['/taxon/' + taxon.id]">
+            <i class="glyphicon glyphicon-modal-window"></i>
+          </a>
+          <span *ngIf="cnt[taxon.id]" class="pull-right">
+            {{cnt[taxon.id]}} {{'invasive.exists' | translate}}
+          </span>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

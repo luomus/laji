@@ -6,7 +6,7 @@ import { NewsService } from '../shared/service/news.service';
 import { Logger } from '../shared/logger/logger.service';
 
 @Component({
-  selector: 'laij-news',
+  selector: 'laji-news',
   templateUrl: './news.component.html'
 })
 export class NewsComponent implements OnInit, OnDestroy {

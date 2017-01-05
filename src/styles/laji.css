@@ -184,8 +184,8 @@ body {
   height: 100%;
 }
 
-.laji-form {
-  z-index:1;
+.laji-form .laji-form-map-container, .laji-form .popover {
+  z-index: 0;
 }
 
 .laji-form .blocking-loader {

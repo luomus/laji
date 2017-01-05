@@ -26,6 +26,7 @@ import { ToQNamePipe } from './pipe/to-qname.pipe';
 import { WindowRef } from './windows-ref';
 import { ToFullUriPipe } from './pipe/to-full-uri';
 import { GalleryComponent } from '../+observation/gallery/gallery.component';
+import { AuthoritiesDirective } from './authorities/authorities.directive';
 import { UserService } from './service/user.service';
 import { NewsApi } from './api/NewsApi';
 import { BrowserModule } from '@angular/platform-browser';
@@ -52,7 +53,8 @@ import { AutocompleteApi } from './api/AutocompleteApi';
     SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe,
     UsersPipe, LabelPipe, SafePipe, MultiLangPipe, FormattedNumber,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
-    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal
+    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal,
+    AuthoritiesDirective
   ],
   imports: [
     ToastModule,
@@ -68,7 +70,8 @@ import { AutocompleteApi } from './api/AutocompleteApi';
     NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe, MultiLangPipe, ToQNamePipe,
     ToFullUriPipe, TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
-    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal
+    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal,
+    AuthoritiesDirective
   ]
 })
 export class SharedModule {
