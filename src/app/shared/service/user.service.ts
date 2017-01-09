@@ -104,7 +104,9 @@ export class UserService {
   }
 
   public returnToPageBeforeLogin(): void {
-    this.router.navigateByUrl(this.returnUrl);
+    if (this.returnUrl) {
+      this.router.navigateByUrl(this.returnUrl);
+    }
   }
 
   public getDefaultFormData(): Observable<any> {

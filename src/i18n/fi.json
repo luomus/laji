@@ -308,5 +308,7 @@
   "whatsNew.acknowledge": "Sulje",
   "invasive.title": "Vieraslajit",
   "invasive.description": "Tällä sivulla näet Suomessa viimeisen 365 päivän aikana havaitut EU-directiivissä määritellyt vieraslajit.",
-  "invasive.exists": "havaintoa"
+  "invasive.exists": "havaintoa",
+  "invasive.individuals": "yksilöä",
+  "invasive.lastRecord": "viimesin havainto"
 }

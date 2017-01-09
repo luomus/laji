@@ -13,13 +13,15 @@ import { Observable } from 'rxjs';
 export class InvasiveComponent implements OnInit, OnDestroy {
 
   public taxa: Observable<Taxonomy[]>;
-  public cnt: {[key: string]: number} = {};
+  public aggr: {[key: string]: number} = {};
   public daysBack = '365';
 
   constructor(
     private taxonomyApi: TaxonomyApi,
     private warehouseApi: WarehouseApi
-  ) { }
+  ) {
+    this.daysBack = moment().subtract(365, 'days').format('YYYY-MM-DD');
+  }
 
   ngOnInit() {
     this.updateObservations();
@@ -36,14 +38,19 @@ export class InvasiveComponent implements OnInit, OnDestroy {
       {
         countryId: ['ML.206'],
         administrativeStatusId: ['MX.euInvasiveSpeciesList'],
-        time: ['-' + this.daysBack + '/']
+        time: [this.daysBack + '/']
       },
-      ['unit.linkings.taxon.id']
+      ['unit.linkings.taxon.id'],
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      false
     )
       .map(data => data.results)
       .subscribe(data => {
         data.map(item => {
-          this.cnt[IdService.getId(item['aggregateBy']['unit.linkings.taxon.id'])] = item['count'];
+          this.aggr[IdService.getId(item['aggregateBy']['unit.linkings.taxon.id'])] = item;
         });
       });
   }

@@ -9,9 +9,9 @@ export class AuthoritiesDirective {
     private viewContainer: ViewContainerRef,
     private appConfig: AppConfig
   ) { }
+
   @Input() set lajiAuthorities(isAuthority: boolean) {
-    if ((this.appConfig.isForAuthorities() && isAuthority) ||
-       (!this.appConfig.isForAuthorities() && !isAuthority)) {
+    if (this.appConfig.isForAuthorities() === isAuthority) {
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
       this.viewContainer.clear();
