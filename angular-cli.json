@@ -23,8 +23,7 @@
         "styles/laji.css"
       ],
       "scripts": [
-        { "input": "../node_modules/moment/moment.js", "lazy": true },
-        { "input": "../node_modules/laji-form/lib/app.js", "lazy": true }
+        "../node_modules/moment/moment.js"
       ],
       "environments": {
         "source": "environments/environment.ts",
