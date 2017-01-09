@@ -10,8 +10,8 @@ import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-species-list',
-  templateUrl: 'species-list.component.html',
-  styleUrls: ['species-list.component.css'],
+  templateUrl: './species-list.component.html',
+  styleUrls: ['./species-list.component.css'],
   providers: []
 })
 export class SpeciesListComponent implements OnChanges {
@@ -19,7 +19,7 @@ export class SpeciesListComponent implements OnChanges {
   @Input() informalGroup: InformalTaxonGroup;
 
   loading: boolean = false;
-  speciesPage: PagedResult<Taxonomy[]>;
+  speciesPage: PagedResult<Taxonomy>;
 
   private subFetch: Subscription;
 

@@ -7,7 +7,7 @@ import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-haseka-form-list',
-  templateUrl: 'haseka-form-list.component.html'
+  templateUrl: './haseka-form-list.component.html'
 })
 export class HaSeKaFormListComponent implements OnInit, OnDestroy {
 

@@ -5,10 +5,7 @@ import {
 import { FormApiClient } from '../api';
 import { UserService } from '../service/user.service';
 import { Logger } from '../logger/logger.service';
-
 import LajiFormWrapper from 'laji-form';
-
-// const lajiFormWrapper = require('laji-form/dist/laji-form').default;
 
 @Component({
   selector: 'laji-form',

@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-observation-active',
-  templateUrl: 'observation-active.component.html',
+  templateUrl: './observation-active.component.html',
   styleUrls: ['./observation-active.component.css']
 })
 export class ObservationActiveComponent implements OnInit, OnDestroy {

@@ -6,7 +6,7 @@ import { SearchQuery } from '../search-query.model';
 import { Util } from '../../shared/service/util.service';
 import { TranslateService } from 'ng2-translate';
 import { Logger } from '../../shared/logger/logger.service';
-import { SessionStorage } from 'angular2-localstorage/dist';
+import { SessionStorage } from 'ng2-webstorage';
 import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { PagedResult } from '../../shared/model/PagedResult';
@@ -22,7 +22,7 @@ interface Column {
 
 @Component({
   selector: 'laji-observation-result-list',
-  templateUrl: 'observation-result-list.component.html',
+  templateUrl: './observation-result-list.component.html',
   styleUrls: ['./observation-result-list.component.css'],
   providers: [ValueDecoratorService, LabelPipe, ToQNamePipe]
 })

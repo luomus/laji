@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-user-login',
-  templateUrl: 'user-login.component.html'
+  templateUrl: './user-login.component.html'
 })
 export class UserLoginComponent implements OnInit {
 

@@ -6,7 +6,7 @@ import { WindowRef } from '../../shared/windows-ref';
 
 @Component({
   selector: 'laji-logout',
-  templateUrl: 'user-logout.component.html'
+  templateUrl: './user-logout.component.html'
 })
 export class UserLogoutComponent implements OnInit {
   constructor(

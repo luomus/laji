@@ -22,7 +22,7 @@ export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
 
 @Component({
   selector: 'observation-group-select',
-  templateUrl: 'group-select.component.html',
+  templateUrl: './group-select.component.html',
   styleUrls: ['./group-select.component.css'],
   providers: [InformalTaxonGroupApi, OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR]
 })
