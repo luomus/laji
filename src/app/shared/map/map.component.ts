@@ -113,8 +113,8 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     if (type === 'Coordinates') {
       this.map.openCoordinatesDialog();
     } else if (['Rectangle'].indexOf(type) > -1) {
-      /*new L.Draw[type](this.map.map, this.getDrawingDraftStyle(type))
-        .enable();*/
+      new (L as any).Draw[type](this.map.map, this.getDrawingDraftStyle(type))
+        .enable();
     }
   }
 

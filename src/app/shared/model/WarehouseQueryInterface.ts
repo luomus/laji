@@ -140,5 +140,3 @@ export interface WarehouseQueryInterface {
   secureReason?: Array<string>;
   editorId?: Array<string>;
 }
-
-export const DATE_FORMAT = 'YYYY-MM-DD';

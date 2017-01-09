@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as appConfigJson from '../../config.json';
 
 @Injectable()
 export class AppConfig {
@@ -6,9 +7,9 @@ export class AppConfig {
 
   constructor() {
     try {
-      this.config = require('../../config.json');
+      this.config = appConfigJson;
     } catch (e) {
-      throw 'Place add config.json for your application!';
+      throw 'Place add config.json for your application root!';
     }
   }
 

@@ -20,10 +20,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule } from 'ng2-bootstrap';
 import { CoreModule } from './shared/core.module';
 
-export function createTranslateLoader(): TranslateLoader {
-  return new TranslateFileLoader();
-}
-
 export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): ILogger {
   const env = appConfig.getEnv();
   if (env === 'prod' || env === 'staging') {
@@ -40,7 +36,7 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
   imports: [
     TranslateModule.forRoot({
       provide: TranslateLoader,
-      useFactory: createTranslateLoader
+      useClass: TranslateFileLoader
     }),
     CoreModule,
     SharedModule.forRoot(),
@@ -48,6 +44,7 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
     ModalModule.forRoot(),
     DropdownModule.forRoot(),
     TooltipModule.forRoot(),
+    AlertModule.forRoot(),
     AppRoutingModule,
     BrowserModule
   ],
@@ -60,8 +57,8 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
     {
       provide: Logger,
       deps: [LoggerApi, AppConfig],
-      useClass: ConsoleLogger
-    },
+      useFactory: createLoggerLoader
+    }
   ],
   bootstrap: [
     AppComponent

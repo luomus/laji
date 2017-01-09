@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { SearchQuery } from '../search-query.model';
-import { WarehouseQueryInterface, DATE_FORMAT } from '../../shared/model/WarehouseQueryInterface';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable, Subscription } from 'rxjs';
 import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
 import { TranslateService } from 'ng2-translate';
@@ -36,7 +36,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   public formQuery: ObservationFormQuery;
   public dataSource: Observable<any>;
   public typeaheadLoading: boolean = false;
-  public warehouseDateFormat = DATE_FORMAT;
+  public warehouseDateFormat = 'YYYY-MM-DD';
   public logCoordinateAccuracyMax: number = 4;
   public showPlace = false;
   public showFilter = true;
@@ -184,7 +184,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       dates = Math.ceil(((+today) - (+oneJan)) / 86400000) - 1;
     }
     let today = moment();
-    this.formQuery.timeStart = today.subtract(dates, 'days').format(DATE_FORMAT);
+    this.formQuery.timeStart = today.subtract(dates, 'days').format('YYYY-MM-DD');
     this.formQuery.timeEnd = '';
     this.onSubmit();
   }
