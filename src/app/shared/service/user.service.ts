@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { PersonTokenApi } from '../api/PersonTokenApi';
 import { Subscription, Observable, Observer } from 'rxjs';
@@ -104,9 +104,7 @@ export class UserService {
   }
 
   public returnToPageBeforeLogin(): void {
-    if (this.returnUrl) {
-      this.router.navigateByUrl(this.returnUrl);
-    }
+    this.router.navigateByUrl(this.returnUrl || '/');
   }
 
   public getDefaultFormData(): Observable<any> {

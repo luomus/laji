@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TaxonomyApi } from '../shared/api/TaxonomyApi';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { Taxonomy } from '../shared/model/Taxonomy';
@@ -10,7 +10,9 @@ import { Observable } from 'rxjs';
   templateUrl: './invasive.component.html',
   styleUrls: ['./invasive.component.css']
 })
-export class InvasiveComponent implements OnInit, OnDestroy {
+export class InvasiveComponent implements OnInit {
+
+  static taxa;
 
   public taxa: Observable<Taxonomy[]>;
   public aggr: {[key: string]: number} = {};
@@ -25,12 +27,18 @@ export class InvasiveComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.updateObservations();
-    this.taxa = this.taxonomyApi
-      .taxonomyFindSpecies('MX.37600', 'multi', undefined, 'MX.euInvasiveSpeciesList')
-      .map(species => species.results);
+    this.updateTaxa();
   }
 
-  ngOnDestroy() {
+  updateTaxa() {
+    if (InvasiveComponent.taxa) {
+      this.taxa = Observable.of(InvasiveComponent.taxa);
+    } else {
+      this.taxa = this.taxonomyApi
+        .taxonomyFindSpecies('MX.37600', 'multi', undefined, 'MX.euInvasiveSpeciesList')
+        .map(species => species.results)
+        .do(taxa => InvasiveComponent.taxa = taxa);
+    }
   }
 
   updateObservations() {
