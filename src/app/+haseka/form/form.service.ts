@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
-import { LocalStorage } from 'angular2-localstorage/dist';
+import { LocalStorage } from 'ng2-webstorage';
 import { UserService } from '../../shared/service/user.service';
 import { Util } from '../../shared/service/util.service';
 import { FormApi } from '../../shared/api/FormApi';
@@ -12,8 +12,8 @@ import { AppConfig } from '../../app.config';
 @Injectable()
 export class FormService {
 
-  @LocalStorage() private formDataStorage = {};
-  @LocalStorage() private tmpDocId = 0;
+  @LocalStorage() private formDataStorage;
+  @LocalStorage() private tmpDocId;
   private tmpNs = 'T';
   private currentData: any;
   private currentKey: string;
@@ -28,7 +28,14 @@ export class FormService {
     private userService: UserService,
     private documentApi: DocumentApi,
     private appConfig: AppConfig
-  ) {}
+  ) {
+    if (!this.formDataStorage) {
+      this.formDataStorage = {};
+    }
+    if (!this.tmpDocId) {
+      this.tmpDocId = 0;
+    }
+  }
 
   getUserId(): Observable<string> {
     return this.userService.getUser()
@@ -43,6 +50,7 @@ export class FormService {
       .switchMap(userID => {
         if (this.formDataStorage[userID] && this.formDataStorage[userID][id]) {
           delete this.formDataStorage[userID][id];
+          this.formDataStorage = Util.clone(this.formDataStorage);
         }
         return Observable.of(true);
       })
@@ -73,6 +81,7 @@ export class FormService {
             this.formDataStorage[userID] = {};
           }
           this.formDataStorage[userID][this.currentKey] = formData;
+          this.formDataStorage = Util.clone(this.formDataStorage);
           return Observable.of(true);
         })
         .subscribe();
@@ -232,6 +241,7 @@ export class FormService {
           return Observable.of(this.formDataStorage[userID][documentId]);
         }
         delete this.formDataStorage[userID][documentId];
+        this.formDataStorage = Util.clone(this.formDataStorage);
         return Observable.of(current);
       });
   }

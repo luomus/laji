@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ng2-bootstrap';
-import { LocalStorage } from 'angular2-localstorage/dist';
+import { LocalStorage } from 'ng2-webstorage';
 
 @Component({
   selector: 'laji-whats-new',
@@ -9,7 +9,7 @@ import { LocalStorage } from 'angular2-localstorage/dist';
 })
 export class WhatsNewComponent implements OnInit {
 
-  CurrentVersion = 0;
+  CurrentVersion = 1;
 
   @LocalStorage() public version;
 

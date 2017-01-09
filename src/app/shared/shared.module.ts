@@ -1,5 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import { HttpModule, Http } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -29,7 +29,6 @@ import { GalleryComponent } from '../+observation/gallery/gallery.component';
 import { AuthoritiesDirective } from './authorities/authorities.directive';
 import { UserService } from './service/user.service';
 import { NewsApi } from './api/NewsApi';
-import { BrowserModule } from '@angular/platform-browser';
 import { ToastModule } from 'ng2-toastr';
 import { ToastsService } from './service/toasts.service';
 import { AppConfig } from '../app.config';
@@ -42,9 +41,10 @@ import { LoggerApi } from './api/LoggerApi';
 import { WarehouseValueMappingService } from './service/warehouse-value-mapping.service';
 import { TriplestoreLabelService } from './service/triplestore-label.service';
 import { MetadataApi } from './api/MetadataApi';
-import { LocalStorageService } from 'angular2-localstorage/dist';
+import { Ng2Webstorage } from 'ng2-webstorage';
 import { FooterService } from './service/footer.service';
 import { AutocompleteApi } from './api/AutocompleteApi';
+import { AuthenticatedHttpService } from './service/authenticated-http.service';
 
 
 @NgModule({
@@ -64,7 +64,7 @@ import { AutocompleteApi } from './api/AutocompleteApi';
     RouterModule,
     TranslateModule,
     ReactiveFormsModule,
-    TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule
+    TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, Ng2Webstorage
   ],
   providers: [ ], // keep this empty!
   exports: [
@@ -89,8 +89,9 @@ export class SharedModule {
         ToastsService, AppConfig,
         PersonTokenApi, PersonApi, SearchQuery, WarehouseApi, FeedbackApi, LoggerApi,
         WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
-        AutocompleteApi, FooterService, LocalStorageService,
-        DatePipe
+        AutocompleteApi, FooterService, Ng2Webstorage,
+        DatePipe,
+        {provide: Http, useClass: AuthenticatedHttpService}
       ]
     };
   }

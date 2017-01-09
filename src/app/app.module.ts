@@ -19,6 +19,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule } from 'ng2-bootstrap';
 import { CoreModule } from './shared/core.module';
+import { Ng2Webstorage } from 'ng2-webstorage';
 
 export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): ILogger {
   const env = appConfig.getEnv();
@@ -45,6 +46,7 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
     DropdownModule.forRoot(),
     TooltipModule.forRoot(),
     AlertModule.forRoot(),
+    Ng2Webstorage.forRoot({ prefix: 'laji-', separator: '' }),
     AppRoutingModule,
     BrowserModule
   ],

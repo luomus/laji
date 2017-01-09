@@ -24,7 +24,7 @@
             </p>
           </div>
         </div>
-        <alert *ngIf="error" type="danger" [dismissible]="true" (close)="closeError()">
+        <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
           {{'feedback.invalid' | translate}}
         </alert>
         <div class="row subject">

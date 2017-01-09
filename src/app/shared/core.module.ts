@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
 import { TranslateService, TranslateModule } from 'ng2-translate';
-import { LocalStorage } from 'angular2-localstorage/dist';
+import { LocalStorage } from 'ng2-webstorage';
 
 @NgModule({
 })

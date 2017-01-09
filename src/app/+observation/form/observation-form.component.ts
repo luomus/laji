@@ -13,7 +13,7 @@ import { IdService } from '../../shared/service/id.service';
 import { SourceApi } from '../../shared/api/SourceApi';
 import { Source } from '../../shared/model/Source';
 import { debounce } from 'underscore';
-import { LocalStorage } from 'angular2-localstorage/dist';
+import { LocalStorage } from 'ng2-webstorage';
 import { MapService } from '../../shared/map/map.service';
 import { WindowRef } from '../../shared/windows-ref';
 import { ObservationResultComponent } from '../result/observation-result.component';
@@ -27,7 +27,7 @@ import { Autocomplete } from '../../shared/model/Autocomplete';
 })
 export class ObservationFormComponent implements OnInit, OnDestroy {
 
-  @LocalStorage() public observationSettings = {showIntro: true};
+  @LocalStorage() public observationSettings: any;
   @Input() activeTab: string;
   @ViewChild('tabs') tabs;
   @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
@@ -139,6 +139,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (!this.observationSettings) {
+      this.observationSettings = { showIntro: true };
+    }
     this.empty(false, this.searchQuery.query);
     this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
       res => {
@@ -221,7 +224,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   toggleInfo() {
-    this.observationSettings.showIntro = !this.observationSettings.showIntro;
+    this.observationSettings = {showIntro: !this.observationSettings.showIntro};
   }
 
   togglePlace(event) {

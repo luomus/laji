@@ -4,7 +4,7 @@ import { PersonTokenApi } from '../api/PersonTokenApi';
 import { Subscription, Observable, Observer } from 'rxjs';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
-import { LocalStorage } from 'angular2-localstorage/dist';
+import { LocalStorage } from 'ng2-webstorage';
 import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
 import { AppConfig } from '../../app.config';
@@ -15,8 +15,8 @@ export class UserService {
 
   public isLoggedIn = false;
 
-  @LocalStorage() private token = '';
-  @LocalStorage() private returnUrl = '/';
+  @LocalStorage() private token;
+  @LocalStorage() private returnUrl;
   private currentUserId: string;
   private users: {[id: string]: Person} = {};
   private usersFetch: {[id: string]: Observable<Person>} = {};
@@ -152,7 +152,7 @@ export class UserService {
     return this.observable;
   }
 
-  private addUser(user: Person, asCurrent: boolean = false) {
+  private addUser(user: Person, asCurrent = false) {
     if (asCurrent) {
       this.currentUserId = user.id;
     }
