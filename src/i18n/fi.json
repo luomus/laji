@@ -304,7 +304,7 @@
   "feedback.success": "Kiitos palautteestasi!",
   "feedback.failure": "Valitettavasti palautteen lähettäminen epäonnistui. Voit yrittää hetken kuluttua uudestaan. Jos ongelma jatkuu, voit lähettää palautetta sähköpostilla osoitteeseen helpdesk@laji.fi.",
   "whatsNew": "Uutta sivustolla",
-  "whatsNew.message": "beta.laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!",
+  "whatsNew.message": "beta.laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p><strong>Uutta:</strong> Tammikuun alussa on korjattu muutamia portaalin ja Vihkon bugeja.",
   "whatsNew.acknowledge": "Sulje",
   "invasive.title": "Vieraslajit",
   "invasive.description": "Tällä sivulla näet Suomessa viimeisen 365 päivän aikana havaitut EU-directiivissä määritellyt vieraslajit.",
