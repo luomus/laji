@@ -14,10 +14,9 @@ export class InvasiveComponent implements OnInit {
 
   static taxa;
 
-  public  dateFormat = 'YYYY-MM-DD';
   public taxa: Observable<Taxonomy[]>;
   public aggr: {[key: string]: number} = {};
-  public daysBack = '365';
+  public daysBack;
 
   constructor(
     private taxonomyApi: TaxonomyApi,
