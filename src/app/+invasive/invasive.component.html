@@ -7,13 +7,14 @@
         <th>{{'search.result.species' | translate}}</th>
         <th>{{'invasive.exists' | translate}}</th>
         <th>{{'invasive.individuals' | translate}}</th>
-        <th>{{'invasive.lastRecord' | translate}}</th>
+        <th>{{'invasive.latestRecord' | translate}}</th>
+        <th>{{'invasive.oldestRecord' | translate}}</th>
       </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let taxon of taxa | async" [ngClass]="{danger: aggr[taxon.id]}">
+    <tr *ngFor="let taxon of taxa | async" [ngClass]="{danger: aggr[taxon.id] && aggr[taxon.id]?.isNew}">
       <td>
-          <a [routerLink]="['/observation']" [queryParams]="{target: taxon.id, time: daysBack + '/' }">
+          <a [routerLink]="['/observation']" [queryParams]="{target: taxon.id}">
             {{taxon.vernacularName | multiLang}}
             (<i *ngIf="taxon.cursiveName">{{taxon.scientificName}}</i>)
           </a>
@@ -34,6 +35,11 @@
       <td>
         <span *ngIf="aggr[taxon.id]">
           {{aggr[taxon.id]?.newestRecord | date:'dd.MM.yyyy' }}
+        </span>
+      </td>
+      <td>
+        <span *ngIf="aggr[taxon.id]">
+          {{aggr[taxon.id]?.oldestRecord | date:'dd.MM.yyyy' }}
         </span>
       </td>
     </tr>

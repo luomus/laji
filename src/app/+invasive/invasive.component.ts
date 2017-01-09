@@ -14,6 +14,7 @@ export class InvasiveComponent implements OnInit {
 
   static taxa;
 
+  public  dateFormat = 'YYYY-MM-DD';
   public taxa: Observable<Taxonomy[]>;
   public aggr: {[key: string]: number} = {};
   public daysBack = '365';
@@ -22,7 +23,7 @@ export class InvasiveComponent implements OnInit {
     private taxonomyApi: TaxonomyApi,
     private warehouseApi: WarehouseApi
   ) {
-    this.daysBack = moment().subtract(365, 'days').format('YYYY-MM-DD');
+    this.daysBack = moment().subtract(365, 'days');
   }
 
   ngOnInit() {
@@ -45,8 +46,7 @@ export class InvasiveComponent implements OnInit {
     this.warehouseApi.warehouseQueryAggregateGet(
       {
         countryId: ['ML.206'],
-        administrativeStatusId: ['MX.euInvasiveSpeciesList'],
-        time: [this.daysBack + '/']
+        administrativeStatusId: ['MX.euInvasiveSpeciesList']
       },
       ['unit.linkings.taxon.id'],
       undefined,
@@ -58,6 +58,7 @@ export class InvasiveComponent implements OnInit {
       .map(data => data.results)
       .subscribe(data => {
         data.map(item => {
+          item.isNew = moment(item.oldestRecord) > this.daysBack;
           this.aggr[IdService.getId(item['aggregateBy']['unit.linkings.taxon.id'])] = item;
         });
       });
