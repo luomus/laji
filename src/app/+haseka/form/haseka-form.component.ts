@@ -95,7 +95,9 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
     this.status = 'unsaved';
     this.saving = false;
     this.form['formData'] = formData;
-    this.formService.store(formData);
+    this.formService
+      .store(formData)
+      .subscribe();
   }
 
   onLangChange() {
@@ -181,10 +183,11 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
       .load(this.formId, this.translate.currentLang)
       .subscribe(
         data => {
-          this.loading = false;
-          this.isEdit = false;
-          this.form = data;
-          this.lang = this.translate.currentLang;
+          this.formService
+            .store(data.formData)
+            .subscribe(id => this.router.navigate(
+              ['/vihko/' + this.formId + '/' + id]
+            ));
         },
         err => {
           this.loading = false;

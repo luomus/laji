@@ -72,20 +72,17 @@ export class FormService {
 
   store(formData) {
     if (this.currentKey) {
-      if (this.subUpdate) {
-        this.subUpdate.unsubscribe();
-      }
-      this.subUpdate = this.getUserId()
+      return this.getUserId()
         .switchMap(userID => {
           if (!this.formDataStorage[userID]) {
             this.formDataStorage[userID] = {};
           }
           this.formDataStorage[userID][this.currentKey] = formData;
           this.formDataStorage = Util.clone(this.formDataStorage);
-          return Observable.of(true);
-        })
-        .subscribe();
+          return Observable.of(this.currentKey);
+        });
     }
+    return Observable.of('');
   }
 
   hasUnsavedData(id?: string, document?: any): Observable<boolean> {
@@ -153,9 +150,6 @@ export class FormService {
   }
 
   getForm(formId: string, lang: string): Observable<any> {
-    if (!this.appConfig.isFormAllowed(formId) ) {
-      return Observable.of({});
-    }
     this.setLang(lang);
     return this.formCache[formId] ?
       Observable.of(this.formCache[formId]) :
@@ -166,9 +160,6 @@ export class FormService {
   }
 
   load(formId: string, lang: string, documentId?: string): Observable<any> {
-    if (!this.appConfig.isFormAllowed(formId) ) {
-      return Observable.of({});
-    }
     this.setLang(lang);
     let form$ = this.formCache[formId] ?
       Observable.of(this.formCache[formId]) :
