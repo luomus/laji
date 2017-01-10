@@ -307,7 +307,7 @@
   "whatsNew.message": "beta.laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p><strong>Uutta:</strong> Tammikuun alussa on korjattu muutamia portaalin ja Vihkon bugeja.",
   "whatsNew.acknowledge": "Sulje",
   "invasive.title": "Vieraslajit",
-  "invasive.description": "Tällä sivulla näet Suomessa viimeisen 365 päivän aikana havaitut EU-direktiivissä määritellyt vieraslajit.",
+  "invasive.description": "Tällä sivulla näytetään Lajitietokeskuksen tietovarastossa olevia havaintoja vieraslajeista. Virallinen EU:n vaatima ilmoitus pitää tehdä <a href=\"http://easin.jrc.ec.europa.eu/\">EASIN-palvelussa</a>",
   "invasive.exists": "Havaintoa",
   "invasive.individuals": "Yksilöä",
   "invasive.latestRecord": "Uusin",
