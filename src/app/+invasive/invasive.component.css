@@ -1,0 +1,8 @@
+.invasive-list {
+  list-style: none;
+  max-width: 700px;
+}
+.invasive-list tr.danger {
+  color: #b94a48;
+  background-color: #f2dede;
+}

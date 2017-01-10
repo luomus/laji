@@ -1,6 +1,6 @@
 {
   "project": {
-    "version": "1.0.0-beta.22",
+    "version": "1.0.0-beta.24",
     "name": "laji-front"
   },
   "apps": [
@@ -23,6 +23,7 @@
         "styles/laji.css"
       ],
       "scripts": [
+        "../node_modules/moment/moment.js"
       ],
       "environments": {
         "source": "environments/environment.ts",

@@ -1,9 +1,7 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { SearchQuery } from './search-query.model';
-import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
-declare let d3: any;
 
 @Component({
   selector: 'laji-observation',

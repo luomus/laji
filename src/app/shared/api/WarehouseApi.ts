@@ -251,8 +251,9 @@ export class WarehouseApi {
    * @param pageSize Set number of results in one page.
    * @param page Set current page.
    * @param geoJSON returns data as geojson.
+   * @oaram onlyCount return only counts of items default true
    */
-  public warehouseQueryAggregateGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean): Observable<PagedResult<any>|any> {
+  public warehouseQueryAggregateGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
     const path = this.basePath + '/warehouse/query/aggregate';
 
     let queryParameters = new URLSearchParams();
@@ -263,6 +264,10 @@ export class WarehouseApi {
 
     if (geoJSON !== undefined) {
       queryParameters.set('geoJSON', geoJSON ? 'true' : 'false');
+    }
+
+    if (onlyCount !== undefined) {
+      queryParameters.set('onlyCount', onlyCount ? 'true' : 'false');
     }
 
     let requestOptions: RequestOptionsArgs = {

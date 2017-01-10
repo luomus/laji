@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { SearchQuery } from '../search-query.model';
-import { WarehouseQueryInterface, DATE_FORMAT } from '../../shared/model/WarehouseQueryInterface';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable, Subscription } from 'rxjs';
 import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
 import { TranslateService } from 'ng2-translate';
@@ -13,22 +13,21 @@ import { IdService } from '../../shared/service/id.service';
 import { SourceApi } from '../../shared/api/SourceApi';
 import { Source } from '../../shared/model/Source';
 import { debounce } from 'underscore';
-import { LocalStorage } from 'angular2-localstorage/dist';
+import { LocalStorage } from 'ng2-webstorage';
 import { MapService } from '../../shared/map/map.service';
 import { WindowRef } from '../../shared/windows-ref';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Autocomplete } from '../../shared/model/Autocomplete';
-import * as moment from 'moment';
 
 @Component({
   selector: 'laji-observation-form',
-  templateUrl: 'observation-form.component.html',
+  templateUrl: './observation-form.component.html',
   styleUrls: ['./observation-form.component.css'],
   providers: [CollectionApi, SourceApi]
 })
 export class ObservationFormComponent implements OnInit, OnDestroy {
 
-  @LocalStorage() public observationSettings = {showIntro: true};
+  @LocalStorage() public observationSettings: any;
   @Input() activeTab: string;
   @ViewChild('tabs') tabs;
   @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
@@ -37,7 +36,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   public formQuery: ObservationFormQuery;
   public dataSource: Observable<any>;
   public typeaheadLoading: boolean = false;
-  public warehouseDateFormat = DATE_FORMAT;
+  public warehouseDateFormat = 'YYYY-MM-DD';
   public logCoordinateAccuracyMax: number = 4;
   public showPlace = false;
   public showFilter = true;
@@ -140,6 +139,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (!this.observationSettings) {
+      this.observationSettings = { showIntro: true };
+    }
     this.empty(false, this.searchQuery.query);
     this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
       res => {
@@ -185,7 +187,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       dates = Math.ceil(((+today) - (+oneJan)) / 86400000) - 1;
     }
     let today = moment();
-    this.formQuery.timeStart = today.subtract(dates, 'days').format(DATE_FORMAT);
+    this.formQuery.timeStart = today.subtract(dates, 'days').format('YYYY-MM-DD');
     this.formQuery.timeEnd = '';
     this.onSubmit();
   }
@@ -222,7 +224,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   toggleInfo() {
-    this.observationSettings.showIntro = !this.observationSettings.showIntro;
+    this.observationSettings = {showIntro: !this.observationSettings.showIntro};
   }
 
   togglePlace(event) {

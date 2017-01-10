@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
-import { LocalStorage } from 'angular2-localstorage/dist';
+import { LocalStorage } from 'ng2-webstorage';
 import { UserService } from '../../shared/service/user.service';
 import { Util } from '../../shared/service/util.service';
 import { FormApi } from '../../shared/api/FormApi';
@@ -12,8 +12,8 @@ import { AppConfig } from '../../app.config';
 @Injectable()
 export class FormService {
 
-  @LocalStorage() private formDataStorage = {};
-  @LocalStorage() private tmpDocId = 0;
+  @LocalStorage() private formDataStorage;
+  @LocalStorage() private tmpDocId;
   private tmpNs = 'T';
   private currentData: any;
   private currentKey: string;
@@ -28,7 +28,14 @@ export class FormService {
     private userService: UserService,
     private documentApi: DocumentApi,
     private appConfig: AppConfig
-  ) {}
+  ) {
+    if (!this.formDataStorage) {
+      this.formDataStorage = {};
+    }
+    if (!this.tmpDocId) {
+      this.tmpDocId = 0;
+    }
+  }
 
   getUserId(): Observable<string> {
     return this.userService.getUser()
@@ -43,6 +50,7 @@ export class FormService {
       .switchMap(userID => {
         if (this.formDataStorage[userID] && this.formDataStorage[userID][id]) {
           delete this.formDataStorage[userID][id];
+          this.formDataStorage = Util.clone(this.formDataStorage);
         }
         return Observable.of(true);
       })
@@ -64,19 +72,17 @@ export class FormService {
 
   store(formData) {
     if (this.currentKey) {
-      if (this.subUpdate) {
-        this.subUpdate.unsubscribe();
-      }
-      this.subUpdate = this.getUserId()
+      return this.getUserId()
         .switchMap(userID => {
           if (!this.formDataStorage[userID]) {
             this.formDataStorage[userID] = {};
           }
           this.formDataStorage[userID][this.currentKey] = formData;
-          return Observable.of(true);
-        })
-        .subscribe();
+          this.formDataStorage = Util.clone(this.formDataStorage);
+          return Observable.of(this.currentKey);
+        });
     }
+    return Observable.of('');
   }
 
   hasUnsavedData(id?: string, document?: any): Observable<boolean> {
@@ -121,7 +127,7 @@ export class FormService {
   }
 
   isTmpId(id: string) {
-    return id.indexOf(this.tmpNs + ':') === 0;
+    return id && id.indexOf(this.tmpNs + ':') === 0;
   }
 
   getAllTempDocuments(): Observable<Document[]> {
@@ -144,9 +150,6 @@ export class FormService {
   }
 
   getForm(formId: string, lang: string): Observable<any> {
-    if (!this.appConfig.isFormAllowed(formId) ) {
-      return Observable.of({});
-    }
     this.setLang(lang);
     return this.formCache[formId] ?
       Observable.of(this.formCache[formId]) :
@@ -157,9 +160,6 @@ export class FormService {
   }
 
   load(formId: string, lang: string, documentId?: string): Observable<any> {
-    if (!this.appConfig.isFormAllowed(formId) ) {
-      return Observable.of({});
-    }
     this.setLang(lang);
     let form$ = this.formCache[formId] ?
       Observable.of(this.formCache[formId]) :
@@ -232,6 +232,7 @@ export class FormService {
           return Observable.of(this.formDataStorage[userID][documentId]);
         }
         delete this.formDataStorage[userID][documentId];
+        this.formDataStorage = Util.clone(this.formDataStorage);
         return Observable.of(current);
       });
   }

@@ -3,8 +3,8 @@ import { InformalTaxonGroup } from '../../shared';
 
 @Component({
   selector: 'laji-informal-list-breadcrumb',
-  templateUrl: 'informal-list-breadcrumb.component.html',
-  styleUrls: ['informal-list-breadcrumb.component.css']
+  templateUrl: './informal-list-breadcrumb.component.html',
+  styleUrls: ['./informal-list-breadcrumb.component.css']
 })
 
 export class InformalListBreadcrumbComponent {

@@ -1,0 +1,48 @@
+<div class="container-fluid">
+  <h1>{{ 'invasive.title' | translate }}</h1>
+  <p [innerHtml]="'invasive.description' | translate"></p>
+  <table class="table table-striped table-bordered table-condensed invasive-list">
+    <thead>
+      <tr>
+        <th>{{'search.result.species' | translate}}</th>
+        <th>{{'invasive.exists' | translate}}</th>
+        <th>{{'invasive.individuals' | translate}}</th>
+        <th>{{'invasive.latestRecord' | translate}}</th>
+        <th>{{'invasive.oldestRecord' | translate}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let taxon of taxa | async" [ngClass]="{danger: aggr[taxon.id] && aggr[taxon.id]?.isNew}">
+      <td>
+          <a [routerLink]="['/observation']" [queryParams]="{target: taxon.id}">
+            {{taxon.vernacularName | multiLang}}
+            (<i *ngIf="taxon.cursiveName">{{taxon.scientificName}}</i>)
+          </a>
+          <a [routerLink]="['/taxon/' + taxon.id]">
+            <i class="glyphicon glyphicon-modal-window"></i>
+          </a>
+      </td>
+      <td>
+        <span *ngIf="aggr[taxon.id]">
+          {{aggr[taxon.id]?.count}}
+        </span>
+      </td>
+      <td>
+        <span *ngIf="aggr[taxon.id]">
+          {{aggr[taxon.id]?.individualCountSum}}
+        </span>
+      </td>
+      <td>
+        <span *ngIf="aggr[taxon.id]">
+          {{aggr[taxon.id]?.newestRecord | date:'dd.MM.yyyy' }}
+        </span>
+      </td>
+      <td>
+        <span *ngIf="aggr[taxon.id]">
+          {{aggr[taxon.id]?.oldestRecord | date:'dd.MM.yyyy' }}
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

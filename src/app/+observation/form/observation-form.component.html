@@ -435,8 +435,8 @@
           </h1>
         </div>
       </div>
-      <alert *ngIf="observationSettings.showIntro" [dismissible]="true" (close)="toggleInfo()" [type]="'info'">
-      <div [innerHtml]="'observation.intro' | translate"></div>
+      <alert *ngIf="observationSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+        <div [innerHtml]="'observation.intro' | translate"></div>
       </alert>
       <div #tabs>
         <laji-observation-result [(active)]="activeTab" [(filters)]="filters"

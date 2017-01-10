@@ -125,6 +125,11 @@ body {
   background-size: 100% auto;
 }
 
+.active .informal-group-image {
+  -webkit-filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
+}
+
 .informal-group-image.MVL\.1 {
   background-image: url('/static/images/informalGroups/MVL.1.svg');
 }

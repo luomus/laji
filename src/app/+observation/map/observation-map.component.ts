@@ -16,7 +16,7 @@ const maxCoordinateAccuracy = 10000;
 
 @Component({
   selector: 'laji-observation-map',
-  templateUrl: 'observation-map.component.html',
+  templateUrl: './observation-map.component.html',
   styleUrls: ['./observation-map.component.css'],
   providers: [ValueDecoratorService, LabelPipe, ToQNamePipe]
 })

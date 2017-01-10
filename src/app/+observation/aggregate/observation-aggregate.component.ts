@@ -7,7 +7,7 @@ import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-observation-aggregate',
-  templateUrl: 'observation-aggregate.component.html'
+  templateUrl: './observation-aggregate.component.html'
 })
 export class ObservationAggregateComponent implements OnInit, OnDestroy, OnChanges {
 

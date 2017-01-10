@@ -17,7 +17,7 @@ export const METADATA_SELECT_VALUE_ACCESSOR: any = {
 
 @Component({
   selector: 'metadata-select',
-  templateUrl: 'metadata-select.component.html',
+  templateUrl: './metadata-select.component.html',
   providers: [METADATA_SELECT_VALUE_ACCESSOR]
 })
 export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {

@@ -9,8 +9,8 @@ import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-observation-filter',
-  templateUrl: 'observation-filter.component.html',
-  styleUrls: ['observation-filter.component.css']
+  templateUrl: './observation-filter.component.html',
+  styleUrls: ['./observation-filter.component.css']
 })
 export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy {
   @Input() lang: string;

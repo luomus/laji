@@ -3,7 +3,7 @@ import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'only-logged',
-  templateUrl: 'only-logged.component.html'
+  templateUrl: './only-logged.component.html'
 })
 export class OnlyLoggedComponent implements OnInit {
   public isLoggedIn: boolean = false;

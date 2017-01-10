@@ -11,7 +11,7 @@ import { setTimeout } from 'timers';
 
 @Component({
   selector: 'laji-tree',
-  templateUrl: 'taxon-tree.component.html',
+  templateUrl: './taxon-tree.component.html',
   styleUrls: ['./taxon-tree.component.css']
 })
 export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {

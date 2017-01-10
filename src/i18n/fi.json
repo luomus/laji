@@ -12,6 +12,7 @@
   "navigation.information": "Lajitietokeskus",
   "navigation.collection": "Aineistot",
   "navigation.haseka": "Vihko",
+  "navigation.invasive": "Vieraslajit",
   "navigation.notify": "Vihko",
   "navigation.user": "Käyttäjäasetukset",
   "navigation.user.login": "Kirjaudu",
@@ -20,6 +21,8 @@
   "home.image-header.observations": "havaintoja ja näytteitä",
   "home.image-header.species": "lajeja",
   "home.image-header.sources": "aineistoja",
+  "home.authority.title": "Suomen Lajitietokeskus virannomaisille",
+  "home.authority.text": "Tämän portaalin kautta voit tarkastella kaikkia lajitietokeskukseen ilmoitettuja havaintoja.",
   "home.main-page.title": "Suomen Lajitietokeskus",
   "home.main-page.recent": "Uusimpia havaintoja Suomesta",
   "home.main-page.text": "Suomen Lajitietokeskus kerää ja yhdistää suomalaisen lajitiedon yhtenäiseksi ja avoimeksi kokonaisuudeksi. Laji.fi:ssa voit tutustua lajeihin ja niiden esiintymiseen, selata havaintoja suomalaisista lajitietokannoista sekä pitää kirjaa omista luontohavainnoistasi.",
@@ -301,6 +304,12 @@
   "feedback.success": "Kiitos palautteestasi!",
   "feedback.failure": "Valitettavasti palautteen lähettäminen epäonnistui. Voit yrittää hetken kuluttua uudestaan. Jos ongelma jatkuu, voit lähettää palautetta sähköpostilla osoitteeseen helpdesk@laji.fi.",
   "whatsNew": "Uutta sivustolla",
-  "whatsNew.message": "beta.laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!",
-  "whatsNew.acknowledge": "Sulje"
+  "whatsNew.message": "beta.laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p><strong>Uutta:</strong> Tammikuun alussa on korjattu muutamia portaalin ja Vihkon bugeja.",
+  "whatsNew.acknowledge": "Sulje",
+  "invasive.title": "Vieraslajit",
+  "invasive.description": "Tällä sivulla näet Suomessa viimeisen 365 päivän aikana havaitut EU-directiivissä määritellyt vieraslajit.",
+  "invasive.exists": "havaintoa",
+  "invasive.individuals": "yksilöä",
+  "invasive.latestRecord": "uusin",
+  "invasive.oldestRecord": "vanhin"
 }
