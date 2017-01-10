@@ -39,10 +39,12 @@ export class AppComponent {
     toastr.setRootViewContainerRef(viewContainerRef);
     router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
-        let newRoute = '/' + location.path() || '/';
-        if (this.currentRoute !== newRoute && newRoute.indexOf('/user') !== 0) {
-          windowRef.nativeWindow.scroll(0, 0);
-          if (this.hasAnalytics) {
+        let newRoute = location.path() || '/';
+        if (this.currentRoute !== newRoute) {
+          if (newRoute.indexOf('/observation') !== 0) {
+            windowRef.nativeWindow.scroll(0, 0);
+          }
+          if (this.hasAnalytics && newRoute.indexOf('/user') !== 0) {
             try {
               ga('send', 'pageview', newRoute);
             } catch (e) {}

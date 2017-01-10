@@ -17,7 +17,10 @@ import { TranslateFileLoader } from './shared/translate/translate-file-loader';
 import { WhatsNewComponent } from './shared/whats-new/whats-new.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule } from 'ng2-bootstrap';
+import {
+  TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
+  TypeaheadModule
+} from 'ng2-bootstrap';
 import { CoreModule } from './shared/core.module';
 import { Ng2Webstorage } from 'ng2-webstorage';
 
@@ -46,6 +49,7 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
     DropdownModule.forRoot(),
     TooltipModule.forRoot(),
     AlertModule.forRoot(),
+    TypeaheadModule.forRoot(),
     Ng2Webstorage.forRoot({ prefix: 'laji-', separator: '' }),
     AppRoutingModule,
     BrowserModule
