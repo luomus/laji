@@ -12,7 +12,7 @@ import { ObservationResultListComponent } from './result-list/observation-result
 import { MetadataSelectComponent } from '../shared/metadata-select/metadata-select.component';
 import { PieChartComponent } from '../shared/chart/pie/pie-chart.component';
 import { TypeaheadModule } from 'ng2-bootstrap';
-import { SelectModule } from 'ng2-select';
+import { SelectModule } from 'ng2-select/ng2-select';
 import { DatePickerComponent } from '../shared/datepicker/datepicker.component';
 import { ObservationAggregateComponent } from './aggregate/observation-aggregate.component';
 import { ObservationDownloadComponent } from './download/observation-download.component';
