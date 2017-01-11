@@ -74,6 +74,7 @@
   "news.title": "News",
   "news.earlier": "previous",
   "news.newer": "next",
+  "news.updated": "updated",
   "information.more": "More information",
   "paginator.first": "first",
   "paginator.last": "last",
