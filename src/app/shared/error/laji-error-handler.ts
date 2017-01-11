@@ -16,7 +16,7 @@ export class LajiErrorHandler implements ErrorHandler {
   constructor(private injector: Injector) {}
 
   handleError(error) {
-    if (this.pause) {
+    if (this.pause || !error || (typeof error === 'object' && Object.keys(error).length === 0)) {
       return;
     }
     this.getLogger().error('Guru Meditation!', error);

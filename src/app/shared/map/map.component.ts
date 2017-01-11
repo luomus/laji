@@ -165,7 +165,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
         'draw:drawstart': event => this.mapService.startDraw()
       });
     } catch (err) {
-      this.logger.error('Failed to add map data', err);
+      this.logger.error('Failed to add map data', {error: err && err.message || 'no data' });
     }
   }
 
