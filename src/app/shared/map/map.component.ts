@@ -30,10 +30,12 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   @Output() select = new EventEmitter();
   @Output() onCreate = new EventEmitter();
   @Output() onMove = new EventEmitter();
+  @Output() onFailure =  new EventEmitter();
   @ViewChild('map') elemRef: ElementRef;
 
   map: any;
   private initEvents = false;
+  private failureSend = false;
 
   constructor(
     private mapService: MapService,
@@ -165,7 +167,12 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
         'draw:drawstart': event => this.mapService.startDraw()
       });
     } catch (err) {
-      this.logger.error('Failed to add map data', {error: err && err.message || 'no data' });
+      if (this.failureSend) {
+        this.logger.error('Failed to add map data', {error: err && err.message || 'no data' });
+      } else {
+        this.onFailure.emit(true);
+        this.failureSend = true;
+      }
     }
   }
 

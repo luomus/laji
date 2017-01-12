@@ -57,6 +57,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   public mapData;
   public drawData: any = {featureCollection: {type: 'featureCollection', features: []}};
   public loading = false;
+  public reloading = false;
   public topMargin: string = '0';
   public legendList: {color: string, range: string}[] = [];
   private prev: string = '';
@@ -166,6 +167,15 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       });
     }
     this.legendList = legend;
+  }
+
+  refreshMap() {
+    setTimeout(() => {
+      this.reloading = true;
+    }, 100);
+    setTimeout(() => {
+      this.reloading = false;
+    }, 200);
   }
 
   private initColorScale() {
