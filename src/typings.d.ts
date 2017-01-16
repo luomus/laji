@@ -5,7 +5,6 @@ declare module 'laji-form';
 declare module 'laji-map';
 declare module 'query-string';
 declare let d3: any;
-declare var moment: any;
 
 declare module '*.json' {
    const value: any;

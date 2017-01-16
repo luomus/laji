@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { FormControl } from '@angular/forms';
 import { AutocompleteApi } from '../api/AutocompleteApi';
 import { TaxonomyApi } from '../api/TaxonomyApi';

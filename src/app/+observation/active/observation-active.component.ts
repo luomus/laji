@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, HostListener, ViewContainerRef } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'laji-observation-active',

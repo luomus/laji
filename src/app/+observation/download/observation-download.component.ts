@@ -3,7 +3,7 @@ import { SearchQuery } from '../search-query.model';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from 'ng2-translate';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { AppConfig } from '../../app.config';

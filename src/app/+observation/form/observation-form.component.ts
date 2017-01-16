@@ -2,7 +2,8 @@ import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
 import { TranslateService } from 'ng2-translate';
 import { ObservationFilterInterface } from '../filter/observation-filter.interface';
@@ -18,6 +19,7 @@ import { MapService } from '../../shared/map/map.service';
 import { WindowRef } from '../../shared/windows-ref';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Autocomplete } from '../../shared/model/Autocomplete';
+declare const moment: any;
 
 @Component({
   selector: 'laji-observation-form',
@@ -182,12 +184,12 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   updateTime(dates) {
     if (dates === 365) {
-      let today = new Date();
-      let oneJan = new Date(today.getFullYear(), 0, 1);
+      const today = new Date();
+      const oneJan = new Date(today.getFullYear(), 0, 1);
       dates = Math.ceil(((+today) - (+oneJan)) / 86400000) - 1;
     }
-    let today = moment();
-    this.formQuery.timeStart = today.subtract(dates, 'days').format('YYYY-MM-DD');
+    const now = moment();
+    this.formQuery.timeStart = now.subtract(dates, 'days').format('YYYY-MM-DD');
     this.formQuery.timeEnd = '';
     this.onSubmit();
   }
@@ -240,7 +242,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       this.translate.currentLang,
       data.map(col => IdService.getId(col.value)).join(',')
     ).map(res => {
-      let lookUp = {};
+      const lookUp = {};
       res.results.map((collection: Collection) => {
         lookUp[IdService.getUri(collection.id)] = collection.longName;
       });
@@ -256,7 +258,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       this.translate.currentLang,
       data.map(col => IdService.getId(col.value)).join(',')
     ).map(res => {
-      let lookUp = {};
+      const lookUp = {};
       res.results.map((source: Source) => {
         lookUp[IdService.getUri(source.id)] = source.name;
       });
@@ -273,7 +275,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       ||  this.searchQuery.query[field] !== selectValue
         ? selectValue : undefined;
     } else {
-      let value = this.searchQuery.query[field];
+      const value = this.searchQuery.query[field];
       this.searchQuery.query[field] =
         typeof value === 'undefined' ||  value !==  selectValue ?
           selectValue : undefined;
@@ -305,7 +307,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   onSubmit(updateQuery = true) {
     this.formQueryToQuery(this.formQuery);
-    let cacheKey = JSON.stringify(this.searchQuery.query);
+    const cacheKey = JSON.stringify(this.searchQuery.query);
     if (this.lastQuery === cacheKey) {
       return;
     }
@@ -332,7 +334,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   private queryToFormQuery(query: WarehouseQueryInterface) {
     this.onAccuracyValueChange();
-    let time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
+    const time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
     this.formQuery = {
       taxon: query.target && query.target[0] ? query.target[0] : '',
       timeStart: this.getValidDate(time[0]),
@@ -353,9 +355,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   private formQueryToQuery(formQuery: ObservationFormQuery) {
-    let taxon = formQuery.taxon;
-    let time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
-    let query = this.searchQuery.query;
+    const taxon = formQuery.taxon;
+    const time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
+    const query = this.searchQuery.query;
 
     query.target = taxon.length > 0 ?
       [taxon] : undefined;

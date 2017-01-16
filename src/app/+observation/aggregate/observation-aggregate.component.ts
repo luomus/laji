@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { SearchQuery } from '../search-query.model';
 import { Util } from '../../shared/service/util.service';

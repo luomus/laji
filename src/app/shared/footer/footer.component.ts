@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FooterService } from '../service/footer.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { InformationApi } from '../api/InformationApi';
 import { TranslateService } from 'ng2-translate';
 

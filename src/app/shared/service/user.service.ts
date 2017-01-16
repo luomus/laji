@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { PersonTokenApi } from '../api/PersonTokenApi';
-import { Subscription, Observable, Observer } from 'rxjs';
+import { Observer } from 'rxjs/Observer';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
 import { LocalStorage } from 'ng2-webstorage';
@@ -52,7 +54,7 @@ export class UserService {
     if (this.token === '' || this.subLogout) {
       return;
     }
-    let token = this.token;
+    const token = this.token;
     this.token = '';
     this.isLoggedIn = false;
     this.currentUserId = undefined;

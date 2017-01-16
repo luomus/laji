@@ -28,6 +28,7 @@
 
 import { Component, OnInit, ViewContainerRef, Input, forwardRef, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+declare const moment: any;
 
 export interface CalendarDate {
   day: number;

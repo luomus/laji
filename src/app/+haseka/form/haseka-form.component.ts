@@ -3,7 +3,7 @@ import {
   HostListener, OnDestroy
 } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { UserService } from '../../shared/service/user.service';

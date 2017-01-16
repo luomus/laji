@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges, OnDestroy, forwardRef, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subscription, Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { MetadataApi } from '../api/MetadataApi';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
 import { Logger } from '../logger/logger.service';
@@ -43,13 +44,13 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   }
 
   onChange = (_: any) => {
-  };
+  }
   onTouched = () => {
-  };
+  }
 
   get value(): any {
     return this.innerValue;
-  };
+  }
 
   set value(v: any) {
     if (v !== this.innerValue) {
@@ -85,7 +86,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
       .map(result => this.pickValue(result))
       .switchMap(options => {
         if (this.mapToWarehouse) {
-          let requests = [];
+          const requests = [];
           options.map(item => {
             requests.push(this.warehouseMapper.getWarehouseKey(item.id));
           });
@@ -163,7 +164,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
     if (!this.pick) {
       return data.map(value => ({id: value.id, text: value.value}));
     }
-    let result = [];
+    const result = [];
     data.map(item => {
       if (typeof this.pick[item.id] !== 'undefined') {
         if (this.pick[item.id] === '') {

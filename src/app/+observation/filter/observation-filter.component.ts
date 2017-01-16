@@ -3,7 +3,7 @@ import { isArray } from 'underscore';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { SearchQuery } from '../search-query.model';
 import { ObservationFilterInterface } from './observation-filter.interface';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { Logger } from '../../shared/logger/logger.service';
 
 
