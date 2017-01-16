@@ -1,35 +1,54 @@
-import { Component, OnInit, AfterViewInit, ElementRef, Inject, Input } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, Input, OnDestroy, OnChanges } from '@angular/core';
 import * as OpenSeadragon from 'openseadragon';
 
 @Component({
   selector: 'laji-image',
-  templateUrl: './image.component.html',
+  template: '',
   styleUrls: ['./image.component.css']
 })
-export class ImageComponent implements OnInit, AfterViewInit {
+export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
 
   @Input() src: string;
   @Input() showNavigator = true;
   @Input() navigatorPosition = 'BOTTOM_RIGHT';
 
+  private viewer: any;
+
   constructor(private el: ElementRef) { }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    this.updateImage();
   }
 
-  ngAfterViewInit() {
-    OpenSeadragon({
+  ngOnDestroy() {
+    this.destroy();
+  }
+
+  ngOnChanges() {
+    this.updateImage();
+  }
+
+  private destroy() {
+    if (this.viewer) {
+      this.viewer.destroy();
+    }
+  }
+
+  private updateImage() {
+    if (!this.src) {
+      return;
+    }
+    this.destroy();
+    this.viewer = OpenSeadragon({
       element: this.el.nativeElement,
       animationTime: 0.7,
-      prefixUrl: '/js/opensea/images/',
+      prefixUrl: '/static/images/openseadragon/',
       showNavigator: this.showNavigator,
       navigatorPosition: this.navigatorPosition,
       maxZoomPixelRatio: 2,
       tileSources: [{
-        type: 'legacy-image-pyramid',
-        levels: [{
-          url: this.src
-        }]
+        type: 'image',
+        url: this.src
       }]
     });
   }

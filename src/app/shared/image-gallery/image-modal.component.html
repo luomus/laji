@@ -11,8 +11,8 @@
     <div class="uil-ring-css" *ngIf="loading"><div></div></div>
     <a class="close-popup" (click)="closeGallery()"><i class="glyphicon glyphicon-remove"></i></a>
     <a class="nav-left" *ngIf="modalImages.length >1" (click)="prevImage()"><i class="glyphicon glyphicon-chevron-left"></i></a>
-    <img *ngIf="!loading" src="{{img.largeURL || img.fullURL}}" (click)="nextImage()" class="effect" />
-    <a class="nav-right" *ngIf="modalImages.length >1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
+    <laji-image *ngIf="!loading" [src]="img.fullURL || img.largeURL" class="effect"></laji-image>
+    <a class="nav-right" *ngIf="modalImages.length > 1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
     <span class="info-text">
      <span *ngIf="img.vernacularName">{{img.vernacularName}}<br></span>
       <span *ngIf="img.author">{{img.author}},</span>
