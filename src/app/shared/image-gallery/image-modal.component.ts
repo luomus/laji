@@ -40,41 +40,11 @@ import { Image } from './image.interface';
  */
 
 @Component({
-  selector: 'ImageModal',
+  selector: 'laji-image-gallery',
   styleUrls: ['./image-modal.component.css'],
-  template: `
-   <div class="ng-gallery" *ngIf="showRepeat"> 
-     <div *ngFor ="let i of modalImages; let index = index">
-       <img src="{{ i.thumbnailURL || i.largeURL || i.fullURL }}" 
-        class="ng-thumb" 
-        (click)="openGallery(index)" 
-        alt="Image {{ index + 1 }}" />
-     </div>
-   </div>
-   <div class="ng-overlay" *ngIf="opened">
-    <div class="ng-gallery-content" >
-    <div class="uil-ring-css" *ngIf="loading"><div></div></div>         
-    <a class="close-popup" (click)="closeGallery()"><i class="glyphicon glyphicon-remove"></i></a>
-     <a class="nav-left" *ngIf="modalImages.length >1" (click)="prevImage()"><i class="glyphicon glyphicon-chevron-left"></i></a>
-     <img *ngIf="!loading" src="{{img.largeURL || img.fullURL}}" (click)="nextImage()" class="effect" />
-     <a class="nav-right" *ngIf="modalImages.length >1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
-     <span class="info-text">
-     <span *ngIf="img.vernacularName">{{img.vernacularName}}<br></span>
-      <span *ngIf="img.author">{{img.author}},</span>
-      <span *ngIf="img.copyrightOwner && (!img.author || img.author.indexOf(img.copyrightOwner) === -1)">
-        {{img.copyrightOwner}},
-      </span> 
-      <span *ngIf="img.licenseId">{{img.licenseId | toQName | label}}</span> 
-      <span *ngIf="img.licenseAbbreviation && !img.licenseId">{{img.licenseAbbreviation}}</span>
-      <br *ngIf="img.author || img.copyrightOwner || img.licenseId || img.licenseAbbreviation">
-      <a *ngIf="img.documentId" routerLink="/observation/list" [queryParams]="{'documentId':img.documentId}">{{img.documentId}}</a>
-     ({{ currentImageIndex + 1 }}/{{ modalImages.length }})
-     </span>
-   </div>
-   </div>
-`
+  templateUrl: './image-modal.component.html'
 })
-export class ImageModal implements OnInit {
+export class ImageModalComponent implements OnInit {
   public _element: any;
   public opened: boolean = false;
   public img: Image;

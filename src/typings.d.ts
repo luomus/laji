@@ -4,6 +4,7 @@
 declare module 'laji-form';
 declare module 'laji-map';
 declare module 'query-string';
+declare module 'openseadragon';
 declare let d3: any;
 
 declare module '*.json' {

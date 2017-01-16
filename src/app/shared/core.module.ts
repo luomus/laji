@@ -1,5 +1,5 @@
-import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
-import { TranslateService, TranslateModule } from 'ng2-translate';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { TranslateService } from 'ng2-translate';
 import { LocalStorage } from 'ng2-webstorage';
 
 @NgModule({
@@ -13,7 +13,7 @@ export class CoreModule {
       throw new Error(
         'CoreModule is already loaded. Import it in the AppModule only!');
     }
-    let userLang = CoreModule.defaultLang || 'fi';
+    const userLang = CoreModule.defaultLang || 'fi';
     translate.setDefaultLang('fi');
     translate.use(userLang);
   }

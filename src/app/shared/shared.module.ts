@@ -20,7 +20,7 @@ import { MultiLangPipe } from './pipe/multi-lang.pipe';
 import { NewsService } from './service/news.service';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { OnlyLoggedComponent } from './only-logged/only-logged.component';
-import { ImageModal } from './image-gallery/image-modal.component';
+import { ImageModalComponent } from './image-gallery/image-modal.component';
 import { MapService } from './map/map.service';
 import { ToQNamePipe } from './pipe/to-qname.pipe';
 import { WindowRef } from './windows-ref';
@@ -45,6 +45,7 @@ import { Ng2Webstorage } from 'ng2-webstorage';
 import { FooterService } from './service/footer.service';
 import { AutocompleteApi } from './api/AutocompleteApi';
 import { AuthenticatedHttpService } from './service/authenticated-http.service';
+import { ImageComponent } from './image/image.component';
 
 
 @NgModule({
@@ -53,8 +54,8 @@ import { AuthenticatedHttpService } from './service/authenticated-http.service';
     SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe,
     UsersPipe, LabelPipe, SafePipe, MultiLangPipe, FormattedNumber,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
-    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal,
-    AuthoritiesDirective
+    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
+    AuthoritiesDirective, ImageComponent
   ],
   imports: [
     ToastModule,
@@ -72,7 +73,7 @@ import { AuthenticatedHttpService } from './service/authenticated-http.service';
     NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe, MultiLangPipe, ToQNamePipe,
     ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
-    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal,
+    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
     AuthoritiesDirective
   ]
 })

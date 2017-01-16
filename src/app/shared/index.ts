@@ -11,5 +11,4 @@ export * from './panel';
 export * from './spinner/spinner.component';
 export * from './omni-search';
 export * from './datepicker/datepicker.component';
-export * from './image-gallery/image-gallery.component';
 export * from './service';

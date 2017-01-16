@@ -57,7 +57,7 @@
               </li>
             </ul>
             <div [hidden]="activeImageTab !== 'taxon'" *ngIf="hasTaxonImages">
-              <ImageModal [modalImages]="taxonImages"></ImageModal>
+              <laji-image-gallery [modalImages]="taxonImages"></laji-image-gallery>
             </div>
             <div [hidden]="activeImageTab !== 'collection' || !hasCollectionImages">
               <laji-gallery
