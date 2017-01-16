@@ -72,6 +72,7 @@ img.ng-thumb {
   top: 20px;
   right: 0;
   z-index: 10;
+  text-shadow: 0 1px 5px #000;
 }
 
 .ng-gallery-content > a.download-image {
@@ -93,6 +94,7 @@ img.ng-thumb {
   cursor: pointer;
   outline: none;
   z-index: 10;
+  text-shadow: 0 1px 5px #000;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;

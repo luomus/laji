@@ -10,7 +10,6 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
 
   @Input() src: string;
   @Input() showNavigator = true;
-  @Input() navigatorPosition = 'BOTTOM_RIGHT';
 
   private viewer: any;
 
@@ -44,7 +43,11 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
       animationTime: 0.7,
       prefixUrl: '/static/images/openseadragon/',
       showNavigator: this.showNavigator,
-      navigatorPosition: this.navigatorPosition,
+      navigatorPosition: 'ABSOLUTE',
+      navigatorTop: '35px',
+      navigatorLeft: '4px',
+      navigatorHeight: '100px',
+      navigatorWidth: '133px',
       maxZoomPixelRatio: 2,
       tileSources: [{
         type: 'image',
