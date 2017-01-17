@@ -62,7 +62,7 @@ export class TriplestoreLabelService {
   private parseResult(result) {
     this.labels = result[0];
     result[1].results.map(property => {
-      this.labels[property['shortname']] = property.label || '';
+      this.labels[property['shortName']] = property.label || '';
       this.labels[property['property']] = property.label || '';
     });
     result[2].results.map(data => {

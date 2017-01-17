@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h3 *ngIf="showTitle">{{level}}</h3>
+    <div class="level {{level}}">
+      <div *ngFor="let curr of items">
+        <div [ngSwitch]="curr.type">
+          <div *ngSwitchCase="'subArray'">
+            <div *ngFor="let sub of curr.value">
+              <laji-level [item]="sub" [subLevels]="subLevels" [level]="curr.key " [skip]="skip"></laji-level>
+            </div>
+          </div>
+          <div *ngSwitchCase="'subObject'">
+            <laji-level [item]="curr.value" [subLevels]="subLevels" [level]="curr.key " [skip]="skip"></laji-level>
+          </div>
+          <div *ngSwitchCase="'array'">
+            <div *ngFor="let sub of curr.value">
+              <laji-level [item]="sub" [subLevels]="subLevels" [level]="level" [skip]="skip" [showTitle]="false"></laji-level>
+            </div>
+          </div>
+          <div *ngSwitchCase="'object'">
+            <laji-level [item]="curr.value" [subLevels]="subLevels" [level]="level" [skip]="skip" [showTitle]="false"></laji-level>
+          </div>
+          <div *ngSwitchDefault class="row">
+            <div class="key-{{curr.key}} key col-sm-4">
+              {{curr.key | label}}<span *ngIf="curr.key">:</span>
+            </div>
+            <div class="value col-sm-8">
+              {{curr.value | label}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

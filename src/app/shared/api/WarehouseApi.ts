@@ -459,7 +459,7 @@ export class WarehouseApi {
    * Get single full document by document URI. Contains the document, gatherings and units, including facts, media etc
    * @param documentId Full document ID (URI identifier)
    */
-  public warehouseQuerySingleGet(documentId: string, extraHttpRequestParams?: any): Observable<string> {
+  public warehouseQuerySingleGet(documentId: string, extraHttpRequestParams?: any): Observable<any> {
     const path = this.basePath + '/warehouse/query/single';
 
     let queryParameters = new URLSearchParams();

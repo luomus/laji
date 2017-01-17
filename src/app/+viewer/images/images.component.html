@@ -1,0 +1,20 @@
+<div class="well" *ngIf="documentImages.length > 0 || gatheringImages.length > 0 || unitImages.length > 0">
+  <div class="row" *ngIf="documentImages.length > 0">
+    <div class="col-sm12">
+      {{'viewer.documentImages' | translate}}
+      <laji-image-gallery [modalImages]="documentImages"></laji-image-gallery>
+    </div>
+  </div>
+  <div class="row" *ngIf="gatheringImages.length > 0">
+    <div class="col-sm12">
+      {{'viewer.gatheringImages' | translate}}
+      <laji-image-gallery [modalImages]="gatheringImages"></laji-image-gallery>
+    </div>
+  </div>
+  <div class="row" *ngIf="unitImages.length > 0">
+    <div class="col-sm12">
+      {{'viewer.unitImages' | translate}}
+      <laji-image-gallery [modalImages]="unitImages"></laji-image-gallery>
+    </div>
+  </div>
+</div>

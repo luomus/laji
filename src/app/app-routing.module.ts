@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
+import { ViewerComponent } from './+viewer/viewer.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule'},
   {path: 'news', loadChildren: './+news/news.module#NewsModule'},
   {path: 'about', loadChildren: './+information/information.module#InformationModule'},
   {path: 'user', loadChildren: './+user/user.module#UserModule'},
+  {path: 'view', component: ViewerComponent },
   {path: 'invasive', loadChildren: './+invasive/invasive.module#InvasiveModule'},
   {path: 'vihko', loadChildren: './+haseka/haseka.module#HasekaModule'},
   {path: 'observation', loadChildren: './+observation/observation.module#ObservationModule'},

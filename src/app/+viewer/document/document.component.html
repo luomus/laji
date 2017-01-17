@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-sm-7">
+    <laji-level
+            [item]="document"
+            [subLevels]="['gatherings','units','identifications']"
+            [skip]="[
+              'superRecordBasis','mediaCount','media','documentId','gatheringId','unitId',
+              'interpretations','linkings','conversions'
+            ]"
+            *ngIf="document"></laji-level>
+  </div>
+  <div class="col-sm-5" style="padding-top: 20px;">
+    <laji-images [document]="document" ></laji-images>
+
+  </div>
+</div>
