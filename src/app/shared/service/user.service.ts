@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { PersonTokenApi } from '../api/PersonTokenApi';
-import { Subscription, Observable, Observer } from 'rxjs';
+import { Observer } from 'rxjs/Observer';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
 import { LocalStorage } from 'ng2-webstorage';
@@ -9,6 +11,8 @@ import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
 import { AppConfig } from '../../app.config';
 import { WindowRef } from '../windows-ref';
+import { ToastsService } from './toasts.service';
+import { TranslateService } from 'ng2-translate';
 
 @Injectable()
 export class UserService {
@@ -23,7 +27,6 @@ export class UserService {
   private defaultFormData: any;
 
   private subUser: Subscription;
-  private subLogout: Subscription;
   private observable: Observable<Person>;
   private formDefaultObservable: Observable<any>;
 
@@ -33,6 +36,8 @@ export class UserService {
               private location: Location,
               private logger: Logger,
               private appConfig: AppConfig,
+              private toastsService: ToastsService,
+              private translate: TranslateService,
               private winRef: WindowRef) {
     if (this.token) {
       this.loadUserInfo(this.token);
@@ -49,17 +54,24 @@ export class UserService {
   }
 
   public logout() {
-    if (this.token === '' || this.subLogout) {
+    if (this.token === '') {
       return;
     }
-    let token = this.token;
-    this.token = '';
-    this.isLoggedIn = false;
-    this.currentUserId = undefined;
-    this.subLogout = this.tokenService.personTokenDeleteToken(token)
+    this.tokenService.personTokenDeleteToken(this.token)
       .subscribe(
-        () => {},
-        err => this.logger.warn('Failed to logout', err)
+        () => {
+          this.token = '';
+          this.isLoggedIn = false;
+          this.currentUserId = undefined;
+        },
+        err => {
+          if (this.token !== '') {
+            this.translate.get('error.logout').subscribe(
+              msg => this.toastsService.showError(msg)
+            );
+            this.logger.warn('Failed to logout', err);
+          }
+        }
       );
   }
 
