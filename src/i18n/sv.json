@@ -6,6 +6,7 @@
   "Error.500.intro": "Tyvärr ett oväntat fel inträffades. Vänta ett tag och försök igen om en liten stund. Om felet inte försvinner kontakta support.",
   "Error.404.title": "Sidan hittades inte",
   "Error.404.intro": "Kontrollera att webbadressen är korrekt skriven.",
+  "error.logout": "Unable to logout. Please try again little later",
   "navigation.taxonomy": "Artlista",
   "navigation.observation": "Observationer",
   "navigation.information": "Artdatacenter",

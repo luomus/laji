@@ -6,6 +6,7 @@
   "error.500.intro": "Unfortunately an unexpected error occurred. Please wait a while and try again in a little while. If the error doesn't get repaired, please contact support.",
   "error.404.title": "Page not found",
   "error.404.intro": "Please check that url is written correctly.",
+  "error.logout": "Unable to logout. Please try again little later",
   "navigation.taxonomy": "Species",
   "navigation.observation": "Occurrences",
   "navigation.information": "FinBIF",
