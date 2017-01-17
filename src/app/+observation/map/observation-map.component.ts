@@ -76,7 +76,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
   private static getValue(row: any, propertyName: string): string {
     let val = '';
-    let first = propertyName.split(',')[0];
+    const first = propertyName.split(',')[0];
     try {
       val = first.split('.').reduce((prev: any, curr: any) => prev[curr], row);
     } catch (e) {
@@ -121,10 +121,11 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   onMove(e) {
-    let curActive = this.activeLevel;
+    const curActive = this.activeLevel;
+    const len = this.zoomThresholds.length;
     this.viewBound = e.bounds;
     this.activeLevel = 0;
-    for (let i = 0, len = this.zoomThresholds.length; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       if (this.zoomThresholds[i] < e.zoom) {
         this.activeLevel = i + 1;
       }
@@ -146,12 +147,12 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   initLegendTopMargin(): void {
-    let top = 20, items = this.color instanceof Array ? this.color.length : 1;
+    const top = 20, items = this.color instanceof Array ? this.color.length : 1;
     this.topMargin = '-' + (top + (items * 20)) + 'px';
   }
 
   initLegend(): void {
-    let legend = [];
+    const legend = [];
     let start = 1;
     if (this.color instanceof Array) {
       this.color.map((color, idx) => {
