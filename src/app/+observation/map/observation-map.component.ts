@@ -184,7 +184,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     if (typeof this.color === 'string') {
       this.style = () => String(this.color);
     } else {
-      let i, len = this.colorThresholds.length, memory = {};
+      let i;
+      const len = this.colorThresholds.length, memory = {};
       this.style = (count) => {
         if (memory[count]) {
           return memory[count];
@@ -218,15 +219,15 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       this.accuracy = maxCoordinateAccuracy;
       return;
     }
-    let features = [];
+    const features = [];
     this.query.coordinates.map(coord => {
-      let parts = coord.split(':');
-      let system = parts.pop();
+      const parts = coord.split(':');
+      const system = parts.pop();
       if (system === 'WGS84' && parts.length === 4) {
         if (!this.query.coordinateAccuracyMax) {
-          let spot1 = new (L as any).LatLng(+parts[2], +parts[0]);
-          let spot2 = new (L as any).LatLng(+parts[2], +parts[1]);
-          let spot3 = new (L as any).LatLng(+parts[3], +parts[1]);
+          const spot1 = new (L as any).LatLng(+parts[2], +parts[0]);
+          const spot2 = new (L as any).LatLng(+parts[2], +parts[1]);
+          const spot3 = new (L as any).LatLng(+parts[3], +parts[1]);
           setTimeout(() => {
             if (!this.query.coordinateAccuracyMax) {
               this.query.coordinateAccuracyMax = Math.max(Math.pow(10, Math.floor(
@@ -255,8 +256,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   private updateMapData() {
-    let query = Util.clone(this.query);
-    let cacheKey = this.getCacheKey(query);
+    const query = Util.clone(this.query);
+    const cacheKey = this.getCacheKey(query);
     if (this.prev === cacheKey) {
       return;
     }
@@ -280,19 +281,19 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       'gathering.conversions.wgs84CenterPoint.lat',
       ...this.itemFields
     ], undefined, this.showItemsWhenLessThan).map(data => {
-      let features = [];
+      const features = [];
       if (data.results) {
         data.results.map(row => {
-          let coordinates = [
+          const coordinates = [
             ObservationMapComponent.getValue(row, 'gathering.conversions.wgs84CenterPoint.lon'),
             ObservationMapComponent.getValue(row, 'gathering.conversions.wgs84CenterPoint.lat')
           ];
           if (!coordinates[0] || !coordinates[0]) {
             return;
           }
-          let properties = {title: 1};
+          const properties = {title: 1};
           this.itemFields.map(field => {
-            let name = field.split('.').pop();
+            const name = field.split('.').pop();
             properties[name] = ObservationMapComponent.getValue(row, field);
           });
           features.push({
@@ -410,7 +411,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   private getCacheKey(query: WarehouseQueryInterface) {
-    let cache = JSON.stringify(query);
+    const cache = JSON.stringify(query);
     if ((!this.activeBounds || this.activeLevel < this.onlyViewPortThreshold) || query.coordinates) {
       return cache + this.activeLevel;
     }
@@ -443,10 +444,10 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   private getPopup(idx: number, cb: Function) {
     try {
       const properties = this.mapData[0].featureCollection.features[idx].properties;
-      let cnt = properties.title;
+      const cnt = properties.title;
       let description = '';
       this.itemFields.map(field => {
-        let name = field.split('.').pop();
+        const name = field.split('.').pop();
         if (properties[name]) {
           description += this.decorator.decorate(field, properties[name], {}) + '<br>';
         }

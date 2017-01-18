@@ -6,19 +6,19 @@
         <div [ngSwitch]="curr.type">
           <div *ngSwitchCase="'subArray'">
             <div *ngFor="let sub of curr.value">
-              <laji-level [item]="sub" [subLevels]="subLevels" [level]="curr.key " [skip]="skip"></laji-level>
+              <laji-level [item]="sub" [subLevels]="subLevels" [level]="curr.key " [skip]="skip" [keyMap]="keyMap"></laji-level>
             </div>
           </div>
           <div *ngSwitchCase="'subObject'">
-            <laji-level [item]="curr.value" [subLevels]="subLevels" [level]="curr.key " [skip]="skip"></laji-level>
+            <laji-level [item]="curr.value" [subLevels]="subLevels" [level]="curr.key " [skip]="skip" [keyMap]="keyMap"></laji-level>
           </div>
           <div *ngSwitchCase="'array'">
             <div *ngFor="let sub of curr.value">
-              <laji-level [item]="sub" [subLevels]="subLevels" [level]="level" [skip]="skip" [showTitle]="false"></laji-level>
+              <laji-level [item]="sub" [subLevels]="subLevels" [level]="curr.key" [skip]="skip" [showTitle]="false" [keyMap]="keyMap"></laji-level>
             </div>
           </div>
           <div *ngSwitchCase="'object'">
-            <laji-level [item]="curr.value" [subLevels]="subLevels" [level]="level" [skip]="skip" [showTitle]="false"></laji-level>
+            <laji-level [item]="curr.value" [subLevels]="subLevels" [level]="curr.key" [skip]="skip" [showTitle]="false" [keyMap]="keyMap"></laji-level>
           </div>
           <div *ngSwitchDefault class="row">
             <div class="key-{{curr.key}} key col-sm-4">

@@ -1,0 +1,18 @@
+<div class="row" *ngIf="_show">
+  <div #fullRow [hidden]="fullRow.children.length == 0">
+    <ng-content select="[row]"></ng-content>
+  </div>
+  <div class="key-{{field}} key col-sm-4" *ngIf="fullRow.children.length == 0 && keyRow.children.length == 0">
+    {{_title | label}}<span *ngIf="_title">:</span>
+  </div>
+  <div class="value col-sm-8" *ngIf="item && field && fullRow.children.length == 0 && valueRow.children.length == 0">
+    <span *ngIf="valueIsLabel">{{item[field] | label}}</span>
+    <span *ngIf="!valueIsLabel">{{item[field] | values}}</span>
+  </div>
+  <div class="col-sm-4" #keyRow [hidden]="keyRow.children.length == 0 && fullRow.children.length != 0">
+    <ng-content select="[key-row]"></ng-content>
+  </div>
+  <div class="col-sm-8" #valueRow [hidden]="valueRow.children.length != 0 && fullRow.children.length != 0">
+    <ng-content select="[value-row]"></ng-content>
+  </div>
+</div>

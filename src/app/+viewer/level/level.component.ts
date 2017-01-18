@@ -14,6 +14,7 @@ export class LevelComponent implements OnInit, OnChanges {
   @Input() subLevels: string[] = [];
   @Input() level: string = 'document';
   @Input() showTitle = true;
+  @Input() keyMap: KeyMap = {};
   items: ViewRow[] = [];
 
   constructor() { }
@@ -42,7 +43,7 @@ export class LevelComponent implements OnInit, OnChanges {
             return total;
           }
           total.push({
-            key: curr,
+            key: this.keyMap[curr] || curr,
             type: this.keyType(curr),
             value: this.item[curr]
           });
@@ -50,7 +51,7 @@ export class LevelComponent implements OnInit, OnChanges {
         }, []);
     } else {
       this.items = [{
-        key: '',
+        key: this.keyMap[this.level] || this.level,
         type: 'other',
         value: this.item
       }];
@@ -63,4 +64,8 @@ export interface ViewRow {
   type: 'subArray'|'subObject'|'object'|'array'|'other';
   key: string;
   value: any;
+}
+
+export interface KeyMap {
+  [key: string]: string;
 }

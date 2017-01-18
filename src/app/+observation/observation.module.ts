@@ -19,9 +19,10 @@ import { ObservationDownloadComponent } from './download/observation-download.co
 import { routing } from './observation.routes';
 import { ObservationComponent } from './observation.component';
 import { nvD3 } from 'ng2-nvd3';
+import { ViewerModule } from '../+viewer/viewer.module';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, TypeaheadModule, SelectModule],
+  imports: [routing, SharedModule, RouterModule, TypeaheadModule, SelectModule, ViewerModule],
   declarations: [ObservationComponent, ObservationActiveComponent,
     ObservationAggregateComponent, ObservationChartComponent,
     ObservationFilterComponent, ObservationFormComponent, ObservationGroupSelectComponent,

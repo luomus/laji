@@ -6,8 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
  *   value | qname
  */
 @Pipe({
-  name: 'toQName',
-  pure: false
+  name: 'toQName'
 })
 export class ToQNamePipe implements PipeTransform {
   transform(value: string): any {

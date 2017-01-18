@@ -17,9 +17,9 @@ import LajiMap from 'laji-map';
 })
 export class MapComponent implements OnDestroy, OnChanges, OnInit {
 
-  @Input() data: any = {};
+  @Input() data: any = [];
   @Input() drawData: any;
-  @Input() visible: boolean;
+  @Input() visible: boolean = true;
   @Input() draw: any = false;
   @Input() lang: string = 'fi';
   @Input() center: [number, number];
@@ -44,7 +44,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   }
 
   ngOnInit() {
-    let controlSettings: any = {
+    const controlSettings: any = {
       draw: this.draw,
       edit: false,
       layers: true,

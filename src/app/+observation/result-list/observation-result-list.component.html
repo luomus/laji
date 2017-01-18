@@ -14,6 +14,7 @@
       <table class="table table-striped table-bordered table-condensed dataTable">
         <thead>
         <tr role="row">
+          <th></th>
           <th *ngFor="let column of userColumns"
               (click)="setSort(column)"
               [ngClass]="{link: column.sortBy !== false}">
@@ -25,6 +26,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let row of result?.results">
+          <td><button class="btn btn-success btn-xs" (click)="documentModal.show()"><i class="glyphicon glyphicon-eye-open"></i></button></td>
           <td *ngFor="let column of userColumns">
             <span *ngIf="row[column.field]" [innerHtml]="row[column.field]"></span>
           </td>
@@ -47,4 +49,20 @@
         [previousText]="'paginator.previous' | translate"
         [nextText]="'paginator.next' | translate"
 ></pagination>
+<div class="modal fade" bsModal #documentModal="bs-modal"
+     tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Static modal</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <laji-document [uri]="'http://tun.fi/JX.6116'"></laji-document>
+      </div>
+    </div>
+  </div>
+</div>
 

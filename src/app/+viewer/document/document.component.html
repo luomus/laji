@@ -1,16 +1,37 @@
-<div class="row">
-  <div class="col-sm-7">
-    <laji-level
-            [item]="document"
-            [subLevels]="['gatherings','units','identifications']"
-            [skip]="[
-              'superRecordBasis','mediaCount','media','documentId','gatheringId','unitId',
-              'interpretations','linkings','conversions'
-            ]"
-            *ngIf="document"></laji-level>
+<div *ngIf="hasDoc">
+  <div class="row">
+    <div class="col-sm-7">
+      <div class="page-header">
+        <h2>Document <small>{{item?.documentId}}</small></h2>
+      </div>
+      <laji-row [field]="'collectionId'" [title]="'MY.collectionID'" [item]="item"></laji-row>
+      <laji-row [field]="'sourceId'" [item]="item"></laji-row>
+      <laji-row [field]="'namedPlaceId'" [item]="item"></laji-row>
+      <laji-row [field]="'keywords'" [item]="item"></laji-row>
+      <laji-row [field]="'secureLevel'" [item]="item"></laji-row>
+      <laji-row [field]="'createdDate'" [item]="item"></laji-row>
+      <laji-row [field]="'modifiedDate'" [item]="item"></laji-row>
+      <laji-row [field]="'loadDate'" [item]="item"></laji-row>
+    </div>
+    <div class="col-sm-5" style="padding-top: 20px;">
+      <laji-images [document]="item"></laji-images>
+    </div>
   </div>
-  <div class="col-sm-5" style="padding-top: 20px;">
-    <laji-images [document]="document" ></laji-images>
-
+  <div *ngIf="item?.gatherings.length > 1">
+    <ul class="nav nav-tabs nav-justified">
+      <li *ngFor="let gathering of item?.gatherings; let i=index" [ngClass]="{active: active === i}">
+        <a (click)="setActive(i)">
+          {{ 'search.result.map' | translate }}
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div *ngFor="let gathering of item?.gatherings; let i=index">
+    <laji-gathering [gathering]="gathering" *ngIf="active === i"></laji-gathering>
+  </div>
+</div>
+<div *ngIf="hasDoc === false">
+  <div class="page-header">
+    <h2>{{'viewer.notFound' | translate}}</h2>
   </div>
 </div>

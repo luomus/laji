@@ -46,12 +46,13 @@ import { FooterService } from './service/footer.service';
 import { AutocompleteApi } from './api/AutocompleteApi';
 import { AuthenticatedHttpService } from './service/authenticated-http.service';
 import { ImageComponent } from './image/image.component';
+import { ValuesPipe } from './pipe/values.pipe';
 
 
 @NgModule({
   declarations: [
     NewsListComponent,
-    SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe,
+    SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, SafePipe, MultiLangPipe, FormattedNumber,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
@@ -70,7 +71,7 @@ import { ImageComponent } from './image/image.component';
   providers: [ ], // keep this empty!
   exports: [
     CommonModule, HttpModule, TranslateModule, FormsModule, ReactiveFormsModule,
-    NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe, MultiLangPipe, ToQNamePipe,
+    NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe, MultiLangPipe, ToQNamePipe, ValuesPipe,
     ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
