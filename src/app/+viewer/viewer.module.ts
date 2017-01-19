@@ -8,11 +8,13 @@ import { ViewerMapComponent } from './viewer-map/viewer-map.component';
 import { RowComponent } from './row/row.component';
 import { GatheringComponent } from './gathering/gathering.component';
 import { UnitComponent } from './unit/unit.component';
+import { ToQNamePipe } from '../shared/pipe/to-qname.pipe';
 
 @NgModule({
   imports: [
     SharedModule
   ],
+  providers: [ToQNamePipe],
   declarations: [ViewerComponent, DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
     GatheringComponent, UnitComponent],
   exports: [ViewerComponent, DocumentComponent]

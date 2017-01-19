@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Location } from '@angular/common';
 import { ValueDecoratorService } from './value-decorator.sevice';
@@ -11,12 +11,14 @@ import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
+import { ModalDirective } from 'ng2-bootstrap';
 
 interface Column {
   field: string;
   translation?: string;
   sort?: 'ASC' | 'DESC';
   visible: boolean;
+  skip?: boolean;
   sortBy?: string | boolean;
 }
 
@@ -27,7 +29,7 @@ interface Column {
   providers: [ValueDecoratorService, LabelPipe, ToQNamePipe]
 })
 export class ObservationResultListComponent implements OnInit, OnDestroy {
-
+  @ViewChild('documentModal') public modal: ModalDirective;
   @SessionStorage() userColumns: Column[] = [];
   @Input() showPager: boolean = true;
   @Output() onSelect: EventEmitter<string> = new EventEmitter<string>();
@@ -51,7 +53,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     {field: 'unit.sex', visible: false, sortBy: false, translation: 'observation.form.sex'},
     {field: 'unit.recordBasis', visible: false, sortBy: false, translation: 'observation.filterBy.recordBasis'},
     {field: 'document.notes', visible: false},
-    {field: 'document.documentId', visible: false},
+    {field: 'document.documentId', visible: false, skip: true},
     {field: 'gathering.interpretations.coordinateAccuracy', visible: false, sortBy: false},
     {field: 'document.secureLevel', visible: false, sortBy: false},
     {field: 'document.secureReasons', visible: false, sortBy: false}
@@ -61,6 +63,8 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   public result: PagedResult<any>;
 
   public loading: boolean = true;
+  public shownDocument: string = '';
+  public highlightId: string = '';
 
   private subFetch: Subscription;
   private subUpdate: Subscription;
@@ -90,7 +94,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     this.subTrans = this.translate.onLangChange.subscribe(
       () => {
         if (this.resultCache) {
-          this.result = this.prepareData(Util.clone(this.resultCache));
+          this.result = this.prepareData(Util.clone(this.resultCache), this.columns.map(col => col.field));
         }
       }
     );
@@ -115,7 +119,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   }
 
   updateUserCols() {
-    let current = JSON.stringify(this.userColumns);
+    const current = JSON.stringify(this.userColumns);
     this.userColumns = this.columns.filter((col) => col.visible !== false);
     return current !== JSON.stringify(this.userColumns);
   }
@@ -127,9 +131,9 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   }
 
   fetchRows(page: number, forceUpdate = false): void {
-    let query = Util.clone(this.searchQuery.query);
+    const query = Util.clone(this.searchQuery.query);
     if (!forceUpdate) {
-      let cache = [
+      const cache = [
         JSON.stringify(query),
         page
       ].join(':');
@@ -144,13 +148,18 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
-    query.selected = this.userColumns.map((column) => column.field);
-    let sort = this.userColumns.reduce((prev, cur) => {
+    query.selected = this.userColumns.reduce((total, column) => {
+      if (column.skip !== false) {
+        total.push(column.field);
+      }
+      return total;
+    }, ['document.documentId', 'unit.unitId']);
+    const sort = this.userColumns.reduce((prev, cur) => {
       if (!cur.sort || cur.sortBy === false) {
         return prev;
       }
-      let field = '' + (cur.sortBy || cur.field);
-      let cols = field.split(',').map((value) => {
+      const field = '' + (cur.sortBy || cur.field);
+      const cols = field.split(',').map((value) => {
         return value + ' ' + cur.sort;
       });
       return [...cols, ...prev];
@@ -164,7 +173,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
         this.searchQuery.pageSize,
         page)
       .do(result => this.resultCache = Util.clone(result))
-      .map(result => this.prepareData(result))
+      .map(result => this.prepareData(result, query.selected))
       .subscribe(
         results => {
           this.searchQuery.page = results.currentPage || 1;
@@ -203,17 +212,18 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     this.fetchRows(this.searchQuery.page, true);
   }
 
-  prepareData(data) {
+  prepareData(data, fields) {
     if (!data.results) {
       return data;
     }
-    let colLen = this.userColumns.length;
-    let results: any = [];
+    const selLen = fields.length;
+    const results: any = [];
+    const len = data.results.length;
     this.decorator.lang = this.translate.currentLang;
-    for (let i = 0, len = data.results.length; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       results[i] = {};
-      for (let j = 0; j < colLen; j++) {
-        results[i][this.userColumns[j].field] = this.getData(data.results[i], this.userColumns[j].field);
+      for (let j = 0; j < selLen; j++) {
+        results[i][fields[j]] = this.getData(data.results[i], fields[j]);
       }
     }
     data.results = results;
@@ -222,7 +232,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   getData(row: any, propertyName: string): string {
     let val = '';
-    let first = propertyName.split(',')[0];
+    const first = propertyName.split(',')[0];
     try {
       val = first.split('.').reduce((prev: any, curr: any) => prev[curr], row);
       val = this.decorator.decorate(first, val, row);
@@ -238,7 +248,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
       }
     } else {               // when opening
       this.columns.map((col, idx) => {
-        let userCol = this.userColumns.filter((src) => src.field === col.field);
+        const userCol = this.userColumns.filter((src) => src.field === col.field);
         if (userCol.length !== 1) {
           this.columns[idx].visible = false;
           return;
@@ -246,6 +256,12 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
         this.columns[idx].visible = typeof userCol[0].visible === 'undefined' || userCol[0].visible;
       });
     }
+  }
+
+  showDocument(row) {
+    this.shownDocument = row['document.documentId'];
+    this.highlightId = row['unit.unitId'];
+    this.modal.show();
   }
 
   toggleColumn(col: Column) {

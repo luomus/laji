@@ -26,7 +26,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let row of result?.results">
-          <td><button class="btn btn-success btn-xs" (click)="documentModal.show()"><i class="glyphicon glyphicon-eye-open"></i></button></td>
+          <td><button class="btn btn-primary btn-xs" (click)="showDocument(row)"><i class="glyphicon glyphicon-eye-open"></i></button></td>
           <td *ngFor="let column of userColumns">
             <span *ngIf="row[column.field]" [innerHtml]="row[column.field]"></span>
           </td>
@@ -54,13 +54,13 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title pull-left">Static modal</h4>
+        <h4 class="modal-title pull-left">Document <small>{{shownDocument}}</small></h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <laji-document [uri]="'http://tun.fi/JX.6116'"></laji-document>
+        <laji-document [uri]="shownDocument" [highlight]="highlightId"></laji-document>
       </div>
     </div>
   </div>

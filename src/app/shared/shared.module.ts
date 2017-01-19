@@ -70,7 +70,7 @@ import { ValuesPipe } from './pipe/values.pipe';
   ],
   providers: [ ], // keep this empty!
   exports: [
-    CommonModule, HttpModule, TranslateModule, FormsModule, ReactiveFormsModule,
+    CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule,
     NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe, MultiLangPipe, ToQNamePipe, ValuesPipe,
     ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,

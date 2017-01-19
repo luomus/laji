@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
+import { Observable } from 'rxjs';
+import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 
 @Component({
   selector: 'laji-document',
@@ -9,13 +11,15 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 export class DocumentComponent implements OnInit, OnChanges {
 
   @Input() uri: string;
-  item: Object;
+  @Input() highlight: string;
+  @Input() showTitle = false;
+  document: Object;
   mapData: Object[] = [];
   hasDoc: boolean;
   active = 0;
   private _uri: string;
 
-  constructor(private warehouseApi: WarehouseApi) { }
+  constructor(private warehouseApi: WarehouseApi, private labelService: TriplestoreLabelService) { }
 
   ngOnInit() {
     this.updateDocument();
@@ -26,13 +30,18 @@ export class DocumentComponent implements OnInit, OnChanges {
   }
 
   updateDocument() {
-    if (this.uri === this._uri) {
+    this.hasDoc = undefined;
+    if (!this.uri) {
+      this.parseDoc({}, false);
       return;
     }
+    const findDox$ = this.uri === this._uri ?
+      Observable.of(this.document) :
+      this.labelService.get('MY.person')
+        .switchMap(() => this.warehouseApi.warehouseQuerySingleGet(this.uri))
+        .map(doc => doc.document);
     this._uri = this.uri;
-    this.warehouseApi
-      .warehouseQuerySingleGet(this.uri)
-      .map(doc => doc.document)
+    findDox$
       .subscribe(
         doc => this.parseDoc(doc, true),
         err => this.parseDoc({}, false)
@@ -45,12 +54,19 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   private parseDoc(doc, found) {
     this.hasDoc = found;
-    this.item = doc;
+    this.document = doc;
     this.mapData = [];
-    if (doc.gatherings) {
-      doc.gatherings.map(gathering => {
-        if (gathering.conversions && gathering.conversions.wgs84Geo) {
-          this.mapData.push(gathering.conversions.wgs84Geo);
+    if (this.highlight && doc.gatherings) {
+      doc.gatherings.map((gathering, idx) => {
+        if (this.highlight && gathering.gatheringId === this.highlight) {
+          this.active = idx;
+        }
+        if (gathering.units) {
+          gathering.units.map(unit => {
+            if (this.highlight && unit.unitId === this.highlight) {
+              this.active = idx;
+            }
+          });
         }
       });
     }

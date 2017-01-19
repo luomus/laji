@@ -10,7 +10,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ToQNamePipe implements PipeTransform {
   transform(value: string): any {
-    if (!value) {
+    if (Array.isArray(value)) {
+      return value.map(val => this.transform(val));
+    } else if (!value || typeof value !== 'string') {
       return value;
     }
     return value.split('/').pop();

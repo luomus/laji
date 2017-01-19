@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, OnChanges, ViewContainerRef } from '@angular/core';
+import {
+  Component, OnInit, Input, OnChanges, ViewContainerRef, ViewChild, AfterViewInit,
+  ViewRef, ViewEncapsulation, AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef
+} from '@angular/core';
 import { type } from 'os';
 
 @Component({
@@ -6,17 +9,19 @@ import { type } from 'os';
   templateUrl: './row.component.html',
   styleUrls: ['./row.component.css']
 })
-export class RowComponent implements OnInit, OnChanges {
+export class RowComponent implements OnInit, OnChanges, AfterViewInit {
 
+  @ViewChild('valueRow') valueRow;
   @Input() item: any = {};
   @Input() title: string;
   @Input() field: string;
   @Input() valueIsLabel = true;
 
   public _title = '';
-  public _show = false;
+  public _show = true;
+  private checked = false;
 
-  constructor() {
+  constructor(private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -27,12 +32,17 @@ export class RowComponent implements OnInit, OnChanges {
     this.initRow();
   }
 
-  initRow() {
-    if (!this.item || !this.field) {
-      return;
+  ngAfterViewInit() {
+    if (!this.checked) {
+      console.log(this.valueRow.nativeElement.innerText);
+      this._show = this.valueRow.nativeElement.innerText.trim().length > 0;
+      this.checked = false;
+      this.cd.detectChanges();
     }
-    this._show = typeof this.item[this.field] !== 'undefined';
-    this._title = this.title || this.field;
+  }
+
+  initRow() {
+    this._title = this.title || this.field || '';
   }
 
 }

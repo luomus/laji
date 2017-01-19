@@ -313,5 +313,7 @@
   "invasive.exists": "Havaintoa",
   "invasive.individuals": "Yksilöä",
   "invasive.latestRecord": "Uusin",
-  "invasive.oldestRecord": "Vanhin"
+  "invasive.oldestRecord": "Vanhin",
+  "viewer.gathering": "Paikka",
+  "viewer.unit": "havaintoa"
 }

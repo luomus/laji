@@ -9,8 +9,6 @@ export class ValueDecoratorService {
   public lang = 'fi';
 
   private decoratable = {
-    'document.documentId': 'makeId',
-    'unit.individualId': 'makeId',
     'document.createdDate': 'makeDate',
     'gathering.eventDate': 'makeDateRange',
     'gathering.team': 'makeArrayToSemiColon',
@@ -51,13 +49,6 @@ export class ValueDecoratorService {
     return this.datePipe.transform(value, 'dd.MM.yyyy');
   }
 
-  protected makeId(value) {
-    if (!value) {
-      return '';
-    }
-    return `<span class="individualId">${value}</span>`;
-  }
-
   protected makeArrayToSemiColon(value) {
     return value.join('; ');
   }
@@ -83,7 +74,7 @@ export class ValueDecoratorService {
 
   protected makeYkj(value) {
     if (value && value.latMin) {
-      let lat = this.getYkjCoord(value.latMin, value.latMax);
+      const lat = this.getYkjCoord(value.latMin, value.latMax);
       return lat + ':' + this.getYkjCoord(value.lonMin, value.lonMax, lat.split('-')[0].length);
     }
     return '';
@@ -92,7 +83,7 @@ export class ValueDecoratorService {
   protected getYkjCoord(min, max, minLen = 3) {
     let tmpMin = ('' + min).replace(/[0]*$/, '');
     let tmpMax = ('' + max).replace(/[0]*$/, '');
-    let targetLen = Math.max(tmpMin.length, tmpMax.length, minLen);
+    const targetLen = Math.max(tmpMin.length, tmpMax.length, minLen);
     tmpMin = tmpMin + '0000000'.substr(tmpMin.length, (targetLen - tmpMin.length));
     tmpMax = '' + (+(tmpMax + '0000000'.substr(tmpMax.length, (targetLen - tmpMax.length))) - 1);
     return tmpMin === tmpMax ? tmpMin : tmpMin + '-' + tmpMax;

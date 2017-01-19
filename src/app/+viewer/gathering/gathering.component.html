@@ -1,28 +1,30 @@
-<div class="row">
+<div class="row" [hidden]="!visible">
   <div class="col-sm-7">
-    <laji-row [field]="'team'" [title]="'MY.leg'" [item]="gathering"></laji-row>
-    <laji-row [field]="'eventDate'" [title]="'MY.dateBegin'" [item]="gathering">
-      <div value-row>
-        {{ gathering.eventDate.begin }}
-        <span *ngIf="gathering.eventDate.begin !== gathering.eventDate.end">
-          {{gathering.eventDate.end}}
-        </span>
-      </div>
+    <laji-row [title]="'MY.leg'" *ngIf="gathering.team">{{gathering.team | values}}</laji-row>
+    <laji-row [title]="'MY.dateBegin'" *ngIf="gathering.eventDate">
+      {{ gathering.eventDate.begin | date:'dd.MM.yyyy' }}
+      <span *ngIf="gathering.eventDate.begin !== gathering.eventDate.end">
+        {{gathering.eventDate.end | date:'dd.MM.yyyy'}}
+      </span>
     </laji-row>
-    <laji-row [field]="'interpretations'" [item]="gathering">
+    <div *ngIf="gathering.interpretations">
+      <laji-row [title]="'country'">{{gathering.interpretations.country | toQName}}</laji-row>
+    </div>
+    <laji-row [field]="'interpretations'" [item]="gathering" *ngIf="gathering.interpretations">
       <div row>
         <div class="col-sm-12">
-          <laji-row [field]="'country'" [title]="'MY.country'" [item]="gathering.interpretations"></laji-row>
+
           <laji-row [field]="'biogeographicalProvince'" [title]="'MY.biologicalProvince'" [item]="gathering.interpretations"></laji-row>
           <laji-row [field]="'finnishMunicipality'" [title]="'MY.municipality'" [item]="gathering.interpretations"></laji-row>
         </div>
       </div>
     </laji-row>
     <div *ngFor="let unit of gathering?.units">
-      <laji-unit [unit]="unit"></laji-unit>
+      <laji-unit [unit]="unit" [highlight]="highlight"></laji-unit>
     </div>
   </div>
   <div class="col-sm-5">
-    <laji-viewer-map [data]="mapData"></laji-viewer-map>
+    <laji-viewer-map *ngIf="mapData.length > 0" [visible]="visible" [data]="mapData"></laji-viewer-map>
+    <laji-image-gallery *ngIf="gathering.media" [modalImages]="gathering.media"></laji-image-gallery>
   </div>
 </div>

@@ -1,33 +1,32 @@
-<div *ngIf="hasDoc">
-  <div class="row">
+<div *ngIf="hasDoc && document">
+  <div class="row {{document.secureLevel | label}}">
     <div class="col-sm-7">
-      <div class="page-header">
-        <h2>Document <small>{{item?.documentId}}</small></h2>
+      <div class="page-header" *ngIf="showTitle">
+        <h2>Document <small>{{document.documentId}}</small></h2>
       </div>
-      <laji-row [field]="'collectionId'" [title]="'MY.collectionID'" [item]="item"></laji-row>
-      <laji-row [field]="'sourceId'" [item]="item"></laji-row>
-      <laji-row [field]="'namedPlaceId'" [item]="item"></laji-row>
-      <laji-row [field]="'keywords'" [item]="item"></laji-row>
-      <laji-row [field]="'secureLevel'" [item]="item"></laji-row>
-      <laji-row [field]="'createdDate'" [item]="item"></laji-row>
-      <laji-row [field]="'modifiedDate'" [item]="item"></laji-row>
-      <laji-row [field]="'loadDate'" [item]="item"></laji-row>
+      <laji-row [title]="'MY.collectionID'">{{document.collectionId | toQName}}</laji-row>
+      <laji-row [title]="'sourceId'">{{document.sourceId | toQName}}</laji-row>
+      <laji-row [title]="'namedPlaceId'">{{document.namedPlaceId | toQName}}</laji-row>
+      <laji-row [title]="'secureLevel'">{{document.secureLevel | label}}</laji-row>
+      <laji-row [title]="'createdDate'">{{document.createdDate | date:'dd.MM.yyyy'}}</laji-row>
+      <laji-row [title]="'modifiedDate'">{{document.modifiedDate | date:'dd.MM.yyyy'}}</laji-row>
+      <laji-row [title]="'loadDate'">{{document.loadDate | date:'dd.MM.yyyy'}}</laji-row>
     </div>
-    <div class="col-sm-5" style="padding-top: 20px;">
-      <laji-images [document]="item"></laji-images>
+    <div class="col-sm-5" style="padding-top: 20px;" *ngIf="document.media">
+      <laji-image-gallery [modalImages]="document.media"></laji-image-gallery>
     </div>
   </div>
-  <div *ngIf="item?.gatherings.length > 1">
-    <ul class="nav nav-tabs nav-justified">
-      <li *ngFor="let gathering of item?.gatherings; let i=index" [ngClass]="{active: active === i}">
+  <div *ngIf="document.gatherings.length > 1" class="gatherings">
+    <ul class="nav nav-tabs link">
+      <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
         <a (click)="setActive(i)">
-          {{ 'search.result.map' | translate }}
+         {{ 'viewer.gathering' | translate }} {{i + 1}}
         </a>
       </li>
     </ul>
   </div>
-  <div *ngFor="let gathering of item?.gatherings; let i=index">
-    <laji-gathering [gathering]="gathering" *ngIf="active === i"></laji-gathering>
+  <div *ngFor="let gathering of document.gatherings; let i=index">
+    <laji-gathering [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
   </div>
 </div>
 <div *ngIf="hasDoc === false">
