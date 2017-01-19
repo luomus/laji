@@ -299,6 +299,8 @@
   "feedback.failure": "Unfortunately your feedback could not be send. You can try again in a while. If the problem continues, you can send your feedback directly to address helpdesk@laji.fi",
   "whatsNew": "What's new",
   "whatsNew.message": "beta.laji.fi is a test portal for Finnish Biodiversity Information Facility. Information and properties will be improved continuosly. Feedback is welcome - you can send it by feedback form or by e-mail to address info@laji.fi. Thank you!",
-  "whatsNew.acknowledge": "Thank you for the information!"
-
+  "whatsNew.acknowledge": "Thank you for the information!",
+  "viewer.document": "Observation",
+  "viewer.gathering": "Place",
+  "viewer.unit": "observations"
 }

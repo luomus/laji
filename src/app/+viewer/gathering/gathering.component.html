@@ -1,6 +1,6 @@
 <div class="row" [hidden]="!visible">
   <div class="col-sm-7">
-    <laji-row [title]="'MY.leg'" *ngIf="gathering.team">{{gathering.team | values}}</laji-row>
+    <laji-row [title]="'MY.leg'">{{gathering.team | values}}</laji-row>
     <laji-row [title]="'MY.dateBegin'" *ngIf="gathering.eventDate">
       {{ gathering.eventDate.begin | date:'dd.MM.yyyy' }}
       <span *ngIf="gathering.eventDate.begin !== gathering.eventDate.end">
@@ -9,22 +9,15 @@
     </laji-row>
     <div *ngIf="gathering.interpretations">
       <laji-row [title]="'country'">{{gathering.interpretations.country | toQName}}</laji-row>
+      <laji-row [field]="'biogeographicalProvince'" [title]="'MY.biologicalProvince'" [item]="gathering.interpretations"></laji-row>
+      <laji-row [field]="'finnishMunicipality'" [title]="'MY.municipality'" [item]="gathering.interpretations"></laji-row>
     </div>
-    <laji-row [field]="'interpretations'" [item]="gathering" *ngIf="gathering.interpretations">
-      <div row>
-        <div class="col-sm-12">
-
-          <laji-row [field]="'biogeographicalProvince'" [title]="'MY.biologicalProvince'" [item]="gathering.interpretations"></laji-row>
-          <laji-row [field]="'finnishMunicipality'" [title]="'MY.municipality'" [item]="gathering.interpretations"></laji-row>
-        </div>
-      </div>
-    </laji-row>
     <div *ngFor="let unit of gathering?.units">
       <laji-unit [unit]="unit" [highlight]="highlight"></laji-unit>
     </div>
   </div>
   <div class="col-sm-5">
-    <laji-viewer-map *ngIf="mapData.length > 0" [visible]="visible" [data]="mapData"></laji-viewer-map>
+    <!--<laji-viewer-map *ngIf="mapData.length > 0" [visible]="visible" [data]="mapData"></laji-viewer-map>-->
     <laji-image-gallery *ngIf="gathering.media" [modalImages]="gathering.media"></laji-image-gallery>
   </div>
 </div>

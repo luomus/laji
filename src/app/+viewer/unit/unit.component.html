@@ -1,26 +1,22 @@
 <hr>
 <div [ngClass]="{'highlight': highlight === unit.unitId}">
-  <laji-row [field]="'recordBasis'" [item]="unit"></laji-row>
+  <laji-row [title]="'MY.leg'">{{unit.recordBasis | label}}</laji-row>
   <div *ngIf="unit && unit.linkings && unit.linkings.taxon">
-    <laji-row [field]="'taxon'" [title]="'MY.taxon'" [item]="unit.linkings">
-      <div value-row>
+    <laji-row [title]="'MY.taxon'">
         <span class="vernacularName" *ngIf="unit.linkings.taxon.vernacularName">
           {{unit.linkings.taxon.vernacularName | multiLang}}
         </span>
         (<i *ngIf="unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</i><span *ngIf="!unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</span>)
         <a [routerLink]="['/taxon/' + unit.linkings.taxonId]"><i class="glyphicon glyphicon-modal-window"></i></a>
-      </div>
     </laji-row>
   </div>
   <div *ngIf="unit && (!unit.linkings || !unit.linkings.taxon)">
-    <laji-row [field]="'taxonVerbatim'" [item]="unit"></laji-row>
+    <laji-row [title]="'taxonVerbatim'">{{unit.taxonVerbatim}}</laji-row>
   </div>
-  <laji-row [field]="'lifeStage'" [item]="unit"></laji-row>
-  <laji-row [field]="'sex'" [item]="unit"></laji-row>
-  <laji-row [field]="'interpretations'" [title]="'MY.count'" [item]="unit" *ngIf="unit && unit.interpretations && unit.interpretations.individualCount">
-    <div value-row>
-      {{unit.interpretations.individualCount}}
-    </div>
+  <laji-row [title]="'lifeStage'">{{unit.lifeStage}}</laji-row>
+  <laji-row [title]="'sex'">{{unit.sex}}</laji-row>
+  <laji-row [title]="'MY.count'" *ngIf="unit && unit.interpretations && unit.interpretations.individualCount">
+    {{unit.interpretations.individualCount}}
   </laji-row>
   <div class="image-holder">
     <laji-image-gallery *ngIf="unit.media" [modalImages]="unit.media"></laji-image-gallery>
