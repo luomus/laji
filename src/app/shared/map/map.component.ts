@@ -57,18 +57,26 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     }
     this.map = new LajiMap({
       tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
-      activeIdx: 0,
       zoom: this.getInitialZoomLevel(),
       center: this.center || [65, 26],
       lang: this.lang,
       data: [],
+      draw: {
+        data: this.drawData,
+        editable: false,
+        getDraftStyle: this.getDrawingDraftStyle,
+        onChange: e => this.onChange(e),
+      },
       markerPopupOffset: 5,
       featurePopupOffset: 0,
-      enableDrawEditing: false,
-      getDrawingDraftStyle: this.getDrawingDraftStyle,
-      onChange: e => this.onChange(e),
       rootElem: this.elemRef.nativeElement,
-      controlSettings: controlSettings
+      controlSettings: {
+        draw: false,
+        drawCopy: false,
+        drawClear: false,
+        coordinates: false,
+        coordinateInput: false
+      }
     });
     this.map.map.on('moveend', _ => {
       this.moveEvent('moveend');
