@@ -80,9 +80,13 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
       return;
     }
 
-    const options$ = this.field ?
+    const options$ = this.field === 'MY.collection' ?
       this.collectionService.getAllAsLookUp(this.lang) :
-      this.metadataService.metadataFindRange(this.alt, this.lang);
+      (
+        this.field ?
+        this.metadataService.metadataFindPropertiesRanges(this.field, this.lang, false, true) :
+        this.metadataService.metadataFindRange(this.alt, this.lang)
+      );
 
     this.subOptions = options$
       .map(result => this.pickValue(result))
