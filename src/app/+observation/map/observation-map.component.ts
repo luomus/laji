@@ -230,7 +230,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           const spot3 = new (L as any).LatLng(+parts[3], +parts[1]);
           setTimeout(() => {
             if (!this.query.coordinateAccuracyMax) {
-              this.query.coordinateAccuracyMax = Math.max(Math.pow(10, Math.floor(
+              this.query.coordinateAccuracyMax = Math.max(Math.pow(10, Math.ceil(
                 Math.log(Math.min(
                   spot1.distanceTo(spot3),
                   spot1.distanceTo(spot2),
