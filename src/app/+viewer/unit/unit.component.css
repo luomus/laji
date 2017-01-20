@@ -7,3 +7,7 @@ hr {
 .image-holder {
   padding-left: 5px;
 }
+.scientificName {
+  display: inline-block;
+  white-space: nowrap;
+}

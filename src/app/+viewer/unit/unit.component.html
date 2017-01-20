@@ -2,11 +2,13 @@
 <div [ngClass]="{'highlight': highlight === unit.unitId}">
   <laji-row [title]="'MY.recordBasis'" [value]="unit.recordBasis | label"></laji-row>
   <laji-row [title]="'MY.taxon'" *ngIf="unit && unit.linkings && unit.linkings.taxon">
-      <span class="vernacularName" *ngIf="unit.linkings.taxon.vernacularName">
-        {{unit.linkings.taxon.vernacularName | multiLang}}
-      </span>
+    <span class="vernacularName" *ngIf="unit.linkings.taxon.vernacularName">
+      {{unit.linkings.taxon.vernacularName | multiLang}}
+    </span>
+    <span class="scientificName">
       (<i *ngIf="unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</i><span *ngIf="!unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</span>)
       <a [routerLink]="['/taxon/' + unit.linkings.taxonId]"><i class="glyphicon glyphicon-modal-window"></i></a>
+    </span>
   </laji-row>
   <div *ngIf="unit && (!unit.linkings || !unit.linkings.taxon)">
     <laji-row [title]="'taxonVerbatim'" [value]="unit.taxonVerbatim"></laji-row>

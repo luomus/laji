@@ -3,18 +3,19 @@ import { WarehouseValueMappingService } from '../service/warehouse-value-mapping
 import { LangChangeEvent, TranslateService } from 'ng2-translate';
 import { TriplestoreLabelService } from '../service/triplestore-label.service';
 import { CollectionService } from '../service/collection.service';
+import { AreaService } from '../service/area.service';
 
 @Pipe({
-  name: 'collectionName',
+  name: 'areaName',
   pure: false
 })
-export class CollectionNamePipe implements PipeTransform, OnDestroy {
+export class AreaNamePipe implements PipeTransform, OnDestroy {
   value: string = '';
   lastKey: string;
   onLangChange: EventEmitter<LangChangeEvent>;
 
   constructor(private translate: TranslateService,
-              private collectionService: CollectionService,
+              private areaService: AreaService,
               private _ref: ChangeDetectorRef) {
   }
 
@@ -65,9 +66,8 @@ export class CollectionNamePipe implements PipeTransform, OnDestroy {
   }
 
   private _updateValue(key: string): void {
-    this.collectionService
+    this.areaService
       .getName(key, this.translate.currentLang)
-      .map(col => (col[0] || {value: ''}).value)
       .subscribe((res: string) => {
         this.value = res ? res : key;
         this._ref.markForCheck();

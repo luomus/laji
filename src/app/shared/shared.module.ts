@@ -49,6 +49,9 @@ import { ImageComponent } from './image/image.component';
 import { ValuesPipe } from './pipe/values.pipe';
 import { CollectionService } from './service/collection.service';
 import { CollectionNamePipe } from './pipe/collection-name.pipe';
+import { AreaService } from './service/area.service';
+import { AreaNamePipe } from './pipe/area-name.pipe';
+import { AreaApi } from './api/AreaApi';
 
 
 @NgModule({
@@ -56,6 +59,7 @@ import { CollectionNamePipe } from './pipe/collection-name.pipe';
     NewsListComponent,
     SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, FormattedNumber,
+    AreaNamePipe,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
     AuthoritiesDirective, ImageComponent
@@ -73,7 +77,7 @@ import { CollectionNamePipe } from './pipe/collection-name.pipe';
   providers: [ ], // keep this empty!
   exports: [
     CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule,
-    NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, ToQNamePipe, ValuesPipe,
+    AreaNamePipe, NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, ToQNamePipe, ValuesPipe,
     ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
@@ -92,7 +96,9 @@ export class SharedModule {
         CollectionService,
         WindowRef,
         ToastsService, AppConfig,
-        PersonTokenApi, PersonApi, SearchQuery, WarehouseApi, FeedbackApi, LoggerApi,
+        PersonTokenApi, PersonApi, SearchQuery, WarehouseApi,
+        AreaApi, AreaService,
+        FeedbackApi, LoggerApi,
         WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
         AutocompleteApi, FooterService, Ng2Webstorage,
         DatePipe,
