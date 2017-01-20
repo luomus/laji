@@ -47,13 +47,15 @@ import { AutocompleteApi } from './api/AutocompleteApi';
 import { AuthenticatedHttpService } from './service/authenticated-http.service';
 import { ImageComponent } from './image/image.component';
 import { ValuesPipe } from './pipe/values.pipe';
+import { CollectionService } from './service/collection.service';
+import { CollectionNamePipe } from './pipe/collection-name.pipe';
 
 
 @NgModule({
   declarations: [
     NewsListComponent,
     SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
-    UsersPipe, LabelPipe, SafePipe, MultiLangPipe, FormattedNumber,
+    UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, FormattedNumber,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
     AuthoritiesDirective, ImageComponent
@@ -71,7 +73,7 @@ import { ValuesPipe } from './pipe/values.pipe';
   providers: [ ], // keep this empty!
   exports: [
     CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule,
-    NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe, MultiLangPipe, ToQNamePipe, ValuesPipe,
+    NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, ToQNamePipe, ValuesPipe,
     ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
@@ -87,6 +89,7 @@ export class SharedModule {
         NewsApi,
         NewsService,
         MapService,
+        CollectionService,
         WindowRef,
         ToastsService, AppConfig,
         PersonTokenApi, PersonApi, SearchQuery, WarehouseApi, FeedbackApi, LoggerApi,

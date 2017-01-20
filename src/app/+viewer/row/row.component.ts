@@ -4,24 +4,24 @@ import {
 } from '@angular/core';
 import { type } from 'os';
 
+const EMPTY_VALUE = ' ';
+
 @Component({
   selector: 'laji-row',
   templateUrl: './row.component.html',
   styleUrls: ['./row.component.css']
 })
-export class RowComponent implements OnInit, OnChanges, AfterViewInit {
+export class RowComponent implements OnInit, OnChanges {
 
   @ViewChild('valueRow') valueRow;
-  @Input() item: any = {};
   @Input() title: string;
   @Input() field: string;
-  @Input() valueIsLabel = true;
+  @Input() value: string = EMPTY_VALUE;
 
   public _title = '';
-  public _show = true;
-  private checked = false;
+  public show = false;
 
-  constructor(private cd: ChangeDetectorRef) {
+  constructor() {
   }
 
   ngOnInit() {
@@ -32,17 +32,9 @@ export class RowComponent implements OnInit, OnChanges, AfterViewInit {
     this.initRow();
   }
 
-  ngAfterViewInit() {
-    if (!this.checked) {
-      console.log(this.valueRow.nativeElement.innerText);
-      this._show = this.valueRow.nativeElement.innerText.trim().length > 0;
-      this.checked = false;
-      this.cd.detectChanges();
-    }
-  }
-
   initRow() {
-    this._title = this.title || this.field || '';
+    this._title = this.title || '';
+    this.show = !!this.value || this.value === EMPTY_VALUE;
   }
 
 }

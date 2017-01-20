@@ -1,8 +1,9 @@
-<div class="row" [hidden]="fullRow.childNodes.length == 0 && !_show">
-  <div #fullRow [hidden]="fullRow.childNodes.length == 0"><ng-content select="[row]"></ng-content></div>
-  <div class="key-{{field}} key col-sm-4" *ngIf="fullRow.children.length == 0">
+<div class="row" *ngIf="show">
+  <div class="key col-sm-4">
     {{_title | label}}<span *ngIf="_title">:</span>
     <ng-content select="[key-row]"></ng-content>
   </div>
-  <div class="col-sm-8 value" [hidden]="fullRow.childNodes.length != 0" #valueRow><ng-content></ng-content><span *ngIf="field && item"><span *ngIf="valueIsLabel">{{item[field] | toQName | label | values}}</span><span *ngIf="!valueIsLabel">{{item[field] | values }}</span></span></div>
+  <div class="col-sm-8 value">
+    {{value}}<ng-content></ng-content>
+  </div>
 </div>

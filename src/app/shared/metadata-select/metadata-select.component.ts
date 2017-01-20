@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { MetadataApi } from '../api/MetadataApi';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
 import { Logger } from '../logger/logger.service';
+import { CollectionService } from '../service/collection.service';
 
 export interface MetadataSelectPick {
   [field: string]: string;
@@ -39,6 +40,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
 
   constructor(public warehouseMapper: WarehouseValueMappingService,
               private metadataService: MetadataApi,
+              private collectionService: CollectionService,
               private logger: Logger
   ) {
   }
@@ -79,7 +81,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
     }
 
     const options$ = this.field ?
-      this.metadataService.metadataFindPropertiesRanges(this.field, this.lang, false, true) :
+      this.collectionService.getAllAsLookUp(this.lang) :
       this.metadataService.metadataFindRange(this.alt, this.lang);
 
     this.subOptions = options$

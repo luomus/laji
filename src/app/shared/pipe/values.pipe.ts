@@ -10,17 +10,23 @@ import { IdService } from '../service/id.service';
   name: 'values'
 })
 export class ValuesPipe implements PipeTransform {
-  transform(value: string, sep = ', '): string {
+  transform(value: string, sep = ', ', objKey = ''): string {
     const type = typeof value;
     const values = [];
     if (Array.isArray(value)) {
       for(const item of value) {
-        values.push(this.transform(item));
+        values.push(this.transform(item, sep, objKey));
       }
     } else if (type === 'object') {
-      Object.keys(value).map(key => {
-        values.push(this.transform(value[key]));
-      });
+      if (objKey) {
+        if (value[objKey]) {
+          values.push(value[objKey]);
+        }
+      } else {
+        Object.keys(value).map(key => {
+          values.push(this.transform(value[key], sep, objKey));
+        });
+      }
     } else {
       values.push(value);
     }

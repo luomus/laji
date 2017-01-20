@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
+import { CollectionService } from '../../shared/service/collection.service';
 
 @Component({
   selector: 'laji-document',

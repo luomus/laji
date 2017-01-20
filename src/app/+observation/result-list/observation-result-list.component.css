@@ -12,3 +12,7 @@
 .table th:last-child {
   padding-right: 40px;
 }
+
+.viewer-column {
+  width: 35px;
+}

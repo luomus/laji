@@ -1,23 +1,19 @@
 <hr>
 <div [ngClass]="{'highlight': highlight === unit.unitId}">
-  <laji-row [title]="'MY.leg'">{{unit.recordBasis | label}}</laji-row>
-  <div *ngIf="unit && unit.linkings && unit.linkings.taxon">
-    <laji-row [title]="'MY.taxon'">
-        <span class="vernacularName" *ngIf="unit.linkings.taxon.vernacularName">
-          {{unit.linkings.taxon.vernacularName | multiLang}}
-        </span>
-        (<i *ngIf="unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</i><span *ngIf="!unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</span>)
-        <a [routerLink]="['/taxon/' + unit.linkings.taxonId]"><i class="glyphicon glyphicon-modal-window"></i></a>
-    </laji-row>
-  </div>
-  <div *ngIf="unit && (!unit.linkings || !unit.linkings.taxon)">
-    <laji-row [title]="'taxonVerbatim'">{{unit.taxonVerbatim}}</laji-row>
-  </div>
-  <laji-row [title]="'lifeStage'">{{unit.lifeStage}}</laji-row>
-  <laji-row [title]="'sex'">{{unit.sex}}</laji-row>
-  <laji-row [title]="'MY.count'" *ngIf="unit && unit.interpretations && unit.interpretations.individualCount">
-    {{unit.interpretations.individualCount}}
+  <laji-row [title]="'MY.recordBasis'" [value]="unit.recordBasis | label"></laji-row>
+  <laji-row [title]="'MY.taxon'" *ngIf="unit && unit.linkings && unit.linkings.taxon">
+      <span class="vernacularName" *ngIf="unit.linkings.taxon.vernacularName">
+        {{unit.linkings.taxon.vernacularName | multiLang}}
+      </span>
+      (<i *ngIf="unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</i><span *ngIf="!unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</span>)
+      <a [routerLink]="['/taxon/' + unit.linkings.taxonId]"><i class="glyphicon glyphicon-modal-window"></i></a>
   </laji-row>
+  <div *ngIf="unit && (!unit.linkings || !unit.linkings.taxon)">
+    <laji-row [title]="'taxonVerbatim'" [value]="unit.taxonVerbatim"></laji-row>
+  </div>
+  <laji-row [title]="'lifeStage'" [value]="unit.lifeStage"></laji-row>
+  <laji-row [title]="'sex'" [value]="unit.sex"></laji-row>
+  <laji-row [title]="item.fact | lcFirst" [value]="item.value | label" *ngFor="let item of unit.facts"></laji-row>
   <div class="image-holder">
     <laji-image-gallery *ngIf="unit.media" [modalImages]="unit.media"></laji-image-gallery>
   </div>

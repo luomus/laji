@@ -2,15 +2,18 @@
   <div class="row {{document.secureLevel | label}}">
     <div class="col-sm-7">
       <div class="page-header" *ngIf="showTitle">
-        <h2>Document <small>{{document.documentId}}</small></h2>
+        <h2>{{'viewer.document' | translate }} <small>{{document.documentId}}</small></h2>
       </div>
-      <laji-row [title]="'MY.collectionID'">{{document.collectionId | toQName}}</laji-row>
-      <laji-row [title]="'sourceId'">{{document.sourceId | toQName}}</laji-row>
-      <laji-row [title]="'namedPlaceId'">{{document.namedPlaceId | toQName}}</laji-row>
-      <laji-row [title]="'secureLevel'">{{document.secureLevel | label}}</laji-row>
-      <laji-row [title]="'createdDate'">{{document.createdDate | date:'dd.MM.yyyy'}}</laji-row>
-      <laji-row [title]="'modifiedDate'">{{document.modifiedDate | date:'dd.MM.yyyy'}}</laji-row>
-      <laji-row [title]="'loadDate'">{{document.loadDate | date:'dd.MM.yyyy'}}</laji-row>
+      <laji-row [title]="'MY.collectionID'" [value]="document.collectionId | toQName | collectionName"></laji-row>
+      <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId | toQName"></laji-row>
+      <laji-row [title]="'secureLevel'" [value]="document.secureLevel | label"></laji-row>
+      <laji-row [title]="'createdDate'" [value]="document.createdDate | date:'dd.MM.yyyy'"></laji-row>
+      <laji-row [title]="'modifiedDate'" [value]="document.modifiedDate | date:'dd.MM.yyyy'"></laji-row>
+      <laji-row [title]="'loadDate'" [value]="document.loadDate | date:'dd.MM.yyyy'"></laji-row>
+      <laji-row [title]="'MZ.editor'" *ngIf="document.linkings && document.linkings.editors">
+        {{document.linkings.editors | values:', ':'fullName' }}
+      </laji-row>
+      <laji-row [title]="item.fact | lcFirst" [value]="item.value | label" *ngFor="let item of document.facts"></laji-row>
     </div>
     <div class="col-sm-5" style="padding-top: 20px;" *ngIf="document.media">
       <laji-image-gallery [modalImages]="document.media"></laji-image-gallery>
@@ -34,3 +37,4 @@
     <h2>{{'viewer.notFound' | translate}}</h2>
   </div>
 </div>
+<!--<pre>{{document | json}}</pre>-->
