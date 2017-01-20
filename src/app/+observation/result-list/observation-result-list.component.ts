@@ -181,7 +181,8 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
           this.loading = false;
           this.searchQuery.updateUrl(this.location, undefined, [
             'selected',
-            'pageSize'
+            'pageSize',
+            'page'
           ]);
         },
         err => {

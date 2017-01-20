@@ -316,7 +316,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.searchQuery.tack++;
     this.searchQuery.updateUrl(this.location, undefined, [
       'selected',
-      'pageSize'
+      'pageSize',
+      'page'
     ], false);
     if (updateQuery) {
       this.searchQuery.queryUpdate();

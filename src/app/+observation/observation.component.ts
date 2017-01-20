@@ -26,7 +26,6 @@ export class ObservationComponent implements OnInit, OnDestroy {
       this.tab = params['tab'] || 'map';
     });
     this.subQuery = this.route.queryParams.subscribe(params => {
-      this.searchQuery.page = +params['page'] || 1;
       if (params['target']) {
         this.searchQuery.query.target = [params['target']];
       }

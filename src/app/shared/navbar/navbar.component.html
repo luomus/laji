@@ -19,7 +19,7 @@
               <a [routerLink]="['/taxon']">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']">
-              <a [routerLink]="['/observation']" [queryParams]="{page: 1}">{{ 'navigation.observation' | translate }}</a>
+              <a [routerLink]="['/observation']">{{ 'navigation.observation' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiAuthorities="true">
               <a [routerLink]="['/invasive']">{{ 'navigation.invasive' | translate }}</a>
