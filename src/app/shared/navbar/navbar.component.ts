@@ -10,10 +10,12 @@ import { AppConfig } from '../../app.config';
 export class NavbarComponent {
 
   openMenu: Boolean = false;
+  isAuthority = false;
   env: string = 'beta';
 
   constructor(public userService: UserService, appConfig: AppConfig) {
     this.env = appConfig.getEnv();
+    this.isAuthority = appConfig.isForAuthorities();
   }
 
   toggleMenu() {
