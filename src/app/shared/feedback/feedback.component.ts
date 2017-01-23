@@ -39,14 +39,14 @@ export class FeedbackComponent {
 
   sendFeedback() {
     this.error = false;
-    let subject = (['other', ''].indexOf(this.feedback.subject) > -1 ?  '' : (this.feedback.subject + ': ')) +
+    const subject = (['other', ''].indexOf(this.feedback.subject) > -1 ?  '' : (this.feedback.subject + ': ')) +
       this.feedback.other;
-    let message = this.feedback.message;
+    const message = this.feedback.message;
     if (!this.feedback.other || !message) {
       this.error = true;
       return;
     }
-    let meta = this.location.prepareExternalUrl(this.location.path());
+    const meta = this.location.prepareExternalUrl(this.location.path());
     this.userService.getUser()
       .subscribe(user => {
         this.feedbackApi.send(
