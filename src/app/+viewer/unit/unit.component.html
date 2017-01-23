@@ -15,7 +15,7 @@
   </div>
   <laji-row [title]="'lifeStage'" [value]="unit.lifeStage"></laji-row>
   <laji-row [title]="'sex'" [value]="unit.sex"></laji-row>
-  <laji-row [title]="item.fact | lcFirst" [value]="item.value | label" *ngFor="let item of unit.facts"></laji-row>
+  <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label" *ngFor="let item of unit.facts"></laji-row>
   <div class="image-holder">
     <laji-image-gallery *ngIf="unit.media" [modalImages]="unit.media"></laji-image-gallery>
   </div>

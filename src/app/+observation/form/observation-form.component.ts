@@ -19,6 +19,7 @@ import { MapService } from '../../shared/map/map.service';
 import { WindowRef } from '../../shared/windows-ref';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Autocomplete } from '../../shared/model/Autocomplete';
+import { AreaType } from '../../shared/service/area.service';
 declare const moment: any;
 
 @Component({
@@ -43,6 +44,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   public showPlace = false;
   public showFilter = true;
   public taxonName: Autocomplete;
+  public areaType = AreaType;
 
   public filters: {[name: string]: ObservationFilterInterface} = {
     recordBasis: {

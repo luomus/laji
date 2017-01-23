@@ -38,12 +38,8 @@ export class FeedbackApi {
     protected basePath = '/api';
     public defaultHeaders: Headers = new Headers({'Content-Type': 'application/json'});
 
-    constructor(protected http: Http, @Optional() basePath: string) {
-        if (basePath) {
-            this.basePath = basePath;
-        }
+    constructor(protected http: Http) {
     }
-
     /**
      * Send feedback. **Requires** that the api-users feedbackEMail has been set by the admins
      * 

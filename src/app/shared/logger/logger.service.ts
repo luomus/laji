@@ -5,17 +5,13 @@ import { Injectable } from '@angular/core';
 declare const console: any;
 
 @Injectable()
-export class Logger implements ILogger {
+export abstract class Logger implements ILogger {
 
-  public error(message: string, meta?: any): void {
-  }
+  abstract error(message: string, meta?: any): void;
 
-  public warn(message: string, meta?: any): void {
-  }
+  abstract warn(message: string, meta?: any): void;
 
-  public info(message: string, meta?: any): void {
-  }
+  abstract info(message: string, meta?: any): void;
 
-  public log(message: string, meta?: any): void {
-  }
+  abstract log(message: string, meta?: any): void;
 }

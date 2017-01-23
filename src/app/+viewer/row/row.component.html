@@ -1,6 +1,6 @@
 <div class="row" *ngIf="show">
   <div class="key col-sm-4">
-    {{_title | label}}<span *ngIf="_title">:</span>
+    {{_title | toQName | label}}<span *ngIf="_title">:</span>
     <ng-content select="[key-row]"></ng-content>
   </div>
   <div class="col-sm-8 value">

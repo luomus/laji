@@ -36,10 +36,7 @@ export class InformationApi {
   protected basePath = '/api';
   public defaultHeaders: Headers = new Headers();
 
-  constructor(protected http: Http, @Optional() basePath: string) {
-    if (basePath) {
-      this.basePath = basePath;
-    }
+  constructor(protected http: Http) {
   }
 
   /**

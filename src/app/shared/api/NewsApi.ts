@@ -10,10 +10,7 @@ export class NewsApi {
   protected basePath = '/api';
   private lastResult: PagedResult<News>;
 
-  constructor(protected http: Http, @Optional() basePath: string) {
-    if (basePath) {
-      this.basePath = basePath;
-    }
+  constructor(protected http: Http) {
   }
 
   /**

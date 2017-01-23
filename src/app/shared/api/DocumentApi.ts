@@ -37,10 +37,7 @@ export class DocumentApi {
   protected basePath = '/api';
   public defaultHeaders: Headers = new Headers({'Content-Type': 'application/json'});
 
-  constructor(protected http: Http, @Optional() basePath: string) {
-    if (basePath) {
-      this.basePath = basePath;
-    }
+  constructor(protected http: Http) {
   }
 
   /**

@@ -27,7 +27,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.lajiMap.map.dataLayerGroups && this.lajiMap.map.dataLayerGroups[0]) {
+    if (this.lajiMap && this.lajiMap.map.dataLayerGroups && this.lajiMap.map.dataLayerGroups[0]) {
       this.lajiMap.map.map.fitBounds(this.lajiMap.map.dataLayerGroups[0].getBounds(), {maxZoom: 5});
       this.lajiMap.invalidateSize();
     }

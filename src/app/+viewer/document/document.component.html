@@ -13,7 +13,7 @@
       <laji-row [title]="'MZ.editor'" *ngIf="document.linkings && document.linkings.editors">
         {{document.linkings.editors | values:', ':'fullName' }}
       </laji-row>
-      <laji-row [title]="item.fact | lcFirst" [value]="item.value | label" *ngFor="let item of document.facts"></laji-row>
+      <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label" *ngFor="let item of document.facts"></laji-row>
     </div>
     <div class="col-sm-5" style="padding-top: 20px;" *ngIf="document.media">
       <laji-image-gallery [modalImages]="document.media"></laji-image-gallery>

@@ -17,7 +17,7 @@ import { TranslateFileLoader } from './shared/translate/translate-file-loader';
 import { WhatsNewComponent } from './shared/whats-new/whats-new.component';
 import { BrowserModule } from '@angular/platform-browser';
 import {
-  TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
+  TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
   TypeaheadModule
 } from 'ng2-bootstrap';
 import { CoreModule } from './shared/core.module';

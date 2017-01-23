@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'laji-image-header',
@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./image-header.component.css']
 })
 export class ImageHeaderComponent {
-
 }

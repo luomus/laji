@@ -12,7 +12,7 @@
       <laji-row [title]="'MY.biologicalProvince'" [value]="gathering.interpretations.biogeographicalProvince | toQName | areaName"></laji-row>
       <laji-row [title]="'MY.municipality'" [value]="gathering.interpretations.finnishMunicipality | toQName | areaName"></laji-row>
     </div>
-    <laji-row [title]="item.fact | lcFirst" [value]="item.value | label" *ngFor="let item of gathering.facts"></laji-row>
+    <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label" *ngFor="let item of gathering.facts"></laji-row>
     <div *ngFor="let unit of gathering?.units">
       <laji-unit [unit]="unit" [highlight]="highlight"></laji-unit>
     </div>

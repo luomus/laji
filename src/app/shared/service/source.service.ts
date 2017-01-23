@@ -3,26 +3,17 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { Observer } from 'rxjs/Observer';
-import { AreaApi } from '../api/AreaApi';
+import { SourceApi } from '../api/SourceApi';
 
-
-export enum AreaType {
-  Country = <any>'ML.country',
-  Biogeographical = <any>'ML.biogeographicalProvince',
-  Municipality = <any>'ML.municipality',
-  IucnEvaluationArea = <any>'ML.iucnEvaluationArea',
-}
 
 @Injectable()
-export class AreaService {
-
-  public types = AreaType;
+export class SourceService {
 
   private areas;
   private currentLang;
   private pending: Observable<any>;
 
-  constructor(private areaApi: AreaApi) {
+  constructor(private sourceApi: SourceApi) {
   }
 
   getAllAsLookUp(lang: string) {
@@ -41,15 +32,12 @@ export class AreaService {
         });
       }
     }
-    this.pending = this.areaApi
+    this.pending = this.sourceApi
       .findAll(lang, undefined, '1', '1000')
       .map(paged => paged.results)
       .map(areas => {
         const lkObject = {};
-        areas.map(area => { lkObject[area['id']] = {
-          name: area['name'],
-          areaType: area['areaType']
-        }; });
+        areas.map(area => { lkObject[area['id']] = area['name']; });
         return lkObject;
       })
       .do(locations => { this.areas = locations; })
@@ -59,28 +47,8 @@ export class AreaService {
     return this.pending;
   }
 
-  getBiogeographicalProvinces(lang: string) {
-    return this.getAreaType(lang, this.types.Biogeographical);
-  }
-
-  getMunicipalities(lang: string) {
-    return this.getAreaType(lang, this.types.Municipality);
-  }
-
   getName(id: string, lang) {
     return this.getAllAsLookUp(lang)
       .map(data => data[id] && data[id].name || id );
-  }
-
-  private getAreaType(lang: string, type: AreaType) {
-    return this.getAllAsLookUp(lang)
-      .map(area => {
-        return Object.keys(area).reduce((total, key) => {
-          if (this.areas[key].areaType === type) {
-            total.push({id: key, value: this.areas[key].name});
-          }
-          return total;
-        }, []);
-      });
   }
 }

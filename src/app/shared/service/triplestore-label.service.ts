@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from 'ng2-translate';
 import { MetadataApi } from '../api/MetadataApi';
 import { Logger } from '../logger/logger.service';
+import { MetadataService } from './metadata.service';
 
 @Injectable()
 export class TriplestoreLabelService {
@@ -12,7 +13,8 @@ export class TriplestoreLabelService {
   private currentLang;
   private pending: Observable<any>;
 
-  constructor(private metadataService: MetadataApi,
+  constructor(private metadataApi: MetadataApi,
+              private metadataService: MetadataService,
               private translate: TranslateService,
               private logger: Logger
   ) {
@@ -50,9 +52,9 @@ export class TriplestoreLabelService {
 
   private getLang(lang) {
     this.pending = Observable.forkJoin(
-      this.metadataService.metadataFindAllRanges(lang, true),
-      this.metadataService.metadataAllProperties(lang),
-      this.metadataService.metadataAllClasses(lang)
+      this.metadataService.getAllRangesAsLookUp(lang),
+      this.metadataApi.metadataAllProperties(lang),
+      this.metadataApi.metadataAllClasses(lang)
     )
       .map(data => this.parseResult(data))
       .share();

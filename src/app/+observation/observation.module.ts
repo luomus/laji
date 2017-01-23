@@ -18,17 +18,17 @@ import { ObservationAggregateComponent } from './aggregate/observation-aggregate
 import { ObservationDownloadComponent } from './download/observation-download.component';
 import { routing } from './observation.routes';
 import { ObservationComponent } from './observation.component';
-import { nvD3 } from 'ng2-nvd3';
 import { ViewerModule } from '../+viewer/viewer.module';
+import { NvD3Module } from '../ng2-nvd3/ng2-nvd3.module';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, TypeaheadModule, SelectModule, ViewerModule],
+  imports: [routing, NvD3Module, SharedModule, TypeaheadModule, SelectModule, ViewerModule],
   declarations: [ObservationComponent, ObservationActiveComponent,
     ObservationAggregateComponent, ObservationChartComponent,
     ObservationFilterComponent, ObservationFormComponent, ObservationGroupSelectComponent,
     MultiRadioComponent, ObservationResultComponent,
     ObservationResultListComponent, MetadataSelectComponent,
-    PieChartComponent, nvD3, DatePickerComponent, ObservationDownloadComponent]
+    PieChartComponent, DatePickerComponent, ObservationDownloadComponent]
 })
 export class ObservationModule {
 }

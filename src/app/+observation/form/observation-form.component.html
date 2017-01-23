@@ -113,6 +113,30 @@
              [title]="'observation.form.place' | translate">
           <div class="form-group">
             <div class="col-sm-12">
+              <metadata-select
+                      [(ngModel)]="searchQuery.query.biogeographicalProvinceId"
+                      (ngModelChange)="onQueryChange()"
+                      [multiple]="true"
+                      [placeholder]="'observation.form.biogeographicalProvince'|translate"
+                      name="biogeographicalProvinceId"
+                      [field]="areaType.Biogeographical"
+                      [lang]="translate.currentLang"></metadata-select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <metadata-select
+                      [(ngModel)]="searchQuery.query.finnishMunicipalityId"
+                      (ngModelChange)="onQueryChange()"
+                      [multiple]="true"
+                      [placeholder]="'observation.form.municipality'|translate"
+                      name="finnishMunicipalityId"
+                      [field]="areaType.Municipality"
+                      [lang]="translate.currentLang"></metadata-select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12">
               {{'observation.form.map.intro'|translate}}
             </div>
           </div>
@@ -189,7 +213,7 @@
                       [multiple]="true"
                       name="recordBasis"
                       [mapToWarehouse]="true"
-                      [field]="'MY.recordBasis'"
+                      [alt]="'MY.recordBases'"
                       [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
@@ -225,7 +249,7 @@
             <div class="col-lg-12">
               <metadata-select
                       [(ngModel)]="searchQuery.query.sex"
-                      [field]="'MY.sex'"
+                      [alt]="'MY.sexes'"
                       [multiple]="true"
                       (ngModelChange)="onQueryChange()"
                       [mapToWarehouse]="true"
@@ -241,7 +265,7 @@
               <metadata-select
                       [(ngModel)]="searchQuery.query.lifeStage"
                       (ngModelChange)="onQueryChange()"
-                      [field]="'MY.lifeStage'"
+                      [alt]="'MY.lifeStages'"
                       [multiple]="true"
                       [mapToWarehouse]="true"
                       name="lifeStage"
@@ -295,7 +319,7 @@
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
                       name="administrativeStatusId"
-                      [field]="'MX.hasAdminStatus'"
+                      [alt]="'MX.adminStatusEnum'"
                       [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
@@ -308,7 +332,7 @@
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
                       name="redListStatusId"
-                      [field]="'MKV.redListStatus'"
+                      [alt]="'MX.iucnStatuses'"
                       [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
@@ -336,6 +360,7 @@
               </label>
             </div>
           </div>
+          <hr>
           <div class="row">
             <div class="col-sm-12">
               <label>
@@ -358,6 +383,7 @@
               </label>
             </div>
           </div>
+          <hr>
           <div class="row">
             <div class="col-sm-12">
               <label>
@@ -380,6 +406,7 @@
               </label>
             </div>
           </div>
+          <hr>
           <div class="row">
             <div class="col-sm-12">
               <label>
@@ -389,6 +416,19 @@
                        name="includeOnlyValid">
                 {{'observation.form.includeNonValidTaxa' | translate}}
               </label>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-12">
+              <metadata-select
+                      [(ngModel)]="searchQuery.query.sourceId"
+                      (ngModelChange)="onQueryChange()"
+                      [placeholder]="'observation.form.source'|translate"
+                      [multiple]="true"
+                      name="sourceId"
+                      [field]="'KE.informationSystem'"
+                      [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
         </div>
