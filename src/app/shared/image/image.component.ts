@@ -43,6 +43,7 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
       animationTime: 0.7,
       prefixUrl: '/static/images/openseadragon/',
       showNavigator: this.showNavigator,
+      showRotationControl: true,
       navigatorPosition: 'ABSOLUTE',
       navigatorTop: '35px',
       navigatorLeft: '4px',
