@@ -18,3 +18,6 @@ import 'rxjs/Rx';
 // ng2-nvd3
 import 'd3';
 import 'nvd3';
+
+import 'laji-form/lib.moment-wrapped/laji-form';
+import 'laji-map';

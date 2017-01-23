@@ -38,7 +38,7 @@
           [visible]="active === 'map'"
           [height]="500"
           [query]="searchQuery.query"
-          [draw]="false"
+          [draw]="{rectangle: false, marker: false, polygon: false, polyline: false, circle: false}"
           [legend]="true"
           [initWithWorldMap]="true"
           (create)="pickLocation($event)"

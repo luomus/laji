@@ -4,7 +4,6 @@ import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { Taxonomy } from '../shared/model/Taxonomy';
 import { IdService } from '../shared/service/id.service';
 import { Observable } from 'rxjs/Observable';
-declare const moment: any;
 
 @Component({
   selector: 'laji-invasive',

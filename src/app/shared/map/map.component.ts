@@ -61,12 +61,15 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
       center: this.center || [65, 26],
       lang: this.lang,
       data: [],
-      draw: {
-        data: this.drawData,
-        editable: false,
-        getDraftStyle: this.getDrawingDraftStyle,
-        onChange: e => this.onChange(e),
-      },
+      draw: this.draw === false ? false : {
+          data: this.drawData,
+          editable: false,
+          getDraftStyle: this.getDrawingDraftStyle,
+          onChange: e => this.onChange(e),
+          polygon: false,
+          polyline: false,
+          hasActive: true
+        },
       markerPopupOffset: 5,
       featurePopupOffset: 0,
       rootElem: this.elemRef.nativeElement,

@@ -164,6 +164,9 @@
   "observation.form.multi-true": "kyllä",
   "observation.form.multi-false": "ei",
   "observation.form.inclusiveCoordinates": "Näytä myös havainnot, jotka sijaitsevat vain osittain valitulla alueella.",
+  "observation.form.biogeographicalProvince": "Eliömaakunta",
+  "observation.form.municipality": "Kunta",
+  "observation.form.source": "Lähde järjestelmä",
   "observation.filters.unit": "Näyte",
   "observation.filters.collection": "Kokoelma",
   "observation.filters.administrative": "Hallinnolliset",
@@ -199,6 +202,8 @@
   "observation.active.individualCountMin": "Minimiyksilömäärä",
   "observation.active.finnish": "Suomalaisuus",
   "observation.active.hasMedia": "Kuva",
+  "observation.active.finnishMunicipalityId": "Kunta",
+  "observation.active.biogeographicalProvinceId": "Eliömaakunta",
   "observation.download.specimenTitle": "Lajiluettelon lataus",
   "observation.download.loadSpecies": "Lataa lajiluettelo",
   "observation.download.loadPublic": "Lataa aineisto",
@@ -316,5 +321,6 @@
   "invasive.oldestRecord": "Vanhin",
   "viewer.document": "Havaintoerä",
   "viewer.gathering": "Paikka",
-  "viewer.unit": "havaintoa"
+  "viewer.unit": "havaintoa",
+  "viewer.valueInterpreted": "tulkittu"
 }

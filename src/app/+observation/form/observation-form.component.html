@@ -219,7 +219,7 @@
           </div>
         </div>
         <div laji-panel [title]="'observation.form.unit' | translate" [autoToggle]="true">
-          <div class="row">
+          <div class="form-group">
             <label class="col-lg-12">
               {{'observation.form.count' | translate}}:
             </label>
@@ -242,15 +242,13 @@
               </div>
             </div>
           </div>
-          <div class="row">
-            <label class="col-lg-12">
-              {{'observation.form.sex' | translate}}:
-            </label>
+          <div class="form-group">
             <div class="col-lg-12">
               <metadata-select
                       [(ngModel)]="searchQuery.query.sex"
                       [alt]="'MY.sexes'"
                       [multiple]="true"
+                      [placeholder]="'observation.form.sex' | translate"
                       (ngModelChange)="onQueryChange()"
                       [mapToWarehouse]="true"
                       name="sex"
@@ -258,15 +256,13 @@
             </div>
           </div>
           <div class="row">
-            <label class="col-lg-12">
-              {{'MY.lifeStage' | label}}:
-            </label>
             <div class="col-lg-12">
               <metadata-select
                       [(ngModel)]="searchQuery.query.lifeStage"
                       (ngModelChange)="onQueryChange()"
                       [alt]="'MY.lifeStages'"
                       [multiple]="true"
+                      [placeholder]="'MY.lifeStage' | label"
                       [mapToWarehouse]="true"
                       name="lifeStage"
                       [lang]="translate.currentLang"></metadata-select>

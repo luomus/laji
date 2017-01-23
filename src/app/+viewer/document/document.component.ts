@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
-import { CollectionService } from '../../shared/service/collection.service';
+import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 
 @Component({
   selector: 'laji-document',
@@ -10,12 +10,13 @@ import { CollectionService } from '../../shared/service/collection.service';
   styleUrls: ['./document.component.css']
 })
 export class DocumentComponent implements OnInit, OnChanges {
-
+  @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
   @Input() uri: string;
   @Input() highlight: string;
   @Input() showTitle = false;
-  document: Object;
-  mapData: Object[] = [];
+  document: any;
+  activeGathering: any;
+  mapData: any = [];
   hasDoc: boolean;
   active = 0;
   private _uri: string;
@@ -51,21 +52,27 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   setActive(i) {
     this.active = i;
+    if (this.map) {
+      this.map.setActiveIndex(i);
+    }
   }
 
   private parseDoc(doc, found) {
     this.hasDoc = found;
     this.document = doc;
     this.mapData = [];
+    this.setActive(0);
     if (this.highlight && doc.gatherings) {
       doc.gatherings.map((gathering, idx) => {
+        this.mapData[idx] = gathering.conversions && gathering.conversions.wgs84Geo ?
+          gathering.conversions.wgs84Geo : {};
         if (this.highlight && gathering.gatheringId === this.highlight) {
-          this.active = idx;
+          this.setActive(idx);
         }
         if (gathering.units) {
           gathering.units.map(unit => {
             if (this.highlight && unit.unitId === this.highlight) {
-              this.active = idx;
+              this.setActive(idx);
             }
           });
         }

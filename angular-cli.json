@@ -18,8 +18,8 @@
       "prefix": "laji",
       "mobile": false,
       "styles": [
-        "styles/ng2-toastr.min.css",
         "../node_modules/laji-form/dist/styles.css",
+        "styles/ng2-toastr.min.css",
         "styles/laji.css"
       ],
       "scripts": [

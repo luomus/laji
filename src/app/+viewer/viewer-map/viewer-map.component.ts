@@ -33,12 +33,22 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
+  setActiveIndex(idx: number) {
+    this.lajiMap.map.setActive(idx);
+  }
+
   private initData() {
     if (!this.data) {
       return;
     }
     try {
       this._data = this.data.map(set => ({
+        getFeatureStyle: () => ({
+          weight: 5,
+          opacity: 1,
+          fillOpacity: 0.3,
+          color: '#00aa00'
+        }),
         featureCollection: {
           type: set.type,
           features: set.features.map(feat => ({

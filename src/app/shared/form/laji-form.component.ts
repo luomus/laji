@@ -5,7 +5,7 @@ import {
 import { FormApiClient } from '../api';
 import { UserService } from '../service/user.service';
 import { Logger } from '../logger/logger.service';
-import LajiFormWrapper from 'laji-form';
+import LajiFormWrapper from 'laji-form/lib.moment-wrapped/laji-form';
 
 @Component({
   selector: 'laji-form',
@@ -93,7 +93,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
       return;
     }
     try {
-      let uiSchemaContext = this.formData.uiSchemaContext || {};
+      const uiSchemaContext = this.formData.uiSchemaContext || {};
       uiSchemaContext['creator'] = this.formData.formData.creator;
       this.apiClient.lang = this.lang;
       this.apiClient.personToken = this.userService.getToken();

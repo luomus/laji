@@ -28,8 +28,16 @@
       </li>
     </ul>
   </div>
-  <div *ngFor="let gathering of document.gatherings; let i=index">
-    <laji-gathering [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
+  <div class="row">
+    <div class="col-sm-7">
+      <div *ngFor="let gathering of document.gatherings; let i=index">
+        <laji-gathering [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <laji-viewer-map *ngIf="mapData.length > 0" [visible]="visible" [data]="mapData"></laji-viewer-map>
+      <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media"></laji-image-gallery>
+    </div>
   </div>
 </div>
 <div *ngIf="hasDoc === false">

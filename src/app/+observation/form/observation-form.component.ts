@@ -20,7 +20,6 @@ import { WindowRef } from '../../shared/windows-ref';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Autocomplete } from '../../shared/model/Autocomplete';
 import { AreaType } from '../../shared/service/area.service';
-declare const moment: any;
 
 @Component({
   selector: 'laji-observation-form',

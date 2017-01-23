@@ -40,6 +40,10 @@ body {
   flex: 1 0 auto;
 }
 
+#footer {
+  z-index: 1;
+}
+
 #footer footer {
   flex: none;
   color: #fff;

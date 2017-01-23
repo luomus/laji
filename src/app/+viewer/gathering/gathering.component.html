@@ -1,24 +1,19 @@
-<div class="row" [hidden]="!visible">
-  <div class="col-sm-7">
-    <laji-row [title]="'MY.leg'" [value]="gathering.team | values"></laji-row>
-    <laji-row [title]="'MY.dateBegin'" *ngIf="gathering.eventDate">
-      {{ gathering.eventDate.begin | date:'dd.MM.yyyy' }}
-      <span *ngIf="gathering.eventDate.begin !== gathering.eventDate.end">
-        {{gathering.eventDate.end | date:'dd.MM.yyyy'}}
-      </span>
-    </laji-row>
-    <div *ngIf="gathering.interpretations">
-      <laji-row [title]="'country'" [value]="gathering.interpretations.country | toQName | areaName"></laji-row>
-      <laji-row [title]="'MY.biologicalProvince'" [value]="gathering.interpretations.biogeographicalProvince | toQName | areaName"></laji-row>
-      <laji-row [title]="'MY.municipality'" [value]="gathering.interpretations.finnishMunicipality | toQName | areaName"></laji-row>
-    </div>
-    <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label" *ngFor="let item of gathering.facts"></laji-row>
-    <div *ngFor="let unit of gathering?.units">
-      <laji-unit [unit]="unit" [highlight]="highlight"></laji-unit>
-    </div>
+<div [hidden]="!visible">
+  <laji-row [title]="'MY.leg'" [value]="gathering.team | values"></laji-row>
+  <laji-row [title]="'MY.dateBegin'" *ngIf="gathering.eventDate">
+    {{ gathering.eventDate.begin | date:'dd.MM.yyyy' }}
+    <span *ngIf="gathering.eventDate.begin !== gathering.eventDate.end">
+      {{gathering.eventDate.end | date:'dd.MM.yyyy'}}
+    </span>
+    (tulkittu)
+  </laji-row>
+  <div *ngIf="gathering.interpretations">
+    <laji-row [title]="'country'" [value]="gathering.interpretations.country | toQName | areaName"> ({{'viewer.valueInterpreted' | translate}})</laji-row>
+    <laji-row [title]="'MY.biologicalProvince'" [value]="gathering.interpretations.biogeographicalProvince | toQName | areaName">  ({{'viewer.valueInterpreted' | translate}})</laji-row>
+    <laji-row [title]="'MY.municipality'" [value]="gathering.interpretations.finnishMunicipality | toQName | areaName">  ({{'viewer.valueInterpreted' | translate}})</laji-row>
   </div>
-  <div class="col-sm-5">
-    <laji-viewer-map *ngIf="mapData.length > 0" [visible]="visible" [data]="mapData"></laji-viewer-map>
-    <laji-image-gallery *ngIf="gathering.media" [modalImages]="gathering.media"></laji-image-gallery>
+  <laji-row [title]="item.fact" [value]="item.value | toQName | label" *ngFor="let item of gathering.facts"></laji-row>
+  <div *ngFor="let unit of gathering?.units">
+    <laji-unit [unit]="unit" [highlight]="highlight"></laji-unit>
   </div>
 </div>
