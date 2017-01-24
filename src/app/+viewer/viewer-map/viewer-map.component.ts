@@ -11,6 +11,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() data: any;
   @Input() height = 300;
   @Input() visible = true;
+  @Input() active: number = 0;
 
   public _data: any;
 
@@ -27,14 +28,19 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.lajiMap && this.lajiMap.map.dataLayerGroups && this.lajiMap.map.dataLayerGroups[0]) {
-      this.lajiMap.map.map.fitBounds(this.lajiMap.map.dataLayerGroups[0].getBounds(), {maxZoom: 5});
-      this.lajiMap.invalidateSize();
-    }
+    this.setActiveIndex(this.active);
   }
 
   setActiveIndex(idx: number) {
-    this.lajiMap.map.setActive(idx);
+    this.active = idx;
+    this.lajiMap.map.setData([this._data[idx] || {}]);
+    if (this._data[idx]) {
+      this.lajiMap.map.map.fitBounds(
+        this.lajiMap.map.dataLayerGroups[0].getBounds(),
+        {maxZoom: this.lajiMap.map.map.getZoom()}
+      );
+      this.lajiMap.invalidateSize();
+    }
   }
 
   private initData() {

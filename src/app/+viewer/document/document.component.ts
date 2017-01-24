@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild, AfterViewInit } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
@@ -9,7 +9,7 @@ import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
   templateUrl: './document.component.html',
   styleUrls: ['./document.component.css']
 })
-export class DocumentComponent implements OnInit, OnChanges {
+export class DocumentComponent implements AfterViewInit, OnChanges {
   @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
   @Input() uri: string;
   @Input() highlight: string;
@@ -24,7 +24,7 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   constructor(private warehouseApi: WarehouseApi, private labelService: TriplestoreLabelService) { }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.updateDocument();
   }
 
@@ -69,23 +69,24 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.hasDoc = found;
     this.document = doc;
     this.mapData = [];
-    this.setActive(0);
+    let activeIdx = 0;
     if (doc && doc.gatherings) {
       doc.gatherings.map((gathering, idx) => {
         this.mapData[idx] = gathering.conversions && gathering.conversions.wgs84Geo ?
           gathering.conversions.wgs84Geo : {};
         if (this.highlight && gathering.gatheringId === this.highlight) {
-          this.setActive(idx);
+          activeIdx = idx;
         }
         if (gathering.units) {
           gathering.units.map(unit => {
             if (this.highlight && unit.unitId === this.highlight) {
-              this.setActive(idx);
+              activeIdx = idx;
             }
           });
         }
       });
     }
+    this.setActive(activeIdx);
   }
 
 }

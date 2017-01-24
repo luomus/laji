@@ -7,6 +7,8 @@
         </h3>
         <laji-row [noTitleSpace]="true" [noRow]="true" [value]="document.collectionId | toQName | collectionName"> (<a href="{{document.collectionId}}">{{document.collectionId}}</a>)</laji-row>
       </div>
+      <laji-row [title]="'secureReason'" [value]="document.secureReason | label"></laji-row>
+      <laji-row [title]="'secureLevel'" [value]="document.secureLevel | label"></laji-row>
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
       <div class="facts" *ngIf="showFacts">
         <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label" *ngFor="let item of document.facts"></laji-row>
@@ -16,8 +18,6 @@
       <div class="row">
         <div class="col-sm-12 doc-meta">
           <template #docMeta>
-            <laji-row [title]="'secureReason'" [value]="document.secureReason | label"></laji-row>
-            <laji-row [title]="'secureLevel'" [value]="document.secureLevel | label"></laji-row>
             <laji-row [title]="'MZ.editor'" *ngIf="document.linkings && document.linkings.editors">
               {{document.linkings.editors | values:', ':'fullName' }}
             </laji-row>
@@ -46,7 +46,11 @@
     </div>
   </div>
   <div *ngIf="document.gatherings.length > 1" class="gatherings">
-    <label>{{ 'viewer.gatherings' | translate }}:</label>
+    <div class="row">
+      <div class="col-sm-7">
+        <laji-row [title]="'viewer.gatherings' | translate" [showWithoutValue]="true"></laji-row>
+      </div>
+    </div>
     <ul class="nav nav-tabs link">
       <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
         <a (click)="setActive(i)">
@@ -62,7 +66,7 @@
       </div>
     </div>
     <div class="col-sm-5">
-      <laji-viewer-map *ngIf="mapData.length > 0" [data]="mapData"></laji-viewer-map>
+      <laji-viewer-map [active]="active" *ngIf="mapData.length > 0" [data]="mapData"></laji-viewer-map>
       <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media"></laji-image-gallery>
     </div>
   </div>
