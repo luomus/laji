@@ -33,13 +33,15 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   setActiveIndex(idx: number) {
     this.active = idx;
-    this.lajiMap.map.setData([this._data[idx] || {}]);
-    if (this._data[idx]) {
+    if (this._data && this._data[idx]) {
+      this.lajiMap.map.setData([this._data[idx] || {}]);
       this.lajiMap.map.map.fitBounds(
         this.lajiMap.map.dataLayerGroups[0].getBounds(),
         {maxZoom: this.lajiMap.map.map.getZoom()}
       );
       this.lajiMap.invalidateSize();
+    } else {
+      this.lajiMap.map.setData([]);
     }
   }
 
