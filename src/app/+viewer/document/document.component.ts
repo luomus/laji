@@ -3,6 +3,7 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
+import { SessionStorage } from 'ng2-webstorage';
 
 @Component({
   selector: 'laji-document',
@@ -19,7 +20,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges {
   mapData: any = [];
   hasDoc: boolean;
   active = 0;
-  showFacts = false;
+  @SessionStorage() showFacts = false;
   private _uri: string;
 
   constructor(private warehouseApi: WarehouseApi, private labelService: TriplestoreLabelService) { }
@@ -72,8 +73,9 @@ export class DocumentComponent implements AfterViewInit, OnChanges {
     let activeIdx = 0;
     if (doc && doc.gatherings) {
       doc.gatherings.map((gathering, idx) => {
-        this.mapData[idx] = gathering.conversions && gathering.conversions.wgs84Geo ?
-          gathering.conversions.wgs84Geo : {};
+        if (gathering.conversions && gathering.conversions.wgs84Geo) {
+          this.mapData[idx] = gathering.conversions.wgs84Geo;
+        }
         if (this.highlight && gathering.gatheringId === this.highlight) {
           activeIdx = idx;
         }
