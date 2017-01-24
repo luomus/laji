@@ -320,7 +320,7 @@
   "invasive.latestRecord": "Uusin",
   "invasive.oldestRecord": "Vanhin",
   "viewer.document": "Havaintoerä",
-  "viewer.gathering": "Keruutapahtuma",
+  "viewer.gatherings": "Keruutapahtumat",
   "viewer.unit": "havaintoa",
   "viewer.valueInterpreted": "tulkittu",
   "viewer.showFacts": "Näytä lisämuuttujat",

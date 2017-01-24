@@ -46,10 +46,11 @@
     </div>
   </div>
   <div *ngIf="document.gatherings.length > 1" class="gatherings">
+    <label>{{ 'viewer.gatherings' | translate }}:</label>
     <ul class="nav nav-tabs link">
       <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
         <a (click)="setActive(i)">
-         {{ 'viewer.gathering' | translate }} {{i + 1}}
+         {{i + 1}}
         </a>
       </li>
     </ul>
