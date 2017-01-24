@@ -8,7 +8,9 @@
         <laji-row [noTitleSpace]="true" [noRow]="true" [value]="document.collectionId | toQName | collectionName"> (<a href="{{document.collectionId}}">{{document.collectionId}}</a>)</laji-row>
       </div>
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
-      <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label" *ngFor="let item of document.facts"></laji-row>
+      <div class="facts" *ngIf="showFacts">
+        <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label" *ngFor="let item of document.facts"></laji-row>
+      </div>
     </div>
     <div class="col-sm-5">
       <div class="row">
@@ -23,7 +25,7 @@
             <laji-row [title]="'modifiedDate'" [value]="document.modifiedDate | date:'dd.MM.yyyy'"></laji-row>
             <laji-row [title]="'loadDate'" [value]="document.loadDate | date:'dd.MM.yyyy'"></laji-row>
           </template>
-          <button class="btn btn-default btn-xs pull-right"
+          <button class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
                   [popover]="docMeta"
                   placement="left"
                   triggers="click mouseenter:mouseleave"><i class="glyphicon glyphicon-user"></i>
