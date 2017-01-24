@@ -1,11 +1,11 @@
 <div [hidden]="!visible">
-  <laji-row [title]="'MY.leg'" [value]="gathering.team | values"></laji-row>
-  <laji-row [title]="'MY.dateBegin'" *ngIf="gathering.eventDate">
+  <laji-row [title]="'viewer.field.observer' | translate" [value]="gathering.team | values"></laji-row>
+  <laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.eventDate">
     {{ gathering.eventDate.begin | date:'dd.MM.yyyy' }}
     <span *ngIf="gathering.eventDate.begin !== gathering.eventDate.end">
       {{gathering.eventDate.end | date:'dd.MM.yyyy'}}
     </span>
-    (tulkittu)
+    ({{'viewer.valueInterpreted' | translate}})
   </laji-row>
   <div *ngIf="gathering.interpretations">
     <laji-row [title]="'country'" [value]="gathering.interpretations.country | toQName | areaName"> ({{gathering.interpretations.sourceOfCountry| label}})</laji-row>

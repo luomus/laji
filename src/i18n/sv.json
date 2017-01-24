@@ -309,7 +309,9 @@
   "observation.active.finnishMunicipalityId": "Grevskap",
   "observation.active.biogeographicalProvinceId": "Biogeografiskt provins",
   "viewer.gatherings": "ställen",
-  "viewer.valueInterpreted": "interpreted",
+  "viewer.valueInterpreted": "tolkas",
   "viewer.showFacts": "Visa extra information",
-  "viewer.hideFacts": "Göm extra info"
-}  
+  "viewer.hideFacts": "Göm extra info",
+  "viewer.field.observer": "Göm extra info",
+  "viewer.field.time": "Tid"
+}

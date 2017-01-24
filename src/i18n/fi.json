@@ -324,5 +324,7 @@
   "viewer.unit": "havaintoa",
   "viewer.valueInterpreted": "tulkittu",
   "viewer.showFacts": "Näytä lisämuuttujat",
-  "viewer.hideFacts": "Piilota lisämuuttujat"
+  "viewer.hideFacts": "Piilota lisämuuttujat",
+  "viewer.field.observer": "Havainnoija",
+  "viewer.field.time": "Aika"
 }

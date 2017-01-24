@@ -311,5 +311,7 @@
   "viewer.gatherings": "Gatherings",
   "viewer.valueInterpreted": "interpreted",
   "viewer.showFacts": "Show extra info",
-  "viewer.hideFacts": "Hide extra info"
+  "viewer.hideFacts": "Hide extra info",
+  "viewer.field.observer": "Observer",
+  "viewer.field.time": "Time"
 }
