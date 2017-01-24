@@ -17,6 +17,8 @@ export class RowComponent implements OnInit, OnChanges {
   @Input() title: string;
   @Input() field: string;
   @Input() value: string = EMPTY_VALUE;
+  @Input() noTitleSpace = false;
+  @Input() noRow = false;
 
   public _title = '';
   public show = false;

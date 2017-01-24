@@ -9,10 +9,7 @@
   z-index: 1;
 }
 
-.table th:last-child {
-  padding-right: 40px;
-}
-
 .viewer-column {
+  text-align: center;
   width: 35px;
 }

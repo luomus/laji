@@ -3,7 +3,10 @@ import { HttpModule, Http } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
-import { TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule } from 'ng2-bootstrap';
+import {
+  TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
+  PopoverModule
+} from 'ng2-bootstrap';
 import { TranslateModule } from 'ng2-translate';
 import { NewsListComponent } from './news-list/news-list.component';
 import { SpinnerComponent } from './spinner/spinner.component';
@@ -77,14 +80,14 @@ import { ImageModalOverlayComponent } from './image-gallery/image-modal-overlay.
     RouterModule,
     TranslateModule,
     ReactiveFormsModule,
-    TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, Ng2Webstorage
+    TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule
   ],
   providers: [ ], // keep this empty!
   exports: [
     CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule,
     AreaNamePipe, NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe,
     ToQNamePipe, ValuesPipe, CollectionNamePipe,
-    ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
+    ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
     AuthoritiesDirective

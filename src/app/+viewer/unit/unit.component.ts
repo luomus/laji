@@ -10,6 +10,7 @@ export class UnitComponent implements OnInit {
 
   @Input() unit: any;
   @Input() highlight: string;
+  @Input() showFacts = false;
 
   skipFacts: string[] = ['UnitGUID', 'InformalNameString'];
 

@@ -19,6 +19,7 @@ export class DocumentComponent implements OnInit, OnChanges {
   mapData: any = [];
   hasDoc: boolean;
   active = 0;
+  showFacts = false;
   private _uri: string;
 
   constructor(private warehouseApi: WarehouseApi, private labelService: TriplestoreLabelService) { }
@@ -52,12 +53,16 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   setActive(i) {
     this.active = i;
-    if (this.document.gatherings) {
+    if (this.document && this.document.gatherings) {
       this.activeGathering = this.document.gatherings[i] || {};
     }
     if (this.map) {
       this.map.setActiveIndex(i);
     }
+  }
+
+  toggleFacts() {
+    this.showFacts = !this.showFacts;
   }
 
   private parseDoc(doc, found) {

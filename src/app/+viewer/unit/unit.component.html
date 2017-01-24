@@ -13,9 +13,12 @@
   <div *ngIf="unit && (!unit.linkings || !unit.linkings.taxon)">
     <laji-row [title]="'taxonVerbatim'" [value]="unit.taxonVerbatim"></laji-row>
   </div>
-  <laji-row [title]="'lifeStage'" [value]="unit.lifeStage"></laji-row>
-  <laji-row [title]="'sex'" [value]="unit.sex"></laji-row>
-  <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label" *ngFor="let item of unit.facts"></laji-row>
+  <laji-row [title]="'MY.count'" [value]="unit.abundanceString"></laji-row>
+  <laji-row [title]="'lifeStage'" [value]="unit.lifeStage | label"></laji-row>
+  <laji-row [title]="'sex'" [value]="unit.sex | label"></laji-row>
+  <div class="facts" *ngIf="showFacts">
+    <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label" *ngFor="let item of unit.facts"></laji-row>
+  </div>
   <div class="image-holder">
     <laji-image-gallery *ngIf="unit.media" [modalImages]="unit.media"></laji-image-gallery>
   </div>

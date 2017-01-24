@@ -10,6 +10,7 @@ export class GatheringComponent {
   @Input() gathering: any;
   @Input() highlight: string;
   @Input() visible = true;
+  @Input() showFacts = false;
 
   constructor() { }
 

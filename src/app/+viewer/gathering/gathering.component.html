@@ -8,12 +8,14 @@
     (tulkittu)
   </laji-row>
   <div *ngIf="gathering.interpretations">
-    <laji-row [title]="'country'" [value]="gathering.interpretations.country | toQName | areaName"> ({{'viewer.valueInterpreted' | translate}})</laji-row>
-    <laji-row [title]="'MY.biologicalProvince'" [value]="gathering.interpretations.biogeographicalProvince | toQName | areaName">  ({{'viewer.valueInterpreted' | translate}})</laji-row>
-    <laji-row [title]="'MY.municipality'" [value]="gathering.interpretations.finnishMunicipality | toQName | areaName">  ({{'viewer.valueInterpreted' | translate}})</laji-row>
+    <laji-row [title]="'country'" [value]="gathering.interpretations.country | toQName | areaName"> ({{gathering.interpretations.sourceOfCountry| label}})</laji-row>
+    <laji-row [title]="'MY.biologicalProvince'" [value]="gathering.interpretations.biogeographicalProvince | toQName | areaName">  ({{gathering.interpretations.sourceOfBiogeographicalProvince| label}})</laji-row>
+    <laji-row [title]="'MY.municipality'" [value]="gathering.interpretations.finnishMunicipality | toQName | areaName">  ({{gathering.interpretations.sourceOfFinnishMunicipality| label}})</laji-row>
   </div>
-  <laji-row [title]="item.fact" [value]="item.value | toQName | label" *ngFor="let item of gathering.facts"></laji-row>
+  <div class="facts" *ngIf="showFacts">
+    <laji-row [title]="item.fact" [value]="item.value | toQName | label" *ngFor="let item of gathering.facts"></laji-row>
+  </div>
   <div *ngFor="let unit of gathering?.units">
-    <laji-unit [unit]="unit" [highlight]="highlight"></laji-unit>
+    <laji-unit [showFacts]="showFacts" [unit]="unit" [highlight]="highlight"></laji-unit>
   </div>
 </div>

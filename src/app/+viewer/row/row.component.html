@@ -1,9 +1,9 @@
-<div class="row" *ngIf="show">
-  <div class="key col-sm-4">
+<div *ngIf="show" [ngClass]="{row: !noRow}">
+  <div class="key col-sm-4" *ngIf="!noTitleSpace">
     {{_title | toQName | label}}<span *ngIf="_title">:</span>
     <ng-content select="[key-row]"></ng-content>
   </div>
-  <div class="col-sm-8 value">
+  <div class="value" [ngClass]="{'col-sm-8': !noTitleSpace, 'com-sm-12': noTitleSpace}">
     {{value}}<ng-content></ng-content>
   </div>
 </div>

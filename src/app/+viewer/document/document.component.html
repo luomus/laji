@@ -1,22 +1,46 @@
 <div *ngIf="hasDoc && document">
-  <div class="row {{document.secureLevel | label}}">
+  <div class="row">
     <div class="col-sm-7">
-      <div class="page-header" *ngIf="showTitle">
-        <h2>{{'viewer.document' | translate }} <small>{{document.documentId}}</small></h2>
+      <div class="page-header" [ngClass]="{tight: !showTitle}">
+        <h3>
+          {{'viewer.document' | translate }} <small>{{document.documentId}}<br></small>
+        </h3>
+        <laji-row [noTitleSpace]="true" [noRow]="true" [value]="document.collectionId | toQName | collectionName"> (<a href="{{document.collectionId}}">{{document.collectionId}}</a>)</laji-row>
       </div>
-      <laji-row [title]="'MY.collectionID'" [value]="document.collectionId | toQName | collectionName"></laji-row>
-      <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId | toQName"></laji-row>
-      <laji-row [title]="'secureLevel'" [value]="document.secureLevel | label"></laji-row>
-      <laji-row [title]="'createdDate'" [value]="document.createdDate | date:'dd.MM.yyyy'"></laji-row>
-      <laji-row [title]="'modifiedDate'" [value]="document.modifiedDate | date:'dd.MM.yyyy'"></laji-row>
-      <laji-row [title]="'loadDate'" [value]="document.loadDate | date:'dd.MM.yyyy'"></laji-row>
-      <laji-row [title]="'MZ.editor'" *ngIf="document.linkings && document.linkings.editors">
-        {{document.linkings.editors | values:', ':'fullName' }}
-      </laji-row>
+      <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
       <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label" *ngFor="let item of document.facts"></laji-row>
     </div>
-    <div class="col-sm-5" style="padding-top: 20px;" *ngIf="document.media">
-      <laji-image-gallery [modalImages]="document.media"></laji-image-gallery>
+    <div class="col-sm-5">
+      <div class="row">
+        <div class="col-sm-12 doc-meta">
+          <template #docMeta>
+            <laji-row [title]="'secureReason'" [value]="document.secureReason | label"></laji-row>
+            <laji-row [title]="'secureLevel'" [value]="document.secureLevel | label"></laji-row>
+            <laji-row [title]="'MZ.editor'" *ngIf="document.linkings && document.linkings.editors">
+              {{document.linkings.editors | values:', ':'fullName' }}
+            </laji-row>
+            <laji-row [title]="'createdDate'" [value]="document.createdDate | date:'dd.MM.yyyy'"></laji-row>
+            <laji-row [title]="'modifiedDate'" [value]="document.modifiedDate | date:'dd.MM.yyyy'"></laji-row>
+            <laji-row [title]="'loadDate'" [value]="document.loadDate | date:'dd.MM.yyyy'"></laji-row>
+          </template>
+          <button class="btn btn-default btn-xs pull-right"
+                  [popover]="docMeta"
+                  placement="left"
+                  triggers="click mouseenter:mouseleave"><i class="glyphicon glyphicon-user"></i>
+          </button>
+          <button class="btn btn-default btn-xs pull-right"
+                  [tooltip]="showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate)"
+                  placement="left"
+                  (click)="toggleFacts()">
+            <i class="glyphicon" [ngClass]="{'glyphicon-eye-open': showFacts, 'glyphicon-eye-close': !showFacts}"></i>
+          </button>
+        </div>
+      </div>
+      <div class="row" *ngIf="document.media">
+        <div class="col-sm-12">
+          <laji-image-gallery [modalImages]="document.media"></laji-image-gallery>
+        </div>
+      </div>
     </div>
   </div>
   <div *ngIf="document.gatherings.length > 1" class="gatherings">
@@ -31,7 +55,7 @@
   <div class="row">
     <div class="col-sm-7">
       <div *ngFor="let gathering of document.gatherings; let i=index">
-        <laji-gathering [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
+        <laji-gathering [showFacts]="showFacts" [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
       </div>
     </div>
     <div class="col-sm-5">
