@@ -319,6 +319,7 @@
   "invasive.individuals": "Yksilöä",
   "invasive.latestRecord": "Uusin",
   "invasive.oldestRecord": "Vanhin",
+  "viewer.notFound": "Havaintoerää ei löytynyt",
   "viewer.document": "Havaintoerä",
   "viewer.gathering": "Paikka",
   "viewer.unit": "havaintoa",

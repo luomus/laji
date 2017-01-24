@@ -52,6 +52,9 @@ export class DocumentComponent implements OnInit, OnChanges {
 
   setActive(i) {
     this.active = i;
+    if (this.document.gatherings) {
+      this.activeGathering = this.document.gatherings[i] || {};
+    }
     if (this.map) {
       this.map.setActiveIndex(i);
     }
@@ -62,7 +65,7 @@ export class DocumentComponent implements OnInit, OnChanges {
     this.document = doc;
     this.mapData = [];
     this.setActive(0);
-    if (this.highlight && doc.gatherings) {
+    if (doc && doc.gatherings) {
       doc.gatherings.map((gathering, idx) => {
         this.mapData[idx] = gathering.conversions && gathering.conversions.wgs84Geo ?
           gathering.conversions.wgs84Geo : {};

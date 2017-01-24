@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule } from 'ng2-bootstrap';
-import { TranslateModule, TranslateService } from 'ng2-translate';
+import { TranslateModule } from 'ng2-translate';
 import { NewsListComponent } from './news-list/news-list.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { UsersPipe } from './pipe/users.pipe';
@@ -55,16 +55,18 @@ import { AreaApi } from './api/AreaApi';
 import { SourceService } from './service/source.service';
 import { SourceApi } from './api/SourceApi';
 import { MetadataService } from './service/metadata.service';
+import { ImageModalOverlayComponent } from './image-gallery/image-modal-overlay.component';
 
 
 @NgModule({
+  entryComponents: [ImageModalOverlayComponent],
   declarations: [
     NewsListComponent,
     SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, FormattedNumber,
     AreaNamePipe, CollectionNamePipe,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
-    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
+    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent
   ],
   imports: [
