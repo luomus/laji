@@ -302,5 +302,14 @@
   "whatsNew.acknowledge": "Thank you for the information!",
   "viewer.document": "Observation",
   "viewer.gathering": "Place",
-  "viewer.unit": "observations"
+  "viewer.unit": "observations",
+  "observation.form.biogeographicalProvince": "Biogeographical province",
+  "observation.form.municipality": "Municipality",
+  "observation.form.source": "Source system",
+  "observation.active.finnishMunicipalityId": "Municipality",
+  "observation.active.biogeographicalProvinceId": "Biogeographical province",
+  "viewer.gatherings": "Gatherings",
+  "viewer.valueInterpreted": "interpreted",
+  "viewer.showFacts": "Show extra info",
+  "viewer.hideFacts": "Hide extra info"
 }

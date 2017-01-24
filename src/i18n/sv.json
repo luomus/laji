@@ -302,5 +302,14 @@
   "whatsNew.acknowledge": "Tack för informationen",
   "viewer.document": "Observationer",
   "viewer.gathering": "Plats",
-  "viewer.unit": "Observationer"
+  "viewer.unit": "Observationer",
+  "observation.form.biogeographicalProvince": "Biogeografiskt provins",
+  "observation.form.municipality": "Grevskap",
+  "observation.form.source": "källsystem",
+  "observation.active.finnishMunicipalityId": "Grevskap",
+  "observation.active.biogeographicalProvinceId": "Biogeografiskt provins",
+  "viewer.gatherings": "ställen",
+  "viewer.valueInterpreted": "interpreted",
+  "viewer.showFacts": "Visa extra information",
+  "viewer.hideFacts": "Göm extra info"
 }  
