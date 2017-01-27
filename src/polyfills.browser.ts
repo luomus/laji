@@ -1,5 +1,3 @@
-// Polyfills
-
 import 'ie-shim';
 import 'core-js/es6/symbol';
 import 'core-js/es6/object';
@@ -22,7 +20,7 @@ import 'core-js/es7/reflect';
 import 'intl/index';
 import 'intl/locale-data/jsonp/en.js';
 import 'zone.js/dist/zone';
-import 'zone.js/dist/long-stack-trace-zone'; // Internet Explorer 9 support
+import 'zone.js/dist/long-stack-trace-zone';
 
 // import 'core-js/es6';
 // Added parts of es6 which are necessary for your project or your browser support requirements.

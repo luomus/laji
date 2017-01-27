@@ -1,7 +1,6 @@
 import { Component, ElementRef, HostListener, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { debounce } from 'underscore';
-import { Taxonomy } from '../../shared';
 
 
 declare var d3: any;

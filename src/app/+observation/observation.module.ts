@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { ObservationActiveComponent } from './active/observation-active.component';
 import { ObservationChartComponent } from './chart/observation-chart.component';

@@ -1,6 +1,14 @@
 import {
-  Component, OnInit, ViewChild, trigger, state, style, transition, animate, Inject,
-  HostListener, OnDestroy
+  Component,
+  OnInit,
+  ViewChild,
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+  HostListener,
+  OnDestroy
 } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs/Subscription';
@@ -118,7 +126,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
   onSubmit(event) {
     this.saving = true;
     this.lajiForm.block();
-    let data = event.data.formData;
+    const data = event.data.formData;
     data['publicityRestrictions'] = this.publicityRestrictions;
     let doc$;
     if (this.isEdit) {
@@ -191,7 +199,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
         },
         err => {
           this.loading = false;
-          let msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
+          const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
           this.translate.get(msgKey, {formId: this.formId})
             .subscribe(data => this.errorMsg = data);
         }
@@ -225,7 +233,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
         },
         err => {
           this.loading = false;
-          let msgKey = err.status === 404 ? 'haseka.form.documentNotFound' : 'haseka.form.genericError';
+          const msgKey = err.status === 404 ? 'haseka.form.documentNotFound' : 'haseka.form.genericError';
           this.translate.get(msgKey, {documentId: this.documentId})
             .subscribe(data => this.errorMsg = data);
         }

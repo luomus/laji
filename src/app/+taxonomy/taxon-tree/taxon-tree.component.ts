@@ -1,12 +1,10 @@
-import { Component, ViewChild, OnDestroy, Input, OnInit, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnDestroy, Input, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { TreeComponent, TreeNode, TREE_ACTIONS } from 'angular2-tree-component';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { ITreeNode } from 'angular2-tree-component/dist/defs/api';
-
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/observable/fromEvent';
-import { Taxonomy } from '../../shared/model/Taxonomy';
 import { setTimeout } from 'timers';
 
 @Component({

@@ -22,9 +22,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
-import { Injectable, Optional } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { WarehouseQueryInterface, PagedResult } from '../model';
 import 'rxjs/Rx';

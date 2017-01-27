@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Request, XHRBackend, RequestOptions, Response, Http, RequestOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
-import { AppConfig } from '../../app.config';
-import { WindowRef } from '../windows-ref';
 import { MetadataApi } from '../api/MetadataApi';
 import { Observer } from 'rxjs';
 

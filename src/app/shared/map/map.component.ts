@@ -1,5 +1,12 @@
 import {
-  Component, ElementRef, OnDestroy, Input, Output, EventEmitter, OnChanges, ViewChild,
+  Component,
+  ElementRef,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  ViewChild,
   OnInit
 } from '@angular/core';
 import { Logger } from '../logger/logger.service';

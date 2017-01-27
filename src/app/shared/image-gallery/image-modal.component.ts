@@ -1,6 +1,14 @@
 import {
-  Component, Input, Output, ElementRef, EventEmitter, OnInit, HostListener,
-  ViewContainerRef, Renderer, OnDestroy, ComponentRef
+  Component,
+  Input,
+  Output,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  ViewContainerRef,
+  Renderer,
+  OnDestroy,
+  ComponentRef
 } from '@angular/core';
 import { Image } from './image.interface';
 import { ComponentLoaderFactory, ComponentLoader } from 'ng2-bootstrap';

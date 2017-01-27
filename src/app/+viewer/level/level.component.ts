@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { isString } from 'util';
 import { isArray } from 'util';
 
 @Component({

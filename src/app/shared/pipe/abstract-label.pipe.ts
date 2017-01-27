@@ -1,9 +1,5 @@
-import { Pipe, PipeTransform, OnDestroy, ChangeDetectorRef, EventEmitter } from '@angular/core';
-import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
+import { PipeTransform, OnDestroy, EventEmitter } from '@angular/core';
 import { LangChangeEvent, TranslateService } from 'ng2-translate';
-import { TriplestoreLabelService } from '../service/triplestore-label.service';
-import { CollectionService } from '../service/collection.service';
-import { AreaService } from '../service/area.service';
 
 export abstract class AbsractLabelPipe implements PipeTransform, OnDestroy {
   value: string = '';

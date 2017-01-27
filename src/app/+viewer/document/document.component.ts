@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild, AfterViewInit } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';

@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IdService } from '../service/id.service';
 
 /**
  * fullUri picker

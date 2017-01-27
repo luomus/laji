@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import { Observer } from 'rxjs/Observer';
-import { SourceApi } from '../api/SourceApi';
 import { MetadataApi } from '../api/MetadataApi';
 
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ng2-bootstrap';
 import { FeedbackApi } from '../api/FeedbackApi';
 import { UserService } from '../service/user.service';

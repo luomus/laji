@@ -1,5 +1,4 @@
-import { Directive, Input } from '@angular/core';
-import { TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { AppConfig } from '../../app.config';
 
 @Directive({ selector: '[lajiAuthorities]' })

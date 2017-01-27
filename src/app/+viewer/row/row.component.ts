@@ -1,8 +1,4 @@
-import {
-  Component, OnInit, Input, OnChanges, ViewContainerRef, ViewChild, AfterViewInit,
-  ViewRef, ViewEncapsulation, AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef
-} from '@angular/core';
-import { type } from 'os';
+import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
 
 const EMPTY_VALUE = ' ';
 

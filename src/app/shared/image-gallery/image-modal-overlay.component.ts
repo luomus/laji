@@ -1,9 +1,5 @@
-import {
-  Component, Input, Output, ElementRef, EventEmitter, OnInit, HostListener,
-  ViewContainerRef, Renderer
-} from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
 import { Image } from './image.interface';
-import { ComponentLoaderFactory } from 'ng2-bootstrap';
 
 @Component({
   selector: 'laji-image-gallery-overlay',

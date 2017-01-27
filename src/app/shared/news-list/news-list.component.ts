@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
-import { NewsApi } from '../api/NewsApi';
 import { News } from '../model/News';
 import { PagedResult } from '../model/PagedResult';
 import { Subscription } from 'rxjs/Subscription';

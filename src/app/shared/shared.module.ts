@@ -4,7 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import {
-  TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
+  TooltipModule,
+  PaginationModule,
+  DropdownModule,
+  AlertModule,
+  ModalModule,
   PopoverModule
 } from 'ng2-bootstrap';
 import { TranslateModule } from 'ng2-translate';
