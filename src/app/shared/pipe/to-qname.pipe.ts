@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { IdService } from '../service/id.service';
 
 /**
  * QName picker
@@ -12,9 +13,7 @@ export class ToQNamePipe implements PipeTransform {
   transform(value: string): any {
     if (Array.isArray(value)) {
       return value.map(val => this.transform(val));
-    } else if (!value || typeof value !== 'string') {
-      return value;
     }
-    return value.split('/').pop();
+    return IdService.getId(value);
   }
 }

@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@angular/compiler-cli": "^2.3.1",
+    "@angular/language-service": "^2.4.5",
     "@types/d3": "^3.0.0",
     "@types/geojson": "0.0.31",
     "@types/jasmine": "2.5.38",
