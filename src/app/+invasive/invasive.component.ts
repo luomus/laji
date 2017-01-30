@@ -58,6 +58,7 @@ export class InvasiveComponent implements OnInit {
       .subscribe(data => {
         data.map(item => {
           item.isNew = moment(item.oldestRecord) > this.daysBack;
+          item.isNewThisYear = moment(item.newestRecord) > this.daysBack;
           this.aggr[IdService.getId(item['aggregateBy']['unit.linkings.taxon.id'])] = item;
         });
       });

@@ -9,10 +9,14 @@
         <th>{{'invasive.individuals' | translate}}</th>
         <th>{{'invasive.oldestRecord' | translate}}</th>
         <th>{{'invasive.latestRecord' | translate}}</th>
+        <th>{{'invasive.alerted' | translate}}</th>
       </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let taxon of taxa | async" [ngClass]="{danger: aggr[taxon.id] && aggr[taxon.id]?.isNew}">
+    <tr *ngFor="let taxon of taxa | async" [ngClass]="{
+      danger: aggr[taxon.id] && aggr[taxon.id]?.isNew,
+      warning: aggr[taxon.id] && aggr[taxon.id]?.isNewThisYear
+    }">
       <td>
           <a [routerLink]="['/observation']" [queryParams]="{target: taxon.id}">
             {{taxon.vernacularName | multiLang}}
@@ -41,6 +45,9 @@
         <span *ngIf="aggr[taxon.id]">
           {{aggr[taxon.id]?.newestRecord | date:'dd.MM.yyyy' }}
         </span>
+      </td>
+      <td>
+
       </td>
     </tr>
     </tbody>

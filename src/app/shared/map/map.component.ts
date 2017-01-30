@@ -33,6 +33,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   @Input() showLayers: boolean = true;
   @Input() initWithWorldMap: boolean = false;
   @Input() bringDrawLayerToBack: boolean = true;
+  @Input() zoom = 1;
 
   @Output() select = new EventEmitter();
   @Output() onCreate = new EventEmitter();
@@ -64,7 +65,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     }
     this.map = new LajiMap({
       tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
-      zoom: this.getInitialZoomLevel(),
+      zoom: this.zoom,
       center: this.center || [65, 26],
       lang: this.lang,
       data: [],
@@ -205,9 +206,5 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
         this.map.drawLayerGroup.bringToBack();
       }
     }
-  }
-
-  private getInitialZoomLevel() {
-    return this.initWithWorldMap ? 3 : 1;
   }
 }

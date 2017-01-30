@@ -1,5 +1,6 @@
-import { Component, AfterViewInit, ElementRef, Input, OnDestroy, OnChanges } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, Input, OnDestroy, OnChanges, Output, EventEmitter } from '@angular/core';
 import * as OpenSeadragon from 'openseadragon';
+import { setTimeout } from 'timers';
 
 @Component({
   selector: 'laji-image',
@@ -10,8 +11,10 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
 
   @Input() src: string;
   @Input() showNavigator = true;
+  @Output() loading = new EventEmitter<boolean>();
 
   private viewer: any;
+  private current: string;
 
   constructor(private el: ElementRef) { }
 
@@ -34,10 +37,12 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
   }
 
   private updateImage() {
-    if (!this.src) {
+    if (!this.src || this.current === this.src) {
       return;
     }
+    this.current = this.src;
     this.destroy();
+    this.loading.emit(true);
     this.viewer = OpenSeadragon({
       element: this.el.nativeElement,
       animationTime: 0.7,
@@ -54,6 +59,9 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
         type: 'image',
         url: this.src
       }]
+    });
+    this.viewer.addHandler('tile-loaded', () => {
+      this.loading.emit(false);
     });
   }
 

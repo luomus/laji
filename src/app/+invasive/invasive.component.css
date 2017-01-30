@@ -2,6 +2,10 @@
   list-style: none;
   max-width: 700px;
 }
+.invasive-list tr.warning {
+  color: #746b30;
+  background-color: #f2dede;
+}
 .invasive-list tr.danger {
   color: #b94a48;
   background-color: #f2dede;

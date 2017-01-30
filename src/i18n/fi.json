@@ -319,6 +319,7 @@
   "invasive.individuals": "Yksilöä",
   "invasive.latestRecord": "Uusin",
   "invasive.oldestRecord": "Vanhin",
+  "invasive.alerted": "Hälytys tehty",
   "viewer.document": "Havaintoerä",
   "viewer.gatherings": "Keruutapahtumat",
   "viewer.unit": "havaintoa",

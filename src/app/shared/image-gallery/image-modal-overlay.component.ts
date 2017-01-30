@@ -1,15 +1,24 @@
 import { Component, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
 import { Image } from './image.interface';
+import { setTimeout } from 'timers';
 
 @Component({
   selector: 'laji-image-gallery-overlay',
   styleUrls: ['./image-modal.component.css'],
   template: `<div class="ng-overlay">
   <div class="ng-gallery-content">
-    <a href="{{img.fullURL || img.largeURL}}" download="{{img.fullURL || img.largeURL}}" class="download-img"><i class="glyphicon glyphicon-download-alt"></i></a>
+  <div class="uil-ring-css" *ngIf="loading"><div></div></div>
+    <a href="{{img.fullURL || img.largeURL}}" download="{{img.fullURL || img.largeURL}}" class="download-img">
+      <i class="glyphicon glyphicon-download-alt"></i>
+    </a>
     <a class="close-popup" (click)="closeGallery()"><i class="glyphicon glyphicon-remove"></i></a>
     <a class="nav-left" *ngIf="modalImages.length >1" (click)="prevImage()"><i class="glyphicon glyphicon-chevron-left"></i></a>
-    <laji-image id="openseadragon-wrapper" *ngIf="img" [src]="img.fullURL || img.largeURL" class="effect"></laji-image>
+    <laji-image 
+      id="openseadragon-wrapper" 
+      *ngIf="img" 
+      (loading)="handleLoading($event)" 
+      [src]="img.fullURL || img.largeURL" 
+      class="effect"></laji-image>
     <a class="nav-right" *ngIf="modalImages.length > 1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
     <span class="info-text" *ngIf="img">
      <span *ngIf="img.vernacularName">{{img.vernacularName}}<br></span>
@@ -31,6 +40,7 @@ export class ImageModalOverlayComponent implements OnInit {
   public currentImageIndex: number;
   public close: Function;
   public modalImages: Image[];
+  public loading;
   @Output('cancelEvent') cancelEvent = new EventEmitter<any>();
 
   constructor() {
@@ -85,5 +95,11 @@ export class ImageModalOverlayComponent implements OnInit {
     if (this.modalImages[index]) {
       this.img = this.modalImages[index];
     }
+  }
+
+  handleLoading(loading) {
+    setTimeout(() => {
+      this.loading = loading;
+    }, 200);
   }
 }

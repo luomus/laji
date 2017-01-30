@@ -29,6 +29,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.setActiveIndex(this.active);
+    this.lajiMap.invalidateSize();
   }
 
   setActiveIndex(idx: number) {
@@ -39,7 +40,6 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
         this.lajiMap.map.dataLayerGroups[0].getBounds(),
         {maxZoom: this.lajiMap.map.map.getZoom()}
       );
-      this.lajiMap.invalidateSize();
     } else {
       this.lajiMap.map.setData([]);
     }

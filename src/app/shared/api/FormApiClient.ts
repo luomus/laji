@@ -31,7 +31,7 @@ export class FormApiClient {
   public fetch(resource: string, query: any, options?: RequestOptionsArgs): Promise<any> {
     const path = this.basePath + resource;
 
-    let queryParameters = new URLSearchParams();
+    const queryParameters = new URLSearchParams();
 
     if (this._lang !== undefined) {
       queryParameters.set('lang', this._lang);
@@ -40,7 +40,7 @@ export class FormApiClient {
       queryParameters.set('personToken', this._personToken);
     }
 
-    for (let param in query) {
+    for (const param in query) {
       if (!query.hasOwnProperty(param)) {
         continue;
       }
@@ -52,7 +52,7 @@ export class FormApiClient {
       options = {};
     }
 
-    let requestOptions: RequestOptionsArgs = {
+    const requestOptions: RequestOptionsArgs = {
       method: options['method'] || 'GET',
       headers: options['headers'] ? new Headers(options['headers']) : this.defaultHeaders,
       search: queryParameters,
