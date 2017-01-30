@@ -74,6 +74,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
           editable: false,
           getDraftStyle: this.getDrawingDraftStyle,
           onChange: e => this.onChange(e),
+          marker: false,
           polygon: false,
           polyline: false,
           hasActive: true
