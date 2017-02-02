@@ -15,9 +15,10 @@ import { AlertModule } from 'ng2-bootstrap';
 import { FormService } from './form/form.service';
 import { FormApi } from '../shared/api/FormApi';
 import { DocumentApi } from '../shared/api/DocumentApi';
+import { NamedPlaceModule } from './named-place/named-place.module';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, AlertModule],
+  imports: [routing, SharedModule, RouterModule, AlertModule, NamedPlaceModule],
   providers: [ FormService, FormApi, DocumentApi ],
   declarations: [HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
     ShortDocumentComponent, HaSeKaFormComponent, LajiFormComponent, HaSeKaTermsOfServiceComponent]
