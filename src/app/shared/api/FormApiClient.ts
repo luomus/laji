@@ -59,13 +59,6 @@ export class FormApiClient {
       body: options['body'] || undefined
     };
 
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204 || response.status >= 400) {
-          throw new Error('Request failed');
-        } else {
-          return response.json();
-        }
-      }).toPromise(Promise);
+    return this.http.request(path, requestOptions).toPromise(Promise);
   }
 }
