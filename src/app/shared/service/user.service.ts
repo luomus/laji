@@ -27,6 +27,7 @@ export class UserService {
   private defaultFormData: any;
 
   private subUser: Subscription;
+  private subLogout: Subscription;
   private observable: Observable<Person>;
   private formDefaultObservable: Observable<any>;
 
@@ -54,10 +55,11 @@ export class UserService {
   }
 
   public logout() {
-    if (this.token === '') {
+    if (this.token === '' || this.subLogout) {
       return;
     }
-    this.tokenService.personTokenDeleteToken(this.token)
+    this.subLogout = this.tokenService.personTokenDeleteToken(this.token)
+      .retry(5)
       .subscribe(
         () => {
           this.token = '';
@@ -66,6 +68,9 @@ export class UserService {
         },
         err => {
           if (this.token !== '') {
+            this.token = '';
+            this.isLoggedIn = false;
+            this.currentUserId = undefined;
             this.translate.get('error.logout').subscribe(
               msg => this.toastsService.showError(msg)
             );
@@ -139,7 +144,7 @@ export class UserService {
 
   private loadUserInfo(token: string) {
     this.token = token;
-    this.getUser()
+    this.subUser = this.getUser()
       .subscribe(
         user => this.addUser(user, true),
         err => {
