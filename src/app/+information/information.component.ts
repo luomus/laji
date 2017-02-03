@@ -8,7 +8,7 @@ import { Information } from '../shared/model/Information';
 import { InformationService } from './information.service';
 
 @Component({
-  selector: '[laji-information]',
+  selector: 'laji-information',
   templateUrl: './information.component.html',
   styleUrls: ['./information.component.css'],
   providers: [InformationApi]
