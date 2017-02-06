@@ -67,6 +67,10 @@ export class AreaService {
     return this.getAreaType(lang, this.types.Municipality);
   }
 
+  getCountries(lang: string) {
+    return this.getAreaType(lang, this.types.Country);
+  }
+
   getName(id: string, lang) {
     return this.getAllAsLookUp(lang)
       .map(data => data[id] && data[id].name || id );

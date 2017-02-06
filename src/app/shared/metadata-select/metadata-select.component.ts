@@ -173,6 +173,8 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
           return this.areaService.getBiogeographicalProvinces(this.lang);
         case <any>AreaType.Municipality:
           return this.areaService.getMunicipalities(this.lang);
+        case <any>AreaType.Country:
+          return this.areaService.getCountries(this.lang);
         case 'KE.informationSystem':
           return this.sourceService.getAllAsLookUp(this.lang)
             .map(system => Object.keys(system).reduce((total, current) => {

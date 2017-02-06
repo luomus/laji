@@ -114,10 +114,22 @@
           <div class="form-group">
             <div class="col-sm-12">
               <metadata-select
+                      [(ngModel)]="searchQuery.query.countryId"
+                      (ngModelChange)="onQueryChange()"
+                      [multiple]="true"
+                      [placeholder]="'observation.form.country'|translate"
+                      name="countryId"
+                      [field]="areaType.Country"
+                      [lang]="translate.currentLang"></metadata-select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-12">
+              <metadata-select
                       [(ngModel)]="searchQuery.query.biogeographicalProvinceId"
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
-                      [placeholder]="'observation.form.biogeographicalProvince'|translate"
+                      [placeholder]="'result.gathering.biogeographicalProvince'|translate"
                       name="biogeographicalProvinceId"
                       [field]="areaType.Biogeographical"
                       [lang]="translate.currentLang"></metadata-select>
