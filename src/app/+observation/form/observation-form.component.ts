@@ -375,12 +375,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     const time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
     const query = this.searchQuery.query;
 
-    query.target = taxon.length > 0 ?
-      [taxon] : undefined;
-    query.time = time.length > 0 ?
-      [time] : undefined;
-    query.informalTaxonGroupId = formQuery.informalTaxonGroupId ?
-      [formQuery.informalTaxonGroupId] : undefined;
+    query.target = taxon.length > 0 ? [taxon] : undefined;
+    query.time = time.length > 0 ? [time] : undefined;
+    query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? [formQuery.informalTaxonGroupId] : undefined;
     query.invasive = formQuery.isNotInvasive ? false : query.invasive;
     query.finnish = formQuery.isNotFinnish ? false : query.finnish;
     query.hasMedia = formQuery.hasNotMedia ? false : query.hasMedia;
