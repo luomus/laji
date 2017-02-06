@@ -88,6 +88,8 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   }
 
   updateCount() {
+    const secretQuery = Util.clone(this.searchQuery.query);
+    secretQuery.secre
     this.warehouseService.warehouseQueryCountGet(this.searchQuery.query)
       .combineLatest(
         this.warehouseService.warehouseQueryAggregateGet(this.searchQuery.query, ['document.secureLevel'])
