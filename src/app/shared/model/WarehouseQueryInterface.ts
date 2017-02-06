@@ -139,4 +139,5 @@ export interface WarehouseQueryInterface {
   hasMedia?: boolean;
   secureReason?: Array<string>;
   editorId?: Array<string>;
+  secured?: boolean;
 }

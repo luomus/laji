@@ -88,25 +88,11 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   }
 
   updateCount() {
-    const secretQuery = Util.clone(this.searchQuery.query);
-    secretQuery.secre
+    const secretQuery: WarehouseQueryInterface = Util.clone(this.searchQuery.query);
+    secretQuery.secured = true;
     this.warehouseService.warehouseQueryCountGet(this.searchQuery.query)
-      .combineLatest(
-        this.warehouseService.warehouseQueryAggregateGet(this.searchQuery.query, ['document.secureLevel'])
-          .map(aggrs => {
-            const pick = ['HIGHEST', 'KM100', 'KM50', 'KM25', 'KM10'];
-            let cnt = 0;
-            if (aggrs.results) {
-              aggrs.results.map(aggr => {
-                if (aggr['aggregateBy'] && aggr['aggregateBy']['document.secureLevel']
-                  && pick.indexOf(aggr['aggregateBy']['document.secureLevel']) > -1) {
-                  cnt += aggr['count'];
-                }
-              });
-            }
-            return cnt;
-          }),
-        (count, priva) => ({'count': count.total, 'private': priva}))
+      .combineLatest(this.warehouseService.warehouseQueryCountGet(secretQuery),
+        (count, priva) => ({'count': count.total, 'private': priva.total}))
       .subscribe(res => this.count = res);
 
     const speciesQuery: WarehouseQueryInterface = Util.clone(this.searchQuery.query);
