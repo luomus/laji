@@ -345,7 +345,7 @@
             </div>
           </div>
         </div>
-        <div laji-panel [title]="'observation.form.other' | translate" [autoToggle]="true">
+        <div laji-panel [title]="'observation.form.invasive' | translate" [autoToggle]="true">
           <div class="row">
             <div class="col-sm-12">
               <label>
@@ -369,6 +369,52 @@
             </div>
           </div>
           <hr>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [ngModel]="formQuery.nationallySignificantInvasiveSpecies"
+                       (ngModelChange)="onInvasiveCheckBoxToggle('nationallySignificantInvasiveSpecies')"
+                       name="nationallySignificantInvasiveSpecies">
+                {{'MX.nationallySignificantInvasiveSpecies' | label}}
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [ngModel]="formQuery.euInvasiveSpeciesList"
+                       (ngModelChange)="onInvasiveCheckBoxToggle('euInvasiveSpeciesList')"
+                       name="euInvasiveSpeciesList">
+                {{'MX.euInvasiveSpeciesList' | label}}
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [ngModel]="formQuery.quarantinePlantPest"
+                       (ngModelChange)="onInvasiveCheckBoxToggle('quarantinePlantPest')"
+                       name="quarantinePlantPest">
+                {{'MX.quarantinePlantPest' | label}}
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [ngModel]="formQuery.otherInvasiveSpeciesList"
+                       (ngModelChange)="onInvasiveCheckBoxToggle('otherInvasiveSpeciesList')"
+                       name="otherInvasiveSpeciesList">
+                {{'MX.otherInvasiveSpeciesList' | label}}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div laji-panel [title]="'observation.form.other' | translate" [autoToggle]="true">
           <div class="row">
             <div class="col-sm-12">
               <label>

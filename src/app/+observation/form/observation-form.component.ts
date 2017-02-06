@@ -37,9 +37,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   public limit = 10;
   public formQuery: ObservationFormQuery;
   public dataSource: Observable<any>;
-  public typeaheadLoading: boolean = false;
+  public typeaheadLoading = false;
   public warehouseDateFormat = 'YYYY-MM-DD';
-  public logCoordinateAccuracyMax: number = 4;
+  public logCoordinateAccuracyMax = 4;
   public showPlace = false;
   public showFilter = true;
   public taxonName: Autocomplete;
@@ -93,7 +93,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   public drawing = false;
   public drawingShape: string;
-  public dateFormat: string = 'YYYY-MM-DD';
+  public dateFormat = 'YYYY-MM-DD';
 
   private subUpdate: Subscription;
   private subMap: Subscription;
@@ -209,7 +209,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       isNotFinnish: undefined,
       isNotInvasive: undefined,
       hasNotMedia: undefined,
-      includeOnlyValid: undefined
+      includeOnlyValid: undefined,
+      euInvasiveSpeciesList: undefined,
+      nationallySignificantInvasiveSpecies: undefined,
+      quarantinePlantPest: undefined,
+      otherInvasiveSpeciesList: undefined
     };
 
     if (refresh) {
@@ -268,6 +272,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
         return col;
       });
     });
+  }
+
+  onInvasiveCheckBoxToggle(field) {
+    this.formQuery[field] = !this.formQuery[field];
+    this.onSubmit();
   }
 
   onCheckBoxToggle(field, selectValue = true, isDirect = true) {
@@ -343,7 +352,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       isNotFinnish: query.finnish === false ? true : undefined,
       isNotInvasive: query.invasive === false ? true : undefined,
       includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
-      hasNotMedia: query.hasMedia === false ? true : undefined
+      hasNotMedia: query.hasMedia === false ? true : undefined,
+      nationallySignificantInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.nationallySignificantInvasiveSpecies'),
+      euInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.euInvasiveSpeciesList'),
+      quarantinePlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.quarantinePlantPest'),
+      otherInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.otherInvasiveSpeciesList')
     };
     if (this.formQuery.taxon && (
       this.formQuery.taxon.indexOf('MX.') === 0 || this.formQuery.taxon.indexOf('http:') === 0)) {
@@ -351,6 +364,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     } else {
       this.taxonName = null;
     }
+  }
+
+  private hasInMulti(multi, value) {
+    return Array.isArray(multi) && multi.indexOf(value) > -1;
   }
 
   private formQueryToQuery(formQuery: ObservationFormQuery) {
@@ -368,6 +385,25 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     query.finnish = formQuery.isNotFinnish ? false : query.finnish;
     query.hasMedia = formQuery.hasNotMedia ? false : query.hasMedia;
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
+    ['nationallySignificantInvasiveSpecies', 'euInvasiveSpeciesList', 'quarantinePlantPest', 'otherInvasiveSpeciesList']
+      .map((key) => {
+        const value = 'MX.' + key;
+        if (!formQuery[key]) {
+          if (query.administrativeStatusId) {
+            const idx = query.administrativeStatusId.indexOf(value);
+            if (idx > -1) {
+              query.administrativeStatusId.splice(idx, 1);
+            }
+          }
+          return;
+        }
+        if (!query.administrativeStatusId) {
+          query.administrativeStatusId = [];
+        }
+        if (query.administrativeStatusId.indexOf(value) === -1) {
+          query.administrativeStatusId.push(value);
+        }
+      });
   }
 
   private getValidDate(date) {
