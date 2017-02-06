@@ -328,5 +328,6 @@
   "viewer.showFacts": "Näytä lisämuuttujat",
   "viewer.hideFacts": "Piilota lisämuuttujat",
   "viewer.field.observer": "Havainnoija",
-  "viewer.field.time": "Aika"
+  "viewer.field.time": "Aika",
+  "np.title": "Nimetyt paikat"
 }

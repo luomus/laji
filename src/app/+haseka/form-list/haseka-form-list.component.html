@@ -1,8 +1,15 @@
 <h3>{{'haseka.forms.title' | translate}}</h3>
 <ul>
   <li *ngFor="let form of formList">
-    <a [routerLink]="['/vihko/' + form.id]">
-      {{form.title}}
-    </a>
+    <span *ngIf="form.features && form.features.indexOf('MHL.featureNamedPlace') > -1">
+      <a [routerLink]="['/vihko/np/' + form.collectionID + '/'+ form.id]">
+        {{form.title}}
+      </a>
+    </span>
+    <span *ngIf="!form.features || form.features.indexOf('MHL.featureNamedPlace') === -1">
+      <a [routerLink]="['/vihko/' + form.id]">
+        {{form.title}}
+      </a>
+    </span>
   </li>
 </ul>

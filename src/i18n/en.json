@@ -314,5 +314,6 @@
   "viewer.showFacts": "Show extra info",
   "viewer.hideFacts": "Hide extra info",
   "viewer.field.observer": "Observer",
-  "viewer.field.time": "Time"
+  "viewer.field.time": "Time",
+  "np.title": "Names places"
 }

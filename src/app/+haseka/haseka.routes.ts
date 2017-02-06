@@ -3,6 +3,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { HasekaComponent } from './haseka.component';
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { HaSeKaFormComponent } from './form/haseka-form.component';
+import { NamedPlaceComponent } from './named-place/named-place/named-place.component';
 
 export const hasekaRoutes: Routes = [
   {
@@ -14,6 +15,11 @@ export const hasekaRoutes: Routes = [
     path: 'terms-of-service',
     pathMatch: 'full',
     component: HaSeKaTermsOfServiceComponent
+  },
+  {
+    path: 'np/:collectionId/:formId',
+    pathMatch: 'full',
+    component: NamedPlaceComponent
   },
   {
     path: ':formId',

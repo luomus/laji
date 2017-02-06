@@ -7,8 +7,7 @@ import { LocalStorage } from 'ng2-webstorage';
 @Component({
   selector: 'haseka',
   templateUrl: './haseka.component.html',
-  styleUrls: ['./haseka.component.css'],
-  providers: [FormApi, DocumentApi]
+  styleUrls: ['./haseka.component.css']
 })
 export class HasekaComponent implements OnInit {
 

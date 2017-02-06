@@ -41,20 +41,21 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
   public formId: string;
   public documentId: string;
   public lang: string;
-  public tick: number = 0;
-  public status: string = '';
-  public saveVisibility: string = 'hidden';
-  public saving: boolean = false;
-  public loading: boolean = false;
+  public tick = 0;
+  public status = '';
+  public saveVisibility = 'hidden';
+  public saving = false;
+  public loading = false;
 
   private subParam: Subscription;
   private subTrans: Subscription;
   private subFetch: Subscription;
   private subForm: Subscription;
-  private success: string = '';
+  private success = '';
   private error: any;
   private errorMsg: string;
-  private isEdit: boolean = false;
+  private isEdit = false;
+  private hasChanges = false;
   private leaveMsg;
   private publicityRestrictions;
 
@@ -76,10 +77,14 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
     this.subParam.unsubscribe();
     this.subTrans.unsubscribe();
     this.footerService.footerVisible = true;
+    if (!this.hasChanges && this.documentId) {
+      this.formService.discard();
+    }
   }
 
   ngOnInit() {
     this.loading = true;
+    this.hasChanges = false;
     this.footerService.footerVisible = false;
     this.subParam = this.route.params.subscribe(params => {
       this.formId = params['formId'];
@@ -93,7 +98,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
 
   @HostListener('window:beforeunload', ['$event'])
   preventLeave($event) {
-    if (this.status === 'unsaved') {
+    if (this.hasChanges) {
       $event.returnValue = this.leaveMsg;
     }
   }
@@ -102,6 +107,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
     this.saveVisibility = 'shown';
     this.status = 'unsaved';
     this.saving = false;
+    this.hasChanges = true;
     this.form['formData'] = formData;
     this.formService
       .store(formData)
@@ -137,6 +143,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
     }
     doc$.subscribe(
           (result) => {
+            this.hasChanges = false;
             this.lajiForm.unBlock();
             this.formService.discard();
             this.formService.setCurrentData(result, true);
@@ -173,7 +180,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
   discard() {
     this.translate.get('haseka.form.discardConfirm').subscribe(
       (confirm) => {
-        if (this.status !== 'unsaved') {
+        if (!this.hasChanges) {
           this.gotoFrontPage();
         } else if (this.winRef.nativeWindow.confirm(confirm)) {
           this.formService.discard();
@@ -218,6 +225,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
           this.isEdit = true;
           if (this.formService.isTmpId(this.documentId)) {
             this.isEdit = false;
+            this.hasChanges = false;
             data.formData.id = undefined;
             data.formData.hasChanges = undefined;
           }

@@ -23,6 +23,7 @@ export class FormService {
   private allForms: any[];
   private successMsg;
   private subUpdate: Subscription;
+  private _populate: any;
 
   constructor(
     private formApi: FormApi,
@@ -95,7 +96,7 @@ export class FormService {
     }
     return this.getUserId()
       .switchMap(userID => {
-        let result = typeof this.formDataStorage[userID] !== 'undefined' &&
+        const result = typeof this.formDataStorage[userID] !== 'undefined' &&
           typeof this.formDataStorage[userID][id] !== 'undefined';
         if (document && result) {
           return Observable.of(
@@ -141,7 +142,7 @@ export class FormService {
           Object.keys(this.formDataStorage[userID])
             .filter((key) => this.isTmpId(key))
             .map((key) => {
-              let document = this.formDataStorage[userID][key];
+              const document = this.formDataStorage[userID][key];
               document.id = key;
               return document;
             })
@@ -162,13 +163,13 @@ export class FormService {
 
   load(formId: string, lang: string, documentId?: string): Observable<any> {
     this.setLang(lang);
-    let form$ = this.formCache[formId] ?
+    const form$ = this.formCache[formId] ?
       Observable.of(this.formCache[formId]) :
       this.formApi.formFindById(formId, lang)
         .do((schema) => {
           this.formCache[formId] = schema;
         });
-    let data$ = documentId ?
+    const data$ = documentId ?
         this.getUserId().switchMap(userID => {
           return this.isTmpId(documentId) && this.formDataStorage[userID][documentId] ?
             Observable.of(this.formDataStorage[userID][documentId]) :
@@ -204,6 +205,10 @@ export class FormService {
       this.formApi.formFindAll(this.currentLang)
         .map((forms) => forms.results.filter(form => this.appConfig.isFormAllowed(form.id)))
         .do((forms) => this.allForms = forms);
+  }
+
+  populate(data: any) {
+    this._populate = Object.assign({}, this._populate, data);
   }
 
   private getTmpId(num: number) {
@@ -242,10 +247,12 @@ export class FormService {
     this.currentKey = this.generateTmpId();
     return this.userService.getDefaultFormData()
       .map((data: Document) => {
-        data.formID = formId;
-        return data;
+        return Object.assign(data, {formID: formId}, this._populate);
       })
-      .do((data) => this.currentData = Util.clone(data));
+      .do((data) => {
+        this.currentData = Util.clone(data);
+        delete this._populate;
+      });
   }
 
   private isLocalNewest(local, remote): boolean {
@@ -260,7 +267,7 @@ export class FormService {
 
   private getDateFromString(dateString) {
     const reggie = /(\d{4})-(\d{2})-(\d{2})[T\s](\d{2}):(\d{2}):(\d{2})/;
-    let dateArray = reggie.exec(dateString);
+    const dateArray = reggie.exec(dateString);
     return new Date(
       (+dateArray[1]),
       (+dateArray[2]) - 1, // Careful, month starts at 0!

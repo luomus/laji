@@ -7,4 +7,6 @@ export interface FormListInterface {
   description: string;
   supportedLanguage: string[];
   category: string;
+  collectionID: string;
+  features: string[];
 }

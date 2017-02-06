@@ -314,5 +314,6 @@
   "viewer.showFacts": "Visa extra information",
   "viewer.hideFacts": "Göm extra info",
   "viewer.field.observer": "Göm extra info",
-  "viewer.field.time": "Tid"
+  "viewer.field.time": "Tid",
+  "np.title": "Namn på platser"
 }

@@ -63,6 +63,10 @@ import { SourceService } from './service/source.service';
 import { SourceApi } from './api/SourceApi';
 import { MetadataService } from './service/metadata.service';
 import { ImageModalOverlayComponent } from './image-gallery/image-modal-overlay.component';
+import { NamedPlaceApi } from './api/NamedPlaceApi';
+import { FormService } from '../+haseka/form/form.service';
+import { FormApi } from './api/FormApi';
+import { DocumentApi } from './api/DocumentApi';
 
 
 @NgModule({
@@ -104,6 +108,10 @@ export class SharedModule {
       providers: [
         UserService,
         NewsApi,
+        FormService,
+        FormApi,
+        DocumentApi,
+        NamedPlaceApi,
         NewsService,
         MapService,
         CollectionService,

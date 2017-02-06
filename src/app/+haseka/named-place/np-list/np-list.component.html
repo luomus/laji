@@ -1,3 +1,7 @@
-<p>
-  Lista named placeja
-</p>
+<ul *ngIf="namedPlaces$">
+  <li *ngFor="let np of namedPlaces$ | async">
+    <a [routerLink]="['/vihko/' + formId]" (click)="populateForm(np)">
+      {{np.name}}
+    </a>
+  </li>
+</ul>
