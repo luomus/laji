@@ -47,31 +47,36 @@ export class GalleryComponent implements OnChanges {
     if (!this.query) {
       return;
     }
-    let query = Util.clone(this.query);
+    const query = Util.clone(this.query);
     this.loading = true;
     query.hasUnitMedia = true;
     this.warehouseApi.warehouseQueryListGet(query, [
-        'unit.taxonVerbatim,unit.linkings.taxon.vernacularName',
+        'unit.taxonVerbatim,unit.linkings.taxon.vernacularName,unit.linkings.taxon.scientificName',
         'unit.media',
         // 'gathering.media',
         // 'document.media',
         'document.documentId'
       ], undefined, this.pageSize, this.page)
       .map((data) => {
-        let images = [];
+        const images = [];
         this.total = data.total;
         if (data.results) {
           this.valueDecorator.lang = this.translate.currentLang;
           data.results.map((items) => {
-            let name = (items['unit'] && items['unit']['taxonVerbatim']) ?
+            const name = (items['unit'] && items['unit']['taxonVerbatim']) ?
               items['unit']['taxonVerbatim'] : '';
-            let vernacularName = this.valueDecorator
+            const vernacularName = this.valueDecorator
               .decorate('unit.taxonVerbatim', name, items);
             ['unit'].map((key) => {
               if (items[key] && items[key].media) {
                 items[key].media.map(media => {
                   media['documentId'] = items['document']['documentId'];
                   media['vernacularName'] = vernacularName;
+                  media['scientificName'] = items['unit']
+                    && items['unit']['linkings']
+                    &&  items['unit']['linkings']['taxon']
+                    &&  items['unit']['linkings']['taxon']['scientificName']
+                    || '';
                   images.push(media);
                 });
               }
