@@ -11,7 +11,7 @@ export class NavbarComponent {
 
   openMenu: Boolean = false;
   isAuthority = false;
-  env: string = 'beta';
+  env = 'beta';
 
   constructor(public userService: UserService, appConfig: AppConfig) {
     this.env = appConfig.getEnv();
