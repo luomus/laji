@@ -15,12 +15,12 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   @Input() pick: any;
   @Input() query: any;
   @Input() overrideInQuery: any;
-  @Input() pageSize: number = 20;
+  @Input() pageSize = 20;
   @Input() tick: number;
-  @Input() lightLoader: boolean = false;
+  @Input() lightLoader = false;
 
-  public count: string = '';
-  public loading: boolean = true;
+  public count = '';
+  public loading = true;
 
   private subCount: Subscription;
   private cache: string;
@@ -29,7 +29,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   }
 
   ngOnChanges() {
-    let key = JSON.stringify(this.query);
+    const key = JSON.stringify(this.query);
     if (this.cache === key) {
       return;
     }

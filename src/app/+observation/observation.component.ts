@@ -30,7 +30,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
         this.searchQuery.query.target = [params['target']];
       }
       this.searchQuery.setQueryFromQueryObject(params);
-      this.searchQuery.queryUpdate({formSubmit: true, newData: true});
+      this.searchQuery.queryUpdate({formSubmit: false, newData: true});
     });
   }
 

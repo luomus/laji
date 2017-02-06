@@ -49,7 +49,7 @@
         *ngIf="showPager"
         [totalItems]="result?.total"
         [itemsPerPage]="result?.pageSize"
-        [(ngModel)]="searchQuery.page"
+        [(ngModel)]="page"
         (pageChanged)="pageChanged($event)"
         [maxSize]="7"
         [boundaryLinks]="true"

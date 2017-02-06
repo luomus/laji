@@ -62,9 +62,11 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   public result: PagedResult<any>;
 
-  public loading: boolean = true;
-  public shownDocument: string = '';
-  public highlightId: string = '';
+  public loading = true;
+  public shownDocument = '';
+  public highlightId = '';
+  public page = 1;
+  public pageSize = 20;
 
   private subFetch: Subscription;
   private subUpdate: Subscription;
@@ -74,10 +76,10 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   constructor(private warehouseService: WarehouseApi,
               private decorator: ValueDecoratorService,
-              private searchQuery: SearchQuery,
               private translate: TranslateService,
               private location: Location,
-              private logger: Logger
+              private logger: Logger,
+              public searchQuery: SearchQuery
   ) {
   }
 
@@ -86,9 +88,9 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
       this.updateUserCols();
     }
     this.result = {
-      total: this.searchQuery.page * this.searchQuery.pageSize,
-      pageSize: this.searchQuery.pageSize,
-      currentPage: this.searchQuery.page,
+      total: this.page * this.pageSize,
+      pageSize: this.pageSize,
+      currentPage: this.page,
       results: []
     };
     this.subTrans = this.translate.onLangChange.subscribe(
@@ -100,10 +102,10 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     );
     this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
-        this.fetchRows(this.searchQuery.page);
+        this.fetchRows(this.page);
       }
     );
-    this.fetchRows(this.searchQuery.page);
+    this.fetchRows(this.page);
   }
 
   ngOnDestroy() {
@@ -125,7 +127,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(event: any): void {
-    if (this.searchQuery.page !== event.page) {
+    if (this.page !== event.page) {
       this.fetchRows(event.page);
     }
   }
@@ -170,13 +172,13 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
         query,
         query.selected,
         sort.length > 0 ? sort : undefined,
-        this.searchQuery.pageSize,
+        this.pageSize,
         page)
       .do(result => this.resultCache = Util.clone(result))
       .map(result => this.prepareData(result, query.selected))
       .subscribe(
         results => {
-          this.searchQuery.page = results.currentPage || 1;
+          this.page = results.currentPage || 1;
           this.result = results;
           this.loading = false;
           this.searchQuery.updateUrl(this.location, undefined, [
@@ -210,7 +212,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     } else {
       col.sort = undefined;
     }
-    this.fetchRows(this.searchQuery.page, true);
+    this.fetchRows(this.page, true);
   }
 
   prepareData(data, fields) {
@@ -245,7 +247,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   toggledFieldSelect(event) {
     if (event === false) { // when closing
       if (this.updateUserCols()) {
-        this.fetchRows(this.searchQuery.page, true);
+        this.fetchRows(this.page, true);
       }
     } else {               // when opening
       this.columns.map((col, idx) => {

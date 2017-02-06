@@ -18,10 +18,11 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
   @Output() filterChange: EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
   @Output() onSelect: EventEmitter<any> = new EventEmitter();
 
-  public loading: boolean = false;
-  public page: number = 1;
-  public total: number = 0;
+  public loading = false;
+  public page = 1;
+  public total = 0;
 
+  private queryUpdate: Subscription;
   private subData: Subscription;
   private lastQuery: string;
 
@@ -33,7 +34,7 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
 
   ngOnInit() {
     this.init();
-    this.searchQuery.queryUpdated$.subscribe(() => this.init());
+    this.queryUpdate = this.searchQuery.queryUpdated$.subscribe(() => this.init());
   }
 
   ngOnChanges() {
@@ -43,6 +44,9 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
   ngOnDestroy() {
     if (this.subData) {
       this.subData.unsubscribe();
+    }
+    if (this.queryUpdate) {
+      this.queryUpdate.unsubscribe();
     }
   }
 

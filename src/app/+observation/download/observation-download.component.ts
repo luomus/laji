@@ -26,8 +26,8 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     'private': 0
   };
   public speciesCount = 0;
-  public description: string = '';
-  public csvParams: string = '';
+  public description = '';
+  public csvParams = '';
   public showRequest = true;
   public apiBase: string;
   private taxaDownloadAggregateBy = {
@@ -65,7 +65,9 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     this.subLang = this.translate.onLangChange.subscribe(() => this.updateCsvLink());
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
-        if (this.queryCache !== JSON.stringify(this.searchQuery.query)) {
+        const cacheKey = JSON.stringify(this.searchQuery.query);
+        if (this.queryCache !== cacheKey) {
+          this.queryCache = cacheKey;
           this.requests = {};
           this.updateCount();
           this.updateCsvLink();
@@ -105,7 +107,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
         (count, priva) => ({'count': count.total, 'private': priva}))
       .subscribe(res => this.count = res);
 
-    let speciesQuery: WarehouseQueryInterface = Util.clone(this.searchQuery.query);
+    const speciesQuery: WarehouseQueryInterface = Util.clone(this.searchQuery.query);
     speciesQuery.taxonRankId = 'MX.species';
     speciesQuery.includeNonValidTaxa = false;
     this.warehouseService.warehouseQueryAggregateGet(
@@ -114,7 +116,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   }
 
   updateCsvLink() {
-    let queryParams = this.searchQuery.getQueryObject();
+    const queryParams = this.searchQuery.getQueryObject();
     queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang];
     queryParams['includeNonValidTaxa'] = 'false';
     queryParams['pageSize'] = this.taxaLimit;

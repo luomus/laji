@@ -22,9 +22,9 @@ export class GalleryComponent implements OnChanges {
   @Output() hasData = new EventEmitter<boolean>();
 
   images: TaxonomyImage[] = [];
-  page: number = 1;
-  total: number = 0;
-  loading: boolean = false;
+  page = 1;
+  total = 0;
+  loading = false;
 
   constructor(
     private warehouseApi: WarehouseApi,

@@ -313,16 +313,13 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       return;
     }
     this.lastQuery = cacheKey;
-    this.searchQuery.page = 1;
     this.searchQuery.tack++;
     this.searchQuery.updateUrl(this.location, undefined, [
       'selected',
       'pageSize',
       'page'
     ], false);
-    if (updateQuery) {
-      this.searchQuery.queryUpdate();
-    }
+    this.searchQuery.queryUpdate();
     return false;
   }
 

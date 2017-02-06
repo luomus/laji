@@ -14,7 +14,7 @@ export class SearchQuery {
 
   public query: WarehouseQueryInterface = {};
   public page: number;
-  public pageSize: number = 20;
+  public pageSize = 20;
   public includeNonValidTaxa: boolean = false;
   public selected: string[];
   public orderBy: string[];
@@ -73,7 +73,7 @@ export class SearchQuery {
   }
 
   public setQueryFromQueryObject(query) {
-    for (let i of this.arrayTypes) {
+    for (const i of this.arrayTypes) {
       if (typeof query[i] !== 'undefined') {
         this.query[i] = decodeURIComponent(query[i])
           .split(',')
@@ -261,7 +261,7 @@ export class SearchQuery {
     if (Object.keys(query).length > 0) {
       extra['queryParams'] = this.getQueryObject(skipParams);
     } else {
-      extra['preserveQueryParams'] = true;
+      extra['preserveQueryParams'] = false;
     }
     this.router.navigate(path.split('/'), extra);
   }
