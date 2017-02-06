@@ -40,10 +40,10 @@ body {
   flex: 1 0 auto;
 }
 laji-observation, laji-home, laji-taxonomy, haseka {
-  z-index: 2;
+  z-index: auto;
 }
 #footer {
-  z-index: 1;
+  z-index: 0;
 }
 
 #footer footer {
