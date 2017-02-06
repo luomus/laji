@@ -227,6 +227,7 @@
   "haseka.pleaseLogin": "Please login to use this service",
   "haseka.terms": "Terms of use",
   "haseka.button": "Go to the Notebook",
+  "haseka.form.error": "Failed to submit data",
   "haseka.users.latest.gathered": "observed",
   "observation.export.tooMany": "Too many results. Max is {{max}}, you'll need to narrow the search.",
   "observation.export.tooManySpecies": "Too many species. Max is {{max}}, you'll need to narrow the search.",

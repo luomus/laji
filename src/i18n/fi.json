@@ -238,6 +238,7 @@
   "haseka.pleaseLogin": "Sinun täytyy kirjautua käyttääksesi tätä palvelua.",
   "haseka.terms": "Käyttöehdot",
   "haseka.button": "Siirry Vihkoon",
+  "haseka.form.error": "Tallennus epäonnistui",
   "haseka.users.latest.gathered": "havaittu",
   "observation.export.tooMany": "Liian paljon havaintoja. Maksimimäärä on {{max}}, joten rajaa hakua lisää.",
   "observation.export.tooManySpecies": "Liian paljon lajeja. Maksimimäärä on {{max}}, joten rajaa hakua lisää.",

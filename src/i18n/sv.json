@@ -227,6 +227,7 @@
   "haseka.pleaseLogin": "Du måste logga in för att använda den här tjänsten.",
   "haseka.terms": "Användarvillkor",
   "haseka.button": "Gå till Skrivboken",
+  "haseka.form.error": "Failed to submit data",
   "haseka.users.latest.gathered": "observerad",
   "observation.export.tooMany": "För många observationer. Maksimiantal är {{max}}. Sökningen måste begränsas.",
   "observation.export.tooManySpecies": "För många arter. Maksimiantal är {{max}}. Sökningen måste begränsas.",
