@@ -4,7 +4,3 @@ import '@angular/core';
 import '@angular/http';
 import '@angular/router';
 import 'rxjs/operator/retry';
-import 'd3';
-import 'nvd3';
-import 'laji-form/lib.moment-wrapped/laji-form';
-import 'laji-map';
