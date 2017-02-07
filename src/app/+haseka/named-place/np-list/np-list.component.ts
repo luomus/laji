@@ -44,8 +44,7 @@ export class NpListComponent implements OnInit, OnChanges {
           'type': 'GeometryCollection',
           'geometries': [
             np.geometry
-          ],
-          'invasiveControlTaxon': np.taxonIDs || []
+          ]
         }
       }]
     });
