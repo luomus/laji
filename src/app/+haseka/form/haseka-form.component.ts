@@ -8,7 +8,7 @@ import {
   transition,
   animate,
   HostListener,
-  OnDestroy
+  OnDestroy, AfterViewInit
 } from '@angular/core';
 import { TranslateService } from 'ng2-translate/ng2-translate';
 import { Subscription } from 'rxjs/Subscription';
@@ -34,7 +34,7 @@ import { ToastsService } from '../../shared/service/toasts.service';
     ])
   ]
 })
-export class HaSeKaFormComponent implements OnInit, OnDestroy {
+export class HaSeKaFormComponent implements AfterViewInit, OnDestroy {
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
 
   public form: any;
@@ -82,7 +82,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.loading = true;
     this.hasChanges = false;
     this.footerService.footerVisible = false;

@@ -247,7 +247,7 @@ export class FormService {
     this.currentKey = this.generateTmpId();
     return this.userService.getDefaultFormData()
       .map((data: Document) => {
-        return Object.assign(data, {formID: formId}, this._populate);
+        return Object.assign({}, data, {formID: formId}, this._populate);
       })
       .do((data) => {
         this.currentData = Util.clone(data);
