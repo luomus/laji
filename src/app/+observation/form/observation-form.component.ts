@@ -99,6 +99,12 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   private subMap: Subscription;
   private lastQuery: string;
   private delayedSearch;
+  private invasiveStatuses: string[] = [
+    'nationallySignificantInvasiveSpecies',
+    'euInvasiveSpeciesList',
+    'quarantinePlantPest',
+    'otherInvasiveSpeciesList'
+  ];
 
   constructor(public searchQuery: SearchQuery,
               public translate: TranslateService,
@@ -279,6 +285,15 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onSubmit();
   }
 
+  onAdministrativeStatusChange() {
+    const admins = this.searchQuery.query.administrativeStatusId;
+    this.invasiveStatuses.map(key => {
+      const realKey = 'MX.' + key;
+      this.formQuery[key] = admins && admins.indexOf(realKey) > -1;
+    });
+    this.onQueryChange();
+  }
+
   onCheckBoxToggle(field, selectValue = true, isDirect = true) {
     if (isDirect) {
       this.searchQuery.query[field] = typeof this.searchQuery.query[field] === 'undefined'
@@ -382,7 +397,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     query.finnish = formQuery.isNotFinnish ? false : query.finnish;
     query.hasMedia = formQuery.hasNotMedia ? false : query.hasMedia;
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
-    ['nationallySignificantInvasiveSpecies', 'euInvasiveSpeciesList', 'quarantinePlantPest', 'otherInvasiveSpeciesList']
+    this.invasiveStatuses
       .map((key) => {
         const value = 'MX.' + key;
         if (!formQuery[key]) {
