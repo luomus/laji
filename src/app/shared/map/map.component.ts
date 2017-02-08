@@ -23,6 +23,8 @@ import { MapService } from './map.service';
 })
 export class MapComponent implements OnDestroy, OnChanges, OnInit {
 
+  private static LajiMap;
+
   @Input() data: any = [];
   @Input() drawData: any;
   @Input() visible = true;
@@ -43,13 +45,14 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   map: any;
   private initEvents = false;
   private failureSend = false;
-  private LajiMap;
 
   constructor(
     private mapService: MapService,
     private logger: Logger
   ) {
-    this.LajiMap = require('laji-map').default;
+    if (!MapComponent.LajiMap) {
+      MapComponent.LajiMap = require('laji-map').default;
+    }
   }
 
   ngOnInit() {
@@ -64,7 +67,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     if (this.showLayers === false) {
       controlSettings.layer = false;
     }
-    this.map = new this.LajiMap({
+    this.map = new MapComponent.LajiMap({
       tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
       zoom: this.zoom,
       center: this.center || [65, 26],
