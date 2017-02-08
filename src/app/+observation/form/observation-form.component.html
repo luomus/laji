@@ -225,6 +225,7 @@
                       [multiple]="true"
                       name="recordBasis"
                       [mapToWarehouse]="true"
+                      [placeholder]="'MY.recordBasis' | label"
                       [alt]="'MY.recordBases'"
                       [lang]="translate.currentLang"></metadata-select>
             </div>
@@ -313,6 +314,7 @@
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
                       [field]="'MY.collectionID'"
+                      [placeholder]="'MY.collectionID' | label"
                       [mapToWarehouse]="false"
                       name="collectionID"
                       [lang]="translate.currentLang"></metadata-select>
@@ -326,6 +328,7 @@
                       [(ngModel)]="searchQuery.query.administrativeStatusId"
                       (ngModelChange)="onAdministrativeStatusChange()"
                       [multiple]="true"
+                      [placeholder]="'MX.hasAdminStatus' | label"
                       name="administrativeStatusId"
                       [alt]="'MX.adminStatusEnum'"
                       [lang]="translate.currentLang"></metadata-select>
@@ -340,6 +343,7 @@
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
                       name="redListStatusId"
+                      [placeholder]="'observation.form.redListStatusId' | translate"
                       [alt]="'MX.iucnStatuses'"
                       [lang]="translate.currentLang"></metadata-select>
             </div>
@@ -415,6 +419,17 @@
           </div>
         </div>
         <div laji-panel [title]="'observation.form.other' | translate" [autoToggle]="true">
+          <div class="row" *lajiAuthorities="true">
+            <div class="col-sm-12">
+              <metadata-select
+                [multiple]="true"
+                name="invasiveControlEffectiveness"
+                [placeholder]="'MY.invasiveControlEffectiveness' | label"
+                [alt]="'MY.invasiveControlEffectivenessEnum'"
+                [lang]="translate.currentLang"></metadata-select>
+            </div>
+          </div>
+          <hr *lajiAuthorities="true">
           <div class="row">
             <div class="col-sm-12">
               <label>
