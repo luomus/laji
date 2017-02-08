@@ -13,7 +13,7 @@ import {
 import { FormApiClient } from '../api';
 import { UserService } from '../service/user.service';
 import { Logger } from '../logger/logger.service';
-import LajiFormWrapper from 'laji-form/lib.moment-wrapped/laji-form';
+import LajiFormWrapper from 'laji-form/dist/laji-form';
 
 @Component({
   selector: 'laji-form',
