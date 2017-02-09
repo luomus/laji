@@ -33,7 +33,7 @@
               <button class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPublic()">{{'haseka.form.savePublic'|translate}}</button>
             </div>
             <div class="col-xs-3 col-sm-2">
-              <button class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPrivate()">{{'haseka.form.savePrivate'|translate}}</button>
+              <button *ngIf="enablePrivate" class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPrivate()">{{'haseka.form.savePrivate'|translate}}</button>
             </div>
             <div class="col-xs-3 col-sm-6 form-control-static info" [ngSwitch]="status">
               <div *ngSwitchCase="'success'" class="success status">
