@@ -43,7 +43,12 @@
       </td>
       <td>
         <span *ngIf="aggr[taxon.id]">
-          {{aggr[taxon.id]?.newestRecord | date:'dd.MM.yyyy' }}
+          {{aggr[taxon.id]?.newestRecord | date:'dd.MM.yyyy' }}&nbsp;<a
+            placement="right"
+            container="body"
+            [tooltip]="'result.showViewer' | translate"
+            class="btn btn-primary btn-xs"
+            (click)="showLatestDocument(taxon.id)"><i class="glyphicon glyphicon-eye-open"></i></a>
         </span>
       </td>
       <td>
@@ -52,4 +57,17 @@
     </tr>
     </tbody>
   </table>
+</div>
+<div class="modal fade" bsModal #documentModal="bs-modal"
+     tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <laji-document [uri]="shownDocument" [highlight]="highlightId"></laji-document>
+      </div>
+    </div>
+  </div>
 </div>
