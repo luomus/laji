@@ -315,5 +315,7 @@
   "viewer.hideFacts": "Göm extra info",
   "viewer.field.observer": "Göm extra info",
   "viewer.field.time": "Tid",
-  "np.title": "Namn på platser"
+  "np.title": "Namn på platser",
+  "np.choose": "Väljä denna plats",
+  "np.createNew": "Skapa nu"
 }
