@@ -72,6 +72,8 @@
   "taxonomy.administrative.statuses": "Administrative status",
   "taxonomy.group": "To organismgroup",
   "taxonomy.belongs.to": "Subordinate taxa",
+  "taxonomy.source": "Source",
+  "taxonomy.synonyms": "Synonyms",
   "news.title": "News",
   "news.earlier": "previous",
   "news.newer": "next",

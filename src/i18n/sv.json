@@ -72,6 +72,8 @@
   "taxonomy.administrative.statuses": "Administrativa status",
   "taxonomy.group": "Till organismgrupp",
   "taxonomy.belongs.to": "Underliggande taxa",
+  "taxonomy.source": "Källa",
+  "taxonomy.synonyms": "Synonymer",
   "news.title": "Nyheter",
   "news.earlier": "föregående",
   "news.newer": "nästa",
