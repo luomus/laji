@@ -1,6 +1,6 @@
-<ul *ngIf="namedPlaces$">
-  <li *ngFor="let np of namedPlaces$ | async">
-    <a [routerLink]="['/vihko/' + formId]" (click)="populateForm(np)">
+<ul *ngIf="namedPlaces">
+  <li *ngFor="let np of namedPlaces; let i = index;">
+    <a (click)="changeActivePlace(i)">
       {{np.name}}
     </a>
   </li>

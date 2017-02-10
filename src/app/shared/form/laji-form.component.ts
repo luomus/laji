@@ -13,7 +13,6 @@ import {
 import { FormApiClient } from '../api';
 import { UserService } from '../service/user.service';
 import { Logger } from '../logger/logger.service';
-import LajiFormWrapper from 'laji-form/lib.moment-wrapped/laji-form';
 
 @Component({
   selector: 'laji-form',
@@ -22,6 +21,7 @@ import LajiFormWrapper from 'laji-form/lib.moment-wrapped/laji-form';
 })
 export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
 
+  private static LajiFormWrapper;
   @Input() lang: string;
   @Input() formData: any = {};
   @Input() tick: number;
@@ -41,6 +41,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               private logger: Logger
   ) {
     this.elem = elementRef.nativeElement;
+    if (!LajiFormComponent.LajiFormWrapper) {
+      LajiFormComponent.LajiFormWrapper = require('laji-form/lib/laji-form').default;
+    }
   }
 
   ngAfterViewInit() {
@@ -105,7 +108,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
       uiSchemaContext['creator'] = this.formData.formData.creator;
       this.apiClient.lang = this.lang;
       this.apiClient.personToken = this.userService.getToken();
-      this.lajiFormWrapper = new LajiFormWrapper({
+      this.lajiFormWrapper = new LajiFormComponent.LajiFormWrapper({
         staticImgPath: '/static/lajiForm/',
         rootElem: this.elem,
         schema: this.formData.schema,

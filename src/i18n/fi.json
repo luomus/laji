@@ -78,6 +78,8 @@
   "taxonomy.administrative.statuses": "Hallinnolliset lajitiedot",
   "taxonomy.group": "Ryhmään",
   "taxonomy.belongs.to": "Alemmat taksonit",
+  "taxonomy.source": "Lähde",
+  "taxonomy.synonyms": "Synonyymit",
   "news.title": "Uutiset",
   "news.earlier": "edelliset",
   "news.newer": "seuraavat",

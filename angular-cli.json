@@ -23,7 +23,9 @@
         "styles/laji.css"
       ],
       "scripts": [
-        "../node_modules/moment/moment.js"
+        "../node_modules/moment/moment.js",
+        "../node_modules/laji-map/dist/laji-map.js",
+        "../node_modules/laji-form/dist/laji-form.js"
       ],
       "environments": {
         "source": "environments/environment.ts",

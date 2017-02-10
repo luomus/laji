@@ -1,6 +1,27 @@
-<div class="container">
-  <h1>
-    {{'np.title' | translate}}
-  </h1>
-  <laji-np-list [collectionId]="collectionId" [formId]="formId"></laji-np-list>
+<div class="container-fluid">
+  <only-logged>
+    <div class="container" out>
+      <h1>{{'haseka.title' | translate}}</h1>
+      <p>{{'haseka.pleaseLogin' | translate}}</p>
+    </div>
+    <div class="container" in>
+      <laji-spinner [spinning]="!namedPlaces" [overlay]="true"></laji-spinner>
+      <div *ngIf="namedPlaces">
+        <h1>
+          {{'np.title' | translate}}
+        </h1>
+        <div class="row">
+          <div class="col-sm-5">
+            <laji-np-list [namedPlaces]="namedPlaces" (onActivePlaceChange)="setActiveNP($event)"></laji-np-list>
+            <a [routerLink]="" class="btn btn-lg btn-default">{{'np.createNew' | translate}}</a>
+          </div>
+          <div *ngIf="activeNP >= 0" class="col-sm-5">
+            <h3>{{namedPlaces[activeNP].name}}</h3>
+            <laji-np-map [namedPlaces]="namedPlaces" [activeNP]="activeNP"></laji-np-map>
+            <a [routerLink]="['/vihko/' + formId]" type="button" class="btn btn-lg btn-default" (click)="populateForm()">{{'np.choose' | translate}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </only-logged>
 </div>

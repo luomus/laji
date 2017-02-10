@@ -1,5 +1,6 @@
 import { NamedPlaceActive } from './NamedPlaceActive';
 import { NamedPlaceReserve } from './NamedPlaceReserve';
+import { Document } from './Document';
 /**
  * API documentation
  * To use this api you need an access token. To get the token, send a post request
@@ -17,75 +18,80 @@ import { NamedPlaceReserve } from './NamedPlaceReserve';
  */
 
 export interface NamedPlace {
-    /**
-     * Unique ID for the object. This will be automatically generated.
-     */
-    id?: string;
+  /**
+   * Unique ID for the object. This will be automatically generated.
+   */
+  id?: string;
 
-    accessibility?: NamedPlace.AccessibilityEnum;
+  accessibility?: NamedPlace.AccessibilityEnum;
 
-    /**
-     * instance of active
-     */
-    active?: NamedPlaceActive;
+  /**
+   * instance of active
+   */
+  active?: NamedPlaceActive;
 
-    alternativeIDs?: Array<string>;
+  alternativeIDs?: Array<string>;
 
-    /**
-     * QName for MY.collection
-     */
-    collectionID?: string;
+  /**
+   * QName for MY.collection
+   */
+  collectionID?: string;
 
-    /**
-     * Persons who have rights to see and use the named places in their documents. QName for MA.person
-     */
-    editors?: Array<string>;
+  /**
+   * Persons who have rights to see and use the named places in their documents. QName for MA.person
+   */
+  editors?: Array<string>;
 
-    /**
-     * Using GeoJSONs geometry object specification. QName for MZ.geometry
-     */
-    geometry: string;
+  /**
+   * Using GeoJSONs geometry object specification. QName for MZ.geometry
+   */
+  geometry: string;
 
-    name: string;
+  name: string;
 
-    notes?: string;
+  notes?: string;
 
-    /**
-     * Persons who have full use access and rights to edit the named place. QName for MA.person
-     */
-    owners?: Array<string>;
+  /**
+   * Persons who have full use access and rights to edit the named place. QName for MA.person
+   */
+  owners?: Array<string>;
 
-    priority?: NamedPlace.PriorityEnum;
+  priority?: NamedPlace.PriorityEnum;
 
-    privateNotes?: string;
+  privateNotes?: string;
 
-    /**
-     * Is the named place publicaly available. Defaults to false)
-     */
+  /**
+   * Is the named place publicaly available. Defaults to false)
+   */
     public?: boolean;
 
-    /**
-     * instance of reserve
-     */
-    reserve?: NamedPlaceReserve;
+  /**
+   * instance of reserve
+   */
+  reserve?: NamedPlaceReserve;
 
-    /**
-     * QName for MX.taxon
-     */
-    taxonIDs?: Array<string>;
+  /**
+   * QName for MX.taxon
+   */
+  taxonIDs?: Array<string>;
+
+  /**
+   * Document data to prepopulate form with
+   */
+  prepopulatedDocument: Document;
 
 }
 export namespace NamedPlace {
-    export enum AccessibilityEnum {
-        AccessibilityEasy = <any> 'MNP.accessibilityEasy',
-        AccessibilityModerate = <any> 'MNP.accessibilityModerate',
-        AccessibilityDifficult = <any> 'MNP.accessibilityDifficult'
-    }
-    export enum PriorityEnum {
-        Priority1 = <any> 'MNP.priority1',
-        Priority2 = <any> 'MNP.priority2',
-        Priority3 = <any> 'MNP.priority3',
-        Priority4 = <any> 'MNP.priority4',
-        Priority5 = <any> 'MNP.priority5'
-    }
+  export enum AccessibilityEnum {
+    AccessibilityEasy = <any> 'MNP.accessibilityEasy',
+    AccessibilityModerate = <any> 'MNP.accessibilityModerate',
+    AccessibilityDifficult = <any> 'MNP.accessibilityDifficult'
+  }
+  export enum PriorityEnum {
+    Priority1 = <any> 'MNP.priority1',
+    Priority2 = <any> 'MNP.priority2',
+    Priority3 = <any> 'MNP.priority3',
+    Priority4 = <any> 'MNP.priority4',
+    Priority5 = <any> 'MNP.priority5'
+  }
 }

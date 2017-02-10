@@ -20,6 +20,7 @@ import { LajiFormComponent } from '../../shared/form/laji-form.component';
 import { FormService } from './form.service';
 import { WindowRef } from '../../shared/windows-ref';
 import { ToastsService } from '../../shared/service/toasts.service';
+import { Form } from '../../shared/model/FormListInterface';
 
 @Component({
   selector: 'laji-haseka-form',
@@ -46,6 +47,7 @@ export class HaSeKaFormComponent implements AfterViewInit, OnDestroy {
   public saveVisibility = 'hidden';
   public saving = false;
   public loading = false;
+  public enablePrivate = true;
 
   private subParam: Subscription;
   private subTrans: Subscription;
@@ -223,6 +225,7 @@ export class HaSeKaFormComponent implements AfterViewInit, OnDestroy {
         data => {
           this.loading = false;
           this.isEdit = true;
+          this.enablePrivate = !data.features || data.features.indexOf(Form.Feature.NoPrivate) === -1;
           if (this.formService.isTmpId(this.documentId)) {
             this.isEdit = false;
             this.hasChanges = false;
@@ -241,9 +244,11 @@ export class HaSeKaFormComponent implements AfterViewInit, OnDestroy {
         },
         err => {
           this.loading = false;
-          const msgKey = err.status === 404 ? 'haseka.form.documentNotFound' : 'haseka.form.genericError';
-          this.translate.get(msgKey, {documentId: this.documentId})
-            .subscribe(data => this.errorMsg = data);
+          this.formService.isTmpId(this.documentId) ?
+            this.gotoFrontPage() :
+            this.translate
+              .get(err.status === 404 ? 'haseka.form.documentNotFound' : 'haseka.form.genericError', {documentId: this.documentId})
+              .subscribe(msg => this.errorMsg = msg);
         }
       );
   }

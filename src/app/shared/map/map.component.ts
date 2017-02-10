@@ -11,7 +11,6 @@ import {
 } from '@angular/core';
 import { Logger } from '../logger/logger.service';
 import { MapService } from './map.service';
-import LajiMap from 'laji-map';
 
 @Component({
   selector: 'laji-map',
@@ -24,15 +23,17 @@ import LajiMap from 'laji-map';
 })
 export class MapComponent implements OnDestroy, OnChanges, OnInit {
 
+  private static LajiMap;
+
   @Input() data: any = [];
   @Input() drawData: any;
-  @Input() visible: boolean = true;
+  @Input() visible = true;
   @Input() draw: any = false;
-  @Input() lang: string = 'fi';
+  @Input() lang = 'fi';
   @Input() center: [number, number];
-  @Input() showLayers: boolean = true;
-  @Input() initWithWorldMap: boolean = false;
-  @Input() bringDrawLayerToBack: boolean = true;
+  @Input() showLayers = true;
+  @Input() initWithWorldMap = false;
+  @Input() bringDrawLayerToBack = true;
   @Input() zoom = 1;
 
   @Output() select = new EventEmitter();
@@ -49,6 +50,9 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     private mapService: MapService,
     private logger: Logger
   ) {
+    if (!MapComponent.LajiMap) {
+      MapComponent.LajiMap = require('laji-map').default;
+    }
   }
 
   ngOnInit() {
@@ -63,7 +67,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     if (this.showLayers === false) {
       controlSettings.layer = false;
     }
-    this.map = new LajiMap({
+    this.map = new MapComponent.LajiMap({
       tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
       zoom: this.zoom,
       center: this.center || [65, 26],
@@ -141,12 +145,8 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   }
 
   ngOnDestroy() {
-    try {
-      this.map.map.off();
-      this.map.map.remove();
-    } catch (err) {
-      this.logger.log('Unmounting map failed', err);
-    }
+    this.map.map.off();
+    this.map.map.remove();
   }
 
   ngOnChanges(changes) {
