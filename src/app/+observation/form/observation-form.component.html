@@ -350,7 +350,7 @@
           </div>
         </div>
         <div laji-panel [title]="'observation.form.invasive' | translate" [autoToggle]="true">
-          <div class="row" *lajiAuthorities="false">
+          <div class="row" *lajiAuthorities="true">
             <div class="col-sm-12">
               <metadata-select
                 [multiple]="true"
@@ -360,7 +360,7 @@
                 [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
-          <hr *lajiAuthorities="false">
+          <hr *lajiAuthorities="true">
           <div class="row">
             <div class="col-sm-12">
               <label>
