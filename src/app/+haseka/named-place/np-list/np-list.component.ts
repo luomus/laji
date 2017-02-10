@@ -38,16 +38,9 @@ export class NpListComponent implements OnInit, OnChanges {
   }
 
   populateForm(np: NamedPlace) {
-    this.formService.populate({
-      gatherings: [{
-        geometry: {
-          'type': 'GeometryCollection',
-          'geometries': [
-            np.geometry
-          ]
-        }
-      }]
-    });
+    np.prepopulatedDocument ?
+      this.formService.populate(np.prepopulatedDocument) :
+      this.formService.populate({gatherings: [{geometry: {type: 'GeometryCollection', geometries: [np.geometry]}}]});
   }
 
 }
