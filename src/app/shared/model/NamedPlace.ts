@@ -45,7 +45,7 @@ export interface NamedPlace {
   /**
    * Using GeoJSONs geometry object specification. QName for MZ.geometry
    */
-  geometry: string;
+  geometry: any;
 
   name: string;
 
@@ -78,7 +78,7 @@ export interface NamedPlace {
   /**
    * Document data to prepopulate form with
    */
-  prepopulatedDocument: Document;
+  prepopulatedDocument?: Document;
 
 }
 export namespace NamedPlace {
