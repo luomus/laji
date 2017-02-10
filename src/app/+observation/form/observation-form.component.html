@@ -350,6 +350,17 @@
           </div>
         </div>
         <div laji-panel [title]="'observation.form.invasive' | translate" [autoToggle]="true">
+          <div class="row" *lajiAuthorities="false">
+            <div class="col-sm-12">
+              <metadata-select
+                [multiple]="true"
+                name="invasiveControlEffectiveness"
+                [placeholder]="'MY.invasiveControlEffectiveness' | label"
+                [alt]="'MY.invasiveControlEffectivenessEnum'"
+                [lang]="translate.currentLang"></metadata-select>
+            </div>
+          </div>
+          <hr *lajiAuthorities="false">
           <div class="row">
             <div class="col-sm-12">
               <label>
@@ -419,17 +430,6 @@
           </div>
         </div>
         <div laji-panel [title]="'observation.form.other' | translate" [autoToggle]="true">
-          <div class="row" *lajiAuthorities="true">
-            <div class="col-sm-12">
-              <metadata-select
-                [multiple]="true"
-                name="invasiveControlEffectiveness"
-                [placeholder]="'MY.invasiveControlEffectiveness' | label"
-                [alt]="'MY.invasiveControlEffectivenessEnum'"
-                [lang]="translate.currentLang"></metadata-select>
-            </div>
-          </div>
-          <hr *lajiAuthorities="true">
           <div class="row">
             <div class="col-sm-12">
               <label>
