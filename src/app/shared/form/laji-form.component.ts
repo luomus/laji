@@ -42,7 +42,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   ) {
     this.elem = elementRef.nativeElement;
     if (!LajiFormComponent.LajiFormWrapper) {
-      LajiFormComponent.LajiFormWrapper = require('laji-form/dist/laji-form').default;
+      LajiFormComponent.LajiFormWrapper = require('laji-form/lib/laji-form').default;
     }
   }
 

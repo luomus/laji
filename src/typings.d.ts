@@ -1,7 +1,7 @@
 // Typings reference file, you can add your own global typings here
 // https://www.typescriptlang.org/docs/handbook/writing-declaration-files.html
 
-declare module 'laji-form/dist/laji-form';
+declare module 'laji-form/lib/laji-form';
 declare module 'laji-map';
 declare module 'query-string';
 declare module 'openseadragon';

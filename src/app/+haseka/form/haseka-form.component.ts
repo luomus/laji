@@ -225,7 +225,6 @@ export class HaSeKaFormComponent implements AfterViewInit, OnDestroy {
         data => {
           this.loading = false;
           this.isEdit = true;
-          console.log(data);
           this.enablePrivate = !data.features || data.features.indexOf(Form.Feature.NoPrivate) === -1;
           if (this.formService.isTmpId(this.documentId)) {
             this.isEdit = false;
