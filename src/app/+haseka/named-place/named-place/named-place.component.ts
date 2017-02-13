@@ -1,8 +1,6 @@
-import { Component, OnDestroy, OnInit, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { NpMapComponent } from '../np-map/np-map.component';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlacesService } from '../named-places.service';
 import { FormService } from '../../form/form.service';
@@ -15,6 +13,9 @@ import { FormService } from '../../form/form.service';
 export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
   formId;
   collectionId;
+  active: string = 'list';
+  mapActivated: boolean = false;
+
   namedPlaces: NamedPlace[];
   activeNP: number = -1;
   private subParam: Subscription;
@@ -44,6 +45,13 @@ export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  setActive(newActive: string) {
+    this.active = newActive;
+    if (!this.mapActivated && newActive === 'map') {
+      this.mapActivated = true;
+    }
+  }
+
   updateNP() {
     if (this.collectionId) {
       const namedPlaces$ = this.namedPlaceService
@@ -53,6 +61,29 @@ export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
       namedPlaces$.subscribe(
         data => (this.namedPlaces = data)
       )
+      /*this.namedPlaces = [
+        {
+          'id': 'MNP.65',
+          'collectionID': 'HR.128',
+          'geometry': {'type': 'Polygon', 'coordinates': [[
+            [24.697265625, 62.955223045159],
+            [26.3671875, 65.403444788308],
+            [27.70751953125, 64.774125312929],
+            [27.18017578125, 63.714454583648],
+            [26.21337890625, 63.956673336488],
+            [26.19140625, 63.636503596185],
+            [27.18017578125, 63.064914202086],
+            [27.13623046875, 62.34960927573],
+            [25.2685546875, 62.000904713686],
+            [23.97216796875, 62.288365098248],
+            [24.697265625, 62.955223045159]
+          ]]},
+          'name': 'Visake alue #1',
+          'priority': NamedPlace.PriorityEnum.Priority4,
+          'public': true,
+          'owners': ['MA.97']
+        }
+      ];*/
     }
   }
 

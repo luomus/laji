@@ -12,6 +12,8 @@ export class NpListComponent {
   @Input() namedPlaces: NamedPlace[];
   @Output() onActivePlaceChange = new EventEmitter<NamedPlace>();
 
+  @Input() activeNP: number;
+
   constructor() { }
 
   changeActivePlace(idx) {
