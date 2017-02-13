@@ -68,5 +68,7 @@
 </div>
 <div class="container-fluid" *lajiAuthorities="true">
   <h1>{{'home.authority.title' | translate}}</h1>
-  <p>{{'home.authority.text' | translate}}</p>
+  <div class="row">
+    <div class="col-sm-10 col-md-7 intro" [innerHtml]="'home.authority.text' | translate"></div>
+  </div>
 </div>

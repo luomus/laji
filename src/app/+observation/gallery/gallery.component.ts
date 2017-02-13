@@ -2,22 +2,17 @@ import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Util } from '../../shared/service/util.service';
 import { TaxonomyImage } from '../../shared/model/Taxonomy';
-import { ValueDecoratorService } from '../result-list/value-decorator.sevice';
-import { LabelPipe } from '../../shared/pipe/label.pipe';
-import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
-import { TranslateService } from 'ng2-translate';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 @Component({
   selector: 'laji-gallery',
   styleUrls: ['./gallery.component.css'],
   templateUrl: './gallery.component.html',
-  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe]
 })
 export class GalleryComponent implements OnChanges {
   @Input() query: WarehouseQueryInterface;
   @Input() tick;
-  @Input() pageSize: number = 50;
+  @Input() pageSize = 50;
   @Input() shortPager = false;
   @Output() hasData = new EventEmitter<boolean>();
 
@@ -27,9 +22,7 @@ export class GalleryComponent implements OnChanges {
   loading = false;
 
   constructor(
-    private warehouseApi: WarehouseApi,
-    private translate: TranslateService,
-    private valueDecorator: ValueDecoratorService
+    private warehouseApi: WarehouseApi
   ) {
   }
 
@@ -61,22 +54,21 @@ export class GalleryComponent implements OnChanges {
         const images = [];
         this.total = data.total;
         if (data.results) {
-          this.valueDecorator.lang = this.translate.currentLang;
           data.results.map((items) => {
-            const name = (items['unit'] && items['unit']['taxonVerbatim']) ?
-              items['unit']['taxonVerbatim'] : '';
-            const vernacularName = this.valueDecorator
-              .decorate('unit.taxonVerbatim', name, items);
+            const verbatim = (items['unit'] && items['unit']['taxonVerbatim']) ? items['unit']['taxonVerbatim'] : '';
             ['unit'].map((key) => {
               if (items[key] && items[key].media) {
                 items[key].media.map(media => {
                   media['documentId'] = items['document']['documentId'];
-                  media['vernacularName'] = vernacularName;
+                  media['vernacularName'] = items.unit
+                    && items.unit.linkings
+                    && items.unit.linkings.taxon
+                    && items.unit.linkings.taxon.vernacularName || '';
                   media['scientificName'] = items['unit']
                     && items['unit']['linkings']
-                    &&  items['unit']['linkings']['taxon']
-                    &&  items['unit']['linkings']['taxon']['scientificName']
-                    || '';
+                    && items['unit']['linkings']['taxon']
+                    && items['unit']['linkings']['taxon']['scientificName'] || verbatim || '';
+                  console.log(media);
                   images.push(media);
                 });
               }

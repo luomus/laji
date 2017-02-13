@@ -46,6 +46,29 @@ laji-observation, laji-home, laji-taxonomy, haseka {
   z-index: 0;
 }
 
+.cursive {
+  font-style: italic;
+}
+
+.comma-list {
+  display: inline;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.comma-list li {
+  display: inline;
+}
+
+.comma-list li:after {
+  content: ", ";
+}
+.comma-list li:last-child:after {
+  content: "";
+}
+
+
 #footer footer {
   flex: none;
   color: #fff;

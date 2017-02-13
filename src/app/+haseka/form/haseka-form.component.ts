@@ -244,9 +244,11 @@ export class HaSeKaFormComponent implements AfterViewInit, OnDestroy {
         },
         err => {
           this.loading = false;
-          const msgKey = err.status === 404 ? 'haseka.form.documentNotFound' : 'haseka.form.genericError';
-          this.translate.get(msgKey, {documentId: this.documentId})
-            .subscribe(data => this.errorMsg = data);
+          this.formService.isTmpId(this.documentId) ?
+            this.gotoFrontPage() :
+            this.translate
+              .get(err.status === 404 ? 'haseka.form.documentNotFound' : 'haseka.form.genericError', {documentId: this.documentId})
+              .subscribe(msg => this.errorMsg = msg);
         }
       );
   }

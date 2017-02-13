@@ -21,7 +21,7 @@ import { setTimeout } from 'timers';
       class="effect"></laji-image>
     <a class="nav-right" *ngIf="modalImages.length > 1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
     <span class="info-text" *ngIf="img">
-      <span *ngIf="img.vernacularName">{{img.vernacularName}}</span>
+      <span *ngIf="img.vernacularName">{{img.vernacularName | multiLang}}</span>
       <span *ngIf="img.vernacularName && img.scientificName">-</span>
       <span *ngIf="img.scientificName"><em>{{img.scientificName}}</em></span>
       <br>

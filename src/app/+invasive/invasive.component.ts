@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TaxonomyApi } from '../shared/api/TaxonomyApi';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { Taxonomy } from '../shared/model/Taxonomy';
 import { IdService } from '../shared/service/id.service';
 import { Observable } from 'rxjs/Observable';
+import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
 
 @Component({
   selector: 'laji-invasive',
@@ -13,10 +14,14 @@ import { Observable } from 'rxjs/Observable';
 export class InvasiveComponent implements OnInit {
 
   static taxa;
+  @ViewChild('documentModal') public modal: ModalDirective;
 
-  public taxa: Observable<Taxonomy[]>;
-  public aggr: {[key: string]: number} = {};
-  public daysBack;
+  taxa: Observable<Taxonomy[]>;
+  aggr: {[key: string]: number} = {};
+  daysBack;
+
+  shownDocument = '';
+  highlightId;
 
   constructor(
     private taxonomyApi: TaxonomyApi,
@@ -64,4 +69,13 @@ export class InvasiveComponent implements OnInit {
       });
   }
 
+  showLatestDocument(taxonID) {
+    this.warehouseApi.warehouseQueryListGet({taxonId: taxonID}, ['document.documentId', 'unit.unitId'], undefined, 1)
+      .map(data => data.results[0])
+      .subscribe(result => {
+        this.shownDocument = result.document && result.document.documentId || '';
+        this.highlightId = result.unit && result.unit.unitId || '';
+        this.modal.show();
+      });
+  }
 }

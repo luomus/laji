@@ -3,8 +3,7 @@
   <tr>
     <th>{{ 'taxonomy.scientific.name' | translate }}</th>
     <td>
-      <i *ngIf="taxon.cursiveName">{{taxon.scientificName}}</i>
-      <span *ngIf="!taxon.cursiveName">{{taxon.scientificName}}</span>
+      <span [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
     </td>
   </tr>
   <tr>
@@ -15,9 +14,21 @@
     <th>{{ 'taxonomy.vernacular.name' | translate }}</th>
     <td>{{taxon.vernacularName | multiLang}}</td>
   </tr>
+  <tr *ngIf="taxon.synonyms">
+    <th>{{ 'taxonomy.synonyms' | translate }}</th>
+    <td>
+      <ul class="comma-list">
+        <li *ngFor="let synonym of taxon.synonyms"><span [class.cursive]="synonym.cursiveName">{{synonym.scientificName}}</span></li>
+      </ul>
+    </td>
+  </tr>
   <tr>
     <th>{{ 'MX.taxonRank' | label}}</th>
     <td>{{taxon.taxonRank | label}}</td>
+  </tr>
+  <tr *ngIf="taxon.occurrenceInFinland">
+    <th>{{ 'taxonomy.occurrenceInFinland' | translate }}</th>
+    <td>{{taxon.occurrenceInFinland | label}}</td>
   </tr>
   <tr *ngIf="taxon.invasiveSpeciesCategory">
     <th>
@@ -51,6 +62,14 @@
   <tr>
     <th>{{ 'taxonomy.card.id' | translate }}</th>
     <td>http://tun.fi/{{taxon.id}}</td>
+  </tr>
+  <tr *ngIf="taxon.taxonExpert && taxon.taxonExpert.length > 0">
+    <th>{{ 'taxonomy.experts' | translate }}</th>
+    <td>
+      <ul class="comma-list">
+        <li *ngFor="let export of taxon.taxonExpert">{{export | users}}</li>
+      </ul>
+    </td>
   </tr>
   </tbody>
 </table>
