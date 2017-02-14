@@ -1,6 +1,5 @@
-import { Component, Input, Output, EventEmitter, OnChanges, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { NamedPlace } from '../../../shared/model/NamedPlace';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { NamedPlace } from '../../../../shared/model/NamedPlace';
 
 @Component({
   selector: 'laji-np-list',
@@ -10,7 +9,7 @@ import { NamedPlace } from '../../../shared/model/NamedPlace';
 export class NpListComponent {
 
   @Input() namedPlaces: NamedPlace[];
-  @Output() onActivePlaceChange = new EventEmitter<NamedPlace>();
+  @Output() onActivePlaceChange = new EventEmitter<number>();
 
   @Input() activeNP: number;
 

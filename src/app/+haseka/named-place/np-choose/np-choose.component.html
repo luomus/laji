@@ -1,0 +1,25 @@
+<div *ngIf="namedPlaces">
+  <div>
+    <ul class="nav nav-tabs nav-justified">
+      <li role="presentation" [ngClass]="{active: active === 'list'}">
+        <a (click)="setActive('list')">Lista</a>
+      </li>
+      <li role="presentation" [ngClass]="{active: active === 'map'}">
+        <a (click)="setActive('map')">Kartta</a>
+      </li>
+    </ul>
+  </div>
+
+  <div [hidden]="active !== 'list'">
+    <laji-np-list [namedPlaces]="namedPlaces" [activeNP]="activeNP" (onActivePlaceChange)="setActiveNP($event)"></laji-np-list>
+  </div>
+
+  <div [hidden]="active !== 'map'" *ngIf="mapActivated">
+    <laji-np-map [namedPlaces]="namedPlaces"
+                 [activeNP]="activeNP"
+                 [visible]="active === 'map'"
+                 (onActivePlaceChange)="setActiveNP($event)"></laji-np-map>
+  </div>
+</div>
+<!--a [routerLink]="['/vihko/' + formId]" type="button" class="btn btn-lg btn-default" (click)="populateForm()">{{'np.choose' | translate}}</a>
+<a [routerLink]="" class="btn btn-lg btn-default">{{'np.createNew' | translate}}</a-->

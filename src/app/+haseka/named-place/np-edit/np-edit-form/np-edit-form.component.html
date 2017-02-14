@@ -1,0 +1,8 @@
+<div class="laji-form" *ngIf="formData">
+  <laji-form
+    [formData]="formData"
+    [lang]="lang"
+    [tick]="tick"
+    (onChange)="onChange($event)"
+    (onSubmit)="onSubmit($event)"></laji-form>
+</div>

@@ -1,7 +1,6 @@
 import {Component, OnInit, AfterViewInit, Input, Output, ViewChild, SimpleChanges, OnChanges, EventEmitter} from '@angular/core';
-import { MapComponent } from '../../../shared/map/map.component';
-import { Observable } from 'rxjs/Observable';
-import { NamedPlace } from '../../../shared/model/NamedPlace';
+import { MapComponent } from '../../../../shared/map/map.component';
+import { NamedPlace } from '../../../../shared/model/NamedPlace';
 
 @Component({
   selector: 'laji-np-map',
@@ -13,7 +12,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() visible = false;
   @Input() namedPlaces: NamedPlace[];
   @Input() activeNP: number;
-  @Output() onActivePlaceChange = new EventEmitter<NamedPlace>();
+  @Output() onActivePlaceChange = new EventEmitter<number>();
 
   private _data: any;
 

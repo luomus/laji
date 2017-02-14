@@ -1,0 +1,5 @@
+<laji-spinner [spinning]="namedPlace && !formData" [overlay]="true"></laji-spinner>
+<div *ngIf="namedPlace && formData">
+  <laji-np-info [namedPlace]="namedPlace" [formData]="formData"></laji-np-info>
+  <!--laji-np-edit-form [lang]="lang" [formData]="formData"></--laji-np-edit-form-->
+</div>
