@@ -320,5 +320,7 @@
   "viewer.hideFacts": "Hide extra info",
   "viewer.field.observer": "Observer",
   "viewer.field.time": "Time",
-  "np.title": "Names places"
+  "np.title": "Names places",
+  "np.choose": "Choose this place",
+  "np.createNew": "Create new"
 }

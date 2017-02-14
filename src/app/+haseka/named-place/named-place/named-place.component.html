@@ -1,6 +1,42 @@
-<div class="container">
-  <h1>
-    {{'np.title' | translate}}
-  </h1>
-  <laji-np-list [collectionId]="collectionId" [formId]="formId"></laji-np-list>
+<div class="container-fluid">
+  <only-logged>
+    <div class="container" out>
+      <h1>{{'haseka.title' | translate}}</h1>
+      <p>{{'haseka.pleaseLogin' | translate}}</p>
+    </div>
+    <div class="container" in>
+      <laji-spinner [spinning]="!namedPlaces" [overlay]="true"></laji-spinner>
+
+      <div class="row" *ngIf="namedPlaces">
+        <div class="col-sm-5">
+          <div>
+            <h1>
+              {{'np.title' | translate}}
+            </h1>
+            <ul class="nav nav-tabs nav-justified">
+              <li role="presentation" [ngClass]="{active: active === 'list'}">
+                <a (click)="setActive('list')">Lista</a>
+              </li>
+              <li role="presentation" [ngClass]="{active: active === 'map'}">
+                <a (click)="setActive('map')">Kartta</a>
+              </li>
+            </ul>
+          </div>
+
+          <div [hidden]="active !== 'list'">
+            <laji-np-list [namedPlaces]="namedPlaces" [activeNP]="activeNP" (onActivePlaceChange)="setActiveNP($event)"></laji-np-list>
+          </div>
+
+          <div [hidden]="active !== 'map'" *ngIf="mapActivated">
+            <laji-np-map [namedPlaces]="namedPlaces"
+                         [activeNP]="activeNP"
+                         [visible]="active === 'map'"
+                         (onActivePlaceChange)="setActiveNP($event)"></laji-np-map>
+          </div>
+        </div>
+      </div>
+      <!--a [routerLink]="['/vihko/' + formId]" type="button" class="btn btn-lg btn-default" (click)="populateForm()">{{'np.choose' | translate}}</a>
+      <a [routerLink]="" class="btn btn-lg btn-default">{{'np.createNew' | translate}}</a-->
+    </div>
+  </only-logged>
 </div>

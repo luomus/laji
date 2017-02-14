@@ -334,5 +334,7 @@
   "viewer.hideFacts": "Piilota lisämuuttujat",
   "viewer.field.observer": "Havainnoija",
   "viewer.field.time": "Aika",
-  "np.title": "Nimetyt paikat"
+  "np.title": "Nimetyt paikat",
+  "np.choose": "Valitse tämä paikka",
+  "np.createNew": "Luo uusi"
 }
