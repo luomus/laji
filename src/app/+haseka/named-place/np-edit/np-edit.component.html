@@ -1,5 +1,8 @@
 <laji-spinner [spinning]="namedPlace && !formData" [overlay]="true"></laji-spinner>
 <div *ngIf="namedPlace && formData">
-  <laji-np-info [namedPlace]="namedPlace" [formData]="formData"></laji-np-info>
+  <div>
+    <laji-np-info [namedPlace]="namedPlace" [formData]="formData"></laji-np-info>
+    <a [routerLink]="['/vihko/' + formId]" type="button" class="btn btn-lg btn-default" (click)="populateForm()">{{'np.use' | translate}}</a>
+  </div>
   <!--laji-np-edit-form [lang]="lang" [formData]="formData"></--laji-np-edit-form-->
 </div>

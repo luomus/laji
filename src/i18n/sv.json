@@ -321,6 +321,6 @@
   "viewer.field.observer": "Göm extra info",
   "viewer.field.time": "Tid",
   "np.title": "Namn på platser",
-  "np.choose": "Väljä denna plats",
+  "np.use": "Använd denna plats",
   "np.createNew": "Skapa nu"
 }

@@ -13,13 +13,14 @@ import { NamedPlace } from '../../../shared/model/NamedPlace';
 export class NpEditComponent implements OnInit, OnChanges {
   @Input() namedPlaces: NamedPlace[];
   @Input() activeNP = -1;
+  @Input() formId: string;
   namedPlace: NamedPlace;
 
   formData: any;
   loading = true;
   lang: string;
 
-  private formId: string;
+  private npFormId: string;
   private form$: Subscription;
 
   constructor(
@@ -29,7 +30,7 @@ export class NpEditComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.formId = this.appConfig.getNamedPlaceFormId();
+    this.npFormId = this.appConfig.getNamedPlaceFormId();
     this.fetchForm();
   }
 
@@ -45,7 +46,7 @@ export class NpEditComponent implements OnInit, OnChanges {
     }
     this.lang = this.translate.currentLang;
     this.form$ = this.formService
-      .load(this.formId, this.lang)
+      .load(this.npFormId, this.lang)
       .subscribe(
         data => {
           this.formData = data;
@@ -53,9 +54,17 @@ export class NpEditComponent implements OnInit, OnChanges {
         err => {
           this.loading = false;
           /*const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
-          this.translate.get(msgKey, {formId: this.formId})
+          this.translate.get(msgKey, {npFormId: this.npFormId})
             .subscribe(data => this.errorMsg = data);*/
         }
       );
+  }
+
+  populateForm() {
+    const np = this.namedPlaces[this.activeNP];
+
+    np.prepopulatedDocument ?
+      this.formService.populate(np.prepopulatedDocument) :
+      this.formService.populate({gatherings: [{geometry: {type: 'GeometryCollection', geometries: [np.geometry]}}]});
   }
 }

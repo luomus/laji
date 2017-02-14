@@ -335,6 +335,6 @@
   "viewer.field.observer": "Havainnoija",
   "viewer.field.time": "Aika",
   "np.title": "Nimetyt paikat",
-  "np.choose": "Valitse tämä paikka",
+  "np.use": "Käytä tätä paikkaa",
   "np.createNew": "Luo uusi"
 }

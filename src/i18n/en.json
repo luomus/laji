@@ -321,6 +321,6 @@
   "viewer.field.observer": "Observer",
   "viewer.field.time": "Time",
   "np.title": "Names places",
-  "np.choose": "Choose this place",
+  "np.use": "Use this place",
   "np.createNew": "Create new"
 }

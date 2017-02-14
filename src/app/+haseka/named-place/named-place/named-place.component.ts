@@ -84,12 +84,4 @@ export class NamedPlaceComponent implements OnInit {
   setActiveNP(idx: number) {
     this.activeNP = idx;
   }
-
-  populateForm() {
-    const np = this.namedPlaces[this.activeNP];
-
-    np.prepopulatedDocument ?
-      this.formService.populate(np.prepopulatedDocument) :
-      this.formService.populate({gatherings: [{geometry: {type: 'GeometryCollection', geometries: [np.geometry]}}]});
-  }
 }
