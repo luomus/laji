@@ -35,7 +35,7 @@
     "core-js": "^2.4.1",
     "ie-shim": "^0.1.0",
     "intl": "^1.2.5",
-    "laji-form": "0.0.135",
+    "laji-form": "0.0.136",
     "laji-map": "1.0.148",
     "ng2-bootstrap": "1.2.6",
     "ng2-select": "vixriihi/ng2-select.git#development",
