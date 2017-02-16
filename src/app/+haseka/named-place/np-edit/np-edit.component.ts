@@ -14,9 +14,11 @@ export class NpEditComponent implements OnInit, OnChanges {
   @Input() namedPlaces: NamedPlace[];
   @Input() activeNP = -1;
   @Input() formId: string;
-  namedPlace: NamedPlace;
 
+  namedPlace: NamedPlace;
   formData: any;
+
+  @Input() editMode = false;
   loading = true;
   lang: string;
 

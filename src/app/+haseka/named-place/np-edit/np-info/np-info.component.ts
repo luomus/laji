@@ -24,4 +24,8 @@ export class NpInfoComponent implements OnInit, OnChanges {
     this.fields = this.formData.schema.properties.namedPlace.items.properties;
     this.npProperties = Object.keys(this.namedPlace);
   }
+
+  editClick() {
+
+  }
 }

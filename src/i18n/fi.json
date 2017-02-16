@@ -336,5 +336,7 @@
   "viewer.field.time": "Aika",
   "np.title": "Nimetyt paikat",
   "np.use": "Käytä tätä paikkaa",
-  "np.createNew": "Luo uusi"
+  "np.edit": "Muokkaa",
+  "np.createNew": "Luo uusi",
+  "np.save": "Tallenna"
 }

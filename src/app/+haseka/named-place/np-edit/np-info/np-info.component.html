@@ -2,11 +2,14 @@
   <div class="panel-heading">
     <div class="panel-title">
       <span>{{namedPlace.name}}</span>
+      <div class="pull-right">
+        <button class="btn btn-sm btn-default" (click)="editClick()">{{'np.edit' | translate}}</button>
+      </div>
     </div>
   </div>
   <div class="panel-body">
     <div *ngFor="let p of npProperties">
-      <div *ngIf="fields[p] && p !== 'name' && p !== 'geometry'">
+      <div *ngIf="fields[p] && p !== 'name' && p !== 'geometry' && p !== 'editors' && p !== 'owners'">
         <laji-np-info-row [key]="p" [value]="namedPlace[p]" [fields]="fields"></laji-np-info-row>
       </div>
     </div>

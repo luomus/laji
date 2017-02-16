@@ -18,6 +18,8 @@ export class NamedPlaceComponent implements OnInit {
   namedPlaces: NamedPlace[];
   activeNP: number = -1;
 
+  editMode = false;
+
   private subParam: Subscription;
   private namedPlaces$: Observable<NamedPlace[]>;
 
@@ -83,5 +85,9 @@ export class NamedPlaceComponent implements OnInit {
 
   setActiveNP(idx: number) {
     this.activeNP = idx;
+  }
+
+  toEditMode() {
+    this.editMode = true;
   }
 }

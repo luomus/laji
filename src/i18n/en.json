@@ -322,5 +322,7 @@
   "viewer.field.time": "Time",
   "np.title": "Names places",
   "np.use": "Use this place",
-  "np.createNew": "Create new"
+  "np.edit": "Edit",
+  "np.createNew": "Create new",
+  "np.save": "Save"
 }
