@@ -49,6 +49,6 @@ export class SourceService {
 
   getName(id: string, lang) {
     return this.getAllAsLookUp(lang)
-      .map(data => data[id] && data[id].name || id );
+      .map(data => data[id] || id );
   }
 }

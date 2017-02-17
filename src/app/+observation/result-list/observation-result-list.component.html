@@ -27,7 +27,10 @@
         <tbody>
         <tr *ngFor="let row of result?.results">
           <td *ngFor="let column of userColumns">
-            <span *ngIf="row[column.field]" [innerHtml]="row[column.field]"></span>
+            <span *ngIf="row[column.field]">
+              <span *ngIf="!column.async" [innerHtml]="row[column.field]"></span>
+              <span *ngIf="column.async" [innerHtml]="row[column.field] | async"></span>
+            </span>
           </td>
           <td class="viewer-column">
             <button

@@ -12,6 +12,7 @@ import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { ModalDirective } from 'ng2-bootstrap';
+import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 
 interface Column {
   field: string;
@@ -19,6 +20,7 @@ interface Column {
   sort?: 'ASC' | 'DESC';
   visible: boolean;
   skip?: boolean;
+  async?: boolean;
   sortBy?: string | boolean;
 }
 
@@ -26,12 +28,12 @@ interface Column {
   selector: 'laji-observation-result-list',
   templateUrl: './observation-result-list.component.html',
   styleUrls: ['./observation-result-list.component.css'],
-  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe]
+  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe]
 })
 export class ObservationResultListComponent implements OnInit, OnDestroy {
   @ViewChild('documentModal') public modal: ModalDirective;
-  @SessionStorage() userColumns: Column[] = [];
-  @Input() showPager: boolean = true;
+  @SessionStorage() userColumns: Column[];
+  @Input() showPager = true;
   @Output() onSelect: EventEmitter<string> = new EventEmitter<string>();
 
   public columns: Column[] = [
@@ -43,21 +45,27 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     {field: 'gathering.team', visible: true, sortBy: false},
     {field: 'document.createdDate', visible: false, sortBy: false},
     {field: 'gathering.eventDate', visible: true, sortBy: 'gathering.eventDate.begin,gathering.eventDate.end'},
-    {field: 'gathering.country', visible: false, sortBy: false},
-    {field: 'gathering.biogeographicalProvince', visible: false, sortBy: false},
-    {field: 'gathering.municipality', visible: true, sortBy: false},
+    {field: 'gathering.interpretations.countryDisplayname', visible: false,
+      sortBy: 'gathering.interpretations.countryDisplayname', translation: 'result.gathering.country'},
+    {field: 'gathering.interpretations.biogeographicalProvinceDisplayname', visible: false,
+      sortBy: 'gathering.interpretations.biogeographicalProvinceDisplayname', translation: 'result.gathering.biogeographicalProvince'},
+    {field: 'gathering.interpretations.municipalityDisplayname', visible: true,
+      sortBy: 'gathering.interpretations.municipalityDisplayname', translation: 'observation.form.municipality'},
     {field: 'gathering.locality', visible: false},
     {field: 'gathering.conversions.ykj', visible: false, sortBy: false},
     {field: 'gathering.coordinatesVerbatim', visible: false, sortBy: false},
+    {field: 'unit.abundanceString', visible: false, sortBy: false},
+    {field: 'unit.interpretations.individualCount', visible: true, sortBy: false},
     {field: 'unit.lifeStage', visible: false, sortBy: false, translation: 'observation.form.lifeStage'},
     {field: 'unit.sex', visible: false, sortBy: false, translation: 'observation.form.sex'},
     {field: 'unit.recordBasis', visible: false, sortBy: false, translation: 'observation.filterBy.recordBasis'},
+    {field: 'document.collectionId', visible: false},
     {field: 'document.notes', visible: false},
     {field: 'document.documentId', visible: false, skip: true},
     {field: 'gathering.interpretations.coordinateAccuracy', visible: false, sortBy: false},
     {field: 'document.secureLevel', visible: false, sortBy: false},
-    {field: 'document.secureReasons', visible: false, sortBy: false}
-    // {field: 'document.sourceId', visible: false}
+    {field: 'document.secureReasons', visible: false, sortBy: false},
+    {field: 'document.sourceId', visible: false, async: true}
   ];
 
   public result: PagedResult<any>;
@@ -84,7 +92,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.userColumns.length === 0) {
+    if (!this.userColumns || this.userColumns.length === 0) {
       this.updateUserCols();
     }
     this.result = {

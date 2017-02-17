@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
+import { SourceService } from '../../shared/service/source.service';
+import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 
 @Injectable()
 export class ValueDecoratorService {
@@ -20,11 +22,18 @@ export class ValueDecoratorService {
     'unit.lifeStage': 'makeLabel',
     'unit.recordBasis': 'makeLabel',
     'document.secureReasons': 'makeLabelFromArray',
-    'document.sourceId': 'makeLabelFromFullUri',
+    'document.collectionId': 'makeCollectionName',
+    'document.sourceId': 'makeSourceName',
     'gathering.conversions.ykj': 'makeYkj'
   };
 
-  constructor(private datePipe: DatePipe, private labelPipe: LabelPipe, private toQNamePipe: ToQNamePipe) {
+  constructor(
+    private datePipe: DatePipe,
+    private labelPipe: LabelPipe,
+    private toQNamePipe: ToQNamePipe,
+    private source: SourceService,
+    private collectionName: CollectionNamePipe
+  ) {
   }
 
   public isDecoratable(field: string) {
@@ -62,6 +71,14 @@ export class ValueDecoratorService {
 
   protected makeLabelFromFullUri(value) {
     return this.makeLabel(this.toQNamePipe.transform(value));
+  }
+
+  protected makeCollectionName(value) {
+    return this.collectionName.transform(this.toQNamePipe.transform(value));
+  }
+
+  protected makeSourceName(value) {
+    return this.source.getName(this.toQNamePipe.transform(value), this.lang);
   }
 
   protected makeLabelFromArray(value) {

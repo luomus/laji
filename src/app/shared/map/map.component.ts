@@ -35,6 +35,13 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   @Input() initWithWorldMap = false;
   @Input() bringDrawLayerToBack = true;
   @Input() zoom = 1;
+  @Input() controlSettings: any = {
+    draw: false,
+    drawCopy: false,
+    drawClear: false,
+    coordinates: false,
+    coordinateInput: false
+  };
 
   @Output() select = new EventEmitter();
   @Output() onCreate = new EventEmitter();
@@ -56,16 +63,16 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   }
 
   ngOnInit() {
-    const controlSettings: any = {
-      draw: this.draw,
-      edit: false,
-      layers: true,
-      zoom: true,
-      coordinateInput: false,
-      location: false,
-    };
-    if (this.showLayers === false) {
-      controlSettings.layer = false;
+    const draw = this.draw;
+    if (this.draw) {
+      draw.onChange = draw.onChange || (e => this.onChange(e));
+      draw.getDraftStyle = draw.getDraftStyle || this.getDrawingDraftStyle;
+      draw.data = draw.data || this.drawData;
+      draw.editable = draw.editable !== false ? draw.editable : false;
+      draw.marker = draw.marker !== false ? draw.marker : false;
+      draw.polygon = draw.polygon !== false ? draw.polygon : false;
+      draw.polyline = draw.polyline !== false ? draw.polyline : false;
+      draw.hasActive = draw.hasActive !== true ? draw.hasActive : true;
     }
     this.map = new MapComponent.LajiMap({
       tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
@@ -73,26 +80,11 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
       center: this.center || [65, 26],
       lang: this.lang,
       data: [],
-      draw: this.draw === false ? false : {
-          data: this.drawData,
-          editable: false,
-          getDraftStyle: this.getDrawingDraftStyle,
-          onChange: e => this.onChange(e),
-          marker: false,
-          polygon: false,
-          polyline: false,
-          hasActive: true
-        },
+      draw: draw,
       markerPopupOffset: 5,
       featurePopupOffset: 0,
       rootElem: this.elemRef.nativeElement,
-      controlSettings: {
-        draw: false,
-        drawCopy: false,
-        drawClear: false,
-        coordinates: false,
-        coordinateInput: false
-      }
+      controlSettings: this.controlSettings
     });
     this.map.map.on('moveend', _ => {
       this.moveEvent('moveend');

@@ -14,7 +14,7 @@ import { TriplestoreLabelService } from '../service/triplestore-label.service';
   pure: false
 })
 export class LabelPipe implements PipeTransform, OnDestroy {
-  value: string = '';
+  value = '';
   lastKey: string;
   onLangChange: EventEmitter<LangChangeEvent>;
 
