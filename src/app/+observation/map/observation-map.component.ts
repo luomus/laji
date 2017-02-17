@@ -12,6 +12,7 @@ import 'leaflet';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { MapComponent } from '../../shared/map/map.component';
 import LatLngBounds = L.LatLngBounds;
+import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 
 const maxCoordinateAccuracy = 10000;
 
@@ -19,7 +20,7 @@ const maxCoordinateAccuracy = 10000;
   selector: 'laji-observation-map',
   templateUrl: './observation-map.component.html',
   styleUrls: ['./observation-map.component.css'],
-  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe]
+  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe]
 })
 export class ObservationMapComponent implements OnInit, OnChanges {
   @ViewChild(MapComponent) lajiMap: MapComponent;
