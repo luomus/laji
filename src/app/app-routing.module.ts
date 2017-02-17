@@ -14,6 +14,8 @@ const routes: Routes = [
   {path: 'observation', loadChildren: './+observation/observation.module#ObservationModule'},
   {path: 'taxon', loadChildren: './+taxonomy/taxonomy.module#TaxonomyModule'},
   {path: 'collection', loadChildren: './+collection/collection.module#CollectionModule'},
+  {path: 'kartta', loadChildren: './+map/map.module#MapModule'},
+  {path: 'map', loadChildren: './+map/map.module#MapModule'},
   {path: 'error', loadChildren: './+error/error.module#ErrorModule'},
   {path: '**', component: NotFoundComponent}
 ];
