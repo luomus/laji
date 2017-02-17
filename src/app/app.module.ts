@@ -50,7 +50,6 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
         useClass: TranslateFileLoader
       }
     }),
-    CoreModule,
     ToastModule.forRoot(),
     SharedModule.forRoot(),
     PaginationModule.forRoot(),
@@ -61,6 +60,7 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),
     Ng2Webstorage.forRoot({ prefix: 'laji-', separator: '' }),
+    CoreModule,
     AppRoutingModule,
     ViewerModule,
     BrowserModule
