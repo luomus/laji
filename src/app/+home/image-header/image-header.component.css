@@ -4,7 +4,7 @@
 
 .header-image {
   background-clip: border-box;
-  background: url(/static/images/bg3.jpg) center / cover;
+  background: url(https://cdn.laji.fi/images/backdrop/snow.jpg) center / cover;
 }
 
 .header-image, .carousel .item {

@@ -51,7 +51,8 @@
   "taxonomy.typesOfOccurrenceInFinland": "Type of occurrence",
   "taxonomy.redListStatus2010Finland": "Conservation status in Finland",
   "taxonomy.checklist": "Checklist",
-  "taxonomy.experts": "{experts, plural, one {Expert} other {Experts}}",
+  "taxonomy.expert": "Expert",
+  "taxonomy.experts": "Experts",
   "taxonomy.invasive.category": "Invasive category",
   "taxonomy.invasive.establishment": "Establishment",
   "taxonomy.invasive.phrase": "This species is",
@@ -319,5 +320,9 @@
   "viewer.hideFacts": "Hide extra info",
   "viewer.field.observer": "Observer",
   "viewer.field.time": "Time",
-  "np.title": "Names places"
+  "np.title": "Names places",
+  "np.use": "Use this place",
+  "np.edit": "Edit",
+  "np.createNew": "Create new",
+  "np.save": "Save"
 }

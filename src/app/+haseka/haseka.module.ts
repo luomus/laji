@@ -10,7 +10,6 @@ import {
   HaSeKaTermsOfServiceComponent
 } from './index';
 import { SharedModule } from '../shared/shared.module';
-import { LajiFormComponent } from '../shared/form/laji-form.component';
 import { AlertModule } from 'ng2-bootstrap';
 import { FormApi } from '../shared/api/FormApi';
 import { DocumentApi } from '../shared/api/DocumentApi';
@@ -20,7 +19,7 @@ import { NamedPlaceModule } from './named-place/named-place.module';
   imports: [routing, SharedModule, RouterModule, AlertModule, NamedPlaceModule],
   providers: [ FormApi, DocumentApi ],
   declarations: [HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
-    ShortDocumentComponent, HaSeKaFormComponent, LajiFormComponent, HaSeKaTermsOfServiceComponent]
+    ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent]
 })
 export class HasekaModule {
 }

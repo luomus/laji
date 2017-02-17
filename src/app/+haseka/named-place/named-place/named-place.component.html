@@ -1,6 +1,26 @@
-<div class="container">
-  <h1>
-    {{'np.title' | translate}}
-  </h1>
-  <laji-np-list [collectionId]="collectionId" [formId]="formId"></laji-np-list>
+<div class="container-fluid">
+  <only-logged>
+    <div class="container" out>
+      <h1>{{'haseka.title' | translate}}</h1>
+      <p>{{'haseka.pleaseLogin' | translate}}</p>
+    </div>
+    <div class="container" in>
+      <laji-spinner [spinning]="!namedPlaces" [overlay]="true"></laji-spinner>
+
+      <div [hidden]="!namedPlaces">
+        <h1>
+          {{'np.title' | translate}}
+        </h1>
+        <div class="row">
+          <div [ngClass]="editMode? 'hidden' : 'col-sm-6'">
+            <laji-np-choose [namedPlaces]="namedPlaces" (onActivePlaceChange)="setActiveNP($event)"></laji-np-choose>
+            <button class="btn btn-lg btn-default" (click)="toEditMode()">{{'np.createNew' | translate}}</button>
+          </div>
+          <div [ngClass]="editMode? 'col-sm-12' : 'col-sm-6'">
+            <laji-np-edit [editMode]="editMode" [formId]="formId" [namedPlaces]="namedPlaces" [activeNP]="activeNP"></laji-np-edit>
+          </div>
+        </div>
+      </div>
+    </div>
+  </only-logged>
 </div>

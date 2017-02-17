@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NamedPlaceApi } from '../../shared/api/NamedPlaceApi';
+import { NamedPlace } from '../../shared/model/NamedPlace';
 
 @Injectable()
 export class NamedPlacesService {
@@ -17,4 +18,11 @@ export class NamedPlacesService {
       );
   }
 
+  createNamedPlace(data: NamedPlace, userToken: string) {
+    return this.namedPlaceApi
+      .create(
+        data,
+        userToken
+      );
+  }
 }

@@ -67,6 +67,7 @@ import { NamedPlaceApi } from './api/NamedPlaceApi';
 import { FormService } from '../+haseka/form/form.service';
 import { FormApi } from './api/FormApi';
 import { DocumentApi } from './api/DocumentApi';
+import { LajiFormComponent } from './form/laji-form.component';
 
 
 @NgModule({
@@ -78,7 +79,7 @@ import { DocumentApi } from './api/DocumentApi';
     AreaNamePipe, CollectionNamePipe,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, ImageModalOverlayComponent,
-    AuthoritiesDirective, ImageComponent
+    AuthoritiesDirective, ImageComponent, LajiFormComponent
   ],
   imports: [
     ToastModule,
@@ -94,7 +95,7 @@ import { DocumentApi } from './api/DocumentApi';
   exports: [
     CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule,
     AreaNamePipe, NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe,
-    ToQNamePipe, ValuesPipe, CollectionNamePipe,
+    ToQNamePipe, ValuesPipe, CollectionNamePipe, LajiFormComponent,
     ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,

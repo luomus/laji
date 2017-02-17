@@ -55,7 +55,8 @@
   "taxonomy.typesOfOccurrenceInFinland": "Esiintymisen tyyppi",
   "taxonomy.redListStatus2010Finland": "Uhanalaisuus Suomessa",
   "taxonomy.checklist": "Lajiluettelo",
-  "taxonomy.experts": "{experts, plural, one {Asiantuntija} other {Asiantuntijat}}",
+  "taxonomy.expert": "Asiantuntija",
+  "taxonomy.experts": "Asiantuntijat",
   "taxonomy.invasive.category": "Haitallisuuskategoria",
   "taxonomy.invasive.establishment": "Vakiintuneisuus",
   "taxonomy.invasive.phrase": "Tämä laji on",
@@ -333,5 +334,9 @@
   "viewer.hideFacts": "Piilota lisämuuttujat",
   "viewer.field.observer": "Havainnoija",
   "viewer.field.time": "Aika",
-  "np.title": "Nimetyt paikat"
+  "np.title": "Nimetyt paikat",
+  "np.use": "Käytä tätä paikkaa",
+  "np.edit": "Muokkaa",
+  "np.createNew": "Luo uusi",
+  "np.save": "Tallenna"
 }

@@ -51,7 +51,8 @@
   "taxonomy.typesOfOccurrenceInFinland": "Typ av förekomst",
   "taxonomy.redListStatus2010Finland": "Rödlistekategori",
   "taxonomy.checklist": "Artlista",
-  "taxonomy.experts": "{experts, plural, one {Expert} other {Experter}}",
+  "taxonomy.expert": "Expert",
+  "taxonomy.experts": "Experter",
   "taxonomy.invasive.category": "Skadlighetskategori",
   "taxonomy.invasive.establishment": "Typ av förekomst",
   "taxonomy.invasive.phrase": "Denna art är",
@@ -319,5 +320,9 @@
   "viewer.hideFacts": "Göm extra info",
   "viewer.field.observer": "Göm extra info",
   "viewer.field.time": "Tid",
-  "np.title": "Namn på platser"
+  "np.title": "Namn på platser",
+  "np.use": "Använd denna plats",
+  "np.edit": "Redigera",
+  "np.createNew": "Skapa nu",
+  "np.save": "Spara"
 }

@@ -1,8 +1,9 @@
 <div class="container" *ngIf="taxon">
   <h1>
     {{taxon.vernacularName | multiLang}}
-    <span [class.cursive]="taxon.cursiveName">({{taxon.scientificName}})</span>
-    <small *ngIf="taxon.vernacularName">- {{ 'home.main-page.title' | translate }}</small>
+    <span *ngIf="taxon.vernacularName" [class.cursive]="taxon.cursiveName">({{taxon.scientificName}})</span>
+    <span *ngIf="!taxon.vernacularName" [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
+    <small>- {{ 'home.main-page.title' | translate }}</small>
   </h1>
   <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
   <div class="row">
