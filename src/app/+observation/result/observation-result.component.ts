@@ -4,9 +4,9 @@ import { SearchQuery } from '../search-query.model';
 import { IdService } from '../../shared/service/id.service';
 import { UserService } from '../../shared/service/user.service';
 import { ObservationFilterInterface } from '../filter/observation-filter.interface';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { ObservationMapComponent } from '../map/observation-map.component';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({

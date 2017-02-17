@@ -1,5 +1,5 @@
 import { PipeTransform, OnDestroy, EventEmitter } from '@angular/core';
-import { LangChangeEvent, TranslateService } from 'ng2-translate';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 
 export abstract class AbsractLabelPipe implements PipeTransform, OnDestroy {
   value: string = '';

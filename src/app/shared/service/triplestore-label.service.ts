@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { Injectable } from '@angular/core';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { MetadataApi } from '../api/MetadataApi';
 import { Logger } from '../logger/logger.service';
 import { MetadataService } from './metadata.service';

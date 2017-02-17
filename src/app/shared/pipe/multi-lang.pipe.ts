@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform, EventEmitter, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { TranslateService, LangChangeEvent } from 'ng2-translate';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 /**
  * Format a multi lang field to asked string
  * Takes object or string and returns it with lang code if the value wasn't active

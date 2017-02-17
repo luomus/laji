@@ -11,7 +11,7 @@ import {
   ModalModule,
   PopoverModule
 } from 'ng2-bootstrap';
-import { TranslateModule } from 'ng2-translate';
+import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { UsersPipe } from './pipe/users.pipe';

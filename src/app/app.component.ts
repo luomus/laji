@@ -39,7 +39,7 @@ export class AppComponent {
     toastr.setRootViewContainerRef(viewContainerRef);
     router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
-        let newRoute = location.path() || '/';
+        const newRoute = location.path() || '/';
         if (this.currentRoute !== newRoute) {
           if (newRoute.indexOf('/observation') !== 0) {
             windowRef.nativeWindow.scroll(0, 0);

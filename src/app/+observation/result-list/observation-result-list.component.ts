@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { ValueDecoratorService } from './value-decorator.sevice';
 import { SearchQuery } from '../search-query.model';
 import { Util } from '../../shared/service/util.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../shared/logger/logger.service';
 import { SessionStorage } from 'ng2-webstorage';
 import { LabelPipe } from '../../shared/pipe/label.pipe';

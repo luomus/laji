@@ -3,7 +3,7 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { LangSelectComponent } from './shared/navbar/lang-select.component';
 import { SharedModule } from './shared/shared.module';
-import { TranslateModule, TranslateLoader } from 'ng2-translate';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
 import { FeedbackComponent } from './shared/feedback/feedback.component';
 import { Logger, ConsoleLogger, HttpLogger } from './shared/logger/index';
@@ -28,6 +28,7 @@ import {
 import { CoreModule } from './shared/core.module';
 import { Ng2Webstorage } from 'ng2-webstorage';
 import { ViewerModule } from './+viewer/viewer.module';
+import { ToastModule } from '../../node_modules/ng2-toastr/src/toast.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): ILogger {
   const env = appConfig.getEnv();
@@ -44,10 +45,13 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
   ],
   imports: [
     TranslateModule.forRoot({
-      provide: TranslateLoader,
-      useClass: TranslateFileLoader
+      loader: {
+        provide: TranslateLoader,
+        useClass: TranslateFileLoader
+      }
     }),
     CoreModule,
+    ToastModule.forRoot(),
     SharedModule.forRoot(),
     PaginationModule.forRoot(),
     ModalModule.forRoot(),

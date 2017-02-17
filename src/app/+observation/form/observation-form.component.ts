@@ -5,7 +5,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { ObservationFilterInterface } from '../filter/observation-filter.interface';
 import { ObservationFormQuery } from './observation-form-query.interface';
 import { CollectionApi } from '../../shared/api/CollectionApi';

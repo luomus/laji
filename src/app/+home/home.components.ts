@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SearchQuery } from '../+observation/search-query.model';
 import { NewsApi } from '../shared/api/NewsApi';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-home',

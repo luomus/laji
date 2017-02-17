@@ -3,7 +3,7 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Util } from '../../shared/service/util.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { ValueDecoratorService } from '../result-list/value-decorator.sevice';
 import { Logger } from '../../shared/logger/logger.service';
 import { LabelPipe } from '../../shared/pipe/label.pipe';

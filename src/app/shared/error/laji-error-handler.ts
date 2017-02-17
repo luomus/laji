@@ -1,6 +1,6 @@
 import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { ToastsService } from '../service/toasts.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../logger/logger.service';
 
 const pauseBeforeResendError = 3000;

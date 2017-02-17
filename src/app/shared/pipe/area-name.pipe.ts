@@ -1,5 +1,5 @@
 import { Pipe, ChangeDetectorRef, PipeTransform } from '@angular/core';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { AreaService } from '../service/area.service';
 import { AbsractLabelPipe } from './abstract-label.pipe';
 

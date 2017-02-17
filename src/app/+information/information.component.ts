@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { TranslateService } from 'ng2-translate/ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../shared/logger/logger.service';
 import { InformationApi } from '../shared/api/InformationApi';
 import { Information } from '../shared/model/Information';

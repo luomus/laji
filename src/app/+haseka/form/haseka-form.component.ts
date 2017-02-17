@@ -10,7 +10,7 @@ import {
   HostListener,
   OnDestroy, AfterViewInit
 } from '@angular/core';
-import { TranslateService } from 'ng2-translate/ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentApi } from '../../shared/api/DocumentApi';

@@ -4,7 +4,7 @@ import { FeedbackApi } from '../api/FeedbackApi';
 import { UserService } from '../service/user.service';
 import { SessionStorage } from 'ng2-webstorage';
 import { ToastsService } from '../service/toasts.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
 
 @Component({
