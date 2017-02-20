@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 
 @Component({
@@ -9,6 +9,8 @@ import { NamedPlace } from '../../../../shared/model/NamedPlace';
 export class NpInfoComponent implements OnInit, OnChanges {
   @Input() namedPlace: NamedPlace;
   @Input() formData: any;
+
+  @Output() onEditButtonClick = new EventEmitter();
 
   fields: any;
   npProperties: any;
@@ -26,6 +28,6 @@ export class NpInfoComponent implements OnInit, OnChanges {
   }
 
   editClick() {
-
+    this.onEditButtonClick.emit();
   }
 }

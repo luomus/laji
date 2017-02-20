@@ -341,5 +341,6 @@
   "np.use": "Käytä tätä paikkaa",
   "np.edit": "Muokkaa",
   "np.createNew": "Luo uusi",
-  "np.save": "Tallenna"
+  "np.save": "Tallenna",
+  "np.form.success": "Paikka tallennettu!"
 }

@@ -69,7 +69,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
       }
 
       if (color) {
-        if (layer.feature.geometry.type === 'Point') {
+        if (layer.options.icon) {
           const icon = layer.options.icon;
           icon.options.markerColor = color;
           layer.setIcon(icon);

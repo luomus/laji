@@ -1,9 +1,13 @@
-import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { FooterService } from '../../../../shared/service/footer.service';
 import { LajiFormComponent } from '../../../../shared/form/laji-form.component';
 import { FormService } from '../../../form/form.service';
 import { UserService } from '../../../../shared/service/user.service';
 import { NamedPlacesService } from '../../named-places.service';
+import { NamedPlace } from '../../../../shared/model/NamedPlace';
+import { WindowRef } from '../../../../shared/windows-ref';
+import { ToastsService } from '../../../../shared/service/toasts.service';
 
 @Component({
   selector: 'laji-np-edit-form',
@@ -13,9 +17,15 @@ import { NamedPlacesService } from '../../named-places.service';
 export class NpEditFormComponent implements OnInit {
   @Input() lang: string;
   @Input() formData: any;
+  @Input() namedPlace: NamedPlace;
+  @Output() onEditReady = new EventEmitter<NamedPlace>();
+
   tick = 0;
   saving = false;
-  enablePrivate = false;
+  enablePrivate = true;
+
+  private hasChanges = false;
+  private public = false;
 
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
 
@@ -23,7 +33,10 @@ export class NpEditFormComponent implements OnInit {
     private footerService: FooterService,
     private formService: FormService,
     private  userService: UserService,
-    private namedPlaceService: NamedPlacesService
+    private namedPlaceService: NamedPlacesService,
+    private winRef: WindowRef,
+    private translate: TranslateService,
+    private toastsService: ToastsService
   ) { }
 
   ngOnInit() {
@@ -35,44 +48,83 @@ export class NpEditFormComponent implements OnInit {
   }
 
   onChange() {
-
+    this.hasChanges = true;
   }
 
   onSubmit(event) {
     this.saving = true;
     this.lajiForm.block();
-    let data = event.data.formData.namedPlace[0];
-    const keys = Object.keys(data);
+    let data = this.getNamedPlaceData(event);
 
-    for (let i in keys) {
-      let key = keys[i];
-      if (data[key] === undefined) {
-        delete data[key];
-      }
+    let result$;
+    if (this.namedPlace) {
+      result$ = this.namedPlaceService.updateNamedPlace(data.id, data, this.userService.getToken());
+    } else {
+      result$ = this.namedPlaceService.createNamedPlace(data, this.userService.getToken());
     }
-
-    let create$ = this.namedPlaceService.createNamedPlace(data, this.userService.getToken());
-
-    create$.subscribe(
+    
+    result$.subscribe(
       (result) => {
         this.lajiForm.unBlock();
-        console.log(result);
+        this.saving = false;
+        this.translate.get('np.form.success')
+          .subscribe(value => {
+            this.toastsService.showSuccess(value);
+          });
+        this.onEditReady.emit();
       },
       (err) => {
-        this.lajiForm.unBlock();
         console.log(err);
+        this.lajiForm.unBlock();
+        this.saving = false;
+        /*this.error = this.parseErrorMessage(err);
+        this.status = 'error';
+        setTimeout(() => {
+          if (this.status === 'error') {
+            this.status = '';
+          }
+        }, 5000);*/
       });
   }
 
   submitPublic() {
+    this.public = true;
     this.lajiForm.submit();
   }
 
   submitPrivate() {
-
+    this.public = false;
+    this.lajiForm.submit();
   }
 
   discard() {
+    this.translate.get('haseka.form.discardConfirm').subscribe(
+      (confirm) => {
+        if (!this.hasChanges) {
+          this.onEditReady.emit();
+        } else if (this.winRef.nativeWindow.confirm(confirm)) {
+          this.formService.discard();
+          this.onEditReady.emit();
+        }
+      }
+    );
+  }
 
+  private getNamedPlaceData(event) {
+    let formData = event.data.formData.namedPlace[0];
+    let data: NamedPlace = {'name': '', 'geometry': ''};
+
+    const keys = Object.keys(formData);
+
+    for (let i in keys) {
+      let key = keys[i];
+      if (formData[key] !== undefined && key !== 'geometryOnMap') {
+        data[key] = formData[key];
+      }
+    }
+    data['geometry'] = formData.geometryOnMap.geometries[0];
+    data['public'] = this.public;
+
+    return data;
   }
 }
