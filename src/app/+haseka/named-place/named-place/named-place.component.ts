@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlacesService } from '../named-places.service';
 import { FormService } from '../../form/form.service';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-named-place',
