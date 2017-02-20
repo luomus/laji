@@ -58,7 +58,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     private logger: Logger
   ) {
     if (!MapComponent.LajiMap) {
-      MapComponent.LajiMap = require('laji-map').default;
+      MapComponent.LajiMap = require('laji-map/lib/map').default;
     }
   }
 
