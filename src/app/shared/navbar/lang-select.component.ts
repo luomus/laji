@@ -8,11 +8,11 @@ import { CoreModule } from '../core.module';
   styleUrls: ['./lang-select.component.css'],
 })
 export class LangSelectComponent {
-  constructor(public translate: TranslateService) {
+  constructor(public translate: TranslateService, public coreModule: CoreModule) {
   }
 
   switchLang(lang) {
-    CoreModule.defaultLang = lang;
+    this.coreModule.defaultLang = lang;
     this.translate.use(lang);
   }
 }
