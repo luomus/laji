@@ -14,10 +14,14 @@
         <div class="row">
           <div [ngClass]="editMode? 'hidden' : 'col-sm-6'">
             <laji-np-choose [namedPlaces]="namedPlaces" (onActivePlaceChange)="setActiveNP($event)"></laji-np-choose>
-            <button class="btn btn-lg btn-default" (click)="toEditMode()">{{'np.createNew' | translate}}</button>
+            <button class="btn btn-lg btn-default" (click)="toEditMode(true)">{{'np.createNew' | translate}}</button>
           </div>
           <div [ngClass]="editMode? 'col-sm-12' : 'col-sm-6'">
-            <laji-np-edit [editMode]="editMode" [formId]="formId" [namedPlaces]="namedPlaces" [activeNP]="activeNP"></laji-np-edit>
+            <laji-np-edit [editMode]="editMode"
+                          [formId]="formId"
+                          [namedPlace]="namedPlace"
+                          (onEditButtonClick)="toEditMode(false)"
+                          (onEditReady)="toNormalMode()"></laji-np-edit>
           </div>
         </div>
       </div>

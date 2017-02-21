@@ -25,4 +25,13 @@ export class NamedPlacesService {
         userToken
       );
   }
+
+  updateNamedPlace(id: string, data: NamedPlace, userToken: string) {
+    return this.namedPlaceApi
+      .update(
+        id,
+        data,
+        userToken
+      );
+  }
 }
