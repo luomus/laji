@@ -327,5 +327,6 @@
   "np.use": "Använd denna plats",
   "np.edit": "Redigera",
   "np.createNew": "Skapa nu",
-  "np.save": "Spara"
+  "np.save": "Spara",
+  "np.form.success": "Plats sparat!"
 }

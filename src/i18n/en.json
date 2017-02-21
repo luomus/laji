@@ -327,5 +327,6 @@
   "np.use": "Use this place",
   "np.edit": "Edit",
   "np.createNew": "Create new",
-  "np.save": "Save"
+  "np.save": "Save",
+  "np.form.success": "Place saved!"
 }

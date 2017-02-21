@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { AppConfig } from '../../../app.config';
 import { FormService } from '../../form/form.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,14 +11,15 @@ import { NamedPlace } from '../../../shared/model/NamedPlace';
   styleUrls: ['./np-edit.component.css']
 })
 export class NpEditComponent implements OnInit, OnChanges {
-  @Input() namedPlaces: NamedPlace[];
-  @Input() activeNP = -1;
+  @Input() namedPlace: NamedPlace;
   @Input() formId: string;
 
-  namedPlace: NamedPlace;
   formData: any;
 
   @Input() editMode = false;
+  @Output() onEditButtonClick = new EventEmitter();
+  @Output() onEditReady = new EventEmitter();
+
   loading = true;
   lang: string;
 
@@ -37,9 +38,7 @@ export class NpEditComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.namedPlaces && this.activeNP >= 0) {
-      this.namedPlace = this.namedPlaces[this.activeNP];
-    }
+    this.setFormData();
   }
 
   fetchForm() {
@@ -62,8 +61,28 @@ export class NpEditComponent implements OnInit, OnChanges {
       );
   }
 
+  setFormData() {
+    if (!this.formData) return;
+
+    if (this.namedPlace) {
+      let npData = this.namedPlace;
+      npData['geometryOnMap'] = {type: 'GeometryCollection', geometries: [npData.geometry]};
+      this.formData.formData.namedPlace = [npData];
+    } else if ('namedPlace' in this.formData.formData){
+      delete this.formData.formData['namedPlace'];
+    }
+  }
+
+  editClick() {
+    this.onEditButtonClick.emit();
+  }
+
+  editReady() {
+    this.onEditReady.emit();
+  }
+
   populateForm() {
-    const np = this.namedPlaces[this.activeNP];
+    const np = this.namedPlace;
 
     np.prepopulatedDocument ?
       this.formService.populate(np.prepopulatedDocument) :

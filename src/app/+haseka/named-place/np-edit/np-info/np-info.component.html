@@ -9,7 +9,7 @@
   </div>
   <div class="panel-body">
     <div *ngFor="let p of npProperties">
-      <div *ngIf="fields[p] && p !== 'name' && p !== 'geometry' && p !== 'editors' && p !== 'owners'">
+      <div *ngIf="fields[p] && p !== 'name' && p !== 'geometry' && p !== 'editors' && p !== 'owners' && p !== 'geometryOnMap'">
         <laji-np-info-row [key]="p" [value]="namedPlace[p]" [fields]="fields"></laji-np-info-row>
       </div>
     </div>
