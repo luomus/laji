@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlacesService } from '../named-places.service';
-//import { NpChooseComponent} from '../np-choose/np-choose.component';
-import {Observable} from "rxjs";
+// import { NpChooseComponent} from '../np-choose/np-choose.component';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-named-place',
