@@ -11,12 +11,12 @@
         <h1>
           {{'np.title' | translate}}
         </h1>
-        <div class="row">
+        <div class="row np-row">
           <div [ngClass]="editMode? 'hidden' : 'col-sm-6'">
             <laji-np-choose [namedPlaces]="namedPlaces" (onActivePlaceChange)="setActiveNP($event)"></laji-np-choose>
             <button class="btn btn-lg btn-default" (click)="toEditMode(true)">{{'np.createNew' | translate}}</button>
           </div>
-          <div [ngClass]="editMode? 'col-sm-12' : 'col-sm-6'">
+          <div [ngClass]="editMode? 'col-sm-12 nav-margin' : 'col-sm-6 nav-margin'">
             <laji-np-edit [editMode]="editMode"
                           [formId]="formId"
                           [namedPlace]="namedPlace"

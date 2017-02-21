@@ -1,5 +1,13 @@
-.laji-form {
+.np-form {
   margin-bottom: 50px;
+}
+
+:host >>> .btn-toolbar {
+  display: none;
+}
+
+:host >>> .panel-group .btn-toolbar {
+  display: inherit;
 }
 
 .form-footer {
