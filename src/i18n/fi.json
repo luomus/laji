@@ -209,6 +209,7 @@
   "observation.active.individualCountMin": "Minimiyksilömäärä",
   "observation.active.finnish": "Suomalaisuus",
   "observation.active.hasMedia": "Kuva",
+  "observation.active.countryId ": "Maa",
   "observation.active.finnishMunicipalityId": "Kunta",
   "observation.active.biogeographicalProvinceId": "Eliömaakunta",
   "observation.download.specimenTitle": "Lajiluettelon lataus",

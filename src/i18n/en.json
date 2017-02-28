@@ -99,6 +99,7 @@
   "result.unit.abundanceString": "Amount",
   "result.unit.interpretations.individualCount": "Amount (interpreted)",
   "result.document.collectionId": "Collection",
+  "result.gathering.countryId": "Country",
   "result.gathering.biogeographicalProvince": "Biogeographical province",
   "result.gathering.conversions.ykj": "Finnish uniform grid",
   "result.gathering.coordinatesVerbatim": "Coordinates",
