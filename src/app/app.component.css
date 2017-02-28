@@ -33,3 +33,17 @@
 .slick-track {
   height: 80px;
 }
+
+/** for embedded page */
+
+:host >>> .embedded .map-wrap {
+  height: 100vh;
+}
+.embedded {
+  margin-top: -50px;
+}
+:host >>> .embedded .container, .embedded .container-fluid {
+  width: 100% !important;
+}
+
+/** /for embedded page */

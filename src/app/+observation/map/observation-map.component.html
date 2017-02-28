@@ -1,4 +1,4 @@
-<div class="observation-map" [ngStyle]="{height: height + 'px', width:'100%'}">
+<div class="observation-map" [ngStyle]="{height: height + 'px'}">
   <laji-map
           *ngIf="!reloading"
           [visible]="visible"
@@ -6,7 +6,7 @@
           [drawData]="drawData"
           [draw]="draw"
           [center]="center"
-          [showLayers]="showLayers"
+          [showControls]="showControls"
           (onCreate)="onCreate($event)"
           (onMove)="onMove($event)"
           (onFailure)="refreshMap()"

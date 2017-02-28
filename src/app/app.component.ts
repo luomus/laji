@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 import { InformationApi } from './shared/api/InformationApi';
 import { WindowRef } from './shared/windows-ref';
 import { AppConfig } from './app.config';
+import { environment } from '../environments/environment';
 
 declare const ga: Function;
 
@@ -24,6 +25,7 @@ export class AppComponent {
 
   public viewContainerRef: ViewContainerRef;
   public hasAnalytics = true;
+  public isEmbedded: boolean;
   private currentRoute: string;
 
   constructor(
@@ -36,6 +38,7 @@ export class AppComponent {
   ) {
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !appConfig.isAnalyticsDisabled();
+    this.isEmbedded = environment.isEmbedded || false;
     toastr.setRootViewContainerRef(viewContainerRef);
     router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {

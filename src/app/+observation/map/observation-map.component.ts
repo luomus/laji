@@ -39,10 +39,10 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() lastPage = 0; // 0 = no page limit
   @Input() draw: any = false;
   @Input() center: [number, number];
-  @Input() showLayers = true;
+  @Input() showControls = true;
   @Input() height: number;
   @Input() selectColor = '#00aa00';
-  @Input() color: any = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
+  @Input() color: any;
   @Input() showLoadMore = true;
   @Input() legend = false;
   @Input() colorThresholds = [10, 100, 1000, 10000]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
@@ -101,6 +101,9 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    if (!this.color) {
+      this.color = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
+    }
     this.lastQuery = JSON.stringify(this.query);
     this.updateMapData();
     this.initColorScale();

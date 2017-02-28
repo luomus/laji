@@ -7,7 +7,7 @@ import {
   EventEmitter,
   OnChanges,
   ViewChild,
-  OnInit
+  AfterViewInit
 } from '@angular/core';
 import { Logger } from '../logger/logger.service';
 import { MapService } from './map.service';
@@ -15,13 +15,14 @@ import { MapService } from './map.service';
 @Component({
   selector: 'laji-map',
   template: `
-<div style="width:100%; height: 100%; position: relative">
-  <div #map style="height:100%;width:100%"></div>
+<div class="laji-map-wrap" [ngClass]="{'no-controls': !showControls}">
+  <div #map class="laji-map"></div>
   <ng-content></ng-content>
 </div>`,
+  styleUrls: ['./map.component.css'],
   providers: []
 })
-export class MapComponent implements OnDestroy, OnChanges, OnInit {
+export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   private static LajiMap;
 
@@ -31,7 +32,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
   @Input() draw: any = false;
   @Input() lang = 'fi';
   @Input() center: [number, number];
-  @Input() showLayers = true;
+  @Input() showControls = true;
   @Input() initWithWorldMap = false;
   @Input() bringDrawLayerToBack = true;
   @Input() zoom = 1;
@@ -62,7 +63,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     }
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     const draw = this.draw;
     if (this.draw) {
       draw.onChange = draw.onChange || (e => this.onChange(e));
