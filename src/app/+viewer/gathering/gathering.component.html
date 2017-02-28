@@ -5,7 +5,6 @@
     <span *ngIf="gathering.eventDate.begin !== gathering.eventDate.end">
       {{gathering.eventDate.end | date:'dd.MM.yyyy'}}
     </span>
-    ({{'viewer.valueInterpreted' | translate}})
   </laji-row>
   <div *ngIf="gathering.interpretations">
     <laji-row [title]="'country'" [value]="gathering.interpretations.country | toQName | areaName"> <!-- ({{gathering.interpretations.sourceOfCountry| label}}) --></laji-row>
