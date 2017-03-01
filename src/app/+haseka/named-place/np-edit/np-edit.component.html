@@ -2,7 +2,11 @@
 <div *ngIf="formData">
   <div *ngIf="!editMode && namedPlace">
     <laji-np-info [namedPlace]="namedPlace" [formData]="formData" (onEditButtonClick)="editClick()"></laji-np-info>
-    <a [routerLink]="['/vihko/' + formId]" type="button" class="btn btn-lg btn-default" (click)="populateForm()">{{'np.use' | translate}}</a>
+    <a [routerLink]="['/vihko/' + formId]"
+       type="button"
+       class="btn btn-md btn-primary"
+       id="use-button"
+       (click)="populateForm()">{{'np.use' | translate}}</a>
   </div>
   <div *ngIf="editMode">
     <laji-np-edit-form [lang]="lang" [formData]="formData" [namedPlace]="namedPlace" (onEditReady)="editReady()"></laji-np-edit-form>

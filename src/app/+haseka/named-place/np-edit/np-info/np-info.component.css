@@ -1,8 +1,13 @@
-.np-info-header {
-  background-color: #e2e2e2;
+.np-info {
+  padding-bottom: 20px;
+  margin-bottom: 3px;
 }
 
-.np-info-header .panel-title {
-  height: 27px;
-  font-size: 16px;
+.np-info legend {
+  font-size: 15px;
+}
+
+.np-info button {
+  margin-bottom: 2px;
+  margin-top: -7px;
 }

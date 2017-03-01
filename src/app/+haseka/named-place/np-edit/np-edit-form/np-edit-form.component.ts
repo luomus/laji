@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, ViewChild, EventEmitter, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { FooterService } from '../../../../shared/service/footer.service';
 import { LajiFormComponent } from '../../../../shared/form/laji-form.component';
 import { FormService } from '../../../form/form.service';
 import { UserService } from '../../../../shared/service/user.service';
@@ -14,7 +13,7 @@ import { ToastsService } from '../../../../shared/service/toasts.service';
   templateUrl: './np-edit-form.component.html',
   styleUrls: ['./np-edit-form.component.css']
 })
-export class NpEditFormComponent implements OnInit, OnDestroy {
+export class NpEditFormComponent {
   @Input() lang: string;
   @Input() formData: any;
   @Input() namedPlace: NamedPlace;
@@ -30,7 +29,6 @@ export class NpEditFormComponent implements OnInit, OnDestroy {
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
 
   constructor(
-    private footerService: FooterService,
     private formService: FormService,
     private  userService: UserService,
     private namedPlaceService: NamedPlacesService,
@@ -38,14 +36,6 @@ export class NpEditFormComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private toastsService: ToastsService
   ) { }
-
-  ngOnInit() {
-    this.footerService.footerVisible = false;
-  }
-
-  ngOnDestroy() {
-    this.footerService.footerVisible = true;
-  }
 
   onChange() {
     this.hasChanges = true;

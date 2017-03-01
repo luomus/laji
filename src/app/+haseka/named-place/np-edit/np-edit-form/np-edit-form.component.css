@@ -2,14 +2,6 @@
   margin-bottom: 50px;
 }
 
-:host >>> .btn-toolbar {
-  display: none;
-}
-
-:host >>> .panel-group .btn-toolbar {
-  display: inherit;
-}
-
 .form-footer {
   position: fixed;
   bottom: 0;

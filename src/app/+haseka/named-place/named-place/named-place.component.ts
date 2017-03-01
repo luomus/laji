@@ -5,6 +5,7 @@ import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlacesService } from '../named-places.service';
 import { NpChooseComponent} from '../np-choose/np-choose.component';
 import { Observable } from 'rxjs/Observable';
+import { FooterService } from '../../../shared/service/footer.service';
 
 @Component({
   selector: 'laji-named-place',
@@ -28,7 +29,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private route: ActivatedRoute,
-    private namedPlaceService: NamedPlacesService
+    private namedPlaceService: NamedPlacesService,
+    private footerService: FooterService
   ) {}
 
   ngOnInit() {
@@ -38,6 +40,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     this.updateNP();
+    this.footerService.footerVisible = false;
   }
 
   ngOnChanges() {
@@ -48,6 +51,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
     if (this.subParam) {
       this.subParam.unsubscribe();
     }
+    this.footerService.footerVisible = true;
   }
 
   updateNP() {

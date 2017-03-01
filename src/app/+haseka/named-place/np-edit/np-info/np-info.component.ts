@@ -12,6 +12,8 @@ export class NpInfoComponent implements OnInit, OnChanges {
 
   @Output() onEditButtonClick = new EventEmitter();
 
+  hiddenProperties = ['geometry', 'geometryOnMap', 'editors', 'owners', 'collectionID'];
+
   fields: any;
   npProperties: any;
 
@@ -20,6 +22,10 @@ export class NpInfoComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.fields = this.formData.schema.properties.namedPlace.items.properties;
     this.npProperties = Object.keys(this.namedPlace);
+
+    for (let i = 0; i < this.npProperties.length; i++) {
+      let p = this.npProperties[i];
+    }
   }
 
   ngOnChanges() {

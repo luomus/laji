@@ -328,5 +328,6 @@
   "np.edit": "Redigera",
   "np.createNew": "Skapa nu",
   "np.save": "Spara",
+  "np.additionalInfo": "",
   "np.form.success": "Plats sparat!"
 }

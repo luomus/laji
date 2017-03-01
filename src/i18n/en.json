@@ -328,5 +328,6 @@
   "np.edit": "Edit",
   "np.createNew": "Create new",
   "np.save": "Save",
+  "np.additionalInfo": "Additional info",
   "np.form.success": "Place saved!"
 }
