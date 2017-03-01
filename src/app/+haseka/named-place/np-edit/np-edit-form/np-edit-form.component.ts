@@ -17,11 +17,13 @@ export class NpEditFormComponent {
   @Input() lang: string;
   @Input() formData: any;
   @Input() namedPlace: NamedPlace;
+  @Input() collectionId: string;
   @Output() onEditReady = new EventEmitter<NamedPlace>();
 
   tick = 0;
   saving = false;
-  enablePrivate = true;
+  enablePrivate = false;
+  error = '';
 
   private hasChanges = false;
   private public = false;
@@ -68,16 +70,15 @@ export class NpEditFormComponent {
         this.onEditReady.emit();
       },
       (err) => {
-        console.log(err);
         this.lajiForm.unBlock();
         this.saving = false;
-        /*this.error = this.parseErrorMessage(err);
-        this.status = 'error';
+        this.error = this.parseErrorMessage(err);
+
         setTimeout(() => {
-          if (this.status === 'error') {
-            this.status = '';
+          if (this.error) {
+            this.error = '';
           }
-        }, 5000);*/
+        }, 5000);
       });
   }
 
@@ -118,7 +119,26 @@ export class NpEditFormComponent {
     }
     data['geometry'] = formData.geometryOnMap.geometries[0];
     data['public'] = this.public;
+    data['collectionID'] = this.collectionId;
 
     return data;
+  }
+
+  private parseErrorMessage(err) {
+    let detail = 'Error! ', data;
+    if (err._body) {
+      try {
+        data = JSON.parse(err._body);
+
+        if (data.error) {
+          if (data.error.detail) {
+            detail = data.error.detail;
+          } else if (data.error.message) {
+            detail += data.error.message;
+          }
+        }
+      } catch (e) {}
+    }
+    return detail;
   }
 }

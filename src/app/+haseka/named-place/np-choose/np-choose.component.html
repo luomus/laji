@@ -1,4 +1,4 @@
-<div *ngIf="namedPlaces" class="full-height">
+<div *ngIf="namedPlaces" [ngClass]="{'full-height': active === 'map'}">
   <div>
     <ul class="nav nav-tabs nav-justified">
       <li role="presentation" [ngClass]="{active: active === 'list'}">
@@ -21,5 +21,9 @@
                  (onActivePlaceChange)="setActiveNP($event)"
                  class="full-height"></laji-np-map>
   </div>
+
+  <button class="btn btn-md btn-default"
+          id="create-new-button"
+          (click)="createButtonClick()">{{'np.createNew' | translate}}</button>
 </div>
 <!--a [routerLink]="" class="btn btn-lg btn-default">{{'np.createNew' | translate}}</a-->

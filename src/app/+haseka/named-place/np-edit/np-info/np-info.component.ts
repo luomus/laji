@@ -12,7 +12,7 @@ export class NpInfoComponent implements OnInit, OnChanges {
 
   @Output() onEditButtonClick = new EventEmitter();
 
-  hiddenProperties = ['geometry', 'geometryOnMap', 'editors', 'owners', 'collectionID'];
+  hiddenProperties = ['geometry', 'geometryOnMap'];
 
   fields: any;
   npProperties: any;

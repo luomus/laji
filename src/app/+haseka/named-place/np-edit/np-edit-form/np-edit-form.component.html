@@ -14,22 +14,9 @@
       <div class="col-xs-3 col-sm-2">
         <button *ngIf="enablePrivate" class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPrivate()">{{'haseka.form.savePrivate'|translate}}</button>
       </div>
-      <!--div class="col-xs-3 col-sm-6 form-control-static info" [ngSwitch]="status">
-        <div *ngSwitchCase="'success'" class="success status">
-          {{'haseka.form.success'|translate}}
-        </div>
-        <div *ngSwitchCase="'error'" class="error status">
-          {{'haseka.form.error' | translate}}
-        </div>
-        <div *ngSwitchCase="'unsaved'" class="unsaved status">
-                <span *ngIf="form.formData.dateEdited">
-                  {{'haseka.form.unsaved' | translate:{saveTime: form.formData.dateEdited | date:'d.M.y HH:mm'} }}
-                </span>
-          <span *ngIf="!form.formData.dateEdited">
-                  {{'haseka.form.unsavedNever' | translate}}
-                </span>
-        </div>
-      </div-->
+      <div class="col-xs-3 col-sm-6 form-control-static">
+        <span class="error">{{error}}</span>
+      </div>
       <div class="col-xs-3 col-sm-2">
         <button class="btn btn-default pull-right" [disabled]="saving" type="submit" (click)="discard()">{{'haseka.form.back'|translate}}</button>
       </div>

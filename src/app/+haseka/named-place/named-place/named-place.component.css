@@ -35,9 +35,3 @@
 #choose-container laji-np-choose {
   flex: 10;
 }
-
-#choose-container button {
-  flex: 0 1 auto;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}

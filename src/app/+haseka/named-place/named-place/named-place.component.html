@@ -15,12 +15,13 @@
           <div [ngClass]="editMode? 'hidden' : 'col-sm-6 full-height'" id="choose-container">
             <laji-np-choose [namedPlaces]="namedPlaces"
                             (onActivePlaceChange)="setActiveNP($event)"
+                            (onCreateButtonClick)="toEditMode(true)"
                             class="full-height"></laji-np-choose>
-            <button class="btn btn-md btn-default" (click)="toEditMode(true)">{{'np.createNew' | translate}}</button>
           </div>
           <div [ngClass]="editMode? 'col-sm-12 nav-margin' : 'col-sm-6 nav-margin'">
             <laji-np-edit [editMode]="editMode"
                           [formId]="formId"
+                          [collectionId]="collectionId"
                           [namedPlace]="namedPlace"
                           (onEditButtonClick)="toEditMode(false)"
                           (onEditReady)="toNormalMode()"></laji-np-edit>

@@ -13,6 +13,7 @@ import { NamedPlace } from '../../../shared/model/NamedPlace';
 export class NpEditComponent implements OnInit, OnChanges {
   @Input() namedPlace: NamedPlace;
   @Input() formId: string;
+  @Input() collectionId: string;
 
   formData: any;
 
