@@ -7,13 +7,14 @@ import { NamedPlacesService } from '../../named-places.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { WindowRef } from '../../../../shared/windows-ref';
 import { ToastsService } from '../../../../shared/service/toasts.service';
+import { Form } from '../../../../shared/model/FormListInterface';
 
 @Component({
   selector: 'laji-np-edit-form',
   templateUrl: './np-edit-form.component.html',
   styleUrls: ['./np-edit-form.component.css']
 })
-export class NpEditFormComponent {
+export class NpEditFormComponent implements OnInit {
   @Input() lang: string;
   @Input() formData: any;
   @Input() namedPlace: NamedPlace;
@@ -38,6 +39,10 @@ export class NpEditFormComponent {
     private translate: TranslateService,
     private toastsService: ToastsService
   ) { }
+
+  ngOnInit() {
+    this.enablePrivate = !this.formData.features || this.formData.features.indexOf(Form.Feature.NoPrivate) === -1;
+  }
 
   onChange() {
     this.hasChanges = true;

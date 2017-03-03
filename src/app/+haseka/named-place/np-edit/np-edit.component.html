@@ -9,7 +9,8 @@
        (click)="populateForm()">{{'np.use' | translate}}</a>
   </div>
   <div *ngIf="editMode">
-    <laji-np-edit-form [lang]="lang"
+    <laji-np-edit-form *ngIf="formData"
+                       [lang]="lang"
                        [formData]="formData"
                        [namedPlace]="namedPlace"
                        [collectionId]="collectionId"
