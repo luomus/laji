@@ -21,10 +21,10 @@ export class NpEditComponent implements OnInit, OnChanges {
   @Output() onEditButtonClick = new EventEmitter();
   @Output() onEditReady = new EventEmitter();
 
-  loading = true;
   lang: string;
 
   private npFormId: string;
+  private npform$: Subscription;
   private form$: Subscription;
 
   constructor(
@@ -51,13 +51,28 @@ export class NpEditComponent implements OnInit, OnChanges {
       .load(this.npFormId, this.lang)
       .subscribe(
         data => {
-          this.formData = data;
+          this.setData(data);
         },
         err => {
-          this.loading = false;
           /*const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
           this.translate.get(msgKey, {npFormId: this.npFormId})
             .subscribe(data => this.errorMsg = data);*/
+        }
+      );
+  }
+
+  setData(data) {
+    const drawData$ = this.formService
+      .getFormDrawData(this.formId, this.lang)
+      .subscribe(
+        drawData => {
+          if (drawData) {
+            data['uiSchema']['namedPlace']['ui:options']['draw'] = drawData;
+          }
+          this.formData = data;
+        },
+        err => {
+          // console.log(err);
         }
       );
   }
@@ -71,7 +86,7 @@ export class NpEditComponent implements OnInit, OnChanges {
       const npData = this.namedPlace;
       npData['geometryOnMap'] = {type: 'GeometryCollection', geometries: [npData.geometry]};
       this.formData.formData.namedPlace = [npData];
-    } else if ('namedPlace' in this.formData.formData){
+    } else if ('namedPlace' in this.formData.formData) {
       delete this.formData.formData['namedPlace'];
     }
   }

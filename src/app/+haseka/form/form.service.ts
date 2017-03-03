@@ -170,12 +170,12 @@ export class FormService {
           this.formCache[formId] = schema;
         });
     const data$ = documentId ?
-        this.getUserId().switchMap(userID => {
-          return this.isTmpId(documentId) && this.formDataStorage[userID][documentId] ?
-            Observable.of(this.formDataStorage[userID][documentId]) :
-            this.documentApi.findById(documentId, this.userService.getToken());
-        }) :
-        this.userService.getDefaultFormData();
+      this.getUserId().switchMap(userID => {
+        return this.isTmpId(documentId) && this.formDataStorage[userID][documentId] ?
+          Observable.of(this.formDataStorage[userID][documentId]) :
+          this.documentApi.findById(documentId, this.userService.getToken());
+      }) :
+      this.userService.getDefaultFormData();
 
     return data$
       .do(data => this.setCurrentData(data))
@@ -205,6 +205,15 @@ export class FormService {
       this.formApi.formFindAll(this.currentLang)
         .map((forms) => forms.results.filter(form => this.appConfig.isFormAllowed(form.id)))
         .do((forms) => this.allForms = forms);
+  }
+
+  getFormDrawData(formId: string, lang: string): Observable<any> {
+    return this.getForm(formId, lang)
+      .switchMap(data => {
+        const obj = Observable.of(this.getObjectByKey(data.uiSchema, 'draw'));
+        return obj;
+      }
+    );
   }
 
   populate(data: any) {
@@ -278,4 +287,24 @@ export class FormService {
     );
   }
 
+  private getObjectByKey (obj, key) {
+    let foundObject = null;
+
+    for (const i in obj) {
+      if (!obj.hasOwnProperty(i) || typeof  obj[i] !== 'object') {
+        continue;
+      }
+
+      if (i === key) {
+        foundObject = obj[i];
+      } else if (typeof obj[i] === 'object') {
+        foundObject = this.getObjectByKey(obj[i], key);
+      }
+
+      if (foundObject !== null) {
+        break;
+      }
+    }
+    return foundObject;
+  }
 }
