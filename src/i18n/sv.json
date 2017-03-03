@@ -328,6 +328,8 @@
   "np.edit": "Redigera",
   "np.createNew": "Skapa nu",
   "np.save": "Spara",
+  "np.list": "Lista",
+  "np.map": "Karta",
   "np.additionalInfo": "Ytterligare information",
   "np.form.success": "Plats sparat!"
 }

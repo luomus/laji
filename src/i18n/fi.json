@@ -342,6 +342,8 @@
   "np.edit": "Muokkaa",
   "np.createNew": "Luo uusi",
   "np.save": "Tallenna",
+  "np.list": "Lista",
+  "np.map": "Kartta",
   "np.additionalInfo": "Lisätietoa paikasta",
   "np.form.success": "Paikka tallennettu!"
 }

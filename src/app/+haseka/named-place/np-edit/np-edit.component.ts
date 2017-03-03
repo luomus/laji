@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { AppConfig } from '../../../app.config';
 import { FormService } from '../../form/form.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,7 +10,7 @@ import { NamedPlace } from '../../../shared/model/NamedPlace';
   templateUrl: './np-edit.component.html',
   styleUrls: ['./np-edit.component.css']
 })
-export class NpEditComponent implements OnInit, OnChanges {
+export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() namedPlace: NamedPlace;
   @Input() formId: string;
   @Input() collectionId: string;
@@ -24,8 +24,8 @@ export class NpEditComponent implements OnInit, OnChanges {
   lang: string;
 
   private npFormId: string;
-  private npform$: Subscription;
   private form$: Subscription;
+  private translation$: Subscription;
 
   constructor(
     private appConfig: AppConfig,
@@ -36,10 +36,35 @@ export class NpEditComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.npFormId = this.appConfig.getNamedPlaceFormId();
     this.fetchForm();
+    this.translation$ = this.translate.onLangChange.subscribe(
+      () => this.onLangChange()
+    );
+  }
+
+  ngOnDestroy() {
+    if (this.form$) {
+      this.form$.unsubscribe();
+    }
+    this.translation$.unsubscribe();
   }
 
   ngOnChanges() {
     this.setFormData();
+  }
+
+  onLangChange() {
+    if (this.form$) {
+      this.form$.unsubscribe();
+    }
+    const data = this.formData.formData;
+    this.formData = null;
+    this.form$ = this.formService
+      .getForm(this.npFormId, this.translate.currentLang)
+      .subscribe(form => {
+        form['formData'] = data;
+        this.lang = this.translate.currentLang;
+        this.formData = form;
+      });
   }
 
   fetchForm() {
