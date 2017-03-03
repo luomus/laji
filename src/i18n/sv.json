@@ -331,5 +331,8 @@
   "np.list": "Lista",
   "np.map": "Karta",
   "np.additionalInfo": "Ytterligare information",
-  "np.form.success": "Plats sparat!"
+  "np.form.success": "Plats sparat!",
+  "np.country": "Land",
+  "np.municipality": "Grevskap",
+  "np.biogeographicalProvince": "Biogeografiskt provins"
 }

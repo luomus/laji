@@ -345,5 +345,8 @@
   "np.list": "Lista",
   "np.map": "Kartta",
   "np.additionalInfo": "Lisätietoa paikasta",
-  "np.form.success": "Paikka tallennettu!"
+  "np.form.success": "Paikka tallennettu!",
+  "np.country": "Maa",
+  "np.municipality": "Kunta",
+  "np.biogeographicalProvince": "Eliömaakunta"
 }

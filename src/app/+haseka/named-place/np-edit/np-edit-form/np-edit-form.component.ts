@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter, ContentChildren } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiFormComponent } from '../../../../shared/form/laji-form.component';
 import { FormService } from '../../../form/form.service';
@@ -26,10 +26,13 @@ export class NpEditFormComponent implements OnInit {
   enablePrivate = false;
   error = '';
 
+  areaInfoVisible = true;
+
   private hasChanges = false;
   private public = false;
 
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
+  @ContentChildren(LajiFormComponent) lajiFormChildren;
 
   constructor(
     private formService: FormService,
