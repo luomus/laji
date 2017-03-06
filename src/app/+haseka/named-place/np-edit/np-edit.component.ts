@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../../shared/service/user.service';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
+import { Util } from '../../../shared/service/util.service';
 
 @Component({
   selector: 'laji-np-edit',
@@ -88,8 +89,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
         },
         err => {
           /*const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
-          this.translate.get(msgKey, {npFormId: this.npFormId})
-            .subscribe(data => this.errorMsg = data);*/
+           this.translate.get(msgKey, {npFormId: this.npFormId})
+           .subscribe(data => this.errorMsg = data);*/
         }
       );
   }
@@ -116,8 +117,20 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (this.namedPlace) {
-      const npData = this.namedPlace;
+      const npData = Util.clone(this.namedPlace);
+
       npData['geometryOnMap'] = {type: 'GeometryCollection', geometries: [npData.geometry]};
+
+      if (npData.prepopulatedDocument && npData.prepopulatedDocument.gatherings && npData.prepopulatedDocument.gatherings.length > 0) {
+        const gathering = npData.prepopulatedDocument.gatherings[0];
+        if (gathering.locality) {
+          npData['locality'] = gathering.locality;
+        }
+        if (gathering.localityDescription) {
+          npData['localityDescription'] = gathering.localityDescription;
+        }
+      }
+
       this.formData.formData.namedPlace = [npData];
     } else if ('namedPlace' in this.formData.formData) {
       delete this.formData.formData['namedPlace'];
@@ -135,17 +148,23 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   populateForm() {
     const np = this.namedPlace;
 
-    np.prepopulatedDocument ?
-      this.formService.populate(np.prepopulatedDocument) :
-      this.formService.populate({gatherings: [{geometry: {type: 'GeometryCollection', geometries: [np.geometry]}}]});
+    const populate: any = np.prepopulatedDocument ? np.prepopulatedDocument : {};
+
+    if (!populate.gatherings || populate.gatherings.length <= 0) {
+      populate['gatherings'] = [{}];
+    }
+
+    populate.gatherings[0]['geometry'] = {type: 'GeometryCollection', geometries: [np.geometry]};
+
+    this.formService.populate(populate);
   }
 
   private setButtonVisibilities() {
     if (this.namedPlace) {
       this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(this.userId) !== -1);
       this.useButtonVisible = (this.namedPlace.public ||
-        (this.namedPlace.owners && this.namedPlace.owners.indexOf(this.userId) !== -1) ||
-        (this.namedPlace.editors && this.namedPlace.editors.indexOf(this.userId) !== -1));
+      (this.namedPlace.owners && this.namedPlace.owners.indexOf(this.userId) !== -1) ||
+      (this.namedPlace.editors && this.namedPlace.editors.indexOf(this.userId) !== -1));
     }
   }
 }

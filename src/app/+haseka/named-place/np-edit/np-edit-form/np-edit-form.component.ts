@@ -123,6 +123,8 @@ export class NpEditFormComponent implements OnInit {
   }
 
   private getNamedPlaceData(event) {
+    const filteredKeys = ['geometryOnMap', 'locality', 'localityDescription'];
+
     const formData = event.data.formData.namedPlace[0];
     const data: NamedPlace = {'name': '', 'geometry': ''};
 
@@ -130,7 +132,7 @@ export class NpEditFormComponent implements OnInit {
 
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
-      if (formData[key] !== undefined && key !== 'geometryOnMap') {
+      if (formData[key] !== undefined && filteredKeys.indexOf(key) === -1) {
         data[key] = formData[key];
       }
     }
@@ -138,7 +140,26 @@ export class NpEditFormComponent implements OnInit {
     data['public'] = this.public;
     data['collectionID'] = this.collectionId;
 
+    this.localityToPrepopulatedDocument(data, formData);
     return data;
+  }
+
+  private localityToPrepopulatedDocument(data, formData) {
+    if (formData.locality || formData.localityDescription) {
+      data['prepopulatedDocument'] = this.namedPlace.prepopulatedDocument ? this.namedPlace.prepopulatedDocument : {};
+
+      if (!data.prepopulatedDocument.gatherings || data.prepopulatedDocument.gatherings.length <= 0) {
+        data.prepopulatedDocument['gatherings'] = [{}];
+      }
+
+      if (formData.locality) {
+        data.prepopulatedDocument.gatherings[0]['locality'] = formData.locality;
+      }
+
+      if (formData.localityDescription) {
+        data.prepopulatedDocument.gatherings[0]['localityDescription'] = formData.localityDescription;
+      }
+    }
   }
 
   private parseErrorMessage(err) {
