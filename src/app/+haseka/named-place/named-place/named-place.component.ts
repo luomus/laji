@@ -1,5 +1,6 @@
 import { Component, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlacesService } from '../named-places.service';
@@ -22,6 +23,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
 
   editMode = false;
 
+  errorMsg = '';
+
   private subParam: Subscription;
   private namedPlaces$: Observable<NamedPlace[]>;
 
@@ -30,7 +33,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private route: ActivatedRoute,
     private namedPlaceService: NamedPlacesService,
-    private footerService: FooterService
+    private footerService: FooterService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
@@ -68,6 +72,11 @@ export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
           } else {
             this.namedPlace = null;
           }
+        },
+        err => {
+          const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
+          this.translate.get(msgKey, {formId: this.formId})
+            .subscribe(data => this.setErrorMessage(data));
         }
       );
     }
@@ -93,5 +102,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
   toNormalMode() {
     this.updateNP();
     this.editMode = false;
+  }
+
+  setErrorMessage(msg) {
+    this.errorMsg = msg;
   }
 }

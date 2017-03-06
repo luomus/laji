@@ -26,6 +26,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() editMode = false;
   @Output() onEditButtonClick = new EventEmitter();
   @Output() onEditReady = new EventEmitter();
+  @Output() onError = new EventEmitter();
 
   lang: string;
 
@@ -88,9 +89,9 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
           this.setData(data);
         },
         err => {
-          /*const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
-           this.translate.get(msgKey, {npFormId: this.npFormId})
-           .subscribe(data => this.errorMsg = data);*/
+          const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
+           this.translate.get(msgKey, {formId: this.npFormId})
+           .subscribe(msg => this.onError.emit(msg));
         }
       );
   }
@@ -106,7 +107,9 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
           this.formData = data;
         },
         err => {
-          // console.log(err);
+          const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
+          this.translate.get(msgKey, {formId: this.formId})
+            .subscribe(msg => this.onError.emit(msg));
         }
       );
   }
