@@ -1,0 +1,8 @@
+.np-row [class^="col-"] {
+  padding-right: 1px;
+  padding-left: 1px;
+}
+
+.nav-margin {
+  margin-top: 42px;
+}

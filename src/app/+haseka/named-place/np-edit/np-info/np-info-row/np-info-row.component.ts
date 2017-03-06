@@ -24,9 +24,9 @@ export class NpInfoRowComponent implements OnInit, OnChanges {
 
   updateValueName() {
     const prop = this.fields[this.key];
-    if ("enum" in prop) {
-      const idx = prop["enum"].indexOf(this.value);
-      this.nameOfValue = prop["enumNames"][idx];
+    if ('enum' in prop) {
+      const idx = prop['enum'].indexOf(this.value);
+      this.nameOfValue = prop['enumNames'][idx];
     } else {
       this.nameOfValue = this.value;
     }

@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlacesService } from '../named-places.service';
-// import { NpChooseComponent} from '../np-choose/np-choose.component';
+import { NpChooseComponent} from '../np-choose/np-choose.component';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: './named-place.component.html',
   styleUrls: ['./named-place.component.css']
 })
-export class NamedPlaceComponent implements OnInit {
+export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
   formId;
   collectionId;
 
@@ -24,7 +24,7 @@ export class NamedPlaceComponent implements OnInit {
   private subParam: Subscription;
   private namedPlaces$: Observable<NamedPlace[]>;
 
-  //@ViewChild(NpChooseComponent) chooseView: NpChooseComponent;
+  @ViewChild(NpChooseComponent) chooseView: NpChooseComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -59,24 +59,29 @@ export class NamedPlaceComponent implements OnInit {
       this.namedPlaces$.subscribe(
         data => {
           this.namedPlaces = data;
-          if (this.activeNP) {
+          if (this.activeNP >= 0) {
             this.namedPlace = this.namedPlaces[this.activeNP];
+          } else {
+            this.namedPlace = null;
           }
         }
-      )
+      );
     }
   }
 
   setActiveNP(idx: number) {
     this.activeNP = idx;
-    this.namedPlace = this.namedPlaces[this.activeNP];
+    if (this.activeNP >= 0) {
+      this.namedPlace = this.namedPlaces[this.activeNP];
+    } else {
+      this.namedPlace = null;
+    }
   }
 
   toEditMode(create: boolean) {
-    /*if (create) {
-      this.activeNP = -1;
-      this.namedPlace = null;
-    }*/
+    if (create) {
+      this.chooseView.setActiveNP(-1);
+    }
 
     this.editMode = true;
   }

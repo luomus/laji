@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { FooterService } from '../../../../shared/service/footer.service';
 import { LajiFormComponent } from '../../../../shared/form/laji-form.component';
@@ -14,7 +14,7 @@ import { ToastsService } from '../../../../shared/service/toasts.service';
   templateUrl: './np-edit-form.component.html',
   styleUrls: ['./np-edit-form.component.css']
 })
-export class NpEditFormComponent implements OnInit {
+export class NpEditFormComponent implements OnInit, OnDestroy {
   @Input() lang: string;
   @Input() formData: any;
   @Input() namedPlace: NamedPlace;
@@ -52,9 +52,13 @@ export class NpEditFormComponent implements OnInit {
   }
 
   onSubmit(event) {
+    if (!('namedPlace' in event.data.formData)) {
+      this.lajiForm.unBlock();
+      return;
+    }
     this.saving = true;
     this.lajiForm.block();
-    let data = this.getNamedPlaceData(event);
+    const data = this.getNamedPlaceData(event);
 
     let result$;
     if (this.namedPlace) {
@@ -62,7 +66,7 @@ export class NpEditFormComponent implements OnInit {
     } else {
       result$ = this.namedPlaceService.createNamedPlace(data, this.userService.getToken());
     }
-    
+
     result$.subscribe(
       (result) => {
         this.lajiForm.unBlock();
@@ -111,13 +115,13 @@ export class NpEditFormComponent implements OnInit {
   }
 
   private getNamedPlaceData(event) {
-    let formData = event.data.formData.namedPlace[0];
-    let data: NamedPlace = {'name': '', 'geometry': ''};
+    const formData = event.data.formData.namedPlace[0];
+    const data: NamedPlace = {'name': '', 'geometry': ''};
 
     const keys = Object.keys(formData);
 
-    for (let i in keys) {
-      let key = keys[i];
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
       if (formData[key] !== undefined && key !== 'geometryOnMap') {
         data[key] = formData[key];
       }

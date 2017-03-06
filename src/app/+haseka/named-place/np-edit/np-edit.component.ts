@@ -62,10 +62,12 @@ export class NpEditComponent implements OnInit, OnChanges {
   }
 
   setFormData() {
-    if (!this.formData) return;
+    if (!this.formData) {
+      return;
+    }
 
     if (this.namedPlace) {
-      let npData = this.namedPlace;
+      const npData = this.namedPlace;
       npData['geometryOnMap'] = {type: 'GeometryCollection', geometries: [npData.geometry]};
       this.formData.formData.namedPlace = [npData];
     } else if ('namedPlace' in this.formData.formData){

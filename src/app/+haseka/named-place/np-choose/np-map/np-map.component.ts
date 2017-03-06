@@ -62,9 +62,9 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
 
     geojsonLayer.eachLayer(function (layer) {
       let color = null;
-      if(layer.feature.properties.lajiMapIdx == newActive) {
+      if (layer.feature.properties.lajiMapIdx === newActive) {
         color = '#007700';
-      } else if (oldActive && layer.feature.properties.lajiMapIdx == oldActive) {
+      } else if (layer.feature.properties.lajiMapIdx === oldActive) {
         color = '#00aa00';
       }
 
@@ -90,7 +90,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
     try {
       this._data = {
         getFeatureStyle: (o) => {
-          if (this.activeNP == o.feature.properties.lajiMapIdx) {
+          if (this.activeNP === o.feature.properties.lajiMapIdx) {
             return {
               weight: 5,
               opacity: 1,
