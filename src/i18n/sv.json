@@ -330,5 +330,11 @@
   "np.edit": "Redigera",
   "np.createNew": "Skapa nu",
   "np.save": "Spara",
-  "np.form.success": "Plats sparat!"
+  "np.list": "Lista",
+  "np.map": "Karta",
+  "np.additionalInfo": "Ytterligare information",
+  "np.form.success": "Plats sparat!",
+  "np.country": "Land",
+  "np.municipality": "Grevskap",
+  "np.biogeographicalProvince": "Biogeografiskt provins"
 }

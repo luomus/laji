@@ -344,5 +344,11 @@
   "np.edit": "Muokkaa",
   "np.createNew": "Luo uusi",
   "np.save": "Tallenna",
-  "np.form.success": "Paikka tallennettu!"
+  "np.list": "Lista",
+  "np.map": "Kartta",
+  "np.additionalInfo": "Lisätietoa paikasta",
+  "np.form.success": "Paikka tallennettu!",
+  "np.country": "Maa",
+  "np.municipality": "Kunta",
+  "np.biogeographicalProvince": "Eliömaakunta"
 }

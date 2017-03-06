@@ -1,24 +1,29 @@
-<div *ngIf="namedPlaces">
+<div *ngIf="namedPlaces" [ngClass]="{'full-height': active === 'map'}">
   <div>
     <ul class="nav nav-tabs nav-justified">
       <li role="presentation" [ngClass]="{active: active === 'list'}">
-        <a (click)="setActive('list')">Lista</a>
+        <a (click)="setActive('list')">{{'np.list' | translate}}</a>
       </li>
       <li role="presentation" [ngClass]="{active: active === 'map'}">
-        <a (click)="setActive('map')">Kartta</a>
+        <a (click)="setActive('map')">{{'np.map' | translate}}</a>
       </li>
     </ul>
   </div>
 
-  <div [hidden]="active !== 'list'">
+  <div [ngClass]="{hidden: active !== 'list'}">
     <laji-np-list [namedPlaces]="namedPlaces" [activeNP]="activeNP" (onActivePlaceChange)="setActiveNP($event)"></laji-np-list>
   </div>
 
-  <div [hidden]="active !== 'map'" *ngIf="mapActivated">
+  <div class="full-height" [ngClass]="{hidden: active !== 'map'}" *ngIf="mapActivated">
     <laji-np-map [namedPlaces]="namedPlaces"
                  [activeNP]="activeNP"
                  [visible]="active === 'map'"
-                 (onActivePlaceChange)="setActiveNP($event)"></laji-np-map>
+                 (onActivePlaceChange)="setActiveNP($event)"
+                 class="full-height"></laji-np-map>
   </div>
+
+  <button class="btn btn-md btn-default"
+          id="create-new-button"
+          (click)="createButtonClick()">{{'np.createNew' | translate}}</button>
 </div>
 <!--a [routerLink]="" class="btn btn-lg btn-default">{{'np.createNew' | translate}}</a-->

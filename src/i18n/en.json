@@ -330,5 +330,11 @@
   "np.edit": "Edit",
   "np.createNew": "Create new",
   "np.save": "Save",
-  "np.form.success": "Place saved!"
+  "np.list": "List",
+  "np.map": "Map",
+  "np.additionalInfo": "Additional info",
+  "np.form.success": "Place saved!",
+  "np.country": "Country",
+  "np.municipality": "Municipality",
+  "np.biogeographicalProvince": "Biogeographical province"
 }

@@ -9,8 +9,11 @@ import { NamedPlace } from '../../../../shared/model/NamedPlace';
 export class NpInfoComponent implements OnInit, OnChanges {
   @Input() namedPlace: NamedPlace;
   @Input() formData: any;
+  @Input() editButtonVisible: boolean;
 
   @Output() onEditButtonClick = new EventEmitter();
+
+  hiddenProperties = ['geometry', 'geometryOnMap'];
 
   fields: any;
   npProperties: any;
@@ -20,6 +23,10 @@ export class NpInfoComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.fields = this.formData.schema.properties.namedPlace.items.properties;
     this.npProperties = Object.keys(this.namedPlace);
+
+    for (let i = 0; i < this.npProperties.length; i++) {
+      const p = this.npProperties[i];
+    }
   }
 
   ngOnChanges() {

@@ -14,6 +14,8 @@ export class NpChooseComponent {
   activeNP = -1;
   @Output() onActivePlaceChange = new EventEmitter<number>();
 
+  @Output() onCreateButtonClick = new EventEmitter();
+
   constructor() {}
 
   setActive(newActive: string) {
@@ -26,5 +28,9 @@ export class NpChooseComponent {
   setActiveNP(idx: number) {
     this.activeNP = idx;
     this.onActivePlaceChange.emit(idx);
+  }
+
+  createButtonClick() {
+    this.onCreateButtonClick.emit();
   }
 }

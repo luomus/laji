@@ -12,6 +12,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() visible = false;
   @Input() namedPlaces: NamedPlace[];
   @Input() activeNP: number;
+  @Input() mapHeight: string;
   @Output() onActivePlaceChange = new EventEmitter<number>();
 
   private _data: any;
@@ -20,6 +21,8 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnInit() {
     this.initMapData();
+
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -41,22 +44,22 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
       this.lajiMap.map.setData([this._data || {}]);
 
       const geojsonLayer = this.lajiMap.map.dataLayerGroups[0];
-      this.lajiMap.map.map.fitBounds(
+      /*this.lajiMap.map.map.fitBounds(
         geojsonLayer.getBounds(),
         {maxZoom: this.lajiMap.map.map.getZoom()}
-      );
+      );*/
       const that = this;
       geojsonLayer.on({
         click: (event) => {
           const idx = event.layer.feature.properties.lajiMapIdx;
           that.onActivePlaceChange.emit(idx);
         }
-      })
+      });
     }
   }
 
   private setNewActivePlace(oldActive: number, newActive: number) {
-    if (!this.lajiMap.map) return;
+    if (!this.lajiMap.map) { return; }
 
     const geojsonLayer = this.lajiMap.map.dataLayerGroups[0];
 
@@ -96,14 +99,14 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
               opacity: 1,
               fillOpacity: 0.3,
               color: '#007700'
-            }
+            };
           } else {
             return {
               weight: 5,
               opacity: 1,
               fillOpacity: 0.3,
               color: '#00aa00'
-            }
+            };
           }
         },
         featureCollection: {
@@ -114,7 +117,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
             properties: { }
           }))
         }
-      }
+      };
     } catch (e) { }
   }
 }

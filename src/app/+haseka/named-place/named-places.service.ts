@@ -7,14 +7,14 @@ export class NamedPlacesService {
 
   constructor(private namedPlaceApi: NamedPlaceApi) { }
 
-  getAllNamePlacesByCollectionId(collectionID: string, page = 1, pageSize = 100) {
+  getAllNamePlacesByCollectionId(collectionID: string) {
     return this.namedPlaceApi
       .findAll(
         undefined,
         collectionID,
         undefined,
-        '' + page,
-        '' + pageSize
+        undefined,
+        undefined
       );
   }
 
