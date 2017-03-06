@@ -1,0 +1,30 @@
+<div *ngIf="loading">
+  Tietoja haetaan...
+</div>
+<div *ngIf="!loading && list.length === 0">
+  <strong>Ei havaintoja annetuilla ehdoilla.</strong>
+</div>
+<div class="table-responsive" *ngIf="list.length > 0" [ngStyle]="{'max-height': (tbodyHeight + 80) + 'px'}">
+  <table class="table table-striped table-condensed table-hover" [lajiFixedTable]="tbodyHeight">
+    <thead>
+    <tr>
+      <th class="col-1">Laji</th>
+      <th class="col-2">Havlkm</th>
+      <th class="col-3">Ykssum</th>
+      <th class="col-6">Uusin</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of list; trackBy:item?.aggregateBy['unit.linkings.taxon.speciesId']">
+      <td class="col-1">
+        <a [routerLink] [queryParams]="{taxonId:(item.aggregateBy['unit.linkings.taxon.speciesId'] | toQName), time: time}">
+          {{item.aggregateBy['unit.linkings.taxon.speciesScientificName']}}
+        </a>
+      </td>
+      <td class="col-2">{{item.count}}</td>
+      <td class="col-3">{{item.individualCountSum}}</td>
+      <td class="col-6">{{item.newestRecord | date: 'd.M.yyyy'}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

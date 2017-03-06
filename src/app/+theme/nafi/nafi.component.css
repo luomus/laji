@@ -1,0 +1,39 @@
+:host >>> laji-nafi {
+  display: flex;
+  flex: 1 0 auto;
+}
+
+.nafi-content {
+  margin-bottom: 20px !important;
+}
+
+.sidebar-nav {
+  margin: 0;
+  padding: 0 0 20px 0;
+  list-style: none;
+}
+
+.sidebar-nav li {
+  text-indent: 20px;
+  line-height: 40px;
+  margin: 0 -15px;
+}
+
+.sidebar-nav li a {
+  display: block;
+  text-decoration: none;
+  color: #3d3d3d;
+}
+
+.sidebar-nav li a:hover {
+  display: block;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #898989;
+}
+
+@media only screen and (min-width : 768px) {
+  #wrapper {
+    display: flex;
+  }
+}

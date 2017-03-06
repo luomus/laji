@@ -17,6 +17,8 @@ const routes: Routes = [
   {path: 'kartta', loadChildren: './+map/map.module#MapModule'},
   {path: 'map', loadChildren: './+map/map.module#MapModule'},
   {path: 'error', loadChildren: './+error/error.module#ErrorModule'},
+  {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule'},
+  {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
   {path: '**', component: NotFoundComponent}
 ];
 

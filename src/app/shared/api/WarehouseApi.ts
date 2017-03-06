@@ -250,6 +250,7 @@ export class WarehouseApi {
    * @param pageSize Set number of results in one page.
    * @param page Set current page.
    * @param geoJSON returns data as geojson.
+   * @param onlyCount return only count in result items (default true).
    * @oaram onlyCount return only counts of items default true
    */
   public warehouseQueryAggregateGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {

@@ -1,14 +1,22 @@
-<div class="map-wrap">
+<div class="map-wrap" *ngIf="hasQuery">
+  <laji-observation-map
+          [color]="color"
+          [showControls]="showControls"
+          [initWithWorldMap]="true"
+          [draw]="false"
+          [query]="query"></laji-observation-map>
+</div>
+<div class="map-wrap" *ngIf="!hasQuery">
   <laji-map
-    [draw]="draw"
-    [drawData]="drawData"
-    [controlSettings]="{
-     drawCopy: true,
-     drawClear: true,
-     coordinates: true
-    }"
-    [lang]="translate.currentLang"
-    [initWithWorldMap]="true"
-    [zoom]="7"
-    [center]="[60.209804323671776, 24.912872314453125]"></laji-map>
+          [draw]="draw"
+          [drawData]="drawData"
+          [controlSettings]="{
+           drawCopy: true,
+           drawClear: true,
+           coordinates: true
+          }"
+          [lang]="translate.currentLang"
+          [initWithWorldMap]="true"
+          [zoom]="7"
+          [center]="[60.209804323671776, 24.912872314453125]"></laji-map>
 </div>

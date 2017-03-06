@@ -1,0 +1,17 @@
+<div class="map-wrap">
+  <laji-map
+    [loading]="loading"
+    [draw]="false"
+    [lang]="translate.currentLang"
+    [zoom]="2"
+    [center]="[64.709804, 25]">
+  </laji-map>
+  <div class="legend">
+    Havaintolkm
+    <ul>
+      <li *ngFor="let leg of legendList">
+        <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{leg.label}}
+      </li>
+    </ul>
+  </div>
+</div>

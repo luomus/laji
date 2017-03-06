@@ -25,29 +25,29 @@ const maxCoordinateAccuracy = 10000;
 export class ObservationMapComponent implements OnInit, OnChanges {
   @ViewChild(MapComponent) lajiMap: MapComponent;
 
-  @Input() visible: boolean = false;
+  @Input() visible = false;
   @Input() query: any;
-  @Input() opacity: number = .5;
+  @Input() opacity = .5;
   @Input() lat: string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid005.lat'];
   @Input() lon: string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
   // zoom levels from lowest to highest when to move to more accurate grid
   @Input() zoomThresholds: number[] = [4];
   // when active level is higher or equal to this will be using viewport coordinates to show grid
-  @Input() onlyViewPortThreshold: number = 1;
-  @Input() size: number = 10000;
-  @Input() initWithWorldMap: boolean = false;
-  @Input() lastPage: number = 0; // 0 = no page limit
+  @Input() onlyViewPortThreshold = 1;
+  @Input() size = 10000;
+  @Input() initWithWorldMap = false;
+  @Input() lastPage = 0; // 0 = no page limit
   @Input() draw: any = false;
   @Input() center: [number, number];
-  @Input() showLayers: boolean = true;
+  @Input() showControls = true;
   @Input() height: number;
-  @Input() selectColor: string = '#00aa00';
-  @Input() color: any = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
-  @Input() showLoadMore: boolean = true;
-  @Input() legend: boolean = false;
+  @Input() selectColor = '#00aa00';
+  @Input() color: any;
+  @Input() showLoadMore = true;
+  @Input() legend = false;
   @Input() colorThresholds = [10, 100, 1000, 10000]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
   @Output() create = new EventEmitter();
-  @Input() showItemsWhenLessThan: number = 0;
+  @Input() showItemsWhenLessThan = 0;
   @Input() tick: number;
   @Input() itemFields: string[] = [
     'unit.linkings.taxon',
@@ -60,9 +60,9 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   public drawData: any = {featureCollection: {type: 'featureCollection', features: []}};
   public loading = false;
   public reloading = false;
-  public topMargin: string = '0';
+  public topMargin = '0';
   public legendList: {color: string, range: string}[] = [];
-  private prev: string = '';
+  private prev = '';
   private subDataFetch: Subscription;
   private style: (count: number) => string;
   private lastQuery: any;
@@ -101,6 +101,9 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    if (!this.color) {
+      this.color = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
+    }
     this.lastQuery = JSON.stringify(this.query);
     this.updateMapData();
     this.initColorScale();

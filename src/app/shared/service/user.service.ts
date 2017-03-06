@@ -25,6 +25,7 @@ export class UserService {
   private users: {[id: string]: Person} = {};
   private usersFetch: {[id: string]: Observable<Person>} = {};
   private defaultFormData: any;
+  private errorSend = false;
 
   private subUser: Subscription;
   private subLogout: Subscription;
@@ -50,11 +51,12 @@ export class UserService {
     if (this.token === userToken || this.subUser) {
       return;
     }
+    this.errorSend = false;
     this.isLoggedIn = true;
     this.loadUserInfo(userToken);
   }
 
-  public logout() {
+  public logout(showError = true) {
     if (this.token === '' || this.subLogout) {
       return;
     }
@@ -71,9 +73,11 @@ export class UserService {
             this.token = '';
             this.isLoggedIn = false;
             this.currentUserId = undefined;
-            this.translate.get('error.logout').subscribe(
-              msg => this.toastsService.showError(msg)
-            );
+            if (showError) {
+              this.translate.get('error.logout').subscribe(
+                msg => this.toastsService.showError(msg)
+              );
+            }
             this.logger.warn('Failed to logout', err);
           }
         }
@@ -88,8 +92,14 @@ export class UserService {
     if (!id) {
       return this.getCurrentUser()
         .catch((err) => {
+          if (!this.errorSend) {
+            this.errorSend = true;
+            this.translate.get('error.login').subscribe(
+              msg => this.toastsService.showError(msg)
+            );
+          }
           this.logger.warn('Failed to fetch current users information', err);
-          this.logout();
+          this.logout(false);
           return Observable.of({});
         });
     }

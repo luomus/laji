@@ -22,7 +22,7 @@ export class NavbarComponent {
     this.openMenu = !this.openMenu;
   }
 
-  clicked(event: Event) {
+  doLogin(event: Event) {
     event.preventDefault();
     this.userService.doLogin();
   }
