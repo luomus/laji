@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter, ContentChildren } from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter, ContentChildren, HostListener } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiFormComponent } from '../../../../shared/form/laji-form.component';
 import { FormService } from '../../../form/form.service';
@@ -24,9 +24,8 @@ export class NpEditFormComponent implements OnInit {
   tick = 0;
   saving = false;
   enablePrivate = false;
+  status = '';
   error = '';
-
-  areaInfoVisible = true;
 
   private hasChanges = false;
   private public = false;
@@ -47,8 +46,17 @@ export class NpEditFormComponent implements OnInit {
     this.enablePrivate = !this.formData.features || this.formData.features.indexOf(Form.Feature.NoPrivate) === -1;
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+  preventLeave($event) {
+    if (this.hasChanges) {
+      this.translate.get('haseka.leave.unsaved')
+        .subscribe((msg) =>  $event.returnValue = msg);
+    }
+  }
+
   onChange() {
     this.hasChanges = true;
+    this.status = 'unsaved';
   }
 
   onSubmit(event) {
@@ -80,11 +88,12 @@ export class NpEditFormComponent implements OnInit {
       (err) => {
         this.lajiForm.unBlock();
         this.saving = false;
+        this.status = 'error';
         this.error = this.parseErrorMessage(err);
 
         setTimeout(() => {
-          if (this.error) {
-            this.error = '';
+          if (this.status === 'error') {
+            this.status = '';
           }
         }, 5000);
       });

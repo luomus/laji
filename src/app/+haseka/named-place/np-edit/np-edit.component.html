@@ -1,8 +1,12 @@
-<laji-spinner [spinning]="(namedPlace || editMode) && !formData" [overlay]="true"></laji-spinner>
+<laji-spinner [spinning]="(namedPlace || editMode) && !(formData || userId)" [overlay]="true"></laji-spinner>
 <div *ngIf="formData">
   <div *ngIf="!editMode && namedPlace">
-    <laji-np-info [namedPlace]="namedPlace" [formData]="formData" (onEditButtonClick)="editClick()"></laji-np-info>
-    <a [routerLink]="['/vihko/' + formId]"
+    <laji-np-info [namedPlace]="namedPlace"
+                  [formData]="formData"
+                  [editButtonVisible]="editButtonVisible"
+                  (onEditButtonClick)="editClick()"></laji-np-info>
+    <a *ngIf="useButtonVisible"
+       [routerLink]="['/vihko/' + formId]"
        type="button"
        class="btn btn-md btn-primary"
        id="use-button"

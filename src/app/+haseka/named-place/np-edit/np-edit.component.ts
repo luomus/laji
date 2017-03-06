@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter } 
 import { AppConfig } from '../../../app.config';
 import { FormService } from '../../form/form.service';
 import { TranslateService } from '@ngx-translate/core';
+import { UserService } from '../../../shared/service/user.service';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 
@@ -16,6 +17,10 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() collectionId: string;
 
   formData: any;
+  userId: string;
+
+  editButtonVisible: boolean;
+  useButtonVisible: boolean;
 
   @Input() editMode = false;
   @Output() onEditButtonClick = new EventEmitter();
@@ -30,7 +35,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private appConfig: AppConfig,
     private formService: FormService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
@@ -39,6 +45,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     this.translation$ = this.translate.onLangChange.subscribe(
       () => this.onLangChange()
     );
+    this.userService.getUser().subscribe(data => { this.userId = data.id; });
   }
 
   ngOnDestroy() {
@@ -50,6 +57,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges() {
     this.setFormData();
+    this.setButtonVisibilities();
   }
 
   onLangChange() {
@@ -103,7 +111,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   setFormData() {
-    if (!this.formData) {
+    if (!this.formData || !this.userId) {
       return;
     }
 
@@ -130,5 +138,14 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     np.prepopulatedDocument ?
       this.formService.populate(np.prepopulatedDocument) :
       this.formService.populate({gatherings: [{geometry: {type: 'GeometryCollection', geometries: [np.geometry]}}]});
+  }
+
+  private setButtonVisibilities() {
+    if (this.namedPlace) {
+      this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(this.userId) !== -1);
+      this.useButtonVisible = (this.namedPlace.public ||
+        (this.namedPlace.owners && this.namedPlace.owners.indexOf(this.userId) !== -1) ||
+        (this.namedPlace.editors && this.namedPlace.editors.indexOf(this.userId) !== -1));
+    }
   }
 }

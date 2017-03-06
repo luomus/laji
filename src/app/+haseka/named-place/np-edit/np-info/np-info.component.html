@@ -3,7 +3,9 @@
     <legend>
       <span>{{'np.additionalInfo' | translate}}</span>
       <div class="pull-right">
-        <button class="btn btn-sm btn-default" (click)="editClick()">{{'np.edit' | translate}}</button>
+        <button *ngIf="editButtonVisible"
+                class="btn btn-sm btn-default"
+                (click)="editClick()">{{'np.edit' | translate}}</button>
       </div>
     </legend>
     <div *ngFor="let p of npProperties">

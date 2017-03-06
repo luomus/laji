@@ -9,6 +9,7 @@ import { NamedPlace } from '../../../../shared/model/NamedPlace';
 export class NpInfoComponent implements OnInit, OnChanges {
   @Input() namedPlace: NamedPlace;
   @Input() formData: any;
+  @Input() editButtonVisible: boolean;
 
   @Output() onEditButtonClick = new EventEmitter();
 
@@ -24,7 +25,7 @@ export class NpInfoComponent implements OnInit, OnChanges {
     this.npProperties = Object.keys(this.namedPlace);
 
     for (let i = 0; i < this.npProperties.length; i++) {
-      let p = this.npProperties[i];
+      const p = this.npProperties[i];
     }
   }
 
