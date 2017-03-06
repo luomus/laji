@@ -146,7 +146,8 @@ export class NpEditFormComponent implements OnInit {
 
   private localityToPrepopulatedDocument(data, formData) {
     if (formData.locality || formData.localityDescription) {
-      data['prepopulatedDocument'] = this.namedPlace.prepopulatedDocument ? this.namedPlace.prepopulatedDocument : {};
+      data['prepopulatedDocument'] =
+        (this.namedPlace && this.namedPlace.prepopulatedDocument) ? this.namedPlace.prepopulatedDocument : {};
 
       if (!data.prepopulatedDocument.gatherings || data.prepopulatedDocument.gatherings.length <= 0) {
         data.prepopulatedDocument['gatherings'] = [{}];
