@@ -15,7 +15,7 @@ export class FooterComponent implements OnInit, OnDestroy{
   public onFrontPage = true;
   public subRouteEvent: Subscription;
   public subLangChange: Subscription;
-  public tree = [];
+  public tree;
   public columns = [
     'col-sm-offset-1 col-sm-6 col-md-3',
     'col-sm-5 col-md-2',
@@ -52,9 +52,11 @@ export class FooterComponent implements OnInit, OnDestroy{
   }
 
   fetchTreeData() {
-    this.informationApi
-      .informationIndex(this.translate.currentLang)
-      .map(tree => tree.children || [])
-      .subscribe(tree => this.tree = tree);
+    if (!this.tree) {
+      this.informationApi
+        .informationIndex(this.translate.currentLang)
+        .map(tree => tree.children || [])
+        .subscribe(tree => this.tree = tree);
+    }
   }
 }
