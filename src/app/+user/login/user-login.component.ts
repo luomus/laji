@@ -16,7 +16,7 @@ export class UserLoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    let url = new URLSearchParams(this.location.path(true).replace('?', '?skip=true&'));
+    const url = new URLSearchParams(this.location.path(true).replace('?', '?skip=true&'));
     this.location.replaceState('/', '');
     this.userService.login(url.get('token'));
     this.userService.returnToPageBeforeLogin();

@@ -1,0 +1,57 @@
+<h3>Päiväperhosseuranta {{currentMonth >= startMonth ? currentYear : year}}</h3>
+<div class="row">
+  <div class="col-sm-12">
+    <p>
+      <a href="http://www.luomus.fi/nafi">Valtakunnallinen päiväperhosseuranta (NAFI)</a> on
+      <a href="http://www.ekay.net/ymparisto/perhosseuranta/" target="_blank">Etelä-Karjalan Allergia- ja Ympäristöinstituutin</a> ja
+      <a href="http://www.perhostutkijainseura.fi" target="_blank">Suomen Perhostutkijain Seuran</a> koordinoima tutkimushanke.
+    </p>
+
+    <p>
+      Valitse näytettävä havaintojakso:
+      <br>
+      <a [routerLink] [queryParams]="{time: year}">koko&nbsp;vuosi&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-03'}">maaliskuu&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-04'}">huhtikuu&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-05'}">toukokuu&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-06'}">kesäkuu&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-07'}">heinäkuu&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-08'}">elokuu&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-09'}">syyskuu&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-10'}">lokakuu&nbsp;{{year}}</a>
+      <br>
+      <a [routerLink] [queryParams]="{time: currentYear}">koko&nbsp;vuosi&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 3" [routerLink] [queryParams]="{time: currentYear + '-03'}">maaliskuu&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 4" [routerLink] [queryParams]="{time: currentYear + '-04'}">huhtikuu&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 5" [routerLink] [queryParams]="{time: currentYear + '-05'}">toukokuu&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 6" [routerLink] [queryParams]="{time: currentYear + '-06'}">kesäkuu&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 8" [routerLink] [queryParams]="{time: currentYear + '-07'}">heinäkuu&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 8" [routerLink] [queryParams]="{time: currentYear + '-08'}">elokuu&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 9" [routerLink] [queryParams]="{time: currentYear + '-09'}">syyskuu&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 10" [routerLink] [queryParams]="{time: currentYear + '-10'}">lokakuu&nbsp;{{currentYear}}</a>
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-5 col-sm-push-7">
+    <laji-theme-map [taxonId]="taxonId" [time]="time" [collectionId]="collectionId"></laji-theme-map>
+  </div>
+  <div class="col-sm-7 col-sm-pull-5 table-col">
+    <laji-theme-observation-list
+            *ngIf="grid"
+            [tbodyHeight]="610"
+            [collectionId]="collectionId"
+            [taxonId]="taxonId"
+            [time]="time"
+            [grid]="grid"
+    >
+    </laji-theme-observation-list>
+    <laji-theme-result
+            *ngIf="!grid"
+            [tbodyHeight]="610"
+            [time]="time"
+            [collectionId]="collectionId"
+            informalGroup="MVL.181"
+    ></laji-theme-result>
+  </div>
+</div>

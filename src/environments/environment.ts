@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  isEmbedded: false
+  isEmbedded: false,
+  nafiForm: 'JX.123648'
 };

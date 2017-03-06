@@ -68,6 +68,7 @@ import { FormService } from '../+haseka/form/form.service';
 import { FormApi } from './api/FormApi';
 import { DocumentApi } from './api/DocumentApi';
 import { LajiFormComponent } from './form/laji-form.component';
+import { OnlyLoggedIn } from './route/only-logged-in';
 
 
 @NgModule({
@@ -126,6 +127,7 @@ export class SharedModule {
         WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
         AutocompleteApi, FooterService, Ng2Webstorage,
         DatePipe,
+        OnlyLoggedIn,
         {provide: Http, useClass: AuthenticatedHttpService}
       ]
     };

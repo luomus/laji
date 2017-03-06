@@ -185,6 +185,10 @@ export class FormService {
             this.getDefaultData(formId, documentId, data),
             (form, current) => {
               form.formData = current;
+              if (!documentId && form.prepopulatedDocument) {
+                form.formData = Object.assign({}, form.formData, form.prepopulatedDocument);
+              }
+              this.currentData = Util.clone(form.formData);
               return form;
             }
           );
@@ -250,7 +254,6 @@ export class FormService {
         return Object.assign({}, data, {formID: formId}, this._populate);
       })
       .do((data) => {
-        this.currentData = Util.clone(data);
         delete this._populate;
       });
   }

@@ -12,3 +12,16 @@
   height:100%;
   width:100%;
 }
+
+.loading-map {
+  z-index: 1000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  border-radius: 10%;
+  background-color: rgba(255, 255, 255, 0.3);
+  background-position: center center;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}

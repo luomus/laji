@@ -44,7 +44,7 @@ export class AppComponent {
       if (event instanceof NavigationEnd) {
         const newRoute = location.path() || '/';
         if (this.currentRoute !== newRoute) {
-          if (newRoute.indexOf('/observation') !== 0) {
+          if (newRoute.indexOf('/observation') !== 0 && newRoute.indexOf('/theme') !== 0) {
             windowRef.nativeWindow.scroll(0, 0);
           }
           if (this.hasAnalytics && newRoute.indexOf('/user') !== 0) {

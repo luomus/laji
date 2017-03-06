@@ -17,6 +17,7 @@ import { MapService } from './map.service';
   template: `
 <div class="laji-map-wrap" [ngClass]="{'no-controls': !showControls}">
   <div #map class="laji-map"></div>
+  <div class="loading-map loading" *ngIf="loading"></div>
   <ng-content></ng-content>
 </div>`,
   styleUrls: ['./map.component.css'],
@@ -31,6 +32,7 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input() visible = true;
   @Input() draw: any = false;
   @Input() lang = 'fi';
+  @Input() loading = false;
   @Input() center: [number, number];
   @Input() showControls = true;
   @Input() initWithWorldMap = false;

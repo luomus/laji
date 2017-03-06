@@ -15,6 +15,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges {
   @Input() uri: string;
   @Input() highlight: string;
   @Input() showTitle = false;
+  @Input() useWorldMap = true;
   document: any;
   activeGathering: any;
   mapData: any = [];

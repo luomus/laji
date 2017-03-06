@@ -11,7 +11,8 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() data: any;
   @Input() height = 300;
   @Input() visible = true;
-  @Input() active: number = 0;
+  @Input() active = 0;
+  @Input() useWorldMap = true;
 
   public _data: any;
 

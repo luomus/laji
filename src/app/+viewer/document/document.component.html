@@ -66,7 +66,7 @@
       </div>
     </div>
     <div class="col-sm-5">
-      <laji-viewer-map [active]="active" *ngIf="mapData.length > 0" [data]="mapData"></laji-viewer-map>
+      <laji-viewer-map [useWorldMap]="useWorldMap" [active]="active" *ngIf="mapData.length > 0" [data]="mapData"></laji-viewer-map>
       <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media"></laji-image-gallery>
     </div>
   </div>
