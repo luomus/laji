@@ -1,5 +1,5 @@
 .map-wrap {
-  margin-top: 30px;
+  margin-top: 50px;
   height: 605px;
 }
 
@@ -10,7 +10,7 @@
   border: 0;
   left: 20px;
   z-index: 400;
-  top: 200px;
+  top: 220px;
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 }

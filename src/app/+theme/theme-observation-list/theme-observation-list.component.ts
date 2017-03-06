@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
 import { ResultService } from '../service/result.service';
 import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-theme-observation-list',
@@ -22,8 +23,12 @@ export class ThemeObservationListComponent implements OnInit, OnChanges {
   results = {results: []};
   shownDocument = '';
   highlightId = '';
+  current: string;
 
-  constructor(private resultService: ResultService) { }
+  constructor(
+    private resultService: ResultService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.updateDocuments();
@@ -34,6 +39,11 @@ export class ThemeObservationListComponent implements OnInit, OnChanges {
   }
 
   updateDocuments() {
+    const key = this.grid + ':' + this.collectionId + ':' + this.taxonId + ':' + this.time + ':' + this.page;
+    if (this.current === key) {
+      return;
+    }
+    this.current = key;
     this.loading = true;
     this.resultService.getList(this.grid, this.collectionId, this.taxonId, this.time, this.page)
       .subscribe(data => {
@@ -49,6 +59,15 @@ export class ThemeObservationListComponent implements OnInit, OnChanges {
     this.shownDocument = documentId;
     this.highlightId = highlightId;
     this.modal.show();
+  }
+
+  pageChanged(pager) {
+    this.router.navigate([], {queryParams: {
+      grid: this.grid,
+      time: this.time,
+      taxonId: this.taxonId,
+      page: pager.page
+    }});
   }
 
 }
