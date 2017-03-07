@@ -33,10 +33,10 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-sm-5 col-sm-push-7">
+  <div class="col-sm-5 col-sm-push-7 map-col">
     <laji-theme-map [taxonId]="taxonId" [time]="time" [collectionId]="collectionId"></laji-theme-map>
   </div>
-  <div class="col-sm-7 col-sm-pull-5 table-col">
+  <div class="col-sm-7 col-sm-pull-5 table-col" [ngClass]="{'no-header': !grid}">
     <laji-theme-observation-list
             *ngIf="grid"
             [tbodyHeight]="610"
