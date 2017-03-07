@@ -3,7 +3,7 @@
 
 declare module 'laji-form/lib/laji-form';
 declare module 'laji-map/lib/utils';
-declare module 'laji-map';
+declare module 'laji-map/lib/map';
 declare module 'query-string';
 declare module 'openseadragon';
 declare let d3: any;

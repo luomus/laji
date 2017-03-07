@@ -13,6 +13,7 @@ import {
 import { FormApiClient } from '../api';
 import { UserService } from '../service/user.service';
 import { Logger } from '../logger/logger.service';
+import { LajiExternalService } from '../service/laji-external.service';
 
 @Component({
   selector: 'laji-form',
@@ -21,7 +22,6 @@ import { Logger } from '../logger/logger.service';
 })
 export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
 
-  private static LajiFormWrapper;
   @Input() lang: string;
   @Input() formData: any = {};
   @Input() tick: number;
@@ -38,12 +38,10 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   constructor(@Inject(ElementRef) elementRef: ElementRef,
               private apiClient: FormApiClient,
               private userService: UserService,
+              private lajiExternalService: LajiExternalService,
               private logger: Logger
   ) {
     this.elem = elementRef.nativeElement;
-    if (!LajiFormComponent.LajiFormWrapper) {
-      LajiFormComponent.LajiFormWrapper = require('laji-form/lib/laji-form').default;
-    }
   }
 
   ngAfterViewInit() {
@@ -109,7 +107,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
       uiSchemaContext['creator'] = this.formData.formData.creator;
       this.apiClient.lang = this.lang;
       this.apiClient.personToken = this.userService.getToken();
-      this.lajiFormWrapper = new LajiFormComponent.LajiFormWrapper({
+      this.lajiFormWrapper = this.lajiExternalService.getForm({
         staticImgPath: '/static/lajiForm/',
         rootElem: this.elem,
         schema: this.formData.schema,

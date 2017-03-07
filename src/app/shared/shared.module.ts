@@ -69,6 +69,7 @@ import { FormApi } from './api/FormApi';
 import { DocumentApi } from './api/DocumentApi';
 import { LajiFormComponent } from './form/laji-form.component';
 import { OnlyLoggedIn } from './route/only-logged-in';
+import { LajiExternalService } from './service/laji-external.service';
 
 
 @NgModule({
@@ -108,6 +109,7 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
+        LajiExternalService,
         UserService,
         NewsApi,
         FormService,

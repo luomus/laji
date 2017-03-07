@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { Logger } from '../logger/logger.service';
 import { MapService } from './map.service';
+import { LajiExternalService } from '../service/laji-external.service';
 
 @Component({
   selector: 'laji-map',
@@ -24,8 +25,6 @@ import { MapService } from './map.service';
   providers: []
 })
 export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
-
-  private static LajiMap;
 
   @Input() data: any = [];
   @Input() drawData: any;
@@ -58,11 +57,10 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   constructor(
     private mapService: MapService,
-    private logger: Logger
+    private logger: Logger,
+    private lajiExternalService: LajiExternalService
   ) {
-    if (!MapComponent.LajiMap) {
-      MapComponent.LajiMap = require('laji-map/lib/map').default;
-    }
+
   }
 
   ngAfterViewInit() {
@@ -77,7 +75,7 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
       draw.polyline = draw.polyline !== false ? draw.polyline : false;
       draw.hasActive = draw.hasActive !== true ? draw.hasActive : true;
     }
-    this.map = new MapComponent.LajiMap({
+    this.map = this.lajiExternalService.getMap({
       tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
       zoom: this.zoom,
       center: this.center || [65, 26],
