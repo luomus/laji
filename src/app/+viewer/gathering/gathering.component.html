@@ -3,7 +3,7 @@
   <laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.eventDate">
     {{ gathering.eventDate.begin | date:'dd.MM.yyyy' }}
     <span *ngIf="gathering.eventDate.begin !== gathering.eventDate.end">
-      {{gathering.eventDate.end | date:'dd.MM.yyyy'}}
+      - {{gathering.eventDate.end | date:'dd.MM.yyyy'}}
     </span>
   </laji-row>
   <div *ngIf="gathering.interpretations">
