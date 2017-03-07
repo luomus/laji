@@ -214,8 +214,8 @@ export class FormService {
   getFormDrawData(formId: string, lang: string): Observable<any> {
     return this.getForm(formId, lang)
       .switchMap(data => {
-        const obj = Observable.of(this.getObjectByKey(data.uiSchema, 'draw'));
-        return obj;
+        const drawData = data.uiSchema ? this.getObjectByKey(data.uiSchema, 'draw') : null;
+        return Observable.of(drawData);
       }
     );
   }
