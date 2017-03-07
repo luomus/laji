@@ -306,8 +306,8 @@
             </label>
           </div>
         </div>
-        <div laji-panel [title]="'MY.collectionID' | label" [autoToggle]="true">
-          <div class="row">
+        <div laji-panel [title]="'observation.form.source' | translate" [autoToggle]="true">
+          <div class="form-group">
             <div class="col-sm-12">
               <metadata-select
                       [(ngModel)]="searchQuery.query.collectionId"
@@ -320,9 +320,76 @@
                       [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
-        </div>
-        <div laji-panel [title]="'MX.hasAdminStatus' | label" [autoToggle]="true">
           <div class="row">
+            <div class="col-sm-12">
+              <metadata-select
+                      [(ngModel)]="searchQuery.query.sourceId"
+                      (ngModelChange)="onQueryChange()"
+                      [placeholder]="'observation.form.system'|translate"
+                      [multiple]="true"
+                      name="sourceId"
+                      [field]="'KE.informationSystem'"
+                      [lang]="translate.currentLang"></metadata-select>
+            </div>
+          </div>
+        </div>
+        <div laji-panel [title]="'observation.form.speciesFeatures' | translate" [autoToggle]="true">
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [ngModel]="searchQuery.query.invasive"
+                       (ngModelChange)="onCheckBoxToggle('invasive')"
+                       name="invasive">
+                {{'observation.form.invasive' | translate}}
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [ngModel]="formQuery.isNotInvasive"
+                       (ngModelChange)="onCheckBoxToggle('invasive', false, false)"
+                       name="isNotInvasive">
+                {{'observation.form.nonInvasive' | translate}}
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [ngModel]="searchQuery.query.finnish"
+                       (ngModelChange)="onCheckBoxToggle('finnish')"
+                       name="finnish">
+                {{'observation.form.finnish' | translate}}
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [ngModel]="formQuery.isNotFinnish"
+                       (ngModelChange)="onCheckBoxToggle('finnish', false, false)"
+                       name="isNotFinnish">
+                {{'observation.form.nonFinnish' | translate}}
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [ngModel]="formQuery.includeOnlyValid"
+                       (ngModelChange)="onCheckBoxToggle('includeNonValidTaxa', false, false)"
+                       name="includeOnlyValid">
+                {{'observation.form.includeNonValidTaxa' | translate}}
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
             <div class="col-sm-12">
               <metadata-select
                       [(ngModel)]="searchQuery.query.administrativeStatusId"
@@ -334,8 +401,6 @@
                       [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
-        </div>
-        <div laji-panel [title]="'observation.form.redListStatusId' | translate" [autoToggle]="true">
           <div class="row">
             <div class="col-sm-12">
               <metadata-select
@@ -361,29 +426,6 @@
             </div>
           </div>
           <hr *lajiAuthorities="true">
-          <div class="row">
-            <div class="col-sm-12">
-              <label>
-                <input type="checkbox"
-                       [ngModel]="searchQuery.query.invasive"
-                       (ngModelChange)="onCheckBoxToggle('invasive')"
-                       name="invasive">
-                {{'observation.form.invasive' | translate}}
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <label>
-                <input type="checkbox"
-                       [ngModel]="formQuery.isNotInvasive"
-                       (ngModelChange)="onCheckBoxToggle('invasive', false, false)"
-                       name="isNotInvasive">
-                {{'observation.form.nonInvasive' | translate}}
-              </label>
-            </div>
-          </div>
-          <hr>
           <div class="row">
             <div class="col-sm-12">
               <label>
@@ -421,38 +463,15 @@
             <div class="col-sm-12">
               <label>
                 <input type="checkbox"
-                       [ngModel]="formQuery.otherInvasiveSpeciesList"
-                       (ngModelChange)="onInvasiveCheckBoxToggle('otherInvasiveSpeciesList')"
-                       name="otherInvasiveSpeciesList">
-                {{'MX.otherInvasiveSpeciesList' | label}}
+                       [ngModel]="formQuery.allInvasiveSpecies"
+                       (ngModelChange)="onInvasiveCheckBoxToggle(invasiveStatuses)"
+                       name="allInvasiveSpecies">
+                {{'observation.form.allInvasive' | translate}}
               </label>
             </div>
           </div>
         </div>
         <div laji-panel [title]="'observation.form.other' | translate" [autoToggle]="true">
-          <div class="row">
-            <div class="col-sm-12">
-              <label>
-                <input type="checkbox"
-                       [ngModel]="searchQuery.query.finnish"
-                       (ngModelChange)="onCheckBoxToggle('finnish')"
-                       name="finnish">
-                {{'observation.form.finnish' | translate}}
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <label>
-                <input type="checkbox"
-                       [ngModel]="formQuery.isNotFinnish"
-                       (ngModelChange)="onCheckBoxToggle('finnish', false, false)"
-                       name="isNotFinnish">
-                {{'observation.form.nonFinnish' | translate}}
-              </label>
-            </div>
-          </div>
-          <hr>
           <div class="row">
             <div class="col-sm-12">
               <label>
@@ -473,31 +492,6 @@
                        name="hasNotMedia">
                 {{'observation.form.hasNotMedia' | translate}}
               </label>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col-sm-12">
-              <label>
-                <input type="checkbox"
-                       [ngModel]="formQuery.includeOnlyValid"
-                       (ngModelChange)="onCheckBoxToggle('includeNonValidTaxa', false, false)"
-                       name="includeOnlyValid">
-                {{'observation.form.includeNonValidTaxa' | translate}}
-              </label>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col-sm-12">
-              <metadata-select
-                      [(ngModel)]="searchQuery.query.sourceId"
-                      (ngModelChange)="onQueryChange()"
-                      [placeholder]="'observation.form.source'|translate"
-                      [multiple]="true"
-                      name="sourceId"
-                      [field]="'KE.informationSystem'"
-                      [lang]="translate.currentLang"></metadata-select>
             </div>
           </div>
         </div>
