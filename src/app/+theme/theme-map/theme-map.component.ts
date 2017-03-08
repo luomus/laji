@@ -61,6 +61,7 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
       }
       return;
     }
+    delete this.taxon;
     this.current = key;
     this.loading = true;
     this.initGeoJsonLayer();
