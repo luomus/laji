@@ -138,6 +138,7 @@
   "observation.form.thisYear": "This year",
   "observation.form.preservedSpecimens": "Preserved specimens",
   "observation.form.typeSpecimen": "only type specimens",
+  "observation.form.invasiveClassification": "Invasive species classification",
   "observation.form.invasive": "Invasive species",
   "observation.form.nonInvasive": "Noninvasive species",
   "observation.form.includeNonValidTaxa": "Only with known name",

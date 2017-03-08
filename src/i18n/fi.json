@@ -143,6 +143,7 @@
   "observation.form.thisYear": "Tänä vuonna",
   "observation.form.preservedSpecimens": "Kokoelmanäytteitä",
   "observation.form.typeSpecimen": "vain tyyppinäytteet",
+  "observation.form.invasiveClassification": "Vieraslajiluokittelu",
   "observation.form.invasive": "Vieraslajit",
   "observation.form.nonInvasive": "Ei-vieraslajit",
   "observation.form.includeNonValidTaxa": "Vain tunnetulla nimellä tallennetut",

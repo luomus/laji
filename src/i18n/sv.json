@@ -137,6 +137,7 @@
   "observation.form.thisYear": "Detta år",
   "observation.form.preservedSpecimens": "Prover",
   "observation.form.typeSpecimen": "endast typprover",
+  "observation.form.invasiveClassification": "Främmander arter klassificering",
   "observation.form.invasive": "Främmander arter",
   "observation.form.nonInvasive": "Ej-främmande arter",
   "observation.form.includeNonValidTaxa": "Endast med kända namn",
