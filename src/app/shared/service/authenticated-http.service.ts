@@ -21,7 +21,7 @@ export class AuthenticatedHttpService extends Http {
     return super.request(url, options).catch((error: Response) => {
       if (this.appConfig.isForcedLogin() && (error.status === 401 || error.status === 403)) {
         this.winRef.nativeWindow.location.href = this.appConfig.getLoginUrl();
-        return Observable.of(null).delay(10000);
+        return Observable.of(null).delay(3000);
       }
       return Observable.throw(error);
     });
