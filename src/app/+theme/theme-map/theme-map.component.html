@@ -1,21 +1,28 @@
 <div class="map-wrap">
+  <div class="title" *ngIf="taxon">
+    <span [ngClass]="{cursive: taxon.cursiveName}">{{taxon.scientificName}}</span>
+    <span *ngIf="taxon.vernacularName">
+      <br>{{taxon.vernacularName | multiLang}}
+    </span>
+  </div>
   <laji-map
     [loading]="loading"
     [draw]="false"
     [lang]="translate.currentLang"
     [zoom]="2"
+    [tileOpacity]="0.5"
     [center]="[64.709804, 25]">
   </laji-map>
   <div class="legend">
     <span [ngSwitch]="type">
       <span *ngSwitchCase="'individuals'">
-        Yksilömäärä
+        {{'theme.individualCount' | translate}}
       </span>
       <span *ngSwitchCase="'newest'">
-        Uusin
+        {{'theme.newest' | translate}}
       </span>
       <span *ngSwitchDefault>
-        Havaintolkm
+        {{'theme.count' | translate}}
       </span>
     </span>
     <ul>
@@ -25,6 +32,6 @@
     </ul>
   </div>
 </div>
-<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'count'}">Havintolkm</a>
-<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'individuals'}">Yksilö määrä</a>
-<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'newest'}">Uusin</a>
+<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'count'}">{{'theme.count' | translate}}</a>
+<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'individuals'}">{{'theme.individualCount' | translate}}</a>
+<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'newest'}">{{'theme.newest' | translate}}</a>

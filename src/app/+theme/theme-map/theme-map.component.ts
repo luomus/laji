@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core/src/translate.service';
 import { MapComponent } from '../../shared/map/map.component';
 import { ResultService } from '../service/result.service';
 import { Router } from '@angular/router';
+import { Taxonomy } from '../../shared/model/Taxonomy';
 
 export type MapTypes = 'count'|'individuals'|'newest'|'oldest';
 
@@ -28,6 +29,7 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
 
   geoJsonLayer;
   loading = false;
+  taxon: Taxonomy;
   legendList: {color: string, label: string}[] = [];
 
   private currentColor;
@@ -40,7 +42,6 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
   ) {
     const now = new Date();
     this.timeLabel[0] = now.getFullYear() + '-';
-    console.log(this.timeLabel);
   }
 
   ngAfterViewInit() {
@@ -56,7 +57,7 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
     if (this.current === key) {
       const colorKey = this.getColorKey();
       if (this.currentColor !== colorKey  && this.geoJsonLayer) {
-        this.setColor();
+        this.initColor();
       }
       return;
     }
@@ -68,8 +69,9 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
       .subscribe(geoJson => {
         this.geoJsonLayer.addData(geoJson);
         this.currentColor = '';
-        this.setColor();
         this.loading = false;
+        this.initColor();
+        this.initTitle();
       },
       error => {
         this.loading = false;
@@ -106,7 +108,7 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
           };
         }
       });
-      this.addLayerToMap();
+      this.initMap();
       this.geoJsonLayer.on('click', (evt) => {
         if (!evt.layer.feature.properties || !evt.layer.feature.properties.grid) {
           return;
@@ -121,7 +123,12 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
     }
   }
 
-  setColor() {
+  initTitle() {
+    this.resultService.getTaxon(this.taxonId)
+      .subscribe(taxon => this.taxon = taxon);
+  }
+
+  initColor() {
     const colorKey = this.getColorKey();
     if (this.currentColor === colorKey) {
       return;
@@ -168,7 +175,6 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
 
   countColor(feature, prop = 'count') {
     const cnt = feature.properties[prop] || 0;
-    console.log(feature.properties);
     let newColor = '#ffffff';
     for (const idx in this.countBreak) {
       if (!this.countBreak.hasOwnProperty(idx)) {
@@ -183,13 +189,15 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
     return newColor;
   }
 
-  addLayerToMap() {
+  initMap() {
     if (!this.lajiMap.map || !this.lajiMap.map.map) {
       setTimeout(() => {
-        this.addLayerToMap();
+        this.initMap();
       }, 1000);
       return;
     }
+    this.lajiMap.map.map.options.maxZoom = 8;
+    this.lajiMap.map.map.options.minZoom = 2;
     this.geoJsonLayer.addTo(this.lajiMap.map.map);
   }
 

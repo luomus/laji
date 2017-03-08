@@ -1,35 +1,30 @@
-<h3>Päiväperhosseuranta {{currentMonth >= startMonth ? currentYear : year}}</h3>
+<h3>{{'nafi.stats.title' | translate:{year: currentMonth >= startMonth ? currentYear : year} }}</h3>
 <div class="row">
   <div class="col-sm-12">
+    <p [innerHtml]="'nafi.stats.intro' | translate"></p>
     <p>
-      Valtakunnallinen päiväperhosseuranta (NAFI) on
-      <a href="http://www.ekay.net/ymparisto/perhosseuranta/" target="_blank">Etelä-Karjalan Allergia- ja Ympäristöinstituutin</a> ja
-      <a href="http://www.perhostutkijainseura.fi" target="_blank">Suomen Perhostutkijain Seuran</a> koordinoima tutkimushanke.
-    </p>
-
-    <p>
-      Valitse näytettävä havaintojakso:
+      {{'nafi.stats.times' | translate}}:
       <br>
-      <a [routerLink] [queryParams]="{time: year, type: type}">koko&nbsp;vuosi&nbsp;{{year}}</a>
-      <a [routerLink] [queryParams]="{time: year + '-03', type: type}">maaliskuu&nbsp;{{year}}</a>
-      <a [routerLink] [queryParams]="{time: year + '-04', type: type}">huhtikuu&nbsp;{{year}}</a>
-      <a [routerLink] [queryParams]="{time: year + '-05', type: type}">toukokuu&nbsp;{{year}}</a>
-      <a [routerLink] [queryParams]="{time: year + '-06', type: type}">kesäkuu&nbsp;{{year}}</a>
-      <a [routerLink] [queryParams]="{time: year + '-07', type: type}">heinäkuu&nbsp;{{year}}</a>
-      <a [routerLink] [queryParams]="{time: year + '-08', type: type}">elokuu&nbsp;{{year}}</a>
-      <a [routerLink] [queryParams]="{time: year + '-09', type: type}">syyskuu&nbsp;{{year}}</a>
-      <a [routerLink] [queryParams]="{time: year + '-10', type: type}">lokakuu&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year, type: type}">{{'wholeYear'| translate:{year:year} }}</a>
+      <a [routerLink] [queryParams]="{time: year + '-03', type: type}">{{'March' | translate}}&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-04', type: type}">{{'April' | translate}}&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-05', type: type}">{{'May' | translate}}&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-06', type: type}">{{'June' | translate}}&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-07', type: type}">{{'July' | translate}}&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-08', type: type}">{{'August' | translate}}&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-09', type: type}">{{'September' | translate}}&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year + '-10', type: type}">{{'October' | translate}}&nbsp;{{year}}</a>
       <br>
-      <a [routerLink] [queryParams]="{time: currentYear}">koko&nbsp;vuosi&nbsp;{{currentYear}}</a>
-      <a *ngIf="currentMonth >= 3" [routerLink] [queryParams]="{time: currentYear + '-03', type: type}">maaliskuu&nbsp;{{currentYear}}</a>
-      <a *ngIf="currentMonth >= 4" [routerLink] [queryParams]="{time: currentYear + '-04', type: type}">huhtikuu&nbsp;{{currentYear}}</a>
-      <a *ngIf="currentMonth >= 5" [routerLink] [queryParams]="{time: currentYear + '-05', type: type}">toukokuu&nbsp;{{currentYear}}</a>
-      <a *ngIf="currentMonth >= 6" [routerLink] [queryParams]="{time: currentYear + '-06', type: type}">kesäkuu&nbsp;{{currentYear}}</a>
-      <a *ngIf="currentMonth >= 8" [routerLink] [queryParams]="{time: currentYear + '-07', type: type}">heinäkuu&nbsp;{{currentYear}}</a>
-      <a *ngIf="currentMonth >= 8" [routerLink] [queryParams]="{time: currentYear + '-08', type: type}">elokuu&nbsp;{{currentYear}}</a>
-      <a *ngIf="currentMonth >= 9" [routerLink] [queryParams]="{time: currentYear + '-09', type: type}">syyskuu&nbsp;{{currentYear}}</a>
-      <a *ngIf="currentMonth >= 10" [routerLink] [queryParams]="{time: currentYear + '-10', type: type}">lokakuu&nbsp;{{currentYear}}</a><br>
-      <a [routerLink] [queryParams]="{type: type}">Kaikki</a><br>
+      <a [routerLink] [queryParams]="{time: currentYear}">{{'wholeYear'| translate:{year:currentYear} }}</a>
+      <a *ngIf="currentMonth >= 3" [routerLink] [queryParams]="{time: currentYear + '-03', type: type}">{{'March' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 4" [routerLink] [queryParams]="{time: currentYear + '-04', type: type}">{{'April' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 5" [routerLink] [queryParams]="{time: currentYear + '-05', type: type}">{{'May' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 6" [routerLink] [queryParams]="{time: currentYear + '-06', type: type}">{{'June' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 8" [routerLink] [queryParams]="{time: currentYear + '-07', type: type}">{{'July' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 8" [routerLink] [queryParams]="{time: currentYear + '-08', type: type}">{{'August' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 9" [routerLink] [queryParams]="{time: currentYear + '-09', type: type}">{{'September' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 10" [routerLink] [queryParams]="{time: currentYear + '-10', type: type}">{{'October' | translate}}&nbsp;{{currentYear}}</a><br>
+      <a [routerLink] [queryParams]="{type: type}">{{'observation.active.informalTaxonGroupAll' | translate}}</a><br>
     </p>
   </div>
 </div>

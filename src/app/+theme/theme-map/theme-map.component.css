@@ -2,6 +2,16 @@
   height: 605px;
 }
 
+.title {
+  position: absolute;
+  z-index: 401;
+  width: 200px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  margin: 0 auto;
+}
+
 .legend {
   width: 100px;
   margin: 0;

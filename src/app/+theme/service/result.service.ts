@@ -3,11 +3,18 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import * as MapUtil from 'laji-map/lib/utils';
+import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 
 @Injectable()
 export class ResultService {
 
   private state = {
+    taxon: {
+      key: '',
+      data: {},
+      pending: undefined,
+      pendingKey: ''
+    },
     result: {
       key: '',
       data: [],
@@ -29,8 +36,19 @@ export class ResultService {
   };
 
   constructor(
-    private warehouseApi: WarehouseApi
+    private warehouseApi: WarehouseApi,
+    private taxonomyApi: TaxonomyApi
   ) { }
+
+  getTaxon(taxonId: string) {
+    return this._fetch('taxon', taxonId, this.taxonomyApi.taxonomyFindBySubject(
+      taxonId,
+      'multi',
+      {
+        'selectedFields': 'scientificName,vernacularName,cursiveName'
+      }
+    ));
+  }
 
   getResults(collectionId: string, informalGroup: string, time: string): Observable<any> {
     const cacheKey = collectionId + ':' + informalGroup + ':' + time;
@@ -88,7 +106,7 @@ export class ResultService {
     );
   }
 
-  private _fetch(type: 'map'|'list'|'result', cacheKey: string, request): Observable<any> {
+  private _fetch(type: 'map'|'list'|'result'|'taxon', cacheKey: string, request): Observable<any> {
     if (this.state[type].key === cacheKey) {
       return Observable.of(this.state[type].data);
     } else if (this.state[type].pendingKey === cacheKey && this.state[type].pending) {

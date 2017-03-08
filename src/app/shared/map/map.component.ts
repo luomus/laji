@@ -37,6 +37,7 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input() initWithWorldMap = false;
   @Input() bringDrawLayerToBack = true;
   @Input() zoom = 1;
+  @Input() tileOpacity: number;
   @Input() controlSettings: any = {
     draw: false,
     drawCopy: false,
@@ -93,6 +94,7 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.map.map.on('movestart', _ => {
       this.moveEvent('movestart');
     });
+    this.initOpacity();
     this.updateData();
     this.initDrawData();
     this.moveEvent('moveend');
@@ -143,6 +145,9 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes) {
+    if (changes.tileOpacity) {
+      this.initOpacity();
+    }
     if (changes.visible) {
       setTimeout(() => {
         this.invalidateSize();
@@ -199,6 +204,12 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
       if (this.bringDrawLayerToBack) {
         this.map.drawLayerGroup.bringToBack();
       }
+    }
+  }
+
+  initOpacity() {
+    if (this.tileOpacity && this.map) {
+      this.map.tileLayer.setOpacity(this.tileOpacity);
     }
   }
 }
