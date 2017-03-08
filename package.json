@@ -34,6 +34,7 @@
     "@angular/router": "^3.4.0",
     "@ngx-translate/core": "^6.0.0",
     "@swimlane/ngx-datatable": "^6.3.0",
+    "angular2-moment": "^1.2.0",
     "angular2-tree-component": "^2.8.1",
     "core-js": "^2.4.1",
     "ie-shim": "^0.1.0",

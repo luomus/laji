@@ -70,6 +70,7 @@ import { DocumentApi } from './api/DocumentApi';
 import { LajiFormComponent } from './form/laji-form.component';
 import { OnlyLoggedIn } from './route/only-logged-in';
 import { LajiExternalService } from './service/laji-external.service';
+import { MomentModule } from 'angular2-moment';
 
 
 @NgModule({
@@ -91,6 +92,7 @@ import { LajiExternalService } from './service/laji-external.service';
     RouterModule,
     TranslateModule,
     ReactiveFormsModule,
+    MomentModule,
     TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule
   ],
   providers: [ ], // keep this empty!
@@ -101,7 +103,7 @@ import { LajiExternalService } from './service/laji-external.service';
     ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
-    AuthoritiesDirective
+    AuthoritiesDirective, MomentModule
   ]
 })
 export class SharedModule {

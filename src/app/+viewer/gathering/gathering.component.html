@@ -1,9 +1,9 @@
 <div [hidden]="!visible">
   <laji-row [title]="'viewer.field.observer' | translate" [value]="gathering.team | values"></laji-row>
   <laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.eventDate">
-    {{ gathering.eventDate.begin | date:'dd.MM.yyyy' }}
+    {{ gathering.eventDate.begin | amDateFormat:'DD.MM.YYYY' }}
     <span *ngIf="gathering.eventDate.begin !== gathering.eventDate.end">
-      - {{gathering.eventDate.end | date:'dd.MM.yyyy'}}
+      - {{gathering.eventDate.end | amDateFormat:'DD.MM.YYYY'}}
     </span>
   </laji-row>
   <div *ngIf="gathering.interpretations">

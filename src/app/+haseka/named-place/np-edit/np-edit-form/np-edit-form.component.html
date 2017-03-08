@@ -23,7 +23,7 @@
         </div>
         <div *ngSwitchCase="'unsaved'" class="unsaved status">
           <span *ngIf="formData.formData.dateEdited">
-            {{'haseka.form.unsaved' | translate:{saveTime: formData.formData.dateEdited | date:'d.M.y HH:mm'} }}
+            {{'haseka.form.unsaved' | translate:{saveTime: formData.formData.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'} }}
           </span>
           <span *ngIf="!formData.formData.dateEdited">
             {{'haseka.form.unsavedNever' | translate}}
