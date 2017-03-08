@@ -7,7 +7,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { Util } from '../../shared/service/util.service';
 
 @Component({
-  selector: 'laji-front',
+  selector: 'laji-map-front',
   templateUrl: './front.component.html',
   styleUrls: ['./front.component.css']
 })
