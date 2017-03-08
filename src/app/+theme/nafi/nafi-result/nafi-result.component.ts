@@ -14,6 +14,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   time;
   grid;
   page;
+  type;
 
   year;
   currentMonth;
@@ -34,6 +35,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
       this.taxonId = params['taxonId'] || '';
       this.time = params['time'] || '1991-01-01/';
       this.grid = params['grid'] || '';
+      this.type = params['type'] || 'count';
       this.page = +params['page'] || 1;
     });
   }

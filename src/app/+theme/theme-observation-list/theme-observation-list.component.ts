@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
 import { ResultService } from '../service/result.service';
 import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
 import { Router } from '@angular/router';
+import { MapTypes } from '../theme-map/theme-map.component';
 
 @Component({
   selector: 'laji-theme-observation-list',
@@ -16,6 +17,7 @@ export class ThemeObservationListComponent implements OnInit, OnChanges {
   @Input() collectionId: string;
   @Input() taxonId: string;
   @Input() time: string;
+  @Input() type: MapTypes;
   @Input() tbodyHeight = 400;
   @Input() page: number;
 

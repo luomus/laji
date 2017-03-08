@@ -7,7 +7,17 @@
     [center]="[64.709804, 25]">
   </laji-map>
   <div class="legend">
-    Havaintolkm
+    <span [ngSwitch]="type">
+      <span *ngSwitchCase="'individuals'">
+        Yksilömäärä
+      </span>
+      <span *ngSwitchCase="'newest'">
+        Uusin
+      </span>
+      <span *ngSwitchDefault>
+        Havaintolkm
+      </span>
+    </span>
     <ul>
       <li *ngFor="let leg of legendList">
         <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{leg.label}}
@@ -15,3 +25,6 @@
     </ul>
   </div>
 </div>
+<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'count'}">Havintolkm</a>
+<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'individuals'}">Yksilö määrä</a>
+<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'newest'}">Uusin</a>

@@ -3,6 +3,7 @@
 }
 
 .legend {
+  width: 100px;
   margin: 0;
   padding: 10px;
   position: absolute;
@@ -31,6 +32,11 @@
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.type-switch {
+  display: inline-block;
+  padding-right: 10px;
 }
 
 :host >>> .leaflet-container {

@@ -131,8 +131,7 @@ export class ResultService {
         type: 'Feature',
         properties: {
           count: result.count || 0,
-          individualCountMax: result.individualCountMax || 0,
-          individualCountMin: result.individualCountMin || 0,
+          individualCountSum: result.individualCountSum || 0,
           newestRecord: result.newestRecord || '',
           oldestRecord: result.oldestRecord || '',
           grid: lat + ':' + lng
