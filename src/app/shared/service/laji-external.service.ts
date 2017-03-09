@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import LajiForm from 'laji-form/lib/laji-form'; // Keep the order!
-import LajiMap from 'laji-map/lib/map'; // this has to be after laji-form!
+import LajiForm from 'laji-form/lib/laji-form';
+import LajiMap from 'laji-map/lib/map';
 
 @Injectable()
 export class LajiExternalService {

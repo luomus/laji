@@ -203,7 +203,8 @@ export class HaSeKaFormComponent implements AfterViewInit, OnDestroy {
           this.formService
             .store(data.formData)
             .subscribe(id => this.router.navigate(
-              ['/vihko/' + this.formId + '/' + id]
+              ['/vihko/' + this.formId + '/' + id],
+              {replaceUrl: true}
             ));
         },
         err => {
