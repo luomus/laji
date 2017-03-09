@@ -27,7 +27,7 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
   @Input() countLabel: string[] = ['1-4', '5-9', '10-49', '50-99', '100-499', '500-'];
   @Input() timeLabel: string[] = ['2020-', '2015-', '2010-', '2005-', '2000-', '1995-'];
 
-  maxBounds = [[58.7, 18.6], [71.1, 33.6]];
+  maxBounds = [[58.0, 19.0], [72.0, 35.0]];
   geoJsonLayer;
   loading = false;
   taxon: Taxonomy;
