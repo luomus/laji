@@ -8,6 +8,12 @@ import * as MapUtil from 'laji-map/lib/utils';
 export class ResultService {
 
   private state = {
+    result: {
+      key: '',
+      data: [],
+      pending: undefined,
+      pendingKey: ''
+    },
     list: {
       key: '',
       data: [],
@@ -28,7 +34,7 @@ export class ResultService {
 
   getResults(collectionId: string, informalGroup: string, time: string): Observable<any> {
     const cacheKey = collectionId + ':' + informalGroup + ':' + time;
-    return this._fetch('list', cacheKey, this.warehouseApi.warehouseQueryAggregateGet(
+    return this._fetch('result', cacheKey, this.warehouseApi.warehouseQueryAggregateGet(
       {
         collectionId: [collectionId],
         informalTaxonGroupId: [informalGroup],
@@ -82,7 +88,7 @@ export class ResultService {
     );
   }
 
-  private _fetch(type: 'map'|'list', cacheKey: string, request): Observable<any> {
+  private _fetch(type: 'map'|'list'|'result', cacheKey: string, request): Observable<any> {
     if (this.state[type].key === cacheKey) {
       return Observable.of(this.state[type].data);
     } else if (this.state[type].pendingKey === cacheKey && this.state[type].pending) {
