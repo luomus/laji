@@ -370,7 +370,7 @@
   "nafi.stats.intro": "Valtakunnallinen päiväperhosseuranta (NAFI) on <a href=\"http://www.ekay.net/ymparisto/perhosseuranta/\" target=\"_blank\">Etelä-Karjalan Allergia- ja Ympäristöinstituutin</a> ja <a href=\"http://www.perhostutkijainseura.fi\" target=\"_blank\">Suomen Perhostutkijain Seuran</a> koordinoima tutkimushanke.",
   "nafi.stats.times": "Valitse näytettävä havaintojakso:",
   "nafi.stats.all": "Valitse näytettävä havaintojakso",
-  "fullYear": "koko vuosi {{year}}",
+  "wholeYear": "koko vuosi {{year}}",
   "January": "tammikuu",
   "February": "helmikuu",
   "March": "maaliskuu",
