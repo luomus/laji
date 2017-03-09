@@ -33,6 +33,7 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input() lang = 'fi';
   @Input() loading = false;
   @Input() center: [number, number];
+  @Input() maxBounds: [[number, number], [number, number]];
   @Input() showControls = true;
   @Input() initWithWorldMap = false;
   @Input() bringDrawLayerToBack = true;
@@ -94,7 +95,7 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.map.map.on('movestart', _ => {
       this.moveEvent('movestart');
     });
-    this.initOpacity();
+    this.initMapOptions();
     this.updateData();
     this.initDrawData();
     this.moveEvent('moveend');
@@ -146,7 +147,7 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   ngOnChanges(changes) {
     if (changes.tileOpacity) {
-      this.initOpacity();
+      this.initMapOptions();
     }
     if (changes.visible) {
       setTimeout(() => {
@@ -207,9 +208,15 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
-  initOpacity() {
-    if (this.tileOpacity && this.map) {
+  initMapOptions() {
+    if (!this.map) {
+      return;
+    }
+    if (this.tileOpacity) {
       this.map.tileLayer.setOpacity(this.tileOpacity);
+    }
+    if (this.maxBounds) {
+      this.map.map.setMaxBounds(this.maxBounds);
     }
   }
 }

@@ -23,10 +23,11 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
   @Input() type: MapTypes = 'count';
   @Input() colorRange: string[] = ['#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
   @Input() countBreak: number[] = [1, 5, 10, 50, 100, 500];
-  @Input() timeBreak: string[] = ['2020-01-01', '2010-01-01', '2000-01-01', '1975-01-01', '1950-01-01', '1925-01-01'];
+  @Input() timeBreak: string[] = ['2020-01-01', '2015-01-01', '2010-01-01', '2005-01-01', '2000-01-01', '1995-01-01'];
   @Input() countLabel: string[] = ['1-4', '5-9', '10-49', '50-99', '100-499', '500-'];
-  @Input() timeLabel: string[] = ['2020-', '2010-', '2000-', '1975-', '1950-', '1925-'];
+  @Input() timeLabel: string[] = ['2020-', '2015-', '2010-', '2005-', '2000-', '1995-'];
 
+  maxBounds = [[58.7, 18.6], [71.1, 33.6]];
   geoJsonLayer;
   loading = false;
   taxon: Taxonomy;
