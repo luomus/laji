@@ -115,7 +115,7 @@
   "result.unit.interpretations.individualCount": "Mängd (tolkas)",
   "result.document.collectionId": "Samling",
   "observation.download.publicTitle": "Offentliga data",
-  "result.load.introPublic": "Din sökning består av <strong>{{count}}</strong> offentliga observationer varav <strong>{{private}}</strong> är diffuserade. Du kan ladda ner offentliga datan som en textfil (CSV). Tryck på \"Hämta data\" -knappen och du får en länk till nedladdningssidan via e-post.",
+  "result.load.introPublic": "Din sökning består av <strong>{{count}}</strong> offentliga observationer varav <strong>{{private}}</strong> är diffuserade. Du kan ladda ner offentliga datan som en textfil (CSV). Tryck på \"Hämta data\" -knappen och du får en länk till nedladdningssidan via e-post. Nedladdningstiden beror på storleken på data.",
   "result.load.introSpecies": "Statistik har en lista över arter i ordning efter antalet observationer.",
   "observation.download.privateTitle": "Diffuserade och dolda data",
   "result.load.introPrivate": "<p>Din sökning innehåller <strong>{{private}}</strong> diffuserad observationer. Ytterligare kan den innehålla dolda observationer.</p><p>Du kan göra en begäran om att få diffuserad och dolda data. Din begäran kommer att behandlas  individuellt och du får ytterligare instruktioner via e-post. Berättigande för användning och godkännandet av användarvillkoren kommer att bli ombedd vid ett senare tillfälle.</p>",
