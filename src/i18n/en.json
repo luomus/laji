@@ -116,7 +116,7 @@
   "result.gathering.municipality": "Municipality",
   "result.gathering.locality": "Location",
   "observation.download.publicTitle": "Public data",
-  "result.load.introPublic": "Your search consists of <strong>{{count}}</strong> public observations of which <strong>{{private}}</strong> have been coarsened. You can download public data as a text file (CSV). Press Download data button and you'll receive a link to data download page by e-mail.",
+  "result.load.introPublic": "Your search consists of <strong>{{count}}</strong> public observations of which <strong>{{private}}</strong> have been coarsened. You can download public data as a text file (CSV). Press Download data button and you'll receive a link to data download page by e-mail. Download time depends on the size of the data.",
   "result.load.introSpecies": "The observation statistics have a list of species in order of the number of observations",
   "observation.download.privateTitle": "Coarsened and hidden data",
   "result.load.introPrivate": "<p>Your search contains <strong>{{private}}</strong> coarsened observations. Additionally it may contain hidden observations.</p><p>You can make a request to receive coarsened and hidden data. Your request will be handled individually  and you'll receive additional instructions by e-mail. Justification for data use and approval of terms of use will be asked at a later stage.</p>",
