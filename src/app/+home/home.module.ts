@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { CarouselModule } from 'ng2-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { NavigationThumbnailComponent } from '../shared/navigation-thumbnail/navigation-thumbnail.component';
-import { HomeComponent, routing, ImageHeaderComponent, StatItemComponent } from './index';
 import { TaxonomyApi } from '../shared/api/TaxonomyApi';
+import { routing } from './home.routes';
+import { HomeComponent } from './home.components';
+import { ImageHeaderComponent } from './image-header/image-header.component';
+import { StatItemComponent } from './image-header/stat-item.component';
 
 @NgModule({
   providers: [TaxonomyApi],
-  imports: [routing, SharedModule, RouterModule, CarouselModule],
+  imports: [routing, SharedModule, CarouselModule],
   declarations: [HomeComponent, ImageHeaderComponent, StatItemComponent, NavigationThumbnailComponent]
 })
 export class HomeModule {

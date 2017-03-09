@@ -1,31 +1,26 @@
-import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
-import { TranslateService, TranslateModule } from 'ng2-translate';
-import { LocalStorage } from 'angular2-localstorage/dist';
-
-import { UserService } from './service/user.service';
-import { NewsApi } from './api/NewsApi';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { LocalStorage } from 'ng2-webstorage';
+import { ActivatedRoute } from '../../../node_modules/@angular/router/src/router_state';
 
 @NgModule({
 })
 export class CoreModule {
 
-  @LocalStorage() public static defaultLang;
+  @LocalStorage() public defaultLang;
 
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: CoreModule,
-      providers: [ UserService, NewsApi ]
-    };
-  }
-
-  constructor(translate: TranslateService, @Optional() @SkipSelf() parentModule: CoreModule) {
+  constructor(translate: TranslateService, @Optional() @SkipSelf() parentModule: CoreModule,  private route: ActivatedRoute) {
     if (parentModule) {
       throw new Error(
         'CoreModule is already loaded. Import it in the AppModule only!');
     }
-    let userLang = CoreModule.defaultLang || 'fi';
-    // Todo: uncomment whne all the translations are done
-    // translate.setDefaultLang('fi');
-    translate.use(userLang);
+    this.route.queryParams.subscribe(params => {
+      if (params['lang']) {
+        this.defaultLang = params['lang'];
+      }
+      const userLang = this.defaultLang || 'fi';
+      translate.use(userLang);
+    });
+    translate.setDefaultLang('fi');
   }
 }

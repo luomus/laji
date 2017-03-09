@@ -62,15 +62,25 @@ img.ng-thumb {
 }
 
 .ng-gallery-content > a.close-popup {
-  font-size: 30px;
+  top: 20px;
+  font-size: 25px;
+}
+
+.download-img {
+  font-size: 20px;
+  bottom: 25px;
+}
+
+.ng-gallery-content > a.close-popup, .download-img {
   float: right;
+  right: 30px;
   color: #fff;
   text-decoration: none;
-  margin: 0 30px 0 0;
+  margin: 0;
   cursor: pointer;
   position: absolute;
-  top: 20px;
-  right: 0;
+  z-index: 10;
+  text-shadow: 0 1px 5px #000;
 }
 
 .ng-gallery-content > a.download-image {
@@ -91,6 +101,8 @@ img.ng-thumb {
   font-size: 50px;
   cursor: pointer;
   outline: none;
+  z-index: 10;
+  text-shadow: 0 1px 5px #000;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
@@ -132,7 +144,7 @@ img.ng-thumb {
   -webkit-user-drag: none;
 }
 
-.ng-gallery-content > img.effect {
+.ng-gallery-content > .effect {
   animation: fadeIn 0.5s;
 }
 
@@ -156,7 +168,7 @@ img.ng-thumb {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 100px;
+  bottom: 5px;
   text-shadow: 0 1px 5px #000;
 }
 
@@ -281,9 +293,11 @@ uiload > div {
 
 .uil-ring-css {
   background: none;
-  position: relative;
-  top: 0;
-  margin: 180px auto 0 auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -50px;
   width: 100px;
   height: 100px;
 }

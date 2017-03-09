@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import {
   UserComponent,
   ProfileComponent,
@@ -12,7 +11,7 @@ import {
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, FormsModule],
+  imports: [routing, SharedModule, RouterModule],
   declarations: [UserComponent, ProfileComponent, FriendsComponent, UserLoginComponent, UserLogoutComponent]
 })
 export class UserModule {

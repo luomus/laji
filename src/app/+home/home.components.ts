@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { SearchQuery } from '../+observation/search-query.model';
 import { NewsApi } from '../shared/api/NewsApi';
-import { TranslateService } from 'ng2-translate';
-import { SharedModule } from '../shared/shared.module';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-home',
@@ -16,6 +15,4 @@ import { SharedModule } from '../shared/shared.module';
 export class HomeComponent {
   constructor(public translate: TranslateService) {
   }
-
-  ngOnInit() { }
 }

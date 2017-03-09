@@ -1,0 +1,68 @@
+import { Component, AfterViewInit, ElementRef, Input, OnDestroy, OnChanges, Output, EventEmitter } from '@angular/core';
+import * as OpenSeadragon from 'openseadragon';
+import { setTimeout } from 'timers';
+
+@Component({
+  selector: 'laji-image',
+  template: '',
+  styleUrls: ['./image.component.css']
+})
+export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
+
+  @Input() src: string;
+  @Input() showNavigator = true;
+  @Output() loading = new EventEmitter<boolean>();
+
+  private viewer: any;
+  private current: string;
+
+  constructor(private el: ElementRef) { }
+
+  ngAfterViewInit() {
+    this.updateImage();
+  }
+
+  ngOnDestroy() {
+    this.destroy();
+  }
+
+  ngOnChanges() {
+    this.updateImage();
+  }
+
+  private destroy() {
+    if (this.viewer) {
+      this.viewer.destroy();
+    }
+  }
+
+  private updateImage() {
+    if (!this.src || this.current === this.src) {
+      return;
+    }
+    this.current = this.src;
+    this.destroy();
+    this.loading.emit(true);
+    this.viewer = OpenSeadragon({
+      element: this.el.nativeElement,
+      animationTime: 0.7,
+      prefixUrl: '/static/images/openseadragon/',
+      showNavigator: this.showNavigator,
+      showRotationControl: true,
+      navigatorPosition: 'ABSOLUTE',
+      navigatorTop: '35px',
+      navigatorLeft: '4px',
+      navigatorHeight: '100px',
+      navigatorWidth: '133px',
+      maxZoomPixelRatio: 2,
+      tileSources: [{
+        type: 'image',
+        url: this.src
+      }]
+    });
+    this.viewer.addHandler('tile-loaded', () => {
+      this.loading.emit(false);
+    });
+  }
+
+}

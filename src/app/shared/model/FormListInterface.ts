@@ -7,4 +7,13 @@ export interface FormListInterface {
   description: string;
   supportedLanguage: string[];
   category: string;
+  collectionID: string;
+  features: Form.Feature[];
+}
+export namespace Form {
+  export enum Feature {
+    NamedPlace = <any> 'MHL.featureNamedPlace',
+    NoPrivate = <any> 'MHL.featureNoPrivate',
+    Reserve = <any> 'MHL.featureReserve'
+  }
 }

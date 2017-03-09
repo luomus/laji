@@ -1,19 +1,17 @@
 import { ILogger } from './logger.interface';
+import { Injectable } from '@angular/core';
 
 // Declare the console as an ambient value so that TypeScript doesn't complain.
 declare const console: any;
 
-export class Logger implements ILogger {
+@Injectable()
+export abstract class Logger implements ILogger {
 
-  public error(message: string, meta?: any): void {
-  }
+  abstract error(message: string, meta?: any): void;
 
-  public warn(message: string, meta?: any): void {
-  }
+  abstract warn(message: string, meta?: any): void;
 
-  public info(message: string, meta?: any): void {
-  }
+  abstract info(message: string, meta?: any): void;
 
-  public log(message: string, meta?: any): void {
-  }
+  abstract log(message: string, meta?: any): void;
 }

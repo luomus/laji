@@ -1,0 +1,12 @@
+.col-1, .col-2 {
+  width: 20%;
+}
+.col-3, .col-4 {
+  width: 30%;
+}
+.col-5 {
+  width: 25px;
+}
+.badge {
+  background-color: #d9534f;
+}

@@ -1,0 +1,14 @@
+<div *ngIf="documentImages.length > 0 || gatheringImages.length > 0 || unitImages.length > 0">
+  <div *ngIf="documentImages.length > 0">
+    <div class="col-sm12">
+      {{'viewer.documentImages' | translate}}
+      <laji-image-gallery [modalImages]="documentImages"></laji-image-gallery>
+    </div>
+  </div>
+  <div *ngIf="gatheringImages.length > 0">
+    <div class="col-sm12">
+      {{'viewer.gatheringImages' | translate}}
+      <laji-image-gallery [modalImages]="gatheringImages"></laji-image-gallery>
+    </div>
+  </div>
+</div>

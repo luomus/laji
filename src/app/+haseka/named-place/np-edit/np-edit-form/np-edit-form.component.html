@@ -1,0 +1,38 @@
+<div class="laji-form">
+  <!--laji-np-area-form
+    [lang]="lang"
+    [visible]="true"></--laji-np-area-form-->
+  <laji-form
+    class="np-form"
+    [formData]="formData"
+    [lang]="lang"
+    [tick]="tick"
+    (onChange)="onChange($event)"
+    (onSubmit)="onSubmit($event)"></laji-form>
+  <div class="form-footer">
+    <div class="row">
+      <div class="col-xs-3 col-sm-2">
+        <button class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPublic()">{{'haseka.form.savePublic'|translate}}</button>
+      </div>
+      <div class="col-xs-3 col-sm-2">
+        <button *ngIf="enablePrivate" class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPrivate()">{{'haseka.form.savePrivate'|translate}}</button>
+      </div>
+      <div class="col-xs-3 col-sm-6 form-control-static info" [ngSwitch]="status">
+        <div *ngSwitchCase="'error'" class="error status">
+          {{'haseka.form.error' | translate}}
+        </div>
+        <div *ngSwitchCase="'unsaved'" class="unsaved status">
+          <span *ngIf="formData.formData.dateEdited">
+            {{'haseka.form.unsaved' | translate:{saveTime: formData.formData.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'} }}
+          </span>
+          <span *ngIf="!formData.formData.dateEdited">
+            {{'haseka.form.unsavedNever' | translate}}
+          </span>
+        </div>
+      </div>
+      <div class="col-xs-3 col-sm-2">
+        <button class="btn btn-default pull-right" [disabled]="saving" type="submit" (click)="discard()">{{'haseka.form.back'|translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>

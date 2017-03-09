@@ -1,0 +1,7 @@
+.container {
+  padding-bottom: 50px;
+}
+
+:host >>> .descriptions .panel-body {
+  overflow: hidden;
+}

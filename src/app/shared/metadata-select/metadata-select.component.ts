@@ -1,9 +1,14 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy, forwardRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, OnDestroy, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subscription, Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { MetadataApi } from '../api/MetadataApi';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
 import { Logger } from '../logger/logger.service';
+import { CollectionService } from '../service/collection.service';
+import { AreaService, AreaType } from '../service/area.service';
+import { SourceService } from '../service/source.service';
+import { MetadataService } from '../service/metadata.service';
 
 export interface MetadataSelectPick {
   [field: string]: string;
@@ -17,7 +22,7 @@ export const METADATA_SELECT_VALUE_ACCESSOR: any = {
 
 @Component({
   selector: 'metadata-select',
-  templateUrl: 'metadata-select.component.html',
+  templateUrl: './metadata-select.component.html',
   providers: [METADATA_SELECT_VALUE_ACCESSOR]
 })
 export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
@@ -37,19 +42,23 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   private innerValue: string = '';
 
   constructor(public warehouseMapper: WarehouseValueMappingService,
-              private metadataService: MetadataApi,
+              private metadataApi: MetadataApi,
+              private metadataService: MetadataService,
+              private collectionService: CollectionService,
+              private areaService: AreaService,
+              private sourceService: SourceService,
               private logger: Logger
   ) {
   }
 
   onChange = (_: any) => {
-  };
+  }
   onTouched = () => {
-  };
+  }
 
   get value(): any {
     return this.innerValue;
-  };
+  }
 
   set value(v: any) {
     if (v !== this.innerValue) {
@@ -77,15 +86,11 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
       return;
     }
 
-    const options$ = this.field ?
-      this.metadataService.metadataFindPropertiesRanges(this.field, this.lang, false, true) :
-      this.metadataService.metadataFindRange(this.alt, this.lang);
-
-    this.subOptions = options$
+    this.subOptions = this.getDataObservable()
       .map(result => this.pickValue(result))
       .switchMap(options => {
         if (this.mapToWarehouse) {
-          let requests = [];
+          const requests = [];
           options.map(item => {
             requests.push(this.warehouseMapper.getWarehouseKey(item.id));
           });
@@ -159,18 +164,39 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
     this.onTouched = fn;
   }
 
+  private getDataObservable() {
+    if (this.field) {
+      switch (this.field) {
+        case 'MY.collectionID':
+          return this.collectionService.getAllAsLookUp(this.lang);
+        case <any>AreaType.Biogeographical:
+          return this.areaService.getBiogeographicalProvinces(this.lang);
+        case <any>AreaType.Municipality:
+          return this.areaService.getMunicipalities(this.lang);
+        case <any>AreaType.Country:
+          return this.areaService.getCountries(this.lang);
+        case 'KE.informationSystem':
+          return this.sourceService.getAllAsLookUp(this.lang)
+            .map(system => Object.keys(system).reduce((total, current) => {
+              total.push({id: current, value: system[current]});
+              return total;
+            }, []));
+        default:
+          throw new Error('Could not find mapping for ' + this.field);
+      }
+    }
+    return this.metadataService.getRange(this.alt, this.lang);
+  }
+
   private pickValue(data) {
     if (!this.pick) {
       return data.map(value => ({id: value.id, text: value.value}));
     }
-    let result = [];
-    data.map(item => {
-      if (typeof this.pick[item.id] !== 'undefined') {
-        if (this.pick[item.id] === '') {
-          result.push({id: item.id, text: item.value});
-        }
+    return data.retuce((total, item) => {
+      if (typeof this.pick[item.id] !== 'undefined' && this.pick[item.id] === '') {
+        total.push({id: item.id, text: item.value});
       }
-    });
-    return result;
+      return total;
+    }, []);
   }
 }

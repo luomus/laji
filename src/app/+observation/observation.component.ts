@@ -1,9 +1,7 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
 import { SearchQuery } from './search-query.model';
-import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
-declare let d3: any;
 
 @Component({
   selector: 'laji-observation',
@@ -28,12 +26,14 @@ export class ObservationComponent implements OnInit, OnDestroy {
       this.tab = params['tab'] || 'map';
     });
     this.subQuery = this.route.queryParams.subscribe(params => {
-      this.searchQuery.page = +params['page'] || 1;
       if (params['target']) {
         this.searchQuery.query.target = [params['target']];
       }
       this.searchQuery.setQueryFromQueryObject(params);
-      this.searchQuery.queryUpdate({formSubmit: true, newData: true});
+      if (params['reset']) {
+        this.searchQuery.query = {};
+      }
+      this.searchQuery.queryUpdate({formSubmit: !!params['reset'], newData: true});
     });
   }
 

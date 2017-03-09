@@ -1,0 +1,20 @@
+<div [hidden]="!visible">
+  <laji-row [title]="'viewer.field.observer' | translate" [value]="gathering.team | values"></laji-row>
+  <laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.eventDate">
+    {{ gathering.eventDate.begin | amDateFormat:'DD.MM.YYYY' }}
+    <span *ngIf="gathering.eventDate.begin !== gathering.eventDate.end">
+      - {{gathering.eventDate.end | amDateFormat:'DD.MM.YYYY'}}
+    </span>
+  </laji-row>
+  <div *ngIf="gathering.interpretations">
+    <laji-row [title]="'country'" [value]="gathering.interpretations.country | toQName | areaName"> <!-- ({{gathering.interpretations.sourceOfCountry| label}}) --></laji-row>
+    <laji-row [title]="'MY.biologicalProvince'" [value]="gathering.interpretations.biogeographicalProvince | toQName | areaName"> <!-- ({{gathering.interpretations.sourceOfBiogeographicalProvince| label}})--></laji-row>
+    <laji-row [title]="'MY.municipality'" [value]="gathering.interpretations.finnishMunicipality | toQName | areaName"> <!-- ({{gathering.interpretations.sourceOfFinnishMunicipality| label}})--></laji-row>
+  </div>
+  <div class="facts" *ngIf="showFacts">
+    <laji-row [title]="item.fact" [value]="item.value | toQName | label" *ngFor="let item of gathering.facts"></laji-row>
+  </div>
+  <div *ngFor="let unit of gathering?.units">
+    <laji-unit [showFacts]="showFacts" [unit]="unit" [highlight]="highlight"></laji-unit>
+  </div>
+</div>

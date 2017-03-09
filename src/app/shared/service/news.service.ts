@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { PagedResult } from '../model/PagedResult';
 import { News } from '../model/News';
 import { NewsApi } from '../api/NewsApi';
@@ -14,8 +14,8 @@ export class NewsService {
     private newsApi: NewsApi
   ) {}
 
-  getPage(lang: string, page: number, pageSize: number = 5): Observable<PagedResult<News>> {
-    let cacheKey = lang + page + ':' + pageSize;
+  getPage(lang: string, page: number, pageSize = 5): Observable<PagedResult<News>> {
+    const cacheKey = lang + page + ':' + pageSize;
     if (cacheKey === this.currentKey) {
       return Observable.of(this.currentData);
     }
@@ -28,7 +28,7 @@ export class NewsService {
 
   get(id: string): Observable<News> {
     if (this.currentData && this.currentData.results) {
-      let result = this.currentData.results.filter(data => data.id === id);
+      const result = this.currentData.results.filter(data => data.id === id);
       if (result.length === 1) {
         return Observable.of(result[0]);
       }

@@ -1,12 +1,12 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
   <div *ngIf="!loading && images.length === 0">{{'observation.form.noImages' | translate}}</div>
-  <ImageModal [modalImages]="images"></ImageModal>
+  <laji-image-gallery [modalImages]="images"></laji-image-gallery>
   <pagination
           [totalItems]="total"
           [itemsPerPage]="pageSize"
           [(ngModel)]="page"
           (pageChanged)="pageChanged($event)"
-          [maxSize]="shortPager ? 2 : 7"
+          [maxSize]="shortPager ? 3 : 7"
           [boundaryLinks]="!shortPager"
           [firstText]="'paginator.first' | translate"
           [lastText]="'paginator.last' | translate"

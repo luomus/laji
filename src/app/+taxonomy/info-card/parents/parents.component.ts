@@ -1,6 +1,6 @@
 import { Component, Input, SimpleChange, OnInit, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { TranslateService } from 'ng2-translate/ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 

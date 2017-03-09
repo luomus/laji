@@ -21,12 +21,26 @@
             <i *ngIf="column.sort" class="pull-right glyphicon"
                [ngClass]="{'glyphicon-triangle-bottom': column.sort === 'DESC', 'glyphicon-triangle-top': column.sort === 'ASC'}"></i>
           </th>
+          <th></th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let row of result?.results">
           <td *ngFor="let column of userColumns">
-            <span *ngIf="row[column.field]" [innerHtml]="row[column.field]"></span>
+            <span *ngIf="row[column.field]">
+              <span *ngIf="!column.async" [innerHtml]="row[column.field]"></span>
+              <span *ngIf="column.async" [innerHtml]="row[column.field] | async"></span>
+            </span>
+          </td>
+          <td class="viewer-column">
+            <button
+                    placement="right"
+                    container="body"
+                    [tooltip]="'result.showViewer' | translate"
+                    class="btn btn-primary btn-xs"
+                    (click)="showDocument(row)">
+              <i class="glyphicon glyphicon-eye-open"></i>
+            </button>
           </td>
         </tr>
         </tbody>
@@ -38,7 +52,7 @@
         *ngIf="showPager"
         [totalItems]="result?.total"
         [itemsPerPage]="result?.pageSize"
-        [(ngModel)]="searchQuery.page"
+        [(ngModel)]="page"
         (pageChanged)="pageChanged($event)"
         [maxSize]="7"
         [boundaryLinks]="true"
@@ -47,4 +61,17 @@
         [previousText]="'paginator.previous' | translate"
         [nextText]="'paginator.next' | translate"
 ></pagination>
+<div class="modal fade" bsModal #documentModal="bs-modal"
+     tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <laji-document [uri]="shownDocument" [highlight]="highlightId"></laji-document>
+      </div>
+    </div>
+  </div>
+</div>
 

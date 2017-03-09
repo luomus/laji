@@ -6,4 +6,6 @@ export interface Image extends TaxonomyImage{
 
   vernacularName?: string;
 
+  scientificName?: string;
+
 }

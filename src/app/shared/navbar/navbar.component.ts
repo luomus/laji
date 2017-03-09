@@ -10,17 +10,19 @@ import { AppConfig } from '../../app.config';
 export class NavbarComponent {
 
   openMenu: Boolean = false;
-  env: string = 'beta';
+  isAuthority = false;
+  env = 'beta';
 
   constructor(public userService: UserService, appConfig: AppConfig) {
     this.env = appConfig.getEnv();
+    this.isAuthority = appConfig.isForAuthorities();
   }
 
   toggleMenu() {
     this.openMenu = !this.openMenu;
   }
 
-  clicked(event: Event) {
+  doLogin(event: Event) {
     event.preventDefault();
     this.userService.doLogin();
   }

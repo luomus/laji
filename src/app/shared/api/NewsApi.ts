@@ -1,5 +1,5 @@
 import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
-import { Injectable, Optional } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { PagedResult, News } from '../model';
 import 'rxjs/Rx';
@@ -10,10 +10,7 @@ export class NewsApi {
   protected basePath = '/api';
   private lastResult: PagedResult<News>;
 
-  constructor(protected http: Http, @Optional() basePath: string) {
-    if (basePath) {
-      this.basePath = basePath;
-    }
+  constructor(protected http: Http) {
   }
 
   /**

@@ -139,6 +139,6 @@ export interface WarehouseQueryInterface {
   hasMedia?: boolean;
   secureReason?: Array<string>;
   editorId?: Array<string>;
+  secured?: boolean;
+  ykj3?: string;
 }
-
-export const DATE_FORMAT = 'YYYY-MM-DD';

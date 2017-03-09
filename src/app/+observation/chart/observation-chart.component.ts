@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
-import { TranslateService } from 'ng2-translate/ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Subscription, Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { IdService } from '../../shared/service/id.service';
@@ -11,23 +12,23 @@ import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-observation-chart',
-  templateUrl: 'observation-char.component.html',
+  templateUrl: './observation-char.component.html',
   styleUrls: ['./observation-char.component.css'],
   providers: [InformalTaxonGroupApi]
 })
 export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
 
-  @Input() height: number = 150;
-  @Input() showLegend: boolean = false;
-  @Input() legendPosition: string = 'top';
-  @Input() active: boolean = true;
-  @Input() public visible: boolean = true;
+  @Input() height = 150;
+  @Input() showLegend = false;
+  @Input() legendPosition = 'top';
+  @Input() active = true;
+  @Input() public visible = true;
 
 
   public informalGroups: InformalTaxonGroup[] = [];
   public data: any;
   private group: string;
-  private loading: boolean = false;
+  private loading = false;
 
   private subDataQuery: Subscription;
   private subInformal: Subscription;
@@ -49,7 +50,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
     );
     this.subDataQuery = this.searchQuery.queryUpdated$.subscribe(
       (data) => {
-        if (data && data.formSubmit) {
+        if (data && data['newData']) {
           this.updateData();
         }
       }
@@ -91,7 +92,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private getGroupsSub(): Observable<PagedResult<InformalTaxonGroup>> {
-    let lang = this.translate.currentLang;
+    const lang = this.translate.currentLang;
     this.group = (
       this.searchQuery.query.informalTaxonGroupId &&
       this.searchQuery.query.informalTaxonGroupId.length === 1
@@ -110,7 +111,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
     this.loading = true;
-    let sources = [];
+    const sources = [];
     sources.push(this.getGroupsSub());
     sources.push(this.warehouseService
       .warehouseQueryAggregateGet(
@@ -129,7 +130,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
               result => {
                 this.loading = false;
                 this.informalGroups = [result];
-                let groups = this.informalGroups.map(group => group.id);
+                const groups = this.informalGroups.map(group => group.id);
                 this.data = data[1].results
                   .map(item => {
                     return {
@@ -149,7 +150,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
           if (!this.informalGroups) {
             return;
           }
-          let groups = this.informalGroups.map(group => group.id);
+          const groups = this.informalGroups.map(group => group.id);
           this.data = data[1].results
             .map(item => {
               return {

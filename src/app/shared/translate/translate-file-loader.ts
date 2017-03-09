@@ -1,5 +1,5 @@
-import { TranslateLoader } from 'ng2-translate';
-import { Observable } from 'rxjs';
+import { TranslateLoader } from '@ngx-translate/core';
+import { Observable } from 'rxjs/Observable';
 
 export class TranslateFileLoader implements TranslateLoader {
   private translations = {

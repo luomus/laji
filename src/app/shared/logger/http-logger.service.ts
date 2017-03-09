@@ -1,6 +1,8 @@
 import { ILogger } from './logger.interface';
 import { LoggerApi } from '../api/LoggerApi';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class HttpLogger implements ILogger {
 
   constructor(private loggerApi: LoggerApi) {

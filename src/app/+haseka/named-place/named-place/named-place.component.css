@@ -1,0 +1,37 @@
+:host {
+  display: flex;
+  flex: 1;
+}
+
+:host >>> .full-height {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+:host >>> .hidden {
+  display: none !important;
+}
+
+.np-row {
+  flex-flow: row;
+}
+
+.np-row [class^="col-"] {
+  padding-right: 1px;
+  padding-left: 1px;
+}
+
+.nav-margin {
+  margin-top: 42px;
+}
+
+#np-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#choose-container laji-np-choose {
+  flex: 10;
+}

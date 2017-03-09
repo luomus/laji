@@ -1,0 +1,42 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { ThemeRoutingModule } from './theme-routing.module';
+import { NafiComponent } from './nafi/nafi.component';
+import { SharedModule } from '../shared/shared.module';
+import { ThemeResultComponent } from './theme-result/theme-result.component';
+import { NafiResultComponent } from './nafi/nafi-result/nafi-result.component';
+import { ThemeMapComponent } from './theme-map/theme-map.component';
+import { ResultService } from './service/result.service';
+import { FixedTableDirective } from './directive/fixed-table.directive';
+import { ThemeFormComponent } from './theme-form/theme-form.component';
+import { ThemeObservationListComponent } from './theme-observation-list/theme-observation-list.component';
+import { NafiFormComponent } from './nafi/nafi-form/nafi-form.component';
+import { NafiMyDocumentListComponent } from './nafi/nafi-my-document-list/nafi-my-document-list.component';
+import { ThemeMyDocumentListComponent } from './theme-my-document-list/theme-my-document-list.component';
+import { NafiInstructionsComponent } from './nafi/nafi-instructions/nafi-instructions.component';
+import { ViewerModule } from '../+viewer/viewer.module';
+
+@NgModule({
+  imports: [
+    CommonModule,
+    ThemeRoutingModule,
+    SharedModule,
+    ViewerModule
+  ],
+  declarations: [
+    NafiComponent,
+    ThemeResultComponent,
+    NafiResultComponent,
+    ThemeMapComponent,
+    FixedTableDirective,
+    ThemeFormComponent,
+    ThemeObservationListComponent,
+    NafiFormComponent,
+    NafiMyDocumentListComponent,
+    ThemeMyDocumentListComponent,
+    NafiInstructionsComponent
+  ],
+  providers: [ ResultService ]
+})
+export class ThemeModule { }

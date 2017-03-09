@@ -4,7 +4,7 @@ import { FormService } from '../form/form.service';
 
 @Component({
   selector: 'laji-short-document',
-  templateUrl: 'short-document.component.html',
+  templateUrl: './short-document.component.html',
   styleUrls: ['./short-document.component.css']
 })
 export class ShortDocumentComponent implements OnInit, OnChanges {

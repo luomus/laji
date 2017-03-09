@@ -1,4 +1,4 @@
-<div class="laji-news">
+<div class="laji-news" *lajiAuthorities="false">
   <laji-image-header></laji-image-header>
   <div class="searchBar">
     <div class="container-fluid">
@@ -46,7 +46,7 @@
           <div class="col-md-5">
             <div class="panel panel-default">
               <div class="panel-body resent-map">
-                <laji-observation-map [height]="305" [showLayers]="false" [initWithWorldMap]="true" [showItemsWhenLessThan]="500" [draw]="false" [query]="{time:'-1/0', finnish: true}"></laji-observation-map>
+                <laji-observation-map [height]="305" [showControls]="false" [initWithWorldMap]="true" [showItemsWhenLessThan]="500" [draw]="false" [query]="{time:'-1/0', finnish: true}"></laji-observation-map>
               </div>
               <div class="panel-footer">
                 <h2 class="panel-title">{{ 'home.main-page.recent' | translate }}</h2>
@@ -64,5 +64,11 @@
           </div-->
       </div>
     </div>
+  </div>
+</div>
+<div class="container-fluid" *lajiAuthorities="true">
+  <h1>{{'home.authority.title' | translate}}</h1>
+  <div class="row">
+    <div class="col-sm-10 col-md-7 intro" [innerHtml]="'home.authority.text' | translate"></div>
   </div>
 </div>

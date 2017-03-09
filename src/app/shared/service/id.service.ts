@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 export const DEFAULT_DOMAIN = 'http://tun.fi/';
 
 
@@ -5,6 +6,7 @@ export const DEFAULT_DOMAIN = 'http://tun.fi/';
  * Id service
  * Currently works only in default domain!
  */
+@Injectable()
 export class IdService {
   static getId(value) {
     if (typeof value !== 'string' || value === '') {

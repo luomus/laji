@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top" [ngClass]="{authority: isAuthority}">
   <div class="env {{env}}"></div>
   <div class="container-fluid">
     <div class="row">
@@ -15,17 +15,19 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
           <ul class="nav navbar-nav">
-            <li [routerLinkActive]="['active']">
+            <li [routerLinkActive]="['active']" *lajiAuthorities="false">
               <a [routerLink]="['/taxon']">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']">
-              <a [routerLink]="['/observation']" [queryParams]="{page: 1}">{{ 'navigation.observation' | translate }}</a>
+              <a [routerLink]="['/observation']" [queryParams]="{reset: true}">{{ 'navigation.observation' | translate }}</a>
+            </li>
+            <li [routerLinkActive]="['active']" *lajiAuthorities="true">
+              <a [routerLink]="['/invasive']">{{ 'navigation.invasive' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']">
-              <a *ngIf="userService.isLoggedIn" [routerLink]="['/vihko']">{{ 'navigation.haseka' | translate }}</a>
-              <a *ngIf="!userService.isLoggedIn" [routerLink]="['/vihko']">{{ 'navigation.notify' | translate }}</a>
+              <a [routerLink]="['/vihko']">{{ 'navigation.haseka' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']">
+            <li [routerLinkActive]="['active']" *lajiAuthorities="false">
               <a [routerLink]="['/about']">{{ 'navigation.information' | translate }}</a>
             </li>
           </ul>
@@ -47,7 +49,7 @@
                   </ul>
                 </div>
               </div>
-              <a href="#login" *ngIf="!userService.isLoggedIn" (click)="clicked($event)">{{ 'navigation.user.login' | translate }}</a>
+              <a href="#login" *ngIf="!userService.isLoggedIn" (click)="doLogin($event)">{{ 'navigation.user.login' | translate }}</a>
             </li>
             <li>
               <laji-lang-select></laji-lang-select>

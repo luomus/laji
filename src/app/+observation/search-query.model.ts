@@ -1,7 +1,7 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { URLSearchParams } from '@angular/http';
-import { Subject } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -10,12 +10,12 @@ export class SearchQuery {
 
   public queryUpdatedSource = new Subject<any>();
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
-  public tack: number = 0;
+  public tack = 0;
 
   public query: WarehouseQueryInterface = {};
   public page: number;
-  public pageSize: number = 20;
-  public includeNonValidTaxa: boolean = false;
+  public pageSize = 20;
+  public includeNonValidTaxa = false;
   public selected: string[];
   public orderBy: string[];
   public aggregateBy: string[];
@@ -54,7 +54,8 @@ export class SearchQuery {
     'hasDocumentMedia',
     'hasGatheringMedia',
     'hasUnitMedia',
-    'hasMedia'
+    'hasMedia',
+    'secured'
   ];
 
   numericTypes = [
@@ -66,14 +67,15 @@ export class SearchQuery {
   ];
 
   stringTypes = [
-    'taxonRankId'
+    'taxonRankId',
+    'ykj3'
   ];
 
   constructor(private router: Router) {
   }
 
   public setQueryFromQueryObject(query) {
-    for (let i of this.arrayTypes) {
+    for (const i of this.arrayTypes) {
       if (typeof query[i] !== 'undefined') {
         this.query[i] = decodeURIComponent(query[i])
           .split(',')
@@ -83,7 +85,7 @@ export class SearchQuery {
       }
     }
 
-    for (let i of this.booleanTypes) {
+    for (const i of this.booleanTypes) {
       if (typeof query[i] !== 'undefined') {
         this.query[i] = query[i] === 'true';
       } else {
@@ -91,9 +93,9 @@ export class SearchQuery {
       }
     }
 
-    for (let i of this.numericTypes) {
+    for (const i of this.numericTypes) {
       if (typeof query[i] !== 'undefined') {
-        let value = +query[i];
+        const value = +query[i];
         if (!isNaN(value)) {
           this.query[i] = value;
         }
@@ -102,7 +104,7 @@ export class SearchQuery {
       }
     }
 
-    for (let i of this.stringTypes) {
+    for (const i of this.stringTypes) {
       if (typeof query[i] !== 'undefined') {
         this.query[i] = query[i];
       } else {
@@ -116,7 +118,7 @@ export class SearchQuery {
   }
 
   public setQueryFromURLSearchParams(queryParameters: URLSearchParams) {
-    for (let i of this.arrayTypes) {
+    for (const i of this.arrayTypes) {
       if (queryParameters.has(i)) {
         this.query[i] = decodeURIComponent(queryParameters.get(i))
           .split(',')
@@ -126,7 +128,7 @@ export class SearchQuery {
       }
     }
 
-    for (let i of this.booleanTypes) {
+    for (const i of this.booleanTypes) {
       if (queryParameters.has(i)) {
         this.query[i] = queryParameters.get(i) === 'true';
       } else {
@@ -134,9 +136,9 @@ export class SearchQuery {
       }
     }
 
-    for (let i of this.numericTypes) {
+    for (const i of this.numericTypes) {
       if (queryParameters.has(i)) {
-        let value = +queryParameters.get(i);
+        const value = +queryParameters.get(i);
         if (!isNaN(value)) {
           this.query[i] = value;
         }
@@ -145,7 +147,7 @@ export class SearchQuery {
       }
     }
 
-    for (let i of this.stringTypes) {
+    for (const i of this.stringTypes) {
       if (queryParameters.has(i)) {
         this.query[i] = queryParameters.get(i);
       } else {
@@ -159,8 +161,8 @@ export class SearchQuery {
   }
 
   public getQueryObject(skipParams: string[] = []) {
-    let result = {};
-    for (let i of this.arrayTypes) {
+    const result = {};
+    for (const i of this.arrayTypes) {
       if (skipParams.indexOf(i) > -1) {
         continue;
       }
@@ -171,7 +173,7 @@ export class SearchQuery {
         if (typeof this.query[i] === 'string') {
           this.query[i] = [this.query[i]];
         }
-        let query = this.query[i]
+        const query = this.query[i]
           .filter(val => val.trim().length > 0)
           .join(',');
         if (query.length > 0) {
@@ -180,7 +182,7 @@ export class SearchQuery {
       }
     }
 
-    for (let i of this.booleanTypes) {
+    for (const i of this.booleanTypes) {
       if (skipParams.indexOf(i) > -1) {
         continue;
       }
@@ -189,17 +191,17 @@ export class SearchQuery {
       }
     }
 
-    for (let i of this.numericTypes) {
+    for (const i of this.numericTypes) {
       if (skipParams.indexOf(i) > -1) {
         continue;
       }
-      let type = typeof this.query[i];
+      const type = typeof this.query[i];
       if (type === 'number' || type === 'string') {
         result[i] = String(this.query[i]);
       }
     }
 
-    for (let i of this.stringTypes) {
+    for (const i of this.stringTypes) {
       if (skipParams.indexOf(i) > -1) {
         continue;
       }
@@ -244,7 +246,7 @@ export class SearchQuery {
     if (!queryParameters) {
       queryParameters = new URLSearchParams();
     }
-    let query = this.getQueryObject(skipParams);
+    const query = this.getQueryObject(skipParams);
     Object.keys(query).map((key) => {
       queryParameters.set(key, query[key]);
     });
@@ -256,12 +258,12 @@ export class SearchQuery {
     if (!path) {
       path = location.path(false).split('?')[0].split(';')[0];
     }
-    let query = this.getQueryObject(skipParams);
-    let extra = {skipLocationChange: skipHistory};
+    const query = this.getQueryObject(skipParams);
+    const extra = {skipLocationChange: skipHistory};
     if (Object.keys(query).length > 0) {
       extra['queryParams'] = this.getQueryObject(skipParams);
     } else {
-      extra['preserveQueryParams'] = true;
+      extra['preserveQueryParams'] = false;
     }
     this.router.navigate(path.split('/'), extra);
   }

@@ -1,22 +1,26 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { PersonTokenApi } from '../api/PersonTokenApi';
-import { Subscription, Observable, Observer } from 'rxjs';
+import { Observer } from 'rxjs/Observer';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
-import { LocalStorage } from 'angular2-localstorage/dist';
+import { LocalStorage } from 'ng2-webstorage';
 import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
 import { AppConfig } from '../../app.config';
 import { WindowRef } from '../windows-ref';
+import { ToastsService } from './toasts.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class UserService {
 
   public isLoggedIn = false;
 
-  @LocalStorage() private token = '';
-  @LocalStorage() private returnUrl = '/';
+  @LocalStorage() private token;
+  @LocalStorage() private returnUrl;
   private currentUserId: string;
   private users: {[id: string]: Person} = {};
   private usersFetch: {[id: string]: Observable<Person>} = {};
@@ -33,6 +37,8 @@ export class UserService {
               private location: Location,
               private logger: Logger,
               private appConfig: AppConfig,
+              private toastsService: ToastsService,
+              private translate: TranslateService,
               private winRef: WindowRef) {
     if (this.token) {
       this.loadUserInfo(this.token);
@@ -48,18 +54,31 @@ export class UserService {
     this.loadUserInfo(userToken);
   }
 
-  public logout() {
+  public logout(showError = true) {
     if (this.token === '' || this.subLogout) {
       return;
     }
-    let token = this.token;
-    this.token = '';
-    this.isLoggedIn = false;
-    this.currentUserId = undefined;
-    this.subLogout = this.tokenService.personTokenDeleteToken(token)
+    this.subLogout = this.tokenService.personTokenDeleteToken(this.token)
+      .retry(5)
       .subscribe(
-        () => {},
-        err => this.logger.warn('Failed to logout', err)
+        () => {
+          this.token = '';
+          this.isLoggedIn = false;
+          this.currentUserId = undefined;
+        },
+        err => {
+          if (this.token !== '') {
+            this.token = '';
+            this.isLoggedIn = false;
+            this.currentUserId = undefined;
+            if (showError) {
+              this.translate.get('error.logout').subscribe(
+                msg => this.toastsService.showError(msg)
+              );
+            }
+            this.logger.warn('Failed to logout', err);
+          }
+        }
       );
   }
 
@@ -72,7 +91,7 @@ export class UserService {
       return this.getCurrentUser()
         .catch((err) => {
           this.logger.warn('Failed to fetch current users information', err);
-          this.logout();
+          this.logout(false);
           return Observable.of({});
         });
     }
@@ -104,7 +123,7 @@ export class UserService {
   }
 
   public returnToPageBeforeLogin(): void {
-    this.router.navigateByUrl(this.returnUrl);
+    this.router.navigateByUrl(this.returnUrl || '/');
   }
 
   public getDefaultFormData(): Observable<any> {
@@ -127,7 +146,7 @@ export class UserService {
 
   private loadUserInfo(token: string) {
     this.token = token;
-    this.getUser()
+    this.subUser = this.getUser()
       .subscribe(
         user => this.addUser(user, true),
         err => {
@@ -152,7 +171,7 @@ export class UserService {
     return this.observable;
   }
 
-  private addUser(user: Person, asCurrent: boolean = false) {
+  private addUser(user: Person, asCurrent = false) {
     if (asCurrent) {
       this.currentUserId = user.id;
     }

@@ -1,4 +1,5 @@
-import { Observable, Observer } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Injectable } from '@angular/core';
 
@@ -43,8 +44,8 @@ export class WarehouseValueMappingService {
     this.mapping = {};
     this.reverse = {};
     result.results.map(translation => {
-      let key = translation.enumeration || '';
-      let value = translation.property || '';
+      const key = translation.enumeration || '';
+      const value = translation.property || '';
       this.mapping[key] = value;
       this.reverse[value] = key;
     });

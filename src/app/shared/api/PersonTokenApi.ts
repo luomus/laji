@@ -22,9 +22,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
-import { Injectable, Optional } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
 import 'rxjs/Rx';
@@ -38,10 +37,7 @@ export class PersonTokenApi {
   protected basePath = '/api';
   public defaultHeaders: Headers = new Headers();
 
-  constructor(protected http: Http, @Optional() basePath: string) {
-    if (basePath) {
-      this.basePath = basePath;
-    }
+  constructor(protected http: Http) {
   }
 
   /**

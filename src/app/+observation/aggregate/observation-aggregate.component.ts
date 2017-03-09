@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { SearchQuery } from '../search-query.model';
 import { Util } from '../../shared/service/util.service';
@@ -7,7 +7,7 @@ import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-observation-aggregate',
-  templateUrl: 'observation-aggregate.component.html'
+  templateUrl: './observation-aggregate.component.html'
 })
 export class ObservationAggregateComponent implements OnInit, OnDestroy, OnChanges {
 

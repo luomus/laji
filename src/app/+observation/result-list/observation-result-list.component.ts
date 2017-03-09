@@ -1,35 +1,39 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { Location } from '@angular/common';
 import { ValueDecoratorService } from './value-decorator.sevice';
 import { SearchQuery } from '../search-query.model';
 import { Util } from '../../shared/service/util.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../shared/logger/logger.service';
-import { SessionStorage } from 'angular2-localstorage/dist';
+import { SessionStorage } from 'ng2-webstorage';
 import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
+import { ModalDirective } from 'ng2-bootstrap';
+import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 
 interface Column {
   field: string;
   translation?: string;
   sort?: 'ASC' | 'DESC';
   visible: boolean;
+  skip?: boolean;
+  async?: boolean;
   sortBy?: string | boolean;
 }
 
 @Component({
   selector: 'laji-observation-result-list',
-  templateUrl: 'observation-result-list.component.html',
+  templateUrl: './observation-result-list.component.html',
   styleUrls: ['./observation-result-list.component.css'],
-  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe]
+  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe]
 })
 export class ObservationResultListComponent implements OnInit, OnDestroy {
-
-  @SessionStorage() userColumns: Column[] = [];
-  @Input() showPager: boolean = true;
+  @ViewChild('documentModal') public modal: ModalDirective;
+  @SessionStorage() userColumns: Column[];
+  @Input() showPager = true;
   @Output() onSelect: EventEmitter<string> = new EventEmitter<string>();
 
   public columns: Column[] = [
@@ -41,26 +45,36 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     {field: 'gathering.team', visible: true, sortBy: false},
     {field: 'document.createdDate', visible: false, sortBy: false},
     {field: 'gathering.eventDate', visible: true, sortBy: 'gathering.eventDate.begin,gathering.eventDate.end'},
-    {field: 'gathering.country', visible: false, sortBy: false},
-    {field: 'gathering.biogeographicalProvince', visible: false, sortBy: false},
-    {field: 'gathering.municipality', visible: true, sortBy: false},
+    {field: 'gathering.interpretations.countryDisplayname', visible: false,
+      sortBy: 'gathering.interpretations.countryDisplayname', translation: 'result.gathering.country'},
+    {field: 'gathering.interpretations.biogeographicalProvinceDisplayname', visible: false,
+      sortBy: 'gathering.interpretations.biogeographicalProvinceDisplayname', translation: 'result.gathering.biogeographicalProvince'},
+    {field: 'gathering.interpretations.municipalityDisplayname', visible: true,
+      sortBy: 'gathering.interpretations.municipalityDisplayname', translation: 'observation.form.municipality'},
     {field: 'gathering.locality', visible: false},
     {field: 'gathering.conversions.ykj', visible: false, sortBy: false},
     {field: 'gathering.coordinatesVerbatim', visible: false, sortBy: false},
+    {field: 'unit.abundanceString', visible: false, sortBy: false},
+    {field: 'unit.interpretations.individualCount', visible: true, sortBy: false},
     {field: 'unit.lifeStage', visible: false, sortBy: false, translation: 'observation.form.lifeStage'},
     {field: 'unit.sex', visible: false, sortBy: false, translation: 'observation.form.sex'},
     {field: 'unit.recordBasis', visible: false, sortBy: false, translation: 'observation.filterBy.recordBasis'},
+    {field: 'document.collectionId', visible: false},
     {field: 'document.notes', visible: false},
-    {field: 'document.documentId', visible: false},
+    {field: 'document.documentId', visible: false, skip: true},
     {field: 'gathering.interpretations.coordinateAccuracy', visible: false, sortBy: false},
     {field: 'document.secureLevel', visible: false, sortBy: false},
-    {field: 'document.secureReasons', visible: false, sortBy: false}
-    // {field: 'document.sourceId', visible: false}
+    {field: 'document.secureReasons', visible: false, sortBy: false},
+    {field: 'document.sourceId', visible: false, async: true}
   ];
 
   public result: PagedResult<any>;
 
-  public loading: boolean = true;
+  public loading = true;
+  public shownDocument = '';
+  public highlightId = '';
+  public page = 1;
+  public pageSize = 20;
 
   private subFetch: Subscription;
   private subUpdate: Subscription;
@@ -70,36 +84,36 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   constructor(private warehouseService: WarehouseApi,
               private decorator: ValueDecoratorService,
-              private searchQuery: SearchQuery,
               private translate: TranslateService,
               private location: Location,
-              private logger: Logger
+              private logger: Logger,
+              public searchQuery: SearchQuery
   ) {
   }
 
   ngOnInit() {
-    if (this.userColumns.length === 0) {
+    if (!this.userColumns || this.userColumns.length === 0) {
       this.updateUserCols();
     }
     this.result = {
-      total: this.searchQuery.page * this.searchQuery.pageSize,
-      pageSize: this.searchQuery.pageSize,
-      currentPage: this.searchQuery.page,
+      total: this.page * this.pageSize,
+      pageSize: this.pageSize,
+      currentPage: this.page,
       results: []
     };
     this.subTrans = this.translate.onLangChange.subscribe(
       () => {
         if (this.resultCache) {
-          this.result = this.prepareData(Util.clone(this.resultCache));
+          this.result = this.prepareData(Util.clone(this.resultCache), this.columns.map(col => col.field));
         }
       }
     );
     this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
-        this.fetchRows(this.searchQuery.page);
+        this.fetchRows(this.page);
       }
     );
-    this.fetchRows(this.searchQuery.page);
+    this.fetchRows(this.page);
   }
 
   ngOnDestroy() {
@@ -115,21 +129,21 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   }
 
   updateUserCols() {
-    let current = JSON.stringify(this.userColumns);
+    const current = JSON.stringify(this.userColumns);
     this.userColumns = this.columns.filter((col) => col.visible !== false);
     return current !== JSON.stringify(this.userColumns);
   }
 
   pageChanged(event: any): void {
-    if (this.searchQuery.page !== event.page) {
+    if (this.page !== event.page) {
       this.fetchRows(event.page);
     }
   }
 
   fetchRows(page: number, forceUpdate = false): void {
-    let query = Util.clone(this.searchQuery.query);
+    const query = Util.clone(this.searchQuery.query);
     if (!forceUpdate) {
-      let cache = [
+      const cache = [
         JSON.stringify(query),
         page
       ].join(':');
@@ -144,13 +158,18 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
-    query.selected = this.userColumns.map((column) => column.field);
-    let sort = this.userColumns.reduce((prev, cur) => {
+    query.selected = this.userColumns.reduce((total, column) => {
+      if (column.skip !== false) {
+        total.push(column.field);
+      }
+      return total;
+    }, ['document.documentId', 'unit.unitId']);
+    const sort = this.userColumns.reduce((prev, cur) => {
       if (!cur.sort || cur.sortBy === false) {
         return prev;
       }
-      let field = '' + (cur.sortBy || cur.field);
-      let cols = field.split(',').map((value) => {
+      const field = '' + (cur.sortBy || cur.field);
+      const cols = field.split(',').map((value) => {
         return value + ' ' + cur.sort;
       });
       return [...cols, ...prev];
@@ -161,18 +180,19 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
         query,
         query.selected,
         sort.length > 0 ? sort : undefined,
-        this.searchQuery.pageSize,
+        this.pageSize,
         page)
       .do(result => this.resultCache = Util.clone(result))
-      .map(result => this.prepareData(result))
+      .map(result => this.prepareData(result, query.selected))
       .subscribe(
         results => {
-          this.searchQuery.page = results.currentPage || 1;
+          this.page = results.currentPage || 1;
           this.result = results;
           this.loading = false;
           this.searchQuery.updateUrl(this.location, undefined, [
             'selected',
-            'pageSize'
+            'pageSize',
+            'page'
           ]);
         },
         err => {
@@ -200,20 +220,21 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     } else {
       col.sort = undefined;
     }
-    this.fetchRows(this.searchQuery.page, true);
+    this.fetchRows(this.page, true);
   }
 
-  prepareData(data) {
+  prepareData(data, fields) {
     if (!data.results) {
       return data;
     }
-    let colLen = this.userColumns.length;
-    let results: any = [];
+    const selLen = fields.length;
+    const results: any = [];
+    const len = data.results.length;
     this.decorator.lang = this.translate.currentLang;
-    for (let i = 0, len = data.results.length; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       results[i] = {};
-      for (let j = 0; j < colLen; j++) {
-        results[i][this.userColumns[j].field] = this.getData(data.results[i], this.userColumns[j].field);
+      for (let j = 0; j < selLen; j++) {
+        results[i][fields[j]] = this.getData(data.results[i], fields[j]);
       }
     }
     data.results = results;
@@ -222,7 +243,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   getData(row: any, propertyName: string): string {
     let val = '';
-    let first = propertyName.split(',')[0];
+    const first = propertyName.split(',')[0];
     try {
       val = first.split('.').reduce((prev: any, curr: any) => prev[curr], row);
       val = this.decorator.decorate(first, val, row);
@@ -234,11 +255,11 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   toggledFieldSelect(event) {
     if (event === false) { // when closing
       if (this.updateUserCols()) {
-        this.fetchRows(this.searchQuery.page, true);
+        this.fetchRows(this.page, true);
       }
     } else {               // when opening
       this.columns.map((col, idx) => {
-        let userCol = this.userColumns.filter((src) => src.field === col.field);
+        const userCol = this.userColumns.filter((src) => src.field === col.field);
         if (userCol.length !== 1) {
           this.columns[idx].visible = false;
           return;
@@ -246,6 +267,12 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
         this.columns[idx].visible = typeof userCol[0].visible === 'undefined' || userCol[0].visible;
       });
     }
+  }
+
+  showDocument(row) {
+    this.shownDocument = row['document.documentId'];
+    this.highlightId = row['unit.unitId'];
+    this.modal.show();
   }
 
   toggleColumn(col: Column) {

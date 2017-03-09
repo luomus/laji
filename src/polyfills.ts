@@ -1,5 +1,3 @@
-// This file includes polyfills needed by Angular 2 and is loaded before
-// the app. You can add your own extra polyfills to this file.
 import 'core-js/es6/symbol';
 import 'core-js/es6/object';
 import 'core-js/es6/function';
@@ -13,9 +11,35 @@ import 'core-js/es6/array';
 import 'core-js/es6/regexp';
 import 'core-js/es6/map';
 import 'core-js/es6/set';
-import 'core-js/es6/reflect';
-import 'intl/index';
-import 'intl/locale-data/jsonp/en.js';
 
+/** IE10 and IE11 requires the following for NgClass support on SVG elements */
+// import 'classlist.js';  // Run `npm install --save classlist.js`.
+
+// If you need to support the browsers/features below, uncomment the import
+// and run `npm install import-name-here';
+// Learn more in https://angular.io/docs/ts/latest/guide/browser-support.html
+
+// Animations
+// Needed for: All but Chrome and Firefox, Not supported in IE9
+import 'web-animations-js';
+
+/** Evergreen browsers require these. **/
+import 'core-js/es6/reflect';
 import 'core-js/es7/reflect';
-import 'zone.js/dist/zone';
+
+/***************************************************************************************************
+ * Zone JS is required by Angular itself.
+ */
+import 'zone.js/dist/zone';  // Included with Angular CLI.
+
+
+
+/***************************************************************************************************
+ * APPLICATION IMPORTS
+ */
+
+/**
+ * Date, currency, decimal and percent pipes.
+ * Needed for: All but Chrome, Firefox, Edge, IE11 and Safari 10
+ */
+import 'intl';;

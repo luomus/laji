@@ -1,13 +1,15 @@
-<div class="observation-map" [ngStyle]="{height: height + 'px', width:'100%'}">
+<div class="observation-map" [ngStyle]="{height: height + 'px'}">
   <laji-map
+          *ngIf="!reloading"
           [visible]="visible"
           [data]="mapData"
           [drawData]="drawData"
           [draw]="draw"
           [center]="center"
-          [showLayers]="showLayers"
+          [showControls]="showControls"
           (onCreate)="onCreate($event)"
           (onMove)="onMove($event)"
+          (onFailure)="refreshMap()"
           [initWithWorldMap]="initWithWorldMap">
     <div class="loading-map loading" *ngIf="loading"></div>
     <ul class="legend" *ngIf="legend" [ngStyle]="{'margin-top': topMargin }">

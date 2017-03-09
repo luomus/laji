@@ -1,8 +1,8 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../shared/model/Taxonomy';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { InformalTaxonGroup } from '../../shared';
 import { Logger } from '../../shared/logger/logger.service';
@@ -10,8 +10,8 @@ import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-species-list',
-  templateUrl: 'species-list.component.html',
-  styleUrls: ['species-list.component.css'],
+  templateUrl: './species-list.component.html',
+  styleUrls: ['./species-list.component.css'],
   providers: []
 })
 export class SpeciesListComponent implements OnChanges {
@@ -19,7 +19,7 @@ export class SpeciesListComponent implements OnChanges {
   @Input() informalGroup: InformalTaxonGroup;
 
   loading: boolean = false;
-  speciesPage: PagedResult<Taxonomy[]>;
+  speciesPage: PagedResult<Taxonomy>;
 
   private subFetch: Subscription;
 

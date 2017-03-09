@@ -1,0 +1,54 @@
+.map-wrap {
+  height: 605px;
+}
+
+.title {
+  position: absolute;
+  z-index: 401;
+  width: 200px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.legend {
+  width: 100px;
+  margin: 0;
+  padding: 10px;
+  position: absolute;
+  border: 0;
+  left: 21px;
+  z-index: 400;
+  top: 165px;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+.legend .color {
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  margin-right: 5px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+.legend ul {
+  padding: 0;
+  margin: 0;
+}
+
+.legend li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.type-switch {
+  display: inline-block;
+  padding-right: 10px;
+}
+
+:host >>> .leaflet-container {
+  background-color: #eee;
+}

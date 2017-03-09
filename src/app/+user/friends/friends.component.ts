@@ -6,7 +6,7 @@ import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'friends',
-  templateUrl: 'friends.component.html'
+  templateUrl: './friends.component.html'
 })
 export class FriendsComponent implements OnInit {
 

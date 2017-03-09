@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from 'ng2-translate/ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -10,9 +10,9 @@ import { InformalTaxonGroup } from '../shared/model/InformalTaxonGroup';
 import { Taxonomy } from '../shared/model/Taxonomy';
 
 @Component({
-  selector: '[laji-taxonomy]',
+  selector: 'laji-taxonomy',
   templateUrl: './taxon.component.html',
-  styleUrls: ['taxon.component.css']
+  styleUrls: ['./taxon.component.css']
 })
 export class TaxonComponent implements OnInit, OnDestroy {
 

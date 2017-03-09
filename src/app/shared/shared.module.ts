@@ -1,10 +1,17 @@
-import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import { NgModule, ModuleWithProviders } from '@angular/core';
+import { HttpModule, Http } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule } from 'ng2-bootstrap';
-import { TranslateModule } from 'ng2-translate';
+import { CommonModule, DatePipe } from '@angular/common';
+import {
+  TooltipModule,
+  PaginationModule,
+  DropdownModule,
+  AlertModule,
+  ModalModule,
+  PopoverModule
+} from 'ng2-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { UsersPipe } from './pipe/users.pipe';
@@ -20,42 +27,113 @@ import { MultiLangPipe } from './pipe/multi-lang.pipe';
 import { NewsService } from './service/news.service';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { OnlyLoggedComponent } from './only-logged/only-logged.component';
-import { ImageModal } from './image-gallery/image-modal.component';
+import { ImageModalComponent } from './image-gallery/image-modal.component';
 import { MapService } from './map/map.service';
 import { ToQNamePipe } from './pipe/to-qname.pipe';
 import { WindowRef } from './windows-ref';
 import { ToFullUriPipe } from './pipe/to-full-uri';
 import { GalleryComponent } from '../+observation/gallery/gallery.component';
+import { AuthoritiesDirective } from './authorities/authorities.directive';
+import { UserService } from './service/user.service';
+import { NewsApi } from './api/NewsApi';
+import { ToastModule } from 'ng2-toastr';
+import { ToastsService } from './service/toasts.service';
+import { AppConfig } from '../app.config';
+import { PersonTokenApi } from './api/PersonTokenApi';
+import { PersonApi } from './api/PersonApi';
+import { SearchQuery } from '../+observation/search-query.model';
+import { WarehouseApi } from './api/WarehouseApi';
+import { FeedbackApi } from './api/FeedbackApi';
+import { LoggerApi } from './api/LoggerApi';
+import { WarehouseValueMappingService } from './service/warehouse-value-mapping.service';
+import { TriplestoreLabelService } from './service/triplestore-label.service';
+import { MetadataApi } from './api/MetadataApi';
+import { Ng2Webstorage } from 'ng2-webstorage';
+import { FooterService } from './service/footer.service';
+import { AutocompleteApi } from './api/AutocompleteApi';
+import { AuthenticatedHttpService } from './service/authenticated-http.service';
+import { ImageComponent } from './image/image.component';
+import { ValuesPipe } from './pipe/values.pipe';
+import { CollectionService } from './service/collection.service';
+import { CollectionNamePipe } from './pipe/collection-name.pipe';
+import { AreaService } from './service/area.service';
+import { AreaNamePipe } from './pipe/area-name.pipe';
+import { AreaApi } from './api/AreaApi';
+import { SourceService } from './service/source.service';
+import { SourceApi } from './api/SourceApi';
+import { MetadataService } from './service/metadata.service';
+import { ImageModalOverlayComponent } from './image-gallery/image-modal-overlay.component';
+import { NamedPlaceApi } from './api/NamedPlaceApi';
+import { FormService } from '../+haseka/form/form.service';
+import { FormApi } from './api/FormApi';
+import { DocumentApi } from './api/DocumentApi';
+import { LajiFormComponent } from './form/laji-form.component';
+import { OnlyLoggedIn } from './route/only-logged-in';
+import { LajiExternalService } from './service/laji-external.service';
+import { MomentModule } from 'angular2-moment';
 
 
 @NgModule({
+  entryComponents: [ImageModalOverlayComponent],
   declarations: [
     NewsListComponent,
-    SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe,
-    UsersPipe, LabelPipe, SafePipe, MultiLangPipe, FormattedNumber,
+    SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
+    UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, FormattedNumber,
+    AreaNamePipe, CollectionNamePipe,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
-    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal
+    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, ImageModalOverlayComponent,
+    AuthoritiesDirective, ImageComponent, LajiFormComponent
   ],
   imports: [
+    ToastModule,
     FormsModule,
-    ReactiveFormsModule,
     CommonModule,
     HttpModule,
     RouterModule,
     TranslateModule,
-    TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule
+    ReactiveFormsModule,
+    MomentModule,
+    TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule
   ],
-  providers: [
-    NewsService, MapService, WindowRef
-  ],
+  providers: [ ], // keep this empty!
   exports: [
-    CommonModule, HttpModule, TranslateModule,
-    NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, SafePipe, MultiLangPipe, ToQNamePipe,
-    ToFullUriPipe, TooltipModule, TabsModule, PaginationModule, DropdownModule, AlertModule, ModalModule,
+    CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule,
+    AreaNamePipe, NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe,
+    ToQNamePipe, ValuesPipe, CollectionNamePipe, LajiFormComponent,
+    ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
-    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModal
+    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
+    AuthoritiesDirective, MomentModule
   ]
 })
 export class SharedModule {
-
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: SharedModule,
+      providers: [
+        LajiExternalService,
+        UserService,
+        NewsApi,
+        FormService,
+        FormApi,
+        DocumentApi,
+        NamedPlaceApi,
+        NewsService,
+        MapService,
+        CollectionService,
+        WindowRef,
+        ToastsService, AppConfig,
+        PersonTokenApi, PersonApi, SearchQuery, WarehouseApi,
+        AreaApi, AreaService,
+        SourceApi, SourceService,
+        FeedbackApi, LoggerApi,
+        MetadataService,
+        WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
+        AutocompleteApi, FooterService, Ng2Webstorage,
+        DatePipe,
+        OnlyLoggedIn,
+        {provide: Http, useClass: AuthenticatedHttpService}
+      ]
+    };
+  }
 }

@@ -1,72 +1,93 @@
 import {
-  Component, ElementRef, OnDestroy, Input, Output, EventEmitter, OnChanges, ViewChild,
-  OnInit
+  Component,
+  ElementRef,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  ViewChild,
+  AfterViewInit
 } from '@angular/core';
 import { Logger } from '../logger/logger.service';
 import { MapService } from './map.service';
-import LajiMap from 'laji-map';
+import { LajiExternalService } from '../service/laji-external.service';
 
 @Component({
   selector: 'laji-map',
   template: `
-<div style="width:100%; height: 100%; position: relative">
-  <div #map style="height:100%;width:100%"></div>
+<div class="laji-map-wrap" [ngClass]="{'no-controls': !showControls}">
+  <div #map class="laji-map"></div>
+  <div class="loading-map loading" *ngIf="loading"></div>
   <ng-content></ng-content>
 </div>`,
+  styleUrls: ['./map.component.css'],
   providers: []
 })
-export class MapComponent implements OnDestroy, OnChanges, OnInit {
+export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
 
-  @Input() data: any = {};
+  @Input() data: any = [];
   @Input() drawData: any;
-  @Input() visible: boolean;
+  @Input() visible = true;
   @Input() draw: any = false;
-  @Input() lang: string = 'fi';
+  @Input() lang = 'fi';
+  @Input() loading = false;
   @Input() center: [number, number];
-  @Input() showLayers: boolean = true;
-  @Input() initWithWorldMap: boolean = false;
-  @Input() bringDrawLayerToBack: boolean = true;
+  @Input() maxBounds: [[number, number], [number, number]];
+  @Input() showControls = true;
+  @Input() initWithWorldMap = false;
+  @Input() bringDrawLayerToBack = true;
+  @Input() zoom = 1;
+  @Input() tileOpacity: number;
+  @Input() controlSettings: any = {
+    draw: false,
+    drawCopy: false,
+    drawClear: false,
+    coordinates: false,
+    coordinateInput: false
+  };
 
   @Output() select = new EventEmitter();
   @Output() onCreate = new EventEmitter();
   @Output() onMove = new EventEmitter();
+  @Output() onFailure =  new EventEmitter();
   @ViewChild('map') elemRef: ElementRef;
 
   map: any;
   private initEvents = false;
+  private failureSend = false;
 
   constructor(
     private mapService: MapService,
-    private logger: Logger
+    private logger: Logger,
+    private lajiExternalService: LajiExternalService
   ) {
+
   }
 
-  ngOnInit() {
-    let controlSettings: any = {
-      draw: this.draw,
-      edit: false,
-      layers: true,
-      zoom: true,
-      coordinateInput: false,
-      location: false,
-    };
-    if (this.showLayers === false) {
-      controlSettings.layer = false;
+  ngAfterViewInit() {
+    const draw = this.draw;
+    if (this.draw) {
+      draw.onChange = draw.onChange || (e => this.onChange(e));
+      draw.getDraftStyle = draw.getDraftStyle || this.getDrawingDraftStyle;
+      draw.data = draw.data || this.drawData;
+      draw.editable = draw.editable !== false ? draw.editable : false;
+      draw.marker = draw.marker !== false ? draw.marker : false;
+      draw.polygon = draw.polygon !== false ? draw.polygon : false;
+      draw.polyline = draw.polyline !== false ? draw.polyline : false;
+      draw.hasActive = draw.hasActive !== true ? draw.hasActive : true;
     }
-    this.map = new LajiMap({
+    this.map = this.lajiExternalService.getMap({
       tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
-      activeIdx: 0,
-      zoom: this.getInitialZoomLevel(),
+      zoom: this.zoom,
       center: this.center || [65, 26],
       lang: this.lang,
       data: [],
+      draw: draw,
       markerPopupOffset: 5,
       featurePopupOffset: 0,
-      enableDrawEditing: false,
-      getDrawingDraftStyle: this.getDrawingDraftStyle,
-      onChange: e => this.onChange(e),
       rootElem: this.elemRef.nativeElement,
-      controlSettings: controlSettings
+      controlSettings: this.controlSettings
     });
     this.map.map.on('moveend', _ => {
       this.moveEvent('moveend');
@@ -74,6 +95,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     this.map.map.on('movestart', _ => {
       this.moveEvent('movestart');
     });
+    this.initMapOptions();
     this.updateData();
     this.initDrawData();
     this.moveEvent('moveend');
@@ -113,21 +135,20 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     if (type === 'Coordinates') {
       this.map.openCoordinatesDialog();
     } else if (['Rectangle'].indexOf(type) > -1) {
-      new L.Draw[type](this.map.map, this.getDrawingDraftStyle(type))
+      new (L as any).Draw[type](this.map.map, this.getDrawingDraftStyle(type))
         .enable();
     }
   }
 
   ngOnDestroy() {
-    try {
-      this.map.map.off();
-      this.map.map.remove();
-    } catch (err) {
-      this.logger.log('Unmounting map failed', err);
-    }
+    this.map.map.off();
+    this.map.map.remove();
   }
 
   ngOnChanges(changes) {
+    if (changes.tileOpacity) {
+      this.initMapOptions();
+    }
     if (changes.visible) {
       setTimeout(() => {
         this.invalidateSize();
@@ -165,7 +186,12 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
         'draw:drawstart': event => this.mapService.startDraw()
       });
     } catch (err) {
-      this.logger.error('Failed to add map data', err);
+      if (this.failureSend) {
+        this.logger.error('Failed to add map data', {error: err && err.message || 'no data' });
+      } else {
+        this.onFailure.emit(true);
+        this.failureSend = true;
+      }
     }
   }
 
@@ -182,7 +208,15 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit {
     }
   }
 
-  private getInitialZoomLevel() {
-    return this.initWithWorldMap ? 3 : 1;
+  initMapOptions() {
+    if (!this.map) {
+      return;
+    }
+    if (this.tileOpacity) {
+      this.map.tileLayer.setOpacity(this.tileOpacity);
+    }
+    if (this.maxBounds) {
+      this.map.map.setMaxBounds(this.maxBounds);
+    }
   }
 }

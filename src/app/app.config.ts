@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as appConfigJson from '../../config.json';
 
 @Injectable()
 export class AppConfig {
@@ -6,9 +7,9 @@ export class AppConfig {
 
   constructor() {
     try {
-      this.config = require('../../config.json');
+      this.config = appConfigJson;
     } catch (e) {
-      throw 'Place add config.json for your application!';
+      throw 'Place add config.json for your application root!';
     }
   }
 
@@ -33,5 +34,21 @@ export class AppConfig {
       return true;
     }
     return this.config.form_whitelist.indexOf(formId) !== -1;
+  }
+
+  isAnalyticsDisabled() {
+    return !!this.config.disable_analytics;
+  }
+
+  isForcedLogin() {
+    return !!this.config.force_login;
+  }
+
+  isForAuthorities() {
+    return !!this.config.for_authorities;
+  }
+
+  getNamedPlaceFormId() {
+    return this.config.form_namedplaces || '';
   }
 }

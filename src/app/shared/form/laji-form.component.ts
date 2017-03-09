@@ -1,14 +1,19 @@
 import {
-  Component, ElementRef, Inject, OnDestroy, Input, Output, EventEmitter, OnChanges,
-  AfterViewInit, SimpleChanges
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  AfterViewInit,
+  SimpleChanges
 } from '@angular/core';
 import { FormApiClient } from '../api';
 import { UserService } from '../service/user.service';
 import { Logger } from '../logger/logger.service';
-
-import LajiFormWrapper from 'laji-form';
-
-// const lajiFormWrapper = require('laji-form/dist/laji-form').default;
+import { LajiExternalService } from '../service/laji-external.service';
 
 @Component({
   selector: 'laji-form',
@@ -33,6 +38,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   constructor(@Inject(ElementRef) elementRef: ElementRef,
               private apiClient: FormApiClient,
               private userService: UserService,
+              private lajiExternalService: LajiExternalService,
               private logger: Logger
   ) {
     this.elem = elementRef.nativeElement;
@@ -50,6 +56,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (!this.lajiFormWrapper) {
+      this.mount();
       return;
     }
     if (changes['lang']) {
@@ -96,11 +103,11 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
       return;
     }
     try {
-      let uiSchemaContext = this.formData.uiSchemaContext || {};
+      const uiSchemaContext = this.formData.uiSchemaContext || {};
       uiSchemaContext['creator'] = this.formData.formData.creator;
       this.apiClient.lang = this.lang;
       this.apiClient.personToken = this.userService.getToken();
-      this.lajiFormWrapper = new LajiFormWrapper({
+      this.lajiFormWrapper = this.lajiExternalService.getForm({
         staticImgPath: '/static/lajiForm/',
         rootElem: this.elem,
         schema: this.formData.schema,

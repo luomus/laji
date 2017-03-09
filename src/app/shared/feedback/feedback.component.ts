@@ -1,16 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ng2-bootstrap';
 import { FeedbackApi } from '../api/FeedbackApi';
 import { UserService } from '../service/user.service';
-import { SessionStorage } from 'angular2-localstorage/dist';
+import { SessionStorage } from 'ng2-webstorage';
 import { ToastsService } from '../service/toasts.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
 
 @Component({
   selector: 'laji-feedback',
   styleUrls: ['./feedback.component.css'],
-  templateUrl: 'feedback.component.html'
+  templateUrl: './feedback.component.html'
 })
 export class FeedbackComponent {
 
@@ -39,14 +39,14 @@ export class FeedbackComponent {
 
   sendFeedback() {
     this.error = false;
-    let subject = (['other', ''].indexOf(this.feedback.subject) > -1 ?  '' : (this.feedback.subject + ': ')) +
+    const subject = (['other', ''].indexOf(this.feedback.subject) > -1 ?  '' : (this.feedback.subject + ': ')) +
       this.feedback.other;
-    let message = this.feedback.message;
+    const message = this.feedback.message;
     if (!this.feedback.other || !message) {
       this.error = true;
       return;
     }
-    let meta = this.location.prepareExternalUrl(this.location.path());
+    const meta = this.location.prepareExternalUrl(this.location.path());
     this.userService.getUser()
       .subscribe(user => {
         this.feedbackApi.send(

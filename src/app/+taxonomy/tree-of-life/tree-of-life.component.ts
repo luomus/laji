@@ -1,14 +1,13 @@
 import { Component, ElementRef, HostListener, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { debounce } from 'underscore';
-import { Taxonomy } from '../../shared';
 
 
 declare var d3: any;
 
 @Component({
   selector: 'laji-tree-of-life',
-  templateUrl: 'tree-of-life.component.html',
+  templateUrl: './tree-of-life.component.html',
   styleUrls: ['./tree-of-life.component.css']
 })
 export class TreeOfLifeComponent {

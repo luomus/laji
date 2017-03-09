@@ -11,7 +11,7 @@ import {
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { Logger } from '../../shared/logger/logger.service';
 
 export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
@@ -22,7 +22,7 @@ export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
 
 @Component({
   selector: 'observation-group-select',
-  templateUrl: 'group-select.component.html',
+  templateUrl: './group-select.component.html',
   styleUrls: ['./group-select.component.css'],
   providers: [InformalTaxonGroupApi, OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR]
 })

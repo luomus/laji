@@ -25,10 +25,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 import { Component, OnInit, ViewContainerRef, Input, forwardRef, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import * as moment from 'moment';
 
 export interface CalendarDate {
   day: number;
@@ -240,7 +238,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   }
 
   private onTouchedCallback: () => void = () => {
-  };
+  }
   private onChangeCallback: (_: any) => void = () => {
-  };
+  }
 }

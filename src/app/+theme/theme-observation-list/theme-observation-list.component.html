@@ -1,0 +1,74 @@
+<div *ngIf="loading" [ngStyle]="{'height': (tbodyHeight + 80) + 'px'}">
+  {{'theme.searching' | translate}}
+</div>
+<div *ngIf="!loading && results.results.length === 0"  [ngStyle]="{'height': (tbodyHeight + 80) + 'px'}">
+  <strong>{{'theme.noHits' | translate}}</strong>
+</div>
+<div *ngIf="!loading && results.results.length > 0">
+  <strong>{{'theme.grid' | translate:{grid: grid, total: results.total} }}
+    Ruudun {{grid}} havainnot ({{results.total}} kpl)</strong>
+  <a [routerLink] [queryParams]="{taxonId: taxonId, time: time, type: type}" class="badge pull-right">x</a>
+  <div class="table-responsive" [ngStyle]="{'max-height': (tbodyHeight + 80) + 'px'}">
+    <table class="table table-striped table-condensed table-hover" [lajiFixedTable]="tbodyHeight">
+      <thead>
+      <tr>
+        <th class="col-1">{{'result.unit.taxonVerbatim' | translate}}</th>
+        <th class="col-2">{{'observation.form.place' | translate}}</th>
+        <th class="col-3">{{'result.gathering.eventDate' | translate}}</th>
+        <th class="col-4">{{'viewer.field.observer' | translate}}</th>
+        <th class="col-5"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of results.results">
+        <td class="col-1">{{item.unit.linkings?.taxon.scientificName}}</td>
+        <td class="col-2">
+          {{item.gathering.municipality}}
+          {{item.gathering.biogeographicalProvince}}
+        </td>
+        <td class="col-3">
+          {{item.gathering.eventDate?.begin}}<span *ngIf="item.gathering.eventDate?.begin !== item.gathering.eventDate?.end">/{{item.gathering.eventDate?.end}}</span>
+        </td>
+        <td class="col-4">
+          <span *ngIf="item.gathering.team">
+            {{item.gathering.team.join(' & ')}}
+          </span>
+        </td>
+        <td class="col-5">
+          <a
+              placement="right"
+              container="body"
+              [tooltip]="'result.showViewer' | translate"
+              class="btn btn-primary btn-xs"
+              (click)="showDocument(item.document.documentId, item.unit.unitId)"><i class="glyphicon glyphicon-eye-open"></i></a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <pagination
+          [totalItems]="results.total"
+          [itemsPerPage]="100"
+          [(ngModel)]="page"
+          (pageChanged)="pageChanged($event)"
+          [maxSize]="5"
+          [boundaryLinks]="true"
+          [firstText]="'paginator.first' | translate"
+          [lastText]="'paginator.last' | translate"
+          [previousText]="'paginator.previous' | translate"
+          [nextText]="'paginator.next' | translate"
+  ></pagination>
+</div>
+<div class="modal fade" bsModal #documentModal="bs-modal"
+     tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <laji-document [useWorldMap]="false" [uri]="shownDocument" [highlight]="highlightId"></laji-document>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,21 +1,22 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnChanges, OnDestroy, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges, ViewChild, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { SearchQuery } from '../search-query.model';
 import { IdService } from '../../shared/service/id.service';
 import { UserService } from '../../shared/service/user.service';
 import { ObservationFilterInterface } from '../filter/observation-filter.interface';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { ObservationMapComponent } from '../map/observation-map.component';
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({
   selector: 'laji-observation-result',
-  templateUrl: 'observation-result.component.html'
+  templateUrl: './observation-result.component.html'
 })
-export class ObservationResultComponent implements OnInit, OnChanges {
+export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() filters: {[name: string]: ObservationFilterInterface};
-  @Input() active: string = 'list';
+  @Input() active = 'list';
   @Output() activeChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() onFilterSelect: EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
 
@@ -23,6 +24,8 @@ export class ObservationResultComponent implements OnInit, OnChanges {
 
   public activated = {};
   public queryParams = {};
+
+  private subQueryUpdate: Subscription;
 
   constructor(public searchQuery: SearchQuery,
               public userService: UserService,
@@ -33,13 +36,15 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.updateQueryParams();
     this.activated[this.active] = true;
-    this.searchQuery.queryUpdated$.subscribe(data => {
-      if (data['formSubmit']) {
-        this.updateQueryParams();
-        this.activated = {};
-        this.activated[this.active] = true;
-      }
+    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(() => {
+      this.updateQueryParams();
     });
+  }
+
+  ngOnDestroy() {
+    if (this.subQueryUpdate) {
+      this.subQueryUpdate.unsubscribe();
+    }
   }
 
   ngOnChanges(changes) {
@@ -50,7 +55,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
 
   pickValue(aggr, lang) {
     let vernacular = '';
-    let scientific = aggr['unit.linkings.taxon.speciesScientificName'] || '';
+    const scientific = aggr['unit.linkings.taxon.speciesScientificName'] || '';
     switch (lang) {
       case 'fi':
         vernacular = aggr['unit.linkings.taxon.speciesNameFinnish'] || '';
@@ -97,7 +102,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     this.searchQuery.queryUpdate({formSubmit: true});
   }
 
-  activate(tab: string, forceUpdate: boolean = false) {
+  activate(tab: string, forceUpdate = false) {
     if (!forceUpdate && this.active === tab) {
       return;
     }
@@ -106,14 +111,16 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     this.activeChange.emit(this.active);
     this.searchQuery.updateUrl(this.location, '/observation/' + tab, [
       'selected',
-      'pageSize'
+      'pageSize',
+      'page'
     ]);
   }
 
   private updateQueryParams() {
     this.queryParams = this.searchQuery.getQueryObject([
       'selected',
-      'pageSize'
+      'pageSize',
+      'page'
     ]);
   }
 }

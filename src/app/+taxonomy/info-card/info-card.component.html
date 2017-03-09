@@ -1,12 +1,13 @@
 <div class="container" *ngIf="taxon">
   <h1>
-    <i *ngIf="taxon.cursiveName">{{taxon.scientificName}}</i>
-    <span *ngIf="!taxon.cursiveName">{{taxon.scientificName}}</span>
-    <small *ngIf="taxon.vernacularName">{{taxon.vernacularName | multiLang}}</small>
+    {{taxon.vernacularName | multiLang}}
+    <span *ngIf="taxon.vernacularName" [class.cursive]="taxon.cursiveName">({{taxon.scientificName}})</span>
+    <span *ngIf="!taxon.vernacularName" [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
+    <small>- {{ 'home.main-page.title' | translate }}</small>
   </h1>
   <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
   <div class="row">
-    <div class="col-sm-6" *ngIf="hasDescription">
+    <div class="col-sm-6 descriptions" *ngIf="hasDescription">
       <select style="margin-bottom: 8px;" class="form-control" [(ngModel)]="activeDescription"
               *ngIf="taxonDescription.length > 1">
         <option *ngFor="let description of taxonDescription; let i = index" [value]="i">
@@ -29,13 +30,14 @@
           </div>
         </div>
       </div>
+      {{ 'taxonomy.source' | translate }}:<br>{{taxonDescription[activeDescription]?.title}}
     </div>
     <div [class.col-sm-6]="hasDescription">
       <div [ngClass]="{
-              'col-sm-4': !hasDescription
+              'col-sm-6 col-md-4': !hasDescription
               }"
            [hidden]="!hasTaxonImages && !hasCollectionImages">
-        <div class="panel panel-default">
+        <div class="panel panel-default taxon-images">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">{{ 'taxonomy.images' | translate }}</h4>
           </div>
@@ -57,7 +59,7 @@
               </li>
             </ul>
             <div [hidden]="activeImageTab !== 'taxon'" *ngIf="hasTaxonImages">
-              <ImageModal [modalImages]="taxonImages"></ImageModal>
+              <laji-image-gallery [modalImages]="taxonImages"></laji-image-gallery>
             </div>
             <div [hidden]="activeImageTab !== 'collection' || !hasCollectionImages">
               <laji-gallery
@@ -75,8 +77,8 @@
         </div>
       </div>
       <div [ngClass]="{
-            'col-sm-5': !hasDescription && (hasCollectionImages || hasTaxonImages),
-            'col-sm-6': !hasDescription && (!hasCollectionImages && !hasTaxonImages)
+            'col-sm-6': !hasDescription && ((hasCollectionImages || hasTaxonImages) || (!hasCollectionImages && !hasTaxonImages)),
+            'col-md-5': !hasDescription && (hasCollectionImages || hasTaxonImages)
           }">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
@@ -103,8 +105,8 @@
         </div>
       </div>
       <div [ngClass]="{
-            'col-sm-3': !hasDescription && (hasCollectionImages || hasTaxonImages),
-            'col-sm-6': !hasDescription && (!hasCollectionImages && !hasTaxonImages)
+            'col-sm-6': !hasDescription && ((hasCollectionImages || hasTaxonImages) || (!hasCollectionImages && !hasTaxonImages)),
+            'col-md-3': !hasDescription && (hasCollectionImages || hasTaxonImages)
           }">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">

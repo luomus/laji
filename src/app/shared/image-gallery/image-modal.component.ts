@@ -1,5 +1,18 @@
-import { Component, Input, Output, ElementRef, EventEmitter, OnInit, HostListener } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  ViewContainerRef,
+  Renderer,
+  OnDestroy,
+  ComponentRef
+} from '@angular/core';
 import { Image } from './image.interface';
+import { ComponentLoaderFactory, ComponentLoader } from 'ng2-bootstrap';
+import { ImageModalOverlayComponent } from './image-modal-overlay.component';
 
 /**
  * Originally from here https://github.com/vimalavinisha/angular2-image-popup
@@ -40,116 +53,63 @@ import { Image } from './image.interface';
  */
 
 @Component({
-  selector: 'ImageModal',
+  selector: 'laji-image-gallery',
   styleUrls: ['./image-modal.component.css'],
-  template: `
-   <div class="ng-gallery" *ngIf="showRepeat"> 
-     <div *ngFor ="let i of modalImages; let index = index">
-       <img src="{{ i.thumbnailURL || i.largeURL || i.fullURL }}" 
-        class="ng-thumb" 
-        (click)="openGallery(index)" 
-        alt="Image {{ index + 1 }}" />
-     </div>
-   </div>
-   <div class="ng-overlay" *ngIf="opened">
-    <div class="ng-gallery-content" >
-    <div class="uil-ring-css" *ngIf="loading"><div></div></div>         
-    <a class="close-popup" (click)="closeGallery()"><i class="glyphicon glyphicon-remove"></i></a>
-     <a class="nav-left" *ngIf="modalImages.length >1" (click)="prevImage()"><i class="glyphicon glyphicon-chevron-left"></i></a>
-     <img *ngIf="!loading" src="{{img.largeURL || img.fullURL}}" (click)="nextImage()" class="effect" />
-     <a class="nav-right" *ngIf="modalImages.length >1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
-     <span class="info-text">
-     <span *ngIf="img.vernacularName">{{img.vernacularName}}<br></span>
-      <span *ngIf="img.author">{{img.author}},</span>
-      <span *ngIf="img.copyrightOwner && (!img.author || img.author.indexOf(img.copyrightOwner) === -1)">
-        {{img.copyrightOwner}},
-      </span> 
-      <span *ngIf="img.licenseId">{{img.licenseId | toQName | label}}</span> 
-      <span *ngIf="img.licenseAbbreviation && !img.licenseId">{{img.licenseAbbreviation}}</span>
-      <br *ngIf="img.author || img.copyrightOwner || img.licenseId || img.licenseAbbreviation">
-      <a *ngIf="img.documentId" routerLink="/observation/list" [queryParams]="{'documentId':img.documentId}">{{img.documentId}}</a>
-     ({{ currentImageIndex + 1 }}/{{ modalImages.length }})
-     </span>
-   </div>
-   </div>
-`
+  templateUrl: './image-modal.component.html'
 })
-export class ImageModal implements OnInit {
-  public _element: any;
+export class ImageModalComponent implements OnInit, OnDestroy {
   public opened: boolean = false;
   public img: Image;
-  public currentImageIndex: number;
   public loading: boolean= false;
   public showRepeat: boolean= false;
   @Input('modalImages') public modalImages: Image[];
   @Input('imagePointer') public imagePointer: number;
   @Output('cancelEvent') cancelEvent = new EventEmitter<any>();
+  public overlay: ComponentRef<ImageModalOverlayComponent>;
+  private _overlay: ComponentLoader<ImageModalOverlayComponent>;
+  private _isShown: boolean = false;
 
-  constructor(public element: ElementRef) {
-    this._element = this.element.nativeElement;
+  constructor(_viewContainerRef: ViewContainerRef,
+              _renderer: Renderer,
+              _elementRef: ElementRef,
+              cis: ComponentLoaderFactory) {
+    this._overlay = cis
+      .createLoader<ImageModalOverlayComponent>(_elementRef, _viewContainerRef, _renderer);
   }
 
   ngOnInit() {
     this.loading = true;
     if (this.imagePointer >= 0) {
       this.showRepeat = false;
-      this.openGallery(this.imagePointer);
+      this.openImage(this.imagePointer);
     } else {
       this.showRepeat = true;
     }
   }
 
-  @HostListener('window:keydown', ['$event'])
-  onKeyDown(e) {
-    if (!this.opened) {
+  ngOnDestroy() {
+    this._overlay.dispose();
+  }
+
+  openImage(index) {
+    this._overlay
+      .attach(ImageModalOverlayComponent)
+      .to('body')
+      .show({isAnimated: false});
+    this._isShown = true;
+    this.overlay = this._overlay._componentRef;
+    this.overlay.instance.modalImages = this.modalImages;
+    this.overlay.instance.showImage(index);
+    this.overlay.instance.close = () => {
+      this.closeImage();
+    };
+  }
+
+  closeImage() {
+    if (!this._isShown) {
       return;
     }
-    if (e.keyCode === 27) { // esc
-      this.closeGallery();
-    }
-    if (e.keyCode === 37) { // left
-      this.prevImage();
-    }
-    if (e.keyCode === 39) { // right
-      this.nextImage();
-    }
-  }
-
-  closeGallery() {
-    this.opened = false;
-    this.cancelEvent.emit(null);
-  }
-
-  prevImage() {
-    this.loading = true;
-    this.currentImageIndex--;
-    if (this.currentImageIndex < 0) {
-      this.currentImageIndex = this.modalImages.length - 1;
-    }
-    this.openGallery(this.currentImageIndex);
-  }
-
-  nextImage() {
-    this.loading = true;
-    this.currentImageIndex++;
-    if (this.modalImages.length === this.currentImageIndex) {
-      this.currentImageIndex = 0;
-    }
-    this.openGallery(this.currentImageIndex);
-  }
-
-  openGallery(index) {
-    if (!index) {
-      this.currentImageIndex = 1;
-    }
-    this.currentImageIndex = index;
-    this.opened = true;
-    for (let i = 0; i < this.modalImages.length; i++) {
-      if (i === this.currentImageIndex ) {
-        this.img = this.modalImages[i];
-        this.loading = false;
-        break;
-      }
-    }
+    this._isShown = false;
+    this._overlay.hide();
   }
 }

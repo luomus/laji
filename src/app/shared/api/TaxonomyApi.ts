@@ -22,14 +22,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
-import { Injectable, Optional } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as models from '../model/index';
 import 'rxjs/Rx';
 import { PagedResult } from '../model/PagedResult';
-
 import * as _ from 'underscore';
 
 /* tslint:disable:no-unused-variable member-ordering */
@@ -41,10 +39,7 @@ export class TaxonomyApi {
   protected basePath = '/api';
   public defaultHeaders: Headers = new Headers();
 
-  constructor(protected http: Http, @Optional() basePath: string) {
-    if (basePath) {
-      this.basePath = basePath;
-    }
+  constructor(protected http: Http) {
   }
 
   /**
@@ -255,7 +250,7 @@ export class TaxonomyApi {
    * @param pageSize Page size
    * @param sortOrder Sort order
    */
-  public taxonomyFindSpecies(id: string, lang?: string, informalGroupFilters?: string, adminStatusFilters?: string, redListStatusFilters?: string, typesOfOccurrenceFilters?: string, invasiveSpeciesFilter?: boolean, page?: string, pageSize?: string, sortOrder?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Taxonomy>>> {
+  public taxonomyFindSpecies(id: string, lang?: string, informalGroupFilters?: string, adminStatusFilters?: string, redListStatusFilters?: string, typesOfOccurrenceFilters?: string, invasiveSpeciesFilter?: boolean, page?: string, pageSize?: string, sortOrder?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Taxonomy>> {
     const path = this.basePath + '/taxa/{id}/species'
         .replace('{' + 'id' + '}', String(id));
 

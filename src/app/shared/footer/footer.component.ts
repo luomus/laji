@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FooterService } from '../service/footer.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { InformationApi } from '../api/InformationApi';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-footer',
@@ -15,7 +15,7 @@ export class FooterComponent implements OnInit, OnDestroy{
   public onFrontPage = true;
   public subRouteEvent: Subscription;
   public subLangChange: Subscription;
-  public tree = [];
+  public tree;
   public columns = [
     'col-sm-offset-1 col-sm-6 col-md-3',
     'col-sm-5 col-md-2',
@@ -52,9 +52,11 @@ export class FooterComponent implements OnInit, OnDestroy{
   }
 
   fetchTreeData() {
-    this.informationApi
-      .informationIndex(this.translate.currentLang)
-      .map(tree => tree.children || [])
-      .subscribe(tree => this.tree = tree);
+    if (!this.tree) {
+      this.informationApi
+        .informationIndex(this.translate.currentLang)
+        .map(tree => tree.children || [])
+        .subscribe(tree => this.tree = tree);
+    }
   }
 }

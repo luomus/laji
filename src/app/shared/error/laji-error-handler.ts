@@ -1,6 +1,6 @@
 import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { ToastsService } from '../service/toasts.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../logger/logger.service';
 
 const pauseBeforeResendError = 3000;
@@ -16,7 +16,7 @@ export class LajiErrorHandler implements ErrorHandler {
   constructor(private injector: Injector) {}
 
   handleError(error) {
-    if (this.pause) {
+    if (this.pause || !error || (typeof error === 'object' && Object.keys(error).length === 0)) {
       return;
     }
     this.getLogger().error('Guru Meditation!', error);

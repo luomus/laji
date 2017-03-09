@@ -1,0 +1,38 @@
+<div class="map-wrap">
+  <div class="title" *ngIf="taxon">
+    <span [ngClass]="{cursive: taxon.cursiveName}">{{taxon.scientificName}}</span>
+    <span *ngIf="taxon.vernacularName">
+      <br>{{taxon.vernacularName | multiLang}}
+    </span>
+  </div>
+  <laji-map
+    [loading]="loading"
+    [draw]="false"
+    [lang]="translate.currentLang"
+    [maxBounds]="maxBounds"
+    [zoom]="2"
+    [tileOpacity]="0.5"
+    [center]="[64.709804, 25]">
+  </laji-map>
+  <div class="legend">
+    <span [ngSwitch]="type">
+      <span *ngSwitchCase="'individuals'">
+        {{'theme.individualCount' | translate}}
+      </span>
+      <span *ngSwitchCase="'newest'">
+        {{'theme.newest' | translate}}
+      </span>
+      <span *ngSwitchDefault>
+        {{'theme.count' | translate}}
+      </span>
+    </span>
+    <ul>
+      <li *ngFor="let leg of legendList">
+        <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{leg.label}}
+      </li>
+    </ul>
+  </div>
+</div>
+<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'count'}">{{'theme.count' | translate}}</a>
+<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'individuals'}">{{'theme.individualCount' | translate}}</a>
+<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'newest'}">{{'theme.newest' | translate}}</a>

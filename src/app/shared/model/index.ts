@@ -23,3 +23,4 @@ export * from './Metadata';
 export * from './Property';
 export * from './Collection';
 export * from './Source';
+export * from './Area';

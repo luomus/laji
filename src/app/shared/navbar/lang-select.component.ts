@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
-import { TranslateService } from 'ng2-translate/ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { CoreModule } from '../core.module';
 
 @Component({
   selector: 'laji-lang-select',
-  templateUrl: 'lang-select.component.html',
+  templateUrl: './lang-select.component.html',
   styleUrls: ['./lang-select.component.css'],
 })
 export class LangSelectComponent {
-  constructor(public translate: TranslateService) {
+  constructor(public translate: TranslateService, public coreModule: CoreModule) {
   }
 
   switchLang(lang) {
-    CoreModule.defaultLang = lang;
+    this.coreModule.defaultLang = lang;
     this.translate.use(lang);
   }
 }

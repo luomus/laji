@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { FormControl } from '@angular/forms';
 import { AutocompleteApi } from '../api/AutocompleteApi';
 import { TaxonomyApi } from '../api/TaxonomyApi';
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-omni-search',
-  templateUrl: 'omni-search.component.html',
+  templateUrl: './omni-search.component.html',
   styleUrls: ['./omni-search.component.css']
 })
 export class OmniSearchComponent implements OnInit, OnChanges {

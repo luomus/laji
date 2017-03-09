@@ -1,0 +1,13 @@
+<div *ngIf="namedPlaces" class="table-responsive np-list">
+  <table class="table table-bordered table-striped table-condensed">
+    <tbody>
+      <tr *ngFor="let np of namedPlaces; let i = index;">
+        <td>
+          <a [ngStyle]="{'font-weight': activeNP == i ? 'bold' : 'normal'}" (click)="changeActivePlace(i)">
+            {{np.name}}
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,40 +1,34 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { LocationStrategy, PathLocationStrategy, DatePipe } from '@angular/common';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { LangSelectComponent } from './shared/navbar/lang-select.component';
-import { PersonTokenApi } from './shared/api/PersonTokenApi';
-import { PersonApi } from './shared/api/PersonApi';
-import { WarehouseApi } from './shared/api/WarehouseApi';
-import { WarehouseValueMappingService } from './shared/service/warehouse-value-mapping.service';
-import { TriplestoreLabelService } from './shared/service/triplestore-label.service';
-import { MetadataApi } from './shared/api/MetadataApi';
-import { AutocompleteApi } from './shared/api/AutocompleteApi';
-import { FooterService } from './shared/service/footer.service';
-import { LocalStorageService } from 'angular2-localstorage/dist';
 import { SharedModule } from './shared/shared.module';
-import { BrowserModule } from '@angular/platform-browser';
-import { TranslateModule, TranslateLoader } from 'ng2-translate';
-import { CoreModule } from './shared/core.module';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
-import { SearchQuery } from './+observation/search-query.model';
-import { ToastsService } from './shared/service/toasts.service';
-import { ToastModule } from 'ng2-toastr';
 import { FeedbackComponent } from './shared/feedback/feedback.component';
-import { FeedbackApi } from './shared/api/FeedbackApi';
 import { Logger, ConsoleLogger, HttpLogger } from './shared/logger/index';
 import { LoggerApi } from './shared/api/LoggerApi';
 import { AppConfig } from './app.config';
 import { ILogger } from './shared/logger/logger.interface';
-import { ComponentsHelper } from 'ng2-bootstrap/ng2-bootstrap';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TranslateFileLoader } from './shared/translate/translate-file-loader';
 import { WhatsNewComponent } from './shared/whats-new/whats-new.component';
-
-export function createTranslateLoader(): TranslateLoader {
-  return new TranslateFileLoader();
-}
+import { BrowserModule } from '@angular/platform-browser';
+import {
+  TooltipModule,
+  PaginationModule,
+  DropdownModule,
+  AlertModule,
+  ModalModule,
+  TypeaheadModule,
+  PopoverModule
+} from 'ng2-bootstrap';
+import { CoreModule } from './shared/core.module';
+import { Ng2Webstorage } from 'ng2-webstorage';
+import { ViewerModule } from './+viewer/viewer.module';
+import { ToastModule } from '../../node_modules/ng2-toastr/src/toast.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): ILogger {
   const env = appConfig.getEnv();
@@ -50,33 +44,38 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
     WhatsNewComponent
   ],
   imports: [
-    BrowserModule,
-    ToastModule,
     TranslateModule.forRoot({
-      provide: TranslateLoader,
-      useFactory: createTranslateLoader
+      loader: {
+        provide: TranslateLoader,
+        useClass: TranslateFileLoader
+      }
     }),
-    CoreModule.forRoot(),
-    SharedModule,
-    AppRoutingModule
+    ToastModule.forRoot(),
+    SharedModule.forRoot(),
+    PaginationModule.forRoot(),
+    ModalModule.forRoot(),
+    DropdownModule.forRoot(),
+    TooltipModule.forRoot(),
+    AlertModule.forRoot(),
+    TypeaheadModule.forRoot(),
+    PopoverModule.forRoot(),
+    Ng2Webstorage.forRoot({ prefix: 'laji-', separator: '' }),
+    CoreModule,
+    AppRoutingModule,
+    ViewerModule,
+    BrowserModule
   ],
   exports: [
     TranslateModule
   ],
   providers: [
     {provide: ErrorHandler, useClass: LajiErrorHandler},
-    {provide: ComponentsHelper, useClass: ComponentsHelper},
     {provide: LocationStrategy, useClass: PathLocationStrategy},
     {
       provide: Logger,
       deps: [LoggerApi, AppConfig],
-      useFactory: (createLoggerLoader)
-    },
-    ToastsService, AppConfig,
-    PersonTokenApi, PersonApi, SearchQuery, WarehouseApi, FeedbackApi, LoggerApi,
-    WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
-    AutocompleteApi, FooterService, LocalStorageService,
-    DatePipe
+      useFactory: createLoggerLoader
+    }
   ],
   bootstrap: [
     AppComponent

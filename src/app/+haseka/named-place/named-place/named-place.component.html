@@ -1,0 +1,35 @@
+<div class="container-fluid full-height">
+  <only-logged class="full-height">
+    <div class="container" out>
+      <h1>{{'haseka.title' | translate}}</h1>
+      <p>{{'haseka.pleaseLogin' | translate}}</p>
+    </div>
+    <div class="container full-height" in>
+      <laji-spinner [spinning]="!namedPlaces && !errorMsg" [overlay]="true"></laji-spinner>
+
+      <div id="np-container" [ngClass]="{hidden: !namedPlaces || errorMsg}">
+        <h1>
+          {{'np.title' | translate}}
+        </h1>
+        <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
+        <div class="row np-row full-height">
+          <div [ngClass]="editMode? 'hidden' : 'col-sm-6 full-height'" id="choose-container">
+            <laji-np-choose [namedPlaces]="namedPlaces"
+                            (onActivePlaceChange)="setActiveNP($event)"
+                            (onCreateButtonClick)="toEditMode(true)"
+                            class="full-height"></laji-np-choose>
+          </div>
+          <div [ngClass]="editMode? 'col-sm-12 nav-margin' : 'col-sm-6 nav-margin'">
+            <laji-np-edit [editMode]="editMode"
+                          [formId]="formId"
+                          [collectionId]="collectionId"
+                          [namedPlace]="namedPlace"
+                          (onEditButtonClick)="toEditMode(false)"
+                          (onEditReady)="toNormalMode()"
+                          (onError)="setErrorMessage($event)"></laji-np-edit>
+          </div>
+        </div>
+      </div>
+    </div>
+  </only-logged>
+</div>

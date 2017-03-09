@@ -7,4 +7,10 @@ export interface ObservationFormQuery {
   isNotFinnish: boolean;
   isNotInvasive: boolean;
   includeOnlyValid: boolean;
+  nationallySignificantInvasiveSpecies: boolean;
+  euInvasiveSpeciesList: boolean;
+  quarantinePlantPest: boolean;
+  otherInvasiveSpeciesList: boolean;
+  nationalInvasiveSpeciesStrategy: boolean;
+  allInvasiveSpecies: boolean;
 }

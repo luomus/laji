@@ -7,8 +7,7 @@ import { IdService } from '../service/id.service';
  *   value | toFullUri
  */
 @Pipe({
-  name: 'toFullUri',
-  pure: false
+  name: 'toFullUri'
 })
 export class ToFullUriPipe implements PipeTransform {
   transform(value: string): any {

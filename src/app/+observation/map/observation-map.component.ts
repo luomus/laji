@@ -1,51 +1,53 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Subscription, Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { Util } from '../../shared/service/util.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { ValueDecoratorService } from '../result-list/value-decorator.sevice';
 import { Logger } from '../../shared/logger/logger.service';
 import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import 'leaflet';
-import LatLngBounds = L.LatLngBounds;
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { MapComponent } from '../../shared/map/map.component';
+import LatLngBounds = L.LatLngBounds;
+import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 
 const maxCoordinateAccuracy = 10000;
 
 @Component({
   selector: 'laji-observation-map',
-  templateUrl: 'observation-map.component.html',
+  templateUrl: './observation-map.component.html',
   styleUrls: ['./observation-map.component.css'],
-  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe]
+  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe]
 })
 export class ObservationMapComponent implements OnInit, OnChanges {
   @ViewChild(MapComponent) lajiMap: MapComponent;
 
-  @Input() visible: boolean = false;
+  @Input() visible = false;
   @Input() query: any;
-  @Input() opacity: number = .5;
+  @Input() opacity = .5;
   @Input() lat: string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid005.lat'];
   @Input() lon: string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
   // zoom levels from lowest to highest when to move to more accurate grid
   @Input() zoomThresholds: number[] = [4];
   // when active level is higher or equal to this will be using viewport coordinates to show grid
-  @Input() onlyViewPortThreshold: number = 1;
-  @Input() size: number = 10000;
-  @Input() initWithWorldMap: boolean = false;
-  @Input() lastPage: number = 0; // 0 = no page limit
+  @Input() onlyViewPortThreshold = 1;
+  @Input() size = 10000;
+  @Input() initWithWorldMap = false;
+  @Input() lastPage = 0; // 0 = no page limit
   @Input() draw: any = false;
   @Input() center: [number, number];
-  @Input() showLayers: boolean = true;
+  @Input() showControls = true;
   @Input() height: number;
-  @Input() selectColor: string = '#00aa00';
-  @Input() color: any = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
-  @Input() showLoadMore: boolean = true;
-  @Input() legend: boolean = false;
+  @Input() selectColor = '#00aa00';
+  @Input() color: any;
+  @Input() showLoadMore = true;
+  @Input() legend = false;
   @Input() colorThresholds = [10, 100, 1000, 10000]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
   @Output() create = new EventEmitter();
-  @Input() showItemsWhenLessThan: number = 0;
+  @Input() showItemsWhenLessThan = 0;
   @Input() tick: number;
   @Input() itemFields: string[] = [
     'unit.linkings.taxon',
@@ -57,9 +59,10 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   public mapData;
   public drawData: any = {featureCollection: {type: 'featureCollection', features: []}};
   public loading = false;
-  public topMargin: string = '0';
+  public reloading = false;
+  public topMargin = '0';
   public legendList: {color: string, range: string}[] = [];
-  private prev: string = '';
+  private prev = '';
   private subDataFetch: Subscription;
   private style: (count: number) => string;
   private lastQuery: any;
@@ -74,7 +77,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
   private static getValue(row: any, propertyName: string): string {
     let val = '';
-    let first = propertyName.split(',')[0];
+    const first = propertyName.split(',')[0];
     try {
       val = first.split('.').reduce((prev: any, curr: any) => prev[curr], row);
     } catch (e) {
@@ -98,6 +101,9 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    if (!this.color) {
+      this.color = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
+    }
     this.lastQuery = JSON.stringify(this.query);
     this.updateMapData();
     this.initColorScale();
@@ -119,10 +125,11 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   onMove(e) {
-    let curActive = this.activeLevel;
+    const curActive = this.activeLevel;
+    const len = this.zoomThresholds.length;
     this.viewBound = e.bounds;
     this.activeLevel = 0;
-    for (let i = 0, len = this.zoomThresholds.length; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       if (this.zoomThresholds[i] < e.zoom) {
         this.activeLevel = i + 1;
       }
@@ -144,12 +151,12 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   initLegendTopMargin(): void {
-    let top = 20, items = this.color instanceof Array ? this.color.length : 1;
+    const top = 20, items = this.color instanceof Array ? this.color.length : 1;
     this.topMargin = '-' + (top + (items * 20)) + 'px';
   }
 
   initLegend(): void {
-    let legend = [];
+    const legend = [];
     let start = 1;
     if (this.color instanceof Array) {
       this.color.map((color, idx) => {
@@ -168,11 +175,21 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     this.legendList = legend;
   }
 
+  refreshMap() {
+    setTimeout(() => {
+      this.reloading = true;
+    }, 100);
+    setTimeout(() => {
+      this.reloading = false;
+    }, 200);
+  }
+
   private initColorScale() {
     if (typeof this.color === 'string') {
       this.style = () => String(this.color);
     } else {
-      let i, len = this.colorThresholds.length, memory = {};
+      let i;
+      const len = this.colorThresholds.length, memory = {};
       this.style = (count) => {
         if (memory[count]) {
           return memory[count];
@@ -206,18 +223,18 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       this.accuracy = maxCoordinateAccuracy;
       return;
     }
-    let features = [];
+    const features = [];
     this.query.coordinates.map(coord => {
-      let parts = coord.split(':');
-      let system = parts.pop();
+      const parts = coord.split(':');
+      const system = parts.pop();
       if (system === 'WGS84' && parts.length === 4) {
         if (!this.query.coordinateAccuracyMax) {
-          let spot1 = new (L as any).LatLng(+parts[2], +parts[0]);
-          let spot2 = new (L as any).LatLng(+parts[2], +parts[1]);
-          let spot3 = new (L as any).LatLng(+parts[3], +parts[1]);
+          const spot1 = new (L as any).LatLng(+parts[2], +parts[0]);
+          const spot2 = new (L as any).LatLng(+parts[2], +parts[1]);
+          const spot3 = new (L as any).LatLng(+parts[3], +parts[1]);
           setTimeout(() => {
             if (!this.query.coordinateAccuracyMax) {
-              this.query.coordinateAccuracyMax = Math.max(Math.pow(10, Math.floor(
+              this.query.coordinateAccuracyMax = Math.max(Math.pow(10, Math.ceil(
                 Math.log(Math.min(
                   spot1.distanceTo(spot3),
                   spot1.distanceTo(spot2),
@@ -243,8 +260,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   private updateMapData() {
-    let query = Util.clone(this.query);
-    let cacheKey = this.getCacheKey(query);
+    const query = Util.clone(this.query);
+    const cacheKey = this.getCacheKey(query);
     if (this.prev === cacheKey) {
       return;
     }
@@ -268,19 +285,19 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       'gathering.conversions.wgs84CenterPoint.lat',
       ...this.itemFields
     ], undefined, this.showItemsWhenLessThan).map(data => {
-      let features = [];
+      const features = [];
       if (data.results) {
         data.results.map(row => {
-          let coordinates = [
+          const coordinates = [
             ObservationMapComponent.getValue(row, 'gathering.conversions.wgs84CenterPoint.lon'),
             ObservationMapComponent.getValue(row, 'gathering.conversions.wgs84CenterPoint.lat')
           ];
           if (!coordinates[0] || !coordinates[0]) {
             return;
           }
-          let properties = {title: 1};
+          const properties = {title: 1};
           this.itemFields.map(field => {
-            let name = field.split('.').pop();
+            const name = field.split('.').pop();
             properties[name] = ObservationMapComponent.getValue(row, field);
           });
           features.push({
@@ -398,7 +415,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   private getCacheKey(query: WarehouseQueryInterface) {
-    let cache = JSON.stringify(query);
+    const cache = JSON.stringify(query);
     if ((!this.activeBounds || this.activeLevel < this.onlyViewPortThreshold) || query.coordinates) {
       return cache + this.activeLevel;
     }
@@ -431,10 +448,10 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   private getPopup(idx: number, cb: Function) {
     try {
       const properties = this.mapData[0].featureCollection.features[idx].properties;
-      let cnt = properties.title;
+      const cnt = properties.title;
       let description = '';
       this.itemFields.map(field => {
-        let name = field.split('.').pop();
+        const name = field.split('.').pop();
         if (properties[name]) {
           description += this.decorator.decorate(field, properties[name], {}) + '<br>';
         }

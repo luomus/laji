@@ -7,7 +7,8 @@ import { InformationService } from './information.service';
 @NgModule({
   imports: [routing, SharedModule, RouterModule],
   providers: [InformationService],
-  declarations: [InformationComponent]
+  declarations: [InformationComponent],
+  entryComponents: [InformationComponent]
 })
 export class InformationModule {
 }

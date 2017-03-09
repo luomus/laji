@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
+import { SourceService } from '../../shared/service/source.service';
+import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 
 @Injectable()
 export class ValueDecoratorService {
@@ -9,8 +11,6 @@ export class ValueDecoratorService {
   public lang = 'fi';
 
   private decoratable = {
-    'document.documentId': 'makeId',
-    'unit.individualId': 'makeId',
     'document.createdDate': 'makeDate',
     'gathering.eventDate': 'makeDateRange',
     'gathering.team': 'makeArrayToSemiColon',
@@ -22,11 +22,18 @@ export class ValueDecoratorService {
     'unit.lifeStage': 'makeLabel',
     'unit.recordBasis': 'makeLabel',
     'document.secureReasons': 'makeLabelFromArray',
-    'document.sourceId': 'makeLabelFromFullUri',
+    'document.collectionId': 'makeCollectionName',
+    'document.sourceId': 'makeSourceName',
     'gathering.conversions.ykj': 'makeYkj'
   };
 
-  constructor(private datePipe: DatePipe, private labelPipe: LabelPipe, private toQNamePipe: ToQNamePipe) {
+  constructor(
+    private datePipe: DatePipe,
+    private labelPipe: LabelPipe,
+    private toQNamePipe: ToQNamePipe,
+    private source: SourceService,
+    private collectionName: CollectionNamePipe
+  ) {
   }
 
   public isDecoratable(field: string) {
@@ -51,13 +58,6 @@ export class ValueDecoratorService {
     return this.datePipe.transform(value, 'dd.MM.yyyy');
   }
 
-  protected makeId(value) {
-    if (!value) {
-      return '';
-    }
-    return `<span class="individualId">${value}</span>`;
-  }
-
   protected makeArrayToSemiColon(value) {
     return value.join('; ');
   }
@@ -73,6 +73,14 @@ export class ValueDecoratorService {
     return this.makeLabel(this.toQNamePipe.transform(value));
   }
 
+  protected makeCollectionName(value) {
+    return this.collectionName.transform(this.toQNamePipe.transform(value));
+  }
+
+  protected makeSourceName(value) {
+    return this.source.getName(this.toQNamePipe.transform(value), this.lang);
+  }
+
   protected makeLabelFromArray(value) {
     return value.map(val => this.makeLabel(val));
   }
@@ -83,7 +91,7 @@ export class ValueDecoratorService {
 
   protected makeYkj(value) {
     if (value && value.latMin) {
-      let lat = this.getYkjCoord(value.latMin, value.latMax);
+      const lat = this.getYkjCoord(value.latMin, value.latMax);
       return lat + ':' + this.getYkjCoord(value.lonMin, value.lonMax, lat.split('-')[0].length);
     }
     return '';
@@ -92,7 +100,7 @@ export class ValueDecoratorService {
   protected getYkjCoord(min, max, minLen = 3) {
     let tmpMin = ('' + min).replace(/[0]*$/, '');
     let tmpMax = ('' + max).replace(/[0]*$/, '');
-    let targetLen = Math.max(tmpMin.length, tmpMax.length, minLen);
+    const targetLen = Math.max(tmpMin.length, tmpMax.length, minLen);
     tmpMin = tmpMin + '0000000'.substr(tmpMin.length, (targetLen - tmpMin.length));
     tmpMax = '' + (+(tmpMax + '0000000'.substr(tmpMax.length, (targetLen - tmpMax.length))) - 1);
     return tmpMin === tmpMax ? tmpMin : tmpMin + '-' + tmpMax;

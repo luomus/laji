@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, Input, HostListener, ViewContainerRef } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'laji-observation-active',
-  templateUrl: 'observation-active.component.html',
+  templateUrl: './observation-active.component.html',
   styleUrls: ['./observation-active.component.css']
 })
 export class ObservationActiveComponent implements OnInit, OnDestroy {
