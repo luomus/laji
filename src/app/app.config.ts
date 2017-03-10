@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as appConfigJson from '../../config.json';
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class AppConfig {
@@ -9,7 +10,7 @@ export class AppConfig {
     try {
       this.config = appConfigJson;
     } catch (e) {
-      throw 'Place add config.json for your application root!';
+      throw new Error('Place add config.json for your application root!');
     }
   }
 
@@ -30,10 +31,11 @@ export class AppConfig {
   }
 
   isFormAllowed(formId: string) {
-    if (!this.config.form_whitelist) {
+    const forms = environment.formWhitelist;
+    if (forms.length === 0) {
       return true;
     }
-    return this.config.form_whitelist.indexOf(formId) !== -1;
+    return forms.indexOf(formId) !== -1;
   }
 
   isAnalyticsDisabled() {

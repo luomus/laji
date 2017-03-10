@@ -6,5 +6,6 @@
 export const environment = {
   production: false,
   isEmbedded: false,
+  formWhitelist: ['JX.519', 'JX.111715', 'MHL.1', 'JX.123648'],
   nafiForm: 'JX.123648'
 };
