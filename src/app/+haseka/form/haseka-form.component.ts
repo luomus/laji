@@ -21,6 +21,7 @@ import { FormService } from './form.service';
 import { WindowRef } from '../../shared/windows-ref';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { Form } from '../../shared/model/FormListInterface';
+import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-haseka-form',
@@ -69,7 +70,8 @@ export class HaSeKaFormComponent implements AfterViewInit, OnDestroy {
               private footerService: FooterService,
               public translate: TranslateService,
               private toastsService: ToastsService,
-              private winRef: WindowRef) {
+              private winRef: WindowRef,
+              private logger: Logger) {
   }
 
   ngOnDestroy() {
@@ -166,6 +168,10 @@ export class HaSeKaFormComponent implements AfterViewInit, OnDestroy {
                 this.status = '';
               }
             }, 5000);
+            this.logger.error('UNABLE TO SAVE DOCUMENT', {
+              data: data,
+              error: this.parseErrorMessage(err)
+            });
         });
   }
 
@@ -264,8 +270,8 @@ export class HaSeKaFormComponent implements AfterViewInit, OnDestroy {
       try {
         data = JSON.parse(err._body);
       } catch (e) {}
-      detail = data && data.error && data.error.detail ?
-        data.error.detail : '';
+      detail = data && data.error && data.error.details ?
+        data.error.details : '';
     }
     return detail;
   }
