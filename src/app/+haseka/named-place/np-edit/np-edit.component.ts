@@ -16,6 +16,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() namedPlace: NamedPlace;
   @Input() formId: string;
   @Input() collectionId: string;
+  @Input() formInfo: any;
 
   formData: any;
   userId: string;
@@ -72,6 +73,9 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       .getForm(this.npFormId, this.translate.currentLang)
       .subscribe(form => {
         form['formData'] = data;
+        if (this.formInfo.drawData) {
+          form['uiSchema']['namedPlace']['ui:options']['draw'] = this.formInfo.drawData;
+        }
         this.lang = this.translate.currentLang;
         this.formData = form;
       });
@@ -86,30 +90,15 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       .load(this.npFormId, this.lang)
       .subscribe(
         data => {
-          this.setData(data);
-        },
-        err => {
-          const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
-           this.translate.get(msgKey, {formId: this.npFormId})
-           .subscribe(msg => this.onError.emit(msg));
-        }
-      );
-  }
-
-  setData(data) {
-    const drawData$ = this.formService
-      .getFormDrawData(this.formId, this.lang)
-      .subscribe(
-        drawData => {
-          if (drawData) {
-            data['uiSchema']['namedPlace']['ui:options']['draw'] = drawData;
+          if (this.formInfo.drawData) {
+            data['uiSchema']['namedPlace']['ui:options']['draw'] = this.formInfo.drawData;
           }
           this.formData = data;
         },
         err => {
           const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
-          this.translate.get(msgKey, {formId: this.formId})
-            .subscribe(msg => this.onError.emit(msg));
+           this.translate.get(msgKey, {formId: this.npFormId})
+           .subscribe(msg => this.onError.emit(msg));
         }
       );
   }

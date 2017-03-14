@@ -1,6 +1,9 @@
+#choose-container {
+  margin-bottom: 5px;
+}
+
 #create-new-button {
   flex: 0 1 auto;
   margin-top: 5px;
-  margin-bottom: 5px;
   width: 100%;
 }

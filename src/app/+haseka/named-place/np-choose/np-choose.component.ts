@@ -10,11 +10,14 @@ export class NpChooseComponent {
   active = 'list';
   mapActivated = false;
 
+  @Input() formInfo: any;
   @Input() namedPlaces: NamedPlace[];
-  activeNP = -1;
-  @Output() onActivePlaceChange = new EventEmitter<number>();
 
+  @Output() onActivePlaceChange = new EventEmitter<number>();
   @Output() onCreateButtonClick = new EventEmitter();
+
+  createAllowed = false;
+  activeNP = -1;
 
   constructor() {}
 

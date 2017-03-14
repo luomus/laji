@@ -1,4 +1,4 @@
-<div *ngIf="namedPlaces" [ngClass]="{'full-height': active === 'map'}">
+<div *ngIf="namedPlaces" [ngClass]="{'full-height': active === 'map'}" id="choose-container">
   <div>
     <ul class="nav nav-tabs nav-justified">
       <li role="presentation" [ngClass]="{active: active === 'list'}">
@@ -22,8 +22,8 @@
                  class="full-height"></laji-np-map>
   </div>
 
-  <button class="btn btn-md btn-default"
+  <button *ngIf="formInfo.features?.indexOf('MHL.featureAddingNamedPlacesNotAllowed') === -1"
+          class="btn btn-md btn-default"
           id="create-new-button"
           (click)="createButtonClick()">{{'np.createNew' | translate}}</button>
 </div>
-<!--a [routerLink]="" class="btn btn-lg btn-default">{{'np.createNew' | translate}}</a-->

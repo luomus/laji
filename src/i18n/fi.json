@@ -347,6 +347,7 @@
   "np.list": "Luettelo",
   "np.map": "Kartta",
   "np.additionalInfo": "Lisätietoa paikasta",
+  "np.loadError": "Paikkojen lataus epäonnistui. Yritä hetken kuluttua uudelleen.",
   "np.form.success": "Paikka tallennettu!",
   "np.country": "Maa",
   "np.municipality": "Kunta",
