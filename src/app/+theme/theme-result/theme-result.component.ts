@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
-import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Observable } from 'rxjs/Observable';
 import { ResultService } from '../service/result.service';
 import { MapTypes } from '../theme-map/theme-map.component';
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({
@@ -18,9 +17,11 @@ export class ThemeResultComponent implements OnInit, OnChanges, OnDestroy {
   @Input() time = '1991-01-01/';
   @Input() type: MapTypes;
   @Input() tbodyHeight = 400;
+  @Input() lang;
 
   list = [];
   loading = false;
+  private subTrans: Subscription;
 
   constructor(
     private resultService: ResultService
@@ -31,7 +32,7 @@ export class ThemeResultComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-
+    this.subTrans.unsubscribe();
   }
 
   ngOnChanges() {
@@ -39,13 +40,12 @@ export class ThemeResultComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   initList() {
-    if (!this.informalGroup || !this.collectionId) {
+    if (!this.informalGroup || !this.collectionId || !this.lang) {
       return;
     }
     this.loading = true;
     this.list = [];
-    this.resultService.getResults(this.collectionId, this.informalGroup, this.time)
-      .map(data => data.results)
+    this.resultService.getResults(this.collectionId, this.informalGroup, this.time, this.lang)
       .subscribe(data => {
         this.loading = false;
         this.list = data;

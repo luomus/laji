@@ -1,4 +1,4 @@
-<h3>{{'nafi.stats.title' | translate:{year: currentMonth >= startMonth ? currentYear : year} }}</h3>
+<h3>{{'nafi.stats.title' | translate:{year: ''} }}</h3>
 <div class="row">
   <div class="col-sm-12">
     <p [innerHtml]="'nafi.stats.intro' | translate"></p>
@@ -55,6 +55,7 @@
             [tbodyHeight]="610"
             [time]="time"
             [type]="type"
+            [lang]="lang"
             [collectionId]="collectionId"
             informalGroup="MVL.181"
     ></laji-theme-result>

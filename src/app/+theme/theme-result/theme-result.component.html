@@ -9,9 +9,9 @@
     <thead>
     <tr>
       <th class="col-1">{{'result.unit.taxonVerbatim' | translate}}</th>
-      <th class="col-2">{{'theme.countShort' | translate}}</th>
-      <th class="col-3">{{'theme.individualCountShort' | translate}}</th>
-      <th class="col-6">{{'theme.newest' | translate}}</th>
+      <th class="col-2">{{'taxonomy.vernacular.name' | translate}}</th>
+      <th class="col-3">{{'theme.countShort' | translate}}</th>
+      <th class="col-4">{{'theme.individualCountShort' | translate}}</th>
     </tr>
     </thead>
     <tbody>
@@ -21,9 +21,9 @@
           {{item.aggregateBy['unit.linkings.taxon.speciesScientificName']}}
         </a>
       </td>
-      <td class="col-2">{{item.count}}</td>
-      <td class="col-3">{{item.individualCountSum}}</td>
-      <td class="col-6">{{item.newestRecord | amDateFormat:'DD.MM.YYYY'}}</td>
+      <td class="col-2">{{item.aggregateBy['vernacularName']}}</td>
+      <td class="col-3">{{item.count}}</td>
+      <td class="col-4">{{item.individualCountSum}}</td>
     </tr>
     </tbody>
   </table>

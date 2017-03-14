@@ -5,8 +5,7 @@
   <strong>{{'theme.noHits' | translate}}</strong>
 </div>
 <div *ngIf="!loading && results.results.length > 0">
-  <strong>{{'theme.grid' | translate:{grid: grid, total: results.total} }}
-    Ruudun {{grid}} havainnot ({{results.total}} kpl)</strong>
+  <strong>{{'theme.grid' | translate:{grid: grid, total: results.total} }}</strong>
   <a [routerLink] [queryParams]="{taxonId: taxonId, time: time, type: type}" class="badge pull-right">x</a>
   <div class="table-responsive" [ngStyle]="{'max-height': (tbodyHeight + 80) + 'px'}">
     <table class="table table-striped table-condensed table-hover" [lajiFixedTable]="tbodyHeight">

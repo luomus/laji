@@ -50,21 +50,39 @@ export class ResultService {
     ));
   }
 
-  getResults(collectionId: string, informalGroup: string, time: string): Observable<any> {
-    const cacheKey = collectionId + ':' + informalGroup + ':' + time;
+  getResults(collectionId: string, informalGroup: string, time: string, lang: string): Observable<any> {
+    let vernacular = 'unit.linkings.taxon.nameFinnish';
+    switch (lang) {
+      case 'en':
+        vernacular = 'unit.linkings.taxon.nameEnglish';
+        break;
+      case 'sv':
+        vernacular = 'unit.linkings.taxon.nameSwedish';
+    }
+    const cacheKey = collectionId + ':' + informalGroup + ':' + time + ':' + lang;
     return this._fetch('result', cacheKey, this.warehouseApi.warehouseQueryAggregateGet(
       {
         collectionId: [collectionId],
         informalTaxonGroupId: [informalGroup],
         time: [time]
       },
-      ['unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName'],
+      ['unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName', vernacular],
       ['2'],
       1000,
       1,
       false,
       false
-    ));
+    ))
+      .map(data => data.results)
+      .map(data => {
+        return data.map(row => {
+          row.aggregateBy['vernacularName'] =
+            row.aggregateBy['unit.linkings.taxon.nameFinnish'] ||
+            row.aggregateBy['unit.linkings.taxon.nameEnglish'] ||
+            row.aggregateBy['unit.linkings.taxon.nameSwedish'];
+          return row;
+        });
+      });
   }
 
   getList(grid: string, collectionId: string, taxonId: string, time: string, page: number): Observable<any> {

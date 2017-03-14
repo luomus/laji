@@ -31,6 +31,7 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
   geoJsonLayer;
   loading = false;
   taxon: Taxonomy;
+  count: {[k: string]: number} = {};
   legendList: {color: string, label: string}[] = [];
 
   private currentColor;
@@ -126,11 +127,16 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
   }
 
   initTitle() {
-    this.resultService.getTaxon(this.taxonId)
-      .subscribe(taxon => this.taxon = taxon);
+    if (!this.taxonId) {
+      this.taxon = undefined;
+    } else {
+      this.resultService.getTaxon(this.taxonId)
+        .subscribe(taxon => this.taxon = taxon);
+    }
   }
 
   initColor() {
+    this.count = {total: 0};
     const colorKey = this.getColorKey();
     if (this.currentColor === colorKey) {
       return;
@@ -168,6 +174,11 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
         break;
       }
     }
+    if (!this.count[newColor]) {
+      this.count[newColor] = 0;
+    }
+    this.count[newColor]++;
+    this.count['total']++;
     return newColor;
   }
 
@@ -188,6 +199,11 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
         break;
       }
     }
+    if (!this.count[newColor]) {
+      this.count[newColor] = 0;
+    }
+    this.count[newColor]++;
+    this.count['total']++;
     return newColor;
   }
 
