@@ -21,7 +21,6 @@ export class ThemeResultComponent implements OnInit, OnChanges, OnDestroy {
 
   list = [];
   loading = false;
-  private subTrans: Subscription;
 
   constructor(
     private resultService: ResultService
@@ -32,7 +31,6 @@ export class ThemeResultComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subTrans.unsubscribe();
   }
 
   ngOnChanges() {
