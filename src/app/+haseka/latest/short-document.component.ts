@@ -28,11 +28,11 @@ export class ShortDocumentComponent implements OnInit, OnChanges {
 
   updateTaxa(max = 10) {
     const result = [];
-    if (!this.document.gatherings && Array.isArray(this.document.gatherings)) {
+    if (!this.document.gatherings || !Array.isArray(this.document.gatherings)) {
       return result;
     }
     this.document.gatherings.map((gathering) => {
-      if (!gathering.units && Array.isArray(gathering.units)) {
+      if (!gathering.units || !Array.isArray(gathering.units)) {
         return;
       }
       return gathering.units.map((unit) => {
