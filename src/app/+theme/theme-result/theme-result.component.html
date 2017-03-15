@@ -9,7 +9,7 @@
     <thead>
     <tr>
       <th class="col-1">{{'result.unit.taxonVerbatim' | translate}}</th>
-      <th class="col-2">{{'taxonomy.vernacular.name' | translate}}</th>
+      <th class="col-2 hidden-sm hidden-xs">{{'taxonomy.vernacular.name' | translate}}</th>
       <th class="col-3">{{'theme.countShort' | translate}}</th>
       <th class="col-4">{{'theme.individualCountShort' | translate}}</th>
     </tr>
@@ -20,8 +20,11 @@
         <a [routerLink] [queryParams]="{taxonId:(item.aggregateBy['unit.linkings.taxon.speciesId'] | toQName), time: time, type: type}">
           {{item.aggregateBy['unit.linkings.taxon.speciesScientificName']}}
         </a>
+        <span class="visible-sm visible-xs">
+          {{item.aggregateBy['vernacularName']}}
+        </span>
       </td>
-      <td class="col-2">{{item.aggregateBy['vernacularName']}}</td>
+      <td class="col-2 hidden-sm hidden-xs">{{item.aggregateBy['vernacularName']}}</td>
       <td class="col-3">{{item.count}}</td>
       <td class="col-4">{{item.individualCountSum}}</td>
     </tr>
