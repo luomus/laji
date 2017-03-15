@@ -352,7 +352,7 @@
   "nafi.stats": "Stats",
   "nafi.form": "Skicka observationer",
   "nafi.myObservations": "Mina observationer",
-  "nafi.stats.title": "Nationella fjäril undersökning av Finland {{year}}",
+  "nafi.stats.title": "Nationella fjäril undersökning av Finland",
   "nafi.stats.intro": "",
   "nafi.stats.times": "Välj tidsperiod för att observera",
   "wholeYear": "helt år {{year}}",

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 import { ResultService } from '../service/result.service';
 import { MapTypes } from '../theme-map/theme-map.component';
-import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({

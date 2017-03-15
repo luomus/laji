@@ -368,7 +368,7 @@
   "nafi.stats": "Tilastot",
   "nafi.form": "Ilmoita",
   "nafi.myObservations": "Omat havaintoni",
-  "nafi.stats.title": "Päiväperhosseuranta {{year}}",
+  "nafi.stats.title": "Päiväperhosseuranta",
   "nafi.stats.intro": "Valtakunnallinen päiväperhosseuranta (NAFI) on <a href=\"http://www.ekay.net/ymparisto/perhosseuranta/\" target=\"_blank\">Etelä-Karjalan Allergia- ja Ympäristöinstituutin</a> ja <a href=\"http://www.perhostutkijainseura.fi\" target=\"_blank\">Suomen Perhostutkijain Seuran</a> koordinoima tutkimushanke.",
   "nafi.stats.times": "Valitse näytettävä havaintojakso:",
   "nafi.stats.all": "Valitse näytettävä havaintojakso",

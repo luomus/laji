@@ -1,4 +1,10 @@
-<h3>{{'nafi.stats.title' | translate:{year: ''} }}</h3>
+<h3>
+  {{'nafi.stats.title' | translate}}
+  <span *ngIf="fromYear">
+    {{fromMonth | translate}}
+    {{fromYear}}
+  </span>
+</h3>
 <div class="row">
   <div class="col-sm-12">
     <p [innerHtml]="'nafi.stats.intro' | translate"></p>

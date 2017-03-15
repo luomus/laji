@@ -352,7 +352,7 @@
   "nafi.stats": "Stats",
   "nafi.form": "Send observations",
   "nafi.myObservations": "My observations",
-  "nafi.stats.title": "National butterfly survey of Finland {{year}}",
+  "nafi.stats.title": "National butterfly survey of Finland",
   "nafi.stats.intro": "",
   "nafi.stats.times": "Choose the time period to observe",
   "wholeYear": "whole year {{year}}",

@@ -22,6 +22,8 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   currentMonth;
   currentYear;
   startMonth = 3;
+  fromYear;
+  fromMonth;
 
   private subTrans: Subscription;
   private subQuery: Subscription;
@@ -43,7 +45,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
     });
     this.subQuery = this.route.queryParams.subscribe(params => {
       this.taxonId = params['taxonId'] || '';
-      this.time = params['time'] || '1991-01-01/';
+      this.time = this.parseDateTimeRange(params['time']) || '1991-01-01/';
       this.grid = params['grid'] || '';
       this.type = params['type'] || 'count';
       this.page = +params['page'] || 1;
@@ -53,6 +55,37 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subQuery.unsubscribe();
     this.subTrans.unsubscribe();
+  }
+
+  private parseDateTimeRange(date) {
+    this.emptyTime();
+    if (!date || typeof date !== 'string') {
+      return date;
+    }
+    if (date.indexOf('/') > -1) {
+      return date;
+    }
+    const time = this.parseDateTime(date);
+    this.fromYear = time.year;
+    this.fromMonth = time.month;
+
+    return date;
+  }
+
+  private parseDateTime(date): {year: string, month: string} {
+    if (date.length === '4') {
+      return {year: date, month: ''};
+    }
+    const month = date.substr(5, 2);
+    return {
+      year: date.substr(0, 4),
+      month: month ? 'm-' + month : '',
+    };
+  }
+
+  private emptyTime() {
+    this.fromYear = '';
+    this.fromMonth = '';
   }
 
 }
