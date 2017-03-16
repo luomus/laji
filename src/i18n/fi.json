@@ -366,7 +366,7 @@
   "theme.searching": "Tietoja haetaan...",
   "theme.noHits": "Ei havaintoja annetuilla ehdoilla.",
   "theme.grid": "Ruudun {{grid}} havainnot ({{total}} kpl)",
-  "nafi.stats": "Tilastot",
+  "nafi.stats": "Tulokset",
   "nafi.form": "Ilmoita",
   "nafi.myObservations": "Omat havaintoni",
   "nafi.stats.title": "Päiväperhosseuranta",
