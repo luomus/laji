@@ -355,6 +355,7 @@
   "np.country": "Maa",
   "np.municipality": "Kunta",
   "np.biogeographicalProvince": "Eliömaakunta",
+  "theme.filterAll": "koko aineisto 1991 - {{year}}",
   "theme.individualCount": "Yksilömäärä",
   "theme.individualCountShort": "Ykslkm",
   "theme.newest": "Uusin",

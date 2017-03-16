@@ -342,6 +342,7 @@
   "np.municipality": "Municipality",
   "np.biogeographicalProvince": "Biogeographical province",
   "theme.individualCount": "Individual count",
+  "theme.filterAll": "whole material 1991 - {{year}}",
   "theme.newest": "Newest",
   "theme.total": "Total",
   "theme.count": "Count",
