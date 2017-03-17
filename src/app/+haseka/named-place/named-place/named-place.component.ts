@@ -1,10 +1,10 @@
-import { Component, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlacesService } from '../named-places.service';
-import { FormService } from '../../form/form.service';
+import { FormService } from '../../../shared/service/form.service';
 import { NpChooseComponent} from '../np-choose/np-choose.component';
 import { Observable } from 'rxjs/Observable';
 import { FooterService } from '../../../shared/service/footer.service';
@@ -51,11 +51,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.getFormInfo();
 
     this.footerService.footerVisible = false;
-  }
-
-  ngOnChange() {
-    this.updateNP();
-    this.getFormInfo();
   }
 
   ngOnDestroy() {

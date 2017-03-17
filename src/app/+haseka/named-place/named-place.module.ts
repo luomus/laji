@@ -18,7 +18,10 @@ import { NpAreaFormComponent } from './np-edit/np-edit-form/np-area-form/np-area
     CommonModule,
     SharedModule
   ],
-  declarations: [NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent, NpEditFormComponent, NpInfoComponent, NpInfoRowComponent, NpAreaFormComponent],
+  declarations: [
+    NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,
+    NpEditFormComponent, NpInfoComponent, NpInfoRowComponent, NpAreaFormComponent
+  ],
   exports: [NamedPlaceComponent]
 })
 export class NamedPlaceModule { }
