@@ -72,6 +72,7 @@ import { LajiExternalService } from './service/laji-external.service';
 import { MomentModule } from 'angular2-moment';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { FormService } from './service/form.service';
+import { CoordinateService } from './service/coordinate.service';
 
 
 @NgModule({
@@ -123,6 +124,7 @@ export class SharedModule {
         MapService,
         CollectionService,
         WindowRef,
+        CoordinateService,
         ToastsService, AppConfig,
         PersonTokenApi, PersonApi, SearchQuery, WarehouseApi,
         AreaApi, AreaService,

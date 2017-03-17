@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import * as MapUtil from 'laji-map/lib/utils';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
+import { CoordinateService } from '../../shared/service/coordinate.service';
 
 @Injectable()
 export class ResultService {
@@ -37,7 +37,8 @@ export class ResultService {
 
   constructor(
     private warehouseApi: WarehouseApi,
-    private taxonomyApi: TaxonomyApi
+    private taxonomyApi: TaxonomyApi,
+    private coordinateService: CoordinateService
   ) { }
 
   getTaxon(taxonId: string) {
@@ -148,41 +149,20 @@ export class ResultService {
   }
 
   private _resultToGeoJson(data) {
-    const pad = function(value) {
-      value = '' + value;
-      return value + '0000000'.slice(value.length);
-    };
-    const convert = function(latLng) {
-      return MapUtil.convertLatLng(latLng, 'EPSG:2393', 'WGS84');
-    };
+
     const features = [];
     data.map(result => {
-      const lat = parseInt(result.aggregateBy['gathering.conversions.ykj3.lat'], 10);
-      const lng = parseInt(result.aggregateBy['gathering.conversions.ykj3.lon'], 10);
-      const latStart = pad(lat);
-      const latEnd = pad(lat + 1);
-      const lonStart = pad(lng);
-      const lonEnd = pad(lng + 1);
-      features.push({
-        type: 'Feature',
-        properties: {
+      features.push(this.coordinateService.convertYkjToGeoJsonFeature(
+        result.aggregateBy['gathering.conversions.ykj3.lat'],
+        result.aggregateBy['gathering.conversions.ykj3.lon'],
+        {
           count: result.count || 0,
           individualCountSum: result.individualCountSum || 0,
           newestRecord: result.newestRecord || '',
           oldestRecord: result.oldestRecord || '',
-          grid: lat + ':' + lng
-        },
-        geometry: {
-          type: 'Polygon',
-          coordinates: [[
-            [latStart, lonStart],
-            [latStart, lonEnd],
-            [latEnd, lonEnd],
-            [latEnd, lonStart],
-            [latStart, lonStart],
-          ].map(convert)]
+          grid: result.aggregateBy['gathering.conversions.ykj3.lat'] + ':' + result.aggregateBy['gathering.conversions.ykj3.lon']
         }
-      });
+      ));
     });
     return features;
   }
