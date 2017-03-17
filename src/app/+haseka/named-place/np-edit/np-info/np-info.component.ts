@@ -16,25 +16,45 @@ export class NpInfoComponent implements OnInit, OnChanges {
   hiddenProperties = ['geometry', 'geometryOnMap'];
 
   fields: any;
-  npProperties: any;
+
+  keys: any;
+  values: any;
 
   constructor() { }
 
   ngOnInit() {
-    this.fields = this.formData.schema.properties.namedPlace.items.properties;
-    this.npProperties = Object.keys(this.namedPlace);
-
-    for (let i = 0; i < this.npProperties.length; i++) {
-      const p = this.npProperties[i];
-    }
+    this.updateFields();
   }
 
   ngOnChanges() {
-    this.fields = this.formData.schema.properties.namedPlace.items.properties;
-    this.npProperties = Object.keys(this.namedPlace);
+    this.updateFields();
   }
 
   editClick() {
     this.onEditButtonClick.emit();
+  }
+
+  private updateFields() {
+    this.keys = [];
+    this.values = {};
+    this.fields = this.formData.schema.properties.namedPlace.items.properties;
+
+    let gData = null;
+    const np = this.namedPlace;
+
+    if (np.prepopulatedDocument && np.prepopulatedDocument.gatherings && np.prepopulatedDocument.gatherings.length >= 0) {
+      gData = np.prepopulatedDocument.gatherings[0];
+    }
+
+    for (const field in this.fields) {
+      if (this.hiddenProperties.indexOf(field) === -1 && (this.namedPlace[field] !== undefined || (gData && gData[field] !== undefined))) {
+        this.keys.push(field);
+        if (this.namedPlace[field] !== undefined) {
+          this.values[field] = this.namedPlace[field];
+        } else {
+          this.values[field] = gData[field];
+        }
+      }
+    }
   }
 }
