@@ -12,11 +12,11 @@ export class NpChooseComponent {
 
   @Input() formInfo: any;
   @Input() namedPlaces: NamedPlace[];
+  @Input() visible = true;
 
   @Output() onActivePlaceChange = new EventEmitter<number>();
   @Output() onCreateButtonClick = new EventEmitter();
 
-  createAllowed = false;
   activeNP = -1;
 
   constructor() {}

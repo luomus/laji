@@ -133,8 +133,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     this.onEditButtonClick.emit();
   }
 
-  editReady() {
-    this.onEditReady.emit();
+  editReady(np: NamedPlace) {
+    this.onEditReady.emit(np);
   }
 
   populateForm() {

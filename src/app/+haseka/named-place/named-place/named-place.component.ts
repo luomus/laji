@@ -69,20 +69,16 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (this.collectionId) {
       this.namedPlaces$ = this.namedPlaceService
         .getAllNamePlacesByCollectionId(this.collectionId)
-        .map(result => result.results);
+        .map(result => (result));
 
       this.namedPlaces$.subscribe(
         data => {
+          this.setActiveNP(-1);
           this.namedPlaces = data;
-          if (this.activeNP >= 0) {
-            this.namedPlace = this.namedPlaces[this.activeNP];
-          } else {
-            this.namedPlace = null;
-          }
         },
         err => {
           this.translate.get('np.loadError')
-            .subscribe(msg => this.setErrorMessage(msg));
+            .subscribe(msg => (this.setErrorMessage(msg)));
         }
       );
     }
@@ -124,9 +120,16 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.editMode = true;
   }
 
-  toNormalMode() {
+  toNormalMode(np: NamedPlace) {
+    if (np) {
+      if (this.activeNP >= 0) {
+        this.namedPlaces[this.activeNP] = np;
+        this.namedPlace = np;
+      } else {
+        this.namedPlaces.push(np);
+      }
+    }
     this.editMode = false;
-    this.updateNP();
   }
 
   setErrorMessage(msg) {

@@ -83,7 +83,7 @@ export class NpEditFormComponent implements OnInit {
           .subscribe(value => {
             this.toastsService.showSuccess(value);
           });
-        this.onEditReady.emit();
+        this.onEditReady.emit(result);
       },
       (err) => {
         this.lajiForm.unBlock();
