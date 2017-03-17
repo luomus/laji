@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { Logger } from '../logger/logger.service';
 import { MapService } from './map.service';
+import { LajiExternalService } from '../service/laji-external.service';
 
 @Component({
   selector: 'laji-map',
@@ -25,8 +26,6 @@ import { MapService } from './map.service';
 })
 export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
 
-  private static LajiMap;
-
   @Input() data: any = [];
   @Input() drawData: any;
   @Input() visible = true;
@@ -34,10 +33,12 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input() lang = 'fi';
   @Input() loading = false;
   @Input() center: [number, number];
+  @Input() maxBounds: [[number, number], [number, number]];
   @Input() showControls = true;
   @Input() initWithWorldMap = false;
   @Input() bringDrawLayerToBack = true;
   @Input() zoom = 1;
+  @Input() tileOpacity: number;
   @Input() controlSettings: any = {
     draw: false,
     drawCopy: false,
@@ -58,11 +59,10 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   constructor(
     private mapService: MapService,
-    private logger: Logger
+    private logger: Logger,
+    private lajiExternalService: LajiExternalService
   ) {
-    if (!MapComponent.LajiMap) {
-      MapComponent.LajiMap = require('laji-map/lib/map').default;
-    }
+
   }
 
   ngAfterViewInit() {
@@ -77,7 +77,7 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
       draw.polyline = draw.polyline !== false ? draw.polyline : false;
       draw.hasActive = draw.hasActive !== true ? draw.hasActive : true;
     }
-    this.map = new MapComponent.LajiMap({
+    this.map = this.lajiExternalService.getMap({
       tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
       zoom: this.zoom,
       center: this.center || [65, 26],
@@ -95,6 +95,7 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.map.map.on('movestart', _ => {
       this.moveEvent('movestart');
     });
+    this.initMapOptions();
     this.updateData();
     this.initDrawData();
     this.moveEvent('moveend');
@@ -145,6 +146,9 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes) {
+    if (changes.tileOpacity) {
+      this.initMapOptions();
+    }
     if (changes.visible) {
       setTimeout(() => {
         this.invalidateSize();
@@ -201,6 +205,18 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
       if (this.bringDrawLayerToBack) {
         this.map.drawLayerGroup.bringToBack();
       }
+    }
+  }
+
+  initMapOptions() {
+    if (!this.map) {
+      return;
+    }
+    if (this.tileOpacity) {
+      this.map.tileLayer.setOpacity(this.tileOpacity);
+    }
+    if (this.maxBounds) {
+      this.map.map.setMaxBounds(this.maxBounds);
     }
   }
 }

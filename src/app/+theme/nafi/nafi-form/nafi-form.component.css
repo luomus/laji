@@ -1,0 +1,9 @@
+:host >>> .form-group.field.field-object.well.well-sm {
+  margin: 3px 0 0 0;
+  padding: 0;
+}
+
+:host >>> .form-group.field.field-object.well.well-sm .form-group {
+  margin: 0;
+  padding: 0;
+}

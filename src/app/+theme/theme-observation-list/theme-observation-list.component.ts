@@ -2,6 +2,8 @@ import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
 import { ResultService } from '../service/result.service';
 import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
 import { Router } from '@angular/router';
+import { MapTypes } from '../theme-map/theme-map.component';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'laji-theme-observation-list',
@@ -16,6 +18,7 @@ export class ThemeObservationListComponent implements OnInit, OnChanges {
   @Input() collectionId: string;
   @Input() taxonId: string;
   @Input() time: string;
+  @Input() type: MapTypes;
   @Input() tbodyHeight = 400;
   @Input() page: number;
 
@@ -24,6 +27,8 @@ export class ThemeObservationListComponent implements OnInit, OnChanges {
   shownDocument = '';
   highlightId = '';
   current: string;
+
+  private subQuery: Subscription;
 
   constructor(
     private resultService: ResultService,
@@ -43,9 +48,12 @@ export class ThemeObservationListComponent implements OnInit, OnChanges {
     if (this.current === key) {
       return;
     }
+    if (this.subQuery) {
+      this.subQuery.unsubscribe();
+    }
     this.current = key;
     this.loading = true;
-    this.resultService.getList(this.grid, this.collectionId, this.taxonId, this.time, this.page)
+    this.subQuery = this.resultService.getList(this.grid, this.collectionId, this.taxonId, this.time, this.page)
       .subscribe(data => {
         this.results = data;
         this.loading = false;

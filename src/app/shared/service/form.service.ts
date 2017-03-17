@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { LocalStorage } from 'ng2-webstorage';
-import { UserService } from '../../shared/service/user.service';
-import { Util } from '../../shared/service/util.service';
-import { FormApi } from '../../shared/api/FormApi';
-import { DocumentApi } from '../../shared/api/DocumentApi';
-import { Document } from '../../shared/model/Document';
+import { UserService } from './user.service';
+import { Util } from './util.service';
+import { FormApi } from '../api/FormApi';
+import { DocumentApi } from '../api/DocumentApi';
+import { Document } from '../model/Document';
 import { AppConfig } from '../../app.config';
 
 
@@ -57,19 +57,6 @@ export class FormService {
         return Observable.of(true);
       })
       .subscribe();
-  }
-
-  setSuccessMessage(msg: string) {
-    this.successMsg = msg;
-  }
-
-  getSuccessMessage() {
-    let message = '';
-    if (this.successMsg) {
-      message = this.successMsg;
-      this.successMsg = '';
-    }
-    return message;
   }
 
   store(formData) {

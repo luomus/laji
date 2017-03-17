@@ -3,11 +3,18 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import * as MapUtil from 'laji-map/lib/utils';
+import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 
 @Injectable()
 export class ResultService {
 
   private state = {
+    taxon: {
+      key: '',
+      data: {},
+      pending: undefined,
+      pendingKey: ''
+    },
     result: {
       key: '',
       data: [],
@@ -29,24 +36,53 @@ export class ResultService {
   };
 
   constructor(
-    private warehouseApi: WarehouseApi
+    private warehouseApi: WarehouseApi,
+    private taxonomyApi: TaxonomyApi
   ) { }
 
-  getResults(collectionId: string, informalGroup: string, time: string): Observable<any> {
-    const cacheKey = collectionId + ':' + informalGroup + ':' + time;
+  getTaxon(taxonId: string) {
+    return this._fetch('taxon', taxonId, this.taxonomyApi.taxonomyFindBySubject(
+      taxonId,
+      'multi',
+      {
+        'selectedFields': 'scientificName,vernacularName,cursiveName'
+      }
+    ));
+  }
+
+  getResults(collectionId: string, informalGroup: string, time: string, lang: string): Observable<any> {
+    let vernacular = 'unit.linkings.taxon.nameFinnish';
+    switch (lang) {
+      case 'en':
+        vernacular = 'unit.linkings.taxon.nameEnglish';
+        break;
+      case 'sv':
+        vernacular = 'unit.linkings.taxon.nameSwedish';
+    }
+    const cacheKey = collectionId + ':' + informalGroup + ':' + time + ':' + lang;
     return this._fetch('result', cacheKey, this.warehouseApi.warehouseQueryAggregateGet(
       {
         collectionId: [collectionId],
         informalTaxonGroupId: [informalGroup],
         time: [time]
       },
-      ['unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName'],
+      ['unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName', vernacular],
       ['2'],
       1000,
       1,
       false,
       false
-    ));
+    ))
+      .map(data => data.results)
+      .map(data => {
+        return data.map(row => {
+          row.aggregateBy['vernacularName'] =
+            row.aggregateBy['unit.linkings.taxon.nameFinnish'] ||
+            row.aggregateBy['unit.linkings.taxon.nameEnglish'] ||
+            row.aggregateBy['unit.linkings.taxon.nameSwedish'];
+          return row;
+        });
+      });
   }
 
   getList(grid: string, collectionId: string, taxonId: string, time: string, page: number): Observable<any> {
@@ -88,7 +124,7 @@ export class ResultService {
     );
   }
 
-  private _fetch(type: 'map'|'list'|'result', cacheKey: string, request): Observable<any> {
+  private _fetch(type: 'map'|'list'|'result'|'taxon', cacheKey: string, request): Observable<any> {
     if (this.state[type].key === cacheKey) {
       return Observable.of(this.state[type].data);
     } else if (this.state[type].pendingKey === cacheKey && this.state[type].pending) {
@@ -131,8 +167,7 @@ export class ResultService {
         type: 'Feature',
         properties: {
           count: result.count || 0,
-          individualCountMax: result.individualCountMax || 0,
-          individualCountMin: result.individualCountMin || 0,
+          individualCountSum: result.individualCountSum || 0,
           newestRecord: result.newestRecord || '',
           oldestRecord: result.oldestRecord || '',
           grid: lat + ':' + lng

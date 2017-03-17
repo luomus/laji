@@ -25,7 +25,6 @@ export class UserService {
   private users: {[id: string]: Person} = {};
   private usersFetch: {[id: string]: Observable<Person>} = {};
   private defaultFormData: any;
-  private errorSend = false;
 
   private subUser: Subscription;
   private subLogout: Subscription;
@@ -51,7 +50,6 @@ export class UserService {
     if (this.token === userToken || this.subUser) {
       return;
     }
-    this.errorSend = false;
     this.isLoggedIn = true;
     this.loadUserInfo(userToken);
   }
@@ -92,12 +90,6 @@ export class UserService {
     if (!id) {
       return this.getCurrentUser()
         .catch((err) => {
-          if (!this.errorSend) {
-            this.errorSend = true;
-            this.translate.get('error.login').subscribe(
-              msg => this.toastsService.showError(msg)
-            );
-          }
           this.logger.warn('Failed to fetch current users information', err);
           this.logout(false);
           return Observable.of({});

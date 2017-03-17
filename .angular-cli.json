@@ -31,7 +31,8 @@
       "environments": {
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts",
-        "embedded": "environments/environment.embedded.ts"
+        "embedded": "environments/environment.embedded.ts",
+        "vir": "environments/environment.vir.ts"
       }
     }
   ],

@@ -5,58 +5,7 @@
       <p>{{'haseka.pleaseLogin' | translate}}</p>
     </div>
     <div in>
-      <laji-spinner [spinning]="loading" [overlay]="true"></laji-spinner>
-      <div class="row">
-        <div [ngClass]="{
-          'col-sm-8': form?.logo,
-          'col-sm-12': !form?.logo
-        }">
-          <h1>{{form?.title}}</h1>
-          <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
-          <div [innerHtml]="form?.description"></div>
-        </div>
-        <div class="col-sm-4" *ngIf="form?.logo">
-          <img src="{{form.logo}}">
-        </div>
-      </div>
-
-      <div class="laji-form" *ngIf="form?.id">
-        <laji-form
-                [formData]="form"
-                [lang]="lang"
-                [tick]="tick"
-                (onChange)="onChange($event)"
-                (onSubmit)="onSubmit($event)"></laji-form>
-        <div class="form-footer">
-          <div class="row">
-            <div class="col-xs-3 col-sm-2">
-              <button class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPublic()">{{'haseka.form.savePublic'|translate}}</button>
-            </div>
-            <div class="col-xs-3 col-sm-2">
-              <button *ngIf="enablePrivate" class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPrivate()">{{'haseka.form.savePrivate'|translate}}</button>
-            </div>
-            <div class="col-xs-3 col-sm-6 form-control-static info" [ngSwitch]="status">
-              <div *ngSwitchCase="'success'" class="success status">
-                {{'haseka.form.success'|translate}}
-              </div>
-              <div *ngSwitchCase="'error'" class="error status">
-                {{'haseka.form.error' | translate}}
-              </div>
-              <div *ngSwitchCase="'unsaved'" class="unsaved status">
-                <span *ngIf="form.formData.dateEdited">
-                  {{'haseka.form.unsaved' | translate:{saveTime: form.formData.dateEdited | date:'d.M.y HH:mm'} }}
-                </span>
-                <span *ngIf="!form.formData.dateEdited">
-                  {{'haseka.form.unsavedNever' | translate}}
-                </span>
-              </div>
-            </div>
-            <div class="col-xs-3 col-sm-2">
-              <button class="btn btn-default pull-right" [disabled]="saving" type="submit" (click)="discard()">{{'haseka.form.back'|translate}}</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <laji-document-form [formId]="formId" [documentId]="documentId"></laji-document-form>
     </div>
   </only-logged>
 </div>

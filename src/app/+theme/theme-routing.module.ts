@@ -12,8 +12,10 @@ const routes: Routes = [
     path: 'nafi',
     component: NafiComponent,
     children: [
-      {path: '', pathMatch: 'full', component: NafiResultComponent},
+      {path: '', pathMatch: 'full', component: NafiInstructionsComponent},
+      {path: 'stats', pathMatch: 'full', component: NafiResultComponent},
       {path: 'form', pathMatch: 'full', component: NafiFormComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'form/:id', pathMatch: 'full', component: NafiFormComponent, canActivate: [OnlyLoggedIn]},
       {path: 'myObservations', pathMatch: 'full', component: NafiMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: NafiInstructionsComponent}
     ]

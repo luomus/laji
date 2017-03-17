@@ -1,5 +1,5 @@
 <a [routerLink]="['/vihko/' + (document.formID || 'JX.519') + '/' + document.id]">
-  {{document.id}} <small>{{document.dateEdited | date:'d.M.y HH:mm'}}</small>
+  {{document.id}} <small>{{document.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'}}</small>
 </a>
 <span *ngIf="document.publicityRestrictions === 'MZ.publicityRestrictionsPrivate'">
   <span class="label label-warning"
@@ -15,7 +15,7 @@
 {{'haseka.users.latest.gathered' | translate }}:
 <span *ngIf="gatheringDates.start || gatheringDates.end">
   <a [routerLink]="['/vihko/' + (document.formID || 'JX.519') + '/' + document.id]">
-    {{gatheringDates.start | date:'d.M.y'}} - {{gatheringDates.end | date:'d.M.y'}}
+    {{gatheringDates.start | amDateFormat:'DD.MM.YYYY'}} - {{gatheringDates.end | amDateFormat:'DD.MM.YYYY'}}
   </a>
 </span>
 <span

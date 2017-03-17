@@ -38,12 +38,12 @@
       </td>
       <td>
         <span *ngIf="aggr[taxon.id]">
-          {{aggr[taxon.id]?.oldestRecord | date:'dd.MM.yyyy' }}
+          {{aggr[taxon.id]?.oldestRecord | amDateFormat:'DD.MM.YYYY' }}
         </span>
       </td>
       <td>
         <span *ngIf="aggr[taxon.id]">
-          {{aggr[taxon.id]?.newestRecord | date:'dd.MM.yyyy' }}&nbsp;<a
+          {{aggr[taxon.id]?.newestRecord | amDateFormat:'DD.MM.YYYY' }}&nbsp;<a
             placement="right"
             container="body"
             [tooltip]="'result.showViewer' | translate"

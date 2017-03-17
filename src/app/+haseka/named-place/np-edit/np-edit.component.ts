@@ -1,11 +1,11 @@
 import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { AppConfig } from '../../../app.config';
-import { FormService } from '../../form/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../../shared/service/user.service';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { Util } from '../../../shared/service/util.service';
+import { FormService } from '../../../shared/service/form.service';
 
 @Component({
   selector: 'laji-np-edit',

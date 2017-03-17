@@ -94,17 +94,18 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   public drawing = false;
   public drawingShape: string;
   public dateFormat = 'YYYY-MM-DD';
+  public invasiveStatuses: string[] = [
+    'nationallySignificantInvasiveSpecies',
+    'nationalInvasiveSpeciesStrategy',
+    'otherInvasiveSpeciesList',
+    'euInvasiveSpeciesList',
+    'quarantinePlantPest'
+  ];
 
   private subUpdate: Subscription;
   private subMap: Subscription;
   private lastQuery: string;
   private delayedSearch;
-  private invasiveStatuses: string[] = [
-    'nationallySignificantInvasiveSpecies',
-    'euInvasiveSpeciesList',
-    'quarantinePlantPest',
-    'otherInvasiveSpeciesList'
-  ];
 
   constructor(public searchQuery: SearchQuery,
               public translate: TranslateService,
@@ -219,7 +220,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       euInvasiveSpeciesList: undefined,
       nationallySignificantInvasiveSpecies: undefined,
       quarantinePlantPest: undefined,
-      otherInvasiveSpeciesList: undefined
+      otherInvasiveSpeciesList: undefined,
+      nationalInvasiveSpeciesStrategy: undefined,
+      allInvasiveSpecies: undefined
     };
 
     if (refresh) {
@@ -281,17 +284,33 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   onInvasiveCheckBoxToggle(field) {
-    this.formQuery[field] = !this.formQuery[field];
+    if (Array.isArray(field)) {
+      this.formQuery.allInvasiveSpecies = !this.formQuery.allInvasiveSpecies;
+      field.map(status => {this.formQuery[status] = this.formQuery.allInvasiveSpecies; });
+    } else {
+      this.formQuery[field] = !this.formQuery[field];
+      if (!this.formQuery[field] && this.formQuery.allInvasiveSpecies) {
+        this.formQuery.allInvasiveSpecies = false;
+      }
+    }
     this.onSubmit();
+    this.onAdministrativeStatusChange(false);
   }
 
-  onAdministrativeStatusChange() {
+  onAdministrativeStatusChange(doChange = true) {
     const admins = this.searchQuery.query.administrativeStatusId;
+    let cnt = 0;
     this.invasiveStatuses.map(key => {
       const realKey = 'MX.' + key;
       this.formQuery[key] = admins && admins.indexOf(realKey) > -1;
+      if (this.formQuery[key]) {
+        cnt++;
+      }
     });
-    this.onQueryChange();
+    this.formQuery.allInvasiveSpecies = cnt === this.invasiveStatuses.length;
+    if (doChange) {
+      this.onQueryChange();
+    }
   }
 
   onCheckBoxToggle(field, selectValue = true, isDirect = true) {
@@ -371,7 +390,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       nationallySignificantInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.nationallySignificantInvasiveSpecies'),
       euInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.euInvasiveSpeciesList'),
       quarantinePlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.quarantinePlantPest'),
-      otherInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.otherInvasiveSpeciesList')
+      otherInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.otherInvasiveSpeciesList'),
+      nationalInvasiveSpeciesStrategy: this.hasInMulti(query.administrativeStatusId, 'MX.nationalInvasiveSpeciesStrategy'),
+      allInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val))
     };
     if (this.formQuery.taxon && (
       this.formQuery.taxon.indexOf('MX.') === 0 || this.formQuery.taxon.indexOf('http:') === 0)) {
@@ -382,6 +403,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   private hasInMulti(multi, value) {
+    if (Array.isArray(value)) {
+      return value.filter(val => !this.hasInMulti(multi, val)).length === 0;
+    }
     return Array.isArray(multi) && multi.indexOf(value) > -1;
   }
 
@@ -397,6 +421,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     query.finnish = formQuery.isNotFinnish ? false : query.finnish;
     query.hasMedia = formQuery.hasNotMedia ? false : query.hasMedia;
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
+    if (formQuery.allInvasiveSpecies) {
+      query.administrativeStatusId = this.invasiveStatuses.map(val => 'MX.' + val);
+    }
     this.invasiveStatuses
       .map((key) => {
         const value = 'MX.' + key;

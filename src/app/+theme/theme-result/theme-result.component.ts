@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
-import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Observable } from 'rxjs/Observable';
 import { ResultService } from '../service/result.service';
+import { MapTypes } from '../theme-map/theme-map.component';
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({
@@ -15,10 +15,13 @@ export class ThemeResultComponent implements OnInit, OnChanges, OnDestroy {
   @Input() collectionId: string;
   @Input() informalGroup: string;
   @Input() time = '1991-01-01/';
+  @Input() type: MapTypes;
   @Input() tbodyHeight = 400;
+  @Input() lang;
 
   list = [];
   loading = false;
+  private subQuery: Subscription;
 
   constructor(
     private resultService: ResultService
@@ -29,7 +32,6 @@ export class ThemeResultComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-
   }
 
   ngOnChanges() {
@@ -37,13 +39,15 @@ export class ThemeResultComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   initList() {
-    if (!this.informalGroup || !this.collectionId) {
+    if (!this.informalGroup || !this.collectionId || !this.lang) {
       return;
+    }
+    if (this.subQuery)  {
+      this.subQuery.unsubscribe();
     }
     this.loading = true;
     this.list = [];
-    this.resultService.getResults(this.collectionId, this.informalGroup, this.time)
-      .map(data => data.results)
+    this.subQuery = this.resultService.getResults(this.collectionId, this.informalGroup, this.time, this.lang)
       .subscribe(data => {
         this.loading = false;
         this.list = data;
