@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Document } from '../../shared/model/Document';
-import { FormService } from '../form/form.service';
+import { FormService } from '../../shared/service/form.service';
 
 @Component({
   selector: 'laji-short-document',
@@ -9,7 +9,7 @@ import { FormService } from '../form/form.service';
 })
 export class ShortDocumentComponent implements OnInit, OnChanges {
   @Input() document: Document;
-  @Input() showList: boolean = false;
+  @Input() showList = false;
 
   public taxa: Array<{ name: string, id: string }>;
   public gatheringDates: { start: string, end: string };

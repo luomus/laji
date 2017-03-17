@@ -1,6 +1,4 @@
 import { Component, AfterViewInit, OnChanges, Input } from '@angular/core';
-import { FormService } from '../../+haseka/form/form.service';
-import { TranslateService } from '@ngx-translate/core/src/translate.service';
 
 @Component({
   selector: 'laji-theme-form',
@@ -10,31 +8,15 @@ import { TranslateService } from '@ngx-translate/core/src/translate.service';
 export class ThemeFormComponent implements AfterViewInit, OnChanges {
 
   @Input() formId;
-  formData;
+  @Input() documentId;
+  @Input() donePath;
+  @Input() tmpPath;
 
-  private currentFormId;
-
-  constructor(
-    private formService: FormService,
-    public translate: TranslateService
-  ) { }
+  constructor() { }
 
   ngAfterViewInit() {
-    this.updateForm();
   }
 
   ngOnChanges() {
-    this.updateForm();
   }
-
-  updateForm() {
-    if (this.currentFormId === this.formId) {
-      return;
-    }
-    this.currentFormId = this.formId;
-    this.formService
-      .load(this.formId, this.translate.currentLang)
-      .subscribe(formData => this.formData = formData);
-  }
-
 }

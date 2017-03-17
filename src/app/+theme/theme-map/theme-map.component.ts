@@ -4,6 +4,7 @@ import { MapComponent } from '../../shared/map/map.component';
 import { ResultService } from '../service/result.service';
 import { Router } from '@angular/router';
 import { Taxonomy } from '../../shared/model/Taxonomy';
+import { Subscription } from 'rxjs/Subscription';
 
 export type MapTypes = 'count'|'individuals'|'newest'|'oldest';
 
@@ -36,6 +37,7 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
 
   private currentColor;
   private current;
+  private subQuery: Subscription;
 
   constructor(
     private resultService: ResultService,
@@ -63,11 +65,14 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
       }
       return;
     }
+    if (this.subQuery) {
+      this.subQuery.unsubscribe();
+    }
     delete this.taxon;
     this.current = key;
     this.loading = true;
     this.initGeoJsonLayer();
-    this.resultService
+    this.subQuery = this.resultService
       .getGeoJson(this.taxonId, this.time, this.collectionId)
       .subscribe(geoJson => {
         this.geoJsonLayer.addData(geoJson);

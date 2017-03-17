@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 import { ResultService } from '../service/result.service';
 import { MapTypes } from '../theme-map/theme-map.component';
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class ThemeResultComponent implements OnInit, OnChanges, OnDestroy {
 
   list = [];
   loading = false;
+  private subQuery: Subscription;
 
   constructor(
     private resultService: ResultService
@@ -40,9 +42,12 @@ export class ThemeResultComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.informalGroup || !this.collectionId || !this.lang) {
       return;
     }
+    if (this.subQuery)  {
+      this.subQuery.unsubscribe();
+    }
     this.loading = true;
     this.list = [];
-    this.resultService.getResults(this.collectionId, this.informalGroup, this.time, this.lang)
+    this.subQuery = this.resultService.getResults(this.collectionId, this.informalGroup, this.time, this.lang)
       .subscribe(data => {
         this.loading = false;
         this.list = data;

@@ -64,19 +64,20 @@ import { SourceApi } from './api/SourceApi';
 import { MetadataService } from './service/metadata.service';
 import { ImageModalOverlayComponent } from './image-gallery/image-modal-overlay.component';
 import { NamedPlaceApi } from './api/NamedPlaceApi';
-import { FormService } from '../+haseka/form/form.service';
 import { FormApi } from './api/FormApi';
 import { DocumentApi } from './api/DocumentApi';
 import { LajiFormComponent } from './form/laji-form.component';
 import { OnlyLoggedIn } from './route/only-logged-in';
 import { LajiExternalService } from './service/laji-external.service';
 import { MomentModule } from 'angular2-moment';
+import { DocumentFormComponent } from './document-form/document-form.component';
+import { FormService } from './service/form.service';
 
 
 @NgModule({
   entryComponents: [ImageModalOverlayComponent],
   declarations: [
-    NewsListComponent,
+    NewsListComponent, DocumentFormComponent,
     SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, FormattedNumber,
     AreaNamePipe, CollectionNamePipe,
@@ -99,7 +100,7 @@ import { MomentModule } from 'angular2-moment';
   exports: [
     CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule,
     AreaNamePipe, NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe,
-    ToQNamePipe, ValuesPipe, CollectionNamePipe, LajiFormComponent,
+    ToQNamePipe, ValuesPipe, CollectionNamePipe, LajiFormComponent, DocumentFormComponent,
     ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
