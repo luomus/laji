@@ -198,15 +198,6 @@ export class FormService {
         .do((forms) => this.allForms = forms);
   }
 
-  getFormDrawData(formId: string, lang: string): Observable<any> {
-    return this.getForm(formId, lang)
-      .switchMap(data => {
-        const drawData = data.uiSchema ? this.getObjectByKey(data.uiSchema, 'draw') : null;
-        return Observable.of(drawData);
-      }
-    );
-  }
-
   populate(data: any) {
     this._populate = Object.assign({}, this._populate, data);
   }
@@ -275,26 +266,5 @@ export class FormService {
       (+dateArray[5]),
       (+dateArray[6])
     );
-  }
-
-  private getObjectByKey (obj, key) {
-    let foundObject = null;
-
-    for (const i in obj) {
-      if (!obj.hasOwnProperty(i) || typeof  obj[i] !== 'object') {
-        continue;
-      }
-
-      if (i === key) {
-        foundObject = obj[i];
-      } else if (typeof obj[i] === 'object') {
-        foundObject = this.getObjectByKey(obj[i], key);
-      }
-
-      if (foundObject !== null) {
-        break;
-      }
-    }
-    return foundObject;
   }
 }
