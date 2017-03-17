@@ -7,11 +7,13 @@
     <div class="container full-height" in>
       <laji-spinner [spinning]="!(namedPlaces && formInfo) && !errorMsg" [overlay]="true"></laji-spinner>
 
+      <h1>
+        {{'np.title' | translate}}
+      </h1>
+
+      <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
+
       <div class="full-height" *ngIf="namedPlaces && formInfo && !errorMsg">
-        <h1>
-          {{'np.title' | translate}}
-        </h1>
-        <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
         <div class="row np-row full-height">
           <div [ngClass]="editMode? 'hidden' : 'col-sm-6 full-height'">
             <laji-np-choose [namedPlaces]="namedPlaces"

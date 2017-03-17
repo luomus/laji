@@ -82,7 +82,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         },
         err => {
           this.translate.get('np.loadError')
-            .subscribe(data => this.setErrorMessage(data));
+            .subscribe(msg => this.setErrorMessage(msg));
         }
       );
     }
@@ -125,8 +125,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   toNormalMode() {
-    this.updateNP();
     this.editMode = false;
+    this.updateNP();
   }
 
   setErrorMessage(msg) {

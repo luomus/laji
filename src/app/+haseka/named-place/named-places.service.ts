@@ -14,7 +14,7 @@ export class NamedPlacesService {
         collectionID,
         undefined,
         undefined,
-        undefined
+        '100'
       );
   }
 
