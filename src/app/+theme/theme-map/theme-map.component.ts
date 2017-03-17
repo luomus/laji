@@ -24,9 +24,9 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
   @Input() type: MapTypes = 'count';
   @Input() colorRange: string[] = ['#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
   @Input() countBreak: number[] = [1, 5, 10, 50, 100, 500];
-  @Input() timeBreak: string[] = ['2020-01-01', '2015-01-01', '2010-01-01', '2005-01-01', '2000-01-01', '1995-01-01'];
+  @Input() timeBreak: string[] = ['2020-01-01', '2015-01-01', '2010-01-01', '2005-01-01', '2000-01-01', '1991-01-01'];
   @Input() countLabel: string[] = ['1-4', '5-9', '10-49', '50-99', '100-499', '500-'];
-  @Input() timeLabel: string[] = ['2020-', '2015-', '2010-', '2005-', '2000-', '1995-'];
+  @Input() timeLabel: string[] = ['2020', '2015-', '2010-', '2005-', '2000-', '1990-'];
 
   maxBounds = [[58.0, 19.0], [72.0, 35.0]];
   geoJsonLayer;
@@ -45,7 +45,8 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
     private router: Router
   ) {
     const now = new Date();
-    this.timeLabel[0] = now.getFullYear() + '-';
+    this.timeLabel[0] = '' + now.getFullYear();
+    this.timeBreak[0] = now.getFullYear() + '-01-01';
   }
 
   ngAfterViewInit() {
@@ -168,12 +169,10 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
 
   newestColor(feature) {
     const cnt = feature.properties.newestRecord || '1991-01-01';
+    const len = this.timeBreak.length;
     let newColor = '#ffffff';
-    for (const idx in this.timeBreak) {
-      if (!this.timeBreak.hasOwnProperty(idx)) {
-        continue;
-      }
-      if (cnt <= this.timeBreak[idx]) {
+    for (let idx = len - 1; idx >= 0; idx--) {
+      if (cnt >= this.timeBreak[idx]) {
         newColor = this.colorRange[idx];
       } else {
         break;
