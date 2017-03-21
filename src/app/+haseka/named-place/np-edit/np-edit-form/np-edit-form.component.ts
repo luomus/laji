@@ -7,7 +7,6 @@ import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { WindowRef } from '../../../../shared/windows-ref';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import { Form } from '../../../../shared/model/FormListInterface';
-import { FormService } from '../../../../shared/service/form.service';
 
 @Component({
   selector: 'laji-np-edit-form',
@@ -34,7 +33,6 @@ export class NpEditFormComponent implements OnInit {
   @ContentChildren(LajiFormComponent) lajiFormChildren;
 
   constructor(
-    private formService: FormService,
     private  userService: UserService,
     private namedPlaceService: NamedPlacesService,
     private winRef: WindowRef,
@@ -83,7 +81,7 @@ export class NpEditFormComponent implements OnInit {
           .subscribe(value => {
             this.toastsService.showSuccess(value);
           });
-        this.onEditReady.emit();
+        this.onEditReady.emit(result);
       },
       (err) => {
         this.lajiForm.unBlock();
@@ -115,7 +113,6 @@ export class NpEditFormComponent implements OnInit {
         if (!this.hasChanges) {
           this.onEditReady.emit();
         } else if (this.winRef.nativeWindow.confirm(confirm)) {
-          this.formService.discard();
           this.onEditReady.emit();
         }
       }

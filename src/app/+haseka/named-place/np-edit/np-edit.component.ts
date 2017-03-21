@@ -16,8 +16,9 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() namedPlace: NamedPlace;
   @Input() formId: string;
   @Input() collectionId: string;
+  @Input() formInfo: any;
 
-  formData: any;
+  npFormData: any;
   userId: string;
 
   editButtonVisible: boolean;
@@ -31,7 +32,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   lang: string;
 
   private npFormId: string;
-  private form$: Subscription;
+  private npForm$: Subscription;
   private translation$: Subscription;
 
   constructor(
@@ -51,8 +52,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.form$) {
-      this.form$.unsubscribe();
+    if (this.npForm$) {
+      this.npForm$.unsubscribe();
     }
     this.translation$.unsubscribe();
   }
@@ -63,30 +64,36 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onLangChange() {
-    if (this.form$) {
-      this.form$.unsubscribe();
+    if (this.npForm$) {
+      this.npForm$.unsubscribe();
     }
-    const data = this.formData.formData;
-    this.formData = null;
-    this.form$ = this.formService
+    const data = this.npFormData.formData;
+    this.npFormData = null;
+    this.npForm$ = this.formService
       .getForm(this.npFormId, this.translate.currentLang)
       .subscribe(form => {
         form['formData'] = data;
+        if (this.formInfo.drawData) {
+          form['uiSchema']['namedPlace']['ui:options']['draw'] = this.formInfo.drawData;
+        }
         this.lang = this.translate.currentLang;
-        this.formData = form;
+        this.npFormData = form;
       });
   }
 
   fetchForm() {
-    if (this.form$) {
-      this.form$.unsubscribe();
+    if (this.npForm$) {
+      this.npForm$.unsubscribe();
     }
     this.lang = this.translate.currentLang;
-    this.form$ = this.formService
+    this.npForm$ = this.formService
       .load(this.npFormId, this.lang)
       .subscribe(
         data => {
-          this.setData(data);
+          if (this.formInfo.drawData) {
+            data['uiSchema']['namedPlace']['ui:options']['draw'] = this.formInfo.drawData;
+          }
+          this.npFormData = data;
         },
         err => {
           const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
@@ -96,26 +103,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       );
   }
 
-  setData(data) {
-    const drawData$ = this.formService
-      .getFormDrawData(this.formId, this.lang)
-      .subscribe(
-        drawData => {
-          if (drawData) {
-            data['uiSchema']['namedPlace']['ui:options']['draw'] = drawData;
-          }
-          this.formData = data;
-        },
-        err => {
-          const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
-          this.translate.get(msgKey, {formId: this.formId})
-            .subscribe(msg => this.onError.emit(msg));
-        }
-      );
-  }
-
   setFormData() {
-    if (!this.formData || !this.userId) {
+    if (!this.npFormData || !this.userId) {
       return;
     }
 
@@ -134,9 +123,9 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
 
-      this.formData.formData.namedPlace = [npData];
-    } else if ('namedPlace' in this.formData.formData) {
-      delete this.formData.formData['namedPlace'];
+      this.npFormData.formData.namedPlace = [npData];
+    } else if ('namedPlace' in this.npFormData.formData) {
+      delete this.npFormData.formData['namedPlace'];
     }
   }
 
@@ -144,8 +133,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     this.onEditButtonClick.emit();
   }
 
-  editReady() {
-    this.onEditReady.emit();
+  editReady(np: NamedPlace) {
+    this.onEditReady.emit(np);
   }
 
   populateForm() {

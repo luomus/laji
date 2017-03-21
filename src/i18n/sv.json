@@ -337,6 +337,7 @@
   "np.list": "Lista",
   "np.map": "Karta",
   "np.additionalInfo": "Ytterligare information",
+  "np.loadError": "Det gick inte att läsa in platser.",
   "np.form.success": "Plats sparat!",
   "np.country": "Land",
   "np.municipality": "Grevskap",

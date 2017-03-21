@@ -1,8 +1,8 @@
-<laji-spinner [spinning]="(namedPlace || editMode) && !(formData || userId)" [overlay]="true"></laji-spinner>
-<div *ngIf="formData">
+<laji-spinner [spinning]="(namedPlace || editMode) && !(npFormData || userId)" [overlay]="true"></laji-spinner>
+<div *ngIf="npFormData">
   <div *ngIf="!editMode && namedPlace">
     <laji-np-info [namedPlace]="namedPlace"
-                  [formData]="formData"
+                  [formData]="npFormData"
                   [editButtonVisible]="editButtonVisible"
                   (onEditButtonClick)="editClick()"></laji-np-info>
     <a *ngIf="useButtonVisible"
@@ -13,11 +13,11 @@
        (click)="populateForm()">{{'np.use' | translate}}</a>
   </div>
   <div *ngIf="editMode">
-    <laji-np-edit-form *ngIf="formData"
+    <laji-np-edit-form *ngIf="npFormData"
                        [lang]="lang"
-                       [formData]="formData"
+                       [formData]="npFormData"
                        [namedPlace]="namedPlace"
                        [collectionId]="collectionId"
-                       (onEditReady)="editReady()"></laji-np-edit-form>
+                       (onEditReady)="editReady($event)"></laji-np-edit-form>
   </div>
 </div>
