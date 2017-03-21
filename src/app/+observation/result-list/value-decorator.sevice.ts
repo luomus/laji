@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DateFormatPipe } from 'angular2-moment/date-format.pipe';
 import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { SourceService } from '../../shared/service/source.service';
@@ -28,7 +28,7 @@ export class ValueDecoratorService {
   };
 
   constructor(
-    private datePipe: DatePipe,
+    private datePipe: DateFormatPipe,
     private labelPipe: LabelPipe,
     private toQNamePipe: ToQNamePipe,
     private source: SourceService,
@@ -55,7 +55,7 @@ export class ValueDecoratorService {
   }
 
   protected makeDate(value) {
-    return this.datePipe.transform(value, 'dd.MM.yyyy');
+    return this.datePipe.transform(value, 'DD.MM.YYYY');
   }
 
   protected makeArrayToSemiColon(value) {

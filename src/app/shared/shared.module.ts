@@ -2,7 +2,8 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpModule, Http } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { DateFormatPipe } from 'angular2-moment/date-format.pipe';
 import {
   TooltipModule,
   PaginationModule,
@@ -133,7 +134,7 @@ export class SharedModule {
         MetadataService,
         WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
         AutocompleteApi, FooterService, Ng2Webstorage,
-        DatePipe,
+        DateFormatPipe,
         OnlyLoggedIn,
         {provide: Http, useClass: AuthenticatedHttpService}
       ]
