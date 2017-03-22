@@ -42,10 +42,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
       this.lajiMap.map.setData([this._data]);
 
       const geojsonLayer = this.lajiMap.map.dataLayerGroups[0];
-      /*this.lajiMap.map.map.fitBounds(
-        geojsonLayer.getBounds(),
-        {maxZoom: this.lajiMap.map.map.getZoom()}
-      );*/
+
       const that = this;
       geojsonLayer.on({
         click: (event) => {

@@ -11,6 +11,7 @@ import { NpEditFormComponent } from './np-edit/np-edit-form/np-edit-form.compone
 import { NpInfoComponent } from './np-edit/np-info/np-info.component';
 import { NpInfoRowComponent } from './np-edit/np-info/np-info-row/np-info-row.component';
 import { NpAreaFormComponent } from './np-edit/np-edit-form/np-area-form/np-area-form.component';
+import { NpInfoMapComponent } from './np-edit/np-info/np-info-map/np-info-map.component';
 
 @NgModule({
   providers: [NamedPlacesService],
@@ -20,7 +21,7 @@ import { NpAreaFormComponent } from './np-edit/np-edit-form/np-area-form/np-area
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,
-    NpEditFormComponent, NpInfoComponent, NpInfoRowComponent, NpAreaFormComponent
+    NpEditFormComponent, NpInfoComponent, NpInfoRowComponent, NpAreaFormComponent, NpInfoMapComponent
   ],
   exports: [NamedPlaceComponent]
 })

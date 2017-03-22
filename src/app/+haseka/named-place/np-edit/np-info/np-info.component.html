@@ -8,6 +8,7 @@
                 (click)="editClick()">{{'np.edit' | translate}}</button>
       </div>
     </legend>
+    <laji-np-info-map [visible]="namedPlace && !editMode" [namedPlace]="namedPlace"></laji-np-info-map>
     <div *ngFor="let k of keys">
       <laji-np-info-row [key]="k" [value]="values[k]" [fields]="fields"></laji-np-info-row>
     </div>

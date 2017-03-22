@@ -10,6 +10,7 @@ export class NpInfoComponent implements OnInit, OnChanges {
   @Input() namedPlace: NamedPlace;
   @Input() formData: any;
   @Input() editButtonVisible: boolean;
+  @Input() editMode: boolean;
 
   @Output() onEditButtonClick = new EventEmitter();
 
@@ -38,6 +39,8 @@ export class NpInfoComponent implements OnInit, OnChanges {
     this.keys = [];
     this.values = {};
     this.fields = this.formData.schema.properties.namedPlace.items.properties;
+
+    if (!this.namedPlace) { return; }
 
     let gData = null;
     const np = this.namedPlace;
