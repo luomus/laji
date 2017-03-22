@@ -20,7 +20,7 @@ export class NamedPlacesService {
       .switchMap(
         result => {
           namedPlaces.push(...result.results);
-          if (result.currentPage !== result.lastPage) {
+          if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
             return this.getAllNamePlacesByCollectionId(collectionID, result.currentPage + 1, namedPlaces);
           } else {
             return Observable.of(namedPlaces);

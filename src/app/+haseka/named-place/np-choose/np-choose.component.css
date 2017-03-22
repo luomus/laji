@@ -2,8 +2,19 @@
   margin-bottom: 5px;
 }
 
+#navbar {
+  flex: none;
+}
+
 #create-new-button {
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   margin-top: 5px;
   width: 100%;
+}
+
+#list-container, laji-np-list {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  min-height: 0;
 }
