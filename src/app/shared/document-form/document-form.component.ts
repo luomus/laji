@@ -140,33 +140,33 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       doc$ = this.documentService.create(data, this.userService.getToken());
     }
     doc$.subscribe(
-          (result) => {
-            this.hasChanges = false;
-            this.lajiForm.unBlock();
-            this.formService.discard();
-            this.formService.setCurrentData(result, true);
-            this.translate.get('haseka.form.success')
-              .subscribe(value => {
-                this.toastsService.showSuccess(value);
-              });
-            this.gotoFrontPage();
-          },
-          (err) => {
-            this.lajiForm.unBlock();
-            this.saving = false;
-            this.saveVisibility = 'shown';
-            this.error = this.parseErrorMessage(err);
-            this.status = 'error';
-            setTimeout(() => {
-              if (this.status === 'error') {
-                this.status = '';
-              }
-            }, 5000);
-            this.logger.error('UNABLE TO SAVE DOCUMENT', {
-              data: data,
-              error: this.parseErrorMessage(err)
-            });
+      (result) => {
+        this.hasChanges = false;
+        this.lajiForm.unBlock();
+        this.formService.discard();
+        this.formService.setCurrentData(result, true);
+        this.translate.get('haseka.form.success')
+          .subscribe(value => {
+            this.toastsService.showSuccess(value);
+          });
+        this.gotoFrontPage();
+      },
+      (err) => {
+        this.lajiForm.unBlock();
+        this.saving = false;
+        this.saveVisibility = 'shown';
+        this.error = this.parseErrorMessage(err);
+        this.status = 'error';
+        setTimeout(() => {
+          if (this.status === 'error') {
+            this.status = '';
+          }
+        }, 5000);
+        this.logger.error('UNABLE TO SAVE DOCUMENT', {
+          data: data,
+          error: this.parseErrorMessage(err)
         });
+    });
   }
 
   submitPublic() {
@@ -227,6 +227,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       .load(this.formId, this.translate.currentLang, this.documentId)
       .subscribe(
         data => {
+          console.log(data);
           this.loading = false;
           this.isEdit = true;
           this.enablePrivate = !data.features || data.features.indexOf(Form.Feature.NoPrivate) === -1;
