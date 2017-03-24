@@ -1,10 +1,10 @@
-import { Component, AfterViewInit, OnChanges, ViewChild, Input } from '@angular/core';
+import { Component, AfterViewInit, OnChanges, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
 import { MapComponent } from '../../shared/map/map.component';
 import { ResultService } from '../service/result.service';
-import { Router } from '@angular/router';
 import { Taxonomy } from '../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs/Subscription';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 export type MapTypes = 'count'|'individuals'|'newest'|'oldest';
 
@@ -17,16 +17,14 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
 
   @ViewChild(MapComponent) lajiMap: MapComponent;
 
-  @Input() time: string;
-  @Input() taxonId: string;
-  @Input() collectionId: string;
-  @Input() grid: string;
+  @Input() query: WarehouseQueryInterface;
   @Input() type: MapTypes = 'count';
   @Input() colorRange: string[] = ['#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
   @Input() countBreak: number[] = [1, 5, 10, 50, 100, 500];
   @Input() timeBreak: string[] = ['2020-01-01', '2015-01-01', '2010-01-01', '2005-01-01', '2000-01-01', '1991-01-01'];
   @Input() countLabel: string[] = ['1-4', '5-9', '10-49', '50-99', '100-499', '500-'];
   @Input() timeLabel: string[] = ['2020', '2015-', '2010-', '2005-', '2000-', '1990-'];
+  @Output() onGridClick = new EventEmitter<WarehouseQueryInterface>();
 
   maxBounds = [[58.0, 19.0], [72.0, 35.0]];
   geoJsonLayer;
@@ -41,8 +39,7 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
 
   constructor(
     private resultService: ResultService,
-    public translate: TranslateService,
-    private router: Router
+    public translate: TranslateService
   ) {
     const now = new Date();
     this.timeLabel[0] = '' + now.getFullYear();
@@ -58,7 +55,10 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
   }
 
   initMapdata() {
-    const key = this.taxonId + this.time;
+    if (!this.query) {
+      return;
+    }
+    const key = JSON.stringify(this.query);
     if (this.current === key) {
       const colorKey = this.getColorKey();
       if (this.currentColor !== colorKey  && this.geoJsonLayer) {
@@ -74,7 +74,7 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
     this.loading = true;
     this.initGeoJsonLayer();
     this.subQuery = this.resultService
-      .getGeoJson(this.taxonId, this.time, this.collectionId)
+      .getGeoJson(this.query)
       .subscribe(geoJson => {
         this.geoJsonLayer.addData(geoJson);
         this.currentColor = '';
@@ -122,21 +122,18 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
         if (!evt.layer.feature.properties || !evt.layer.feature.properties.grid) {
           return;
         }
-        this.router.navigate([], {queryParams: {
-          grid: evt.layer.feature.properties.grid,
-          time: this.time,
-          taxonId: this.taxonId,
-          type: this.type
-        }});
+        const query = JSON.parse(JSON.stringify(this.query));
+        query.ykj3 = evt.layer.feature.properties.grid;
+        this.onGridClick.emit(query);
       });
     }
   }
 
   initTitle() {
-    if (!this.taxonId) {
+    if (!this.query || !this.query.taxonId || this.query.taxonId.length === 0) {
       this.taxon = undefined;
     } else {
-      this.resultService.getTaxon(this.taxonId)
+      this.resultService.getTaxon(this.query.taxonId[0])
         .subscribe(taxon => this.taxon = taxon);
     }
   }
@@ -212,10 +209,10 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
   }
 
   initMap() {
-    if (!this.lajiMap.map || !this.lajiMap.map.map) {
+    if (!this.lajiMap || !this.lajiMap.map || !this.lajiMap.map.map) {
       setTimeout(() => {
         this.initMap();
-      }, 1000);
+      }, 500);
       return;
     }
     this.lajiMap.map.map.options.maxZoom = 8;
@@ -224,6 +221,6 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
   }
 
   private getColorKey() {
-    return this.taxonId + this.time + this.type;
+    return JSON.stringify(this.query) + this.type;
   }
 }

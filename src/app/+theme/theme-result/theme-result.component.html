@@ -17,7 +17,7 @@
     <tbody>
     <tr *ngFor="let item of list; trackBy:item?.aggregateBy['unit.linkings.taxon.speciesId']">
       <td class="col-1">
-        <a [routerLink] [queryParams]="{taxonId:(item.aggregateBy['unit.linkings.taxon.speciesId'] | toQName), time: time, type: type}">
+        <a class="link" (click)="nameClick(item.aggregateBy['unit.linkings.taxon.speciesId'])">
           {{item.aggregateBy['unit.linkings.taxon.speciesScientificName']}}
         </a>
         <span class="visible-sm visible-xs">

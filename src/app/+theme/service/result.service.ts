@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { CoordinateService } from '../../shared/service/coordinate.service';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 @Injectable()
 export class ResultService {
@@ -51,7 +52,7 @@ export class ResultService {
     ));
   }
 
-  getResults(collectionId: string, informalGroup: string, time: string, lang: string): Observable<any> {
+  getResults(query: WarehouseQueryInterface, lang: string): Observable<any> {
     let vernacular = 'unit.linkings.taxon.nameFinnish';
     switch (lang) {
       case 'en':
@@ -60,13 +61,8 @@ export class ResultService {
       case 'sv':
         vernacular = 'unit.linkings.taxon.nameSwedish';
     }
-    const cacheKey = collectionId + ':' + informalGroup + ':' + time + ':' + lang;
-    return this._fetch('result', cacheKey, this.warehouseApi.warehouseQueryAggregateGet(
-      {
-        collectionId: [collectionId],
-        informalTaxonGroupId: [informalGroup],
-        time: [time]
-      },
+    return this._fetch('result', JSON.stringify(query) + ':' + lang, this.warehouseApi.warehouseQueryAggregateGet(
+      query,
       ['unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.taxonomicOrder', vernacular],
       ['3'],
       1000,
@@ -86,15 +82,9 @@ export class ResultService {
       });
   }
 
-  getList(grid: string, collectionId: string, taxonId: string, time: string, page: number): Observable<any> {
-    const cacheKey = grid + ':' + collectionId + ':' + taxonId + ':' + time + ':' + page;
-    return this._fetch('list', cacheKey, this.warehouseApi.warehouseQueryListGet(
-      {
-        collectionId: [collectionId],
-        taxonId: [taxonId],
-        time: [time],
-        ykj3: grid
-      },
+  getList(query: WarehouseQueryInterface, page: number): Observable<any> {
+    return this._fetch('list', JSON.stringify(query) + ':' + page, this.warehouseApi.warehouseQueryListGet(
+      query,
       ['document.documentId,gathering.eventDate.begin,gathering.eventDate.end,gathering.municipality,gathering.province,' +
       'gathering.team,gathering.timeBegin,gathering.timeEnd,unit.unitId,unit.linkings.taxon.scientificName'],
       undefined,
@@ -103,16 +93,11 @@ export class ResultService {
     ));
   }
 
-  getGeoJson(taxonId: string, time: string, collectionId: string): Observable<any> {
-    return this._fetch('map', taxonId + time,
+  getGeoJson(query: WarehouseQueryInterface): Observable<any> {
+    return this._fetch('map', JSON.stringify(query),
       this.warehouseApi
         .warehouseQueryAggregateGet(
-          {
-            collectionId: [collectionId],
-            countryId: ['ML.206'],
-            taxonId: [taxonId],
-            time: [time]
-          },
+          query,
           ['gathering.conversions.ykj3.lat,gathering.conversions.ykj3.lon'],
           ['1'],
           5000,
@@ -149,7 +134,6 @@ export class ResultService {
   }
 
   private _resultToGeoJson(data) {
-
     const features = [];
     data.map(result => {
       features.push(this.coordinateService.convertYkjToGeoJsonFeature(

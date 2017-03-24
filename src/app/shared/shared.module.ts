@@ -135,6 +135,7 @@ export class SharedModule {
         WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
         AutocompleteApi, FooterService, Ng2Webstorage,
         DateFormatPipe,
+        ToQNamePipe,
         OnlyLoggedIn,
         {provide: Http, useClass: AuthenticatedHttpService}
       ]

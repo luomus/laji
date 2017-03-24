@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ResultService } from '../service/result.service';
 import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
 import { Router } from '@angular/router';
 import { MapTypes } from '../theme-map/theme-map.component';
 import { Subscription } from 'rxjs/Subscription';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 @Component({
   selector: 'laji-theme-observation-list',
@@ -14,13 +15,12 @@ export class ThemeObservationListComponent implements OnInit, OnChanges {
 
   @ViewChild('documentModal') public modal: ModalDirective;
 
-  @Input() grid: string;
-  @Input() collectionId: string;
-  @Input() taxonId: string;
-  @Input() time: string;
+  @Input() query: WarehouseQueryInterface;
   @Input() type: MapTypes;
   @Input() tbodyHeight = 400;
   @Input() page: number;
+  @Output() onListClose = new EventEmitter<WarehouseQueryInterface>();
+  @Output() onPageChange = new EventEmitter<number>();
 
   loading = false;
   results = {results: []};
@@ -44,7 +44,7 @@ export class ThemeObservationListComponent implements OnInit, OnChanges {
   }
 
   updateDocuments() {
-    const key = this.grid + ':' + this.collectionId + ':' + this.taxonId + ':' + this.time + ':' + this.page;
+    const key = JSON.stringify(this.query) + ':' + this.page;
     if (this.current === key) {
       return;
     }
@@ -53,7 +53,7 @@ export class ThemeObservationListComponent implements OnInit, OnChanges {
     }
     this.current = key;
     this.loading = true;
-    this.subQuery = this.resultService.getList(this.grid, this.collectionId, this.taxonId, this.time, this.page)
+    this.subQuery = this.resultService.getList(this.query, this.page)
       .subscribe(data => {
         this.results = data;
         this.loading = false;
@@ -70,12 +70,7 @@ export class ThemeObservationListComponent implements OnInit, OnChanges {
   }
 
   pageChanged(pager) {
-    this.router.navigate([], {queryParams: {
-      grid: this.grid,
-      time: this.time,
-      taxonId: this.taxonId,
-      page: pager.page
-    }});
+    this.onPageChange.emit(pager.page);
   }
 
 }

@@ -37,33 +37,32 @@
 <div class="row">
   <div class="col-sm-5 col-sm-push-7 map-col">
     <laji-theme-map
-            [taxonId]="taxonId"
-            [time]="time"
-            [collectionId]="collectionId"
-            [grid]="grid"
+            (onGridClick)="showGridObservations($event)"
+            [query]="mapQuery"
             [type]="type">
     </laji-theme-map>
+    <a class="type-switch link" (click)="changeLegendType('count')">{{'theme.count' | translate}}</a>
+    <a class="type-switch link" (click)="changeLegendType('individuals')">{{'theme.individualCount' | translate}}</a>
+    <a class="type-switch link" (click)="changeLegendType('newest')">{{'theme.newest' | translate}}</a>
   </div>
   <div class="col-sm-7 col-sm-pull-5 table-col" [ngClass]="{'no-header': !grid}">
-    <laji-theme-observation-list
-            *ngIf="grid"
+    <laji-theme-result
+            *ngIf="query && !query.ykj3"
+            (onNameClick)="navigate($event)"
             [tbodyHeight]="610"
-            [collectionId]="collectionId"
-            [taxonId]="taxonId"
-            [time]="time"
-            [grid]="grid"
+            [query]="resultQuery"
+            [type]="type"
+            [lang]="lang"
+    ></laji-theme-result>
+    <laji-theme-observation-list
+            *ngIf="query && query.ykj3"
+            (onListClose)="closeList()"
+            (onPageChange)="goToPage($event)"
+            [tbodyHeight]="610"
+            [query]="query"
             [type]="type"
             [page]="page"
     >
     </laji-theme-observation-list>
-    <laji-theme-result
-            *ngIf="!grid"
-            [tbodyHeight]="610"
-            [time]="time"
-            [type]="type"
-            [lang]="lang"
-            [collectionId]="collectionId"
-            informalGroup="MVL.181"
-    ></laji-theme-result>
   </div>
 </div>

@@ -278,7 +278,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   private getPathWithParams(path, formId = '', id = '') {
-    console.log(path);
     return path
       .replace('{id}', id)
       .replace('{formId}', formId);
