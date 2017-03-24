@@ -67,8 +67,8 @@ export class ResultService {
         informalTaxonGroupId: [informalGroup],
         time: [time]
       },
-      ['unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName', vernacular],
-      ['2'],
+      ['unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.taxonomicOrder', vernacular],
+      ['3'],
       1000,
       1,
       false,
