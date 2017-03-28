@@ -83,7 +83,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.formService.getForm(this.formId, this.translate.currentLang)
       .subscribe(data => {
           const info = {};
-          info['features'] = data.features ? data.features : {};
+          info['features'] = data.features ? data.features : [];
           const drawData = this.getFormDrawData(data);
           if (this.getFormDrawData(data)) {
             info['drawData'] = drawData;

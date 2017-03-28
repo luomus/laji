@@ -22,7 +22,7 @@
                  class="full-height"></laji-np-map>
   </div>
 
-  <button *ngIf="formInfo.features?.indexOf('MHL.featureAddingNamedPlacesNotAllowed') === -1"
+  <button *ngIf="formInfo.features.indexOf('MHL.featureAddingNamedPlacesNotAllowed') === -1"
           class="btn btn-md btn-default"
           id="create-new-button"
           (click)="createButtonClick()">{{'np.createNew' | translate}}</button>
