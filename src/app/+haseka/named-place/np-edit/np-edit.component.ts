@@ -124,8 +124,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       }
 
       this.npFormData.formData.namedPlace = [npData];
-    } else if ('namedPlace' in this.npFormData.formData) {
-      delete this.npFormData.formData['namedPlace'];
+    } else {
+      this.npFormData.formData.namedPlace = [{ 'collectionID': this.collectionId }];
     }
   }
 
@@ -146,7 +146,9 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       populate['gatherings'] = [{}];
     }
 
-    populate.gatherings[0]['geometry'] = {type: 'GeometryCollection', geometries: [np.geometry]};
+    if (!populate.gatherings.geometry) {
+      populate.gatherings[0]['geometry'] = {type: 'GeometryCollection', geometries: [np.geometry]};
+    }
 
     this.formService.populate(populate);
   }

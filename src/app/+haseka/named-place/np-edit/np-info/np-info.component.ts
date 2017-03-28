@@ -9,12 +9,11 @@ import { NamedPlace } from '../../../../shared/model/NamedPlace';
 export class NpInfoComponent implements OnInit, OnChanges {
   @Input() namedPlace: NamedPlace;
   @Input() formData: any;
+  @Input() collectionId: string;
   @Input() editButtonVisible: boolean;
   @Input() editMode: boolean;
 
   @Output() onEditButtonClick = new EventEmitter();
-
-  hiddenProperties = ['geometry', 'geometryOnMap'];
 
   fields: any;
 
@@ -40,7 +39,9 @@ export class NpInfoComponent implements OnInit, OnChanges {
     this.values = {};
     this.fields = this.formData.schema.properties.namedPlace.items.properties;
 
-    if (!this.namedPlace) { return; }
+    const displayedById =
+      this.formData.uiSchema.namedPlace.uiSchema.items.placeWrapper['ui:options'].fieldScopes.collectionID;
+    const displayed = displayedById[this.collectionId] ? displayedById[this.collectionId] : displayedById['*'];
 
     let gData = null;
     const np = this.namedPlace;
@@ -50,7 +51,7 @@ export class NpInfoComponent implements OnInit, OnChanges {
     }
 
     for (const field in this.fields) {
-      if (this.hiddenProperties.indexOf(field) === -1 && (this.namedPlace[field] !== undefined || (gData && gData[field] !== undefined))) {
+      if (displayed.fields.indexOf(field) > -1 && (this.namedPlace[field] !== undefined || (gData && gData[field] !== undefined))) {
         this.keys.push(field);
         if (this.namedPlace[field] !== undefined) {
           this.values[field] = this.namedPlace[field];

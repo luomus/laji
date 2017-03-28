@@ -10,7 +10,6 @@ import { NpEditComponent } from './np-edit/np-edit.component';
 import { NpEditFormComponent } from './np-edit/np-edit-form/np-edit-form.component';
 import { NpInfoComponent } from './np-edit/np-info/np-info.component';
 import { NpInfoRowComponent } from './np-edit/np-info/np-info-row/np-info-row.component';
-import { NpAreaFormComponent } from './np-edit/np-edit-form/np-area-form/np-area-form.component';
 import { NpInfoMapComponent } from './np-edit/np-info/np-info-map/np-info-map.component';
 
 @NgModule({
@@ -21,7 +20,7 @@ import { NpInfoMapComponent } from './np-edit/np-info/np-info-map/np-info-map.co
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,
-    NpEditFormComponent, NpInfoComponent, NpInfoRowComponent, NpAreaFormComponent, NpInfoMapComponent
+    NpEditFormComponent, NpInfoComponent, NpInfoRowComponent, NpInfoMapComponent
   ],
   exports: [NamedPlaceComponent]
 })

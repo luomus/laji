@@ -17,7 +17,6 @@ export class NpEditFormComponent implements OnInit {
   @Input() lang: string;
   @Input() formData: any;
   @Input() namedPlace: NamedPlace;
-  @Input() collectionId: string;
   @Output() onEditReady = new EventEmitter<NamedPlace>();
 
   tick = 0;
@@ -112,7 +111,7 @@ export class NpEditFormComponent implements OnInit {
   }
 
   private getNamedPlaceData(event) {
-    const filteredKeys = ['geometryOnMap', 'locality', 'localityDescription'];
+    const filteredKeys = ['geometryOnMap', 'locality', 'localityDescription', 'placeWrapper'];
 
     const formData = event.data.formData.namedPlace[0];
     const data: NamedPlace = {'name': '', 'geometry': ''};
@@ -126,9 +125,10 @@ export class NpEditFormComponent implements OnInit {
       }
     }
     data['geometry'] = formData.geometryOnMap.geometries[0];
-    data['collectionID'] = this.collectionId;
+    data['public'] = true;
 
     this.localityToPrepopulatedDocument(data, formData);
+
     return data;
   }
 
