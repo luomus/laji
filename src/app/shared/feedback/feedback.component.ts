@@ -6,6 +6,7 @@ import { SessionStorage } from 'ng2-webstorage';
 import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
+import { WindowRef } from '../windows-ref';
 
 @Component({
   selector: 'laji-feedback',
@@ -20,7 +21,7 @@ export class FeedbackComponent {
     message: '',
     meta: ''
   };
-  public error: boolean = false;
+  public error = false;
 
   @ViewChild('childModal') public modal: ModalDirective;
 
@@ -29,7 +30,8 @@ export class FeedbackComponent {
     public translate: TranslateService,
     private feedbackApi: FeedbackApi,
     private toastsService: ToastsService,
-    private location: Location
+    private location: Location,
+    private windowsRef: WindowRef
 ) {
   }
 
@@ -46,7 +48,7 @@ export class FeedbackComponent {
       this.error = true;
       return;
     }
-    const meta = this.location.prepareExternalUrl(this.location.path());
+    const meta = this.getMeta();
     this.userService.getUser()
       .subscribe(user => {
         this.feedbackApi.send(
@@ -68,6 +70,16 @@ export class FeedbackComponent {
           }
         );
       });
+  }
+
+  private getMeta(): string {
+    let agent = '';
+    try {
+      agent = this.windowsRef.nativeWindow.navigator.userAgent;
+    } catch (e) {
+    }
+    return this.location.prepareExternalUrl(this.location.path())
+      + ' (' + agent + ')';
   }
 
   private sendMessage(type, msgKey) {
