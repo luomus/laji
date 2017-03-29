@@ -227,7 +227,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       .load(this.formId, this.translate.currentLang, this.documentId)
       .subscribe(
         data => {
-          console.log(data);
           this.loading = false;
           this.isEdit = true;
           this.enablePrivate = !data.features || data.features.indexOf(Form.Feature.NoPrivate) === -1;

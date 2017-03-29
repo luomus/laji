@@ -56,7 +56,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (!this.lajiFormWrapper) {
-      this.mount();
       return;
     }
     if (changes['lang']) {

@@ -68,7 +68,6 @@ export class GalleryComponent implements OnChanges {
                     && items['unit']['linkings']
                     && items['unit']['linkings']['taxon']
                     && items['unit']['linkings']['taxon']['scientificName'] || verbatim || '';
-                  console.log(media);
                   images.push(media);
                 });
               }
