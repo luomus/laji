@@ -1,7 +1,4 @@
 <div class="laji-form">
-  <!--laji-np-area-form
-    [lang]="lang"
-    [visible]="true"></--laji-np-area-form-->
   <laji-form
     class="np-form"
     [formData]="formData"
@@ -14,9 +11,7 @@
       <div class="col-xs-3 col-sm-2">
         <button class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPublic()">{{'haseka.form.savePublic'|translate}}</button>
       </div>
-      <div class="col-xs-3 col-sm-2">
-        <button *ngIf="enablePrivate" class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPrivate()">{{'haseka.form.savePrivate'|translate}}</button>
-      </div>
+      <div class="col-xs-3 col-sm-2"></div>
       <div class="col-xs-3 col-sm-6 form-control-static info" [ngSwitch]="status">
         <div *ngSwitchCase="'error'" class="error status">
           {{'haseka.form.error' | translate}}

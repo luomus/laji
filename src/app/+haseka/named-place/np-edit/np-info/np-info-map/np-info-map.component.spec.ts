@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NpAreaFormComponent } from './np-area-form.component';
+import { NpInfoMapComponent } from './np-info-map.component';
 
-describe('NpAreaFormComponent', () => {
-  let component: NpAreaFormComponent;
-  let fixture: ComponentFixture<NpAreaFormComponent>;
+describe('NpInfoMapComponent', () => {
+  let component: NpInfoMapComponent;
+  let fixture: ComponentFixture<NpInfoMapComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NpAreaFormComponent ]
+      declarations: [ NpInfoMapComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NpAreaFormComponent);
+    fixture = TestBed.createComponent(NpInfoMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

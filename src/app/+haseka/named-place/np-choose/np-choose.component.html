@@ -1,5 +1,5 @@
-<div *ngIf="namedPlaces && visible" [ngClass]="{'full-height': active === 'map'}" id="choose-container">
-  <div>
+<div *ngIf="namedPlaces && visible" class="full-height" id="choose-container">
+  <div id="navbar">
     <ul class="nav nav-tabs nav-justified">
       <li role="presentation" [ngClass]="{active: active === 'list'}">
         <a (click)="setActive('list')">{{'np.list' | translate}}</a>
@@ -10,7 +10,7 @@
     </ul>
   </div>
 
-  <div [ngClass]="{hidden: active !== 'list'}">
+  <div [ngClass]="{hidden: active !== 'list'}" id="list-container">
     <laji-np-list [namedPlaces]="namedPlaces" [activeNP]="activeNP" (onActivePlaceChange)="setActiveNP($event)"></laji-np-list>
   </div>
 

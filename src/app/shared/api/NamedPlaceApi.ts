@@ -144,7 +144,7 @@ export class NamedPlaceApi {
     }
 
     if (collectionID !== undefined) {
-      queryParameters.set('collectionId', collectionID);
+      queryParameters.set('collectionID', collectionID);
     }
 
     if (alternativeIDs !== undefined) {

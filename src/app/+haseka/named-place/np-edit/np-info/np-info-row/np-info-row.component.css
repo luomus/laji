@@ -1,9 +1,6 @@
 .key {
   color: #000;
   font-weight: bold;
-  text-align: right;
-  margin-right: 0;
-  padding-right: 0;
 }
 .value {
   overflow: scroll;

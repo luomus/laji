@@ -1,8 +1,10 @@
 <laji-spinner [spinning]="(namedPlace || editMode) && !(npFormData || userId)" [overlay]="true"></laji-spinner>
 <div *ngIf="npFormData">
-  <div *ngIf="!editMode && namedPlace">
+  <div *ngIf="namedPlace && !editMode">
     <laji-np-info [namedPlace]="namedPlace"
                   [formData]="npFormData"
+                  [collectionId]="collectionId"
+                  [editMode]="editMode"
                   [editButtonVisible]="editButtonVisible"
                   (onEditButtonClick)="editClick()"></laji-np-info>
     <a *ngIf="useButtonVisible"
@@ -17,7 +19,6 @@
                        [lang]="lang"
                        [formData]="npFormData"
                        [namedPlace]="namedPlace"
-                       [collectionId]="collectionId"
                        (onEditReady)="editReady($event)"></laji-np-edit-form>
   </div>
 </div>

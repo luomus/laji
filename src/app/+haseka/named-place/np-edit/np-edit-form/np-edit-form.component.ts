@@ -17,17 +17,14 @@ export class NpEditFormComponent implements OnInit {
   @Input() lang: string;
   @Input() formData: any;
   @Input() namedPlace: NamedPlace;
-  @Input() collectionId: string;
   @Output() onEditReady = new EventEmitter<NamedPlace>();
 
   tick = 0;
   saving = false;
-  enablePrivate = false;
   status = '';
   error = '';
 
   private hasChanges = false;
-  private public = false;
 
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
   @ContentChildren(LajiFormComponent) lajiFormChildren;
@@ -41,7 +38,7 @@ export class NpEditFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.enablePrivate = !this.formData.features || this.formData.features.indexOf(Form.Feature.NoPrivate) === -1;
+
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -98,12 +95,6 @@ export class NpEditFormComponent implements OnInit {
   }
 
   submitPublic() {
-    this.public = true;
-    this.lajiForm.submit();
-  }
-
-  submitPrivate() {
-    this.public = false;
     this.lajiForm.submit();
   }
 
@@ -120,7 +111,7 @@ export class NpEditFormComponent implements OnInit {
   }
 
   private getNamedPlaceData(event) {
-    const filteredKeys = ['geometryOnMap', 'locality', 'localityDescription'];
+    const filteredKeys = ['geometryOnMap', 'locality', 'localityDescription', 'placeWrapper'];
 
     const formData = event.data.formData.namedPlace[0];
     const data: NamedPlace = {'name': '', 'geometry': ''};
@@ -134,10 +125,10 @@ export class NpEditFormComponent implements OnInit {
       }
     }
     data['geometry'] = formData.geometryOnMap.geometries[0];
-    data['public'] = this.public;
-    data['collectionID'] = this.collectionId;
+    data['public'] = true;
 
     this.localityToPrepopulatedDocument(data, formData);
+
     return data;
   }
 
