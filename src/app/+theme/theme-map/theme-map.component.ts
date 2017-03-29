@@ -29,6 +29,7 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
   maxBounds = [[58.0, 19.0], [72.0, 35.0]];
   geoJsonLayer;
   loading = false;
+  mapInit = false;
   taxon: Taxonomy;
   count: {[k: string]: number} = {};
   legendList: {color: string, label: string}[] = [];
@@ -48,6 +49,7 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
 
   ngAfterViewInit() {
     this.initMapdata();
+    this.initMap();
   }
 
   ngOnChanges() {
@@ -66,13 +68,13 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
       }
       return;
     }
-    if (this.subQuery) {
-      this.subQuery.unsubscribe();
-    }
     delete this.taxon;
     this.current = key;
     this.loading = true;
     this.initGeoJsonLayer();
+    if (this.subQuery) {
+      this.subQuery.unsubscribe();
+    }
     this.subQuery = this.resultService
       .getGeoJson(this.query)
       .subscribe(geoJson => {
@@ -109,15 +111,9 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
     } else if (!this.geoJsonLayer) {
       this.geoJsonLayer = L.geoJSON(undefined, {
         style: function() {
-          return {
-            color: '#000000',
-            weight: 0.3,
-            opacity: 1,
-            fillOpacity: 0.9
-          };
+          return { color: '#000000', weight: 0.3, opacity: 1, fillOpacity: 0.9 };
         }
       });
-      this.initMap();
       this.geoJsonLayer.on('click', (evt) => {
         if (!evt.layer.feature.properties || !evt.layer.feature.properties.grid) {
           return;
@@ -208,13 +204,11 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
     return newColor;
   }
 
-  initMap() {
-    if (!this.lajiMap || !this.lajiMap.map || !this.lajiMap.map.map) {
-      setTimeout(() => {
-        this.initMap();
-      }, 500);
+  private initMap() {
+    if (this.mapInit || !this.lajiMap || !this.lajiMap.map || !this.lajiMap.map.map || !this.geoJsonLayer) {
       return;
     }
+    this.mapInit = true;
     this.lajiMap.map.map.options.maxZoom = 8;
     this.lajiMap.map.map.options.minZoom = 2;
     this.geoJsonLayer.addTo(this.lajiMap.map.map);
