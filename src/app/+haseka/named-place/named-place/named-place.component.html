@@ -4,7 +4,7 @@
       <h1>{{'haseka.title' | translate}}</h1>
       <p>{{'haseka.pleaseLogin' | translate}}</p>
     </div>
-    <div class="container full-height" in>
+    <div class="container full-height" in id="container">
       <laji-spinner [spinning]="!(namedPlaces && formInfo) && !errorMsg" [overlay]="true"></laji-spinner>
 
       <h1>
@@ -12,10 +12,11 @@
       </h1>
 
       <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
+      <div #mobileCheck id="mobile-check"><div></div></div>
 
       <div class="full-height" *ngIf="namedPlaces && formInfo && !errorMsg">
         <div class="row np-row full-height">
-          <div [ngClass]="{'col-sm-6 full-height': !editMode}">
+          <div [ngClass]="{'col-xs-12 col-sm-6 full-height': !editMode}">
             <laji-np-choose [namedPlaces]="namedPlaces"
                             [formInfo]="formInfo"
                             [visible]="!editMode"
@@ -23,12 +24,14 @@
                             (onCreateButtonClick)="toEditMode(true)"
                             class="full-height"></laji-np-choose>
           </div>
-          <div [ngClass]="editMode? 'col-sm-12 nav-margin' : 'col-sm-6 nav-margin'">
-            <laji-np-edit [editMode]="editMode"
+          <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-sm-6 nav-margin'">
+            <laji-np-edit #lajiEdit
+                          [editMode]="editMode"
                           [formId]="formId"
                           [collectionId]="collectionId"
                           [namedPlace]="namedPlace"
                           [formInfo]="formInfo"
+                          [mobile]="mobileMode"
                           (onEditButtonClick)="toEditMode(false)"
                           (onEditReady)="toNormalMode($event)"
                           (onError)="setErrorMessage($event)"></laji-np-edit>

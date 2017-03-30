@@ -1,37 +1,71 @@
-import { Component, Input, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, Output, EventEmitter, ViewChild, AfterViewInit, SimpleChanges } from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
+import { UserService } from '../../../../shared/service/user.service';
+import { ModalDirective } from 'ng2-bootstrap';
 
 @Component({
   selector: 'laji-np-info',
   templateUrl: './np-info.component.html',
   styleUrls: ['./np-info.component.css']
 })
-export class NpInfoComponent implements OnInit, OnChanges {
+export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace: NamedPlace;
   @Input() formData: any;
   @Input() collectionId: string;
-  @Input() editButtonVisible: boolean;
   @Input() editMode: boolean;
+  @Input() mobile: boolean;
+
+  editButtonVisible: boolean;
+  useButtonVisible: boolean;
 
   @Output() onEditButtonClick = new EventEmitter();
+  @Output() onUseButtonClick = new EventEmitter();
+
+  @ViewChild('infoModal') public modal: ModalDirective;
 
   fields: any;
-
   keys: any;
   values: any;
 
-  constructor() { }
+  modalIsVisible = false;
+  viewIsInitialized = false;
+
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
     this.updateFields();
+    this.userService.getUser().subscribe(data => { this.setButtonVisibilities(data.id); });
   }
 
-  ngOnChanges() {
-    this.updateFields();
+  ngAfterViewInit() {
+    if (this.mobile) {
+      this.modal.onShown.subscribe(() => { this.modalIsVisible = true; });
+      this.modal.onHidden.subscribe(() => { this.modalIsVisible = false; });
+      this.modal.show();
+    }
+    this.viewIsInitialized = true;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['namedPlace']) {
+      this.updateFields();
+      if (this.mobile && this.viewIsInitialized) {
+        this.modal.show();
+      }
+    }
+    if (changes['mobile']) {
+      if (changes['mobile'].currentValue === false && this.modalIsVisible) {
+        this.modal.hide();
+      }
+    }
   }
 
   editClick() {
     this.onEditButtonClick.emit();
+  }
+
+  useClick() {
+    this.onUseButtonClick.emit();
   }
 
   private updateFields() {
@@ -59,6 +93,15 @@ export class NpInfoComponent implements OnInit, OnChanges {
           this.values[field] = gData[field];
         }
       }
+    }
+  }
+
+  private setButtonVisibilities(userId) {
+    if (this.namedPlace) {
+      this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(userId) !== -1);
+      this.useButtonVisible = (this.namedPlace.public ||
+      (this.namedPlace.owners && this.namedPlace.owners.indexOf(userId) !== -1) ||
+      (this.namedPlace.editors && this.namedPlace.editors.indexOf(userId) !== -1));
     }
   }
 }
