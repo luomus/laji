@@ -1,4 +1,4 @@
-<a [routerLink]="['/vihko/' + (document.formID || 'JX.519') + '/' + document.id]">
+<a class="link" (click)="editDocument(document.formID, document.id)">
   {{document.id}} <small>{{document.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'}}</small>
 </a>
 <span *ngIf="document.publicityRestrictions === 'MZ.publicityRestrictionsPrivate'">
@@ -14,7 +14,7 @@
 <br>
 {{'haseka.users.latest.gathered' | translate }}:
 <span *ngIf="gatheringDates.start || gatheringDates.end">
-  <a [routerLink]="['/vihko/' + (document.formID || 'JX.519') + '/' + document.id]">
+  <a class="link" (click)="editDocument(document.formID, document.id)">
     {{gatheringDates.start | amDateFormat:'DD.MM.YYYY'}} - {{gatheringDates.end | amDateFormat:'DD.MM.YYYY'}}
   </a>
 </span>
@@ -33,7 +33,7 @@
 </span>
 <ul *ngIf="showList">
   <li *ngFor="let taxon of taxa">
-    <a [routerLink]="['/vihko/' + (document.formID || 'JX.519') + '/' + document.id]">
+    <a class="link" (click)="editDocument(document.formID, document.id)">
       {{taxon.name}}
       <small>{{taxon.id}}</small>
     </a>

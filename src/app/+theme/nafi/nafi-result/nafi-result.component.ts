@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from '@ngx-translate/core';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
 @Component({
   selector: 'laji-nafi-result',
@@ -10,13 +11,14 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class NafiResultComponent implements OnInit, OnDestroy {
 
+  informalTaxonGroup = 'MVL.181';
   collectionId = 'HR.175';
-  taxonId;
-  time;
-  grid;
   page;
   type;
   lang;
+  query: WarehouseQueryInterface;
+  mapQuery: WarehouseQueryInterface;
+  resultQuery: WarehouseQueryInterface;
 
   year;
   currentMonth;
@@ -30,6 +32,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private translate: TranslateService
   ) {
     const now = new Date();
@@ -44,9 +47,19 @@ export class NafiResultComponent implements OnInit, OnDestroy {
       this.lang = res.lang;
     });
     this.subQuery = this.route.queryParams.subscribe(params => {
-      this.taxonId = params['taxonId'] || '';
-      this.time = this.parseDateTimeRange(params['time']) || '1991-01-01/';
-      this.grid = params['grid'] || '';
+      this.query = {
+        time: [this.parseDateTimeRange(params['time']) || '1991-01-01/'],
+        collectionId: [this.collectionId],
+        informalTaxonGroupId: [this.informalTaxonGroup]
+      };
+      this.resultQuery = this.clone(this.query);
+      if (params['taxonId']) {
+        this.query.taxonId = [params['taxonId']];
+      }
+      this.mapQuery = this.clone(this.query);
+      if (params['grid']) {
+        this.query.ykj3 = params['grid'];
+      }
       this.type = params['type'] || 'count';
       this.page = +params['page'] || 1;
     });
@@ -55,6 +68,40 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subQuery.unsubscribe();
     this.subTrans.unsubscribe();
+  }
+
+  goToPage(page) {
+    this.page = page;
+    this.navigate(this.query)
+  }
+
+  closeList() {
+    this.query.ykj3 = undefined;
+    this.navigate(this.query);
+  }
+
+  changeLegendType(type) {
+    this.type = type;
+    this.navigate(this.query);
+  }
+
+  showGridObservations(query: WarehouseQueryInterface) {
+    this.page = 1;
+    this.navigate(query);
+  }
+
+  private navigate(query: WarehouseQueryInterface) {
+    this.router.navigate([], {queryParams: {
+      grid: query.ykj3,
+      time: query.time,
+      taxonId: query.taxonId,
+      type: this.type,
+      page: this.page
+    }});
+  }
+
+  private clone(obj) {
+    return JSON.parse(JSON.stringify(obj));
   }
 
   private parseDateTimeRange(date) {

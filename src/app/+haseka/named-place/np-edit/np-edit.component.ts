@@ -1,11 +1,11 @@
 import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { AppConfig } from '../../../app.config';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../../shared/service/user.service';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { Util } from '../../../shared/service/util.service';
 import { FormService } from '../../../shared/service/form.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'laji-np-edit',
@@ -36,14 +36,13 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   private translation$: Subscription;
 
   constructor(
-    private appConfig: AppConfig,
     private formService: FormService,
     private translate: TranslateService,
     private userService: UserService
   ) { }
 
   ngOnInit() {
-    this.npFormId = this.appConfig.getNamedPlaceFormId();
+    this.npFormId = environment.namedPlaceForm;
     this.fetchForm();
     this.translation$ = this.translate.onLangChange.subscribe(
       () => this.onLangChange()
@@ -145,8 +144,12 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     if (!populate.gatherings || populate.gatherings.length <= 0) {
       populate['gatherings'] = [{}];
     }
-
-    if (!populate.gatherings.geometry) {
+    if (!populate.gatherings) {
+      populate.gatherings = [{}];
+    } else if (!populate.gatherings[0]) {
+      populate.gatherings[0] = {};
+    }
+    if (!populate.gatherings[0].geometry) {
       populate.gatherings[0]['geometry'] = {type: 'GeometryCollection', geometries: [np.geometry]};
     }
 

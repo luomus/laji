@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { Document } from '../../shared/model/Document';
 import { FormService } from '../../shared/service/form.service';
 
@@ -14,7 +15,10 @@ export class ShortDocumentComponent implements OnInit, OnChanges {
   public taxa: Array<{ name: string, id: string }>;
   public gatheringDates: { start: string, end: string };
 
-  constructor(public formService: FormService) {}
+  constructor(
+    public formService: FormService,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.updateTaxa();
@@ -66,6 +70,10 @@ export class ShortDocumentComponent implements OnInit, OnChanges {
         this.gatheringDates.end = gathering.dateEnd;
       }
     });
+  }
+
+  editDocument(formId, documentId) {
+    this.router.navigate([this.formService.getEditUrlPath(formId, documentId)]);
   }
 
 

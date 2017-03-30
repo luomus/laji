@@ -13,6 +13,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { MapComponent } from '../../shared/map/map.component';
 import LatLngBounds = L.LatLngBounds;
 import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
+import { CoordinateService } from '../../shared/service/coordinate.service';
 
 const maxCoordinateAccuracy = 10000;
 
@@ -96,6 +97,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   constructor(private warehouseService: WarehouseApi,
               public translate: TranslateService,
               private decorator: ValueDecoratorService,
+              private coordinateService: CoordinateService,
               private logger: Logger
   ) {
   }
@@ -252,6 +254,17 @@ export class ObservationMapComponent implements OnInit, OnChanges {
             [parts[2], parts[0]]
           ]]
         }));
+      } else if (system === 'YKJ' && parts.length === 2) {
+        if (!this.query.coordinateAccuracyMax) {
+          setTimeout(() => {
+            this.query.coordinateAccuracyMax = Math.pow(10, 7 - parts[0].length);
+          });
+        }
+        features.push(
+          this.coordinateService.convertYkjToGeoJsonFeature(
+            parts[0], parts[1]
+          )
+        );
       }
     });
     if (features.length) {

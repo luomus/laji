@@ -87,7 +87,9 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   pickLocation(e) {
-    if (
+    if (e.coordinateVerbatim) {
+      this.searchQuery.query.coordinates = [e.coordinateVerbatim + ':YKJ'];
+    } else if (
       e &&
       e.type === 'Polygon' &&
       e.coordinates && e.coordinates.length === 1 && e.coordinates[0].length === 5

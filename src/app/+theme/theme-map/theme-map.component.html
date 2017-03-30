@@ -1,4 +1,4 @@
-<div class="map-wrap">
+<div class="map-wrap" *ngIf="query">
   <div class="title">
     <span *ngIf="taxon" [ngClass]="{cursive: taxon.cursiveName}">{{taxon.scientificName}}</span>
     <span *ngIf="taxon && taxon.vernacularName">
@@ -42,6 +42,3 @@
     </ul>
   </div>
 </div>
-<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'count'}">{{'theme.count' | translate}}</a>
-<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'individuals'}">{{'theme.individualCount' | translate}}</a>
-<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'newest'}">{{'theme.newest' | translate}}</a>

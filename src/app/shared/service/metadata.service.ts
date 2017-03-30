@@ -94,7 +94,6 @@ export class MetadataService {
 
   getRange(range: string, lang: string) {
     return this.getAllRanges(lang)
-      .do(ran => console.log(range))
       .map(data => data[range] || [] );
   }
 }

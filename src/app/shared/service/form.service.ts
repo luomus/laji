@@ -8,6 +8,7 @@ import { FormApi } from '../api/FormApi';
 import { DocumentApi } from '../api/DocumentApi';
 import { Document } from '../model/Document';
 import { AppConfig } from '../../app.config';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable()
@@ -200,6 +201,16 @@ export class FormService {
 
   populate(data: any) {
     this._populate = Object.assign({}, this._populate, data);
+  }
+
+  getEditUrlPath(formId, documentId) {
+    if (formId === environment.nafiForm) {
+      return '/theme/nafi/form/' + documentId;
+    }
+    if (!formId) {
+      formId = environment.defaultForm;
+    }
+    return '/vihko/' + formId + '/' + documentId;
   }
 
   private getTmpId(num: number) {

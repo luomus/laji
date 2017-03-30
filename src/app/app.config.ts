@@ -49,8 +49,4 @@ export class AppConfig {
   isForAuthorities() {
     return !!this.config.for_authorities;
   }
-
-  getNamedPlaceFormId() {
-    return this.config.form_namedplaces || '';
-  }
 }

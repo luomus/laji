@@ -2,5 +2,7 @@ export const environment = {
   production: true,
   isEmbedded: true,
   formWhitelist: [],
-  nafiForm: 'JX.123648'
+  defaultForm: 'JX.519',
+  nafiForm: 'JX.123648',
+  namedPlaceForm: 'JX.6668'
 };
