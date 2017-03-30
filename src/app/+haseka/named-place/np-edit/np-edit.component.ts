@@ -112,7 +112,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
       npData['geometryOnMap'] = {type: 'GeometryCollection', geometries: [npData.geometry]};
 
-      if (npData.prepopulatedDocument && npData.prepopulatedDocument.gatherings && npData.prepopulatedDocument.gatherings.length > 0) {
+      if (npData.prepopulatedDocument && npData.prepopulatedDocument.gatherings && npData.prepopulatedDocument.gatherings[0]) {
         const gathering = npData.prepopulatedDocument.gatherings[0];
         if (gathering.locality) {
           npData['locality'] = gathering.locality;
@@ -141,9 +141,6 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
     const populate: any = np.prepopulatedDocument ? np.prepopulatedDocument : {};
 
-    if (!populate.gatherings || populate.gatherings.length <= 0) {
-      populate['gatherings'] = [{}];
-    }
     if (!populate.gatherings) {
       populate.gatherings = [{}];
     } else if (!populate.gatherings[0]) {
