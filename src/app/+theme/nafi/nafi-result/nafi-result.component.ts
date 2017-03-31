@@ -48,7 +48,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
     });
     this.subQuery = this.route.queryParams.subscribe(params => {
       this.query = {
-        time: [this.parseDateTimeRange(params['time']) || '1991-01-01/'],
+        time: [this.parseDateTimeRange(params['time'] || '' + this.getCurrentSeason())],
         collectionId: [this.collectionId],
         informalTaxonGroupId: [this.informalTaxonGroup]
       };
@@ -88,6 +88,13 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   showGridObservations(query: WarehouseQueryInterface) {
     this.page = 1;
     this.navigate(query);
+  }
+
+  private getCurrentSeason() {
+    if (this.currentMonth >= this.startMonth) {
+      return this.currentYear;
+    }
+    return this.year;
   }
 
   private navigate(query: WarehouseQueryInterface) {

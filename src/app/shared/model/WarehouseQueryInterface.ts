@@ -141,4 +141,5 @@ export interface WarehouseQueryInterface {
   editorId?: Array<string>;
   secured?: boolean;
   ykj3?: string;
+  ykj3Center?: string;
 }
