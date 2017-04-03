@@ -15,7 +15,7 @@ export class NamedPlacesService {
         collectionID,
         undefined,
         '' + page,
-        '100'
+        '1000'
       )
       .switchMap(
         result => {
