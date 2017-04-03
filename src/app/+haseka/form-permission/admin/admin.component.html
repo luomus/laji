@@ -1,0 +1,35 @@
+<div class="container" *ngIf="isAllowed">
+  <div class="row">
+    <div class="col-sm-6">
+      <h1>Pyytäneet pääsyä lomakkeelle</h1>
+      <p>Täältä voit hallinnoida sitä kuka pääsee käyttämään lomakketta.</p>
+    </div>
+  </div>
+  <div class="row" *ngIf="formPermission.permissionRequests.length > 0">
+    <div class="col-sm-6">
+      <h3>Pyytäneet pääsyä lomakkeelle</h3>
+      <ul>
+        <li *ngFor="let person of formPermission.permissionRequests">
+          <button class="btn btn-success" (click)="accept(person)">hyväksy</button>
+          <button class="btn btn-danger" (click)="reject(person)">hylkää</button>
+          <span class="form-control-static">
+            {{person | users}} ({{person}})
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row" *ngIf="formPermission.editors.length > 0">
+    <div class="col-sm-6">
+      <h3>Pääsy lomakkeelle</h3>
+      <ul>
+        <li *ngFor="let person of formPermission.editors">
+          <button class="btn btn-danger" (click)="reject(person)">Poista pääsy</button>
+          <span class="form-control-static">
+            {{person | users}} ({{person}})
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

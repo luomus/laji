@@ -42,4 +42,6 @@ export interface Person {
    * Email address for the user
    */
   emailAddress?: Array<string>;
+
+  role?: Array<string>;
 }

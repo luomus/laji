@@ -4,6 +4,8 @@ import { HasekaComponent } from './haseka.component';
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { HaSeKaFormComponent } from './form/haseka-form.component';
 import { NamedPlaceComponent } from './named-place/named-place/named-place.component';
+import { RequestComponent } from './form-permission/request/request.component';
+import { AdminComponent } from './form-permission/admin/admin.component';
 
 export const hasekaRoutes: Routes = [
   {
@@ -20,6 +22,16 @@ export const hasekaRoutes: Routes = [
     path: 'np/:collectionId/:formId',
     pathMatch: 'full',
     component: NamedPlaceComponent
+  },
+  {
+    path: 'fp/:collectionId/admin',
+    pathMatch: 'full',
+    component: AdminComponent
+  },
+  {
+    path: 'fp/:collectionId',
+    pathMatch: 'full',
+    component: RequestComponent
   },
   {
     path: ':formId',
