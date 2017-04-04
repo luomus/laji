@@ -1,24 +1,37 @@
-<div class="container" *ngIf="isAllowed">
-  <div class="row">
-    <div class="col-sm-6">
-      <h1>Pyytäneet pääsyä lomakkeelle</h1>
-      <p>Täältä voit hallinnoida sitä kuka pääsee käyttämään lomakketta.</p>
-    </div>
-  </div>
-  <div class="row" *ngIf="formPermission.permissionRequests.length > 0">
-    <div class="col-sm-6">
-      <h3>Pyytäneet pääsyä lomakkeelle</h3>
-      <ul>
-        <li *ngFor="let person of formPermission.permissionRequests">
-          <button class="btn btn-success" (click)="accept(person)">hyväksy</button>
-          <button class="btn btn-danger" (click)="reject(person)">hylkää</button>
-          <span class="form-control-static">
-            {{person | users}} ({{person}})
+<div class="container-fluid form-admin">
+  <div class="row" id="wrapper">
+    <div style="background-color: #ECF0F1;" class="col-sm-3 col-md-3 col-lg-2">
+      <h1 class="menu-title">Form admin</h1>
+      <small class="menu-sub">{{collectionId | collectionName}}</small>
+      <ul class="sidebar-nav">
+        <li><a [routerLink]="['./']">
+          Ohje
+        </a></li>
+        <li><a [routerLink]="['accept']">
+          Pääsy pyynnöt
+          <span
+              *ngIf="formPermission && formPermission.permissionRequests && formPermission.permissionRequests.length > 0"
+              class="badge pull-right">
+            {{formPermission.permissionRequests.length}}
           </span>
-        </li>
+        </a></li>
+        <li><a [routerLink]="['manage']">
+          Hyväksytyt
+          <span
+                  *ngIf="formPermission && formPermission.editors && formPermission.editors.length > 0"
+                  class="badge pull-right">
+            {{formPermission.editors.length}}
+          </span>
+        </a></li>
       </ul>
     </div>
+    <div class="col-sm-9 col-md-9 col-lg-10 nafi-content">
+      <router-outlet></router-outlet>
+    </div>
   </div>
+</div>
+<!--
+<div class="container" *ngIf="isAllowed">
   <div class="row" *ngIf="formPermission.editors.length > 0">
     <div class="col-sm-6">
       <h3>Pääsy lomakkeelle</h3>
@@ -33,3 +46,4 @@
     </div>
   </div>
 </div>
+-->

@@ -1,26 +1,25 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { FormPermissionService } from '../form-permission.service';
-import { ToastsService } from '../../../shared/service/toasts.service';
-import { UserService } from '../../../shared/service/user.service';
-import { FormPermission } from '../../../shared/model/FormPermission';
-import { Logger } from '../../../shared/logger/logger.service';
-import { Person } from '../../../shared/model/Person';
+import { FormPermissionService } from '../../form-permission.service';
+import { ToastsService } from '../../../../shared/service/toasts.service';
+import { FormPermission } from '../../../../shared/model/FormPermission';
+import { UserService } from '../../../../shared/service/user.service';
+import { Logger } from '../../../../shared/logger/logger.service';
+import { Person } from '../../../../shared/model/Person';
 
 @Component({
-  selector: 'laji-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  selector: 'laji-manage',
+  templateUrl: './manage.component.html',
+  styleUrls: ['./manage.component.css']
 })
-export class AdminComponent implements OnInit, OnDestroy {
+export class ManageComponent implements OnInit, OnDestroy {
 
   formPermission: FormPermission;
   isAllowed = false;
   collectionId: string;
 
   private subParam: Subscription;
-  private subFPChanges: Subscription;
 
   constructor(
     private router: Router,
@@ -32,16 +31,21 @@ export class AdminComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subParam = this.route.params.subscribe(params => {
+    this.subParam = this.route.parent.params.subscribe(params => {
       this.collectionId = params['collectionId'];
       this.initFormPermission();
     });
-    this.subFPChanges = this.formPermissionService.changes$
-      .subscribe(fp => this.formPermission = fp);
   }
 
   ngOnDestroy() {
     this.subParam.unsubscribe();
+  }
+
+  reject(personId: string) {
+    this.formPermissionService.revokeAccess(this.collectionId, this.userService.getToken(), personId)
+      .subscribe(
+        () => this.initFormPermission()
+      );
   }
 
   private initFormPermission() {

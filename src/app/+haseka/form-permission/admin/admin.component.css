@@ -5,5 +5,14 @@ ul {
 }
 
 ul li {
-  min-height: 40px;
+  min-height: 30px;
+}
+
+.menu-title {
+  margin-bottom: 6px;
+}
+
+.menu-sub {
+  display: block;
+  margin-bottom: 16px;
 }

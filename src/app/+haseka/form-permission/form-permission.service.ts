@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { FormPermissionApi } from '../../shared/api/FormPermissionApi';
 import { Observable } from 'rxjs/Observable';
 import { FormPermission } from '../../shared/model/FormPermission';
@@ -8,6 +8,8 @@ import { Person } from '../../shared/model/Person';
 export class FormPermissionService {
 
   private static formPermissions = {};
+
+  public changes$ = new EventEmitter<any>();
 
   constructor(private formPermissionApi: FormPermissionApi) {}
 
@@ -30,17 +32,20 @@ export class FormPermissionService {
   makeAccessRequest(collectionID: string, personToken: string) {
     FormPermissionService.formPermissions[collectionID] = false;
     return this.formPermissionApi
-      .requestAccess(collectionID, personToken);
+      .requestAccess(collectionID, personToken)
+      .do(fp => this.changes$.emit(fp));
   }
 
   acceptRequest(collectionID: string, personToken: string, personID: string) {
     FormPermissionService.formPermissions[collectionID] = false;
-    return this.formPermissionApi.acceptRequest(collectionID, personID, personToken);
+    return this.formPermissionApi.acceptRequest(collectionID, personID, personToken)
+      .do(fp => this.changes$.emit(fp));
   }
 
   revokeAccess(collectionID: string, personToken: string, personID: string) {
     FormPermissionService.formPermissions[collectionID] = false;
-    return this.formPermissionApi.revokeAccess(collectionID, personID, personToken);
+    return this.formPermissionApi.revokeAccess(collectionID, personID, personToken)
+      .do(fp => this.changes$.emit(fp));
   }
 
 }

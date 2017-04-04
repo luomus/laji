@@ -5,6 +5,9 @@ import { FormPermissionApi } from '../../shared/api/FormPermissionApi';
 import { SharedModule } from '../../shared/shared.module';
 import { FormPermissionService } from './form-permission.service';
 import { AdminComponent } from './admin/admin.component';
+import { IntroComponent } from './admin/intro/intro.component';
+import { AcceptComponent } from './admin/accept/accept.component';
+import { ManageComponent } from './admin/manage/manage.component';
 
 @NgModule({
   imports: [
@@ -13,11 +16,17 @@ import { AdminComponent } from './admin/admin.component';
   ],
   declarations: [
     AdminComponent,
-    RequestComponent
+    RequestComponent,
+    IntroComponent,
+    AcceptComponent,
+    ManageComponent
   ],
   exports: [
     AdminComponent,
-    RequestComponent
+    RequestComponent,
+    IntroComponent,
+    AcceptComponent,
+    ManageComponent
   ]
 })
 export class FormPermissionModule {
