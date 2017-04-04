@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, Output, EventEmitter, ViewChild, AfterViewInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, Output, EventEmitter, ViewChild, AfterViewInit, SimpleChanges, HostListener } from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { UserService } from '../../../../shared/service/user.service';
 import { ModalDirective } from 'ng2-bootstrap';
@@ -13,7 +13,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() formData: any;
   @Input() collectionId: string;
   @Input() editMode: boolean;
-  @Input() mobile: boolean;
 
   editButtonVisible: boolean;
   useButtonVisible: boolean;
@@ -22,6 +21,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() onUseButtonClick = new EventEmitter();
 
   @ViewChild('infoModal') public modal: ModalDirective;
+  @ViewChild('infoBox') infoBox;
 
   fields: any;
   keys: any;
@@ -38,9 +38,9 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.mobile) {
-      this.modal.onShown.subscribe(() => { this.modalIsVisible = true; });
-      this.modal.onHidden.subscribe(() => { this.modalIsVisible = false; });
+    this.modal.onShown.subscribe(() => { this.modalIsVisible = true; });
+    this.modal.onHidden.subscribe(() => { this.modalIsVisible = false; });
+    if (this.infoBox.nativeElement.offsetParent === null) {
       this.modal.show();
     }
     this.viewIsInitialized = true;
@@ -49,14 +49,16 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['namedPlace']) {
       this.updateFields();
-      if (this.mobile && this.viewIsInitialized) {
+      if (this.viewIsInitialized && this.infoBox.nativeElement.offsetParent === null) {
         this.modal.show();
       }
     }
-    if (changes['mobile']) {
-      if (changes['mobile'].currentValue === false && this.modalIsVisible) {
-        this.modal.hide();
-      }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    if (this.modalIsVisible && this.infoBox.nativeElement.offsetParent !== null) {
+      this.modal.hide();
     }
   }
 

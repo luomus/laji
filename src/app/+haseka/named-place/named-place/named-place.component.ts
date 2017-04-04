@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, AfterViewInit, HostListener, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
@@ -14,7 +14,7 @@ import { FooterService } from '../../../shared/service/footer.service';
   templateUrl: './named-place.component.html',
   styleUrls: ['./named-place.component.css']
 })
-export class NamedPlaceComponent implements OnInit, AfterViewInit, OnDestroy {
+export class NamedPlaceComponent implements OnInit, OnDestroy {
   formId;
   collectionId;
 
@@ -28,14 +28,10 @@ export class NamedPlaceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   errorMsg = '';
 
-  mobileMode = false;
-
   private subParam: Subscription;
   private namedPlaces$: Observable<NamedPlace[]>;
 
   @ViewChild(NpChooseComponent) chooseView: NpChooseComponent;
-
-  @ViewChild('mobileCheck') mobileCheck: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,30 +53,12 @@ export class NamedPlaceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.footerService.footerVisible = false;
   }
 
-  ngAfterViewInit() {
-    this.checkIfMobileMode();
-  }
-
   ngOnDestroy() {
     if (this.subParam) {
       this.subParam.unsubscribe();
     }
     this.footerService.footerVisible = true;
   }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.checkIfMobileMode();
-  }
-
-  checkIfMobileMode() {
-    if (this.mobileCheck.nativeElement.children[0].offsetParent === null) {
-      this.mobileMode = false;
-    } else {
-      this.mobileMode = true;
-    }
-  }
-
 
   private updateNP() {
     if (this.collectionId) {

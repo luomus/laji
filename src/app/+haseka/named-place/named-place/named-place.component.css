@@ -35,15 +35,3 @@ laji-np-choose {
   flex: 10;
 }
 
-#mobile-check {
-  display: block;
-  height: 0;
-  width: 0;
-}
-
-@media screen and (min-width: 768px) {
-  #mobile-check {
-    visibility: hidden;
-    display: none;
-  }
-}

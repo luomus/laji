@@ -11,9 +11,6 @@
         {{'np.title' | translate}}
       </h1>
 
-      <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
-      <div #mobileCheck id="mobile-check"><div></div></div>
-
       <div class="full-height" *ngIf="namedPlaces && formInfo && !errorMsg">
         <div class="row np-row full-height">
           <div [ngClass]="{'col-xs-12 col-sm-6 full-height': !editMode}">
@@ -25,13 +22,11 @@
                             class="full-height"></laji-np-choose>
           </div>
           <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-sm-6 nav-margin'">
-            <laji-np-edit #lajiEdit
-                          [editMode]="editMode"
+            <laji-np-edit [editMode]="editMode"
                           [formId]="formId"
                           [collectionId]="collectionId"
                           [namedPlace]="namedPlace"
                           [formInfo]="formInfo"
-                          [mobile]="mobileMode"
                           (onEditButtonClick)="toEditMode(false)"
                           (onEditReady)="toNormalMode($event)"
                           (onError)="setErrorMessage($event)"></laji-np-edit>

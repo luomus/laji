@@ -1,5 +1,6 @@
 <div [ngClass]="{'hidden': editButtonVisible === undefined && useButtonVisible === undefined}">
-  <div *ngIf="!mobile">
+  
+  <div class="hidden-xs" #infoBox>
     <div class="well well-sm np-info">
       <fieldset>
         <legend>
@@ -22,7 +23,7 @@
        (click)="useClick()">{{'np.use' | translate}}</a>
   </div>
 
-  <div class="modal" tabindex="-1" role="dialog" bsModal #infoModal="bs-modal">
+  <div class="modal hidden-sm" tabindex="-1" role="dialog" bsModal #infoModal="bs-modal">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">
