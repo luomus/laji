@@ -7,8 +7,7 @@ import { NamedPlace } from '../../../shared/model/NamedPlace';
   styleUrls: ['./np-choose.component.css']
 })
 export class NpChooseComponent {
-  active = 'list';
-  mapActivated = false;
+  active = 'map';
 
   @Input() formInfo: any;
   @Input() namedPlaces: NamedPlace[];
@@ -23,9 +22,6 @@ export class NpChooseComponent {
 
   setActive(newActive: string) {
     this.active = newActive;
-    if (!this.mapActivated && newActive === 'map') {
-      this.mapActivated = true;
-    }
   }
 
   setActiveNP(idx: number) {

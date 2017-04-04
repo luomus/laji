@@ -1,11 +1,11 @@
 <div *ngIf="namedPlaces && visible" class="full-height" id="choose-container">
   <div id="navbar">
     <ul class="nav nav-tabs nav-justified">
-      <li role="presentation" [ngClass]="{active: active === 'list'}">
-        <a (click)="setActive('list')">{{'np.list' | translate}}</a>
-      </li>
       <li role="presentation" [ngClass]="{active: active === 'map'}">
         <a (click)="setActive('map')">{{'np.map' | translate}}</a>
+      </li>
+      <li role="presentation" [ngClass]="{active: active === 'list'}">
+        <a (click)="setActive('list')">{{'np.list' | translate}}</a>
       </li>
     </ul>
   </div>
@@ -14,7 +14,7 @@
     <laji-np-list [namedPlaces]="namedPlaces" [activeNP]="activeNP" (onActivePlaceChange)="setActiveNP($event)"></laji-np-list>
   </div>
 
-  <div class="full-height" [ngClass]="{hidden: active !== 'map'}" *ngIf="mapActivated">
+  <div class="full-height" [ngClass]="{hidden: active !== 'map'}">
     <laji-np-map [namedPlaces]="namedPlaces"
                  [activeNP]="activeNP"
                  [visible]="active === 'map' && visible"
