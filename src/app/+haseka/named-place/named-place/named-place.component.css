@@ -14,6 +14,10 @@
   display: none !important;
 }
 
+#container {
+  width: 100%;
+}
+
 .np-row {
   flex-flow: row;
 }
@@ -30,3 +34,4 @@
 laji-np-choose {
   flex: 10;
 }
+

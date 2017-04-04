@@ -114,7 +114,7 @@ export class NpEditFormComponent implements OnInit {
     const filteredKeys = ['geometryOnMap', 'locality', 'localityDescription', 'placeWrapper'];
 
     const formData = event.data.formData.namedPlace[0];
-    const data: NamedPlace = {'name': '', 'geometry': ''};
+    const data: any = {};
 
     const keys = Object.keys(formData);
 
@@ -134,19 +134,23 @@ export class NpEditFormComponent implements OnInit {
 
   private localityToPrepopulatedDocument(data, formData) {
     if (formData.locality || formData.localityDescription) {
-      data['prepopulatedDocument'] =
+      data.prepopulatedDocument =
         (this.namedPlace && this.namedPlace.prepopulatedDocument) ? this.namedPlace.prepopulatedDocument : {};
 
-      if (!data.prepopulatedDocument.gatherings || data.prepopulatedDocument.gatherings.length <= 0) {
-        data.prepopulatedDocument['gatherings'] = [{}];
+      const populate = data.prepopulatedDocument;
+
+      if (!populate.gatherings) {
+        populate.gatherings = [{}];
+      } else if (!populate.gatherings[0]) {
+        populate.gatherings[0] = {};
       }
 
       if (formData.locality) {
-        data.prepopulatedDocument.gatherings[0]['locality'] = formData.locality;
+        populate.gatherings[0].locality = formData.locality;
       }
 
       if (formData.localityDescription) {
-        data.prepopulatedDocument.gatherings[0]['localityDescription'] = formData.localityDescription;
+        populate.gatherings[0].localityDescription = formData.localityDescription;
       }
     }
   }

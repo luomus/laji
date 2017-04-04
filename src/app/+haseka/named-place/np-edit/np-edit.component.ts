@@ -1,11 +1,11 @@
-import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { UserService } from '../../../shared/service/user.service';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { Util } from '../../../shared/service/util.service';
 import { FormService } from '../../../shared/service/form.service';
 import { environment } from '../../../../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-np-edit',
@@ -19,10 +19,6 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() formInfo: any;
 
   npFormData: any;
-  userId: string;
-
-  editButtonVisible: boolean;
-  useButtonVisible: boolean;
 
   @Input() editMode = false;
   @Output() onEditButtonClick = new EventEmitter();
@@ -38,7 +34,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private formService: FormService,
     private translate: TranslateService,
-    private userService: UserService
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -47,7 +43,6 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     this.translation$ = this.translate.onLangChange.subscribe(
       () => this.onLangChange()
     );
-    this.userService.getUser().subscribe(data => { this.userId = data.id; });
   }
 
   ngOnDestroy() {
@@ -57,9 +52,10 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     this.translation$.unsubscribe();
   }
 
-  ngOnChanges() {
-    this.setFormData();
-    this.setButtonVisibilities();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['namedPlace']) {
+      this.setFormData();
+    }
   }
 
   onLangChange() {
@@ -103,7 +99,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   setFormData() {
-    if (!this.npFormData || !this.userId) {
+    if (!this.npFormData) {
       return;
     }
 
@@ -112,7 +108,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
       npData['geometryOnMap'] = {type: 'GeometryCollection', geometries: [npData.geometry]};
 
-      if (npData.prepopulatedDocument && npData.prepopulatedDocument.gatherings && npData.prepopulatedDocument.gatherings.length > 0) {
+      if (npData.prepopulatedDocument && npData.prepopulatedDocument.gatherings && npData.prepopulatedDocument.gatherings[0]) {
         const gathering = npData.prepopulatedDocument.gatherings[0];
         if (gathering.locality) {
           npData['locality'] = gathering.locality;
@@ -132,18 +128,20 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     this.onEditButtonClick.emit();
   }
 
+  useClick() {
+    this.populateForm();
+    this.router.navigate(['/vihko/' + this.formId]);
+  }
+
   editReady(np: NamedPlace) {
     this.onEditReady.emit(np);
   }
 
-  populateForm() {
+  private populateForm() {
     const np = this.namedPlace;
 
     const populate: any = np.prepopulatedDocument ? np.prepopulatedDocument : {};
 
-    if (!populate.gatherings || populate.gatherings.length <= 0) {
-      populate['gatherings'] = [{}];
-    }
     if (!populate.gatherings) {
       populate.gatherings = [{}];
     } else if (!populate.gatherings[0]) {
@@ -154,14 +152,5 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.formService.populate(populate);
-  }
-
-  private setButtonVisibilities() {
-    if (this.namedPlace) {
-      this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(this.userId) !== -1);
-      this.useButtonVisible = (this.namedPlace.public ||
-      (this.namedPlace.owners && this.namedPlace.owners.indexOf(this.userId) !== -1) ||
-      (this.namedPlace.editors && this.namedPlace.editors.indexOf(this.userId) !== -1));
-    }
   }
 }

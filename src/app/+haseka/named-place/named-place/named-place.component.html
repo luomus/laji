@@ -4,18 +4,16 @@
       <h1>{{'haseka.title' | translate}}</h1>
       <p>{{'haseka.pleaseLogin' | translate}}</p>
     </div>
-    <div class="container full-height" in>
+    <div class="container full-height" in id="container">
       <laji-spinner [spinning]="!(namedPlaces && formInfo) && !errorMsg" [overlay]="true"></laji-spinner>
 
       <h1>
         {{'np.title' | translate}}
       </h1>
 
-      <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
-
       <div class="full-height" *ngIf="namedPlaces && formInfo && !errorMsg">
         <div class="row np-row full-height">
-          <div [ngClass]="{'col-sm-6 full-height': !editMode}">
+          <div [ngClass]="{'col-xs-12 col-sm-6 full-height': !editMode}">
             <laji-np-choose [namedPlaces]="namedPlaces"
                             [formInfo]="formInfo"
                             [visible]="!editMode"
@@ -23,7 +21,7 @@
                             (onCreateButtonClick)="toEditMode(true)"
                             class="full-height"></laji-np-choose>
           </div>
-          <div [ngClass]="editMode? 'col-sm-12 nav-margin' : 'col-sm-6 nav-margin'">
+          <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-sm-6 nav-margin'">
             <laji-np-edit [editMode]="editMode"
                           [formId]="formId"
                           [collectionId]="collectionId"

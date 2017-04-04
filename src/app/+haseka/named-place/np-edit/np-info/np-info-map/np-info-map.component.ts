@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, AfterViewInit, Input, ViewChild, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, AfterViewInit, Input, ViewChild, HostListener, SimpleChanges } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { MapComponent } from '../../../../../shared/map/map.component';
 
@@ -13,6 +13,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace: NamedPlace;
 
   private _data: any;
+  private resize: any;
 
   constructor() { }
 
@@ -31,16 +32,28 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
     this.setData();
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    clearTimeout(this.resize);
+    const that = this;
+    this.resize = setTimeout(function(){
+      that.setZoom();
+    }, 500);
+  }
+
   setData() {
     if (this._data && this.lajiMap.map) {
       this.lajiMap.map.setData([this._data]);
 
-      const geojsonLayer = this.lajiMap.map.dataLayerGroups[0];
+      this.setZoom();
+    }
+  }
 
+  setZoom() {
+    if (this._data && this.lajiMap.map) {
+      const geojsonLayer = this.lajiMap.map.dataLayerGroups[0];
       this.lajiMap.map.map.fitBounds(
-       geojsonLayer.getBounds(), {
-         maxZoom: 2
-       });
+        geojsonLayer.getBounds(), { maxZoom: 3, padding: [10, 10] });
     }
   }
 
