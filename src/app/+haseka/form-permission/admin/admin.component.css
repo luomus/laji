@@ -1,11 +1,11 @@
-ul {
-  list-style: none;
-  margin-left: 0;
-  padding-left: 0;
+:host >>> [laji-form-admin] {
+  display: flex;
+  flex: 1 0 auto;
 }
 
-ul li {
-  min-height: 30px;
+.badge {
+  margin: 10px 5px 0 0;
+  background-color: #2e921c;
 }
 
 .menu-title {
@@ -15,4 +15,10 @@ ul li {
 .menu-sub {
   display: block;
   margin-bottom: 16px;
+}
+
+@media only screen and (min-width : 768px) {
+  #wrapper {
+    display: flex;
+  }
 }

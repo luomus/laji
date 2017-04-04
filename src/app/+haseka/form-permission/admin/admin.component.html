@@ -1,14 +1,14 @@
 <div class="container-fluid form-admin">
   <div class="row" id="wrapper">
     <div style="background-color: #ECF0F1;" class="col-sm-3 col-md-3 col-lg-2">
-      <h1 class="menu-title">Form admin</h1>
+      <h1 class="menu-title">Lomake admin</h1>
       <small class="menu-sub">{{collectionId | collectionName}}</small>
       <ul class="sidebar-nav">
         <li><a [routerLink]="['./']">
           Ohje
         </a></li>
         <li><a [routerLink]="['accept']">
-          Pääsy pyynnöt
+          Pääsypyynnöt
           <span
               *ngIf="formPermission && formPermission.permissionRequests && formPermission.permissionRequests.length > 0"
               class="badge pull-right">
@@ -30,20 +30,3 @@
     </div>
   </div>
 </div>
-<!--
-<div class="container" *ngIf="isAllowed">
-  <div class="row" *ngIf="formPermission.editors.length > 0">
-    <div class="col-sm-6">
-      <h3>Pääsy lomakkeelle</h3>
-      <ul>
-        <li *ngFor="let person of formPermission.editors">
-          <button class="btn btn-danger" (click)="reject(person)">Poista pääsy</button>
-          <span class="form-control-static">
-            {{person | users}} ({{person}})
-          </span>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
--->

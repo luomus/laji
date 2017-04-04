@@ -9,7 +9,7 @@ import { Logger } from '../../../shared/logger/logger.service';
 import { Person } from '../../../shared/model/Person';
 
 @Component({
-  selector: 'laji-admin',
+  selector: '[laji-form-admin]',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
