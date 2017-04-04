@@ -21,8 +21,8 @@
             <laji-row [title]="'MZ.editor'" *ngIf="document.linkings && document.linkings.editors">
               {{document.linkings.editors | values:', ':'fullName' }}
             </laji-row>
-            <laji-row [title]="'createdDate'" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
-            <laji-row [title]="'modifiedDate'" [value]="document.modifiedDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
+            <laji-row [title]="'MZ.dateCreated'" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
+            <laji-row [title]="'MZ.dateEdited'" [value]="document.modifiedDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
             <laji-row [title]="'loadDate'" [value]="document.loadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
           </template>
           <button class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"

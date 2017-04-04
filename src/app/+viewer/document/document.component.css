@@ -9,8 +9,8 @@
 }
 
 :host >>> .popover {
-  width: 300px;
-  max-width: 300px;
+  width: 430px;
+  max-width: 430px;
 }
 
 :host >>> .facts {
