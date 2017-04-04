@@ -14,8 +14,10 @@
   display: none !important;
 }
 
-#container {
-  width: 100%;
+@media screen and (max-width: 767px) {
+  #container {
+    margin: 0;
+  }
 }
 
 .np-row {
