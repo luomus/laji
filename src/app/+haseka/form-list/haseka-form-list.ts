@@ -64,7 +64,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
   }
 
   goToForm(form: FormListInterface) {
-    if (form.collectionID && form.features.indexOf(Form.Feature.Restricted)) {
+    if (form.collectionID && form.features && form.features.indexOf(Form.Feature.Restricted) > -1) {
       Observable.forkJoin(
         this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken()),
         this.userService.getUser(),
