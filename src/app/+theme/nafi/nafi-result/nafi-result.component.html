@@ -10,9 +10,9 @@
     <p>
       {{'nafi.stats.times' | translate}}:
       <br>
-      <a [routerLink] [queryParams]="{type: type}">{{'theme.filterAll' | translate:{year: currentYear} }}</a>
+      <a [routerLink] [queryParams]="{time: '1991-01-01/', type: type}">{{'theme.filterAll' | translate:{year: currentYear} }}</a>
       <br>
-      <a [routerLink] [queryParams]="{time: currentYear}">{{'wholeYear'| translate:{year:currentYear} }}</a>
+      <a [routerLink] [queryParams]="{time: currentYear, type: type}">{{'wholeYear'| translate:{year:currentYear} }}</a>
       <a *ngIf="currentMonth >= 3" [routerLink] [queryParams]="{time: currentYear + '-03', type: type}">{{'m-03' | translate}}&nbsp;{{currentYear}}</a>
       <a *ngIf="currentMonth >= 4" [routerLink] [queryParams]="{time: currentYear + '-04', type: type}">{{'m-04' | translate}}&nbsp;{{currentYear}}</a>
       <a *ngIf="currentMonth >= 5" [routerLink] [queryParams]="{time: currentYear + '-05', type: type}">{{'m-05' | translate}}&nbsp;{{currentYear}}</a>

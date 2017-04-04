@@ -1,0 +1,17 @@
+<div class="row" *ngIf="formPermission">
+  <div class="col-sm-6">
+    <h3>Henkilöt jotka ovat pyytäneet pääsyä tälle lomakkeelle</h3>
+    <p *ngIf="formPermission.permissionRequests.length === 0">
+      Ei käsittelemättömiä pääsy pyyntöjä.
+    </p>
+    <ul>
+      <li *ngFor="let person of formPermission.permissionRequests">
+        <button class="btn btn-success" (click)="accept(person)">hyväksy</button>
+        <button class="btn btn-danger" (click)="reject(person)">hylkää</button>
+        <span class="form-control-static">
+            {{person | users}} ({{person}})
+          </span>
+      </li>
+    </ul>
+  </div>
+</div>

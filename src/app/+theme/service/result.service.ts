@@ -144,7 +144,8 @@ export class ResultService {
           individualCountSum: result.individualCountSum || 0,
           newestRecord: result.newestRecord || '',
           oldestRecord: result.oldestRecord || '',
-          grid: result.aggregateBy['gathering.conversions.ykj3.lat'] + ':' + result.aggregateBy['gathering.conversions.ykj3.lon']
+          grid: result.aggregateBy['gathering.conversions.ykj3.lat'] + ':'
+          + result.aggregateBy['gathering.conversions.ykj3.lon']
         }
       ));
     });

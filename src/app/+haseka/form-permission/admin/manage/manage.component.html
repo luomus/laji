@@ -1,0 +1,16 @@
+<div class="row" *ngIf="formPermission">
+  <div class="col-sm-6">
+    <h3>Pääsy lomakkeelle</h3>
+    <p *ngIf="formPermission.editors.length === 0">
+      Kenelläkään ei ole vielä pääsyä tälle lomakkeelle.
+    </p>
+    <ul>
+      <li *ngFor="let person of formPermission.editors">
+        <button class="btn btn-danger" (click)="reject(person)">Poista pääsy</button>
+        <span class="form-control-static">
+            {{person | users}} ({{person}})
+          </span>
+      </li>
+    </ul>
+  </div>
+</div>
