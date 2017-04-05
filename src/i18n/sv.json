@@ -214,6 +214,7 @@
   "observation.download.wip": "Arbete i progress<br><br>Data begäran för myndigheter eller andra data ägare kan göras för närvarande enligt nuförande praxis.",
   "observation.download.label": "Valfri beskrivning för en begäran om data",
   "observation.download.description.left": "tecken kvar",
+  "observation.form.zeroObservations": "Ingen observation",
   "haseka.title": "Skrivbok",
   "haseka.slogan": "Spara, administrera och dela dina artobservationer",
   "haseka.intro": "<p>Du kan spara dina artobservationer till Skrivboken och delta i uppföljande forskningar eller medborgarvetenskapsprojekter. I tjänsten kommer att bli smidiga former och du kan välja det sättet att spara observationer som är lämplig för dig. Observationerna kommer att nytta hobby, forskning och myndigheter.</p>",

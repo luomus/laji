@@ -171,6 +171,7 @@
   "observation.form.multi-all": "both",
   "observation.form.multi-true": "yes",
   "observation.form.multi-false": "no",
+  "observation.form.zeroObservations": "No observation",
   "observation.form.inclusiveCoordinates": "Show also observations that are located only partly on the chosen area.",
   "observation.filters.unit": "Specimen",
   "observation.filters.collection": "Collection",

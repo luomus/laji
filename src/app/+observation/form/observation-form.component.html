@@ -237,20 +237,31 @@
               {{'observation.form.count' | translate}}:
             </label>
             <div class="col-lg-12">
-              <div class="row">
+              <div class="form-group">
                 <div class="col-sm-6">
                   <input type="number" name="individualCountMin"
                          class="form-control input-sm"
                          placeholder="{{'observation.form.countMin' | translate}}"
-                         (ngModelChange)="onQueryChange()"
+                         (ngModelChange)="onCountChange()"
                          [(ngModel)]="searchQuery.query.individualCountMin">
                 </div>
                 <div class="col-sm-6">
                   <input type="number" name="individualCountMax"
                          class="form-control input-sm"
                          placeholder="{{'observation.form.countMax' | translate}}"
-                         (ngModelChange)="onQueryChange()"
+                         (ngModelChange)="onCountChange()"
                          [(ngModel)]="searchQuery.query.individualCountMax">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <label>
+                    <input type="checkbox"
+                           [ngModel]="formQuery.zeroObservations"
+                           (ngModelChange)="toggleZeroCheckBox()"
+                           name="zeroObservations">
+                    {{'observation.form.zeroObservations' | translate}}
+                  </label>
                 </div>
               </div>
             </div>
