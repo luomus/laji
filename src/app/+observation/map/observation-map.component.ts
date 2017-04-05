@@ -54,7 +54,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     'unit.linkings.taxon',
     'gathering.team',
     'gathering.eventDate',
-    'document.documentId'
+    'document.documentId',
+    'unit.unitId'
   ];
 
   public mapData;
@@ -465,10 +466,17 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       let description = '';
       this.itemFields.map(field => {
         const name = field.split('.').pop();
-        if (properties[name]) {
+        if (properties[name] && name !== 'documentId' && name !== 'unitId') {
           description += this.decorator.decorate(field, properties[name], {}) + '<br>';
         }
       });
+      if (properties['documentId'] && properties['unitId']) {
+        description += '<a href="/view?uri=' +
+          properties['documentId'] +
+          '&highlight=' +
+          properties['unitId'].replace('#', '_') + '">' +
+          properties['documentId'] + '</a>';
+      }
       if (description) {
         cb(description);
       } else if (cnt) {

@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ViewerComponent implements OnInit, OnDestroy {
 
   private uri: string;
+  private highlight: string;
   private subQuery: Subscription;
 
   constructor(private route: ActivatedRoute) { }
@@ -17,6 +18,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subQuery = this.route.queryParams.subscribe(params => {
       this.uri = params['uri'] || '';
+      this.highlight = (params['highlight'] || '').replace('_', '#');
     });
   }
 
