@@ -1,7 +1,7 @@
 <h1 class="hidden-sm hidden-md hidden-lg">
   {{'observation.results.title' | translate}}
 </h1>
-<form (ngSubmit)="onSubmit()" #observationForm="ngForm" class="form-horizontal">
+<form (ngSubmit)="onSubmit()" #observationForm="ngForm" class="form-horizontal" id="wrapper">
   <div class="row">
     <div class="form-filters"
       [ngClass]="{
@@ -496,6 +496,7 @@
           </div>
         </div>
       </div><!-- filters end -->
+      <div class="form-filters-fill"></div>
     </div>
     <div
      [ngClass]="{

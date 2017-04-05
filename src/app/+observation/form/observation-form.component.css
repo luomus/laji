@@ -16,7 +16,6 @@ hr {
 }
 .form-filters {
   z-index: 1001;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 }
 .checkbox-label {
   padding-left:0;
@@ -80,7 +79,26 @@ hr {
 }
 
 @media only screen and (min-width : 768px) {
+  #wrapper {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  #wrapper > div {
+    display: flex;
+  }
   .result-list {
     padding-right: 0;
+  }
+  .form-filters {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .form-filters-fill {
+    background-color: #ECF0F1;
+    width: calc(100% + 30px);
+    flex: 1 1 auto;
+    margin: 0 -15px;
   }
 }
