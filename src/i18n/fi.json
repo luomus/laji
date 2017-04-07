@@ -176,6 +176,7 @@
   "observation.form.multi-false": "ei",
   "observation.form.inclusiveCoordinates": "Näytä myös havainnot, jotka sijaitsevat vain osittain valitulla alueella.",
   "observation.form.biogeographicalProvince": "Eliömaakunta",
+  "observation.form.zeroObservations": "Nolla havainnot",
   "observation.form.municipality": "Kunta",
   "observation.form.source": "Lähde",
   "observation.form.system": "Järjestelmä",

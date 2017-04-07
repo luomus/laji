@@ -222,7 +222,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       quarantinePlantPest: undefined,
       otherInvasiveSpeciesList: undefined,
       nationalInvasiveSpeciesStrategy: undefined,
-      allInvasiveSpecies: undefined
+      allInvasiveSpecies: undefined,
+      zeroObservations: undefined
     };
 
     if (refresh) {
@@ -324,6 +325,32 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
         typeof value === 'undefined' ||  value !==  selectValue ?
           selectValue : undefined;
     }
+    this.onIndirectChange();
+  }
+
+  onCountChange() {
+    if ( this.searchQuery.query.individualCountMin === 0
+      && this.searchQuery.query.individualCountMax === 0) {
+      this.formQuery['zeroObservations'] = true;
+    } else {
+      this.formQuery['zeroObservations'] = false;
+    }
+    this.onQueryChange();
+  }
+
+  toggleZeroCheckBox() {
+    this.formQuery['zeroObservations'] = !this.formQuery['zeroObservations'];
+    if (this.formQuery['zeroObservations']) {
+      this.searchQuery.query.individualCountMin = 0;
+      this.searchQuery.query.individualCountMax = 0;
+    } else {
+      this.searchQuery.query.individualCountMin = undefined;
+      this.searchQuery.query.individualCountMax = undefined;
+    }
+    this.onSubmit();
+  }
+
+  onIndirectChange() {
     this.queryToFormQuery(this.searchQuery.query);
     this.onQueryChange();
   }
@@ -387,6 +414,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       isNotInvasive: query.invasive === false ? true : undefined,
       includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
       hasNotMedia: query.hasMedia === false ? true : undefined,
+      zeroObservations: query.individualCountMax === 0 && query.individualCountMax === 0 ? true : undefined,
       nationallySignificantInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.nationallySignificantInvasiveSpecies'),
       euInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.euInvasiveSpeciesList'),
       quarantinePlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.quarantinePlantPest'),

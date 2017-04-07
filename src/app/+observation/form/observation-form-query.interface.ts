@@ -13,4 +13,5 @@ export interface ObservationFormQuery {
   otherInvasiveSpeciesList: boolean;
   nationalInvasiveSpeciesStrategy: boolean;
   allInvasiveSpecies: boolean;
+  zeroObservations: boolean;
 }
