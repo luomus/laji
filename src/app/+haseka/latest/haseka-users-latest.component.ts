@@ -5,7 +5,8 @@ import { FormService } from '../../shared/service/form.service';
 
 @Component({
   selector: 'laji-haseka-latest',
-  templateUrl: './haseka-users-latest.component.html'
+  templateUrl: './haseka-users-latest.component.html',
+  styleUrls: ['./haseka-users-latest.component.css']
 })
 export class UsersLatestComponent implements OnChanges {
 

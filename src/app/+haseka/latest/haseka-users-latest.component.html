@@ -1,4 +1,4 @@
-<div>
+<div id="haseka-latest">
   <ul class="sidebar-nav">
     <li><a [routerLink]="['../vihko']">Lomakkeet</a></li>
     <li><a [routerLink]="['../vihko']">Omat havantoeräni</a></li>
@@ -24,7 +24,7 @@
         <laji-spinner [spinning]="loading" [overlay]="true">
           <table class="table table-striped table-bordered table-condensed dataTable">
             <tbody>
-            <tr *ngFor="let document of documents">
+            <tr *ngFor="let document of documents | slice:0:9">
               <td>
                 <laji-short-document [document]="document"></laji-short-document>
               </td>
