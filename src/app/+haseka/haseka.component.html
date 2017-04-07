@@ -1,9 +1,9 @@
-<div class="container">
-  <h1>{{'haseka.title' | translate}}</h1>
-  <only-logged>
+<div class="container-fluid">
+  <only-logged class="flex-column">
     <div out>
       <div class="row">
         <div class="col-sm-8">
+          <h1>{{'haseka.title' | translate}}</h1>
           <p>
             {{'haseka.pleaseLogin' | translate}}
           </p>
@@ -11,20 +11,23 @@
         </div>
       </div>
     </div>
-    <div in>
-      <div class="row">
-        <div class="col-sm-8">
-          <div [innerHtml]="'haseka.intro' | translate"></div>
-          <div class="pull-right toggle-intro" *ngIf="!vihkoSettings.showIntro">
-            <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+    <div in class="flex-column">
+      <div class="row flex-column flex-row">
+        <div class="col-sm-9 col-md-9 col-lg-10">
+          <div id="haseka-container">
+            <h1>{{'haseka.title' | translate}}</h1>
+            <div [innerHtml]="'haseka.intro' | translate"></div>
+            <div class="pull-right toggle-intro" *ngIf="!vihkoSettings.showIntro">
+              <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+            </div>
+            <alert *ngIf="vihkoSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+              <div [innerHtml]="'haseka.intro2' | translate"></div>
+            </alert>
+            <a routerLink="/vihko/terms-of-service">{{'haseka.termsOfService' | translate}}</a>
+            <laji-haseka-form-list></laji-haseka-form-list>
           </div>
-          <alert *ngIf="vihkoSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-            <div [innerHtml]="'haseka.intro2' | translate"></div>
-          </alert>
-          <a routerLink="/vihko/terms-of-service">{{'haseka.termsOfService' | translate}}</a>
-          <laji-haseka-form-list></laji-haseka-form-list>
         </div>
-        <div class="col-sm-4 well" *ngIf="userService.isLoggedIn">
+        <div class="col-sm-3 col-md-3 col-lg-2 flex-column" *ngIf="userService.isLoggedIn" id="sidebar-container">
           <laji-haseka-latest [userToken]="userService.token"></laji-haseka-latest>
         </div>
       </div>

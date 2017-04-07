@@ -1,3 +1,9 @@
+:host {
+  display: flex;
+  flex: 1 0 auto;
+  min-height: 0;
+}
+
 .more-info {
   padding-bottom: 10px;
   padding-top: 15px;
@@ -8,4 +14,24 @@
   padding: 10px 10px 0 0;
   font-size: 13px;
   color: #3498DB;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  min-height: 0;
+}
+
+.flex-row {
+  flex-flow: row;
+}
+
+#haseka-container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+#sidebar-container {
+  background-color: #ecf0f1;
 }
