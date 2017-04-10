@@ -38,6 +38,8 @@ export interface News {
 
   content?: string;
 
+  author?: string;
+
   /**
    * timestamp for when the news was posted
    */

@@ -1,7 +1,7 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ng2-webstorage';
-import { ActivatedRoute } from '../../../node_modules/@angular/router/src/router_state';
+import { ActivatedRoute } from '@angular/router';
 
 @NgModule({
 })

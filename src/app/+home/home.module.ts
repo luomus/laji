@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CarouselModule } from 'ng2-bootstrap';
+import { CarouselModule } from 'ngx-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { NavigationThumbnailComponent } from '../shared/navigation-thumbnail/navigation-thumbnail.component';
 import { TaxonomyApi } from '../shared/api/TaxonomyApi';

@@ -45,7 +45,7 @@
     <a class="type-switch link" (click)="changeLegendType('individuals')">{{'theme.individualCount' | translate}}</a>
     <a class="type-switch link" (click)="changeLegendType('newest')">{{'theme.newest' | translate}}</a>
   </div>
-  <div class="col-sm-7 col-sm-pull-5 table-col" [ngClass]="{'no-header': !grid}">
+  <div class="col-sm-7 col-sm-pull-5 table-col">
     <laji-theme-result
             *ngIf="query && !query.ykj3"
             (onNameClick)="navigate($event)"

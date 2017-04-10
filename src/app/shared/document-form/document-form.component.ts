@@ -40,13 +40,13 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   public saving = false;
   public loading = false;
   public enablePrivate = true;
+  public errorMsg: string;
 
   private subTrans: Subscription;
   private subFetch: Subscription;
   private subForm: Subscription;
   private success = '';
   private error: any;
-  private errorMsg: string;
   private isEdit = false;
   private hasChanges = false;
   private leaveMsg;

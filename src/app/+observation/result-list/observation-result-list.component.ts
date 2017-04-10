@@ -11,7 +11,7 @@ import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { ModalDirective } from 'ng2-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap';
 import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 
 interface Column {
@@ -194,6 +194,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
             'pageSize',
             'page'
           ]);
+          this.onSettingsOpen();
         },
         err => {
           this.logger.warn('Failed to fetch list result', err);
@@ -252,21 +253,21 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     return val;
   }
 
-  toggledFieldSelect(event) {
-    if (event === false) { // when closing
-      if (this.updateUserCols()) {
-        this.fetchRows(this.page, true);
-      }
-    } else {               // when opening
-      this.columns.map((col, idx) => {
-        const userCol = this.userColumns.filter((src) => src.field === col.field);
-        if (userCol.length !== 1) {
-          this.columns[idx].visible = false;
-          return;
-        }
-        this.columns[idx].visible = typeof userCol[0].visible === 'undefined' || userCol[0].visible;
-      });
+  onSettingsClose() {
+    if (this.updateUserCols()) {
+      this.fetchRows(this.page, true);
     }
+  }
+
+  onSettingsOpen() {
+    this.columns.map((col, idx) => {
+      const userCol = this.userColumns.filter((src) => src.field === col.field);
+      if (userCol.length !== 1) {
+        this.columns[idx].visible = false;
+        return;
+      }
+      this.columns[idx].visible = typeof userCol[0].visible === 'undefined' || userCol[0].visible;
+    });
   }
 
   showDocument(row) {
@@ -277,5 +278,9 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   toggleColumn(col: Column) {
     col.visible = !col.visible;
+
+    // ngx-bootstrap has a bug wher it's not triggering onHidden event as expected
+    // when that's fixed this line can be removed
+    this.onSettingsClose();
   }
 }

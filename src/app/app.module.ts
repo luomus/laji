@@ -1,5 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { LangSelectComponent } from './shared/navbar/lang-select.component';
 import { SharedModule } from './shared/shared.module';
@@ -19,12 +20,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import {
   TooltipModule,
   PaginationModule,
-  DropdownModule,
+  BsDropdownModule,
   AlertModule,
   ModalModule,
   TypeaheadModule,
   PopoverModule
-} from 'ng2-bootstrap';
+} from 'ngx-bootstrap';
 import { CoreModule } from './shared/core.module';
 import { Ng2Webstorage } from 'ng2-webstorage';
 import { ViewerModule } from './+viewer/viewer.module';
@@ -44,6 +45,7 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
     WhatsNewComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -54,7 +56,7 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
     SharedModule.forRoot(),
     PaginationModule.forRoot(),
     ModalModule.forRoot(),
-    DropdownModule.forRoot(),
+    BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
