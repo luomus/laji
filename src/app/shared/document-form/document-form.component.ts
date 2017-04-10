@@ -163,8 +163,8 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           }
         }, 5000);
         this.logger.error('UNABLE TO SAVE DOCUMENT', {
-          data: data,
-          error: this.parseErrorMessage(err)
+          data: JSON.stringify(data),
+          error: JSON.stringify(this.parseErrorMessage(err))
         });
     });
   }
