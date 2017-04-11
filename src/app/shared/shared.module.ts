@@ -74,6 +74,7 @@ import { MomentModule } from 'angular2-moment';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { FormService } from './service/form.service';
 import { CoordinateService } from './service/coordinate.service';
+import { TaxonomyApi } from './api/TaxonomyApi';
 
 
 @NgModule({
@@ -128,6 +129,7 @@ export class SharedModule {
         CoordinateService,
         ToastsService, AppConfig,
         PersonTokenApi, PersonApi, SearchQuery, WarehouseApi,
+        TaxonomyApi,
         AreaApi, AreaService,
         SourceApi, SourceService,
         FeedbackApi, LoggerApi,

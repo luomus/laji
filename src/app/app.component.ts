@@ -1,6 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
-import { TaxonomyApi } from './shared/api/TaxonomyApi';
 import { CollectionApi } from './shared/api/CollectionApi';
 import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
@@ -14,7 +13,6 @@ declare const ga: Function;
 @Component({
   selector: 'laji-app',
   providers: [
-    TaxonomyApi,
     CollectionApi,
     InformationApi
   ],
