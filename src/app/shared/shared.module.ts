@@ -73,6 +73,7 @@ import { LajiExternalService } from './service/laji-external.service';
 import { MomentModule } from 'angular2-moment';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { FormService } from './service/form.service';
+import { FormNamePipe } from './pipe/form-name.pipe';
 import { CoordinateService } from './service/coordinate.service';
 
 
@@ -82,7 +83,7 @@ import { CoordinateService } from './service/coordinate.service';
     NewsListComponent, DocumentFormComponent,
     SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, FormattedNumber,
-    AreaNamePipe, CollectionNamePipe,
+    AreaNamePipe, CollectionNamePipe, FormNamePipe,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent
@@ -102,7 +103,7 @@ import { CoordinateService } from './service/coordinate.service';
   exports: [
     CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule,
     AreaNamePipe, NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe,
-    ToQNamePipe, ValuesPipe, CollectionNamePipe, LajiFormComponent, DocumentFormComponent,
+    ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe, LajiFormComponent, DocumentFormComponent,
     ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,

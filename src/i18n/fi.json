@@ -246,6 +246,7 @@
   "haseka.form.documentNotFound": "Havaintoerää ei löytynyt id:llä {{documentId}}.",
   "haseka.form.formNotFound": "Lomaketta id:llä {{formId}} ei löytynyt.",
   "haseka.form.genericError": "Odottamaton virhe tapahtui. Yritä hetken kuluttua uudestaan ja jos virhe ei korjaannu, ota yhteyttä ylläpitoon.",
+  "haseka.form.removeConfirm": "Haluatko varmasti poistaa havaintoerän?",
   "haseka.users.latest": "Uusimmat havaintoeräni",
   "haseka.users.latest.more": "lisätietoja",
   "haseka.users.unsaved": "Julkaisemattomat havaintoeräni",

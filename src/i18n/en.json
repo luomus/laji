@@ -236,6 +236,7 @@
   "haseka.form.documentNotFound": "No submission was found with id {{documentId}}.",
   "haseka.form.formNotFound": "Form with id {{formId}} was not found.",
   "haseka.form.genericError": "Unfortunately an unexpected error occurred. Please wait a while and try again in a little while. If the error doesn't get repaired, please contact support",
+  "haseka.form.removeConfirm": "Are you sure that you want to remove the submission?",
   "haseka.users.latest": "Latest submissions",
   "haseka.users.latest.more": "more",
   "haseka.users.unsaved": "Unpublished submissions",

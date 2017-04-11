@@ -10,11 +10,13 @@
       <h4>{{'haseka.users.unsaved' | translate}}</h4>
       <table class="table table-striped table-bordered table-condensed dataTable">
         <tbody>
-        <tr *ngFor="let document of unsavedDocuments">
-          <td>
-            <laji-short-document [document]="document"></laji-short-document>
-          </td>
-        </tr>
+        <ng-container *ngFor="let document of unsavedDocuments">
+          <tr *ngIf="!document.removed">
+            <td>
+              <laji-short-document [document]="document"></laji-short-document>
+            </td>
+          </tr>
+        </ng-container>
         </tbody>
       </table>
     </div>

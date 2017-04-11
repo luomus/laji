@@ -1,27 +1,38 @@
-<a class="link" (click)="editDocument(document.formID, document.id)">
-  {{document.id}} <small>{{document.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'}}</small>
-</a>
-<span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
+<div>
+  <a class="link" (click)="editDocument(document.formID, document.id)">
+    {{document.id}} <small>{{document.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'}}</small>
+  </a>
+  <span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
   <span class="label label-warning"
         [tooltip]="'haseka.form.private' | translate">
     <i class="glyphicon glyphicon-eye-close"></i>
   </span>
   &nbsp;
-</span>
-<span class="label label-danger" *ngIf="formService.hasUnsavedData(document.id, document) | async" [tooltip]="'haseka.form.hasChanges' | translate">
-  <i class="glyphicon glyphicon-warning-sign"></i>
-</span>
-<br>
-{{'haseka.users.latest.gathered' | translate }}:
-<span *ngIf="gatheringDates.start || gatheringDates.end">
+  </span>
+
+  <span *ngIf="formService.hasUnsavedData(document.id, document) | async">
+    <span class="label label-danger" [tooltip]="'haseka.form.hasChanges' | translate">
+      <i class="glyphicon glyphicon-warning-sign"></i>
+    </span>
+    <span class="pull-right">
+      <span class="label label-primary link" (click)="removeDocument(document)">
+        <i class="glyphicon glyphicon-trash"></i>
+      </span>
+    </span>
+  </span>
+  <br>
+  {{'haseka.users.latest.gathered' | translate }}:
+  <span *ngIf="gatheringDates.start || gatheringDates.end">
   <a class="link" (click)="editDocument(document.formID, document.id)">
     {{gatheringDates.start | amDateFormat:'DD.MM.YYYY'}} - {{gatheringDates.end | amDateFormat:'DD.MM.YYYY'}}
   </a>
 </span>
-<span
-        *ngIf="taxa && taxa.length > 0"
-        class="link"
-        (click)="showList = !showList">
+  <br>
+  <span class="label label-default">{{document.formID | formName}}</span>
+  <span
+    *ngIf="taxa && taxa.length > 0"
+    class="link"
+    (click)="showList = !showList">
   {{'haseka.users.latest.more' | translate}}
   <i class="glyphicon"
      style="font-size:0.8em"
@@ -31,11 +42,12 @@
              }"
   ></i>
 </span>
-<ul *ngIf="showList">
-  <li *ngFor="let taxon of taxa">
-    <a class="link" (click)="editDocument(document.formID, document.id)">
-      {{taxon.name}}
-      <small>{{taxon.id}}</small>
-    </a>
-  </li>
-</ul>
+  <ul *ngIf="showList">
+    <li *ngFor="let taxon of taxa">
+      <a class="link" (click)="editDocument(document.formID, document.id)">
+        {{taxon.name}}
+        <small>{{taxon.id}}</small>
+      </a>
+    </li>
+  </ul>
+</div>

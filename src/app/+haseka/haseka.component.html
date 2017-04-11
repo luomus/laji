@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div id="haseka-container" class="flex-column">
   <only-logged class="flex-column">
     <div out>
       <div class="row">
@@ -14,7 +14,7 @@
     <div in class="flex-column">
       <div class="row flex-column flex-row">
         <div class="col-sm-9 col-md-9 col-lg-10">
-          <div id="haseka-container">
+          <div>
             <h1>{{'haseka.title' | translate}}</h1>
             <div [innerHtml]="'haseka.intro' | translate"></div>
             <div class="pull-right toggle-intro" *ngIf="!vihkoSettings.showIntro">
