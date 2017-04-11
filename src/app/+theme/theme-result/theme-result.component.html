@@ -9,21 +9,24 @@
     <thead>
     <tr>
       <th class="col-1">{{'result.unit.taxonVerbatim' | translate}}</th>
-      <th class="col-2">{{'theme.countShort' | translate}}</th>
-      <th class="col-3">{{'theme.individualCountShort' | translate}}</th>
-      <th class="col-6">{{'theme.newest' | translate}}</th>
+      <th class="col-2 hidden-sm hidden-xs">{{'taxonomy.vernacular.name' | translate}}</th>
+      <th class="col-3">{{'theme.countShort' | translate}}</th>
+      <th class="col-4">{{'theme.individualCountShort' | translate}}</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let item of list; trackBy:item?.aggregateBy['unit.linkings.taxon.speciesId']">
       <td class="col-1">
-        <a [routerLink] [queryParams]="{taxonId:(item.aggregateBy['unit.linkings.taxon.speciesId'] | toQName), time: time, type: type}">
+        <a class="link" (click)="nameClick(item.aggregateBy['unit.linkings.taxon.speciesId'])">
           {{item.aggregateBy['unit.linkings.taxon.speciesScientificName']}}
         </a>
+        <span class="visible-sm visible-xs">
+          {{item.aggregateBy['vernacularName']}}
+        </span>
       </td>
-      <td class="col-2">{{item.count}}</td>
-      <td class="col-3">{{item.individualCountSum}}</td>
-      <td class="col-6">{{item.newestRecord | amDateFormat:'DD.MM.YYYY'}}</td>
+      <td class="col-2 hidden-sm hidden-xs">{{item.aggregateBy['vernacularName']}}</td>
+      <td class="col-3">{{item.count}}</td>
+      <td class="col-4">{{item.individualCountSum}}</td>
     </tr>
     </tbody>
   </table>

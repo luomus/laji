@@ -1,23 +1,18 @@
-<laji-spinner [spinning]="(namedPlace || editMode) && !(formData || userId)" [overlay]="true"></laji-spinner>
-<div *ngIf="formData">
-  <div *ngIf="!editMode && namedPlace">
+<laji-spinner [spinning]="(namedPlace || editMode) && !npFormData" [overlay]="true"></laji-spinner>
+<div *ngIf="npFormData">
+  <div *ngIf="namedPlace && !editMode">
     <laji-np-info [namedPlace]="namedPlace"
-                  [formData]="formData"
-                  [editButtonVisible]="editButtonVisible"
-                  (onEditButtonClick)="editClick()"></laji-np-info>
-    <a *ngIf="useButtonVisible"
-       [routerLink]="['/vihko/' + formId]"
-       type="button"
-       class="btn btn-md btn-primary"
-       id="use-button"
-       (click)="populateForm()">{{'np.use' | translate}}</a>
+                  [formData]="npFormData"
+                  [collectionId]="collectionId"
+                  [editMode]="editMode"
+                  (onEditButtonClick)="editClick()"
+                  (onUseButtonClick)="useClick()"></laji-np-info>
   </div>
   <div *ngIf="editMode">
-    <laji-np-edit-form *ngIf="formData"
+    <laji-np-edit-form *ngIf="npFormData"
                        [lang]="lang"
-                       [formData]="formData"
+                       [formData]="npFormData"
                        [namedPlace]="namedPlace"
-                       [collectionId]="collectionId"
-                       (onEditReady)="editReady()"></laji-np-edit-form>
+                       (onEditReady)="editReady($event)"></laji-np-edit-form>
   </div>
 </div>

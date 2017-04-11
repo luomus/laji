@@ -1,0 +1,24 @@
+:host >>> [laji-form-admin] {
+  display: flex;
+  flex: 1 0 auto;
+}
+
+.badge {
+  margin: 10px 5px 0 0;
+  background-color: #2e921c;
+}
+
+.menu-title {
+  margin-bottom: 6px;
+}
+
+.menu-sub {
+  display: block;
+  margin-bottom: 16px;
+}
+
+@media only screen and (min-width : 768px) {
+  #wrapper {
+    display: flex;
+  }
+}

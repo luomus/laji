@@ -8,10 +8,6 @@
         </div>
         <div class="col-sm-3">
           <span class="pull-right some-links" aria-hidden="true">
-            <a href="http://foorumi.laji.fi/">
-              <span class="forum">{{'Forum' | translate}}</span>
-              <svg viewBox="0 0 24 24"><path fill="#f1f1f1" d="M17,12V3A1,1 0 0,0 16,2H3A1,1 0 0,0 2,3V17L6,13H16A1,1 0 0,0 17,12M21,6H19V15H6V17A1,1 0 0,0 7,18H18L22,22V7A1,1 0 0,0 21,6Z" /></svg>
-            </a>
             <a href="https://facebook.com/Lajitietokeskus">
               <svg viewBox="0 0 24 24"><path fill="#f1f1f1" d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
             </a>
@@ -46,7 +42,8 @@
           <div class="col-md-5">
             <div class="panel panel-default">
               <div class="panel-body resent-map">
-                <laji-observation-map [height]="305" [showControls]="false" [initWithWorldMap]="true" [showItemsWhenLessThan]="500" [draw]="false" [query]="{time:'-1/0', finnish: true}"></laji-observation-map>
+                <div class="link resent-map-overlay" [routerLink]="['/observation']" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}"></div>
+                <laji-observation-map [height]="305" [showControls]="false" [initWithWorldMap]="false" [showItemsWhenLessThan]="500" [draw]="false" [query]="{time: mapStartDate + '/', countryId: 'ML.206'}"></laji-observation-map>
               </div>
               <div class="panel-footer">
                 <h2 class="panel-title">{{ 'home.main-page.recent' | translate }}</h2>
@@ -59,9 +56,6 @@
         <div class="news-panel">
           <laji-news-list></laji-news-list>
         </div>
-        <!--div>
-            <Sponsors />
-          </div-->
       </div>
     </div>
   </div>

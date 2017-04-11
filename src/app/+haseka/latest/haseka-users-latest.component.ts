@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { FormService } from '../form/form.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
+import { FormService } from '../../shared/service/form.service';
 
 @Component({
   selector: 'laji-haseka-latest',
@@ -16,7 +16,7 @@ export class UsersLatestComponent implements OnChanges {
   public total = 0;
   public page = 1;
   public pageSize = 10;
-  public loading: boolean = true;
+  public loading = true;
 
   constructor(
     private documentService: DocumentApi,

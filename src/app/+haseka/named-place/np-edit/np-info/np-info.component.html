@@ -1,17 +1,52 @@
-<div class="well well-sm np-info">
-  <fieldset>
-    <legend>
-      <span>{{'np.additionalInfo' | translate}}</span>
-      <div class="pull-right">
-        <button *ngIf="editButtonVisible"
-                class="btn btn-sm btn-default"
-                (click)="editClick()">{{'np.edit' | translate}}</button>
-      </div>
-    </legend>
-    <div *ngFor="let p of npProperties">
-      <div *ngIf="fields[p] && hiddenProperties.indexOf(p) === -1">
-        <laji-np-info-row [key]="p" [value]="namedPlace[p]" [fields]="fields"></laji-np-info-row>
-      </div>
+<div [ngClass]="{'hidden': editButtonVisible === undefined && useButtonVisible === undefined}">
+
+  <div class="hidden-xs" #infoBox>
+    <div class="well well-sm np-info">
+      <fieldset>
+        <legend>
+          <span>{{'np.additionalInfo' | translate}}</span>
+          <div class="pull-right">
+            <button *ngIf="editButtonVisible"
+                    class="btn btn-sm btn-default"
+                    (click)="editClick()">{{'np.edit' | translate}}</button>
+          </div>
+        </legend>
+        <laji-np-info-map [visible]="namedPlace && !editMode" [namedPlace]="namedPlace"></laji-np-info-map>
+        <div *ngFor="let k of keys">
+          <laji-np-info-row [key]="k" [value]="values[k]" [fields]="fields"></laji-np-info-row>
+        </div>
+      </fieldset>
     </div>
-  </fieldset>
+    <a *ngIf="useButtonVisible"
+       type="button"
+       class="btn btn-md btn-primary use-button"
+       (click)="useClick()">{{'np.use' | translate}}</a>
+  </div>
+
+  <div class="modal hidden-sm" tabindex="-1" role="dialog" bsModal #infoModal="bs-modal">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close pull-right" type="button" (click)="modal.hide()">
+            <i class="glyphicon glyphicon-remove"></i>
+          </button>
+          <h5>{{'np.additionalInfo' | translate}}</h5>
+        </div>
+        <div class="modal-body">
+          <div class="well well-sm np-info">
+            <fieldset>
+              <laji-np-info-map *ngIf="modalIsVisible" [visible]="true" [namedPlace]="namedPlace"></laji-np-info-map>
+              <div *ngFor="let k of keys">
+                <laji-np-info-row [key]="k" [value]="values[k]" [fields]="fields"></laji-np-info-row>
+              </div>
+            </fieldset>
+          </div>
+          <a *ngIf="useButtonVisible"
+             type="button"
+             class="btn btn-md btn-primary use-button"
+             (click)="useClick()">{{'np.use' | translate}}</a>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 </div>

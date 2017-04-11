@@ -17,6 +17,7 @@
           }"
           [lang]="translate.currentLang"
           [initWithWorldMap]="true"
-          [zoom]="7"
-          [center]="[60.209804323671776, 24.912872314453125]"></laji-map>
+          [zoom]="3"
+          (onCreate)="onCreate($event)"
+          [center]="[64.209802, 24.912872]"></laji-map>
 </div>

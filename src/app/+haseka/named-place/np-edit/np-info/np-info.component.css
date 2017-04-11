@@ -11,3 +11,14 @@
   margin-bottom: 2px;
   margin-top: -7px;
 }
+
+laji-np-info-map {
+  float: right;
+  width: 55%;
+  padding-top: 55%;
+  position: relative;
+}
+
+.use-button {
+  width: 100%;
+}

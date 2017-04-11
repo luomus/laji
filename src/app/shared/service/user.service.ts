@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Response } from '@angular/http';
 import { PersonTokenApi } from '../api/PersonTokenApi';
 import { Observer } from 'rxjs/Observer';
 import { Observable } from 'rxjs/Observable';
@@ -89,8 +90,10 @@ export class UserService {
   public getUser(id?: string): Observable<Person> {
     if (!id) {
       return this.getCurrentUser()
-        .catch((err) => {
-          this.logger.warn('Failed to fetch current users information', err);
+        .catch((err: Response | any) => {
+          if (err instanceof Response && err.status !== 404) {
+            this.logger.error('Failed to fetch current users information', err);
+          }
           this.logout(false);
           return Observable.of({});
         });

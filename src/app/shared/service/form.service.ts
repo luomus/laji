@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { LocalStorage } from 'ng2-webstorage';
-import { UserService } from '../../shared/service/user.service';
-import { Util } from '../../shared/service/util.service';
-import { FormApi } from '../../shared/api/FormApi';
-import { DocumentApi } from '../../shared/api/DocumentApi';
-import { Document } from '../../shared/model/Document';
+import { UserService } from './user.service';
+import { Util } from './util.service';
+import { FormApi } from '../api/FormApi';
+import { DocumentApi } from '../api/DocumentApi';
+import { Document } from '../model/Document';
 import { AppConfig } from '../../app.config';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable()
@@ -57,19 +58,6 @@ export class FormService {
         return Observable.of(true);
       })
       .subscribe();
-  }
-
-  setSuccessMessage(msg: string) {
-    this.successMsg = msg;
-  }
-
-  getSuccessMessage() {
-    let message = '';
-    if (this.successMsg) {
-      message = this.successMsg;
-      this.successMsg = '';
-    }
-    return message;
   }
 
   store(formData) {
@@ -211,17 +199,18 @@ export class FormService {
         .do((forms) => this.allForms = forms);
   }
 
-  getFormDrawData(formId: string, lang: string): Observable<any> {
-    return this.getForm(formId, lang)
-      .switchMap(data => {
-        const drawData = data.uiSchema ? this.getObjectByKey(data.uiSchema, 'draw') : null;
-        return Observable.of(drawData);
-      }
-    );
-  }
-
   populate(data: any) {
     this._populate = Object.assign({}, this._populate, data);
+  }
+
+  getEditUrlPath(formId, documentId) {
+    if (formId === environment.nafiForm) {
+      return '/theme/nafi/form/' + documentId;
+    }
+    if (!formId) {
+      formId = environment.defaultForm;
+    }
+    return '/vihko/' + formId + '/' + documentId;
   }
 
   private getTmpId(num: number) {
@@ -288,26 +277,5 @@ export class FormService {
       (+dateArray[5]),
       (+dateArray[6])
     );
-  }
-
-  private getObjectByKey (obj, key) {
-    let foundObject = null;
-
-    for (const i in obj) {
-      if (!obj.hasOwnProperty(i) || typeof  obj[i] !== 'object') {
-        continue;
-      }
-
-      if (i === key) {
-        foundObject = obj[i];
-      } else if (typeof obj[i] === 'object') {
-        foundObject = this.getObjectByKey(obj[i], key);
-      }
-
-      if (foundObject !== null) {
-        break;
-      }
-    }
-    return foundObject;
   }
 }

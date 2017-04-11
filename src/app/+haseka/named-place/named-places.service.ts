@@ -1,20 +1,31 @@
 import { Injectable } from '@angular/core';
 import { NamedPlaceApi } from '../../shared/api/NamedPlaceApi';
 import { NamedPlace } from '../../shared/model/NamedPlace';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class NamedPlacesService {
 
   constructor(private namedPlaceApi: NamedPlaceApi) { }
 
-  getAllNamePlacesByCollectionId(collectionID: string) {
+  getAllNamePlacesByCollectionId(collectionID: string, page = 1, namedPlaces = [])  {
     return this.namedPlaceApi
       .findAll(
         undefined,
         collectionID,
         undefined,
-        undefined,
-        undefined
+        '' + page,
+        '1000'
+      )
+      .switchMap(
+        result => {
+          namedPlaces.push(...result.results);
+          if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
+            return this.getAllNamePlacesByCollectionId(collectionID, result.currentPage + 1, namedPlaces);
+          } else {
+            return Observable.of(namedPlaces);
+          }
+        }
       );
   }
 

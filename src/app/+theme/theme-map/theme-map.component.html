@@ -1,7 +1,7 @@
-<div class="map-wrap">
-  <div class="title" *ngIf="taxon">
-    <span [ngClass]="{cursive: taxon.cursiveName}">{{taxon.scientificName}}</span>
-    <span *ngIf="taxon.vernacularName">
+<div class="map-wrap" *ngIf="query">
+  <div class="title">
+    <span *ngIf="taxon" [ngClass]="{cursive: taxon.cursiveName}">{{taxon.scientificName}}</span>
+    <span *ngIf="taxon && taxon.vernacularName">
       <br>{{taxon.vernacularName | multiLang}}
     </span>
   </div>
@@ -25,14 +25,20 @@
       <span *ngSwitchDefault>
         {{'theme.count' | translate}}
       </span>
+      <span class="cnt">
+        {{'theme.cnt' | translate}}
+      </span>
     </span>
     <ul>
       <li *ngFor="let leg of legendList">
-        <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{leg.label}}
+        <span class="color" [ngStyle]="{'background-color': leg.color}"></span>
+        {{leg.label}}
+        <span class="cnt">{{count[leg.color] || 0}}</span>
+      </li>
+      <li>
+        {{'theme.total' | translate}}
+        <span class="cnt">{{count['total']}}</span>
       </li>
     </ul>
   </div>
 </div>
-<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'count'}">{{'theme.count' | translate}}</a>
-<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'individuals'}">{{'theme.individualCount' | translate}}</a>
-<a class="type-switch" [routerLink] [queryParams]="{taxonId:taxonId, time: time, grid: grid, type:'newest'}">{{'theme.newest' | translate}}</a>

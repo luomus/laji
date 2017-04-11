@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import * as MapUtil from 'laji-map/lib/utils';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
+import { CoordinateService } from '../../shared/service/coordinate.service';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 @Injectable()
 export class ResultService {
@@ -37,7 +38,8 @@ export class ResultService {
 
   constructor(
     private warehouseApi: WarehouseApi,
-    private taxonomyApi: TaxonomyApi
+    private taxonomyApi: TaxonomyApi,
+    private coordinateService: CoordinateService
   ) { }
 
   getTaxon(taxonId: string) {
@@ -50,32 +52,39 @@ export class ResultService {
     ));
   }
 
-  getResults(collectionId: string, informalGroup: string, time: string): Observable<any> {
-    const cacheKey = collectionId + ':' + informalGroup + ':' + time;
-    return this._fetch('result', cacheKey, this.warehouseApi.warehouseQueryAggregateGet(
-      {
-        collectionId: [collectionId],
-        informalTaxonGroupId: [informalGroup],
-        time: [time]
-      },
-      ['unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName'],
-      ['2'],
+  getResults(query: WarehouseQueryInterface, lang: string): Observable<any> {
+    let vernacular = 'unit.linkings.taxon.nameFinnish';
+    switch (lang) {
+      case 'en':
+        vernacular = 'unit.linkings.taxon.nameEnglish';
+        break;
+      case 'sv':
+        vernacular = 'unit.linkings.taxon.nameSwedish';
+    }
+    return this._fetch('result', JSON.stringify(query) + ':' + lang, this.warehouseApi.warehouseQueryAggregateGet(
+      query,
+      ['unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.taxonomicOrder', vernacular],
+      ['3'],
       1000,
       1,
       false,
       false
-    ));
+    ))
+      .map(data => data.results)
+      .map(data => {
+        return data.map(row => {
+          row.aggregateBy['vernacularName'] =
+            row.aggregateBy['unit.linkings.taxon.nameFinnish'] ||
+            row.aggregateBy['unit.linkings.taxon.nameEnglish'] ||
+            row.aggregateBy['unit.linkings.taxon.nameSwedish'];
+          return row;
+        });
+      });
   }
 
-  getList(grid: string, collectionId: string, taxonId: string, time: string, page: number): Observable<any> {
-    const cacheKey = grid + ':' + collectionId + ':' + taxonId + ':' + time + ':' + page;
-    return this._fetch('list', cacheKey, this.warehouseApi.warehouseQueryListGet(
-      {
-        collectionId: [collectionId],
-        taxonId: [taxonId],
-        time: [time],
-        ykj3: grid
-      },
+  getList(query: WarehouseQueryInterface, page: number): Observable<any> {
+    return this._fetch('list', JSON.stringify(query) + ':' + page, this.warehouseApi.warehouseQueryListGet(
+      query,
       ['document.documentId,gathering.eventDate.begin,gathering.eventDate.end,gathering.municipality,gathering.province,' +
       'gathering.team,gathering.timeBegin,gathering.timeEnd,unit.unitId,unit.linkings.taxon.scientificName'],
       undefined,
@@ -84,16 +93,11 @@ export class ResultService {
     ));
   }
 
-  getGeoJson(taxonId: string, time: string, collectionId: string): Observable<any> {
-    return this._fetch('map', taxonId + time,
+  getGeoJson(query: WarehouseQueryInterface): Observable<any> {
+    return this._fetch('map', JSON.stringify(query),
       this.warehouseApi
         .warehouseQueryAggregateGet(
-          {
-            collectionId: [collectionId],
-            countryId: ['ML.206'],
-            taxonId: [taxonId],
-            time: [time]
-          },
+          query,
           ['gathering.conversions.ykj3.lat,gathering.conversions.ykj3.lon'],
           ['1'],
           5000,
@@ -130,41 +134,20 @@ export class ResultService {
   }
 
   private _resultToGeoJson(data) {
-    const pad = function(value) {
-      value = '' + value;
-      return value + '0000000'.slice(value.length);
-    };
-    const convert = function(latLng) {
-      return MapUtil.convertLatLng(latLng, 'EPSG:2393', 'WGS84');
-    };
     const features = [];
     data.map(result => {
-      const lat = parseInt(result.aggregateBy['gathering.conversions.ykj3.lat'], 10);
-      const lng = parseInt(result.aggregateBy['gathering.conversions.ykj3.lon'], 10);
-      const latStart = pad(lat);
-      const latEnd = pad(lat + 1);
-      const lonStart = pad(lng);
-      const lonEnd = pad(lng + 1);
-      features.push({
-        type: 'Feature',
-        properties: {
+      features.push(this.coordinateService.convertYkjToGeoJsonFeature(
+        result.aggregateBy['gathering.conversions.ykj3.lat'],
+        result.aggregateBy['gathering.conversions.ykj3.lon'],
+        {
           count: result.count || 0,
           individualCountSum: result.individualCountSum || 0,
           newestRecord: result.newestRecord || '',
           oldestRecord: result.oldestRecord || '',
-          grid: lat + ':' + lng
-        },
-        geometry: {
-          type: 'Polygon',
-          coordinates: [[
-            [latStart, lonStart],
-            [latStart, lonEnd],
-            [latEnd, lonEnd],
-            [latEnd, lonStart],
-            [latStart, lonStart],
-          ].map(convert)]
+          grid: result.aggregateBy['gathering.conversions.ykj3.lat'] + ':'
+          + result.aggregateBy['gathering.conversions.ykj3.lon']
         }
-      });
+      ));
     });
     return features;
   }

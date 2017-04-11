@@ -3,7 +3,7 @@
     <tbody>
       <tr *ngFor="let np of namedPlaces; let i = index;">
         <td>
-          <a [ngStyle]="{'font-weight': activeNP == i ? 'bold' : 'normal'}" (click)="changeActivePlace(i)">
+          <a class="link" [ngStyle]="{'font-weight': activeNP == i ? 'bold' : 'normal'}" (click)="changeActivePlace(i)">
             {{np.name}}
           </a>
         </td>

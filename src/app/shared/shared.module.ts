@@ -2,15 +2,16 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpModule, Http } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { DateFormatPipe } from 'angular2-moment/date-format.pipe';
 import {
   TooltipModule,
   PaginationModule,
-  DropdownModule,
+  BsDropdownModule,
   AlertModule,
   ModalModule,
   PopoverModule
-} from 'ng2-bootstrap';
+} from 'ngx-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';
 import { SpinnerComponent } from './spinner/spinner.component';
@@ -64,19 +65,21 @@ import { SourceApi } from './api/SourceApi';
 import { MetadataService } from './service/metadata.service';
 import { ImageModalOverlayComponent } from './image-gallery/image-modal-overlay.component';
 import { NamedPlaceApi } from './api/NamedPlaceApi';
-import { FormService } from '../+haseka/form/form.service';
 import { FormApi } from './api/FormApi';
 import { DocumentApi } from './api/DocumentApi';
 import { LajiFormComponent } from './form/laji-form.component';
 import { OnlyLoggedIn } from './route/only-logged-in';
 import { LajiExternalService } from './service/laji-external.service';
 import { MomentModule } from 'angular2-moment';
+import { DocumentFormComponent } from './document-form/document-form.component';
+import { FormService } from './service/form.service';
+import { CoordinateService } from './service/coordinate.service';
 
 
 @NgModule({
   entryComponents: [ImageModalOverlayComponent],
   declarations: [
-    NewsListComponent,
+    NewsListComponent, DocumentFormComponent,
     SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, FormattedNumber,
     AreaNamePipe, CollectionNamePipe,
@@ -93,14 +96,14 @@ import { MomentModule } from 'angular2-moment';
     TranslateModule,
     ReactiveFormsModule,
     MomentModule,
-    TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule
+    TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule
   ],
   providers: [ ], // keep this empty!
   exports: [
     CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule,
     AreaNamePipe, NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe,
-    ToQNamePipe, ValuesPipe, CollectionNamePipe, LajiFormComponent,
-    ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, PopoverModule,
+    ToQNamePipe, ValuesPipe, CollectionNamePipe, LajiFormComponent, DocumentFormComponent,
+    ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
     AuthoritiesDirective, MomentModule
@@ -122,6 +125,7 @@ export class SharedModule {
         MapService,
         CollectionService,
         WindowRef,
+        CoordinateService,
         ToastsService, AppConfig,
         PersonTokenApi, PersonApi, SearchQuery, WarehouseApi,
         AreaApi, AreaService,
@@ -130,7 +134,8 @@ export class SharedModule {
         MetadataService,
         WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
         AutocompleteApi, FooterService, Ng2Webstorage,
-        DatePipe,
+        DateFormatPipe,
+        ToQNamePipe,
         OnlyLoggedIn,
         {provide: Http, useClass: AuthenticatedHttpService}
       ]

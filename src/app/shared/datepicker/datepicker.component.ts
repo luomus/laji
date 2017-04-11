@@ -59,10 +59,10 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   @Output() onSelect = new EventEmitter();
 
   public validDate = true;
+  public viewDate: string = null;
   private date: any = moment();
   private el: Element;
   private bodyEl: Element;
-  private viewDate: string = null;
   private days: CalendarDate[] = [];
   private cbFunc: any;
 

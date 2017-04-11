@@ -1,9 +1,10 @@
-import { Component, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlacesService } from '../named-places.service';
+import { FormService } from '../../../shared/service/form.service';
 import { NpChooseComponent} from '../np-choose/np-choose.component';
 import { Observable } from 'rxjs/Observable';
 import { FooterService } from '../../../shared/service/footer.service';
@@ -13,9 +14,11 @@ import { FooterService } from '../../../shared/service/footer.service';
   templateUrl: './named-place.component.html',
   styleUrls: ['./named-place.component.css']
 })
-export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
+export class NamedPlaceComponent implements OnInit, OnDestroy {
   formId;
   collectionId;
+
+  formInfo;
 
   namedPlaces: NamedPlace[];
   activeNP = -1;
@@ -33,6 +36,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private route: ActivatedRoute,
     private namedPlaceService: NamedPlacesService,
+    private formService: FormService,
     private footerService: FooterService,
     private translate: TranslateService
   ) {}
@@ -44,11 +48,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     this.updateNP();
-    this.footerService.footerVisible = false;
-  }
+    this.getFormInfo();
 
-  ngOnChanges() {
-    this.updateNP();
+    this.footerService.footerVisible = false;
   }
 
   ngOnDestroy() {
@@ -58,28 +60,42 @@ export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
     this.footerService.footerVisible = true;
   }
 
-  updateNP() {
+  private updateNP() {
     if (this.collectionId) {
       this.namedPlaces$ = this.namedPlaceService
         .getAllNamePlacesByCollectionId(this.collectionId)
-        .map(result => result.results);
+        .map(result => (result));
 
       this.namedPlaces$.subscribe(
         data => {
+          this.setActiveNP(-1);
           this.namedPlaces = data;
-          if (this.activeNP >= 0) {
-            this.namedPlace = this.namedPlaces[this.activeNP];
-          } else {
-            this.namedPlace = null;
+        },
+        err => {
+          this.translate.get('np.loadError')
+            .subscribe(msg => (this.setErrorMessage(msg)));
+        }
+      );
+    }
+  }
+
+  private getFormInfo() {
+    this.formService.getForm(this.formId, this.translate.currentLang)
+      .subscribe(data => {
+          const info = {};
+          info['features'] = data.features ? data.features : [];
+          const drawData = this.getFormDrawData(data);
+          if (this.getFormDrawData(data)) {
+            info['drawData'] = drawData;
           }
+          this.formInfo = info;
         },
         err => {
           const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
           this.translate.get(msgKey, {formId: this.formId})
-            .subscribe(data => this.setErrorMessage(data));
+            .subscribe(msg => this.setErrorMessage(msg));
         }
       );
-    }
   }
 
   setActiveNP(idx: number) {
@@ -99,12 +115,56 @@ export class NamedPlaceComponent implements OnInit, OnDestroy, OnChanges {
     this.editMode = true;
   }
 
-  toNormalMode() {
-    this.updateNP();
+  toNormalMode(np: NamedPlace) {
+    if (np) {
+      if (this.activeNP >= 0) {
+        this.namedPlaces[this.activeNP] = np;
+        this.namedPlace = np;
+      } else {
+        this.namedPlaces.push(np);
+      }
+    }
     this.editMode = false;
   }
 
   setErrorMessage(msg) {
     this.errorMsg = msg;
+  }
+
+  private getFormDrawData(form) {
+    if (!form.uiSchema) {
+      return null;
+    }
+
+    if (form.uiSchema.gatherings) {
+      if (form.uiSchema.gatherings['ui:options'] && form.uiSchema.gatherings['ui:options']['draw']) {
+        return form.uiSchema.gatherings['ui:options']['draw'];
+      } else {
+        return null;
+      }
+    } else {
+      return this.getObjectByKey(form.uiSchema, 'draw');
+    }
+  }
+
+  private getObjectByKey (obj, key) {
+    let foundObject = null;
+
+    for (const i in obj) {
+      if (!obj.hasOwnProperty(i) || typeof  obj[i] !== 'object') {
+        continue;
+      }
+
+      if (i === key) {
+        foundObject = obj[i];
+      } else if (typeof obj[i] === 'object') {
+        foundObject = this.getObjectByKey(obj[i], key);
+      }
+
+      if (foundObject !== null) {
+        break;
+      }
+    }
+    return foundObject;
   }
 }

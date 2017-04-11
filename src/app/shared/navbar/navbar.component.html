@@ -30,16 +30,19 @@
             <li [routerLinkActive]="['active']" *lajiAuthorities="false">
               <a [routerLink]="['/about']">{{ 'navigation.information' | translate }}</a>
             </li>
+            <li>
+              <a href="http://foorumi.laji.fi/">{{'Forum' | translate}}</a>
+            </li>
           </ul>
           <ul class="nav navbar-nav pull-right">
             <li [routerLinkActive]="['active']">
               <div class="navbar-profile" *ngIf="userService.isLoggedIn">
                 <div dropdown>
                   <a dropdownToggle class="link language-toggle">
-                    {{(userService.getUser()|async)?.id | users}}
+                    <span class="hidden-sm">{{(userService.getUser()|async)?.id | users}}</span>
                     <i class="glyphicon glyphicon-user"></i>
                   </a>
-                  <ul dropdownMenu role="menu" aria-labelledby="single-button">
+                  <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
                     <li role="menuitem">
                       <a [routerLink]="['/user']" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
                     </li>

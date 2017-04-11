@@ -13,7 +13,8 @@
 }
 
 .legend {
-  width: 100px;
+  font-size: 10px;
+  width: 105px;
   margin: 0;
   padding: 10px;
   position: absolute;
@@ -23,6 +24,11 @@
   top: 165px;
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+.legend .cnt {
+  display: inline-block;
+  float: right;
 }
 
 .legend .color {

@@ -7,22 +7,21 @@ import { NamedPlace } from '../../../shared/model/NamedPlace';
   styleUrls: ['./np-choose.component.css']
 })
 export class NpChooseComponent {
-  active = 'list';
-  mapActivated = false;
+  active = 'map';
 
+  @Input() formInfo: any;
   @Input() namedPlaces: NamedPlace[];
-  activeNP = -1;
-  @Output() onActivePlaceChange = new EventEmitter<number>();
+  @Input() visible = true;
 
+  @Output() onActivePlaceChange = new EventEmitter<number>();
   @Output() onCreateButtonClick = new EventEmitter();
+
+  activeNP = -1;
 
   constructor() {}
 
   setActive(newActive: string) {
     this.active = newActive;
-    if (!this.mapActivated && newActive === 'map') {
-      this.mapActivated = true;
-    }
   }
 
   setActiveNP(idx: number) {

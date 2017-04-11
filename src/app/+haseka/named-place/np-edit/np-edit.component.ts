@@ -1,11 +1,11 @@
-import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { AppConfig } from '../../../app.config';
-import { FormService } from '../../form/form.service';
+import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { UserService } from '../../../shared/service/user.service';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { Util } from '../../../shared/service/util.service';
+import { FormService } from '../../../shared/service/form.service';
+import { environment } from '../../../../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-np-edit',
@@ -16,12 +16,9 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() namedPlace: NamedPlace;
   @Input() formId: string;
   @Input() collectionId: string;
+  @Input() formInfo: any;
 
-  formData: any;
-  userId: string;
-
-  editButtonVisible: boolean;
-  useButtonVisible: boolean;
+  npFormData: any;
 
   @Input() editMode = false;
   @Output() onEditButtonClick = new EventEmitter();
@@ -31,62 +28,67 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   lang: string;
 
   private npFormId: string;
-  private form$: Subscription;
+  private npForm$: Subscription;
   private translation$: Subscription;
 
   constructor(
-    private appConfig: AppConfig,
     private formService: FormService,
     private translate: TranslateService,
-    private userService: UserService
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.npFormId = this.appConfig.getNamedPlaceFormId();
+    this.npFormId = environment.namedPlaceForm;
     this.fetchForm();
     this.translation$ = this.translate.onLangChange.subscribe(
       () => this.onLangChange()
     );
-    this.userService.getUser().subscribe(data => { this.userId = data.id; });
   }
 
   ngOnDestroy() {
-    if (this.form$) {
-      this.form$.unsubscribe();
+    if (this.npForm$) {
+      this.npForm$.unsubscribe();
     }
     this.translation$.unsubscribe();
   }
 
-  ngOnChanges() {
-    this.setFormData();
-    this.setButtonVisibilities();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['namedPlace']) {
+      this.setFormData();
+    }
   }
 
   onLangChange() {
-    if (this.form$) {
-      this.form$.unsubscribe();
+    if (this.npForm$) {
+      this.npForm$.unsubscribe();
     }
-    const data = this.formData.formData;
-    this.formData = null;
-    this.form$ = this.formService
+    const data = this.npFormData.formData;
+    this.npFormData = null;
+    this.npForm$ = this.formService
       .getForm(this.npFormId, this.translate.currentLang)
       .subscribe(form => {
         form['formData'] = data;
+        if (this.formInfo.drawData) {
+          form['uiSchema']['namedPlace']['ui:options']['draw'] = this.formInfo.drawData;
+        }
         this.lang = this.translate.currentLang;
-        this.formData = form;
+        this.npFormData = form;
       });
   }
 
   fetchForm() {
-    if (this.form$) {
-      this.form$.unsubscribe();
+    if (this.npForm$) {
+      this.npForm$.unsubscribe();
     }
     this.lang = this.translate.currentLang;
-    this.form$ = this.formService
+    this.npForm$ = this.formService
       .load(this.npFormId, this.lang)
       .subscribe(
         data => {
-          this.setData(data);
+          if (this.formInfo.drawData) {
+            data['uiSchema']['namedPlace']['ui:options']['draw'] = this.formInfo.drawData;
+          }
+          this.npFormData = data;
         },
         err => {
           const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
@@ -96,26 +98,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       );
   }
 
-  setData(data) {
-    const drawData$ = this.formService
-      .getFormDrawData(this.formId, this.lang)
-      .subscribe(
-        drawData => {
-          if (drawData) {
-            data['uiSchema']['namedPlace']['ui:options']['draw'] = drawData;
-          }
-          this.formData = data;
-        },
-        err => {
-          const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
-          this.translate.get(msgKey, {formId: this.formId})
-            .subscribe(msg => this.onError.emit(msg));
-        }
-      );
-  }
-
   setFormData() {
-    if (!this.formData || !this.userId) {
+    if (!this.npFormData) {
       return;
     }
 
@@ -124,7 +108,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
       npData['geometryOnMap'] = {type: 'GeometryCollection', geometries: [npData.geometry]};
 
-      if (npData.prepopulatedDocument && npData.prepopulatedDocument.gatherings && npData.prepopulatedDocument.gatherings.length > 0) {
+      if (npData.prepopulatedDocument && npData.prepopulatedDocument.gatherings && npData.prepopulatedDocument.gatherings[0]) {
         const gathering = npData.prepopulatedDocument.gatherings[0];
         if (gathering.locality) {
           npData['locality'] = gathering.locality;
@@ -134,9 +118,9 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
 
-      this.formData.formData.namedPlace = [npData];
-    } else if ('namedPlace' in this.formData.formData) {
-      delete this.formData.formData['namedPlace'];
+      this.npFormData.formData.namedPlace = [npData];
+    } else {
+      this.npFormData.formData.namedPlace = [{ 'collectionID': this.collectionId }];
     }
   }
 
@@ -144,30 +128,29 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     this.onEditButtonClick.emit();
   }
 
-  editReady() {
-    this.onEditReady.emit();
+  useClick() {
+    this.populateForm();
+    this.router.navigate(['/vihko/' + this.formId]);
   }
 
-  populateForm() {
+  editReady(np: NamedPlace) {
+    this.onEditReady.emit(np);
+  }
+
+  private populateForm() {
     const np = this.namedPlace;
 
     const populate: any = np.prepopulatedDocument ? np.prepopulatedDocument : {};
 
-    if (!populate.gatherings || populate.gatherings.length <= 0) {
-      populate['gatherings'] = [{}];
+    if (!populate.gatherings) {
+      populate.gatherings = [{}];
+    } else if (!populate.gatherings[0]) {
+      populate.gatherings[0] = {};
     }
-
-    populate.gatherings[0]['geometry'] = {type: 'GeometryCollection', geometries: [np.geometry]};
+    if (!populate.gatherings[0].geometry) {
+      populate.gatherings[0]['geometry'] = {type: 'GeometryCollection', geometries: [np.geometry]};
+    }
 
     this.formService.populate(populate);
-  }
-
-  private setButtonVisibilities() {
-    if (this.namedPlace) {
-      this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(this.userId) !== -1);
-      this.useButtonVisible = (this.namedPlace.public ||
-      (this.namedPlace.owners && this.namedPlace.owners.indexOf(this.userId) !== -1) ||
-      (this.namedPlace.editors && this.namedPlace.editors.indexOf(this.userId) !== -1));
-    }
   }
 }

@@ -1,6 +1,7 @@
-<div>
-  <h3>{{formData?.title}}</h3>
-  <p>{{formData?.description}}</p>
-  <laji-form [formData]="formData" [lang]="translate.currentLang">
-  </laji-form>
-</div>
+<laji-document-form
+        [formId]="formId"
+        [documentId]="documentId"
+        [donePath]="donePath"
+        [tmpPath]="tmpPath"
+>
+</laji-document-form>

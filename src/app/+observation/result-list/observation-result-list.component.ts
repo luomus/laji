@@ -6,12 +6,12 @@ import { SearchQuery } from '../search-query.model';
 import { Util } from '../../shared/service/util.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../../shared/logger/logger.service';
-import { SessionStorage } from 'ng2-webstorage';
+import { LocalStorage } from 'ng2-webstorage';
 import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { ModalDirective } from 'ng2-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap';
 import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 
 interface Column {
@@ -32,7 +32,7 @@ interface Column {
 })
 export class ObservationResultListComponent implements OnInit, OnDestroy {
   @ViewChild('documentModal') public modal: ModalDirective;
-  @SessionStorage() userColumns: Column[];
+  @LocalStorage() userColumns: Column[];
   @Input() showPager = true;
   @Output() onSelect: EventEmitter<string> = new EventEmitter<string>();
 
@@ -42,7 +42,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
       translation: 'result.unit.taxonVerbatim', visible: true, sortBy: false
     },
     {field: 'unit.linkings.taxon.scientificName', translation: 'result.scientificName', visible: true},
-    {field: 'gathering.team', visible: true, sortBy: false},
+    {field: 'gathering.team', visible: true, sortBy: 'gathering.team'},
     {field: 'document.createdDate', visible: false, sortBy: false},
     {field: 'gathering.eventDate', visible: true, sortBy: 'gathering.eventDate.begin,gathering.eventDate.end'},
     {field: 'gathering.interpretations.countryDisplayname', visible: false,
@@ -54,8 +54,8 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     {field: 'gathering.locality', visible: false},
     {field: 'gathering.conversions.ykj', visible: false, sortBy: false},
     {field: 'gathering.coordinatesVerbatim', visible: false, sortBy: false},
-    {field: 'unit.abundanceString', visible: false, sortBy: false},
-    {field: 'unit.interpretations.individualCount', visible: true, sortBy: false},
+    {field: 'unit.abundanceString', visible: true, sortBy: false},
+    {field: 'unit.interpretations.individualCount', visible: false, sortBy: false},
     {field: 'unit.lifeStage', visible: false, sortBy: false, translation: 'observation.form.lifeStage'},
     {field: 'unit.sex', visible: false, sortBy: false, translation: 'observation.form.sex'},
     {field: 'unit.recordBasis', visible: false, sortBy: false, translation: 'observation.filterBy.recordBasis'},
@@ -65,7 +65,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     {field: 'gathering.interpretations.coordinateAccuracy', visible: false, sortBy: false},
     {field: 'document.secureLevel', visible: false, sortBy: false},
     {field: 'document.secureReasons', visible: false, sortBy: false},
-    {field: 'document.sourceId', visible: false, async: true}
+    {field: 'document.sourceId', visible: false, async: true, sortBy: 'document.sourceId'}
   ];
 
   public result: PagedResult<any>;
@@ -194,6 +194,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
             'pageSize',
             'page'
           ]);
+          this.onSettingsOpen();
         },
         err => {
           this.logger.warn('Failed to fetch list result', err);
@@ -252,21 +253,21 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     return val;
   }
 
-  toggledFieldSelect(event) {
-    if (event === false) { // when closing
-      if (this.updateUserCols()) {
-        this.fetchRows(this.page, true);
-      }
-    } else {               // when opening
-      this.columns.map((col, idx) => {
-        const userCol = this.userColumns.filter((src) => src.field === col.field);
-        if (userCol.length !== 1) {
-          this.columns[idx].visible = false;
-          return;
-        }
-        this.columns[idx].visible = typeof userCol[0].visible === 'undefined' || userCol[0].visible;
-      });
+  onSettingsClose() {
+    if (this.updateUserCols()) {
+      this.fetchRows(this.page, true);
     }
+  }
+
+  onSettingsOpen() {
+    this.columns.map((col, idx) => {
+      const userCol = this.userColumns.filter((src) => src.field === col.field);
+      if (userCol.length !== 1) {
+        this.columns[idx].visible = false;
+        return;
+      }
+      this.columns[idx].visible = typeof userCol[0].visible === 'undefined' || userCol[0].visible;
+    });
   }
 
   showDocument(row) {
@@ -277,5 +278,9 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
 
   toggleColumn(col: Column) {
     col.visible = !col.visible;
+
+    // ngx-bootstrap has a bug wher it's not triggering onHidden event as expected
+    // when that's fixed this line can be removed
+    this.onSettingsClose();
   }
 }

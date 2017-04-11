@@ -4,28 +4,31 @@
       <h1>{{'haseka.title' | translate}}</h1>
       <p>{{'haseka.pleaseLogin' | translate}}</p>
     </div>
-    <div class="container full-height" in>
-      <laji-spinner [spinning]="!namedPlaces && !errorMsg" [overlay]="true"></laji-spinner>
+    <div class="container full-height" in id="container">
+      <laji-spinner [spinning]="!(namedPlaces && formInfo) && !errorMsg" [overlay]="true"></laji-spinner>
 
-      <div id="np-container" [ngClass]="{hidden: !namedPlaces || errorMsg}">
-        <h1>
-          {{'np.title' | translate}}
-        </h1>
-        <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
+      <h1>
+        {{'np.title' | translate}}
+      </h1>
+
+      <div class="full-height" *ngIf="namedPlaces && formInfo && !errorMsg">
         <div class="row np-row full-height">
-          <div [ngClass]="editMode? 'hidden' : 'col-sm-6 full-height'" id="choose-container">
+          <div [ngClass]="{'col-xs-12 col-sm-6 full-height': !editMode}">
             <laji-np-choose [namedPlaces]="namedPlaces"
+                            [formInfo]="formInfo"
+                            [visible]="!editMode"
                             (onActivePlaceChange)="setActiveNP($event)"
                             (onCreateButtonClick)="toEditMode(true)"
                             class="full-height"></laji-np-choose>
           </div>
-          <div [ngClass]="editMode? 'col-sm-12 nav-margin' : 'col-sm-6 nav-margin'">
+          <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-sm-6 nav-margin'">
             <laji-np-edit [editMode]="editMode"
                           [formId]="formId"
                           [collectionId]="collectionId"
                           [namedPlace]="namedPlace"
+                          [formInfo]="formInfo"
                           (onEditButtonClick)="toEditMode(false)"
-                          (onEditReady)="toNormalMode()"
+                          (onEditReady)="toNormalMode($event)"
                           (onError)="setErrorMessage($event)"></laji-np-edit>
           </div>
         </div>

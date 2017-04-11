@@ -12,7 +12,6 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() visible = false;
   @Input() namedPlaces: NamedPlace[];
   @Input() activeNP: number;
-  @Input() mapHeight: string;
   @Output() onActivePlaceChange = new EventEmitter<number>();
 
   private _data: any;
@@ -21,13 +20,12 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnInit() {
     this.initMapData();
-
-
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['namedPlaces']) {
       this.initMapData();
+      this.setMapData();
     }
     if (changes['activeNP']) {
       const c = changes['activeNP'];
@@ -41,13 +39,10 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   setMapData() {
     if (this._data && this.lajiMap.map) {
-      this.lajiMap.map.setData([this._data || {}]);
+      this.lajiMap.map.setData([this._data]);
 
       const geojsonLayer = this.lajiMap.map.dataLayerGroups[0];
-      /*this.lajiMap.map.map.fitBounds(
-        geojsonLayer.getBounds(),
-        {maxZoom: this.lajiMap.map.map.getZoom()}
-      );*/
+
       const that = this;
       geojsonLayer.on({
         click: (event) => {

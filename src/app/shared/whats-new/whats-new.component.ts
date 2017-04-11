@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ng2-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap';
 import { LocalStorage } from 'ng2-webstorage';
 
 @Component({
@@ -13,7 +13,7 @@ export class WhatsNewComponent implements OnInit {
 
   @LocalStorage() public version;
 
-  public error: boolean = false;
+  public error = false;
 
   @ViewChild('whatsNewModal') public modal: ModalDirective;
 

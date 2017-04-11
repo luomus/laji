@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, ViewChild, EventEmitter, ContentChildren, HostListener } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiFormComponent } from '../../../../shared/form/laji-form.component';
-import { FormService } from '../../../form/form.service';
 import { UserService } from '../../../../shared/service/user.service';
 import { NamedPlacesService } from '../../named-places.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
@@ -18,23 +17,19 @@ export class NpEditFormComponent implements OnInit {
   @Input() lang: string;
   @Input() formData: any;
   @Input() namedPlace: NamedPlace;
-  @Input() collectionId: string;
   @Output() onEditReady = new EventEmitter<NamedPlace>();
 
   tick = 0;
   saving = false;
-  enablePrivate = false;
   status = '';
   error = '';
 
   private hasChanges = false;
-  private public = false;
 
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
   @ContentChildren(LajiFormComponent) lajiFormChildren;
 
   constructor(
-    private formService: FormService,
     private  userService: UserService,
     private namedPlaceService: NamedPlacesService,
     private winRef: WindowRef,
@@ -43,7 +38,7 @@ export class NpEditFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.enablePrivate = !this.formData.features || this.formData.features.indexOf(Form.Feature.NoPrivate) === -1;
+
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -54,7 +49,7 @@ export class NpEditFormComponent implements OnInit {
     }
   }
 
-  onChange() {
+  onChange(event) {
     this.hasChanges = true;
     this.status = 'unsaved';
   }
@@ -83,7 +78,7 @@ export class NpEditFormComponent implements OnInit {
           .subscribe(value => {
             this.toastsService.showSuccess(value);
           });
-        this.onEditReady.emit();
+        this.onEditReady.emit(result);
       },
       (err) => {
         this.lajiForm.unBlock();
@@ -100,12 +95,6 @@ export class NpEditFormComponent implements OnInit {
   }
 
   submitPublic() {
-    this.public = true;
-    this.lajiForm.submit();
-  }
-
-  submitPrivate() {
-    this.public = false;
     this.lajiForm.submit();
   }
 
@@ -115,7 +104,6 @@ export class NpEditFormComponent implements OnInit {
         if (!this.hasChanges) {
           this.onEditReady.emit();
         } else if (this.winRef.nativeWindow.confirm(confirm)) {
-          this.formService.discard();
           this.onEditReady.emit();
         }
       }
@@ -123,10 +111,10 @@ export class NpEditFormComponent implements OnInit {
   }
 
   private getNamedPlaceData(event) {
-    const filteredKeys = ['geometryOnMap', 'locality', 'localityDescription'];
+    const filteredKeys = ['geometryOnMap', 'locality', 'localityDescription', 'placeWrapper'];
 
     const formData = event.data.formData.namedPlace[0];
-    const data: NamedPlace = {'name': '', 'geometry': ''};
+    const data: any = {};
 
     const keys = Object.keys(formData);
 
@@ -137,28 +125,32 @@ export class NpEditFormComponent implements OnInit {
       }
     }
     data['geometry'] = formData.geometryOnMap.geometries[0];
-    data['public'] = this.public;
-    data['collectionID'] = this.collectionId;
+    data['public'] = true;
 
     this.localityToPrepopulatedDocument(data, formData);
+
     return data;
   }
 
   private localityToPrepopulatedDocument(data, formData) {
     if (formData.locality || formData.localityDescription) {
-      data['prepopulatedDocument'] =
+      data.prepopulatedDocument =
         (this.namedPlace && this.namedPlace.prepopulatedDocument) ? this.namedPlace.prepopulatedDocument : {};
 
-      if (!data.prepopulatedDocument.gatherings || data.prepopulatedDocument.gatherings.length <= 0) {
-        data.prepopulatedDocument['gatherings'] = [{}];
+      const populate = data.prepopulatedDocument;
+
+      if (!populate.gatherings) {
+        populate.gatherings = [{}];
+      } else if (!populate.gatherings[0]) {
+        populate.gatherings[0] = {};
       }
 
       if (formData.locality) {
-        data.prepopulatedDocument.gatherings[0]['locality'] = formData.locality;
+        populate.gatherings[0].locality = formData.locality;
       }
 
       if (formData.localityDescription) {
-        data.prepopulatedDocument.gatherings[0]['localityDescription'] = formData.localityDescription;
+        populate.gatherings[0].localityDescription = formData.localityDescription;
       }
     }
   }

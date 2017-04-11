@@ -1,15 +1,14 @@
 <div class="container-fluid nafi">
   <div class="row" id="wrapper">
-    <div style="background-color: #ECF0F1;" class="col-sm-4 col-md-3 col-lg-2">
+    <div style="background-color: #ECF0F1;" class="col-sm-3 col-md-3 col-lg-2">
       <h1>NAFI</h1>
       <ul class="sidebar-nav">
-        <li><a [routerLink]="['../nafi']">{{'nafi.stats' | translate}}</a></li>
-        <li><a [routerLink]="['../nafi', 'form']">{{'nafi.form' | translate}}</a></li>
-        <li><a [routerLink]="['../nafi', 'myObservations']">{{'nafi.myObservations' | translate}}</a></li>
         <li><a [routerLink]="['../nafi', 'instructions']">{{'instructions' | translate}}</a></li>
+        <li><a [routerLink]="['../nafi', 'stats']">{{'nafi.stats' | translate}}</a></li>
+        <li *ngIf="showForm"><a [routerLink]="['../nafi', 'form']">{{'nafi.form' | translate}}</a></li>
       </ul>
     </div>
-    <div class="col-sm-8 col-md-9 col-lg-10 nafi-content">
+    <div class="col-sm-9 col-md-9 col-lg-10 nafi-content">
       <router-outlet></router-outlet>
     </div>
   </div>

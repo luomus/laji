@@ -13,6 +13,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { MapComponent } from '../../shared/map/map.component';
 import LatLngBounds = L.LatLngBounds;
 import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
+import { CoordinateService } from '../../shared/service/coordinate.service';
 
 const maxCoordinateAccuracy = 10000;
 
@@ -53,7 +54,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     'unit.linkings.taxon',
     'gathering.team',
     'gathering.eventDate',
-    'document.documentId'
+    'document.documentId',
+    'unit.unitId'
   ];
 
   public mapData;
@@ -96,6 +98,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   constructor(private warehouseService: WarehouseApi,
               public translate: TranslateService,
               private decorator: ValueDecoratorService,
+              private coordinateService: CoordinateService,
               private logger: Logger
   ) {
   }
@@ -252,6 +255,17 @@ export class ObservationMapComponent implements OnInit, OnChanges {
             [parts[2], parts[0]]
           ]]
         }));
+      } else if (system === 'YKJ' && parts.length === 2) {
+        if (!this.query.coordinateAccuracyMax) {
+          setTimeout(() => {
+            this.query.coordinateAccuracyMax = Math.pow(10, 7 - parts[0].length);
+          });
+        }
+        features.push(
+          this.coordinateService.convertYkjToGeoJsonFeature(
+            parts[0], parts[1]
+          )
+        );
       }
     });
     if (features.length) {
@@ -452,10 +466,17 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       let description = '';
       this.itemFields.map(field => {
         const name = field.split('.').pop();
-        if (properties[name]) {
+        if (properties[name] && name !== 'documentId' && name !== 'unitId') {
           description += this.decorator.decorate(field, properties[name], {}) + '<br>';
         }
       });
+      if (properties['documentId'] && properties['unitId']) {
+        description += '<a href="/view?uri=' +
+          properties['documentId'] +
+          '&highlight=' +
+          properties['unitId'].replace('#', '_') + '">' +
+          properties['documentId'] + '</a>';
+      }
       if (description) {
         cb(description);
       } else if (cnt) {

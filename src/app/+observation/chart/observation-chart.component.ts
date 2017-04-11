@@ -27,8 +27,8 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
 
   public informalGroups: InformalTaxonGroup[] = [];
   public data: any;
+  public loading = false;
   private group: string;
-  private loading = false;
 
   private subDataQuery: Subscription;
   private subInformal: Subscription;

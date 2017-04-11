@@ -1,14 +1,12 @@
 <h3>{{'haseka.forms.title' | translate}}</h3>
 <ul>
   <li *ngFor="let form of formList">
-    <span *ngIf="form.features && form.features.indexOf('MHL.featureNamedPlace') > -1">
-      <a [routerLink]="['/vihko/np/' + form.collectionID + '/'+ form.id]">
-        {{form.title}}
-      </a>
-    </span>
-    <span *ngIf="!form.features || form.features.indexOf('MHL.featureNamedPlace') === -1">
-      <a [routerLink]="['/vihko/' + form.id]">
-        {{form.title}}
+    <a (click)="goToForm(form)" class="link">
+      {{form.title}}
+    </a>
+    <span *ngIf="isAdmin && form.features && form.features.indexOf('MHL.featureRestrictAccess') > -1">
+      <a [routerLink]="['/vihko/fp/' + form.collectionID + '/admin']">
+        (Hallinnoi lomakkeen käyttöä)
       </a>
     </span>
   </li>

@@ -16,8 +16,9 @@ export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {
   private static cache;
 
   @Input() openId: string;
-  private options = null;
-  private nodes = [];
+
+  public options = null;
+  public nodes = [];
 
   @ViewChild(TreeComponent)
   private tree: TreeComponent;

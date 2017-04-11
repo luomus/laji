@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { NpChooseComponent } from './np-choose.component';
+import { NpEditComponent } from './np-edit.component';
 
 describe('NpChooseComponent', () => {
-  let component: NpChooseComponent;
-  let fixture: ComponentFixture<NpChooseComponent>;
+  let component: NpEditComponent;
+  let fixture: ComponentFixture<NpEditComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NpChooseComponent ]
+      declarations: [ NpEditComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NpChooseComponent);
+    fixture = TestBed.createComponent(NpEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

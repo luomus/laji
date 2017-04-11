@@ -1,29 +1,29 @@
-<div *ngIf="namedPlaces" [ngClass]="{'full-height': active === 'map'}">
-  <div>
+<div *ngIf="namedPlaces && visible" class="full-height" id="choose-container">
+  <div id="navbar">
     <ul class="nav nav-tabs nav-justified">
-      <li role="presentation" [ngClass]="{active: active === 'list'}">
-        <a (click)="setActive('list')">{{'np.list' | translate}}</a>
-      </li>
       <li role="presentation" [ngClass]="{active: active === 'map'}">
         <a (click)="setActive('map')">{{'np.map' | translate}}</a>
+      </li>
+      <li role="presentation" [ngClass]="{active: active === 'list'}">
+        <a (click)="setActive('list')">{{'np.list' | translate}}</a>
       </li>
     </ul>
   </div>
 
-  <div [ngClass]="{hidden: active !== 'list'}">
+  <div [ngClass]="{hidden: active !== 'list'}" id="list-container">
     <laji-np-list [namedPlaces]="namedPlaces" [activeNP]="activeNP" (onActivePlaceChange)="setActiveNP($event)"></laji-np-list>
   </div>
 
-  <div class="full-height" [ngClass]="{hidden: active !== 'map'}" *ngIf="mapActivated">
+  <div class="full-height" [ngClass]="{hidden: active !== 'map'}">
     <laji-np-map [namedPlaces]="namedPlaces"
                  [activeNP]="activeNP"
-                 [visible]="active === 'map'"
+                 [visible]="active === 'map' && visible"
                  (onActivePlaceChange)="setActiveNP($event)"
                  class="full-height"></laji-np-map>
   </div>
 
-  <button class="btn btn-md btn-default"
+  <button *ngIf="formInfo.features.indexOf('MHL.featureAddingNamedPlacesNotAllowed') === -1"
+          class="btn btn-md btn-default"
           id="create-new-button"
           (click)="createButtonClick()">{{'np.createNew' | translate}}</button>
 </div>
-<!--a [routerLink]="" class="btn btn-lg btn-default">{{'np.createNew' | translate}}</a-->

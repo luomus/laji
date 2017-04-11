@@ -18,13 +18,13 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   public taxon: Taxonomy;
   public taxonDescription: Array<TaxonomyDescription>;
   public taxonImages: Array<TaxonomyImage>;
-  public activePanel: number = 0;
-  public activeImage: number = 1;
+  public activePanel = 0;
+  public activeImage = 1;
   public activeImageTab: string;
   public hasCollectionImages = true;
   public hasTaxonImages = true;
   public hasDescription = true;
-  public activeDescription: number = 0;
+  public activeDescription = 0;
 
   @Input() public taxonId: string;
 
@@ -104,7 +104,9 @@ export class InfoCardComponent implements OnInit, OnDestroy {
           this.taxonDescription = descriptions;
           this.hasDescription = descriptions.length > 0;
           setTimeout(() => {
-            this.map.invalidateSize();
+            if (this.map) {
+              this.map.invalidateSize();
+            }
           }, 100);
         },
         err => this.logger.warn('Failed to fetch taxon description by id', err)
@@ -120,7 +122,9 @@ export class InfoCardComponent implements OnInit, OnDestroy {
           this.activeImageTab = this.hasTaxonImages ? 'taxon' : 'collection';
           this.taxonImages = media;
           setTimeout(() => {
-            this.map.invalidateSize();
+            if (this.map) {
+              this.map.invalidateSize();
+            }
           }, 100);
         },
         err => this.logger.warn('Failed to fetch taxon media by id', err)

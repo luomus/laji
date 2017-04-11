@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { Document } from '../../shared/model/Document';
-import { FormService } from '../form/form.service';
+import { FormService } from '../../shared/service/form.service';
 
 @Component({
   selector: 'laji-short-document',
@@ -9,12 +10,16 @@ import { FormService } from '../form/form.service';
 })
 export class ShortDocumentComponent implements OnInit, OnChanges {
   @Input() document: Document;
-  @Input() showList: boolean = false;
+  @Input() showList = false;
 
   public taxa: Array<{ name: string, id: string }>;
   public gatheringDates: { start: string, end: string };
+  public publicity = Document.PublicityRestrictionsEnum;
 
-  constructor(public formService: FormService) {}
+  constructor(
+    public formService: FormService,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.updateTaxa();
@@ -27,20 +32,20 @@ export class ShortDocumentComponent implements OnInit, OnChanges {
   }
 
   updateTaxa(max = 10) {
-    let result = [];
-    if (!this.document.gatherings) {
+    const result = [];
+    if (!this.document.gatherings || !Array.isArray(this.document.gatherings)) {
       return result;
     }
     this.document.gatherings.map((gathering) => {
-      if (!gathering.units) {
+      if (!gathering.units || !Array.isArray(gathering.units)) {
         return;
       }
       return gathering.units.map((unit) => {
         let taxon = unit.informalNameString || '';
-        if (unit.identifications) {
+        if (unit.identifications && Array.isArray(unit.identifications)) {
           taxon = unit.identifications.reduce(
             (acc, cur) => {
-              let curTaxon = cur.taxon || cur.taxonVerbatim;
+              const curTaxon = cur.taxon || cur.taxonVerbatim;
               return acc ? acc + ', ' + curTaxon : curTaxon;
             }, taxon );
         }
@@ -68,5 +73,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges {
     });
   }
 
-
+  editDocument(formId, documentId) {
+    this.router.navigate([this.formService.getEditUrlPath(formId, documentId)]);
+  }
 }
