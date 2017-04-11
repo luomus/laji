@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { InformalTaxonGroup } from '../../shared';
+import { PagedResult } from '../../shared/model/PagedResult';
 
 @Component({
   selector: 'laji-informal-list',
@@ -9,6 +10,6 @@ import { InformalTaxonGroup } from '../../shared';
 })
 export class InformalListComponent {
 
-  @Input() tree: Array<InformalTaxonGroup>;
+  @Input() tree: PagedResult<InformalTaxonGroup>;
 
 }

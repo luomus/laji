@@ -49,7 +49,7 @@ export class NpEditFormComponent implements OnInit {
     }
   }
 
-  onChange() {
+  onChange(event) {
     this.hasChanges = true;
     this.status = 'unsaved';
   }

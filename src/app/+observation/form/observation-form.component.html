@@ -204,17 +204,6 @@
               </datalist>
             </div>
           </div>
-          <div class="row hidden">
-            <div class="col-sm-12">
-              <label>
-                <input type="checkbox"
-                       [(ngModel)]="formQuery.inclusiveCoordinates"
-                       (ngModelChange)="onCheckBoxToggle('inclusiveCoordinates')"
-                       name="inclusiveCoordinates">
-                {{'observation.form.inclusiveCoordinates' | translate}}
-              </label>
-            </div>
-          </div>
         </div>
         <div laji-panel [title]="'MY.recordBasis' | label" [autoToggle]="true">
           <div class="row">

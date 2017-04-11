@@ -393,7 +393,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  onFilterSelect() {
+  onFilterSelect(event) {
     this.onSubmit();
   }
 

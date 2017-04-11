@@ -14,6 +14,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges {
 
   public taxa: Array<{ name: string, id: string }>;
   public gatheringDates: { start: string, end: string };
+  public publicity = Document.PublicityRestrictionsEnum;
 
   constructor(
     public formService: FormService,
@@ -75,6 +76,4 @@ export class ShortDocumentComponent implements OnInit, OnChanges {
   editDocument(formId, documentId) {
     this.router.navigate([this.formService.getEditUrlPath(formId, documentId)]);
   }
-
-
 }

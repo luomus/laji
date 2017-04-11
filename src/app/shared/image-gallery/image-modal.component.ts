@@ -11,7 +11,7 @@ import {
   ComponentRef
 } from '@angular/core';
 import { Image } from './image.interface';
-import { ComponentLoaderFactory, ComponentLoader } from 'ng2-bootstrap';
+import { ComponentLoaderFactory, ComponentLoader } from 'ngx-bootstrap';
 import { ImageModalOverlayComponent } from './image-modal-overlay.component';
 
 /**

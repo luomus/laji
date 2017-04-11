@@ -9,8 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ViewerComponent implements OnInit, OnDestroy {
 
-  private uri: string;
-  private highlight: string;
+  public uri: string;
+  public highlight: string;
   private subQuery: Subscription;
 
   constructor(private route: ActivatedRoute) { }

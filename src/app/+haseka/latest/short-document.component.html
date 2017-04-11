@@ -1,7 +1,7 @@
 <a class="link" (click)="editDocument(document.formID, document.id)">
   {{document.id}} <small>{{document.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'}}</small>
 </a>
-<span *ngIf="document.publicityRestrictions === 'MZ.publicityRestrictionsPrivate'">
+<span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
   <span class="label label-warning"
         [tooltip]="'haseka.form.private' | translate">
     <i class="glyphicon glyphicon-eye-close"></i>

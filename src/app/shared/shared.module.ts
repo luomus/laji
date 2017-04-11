@@ -7,11 +7,11 @@ import { DateFormatPipe } from 'angular2-moment/date-format.pipe';
 import {
   TooltipModule,
   PaginationModule,
-  DropdownModule,
+  BsDropdownModule,
   AlertModule,
   ModalModule,
   PopoverModule
-} from 'ng2-bootstrap';
+} from 'ngx-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';
 import { SpinnerComponent } from './spinner/spinner.component';
@@ -96,14 +96,14 @@ import { CoordinateService } from './service/coordinate.service';
     TranslateModule,
     ReactiveFormsModule,
     MomentModule,
-    TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule
+    TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule
   ],
   providers: [ ], // keep this empty!
   exports: [
     CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule,
     AreaNamePipe, NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe,
     ToQNamePipe, ValuesPipe, CollectionNamePipe, LajiFormComponent, DocumentFormComponent,
-    ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, PopoverModule,
+    ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
     AuthoritiesDirective, MomentModule

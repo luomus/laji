@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ResultService } from '../service/result.service';
-import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
+import { ModalDirective } from 'ngx-bootstrap/modal/modal.component';
 import { Router } from '@angular/router';
 import { MapTypes } from '../theme-map/theme-map.component';
 import { Subscription } from 'rxjs/Subscription';

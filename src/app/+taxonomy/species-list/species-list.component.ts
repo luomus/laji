@@ -18,7 +18,7 @@ export class SpeciesListComponent implements OnChanges {
 
   @Input() informalGroup: InformalTaxonGroup;
 
-  loading: boolean = false;
+  loading = false;
   speciesPage: PagedResult<Taxonomy>;
 
   private subFetch: Subscription;

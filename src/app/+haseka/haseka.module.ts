@@ -10,7 +10,7 @@ import {
   HaSeKaTermsOfServiceComponent
 } from './index';
 import { SharedModule } from '../shared/shared.module';
-import { AlertModule } from 'ng2-bootstrap';
+import { AlertModule } from 'ngx-bootstrap';
 import { FormApi } from '../shared/api/FormApi';
 import { DocumentApi } from '../shared/api/DocumentApi';
 import { NamedPlaceModule } from './named-place/named-place.module';
