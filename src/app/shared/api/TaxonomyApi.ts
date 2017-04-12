@@ -61,8 +61,10 @@ export class TaxonomyApi {
       queryParameters.set('lang', lang);
     }
 
-    Object.keys(extraHttpRequestParams)
-      .map(key => queryParameters.set(key, extraHttpRequestParams[key]));
+    if (extraHttpRequestParams) {
+      Object.keys(extraHttpRequestParams)
+        .map(key => queryParameters.set(key, extraHttpRequestParams[key]));
+    }
 
     let requestOptions: RequestOptionsArgs = {
       method: 'GET',
@@ -105,8 +107,11 @@ export class TaxonomyApi {
       queryParameters.set('maxLevel', maxLevel);
     }
 
-    Object.keys(extraHttpRequestParams)
-      .map(key => queryParameters.set(key, extraHttpRequestParams[key]));
+
+    if (extraHttpRequestParams) {
+      Object.keys(extraHttpRequestParams)
+        .map(key => queryParameters.set(key, extraHttpRequestParams[key]));
+    }
 
     let requestOptions: RequestOptionsArgs = {
       method: 'GET',

@@ -200,7 +200,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       .load(this.formId, this.translate.currentLang)
       .subscribe(
         data => {
-          console.log(this.getPathWithParams(this.tmpPath, this.formId, 'T:123'));
           this.loading = false;
           this.formService
             .store(data.formData)
