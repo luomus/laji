@@ -39,9 +39,21 @@ body {
 #content .container-fluid > div {
   flex: 1 0 auto;
 }
-laji-observation, laji-home, laji-taxonomy, haseka {
-  z-index: auto;
+
+.full-height {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
 }
+
+.full-width {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
 #footer {
   z-index: 0;
 }

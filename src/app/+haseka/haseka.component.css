@@ -1,3 +1,10 @@
+:host {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  z-index: auto;
+}
+
 .more-info {
   padding-bottom: 10px;
   padding-top: 15px;

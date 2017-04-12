@@ -6,6 +6,14 @@ import { SearchQuery } from './search-query.model';
 @Component({
   selector: 'laji-observation',
   templateUrl: './observation.component.html',
+  styles: [`
+    :host {
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+      z-index: auto;
+    }
+  `],
   providers: [SearchQuery]
 })
 export class ObservationComponent implements OnInit, OnDestroy {

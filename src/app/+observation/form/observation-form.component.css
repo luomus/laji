@@ -16,9 +16,22 @@ hr {
 }
 .form-filters {
   z-index: 1001;
+  border-left: 1px solid #e1e1e1;
+  background-color: #ECF0F1;
 }
 .checkbox-label {
   padding-left:0;
+}
+.taxon-panel {
+  background-color: #ffffff;
+  margin: -15px;
+  padding: 15px;
+}
+:host {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  z-index: auto;
 }
 :host >>> .alert.alert-info {
   margin-right: 10px;
@@ -26,6 +39,9 @@ hr {
 :host >>> .panel-heading, .form-title {
   background-color: #ECF0F1;
   border-bottom: 1px solid #e1e1e1;
+}
+:host >>> .panel-body {
+  background-color: #ffffff;
 }
 
 :host >>> .form-filters .btn {
@@ -50,7 +66,9 @@ hr {
   padding: 5px;
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+  border-top: 1px solid #e1e1e1;
+  border-left: 1px solid #e1e1e1;
+  border-bottom: 1px solid #e1e1e1;
 }
 
 .form-title {
@@ -79,21 +97,8 @@ hr {
 }
 
 @media only screen and (min-width : 768px) {
-  #wrapper {
-    flex: 1 0 auto;
-    display: flex;
-    flex-direction: column;
-  }
-  #wrapper > div {
-    display: flex;
-  }
   .result-list {
     padding-right: 0;
-  }
-  .form-filters {
-    flex: 1 0 auto;
-    display: flex;
-    flex-direction: column;
   }
   .form-filters-fill {
     background-color: #ECF0F1;
