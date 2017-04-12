@@ -1,4 +1,4 @@
-import { Routes, RouterModule, UrlSegment } from '@angular/router';
+import { RouterModule, Routes, UrlSegment } from '@angular/router';
 import { TaxonComponent } from './taxon.component';
 import { InfoCardComponent } from './info-card/info-card.component';
 import { ModuleWithProviders } from '@angular/core';

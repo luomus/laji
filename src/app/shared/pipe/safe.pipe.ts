@@ -1,5 +1,5 @@
-import { DomSanitizer, SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl } from '@angular/platform-browser';
-import { PipeTransform, Pipe } from '@angular/core';
+import { DomSanitizer, SafeHtml, SafeResourceUrl, SafeScript, SafeStyle, SafeUrl } from '@angular/platform-browser';
+import { Pipe, PipeTransform } from '@angular/core';
 
 /**
  * Marks the sting safe for rendering

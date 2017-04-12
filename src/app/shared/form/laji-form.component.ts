@@ -1,15 +1,15 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
-  Inject,
-  OnDestroy,
-  Input,
-  Output,
   EventEmitter,
+  Inject,
+  Input,
+  NgZone,
   OnChanges,
-  AfterViewInit,
-  SimpleChanges,
-  NgZone
+  OnDestroy,
+  Output,
+  SimpleChanges
 } from '@angular/core';
 import { FormApiClient } from '../api';
 import { UserService } from '../service/user.service';

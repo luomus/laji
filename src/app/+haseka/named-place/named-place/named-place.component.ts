@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlacesService } from '../named-places.service';
 import { FormService } from '../../../shared/service/form.service';
-import { NpChooseComponent} from '../np-choose/np-choose.component';
+import { NpChooseComponent } from '../np-choose/np-choose.component';
 import { Observable } from 'rxjs/Observable';
 import { FooterService } from '../../../shared/service/footer.service';
 

@@ -1,7 +1,6 @@
-import { Component, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { TranslateService } from '../../../../node_modules/@ngx-translate/core/src/translate.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core/src/translate.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQuery } from '../../+observation/search-query.model';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Util } from '../../shared/service/util.service';

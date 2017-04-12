@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, HostListener, ViewContainerRef } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
 import { Subscription } from 'rxjs/Subscription';
 

@@ -1,12 +1,4 @@
-import {
-  Component,
-  ViewChild,
-  Input,
-  HostListener,
-  OnDestroy,
-  AfterViewInit,
-  OnChanges
-} from '@angular/core';
+import { AfterViewInit, Component, HostListener, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';

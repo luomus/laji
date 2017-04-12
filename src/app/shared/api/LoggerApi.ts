@@ -24,7 +24,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
@@ -42,7 +42,7 @@ export class LoggerApi {
 
     /**
      * Send error level log msg
-     * 
+     *
      * @param data Model instance data
      */
     public logError (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
@@ -69,7 +69,7 @@ export class LoggerApi {
 
     /**
      * Send info level log msg
-     * 
+     *
      * @param data Model instance data
      */
     public logInfo (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
@@ -96,7 +96,7 @@ export class LoggerApi {
 
     /**
      * Send error level log msg
-     * 
+     *
      * @param minutesBack How many minutes back to look for items in the log
      */
     public logStatus (minutesBack?: number, extraHttpRequestParams?: any ): Observable<Status> {
@@ -126,7 +126,7 @@ export class LoggerApi {
 
     /**
      * Send warn level log msg
-     * 
+     *
      * @param data Model instance data
      */
     public logWarn (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {

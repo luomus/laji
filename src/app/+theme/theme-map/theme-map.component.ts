@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnChanges, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
 import { MapComponent } from '../../shared/map/map.component';
 import { ResultService } from '../service/result.service';

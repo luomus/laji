@@ -1,14 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  trigger,
-  state,
-  style,
-  transition,
-  animate,
-  OnDestroy
-} from '@angular/core';
+import { animate, Component, OnDestroy, OnInit, state, style, transition, trigger, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';

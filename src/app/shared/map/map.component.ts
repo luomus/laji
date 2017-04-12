@@ -1,14 +1,14 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
-  OnDestroy,
-  Input,
-  Output,
   EventEmitter,
+  Input,
+  NgZone,
   OnChanges,
-  ViewChild,
-  AfterViewInit,
-  NgZone
+  OnDestroy,
+  Output,
+  ViewChild
 } from '@angular/core';
 import { Logger } from '../logger/logger.service';
 import { MapService } from './map.service';

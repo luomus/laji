@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { ResultService } from '../service/result.service';
 import { ModalDirective } from 'ngx-bootstrap/modal/modal.component';
 import { Router } from '@angular/router';

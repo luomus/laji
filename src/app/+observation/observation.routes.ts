@@ -1,4 +1,4 @@
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { ObservationComponent } from './observation.component';
 import { ModuleWithProviders } from '@angular/core';
 

@@ -1,16 +1,16 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
-import { HttpModule, Http } from '@angular/http';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { Http, HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DateFormatPipe } from 'angular2-moment/date-format.pipe';
 import {
-  TooltipModule,
-  PaginationModule,
-  BsDropdownModule,
   AlertModule,
+  BsDropdownModule,
   ModalModule,
-  PopoverModule
+  PaginationModule,
+  PopoverModule,
+  TooltipModule
 } from 'ngx-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';

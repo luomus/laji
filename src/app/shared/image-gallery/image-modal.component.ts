@@ -1,17 +1,17 @@
 import {
   Component,
-  Input,
-  Output,
+  ComponentRef,
   ElementRef,
   EventEmitter,
-  OnInit,
-  ViewContainerRef,
-  Renderer,
+  Input,
   OnDestroy,
-  ComponentRef
+  OnInit,
+  Output,
+  Renderer,
+  ViewContainerRef
 } from '@angular/core';
 import { Image } from './image.interface';
-import { ComponentLoaderFactory, ComponentLoader } from 'ngx-bootstrap';
+import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap';
 import { ImageModalOverlayComponent } from './image-modal-overlay.component';
 
 /**

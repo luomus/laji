@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   HasekaComponent,
-  routing,
-  HaSeKaFormListComponent,
-  UsersLatestComponent,
-  ShortDocumentComponent,
   HaSeKaFormComponent,
-  HaSeKaTermsOfServiceComponent
+  HaSeKaFormListComponent,
+  HaSeKaTermsOfServiceComponent,
+  routing,
+  ShortDocumentComponent,
+  UsersLatestComponent
 } from './index';
 import { SharedModule } from '../shared/shared.module';
 import { AlertModule } from 'ngx-bootstrap';

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, OnChanges, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { ResultService } from '../service/result.service';
 import { Subscription } from 'rxjs/Subscription';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
