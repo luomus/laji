@@ -114,14 +114,6 @@ laji-observation, laji-home, laji-taxonomy, haseka {
 }
 
 /** taxon tree **/
-.node circle {
-  fill: #fff;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-  cursor: pointer;
-  cursor: hand;
-}
-
 .node-content-wrapper, .tree-children {
   position: relative;
 }
@@ -140,8 +132,12 @@ laji-observation, laji-home, laji-taxonomy, haseka {
   left: -28px;
 }
 
+.tree-node-leaf {
+  padding-left: 3px;
+}
+
 .tree-node-leaf > .node-wrapper > .node-content-wrapper::before {
-  width: 25px;
+  width: 28px;
 }
 
 .tree-children::after {
@@ -158,7 +154,6 @@ treenode:last-child > .tree-node > .tree-children::after {
 .toggle-children {
   z-index: 1;
 }
-
 /** /taxon tree **/
 
 /** informal taxon groups **/
