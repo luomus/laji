@@ -1,8 +1,8 @@
 import { Component, ViewChild, OnDestroy, Input, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { TreeComponent, TreeNode, TREE_ACTIONS } from 'angular2-tree-component';
+import { TreeComponent, TreeNode, TREE_ACTIONS } from 'angular-tree-component';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
-import { ITreeNode } from 'angular2-tree-component/dist/defs/api';
+import { ITreeNode } from 'angular-tree-component/dist/defs/api';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/observable/fromEvent';
 import { setTimeout } from 'timers';
@@ -56,6 +56,7 @@ export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {
         .map(data => [data] ))
       .subscribe((data) => {
         this.nodes = data;
+        this.tree.treeModel.update();
         setTimeout(() => {
           if (TaxonTreeComponent.cache) {
             this.openTree(this.tree.treeModel.roots);
@@ -81,7 +82,7 @@ export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {
 
   getOpenNodesFromTree(roots: TreeNode[]) {
     return roots.map((root: TreeNode) => {
-      let data = root.data;
+      const data = root.data;
       data['children'] = (root.children && data.isExpandedField) ? this.getOpenNodesFromTree(root.children) : undefined;
       data['hasChildren'] = root.hasChildren;
       return data;
@@ -107,16 +108,18 @@ export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {
   }
 
   closeChildren(nodes: ITreeNode[]) {
-    nodes.map(node => {
-      if (node.children) {
-        this.closeChildren(node.children);
-      }
-      node.collapse();
-    });
+    if (nodes) {
+      nodes.map(node => {
+        if (node.children) {
+          this.closeChildren(node.children);
+        }
+        node.collapse();
+      });
+    }
   }
 
   goTo(parents: string[]) {
-    let roots = this.tree.treeModel.roots;
+    const roots = this.tree.treeModel.roots;
     this.travelTo(parents, roots);
   }
 
@@ -124,24 +127,28 @@ export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {
     if (!parents || parents.length === 0) {
       return;
     }
-    let id = parents.shift();
+    const id = parents.shift();
     roots.map((elem: TreeNode) => {
       if (elem.id === id) {
         if (parents.length > 0) {
-          elem.expand();
+          elem.expand()
+            .then(() => {
+              this.tree.treeModel.update();
+              if (elem.children) {
+                this.travelTo(parents, elem.children);
+              } else if (elem.hasChildren) {
+                this.getChildren(elem)
+                  .then((children) => {
+                    elem.setField('children', children);
+                    elem._initChildren();
+                    this.travelTo(parents, elem.children);
+                  });
+              }
+            });
         } else if (parents.length === 0) {
           elem.focus();
           elem.scrollIntoView();
-        }
-        if (elem.children) {
-          this.travelTo(parents, elem.children);
-        } else if (elem.hasChildren) {
-          this.getChildren(elem)
-            .then((children) => {
-              elem.setField('children', children);
-              elem._initChildren();
-              this.travelTo(parents, elem.children);
-            });
+          this.tree.treeModel.update();
         }
       }
     });
