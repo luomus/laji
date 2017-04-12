@@ -7,7 +7,8 @@ import {
   EventEmitter,
   OnChanges,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
+  NgZone
 } from '@angular/core';
 import { Logger } from '../logger/logger.service';
 import { MapService } from './map.service';
@@ -60,7 +61,8 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
   constructor(
     private mapService: MapService,
     private logger: Logger,
-    private lajiExternalService: LajiExternalService
+    private lajiExternalService: LajiExternalService,
+    private ngZone: NgZone
   ) {
 
   }
@@ -77,17 +79,19 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
       draw.polyline = draw.polyline !== false ? draw.polyline : false;
       draw.hasActive = draw.hasActive !== true ? draw.hasActive : true;
     }
-    this.map = this.lajiExternalService.getMap({
-      tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
-      zoom: this.zoom,
-      center: this.center || [65, 26],
-      lang: this.lang,
-      data: [],
-      draw: draw,
-      markerPopupOffset: 5,
-      featurePopupOffset: 0,
-      rootElem: this.elemRef.nativeElement,
-      controlSettings: this.controlSettings
+    this.ngZone.runOutsideAngular(() => {
+      this.map = this.lajiExternalService.getMap({
+        tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
+        zoom: this.zoom,
+        center: this.center || [65, 26],
+        lang: this.lang,
+        data: [],
+        draw: draw,
+        markerPopupOffset: 5,
+        featurePopupOffset: 0,
+        rootElem: this.elemRef.nativeElement,
+        controlSettings: this.controlSettings
+      });
     });
     this.map.map.on('moveend', _ => {
       this.moveEvent('moveend');
@@ -114,9 +118,11 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
       switch (event.type) {
         case 'create':
           this.onCreate.emit(event.feature.geometry);
+          this.ngZone.run(() => {});
           break;
         case 'delete':
           this.onCreate.emit();
+          this.ngZone.run(() => {});
           break;
         default:
       }

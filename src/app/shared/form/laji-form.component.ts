@@ -8,7 +8,8 @@ import {
   EventEmitter,
   OnChanges,
   AfterViewInit,
-  SimpleChanges
+  SimpleChanges,
+  NgZone
 } from '@angular/core';
 import { FormApiClient } from '../api';
 import { UserService } from '../service/user.service';
@@ -39,7 +40,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               private apiClient: FormApiClient,
               private userService: UserService,
               private lajiExternalService: LajiExternalService,
-              private logger: Logger
+              private logger: Logger,
+              private ngZone: NgZone
   ) {
     this.elem = elementRef.nativeElement;
   }
@@ -102,23 +104,25 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
       return;
     }
     try {
-      const uiSchemaContext = this.formData.uiSchemaContext || {};
-      uiSchemaContext['creator'] = this.formData.formData.creator;
-      this.apiClient.lang = this.lang;
-      this.apiClient.personToken = this.userService.getToken();
-      this.lajiFormWrapper = this.lajiExternalService.getForm({
-        staticImgPath: '/static/lajiForm/',
-        rootElem: this.elem,
-        schema: this.formData.schema,
-        uiSchema: this.formData.uiSchema,
-        uiSchemaContext: uiSchemaContext,
-        formData: this.formData.formData,
-        validators: this.formData.validators,
-        onSubmit: this._onSubmit.bind(this),
-        onChange: this._onChange.bind(this),
-        apiClient: this.apiClient,
-        lang: this.lang,
-        renderSubmit: false
+      this.ngZone.runOutsideAngular(() => {
+        const uiSchemaContext = this.formData.uiSchemaContext || {};
+        uiSchemaContext['creator'] = this.formData.formData.creator;
+        this.apiClient.lang = this.lang;
+        this.apiClient.personToken = this.userService.getToken();
+        this.lajiFormWrapper = this.lajiExternalService.getForm({
+          staticImgPath: '/static/lajiForm/',
+          rootElem: this.elem,
+          schema: this.formData.schema,
+          uiSchema: this.formData.uiSchema,
+          uiSchemaContext: uiSchemaContext,
+          formData: this.formData.formData,
+          validators: this.formData.validators,
+          onSubmit: this._onSubmit.bind(this),
+          onChange: this._onChange.bind(this),
+          apiClient: this.apiClient,
+          lang: this.lang,
+          renderSubmit: false
+        });
       });
     } catch (err) {
       this.logger.error('Failed to load lajiForm', err);
@@ -127,6 +131,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   _onChange(formData) {
     this.onChange.emit(formData);
+    this.ngZone.run(() => {});
   }
 
   _onSubmit(data) {
@@ -135,6 +140,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
       makeBlock: this.lajiFormWrapper.pushBlockingLoader,
       clearBlock: this.lajiFormWrapper.popBlockingLoader
     });
+    this.ngZone.run(() => {});
   }
 
   unMount() {
