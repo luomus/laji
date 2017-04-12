@@ -56,6 +56,7 @@ export class FrontComponent implements AfterViewInit {
       );
       this.lajiMap.addData(this.drawData);
       this.lajiMap.initDrawData();
+      this.lajiMap.map.focusToLayer(0);
       len--;
     }
     this.hasQuery = len > 0;
