@@ -175,7 +175,7 @@ export class SearchQuery {
             this.query[i] = [this.query[i]];
           }
           const query = this.query[i]
-            .filter(val => val.trim().length > 0)
+            .filter(val => typeof val === 'string' && val.trim().length > 0)
             .join(',');
           if (query.length > 0) {
             result[i] = query;

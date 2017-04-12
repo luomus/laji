@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Output, OnChanges, EventEmitter } from '@angular/core';
 import { ResultService } from '../service/result.service';
-import { MapTypes } from '../theme-map/theme-map.component';
 import { Subscription } from 'rxjs/Subscription';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
@@ -15,7 +14,7 @@ export class ThemeResultComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() query: WarehouseQueryInterface;
   @Input() path = 'nafi';
-  @Input() type: MapTypes;
+  @Input() type: string;
   @Input() tbodyHeight = 400;
   @Input() lang;
   @Output() onNameClick = new EventEmitter<WarehouseQueryInterface>();
