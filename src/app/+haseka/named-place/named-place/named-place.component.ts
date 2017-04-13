@@ -187,8 +187,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
       const aa = chunkify(a.name);
       const bb = chunkify(b.name);*/
-      const aa = a.name.split(' ');
-      const bb = b.name.split(' ');
+      const aa = a.name.toLowerCase().split(' ');
+      const bb = b.name.toLowerCase().split(' ');
 
       for (let x = 0; aa[x] && bb[x]; x++) {
         if (aa[x] !== bb[x]) {
