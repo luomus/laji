@@ -221,6 +221,8 @@
   "haseka.intro2": "To be translated",
   "haseka.termsOfService": "Användarvillkor",
   "haseka.forms.title": "Formulär",
+  "haseka.ownSubmissions.title": "Mina observationer",
+  "haseka.statistics.title": "Statistik",
   "haseka.form.private": "Observationbatch är inte ännu publicerat.",
   "haseka.form.success": "Observationerna sparat!",
   "haseka.form.failure": "Det gick inte att spara!",

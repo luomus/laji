@@ -1,6 +1,7 @@
 <div>
+  <small>Tallennettu: <span>{{document.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'}}</span></small>
   <a class="link" (click)="editDocument(document.formID, document.id)">
-    {{document.id}} <small>{{document.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'}}</small>
+    {{document.id}}
   </a>
   <span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
   <span class="label label-warning"

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter } from '@angular/core';
 import { Logger } from '../../shared/logger/logger.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { FormService } from '../../shared/service/form.service';
@@ -11,6 +11,7 @@ import { FormService } from '../../shared/service/form.service';
 export class UsersLatestComponent implements OnChanges {
 
   @Input() userToken: string;
+  @Output() tabChange = new EventEmitter<string>();
 
   public unsavedDocuments: Document[];
   public documents: Document[];
@@ -31,6 +32,9 @@ export class UsersLatestComponent implements OnChanges {
     this.updateTempDocumentList();
   }
 
+  changeTab(tab: string) {
+    this.tabChange.emit(tab);
+  }
 
   pageChanged(page) {
     this.page = page.page;
