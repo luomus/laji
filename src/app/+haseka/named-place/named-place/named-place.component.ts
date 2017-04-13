@@ -69,6 +69,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.namedPlaces$.subscribe(
         data => {
           this.setActiveNP(-1);
+          data.sort(this.naturalSort);
           this.namedPlaces = data;
         },
         err => {
@@ -147,7 +148,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getObjectByKey (obj, key) {
+  private getObjectByKey(obj, key) {
     let foundObject = null;
 
     for (const i in obj) {
@@ -166,5 +167,39 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       }
     }
     return foundObject;
+  }
+
+  private naturalSort(a, b) {
+      /*function chunkify(t) {
+        const tz = [];
+        let x = 0, y = -1, n = false, i, j;
+
+        while (i = (j = t.charAt(x++)).charCodeAt(0)) {
+          const m = (i === 46 || (i >= 48 && i <= 57));
+          if (m !== n) {
+            tz[++y] = '';
+            n = m;
+          }
+          tz[y] += j;
+        }
+        return tz;
+      }
+
+      const aa = chunkify(a.name);
+      const bb = chunkify(b.name);*/
+      const aa = a.name.split(' ');
+      const bb = b.name.split(' ');
+
+      for (let x = 0; aa[x] && bb[x]; x++) {
+        if (aa[x] !== bb[x]) {
+          const c = Number(aa[x]), d = Number(bb[x]);
+          if (c !== null && d !== null) {
+            return c - d;
+          } else {
+            return (aa[x] > bb[x]) ? 1 : -1;
+          }
+        }
+      }
+      return aa.length - bb.length;
   }
 }
