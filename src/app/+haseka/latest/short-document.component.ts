@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Document } from '../../shared/model/Document';
 import { FormService } from '../../shared/service/form.service';
@@ -26,7 +26,6 @@ export class ShortDocumentComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    console.log(this.document);
     this.updateTaxa();
     this.updateGatheredDates();
   }

@@ -26,6 +26,7 @@
             <a routerLink="/vihko/terms-of-service">{{'haseka.termsOfService' | translate}}</a>
             <laji-haseka-form-list *ngIf="activeTab === 'forms'"></laji-haseka-form-list>
             <laji-own-submissions *ngIf="activeTab === 'ownSubmissions'"></laji-own-submissions>
+            <laji-statistics *ngIf="activeTab === 'statistics'"></laji-statistics>
           </div>
         </div>
         <div class="col-sm-3 col-md-3 col-lg-2 flex-column" *ngIf="userService.isLoggedIn" id="sidebar-container">

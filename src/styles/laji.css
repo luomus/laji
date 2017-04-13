@@ -39,9 +39,21 @@ body {
 #content .container-fluid > div {
   flex: 1 0 auto;
 }
-laji-observation, laji-home, laji-taxonomy, haseka {
-  z-index: auto;
+
+.full-height {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
 }
+
+.full-width {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
 #footer {
   z-index: 0;
 }
@@ -114,37 +126,46 @@ laji-observation, laji-home, laji-taxonomy, haseka {
 }
 
 /** taxon tree **/
-.node circle {
-  fill: #fff;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-  cursor: pointer;
-  cursor: hand;
+.node-content-wrapper, .tree-children {
+  position: relative;
 }
 
-.node circle:hover {
-  fill: #bce9ff;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-  cursor: pointer;
-  cursor: hand;
+.node-content-wrapper::before, .tree-children::after {
+  content: "";
+  position: absolute;
 }
 
-.node {
-  font: 10px sans-serif;
+.node-content-wrapper::before {
+  border-bottom: 1px solid lightgrey;
+  border-left: 1px solid lightgrey;
+  height: 28px;
+  top: -17px;
+  width: 20px;
+  left: -28px;
 }
 
-.node:hover {
-  font: 10px sans-serif;
-  text-decoration: underline;
+.tree-node-leaf {
+  padding-left: 3px;
 }
 
-.link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
+.tree-node-leaf > .node-wrapper > .node-content-wrapper::before {
+  width: 28px;
 }
 
+.tree-children::after {
+  border-left: 1px solid lightgrey;
+  height: 100%;
+  top: -15px;
+  left: -15px;
+}
+
+treenode:last-child > .tree-node > .tree-children::after {
+  border-left: none;
+}
+
+.toggle-children {
+  z-index: 1;
+}
 /** /taxon tree **/
 
 /** informal taxon groups **/

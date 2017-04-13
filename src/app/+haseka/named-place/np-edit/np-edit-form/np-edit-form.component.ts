@@ -1,4 +1,13 @@
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter, ContentChildren, HostListener } from '@angular/core';
+import {
+  Component,
+  ContentChildren,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiFormComponent } from '../../../../shared/form/laji-form.component';
 import { UserService } from '../../../../shared/service/user.service';
@@ -6,7 +15,6 @@ import { NamedPlacesService } from '../../named-places.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { WindowRef } from '../../../../shared/windows-ref';
 import { ToastsService } from '../../../../shared/service/toasts.service';
-import { Form } from '../../../../shared/model/FormListInterface';
 
 @Component({
   selector: 'laji-np-edit-form',

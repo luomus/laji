@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
-  UserComponent,
-  ProfileComponent,
   FriendsComponent,
+  ProfileComponent,
   routing,
+  UserComponent,
   UserLoginComponent,
   UserLogoutComponent
 } from './index';

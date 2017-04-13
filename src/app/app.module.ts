@@ -1,13 +1,13 @@
-import { NgModule, ErrorHandler } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { LangSelectComponent } from './shared/navbar/lang-select.component';
 import { SharedModule } from './shared/shared.module';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
 import { FeedbackComponent } from './shared/feedback/feedback.component';
-import { Logger, ConsoleLogger, HttpLogger } from './shared/logger/index';
+import { ConsoleLogger, HttpLogger, Logger } from './shared/logger/index';
 import { LoggerApi } from './shared/api/LoggerApi';
 import { AppConfig } from './app.config';
 import { ILogger } from './shared/logger/logger.interface';
@@ -18,18 +18,18 @@ import { TranslateFileLoader } from './shared/translate/translate-file-loader';
 import { WhatsNewComponent } from './shared/whats-new/whats-new.component';
 import { BrowserModule } from '@angular/platform-browser';
 import {
-  TooltipModule,
-  PaginationModule,
-  BsDropdownModule,
   AlertModule,
+  BsDropdownModule,
   ModalModule,
-  TypeaheadModule,
-  PopoverModule
+  PaginationModule,
+  PopoverModule,
+  TooltipModule,
+  TypeaheadModule
 } from 'ngx-bootstrap';
 import { CoreModule } from './shared/core.module';
 import { Ng2Webstorage } from 'ng2-webstorage';
 import { ViewerModule } from './+viewer/viewer.module';
-import { ToastModule } from '../../node_modules/ng2-toastr/src/toast.module';
+import { ToastModule } from 'ng2-toastr/src/toast.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): ILogger {
   const env = appConfig.getEnv();

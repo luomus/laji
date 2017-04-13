@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';

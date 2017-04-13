@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { NamedPlacesService } from './named-places.service';
 
 describe('NamedPlacesService', () => {

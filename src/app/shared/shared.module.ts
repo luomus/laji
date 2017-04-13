@@ -1,16 +1,16 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
-import { HttpModule, Http } from '@angular/http';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { Http, HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DateFormatPipe } from 'angular2-moment/date-format.pipe';
 import {
-  TooltipModule,
-  PaginationModule,
-  BsDropdownModule,
   AlertModule,
+  BsDropdownModule,
   ModalModule,
-  PopoverModule
+  PaginationModule,
+  PopoverModule,
+  TooltipModule
 } from 'ngx-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';
@@ -75,6 +75,7 @@ import { DocumentFormComponent } from './document-form/document-form.component';
 import { FormService } from './service/form.service';
 import { FormNamePipe } from './pipe/form-name.pipe';
 import { CoordinateService } from './service/coordinate.service';
+import { TaxonomyApi } from './api/TaxonomyApi';
 
 
 @NgModule({
@@ -129,6 +130,7 @@ export class SharedModule {
         CoordinateService,
         ToastsService, AppConfig,
         PersonTokenApi, PersonApi, SearchQuery, WarehouseApi,
+        TaxonomyApi,
         AreaApi, AreaService,
         SourceApi, SourceService,
         FeedbackApi, LoggerApi,

@@ -22,7 +22,6 @@ export class HomeComponent implements OnInit{
   ngOnInit() {
     const start = moment();
     start.subtract(1, 'd');
-    console.log(start);
     this.mapStartDate = start.format('YYYY-MM-DD');
   }
 }

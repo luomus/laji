@@ -1,3 +1,10 @@
+:host {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  z-index: auto;
+}
+
 .informal h3, .taxonomy h3 {
   padding: 10px 40px 0 0;
   margin: 10px 0;
@@ -22,5 +29,5 @@
 @media only screen and (min-width : 768px) {
   #wrapper {
     display: flex;
-  } 
+  }
 }

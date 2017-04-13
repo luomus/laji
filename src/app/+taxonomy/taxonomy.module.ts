@@ -15,7 +15,7 @@ import { ChildrenListComponent } from './info-card/children-list/children-list.c
 import { TaxonomyApi } from '../shared/api/TaxonomyApi';
 import { InformalTaxonGroupApi } from '../shared/api/InformalTaxonGroupApi';
 import { TaxonInfoComponent } from './info-card/taxon/taxon-info.component';
-import { TreeModule } from 'angular2-tree-component';
+import { TreeModule } from 'angular-tree-component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, TreeModule],

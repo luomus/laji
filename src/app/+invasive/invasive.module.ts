@@ -1,4 +1,4 @@
-import { NgModule, ViewChild } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { InvasiveComponent } from './invasive.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';

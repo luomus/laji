@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { Image } from './image.interface';
 import { setTimeout } from 'timers';
 

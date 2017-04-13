@@ -3,12 +3,12 @@ import { RouterModule } from '@angular/router';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import {
   HasekaComponent,
-  routing,
-  HaSeKaFormListComponent,
-  UsersLatestComponent,
-  ShortDocumentComponent,
   HaSeKaFormComponent,
-  HaSeKaTermsOfServiceComponent
+  HaSeKaFormListComponent,
+  HaSeKaTermsOfServiceComponent,
+  routing,
+  ShortDocumentComponent,
+  UsersLatestComponent
 } from './index';
 import { SharedModule } from '../shared/shared.module';
 import { AlertModule } from 'ngx-bootstrap';
@@ -17,12 +17,13 @@ import { DocumentApi } from '../shared/api/DocumentApi';
 import { NamedPlaceModule } from './named-place/named-place.module';
 import { FormPermissionModule } from './form-permission/form-permission.module';
 import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, AlertModule, NgxDatatableModule, NamedPlaceModule, FormPermissionModule.forRoot()],
   providers: [ FormApi, DocumentApi ],
   declarations: [HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
-    ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent, OwnSubmissionsComponent]
+    ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent, OwnSubmissionsComponent, StatisticsComponent]
 })
 export class HasekaModule {
 }

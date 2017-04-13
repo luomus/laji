@@ -1,19 +1,19 @@
-import { Component, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { TranslateService } from '../../../../node_modules/@ngx-translate/core/src/translate.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { AfterViewInit, OnDestroy, Component, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core/src/translate.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQuery } from '../../+observation/search-query.model';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Util } from '../../shared/service/util.service';
 import { CoordinateService } from '../../shared/service/coordinate.service';
 import { MapComponent } from '../../shared/map/map.component';
+import { FooterService } from '../../shared/service/footer.service';
 
 @Component({
   selector: 'laji-map-front',
   templateUrl: './front.component.html',
   styleUrls: ['./front.component.css']
 })
-export class FrontComponent implements AfterViewInit {
+export class FrontComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MapComponent) lajiMap: MapComponent;
   drawData = {
     featureCollection: {
@@ -42,11 +42,13 @@ export class FrontComponent implements AfterViewInit {
     private route: ActivatedRoute,
     public searchQuery: SearchQuery,
     public translate: TranslateService,
-    private coordinateService: CoordinateService
+    private coordinateService: CoordinateService,
+    private footerService: FooterService
   ) {
   }
 
   ngAfterViewInit() {
+    this.footerService.footerVisible = false;
     const params = this.route.snapshot.queryParams;
     let len = Object.keys(params).length;
     if (params['ykj']) {
@@ -56,6 +58,7 @@ export class FrontComponent implements AfterViewInit {
       );
       this.lajiMap.addData(this.drawData);
       this.lajiMap.initDrawData();
+      this.lajiMap.map.focusToLayer(0);
       len--;
     }
     this.hasQuery = len > 0;
@@ -70,6 +73,10 @@ export class FrontComponent implements AfterViewInit {
     }
     this.searchQuery.setQueryFromQueryObject(params);
     this.query = Util.clone(this.searchQuery.query);
+  }
+
+  ngOnDestroy() {
+    this.footerService.footerVisible = true;
   }
 
   onCreate(e) {
