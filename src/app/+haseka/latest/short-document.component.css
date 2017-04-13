@@ -1,3 +1,7 @@
-.hasChanges {
-  background-color: #b9a939;
+#short-document {
+  padding: 5px;
+}
+
+.inline-block {
+  display: inline-block;
 }

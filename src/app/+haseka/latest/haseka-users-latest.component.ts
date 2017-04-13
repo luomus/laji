@@ -13,8 +13,8 @@ export class UsersLatestComponent implements OnChanges {
   @Input() userToken: string;
   @Output() tabChange = new EventEmitter<string>();
 
-  public unsavedDocuments: Document[];
-  public documents: Document[];
+  public unpublishedDocuments: Document[] = [];
+  public documents: Document[] = [];
   public total = 0;
   public page = 1;
   public pageSize = 10;
@@ -47,10 +47,10 @@ export class UsersLatestComponent implements OnChanges {
     }
     this.formService.getAllTempDocuments()
       .subscribe(documents => {
-        this.unsavedDocuments = <Document[]>documents.map(document => {
+        this.unpublishedDocuments.push(...<Document[]>documents.map(document => {
           document.hasChanges = true;
           return document;
-        });
+        }));
       });
   }
 
@@ -62,10 +62,24 @@ export class UsersLatestComponent implements OnChanges {
       .subscribe(
         result => {
           this.loading = false;
-          this.documents = <Document[]>(result.results || []);
+          if (result.results) {
+            this.addDocuments(result.results);
+          }
           this.total = result.total || 0;
         },
         err => this.logger.warn('Unable to fetch users documents', err)
       );
+  }
+
+  private addDocuments(docs) {
+    for (let i = 0; i < docs.length; i++) {
+      if (docs[i].publicityRestrictions && docs[i].publicityRestrictions === 'MZ.publicityRestrictionsPrivate') {
+        this.unpublishedDocuments.push(docs[i]);
+      } else {
+        if (this.documents.length < 10) {
+          this.documents.push(docs[i]);
+        }
+      }
+    }
   }
 }

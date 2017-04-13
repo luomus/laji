@@ -1,54 +1,42 @@
-<div>
-  <small>Tallennettu: <span>{{document.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'}}</span></small>
-  <a class="link" (click)="editDocument(document.formID, document.id)">
-    {{document.id}}
-  </a>
+<div [popover]="popTemplate" placement="left" triggers="hover" id="short-document">
+  <small *ngIf="!changingLocale">{{'haseka.users.saved' | translate}}: <span *ngIf="document.dateEdited">{{document.dateEdited | amTimeAgo}}</span></small>
+
   <span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
-  <span class="label label-warning"
+    <span class="label label-warning inline-block"
         [tooltip]="'haseka.form.private' | translate">
-    <i class="glyphicon glyphicon-eye-close"></i>
-  </span>
-  &nbsp;
+      <i class="glyphicon glyphicon-eye-close"></i>
+    </span>
   </span>
 
   <span *ngIf="formService.hasUnsavedData(document.id, document) | async">
-    <span class="label label-danger" [tooltip]="'haseka.form.hasChanges' | translate">
+    <span class="label label-danger inline-block" [tooltip]="'haseka.form.hasChanges' | translate">
       <i class="glyphicon glyphicon-warning-sign"></i>
     </span>
     <span class="pull-right">
-      <span class="label label-primary link" (click)="removeDocument(document)">
+      <span class="label label-primary link inline-block" (click)="removeDocument(document)">
         <i class="glyphicon glyphicon-trash"></i>
       </span>
     </span>
   </span>
   <br>
-  {{'haseka.users.latest.gathered' | translate }}:
-  <span *ngIf="gatheringDates.start || gatheringDates.end">
+
   <a class="link" (click)="editDocument(document.formID, document.id)">
-    {{gatheringDates.start | amDateFormat:'DD.MM.YYYY'}} - {{gatheringDates.end | amDateFormat:'DD.MM.YYYY'}}
+    <span *ngIf="gatheringDates.start || gatheringDates.end">
+      {{gatheringDates.start | amDateFormat:'DD.MM.YYYY'}} - {{gatheringDates.end | amDateFormat:'DD.MM.YYYY'}}
+    </span>
+    <span>
+      {{taxa.length}} {{'haseka.users.latest.gathered' | translate}}
+    </span>
   </a>
-</span>
   <br>
+
   <span class="label label-default">{{document.formID | formName}}</span>
-  <span
-    *ngIf="taxa && taxa.length > 0"
-    class="link"
-    (click)="showList = !showList">
-  {{'haseka.users.latest.more' | translate}}
-  <i class="glyphicon"
-     style="font-size:0.8em"
-     [ngClass]="{
-             'glyphicon-triangle-bottom': showList,
-             'glyphicon-triangle-right': !showList
-             }"
-  ></i>
-</span>
-  <ul *ngIf="showList">
+</div>
+
+<ng-template #popTemplate>
+  <ul>
     <li *ngFor="let taxon of taxa">
-      <a class="link" (click)="editDocument(document.formID, document.id)">
-        {{taxon.name}}
-        <small>{{taxon.id}}</small>
-      </a>
+      {{taxon.name}}
     </li>
   </ul>
-</div>
+</ng-template>
