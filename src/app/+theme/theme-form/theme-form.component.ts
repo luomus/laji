@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnChanges, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'laji-theme-form',

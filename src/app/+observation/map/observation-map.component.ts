@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -11,9 +11,9 @@ import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import 'leaflet';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { MapComponent } from '../../shared/map/map.component';
-import LatLngBounds = L.LatLngBounds;
 import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 import { CoordinateService } from '../../shared/service/coordinate.service';
+import LatLngBounds = L.LatLngBounds;
 
 const maxCoordinateAccuracy = 10000;
 
@@ -54,7 +54,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     'unit.linkings.taxon',
     'gathering.team',
     'gathering.eventDate',
-    'document.documentId'
+    'document.documentId',
+    'unit.unitId'
   ];
 
   public mapData;
@@ -286,6 +287,9 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     if (query.coordinates) {
       this.initDrawData();
     }
+    if (WarehouseApi.isEmptyQuery(query)) {
+      query.cache = true;
+    }
     this.reset = true;
     this.loading = true;
     this.showingItems = false;
@@ -465,10 +469,17 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       let description = '';
       this.itemFields.map(field => {
         const name = field.split('.').pop();
-        if (properties[name]) {
+        if (properties[name] && name !== 'documentId' && name !== 'unitId') {
           description += this.decorator.decorate(field, properties[name], {}) + '<br>';
         }
       });
+      if (properties['documentId'] && properties['unitId']) {
+        description += '<a href="/view?uri=' +
+          properties['documentId'] +
+          '&highlight=' +
+          properties['unitId'].replace('#', '_') + '">' +
+          properties['documentId'] + '</a>';
+      }
       if (description) {
         cb(description);
       } else if (cnt) {

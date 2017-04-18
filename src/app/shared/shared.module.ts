@@ -1,17 +1,17 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
-import { HttpModule, Http } from '@angular/http';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { Http, HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DateFormatPipe } from 'angular2-moment/date-format.pipe';
 import {
-  TooltipModule,
-  PaginationModule,
-  DropdownModule,
   AlertModule,
+  BsDropdownModule,
   ModalModule,
-  PopoverModule
-} from 'ng2-bootstrap';
+  PaginationModule,
+  PopoverModule,
+  TooltipModule
+} from 'ngx-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';
 import { SpinnerComponent } from './spinner/spinner.component';
@@ -73,7 +73,9 @@ import { LajiExternalService } from './service/laji-external.service';
 import { MomentModule } from 'angular2-moment';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { FormService } from './service/form.service';
+import { FormNamePipe } from './pipe/form-name.pipe';
 import { CoordinateService } from './service/coordinate.service';
+import { TaxonomyApi } from './api/TaxonomyApi';
 
 
 @NgModule({
@@ -82,7 +84,7 @@ import { CoordinateService } from './service/coordinate.service';
     NewsListComponent, DocumentFormComponent,
     SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, FormattedNumber,
-    AreaNamePipe, CollectionNamePipe,
+    AreaNamePipe, CollectionNamePipe, FormNamePipe,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent
@@ -96,14 +98,14 @@ import { CoordinateService } from './service/coordinate.service';
     TranslateModule,
     ReactiveFormsModule,
     MomentModule,
-    TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule
+    TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule
   ],
   providers: [ ], // keep this empty!
   exports: [
     CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule,
     AreaNamePipe, NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe,
-    ToQNamePipe, ValuesPipe, CollectionNamePipe, LajiFormComponent, DocumentFormComponent,
-    ToFullUriPipe, TooltipModule, PaginationModule, DropdownModule, AlertModule, ModalModule, PopoverModule,
+    ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe, LajiFormComponent, DocumentFormComponent,
+    ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
     AuthoritiesDirective, MomentModule
@@ -128,6 +130,7 @@ export class SharedModule {
         CoordinateService,
         ToastsService, AppConfig,
         PersonTokenApi, PersonApi, SearchQuery, WarehouseApi,
+        TaxonomyApi,
         AreaApi, AreaService,
         SourceApi, SourceService,
         FeedbackApi, LoggerApi,

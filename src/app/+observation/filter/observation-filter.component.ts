@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, OnChanges } from '@angular/core';
-import { isArray } from 'underscore';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { SearchQuery } from '../search-query.model';
 import { ObservationFilterInterface } from './observation-filter.interface';
 import { Subscription } from 'rxjs/Subscription';
 import { Logger } from '../../shared/logger/logger.service';
+import { Util } from '../../shared/service/util.service';
 
 
 @Component({
@@ -60,9 +60,13 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
     if (!this.filter) {
       return;
     }
-    let cacheKey = JSON.stringify(this.searchQuery.query) + this.page;
+    const query = Util.clone(this.searchQuery.query);
+    const cacheKey = JSON.stringify(query) + this.page;
     if (this.lastQuery === cacheKey) {
       return;
+    }
+    if (WarehouseApi.isEmptyQuery(query)) {
+      query.cache = true;
     }
     this.lastQuery = cacheKey;
     if (this.subData) {
@@ -70,7 +74,7 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
     }
     this.loading = true;
     this.subData = this.warehouseService.warehouseQueryAggregateGet(
-      this.searchQuery.query,
+      query,
       [this.filter.field],
       undefined,
       this.filter.size,
@@ -78,7 +82,7 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
     ).subscribe(
       data => {
         this.total = data.total || 0;
-        let filtersData = (data.results || [])
+        const filtersData = (data.results || [])
           .filter((result) => {
             if (this.filter.pick) {
               return this.filter.pick.indexOf(result.aggregateBy[this.filter['field']]) > -1;
@@ -109,17 +113,17 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   toggle(item: any) {
-    let selected = this.isActive(item);
-    let value = this.getQueryValue(item);
-    let query = this.searchQuery.query;
-    let filter = this.filter['filter'];
+    const selected = this.isActive(item);
+    const value = this.getQueryValue(item);
+    const query = this.searchQuery.query;
+    const filter = this.filter['filter'];
     if (selected) {
       switch (this.filter.type) {
         case'array':
           if (!query[filter]) {
             break;
           }
-          let idx = query[filter].indexOf(value);
+          const idx = query[filter].indexOf(value);
           if (idx > -1) {
             query[filter].splice(idx, 1);
           }
@@ -152,13 +156,13 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   isActive(item: FilterItem) {
-    let filter = this.searchQuery.query[this.filter['filter']];
-    let type = typeof filter;
+    const filter = this.searchQuery.query[this.filter['filter']];
+    const type = typeof filter;
     if (type === 'undefined') {
       return false;
     }
-    let value = this.getQueryValue(item);
-    if (isArray(filter)) {
+    const value = this.getQueryValue(item);
+    if (Array.isArray(filter)) {
       return filter.indexOf(value) > -1;
     }
     return filter === value;

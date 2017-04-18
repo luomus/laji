@@ -22,10 +22,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { WarehouseQueryInterface, PagedResult } from '../model';
+import { PagedResult, WarehouseQueryInterface } from '../model';
 import 'rxjs/Rx';
 import { SearchQuery } from '../../+observation/search-query.model';
 import { WarehouseCountResultInterface } from '../model/WarehouseCountResultInterface';
@@ -41,6 +41,11 @@ export class WarehouseApi {
 
   constructor(protected http: Http, private queryService: SearchQuery) {
 
+  }
+
+  public static isEmptyQuery(query: WarehouseQueryInterface = {}) {
+    const paramCnt = Object.keys(query).length;
+    return paramCnt === 0 || (paramCnt === 1 && typeof query.includeNonValidTaxa !== 'undefined');
   }
 
   /**

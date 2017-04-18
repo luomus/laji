@@ -1,7 +1,7 @@
 <div *ngIf="loading">
 	loading...
 </div>
-<div *ngIf="!loading && speciesPage">
+<div *ngIf="!loading && !!speciesPage">
   <h3>{{'species.list.header' | translate:{informalGroup: informalGroup.name} }}</h3>
 	<table class="table table-bordered table-striped">
 		<thead>

@@ -1,7 +1,18 @@
-import { Component, Input, OnInit, OnChanges, Output, EventEmitter, ViewChild, AfterViewInit, SimpleChanges, HostListener } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { UserService } from '../../../../shared/service/user.service';
-import { ModalDirective } from 'ng2-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap';
 
 @Component({
   selector: 'laji-np-info',

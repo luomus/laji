@@ -11,6 +11,8 @@
         {{'np.title' | translate}}
       </h1>
 
+      <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
+
       <div class="full-height" *ngIf="namedPlaces && formInfo && !errorMsg">
         <div class="row np-row full-height">
           <div [ngClass]="{'col-xs-12 col-sm-6 full-height': !editMode}">

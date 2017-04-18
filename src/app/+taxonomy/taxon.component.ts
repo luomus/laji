@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
@@ -16,6 +16,8 @@ import { Taxonomy } from '../shared/model/Taxonomy';
 })
 export class TaxonComponent implements OnInit, OnDestroy {
 
+  public type: Observable<string>;
+
   public groups: Array<InformalTaxonGroup>;
 
   public selectedInformalGroup: InformalTaxonGroup;
@@ -28,15 +30,13 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   private subTaxon: Subscription;
 
-  private type: Observable<string>;
-
   private id: Observable<string>;
 
   private taxon: Observable<Taxonomy>;
 
   constructor(
+    public translate: TranslateService,
     private route: ActivatedRoute,
-    private translate: TranslateService,
     private informalTaxonService: InformalTaxonGroupApi,
     private taxonService: TaxonomyApi
   ) { }

@@ -1,10 +1,10 @@
 <div>
-  <Tree #tree
+  <tree-root #tree
         (onToggleExpanded)="onToggle($event)"
         [nodes]="nodes"
         [focused]="true"
         [options]="options">
-    <template #treeNodeTemplate let-node>
+    <ng-template #treeNodeTemplate let-node>
       <span class="rank">
         [{{node.data.taxonRank | label}}]
       </span>
@@ -16,6 +16,6 @@
       <a [routerLink]="'/taxon/' + node.data.id">
         <i class="glyphicon glyphicon-modal-window"></i>
       </a>
-    </template>
-  </Tree>
+    </ng-template>
+  </tree-root>
 </div>

@@ -1,18 +1,20 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { TranslateService } from '../../../../node_modules/@ngx-translate/core/src/translate.service';
-import { ActivatedRoute } from '@angular/router';
+import { AfterViewInit, OnDestroy, Component, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core/src/translate.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQuery } from '../../+observation/search-query.model';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Util } from '../../shared/service/util.service';
+import { CoordinateService } from '../../shared/service/coordinate.service';
+import { MapComponent } from '../../shared/map/map.component';
+import { FooterService } from '../../shared/service/footer.service';
 
 @Component({
   selector: 'laji-map-front',
   templateUrl: './front.component.html',
   styleUrls: ['./front.component.css']
 })
-export class FrontComponent implements OnInit, OnDestroy {
-
+export class FrontComponent implements AfterViewInit, OnDestroy {
+  @ViewChild(MapComponent) lajiMap: MapComponent;
   drawData = {
     featureCollection: {
       type: 'FeatureCollection',
@@ -35,35 +37,54 @@ export class FrontComponent implements OnInit, OnDestroy {
   color = undefined;
   query: WarehouseQueryInterface;
 
-  private subQuery: Subscription;
-
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     public searchQuery: SearchQuery,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private coordinateService: CoordinateService,
+    private footerService: FooterService
   ) {
   }
 
-  ngOnInit() {
-    this.subQuery = this.route.queryParams.subscribe(params => {
-      this.hasQuery = Object.keys(params).length > 0;
-      if (params['color']) {
-        this.color = '#' + params['color'];
-      }
-      if (params['showControls'] && params['showControls'] !== 'false') {
-        this.showControls = true;
-      }
-      if (params['target']) {
-        this.searchQuery.query.target = [params['target']];
-      }
-      this.searchQuery.setQueryFromQueryObject(params);
-      this.query = Util.clone(this.searchQuery.query);
-    });
+  ngAfterViewInit() {
+    this.footerService.footerVisible = false;
+    const params = this.route.snapshot.queryParams;
+    let len = Object.keys(params).length;
+    if (params['ykj']) {
+      const parts = params['ykj'].split(':');
+      this.drawData.featureCollection.features.push(
+        this.coordinateService.convertYkjToGeoJsonFeature(parts[0], parts[1])
+      );
+      this.lajiMap.addData(this.drawData);
+      this.lajiMap.initDrawData();
+      this.lajiMap.map.focusToLayer(0);
+      len--;
+    }
+    this.hasQuery = len > 0;
+    if (params['color']) {
+      this.color = '#' + params['color'];
+    }
+    if (params['showControls'] && params['showControls'] !== 'false') {
+      this.showControls = true;
+    }
+    if (params['target']) {
+      this.searchQuery.query.target = [params['target']];
+    }
+    this.searchQuery.setQueryFromQueryObject(params);
+    this.query = Util.clone(this.searchQuery.query);
   }
 
   ngOnDestroy() {
-    if (this.subQuery) {
-      this.subQuery.unsubscribe();
+    this.footerService.footerVisible = true;
+  }
+
+  onCreate(e) {
+    if (e && e.coordinateVerbatim) {
+      this.router.navigate([], {
+        queryParams: {ykj: e.coordinateVerbatim},
+        relativeTo: this.route
+      });
     }
   }
 

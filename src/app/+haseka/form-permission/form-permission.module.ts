@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RequestComponent } from './request/request.component';
 import { FormPermissionApi } from '../../shared/api/FormPermissionApi';

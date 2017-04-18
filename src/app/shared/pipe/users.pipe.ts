@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { Person } from '../model/Person';
 

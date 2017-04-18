@@ -1,4 +1,4 @@
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 import { HasekaComponent } from './haseka.component';
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';

@@ -1,14 +1,21 @@
 <div class="container-relative" style="min-height: 100px">
-  <span dropdown autoClose="outsideClick" (onToggle)="toggledFieldSelect($event)" class="setting-menu pull-right">
-    <a class="btn btn-primary btn-sm" dropdownToggle><i class="glyphicon glyphicon-cog"></i></a>
-    <ul class="dropdown-menu" dropdownMenu>
+  <div dropdown
+       #setting="bs-dropdown"
+       [autoClose]="true"
+       (onShown)="onSettingsOpen()"
+       (onHidden)="onSettingsClose()"
+       class="setting-menu pull-right">
+    <button type="button" class="btn btn-primary btn-sm" dropdownToggle>
+      <i class="glyphicon glyphicon-cog"></i>
+    </button>
+    <ul class="dropdown-menu" role="menu" *dropdownMenu>
       <li *ngFor="let column of columns" [ngClass]="{active: column.visible}">
         <a class="dropdown-item link" (click)="toggleColumn(column)">
           {{(column.translation || 'result.' + column.field) | translate}}
         </a>
       </li>
     </ul>
-  </span>
+  </div>
   <laji-spinner [spinning]="loading" [overlay]="true">
     <div class="table-responsive">
       <table class="table table-striped table-bordered table-condensed dataTable">

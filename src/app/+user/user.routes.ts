@@ -1,4 +1,4 @@
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { UserComponent } from './user.component';
 import { UserLoginComponent } from './login/user-login.component';
 import { UserLogoutComponent } from './logout/user-logout.component';

@@ -25,8 +25,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import { Component, OnInit, ViewContainerRef, Input, forwardRef, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, ViewContainerRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface CalendarDate {
   day: number;
@@ -59,10 +59,10 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   @Output() onSelect = new EventEmitter();
 
   public validDate = true;
+  public viewDate: string = null;
   private date: any = moment();
   private el: Element;
   private bodyEl: Element;
-  private viewDate: string = null;
   private days: CalendarDate[] = [];
   private cbFunc: any;
 

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ng2-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap';
 import { FeedbackApi } from '../api/FeedbackApi';
 import { UserService } from '../service/user.service';
 import { SessionStorage } from 'ng2-webstorage';

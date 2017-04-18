@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Util } from '../../shared/service/util.service';
 import { TaxonomyImage } from '../../shared/model/Taxonomy';
@@ -41,6 +41,9 @@ export class GalleryComponent implements OnChanges {
       return;
     }
     const query = Util.clone(this.query);
+    if (WarehouseApi.isEmptyQuery(query)) {
+      query.cache = true;
+    }
     this.loading = true;
     query.hasUnitMedia = true;
     this.warehouseApi.warehouseQueryListGet(query, [

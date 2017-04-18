@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
@@ -9,6 +9,7 @@ import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { IdService } from '../../shared/service/id.service';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { Logger } from '../../shared/logger/logger.service';
+import { Util } from '../../shared/service/util.service';
 
 @Component({
   selector: 'laji-observation-chart',
@@ -27,8 +28,8 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
 
   public informalGroups: InformalTaxonGroup[] = [];
   public data: any;
+  public loading = false;
   private group: string;
-  private loading = false;
 
   private subDataQuery: Subscription;
   private subInformal: Subscription;
@@ -110,12 +111,16 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.active) {
       return;
     }
+    const query = Util.clone(this.searchQuery.query);
+    if (WarehouseApi.isEmptyQuery(query)) {
+      query.cache = true;
+    }
     this.loading = true;
     const sources = [];
     sources.push(this.getGroupsSub());
     sources.push(this.warehouseService
       .warehouseQueryAggregateGet(
-        this.searchQuery.query,
+        query,
         ['unit.linkings.taxon.informalTaxonGroup'],
         undefined,
         1000

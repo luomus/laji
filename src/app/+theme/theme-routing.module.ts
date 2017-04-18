@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { NafiComponent } from './nafi/nafi.component';
 import { NafiResultComponent } from './nafi/nafi-result/nafi-result.component';
 import { NafiFormComponent } from './nafi/nafi-form/nafi-form.component';

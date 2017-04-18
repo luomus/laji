@@ -4,7 +4,7 @@ import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { Taxonomy } from '../shared/model/Taxonomy';
 import { IdService } from '../shared/service/id.service';
 import { Observable } from 'rxjs/Observable';
-import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
+import { ModalDirective } from 'ngx-bootstrap/modal/modal.component';
 
 @Component({
   selector: 'laji-invasive',

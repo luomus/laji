@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, OnChanges, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { ResultService } from '../service/result.service';
-import { ModalDirective } from 'ng2-bootstrap/modal/modal.component';
+import { ModalDirective } from 'ngx-bootstrap/modal/modal.component';
 import { Router } from '@angular/router';
-import { MapTypes } from '../theme-map/theme-map.component';
 import { Subscription } from 'rxjs/Subscription';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
@@ -16,7 +15,7 @@ export class ThemeObservationListComponent implements OnInit, OnChanges {
   @ViewChild('documentModal') public modal: ModalDirective;
 
   @Input() query: WarehouseQueryInterface;
-  @Input() type: MapTypes;
+  @Input() type: string;
   @Input() tbodyHeight = 400;
   @Input() page: number;
   @Output() onListClose = new EventEmitter<WarehouseQueryInterface>();

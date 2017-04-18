@@ -1,4 +1,4 @@
-import { Pipe, ChangeDetectorRef, PipeTransform } from '@angular/core';
+import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AreaService } from '../service/area.service';
 import { AbsractLabelPipe } from './abstract-label.pipe';

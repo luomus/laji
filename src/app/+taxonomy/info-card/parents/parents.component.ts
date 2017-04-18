@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChange, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChange } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';

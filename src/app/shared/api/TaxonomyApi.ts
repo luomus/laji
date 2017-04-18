@@ -22,13 +22,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as models from '../model/index';
 import 'rxjs/Rx';
 import { PagedResult } from '../model/PagedResult';
-import * as _ from 'underscore';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
@@ -62,9 +61,10 @@ export class TaxonomyApi {
       queryParameters.set('lang', lang);
     }
 
-    _.each(extraHttpRequestParams, (value, key: any) => {
-      queryParameters.set(key, value)
-    });
+    if (extraHttpRequestParams) {
+      Object.keys(extraHttpRequestParams)
+        .map(key => queryParameters.set(key, extraHttpRequestParams[key]));
+    }
 
     let requestOptions: RequestOptionsArgs = {
       method: 'GET',
@@ -107,9 +107,11 @@ export class TaxonomyApi {
       queryParameters.set('maxLevel', maxLevel);
     }
 
-    _.each(extraHttpRequestParams, (value, key: any) => {
-      queryParameters.set(key, value)
-    });
+
+    if (extraHttpRequestParams) {
+      Object.keys(extraHttpRequestParams)
+        .map(key => queryParameters.set(key, extraHttpRequestParams[key]));
+    }
 
     let requestOptions: RequestOptionsArgs = {
       method: 'GET',

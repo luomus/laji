@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Util } from '../../shared/service/util.service';
@@ -47,6 +47,9 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
     let query = Util.clone(this.query);
     if (this.overrideInQuery) {
       query = Object.assign(query, this.overrideInQuery);
+    }
+    if (WarehouseApi.isEmptyQuery(query)) {
+      query.cache = true;
     }
     if (this.subCount) {
       this.subCount.unsubscribe();

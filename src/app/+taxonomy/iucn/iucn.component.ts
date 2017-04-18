@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, HostListener, ElementRef } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnChanges, OnInit } from '@angular/core';
 
 @Component({
   selector: 'iucn',

@@ -1,7 +1,9 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Document } from '../../shared/model/Document';
 import { FormService } from '../../shared/service/form.service';
+import { TranslateService } from '@ngx-translate/core';
+import { WindowRef } from '../../shared/windows-ref';
 
 @Component({
   selector: 'laji-short-document',
@@ -14,10 +16,13 @@ export class ShortDocumentComponent implements OnInit, OnChanges {
 
   public taxa: Array<{ name: string, id: string }>;
   public gatheringDates: { start: string, end: string };
+  public publicity = Document.PublicityRestrictionsEnum;
 
   constructor(
     public formService: FormService,
     private router: Router,
+    private translate: TranslateService,
+    private winRef: WindowRef
   ) {}
 
   ngOnInit() {
@@ -76,5 +81,14 @@ export class ShortDocumentComponent implements OnInit, OnChanges {
     this.router.navigate([this.formService.getEditUrlPath(formId, documentId)]);
   }
 
-
+  removeDocument(document) {
+    this.translate.get('haseka.form.removeConfirm').subscribe(
+      (confirm) => {
+        if (this.winRef.nativeWindow.confirm(confirm)) {
+          this.formService.discard(document.id);
+          document.removed = true;
+        }
+      }
+    );
+  }
 }
