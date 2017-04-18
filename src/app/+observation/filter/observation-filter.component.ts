@@ -4,6 +4,7 @@ import { SearchQuery } from '../search-query.model';
 import { ObservationFilterInterface } from './observation-filter.interface';
 import { Subscription } from 'rxjs/Subscription';
 import { Logger } from '../../shared/logger/logger.service';
+import { Util } from '../../shared/service/util.service';
 
 
 @Component({
@@ -59,9 +60,13 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
     if (!this.filter) {
       return;
     }
-    const cacheKey = JSON.stringify(this.searchQuery.query) + this.page;
+    const query = Util.clone(this.searchQuery.query);
+    const cacheKey = JSON.stringify(query) + this.page;
     if (this.lastQuery === cacheKey) {
       return;
+    }
+    if (WarehouseApi.isEmptyQuery(query)) {
+      query.cache = true;
     }
     this.lastQuery = cacheKey;
     if (this.subData) {
@@ -69,7 +74,7 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
     }
     this.loading = true;
     this.subData = this.warehouseService.warehouseQueryAggregateGet(
-      this.searchQuery.query,
+      query,
       [this.filter.field],
       undefined,
       this.filter.size,
