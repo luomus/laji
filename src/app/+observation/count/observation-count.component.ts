@@ -48,6 +48,9 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
     if (this.overrideInQuery) {
       query = Object.assign(query, this.overrideInQuery);
     }
+    if (WarehouseApi.isEmptyQuery(query)) {
+      query.cache = true;
+    }
     if (this.subCount) {
       this.subCount.unsubscribe();
     }

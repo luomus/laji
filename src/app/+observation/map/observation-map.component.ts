@@ -287,6 +287,9 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     if (query.coordinates) {
       this.initDrawData();
     }
+    if (WarehouseApi.isEmptyQuery(query)) {
+      query.cache = true;
+    }
     this.reset = true;
     this.loading = true;
     this.showingItems = false;
