@@ -18,9 +18,10 @@ import 'moment/locale/sv';
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() document: Document;
 
-  public taxa: Array<{ name: string, id: string }>;
+  public taxa: Array<string>;
   public gatheringDates: { start: string, end: string };
   public publicity = Document.PublicityRestrictionsEnum;
+  public locality;
 
   public changingLocale = true;
 
@@ -46,7 +47,6 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
         }, 0);
       }
     );
-    console.log(this.document);
     this.updateTaxa();
     this.updateGatheredDates();
   }
@@ -62,24 +62,27 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
 
   updateTaxa() {
     const result = [];
-    if (this.document.gatherings && Array.isArray(this.document.gatherings)) {
+
+    if (this.document.gatherings && Array.isArray(this.document.gatherings) && this.document.gatherings.length > 0) {
+      if (this.document.gatherings[0].locality) {
+        this.locality = this.document.gatherings[0].locality;
+      }
       this.document.gatherings.map((gathering) => {
         if (!gathering.units || !Array.isArray(gathering.units)) {
           return;
         }
         return gathering.units.map((unit) => {
-          let taxon = unit.informalNameString || '';
-          if (unit.identifications && Array.isArray(unit.identifications)) {
-            taxon = unit.identifications.reduce(
-              (acc, cur) => {
-                const curTaxon = cur.taxon || cur.taxonVerbatim;
-                return acc ? acc + ', ' + curTaxon : curTaxon;
-              }, taxon);
+          if (unit.id) {
+            let taxon = unit.informalNameString || '';
+            if (unit.identifications && Array.isArray(unit.identifications)) {
+              taxon = unit.identifications.reduce(
+                (acc, cur) => {
+                  const curTaxon = cur.taxon || cur.taxonVerbatim;
+                  return acc ? acc + ', ' + curTaxon : curTaxon;
+                }, taxon);
+            }
+            result.push(unit.id);
           }
-          result.push({
-            name: taxon,
-            id: unit.id
-          });
         });
       });
     }
@@ -105,7 +108,8 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     this.router.navigate([this.formService.getEditUrlPath(formId, documentId)]);
   }
 
-  removeDocument(document) {
+  removeDocument(event, document) {
+    event.stopPropagation();
     this.translate.get('haseka.form.removeConfirm').subscribe(
       (confirm) => {
         if (this.winRef.nativeWindow.confirm(confirm)) {

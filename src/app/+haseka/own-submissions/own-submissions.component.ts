@@ -6,8 +6,9 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./own-submissions.component.css']
 })
 export class OwnSubmissionsComponent implements OnInit {
-  rows = [];
-  columns = [];
+  rows = [ { prop: 'abc' },
+      { name: 'def'}];
+  columns = [{abc: 'kesken'}, {def: 'nyt!'}];
 
   constructor() { }
 
