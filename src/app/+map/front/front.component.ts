@@ -56,7 +56,6 @@ export class FrontComponent implements AfterViewInit, OnDestroy {
       this.drawData.featureCollection.features.push(
         this.coordinateService.convertYkjToGeoJsonFeature(parts[0], parts[1])
       );
-      this.lajiMap.addData(this.drawData);
       this.lajiMap.initDrawData();
       this.lajiMap.map.focusToLayer(0);
       len--;
