@@ -22,6 +22,44 @@ export class FrontComponent implements AfterViewInit, OnDestroy {
     },
     getFeatureStyle: function () {
       return {color: '#000000', fillColor: '#000000', weight: 2};
+    },
+    getTooltip: (i, geometry) => {
+      switch(geometry.type) {
+      case "LineString": {
+        let prevLatLng = undefined;
+        let length = geometry.coordinates.slice(0).reduce((length, coords) => {
+          const latLng = L.latLng(coords.reverse());
+          length += prevLatLng ? L.latLng(latLng).distanceTo(prevLatLng) : 0;
+          prevLatLng = latLng;
+          return length;
+        }, 0);
+
+        let suffix = "m";
+        if (length > 1000) {
+          length = length / 1000;
+          length = +parseFloat(length).toFixed(2);
+          suffix = "km";
+        } else {
+          length = parseInt(length);
+        }
+
+        return `${length}${suffix}`;
+      }
+      case "Polygon": {
+        const latLngs = geometry.coordinates[0].slice(1).map(c => L.latLng(c.reverse()));
+        const area = L.GeometryUtil.readableArea(L.GeometryUtil.geodesicArea(latLngs), true);
+        return area;
+      }
+      case "Point": {
+        if (geometry.radius === undefined) return;
+        const {radius} = geometry;
+        const area = (Math.PI) * (radius * radius);
+        return L.GeometryUtil.readableArea(area, true);
+      }
+      }
+    },
+    tooltipOptions: {
+      permanent: true
     }
   };
 
