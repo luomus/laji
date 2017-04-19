@@ -152,6 +152,9 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
       }
       this.lastQuery = cache;
     }
+    if (WarehouseApi.isEmptyQuery(query)) {
+      query.cache = true;
+    }
     if (Object.keys(query).length === 0) {
       query.includeNonValidTaxa = false;
     }
