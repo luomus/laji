@@ -1,5 +1,5 @@
 <div class="link" (click)="editDocument(document.formID, document.id)" id="short-document">
-  <small *ngIf="!changingLocale">{{'haseka.users.saved' | translate}}: <span *ngIf="document.dateEdited">{{document.dateEdited | amTimeAgo}}</span></small>
+  <small *ngIf="!changingLocale">{{'haseka.users.edited' | translate}}: <span *ngIf="dateEdited">{{dateEdited | amTimeAgo}}</span></small>
 
   <span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
     <span class="label label-warning inline-block"
@@ -9,14 +9,15 @@
     </span>
   </span>
 
-  <span *ngIf="formService.hasUnsavedData(document.id, document) | async">
+  <span *ngIf="hasUnsavedData">
     <span class="label label-danger inline-block" [tooltip]="'haseka.form.hasChanges' | translate" [placement]="'left'">
       <i class="glyphicon glyphicon-warning-sign"></i>
     </span>
-    <span class="pull-right">
-      <span class="label label-primary link inline-block" (click)="removeDocument($event, document)">
-        <i class="glyphicon glyphicon-trash"></i>
-      </span>
+    <span class="label label-primary link inline-block"
+          [tooltip]="'haseka.users.latest.discard' | translate"
+          [placement]="'left'"
+          (click)="removeDocument($event, document)">
+      <i class="glyphicon glyphicon-trash"></i>
     </span>
   </span>
   <br>
@@ -29,9 +30,9 @@
   <span *ngIf="document.gatherings?.length > 1">({{document.gatherings.length - 1}} {{'haseka.users.latest.other' | translate}})</span>
 
   <small style="white-space: nowrap">
-    <span>{{taxa.length}}</span>
-    <span *ngIf="taxa.length === 1">{{'haseka.users.latest.gathered.singular' | translate}}</span>
-    <span *ngIf="taxa.length !== 1">{{'haseka.users.latest.gathered' | translate}}</span>
+    <span>{{unitsLength}}</span>
+    <span *ngIf="unitsLength === 1">{{'haseka.users.latest.gathered.singular' | translate}}</span>
+    <span *ngIf="unitsLength !== 1">{{'haseka.users.latest.gathered' | translate}}</span>
   </small>
   <br>
 

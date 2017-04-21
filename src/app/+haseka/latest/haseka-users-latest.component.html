@@ -10,10 +10,10 @@
       <h4>{{'haseka.users.unsaved' | translate}}</h4>
       <table class="table table-striped table-bordered table-condensed dataTable">
         <tbody>
-        <ng-container *ngFor="let document of unpublishedDocuments">
+        <ng-container *ngFor="let document of unpublishedDocuments; let i = index">
           <tr *ngIf="!document.removed">
             <td>
-              <laji-short-document [document]="document"></laji-short-document>
+              <laji-short-document [document]="document" (onDiscard)="discardDocument(unpublishedDocuments, i)"></laji-short-document>
             </td>
           </tr>
         </ng-container>
@@ -26,9 +26,9 @@
         <laji-spinner [spinning]="loading" [overlay]="true">
           <table class="table table-striped table-bordered table-condensed dataTable">
             <tbody>
-            <tr *ngFor="let document of documents">
+            <tr *ngFor="let document of documents; let i = index">
               <td>
-                <laji-short-document [document]="document"></laji-short-document>
+                <laji-short-document [document]="document" (onDiscard)="discardDocument(documents, i)"></laji-short-document>
               </td>
             </tr>
             </tbody>

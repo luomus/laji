@@ -2,6 +2,7 @@ import { Component, Input, Output, OnChanges, EventEmitter } from '@angular/core
 import { Logger } from '../../shared/logger/logger.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { FormService } from '../../shared/service/form.service';
+import { Document } from '../../shared/model/Document';
 
 @Component({
   selector: 'laji-haseka-latest',
@@ -48,7 +49,6 @@ export class UsersLatestComponent implements OnChanges {
     this.formService.getAllTempDocuments()
       .subscribe(documents => {
         this.unpublishedDocuments.push(...<Document[]>documents.map(document => {
-          document.hasChanges = true;
           return document;
         }));
       });
@@ -71,15 +71,34 @@ export class UsersLatestComponent implements OnChanges {
       );
   }
 
+  discardDocument(documents, i) {
+    const id = documents[i].id;
+    this.formService.discard(id);
+    if (this.formService.isTmpId(id)) {
+      documents.splice(i, 1);
+    } else {
+      this.documentService.findById(id, this.userToken)
+        .subscribe(
+          doc => {
+            documents[i] = doc;
+          }
+        );
+    }
+  }
+
   private addDocuments(docs) {
     for (let i = 0; i < docs.length; i++) {
-      if (docs[i].publicityRestrictions && docs[i].publicityRestrictions === 'MZ.publicityRestrictionsPrivate') {
-        this.unpublishedDocuments.push(docs[i]);
-      } else {
-        if (this.documents.length < 10) {
-          this.documents.push(docs[i]);
+      this.formService.getTmpDocumentIfNewerThanCurrent(docs[i]).subscribe(
+        (doc) => {
+          if (doc.publicityRestrictions && doc.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate) {
+            this.unpublishedDocuments.push(doc);
+          } else {
+            if (this.documents.length < 10) {
+              this.documents.push(doc);
+            }
+          }
         }
-      }
+      );
     }
   }
 }

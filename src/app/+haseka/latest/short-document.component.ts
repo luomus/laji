@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Document } from '../../shared/model/Document';
 import { FormService } from '../../shared/service/form.service';
@@ -17,11 +17,15 @@ import 'moment/locale/sv';
 })
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() document: Document;
+  @Output() onDiscard = new EventEmitter();
 
-  public taxa: Array<string>;
+  public unitsLength: number;
+  public newUnitsLength: number;
   public gatheringDates: { start: string, end: string };
   public publicity = Document.PublicityRestrictionsEnum;
   public locality;
+  public dateEdited;
+  public hasUnsavedData;
 
   public changingLocale = true;
 
@@ -47,31 +51,51 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
         }, 0);
       }
     );
-    this.updateTaxa();
-    this.updateGatheredDates();
+    this.updateFields();
   }
 
   ngOnChanges() {
-    this.updateTaxa();
-    this.updateGatheredDates();
+    this.updateFields();
   }
 
   ngOnDestroy() {
     this.subTrans.unsubscribe();
   }
 
-  updateTaxa() {
-    const result = [];
+  private updateFields() {
+    this.newUnitsLength = 0;
+    this.unitsLength = 0;
+    this.gatheringDates = {start: null, end: null};
+    this.locality = null;
+
+    this.formService.hasUnsavedData(this.document.id, this.document)
+      .subscribe(
+        (value) => { this.hasUnsavedData = value; }
+      );
 
     if (this.document.gatherings && Array.isArray(this.document.gatherings) && this.document.gatherings.length > 0) {
       if (this.document.gatherings[0].locality) {
         this.locality = this.document.gatherings[0].locality;
       }
       this.document.gatherings.map((gathering) => {
+        if (gathering.dateBegin && (!this.gatheringDates.start || new Date(gathering.dateBegin) < new Date(this.gatheringDates.start))) {
+          this.gatheringDates.start = gathering.dateBegin;
+        }
+
+        if (gathering.dateEnd && (!this.gatheringDates.end || new Date(gathering.dateEnd) > new Date(this.gatheringDates.end))) {
+          this.gatheringDates.end = gathering.dateEnd;
+        }
+
         if (!gathering.units || !Array.isArray(gathering.units)) {
           return;
         }
-        return gathering.units.map((unit) => {
+        for (let i = 0; i < gathering.units.length; i++) {
+          if (!gathering.units[i].id) {
+            this.newUnitsLength++;
+          }
+          this.unitsLength++;
+        }
+        /*return gathering.units.map((unit) => {
           if (unit.id) {
             let taxon = unit.informalNameString || '';
             if (unit.identifications && Array.isArray(unit.identifications)) {
@@ -83,25 +107,33 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
             }
             result.push(unit.id);
           }
-        });
+        });*/
       });
     }
-    this.taxa = result;
+
+    this.updateGatheredDates();
+    this.updateEditDate();
   }
 
-  updateGatheredDates() {
-    this.gatheringDates = {start: null, end: null};
-    if (!this.document.gatherings) {
+  private updateGatheredDates() {
+    if (!this.document['gatheringEvent'] || this.gatheringDates.start || this.gatheringDates.end) {
       return;
     }
-    this.document.gatherings.map((gathering) => {
-      if (gathering.dateBegin) {
-        this.gatheringDates.start = gathering.dateBegin;
+
+    this.gatheringDates.start = this.document['gatheringEvent'].dateBegin;
+    this.gatheringDates.end = this.document['gatheringEvent'].dateEnd;
+  }
+
+  private updateEditDate() {
+    this.formService.getTmpDocumentStoreDate(this.document.id).subscribe(
+      (tmpDate) => {
+        if (tmpDate) {
+          this.dateEdited = tmpDate;
+        } else if (this.document.dateEdited) {
+          this.dateEdited = this.document.dateEdited;
+        }
       }
-      if (gathering.dateEnd) {
-        this.gatheringDates.end = gathering.dateEnd;
-      }
-    });
+    );
   }
 
   editDocument(formId, documentId) {
@@ -110,13 +142,21 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
 
   removeDocument(event, document) {
     event.stopPropagation();
-    this.translate.get('haseka.form.removeConfirm').subscribe(
-      (confirm) => {
-        if (this.winRef.nativeWindow.confirm(confirm)) {
-          this.formService.discard(document.id);
-          document.removed = true;
+
+    if (this.newUnitsLength > 0) {
+      this.translate.get('haseka.users.latest.discardConfirm', {unitCount: this.newUnitsLength}).subscribe(
+        (confirm) => {
+          if (this.winRef.nativeWindow.confirm(confirm)) {
+            this.discard(document);
+          }
         }
-      }
-    );
+      );
+    } else {
+      this.discard(document);
+    }
+  }
+
+  private discard(document) {
+    this.onDiscard.emit(document.id);
   }
 }
