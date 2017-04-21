@@ -18,6 +18,7 @@ import 'moment/locale/sv';
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() document: Document;
   @Output() onDiscard = new EventEmitter();
+  @Output() onShowViewer = new EventEmitter();
 
   public unitsLength: number;
   public newUnitsLength: number;
@@ -25,6 +26,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   public publicity = Document.PublicityRestrictionsEnum;
   public locality;
   public dateEdited;
+
   public hasUnsavedData;
 
   public changingLocale = true;
@@ -147,16 +149,17 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
       this.translate.get('haseka.users.latest.discardConfirm', {unitCount: this.newUnitsLength}).subscribe(
         (confirm) => {
           if (this.winRef.nativeWindow.confirm(confirm)) {
-            this.discard(document);
+            this.onDiscard.emit();
           }
         }
       );
     } else {
-      this.discard(document);
+      this.onDiscard.emit();
     }
   }
 
-  private discard(document) {
-    this.onDiscard.emit(document.id);
+  showViewer(event) {
+    event.stopPropagation();
+    this.onShowViewer.emit();
   }
 }

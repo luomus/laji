@@ -1,23 +1,34 @@
 <div class="link" (click)="editDocument(document.formID, document.id)" id="short-document">
   <small *ngIf="!changingLocale">{{'haseka.users.edited' | translate}}: <span *ngIf="dateEdited">{{dateEdited | amTimeAgo}}</span></small>
 
-  <span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
-    <span class="label label-warning inline-block"
+  <span style="white-space: nowrap">
+    <span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
+      <span class="label label-warning inline-block"
           [tooltip]="'haseka.form.private' | translate"
           [placement]="'left'">
-      <i class="glyphicon glyphicon-eye-close"></i>
+        <i class="glyphicon glyphicon-eye-close"></i>
+      </span>
     </span>
-  </span>
 
-  <span *ngIf="hasUnsavedData">
-    <span class="label label-danger inline-block" [tooltip]="'haseka.form.hasChanges' | translate" [placement]="'left'">
-      <i class="glyphicon glyphicon-warning-sign"></i>
+    <span *ngIf="hasUnsavedData">
+      <span class="label label-danger inline-block" [tooltip]="'haseka.form.hasChanges' | translate" [placement]="'left'">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+      </span>
+      <span class="label label-default link inline-block"
+            [tooltip]="'haseka.users.latest.discard' | translate"
+            [placement]="'left'"
+            (click)="removeDocument($event, document)">
+        <i class="glyphicon glyphicon-trash"></i>
+      </span>
     </span>
-    <span class="label label-primary link inline-block"
-          [tooltip]="'haseka.users.latest.discard' | translate"
-          [placement]="'left'"
-          (click)="removeDocument($event, document)">
-      <i class="glyphicon glyphicon-trash"></i>
+
+    <span *ngIf="document.dateCreated">
+      <span class="label label-primary link inline-block"
+            [tooltip]="'result.showViewer' | translate"
+            [placement]="'left'"
+            (click)="showViewer($event)">
+        <i class="glyphicon glyphicon-eye-open"></i>
+      </span>
     </span>
   </span>
   <br>

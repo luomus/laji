@@ -13,7 +13,9 @@
         <ng-container *ngFor="let document of unpublishedDocuments; let i = index">
           <tr *ngIf="!document.removed">
             <td>
-              <laji-short-document [document]="document" (onDiscard)="discardDocument(unpublishedDocuments, i)"></laji-short-document>
+              <laji-short-document [document]="document"
+                                   (onDiscard)="discardDocument(unpublishedDocuments, i)"
+                                   (onShowViewer)="showDocumentViewer(document)"></laji-short-document>
             </td>
           </tr>
         </ng-container>
@@ -28,7 +30,9 @@
             <tbody>
             <tr *ngFor="let document of documents; let i = index">
               <td>
-                <laji-short-document [document]="document" (onDiscard)="discardDocument(documents, i)"></laji-short-document>
+                <laji-short-document [document]="document"
+                                     (onDiscard)="discardDocument(documents, i)"
+                                     (onShowViewer)="showDocumentViewer(document)"></laji-short-document>
               </td>
             </tr>
             </tbody>
@@ -49,4 +53,18 @@
     [previousText]="'paginator.previous' | translate"
     [nextText]="'paginator.next' | translate"
   ></pagination-->
+</div>
+
+<div class="modal fade" bsModal #documentModal="bs-modal"
+     tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <laji-document [uri]="shownDocument" [highlight]="0"></laji-document>
+      </div>
+    </div>
+  </div>
 </div>

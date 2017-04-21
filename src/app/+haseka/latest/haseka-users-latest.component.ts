@@ -1,8 +1,9 @@
-import { Component, Input, Output, OnChanges, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter, ViewChild } from '@angular/core';
 import { Logger } from '../../shared/logger/logger.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
+import { ModalDirective } from 'ngx-bootstrap';
 
 @Component({
   selector: 'laji-haseka-latest',
@@ -10,7 +11,7 @@ import { Document } from '../../shared/model/Document';
   styleUrls: ['./haseka-users-latest.component.css']
 })
 export class UsersLatestComponent implements OnChanges {
-
+  @ViewChild('documentModal') public modal: ModalDirective;
   @Input() userToken: string;
   @Output() tabChange = new EventEmitter<string>();
 
@@ -20,6 +21,8 @@ export class UsersLatestComponent implements OnChanges {
   public page = 1;
   public pageSize = 10;
   public loading = true;
+
+  public shownDocument;
 
   constructor(
     private documentService: DocumentApi,
@@ -84,6 +87,11 @@ export class UsersLatestComponent implements OnChanges {
           }
         );
     }
+  }
+
+  showDocumentViewer(doc: Document) {
+    this.shownDocument = doc.id;
+    this.modal.show();
   }
 
   private addDocuments(docs) {
