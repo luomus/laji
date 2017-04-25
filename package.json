@@ -5,14 +5,14 @@
   "scripts": {
     "ng": "ng",
     "ng:versoin": "ng --version",
-    "start": "ng serve --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000",
-    "start:aot": "ng serve --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000 --aot",
-    "start:embedded": "ng serve --environment=embedded --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000",
-    "start:vir": "ng serve --environment=vir --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000",
-    "build": "ng build --prod --aot",
-    "build:embedded": "ng build --environment=embedded --prod --aot",
-    "build:vir": "ng build --environment=vir --prod --aot",
-    "build:dev": "ng build --environment=dev --prod --aot",
+    "start": "ng serve --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000 --extract-css",
+    "start:aot": "ng serve --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000 --aot --extract-css",
+    "start:embedded": "ng serve --environment=embedded --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000 --extract-css",
+    "start:vir": "ng serve --environment=vir --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000 --extract-css",
+    "build": "ng build --prod --aot --extract-css",
+    "build:embedded": "ng build --environment=embedded --prod --aot --extract-css",
+    "build:vir": "ng build --environment=vir --prod --aot --extract-css",
+    "build:dev": "ng build --environment=dev --prod --aot --extract-css",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test",
     "pree2e": "webdriver-manager update --standalone false --gecko false",
@@ -54,7 +54,7 @@
     "rxjs": "^5.1.0",
     "underscore": "^1.8.3",
     "web-animations-js": "^2.2.2",
-    "zone.js": "^0.8.4"
+    "zone.js": "0.8.5"
   },
   "devDependencies": {
     "@angular/cli": "^1.0.0",
