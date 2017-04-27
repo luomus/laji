@@ -3,7 +3,6 @@ import { Logger } from '../../shared/logger/logger.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
-import { ModalDirective } from 'ngx-bootstrap';
 
 @Component({
   selector: 'laji-haseka-latest',
@@ -11,9 +10,9 @@ import { ModalDirective } from 'ngx-bootstrap';
   styleUrls: ['./haseka-users-latest.component.css']
 })
 export class UsersLatestComponent implements OnChanges {
-  @ViewChild('documentModal') public modal: ModalDirective;
   @Input() userToken: string;
   @Output() tabChange = new EventEmitter<string>();
+  @Output() onShowViewer = new EventEmitter<string>();
 
   public unpublishedDocuments: Document[] = [];
   public documents: Document[] = [];
@@ -21,8 +20,6 @@ export class UsersLatestComponent implements OnChanges {
   public page = 1;
   public pageSize = 10;
   public loading = true;
-
-  public shownDocument;
 
   constructor(
     private documentService: DocumentApi,
@@ -89,9 +86,8 @@ export class UsersLatestComponent implements OnChanges {
     }
   }
 
-  showDocumentViewer(doc: Document) {
-    this.shownDocument = doc.id;
-    this.modal.show();
+  showDocumentViewer(docId: string) {
+    this.onShowViewer.emit(docId);
   }
 
   private addDocuments(docs) {

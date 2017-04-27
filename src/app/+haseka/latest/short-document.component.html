@@ -22,7 +22,7 @@
       </span>
     </span>
 
-    <span *ngIf="document.dateCreated">
+    <span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPublic">
       <span class="label label-primary link inline-block"
             [tooltip]="'result.showViewer' | translate"
             [placement]="'left'"

@@ -111,25 +111,25 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
           }
         });*/
       });
+
+      if (this.document['gatheringEvent']) {
+        const event = this.document['gatheringEvent'];
+        if (event.dateBegin && (!this.gatheringDates.start || new Date(event.dateBegin) < new Date(this.gatheringDates.start))) {
+          this.gatheringDates.start = event.dateBegin;
+        }
+        if (event.dateEnd && (!this.gatheringDates.end || new Date(event.dateEnd) > new Date(this.gatheringDates.end))) {
+          this.gatheringDates.end = event.dateEnd;
+        }
+      }
     }
 
-    this.updateGatheredDates();
     this.updateEditDate();
-  }
-
-  private updateGatheredDates() {
-    if (!this.document['gatheringEvent'] || this.gatheringDates.start || this.gatheringDates.end) {
-      return;
-    }
-
-    this.gatheringDates.start = this.document['gatheringEvent'].dateBegin;
-    this.gatheringDates.end = this.document['gatheringEvent'].dateEnd;
   }
 
   private updateEditDate() {
     this.formService.getTmpDocumentStoreDate(this.document.id).subscribe(
       (tmpDate) => {
-        if (tmpDate) {
+        if (tmpDate && (!this.document.dateEdited || new Date(tmpDate) > new Date(this.document.dateEdited))) {
           this.dateEdited = tmpDate;
         } else if (this.document.dateEdited) {
           this.dateEdited = this.document.dateEdited;
@@ -160,6 +160,6 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
 
   showViewer(event) {
     event.stopPropagation();
-    this.onShowViewer.emit();
+    this.onShowViewer.emit(this.document.id);
   }
 }
