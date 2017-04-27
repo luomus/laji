@@ -190,6 +190,7 @@
   "observation.active.hasUnitMedia": "Image",
   "observation.active.coordinates": "Location",
   "observation.active.coordinateAccuracyMax": "Accuracy of location",
+  "observation.active.countryId": "Country",
   "observation.active.documentId": "ID",
   "observation.active.collectionId": "Collection",
   "observation.active.typeSpecimen": "Type specimen",

@@ -41,6 +41,9 @@ export class GalleryComponent implements OnChanges {
       return;
     }
     const query = Util.clone(this.query);
+    if (WarehouseApi.isEmptyQuery(query)) {
+      query.cache = true;
+    }
     this.loading = true;
     query.hasUnitMedia = true;
     this.warehouseApi.warehouseQueryListGet(query, [

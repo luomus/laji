@@ -43,6 +43,11 @@ export class WarehouseApi {
 
   }
 
+  public static isEmptyQuery(query: WarehouseQueryInterface = {}) {
+    const paramCnt = Object.keys(query).length;
+    return paramCnt === 0 || (paramCnt === 1 && typeof query.includeNonValidTaxa !== 'undefined');
+  }
+
   /**
    * PLACEHOLDER - Not Yet implemented
    * Get loaded documents from your data source that have not been processed successfully. Requires that API key has load permissions.

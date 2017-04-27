@@ -79,7 +79,7 @@ export class FeedbackComponent {
     } catch (e) {
     }
     return this.location.prepareExternalUrl(this.location.path())
-      + ' (' + agent + ')';
+      + '\n' + agent;
   }
 
   private sendMessage(type, msgKey) {

@@ -40,20 +40,21 @@ body {
   flex: 1 0 auto;
 }
 
-.full-height {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  min-height: 0;
-}
+@media only screen and (min-width : 768px) {
+  .full-height {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
 
-.full-width {
-  display: flex;
-  flex-direction: row;
-  flex: 1 1 auto;
-  min-height: 0;
+  .full-width {
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
 }
-
 #footer {
   z-index: 0;
 }

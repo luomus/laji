@@ -339,7 +339,7 @@
   "viewer.unit": "Observationer",
   "observation.form.biogeographicalProvince": "Biogeografiskt provins",
   "observation.form.municipality": "Grevskap",
-  "observation.active.countryId": "Country",
+  "observation.active.countryId": "Land",
   "observation.active.finnishMunicipalityId": "Grevskap",
   "observation.active.biogeographicalProvinceId": "Biogeografiskt provins",
   "viewer.gatherings": "ställen",
