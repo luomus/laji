@@ -18,9 +18,11 @@ import { NamedPlaceModule } from './named-place/named-place.module';
 import { FormPermissionModule } from './form-permission/form-permission.module';
 import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+import { ViewerModule } from '../+viewer/viewer.module';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, AlertModule, NgxDatatableModule, NamedPlaceModule, FormPermissionModule.forRoot()],
+  imports: [routing, SharedModule, RouterModule, AlertModule, NgxDatatableModule, NamedPlaceModule, ViewerModule,
+    FormPermissionModule.forRoot()],
   providers: [ FormApi, DocumentApi ],
   declarations: [HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
     ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent, OwnSubmissionsComponent, StatisticsComponent]

@@ -1,8 +1,83 @@
 <h3>{{'haseka.ownSubmissions.title' | translate}}</h3>
-<p>Ei vielä toteutettu.</p>
-<!--div>
+
+<div>
+  <laji-spinner [spinning]="!activeDocuments" [overlay]="false">
   <ngx-datatable
+    *ngIf="activeDocuments"
+    class="material"
     [rows]="rows"
-    [columns]="columns">
+    [columnMode]="'force'"
+    [rowHeight]="'auto'"
+    [limit]="20"
+    [footerHeight]="30"
+    [messages]="{emptyMessage: emptyMessage, totalMessage: totalMessage}">
+
+    <ngx-datatable-column [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate"
+                          [width]="45" [minWidth]="45" [maxWidth]="50">
+      <ng-template let-column="column" ngx-datatable-header-template></ng-template>
+      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+        <span *ngIf="value === publicity.publicityRestrictionsPublic">
+          <span class="label label-primary link inline-block"
+            [tooltip]="'result.showViewer' | translate"
+            [placement]="'right'"
+            (click)="showViewer($event, row.id)">
+          <i class="glyphicon glyphicon-eye-open"></i>
+          </span>
+        </span>
+        <span *ngIf="value === publicity.publicityRestrictionsPrivate">
+          <span class="label label-warning inline-block"
+            [tooltip]="'haseka.form.private' | translate"
+            [placement]="'right'">
+          <i class="glyphicon glyphicon-eye-close"></i>
+          </span>
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column [prop]="'dateEdited'" [name]="'haseka.submissions.dateEdited' | translate" [width]="defaultWidth">
+      <ng-template let-value="value" ngx-datatable-cell-template>
+        {{value | amDateFormat:'DD.MM.YYYY HH:mm'}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column [prop]="'dateStart'" [name]="'haseka.submissions.dateStart' | translate" [width]="defaultWidth">
+      <ng-template let-value="value" ngx-datatable-cell-template>
+        {{value | amDateFormat:'DD.MM.YYYY'}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column [prop]="'dateEnd'" [name]="'haseka.submissions.dateEnd' | translate" [width]="defaultWidth">
+      <ng-template let-value="value" ngx-datatable-cell-template>
+        {{value | amDateFormat:'DD.MM.YYYY'}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column [prop]="'locality'" [name]="'haseka.submissions.locality' | translate" [width]="defaultWidth">
+      <ng-template let-value="value" ngx-datatable-cell-template>
+        <span *ngIf="value.firstLocality">{{value.firstLocality}}</span>
+        <span *ngIf="!value.firstLocality">{{'haseka.users.latest.localityMissing' | translate}}</span>
+        <span *ngIf="value.otherLocalities > 0">({{value.otherLocalities}} {{'haseka.users.latest.other' | translate}})</span>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column [prop]="'unitCount'" [name]="'haseka.submissions.unitCount' | translate" [width]="defaultWidth">
+      <ng-template let-value="value" ngx-datatable-cell-template>
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column [prop]="'observer'" [name]="'haseka.submissions.observer' | translate" [width]="defaultWidth">
+      <ng-template let-value="value" ngx-datatable-cell-template>
+        <span *ngFor="let user of value; let i = index;">
+          <span>{{user | users:"fullname"}}</span>
+          <span *ngIf="i !== value.length - 1">, </span>
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column [prop]="'collection'" [name]="'haseka.submissions.collection' | translate" [width]="defaultWidth">
+      <ng-template let-value="value" ngx-datatable-cell-template>
+        {{value | collectionName}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column [prop]="'id'" [name]="'haseka.submissions.id' | translate" [width]="defaultWidth">
+      <ng-template let-value="value" ngx-datatable-cell-template>
+        {{value}}
+      </ng-template>
+    </ngx-datatable-column>
   </ngx-datatable>
-</div-->
+  </laji-spinner>
+</div>

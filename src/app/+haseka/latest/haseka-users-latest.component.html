@@ -1,19 +1,21 @@
 <div id="haseka-latest">
   <ul class="sidebar-nav">
-    <li><a (click)="changeTab('forms')">{{'haseka.forms.title' | translate}}</a></li>
-    <li><a (click)="changeTab('ownSubmissions')">{{'haseka.ownSubmissions.title' | translate}}</a></li>
-    <li><a (click)="changeTab('statistics')">{{'haseka.statistics.title' | translate}}</a></li>
+    <li><a class="link" (click)="changeTab('forms')">{{'haseka.forms.title' | translate}}</a></li>
+    <li><a class="link" (click)="changeTab('ownSubmissions')">{{'haseka.ownSubmissions.title' | translate}}</a></li>
+    <li><a class="link" (click)="changeTab('statistics')">{{'haseka.statistics.title' | translate}}</a></li>
   </ul>
 
   <div>
-    <div *ngIf="unsavedDocuments && unsavedDocuments.length > 0">
+    <div *ngIf="unpublishedDocuments && unpublishedDocuments.length > 0">
       <h4>{{'haseka.users.unsaved' | translate}}</h4>
       <table class="table table-striped table-bordered table-condensed dataTable">
         <tbody>
-        <ng-container *ngFor="let document of unsavedDocuments">
+        <ng-container *ngFor="let document of unpublishedDocuments; let i = index">
           <tr *ngIf="!document.removed">
             <td>
-              <laji-short-document [document]="document"></laji-short-document>
+              <laji-short-document [document]="document"
+                                   (onDiscard)="discardDocument(unpublishedDocuments, i)"
+                                   (onShowViewer)="showDocumentViewer($event)"></laji-short-document>
             </td>
           </tr>
         </ng-container>
@@ -26,9 +28,11 @@
         <laji-spinner [spinning]="loading" [overlay]="true">
           <table class="table table-striped table-bordered table-condensed dataTable">
             <tbody>
-            <tr *ngFor="let document of documents | slice:0:9">
+            <tr *ngFor="let document of documents; let i = index">
               <td>
-                <laji-short-document [document]="document"></laji-short-document>
+                <laji-short-document [document]="document"
+                                     (onDiscard)="discardDocument(documents, i)"
+                                     (onShowViewer)="showDocumentViewer($event)"></laji-short-document>
               </td>
             </tr>
             </tbody>

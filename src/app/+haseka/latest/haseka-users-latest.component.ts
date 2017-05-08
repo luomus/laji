@@ -1,7 +1,8 @@
-import { Component, Input, Output, OnChanges, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnChanges, EventEmitter, ViewChild } from '@angular/core';
 import { Logger } from '../../shared/logger/logger.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { FormService } from '../../shared/service/form.service';
+import { Document } from '../../shared/model/Document';
 
 @Component({
   selector: 'laji-haseka-latest',
@@ -9,12 +10,12 @@ import { FormService } from '../../shared/service/form.service';
   styleUrls: ['./haseka-users-latest.component.css']
 })
 export class UsersLatestComponent implements OnChanges {
-
   @Input() userToken: string;
   @Output() tabChange = new EventEmitter<string>();
+  @Output() onShowViewer = new EventEmitter<string>();
 
-  public unsavedDocuments: Document[];
-  public documents: Document[];
+  public unpublishedDocuments: Document[] = [];
+  public documents: Document[] = [];
   public total = 0;
   public page = 1;
   public pageSize = 10;
@@ -47,10 +48,9 @@ export class UsersLatestComponent implements OnChanges {
     }
     this.formService.getAllTempDocuments()
       .subscribe(documents => {
-        this.unsavedDocuments = <Document[]>documents.map(document => {
-          document.hasChanges = true;
+        this.unpublishedDocuments.push(...<Document[]>documents.map(document => {
           return document;
-        });
+        }));
       });
   }
 
@@ -62,10 +62,47 @@ export class UsersLatestComponent implements OnChanges {
       .subscribe(
         result => {
           this.loading = false;
-          this.documents = <Document[]>(result.results || []);
+          if (result.results) {
+            this.addDocuments(result.results);
+          }
           this.total = result.total || 0;
         },
         err => this.logger.warn('Unable to fetch users documents', err)
       );
+  }
+
+  discardDocument(documents, i) {
+    const id = documents[i].id;
+    this.formService.discard(id);
+    if (this.formService.isTmpId(id)) {
+      documents.splice(i, 1);
+    } else {
+      this.documentService.findById(id, this.userToken)
+        .subscribe(
+          doc => {
+            documents[i] = doc;
+          }
+        );
+    }
+  }
+
+  showDocumentViewer(docId: string) {
+    this.onShowViewer.emit(docId);
+  }
+
+  private addDocuments(docs) {
+    for (let i = 0; i < docs.length; i++) {
+      this.formService.getTmpDocumentIfNewerThanCurrent(docs[i]).subscribe(
+        (doc) => {
+          if (doc.publicityRestrictions && doc.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate) {
+            this.unpublishedDocuments.push(doc);
+          } else {
+            if (this.documents.length < 10) {
+              this.documents.push(doc);
+            }
+          }
+        }
+      );
+    }
   }
 }

@@ -2,8 +2,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { FormControl } from '@angular/forms';
-import { AutocompleteApi } from '../api/AutocompleteApi';
-import { TaxonomyApi } from '../api/TaxonomyApi';
+import { AutocompleteApi, AutocompleteMatchType } from '../api/AutocompleteApi';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
 import { Router } from '@angular/router';
@@ -17,9 +16,10 @@ export class OmniSearchComponent implements OnInit, OnChanges {
 
   @Input() placeholder: string;
   @Input() lang: string;
-  @Input() limit: number = 10;
-  @Input() delay: number = 200;
-  @Input() selectTo: string  = '/taxon';
+  @Input() limit = 10;
+  @Input() delay = 200;
+  @Input() selectTo = '/taxon';
+  @Input() matchType: AutocompleteMatchType;
   public search = '';
   public searchControl = new FormControl();
   public active = 0;
@@ -28,11 +28,9 @@ export class OmniSearchComponent implements OnInit, OnChanges {
   public loading = false;
   private subTaxa: Subscription;
   private subCnt: Subscription;
-  private subTaxon: Subscription;
 
   constructor(private autocompleteService: AutocompleteApi,
               private warehouseApi: WarehouseApi,
-              private taxonService: TaxonomyApi,
               private router: Router,
               private logger: Logger
   ) {
@@ -67,16 +65,6 @@ export class OmniSearchComponent implements OnInit, OnChanges {
       this.taxon.informalTaxonGroups = this.taxon.payload.informalTaxonGroups
         .map(group => group.name)
         .reverse();
-      this.subTaxon = this.taxonService
-        .taxonomyFindBySubject(this.taxon.key, this.lang)
-        .subscribe(data => {
-          this.taxa.map(auto => {
-            if (auto.key === data.id ) {
-              auto['vernacularName'] = data['vernacularName'];
-              auto['cursiveName'] = data['cursiveName'] || false;
-            }
-          });
-        });
       this.subCnt =
         Observable.of(this.taxon.key).combineLatest(
           this.warehouseApi.warehouseQueryCountGet({taxonId: this.taxon.key}),
@@ -121,16 +109,19 @@ export class OmniSearchComponent implements OnInit, OnChanges {
     if (this.subCnt) {
       this.subCnt.unsubscribe();
     }
-    if (this.subTaxon) {
-      this.subTaxon.unsubscribe();
-    }
     if (this.search.length < 4) {
       this.loading = false;
       return;
     }
     this.loading = true;
     this.subTaxa = this.autocompleteService
-      .autocompleteFindByField('taxon', this.search, '' + this.limit, true, this.lang)
+      .autocompleteFindByField({
+        field: 'taxon',
+        q: this.search,
+        limit: '' + this.limit,
+        includePayload: true,
+        lang: this.lang
+      })
       .subscribe(
         data => {
           this.taxa = data;

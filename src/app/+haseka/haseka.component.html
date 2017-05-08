@@ -25,14 +25,32 @@
             </alert>
             <a routerLink="/vihko/terms-of-service">{{'haseka.termsOfService' | translate}}</a>
             <laji-haseka-form-list *ngIf="activeTab === 'forms'"></laji-haseka-form-list>
-            <laji-own-submissions *ngIf="activeTab === 'ownSubmissions'"></laji-own-submissions>
+            <laji-own-submissions *ngIf="activeTab === 'ownSubmissions'"
+                                  [userToken]="userService.getToken()"
+                                  (onShowViewer)="showDocumentViewer($event)"></laji-own-submissions>
             <laji-statistics *ngIf="activeTab === 'statistics'"></laji-statistics>
           </div>
         </div>
         <div class="col-sm-3 col-md-3 col-lg-2 flex-column" *ngIf="userService.isLoggedIn" id="sidebar-container">
-          <laji-haseka-latest [userToken]="userService.token" (tabChange)="changeTab($event)"></laji-haseka-latest>
+          <laji-haseka-latest [userToken]="userService.getToken()"
+                              (tabChange)="changeTab($event)"
+                              (onShowViewer)="showDocumentViewer($event)"></laji-haseka-latest>
         </div>
       </div>
     </div>
   </only-logged>
+</div>
+
+<div class="modal fade" bsModal #documentModal="bs-modal"
+     tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <laji-document [uri]="shownDocument" [highlight]="0"></laji-document>
+      </div>
+    </div>
+  </div>
 </div>

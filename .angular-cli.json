@@ -33,6 +33,9 @@
         "../node_modules/react-spinner/react-spinner.css",
         "../node_modules/react-selectize/themes/index.css",
         "../node_modules/laji-form/lib/styles.css",
+        "../node_modules/@swimlane/ngx-datatable/release/index.css",
+        "../node_modules/@swimlane/ngx-datatable/release/themes/material.css",
+        "../node_modules/@swimlane/ngx-datatable/release/assets/icons.css",
         "styles/ng2-toastr.min.css",
         "styles/laji.css"
       ],
