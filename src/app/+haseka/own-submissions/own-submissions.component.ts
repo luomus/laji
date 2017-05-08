@@ -25,7 +25,7 @@ export class OwnSubmissionsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.documentService.findAll(this.userToken, String(1), String(10))
+    this.documentService.findAll(this.userToken, String(1), String(1000))
       .subscribe(
         result => {
           if (result.results) {
@@ -84,7 +84,7 @@ export class OwnSubmissionsComponent implements OnInit {
       row['dateEnd'] =  gatheringDates.end;
       row['locality'] = locality;
       row['unitCount'] = unitCount;
-      row['observer'] = document['gatheringEvent'].leg;
+      row['observer'] = document.gatheringEvent && document.gatheringEvent.leg;
       row['collection'] = document.collectionID;
       row['keywords'] = '';
       row['id'] = document.id;
