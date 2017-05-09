@@ -120,7 +120,8 @@ export class OmniSearchComponent implements OnInit, OnChanges {
         q: this.search,
         limit: '' + this.limit,
         includePayload: true,
-        lang: this.lang
+        lang: this.lang,
+        matchType: this.matchType
       })
       .subscribe(
         data => {
