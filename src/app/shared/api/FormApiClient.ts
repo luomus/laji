@@ -61,7 +61,7 @@ export class FormApiClient {
 
     switch (resource) {
       case '/autocomplete/taxon':
-        queryParameters.set('matchType', 'exact,partial');
+        queryParameters.set('matchType', 'EXACT,PARTIAL');
     }
 
     return this.http.request(path, requestOptions).toPromise(Promise);
