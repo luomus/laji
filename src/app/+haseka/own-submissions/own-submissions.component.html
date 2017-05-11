@@ -14,6 +14,7 @@
     [rows]="rows"
     [columnMode]="'force'"
     [rowHeight]="'auto'"
+    [limit]="20"
     [footerHeight]="30"
     [messages]="{emptyMessage: emptyMessage, totalMessage: totalMessage}">
 
@@ -45,11 +46,7 @@
     <ngx-datatable-column [prop]="'locality'" [name]="'haseka.submissions.locality' | translate" [width]="defaultWidth"></ngx-datatable-column>
     <ngx-datatable-column [prop]="'unitCount'" [name]="'haseka.submissions.unitCount' | translate" [width]="defaultWidth"></ngx-datatable-column>
     <ngx-datatable-column [prop]="'observer'" [name]="'haseka.submissions.observer' | translate" [width]="defaultWidth"></ngx-datatable-column>
-    <ngx-datatable-column [prop]="'collection'" [name]="'haseka.submissions.collection' | translate" [width]="defaultWidth">
-      <ng-template let-value="value" ngx-datatable-cell-template>
-        {{value | collectionName}}
-      </ng-template>
-    </ngx-datatable-column>
+    <ngx-datatable-column [prop]="'form'" [name]="'haseka.submissions.form' | translate" [width]="defaultWidth"></ngx-datatable-column>
     <ngx-datatable-column [prop]="'id'" [name]="'haseka.submissions.id' | translate" [width]="defaultWidth"></ngx-datatable-column>
   </ngx-datatable>
   </laji-spinner>

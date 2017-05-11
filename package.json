@@ -43,8 +43,8 @@
     "core-js": "^2.4.1",
     "ie-shim": "^0.1.0",
     "intl": "^1.2.5",
-    "laji-form": "0.0.155",
-    "laji-map": "1.0.185",
+    "laji-form": "0.0.163",
+    "laji-map": "1.0.187",
     "ng2-select": "vixriihi/ng2-select.git#development",
     "ng2-toastr": "^4.0.1",
     "ng2-webstorage": "^1.6.2",
@@ -54,10 +54,10 @@
     "rxjs": "^5.1.0",
     "underscore": "^1.8.3",
     "web-animations-js": "^2.2.2",
-    "zone.js": "0.8.5"
+    "zone.js": "^0.8.10"
   },
   "devDependencies": {
-    "@angular/cli": "^1.0.0",
+    "@angular/cli": "^1.0.3",
     "@angular/compiler-cli": "^4.0.0",
     "@angular/language-service": "^4.0.0",
     "@types/d3": "^3.0.0",
