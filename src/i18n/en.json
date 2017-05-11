@@ -252,7 +252,7 @@
   "haseka.users.latest.other": "other",
   "haseka.users.latest.discard": "Remove unsaved local changes",
   "haseka.users.latest.discardConfirm": "Are you sure you want to discard changes? New observations: {{unitCount}}.",
-  "haseka.submissions.publicity": "",
+  "haseka.submissions.publicity": "Publicity",
   "haseka.submissions.dateEdited": "",
   "haseka.submissions.dateStart": "",
   "haseka.submissions.dateEnd": "",

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NamedPlaceApi } from '../../shared/api/NamedPlaceApi';
 import { NamedPlace } from '../../shared/model/NamedPlace';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class NamedPlacesService {

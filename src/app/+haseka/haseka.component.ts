@@ -3,6 +3,7 @@ import { UserService } from '../shared/service/user.service';
 import { LocalStorage } from 'ng2-webstorage';
 import { Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
+import { RouterChildrenEventsService } from './router-children-events.service';
 
 @Component({
   selector: 'haseka',
@@ -14,13 +15,13 @@ export class HasekaComponent implements OnInit {
   @LocalStorage() public vihkoSettings;
   public email: string;
 
-  public activeTab = 'forms';
   public shownDocument: string;
   @ViewChild('documentModal') public modal: ModalDirective;
 
   constructor(
     public userService: UserService,
-    public router: Router
+    public router: Router,
+    private eventService: RouterChildrenEventsService
   ) {
   }
 
@@ -28,14 +29,13 @@ export class HasekaComponent implements OnInit {
     if (!this.vihkoSettings) {
       this.vihkoSettings = { showIntro: true };
     }
+    this.eventService.showViewerClicked$.subscribe((docId) => {
+        this.showDocumentViewer(docId);
+    });
   }
 
   toggleInfo() {
     this.vihkoSettings = {showIntro: !this.vihkoSettings.showIntro};
-  }
-
-  changeTab(tab: string) {
-    this.activeTab = tab;
   }
 
   showDocumentViewer(docId: string) {

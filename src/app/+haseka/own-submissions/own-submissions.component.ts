@@ -8,7 +8,7 @@ import { UserService } from '../../shared/service/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Person } from '../../shared/model/Person';
 import { FormService } from '../../shared/service/form.service';
-
+import { RouterChildrenEventsService } from '../router-children-events.service';
 
 @Component({
   selector: 'laji-own-submissions',
@@ -16,13 +16,12 @@ import { FormService } from '../../shared/service/form.service';
   styleUrls: ['./own-submissions.component.css']
 })
 export class OwnSubmissionsComponent implements OnInit {
-  @Input() userToken: string;
-  @Output() onShowViewer = new EventEmitter<string>();
   activeDocuments: Document[];
   emptyMessage: '';
   totalMessage: '';
   publicity = Document.PublicityRestrictionsEnum;
-  rows = [];
+  columns = ['dateEdited', 'dateStart', 'dateEnd', 'locality', 'unitCount', 'observer', 'form', 'id'];
+  rows: any[];
   defaultWidth = 120;
 
   @ViewChild(DataTableBodyRowComponent) child: DataTableBodyRowComponent;
@@ -31,11 +30,12 @@ export class OwnSubmissionsComponent implements OnInit {
     private documentService: DocumentApi,
     private translate: TranslateService,
     private userService: UserService,
-    private formService: FormService
+    private formService: FormService,
+    private eventService: RouterChildrenEventsService
   ) { }
 
   ngOnInit() {
-    this.documentService.findAll(this.userToken, String(1), String(1000))
+    this.documentService.findAll(this.userService.getToken(), String(1), String(1000))
       .subscribe(
         result => {
           if (result.results) {
@@ -51,7 +51,7 @@ export class OwnSubmissionsComponent implements OnInit {
   }
 
   updateRows() {
-    this.rows = [];
+    this.rows = null;
 
     Observable.from(this.activeDocuments.map((doc) => {
       return this.setRowData(doc);
@@ -65,7 +65,7 @@ export class OwnSubmissionsComponent implements OnInit {
 
   showViewer(event, docId: string) {
     event.stopPropagation();
-    this.onShowViewer.emit(docId);
+    this.eventService.showViewer(docId);
   }
 
   updateFilter(event) {

@@ -1,7 +1,7 @@
 <h3>{{'haseka.ownSubmissions.title' | translate}}</h3>
 
 <div>
-  <laji-spinner [spinning]="!activeDocuments" [overlay]="false">
+  <laji-spinner [spinning]="!(activeDocuments && rows)" [overlay]="false">
     <input
       type='text'
       style='padding:8px;margin:15px auto;width:30%;'
@@ -9,7 +9,7 @@
       (keyup)='updateFilter($event)'
     />
   <ngx-datatable
-    *ngIf="activeDocuments"
+    *ngIf="activeDocuments && rows"
     class="material"
     [rows]="rows"
     [columnMode]="'force'"
@@ -39,15 +39,7 @@
         </span>
       </ng-template>
     </ngx-datatable-column>
-    <ngx-datatable-column [prop]="'dateEdited'" [name]="'haseka.submissions.dateEdited' | translate" [width]="defaultWidth">
-    </ngx-datatable-column>
-    <ngx-datatable-column [prop]="'dateStart'" [name]="'haseka.submissions.dateStart' | translate" [width]="defaultWidth"></ngx-datatable-column>
-    <ngx-datatable-column [prop]="'dateEnd'" [name]="'haseka.submissions.dateEnd' | translate" [width]="defaultWidth"></ngx-datatable-column>
-    <ngx-datatable-column [prop]="'locality'" [name]="'haseka.submissions.locality' | translate" [width]="defaultWidth"></ngx-datatable-column>
-    <ngx-datatable-column [prop]="'unitCount'" [name]="'haseka.submissions.unitCount' | translate" [width]="defaultWidth"></ngx-datatable-column>
-    <ngx-datatable-column [prop]="'observer'" [name]="'haseka.submissions.observer' | translate" [width]="defaultWidth"></ngx-datatable-column>
-    <ngx-datatable-column [prop]="'form'" [name]="'haseka.submissions.form' | translate" [width]="defaultWidth"></ngx-datatable-column>
-    <ngx-datatable-column [prop]="'id'" [name]="'haseka.submissions.id' | translate" [width]="defaultWidth"></ngx-datatable-column>
+    <ngx-datatable-column *ngFor="let col of columns" [prop]="col" [name]="'haseka.submissions.' + col | translate" [width]="defaultWidth"></ngx-datatable-column>
   </ngx-datatable>
   </laji-spinner>
 </div>
