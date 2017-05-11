@@ -11,6 +11,7 @@ import { WindowRef } from '../windows-ref';
 import { ToastsService } from '../service/toasts.service';
 import { Form } from '../model/FormListInterface';
 import { Logger } from '../logger/logger.service';
+import {NamedPlacesService} from '../../+haseka/named-place/named-places.service';
 
 @Component({
   selector: 'laji-document-form',
@@ -33,6 +34,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   public loading = false;
   public enablePrivate = true;
   public errorMsg: string;
+  public namedPlace;
 
   private subTrans: Subscription;
   private subFetch: Subscription;
@@ -51,6 +53,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               private footerService: FooterService,
               public translate: TranslateService,
               private toastsService: ToastsService,
+              private namedPlaceService: NamedPlacesService,
               private winRef: WindowRef,
               private logger: Logger) {
   }
@@ -239,6 +242,10 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
                 this.status = 'unsaved';
               }
             });
+          if (data.formData.namedPlaceID) {
+            this.namedPlaceService.getNamedPlace(data.formData.namedPlaceID, this.userService.getToken())
+              .subscribe(np => this.namedPlace = np);
+          }
           this.lang = this.translate.currentLang;
         },
         err => {

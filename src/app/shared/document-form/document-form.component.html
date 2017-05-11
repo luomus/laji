@@ -12,7 +12,12 @@
     <img src="{{form.logo}}">
   </div>
 </div>
-
+<div class="row" *ngIf="namedPlace" style="margin-top: 10px">
+  <div class="col-sm-12">
+    <strong>{{namedPlace.name}}</strong>
+  </div>
+</div>
+<div class="clear"></div>
 <div class="laji-form" *ngIf="form?.id">
   <laji-form
           [formData]="form"

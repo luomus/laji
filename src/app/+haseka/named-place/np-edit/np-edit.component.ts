@@ -142,6 +142,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
     const populate: any = np.prepopulatedDocument ? np.prepopulatedDocument : {};
 
+    populate.namedPlaceID = np.id;
+
     if (!populate.gatherings) {
       populate.gatherings = [{}];
     } else if (!populate.gatherings[0]) {
