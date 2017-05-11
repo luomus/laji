@@ -2,6 +2,12 @@
 
 <div>
   <laji-spinner [spinning]="!activeDocuments" [overlay]="false">
+    <input
+      type='text'
+      style='padding:8px;margin:15px auto;width:30%;'
+      placeholder='Type to filter the name column...'
+      (keyup)='updateFilter($event)'
+    />
   <ngx-datatable
     *ngIf="activeDocuments"
     class="material"
@@ -33,50 +39,18 @@
       </ng-template>
     </ngx-datatable-column>
     <ngx-datatable-column [prop]="'dateEdited'" [name]="'haseka.submissions.dateEdited' | translate" [width]="defaultWidth">
-      <ng-template let-value="value" ngx-datatable-cell-template>
-        {{value | amDateFormat:'DD.MM.YYYY HH:mm'}}
-      </ng-template>
     </ngx-datatable-column>
-    <ngx-datatable-column [prop]="'dateStart'" [name]="'haseka.submissions.dateStart' | translate" [width]="defaultWidth">
-      <ng-template let-value="value" ngx-datatable-cell-template>
-        {{value | amDateFormat:'DD.MM.YYYY'}}
-      </ng-template>
-    </ngx-datatable-column>
-    <ngx-datatable-column [prop]="'dateEnd'" [name]="'haseka.submissions.dateEnd' | translate" [width]="defaultWidth">
-      <ng-template let-value="value" ngx-datatable-cell-template>
-        {{value | amDateFormat:'DD.MM.YYYY'}}
-      </ng-template>
-    </ngx-datatable-column>
-    <ngx-datatable-column [prop]="'locality'" [name]="'haseka.submissions.locality' | translate" [width]="defaultWidth">
-      <ng-template let-value="value" ngx-datatable-cell-template>
-        <span *ngIf="value.firstLocality">{{value.firstLocality}}</span>
-        <span *ngIf="!value.firstLocality">{{'haseka.users.latest.localityMissing' | translate}}</span>
-        <span *ngIf="value.otherLocalities > 0">({{value.otherLocalities}} {{'haseka.users.latest.other' | translate}})</span>
-      </ng-template>
-    </ngx-datatable-column>
-    <ngx-datatable-column [prop]="'unitCount'" [name]="'haseka.submissions.unitCount' | translate" [width]="defaultWidth">
-      <ng-template let-value="value" ngx-datatable-cell-template>
-        {{value}}
-      </ng-template>
-    </ngx-datatable-column>
-    <ngx-datatable-column [prop]="'observer'" [name]="'haseka.submissions.observer' | translate" [width]="defaultWidth">
-      <ng-template let-value="value" ngx-datatable-cell-template>
-        <span *ngFor="let user of value; let i = index;">
-          <span>{{user | users:"fullname"}}</span>
-          <span *ngIf="i !== value.length - 1">, </span>
-        </span>
-      </ng-template>
-    </ngx-datatable-column>
+    <ngx-datatable-column [prop]="'dateStart'" [name]="'haseka.submissions.dateStart' | translate" [width]="defaultWidth"></ngx-datatable-column>
+    <ngx-datatable-column [prop]="'dateEnd'" [name]="'haseka.submissions.dateEnd' | translate" [width]="defaultWidth"></ngx-datatable-column>
+    <ngx-datatable-column [prop]="'locality'" [name]="'haseka.submissions.locality' | translate" [width]="defaultWidth"></ngx-datatable-column>
+    <ngx-datatable-column [prop]="'unitCount'" [name]="'haseka.submissions.unitCount' | translate" [width]="defaultWidth"></ngx-datatable-column>
+    <ngx-datatable-column [prop]="'observer'" [name]="'haseka.submissions.observer' | translate" [width]="defaultWidth"></ngx-datatable-column>
     <ngx-datatable-column [prop]="'collection'" [name]="'haseka.submissions.collection' | translate" [width]="defaultWidth">
       <ng-template let-value="value" ngx-datatable-cell-template>
         {{value | collectionName}}
       </ng-template>
     </ngx-datatable-column>
-    <ngx-datatable-column [prop]="'id'" [name]="'haseka.submissions.id' | translate" [width]="defaultWidth">
-      <ng-template let-value="value" ngx-datatable-cell-template>
-        {{value}}
-      </ng-template>
-    </ngx-datatable-column>
+    <ngx-datatable-column [prop]="'id'" [name]="'haseka.submissions.id' | translate" [width]="defaultWidth"></ngx-datatable-column>
   </ngx-datatable>
   </laji-spinner>
 </div>

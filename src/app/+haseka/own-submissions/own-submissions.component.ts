@@ -1,7 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
+import { DocumentInfoService } from '../document-info.service';
 import { TranslateService } from '@ngx-translate/core';
+import { DataTableBodyRowComponent } from '@swimlane/ngx-datatable';
+import { UserService } from '../../shared/service/user.service';
+import { Observable } from 'rxjs/Observable';
+import { Person } from '../../shared/model/Person';
 
 
 @Component({
@@ -19,9 +24,12 @@ export class OwnSubmissionsComponent implements OnInit {
   rows = [];
   defaultWidth = 120;
 
+  @ViewChild(DataTableBodyRowComponent) child: DataTableBodyRowComponent;
+
   constructor(
     private documentService: DocumentApi,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
@@ -43,58 +51,93 @@ export class OwnSubmissionsComponent implements OnInit {
   updateRows() {
     this.rows = [];
 
-    this.rows = this.activeDocuments.map((document => {
-      const row = {};
-      const gatheringDates = {start: undefined, end: undefined};
-      let unitCount = 0;
-      const locality = {firstLocality: null, otherLocalities: 0};
+    /*Observable.of(this.activeDocuments)
+     .mergeMap((document) => {
+     return this.setRowData(document) })
+     .subscribe((value) => {console.log(value); });*/
 
-      for (let i = 0; i < document.gatherings.length; i++) {
-        const gathering = document.gatherings[i];
-        if (i === 0) {
-          locality.firstLocality = gathering.locality;
-          locality.otherLocalities = document.gatherings.length - 1;
-        }
-        if (gathering.dateBegin && (!gatheringDates.start || new Date(gathering.dateBegin) < new Date(gatheringDates.start))) {
-          gatheringDates.start = gathering.dateBegin;
-        }
+    Observable.from(this.activeDocuments.map((doc) => {
+      return this.setRowData(doc);
+    }))
+      .mergeAll()
+      .toArray()
+      .subscribe((array) => {
+        this.rows = array;
+      });
 
-        if (gathering.dateEnd && (!gatheringDates.end || new Date(gathering.dateEnd) > new Date(gatheringDates.end))) {
-          gatheringDates.end = gathering.dateEnd;
-        }
-
-        if (gathering.units) {
-          unitCount += gathering.units.length;
-        }
-      }
-
-      if (document['gatheringEvent']) {
-        const event = document['gatheringEvent'];
-        if (event.dateBegin && (!gatheringDates.start || new Date(event.dateBegin) < new Date(gatheringDates.start))) {
-          gatheringDates.start = event.dateBegin;
-        }
-        if (event.dateEnd && (!gatheringDates.end || new Date(event.dateEnd) > new Date(gatheringDates.end))) {
-          gatheringDates.end = event.dateEnd;
-        }
-      }
-
-      row['publicity'] = document.publicityRestrictions;
-      row['dateEdited'] = document.dateEdited;
-      row['dateStart'] = gatheringDates.start;
-      row['dateEnd'] =  gatheringDates.end;
-      row['locality'] = locality;
-      row['unitCount'] = unitCount;
-      row['observer'] = document['gatheringEvent'].leg;
-      row['collection'] = document.collectionID;
-      row['keywords'] = '';
-      row['id'] = document.id;
-
-      return row;
-    }));
+    /*this.list = this.af.database.list("API_URL")
+     .mergeMap((ItemKeys) => {
+     return Observable.from(ItemKeys.map((ItemKey) => {
+     return this.af.database.object(API_URL + "/" + ItemKey);
+     })).mergeAll().toArray();
+     })
+     .subscribe((items) => {
+     this.lineData = items;
+     });*/
   }
 
   showViewer(event, docId: string) {
     event.stopPropagation();
     this.onShowViewer.emit(docId);
+  }
+
+  updateFilter(event) {
+    const val = event.target.value;
+    console.log(this.child);
+    /*this.rows = this.rows.filter(function (row) {
+
+     });*/
+  }
+
+  private setRowData(document: Document): Observable<any> {
+    const gatheringInfo = DocumentInfoService.getGatheringInfo(document);
+    const row = {};
+
+    return this.getLocality(gatheringInfo).switchMap((locality) => {
+        return this.getObservers(document['gatheringEvent'].leg).switchMap((observers) => {
+            row['publicity'] = document.publicityRestrictions;
+            row['dateEdited'] = moment(document.dateEdited).format('DD.MM.YYYY HH:mm');
+            row['dateStart'] = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '' ;
+            row['dateEnd'] = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
+            row['locality'] = locality;
+            row['unitCount'] = gatheringInfo.unitCount;
+            row['observer'] = observers;
+            row['collection'] = document.collectionID;
+            row['keywords'] = '';
+            row['id'] = document.id;
+            return Observable.of(row);
+          });
+    });
+  }
+
+  private getLocality(gatheringInfo: any): Observable<string> {
+    let locality = gatheringInfo.locality;
+
+    return this.translate.get('haseka.users.latest.localityMissing').switchMap((localityMissing) => {
+      if (!locality) {
+        locality = localityMissing;
+      }
+
+      return this.translate.get('haseka.users.latest.other').switchMap((other) => {
+        if (gatheringInfo.localityCount > 0) {
+          locality += ' (' + gatheringInfo.localityCount + ' ' + other + ')';
+        }
+        return Observable.of(locality);
+      });
+    });
+  }
+
+  private getObservers(userArray: string[]): Observable<string> {
+    return Observable.from(userArray.map((userId) => {
+      return this.userService.getUser(userId)
+        .switchMap((user: Person) => {
+          return Observable.of(user.fullName);
+        });
+    }))
+      .mergeAll()
+      .toArray()
+      .switchMap((array) => {
+        return Observable.of(array.join(', '));
+      });
   }
 }
