@@ -76,6 +76,7 @@ import { FormService } from './service/form.service';
 import { FormNamePipe } from './pipe/form-name.pipe';
 import { CoordinateService } from './service/coordinate.service';
 import { TaxonomyApi } from './api/TaxonomyApi';
+import { NlToBrPipe } from './pipe/nl-to-br.pipe';
 
 
 @NgModule({
@@ -87,7 +88,7 @@ import { TaxonomyApi } from './api/TaxonomyApi';
     AreaNamePipe, CollectionNamePipe, FormNamePipe,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, ImageModalOverlayComponent,
-    AuthoritiesDirective, ImageComponent, LajiFormComponent
+    AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe
   ],
   imports: [
     ToastModule,
@@ -107,7 +108,7 @@ import { TaxonomyApi } from './api/TaxonomyApi';
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe, LajiFormComponent, DocumentFormComponent,
     ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
-    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent,
+    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, NlToBrPipe,
     AuthoritiesDirective, MomentModule
   ]
 })
