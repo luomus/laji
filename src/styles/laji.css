@@ -55,6 +55,7 @@ body {
     min-height: 0;
   }
 }
+
 #footer {
   z-index: 0;
 }
@@ -584,4 +585,13 @@ body > .ui-select-bootstrap.open {
 .dropdown-menu.right {
   right: 0 !important;
   left: auto !important;
+}
+
+/** print management */
+@media print
+{
+  .no-print, .no-print *
+  {
+    display: none !important;
+  }
 }
