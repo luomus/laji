@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, ViewChild, AfterViewInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MapComponent } from '../../shared/map/map.component';
 
 @Component({

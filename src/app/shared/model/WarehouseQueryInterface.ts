@@ -142,4 +142,5 @@ export interface WarehouseQueryInterface {
   secured?: boolean;
   ykj3?: string;
   ykj3Center?: string;
+  cache?: boolean;
 }

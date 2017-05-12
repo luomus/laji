@@ -10,5 +10,5 @@
   <span>{{fields[key].title}}:</span>
 </div>
 <div class="value">
-  <span>{{nameOfValue}}</span>
+  <span [innerHtml]="nameOfValue | nlToBr"></span>
 </div>

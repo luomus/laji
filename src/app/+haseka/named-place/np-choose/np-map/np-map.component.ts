@@ -1,4 +1,14 @@
-import {Component, OnInit, AfterViewInit, Input, Output, ViewChild, SimpleChanges, OnChanges, EventEmitter} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { MapComponent } from '../../../../shared/map/map.component';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 

@@ -1,10 +1,13 @@
-<div class="laji-news" *lajiAuthorities="false">
+<div class="laji-news full-height" *lajiAuthorities="false">
   <laji-image-header></laji-image-header>
   <div class="searchBar">
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
-          <laji-omni-search [placeholder]="'search-bar.input' | translate" [lang]="translate.currentLang"></laji-omni-search>
+          <laji-omni-search
+            [placeholder]="'search-bar.input' | translate"
+            [lang]="translate.currentLang"
+          ></laji-omni-search>
         </div>
         <div class="col-sm-3">
           <span class="pull-right some-links" aria-hidden="true">
@@ -43,7 +46,7 @@
             <div class="panel panel-default">
               <div class="panel-body resent-map">
                 <div class="link resent-map-overlay" [routerLink]="['/observation']" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}"></div>
-                <laji-observation-map [height]="305" [showControls]="false" [initWithWorldMap]="false" [showItemsWhenLessThan]="500" [draw]="false" [query]="{time: mapStartDate + '/', countryId: 'ML.206'}"></laji-observation-map>
+                <laji-observation-map [height]="305" [showControls]="false" [initWithWorldMap]="false" [showItemsWhenLessThan]="500" [draw]="false" [query]="{time: mapStartDate + '/', countryId: 'ML.206', cache: true}"></laji-observation-map>
               </div>
               <div class="panel-footer">
                 <h2 class="panel-title">{{ 'home.main-page.recent' | translate }}</h2>

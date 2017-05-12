@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { NamedPlacesService } from './named-places.service';
 import { NamedPlaceComponent } from './named-place/named-place.component';
-import { NpChooseComponent} from './np-choose/np-choose.component';
+import { NpChooseComponent } from './np-choose/np-choose.component';
 import { NpListComponent } from './np-choose/np-list/np-list.component';
 import { NpMapComponent } from './np-choose/np-map/np-map.component';
 import { NpEditComponent } from './np-edit/np-edit.component';

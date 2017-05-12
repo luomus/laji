@@ -22,11 +22,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
 import 'rxjs/Rx';
+
+export enum AutocompleteMatchType {
+  partial = <any> 'exact,partial',
+  likely = <any> 'exact,likely'
+}
+
+export interface AutocompleteParams {
+  field: string;
+  q?: string;
+  limit?: string;
+  includePayload?: boolean;
+  lang?: string;
+  checklist?: string;
+  informalTaxonGroup?: string;
+  personToken?: string;
+  matchType?: AutocompleteMatchType;
+  onlySpecies?: boolean;
+  onlyFinnish?: boolean;
+  formID?: string;
+}
 
 @Injectable()
 export class AutocompleteApi {
@@ -38,51 +58,33 @@ export class AutocompleteApi {
 
   /**
    * Returns autocomplete object
-   *
-   * @param field Field to be used for autocomplete
-   * @param q Partial query
-   * @param limit limit the pageSize of results (defaults to 10)
-   * @param includePayload Include payload in response (default is false)
-   * @param lang Language of fields that have multiple languages.
-   * @param userToken User authentication token
+   * @param params AutocompleteParams
+   * @returns {Observable<R>}
    */
-  public autocompleteFindByField(field: string, q?: string, limit?: string, includePayload?: boolean, lang?: string, checklist?: string, informalTaxonGroup?: string, userToken?: string, extraHttpRequestParams?: any): Observable<Array<models.Autocomplete>> {
+  public autocompleteFindByField(params: AutocompleteParams): Observable<Array<models.Autocomplete>> {
     const path = this.basePath + '/autocomplete/{field}'
-        .replace('{' + 'field' + '}', String(field));
+        .replace('{' + 'field' + '}', String(params.field));
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;
     // verify required parameter 'field' is not null or undefined
-    if (field === null || field === undefined) {
+    if (params.field === null || params.field === undefined) {
       throw new Error('Required parameter field was null or undefined when calling autocompleteFindByField.');
     }
-    if (q !== undefined) {
-      queryParameters.set('q', q.replace('http://tun.fi/', ''));
+    if (params.q !== undefined) {
+      queryParameters.set('q', params.q.replace('http://tun.fi/', ''));
     }
 
-    if (limit !== undefined) {
-      queryParameters.set('limit', limit);
-    }
-
-    if (includePayload !== undefined) {
-      queryParameters.set('includePayload', includePayload ? 'true' : 'false');
-    }
-
-    if (checklist !== undefined) {
-      queryParameters.set('checklist', checklist);
-    }
-
-    if (informalTaxonGroup !== undefined) {
-      queryParameters.set('informalTaxonGroup', informalTaxonGroup);
-    }
-
-    if (lang !== undefined) {
-      queryParameters.set('lang', lang);
-    }
-
-    if (userToken !== undefined) {
-      queryParameters.set('personToken', userToken);
-    }
+    Object.keys(params).map(key => {
+      if (['field', 'q'].indexOf(key) > -1) {
+        return;
+      }
+      if (typeof params[key] === 'boolean') {
+        queryParameters.set(key, params[key] ? 'true' : 'false');
+      } else {
+        queryParameters.set(key, params[key]);
+      }
+    });
 
     let requestOptions: RequestOptionsArgs = {
       method: 'GET',

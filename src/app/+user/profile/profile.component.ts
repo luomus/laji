@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
 import { Profile } from '../../shared/model/Profile';

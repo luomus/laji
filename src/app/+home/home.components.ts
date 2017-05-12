@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SearchQuery } from '../+observation/search-query.model';
 import { NewsApi } from '../shared/api/NewsApi';
 import { TranslateService } from '@ngx-translate/core';
+import { AutocompleteMatchType } from '../shared/api/AutocompleteApi';
 
 @Component({
   selector: 'laji-home',
@@ -12,9 +13,11 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./home.component.css'],
   templateUrl: './home.component.html'
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
 
   mapStartDate;
+
+  autocompleteMatchTypes = AutocompleteMatchType;
 
   constructor(public translate: TranslateService) {
   }
@@ -22,7 +25,6 @@ export class HomeComponent implements OnInit{
   ngOnInit() {
     const start = moment();
     start.subtract(1, 'd');
-    console.log(start);
     this.mapStartDate = start.format('YYYY-MM-DD');
   }
 }

@@ -10,3 +10,17 @@ h3 {
 .laji-news {
   padding: 0 15px
 }
+
+.media-body {
+  display: inline-block;
+  width: 100%;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
+
+.media-heading {
+  font-size: 15px;
+}

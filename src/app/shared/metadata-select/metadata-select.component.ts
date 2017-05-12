@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy, forwardRef } from '@angular/core';
+import { Component, forwardRef, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';

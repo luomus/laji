@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform, OnDestroy, ChangeDetectorRef, EventEmitter } from '@angular/core';
+import { ChangeDetectorRef, EventEmitter, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../service/triplestore-label.service';

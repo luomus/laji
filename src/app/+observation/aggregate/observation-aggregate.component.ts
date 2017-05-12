@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { SearchQuery } from '../search-query.model';
@@ -11,23 +11,23 @@ import { Logger } from '../../shared/logger/logger.service';
 })
 export class ObservationAggregateComponent implements OnInit, OnDestroy, OnChanges {
 
-  @Input() lang: string = 'fi';
-  @Input() title: string = '';
+  @Input() lang = 'fi';
+  @Input() title = '';
   @Input() field: string|{'en': string, 'sv': string, 'fi': string};
-  @Input() limit: number = 10;
-  @Input() hideOnEmpty: boolean = false;
-  @Input() updateOnLangChange: boolean = false;
+  @Input() limit = 10;
+  @Input() hideOnEmpty = false;
+  @Input() updateOnLangChange = false;
   @Input() queryOverride: any;
   @Input() valuePicker: any;
-  @Input() showPager: boolean = false;
+  @Input() showPager = false;
   @Input() linkPicker: (item: any) => {
     local: string,
     content: string
   };
 
-  public page: number = 1;
-  public total: number = 1;
-  public loading: boolean = false;
+  public page = 1;
+  public total = 1;
+  public loading = false;
 
   public items: Array<{
     count: number,
@@ -80,7 +80,7 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy, OnChang
 
   updateList() {
     let query = Util.clone(this.searchQuery.query);
-    let cache = JSON.stringify(query) + this.page + this.lang;
+    const cache = JSON.stringify(query) + this.page + this.lang;
     if (this.lastCache === cache) {
       return;
     }
@@ -90,6 +90,9 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy, OnChang
     }
     if (this.queryOverride) {
       query = Object.assign(query, this.queryOverride);
+    }
+    if (WarehouseApi.isEmptyQuery(query)) {
+      query.cache = true;
     }
     this.loading = true;
     let fields: any = '';
@@ -107,7 +110,7 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy, OnChang
             this.items = result.results
               .map(item => {
                 let link = undefined;
-                let value = this.valuePicker ?
+                const value = this.valuePicker ?
                   this.valuePicker(item.aggregateBy, this.lang) :
                   (item.aggregateBy[fields] || '');
                 if (this.linkPicker) {

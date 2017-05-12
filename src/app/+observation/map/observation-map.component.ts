@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -11,9 +11,9 @@ import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import 'leaflet';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { MapComponent } from '../../shared/map/map.component';
-import LatLngBounds = L.LatLngBounds;
 import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 import { CoordinateService } from '../../shared/service/coordinate.service';
+import LatLngBounds = L.LatLngBounds;
 
 const maxCoordinateAccuracy = 10000;
 
@@ -287,6 +287,9 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     if (query.coordinates) {
       this.initDrawData();
     }
+    if (WarehouseApi.isEmptyQuery(query)) {
+      query.cache = true;
+    }
     this.reset = true;
     this.loading = true;
     this.showingItems = false;
@@ -459,7 +462,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
 
-  private getPopup(idx: number, cb: Function) {
+  private getPopup(idx: number, geometry: any, cb: Function) {
     try {
       const properties = this.mapData[0].featureCollection.features[idx].properties;
       const cnt = properties.title;

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Location } from '@angular/common';
 import { ValueDecoratorService } from './value-decorator.sevice';
@@ -151,6 +151,9 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
         return;
       }
       this.lastQuery = cache;
+    }
+    if (WarehouseApi.isEmptyQuery(query)) {
+      query.cache = true;
     }
     if (Object.keys(query).length === 0) {
       query.includeNonValidTaxa = false;

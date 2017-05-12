@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
+import {AutocompleteApi, AutocompleteMatchType} from '../../shared/api/AutocompleteApi';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationFilterInterface } from '../filter/observation-filter.interface';
 import { ObservationFormQuery } from './observation-form-query.interface';
@@ -122,15 +122,15 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   public getTaxa(token: string, onlyFirstMatch = false): Observable<any> {
-    return this.autocompleteService.autocompleteFindByField(
-        'taxon',
-        token,
-        onlyFirstMatch ? '1' : '' + this.limit,
-        true,
-        this.translate.currentLang,
-        undefined,
-        this.formQuery.informalTaxonGroupId
-      )
+    return this.autocompleteService.autocompleteFindByField({
+        field: 'taxon',
+        q: token,
+        limit: onlyFirstMatch ? '1' : '' + this.limit,
+        includePayload: true,
+        lang: this.translate.currentLang,
+        informalTaxonGroup: this.formQuery.informalTaxonGroupId,
+        matchType: AutocompleteMatchType.partial
+      })
       .map(data => {
         if (onlyFirstMatch) {
           return data[0] || {};

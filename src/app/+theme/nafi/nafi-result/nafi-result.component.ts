@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from '@ngx-translate/core';
@@ -47,14 +47,19 @@ export class NafiResultComponent implements OnInit, OnDestroy {
       this.lang = res.lang;
     });
     this.subQuery = this.route.queryParams.subscribe(params => {
+      const time = (params['time'] && Array.isArray(params['time'])) ?
+        params['time'][0] : params['time'];
+      const taxonId = (params['taxonId'] && Array.isArray(params['taxonId'])) ?
+        params['taxonId'][0] : params['taxonId'];
       this.query = {
-        time: [this.parseDateTimeRange(params['time'] || '' + this.getCurrentSeason())],
+        taxonRankId: 'MX.species',
+        time: [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
         collectionId: [this.collectionId],
         informalTaxonGroupId: [this.informalTaxonGroup]
       };
       this.resultQuery = this.clone(this.query);
-      if (params['taxonId']) {
-        this.query.taxonId = [params['taxonId']];
+      if (taxonId) {
+        this.query.taxonId = [taxonId];
       }
       this.mapQuery = this.clone(this.query);
       if (params['grid']) {
@@ -72,7 +77,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
 
   goToPage(page) {
     this.page = page;
-    this.navigate(this.query)
+    this.navigate(this.query);
   }
 
   closeList() {

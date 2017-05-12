@@ -149,6 +149,8 @@ export interface Document {
    */
   exsiccatum?: string;
 
+  gatheringEvent?: models.Gatherings;
+
   /**
    * Array of gatherings
    */

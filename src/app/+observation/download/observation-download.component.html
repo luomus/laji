@@ -21,7 +21,7 @@
     <div *ngIf="!showRequest">
       <span [innerHtml]="'observation.download.wip' | translate"></span>
     </div>
-    <div *ngIf="showRequest">
+    <div [ngStyle]="{display: !showRequest ? 'none' : 'block'}">
       <div class="form-group">
         <div class="col-sm-12" *ngIf="loadLimit < count.private">
           {{'observation.export.tooMany' | translate:{max:(loadLimit | formattedNumber:'&nbsp;')} }}

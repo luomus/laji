@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
@@ -142,6 +142,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
     const populate: any = np.prepopulatedDocument ? np.prepopulatedDocument : {};
 
+    populate.namedPlaceID = np.id;
+
     if (!populate.gatherings) {
       populate.gatherings = [{}];
     } else if (!populate.gatherings[0]) {
@@ -149,6 +151,12 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (!populate.gatherings[0].geometry) {
       populate.gatherings[0]['geometry'] = {type: 'GeometryCollection', geometries: [np.geometry]};
+    }
+    if (this.namedPlace.notes) {
+      if (!populate.gatheringEvent) {
+        populate.gatheringEvent = {};
+      }
+      populate.gatheringEvent.namedPlaceNotes = this.namedPlace.notes;
     }
 
     this.formService.populate(populate);

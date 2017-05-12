@@ -1,12 +1,4 @@
-import {
-  Component,
-  ViewChild,
-  Input,
-  HostListener,
-  OnDestroy,
-  AfterViewInit,
-  OnChanges
-} from '@angular/core';
+import { AfterViewInit, Component, HostListener, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
@@ -19,6 +11,7 @@ import { WindowRef } from '../windows-ref';
 import { ToastsService } from '../service/toasts.service';
 import { Form } from '../model/FormListInterface';
 import { Logger } from '../logger/logger.service';
+import {NamedPlacesService} from '../../+haseka/named-place/named-places.service';
 
 @Component({
   selector: 'laji-document-form',
@@ -41,6 +34,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   public loading = false;
   public enablePrivate = true;
   public errorMsg: string;
+  public namedPlace;
 
   private subTrans: Subscription;
   private subFetch: Subscription;
@@ -59,6 +53,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               private footerService: FooterService,
               public translate: TranslateService,
               private toastsService: ToastsService,
+              private namedPlaceService: NamedPlacesService,
               private winRef: WindowRef,
               private logger: Logger) {
   }
@@ -200,7 +195,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       .load(this.formId, this.translate.currentLang)
       .subscribe(
         data => {
-          console.log(this.getPathWithParams(this.tmpPath, this.formId, 'T:123'));
           this.loading = false;
           this.formService
             .store(data.formData)
@@ -236,6 +230,10 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
             data.formData.id = undefined;
             data.formData.hasChanges = undefined;
           }
+          if (typeof data.uiSchemaContext === 'undefined') {
+            data.uiSchemaContext = {};
+          }
+          data.uiSchemaContext.formID = this.formId;
           this.form = data;
           this.formService.hasUnsavedData()
             .subscribe(hasChanges => {
@@ -244,6 +242,10 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
                 this.status = 'unsaved';
               }
             });
+          if (data.formData.namedPlaceID) {
+            this.namedPlaceService.getNamedPlace(data.formData.namedPlaceID, this.userService.getToken())
+              .subscribe(np => this.namedPlace = np);
+          }
           this.lang = this.translate.currentLang;
         },
         err => {

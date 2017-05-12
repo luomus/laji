@@ -1,13 +1,13 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
-  OnDestroy,
-  Input,
-  Output,
   EventEmitter,
+  Input,
   OnChanges,
-  ViewChild,
-  AfterViewInit
+  OnDestroy,
+  Output,
+  ViewChild
 } from '@angular/core';
 import { Logger } from '../logger/logger.service';
 import { MapService } from './map.service';
@@ -133,7 +133,7 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   drawToMap(type) {
     if (type === 'Coordinates') {
-      this.map.openCoordinatesDialog();
+      this.map.openCoordinatesInputDialog();
     } else if (['Rectangle'].indexOf(type) > -1) {
       new (L as any).Draw[type](this.map.map, this.getDrawingDraftStyle(type))
         .enable();

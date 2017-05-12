@@ -1,6 +1,5 @@
-import { Component, AfterViewInit, ElementRef, Input, OnDestroy, OnChanges, Output, EventEmitter } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import * as OpenSeadragon from 'openseadragon';
-import { setTimeout } from 'timers';
 
 @Component({
   selector: 'laji-image',

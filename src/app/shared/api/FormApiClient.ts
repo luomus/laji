@@ -1,4 +1,4 @@
-import { Http, Headers, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Headers, Http, RequestOptionsArgs, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
 
@@ -55,9 +55,14 @@ export class FormApiClient {
     const requestOptions: RequestOptionsArgs = {
       method: options['method'] || 'GET',
       headers: options['headers'] ? new Headers(options['headers']) : this.defaultHeaders,
-      search: queryParameters,
+      params: queryParameters,
       body: options['body'] || undefined
     };
+
+    switch (resource) {
+      case '/autocomplete/taxon':
+        queryParameters.set('matchType', 'EXACT,PARTIAL');
+    }
 
     return this.http.request(path, requestOptions).toPromise(Promise);
   }

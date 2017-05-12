@@ -1,12 +1,10 @@
-import { Component, AfterViewInit, OnChanges, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
 import { MapComponent } from '../../shared/map/map.component';
 import { ResultService } from '../service/result.service';
 import { Taxonomy } from '../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs/Subscription';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-
-export type MapTypes = 'count'|'individuals'|'newest'|'oldest';
 
 @Component({
   selector: 'laji-theme-map',
@@ -18,7 +16,7 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
   @ViewChild(MapComponent) lajiMap: MapComponent;
 
   @Input() query: WarehouseQueryInterface;
-  @Input() type: MapTypes = 'count';
+  @Input() type = 'count';
   @Input() colorRange: string[] = ['#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
   @Input() countBreak: number[] = [1, 5, 10, 50, 100, 500];
   @Input() timeBreak: string[] = ['2020-01-01', '2015-01-01', '2010-01-01', '2005-01-01', '2000-01-01', '1991-01-01'];

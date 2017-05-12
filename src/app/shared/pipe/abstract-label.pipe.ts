@@ -1,4 +1,4 @@
-import { PipeTransform, OnDestroy, EventEmitter } from '@angular/core';
+import { EventEmitter, OnDestroy, PipeTransform } from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 
 export abstract class AbsractLabelPipe implements PipeTransform, OnDestroy {

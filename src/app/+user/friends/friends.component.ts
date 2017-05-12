@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Profile } from '../../shared/model/Profile';
 import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';

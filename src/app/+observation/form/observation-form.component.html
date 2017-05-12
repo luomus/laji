@@ -1,8 +1,8 @@
 <h1 class="hidden-sm hidden-md hidden-lg">
   {{'observation.results.title' | translate}}
 </h1>
-<form (ngSubmit)="onSubmit()" #observationForm="ngForm" class="form-horizontal" id="wrapper">
-  <div class="row">
+<form (ngSubmit)="onSubmit()" #observationForm="ngForm" class="form-horizontal full-height" id="wrapper">
+  <div class="row full-width">
     <div class="form-filters"
       [ngClass]="{
         'col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10': showFilter,
@@ -24,51 +24,53 @@
           </h2>
         </div>
       </div>
-      <div class="form-group">
-        <label class="col-lg-12">
-          {{'observation.active.informalTaxonGroupId' | translate}}:
-        </label>
-        <div class="col-lg-12">
-          <observation-group-select
-                  [(ngModel)]="formQuery.informalTaxonGroupId"
-                  name="informalTaxonGroupId"
-                  [lang]="translate.currentLang"
-                  (onSelect)="onQueryChange()">
-            {{'observation.active.informalTaxonGroupAll'|translate}}
-          </observation-group-select>
+      <div class="taxon-panel">
+        <div class="form-group">
+          <label class="col-lg-12">
+            {{'observation.active.informalTaxonGroupId' | translate}}:
+          </label>
+          <div class="col-lg-12">
+            <observation-group-select
+                    [(ngModel)]="formQuery.informalTaxonGroupId"
+                    name="informalTaxonGroupId"
+                    [lang]="translate.currentLang"
+                    (onSelect)="onQueryChange()">
+              {{'observation.active.informalTaxonGroupAll'|translate}}
+            </observation-group-select>
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="col-lg-12">
-          {{'observation.form.specimen' | translate}}:
-        </label>
-        <div class="col-lg-12">
-          <input
-                  [ngClass]="{loading: typeaheadLoading}"
-                  type="text"
-                  class="form-control input-sm"
-                  name="target"
-                  [(ngModel)]="formQuery.taxon"
-                  [typeahead]="dataSource"
-                  [typeaheadOptionsLimit]="limit"
-                  [typeaheadWaitMs]="200"
-                  [typeaheadMinLength]="4"
-                  [typeaheadOptionField]="'value'"
-                  [typeaheadItemTemplate]="taxonItem"
-                  (typeaheadLoading)="changeTypeaheadLoading($event)"
-                  (typeaheadOnSelect)="onQueryChange()"
-                  (change)="onQueryChange()"
-                  autocomplete="off"
-                  autocorrect="off"
-          >
-          <template #taxonItem let-model="item">
-            <h5 class="autosuggest-value {{model.groups}} informal-group-image">
-              {{model.value}}
-            </h5>
-          </template>
-          <span *ngIf="taxonName && taxonName.value" style="margin-left: 5px;">
-            <em *ngIf="taxonName.payload.cursiveName">{{taxonName.value}}</em>
-          </span>
+        <div class="form-group">
+          <label class="col-lg-12">
+            {{'observation.form.specimen' | translate}}:
+          </label>
+          <div class="col-lg-12">
+            <input
+                    [ngClass]="{loading: typeaheadLoading}"
+                    type="text"
+                    class="form-control input-sm"
+                    name="target"
+                    [(ngModel)]="formQuery.taxon"
+                    [typeahead]="dataSource"
+                    [typeaheadOptionsLimit]="limit"
+                    [typeaheadWaitMs]="200"
+                    [typeaheadMinLength]="4"
+                    [typeaheadOptionField]="'value'"
+                    [typeaheadItemTemplate]="taxonItem"
+                    (typeaheadLoading)="changeTypeaheadLoading($event)"
+                    (typeaheadOnSelect)="onQueryChange()"
+                    (change)="onQueryChange()"
+                    autocomplete="off"
+                    autocorrect="off"
+            >
+            <template #taxonItem let-model="item">
+              <h5 class="autosuggest-value {{model.groups}} informal-group-image">
+                {{model.value}}
+              </h5>
+            </template>
+            <span *ngIf="taxonName && taxonName.value" style="margin-left: 5px;">
+              <em *ngIf="taxonName.payload.cursiveName">{{taxonName.value}}</em>
+            </span>
+          </div>
         </div>
       </div>
       <div class="row">

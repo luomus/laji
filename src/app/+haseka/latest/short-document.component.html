@@ -1,41 +1,51 @@
-<a class="link" (click)="editDocument(document.formID, document.id)">
-  {{document.id}} <small>{{document.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'}}</small>
-</a>
-<span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
-  <span class="label label-warning"
-        [tooltip]="'haseka.form.private' | translate">
-    <i class="glyphicon glyphicon-eye-close"></i>
+<div class="link" (click)="editDocument(document.formID, document.id)" id="short-document">
+  <small *ngIf="!changingLocale">{{'haseka.users.edited' | translate}}: <span *ngIf="dateEdited">{{dateEdited | amTimeAgo}}</span></small>
+
+  <span style="white-space: nowrap">
+    <span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
+      <span class="label label-warning inline-block"
+          [tooltip]="'haseka.form.private' | translate"
+          [placement]="'left'">
+        <i class="glyphicon glyphicon-eye-close"></i>
+      </span>
+    </span>
+
+    <span *ngIf="hasUnsavedData">
+      <span class="label label-danger inline-block" [tooltip]="'haseka.form.hasChanges' | translate" [placement]="'left'">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+      </span>
+      <span class="label label-default link inline-block"
+            [tooltip]="'haseka.users.latest.discard' | translate"
+            [placement]="'left'"
+            (click)="removeDocument($event, document)">
+        <i class="glyphicon glyphicon-trash"></i>
+      </span>
+    </span>
+
+    <span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPublic">
+      <span class="label label-primary link inline-block"
+            [tooltip]="'result.showViewer' | translate"
+            [placement]="'left'"
+            (click)="showViewer($event)">
+        <i class="glyphicon glyphicon-eye-open"></i>
+      </span>
+    </span>
   </span>
-  &nbsp;
-</span>
-<span class="label label-danger" *ngIf="formService.hasUnsavedData(document.id, document) | async" [tooltip]="'haseka.form.hasChanges' | translate">
-  <i class="glyphicon glyphicon-warning-sign"></i>
-</span>
-<br>
-{{'haseka.users.latest.gathered' | translate }}:
-<span *ngIf="gatheringDates.start || gatheringDates.end">
-  <a class="link" (click)="editDocument(document.formID, document.id)">
-    {{gatheringDates.start | amDateFormat:'DD.MM.YYYY'}} - {{gatheringDates.end | amDateFormat:'DD.MM.YYYY'}}
-  </a>
-</span>
-<span
-        *ngIf="taxa && taxa.length > 0"
-        class="link"
-        (click)="showList = !showList">
-  {{'haseka.users.latest.more' | translate}}
-  <i class="glyphicon"
-     style="font-size:0.8em"
-     [ngClass]="{
-             'glyphicon-triangle-bottom': showList,
-             'glyphicon-triangle-right': !showList
-             }"
-  ></i>
-</span>
-<ul *ngIf="showList">
-  <li *ngFor="let taxon of taxa">
-    <a class="link" (click)="editDocument(document.formID, document.id)">
-      {{taxon.name}}
-      <small>{{taxon.id}}</small>
-    </a>
-  </li>
-</ul>
+  <br>
+
+  <span *ngIf="gatheringDates.start"> {{gatheringDates.start | amDateFormat:'DD.MM.YYYY'}}</span>
+  <span *ngIf="gatheringDates.end">- {{gatheringDates.end | amDateFormat:'DD.MM.YYYY'}}</span>
+
+  <span *ngIf="locality">{{locality}}</span>
+  <span *ngIf="!locality">{{'haseka.users.latest.localityMissing' | translate}}</span>
+  <span *ngIf="document.gatherings?.length > 1">({{document.gatherings.length - 1}} {{'haseka.users.latest.other' | translate}})</span>
+
+  <small style="white-space: nowrap">
+    <span>{{unitsLength}}</span>
+    <span *ngIf="unitsLength === 1">{{'haseka.users.latest.gathered.singular' | translate}}</span>
+    <span *ngIf="unitsLength !== 1">{{'haseka.users.latest.gathered' | translate}}</span>
+  </small>
+  <br>
+
+  <span class="label label-default">{{document.formID | formName}}</span>
+</div>

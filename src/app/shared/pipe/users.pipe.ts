@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { Person } from '../model/Person';
 
@@ -43,13 +43,18 @@ export class UsersPipe implements PipeTransform {
 
   private updateValue(id: string, format: string): void {
     this.userService.getUser(id)
-      .subscribe((user: Person) => {
-        if (format === 'fullname') {
-          this.value = user.fullName || '';
-        } else {
-          this.value = '';
+      .subscribe(
+        (user: Person) => {
+          if (format === 'fullname') {
+            this.value = user.fullName || '';
+          } else {
+            this.value = '';
+          }
+          if (this.value === '') {
+            this.value = id;
+          }
+          this._ref.markForCheck();
         }
-        this._ref.markForCheck();
-      });
+      );
   }
 }

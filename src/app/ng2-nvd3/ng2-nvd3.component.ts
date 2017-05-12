@@ -1,4 +1,4 @@
-import { Component, OnChanges, ElementRef, Input } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges } from '@angular/core';
 declare var d3, nv: any;
 
 @Component({
