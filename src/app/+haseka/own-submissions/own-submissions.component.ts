@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { DocumentInfoService } from '../document-info.service';
 import { TranslateService } from '@ngx-translate/core';
-import { DataTableBodyRowComponent } from '@swimlane/ngx-datatable';
+import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { UserService } from '../../shared/service/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Person } from '../../shared/model/Person';
@@ -22,10 +22,11 @@ export class OwnSubmissionsComponent implements OnInit {
   totalMessage: '';
   publicity = Document.PublicityRestrictionsEnum;
   columns = ['dateEdited', 'dateStart', 'dateEnd', 'locality', 'unitCount', 'observer', 'form', 'id'];
+  temp = [];
   rows: any[];
   defaultWidth = 120;
 
-  @ViewChild(DataTableBodyRowComponent) child: DataTableBodyRowComponent;
+  @ViewChild(DatatableComponent) table: DatatableComponent;
 
   constructor(
     private documentService: DocumentApi,
@@ -61,7 +62,8 @@ export class OwnSubmissionsComponent implements OnInit {
       .mergeAll()
       .toArray()
       .subscribe((array) => {
-        this.rows = array;
+        this.temp = array;
+        this.rows = this.temp;
       });
   }
 
@@ -71,11 +73,20 @@ export class OwnSubmissionsComponent implements OnInit {
   }
 
   updateFilter(event) {
-    const val = event.target.value;
-    console.log(this.child);
-    /*this.rows = this.rows.filter(function (row) {
+    const val = event.target.value.toLowerCase();
+    const columns = this.columns;
 
-     });*/
+    this.rows = this.temp.filter(function (row) {
+      for (let i = 0; i < columns.length; i++) {
+        const rowValue = String(row[columns[i]]);
+        if (rowValue && (rowValue.toLowerCase().indexOf(val) !== -1 || !val)) {
+          return true;
+        }
+      }
+      return false;
+    });
+
+    this.table.offset = 0;
   }
 
   tableActivated(event) {
