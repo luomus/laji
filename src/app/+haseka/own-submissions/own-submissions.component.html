@@ -1,46 +1,60 @@
 <h3>{{'haseka.ownSubmissions.title' | translate}}</h3>
 
-<div>
-  <laji-spinner [spinning]="!(activeDocuments && rows)" [overlay]="false">
+<laji-spinner [spinning]="!(activeDocuments && rows)" [overlay]="false">
+  <div *ngIf="activeDocuments && rows">
     <input
       class="input-lg"
       type='text'
-      placeholder='Type to filter the name column...'
+      placeholder="{{'haseka.submissions.filter' | translate}}"
       (keyup)='updateFilter($event)'
     />
-  <ngx-datatable
-    *ngIf="activeDocuments && rows"
-    class="material link"
-    (activate)="tableActivated($event)"
-    [rows]="rows"
-    [columnMode]="'force'"
-    [rowHeight]="'auto'"
-    [limit]="20"
-    [footerHeight]="30"
-    [messages]="{emptyMessage: emptyMessage, totalMessage: totalMessage}">
+    <ngx-datatable
+      class="material"
+      (activate)="tableActivated($event)"
+      [rows]="rows"
+      [columnMode]="'force'"
+      [rowHeight]="'auto'"
+      [limit]="20"
+      [footerHeight]="30"
+      [messages]="{emptyMessage: emptyMessage, totalMessage: totalMessage}">
 
-    <ngx-datatable-column [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate"
-                          [width]="45" [minWidth]="45" [maxWidth]="50">
-      <ng-template let-column="column" ngx-datatable-header-template></ng-template>
-      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+      <ngx-datatable-column [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate"
+                            [width]="45" [minWidth]="45" [maxWidth]="50">
+        <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+          <span class="datatable-header-cell-wrapper link" (click)="sort()" title="{{column.name}}">
+            <span class="datatable-header-cell-label draggable" style="color: white">---</span>
+          </span>
+        </ng-template>
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
         <span *ngIf="value === publicity.publicityRestrictionsPublic">
           <span class="label label-primary link inline-block"
-            [tooltip]="'result.showViewer' | translate"
-            [placement]="'right'"
-            (click)="showViewer($event, row.id)">
+                [tooltip]="'result.showViewer' | translate"
+                [placement]="'right'"
+                (click)="showViewer($event, row.id)">
           <i class="glyphicon glyphicon-eye-open"></i>
           </span>
         </span>
-        <span *ngIf="value === publicity.publicityRestrictionsPrivate">
+          <span *ngIf="value === publicity.publicityRestrictionsPrivate">
           <span class="label label-warning inline-block"
-            [tooltip]="'haseka.form.private' | translate"
-            [placement]="'right'">
+                [tooltip]="'haseka.form.private' | translate"
+                [placement]="'right'">
           <i class="glyphicon glyphicon-eye-close"></i>
           </span>
         </span>
-      </ng-template>
-    </ngx-datatable-column>
-    <ngx-datatable-column *ngFor="let col of columns" [prop]="col" [name]="'haseka.submissions.' + col | translate" [width]="defaultWidth"></ngx-datatable-column>
-  </ngx-datatable>
-  </laji-spinner>
-</div>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column *ngFor="let col of columns"
+                            [prop]="col"
+                            [name]="'haseka.submissions.' + col | translate"
+                            [width]="defaultWidth">
+        <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+          <span class="datatable-header-cell-wrapper sort-full-width link" (click)="sort()" title="{{column.name}}">
+            <span class="datatable-header-cell-label draggable">
+              {{column.name}}
+            </span>
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</laji-spinner>

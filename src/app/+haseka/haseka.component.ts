@@ -4,7 +4,7 @@ import { LocalStorage } from 'ng2-webstorage';
 import { Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
 import { RouterChildrenEventService } from './router-children-event.service';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'haseka',

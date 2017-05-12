@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { DocumentInfoService } from '../document-info.service';
@@ -10,13 +10,14 @@ import { Person } from '../../shared/model/Person';
 import { FormService } from '../../shared/service/form.service';
 import { RouterChildrenEventService } from '../router-children-event.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'laji-own-submissions',
   templateUrl: './own-submissions.component.html',
   styleUrls: ['./own-submissions.component.css']
 })
-export class OwnSubmissionsComponent implements OnInit {
+export class OwnSubmissionsComponent implements OnInit, OnDestroy {
   activeDocuments: Document[];
   emptyMessage: '';
   totalMessage: '';
@@ -25,6 +26,9 @@ export class OwnSubmissionsComponent implements OnInit {
   temp = [];
   rows: any[];
   defaultWidth = 120;
+
+  subTrans: Subscription;
+  rowData$: Subscription;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
 
@@ -49,14 +53,25 @@ export class OwnSubmissionsComponent implements OnInit {
         err => {}
       );
 
-    this.translate.get('haseka.submissions.noSubmissions').subscribe((value) => this.emptyMessage = value);
-    this.translate.get('haseka.submissions.total').subscribe((value) => this.totalMessage = value);
+    this.updateTranslations();
+
+    this.subTrans = this.translate.onLangChange.subscribe(() => {
+      this.updateRows();
+      this.updateTranslations();
+    });
   }
 
-  updateRows() {
-    this.rows = null;
+  ngOnDestroy() {
+    this.subTrans.unsubscribe();
+  }
 
-    Observable.from(this.activeDocuments.map((doc) => {
+  private updateRows() {
+    this.rows = null;
+    if (this.rowData$) {
+      this.rowData$.unsubscribe();
+    }
+
+    this.rowData$ = Observable.from(this.activeDocuments.map((doc) => {
       return this.setRowData(doc);
     }))
       .mergeAll()
@@ -65,6 +80,11 @@ export class OwnSubmissionsComponent implements OnInit {
         this.temp = array;
         this.rows = this.temp;
       });
+  }
+
+  private updateTranslations() {
+    this.translate.get('haseka.submissions.noSubmissions').subscribe((value) => this.emptyMessage = value);
+    this.translate.get('haseka.submissions.total').subscribe((value) => this.totalMessage = value);
   }
 
   showViewer(event, docId: string) {
