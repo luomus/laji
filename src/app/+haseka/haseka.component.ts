@@ -1,16 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { UserService } from '../shared/service/user.service';
 import { LocalStorage } from 'ng2-webstorage';
 import { Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
-import { RouterChildrenEventsService } from './router-children-events.service';
+import { RouterChildrenEventService } from './router-children-event.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'haseka',
   templateUrl: './haseka.component.html',
   styleUrls: ['./haseka.component.css']
 })
-export class HasekaComponent implements OnInit {
+export class HasekaComponent implements OnInit, OnDestroy {
 
   @LocalStorage() public vihkoSettings;
   public email: string;
@@ -18,10 +19,12 @@ export class HasekaComponent implements OnInit {
   public shownDocument: string;
   @ViewChild('documentModal') public modal: ModalDirective;
 
+  private showViewerClick$: Subscription;
+
   constructor(
     public userService: UserService,
     public router: Router,
-    private eventService: RouterChildrenEventsService
+    private eventService: RouterChildrenEventService
   ) {
   }
 
@@ -29,9 +32,13 @@ export class HasekaComponent implements OnInit {
     if (!this.vihkoSettings) {
       this.vihkoSettings = { showIntro: true };
     }
-    this.eventService.showViewerClicked$.subscribe((docId) => {
+    this.showViewerClick$ = this.eventService.showViewerClick$.subscribe((docId) => {
         this.showDocumentViewer(docId);
     });
+  }
+
+  ngOnDestroy() {
+    this.showViewerClick$.unsubscribe();
   }
 
   toggleInfo() {

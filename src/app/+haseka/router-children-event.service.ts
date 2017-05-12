@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
-export class RouterChildrenEventsService {
+export class RouterChildrenEventService {
   private showViewerClick = new Subject<any>();
 
-  showViewerClicked$ = this.showViewerClick.asObservable();
+  showViewerClick$ = this.showViewerClick.asObservable();
 
-  showViewer(docId: any) {
+  showViewerClicked(docId: any) {
     this.showViewerClick.next(docId);
   }
 }

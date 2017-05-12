@@ -3,14 +3,15 @@
 <div>
   <laji-spinner [spinning]="!(activeDocuments && rows)" [overlay]="false">
     <input
+      class="input-lg"
       type='text'
-      style='padding:8px;margin:15px auto;width:30%;'
       placeholder='Type to filter the name column...'
       (keyup)='updateFilter($event)'
     />
   <ngx-datatable
     *ngIf="activeDocuments && rows"
-    class="material"
+    class="material link"
+    (activate)="tableActivated($event)"
     [rows]="rows"
     [columnMode]="'force'"
     [rowHeight]="'auto'"

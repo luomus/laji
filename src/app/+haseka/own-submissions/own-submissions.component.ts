@@ -8,7 +8,8 @@ import { UserService } from '../../shared/service/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Person } from '../../shared/model/Person';
 import { FormService } from '../../shared/service/form.service';
-import { RouterChildrenEventsService } from '../router-children-events.service';
+import { RouterChildrenEventService } from '../router-children-event.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-own-submissions',
@@ -31,7 +32,8 @@ export class OwnSubmissionsComponent implements OnInit {
     private translate: TranslateService,
     private userService: UserService,
     private formService: FormService,
-    private eventService: RouterChildrenEventsService
+    private eventService: RouterChildrenEventService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -65,7 +67,7 @@ export class OwnSubmissionsComponent implements OnInit {
 
   showViewer(event, docId: string) {
     event.stopPropagation();
-    this.eventService.showViewer(docId);
+    this.eventService.showViewerClicked(docId);
   }
 
   updateFilter(event) {
@@ -74,6 +76,12 @@ export class OwnSubmissionsComponent implements OnInit {
     /*this.rows = this.rows.filter(function (row) {
 
      });*/
+  }
+
+  tableActivated(event) {
+    if (event.type === 'click') {
+      this.router.navigate([this.formService.getEditUrlPath(event.row.formId, event.row.id)]);
+    }
   }
 
   private setRowData(document: Document): Observable<any> {
@@ -92,6 +100,7 @@ export class OwnSubmissionsComponent implements OnInit {
           row['observer'] = observers;
           row['form'] = formName;
           row['id'] = document.id;
+          row['formId'] = document.formID;
           return Observable.of(row);
         });
       });
