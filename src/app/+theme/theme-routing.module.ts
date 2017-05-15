@@ -6,6 +6,7 @@ import { NafiFormComponent } from './nafi/nafi-form/nafi-form.component';
 import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 import { NafiMyDocumentListComponent } from './nafi/nafi-my-document-list/nafi-my-document-list.component';
 import { NafiInstructionsComponent } from './nafi/nafi-instructions/nafi-instructions.component';
+import { HerpetologyComponent } from './herpetology/herpetology.component';
 
 const routes: Routes = [
   {
@@ -19,7 +20,8 @@ const routes: Routes = [
       {path: 'myObservations', pathMatch: 'full', component: NafiMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: NafiInstructionsComponent}
     ]
-  }
+  },
+  {path: 'herpetology',  pathMatch:'full', component: HerpetologyComponent}
 ];
 
 @NgModule({

@@ -4,7 +4,7 @@
   "description": "laji.fi frontend",
   "scripts": {
     "ng": "ng",
-    "ng:versoin": "ng --version",
+    "ng:version": "ng --version",
     "start": "ng serve --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000 --extract-css",
     "start:aot": "ng serve --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000 --aot --extract-css",
     "start:embedded": "ng serve --environment=embedded --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000 --extract-css",
