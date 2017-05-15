@@ -39,7 +39,7 @@
 
       <a>
           {{taxon.taxon.vernacularName | multiLang}}
-          (<i *ngIf="taxon.taxon.cursiveName">{{taxon.taxa.scientificName}}</i>)
+          (<i *ngIf="taxon.taxon.cursiveName">{{taxon.taxon.scientificName}}</i>)
         </a>
       <a [routerLink]="['/taxon/' + taxon.taxon.id]">
         <i class="glyphicon glyphicon-modal-window"></i>
@@ -54,15 +54,15 @@
     }">
     <td>
       <a>
-        {{taxon.taxa.vernacularName | multiLang}}
-        (<i *ngIf="taxon.taxa.cursiveName">{{taxon.taxa.scientificName}}</i>)
+        {{taxon.taxon.vernacularName | multiLang}}
+        (<i *ngIf="taxon.taxon.cursiveName">{{taxon.taxon.scientificName}}</i>)
       </a>
-      <a [routerLink]="['/taxon/' + taxon.taxa.id]">
+      <a [routerLink]="['/taxon/' + taxon.taxon.id]">
         <i class="glyphicon glyphicon-modal-window"></i>
       </a>
       <a>
         {{media | multiLang}}
-        <laji-image-gallery [modalImages]="taxon.taxa.images" class="taxon-img" ></laji-image-gallery>
+        <laji-image-gallery [modalImages]="taxon.taxon.images" class="taxon-img" ></laji-image-gallery>
       </a>
     </td>
   </tr>
@@ -73,10 +73,10 @@
     }">
     <td>
       <a>
-        {{taxon.taxa.vernacularName | multiLang}}
-        (<i *ngIf="taxon.taxa.cursiveName">{{taxon.taxa.scientificName}}</i>)
+        {{taxon.taxon.vernacularName | multiLang}}
+        (<i *ngIf="taxon.taxon.cursiveName">{{taxon.taxon.scientificName}}</i>)
       </a>
-      <a [routerLink]="['/taxon/' + taxon.taxa.id]">
+      <a [routerLink]="['/taxon/' + taxon.taxon.id]">
         <i class="glyphicon glyphicon-modal-window"></i>
       </a>
     </td>

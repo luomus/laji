@@ -21,7 +21,7 @@ const routes: Routes = [
       {path: 'instructions', pathMatch: 'full', component: NafiInstructionsComponent}
     ]
   },
-  {path: 'herpetology',  pathMatch:'full', component: HerpetologyComponent}
+  {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent}
 ];
 
 @NgModule({
