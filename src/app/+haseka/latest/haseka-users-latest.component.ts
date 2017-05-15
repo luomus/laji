@@ -11,7 +11,6 @@ import { Document } from '../../shared/model/Document';
 })
 export class UsersLatestComponent implements OnChanges {
   @Input() userToken: string;
-  @Output() tabChange = new EventEmitter<string>();
   @Output() onShowViewer = new EventEmitter<string>();
 
   public unpublishedDocuments: Document[] = [];
@@ -31,10 +30,6 @@ export class UsersLatestComponent implements OnChanges {
   ngOnChanges() {
     this.updateDocumentList();
     this.updateTempDocumentList();
-  }
-
-  changeTab(tab: string) {
-    this.tabChange.emit(tab);
   }
 
   pageChanged(page) {
