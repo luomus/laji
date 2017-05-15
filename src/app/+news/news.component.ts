@@ -7,7 +7,8 @@ import { Logger } from '../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-news',
-  templateUrl: './news.component.html'
+  templateUrl: './news.component.html',
+  styleUrls: ['./news.component.css']
 })
 export class NewsComponent implements OnInit, OnDestroy {
   public newsItem: News;

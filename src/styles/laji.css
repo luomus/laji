@@ -557,6 +557,12 @@ body > .ui-select-bootstrap.open {
   background-image: url('/static/images/icons/crop.svg');
 }
 
+.more-info {
+  padding-bottom: 10px;
+  padding-top: 15px;
+  background-color: rgb(236, 240, 241);
+}
+
 .sidebar-nav {
   margin: 0;
   padding: 0 0 20px 0;
