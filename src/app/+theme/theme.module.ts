@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ThemeRoutingModule } from './theme-routing.module';
 import { NafiComponent } from './nafi/nafi.component';
+import { HerpetologyComponent } from './herpetology/herpetology.component';
 import { SharedModule } from '../shared/shared.module';
 import { ThemeResultComponent } from './theme-result/theme-result.component';
 import { NafiResultComponent } from './nafi/nafi-result/nafi-result.component';
@@ -26,6 +27,7 @@ import { ViewerModule } from '../+viewer/viewer.module';
   ],
   declarations: [
     NafiComponent,
+    HerpetologyComponent,
     ThemeResultComponent,
     NafiResultComponent,
     ThemeMapComponent,
