@@ -1,0 +1,93 @@
+:host >>> laji-herpetology {
+  display: flex;
+  flex: 1 0 auto;
+}
+
+#all-content {
+  background-image:  url('https://cdn.laji.fi/images/sisilisko_header_Böhringer_Friedrich_ CC_BY_SA.jpg');
+  background-repeat: no-repeat;
+}
+
+.herpetology-content {
+  background-color: rgba(255,255,255, 0.88);
+  margin-bottom: 20px !important;
+  margin-top: 100px !important;
+  margin-left: 50px;
+  margin-right: 150px;
+  padding: 3em;
+  max-width: 60em;
+  font-size: 1.2em;
+  line-height: 1.7em;
+}
+
+.herpetology-title {
+  color: white;
+  margin-left: 75px;
+  margin-top: 100px;
+  font-size: 2.3em;
+}
+
+#page-content  {
+  background-color: rgba(255,255,255, 0.88);
+  margin-left: 50px;
+  margin-right: 150px !important;
+  padding: 2em;
+
+}
+
+#projects .themeLogo {
+  display: inline-block;
+  position: relative;
+  margin: 1em;
+  margin-bottom: 3em;
+}
+
+.themeLogo img {
+  height: 150px;
+  width: auto;
+  max-width: 230px;
+  margin-left: 2.5em;
+  margin-right: 1.0em !important;
+  margin-bottom: 1.5em;
+}
+
+.taxon-img {
+  max-width: 200px;
+  margin-right: 1.0em !important;
+  margin-bottom: 1.5em;
+}
+
+.partnerLogo img {
+  height: 70px;
+  width: auto;
+  max-width: 250px;
+  padding: 0 8px 25px 8px;
+  margin: 0.5em;
+}
+
+.herbButton {
+  padding: 1em;
+  display: block;
+  line-height: normal;
+  margin-left: 25% !important;
+  margin-right: 25% !important;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#speciesThemes a .themeIcon {
+  display: inline;
+}
+
+.partners.front li {
+  padding: 0 8px 25px 8px;
+}
+
+@media only screen and (min-width : 768px) {
+  #wrapper {
+    display: flex;
+  }
+
+
+
+}
