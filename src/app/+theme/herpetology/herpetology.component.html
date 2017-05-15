@@ -1,0 +1,114 @@
+<div id="all-content">
+
+  <h2 class="herpetology-title">{{'herpetology.title' | translate}}</h2>
+
+  <div class="herpetology-content">
+
+  <div style="float: right;">
+  	<div class="themeLogo">
+  			<div class="themeIcon">
+
+      			<img src="https://laji.fi/static/img/themepages/herpetology_atlas/logo-sv.png" alt="Grod- och kräldjurens utbredningskartering" />
+
+  			</div>
+      </div>
+    </div>
+    <div class="page-content">
+      <p>{{'herpetology.intro' | translate}} </p>
+      <h2>{{'herpetology.observate' | translate}}</h2>
+  		<p>{{'herpetology.observation' | translate}}</p>
+  </div>
+
+
+<div class="button">
+                  <a class="btn herbButton btn-primary center-block" [href]="'http://loydos.luomus.fi/forms/sammakot-ja-matelijat?language=' + lang"  role="button">{{ 'herpetology.form' | translate }}</a>
+  </div>
+
+  <h2>{{'herpetology.search' | translate}}</h2>
+
+  <div class="button">
+                  <a class="btn herbButton btn-primary center-block" routerLink="/observation/map" [queryParams]="{time: currentYear, countryId: 'ML.206', informalTaxonGroupId:'MVL.26'}" role="button">{{ 'herpetology.search' | translate }}</a>
+                </div>
+
+  <h2>{{'herpetology.amphibians' | translate}}</h2>
+
+    {{amphibianTaxa|json}}
+  <tr *ngFor="let taxon of amphibianTaxa">
+    <td>
+      foo{{taxon|json}}
+
+      <a>
+          {{taxon.taxon.vernacularName | multiLang}}
+          (<i *ngIf="taxon.taxon.cursiveName">{{taxon.taxa.scientificName}}</i>)
+        </a>
+      <a [routerLink]="['/taxon/' + taxon.taxon.id]">
+        <i class="glyphicon glyphicon-modal-window"></i>
+      </a>
+    </td>
+  </tr>
+
+
+
+  <h2>{{'herpetology.reptiles' | translate}}</h2>
+  <tr *ngFor="let taxon of reptileTaxa" [ngClass]="{
+    }">
+    <td>
+      <a>
+        {{taxon.taxa.vernacularName | multiLang}}
+        (<i *ngIf="taxon.taxa.cursiveName">{{taxon.taxa.scientificName}}</i>)
+      </a>
+      <a [routerLink]="['/taxon/' + taxon.taxa.id]">
+        <i class="glyphicon glyphicon-modal-window"></i>
+      </a>
+      <a>
+        {{media | multiLang}}
+        <laji-image-gallery [modalImages]="taxon.taxa.images" class="taxon-img" ></laji-image-gallery>
+      </a>
+    </td>
+  </tr>
+
+  <h2>{{'herpetology.occasionalSpecies' | translate}}</h2>
+
+  <tr *ngFor="let taxon of occasionalTaxa" [ngClass]="{
+    }">
+    <td>
+      <a>
+        {{taxon.taxa.vernacularName | multiLang}}
+        (<i *ngIf="taxon.taxa.cursiveName">{{taxon.taxa.scientificName}}</i>)
+      </a>
+      <a [routerLink]="['/taxon/' + taxon.taxa.id]">
+        <i class="glyphicon glyphicon-modal-window"></i>
+      </a>
+    </td>
+  </tr>
+
+    <h2>{{'herpetology.background' | translate}}</h2>
+
+   <p>{{'herpetology.backgroundText' | translate}}</p>
+
+  <div class="partners-footer">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-offset-1 col-sm-11 partners front partnerLogo">
+<p>
+              <a href="http://luomus.fi" target="_blank">
+                <img src="https://cdn.laji.fi/images/partners/luomus_fi_blue_smaller.gif" alt="LUOMUS - Luonnontieteellinen keskusmuseo">
+              </a>
+
+              <a href="http://yle.fi" target="_blank">
+                <img src="https://cdn.laji.fi/images/logo_yle_87x87.png" alt="YLE">
+              </a>
+
+              <a href="http://luomus.fi" target="_blank">
+                <img src="https://cdn.laji.fi/images/luomus_tutkii_leima_200x200.jpg" alt="Luomus tutkii">
+              </a>
+</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div id="header-author">{{'herpetology.cover' | translate}}</div>
+</div>
+
+
