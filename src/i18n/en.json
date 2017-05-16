@@ -240,7 +240,7 @@
   "haseka.form.formNotFound": "Form with id {{formId}} was not found.",
   "haseka.form.genericError": "Unfortunately an unexpected error occurred. Please wait a while and try again in a little while. If the error doesn't get repaired, please contact support",
   "haseka.users.latest": "Latest submissions",
-  "haseka.users.unsaved": "Unpublished submissions",
+  "haseka.users.unsaved": "Unsaved submissions",
   "haseka.users.edited": "Edited",
   "haseka.pleaseLogin": "Please login to use this service",
   "haseka.terms": "Terms of use",

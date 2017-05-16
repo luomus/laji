@@ -21,15 +21,14 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Output() onDiscard = new EventEmitter();
   @Output() onShowViewer = new EventEmitter();
 
-  public unitsLength: number;
+  public unitList = [];
   public newUnitsLength: number;
   public gatheringDates: { start: string, end: string };
   public publicity = Document.PublicityRestrictionsEnum;
   public locality;
   public dateEdited;
 
-  public hasUnsavedData;
-
+  public showList = false;
   public changingLocale = true;
 
   private subTrans: Subscription;
@@ -67,29 +66,10 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateFields() {
     const gatheringInfo = DocumentInfoService.getGatheringInfo(this.document, true);
+    this.unitList = gatheringInfo.unitList;
     this.newUnitsLength = gatheringInfo.unsavedUnitCount;
-    this.unitsLength = gatheringInfo.unitCount;
     this.gatheringDates = {start: gatheringInfo.dateBegin, end: gatheringInfo.dateEnd};
     this.locality = gatheringInfo.locality;
-
-    this.formService.hasUnsavedData(this.document.id, this.document)
-      .subscribe(
-        (value) => { this.hasUnsavedData = value; }
-      );
-
-    this.updateEditDate();
-  }
-
-  private updateEditDate() {
-    this.formService.getTmpDocumentStoreDate(this.document.id).subscribe(
-      (tmpDate) => {
-        if (tmpDate && (!this.document.dateEdited || new Date(tmpDate) > new Date(this.document.dateEdited))) {
-          this.dateEdited = tmpDate;
-        } else if (this.document.dateEdited) {
-          this.dateEdited = this.document.dateEdited;
-        }
-      }
-    );
   }
 
   editDocument(formId, documentId) {
@@ -115,5 +95,10 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   showViewer(event) {
     event.stopPropagation();
     this.onShowViewer.emit(this.document.id);
+  }
+
+  showUnitList(event) {
+    event.stopPropagation();
+    this.showList = !this.showList;
   }
 }

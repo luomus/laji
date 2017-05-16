@@ -249,7 +249,7 @@
   "haseka.form.formNotFound": "Lomaketta id:llä {{formId}} ei löytynyt.",
   "haseka.form.genericError": "Odottamaton virhe tapahtui. Yritä hetken kuluttua uudestaan ja jos virhe ei korjaannu, ota yhteyttä ylläpitoon.",
   "haseka.users.latest": "Uusimmat havaintoeräni",
-  "haseka.users.unsaved": "Julkaisemattomat havaintoeräni",
+  "haseka.users.unsaved": "Tallentamattomat havaintoeräni",
   "haseka.users.edited": "Muokattu",
   "haseka.pleaseLogin": "Sinun täytyy kirjautua käyttääksesi tätä palvelua.",
   "haseka.terms": "Käyttöehdot",
