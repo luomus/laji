@@ -117,25 +117,24 @@ export class OwnSubmissionsComponent implements OnInit, OnDestroy {
 
   private setRowData(document: Document): Observable<any> {
     const gatheringInfo = DocumentInfoService.getGatheringInfo(document);
-    const row = {};
 
-    return this.getLocality(gatheringInfo).switchMap((locality) => {
-      return this.getObservers(document.gatheringEvent && document.gatheringEvent.leg).switchMap((observers) => {
-        return this.getFormName(document.formID).switchMap((formName) => {
-          row['publicity'] = document.publicityRestrictions;
-          row['dateEdited'] = moment(document.dateEdited).format('DD.MM.YYYY HH:mm');
-          row['dateStart'] = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '' ;
-          row['dateEnd'] = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
-          row['locality'] = locality;
-          row['unitCount'] = gatheringInfo.unitCount;
-          row['observer'] = observers;
-          row['form'] = formName;
-          row['id'] = document.id;
-          row['formId'] = document.formID;
-          return Observable.of(row);
-        });
-      });
-    });
+    return Observable.forkJoin(
+      this.getLocality(gatheringInfo),
+      this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
+      this.getFormName(document.formID),
+      (locality, observers, formName) => ({
+        publicity: document.publicityRestrictions,
+        dateEdited: moment(document.dateEdited).format('DD.MM.YYYY HH:mm'),
+        dateStart: gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '' ,
+        dateEnd: gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '',
+        locality: locality,
+        unitCount: gatheringInfo.unitCount,
+        observer: observers,
+        form: formName,
+        id: document.id,
+        formId: document.formID
+      })
+    );
   }
 
   private getLocality(gatheringInfo: any): Observable<string> {
@@ -172,9 +171,6 @@ export class OwnSubmissionsComponent implements OnInit, OnDestroy {
   private getFormName(formId: string): Observable<string> {
     return this.formService
       .getForm(formId, this.translate.currentLang)
-      .switchMap((res: any) => {
-        const name = res.title ? res.title : formId;
-        return Observable.of(name);
-      });
+      .map((res: any) => res.title || formId);
   }
 }
