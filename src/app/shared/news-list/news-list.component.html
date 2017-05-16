@@ -19,12 +19,12 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-6" *ngIf="news?.nextPage">
+    <div class="col-xs-6" *ngIf="news?.nextPage">
       <a (click)="gotoPage(news.nextPage)" class="link">
         <h5><i class="glyphicon glyphicon-arrow-left"></i> {{ 'news.earlier' | translate }}</h5>
       </a>
     </div>
-    <div class="col-sm-6" *ngIf="news?.prevPage" style="text-align: right">
+    <div class="col-xs-6" *ngIf="news?.prevPage" style="text-align: right">
       <a (click)="gotoPage(news.prevPage)" class="link">
         <h5>{{ 'news.newer' | translate }} <i class="glyphicon glyphicon-arrow-right"></i></h5>
       </a>
