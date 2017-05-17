@@ -1,5 +1,5 @@
 <h3>{{'haseka.ownSubmissions.title' | translate}}</h3>
 
-<nouislider [config]="sliderConfig" [ngModel]="sliderRange" (change)="sliderRangeChange($event)" class="slider"></nouislider>
+<nouislider *ngIf="sliderRange && sliderConfig" [config]="sliderConfig" [ngModel]="sliderRange" (change)="sliderRangeChange($event)" class="slider"></nouislider>
 
 <laji-own-datatable [documents]="activeDocuments"></laji-own-datatable>

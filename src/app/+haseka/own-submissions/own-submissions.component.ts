@@ -14,27 +14,10 @@ export class OwnSubmissionsComponent implements OnInit {
   documentCache = {};
   documents$: Subscription;
 
+  countByYear = {};
 
-  sliderRange = new Date().getFullYear();
-
-  sliderConfig = {
-    connect: true,
-    margin: 0,
-    step: 1,
-    range: {
-      min: this.sliderRange - 10,
-      max: this.sliderRange
-    },
-    pips: {
-      mode: 'count',
-      values: 11,
-      density: 11,
-      stepped: true,
-      format: {to: (value, type) => {
-        return '<div style="margin: 2px 5px; min-width: 90px">' + value +  '<br>100 kpl</div>';
-      }}
-    }
-  };
+  sliderRange: Number;
+  sliderConfig: any;
 
   constructor(
     private documentService: DocumentApi,
@@ -42,7 +25,16 @@ export class OwnSubmissionsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getDocumentsByYear(this.sliderRange);
+    this.documentService.findByYear(this.userService.getToken()).subscribe(
+      (results) => {
+        this.initSlider(results.map((res) => {
+          res.year = parseInt(res.year, 10);
+          return res;
+        }));
+        this.getDocumentsByYear(this.sliderRange);
+      },
+      (err) => { }
+    );
   }
 
   sliderRangeChange(newRange) {
@@ -50,6 +42,41 @@ export class OwnSubmissionsComponent implements OnInit {
 
     this.sliderRange = newRange;
     this.getDocumentsByYear(newRange);
+  }
+
+  private initSlider(yearInfo: any) {
+    const first = yearInfo[0].year;
+    const last = yearInfo[yearInfo.length - 1].year;
+    const range = {'min': first, 'max': last};
+
+    for (let i = 0; i < yearInfo.length; i++) {
+      if (i !== 0 && i !== yearInfo.length - 1) {
+        const percentage = last - first / yearInfo[i].year - first;
+        range[percentage + '%'] = yearInfo[i].year;
+      }
+
+      this.countByYear[yearInfo[i].year] = yearInfo[i].count;
+    }
+
+    this.sliderRange = last;
+
+    this.sliderConfig = {
+      connect: true,
+      margin: 0,
+      snap: true,
+      range: range,
+      pips: {
+        mode: 'count',
+        values: yearInfo.length,
+        density: 100,
+        stepped: true,
+        format: {
+          to: (value, type) => {
+            return '<div style="margin: 2px 5px; min-width: 90px">' + value + '<br>' + this.countByYear[value] + ' kpl</div>';
+          }
+        }
+      }
+    };
   }
 
   private getDocumentsByYear(year: Number) {

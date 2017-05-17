@@ -32,7 +32,7 @@
           <i class="glyphicon glyphicon-eye-open"></i>
           </span>
         </span>
-          <span *ngIf="value === publicity.publicityRestrictionsPrivate">
+        <span *ngIf="value === publicity.publicityRestrictionsPrivate">
           <span class="label label-warning inline-block"
                 [tooltip]="'haseka.form.private' | translate"
                 [placement]="'right'">
@@ -41,6 +41,7 @@
         </span>
         </ng-template>
       </ngx-datatable-column>
+
       <ngx-datatable-column *ngFor="let col of columns"
                             [prop]="col"
                             [name]="'haseka.submissions.' + col | translate"
@@ -50,6 +51,20 @@
             <span class="datatable-header-cell-label draggable">
               {{column.name}}
             </span>
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [prop]="'download'"
+                            [width]="45" [minWidth]="45" [maxWidth]="50">
+        <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+        </ng-template>
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+          <span class="label label-default link inline-block"
+                [tooltip]="'result.showViewer' | translate"
+                [placement]="'right'"
+                (click)="downloadDocument($event, row.id)">
+          <i class="glyphicon glyphicon-download-alt"></i>
           </span>
         </ng-template>
       </ngx-datatable-column>

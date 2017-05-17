@@ -114,6 +114,12 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  downloadDocument(event, docId) {
+    event.stopPropagation();
+    console.log(event);
+    console.log(docId);
+  }
+
   private setRowData(document: Document): Observable<any> {
     const gatheringInfo = DocumentInfoService.getGatheringInfo(document);
 
