@@ -11,6 +11,8 @@ import { NpEditFormComponent } from './np-edit/np-edit-form/np-edit-form.compone
 import { NpInfoComponent } from './np-edit/np-info/np-info.component';
 import { NpInfoRowComponent } from './np-edit/np-info/np-info-row/np-info-row.component';
 import { NpInfoMapComponent } from './np-edit/np-info/np-info-map/np-info-map.component';
+import { NpPrintComponent } from './np-print/np-print.component';
+import { LineTransectComponent } from './np-print/line-transect/line-transect.component';
 
 @NgModule({
   providers: [NamedPlacesService],
@@ -20,8 +22,8 @@ import { NpInfoMapComponent } from './np-edit/np-info/np-info-map/np-info-map.co
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,
-    NpEditFormComponent, NpInfoComponent, NpInfoRowComponent, NpInfoMapComponent
+    NpEditFormComponent, NpInfoComponent, NpInfoRowComponent, NpInfoMapComponent, NpPrintComponent, LineTransectComponent
   ],
-  exports: [NamedPlaceComponent]
+  exports: [NamedPlaceComponent, NpPrintComponent]
 })
 export class NamedPlaceModule { }
