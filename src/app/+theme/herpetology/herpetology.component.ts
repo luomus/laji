@@ -26,7 +26,7 @@ export class HerpetologyComponent implements OnInit {
   year;
   currentYear;
 
-  public amphibianTaxa: {taxon: Taxonomy, images: any}[] = [{taxon: {id: 'MX.2'}, images: []}];
+  public amphibianTaxa: {taxon: Taxonomy, images: any}[] = [];
   public reptileTaxa: {taxon: Taxonomy, images: any}[] = [];
   public occasionalTaxa: {taxon: Taxonomy, images: any}[] = [];
 
@@ -93,7 +93,7 @@ export class HerpetologyComponent implements OnInit {
         .switchMap(data => {
           return Observable.forkJoin(data.map(taxon => this.taxonomyApi
             .taxonomyFindMedia(taxon.id, this.translate.currentLang)
-            .map(images => ({taxon: taxon, images: images}))
+            .map(images => ({taxon: taxon, images: images[0] || {} }))
           ));
         }),
       this.taxonomyApi
@@ -102,7 +102,7 @@ export class HerpetologyComponent implements OnInit {
         .switchMap(data => {
           return Observable.forkJoin(data.map(taxon => this.taxonomyApi
             .taxonomyFindMedia(taxon.id, this.translate.currentLang)
-            .map(images => ({taxon: taxon, images: images}))
+            .map(images => ({taxon: taxon, images: images[0] || {}}))
           ));
         }),
       this.taxonomyApi
@@ -111,7 +111,7 @@ export class HerpetologyComponent implements OnInit {
         .switchMap(data => {
           return Observable.forkJoin(data.map(taxon => this.taxonomyApi
             .taxonomyFindMedia(taxon.id, this.translate.currentLang)
-            .map(images => ({taxon: taxon, images: images}))
+            .map(images => ({taxon: taxon, images: images[0] || {}}))
           ));
         })
     ).subscribe(data => {

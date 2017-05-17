@@ -20,7 +20,7 @@
   </div>
 
 
-<div class="button">
+  <div class="button">
                   <a class="btn herbButton btn-primary center-block" [href]="'http://loydos.luomus.fi/forms/sammakot-ja-matelijat?language=' + lang"  role="button">{{ 'herpetology.form' | translate }}</a>
   </div>
 
@@ -32,55 +32,55 @@
 
   <h2>{{'herpetology.amphibians' | translate}}</h2>
 
-    {{amphibianTaxa|json}}
-  <tr *ngFor="let taxon of amphibianTaxa">
-    <td>
-      foo{{taxon|json}}
-
-      <a>
+  <div class="row">
+    <div *ngFor="let taxon of amphibianTaxa" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-2">
+      <a href= "taxon/{{taxon.taxon.id}}">
+        {{media | multiLang}}
+        <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
+        <h4>
           {{taxon.taxon.vernacularName | multiLang}}
-          (<i *ngIf="taxon.taxon.cursiveName">{{taxon.taxon.scientificName}}</i>)
-        </a>
-      <a [routerLink]="['/taxon/' + taxon.taxon.id]">
-        <i class="glyphicon glyphicon-modal-window"></i>
+          <span *ngIf="lang === 'fi'">
+          <br> {{taxon.taxon.alternativeVernacularName | multiLang}}
+        </span>
+        </h4>
       </a>
-    </td>
-  </tr>
+    </div>
+  </div>
 
 
 
   <h2>{{'herpetology.reptiles' | translate}}</h2>
-  <tr *ngFor="let taxon of reptileTaxa" [ngClass]="{
-    }">
-    <td>
-      <a>
-        {{taxon.taxon.vernacularName | multiLang}}
-        (<i *ngIf="taxon.taxon.cursiveName">{{taxon.taxon.scientificName}}</i>)
-      </a>
-      <a [routerLink]="['/taxon/' + taxon.taxon.id]">
-        <i class="glyphicon glyphicon-modal-window"></i>
-      </a>
-      <a>
+    <div class="row">
+  <td *ngFor="let taxon of reptileTaxa" [ngClass]="{}" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-2">
+    <a href= "taxon/{{taxon.taxon.id}}">
         {{media | multiLang}}
-        <laji-image-gallery [modalImages]="taxon.taxon.images" class="taxon-img" ></laji-image-gallery>
-      </a>
-    </td>
-  </tr>
+        <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
+    <h4>
+      {{taxon.taxon.vernacularName | multiLang}}
+      <span *ngIf="lang === 'fi'">
+          <br> {{taxon.taxon.alternativeVernacularName | multiLang}}
+        </span>
+    </h4>
+    </a>
+  </td>
+    </div>
 
   <h2>{{'herpetology.occasionalSpecies' | translate}}</h2>
-
-  <tr *ngFor="let taxon of occasionalTaxa" [ngClass]="{
-    }">
-    <td>
-      <a>
+    <div class="row align-items-start">
+    <td *ngFor="let taxon of occasionalTaxa" [ngClass]="{
+    }" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-2 col-lg-offset-1">
+    <a href= "taxon/{{taxon.taxon.id}}">
+      {{media | multiLang}}
+      <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
+      <h4>
         {{taxon.taxon.vernacularName | multiLang}}
-        (<i *ngIf="taxon.taxon.cursiveName">{{taxon.taxon.scientificName}}</i>)
-      </a>
-      <a [routerLink]="['/taxon/' + taxon.taxon.id]">
-        <i class="glyphicon glyphicon-modal-window"></i>
-      </a>
+        <span *ngIf="lang === 'fi'">
+          <br> {{taxon.taxon.alternativeVernacularName | multiLang}}
+        </span>
+      </h4>
+    </a>
     </td>
-  </tr>
+    </div>
 
     <h2>{{'herpetology.background' | translate}}</h2>
 
