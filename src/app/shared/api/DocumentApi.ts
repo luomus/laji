@@ -126,7 +126,7 @@ export class DocumentApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findAll(userToken: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Document>> {
+  public findAll(userToken: string, page?: string, pageSize?: string, observationYear?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Document>> {
     const path = this.basePath + '/documents';
 
     let queryParameters = new URLSearchParams();
@@ -145,6 +145,10 @@ export class DocumentApi {
 
     if (userToken !== undefined) {
       queryParameters.set('personToken', userToken);
+    }
+
+    if (observationYear !== undefined) {
+      queryParameters.set('observationYear', observationYear);
     }
 
     let requestOptions: RequestOptionsArgs = {

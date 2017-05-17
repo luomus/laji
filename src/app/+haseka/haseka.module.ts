@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NouisliderModule } from 'ng2-nouislider';
 import {
   HasekaComponent,
   HaSeKaFormComponent,
@@ -20,13 +21,14 @@ import { OwnSubmissionsComponent } from './own-submissions/own-submissions.compo
 import { StatisticsComponent } from './statistics/statistics.component';
 import { ViewerModule } from '../+viewer/viewer.module';
 import { RouterChildrenEventService } from './router-children-event.service';
+import { OwnDatatableComponent } from './own-submissions/own-datatable/own-datatable.component';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, AlertModule, NgxDatatableModule, NamedPlaceModule, ViewerModule,
+  imports: [routing, SharedModule, RouterModule, AlertModule, NgxDatatableModule, NouisliderModule, NamedPlaceModule, ViewerModule,
     FormPermissionModule.forRoot()],
   providers: [ FormApi, DocumentApi, RouterChildrenEventService ],
   declarations: [HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
-    ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent, OwnSubmissionsComponent, StatisticsComponent]
+    ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent, OwnSubmissionsComponent, StatisticsComponent, OwnDatatableComponent]
 })
 export class HasekaModule {
 }
