@@ -1,0 +1,61 @@
+<div class="page">
+  <div class="pager">
+    <h2>{{namedPlace.name}}&nbsp;&nbsp;<span>1/{{total}}</span></h2>
+  </div>
+  <div class="title">
+    <h1>{{namedPlace.name}}</h1>
+  </div>
+  <table class="info">
+    <tr *ngFor="let row of info">
+      <td>{{row.key}}</td>
+      <td [innerHtml]="row.data | nlToBr"></td>
+    </tr>
+    <tr *ngIf="ykjGrid">
+      <td>Yhtenäiskoordinaatit:</td>
+      <td>{{ykjGrid}}</td>
+    </tr>
+    <tr>
+      <td>Koillisnurkan etäisyys aloitus pisteestä:</td>
+      <td>{{neDistance}}m</td>
+    </tr>
+    <tr>
+      <td>Reitin pituus:</td>
+      <td>{{routeLength}}m</td>
+    </tr>
+    <tr *ngIf="person">
+      <td>Havainnoja:</td>
+      <td>
+        {{person.id | users}} ({{person.id}})<br>
+        {{person.emailAddress}}
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="page no-page-break page-break-after" *ngIf="lajiMapOptions">
+  <div class="pager">
+    <h2>{{namedPlace.name}}&nbsp;&nbsp;<span>2/{{total}}</span></h2>
+  </div>
+  <laji-map2 [options]="lajiMapOptions"></laji-map2>
+</div>
+<div *ngIf="pagedDistance">
+  <div class="page no-page-break page-break-after" *ngFor="let page of pagedDistance; let i = index">
+    <div class="pager">
+      <h2>{{namedPlace.name}}&nbsp;&nbsp;<span>{{i + 2}}/{{total}}</span></h2>
+    </div>
+    <table class="line-table">
+      <tr>
+        <th>Apusarka</th>
+        <th colspan="2">50m leveä pääsarka</th>
+        <th>Apusarka</th>
+        <th>Biotooppi pääsaralla</th>
+      </tr>
+      <tr *ngFor="let distance of page">
+        <td><div class="distance">{{distance}}</div></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><div class="distance">{{distance}}</div></td>
+      </tr>
+    </table>
+  </div>
+</div>

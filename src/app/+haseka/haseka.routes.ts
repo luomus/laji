@@ -12,6 +12,7 @@ import { AdminComponent } from './form-permission/admin/admin.component';
 import { IntroComponent } from './form-permission/admin/intro/intro.component';
 import { AcceptComponent } from './form-permission/admin/accept/accept.component';
 import { ManageComponent } from './form-permission/admin/manage/manage.component';
+import { NpPrintComponent } from './named-place/np-print/np-print.component';
 
 export const hasekaRoutes: Routes = [
   {
@@ -28,6 +29,10 @@ export const hasekaRoutes: Routes = [
     path: 'terms-of-service',
     pathMatch: 'full',
     component: HaSeKaTermsOfServiceComponent
+  },
+  {
+    path: 'np/:npId/print/:type',
+    component: NpPrintComponent
   },
   {
     path: 'np/:collectionId/:formId',

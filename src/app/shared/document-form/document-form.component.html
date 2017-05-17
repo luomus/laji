@@ -1,8 +1,8 @@
 <laji-spinner [spinning]="!form && loading" [overlay]="true"></laji-spinner>
 <div class="row">
   <div [ngClass]="{
-    'col-sm-8': form?.logo,
-    'col-sm-12': !form?.logo
+    'col-sm-7': form?.logo,
+    'col-sm-11': !form?.logo
   }">
     <h1>{{form?.title}}</h1>
     <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
@@ -10,6 +10,10 @@
   </div>
   <div class="col-sm-4" *ngIf="form?.logo">
     <img src="{{form.logo}}">
+  </div>
+  <div class="col-sm-1" *ngIf="form?.printType && form?.formData.namedPlaceID">
+    <a class="btn btn-sm btn-default"
+       [routerLink]="['/vihko/np/', form.formData.namedPlaceID, 'print', form.printType]">print</a>
   </div>
 </div>
 <div class="row" *ngIf="namedPlace" style="margin-top: 10px">

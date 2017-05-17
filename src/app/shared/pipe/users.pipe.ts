@@ -15,7 +15,7 @@ import { Person } from '../model/Person';
   pure: false
 })
 export class UsersPipe implements PipeTransform {
-  value: string = '';
+  value = '';
   lastId: string;
   lastFormat: string;
 
