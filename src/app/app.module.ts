@@ -30,6 +30,7 @@ import { CoreModule } from './shared/core.module';
 import { Ng2Webstorage } from 'ng2-webstorage';
 import { ViewerModule } from './+viewer/viewer.module';
 import { ToastModule } from 'ng2-toastr/src/toast.module';
+import { NamedPlaceModule } from './+haseka/named-place/named-place.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): ILogger {
   const env = appConfig.getEnv();
@@ -52,6 +53,7 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
         useClass: TranslateFileLoader
       }
     }),
+    NamedPlaceModule.forRoot(),
     ToastModule.forRoot(),
     SharedModule.forRoot(),
     PaginationModule.forRoot(),
