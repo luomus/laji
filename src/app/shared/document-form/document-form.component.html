@@ -11,8 +11,8 @@
   <div class="col-sm-4" *ngIf="form?.logo">
     <img src="{{form.logo}}">
   </div>
-  <div class="col-sm-1" *ngIf="form?.printType && form?.formData.namedPlaceID">
-    <a class="btn btn-sm btn-default"
+  <div class="col-sm-1 form-actions" *ngIf="form?.printType && form?.formData.namedPlaceID">
+    <a class="btn btn-sm btn-default pull-right"
        [routerLink]="['/vihko/np/', form.formData.namedPlaceID, 'print', form.printType]">print</a>
   </div>
 </div>

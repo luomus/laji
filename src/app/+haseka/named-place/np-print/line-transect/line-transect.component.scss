@@ -67,15 +67,16 @@ $perPage: 10;
 /** Info table **/
 .info {
   position: absolute;
-  bottom: 10mm;
+  top: 60mm;
+  font-size: small;
   td {
     vertical-align: top;
-    padding: 1mm;
+    padding: 0.3mm;
   }
 
   td:first-of-type {
     text-align: right;
-    width: 80mm;
+    width: 110mm;
   }
 }
 
@@ -84,21 +85,26 @@ $perPage: 10;
   width: 100%;
   height: $rowHeight * $perPage;
   border-left: dashed 1px #000;
-  tr {
-    border-bottom: dashed 1px #000;
-  }
   td {
     height: $rowHeight;
     vertical-align: top;
+    border-bottom: dashed 1px #000;
   }
   td:last-of-type {
     text-align: right;
-    width: 50mm;
+    width: 45mm;
   }
   th {
     text-align: center;
+    border-bottom: solid 1px #000;
   }
-  td, th {
+  td:nth-child(0), th:nth-child(0),
+  td:nth-child(1), th:nth-child(1),
+  th:nth-child(2),
+  td:nth-child(3), th:nth-child(3),
+  td:nth-child(4), th:nth-child(4),
+  td:nth-child(5)
+  {
     border-right: dashed 1px #000;
   }
   td:nth-child(2) {
@@ -111,4 +117,9 @@ $perPage: 10;
 .distance {
   margin: 0 1mm;
   font-size: smaller;
+}
+.short-hand {
+  position: absolute;
+  bottom: 0;
+  font-size: small;
 }
