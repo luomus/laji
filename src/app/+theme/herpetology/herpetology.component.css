@@ -15,7 +15,7 @@
   margin-left: 50px;
   margin-right: 150px;
   padding: 3em;
-  max-width: 60em;
+  max-width: 72em;
   font-size: 1.2em;
   line-height: 1.7em;
 }
@@ -52,9 +52,21 @@
 }
 
 .taxon-img {
-  max-width: 200px;
-  margin-right: 1.0em !important;
-  margin-bottom: 1.5em;
+  max-width: 170px;
+  margin-right: 1.0em;
+  margin-bottom: 0.2em;
+}
+
+.taxonCard h4{
+  font-size: 0.9em;
+
+  bottom: -3em;
+  left: -1em;
+  background-color: rgba(0,0,0,0.8);
+  color: white;
+  width: 12.6em;
+  padding: 0.5em;
+  margin-right: 10px;
 }
 
 .partnerLogo img {
