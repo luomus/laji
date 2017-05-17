@@ -5,12 +5,8 @@
   z-index: auto;
 }
 
-.about {
-  padding-bottom: 30px;
-}
-
 @media only screen and (min-width : 768px) {
-  .more-info .media {
+  .more-info .news-panel {
     position: fixed;
   }
 

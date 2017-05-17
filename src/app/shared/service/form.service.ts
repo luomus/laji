@@ -20,6 +20,7 @@ export class FormService {
   private currentKey: string;
   private currentLang: string;
   private formCache: {[key: string]: any} = {};
+  private formPending: {[key: string]: Observable<any>} = {};
   private allForms: any[];
 
   private _populate: any;
@@ -138,13 +139,20 @@ export class FormService {
   }
 
   getForm(formId: string, lang: string): Observable<any> {
+    if (!formId) {
+      return Observable.of({});
+    }
     this.setLang(lang);
-    return this.formCache[formId] ?
-      Observable.of(this.formCache[formId]) :
-      this.formApi.formFindById(formId, lang)
+    if (this.formCache[formId]) {
+      return Observable.of(this.formCache[formId]);
+    } else if (!this.formPending[formId]) {
+      this.formPending[formId] = this.formApi.formFindById(formId, lang)
         .do((schema) => {
           this.formCache[formId] = schema;
-        });
+        })
+        .share();
+    }
+    return this.formPending[formId];
   }
 
   load(formId: string, lang: string, documentId?: string): Observable<any> {
@@ -261,6 +269,7 @@ export class FormService {
   private setLang(lang: string) {
     if (this.currentLang !== lang) {
       this.formCache = {};
+      this.formPending = {};
       this.allForms = undefined;
       this.currentLang = lang;
     }

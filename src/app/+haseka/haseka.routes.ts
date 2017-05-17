@@ -1,6 +1,9 @@
 import { RouterModule, Routes } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 import { HasekaComponent } from './haseka.component';
+import { HaSeKaFormListComponent } from './form-list/haseka-form-list';
+import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { HaSeKaFormComponent } from './form/haseka-form.component';
 import { NamedPlaceComponent } from './named-place/named-place/named-place.component';
@@ -13,8 +16,13 @@ import { ManageComponent } from './form-permission/admin/manage/manage.component
 export const hasekaRoutes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
-    component: HasekaComponent
+    component: HasekaComponent,
+    children: [
+      {path: '', pathMatch: 'full', component: HaSeKaFormListComponent},
+      {path: 'forms', pathMatch: 'full', component: HaSeKaFormListComponent},
+      {path: 'ownSubmissions', pathMatch: 'full', component: OwnSubmissionsComponent},
+      {path: 'statistics', pathMatch: 'full', component: StatisticsComponent}
+    ]
   },
   {
     path: 'terms-of-service',
