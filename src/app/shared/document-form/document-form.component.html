@@ -12,8 +12,11 @@
     <img src="{{form.logo}}">
   </div>
   <div class="col-sm-1 form-actions" *ngIf="form?.printType && form?.formData.namedPlaceID">
-    <a class="btn btn-sm btn-default pull-right"
-       [routerLink]="['/vihko/np/', form.formData.namedPlaceID, 'print', form.printType]">print</a>
+    <span [ngSwitch]="form.printType">
+      <a *ngSwitchCase="'MHL.printTypeLineTransect'"
+        class="btn btn-sm btn-default pull-right"
+        [routerLink]="['/vihko/np/', form.formData.namedPlaceID, 'print', form.printType]">print</a>
+    </span>
   </div>
 </div>
 <div class="row" *ngIf="namedPlace" style="margin-top: 10px">
