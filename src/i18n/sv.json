@@ -262,6 +262,8 @@
   "haseka.submissions.noSubmissions": "Inga observationer hittades",
   "haseka.submissions.total": "Total",
   "haseka.submissions.filter": "Filtera...",
+  "haseka.submissions.pcs.singular": "st",
+  "haseka.submissions.pcs": "st",
   "observation.export.tooMany": "För många observationer. Maksimiantal är {{max}}. Sökningen måste begränsas.",
   "observation.export.tooManySpecies": "För många arter. Maksimiantal är {{max}}. Sökningen måste begränsas.",
   "observation.export.tooLittle": "Inga observationer som kan laddas ner.",

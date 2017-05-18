@@ -273,6 +273,8 @@
   "haseka.submissions.noSubmissions": "Yhtään havaintoerää ei löytynyt.",
   "haseka.submissions.total": "Yhteensä",
   "haseka.submissions.filter": "Filteröi...",
+  "haseka.submissions.pcs.singular": "kpl",
+  "haseka.submissions.pcs": "kpl",
   "observation.export.tooMany": "Liian paljon havaintoja. Maksimimäärä on {{max}}, joten rajaa hakua lisää.",
   "observation.export.tooManySpecies": "Liian paljon lajeja. Maksimimäärä on {{max}}, joten rajaa hakua lisää.",
   "observation.export.tooLittle": "Ei havaintoja, joita voisit ladata.",

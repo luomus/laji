@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
@@ -18,14 +19,35 @@ export class OwnSubmissionsComponent implements OnInit {
 
   sliderRange: Number;
   sliderConfig: any;
+  sliderWidth: String;
+  pipGrid: any;
+
+  pcsString: String;
+  pcString: String;
+  subTrans: Subscription;
+
+  @ViewChild('sliderRef') sliderRef;
 
   constructor(
     private documentService: DocumentApi,
-    private userService: UserService
+    private userService: UserService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
-    this.documentService.findByYear(this.userService.getToken()).subscribe(
+    this.updateTranslations();
+
+    this.subTrans = this.translate.onLangChange.subscribe(() => {
+      this.updateTranslations();
+
+      if (this.sliderConfig) {
+        const p = this.sliderRef.el.nativeElement.querySelector('.noUi-pips');
+        p.parentElement.removeChild(p);
+        this.sliderRef.slider.pips(this.sliderRef.slider.options.pips);
+      }
+    });
+
+    this.documentService.countByYear(this.userService.getToken()).subscribe(
       (results) => {
         this.initSlider(results.map((res) => {
           res.year = parseInt(res.year, 10);
@@ -45,6 +67,8 @@ export class OwnSubmissionsComponent implements OnInit {
   }
 
   private initSlider(yearInfo: any) {
+    if (yearInfo.length === 0) { return; }
+
     const first = yearInfo[0].year;
     const last = yearInfo[yearInfo.length - 1].year;
     const range = {'min': first, 'max': last};
@@ -58,25 +82,30 @@ export class OwnSubmissionsComponent implements OnInit {
       this.countByYear[yearInfo[i].year] = yearInfo[i].count;
     }
 
+    this.sliderWidth = Math.min(yearInfo.length * 10, 100) + '%';
+
     this.sliderRange = last;
 
-    this.sliderConfig = {
-      connect: true,
-      margin: 0,
-      snap: true,
-      range: range,
-      pips: {
-        mode: 'count',
-        values: yearInfo.length,
-        density: 100,
-        stepped: true,
-        format: {
-          to: (value, type) => {
-            return '<div style="margin: 2px 5px; min-width: 90px">' + value + '<br>' + this.countByYear[value] + ' kpl</div>';
+    if (yearInfo.length > 1) {
+      this.sliderConfig = {
+        connect: true,
+        margin: 0,
+        snap: true,
+        range: range,
+        pips: {
+          mode: 'count',
+          values: yearInfo.length,
+          density: 100,
+          stepped: true,
+          format: {
+            to: (value, type) => {
+              const pcs = this.countByYear[value] === 1 ? this.pcString : this.pcsString;
+              return '<div style="margin: 2px 5px; min-width: 90px">' + value + '<br>' + this.countByYear[value] + ' ' + pcs + '</div>';
+            }
           }
         }
-      }
-    };
+      };
+    }
   }
 
   private getDocumentsByYear(year: Number) {
@@ -91,6 +120,8 @@ export class OwnSubmissionsComponent implements OnInit {
 
     this.activeDocuments = null;
 
+    if (!year) { return; }
+
     this.documents$ = this.documentService.findAll(this.userService.getToken(), String(1), String(1000), String(year))
       .subscribe(
         result => {
@@ -101,5 +132,13 @@ export class OwnSubmissionsComponent implements OnInit {
         },
         err => { }
       );
+  }
+
+  private updateTranslations() {
+    this.translate.get('haseka.submissions.pcs.singular').subscribe(
+      (msg) => { this.pcString = msg; });
+
+    this.translate.get('haseka.submissions.pcs').subscribe(
+      (msg) => { this.pcsString = msg; });
   }
 }

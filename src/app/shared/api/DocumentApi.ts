@@ -215,11 +215,10 @@ export class DocumentApi {
 
   /**
    *
-   *
    * @param userToken User authentication token
    */
-  public findByYear(userToken: string, extraHttpRequestParams?: any): Observable<any> {
-    const path = this.basePath + '/documents/byYear';
+  public countByYear(userToken: string, extraHttpRequestParams?: any): Observable<any> {
+    const path = this.basePath + '/documents/count/byYear';
 
     let queryParameters = new URLSearchParams();
     let headerParams = this.defaultHeaders;

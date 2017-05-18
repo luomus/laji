@@ -34,7 +34,7 @@
   <br>
 
   <span *ngIf="gatheringDates.start"> {{gatheringDates.start | amDateFormat:'DD.MM.YYYY'}}</span>
-  <span *ngIf="gatheringDates.end">- {{gatheringDates.end | amDateFormat:'DD.MM.YYYY'}}</span>
+  <span *ngIf="gatheringDates.end && gatheringDates.end !== gatheringDates.start">- {{gatheringDates.end | amDateFormat:'DD.MM.YYYY'}}</span>
 
   <span *ngIf="locality">{{locality}}</span>
   <span *ngIf="!locality">{{'haseka.users.latest.localityMissing' | translate}}</span>
