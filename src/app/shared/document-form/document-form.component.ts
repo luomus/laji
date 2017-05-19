@@ -156,16 +156,15 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         this.saving = false;
         this.saveVisibility = 'shown';
         this.error = this.parseErrorMessage(err);
-        this.status = 'error';
-        setTimeout(() => {
-          if (this.status === 'error') {
-            this.status = '';
-          }
-        }, 5000);
+        this.status = 'unsaved';
         this.logger.error('UNABLE TO SAVE DOCUMENT', {
           data: JSON.stringify(data),
           error: JSON.stringify(this.parseErrorMessage(err))
         });
+        this.translate.get('haseka.form.error')
+          .subscribe(value => {
+            this.toastsService.showError(value);
+          });
     });
   }
 
