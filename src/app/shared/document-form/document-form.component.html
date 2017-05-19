@@ -1,22 +1,24 @@
 <laji-spinner [spinning]="!form && loading" [overlay]="true"></laji-spinner>
 <div class="row">
   <div [ngClass]="{
-    'col-sm-7': form?.logo,
-    'col-sm-11': !form?.logo
+    'col-sm-8': form?.logo || form?.printType,
+    'col-sm-12': !(form?.logo || form?.printType)
   }">
     <h1>{{form?.title}}</h1>
     <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
     <div [innerHtml]="form?.description"></div>
   </div>
-  <div class="col-sm-4" *ngIf="form?.logo">
-    <img src="{{form.logo}}">
-  </div>
-  <div class="col-sm-1 form-actions" *ngIf="form?.printType && form?.formData.namedPlaceID">
-    <span [ngSwitch]="form.printType">
-      <a *ngSwitchCase="'MHL.printTypeLineTransect'"
-        class="btn btn-sm btn-default pull-right"
-        [routerLink]="['/vihko/np/', form.formData.namedPlaceID, 'print', form.printType]">print</a>
-    </span>
+  <div class="col-sm-4" *ngIf="form?.logo || form?.printType">
+    <div class="form-actions pull-right" *ngIf="form?.printType && form?.formData.namedPlaceID">
+      <span [ngSwitch]="form.printType">
+        <a *ngSwitchCase="'MHL.printTypeLineTransect'"
+           class="btn btn-sm btn-default"
+           [routerLink]="['/vihko/np/', form.formData.namedPlaceID, 'print', form.printType]">print</a>
+      </span>
+    </div>
+    <div class="form-logo pull-right" *ngIf="form?.logo">
+      <img src="{{form.logo}}">
+    </div>
   </div>
 </div>
 <div class="row" *ngIf="namedPlace" style="margin-top: 10px">
