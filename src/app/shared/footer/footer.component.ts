@@ -38,7 +38,7 @@ export class FooterComponent implements OnInit, OnDestroy{
     });
     this.fetchTreeData();
     this.subLangChange = this.translate.onLangChange.subscribe(() => {
-      this.fetchTreeData();
+      this.fetchTreeData(true);
     });
   }
 
@@ -51,8 +51,8 @@ export class FooterComponent implements OnInit, OnDestroy{
     }
   }
 
-  fetchTreeData() {
-    if (!this.tree) {
+  fetchTreeData(force = false) {
+    if (force || !this.tree) {
       this.informationApi
         .informationIndex(this.translate.currentLang)
         .map(tree => tree.children || [])
