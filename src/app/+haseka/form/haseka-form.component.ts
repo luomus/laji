@@ -1,34 +1,25 @@
-import { animate, Component, OnDestroy, OnInit, state, style, transition, trigger, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FooterService } from '../../shared/service/footer.service';
-import { LajiFormComponent } from '../../shared/form/laji-form.component';
 
 @Component({
   selector: 'laji-haseka-form',
   templateUrl: './haseka-form.component.html',
-  styleUrls: ['./haseka-form.component.css'],
-  animations: [
-    trigger('visibilityChanged', [
-      state('shown' , style({ opacity: 1 })),
-      state('hidden', style({ opacity: 0 })),
-      transition('shown => hidden', animate('600ms')),
-      transition('hidden => shown', animate('300ms'))
-    ])
-  ]
+  styleUrls: ['./haseka-form.component.css']
 })
 export class HaSeKaFormComponent implements OnInit, OnDestroy {
-  @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
-
   public formId: string;
   public documentId: string;
 
   private subParam: Subscription;
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private footerService: FooterService,
-              public translate: TranslateService,) {
+              public translate: TranslateService
+  ) {
   }
 
   ngOnInit() {
@@ -44,4 +35,22 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
     this.footerService.footerVisible = true;
   }
 
+  onSuccess(data) {
+    this.router.navigate(['/vihko']);
+  }
+
+  onTmlLoad(data) {
+    this.router.navigate(
+      ['/vihko', data.formID, data.tmpID],
+      { replaceUrl: true }
+    );
+  }
+
+  onError() {
+    this.router.navigate(['/vihko']);
+  }
+
+  onCancel() {
+    this.router.navigate(['/vihko']);
+  }
 }

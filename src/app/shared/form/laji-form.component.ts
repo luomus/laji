@@ -18,7 +18,7 @@ import { LajiExternalService } from '../service/laji-external.service';
 
 @Component({
   selector: 'laji-form',
-  template: '',
+  template: '<div></div>',
   providers: [FormApiClient]
 })
 export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
