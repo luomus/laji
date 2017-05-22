@@ -1,22 +1,30 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, OnDestroy } from '@angular/core';
+import { ViewChild } from '@angular/core';
+import { nvD3 } from '../../../ng2-nvd3/ng2-nvd3.component';
 
 @Component({
   selector: 'laji-pie-chart',
   template: '<nvd3 *ngIf="innerVisibility" [options]="options" [data]="data"></nvd3>'
 })
-export class PieChartComponent implements OnInit, OnChanges {
+export class PieChartComponent implements OnInit, OnChanges, OnDestroy {
+  @ViewChild(nvD3)
+  public nvD3: nvD3;
   @Input() data: {label: string, value: number}[];
-  @Input() height: number = 100;
-  @Input() showLegend: boolean = false;
-  @Input() visible: boolean = false;
-  @Input() legendPosition: string = 'top';
+  @Input() height = 100;
+  @Input() showLegend = false;
+  @Input() visible = false;
+  @Input() legendPosition = 'top';
 
   @Output() sectionSelect = new EventEmitter();
 
-  public innerVisibility: boolean = true;
+  public innerVisibility = true;
   public options: any;
 
   constructor() {
+  }
+
+  ngOnInit() {
+    this.refreshOptions();
   }
 
   ngOnChanges(changes) {
@@ -29,8 +37,8 @@ export class PieChartComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit() {
-    this.refreshOptions();
+  ngOnDestroy() {
+    this.nvD3.clearElement();
   }
 
   public refreshOptions() {
