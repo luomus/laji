@@ -4,6 +4,7 @@ import { LajiMapOptions, Map2Component } from '../../../shared/map/map2.componen
 import * as MapUtil from 'laji-map/lib/utils';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
+import { NamedPlace } from '../../../shared/model/NamedPlace';
 
 interface LineTransectCount {
   psCouples: number;
@@ -23,6 +24,9 @@ interface LineTransectCount {
 })
 export class LineTransectComponent implements OnChanges, AfterViewInit {
   @ViewChild(Map2Component)
+  @Input() document: Document;
+  @Input() namedPlace: NamedPlace;
+
   public lajiMap: Map2Component;
 
   public counts: LineTransectCount;
@@ -57,8 +61,6 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     }
   };
 
-  @Input() document: Document;
-
   constructor(
     private coordinateService: CoordinateService
   ) {}
@@ -69,13 +71,13 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.lajiMap.lajiMap.pointIdxsToDistances) {
+    if (this.lajiMap &&  this.lajiMap.lajiMap && this.lajiMap.lajiMap.pointIdxsToDistances) {
       const keys = Object.keys(this.lajiMap.lajiMap.pointIdxsToDistances);
       const lastKey = keys.pop();
       setTimeout(() => {
         this.counts.routeLength = parseInt(this.lajiMap.lajiMap.pointIdxsToDistances[lastKey], 10);
         this.counts.couplesPerKm = (this.counts.tsCouples + this.counts.psCouples) /
-          (this.counts.routeLength / 1000)
+          (this.counts.routeLength / 1000);
       }, 100);
 
     }
@@ -120,7 +122,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     });
     const total = count.psCouples + count.tsCouples;
     if (total > 0) {
-      count.onPsPros = Math.ceil(count.psCouples / (total));
+      count.onPsPros = Math.round((count.psCouples / (total)) * 100);
     }
     this.counts = count;
   }
@@ -135,19 +137,12 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   }
 
   private getGeometry() {
+    this.counts.ykj3N = +this.namedPlace.alternativeIDs[1].substring(0, 3);
     if (this.document.gatherings) {
-      let found = false;
       return MapUtil.latLngSegmentsToGeoJSONGeometry(
         this.document.gatherings
           .map(gathering => {
             if (gathering.geometry && gathering.geometry.coordinates) {
-              if (!found && gathering.geometry.coordinates[0] && gathering.geometry.coordinates[0].length === 2) {
-                const ykj = this.coordinateService.convertWgs84ToYkj(
-                  gathering.geometry.coordinates[0][0], gathering.geometry.coordinates[0][1]
-                );
-                this.counts.ykj3N = +('' + ykj[0]).substr(0, 3);
-                found = true;
-              }
               return gathering.geometry.coordinates;
             }
             return [0, 0];

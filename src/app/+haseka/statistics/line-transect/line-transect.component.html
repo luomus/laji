@@ -44,13 +44,13 @@
       </tbody>
     </table>
   </div>
-  <div class="col-sm-6 col-md-5 col-lg-3" *ngIf="counts.ykj3N">
+  <div class="col-sm-6 col-md-5 col-lg-3" *ngIf="counts.onPsPros && counts.ykj3N">
     <div class="row">
       <div class="col-sm-12" style="height: 200px">
         <laji-line-transect-chart
           [terms]="onMainTerms"
           [ykj3]="counts.ykj3N"
-          [value]="counts.onPsPros || 0"
+          [value]="counts.onPsPros"
         ></laji-line-transect-chart>
       </div>
     </div>
@@ -65,7 +65,7 @@
           [terms]="perKmTerms"
           [yRange]="[0, 50]"
           [ykj3]="counts.ykj3N"
-          [value]="counts.couplesPerKm || 0"
+          [value]="counts.couplesPerKm"
         ></laji-line-transect-chart>
       </div>
     </div>

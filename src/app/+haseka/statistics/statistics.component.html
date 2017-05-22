@@ -2,7 +2,7 @@
   <div *ngIf="form; else wip">
     <div [ngSwitch]="form.viewerType">
       <div *ngSwitchCase="'MHL.viewerTypeLineTransect'">
-        <laji-line-transect-stats [document]="document"></laji-line-transect-stats>
+        <laji-line-transect-stats [document]="document" [namedPlace]="ns"></laji-line-transect-stats>
       </div>
       <div *ngSwitchDefault="">
         <div *ngTemplateOutlet="wip"></div>
