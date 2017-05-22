@@ -20,13 +20,18 @@ import { OwnSubmissionsComponent } from './own-submissions/own-submissions.compo
 import { StatisticsComponent } from './statistics/statistics.component';
 import { ViewerModule } from '../+viewer/viewer.module';
 import { RouterChildrenEventService } from './router-children-event.service';
+import { LineTransectComponent } from './statistics/line-transect/line-transect.component';
+import { LineTransectChartComponent } from './statistics/line-transect/line-transect-chart/line-transect-chart.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, AlertModule, NgxDatatableModule, NamedPlaceModule, ViewerModule,
     FormPermissionModule.forRoot()],
   providers: [ FormApi, DocumentApi, RouterChildrenEventService ],
-  declarations: [HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
-    ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent, OwnSubmissionsComponent, StatisticsComponent]
+  declarations: [
+    HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
+    ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent, OwnSubmissionsComponent,
+    StatisticsComponent, LineTransectComponent, LineTransectChartComponent
+  ]
 })
 export class HasekaModule {
 }

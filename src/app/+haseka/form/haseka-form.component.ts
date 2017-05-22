@@ -36,7 +36,10 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy {
   }
 
   onSuccess(data) {
-    this.router.navigate(['/vihko']);
+    if (data.form && data.form.viewerType && data.document && data.document.id) {
+      return this.router.navigate(['/vihko/statistics/', data.document.id]);
+    }
+    this.router.navigate(['/vihko/']);
   }
 
   onTmlLoad(data) {

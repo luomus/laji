@@ -1,0 +1,160 @@
+import { AfterViewInit, Component, Input, OnChanges, ViewChild } from '@angular/core';
+import { Document } from '../../../shared/model/Document';
+import { LajiMapOptions, Map2Component } from '../../../shared/map/map2.component';
+import * as MapUtil from 'laji-map/lib/utils';
+import { CoordinateService } from '../../../shared/service/coordinate.service';
+import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
+
+interface LineTransectCount {
+  psCouples: number;
+  tsCouples: number;
+  onPs: number;
+  onPsPros: number;
+  routeLength?: number;
+  ykj3N?: number;
+  couplesPerKm?: number;
+  species: {id: string, psCouples: number, tsCouples: number, name?: string}[];
+}
+
+@Component({
+  selector: 'laji-line-transect-stats',
+  templateUrl: './line-transect.component.html',
+  styleUrls: ['./line-transect.component.css']
+})
+export class LineTransectComponent implements OnChanges, AfterViewInit {
+  @ViewChild(Map2Component)
+  public lajiMap: Map2Component;
+
+  public counts: LineTransectCount;
+  public lajiMapOptions: LajiMapOptions;
+  public perKmTerms: LineTransectChartTerms = {
+    upper: {
+      slope: -0.1233,
+      term: 116.921
+    },
+    middle: {
+      slope: -0.1233,
+      term: 104.4
+    },
+    lower: {
+      slope: -0.1233,
+      term: 91.84713
+    }
+  };
+
+  public onMainTerms: LineTransectChartTerms = {
+    upper: {
+      slope: -0.279,
+      term: 221.88
+    },
+    middle: {
+      slope: -0.279,
+      term: 241.35
+    },
+    lower: {
+      slope: -0.2791,
+      term: 260.897
+    }
+  };
+
+  @Input() document: Document;
+
+  constructor(
+    private coordinateService: CoordinateService
+  ) {}
+
+  ngOnChanges() {
+    this.initCounts();
+    this.initMapOptions();
+  }
+
+  ngAfterViewInit() {
+    if (this.lajiMap.lajiMap.pointIdxsToDistances) {
+      const keys = Object.keys(this.lajiMap.lajiMap.pointIdxsToDistances);
+      const lastKey = keys.pop();
+      setTimeout(() => {
+        this.counts.routeLength = parseInt(this.lajiMap.lajiMap.pointIdxsToDistances[lastKey], 10);
+        this.counts.couplesPerKm = (this.counts.tsCouples + this.counts.psCouples) /
+          (this.counts.routeLength / 1000)
+      }, 100);
+
+    }
+  }
+
+  private initCounts() {
+    const count = {
+      psCouples: 0,
+      tsCouples: 0,
+      onPs: 0,
+      onPsPros: 0,
+      species: []
+    };
+    const species = {};
+    if (this.document.gatherings) {
+      this.document.gatherings.map(gathering => {
+        if (gathering.units) {
+          gathering.units.map(unit => {
+            if (unit.identifications && unit.identifications[0]) {
+              const taxon = unit.identifications[0].taxonID || unit.identifications[0].taxon || '';
+              if (!species[taxon]) {
+                species[taxon] = {
+                  psCouples: 0,
+                  tsCouples: 0,
+                  name: unit.identifications[0].taxon || ''
+                };
+              }
+              const cntKey = unit.lineTransectRouteFieldType === 'MY.lineTransectRouteFieldTypeOuter' ?
+                'tsCouples' : 'psCouples';
+              if (cntKey === 'psCouples') {
+                count.onPs++;
+              }
+              count[cntKey] += unit.pairCount || 0;
+              species[taxon][cntKey] += unit.pairCount || 0;
+            }
+          });
+        }
+      });
+    }
+    Object.keys(species).map(taxon => {
+      count.species.push({...species[taxon], id: taxon});
+    });
+    const total = count.psCouples + count.tsCouples;
+    if (total > 0) {
+      count.onPsPros = Math.ceil(count.psCouples / (total));
+    }
+    this.counts = count;
+  }
+
+  private initMapOptions() {
+    this.lajiMapOptions = {
+      tileLayerName: 'maastokartta',
+      lineTransect: {
+        feature: {geometry: this.getGeometry()}
+      }
+    };
+  }
+
+  private getGeometry() {
+    if (this.document.gatherings) {
+      let found = false;
+      return MapUtil.latLngSegmentsToGeoJSONGeometry(
+        this.document.gatherings
+          .map(gathering => {
+            if (gathering.geometry && gathering.geometry.coordinates) {
+              if (!found && gathering.geometry.coordinates[0] && gathering.geometry.coordinates[0].length === 2) {
+                const ykj = this.coordinateService.convertWgs84ToYkj(
+                  gathering.geometry.coordinates[0][0], gathering.geometry.coordinates[0][1]
+                );
+                this.counts.ykj3N = +('' + ykj[0]).substr(0, 3);
+                found = true;
+              }
+              return gathering.geometry.coordinates;
+            }
+            return [0, 0];
+          })
+      );
+    }
+    return {};
+  }
+
+}
