@@ -22,9 +22,9 @@
         <th>Pääsarkaprosentti</th>
         <td>{{counts.onPsPros}}%</td>
       </tr>
-      <tr>
-        <th>Pohjoiskoordinaatti</th>
-        <td>{{counts.ykj3N}}</td>
+      <tr *ngIf="counts.ykj3N">
+        <th>Ykj-ruutu</th>
+        <td>{{counts.ykj3N}}:{{counts.ykj3E}}</td>
       </tr>
     </table>
     <table class="table">
