@@ -24,10 +24,10 @@ interface LineTransectCount {
 })
 export class LineTransectComponent implements OnChanges, AfterViewInit {
   @ViewChild(Map2Component)
+  public lajiMap: Map2Component;
+
   @Input() document: Document;
   @Input() namedPlace: NamedPlace;
-
-  public lajiMap: Map2Component;
 
   public counts: LineTransectCount;
   public lajiMapOptions: LajiMapOptions;
@@ -71,7 +71,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.lajiMap &&  this.lajiMap.lajiMap && this.lajiMap.lajiMap.pointIdxsToDistances) {
+    if (this.lajiMap && this.lajiMap.lajiMap.pointIdxsToDistances) {
       const keys = Object.keys(this.lajiMap.lajiMap.pointIdxsToDistances);
       const lastKey = keys.pop();
       setTimeout(() => {
