@@ -1,6 +1,8 @@
 <laji-theme-form
         [formId]="formId"
         [documentId]="documentId"
-        donePath="/theme/nafi/stats"
-        tmpPath="/theme/nafi/form/{id}"
+        (onSuccess)="onSuccess($event)"
+        (onTmpLoad)="onTmlLoad($event)"
+        (onError)="onError()"
+        (onCancel)="onCancel()"
 ></laji-theme-form>

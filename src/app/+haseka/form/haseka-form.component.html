@@ -5,7 +5,13 @@
       <p>{{'haseka.pleaseLogin' | translate}}</p>
     </div>
     <div in>
-      <laji-document-form [formId]="formId" [documentId]="documentId"></laji-document-form>
+      <laji-document-form
+        (onSuccess)="onSuccess($event)"
+        (onTmpLoad)="onTmlLoad($event)"
+        (onError)="onError()"
+        (onCancel)="onCancel()"
+        [formId]="formId"
+        [documentId]="documentId"></laji-document-form>
     </div>
   </only-logged>
 </div>

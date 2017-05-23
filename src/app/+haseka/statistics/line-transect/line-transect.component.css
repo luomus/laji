@@ -1,0 +1,7 @@
+table th:first-of-type {
+  width: 40%;
+}
+.chart-title {
+  text-align: center;
+  margin-bottom: 15px;
+}

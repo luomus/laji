@@ -1,7 +1,9 @@
 <laji-document-form
         [formId]="formId"
         [documentId]="documentId"
-        [donePath]="donePath"
-        [tmpPath]="tmpPath"
+        (onSuccess)="onSuccess.emit($event)"
+        (onTmpLoad)="onTmpLoad.emit($event)"
+        (onError)="onError.emit($event)"
+        (onCancel)="onCancel.emit($event)"
 >
 </laji-document-form>

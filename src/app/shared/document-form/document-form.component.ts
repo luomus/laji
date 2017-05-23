@@ -1,7 +1,9 @@
-import { AfterViewInit, Component, HostListener, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
+import {
+  AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, Output,
+  ViewChild
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
-import { Router } from '@angular/router';
 import { DocumentApi } from '../api/DocumentApi';
 import { UserService } from '../service/user.service';
 import { FooterService } from '../service/footer.service';
@@ -12,6 +14,7 @@ import { ToastsService } from '../service/toasts.service';
 import { Form } from '../model/FormListInterface';
 import { Logger } from '../logger/logger.service';
 import {NamedPlacesService} from '../../+haseka/named-place/named-places.service';
+import { Document } from '../model/Document';
 
 @Component({
   selector: 'laji-document-form',
@@ -22,8 +25,10 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
   @Input() formId: string;
   @Input() documentId: string;
-  @Input() tmpPath = '/vihko/{formId}/{id}';
-  @Input() donePath = '/vihko';
+  @Output() onSuccess = new EventEmitter<{document: Document, form: any}>();
+  @Output() onError = new EventEmitter();
+  @Output() onCancel = new EventEmitter();
+  @Output() onTmpLoad = new EventEmitter();
 
   public form: any;
   public lang: string;
@@ -45,9 +50,9 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   private hasChanges = false;
   private leaveMsg;
   private publicityRestrictions;
+  private current;
 
   constructor(private documentService: DocumentApi,
-              private router: Router,
               private formService: FormService,
               private userService: UserService,
               private footerService: FooterService,
@@ -144,23 +149,22 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           .subscribe(value => {
             this.toastsService.showSuccess(value);
           });
-        this.gotoFrontPage();
+        this.onSuccess.emit({document: result, form: this.form});
       },
       (err) => {
         this.lajiForm.unBlock();
         this.saving = false;
         this.saveVisibility = 'shown';
         this.error = this.parseErrorMessage(err);
-        this.status = 'error';
-        setTimeout(() => {
-          if (this.status === 'error') {
-            this.status = '';
-          }
-        }, 5000);
+        this.status = 'unsaved';
         this.logger.error('UNABLE TO SAVE DOCUMENT', {
           data: JSON.stringify(data),
           error: JSON.stringify(this.parseErrorMessage(err))
         });
+        this.translate.get('haseka.form.error')
+          .subscribe(value => {
+            this.toastsService.showError(value);
+          });
     });
   }
 
@@ -178,16 +182,21 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     this.translate.get('haseka.form.discardConfirm').subscribe(
       (confirm) => {
         if (!this.hasChanges) {
-          this.gotoFrontPage();
+          this.onCancel.emit(true);
         } else if (this.winRef.nativeWindow.confirm(confirm)) {
           this.formService.discard();
-          this.gotoFrontPage();
+          this.onCancel.emit(true);
         }
       }
     );
   }
 
   fetchForm() {
+    const key = this.formId + this.translate.currentLang;
+    if (this.current === key) {
+      return;
+    }
+    this.current = key;
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
@@ -198,11 +207,10 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           this.loading = false;
           this.formService
             .store(data.formData)
-            .subscribe(id => this.router.navigate([
-                this.getPathWithParams(this.tmpPath, this.formId, id)
-              ],
-              {replaceUrl: true}
-            ));
+            .subscribe(id => this.onTmpLoad.emit({
+              formID: this.formId,
+              tmpID: id
+            }));
         },
         err => {
           this.loading = false;
@@ -214,6 +222,11 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   fetchFormAndDocument() {
+    const key = this.formId + this.translate.currentLang + this.documentId;
+    if (this.current === key) {
+      return;
+    }
+    this.current = key;
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
@@ -251,20 +264,12 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         err => {
           this.loading = false;
           this.formService.isTmpId(this.documentId) ?
-            this.gotoFrontPage() :
+            this.onError.emit(true) :
             this.translate
               .get(err.status === 404 ? 'haseka.form.documentNotFound' : 'haseka.form.genericError', {documentId: this.documentId})
               .subscribe(msg => this.errorMsg = msg);
         }
       );
-  }
-
-  private gotoFrontPage() {
-    this.router.navigate([this.getPathWithParams(
-      this.donePath,
-      this.formId,
-      this.documentId
-    )]);
   }
 
   private parseErrorMessage(err) {
@@ -277,11 +282,5 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         data.error.details : '';
     }
     return detail;
-  }
-
-  private getPathWithParams(path, formId = '', id = '') {
-    return path
-      .replace('{id}', id)
-      .replace('{formId}', formId);
   }
 }

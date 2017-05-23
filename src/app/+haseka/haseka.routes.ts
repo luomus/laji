@@ -22,7 +22,8 @@ export const hasekaRoutes: Routes = [
       {path: '', pathMatch: 'full', component: HaSeKaFormListComponent},
       {path: 'forms', pathMatch: 'full', component: HaSeKaFormListComponent},
       {path: 'ownSubmissions', pathMatch: 'full', component: OwnSubmissionsComponent},
-      {path: 'statistics', pathMatch: 'full', component: StatisticsComponent}
+      {path: 'statistics', pathMatch: 'full', component: StatisticsComponent},
+      {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent}
     ]
   },
   {

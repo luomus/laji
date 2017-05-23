@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Subscription } from 'rxjs/Subscription';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'laji-nafi-form',
@@ -14,7 +14,10 @@ export class NafiFormComponent implements OnInit, OnDestroy {
   documentId;
   private subParam: Subscription;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.formId = environment.nafiForm;
@@ -27,4 +30,22 @@ export class NafiFormComponent implements OnInit, OnDestroy {
     this.subParam.unsubscribe();
   }
 
+  onTmlLoad(data) {
+    this.router.navigate(
+      ['/theme/nafi/form/', data.tmpID],
+      { replaceUrl: true }
+    );
+  }
+
+  onSuccess(data) {
+    this.router.navigate(['/theme/nafi/stats']);
+  }
+
+  onError() {
+    this.router.navigate(['/theme/nafi/stats']);
+  }
+
+  onCancel() {
+    this.router.navigate(['/theme/nafi/stats']);
+  }
 }

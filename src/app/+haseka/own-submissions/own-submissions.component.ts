@@ -156,10 +156,13 @@ export class OwnSubmissionsComponent implements OnInit, OnDestroy {
 
   private getObservers(userArray: string[] = []): Observable<string> {
     return Observable.from(userArray.map((userId) => {
-      return this.userService.getUser(userId)
-        .switchMap((user: Person) => {
-          return Observable.of(user.fullName);
-        });
+      if (userId.indexOf('MA.') === 0) {
+        return this.userService.getUser(userId)
+          .switchMap((user: Person) => {
+            return Observable.of(user.fullName);
+          });
+      }
+      return Observable.of(userId);
     }))
       .mergeAll()
       .toArray()

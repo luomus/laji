@@ -139,4 +139,10 @@ export interface Units {
   weightInGrams?: Array<string>;
 
   wingInMillimeters?: Array<string>;
+
+  shortHandText?: string;
+  lineTransectObsType?: string;
+  lineTransectRouteFieldType?: string;
+  pairCount?: number;
+
 }

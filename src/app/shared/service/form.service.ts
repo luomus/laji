@@ -8,6 +8,7 @@ import { DocumentApi } from '../api/DocumentApi';
 import { Document } from '../model/Document';
 import { AppConfig } from '../../app.config';
 import { environment } from '../../../environments/environment';
+import * as deepmerge from 'deepmerge';
 
 
 @Injectable()
@@ -181,7 +182,7 @@ export class FormService {
             (form, current) => {
               form.formData = current;
               if (!documentId && form.prepopulatedDocument) {
-                form.formData = Object.assign({}, form.formData, form.prepopulatedDocument);
+                form.formData = deepmerge(form.formData || {}, form.prepopulatedDocument || {});
               }
               this.currentData = Util.clone(form.formData);
               return form;
@@ -207,7 +208,7 @@ export class FormService {
   }
 
   populate(data: any) {
-    this._populate = Object.assign({}, this._populate, data);
+    this._populate = deepmerge(this._populate || {}, data || {});
   }
 
   getEditUrlPath(formId, documentId) {
@@ -289,9 +290,9 @@ export class FormService {
     this.currentKey = this.generateTmpId();
     return this.userService.getDefaultFormData()
       .map((data: Document) => {
-        return Object.assign({}, data, {formID: formId}, this._populate);
+        return deepmerge(deepmerge( data || {}, {formID: formId}), this._populate || {});
       })
-      .do((data) => {
+      .do(() => {
         delete this._populate;
       });
   }

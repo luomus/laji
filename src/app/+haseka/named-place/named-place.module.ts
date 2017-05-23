@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { NamedPlacesService } from './named-places.service';
@@ -15,7 +15,7 @@ import { NpPrintComponent } from './np-print/np-print.component';
 import { LineTransectComponent } from './np-print/line-transect/line-transect.component';
 
 @NgModule({
-  providers: [NamedPlacesService],
+  providers: [],
   imports: [
     CommonModule,
     SharedModule
@@ -26,4 +26,13 @@ import { LineTransectComponent } from './np-print/line-transect/line-transect.co
   ],
   exports: [NamedPlaceComponent, NpPrintComponent]
 })
-export class NamedPlaceModule { }
+export class NamedPlaceModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: SharedModule,
+      providers: [
+        NamedPlacesService
+      ]
+    };
+  }
+}

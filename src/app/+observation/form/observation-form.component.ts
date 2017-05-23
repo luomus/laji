@@ -356,6 +356,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   onQueryChange() {
+    this.taxonName = null;
     this.delayedSearch(true);
   }
 

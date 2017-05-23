@@ -1,0 +1,22 @@
+<div class="row" *ngIf="form">
+  <div [ngClass]="{
+    'col-sm-8': form.logo || printType,
+    'col-sm-12': !(form.logo || printType)
+  }">
+    <h1>{{form.title}}</h1>
+    <div [innerHtml]="form.description"></div>
+  </div>
+  <div class="col-sm-4" *ngIf="form.logo || printType">
+    <div class="form-actions pull-right" *ngIf="printType && namedPlaceID">
+      <span [ngSwitch]="form.printType">
+        <a *ngSwitchCase="'MHL.printTypeLineTransect'"
+           class="btn btn-sm btn-default"
+           [routerLink]="['/vihko/np/', namedPlaceID, 'print', printType]">print</a>
+      </span>
+    </div>
+    <div class="form-logo pull-right" *ngIf="form.logo">
+      <img src="{{form.logo}}">
+    </div>
+  </div>
+</div>
+<ng-content></ng-content>
