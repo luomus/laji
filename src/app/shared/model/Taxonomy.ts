@@ -226,6 +226,8 @@ export interface TaxonomyDescription {
 
   groups?: Array<TaxonomyDescriptionGroup>;
 
+  speciesCardAuthors?: TaxonomyDescriptionVariable;
+
 }
 
 export interface TaxonomyImage {

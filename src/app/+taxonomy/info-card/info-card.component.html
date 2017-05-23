@@ -30,7 +30,11 @@
           </div>
         </div>
       </div>
-      {{ 'taxonomy.source' | translate }}:<br>{{taxonDescription[activeDescription]?.title}}
+      {{ 'taxonomy.source' | translate }}: {{taxonDescription[activeDescription]?.title}}
+      <div *ngIf="taxonDescription[activeDescription]?.speciesCardAuthors">
+        {{taxonDescription[activeDescription]?.speciesCardAuthors.title}}:
+        {{taxonDescription[activeDescription]?.speciesCardAuthors.content}}
+      </div>
     </div>
     <div [class.col-sm-6]="hasDescription">
       <div [ngClass]="{
