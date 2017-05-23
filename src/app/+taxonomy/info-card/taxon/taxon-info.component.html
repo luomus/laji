@@ -61,7 +61,23 @@
   </tr>
   <tr>
     <th>{{ 'taxonomy.card.id' | translate }}</th>
-    <td>http://tun.fi/{{taxon.id}}</td>
+    <td>
+      http://tun.fi/{{taxon.id}}
+      <div class="download-formats">
+        <a href="/api/taxa/{{taxon.id}}" rel="noopener" target="_blank">
+          <span class="label label-default">json</span>
+        </a>
+        <a href="http://tun.fi/{{taxon.id}}?format=rdfxml" rel="noopener" target="_blank">
+          <span class="label label-primary">rdf+xml</span>
+        </a>
+        <a href="http://tun.fi/{{taxon.id}}?format=rdfxml_dwc" rel="noopener" target="_blank">
+          <span class="label label-success">dwc</span>
+        </a>
+        <a href="https://vanha.laji.fi/taksonomia/lataus/{{taxon.id}}.csv?locale={{translate.currentLang}}" rel="noopener" target="_blank">
+          <span class="label label-info">csv</span>
+        </a>
+      </div>
+    </td>
   </tr>
   <tr *ngIf="taxon.taxonExpert && taxon.taxonExpert.length > 0">
     <th>{{ (taxon.taxonExpert.length > 1 ? 'taxonomy.experts' : 'taxonomy.expert') | translate }}</th>
