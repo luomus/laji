@@ -266,6 +266,7 @@
   "haseka.submissions.filter": "Type to filter...",
   "haseka.submissions.pcs.singular": "pc.",
   "haseka.submissions.pcs": "pcs",
+  "haseka.submissions.download": "Download",
   "observation.export.tooMany": "Too many results. Max is {{max}}, you'll need to narrow the search.",
   "observation.export.tooManySpecies": "Too many species. Max is {{max}}, you'll need to narrow the search.",
   "observation.export.tooLittle": "No results for download.",

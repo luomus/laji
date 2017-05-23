@@ -264,6 +264,7 @@
   "haseka.submissions.filter": "Filtera...",
   "haseka.submissions.pcs.singular": "st",
   "haseka.submissions.pcs": "st",
+  "haseka.submissions.download": "Ladda ner",
   "observation.export.tooMany": "För många observationer. Maksimiantal är {{max}}. Sökningen måste begränsas.",
   "observation.export.tooManySpecies": "För många arter. Maksimiantal är {{max}}. Sökningen måste begränsas.",
   "observation.export.tooLittle": "Inga observationer som kan laddas ner.",

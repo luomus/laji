@@ -10,6 +10,7 @@ import { FormService } from '../../../shared/service/form.service';
 import { RouterChildrenEventService } from '../../router-children-event.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { queue } from 'rxjs/scheduler/queue';
 
 @Component({
   selector: 'laji-own-datatable',
@@ -38,7 +39,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     private router: Router,
     private userService: UserService,
     private formService: FormService,
-    private eventService: RouterChildrenEventService,
+    private eventService: RouterChildrenEventService
   ) {}
 
   ngOnInit() {
@@ -87,8 +88,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       this.rowData$.unsubscribe();
     }
 
-    this.rowData$ = Observable.from(this.documents.map((doc) => {
-      return this.setRowData(doc);
+    this.rowData$ = Observable.from(this.documents.map((doc, i) => {
+      return this.setRowData(doc, i);
     }))
       .mergeAll()
       .toArray()
@@ -110,17 +111,101 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
   tableActivated(event) {
     if (event.type === 'click') {
-      this.router.navigate([this.formService.getEditUrlPath(event.row.formId, event.row.id)]);
+      const formId = this.documents[event.row.index].formID;
+      this.router.navigate([this.formService.getEditUrlPath(formId, event.row.id)]);
     }
   }
 
-  downloadDocument(event, docId) {
+  downloadDocument(event, index) {
     event.stopPropagation();
-    console.log(event);
-    console.log(docId);
+
+    const uri = encodeURI(this.documentToCsv(this.documents[index]));
+    const downloadLink = document.createElement('a');
+    downloadLink.href = uri;
+    downloadLink.download = 'data.csv';
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
   }
 
-  private setRowData(document: Document): Observable<any> {
+  private documentToCsv(document: Document) {
+    let csv = 'data:text/csv;charset=utf-8';
+
+    const keys = this.getKeys(document);
+
+    for (let i = 0; i < keys.length; i++) {
+      for (let j = 0; j < keys[i].length; j++) {
+        csv += keys[i][j];
+
+        if (i !== keys.length - 1 || j !== keys[i].length - 1) {
+          csv += '; ';
+        } else {
+          csv += '\n';
+        }
+      }
+    }
+    console.log(keys);
+    console.log(csv);
+    csv = this.addCsvRows(document, keys, csv, 0);
+    console.log(csv);
+
+    return csv;
+  }
+
+
+  private getKeys(document: Document) {
+    const queue = [{obj: document, depth: 0}];
+    let next, obj, depth;
+
+    const keys = [];
+
+    while (queue.length > 0) {
+      next = queue.shift();
+      obj = next.obj;
+      depth = next.depth;
+
+      for (const i in obj) {
+        if (!obj.hasOwnProperty(i) || i.charAt(0) === '@') {
+          continue;
+        }
+
+        if (!keys[depth]) { keys[depth] = []; }
+
+        if (keys[depth].indexOf(i) === -1
+          && isNaN(Number(i))
+          && (obj[i] || obj[i] === 0)
+          && (typeof obj[i] !== 'object' || Array.isArray(obj[i]))) {
+          keys[depth].push(i);
+        }
+
+        if (typeof obj[i] === 'object') {
+          queue.push({obj: obj[i], depth: next.depth + 1});
+        }
+      }
+    }
+
+    return keys;
+  }
+
+  private addCsvRows(obj, keys, csv, depth) {
+    for (let i = 0; i < keys[depth].length; i++) {
+      const key = keys[depth][i];
+      if (obj[key] || obj[key] === 0) {
+        csv += obj[key];
+      }
+      if (i !== keys[depth].length - 1) {
+        csv += '; ';
+      }
+
+      /*if (typeof obj[i] === 'object') {
+        this.addCsvRows(obj[i], keys, csv);
+      }*/
+    }
+    return csv;
+  }
+
+  private setRowData(document: Document, idx: Number): Observable<any> {
     const gatheringInfo = DocumentInfoService.getGatheringInfo(document);
 
     return Observable.forkJoin(
@@ -137,7 +222,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
         observer: observers,
         form: formName,
         id: document.id,
-        formId: document.formID
+        index: idx
       })
     );
   }
