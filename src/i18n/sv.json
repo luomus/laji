@@ -76,6 +76,7 @@
   "taxonomy.belongs.to": "Underliggande taxa",
   "taxonomy.source": "Källa",
   "taxonomy.synonyms": "Synonymer",
+  "taxonomy.notFound": "Arter hittades inte",
   "news.title": "Nyheter",
   "news.earlier": "föregående",
   "news.newer": "nästa",

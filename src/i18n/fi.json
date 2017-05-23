@@ -82,6 +82,7 @@
   "taxonomy.belongs.to": "Alemmat taksonit",
   "taxonomy.source": "Lähde",
   "taxonomy.synonyms": "Synonyymit",
+  "taxonomy.notFound": "Lajia ei löytynyt",
   "news.title": "Uutiset",
   "news.earlier": "edelliset",
   "news.newer": "seuraavat",

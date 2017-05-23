@@ -6,6 +6,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { ObservationMapComponent } from '../../+observation/map/observation-map.component';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-info-card',
@@ -15,7 +16,7 @@ import { ObservationMapComponent } from '../../+observation/map/observation-map.
 export class InfoCardComponent implements OnInit, OnDestroy {
   @ViewChild(ObservationMapComponent) map: ObservationMapComponent;
 
-  public taxon: Taxonomy;
+  public taxon: Taxonomy | false;
   public taxonDescription: Array<TaxonomyDescription>;
   public taxonImages: Array<TaxonomyImage>;
   public activePanel = 0;
@@ -25,6 +26,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   public hasTaxonImages = true;
   public hasDescription = true;
   public activeDescription = 0;
+  public loading = false;
 
   @Input() public taxonId: string;
 
@@ -42,26 +44,35 @@ export class InfoCardComponent implements OnInit, OnDestroy {
     if (!this.taxonId) {
       this.subParam = this.route.params.subscribe(params => {
         this.taxonId = params['id'];
-        this.getTaxon(this.taxonId);
-        this.getTaxonDescription(this.taxonId);
-        this.getTaxonMedia(this.taxonId);
         this.activeImage = 1;
+        this.initTaxon();
       });
     }
 
     this.taxonDescription = [];
     this.taxonImages = [];
 
-    this.subTrans = this.translate.onLangChange.subscribe(
-      () => {
-        this.getTaxonDescription(this.taxonId);
-        this.getTaxonMedia(this.taxonId);
+    this.subTrans = this.translate.onLangChange
+      .do(() => this.loading = true)
+      .switchMap(() => {
+        return Observable.forkJoin(
+          this.getTaxonDescription(this.taxonId),
+          this.getTaxonMedia(this.taxonId)
+        );
+      })
+      .subscribe((data) => {
+        this.taxonDescription = data[0];
+        this.hasDescription = data[0].length > 0;
+        this.taxonImages = data[1];
+        this.loading = false;
+        this.updateMap();
       }
     );
   }
 
-  hasData(event) {
+  onCollectionImagesLoaded(event) {
     this.hasCollectionImages = event;
+    this.updateMap();
   }
 
   setActive(event) {
@@ -79,18 +90,56 @@ export class InfoCardComponent implements OnInit, OnDestroy {
     this.subTrans.unsubscribe();
   }
 
+  private updateMap() {
+    if (!this.map) {
+      return;
+    }
+    setTimeout(() => {
+      if (this.map) {
+        this.map.invalidateSize();
+      }
+    }, 100);
+  }
+
+  private initTaxon() {
+    this.loading = true;
+    this.getTaxon(this.taxonId);
+    this.getTaxonDescription(this.taxonId);
+    this.getTaxonMedia(this.taxonId);
+    Observable.forkJoin(
+      this.getTaxon(this.taxonId),
+      this.getTaxonDescription(this.taxonId),
+      this.getTaxonMedia(this.taxonId),
+      (taxon, descriptions, media) => ({taxon, descriptions, media})
+    )
+      .subscribe(data => {
+        this.loading = false;
+        this.taxon = data.taxon;
+        this.taxonDescription = data.descriptions;
+        this.hasDescription = data.descriptions.length > 0;
+        this.hasTaxonImages = data.media.length > 0;
+        this.activeImageTab = this.hasTaxonImages ? 'taxon' : 'collection';
+        this.taxonImages = data.media;
+        this.updateMap();
+      });
+  }
+
   private getTaxon(id) {
-    this.taxonService
+    return this.taxonService
       .taxonomyFindBySubject(id, 'multi')
-      .subscribe(
-        taxonomy => this.taxon = taxonomy,
-        err => this.logger.warn('Failed to fetch taxon by id', err)
-      );
+      .catch(err => {
+        this.logger.warn('Failed to fetch taxon by id', err);
+        return Observable.of(false);
+      });
   }
 
   private getTaxonDescription(id) {
-    this.taxonService
+    return this.taxonService
       .taxonomyFindDescriptions(id, this.translate.currentLang, false)
+      .catch(err => {
+        this.logger.warn('Failed to fetch taxon description by id', err);
+        return Observable.of([]);
+      })
       .map(descriptions => descriptions.reduce((prev, current) => {
           if (!current.title) {
             return prev;
@@ -98,36 +147,16 @@ export class InfoCardComponent implements OnInit, OnDestroy {
           prev.push(current);
           return prev;
         }, [])
-      )
-      .subscribe(
-        descriptions => {
-          this.taxonDescription = descriptions;
-          this.hasDescription = descriptions.length > 0;
-          setTimeout(() => {
-            if (this.map) {
-              this.map.invalidateSize();
-            }
-          }, 100);
-        },
-        err => this.logger.warn('Failed to fetch taxon description by id', err)
       );
 
   }
 
   private getTaxonMedia(id) {
-    this.taxonService
+    return this.taxonService
       .taxonomyFindMedia(id, this.translate.currentLang)
-      .subscribe(media => {
-          this.hasTaxonImages = media.length > 0;
-          this.activeImageTab = this.hasTaxonImages ? 'taxon' : 'collection';
-          this.taxonImages = media;
-          setTimeout(() => {
-            if (this.map) {
-              this.map.invalidateSize();
-            }
-          }, 100);
-        },
-        err => this.logger.warn('Failed to fetch taxon media by id', err)
-      );
+      .catch(err => {
+        this.logger.warn('Failed to fetch taxon media by id', err);
+        return Observable.of([]);
+      });
   }
 }

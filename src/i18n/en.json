@@ -76,6 +76,7 @@
   "taxonomy.belongs.to": "Subordinate taxa",
   "taxonomy.source": "Source",
   "taxonomy.synonyms": "Synonyms",
+  "taxonomy.notFound": "Species not found",
   "news.title": "News",
   "news.earlier": "previous",
   "news.newer": "next",
