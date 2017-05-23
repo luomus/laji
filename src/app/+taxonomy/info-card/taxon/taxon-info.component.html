@@ -30,7 +30,7 @@
     <th>{{ 'taxonomy.occurrenceInFinland' | translate }}</th>
     <td>{{taxon.occurrenceInFinland | label}}</td>
   </tr>
-  <tr *ngIf="taxon.invasiveSpeciesCategory">
+  <tr *ngIf="taxon.invasiveSpecies">
     <th>
       <img src="/static/images/vieraslaji.png" class="img-responsive"/>
     </th>
@@ -41,7 +41,7 @@
         <tbody>
         <tr>
           <th>{{ 'taxonomy.invasive.category' | translate }}</th>
-          <td>{{taxon.invasiveSpeciesCategory | label}}</td>
+          <td>{{taxon.invasiveSpeciesEstablishment | label}}</td>
         </tr>
         </tbody>
       </table>
