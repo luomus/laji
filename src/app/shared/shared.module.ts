@@ -77,6 +77,8 @@ import { FormNamePipe } from './pipe/form-name.pipe';
 import { CoordinateService } from './service/coordinate.service';
 import { TaxonomyApi } from './api/TaxonomyApi';
 import { NlToBrPipe } from './pipe/nl-to-br.pipe';
+import { Map2Component } from './map/map2.component';
+import { DocumentFormHeaderComponent } from './document-form-header/document-form-header.component';
 
 
 @NgModule({
@@ -86,9 +88,9 @@ import { NlToBrPipe } from './pipe/nl-to-br.pipe';
     SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, FormattedNumber,
     AreaNamePipe, CollectionNamePipe, FormNamePipe,
-    ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
+    ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, ImageModalOverlayComponent,
-    AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe
+    AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent
   ],
   imports: [
     ToastModule,
@@ -107,9 +109,9 @@ import { NlToBrPipe } from './pipe/nl-to-br.pipe';
     AreaNamePipe, NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe,
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe, LajiFormComponent, DocumentFormComponent,
     ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
-    FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
+    FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, NlToBrPipe,
-    AuthoritiesDirective, MomentModule
+    AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent
   ]
 })
 export class SharedModule {

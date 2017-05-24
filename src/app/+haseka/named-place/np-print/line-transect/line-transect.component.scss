@@ -1,0 +1,125 @@
+$rowHeight: 29mm;
+$perPage: 10;
+
+@page {
+  size: A4;
+  margin: 0;
+}
+.page {
+  position: relative;
+  margin: 0 auto;
+  width: 210mm;
+  height: 297mm;
+  padding-top: 5mm;
+}
+
+@media not print {
+  .page {
+    margin: 20px auto;
+  }
+}
+
+@media print {
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+  }
+}
+
+/** title page **/
+.title {
+  position: absolute;
+  z-index: 1000;
+  width: 100mm;
+  padding: 3mm;
+  background-color: #fff;
+  text-align: center;
+  left: 50%;
+  top: 30mm;
+  margin-left: -50mm;
+
+  h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+
+/** pager **/
+.pager {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1000;
+  padding: 0;
+  margin: 0;
+  h2 {
+    font-size: 10px;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/** Info table **/
+.info {
+  position: absolute;
+  top: 60mm;
+  font-size: small;
+  td {
+    vertical-align: top;
+    padding: 0.3mm;
+  }
+
+  td:first-of-type {
+    text-align: right;
+    width: 110mm;
+  }
+}
+
+/** Input table **/
+.line-table {
+  width: 100%;
+  height: $rowHeight * $perPage;
+  border-left: dashed 1px #000;
+  td {
+    height: $rowHeight;
+    vertical-align: top;
+    border-bottom: dashed 1px #000;
+  }
+  td:last-of-type {
+    text-align: right;
+    width: 45mm;
+  }
+  th {
+    text-align: center;
+    border-bottom: solid 1px #000;
+  }
+  td:nth-child(0), th:nth-child(0),
+  td:nth-child(1), th:nth-child(1),
+  th:nth-child(2),
+  td:nth-child(3), th:nth-child(3),
+  td:nth-child(4), th:nth-child(4),
+  td:nth-child(5)
+  {
+    border-right: dashed 1px #000;
+  }
+  td:nth-child(2) {
+    border-right: dotted 1px #000;
+  }
+  tr:last-of-type {
+    height: 100%;
+  }
+}
+.distance {
+  margin: 0 1mm;
+  font-size: smaller;
+}
+.short-hand {
+  position: absolute;
+  bottom: 0;
+  font-size: small;
+}

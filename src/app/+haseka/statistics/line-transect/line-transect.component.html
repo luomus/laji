@@ -1,0 +1,83 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h3>Laskennan tulokset linjalta {{namedPlace.name}}</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6">
+    <table class="table">
+      <tr>
+        <th>Lajimäärä</th>
+        <td>{{counts.species.length}}</td>
+      </tr>
+      <tr>
+        <th>PS parisumma</th>
+        <td>{{counts.psCouples}}</td>
+      </tr>
+      <tr>
+        <th>TS parisumma</th>
+        <td>{{counts.tsCouples}}</td>
+      </tr>
+      <tr>
+        <th>Pääsarkaprosentti</th>
+        <td>{{counts.onPsPros}}%</td>
+      </tr>
+      <tr *ngIf="counts.ykj3N">
+        <th>Ykj-ruutu</th>
+        <td>{{counts.ykj3N}}:{{counts.ykj3E}}</td>
+      </tr>
+    </table>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Laji</th>
+        <th>PS</th>
+        <th>TS</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let species of counts.species">
+        <td>{{species.name || species.id}}</td>
+        <td>{{species.psCouples}}</td>
+        <td>{{species.tsCouples}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-6 col-md-5 col-lg-3" *ngIf="counts.onPsPros && counts.ykj3N">
+    <div class="row">
+      <div class="col-sm-12" style="height: 200px">
+        <laji-line-transect-chart
+          [terms]="onMainTerms"
+          [ykj3]="counts.ykj3N"
+          [value]="counts.onPsPros"
+        ></laji-line-transect-chart>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 chart-title">
+        <strong>Pääsarkaprosentti</strong>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12" style="height: 200px">
+        <laji-line-transect-chart
+          [terms]="perKmTerms"
+          [yRange]="[0, 50]"
+          [ykj3]="counts.ykj3N"
+          [value]="counts.couplesPerKm"
+        ></laji-line-transect-chart>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 chart-title">
+        <strong>Pareja / 1km</strong>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12" style="height: 0; position: absolute; top: -999px">
+    <laji-map2 [options]="lajiMapOptions"></laji-map2>
+  </div>
+</div>

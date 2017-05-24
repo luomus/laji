@@ -20,7 +20,6 @@ export class OwnSubmissionsComponent implements OnInit {
   sliderRange: Number;
   sliderConfig: any;
   sliderWidth: String;
-  pipGrid: any;
 
   pcsString: String;
   pcString: String;
@@ -75,7 +74,7 @@ export class OwnSubmissionsComponent implements OnInit {
 
     for (let i = 0; i < yearInfo.length; i++) {
       if (i !== 0 && i !== yearInfo.length - 1) {
-        const percentage = last - first / yearInfo[i].year - first;
+        const percentage = (yearInfo[i].year - first) / (last - first) * 100;
         range[percentage + '%'] = yearInfo[i].year;
       }
 

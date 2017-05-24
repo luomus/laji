@@ -10,7 +10,7 @@ import { FormService } from '../../../shared/service/form.service';
 import { RouterChildrenEventService } from '../../router-children-event.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { queue } from 'rxjs/scheduler/queue';
+import { CsvService } from './csv.service';
 
 @Component({
   selector: 'laji-own-datatable',
@@ -31,7 +31,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   subTrans: Subscription;
   rowData$: Subscription;
 
-
   @ViewChild(DatatableComponent) table: DatatableComponent;
 
   constructor(
@@ -39,7 +38,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     private router: Router,
     private userService: UserService,
     private formService: FormService,
-    private eventService: RouterChildrenEventService
+    private eventService: RouterChildrenEventService,
+    private csvService: CsvService
   ) {}
 
   ngOnInit() {
@@ -118,91 +118,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
   downloadDocument(event, index) {
     event.stopPropagation();
-
-    const uri = encodeURI(this.documentToCsv(this.documents[index]));
-    const downloadLink = document.createElement('a');
-    downloadLink.href = uri;
-    downloadLink.download = 'data.csv';
-
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-  }
-
-  private documentToCsv(document: Document) {
-    let csv = 'data:text/csv;charset=utf-8';
-
-    const keys = this.getKeys(document);
-
-    for (let i = 0; i < keys.length; i++) {
-      for (let j = 0; j < keys[i].length; j++) {
-        csv += keys[i][j];
-
-        if (i !== keys.length - 1 || j !== keys[i].length - 1) {
-          csv += '; ';
-        } else {
-          csv += '\n';
-        }
-      }
-    }
-    console.log(keys);
-    console.log(csv);
-    csv = this.addCsvRows(document, keys, csv, 0);
-    console.log(csv);
-
-    return csv;
-  }
-
-
-  private getKeys(document: Document) {
-    const queue = [{obj: document, depth: 0}];
-    let next, obj, depth;
-
-    const keys = [];
-
-    while (queue.length > 0) {
-      next = queue.shift();
-      obj = next.obj;
-      depth = next.depth;
-
-      for (const i in obj) {
-        if (!obj.hasOwnProperty(i) || i.charAt(0) === '@') {
-          continue;
-        }
-
-        if (!keys[depth]) { keys[depth] = []; }
-
-        if (keys[depth].indexOf(i) === -1
-          && isNaN(Number(i))
-          && (obj[i] || obj[i] === 0)
-          && (typeof obj[i] !== 'object' || Array.isArray(obj[i]))) {
-          keys[depth].push(i);
-        }
-
-        if (typeof obj[i] === 'object') {
-          queue.push({obj: obj[i], depth: next.depth + 1});
-        }
-      }
-    }
-
-    return keys;
-  }
-
-  private addCsvRows(obj, keys, csv, depth) {
-    for (let i = 0; i < keys[depth].length; i++) {
-      const key = keys[depth][i];
-      if (obj[key] || obj[key] === 0) {
-        csv += obj[key];
-      }
-      if (i !== keys[depth].length - 1) {
-        csv += '; ';
-      }
-
-      /*if (typeof obj[i] === 'object') {
-        this.addCsvRows(obj[i], keys, csv);
-      }*/
-    }
-    return csv;
+    this.csvService.downloadDocumentAsCsv(this.documents[index]);
   }
 
   private setRowData(document: Document, idx: Number): Observable<any> {
@@ -246,10 +162,13 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
   private getObservers(userArray: string[] = []): Observable<string> {
     return Observable.from(userArray.map((userId) => {
-      return this.userService.getUser(userId)
-        .switchMap((user: Person) => {
-          return Observable.of(user.fullName);
-        });
+      if (userId.indexOf('MA.') === 0) {
+        return this.userService.getUser(userId)
+          .switchMap((user: Person) => {
+            return Observable.of(user.fullName);
+          });
+      }
+      return Observable.of(userId);
     }))
       .mergeAll()
       .toArray()

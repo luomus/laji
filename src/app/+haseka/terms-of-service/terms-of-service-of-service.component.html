@@ -1,64 +1,110 @@
-<div class="container">
+<div class="container" [ngSwitch]="translate.currentLang">
+  <div *ngSwitchCase="'en'">
+    <h1>Terms of the <strong>Vihko observation service</strong> of the Finnish Biodiversity Information Facility</h1>
+    <h2>1. Service description</h2>
+    The Vihko service (henceforth service) of the Finnish Biodiversity Information Facility is a browser-based service developed and maintained 
+    by the Finnish Museum of Natural History Luomus (henceforth Luomus) at the University of Helsinki. Registered users or representatives of users 
+    (henceforth users) can use the service to record their species observations and share them with others through FinBIF in ways that are specified 
+    in these instructions. The service is used in compliance with these terms. 
 
-  <h1>Suomen Lajitietokeskuksen <strong>Vihko-havaintopalvelun</strong> käyttöehdot</h1>
+    <h2>2. User responsibilities and duties</h2>
+    At the time of registration, users will create a user name and password. The password is personal, and it may not be transferred to anyone else. 
+    Users are responsible for all activities conducted with their user identification. Users pledge to use the service in accordance with the law and 
+    good practice, as well as these terms. The service administrator has the right to revoke a user name that has already been granted if a user has 
+    acted or is acting in breach of the terms, the law and good practice, or if it is necessary for the functionality of the service. 
+    Users use the service provided by the service administrator at their own risk. Users are obliged to pay compensation to the service administrator, 
+    content producers or third parties for damage caused by activities in violation of the law, official regulations and instructions, or this agreement. 
+    Users are not allowed to store observations made by other parties without permission from the party in question. Users are not allowed to store 
+    personal details (such as names) of other persons without their permission. 
+    
+    <h2>3. Publicity and disclosure of stored data</h2>
+    As a rule, observations stored in the service by users are public and will be distributed as open data through the Laji.fi portal in accordance with 
+    conditions stipulated in the ”<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0 license</a>. An exception to this is 
+    observation-related information which is sensitive due to reasons of nature conservation that will be made less specific or completely secret automatically 
+    by FinBIF. Users have the right to require that location data for observations intended for public use will be made less specific (10 x 10 km grid). 
+    Only public data distributed under a license through the Laji.fi portal will be made less specific. Specific location data will remain in its original 
+    form for use by the authorities. This helps ensure that decision-making related to land use is based on the best possible data, among other things. 
+    Photographs stored in connection with observations will be published in the Laji.fi portal. The photographers are able to define the terms for their 
+    photographs, which will be attached to the photograph files. FinBIF is not responsible for any use in violation of terms concerning the use of photographs, 
+    observations or other information. Users can also use the service for private observation storage, accessible only to themselves. This data will not be 
+    transferred for use by FinBIF or to the Laji.fi website. Users can anonymise their observations so that all connections to the user are removed. 
+    The observations themselves will still remain in the system. Observations amended in this manner will become invalid and their value to the system void.
+    
+    <h2>4. Implementation and management of service</h2>
+    As a rule, the service is available 24 hours a day. However, Luomus does not guarantee that the service will be available without breaks. The administrator 
+    has the right to at any time temporarily interrupt the service or parts of it due to maintenance, equipment installation, system overload or other unavoidable event. 
+    The administrator also has the right to stop managing the service at any time. Luomus is committed to storing and verifying all data in its primary storage systems 
+    indefinitely, including observations stored by the Vihko observation service. The observation service data will be protected in the same way as data compiled from 
+    other Luomus scientific monitoring projects. Luomus has the right to improve and amend in any way the content and structure of the service, its product and database 
+    selection, as well as software, equipment and other parts of the service. The administrator aims to give notification of essential changes to the service or to its 
+    terms that may be relevant to users, as well as breaks in service, through the service itself or other appropriate means.
+    
+    <h2>5. Liability for damages</h2>
+    The service is free of charge. Users or third parties will receive no compensation for direct or indirect expenses or losses caused by the service, its 
+    operations, breaks in service, errors, amendments, end of operations or other similar reasons.
 
-  <h2>1. Palvelun kuvaus</h2>
-  Suomen Lajitietokeskuksen Vihko (jäljempänä palvelu) on Helsingin yliopiston Luonnontieteellisen keskusmuseon 
-  Luomuksen (jäljempänä Luomus) kehittämä ja ylläpitämä selainkäyttöinen palvelu. Palvelussa rekisteröitynyt käyttäjä tai 
-  käyttäjän edustaja (jäljempänä käyttäjä) voi pitää kirjaa tekemistään eliölajihavainnoista ja jakaa niitä muille näissä 
-  ohjeissa kuvatuilla tavoilla Lajitietokeskuksen kautta.
+  </div>
+  <div *ngSwitchDefault>
+    <h1>Suomen Lajitietokeskuksen <strong>Vihko-havaintopalvelun</strong> käyttöehdot</h1>
 
-  Palvelun käyttämiseen sovelletaan näitä käyttöehtoja.
+    <h2>1. Palvelun kuvaus</h2>
+    Suomen Lajitietokeskuksen Vihko (jäljempänä palvelu) on Helsingin yliopiston Luonnontieteellisen keskusmuseon
+    Luomuksen (jäljempänä Luomus) kehittämä ja ylläpitämä selainkäyttöinen palvelu. Palvelussa rekisteröitynyt käyttäjä tai
+    käyttäjän edustaja (jäljempänä käyttäjä) voi pitää kirjaa tekemistään eliölajihavainnoista ja jakaa niitä muille näissä
+    ohjeissa kuvatuilla tavoilla Lajitietokeskuksen kautta.
 
-  <h2>2. Käyttäjän vastuut ja velvoitteet</h2>
-  Rekisteröityessään palveluun käyttäjä luo itselleen käyttäjätunnuksen ja salasanan. Salasana on henkilökohtainen, 
-  eikä sitä saa luovuttaa kenellekään. Käyttäjä on vastuussa kaikesta kyseisellä käyttäjätunnuksella ja salasanalla 
-  tapahtuneesta käytöstä. Käyttäjä sitoutuu käyttämään palvelua lain ja hyvän tavan sekä näiden käyttöehtojen mukaisesti. 
-  Palvelun ylläpitäjällä on oikeus peruuttaa myönnetty käyttäjätunnus, jos käyttäjä on toiminut tai toimii käyttöehtojen, 
-  lain tai hyvän tavan vastaisesti tai jos se on palvelun toiminnan kannalta tarpeen.
+    Palvelun käyttämiseen sovelletaan näitä käyttöehtoja.
 
-  Käyttäjä käyttää palvelun ylläpitäjän tuottamaa palvelua omalla vastuullaan. Käyttäjä on velvollinen korvaamaan palvelun 
-  ylläpitäjälle, sisällöntuottajille tai kolmansille osapuolille aiheutuneen vahingon, joka on seurausta lain, viranomaisten 
-  määräysten ja ohjeiden tai tämän sopimuksen vastaisesta käyttäjän toiminnasta.
+    <h2>2. Käyttäjän vastuut ja velvoitteet</h2>
+    Rekisteröityessään palveluun käyttäjä luo itselleen käyttäjätunnuksen ja salasanan. Salasana on henkilökohtainen,
+    eikä sitä saa luovuttaa kenellekään. Käyttäjä on vastuussa kaikesta kyseisellä käyttäjätunnuksella ja salasanalla
+    tapahtuneesta käytöstä. Käyttäjä sitoutuu käyttämään palvelua lain ja hyvän tavan sekä näiden käyttöehtojen mukaisesti.
+    Palvelun ylläpitäjällä on oikeus peruuttaa myönnetty käyttäjätunnus, jos käyttäjä on toiminut tai toimii käyttöehtojen,
+    lain tai hyvän tavan vastaisesti tai jos se on palvelun toiminnan kannalta tarpeen.
 
-  Käyttäjä ei saa tallentaa palveluun havaintoja, jotka eivät ole hänen itsensä tekemiä, paitsi jos tähän on saatu havainnon 
-  tekijän lupa. Käyttäjä ei saa tallentaa palveluun muiden ihmisten henkilötietoja (kuten nimeä) ilman heidän lupaansa.
+    Käyttäjä käyttää palvelun ylläpitäjän tuottamaa palvelua omalla vastuullaan. Käyttäjä on velvollinen korvaamaan palvelun
+    ylläpitäjälle, sisällöntuottajille tai kolmansille osapuolille aiheutuneen vahingon, joka on seurausta lain, viranomaisten
+    määräysten ja ohjeiden tai tämän sopimuksen vastaisesta käyttäjän toiminnasta.
 
-  <h2>3. Tallennettujen tietojen julkisuus ja luovutus</h2>
-  Käyttäjän palveluun tallentamat havainnot ovat lähtökohtaisesti julkisia ja jaetaan avoimena tietona Laji.fi-portaalin kautta ”<a
-  href="https://creativecommons.org/licenses/by/4.0/deed.fi" target="_blank">Creative Commons Nimeä 4.0. Kansainvälinen (CC BY 4.0)</a>” 
-  -lisenssin ehdoilla. Poikkeuksena tästä on luonnonsuojelullisista syistä havaintoihin liittyvä sensitiivinen tieto, joka karkeistetaan 
-  tai salataan automaattisesti Lajitietokeskuksen toimesta.
+    Käyttäjä ei saa tallentaa palveluun havaintoja, jotka eivät ole hänen itsensä tekemiä, paitsi jos tähän on saatu havainnon
+    tekijän lupa. Käyttäjä ei saa tallentaa palveluun muiden ihmisten henkilötietoja (kuten nimeä) ilman heidän lupaansa.
 
-  Käyttäjällä on oikeus merkitä julkiseen käyttöön tulevat havaintonsa tarkan paikkatiedon osalta myös karkeistettavaksi (10 x 10 km karttaruudulle). 
-  Havaintojen karkeistaminen koskee siis ainoastaan julkista tietoa, joka jaetaan lisenssin alaisena Laji.fi-portaalin kautta. 
-  
-  Havainnon tarkka paikkatieto tulee viranomaistahojen tietoon alkuperäisenä, jonka avulla varmistetaan, että mm. maankäyttöön liittyvä päätöksenteko 
-  tukeutuu parhaaseen mahdolliseen aineistoon.
-  
-  Havaintojen yhteydessä tallennetut kuvat julkaistaan Laji.fi-portaalissa. Kuvaaja voi itse määritellä niiden käyttöehdot, jotka liitetään kuvatiedoston yhteyteen.
-  
-  Lajitietokeskus ei ole vastuussa kuvien, havaintojen tai muiden tietojen käyttöehtojen vastaisesta käytöstä.
-  
-  Käyttäjä voi myös käyttää palvelua vain omana yksityisenä tallennuspaikkana havainnoistaan, jotka eivät tule näkyviin muille kuin käyttäjälle itselleen. 
-  Tämä tieto ei välity lainkaan Lajitietokeskuksen käyttöön eikä Laji.fi-sivustolle.
+    <h2>3. Tallennettujen tietojen julkisuus ja luovutus</h2>
+    Käyttäjän palveluun tallentamat havainnot ovat lähtökohtaisesti julkisia ja jaetaan avoimena tietona Laji.fi-portaalin kautta ”<a
+    href="https://creativecommons.org/licenses/by/4.0/deed.fi" target="_blank">Creative Commons Nimeä 4.0. Kansainvälinen (CC BY 4.0)</a>”
+    -lisenssin ehdoilla. Poikkeuksena tästä on luonnonsuojelullisista syistä havaintoihin liittyvä sensitiivinen tieto, joka karkeistetaan
+    tai salataan automaattisesti Lajitietokeskuksen toimesta.
 
-  Käyttäjä voi anonymisoida omat havaintonsa palvelussa siten, että tieto niiden yhteydestä käyttäjään poistetaan. Itse havainnot eivät tällöin poistu järjestelmästä. 
-  Näin käsitellyt havainnot muuttuvat samalla validoimattomiksi ja niiden arvo palvelussa mitätöityy.
+    Käyttäjällä on oikeus merkitä julkiseen käyttöön tulevat havaintonsa tarkan paikkatiedon osalta myös karkeistettavaksi (10 x 10 km karttaruudulle).
+    Havaintojen karkeistaminen koskee siis ainoastaan julkista tietoa, joka jaetaan lisenssin alaisena Laji.fi-portaalin kautta.
 
-  <h2>4. Palvelun tuottaminen ja ylläpitäminen</h2>
-  Palvelu on lähtökohtaisesti käytettävissä 24 tuntia vuorokaudessa. Luomus ei takaa, että palvelu toimii käyttökatkoitta tai virheettömästi. 
-  Ylläpitäjällä on milloin tahansa oikeus ottaa palvelu tai sen osa tilapäisesti pois käytöstä huollon, laitteistoasennuksen, järjestelmän 
-  liiallisen kuormituksen tai muun välttämättömän syyn vuoksi. Ylläpitäjällä on myös oikeus lopettaa palvelun ylläpito milloin tahansa.
+    Havainnon tarkka paikkatieto tulee viranomaistahojen tietoon alkuperäisenä, jonka avulla varmistetaan, että mm. maankäyttöön liittyvä päätöksenteko
+    tukeutuu parhaaseen mahdolliseen aineistoon.
 
-  Luomus on sitoutunut säilyttämään ja varmistamaan kaikkien ns. primaaritallennusjärjestelmiensä tiedot määräämättömäksi ajaksi, mukaan 
-  lukien Vihko-havaintopalvelun havainnot. Havaintopalvelun aineistot säilytetään samalla tavoin ja suojattuna kuin muut Luomuksen tieteellisistä seurannoista kertyvät aineistot.
+    Havaintojen yhteydessä tallennetut kuvat julkaistaan Laji.fi-portaalissa. Kuvaaja voi itse määritellä niiden käyttöehdot, jotka liitetään kuvatiedoston yhteyteen.
 
-  Luomuksella on oikeus parantaa ja kaikin tavoin muuttaa palvelun sisältöä ja rakennetta, sen tuote- ja tietokantavalikoimaa, ohjelmistoja, laitteistoja 
-  sekä muita palvelun osia. Ylläpitäjä pyrkii tiedottamaan palvelussa tai käyttöehdoissa tapahtuvista, käyttäjän kannalta oleellisista muutoksista sekä 
-  käyttökatkoksista etukäteen palvelun välityksellä tai muulla sopivaksi katsomallaan tavalla.
+    Lajitietokeskus ei ole vastuussa kuvien, havaintojen tai muiden tietojen käyttöehtojen vastaisesta käytöstä.
 
-  <h2>5. Vahingonkorvausvelvollisuus</h2>
-  Palvelu on maksuton. Käyttäjälle tai kolmansille osapuolille ei korvata miltään osin palvelusta, sen toiminnasta, käyttökatkoksista, virheistä, muuttamisesta, 
-  lopettamisesta tai vastaavista mahdollisesti aiheutuvia välittömiä tai välillisiä kustannuksia tai menetyksiä.
+    Käyttäjä voi myös käyttää palvelua vain omana yksityisenä tallennuspaikkana havainnoistaan, jotka eivät tule näkyviin muille kuin käyttäjälle itselleen.
+    Tämä tieto ei välity lainkaan Lajitietokeskuksen käyttöön eikä Laji.fi-sivustolle.
+
+    Käyttäjä voi anonymisoida omat havaintonsa palvelussa siten, että tieto niiden yhteydestä käyttäjään poistetaan. Itse havainnot eivät tällöin poistu järjestelmästä.
+    Näin käsitellyt havainnot muuttuvat samalla validoimattomiksi ja niiden arvo palvelussa mitätöityy.
+
+    <h2>4. Palvelun tuottaminen ja ylläpitäminen</h2>
+    Palvelu on lähtökohtaisesti käytettävissä 24 tuntia vuorokaudessa. Luomus ei takaa, että palvelu toimii käyttökatkoitta tai virheettömästi.
+    Ylläpitäjällä on milloin tahansa oikeus ottaa palvelu tai sen osa tilapäisesti pois käytöstä huollon, laitteistoasennuksen, järjestelmän
+    liiallisen kuormituksen tai muun välttämättömän syyn vuoksi. Ylläpitäjällä on myös oikeus lopettaa palvelun ylläpito milloin tahansa.
+
+    Luomus on sitoutunut säilyttämään ja varmistamaan kaikkien ns. primaaritallennusjärjestelmiensä tiedot määräämättömäksi ajaksi, mukaan
+    lukien Vihko-havaintopalvelun havainnot. Havaintopalvelun aineistot säilytetään samalla tavoin ja suojattuna kuin muut Luomuksen tieteellisistä seurannoista kertyvät aineistot.
+
+    Luomuksella on oikeus parantaa ja kaikin tavoin muuttaa palvelun sisältöä ja rakennetta, sen tuote- ja tietokantavalikoimaa, ohjelmistoja, laitteistoja
+    sekä muita palvelun osia. Ylläpitäjä pyrkii tiedottamaan palvelussa tai käyttöehdoissa tapahtuvista, käyttäjän kannalta oleellisista muutoksista sekä
+    käyttökatkoksista etukäteen palvelun välityksellä tai muulla sopivaksi katsomallaan tavalla.
+
+    <h2>5. Vahingonkorvausvelvollisuus</h2>
+    Palvelu on maksuton. Käyttäjälle tai kolmansille osapuolille ei korvata miltään osin palvelusta, sen toiminnasta, käyttökatkoksista, virheistä, muuttamisesta,
+    lopettamisesta tai vastaavista mahdollisesti aiheutuvia välittömiä tai välillisiä kustannuksia tai menetyksiä.
+  </div>
 </div>

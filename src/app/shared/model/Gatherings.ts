@@ -63,6 +63,9 @@ export interface Gatherings {
 
   associatedSpecimenTaxa?: string;
 
+
+  startDistanceFromNECorner?: number;
+
   /**
    * Formal abbreviation. For Finnish eliömaakunnat, use Finnish abbreviation.
    */

@@ -1,17 +1,5 @@
 <laji-spinner [spinning]="!form && loading" [overlay]="true"></laji-spinner>
-<div class="row">
-  <div [ngClass]="{
-    'col-sm-8': form?.logo,
-    'col-sm-12': !form?.logo
-  }">
-    <h1>{{form?.title}}</h1>
-    <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
-    <div [innerHtml]="form?.description"></div>
-  </div>
-  <div class="col-sm-4" *ngIf="form?.logo">
-    <img src="{{form.logo}}">
-  </div>
-</div>
+<laji-document-form-header *ngIf="form" [formID]="form.id" [namedPlaceID]="namedPlace?.id" [printType]="form?.printType"></laji-document-form-header>
 <div class="row" *ngIf="namedPlace" style="margin-top: 10px">
   <div class="col-sm-12">
     <strong>{{namedPlace.name}}</strong>

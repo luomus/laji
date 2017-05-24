@@ -6,10 +6,6 @@
 }
 
 @media only screen and (min-width : 768px) {
-  .more-info .news-panel {
-    position: fixed;
-  }
-
   #wrapper {
     display: flex;
   }

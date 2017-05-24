@@ -22,13 +22,19 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { ViewerModule } from '../+viewer/viewer.module';
 import { RouterChildrenEventService } from './router-children-event.service';
 import { OwnDatatableComponent } from './own-submissions/own-datatable/own-datatable.component';
+import { CsvService } from './own-submissions/own-datatable/csv.service';
+import { LineTransectComponent } from './statistics/line-transect/line-transect.component';
+import { LineTransectChartComponent } from './statistics/line-transect/line-transect-chart/line-transect-chart.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, AlertModule, NgxDatatableModule, NouisliderModule, NamedPlaceModule, ViewerModule,
     FormPermissionModule.forRoot()],
-  providers: [ FormApi, DocumentApi, RouterChildrenEventService ],
-  declarations: [HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
-    ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent, OwnSubmissionsComponent, StatisticsComponent, OwnDatatableComponent]
+  providers: [ FormApi, DocumentApi, RouterChildrenEventService, CsvService ],
+  declarations: [
+    HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
+    ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent, OwnSubmissionsComponent, OwnDatatableComponent,
+    StatisticsComponent, LineTransectComponent, LineTransectChartComponent
+  ]
 })
 export class HasekaModule {
 }

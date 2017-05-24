@@ -1,0 +1,15 @@
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+:host >>> .axis path,
+:host >>> .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+:host >>> .axis text {
+  font: 10px sans-serif;
+}
