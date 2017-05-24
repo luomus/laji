@@ -11,7 +11,7 @@
         <laji-row [title]="'secureLevel'" [value]="document.secureLevel | label"></laji-row>
           <laji-row [title]="'result.document.secureReasons' | translate" [value]="document.secureLevel" [hideValue]="true">
             <span *ngFor="let reason of document.secureReasons">
-              {{reason | label}}
+              {{reason | label}}<br>
             </span>
           </laji-row>
       </div>
