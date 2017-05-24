@@ -10,7 +10,9 @@
       <div *ngIf="document.secured">
         <laji-row [title]="'secureLevel'" [value]="document.secureLevel | label"></laji-row>
           <laji-row [title]="'secureReasons'" [value]="document.secureLevel" [hideValue]="true">
-            <span *ngFor="let reason of document.secureReasons">{{reason | label}}</span>
+            <span *ngFor="let reason of document.secureReasons">
+              {{reason | label}}
+            </span>
           </laji-row>
       </div>
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
