@@ -45,6 +45,7 @@ export interface AutocompleteParams {
   matchType?: AutocompleteMatchType;
   onlySpecies?: boolean;
   onlyFinnish?: boolean;
+  excludeNameTypes?: string;
   formID?: string;
 }
 

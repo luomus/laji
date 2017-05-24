@@ -30,7 +30,7 @@
     <th>{{ 'taxonomy.occurrenceInFinland' | translate }}</th>
     <td>{{taxon.occurrenceInFinland | label}}</td>
   </tr>
-  <tr *ngIf="taxon.invasiveSpeciesCategory">
+  <tr *ngIf="taxon.invasiveSpecies">
     <th>
       <img src="/static/images/vieraslaji.png" class="img-responsive"/>
     </th>
@@ -41,7 +41,7 @@
         <tbody>
         <tr>
           <th>{{ 'taxonomy.invasive.category' | translate }}</th>
-          <td>{{taxon.invasiveSpeciesCategory | label}}</td>
+          <td>{{taxon.invasiveSpeciesEstablishment | label}}</td>
         </tr>
         </tbody>
       </table>
@@ -61,7 +61,23 @@
   </tr>
   <tr>
     <th>{{ 'taxonomy.card.id' | translate }}</th>
-    <td>http://tun.fi/{{taxon.id}}</td>
+    <td>
+      http://tun.fi/{{taxon.id}}
+      <div class="download-formats">
+        <a href="/api/taxa/{{taxon.id}}?locale={{translate.currentLang}}" rel="noopener" target="_blank">
+          <span class="label label-default">json</span>
+        </a>
+        <a href="http://tun.fi/{{taxon.id}}?format=rdfxml" rel="noopener" target="_blank">
+          <span class="label label-primary">rdf+xml</span>
+        </a>
+        <a href="http://tun.fi/{{taxon.id}}?format=rdfxml_dwc" rel="noopener" target="_blank">
+          <span class="label label-success">dwc</span>
+        </a>
+        <a href="https://vanha.laji.fi/taksonomia/lataus/{{taxon.id}}.csv?locale={{translate.currentLang}}" rel="noopener" target="_blank">
+          <span class="label label-info">csv</span>
+        </a>
+      </div>
+    </td>
   </tr>
   <tr *ngIf="taxon.taxonExpert && taxon.taxonExpert.length > 0">
     <th>{{ (taxon.taxonExpert.length > 1 ? 'taxonomy.experts' : 'taxonomy.expert') | translate }}</th>

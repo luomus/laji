@@ -22,6 +22,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace: NamedPlace;
   @Input() formData: any;
+  @Input() targetForm: any;
   @Input() collectionId: string;
   @Input() editMode: boolean;
 

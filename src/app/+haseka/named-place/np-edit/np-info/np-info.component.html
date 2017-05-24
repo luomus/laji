@@ -1,11 +1,16 @@
 <div [ngClass]="{'hidden': editButtonVisible === undefined && useButtonVisible === undefined}">
-
   <div class="hidden-xs" #infoBox>
     <div class="well well-sm np-info">
       <fieldset>
         <legend>
           <span>{{'np.additionalInfo' | translate}}</span>
           <div class="pull-right">
+            <span [ngSwitch]="targetForm.printType">
+              <a *ngSwitchCase="'MHL.printTypeLineTransect'"
+                 class="btn btn-sm btn-default"
+                 target="_blank"
+                 [routerLink]="['/vihko/np/', namedPlace.id, 'print', targetForm.printType]">print</a>
+            </span>
             <button *ngIf="editButtonVisible"
                     class="btn btn-sm btn-default"
                     (click)="editClick()">{{'np.edit' | translate}}</button>

@@ -61,7 +61,7 @@ export class FormApiClient {
 
     switch (resource) {
       case '/autocomplete/taxon':
-        queryParameters.set('matchType', 'EXACT,PARTIAL');
+        queryParameters.set('excludeNameTypes', 'MX.misappliedCircumscription');
     }
 
     return this.http.request(path, requestOptions).toPromise(Promise);

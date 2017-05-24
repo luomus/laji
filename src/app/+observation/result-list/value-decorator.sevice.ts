@@ -82,7 +82,7 @@ export class ValueDecoratorService {
   }
 
   protected makeLabelFromArray(value) {
-    return value.map(val => this.makeLabel(val));
+    return value.map(val => ' ' + this.makeLabel(val));
   }
 
   protected makeLabel(value) {

@@ -1,3 +1,20 @@
 .table tr:first-child th, .table tr:first-child td {
   border-top: none;
 }
+
+.download-formats a:hover {
+  text-decoration: none;
+}
+
+.badge.json {
+  background-color: #a19bc1;
+}
+.badge.rdf {
+  background-color: #fdb81f;
+}
+.badge.dwc {
+  background-color: #dd6c34;
+}
+.badge.csv {
+  background-color: #b8c349;
+}

@@ -47,20 +47,24 @@
 <div [hidden]="active !== 'list'" *ngIf="activated['list']">
   <laji-observation-result-list *ngIf="activated['list']"></laji-observation-result-list>
 </div>
-<div [hidden]="active !== 'species'" *ngIf="activated['species']" style="min-height: 250px;">
-  <laji-observation-aggregate
-          [field]="{
+<div [hidden]="active !== 'species'" *ngIf="activated['species']" class="species-list">
+  <div class="row">
+    <div class="col-sm-12">
+      <laji-observation-aggregate
+        [field]="{
               'en': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish',
               'fi': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
               'sv': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameSwedish'
             }"
-          [title]="'search.result.species' | translate"
-          [valuePicker]="pickValue"
-          [linkPicker]="pickLink"
-          [lang]="translate.currentLang"
-          [queryOverride]="{includeNonValidTaxa: false}"
-          [limit]="searchQuery.pageSize"
-          [showPager]="true"></laji-observation-aggregate>
+        [title]="'search.result.species' | translate"
+        [valuePicker]="pickValue"
+        [linkPicker]="pickLink"
+        [lang]="translate.currentLang"
+        [queryOverride]="{includeNonValidTaxa: false}"
+        [limit]="searchQuery.pageSize"
+        [showPager]="true"></laji-observation-aggregate>
+    </div>
+  </div>
 </div>
 <div [hidden]="active !== 'images'" *ngIf="activated['images']" style="min-height: 180px; padding: 10px 10px 0 0">
   <laji-gallery
@@ -70,7 +74,7 @@
 </div>
 <div [hidden]="active !== 'stats'" *ngIf="activated['stats']">
   <div *ngIf="activated['stats']">
-    <div class="form-group">
+    <div class="form-group spacer">
       <div class="col-md-6">
         <laji-observation-chart
                 [height]="300"
@@ -90,6 +94,7 @@
         <div class="form-group">
           <div class="col-sm-12">
             <laji-observation-filter
+                    [override]="{hasMedia: true}"
                     [(filter)]="filters.image"
                     (onSelect)="onFilterSelect.emit($event)"
                     [lang]="translate.currentLang"></laji-observation-filter>

@@ -1,136 +1,147 @@
-<div class="container" *ngIf="taxon">
-  <h1>
-    {{taxon.vernacularName | multiLang}}
-    <span *ngIf="taxon.vernacularName" [class.cursive]="taxon.cursiveName">({{taxon.scientificName}})</span>
-    <span *ngIf="!taxon.vernacularName" [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
-    <small>- {{ 'home.main-page.title' | translate }}</small>
-  </h1>
-  <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
-  <div class="row">
-    <div class="col-sm-6 descriptions" *ngIf="hasDescription">
-      <select style="margin-bottom: 8px;" class="form-control" [(ngModel)]="activeDescription"
-              *ngIf="taxonDescription.length > 1">
-        <option *ngFor="let description of taxonDescription; let i = index" [value]="i">
-          {{ description.title ? description.title : description.id }}
-        </option>
-      </select>
-      <div class="panel-group" role="tablist" aria-multiselectable="true">
-        <div class="panel panel-default"
-             *ngFor="let group of taxonDescription[activeDescription]?.groups; let i = index"
-             [title]="group.title"
-             [open]="true"
-             [index]="i"
-             [headerLink]="false"
-             laji-panel>
-          <div *ngFor="let variable of group.variables">
-            <h4 *ngIf="variable.title !== 'Ingressi'">
-              {{ variable.title }}
-            </h4>
-            <span [innerHTML]="variable.content"></span>
-          </div>
-        </div>
-      </div>
-      {{ 'taxonomy.source' | translate }}:<br>{{taxonDescription[activeDescription]?.title}}
-    </div>
-    <div [class.col-sm-6]="hasDescription">
-      <div [ngClass]="{
-              'col-sm-6 col-md-4': !hasDescription
-              }"
-           [hidden]="!hasTaxonImages && !hasCollectionImages">
-        <div class="panel panel-default taxon-images">
-          <div class="panel-heading" role="tab">
-            <h4 class="panel-title">{{ 'taxonomy.images' | translate }}</h4>
-          </div>
-          <div class="panel-body">
-            <ul class="nav nav-tabs">
-              <li role="presentation"
-                  [ngClass]="{active: activeImageTab === 'taxon'}"
-                  *ngIf="hasTaxonImages">
-                <a (click)="setActiveImageTab('taxon')">
-                  {{ 'taxonomy.images.taxon' | translate }}
-                </a>
-              </li>
-              <li role="presentation"
-                  [ngClass]="{active: activeImageTab === 'collection'}"
-                  *ngIf="hasCollectionImages">
-                <a (click)="setActiveImageTab('collection')">
-                  {{ 'taxonomy.images.collection' | translate }}
-                </a>
-              </li>
-            </ul>
-            <div [hidden]="activeImageTab !== 'taxon'" *ngIf="hasTaxonImages">
-              <laji-image-gallery [modalImages]="taxonImages"></laji-image-gallery>
-            </div>
-            <div [hidden]="activeImageTab !== 'collection' || !hasCollectionImages">
-              <laji-gallery
-                      *ngIf="taxon.species"
-                      [shortPager]="true"
-                      (hasData)="hasData($event)"
-                      [query]="{taxonId: taxon.id, taxonRankId: taxon.taxonRank, superRecordBasis: 'PRESERVED_SPECIMEN', sourceId: 'KE.3'}" [pageSize]="10"></laji-gallery>
-              <laji-gallery
-                      *ngIf="!taxon.species"
-                      [shortPager]="true"
-                      (hasData)="hasData($event)"
-                      [query]="{taxonId: taxon.id, superRecordBasis: 'PRESERVED_SPECIMEN', sourceId: 'KE.3'}" [pageSize]="10"></laji-gallery>
+<laji-spinner [spinning]="loading" [overlay]="true">
+  <div class="container" *ngIf="taxon">
+    <h1>
+      {{taxon.vernacularName | multiLang}}
+      <span *ngIf="taxon.vernacularName" [class.cursive]="taxon.cursiveName">({{taxon.scientificName}})</span>
+      <span *ngIf="!taxon.vernacularName" [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
+      <small>- {{ 'home.main-page.title' | translate }}</small>
+    </h1>
+    <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
+      <div class="row">
+      <div class="col-sm-6 descriptions" *ngIf="hasDescription">
+        <select style="margin-bottom: 8px;" class="form-control" [(ngModel)]="activeDescription"
+                *ngIf="taxonDescription.length > 1">
+          <option *ngFor="let description of taxonDescription; let i = index" [value]="i">
+            {{ description.title ? description.title : description.id }}
+          </option>
+        </select>
+        <div class="panel-group" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default"
+               *ngFor="let group of taxonDescription[activeDescription]?.groups; let i = index"
+               [title]="group.title"
+               [open]="true"
+               [index]="i"
+               [headerLink]="false"
+               laji-panel>
+            <div *ngFor="let variable of group.variables">
+              <h4 *ngIf="variable.title !== 'Ingressi'">
+                {{ variable.title }}
+              </h4>
+              <span [innerHTML]="variable.content"></span>
             </div>
           </div>
         </div>
-      </div>
-      <div [ngClass]="{
-            'col-sm-6': !hasDescription && ((hasCollectionImages || hasTaxonImages) || (!hasCollectionImages && !hasTaxonImages)),
-            'col-md-5': !hasDescription && (hasCollectionImages || hasTaxonImages)
-          }">
-        <div class="panel panel-default">
-          <div class="panel-heading" role="tab">
-            <h4 class="panel-title">{{ 'taxonomy.card' | translate }}</h4>
-          </div>
-          <div class="panel-body">
-            <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading" role="tab">
-            <h4 class="panel-title">{{ 'taxonomy.browse.title' | translate }}</h4>
-          </div>
-          <div class="panel-body">
-            <p>
-              <a [routerLink]="'/observation/map'" [queryParams]="{target: taxon.id}">
-                {{ 'taxonomy.browse' | translate }}
-              </a><br>
-              <a [routerLink]="'/observation/load'" [queryParams]="{target: taxon.id}">
-                {{ 'taxonomy.browse.download' | translate }}
-              </a><br>
-            </p>
-          </div>
+        {{ 'taxonomy.source' | translate }}: {{taxonDescription[activeDescription]?.title}}
+        <div *ngIf="taxonDescription[activeDescription]?.speciesCardAuthors">
+          {{taxonDescription[activeDescription]?.speciesCardAuthors.title}}:
+          {{taxonDescription[activeDescription]?.speciesCardAuthors.content}}
         </div>
       </div>
-      <div [ngClass]="{
-            'col-sm-6': !hasDescription && ((hasCollectionImages || hasTaxonImages) || (!hasCollectionImages && !hasTaxonImages)),
-            'col-md-3': !hasDescription && (hasCollectionImages || hasTaxonImages)
-          }">
-        <div class="panel panel-default">
-          <div class="panel-heading" role="tab">
-            <h4 class="panel-title">{{ 'taxonomy.map' | translate }}</h4>
+      <div [class.col-sm-6]="hasDescription">
+        <div [ngClass]="{
+                'col-sm-6 col-md-4': !hasDescription
+                }"
+             [hidden]="!hasTaxonImages && !hasCollectionImages">
+          <div class="panel panel-default taxon-images">
+            <div class="panel-heading" role="tab">
+              <h4 class="panel-title">{{ 'taxonomy.images' | translate }}</h4>
+            </div>
+            <div class="panel-body">
+              <ul class="nav nav-tabs">
+                <li role="presentation"
+                    [ngClass]="{active: activeImageTab === 'taxon'}"
+                    *ngIf="hasTaxonImages">
+                  <a (click)="setActiveImageTab('taxon')">
+                    {{ 'taxonomy.images.taxon' | translate }}
+                  </a>
+                </li>
+                <li role="presentation"
+                    [ngClass]="{active: activeImageTab === 'collection'}"
+                    *ngIf="hasCollectionImages">
+                  <a (click)="setActiveImageTab('collection')">
+                    {{ 'taxonomy.images.collection' | translate }}
+                  </a>
+                </li>
+              </ul>
+              <div [hidden]="activeImageTab !== 'taxon'" *ngIf="hasTaxonImages">
+                <laji-image-gallery [modalImages]="taxonImages"></laji-image-gallery>
+              </div>
+              <div [hidden]="activeImageTab !== 'collection' || !hasCollectionImages">
+                <laji-gallery
+                        *ngIf="taxon.species"
+                        [shortPager]="true"
+                        (hasData)="onCollectionImagesLoaded($event)"
+                        [query]="{taxonId: taxon.id, taxonRankId: taxon.taxonRank, superRecordBasis: 'PRESERVED_SPECIMEN', sourceId: 'KE.3'}" [pageSize]="10"></laji-gallery>
+                <laji-gallery
+                        *ngIf="!taxon.species"
+                        [shortPager]="true"
+                        (hasData)="onCollectionImagesLoaded($event)"
+                        [query]="{taxonId: taxon.id, superRecordBasis: 'PRESERVED_SPECIMEN', sourceId: 'KE.3'}" [pageSize]="10"></laji-gallery>
+              </div>
+            </div>
           </div>
-          <div class="panel-body">
-            <p class="disclaimer">
-              {{ 'taxonomy.map.disclaimer' | translate }}
-            </p>
-            <laji-observation-map [color]="'#009900'"
-                                  [center]="[64.5, 25.0]"
-                                  [query]="{taxonId: [taxon.id]}"
-                                  [height]="300"
-                                  [draw]="false">
-            </laji-observation-map>
+        </div>
+        <div [ngClass]="{
+              'col-sm-6': !hasDescription && ((hasCollectionImages || hasTaxonImages) || (!hasCollectionImages && !hasTaxonImages)),
+              'col-md-5': !hasDescription && (hasCollectionImages || hasTaxonImages)
+            }">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab">
+              <h4 class="panel-title">{{ 'taxonomy.card' | translate }}</h4>
+            </div>
+            <div class="panel-body">
+              <laji-taxon-info [taxon]="taxon"></laji-taxon-info>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab">
+              <h4 class="panel-title">{{ 'taxonomy.browse.title' | translate }}</h4>
+            </div>
+            <div class="panel-body">
+              <p>
+                <a [routerLink]="'/observation/map'" [queryParams]="{target: taxon.id}">
+                  {{ 'taxonomy.browse' | translate }}
+                </a><br>
+                <a [routerLink]="'/observation/load'" [queryParams]="{target: taxon.id}">
+                  {{ 'taxonomy.browse.download' | translate }}
+                </a><br>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div [ngClass]="{
+              'col-sm-6': !hasDescription && ((hasCollectionImages || hasTaxonImages) || (!hasCollectionImages && !hasTaxonImages)),
+              'col-md-3': !hasDescription && (hasCollectionImages || hasTaxonImages)
+            }">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab">
+              <h4 class="panel-title">{{ 'taxonomy.map' | translate }}</h4>
+            </div>
+            <div class="panel-body">
+              <p class="disclaimer">
+                {{ 'taxonomy.map.disclaimer' | translate }}
+              </p>
+              <laji-observation-map [color]="'#009900'"
+                                    [center]="[64.5, 25.0]"
+                                    [query]="{taxonId: [taxon.id]}"
+                                    [height]="300"
+                                    [draw]="false">
+              </laji-observation-map>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div *ngIf="taxon.hasChildren" class="row">
-    <div class="col-xs-12">
-      <h3>{{ 'taxonomy.belongs.to' | translate }}</h3>
-      <laji-children-list [parentId]="taxon.id"></laji-children-list>
+    <div *ngIf="taxon.hasChildren" class="row">
+      <div class="col-xs-12">
+        <h3>{{ 'taxonomy.belongs.to' | translate }}</h3>
+        <laji-children-list [parentId]="taxon.id"></laji-children-list>
+      </div>
     </div>
   </div>
-</div>
+  <div class="container" *ngIf="taxon === false">
+    <h1>
+      {{'taxonomy.notFound' | translate}}
+    </h1>
+  </div>
+</laji-spinner>

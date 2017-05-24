@@ -10,6 +10,7 @@
     <laji-row [title]="'country'" [value]="gathering.interpretations.country | toQName | areaName"> <!-- ({{gathering.interpretations.sourceOfCountry| label}}) --></laji-row>
     <laji-row [title]="'MY.biologicalProvince'" [value]="gathering.interpretations.biogeographicalProvince | toQName | areaName"> <!-- ({{gathering.interpretations.sourceOfBiogeographicalProvince| label}})--></laji-row>
     <laji-row [title]="'MY.municipality'" [value]="gathering.interpretations.finnishMunicipality | toQName | areaName"> <!-- ({{gathering.interpretations.sourceOfFinnishMunicipality| label}})--></laji-row>
+    <laji-row [title]="'MY.locality'" [value]="gathering.locality"></laji-row>
     <laji-row [title]="'MY.notes'" [value]="gathering.notes"></laji-row>
   </div>
   <div class="facts" *ngIf="showFacts">
