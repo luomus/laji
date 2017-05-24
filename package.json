@@ -55,7 +55,9 @@
     "rxjs": "^5.1.0",
     "underscore": "^1.8.3",
     "web-animations-js": "^2.2.2",
-    "zone.js": "^0.8.10"
+    "zone.js": "^0.8.10",
+    "nouislider": "^9.2.0",
+    "ng2-nouislider": "^1.6.1"
   },
   "devDependencies": {
     "@angular/cli": "^1.0.3",

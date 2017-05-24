@@ -5,3 +5,7 @@
 .inline-block {
   display: inline-block;
 }
+
+.nowrap {
+  white-space: nowrap;
+}

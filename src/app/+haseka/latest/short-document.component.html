@@ -1,16 +1,16 @@
 <div class="link" (click)="editDocument(document.formID, document.id)" id="short-document">
-  <small *ngIf="!changingLocale">{{'haseka.users.edited' | translate}}: <span *ngIf="dateEdited">{{dateEdited | amTimeAgo}}</span></small>
+  <small *ngIf="!changingLocale">{{'haseka.users.edited' | translate}}: <span *ngIf="document.dateEdited">{{document.dateEdited | amTimeAgo}}</span></small>
 
-  <span style="white-space: nowrap">
+  <span class="nowrap">
     <span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
       <span class="label label-warning inline-block"
-          [tooltip]="'haseka.form.private' | translate"
-          [placement]="'left'">
+            [tooltip]="'haseka.form.private' | translate"
+            [placement]="'left'">
         <i class="glyphicon glyphicon-eye-close"></i>
       </span>
     </span>
 
-    <span *ngIf="hasUnsavedData">
+    <span *ngIf="document.hasChanges">
       <span class="label label-danger inline-block" [tooltip]="'haseka.form.hasChanges' | translate" [placement]="'left'">
         <i class="glyphicon glyphicon-warning-sign"></i>
       </span>
@@ -34,18 +34,37 @@
   <br>
 
   <span *ngIf="gatheringDates.start"> {{gatheringDates.start | amDateFormat:'DD.MM.YYYY'}}</span>
-  <span *ngIf="gatheringDates.end">- {{gatheringDates.end | amDateFormat:'DD.MM.YYYY'}}</span>
+  <span *ngIf="gatheringDates.end && gatheringDates.end !== gatheringDates.start">- {{gatheringDates.end | amDateFormat:'DD.MM.YYYY'}}</span>
 
   <span *ngIf="locality">{{locality}}</span>
   <span *ngIf="!locality">{{'haseka.users.latest.localityMissing' | translate}}</span>
   <span *ngIf="document.gatherings?.length > 1">({{document.gatherings.length - 1}} {{'haseka.users.latest.other' | translate}})</span>
 
-  <small style="white-space: nowrap">
-    <span>{{unitsLength}}</span>
-    <span *ngIf="unitsLength === 1">{{'haseka.users.latest.gathered.singular' | translate}}</span>
-    <span *ngIf="unitsLength !== 1">{{'haseka.users.latest.gathered' | translate}}</span>
-  </small>
-  <br>
+  <span class="nowrap" (click)="showUnitList($event)">
+    <small>
+      <span>{{unitList.length}}</span>
+      <span *ngIf="unitList.length === 1">{{'haseka.users.latest.gathered.singular' | translate}}</span>
+      <span *ngIf="unitList.length !== 1">{{'haseka.users.latest.gathered' | translate}}</span>
+    </small>
+
+    <span *ngIf="unitList && unitList.length > 0"
+          class="link"
+          (click)="showUnitList($event)">
+          <i class="glyphicon"
+             style="font-size:0.8em"
+             [ngClass]="{ 'glyphicon-triangle-bottom': showList, 'glyphicon-triangle-right': !showList }"></i>
+    </span>
+
+    <br>
+    <small>
+      <ul *ngIf="showList" style="margin-bottom: 2px">
+        <li *ngFor="let taxon of unitList | slice:0:5;">
+          {{taxon}}
+        </li>
+        <li *ngIf="unitList.length > 5">{{unitList.length - 5}} {{'haseka.users.latest.other' | translate}}</li>
+      </ul>
+    </small>
+  </span>
 
   <span class="label label-default">{{document.formID | formName}}</span>
 </div>
