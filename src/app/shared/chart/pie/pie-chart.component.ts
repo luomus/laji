@@ -31,6 +31,9 @@ export class PieChartComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.visible) {
       setTimeout(() => {
         this.innerVisibility = changes.visible.currentValue;
+        if (!this.innerVisibility) {
+          this.nvD3.clearElement();
+        }
       }, 100);
     } else {
       this.refreshOptions();
