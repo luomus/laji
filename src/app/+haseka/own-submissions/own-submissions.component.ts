@@ -81,7 +81,7 @@ export class OwnSubmissionsComponent implements OnInit {
       this.countByYear[yearInfo[i].year] = yearInfo[i].count;
     }
 
-    this.sliderWidth = Math.min(yearInfo.length * 10, 100) + '%';
+    this.sliderWidth = Math.min((last - first) * 10, 100) + '%';
 
     this.sliderRange = last;
 

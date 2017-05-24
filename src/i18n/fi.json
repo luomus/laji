@@ -277,6 +277,7 @@
   "haseka.submissions.pcs.singular": "kpl",
   "haseka.submissions.pcs": "kpl",
   "haseka.submissions.download": "Lataa havaintoerä",
+  "haseka.submissions.submission": "havaintoerä",
   "observation.export.tooMany": "Liian paljon havaintoja. Maksimimäärä on {{max}}, joten rajaa hakua lisää.",
   "observation.export.tooManySpecies": "Liian paljon lajeja. Maksimimäärä on {{max}}, joten rajaa hakua lisää.",
   "observation.export.tooLittle": "Ei havaintoja, joita voisit ladata.",

@@ -3,7 +3,7 @@
 }
 
 .slider {
-  margin: 25px 25px 120px 20px;
+  padding: 25px 25px 120px 20px;
 }
 
 /*:host >>> .noUi-horizontal {

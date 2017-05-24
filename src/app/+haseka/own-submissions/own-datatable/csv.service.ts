@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import { Util } from '../../../shared/service/util.service';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Csv service
@@ -9,16 +10,23 @@ import { Util } from '../../../shared/service/util.service';
 export class CsvService {
   private delimeter = ',';
 
+  constructor(
+    private translate: TranslateService
+  ) {}
+
   public downloadDocumentAsCsv(doc: Document) {
     const uri = encodeURI(this.documentToCsv(doc));
 
     const downloadLink = document.createElement('a');
     downloadLink.href = uri;
-    downloadLink.download = 'document_' + doc.id.split('.')[1] + '.csv';
 
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+    this.translate.get('haseka.submissions.submission').subscribe((msg) => {
+      downloadLink.download = msg + '_' + doc.id.split('.')[1] + '.csv';
+
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    });
   }
 
   public documentToCsv(document: Document) {
