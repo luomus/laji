@@ -11,7 +11,8 @@ import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'laji-observation-result',
-  templateUrl: './observation-result.component.html'
+  templateUrl: './observation-result.component.html',
+  styleUrls: ['./observation-result.component.css']
 })
 export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy {
 

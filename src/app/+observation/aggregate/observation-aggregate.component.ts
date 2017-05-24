@@ -116,7 +116,7 @@ export class ObservationAggregateComponent implements OnInit, OnDestroy, OnChang
                 if (this.linkPicker) {
                   link = this.linkPicker(item.aggregateBy);
                 }
-                return {count: item.count, value: value, link: link};
+                return {count: item.count, value: value.replace(/\s/g, '&nbsp;'), link: link};
               });
           }
         },
