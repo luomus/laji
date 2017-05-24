@@ -16,6 +16,7 @@ export class RowComponent implements OnInit, OnChanges {
   @Input() noTitleSpace = false;
   @Input() noRow = false;
   @Input() showWithoutValue = false;
+  @Input() hideValue = false;
 
   public _title = '';
   public show = false;
@@ -33,7 +34,7 @@ export class RowComponent implements OnInit, OnChanges {
 
   initRow() {
     this._title = this.title || '';
-    this.show = this.showWithoutValue || !!this.value || this.value === EMPTY_VALUE;
+    this.show = this.showWithoutValue || !!this.value || this.value === EMPTY_VALUE;
   }
 
 }
