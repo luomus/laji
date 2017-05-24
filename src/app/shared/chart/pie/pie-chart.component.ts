@@ -38,7 +38,9 @@ export class PieChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.nvD3.clearElement();
+    if (this.nvD3) {
+      this.nvD3.clearElement();
+    }
   }
 
   public refreshOptions() {
