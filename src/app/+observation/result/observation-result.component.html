@@ -94,6 +94,7 @@
         <div class="form-group">
           <div class="col-sm-12">
             <laji-observation-filter
+                    [override]="{hasMedia: true}"
                     [(filter)]="filters.image"
                     (onSelect)="onFilterSelect.emit($event)"
                     [lang]="translate.currentLang"></laji-observation-filter>
