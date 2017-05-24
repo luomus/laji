@@ -224,7 +224,7 @@
   "haseka.intro2": "<p><h4>Principles of use in brief</h4><ol><li>Reported observations are published at <a href=\"http://beta.laji.fi/\">Laji.fi</a> portal as open data under Creative Commons 4.0. BY license.</li><li>Photographs attached with the reported observations are published at Laji.fi portal. Reporter (owner) may choose the license under the photos are available for use. FinBIF is not responsible for illegitimate use of data, photographs or other information linked with the observation.</li><li>Reporter may generalize the locality of the observation. This has an impact to the quality of the Laji.fi data available as open data. The authorities, however, will be able to access the accurate data recorded.</li><li>Deletion of published records from the database is not possible. But the identification information, such as a name, of the reporter can be removed so that the observation becomes anonymized.</li><li>The locations of species that are included in to national sensitive species list are generalized automatically.</li><li>The service can be used also solely as a private notebook, but in that case, the data will not be beneficial for anyone else and is not providing any added value for e.g. biodiversity conservation.</li></ol></p>",
   "haseka.termsOfService": "Terms of Service",
   "haseka.forms.title": "Forms",
-  "haseka.ownSubmissions.title": "My observations",
+  "haseka.ownSubmissions.title": "Own submissions",
   "haseka.statistics.title": "Statistics",
   "haseka.form.private": "Submission has not been published yet",
   "haseka.form.success": "Observations saved!",
