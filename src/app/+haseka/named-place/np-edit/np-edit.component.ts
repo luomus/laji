@@ -19,6 +19,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() formInfo: any;
 
   npFormData: any;
+  targetForm: any;
 
   @Input() editMode = false;
   @Output() onEditButtonClick = new EventEmitter();
@@ -43,6 +44,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     this.translation$ = this.translate.onLangChange.subscribe(
       () => this.onLangChange()
     );
+    this.formService.getForm(this.formId, this.translate.currentLang)
+      .subscribe((form) => this.targetForm = form);
   }
 
   ngOnDestroy() {
