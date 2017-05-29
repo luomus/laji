@@ -31,6 +31,9 @@ export class PieChartComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.visible) {
       setTimeout(() => {
         this.innerVisibility = changes.visible.currentValue;
+        if (!this.innerVisibility) {
+          this.nvD3.clearElement();
+        }
       }, 100);
     } else {
       this.refreshOptions();
@@ -38,7 +41,9 @@ export class PieChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.nvD3.clearElement();
+    if (this.nvD3) {
+      this.nvD3.clearElement();
+    }
   }
 
   public refreshOptions() {

@@ -3,10 +3,10 @@
     <table class="table table-striped table-bordered table-condensed dataTable">
       <thead>
       <tr>
-        <th style="width:50%">
+        <th>
           {{title}}
         </th>
-        <th>
+        <th style="width:100%">
           {{'observation.count' | translate }}
         </th>
       </tr>
@@ -15,11 +15,9 @@
       <tr *ngFor="let item of items">
         <td>
           <span *ngIf="item.link">
-            <span [innerHtml]="item.value | label"></span>
-            <a [routerLink]="[item.link.local]" [innerHtml]="item.link.content || 'link'">
-            </a>
+            <span [innerHtml]="item.value"></span>&nbsp;<a [routerLink]="[item.link.local]" [innerHtml]="item.link.content || 'link'"></a>
           </span>
-          <span *ngIf="!item.link" [innerHtml]="item.value | label"></span>
+          <span *ngIf="!item.link" [innerHtml]="item.value"></span>
         </td>
         <td>{{item.count}}</td>
       </tr>

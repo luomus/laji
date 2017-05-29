@@ -9,7 +9,11 @@
       </div>
       <div *ngIf="document.secured">
         <laji-row [title]="'secureLevel'" [value]="document.secureLevel | label"></laji-row>
-        <laji-row [title]="'secureReasons'" [value]="document.secureReasons | label"></laji-row>
+          <laji-row [title]="'result.document.secureReasons' | translate" [value]="document.secureLevel" [hideValue]="true">
+            <span *ngFor="let reason of document.secureReasons">
+              {{reason | label}}<br>
+            </span>
+          </laji-row>
       </div>
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
       <div class="facts" *ngIf="showFacts">

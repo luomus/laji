@@ -5,6 +5,7 @@ import { ObservationFilterInterface } from './observation-filter.interface';
 import { Subscription } from 'rxjs/Subscription';
 import { Logger } from '../../shared/logger/logger.service';
 import { Util } from '../../shared/service/util.service';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 
 @Component({
@@ -15,6 +16,7 @@ import { Util } from '../../shared/service/util.service';
 export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy {
   @Input() lang: string;
   @Input() filter: ObservationFilterInterface;
+  @Input() override: WarehouseQueryInterface;
   @Output() filterChange: EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
   @Output() onSelect: EventEmitter<any> = new EventEmitter();
 
@@ -61,12 +63,18 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
       return;
     }
     const query = Util.clone(this.searchQuery.query);
+    if (WarehouseApi.isEmptyQuery(query)) {
+      query.cache = true;
+    }
+    if (this.override) {
+      Object.keys(this.override).map(key => {
+        query[key] = this.override[key];
+        console.log(query);
+      });
+    }
     const cacheKey = JSON.stringify(query) + this.page;
     if (this.lastQuery === cacheKey) {
       return;
-    }
-    if (WarehouseApi.isEmptyQuery(query)) {
-      query.cache = true;
     }
     this.lastQuery = cacheKey;
     if (this.subData) {
