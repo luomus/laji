@@ -1,6 +1,6 @@
 {
   "name": "laji-front",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "laji.fi frontend",
   "scripts": {
     "ng": "ng",
