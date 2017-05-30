@@ -40,7 +40,7 @@
           <i class="glyphicon glyphicon-eye-open"></i>
           </span>
         </span>
-        <span *ngIf="value === publicity.publicityRestrictionsPrivate">
+          <span *ngIf="value === publicity.publicityRestrictionsPrivate">
           <span class="label label-warning inline-block"
                 [tooltip]="'haseka.form.private' | translate"
                 [placement]="'right'">
@@ -71,11 +71,20 @@
         </ng-template>
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
           <span class="label label-default link inline-block"
-                [tooltip]="'haseka.submissions.download' | translate"
+                  [tooltip]="'haseka.submissions.download' | translate"
+                  [placement]="'right'"
+                  [container]="'body'"
+                  (click)="downloadDocument($event, row.index)">
+            <i class="glyphicon glyphicon-download-alt"></i>
+          </span>
+          <br>
+          <span *ngIf="row.viewerType === 'MHL.viewerTypeLineTransect'"
+                class="label label-warning link inline-block"
+                [tooltip]="'haseka.submissions.toStatistics' | translate"
                 [placement]="'right'"
                 [container]="'body'"
-                (click)="downloadDocument($event, row.index)">
-          <i class="glyphicon glyphicon-download-alt"></i>
+                (click)="toStatisticsPage($event, row.id)">
+            <i class="glyphicon glyphicon glyphicon-stats"></i>
           </span>
         </ng-template>
       </ngx-datatable-column>

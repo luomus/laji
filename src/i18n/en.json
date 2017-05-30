@@ -269,6 +269,7 @@
   "haseka.submissions.pcs": "pcs",
   "haseka.submissions.download": "Download",
   "haseka.submissions.submission": "submission",
+  "haseka.submissions.toStatistics": "Go to statistics page",
   "observation.export.tooMany": "Too many results. Max is {{max}}, you'll need to narrow the search.",
   "observation.export.tooManySpecies": "Too many species. Max is {{max}}, you'll need to narrow the search.",
   "observation.export.tooLittle": "No results for download.",

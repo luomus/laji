@@ -121,14 +121,19 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.csvService.downloadDocumentAsCsv(this.documents[index]);
   }
 
+  toStatisticsPage(event, docId: string) {
+    event.stopPropagation();
+    this.router.navigate(['/vihko/statistics/' + docId]);
+  }
+
   private setRowData(document: Document, idx: Number): Observable<any> {
     const gatheringInfo = DocumentInfoService.getGatheringInfo(document);
 
     return Observable.forkJoin(
       this.getLocality(gatheringInfo),
       this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
-      this.getFormName(document.formID),
-      (locality, observers, formName) => ({
+      this.getForm(document.formID),
+      (locality, observers, form) => ({
         publicity: document.publicityRestrictions,
         dateEdited: moment(document.dateEdited).format('DD.MM.YYYY HH:mm'),
         dateStart: gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '' ,
@@ -136,8 +141,9 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
         locality: locality,
         unitCount: gatheringInfo.unitCount,
         observer: observers,
-        form: formName,
+        form: form.title || document.formID,
         id: document.id,
+        viewerType: form.viewerType,
         index: idx
       })
     );
@@ -177,9 +183,9 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
-  private getFormName(formId: string): Observable<string> {
+  private getForm(formId: string): Observable<any> {
     return this.formService
       .getForm(formId, this.translate.currentLang)
-      .map((res: any) => res.title || formId);
+      .map((res: any) => res);
   }
 }

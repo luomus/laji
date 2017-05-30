@@ -92,10 +92,8 @@ export class OwnSubmissionsComponent implements OnInit {
         snap: true,
         range: range,
         pips: {
-          mode: 'count',
-          values: yearInfo.length,
+          mode: 'range',
           density: 100,
-          stepped: true,
           format: {
             to: (value, type) => {
               const pcs = this.countByYear[value] === 1 ? this.pcString : this.pcsString;
