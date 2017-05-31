@@ -144,7 +144,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   tableActivated(event) {
-    const col = event.column;
     if (event.type === 'click') {
       const formId = this.documents[event.row.index].formID;
       this.router.navigate([this.formService.getEditUrlPath(formId, event.row.id)]);
