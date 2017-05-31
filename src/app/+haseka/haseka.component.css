@@ -6,34 +6,30 @@
   z-index: auto;
 }
 
-.more-info {
-  padding-bottom: 10px;
-  padding-top: 15px;
-  background-color: rgb(236, 240, 241);
-}
-
 .toggle-intro {
   padding: 10px 10px 0 0;
   font-size: 13px;
   color: #3498DB;
 }
 
-.flex-column {
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 auto;
-  min-height: 0;
-}
+@media only screen and (min-width : 768px) {
+  .flex-column {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    min-height: 0;
+  }
 
-.flex-row {
-  flex-flow: row;
+  .flex-row {
+    flex-flow: row;
+  }
 }
 
 #haseka-container {
-  margin-left: 20px;
+  margin-left: 15px;
   margin-right: 15px;
 }
 
-#sidebar-container {
-  background-color: #ecf0f1;
+#content-container {
+  margin-bottom: 20px;
 }

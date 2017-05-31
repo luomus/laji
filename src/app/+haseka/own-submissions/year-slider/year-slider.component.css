@@ -1,0 +1,26 @@
+:host >>> .noUi-connect {
+  background: #337ab7;
+}
+
+.slider {
+  padding: 25px 25px 120px 20px;
+}
+
+/*:host >>> .noUi-horizontal {
+  height: 18px;
+}
+
+:host >>> .noUi-horizontal .noUi-handle {
+  width: 34px;
+  height: 28px;
+  left: -17px;
+  top: -6px
+}
+
+:host >>> .noUi-horizontal.noUi-extended {
+  padding: 0 15px;
+}
+
+:host >>> .noUi-horizontal.noUi-extended .noUi-origin {
+  right: -15px;
+}*/

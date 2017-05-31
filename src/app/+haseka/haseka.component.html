@@ -13,7 +13,7 @@
     </div>
     <div in class="flex-column">
       <div class="row flex-column flex-row">
-        <div class="col-sm-9 col-md-9 col-lg-10">
+        <div class="col-sm-9 col-md-9 col-lg-10" id="content-container">
           <div>
             <h1>{{'haseka.title' | translate}}</h1>
             <div [innerHtml]="'haseka.intro' | translate"></div>
@@ -27,7 +27,7 @@
             <router-outlet></router-outlet>
           </div>
         </div>
-        <div class="col-sm-3 col-md-3 col-lg-2 flex-column" *ngIf="userService.isLoggedIn" id="sidebar-container">
+        <div class="col-sm-3 col-md-3 col-lg-2 more-info flex-column" *ngIf="userService.isLoggedIn">
           <laji-haseka-latest [userToken]="userService.getToken()"
                               (onShowViewer)="showDocumentViewer($event)"></laji-haseka-latest>
         </div>
