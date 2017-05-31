@@ -1,0 +1,7 @@
+<nouislider *ngIf="sliderRange && sliderConfig"
+            #sliderRef
+            [config]="sliderConfig"
+            [ngModel]="sliderRange"
+            (change)="sliderRangeChange($event)"
+            [ngStyle]="{'width': sliderWidth}"
+            class="slider"></nouislider>
