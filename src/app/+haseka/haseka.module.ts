@@ -26,6 +26,7 @@ import { CsvService } from './own-submissions/own-datatable/csv.service';
 import { LineTransectComponent } from './statistics/line-transect/line-transect.component';
 import { LineTransectChartComponent } from './statistics/line-transect/line-transect-chart/line-transect-chart.component';
 import { YearSliderComponent } from './own-submissions/year-slider/year-slider.component';
+import { FilterColumnsPipe } from './own-submissions/own-datatable/filter-columns.pipe';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, AlertModule, NgxDatatableModule, NouisliderModule, NamedPlaceModule, ViewerModule,
@@ -34,7 +35,7 @@ import { YearSliderComponent } from './own-submissions/year-slider/year-slider.c
   declarations: [
     HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
     ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent, OwnSubmissionsComponent, OwnDatatableComponent,
-    StatisticsComponent, LineTransectComponent, LineTransectChartComponent, YearSliderComponent
+    StatisticsComponent, LineTransectComponent, LineTransectChartComponent, YearSliderComponent, FilterColumnsPipe
   ]
 })
 export class HasekaModule {

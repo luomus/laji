@@ -46,7 +46,7 @@ export class CsvService {
   }
 
 
-  private getColumnData(document: Document, filtered: String[]): any {
+  private getColumnData(document: Document, filtered: string[]): any {
     const queue = [{obj: document, key: 'document'}];
     let next, obj, key;
     const colData = {};

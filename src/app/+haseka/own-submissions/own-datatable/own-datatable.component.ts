@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, OnChanges, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, ViewChild, Input, HostListener } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import { DocumentInfoService } from '../../document-info.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,6 +11,7 @@ import { RouterChildrenEventService } from '../../router-children-event.service'
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { CsvService } from './csv.service';
+import { WindowRef } from '../../../shared/windows-ref';
 
 @Component({
   selector: 'laji-own-datatable',
@@ -23,10 +24,20 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   emptyMessage: '';
   totalMessage: '';
   publicity = Document.PublicityRestrictionsEnum;
-  columns = ['dateEdited', 'dateStart', 'dateEnd', 'locality', 'unitCount', 'observer', 'form', 'id'];
+  columns = [
+    {prop: 'dateEdited', mode: 'small', width: 110},
+    {prop: 'dateObserved', mode: 'medium'},
+    {prop: 'locality', mode: 'medium'},
+    {prop: 'unitCount', mode: 'small', width: 105},
+    {prop: 'observer', mode: 'large'},
+    {prop: 'form', mode: 'large', width: 145},
+    {prop: 'id', mode: 'large', width: 110}
+  ];
   temp = [];
   rows: any[];
   defaultWidth = 120;
+
+  displayMode: string;
 
   subTrans: Subscription;
   rowData$: Subscription;
@@ -39,7 +50,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     private userService: UserService,
     private formService: FormService,
     private eventService: RouterChildrenEventService,
-    private csvService: CsvService
+    private csvService: CsvService,
+    private window: WindowRef
   ) {}
 
   ngOnInit() {
@@ -49,6 +61,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       this.updateRows();
       this.updateTranslations();
     });
+
+    this.updateDisplayMode();
   }
 
   ngOnDestroy() {
@@ -59,13 +73,33 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.updateRows();
   }
 
+  @HostListener('window:resize')
+  onResize() {
+    this.updateDisplayMode();
+  }
+
+  private updateDisplayMode() {
+    const width = this.window.nativeWindow.innerWidth;
+
+    if (width > 1150) {
+      if (this.table) {
+        this.table.rowDetail.collapseAllRows();
+      }
+      this.displayMode = 'large';
+    } else if (width > 570) {
+      this.displayMode = 'medium';
+    } else {
+      this.displayMode = 'small';
+    }
+  }
+
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
     const columns = this.columns;
 
     this.rows = this.temp.filter(function (row) {
       for (let i = 0; i < columns.length; i++) {
-        const rowValue = String(row[columns[i]]);
+        const rowValue = String(row[columns[i].prop]);
         if (rowValue && (rowValue.toLowerCase().indexOf(val) !== -1 || !val)) {
           return true;
         }
@@ -110,13 +144,14 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   tableActivated(event) {
+    const col = event.column;
     if (event.type === 'click') {
       const formId = this.documents[event.row.index].formID;
       this.router.navigate([this.formService.getEditUrlPath(formId, event.row.id)]);
     }
   }
 
-  downloadDocument(event, index) {
+  downloadDocument(event, index: number) {
     event.stopPropagation();
     this.csvService.downloadDocumentAsCsv(this.documents[index]);
   }
@@ -126,26 +161,35 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.router.navigate(['/vihko/statistics/' + docId]);
   }
 
-  private setRowData(document: Document, idx: Number): Observable<any> {
+  toggleExpandRow(event, row: any) {
+    event.stopPropagation();
+    this.table.rowDetail.toggleExpandRow(row);
+  }
+
+  private setRowData(document: Document, idx: number): Observable<any> {
     const gatheringInfo = DocumentInfoService.getGatheringInfo(document);
 
     return Observable.forkJoin(
       this.getLocality(gatheringInfo),
       this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
       this.getForm(document.formID),
-      (locality, observers, form) => ({
-        publicity: document.publicityRestrictions,
-        dateEdited: moment(document.dateEdited).format('DD.MM.YYYY HH:mm'),
-        dateStart: gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '' ,
-        dateEnd: gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '',
-        locality: locality,
-        unitCount: gatheringInfo.unitCount,
-        observer: observers,
-        form: form.title || document.formID,
-        id: document.id,
-        viewerType: form.viewerType,
-        index: idx
-      })
+      (locality, observers, form) => {
+        let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
+        dateObserved += gatheringInfo.dateEnd ? ' - ' + moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
+
+        return {
+          publicity: document.publicityRestrictions,
+          dateEdited: moment(document.dateEdited).format('DD.MM.YYYY HH:mm'),
+          dateObserved: dateObserved,
+          locality: locality,
+          unitCount: gatheringInfo.unitCount,
+          observer: observers,
+          form: form.title || document.formID,
+          id: document.id,
+          viewerType: form.viewerType,
+          index: idx
+        };
+      }
     );
   }
 

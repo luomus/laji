@@ -11,14 +11,14 @@ export class YearSliderComponent implements OnInit {
   @Input() yearInfo: any[];
   countByYear = {};
 
-  sliderRange: Number;
+  sliderRange: number;
   sliderConfig: any;
-  sliderWidth: String;
+  sliderWidth: string;
 
   oneStepWidth = 60;
 
-  pcsString: String;
-  pcString: String;
+  pcsString: string;
+  pcString: string;
   subTrans: Subscription;
 
   @Output() onRangeChange = new EventEmitter();

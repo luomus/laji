@@ -32,11 +32,11 @@ export class OwnSubmissionsComponent implements OnInit {
     );
   }
 
-  sliderRangeChange(newRange: Number) {
+  sliderRangeChange(newRange: number) {
     this.getDocumentsByYear(newRange);
   }
 
-  private getDocumentsByYear(year: Number) {
+  private getDocumentsByYear(year: number) {
     if (this.documents$) {
       this.documents$.unsubscribe();
     }
