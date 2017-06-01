@@ -29,9 +29,9 @@ export class OwnSubmissionsComponent implements OnInit {
   ngOnInit() {
     this.documentService.countByYear(this.userService.getToken()).subscribe(
       (results) => {
-         this.yearInfo = results;
-         const lastYear = results.length > 0 ? results[results.length - 1].year : null;
-         this.getDocumentsByYear(lastYear);
+        this.yearInfo = results;
+        const lastYear = results.length > 0 ? results[results.length - 1].year : null;
+        this.getDocumentsByYear(lastYear);
       },
       (err) => {
         this.translate.get('haseka.form.genericError')
