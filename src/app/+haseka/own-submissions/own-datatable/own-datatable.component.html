@@ -22,7 +22,7 @@
       [rowHeight]="'auto'"
       [limit]="20"
       [footerHeight]="30"
-      [messages]="{emptyMessage: emptyMessage, totalMessage: totalMessage}">
+      [messages]="{emptyMessage: loadError, totalMessage: totalMessage}">
 
       <ngx-datatable-row-detail [rowHeight]="'auto'">
         <ng-template let-row="row" ngx-datatable-row-detail-template>

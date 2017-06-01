@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -16,19 +17,26 @@ export class OwnSubmissionsComponent implements OnInit {
 
   yearInfo: any[];
 
+  yearInfoError: string;
+  documentError: string;
+
   constructor(
     private documentService: DocumentApi,
-    private userService: UserService
+    private userService: UserService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
     this.documentService.countByYear(this.userService.getToken()).subscribe(
       (results) => {
-        this.yearInfo = results;
-        const lastYear = results.length > 0 ? results[results.length - 1].year : null;
-        this.getDocumentsByYear(lastYear);
+         this.yearInfo = results;
+         const lastYear = results.length > 0 ? results[results.length - 1].year : null;
+         this.getDocumentsByYear(lastYear);
       },
-      (err) => { }
+      (err) => {
+        this.translate.get('haseka.form.genericError')
+        .subscribe(msg => (this.yearInfoError = msg));
+      }
     );
   }
 
@@ -47,6 +55,7 @@ export class OwnSubmissionsComponent implements OnInit {
     }
 
     this.activeDocuments = null;
+    this.documentError = '';
 
     if (!year) { return; }
 
@@ -58,7 +67,13 @@ export class OwnSubmissionsComponent implements OnInit {
             this.activeDocuments = result.results;
           }
         },
-        err => { }
+        err => {
+          this.translate.get('haseka.submissions.loadError', {year: year})
+            .subscribe(msg => {
+              this.activeDocuments = [];
+              this.documentError = msg;
+            });
+        }
       );
   }
 }

@@ -20,8 +20,8 @@ import { WindowRef } from '../../../shared/windows-ref';
 })
 export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() documents: Document[];
+  @Input() loadError: '';
 
-  emptyMessage: '';
   totalMessage: '';
   publicity = Document.PublicityRestrictionsEnum;
   columns = [
@@ -134,7 +134,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateTranslations() {
-    this.translate.get('haseka.submissions.noSubmissions').subscribe((value) => this.emptyMessage = value);
     this.translate.get('haseka.submissions.total').subscribe((value) => this.totalMessage = value);
   }
 

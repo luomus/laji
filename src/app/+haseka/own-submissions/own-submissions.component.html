@@ -1,5 +1,11 @@
 <h3>{{'haseka.ownSubmissions.title' | translate}}</h3>
 
-<laji-year-slider *ngIf="yearInfo" (onRangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo"></laji-year-slider>
+<alert *ngIf="yearInfoError" type="danger">{{yearInfoError}}</alert>
 
-<laji-own-datatable [documents]="activeDocuments"></laji-own-datatable>
+<laji-spinner [spinning]="!(yearInfo || yearInfoError)" [overlay]="false">
+  <div *ngIf="!yearInfoError && yearInfo">
+    <laji-year-slider *ngIf="yearInfo" (onRangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo"></laji-year-slider>
+    <laji-own-datatable [loadError]="documentError" [documents]="activeDocuments"></laji-own-datatable>
+  </div>
+</laji-spinner>
+
