@@ -39,10 +39,10 @@ export class DocumentInfoService {
                 return acc ? acc + ', ' + curTaxon : curTaxon;
               }, taxon);
 
-            if (!unit.id) {
-              info.unsavedUnitCount++;
-            }
             if (taxon) {
+              if (!unit.id) {
+                info.unsavedUnitCount++;
+              }
               result.push(taxon);
             }
           }
