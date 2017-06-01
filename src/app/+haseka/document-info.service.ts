@@ -6,11 +6,10 @@ import { Document } from '../shared/model/Document';
  */
 @Injectable()
 export class DocumentInfoService {
-  static getGatheringInfo(document: Document, includeUnitList = false) {
+  static getGatheringInfo(document: Document) {
     const info = {
       dateBegin: null,
       dateEnd: null,
-      unitCount: 0,
       unsavedUnitCount: 0,
       locality: null,
       localityCount: 0,
@@ -31,27 +30,24 @@ export class DocumentInfoService {
       DocumentInfoService.updateMinMaxDates(info, gathering.dateEnd);
 
       if (gathering.units) {
-        if (includeUnitList) {
-          gathering.units.reduce((result, unit) => {
-            let taxon = unit.informalNameString || '';
-            if (unit.identifications && Array.isArray(unit.identifications)) {
-              taxon = unit.identifications.reduce(
-                (acc, cur) => {
-                  const curTaxon = cur.taxon || cur.taxonVerbatim;
-                  return acc ? acc + ', ' + curTaxon : curTaxon;
-                }, taxon);
+        gathering.units.reduce((result, unit) => {
+          let taxon = unit.informalNameString || '';
+          if (unit.identifications && Array.isArray(unit.identifications)) {
+            taxon = unit.identifications.reduce(
+              (acc, cur) => {
+                const curTaxon = cur.taxon || cur.taxonVerbatim;
+                return acc ? acc + ', ' + curTaxon : curTaxon;
+              }, taxon);
 
-              info.unitCount++;
-              if (!unit.id) {
-                info.unsavedUnitCount++;
-              }
+            if (!unit.id) {
+              info.unsavedUnitCount++;
+            }
+            if (taxon) {
               result.push(taxon);
             }
-            return result;
-          }, info.unitList);
-        } else {
-          info.unitCount += gathering.units.length;
-        }
+          }
+          return result;
+        }, info.unitList);
       }
     }
 

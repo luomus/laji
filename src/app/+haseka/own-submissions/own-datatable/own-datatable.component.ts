@@ -181,7 +181,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
           dateEdited: moment(document.dateEdited).format('DD.MM.YYYY HH:mm'),
           dateObserved: dateObserved,
           locality: locality,
-          unitCount: gatheringInfo.unitCount,
+          unitCount: gatheringInfo.unitList.length,
           observer: observers,
           form: form.title || document.formID,
           id: document.id,

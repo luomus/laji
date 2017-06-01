@@ -65,7 +65,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateFields() {
-    const gatheringInfo = DocumentInfoService.getGatheringInfo(this.document, true);
+    const gatheringInfo = DocumentInfoService.getGatheringInfo(this.document);
     this.unitList = gatheringInfo.unitList;
     this.newUnitsLength = gatheringInfo.unsavedUnitCount;
     this.gatheringDates = {start: gatheringInfo.dateBegin, end: gatheringInfo.dateEnd};
