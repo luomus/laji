@@ -18,7 +18,7 @@
         pagerNext: 'glyphicon glyphicon-step-forward'
       }"
       [rows]="rows"
-      [columnMode]="'force'"
+      [columnMode]="'flex'"
       [rowHeight]="'auto'"
       [limit]="20"
       [footerHeight]="30"
@@ -33,7 +33,7 @@
         </ng-template>
       </ngx-datatable-row-detail>
 
-      <ngx-datatable-column [width]="30" [minWidth]="30" [maxWidth]="40" [draggable]="false" *ngIf="displayMode !== 'large'">
+      <ngx-datatable-column [flexGrow]="1" [draggable]="false" [cellClass]="'center-text'" *ngIf="displayMode !== 'large'">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span
             class="glyphicon"
@@ -44,7 +44,7 @@
       </ngx-datatable-column>
 
       <ngx-datatable-column [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate"
-                            [width]="45" [minWidth]="45" [maxWidth]="50">
+                            [flexGrow]="1" [cellClass]="'center-text'">
         <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
           <span class="datatable-header-cell-wrapper link" (click)="sort()" title="{{column.name}}">
             <span class="datatable-header-cell-label draggable" style="color: white">---</span>
@@ -72,9 +72,10 @@
       <ngx-datatable-column *ngFor="let col of columns | filterColumns:this.displayMode"
                             [prop]="col.prop"
                             [name]="'haseka.submissions.' + col.prop | translate"
-                            [width]="col.width ? col.width : defaultWidth">
+                            [flexGrow]="3"
+                            [cellClass]="'break-word'">
         <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-          <span class="datatable-header-cell-wrapper sort-full-width link"
+          <span class="datatable-header-cell-wrapper sort-full-width"
                 (click)="sort()"
                 title="{{column.name}}">
             <span class="datatable-header-cell-label draggable">
@@ -84,10 +85,7 @@
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column [width]="45"
-                            [minWidth]="45"
-                            [maxWidth]="50"
-                            [draggable]="false">
+      <ngx-datatable-column [flexGrow]="1" [draggable]="false" [cellClass]="'center-text'">
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
           <div>
             <span class="label label-default link inline-block"

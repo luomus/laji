@@ -25,17 +25,16 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   totalMessage: '';
   publicity = Document.PublicityRestrictionsEnum;
   columns = [
-    {prop: 'dateEdited', mode: 'small', width: 110},
+    {prop: 'dateEdited', mode: 'small'},
     {prop: 'dateObserved', mode: 'medium'},
     {prop: 'locality', mode: 'medium'},
-    {prop: 'unitCount', mode: 'small', width: 105},
+    {prop: 'unitCount', mode: 'small'},
     {prop: 'observer', mode: 'large'},
-    {prop: 'form', mode: 'large', width: 145},
-    {prop: 'id', mode: 'large', width: 110}
+    {prop: 'form', mode: 'large'},
+    {prop: 'id', mode: 'large'}
   ];
   temp = [];
   rows: any[];
-  defaultWidth = 120;
 
   displayMode: string;
 
