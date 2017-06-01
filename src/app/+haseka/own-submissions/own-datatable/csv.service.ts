@@ -61,7 +61,8 @@ export class CsvService {
           continue;
         }
 
-        if (obj[i] != null && filtered.indexOf(i) === -1 && (i !== 'id' || key === 'document')) {
+        if (obj[i] != null && (!Array.isArray(obj[i]) || obj[i].length > 0)
+          && filtered.indexOf(i) === -1 && (i !== 'id' || key === 'document')) {
           let type;
 
           if (typeof obj[i] !== 'object' || (Array.isArray(obj[i]) && typeof obj[i][0] !== 'object')) {
