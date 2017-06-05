@@ -89,9 +89,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     }
     this.subTrans.unsubscribe();
     this.footerService.footerVisible = true;
-    if (!this.hasChanges && this.documentId) {
-      this.formService.discard();
-    }
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -184,9 +181,9 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         if (!this.hasChanges) {
           this.onCancel.emit(true);
         } else if (this.winRef.nativeWindow.confirm(confirm)) {
-          this.formService.discard();
           this.onCancel.emit(true);
         }
+        this.formService.discard();
       }
     );
   }
