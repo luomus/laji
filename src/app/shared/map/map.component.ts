@@ -141,8 +141,7 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   ngOnDestroy() {
-    this.map.map.off();
-    this.map.map.remove();
+    this.map.destroy();
   }
 
   ngOnChanges(changes) {
