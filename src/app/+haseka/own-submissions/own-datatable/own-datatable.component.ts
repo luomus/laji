@@ -183,7 +183,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
         return b - a;
       };
     } else if (prop === 'unitCount') {
-      return (a, b) => a - b;
+      return (a, b) => b - a;
     }
     return (a, b) => {
       return ('' + a).localeCompare('' + b);
