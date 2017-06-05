@@ -168,7 +168,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       return (a, b) => {
         a = (a || '').split('-')[0].trim().split('.').reverse().join('');
         b = (b || '').split('-')[0].trim().split('.').reverse().join('');
-        return a - b;
+        return b - a;
       };
     } else if (prop === 'dateEdited') {
       return (a, b) => {
@@ -180,7 +180,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
         b = b.length > 1 ?
           b[0].trim().split('.').reverse().join('') + b[1].replace(':', '') :
           b[0].trim().split('.').reverse().join('');
-        return a - b;
+        return b - a;
       };
     } else if (prop === 'unitCount') {
       return (a, b) => a - b;
