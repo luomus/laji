@@ -163,6 +163,33 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.table.rowDetail.toggleExpandRow(row);
   }
 
+  comparator(prop) {
+    if (prop === 'dateObserved') {
+      return (a, b) => {
+        a = (a || '').split('-')[0].trim().split('.').reverse().join('');
+        b = (b || '').split('-')[0].trim().split('.').reverse().join('');
+        return a - b;
+      };
+    } else if (prop === 'dateEdited') {
+      return (a, b) => {
+        a = (a || '').split(' ');
+        b = (b || '').split(' ');
+        a = a.length > 1 ?
+          a[0].trim().split('.').reverse().join('') + a[1].replace(':', '') :
+          a[0].trim().split('.').reverse().join('');
+        b = b.length > 1 ?
+          b[0].trim().split('.').reverse().join('') + b[1].replace(':', '') :
+          b[0].trim().split('.').reverse().join('');
+        return a - b;
+      };
+    } else if (prop === 'unitCount') {
+      return (a, b) => a - b;
+    }
+    return (a, b) => {
+      return ('' + a).localeCompare('' + b);
+    };
+  }
+
   private setRowData(document: Document, idx: number): Observable<any> {
     const gatheringInfo = DocumentInfoService.getGatheringInfo(document);
 
@@ -176,7 +203,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
         return {
           publicity: document.publicityRestrictions,
-          dateEdited: moment(document.dateEdited).format('DD.MM.YYYY HH:mm'),
+          dateEdited: document.dateEdited ? moment(document.dateEdited).format('DD.MM.YYYY HH:mm') : '',
           dateObserved: dateObserved,
           locality: locality,
           unitCount: gatheringInfo.unitList.length,

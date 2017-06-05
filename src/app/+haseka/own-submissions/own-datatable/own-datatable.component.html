@@ -73,6 +73,7 @@
                             [prop]="col.prop"
                             [name]="'haseka.submissions.' + col.prop | translate"
                             [flexGrow]="3"
+                            [comparator]="comparator(col.prop)"
                             [cellClass]="'break-word'">
         <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
           <span class="datatable-header-cell-wrapper sort-full-width"
