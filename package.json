@@ -44,7 +44,7 @@
     "deepmerge": "^1.3.2",
     "ie-shim": "^0.1.0",
     "intl": "^1.2.5",
-    "laji-form": "0.0.171",
+    "laji-form": "0.0.170",
     "laji-map": "1.0.192",
     "ng2-select": "vixriihi/ng2-select.git#development",
     "ng2-toastr": "^4.0.1",
