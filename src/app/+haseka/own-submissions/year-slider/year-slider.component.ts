@@ -55,14 +55,10 @@ export class YearSliderComponent implements OnInit {
   private initSlider() {
     if (this.yearInfo.length < 2) { return; }
 
-    let stepCount = -1;
+    const stepCount = this.yearInfo.length;
 
     for (let i = 0; i < this.yearInfo.length; i++) {
       this.yearInfo[i].year = parseInt(this.yearInfo[i].year, 10);
-      stepCount++;
-      if (i > 0 && this.yearInfo[i].year - this.yearInfo[i - 1].year > 1) {
-        stepCount++;
-      }
       this.countByYear[this.yearInfo[i].year] = this.yearInfo[i].count;
     }
 
