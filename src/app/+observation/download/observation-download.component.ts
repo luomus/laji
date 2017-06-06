@@ -118,40 +118,6 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     this.csvParams = queryString.stringify(queryParams);
   }
 
-  makeSpeciesList(e) {
-    e.preventDefault();
-    if (this.requests['species'] === RequestStatus.loading) {
-      return;
-    }
-    this.requests['species'] = RequestStatus.loading;
-    this.warehouseService.warehouseQueryAggregateGetCsv(
-      this.searchQuery.query,
-      [this.taxaDownloadAggregateBy[this.translate.currentLang]],
-      undefined,
-      this.taxaLimit
-    )
-      .subscribe(
-        csv => {
-          const data = encodeURI('data:text/csv;charset=utf-8, ' + csv.text('legacy'));
-          const downloadLink = document.createElement('a');
-
-          downloadLink.href = data;
-          downloadLink.download = 'species.csv';
-
-          document.body.appendChild(downloadLink);
-          downloadLink.click();
-          document.body.removeChild(downloadLink);
-
-          this.requests['species'] = RequestStatus.done;
-        },
-        err => {
-          this.requests['species'] = RequestStatus.error;
-          this.toastsService.showError(this.messages['observation.download.error']);
-          this.logger.warn('Failed to download species list', err);
-        }
-      );
-  }
-
   makePrivateRequest() {
     this.makeRequest('downloadApprovalRequest');
   }

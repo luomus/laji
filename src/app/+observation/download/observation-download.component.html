@@ -45,7 +45,6 @@
         </p>
         <a [ngClass]="{disabled: requests['species'] === requestStatus.loading}"
            class="btn btn-default"
-           (click)="makeSpeciesList($event)"
            href="{{apiBase}}/warehouse/query/aggregate?{{csvParams}}&format=csv">
           {{'observation.download.loadSpecies' | translate}}
         </a>
