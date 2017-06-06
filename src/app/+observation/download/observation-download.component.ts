@@ -132,9 +132,17 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     )
       .subscribe(
         csv => {
+          const data = encodeURI('data:text/csv;charset=utf-8, ' + csv.text('legacy'));
+          const downloadLink = document.createElement('a');
+
+          downloadLink.href = data;
+          downloadLink.download = 'species.csv';
+
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+
           this.requests['species'] = RequestStatus.done;
-          const blob = new Blob([csv.arrayBuffer()], { type: 'text/csv' });
-          window.open(window.URL.createObjectURL(blob));
         },
         err => {
           this.requests['species'] = RequestStatus.error;

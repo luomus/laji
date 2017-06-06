@@ -22,7 +22,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Headers, Http, RequestOptionsArgs, Response, ResponseContentType, URLSearchParams } from '@angular/http';
+import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { PagedResult, WarehouseQueryInterface } from '../model';
@@ -77,8 +77,7 @@ export class WarehouseApi {
     let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
-      search: queryParameters,
-      responseType: ResponseContentType.ArrayBuffer
+      search: queryParameters
     };
 
     return this.http.request(path, requestOptions);
