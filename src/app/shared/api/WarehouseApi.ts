@@ -49,204 +49,6 @@ export class WarehouseApi {
   }
 
   /**
-   * PLACEHOLDER - Not Yet implemented
-   * Get loaded documents from your data source that have not been processed successfully. Requires that API key has load permissions.
-   */
-  public warehouseErrorsGet(extraHttpRequestParams?: any): Observable<string> {
-    const path = this.basePath + '/warehouse/errors';
-
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
-  }
-
-  /**
-   * Perform aggregation query using given filters and aggregation
-   * Aggregates the results of the query based on given \&quot;aggregateBy\&quot; parameter or parameters. Returns count of units, individual count sum and maximum and min and max date.
-   * @param query query to make to ware house
-   * @param aggregateBy Define fields to aggregate by. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
-   * @param orderBy Define order of fields. Defaults to count of units (desc). Give number of the column, first is 1. aggregateBy -fields are first, followed by count of units, individual count sum and maximum and min and max date. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
-   * @param pageSize Set number of results in one page.
-   * @param page Set current page.
-   */
-  public warehousePrivateQueryAggregateGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<string> {
-    const path = this.basePath + '/warehouse/private-query/aggregate';
-
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
-
-    this.addMetaToQuery(aggregateBy, orderBy, pageSize, page);
-    this.addQueryToQueryParams(query, queryParameters);
-
-    //headerParams.set('accept', accept);
-
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      })
-      .share();
-  }
-
-  /**
-   * Get count of results using given filter
-   * Use this API to test how many results your query would return and then proceed with list query. Also returns max result count allowed for list queries.
-   * @param query query to make to ware house
-   */
-  public warehousePrivateQueryCountGet(query: WarehouseQueryInterface, extraHttpRequestParams?: any): Observable<string> {
-    const path = this.basePath + '/warehouse/private-query/count';
-
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
-
-    this.addQueryToQueryParams(query, queryParameters);
-
-
-    // headerParams.set('accept', accept);
-
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      })
-      .share();
-  }
-
-  /**
-   * Get list of results using given filter
-   * Get list of results. Maximum number of results is 10000. Before making a list query, you should check with /count how many results the query yields. Application/json and application/xml responses respect the \&quot;selected\&quot; parameter, but application/dwc+xml does not support all fields.
-   * @param query query to make to ware house
-   * @param selected Define what fields to include to the result. Defaults to [document.documentId, gathering.gatheringId, unit.unitId, document.sourceId, document.collectionId, document.namedPlaceId, document.secureLevel, document.secureReason, document.keywords, gathering.team, gathering.eventDate.begin, gathering.eventDate.end, gathering.timeBegin, gathering.timeEnd, gathering.higherGeography, gathering.country, gathering.province, gathering.municipality, gathering.locality, gathering.conversions.wgs84CenterPoint.lat, gathering.conversions.wgs84CenterPoint.lon, gathering.interpretations.coordinateAccuracy, gathering.interpretations.sourceOfCoordinates, unit.linkings.taxon.qname, unit.linkings.taxon.species, unit.linkings.taxon.scientificName, unit.linkings.taxon.vernacularName, unit.taxonVerbatim, unit.abundanceString, unit.recordBasis, unit.mediaCount, unit.notes] Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
-   * @param orderBy Define what fields to use when sorting results. If using default select, defaults to [gathering.eventDate.begin DESC, document.loadDate DESC, unit.taxonVerbatim ASC]. If using custom select there is no default order. Each fieldname given as parameter defaults to ASC - if you want to sort using descending order, add \&quot; DESC\&quot; to the end of the field name. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
-   * @param pageSize Set number of results in one page.
-   * @param page Set current page.
-   */
-  public warehousePrivateQueryListGet(query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any): Observable<string> {
-    const path = this.basePath + '/warehouse/private-query/list';
-
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
-
-    this.addMetaToQuery(selected, orderBy, pageSize, page);
-    this.addQueryToQueryParams(query, queryParameters);
-
-    //    headerParams.set('accept', accept);
-
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      })
-      .share();
-  }
-
-  /**
-   * Get single full document.
-   * Get single full document by document URI. Contains the document, gatherings and units, including facts, media etc
-   * @param documentId Full document ID (URI identifier)
-   */
-  public warehousePrivateQuerySingleGet(documentId: string, extraHttpRequestParams?: any): Observable<string> {
-    const path = this.basePath + '/warehouse/private-query/single';
-
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
-    // verify required parameter 'documentId' is not null or undefined
-    if (documentId === null || documentId === undefined) {
-      throw new Error('Required parameter documentId was null or undefined when calling warehousePrivateQuerySingleGet.');
-    }
-    queryParameters.set('documentId', documentId);
-
-    //  headerParams.set('accept', accept);
-
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      })
-      .share();
-  }
-
-  /**
-   * Load data to the Data Warehouse
-   * Requires that API key has load permissions. Data is given in request body. Supports multiple data formats. See [documentation](https://laji.fi/information/node/1234) (TODO) for complete reference. Accepts all payloads that pass format validation (for example is valid XML), but that does not mean the data will be processed succesfully. Use error-api to get feedback about processing failures.
-   * @param documents See [documentation](https://laji.fi/information/node/1234) (TODO) for complete reference. Can contain multiple documents.
-   */
-  public warehousePushPost(documents: string, extraHttpRequestParams?: any): Observable<string> {
-    const path = this.basePath + '/warehouse/push';
-
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
-    // verify required parameter 'documents' is not null or undefined
-    if (documents === null || documents === undefined) {
-      throw new Error('Required parameter documents was null or undefined when calling warehousePushPost.');
-    }
-    let requestOptions: RequestOptionsArgs = {
-      method: 'POST',
-      headers: headerParams,
-      search: queryParameters
-    };
-    requestOptions.body = JSON.stringify(documents);
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
-  }
-
-  /**
    * Perform aggregation query using given filter and aggregation
    * Aggregates the results of the query based on given \&quot;aggregateBy\&quot; parameter or parameters. Returns count of units, individual count sum and maximum and min and max date.
    * @param query to make to the warehouse
@@ -282,7 +84,6 @@ export class WarehouseApi {
     };
 
     return this.http.request(path, requestOptions)
-      .share()
       .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
@@ -412,7 +213,6 @@ export class WarehouseApi {
     };
 
     return this.http.request(path, requestOptions)
-      .share()
       .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
@@ -449,7 +249,6 @@ export class WarehouseApi {
     };
 
     return this.http.request(path, requestOptions)
-      .share()
       .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
