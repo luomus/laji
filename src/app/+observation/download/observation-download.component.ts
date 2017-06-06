@@ -11,6 +11,12 @@ import { Util } from '../../shared/service/util.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import queryString from 'query-string';
 
+enum RequestStatus {
+  error = <any> 'error',
+  loading = <any> 'loading',
+  done = <any> 'done',
+}
+
 @Component({
   selector: 'laji-observation-download',
   templateUrl: './observation-download.component.html'
@@ -20,7 +26,8 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   @Input() taxaLimit = 1000;
   @Input() loadLimit = 2000000;
 
-  public requests: any = {};
+  public requests: {[place: string]: RequestStatus} = {};
+  public requestStatus = RequestStatus;
   public count = {
     'count': 0,
     'private': 0
@@ -111,6 +118,32 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     this.csvParams = queryString.stringify(queryParams);
   }
 
+  makeSpeciesList(e) {
+    e.preventDefault();
+    if (this.requests['species'] === RequestStatus.loading) {
+      return;
+    }
+    this.requests['species'] = RequestStatus.loading;
+    this.warehouseService.warehouseQueryAggregateGetCsv(
+      this.searchQuery.query,
+      [this.taxaDownloadAggregateBy[this.translate.currentLang]],
+      undefined,
+      this.taxaLimit
+    )
+      .subscribe(
+        csv => {
+          this.requests['species'] = RequestStatus.done;
+          const blob = new Blob([csv.arrayBuffer()], { type: 'text/csv' });
+          window.open(window.URL.createObjectURL(blob));
+        },
+        err => {
+          this.requests['species'] = RequestStatus.error;
+          this.toastsService.showError(this.messages['observation.download.error']);
+          this.logger.warn('Failed to download species list', err);
+        }
+      );
+  }
+
   makePrivateRequest() {
     this.makeRequest('downloadApprovalRequest');
   }
@@ -120,11 +153,10 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   }
 
   makeRequest(type: string) {
-    this.queryCache = JSON.stringify(this.searchQuery.query);
-    if (this.requests[type] === this.queryCache) {
+    if (this.requests[type] === RequestStatus.loading || this.requests[type] === RequestStatus.done) {
       return;
     }
-    this.requests[type] = this.queryCache;
+    this.requests[type] = RequestStatus.loading;
     this.userService.getToken();
     this.warehouseService[type](
       this.userService.getToken(),
@@ -136,10 +168,10 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
         this.toastsService.showSuccess(this.messages[type === 'download' ?
           'result.load.thanksPublic' : 'result.load.thanksRequest'
         ]);
-        this.requests[type] = 'sent';
+        this.requests[type] = RequestStatus.done;
       },
       err => {
-        this.requests[type] = 'error';
+        this.requests[type] = RequestStatus.error;
         this.toastsService.showError(this.messages['observation.download.error']);
         this.logger.warn('Failed to make download request', err);
       }
