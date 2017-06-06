@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NouisliderModule } from 'ng2-nouislider';
 import {
   HasekaComponent,
   HaSeKaFormComponent,
@@ -20,17 +21,21 @@ import { OwnSubmissionsComponent } from './own-submissions/own-submissions.compo
 import { StatisticsComponent } from './statistics/statistics.component';
 import { ViewerModule } from '../+viewer/viewer.module';
 import { RouterChildrenEventService } from './router-children-event.service';
+import { OwnDatatableComponent } from './own-submissions/own-datatable/own-datatable.component';
+import { CsvService } from './own-submissions/own-datatable/csv.service';
 import { LineTransectComponent } from './statistics/line-transect/line-transect.component';
 import { LineTransectChartComponent } from './statistics/line-transect/line-transect-chart/line-transect-chart.component';
+import { YearSliderComponent } from './own-submissions/year-slider/year-slider.component';
+import { FilterColumnsPipe } from './own-submissions/own-datatable/filter-columns.pipe';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, AlertModule, NgxDatatableModule, NamedPlaceModule, ViewerModule,
+  imports: [routing, SharedModule, RouterModule, AlertModule, NgxDatatableModule, NouisliderModule, NamedPlaceModule, ViewerModule,
     FormPermissionModule.forRoot()],
-  providers: [ FormApi, DocumentApi, RouterChildrenEventService ],
+  providers: [ FormApi, DocumentApi, RouterChildrenEventService, CsvService ],
   declarations: [
     HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
-    ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent, OwnSubmissionsComponent,
-    StatisticsComponent, LineTransectComponent, LineTransectChartComponent
+    ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent, OwnSubmissionsComponent, OwnDatatableComponent,
+    StatisticsComponent, LineTransectComponent, LineTransectChartComponent, YearSliderComponent, FilterColumnsPipe
   ]
 })
 export class HasekaModule {

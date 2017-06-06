@@ -1,0 +1,113 @@
+<laji-spinner [spinning]="!(documents && rows)" [overlay]="false">
+  <div *ngIf="documents && rows">
+    <input
+      class="form-control filter-input"
+      type='text'
+      placeholder="{{'haseka.submissions.filter' | translate}}"
+      (keyup)='updateFilter($event)'
+    />
+    <ngx-datatable
+      class="material"
+      (activate)="tableActivated($event)"
+      [cssClasses]="{
+        sortAscending: 'glyphicon glyphicon-chevron-down',
+        sortDescending: 'glyphicon glyphicon-chevron-up',
+        pagerLeftArrow: 'glyphicon glyphicon-chevron-left',
+        pagerRightArrow: 'glyphicon glyphicon-chevron-right',
+        pagerPrevious: 'glyphicon glyphicon-step-backward',
+        pagerNext: 'glyphicon glyphicon-step-forward'
+      }"
+      [rows]="rows"
+      [columnMode]="'flex'"
+      [rowHeight]="'auto'"
+      [limit]="20"
+      [footerHeight]="30"
+      [messages]="{emptyMessage: loadError, totalMessage: totalMessage}">
+
+      <ngx-datatable-row-detail [rowHeight]="'auto'">
+        <ng-template let-row="row" ngx-datatable-row-detail-template>
+          <div *ngFor="let col of columns | filterColumns:this.displayMode:true" style="padding-left: 35px">
+            <span><strong>{{'haseka.submissions.' + col.prop | translate}}: </strong></span>
+            <span>{{row[col.prop]}}</span>
+          </div>
+        </ng-template>
+      </ngx-datatable-row-detail>
+
+      <ngx-datatable-column [flexGrow]="1" [draggable]="false" [cellClass]="'center-text'" *ngIf="displayMode !== 'large'">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span
+            class="glyphicon"
+            [ngClass]="{'glyphicon-chevron-right': !row.$$expanded, 'glyphicon-chevron-down': row.$$expanded}"
+            (click)="toggleExpandRow($event, row)">
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate"
+                            [flexGrow]="1" [cellClass]="'center-text'">
+        <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+          <span class="datatable-header-cell-wrapper link" (click)="sort()" title="{{column.name}}">
+            <span class="datatable-header-cell-label draggable" style="color: white">---</span>
+          </span>
+        </ng-template>
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+          <span *ngIf="value === publicity.publicityRestrictionsPublic">
+            <span class="label label-primary link inline-block"
+                  [tooltip]="'result.showViewer' | translate"
+                  [placement]="'right'"
+                  (click)="showViewer($event, row.id)">
+              <i class="glyphicon glyphicon-eye-open"></i>
+            </span>
+          </span>
+          <span *ngIf="value === publicity.publicityRestrictionsPrivate">
+            <span class="label label-warning inline-block"
+                  [tooltip]="'haseka.form.private' | translate"
+                  [placement]="'right'">
+              <i class="glyphicon glyphicon-eye-close"></i>
+            </span>
+        </span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column *ngFor="let col of columns | filterColumns:this.displayMode"
+                            [prop]="col.prop"
+                            [name]="'haseka.submissions.' + col.prop | translate"
+                            [flexGrow]="3"
+                            [comparator]="comparator(col.prop)"
+                            [cellClass]="'break-word'">
+        <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+          <span class="datatable-header-cell-wrapper sort-full-width"
+                (click)="sort()"
+                title="{{column.name}}">
+            <span class="datatable-header-cell-label draggable">
+              {{column.name}}
+            </span>
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column [flexGrow]="1" [draggable]="false" [cellClass]="'center-text'">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+          <div>
+            <span class="label label-default link inline-block"
+                  [tooltip]="'haseka.submissions.download' | translate"
+                  [placement]="'left'"
+                  [container]="'body'"
+                  (click)="downloadDocument($event, row.index)">
+              <i class="glyphicon glyphicon-download-alt"></i>
+            </span>
+            <br>
+            <span *ngIf="row.viewerType === 'MHL.viewerTypeLineTransect'"
+                  class="label label-warning link inline-block"
+                  [tooltip]="'haseka.submissions.toStatistics' | translate"
+                  [placement]="'left'"
+                  [container]="'body'"
+                  (click)="toStatisticsPage($event, row.id)">
+              <i class="glyphicon glyphicon glyphicon-stats"></i>
+            </span>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</laji-spinner>

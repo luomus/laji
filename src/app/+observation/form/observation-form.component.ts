@@ -128,8 +128,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
         limit: onlyFirstMatch ? '1' : '' + this.limit,
         includePayload: true,
         lang: this.translate.currentLang,
-        informalTaxonGroup: this.formQuery.informalTaxonGroupId,
-        matchType: AutocompleteMatchType.partial
+        informalTaxonGroup: this.formQuery.informalTaxonGroupId
       })
       .map(data => {
         if (onlyFirstMatch) {

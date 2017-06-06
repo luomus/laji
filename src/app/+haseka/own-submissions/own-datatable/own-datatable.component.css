@@ -1,0 +1,24 @@
+.sort-full-width {
+  display:inline-block;
+  width:calc(100% - 20px);
+}
+
+:host >>> .datatable-row-wrapper {
+  cursor: pointer;
+  cursor: hand;
+}
+
+:host >>> .center-text {
+  text-align: center !important;
+  padding: 0 !important;
+}
+
+/*:host >>> .break-word {
+  word-wrap: break-word;
+  hyphens: auto;
+}*/
+
+.filter-input {
+  width: 30%;
+  margin-bottom: 5px;
+}

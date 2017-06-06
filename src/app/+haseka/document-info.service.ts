@@ -6,14 +6,14 @@ import { Document } from '../shared/model/Document';
  */
 @Injectable()
 export class DocumentInfoService {
-  static getGatheringInfo(document: Document, includeUnitInfo = false) {
+  static getGatheringInfo(document: Document) {
     const info = {
       dateBegin: null,
       dateEnd: null,
-      unitCount: 0,
       unsavedUnitCount: 0,
       locality: null,
-      localityCount: 0
+      localityCount: 0,
+      unitList: []
     };
 
     if (!document.gatherings || !Array.isArray(document.gatherings)) {
@@ -30,25 +30,24 @@ export class DocumentInfoService {
       DocumentInfoService.updateMinMaxDates(info, gathering.dateEnd);
 
       if (gathering.units) {
-        info.unitCount += gathering.units.length;
+        gathering.units.reduce((result, unit) => {
+          let taxon = unit.informalNameString || '';
+          if (unit.identifications && Array.isArray(unit.identifications)) {
+            taxon = unit.identifications.reduce(
+              (acc, cur) => {
+                const curTaxon = cur.taxon || cur.taxonVerbatim;
+                return acc ? acc + ', ' + curTaxon : curTaxon;
+              }, taxon);
 
-        if (includeUnitInfo) {
-          gathering.units.map((unit) => {
-            if (unit.id) {
-              /*let taxon = unit.informalNameString || '';
-              if (unit.identifications && Array.isArray(unit.identifications)) {
-                taxon = unit.identifications.reduce(
-                  (acc, cur) => {
-                    const curTaxon = cur.taxon || cur.taxonVerbatim;
-                    return acc ? acc + ', ' + curTaxon : curTaxon;
-                  }, taxon);
+            if (taxon) {
+              if (!unit.id) {
+                info.unsavedUnitCount++;
               }
-              result.push(unit.id);*/
-            } else {
-              info.unsavedUnitCount++;
+              result.push(taxon);
             }
-          });
-        }
+          }
+          return result;
+        }, info.unitList);
       }
     }
 

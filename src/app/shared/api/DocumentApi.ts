@@ -126,7 +126,7 @@ export class DocumentApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findAll(userToken: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Document>> {
+  public findAll(userToken: string, page?: string, pageSize?: string, observationYear?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Document>> {
     const path = this.basePath + '/documents';
 
     let queryParameters = new URLSearchParams();
@@ -145,6 +145,10 @@ export class DocumentApi {
 
     if (userToken !== undefined) {
       queryParameters.set('personToken', userToken);
+    }
+
+    if (observationYear !== undefined) {
+      queryParameters.set('observationYear', observationYear);
     }
 
     let requestOptions: RequestOptionsArgs = {
@@ -209,4 +213,37 @@ export class DocumentApi {
       });
   }
 
+  /**
+   *
+   * @param userToken User authentication token
+   */
+  public countByYear(userToken: string, extraHttpRequestParams?: any): Observable<any> {
+    const path = this.basePath + '/documents/count/byYear';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+
+    // verify required parameter 'personToken' is not null or undefined
+    if (userToken === null || userToken === undefined) {
+      throw new Error('Required parameter personToken was null or undefined when calling documentFindByYearWithUser.');
+    }
+    if (userToken !== undefined) {
+      queryParameters.set('personToken', userToken);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
 }

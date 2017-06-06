@@ -20,6 +20,7 @@ export class OmniSearchComponent implements OnInit, OnChanges {
   @Input() delay = 200;
   @Input() selectTo = '/taxon';
   @Input() matchType: AutocompleteMatchType;
+  @Input() minLength = 3;
   public search = '';
   public searchControl = new FormControl();
   public active = 0;
@@ -109,7 +110,7 @@ export class OmniSearchComponent implements OnInit, OnChanges {
     if (this.subCnt) {
       this.subCnt.unsubscribe();
     }
-    if (this.search.length < 4) {
+    if (this.search.length < this.minLength) {
       this.loading = false;
       return;
     }

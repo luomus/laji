@@ -222,13 +222,13 @@ export class FormService {
   }
 
 
-  getTmpDocumentStoreDate(id: string): Observable<string> {
+  getTmpDocumentStoreDate(id: string): Observable<Date> {
     return this.getUserId()
       .switchMap(userID => {
         if (this.formDataStorage[userID] && this.formDataStorage[userID][id] && this.formDataStorage[userID][id].dateStored) {
           return Observable.of(this.formDataStorage[userID][id].dateStored);
         }
-        return Observable.of('');
+        return Observable.of(null);
       });
   }
 

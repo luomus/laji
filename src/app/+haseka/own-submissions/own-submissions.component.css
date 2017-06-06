@@ -1,9 +1,1 @@
-.sort-full-width {
-  display:inline-block;
-  width:calc(100% - 20px);
-}
 
-:host >>> .datatable-row-wrapper {
-  cursor: pointer;
-  cursor: hand;
-}
