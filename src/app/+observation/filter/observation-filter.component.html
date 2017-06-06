@@ -7,7 +7,7 @@
           <td>
             <a (click)="toggle(item)" class="link">
               <span *ngIf="item.label">{{item.label}}</span>
-              <span *ngIf="!item.label">{{item.value | label }}</span>
+              <span *ngIf="!item.label">{{item.value | label: true }}</span>
               <span *ngIf="isActive(item)"><i class="glyphicon glyphicon-ok"></i></span>
             </a>
           </td>

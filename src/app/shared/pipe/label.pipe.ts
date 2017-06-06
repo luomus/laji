@@ -26,22 +26,25 @@ export class LabelPipe implements PipeTransform, OnDestroy {
 
   updateValue(key: string, mapWarehouse = false): void {
     if (mapWarehouse) {
-      this.warehouseService.getOriginalKey(key).subscribe(
-        (res: string) => {
-          if (res) {
-            this._updateValue(res);
-          } else {
-            this.value = key;
-            this._ref.markForCheck();
-          }
-        }
-      );
+      this.warehouseService.getOriginalKey(key)
+        .timeout(1000)
+        .subscribe(
+          (res: string) => {
+            if (res) {
+              this._updateValue(res);
+            } else {
+              this.value = key;
+              this._ref.markForCheck();
+            }
+          },
+          (err) => this._updateValue(key)
+        );
     } else {
       this._updateValue(key);
     }
   }
 
-  transform(value: string, mapWarehouse = true): any {
+  transform(value: string, mapWarehouse = false): any {
     if (!value || value.length === 0) {
       return value;
     }
