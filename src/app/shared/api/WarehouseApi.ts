@@ -22,7 +22,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
+import { Headers, Http, RequestOptionsArgs, Response, ResponseContentType, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { PagedResult, WarehouseQueryInterface } from '../model';
@@ -46,6 +46,42 @@ export class WarehouseApi {
   public static isEmptyQuery(query: WarehouseQueryInterface = {}) {
     const paramCnt = Object.keys(query).length;
     return paramCnt === 0 || (paramCnt === 1 && typeof query.includeNonValidTaxa !== 'undefined');
+  }
+
+  /**
+   * Perform aggregation query using given filter and aggregation
+   * Aggregates the results of the query based on given \&quot;aggregateBy\&quot; parameter or parameters. Returns count of units, individual count sum and maximum and min and max date.
+   * @param query to make to the warehouse
+   * @param aggregateBy Define fields to aggregate by. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
+   * @param orderBy Define order of fields. Defaults to count of units (desc). Give number of the column, first is 1. aggregateBy -fields are first, followed by count of units, individual count sum and maximum and min and max date. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
+   * @param pageSize Set number of results in one page.
+   * @param page Set current page.
+   * @param geoJSON returns data as geojson.
+   * @param onlyCount return only count in result items (default true).
+   * @oaram onlyCount return only counts of items default true
+   */
+  public warehouseQueryAggregateGetCsv(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, onlyCount?: boolean): Observable<Response> {
+    const path = this.basePath + '/warehouse/query/aggregate';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+
+    this.addMetaToQuery(aggregateBy, orderBy, pageSize, page);
+    this.addQueryToQueryParams(query, queryParameters);
+
+    if (onlyCount !== undefined) {
+      queryParameters.set('onlyCount', onlyCount ? 'true' : 'false');
+    }
+    queryParameters.set('format', 'csv');
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters,
+      responseType: ResponseContentType.ArrayBuffer
+    };
+
+    return this.http.request(path, requestOptions);
   }
 
   /**

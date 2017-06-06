@@ -14,7 +14,7 @@
     <laji-row [title]="'MY.notes'" [value]="gathering.notes"></laji-row>
   </div>
   <div class="facts" *ngIf="showFacts">
-    <laji-row [title]="item.fact" [value]="item.value | toQName | label" *ngFor="let item of gathering.facts"></laji-row>
+    <laji-row [title]="item.fact" [value]="item.value | toQName | label: true" *ngFor="let item of gathering.facts"></laji-row>
   </div>
   <div *ngFor="let unit of gathering?.units">
     <laji-unit [showFacts]="showFacts" [unit]="unit" [highlight]="highlight"></laji-unit>

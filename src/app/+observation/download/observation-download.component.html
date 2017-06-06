@@ -14,7 +14,7 @@
       <div class="col-sm-12" *ngIf="loadLimit >= count.count && count.count > 0">
         <p [innerHtml]="'result.load.introPublic' | translate:{private: (count.private | formattedNumber:'&nbsp;'), count: (count.count | formattedNumber:'&nbsp;')} ">
         </p>
-        <a [ngClass]="{disabled: requests['download'] === 'sent'}" class="btn btn-default" (click)="makePublicRequest()">{{'observation.download.loadPublic' | translate}}</a>
+        <a [ngClass]="{disabled: requests['download'] === requestStatus.done || requests['download'] === requestStatus.loading}" class="btn btn-default" (click)="makePublicRequest()">{{'observation.download.loadPublic' | translate}}</a>
       </div>
     </div>
     <h3>{{'observation.download.privateTitle' | translate}}</h3>
@@ -28,7 +28,7 @@
         </div>
         <div class="col-sm-12" *ngIf="loadLimit >= count.private">
           <p [innerHtml]="'result.load.introPrivate' | translate:{private: (count.private | formattedNumber:'&nbsp;'), count: (count.count | formattedNumber:'&nbsp;')}"></p>
-          <a [ngClass]="{disabled: requests['downloadApprovalRequest'] === 'sent'}" class="btn btn-default" (click)="makePrivateRequest()">{{'observation.download.loadPrivate' | translate}}</a>
+          <a [ngClass]="{disabled: requests['downloadApprovalRequest'] === requestStatus.done || requests['downloadApprovalRequest'] === requestStatus.loading}" class="btn btn-default" (click)="makePrivateRequest()">{{'observation.download.loadPrivate' | translate}}</a>
         </div>
       </div>
     </div>
@@ -43,8 +43,9 @@
       <div class="col-sm-12" *ngIf="taxaLimit >= speciesCount && speciesCount > 0">
         <p [innerHtml]="'result.load.introSpecies' | translate">
         </p>
-        <a [ngClass]="{disabled: requests['species'] === 'sent'}"
+        <a [ngClass]="{disabled: requests['species'] === requestStatus.loading}"
            class="btn btn-default"
+           (click)="makeSpeciesList($event)"
            href="{{apiBase}}/warehouse/query/aggregate?{{csvParams}}&format=csv">
           {{'observation.download.loadSpecies' | translate}}
         </a>

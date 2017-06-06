@@ -8,16 +8,16 @@
         <laji-row [noTitleSpace]="true" [noRow]="true" [value]="document.collectionId | toQName | collectionName"> (<a href="{{document.collectionId}}">{{document.collectionId}}</a>)</laji-row>
       </div>
       <div *ngIf="document.secured">
-        <laji-row [title]="'secureLevel'" [value]="document.secureLevel | label"></laji-row>
+        <laji-row [title]="'secureLevel'" [value]="document.secureLevel | label: true"></laji-row>
           <laji-row [title]="'result.document.secureReasons' | translate" [value]="document.secureLevel" [hideValue]="true">
             <span *ngFor="let reason of document.secureReasons">
-              {{reason | label}}<br>
+              {{reason | label: true}}<br>
             </span>
           </laji-row>
       </div>
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
       <div class="facts" *ngIf="showFacts">
-        <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label" *ngFor="let item of document.facts"></laji-row>
+        <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label: true" *ngFor="let item of document.facts"></laji-row>
       </div>
     </div>
     <div class="col-sm-5">
