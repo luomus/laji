@@ -8,7 +8,6 @@
     />
     <ngx-datatable
       class="material"
-      (activate)="tableActivated($event)"
       [cssClasses]="{
         sortAscending: 'glyphicon glyphicon-chevron-down',
         sortDescending: 'glyphicon glyphicon-chevron-up',
@@ -34,11 +33,12 @@
       </ngx-datatable-row-detail>
 
       <ngx-datatable-column [flexGrow]="1" [draggable]="false" [cellClass]="'center-text'" *ngIf="displayMode !== 'large'">
+        <ng-template ngx-datatable-header-template><span></span></ng-template>
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span
-            class="glyphicon"
-            [ngClass]="{'glyphicon-chevron-right': !row.$$expanded, 'glyphicon-chevron-down': row.$$expanded}"
-            (click)="toggleExpandRow($event, row)">
+          <span class="link">
+            <i class="glyphicon"
+              [ngClass]="{'glyphicon-chevron-right': !row.$$expanded, 'glyphicon-chevron-down': row.$$expanded}"
+              (click)="toggleExpandRow(row)"></i>
           </span>
         </ng-template>
       </ngx-datatable-column>
@@ -55,7 +55,7 @@
             <span class="label label-primary link inline-block"
                   [tooltip]="'result.showViewer' | translate"
                   [placement]="'right'"
-                  (click)="showViewer($event, row.id)">
+                  (click)="showViewer(row.id)">
               <i class="glyphicon glyphicon-eye-open"></i>
             </span>
           </span>
@@ -65,7 +65,13 @@
                   [placement]="'right'">
               <i class="glyphicon glyphicon-eye-close"></i>
             </span>
-        </span>
+          </span>
+          <span class="label label-primary link inline-block"
+                [tooltip]="'haseka.submissions.toEdit' | translate"
+                [placement]="'right'"
+                (click)="toEditPage(row)">
+              <i class="glyphicon glyphicon-edit"></i>
+          </span>
         </ng-template>
       </ngx-datatable-column>
 
@@ -87,22 +93,22 @@
       </ngx-datatable-column>
 
       <ngx-datatable-column [flexGrow]="1" [draggable]="false" [cellClass]="'center-text'">
+        <ng-template ngx-datatable-header-template><span></span></ng-template>
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
           <div>
             <span class="label label-default link inline-block"
                   [tooltip]="'haseka.submissions.download' | translate"
                   [placement]="'left'"
                   [container]="'body'"
-                  (click)="downloadDocument($event, row.index)">
+                  (click)="downloadDocument(row.index)">
               <i class="glyphicon glyphicon-download-alt"></i>
             </span>
-            <br>
             <span *ngIf="row.viewerType === 'MHL.viewerTypeLineTransect'"
                   class="label label-warning link inline-block"
                   [tooltip]="'haseka.submissions.toStatistics' | translate"
                   [placement]="'left'"
                   [container]="'body'"
-                  (click)="toStatisticsPage($event, row.id)">
+                  (click)="toStatisticsPage(row.id)">
               <i class="glyphicon glyphicon glyphicon-stats"></i>
             </span>
           </div>

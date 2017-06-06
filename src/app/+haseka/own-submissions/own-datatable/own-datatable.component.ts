@@ -25,10 +25,10 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   totalMessage: '';
   publicity = Document.PublicityRestrictionsEnum;
   columns = [
-    {prop: 'dateEdited', mode: 'small'},
-    {prop: 'dateObserved', mode: 'medium'},
-    {prop: 'locality', mode: 'medium'},
-    {prop: 'unitCount', mode: 'small'},
+    {prop: 'dateEdited', mode: 'medium'},
+    {prop: 'dateObserved', mode: 'small'},
+    {prop: 'locality', mode: 'small'},
+    {prop: 'unitCount', mode: 'medium'},
     {prop: 'observer', mode: 'large'},
     {prop: 'form', mode: 'large'},
     {prop: 'id', mode: 'large'}
@@ -136,30 +136,24 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.translate.get('haseka.submissions.total').subscribe((value) => this.totalMessage = value);
   }
 
-  showViewer(event, docId: string) {
-    event.stopPropagation();
+  showViewer(docId: string) {
     this.eventService.showViewerClicked(docId);
   }
 
-  tableActivated(event) {
-    if (event.type === 'click') {
-      const formId = this.documents[event.row.index].formID;
-      this.router.navigate([this.formService.getEditUrlPath(formId, event.row.id)]);
-    }
+  toEditPage(row: any) {
+    const formId = this.documents[row.index].formID;
+    this.router.navigate([this.formService.getEditUrlPath(formId, row.id)]);
   }
 
-  downloadDocument(event, index: number) {
-    event.stopPropagation();
+  downloadDocument(index: number) {
     this.csvService.downloadDocumentAsCsv(this.documents[index]);
   }
 
-  toStatisticsPage(event, docId: string) {
-    event.stopPropagation();
+  toStatisticsPage(docId: string) {
     this.router.navigate(['/vihko/statistics/' + docId]);
   }
 
-  toggleExpandRow(event, row: any) {
-    event.stopPropagation();
+  toggleExpandRow(row: any) {
     this.table.rowDetail.toggleExpandRow(row);
   }
 

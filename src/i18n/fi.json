@@ -279,6 +279,7 @@
   "haseka.submissions.download": "Lataa havaintoerä",
   "haseka.submissions.submission": "havaintoera",
   "haseka.submissions.toStatistics": "Siirry tilastosivulle",
+  "haseka.submissions.toEdit": "Siirry muokkaussivulle",
   "haseka.submissions.loadError": "Vuoden {{year}} havaintoerien lataus epäonnistui. Yritä hetken kuluttua uudelleen.",
   "observation.export.tooMany": "Liian paljon havaintoja. Maksimimäärä on {{max}}, joten rajaa hakua lisää.",
   "observation.export.tooManySpecies": "Liian paljon lajeja. Maksimimäärä on {{max}}, joten rajaa hakua lisää.",

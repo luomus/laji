@@ -270,6 +270,7 @@
   "haseka.submissions.download": "Download",
   "haseka.submissions.submission": "submission",
   "haseka.submissions.toStatistics": "Go to statistics page",
+  "haseka.submissions.toEdit": "Go to edit page",
   "haseka.submissions.loadError": "Failed to load submissions from the year {{year}}. Please try again a little later.",
   "observation.export.tooMany": "Too many results. Max is {{max}}, you'll need to narrow the search.",
   "observation.export.tooManySpecies": "Too many species. Max is {{max}}, you'll need to narrow the search.",
