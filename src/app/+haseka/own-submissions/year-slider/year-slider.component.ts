@@ -15,7 +15,7 @@ export class YearSliderComponent implements OnInit {
   sliderConfig: any;
   sliderWidth: string;
 
-  oneStepWidth = 60;
+  oneStepWidth = 100;
 
   pcsString: string;
   pcString: string;
@@ -55,27 +55,30 @@ export class YearSliderComponent implements OnInit {
   private initSlider() {
     if (this.yearInfo.length < 2) { return; }
 
-    const stepCount = this.yearInfo.length;
+    const stepCount = this.yearInfo.length - 1;
+    const percentage = 100 / stepCount;
+    const range = {};
+
 
     for (let i = 0; i < this.yearInfo.length; i++) {
       this.yearInfo[i].year = parseInt(this.yearInfo[i].year, 10);
       this.countByYear[this.yearInfo[i].year] = this.yearInfo[i].count;
-    }
 
-    const percentage = 100 / stepCount;
-    const range = {'min': this.yearInfo[0].year, 'max': this.yearInfo[this.yearInfo.length - 1].year};
+      let key = '';
 
-    let j = 1;
-    for (let i = 1; i < this.yearInfo.length - 1; i++) {
-      if (this.yearInfo[i].year - this.yearInfo[i - 1].year > 1) {
-        j++;
+      if (i === 0) {
+        key = 'min';
+      } else if (i === this.yearInfo.length - 1) {
+        key = 'max';
+      } else {
+        key = percentage * i + '%';
       }
-      range[percentage * j + '%'] = this.yearInfo[i].year;
-      j++;
+
+      range[key] = this.yearInfo[i].year;
     }
 
     this.sliderWidth = stepCount * this.oneStepWidth + 'px';
-    this.sliderRange = range.max;
+    this.sliderRange = range['max'];
 
     this.sliderConfig = {
       connect: true,
