@@ -483,8 +483,9 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       if (description) {
         cb(description);
       } else if (cnt) {
-        this.translate.get('result.allObservation')
-          .subscribe(translation => cb(`${cnt} ${translation}`));
+        return;
+        // this.translate.get('result.allObservation')
+        //  .subscribe(translation => cb(`${cnt} ${translation}`));
       }
     } catch (e) {
       this.logger.log('Failed to display popup for the map', e);
