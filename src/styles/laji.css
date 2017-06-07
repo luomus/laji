@@ -63,10 +63,6 @@ body {
   }
 }
 
-#footer {
-  z-index: 0;
-}
-
 .cursive {
   font-style: italic;
 }
