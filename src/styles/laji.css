@@ -600,6 +600,12 @@ body > .ui-select-bootstrap.open {
   left: auto !important;
 }
 
+/** Fixed to view default css*/
+.fixed-to-view {
+  position: fixed;
+  width: inherit;
+}
+
 /** print management */
 @media print
 {

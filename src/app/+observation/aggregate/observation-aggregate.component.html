@@ -19,7 +19,7 @@
           </span>
           <span *ngIf="!item.link" [innerHtml]="item.value"></span>
         </td>
-        <td>{{item.count}}</td>
+        <td><small [innerHtml]="item.count | formattedNumber:'&nbsp'"></small></td>
       </tr>
       </tbody>
     </table>

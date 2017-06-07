@@ -79,6 +79,7 @@ import { TaxonomyApi } from './api/TaxonomyApi';
 import { NlToBrPipe } from './pipe/nl-to-br.pipe';
 import { Map2Component } from './map/map2.component';
 import { DocumentFormHeaderComponent } from './document-form-header/document-form-header.component';
+import { FixedInViewDirective } from './directive/fixed-in-view.directive';
 
 
 @NgModule({
@@ -90,7 +91,7 @@ import { DocumentFormHeaderComponent } from './document-form-header/document-for
     AreaNamePipe, CollectionNamePipe, FormNamePipe,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, ImageModalOverlayComponent,
-    AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent
+    AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent, FixedInViewDirective
   ],
   imports: [
     ToastModule,
@@ -111,7 +112,7 @@ import { DocumentFormHeaderComponent } from './document-form-header/document-for
     ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, NlToBrPipe,
-    AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent
+    AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, FixedInViewDirective
   ]
 })
 export class SharedModule {
