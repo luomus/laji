@@ -243,6 +243,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           if (typeof data.uiSchemaContext === 'undefined') {
             data.uiSchemaContext = {};
           }
+          data.uiSchemaContext.activeGatheringIdx = this.isEdit ? null : 0;
           data.uiSchemaContext.formID = this.formId;
           this.form = data;
           this.formService.hasUnsavedData()
