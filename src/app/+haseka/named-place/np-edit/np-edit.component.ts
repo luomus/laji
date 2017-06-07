@@ -92,6 +92,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
             data['uiSchema']['namedPlace']['ui:options']['draw'] = this.formInfo.drawData;
           }
           this.npFormData = data;
+          this.setFormData();
         },
         err => {
           const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
@@ -109,7 +110,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     if (this.namedPlace) {
       const npData = Util.clone(this.namedPlace);
 
-      npData['geometryOnMap'] = {type: 'GeometryCollection', geometries: [npData.geometry]};
+      npData['geometry'] = {type: 'GeometryCollection', geometries: [npData.geometry]};
 
       if (npData.prepopulatedDocument && npData.prepopulatedDocument.gatherings && npData.prepopulatedDocument.gatherings[0]) {
         const gathering = npData.prepopulatedDocument.gatherings[0];
