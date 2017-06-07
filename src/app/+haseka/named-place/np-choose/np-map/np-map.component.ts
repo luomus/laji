@@ -26,6 +26,9 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   private _data: any;
 
+  private placeColor = '#00aa00';
+  private activePlaceColor = '#007700';
+
   constructor() { }
 
   ngOnInit() {
@@ -50,16 +53,6 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   setMapData() {
     if (this._data && this.lajiMap.map) {
       this.lajiMap.map.setData([this._data]);
-
-      const geojsonLayer = this.lajiMap.map.dataLayerGroups[0];
-
-      const that = this;
-      geojsonLayer.on({
-        click: (event) => {
-          const idx = event.layer.feature.properties.lajiMapIdx;
-          that.onActivePlaceChange.emit(idx);
-        }
-      });
     }
   }
 
@@ -68,12 +61,13 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
 
     const geojsonLayer = this.lajiMap.map.dataLayerGroups[0];
 
+    const that = this;
     geojsonLayer.eachLayer(function (layer) {
       let color = null;
       if (layer.feature.properties.lajiMapIdx === newActive) {
-        color = '#007700';
+        color = that.activePlaceColor;
       } else if (layer.feature.properties.lajiMapIdx === oldActive) {
-        color = '#00aa00';
+        color = that.placeColor;
       }
 
       if (color) {
@@ -86,8 +80,6 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
         }
       }
     });
-
-    this.activeNP = newActive;
   }
 
   private initMapData() {
@@ -98,20 +90,20 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
     try {
       this._data = {
         getFeatureStyle: (o) => {
-          if (this.activeNP === o.feature.properties.lajiMapIdx) {
-            return {
-              weight: 5,
-              opacity: 1,
-              fillOpacity: 0.3,
-              color: '#007700'
-            };
-          } else {
-            return {
-              weight: 5,
-              opacity: 1,
-              fillOpacity: 0.3,
-              color: '#00aa00'
-            };
+          const style = {
+            weight: 5,
+            opacity: 1,
+            fillOpacity: 0.3,
+            color: ''
+          };
+
+          style.color = o.featureIdx === this.activeNP ? this.activePlaceColor : this.placeColor;
+
+          return style;
+        },
+        on: {
+          click: (e, o) => {
+            this.onActivePlaceChange.emit(o.idx);
           }
         },
         featureCollection: {

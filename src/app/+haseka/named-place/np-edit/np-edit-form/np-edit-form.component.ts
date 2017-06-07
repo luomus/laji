@@ -63,10 +63,11 @@ export class NpEditFormComponent implements OnInit {
   }
 
   onSubmit(event) {
-    if (!('namedPlace' in event.data.formData)) {
+    if (!('namedPlace' in event.data.formData) || event.data.formData.namedPlace.length < 1) {
       this.lajiForm.unBlock();
       return;
     }
+
     this.saving = true;
     this.lajiForm.block();
     const data = this.getNamedPlaceData(event);
@@ -119,7 +120,7 @@ export class NpEditFormComponent implements OnInit {
   }
 
   private getNamedPlaceData(event) {
-    const filteredKeys = ['geometryOnMap', 'locality', 'localityDescription', 'placeWrapper'];
+    const filteredKeys = ['geometry', 'locality', 'localityDescription', 'placeWrapper'];
 
     const formData = event.data.formData.namedPlace[0];
     const data: any = {};
@@ -132,7 +133,8 @@ export class NpEditFormComponent implements OnInit {
         data[key] = formData[key];
       }
     }
-    data['geometry'] = formData.geometryOnMap.geometries[0];
+
+    data['geometry'] = formData.geometry.geometries[0];
     data['public'] = true;
 
     this.localityToPrepopulatedDocument(data, formData);
