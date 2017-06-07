@@ -103,7 +103,7 @@
                   (click)="downloadDocument(row.index)">
               <i class="glyphicon glyphicon-download-alt"></i>
             </span>
-            <span *ngIf="row.viewerType === 'MHL.viewerTypeLineTransect'"
+            <span *ngIf="formsById[documents[row.index].formID].viewerType === 'MHL.viewerTypeLineTransect'"
                   class="label label-warning link inline-block"
                   [tooltip]="'haseka.submissions.toStatistics' | translate"
                   [placement]="'left'"
