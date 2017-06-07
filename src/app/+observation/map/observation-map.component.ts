@@ -21,7 +21,7 @@ const maxCoordinateAccuracy = 10000;
   selector: 'laji-observation-map',
   templateUrl: './observation-map.component.html',
   styleUrls: ['./observation-map.component.css'],
-  providers: [ValueDecoratorService]
+  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe]
 })
 export class ObservationMapComponent implements OnInit, OnChanges {
   @ViewChild(MapComponent) lajiMap: MapComponent;
