@@ -21,6 +21,7 @@ import { WindowRef } from '../../../shared/windows-ref';
 export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() documents: Document[];
   @Input() loadError: '';
+  formsById = {};
 
   totalMessage: '';
   publicity = Document.PublicityRestrictionsEnum;
@@ -57,6 +58,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.updateTranslations();
 
     this.subTrans = this.translate.onLangChange.subscribe(() => {
+      this.formsById = {};
       this.updateRows();
       this.updateTranslations();
     });
@@ -146,7 +148,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   downloadDocument(index: number) {
-    this.csvService.downloadDocumentAsCsv(this.documents[index]);
+    const doc = this.documents[index];
+    this.csvService.downloadDocumentAsCsv(doc, this.formsById[doc.formID]);
   }
 
   toStatisticsPage(docId: string) {
@@ -204,7 +207,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
           observer: observers,
           form: form.title || document.formID,
           id: document.id,
-          viewerType: form.viewerType,
           index: idx
         };
       }
@@ -246,8 +248,13 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private getForm(formId: string): Observable<any> {
+    if (this.formsById[formId]) { return Observable.of(this.formsById[formId]); }
+
     return this.formService
       .getForm(formId, this.translate.currentLang)
-      .map((res: any) => res);
+      .map((res: any) => {
+        this.formsById[formId] = res;
+        return res;
+      });
   }
 }
