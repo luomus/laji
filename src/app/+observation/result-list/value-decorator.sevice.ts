@@ -4,6 +4,8 @@ import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { SourceService } from '../../shared/service/source.service';
 import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
+import { NumberFormatter } from '@angular/common/src/pipes/intl';
+import { FormattedNumber } from '../../shared/pipe/formated-number.pipe';
 
 @Injectable()
 export class ValueDecoratorService {
@@ -24,7 +26,8 @@ export class ValueDecoratorService {
     'document.secureReasons': 'makeLabelFromArray',
     'document.collectionId': 'makeCollectionName',
     'document.sourceId': 'makeSourceName',
-    'gathering.conversions.ykj': 'makeYkj'
+    'gathering.conversions.ykj': 'makeYkj',
+    'gathering.interpretations.coordinateAccuracy': 'makeLongNumber'
   };
 
   constructor(
@@ -32,7 +35,8 @@ export class ValueDecoratorService {
     private labelPipe: LabelPipe,
     private toQNamePipe: ToQNamePipe,
     private source: SourceService,
-    private collectionName: CollectionNamePipe
+    private collectionName: CollectionNamePipe,
+    private numberFormater: FormattedNumber
   ) {
   }
 
@@ -60,6 +64,10 @@ export class ValueDecoratorService {
 
   protected makeArrayToSemiColon(value) {
     return value.join('; ');
+  }
+
+  protected makeLongNumber(value) {
+    return this.numberFormater.transform(value, '&nbsp;');
   }
 
   protected makeSecure(value) {

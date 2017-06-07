@@ -16,12 +16,12 @@
   <div class="form-footer">
     <div class="row">
       <div class="col-xs-3 col-sm-2">
-        <button class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPublic()">{{'haseka.form.savePublic'|translate}}</button>
+        <button class="btn btn-default btn-sm" [disabled]="saving" type="submit" (click)="submitPublic()">{{'haseka.form.savePublic'|translate}}</button>
       </div>
       <div class="col-xs-3 col-sm-2">
-        <button *ngIf="enablePrivate" class="btn btn-default" [disabled]="saving" type="submit" (click)="submitPrivate()">{{'haseka.form.savePrivate'|translate}}</button>
+        <button *ngIf="enablePrivate" class="btn btn-default btn-sm" [disabled]="saving" type="submit" (click)="submitPrivate()">{{'haseka.form.savePrivate'|translate}}</button>
       </div>
-      <div class="col-xs-3 col-sm-6 form-control-static info" [ngSwitch]="status">
+      <div class="col-xs-3 col-sm-6 info" [ngSwitch]="status">
         <div *ngSwitchCase="'success'" class="success status">
           {{'haseka.form.success'|translate}}
         </div>
@@ -35,10 +35,13 @@
           <span *ngIf="!form.formData.dateEdited">
             {{'haseka.form.unsavedNever' | translate}}
           </span>
+          <span class="pull-right">
+            <a href="/vihko/terms-of-service" target="_blank">{{'haseka.termsOfService' | translate}}</a>
+          </span>
         </div>
       </div>
       <div class="col-xs-3 col-sm-2">
-        <button class="btn btn-default pull-right" [disabled]="saving" type="submit" (click)="discard()">{{'haseka.form.back'|translate}}</button>
+        <button class="btn btn-default btn-sm pull-right" [disabled]="saving" type="submit" (click)="discard()">{{'haseka.form.back'|translate}}</button>
       </div>
     </div>
   </div>

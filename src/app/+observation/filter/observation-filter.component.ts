@@ -69,7 +69,6 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
     if (this.override) {
       Object.keys(this.override).map(key => {
         query[key] = this.override[key];
-        console.log(query);
       });
     }
     const cacheKey = JSON.stringify(query) + this.page;

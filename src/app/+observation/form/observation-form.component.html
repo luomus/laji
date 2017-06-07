@@ -523,31 +523,38 @@
           <h1>
             <span class="hidden-xs">
               {{'observation.results.title' | translate}}
-              <br>
             </span>
-            <small>
-              <div class="pull-right toggle-intro" *ngIf="!observationSettings.showIntro">
-                <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
-              </div>
-              <laji-observation-count [query]="searchQuery.query" [tick]="searchQuery.tack"></laji-observation-count>
-              {{'observation.results.observation' | translate}}
-              <laji-observation-count
-                      [query]="searchQuery.query"
-                      [tick]="searchQuery.tack"
-                      [field]="'unit.linkings.taxon.speciesId'"
-                      [overrideInQuery]="{includeNonValidTaxa: false}">
-              </laji-observation-count>
-              {{'observation.results.species' | translate}}
-            </small>
+            <div class="pull-right toggle-intro" *ngIf="!observationSettings.showIntro">
+              <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+            </div>
           </h1>
         </div>
       </div>
       <alert *ngIf="observationSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
         <div [innerHtml]="'observation.intro' | translate"></div>
       </alert>
-      <div #tabs>
-        <laji-observation-result [(active)]="activeTab" [(filters)]="filters"
-                                 (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>
+      <div class="fixed-container">
+        <div lajiFixedInView [offsetTop]="55" [offsetBottom]="25">
+          <div class="row">
+            <div class="col-sm-12">
+              <h2 class="counts">
+                <laji-observation-count [query]="searchQuery.query" [tick]="searchQuery.tack"></laji-observation-count>
+                {{'observation.results.observation' | translate}}
+                <laji-observation-count
+                  [query]="searchQuery.query"
+                  [tick]="searchQuery.tack"
+                  [field]="'unit.linkings.taxon.speciesId'"
+                  [overrideInQuery]="{includeNonValidTaxa: false}">
+                </laji-observation-count>
+                {{'observation.results.species' | translate}}
+              </h2>
+            </div>
+          </div>
+          <div #tabs>
+            <laji-observation-result [(active)]="activeTab" [(filters)]="filters"
+                                     (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>
+          </div>
+        </div>
       </div>
     </div>
   </div>

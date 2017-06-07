@@ -40,7 +40,6 @@ export class StatisticsComponent implements OnInit {
           ),
           (document, formData) => ({form: formData.form, ns: formData.ns, document}))
         .subscribe((data) => {
-        console.log(data);
           this.document = data.document;
           this.form = data.form;
           this.ns = data.ns;

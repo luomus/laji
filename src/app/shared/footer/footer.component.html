@@ -8,6 +8,7 @@
           <li *ngFor="let child of item.children">
             <a [routerLink]="'/about/' + child.id">{{child.title}}</a>
           </li>
+          <li *ngIf="i === 0"><laji-feedback></laji-feedback></li>
         </ul>
       </div>
     </div>

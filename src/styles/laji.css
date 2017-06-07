@@ -63,10 +63,6 @@ body {
   }
 }
 
-#footer {
-  z-index: 0;
-}
-
 .cursive {
   font-style: italic;
 }
@@ -598,6 +594,12 @@ body > .ui-select-bootstrap.open {
 .dropdown-menu.right {
   right: 0 !important;
   left: auto !important;
+}
+
+/** Fixed to view default css*/
+.fixed-to-view {
+  position: fixed;
+  width: inherit;
 }
 
 /** print management */

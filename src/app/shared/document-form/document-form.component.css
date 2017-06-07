@@ -13,8 +13,16 @@
 
 .info {
   color: #fff;
+  padding-top: 4px;
 }
 
+.info a {
+  color: #fff;
+}
+.info a:hover {
+  color: #c8c8c8;
+  text-decoration: none;
+}
 .status {
 }
 

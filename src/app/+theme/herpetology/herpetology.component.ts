@@ -120,10 +120,6 @@ export class HerpetologyComponent implements OnInit {
         this.reptileTaxa = data[1];
         this.occasionalTaxa = data[2];
       }, 100);
-      console.log(data);
-      console.log(this.amphibianTaxa);
-      console.log(this.amphibianTaxa[0]);
-      console.log(this.amphibianTaxa[0].taxon.scientificName);
     });
   }
 }

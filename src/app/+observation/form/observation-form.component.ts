@@ -232,11 +232,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   toggleFilters() {
     this.showFilter = !this.showFilter;
-    if (this.activeTab === 'map') {
-      try {
+    try {
+      setTimeout(() => {
         this.winRef.nativeWindow.dispatchEvent(new Event('resize'));
-      } catch (e) {}
-    }
+      }, 50);
+    } catch (e) {}
   }
 
   toggleInfo() {

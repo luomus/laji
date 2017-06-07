@@ -1,8 +1,8 @@
-.info-footer a {
+:host >>> .info-footer a {
   color: #fff;
 }
 
-.info-footer a:focus {
+:host >>> .info-footer a:focus {
   color: #fff;
   text-decoration: none;
 }
