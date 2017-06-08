@@ -234,7 +234,13 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.showFilter = !this.showFilter;
     try {
       setTimeout(() => {
-        this.winRef.nativeWindow.dispatchEvent(new Event('resize'));
+        try {
+          this.winRef.nativeWindow.dispatchEvent(new Event('resize'));
+        } catch (e) {
+          const evt = this.winRef.nativeWindow.document.createEvent('UIEvents');
+          evt.initUIEvent('resize', true, false, window, 0);
+          this.winRef.nativeWindow.dispatchEvent(evt);
+        }
       }, 50);
     } catch (e) {}
   }

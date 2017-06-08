@@ -2,12 +2,9 @@ import { AfterViewInit, Directive, ElementRef, HostListener, Input } from '@angu
 
 interface Coords {
   top: number;
-  left: number;
   bottom: number;
   height: number;
   width: number;
-  marginTop: number;
-  marginBottom: number;
 }
 
 /**
@@ -41,31 +38,27 @@ export class FixedInViewDirective implements AfterViewInit {
   }
 
   private updateDimensions() {
-    const containerCoords = this.getCoords(this.el.nativeElement.parentNode);
-    this.el.nativeElement.style.width = containerCoords.width + 'px';
+    const container = this.getCoords(this.el.nativeElement.parentNode);
+    this.el.nativeElement.style.width = container.width + 'px';
   }
 
   private updatePos() {
     const elem = this.getCoords(this.el.nativeElement);
     const container = this.getCoords(this.el.nativeElement.parentNode);
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-    if (container.top + container.marginTop > scrollTop + this.offsetTop) {
+    if (container.top > scrollTop + this.offsetTop) {
       this.el.nativeElement.style.marginTop = '0';
       this.setActiveClass('');
-      return;
-    }
-    const containerOffsetTop = this.offsetTop + container.marginTop;
-    if (scrollTop + containerOffsetTop > container.bottom - elem.height - this.offsetBottom) {
+    } else if (scrollTop + this.offsetTop > container.bottom - elem.height - this.offsetBottom) {
       if (!this.hasActiveClass(this.fixedBottomClass)) {
         const marginTop = container.height - elem.height - this.offsetBottom;
         this.el.nativeElement.style.marginTop = marginTop > 0 ? marginTop + 'px' : '0';
         this.el.nativeElement.style.marginBottom = this.offsetBottom + 'px';
         this.setActiveClass(this.fixedBottomClass);
       }
-      return;
-    }
-    if (!this.hasActiveClass(this.fixedViewClass)) {
-      this.el.nativeElement.style.marginTop = -(containerOffsetTop) + 'px';
+    } else if (!this.hasActiveClass(this.fixedViewClass)) {
+      this.el.nativeElement.style.marginTop = '0';
+      this.el.nativeElement.style.top = this.offsetTop + 'px';
       this.setActiveClass(this.fixedViewClass);
     }
   }
@@ -92,25 +85,16 @@ export class FixedInViewDirective implements AfterViewInit {
     const docEl = document.documentElement;
 
     const scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
-    const scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
-
     const clientTop = docEl.clientTop || body.clientTop || 0;
-    const clientLeft = docEl.clientLeft || body.clientLeft || 0;
 
     const top  = box.top +  scrollTop - clientTop;
-    const left = box.left + scrollLeft - clientLeft;
     const bottom = top + box.height;
-
-    const styles = window.getComputedStyle(elem);
 
     return {
       top: Math.round(top),
-      left: Math.round(left),
       bottom: Math.round(bottom),
       height: Math.round(box.height),
-      width: Math.round(box.width),
-      marginTop: Math.ceil(parseFloat(styles['marginTop'])),
-      marginBottom: Math.ceil(parseFloat(styles['marginBottom']))
+      width: Math.round(box.width)
     };
   }
 
