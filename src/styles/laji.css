@@ -130,6 +130,12 @@ body {
   position: relative;
 }
 
+/** Observation **/
+.dropdown-toggle .caret {
+  float: right;
+  margin-top: 7px;
+}
+
 /** taxon tree **/
 .node-content-wrapper, .tree-children {
   position: relative;

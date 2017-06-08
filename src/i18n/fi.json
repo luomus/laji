@@ -430,5 +430,11 @@
   "m-10": "lokakuu",
   "m-11": "marraskuu",
   "m-12": "joulukuu",
-  "instructions": "Ohjeet"
+  "instructions": "Ohjeet",
+  "checkAll": "Valitse kaikki",
+  "uncheckAll": "Poista valinnat",
+  "checked": "valittuna",
+  "checkedPlural": "valittuna",
+  "select": "Valitse",
+  "allSelected": "Kaikki valittuna"
 }

@@ -2,13 +2,12 @@ import { Component, forwardRef, Input, OnChanges, OnDestroy, OnInit } from '@ang
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { MetadataApi } from '../api/MetadataApi';
-import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
-import { Logger } from '../logger/logger.service';
-import { CollectionService } from '../service/collection.service';
-import { AreaService, AreaType } from '../service/area.service';
-import { SourceService } from '../service/source.service';
-import { MetadataService } from '../service/metadata.service';
+import { WarehouseValueMappingService } from '../../shared/service/warehouse-value-mapping.service';
+import { Logger } from '../../shared/logger/logger.service';
+import { CollectionService } from '../../shared/service/collection.service';
+import { AreaService, AreaType } from '../../shared/service/area.service';
+import { SourceService } from '../../shared/service/source.service';
+import { MetadataService } from '../../shared/service/metadata.service';
 
 export interface MetadataSelectPick {
   [field: string]: string;
@@ -21,7 +20,7 @@ export const METADATA_SELECT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'metadata-select',
+  selector: 'laji-select',
   templateUrl: './metadata-select.component.html',
   providers: [METADATA_SELECT_VALUE_ACCESSOR]
 })
@@ -29,8 +28,8 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   @Input() field: string;
   @Input() alt: string;
   @Input() name: string;
-  @Input() multiple: boolean = false;
-  @Input() lang: string = 'fi';
+  @Input() multiple = false;
+  @Input() lang = 'fi';
   @Input() placeholder = '';
   @Input() mapToWarehouse = false;
   @Input() pick: MetadataSelectPick;
@@ -39,10 +38,9 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   active = [];
 
   private subOptions: Subscription;
-  private innerValue: string = '';
+  private innerValue = '';
 
   constructor(public warehouseMapper: WarehouseValueMappingService,
-              private metadataApi: MetadataApi,
               private metadataService: MetadataService,
               private collectionService: CollectionService,
               private areaService: AreaService,
@@ -51,10 +49,8 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   ) {
   }
 
-  onChange = (_: any) => {
-  }
-  onTouched = () => {
-  }
+  onChange = (_: any) => {};
+  onTouched = () => {};
 
   get value(): any {
     return this.innerValue;
@@ -98,7 +94,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
             .forkJoin(requests)
             .map(mapping => options.reduce((prev, curr, idx) => {
               if (mapping[idx] !== options[idx].id) {
-                prev.push({id: mapping[idx], text: curr.text});
+                prev.push({id: mapping[idx], name: curr.name});
               } else {
                 this.logger.log('No ETL mapping for', mapping[idx]);
               }
@@ -129,9 +125,19 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
       return;
     }
     if (typeof this.value === 'string') {
-      this.active = this.options.filter(option => this.value === option.id);
+      this.active = this.options.reduce((cum, curr) => {
+        if (this.value === curr.id) {
+          cum.push(curr.id);
+        }
+        return cum;
+      }, []);
     } else {
-      this.active = this.options.filter(option => this.value.indexOf(option.id) > -1);
+      this.active = this.options.reduce((cum, curr) => {
+        if (this.value.indexOf(curr.id) > -1) {
+          cum.push(curr.id);
+        }
+        return cum;
+      }, []);
     }
   }
 
@@ -142,7 +148,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
       this.value = value;
     } else {
       try {
-        this.value = value.map(item => item.id);
+        this.value = value;
       } catch (e) {
         this.value = '';
       }
@@ -190,11 +196,11 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
 
   private pickValue(data) {
     if (!this.pick) {
-      return data.map(value => ({id: value.id, text: value.value}));
+      return data.map(value => ({id: value.id, name: value.value}));
     }
     return data.retuce((total, item) => {
       if (typeof this.pick[item.id] !== 'undefined' && this.pick[item.id] === '') {
-        total.push({id: item.id, text: item.value});
+        total.push({id: item.id, name: item.value});
       }
       return total;
     }, []);

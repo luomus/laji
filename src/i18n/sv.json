@@ -413,5 +413,11 @@
   "m-10": "oktober",
   "m-11": "november",
   "m-12": "december",
-  "instructions": "Instruktioner"
+  "instructions": "Instructions",
+  "checkAll": "Check all",
+  "uncheckAll": "Uncheck all",
+  "checked": "checked",
+  "checkedPlural": "checked",
+  "select": "Select",
+  "allSelected": "All selected"
 }

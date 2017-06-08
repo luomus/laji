@@ -104,6 +104,9 @@ hr {
 .fixed-container {
   position: relative;
 }
+.fixed-element {
+  background-color: #fff;
+}
 
 @media only screen and (min-width : 768px) {
   .result-list {
