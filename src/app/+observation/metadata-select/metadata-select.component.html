@@ -3,6 +3,7 @@
     showUncheckAll: true,
     pullRight: true,
     enableSearch: true,
+    fixedTitle: true,
     checkedStyle: 'checkboxes',
     buttonClasses: 'btn btn-default btn-block btn-sm',
     displayAllSelectedText: true,
@@ -16,7 +17,7 @@
     checked: 'checked' | translate,
     checkedPlural: 'checkedPlural' | translate,
     searchPlaceholder: 'search-bar.input' | translate,
-    defaultTitle: 'select' | translate,
+    defaultTitle: (placeholder | translate) + selectedTitle,
     allSelected: 'allSelected' | translate
   }"
   [ngModel]="active"

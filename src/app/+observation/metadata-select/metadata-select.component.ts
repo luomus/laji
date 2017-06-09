@@ -30,12 +30,13 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   @Input() name: string;
   @Input() multiple = false;
   @Input() lang = 'fi';
-  @Input() placeholder = '';
+  @Input() placeholder = 'select';
   @Input() mapToWarehouse = false;
   @Input() pick: MetadataSelectPick;
 
   options = [];
   active = [];
+  selectedTitle = '';
 
   private subOptions: Subscription;
   private innerValue = '';
@@ -122,6 +123,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   initActive(): any {
     if (!this.value) {
       this.active = [];
+      this.selectedTitle = '';
       return;
     }
     if (typeof this.value === 'string') {
@@ -139,6 +141,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
         return cum;
       }, []);
     }
+    this.selectedTitle = this.active.length > 0 ? ' (' + this.active.length + ')' : '';
   }
 
   public refreshValue(value: any): void {

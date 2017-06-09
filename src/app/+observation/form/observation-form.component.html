@@ -119,7 +119,7 @@
                       [(ngModel)]="searchQuery.query.countryId"
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
-                      [placeholder]="'result.gathering.country'|translate"
+                      [placeholder]="'result.gathering.country'"
                       name="countryId"
                       [field]="areaType.Country"
                       [lang]="translate.currentLang"></laji-select>
@@ -131,7 +131,7 @@
                       [(ngModel)]="searchQuery.query.biogeographicalProvinceId"
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
-                      [placeholder]="'result.gathering.biogeographicalProvince'|translate"
+                      [placeholder]="'result.gathering.biogeographicalProvince'"
                       name="biogeographicalProvinceId"
                       [field]="areaType.Biogeographical"
                       [lang]="translate.currentLang"></laji-select>
@@ -143,7 +143,7 @@
                       [(ngModel)]="searchQuery.query.finnishMunicipalityId"
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
-                      [placeholder]="'observation.form.municipality'|translate"
+                      [placeholder]="'observation.form.municipality'"
                       name="finnishMunicipalityId"
                       [field]="areaType.Municipality"
                       [lang]="translate.currentLang"></laji-select>
@@ -263,7 +263,7 @@
                       [(ngModel)]="searchQuery.query.sex"
                       [alt]="'MY.sexes'"
                       [multiple]="true"
-                      [placeholder]="'observation.form.sex' | translate"
+                      [placeholder]="'observation.form.sex'"
                       (ngModelChange)="onQueryChange()"
                       [mapToWarehouse]="true"
                       name="sex"
@@ -327,7 +327,7 @@
               <laji-select
                       [(ngModel)]="searchQuery.query.sourceId"
                       (ngModelChange)="onQueryChange()"
-                      [placeholder]="'observation.form.system'|translate"
+                      [placeholder]="'observation.form.system'"
                       [multiple]="true"
                       name="sourceId"
                       [field]="'KE.informationSystem'"
@@ -355,7 +355,7 @@
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
                       name="redListStatusId"
-                      [placeholder]="'observation.form.redListStatusId' | translate"
+                      [placeholder]="'observation.form.redListStatusId'"
                       [alt]="'MX.iucnStatuses'"
                       [lang]="translate.currentLang"></laji-select>
             </div>
