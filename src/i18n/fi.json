@@ -365,7 +365,7 @@
   "viewer.document": "Havaintoerä",
   "viewer.gatherings": "Keruutapahtumat",
   "viewer.unit": "havaintoa",
-  "viewer.notFound": "Havaintoerää ei löytynyt",
+  "viewer.notFound": "Havaintoerää ei löytynyt, odota hetki ",
   "viewer.valueInterpreted": "tulkittu",
   "viewer.showFacts": "Näytä lisämuuttujat",
   "viewer.hideFacts": "Piilota lisämuuttujat",

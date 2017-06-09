@@ -352,7 +352,7 @@
   "observation.active.biogeographicalProvinceId": "Biogeografiskt provins",
   "viewer.gatherings": "ställen",
   "viewer.valueInterpreted": "tolkas",
-  "viewer.notFound": "Observation hittades inte",
+  "viewer.notFound": "Observation hittades inte, vänta en stund",
   "viewer.showFacts": "Visa extra information",
   "viewer.hideFacts": "Göm extra info",
   "viewer.field.observer": "Göm extra info",
