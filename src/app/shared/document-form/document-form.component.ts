@@ -15,6 +15,9 @@ import { Form } from '../model/FormListInterface';
 import { Logger } from '../logger/logger.service';
 import {NamedPlacesService} from '../../+haseka/named-place/named-places.service';
 import { Document } from '../model/Document';
+import { DialogService } from '../service/dialog.service';
+import { Observer } from 'rxjs/Observer';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-document-form',
@@ -40,6 +43,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   public enablePrivate = true;
   public errorMsg: string;
   public namedPlace;
+  public hasChanges = false;
 
   private subTrans: Subscription;
   private subFetch: Subscription;
@@ -47,7 +51,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   private success = '';
   private error: any;
   private isEdit = false;
-  private hasChanges = false;
   private leaveMsg;
   private publicityRestrictions;
   private current;
@@ -59,7 +62,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               public translate: TranslateService,
               private toastsService: ToastsService,
               private namedPlaceService: NamedPlacesService,
-              private winRef: WindowRef,
+              private dialogService: DialogService,
               private logger: Logger) {
   }
 
@@ -176,14 +179,14 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   discard() {
-    this.translate.get('haseka.form.discardConfirm').subscribe(
-      (confirm) => {
-        if (!this.hasChanges) {
-          this.onCancel.emit(true);
-        } else if (this.winRef.nativeWindow.confirm(confirm)) {
-          this.onCancel.emit(true);
+    this.translate.get('haseka.form.discardConfirm')
+      .switchMap(txt => this.hasChanges ? this.dialogService.confirm(txt) : Observable.of(false))
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.formService.discard();
+          this.hasChanges = false;
         }
-        this.formService.discard();
+        this.onCancel.emit(true);
       }
     );
   }

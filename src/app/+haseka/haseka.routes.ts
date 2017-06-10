@@ -13,6 +13,7 @@ import { IntroComponent } from './form-permission/admin/intro/intro.component';
 import { AcceptComponent } from './form-permission/admin/accept/accept.component';
 import { ManageComponent } from './form-permission/admin/manage/manage.component';
 import { NpPrintComponent } from './named-place/np-print/np-print.component';
+import { DocumentDeActivateGuard } from '../shared/document-form/document-de-activate.guard';
 
 export const hasekaRoutes: Routes = [
   {
@@ -62,7 +63,8 @@ export const hasekaRoutes: Routes = [
   {
     path: ':formId/:documentId',
     pathMatch: 'full',
-    component: HaSeKaFormComponent
+    component: HaSeKaFormComponent,
+    canDeactivate: [DocumentDeActivateGuard]
   }
 ];
 

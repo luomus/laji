@@ -26,7 +26,6 @@ import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@a
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
-import 'rxjs/Rx';
 import { PagedResult } from '../model/PagedResult';
 
 

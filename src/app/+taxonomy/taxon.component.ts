@@ -66,7 +66,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
     informal.filter(id => id != null).forEach(id => {
       this.informalTaxonService.informalTaxonGroupGetChildren(id, this.translate.currentLang)
-        .zip(this.informalTaxonService.informalTaxonGroupFindById(id, this.translate.currentLang))
+        .combineLatest(this.informalTaxonService.informalTaxonGroupFindById(id, this.translate.currentLang))
         .map(this.parseInformalTaxonGroup.bind(this))
         .subscribe(this.setSelectedInformalGroup.bind(this), () => {});
       this.informalTaxonService.informalTaxonGroupGetParents(id, this.translate.currentLang)

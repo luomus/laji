@@ -27,7 +27,6 @@
 import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/Rx';
 import { Log, Status } from '../model/Log';
 
 /* tslint:disable:no-unused-variable member-ordering */

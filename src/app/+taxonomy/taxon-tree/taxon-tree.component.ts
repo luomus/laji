@@ -3,9 +3,6 @@ import { Observable } from 'rxjs/Observable';
 import { TREE_ACTIONS, TreeComponent, TreeNode } from 'angular-tree-component';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { ITreeNode } from 'angular-tree-component/dist/defs/api';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/observable/fromEvent';
-import { setTimeout } from 'timers';
 
 @Component({
   selector: 'laji-tree',
@@ -54,17 +51,18 @@ export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {
       this.taxonService
         .taxonomyFindBySubject('MX.37600', 'multi', {selectedFields: this.selectedFields})
         .map(data => [data] ))
-      .subscribe((data) => {
+      .do((data) => {
         this.nodes = data;
         this.tree.treeModel.update();
-        setTimeout(() => {
-          if (TaxonTreeComponent.cache) {
-            this.openTree(this.tree.treeModel.roots);
-          }
-          if (this.openId) {
-            this.openTreeById(this.openId);
-          }
-        }, 100);
+      })
+      .delay(100)
+      .subscribe(() => {
+        if (TaxonTreeComponent.cache) {
+          this.openTree(this.tree.treeModel.roots);
+        }
+        if (this.openId) {
+          this.openTreeById(this.openId);
+        }
       }, (error) => {
         console.error(error);
       });

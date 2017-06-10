@@ -10,7 +10,6 @@ import { NafiResultComponent } from './nafi/nafi-result/nafi-result.component';
 import { ThemeMapComponent } from './theme-map/theme-map.component';
 import { ResultService } from './service/result.service';
 import { FixedTableDirective } from './directive/fixed-table.directive';
-import { ThemeFormComponent } from './theme-form/theme-form.component';
 import { ThemeObservationListComponent } from './theme-observation-list/theme-observation-list.component';
 import { NafiFormComponent } from './nafi/nafi-form/nafi-form.component';
 import { NafiMyDocumentListComponent } from './nafi/nafi-my-document-list/nafi-my-document-list.component';
@@ -32,7 +31,6 @@ import { ViewerModule } from '../+viewer/viewer.module';
     NafiResultComponent,
     ThemeMapComponent,
     FixedTableDirective,
-    ThemeFormComponent,
     ThemeObservationListComponent,
     NafiFormComponent,
     NafiMyDocumentListComponent,

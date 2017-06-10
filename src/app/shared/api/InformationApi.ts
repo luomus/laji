@@ -26,7 +26,6 @@ import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@a
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Information } from '../model';
-import 'rxjs/Rx';
 
 'use strict';
 

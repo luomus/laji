@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
-import * as OpenSeadragon from 'openseadragon';
+import { ScriptService } from '../service/script.service';
 
 @Component({
   selector: 'laji-image',
@@ -14,19 +14,30 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
 
   private viewer: any;
   private current: string;
+  private loaded = false;
 
-  constructor(private el: ElementRef) { }
+  constructor(
+    private el: ElementRef,
+    private scriptService: ScriptService
+  ) {}
 
   ngAfterViewInit() {
+    this.scriptService.load('openseadragon')
+      .subscribe(
+        () => {
+          this.loaded = true;
+          this.updateImage();
+        },
+        (err) => console.log(err)
+      );
+  }
+
+  ngOnChanges() {
     this.updateImage();
   }
 
   ngOnDestroy() {
     this.destroy();
-  }
-
-  ngOnChanges() {
-    this.updateImage();
   }
 
   private destroy() {
@@ -36,9 +47,10 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
   }
 
   private updateImage() {
-    if (!this.src || this.current === this.src) {
+    if (!this.src || this.current === this.src || !this.loaded) {
       return;
     }
+    console.log('UPDATE IMAGE');
     this.current = this.src;
     this.destroy();
     this.loading.emit(true);
