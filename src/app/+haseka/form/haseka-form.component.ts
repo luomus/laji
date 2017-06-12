@@ -45,6 +45,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
 
   canDeactivate() {
     if (!this.documentForm || !this.documentForm.hasChanges) {
+      this.formService.discard(undefined, true);
       return true;
     }
     return this.translate

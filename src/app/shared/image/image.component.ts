@@ -3,7 +3,7 @@ import { ScriptService } from '../service/script.service';
 
 @Component({
   selector: 'laji-image',
-  template: '',
+  template: ' ',
   styleUrls: ['./image.component.css']
 })
 export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
@@ -50,7 +50,6 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
     if (!this.src || this.current === this.src || !this.loaded) {
       return;
     }
-    console.log('UPDATE IMAGE');
     this.current = this.src;
     this.destroy();
     this.loading.emit(true);

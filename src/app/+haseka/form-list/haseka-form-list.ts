@@ -12,14 +12,17 @@ import { Person } from '../../shared/model/Person';
 
 @Component({
   selector: 'laji-haseka-form-list',
-  templateUrl: './haseka-form-list.component.html'
+  templateUrl: './haseka-form-list.component.html',
+  styleUrls: ['./haseka-form-list.component.css']
 })
 export class HaSeKaFormListComponent implements OnInit, OnDestroy {
 
   public formList: FormListInterface[] = [];
   public isAdmin = false;
+  public tmpDocument: {[formId: string]: string} = {};
   private subTrans: Subscription;
   private subFetch: Subscription;
+  private subTmp: Subscription;
 
   constructor(private formService: FormService,
               private translate: TranslateService,
@@ -35,6 +38,17 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       .subscribe((person: Person) => {
         this.isAdmin = person.role && person.role.indexOf('MA.admin') > -1;
       });
+    this.subTmp = Observable.merge(
+      this.formService.getAllTempDocuments(),
+      this.formService.localChanged
+        .switchMap(() => this.formService.getAllTempDocuments())
+      ).map(documents => documents.reduce((cumulative, current) => {
+          if (current.formID && !cumulative[current.formID]) {
+            cumulative[current.formID] = current.id;
+          }
+          return cumulative;
+        }, {}))
+      .subscribe((data: any) => this.tmpDocument = data);
     this.subTrans = this.translate.onLangChange.subscribe(
       () => {
         this.updateForms();

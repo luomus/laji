@@ -41,6 +41,7 @@ export class NafiFormComponent implements OnInit, OnDestroy, ComponentCanDeactiv
 
   canDeactivate() {
     if (!this.documentForm || !this.documentForm.hasChanges) {
+      this.formService.discard(undefined, true);
       return true;
     }
     return this.translate

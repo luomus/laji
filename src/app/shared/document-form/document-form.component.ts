@@ -178,19 +178,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     this.lajiForm.submit();
   }
 
-  discard() {
-    this.translate.get('haseka.form.discardConfirm')
-      .switchMap(txt => this.hasChanges ? this.dialogService.confirm(txt) : Observable.of(false))
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.formService.discard();
-          this.hasChanges = false;
-        }
-        this.onCancel.emit(true);
-      }
-    );
-  }
-
   fetchForm() {
     const key = this.formId + this.translate.currentLang;
     if (this.current === key) {
@@ -206,7 +193,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         data => {
           this.loading = false;
           this.formService
-            .store(data.formData)
+            .store(data.formData, true)
             .subscribe(id => this.onTmpLoad.emit({
               formID: this.formId,
               tmpID: id
