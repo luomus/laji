@@ -433,8 +433,8 @@
   "instructions": "Ohjeet",
   "checkAll": "Valitse kaikki",
   "uncheckAll": "Poista valinnat",
-  "checked": "valittuna",
-  "checkedPlural": "valittuna",
+  "checked": "valittu",
+  "checkedPlural": "valittu",
   "select": "Valitse",
-  "allSelected": "Kaikki valittuna"
+  "allSelected": "Kaikki valittu"
 }

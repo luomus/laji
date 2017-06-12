@@ -414,10 +414,10 @@
   "m-11": "november",
   "m-12": "december",
   "instructions": "Instructions",
-  "checkAll": "Check all",
-  "uncheckAll": "Uncheck all",
-  "checked": "checked",
-  "checkedPlural": "checked",
-  "select": "Select",
-  "allSelected": "All selected"
+  "checkAll": "Markera alla",
+  "uncheckAll": "Återställ",
+  "checked": "vald",
+  "checkedPlural": "valda",
+  "select": "Välj",
+  "allSelected": "Alla valda"
 }
