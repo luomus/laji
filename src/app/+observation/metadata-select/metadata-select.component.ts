@@ -127,18 +127,18 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
       return;
     }
     if (typeof this.value === 'string') {
-      this.active = this.options.reduce((cum, curr) => {
-        if (this.value === curr.id) {
-          cum.push(curr.id);
+      this.active = this.options.reduce((cumulative, current) => {
+        if (this.value === current.id) {
+          cumulative.push(current.id);
         }
-        return cum;
+        return cumulative;
       }, []);
     } else {
-      this.active = this.options.reduce((cum, curr) => {
-        if (this.value.indexOf(curr.id) > -1) {
-          cum.push(curr.id);
+      this.active = this.options.reduce((cumulative, current) => {
+        if (this.value.indexOf(current.id) > -1) {
+          cumulative.push(current.id);
         }
-        return cum;
+        return cumulative;
       }, []);
     }
     this.selectedTitle = this.active.length > 0 ? ' (' + this.active.length + ')' : '';
