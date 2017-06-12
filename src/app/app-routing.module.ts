@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { ViewerComponent } from './+viewer/viewer.component';
+import { ForumComponent } from './forum/forum.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule'},
@@ -19,6 +20,7 @@ const routes: Routes = [
   {path: 'error', loadChildren: './+error/error.module#ErrorModule'},
   {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule'},
   {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
+  {path: 'forum', component: ForumComponent },
   {path: '**', component: NotFoundComponent}
 ];
 

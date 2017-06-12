@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { AppConfig } from '../../app.config';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-navbar',
@@ -13,7 +14,7 @@ export class NavbarComponent {
   isAuthority = false;
   env = 'beta';
 
-  constructor(public userService: UserService, appConfig: AppConfig) {
+  constructor(public userService: UserService, private router: Router, appConfig: AppConfig) {
     this.env = appConfig.getEnv();
     this.isAuthority = appConfig.isForAuthorities();
   }
@@ -25,5 +26,10 @@ export class NavbarComponent {
   doLogin(event: Event) {
     event.preventDefault();
     this.userService.doLogin();
+  }
+
+  goToForum(event: Event) {
+    event.preventDefault();
+    this.router.navigate(['/forum'], {skipLocationChange: true});
   }
 }

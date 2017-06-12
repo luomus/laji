@@ -2,7 +2,6 @@ import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@a
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { News, PagedResult } from '../model';
-import 'rxjs/Rx';
 
 @Injectable()
 export class NewsApi {

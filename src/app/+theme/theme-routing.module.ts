@@ -7,6 +7,7 @@ import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 import { NafiMyDocumentListComponent } from './nafi/nafi-my-document-list/nafi-my-document-list.component';
 import { NafiInstructionsComponent } from './nafi/nafi-instructions/nafi-instructions.component';
 import { HerpetologyComponent } from './herpetology/herpetology.component';
+import { DocumentDeActivateGuard } from '../shared/document-form/document-de-activate.guard';
 
 const routes: Routes = [
   {
@@ -16,7 +17,13 @@ const routes: Routes = [
       {path: '', pathMatch: 'full', component: NafiInstructionsComponent},
       {path: 'stats', pathMatch: 'full', component: NafiResultComponent},
       {path: 'form', pathMatch: 'full', component: NafiFormComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'form/:id', pathMatch: 'full', component: NafiFormComponent, canActivate: [OnlyLoggedIn]},
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: NafiFormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard]
+      },
       {path: 'myObservations', pathMatch: 'full', component: NafiMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: NafiInstructionsComponent}
     ]

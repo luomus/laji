@@ -5,7 +5,7 @@ import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WindowRef } from '../../shared/windows-ref';
 import { Subscription } from 'rxjs/Subscription';
-import { DocumentInfoService } from '../document-info.service'
+import { DocumentInfoService } from '../document-info.service';
 
 import * as moment from 'moment';
 import 'moment/locale/fi';
@@ -43,16 +43,15 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     moment.locale(this.translate.currentLang);
     this.changingLocale = false;
-    this.subTrans = this.translate.onLangChange.subscribe(
-      () => {
+    this.subTrans = this.translate.onLangChange
+      .do(() => {
         this.changingLocale = true;
         moment.locale(this.translate.currentLang);
-        const that = this;
-        setTimeout(() => {
-          that.changingLocale = false;
-        }, 0);
-      }
-    );
+      })
+      .delay(0)
+      .subscribe(() => {
+        this.changingLocale = false;
+      });
     this.updateFields();
   }
 

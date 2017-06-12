@@ -5,6 +5,7 @@ import { ModuleWithProviders } from '@angular/core';
 export const observationRoutes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
     redirectTo: 'map'
   },
   {

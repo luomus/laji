@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, OnChanges } from '@angular/core';
+import { ScriptService } from '../shared/service/script.service';
 declare var d3, nv: any;
 
 @Component({
@@ -13,12 +14,16 @@ export class nvD3 implements OnChanges {
   chart: any;
   svg: any;
 
-  constructor(private elementRef: ElementRef) {
+  constructor(private elementRef: ElementRef, private scriptService: ScriptService) {
     this.el = elementRef.nativeElement;
   }
 
   ngOnChanges() {
-    this.updateWithOptions(this.options);
+    this.scriptService.load('d3', 'nvd3')
+      .subscribe(
+        () => this.updateWithOptions(this.options),
+        (err) => console.log(err)
+      );
   }
 
   updateWithOptions(options) {

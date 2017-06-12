@@ -26,7 +26,6 @@ import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@a
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { PagedResult, WarehouseQueryInterface } from '../model';
-import 'rxjs/Rx';
 import { SearchQuery } from '../../+observation/search-query.model';
 import { WarehouseCountResultInterface } from '../model/WarehouseCountResultInterface';
 

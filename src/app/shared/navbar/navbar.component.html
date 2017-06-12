@@ -31,7 +31,7 @@
               <a [routerLink]="['/about']">{{ 'navigation.information' | translate }}</a>
             </li>
             <li>
-              <a href="http://foorumi.laji.fi/">{{'Forum' | translate}}</a>
+              <a (click)="goToForum($event)" class="link" href="http://foorumi.laji.fi/">{{'Forum' | translate}}</a>
             </li>
           </ul>
           <ul class="nav navbar-nav pull-right">
