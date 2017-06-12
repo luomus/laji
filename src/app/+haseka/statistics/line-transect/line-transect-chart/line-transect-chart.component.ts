@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy } from '@angular/core';
+import { ScriptService } from '../../../../shared/service/script.service';
 
 declare const d3: any;
 
@@ -35,20 +36,31 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   private yScale: any;
   private xAxis: any;
   private yAxis: any;
+  private d3Loaded = false;
 
-  constructor(element: ElementRef) {
+  constructor(
+    element: ElementRef,
+    private scriptService: ScriptService
+  ) {
     this.nativeElement = element.nativeElement;
   }
 
   ngAfterViewInit() {
-    this.createChart();
-    if (this.value && this.ykj3) {
-      this.updateChart();
-    }
+    this.scriptService.load('d3')
+      .subscribe(
+        () => {
+          this.d3Loaded = true;
+          this.createChart();
+          if (this.value && this.ykj3) {
+            this.updateChart();
+          }
+        },
+        (err) => console.log(err)
+      );
   }
 
   ngOnChanges() {
-    if (this.chart) {
+    if (this.d3Loaded && this.chart) {
       this.updateChart();
     }
   }
