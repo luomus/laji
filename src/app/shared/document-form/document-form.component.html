@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="col-xs-3 col-sm-2">
-        <button class="btn btn-default btn-sm pull-right" [disabled]="saving" type="submit" (click)="discard()">{{'haseka.form.back'|translate}}</button>
+        <button class="btn btn-default btn-sm pull-right" [disabled]="saving" type="submit" (click)="onCancel.emit()">{{'haseka.form.back'|translate}}</button>
       </div>
     </div>
   </div>

@@ -80,6 +80,9 @@ import { NlToBrPipe } from './pipe/nl-to-br.pipe';
 import { Map2Component } from './map/map2.component';
 import { DocumentFormHeaderComponent } from './document-form-header/document-form-header.component';
 import { FixedInViewDirective } from './directive/fixed-in-view.directive';
+import { DialogService } from './service/dialog.service';
+import { DocumentDeActivateGuard } from './document-form/document-de-activate.guard';
+import { ScriptService } from './service/script.service';
 
 
 @NgModule({
@@ -145,6 +148,9 @@ export class SharedModule {
         FormattedNumber,
         ToQNamePipe,
         OnlyLoggedIn,
+        DialogService,
+        ScriptService,
+        DocumentDeActivateGuard,
         {provide: Http, useClass: AuthenticatedHttpService}
       ]
     };

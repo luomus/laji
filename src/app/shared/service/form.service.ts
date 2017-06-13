@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { LocalStorage } from 'ng2-webstorage';
 import { UserService } from './user.service';
@@ -13,6 +13,8 @@ import * as deepmerge from 'deepmerge';
 
 @Injectable()
 export class FormService {
+
+  public localChanged = new EventEmitter();
 
   @LocalStorage() private formDataStorage;
   @LocalStorage() private tmpDocId;
@@ -45,29 +47,32 @@ export class FormService {
       .map(person => person.id);
   }
 
-  discard(id?: string): void {
+  discard(id?: string, onlyIfNew = false): void {
     if (!id) {
       id = this.currentKey;
     }
     this.getUserId()
       .switchMap(userID => {
         if (this.formDataStorage[userID] && this.formDataStorage[userID][id]) {
-          delete this.formDataStorage[userID][id];
-          this.formDataStorage = Util.clone(this.formDataStorage);
+          if (!onlyIfNew || this.formDataStorage[userID][id]['newData'] === true) {
+            delete this.formDataStorage[userID][id];
+            this.formDataStorage = Util.clone(this.formDataStorage);
+            this.localChanged.emit(true);
+          }
         }
         return Observable.of(true);
       })
       .subscribe();
   }
 
-  store(formData: Document): Observable<string> {
+  store(formData: Document, newData = false): Observable<string> {
     if (this.currentKey) {
       return this.getUserId()
         .switchMap(userID => {
           if (!this.formDataStorage[userID]) {
             this.formDataStorage[userID] = {};
           }
-          this.formDataStorage[userID][this.currentKey] = { 'formData': formData, 'dateStored': new Date() };
+          this.formDataStorage[userID][this.currentKey] = { 'formData': formData, 'dateStored': new Date(), 'newData': newData };
           this.formDataStorage = Util.clone(this.formDataStorage);
           return Observable.of(this.currentKey);
         });

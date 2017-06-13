@@ -31,6 +31,7 @@ import { Ng2Webstorage } from 'ng2-webstorage';
 import { ViewerModule } from './+viewer/viewer.module';
 import { ToastModule } from 'ng2-toastr/src/toast.module';
 import { NamedPlaceModule } from './+haseka/named-place/named-place.module';
+import { ForumComponent } from './forum/forum.component';
 
 export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): ILogger {
   const env = appConfig.getEnv();
@@ -43,7 +44,8 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
 @NgModule({
   declarations: [
     AppComponent, NavbarComponent, FooterComponent, FeedbackComponent, LangSelectComponent,
-    WhatsNewComponent
+    WhatsNewComponent,
+    ForumComponent
   ],
   imports: [
     BrowserAnimationsModule,

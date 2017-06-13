@@ -51,7 +51,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="document.gatherings.length > 1" class="gatherings">
+  <div *ngIf="document.gatherings && document.gatherings.length > 1" class="gatherings">
     <div class="row">
       <div class="col-sm-7">
         <laji-row [title]="'viewer.gatherings' | translate" [showWithoutValue]="true"></laji-row>

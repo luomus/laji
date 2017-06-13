@@ -239,7 +239,10 @@
   "haseka.form.success": "Havainnot tallennettu!",
   "haseka.form.failure": "Tallennus epäonnistui!",
   "haseka.form.savePublic": "Tallenna julkisena (CC-BY)",
-  "haseka.form.savePrivate": "Tallenna vain omaan käyttöön",
+  "haseka.form.savePrivate": "Tallenna vain omaan käyttöön ",
+  "haseka.form.unsaved1": "Tästä lomakkeesta on ",
+  "haseka.form.unsaved2": "tallentamaton havaintoerä",
+  "haseka.form.unsaved3": ".",
   "haseka.form.unsaved": "Viimeksi tallennettu {{saveTime}}",
   "haseka.form.unsavedNever": "Muutoksia ei ole vielä tallennettu",
   "haseka.form.hasChanges": "Havaintoerässä on muutoksia, joita ei ole vielä tallennettu",
@@ -365,7 +368,7 @@
   "viewer.document": "Havaintoerä",
   "viewer.gatherings": "Keruutapahtumat",
   "viewer.unit": "havaintoa",
-  "viewer.notFound": "Havaintoerää ei löytynyt",
+  "viewer.notFound": "Havaintoerää ei löytynyt, odota hetki ",
   "viewer.valueInterpreted": "tulkittu",
   "viewer.showFacts": "Näytä lisämuuttujat",
   "viewer.hideFacts": "Piilota lisämuuttujat",
@@ -433,8 +436,8 @@
   "instructions": "Ohjeet",
   "checkAll": "Valitse kaikki",
   "uncheckAll": "Poista valinnat",
-  "checked": "valittuna",
-  "checkedPlural": "valittuna",
+  "checked": "valittu",
+  "checkedPlural": "valittu",
   "select": "Valitse",
-  "allSelected": "Kaikki valittuna"
+  "allSelected": "Kaikki valittu"
 }
