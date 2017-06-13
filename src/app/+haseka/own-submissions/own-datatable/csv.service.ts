@@ -1,54 +1,53 @@
 import { Injectable } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import { Util } from '../../../shared/service/util.service';
+import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { TranslateService } from '@ngx-translate/core';
 import { geoJSONToISO6709 } from 'laji-map/lib/utils';
+import json2csv from 'json2csv/lib/json2csv';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * Csv service
  */
 @Injectable()
 export class CsvService {
-  private delimeter = ',';
-
   constructor(
-    private translate: TranslateService
+    private translate: TranslateService,
+    private labelService: TriplestoreLabelService
   ) {}
 
   public downloadDocumentAsCsv(doc: Document, form: any) {
-    const uri = encodeURI(this.documentToCsv(doc, form));
+    this.documentToCsvData(doc, form).subscribe(data => {
+      let csv = 'data:text/csv;charset=utf-8,';
+      csv += json2csv({ data: data });
 
-    const downloadLink = document.createElement('a');
-    downloadLink.href = uri;
+      const uri = encodeURI(csv);
 
-    this.translate.get('haseka.submissions.submission').subscribe((msg) => {
-      downloadLink.download = msg + '_' + doc.id.split('.')[1] + '.csv';
+      const downloadLink = document.createElement('a');
+      downloadLink.href = uri;
 
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
+      this.translate.get('haseka.submissions.submission').subscribe((msg) => {
+        downloadLink.download = msg + '_' + doc.id.split('.')[1] + '.csv';
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      });
     });
   }
 
-  private documentToCsv(document: Document, form: any) {
-    let csv = 'data:text/csv;charset=utf-8, ';
-
-    const colData = this.getColumnData(document, form);
-    csv += this.getColString(colData);
-
-    const rows = this.getRowStrings(colData, document, form);
-    for (let i = 0; i < rows.length; i++) {
-      csv += '\n';
-      csv += rows[i];
-    }
-    return csv;
+  private documentToCsvData(document: Document, form: any): Observable<any> {
+    return this.getColumnData(document, form).switchMap((colData) => {
+      return this.getCsvData(colData, document, form);
+    });
   }
 
-
-  private getColumnData(document: Document, form: any): any {
+  private getColumnData(document: Document, form: any): Observable<any> {
     const queue = [{obj: document, key: 'document'}];
     let next, obj, key;
     const colData = {};
+    const labelObservables = [];
 
     while (queue.length > 0) {
       next = queue.shift();
@@ -80,100 +79,140 @@ export class CsvService {
         if (!colData[key]) {
           colData[key] = [];
         }
-        if (colData[key].filter(e => e.name === i).length === 0) {
-          colData[key].push({name: i, type: type});
-        }
-      }
-    }
-    return colData;
-  }
+        if (colData[key].filter(e => e.id === i).length === 0) {
+          const col = {id: i, type: type, label: ''};
+          colData[key].push(col);
+          colData[key].sort((a, b) => {
+            if (a.type === b.type) { return 0; }
 
-  private getColString(colData: any, key = 'document', colString = ''): string {
-    const cols = colData[key] ? colData[key] : [];
-    cols.sort((a, b) => {
-      if (a.type === b.type) { return 0; }
-
-      if (a.type === 'column' || (a.type === 'object' && b.type === 'objectArray')) {
-        return -1;
-      } else {
-        return 1;
-      }
-    });
-
-    for (let i = 0; i < cols.length; i++) {
-      const col = cols[i];
-
-      if (col.type === 'column') {
-        if (colString !== '') { colString += this.delimeter + ' '; }
-        colString += col.name;
-      } else {
-        colString = this.getColString(colData, col.name, colString);
-      }
-    }
-
-    return colString;
-  }
-
-  private getRowStrings(colData, obj, form, key = 'document', rows = ['']) {
-    if (colData[key]) {
-      for (let i = 0; i < colData[key].length; i++) {
-        const col = colData[key][i];
-        const child = !obj ? null : obj[col.name];
-
-        if (col.type === 'column') {
-          const value = this.getColumnValue(col.name, child);
-          this.appendValueToRows(value, rows);
-        } else if (col.type === 'object' || child == null) {
-          rows = this.getRowStrings(colData, child, form, col.name, rows);
-        } else {
-          const rowData = rows;
-          rows = [];
-          for (let j = 0; j < child.length; j++) {
-            if (!this.isEmpty(col.name, child[j], form)) {
-              const row = this.getRowStrings(colData, child[j], form, col.name, Util.clone(rowData));
-              rows = rows.concat(row);
+            if (a.type === 'column' || (a.type === 'object' && b.type === 'objectArray')) {
+              return -1;
+            } else {
+              return 1;
             }
+          });
+          if (col.type === 'column') {
+            labelObservables.push(this.labelService.get(i).do((label) => {
+              col.label = label || i;
+            }));
           }
-
-          if (rows.length < 1) { rows = this.getRowStrings(colData, null, form, col.name, rowData); }
         }
       }
     }
 
-    return rows;
+    return Observable.forkJoin(labelObservables, () => {
+      return colData;
+    });
   }
 
-  private getColumnValue(key, object): string {
-    let value = '';
+  private getCsvData(colData, obj, form, key = 'document', rows = [{}]): Observable<any[]> {
+    let colIndex = 0;
 
-    if (object != null) {
-      if (key === 'geometry') {
-        value += geoJSONToISO6709({
-          type: 'FeatureCollection',
-          features: [{
-            type: 'Feature',
-            geometry: object.geometries ? object.geometries[0] : object,
-          }]});
-      } else if (Array.isArray(object)) {
-        value += object.join(', ');
+    let appendColumnsToData = (): Observable<any[]> => {
+      if (!colData[key] || colData[key].length < 1) { return Observable.of(rows); }
+
+      const columns = colData[key];
+      const rowObservables = [];
+
+      while (colIndex < columns.length && columns[colIndex].type === 'column') {
+        const col = columns[colIndex];
+        const child = !obj ? null : obj[col.id];
+        rowObservables.push(this.getColumnValue(col, child));
+        colIndex++;
+      }
+
+      return Observable.forkJoin(rowObservables).map((array: any[]) => {
+        for (let i = 0; i < array.length; i++) {
+          for (let j = 0; j < rows.length; j++) {
+            Object.assign(rows[j], array[i]);
+          }
+        }
+        return rows;
+      });
+    };
+
+    let appendObjectsToData = (): Observable<any[]> => {
+      if (colIndex >= colData[key].length) { return Observable.of(rows); }
+      const col = colData[key][colIndex];
+      const child = !obj ? null : obj[col.id];
+      colIndex++;
+
+      if (col.type === 'object' || child == null) {
+        return this.getCsvData(colData, child, form, col.id, rows).switchMap(() => {
+          return appendObjectsToData();
+        });
       } else {
-        value += object;
-      }
-    }
+        const rowObservables = [];
 
-    return value;
+        for (let j = 0; j < child.length; j++) {
+          if (!this.isEmpty(col.id, child[j], form)) {
+            rowObservables.push(this.getCsvData(colData, child[j], form, col.id, Util.clone(rows)));
+          }
+        }
+
+        return Observable.forkJoin(rowObservables)
+          .switchMap((array: any[]) => {
+            if (array.length > 0) {
+              rows.length = 0;
+              for (let i = 0; i < array.length; i++) {
+                rows.push.apply(rows, array[i]);
+              }
+              return appendObjectsToData();
+            } else {
+              return this.getCsvData(colData, null, form, col.id, rows).switchMap(() => {
+                return appendObjectsToData();
+              });
+            }
+          });
+      }
+    };
+
+    appendColumnsToData = appendColumnsToData.bind(this);
+    appendObjectsToData = appendObjectsToData.bind(this);
+
+    return appendColumnsToData().switchMap(() => {
+      return appendObjectsToData();
+    });
   }
 
-  private appendValueToRows(value: string, rows: any) {
-    value = value.replace(/\r?\n|\r/g, ' ');
-    value = value.replace('"', '\'');
+  private getColumnValue(col, object): Observable<any> {
 
-    for (let j = 0; j < rows.length; j++) {
-      if (rows[j] !== '') {
-        rows[j] += this.delimeter + ' ';
+    const getRawValue = (): Observable<any> => {
+      let value = '';
+
+      if (object != null) {
+        if (col.id === 'geometry') {
+          value += geoJSONToISO6709({
+            type: 'FeatureCollection',
+            features: [{
+              type: 'Feature',
+              geometry: object.geometries ? object.geometries[0] : object,
+            }]});
+        } else if (Array.isArray(object)) {
+          return Observable.from(object.map((labelKey) => {
+            return this.labelService.get(labelKey).map((label) => {
+              return label || String(object);
+            });
+          }))
+            .mergeAll()
+            .toArray()
+            .map((array) => {
+              return array.join(', ');
+            });
+        } else {
+          return this.labelService.get(object).map((label) => {
+            return label || String(object);
+          });
+        }
       }
-      rows[j] += '"' +  value.trim() + '"';
-    }
+
+      return Observable.of(value);
+    };
+
+    return getRawValue().map((value) => {
+      value = String(value).replace(/\r?\n|\r/g, ' ').trim();
+      return {[col.label]: value};
+    });
   }
 
   private isEmpty(key: string, obj: any, form: any) {
