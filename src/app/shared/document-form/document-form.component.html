@@ -1,4 +1,4 @@
-<laji-spinner [spinning]="!form && loading" [overlay]="true"></laji-spinner>
+<laji-spinner [spinning]="!form" [overlay]="true"></laji-spinner>
 <laji-document-form-header *ngIf="form" [formID]="form.id"></laji-document-form-header>
 <div class="row" *ngIf="namedPlace" style="margin-top: 10px">
   <div class="col-sm-12">
@@ -36,7 +36,7 @@
             {{'haseka.form.unsavedNever' | translate}}
           </span>
           <span class="pull-right">
-            <a href="/vihko/terms-of-service" target="_blank">{{'haseka.termsOfService' | translate}}</a>
+
           </span>
         </div>
       </div>
