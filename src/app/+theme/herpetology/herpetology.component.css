@@ -48,12 +48,13 @@
 
 .taxon-img {
   max-width: 170px;
+  height: 140px;
   margin-right: 1.0em;
   margin-bottom: 0.2em;
 }
 
 .taxonCard h4{
-  font-size: 0.9em;
+  font-size: 0.8em;
 
   bottom: -3em;
   left: -1em;
@@ -94,7 +95,5 @@
   #wrapper {
     display: flex;
   }
-
-
 
 }

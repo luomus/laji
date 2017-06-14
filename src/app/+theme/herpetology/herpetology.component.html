@@ -8,7 +8,7 @@
   	<div class="themeLogo">
   			<div class="themeIcon">
 
-      			<img src="https://laji.fi/static/img/themepages/herpetology_atlas/logo-sv.png" alt="Grod- och kräldjurens utbredningskartering" />
+          <img src="https://cdn.laji.fi/images/sammakkojamatelijakartoitus_270x270.png" alt="Sammakko- ja matelijakartoitus" />
 
   			</div>
       </div>
@@ -27,13 +27,13 @@
   <h2>{{'herpetology.search' | translate}}</h2>
 
   <div class="button">
-                  <a class="btn herbButton btn-primary center-block" routerLink="/observation/map" [queryParams]="{time: currentYear, countryId: 'ML.206', informalTaxonGroupId:'MVL.26'}" role="button">{{ 'herpetology.search' | translate }}</a>
+                  <a class="btn herbButton btn-primary center-block" routerLink="/observation/map" [queryParams]="{ countryId: 'ML.206', informalTaxonGroupId:'MVL.26'}" role="button">{{ 'herpetology.search' | translate }}</a>
                 </div>
 
   <h2>{{'herpetology.amphibians' | translate}}</h2>
 
   <div class="row">
-    <div *ngFor="let taxon of amphibianTaxa" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-2">
+    <div *ngFor="let taxon of amphibianTaxa" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-3">
       <a href= "taxon/{{taxon.taxon.id}}">
         {{media | multiLang}}
         <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
@@ -51,7 +51,7 @@
 
   <h2>{{'herpetology.reptiles' | translate}}</h2>
     <div class="row">
-  <td *ngFor="let taxon of reptileTaxa" [ngClass]="{}" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-2">
+  <td *ngFor="let taxon of reptileTaxa" [ngClass]="{}" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-3">
     <a href= "taxon/{{taxon.taxon.id}}">
         {{media | multiLang}}
         <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
@@ -68,7 +68,7 @@
   <h2>{{'herpetology.occasionalSpecies' | translate}}</h2>
     <div class="row align-items-start">
     <td *ngFor="let taxon of occasionalTaxa" [ngClass]="{
-    }" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-2 col-lg-offset-1">
+    }" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-3">
     <a href= "taxon/{{taxon.taxon.id}}">
       {{media | multiLang}}
       <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
