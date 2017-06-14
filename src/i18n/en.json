@@ -127,7 +127,7 @@
   "result.allObservation": "observation",
   "force.login": "You'll need to login to use this section",
   "observation.intro": "Finnish Biodiversity Information Facility compiles observation data from several Finnish databases. The observations accumulate from hobbyist, citizen science projects, government and as result of scientific work. The observations consist also of scientific collection data.",
-  "observation.form.title": "Search parameters",
+  "observation.form.title": "Parameters",
   "observation.form.unit": "Individual",
   "observation.form.collection": "Preserved specimens",
   "observation.form.coordinateAccuracyMax": "Accuracy of coordinates at least",
