@@ -48,7 +48,7 @@
     </td>
   </tr>
   <tr *ngIf="taxon.administrativeStatuses">
-    <th>{{ 'taxonomy.administrative.statuses' | translate }}</th>
+    <th>{{ 'MX.invasiveSpeciesEstablishment' | label}}</th>
     <td>
       <ul>
         <li *ngFor="let status of taxon.administrativeStatuses">{{ status | label }}</li>
