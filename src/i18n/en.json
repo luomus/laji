@@ -237,6 +237,7 @@
   "haseka.form.unsaved1": "There’s an ",
   "haseka.form.unsaved2": "unsaved submission ",
   "haseka.form.unsaved3": "of this form.",
+  "haseka.instructions": "Instructions",
   "haseka.form.back": "Leave without saving",
   "haseka.form.discard": "Discard changes",
   "haseka.form.discardConfirm": "Are you sure that you want to discard changes that are made after last saving?",

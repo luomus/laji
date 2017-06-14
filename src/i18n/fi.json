@@ -243,6 +243,7 @@
   "haseka.form.unsaved1": "Tästä lomakkeesta on ",
   "haseka.form.unsaved2": "tallentamaton havaintoerä",
   "haseka.form.unsaved3": ".",
+  "haseka.instructions": "Ohjeet",
   "haseka.form.unsaved": "Viimeksi tallennettu {{saveTime}}",
   "haseka.form.unsavedNever": "Muutoksia ei ole vielä tallennettu",
   "haseka.form.hasChanges": "Havaintoerässä on muutoksia, joita ei ole vielä tallennettu",
