@@ -5,6 +5,7 @@
   }">
     <h1>{{form.title}}</h1>
     <div [innerHtml]="form.description"></div>
+    <a href="/vihko/terms-of-service" target="_blank">{{'haseka.termsOfService' | translate}}</a>
   </div>
   <div class="col-sm-4" *ngIf="form.logo">
     <div class="form-logo pull-right" *ngIf="form.logo">

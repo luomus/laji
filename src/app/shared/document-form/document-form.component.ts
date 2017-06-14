@@ -39,7 +39,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   public status = '';
   public saveVisibility = 'hidden';
   public saving = false;
-  public loading = false;
   public enablePrivate = true;
   public errorMsg: string;
   public namedPlace;
@@ -67,7 +66,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   ngAfterViewInit() {
-    this.loading = true;
     this.hasChanges = false;
     this.footerService.footerVisible = false;
     this.subTrans = this.translate.onLangChange.subscribe(
@@ -191,7 +189,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       .load(this.formId, this.translate.currentLang)
       .subscribe(
         data => {
-          this.loading = false;
           this.formService
             .store(data.formData, true)
             .subscribe(id => this.onTmpLoad.emit({
@@ -200,7 +197,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
             }));
         },
         err => {
-          this.loading = false;
           const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
           this.translate.get(msgKey, {formId: this.formId})
             .subscribe(data => this.errorMsg = data);
@@ -221,7 +217,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       .load(this.formId, this.translate.currentLang, this.documentId)
       .subscribe(
         data => {
-          this.loading = false;
           this.isEdit = true;
           this.enablePrivate = !data.features || data.features.indexOf(Form.Feature.NoPrivate) === -1;
           if (this.formService.isTmpId(this.documentId)) {
@@ -250,7 +245,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           this.lang = this.translate.currentLang;
         },
         err => {
-          this.loading = false;
           this.formService.isTmpId(this.documentId) ?
             this.onError.emit(true) :
             this.translate

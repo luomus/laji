@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Logger } from '../../shared/logger/logger.service';
 import { Util } from '../../shared/service/util.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -25,18 +26,24 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
   public total = 0;
 
   private queryUpdate: Subscription;
+  private langChange: Subscription;
   private subData: Subscription;
   private lastQuery: string;
 
   constructor(private warehouseService: WarehouseApi,
               private searchQuery: SearchQuery,
-              private logger: Logger
+              private logger: Logger,
+              private traslate: TranslateService
   ) {
   }
 
   ngOnInit() {
     this.init();
     this.queryUpdate = this.searchQuery.queryUpdated$.subscribe(() => this.init());
+    this.langChange = this.traslate.onLangChange.subscribe(() => {
+      this.lastQuery = '';
+      this.update();
+    });
   }
 
   ngOnChanges() {
@@ -49,6 +56,9 @@ export class ObservationFilterComponent implements OnInit, OnChanges, OnDestroy 
     }
     if (this.queryUpdate) {
       this.queryUpdate.unsubscribe();
+    }
+    if (this.langChange) {
+      this.langChange.unsubscribe();
     }
   }
 
