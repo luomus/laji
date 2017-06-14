@@ -119,6 +119,7 @@ hr {
     width: calc(100% + 30px);
     flex: 1 1 auto;
     margin: 0 -15px;
+    min-height: 100px;
   }
 
   .fixed-container {
