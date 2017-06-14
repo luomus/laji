@@ -138,7 +138,7 @@
   "observation.form.noImages": "No images found with given search parameters.",
   "observation.form.thisYear": "This year",
   "observation.form.preservedSpecimens": "Preserved specimens",
-  "observation.form.typeSpecimen": "only type specimens",
+  "observation.form.typeSpecimen": "Only type specimens",
   "observation.form.invasiveClassification": "Invasive species classification",
   "observation.form.invasive": "Invasive species",
   "observation.form.nonInvasive": "Noninvasive species",
