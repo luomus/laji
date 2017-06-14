@@ -16,9 +16,9 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class SpinnerComponent implements OnInit {
 
-  @Input() spinning: boolean = true;
-  @Input() overlay: boolean = false;
-  @Input() light: boolean = false;
+  @Input() spinning = true;
+  @Input() overlay = false;
+  @Input() light = false;
   @Input() hideContentWhileLoading = false;
 
   constructor() {
