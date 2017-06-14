@@ -260,7 +260,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   fetchCollectionName(data) {
     return this.collectionService.findAll(
       this.translate.currentLang,
-      data.map(col => IdService.getId(col.value)).join(',')
+      data.map(col => IdService.getId(col.value)).join(','),
+      '1',
+      '1000'
     ).map(res => {
       const lookUp = {};
       res.results.map((collection: Collection) => {
