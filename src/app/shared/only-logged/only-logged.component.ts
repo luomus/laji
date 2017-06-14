@@ -6,7 +6,7 @@ import { UserService } from '../service/user.service';
   templateUrl: './only-logged.component.html'
 })
 export class OnlyLoggedComponent implements OnInit {
-  public isLoggedIn: boolean = false;
+  public isLoggedIn = false;
 
   constructor(private userService: UserService) {
   }

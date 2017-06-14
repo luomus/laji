@@ -51,8 +51,10 @@ export class UserService {
     if (this.token === userToken || this.subUser) {
       return;
     }
-    this.isLoggedIn = true;
-    this.loadUserInfo(userToken);
+    setTimeout(() => {
+      this.isLoggedIn = true;
+      this.loadUserInfo(userToken);
+    }, 10);
   }
 
   public logout(showError = true) {
