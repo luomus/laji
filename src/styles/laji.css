@@ -27,7 +27,7 @@ body {
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
-  min-height: 50vh;
+  position: relative;
 }
 
 #footer, #navbar {
