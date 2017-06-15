@@ -19,7 +19,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges {
 
   constructor(
     private formService: FormService,
-    private translate: TranslateService
+    public translate: TranslateService
   ) { }
 
   ngOnInit() {

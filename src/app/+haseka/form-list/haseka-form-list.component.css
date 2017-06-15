@@ -1,5 +1,5 @@
 .link {
-  width: 200px;
+  min-width: 200px;
   text-align: left;
   font-weight: bold;
 }

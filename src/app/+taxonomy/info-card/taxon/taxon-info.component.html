@@ -40,7 +40,7 @@
       <table class="table table-condenced">
         <tbody>
         <tr>
-          <th>{{ 'taxonomy.invasive.category' | translate }}</th>
+          <th>{{ 'MX.invasiveSpeciesEstablishment' | label }}</th>
           <td>{{taxon.invasiveSpeciesEstablishment | label}}</td>
         </tr>
         </tbody>
@@ -48,7 +48,7 @@
     </td>
   </tr>
   <tr *ngIf="taxon.administrativeStatuses">
-    <th>{{ 'MX.invasiveSpeciesEstablishment' | label}}</th>
+    <th>{{ 'taxonomy.administrative.statuses' | translate }}</th>
     <td>
       <ul>
         <li *ngFor="let status of taxon.administrativeStatuses">{{ status | label }}</li>

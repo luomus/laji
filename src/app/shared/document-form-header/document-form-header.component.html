@@ -4,7 +4,11 @@
     'col-sm-12': !(form.logo)
   }">
     <h1>{{form.title}}</h1>
-    <div [innerHtml]="form.description"></div>
+    <div [innerHtml]="form.description"></div><br>
+    <span *ngIf="form.instructions && form.instructions[translate.currentLang]">
+      <a href="{{form.instructions[translate.currentLang]}}" target="_blank">{{'haseka.instructions' | translate}}</a>
+      |
+    </span>
     <a href="/vihko/terms-of-service" target="_blank">{{'haseka.termsOfService' | translate}}</a>
   </div>
   <div class="col-sm-4" *ngIf="form.logo">
