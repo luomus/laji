@@ -245,6 +245,7 @@
   "haseka.terms": "Användarvillkor",
   "haseka.button": "Gå till Skrivboken",
   "haseka.form.error": "Failed to submit data",
+  "haseka.form.localData": "Det finns en osparad inlämning av detta formulär. Klicka här för att återvända till det.",
   "haseka.form.unsaved1": "Det finns en ",
   "haseka.form.unsaved2": "osparad inlämning ",
   "haseka.form.unsaved3": "av detta formulär.",

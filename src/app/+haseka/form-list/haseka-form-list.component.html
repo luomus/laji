@@ -4,8 +4,10 @@
     <a (click)="goToForm(form)" class="link btn btn-default btn-sm">
       {{form.title}}
     </a>
-    <span *ngIf="tmpDocument[form.id]" class="unsaved">
-      {{'haseka.form.unsaved1' | translate}}<a [routerLink]="['/vihko', form.id, tmpDocument[form.id]]">{{'haseka.form.unsaved2' | translate}}</a>{{'haseka.form.unsaved3' | translate}}
+    <span *ngIf="tmpDocument[form.id]" class="unsaved" [tooltip]="'haseka.form.localData' | translate">
+      <a [routerLink]="['/vihko', form.id, tmpDocument[form.id]]" class="btn btn-danger btn-sm">
+        <i class="glyphicon glyphicon-warning-sign"></i>
+      </a>
     </span>
     <span *ngIf="isAdmin && form.features && form.features.indexOf('MHL.featureRestrictAccess') > -1">
       <a [routerLink]="['/vihko/fp/' + form.collectionID + '/admin']" class="btn btn-sm btn-warning">
