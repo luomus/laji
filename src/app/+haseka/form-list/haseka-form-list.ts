@@ -39,13 +39,17 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       this.formService.getAllTempDocuments(),
       this.formService.localChanged
         .switchMap(() => this.formService.getAllTempDocuments())
-    ).map(documents => documents.reduce((cumulative, current) => {
-      if (current.formID && !cumulative[current.formID]) {
-        cumulative[current.formID] = current.id;
-      }
-      return cumulative;
-    }, {}))
-      .subscribe((data: any) => this.tmpDocument = data);
+    ).map(documents => documents.reduce(
+      (cumulative, current) => {
+        if (current.formID && !cumulative[current.formID]) {
+          cumulative[current.formID] = current.id;
+        }
+        return cumulative;
+      }, {})
+    ).subscribe((data: any) => {
+      this.tmpDocument = data;
+      this.changeDetector.markForCheck();
+    });
     this.subTrans = this.translate.onLangChange.subscribe(
       () => {
         this.updateForms();
@@ -60,6 +64,9 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     }
     if (this.subFetch) {
       this.subFetch.unsubscribe();
+    }
+    if (this.subTmp) {
+      this.subTmp.unsubscribe();
     }
   }
 
