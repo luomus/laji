@@ -73,12 +73,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
-  clearState() {
-    if (this.lajiFormWrapper) {
-      this.lajiFormWrapper.clearState();
-    }
-  }
-
   block() {
     if (!this._block) {
       this.lajiFormWrapper.pushBlockingLoader();
