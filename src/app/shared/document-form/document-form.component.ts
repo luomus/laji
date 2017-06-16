@@ -9,15 +9,12 @@ import { UserService } from '../service/user.service';
 import { FooterService } from '../service/footer.service';
 import { LajiFormComponent } from '../form/laji-form.component';
 import { FormService } from '../service/form.service';
-import { WindowRef } from '../windows-ref';
 import { ToastsService } from '../service/toasts.service';
 import { Form } from '../model/FormListInterface';
 import { Logger } from '../logger/logger.service';
 import {NamedPlacesService} from '../../+haseka/named-place/named-places.service';
 import { Document } from '../model/Document';
 import { DialogService } from '../service/dialog.service';
-import { Observer } from 'rxjs/Observer';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-document-form',
@@ -66,7 +63,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   ngAfterViewInit() {
-    this.hasChanges = false;
     this.footerService.footerVisible = false;
     this.subTrans = this.translate.onLangChange.subscribe(
       () => this.onLangChange()
@@ -218,10 +214,11 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       .subscribe(
         data => {
           this.isEdit = true;
+          this.hasChanges = false;
           this.enablePrivate = !data.features || data.features.indexOf(Form.Feature.NoPrivate) === -1;
           if (this.formService.isTmpId(this.documentId)) {
             this.isEdit = false;
-            this.hasChanges = false;
+            this.hasChanges = true;
             data.formData.id = undefined;
             data.formData.hasChanges = undefined;
           }
@@ -234,6 +231,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           this.formService.hasUnsavedData()
             .subscribe(hasChanges => {
               if (hasChanges) {
+                this.hasChanges = true;
                 this.saveVisibility = 'shown';
                 this.status = 'unsaved';
               }
