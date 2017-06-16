@@ -40,7 +40,6 @@ export class ManageComponent implements OnInit, OnDestroy {
     ).subscribe(params => {
       this.collectionId = params['collectionId'];
       this.type = params['type'] || 'editors';
-      console.log(params);
       this.initFormPermission();
     });
   }

@@ -17,5 +17,6 @@ import 'rxjs/add/operator/retry';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/mergeAll';
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/throttleTime';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';

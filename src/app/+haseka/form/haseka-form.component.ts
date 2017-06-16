@@ -44,18 +44,10 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   }
 
   canDeactivate() {
-    if (!this.documentForm || !this.documentForm.hasChanges) {
-      this.formService.discard(undefined, true);
+    if (!this.documentForm) {
       return true;
     }
-    return this.translate
-      .get('haseka.form.discardConfirm')
-      .switchMap(txt => this.dialogService.confirm(txt))
-      .do((result) => {
-        if (result) {
-          this.formService.discard();
-        }
-      });
+    return this.documentForm.canDeactivate();
   }
 
   onSuccess(data) {

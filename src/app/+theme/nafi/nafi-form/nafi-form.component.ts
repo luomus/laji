@@ -40,18 +40,10 @@ export class NafiFormComponent implements OnInit, OnDestroy, ComponentCanDeactiv
   }
 
   canDeactivate() {
-    if (!this.documentForm || !this.documentForm.hasChanges) {
-      this.formService.discard(undefined, true);
+    if (!this.documentForm) {
       return true;
     }
-    return this.translate
-      .get('haseka.form.discardConfirm')
-      .switchMap(txt => this.dialogService.confirm(txt))
-      .do((result) => {
-        if (result) {
-          this.formService.discard();
-        }
-      });
+    return this.documentForm.canDeactivate();
   }
 
   onTmlLoad(data) {

@@ -47,33 +47,31 @@ export class FormService {
       .map(person => person.id);
   }
 
-  discard(id?: string, onlyIfNew = false): void {
+  discard(id?: string): void {
     if (!id) {
       id = this.currentKey;
     }
     this.getUserId()
       .switchMap(userID => {
         if (this.formDataStorage[userID] && this.formDataStorage[userID][id]) {
-          if (!onlyIfNew || this.formDataStorage[userID][id]['newData'] === true) {
-            delete this.formDataStorage[userID][id];
-            this.formDataStorage = Util.clone(this.formDataStorage);
-            this.localChanged.emit(true);
-          }
+          delete this.formDataStorage[userID][id];
+          this.formDataStorage = {...this.formDataStorage};
+          this.localChanged.emit(true);
         }
         return Observable.of(true);
       })
       .subscribe();
   }
 
-  store(formData: Document, newData = false): Observable<string> {
+  store(formData: Document): Observable<string> {
     if (this.currentKey) {
       return this.getUserId()
         .switchMap(userID => {
           if (!this.formDataStorage[userID]) {
             this.formDataStorage[userID] = {};
           }
-          this.formDataStorage[userID][this.currentKey] = { 'formData': formData, 'dateStored': new Date(), 'newData': newData };
-          this.formDataStorage = Util.clone(this.formDataStorage);
+          this.formDataStorage[userID][this.currentKey] = { 'formData': formData, 'dateStored': new Date() };
+          this.formDataStorage = {...this.formDataStorage};
           return Observable.of(this.currentKey);
         });
     }
@@ -84,12 +82,12 @@ export class FormService {
     if (!id) {
       id = this.currentKey;
     }
-    if (this.isTmpId(id)) {
-      return Observable.of(true);
-    }
     return this.getUserId()
       .switchMap(userID => {
         const tmpDoc = this.getTmpDoc(userID, id);
+        if (this.isTmpId(id)) {
+          return Observable.of(tmpDoc._hasChanges);
+        }
 
         if (document && tmpDoc) {
           return Observable.of(

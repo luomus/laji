@@ -246,7 +246,7 @@ export interface Document {
   /**
    * Fields that tels if there is local changes on the form
    */
-  hasChanges?: boolean;
+  _hasChanges?: boolean;
 }
 export namespace Document {
 

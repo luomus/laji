@@ -1,5 +1,6 @@
 import {
-  AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, Output,
+  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnChanges,
+  OnDestroy, Output,
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,13 +16,17 @@ import { Logger } from '../logger/logger.service';
 import {NamedPlacesService} from '../../+haseka/named-place/named-places.service';
 import { Document } from '../model/Document';
 import { DialogService } from '../service/dialog.service';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import { ComponentCanDeactivate } from './document-de-activate.guard';
 
 @Component({
   selector: 'laji-document-form',
   templateUrl: './document-form.component.html',
-  styleUrls: ['./document-form.component.css']
+  styleUrls: ['./document-form.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestroy {
+export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestroy, ComponentCanDeactivate {
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
   @Input() formId: string;
   @Input() documentId: string;
@@ -29,6 +34,9 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   @Output() onError = new EventEmitter();
   @Output() onCancel = new EventEmitter();
   @Output() onTmpLoad = new EventEmitter();
+
+  private changeSource = new Subject<any>();
+  private changeEvent$ = this.changeSource.asObservable();
 
   public form: any;
   public lang: string;
@@ -39,11 +47,11 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   public enablePrivate = true;
   public errorMsg: string;
   public namedPlace;
-  public hasChanges = false;
 
   private subTrans: Subscription;
   private subFetch: Subscription;
   private subForm: Subscription;
+  private subChanges: Subscription;
   private success = '';
   private error: any;
   private isEdit = false;
@@ -59,7 +67,8 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               private toastsService: ToastsService,
               private namedPlaceService: NamedPlacesService,
               private dialogService: DialogService,
-              private logger: Logger) {
+              private logger: Logger,
+              private changeDetector: ChangeDetectorRef) {
   }
 
   ngAfterViewInit() {
@@ -67,6 +76,22 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     this.subTrans = this.translate.onLangChange.subscribe(
       () => this.onLangChange()
     );
+    this.subChanges = Observable.merge(
+        this.changeEvent$.throttleTime(3000),
+        this.changeEvent$.debounceTime(3000)
+      )
+      .distinctUntilChanged()
+      .subscribe((formData) => {
+        this.saveVisibility = 'shown';
+        this.status = 'unsaved';
+        this.saving = false;
+        formData._hasChanges = true;
+        this.form['formData'] = formData;
+        this.changeDetector.markForCheck();
+        this.formService
+          .store(formData)
+          .subscribe();
+      });
   }
 
   ngOnChanges() {
@@ -81,6 +106,9 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   ngOnDestroy() {
+    if (this.subChanges) {
+      this.subChanges.unsubscribe();
+    }
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
@@ -88,22 +116,34 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     this.footerService.footerVisible = true;
   }
 
+  canDeactivate(confirmKey = 'haseka.form.discardConfirm') {
+    if (!this.hasChanges()) {
+      this.formService.discard();
+      return true;
+    }
+    return this.translate
+      .get(confirmKey)
+      .switchMap(txt => this.dialogService.confirm(txt))
+      .do((result) => {
+        if (result) {
+          this.formService.discard();
+        }
+      });
+  }
+
+  hasChanges() {
+    return this.form && this.form.formData && this.form.formData._hasChanges;
+  }
+
   @HostListener('window:beforeunload', ['$event'])
   preventLeave($event) {
-    if (this.hasChanges) {
+    if (this.hasChanges()) {
       $event.returnValue = this.leaveMsg;
     }
   }
 
   onChange(formData) {
-    this.saveVisibility = 'shown';
-    this.status = 'unsaved';
-    this.saving = false;
-    this.hasChanges = true;
-    this.form['formData'] = formData;
-    this.formService
-      .store(formData)
-      .subscribe();
+    this.changeSource.next(formData);
   }
 
   onLangChange() {
@@ -118,6 +158,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         form['formData'] = this.form.formData;
         this.lang = this.translate.currentLang;
         this.form = form;
+        this.changeDetector.markForCheck();
       });
   }
 
@@ -126,6 +167,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     this.lajiForm.block();
     const data = event.data.formData;
     data['publicityRestrictions'] = this.publicityRestrictions;
+    delete data._hasChanges;
     let doc$;
     if (this.isEdit) {
       doc$ = this.documentService
@@ -135,9 +177,9 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     }
     doc$.subscribe(
       (result) => {
-        this.hasChanges = false;
         this.lajiForm.unBlock();
         this.formService.discard();
+        this.form.formData._hasChanges = false;
         this.formService.setCurrentData(result, true);
         this.translate.get('haseka.form.success')
           .subscribe(value => {
@@ -186,7 +228,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       .subscribe(
         data => {
           this.formService
-            .store(data.formData, true)
+            .store(data.formData)
             .subscribe(id => this.onTmpLoad.emit({
               formID: this.formId,
               tmpID: id
@@ -203,6 +245,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   fetchFormAndDocument() {
     const key = this.formId + this.translate.currentLang + this.documentId;
     if (this.current === key) {
+      this.changeDetector.markForCheck();
       return;
     }
     this.current = key;
@@ -214,13 +257,10 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       .subscribe(
         data => {
           this.isEdit = true;
-          this.hasChanges = false;
           this.enablePrivate = !data.features || data.features.indexOf(Form.Feature.NoPrivate) === -1;
           if (this.formService.isTmpId(this.documentId)) {
             this.isEdit = false;
-            this.hasChanges = true;
             data.formData.id = undefined;
-            data.formData.hasChanges = undefined;
           }
           if (typeof data.uiSchemaContext === 'undefined') {
             data.uiSchemaContext = {};
@@ -228,26 +268,30 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           data.uiSchemaContext.activeGatheringIdx = this.isEdit ? null : 0;
           data.uiSchemaContext.formID = this.formId;
           this.form = data;
-          this.formService.hasUnsavedData()
-            .subscribe(hasChanges => {
-              if (hasChanges) {
-                this.hasChanges = true;
-                this.saveVisibility = 'shown';
-                this.status = 'unsaved';
-              }
-            });
+          this.lang = this.translate.currentLang;
+          if (this.hasChanges()) {
+            this.saveVisibility = 'shown';
+            this.status = 'unsaved';
+          }
           if (data.formData.namedPlaceID) {
             this.namedPlaceService.getNamedPlace(data.formData.namedPlaceID, this.userService.getToken())
-              .subscribe(np => this.namedPlace = np);
+              .subscribe(np => {
+                this.namedPlace = np;
+                this.changeDetector.markForCheck();
+              });
+          } else {
+            this.changeDetector.markForCheck();
           }
-          this.lang = this.translate.currentLang;
         },
         err => {
           this.formService.isTmpId(this.documentId) ?
             this.onError.emit(true) :
             this.translate
               .get(err.status === 404 ? 'haseka.form.documentNotFound' : 'haseka.form.genericError', {documentId: this.documentId})
-              .subscribe(msg => this.errorMsg = msg);
+              .subscribe(msg => {
+                this.errorMsg = msg;
+                this.changeDetector.markForCheck();
+              });
         }
       );
   }

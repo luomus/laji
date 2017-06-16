@@ -97,7 +97,7 @@ export class UsersLatestComponent implements OnChanges {
               this.formService.getTmpDocumentStoreDate(doc.id),
               (document, storeDate) => {
                 document = Util.clone(document);
-                document.hasChanges = true;
+                document._hasChanges = true;
 
                 if (storeDate && (!document.dateEdited || new Date(storeDate) > new Date(document.dateEdited))) {
                   document.dateEdited = storeDate;
