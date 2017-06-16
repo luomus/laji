@@ -1,4 +1,4 @@
-<div class="link" (click)="editDocument(document.formID, document.id)" id="short-document">
+<div class="link" (click)="editDocument(document.formID, document.id)" id="short-document" tabIndex=0>
   <small *ngIf="!changingLocale">{{'haseka.users.edited' | translate}}: <span *ngIf="document.dateEdited">{{document.dateEdited | amTimeAgo}}</span></small>
 
   <span class="nowrap">
@@ -15,6 +15,7 @@
         <i class="glyphicon glyphicon-warning-sign"></i>
       </span>
       <span class="label label-default link inline-block"
+            tabIndex=0
             [tooltip]="'haseka.users.latest.discard' | translate"
             [placement]="'left'"
             (click)="removeDocument($event, document)">
