@@ -71,7 +71,7 @@ export class RequestComponent implements OnInit, OnDestroy {
     this.userService
       .getUser()
       .subscribe((person: Person) => {
-        this.isAlreadyAllowed = formPermisison.editors.indexOf(person.id) > -1;
+        this.isAlreadyAllowed = formPermisison.editors.indexOf(person.id) > -1 || formPermisison.admins.indexOf(person.id) > -1;
         this.isAlreadyRequested = formPermisison.permissionRequests.indexOf(person.id) > -1;
       });
   }

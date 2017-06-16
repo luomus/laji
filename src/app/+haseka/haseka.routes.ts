@@ -47,7 +47,7 @@ export const hasekaRoutes: Routes = [
     children: [
       {path: '', pathMatch: 'full', component: IntroComponent},
       {path: 'accept', pathMatch: 'full', component: AcceptComponent},
-      {path: 'manage', pathMatch: 'full', component: ManageComponent}
+      {path: 'manage/:type', pathMatch: 'full', component: ManageComponent}
     ]
   },
   {

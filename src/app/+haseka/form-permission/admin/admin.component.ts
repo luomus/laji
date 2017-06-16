@@ -50,10 +50,13 @@ export class AdminComponent implements OnInit, OnDestroy {
     }
     this.formPermissionService
       .getFormPermission(this.collectionId, this.userService.getToken())
-      .do(data => this.formPermission = data)
-      .switchMap(() => this.userService.getUser())
-      .subscribe((person: Person) => {
-        this.isAllowed = person.role.indexOf('MA.admin') > -1;
+      .combineLatest(
+        this.userService.getUser(),
+        (permission, person) => ({permission, person})
+      )
+      .subscribe((data) => {
+        this.formPermission = data.permission;
+        this.isAllowed = this.formPermissionService.isAdmin(data.permission, data.person);
         if (!this.isAllowed) {
           this.router.navigate(['/vihko']);
         }

@@ -14,7 +14,16 @@ export class FormPermissionService {
   constructor(private formPermissionApi: FormPermissionApi) {}
 
   isEditAllowed(formPermission: FormPermission, person: Person): boolean {
-    if (formPermission.editors.indexOf(person.id) > -1) {
+    if (formPermission.editors.indexOf(person.id) > -1 || formPermission.admins.indexOf(person.id) > -1) {
+      return true;
+    }
+    return false;
+  }
+
+  isAdmin(permission: FormPermission, person: Person) {
+    if (person.role && person.role.indexOf('MA.admin') > -1) {
+      return true;
+    } else if (permission.admins && permission.admins.indexOf(person.id) > -1) {
       return true;
     }
     return false;
@@ -36,9 +45,9 @@ export class FormPermissionService {
       .do(fp => this.changes$.emit(fp));
   }
 
-  acceptRequest(collectionID: string, personToken: string, personID: string) {
+  acceptRequest(collectionID: string, personToken: string, personID: string, type?: FormPermission.Type) {
     FormPermissionService.formPermissions[collectionID] = false;
-    return this.formPermissionApi.acceptRequest(collectionID, personID, personToken)
+    return this.formPermissionApi.acceptRequest(collectionID, personID, personToken, type)
       .do(fp => this.changes$.emit(fp));
   }
 

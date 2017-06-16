@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
-import { UserService } from '../service/user.service';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { USER_LOGOUT_ACTION, UserService } from '../service/user.service';
 import { AppConfig } from '../../app.config';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-navbar',
   styleUrls: ['./navbar.component.css'],
-  templateUrl: './navbar.component.html'
+  templateUrl: './navbar.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavbarComponent {
 
@@ -14,9 +15,19 @@ export class NavbarComponent {
   isAuthority = false;
   env = 'beta';
 
-  constructor(public userService: UserService, private router: Router, appConfig: AppConfig) {
+  constructor(
+    public userService: UserService,
+    private router: Router,
+    private changeDetector: ChangeDetectorRef,
+    appConfig: AppConfig
+  ) {
     this.env = appConfig.getEnv();
     this.isAuthority = appConfig.isForAuthorities();
+    this.userService.action$.subscribe((action) => {
+      if (action === USER_LOGOUT_ACTION) {
+        this.changeDetector.markForCheck();
+      }
+    });
   }
 
   toggleMenu() {

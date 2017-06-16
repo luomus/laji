@@ -6,7 +6,6 @@ import { ToastsService } from '../../../../shared/service/toasts.service';
 import { FormPermission } from '../../../../shared/model/FormPermission';
 import { UserService } from '../../../../shared/service/user.service';
 import { Logger } from '../../../../shared/logger/logger.service';
-import { Person } from '../../../../shared/model/Person';
 
 @Component({
   selector: 'laji-accept',
@@ -61,10 +60,13 @@ export class AcceptComponent implements OnInit, OnDestroy {
     }
     this.formPermissionService
       .getFormPermission(this.collectionId, this.userService.getToken())
-      .do(data => this.formPermission = data)
-      .switchMap(() => this.userService.getUser())
-      .subscribe((person: Person) => {
-        this.isAllowed = person.role.indexOf('MA.admin') > -1;
+      .combineLatest(
+        this.userService.getUser(),
+        (permission, person) => ({permission, person})
+      )
+      .subscribe((data) => {
+        this.formPermission = data.permission;
+        this.isAllowed = this.formPermissionService.isAdmin(data.permission, data.person);
         if (!this.isAllowed) {
           this.router.navigate(['/vihko']);
         }

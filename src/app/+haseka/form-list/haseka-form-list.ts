@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
@@ -13,41 +13,38 @@ import { Person } from '../../shared/model/Person';
 @Component({
   selector: 'laji-haseka-form-list',
   templateUrl: './haseka-form-list.component.html',
-  styleUrls: ['./haseka-form-list.component.css']
+  styleUrls: ['./haseka-form-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HaSeKaFormListComponent implements OnInit, OnDestroy {
-
   public formList: FormListInterface[] = [];
-  public isAdmin = false;
-  public tmpDocument: {[formId: string]: string} = {};
+  public tmpDocument: { [formId: string]: string } = {};
   private subTrans: Subscription;
   private subFetch: Subscription;
   private subTmp: Subscription;
+  private person: Person;
+
 
   constructor(private formService: FormService,
               private translate: TranslateService,
               private logger: Logger,
               private router: Router,
               private userService: UserService,
-              private formPermissionService: FormPermissionService
-  ) {
+              private formPermissionService: FormPermissionService,
+              private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-    this.userService.getUser()
-      .subscribe((person: Person) => {
-        this.isAdmin = person.role && person.role.indexOf('MA.admin') > -1;
-      });
     this.subTmp = Observable.merge(
       this.formService.getAllTempDocuments(),
       this.formService.localChanged
         .switchMap(() => this.formService.getAllTempDocuments())
-      ).map(documents => documents.reduce((cumulative, current) => {
-          if (current.formID && !cumulative[current.formID]) {
-            cumulative[current.formID] = current.id;
-          }
-          return cumulative;
-        }, {}))
+    ).map(documents => documents.reduce((cumulative, current) => {
+      if (current.formID && !cumulative[current.formID]) {
+        cumulative[current.formID] = current.id;
+      }
+      return cumulative;
+    }, {}))
       .subscribe((data: any) => this.tmpDocument = data);
     this.subTrans = this.translate.onLangChange.subscribe(
       () => {
@@ -72,7 +69,10 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     }
     this.subFetch = this.formService.getAllForms(this.translate.currentLang)
       .subscribe(
-        forms => this.formList = forms,
+        forms => {
+          this.formList = forms;
+          this.changeDetector.markForCheck();
+        },
         err => this.logger.log('Failed to fetch all forms', err)
       );
   }
@@ -94,6 +94,22 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       return;
     }
     this._goToForm(form);
+  }
+
+  hasAdminRight(form: FormListInterface) {
+    if (!form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
+      return Observable.of(false);
+    }
+    return this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken())
+      .combineLatest(
+        this.person ? Observable.of(this.person) : this.userService.getUser(),
+        (permission, person) => ({permission, person})
+      )
+      .map(data => this.formPermissionService.isAdmin(data.permission, data.person));
+  }
+
+  trackForm(idx, form) {
+    return form ? form.id : undefined;
   }
 
   private _goToForm(form: FormListInterface) {

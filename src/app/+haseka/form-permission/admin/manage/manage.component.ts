@@ -7,6 +7,7 @@ import { FormPermission } from '../../../../shared/model/FormPermission';
 import { UserService } from '../../../../shared/service/user.service';
 import { Logger } from '../../../../shared/logger/logger.service';
 import { Person } from '../../../../shared/model/Person';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-manage',
@@ -18,6 +19,7 @@ export class ManageComponent implements OnInit, OnDestroy {
   formPermission: FormPermission;
   isAllowed = false;
   collectionId: string;
+  type: string;
 
   private subParam: Subscription;
 
@@ -31,8 +33,14 @@ export class ManageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subParam = this.route.parent.params.subscribe(params => {
+    this.subParam = Observable.combineLatest(
+      this.route.parent.params,
+      this.route.params,
+      (parent, current) => ({...parent, ...current})
+    ).subscribe(params => {
       this.collectionId = params['collectionId'];
+      this.type = params['type'] || 'editors';
+      console.log(params);
       this.initFormPermission();
     });
   }
@@ -41,11 +49,23 @@ export class ManageComponent implements OnInit, OnDestroy {
     this.subParam.unsubscribe();
   }
 
+  makeEditor(personId: string) {
+    this.formPermissionService.acceptRequest(this.collectionId, this.userService.getToken(), personId)
+      .subscribe(() => this.initFormPermission());
+  }
+
+  makeAdmin(personId: string) {
+    if (confirm('Oletko varma että haluat tehdä ' + personId + ':stä adminin?')) {
+      this.formPermissionService
+        .acceptRequest(this.collectionId, this.userService.getToken(), personId, FormPermission.Type.Admin)
+        .subscribe(() => this.initFormPermission());
+    }
+
+  }
+
   reject(personId: string) {
     this.formPermissionService.revokeAccess(this.collectionId, this.userService.getToken(), personId)
-      .subscribe(
-        () => this.initFormPermission()
-      );
+      .subscribe(() => this.initFormPermission());
   }
 
   private initFormPermission() {
@@ -54,10 +74,13 @@ export class ManageComponent implements OnInit, OnDestroy {
     }
     this.formPermissionService
       .getFormPermission(this.collectionId, this.userService.getToken())
-      .do(data => this.formPermission = data)
-      .switchMap(() => this.userService.getUser())
-      .subscribe((person: Person) => {
-        this.isAllowed = person.role.indexOf('MA.admin') > -1;
+      .combineLatest(
+        this.userService.getUser(),
+        (permission, person) => ({permission, person})
+      )
+      .subscribe((data) => {
+        this.formPermission = data.permission;
+        this.isAllowed = this.formPermissionService.isAdmin(data.permission, data.person);
         if (!this.isAllowed) {
           this.router.navigate(['/vihko']);
         }

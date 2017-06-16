@@ -1,16 +1,26 @@
 <div class="row" *ngIf="formPermission">
   <div class="col-sm-6">
-    <h3>Pääsy lomakkeelle</h3>
-    <p *ngIf="formPermission.editors.length === 0">
-      Kenelläkään ei ole vielä pääsyä tälle lomakkeelle.
+    <h3 *ngIf="type === 'admins'; else editorsTitle">
+      Lomakkeen adminit<br>
+      <small>Näillä käyttäjillä on oikeus hyväksyä pääsypyyntöjä, sekä nähdä kaikki havaintoerät jotka on tallennettu kyseiseen kokoelmaan.</small>
+    </h3>
+    <ng-template #editorsTitle>
+      <h3>Pääsy lomakkeelle</h3>
+    </ng-template>
+    <p *ngIf="!formPermission[type] || formPermission[type].length === 0; else list">
+      Ei ketään.
     </p>
-    <ul>
-      <li *ngFor="let person of formPermission.editors">
-        <button class="btn btn-danger" (click)="reject(person)">Poista pääsy</button>
-        <span class="form-control-static">
-            {{person | users}} ({{person}})
+    <ng-template #list>
+      <ul>
+        <li *ngFor="let person of formPermission[type]">
+          <button class="btn btn-warning btn-sm" (click)="reject(person)">Poista pääsy</button>
+          <button *ngIf="type === 'admins'" class="btn btn-warning btn-sm" (click)="makeEditor(person)">Tee editori</button>
+          <button *ngIf="type === 'editors'" class="btn btn-danger btn-sm" (click)="makeAdmin(person)">Tee admin</button>
+          <span class="form-control-static">
+              {{person | users}} ({{person}})
           </span>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </ng-template>
   </div>
 </div>

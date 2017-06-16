@@ -14,10 +14,15 @@ import { AppConfig } from '../../app.config';
 import { WindowRef } from '../windows-ref';
 import { ToastsService } from './toasts.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs/Subject';
+
+export const USER_LOGOUT_ACTION = '[user]: logout';
 
 @Injectable()
 export class UserService {
 
+  private actionSource = new Subject<any>();
+  public action$ = this.actionSource.asObservable();
   public isLoggedIn = false;
 
   @LocalStorage() private token;
@@ -68,6 +73,7 @@ export class UserService {
           this.token = '';
           this.isLoggedIn = false;
           this.currentUserId = undefined;
+          this.actionSource.next(USER_LOGOUT_ACTION);
         },
         err => {
           if (this.token !== '') {

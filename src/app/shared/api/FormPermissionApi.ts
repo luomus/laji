@@ -20,6 +20,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 import * as models from '../model';
+import { FormPermission } from '../model/FormPermission';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
@@ -54,8 +55,8 @@ export class FormPermissionApi {
      * @param personID Person id
      * @param personToken person token who is authorised to accept requests
      */
-    public acceptRequest(collectionID: string, personID: string, personToken: string, extraHttpRequestParams?: any): Observable<models.FormPermission> {
-        return this.acceptRequestWithHttpInfo(collectionID, personID, personToken, extraHttpRequestParams)
+    public acceptRequest(collectionID: string, personID: string, personToken: string, type?: FormPermission.Type, extraHttpRequestParams?: any): Observable<models.FormPermission> {
+        return this.acceptRequestWithHttpInfo(collectionID, personID, personToken, type, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -124,8 +125,9 @@ export class FormPermissionApi {
      * @param collectionID collection id
      * @param personID Person id
      * @param personToken person token who is authorised to accept requests
+     * @param type type of permission granted
      */
-    public acceptRequestWithHttpInfo(collectionID: string, personID: string, personToken: string, extraHttpRequestParams?: any): Observable<Response> {
+    public acceptRequestWithHttpInfo(collectionID: string, personID: string, personToken: string, type?: FormPermission.Type, extraHttpRequestParams?: any): Observable<Response> {
         const path = this.basePath + `/formPermissions/${collectionID}/${personID}`;
 
         let queryParameters = new URLSearchParams();
@@ -145,6 +147,9 @@ export class FormPermissionApi {
         if (personToken !== undefined) {
             queryParameters.set('personToken', <any>personToken);
         }
+        if (type !== undefined) {
+            queryParameters.set('type', <any>type);
+        }
 
 
         // to determine the Content-Type header
@@ -163,9 +168,6 @@ export class FormPermissionApi {
             'application/javascript',
             'text/javascript'
         ];
-
-
-
 
 
         let requestOptions: RequestOptionsArgs = new RequestOptions({

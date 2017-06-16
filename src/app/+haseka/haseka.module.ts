@@ -27,6 +27,7 @@ import { LineTransectComponent } from './statistics/line-transect/line-transect.
 import { LineTransectChartComponent } from './statistics/line-transect/line-transect-chart/line-transect-chart.component';
 import { YearSliderComponent } from './own-submissions/year-slider/year-slider.component';
 import { FilterColumnsPipe } from './own-submissions/own-datatable/filter-columns.pipe';
+import { FormRowComponent } from './form-list/form-row/form-row.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, AlertModule, NgxDatatableModule, NouisliderModule, NamedPlaceModule, ViewerModule,
@@ -35,7 +36,7 @@ import { FilterColumnsPipe } from './own-submissions/own-datatable/filter-column
   declarations: [
     HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
     ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent, OwnSubmissionsComponent, OwnDatatableComponent,
-    StatisticsComponent, LineTransectComponent, LineTransectChartComponent, YearSliderComponent, FilterColumnsPipe
+    StatisticsComponent, LineTransectComponent, LineTransectChartComponent, YearSliderComponent, FilterColumnsPipe, FormRowComponent
   ]
 })
 export class HasekaModule {

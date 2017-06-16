@@ -15,12 +15,20 @@
             {{formPermission.permissionRequests.length}}
           </span>
         </a></li>
-        <li><a [routerLink]="['manage']">
+        <li><a [routerLink]="['manage/editors']">
           Hyväksytyt
           <span
                   *ngIf="formPermission && formPermission.editors && formPermission.editors.length > 0"
                   class="badge pull-right">
             {{formPermission.editors.length}}
+          </span>
+        </a></li>
+        <li><a [routerLink]="['manage/admins']">
+          Administrators
+          <span
+            *ngIf="formPermission && formPermission.admins && formPermission.admins.length > 0"
+            class="badge pull-right">
+            {{formPermission.admins.length}}
           </span>
         </a></li>
       </ul>
