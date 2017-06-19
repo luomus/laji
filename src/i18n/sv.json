@@ -345,7 +345,7 @@
   "feedback.success": "Tack för din feedback",
   "feedback.failure": "Tyvärr feedback inte kunde skickas. Du kan försöka igen om en stund. Om problemet kvarstår, kan du skicka dina synpunkter direkt till adress helpdesk@laji.fi",
   "whatsNew": "Nytt på portalen",
-  "whatsNew.message": "beta.laji.fi är en testportal för Finlands Artdatacenter. Information och egenskaper kommer att förbättras kontinuerligt. Feedback är välkommen - du kan skicka den via feedbackblanketten eller via e-post till adress info@laji.fi. Tack!",
+  "whatsNew.message": "laji.fi är en testportal för Finlands Artdatacenter. Information och egenskaper kommer att förbättras kontinuerligt. Feedback är välkommen - du kan skicka den via feedbackblanketten eller via e-post till adress info@laji.fi. Tack!",
   "whatsNew.acknowledge": "Tack för informationen",
   "viewer.document": "Observationer",
   "viewer.gathering": "Plats",
