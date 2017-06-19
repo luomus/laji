@@ -23,13 +23,13 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
 
   ngAfterViewInit() {
     this.scriptService.load('openseadragon')
-      .subscribe(
+      .then(
         () => {
           this.loaded = true;
           this.updateImage();
-        },
-        (err) => console.log(err)
-      );
+        }
+      )
+      .catch((err) => console.log(err));
   }
 
   ngOnChanges() {

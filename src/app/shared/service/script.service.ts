@@ -18,39 +18,36 @@ export class ScriptService {
   }
 
   load(...scripts: string[]) {
-    const observers: any[] = [];
-    scripts.forEach((script) => observers.push(this.loadScript(script)));
-    return Observable.forkJoin(observers);
+    const promises: any[] = [];
+    scripts.forEach((script) => promises.push(this.loadScript(script)));
+    return Promise.all(promises);
   }
+
   loadScript(name: string) {
-    return Observable.create((observer: Observer<any>) => {
+    return new Promise((resolve, reject) => {
+      // resolve if already loaded
       if (this.scripts[name].loaded) {
-        observer.next({script: name, loaded: true, status: 'Already Loaded'});
-        observer.complete();
+        resolve({script: name, loaded: true, status: 'Already Loaded'});
       } else {
-        const script = <any>document.createElement('script');
+        // load script
+        const script: any = document.createElement('script');
         script.type = 'text/javascript';
         script.src = this.scripts[name].src;
-        if (script.readyState) {  //IE
+        if (script.readyState) {  // IE
           script.onreadystatechange = () => {
             if (script.readyState === 'loaded' || script.readyState === 'complete') {
               script.onreadystatechange = null;
               this.scripts[name].loaded = true;
-              observer.next({script: name, loaded: true, status: 'Loaded'});
-              observer.complete();
+              resolve({script: name, loaded: true, status: 'Loaded'});
             }
           };
         } else {  // Others
           script.onload = () => {
             this.scripts[name].loaded = true;
-            observer.next({script: name, loaded: true, status: 'Loaded'});
-            observer.complete();
+            resolve({script: name, loaded: true, status: 'Loaded'});
           };
         }
-        script.onerror = (error: any) => {
-          observer.error({script: name, loaded: false, status: 'Loaded'});
-          observer.complete();
-        };
+        script.onerror = (error: any) => resolve({script: name, loaded: false, status: 'Loaded'});
         document.getElementsByTagName('head')[0].appendChild(script);
       }
     });

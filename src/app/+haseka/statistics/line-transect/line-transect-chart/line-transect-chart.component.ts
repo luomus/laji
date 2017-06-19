@@ -46,17 +46,17 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   }
 
   ngAfterViewInit() {
-    this.scriptService.load('d3')
-      .subscribe(
+    this.scriptService.load('d3', 'nvd3')
+      .then(
         () => {
           this.d3Loaded = true;
           this.createChart();
           if (this.value && this.ykj3) {
             this.updateChart();
           }
-        },
-        (err) => console.log(err)
-      );
+        }
+      )
+      .catch((err) => console.log(err));
   }
 
   ngOnChanges() {

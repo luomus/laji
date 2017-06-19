@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { ScriptService } from '../shared/service/script.service';
 declare var d3, nv: any;
 
@@ -6,7 +6,7 @@ declare var d3, nv: any;
   selector: 'nvd3',
   template: ``
 })
-export class nvD3 implements OnChanges {
+export class nvD3 implements OnInit {
   @Input() options: any;
   @Input() data: any;
 
@@ -18,12 +18,10 @@ export class nvD3 implements OnChanges {
     this.el = elementRef.nativeElement;
   }
 
-  ngOnChanges() {
+  ngOnInit() {
     this.scriptService.load('d3', 'nvd3')
-      .subscribe(
-        () => this.updateWithOptions(this.options),
-        (err) => console.log(err)
-      );
+      .then(() => this.updateWithOptions(this.options))
+      .catch((err) => console.log(err));
   }
 
   updateWithOptions(options) {
