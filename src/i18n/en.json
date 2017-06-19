@@ -355,7 +355,7 @@
   "observation.active.biogeographicalProvinceId": "Biogeographical province",
   "viewer.gatherings": "Gatherings",
   "viewer.valueInterpreted": "interpreted",
-  "viewer.notFound": "Observation not found, wait for a while.",
+  "viewer.notFound": "The submission has not yet been stored in the FinBIF's data warehouse. Please wait a while.",
   "viewer.showFacts": "Show extra info",
   "viewer.hideFacts": "Hide extra info",
   "viewer.field.observer": "Observer",
