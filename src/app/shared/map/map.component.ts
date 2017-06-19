@@ -157,6 +157,9 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
       this.updateData();
       this.initDrawData();
     }
+    if (changes.lang && this.map) {
+      this.map.setLang(this.lang);
+    }
   }
 
   invalidateSize() {

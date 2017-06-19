@@ -1,4 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output,
+  ViewChild
+} from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -21,7 +24,8 @@ const maxCoordinateAccuracy = 10000;
   selector: 'laji-observation-map',
   templateUrl: './observation-map.component.html',
   styleUrls: ['./observation-map.component.css'],
-  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe]
+  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationMapComponent implements OnInit, OnChanges {
   @ViewChild(MapComponent) lajiMap: MapComponent;
@@ -41,7 +45,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() draw: any = false;
   @Input() center: [number, number];
   @Input() showControls = true;
-  @Input() height: number;
+  @Input() height = 500;
   @Input() selectColor = '#00aa00';
   @Input() color: any;
   @Input() showLoadMore = true;
@@ -61,11 +65,13 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   public mapData;
   public drawData: any = {featureCollection: {type: 'featureCollection', features: []}};
   public loading = false;
+  public lang: string;
   public reloading = false;
   public topMargin = '0';
   public legendList: {color: string, range: string}[] = [];
   private prev = '';
   private subDataFetch: Subscription;
+  private subLang: Subscription;
   private style: (count: number) => string;
   private lastQuery: any;
   private viewBound: LatLngBounds;
@@ -99,7 +105,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
               public translate: TranslateService,
               private decorator: ValueDecoratorService,
               private coordinateService: CoordinateService,
-              private logger: Logger
+              private logger: Logger,
+              private changeDetector: ChangeDetectorRef
   ) {
   }
 
@@ -110,6 +117,11 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     this.lastQuery = JSON.stringify(this.query);
     this.updateMapData();
     this.initColorScale();
+    this.lang = this.translate.currentLang;
+    this.subLang = this.translate.onLangChange.subscribe(() => {
+      this.lang = this.translate.currentLang;
+      this.changeDetector.markForCheck();
+    });
   }
 
   ngOnChanges() {
@@ -176,6 +188,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       });
     }
     this.legendList = legend;
+    this.changeDetector.markForCheck();
   }
 
   refreshMap() {
@@ -277,6 +290,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     const query = Util.clone(this.query);
     const cacheKey = this.getCacheKey(query);
     if (this.prev === cacheKey) {
+      this.changeDetector.markForCheck();
       return;
     }
     this.prev = cacheKey;
@@ -388,6 +402,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
               cluster: data.cluster || false
             }];
             this.loading = false;
+            this.changeDetector.markForCheck();
           }
         }
       );
