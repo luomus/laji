@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import * as appConfigJson from '../../config.json';
 import { environment } from '../environments/environment';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class AppConfig {
   config: any;
 
-  constructor() {
+  constructor(
+    private translate: TranslateService
+  ) {
     try {
       this.config = appConfigJson;
     } catch (e) {
@@ -22,12 +25,15 @@ export class AppConfig {
     return this.config.env || 'dev';
   }
 
-  getLoginUrl() {
-    return this.config.login_url || '';
+  getLoginUrl(next = '') {
+    return (environment.loginUrl
+      + '?target=' + environment.systemID
+      + '&redirectMethod=GET&locale=%lang%'
+      + '&next=' + next).replace('%lang%', this.translate.currentLang);
   }
 
   getPersonSelfUrl() {
-    return this.config.person_self_url || '';
+    return environment.selfPage;
   }
 
   isFormAllowed(formId: string) {

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { USER_LOGOUT_ACTION, UserService } from '../service/user.service';
-import { AppConfig } from '../../app.config';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'laji-navbar',
@@ -19,10 +19,9 @@ export class NavbarComponent {
     public userService: UserService,
     private router: Router,
     private changeDetector: ChangeDetectorRef,
-    appConfig: AppConfig
   ) {
-    this.env = appConfig.getEnv();
-    this.isAuthority = appConfig.isForAuthorities();
+    this.env = environment.production ? 'beta' : 'dev';
+    this.isAuthority = environment.forAuthorities;
     this.userService.action$.subscribe((action) => {
       if (action === USER_LOGOUT_ACTION) {
         this.changeDetector.markForCheck();

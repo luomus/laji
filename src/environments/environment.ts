@@ -6,8 +6,14 @@
 export const environment = {
   production: false,
   isEmbedded: false,
+  forceLogin: false,
+  disableAnalytics: true,
+  forAuthorities: false,
+  systemID: 'KE.501',
   formWhitelist: ['JX.519', 'JX.652', 'JX.111715', 'MHL.1', 'JX.123759', 'JX.123757', 'JX.123659'],
   defaultForm: 'JX.519',
   nafiForm: 'JX.123648',
-  namedPlaceForm: 'JX.123608'
+  namedPlaceForm: 'JX.123608',
+  loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
+  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self'
 };

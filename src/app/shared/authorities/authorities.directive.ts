@@ -1,16 +1,15 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
-import { AppConfig } from '../../app.config';
+import { environment } from '../../../environments/environment';
 
 @Directive({ selector: '[lajiAuthorities]' })
 export class AuthoritiesDirective {
   constructor(
     private templateRef: TemplateRef<any>,
-    private viewContainer: ViewContainerRef,
-    private appConfig: AppConfig
+    private viewContainer: ViewContainerRef
   ) { }
 
   @Input() set lajiAuthorities(isAuthority: boolean) {
-    if (this.appConfig.isForAuthorities() === isAuthority) {
+    if (environment.forAuthorities === isAuthority) {
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
       this.viewContainer.clear();
