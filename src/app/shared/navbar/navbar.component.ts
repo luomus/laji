@@ -13,14 +13,14 @@ export class NavbarComponent {
 
   openMenu: Boolean = false;
   isAuthority = false;
-  env = 'beta';
+  isProd = false;
 
   constructor(
     public userService: UserService,
     private router: Router,
     private changeDetector: ChangeDetectorRef,
   ) {
-    this.env = environment.production ? 'beta' : 'dev';
+    this.isProd = environment.production;
     this.isAuthority = environment.forAuthorities;
     this.userService.action$.subscribe((action) => {
       if (action === USER_LOGOUT_ACTION) {
