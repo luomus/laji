@@ -14,7 +14,9 @@ export class FormPermissionService {
   constructor(private formPermissionApi: FormPermissionApi) {}
 
   isEditAllowed(formPermission: FormPermission, person: Person): boolean {
-    if (formPermission.editors.indexOf(person.id) > -1 || formPermission.admins.indexOf(person.id) > -1) {
+    if ((formPermission.editors && formPermission.editors.indexOf(person.id) > -1) ||
+        (formPermission.admins && formPermission.admins.indexOf(person.id) > -1))
+    {
       return true;
     }
     return false;
