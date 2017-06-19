@@ -1,18 +1,19 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit } from '@angular/core';
 import { ScriptService } from '../shared/service/script.service';
-declare var d3, nv: any;
+declare const d3, nv: any;
 
 @Component({
   selector: 'nvd3',
   template: ``
 })
-export class nvD3 implements OnInit {
+export class nvD3 implements OnInit, OnChanges {
   @Input() options: any;
   @Input() data: any;
 
   el: any;
   chart: any;
   svg: any;
+  scriptsLoaded = false;
 
   constructor(private elementRef: ElementRef, private scriptService: ScriptService) {
     this.el = elementRef.nativeElement;
@@ -23,10 +24,19 @@ export class nvD3 implements OnInit {
     this.scriptService.load('d3')
       .then(() => {
         this.scriptService.load('nvd3')
-          .then(() => this.updateWithOptions(this.options))
+          .then(() => {
+            this.scriptsLoaded = true;
+            this.updateWithOptions(this.options);
+          })
           .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
+  }
+
+  ngOnChanges() {
+    if (this.scriptsLoaded) {
+      this.updateWithOptions(this.options);
+    }
   }
 
   updateWithOptions(options) {
