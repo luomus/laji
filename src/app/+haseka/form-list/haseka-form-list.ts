@@ -87,7 +87,9 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
   goToForm(form: FormListInterface) {
     if (form.collectionID && form.features && form.features.indexOf(Form.Feature.Restricted) > -1) {
       Observable.forkJoin(
-        this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken()),
+        this.userService.isLoggedIn ?
+          this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken()) :
+          Observable.of({}),
         this.userService.getUser(),
         (permission, user) => ({permission: permission, user: user})
       )
@@ -104,7 +106,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
   }
 
   hasAdminRight(form: FormListInterface) {
-    if (!form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
+    if (!this.userService.isLoggedIn || !form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
       return Observable.of(false);
     }
     return this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken())
