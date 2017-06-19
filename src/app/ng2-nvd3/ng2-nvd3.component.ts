@@ -19,8 +19,13 @@ export class nvD3 implements OnInit {
   }
 
   ngOnInit() {
-    this.scriptService.load('d3', 'nvd3')
-      .then(() => this.updateWithOptions(this.options))
+    // On mobile doesn't work if both scripts are loaded on same time
+    this.scriptService.load('d3')
+      .then(() => {
+        this.scriptService.load('nvd3')
+          .then(() => this.updateWithOptions(this.options))
+          .catch((err) => console.log(err));
+      })
       .catch((err) => console.log(err));
   }
 
