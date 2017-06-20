@@ -20,9 +20,7 @@ import { FormPermissionModule } from './form-permission/form-permission.module';
 import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { ViewerModule } from '../+viewer/viewer.module';
-import { RouterChildrenEventService } from './router-children-event.service';
 import { OwnDatatableComponent } from './own-submissions/own-datatable/own-datatable.component';
-import { CsvService } from './own-submissions/own-datatable/csv.service';
 import { LineTransectComponent } from './statistics/line-transect/line-transect.component';
 import { LineTransectChartComponent } from './statistics/line-transect/line-transect-chart/line-transect-chart.component';
 import { YearSliderComponent } from './own-submissions/year-slider/year-slider.component';
@@ -32,7 +30,7 @@ import { FormRowComponent } from './form-list/form-row/form-row.component';
 @NgModule({
   imports: [routing, SharedModule, RouterModule, AlertModule, NgxDatatableModule, NouisliderModule, NamedPlaceModule, ViewerModule,
     FormPermissionModule.forRoot()],
-  providers: [ FormApi, DocumentApi, RouterChildrenEventService, CsvService ],
+  providers: [ FormApi, DocumentApi ],
   declarations: [
     HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
     ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent, OwnSubmissionsComponent, OwnDatatableComponent,

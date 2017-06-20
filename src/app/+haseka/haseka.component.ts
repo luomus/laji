@@ -9,7 +9,8 @@ import { Subscription } from 'rxjs/Subscription';
 @Component({
   selector: 'haseka',
   templateUrl: './haseka.component.html',
-  styleUrls: ['./haseka.component.css']
+  styleUrls: ['./haseka.component.css'],
+  providers: [RouterChildrenEventService]
 })
 export class HasekaComponent implements OnInit, OnDestroy {
 

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import { Util } from '../../../shared/service/util.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
+import { UserService } from '../../../shared/service/user.service';
+import { CollectionService } from '../../../shared/service/collection.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentInfoService } from '../../document-info.service';
 import { geoJSONToISO6709 } from 'laji-map/lib/utils';
@@ -15,7 +17,9 @@ import { Observable } from 'rxjs/Observable';
 export class CsvService {
   constructor(
     private translate: TranslateService,
-    private labelService: TriplestoreLabelService
+    private labelService: TriplestoreLabelService,
+    private userService: UserService,
+    private collectionService: CollectionService
   ) {}
 
   public downloadDocumentAsCsv(doc: Document, form: any) {
@@ -93,9 +97,7 @@ export class CsvService {
             }
           });
           if (col.type === 'column') {
-            labelObservables.push(this.labelService.get(i).do((label) => {
-              col.label = label || i;
-            }));
+            labelObservables.push(this.getLabel(i).do(label => col.label = label));
           }
         }
       }
@@ -191,9 +193,7 @@ export class CsvService {
             }]});
         } else if (Array.isArray(object)) {
           return Observable.from(object.map((labelKey) => {
-            return this.labelService.get(labelKey).map((label) => {
-              return label || String(object);
-            });
+            return this.getLabel(labelKey);
           }))
             .mergeAll()
             .toArray()
@@ -201,9 +201,7 @@ export class CsvService {
               return array.join(', ');
             });
         } else {
-          return this.labelService.get(object).map((label) => {
-            return label || String(object);
-          });
+          return this.getLabel(object);
         }
       }
 
@@ -216,6 +214,34 @@ export class CsvService {
     });
   }
 
+  private getLabel(key: string): Observable<string> {
+    if (typeof key !== 'string') {
+      return Observable.of(key);
+    }
+
+    if (key.match(/^MA\.[0-9]+$/)) {
+      return this.userService
+        .getUser(key)
+        .map((user) => {
+          return user.fullName || key;
+        });
+    }
+
+    if (key.match(/^HR\.[0-9]+$/)) {
+      return this.collectionService
+        .getName(key, this.translate.currentLang)
+        .map((name) => {
+          return name.length > 0 && name[0].value ? name[0].value : key;
+        });
+    }
+
+    return this.labelService
+      .get(key)
+      .map((label) => {
+        return label || key;
+      });
+  }
+
   private isEmpty(key: string, obj: any, form: any) {
     if (key === 'gatherings') {
       if (!obj.units || obj.units.length < 1) { return true; }
@@ -225,6 +251,8 @@ export class CsvService {
       }
 
       return true;
+    } else if (key === 'units') {
+      return DocumentInfoService.isEmptyUnit(obj, form);
     }
 
     return false;
