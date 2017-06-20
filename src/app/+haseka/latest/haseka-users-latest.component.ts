@@ -5,7 +5,6 @@ import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
 import { Observable } from 'rxjs/Observable';
 import { Util } from '../../shared/service/util.service';
-import has = Reflect.has;
 
 @Component({
   selector: 'laji-haseka-latest',

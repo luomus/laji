@@ -188,29 +188,30 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private setRowData(document: Document, idx: number): Observable<any> {
-    const gatheringInfo = DocumentInfoService.getGatheringInfo(document);
+    return this.getForm(document.formID).switchMap((form) => {
+      const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
 
-    return Observable.forkJoin(
-      this.getLocality(gatheringInfo),
-      this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
-      this.getForm(document.formID),
-      (locality, observers, form) => {
-        let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
-        dateObserved += gatheringInfo.dateEnd ? ' - ' + moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
+      return Observable.forkJoin(
+        this.getLocality(gatheringInfo),
+        this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
+        (locality, observers) => {
+          let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
+          dateObserved += gatheringInfo.dateEnd ? ' - ' + moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
 
-        return {
-          publicity: document.publicityRestrictions,
-          dateEdited: document.dateEdited ? moment(document.dateEdited).format('DD.MM.YYYY HH:mm') : '',
-          dateObserved: dateObserved,
-          locality: locality,
-          unitCount: gatheringInfo.unitList.length,
-          observer: observers,
-          form: form.title || document.formID,
-          id: document.id,
-          index: idx
-        };
-      }
-    );
+          return {
+            publicity: document.publicityRestrictions,
+            dateEdited: document.dateEdited ? moment(document.dateEdited).format('DD.MM.YYYY HH:mm') : '',
+            dateObserved: dateObserved,
+            locality: locality,
+            unitCount: gatheringInfo.unitList.length,
+            observer: observers,
+            form: form.title || document.formID,
+            id: document.id,
+            index: idx
+          };
+        }
+      );
+    });
   }
 
   private getLocality(gatheringInfo: any): Observable<string> {

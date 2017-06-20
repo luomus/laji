@@ -3,6 +3,7 @@ import { Document } from '../../../shared/model/Document';
 import { Util } from '../../../shared/service/util.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { TranslateService } from '@ngx-translate/core';
+import { DocumentInfoService } from '../../document-info.service';
 import { geoJSONToISO6709 } from 'laji-map/lib/utils';
 import json2csv from 'json2csv/lib/json2csv';
 import { Observable } from 'rxjs/Observable';
@@ -220,23 +221,7 @@ export class CsvService {
       if (!obj.units || obj.units.length < 1) { return true; }
 
       for (let i = 0; i < obj.units.length; i++) {
-        const unit = obj.units[i];
-
-        if (form.features && form.features.indexOf('MHL.featurePrepopulateWithInformalTaxonGroups') !== -1) {
-          if (unit.count || unit.individualCount || unit.pairCount || unit.abundanceString) {
-            return false;
-          }
-        }
-
-        if (unit.identifications) {
-          for (let j = 0; j < unit.identifications.length; j++) {
-            const ident = unit.identifications[j];
-
-            if (unit.informalNameString || ident.taxon || ident.taxonID || ident.taxonVerbatim) {
-              return false;
-            }
-          }
-        }
+        if (!DocumentInfoService.isEmptyUnit(obj.units[i], form)) { return false; }
       }
 
       return true;

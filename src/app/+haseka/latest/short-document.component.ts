@@ -23,15 +23,17 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
 
   public unitList = [];
   public newUnitsLength: number;
-  public gatheringDates: { start: string, end: string };
+  public gatheringDates: {start: string, end: string};
   public publicity = Document.PublicityRestrictionsEnum;
   public locality;
   public dateEdited;
 
   public showList = false;
   public changingLocale = true;
+  public loading = false;
 
   private subTrans: Subscription;
+  private form$: Subscription;
 
   constructor(
     public formService: FormService,
@@ -64,18 +66,25 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateFields() {
-    const gatheringInfo = DocumentInfoService.getGatheringInfo(this.document);
-    this.unitList = gatheringInfo.unitList;
-    this.newUnitsLength = gatheringInfo.unsavedUnitCount;
-    this.gatheringDates = {start: gatheringInfo.dateBegin, end: gatheringInfo.dateEnd};
-    this.locality = gatheringInfo.locality;
+    if (this.form$) { this.form$.unsubscribe(); }
+
+    this.loading = true;
+
+    this.form$ = this.formService.getForm(this.document.formID, this.translate.currentLang).subscribe((form) => {
+      const gatheringInfo = DocumentInfoService.getGatheringInfo(this.document, form);
+      this.unitList = gatheringInfo.unitList;
+      this.newUnitsLength = gatheringInfo.unsavedUnitCount;
+      this.gatheringDates = {start: gatheringInfo.dateBegin, end: gatheringInfo.dateEnd};
+      this.locality = gatheringInfo.locality;
+      this.loading = false;
+    });
   }
 
   editDocument(formId, documentId) {
     this.router.navigate([this.formService.getEditUrlPath(formId, documentId)]);
   }
 
-  removeDocument(event, document) {
+  removeDocument(event) {
     event.stopPropagation();
 
     if (this.newUnitsLength > 0) {

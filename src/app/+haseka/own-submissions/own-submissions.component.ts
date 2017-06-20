@@ -4,6 +4,7 @@ import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'laji-own-submissions',
@@ -35,7 +36,7 @@ export class OwnSubmissionsComponent implements OnInit {
       },
       (err) => {
         this.translate.get('haseka.form.genericError')
-        .subscribe(msg => (this.yearInfoError = msg));
+          .subscribe(msg => (this.yearInfoError = msg));
       }
     );
   }
@@ -59,13 +60,11 @@ export class OwnSubmissionsComponent implements OnInit {
 
     if (!year) { return; }
 
-    this.documents$ = this.documentService.findAll(this.userService.getToken(), String(1), String(1000), String(year))
+    this.documents$ = this.getAllDocumentsByYear(year)
       .subscribe(
         result => {
-          if (result.results) {
-            this.documentCache[String(year)] = result.results;
-            this.activeDocuments = result.results;
-          }
+          this.documentCache[String(year)] = result;
+          this.activeDocuments = result;
         },
         err => {
           this.translate.get('haseka.submissions.loadError', {year: year})
@@ -73,6 +72,26 @@ export class OwnSubmissionsComponent implements OnInit {
               this.activeDocuments = [];
               this.documentError = msg;
             });
+        }
+      );
+  }
+
+  private getAllDocumentsByYear(year: number, page = 1, documents = []): Observable<Document[]> {
+    return this.documentService
+      .findAll(
+        this.userService.getToken(),
+        String(page),
+        String(1000),
+        String(year)
+      )
+      .switchMap(
+        result => {
+          documents.push(...result.results);
+          if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
+            return this.getAllDocumentsByYear(year, result.currentPage + 1, documents);
+          } else {
+            return Observable.of(documents);
+          }
         }
       );
   }
