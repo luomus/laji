@@ -64,7 +64,9 @@ export class Map2Component implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   ngOnDestroy() {
-    this.lajiMap.destroy();
+    try {
+      this.lajiMap.destroy();
+    } catch (e) {}
   }
 
   ngOnChanges(changes) {
