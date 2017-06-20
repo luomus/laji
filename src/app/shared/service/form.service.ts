@@ -9,6 +9,7 @@ import { Document } from '../model/Document';
 import { AppConfig } from '../../app.config';
 import { environment } from '../../../environments/environment';
 import * as deepmerge from 'deepmerge';
+import { Observer } from 'rxjs/Observer';
 
 
 @Injectable()
@@ -151,12 +152,15 @@ export class FormService {
       return Observable.of(this.formCache[formId]);
     } else if (!this.formPending[formId]) {
       this.formPending[formId] = this.formApi.formFindById(formId, lang)
-        .do((schema) => {
-          this.formCache[formId] = schema;
-        })
+        .do((schema) => this.formCache[formId] = schema)
         .share();
     }
-    return this.formPending[formId];
+    return Observable.create((observer: Observer<string>) => {
+      this.formPending[formId].subscribe(data => {
+        observer.next(data);
+        observer.complete();
+      });
+    } );
   }
 
   load(formId: string, lang: string, documentId?: string): Observable<any> {
