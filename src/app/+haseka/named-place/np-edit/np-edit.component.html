@@ -3,7 +3,7 @@
   <div *ngIf="namedPlace && !editMode">
     <laji-np-info [namedPlace]="namedPlace"
                   [formData]="npFormData"
-                  [targetForm]="targetForm"
+                  [targetForm]="formData"
                   [collectionId]="collectionId"
                   [editMode]="editMode"
                   (onEditButtonClick)="editClick()"

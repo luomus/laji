@@ -18,7 +18,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   formId;
   collectionId;
 
-  formInfo;
+  formData;
 
   namedPlaces: NamedPlace[];
   activeNP = -1;
@@ -30,6 +30,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   private subParam: Subscription;
   private namedPlaces$: Observable<NamedPlace[]>;
+  private subTrans: Subscription;
 
   @ViewChild(NpChooseComponent) chooseView: NpChooseComponent;
 
@@ -49,6 +50,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
     this.updateNP();
     this.getFormInfo();
+    this.subTrans = this.translate.onLangChange.subscribe(
+      () => this.getFormInfo()
+    );
 
     this.footerService.footerVisible = false;
   }
@@ -57,6 +61,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (this.subParam) {
       this.subParam.unsubscribe();
     }
+    if (this.subTrans) {
+      this.subTrans.unsubscribe();
+    }
     this.footerService.footerVisible = true;
   }
 
@@ -64,7 +71,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (this.collectionId) {
       this.namedPlaces$ = this.namedPlaceService
         .getAllNamePlacesByCollectionId(this.collectionId)
-        .map(result => (result));
 
       this.namedPlaces$.subscribe(
         data => {
@@ -83,13 +89,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   private getFormInfo() {
     this.formService.getForm(this.formId, this.translate.currentLang)
       .subscribe(data => {
-          const info = {};
-          info['features'] = data.features ? data.features : [];
-          const drawData = this.getFormDrawData(data);
-          if (this.getFormDrawData(data)) {
-            info['drawData'] = drawData;
-          }
-          this.formInfo = info;
+          this.formData = data;
         },
         err => {
           const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
@@ -130,43 +130,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   setErrorMessage(msg) {
     this.errorMsg = msg;
-  }
-
-  private getFormDrawData(form) {
-    if (!form.uiSchema) {
-      return null;
-    }
-
-    if (form.uiSchema.gatherings) {
-      if (form.uiSchema.gatherings['ui:options'] && form.uiSchema.gatherings['ui:options']['draw']) {
-        return form.uiSchema.gatherings['ui:options']['draw'];
-      } else {
-        return null;
-      }
-    } else {
-      return this.getObjectByKey(form.uiSchema, 'draw');
-    }
-  }
-
-  private getObjectByKey(obj, key) {
-    let foundObject = null;
-
-    for (const i in obj) {
-      if (!obj.hasOwnProperty(i) || typeof  obj[i] !== 'object') {
-        continue;
-      }
-
-      if (i === key) {
-        foundObject = obj[i];
-      } else if (typeof obj[i] === 'object') {
-        foundObject = this.getObjectByKey(obj[i], key);
-      }
-
-      if (foundObject !== null) {
-        break;
-      }
-    }
-    return foundObject;
   }
 
   private naturalSort(a, b) {

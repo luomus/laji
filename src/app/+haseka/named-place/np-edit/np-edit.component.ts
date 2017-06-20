@@ -16,10 +16,10 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() namedPlace: NamedPlace;
   @Input() formId: string;
   @Input() collectionId: string;
-  @Input() formInfo: any;
+  @Input() formData: any;
 
+  drawData: any;
   npFormData: any;
-  targetForm: any;
 
   @Input() editMode = false;
   @Output() onEditButtonClick = new EventEmitter();
@@ -30,7 +30,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
   private npFormId: string;
   private npForm$: Subscription;
-  private translation$: Subscription;
+  private subTrans: Subscription;
 
   constructor(
     private formService: FormService,
@@ -41,18 +41,19 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.npFormId = environment.namedPlaceForm;
     this.fetchForm();
-    this.translation$ = this.translate.onLangChange.subscribe(
+    this.subTrans = this.translate.onLangChange.subscribe(
       () => this.onLangChange()
     );
-    this.formService.getForm(this.formId, this.translate.currentLang)
-      .subscribe((form) => this.targetForm = form);
+    this.drawData = this.getDrawData();
   }
 
   ngOnDestroy() {
     if (this.npForm$) {
       this.npForm$.unsubscribe();
     }
-    this.translation$.unsubscribe();
+    if (this.subTrans) {
+      this.subTrans.unsubscribe();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -71,8 +72,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       .getForm(this.npFormId, this.translate.currentLang)
       .subscribe(form => {
         form['formData'] = data;
-        if (this.formInfo.drawData) {
-          form['uiSchema']['namedPlace']['ui:options']['draw'] = this.formInfo.drawData;
+        if (this.drawData) {
+          form['uiSchema']['namedPlace']['ui:options']['draw'] = this.drawData;
         }
         this.lang = this.translate.currentLang;
         this.npFormData = form;
@@ -88,8 +89,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       .load(this.npFormId, this.lang)
       .subscribe(
         data => {
-          if (this.formInfo.drawData) {
-            data['uiSchema']['namedPlace']['ui:options']['draw'] = this.formInfo.drawData;
+          if (this.drawData) {
+            data['uiSchema']['namedPlace']['ui:options']['draw'] = this.drawData;
           }
           this.npFormData = data;
           this.setFormData();
@@ -164,5 +165,44 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.formService.populate(populate);
+  }
+
+  private getDrawData() {
+    const form = this.formData;
+
+    if (!form.uiSchema) {
+      return null;
+    }
+
+    if (form.uiSchema.gatherings) {
+      if (form.uiSchema.gatherings['ui:options'] && form.uiSchema.gatherings['ui:options']['draw']) {
+        return form.uiSchema.gatherings['ui:options']['draw'];
+      } else {
+        return null;
+      }
+    } else {
+      return this.getObjectByKey(form.uiSchema, 'draw');
+    }
+  }
+
+  private getObjectByKey(obj, key) {
+    let foundObject = null;
+
+    for (const i in obj) {
+      if (!obj.hasOwnProperty(i) || typeof  obj[i] !== 'object') {
+        continue;
+      }
+
+      if (i === key) {
+        foundObject = obj[i];
+      } else if (typeof obj[i] === 'object') {
+        foundObject = this.getObjectByKey(obj[i], key);
+      }
+
+      if (foundObject !== null) {
+        break;
+      }
+    }
+    return foundObject;
   }
 }

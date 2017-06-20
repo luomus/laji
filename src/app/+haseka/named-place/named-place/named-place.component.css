@@ -20,10 +20,6 @@
   }
 }
 
-.np-row {
-  flex-flow: row;
-}
-
 .np-row [class^="col-"] {
   padding-right: 1px;
   padding-left: 1px;
@@ -33,7 +29,14 @@
   margin-top: 42px;
 }
 
-laji-np-choose {
-  flex: 10;
+.form-header {
+  margin-bottom: 1.5em;
 }
 
+.form-logo {
+  margin-top: 25px;
+}
+
+.no-padding {
+  padding: 0;
+}
