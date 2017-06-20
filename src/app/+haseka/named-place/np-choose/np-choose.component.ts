@@ -10,7 +10,7 @@ export class NpChooseComponent {
   active = 'list';
   mapIsActivated = false;
 
-  @Input() formInfo: any;
+  @Input() formData: any;
   @Input() namedPlaces: NamedPlace[];
   @Input() visible = true;
 

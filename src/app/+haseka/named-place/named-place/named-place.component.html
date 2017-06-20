@@ -1,40 +1,49 @@
-<div class="container-fluid full-height">
-  <only-logged class="full-height">
+<div class="container-fluid">
+  <only-logged>
     <div class="container" out>
       <h1>{{'haseka.title' | translate}}</h1>
       <p>{{'haseka.pleaseLogin' | translate}}</p>
     </div>
-    <div class="container full-height" in id="container">
-      <laji-spinner [spinning]="!(namedPlaces && formInfo) && !errorMsg" [overlay]="true"></laji-spinner>
-
-      <h1>
-        {{'np.title' | translate}}
-      </h1>
-
-      <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
-
-      <div class="full-height" *ngIf="namedPlaces && formInfo && !errorMsg">
-        <div class="row np-row full-height">
-          <div [ngClass]="{'col-xs-12 col-sm-6 full-height': !editMode}">
-            <laji-np-choose [namedPlaces]="namedPlaces"
-                            [formInfo]="formInfo"
-                            [visible]="!editMode"
-                            (onActivePlaceChange)="setActiveNP($event)"
-                            (onCreateButtonClick)="toEditMode(true)"
-                            class="full-height"></laji-np-choose>
-          </div>
-          <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-sm-6 nav-margin'">
-            <laji-np-edit [editMode]="editMode"
-                          [formId]="formId"
-                          [collectionId]="collectionId"
-                          [namedPlace]="namedPlace"
-                          [formInfo]="formInfo"
-                          (onEditButtonClick)="toEditMode(false)"
-                          (onEditReady)="toNormalMode($event)"
-                          (onError)="setErrorMessage($event)"></laji-np-edit>
+    <div class="container" in id="container">
+      <div *ngIf="formData" class="row form-header">
+        <div class="col-sm-8 no-padding">
+          <h1>{{formData.title}}</h1>
+          <div>{{formData.description}}</div>
+          <br>
+          <a [routerLink]="'/vihko/terms-of-service'">{{'haseka.termsOfService' | translate}}</a>
+        </div>
+        <div class="col-sm-4 no-padding">
+          <div class="form-logo pull-right">
+            <img src="{{formData.logo}}">
           </div>
         </div>
       </div>
+
+      <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
+
+      <laji-spinner [spinning]="!(namedPlaces && formData) && !errorMsg" [overlay]="false">
+        <div *ngIf="namedPlaces && formData && !errorMsg">
+          <div class="row np-row">
+            <div [ngClass]="{'col-xs-12 col-sm-6': !editMode}">
+              <laji-np-choose [namedPlaces]="namedPlaces"
+                              [formData]="formData"
+                              [visible]="!editMode"
+                              (onActivePlaceChange)="setActiveNP($event)"
+                              (onCreateButtonClick)="toEditMode(true)"></laji-np-choose>
+            </div>
+            <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-sm-6 nav-margin'">
+              <laji-np-edit [editMode]="editMode"
+                            [formId]="formId"
+                            [collectionId]="collectionId"
+                            [namedPlace]="namedPlace"
+                            [formData]="formData"
+                            (onEditButtonClick)="toEditMode(false)"
+                            (onEditReady)="toNormalMode($event)"
+                            (onError)="setErrorMessage($event)"></laji-np-edit>
+            </div>
+          </div>
+        </div>
+      </laji-spinner>
     </div>
   </only-logged>
 </div>

@@ -1,5 +1,15 @@
-#choose-container {
-  margin-bottom: 5px;
+#container {
+  padding: 10px 0 10px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-container {
+  max-height: calc(100vh - 50px);
+}
+
+.map-container {
+  height: calc(100vh - 50px);
 }
 
 #navbar {
