@@ -598,6 +598,10 @@ body > .ui-select-bootstrap.open {
   background-color: #898989;
 }
 
+.dropdown-menu {
+  z-index: 1032;
+}
+
 .dropdown-menu.right {
   right: 0 !important;
   left: auto !important;
