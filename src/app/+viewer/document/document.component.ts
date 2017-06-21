@@ -5,6 +5,7 @@ import { TriplestoreLabelService } from '../../shared/service/triplestore-label.
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ng2-webstorage';
 import { Subscription } from 'rxjs/Subscription';
+import { IdService } from '../../shared/service/id.service';
 
 @Component({
   selector: 'laji-document',
@@ -18,6 +19,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() showTitle = false;
   @Input() useWorldMap = true;
   document: any;
+  documentID: string;
   activeGathering: any;
   mapData: any = [];
   hasDoc: boolean;
@@ -84,6 +86,9 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (found) {
       this.document = doc;
       this.mapData = [];
+      if (doc.documentId) {
+        this.documentID = IdService.getId(doc.documentId);
+      }
       let activeIdx = 0;
       if (doc && doc.gatherings) {
         doc.gatherings.map((gathering, idx) => {

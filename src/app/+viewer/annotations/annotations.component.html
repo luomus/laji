@@ -1,0 +1,67 @@
+<button type="button" class="close" (click)="close.emit()">
+  <i class="glyphicon glyphicon-remove"></i>
+</button>
+<h4>{{'annotaion' | translate}}</h4>
+<div>
+  <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
+    {{'annotation.invalid' | translate}}
+  </alert>
+  <div class="row subject">
+    <div class="col-sm-12">
+      {{'feedback.topic' | translate}}:
+      <select [(ngModel)]="annotation.subject" class="form-control">
+        <option value="">{{'feedback.topic.empty' | translate}}</option>
+        <option value="{{'feedback.topic.good' | translate}}">{{'feedback.topic.good' | translate}}</option>
+        <option value="{{'feedback.topic.bad' | translate}}">{{'feedback.topic.bad' | translate}}</option>
+        <option value="other">{{'feedback.topic.other' | translate}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="row message">
+    <div class="col-sm-12">
+      {{'feedback.message' | translate}}:
+      <textarea class="form-control feedback-text" [(ngModel)]="annotation.message"></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a class="btn btn-danger" (click)="close.emit()">{{'feedback.cancel' | translate}}</a>
+    <a class="btn btn-success" (click)="sendAnnotation()">{{'feedback.send' | translate}}</a>
+  </div>
+  <div class="prev annotations">
+    <div class="annotation">
+      <h2>Type</h2>
+      <span>User</span>
+      <p>Message</p>
+    </div>
+    <div class="annotation">
+      <h2>Type</h2>
+      <span>User</span>
+      <p>Message</p>
+    </div>
+    <div class="annotation">
+      <h2>Type</h2>
+      <span>User</span>
+      <p>Message</p>
+    </div>
+    <div class="annotation">
+      <h2>Type</h2>
+      <span>User</span>
+      <p>Message</p>
+    </div>
+    <div class="annotation">
+      <h2>Type</h2>
+      <span>User</span>
+      <p>Message</p>
+    </div>
+    <div class="annotation">
+      <h2>Type</h2>
+      <span>User</span>
+      <p>Message</p>
+    </div>
+    <div class="annotation">
+      <h2>Type</h2>
+      <span>User</span>
+      <p>Message</p>
+    </div>
+  </div>
+</div>

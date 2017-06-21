@@ -11,3 +11,11 @@ hr {
   display: inline-block;
   white-space: nowrap;
 }
+.unit {
+  position: relative;
+}
+.annotation-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+}

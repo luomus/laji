@@ -10,6 +10,7 @@ import { GatheringComponent } from './gathering/gathering.component';
 import { UnitComponent } from './unit/unit.component';
 import { ToQNamePipe } from '../shared/pipe/to-qname.pipe';
 import { LcFirstPipe } from './pipe/lc-first.pipe';
+import { AnnotationsComponent } from './annotations/annotations.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,7 @@ import { LcFirstPipe } from './pipe/lc-first.pipe';
   ],
   providers: [ToQNamePipe],
   declarations: [ViewerComponent, DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
-    GatheringComponent, UnitComponent, LcFirstPipe],
+    GatheringComponent, UnitComponent, LcFirstPipe, AnnotationsComponent],
   exports: [ViewerComponent, DocumentComponent]
 })
 export class ViewerModule { }

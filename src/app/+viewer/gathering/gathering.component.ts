@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class GatheringComponent {
 
+  @Input() documentID: string;
   @Input() gathering: any;
   @Input() highlight: string;
   @Input() visible = true;
