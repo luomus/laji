@@ -34,8 +34,8 @@ export class UnitComponent implements OnInit {
     }
   }
 
-  showAnnotations() {
-    this.annotationVisible = true;
+  toggleAnnotations() {
+    this.annotationVisible = !this.annotationVisible;
   }
 
   hideAnnotations() {

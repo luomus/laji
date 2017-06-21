@@ -26,7 +26,7 @@
     </div>
   </div>
   <div class="annotation-btn">
-    <button type="button" class="btn btn-xs btn-default" (click)="showAnnotations()"><i class="glyphicon glyphicon-edit"></i></button>
+    <button type="button" class="btn btn-xs btn-default" (click)="toggleAnnotations()"><i class="glyphicon glyphicon-edit"></i></button>
   </div>
   <div class="well" *ngIf="annotationVisible">
     <laji-annotations [rootID]="documentID" [targetID]="unitID" (close)="hideAnnotations()"></laji-annotations>

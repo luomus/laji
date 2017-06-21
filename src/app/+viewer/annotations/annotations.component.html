@@ -6,10 +6,10 @@
   <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
     {{'annotation.invalid' | translate}}
   </alert>
-  <div class="row subject">
+  <div class="row annotation-class">
     <div class="col-sm-12">
-      {{'feedback.topic' | translate}}:
-      <select [(ngModel)]="annotation.subject" class="form-control">
+      {{'MAN.annotationClass' | label}}:
+      <select [(ngModel)]="annotation.subject" class="form-control input-sm">
         <option value="">{{'feedback.topic.empty' | translate}}</option>
         <option value="{{'feedback.topic.good' | translate}}">{{'feedback.topic.good' | translate}}</option>
         <option value="{{'feedback.topic.bad' | translate}}">{{'feedback.topic.bad' | translate}}</option>
@@ -23,7 +23,7 @@
       <textarea class="form-control feedback-text" [(ngModel)]="annotation.message"></textarea>
     </div>
   </div>
-  <div class="modal-footer">
+  <div class="actions">
     <a class="btn btn-danger" (click)="close.emit()">{{'feedback.cancel' | translate}}</a>
     <a class="btn btn-success" (click)="sendAnnotation()">{{'feedback.send' | translate}}</a>
   </div>
