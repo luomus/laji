@@ -607,6 +607,7 @@ body > .ui-select-bootstrap.open {
 .fixed-to-view {
   position: fixed;
   width: inherit;
+  z-index: 1030;
 }
 
 /** print management */
