@@ -15,7 +15,7 @@ hr {
   color: #fff;
 }
 .form-filters {
-  z-index: 1001;
+  z-index: auto;
   border-left: 1px solid #e1e1e1;
   background-color: #ECF0F1;
 }

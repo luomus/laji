@@ -598,6 +598,10 @@ body > .ui-select-bootstrap.open {
   background-color: #898989;
 }
 
+.dropdown-menu {
+  z-index: 1032;
+}
+
 .dropdown-menu.right {
   right: 0 !important;
   left: auto !important;
@@ -607,6 +611,7 @@ body > .ui-select-bootstrap.open {
 .fixed-to-view {
   position: fixed;
   width: inherit;
+  z-index: 1030;
 }
 
 /** print management */
