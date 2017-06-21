@@ -135,7 +135,7 @@ export class CsvService {
     };
 
     let appendObjectsToData = (): Observable<any[]> => {
-      if (colIndex >= colData[key].length) { return Observable.of(rows); }
+      if (!colData[key] || colIndex >= colData[key].length) { return Observable.of(rows); }
       const col = colData[key][colIndex];
       const child = !obj ? null : obj[col.id];
       colIndex++;
