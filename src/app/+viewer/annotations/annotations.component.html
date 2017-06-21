@@ -1,67 +1,17 @@
-<button type="button" class="close" (click)="close.emit()">
-  <i class="glyphicon glyphicon-remove"></i>
-</button>
-<h4>{{'annotaion' | translate}}</h4>
-<div>
-  <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
-    {{'annotation.invalid' | translate}}
-  </alert>
-  <div class="row annotation-class">
-    <div class="col-sm-12">
-      {{'MAN.annotationClass' | label}}:
-      <select [(ngModel)]="annotation.subject" class="form-control input-sm">
-        <option value="">{{'feedback.topic.empty' | translate}}</option>
-        <option value="{{'feedback.topic.good' | translate}}">{{'feedback.topic.good' | translate}}</option>
-        <option value="{{'feedback.topic.bad' | translate}}">{{'feedback.topic.bad' | translate}}</option>
-        <option value="other">{{'feedback.topic.other' | translate}}</option>
-      </select>
+<div class="annotation">
+  <button type="button" class="close" (click)="close.emit()">
+    <i class="glyphicon glyphicon-remove"></i>
+  </button>
+  <h4>{{'annotation' | translate}}</h4>
+  <div>
+    <div *ngIf="!adding">
+      <button class="btn btn-sm btn-success" (click)="toggleAddForm()">{{'annotation.add' | translate}} <i class="glyphicon glyphicon-plus"></i></button>
     </div>
-  </div>
-  <div class="row message">
-    <div class="col-sm-12">
-      {{'feedback.message' | translate}}:
-      <textarea class="form-control feedback-text" [(ngModel)]="annotation.message"></textarea>
-    </div>
-  </div>
-  <div class="actions">
-    <a class="btn btn-danger" (click)="close.emit()">{{'feedback.cancel' | translate}}</a>
-    <a class="btn btn-success" (click)="sendAnnotation()">{{'feedback.send' | translate}}</a>
-  </div>
-  <div class="prev annotations">
-    <div class="annotation">
-      <h2>Type</h2>
-      <span>User</span>
-      <p>Message</p>
-    </div>
-    <div class="annotation">
-      <h2>Type</h2>
-      <span>User</span>
-      <p>Message</p>
-    </div>
-    <div class="annotation">
-      <h2>Type</h2>
-      <span>User</span>
-      <p>Message</p>
-    </div>
-    <div class="annotation">
-      <h2>Type</h2>
-      <span>User</span>
-      <p>Message</p>
-    </div>
-    <div class="annotation">
-      <h2>Type</h2>
-      <span>User</span>
-      <p>Message</p>
-    </div>
-    <div class="annotation">
-      <h2>Type</h2>
-      <span>User</span>
-      <p>Message</p>
-    </div>
-    <div class="annotation">
-      <h2>Type</h2>
-      <span>User</span>
-      <p>Message</p>
-    </div>
+    <laji-annotation-form *ngIf="adding"
+                          [annotation]="annotation"
+                          (success)="onSuccess()"
+                          (cancel)="closeAddForm()"
+    ></laji-annotation-form>
+    <laji-annotation-list [personID]="personID" [annotations]="annotation$ | async" (onDelete)="onDelete($event)"></laji-annotation-list>
   </div>
 </div>

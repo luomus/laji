@@ -11,14 +11,18 @@ import { UnitComponent } from './unit/unit.component';
 import { ToQNamePipe } from '../shared/pipe/to-qname.pipe';
 import { LcFirstPipe } from './pipe/lc-first.pipe';
 import { AnnotationsComponent } from './annotations/annotations.component';
+import { AnnotationFormComponent } from './annotations/annotation-form/annotation-form.component';
+import { AnnotationListComponent } from './annotations/annotation-list/annotation-list.component';
+import { AnnotationService } from './service/annotation.service';
+import { AnnotationApi } from '../shared/api/AnnotationApi';
 
 @NgModule({
   imports: [
     SharedModule
   ],
-  providers: [ToQNamePipe],
+  providers: [ToQNamePipe, AnnotationService, AnnotationApi],
   declarations: [ViewerComponent, DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
-    GatheringComponent, UnitComponent, LcFirstPipe, AnnotationsComponent],
+    GatheringComponent, UnitComponent, LcFirstPipe, AnnotationsComponent, AnnotationFormComponent, AnnotationListComponent],
   exports: [ViewerComponent, DocumentComponent]
 })
 export class ViewerModule { }

@@ -6,6 +6,7 @@ import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ng2-webstorage';
 import { Subscription } from 'rxjs/Subscription';
 import { IdService } from '../../shared/service/id.service';
+import { UserService } from '../../shared/service/user.service';
 
 @Component({
   selector: 'laji-document',
@@ -20,6 +21,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() useWorldMap = true;
   document: any;
   documentID: string;
+  personID: string;
   activeGathering: any;
   mapData: any = [];
   hasDoc: boolean;
@@ -30,7 +32,14 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnDestroy {
   private readonly recheckIterval = 10000; // check every 10sec if document not found
   private interval: Subscription;
 
-  constructor(private warehouseApi: WarehouseApi, private labelService: TriplestoreLabelService) { }
+  constructor(
+    private warehouseApi: WarehouseApi,
+    private labelService: TriplestoreLabelService,
+    userService: UserService
+  ) {
+    userService.getUser()
+      .subscribe(person => this.personID = person.id);
+  }
 
   ngAfterViewInit() {
     this.isViewInited = true;

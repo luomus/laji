@@ -9,6 +9,7 @@ import { IdService } from '../../shared/service/id.service';
 })
 export class UnitComponent implements OnInit {
 
+  @Input() personID: string;
   @Input() documentID: string;
   @Input() unit: any;
   @Input() highlight: string;

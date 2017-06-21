@@ -1,0 +1,25 @@
+<alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
+  {{'annotation.invalid' | translate}}
+</alert>
+<div class="row annotation-class">
+  <div class="col-sm-12">
+    {{'MAN.annotationClass' | label}}:
+    <select [(ngModel)]="annotation.annotationClass" class="form-control input-sm">
+      <option *ngFor="let option of annotationOptions$ | async"
+              value="{{option.id}}"
+              [selected]="option.id === annotation.annotationClass">
+        {{option.value | multiLang}}
+      </option>
+    </select>
+  </div>
+</div>
+<div class="row message">
+  <div class="col-sm-12">
+    {{'feedback.message' | translate}}:
+    <textarea class="form-control feedback-text input-sm" [(ngModel)]="annotation.notes"></textarea>
+  </div>
+</div>
+<div class="actions">
+  <a class="btn btn-danger btn-sm" (click)="cancel.emit()">{{'feedback.cancel' | translate}}</a>
+  <a class="btn btn-success btn-sm" (click)="saveAnnotation()">{{'feedback.send' | translate}}</a>
+</div>

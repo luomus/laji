@@ -4,6 +4,9 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { ViewChild } from '@angular/core';
 import { Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { AnnotationService } from '../service/annotation.service';
+import { Annotation } from '../../shared/model/Annotation';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-annotations',
@@ -16,21 +19,50 @@ export class AnnotationsComponent implements OnInit {
   @Input() rootID: string;
   @Input() targetID: string;
   @Input() personID: string;
-  @Input() type: 'MAN.typeTaxon'| 'MAN.typeInvasiveControlEffectiveness' = 'MAN.typeTaxon';
+  @Input() type: Annotation.TypeEnum = Annotation.TypeEnum.TypeTaxon;
   @Output() close = new EventEmitter<any>();
   error = false;
-  annotation: any = {};
+  adding = false;
+  annotation: Annotation = {};
+  annotation$: Observable<Annotation>;
 
-  constructor() { }
+  constructor(private annotationService: AnnotationService) { }
 
   ngOnInit() {
+    this.updateAnnotationList();
+    this.initEmptyAnnotation();
   }
 
-  closeError() {
-
+  initEmptyAnnotation() {
+    this.annotation = {
+      rootID: this.rootID,
+      targetID: this.targetID,
+      type: this.type
+    };
   }
 
-  sendAnnotation() {
-
+  updateAnnotationList() {
+    this.annotation$ = this.annotationService.getAllFromRoot(this.rootID)
+      .map(annotations => annotations.filter(annotation => annotation.targetID === this.targetID));
   }
+
+  toggleAddForm() {
+    this.adding = !this.adding;
+  }
+
+  onSuccess() {
+    this.closeAddForm();
+    this.updateAnnotationList();
+    this.initEmptyAnnotation();
+  }
+
+  closeAddForm() {
+    this.adding = false;
+  }
+
+  onDelete(annotation: Annotation) {
+    this.annotationService.delete(annotation)
+      .subscribe(() => this.onSuccess());
+  }
+
 }

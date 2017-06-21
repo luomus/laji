@@ -1,0 +1,28 @@
+<div class="annotations">
+  <laji-spinner [spinning]="!annotations"></laji-spinner>
+  <div class="annotation" *ngFor="let annotation of annotations">
+    <div class="row">
+      <div class="col-sm-6">
+        {{annotation.annotationClass | label}}
+      </div>
+      <div class="col-sm-6">
+        <span class="person pull-right">
+          {{annotation.annotationByPerson | users}}
+          <button
+            type="button"
+            class="btn btn-danger btn-xs"
+            (click)="onDelete.emit(annotation)"
+            *ngIf="annotation.annotationByPerson === personID">
+            <i class="glyphicon glyphicon-remove"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+    <p>
+      {{annotation.notes}}
+    </p>
+  </div>
+  <div *ngIf="annotations && annotations.length === 0">
+    {{'annotation.none' | translate}}
+  </div>
+</div>
