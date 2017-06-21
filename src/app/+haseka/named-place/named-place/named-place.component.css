@@ -1,8 +1,3 @@
-:host {
-  display: flex;
-  flex: 1 1 0;
-}
-
 :host >>> .full-height {
   display: flex;
   flex-direction: column;

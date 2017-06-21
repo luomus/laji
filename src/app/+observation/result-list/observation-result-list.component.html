@@ -70,6 +70,7 @@
         [nextText]="'paginator.next' | translate"
 ></pagination>
 <div class="modal fade" bsModal #documentModal="bs-modal"
+     [config]="{backdrop: false}"
      tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
