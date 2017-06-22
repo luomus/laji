@@ -8,6 +8,8 @@ import { OnChanges } from '@angular/core';
 import { AnnotationService } from '../../service/annotation.service';
 import { Observable } from 'rxjs/Observable';
 import { Logger } from '../../../shared/logger/logger.service';
+import { AutocompleteApi } from '../../../shared/api/AutocompleteApi';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-annotation-form',
@@ -23,6 +25,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   @Output() success = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
 
+  taxonAutocomplete: Observable<any>;
   error: any;
   isEditor: boolean;
   needsAck: boolean;
@@ -38,12 +41,37 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   constructor(
     private metadataService: MetadataService,
     private annotationService: AnnotationService,
-    private loggerService: Logger
+    private loggerService: Logger,
+    private autocompleteService: AutocompleteApi,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
     this.annotationOptions$ = this.metadataService.getRange('MAN.annotationClassEnum', 'multi');
     this.initAnnotation();
+    this.taxonAutocomplete = Observable.create((observer: any) => {
+      observer.next(this.annotation.taxon);
+    }).mergeMap((query: string) => this.getTaxa(query));
+  }
+
+  public getTaxa(token: string): Observable<any> {
+    return this.autocompleteService.autocompleteFindByField({
+      field: 'taxon',
+      q: token,
+      limit: '10',
+      includePayload: true,
+      lang: this.translate.currentLang
+    })
+      .map(data => data.map(item => {
+        let groups = '';
+        if (item.payload && item.payload.informalTaxonGroups) {
+          groups = item.payload.informalTaxonGroups.reduce((prev, curr) => {
+            return prev + ' ' + curr.id;
+          }, groups);
+        }
+        item['groups'] = groups;
+        return item;
+      }));
   }
 
   ngOnChanges() {

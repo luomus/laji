@@ -38,7 +38,26 @@
     <div class="row" *ngIf="newName.indexOf(annotation.annotationClass) > -1">
       <div class="col-sm-12">
         {{'MAN.taxon' | label}}:
-        <input type="text" name="taxon" class="form-control input-sm" [(ngModel)]="annotation.taxon" />
+        <input
+          [ngClass]="{loading: typeaheadLoading}"
+          type="text"
+          class="form-control input-sm"
+          name="target"
+          [(ngModel)]="annotation.taxon"
+          [typeahead]="taxonAutocomplete"
+          [typeaheadOptionsLimit]="20"
+          [typeaheadWaitMs]="200"
+          [typeaheadMinLength]="3"
+          [typeaheadOptionField]="'value'"
+          [typeaheadItemTemplate]="taxonItem"
+          autocomplete="off"
+          autocorrect="off"
+        >
+        <ng-template #taxonItem let-model="item">
+          <h5 class="autosuggest-value {{model.groups}} informal-group-image">
+            {{model.value}}
+          </h5>
+        </ng-template>
       </div>
     </div>
   </div>
@@ -47,7 +66,7 @@
       'has-error': notes.errors && (notes.dirty || notes.touched)
     }">
     <div class="col-sm-12">
-      {{'feedback.message' | translate}}:<span *ngIf="annotation.type === types.TypeComment">*</span>
+      {{'MAN.notes' | label}}:<span *ngIf="annotation.type === types.TypeComment">*</span>
       <textarea #notes="ngModel"
                 name="notes"
                 [required]="annotation.type === types.TypeComment"

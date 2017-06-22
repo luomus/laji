@@ -21,14 +21,34 @@
     <div class="facts" *ngIf="showFacts">
       <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label: true" *ngFor="let item of unit.facts"></laji-row>
     </div>
-    <div class="image-holder">
-      <laji-image-gallery *ngIf="unit.media" [modalImages]="unit.media"></laji-image-gallery>
+
+    <div class="row">
+      <div class="col-xs-12 col-md-8 col-md-offset-4">
+        <div class="image-holder">
+          <laji-image-gallery *ngIf="unit.media" [modalImages]="unit.media"></laji-image-gallery>
+        </div>
+      </div>
     </div>
   </div>
   <div class="annotation-btn">
-    <button type="button" class="btn btn-xs btn-default" (click)="toggleAnnotations()"><i class="glyphicon glyphicon-edit"></i></button>
+    <button type="button"
+            class="btn btn-xs {{annotationClass$ | async}}"
+            (click)="toggleAnnotations()">
+      <i class="glyphicon glyphicon-edit"></i>
+    </button>
   </div>
   <div *ngIf="annotationVisible">
-    <laji-annotations [editors]="editors" [personID]="personID" [rootID]="documentID" [targetID]="unitID" (close)="hideAnnotations()"></laji-annotations>
+    <div class="row">
+      <div class="col-xs-12 col-md-10 col-md-offset-2">
+        <laji-annotations
+          [editors]="editors"
+          [personID]="personID"
+          [rootID]="documentID"
+          [targetID]="unitID"
+          (close)="hideAnnotations()"
+          (onChange)="initAnnotationStatus()"
+        ></laji-annotations>
+      </div>
+    </div>
   </div>
 </div>

@@ -15,10 +15,12 @@ import { AnnotationFormComponent } from './annotations/annotation-form/annotatio
 import { AnnotationListComponent } from './annotations/annotation-list/annotation-list.component';
 import { AnnotationService } from './service/annotation.service';
 import { AnnotationApi } from '../shared/api/AnnotationApi';
+import { TypeaheadModule } from 'ngx-bootstrap';
 
 @NgModule({
   imports: [
-    SharedModule
+    SharedModule,
+    TypeaheadModule
   ],
   providers: [ToQNamePipe, AnnotationService, AnnotationApi],
   declarations: [ViewerComponent, DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,

@@ -21,6 +21,7 @@ export class AnnotationsComponent implements OnInit {
   @Input() editors: string[];
   @Input() personID: string;
   @Output() close = new EventEmitter<any>();
+  @Output() onChange = new EventEmitter<any>();
   error = false;
   adding = false;
   type: Annotation.TypeEnum;
@@ -55,6 +56,7 @@ export class AnnotationsComponent implements OnInit {
   }
 
   onSuccess() {
+    this.onChange.emit();
     this.closeAddForm();
     this.updateAnnotationList();
     this.initEmptyAnnotation();

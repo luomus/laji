@@ -131,6 +131,13 @@ body {
   position: relative;
 }
 
+.autosuggest-value {
+  height: 20px;
+  padding-right: 30px;
+  background-size: 20px auto !important;
+  background-position: center right !important;
+}
+
 /** Observation **/
 .dropdown-toggle .caret {
   float: right;

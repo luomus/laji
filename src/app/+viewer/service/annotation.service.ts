@@ -62,6 +62,56 @@ export class AnnotationService {
     });
   }
 
+  getAnnotationClassInEffect(annotations: Annotation[]): Observable<Annotation.AnnotationClassEnum>;
+  getAnnotationClassInEffect(rootID: string, targetID: string): Observable<Annotation.AnnotationClassEnum>;
+  getAnnotationClassInEffect(
+    arg1: string|Annotation[],
+    targetID?: string
+  ): Observable<Annotation.AnnotationClassEnum> {
+    if (typeof arg1 === 'string') {
+      return this.getAllFromRoot(arg1)
+        .map(annotations => annotations.filter(ann => ann.targetID === targetID))
+        .switchMap((annotations) => this.getAnnotationClassInEffect(annotations));
+    }
+    const classes = Annotation.AnnotationClassEnum;
+    const cnt = {
+      [classes.AnnotationClassReliable]: 0,
+      [classes.AnnotationClassLikely]: 0,
+      [classes.AnnotationClassSuspicious]: 0,
+      [classes.AnnotationClassUnreliable]: 0
+    };
+    const persons = {};
+    for (const annotation of arg1) {
+      if (annotation.type === Annotation.TypeEnum.TypeAcknowledged) {
+        break;
+      } else if (
+          annotation.type !== Annotation.TypeEnum.TypeTaxon ||
+          annotation.annotationClass === classes.AnnotationClassNeutral ||
+          persons[annotation.annotationByPerson || annotation.annotationBySystem] ||
+          typeof cnt[annotation.annotationClass] === 'undefined'
+      ) {
+        continue;
+      }
+      persons[annotation.annotationByPerson || annotation.annotationBySystem] = true;
+      cnt[annotation.annotationClass]++;
+    }
+    const total = cnt[classes.AnnotationClassReliable] + cnt[classes.AnnotationClassLikely]
+               - (cnt[classes.AnnotationClassSuspicious] + cnt[classes.AnnotationClassUnreliable]);
+
+    if (total > 0) {
+      return Observable.of(
+        cnt[classes.AnnotationClassReliable] > cnt[classes.AnnotationClassReliable] ?
+          classes.AnnotationClassReliable : classes.AnnotationClassLikely
+      );
+    } else if (total < 0) {
+      return Observable.of(
+        cnt[classes.AnnotationClassUnreliable] > cnt[classes.AnnotationClassSuspicious] ?
+          classes.AnnotationClassUnreliable : classes.AnnotationClassSuspicious
+      );
+    }
+    return Observable.of(classes.AnnotationClassNeutral);
+  }
+
   private _fetchAll(rootID: string, page = 1): Observable<Annotation[]> {
     return this.annotationApi.findAnnotations('' + page, '100', rootID)
       .switchMap(result => {

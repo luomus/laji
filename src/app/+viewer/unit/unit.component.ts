@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
+import { Observable } from 'rxjs/Observable';
+import { Annotation } from '../../shared/model/Annotation';
 
 @Component({
   selector: 'laji-unit',
@@ -17,9 +19,11 @@ export class UnitComponent implements OnInit {
   @Input() highlight: string;
   @Input() showFacts = false;
   annotationVisible = false;
+  annotationClass$: Observable<string>;
 
   unitID: string;
   skipFacts: string[] = ['UnitGUID', 'InformalNameString'];
+  annotationClass = Annotation.AnnotationClassEnum;
 
   constructor(
     private toQname: ToQNamePipe,
@@ -37,9 +41,25 @@ export class UnitComponent implements OnInit {
       if (this.unit.unitId) {
         this.unitID = IdService.getId(this.unit.unitId);
       }
-      this.annotationService.getAllFromRoot(this.documentID)
-        .subscribe();
+      this.initAnnotationStatus();
     }
+  }
+
+  initAnnotationStatus() {
+    this.annotationClass$ = this.annotationService.getAnnotationClassInEffect(this.documentID, this.unitID)
+      .map(annotationClass => {
+        switch (annotationClass) {
+          case Annotation.AnnotationClassEnum.AnnotationClassUnreliable:
+          case Annotation.AnnotationClassEnum.AnnotationClassSuspicious:
+          case Annotation.AnnotationClassEnum.AnnotationClassSpam:
+            return 'btn-warning';
+          case Annotation.AnnotationClassEnum.AnnotationClassLikely:
+          case Annotation.AnnotationClassEnum.AnnotationClassReliable:
+            return 'btn-success';
+          default:
+            return 'btn-default';
+        }
+      });
   }
 
   toggleAnnotations() {

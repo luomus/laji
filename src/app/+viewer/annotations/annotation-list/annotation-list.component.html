@@ -1,6 +1,7 @@
 <div class="annotations">
   <laji-spinner [spinning]="!annotations"></laji-spinner>
-  <div class="annotation" *ngFor="let annotation of annotations">
+  <div class="annotation" *ngFor="let annotation of annotations let isOdd=odd"
+       [class.odd]="isOdd">
     <div class="row">
       <div class="col-xs-6 row-title">
         {{annotation.type | label}}:
