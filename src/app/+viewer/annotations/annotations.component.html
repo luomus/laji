@@ -1,17 +1,22 @@
 <div class="annotation">
-  <button type="button" class="close" (click)="close.emit()">
-    <i class="glyphicon glyphicon-remove"></i>
-  </button>
-  <h4>{{'annotation' | translate}}</h4>
-  <div>
-    <div *ngIf="!adding">
-      <button class="btn btn-sm btn-success" (click)="toggleAddForm()">{{'annotation.add' | translate}} <i class="glyphicon glyphicon-plus"></i></button>
-    </div>
-    <laji-annotation-form *ngIf="adding"
-                          [annotation]="annotation"
-                          (success)="onSuccess()"
-                          (cancel)="closeAddForm()"
-    ></laji-annotation-form>
-    <laji-annotation-list [personID]="personID" [annotations]="annotation$ | async" (onDelete)="onDelete($event)"></laji-annotation-list>
+  <div class="header">
+    <button type="button" class="close" (click)="close.emit()">
+      <i class="glyphicon glyphicon-remove"></i>
+    </button>
+    <h4>
+      {{'annotation' | translate}}
+      <span *ngIf="!adding">
+        <button class="btn btn-xs btn-success" (click)="toggleAddForm()"><i class="glyphicon glyphicon-plus"></i></button>
+      </span>
+    </h4>
   </div>
+  <laji-annotation-form *ngIf="adding"
+                        [annotations]="annotations"
+                        [annotation]="annotation"
+                        [personID]="personID"
+                        [editors]="editors"
+                        (success)="onSuccess()"
+                        (cancel)="closeAddForm()"
+  ></laji-annotation-form>
+  <laji-annotation-list *ngIf="annotation$ | async; let annotations" [personID]="personID" [annotations]="annotations" (onDelete)="onDelete($event)"></laji-annotation-list>
 </div>

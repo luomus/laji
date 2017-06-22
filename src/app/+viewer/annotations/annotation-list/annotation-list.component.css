@@ -1,3 +1,9 @@
-.annotations {
-  margin-top: 10px;
+.annotation {
+  border-bottom: 1px solid #d6d6d6;
+  margin: 0 -5px;
+  padding: 3px 5px;
+  min-height: 50px;
+}
+.annotation:last-of-type {
+  border-bottom: none;
 }

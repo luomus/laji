@@ -2,10 +2,13 @@
   <laji-spinner [spinning]="!annotations"></laji-spinner>
   <div class="annotation" *ngFor="let annotation of annotations">
     <div class="row">
-      <div class="col-sm-6">
-        {{annotation.annotationClass | label}}
+      <div class="col-xs-6 row-title">
+        {{annotation.type | label}}:
+        <span *ngIf="annotation.type === types.TypeTaxon">
+          {{annotation.annotationClass | label}}
+        </span>
       </div>
-      <div class="col-sm-6">
+      <div class="col-xs-6">
         <span class="person pull-right">
           {{annotation.annotationByPerson | users}}
           <button
@@ -18,7 +21,13 @@
         </span>
       </div>
     </div>
-    <p>
+    <div class="row" *ngIf="annotation.taxon">
+      <div class="col-xs-12">
+        {{'MAN.taxon' | label}}:
+        {{annotation.taxon}}
+      </div>
+    </div>
+    <p class="content" *ngIf="annotation.notes">
       {{annotation.notes}}
     </p>
   </div>

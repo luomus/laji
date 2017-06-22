@@ -438,5 +438,8 @@
   "checked": "valittu",
   "checkedPlural": "valittu",
   "select": "Valitse",
-  "allSelected": "Kaikki valittu"
+  "allSelected": "Kaikki valittu",
+  "required": "pakollinen",
+  "annotation": "Annotaatiot",
+  "annotation.none": "Ei annotaatioita"
 }

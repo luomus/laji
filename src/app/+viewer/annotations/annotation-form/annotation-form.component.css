@@ -1,3 +1,13 @@
 .actions {
   margin-top: 10px;
 }
+.radio {
+  display: inline-block;
+  margin: 0 10px 10px 0;
+}
+.annotation-form {
+  margin: 0 -5px;
+  padding: 5px 5px 10px 5px;
+  border-bottom: 1px solid #d6d6d6;
+  background-color: #f4f4f4;
+}

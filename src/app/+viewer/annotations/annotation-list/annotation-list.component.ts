@@ -15,6 +15,8 @@ export class AnnotationListComponent implements OnInit {
   @Input() personID: string;
   @Output() onDelete = new EventEmitter<Annotation>();
 
+  types = Annotation.TypeEnum;
+
   constructor() { }
 
   ngOnInit() {

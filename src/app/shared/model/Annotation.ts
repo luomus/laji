@@ -73,6 +73,8 @@ export namespace Annotation {
     }
     export enum TypeEnum {
         TypeTaxon = <any> 'MAN.typeTaxon',
-        TypeInvasiveControlEffectiveness = <any> 'MAN.typeInvasiveControlEffectiveness'
+        TypeInvasiveControlEffectiveness = <any> 'MAN.typeInvasiveControlEffectiveness',
+        TypeComment = <any> 'MAN.typeComment',
+        TypeAcknowledged = <any> 'MAN.typeAcknowledged'
     }
 }

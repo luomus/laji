@@ -1,25 +1,63 @@
-<alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
-  {{'annotation.invalid' | translate}}
-</alert>
-<div class="row annotation-class">
-  <div class="col-sm-12">
-    {{'MAN.annotationClass' | label}}:
-    <select [(ngModel)]="annotation.annotationClass" class="form-control input-sm">
-      <option *ngFor="let option of annotationOptions$ | async"
-              value="{{option.id}}"
-              [selected]="option.id === annotation.annotationClass">
-        {{option.value | multiLang}}
-      </option>
-    </select>
+<form class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
+  <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
+    {{'annotation.error' | translate}}
+  </alert>
+  <div class="row">
+    <div class="col-sm-12">
+      <span class="radio" *ngIf="!isEditor">
+        <label>
+          <input [(ngModel)]="annotation.type" type="radio" name="type" value="{{types.TypeTaxon}}">
+          {{types.TypeTaxon | label}}
+        </label>
+      </span>
+      <span class="radio">
+        <label>
+          <input [(ngModel)]="annotation.type" type="radio" name="type" value="{{types.TypeComment}}">
+          {{types.TypeComment | label}}
+        </label>
+      </span>
+      <span class="radio" *ngIf="isEditor && needsAck">
+        <label>
+          <input [(ngModel)]="annotation.type" type="radio" name="type" value="{{types.TypeAcknowledged}}">
+          {{types.TypeAcknowledged | label}}
+        </label>
+      </span>
+    </div>
   </div>
-</div>
-<div class="row message">
-  <div class="col-sm-12">
-    {{'feedback.message' | translate}}:
-    <textarea class="form-control feedback-text input-sm" [(ngModel)]="annotation.notes"></textarea>
+  <div *ngIf="annotation.type === types.TypeTaxon">
+    <div class="row annotation-class">
+      <div class="col-sm-12">
+        {{'MAN.annotationClass' | label}}:*
+        <select [(ngModel)]="annotation.annotationClass" name="annotationClass" class="form-control input-sm">
+          <option *ngFor="let option of annotationOptions$ | async" [value]="option.id">
+            {{option.value | multiLang}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row" *ngIf="newName.indexOf(annotation.annotationClass) > -1">
+      <div class="col-sm-12">
+        {{'MAN.taxon' | label}}:
+        <input type="text" name="taxon" class="form-control input-sm" [(ngModel)]="annotation.taxon" />
+      </div>
+    </div>
   </div>
-</div>
-<div class="actions">
-  <a class="btn btn-danger btn-sm" (click)="cancel.emit()">{{'feedback.cancel' | translate}}</a>
-  <a class="btn btn-success btn-sm" (click)="saveAnnotation()">{{'feedback.send' | translate}}</a>
-</div>
+  <div class="row message"
+    [ngClass]="{
+      'has-error': notes.errors && (notes.dirty || notes.touched)
+    }">
+    <div class="col-sm-12">
+      {{'feedback.message' | translate}}:<span *ngIf="annotation.type === types.TypeComment">*</span>
+      <textarea #notes="ngModel"
+                name="notes"
+                [required]="annotation.type === types.TypeComment"
+                class="form-control feedback-text input-sm"
+                [(ngModel)]="annotation.notes"></textarea>
+    </div>
+  </div>
+  <div class="actions">
+    <button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{'feedback.cancel' | translate}}</button>
+    <button type="submit" [disabled]="!annotationForm.form.valid" class="btn btn-success btn-sm">{{'feedback.send' | translate}}</button>
+    <span class="pull-right">* = {{'required' | translate}}</span>
+  </div>
+</form>

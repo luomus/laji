@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class GatheringComponent {
 
+  @Input() editors: string[];
   @Input() personID: string;
   @Input() documentID: string;
   @Input() gathering: any;

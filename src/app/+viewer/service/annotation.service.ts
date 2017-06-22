@@ -49,6 +49,7 @@ export class AnnotationService {
       this.annotations = undefined;
       this.currentRoot = rootID;
       this.pending = this._fetchAll(rootID)
+        .map(this.sortAnnotations)
         .do(annotations => this.annotations = annotations)
         .share();
     }
@@ -70,6 +71,14 @@ export class AnnotationService {
         }
         return Observable.of(result.results);
       });
+  }
+
+  private sortAnnotations(annotations: Annotation[]) {
+    annotations.sort((a: Annotation, b: Annotation) =>
+      parseInt(b.id.replace(/[^\d]/g, ''), 10) - parseInt(a.id.replace(/[^\d]/g, ''), 10)
+    );
+
+    return annotations;
   }
 
 }

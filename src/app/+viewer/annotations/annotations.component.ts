@@ -18,11 +18,12 @@ export class AnnotationsComponent implements OnInit {
 
   @Input() rootID: string;
   @Input() targetID: string;
+  @Input() editors: string[];
   @Input() personID: string;
-  @Input() type: Annotation.TypeEnum = Annotation.TypeEnum.TypeTaxon;
   @Output() close = new EventEmitter<any>();
   error = false;
   adding = false;
+  type: Annotation.TypeEnum;
   annotation: Annotation = {};
   annotation$: Observable<Annotation>;
 
@@ -37,7 +38,10 @@ export class AnnotationsComponent implements OnInit {
     this.annotation = {
       rootID: this.rootID,
       targetID: this.targetID,
-      type: this.type
+      annotationClass: Annotation.AnnotationClassEnum.AnnotationClassNeutral,
+      type: this.editors && this.editors.indexOf(this.personID) > -1 ?
+        Annotation.TypeEnum.TypeComment :
+        Annotation.TypeEnum.TypeTaxon
     };
   }
 

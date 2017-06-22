@@ -21,6 +21,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() useWorldMap = true;
   document: any;
   documentID: string;
+  editors: string[];
   personID: string;
   activeGathering: any;
   mapData: any = [];
@@ -97,6 +98,11 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnDestroy {
       this.mapData = [];
       if (doc.documentId) {
         this.documentID = IdService.getId(doc.documentId);
+      }
+      if (doc.editors) {
+        this.editors = doc.editors.map(editor => IdService.getId(editor));
+      } else {
+        this.editors = [];
       }
       let activeIdx = 0;
       if (doc && doc.gatherings) {
