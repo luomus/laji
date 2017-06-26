@@ -32,7 +32,7 @@ import { setTimeout } from 'timers';
       <span *ngIf="img.licenseId">{{img.licenseId | toQName | label}}</span>
       <span *ngIf="img.licenseAbbreviation && !img.licenseId" [innerHtml]="img.licenseAbbreviation"></span>
       <br *ngIf="img.author || img.copyrightOwner || img.licenseId || img.licenseAbbreviation">
-      <a *ngIf="img.documentId" routerLink="/observation/list" [queryParams]="{'documentId':img.documentId}">{{img.documentId}}</a>
+      <a *ngIf="img.documentId" target="_blank" routerLink="/view" [queryParams]="{'uri':img.documentId}">{{img.documentId}}</a>
      ({{ currentImageIndex + 1 }}/{{ modalImages.length }})
      </span>
   </div>
