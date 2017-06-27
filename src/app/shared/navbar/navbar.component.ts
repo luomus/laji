@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { USER_LOGOUT_ACTION, UserService } from '../service/user.service';
+import { UserService } from '../service/user.service';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
@@ -22,11 +22,7 @@ export class NavbarComponent {
   ) {
     this.isProd = environment.production;
     this.isAuthority = environment.forAuthorities;
-    this.userService.action$.subscribe((action) => {
-      if (action === USER_LOGOUT_ACTION) {
-        this.changeDetector.markForCheck();
-      }
-    });
+    this.userService.action$.subscribe(() => this.changeDetector.markForCheck() );
   }
 
   toggleMenu() {
