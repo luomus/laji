@@ -239,7 +239,7 @@
   "haseka.form.success": "Havainnot tallennettu!",
   "haseka.form.failure": "Tallennus epäonnistui!",
   "haseka.form.savePublic": "Tallenna julkisena (CC-BY)",
-  "haseka.form.savePrivate": "Tallenna vain omaan käyttöön ",
+  "haseka.form.savePrivate": "Tallenna julkaisematta",
   "haseka.form.localData": "Tästä lomakkeesta on tallentamaton havaintoerä. Klikkaa tästä palataksesi siihen.",
   "haseka.instructions": "Ohjeet",
   "haseka.form.unsaved": "Viimeksi tallennettu {{saveTime}}",
