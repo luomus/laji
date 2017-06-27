@@ -1,31 +1,6 @@
 <div [ngClass]="{'hidden': editButtonVisible === undefined && useButtonVisible === undefined}">
-  <div class="hidden-xs" #infoBox>
-    <div class="well well-sm np-info">
-      <fieldset>
-        <legend>
-          <span>{{'np.additionalInfo' | translate}}</span>
-          <div class="pull-right">
-            <span [ngSwitch]="targetForm.printType">
-              <a *ngSwitchCase="'MHL.printTypeLineTransect'"
-                 class="btn btn-sm btn-default"
-                 target="_blank"
-                 [routerLink]="['/vihko/np/', namedPlace.id, 'print', targetForm.printType]">print</a>
-            </span>
-            <button *ngIf="editButtonVisible"
-                    class="btn btn-sm btn-default"
-                    (click)="editClick()">{{'np.edit' | translate}}</button>
-          </div>
-        </legend>
-        <laji-np-info-map [visible]="namedPlace && !editMode" [namedPlace]="namedPlace"></laji-np-info-map>
-        <div *ngFor="let k of keys">
-          <laji-np-info-row [key]="k" [value]="values[k]" [fields]="fields"></laji-np-info-row>
-        </div>
-      </fieldset>
-    </div>
-    <a *ngIf="useButtonVisible"
-       type="button"
-       class="btn btn-md btn-primary use-button"
-       (click)="useClick()">{{'np.use' | translate}}</a>
+  <div class="hidden-xs" #infoBox id="info-box">
+    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
   </div>
 
   <div class="modal hidden-sm" tabindex="-1" role="dialog" bsModal #infoModal="bs-modal">
@@ -35,23 +10,40 @@
           <button class="close pull-right" type="button" (click)="modal.hide()">
             <i class="glyphicon glyphicon-remove"></i>
           </button>
-          <h5>{{'np.additionalInfo' | translate}}</h5>
         </div>
         <div class="modal-body">
-          <div class="well well-sm np-info">
-            <fieldset>
-              <laji-np-info-map *ngIf="modalIsVisible" [visible]="true" [namedPlace]="namedPlace"></laji-np-info-map>
-              <div *ngFor="let k of keys">
-                <laji-np-info-row [key]="k" [value]="values[k]" [fields]="fields"></laji-np-info-row>
-              </div>
-            </fieldset>
-          </div>
-          <a *ngIf="useButtonVisible"
-             type="button"
-             class="btn btn-md btn-primary use-button"
-             (click)="useClick()">{{'np.use' | translate}}</a>
+          <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+
+  <ng-template #contentTemplate>
+    <div class="well well-sm np-info">
+      <fieldset>
+        <legend>
+          <span>{{'np.additionalInfo' | translate}}</span>
+          <div class="pull-right">
+            <span [ngSwitch]="targetForm.printType">
+              <a *ngSwitchCase="'MHL.printTypeLineTransect'"
+                 class="btn btn-sm btn-default"
+                 target="_blank"
+                 [routerLink]="['/vihko/places/', namedPlace.id, 'print', targetForm.printType]">{{'np.print' | translate}}</a>
+            </span>
+            <button *ngIf="editButtonVisible"
+                    class="btn btn-sm btn-default"
+                    (click)="editClick()">{{'np.edit' | translate}}</button>
+          </div>
+        </legend>
+        <laji-np-info-map [visible]="infoBox?.nativeElement?.offsetParent !== null || modalIsVisible" [namedPlace]="namedPlace"></laji-np-info-map>
+        <div *ngFor="let k of keys">
+          <laji-np-info-row [key]="k" [value]="values[k]" [fields]="fields"></laji-np-info-row>
+        </div>
+      </fieldset>
+    </div>
+    <a *ngIf="useButtonVisible"
+       type="button"
+       class="btn btn-md btn-primary use-button"
+       (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</a>
+  </ng-template>
 </div>

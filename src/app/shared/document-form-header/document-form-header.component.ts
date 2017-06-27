@@ -1,21 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { Input } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, Input, SimpleChanges } from '@angular/core';
 import { FormService } from '../service/form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { OnChanges } from '@angular/core';
-import { SimpleChanges } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'laji-document-form-header',
   templateUrl: './document-form-header.component.html',
   styleUrls: ['./document-form-header.component.css']
 })
-export class DocumentFormHeaderComponent implements OnInit, OnChanges {
+export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() formID: string;
   @Input() namedPlaceID: string;
   @Input() printType: string;
+  @Input() includeNpDescription = false;
+
   form: any;
+
+  private subTrans: Subscription;
 
   constructor(
     private formService: FormService,
@@ -24,6 +26,13 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.updateForm();
+    this.subTrans = this.translate.onLangChange.subscribe(res => {
+      this.updateForm();
+    });
+  }
+
+  ngOnDestroy() {
+    this.subTrans.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -37,7 +46,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges {
       return;
     }
     this.formService.getForm(this.formID, this.translate.currentLang)
-      .subscribe(form => this.form = form);
+      .subscribe(form => this.form = form );
   }
 
 }

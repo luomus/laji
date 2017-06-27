@@ -10,6 +10,10 @@
       |
     </span>
     <a href="/vihko/terms-of-service" target="_blank">{{'haseka.termsOfService' | translate}}</a>
+    <div *ngIf="includeNpDescription">
+      <br>
+      <div [innerHtml]="form.namedPlaceOptions?.description ? form.namedPlaceOptions.description : 'np.defaultDescription' | translate"></div>
+    </div>
   </div>
   <div class="col-sm-4" *ngIf="form.logo">
     <div class="form-logo pull-right" *ngIf="form.logo">

@@ -5,19 +5,7 @@
       <p>{{'haseka.pleaseLogin' | translate}}</p>
     </div>
     <div class="container" in id="container">
-      <div *ngIf="formData" class="row form-header">
-        <div class="col-sm-8 no-padding">
-          <h1>{{formData.title}}</h1>
-          <div>{{formData.description}}</div>
-          <br>
-          <a [routerLink]="'/vihko/terms-of-service'">{{'haseka.termsOfService' | translate}}</a>
-        </div>
-        <div class="col-sm-4 no-padding">
-          <div class="form-logo pull-right">
-            <img src="{{formData.logo}}">
-          </div>
-        </div>
-      </div>
+      <laji-document-form-header *ngIf="formData" [formID]="formId" [includeNpDescription]="true"></laji-document-form-header>
 
       <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
 

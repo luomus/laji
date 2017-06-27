@@ -33,11 +33,11 @@ export const hasekaRoutes: Routes = [
     component: HaSeKaTermsOfServiceComponent
   },
   {
-    path: 'np/:npId/print/:type',
+    path: 'places/:npId/print/:type',
     component: NpPrintComponent
   },
   {
-    path: 'np/:collectionId/:formId',
+    path: 'places/:collectionId/:formId',
     pathMatch: 'full',
     component: NamedPlaceComponent
   },
