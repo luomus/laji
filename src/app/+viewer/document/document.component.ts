@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
@@ -13,7 +13,7 @@ import { UserService } from '../../shared/service/user.service';
   templateUrl: './document.component.html',
   styleUrls: ['./document.component.css']
 })
-export class DocumentComponent implements AfterViewInit, OnChanges, OnDestroy {
+export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
   @Input() uri: string;
   @Input() highlight: string;
@@ -32,13 +32,18 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnDestroy {
   private _uri: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
   private interval: Subscription;
+  private metaFetch: Subscription;
 
   constructor(
     private warehouseApi: WarehouseApi,
     private labelService: TriplestoreLabelService,
-    userService: UserService
-  ) {
-    userService.getUser()
+    private userService: UserService
+  ) { }
+
+  ngOnInit() {
+    this.metaFetch = this.userService.action$
+      .startWith()
+      .switchMap(() => this.userService.getUser())
       .subscribe(person => this.personID = person.id);
   }
 
@@ -57,6 +62,9 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     if (this.interval) {
       this.interval.unsubscribe();
+    }
+    if (this.metaFetch) {
+      this.metaFetch.unsubscribe();
     }
   }
 
