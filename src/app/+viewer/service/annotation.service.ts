@@ -81,35 +81,36 @@ export class AnnotationService {
       [classes.AnnotationClassUnreliable]: 0
     };
     const persons = {};
+    let status: Annotation.AnnotationClassEnum;
     for (const annotation of arg1) {
       if (annotation.type === Annotation.TypeEnum.TypeAcknowledged) {
-        break;
+          break;
+      } else if (annotation.annotationBySystem && !status) {
+        status = annotation.annotationClass;
       } else if (
           annotation.type !== Annotation.TypeEnum.TypeTaxon ||
           annotation.annotationClass === classes.AnnotationClassNeutral ||
-          persons[annotation.annotationByPerson || annotation.annotationBySystem] ||
+          !annotation.annotationByPerson ||
+          persons[annotation.annotationByPerson] ||
           typeof cnt[annotation.annotationClass] === 'undefined'
       ) {
         continue;
       }
-      persons[annotation.annotationByPerson || annotation.annotationBySystem] = true;
+      persons[annotation.annotationByPerson] = true;
       cnt[annotation.annotationClass]++;
+      status = classes.AnnotationClassNeutral; // We've got use data so this will always override the machine.
     }
-    const total = cnt[classes.AnnotationClassReliable] + cnt[classes.AnnotationClassLikely]
+    const statusTotal = cnt[classes.AnnotationClassReliable] + cnt[classes.AnnotationClassLikely]
                - (cnt[classes.AnnotationClassSuspicious] + cnt[classes.AnnotationClassUnreliable]);
 
-    if (total > 0) {
-      return Observable.of(
-        cnt[classes.AnnotationClassReliable] > cnt[classes.AnnotationClassReliable] ?
-          classes.AnnotationClassReliable : classes.AnnotationClassLikely
-      );
-    } else if (total < 0) {
-      return Observable.of(
-        cnt[classes.AnnotationClassUnreliable] > cnt[classes.AnnotationClassSuspicious] ?
-          classes.AnnotationClassUnreliable : classes.AnnotationClassSuspicious
-      );
+    if (statusTotal > 0) {
+      status = cnt[classes.AnnotationClassReliable] > cnt[classes.AnnotationClassReliable] ?
+          classes.AnnotationClassReliable : classes.AnnotationClassLikely;
+    } else if (statusTotal < 0) {
+      status = cnt[classes.AnnotationClassUnreliable] > cnt[classes.AnnotationClassSuspicious] ?
+          classes.AnnotationClassUnreliable : classes.AnnotationClassSuspicious;
     }
-    return Observable.of(classes.AnnotationClassNeutral);
+    return Observable.of(status ? status : classes.AnnotationClassNeutral);
   }
 
   private _fetchAll(rootID: string, page = 1): Observable<Annotation[]> {

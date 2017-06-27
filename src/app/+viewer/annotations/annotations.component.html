@@ -18,5 +18,10 @@
                         (success)="onSuccess()"
                         (cancel)="closeAddForm()"
   ></laji-annotation-form>
-  <laji-annotation-list *ngIf="annotation$ | async; let annotations" [personID]="personID" [annotations]="annotations" (onDelete)="onDelete($event)"></laji-annotation-list>
+  <laji-annotation-list
+    *ngIf="annotation$ | async; let annotations"
+    [personID]="personID"
+    [annotations]="annotations"
+    (onDelete)="onDelete($event)">
+  </laji-annotation-list>
 </div>
