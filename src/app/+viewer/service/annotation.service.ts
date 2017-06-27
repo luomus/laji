@@ -83,12 +83,14 @@ export class AnnotationService {
     const persons = {};
     let status: Annotation.AnnotationClassEnum;
     for (const annotation of arg1) {
-      if (annotation.type === Annotation.TypeEnum.TypeAcknowledged) {
-          break;
+      if (annotation.type === Annotation.TypeEnum.TypeOpinion &&
+          annotation.annotationClass === classes.AnnotationClassAcknowledged) {
+        status = classes.AnnotationClassNeutral;
+        break;
       } else if (annotation.annotationBySystem && !status) {
         status = annotation.annotationClass;
       } else if (
-          annotation.type !== Annotation.TypeEnum.TypeTaxon ||
+          annotation.type !== Annotation.TypeEnum.TypeOpinion ||
           annotation.annotationClass === classes.AnnotationClassNeutral ||
           !annotation.annotationByPerson ||
           persons[annotation.annotationByPerson] ||
@@ -110,7 +112,7 @@ export class AnnotationService {
       status = cnt[classes.AnnotationClassUnreliable] > cnt[classes.AnnotationClassSuspicious] ?
           classes.AnnotationClassUnreliable : classes.AnnotationClassSuspicious;
     }
-    return Observable.of(status ? status : classes.AnnotationClassNeutral);
+    return Observable.of(status);
   }
 
   private _fetchAll(rootID: string, page = 1): Observable<Annotation[]> {

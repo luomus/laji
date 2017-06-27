@@ -426,6 +426,6 @@
   "select": "Välj",
   "allSelected": "Alla valda",
   "required": "nödvändig",
-  "annotation": "Anteckningar",
+  "annotation.title": "kommentarer",
   "annotation.none": "Inga anteckningar"
 }

@@ -51,7 +51,7 @@ export interface Annotation {
      */
     targetID?: string;
 
-    taxon?: string;
+    opinion?: string;
 
     type?: Annotation.TypeEnum;
 
@@ -63,7 +63,8 @@ export namespace Annotation {
         AnnotationClassNeutral = <any> 'MAN.annotationClassNeutral',
         AnnotationClassSuspicious = <any> 'MAN.annotationClassSuspicious',
         AnnotationClassUnreliable = <any> 'MAN.annotationClassUnreliable',
-        AnnotationClassSpam = <any> 'MAN.annotationClassSpam'
+        AnnotationClassSpam = <any> 'MAN.annotationClassSpam',
+        AnnotationClassAcknowledged = <any> 'MAN.annotationClassAcknowledged'
     }
     export enum InvasiveControlEffectivenessEnum {
         InvasiveControlEffectivenessFull = <any> 'MY.invasiveControlEffectivenessFull',
@@ -72,7 +73,7 @@ export namespace Annotation {
         InvasiveControlEffectivenessNotFound = <any> 'MY.invasiveControlEffectivenessNotFound'
     }
     export enum TypeEnum {
-        TypeTaxon = <any> 'MAN.typeTaxon',
+        TypeOpinion = <any> 'MAN.typeOpinion',
         TypeInvasiveControlEffectiveness = <any> 'MAN.typeInvasiveControlEffectiveness',
         TypeComment = <any> 'MAN.typeComment',
         TypeAcknowledged = <any> 'MAN.typeAcknowledged'

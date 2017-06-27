@@ -40,9 +40,7 @@ export class AnnotationsComponent implements OnInit {
       rootID: this.rootID,
       targetID: this.targetID,
       annotationClass: Annotation.AnnotationClassEnum.AnnotationClassNeutral,
-      type: this.editors && this.editors.indexOf(this.personID) > -1 ?
-        Annotation.TypeEnum.TypeComment :
-        Annotation.TypeEnum.TypeTaxon
+      type: Annotation.TypeEnum.TypeOpinion
     };
   }
 

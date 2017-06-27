@@ -42,7 +42,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
 
   ngOnInit() {
     this.metaFetch = this.userService.action$
-      .startWith()
+      .startWith('')
       .switchMap(() => this.userService.getUser())
       .subscribe(person => this.personID = person.id);
   }

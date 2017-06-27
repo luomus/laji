@@ -440,6 +440,6 @@
   "select": "Valitse",
   "allSelected": "Kaikki valittu",
   "required": "pakollinen",
-  "annotation": "Annotaatiot",
+  "annotation.title": "Kommentit",
   "annotation.none": "Ei annotaatioita"
 }

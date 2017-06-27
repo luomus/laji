@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { Logger } from '../../../shared/logger/logger.service';
 import { AutocompleteApi } from '../../../shared/api/AutocompleteApi';
 import { TranslateService } from '@ngx-translate/core';
+import ownKeys = Reflect.ownKeys;
 
 @Component({
   selector: 'laji-annotation-form',
@@ -35,6 +36,10 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     Annotation.AnnotationClassEnum.AnnotationClassSuspicious,
     Annotation.AnnotationClassEnum.AnnotationClassUnreliable
   ];
+  ownerTypes = [
+    Annotation.AnnotationClassEnum.AnnotationClassNeutral,
+    Annotation.AnnotationClassEnum.AnnotationClassAcknowledged
+  ];
 
   private emptyAnnotationClass = Annotation.AnnotationClassEnum.AnnotationClassNeutral;
 
@@ -47,10 +52,9 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.annotationOptions$ = this.metadataService.getRange('MAN.annotationClassEnum', 'multi');
     this.initAnnotation();
     this.taxonAutocomplete = Observable.create((observer: any) => {
-      observer.next(this.annotation.taxon);
+      observer.next(this.annotation.opinion);
     }).mergeMap((query: string) => this.getTaxa(query));
   }
 
@@ -79,11 +83,22 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   }
 
   initAnnotation() {
+    console.log('editors', this.editors, this.personID);
     this.isEditor = this.editors && this.editors.indexOf(this.personID) > -1;
     this.needsAck = this.annotations && this.annotations[0] && this.annotations[0].type !== Annotation.TypeEnum.TypeAcknowledged;
     if (!this.annotation.annotationClass) {
       this.annotation.annotationClass = this.emptyAnnotationClass;
     }
+    this.annotationOptions$ = this.metadataService.getRange('MAN.annotationClassEnum', 'multi')
+      .map(annotationOptions => annotationOptions.filter(annotation => this.isEditor ?
+          this.ownerTypes.indexOf(annotation.id) > -1 :
+          ((
+            this.ownerTypes.indexOf(annotation.id) === -1 ||
+            annotation.id === Annotation.AnnotationClassEnum.AnnotationClassNeutral
+          ) &&
+           annotation.id !== Annotation.AnnotationClassEnum.AnnotationClassSpam)
+          )
+      );
   }
 
   closeError() {

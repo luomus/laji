@@ -3,32 +3,10 @@
     <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
       {{'haseka.form.error' | translate}}
     </alert>
-    <div class="row">
-      <div class="col-sm-12">
-        <span class="radio" *ngIf="!isEditor">
-          <label>
-            <input [(ngModel)]="annotation.type" type="radio" name="type" value="{{types.TypeTaxon}}">
-            {{types.TypeTaxon | label}}
-          </label>
-        </span>
-        <span class="radio">
-          <label>
-            <input [(ngModel)]="annotation.type" type="radio" name="type" value="{{types.TypeComment}}">
-            {{types.TypeComment | label}}
-          </label>
-        </span>
-        <span class="radio" *ngIf="isEditor && needsAck">
-          <label>
-            <input [(ngModel)]="annotation.type" type="radio" name="type" value="{{types.TypeAcknowledged}}">
-            {{types.TypeAcknowledged | label}}
-          </label>
-        </span>
-      </div>
-    </div>
-    <div *ngIf="annotation.type === types.TypeTaxon">
+    <div *ngIf="annotation.type === types.TypeOpinion">
       <div class="row annotation-class">
         <div class="col-sm-12">
-          {{'MAN.annotationClass' | label}}:*
+          {{'MAN.annotationClass' | label}}:
           <select [(ngModel)]="annotation.annotationClass" name="annotationClass" class="form-control input-sm">
             <option *ngFor="let option of annotationOptions$ | async" [value]="option.id">
               {{option.value | multiLang}}
@@ -38,13 +16,13 @@
       </div>
       <div class="row" *ngIf="newName.indexOf(annotation.annotationClass) > -1">
         <div class="col-sm-12">
-          {{'MAN.taxon' | label}}:
+          {{'MAN.opinion' | label}}:
           <input
             [ngClass]="{loading: typeaheadLoading}"
             type="text"
             class="form-control input-sm"
-            name="target"
-            [(ngModel)]="annotation.taxon"
+            name="opinion"
+            [(ngModel)]="annotation.opinion"
             [typeahead]="taxonAutocomplete"
             [typeaheadOptionsLimit]="20"
             [typeaheadWaitMs]="200"
@@ -78,7 +56,6 @@
     <div class="actions">
       <button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{'feedback.cancel' | translate}}</button>
       <button type="submit" [disabled]="!annotationForm.form.valid" class="btn btn-success btn-sm">{{'feedback.send' | translate}}</button>
-      <span class="pull-right">* = {{'required' | translate}}</span>
     </div>
   </form>
   <div out class="annotation-form">

@@ -424,6 +424,6 @@
   "select": "Select",
   "allSelected": "All selected",
   "required": "required",
-  "annotation": "Annotations",
+  "annotation.title": "Comments",
   "annotation.none": "No annotations"
 }

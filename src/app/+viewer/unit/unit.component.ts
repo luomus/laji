@@ -20,6 +20,7 @@ export class UnitComponent implements OnInit {
   @Input() showFacts = false;
   annotationVisible = false;
   annotationClass$: Observable<string>;
+  annotationIcon: string;
 
   unitID: string;
   skipFacts: string[] = ['UnitGUID', 'InformalNameString'];
@@ -48,11 +49,12 @@ export class UnitComponent implements OnInit {
   initAnnotationStatus() {
     this.annotationClass$ = this.annotationService.getAnnotationClassInEffect(this.documentID, this.unitID)
       .map(annotationClass => {
+        this.annotationIcon = annotationClass ? 'fa-comments' : 'fa-comment-o';
         switch (annotationClass) {
           case Annotation.AnnotationClassEnum.AnnotationClassUnreliable:
           case Annotation.AnnotationClassEnum.AnnotationClassSuspicious:
           case Annotation.AnnotationClassEnum.AnnotationClassSpam:
-            return 'btn-warning';
+            return 'btn-danger';
           case Annotation.AnnotationClassEnum.AnnotationClassLikely:
           case Annotation.AnnotationClassEnum.AnnotationClassReliable:
             return 'btn-success';

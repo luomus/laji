@@ -32,9 +32,10 @@
   </div>
   <div class="annotation-btn">
     <button type="button"
+            [tooltip]="'annotation.title' | translate"
             class="btn btn-xs {{annotationClass$ | async}}"
             (click)="toggleAnnotations()">
-      <i class="glyphicon glyphicon-edit"></i>
+      <i class="fa {{annotationIcon}}"></i>
     </button>
   </div>
   <div *ngIf="annotationVisible">

@@ -11,3 +11,20 @@
 .odd {
   background-color: #f4f4f4;
 }
+.annotation-class {
+  font-size: larger;
+}
+
+.annotation-author:after {
+  content: "\B7";
+  padding: 0 0 0 3px;
+  display: inline;
+}
+
+.annotation-positive {
+  color: #4cae4c;
+}
+
+.annotation-negative {
+  color: #d43f3a;
+}
