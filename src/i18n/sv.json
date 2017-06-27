@@ -228,7 +228,7 @@
   "haseka.form.success": "Observationerna sparat!",
   "haseka.form.failure": "Det gick inte att spara!",
   "haseka.form.savePublic": "Spara och publicera (CC-BY)",
-  "haseka.form.savePrivate": "Spara för egen användning",
+  "haseka.form.savePrivate": "Spara utan att publicera",
   "haseka.form.unsaved": "senast sparade på {{saveTime}}",
   "haseka.form.unsavedNever": "Ändringarna har ännu inte sparats.",
   "haseka.form.hasChanges": "Observationbatch har lokala ändringar som ännu inte har sparats.",
@@ -426,5 +426,8 @@
   "checked": "vald",
   "checkedPlural": "valda",
   "select": "Välj",
-  "allSelected": "Alla valda"
+  "allSelected": "Alla valda",
+  "required": "nödvändig",
+  "annotation.title": "kommentarer",
+  "annotation.none": "Inga anteckningar"
 }

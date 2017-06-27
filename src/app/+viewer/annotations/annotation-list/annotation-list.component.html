@@ -1,0 +1,60 @@
+<div class="annotations">
+  <laji-spinner [spinning]="!annotations"></laji-spinner>
+  <div class="annotation" *ngFor="let annotation of annotations let isOdd=odd"
+       [class.odd]="isOdd">
+    <div class="row">
+      <div class="col-xs-9 row-title">
+        <span [ngSwitch]="annotation.annotationClass" [tooltip]="annotation.annotationClass | label"
+          class="annotation-class">
+          <span *ngSwitchCase="annotationClass.AnnotationClassAcknowledged">
+            <i class="fa fa-check-square-o"></i>
+          </span>
+          <span *ngSwitchCase="annotationClass.AnnotationClassReliable" class="annotation-positive">
+            <i class="fa fa-check-circle-o"></i>
+            <i class="fa fa-check-circle-o"></i>
+          </span>
+          <span *ngSwitchCase="annotationClass.AnnotationClassLikely"  class="annotation-positive">
+            <i class="fa fa-check-circle-o"></i>
+          </span>
+          <span *ngSwitchCase="annotationClass.AnnotationClassSuspicious"  class="annotation-negative">
+            <i class="fa fa-exclamation-circle"></i>
+          </span>
+          <span *ngSwitchCase="annotationClass.AnnotationClassUnreliable"  class="annotation-negative">
+            <i class="fa fa-exclamation-circle"></i>
+            <i class="fa fa-exclamation-circle"></i>
+          </span>
+          <span *ngSwitchDefault="">
+            <i class="fa fa-comment-o"></i>
+          </span>
+        </span>
+        <small>
+          <span class="annotation-author">{{annotation.annotationByPerson | users}}</span>
+          <span *ngIf="!changingLocale">{{annotation.created | amTimeAgo}}</span>
+        </small>
+      </div>
+      <div class="col-xs-3">
+        <span class="person pull-right">
+          <button
+            type="button"
+            class="btn btn-danger btn-xs"
+            (click)="onDelete.emit(annotation)"
+            *ngIf="annotation.annotationByPerson === personID">
+            <i class="glyphicon glyphicon-remove"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+    <div class="row" *ngIf="annotation.opinion">
+      <div class="col-xs-12">
+        {{'MAN.opinion' | label}}:
+        {{annotation.opinion}}
+      </div>
+    </div>
+    <p class="content" *ngIf="annotation.notes">
+      {{annotation.notes}}
+    </p>
+  </div>
+  <div *ngIf="annotations && annotations.length === 0">
+    {{'annotation.none' | translate}}
+  </div>
+</div>

@@ -16,6 +16,7 @@ import { ToastsService } from './toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject';
 
+export const USER_INFO = '[user]: info';
 export const USER_LOGOUT_ACTION = '[user]: logout';
 
 @Injectable()
@@ -159,7 +160,10 @@ export class UserService {
     this.token = token;
     this.subUser = this.getUser()
       .subscribe(
-        user => this.addUser(user, true),
+        user => {
+          this.addUser(user, true);
+          this.actionSource.next(USER_INFO);
+        },
         err => {
           this.logout();
           this.logger.warn('Failed to load user info with token', err);

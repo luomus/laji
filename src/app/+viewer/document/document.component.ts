@@ -1,23 +1,28 @@
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ng2-webstorage';
 import { Subscription } from 'rxjs/Subscription';
+import { IdService } from '../../shared/service/id.service';
+import { UserService } from '../../shared/service/user.service';
 
 @Component({
   selector: 'laji-document',
   templateUrl: './document.component.html',
   styleUrls: ['./document.component.css']
 })
-export class DocumentComponent implements AfterViewInit, OnChanges, OnDestroy {
+export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
   @Input() uri: string;
   @Input() highlight: string;
   @Input() showTitle = false;
   @Input() useWorldMap = true;
   document: any;
+  documentID: string;
+  editors: string[];
+  personID: string;
   activeGathering: any;
   mapData: any = [];
   hasDoc: boolean;
@@ -27,8 +32,20 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnDestroy {
   private _uri: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
   private interval: Subscription;
+  private metaFetch: Subscription;
 
-  constructor(private warehouseApi: WarehouseApi, private labelService: TriplestoreLabelService) { }
+  constructor(
+    private warehouseApi: WarehouseApi,
+    private labelService: TriplestoreLabelService,
+    private userService: UserService
+  ) { }
+
+  ngOnInit() {
+    this.metaFetch = this.userService.action$
+      .startWith('')
+      .switchMap(() => this.userService.getUser())
+      .subscribe(person => this.personID = person.id);
+  }
 
   ngAfterViewInit() {
     this.isViewInited = true;
@@ -45,6 +62,9 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     if (this.interval) {
       this.interval.unsubscribe();
+    }
+    if (this.metaFetch) {
+      this.metaFetch.unsubscribe();
     }
   }
 
@@ -84,6 +104,14 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (found) {
       this.document = doc;
       this.mapData = [];
+      if (doc.documentId) {
+        this.documentID = IdService.getId(doc.documentId);
+      }
+      if (doc.editors) {
+        this.editors = doc.editors.map(editor => IdService.getId(editor));
+      } else {
+        this.editors = [];
+      }
       let activeIdx = 0;
       if (doc && doc.gatherings) {
         doc.gatherings.map((gathering, idx) => {
