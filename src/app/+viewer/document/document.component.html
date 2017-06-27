@@ -68,7 +68,7 @@
   <div class="row">
     <div class="col-sm-7">
       <div *ngFor="let gathering of document.gatherings; let i=index">
-        <laji-gathering [showFacts]="showFacts" [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
+        <laji-gathering [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
       </div>
     </div>
     <div class="col-sm-5">

@@ -1,0 +1,30 @@
+.annotation {
+  border-bottom: 1px solid #ededed;
+  margin: 0 -5px;
+  padding: 3px 5px;
+  min-height: 50px;
+  background-color: #f9f9f9;
+}
+.annotation:last-of-type {
+  border-bottom: none;
+}
+.odd {
+  background-color: #f4f4f4;
+}
+.annotation-class {
+  font-size: larger;
+}
+
+.annotation-author:after {
+  content: "\B7";
+  padding: 0 0 0 3px;
+  display: inline;
+}
+
+.annotation-positive {
+  color: #4cae4c;
+}
+
+.annotation-negative {
+  color: #d43f3a;
+}

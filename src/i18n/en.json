@@ -424,5 +424,8 @@
   "checked": "checked",
   "checkedPlural": "checked",
   "select": "Select",
-  "allSelected": "All selected"
+  "allSelected": "All selected",
+  "required": "required",
+  "annotation.title": "Comments",
+  "annotation.none": "No annotations"
 }

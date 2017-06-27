@@ -426,5 +426,8 @@
   "checked": "vald",
   "checkedPlural": "valda",
   "select": "Välj",
-  "allSelected": "Alla valda"
+  "allSelected": "Alla valda",
+  "required": "nödvändig",
+  "annotation.title": "kommentarer",
+  "annotation.none": "Inga anteckningar"
 }
