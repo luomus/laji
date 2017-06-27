@@ -489,7 +489,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
         }
       });
       if (properties['documentId'] && properties['unitId']) {
-        description += '<a href="/view?uri=' +
+        description += '<a target="_blank" href="/view?uri=' +
           properties['documentId'] +
           '&highlight=' +
           properties['unitId'].replace('#', '_') + '">' +

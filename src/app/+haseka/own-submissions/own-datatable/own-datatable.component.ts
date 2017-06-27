@@ -17,7 +17,7 @@ import { WindowRef } from '../../../shared/windows-ref';
   selector: 'laji-own-datatable',
   templateUrl: './own-datatable.component.html',
   styleUrls: ['./own-datatable.component.css'],
-  providers: [RouterChildrenEventService, CsvService]
+  providers: [CsvService]
 })
 export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() documents: Document[];
