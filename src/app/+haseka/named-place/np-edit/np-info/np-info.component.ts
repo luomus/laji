@@ -99,15 +99,19 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     for (const field in this.fields) {
-      if (displayed.fields.indexOf(field) > -1 && (this.namedPlace[field] !== undefined || (gData && gData[field] !== undefined))) {
+      if (displayed.fields.indexOf(field) > -1 && (!this.isEmpty(this.namedPlace[field]) || (gData && !this.isEmpty(gData[field])))) {
         this.keys.push(field);
-        if (this.namedPlace[field] !== undefined) {
+        if (!this.isEmpty(this.namedPlace[field])) {
           this.values[field] = this.namedPlace[field];
         } else {
           this.values[field] = gData[field];
         }
       }
     }
+  }
+
+  private isEmpty(value: string) {
+    return value == null || value === '';
   }
 
   private setButtonVisibilities(userId) {

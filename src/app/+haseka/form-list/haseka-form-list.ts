@@ -123,7 +123,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
 
   private _goToForm(form: FormListInterface) {
     if (form.features.indexOf(Form.Feature.NamedPlace) > -1) {
-      this.router.navigate(['/vihko/np/' + form.collectionID + '/' + form.id]);
+      this.router.navigate(['/vihko/places/' + form.collectionID + '/' + form.id]);
     } else {
       this.router.navigate(['/vihko/' + form.id]);
     }

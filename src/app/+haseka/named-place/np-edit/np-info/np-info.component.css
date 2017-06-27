@@ -22,3 +22,7 @@ laji-np-info-map {
 .use-button {
   width: 100%;
 }
+
+#info-box {
+  padding: 10px 0 10px 0;
+}

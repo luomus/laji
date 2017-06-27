@@ -51,7 +51,10 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.updateNP();
     this.getFormInfo();
     this.subTrans = this.translate.onLangChange.subscribe(
-      () => this.getFormInfo()
+      () => {
+        this.formData = null;
+        this.getFormInfo();
+      }
     );
 
     this.footerService.footerVisible = false;
