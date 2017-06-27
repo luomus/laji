@@ -1,23 +1,24 @@
-<div class="container-fluid">
-  <only-logged>
+<div class="container-fluid full-height">
+  <only-logged class="full-height">
     <div class="container" out>
       <h1>{{'haseka.title' | translate}}</h1>
       <p>{{'haseka.pleaseLogin' | translate}}</p>
     </div>
-    <div class="container" in id="container">
-      <laji-document-form-header *ngIf="formData" [formID]="formId" [includeNpDescription]="true"></laji-document-form-header>
+    <div class="container full-height" in id="container">
+      <laji-document-form-header *ngIf="formData" [formID]="formId" [includeNpDescription]="true" class="no-flex"></laji-document-form-header>
 
       <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
 
-      <laji-spinner [spinning]="!(namedPlaces && formData) && !errorMsg" [overlay]="false">
-        <div *ngIf="namedPlaces && formData && !errorMsg">
-          <div class="row np-row">
-            <div [ngClass]="{'col-xs-12 col-sm-6': !editMode}">
+      <laji-spinner [spinning]="!(namedPlaces && formData) && !errorMsg" [overlay]="true" class="full-height">
+        <div *ngIf="namedPlaces && formData && !errorMsg" class="full-height">
+          <div class="row np-row full-height">
+            <div [ngClass]="{'col-xs-12 col-sm-6 full-height': !editMode}">
               <laji-np-choose [namedPlaces]="namedPlaces"
                               [formData]="formData"
                               [visible]="!editMode"
                               (onActivePlaceChange)="setActiveNP($event)"
-                              (onCreateButtonClick)="toEditMode(true)"></laji-np-choose>
+                              (onCreateButtonClick)="toEditMode(true)"
+                              class="full-height"></laji-np-choose>
             </div>
             <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-sm-6 nav-margin'">
               <laji-np-edit [editMode]="editMode"

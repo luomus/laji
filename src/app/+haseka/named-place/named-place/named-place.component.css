@@ -1,3 +1,8 @@
+:host {
+  display: flex;
+  flex: 1 1 0;
+}
+
 :host >>> .full-height {
   display: flex;
   flex-direction: column;
@@ -15,6 +20,11 @@
   }
 }
 
+.np-row {
+  flex-flow: row;
+  flex: 1 0 auto;
+}
+
 .np-row [class^="col-"] {
   padding-right: 1px;
   padding-left: 1px;
@@ -24,14 +34,6 @@
   margin-top: 42px;
 }
 
-.form-header {
-  margin-bottom: 1.5em;
-}
-
-.form-logo {
-  margin-top: 25px;
-}
-
-.no-padding {
-  padding: 0;
+.no-flex {
+  flex: 0 0 auto;
 }
