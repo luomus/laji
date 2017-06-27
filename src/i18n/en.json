@@ -230,7 +230,7 @@
   "haseka.form.success": "Observations saved!",
   "haseka.form.failure": "Failed to save!",
   "haseka.form.savePublic": "Save as public (CC-BY)",
-  "haseka.form.savePrivate": "Save for own use only",
+  "haseka.form.savePrivate": "Save without publishing",
   "haseka.form.unsaved": "last saved at {{saveTime}}",
   "haseka.form.unsavedNever": "The changes have not yet been saved.",
   "haseka.form.hasChanges": "Submission has local changes that are not yet saved",
