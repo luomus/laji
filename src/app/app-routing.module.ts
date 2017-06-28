@@ -1,32 +1,44 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { ViewerComponent } from './+viewer/viewer.component';
 import { ForumComponent } from './forum/forum.component';
+import { Observable } from 'rxjs/Observable';
+
+const PRELOAD_DELAY = 2000; // ms
+
+export class CustomPreloadingStrategy implements PreloadingStrategy {
+  preload(route: Route, fn: () => Observable<boolean>): Observable<boolean> {
+    if (route.data && route.data['noPreload']) {
+      return Observable.of(false);
+    }
+    return Observable.of(true).delay(PRELOAD_DELAY).flatMap( (_: boolean) => fn());
+  }
+}
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule'},
-  {path: 'news', loadChildren: './+news/news.module#NewsModule'},
+  {path: 'news', loadChildren: './+news/news.module#NewsModule', data: {noPreload: true}},
   {path: 'about', loadChildren: './+information/information.module#InformationModule'},
-  {path: 'user', loadChildren: './+user/user.module#UserModule'},
+  {path: 'user', loadChildren: './+user/user.module#UserModule', data: {noPreload: true}},
   {path: 'view', component: ViewerComponent },
-  {path: 'invasive', loadChildren: './+invasive/invasive.module#InvasiveModule'},
+  {path: 'invasive', loadChildren: './+invasive/invasive.module#InvasiveModule', data: {noPreload: true}},
   {path: 'vihko', loadChildren: './+haseka/haseka.module#HasekaModule'},
   {path: 'observation', loadChildren: './+observation/observation.module#ObservationModule'},
   {path: 'taxon', loadChildren: './+taxonomy/taxonomy.module#TaxonomyModule'},
-  {path: 'collection', loadChildren: './+collection/collection.module#CollectionModule'},
-  {path: 'kartta', loadChildren: './+map/map.module#MapModule'},
-  {path: 'map', loadChildren: './+map/map.module#MapModule'},
-  {path: 'error', loadChildren: './+error/error.module#ErrorModule'},
-  {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule'},
+  {path: 'collection', loadChildren: './+collection/collection.module#CollectionModule', data: {noPreload: true}},
+  {path: 'kartta', loadChildren: './+map/map.module#MapModule', data: {noPreload: true}},
+  {path: 'map', loadChildren: './+map/map.module#MapModule', data: {noPreload: true}},
+  {path: 'error', loadChildren: './+error/error.module#ErrorModule', data: {noPreload: true}},
+  {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule', data: {noPreload: true}},
   {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
-  {path: 'forum', component: ForumComponent },
-  {path: '**', component: NotFoundComponent}
+  {path: 'forum', component: ForumComponent, data: {noPreload: true}},
+  {path: '**', component: NotFoundComponent, data: {noPreload: true}}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})],
+  imports: [RouterModule.forRoot(routes, {preloadingStrategy: CustomPreloadingStrategy})],
   exports: [RouterModule],
-  providers: []
+  providers: [CustomPreloadingStrategy]
 })
 export class AppRoutingModule { }
