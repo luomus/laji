@@ -11,6 +11,7 @@
           (onCreate)="onCreate($event)"
           (onMove)="onMove($event)"
           (onFailure)="refreshMap()"
+          [settingsKey]="settingsKey"
           [initWithWorldMap]="initWithWorldMap">
     <div class="loading-map loading" *ngIf="loading"></div>
     <ul class="legend" *ngIf="legend" [ngStyle]="{'margin-top': topMargin }">

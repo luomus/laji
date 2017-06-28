@@ -28,6 +28,7 @@ export class UserService {
 
   @LocalStorage() private token;
   @LocalStorage() private returnUrl;
+  @LocalStorage() private userSettings: {[userID: string]: {[key: string]: any}};
   private currentUserId: string;
   private users: {[id: string]: Person} = {};
   private usersFetch: {[id: string]: Observable<Person>} = {};
@@ -155,6 +156,21 @@ export class UserService {
       .share();
     return this.formDefaultObservable;
   }
+
+  public getUserSetting(key): Observable<any> {
+    return this.getUser()
+      .switchMap((person: Person) => this.userSettings[person.id] && this.userSettings[person.id][key] ?
+        Observable.of(this.userSettings[person.id][key]) : Observable.of(undefined));
+  }
+
+  public setUserSetting(key: string, value: any) {
+    this.getUser()
+      .subscribe((person: Person) => {
+        const personsValues = this.userSettings && this.userSettings[person.id] ?
+          {...this.userSettings[person.id], [key]: value} : {[key]: value};
+        this.userSettings = {...this.userSettings, [person.id]: personsValues};
+      });
+  };
 
   private loadUserInfo(token: string) {
     this.token = token;

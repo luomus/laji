@@ -122,6 +122,7 @@
                 {{ 'taxonomy.map.disclaimer' | translate }}
               </p>
               <laji-observation-map [color]="'#009900'"
+                                    [settingsKey]="'taxonMap'"
                                     [center]="[64.5, 25.0]"
                                     [query]="{taxonId: [taxon.id]}"
                                     [height]="300"

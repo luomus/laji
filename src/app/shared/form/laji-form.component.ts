@@ -26,6 +26,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input() lang: string;
   @Input() formData: any = {};
   @Input() tick: number;
+  @Input() settingsKey = '';
 
   @Output() onSubmit = new EventEmitter();
   @Output() onChange = new EventEmitter();
@@ -97,30 +98,39 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (!this.formData || !this.formData.formData || !this.lang) {
       return;
     }
-    try {
-      this.ngZone.runOutsideAngular(() => {
-        const uiSchemaContext = this.formData.uiSchemaContext || {};
-        uiSchemaContext['creator'] = this.formData.formData.creator;
-        this.apiClient.lang = this.lang;
-        this.apiClient.personToken = this.userService.getToken();
-        this.lajiFormWrapper = this.lajiExternalService.getForm({
-          staticImgPath: '/static/lajiForm/',
-          rootElem: this.elem,
-          schema: this.formData.schema,
-          uiSchema: this.formData.uiSchema,
-          uiSchemaContext: uiSchemaContext,
-          formData: this.formData.formData,
-          validators: this.formData.validators,
-          onSubmit: this._onSubmit.bind(this),
-          onChange: this._onChange.bind(this),
-          apiClient: this.apiClient,
-          lang: this.lang,
-          renderSubmit: false
-        });
+    this.userService.getUserSetting(this.settingsKey)
+      .subscribe(settings => {
+        try {
+          this.ngZone.runOutsideAngular(() => {
+            const uiSchemaContext = this.formData.uiSchemaContext || {};
+            uiSchemaContext['creator'] = this.formData.formData.creator;
+            this.apiClient.lang = this.lang;
+            this.apiClient.personToken = this.userService.getToken();
+            this.lajiFormWrapper = this.lajiExternalService.getForm({
+              staticImgPath: '/static/lajiForm/',
+              rootElem: this.elem,
+              schema: this.formData.schema,
+              uiSchema: this.formData.uiSchema,
+              uiSchemaContext: uiSchemaContext,
+              formData: this.formData.formData,
+              validators: this.formData.validators,
+              onSubmit: this._onSubmit.bind(this),
+              onChange: this._onChange.bind(this),
+              onSettingsChange: this._onSettingsChange.bind(this),
+              settings: settings,
+              apiClient: this.apiClient,
+              lang: this.lang,
+              renderSubmit: false
+            });
+          });
+        } catch (err) {
+          this.logger.error('Failed to load lajiForm', err);
+        }
       });
-    } catch (err) {
-      this.logger.error('Failed to load lajiForm', err);
-    }
+  }
+
+  _onSettingsChange(settings: object) {
+    this.userService.setUserSetting(this.settingsKey, settings);
   }
 
   _onChange(formData) {
