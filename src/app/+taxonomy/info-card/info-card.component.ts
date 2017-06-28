@@ -7,6 +7,7 @@ import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../shared/model
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { ObservationMapComponent } from '../../+observation/map/observation-map.component';
 import { Observable } from 'rxjs/Observable';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'laji-info-card',
@@ -16,7 +17,7 @@ import { Observable } from 'rxjs/Observable';
 export class InfoCardComponent implements OnInit, OnDestroy {
   @ViewChild(ObservationMapComponent) map: ObservationMapComponent;
 
-  public taxon: Taxonomy | false;
+  public taxon: Taxonomy;
   public taxonDescription: Array<TaxonomyDescription>;
   public taxonImages: Array<TaxonomyImage>;
   public activePanel = 0;
@@ -37,7 +38,8 @@ export class InfoCardComponent implements OnInit, OnDestroy {
     private taxonService: TaxonomyApi,
     private translate: TranslateService,
     private route: ActivatedRoute,
-    private logger: Logger
+    private logger: Logger,
+    private title: Title
   ) { }
 
   ngOnInit() {
@@ -54,6 +56,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
 
     this.subTrans = this.translate.onLangChange
       .do(() => this.loading = true)
+      .delay(0)
       .switchMap(() => {
         return Observable.forkJoin(
           this.getTaxonDescription(this.taxonId),
@@ -120,8 +123,15 @@ export class InfoCardComponent implements OnInit, OnDestroy {
         this.hasTaxonImages = data.media.length > 0;
         this.activeImageTab = this.hasTaxonImages ? 'taxon' : 'collection';
         this.taxonImages = data.media;
+        this.setTitle();
         this.updateMap();
       });
+  }
+
+  private setTitle() {
+    let title = this.taxon.vernacularName[this.translate.currentLang] || '';
+    title += title ? ' (' + this.taxon.scientificName + ')' : this.taxon.scientificName;
+    this.title.setTitle((title ? title + ' | '  : '') + this.title.getTitle());
   }
 
   private getTaxon(id) {

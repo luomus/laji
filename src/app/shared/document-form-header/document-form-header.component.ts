@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges, OnDestroy, Input, SimpleChanges } from '@
 import { FormService } from '../service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'laji-document-form-header',
@@ -20,6 +21,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   private subTrans: Subscription;
 
   constructor(
+    private title: Title,
     private formService: FormService,
     public translate: TranslateService
   ) { }
@@ -46,7 +48,10 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
       return;
     }
     this.formService.getForm(this.formID, this.translate.currentLang)
-      .subscribe(form => this.form = form );
+      .subscribe(form => {
+        this.form = form;
+        this.title.setTitle(form.title + ' | ' + this.title.getTitle());
+      });
   }
 
 }

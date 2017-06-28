@@ -6,6 +6,7 @@ import { Logger } from '../shared/logger/logger.service';
 import { InformationApi } from '../shared/api/InformationApi';
 import { Information } from '../shared/model/Information';
 import { InformationService } from './information.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'laji-information',
@@ -23,7 +24,8 @@ export class InformationComponent implements OnDestroy {
               private informationApi: InformationApi,
               private translate: TranslateService,
               private informationService: InformationService,
-              private logger: Logger
+              private logger: Logger,
+              private title: Title
   ) {
     this.paramSub = this.route.params.subscribe(params => {
       this.getInformation(params['id'] || null);
@@ -41,7 +43,7 @@ export class InformationComponent implements OnDestroy {
   }
 
   private getInformation(id?) {
-    let lang = this.translate.currentLang;
+    const lang = this.translate.currentLang;
     (id ?
       (this.informationApi.informationFindById(this.informationService.resolveId(id, lang), lang)) :
       (this.informationApi.informationFindAll(lang)))
@@ -55,7 +57,10 @@ export class InformationComponent implements OnDestroy {
         return data;
       })
       .subscribe(
-        information => this.information = information,
+        information => {
+          this.information = information;
+          this.title.setTitle(information.title + ' | ' + this.title.getTitle());
+        },
         err => this.logger.warn('Failed to fetch root informations', err)
       );
   }

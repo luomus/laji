@@ -32,7 +32,8 @@ export const taxonomyRoutes: Routes = [
   {
     path: ':id',
     pathMatch: 'full',
-    component: InfoCardComponent
+    component: InfoCardComponent,
+    data: {title: 'taxonomy.card'}
   },
 ];
 export const routing: ModuleWithProviders = RouterModule.forChild(taxonomyRoutes);

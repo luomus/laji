@@ -14,8 +14,8 @@ const routes: Routes = [
     path: 'nafi',
     component: NafiComponent,
     children: [
-      {path: '', pathMatch: 'full', component: NafiInstructionsComponent},
-      {path: 'stats', pathMatch: 'full', component: NafiResultComponent},
+      {path: '', pathMatch: 'full', component: NafiInstructionsComponent, data: { title: 'nafi.stats.title' }},
+      {path: 'stats', pathMatch: 'full', component: NafiResultComponent, data: { title: 'nafi.stats.title' }},
       {path: 'form', pathMatch: 'full', component: NafiFormComponent, canActivate: [OnlyLoggedIn]},
       {
         path: 'form/:id',
@@ -25,7 +25,7 @@ const routes: Routes = [
         canDeactivate: [DocumentDeActivateGuard]
       },
       {path: 'myObservations', pathMatch: 'full', component: NafiMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'instructions', pathMatch: 'full', component: NafiInstructionsComponent}
+      {path: 'instructions', pathMatch: 'full', component: NafiInstructionsComponent, data: { title: 'nafi.stats.title' } }
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent}

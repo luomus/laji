@@ -1,14 +1,20 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
 import { CollectionApi } from './shared/api/CollectionApi';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { InformationApi } from './shared/api/InformationApi';
 import { WindowRef } from './shared/windows-ref';
 import { AppConfig } from './app.config';
 import { environment } from '../environments/environment';
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs/Observable';
+import tileLayer = L.tileLayer;
 
 declare const ga: Function;
+
+const MAIN_TITLE = 'home.main-page.title';
 
 @Component({
   selector: 'laji-app',
@@ -32,7 +38,9 @@ export class AppComponent {
     toastr: ToastsManager,
     viewContainerRef: ViewContainerRef,
     windowRef: WindowRef,
-    appConfig: AppConfig
+    appConfig: AppConfig,
+    title: Title,
+    translateService: TranslateService
   ) {
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !appConfig.isAnalyticsDisabled();
@@ -45,6 +53,13 @@ export class AppComponent {
           if (newRoute.indexOf('/observation') !== 0 && newRoute.indexOf('/theme') !== 0) {
             windowRef.nativeWindow.scroll(0, 0);
           }
+          this.getDeepestTitle(router.routerState.snapshot.root)
+            .map(titles => [...titles, MAIN_TITLE])
+            .map(titles => Array.from(new Set<string>(titles)))
+            .switchMap(titles => translateService.get(titles))
+            .subscribe(pageTitle => {
+              title.setTitle(Object.keys(pageTitle).map(key => pageTitle[key]).join(' | '));
+            });
           if (this.hasAnalytics && newRoute.indexOf('/user') !== 0) {
             try {
               ga('send', 'pageview', newRoute);
@@ -54,5 +69,17 @@ export class AppComponent {
         }
       }
     });
+  }
+
+  private getDeepestTitle(routeSnapshot: ActivatedRouteSnapshot): Observable<string[]> {
+    const title = [];
+    if (routeSnapshot.data && routeSnapshot.data['title']) {
+      title.push(routeSnapshot.data['title'] || '');
+    }
+    if (routeSnapshot.firstChild) {
+      return this.getDeepestTitle(routeSnapshot.firstChild)
+        .map(label => [...label, ...title]);
+    }
+    return Observable.of(title);
   }
 }

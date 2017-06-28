@@ -24,7 +24,10 @@ export const userRoutes: Routes = [
   {
     path: ':userId',
     pathMatch: 'full',
-    component: ProfileComponent
+    component: ProfileComponent,
+    data: {
+      title: 'navigation.user.profile'
+    }
   }
 ];
 
