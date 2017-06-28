@@ -85,7 +85,6 @@ export class AnnotationService {
     for (const annotation of arg1) {
       if (annotation.type === Annotation.TypeEnum.TypeOpinion &&
           annotation.annotationClass === classes.AnnotationClassAcknowledged) {
-        status = classes.AnnotationClassNeutral;
         break;
       } else if (annotation.annotationBySystem && !status) {
         status = annotation.annotationClass;
@@ -101,6 +100,9 @@ export class AnnotationService {
       persons[annotation.annotationByPerson] = true;
       cnt[annotation.annotationClass]++;
       status = classes.AnnotationClassNeutral; // We've got use data so this will always override the machine.
+    }
+    if (!status && arg1.length > 0) {
+      status = classes.AnnotationClassNeutral;
     }
     const statusTotal = cnt[classes.AnnotationClassReliable] + cnt[classes.AnnotationClassLikely]
                - (cnt[classes.AnnotationClassSuspicious] + cnt[classes.AnnotationClassUnreliable]);
