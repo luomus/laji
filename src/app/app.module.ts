@@ -75,6 +75,7 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
     TranslateModule
   ],
   providers: [
+    {provide: ErrorHandler, useClass: LajiErrorHandler},
     {provide: LocationStrategy, useClass: PathLocationStrategy},
     {
       provide: Logger,
