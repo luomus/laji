@@ -10,6 +10,7 @@ import {
 import { LajiExternalService } from '../service/laji-external.service';
 
 export interface LajiMapOptions {
+  rootElem?: Element;
   tileLayerName?: string;
   zoom?: number;
   center?: [number, number];
@@ -28,6 +29,12 @@ export interface LajiMapOptions {
     coordinates?: boolean;
     lineTransect?: boolean;
     coordinateInput?: boolean;
+  };
+  on?: {
+    tileLayerChange?: (arg: {tileLayerName: string, type: string, target: any}) => void;
+    tileLayerOpacityChange?: (event: {tileLayerOpacity: string, type: string, target: any}) => void;
+    tileLayerOpacityChangeEnd?: (event: {tileLayerOpacity: string, type: string, target: any}) => void;
+    overlaysChange?: (event: {overlayNames: string[], type: string, target: any}) => void;
   };
 }
 

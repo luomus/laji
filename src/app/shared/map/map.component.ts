@@ -12,6 +12,8 @@ import {
 import { Logger } from '../logger/logger.service';
 import { MapService } from './map.service';
 import { LajiExternalService } from '../service/laji-external.service';
+import { LajiMapOptions } from './map2.component';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'laji-map',
@@ -46,6 +48,7 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
     coordinates: false,
     coordinateInput: false
   };
+  @Input() settingsKey: string;
 
   @Output() select = new EventEmitter();
   @Output() onCreate = new EventEmitter();
@@ -56,49 +59,78 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
   map: any;
   private initEvents = false;
   private failureSend = false;
+  private userSettings: any = {};
 
   constructor(
     private mapService: MapService,
     private logger: Logger,
-    private lajiExternalService: LajiExternalService
+    private lajiExternalService: LajiExternalService,
+    private userService: UserService
   ) {
 
   }
 
   ngAfterViewInit() {
-    const draw = this.draw;
-    if (this.draw) {
-      draw.onChange = draw.onChange || (e => this.onChange(e));
-      draw.getDraftStyle = draw.getDraftStyle || this.getDrawingDraftStyle;
-      draw.data = draw.data || this.drawData;
-      draw.editable = draw.editable !== false ? draw.editable : false;
-      draw.marker = draw.marker !== false ? draw.marker : false;
-      draw.polygon = draw.polygon !== false ? draw.polygon : false;
-      draw.polyline = draw.polyline !== false ? draw.polyline : false;
-      draw.hasActive = draw.hasActive !== true ? draw.hasActive : true;
-    }
-    this.map = this.lajiExternalService.getMap({
-      tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
-      zoom: this.zoom,
-      center: this.center || [65, 26],
-      lang: this.lang,
-      data: [],
-      draw: draw,
-      markerPopupOffset: 5,
-      featurePopupOffset: 0,
-      rootElem: this.elemRef.nativeElement,
-      controlSettings: this.controlSettings
-    });
-    this.map.map.on('moveend', _ => {
-      this.moveEvent('moveend');
-    });
-    this.map.map.on('movestart', _ => {
-      this.moveEvent('movestart');
-    });
-    this.initMapOptions();
-    this.updateData();
-    this.initDrawData();
-    this.moveEvent('moveend');
+    this.userService.getUserSetting(this.settingsKey)
+      .subscribe(settings => {
+        const draw = this.draw;
+        if (this.draw) {
+          draw.onChange = draw.onChange || (e => this.onChange(e));
+          draw.getDraftStyle = draw.getDraftStyle || this.getDrawingDraftStyle;
+          draw.data = draw.data || this.drawData;
+          draw.editable = draw.editable !== false ? draw.editable : false;
+          draw.marker = draw.marker !== false ? draw.marker : false;
+          draw.polygon = draw.polygon !== false ? draw.polygon : false;
+          draw.polyline = draw.polyline !== false ? draw.polyline : false;
+          draw.hasActive = draw.hasActive !== true ? draw.hasActive : true;
+        }
+        const mapOptions: LajiMapOptions = {
+          tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
+          zoom: this.zoom,
+          center: this.center || [65, 26],
+          lang: this.lang,
+          data: [],
+          draw: draw,
+          markerPopupOffset: 5,
+          featurePopupOffset: 0,
+          rootElem: this.elemRef.nativeElement,
+          controlSettings: this.controlSettings
+        };
+
+        if (this.settingsKey) {
+          mapOptions.on = {
+            tileLayerChange: (event) => {
+              this.userSettings.tileLayerName = event.tileLayerName;
+              this.userService.setUserSetting(this.settingsKey, this.userSettings);
+            },
+            tileLayerOpacityChangeEnd: (event) => {
+              this.userSettings.tileLayerOpacity = event.tileLayerOpacity;
+              this.userService.setUserSetting(this.settingsKey, this.userSettings);
+            },
+            overlaysChange: (event) => {
+              this.userSettings.overlayNames = event.overlayNames;
+              this.userService.setUserSetting(this.settingsKey, this.userSettings);
+            }
+          };
+          for (const key in settings) {
+            if (settings.hasOwnProperty(key)) {
+              mapOptions[key] = settings[key];
+            }
+          }
+        }
+
+        this.map = this.lajiExternalService.getMap(mapOptions);
+        this.map.map.on('moveend', _ => {
+          this.moveEvent('moveend');
+        });
+        this.map.map.on('movestart', _ => {
+          this.moveEvent('movestart');
+        });
+        this.initMapOptions();
+        this.updateData();
+        this.initDrawData();
+        this.moveEvent('moveend');
+      });
   }
 
   moveEvent(type: string) {

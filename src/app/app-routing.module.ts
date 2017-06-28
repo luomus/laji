@@ -5,7 +5,7 @@ import { ViewerComponent } from './+viewer/viewer.component';
 import { ForumComponent } from './forum/forum.component';
 import { Observable } from 'rxjs/Observable';
 
-const PRELOAD_DELAY = 2000; // ms
+const PRELOAD_DELAY = 3000; // ms
 
 export class CustomPreloadingStrategy implements PreloadingStrategy {
   preload(route: Route, fn: () => Observable<boolean>): Observable<boolean> {

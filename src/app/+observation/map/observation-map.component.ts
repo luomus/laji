@@ -49,6 +49,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() selectColor = '#00aa00';
   @Input() color: any;
   @Input() showLoadMore = true;
+  @Input() settingsKey = 'observationMap';
   @Input() legend = false;
   @Input() colorThresholds = [10, 100, 1000, 10000]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
   @Output() create = new EventEmitter();

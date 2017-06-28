@@ -1,5 +1,6 @@
 <div class="map-wrap" *ngIf="hasQuery">
   <laji-observation-map
+          [settingsKey]="''"
           [color]="color"
           [showControls]="showControls"
           [initWithWorldMap]="true"
@@ -8,6 +9,7 @@
 </div>
 <div class="map-wrap" *ngIf="!hasQuery">
   <laji-map
+          [settingsKey]="''"
           [draw]="draw"
           [drawData]="drawData"
           [controlSettings]="{
