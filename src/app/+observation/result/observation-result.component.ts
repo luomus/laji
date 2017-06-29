@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { Location } from '@angular/common';
 import { SearchQuery } from '../search-query.model';
 import { IdService } from '../../shared/service/id.service';
 import { UserService } from '../../shared/service/user.service';
@@ -30,8 +29,7 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
 
   constructor(public searchQuery: SearchQuery,
               public userService: UserService,
-              public translate: TranslateService,
-              private location: Location) {
+              public translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -112,7 +110,7 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
     this.active = tab;
     this.activated[tab] = true;
     this.activeChange.emit(this.active);
-    this.searchQuery.updateUrl(this.location, '/observation/' + tab, [
+    this.searchQuery.updateUrl([
       'selected',
       'pageSize',
       'page'

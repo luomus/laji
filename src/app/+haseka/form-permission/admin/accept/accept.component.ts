@@ -6,6 +6,7 @@ import { ToastsService } from '../../../../shared/service/toasts.service';
 import { FormPermission } from '../../../../shared/model/FormPermission';
 import { UserService } from '../../../../shared/service/user.service';
 import { Logger } from '../../../../shared/logger/logger.service';
+import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-accept',
@@ -24,6 +25,7 @@ export class AcceptComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private formPermissionService: FormPermissionService,
+    private localizeRouterService: LocalizeRouterService,
     private toastsService: ToastsService,
     private userService: UserService,
     private logger: Logger
@@ -68,7 +70,9 @@ export class AcceptComponent implements OnInit, OnDestroy {
         this.formPermission = data.permission;
         this.isAllowed = this.formPermissionService.isAdmin(data.permission, data.person);
         if (!this.isAllowed) {
-          this.router.navigate(['/vihko']);
+          this.router.navigate(
+            this.localizeRouterService.translateRoute(['/vihko'])
+          );
         }
       });
   }

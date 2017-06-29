@@ -2,12 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { FormService } from '../../../shared/service/form.service';
 import { ViewChild } from '@angular/core';
 import { DocumentFormComponent } from '../../../shared/document-form/document-form.component';
-import { DialogService } from '../../../shared/service/dialog.service';
 import { ComponentCanDeactivate } from '../../../shared/document-form/document-de-activate.guard';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-nafi-form',
@@ -23,9 +21,7 @@ export class NafiFormComponent implements OnInit, OnDestroy, ComponentCanDeactiv
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private translate: TranslateService,
-    private formService: FormService,
-    private dialogService: DialogService
+    private localizeRouterService: LocalizeRouterService,
   ) { }
 
   ngOnInit() {
@@ -48,20 +44,20 @@ export class NafiFormComponent implements OnInit, OnDestroy, ComponentCanDeactiv
 
   onTmlLoad(data) {
     this.router.navigate(
-      ['/theme/nafi/form/', data.tmpID],
+      this.localizeRouterService.translateRoute(['/theme/nafi/form/', data.tmpID]),
       { replaceUrl: true }
     );
   }
 
   onSuccess(data) {
-    this.router.navigate(['/theme/nafi/stats']);
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/nafi/stats']));
   }
 
   onError() {
-    this.router.navigate(['/theme/nafi/stats']);
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/nafi/stats']));
   }
 
   onCancel() {
-    this.router.navigate(['/theme/nafi/stats']);
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/nafi/stats']));
   }
 }

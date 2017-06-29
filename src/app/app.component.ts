@@ -11,6 +11,7 @@ import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import tileLayer = L.tileLayer;
+import { LocalizeRouterService } from './locale/localize-router.service';
 
 declare const ga: Function;
 
@@ -40,19 +41,25 @@ export class AppComponent {
     windowRef: WindowRef,
     appConfig: AppConfig,
     title: Title,
-    translateService: TranslateService
+    translateService: TranslateService,
+    localizeRouterService: LocalizeRouterService
   ) {
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !appConfig.isAnalyticsDisabled();
     this.isEmbedded = environment.isEmbedded || false;
     toastr.setRootViewContainerRef(viewContainerRef);
+
+    translateService.use(localizeRouterService.getLocationLang());
+
     router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         const newRoute = location.path() || '/';
         if (this.currentRoute !== newRoute) {
-          if (newRoute.indexOf('/observation') !== 0 && newRoute.indexOf('/theme/nafi') !== 0) {
+          // Check if on page that should be scrolled to top
+          if (!newRoute.match(/^\/(en\/|sv\/)?(observation|theme\/nafi)\//)) {
             windowRef.nativeWindow.scroll(0, 0);
           }
+          // Set page title
           this.getDeepestTitle(router.routerState.snapshot.root)
             .map(titles => [...titles, MAIN_TITLE])
             .map(titles => Array.from(new Set<string>(titles)))
@@ -60,11 +67,14 @@ export class AppComponent {
             .subscribe(pageTitle => {
               title.setTitle(Object.keys(pageTitle).map(key => pageTitle[key]).join(' | '));
             });
+
+          // Use analytics
           if (this.hasAnalytics && newRoute.indexOf('/user') !== 0) {
             try {
               ga('send', 'pageview', newRoute);
             } catch (e) {}
           }
+
           this.currentRoute = newRoute;
         }
       }

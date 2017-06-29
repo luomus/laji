@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'laji-navigation-thumbnail',
   template: `
   <div class="col-md-6">
-    <a [routerLink]="'/' + path" class="thumbnail panel panel-default">
+    <a [routerLink]="'/' + path | localize" class="thumbnail panel panel-default">
         <div class="panel-body">
           <div class="icon" [style.background-image]="'url(/static/images/icons/' + icon + '.svg)'"></div>
         </div>

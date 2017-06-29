@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
   <li *ngFor="let taxon of parents$ | async">
-    <a [routerLink]="['/taxon/' + taxon.id]">
+    <a [routerLink]="['/taxon/' + taxon.id] | localize">
       <strong>
         {{ taxon.vernacularName }}
       </strong>

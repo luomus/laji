@@ -4,6 +4,10 @@ import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { ViewerComponent } from './+viewer/viewer.component';
 import { ForumComponent } from './forum/forum.component';
 import { Observable } from 'rxjs/Observable';
+import { LocaleEnComponent } from './locale/locale-en.component';
+import { LocaleSvComponent } from './locale/locale-sv.component';
+import { LocaleFiComponent } from './locale/locale-fi.component';
+import { LocalizeRouterService } from './locale/localize-router.service';
 
 const PRELOAD_DELAY = 3000; // ms
 
@@ -38,8 +42,14 @@ const routes: Routes = [
   {path: '**', component: NotFoundComponent, data: {noPreload: true}}
 ];
 
+const routesWithLang: Routes = [
+  {path: 'en', children: LocalizeRouterService.traslateRoutes(routes.slice(0, routes.length), 'en'), component: LocaleEnComponent},
+  {path: 'sv', children: LocalizeRouterService.traslateRoutes(routes.slice(0, routes.length), 'sv'), component: LocaleSvComponent},
+  {path: '', children: routes, component: LocaleFiComponent}
+];
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {preloadingStrategy: CustomPreloadingStrategy})],
+  imports: [RouterModule.forRoot(routesWithLang, {enableTracing: false, preloadingStrategy: CustomPreloadingStrategy})],
   exports: [RouterModule],
   providers: [CustomPreloadingStrategy]
 })

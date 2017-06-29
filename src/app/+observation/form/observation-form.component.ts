@@ -1,5 +1,4 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Location } from '@angular/common';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable } from 'rxjs/Observable';
@@ -110,7 +109,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   constructor(public searchQuery: SearchQuery,
               public translate: TranslateService,
               public collectionService: CollectionApi,
-              private location: Location,
               private autocompleteService: AutocompleteApi,
               private sourceService: SourceApi,
               private mapService: MapService,
@@ -392,7 +390,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
     this.lastQuery = cacheKey;
     this.searchQuery.tack++;
-    this.searchQuery.updateUrl(this.location, undefined, [
+    this.searchQuery.updateUrl([
       'selected',
       'pageSize',
       'page'

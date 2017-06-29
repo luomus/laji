@@ -6,6 +6,7 @@ import { AutocompleteApi, AutocompleteMatchType } from '../api/AutocompleteApi';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
 import { Router } from '@angular/router';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-omni-search',
@@ -32,6 +33,7 @@ export class OmniSearchComponent implements OnInit, OnChanges {
 
   constructor(private autocompleteService: AutocompleteApi,
               private warehouseApi: WarehouseApi,
+              private localizeRouterService: LocalizeRouterService,
               private router: Router,
               private logger: Logger
   ) {
@@ -97,7 +99,9 @@ export class OmniSearchComponent implements OnInit, OnChanges {
     }
     if (e.keyCode === 13) {
       if (this.taxa[this.active]) {
-        this.router.navigate([this.selectTo, this.taxa[this.active].key]);
+        this.router.navigate(
+          this.localizeRouterService.translateRoute([this.selectTo, this.taxa[this.active].key])
+        );
         this.close();
       }
     }

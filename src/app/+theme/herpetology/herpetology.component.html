@@ -27,7 +27,7 @@
   <h2>{{'herpetology.search' | translate}}</h2>
 
   <div class="button">
-                  <a class="btn herbButton btn-primary center-block" routerLink="/observation/map" [queryParams]="{ countryId: 'ML.206', informalTaxonGroupId:'MVL.26'}" role="button">{{ 'herpetology.search' | translate }}</a>
+                  <a class="btn herbButton btn-primary center-block" [routerLink]="'/observation/map' | localize" [queryParams]="{ countryId: 'ML.206', informalTaxonGroupId:'MVL.26'}" role="button">{{ 'herpetology.search' | translate }}</a>
                 </div>
 
   <h2>{{'herpetology.amphibians' | translate}}</h2>

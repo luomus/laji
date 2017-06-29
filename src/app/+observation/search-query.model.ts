@@ -4,6 +4,7 @@ import { URLSearchParams } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { LocalizeRouterService } from '../locale/localize-router.service';
 
 @Injectable()
 export class SearchQuery {
@@ -72,7 +73,10 @@ export class SearchQuery {
     'ykj3'
   ];
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService,
+  ) {
   }
 
   public setQueryFromQueryObject(query) {
@@ -257,10 +261,7 @@ export class SearchQuery {
     return queryParameters;
   }
 
-  public updateUrl(location: Location, path?: string, skipParams?: string[], skipHistory = true): void {
-    if (!path) {
-      path = location.path(false).split('?')[0].split(';')[0];
-    }
+  public updateUrl(skipParams: string[], skipHistory: boolean = true): void {
     const query = this.getQueryObject(skipParams);
     const extra = {skipLocationChange: skipHistory};
     if (Object.keys(query).length > 0) {
@@ -268,7 +269,10 @@ export class SearchQuery {
     } else {
       extra['preserveQueryParams'] = false;
     }
-    this.router.navigate(path.split('/'), extra);
+    this.router.navigate(
+      [],
+      extra
+    );
   }
 
   public queryUpdate(data = {}): void {

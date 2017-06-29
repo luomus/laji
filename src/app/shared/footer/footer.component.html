@@ -2,11 +2,11 @@
   <div class="container-fluid info-footer" *lajiAuthorities="false">
     <div class="row">
       <div *ngFor="let item of tree; let i=index" class="{{columns[i] || ''}}">
-        <h3><a [routerLink]="'/about/' + item.id">{{item.title}}</a></h3>
+        <h3><a [routerLink]="'/about/' + item.id | localize">{{item.title}}</a></h3>
         <p *ngIf="i === 0" [innerHtml]="'footer.intro1' | translate"></p>
         <ul *ngIf="item.children">
           <li *ngFor="let child of item.children">
-            <a [routerLink]="'/about/' + child.id">{{child.title}}</a>
+            <a [routerLink]="'/about/' + child.id | localize">{{child.title}}</a>
           </li>
           <li *ngIf="i === 0"><laji-feedback></laji-feedback></li>
         </ul>

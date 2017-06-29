@@ -7,9 +7,7 @@ import { WindowRef } from '../../shared/windows-ref';
 import { Subscription } from 'rxjs/Subscription';
 import { DocumentInfoService } from '../document-info.service';
 
-import * as moment from 'moment';
-import 'moment/locale/fi';
-import 'moment/locale/sv';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-short-document',
@@ -39,6 +37,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     public formService: FormService,
     private router: Router,
     private translate: TranslateService,
+    private localizeRouterService: LocalizeRouterService,
     private winRef: WindowRef
   ) {}
 
@@ -81,7 +80,9 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   editDocument(formId, documentId) {
-    this.router.navigate([this.formService.getEditUrlPath(formId, documentId)]);
+    this.router.navigate(
+      this.localizeRouterService.translateRoute([this.formService.getEditUrlPath(formId, documentId)])
+    );
   }
 
   removeDocument(event) {

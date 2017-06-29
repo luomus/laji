@@ -15,7 +15,7 @@
       <tr *ngFor="let item of items">
         <td>
           <span *ngIf="item.link">
-            <span [innerHtml]="item.value"></span>&nbsp;<a [routerLink]="[item.link.local]" [innerHtml]="item.link.content || 'link'"></a>
+            <span [innerHtml]="item.value"></span>&nbsp;<a [routerLink]="[item.link.local] | localize" [innerHtml]="item.link.content || 'link'"></a>
           </span>
           <span *ngIf="!item.link" [innerHtml]="item.value"></span>
         </td>

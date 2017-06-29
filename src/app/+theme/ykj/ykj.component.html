@@ -3,7 +3,7 @@
   <h1>Yhtenäiskoordinaatisto</h1>
 
   <strong>
-    <a [routerLink]="'/map'" [queryParams]="{overlayNames: 'ykjGrid,ykjGridLabels'}">Näytä yhtenäiskoordinaatisto kartalla</a>
+    <a [routerLink]="'/map' | localize" [queryParams]="{overlayNames: 'ykjGrid,ykjGridLabels'}">Näytä yhtenäiskoordinaatisto kartalla</a>
   </strong>
 
   <h3>Taustaa</h3>
@@ -61,7 +61,7 @@
   <h3>Kartan käyttöohje</h3>
 
   <p>
-    <a [routerLink]="'/map'" [queryParams]="{overlayNames: 'ykjGrid,ykjGridLabels'}">Lajitietokeskuksen karttapalvelun</a> pohjana ovat Maanmittauslaitoksen digitaaliset taustakartat. Voit liikuttaa
+    <a [routerLink]="'/map' | localize" [queryParams]="{overlayNames: 'ykjGrid,ykjGridLabels'}">Lajitietokeskuksen karttapalvelun</a> pohjana ovat Maanmittauslaitoksen digitaaliset taustakartat. Voit liikuttaa
     ja suurentaa ja pienentää karttaa hiiren avulla. Pitämällä shift-näppäintä pohjassa voit piirtää hiiren avulla
     kartalle suorakulmion, jonka alue suurennetaan näytölle.
   </p>

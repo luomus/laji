@@ -2,7 +2,7 @@
   <h1>Eliömaakunnat</h1>
 
   <strong>
-    <a [routerLink]="'/map'" [queryParams]="{overlayNames: 'geobiologicalProvinces'}">Näytä eliömaakunnat kartalla</a>
+    <a [routerLink]="'/map' | localize" [queryParams]="{overlayNames: 'geobiologicalProvinces'}">Näytä eliömaakunnat kartalla</a>
   </strong>
 
   <h3>Tausta</h3>
@@ -240,13 +240,13 @@
     </table>
   </div>
   <p>
-    <a [routerLink]="'/map'" [queryParams]="{overlayNames: 'geobiologicalProvinces'}">Lajitietokeskuksen karttapalvelussa</a> voit asettaa näkyville karttatason, joka näyttää eliömaakuntien rajat
+    <a [routerLink]="'/map' | localize" [queryParams]="{overlayNames: 'geobiologicalProvinces'}">Lajitietokeskuksen karttapalvelussa</a> voit asettaa näkyville karttatason, joka näyttää eliömaakuntien rajat
     Maanmittauslaitoksen karttapohjien päällä.
   </p>
   <h3>Eliömaakunnat biologiassa</h3>
   <p>
     Eliömaakuntia on käytetty monissa biologisissa aineistoissa karkeimpana Suomen aluejakona lajien esiintymistä
-    kuvattaessa. Sitä tarkemmat aluejaot puolestaan perustuvat yleensä <a [routerLink]="'/ykj'">yhtenäiskoordinaatistoon</a>.
+    kuvattaessa. Sitä tarkemmat aluejaot puolestaan perustuvat yleensä <a [routerLink]="'/ykj' | localize">yhtenäiskoordinaatistoon</a>.
   </p>
   <p>
     Myös Lajitietokeskus ylläpitää valtakunnallisessa taksonitietokannassa lajien statustietoja eliömaakunnittain.

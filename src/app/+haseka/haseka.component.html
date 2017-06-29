@@ -23,7 +23,7 @@
             <alert *ngIf="vihkoSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
               <div [innerHtml]="'haseka.intro2' | translate"></div>
             </alert>
-            <a routerLink="/vihko/terms-of-service">{{'haseka.termsOfService' | translate}}</a>
+            <a [routerLink]="'/vihko/terms-of-service' | localize">{{'haseka.termsOfService' | translate}}</a>
             <router-outlet></router-outlet>
           </div>
         </div>

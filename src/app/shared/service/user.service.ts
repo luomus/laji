@@ -15,6 +15,7 @@ import { WindowRef } from '../windows-ref';
 import { ToastsService } from './toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 export const USER_INFO = '[user]: info';
 export const USER_LOGOUT_ACTION = '[user]: logout';
@@ -47,6 +48,7 @@ export class UserService {
               private appConfig: AppConfig,
               private toastsService: ToastsService,
               private translate: TranslateService,
+              private localizeRouterService: LocalizeRouterService,
               private winRef: WindowRef) {
     if (this.token) {
       this.loadUserInfo(this.token);
@@ -136,7 +138,9 @@ export class UserService {
   }
 
   public returnToPageBeforeLogin(): void {
-    this.router.navigateByUrl(this.returnUrl || '/');
+    this.router.navigateByUrl(
+      this.localizeRouterService.translateRoute(this.returnUrl || '/')
+    );
   }
 
   public getDefaultFormData(): Observable<any> {

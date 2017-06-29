@@ -7,6 +7,7 @@ import { UserService } from '../../../shared/service/user.service';
 import { FormPermission } from '../../../shared/model/FormPermission';
 import { Logger } from '../../../shared/logger/logger.service';
 import { Person } from '../../../shared/model/Person';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-request',
@@ -25,6 +26,7 @@ export class RequestComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private formPermissionService: FormPermissionService,
+    private localizeRouterService: LocalizeRouterService,
     private toastsService: ToastsService,
     private userService: UserService,
     private logger: Logger
@@ -64,7 +66,7 @@ export class RequestComponent implements OnInit, OnDestroy {
   }
 
   back() {
-    this.router.navigate(['/vihko']);
+    this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']));
   }
 
   private checkAccess(formPermisison: FormPermission) {

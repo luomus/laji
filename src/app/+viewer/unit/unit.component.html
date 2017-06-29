@@ -8,7 +8,7 @@
       </span>
       <span class="scientificName">
         (<i *ngIf="unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</i><span *ngIf="!unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</span>)
-        <a [routerLink]="['/taxon/' + unit.linkings.taxonId]"><i class="glyphicon glyphicon-modal-window"></i></a>
+        <a [routerLink]="['/taxon/' + unit.linkings.taxonId] | localize"><i class="glyphicon glyphicon-modal-window"></i></a>
       </span>
     </laji-row>
     <div *ngIf="unit && (!unit.linkings || !unit.linkings.taxon)">

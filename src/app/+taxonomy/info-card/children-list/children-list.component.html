@@ -9,7 +9,7 @@
     <tbody>
     <tr *ngFor="let taxon of children$ | async">
       <td>{{ taxon.vernacularName }}</td>
-      <th><i><a [routerLink]="['/taxon/' + taxon.id]">{{ taxon.scientificName }}</a></i></th>
+      <th><i><a [routerLink]="['/taxon/' + taxon.id] | localize">{{ taxon.scientificName }}</a></i></th>
     </tr>
     </tbody>
   </table>

@@ -6,8 +6,7 @@ import { FooterService } from '../../shared/service/footer.service';
 import { ComponentCanDeactivate } from '../../shared/document-form/document-de-activate.guard';
 import { ViewChild } from '@angular/core';
 import { DocumentFormComponent } from '../../shared/document-form/document-form.component';
-import { DialogService } from '../../shared/service/dialog.service';
-import { FormService } from '../../shared/service/form.service';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-haseka-form',
@@ -24,8 +23,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   constructor(private route: ActivatedRoute,
               private router: Router,
               private footerService: FooterService,
-              private dialogService: DialogService,
-              private formService: FormService,
+              private localizeRouterService: LocalizeRouterService,
               public translate: TranslateService
   ) {
   }
@@ -52,23 +50,27 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
 
   onSuccess(data) {
     if (data.form && data.form.viewerType && data.document && data.document.id) {
-      return this.router.navigate(['/vihko/statistics/', data.document.id]);
+      return this.router.navigate(
+        this.localizeRouterService.translateRoute(['/vihko/statistics/', data.document.id])
+      );
     }
-    this.router.navigate(['/vihko/']);
+    this.router.navigate(
+      this.localizeRouterService.translateRoute(['/vihko/'])
+    );
   }
 
   onTmlLoad(data) {
     this.router.navigate(
-      ['/vihko', data.formID, data.tmpID],
+      this.localizeRouterService.translateRoute(['/vihko', data.formID, data.tmpID]),
       { replaceUrl: true }
     );
   }
 
   onError() {
-    this.router.navigate(['/vihko']);
+    this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']));
   }
 
   onCancel() {
-    this.router.navigate(['/vihko']);
+    this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']));
   }
 }

@@ -13,7 +13,7 @@
         <span *ngIf="!node.data.cursiveName">{{ node.data.scientificName }}</span>
         {{ node.data.vernacularName ? ' - ' + (node.data.vernacularName | multiLang) : '' }}
       </span>
-      <a [routerLink]="'/taxon/' + node.data.id">
+      <a [routerLink]="'/taxon/' + node.data.id | localize">
         <i class="glyphicon glyphicon-modal-window"></i>
       </a>
     </ng-template>

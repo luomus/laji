@@ -1,31 +1,31 @@
 <ul class="nav nav-tabs nav-justified">
   <li role="presentation" [ngClass]="{active: active === 'map'}">
-    <a routerLink="/observation/map" [queryParams]="queryParams">
+    <a [routerLink]="'/observation/map' | localize" [queryParams]="queryParams">
       {{ 'search.result.map' | translate }}
     </a>
   </li>
   <li role="presentation" [ngClass]="{active: active === 'list'}">
-    <a routerLink="/observation/list" [queryParams]="queryParams">
+    <a [routerLink]="'/observation/list' | localize" [queryParams]="queryParams">
       {{ 'search.result.list' | translate }}
     </a>
   </li>
   <li role="presentation" [ngClass]="{active: active === 'images'}">
-    <a routerLink="/observation/images" [queryParams]="queryParams">
+    <a [routerLink]="'/observation/images' | localize" [queryParams]="queryParams">
       {{ 'search.result.images' | translate }}
     </a>
   </li>
   <li role="presentation" [ngClass]="{active: active === 'species'}">
-    <a routerLink="/observation/species" [queryParams]="queryParams">
+    <a [routerLink]="'/observation/species' | localize" [queryParams]="queryParams">
       {{ 'search.result.species' | translate }}
     </a>
   </li>
   <li role="presentation" [ngClass]="{active: active === 'stats'}">
-    <a routerLink="/observation/stats" [queryParams]="queryParams">
+    <a [routerLink]="'/observation/stats' | localize" [queryParams]="queryParams">
       {{ 'search.result.stats' | translate }}
     </a>
   </li>
   <li role="presentation" [ngClass]="{active: active === 'load'}">
-    <a routerLink="/observation/load" [queryParams]="queryParams">
+    <a [routerLink]="'/observation/load' | localize" [queryParams]="queryParams">
       {{ 'search.result.load' | translate }}
     </a>
   </li>

@@ -8,12 +8,12 @@
 		<div  class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
 			<ul style="margin-top: 24px;" class="nav nav-tabs nav-justified">
 				<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-					<a routerLink="/taxon/informal">
+					<a [routerLink]="'/taxon/informal' | localize">
 						<h3>{{ 'species.groups' | translate }}<br><small>{{ 'species.groups.short' | translate }}</small></h3>
 					</a>
 				</li>
 				<li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-					<a routerLink="/taxon/taxonomy">
+					<a [routerLink]="'/taxon/taxonomy' | localize">
 						<h3>{{ 'species.taxa' | translate }}<br><small>{{ 'species.taxa.short' | translate }}</small></h3>
 					</a>
 				</li>

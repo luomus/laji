@@ -34,7 +34,14 @@ body {
   flex: none;
 }
 
-#content > div, #content .container-fluid {
+laji-locale-fi,
+laji-locale-en,
+laji-locale-sv,
+laji-locale-fi > div,
+laji-locale-en > div,
+laji-locale-sv > div,
+#content > div,
+#content .container-fluid {
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;

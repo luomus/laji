@@ -8,7 +8,7 @@
         </a>
       </div>
       <div *ngIf="!item.external">
-        <a [routerLink]="['/news/' + item.id ]">
+        <a [routerLink]="['/news/' + item.id | localize]">
           <h4 class="media-heading">{{item.title}}</h4>
         </a>
       </div>

@@ -83,12 +83,13 @@ import { FixedInViewDirective } from './directive/fixed-in-view.directive';
 import { DialogService } from './service/dialog.service';
 import { DocumentDeActivateGuard } from './document-form/document-de-activate.guard';
 import { ScriptService } from './service/script.service';
+import { LocalizePipe } from '../locale/localize.pipe';
 
 
 @NgModule({
   entryComponents: [ImageModalOverlayComponent],
   declarations: [
-    NewsListComponent, DocumentFormComponent,
+    NewsListComponent, DocumentFormComponent, LocalizePipe,
     SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, FormattedNumber,
     AreaNamePipe, CollectionNamePipe, FormNamePipe,
@@ -115,7 +116,7 @@ import { ScriptService } from './service/script.service';
     ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, NlToBrPipe,
-    AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, FixedInViewDirective
+    AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, FixedInViewDirective, LocalizePipe
   ]
 })
 export class SharedModule {

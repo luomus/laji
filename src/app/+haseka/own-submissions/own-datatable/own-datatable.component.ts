@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { CsvService } from './csv.service';
 import { WindowRef } from '../../../shared/windows-ref';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-own-datatable',
@@ -51,6 +52,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     private userService: UserService,
     private formService: FormService,
     private eventService: RouterChildrenEventService,
+    private localizeRouterService: LocalizeRouterService,
     private csvService: CsvService,
     private window: WindowRef
   ) {}
@@ -145,7 +147,9 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
   toEditPage(row: any) {
     const formId = this.documents[row.index].formID;
-    this.router.navigate([this.formService.getEditUrlPath(formId, row.id)]);
+    this.router.navigate(
+      this.localizeRouterService.translateRoute([this.formService.getEditUrlPath(formId, row.id)])
+    );
   }
 
   downloadDocument(index: number) {
@@ -154,7 +158,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   toStatisticsPage(docId: string) {
-    this.router.navigate(['/vihko/statistics/' + docId]);
+    this.router.navigate(this.localizeRouterService.translateRoute(['/vihko/statistics/' + docId]));
   }
 
   toggleExpandRow(row: any) {
