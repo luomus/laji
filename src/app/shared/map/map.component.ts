@@ -49,6 +49,7 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
     coordinateInput: false
   };
   @Input() settingsKey: string;
+  @Input() overlayNames: string[];
 
   @Output() select = new EventEmitter();
   @Output() onCreate = new EventEmitter();
@@ -94,7 +95,8 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
           markerPopupOffset: 5,
           featurePopupOffset: 0,
           rootElem: this.elemRef.nativeElement,
-          controlSettings: this.controlSettings
+          controlSettings: this.controlSettings,
+          overlayNames: this.overlayNames
         };
 
         if (this.settingsKey) {

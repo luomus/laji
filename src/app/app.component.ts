@@ -50,7 +50,7 @@ export class AppComponent {
       if (event instanceof NavigationEnd) {
         const newRoute = location.path() || '/';
         if (this.currentRoute !== newRoute) {
-          if (newRoute.indexOf('/observation') !== 0 && newRoute.indexOf('/theme') !== 0) {
+          if (newRoute.indexOf('/observation') !== 0 && newRoute.indexOf('/theme/nafi') !== 0) {
             windowRef.nativeWindow.scroll(0, 0);
           }
           this.getDeepestTitle(router.routerState.snapshot.root)

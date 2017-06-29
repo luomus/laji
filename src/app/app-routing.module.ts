@@ -32,6 +32,8 @@ const routes: Routes = [
   {path: 'error', loadChildren: './+error/error.module#ErrorModule', data: {noPreload: true}},
   {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule', data: {noPreload: true}},
   {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
+  {path: 'ykj', redirectTo: '/theme/ykj', pathMatch: 'full'},
+  {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
   {path: 'forum', component: ForumComponent, data: {noPreload: true}},
   {path: '**', component: NotFoundComponent, data: {noPreload: true}}
 ];

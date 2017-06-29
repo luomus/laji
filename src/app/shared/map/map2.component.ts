@@ -12,6 +12,7 @@ import { LajiExternalService } from '../service/laji-external.service';
 export interface LajiMapOptions {
   rootElem?: Element;
   tileLayerName?: string;
+  overlayNames?: string[];
   zoom?: number;
   center?: [number, number];
   lang?: string;

@@ -8,6 +8,8 @@ import { NafiMyDocumentListComponent } from './nafi/nafi-my-document-list/nafi-m
 import { NafiInstructionsComponent } from './nafi/nafi-instructions/nafi-instructions.component';
 import { HerpetologyComponent } from './herpetology/herpetology.component';
 import { DocumentDeActivateGuard } from '../shared/document-form/document-de-activate.guard';
+import { YkjComponent } from './ykj/ykj.component';
+import { EmkComponent } from './emk/emk.component';
 
 const routes: Routes = [
   {
@@ -28,7 +30,9 @@ const routes: Routes = [
       {path: 'instructions', pathMatch: 'full', component: NafiInstructionsComponent, data: { title: 'nafi.stats.title' } }
     ]
   },
-  {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent}
+  {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent},
+  {path: 'ykj',  pathMatch: 'full', component: YkjComponent},
+  {path: 'emk',  pathMatch: 'full', component: EmkComponent}
 ];
 
 @NgModule({

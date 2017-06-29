@@ -27,8 +27,27 @@
             <li [routerLinkActive]="['active']">
               <a [routerLink]="['/vihko']">{{ 'navigation.haseka' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiAuthorities="false">
-              <a [routerLink]="['/about']">{{ 'navigation.information' | translate }}</a>
+            <li [routerLinkActive]="['active']" *lajiAuthorities="false" dropdown>
+              <a dropdownToggle class="link themes">
+                {{ 'navigation.theme' | translate }}
+              </a>
+              <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu">
+                <li role="menuitem">
+                  <a [routerLink]="['/map']" class="navbar-link link">{{ 'navigation.map' | translate }}</a>
+                </li>
+                <li role="menuitem">
+                  <a [routerLink]="['/ykj']" class="navbar-link link">{{ 'navigation.ykj' | translate }}</a>
+                </li>
+                <li role="menuitem">
+                  <a [routerLink]="['/emk']" class="navbar-link link">{{ 'navigation.emk' | translate }}</a>
+                </li>
+                <li role="menuitem">
+                  <a href="https://satelliitti.laji.fi" class="navbar-link link">{{ 'navigation.satelliitti' | translate }}</a>
+                </li>
+                <li role="menuitem">
+                  <a [routerLink]="['/nafi']" class="navbar-link link">{{ 'nafi.stats.title' | translate }}</a>
+                </li>
+              </ul>
             </li>
             <li *lajiAuthorities="false">
               <a (click)="goToForum($event)" class="link" href="http://foorumi.laji.fi/">{{'Forum' | translate}}</a>

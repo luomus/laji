@@ -16,6 +16,8 @@ import { NafiMyDocumentListComponent } from './nafi/nafi-my-document-list/nafi-m
 import { ThemeMyDocumentListComponent } from './theme-my-document-list/theme-my-document-list.component';
 import { NafiInstructionsComponent } from './nafi/nafi-instructions/nafi-instructions.component';
 import { ViewerModule } from '../+viewer/viewer.module';
+import { YkjComponent } from './ykj/ykj.component';
+import { EmkComponent } from './emk/emk.component';
 
 @NgModule({
   imports: [
@@ -35,7 +37,9 @@ import { ViewerModule } from '../+viewer/viewer.module';
     NafiFormComponent,
     NafiMyDocumentListComponent,
     ThemeMyDocumentListComponent,
-    NafiInstructionsComponent
+    NafiInstructionsComponent,
+    YkjComponent,
+    EmkComponent
   ],
   providers: [ ResultService ]
 })
