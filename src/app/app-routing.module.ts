@@ -40,23 +40,22 @@ const routes: Routes = [
 
 const routesWithLang: Routes = [
   {path: 'en', children: [
-    ...routes,
     {path: 'nafi', redirectTo: '/en/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/en/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/en/theme/emk', pathMatch: 'full'},
+    ...routes
   ], component: LocaleEnComponent},
   {path: 'sv', children: [
-    ...routes,
     {path: 'nafi', redirectTo: '/sv/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/sv/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/sv/theme/emk', pathMatch: 'full'},
-
+    ...routes
   ], component: LocaleSvComponent},
   {path: '', children: [
-    ...routes,
     {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
+    ...routes
   ], component: LocaleFiComponent}
 ];
 
