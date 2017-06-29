@@ -159,7 +159,7 @@ export class UserService {
 
   public getUserSetting(key): Observable<any> {
     return this.getUser()
-      .switchMap((person: Person) => this.userSettings[person.id] && this.userSettings[person.id][key] ?
+      .switchMap((person: Person) => this.userSettings && this.userSettings[person.id] && this.userSettings[person.id][key] ?
         Observable.of(this.userSettings[person.id][key]) : Observable.of(undefined));
   }
 
