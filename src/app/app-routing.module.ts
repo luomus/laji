@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Observable';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
-import { LocalizeRouterService } from './locale/localize-router.service';
 
 const PRELOAD_DELAY = 3000; // ms
 
@@ -35,17 +34,30 @@ const routes: Routes = [
   {path: 'map', loadChildren: './+map/map.module#MapModule', data: {noPreload: true}},
   {path: 'error', loadChildren: './+error/error.module#ErrorModule', data: {noPreload: true}},
   {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule', data: {noPreload: true}},
-  {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
-  {path: 'ykj', redirectTo: '/theme/ykj', pathMatch: 'full'},
-  {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
   {path: 'forum', component: ForumComponent, data: {noPreload: true}},
   {path: '**', component: NotFoundComponent, data: {noPreload: true}}
 ];
 
 const routesWithLang: Routes = [
-  {path: 'en', children: LocalizeRouterService.traslateRoutes(routes.slice(0, routes.length), 'en'), component: LocaleEnComponent},
-  {path: 'sv', children: LocalizeRouterService.traslateRoutes(routes.slice(0, routes.length), 'sv'), component: LocaleSvComponent},
-  {path: '', children: routes, component: LocaleFiComponent}
+  {path: 'en', children: [
+    ...routes,
+    {path: 'nafi', redirectTo: '/en/theme/nafi', pathMatch: 'full'},
+    {path: 'ykj', redirectTo: '/en/theme/ykj', pathMatch: 'full'},
+    {path: 'emk', redirectTo: '/en/theme/emk', pathMatch: 'full'},
+  ], component: LocaleEnComponent},
+  {path: 'sv', children: [
+    ...routes,
+    {path: 'nafi', redirectTo: '/sv/theme/nafi', pathMatch: 'full'},
+    {path: 'ykj', redirectTo: '/sv/theme/ykj', pathMatch: 'full'},
+    {path: 'emk', redirectTo: '/sv/theme/emk', pathMatch: 'full'},
+
+  ], component: LocaleSvComponent},
+  {path: '', children: [
+    ...routes,
+    {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
+    {path: 'ykj', redirectTo: '/theme/ykj', pathMatch: 'full'},
+    {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
+  ], component: LocaleFiComponent}
 ];
 
 @NgModule({
