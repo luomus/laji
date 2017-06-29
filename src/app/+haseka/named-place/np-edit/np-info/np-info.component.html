@@ -1,10 +1,10 @@
 <div [ngClass]="{'hidden': editButtonVisible === undefined && useButtonVisible === undefined}">
   <div class="hidden-xs" #infoBox id="info-box">
-    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+    <ng-template [ngTemplateOutlet]="contentTemplate" [ngOutletContext]="{isModal: false}"></ng-template>
   </div>
 
-  <div class="modal hidden-sm" tabindex="-1" role="dialog" bsModal #infoModal="bs-modal">
-    <div class="modal-dialog modal-sm">
+  <div class="modal" tabindex="-1" role="dialog" bsModal #infoModal="bs-modal">
+    <div class="modal-dialog modal-sm" *ngIf="modalIsVisible">
       <div class="modal-content">
         <div class="modal-header">
           <button class="close pull-right" type="button" (click)="modal.hide()">
@@ -12,13 +12,13 @@
           </button>
         </div>
         <div class="modal-body">
-          <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+          <ng-template [ngTemplateOutlet]="contentTemplate" [ngOutletContext]="{isModal: true}"></ng-template>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 
-  <ng-template #contentTemplate>
+  <ng-template #contentTemplate let-isModal="isModal">
     <div class="well well-sm np-info">
       <fieldset>
         <legend>
@@ -35,7 +35,8 @@
                     (click)="editClick()">{{'np.edit' | translate}}</button>
           </div>
         </legend>
-        <laji-np-info-map [visible]="infoBox?.nativeElement?.offsetParent !== null || modalIsVisible" [namedPlace]="namedPlace"></laji-np-info-map>
+        <laji-np-info-map [visible]="isModal || infoBox?.nativeElement?.offsetParent !== null"
+                          [namedPlace]="namedPlace"></laji-np-info-map>
         <div *ngFor="let k of keys">
           <laji-np-info-row [key]="k" [value]="values[k]" [fields]="fields"></laji-np-info-row>
         </div>

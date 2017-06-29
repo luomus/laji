@@ -23,6 +23,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   private _data: any;
   private resize: any;
+  private viewIsInitialized = false;
 
   constructor() { }
 
@@ -31,7 +32,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['namedPlace']) {
+    if (changes['namedPlace'] && this.viewIsInitialized) {
       this.initData();
       this.setData();
     }
@@ -39,6 +40,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.setData();
+    this.viewIsInitialized = true;
   }
 
   @HostListener('window:resize', ['$event'])
@@ -61,8 +63,9 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
   setZoom() {
     if (this._data && this.lajiMap.map) {
       const geojsonLayer = this.lajiMap.map.dataLayerGroups[0];
+
       this.lajiMap.map.map.fitBounds(
-        geojsonLayer.getBounds(), { maxZoom: 3, padding: [10, 10] });
+        geojsonLayer.getBounds(), { maxZoom: 4 });
     }
   }
 
