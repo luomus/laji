@@ -1,7 +1,9 @@
 <div class="container">
   <h1>Eliömaakunnat</h1>
 
-  <a [routerLink]="'/map'" [queryParams]="{overlayNames: 'geobiologicalProvinces'}">Näytä eliömaakunnat kartalla</a>
+  <strong>
+    <a [routerLink]="'/map'" [queryParams]="{overlayNames: 'geobiologicalProvinces'}">Näytä eliömaakunnat kartalla</a>
+  </strong>
 
   <h3>Tausta</h3>
 
@@ -20,10 +22,25 @@
     Alkuperäiset eliömaakunnat ulottuivat idässä Jäämerelle asti ja kaakossa Laatokan itäpuolelle. Sotien jälkeen
     tapahtuneiden alueluovutusten jälkeen Nyky-Suomen alueella on 21 eliömaakuntaa. Kullakin eliömaakunnalla on suomen-
     ja latinankielinen nimi sekä suomen- ja latinankielinen lyhenne. Hyönteistieteellisessä kirjallisuudessa on käytetty
-    muutamista Pohjois-Suomen eliömaakunnista vaihtoehtoisia nimiä, jotka on myös esitetty oheisessa taulukossa.
+    muutamista Pohjois-Suomen eliömaakunnista vaihtoehtoisia nimiä, jotka on myös esitetty oheisessa taulukossa
+    vaaleankeltaisella taustavärillä.
   </p>
   <div class="table-responsive">
     <table class="table table-condensed table-hover">
+      <thead>
+      <tr>
+        <th></th>
+        <th colspan="2">Suomi</th>
+        <th colspan="2">Latina</th>
+      </tr>
+      <tr>
+        <th>Nro</th>
+        <th>Lyhenne</th>
+        <th>Nimi</th>
+        <th>Lyhenne</th>
+        <th>Nimi</th>
+      </tr>
+      </thead>
       <tr>
         <td>1</td>
         <td>A</td>
@@ -35,7 +52,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td>Al</td>
+        <td class="alternative">Al</td>
         <td></td>
       </tr>
       <tr>
@@ -133,7 +150,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td>Ok</td>
+        <td class="alternative">Ok</td>
         <td></td>
       </tr>
       <tr>
@@ -146,8 +163,8 @@
       <tr>
         <td></td>
         <td></td>
-        <td>Pohjois-Pohjamaa, eteläinen</td>
-        <td>Oba</td>
+        <td class="alternative">Pohjois-Pohjamaa, eteläinen</td>
+        <td class="alternative">Oba</td>
         <td></td>
       </tr>
       <tr>
@@ -174,7 +191,7 @@
       <tr>
         <td></td>
         <td></td>
-        <td>Kuusamo</td>
+        <td class="alternative">Kuusamo</td>
         <td></td>
         <td></td>
       </tr>
@@ -188,8 +205,8 @@
       <tr>
         <td></td>
         <td></td>
-        <td>Kemin Lappi, läntinen</td>
-        <td>Lkoc</td>
+        <td class="alternative">Kemin Lappi, läntinen</td>
+        <td class="alternative">Lkoc</td>
         <td></td>
       </tr>
       <tr>
@@ -202,8 +219,8 @@
       <tr>
         <td></td>
         <td></td>
-        <td>Kemin Lappi, itäinen</td>
-        <td>Lkor</td>
+        <td class="alternative">Kemin Lappi, itäinen</td>
+        <td class="alternative">Lkor</td>
         <td></td>
       </tr>
       <tr>
