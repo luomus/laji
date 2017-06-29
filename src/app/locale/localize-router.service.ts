@@ -61,6 +61,8 @@ export class LocalizeRouterService {
 
     if (pathSlices.length > 1 && this.locales.indexOf(pathSlices[1]) !== -1) {
       return '/' + pathSlices.slice(2).join('/');
+    } else if (pathSlices.length === 1) {
+      return '/';
     }
     return pathSlices.join('/');
   }

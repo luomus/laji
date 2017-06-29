@@ -52,7 +52,9 @@ export class NavbarComponent {
   }
 
   switchLang(lang) {
+    console.log('FOO BAR');
     this.translate.use(lang);
+    console.log(this.localizeRouterService.translateRoute(this.localizeRouterService.getPathWithoutLocale(), lang));
     this.router.navigateByUrl(
       this.localizeRouterService.translateRoute(this.localizeRouterService.getPathWithoutLocale(), lang),
       {

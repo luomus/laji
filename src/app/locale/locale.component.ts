@@ -6,7 +6,6 @@ export abstract class LocaleComponent {
   protected windowRef: WindowRef;
 
   protected setLocale(lang) {
-    console.log('SET LOCALE!!!');
     if (this.translateService.currentLang !== lang) {
       this.translateService.use(lang);
       this.translateService.setDefaultLang('fi');
