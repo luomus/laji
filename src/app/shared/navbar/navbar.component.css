@@ -29,6 +29,7 @@
 }
 
 .navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .dropdown-menu li:hover,
 .navbar-inverse .navbar-nav > li.open > a,
 .navbar-inverse .navbar-brand:hover {
   background-color: #2980B9;
@@ -40,17 +41,13 @@
 }
 
 .navbar-inverse .dropdown-menu {
-  background-color: #2980b9;
-  border: none;
+  background-color: #4ba0d8;
 }
 .navbar-inverse .dropdown-menu a {
   color: #fff;
 }
 .navbar-inverse .dropdown-menu li {
   padding: 3px 0;
-}
-.navbar-inverse .dropdown-menu li:hover {
-  background-color: #28679e;
 }
 
 .navbar-inverse .navbar-nav > .active > a,
