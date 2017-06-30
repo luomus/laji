@@ -7,7 +7,7 @@ import { setTimeout } from 'timers';
   styleUrls: ['./image-modal.component.css'],
   template: `<div class="ng-overlay">
   <div class="ng-gallery-content">
-  <div class="uil-ring-css" *ngIf="loading"><div></div></div>
+  <div class="uil-ring-css" *ngIf="loading"><laji-spinner [spinning]="loading" [light]="true"></laji-spinner></div>
     <a href="{{img.fullURL || img.largeURL}}" download="{{img.fullURL || img.largeURL}}" class="download-img">
       <i class="glyphicon glyphicon-download-alt"></i>
     </a>
