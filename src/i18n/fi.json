@@ -449,5 +449,6 @@
   "allSelected": "Kaikki valittu",
   "required": "pakollinen",
   "annotation.title": "Kommentit",
-  "annotation.none": "Ei kommentteja"
+  "annotation.none": "Ei kommentteja",
+  "more": "Näytä lisätiedot"
 }

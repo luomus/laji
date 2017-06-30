@@ -433,5 +433,6 @@
   "allSelected": "All selected",
   "required": "required",
   "annotation.title": "Comments",
-  "annotation.none": "No comments"
+  "annotation.none": "No comments",
+  "more": "Show additional information"
 }
