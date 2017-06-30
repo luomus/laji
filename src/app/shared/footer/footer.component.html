@@ -3,7 +3,7 @@
     <div class="row">
       <div *ngFor="let item of tree; let i=index" class="{{columns[i] || ''}}">
         <h3><a [routerLink]="'/about/' + item.id | localize">{{item.title}}</a></h3>
-        <p *ngIf="i === 0" [innerHtml]="'footer.intro1' | translate"></p>
+        <p *ngIf="i === 0"><strong>{{'footer.intro1' | translate}}</strong></p>
         <ul *ngIf="item.children">
           <li *ngFor="let child of item.children">
             <a [routerLink]="'/about/' + child.id | localize">{{child.title}}</a>

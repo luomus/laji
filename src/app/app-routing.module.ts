@@ -31,7 +31,7 @@ const routes: Routes = [
   {path: 'taxon', loadChildren: './+taxonomy/taxonomy.module#TaxonomyModule', data: {title: 'navigation.taxonomy'}},
   {path: 'collection', loadChildren: './+collection/collection.module#CollectionModule', data: {noPreload: true}},
   {path: 'kartta', loadChildren: './+map/map.module#MapModule', data: {noPreload: true}},
-  {path: 'map', loadChildren: './+map/map.module#MapModule', data: {noPreload: true}},
+  {path: 'map', loadChildren: './+map/map.module#MapModule', data: {title: 'navigation.map', noPreload: true}},
   {path: 'error', loadChildren: './+error/error.module#ErrorModule', data: {noPreload: true}},
   {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule', data: {noPreload: true}},
   {path: 'forum', component: ForumComponent, data: {noPreload: true}},

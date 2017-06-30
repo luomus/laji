@@ -12,10 +12,16 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import tileLayer = L.tileLayer;
 import { LocalizeRouterService } from './locale/localize-router.service';
+import { Meta } from '@angular/platform-browser';
 
 declare const ga: Function;
 
 const MAIN_TITLE = 'home.main-page.title';
+const MAIN_DESCRIPTION = 'footer.intro1';
+
+const ALL_META_KEYS = [
+  'description'
+];
 
 @Component({
   selector: 'laji-app',
@@ -42,7 +48,8 @@ export class AppComponent {
     appConfig: AppConfig,
     title: Title,
     translateService: TranslateService,
-    localizeRouterService: LocalizeRouterService
+    localizeRouterService: LocalizeRouterService,
+    metaService: Meta
   ) {
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !appConfig.isAnalyticsDisabled();
@@ -59,6 +66,7 @@ export class AppComponent {
           if (!newRoute.match(/^\/(en\/|sv\/)?(observation|theme\/nafi)\//)) {
             windowRef.nativeWindow.scroll(0, 0);
           }
+
           // Set page title
           this.getDeepestTitle(router.routerState.snapshot.root)
             .map(titles => [...titles, MAIN_TITLE])
@@ -66,6 +74,24 @@ export class AppComponent {
             .switchMap(titles => translateService.get(titles))
             .subscribe(pageTitle => {
               title.setTitle(Object.keys(pageTitle).map(key => pageTitle[key]).join(' | '));
+            });
+
+          // Set page meta tags
+          this.getDeepestMeta(router.routerState.snapshot.root)
+            .map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
+            .switchMap(
+              meta => translateService.get(Object.keys(meta).map(key => meta[key])),
+              (meta, translations) => ({meta, translations})
+            )
+            .subscribe(data => {
+              ALL_META_KEYS.map((key) => {
+                const propertySelector = `property='${key}'`;
+                if (data.meta && data.meta[key] && data.translations && data.translations[data.meta[key]]) {
+                  metaService.updateTag({property: key, content: data.translations[data.meta[key]]}, propertySelector);
+                } else {
+                  metaService.removeTag(propertySelector);
+                }
+              });
             });
 
           // Use analytics
@@ -79,6 +105,15 @@ export class AppComponent {
         }
       }
     });
+  }
+
+  private getDeepestMeta(routeSnapshot: ActivatedRouteSnapshot): Observable<object> {
+    const meta = routeSnapshot.data && routeSnapshot.data['meta'] ? routeSnapshot.data['meta'] : {};
+    if (routeSnapshot.firstChild) {
+      return this.getDeepestMeta(routeSnapshot.firstChild)
+        .map(childMeta => ({...meta, ...childMeta}));
+    }
+    return Observable.of(meta);
   }
 
   private getDeepestTitle(routeSnapshot: ActivatedRouteSnapshot): Observable<string[]> {
