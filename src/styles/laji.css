@@ -28,6 +28,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
+  min-height: 200px;
 }
 
 #footer, #navbar {
