@@ -1,4 +1,20 @@
 .map-wrap {
   width: 100%;
   height: calc(100vh - 50px);
+  position: relative;
+}
+.info a {
+  z-index: 1000;
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  color: #464646;
+  width: 33px;
+  height: 33px;
+  border-radius: 4px;
+  border: 2px solid rgba(0,0,0,0.2);
+  background-clip: padding-box;
+  background-color: #fff;
+  line-height: 33px;
+  text-align: center;
 }
