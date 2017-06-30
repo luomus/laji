@@ -196,7 +196,7 @@ export interface Taxonomy {
 
   latestRedListStatusFinland?: LatestRedListStatusFinland;
 
-  redListStatusesInFinland: LatestRedListStatusFinland[];
+  redListStatusesInFinland?: LatestRedListStatusFinland[];
 }
 
 export interface LatestRedListStatusFinland {
