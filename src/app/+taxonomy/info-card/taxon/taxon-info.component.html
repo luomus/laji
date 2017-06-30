@@ -55,9 +55,15 @@
       </ul>
     </td>
   </tr>
-  <tr *ngIf="taxon.latestRedListStatusFinland">
+  <tr *ngIf="taxon.redListStatusesInFinland">
     <th>{{ 'taxonomy.redListStatus2010Finland' | translate }}</th>
-    <td>{{taxon.latestRedListStatusFinland.status | label}}</td>
+    <td>
+      <ul>
+        <li *ngFor="let status of taxon.redListStatusesInFinland">
+         {{status.year}} {{status.status | label}}
+        </li>
+      </ul>
+    </td>
   </tr>
   <tr>
     <th>{{ 'taxonomy.card.id' | translate }}</th>

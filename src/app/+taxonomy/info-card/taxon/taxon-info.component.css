@@ -18,3 +18,8 @@
 .badge.csv {
   background-color: #b8c349;
 }
+
+ul {
+  padding-left: 20px;
+  margin-left: 0;
+}
