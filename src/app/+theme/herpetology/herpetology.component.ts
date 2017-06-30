@@ -9,6 +9,7 @@ import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { Logger } from '../../shared/logger/logger.service';
 
 import { Observable } from 'rxjs/Observable';
+import { CacheService } from '../../shared/service/cache.service';
 
 @Component({
   selector: '[laji-herpetology]',
@@ -31,7 +32,11 @@ export class HerpetologyComponent implements OnInit {
 
   public amphibianGalleries: Array<Array<TaxonomyImage>>;
 
-  constructor(private translate: TranslateService,  private taxonomyApi: TaxonomyApi, private logger: Logger) {
+  constructor(
+    private translate: TranslateService,
+    private taxonomyApi: TaxonomyApi,
+    private cacheService: CacheService,
+    private logger: Logger) {
     const now = new Date();
     this.currentYear = now.getFullYear() + '-01-01';
     this.taxonImages = new Array();
@@ -48,13 +53,16 @@ export class HerpetologyComponent implements OnInit {
 }
 
   updateTaxa() {
-    Observable.forkJoin(
+    const fetchData$ = Observable.forkJoin(
       this.taxonomyApi
-        .taxonomyFindSpecies('MX.37609', 'multi', 'MVL.26',  undefined, undefined, 'MX.typeOfOccurrenceStablePopulation')
+        .taxonomyFindSpecies(
+          'MX.37609', 'multi', 'MVL.26',  undefined, undefined, 'MX.typeOfOccurrenceStablePopulation', undefined, '1', '10', undefined,
+          {selectedFields: 'id,alternativeVernacularName,vernacularName'}
+        )
         .map(species => species.results)
         .switchMap(data => {
           return Observable.forkJoin(data.map(taxon => this.taxonomyApi
-            .taxonomyFindMedia(taxon.id, this.translate.currentLang)
+            .taxonomyFindMedia(taxon.id, 'multi')
             .map(images => ({taxon: taxon, images: images[0] || {} }))
           ));
         }),
@@ -63,7 +71,7 @@ export class HerpetologyComponent implements OnInit {
         .map(species => species.results)
         .switchMap(data => {
           return Observable.forkJoin(data.map(taxon => this.taxonomyApi
-            .taxonomyFindMedia(taxon.id, this.translate.currentLang)
+            .taxonomyFindMedia(taxon.id, 'multi')
             .map(images => ({taxon: taxon, images: images[0] || {}}))
           ));
         }),
@@ -73,14 +81,27 @@ export class HerpetologyComponent implements OnInit {
         .map(species => species.results)
         .switchMap(data => {
           return Observable.forkJoin(data.map(taxon => this.taxonomyApi
-            .taxonomyFindMedia(taxon.id, this.translate.currentLang)
+            .taxonomyFindMedia(taxon.id, 'multi')
             .map(images => ({taxon: taxon, images: images[0] || {}}))
           ));
         })
-    ).subscribe(data => {
+    );
+
+    const cacheKey = 'herpetology';
+    this.cacheService.getItem<any[]>(cacheKey)
+      .subscribe(data => {
+        if (data) {
+          this.amphibianTaxa = data[0];
+          this.reptileTaxa = data[1];
+          this.occasionalTaxa = data[2];
+        }
+      });
+
+    fetchData$.subscribe(data => {
       this.amphibianTaxa = data[0];
       this.reptileTaxa = data[1];
       this.occasionalTaxa = data[2];
+      this.cacheService.setItem(cacheKey, data).subscribe();
     });
   }
 }

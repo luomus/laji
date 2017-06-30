@@ -50,19 +50,23 @@
   max-width: 170px;
   height: 140px;
   margin-right: 1.0em;
-  margin-bottom: 0.2em;
+}
+
+.taxonCard {
+  margin-bottom: 0.7em;
+  height: 150px;
+  position: relative;
 }
 
 .taxonCard h4{
   font-size: 0.8em;
-
-  bottom: -3em;
-  left: -1em;
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(0,0,0,0.7);
   color: white;
   width: 12.6em;
   padding: 0.5em;
   margin-right: 10px;
+  position: absolute;
+  bottom: 0;
 }
 
 .partnerLogo img {

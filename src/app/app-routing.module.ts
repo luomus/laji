@@ -8,7 +8,7 @@ import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
 
-const PRELOAD_DELAY = 3000; // ms
+const PRELOAD_DELAY = 300; // ms
 
 export class CustomPreloadingStrategy implements PreloadingStrategy {
   preload(route: Route, fn: () => Observable<boolean>): Observable<boolean> {

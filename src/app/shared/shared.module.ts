@@ -84,6 +84,7 @@ import { DialogService } from './service/dialog.service';
 import { DocumentDeActivateGuard } from './document-form/document-de-activate.guard';
 import { ScriptService } from './service/script.service';
 import { LocalizePipe } from '../locale/localize.pipe';
+import { CacheService } from './service/cache.service';
 
 
 @NgModule({
@@ -128,6 +129,7 @@ export class SharedModule {
         UserService,
         NewsApi,
         FormService,
+        CacheService,
         FormApi,
         DocumentApi,
         NamedPlaceApi,

@@ -298,6 +298,14 @@ export class TaxonomyApi {
       queryParameters.set('sortOrder', sortOrder);
     }
 
+    if (extraHttpRequestParams !== undefined) {
+      for(const key in extraHttpRequestParams) {
+        if (extraHttpRequestParams.hasOwnProperty(key)) {
+          queryParameters.set(key, extraHttpRequestParams[key]);
+        }
+      }
+    }
+
     let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,
