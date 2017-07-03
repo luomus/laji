@@ -42,13 +42,14 @@
                   <a [routerLink]="['/emk'] | localize" class="navbar-link link">{{ 'navigation.emk' | translate }}</a>
                 </li>
                 <li role="menuitem">
-                  <a href="https://satelliitti.laji.fi" class="navbar-link link">{{ 'navigation.satelliitti' | translate }}</a>
-                </li>
-                <li role="menuitem">
                   <a [routerLink]="['/nafi'] | localize" class="navbar-link link">{{ 'nafi.stats.title' | translate }}</a>
                 </li>
                 <li role="menuitem">
                   <a [routerLink]="['/theme/herpetology'] | localize" class="navbar-link link">{{ 'navigation.herpetology' | translate }}</a>
+                </li>
+                <li role="separator" class="divider"></li>
+                <li role="menuitem">
+                  <a href="https://satelliitti.laji.fi" class="navbar-link link">{{ 'navigation.satelliitti' | translate }}</a>
                 </li>
               </ul>
             </li>
