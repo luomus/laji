@@ -129,7 +129,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   }
 
   private setTitle() {
-    let title = this.taxon.vernacularName[this.translate.currentLang] || '';
+    let title = this.taxon.vernacularName && this.taxon.vernacularName[this.translate.currentLang] || '';
     title += title ? ' (' + this.taxon.scientificName + ')' : this.taxon.scientificName;
     this.title.setTitle((title ? title + ' | '  : '') + this.title.getTitle());
   }
