@@ -9,7 +9,7 @@
       <a href="{{form.instructions[translate.currentLang]}}" target="_blank">{{'haseka.instructions' | translate}}</a>
       |
     </span>
-    <a href="/vihko/terms-of-service" target="_blank">{{'haseka.termsOfService' | translate}}</a>
+    <a [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank">{{'haseka.termsOfService' | translate}}</a>
     <div *ngIf="includeNpDescription">
       <br>
       <div [innerHtml]="form.namedPlaceOptions?.description ? form.namedPlaceOptions.description : 'np.defaultDescription' | translate"></div>
