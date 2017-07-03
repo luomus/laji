@@ -3,7 +3,7 @@
     'col-sm-8': form.logo,
     'col-sm-12': !(form.logo)
   }">
-    <h1>{{form.title}}</h1>
+    <h3>{{form.title}}</h3>
     <div [innerHtml]="form.description"></div><br>
     <span *ngIf="form.instructions && form.instructions[translate.currentLang]">
       <a href="{{form.instructions[translate.currentLang]}}" target="_blank">{{'haseka.instructions' | translate}}</a>

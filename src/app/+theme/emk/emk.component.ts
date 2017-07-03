@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-emk',
@@ -10,5 +11,7 @@ import { Component } from '@angular/core';
   `]
 })
 export class EmkComponent {
+
+  constructor(public translate: TranslateService) {}
 
 }

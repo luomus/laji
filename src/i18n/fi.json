@@ -450,5 +450,6 @@
   "required": "pakollinen",
   "annotation.title": "Kommentit",
   "annotation.none": "Ei kommentteja",
-  "more": "Näytä lisätiedot"
+  "more": "Näytä lisätiedot",
+  "todoTranslation": "Tämän sivun teksti on vielä käännettävänä."
 }
