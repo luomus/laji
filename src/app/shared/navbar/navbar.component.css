@@ -84,10 +84,6 @@
   font-weight: 500;
 }
 
-#navbar .dropdown-menu a {
-  color: #333;
-}
-
 .navbar-link, .navbar-profile .language-toggle {
   color: #ffffff;
   background: none !important;
@@ -121,6 +117,10 @@
 }
 
 @media only screen and (min-width : 768px) {
+  #navbar .dropdown-menu a {
+    color: #333;
+  }
+
   .navbar-inverse .dropdown-menu li[role="menuitem"]:hover {
     background-color: #dfdfdf;
   }
