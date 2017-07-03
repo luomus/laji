@@ -6,7 +6,7 @@
       <span [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
     </td>
   </tr>
-  <tr>
+  <tr *ngIf="taxon.scientificNameAuthorship">
     <th>{{ 'taxonomy.author' | translate }}</th>
     <td>{{taxon.scientificNameAuthorship}}</td>
   </tr>
