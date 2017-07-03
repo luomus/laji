@@ -89,7 +89,7 @@ export class HerpetologyComponent implements OnInit {
 
     const cacheKey = 'herpetology';
     this.cacheService.getItem<any[]>(cacheKey)
-      .merge(fetchData$.do(data => this.cacheService.setItem(cacheKey, data).subscribe()))
+      .merge(fetchData$.do(data => this.cacheService.setItem(cacheKey, data)))
       .subscribe(data => {
         if (data) {
           this.amphibianTaxa = data[0];

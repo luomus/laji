@@ -47,9 +47,10 @@
 }
 
 .taxon-img {
-  max-width: 170px;
+  width: 170px;
   height: 140px;
   margin-right: 1.0em;
+  object-fit: cover;
 }
 
 .taxonCard {
