@@ -15,6 +15,7 @@ import { LajiExternalService } from '../service/laji-external.service';
 import { LajiMapOptions } from './map2.component';
 import { UserService } from '../service/user.service';
 import { OnInit } from '@angular/core';
+import { USER_INFO } from '../service/user.service';
 
 @Component({
   selector: 'laji-map',
@@ -75,7 +76,16 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
 
   ngOnInit() {
     this.userService.getUserSetting(this.settingsKey)
-      .subscribe(settings => this.settings = settings);
+      .merge(this.userService.action$
+        .filter(action => action === USER_INFO)
+        .switchMap(() => this.userService.getUserSetting(this.settingsKey))
+      )
+      .subscribe(settings => {
+        this.settings = settings;
+        if (this.map) {
+          this.map.setOptions(settings);
+        }
+      });
   }
 
   ngAfterViewInit() {

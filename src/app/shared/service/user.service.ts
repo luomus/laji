@@ -24,12 +24,15 @@ export const USER_LOGOUT_ACTION = '[user]: logout';
 @Injectable()
 export class UserService extends LocalDb {
 
+  public static readonly UNKOWN_USER = 'unknown';
+
   private actionSource = new Subject<any>();
   public action$ = this.actionSource.asObservable();
   public isLoggedIn = false;
 
   @LocalStorage() private token;
   @LocalStorage() private returnUrl;
+  private userSettings: {[key: string]: any};
   private currentUserId: string;
   private users: {[id: string]: Person} = {};
   private usersFetch: {[id: string]: Observable<Person>} = {};
@@ -163,27 +166,23 @@ export class UserService extends LocalDb {
   }
 
   public getUserSetting(key): Observable<any> {
-    return this.getUser()
-      .switchMap((person: Person) => this.getItem(person.id))
-      .map(settings => settings && settings[key] ? settings[key] : undefined);
+    return Observable.of(this.userSettings && this.userSettings[key] ? this.userSettings[key] : undefined);
   }
 
   public setUserSetting(key: string, value: any) {
-    this.getUser()
-      .switchMap(
-        (person: Person) => this.getItem(person.id),
-        (person: Person, data: any) => ({person, data})
-      )
-      .switchMap((result) => this.setItem(result.person.id, {...result.data, [key]: value}))
-      .subscribe(() => {});
+    const userId = this.currentUserId ? this.currentUserId : UserService.UNKOWN_USER;
+    this.setItem(userId, {...this.userSettings, [key]: value})
+      .do((settings) => this.userSettings = settings)
+      .subscribe();
   };
 
   private loadUserInfo(token: string) {
     this.token = token;
     this.subUser = this.getUser()
-      .subscribe(
-        user => {
-          this.addUser(user, true);
+      .do((person: Person) => this.addUser(person, true))
+      .switchMap((person: Person) => this.getItem(person.id))
+      .subscribe(settings => {
+          this.userSettings = settings;
           this.actionSource.next(USER_INFO);
         },
         err => {
