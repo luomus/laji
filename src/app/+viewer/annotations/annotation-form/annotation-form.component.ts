@@ -88,7 +88,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     if (!this.annotation.annotationClass) {
       this.annotation.annotationClass = this.emptyAnnotationClass;
     }
-    this.annotationOptions$ = this.metadataService.getRange('MAN.annotationClassEnum', 'multi')
+    this.annotationOptions$ = this.metadataService.getRange('MAN.annotationClassEnum')
       .map(annotationOptions => annotationOptions.filter(annotation => this.isEditor ?
           this.ownerTypes.indexOf(annotation.id) > -1 :
           ((

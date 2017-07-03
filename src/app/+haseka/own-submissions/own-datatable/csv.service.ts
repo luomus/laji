@@ -236,7 +236,7 @@ export class CsvService {
     }
 
     return this.labelService
-      .get(key)
+      .get(key, this.translate.currentLang)
       .map((label) => {
         return label || key;
       });

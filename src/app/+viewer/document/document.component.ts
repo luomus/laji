@@ -74,8 +74,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     }
     const findDox$ = this.uri === this._uri ?
       Observable.of(this.document) :
-      this.labelService.get('MY.person')
-        .switchMap(() => this.warehouseApi.warehouseQuerySingleGet(this.uri))
+      this.warehouseApi.warehouseQuerySingleGet(this.uri)
         .map(doc => doc.document)
         .do(() => this._uri = this.uri);
     findDox$

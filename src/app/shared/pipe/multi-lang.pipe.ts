@@ -1,5 +1,7 @@
 import { ChangeDetectorRef, EventEmitter, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { MultiLangService } from '../service/multi-lang.service';
+import has = Reflect.has;
 /**
  * Format a multi lang field to asked string
  * Takes object or string and returns it with lang code if the value wasn't active
@@ -14,7 +16,6 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
 
   public static lang;
   public value = '';
-  public fallback = ['fi', 'en', 'sv'];
 
   onLangChange: EventEmitter<LangChangeEvent>;
 
@@ -45,18 +46,11 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
   }
 
   private pickLang(value, useFallback) {
-    let lang = this.translate.currentLang;
-    if (value[lang] || !useFallback) {
-      return value[lang] || '';
+    const lang = this.translate.currentLang;
+    const hasLang = MultiLangService.hasValue(value, lang);
+    if (!hasLang && !useFallback) {
+      return '';
     }
-    for (let i = 0; i < 3; i++) {
-      if (this.fallback[i] === lang) {
-        continue;
-      }
-      if (value[this.fallback[i]]) {
-        return value[this.fallback[i]] + ' (' + this.fallback[i] + ')';
-      }
-    }
-    return '';
+    return MultiLangService.getValue(value, lang, '%value% (%lang%)');
   }
 }

@@ -8,6 +8,7 @@ import { CollectionService } from '../../shared/service/collection.service';
 import { AreaService, AreaType } from '../../shared/service/area.service';
 import { SourceService } from '../../shared/service/source.service';
 import { MetadataService } from '../../shared/service/metadata.service';
+import { MultiLangService } from '../../shared/service/multi-lang.service';
 
 export interface MetadataSelectPick {
   [field: string]: string;
@@ -194,7 +195,8 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
           throw new Error('Could not find mapping for ' + this.field);
       }
     }
-    return this.metadataService.getRange(this.alt, this.lang);
+    return this.metadataService.getRange(this.alt)
+      .map(range => range.map(options => ({id: options.id, value: MultiLangService.getValue(options.value, this.lang)})));
   }
 
   private pickValue(data) {
