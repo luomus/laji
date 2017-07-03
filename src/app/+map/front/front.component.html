@@ -9,7 +9,7 @@
 </div>
 <div class="map-wrap" *ngIf="!hasQuery">
   <div class="info">
-    <a [routerLink]="instructions[translate.currentLang]" [tooltip]="'haseka.instructions' | translate" placement="left">
+    <a [routerLink]="instructions[translate.currentLang] | localize" [tooltip]="'haseka.instructions' | translate" placement="left">
       <i class="glyphicon glyphicon-info-sign"></i>
     </a>
   </div>
