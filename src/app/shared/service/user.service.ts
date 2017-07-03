@@ -193,13 +193,13 @@ export class UserService extends LocalDb {
   }
 
   private getCurrentUser() {
+    if (!this.token) {
+      return Observable.of({});
+    }
     if (this.currentUserId && this.users[this.currentUserId]) {
       return Observable.of(this.users[this.currentUserId]);
     } else if (this.observable) {
       return this.observable;
-    }
-    if (!this.token) {
-      return Observable.of({});
     }
     this.observable = this.userService.personFindByToken(this.token)
       .do(u => this.addUser(u, true))
