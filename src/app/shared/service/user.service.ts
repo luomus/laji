@@ -16,12 +16,13 @@ import { ToastsService } from './toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { LocalDb } from '../local-db/local-db.abstract';
 
 export const USER_INFO = '[user]: info';
 export const USER_LOGOUT_ACTION = '[user]: logout';
 
 @Injectable()
-export class UserService {
+export class UserService extends LocalDb {
 
   private actionSource = new Subject<any>();
   public action$ = this.actionSource.asObservable();
@@ -29,7 +30,6 @@ export class UserService {
 
   @LocalStorage() private token;
   @LocalStorage() private returnUrl;
-  @LocalStorage() private userSettings: {[userID: string]: {[key: string]: any}};
   private currentUserId: string;
   private users: {[id: string]: Person} = {};
   private usersFetch: {[id: string]: Observable<Person>} = {};
@@ -50,6 +50,7 @@ export class UserService {
               private translate: TranslateService,
               private localizeRouterService: LocalizeRouterService,
               private winRef: WindowRef) {
+    super('settings');
     if (this.token) {
       this.loadUserInfo(this.token);
       this.isLoggedIn = true;
@@ -163,17 +164,18 @@ export class UserService {
 
   public getUserSetting(key): Observable<any> {
     return this.getUser()
-      .switchMap((person: Person) => this.userSettings && this.userSettings[person.id] && this.userSettings[person.id][key] ?
-        Observable.of(this.userSettings[person.id][key]) : Observable.of(undefined));
+      .switchMap((person: Person) => this.getItem(person.id))
+      .map(settings => settings && settings[key] ? settings[key] : undefined);
   }
 
   public setUserSetting(key: string, value: any) {
     this.getUser()
-      .subscribe((person: Person) => {
-        const personsValues = this.userSettings && this.userSettings[person.id] ?
-          {...this.userSettings[person.id], [key]: value} : {[key]: value};
-        this.userSettings = {...this.userSettings, [person.id]: personsValues};
-      });
+      .switchMap(
+        (person: Person) => this.getItem(person.id),
+        (person: Person, data: any) => ({person, data})
+      )
+      .switchMap((result) => this.setItem(result.person.id, {...result.data, [key]: value}))
+      .subscribe(() => {});
   };
 
   private loadUserInfo(token: string) {
