@@ -17,6 +17,11 @@ export class MetadataService {
   constructor(private metadataApi: MetadataApi, private cacheService: CacheService) {
   }
 
+  getClassProperties(className: string) {
+    return this.metadataApi.metadataFindClassProperties(className, 'multi')
+      .map(result => result.results);
+  }
+
   /**
    * Returns all ranges with multi lang parameter
    *
