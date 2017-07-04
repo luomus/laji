@@ -1,25 +1,35 @@
-import { ErrorHandler, Injectable, Injector } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../logger/logger.service';
+import { LocationStrategy } from '@angular/common';
+import { PathLocationStrategy } from '@angular/common';
+import { ErrorHandler } from '@angular/core';
 
 const pauseBeforeResendError = 3000;
 
 @Injectable()
-export class LajiErrorHandler implements ErrorHandler {
+export class LajiErrorHandler extends ErrorHandler {
 
   private toastsService;
   private translate;
   private logger;
   private pause = false;
 
-  constructor(private injector: Injector) {}
+  constructor(private injector: Injector) {
+    super();
+  }
 
   handleError(error) {
     if (this.pause || !error || (typeof error === 'object' && Object.keys(error).length === 0)) {
       return;
     }
-    this.getLogger().error('Guru Meditation!', error);
+    if (error.message && error.message.indexOf('ExpressionChangedAfterItHasBeenCheckedError:') === 0) {
+      return super.handleError(error);
+    }
+    const location = this.injector.get(LocationStrategy);
+    const url = location instanceof PathLocationStrategy ? location.path() : '';
+    this.getLogger().error('Guru Meditation!', {clientPath: url, error: error});
     this.pause = true;
     setTimeout(() => {
       this.pause = false;
@@ -32,6 +42,7 @@ export class LajiErrorHandler implements ErrorHandler {
           tranlations['error.500.title']
         );
       });
+    return super.handleError(error);
   }
 
   private getToastsService(): ToastsService {

@@ -34,7 +34,7 @@ export class DocumentToCsvService {
   ) {}
 
   public downloadDocumentAsCsv(doc: Document, form: any) {
-.   this.getCsv(doc, form).subscribe((csv) => {
+   this.getCsv(doc, form).subscribe((csv) => {
       const uri = encodeURI(csv);
 
       const downloadLink = document.createElement('a');
@@ -191,7 +191,7 @@ export class DocumentToCsvService {
     for (let i = 0; i < this.classNames.length; i++) {
       const className = this.classNames[i];
       metadatas$.push(
-        this.metadataService.getClassProperties(className.name, this.translate.currentLang)
+        this.metadataService.getClassProperties(className.name)
           .do((metaData) => (metadataByKey[className.id] = metaData))
       );
     }
@@ -203,11 +203,12 @@ export class DocumentToCsvService {
 
     if (obj != null) {
       if (key === 'geometry') {
+        console.log(obj);
         value += geoJSONToISO6709({
           type: 'FeatureCollection',
           features: [{
             type: 'Feature',
-            geometry: obj.geometries ? obj.geometries[0] : obj,
+            geometry: obj,
           }]});
       } else if (Array.isArray(obj)) {
         return Observable.from(obj.map((labelKey) => {
@@ -247,7 +248,7 @@ export class DocumentToCsvService {
     }
 
     return this.labelService
-      .get(key)
+      .get(key, this.translate.currentLang)
       .map((label) => {
         return label || key;
       });

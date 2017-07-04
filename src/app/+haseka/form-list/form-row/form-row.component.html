@@ -2,12 +2,12 @@
   {{form.title}}
 </a>
 <span *ngIf="tmpDocuments[form.id]" class="unsaved" [tooltip]="'haseka.form.localData' | translate">
-  <a [routerLink]="['/vihko', form.id, tmpDocuments[form.id]]" class="btn btn-danger btn-sm">
+  <a [routerLink]="['/vihko', form.id, tmpDocuments[form.id]] | localize" class="btn btn-danger btn-sm">
     <i class="glyphicon glyphicon-warning-sign"></i>
   </a>
 </span>
 <span *ngIf="hasAdminRight">
-  <a [routerLink]="['/vihko/fp/' + form.collectionID + '/admin']" class="btn btn-sm btn-warning">
+  <a [routerLink]="['/vihko/fp/' + form.collectionID + '/admin'] | localize" class="btn btn-sm btn-warning">
     Hallinnoi lomakkeen käyttöä
   </a>
 </span>

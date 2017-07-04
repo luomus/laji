@@ -1,90 +1,96 @@
+<ng-template #todo>
+  <p style="margin-top: 10px">
+   {{'todoTranslation' | translate}}
+  </p>
+</ng-template>
 <div class="container">
+  <div *ngIf="translate.currentLang === 'fi'; else todo">
+    <h1>Yhtenäiskoordinaatisto</h1>
 
-  <h1>Yhtenäiskoordinaatisto</h1>
+    <strong>
+      <a [routerLink]="'/map' | localize" [queryParams]="{overlayNames: 'ykjGrid,ykjGridLabels'}">Näytä yhtenäiskoordinaatisto kartalla</a>
+    </strong>
 
-  <strong>
-    <a [routerLink]="'/map'" [queryParams]="{overlayNames: 'ykjGrid,ykjGridLabels'}">Näytä yhtenäiskoordinaatisto kartalla</a>
-  </strong>
+    <h3>Taustaa</h3>
 
-  <h3>Taustaa</h3>
+    <p>Suomen peruskartat perustuivat vuosina 1972-2005 kansalliseen kartastokoordinaattijärjestelmään (KKJ), jossa Suomi
+      oli jaettu kuuteen projektiokaistaan (KKJ0, KKJ1, KKJ2, KKJ3, KKJ4 ja KKJ5). Näiden projektiokaistojen
+      keskimeridiaanit ovat 18°, 21°, 24°, 27°, 30° ja 33° itäistä pituutta. Yhtenäiskoordinaatistossa (YKJ) koko Suomi on
+      kuvattu yhdessä tasokoordinaattijärjestelmässä laajentamalla KKJ3-projektiokaistaa itään ja lähteen.
+    </p>
+    <p>Yhtenäiskoordinaatiston yhteydessä puhutaan pohjois- ja itäkoordinaateista (lyhennettynä P ja I).
+      Pohjoiskoordinaatti ilmaisee etäisyyden päiväntasaajalta pohjoiseen metreinä, Suomen alueella sen arvot ovat välillä
+      6600000..7800000 m. Itäkoordinaatin 27° keskimeridiaanille on annettu lukuarvo 3500000 m, jotta vältytään
+      negatiivisilta arvoilta. Suomen alueella itäkoordinaatin arvot ovat välillä 3000000..3800000 m.
+    </p>
+    <p>Yhtenäiskoordinaatistosta on käytetty YKJ:n lisäksi lyhenteenä merkintöjä Grid27E tai KKJ3. Yhtenäiskoordinaatiston
+      EPSG-tunniste on EPSG:2393.
+    </p>
+    <h3>Yhtenäiskoordinaatiston käyttö eliöseurannoissa</h3>
 
-  <p>Suomen peruskartat perustuivat vuosina 1972-2005 kansalliseen kartastokoordinaattijärjestelmään (KKJ), jossa Suomi
-    oli jaettu kuuteen projektiokaistaan (KKJ0, KKJ1, KKJ2, KKJ3, KKJ4 ja KKJ5). Näiden projektiokaistojen
-    keskimeridiaanit ovat 18°, 21°, 24°, 27°, 30° ja 33° itäistä pituutta. Yhtenäiskoordinaatistossa (YKJ) koko Suomi on
-    kuvattu yhdessä tasokoordinaattijärjestelmässä laajentamalla KKJ3-projektiokaistaa itään ja lähteen.
-  </p>
-  <p>Yhtenäiskoordinaatiston yhteydessä puhutaan pohjois- ja itäkoordinaateista (lyhennettynä P ja I).
-    Pohjoiskoordinaatti ilmaisee etäisyyden päiväntasaajalta pohjoiseen metreinä, Suomen alueella sen arvot ovat välillä
-    6600000..7800000 m. Itäkoordinaatin 27° keskimeridiaanille on annettu lukuarvo 3500000 m, jotta vältytään
-    negatiivisilta arvoilta. Suomen alueella itäkoordinaatin arvot ovat välillä 3000000..3800000 m.
-  </p>
-  <p>Yhtenäiskoordinaatistosta on käytetty YKJ:n lisäksi lyhenteenä merkintöjä Grid27E tai KKJ3. Yhtenäiskoordinaatiston
-    EPSG-tunniste on EPSG:2393.
-  </p>
-  <h3>Yhtenäiskoordinaatiston käyttö eliöseurannoissa</h3>
+    <p>Biologisissa havaintoaineistoissa yhtenäiskoordinaatistoa on käytetty 1970-luvulta lähtien. YKJ-koordinaatiston
+      pohjalta Suomi on jaettu neliönmuotoisiin osa-alueisiin, joiden koko on määräytynyt tutkimuksen tarpeiden mukaan.
+      Valtakunnallisissa eliöseurannoissa käytetyin aluejako perustuu yhtenäiskoordinaatiston 10 km x 10 km eli
+      neliöpeninkulman ruutuihin. Käytössä on myös 1 km x 1 km (neliökilometri) ja 100 m x 100 m (neliöhehtaari)
+      YKJ-ruutuihin perustuvia aluejakoja.
+    </p>
+    <p>Biologisissa aineistoissa yhtenäiskoordinaattiruudun sijainti ja koko ilmaistaan samanaikaisesti numerosarjalla,
+      jonka alussa on pohjois- eli P-koordinaatti, välissä kaksoispiste ja sen jälkeen itä- eli I-koordinaatti (esim.
+      682:332). Numerosarjan pituus ilmaisee sen, kuinka suuresta neliöruudusta on kyse. Neliöpeninkulman kokoisen
+      YKJ-ruudun koordinaateissa on 3+3 numeroa (esim. 682:332). Neliökilometriruudun koordinaateissa on 4+4 numeroa
+      (esim. 6825:3324), hehtaariruudun koordinaateissa 5+5 numeroa (esim. 68257:33246) jne. Ruudun koordinaattien P- ja
+      I-osa ovat aina yhtä pitkiä, ja I-osan ensimmäinen numero on aina 3.
+    </p>
+    <p>Ruudun lounaisnurkan eli vasemman alakulman P-koordinaatti saadaan lisäämällä ruudun P-koordinaatin perään niin
+      monta nollaa, että luvussa on seitsemän numeroa. I-koordinaatti saadaan vastaavasti lisäämällä ruudun
+      I-koordinaattiin loppunollia seitsemään asti. Siten esim. ruudun 682:332 lounaisnurkan koordinaatit ovat P = 6820000
+      ja I = 3320000.
+    </p>
+    <p>Ruudun koilliskulman eli oikean yläkulman sijainti saadaan vastaavasti kasvattamalla ruudun P- ja I-koordinaatteja
+      yhdellä ja liittämällä loppuun niin monta nollaa, että muodostuu seitsemännumeroinen luku. Esim. ruudun 682:332
+      koillisnurkan koordinaatit ovat P = 6830000 ja I = 3330000.
+    </p>
+    <p>Vuodesta 2005 alkaen uudet maastokartat on kuvattu ETRS-TM35FIN-tasokoordinaattijärjestelmässä, joka
+      YKJ-koordinaatiston tavoin kattaa koko Suomen alueen. ETRS-TM35FIN-koordinaatit eivät kuitenkaan ole yhteneviä
+      YKJ-koordinaattien kanssa. Puupponen (2008) on kuvannut muunnoskaavat, joiden avulla YKJ-koordinaatteja ja
+      ETRS-TM35FIN-koordinaatteja voi muuntaa toisikseen noin metrin tarkkuudella. Tämä on yleensä riittävä tarkkuus
+      biologisissa aineistoissa.
+    </p>
+    <p>Eliöseurannoissa käytettävät koordinaattiruudukot on kuvattu ERTS-TM35FIN-koordinaatistoon siten, että kunkin
+      neliöruudun nurkkapisteet esitetään metrin tarkkuudella ETRS-TM35FIN-koordinaatistossa. YKJ-koordinaatiston
+      yhteydessä käytettyjä lyhennemerkintöjä (esim. 682:332) voidaan käyttää näin kuvattujen ruutujen niminä.
+    </p>
+    <p>ETRS-TM35FIN-koordinaatistossa kuvattujen koordinaattiruutujen nurkat on mahdollista muuntaa virheettömästi myös
+      maailmanlaajuisesti käytössä olevaan WGS84-koordinaatistoon, jota käytetään yleisesti mm. GPS-paikannuslaitteissa.
+    </p>
+    <h3>Kartan käyttöohje</h3>
 
-  <p>Biologisissa havaintoaineistoissa yhtenäiskoordinaatistoa on käytetty 1970-luvulta lähtien. YKJ-koordinaatiston
-    pohjalta Suomi on jaettu neliönmuotoisiin osa-alueisiin, joiden koko on määräytynyt tutkimuksen tarpeiden mukaan.
-    Valtakunnallisissa eliöseurannoissa käytetyin aluejako perustuu yhtenäiskoordinaatiston 10 km x 10 km eli
-    neliöpeninkulman ruutuihin. Käytössä on myös 1 km x 1 km (neliökilometri) ja 100 m x 100 m (neliöhehtaari)
-    YKJ-ruutuihin perustuvia aluejakoja.
-  </p>
-  <p>Biologisissa aineistoissa yhtenäiskoordinaattiruudun sijainti ja koko ilmaistaan samanaikaisesti numerosarjalla,
-    jonka alussa on pohjois- eli P-koordinaatti, välissä kaksoispiste ja sen jälkeen itä- eli I-koordinaatti (esim.
-    682:332). Numerosarjan pituus ilmaisee sen, kuinka suuresta neliöruudusta on kyse. Neliöpeninkulman kokoisen
-    YKJ-ruudun koordinaateissa on 3+3 numeroa (esim. 682:332). Neliökilometriruudun koordinaateissa on 4+4 numeroa
-    (esim. 6825:3324), hehtaariruudun koordinaateissa 5+5 numeroa (esim. 68257:33246) jne. Ruudun koordinaattien P- ja
-    I-osa ovat aina yhtä pitkiä, ja I-osan ensimmäinen numero on aina 3.
-  </p>
-  <p>Ruudun lounaisnurkan eli vasemman alakulman P-koordinaatti saadaan lisäämällä ruudun P-koordinaatin perään niin
-    monta nollaa, että luvussa on seitsemän numeroa. I-koordinaatti saadaan vastaavasti lisäämällä ruudun
-    I-koordinaattiin loppunollia seitsemään asti. Siten esim. ruudun 682:332 lounaisnurkan koordinaatit ovat P = 6820000
-    ja I = 3320000.
-  </p>
-  <p>Ruudun koilliskulman eli oikean yläkulman sijainti saadaan vastaavasti kasvattamalla ruudun P- ja I-koordinaatteja
-    yhdellä ja liittämällä loppuun niin monta nollaa, että muodostuu seitsemännumeroinen luku. Esim. ruudun 682:332
-    koillisnurkan koordinaatit ovat P = 6830000 ja I = 3330000.
-  </p>
-  <p>Vuodesta 2005 alkaen uudet maastokartat on kuvattu ETRS-TM35FIN-tasokoordinaattijärjestelmässä, joka
-    YKJ-koordinaatiston tavoin kattaa koko Suomen alueen. ETRS-TM35FIN-koordinaatit eivät kuitenkaan ole yhteneviä
-    YKJ-koordinaattien kanssa. Puupponen (2008) on kuvannut muunnoskaavat, joiden avulla YKJ-koordinaatteja ja
-    ETRS-TM35FIN-koordinaatteja voi muuntaa toisikseen noin metrin tarkkuudella. Tämä on yleensä riittävä tarkkuus
-    biologisissa aineistoissa.
-  </p>
-  <p>Eliöseurannoissa käytettävät koordinaattiruudukot on kuvattu ERTS-TM35FIN-koordinaatistoon siten, että kunkin
-    neliöruudun nurkkapisteet esitetään metrin tarkkuudella ETRS-TM35FIN-koordinaatistossa. YKJ-koordinaatiston
-    yhteydessä käytettyjä lyhennemerkintöjä (esim. 682:332) voidaan käyttää näin kuvattujen ruutujen niminä.
-  </p>
-  <p>ETRS-TM35FIN-koordinaatistossa kuvattujen koordinaattiruutujen nurkat on mahdollista muuntaa virheettömästi myös
-    maailmanlaajuisesti käytössä olevaan WGS84-koordinaatistoon, jota käytetään yleisesti mm. GPS-paikannuslaitteissa.
-  </p>
-  <h3>Kartan käyttöohje</h3>
+    <p>
+      <a [routerLink]="'/map' | localize" [queryParams]="{overlayNames: 'ykjGrid,ykjGridLabels'}">Lajitietokeskuksen karttapalvelun</a> pohjana ovat Maanmittauslaitoksen digitaaliset taustakartat. Voit liikuttaa
+      ja suurentaa ja pienentää karttaa hiiren avulla. Pitämällä shift-näppäintä pohjassa voit piirtää hiiren avulla
+      kartalle suorakulmion, jonka alue suurennetaan näytölle.
+    </p>
+    <p>Voit asettaa kartassa näkyviin tason "YKJ ruudukko", joka näyttää yhtenäiskoordinaattiruutujen rajaviivat eri
+      mittakaavoissa. Omana tasonaan "YKJ selitteet" voit asettaa näkyviin P- ja I-koordinaattien numerosarjat. Ruudun
+      koordinaatit saadaan ottamalla P-koordinaatti ruudun alareunan viivalta ja I-koordinaatti ruudun vasemman reunan
+      viivalta.
+    </p>
 
-  <p>
-    <a [routerLink]="'/map'" [queryParams]="{overlayNames: 'ykjGrid,ykjGridLabels'}">Lajitietokeskuksen karttapalvelun</a> pohjana ovat Maanmittauslaitoksen digitaaliset taustakartat. Voit liikuttaa
-    ja suurentaa ja pienentää karttaa hiiren avulla. Pitämällä shift-näppäintä pohjassa voit piirtää hiiren avulla
-    kartalle suorakulmion, jonka alue suurennetaan näytölle.
-  </p>
-  <p>Voit asettaa kartassa näkyviin tason "YKJ ruudukko", joka näyttää yhtenäiskoordinaattiruutujen rajaviivat eri
-    mittakaavoissa. Omana tasonaan "YKJ selitteet" voit asettaa näkyviin P- ja I-koordinaattien numerosarjat. Ruudun
-    koordinaatit saadaan ottamalla P-koordinaatti ruudun alareunan viivalta ja I-koordinaatti ruudun vasemman reunan
-    viivalta.
-  </p>
+    <img src="//cdn.laji.fi/images/ykj.png" alt="ykj" />
 
-  <img src="//cdn.laji.fi/images/ykj.png" alt="ykj" />
+    <p>Kartan oikeassa reunassa on piirtotyökalut, joiden avulla voit piirtää kartalle pisteitä, viivoja ja monikulmioita.
+      Oikean reunan painikkeilla saat myös piirrettyjen kuvioiden koordinaatit ulos kolmessa eri tekstimuodossa ja
+      kolmessa eri koordinaatistossa. Voit myös tuoda kartalle samoissa formaateissa ja koordinaatistoissa määriteltyjä
+      kuvioita.
+    </p>
+    <h3>Kirjallisuutta</h3>
 
-  <p>Kartan oikeassa reunassa on piirtotyökalut, joiden avulla voit piirtää kartalle pisteitä, viivoja ja monikulmioita.
-    Oikean reunan painikkeilla saat myös piirrettyjen kuvioiden koordinaatit ulos kolmessa eri tekstimuodossa ja
-    kolmessa eri koordinaatistossa. Voit myös tuoda kartalle samoissa formaateissa ja koordinaatistoissa määriteltyjä
-    kuvioita.
-  </p>
-  <h3>Kirjallisuutta</h3>
+    <p>Heikinheimo, O. & Raatikainen, M. 1971: Paikan ilmoittaminen Suomesta talletetuissa biologisissa aineistoissa. --
+      Annales Entomologici Fennici 37: 1–27, liitt.</p>
 
-  <p>Heikinheimo, O. & Raatikainen, M. 1971: Paikan ilmoittaminen Suomesta talletetuissa biologisissa aineistoissa. --
-    Annales Entomologici Fennici 37: 1–27, liitt.</p>
+    <p>Heikinheimo, O. & Raatikainen, M. 1981: Ruutukoordinaattien ja paikannimien käyttö Suomessa. (Grid references and
+      names of localities in the recording of biological finds in Finland). -- Notulae Entomologicae 61: 133-154.</p>
 
-  <p>Heikinheimo, O. & Raatikainen, M. 1981: Ruutukoordinaattien ja paikannimien käyttö Suomessa. (Grid references and
-    names of localities in the recording of biological finds in Finland). -- Notulae Entomologicae 61: 133-154.</p>
-
-  <p>Puupponen, J. 2008: Tunnetko koordinaattimuunnokset? -- Positio 1/2008: 27-29.</p>
+    <p>Puupponen, J. 2008: Tunnetko koordinaattimuunnokset? -- Positio 1/2008: 27-29.</p>
+  </div>
 </div>

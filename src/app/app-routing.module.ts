@@ -4,8 +4,11 @@ import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { ViewerComponent } from './+viewer/viewer.component';
 import { ForumComponent } from './forum/forum.component';
 import { Observable } from 'rxjs/Observable';
+import { LocaleEnComponent } from './locale/locale-en.component';
+import { LocaleSvComponent } from './locale/locale-sv.component';
+import { LocaleFiComponent } from './locale/locale-fi.component';
 
-const PRELOAD_DELAY = 3000; // ms
+const PRELOAD_DELAY = 300; // ms
 
 export class CustomPreloadingStrategy implements PreloadingStrategy {
   preload(route: Route, fn: () => Observable<boolean>): Observable<boolean> {
@@ -28,18 +31,36 @@ const routes: Routes = [
   {path: 'taxon', loadChildren: './+taxonomy/taxonomy.module#TaxonomyModule', data: {title: 'navigation.taxonomy'}},
   {path: 'collection', loadChildren: './+collection/collection.module#CollectionModule', data: {noPreload: true}},
   {path: 'kartta', loadChildren: './+map/map.module#MapModule', data: {noPreload: true}},
-  {path: 'map', loadChildren: './+map/map.module#MapModule', data: {noPreload: true}},
+  {path: 'map', loadChildren: './+map/map.module#MapModule', data: {title: 'navigation.map', noPreload: true}},
   {path: 'error', loadChildren: './+error/error.module#ErrorModule', data: {noPreload: true}},
   {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule', data: {noPreload: true}},
-  {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
-  {path: 'ykj', redirectTo: '/theme/ykj', pathMatch: 'full'},
-  {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
   {path: 'forum', component: ForumComponent, data: {noPreload: true}},
   {path: '**', component: NotFoundComponent, data: {noPreload: true}}
 ];
 
+const routesWithLang: Routes = [
+  {path: 'en', children: [
+    {path: 'nafi', redirectTo: '/en/theme/nafi', pathMatch: 'full'},
+    {path: 'ykj', redirectTo: '/en/theme/ykj', pathMatch: 'full'},
+    {path: 'emk', redirectTo: '/en/theme/emk', pathMatch: 'full'},
+    ...routes
+  ], component: LocaleEnComponent},
+  {path: 'sv', children: [
+    {path: 'nafi', redirectTo: '/sv/theme/nafi', pathMatch: 'full'},
+    {path: 'ykj', redirectTo: '/sv/theme/ykj', pathMatch: 'full'},
+    {path: 'emk', redirectTo: '/sv/theme/emk', pathMatch: 'full'},
+    ...routes
+  ], component: LocaleSvComponent},
+  {path: '', children: [
+    {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
+    {path: 'ykj', redirectTo: '/theme/ykj', pathMatch: 'full'},
+    {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
+    ...routes
+  ], component: LocaleFiComponent}
+];
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {preloadingStrategy: CustomPreloadingStrategy})],
+  imports: [RouterModule.forRoot(routesWithLang, {enableTracing: false, preloadingStrategy: CustomPreloadingStrategy})],
   exports: [RouterModule],
   providers: [CustomPreloadingStrategy]
 })

@@ -3,7 +3,7 @@
   <div *ngIf="usersProfile.friends && usersProfile.friends.length > 0" class="friends">
     <ul>
       <li *ngFor="let id of usersProfile.friends">
-        <a [routerLink]="['/user/' + id]">{{id|users}}</a>
+        <a [routerLink]="['/user/' + id] | localize">{{id|users}}</a>
         <a (click)="removeFriend(id)" [tooltip]="'firend.remove' | translate"><i class="glyphicon glyphicon-remove"></i></a>
       </li>
     </ul>
@@ -14,7 +14,7 @@
     </h4>
     <ul>
       <li *ngFor="let id of usersProfile.friendRequests">
-        <a [routerLink]="['/user/' + id]">{{id|users}}</a>
+        <a [routerLink]="['/user/' + id] | localize">{{id|users}}</a>
         <a (click)="acceptFriendRequest(id)" [tooltip]="'firend.accept' | translate"><i
                 class="glyphicon glyphicon-ok"></i></a>
         <a (click)="removeFriend(id)" [tooltip]="'firend.remove' | translate"><i class="glyphicon glyphicon-remove"></i></a>
@@ -30,7 +30,7 @@
     </h4>
     <ul>
       <li *ngFor="let id of usersProfile.blocked">
-        <a [routerLink]="['/user/' + id]">{{id|users}}</a>
+        <a [routerLink]="['/user/' + id] | localize">{{id|users}}</a>
         <a (click)="removeBlock(id)" [tooltip]="'firend.removeBlock' | translate"><i
                 class="glyphicon glyphicon-remove"></i></a>
       </li>

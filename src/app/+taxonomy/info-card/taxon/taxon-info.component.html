@@ -6,7 +6,7 @@
       <span [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
     </td>
   </tr>
-  <tr>
+  <tr *ngIf="taxon.scientificNameAuthorship">
     <th>{{ 'taxonomy.author' | translate }}</th>
     <td>{{taxon.scientificNameAuthorship}}</td>
   </tr>
@@ -55,9 +55,15 @@
       </ul>
     </td>
   </tr>
-  <tr *ngIf="taxon.latestRedListStatusFinland">
+  <tr *ngIf="taxon.redListStatusesInFinland">
     <th>{{ 'taxonomy.redListStatus2010Finland' | translate }}</th>
-    <td>{{taxon.latestRedListStatusFinland.status | label}}</td>
+    <td>
+      <ul>
+        <li *ngFor="let status of taxon.redListStatusesInFinland">
+         {{status.year}} {{status.status | label}}
+        </li>
+      </ul>
+    </td>
   </tr>
   <tr>
     <th>{{ 'taxonomy.card.id' | translate }}</th>

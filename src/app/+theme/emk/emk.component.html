@@ -1,255 +1,263 @@
+<ng-template #todo>
+  <p style="margin-top: 10px">
+    {{'todoTranslation' | translate}}
+  </p>
+</ng-template>
 <div class="container">
-  <h1>Eliömaakunnat</h1>
+  <div *ngIf="translate.currentLang === 'fi'; else todo">
+    <h1>Eliömaakunnat</h1>
 
-  <strong>
-    <a [routerLink]="'/map'" [queryParams]="{overlayNames: 'geobiologicalProvinces'}">Näytä eliömaakunnat kartalla</a>
-  </strong>
+    <strong>
+      <a [routerLink]="'/map' | localize" [queryParams]="{overlayNames: 'geobiologicalProvinces'}">Näytä eliömaakunnat kartalla</a>
+    </strong>
 
-  <h3>Tausta</h3>
+    <h3>Tausta</h3>
 
-  <p>
-    Suomen eliömaakunnat, joista toisinaan käytetään myös nimeä luonnontieteelliset maakunnat, ovat vuoden 1930
-    kuntarajojen perusteella määriteltyjä valtakunnan osa-alueita, jotka pyrkivät jakamaan Suomen eliömaantieteellisiin
-    kokonaisuuksiin. Koska kuntien rajat ovat ajan mittaan muuttuneet monin tavoin, eliömaakuntien rajat eivät noudata
-    monin paikoin mitään nykyisiä hallinnollisia rajoja.
-  </p>
-  <p>
-    Eliömaakuntien rajat on perinteisesti esitetty julkaisuissa pienimittakaavaisilla kartoilla, joilla eliömaakuntien
-    rajat on esitetty likimääräisesti. Lajitietokeskus käyttää eliömaakuntien rajoina aineistoa, joka perustuu
-    Luonnontieteellisen keskusmuseon kasvimuseossa tehtyyn selvitystyöhön vuoden 1930 kuntarajoista.
-  </p>
-  <p>
-    Alkuperäiset eliömaakunnat ulottuivat idässä Jäämerelle asti ja kaakossa Laatokan itäpuolelle. Sotien jälkeen
-    tapahtuneiden alueluovutusten jälkeen Nyky-Suomen alueella on 21 eliömaakuntaa. Kullakin eliömaakunnalla on suomen-
-    ja latinankielinen nimi sekä suomen- ja latinankielinen lyhenne. Hyönteistieteellisessä kirjallisuudessa on käytetty
-    muutamista Pohjois-Suomen eliömaakunnista vaihtoehtoisia nimiä, jotka on myös esitetty oheisessa taulukossa
-    vaaleankeltaisella taustavärillä.
-  </p>
-  <div class="table-responsive">
-    <table class="table table-condensed table-hover">
-      <thead>
-      <tr>
-        <th></th>
-        <th colspan="2">Suomi</th>
-        <th colspan="2">Latina</th>
-      </tr>
-      <tr>
-        <th>Nro</th>
-        <th>Lyhenne</th>
-        <th>Nimi</th>
-        <th>Lyhenne</th>
-        <th>Nimi</th>
-      </tr>
-      </thead>
-      <tr>
-        <td>1</td>
-        <td>A</td>
-        <td>Ahvenanmaa</td>
-        <td>A</td>
-        <td>Alandia</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td class="alternative">Al</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>V</td>
-        <td>Varsinais-Suomi</td>
-        <td>Ab</td>
-        <td>Regio aboënsis</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>U</td>
-        <td>Uusimaa</td>
-        <td>N</td>
-        <td>Nylandia</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>EK</td>
-        <td>Etelä-Karjala</td>
-        <td>Ka</td>
-        <td>Karelia australis</td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>St</td>
-        <td>Satakunta</td>
-        <td>St</td>
-        <td>Satakunta</td>
-      </tr>
-      <tr>
-        <td>6</td>
-        <td>EH</td>
-        <td>Etelä-Häme</td>
-        <td>Ta</td>
-        <td>Tavastia australis</td>
-      </tr>
-      <tr>
-        <td>7</td>
-        <td>ES</td>
-        <td>Etelä-Savo</td>
-        <td>Sa</td>
-        <td>Savonia australis</td>
-      </tr>
-      <tr>
-        <td>8</td>
-        <td>LK</td>
-        <td>Laatokan Karjala</td>
-        <td>Kl</td>
-        <td>Karelia ladogensis</td>
-      </tr>
-      <tr>
-        <td>9</td>
-        <td>EP</td>
-        <td>Etelä-Pohjanmaa</td>
-        <td>Oa</td>
-        <td>Ostrobottnia australis</td>
-      </tr>
-      <tr>
-        <td>10</td>
-        <td>PH</td>
-        <td>Pohjois-Häme</td>
-        <td>Tb</td>
-        <td>Tavastia borealis</td>
-      </tr>
-      <tr>
-        <td>11</td>
-        <td>PS</td>
-        <td>Pohjois-Savo</td>
-        <td>Sb</td>
-        <td>Savonia borealis</td>
-      </tr>
-      <tr>
-        <td>12</td>
-        <td>PK</td>
-        <td>Pohjois-Karjala</td>
-        <td>Kb</td>
-        <td>Karelia borealis</td>
-      </tr>
-      <tr>
-        <td>13</td>
-        <td>KP</td>
-        <td>Keski-Pohjanmaa</td>
-        <td>Om</td>
-        <td>Ostrobottnia media</td>
-      </tr>
-      <tr>
-        <td>14</td>
-        <td>Kn</td>
-        <td>Kainuu</td>
-        <td>Kn</td>
-        <td>Ostrobottnia kajanensis</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td class="alternative">Ok</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>15</td>
-        <td>OP</td>
-        <td>Oulun Pohjanmaa</td>
-        <td>Obo</td>
-        <td>Ostrobottnia ouluensis</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td class="alternative">Pohjois-Pohjamaa, eteläinen</td>
-        <td class="alternative">Oba</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>16</td>
-        <td>PeP</td>
-        <td>Perä-Pohjanmaa</td>
-        <td>Obu</td>
-        <td>Ostrobottnia ultima</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td class="alternative">Pohjois-Pohjanmaa, pohjoinen</td>
-        <td class="alternative">Obb</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>17</td>
-        <td>Ks</td>
-        <td>Koillismaa</td>
-        <td>Ks</td>
-        <td>Regio kuusamoënsis</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td class="alternative">Kuusamo</td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>18</td>
-        <td>KiL</td>
-        <td>Kittilän Lappi</td>
-        <td>Lkk</td>
-        <td>Lapponia kittilensis</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td class="alternative">Kemin Lappi, läntinen</td>
-        <td class="alternative">Lkoc</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>19</td>
-        <td>SoL</td>
-        <td>Sompion Lappi</td>
-        <td>Lks</td>
-        <td>Lapponia sompiensis</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td class="alternative">Kemin Lappi, itäinen</td>
-        <td class="alternative">Lkor</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>20</td>
-        <td>EnL</td>
-        <td>Enontekiön Lappi</td>
-        <td>Le</td>
-        <td>Lapponia enontekiensis</td>
-      </tr>
-      <tr>
-        <td>21</td>
-        <td>InL</td>
-        <td>Inarin Lappi</td>
-        <td>Li</td>
-        <td>Lapponia inarensis</td>
-      </tr>
-    </table>
+    <p>
+      Suomen eliömaakunnat, joista toisinaan käytetään myös nimeä luonnontieteelliset maakunnat, ovat vuoden 1930
+      kuntarajojen perusteella määriteltyjä valtakunnan osa-alueita, jotka pyrkivät jakamaan Suomen eliömaantieteellisiin
+      kokonaisuuksiin. Koska kuntien rajat ovat ajan mittaan muuttuneet monin tavoin, eliömaakuntien rajat eivät noudata
+      monin paikoin mitään nykyisiä hallinnollisia rajoja.
+    </p>
+    <p>
+      Eliömaakuntien rajat on perinteisesti esitetty julkaisuissa pienimittakaavaisilla kartoilla, joilla eliömaakuntien
+      rajat on esitetty likimääräisesti. Lajitietokeskus käyttää eliömaakuntien rajoina aineistoa, joka perustuu
+      Luonnontieteellisen keskusmuseon kasvimuseossa tehtyyn selvitystyöhön vuoden 1930 kuntarajoista.
+    </p>
+    <p>
+      Alkuperäiset eliömaakunnat ulottuivat idässä Jäämerelle asti ja kaakossa Laatokan itäpuolelle. Sotien jälkeen
+      tapahtuneiden alueluovutusten jälkeen Nyky-Suomen alueella on 21 eliömaakuntaa. Kullakin eliömaakunnalla on suomen-
+      ja latinankielinen nimi sekä suomen- ja latinankielinen lyhenne. Hyönteistieteellisessä kirjallisuudessa on käytetty
+      muutamista Pohjois-Suomen eliömaakunnista vaihtoehtoisia nimiä, jotka on myös esitetty oheisessa taulukossa
+      vaaleankeltaisella taustavärillä.
+    </p>
+    <div class="table-responsive">
+      <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+          <th></th>
+          <th colspan="2">Suomi</th>
+          <th colspan="2">Latina</th>
+        </tr>
+        <tr>
+          <th>Nro</th>
+          <th>Lyhenne</th>
+          <th>Nimi</th>
+          <th>Lyhenne</th>
+          <th>Nimi</th>
+        </tr>
+        </thead>
+        <tr>
+          <td>1</td>
+          <td>A</td>
+          <td>Ahvenanmaa</td>
+          <td>A</td>
+          <td>Alandia</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="alternative">Al</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>V</td>
+          <td>Varsinais-Suomi</td>
+          <td>Ab</td>
+          <td>Regio aboënsis</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>U</td>
+          <td>Uusimaa</td>
+          <td>N</td>
+          <td>Nylandia</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>EK</td>
+          <td>Etelä-Karjala</td>
+          <td>Ka</td>
+          <td>Karelia australis</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>St</td>
+          <td>Satakunta</td>
+          <td>St</td>
+          <td>Satakunta</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>EH</td>
+          <td>Etelä-Häme</td>
+          <td>Ta</td>
+          <td>Tavastia australis</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>ES</td>
+          <td>Etelä-Savo</td>
+          <td>Sa</td>
+          <td>Savonia australis</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>LK</td>
+          <td>Laatokan Karjala</td>
+          <td>Kl</td>
+          <td>Karelia ladogensis</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>EP</td>
+          <td>Etelä-Pohjanmaa</td>
+          <td>Oa</td>
+          <td>Ostrobottnia australis</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>PH</td>
+          <td>Pohjois-Häme</td>
+          <td>Tb</td>
+          <td>Tavastia borealis</td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>PS</td>
+          <td>Pohjois-Savo</td>
+          <td>Sb</td>
+          <td>Savonia borealis</td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td>PK</td>
+          <td>Pohjois-Karjala</td>
+          <td>Kb</td>
+          <td>Karelia borealis</td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td>KP</td>
+          <td>Keski-Pohjanmaa</td>
+          <td>Om</td>
+          <td>Ostrobottnia media</td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td>Kn</td>
+          <td>Kainuu</td>
+          <td>Kn</td>
+          <td>Ostrobottnia kajanensis</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="alternative">Ok</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td>OP</td>
+          <td>Oulun Pohjanmaa</td>
+          <td>Obo</td>
+          <td>Ostrobottnia ouluensis</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td class="alternative">Pohjois-Pohjamaa, eteläinen</td>
+          <td class="alternative">Oba</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td>PeP</td>
+          <td>Perä-Pohjanmaa</td>
+          <td>Obu</td>
+          <td>Ostrobottnia ultima</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td class="alternative">Pohjois-Pohjanmaa, pohjoinen</td>
+          <td class="alternative">Obb</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>17</td>
+          <td>Ks</td>
+          <td>Koillismaa</td>
+          <td>Ks</td>
+          <td>Regio kuusamoënsis</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td class="alternative">Kuusamo</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>18</td>
+          <td>KiL</td>
+          <td>Kittilän Lappi</td>
+          <td>Lkk</td>
+          <td>Lapponia kittilensis</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td class="alternative">Kemin Lappi, läntinen</td>
+          <td class="alternative">Lkoc</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>19</td>
+          <td>SoL</td>
+          <td>Sompion Lappi</td>
+          <td>Lks</td>
+          <td>Lapponia sompiensis</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td class="alternative">Kemin Lappi, itäinen</td>
+          <td class="alternative">Lkor</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td>EnL</td>
+          <td>Enontekiön Lappi</td>
+          <td>Le</td>
+          <td>Lapponia enontekiensis</td>
+        </tr>
+        <tr>
+          <td>21</td>
+          <td>InL</td>
+          <td>Inarin Lappi</td>
+          <td>Li</td>
+          <td>Lapponia inarensis</td>
+        </tr>
+      </table>
+    </div>
+    <p>
+      <a [routerLink]="'/map' | localize" [queryParams]="{overlayNames: 'geobiologicalProvinces'}">Lajitietokeskuksen karttapalvelussa</a> voit asettaa näkyville karttatason, joka näyttää eliömaakuntien rajat
+      Maanmittauslaitoksen karttapohjien päällä.
+    </p>
+    <h3>Eliömaakunnat biologiassa</h3>
+    <p>
+      Eliömaakuntia on käytetty monissa biologisissa aineistoissa karkeimpana Suomen aluejakona lajien esiintymistä
+      kuvattaessa. Sitä tarkemmat aluejaot puolestaan perustuvat yleensä <a [routerLink]="'/ykj' | localize">yhtenäiskoordinaatistoon</a>.
+    </p>
+    <p>
+      Myös Lajitietokeskus ylläpitää valtakunnallisessa taksonitietokannassa lajien statustietoja eliömaakunnittain.
+      Nämä tiedot perustuvat lajien esiintymisestä tehtyihin havaintoihin, mutta eivät välttämättä ole täysin yhteneviä
+      Lajitietokeskuksen havaintoaineistosta johdetun luettelon kanssa.
+    </p>
   </div>
-  <p>
-    <a [routerLink]="'/map'" [queryParams]="{overlayNames: 'geobiologicalProvinces'}">Lajitietokeskuksen karttapalvelussa</a> voit asettaa näkyville karttatason, joka näyttää eliömaakuntien rajat
-    Maanmittauslaitoksen karttapohjien päällä.
-  </p>
-  <h3>Eliömaakunnat biologiassa</h3>
-  <p>
-    Eliömaakuntia on käytetty monissa biologisissa aineistoissa karkeimpana Suomen aluejakona lajien esiintymistä
-    kuvattaessa. Sitä tarkemmat aluejaot puolestaan perustuvat yleensä <a [routerLink]="'/ykj'">yhtenäiskoordinaatistoon</a>.
-  </p>
-  <p>
-    Myös Lajitietokeskus ylläpitää valtakunnallisessa taksonitietokannassa lajien statustietoja eliömaakunnittain.
-    Nämä tiedot perustuvat lajien esiintymisestä tehtyihin havaintoihin, mutta eivät välttämättä ole täysin yhteneviä
-    Lajitietokeskuksen havaintoaineistosta johdetun luettelon kanssa.
-  </p></div>
+</div>

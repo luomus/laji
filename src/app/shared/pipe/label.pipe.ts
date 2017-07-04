@@ -87,7 +87,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
   }
 
   private _updateValue(key: string): void {
-    this.triplestoreLabelService.get(key)
+    this.triplestoreLabelService.get(key, this.translate.currentLang)
       .subscribe((res: string) => {
         this.value = res ? res : key;
         this._ref.markForCheck();

@@ -479,33 +479,36 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
 
   private getPopup(idx: number, geometry: any, cb: Function) {
-    try {
-      const properties = this.mapData[0].featureCollection.features[idx].properties;
-      const cnt = properties.title;
-      let description = '';
-      this.itemFields.map(field => {
-        const name = field.split('.').pop();
-        if (properties[name] && name !== 'documentId' && name !== 'unitId') {
-          description += this.decorator.decorate(field, properties[name], {}) + '<br>';
+    this.translate.get('more')
+      .subscribe((moreInfo) => {
+        try {
+          const properties = this.mapData[0].featureCollection.features[idx].properties;
+          const cnt = properties.title;
+          let description = '';
+          this.itemFields.map(field => {
+            const name = field.split('.').pop();
+            if (properties[name] && name !== 'documentId' && name !== 'unitId') {
+              description += this.decorator.decorate(field, properties[name], {}) + '<br>';
+            }
+          });
+          if (properties['documentId'] && properties['unitId']) {
+            description += '<a target="_blank" href="/view?uri=' +
+              properties['documentId'] +
+              '&highlight=' +
+              properties['unitId'].replace('#', '_') + '">' +
+              moreInfo + '</a>';
+          }
+          if (description) {
+            cb(description);
+          } else if (cnt) {
+            return;
+            // this.translate.get('result.allObservation')
+            //  .subscribe(translation => cb(`${cnt} ${translation}`));
+          }
+        } catch (e) {
+          this.logger.log('Failed to display popup for the map', e);
         }
       });
-      if (properties['documentId'] && properties['unitId']) {
-        description += '<a target="_blank" href="/view?uri=' +
-          properties['documentId'] +
-          '&highlight=' +
-          properties['unitId'].replace('#', '_') + '">' +
-          properties['documentId'] + '</a>';
-      }
-      if (description) {
-        cb(description);
-      } else if (cnt) {
-        return;
-        // this.translate.get('result.allObservation')
-        //  .subscribe(translation => cb(`${cnt} ${translation}`));
-      }
-    } catch (e) {
-      this.logger.log('Failed to display popup for the map', e);
-    }
   }
 }
 

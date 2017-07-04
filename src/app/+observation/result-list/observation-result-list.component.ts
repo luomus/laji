@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { Location } from '@angular/common';
 import { ValueDecoratorService } from './value-decorator.sevice';
 import { SearchQuery } from '../search-query.model';
 import { Util } from '../../shared/service/util.service';
@@ -85,7 +84,6 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   constructor(private warehouseService: WarehouseApi,
               private decorator: ValueDecoratorService,
               private translate: TranslateService,
-              private location: Location,
               private logger: Logger,
               public searchQuery: SearchQuery
   ) {
@@ -192,7 +190,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
           this.page = results.currentPage || 1;
           this.result = results;
           this.loading = false;
-          this.searchQuery.updateUrl(this.location, undefined, [
+          this.searchQuery.updateUrl([
             'selected',
             'pageSize',
             'page'

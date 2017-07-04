@@ -25,6 +25,7 @@
   "navigation.ykj": "Yhtenäiskoordinaatisto",
   "navigation.satelliitti": "Satelliittiseuranta",
   "navigation.emk": "Eliömaakunnat",
+  "navigation.herpetology": "Sammakkoeläimet ja matelijat",
   "home.image-header.observations": "havaintoja ja näytteitä",
   "home.image-header.species": "lajeja",
   "home.image-header.sources": "aineistoja",
@@ -312,7 +313,7 @@
   "footer.introduction": "Hanke-esittely",
   "footer.generalPrincipals": "Yleiset periaatteet tiedon käytöstä ja julkaisemisesta",
   "footer.principalsInDepth": "Yksityiskohtaiset ohjeet tiedon käytöstä ja julkaisemisesta",
-  "footer.intro1": "<b>Suomen Lajitietokeskus kerää ja yhdistää suomalaisen lajitiedon yhtenäiseksi ja avoimeksi kokonaisuudeksi tutkimuksen ja opetuksen, hallinnon sekä suuren yleisön käyttöön.</b>",
+  "footer.intro1": "Suomen Lajitietokeskus kerää ja yhdistää suomalaisen lajitiedon yhtenäiseksi ja avoimeksi kokonaisuudeksi tutkimuksen ja opetuksen, hallinnon sekä suuren yleisön käyttöön.",
   "footer.title2": "Tiedonhallinta",
   "footer.dataPolicy": "Aineistopolitiikka",
   "footer.sensitiveData": "Sensitiiviset aineistot",
@@ -448,5 +449,7 @@
   "allSelected": "Kaikki valittu",
   "required": "pakollinen",
   "annotation.title": "Kommentit",
-  "annotation.none": "Ei kommentteja"
+  "annotation.none": "Ei kommentteja",
+  "more": "Näytä lisätiedot",
+  "todoTranslation": "Tämän sivun teksti on vielä käännettävänä."
 }

@@ -11,21 +11,21 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" [routerLink]="['/']">LAJI.FI</a>
+          <a class="navbar-brand" [routerLink]="['/'] | localize">LAJI.FI</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
           <ul class="nav navbar-nav">
             <li [routerLinkActive]="['active']" *lajiAuthorities="false">
-              <a [routerLink]="['/taxon']">{{ 'navigation.taxonomy' | translate }}</a>
+              <a [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']">
-              <a [routerLink]="['/observation']" [queryParams]="{reset: true}">{{ 'navigation.observation' | translate }}</a>
+              <a [routerLink]="['/observation'] | localize" [queryParams]="{reset: true}">{{ 'navigation.observation' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiAuthorities="true">
-              <a [routerLink]="['/invasive']">{{ 'navigation.invasive' | translate }}</a>
+              <a [routerLink]="['/invasive'] | localize">{{ 'navigation.invasive' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']">
-              <a [routerLink]="['/vihko']">{{ 'navigation.haseka' | translate }}</a>
+              <a [routerLink]="['/vihko'] | localize">{{ 'navigation.haseka' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiAuthorities="false" dropdown>
               <a dropdownToggle class="link themes">
@@ -33,19 +33,22 @@
               </a>
               <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu">
                 <li role="menuitem">
-                  <a [routerLink]="['/map']" class="navbar-link link">{{ 'navigation.map' | translate }}</a>
+                  <a [routerLink]="['/map'] | localize" class="navbar-link link">{{ 'navigation.map' | translate }}</a>
                 </li>
                 <li role="menuitem">
-                  <a [routerLink]="['/ykj']" class="navbar-link link">{{ 'navigation.ykj' | translate }}</a>
+                  <a [routerLink]="['/ykj'] | localize" class="navbar-link link">{{ 'navigation.ykj' | translate }}</a>
                 </li>
                 <li role="menuitem">
-                  <a [routerLink]="['/emk']" class="navbar-link link">{{ 'navigation.emk' | translate }}</a>
+                  <a [routerLink]="['/emk'] | localize" class="navbar-link link">{{ 'navigation.emk' | translate }}</a>
+                </li>
+                <li role="menuitem">
+                  <a [routerLink]="['/nafi'] | localize" class="navbar-link link">{{ 'nafi.stats.title' | translate }}</a>
+                </li>
+                <li role="menuitem">
+                  <a [routerLink]="['/theme/herpetology'] | localize" class="navbar-link link">{{ 'navigation.herpetology' | translate }}</a>
                 </li>
                 <li role="menuitem">
                   <a href="https://satelliitti.laji.fi" class="navbar-link link">{{ 'navigation.satelliitti' | translate }}</a>
-                </li>
-                <li role="menuitem">
-                  <a [routerLink]="['/nafi']" class="navbar-link link">{{ 'nafi.stats.title' | translate }}</a>
                 </li>
               </ul>
             </li>
@@ -54,27 +57,47 @@
             </li>
           </ul>
           <ul class="nav navbar-nav pull-right">
-            <li [routerLinkActive]="['active']">
-              <div class="navbar-profile" *ngIf="userService.isLoggedIn">
-                <div dropdown>
-                  <a dropdownToggle class="link language-toggle">
-                    <span class="hidden-sm">{{(userService.getUser()|async)?.id | users}}</span>
-                    <i class="glyphicon glyphicon-user"></i>
-                  </a>
-                  <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
-                    <li role="menuitem">
-                      <a [routerLink]="['/user']" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
-                    </li>
-                    <li role="menuitem">
-                      <a [routerLink]="['/user/logout']" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <a href="#login" *ngIf="!userService.isLoggedIn" (click)="doLogin($event)">{{ 'navigation.user.login' | translate }}</a>
+            <li [routerLinkActive]="['active']" *ngIf="isLoggedIn" dropdown>
+              <a dropdownToggle class="link language-toggle">
+                <span class="hidden-sm">{{(userService.getUser()|async)?.id | users}}</span>
+                <i class="glyphicon glyphicon-user"></i>
+              </a>
+              <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
+                <li role="menuitem">
+                  <a [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
+                </li>
+                <li role="menuitem">
+                  <a [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
+                </li>
+              </ul>
             </li>
-            <li>
-              <laji-lang-select></laji-lang-select>
+            <li *ngIf="!isLoggedIn">
+              <a href="#login" (click)="doLogin($event)">{{ 'navigation.user.login' | translate }}</a>
+            </li>
+            <li dropdown>
+              <a dropdownToggle class="link language-toggle">
+                <i class="glyphicon glyphicon-globe"></i>
+                <span *ngIf="'fi' === translate.currentLang">
+                  FI
+                </span>
+                <span *ngIf="'sv' === translate.currentLang">
+                  SV
+                </span>
+                <span *ngIf="'en' === translate.currentLang">
+                  EN
+                </span>
+              </a>
+              <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
+                <li *ngIf="'fi' !== translate.currentLang" role="menuitem">
+                  <a rel="alternate" hreflang="fi" class="navbar-link link" (click)="switchLang('fi')">Suomeksi</a>
+                </li>
+                <li *ngIf="'sv' !== translate.currentLang" role="menuitem">
+                  <a rel="alternate" hreflang="sv" class="navbar-link link" (click)="switchLang('sv')">På svenska</a>
+                </li>
+                <li *ngIf="'en' !== translate.currentLang" role="menuitem">
+                  <a rel="alternate" hreflang="en" class="navbar-link link" (click)="switchLang('en')">In English</a>
+                </li>
+              </ul>
             </li>
           </ul>
         </div>

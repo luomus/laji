@@ -1,5 +1,4 @@
 <laji-navbar id="navbar" *ngIf="!isEmbedded"></laji-navbar>
-<laji-whats-new *ngIf="!isEmbedded"></laji-whats-new>
 <div id="content" [ngClass]="{embedded: isEmbedded}">
   <router-outlet></router-outlet>
 </div>

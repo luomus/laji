@@ -83,13 +83,12 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   }
 
   initAnnotation() {
-    console.log('editors', this.editors, this.personID);
     this.isEditor = this.editors && this.editors.indexOf(this.personID) > -1;
     this.needsAck = this.annotations && this.annotations[0] && this.annotations[0].type !== Annotation.TypeEnum.TypeAcknowledged;
     if (!this.annotation.annotationClass) {
       this.annotation.annotationClass = this.emptyAnnotationClass;
     }
-    this.annotationOptions$ = this.metadataService.getRange('MAN.annotationClassEnum', 'multi')
+    this.annotationOptions$ = this.metadataService.getRange('MAN.annotationClassEnum')
       .map(annotationOptions => annotationOptions.filter(annotation => this.isEditor ?
           this.ownerTypes.indexOf(annotation.id) > -1 :
           ((

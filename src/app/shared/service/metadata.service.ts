@@ -1,104 +1,85 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
 import { Observer } from 'rxjs/Observer';
 import { MetadataApi } from '../api/MetadataApi';
+import { CacheService } from './cache.service';
+import { MultiLangService } from './multi-lang.service';
 
 
 @Injectable()
 export class MetadataService {
 
+  static readonly rangesCacheKey = 'ranges';
+
   private ranges;
   private pendingRanges: Observable<any>;
-  private properties;
-  private pendingProperties: Observable<any>;
-  private currentLang;
 
-  constructor(private metadataApi: MetadataApi) {
+  constructor(private metadataApi: MetadataApi, private cacheService: CacheService) {
   }
 
-  getClassProperties(className: string, lang: string) {
-    return this.metadataApi.metadataFindClassProperties(className, lang)
+  getClassProperties(className: string) {
+    return this.metadataApi.metadataFindClassProperties(className, 'multi')
       .map(result => result.results);
   }
 
-  getAllProperties(lang: string) {
-    if (lang === this.currentLang) {
-      if (this.ranges) {
-        return Observable.of(this.ranges);
-      } else if (this.pendingRanges) {
-        return Observable.create((observer: Observer<any>) => {
-          const onComplete = (res: any) => {
-            observer.next(res);
-            observer.complete();
-          };
-          this.pendingRanges.subscribe(
-            () => { onComplete(this.ranges); }
-          );
-        });
-      }
+  /**
+   * Returns all ranges with multi lang parameter
+   *
+   * @returns Observable<any>
+   */
+  getAllRanges() {
+    if (this.ranges) {
+      return Observable.of(this.ranges);
+    } else if (this.pendingRanges) {
+      return Observable.create((observer: Observer<any>) => {
+        const onComplete = (res: any) => {
+          observer.next(res);
+          observer.complete();
+        };
+        this.pendingRanges.subscribe(
+          (ranges) => {
+            onComplete(ranges);
+          }
+        );
+      });
     }
-    this.pendingRanges = this.metadataApi.metadataFindAllRanges(lang)
+    this.pendingRanges = this.metadataApi.metadataFindAllRanges('multi')
+      .do(ranges =>  this.cacheService.setItem(MetadataService.rangesCacheKey, ranges))
+      .merge(this.cacheService.getItem(MetadataService.rangesCacheKey))
+      .filter(ranges => !!ranges)
       .do(ranges => { this.ranges = ranges; })
       .share();
-    this.currentLang = lang;
 
     return this.pendingRanges;
   }
 
-  getAllPropertiesAsLookUp(lang: string) {
-    return this.getAllRanges(lang)
-      .map(ranges => Object
-        .keys(ranges)
-        .reduce((total, key) => {
-          ranges[key].map(range => {
-            total[range['id']] = range['value'];
-          });
-          return total;
-        }, {}))
-      .share();
-  }
-
-  getAllRanges(lang: string) {
-    if (lang === this.currentLang) {
-      if (this.ranges) {
-        return Observable.of(this.ranges);
-      } else if (this.pendingRanges) {
-        return Observable.create((observer: Observer<any>) => {
-          const onComplete = (res: any) => {
-            observer.next(res);
-            observer.complete();
-          };
-          this.pendingRanges.subscribe(
-            () => { onComplete(this.ranges); }
-          );
-        });
-      }
-    }
-    this.pendingRanges = this.metadataApi.metadataFindAllRanges(lang)
-      .do(ranges => { this.ranges = ranges; })
-      .share();
-    this.currentLang = lang;
-
-    return this.pendingRanges;
-  }
-
+  /**
+   * Gets all ranges as lookup object
+   *
+   * @param lang
+   * @returns {Observable<T>}
+   */
   getAllRangesAsLookUp(lang: string) {
-    return this.getAllRanges(lang)
+    return this.getAllRanges()
       .map(ranges => Object
         .keys(ranges)
         .reduce((total, key) => {
           ranges[key].map(range => {
-            total[range['id']] = range['value'];
+            total[range['id']] = MultiLangService.getValue(range['value'], lang, range['id']);
           });
           return total;
         }, {}))
       .share();
   }
 
-  getRange(range: string, lang: string) {
-    return this.getAllRanges(lang)
+  /**
+   * Gets a specific range of all the ranges
+   *
+   * @param range
+   */
+  getRange(range: string) {
+    return this.getAllRanges()
       .map(data => data[range] || [] );
   }
+
 }

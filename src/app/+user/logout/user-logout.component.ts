@@ -3,6 +3,7 @@ import { UserService } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
 import { AppConfig } from '../../app.config';
 import { WindowRef } from '../../shared/windows-ref';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-logout',
@@ -13,6 +14,7 @@ export class UserLogoutComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private appConfig: AppConfig,
+    private localizeRouterService: LocalizeRouterService,
     private windowRef: WindowRef
   ) {
   }
@@ -24,7 +26,7 @@ export class UserLogoutComponent implements OnInit {
     if (this.appConfig.isForcedLogin()) {
       this.windowRef.nativeWindow.location = this.appConfig.getLoginUrl();
     } else {
-      this.router.navigate(['/'], {queryParams: {}});
+      this.router.navigate(this.localizeRouterService.translateRoute(['/']), {queryParams: {}});
     }
   }
 

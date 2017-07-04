@@ -11,10 +11,17 @@ import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import tileLayer = L.tileLayer;
+import { LocalizeRouterService } from './locale/localize-router.service';
+import { Meta } from '@angular/platform-browser';
 
 declare const ga: Function;
 
 const MAIN_TITLE = 'home.main-page.title';
+const MAIN_DESCRIPTION = 'footer.intro1';
+
+const ALL_META_KEYS = [
+  'description'
+];
 
 @Component({
   selector: 'laji-app',
@@ -40,19 +47,27 @@ export class AppComponent {
     windowRef: WindowRef,
     appConfig: AppConfig,
     title: Title,
-    translateService: TranslateService
+    translateService: TranslateService,
+    localizeRouterService: LocalizeRouterService,
+    metaService: Meta
   ) {
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !appConfig.isAnalyticsDisabled();
     this.isEmbedded = environment.isEmbedded || false;
     toastr.setRootViewContainerRef(viewContainerRef);
+
+    translateService.use(localizeRouterService.getLocationLang());
+
     router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         const newRoute = location.path() || '/';
         if (this.currentRoute !== newRoute) {
-          if (newRoute.indexOf('/observation') !== 0 && newRoute.indexOf('/theme/nafi') !== 0) {
+          // Check if on page that should be scrolled to top
+          if (!newRoute.match(/^\/(en\/|sv\/)?(observation|theme\/nafi)\//)) {
             windowRef.nativeWindow.scroll(0, 0);
           }
+
+          // Set page title
           this.getDeepestTitle(router.routerState.snapshot.root)
             .map(titles => [...titles, MAIN_TITLE])
             .map(titles => Array.from(new Set<string>(titles)))
@@ -60,15 +75,45 @@ export class AppComponent {
             .subscribe(pageTitle => {
               title.setTitle(Object.keys(pageTitle).map(key => pageTitle[key]).join(' | '));
             });
+
+          // Set page meta tags
+          this.getDeepestMeta(router.routerState.snapshot.root)
+            .map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
+            .switchMap(
+              meta => translateService.get(Object.keys(meta).map(key => meta[key])),
+              (meta, translations) => ({meta, translations})
+            )
+            .subscribe(data => {
+              ALL_META_KEYS.map((key) => {
+                const propertySelector = `property='${key}'`;
+                if (data.meta && data.meta[key] && data.translations && data.translations[data.meta[key]]) {
+                  metaService.updateTag({property: key, content: data.translations[data.meta[key]]}, propertySelector);
+                } else {
+                  metaService.removeTag(propertySelector);
+                }
+              });
+            });
+
+          // Use analytics
           if (this.hasAnalytics && newRoute.indexOf('/user') !== 0) {
             try {
               ga('send', 'pageview', newRoute);
             } catch (e) {}
           }
+
           this.currentRoute = newRoute;
         }
       }
     });
+  }
+
+  private getDeepestMeta(routeSnapshot: ActivatedRouteSnapshot): Observable<object> {
+    const meta = routeSnapshot.data && routeSnapshot.data['meta'] ? routeSnapshot.data['meta'] : {};
+    if (routeSnapshot.firstChild) {
+      return this.getDeepestMeta(routeSnapshot.firstChild)
+        .map(childMeta => ({...meta, ...childMeta}));
+    }
+    return Observable.of(meta);
   }
 
   private getDeepestTitle(routeSnapshot: ActivatedRouteSnapshot): Observable<string[]> {

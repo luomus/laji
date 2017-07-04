@@ -80,6 +80,7 @@
               <laji-datepicker
                       [(ngModel)]="formQuery.timeStart"
                       [viewFormat]="'DD.MM.YYYY'"
+                      [otherFormats]="['D.M.YYYY', 'YYYY']"
                       [format]="warehouseDateFormat"
                       (onSelect)="onQueryChange()"
                       (change)="onQueryChange()"
@@ -91,6 +92,8 @@
               <laji-datepicker
                       [(ngModel)]="formQuery.timeEnd"
                       [viewFormat]="'DD.MM.YYYY'"
+                      [otherFormats]="['D.M.YYYY', 'YYYY']"
+                      [toLastOfYear]="true"
                       [format]="warehouseDateFormat"
                       (onSelect)="onQueryChange()"
                       (change)="onQueryChange()"

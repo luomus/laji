@@ -99,10 +99,10 @@
             </div>
             <div class="panel-body">
               <p>
-                <a [routerLink]="'/observation/map'" [queryParams]="{target: taxon.id}">
+                <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id}">
                   {{ 'taxonomy.browse' | translate }}
                 </a><br>
-                <a [routerLink]="'/observation/load'" [queryParams]="{target: taxon.id}">
+                <a [routerLink]="'/observation/load' | localize" [queryParams]="{target: taxon.id}">
                   {{ 'taxonomy.browse.download' | translate }}
                 </a><br>
               </p>

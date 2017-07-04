@@ -15,12 +15,16 @@ import { WindowRef } from '../windows-ref';
 import { ToastsService } from './toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { LocalDb } from '../local-db/local-db.abstract';
 
 export const USER_INFO = '[user]: info';
 export const USER_LOGOUT_ACTION = '[user]: logout';
 
 @Injectable()
-export class UserService {
+export class UserService extends LocalDb {
+
+  public static readonly UNKOWN_USER = 'unknown';
 
   private actionSource = new Subject<any>();
   public action$ = this.actionSource.asObservable();
@@ -28,7 +32,7 @@ export class UserService {
 
   @LocalStorage() private token;
   @LocalStorage() private returnUrl;
-  @LocalStorage() private userSettings: {[userID: string]: {[key: string]: any}};
+  private userSettings: {[key: string]: any};
   private currentUserId: string;
   private users: {[id: string]: Person} = {};
   private usersFetch: {[id: string]: Observable<Person>} = {};
@@ -47,7 +51,9 @@ export class UserService {
               private appConfig: AppConfig,
               private toastsService: ToastsService,
               private translate: TranslateService,
+              private localizeRouterService: LocalizeRouterService,
               private winRef: WindowRef) {
+    super('settings');
     if (this.token) {
       this.loadUserInfo(this.token);
       this.isLoggedIn = true;
@@ -136,7 +142,9 @@ export class UserService {
   }
 
   public returnToPageBeforeLogin(): void {
-    this.router.navigateByUrl(this.returnUrl || '/');
+    this.router.navigateByUrl(
+      this.localizeRouterService.translateRoute(this.returnUrl || '/')
+    );
   }
 
   public getDefaultFormData(): Observable<any> {
@@ -158,26 +166,23 @@ export class UserService {
   }
 
   public getUserSetting(key): Observable<any> {
-    return this.getUser()
-      .switchMap((person: Person) => this.userSettings && this.userSettings[person.id] && this.userSettings[person.id][key] ?
-        Observable.of(this.userSettings[person.id][key]) : Observable.of(undefined));
+    return Observable.of(this.userSettings && this.userSettings[key] ? this.userSettings[key] : undefined);
   }
 
   public setUserSetting(key: string, value: any) {
-    this.getUser()
-      .subscribe((person: Person) => {
-        const personsValues = this.userSettings && this.userSettings[person.id] ?
-          {...this.userSettings[person.id], [key]: value} : {[key]: value};
-        this.userSettings = {...this.userSettings, [person.id]: personsValues};
-      });
+    const userId = this.currentUserId ? this.currentUserId : UserService.UNKOWN_USER;
+    this.setItem(userId, {...this.userSettings, [key]: value})
+      .do((settings) => this.userSettings = settings)
+      .subscribe();
   };
 
   private loadUserInfo(token: string) {
     this.token = token;
     this.subUser = this.getUser()
-      .subscribe(
-        user => {
-          this.addUser(user, true);
+      .do((person: Person) => this.addUser(person, true))
+      .switchMap((person: Person) => this.getItem(person.id))
+      .subscribe(settings => {
+          this.userSettings = settings;
           this.actionSource.next(USER_INFO);
         },
         err => {
@@ -188,13 +193,13 @@ export class UserService {
   }
 
   private getCurrentUser() {
+    if (!this.token) {
+      return Observable.of({});
+    }
     if (this.currentUserId && this.users[this.currentUserId]) {
       return Observable.of(this.users[this.currentUserId]);
     } else if (this.observable) {
       return this.observable;
-    }
-    if (!this.token) {
-      return Observable.of({});
     }
     this.observable = this.userService.personFindByToken(this.token)
       .do(u => this.addUser(u, true))

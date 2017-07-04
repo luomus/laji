@@ -2,7 +2,6 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
-import { LangSelectComponent } from './shared/navbar/lang-select.component';
 import { SharedModule } from './shared/shared.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LajiErrorHandler } from './shared/error/laji-error-handler';
@@ -26,12 +25,15 @@ import {
   TooltipModule,
   TypeaheadModule
 } from 'ngx-bootstrap';
-import { CoreModule } from './shared/core.module';
 import { Ng2Webstorage } from 'ng2-webstorage';
 import { ViewerModule } from './+viewer/viewer.module';
 import { ToastModule } from 'ng2-toastr/src/toast.module';
 import { NamedPlaceModule } from './+haseka/named-place/named-place.module';
 import { ForumComponent } from './forum/forum.component';
+import { LocaleEnComponent } from './locale/locale-en.component';
+import { LocaleFiComponent } from './locale/locale-fi.component';
+import { LocaleSvComponent } from './locale/locale-sv.component';
+import { LocalizeRouterService } from './locale/localize-router.service';
 
 export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): ILogger {
   const env = appConfig.getEnv();
@@ -43,9 +45,12 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
 
 @NgModule({
   declarations: [
-    AppComponent, NavbarComponent, FooterComponent, FeedbackComponent, LangSelectComponent,
+    AppComponent, NavbarComponent, FooterComponent, FeedbackComponent,
     WhatsNewComponent,
-    ForumComponent
+    ForumComponent,
+    LocaleEnComponent,
+    LocaleFiComponent,
+    LocaleSvComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -66,7 +71,6 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),
     Ng2Webstorage.forRoot({ prefix: 'laji-', separator: '' }),
-    CoreModule,
     AppRoutingModule,
     ViewerModule,
     BrowserModule
@@ -76,6 +80,7 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
   ],
   providers: [
     {provide: ErrorHandler, useClass: LajiErrorHandler},
+    LocalizeRouterService,
     {provide: LocationStrategy, useClass: PathLocationStrategy},
     {
       provide: Logger,

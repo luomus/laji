@@ -1,4 +1,4 @@
-import { AfterViewInit, OnDestroy, Component, ViewChild, OnInit } from '@angular/core';
+import { OnDestroy, Component, ViewChild, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQuery } from '../../+observation/search-query.model';
@@ -15,6 +15,13 @@ import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
 })
 export class FrontComponent implements OnInit, OnDestroy {
   @ViewChild(MapComponent) lajiMap: MapComponent;
+
+  readonly instructions = {
+    fi: '/about/1785',
+    sv: '/about/1809',
+    en: '/about/1807'
+  };
+
   drawData = {
     featureCollection: {
       type: 'FeatureCollection',

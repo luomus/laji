@@ -30,9 +30,9 @@ const routes: Routes = [
       {path: 'instructions', pathMatch: 'full', component: NafiInstructionsComponent, data: { title: 'nafi.stats.title' } }
     ]
   },
-  {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent},
-  {path: 'ykj',  pathMatch: 'full', component: YkjComponent},
-  {path: 'emk',  pathMatch: 'full', component: EmkComponent}
+  {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
+  {path: 'ykj',  pathMatch: 'full', component: YkjComponent, data: {title: 'navigation.ykj'}},
+  {path: 'emk',  pathMatch: 'full', component: EmkComponent, data: {title: 'Eliömaakunnat'}}
 ];
 
 @NgModule({

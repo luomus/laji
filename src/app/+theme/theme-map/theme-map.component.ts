@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
 import { MapComponent } from '../../shared/map/map.component';
 import { ResultService } from '../service/result.service';
@@ -11,7 +11,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
   templateUrl: './theme-map.component.html',
   styleUrls: ['./theme-map.component.css']
 })
-export class ThemeMapComponent implements AfterViewInit, OnChanges {
+export class ThemeMapComponent implements OnInit, AfterViewInit, OnChanges {
 
   @ViewChild(MapComponent) lajiMap: MapComponent;
 
@@ -45,8 +45,11 @@ export class ThemeMapComponent implements AfterViewInit, OnChanges {
     this.timeBreak[0] = now.getFullYear() + '-01-01';
   }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.initMapdata();
+  }
+
+  ngAfterViewInit() {
     this.initMap();
   }
 

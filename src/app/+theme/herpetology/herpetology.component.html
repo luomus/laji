@@ -4,95 +4,95 @@
 
   <div class="herpetology-content">
 
-  <div style="float: right;">
-  	<div class="themeLogo">
-  			<div class="themeIcon">
+    <div style="float: right;">
+      <div class="themeLogo">
+        <div class="themeIcon">
 
-          <img src="https://cdn.laji.fi/images/sammakkojamatelijakartoitus_270x270.png" alt="Sammakko- ja matelijakartoitus" />
-
-  			</div>
+          <img src="https://cdn.laji.fi/images/sammakkojamatelijakartoitus_270x270.png"
+               alt="Sammakko- ja matelijakartoitus"/>
+        </div>
       </div>
     </div>
     <div class="page-content">
       <p>{{'herpetology.intro' | translate}} </p>
       <h2>{{'herpetology.observate' | translate}}</h2>
-  		<p>{{'herpetology.observation' | translate}}</p>
-  </div>
-
-
-  <div class="button">
-                  <a class="btn herbButton btn-primary center-block" [href]="'http://loydos.luomus.fi/forms/sammakot-ja-matelijat?language=' + lang"  role="button">{{ 'herpetology.form' | translate }}</a>
-  </div>
-
-  <h2>{{'herpetology.search' | translate}}</h2>
-
-  <div class="button">
-                  <a class="btn herbButton btn-primary center-block" routerLink="/observation/map" [queryParams]="{ countryId: 'ML.206', informalTaxonGroupId:'MVL.26'}" role="button">{{ 'herpetology.search' | translate }}</a>
-                </div>
-
-  <h2>{{'herpetology.amphibians' | translate}}</h2>
-
-  <div class="row">
-    <div *ngFor="let taxon of amphibianTaxa" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-3">
-      <a href= "taxon/{{taxon.taxon.id}}">
-        {{media | multiLang}}
-        <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
-        <h4>
-          {{taxon.taxon.vernacularName | multiLang}}
-          <span *ngIf="lang === 'fi'">
-          <br> {{taxon.taxon.alternativeVernacularName | multiLang}}
-        </span>
-        </h4>
-      </a>
+      <p>{{'herpetology.observation' | translate}}</p>
     </div>
-  </div>
 
 
+    <div class="button">
+      <a class="btn herbButton btn-primary center-block"
+         [href]="'http://loydos.luomus.fi/forms/sammakot-ja-matelijat?language=' + lang" role="button">{{
+        'herpetology.form' | translate }}</a>
+    </div>
 
-  <h2>{{'herpetology.reptiles' | translate}}</h2>
+    <h2>{{'herpetology.search' | translate}}</h2>
+
+    <div class="button">
+      <a class="btn herbButton btn-primary center-block" [routerLink]="'/observation/map' | localize"
+         [queryParams]="{ countryId: 'ML.206', informalTaxonGroupId:'MVL.26'}" role="button">{{ 'herpetology.search' |
+        translate }}</a>
+    </div>
+
+    <h2>{{'herpetology.amphibians' | translate}}</h2>
+
     <div class="row">
-  <td *ngFor="let taxon of reptileTaxa" [ngClass]="{}" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-3">
-    <a href= "taxon/{{taxon.taxon.id}}">
-        {{media | multiLang}}
-        <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
-    <h4>
-      {{taxon.taxon.vernacularName | multiLang}}
-      <span *ngIf="lang === 'fi'">
+      <div *ngFor="let taxon of amphibianTaxa" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-3">
+        <a [routerLink]="['/taxon', taxon.taxon.id] | localize">
+          <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
+          <h4>
+            {{taxon.taxon.vernacularName | multiLang}}
+            <span *ngIf="lang === 'fi'">
           <br> {{taxon.taxon.alternativeVernacularName | multiLang}}
         </span>
-    </h4>
-    </a>
-  </td>
+          </h4>
+        </a>
+      </div>
     </div>
 
-  <h2>{{'herpetology.occasionalSpecies' | translate}}</h2>
+
+    <h2>{{'herpetology.reptiles' | translate}}</h2>
+    <div class="row">
+      <div *ngFor="let taxon of reptileTaxa" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-3">
+        <a [routerLink]="['/taxon', taxon.taxon.id] | localize">
+          <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
+          <h4>
+            {{taxon.taxon.vernacularName | multiLang}}
+            <span *ngIf="lang === 'fi'">
+              <br> {{taxon.taxon.alternativeVernacularName | multiLang}}
+            </span>
+          </h4>
+        </a>
+      </div>
+    </div>
+
+    <h2>{{'herpetology.occasionalSpecies' | translate}}</h2>
     <div class="row align-items-start">
-    <td *ngFor="let taxon of occasionalTaxa" [ngClass]="{
-    }" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-3">
-    <a href= "taxon/{{taxon.taxon.id}}">
-      {{media | multiLang}}
-      <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
-      <h4>
-        {{taxon.taxon.vernacularName | multiLang}}
-        <span *ngIf="lang === 'fi'">
-          <br> {{taxon.taxon.alternativeVernacularName | multiLang}}
-        </span>
-      </h4>
-    </a>
-    </td>
+      <div *ngFor="let taxon of occasionalTaxa" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-3">
+        <a [routerLink]="['/taxon', taxon.taxon.id] | localize">
+          <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
+          <h4>
+            {{taxon.taxon.vernacularName | multiLang}}
+            <span *ngIf="lang === 'fi'">
+              <br> {{taxon.taxon.alternativeVernacularName | multiLang}}
+            </span>
+          </h4>
+        </a>
+      </div>
     </div>
 
     <h2>{{'herpetology.background' | translate}}</h2>
 
-   <p>{{'herpetology.backgroundText' | translate}}</p>
+    <p>{{'herpetology.backgroundText' | translate}}</p>
 
-  <div class="partners-footer">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-offset-1 col-sm-11 partners front partnerLogo">
-<p>
+    <div class="partners-footer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-offset-1 col-sm-11 partners front partnerLogo">
+            <p>
               <a href="http://luomus.fi" target="_blank">
-                <img src="https://cdn.laji.fi/images/partners/luomus_fi_blue_smaller.gif" alt="LUOMUS - Luonnontieteellinen keskusmuseo">
+                <img src="https://cdn.laji.fi/images/partners/luomus_fi_blue_smaller.gif"
+                     alt="LUOMUS - Luonnontieteellinen keskusmuseo">
               </a>
 
               <a href="http://yle.fi" target="_blank">
@@ -102,12 +102,12 @@
               <a href="http://luomus.fi" target="_blank">
                 <img src="https://cdn.laji.fi/images/luomus_tutkii_leima_200x200.jpg" alt="Luomus tutkii">
               </a>
-</p>
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
   <div id="header-author">{{'herpetology.cover' | translate}}</div>
 </div>
 

@@ -1,9 +1,9 @@
 <ol class="breadcrumb">
   <li *ngIf="informalGroup && informalGroup.id" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-    <a routerLink="/taxon/informal">{{ 'observation.active.informalTaxonGroupAll' | translate }}</a>
+    <a [routerLink]="'/taxon/informal' | localize">{{ 'observation.active.informalTaxonGroupAll' | translate }}</a>
   </li>
   <li *ngFor="let group of groups; let i = index; let active = last;">
-    <a [routerLink]="['/taxon/informal/' + group.id]">{{group.name}}</a>
+    <a [routerLink]="['/taxon/informal/' + group.id] | localize">{{group.name}}</a>
   </li>
   <li *ngIf="informalGroup" class="active">
     <span>{{informalGroup.name}}</span>

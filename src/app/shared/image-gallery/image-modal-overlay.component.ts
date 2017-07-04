@@ -7,7 +7,7 @@ import { setTimeout } from 'timers';
   styleUrls: ['./image-modal.component.css'],
   template: `<div class="ng-overlay">
   <div class="ng-gallery-content">
-  <div class="uil-ring-css" *ngIf="loading"><div></div></div>
+  <div class="uil-ring-css" *ngIf="loading"><laji-spinner [spinning]="loading" [light]="true"></laji-spinner></div>
     <a href="{{img.fullURL || img.largeURL}}" download="{{img.fullURL || img.largeURL}}" class="download-img">
       <i class="glyphicon glyphicon-download-alt"></i>
     </a>
@@ -32,7 +32,9 @@ import { setTimeout } from 'timers';
       <span *ngIf="img.licenseId">{{img.licenseId | toQName | label}}</span>
       <span *ngIf="img.licenseAbbreviation && !img.licenseId" [innerHtml]="img.licenseAbbreviation"></span>
       <br *ngIf="img.author || img.copyrightOwner || img.licenseId || img.licenseAbbreviation">
-      <a *ngIf="img.documentId" target="_blank" routerLink="/view" [queryParams]="{'uri':img.documentId}">{{img.documentId}}</a>
+      <a *ngIf="img.documentId" target="_blank" [routerLink]="'/view' | localize" [queryParams]="{'uri':img.documentId}">
+        {{'more' | translate}}
+      </a>
      ({{ currentImageIndex + 1 }}/{{ modalImages.length }})
      </span>
   </div>

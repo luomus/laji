@@ -5,33 +5,28 @@ import { TranslateService } from '@ngx-translate/core';
 import { MetadataApi } from '../api/MetadataApi';
 import { Logger } from '../logger/logger.service';
 import { MetadataService } from './metadata.service';
+import { CacheService } from './cache.service';
+import { MultiLangService } from './multi-lang.service';
 
 @Injectable()
 export class TriplestoreLabelService {
 
+  static readonly cacheTriplestoreLabels = 'triplestoreLabels';
+
   private labels;
-  private currentLang;
   private pending: Observable<any>;
 
   constructor(private metadataApi: MetadataApi,
               private metadataService: MetadataService,
-              private translate: TranslateService,
-              private logger: Logger
+              private logger: Logger,
+              private cacheService: CacheService
   ) {
-    this.translate.onLangChange.subscribe(() => {
-        this.labels = null;
-        this.getLang(this.translate.currentLang);
-      }
-    );
-    if (this.translate.currentLang) {
-      this.labels = null;
-      this.getLang(this.translate.currentLang);
-    }
+    this.getAllLabels();
   };
 
-  public get(key): Observable<string> {
+  public get(key, lang): Observable<string> {
     if (this.labels) {
-      return Observable.of(this.labels[key]);
+      return Observable.of(MultiLangService.getValue(this.labels[key], lang));
     } else if (this.pending) {
       return Observable.create((observer: Observer<string>) => {
         const onComplete = (res: string) => {
@@ -39,26 +34,28 @@ export class TriplestoreLabelService {
           observer.complete();
         };
         this.pending.subscribe(
-          () => {
-            onComplete(this.labels[key]);
+          (labels) => {
+            onComplete(MultiLangService.getValue(labels ? labels[key] : '', lang));
           },
           err => this.logger.warn('Failed to fetch label for ' + key, err)
         );
       });
     } else {
-      return Observable.of(key);
+      return Observable.of(MultiLangService.getValue(this.labels[key], lang));
     }
   }
 
-  private getLang(lang) {
+  private getAllLabels() {
     this.pending = Observable.forkJoin(
-      this.metadataService.getAllRangesAsLookUp(lang),
-      this.metadataApi.metadataAllProperties(lang),
-      this.metadataApi.metadataAllClasses(lang)
+      Observable.of('').delay(200).switchMap(() => this.metadataService.getAllRangesAsLookUp('multi')),
+      Observable.of('').delay(200).switchMap(() => this.metadataApi.metadataAllProperties('multi')),
+      Observable.of('').delay(200).switchMap(() => this.metadataApi.metadataAllClasses('multi'))
     )
       .map(data => this.parseResult(data))
+      .do(data => this.cacheService.setItem(TriplestoreLabelService.cacheTriplestoreLabels, data))
+      .merge(this.cacheService.getItem(TriplestoreLabelService.cacheTriplestoreLabels))
+      .filter(labels => !!labels)
       .share();
-    this.currentLang = lang;
   }
 
   private parseResult(result) {
@@ -70,5 +67,6 @@ export class TriplestoreLabelService {
     result[2].results.map(data => {
       this.labels[data['class']] = data['label'];
     });
+    return this.labels;
   }
 }

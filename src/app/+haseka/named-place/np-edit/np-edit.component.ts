@@ -6,6 +6,7 @@ import { Util } from '../../../shared/service/util.service';
 import { FormService } from '../../../shared/service/form.service';
 import { environment } from '../../../../environments/environment';
 import { Router } from '@angular/router';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-np-edit',
@@ -35,6 +36,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private formService: FormService,
     private translate: TranslateService,
+    private localizeRouterService: LocalizeRouterService,
     private router: Router
   ) { }
 
@@ -135,7 +137,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
   useClick() {
     this.populateForm();
-    this.router.navigate(['/vihko/' + this.formId]);
+    this.router.navigate(this.localizeRouterService.translateRoute(['/vihko/' + this.formId]));
   }
 
   editReady(np: NamedPlace) {

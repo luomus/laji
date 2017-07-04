@@ -9,6 +9,7 @@ import { FormService } from '../../shared/service/form.service';
 import { UserService } from '../../shared/service/user.service';
 import { FormPermissionService } from '../form-permission/form-permission.service';
 import { Person } from '../../shared/model/Person';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-haseka-form-list',
@@ -31,6 +32,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
               private router: Router,
               private userService: UserService,
               private formPermissionService: FormPermissionService,
+              private localizeRouterService: LocalizeRouterService,
               private changeDetector: ChangeDetectorRef) {
   }
 
@@ -98,7 +100,9 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
             this._goToForm(form);
             return;
           }
-          this.router.navigate(['/vihko/fp/' + form.collectionID]);
+          this.router.navigate(
+            this.localizeRouterService.translateRoute(['/vihko/fp/' + form.collectionID])
+          );
         });
       return;
     }
@@ -123,9 +127,13 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
 
   private _goToForm(form: FormListInterface) {
     if (form.features.indexOf(Form.Feature.NamedPlace) > -1) {
-      this.router.navigate(['/vihko/places/' + form.collectionID + '/' + form.id]);
+      this.router.navigate(
+        this.localizeRouterService.translateRoute(['/vihko/places/' + form.collectionID + '/' + form.id])
+      );
     } else {
-      this.router.navigate(['/vihko/' + form.id]);
+      this.router.navigate(
+        this.localizeRouterService.translateRoute(['/vihko/' + form.id])
+      );
     }
   }
 

@@ -54,8 +54,10 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   @Input() expanded: boolean;
   @Input() opened: boolean;
   @Input() format: string;
+  @Input() otherFormats: string[] = [];
   @Input() viewFormat: string;
   @Input() firstWeekdaySunday: boolean;
+  @Input() toLastOfYear= false;
   @Output() onSelect = new EventEmitter();
 
   public validDate = true;
@@ -78,11 +80,16 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     let date = (value instanceof moment) ? value : moment(value, this.format, true);
     if (!date.isValid()) {
       this.validDate = !value;
-      date = moment(value, this.viewFormat, true);
-      if (date.isValid()) {
-        this.validDate = true;
-        this.value = date.format(this.format);
-        return;
+      for (const format of [this.format, ...this.otherFormats]) {
+        date = moment(value, format, true);
+        if (date.isValid()) {
+          if (format.length <= 4 && this.toLastOfYear) {
+            date = moment(value, format, true).endOf('year');
+          }
+          this.validDate = true;
+          this.value = date.format(this.format);
+          return;
+        }
       }
     }
     if (value == null || !date.isValid()) {
@@ -128,23 +135,23 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   }
 
   generateCalendar() {
-    let date = moment(this.date);
-    let month = date.month();
-    let year = date.year();
+    const date = moment(this.date);
+    const month = date.month();
+    const year = date.year();
     let n = 1;
-    let firstWeekDay: number = (this.firstWeekdaySunday) ? date.date(2).day() : date.date(1).day();
+    const firstWeekDay: number = (this.firstWeekdaySunday) ? date.date(2).day() : date.date(1).day();
 
     if (firstWeekDay !== 1) {
       n -= (firstWeekDay + 6) % 7;
     }
 
     this.days = [];
-    let selectedDate = moment(this.value, this.viewFormat);
+    const selectedDate = moment(this.value, this.viewFormat);
     for (let i = n; i <= date.endOf('month').date(); i += 1) {
-      let currentDate = moment(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
-      let today = (moment().isSame(currentDate, 'day') && moment().isSame(currentDate, 'month'))
+      const currentDate = moment(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
+      const today = (moment().isSame(currentDate, 'day') && moment().isSame(currentDate, 'month'))
         ? true : false;
-      let selected = (selectedDate.isSame(currentDate, 'day')) ? true : false;
+      const selected = (selectedDate.isSame(currentDate, 'day')) ? true : false;
 
       if (i > 0) {
         this.days.push({
@@ -171,8 +178,8 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   selectDate(e: MouseEvent, i: number) {
     e.preventDefault();
 
-    let date: CalendarDate = this.days[i];
-    let selectedDate = moment(`${date.day}.${date.month}.${date.year}`, 'DD.MM.YYYY');
+    const date: CalendarDate = this.days[i];
+    const selectedDate = moment(`${date.day}.${date.month}.${date.year}`, 'DD.MM.YYYY');
     this.value = selectedDate.format(this.format);
     this.viewDate = selectedDate.format(this.viewFormat);
     this.close();
@@ -214,7 +221,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
 
   toggle() {
     if (!this.viewDate) {
-      let value = moment();
+      const value = moment();
       this.value = value;
       this.onChangeCallback(value.format(this.format));
     }

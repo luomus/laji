@@ -1,4 +1,5 @@
-import { animate, Component, EventEmitter, Input, Output, state, style, transition, trigger } from '@angular/core';
+import { Component, EventEmitter, Input, Output} from '@angular/core';
+import { animate, trigger, state, style, transition } from '@angular/animations';
 
 @Component({
   selector: '[laji-panel]',
@@ -8,16 +9,16 @@ import { animate, Component, EventEmitter, Input, Output, state, style, transiti
     trigger('visibilityState', [
       state('in' , style({ height: '*' })),
       state('out', style({ height: 0 })),
-      transition('in <=> out', animate('200ms'))
+      transition('in <=> out', animate('100ms'))
     ])
   ]
 })
 export class PanelComponent {
   @Input() title: string;
   @Input() index: number;
-  @Input() open: boolean = false;
-  @Input() autoToggle: boolean = false;
-  @Input() headerLink: boolean = true;
+  @Input() open = false;
+  @Input() autoToggle = false;
+  @Input() headerLink = true;
   @Output() activate = new EventEmitter();
   public hideInside = true;
 

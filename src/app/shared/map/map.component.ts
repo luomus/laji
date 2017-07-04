@@ -14,6 +14,8 @@ import { MapService } from './map.service';
 import { LajiExternalService } from '../service/laji-external.service';
 import { LajiMapOptions } from './map2.component';
 import { UserService } from '../service/user.service';
+import { OnInit } from '@angular/core';
+import { USER_INFO } from '../service/user.service';
 
 @Component({
   selector: 'laji-map',
@@ -26,7 +28,7 @@ import { UserService } from '../service/user.service';
   styleUrls: ['./map.component.css'],
   providers: []
 })
-export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
+export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit {
 
   @Input() data: any = [];
   @Input() drawData: any;
@@ -61,6 +63,7 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
   private initEvents = false;
   private failureSend = false;
   private userSettings: any = {};
+  private settings: any;
 
   constructor(
     private mapService: MapService,
@@ -71,68 +74,79 @@ export class MapComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.userService.getUserSetting(this.settingsKey)
+      .merge(this.userService.action$
+        .filter(action => action === USER_INFO)
+        .switchMap(() => this.userService.getUserSetting(this.settingsKey))
+      )
       .subscribe(settings => {
-        const draw = this.draw;
-        if (this.draw) {
-          draw.onChange = draw.onChange || (e => this.onChange(e));
-          draw.getDraftStyle = draw.getDraftStyle || this.getDrawingDraftStyle;
-          draw.data = draw.data || this.drawData;
-          draw.editable = draw.editable !== false ? draw.editable : false;
-          draw.marker = draw.marker !== false ? draw.marker : false;
-          draw.polygon = draw.polygon !== false ? draw.polygon : false;
-          draw.polyline = draw.polyline !== false ? draw.polyline : false;
-          draw.hasActive = draw.hasActive !== true ? draw.hasActive : true;
+        this.settings = settings;
+        if (this.map) {
+          this.map.setOptions(settings);
         }
-        const mapOptions: LajiMapOptions = {
-          tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
-          zoom: this.zoom,
-          center: this.center || [65, 26],
-          lang: this.lang,
-          data: [],
-          draw: draw,
-          markerPopupOffset: 5,
-          featurePopupOffset: 0,
-          rootElem: this.elemRef.nativeElement,
-          controlSettings: this.controlSettings,
-          overlayNames: this.overlayNames
-        };
+      });
+  }
 
-        if (this.settingsKey) {
-          mapOptions.on = {
-            tileLayerChange: (event) => {
-              this.userSettings.tileLayerName = event.tileLayerName;
-              this.userService.setUserSetting(this.settingsKey, this.userSettings);
-            },
-            tileLayerOpacityChangeEnd: (event) => {
-              this.userSettings.tileLayerOpacity = event.tileLayerOpacity;
-              this.userService.setUserSetting(this.settingsKey, this.userSettings);
-            },
-            overlaysChange: (event) => {
-              this.userSettings.overlayNames = event.overlayNames;
-              this.userService.setUserSetting(this.settingsKey, this.userSettings);
-            }
-          };
-          for (const key in settings) {
-            if (settings.hasOwnProperty(key)) {
-              mapOptions[key] = settings[key];
-            }
+  ngAfterViewInit() {
+      const draw = this.draw;
+      if (this.draw) {
+        draw.onChange = draw.onChange || (e => this.onChange(e));
+        draw.getDraftStyle = draw.getDraftStyle || this.getDrawingDraftStyle;
+        draw.data = draw.data || this.drawData;
+        draw.editable = draw.editable !== false ? draw.editable : false;
+        draw.marker = draw.marker !== false ? draw.marker : false;
+        draw.polygon = draw.polygon !== false ? draw.polygon : false;
+        draw.polyline = draw.polyline !== false ? draw.polyline : false;
+        draw.hasActive = draw.hasActive !== true ? draw.hasActive : true;
+      }
+      const mapOptions: LajiMapOptions = {
+        tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
+        zoom: this.zoom,
+        center: this.center || [65, 26],
+        lang: this.lang,
+        data: [],
+        draw: draw,
+        markerPopupOffset: 5,
+        featurePopupOffset: 0,
+        rootElem: this.elemRef.nativeElement,
+        controlSettings: this.controlSettings,
+        overlayNames: this.overlayNames
+      };
+
+      if (this.settingsKey) {
+        mapOptions.on = {
+          tileLayerChange: (event) => {
+            this.userSettings.tileLayerName = event.tileLayerName;
+            this.userService.setUserSetting(this.settingsKey, this.userSettings);
+          },
+          tileLayerOpacityChangeEnd: (event) => {
+            this.userSettings.tileLayerOpacity = event.tileLayerOpacity;
+            this.userService.setUserSetting(this.settingsKey, this.userSettings);
+          },
+          overlaysChange: (event) => {
+            this.userSettings.overlayNames = event.overlayNames;
+            this.userService.setUserSetting(this.settingsKey, this.userSettings);
+          }
+        };
+        for (const key in this.settings) {
+          if (this.settings.hasOwnProperty(key)) {
+            mapOptions[key] = this.settings[key];
           }
         }
+      }
 
-        this.map = this.lajiExternalService.getMap(mapOptions);
-        this.map.map.on('moveend', _ => {
-          this.moveEvent('moveend');
-        });
-        this.map.map.on('movestart', _ => {
-          this.moveEvent('movestart');
-        });
-        this.initMapOptions();
-        this.updateData();
-        this.initDrawData();
+      this.map = this.lajiExternalService.getMap(mapOptions);
+      this.map.map.on('moveend', _ => {
         this.moveEvent('moveend');
       });
+      this.map.map.on('movestart', _ => {
+        this.moveEvent('movestart');
+      });
+      this.initMapOptions();
+      this.updateData();
+      this.initDrawData();
+      this.moveEvent('moveend');
   }
 
   moveEvent(type: string) {
