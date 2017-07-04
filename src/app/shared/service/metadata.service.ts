@@ -18,6 +18,11 @@ export class MetadataService {
   constructor(private metadataApi: MetadataApi) {
   }
 
+  getClassProperties(className: string, lang: string) {
+    return this.metadataApi.metadataFindClassProperties(className, lang)
+      .map(result => result.results);
+  }
+
   getAllProperties(lang: string) {
     if (lang === this.currentLang) {
       if (this.ranges) {

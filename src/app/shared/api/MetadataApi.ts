@@ -175,7 +175,7 @@ export class MetadataApi {
    * @param _class
    * @param lang
    */
-  public metadataFindClassProperties(_class: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<models.Metadata>> {
+  public metadataFindClassProperties(_class: string, lang?: string, extraHttpRequestParams?: any): Observable<any> {
     const path = this.basePath + '/metadata/classes/{class}/properties'
         .replace('{' + 'class' + '}', String(_class));
 

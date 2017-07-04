@@ -10,14 +10,14 @@ import { FormService } from '../../../shared/service/form.service';
 import { RouterChildrenEventService } from '../../router-children-event.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { CsvService } from './csv.service';
+import { DocumentToCsvService } from './document-to-csv.service';
 import { WindowRef } from '../../../shared/windows-ref';
 
 @Component({
   selector: 'laji-own-datatable',
   templateUrl: './own-datatable.component.html',
   styleUrls: ['./own-datatable.component.css'],
-  providers: [CsvService]
+  providers: [DocumentToCsvService]
 })
 export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() documents: Document[];
@@ -51,7 +51,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     private userService: UserService,
     private formService: FormService,
     private eventService: RouterChildrenEventService,
-    private csvService: CsvService,
+    private csvService: DocumentToCsvService,
     private window: WindowRef
   ) {}
 
