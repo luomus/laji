@@ -1,6 +1,5 @@
 #all-content {
-  background-image:  url('https://cdn.laji.fi/images/sisilisko_header_fadetowhite_1400x779.jpg');
-  background-repeat: no-repeat;
+  background: url('https://cdn.laji.fi/images/sisilisko_header_fadetowhite_1400x779.jpg') no-repeat;
 }
 
 .herpetology-content {
