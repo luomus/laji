@@ -1,4 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { setTimeout } from 'timers';
 
 interface Coords {
   top: number;
@@ -28,8 +29,10 @@ export class FixedInViewDirective implements AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.updateDimensions();
-    this.updatePos();
+    setTimeout(() => {
+      this.updateDimensions();
+      this.updatePos();
+    }, 10);
   }
 
   @HostListener('window:scroll', [])
