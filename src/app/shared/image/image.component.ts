@@ -22,7 +22,7 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
   ) {}
 
   ngAfterViewInit() {
-    this.scriptService.load('openseadragon')
+    this.scriptService.load('openseadragon-icons')
       .then(
         () => {
           this.loaded = true;
@@ -56,7 +56,7 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
     this.viewer = OpenSeadragon({
       element: this.el.nativeElement,
       animationTime: 0.7,
-      prefixUrl: '/static/images/openseadragon/',
+      prefixUrl: '/static/images/openseadragon-icons/',
       showNavigator: this.showNavigator,
       showRotationControl: true,
       navigatorPosition: 'ABSOLUTE',
