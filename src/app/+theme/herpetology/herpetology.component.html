@@ -37,7 +37,7 @@
     <h2>{{'herpetology.amphibians' | translate}}</h2>
 
     <div class="row">
-      <div *ngFor="let taxon of amphibianTaxa" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-3">
+      <div *ngFor="let taxon of amphibianTaxa" class="taxonCard">
         <a [routerLink]="['/taxon', taxon.taxon.id] | localize">
           <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
           <h4>
@@ -53,7 +53,7 @@
 
     <h2>{{'herpetology.reptiles' | translate}}</h2>
     <div class="row">
-      <div *ngFor="let taxon of reptileTaxa" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-3">
+      <div *ngFor="let taxon of reptileTaxa" class="taxonCard">
         <a [routerLink]="['/taxon', taxon.taxon.id] | localize">
           <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
           <h4>
@@ -68,7 +68,7 @@
 
     <h2>{{'herpetology.occasionalSpecies' | translate}}</h2>
     <div class="row align-items-start">
-      <div *ngFor="let taxon of occasionalTaxa" class="taxonCard col-xs-6 col-sm-4 col-md-3 col-lg-3">
+      <div *ngFor="let taxon of occasionalTaxa" class="taxonCard">
         <a [routerLink]="['/taxon', taxon.taxon.id] | localize">
           <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
           <h4>
