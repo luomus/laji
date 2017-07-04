@@ -22,7 +22,7 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
   ) {}
 
   ngAfterViewInit() {
-    this.scriptService.load('openseadragon-icons')
+    this.scriptService.load('openseadragon')
       .then(
         () => {
           this.loaded = true;
