@@ -8,11 +8,22 @@ export const DEFAULT_DOMAIN = 'http://tun.fi/';
  */
 @Injectable()
 export class IdService {
+
+  static readonly domainMap = {
+    'luomus:': 'http://id.luomus.fi/',
+    'zmuo:': 'http://id.zmuo.oulu.fi/',
+    'herbo:': 'http://id.herb.oulu.fi/',
+    'utu:': 'http://mus.utu.fi/'
+  };
+
   static getId(value) {
     if (typeof value !== 'string' || value === '') {
       return value;
     }
     if (value.indexOf('http') === 0) {
+      Object.keys(IdService.domainMap).map(prefix => {
+        value = value.replace(IdService.domainMap[prefix], prefix);
+      });
       return value.replace(DEFAULT_DOMAIN, '');
     }
     return value;
@@ -22,6 +33,10 @@ export class IdService {
     if (typeof value !== 'string' || value === '') {
       return value;
     }
+    if (value.indexOf('http') === 0) {
+      return value;
+    }
+    Object.keys(IdService.domainMap).map(prefix => value = value.replace(prefix, IdService.domainMap[prefix]));
     if (value.indexOf('http') === 0) {
       return value;
     }

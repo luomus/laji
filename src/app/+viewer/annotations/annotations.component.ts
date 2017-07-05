@@ -7,6 +7,7 @@ import { EventEmitter } from '@angular/core';
 import { AnnotationService } from '../service/annotation.service';
 import { Annotation } from '../../shared/model/Annotation';
 import { Observable } from 'rxjs/Observable';
+import { IdService } from '../../shared/service/id.service';
 
 @Component({
   selector: 'laji-annotations',
@@ -37,16 +38,16 @@ export class AnnotationsComponent implements OnInit {
 
   initEmptyAnnotation() {
     this.annotation = {
-      rootID: this.rootID,
-      targetID: this.targetID,
+      rootID: IdService.getId(this.rootID),
+      targetID: IdService.getId(this.targetID),
       annotationClass: Annotation.AnnotationClassEnum.AnnotationClassNeutral,
       type: Annotation.TypeEnum.TypeOpinion
     };
   }
 
   updateAnnotationList() {
-    this.annotation$ = this.annotationService.getAllFromRoot(this.rootID)
-      .map(annotations => annotations.filter(annotation => annotation.targetID === this.targetID));
+    this.annotation$ = this.annotationService.getAllFromRoot(IdService.getId(this.rootID))
+      .map(annotations => annotations.filter(annotation => annotation.targetID === IdService.getId(this.targetID)));
   }
 
   toggleAddForm() {
