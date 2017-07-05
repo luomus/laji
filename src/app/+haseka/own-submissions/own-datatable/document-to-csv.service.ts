@@ -32,20 +32,36 @@ export class DocumentToCsvService {
     this.formService.getFormInJSONFormat(doc.formID, this.translate.currentLang)
       .subscribe((jsonForm) => {
         this.getCsv(doc, jsonForm).subscribe((csv) => {
-          const uri = encodeURI(csv);
-
-          const downloadLink = document.createElement('a');
-          downloadLink.href = uri;
 
           this.translate.get('haseka.submissions.submission').subscribe((msg) => {
-            downloadLink.download = msg + '_' + doc.id.split('.')[1] + '.csv';
-
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
+            const fileName = msg + '_' + doc.id.split('.')[1] + '.csv';
+            this.downloadCsv(csv, fileName);
           });
         });
       });
+  }
+
+  private downloadCsv(csv: string, fileName: string) {
+    const isIE = () => {
+      const ua = window.navigator.userAgent;
+      return /Trident/.test(ua) || /MSIE/.test(ua);
+    };
+
+    if (isIE()) {
+      const IEwindow = window.open();
+      IEwindow.document.write('sep=,\r\n' + csv);
+      IEwindow.document.close();
+      IEwindow.document.execCommand('SaveAs', true, fileName);
+      IEwindow.close();
+    } else {
+      const uri = encodeURI(csv);
+      const downloadLink = document.createElement('a');
+      downloadLink.href = 'data:text/csv;charset=utf-8,' + uri;
+      downloadLink.download = fileName;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    }
   }
 
   private getCsv(doc: Document, form: any): Observable<string> {
@@ -53,8 +69,7 @@ export class DocumentToCsvService {
       .switchMap((fields) => {
         return this.getData(Util.clone(doc), form, fields)
           .map((data) => {
-            const csv = 'data:text/csv;charset=utf-8,';
-            return csv + json2csv({fields: fields, data: data});
+            return json2csv({fields: fields, data: data});
           });
       });
   }
