@@ -14,6 +14,7 @@
           <tr *ngIf="!document.removed">
             <td>
               <laji-short-document [document]="document"
+                                   [form]="formsById[document.formID]"
                                    (onDiscard)="discardDocument(unpublishedDocuments, i)"
                                    (onShowViewer)="showDocumentViewer($event)"></laji-short-document>
             </td>
@@ -31,6 +32,7 @@
             <tr *ngFor="let document of documents; let i = index">
               <td>
                 <laji-short-document [document]="document"
+                                     [form]="formsById[document.formID]"
                                      (onDiscard)="discardDocument(documents, i)"
                                      (onShowViewer)="showDocumentViewer($event)"></laji-short-document>
               </td>

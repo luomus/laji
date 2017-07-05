@@ -258,9 +258,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
     return this.formService
       .getForm(formId, this.translate.currentLang)
-      .map((res: any) => {
+      .do((res: any) => {
         this.formsById[formId] = res;
-        return res;
       });
   }
 }

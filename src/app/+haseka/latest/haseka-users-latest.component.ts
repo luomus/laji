@@ -5,6 +5,7 @@ import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
 import { Observable } from 'rxjs/Observable';
 import { Util } from '../../shared/service/util.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-haseka-latest',
@@ -17,6 +18,7 @@ export class UsersLatestComponent implements OnChanges {
 
   public unpublishedDocuments: Document[] = [];
   public documents: Document[] = [];
+  public formsById = {};
   public total = 0;
   public page = 1;
   public pageSize = 10;
@@ -25,6 +27,7 @@ export class UsersLatestComponent implements OnChanges {
   constructor(
     private documentService: DocumentApi,
     private formService: FormService,
+    private translate: TranslateService,
     private logger: Logger
   ) {
   }
@@ -45,7 +48,10 @@ export class UsersLatestComponent implements OnChanges {
     }
     this.formService.getAllTempDocuments()
       .subscribe(documents => {
-        this.addDocuments(documents, this.unpublishedDocuments);
+        this.processDocuments(documents)
+          .subscribe((docs) => {
+            this.unpublishedDocuments.push(...docs);
+          });
       });
   }
 
@@ -56,9 +62,12 @@ export class UsersLatestComponent implements OnChanges {
     this.documentService.findAll(this.userToken, String(this.page), String(this.pageSize))
       .subscribe(
         result => {
-          this.loading = false;
           if (result.results) {
-            this.addDocuments(result.results, this.documents);
+            this.processDocuments(result.results)
+              .subscribe((docs) => {
+                this.documents.push(...docs);
+                this.loading = false;
+              });
           }
           this.total = result.total || 0;
         },
@@ -86,9 +95,13 @@ export class UsersLatestComponent implements OnChanges {
     this.onShowViewer.emit(docId);
   }
 
-  private addDocuments(docs: Document[], targetArray: Document[]) {
-    Observable.from(docs.map((doc) => {
-      return this.formService.hasUnsavedData(doc.id).switchMap(
+  private processDocuments(docs: Document[]) {
+    return Observable.from(docs.map((doc) => {
+      return Observable.forkJoin(
+        this.formService.hasUnsavedData(doc.id),
+        this.getForm(doc.formID),
+        (hasUnsavedData, form) => (hasUnsavedData)
+      ).switchMap(
         (hasUnsavedData) => {
           if (hasUnsavedData) {
             return Observable.forkJoin(
@@ -111,9 +124,18 @@ export class UsersLatestComponent implements OnChanges {
     }))
       .mergeAll()
       .toArray()
-      .subscribe((array) => {
+      .do((array) => {
         array.sort(this.compareEditDate);
-        targetArray.push(...array);
+      });
+  }
+
+  private getForm(formId: string): Observable<any> {
+    if (this.formsById[formId]) { return Observable.of(this.formsById[formId]); }
+
+    return this.formService
+      .getForm(formId, this.translate.currentLang)
+      .do((res: any) => {
+        this.formsById[formId] = res;
       });
   }
 

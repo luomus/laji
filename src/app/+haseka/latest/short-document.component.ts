@@ -16,6 +16,7 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 })
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() document: Document;
+  @Input() form: any;
   @Output() onDiscard = new EventEmitter();
   @Output() onShowViewer = new EventEmitter();
 
@@ -31,7 +32,6 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   public loading = false;
 
   private subTrans: Subscription;
-  private form$: Subscription;
 
   constructor(
     public formService: FormService,
@@ -65,18 +65,15 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateFields() {
-    if (this.form$) { this.form$.unsubscribe(); }
-
     this.loading = true;
 
-    this.form$ = this.formService.getForm(this.document.formID, this.translate.currentLang).subscribe((form) => {
-      const gatheringInfo = DocumentInfoService.getGatheringInfo(this.document, form);
-      this.unitList = gatheringInfo.unitList;
-      this.newUnitsLength = gatheringInfo.unsavedUnitCount;
-      this.gatheringDates = {start: gatheringInfo.dateBegin, end: gatheringInfo.dateEnd};
-      this.locality = gatheringInfo.locality;
-      this.loading = false;
-    });
+    const gatheringInfo = DocumentInfoService.getGatheringInfo(this.document, this.form);
+    this.unitList = gatheringInfo.unitList;
+    this.newUnitsLength = gatheringInfo.unsavedUnitCount;
+    this.gatheringDates = {start: gatheringInfo.dateBegin, end: gatheringInfo.dateEnd};
+    this.locality = gatheringInfo.locality;
+
+    this.loading = false;
   }
 
   editDocument(formId, documentId) {
