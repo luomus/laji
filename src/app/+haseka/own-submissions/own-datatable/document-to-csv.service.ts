@@ -4,7 +4,7 @@ import { Util } from '../../../shared/service/util.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { UserService } from '../../../shared/service/user.service';
 import { CollectionService } from '../../../shared/service/collection.service';
-import { MetadataService } from '../../../shared/service/metadata.service';
+import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentInfoService } from '../../document-info.service';
 import { geoJSONToISO6709 } from 'laji-map/lib/utils';
@@ -16,13 +16,8 @@ import { Observable } from 'rxjs/Observable';
  */
 @Injectable()
 export class DocumentToCsvService {
-  private readonly classNames = [
-    {id: 'document', name: 'MY.document'},
-    {id: 'gatherings', name: 'MY.gathering'},
-    {id: 'gatheringEvent', name: 'MZ.gatheringEvent'},
-    {id: 'units', name: 'MY.unit'},
-    {id: 'identifications', name: 'MY.identification'}
-  ];
+  private readonly extraFields = ['id', 'formID', 'dateCreated', 'dateEdited'];
+  private readonly classPrefixes = {formID: 'MY', dateCreated: 'MZ', dateEdited: 'MZ'};
   private readonly valuePrefixes = {collection: 'HR', person: 'MA'};
 
   constructor(
@@ -30,62 +25,65 @@ export class DocumentToCsvService {
     private labelService: TriplestoreLabelService,
     private userService: UserService,
     private collectionService: CollectionService,
-    private metadataService: MetadataService
+    private formService: FormService
   ) {}
 
-  public downloadDocumentAsCsv(doc: Document, form: any) {
-   this.getCsv(doc, form).subscribe((csv) => {
-      const uri = encodeURI(csv);
+  public downloadDocumentAsCsv(doc: Document) {
+    this.formService.getFormInJSONFormat(doc.formID, this.translate.currentLang)
+      .subscribe((jsonForm) => {
+        this.getCsv(doc, jsonForm).subscribe((csv) => {
+          const uri = encodeURI(csv);
 
-      const downloadLink = document.createElement('a');
-      downloadLink.href = uri;
+          const downloadLink = document.createElement('a');
+          downloadLink.href = uri;
 
-      this.translate.get('haseka.submissions.submission').subscribe((msg) => {
-        downloadLink.download = msg + '_' + doc.id.split('.')[1] + '.csv';
+          this.translate.get('haseka.submissions.submission').subscribe((msg) => {
+            downloadLink.download = msg + '_' + doc.id.split('.')[1] + '.csv';
 
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+          });
+        });
       });
-    });
   }
 
-  private getCsv(doc: Document, form: any) {
-    const fields = this.getFields(doc, form);
-
-    return Observable.forkJoin(
-      this.getMetadataData().map((metadataData) => (this.getFieldsData(fields, metadataData))),
-      this.getData(Util.clone(doc), form, fields),
-      (fieldsData, data) => {
-        const csv = 'data:text/csv;charset=utf-8,';
-        return csv + json2csv({fields: fieldsData, data: data});
-      }
-    );
+  private getCsv(doc: Document, form: any): Observable<string> {
+    return this.getFields(doc, form)
+      .switchMap((fields) => {
+        return this.getData(Util.clone(doc), form, fields)
+          .map((data) => {
+            const csv = 'data:text/csv;charset=utf-8,';
+            return csv + json2csv({fields: fields, data: data});
+          });
+      });
   }
 
   private getData(obj: any, form: any, fields: any, path = ''): Observable<any> {
     let unwindKey;
-    const labelObservables = [];
+    const observables = [];
 
     for (const key in obj) {
       if (!obj.hasOwnProperty(key)) { continue; }
 
-      if (fields.indexOf(path + key) !== -1) {
-        labelObservables.push(this.getLabelToValue(key, obj[key])
+      const fieldArray = fields.filter((f) => (f.value === path + key));
+      const child = obj[key];
+
+      if (fieldArray.length > 0) {
+        observables.push(this.getLabelToValue(key, obj[key], fieldArray[0])
           .do((label) => {
             obj[key] = label;
           }));
-      }
-
-      const child = obj[key];
-      if (Array.isArray(child) && typeof child[0] === 'object') {
+      } else if (Array.isArray(child) && typeof child[0] === 'object') {
         unwindKey = key;
+      } else if (typeof child === 'object' && key !== 'geometry') {
+        observables.push(this.getData(child, form, fields, path + key + '.'));
       }
     }
 
-    const labelObservable = labelObservables.length > 0 ? Observable.forkJoin(labelObservables) : Observable.of([]);
+    const observable = observables.length > 0 ? Observable.forkJoin(observables) : Observable.of([]);
 
-    return labelObservable.switchMap(
+    return observable.switchMap(
       () => {
         if (unwindKey) {
           const getDataObservables = [];
@@ -121,32 +119,11 @@ export class DocumentToCsvService {
     return result;
   }
 
-  private getFieldsData(fields: string[], metadataData: any): any[] {
-    const getMetadataIdx = (key: string, className: string): number => {
-      for (let i = 0; i < metadataData[className].length; i++) {
-        if (metadataData[className][i].shortName === key) { return i; }
-      }
-
-      return -1;
-    };
-
-    const fieldsData = fields.map((field) => {
-      const splitted = field.split('.');
-      const className = splitted.length < 2 ? 'document' : splitted[splitted.length - 2];
-      const key = splitted[splitted.length - 1];
-      const idx = getMetadataIdx(key, className);
-      const label = idx > -1 ? metadataData[className][idx].label : '';
-
-      return {label: label, value: field, idx: idx};
-    });
-
-    return fieldsData;
-  }
-
-  private getFields(doc: Document, form: any) {
+  private getFields(doc: Document, jsonForm: any): Observable<any[]> {
     const queue = [{obj: doc, key: 'document', path: ''}];
     let next, obj, key, path;
     const fields = [];
+    const labelObservables$ = [];
 
     while (queue.length > 0) {
       next = queue.shift();
@@ -156,63 +133,146 @@ export class DocumentToCsvService {
 
       for (const i in obj) {
         if (!obj.hasOwnProperty(i) || obj[i] == null || i.charAt(0) === '@'
-          || (i === 'id' && key !== 'document') || (Array.isArray(obj[i]) && obj[i].length < 1)) {
+          || (Array.isArray(obj[i]) && obj[i].length < 1)) {
           continue;
         }
 
-        let type;
+        const field = path + i;
 
         if (i === 'geometry' || typeof obj[i] !== 'object' || (Array.isArray(obj[i]) && typeof obj[i][0] !== 'object')) {
-          type = 'column';
-          if (fields.indexOf(path + i) === -1) {
-            fields.push(path + i);
+          if (fields.filter((f) => (f.value === field)).length > 0) { continue; }
+
+          const properties = this.getFieldProperties(field, jsonForm);
+          const extraFieldIdx = this.extraFields.indexOf(field);
+
+          if (properties) {
+            fields.push(Object.assign({value: field}, properties));
+          } else if (extraFieldIdx > -1) {
+            const capitalizedKey = i.charAt(0).toUpperCase() + i.slice(1);
+            const fieldData = {value: field, label: capitalizedKey, sortIdx: extraFieldIdx - this.extraFields.length};
+            fields.push(fieldData);
+            if (i !== 'id') {
+              labelObservables$.push(this.getLabel(i).do((label) => {if (label !== i) {fieldData.label = label; }}));
+            }
           }
         } else if (Array.isArray(obj[i])) {
-          type = 'objectArray';
           for (let j = 0; j < obj[i].length; j++) {
-            if (!this.isEmpty(i, obj[i][j], form)) {
+            if (!this.isEmpty(i, obj[i][j], jsonForm)) {
               queue.push({obj: obj[i][j], key: i, path: path + i + '.'});
             }
           }
         } else {
-          type = 'object';
           queue.push({obj: obj[i], key: i, path: path + i + '.'});
         }
       }
     }
 
-    return fields;
+    this.sortFieldData(fields, doc, jsonForm);
+
+    return Observable.forkJoin(labelObservables$)
+      .map(() => (fields));
   }
 
-  private getMetadataData(): Observable<any> {
-    const metadatas$ = [];
-    const metadataByKey = {};
+  private sortFieldData(fields: any[], doc: Document, jsonForm: any) {
+    const getObj = (parts: string[], idx: number): any => {
+      let obj = doc;
+      for (let i = 0; i <= idx; i++) {
+        if (Array.isArray(obj)) {
+          for (let j = 0; j < obj.length; j++) {
+            if (!this.isEmpty(parts[i - 1], obj[j], jsonForm)) {
+              obj = obj[j];
+              break;
+            }
+          }
+        }
+        obj = obj[parts[i]];
+      }
+      return obj;
+    };
 
-    for (let i = 0; i < this.classNames.length; i++) {
-      const className = this.classNames[i];
-      metadatas$.push(
-        this.metadataService.getClassProperties(className.name)
-          .do((metaData) => (metadataByKey[className.id] = metaData))
-      );
+    fields.sort((a, b) => {
+      const aPath = a.value.substring(0, a.value.lastIndexOf('.'));
+      const bPath =  b.value.substring(0, b.value.lastIndexOf('.'));
+
+      if (aPath === bPath) {
+        return a.sortIdx - b.sortIdx;
+      }
+
+      const aParts = a.value.split('.');
+      const bParts = b.value.split('.');
+      let commonPath = '';
+      let i = 0;
+
+      while (i < aParts.length && i < bParts.length && aParts[i] === bParts[i]) {
+        commonPath += aParts[i] + '.';
+        i++;
+      }
+
+      const aObj = getObj(aParts, i);
+      const bObj = getObj(bParts, i);
+
+      if (Array.isArray(aObj) && typeof aObj[0] === 'object') {
+        return 1;
+      } else if (Array.isArray(bObj) && typeof bObj[0] === 'object') {
+        return -1;
+      }
+
+      let aSortIdx = a.sortIdx;
+      let bSortIdx = b.sortIdx;
+
+      if (i !== aParts.length - 1 && aParts[i] !== 'geometry' && typeof aObj === 'object') {
+        const props = this.getFieldProperties(commonPath + '.' + aParts[i], jsonForm);
+        aSortIdx = props ? props.sortIdx : 10000;
+      }
+
+      if (i !== bParts.length - 1 && bParts[i] !== 'geometry' && typeof bObj === 'object') {
+        const props = this.getFieldProperties(commonPath + '.' + bParts[i], jsonForm);
+        bSortIdx = props ? props.sortIdx : 10000;
+      }
+
+      return aSortIdx - bSortIdx;
+    });
+  }
+
+  private getFieldProperties(field: string, jsonForm: any): any {
+    const splitted = field.split('.');
+    const key = splitted[splitted.length - 1];
+
+    let properties = jsonForm.fields;
+    let fieldProperties;
+
+    for (let i = 0; i < splitted.length; i++) {
+      for (let j = 0; j < properties.length; j++) {
+        if (splitted[i] === properties[j].name) {
+          if (i === splitted.length - 1) {
+            fieldProperties = {label: properties[j].label, sortIdx: j};
+            if (properties[j].options && properties[j].options.value_options) {
+              fieldProperties.enums = properties[j].options.value_options;
+            }
+          } else {
+            properties = properties[j].fields;
+          }
+          break;
+        }
+      }
     }
-    return Observable.forkJoin(metadatas$).switchMap(() => (Observable.of(metadataByKey)));
+    return fieldProperties;
   }
 
-  private getLabelToValue(key: string, obj: any): Observable<any> {
+  private getLabelToValue(key: string, obj: any, fieldData?: any): Observable<any> {
     let value = '';
 
     if (obj != null) {
       if (key === 'geometry') {
-        console.log(obj);
         value += geoJSONToISO6709({
           type: 'FeatureCollection',
           features: [{
             type: 'Feature',
             geometry: obj,
-          }]});
+          }]}).replace(/\n$/, '');
       } else if (Array.isArray(obj)) {
         return Observable.from(obj.map((labelKey) => {
-          return this.getLabel(labelKey);
+          return this.getLabel(labelKey, fieldData);
         }))
           .mergeAll()
           .toArray()
@@ -220,16 +280,20 @@ export class DocumentToCsvService {
             return array.join(', ');
           });
       } else {
-        return this.getLabel(obj);
+        return this.getLabel(obj, fieldData);
       }
     }
 
     return Observable.of(value);
   }
 
-  private getLabel(key: string): Observable<string> {
+  private getLabel(key: string, fieldData?: any): Observable<string> {
     if (typeof key !== 'string') {
-      return Observable.of(key);
+      return Observable.of(String(key));
+    }
+
+    if (fieldData && fieldData.enums && fieldData.enums[key]) {
+      return Observable.of(fieldData.enums[key]);
     }
 
     if (key.match(new RegExp('^' + this.valuePrefixes.person + '\.[0-9]+$'))) {
@@ -247,11 +311,16 @@ export class DocumentToCsvService {
         });
     }
 
-    return this.labelService
-      .get(key, this.translate.currentLang)
-      .map((label) => {
-        return label || key;
-      });
+    if (this.classPrefixes[key]) {
+      key = this.classPrefixes[key] + '.' + key;
+      return this.labelService
+        .get(key, this.translate.currentLang)
+        .map((label) => {
+          return label || key;
+        });
+    }
+
+    return Observable.of(key);
   }
 
   private isEmpty(key: string, obj: any, form: any) {

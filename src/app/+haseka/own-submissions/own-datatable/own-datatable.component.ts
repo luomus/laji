@@ -154,7 +154,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
   downloadDocument(index: number) {
     const doc = this.documents[index];
-    this.csvService.downloadDocumentAsCsv(doc, this.formsById[doc.formID]);
+    this.csvService.downloadDocumentAsCsv(doc);
   }
 
   toStatisticsPage(docId: string) {
@@ -240,16 +240,16 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     return Observable.from(userArray.map((userId) => {
       if (userId.indexOf('MA.') === 0) {
         return this.userService.getUser(userId)
-          .switchMap((user: Person) => {
-            return Observable.of(user.fullName);
+          .map((user: Person) => {
+            return user.fullName;
           });
       }
       return Observable.of(userId);
     }))
       .mergeAll()
       .toArray()
-      .switchMap((array) => {
-        return Observable.of(array.join(', '));
+      .map((array) => {
+        return array.join(', ');
       });
   }
 

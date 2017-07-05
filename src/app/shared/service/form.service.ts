@@ -24,6 +24,7 @@ export class FormService {
   private currentKey: string;
   private currentLang: string;
   private formCache: {[key: string]: any} = {};
+  private jsonFormCache: {[key: string]: any} = {};
   private formPending: {[key: string]: Observable<any>} = {};
   private allForms: any[];
 
@@ -161,6 +162,19 @@ export class FormService {
         observer.complete();
       });
     } );
+  }
+
+  getFormInJSONFormat(formId: string, lang: string): Observable<any> {
+    if (!formId) {
+      return Observable.of({});
+    }
+    this.setLang(lang);
+    if (this.jsonFormCache[formId]) {
+      return Observable.of(this.jsonFormCache[formId]);
+    } else {
+      return this.formApi.formFindById(formId, lang, 'json')
+        .do((jsonForm) => this.formCache[formId] = jsonForm);
+    }
   }
 
   load(formId: string, lang: string, documentId?: string): Observable<any> {
