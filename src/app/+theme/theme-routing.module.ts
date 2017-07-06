@@ -10,8 +10,29 @@ import { HerpetologyComponent } from './herpetology/herpetology.component';
 import { DocumentDeActivateGuard } from '../shared/document-form/document-de-activate.guard';
 import { YkjComponent } from './ykj/ykj.component';
 import { EmkComponent } from './emk/emk.component';
+import { WbcComponent } from './wbc/wbc.component';
+import { WbcInstructionsComponent } from './wbc/wbc-instructions/wbc-instructions.component';
+import { WbcResultComponent } from './wbc/wbc-result/wbc-result.component';
+import { WbcFormComponent } from './wbc/wbc-form/wbc-form.component';
 
 const routes: Routes = [
+  {
+    path: 'wbc',
+    component: WbcComponent,
+    children: [
+      {path: '', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'nafi.stats.title' }},
+      {path: 'stats', pathMatch: 'full', component: WbcResultComponent, data: { title: 'nafi.stats.title' }},
+      {path: 'form', pathMatch: 'full', component: WbcFormComponent, canActivate: [OnlyLoggedIn]},
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: WbcFormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard]
+      },
+      {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'nafi.stats.title' } }
+    ]
+  },
   {
     path: 'nafi',
     component: NafiComponent,
