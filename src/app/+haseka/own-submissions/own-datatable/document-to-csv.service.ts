@@ -43,7 +43,7 @@ export class DocumentToCsvService {
 
   private downloadCsv(csv: string, fileName: string) {
     if (window.navigator.msSaveBlob) {
-      const blob = new Blob([csv], {type: 'text/csv;charset=utf-8,%EF%BB%BF'});
+      const blob = new Blob(['\ufeff' + csv], {type: 'text/csv;charset=utf-8'});
       window.navigator.msSaveBlob(blob, fileName);
     } else {
       const uri = encodeURI(csv);
