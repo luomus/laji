@@ -55,7 +55,7 @@
   </div>
   <div class="col-sm-7 col-sm-pull-5 table-col">
     <laji-theme-result
-            *ngIf="query && !query.ykj3"
+            *ngIf="query && !query.ykj3Center"
             (onNameClick)="navigate($event)"
             [tbodyHeight]="610"
             [query]="resultQuery"
@@ -63,7 +63,7 @@
             [lang]="lang"
     ></laji-theme-result>
     <laji-theme-observation-list
-            *ngIf="query && query.ykj3"
+            *ngIf="query && query.ykj3Center"
             (onListClose)="closeList()"
             (onPageChange)="goToPage($event)"
             [tbodyHeight]="610"

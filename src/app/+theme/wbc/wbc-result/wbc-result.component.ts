@@ -63,7 +63,7 @@ export class WbcResultComponent implements OnInit, OnDestroy {
       }
       this.mapQuery = this.clone(this.query);
       if (params['grid']) {
-        this.query.ykj3 = params['grid'];
+        this.query.ykj3Center = params['grid'];
       }
       this.type = params['type'] || 'count';
       this.page = +params['page'] || 1;
@@ -81,7 +81,7 @@ export class WbcResultComponent implements OnInit, OnDestroy {
   }
 
   closeList() {
-    this.query.ykj3 = undefined;
+    this.query.ykj3Center = undefined;
     this.navigate(this.query);
   }
 
@@ -104,7 +104,7 @@ export class WbcResultComponent implements OnInit, OnDestroy {
 
   private navigate(query: WarehouseQueryInterface) {
     this.router.navigate([], {queryParams: {
-      grid: query.ykj3,
+      grid: query.ykj3Center,
       time: query.time,
       taxonId: query.taxonId,
       type: this.type,

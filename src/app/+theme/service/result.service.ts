@@ -98,7 +98,7 @@ export class ResultService {
       this.warehouseApi
         .warehouseQueryAggregateGet(
           query,
-          ['gathering.conversions.ykj3.lat,gathering.conversions.ykj3.lon'],
+          ['gathering.conversions.ykj3Center.lat,gathering.conversions.ykj3Center.lon'],
           ['1'],
           5000,
           1,
@@ -137,15 +137,15 @@ export class ResultService {
     const features = [];
     data.map(result => {
       features.push(this.coordinateService.convertYkjToGeoJsonFeature(
-        result.aggregateBy['gathering.conversions.ykj3.lat'],
-        result.aggregateBy['gathering.conversions.ykj3.lon'],
+        result.aggregateBy['gathering.conversions.ykj3Center.lat'],
+        result.aggregateBy['gathering.conversions.ykj3Center.lon'],
         {
           count: result.count || 0,
           individualCountSum: result.individualCountSum || 0,
           newestRecord: result.newestRecord || '',
           oldestRecord: result.oldestRecord || '',
-          grid: parseInt(result.aggregateBy['gathering.conversions.ykj3.lat'], 10) + ':'
-          + parseInt(result.aggregateBy['gathering.conversions.ykj3.lon'], 10)
+          grid: parseInt(result.aggregateBy['gathering.conversions.ykj3Center.lat'], 10) + ':'
+          + parseInt(result.aggregateBy['gathering.conversions.ykj3Center.lon'], 10)
         }
       ));
     });

@@ -120,7 +120,7 @@ export class ThemeMapComponent implements OnInit, AfterViewInit, OnChanges {
           return;
         }
         const query = JSON.parse(JSON.stringify(this.query));
-        query.ykj3 = evt.layer.feature.properties.grid;
+        query.ykj3Center = evt.layer.feature.properties.grid;
         this.onGridClick.emit(query);
       });
     }
