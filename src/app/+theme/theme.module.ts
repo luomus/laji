@@ -18,6 +18,10 @@ import { NafiInstructionsComponent } from './nafi/nafi-instructions/nafi-instruc
 import { ViewerModule } from '../+viewer/viewer.module';
 import { YkjComponent } from './ykj/ykj.component';
 import { EmkComponent } from './emk/emk.component';
+import { WbcComponent } from './wbc/wbc.component';
+import { WbcFormComponent } from './wbc/wbc-form/wbc-form.component';
+import { WbcResultComponent } from './wbc/wbc-result/wbc-result.component';
+import { WbcInstructionsComponent } from './wbc/wbc-instructions/wbc-instructions.component';
 
 @NgModule({
   imports: [
@@ -39,7 +43,11 @@ import { EmkComponent } from './emk/emk.component';
     ThemeMyDocumentListComponent,
     NafiInstructionsComponent,
     YkjComponent,
-    EmkComponent
+    EmkComponent,
+    WbcComponent,
+    WbcFormComponent,
+    WbcResultComponent,
+    WbcInstructionsComponent
   ],
   providers: [ ResultService ]
 })

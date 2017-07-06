@@ -1,0 +1,15 @@
+<div class="container-fluid wbc">
+  <div class="row" id="wrapper">
+    <div style="background-color: #ECF0F1;" class="col-sm-3 col-md-3 col-lg-2">
+      <h1>NAFI</h1>
+      <ul class="sidebar-nav">
+        <li><a [routerLink]="['../wbc', 'instructions']">{{'instructions' | translate}}</a></li>
+        <li><a [routerLink]="['../wbc', 'stats']">{{'wbc.stats' | translate}}</a></li>
+        <li *ngIf="showForm"><a [routerLink]="['../wbc', 'form']">{{'wbc.form' | translate}}</a></li>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-md-9 col-lg-10 wbc-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
