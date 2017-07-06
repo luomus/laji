@@ -42,17 +42,9 @@ export class DocumentToCsvService {
   }
 
   private downloadCsv(csv: string, fileName: string) {
-    const isIE = () => {
-      const ua = window.navigator.userAgent;
-      return /Trident/.test(ua) || /MSIE/.test(ua);
-    };
-
-    if (isIE()) {
-      const IEwindow = window.open();
-      IEwindow.document.write('sep=,\r\n' + csv);
-      IEwindow.document.close();
-      IEwindow.document.execCommand('SaveAs', true, fileName);
-      IEwindow.close();
+    if (window.navigator.msSaveBlob) {
+      const blob = new Blob([csv], {type: 'text/csv;charset=utf-8'});
+      window.navigator.msSaveBlob(blob, fileName);
     } else {
       const uri = encodeURI(csv);
       const downloadLink = document.createElement('a');
