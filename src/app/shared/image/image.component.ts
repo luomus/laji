@@ -64,7 +64,7 @@ export class ImageComponent implements AfterViewInit, OnDestroy, OnChanges {
       navigatorLeft: '5px',
       navigatorHeight: '100px',
       navigatorWidth: '133px',
-      maxZoomPixelRatio: 2,
+      maxZoomPixelRatio: 1, // IE11 cannot handle bigger zoom ratio
       tileSources: [{
         type: 'image',
         url: this.src
