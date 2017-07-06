@@ -43,12 +43,12 @@ export class DocumentToCsvService {
 
   private downloadCsv(csv: string, fileName: string) {
     if (window.navigator.msSaveBlob) {
-      const blob = new Blob([csv], {type: 'text/csv;charset=utf-8'});
+      const blob = new Blob([csv], {type: 'text/csv;charset=utf-8,%EF%BB%BF'});
       window.navigator.msSaveBlob(blob, fileName);
     } else {
       const uri = encodeURI(csv);
       const downloadLink = document.createElement('a');
-      downloadLink.href = 'data:text/csv;charset=utf-8,' + uri;
+      downloadLink.href = 'data:text/csv;charset=utf-8,%EF%BB%BF' + uri;
       downloadLink.download = fileName;
       document.body.appendChild(downloadLink);
       downloadLink.click();
