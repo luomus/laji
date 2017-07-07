@@ -100,6 +100,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
     this.userService.getUserSetting(this.settingsKey)
       .subscribe(settings => {
+        console.log(settings);
         try {
           this.ngZone.runOutsideAngular(() => {
             const uiSchemaContext = this.formData.uiSchemaContext || {};
@@ -123,7 +124,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               renderSubmit: false
             });
           });
-          console.log(settings);
         } catch (err) {
           this.logger.error('Failed to load lajiForm', err);
         }
