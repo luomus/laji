@@ -86,29 +86,6 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       );
   }
 
-  goToForm(form: FormListInterface) {
-    if (form.collectionID && form.features && form.features.indexOf(Form.Feature.Restricted) > -1) {
-      Observable.forkJoin(
-        this.userService.isLoggedIn ?
-          this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken()) :
-          Observable.of({}),
-        this.userService.getUser(),
-        (permission, user) => ({permission: permission, user: user})
-      )
-        .subscribe(data => {
-          if (this.formPermissionService.isEditAllowed(data.permission, data.user)) {
-            this._goToForm(form);
-            return;
-          }
-          this.router.navigate(
-            this.localizeRouterService.translateRoute(['/vihko/fp/' + form.collectionID])
-          );
-        });
-      return;
-    }
-    this._goToForm(form);
-  }
-
   hasAdminRight(form: FormListInterface) {
     if (!this.userService.isLoggedIn || !form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
       return Observable.of(false);
@@ -123,18 +100,6 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
 
   trackForm(idx, form) {
     return form ? form.id : undefined;
-  }
-
-  private _goToForm(form: FormListInterface) {
-    if (form.features.indexOf(Form.Feature.NamedPlace) > -1) {
-      this.router.navigate(
-        this.localizeRouterService.translateRoute(['/vihko/places/' + form.collectionID + '/' + form.id])
-      );
-    } else {
-      this.router.navigate(
-        this.localizeRouterService.translateRoute(['/vihko/' + form.id])
-      );
-    }
   }
 
 }

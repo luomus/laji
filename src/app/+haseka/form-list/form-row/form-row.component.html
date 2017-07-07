@@ -1,4 +1,4 @@
-<a (click)="openForm.emit(form)" class="link btn btn-default btn-sm">
+<a [routerLink]="['/vihko', form.id] | localize" class="link btn btn-default btn-sm">
   {{form.title}}
 </a>
 <span *ngIf="tmpDocuments[form.id]" class="unsaved" [tooltip]="'haseka.form.localData' | translate">

@@ -19,6 +19,7 @@ import { DialogService } from '../service/dialog.service';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { ComponentCanDeactivate } from './document-de-activate.guard';
+import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
 
 @Component({
   selector: 'laji-document-form',
@@ -33,6 +34,8 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   @Output() onSuccess = new EventEmitter<{document: Document, form: any}>();
   @Output() onError = new EventEmitter();
   @Output() onCancel = new EventEmitter();
+  @Output() onAccessDenied = new EventEmitter();
+  @Output() onMissingNamedplace = new EventEmitter();
   @Output() onTmpLoad = new EventEmitter();
 
   private changeSource = new Subject<any>();
@@ -67,6 +70,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               private toastsService: ToastsService,
               private namedPlaceService: NamedPlacesService,
               private dialogService: DialogService,
+              private formPermissionService: FormPermissionService,
               private logger: Logger,
               private changeDetector: ChangeDetectorRef) {
   }
@@ -254,10 +258,35 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     }
     this.formService
       .load(this.formId, this.translate.currentLang, this.documentId)
+      .switchMap(
+        data => data.formData.namedPlaceID ? this.namedPlaceService.getNamedPlace(
+          data.formData.namedPlaceID,
+          this.userService.getToken()
+        ) : Observable.of(undefined),
+        (data, namedPace) => ({data, namedPace})
+      )
+      .switchMap(
+        result => this.formPermissionService.hasEditAccess(result.data),
+        (result, hasEditAccess) => ({...result, hasEditAccess})
+      )
       .subscribe(
-        data => {
+        result => {
+          const data = result.data;
+          this.namedPlace = result.namedPace;
           this.isEdit = true;
-          this.enablePrivate = !data.features || data.features.indexOf(Form.Feature.NoPrivate) === -1;
+          if (result.hasEditAccess === false) {
+            this.onAccessDenied.emit(data.collectionID);
+            return;
+          }
+          if (data.features) {
+            this.enablePrivate = data.features.indexOf(Form.Feature.NoPrivate) === -1;
+            if (data.features.indexOf(Form.Feature.NamedPlace) > -1 && !this.namedPlace) {
+              this.onMissingNamedplace.emit({
+                collectionID: data.collectionID,
+                formID: data.id
+              });
+            }
+          }
           if (this.formService.isTmpId(this.documentId)) {
             this.isEdit = false;
             data.formData.id = undefined;
@@ -273,15 +302,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
             this.saveVisibility = 'shown';
             this.status = 'unsaved';
           }
-          if (data.formData.namedPlaceID) {
-            this.namedPlaceService.getNamedPlace(data.formData.namedPlaceID, this.userService.getToken())
-              .subscribe(np => {
-                this.namedPlace = np;
-                this.changeDetector.markForCheck();
-              });
-          } else {
-            this.changeDetector.markForCheck();
-          }
+          this.changeDetector.markForCheck();
         },
         err => {
           this.formService.isTmpId(this.documentId) ?

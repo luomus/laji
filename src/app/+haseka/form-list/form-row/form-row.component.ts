@@ -12,7 +12,6 @@ export class FormRowComponent implements OnInit {
   @Input() tmpDocuments: {[formId: string]: string} = {};
   @Input() hasAdminRight = false;
   @Input() form: FormListInterface;
-  @Output() openForm = new EventEmitter<FormListInterface>();
 
   constructor() { }
 

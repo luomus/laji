@@ -3,6 +3,8 @@ import { FormPermissionApi } from '../../shared/api/FormPermissionApi';
 import { Observable } from 'rxjs/Observable';
 import { FormPermission } from '../../shared/model/FormPermission';
 import { Person } from '../../shared/model/Person';
+import { Form, FormListInterface } from '../../shared/model/FormListInterface';
+import { UserService } from '../../shared/service/user.service';
 
 @Injectable()
 export class FormPermissionService {
@@ -11,7 +13,10 @@ export class FormPermissionService {
 
   public changes$ = new EventEmitter<any>();
 
-  constructor(private formPermissionApi: FormPermissionApi) {}
+  constructor(
+    private formPermissionApi: FormPermissionApi,
+    private userSerivce: UserService
+  ) {}
 
   isEditAllowed(formPermission: FormPermission, person: Person): boolean {
     if ((formPermission.editors && formPermission.editors.indexOf(person.id) > -1) ||
@@ -57,6 +62,20 @@ export class FormPermissionService {
     FormPermissionService.formPermissions[collectionID] = false;
     return this.formPermissionApi.revokeAccess(collectionID, personID, personToken)
       .do(fp => this.changes$.emit(fp));
+  }
+
+  hasEditAccess(form: FormListInterface): Observable<boolean> {
+    console.log(form);
+    if (!form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
+      console.log('NON');
+      return Observable.of(true);
+    }
+    return this.userSerivce.getUser()
+      .switchMap(
+        (person: Person) => this.getFormPermission(form.collectionID, this.userSerivce.getToken()),
+        (person: Person, formPermission: FormPermission) => ({person, formPermission})
+      )
+      .switchMap(data => Observable.of(this.isEditAllowed(data.formPermission, data.person)));
   }
 
 }

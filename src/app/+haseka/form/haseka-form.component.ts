@@ -66,6 +66,16 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
     );
   }
 
+  onAccessDenied(collectionID) {
+    this.router.navigate(this.localizeRouterService.translateRoute(['/vihko/fp', collectionID]));
+  }
+
+  onMissingNamedplace(data) {
+    this.router.navigate(
+      this.localizeRouterService.translateRoute(['/vihko/places/' + data.collectionID + '/' + data.formID])
+    );
+  }
+
   onError() {
     this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']));
   }
