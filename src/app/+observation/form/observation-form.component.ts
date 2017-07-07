@@ -220,7 +220,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       otherInvasiveSpeciesList: undefined,
       nationalInvasiveSpeciesStrategy: undefined,
       allInvasiveSpecies: undefined,
-      zeroObservations: undefined
+      zeroObservations: undefined,
+      onlyPreservedSpecimen: undefined
     };
 
     if (refresh) {
@@ -289,6 +290,14 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  onOnlyPreserverSpecimenCheckBoxToggle() {
+    this.formQuery.onlyPreservedSpecimen = !this.formQuery.onlyPreservedSpecimen;
+    if (this.formQuery.onlyPreservedSpecimen === false) {
+      this.searchQuery.query.recordBasis = [];
+    }
+    this.onSubmit();
+  }
+
   onInvasiveCheckBoxToggle(field) {
     if (Array.isArray(field)) {
       this.formQuery.allInvasiveSpecies = !this.formQuery.allInvasiveSpecies;
@@ -317,6 +326,12 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     if (doChange) {
       this.onQueryChange();
     }
+  }
+
+  onRecordBasisChange() {
+    this.formQuery.onlyPreservedSpecimen = this.searchQuery.query.recordBasis.length === 1
+      && this.searchQuery.query.recordBasis.indexOf('PRESERVER_SPECIMEN') > -1;
+    this.onQueryChange();
   }
 
   onCheckBoxToggle(field, selectValue = true, isDirect = true) {
@@ -410,6 +425,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   private queryToFormQuery(query: WarehouseQueryInterface) {
     this.onAccuracyValueChange();
     const time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
+    console.log('IN QUERY', this.hasInMulti(query.recordBasis, 'PRESERVED_SPECIMEN', true));
     this.formQuery = {
       taxon: query.target && query.target[0] ? query.target[0] : '',
       timeStart: this.getValidDate(time[0]),
@@ -426,7 +442,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       quarantinePlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.quarantinePlantPest'),
       otherInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.otherInvasiveSpeciesList'),
       nationalInvasiveSpeciesStrategy: this.hasInMulti(query.administrativeStatusId, 'MX.nationalInvasiveSpeciesStrategy'),
-      allInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val))
+      allInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
+      onlyPreservedSpecimen: this.hasInMulti(query.recordBasis, 'PRESERVED_SPECIMEN', true)
     };
     if (this.formQuery.taxon && (
       this.formQuery.taxon.indexOf('MX.') === 0 || this.formQuery.taxon.indexOf('http:') === 0)) {
@@ -436,11 +453,14 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private hasInMulti(multi, value) {
+  private hasInMulti(multi, value, noOther = false) {
     if (Array.isArray(value)) {
-      return value.filter(val => !this.hasInMulti(multi, val)).length === 0;
+      return value.filter(val => !this.hasInMulti(multi, val, noOther)).length === 0;
     }
-    return Array.isArray(multi) && multi.indexOf(value) > -1;
+    if (Array.isArray(multi) && multi.indexOf(value) > -1) {
+      return noOther ? multi.length === (Array.isArray(value) ? value.length : 1) : true;
+    }
+    return false;
   }
 
   private formQueryToQuery(formQuery: ObservationFormQuery) {
@@ -457,6 +477,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
     if (formQuery.allInvasiveSpecies) {
       query.administrativeStatusId = this.invasiveStatuses.map(val => 'MX.' + val);
+    }
+    if (formQuery.onlyPreservedSpecimen) {
+      query.recordBasis = ['PRESERVED_SPECIMEN'];
     }
     this.invasiveStatuses
       .map((key) => {

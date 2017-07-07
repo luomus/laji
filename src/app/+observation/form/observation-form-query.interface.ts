@@ -14,4 +14,5 @@ export interface ObservationFormQuery {
   nationalInvasiveSpeciesStrategy: boolean;
   allInvasiveSpecies: boolean;
   zeroObservations: boolean;
+  onlyPreservedSpecimen: boolean;
 }
