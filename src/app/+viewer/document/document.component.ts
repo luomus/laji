@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
@@ -7,11 +7,13 @@ import { SessionStorage } from 'ng2-webstorage';
 import { Subscription } from 'rxjs/Subscription';
 import { IdService } from '../../shared/service/id.service';
 import { UserService } from '../../shared/service/user.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'laji-document',
   templateUrl: './document.component.html',
-  styleUrls: ['./document.component.css']
+  styleUrls: ['./document.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
@@ -19,6 +21,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   @Input() highlight: string;
   @Input() showTitle = false;
   @Input() useWorldMap = true;
+
+  externalViewUrl: string;
   document: any;
   documentID: string;
   editors: string[];
@@ -37,14 +41,18 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   constructor(
     private warehouseApi: WarehouseApi,
     private labelService: TriplestoreLabelService,
-    private userService: UserService
+    private userService: UserService,
+    private changeDetector: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
     this.metaFetch = this.userService.action$
       .startWith('')
       .switchMap(() => this.userService.getUser())
-      .subscribe(person => this.personID = person.id);
+      .subscribe(person => {
+        this.personID = person.id;
+        this.changeDetector.markForCheck();
+      });
   }
 
   ngAfterViewInit() {
@@ -103,6 +111,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     if (found) {
       this.document = doc;
       this.mapData = [];
+      this.externalViewUrl = environment.externalViewers[doc.sourceId] ?
+        environment.externalViewers[doc.sourceId].replace('%uri%', doc.documentId) : '';
       if (doc.documentId) {
         this.documentID = IdService.getId(doc.documentId);
       }
@@ -133,6 +143,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       if (this.interval) {
         this.interval.unsubscribe();
       }
+      this.changeDetector.markForCheck();
     } else if (!this.interval) {
       this.interval = Observable
         .interval(this.recheckIterval)

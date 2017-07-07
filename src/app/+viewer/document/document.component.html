@@ -31,6 +31,13 @@
             <laji-row [title]="'MZ.dateEdited'" [value]="document.modifiedDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
             <laji-row [title]="'loadDate'" [value]="document.loadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
           </ng-template>
+          <a class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
+             *ngIf="externalViewUrl"
+             href="{{externalViewUrl}}" rel="noopener" target="_blank"
+              [tooltip]="'information.more' | translate"
+              placement="left">
+            <i class="glyphicon glyphicon-new-window small"></i>
+          </a>
           <button class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
                   [popover]="docMeta"
                   placement="left"

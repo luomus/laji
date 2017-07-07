@@ -11,5 +11,8 @@ export const environment = {
   wbcForm: 'MHL.3',
   namedPlaceForm: 'JX.6668',
   loginUrl: 'https://login.laji.fi/login',
-  selfPage: 'https://login.laji.fi/self'
+  selfPage: 'https://login.laji.fi/self',
+  externalViewers: {
+    'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'
+  }
 };

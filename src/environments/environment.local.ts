@@ -16,5 +16,8 @@ export const environment = {
   wbcForm: 'MHL.3',
   namedPlaceForm: 'JX.123608',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
-  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self'
+  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
+  externalViewers: {
+    'http://tun.fi/KE.3': 'https://kotkatest.luomus.fi/view?uri=%uri%'
+  }
 };

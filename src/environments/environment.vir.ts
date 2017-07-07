@@ -11,5 +11,8 @@ export const environment = {
   isEmbedded: false,
   forceLogin: true,
   disableAnalytics: true,
-  forAuthorities: true
+  forAuthorities: true,
+  externalViewers: {
+    'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'
+  }
 };
