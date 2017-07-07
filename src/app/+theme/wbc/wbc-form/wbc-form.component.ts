@@ -25,7 +25,7 @@ export class WbcFormComponent implements OnInit, OnDestroy, ComponentCanDeactiva
   ) { }
 
   ngOnInit() {
-    this.formId = environment.nafiForm;
+    this.formId = environment.wbcForm;
     this.subParam = this.route.params.subscribe(params => {
       this.documentId = params['id'] || null;
     });

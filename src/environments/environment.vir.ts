@@ -3,6 +3,7 @@ export const environment = {
   formWhitelist: ['JX.519', 'JX.6485'],
   defaultForm: 'JX.519',
   nafiForm: 'JX.123648',
+  wbcForm: 'MHL.3',
   namedPlaceForm: 'JX.6668',
   loginUrl: '/user/virannomaiset',
   selfPage: 'https://login.laji.fi/self',
