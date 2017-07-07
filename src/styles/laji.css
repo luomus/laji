@@ -73,7 +73,7 @@ laji-locale-sv > div,
 }
 
 #content img {
-  max-width: calc(100vw - 30px);
+  max-width: 100%;
 }
 
 .cursive {
