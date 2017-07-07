@@ -72,6 +72,10 @@ laji-locale-sv > div,
   }
 }
 
+#content img {
+  max-width: calc(100vw - 30px);
+}
+
 .cursive {
   font-style: italic;
 }
