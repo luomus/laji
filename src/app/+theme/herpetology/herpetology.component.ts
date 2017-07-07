@@ -90,12 +90,15 @@ export class HerpetologyComponent implements OnInit {
     const cacheKey = 'herpetology';
     this.cacheService.getItem<any[]>(cacheKey)
       .merge(fetchData$.do(data => this.cacheService.setItem(cacheKey, data)))
+      .filter(data => !!data)
       .subscribe(data => {
-        if (data) {
           this.amphibianTaxa = data[0];
           this.reptileTaxa = data[1];
           this.occasionalTaxa = data[2];
+        },
+        (err) => {
+          this.logger.error('Failed to load herpetology images', err);
         }
-      });
+      );
   }
 }
