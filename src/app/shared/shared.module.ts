@@ -26,7 +26,6 @@ import { OmniSearchComponent } from './omni-search/omni-search.component';
 import { SafePipe } from './pipe/safe.pipe';
 import { MultiLangPipe } from './pipe/multi-lang.pipe';
 import { NewsService } from './service/news.service';
-import { NotFoundComponent } from './not-found/not-found.component';
 import { OnlyLoggedComponent } from './only-logged/only-logged.component';
 import { ImageModalComponent } from './image-gallery/image-modal.component';
 import { MapService } from './map/map.service';
@@ -91,7 +90,7 @@ import { CacheService } from './service/cache.service';
   entryComponents: [ImageModalOverlayComponent],
   declarations: [
     NewsListComponent, DocumentFormComponent, LocalizePipe,
-    SpinnerComponent, NotFoundComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
+    SpinnerComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, FormattedNumber,
     AreaNamePipe, CollectionNamePipe, FormNamePipe,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
-import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { ViewerComponent } from './+viewer/viewer.component';
 import { ForumComponent } from './forum/forum.component';
 import { Observable } from 'rxjs/Observable';
@@ -34,8 +33,7 @@ const routes: Routes = [
   {path: 'map', loadChildren: './+map/map.module#MapModule', data: {title: 'navigation.map', noPreload: true}},
   {path: 'error', loadChildren: './+error/error.module#ErrorModule', data: {noPreload: true}},
   {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule', data: {noPreload: true}},
-  {path: 'forum', component: ForumComponent, data: {noPreload: true}},
-  {path: '**', component: NotFoundComponent, data: {noPreload: true}}
+  {path: 'forum', component: ForumComponent, data: {noPreload: true}}
 ];
 
 const routesWithLang: Routes = [
@@ -43,19 +41,22 @@ const routesWithLang: Routes = [
     {path: 'nafi', redirectTo: '/en/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/en/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/en/theme/emk', pathMatch: 'full'},
-    ...routes
+    ...routes,
+    {path: '**', redirectTo: '/en/error/404'}
   ], component: LocaleEnComponent},
   {path: 'sv', children: [
     {path: 'nafi', redirectTo: '/sv/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/sv/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/sv/theme/emk', pathMatch: 'full'},
-    ...routes
+    ...routes,
+    {path: '**', redirectTo: '/sv/error/404'}
   ], component: LocaleSvComponent},
   {path: '', children: [
     {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
-    ...routes
+    ...routes,
+    {path: '**', redirectTo: '/error/404'}
   ], component: LocaleFiComponent}
 ];
 
