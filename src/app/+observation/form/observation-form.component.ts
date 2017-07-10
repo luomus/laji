@@ -425,7 +425,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   private queryToFormQuery(query: WarehouseQueryInterface) {
     this.onAccuracyValueChange();
     const time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
-    console.log('IN QUERY', this.hasInMulti(query.recordBasis, 'PRESERVED_SPECIMEN', true));
     this.formQuery = {
       taxon: query.target && query.target[0] ? query.target[0] : '',
       timeStart: this.getValidDate(time[0]),

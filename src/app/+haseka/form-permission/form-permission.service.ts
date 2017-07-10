@@ -65,9 +65,7 @@ export class FormPermissionService {
   }
 
   hasEditAccess(form: FormListInterface): Observable<boolean> {
-    console.log(form);
     if (!form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
-      console.log('NON');
       return Observable.of(true);
     }
     return this.userSerivce.getUser()
