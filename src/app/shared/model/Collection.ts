@@ -56,6 +56,11 @@ export interface Collection {
   dataQuarantinePeriod?: number;
 
   /**
+   * isPartOf collection
+   */
+  isPartOf?: string;
+
+  /**
    * Type
    */
   collectionType?: string;

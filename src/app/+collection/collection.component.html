@@ -1,3 +1,17 @@
-<h1>
-  Collections!
-</h1>
+<div class="container">
+  <h1>
+    Collections!
+  </h1>
+  <input type="text" [(ngModel)]="filter">
+  <div class="row" *ngIf="collections$ | async; let collections; else loading">
+    <div class="col-sm-8">
+      <laji-collection-tree [collections]="collections" [filter]="filter"></laji-collection-tree>
+    </div>
+    <div class="col-sm-4">
+      <laji-info></laji-info>
+    </div>
+  </div>
+  <ng-template #loading>
+    <laji-spinner></laji-spinner>
+  </ng-template>
+</div>
