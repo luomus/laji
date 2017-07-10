@@ -7,7 +7,8 @@ import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-parents',
-  templateUrl: './parents.component.html'
+  templateUrl: './parents.component.html',
+  styleUrls: ['./parents.component.css']
 })
 export class ParentsComponent implements OnInit, OnChanges {
   @Input() current: Taxonomy;

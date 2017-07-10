@@ -1,17 +1,19 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
   <div class="container" *ngIf="taxon">
+    <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
     <h1>
       {{taxon.vernacularName | multiLang}}
       <span *ngIf="taxon.vernacularName" [class.cursive]="taxon.cursiveName">({{taxon.scientificName}})</span>
       <span *ngIf="!taxon.vernacularName" [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
-      <small>- {{ 'home.main-page.title' | translate }}</small>
     </h1>
-    <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
       <div class="row">
       <div class="col-sm-6 descriptions" *ngIf="hasDescription">
-        <select style="margin-bottom: 8px;" class="form-control" [(ngModel)]="activeDescription"
+        <select style="margin-bottom: 8px;" class="form-control"
+                (change)="onDescriptionChange($event.target.value)"
                 *ngIf="taxonDescription.length > 1">
-          <option *ngFor="let description of taxonDescription; let i = index" [value]="i">
+          <option *ngFor="let description of taxonDescription; let i = index"
+                  [value]="description.id"
+                  [selected]="activeDescription === i">
             {{ description.title ? description.title : description.id }}
           </option>
         </select>

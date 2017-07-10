@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
@@ -29,7 +28,6 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
   constructor(private formService: FormService,
               private translate: TranslateService,
               private logger: Logger,
-              private router: Router,
               private userService: UserService,
               private formPermissionService: FormPermissionService,
               private localizeRouterService: LocalizeRouterService,

@@ -8,6 +8,7 @@ import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { ObservationMapComponent } from '../../+observation/map/observation-map.component';
 import { Observable } from 'rxjs/Observable';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-info-card',
@@ -30,6 +31,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   public loading = false;
 
   @Input() public taxonId: string;
+  public context: string;
 
   private subParam: Subscription;
   private subTrans: Subscription;
@@ -39,16 +41,23 @@ export class InfoCardComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private route: ActivatedRoute,
     private logger: Logger,
+    private router: Router,
     private title: Title
   ) { }
 
   ngOnInit() {
     if (!this.taxonId) {
-      this.subParam = this.route.params.subscribe(params => {
-        this.taxonId = params['id'];
-        this.activeImage = 1;
-        this.initTaxon();
-      });
+      this.subParam = this.route.params
+        .combineLatest(
+          this.route.queryParams,
+          ((params, queryParams) => ({...queryParams, ...params}))
+        )
+        .subscribe(params => {
+          this.taxonId = params['id'];
+          this.context = params['context'] || 'default';
+          this.activeImage = 1;
+          this.initTaxon();
+        });
     }
 
     this.taxonDescription = [];
@@ -68,6 +77,11 @@ export class InfoCardComponent implements OnInit, OnDestroy {
         this.hasDescription = data[0].length > 0;
         this.taxonImages = data[1];
         this.loading = false;
+        this.taxonDescription.map((description, idx) => {
+          if (description.id === this.context) {
+            this.activeDescription = idx;
+          }
+        });
         this.updateMap();
       }
     );
@@ -91,6 +105,13 @@ export class InfoCardComponent implements OnInit, OnDestroy {
       this.subParam.unsubscribe();
     }
     this.subTrans.unsubscribe();
+  }
+
+  onDescriptionChange(context: string) {
+    this.router.navigate([], {
+      queryParams: (context === 'default' ? {} : {context: context}),
+      replaceUrl: true
+    });
   }
 
   private updateMap() {
@@ -123,6 +144,11 @@ export class InfoCardComponent implements OnInit, OnDestroy {
         this.hasTaxonImages = data.media.length > 0;
         this.activeImageTab = this.hasTaxonImages ? 'taxon' : 'collection';
         this.taxonImages = data.media;
+        this.taxonDescription.map((description, idx) => {
+          if (description.id === this.context) {
+            this.activeDescription = idx;
+          }
+        });
         this.setTitle();
         this.updateMap();
       });
