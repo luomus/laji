@@ -18,6 +18,6 @@ export const environment = {
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
   externalViewers: {
-    'http://tun.fi/KE.3': 'https://kotkatest.luomus.fi/view?uri=%uri%'
+    'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'
   }
 };
