@@ -215,7 +215,7 @@
             <div class="col-sm-12">
               <laji-select
                       [(ngModel)]="searchQuery.query.recordBasis"
-                      (ngModelChange)="onRecordBasisChange()"
+                      (ngModelChange)="onQueryChange()"
                       [multiple]="true"
                       name="recordBasis"
                       [mapToWarehouse]="true"
@@ -313,8 +313,8 @@
           <div class="row">
             <label class="col-lg-12">
               <input type="checkbox"
-                     [ngModel]="formQuery.onlyPreservedSpecimen"
-                     (ngModelChange)="onOnlyPreserverSpecimenCheckBoxToggle()"
+                     [ngModel]="formQuery.onlyFromCollectionSystems"
+                     (ngModelChange)="onOnlyFromCollectionCheckBoxToggle()"
                      name="onlyPreservedSpecimen">
               {{'observation.form.collection' | translate}}
             </label>
@@ -338,7 +338,7 @@
             <div class="col-sm-12">
               <laji-select
                       [(ngModel)]="searchQuery.query.sourceId"
-                      (ngModelChange)="onQueryChange()"
+                      (ngModelChange)="onSystemIDChange()"
                       [placeholder]="'observation.form.system'"
                       [multiple]="true"
                       name="sourceId"

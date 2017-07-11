@@ -221,7 +221,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       nationalInvasiveSpeciesStrategy: undefined,
       allInvasiveSpecies: undefined,
       zeroObservations: undefined,
-      onlyPreservedSpecimen: undefined
+      onlyFromCollectionSystems: undefined
     };
 
     if (refresh) {
@@ -290,10 +290,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  onOnlyPreserverSpecimenCheckBoxToggle() {
-    this.formQuery.onlyPreservedSpecimen = !this.formQuery.onlyPreservedSpecimen;
-    if (this.formQuery.onlyPreservedSpecimen === false) {
-      this.searchQuery.query.recordBasis = [];
+  onOnlyFromCollectionCheckBoxToggle() {
+    this.formQuery.onlyFromCollectionSystems = !this.formQuery.onlyFromCollectionSystems;
+    if (this.formQuery.onlyFromCollectionSystems === false) {
+      this.searchQuery.query.sourceId = [];
     }
     this.onSubmit();
   }
@@ -328,9 +328,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  onRecordBasisChange() {
-    this.formQuery.onlyPreservedSpecimen = this.searchQuery.query.recordBasis.length === 1
-      && this.searchQuery.query.recordBasis.indexOf('PRESERVER_SPECIMEN') > -1;
+  onSystemIDChange() {
+    this.formQuery.onlyFromCollectionSystems = this.searchQuery.query.sourceId.length === 2
+      && this.searchQuery.query.sourceId.indexOf('KE.3') > -1
+      && this.searchQuery.query.sourceId.indexOf('KE.167') > -1;
     this.onQueryChange();
   }
 
@@ -442,7 +443,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       otherInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.otherInvasiveSpeciesList'),
       nationalInvasiveSpeciesStrategy: this.hasInMulti(query.administrativeStatusId, 'MX.nationalInvasiveSpeciesStrategy'),
       allInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
-      onlyPreservedSpecimen: this.hasInMulti(query.recordBasis, 'PRESERVED_SPECIMEN', true)
+      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3'], true)
     };
     if (this.formQuery.taxon && (
       this.formQuery.taxon.indexOf('MX.') === 0 || this.formQuery.taxon.indexOf('http:') === 0)) {
@@ -477,8 +478,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     if (formQuery.allInvasiveSpecies) {
       query.administrativeStatusId = this.invasiveStatuses.map(val => 'MX.' + val);
     }
-    if (formQuery.onlyPreservedSpecimen) {
-      query.recordBasis = ['PRESERVED_SPECIMEN'];
+    if (formQuery.onlyFromCollectionSystems) {
+      query.sourceId = ['KE.167', 'KE.3'];
     }
     this.invasiveStatuses
       .map((key) => {
