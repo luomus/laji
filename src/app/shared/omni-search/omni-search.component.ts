@@ -1,4 +1,8 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy,
+  OnInit,
+  Output, ViewContainerRef
+} from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { FormControl } from '@angular/forms';
@@ -11,9 +15,10 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 @Component({
   selector: 'laji-omni-search',
   templateUrl: './omni-search.component.html',
-  styleUrls: ['./omni-search.component.css']
+  styleUrls: ['./omni-search.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OmniSearchComponent implements OnInit, OnChanges {
+export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() placeholder: string;
   @Input() lang: string;
@@ -22,6 +27,9 @@ export class OmniSearchComponent implements OnInit, OnChanges {
   @Input() selectTo = '/taxon';
   @Input() matchType: AutocompleteMatchType;
   @Input() minLength = 3;
+  @Input() expand: 'rigth'|'left'|'' = '';
+  @Input() visible = true;
+  @Output() visibleTaxon = new EventEmitter<any>();
   public search = '';
   public searchControl = new FormControl();
   public active = 0;
@@ -30,28 +38,48 @@ export class OmniSearchComponent implements OnInit, OnChanges {
   public loading = false;
   private subTaxa: Subscription;
   private subCnt: Subscription;
+  private inputChange: Subscription;
+  private el: Element;
 
   constructor(private autocompleteService: AutocompleteApi,
               private warehouseApi: WarehouseApi,
               private localizeRouterService: LocalizeRouterService,
               private router: Router,
+              private changeDetector: ChangeDetectorRef,
+              viewContainerRef: ViewContainerRef,
               private logger: Logger
   ) {
+    this.el = viewContainerRef.element.nativeElement;
+  }
+
+  @HostListener('body:click', ['$event.target'])
+  onHostClick(target) {
+    if (!(this.taxa.length > 0 && this.search.length > 0) || !target) {
+      return;
+    }
+    if (this.el !== target && !this.el.contains((<any>target))) {
+      this.close();
+    }
   }
 
   ngOnInit() {
-    const inputStream = this.searchControl.valueChanges
+    this.inputChange = this.searchControl.valueChanges
+      .do(value => this.search = value)
       .debounceTime(this.delay)
-      .distinctUntilChanged();
-    inputStream.subscribe(value => {
-      this.search = value;
-      this.updateTaxa();
-    });
+      .subscribe(value => {
+        this.updateTaxa();
+      });
   }
 
 
   ngOnChanges() {
     this.updateTaxa();
+  }
+
+  ngOnDestroy() {
+    if (this.inputChange) {
+      this.inputChange.unsubscribe();
+    }
   }
 
   close() {
@@ -80,6 +108,8 @@ export class OmniSearchComponent implements OnInit, OnChanges {
               auto['count'] = data.cnt;
             }
           });
+          this.visibleTaxon.emit(this.taxa[index]);
+          this.changeDetector.markForCheck();
         });
     } else {
       this.taxon = undefined;
@@ -116,6 +146,7 @@ export class OmniSearchComponent implements OnInit, OnChanges {
     }
     if (this.search.length < this.minLength) {
       this.loading = false;
+      this.changeDetector.markForCheck();
       return;
     }
     this.loading = true;
@@ -131,16 +162,17 @@ export class OmniSearchComponent implements OnInit, OnChanges {
       .subscribe(
         data => {
           this.taxa = data;
+          this.loading = false;
           this.activate(0);
         },
-        err => this.logger.warn('OmniSearch failed to find data', {
-          taxon: this.search,
-          lang: this.lang,
-          limit: this.limit,
-          err: err
-        }),
-        () => {
-          this.loading = false;
+        err => {
+          this.changeDetector.markForCheck();
+          this.logger.warn('OmniSearch failed to find data', {
+            taxon: this.search,
+            lang: this.lang,
+            limit: this.limit,
+            err: err
+          });
         }
       );
   }

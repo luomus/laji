@@ -4,6 +4,7 @@
   top:0;
   width: 50px;
   height: 50px;
+  z-index: 1;
 }
 
 .env.beta, .env.prod  {
@@ -12,6 +13,11 @@
 
 .env.dev, .env.staging {
   background-image: url("/static/images/dev.png");
+}
+
+.search {
+  max-width: 170px;
+  margin: 10px 5px 0 0;
 }
 
 .navbar-profile {

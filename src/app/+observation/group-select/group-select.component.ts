@@ -32,10 +32,10 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
 
   public groups: InformalTaxonGroup[] = [];
   public activeGroup: InformalTaxonGroup;
-  public open: boolean = false;
-  public innerValue: string = '';
+  public open = false;
+  public innerValue = '';
   public currentValue: string;
-  public label: string = '';
+  public label = '';
   public range: number[];
   private el: Element;
 

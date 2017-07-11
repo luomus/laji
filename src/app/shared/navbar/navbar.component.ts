@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { UserService } from '../service/user.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'laji-navbar',
@@ -18,13 +17,13 @@ export class NavbarComponent {
   isAuthority = false;
   isProd = false;
   isLoggedIn = false;
+  showSearch = false;
 
   constructor(
     public userService: UserService,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private changeDetector: ChangeDetectorRef,
-    private location: Location,
     public translate: TranslateService
   ) {
     this.isProd = environment.production;
@@ -35,6 +34,15 @@ export class NavbarComponent {
         this.isLoggedIn = this.userService.isLoggedIn;
         this.changeDetector.markForCheck();
       });
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.showSearch = ['/', '/sv', '/en'].indexOf(event.urlAfterRedirects) === -1;
+        this.changeDetector.markForCheck();
+      }
+    });
+  }
+  updateView() {
+    this.changeDetector.markForCheck();
   }
 
   toggleMenu() {

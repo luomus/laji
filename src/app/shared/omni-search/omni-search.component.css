@@ -8,11 +8,16 @@
   right: 1px;
   background-color: #ffffff;
   padding: 5px;
-  z-index: 1040;
+  z-index: 1029;
   border-right: 1px solid #999;
   border-left: 1px solid #999;
   border-bottom: 1px solid #999;
   color: #aaa;
+  border-radius: 10px;
+}
+.omni-search-results.right {
+  right: 0;
+  left: auto;
 }
 
 .omni-search-results .matches .active {
@@ -57,4 +62,47 @@
   .omni-search-results .first-col {
     border-left: 1px solid #999;
   }
+}
+
+.omni.visible {
+  opacity: 1;
+}
+
+.omni {
+  opacity: 0;
+
+  -webkit-transition: all .4s;
+  -moz-transition: all .4s;
+  transition: all .4s;
+
+}
+
+.omni-search.visible:after {
+  content: "\e003";
+  font-family: "Glyphicons Halflings";
+  line-height: 1;
+  position: absolute;
+  color: #7d7d7d;
+  top: 7px;
+  right: 9px;
+}
+
+
+
+.omni.expandRight {
+  float: right;
+  padding-right: 20px;
+}
+
+.omni.expand {
+  width: 90px;
+  border-radius: 30px;
+  border-color: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.omni.expand.open,
+.omni.expand:focus {
+  width: 100%;
+  background-color: #fff;
 }
