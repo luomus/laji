@@ -27,7 +27,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   @Input() selectTo = '/taxon';
   @Input() matchType: AutocompleteMatchType;
   @Input() minLength = 3;
-  @Input() expand: 'rigth'|'left'|'' = '';
+  @Input() expand = '';
   @Input() visible = true;
   @Output() visibleTaxon = new EventEmitter<any>();
   public search = '';
