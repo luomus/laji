@@ -34,6 +34,7 @@ import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocalizeRouterService } from './locale/localize-router.service';
+import { FormPermissionModule } from './+haseka/form-permission/form-permission.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): ILogger {
   const env = appConfig.getEnv();
@@ -60,6 +61,7 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
         useClass: TranslateFileLoader
       }
     }),
+    FormPermissionModule.forRoot(),
     NamedPlaceModule.forRoot(),
     ToastModule.forRoot(),
     SharedModule.forRoot(),

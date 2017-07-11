@@ -29,7 +29,7 @@ import { FormRowComponent } from './form-list/form-row/form-row.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, AlertModule, NgxDatatableModule, NouisliderModule, NamedPlaceModule, ViewerModule,
-    FormPermissionModule.forRoot()],
+    FormPermissionModule],
   providers: [ FormApi, DocumentApi ],
   declarations: [
     HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
