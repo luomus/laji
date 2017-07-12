@@ -37,7 +37,7 @@ export class LocalizePipe implements PipeTransform {
     }
     if (!query || query.length === 0 || !lang) {
       if (Array.isArray(query)) {
-        query = this.localizeRouterService.getPathWithoutLocale(this.router.url);
+        query = this.localizeRouterService.getPathWithoutLocale(this.router.url).split('?')[0];
       } else {
         return query;
       }
