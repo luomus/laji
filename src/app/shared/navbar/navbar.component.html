@@ -72,9 +72,10 @@
                 [expand]="'right'"></laji-omni-search>
             </li>
             <li [routerLinkActive]="['active']" *ngIf="isLoggedIn" dropdown>
-              <a dropdownToggle class="link language-toggle">
+              <a dropdownToggle class="link language-toggle user">
                 <span class="hidden-sm">{{(userService.getUser()|async)?.id | users}}</span>
                 <i class="glyphicon glyphicon-user"></i>
+                <span class="badge badge-danger" *ngIf="notifications.length > 0">{{notifications.length}}</span>
               </a>
               <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
                 <li role="menuitem">
@@ -82,6 +83,11 @@
                 </li>
                 <li role="menuitem">
                   <a [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
+                </li>
+                <li class="dropdown-header" *ngIf="notifications.length > 0">{{'notifications.title' | translate}}</li>
+                <li role="menuitem" *ngFor="let notification of notifications" laji-notification [notification]="notification"></li>
+                <li *ngIf="notifications.length > 0">
+                  <button type="button" class="btn bnt-block btn-default">Merkkaa kaikki luetuiksi</button>
                 </li>
               </ul>
             </li>

@@ -84,18 +84,19 @@ import { DocumentDeActivateGuard } from './document-form/document-de-activate.gu
 import { ScriptService } from './service/script.service';
 import { LocalizePipe } from '../locale/localize.pipe';
 import { CacheService } from './service/cache.service';
+import { NotificationComponent } from './navbar/notification/notification.component';
 
 
 @NgModule({
   entryComponents: [ImageModalOverlayComponent],
   declarations: [
-    NewsListComponent, DocumentFormComponent, LocalizePipe,
+    NewsListComponent, DocumentFormComponent, LocalizePipe, NotificationComponent,
     SpinnerComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, FormattedNumber,
     AreaNamePipe, CollectionNamePipe, FormNamePipe,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, ImageModalOverlayComponent,
-    AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent, FixedInViewDirective
+    AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent, FixedInViewDirective, NotificationComponent
   ],
   imports: [
     ToastModule,
@@ -110,7 +111,7 @@ import { CacheService } from './service/cache.service';
   ],
   providers: [ ], // keep this empty!
   exports: [
-    CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule,
+    CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent,
     AreaNamePipe, NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe,
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe, LajiFormComponent, DocumentFormComponent,
     ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,

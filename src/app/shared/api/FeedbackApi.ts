@@ -47,13 +47,13 @@ export class FeedbackApi {
     public send(data?: Feedback, personToken?: string, extraHttpRequestParams?: any ): Observable<{}> {
         const path = this.basePath + '/feedback';
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
+        const queryParameters = new URLSearchParams();
+        const headerParams = this.defaultHeaders;
         if (personToken !== undefined) {
             queryParameters.set('personToken', personToken);
         }
 
-        let requestOptions: RequestOptionsArgs = {
+        const requestOptions: RequestOptionsArgs = {
             method: 'POST',
             headers: headerParams,
             search: queryParameters

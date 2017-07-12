@@ -1,0 +1,6 @@
+<a *ngIf="targetPath" class="notification"
+   [class.seen]="notification.seen"
+   [routerLink]="[targetPath]"
+   [queryParams]="targetQuery">
+  Olet saanut kommentin näytteeseen {{info}}
+</a>
