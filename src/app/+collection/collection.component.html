@@ -3,7 +3,10 @@
     Aineistot
   </h1>
   <div class="row" *ngIf="collections$ | async; let collections; else loading">
-    <div class="col-md-7 col-lg-6">
+    <div class="col-md-5 col-md-push-7 col-lg-6 col-lg-push-6">
+      <laji-info-collection [collections]="collections" [activeID]="activeCollection"></laji-info-collection>
+    </div>
+    <div class="col-md-7 col-md-pull-5 col-lg-6 col-lg-pull-6">
       <div class="row">
         <div class="col-sm-8">
           <input
@@ -16,12 +19,9 @@
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <laji-collection-tree [collections]="collections" [filter]="filter"></laji-collection-tree>
+          <div laji-collection-tree [collections]="collections" [filter]="filter" [activeID]="activeCollection"></div>
         </div>
       </div>
-    </div>
-    <div class="col-md-5 col-lg-6">
-      <laji-info-collection [collections]="collections" [activeID]="activeCollection"></laji-info-collection>
     </div>
   </div>
   <ng-template #loading>

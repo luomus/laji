@@ -14,9 +14,10 @@ import { TreeModel } from 'angular-tree-component';
 import { MultiLangService } from '../../shared/service/multi-lang.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { setTimeout } from 'timers';
 
 @Component({
-  selector: 'laji-collection-tree',
+  selector: '[laji-collection-tree]',
   templateUrl: './tree-collection.component.html',
   styleUrls: ['./tree-collection.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -41,6 +42,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() collections: Collection[];
   @Input() filter: string;
+  @Input() activeID: string;
   nodes: any[];
   treeOptions = {
     actionMapping: {
@@ -63,6 +65,11 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.initTree();
+    if (this.activeID) {
+      setTimeout(() => {
+        this.setFocusToCollection(this.activeID);
+      }, 10);
+    }
     this.filterSubscription = this.filterSubject
       .debounceTime(300)
       .subscribe((value) => {
@@ -81,6 +88,9 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (!this.tree.treeModel.roots) {
       return;
+    }
+    if (changes.activeID) {
+      this.setFocusToCollection(this.activeID);
     }
     if (changes.filter) {
       if (!this.filter || this.filter.length === 0) {
@@ -140,6 +150,12 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
         links[collection.id].map(id => this.getTaxonBranch(lookup[id], lookup, links, false)) :
         undefined
     };
+  }
+
+  private setFocusToCollection(id) {
+    const node = this.tree.treeModel.getNodeById(id);
+    node.ensureVisible();
+    node.focus();
   }
 
 }
