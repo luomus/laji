@@ -10,13 +10,6 @@ body {
   height: 100%;
 }
 
-@media print {
-  body, html {
-    margin: 0;
-    padding: 0;
-  }
-}
-
 #lajiApp {
   height: 100%;
   display: flex;
@@ -54,22 +47,6 @@ laji-locale-sv > div,
 
 #content .container-fluid > div {
   flex: 1 0 auto;
-}
-
-@media only screen and (min-width : 768px) {
-  .full-height {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-    min-height: 0;
-  }
-
-  .full-width {
-    display: flex;
-    flex-direction: row;
-    flex: 1 1 auto;
-    min-height: 0;
-  }
 }
 
 #content img {
@@ -630,12 +607,37 @@ body > .ui-select-bootstrap.open {
 .fixed-to-view {
   position: fixed;
   width: inherit;
-  z-index: 1030;
+  z-index: 1020;
+}
+
+
+@media only screen and (min-width : 768px) {
+  .modal-dialog {
+    margin: 60px auto 30px auto;
+  }
+  .full-height {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .full-width {
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
 }
 
 /** print management */
 @media print
 {
+  body, html {
+    margin: 0;
+    padding: 0;
+  }
+
   .no-print, .no-print *
   {
     display: none !important;
