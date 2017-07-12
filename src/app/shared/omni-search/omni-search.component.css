@@ -65,12 +65,7 @@
   }
 }
 
-.omni.visible {
-  opacity: 1;
-}
-
 .omni {
-  opacity: 0;
   border-radius: 30px;
 
   -webkit-transition: all .4s;
@@ -79,7 +74,7 @@
 
 }
 
-.omni-search.visible:after {
+.omni-search:after {
   content: "\e003";
   font-family: "Glyphicons Halflings";
   line-height: 1;
