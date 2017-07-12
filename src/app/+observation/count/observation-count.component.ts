@@ -73,7 +73,6 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
       .timeout(this.timeout)
       .delay(10)
       .subscribe(result => {
-        console.log(query);
           this.loading = false;
           this.count = '' + (result.total || 0);
           this.changeDetectorRef.markForCheck();
