@@ -15,6 +15,7 @@
   border-bottom: 1px solid #999;
   color: #aaa;
   border-radius: 10px;
+  min-width: 250px;
 }
 .omni-search-results.right {
   right: 0;
