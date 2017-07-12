@@ -5,13 +5,23 @@ import { OnChanges } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { TreeComponent } from 'angular-tree-component';
+import { OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+import { IdService } from '../../shared/service/id.service';
+import { TreeNode } from 'angular-tree-component';
+import { TreeModel } from 'angular-tree-component';
+import { MultiLangService } from '../../shared/service/multi-lang.service';
+import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'laji-collection-tree',
   templateUrl: './tree-collection.component.html',
-  styleUrls: ['./tree-collection.component.css']
+  styleUrls: ['./tree-collection.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CollectionTreeComponent implements OnInit, OnChanges {
+export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(TreeComponent) tree: TreeComponent;
 
   roots = {
@@ -25,17 +35,44 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     'HR.1909': true,
     'HR.1727': true,
     'HR.1547': true,
-    'HR.1989': true
+    'HR.1989': true,
+    'HR.1207': true
   };
 
   @Input() collections: Collection[];
   @Input() filter: string;
   nodes: any[];
+  treeOptions = {
+    actionMapping: {
+      mouse: {
+        click: (tree: TreeModel, node: TreeNode, $event: any) => {
+          if (!($event.target && $event.target.className && $event.target.className.indexOf('not-expandable') > -1)) {
+            node.toggleExpanded();
+          }
+        }
+      }
+    }
+  };
 
-  constructor() { }
+  private filterSubject = new Subject();
+  private filterSubscription: Subscription;
+
+  constructor(
+    private translate: TranslateService
+  ) { }
 
   ngOnInit() {
     this.initTree();
+    this.filterSubscription = this.filterSubject
+      .debounceTime(300)
+      .subscribe((value) => {
+        if (value === '') {
+          this.tree.treeModel.filterNodes('', true);
+          this.tree.treeModel.collapseAll();
+        } else {
+          this.tree.treeModel.filterNodes(value, true);
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -43,15 +80,20 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
       this.initTree();
     }
     if (!this.tree.treeModel.roots) {
-      console.log('NO ROOTS');
       return;
     }
     if (changes.filter) {
       if (!this.filter || this.filter.length === 0) {
-        this.tree.treeModel.collapseAll();
+        this.filterSubject.next('');
       } else {
-        this.tree.treeModel.filterNodes(this.filter, true);
+        this.filterSubject.next(this.filter);
       }
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.filterSubscription) {
+      this.filterSubscription.unsubscribe();
     }
   }
 
@@ -62,7 +104,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     const lookUp = {};
     const links = {};
     const roots = {};
-    this.collections.sort(this.compare);
     this.collections.map(collection => {
       lookUp[collection.id] = collection;
       if (collection.isPartOf) {
@@ -85,25 +126,16 @@ export class CollectionTreeComponent implements OnInit, OnChanges {
     });
     this.nodes.push({
       id: 'other',
-      name: 'other',
+      name: 'taxonomy.other',
       children: other
     });
-  }
-
-  private compare(a: Collection, b: Collection) {
-    if (a.longName < b.longName) {
-      return -1;
-    }
-    if (a.longName > b.longName) {
-      return 1;
-    }
-    return 0;
   }
 
   private getTaxonBranch(collection: Collection, lookup: any, links: any, isRoot = true) {
     return {
       id: collection.id,
-      name: collection.collectionName,
+      uri: IdService.getUri(collection.id),
+      name: MultiLangService.getValue(<any>collection.collectionName, this.translate.currentLang, '%value% (%lang%)'),
       children: links[collection.id] ?
         links[collection.id].map(id => this.getTaxonBranch(lookup[id], lookup, links, false)) :
         undefined

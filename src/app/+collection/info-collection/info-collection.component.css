@@ -1,0 +1,6 @@
+.table th {
+  white-space: nowrap;
+}
+.table td {
+  width: 100%;
+}

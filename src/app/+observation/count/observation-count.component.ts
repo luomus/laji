@@ -3,11 +3,14 @@ import { Subscription } from 'rxjs/Subscription';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Util } from '../../shared/service/util.service';
 import { Logger } from '../../shared/logger/logger.service';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
 
 
 @Component({
   selector: 'laji-observation-count',
   templateUrl: './observation-count.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationCountComponent implements OnDestroy, OnChanges {
 
@@ -26,7 +29,11 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   private subCount: Subscription;
   private cache: string;
 
-  constructor(private warehouseService: WarehouseApi, private logger: Logger) {
+  constructor(
+    private warehouseService: WarehouseApi,
+    private logger: Logger,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {
   }
 
   ngOnChanges() {
@@ -56,6 +63,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
       this.subCount.unsubscribe();
     }
     this.loading = true;
+    this.changeDetectorRef.markForCheck();
     this.field ? this.updateAggregated(query) : this.updateCount(query);
   }
 
@@ -63,12 +71,18 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
     this.subCount = this.warehouseService
       .warehouseQueryCountGet(query)
       .timeout(this.timeout)
-      .delay(100)
+      .delay(10)
       .subscribe(result => {
+        console.log(query);
           this.loading = false;
           this.count = '' + (result.total || 0);
+          this.changeDetectorRef.markForCheck();
         },
-        err => this.logger.warn('Failed to update count', err)
+        err => {
+          this.logger.warn('Failed to update count', err)
+          this.loading = false;
+          this.changeDetectorRef.markForCheck();
+        }
       );
   }
 
@@ -95,8 +109,13 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
             this.count = '' + (result.total || 0);
           }
           this.loading = false;
+          this.changeDetectorRef.markForCheck();
         },
-        err => this.logger.warn('Failed to update aggregated count', err)
+        err => {
+          this.logger.warn('Failed to update aggregated count', err);
+          this.loading = false;
+          this.changeDetectorRef.markForCheck();
+        }
       );
   }
 }

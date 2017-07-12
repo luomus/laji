@@ -64,4 +64,74 @@ export interface Collection {
    * Type
    */
   collectionType?: string;
+
+  /**
+   * Person responsible for this metadata
+   */
+  personResponsible?: string;
+
+  /**
+   * Geographic coverage
+   */
+  geographicCoverage?: string;
+
+  /**
+   * temporalCoverage
+   */
+  temporalCoverage?: string;
+
+  /**
+   * onlineUrl
+   */
+  onlineUrl?: string;
+
+  /**
+   * Metadata status
+   */
+  metadataStatus?: string
+
+  /**
+   * Data quality
+   */
+  dataQuality?: string
+
+  /**
+   * Citation
+   */
+  citation?: string
+
+  /**
+   * collectionSize
+   */
+  collectionSize?: string
+
+  /**
+   * digitizedSize
+   */
+  digitizedSize?: string
+
+  /**
+   * intellectualOwner
+   */
+  intellectualOwner?: string
+  /**
+   * intellectualRights
+   */
+  intellectualRights?: string
+  /**
+   * intellectualDescription
+   */
+  intellectualDescription?: string
+  /**
+   * publicationTerms
+   */
+  publicationTerms?: string
+  /**
+   * publicationDescription
+   */
+  publicationDescription?: string
+  /**
+   * typesSize
+   */
+  typesSize?: string
 }
