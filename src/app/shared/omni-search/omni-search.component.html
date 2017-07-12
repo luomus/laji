@@ -1,6 +1,6 @@
 <div class="form-group omni-search" *ngIf="visible" (keyup)="keyEvent($event)">
   <label class="sr-only" for="search-box">{{placeholder}}</label>
-  <input type="search"
+  <input type="text"
          class="form-control input-sm omni"
          id="search-box"
          [class.expandRight]="expand === 'right'"
