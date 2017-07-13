@@ -1,10 +1,8 @@
-import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Util } from '../../shared/service/util.service';
 import { Logger } from '../../shared/logger/logger.service';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { ChangeDetectorRef } from '@angular/core';
 
 
 @Component({

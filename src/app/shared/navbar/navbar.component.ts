@@ -1,11 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
-import { OnDestroy } from '@angular/core';
-import { OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NotificationApi } from '../api/NotificationApi';
 import { Observable } from 'rxjs/Observable';

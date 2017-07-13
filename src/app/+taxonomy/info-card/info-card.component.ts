@@ -1,14 +1,13 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Logger } from '../../shared/logger/logger.service';
 import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { ObservationMapComponent } from '../../+observation/map/observation-map.component';
 import { Observable } from 'rxjs/Observable';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-info-card',

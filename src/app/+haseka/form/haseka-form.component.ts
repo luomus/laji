@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FooterService } from '../../shared/service/footer.service';
 import { ComponentCanDeactivate } from '../../shared/document-form/document-de-activate.guard';
-import { ViewChild } from '@angular/core';
 import { DocumentFormComponent } from '../../shared/document-form/document-form.component';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 

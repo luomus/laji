@@ -1,7 +1,4 @@
-import {
-  AfterViewInit, Component, Input, OnChanges, OnInit,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { LajiMapOptions, Map2Component } from '../../../../shared/map/map2.component';
 import * as MapUtil from 'laji-map/lib/utils';

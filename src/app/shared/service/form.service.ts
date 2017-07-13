@@ -6,7 +6,6 @@ import { Util } from './util.service';
 import { FormApi } from '../api/FormApi';
 import { DocumentApi } from '../api/DocumentApi';
 import { Document } from '../model/Document';
-import { AppConfig } from '../../app.config';
 import { environment } from '../../../environments/environment';
 import * as deepmerge from 'deepmerge';
 import { Observer } from 'rxjs/Observer';
@@ -33,8 +32,7 @@ export class FormService {
   constructor(
     private formApi: FormApi,
     private userService: UserService,
-    private documentApi: DocumentApi,
-    private appConfig: AppConfig
+    private documentApi: DocumentApi
   ) {
     if (!this.formDataStorage) {
       this.formDataStorage = {};
@@ -224,7 +222,7 @@ export class FormService {
     return this.allForms ?
       Observable.of(this.allForms) :
       this.formApi.formFindAll(this.currentLang)
-        .map((forms) => forms.results.filter(form => this.appConfig.isFormAllowed(form.id)))
+        .map((forms) => forms.results.filter(form => this.isFormAllowed(form.id)))
         .do((forms) => this.allForms = forms);
   }
 
@@ -271,6 +269,14 @@ export class FormService {
         this.formDataStorage = Util.clone(this.formDataStorage);
         return Observable.of(current);
       });
+  }
+
+  private isFormAllowed(formId: string) {
+    const forms = environment.formWhitelist;
+    if (forms.length === 0) {
+      return true;
+    }
+    return forms.indexOf(formId) !== -1;
   }
 
   private getTmpDoc(userID: string, id: string): Document {

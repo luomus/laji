@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { Notification } from '../../model/Notification';
 import { AnnotationApi } from '../../api/AnnotationApi';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { ChangeDetectorRef } from '@angular/core';
 import { IdService } from '../../service/id.service';
 
 @Component({

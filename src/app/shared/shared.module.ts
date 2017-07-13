@@ -38,7 +38,6 @@ import { UserService } from './service/user.service';
 import { NewsApi } from './api/NewsApi';
 import { ToastModule } from 'ng2-toastr';
 import { ToastsService } from './service/toasts.service';
-import { AppConfig } from '../app.config';
 import { PersonTokenApi } from './api/PersonTokenApi';
 import { PersonApi } from './api/PersonApi';
 import { SearchQuery } from '../+observation/search-query.model';
@@ -138,7 +137,7 @@ export class SharedModule {
         CollectionService,
         WindowRef,
         CoordinateService,
-        ToastsService, AppConfig,
+        ToastsService,
         PersonTokenApi, PersonApi, SearchQuery, WarehouseApi,
         TaxonomyApi,
         AreaApi, AreaService,

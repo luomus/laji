@@ -1,11 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Collection } from '../../shared/model/Collection';
-import { OnChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IdService } from '../../shared/service/id.service';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'laji-info-collection',

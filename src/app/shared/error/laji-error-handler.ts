@@ -1,10 +1,8 @@
-import { Injectable, Injector } from '@angular/core';
+import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../logger/logger.service';
-import { LocationStrategy } from '@angular/common';
-import { PathLocationStrategy } from '@angular/common';
-import { ErrorHandler } from '@angular/core';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 
 const pauseBeforeResendError = 3000;
 

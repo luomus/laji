@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CollectionApi } from '../shared/api/CollectionApi';
 import { ActivatedRoute } from '@angular/router';
 import { IdService } from '../shared/service/id.service';

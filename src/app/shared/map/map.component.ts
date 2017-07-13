@@ -6,6 +6,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Output,
   ViewChild
 } from '@angular/core';
@@ -13,9 +14,7 @@ import { Logger } from '../logger/logger.service';
 import { MapService } from './map.service';
 import { LajiExternalService } from '../service/laji-external.service';
 import { LajiMapOptions } from './map2.component';
-import { UserService } from '../service/user.service';
-import { OnInit } from '@angular/core';
-import { USER_INFO } from '../service/user.service';
+import { USER_INFO, UserService } from '../service/user.service';
 
 @Component({
   selector: 'laji-map',

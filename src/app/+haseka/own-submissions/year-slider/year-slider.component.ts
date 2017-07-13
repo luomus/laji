@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, ViewChild, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 

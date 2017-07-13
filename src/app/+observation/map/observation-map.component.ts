@@ -1,5 +1,12 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
   ViewChild
 } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';

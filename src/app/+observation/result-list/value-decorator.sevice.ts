@@ -4,7 +4,6 @@ import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { SourceService } from '../../shared/service/source.service';
 import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
-import { NumberFormatter } from '@angular/common/src/pipes/intl';
 import { FormattedNumber } from '../../shared/pipe/formated-number.pipe';
 
 @Injectable()

@@ -1,6 +1,14 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnChanges,
-  OnDestroy, Output,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,7 +21,7 @@ import { FormService } from '../service/form.service';
 import { ToastsService } from '../service/toasts.service';
 import { Form } from '../model/FormListInterface';
 import { Logger } from '../logger/logger.service';
-import {NamedPlacesService} from '../../+haseka/named-place/named-places.service';
+import { NamedPlacesService } from '../../+haseka/named-place/named-places.service';
 import { Document } from '../model/Document';
 import { DialogService } from '../service/dialog.service';
 import { Subject } from 'rxjs/Subject';

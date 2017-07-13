@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef, EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy, Output,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
 import { LajiExternalService } from '../service/laji-external.service';
 
 export interface LajiMapOptions {

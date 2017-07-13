@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, Output} from '@angular/core';
-import { animate, trigger, state, style, transition } from '@angular/animations';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: '[laji-panel]',

@@ -15,6 +15,7 @@ export const environment = {
   nafiForm: 'JX.123648',
   wbcForm: 'MHL.3',
   namedPlaceForm: 'JX.123608',
+  apiBase: '/api',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
   externalViewers: {

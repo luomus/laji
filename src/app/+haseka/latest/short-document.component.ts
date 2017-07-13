@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, OnInit, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Document } from '../../shared/model/Document';
 import { FormService } from '../../shared/service/form.service';

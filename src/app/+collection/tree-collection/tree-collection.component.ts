@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { Collection } from '../../shared/model/Collection';
-import { OnChanges } from '@angular/core';
-import { SimpleChanges } from '@angular/core';
-import { ViewChild } from '@angular/core';
-import { TreeComponent } from 'angular-tree-component';
-import { OnDestroy } from '@angular/core';
+import { TreeComponent, TreeModel, TreeNode } from 'angular-tree-component';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { IdService } from '../../shared/service/id.service';
-import { TreeNode } from 'angular-tree-component';
-import { TreeModel } from 'angular-tree-component';
 import { MultiLangService } from '../../shared/service/multi-lang.service';
 import { TranslateService } from '@ngx-translate/core';
-import { ChangeDetectionStrategy } from '@angular/core';
 import { setTimeout } from 'timers';
 
 @Component({

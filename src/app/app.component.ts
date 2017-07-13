@@ -5,14 +5,11 @@ import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { InformationApi } from './shared/api/InformationApi';
 import { WindowRef } from './shared/windows-ref';
-import { AppConfig } from './app.config';
 import { environment } from '../environments/environment';
-import { Title } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
-import tileLayer = L.tileLayer;
 import { LocalizeRouterService } from './locale/localize-router.service';
-import { Meta } from '@angular/platform-browser';
 
 declare const ga: Function;
 
@@ -45,14 +42,13 @@ export class AppComponent {
     toastr: ToastsManager,
     viewContainerRef: ViewContainerRef,
     windowRef: WindowRef,
-    appConfig: AppConfig,
     title: Title,
     translateService: TranslateService,
     localizeRouterService: LocalizeRouterService,
     metaService: Meta
   ) {
     this.viewContainerRef = viewContainerRef;
-    this.hasAnalytics = !appConfig.isAnalyticsDisabled();
+    this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.isEmbedded || false;
     toastr.setRootViewContainerRef(viewContainerRef);
 

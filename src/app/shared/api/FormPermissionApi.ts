@@ -12,9 +12,15 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Headers, Http, URLSearchParams } from '@angular/http';
-import { RequestMethod, RequestOptions, RequestOptionsArgs } from '@angular/http';
-import { Response } from '@angular/http';
+import {
+  Headers,
+  Http,
+  RequestMethod,
+  RequestOptions,
+  RequestOptionsArgs,
+  Response,
+  URLSearchParams
+} from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';

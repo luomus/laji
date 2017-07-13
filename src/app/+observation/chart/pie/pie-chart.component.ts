@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, OnDestroy } from '@angular/core';
-import { ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { nvD3 } from '../../../ng2-nvd3/ng2-nvd3.component';
 
 @Component({

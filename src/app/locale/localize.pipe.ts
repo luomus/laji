@@ -1,4 +1,4 @@
-import { PipeTransform, Pipe, Injectable, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Injectable, Pipe, PipeTransform } from '@angular/core';
 import 'rxjs/add/observable/forkJoin';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizeRouterService } from './localize-router.service';

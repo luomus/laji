@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
-import { FormService } from '../../../shared/service/form.service';
 import { NamedPlacesService } from '../named-places.service';
 import { UserService } from '../../../shared/service/user.service';
 import { FooterService } from '../../../shared/service/footer.service';

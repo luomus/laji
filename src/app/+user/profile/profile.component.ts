@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Logger } from '../../shared/logger/logger.service';
-import { AppConfig } from '../../app.config';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'laji-user',
@@ -37,10 +37,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService,
               private personService: PersonApi,
               private route: ActivatedRoute,
-              private logger: Logger,
-              private appConfig: AppConfig
+              private logger: Logger
   ) {
-    this.personSelfUrl = appConfig.getPersonSelfUrl();
+    this.personSelfUrl = environment.selfPage;
   }
 
   ngOnInit() {
@@ -49,9 +48,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .map(params => params['userId'])
       .combineLatest(this.userService.getUser(), (id, user) => ({id: id, currentUser: user}))
       .flatMap((data) => {
-          let currentActive = data.currentUser.id === data.id;
-          let empty$ = Observable.of({});
-          let false$ = Observable.of(false);
+          const currentActive = data.currentUser.id === data.id;
+          const empty$ = Observable.of({});
+          const false$ = Observable.of(false);
           return Observable.forkJoin(
             data.currentUser.id ? this.personService.personFindProfileByToken(this.userService.getToken()).catch((e) => false$) : empty$,
             currentActive ? false$ : this.personService.personFindProfileByUserId(data.id).catch((e) => empty$)
@@ -92,7 +91,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   saveProfile() {
-    let method = this.isCreate ? 'personCreateProfileByToken' : 'personUpdateProfileByToken';
+    const method = this.isCreate ? 'personCreateProfileByToken' : 'personUpdateProfileByToken';
     this.personService[method](this.getProfile(), this.userService.getToken())
       .subscribe(
         profile => {

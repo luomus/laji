@@ -8,7 +8,6 @@ import { LajiErrorHandler } from './shared/error/laji-error-handler';
 import { FeedbackComponent } from './shared/feedback/feedback.component';
 import { ConsoleLogger, HttpLogger, Logger } from './shared/logger/index';
 import { LoggerApi } from './shared/api/LoggerApi';
-import { AppConfig } from './app.config';
 import { ILogger } from './shared/logger/logger.interface';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
@@ -35,10 +34,10 @@ import { LocaleFiComponent } from './locale/locale-fi.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocalizeRouterService } from './locale/localize-router.service';
 import { FormPermissionModule } from './+haseka/form-permission/form-permission.module';
+import { environment } from '../environments/environment';
 
-export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): ILogger {
-  const env = appConfig.getEnv();
-  if (env === 'prod' || env === 'staging') {
+export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
+  if (environment.production) {
     return new HttpLogger(loggerApi);
   }
   return new ConsoleLogger();
@@ -86,7 +85,7 @@ export function createLoggerLoader(loggerApi: LoggerApi, appConfig: AppConfig): 
     {provide: LocationStrategy, useClass: PathLocationStrategy},
     {
       provide: Logger,
-      deps: [LoggerApi, AppConfig],
+      deps: [LoggerApi],
       useFactory: createLoggerLoader
     }
   ],

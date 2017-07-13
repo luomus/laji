@@ -3,7 +3,7 @@ import { SearchQuery } from '../search-query.model';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import {AutocompleteApi, AutocompleteMatchType} from '../../shared/api/AutocompleteApi';
+import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationFilterInterface } from '../filter/observation-filter.interface';
 import { ObservationFormQuery } from './observation-form-query.interface';

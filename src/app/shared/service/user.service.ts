@@ -10,13 +10,13 @@ import { PersonApi } from '../api/PersonApi';
 import { LocalStorage } from 'ng2-webstorage';
 import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
-import { AppConfig } from '../../app.config';
 import { WindowRef } from '../windows-ref';
 import { ToastsService } from './toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { LocalDb } from '../local-db/local-db.abstract';
+import { environment } from '../../../environments/environment';
 
 export const USER_INFO = '[user]: info';
 export const USER_LOGOUT_ACTION = '[user]: logout';
@@ -43,12 +43,18 @@ export class UserService extends LocalDb {
   private observable: Observable<Person>;
   private formDefaultObservable: Observable<any>;
 
+  public static getLoginUrl(next = '', lang = 'fi') {
+    return (environment.loginUrl
+    + '?target=' + environment.systemID
+    + '&redirectMethod=GET&locale=%lang%'
+    + '&next=' + next).replace('%lang%', lang);
+  }
+
   constructor(private tokenService: PersonTokenApi,
               private userService: PersonApi,
               private router: Router,
               private location: Location,
               private logger: Logger,
-              private appConfig: AppConfig,
               private toastsService: ToastsService,
               private translate: TranslateService,
               private localizeRouterService: LocalizeRouterService,
@@ -138,7 +144,7 @@ export class UserService extends LocalDb {
 
   public doLogin(): void {
     this.returnUrl = this.location.path(true);
-    this.winRef.nativeWindow.location.href = this.appConfig.getLoginUrl();
+    this.winRef.nativeWindow.location.href = UserService.getLoginUrl(this.returnUrl, this.translate.currentLang);
   }
 
   public returnToPageBeforeLogin(): void {

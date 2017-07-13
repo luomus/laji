@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnChanges, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Logger } from '../../shared/logger/logger.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { FormService } from '../../shared/service/form.service';

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, OnChanges, ViewChild, Input, HostListener } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import { DocumentInfoService } from '../../document-info.service';
 import { TranslateService } from '@ngx-translate/core';

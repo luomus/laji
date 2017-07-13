@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../shared/service/user.service';
 import { LocalStorage } from 'ng2-webstorage';
 import { Router } from '@angular/router';

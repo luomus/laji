@@ -1,9 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
-import { ViewChild } from '@angular/core';
-import { Output } from '@angular/core';
-import { EventEmitter } from '@angular/core';
 import { AnnotationService } from '../service/annotation.service';
 import { Annotation } from '../../shared/model/Annotation';
 import { Observable } from 'rxjs/Observable';

@@ -6,10 +6,10 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
-import { AppConfig } from '../../app.config';
 import { Util } from '../../shared/service/util.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import queryString from 'query-string';
+import { environment } from '../../../environments/environment';
 
 enum RequestStatus {
   error = <any> 'error',
@@ -36,7 +36,6 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   public description = '';
   public csvParams = '';
   public showRequest = true;
-  public apiBase: string;
   private taxaDownloadAggregateBy = {
     'en': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish',
     'fi': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
@@ -52,13 +51,11 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
               public translate: TranslateService,
               private toastsService: ToastsService,
               private warehouseService: WarehouseApi,
-              private logger: Logger,
-              private appConfig: AppConfig
+              private logger: Logger
   ) {
-    if (appConfig.getEnv() === 'prod') {
+    if (environment.production) {
       this.showRequest = false;
     }
-    this.apiBase = appConfig.getApiClientBase();
   }
 
   ngOnInit() {

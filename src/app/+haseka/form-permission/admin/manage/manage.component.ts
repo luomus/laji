@@ -6,7 +6,6 @@ import { ToastsService } from '../../../../shared/service/toasts.service';
 import { FormPermission } from '../../../../shared/model/FormPermission';
 import { UserService } from '../../../../shared/service/user.service';
 import { Logger } from '../../../../shared/logger/logger.service';
-import { Person } from '../../../../shared/model/Person';
 import { Observable } from 'rxjs/Observable';
 import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 

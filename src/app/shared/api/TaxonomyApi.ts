@@ -27,11 +27,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as models from '../model/index';
 import { PagedResult } from '../model/PagedResult';
+import { TaxonomyImage } from '../model/Taxonomy';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
 'use strict';
-import {TaxonomyImage} from "../model/Taxonomy";
 
 @Injectable()
 export class TaxonomyApi {

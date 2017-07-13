@@ -1,7 +1,4 @@
-import { Input } from '@angular/core';
-import { Directive } from '@angular/core';
-import { ElementRef } from '@angular/core';
-import { AfterViewInit } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Input } from '@angular/core';
 
 @Directive({
   selector: 'table[lajiFixedTable]'

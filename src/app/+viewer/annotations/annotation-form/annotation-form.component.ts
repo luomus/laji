@@ -1,10 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Input } from '@angular/core';
-import { EventEmitter } from '@angular/core';
-import { Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { MetadataService } from '../../../shared/service/metadata.service';
-import { OnChanges } from '@angular/core';
 import { AnnotationService } from '../../service/annotation.service';
 import { Observable } from 'rxjs/Observable';
 import { Logger } from '../../../shared/logger/logger.service';

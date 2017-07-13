@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
-import { Route, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 
 @Injectable()
 export class LocalizeRouterService {

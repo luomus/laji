@@ -6,7 +6,6 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { UserService } from '../../../shared/service/user.service';
 import { FormPermission } from '../../../shared/model/FormPermission';
 import { Logger } from '../../../shared/logger/logger.service';
-import { Person } from '../../../shared/model/Person';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 
 @Component({

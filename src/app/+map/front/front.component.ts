@@ -1,4 +1,4 @@
-import { OnDestroy, Component, ViewChild, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQuery } from '../../+observation/search-query.model';
