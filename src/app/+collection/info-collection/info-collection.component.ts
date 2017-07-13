@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleCha
 import { Collection } from '../../shared/model/Collection';
 import { TranslateService } from '@ngx-translate/core';
 import { IdService } from '../../shared/service/id.service';
+import { Title } from '@angular/platform-browser';
+import { MultiLangService } from '../../shared/service/multi-lang.service';
 
 @Component({
   selector: 'laji-info-collection',
@@ -17,14 +19,17 @@ export class InfoCollectionComponent implements OnInit, OnChanges {
   collection: Collection;
   idService = IdService;
 
-  constructor(public translate: TranslateService) { }
+  constructor(
+    public translate: TranslateService,
+    private title: Title
+  ) { }
 
   ngOnInit() {
     this.initActive();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['activeID']) {
+    if (changes.activeID && !changes.activeID.isFirstChange()) {
       this.initActive();
     }
   }
@@ -32,6 +37,13 @@ export class InfoCollectionComponent implements OnInit, OnChanges {
   initActive() {
     if (this.activeID && this.collections) {
       this.collection = this.collections.filter(collection => collection.id === this.activeID)[0] || undefined;
+      if (this.collection) {
+        this.title.setTitle(
+          MultiLangService.getValue(<any>this.collection.collectionName, this.translate.currentLang) +
+          ' | ' +
+          this.title.getTitle()
+        );
+      }
     }
   }
 

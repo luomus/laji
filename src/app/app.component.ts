@@ -60,7 +60,10 @@ export class AppComponent {
         if (this.currentRoute !== newRoute) {
           // Check if on page that should be scrolled to top
           if (!newRoute.match(/^\/(en\/|sv\/)?(observation|theme\/nafi)\//)) {
-            windowRef.nativeWindow.scroll(0, 0);
+            const content = windowRef.nativeWindow.document.getElementById('content');
+            if (content) {
+              content.scrollTop = 0;
+            }
           }
 
           // Set page title

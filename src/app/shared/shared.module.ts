@@ -84,6 +84,7 @@ import { ScriptService } from './service/script.service';
 import { LocalizePipe } from '../locale/localize.pipe';
 import { CacheService } from './service/cache.service';
 import { NotificationComponent } from './navbar/notification/notification.component';
+import { HideScrollDirective } from './directive/hide-scroll';
 
 
 @NgModule({
@@ -95,7 +96,8 @@ import { NotificationComponent } from './navbar/notification/notification.compon
     AreaNamePipe, CollectionNamePipe, FormNamePipe,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, ImageModalOverlayComponent,
-    AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent, FixedInViewDirective, NotificationComponent
+    AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
+    FixedInViewDirective, NotificationComponent, HideScrollDirective
   ],
   imports: [
     ToastModule,
@@ -116,7 +118,8 @@ import { NotificationComponent } from './navbar/notification/notification.compon
     ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, NlToBrPipe,
-    AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, FixedInViewDirective, LocalizePipe
+    AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, FixedInViewDirective, LocalizePipe,
+    HideScrollDirective
   ]
 })
 export class SharedModule {
