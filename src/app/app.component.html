@@ -1,5 +1,7 @@
 <laji-navbar *ngIf="!isEmbedded"></laji-navbar>
 <div id="content" [ngClass]="{embedded: isEmbedded}">
-  <router-outlet></router-outlet>
+  <div class="router-content">
+    <router-outlet></router-outlet>
+  </div>
   <laji-footer id="footer" *ngIf="!isEmbedded"></laji-footer>
 </div>
