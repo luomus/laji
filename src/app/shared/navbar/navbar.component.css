@@ -32,6 +32,13 @@
   font-size: 0.75em;
 }
 
+.notification-pager {
+  width: 100%;
+}
+.notification-pager .btn {
+  width: 50%;
+}
+
 .navbar-profile {
   padding: 15px 10px 0 7px;
 }

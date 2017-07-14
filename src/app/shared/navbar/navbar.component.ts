@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
@@ -8,6 +8,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { NotificationApi } from '../api/NotificationApi';
 import { Observable } from 'rxjs/Observable';
 import { Notification } from '../model/Notification';
+import { PagedResult } from '../model/PagedResult';
+import { BsDropdownDirective } from 'ngx-bootstrap';
+import { DialogService } from '../service/dialog.service';
 
 @Component({
   selector: 'laji-navbar',
@@ -16,18 +19,26 @@ import { Notification } from '../model/Notification';
   providers: [NotificationApi],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NavbarComponent implements OnInit, OnDestroy{
+export class NavbarComponent implements OnInit, OnDestroy {
+
+  @ViewChild('userMenu') public dropDown: BsDropdownDirective;
 
   openMenu: Boolean = false;
   isAuthority = false;
   isProd = false;
   isLoggedIn = false;
   showSearch = false;
-  notifications: Notification[] = [];
+  notifications: PagedResult<Notification>;
+  notificationsNotSeen = 0;
+  currentNotificationPage = 1;
+  visibleNotificationPage = 1;
+  notificationPageSize = 5;
 
   private subParams: Subscription;
   private subUser: Subscription;
   private subNotification: Subscription;
+  private sublangChange: Subscription;
+  private subNotificationPage: Subscription;
 
   constructor(
     public userService: UserService,
@@ -35,7 +46,8 @@ export class NavbarComponent implements OnInit, OnDestroy{
     private localizeRouterService: LocalizeRouterService,
     private changeDetector: ChangeDetectorRef,
     private notificationService: NotificationApi,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private dialogService: DialogService
   ) {
     this.isProd = environment.production;
     this.isAuthority = environment.forAuthorities;
@@ -57,20 +69,74 @@ export class NavbarComponent implements OnInit, OnDestroy{
     this.subNotification = Observable
       .interval(60000)
       .startWith(0)
-      .switchMap(() => this.notificationService.fetch(this.userService.getToken()))
+      .delay(5000)
+      .switchMap(() => Observable.forkJoin(
+        this.notificationService.fetch(
+          this.userService.getToken(),
+          '' + this.currentNotificationPage,
+          '' + this.notificationPageSize
+        ),
+        this.notificationService.fetch(this.userService.getToken(), '1', '1', 'true'),
+        (notifications, unseen) => ({...notifications, unseen: unseen.total || 0})
+      ))
       .subscribe(
         notifications => {
           this.notifications = notifications;
+          this.notificationsNotSeen = notifications.unseen;
           this.changeDetector.markForCheck();
         },
         err => console.log(err)
       );
+    let notifications;
+    this.sublangChange = this.translate.onLangChange
+      .do(() => notifications = [...this.notifications.results])
+      .do(() => this.notifications.results = [])
+      .do(() => this.changeDetector.markForCheck())
+      .delay(10)
+      .subscribe(() => {
+        this.notifications.results = notifications;
+        this.changeDetector.markForCheck();
+      });
+  }
+
+  nextNotificationPage() {
+    this.currentNotificationPage++;
+    this.gotoNotificationPage(this.currentNotificationPage);
+  }
+
+  prevNotificationPage() {
+    this.currentNotificationPage--;
+    this.gotoNotificationPage(this.currentNotificationPage);
+  }
+
+  private gotoNotificationPage(page) {
+    this.dropDown.autoClose = false;
+    setTimeout(() => {
+      this.dropDown.autoClose = true;
+    }, 100);
+    if (this.subNotificationPage) {
+      this.subNotificationPage.unsubscribe();
+    }
+    if (this.visibleNotificationPage === page) {
+      return;
+    }
+    this.subNotificationPage = this.notificationService.fetch(
+      this.userService.getToken(),
+      '' + page,
+      '' + this.notificationPageSize
+    )
+      .subscribe(notifications => {
+        this.notifications = notifications;
+        this.visibleNotificationPage = notifications.currentPage;
+        this.changeDetector.markForCheck();
+      });
   }
 
   ngOnDestroy() {
     this.subUser.unsubscribe();
     this.subParams.unsubscribe();
     this.subNotification.unsubscribe();
+    this.sublangChange.unsubscribe();
   }
 
   updateView() {
@@ -89,5 +155,50 @@ export class NavbarComponent implements OnInit, OnDestroy{
   goToForum(event: Event) {
     event.preventDefault();
     this.router.navigate(this.localizeRouterService.translateRoute(['/forum']), {skipLocationChange: true});
+  }
+
+  trackNotification(idx, notification) {
+    return notification ? notification.id : undefined;
+  }
+
+  markAsSeen(notification: Notification) {
+    if (notification.seen) {
+      return;
+    }
+    notification.seen = true;
+    this.notificationService
+      .update(notification, this.userService.getToken())
+      .subscribe(() => {
+        this.notificationsNotSeen--;
+        this.changeDetector.markForCheck();
+      }, () => {});
+  }
+
+  removeNotification(notification: Notification) {
+    this.translate.get('notification.delete')
+      .switchMap(msg => this.dialogService.confirm(msg))
+      .subscribe(result => {
+        this.dropDown.autoClose = false;
+        setTimeout(() => {
+          this.dropDown.autoClose = true;
+        }, 100);
+        if (result) {
+          if (!notification.seen) {
+            this.notificationsNotSeen--;
+          }
+          this.changeDetector.markForCheck();
+          this.notificationService
+            .delete(notification.id, this.userService.getToken())
+            .switchMap(() => this.notificationService.fetch(
+              this.userService.getToken(),
+              '' + this.currentNotificationPage,
+              '' + this.notificationPageSize
+            ))
+            .subscribe((notifications) => {
+              this.notifications = notifications;
+              this.changeDetector.markForCheck();
+            }, () => {});
+        }
+      });
   }
 }

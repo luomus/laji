@@ -1,6 +1,9 @@
-<a *ngIf="targetPath" class="notification"
+<a class="notification" [class.unseen]="!notification.seen"
+   (click)="notificationSeen.emit(notification)"
    [class.seen]="notification.seen"
-   [routerLink]="[targetPath]"
+   [routerLink]="[targetPath] | localize"
    [queryParams]="targetQuery">
-  Olet saanut kommentin näytteeseen {{info}}
+  <small>{{notification.created | amTimeAgo}}</small><br>
+  <span [innerHtml]="'notification.annotation' | translate: {uri: info}"></span>
 </a>
+<button type="button" class="delete" (click)="onRemove(notification)"><i class="glyphicon glyphicon-remove"></i></button>

@@ -438,5 +438,8 @@
   "annotation.title": "kommentarer",
   "annotation.none": "Inga kommentarer",
   "more": "Visa ytterligare information",
-  "todoTranslation": "Texterna på denna sida är under översättning."
+  "todoTranslation": "Texterna på denna sida är under översättning.",
+  "notification.title": "Anmälningar",
+  "notification.delete": "Vill du verkligen radera denna anmälan?",
+  "notification.annotation": "Kommentera i observation<br><small>{{uri}}</small>"
 }

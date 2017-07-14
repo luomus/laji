@@ -1,3 +1,30 @@
+:host {
+  position: relative;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
 .notification {
   background: none !important;
+  border-top: 1px solid #ccc;
+  padding-right: 40px;
+}
+
+.unseen {
+  border-left: 3px solid #E7D759;
+}
+
+.delete {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+}
+
+.delete:hover,
+.delete:focus {
+  background: #ccc;
 }

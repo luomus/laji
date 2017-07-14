@@ -453,5 +453,8 @@
   "annotation.title": "Kommentit",
   "annotation.none": "Ei kommentteja",
   "more": "Näytä lisätiedot",
-  "todoTranslation": "Tämän sivun teksti on vielä käännettävänä."
+  "todoTranslation": "Tämän sivun teksti on vielä käännettävänä.",
+  "notification.title": "Ilmoitukset",
+  "notification.delete": "Haluatko varmasti poistaa ilmoituksen",
+  "notification.annotation": "Kommentti havaintoerässä<br><small>{{uri}}</small>"
 }

@@ -124,7 +124,7 @@ export class AnnotationService {
           return this._fetchAll(rootID, ++page)
             .map(res => [...result.results, ...res]);
         }
-        return Observable.of(result.results);
+        return Observable.of(result.results || []);
       });
   }
 
