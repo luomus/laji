@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NamedPlaceApi } from '../../shared/api/NamedPlaceApi';
 import { NamedPlace } from '../../shared/model/NamedPlace';
 import { Observable } from 'rxjs/Observable';
+import { UserService } from '../../shared/service/user.service';
 
 @Injectable()
 export class NamedPlacesService {
@@ -9,7 +10,10 @@ export class NamedPlacesService {
   private cache;
   private cacheKey;
 
-  constructor(private namedPlaceApi: NamedPlaceApi) { }
+  constructor(
+    private namedPlaceApi: NamedPlaceApi,
+    private userService: UserService
+  ) { }
 
   getAllNamePlacesByCollectionId(collectionID: string)  {
     if (this.cacheKey === collectionID) {
@@ -54,7 +58,7 @@ export class NamedPlacesService {
   private _getAllNamePlacesByCollectionId(collectionID: string, page = 1, namedPlaces = [])  {
     return this.namedPlaceApi
       .findAll(
-        undefined,
+        this.userService.getToken(),
         collectionID,
         undefined,
         '' + page,
