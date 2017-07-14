@@ -148,9 +148,16 @@ export class UserService extends LocalDb {
   }
 
   public returnToPageBeforeLogin(): void {
-    this.router.navigateByUrl(
-      this.localizeRouterService.translateRoute(this.returnUrl || '/')
-    );
+    const returnTo = this.returnUrl || '/';
+    const lang = this.localizeRouterService.getLocationLang(returnTo);
+    setTimeout(() => {
+      this.translate.use(lang);
+      this.router.navigateByUrl(
+        this.localizeRouterService.translateRoute(
+          this.localizeRouterService.getPathWithoutLocale(returnTo)
+        )
+      );
+    }, 10);
   }
 
   public getDefaultFormData(): Observable<any> {
