@@ -135,7 +135,7 @@ export class NpEditFormComponent implements OnInit {
     }
 
     data['geometry'] = formData.geometry.geometries[0];
-    data['public'] = true;
+    data['public'] = false;
 
     this.localityToPrepopulatedDocument(data, formData);
 
