@@ -55,6 +55,7 @@
     "ng2-toastr": "^4.0.1",
     "ng2-webstorage": "^1.6.2",
     "ngx-bootstrap": "^1.6.6",
+    "ngx-perfect-scrollbar": "^4.5.2",
     "nouislider": "^9.2.0",
     "openseadragon": "^2.2.1",
     "query-string": "^4.3.2",

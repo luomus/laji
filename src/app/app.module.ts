@@ -35,6 +35,8 @@ import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocalizeRouterService } from './locale/localize-router.service';
 import { FormPermissionModule } from './+haseka/form-permission/form-permission.module';
 import { environment } from '../environments/environment';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -42,6 +44,10 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   }
   return new ConsoleLogger();
 }
+
+const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
 
 @NgModule({
   declarations: [
@@ -72,6 +78,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),
     Ng2Webstorage.forRoot({ prefix: 'laji-', separator: '' }),
+    PerfectScrollbarModule.forRoot(PERFECT_SCROLLBAR_CONFIG),
     AppRoutingModule,
     ViewerModule,
     BrowserModule

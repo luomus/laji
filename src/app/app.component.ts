@@ -63,7 +63,7 @@ export class AppComponent {
             windowRef.nativeWindow.scroll(0, 0); // remove when container scrolling is supported by the form
             const content = windowRef.nativeWindow.document.getElementById('content');
             if (content) {
-              content.scrollTop = 0;
+              // content.scrollTop = 0;
             }
           }
 

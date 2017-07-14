@@ -20,7 +20,6 @@ body {
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
-  overflow: auto;
 }
 
 #footer, #navbar {
@@ -610,6 +609,7 @@ body > .ui-select-bootstrap.open {
 }
 
 /** scrollbar **/
+/*
 ::-webkit-scrollbar {
   height: 16px;
   overflow: visible;
@@ -658,6 +658,7 @@ body > .ui-select-bootstrap.open {
   border: 1px rgba(0, 0, 0, .1);
   background-color: rgba(0,0,0,.05);
 }
+*/
 /** /scrollbar **/
 
 @media only screen and (min-width : 768px) {

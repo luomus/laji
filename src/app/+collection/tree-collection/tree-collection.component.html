@@ -1,8 +1,10 @@
-<tree-root [nodes]="nodes" [options]="treeOptions">
-  <ng-template #treeNodeTemplate let-node>
-    {{node.data.name | multiLang | translate}}
-    <a *ngIf="!!node.data.uri" [routerLink]="[]" [queryParams]="{uri: node.data.uri}" class="not-expandable">
-      <i class="glyphicon glyphicon-modal-window not-expandable"></i>
-    </a>
-  </ng-template>
-</tree-root>
+<perfect-scrollbar class="collectionTree">
+  <tree-root [nodes]="nodes" [options]="treeOptions">
+    <ng-template #treeNodeTemplate let-node>
+      {{node.data.name | multiLang | translate}}
+      <a *ngIf="!!node.data.uri" [routerLink]="[]" [queryParams]="{uri: node.data.uri}" class="not-expandable">
+        <i class="glyphicon glyphicon-modal-window not-expandable"></i>
+      </a>
+    </ng-template>
+  </tree-root>
+</perfect-scrollbar>
