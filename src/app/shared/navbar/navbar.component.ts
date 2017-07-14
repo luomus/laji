@@ -70,6 +70,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .interval(60000)
       .startWith(0)
       .delay(5000)
+      .filter(() => this.userService.isLoggedIn)
       .switchMap(() => Observable.forkJoin(
         this.notificationService.fetch(
           this.userService.getToken(),
@@ -89,6 +90,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
       );
     let notifications;
     this.sublangChange = this.translate.onLangChange
+      .filter(() => !!this.notifications)
+      .filter(() => this.userService.isLoggedIn)
       .do(() => notifications = [...this.notifications.results])
       .do(() => this.notifications.results = [])
       .do(() => this.changeDetector.markForCheck())
