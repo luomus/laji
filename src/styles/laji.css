@@ -15,17 +15,12 @@ body {
   display: flex;
   flex-direction: column;
 }
-.router-content {
-  min-height: calc(100vh - 150px);
-  position: relative;
-}
 
 #content {
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   overflow: auto;
-  max-height: calc(100vh - 50px);
 }
 
 #footer, #navbar {
