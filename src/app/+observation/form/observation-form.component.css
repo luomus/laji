@@ -8,6 +8,10 @@ hr {
 .faded {
   color: #fff;
 }
+.result-list {
+  display: flex;
+  flex-direction: column;
+}
 .form-filters {
   z-index: auto;
   border-left: 1px solid #e1e1e1;
