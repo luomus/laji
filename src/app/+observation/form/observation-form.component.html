@@ -68,7 +68,14 @@
               </h5>
             </ng-template>
             <span *ngIf="taxonName && taxonName.value" style="margin-left: 5px;">
-              <span [ngClass]="{'cursive': taxonName.payload.cursiveName}">{{taxonName.value}}</span>
+              <span *ngIf="taxonName?.payload.vernacularName; else taxonNameScientific">
+                {{taxonName?.payload.vernacularName}}
+              </span>
+              <ng-template #taxonNameScientific>
+                <span [ngClass]="{'cursive': taxonName.payload.cursiveName}">
+                  {{taxonName?.payload?.scientificName}}
+                </span>
+              </ng-template>
             </span>
           </div>
         </div>
