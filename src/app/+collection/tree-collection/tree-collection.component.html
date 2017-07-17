@@ -1,4 +1,4 @@
-<perfect-scrollbar class="collectionTree">
+<div lajiHideScroll class="collectionTree" >
   <tree-root [nodes]="nodes" [options]="treeOptions">
     <ng-template #treeNodeTemplate let-node>
       {{node.data.name | multiLang | translate}}
@@ -7,4 +7,4 @@
       </a>
     </ng-template>
   </tree-root>
-</perfect-scrollbar>
+</div>

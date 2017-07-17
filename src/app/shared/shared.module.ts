@@ -84,7 +84,7 @@ import { ScriptService } from './service/script.service';
 import { LocalizePipe } from '../locale/localize.pipe';
 import { CacheService } from './service/cache.service';
 import { NotificationComponent } from './navbar/notification/notification.component';
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { HideScrollDirective } from './directive/hide-scroll';
 
 
 @NgModule({
@@ -97,7 +97,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
-    FixedInViewDirective, NotificationComponent
+    FixedInViewDirective, NotificationComponent, HideScrollDirective
   ],
   imports: [
     ToastModule,
@@ -107,7 +107,6 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     RouterModule,
     TranslateModule,
     ReactiveFormsModule,
-    PerfectScrollbarModule,
     MomentModule,
     TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule
   ],
@@ -119,8 +118,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
     PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, NlToBrPipe,
-    AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, FixedInViewDirective, LocalizePipe,
-    PerfectScrollbarModule
+    AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, FixedInViewDirective, LocalizePipe, HideScrollDirective
   ]
 })
 export class SharedModule {

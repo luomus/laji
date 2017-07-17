@@ -1,4 +1,4 @@
 .collectionTree {
-  height: calc(100vh - 160px);
+  max-height: calc(100vh - 160px);
   min-height: 300px;
 }
