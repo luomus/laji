@@ -29,7 +29,6 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() placeholder: string;
-  @Input() lang: string;
   @Input() limit = 10;
   @Input() delay = 200;
   @Input() selectTo = '/taxon';
@@ -164,7 +163,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         q: this.search,
         limit: '' + this.limit,
         includePayload: true,
-        lang: this.lang,
+        lang: 'multi',
         matchType: this.matchType
       })
       .subscribe(
@@ -177,7 +176,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
           this.changeDetector.markForCheck();
           this.logger.warn('OmniSearch failed to find data', {
             taxon: this.search,
-            lang: this.lang,
+            lang: 'multi',
             limit: this.limit,
             err: err
           });
