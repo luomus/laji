@@ -34,12 +34,12 @@ export class ObservationComponent implements OnInit, OnDestroy {
       this.tab = params['tab'] || 'map';
     });
     this.subQuery = this.route.queryParams.subscribe(params => {
-      if (params['target']) {
-        this.searchQuery.query.target = [params['target']];
-      }
       this.searchQuery.setQueryFromQueryObject(params);
       if (params['reset']) {
         this.searchQuery.query = {};
+      }
+      if (params['target']) {
+        this.searchQuery.query.target = [params['target']];
       }
       this.searchQuery.queryUpdate({formSubmit: !!params['reset'], newData: true});
     });
