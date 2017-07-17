@@ -8,15 +8,15 @@
           </div>
         </div>
         <div style="margin-top: 20px;" class="row">
-          <laji-stat-item [description]="'home.carousel.species' | translate">
+          <laji-stat-item [colClass]="'col-md-3 col-sm-4'" [description]="'home.carousel.species' | translate">
             <laji-observation-count [lightLoader]="true" [field]="'unit.linkings.taxon.id'"
                                     [query]="{taxonRankId: 'MX.species', cache: true}">
             </laji-observation-count>
           </laji-stat-item>
-          <laji-stat-item [colClass]="'col-sm-4'" [description]="'home.carousel.observations' | translate">
+          <laji-stat-item [colClass]="'col-md-4 col-sm-5'" [description]="'home.carousel.observations' | translate">
             <laji-observation-count [lightLoader]="true" [query]="{cache: true}"></laji-observation-count>
           </laji-stat-item>
-          <laji-stat-item [description]="'home.carousel.collections' | translate">
+          <laji-stat-item [colClass]="'col-md-3 col-sm-3'" [description]="'home.carousel.collections' | translate">
             <laji-observation-count [lightLoader]="true" [field]="'document.collectionId'"
                                     [query]="{cache: true}"></laji-observation-count>
           </laji-stat-item>
@@ -31,11 +31,11 @@
           </div>
         </div>
         <div style="margin-top: 20px;" class="row">
-          <laji-stat-item [description]="'home.carousel.preserved' | translate" colClass="col-sm-4">
+          <laji-stat-item [colClass]="'col-lg-4 col-md-5 col-sm-6'" [description]="'home.carousel.preserved' | translate" colClass="col-sm-4">
             <laji-observation-count [lightLoader]="true"
                                     [query]="{superRecordBasis: 'PRESERVED_SPECIMEN', cache: true}"></laji-observation-count>
           </laji-stat-item>
-          <laji-stat-item [description]="'home.carousel.digitized' | translate" colClass="col-sm-4">
+          <laji-stat-item [colClass]="'col-lg-4 col-md-5 col-sm-6'" [description]="'home.carousel.digitized' | translate" colClass="col-sm-4">
             <laji-observation-count [lightLoader]="true"
                                     [query]="{superRecordBasis: 'PRESERVED_SPECIMEN', hasMedia: true, cache: true}">
             </laji-observation-count>
