@@ -52,6 +52,7 @@
     "laji-map": "1.0.242",
     "localforage": "^1.5.0",
     "ng2-nouislider": "^1.6.1",
+    "ng2-select": "vixriihi/ng2-select.git#development",
     "ng2-toastr": "^4.0.1",
     "ng2-webstorage": "^1.6.2",
     "ngx-bootstrap": "^1.6.6",
