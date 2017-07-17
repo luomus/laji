@@ -69,7 +69,8 @@ export class SearchQuery {
 
   stringTypes = [
     'taxonRankId',
-    'ykj3'
+    'ykj3',
+    'ykj3Center'
   ];
 
   constructor(

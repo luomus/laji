@@ -65,7 +65,7 @@
     "zone.js": "^0.8.10"
   },
   "devDependencies": {
-    "@angular/cli": "^1.0.3",
+    "@angular/cli": "^1.2.1",
     "@angular/compiler-cli": "^4.0.0",
     "@angular/language-service": "^4.0.0",
     "@types/d3": "^3.0.0",
@@ -89,7 +89,7 @@
     "protractor": "~5.1.0",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
-    "typescript": "~2.2.0"
+    "typescript": "~2.3.2"
   },
   "keywords": [
     "laji.fi"

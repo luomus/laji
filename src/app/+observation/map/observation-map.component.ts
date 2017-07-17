@@ -18,7 +18,6 @@ import { ValueDecoratorService } from '../result-list/value-decorator.sevice';
 import { Logger } from '../../shared/logger/logger.service';
 import { LabelPipe } from '../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
-import 'leaflet';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { MapComponent } from '../../shared/map/map.component';
 import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';

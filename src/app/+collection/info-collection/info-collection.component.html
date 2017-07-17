@@ -55,10 +55,18 @@
       <td>{{idService.getUri(collection.id)}}</td>
     </tr>
     <tr>
-      <th>{{'omniSearch.allObservation'| translate| titlecase}}</th>
+      <th>{{'omniSearch.allObservation' | translate| titlecase}}</th>
       <td>
         <a [routerLink]="['/observation' | localize]" [queryParams]="{collectionId: collection.id}">
           <laji-observation-count [query]="{collectionId: collection.id}"></laji-observation-count>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <th>{{'typeSpecimens' | titlecase}}</th>
+      <td>
+        <a [routerLink]="['/observation' | localize]" [queryParams]="{collectionId: collection.id, typeSpecimen: true}">
+          <laji-observation-count [query]="{collectionId: collection.id, typeSpecimen: true}"></laji-observation-count>
         </a>
       </td>
     </tr>

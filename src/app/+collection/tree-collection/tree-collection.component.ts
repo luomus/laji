@@ -15,7 +15,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { IdService } from '../../shared/service/id.service';
 import { MultiLangService } from '../../shared/service/multi-lang.service';
 import { TranslateService } from '@ngx-translate/core';
-import { setTimeout } from 'timers';
 
 @Component({
   selector: '[laji-collection-tree]',

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { Image } from './image.interface';
-import { setTimeout } from 'timers';
 
 @Component({
   selector: 'laji-image-gallery-overlay',
