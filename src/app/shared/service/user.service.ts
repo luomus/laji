@@ -182,9 +182,11 @@ export class UserService extends LocalDb {
     return Observable.of(this.userSettings && this.userSettings[key] ? this.userSettings[key] : undefined);
   }
 
-  public setUserSetting(key: string, value: any) {
-    const userId = this.currentUserId ? this.currentUserId : UserService.UNKOWN_USER;
-    this.setItem(userId, {...this.userSettings, [key]: value})
+  public setUserSetting(key: string, value: any): void {
+    if (!this.currentUserId) {
+      return;
+    }
+    this.setItem(this.currentUserId, {...this.userSettings, [key]: value})
       .do((settings) => this.userSettings = settings)
       .subscribe();
   };
