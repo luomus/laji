@@ -11,7 +11,6 @@ import {
 } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable } from 'rxjs/Observable';
-import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ng2-webstorage';
 import { Subscription } from 'rxjs/Subscription';
@@ -50,7 +49,6 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
 
   constructor(
     private warehouseApi: WarehouseApi,
-    private labelService: TriplestoreLabelService,
     private userService: UserService,
     private changeDetector: ChangeDetectorRef
   ) { }
@@ -153,12 +151,12 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       if (this.interval) {
         this.interval.unsubscribe();
       }
-      this.changeDetector.markForCheck();
     } else if (!this.interval) {
       this.interval = Observable
         .interval(this.recheckIterval)
         .subscribe(() => this.updateDocument());
     }
+    this.changeDetector.markForCheck();
   }
 
 }
