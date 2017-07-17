@@ -9,6 +9,7 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 export class HideScrollDirective {
 
   private disableWindowScroll = false;
+  private isTouching = false;
   private el: any;
 
   constructor(ref: ElementRef) {
@@ -16,27 +17,53 @@ export class HideScrollDirective {
   }
 
   @HostListener('mouseenter')
-  onEnter() {
-    this.el.style.overflow = 'auto';
-    this.disableWindowScroll = true;
+  onMouseEnter() {
+    try {
+      if (!this.isTouching) {
+        this.el.style.overflow = 'auto';
+        this.disableWindowScroll = true;
+      }
+    } catch (e) {}
   }
 
   @HostListener('mouseleave')
-  onLeave() {
-    this.el.style.overflow = 'hidden';
-    this.disableWindowScroll = false;
+  onMouseLeave() {
+    try {
+      if (!this.isTouching) {
+        this.el.style.overflow = 'hidden';
+        this.disableWindowScroll = false;
+      }
+    } catch (e) {}
+  }
+
+  @HostListener('touchstart')
+  onTouchStart() {
+    try {
+      this.isTouching = true;
+      this.el.style.overflow = 'auto';
+    } catch (e) {}
+  }
+
+  @HostListener('touchend')
+  onTouchEnd() {
+    try {
+      this.isTouching = true;
+      this.el.style.overflow = 'hidden';
+    } catch (e) {}
   }
 
   @HostListener('window:wheel', ['$event'])
-  onWindowScroll(event: WheelEvent) {
-    if (this.disableWindowScroll &&
-      (
-        (event.deltaY < 0 && this.el.scrollTop === 0) ||
-        (event.deltaY > 0 && (this.el.scrollTop + this.el.offsetHeight + 1) >= this.el.scrollHeight)
-      )
-    ) {
-      event.stopPropagation();
-      event.preventDefault();
-    }
+  onWindowWheel(event: WheelEvent) {
+    try {
+      if (this.disableWindowScroll &&
+        (
+          (event.deltaY < 0 && this.el.scrollTop === 0) ||
+          (event.deltaY > 0 && (this.el.scrollTop + this.el.offsetHeight + 1) >= this.el.scrollHeight)
+        )
+      ) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+    } catch (e) {}
   }
 }
