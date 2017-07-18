@@ -1,5 +1,6 @@
 .router-content {
   /*min-height: calc(100vh - 150px); Uncomment when form supports scrolling in container */
+  min-height: 300px; /* Remove when form supports scrolling in container */
   position: relative;
 }
 

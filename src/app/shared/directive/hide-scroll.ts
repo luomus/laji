@@ -56,6 +56,7 @@ export class HideScrollDirective {
   onWindowWheel(event: WheelEvent) {
     try {
       if (this.disableWindowScroll &&
+        this.el.scrollHeight > this.el.offsetHeight &&
         (
           (event.deltaY < 0 && this.el.scrollTop === 0) ||
           (event.deltaY > 0 && (this.el.scrollTop + this.el.offsetHeight + 1) >= this.el.scrollHeight)
@@ -64,6 +65,6 @@ export class HideScrollDirective {
         event.stopPropagation();
         event.preventDefault();
       }
-    } catch (e) {}
+    } catch (e) {console.log(e)}
   }
 }
