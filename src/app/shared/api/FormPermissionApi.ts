@@ -23,7 +23,6 @@ import {
 } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
 
 import * as models from '../model';
 import { FormPermission } from '../model/FormPermission';

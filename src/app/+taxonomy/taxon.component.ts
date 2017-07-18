@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
 import { InformalTaxonGroupApi } from '../shared/api/InformalTaxonGroupApi';
 import { TaxonomyApi } from '../shared/api/TaxonomyApi';
 import { InformalTaxonGroup } from '../shared/model/InformalTaxonGroup';

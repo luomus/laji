@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
 import { MetadataApi } from '../api/MetadataApi';
 import { Observer } from 'rxjs/Observer';
 

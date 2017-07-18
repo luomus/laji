@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,7 +13,6 @@ import { Collection } from '../../shared/model/Collection';
 import { IdService } from '../../shared/service/id.service';
 import { SourceApi } from '../../shared/api/SourceApi';
 import { Source } from '../../shared/model/Source';
-import { debounce } from 'underscore';
 import { LocalStorage } from 'ng2-webstorage';
 import { MapService } from '../../shared/map/map.service';
 import { WindowRef } from '../../shared/windows-ref';
@@ -33,6 +33,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   @ViewChild('tabs') tabs;
   @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
 
+  public debouchAfterChange = 500;
   public limit = 10;
   public formQuery: ObservationFormQuery;
   public dataSource: Observable<any>;
@@ -104,7 +105,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   private subUpdate: Subscription;
   private subMap: Subscription;
   private lastQuery: string;
-  private delayedSearch;
+  private delayedSearchSource = new Subject<any>();
+  private delayedSearch = this.delayedSearchSource.asObservable();
+  private subSearch: Subscription;
 
   constructor(public searchQuery: SearchQuery,
               public translate: TranslateService,
@@ -113,7 +116,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
               private sourceService: SourceApi,
               private mapService: MapService,
               private winRef: WindowRef) {
-    this.delayedSearch = debounce(this.onSubmit, 500);
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.formQuery.taxon);
     }).mergeMap((token: string) => this.getTaxa(token));
@@ -146,6 +148,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.subSearch = this.delayedSearch
+      .debounceTime(this.debouchAfterChange)
+      .subscribe(() => this.onSubmit());
     if (!this.observationSettings) {
       this.observationSettings = { showIntro: true };
     }
@@ -154,7 +159,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       res => {
         if (res.formSubmit) {
           this.queryToFormQuery(this.searchQuery.query);
-          this.onSubmit(false);
+          this.onSubmit();
         }
       });
     this.subMap = this.mapService.map$.subscribe((event) => {
@@ -174,6 +179,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
     if (this.subMap) {
       this.subMap.unsubscribe();
+    }
+    if (this.subSearch) {
+      this.subSearch.unsubscribe();
     }
   }
 
@@ -378,7 +386,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   onQueryChange() {
     this.taxonName = null;
-    this.delayedSearch(true);
+    this.delayedSearchSource.next(true);
   }
 
   enableAccuracySlider() {
@@ -398,7 +406,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  onSubmit(updateQuery = true) {
+  onSubmit() {
     this.formQueryToQuery(this.formQuery);
     const cacheKey = JSON.stringify(this.searchQuery.query);
     if (this.lastQuery === cacheKey) {

@@ -25,7 +25,6 @@ import {
 } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
 import { Annotation } from '../model/Annotation';
 import { PagedResult } from '../model/PagedResult';
 
