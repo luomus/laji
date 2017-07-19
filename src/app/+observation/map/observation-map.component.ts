@@ -411,6 +411,11 @@ export class ObservationMapComponent implements OnInit, OnChanges {
             this.loading = false;
             this.changeDetector.markForCheck();
           }
+        },
+        (err) => {
+          this.loading = false;
+          this.changeDetector.markForCheck();
+          this.logger.warn('Could not get list for the map!', err);
         }
       );
   }

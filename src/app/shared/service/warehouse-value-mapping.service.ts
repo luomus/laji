@@ -12,6 +12,7 @@ export class WarehouseValueMappingService {
 
   constructor(private warehouseService: WarehouseApi) {
     this.pending = this.warehouseService.warehouseEnumerationLabels()
+      .timeout(10000)
       .map(data => this.parseResult(data))
       .share();
   };
@@ -31,9 +32,10 @@ export class WarehouseValueMappingService {
           observer.next(res);
           observer.complete();
         };
-        this.pending.subscribe((_: any) => {
-          onComplete(this[list][value] || value);
-        });
+        this.pending.subscribe(
+          (_: any) => { onComplete(this[list][value] || value); },
+          () => { onComplete(value); }
+          );
       });
     } else {
       return Observable.of(this[list][value] || value);
