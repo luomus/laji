@@ -12,7 +12,7 @@ export class WarehouseValueMappingService {
 
   constructor(private warehouseService: WarehouseApi) {
     this.pending = this.warehouseService.warehouseEnumerationLabels()
-      .timeout(10000)
+      .timeout(WarehouseApi.longTimeout)
       .map(data => this.parseResult(data))
       .share();
   };

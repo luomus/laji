@@ -3,6 +3,7 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Util } from '../../shared/service/util.service';
 import { TaxonomyImage } from '../../shared/model/Taxonomy';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { Logger } from '../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-gallery',
@@ -22,7 +23,8 @@ export class GalleryComponent implements OnChanges {
   loading = false;
 
   constructor(
-    private warehouseApi: WarehouseApi
+    private warehouseApi: WarehouseApi,
+    private logger: Logger
   ) {
   }
 
@@ -53,6 +55,7 @@ export class GalleryComponent implements OnChanges {
         // 'document.media',
         'document.documentId'
       ], undefined, this.pageSize, this.page)
+      .timeout(WarehouseApi.longTimeout)
       .map((data) => {
         const images = [];
         this.total = data.total;
@@ -83,6 +86,10 @@ export class GalleryComponent implements OnChanges {
         this.loading = false;
         this.images = images;
         this.hasData.emit(images.length > 0);
+      }, (err) => {
+        this.loading = false;
+        this.hasData.emit(false);
+        this.logger.error('Unable to fetch image from warehouse', err);
       });
   }
 }

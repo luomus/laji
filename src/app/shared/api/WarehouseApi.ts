@@ -35,6 +35,7 @@ import { WarehouseCountResultInterface } from '../model/WarehouseCountResultInte
 
 @Injectable()
 export class WarehouseApi {
+  public static readonly longTimeout = 10000;
   protected basePath = '/api';
   public defaultHeaders: Headers = new Headers();
 

@@ -386,6 +386,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           undefined, this.size, page, true
         );
       })
+      .timeout(WarehouseApi.longTimeout * 3)
       .delay(100)
       .subscribe((data: any) => {
           if (data.featureCollection) {
