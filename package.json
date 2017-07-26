@@ -1,6 +1,6 @@
 {
   "name": "laji-front",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "description": "laji.fi frontend",
   "scripts": {
     "ng": "ng",
@@ -48,7 +48,8 @@
     "intl": "^1.2.5",
     "json2csv": "^3.7.3",
     "laji-form": "0.0.207",
-    "laji-map": "1.0.243",
+    "laji-form": "0.0.205",
+    "laji-map": "1.0.244",
     "localforage": "^1.5.0",
     "ng2-nouislider": "^1.6.1",
     "ng2-toastr": "^4.0.1",
