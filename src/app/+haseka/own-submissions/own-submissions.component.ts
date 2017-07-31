@@ -16,6 +16,7 @@ export class OwnSubmissionsComponent implements OnInit {
   documentCache = {};
   documents$: Subscription;
 
+  year: number;
   yearInfo: any[];
 
   yearInfoError: string;
@@ -31,8 +32,8 @@ export class OwnSubmissionsComponent implements OnInit {
     this.documentService.countByYear(this.userService.getToken()).subscribe(
       (results) => {
         this.yearInfo = results;
-        const lastYear = results.length > 0 ? results[results.length - 1].year : null;
-        this.getDocumentsByYear(lastYear);
+        this.year = results.length > 0 ? results[results.length - 1].year : null;
+        this.getDocumentsByYear(this.year);
       },
       (err) => {
         this.translate.get('haseka.form.genericError')
@@ -41,8 +42,9 @@ export class OwnSubmissionsComponent implements OnInit {
     );
   }
 
-  sliderRangeChange(newRange: number) {
-    this.getDocumentsByYear(newRange);
+  sliderRangeChange(newYear: number) {
+    this.year = newYear;
+    this.getDocumentsByYear(this.year);
   }
 
   private getDocumentsByYear(year: number) {

@@ -28,17 +28,22 @@ export class DocumentToCsvService {
     private formService: FormService
   ) {}
 
-  public downloadDocumentAsCsv(doc: Document) {
-    this.formService.getFormInJSONFormat(doc.formID, this.translate.currentLang)
-      .subscribe((jsonForm) => {
-        this.getCsv(doc, jsonForm).subscribe((csv) => {
-
-          this.translate.get('haseka.submissions.submission').subscribe((msg) => {
-            const fileName = msg + '_' + doc.id.split('.')[1] + '.csv';
-            this.downloadCsv(csv, fileName);
-          });
-        });
+  public downloadDocumentsAsCsv(docs: Document[], year: number) {
+    this.getCsv(docs).subscribe((csv) => {
+      this.translate.get('haseka.submissions.submissions').subscribe((msg) => {
+        const fileName = msg + '_' + year + '.csv';
+        this.downloadCsv(csv, fileName);
       });
+    });
+  }
+
+  public downloadDocumentAsCsv(doc: Document) {
+    this.getCsv([doc]).subscribe((csv) => {
+      this.translate.get('haseka.submissions.submission').subscribe((msg) => {
+        const fileName = msg + '_' + doc.id.split('.')[1] + '.csv';
+        this.downloadCsv(csv, fileName);
+      });
+    });
   }
 
   private downloadCsv(csv: string, fileName: string) {
@@ -56,13 +61,36 @@ export class DocumentToCsvService {
     }
   }
 
-  private getCsv(doc: Document, form: any): Observable<string> {
-    return this.getFields(doc, form)
-      .switchMap((fields) => {
-        return this.getData(Util.clone(doc), form, fields)
-          .map((data) => {
-            return json2csv({fields: fields, data: data});
+  private getCsv(docs: Document[]): Observable<string> {
+    return this.getJsonForms(docs)
+      .switchMap((jsonForms) => {
+        return this.getFields(docs, jsonForms)
+          .switchMap((fields) => {
+            const dataObservables = docs.map((doc) => (this.getData(Util.clone(doc), jsonForms[doc.formID], fields)));
+            return Observable.forkJoin(dataObservables)
+              .map((data) => {
+                const mergedData = [].concat.apply([], data);
+                return json2csv({fields: fields, data: mergedData});
+              });
           });
+      });
+  }
+
+  private getJsonForms(docs: Document[], jsonForms = {}, idx = 0): Observable<any> {
+    if (idx >= docs.length) {
+      return Observable.of(jsonForms);
+    }
+
+    const formId = docs[idx].formID;
+
+    if (jsonForms[formId]) {
+      return this.getJsonForms(docs, jsonForms, idx + 1);
+    }
+
+    return this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
+      .switchMap((jsonForm) => {
+        jsonForms[formId] = jsonForm;
+        return this.getJsonForms(docs, jsonForms, idx + 1);
       });
   }
 
@@ -126,9 +154,9 @@ export class DocumentToCsvService {
     return result;
   }
 
-  private getFields(doc: Document, jsonForm: any): Observable<any[]> {
-    const queue = [{obj: doc, key: 'document', path: ''}];
-    let next, obj, key, path;
+  private getFields(docs: Document[], jsonForms: any): Observable<any[]> {
+    const queue = docs.map((doc) => ({obj: doc, key: 'document', path: '', formId: doc.formID}));
+    let next, obj, key, path, formId;
     const fields = [];
     const labelObservables$ = [];
 
@@ -137,6 +165,7 @@ export class DocumentToCsvService {
       obj = next.obj;
       key = next.key;
       path = next.path;
+      formId = next.formId;
 
       for (const i in obj) {
         if (!obj.hasOwnProperty(i) || obj[i] == null || i.charAt(0) === '@'
@@ -149,14 +178,18 @@ export class DocumentToCsvService {
         if (i === 'geometry' || typeof obj[i] !== 'object' || (Array.isArray(obj[i]) && typeof obj[i][0] !== 'object')) {
           if (fields.filter((f) => (f.value === field)).length > 0) { continue; }
 
-          const properties = this.getFieldProperties(field, jsonForm);
+          const properties = this.getFieldProperties(field, jsonForms[formId]);
           const extraFieldIdx = this.extraFields.indexOf(field);
 
           if (properties) {
             fields.push(Object.assign({value: field}, properties));
           } else if (extraFieldIdx > -1) {
             const capitalizedKey = i.charAt(0).toUpperCase() + i.slice(1);
-            const fieldData = {value: field, label: capitalizedKey, sortIdx: extraFieldIdx - this.extraFields.length};
+            const fieldData = {
+              value: field,
+              label: capitalizedKey,
+              sortIdx: extraFieldIdx - this.extraFields.length
+            };
             fields.push(fieldData);
             if (i !== 'id') {
               labelObservables$.push(this.getLabel(i).do((label) => {if (label !== i) {fieldData.label = label; }}));
@@ -164,39 +197,23 @@ export class DocumentToCsvService {
           }
         } else if (Array.isArray(obj[i])) {
           for (let j = 0; j < obj[i].length; j++) {
-            if (!this.isEmpty(i, obj[i][j], jsonForm)) {
-              queue.push({obj: obj[i][j], key: i, path: path + i + '.'});
+            if (!this.isEmpty(i, obj[i][j], jsonForms[formId])) {
+              queue.push({obj: obj[i][j], key: i, path: path + i + '.', formId: formId});
             }
           }
         } else {
-          queue.push({obj: obj[i], key: i, path: path + i + '.'});
+          queue.push({obj: obj[i], key: i, path: path + i + '.', formId: formId});
         }
       }
     }
 
-    this.sortFieldData(fields, doc, jsonForm);
+    // this.sortFieldData(fields, jsonForm);
 
     return Observable.forkJoin(labelObservables$)
       .map(() => (fields));
   }
 
-  private sortFieldData(fields: any[], doc: Document, jsonForm: any) {
-    const getObj = (parts: string[], idx: number): any => {
-      let obj = doc;
-      for (let i = 0; i <= idx; i++) {
-        if (Array.isArray(obj)) {
-          for (let j = 0; j < obj.length; j++) {
-            if (!this.isEmpty(parts[i - 1], obj[j], jsonForm)) {
-              obj = obj[j];
-              break;
-            }
-          }
-        }
-        obj = obj[parts[i]];
-      }
-      return obj;
-    };
-
+  /*private sortFieldData(fields: any[], doc: Document, jsonForm: any) {
     fields.sort((a, b) => {
       const aPath = a.value.substring(0, a.value.lastIndexOf('.'));
       const bPath =  b.value.substring(0, b.value.lastIndexOf('.'));
@@ -214,9 +231,6 @@ export class DocumentToCsvService {
         commonPath += aParts[i] + '.';
         i++;
       }
-
-      const aObj = getObj(aParts, i);
-      const bObj = getObj(bParts, i);
 
       if (Array.isArray(aObj) && typeof aObj[0] === 'object') {
         return 1;
@@ -239,7 +253,7 @@ export class DocumentToCsvService {
 
       return aSortIdx - bSortIdx;
     });
-  }
+  }*/
 
   private getFieldProperties(field: string, jsonForm: any): any {
     const splitted = field.split('.');
@@ -253,6 +267,7 @@ export class DocumentToCsvService {
         if (splitted[i] === properties[j].name) {
           if (i === splitted.length - 1) {
             fieldProperties = {label: properties[j].label, sortIdx: j};
+
             if (properties[j].options && properties[j].options.value_options) {
               fieldProperties.enums = properties[j].options.value_options;
             }

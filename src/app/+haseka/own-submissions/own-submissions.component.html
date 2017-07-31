@@ -5,7 +5,7 @@
 <laji-spinner [spinning]="!(yearInfo || yearInfoError)" [overlay]="false">
   <div *ngIf="!yearInfoError && !!yearInfo">
     <laji-year-slider (onRangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo"></laji-year-slider>
-    <laji-own-datatable [loadError]="documentError" [documents]="activeDocuments"></laji-own-datatable>
+    <laji-own-datatable [loadError]="documentError" [year]="year" [documents]="activeDocuments"></laji-own-datatable>
   </div>
 </laji-spinner>
 

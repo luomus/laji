@@ -286,6 +286,7 @@
   "haseka.submissions.pcs": "kpl",
   "haseka.submissions.download": "Lataa havaintoerä",
   "haseka.submissions.submission": "havaintoera",
+  "haseka.submissions.submissions": "havaintoerat",
   "haseka.submissions.toStatistics": "Siirry tilastosivulle",
   "haseka.submissions.toEdit": "Siirry muokkaussivulle",
   "haseka.submissions.loadError": "Vuoden {{year}} havaintoerien lataus epäonnistui. Yritä hetken kuluttua uudelleen.",

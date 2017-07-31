@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import { DocumentInfoService } from '../../document-info.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -21,6 +21,7 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
   providers: [DocumentToCsvService]
 })
 export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() year: number;
   @Input() documents: Document[];
   @Input() loadError: '';
   formsById = {};
@@ -73,8 +74,10 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.subTrans.unsubscribe();
   }
 
-  ngOnChanges() {
-    this.updateRows();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['documents']) {
+      this.updateRows();
+    }
   }
 
   @HostListener('window:resize')
@@ -150,6 +153,10 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.router.navigate(
       this.localizeRouterService.translateRoute([this.formService.getEditUrlPath(formId, row.id)])
     );
+  }
+
+  downloadAll() {
+    this.csvService.downloadDocumentsAsCsv(this.documents, this.year);
   }
 
   downloadDocument(index: number) {

@@ -1,11 +1,14 @@
 <laji-spinner [spinning]="!(documents && rows)" [overlay]="false">
   <div *ngIf="documents && rows">
-    <input
-      class="form-control filter-input"
-      type='text'
-      placeholder="{{'haseka.submissions.filter' | translate}}"
-      (keyup)='updateFilter($event)'
-    />
+    <div class="form-inline" id="filter-row-container">
+      <input class="form-control filter-input"
+             type='text'
+             placeholder="{{'haseka.submissions.filter' | translate}}"
+             (keyup)='updateFilter($event)'/>
+      <button type="button" class="btn btn-default pull-right" (click)="downloadAll()">
+        <span><i class="glyphicon glyphicon-download-alt"></i></span>
+      </button>
+    </div>
     <ngx-datatable
       class="material"
       [cssClasses]="{

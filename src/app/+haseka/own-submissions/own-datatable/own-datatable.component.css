@@ -15,6 +15,9 @@
 
 .filter-input {
   width: 30%;
+}
+
+#filter-row-container {
   margin-bottom: 5px;
 }
 
