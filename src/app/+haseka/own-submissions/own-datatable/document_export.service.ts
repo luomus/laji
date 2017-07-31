@@ -8,14 +8,13 @@ import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentInfoService } from '../../document-info.service';
 import { geoJSONToISO6709 } from 'laji-map/lib/utils';
-import json2csv from 'json2csv/lib/json2csv';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 import { Observable } from 'rxjs/Observable';
 
-/**
- * Csv service
- */
+
 @Injectable()
-export class DocumentToCsvService {
+export class DocumentExportService {
   private readonly extraFields = ['id', 'formID', 'dateCreated', 'dateEdited'];
   private readonly classPrefixes = {formID: 'MY', dateCreated: 'MZ', dateEdited: 'MZ'};
   private readonly valuePrefixes = {collection: 'HR', person: 'MA'};
@@ -28,40 +27,43 @@ export class DocumentToCsvService {
     private formService: FormService
   ) {}
 
-  public downloadDocumentsAsCsv(docs: Document[], year: number) {
-    this.getCsv(docs).subscribe((csv) => {
+  public downloadDocuments(docs: Document[], year: number, type: string) {
+    this.getBuffer(docs, type).subscribe((buffer) => {
       this.translate.get('haseka.submissions.submissions').subscribe((msg) => {
-        const fileName = msg + '_' + year + '.csv';
-        this.downloadCsv(csv, fileName);
+        const fileName = msg + '_' + year;
+        this.downloadData(buffer, fileName, type);
       });
     });
   }
 
-  public downloadDocumentAsCsv(doc: Document) {
-    this.getCsv([doc]).subscribe((csv) => {
+  public downloadDocument(doc: Document, type: string) {
+    this.getBuffer([doc], type).subscribe((buffer) => {
       this.translate.get('haseka.submissions.submission').subscribe((msg) => {
-        const fileName = msg + '_' + doc.id.split('.')[1] + '.csv';
-        this.downloadCsv(csv, fileName);
+        const fileName = msg + '_' + doc.id.split('.')[1];
+        this.downloadData(buffer, fileName, type);
       });
     });
   }
 
-  private downloadCsv(csv: string, fileName: string) {
-    if (window.navigator.msSaveBlob) {
-      const blob = new Blob(['\ufeff' + csv], {type: 'text/csv;charset=utf-8'});
-      window.navigator.msSaveBlob(blob, fileName);
+  private downloadData(buffer: any, fileName: string, fileExtension: string) {
+    let type;
+
+    if (fileExtension === 'ods') {
+      type = 'application/vnd.oasis.opendocument.spreadsheet';
+    } else if (fileExtension === 'xlsx') {
+      type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     } else {
-      const uri = encodeURI(csv);
-      const downloadLink = document.createElement('a');
-      downloadLink.href = 'data:text/csv;charset=utf-8,%EF%BB%BF' + uri;
-      downloadLink.download = fileName;
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
+      type = 'text/csv;charset=utf-8';
     }
+
+    const data: Blob = new Blob([buffer], {
+      type: type
+    });
+
+    FileSaver.saveAs(data, fileName + '.' + fileExtension);
   }
 
-  private getCsv(docs: Document[]): Observable<string> {
+  private getBuffer(docs: Document[], type): Observable<string> {
     return this.getJsonForms(docs)
       .switchMap((jsonForms) => {
         return this.getFields(docs, jsonForms)
@@ -70,7 +72,18 @@ export class DocumentToCsvService {
             return Observable.forkJoin(dataObservables)
               .map((data) => {
                 const mergedData = [].concat.apply([], data);
-                return json2csv({fields: fields, data: mergedData});
+
+                const aoa = this.convertDataToAoA(fields, mergedData);
+                const sheet = XLSX.utils.aoa_to_sheet(aoa);
+
+                if (type === 'csv') {
+                  return XLSX.utils.sheet_to_csv(sheet);
+                }
+
+                const book = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(book, sheet);
+
+                return XLSX.write(book, {bookType: type, type: 'buffer'});
               });
           });
       });
@@ -92,6 +105,38 @@ export class DocumentToCsvService {
         jsonForms[formId] = jsonForm;
         return this.getJsonForms(docs, jsonForms, idx + 1);
       });
+  }
+
+  private convertDataToAoA(fields: any, data: any) {
+    const getValueByPath = (o: any, path: string) => {
+      const splits = path.split('.');
+      for (let i = 0; i < splits.length; i++) {
+        o = o[splits[i]];
+
+        if (!o) { return ''; }
+      }
+
+      return o;
+    };
+
+    if (fields.length < 1) { return []; }
+
+    const aoa = [[]];
+
+    for (let i = 0; i < fields.length; i++) {
+      aoa[0].push(fields[i].label);
+    }
+
+    for (let i = 0; i < data.length; i++) {
+      const obj = data[i];
+      aoa.push([]);
+
+      for (let j = 0; j < fields.length; j++) {
+        aoa[i + 1].push(getValueByPath(obj, fields[j].value));
+      }
+    }
+
+    return aoa;
   }
 
   private getData(obj: any, form: any, fields: any, path = ''): Observable<any> {

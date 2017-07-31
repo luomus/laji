@@ -10,7 +10,7 @@ import { FormService } from '../../../shared/service/form.service';
 import { RouterChildrenEventService } from '../../router-children-event.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { DocumentToCsvService } from './document-to-csv.service';
+import { DocumentExportService } from './document_export.service';
 import { WindowRef } from '../../../shared/windows-ref';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 
@@ -18,7 +18,7 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
   selector: 'laji-own-datatable',
   templateUrl: './own-datatable.component.html',
   styleUrls: ['./own-datatable.component.css'],
-  providers: [DocumentToCsvService]
+  providers: [DocumentExportService]
 })
 export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() year: number;
@@ -54,7 +54,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     private formService: FormService,
     private eventService: RouterChildrenEventService,
     private localizeRouterService: LocalizeRouterService,
-    private csvService: DocumentToCsvService,
+    private documentExportService: DocumentExportService,
     private window: WindowRef
   ) {}
 
@@ -155,13 +155,13 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     );
   }
 
-  downloadAll() {
-    this.csvService.downloadDocumentsAsCsv(this.documents, this.year);
+  downloadAll(fileType: string) {
+    this.documentExportService.downloadDocuments(this.documents, this.year, fileType);
   }
 
-  downloadDocument(index: number) {
+  downloadDocument(index: number, fileType: string) {
     const doc = this.documents[index];
-    this.csvService.downloadDocumentAsCsv(doc);
+    this.documentExportService.downloadDocument(doc, fileType);
   }
 
   toStatisticsPage(docId: string) {

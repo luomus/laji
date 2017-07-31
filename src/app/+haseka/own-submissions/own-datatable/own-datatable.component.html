@@ -5,9 +5,16 @@
              type='text'
              placeholder="{{'haseka.submissions.filter' | translate}}"
              (keyup)='updateFilter($event)'/>
-      <button type="button" class="btn btn-default pull-right" (click)="downloadAll()">
-        <span><i class="glyphicon glyphicon-download-alt"></i></span>
-      </button>
+      <div class="pull-right">
+        <button type="button" class="btn btn-default" (click)="downloadAll(fileTypeSelect.value)">
+          <span><i class="glyphicon glyphicon-download-alt"></i> Lataa havaintoerät</span>
+        </button>
+        <select class="form-control" #fileTypeSelect>
+          <option value="csv">.csv</option>
+          <option value="ods">.ods</option>
+          <option value="xlsx">.xlsx</option>
+        </select>
+      </div>
     </div>
     <ngx-datatable
       class="material"
@@ -104,7 +111,7 @@
                   [tooltip]="'haseka.submissions.download' | translate"
                   [placement]="'left'"
                   [container]="'body'"
-                  (click)="downloadDocument(row.index)">
+                  (click)="downloadDocument(row.index, fileTypeSelect.value)">
               <i class="glyphicon glyphicon-download-alt"></i>
             </span>
             <span *ngIf="formsById[documents[row.index].formID].viewerType === 'MHL.viewerTypeLineTransect'"
