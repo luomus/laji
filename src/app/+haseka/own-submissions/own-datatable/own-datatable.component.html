@@ -1,15 +1,16 @@
 <laji-spinner [spinning]="!(documents && rows)" [overlay]="false">
   <div *ngIf="documents && rows">
-    <div class="form-inline" id="filter-row-container">
-      <input class="form-control filter-input"
+    <div id="filter-row-container">
+      <input class="form-control inline-block"
              type='text'
              placeholder="{{'haseka.submissions.filter' | translate}}"
              (keyup)='updateFilter($event)'/>
-      <div class="pull-right">
-        <button type="button" class="btn btn-default" (click)="downloadAll(fileTypeSelect.value)">
+
+      <div id="download-button-container">
+        <button type="button" class="btn btn-default inline-block" (click)="downloadAll(fileTypeSelect.value)">
           <span><i class="glyphicon glyphicon-download-alt"></i> Lataa havaintoerät</span>
         </button>
-        <select class="form-control" #fileTypeSelect>
+        <select class="form-control inline-block" #fileTypeSelect>
           <option value="csv">.csv</option>
           <option value="ods">.ods</option>
           <option value="xlsx">.xlsx</option>

@@ -1,6 +1,6 @@
 .sort-full-width {
   display:inline-block;
-  width:calc(100% - 20px);
+  /*width:calc(100% - 20px);*/
 }
 
 :host >>> .center-text {
@@ -13,17 +13,28 @@
   hyphens: auto;
 }*/
 
-.filter-input {
-  width: 30%;
-}
-
 #filter-row-container {
   margin-bottom: 5px;
 }
 
+@media only screen and (min-width : 768px) {
+  #download-button-container {
+    float: right;
+  }
+
+  .inline-block {
+    width: auto;
+    vertical-align: middle;
+  }
+}
+
 @media only screen and (max-width : 767px) {
-  .filter-input {
-    width: 100%;
+  #download-button-container {
+    display: flex;
+  }
+
+  #download-button-container > button {
+    flex: 0 0 auto;
   }
 }
 
