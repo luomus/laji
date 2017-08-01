@@ -42,12 +42,10 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit() {
-    moment.locale(this.translate.currentLang);
     this.changingLocale = false;
     this.subTrans = this.translate.onLangChange
       .do(() => {
         this.changingLocale = true;
-        moment.locale(this.translate.currentLang);
       })
       .delay(0)
       .subscribe(() => {
