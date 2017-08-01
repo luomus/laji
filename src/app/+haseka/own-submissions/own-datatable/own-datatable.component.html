@@ -8,7 +8,7 @@
 
       <div id="download-button-container">
         <button type="button" class="btn btn-default inline-block" (click)="downloadAll(fileTypeSelect.value)">
-          <span><i class="glyphicon glyphicon-download-alt"></i> Lataa havaintoerät</span>
+          <span><i class="glyphicon glyphicon-download-alt"></i> {{"haseka.submissions.downloadAll" | translate}}</span>
         </button>
         <select class="form-control inline-block" #fileTypeSelect>
           <option value="csv">.csv</option>

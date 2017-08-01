@@ -285,6 +285,7 @@
   "haseka.submissions.pcs.singular": "kpl",
   "haseka.submissions.pcs": "kpl",
   "haseka.submissions.download": "Lataa havaintoerä",
+  "haseka.submissions.downloadAll": "Lataa havaintoerät",
   "haseka.submissions.submission": "havaintoera",
   "haseka.submissions.submissions": "havaintoerat",
   "haseka.submissions.toStatistics": "Siirry tilastosivulle",

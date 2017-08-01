@@ -19,6 +19,10 @@ export class DocumentExportService {
   private readonly classPrefixes = {formID: 'MY', dateCreated: 'MZ', dateEdited: 'MZ'};
   private readonly valuePrefixes = {collection: 'HR', person: 'MA'};
 
+  private csvMimeType = 'text/csv;charset=utf-8';
+  private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
+  private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
   constructor(
     private translate: TranslateService,
     private labelService: TriplestoreLabelService,
@@ -49,11 +53,11 @@ export class DocumentExportService {
     let type;
 
     if (fileExtension === 'ods') {
-      type = 'application/vnd.oasis.opendocument.spreadsheet';
+      type = this.odsMimeType;
     } else if (fileExtension === 'xlsx') {
-      type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      type = this.xlsxMimeType;
     } else {
-      type = 'text/csv;charset=utf-8';
+      type = this.csvMimeType;
     }
 
     const data: Blob = new Blob([buffer], {
@@ -113,7 +117,7 @@ export class DocumentExportService {
       for (let i = 0; i < splits.length; i++) {
         o = o[splits[i]];
 
-        if (!o) { return ''; }
+        if (!o) { return null; }
       }
 
       return o;
@@ -252,53 +256,13 @@ export class DocumentExportService {
       }
     }
 
-    // this.sortFieldData(fields, jsonForm);
+    fields.sort((a, b) => {
+      return a.sortIdx - b.sortIdx;
+    });
 
     return Observable.forkJoin(labelObservables$)
       .map(() => (fields));
   }
-
-  /*private sortFieldData(fields: any[], doc: Document, jsonForm: any) {
-    fields.sort((a, b) => {
-      const aPath = a.value.substring(0, a.value.lastIndexOf('.'));
-      const bPath =  b.value.substring(0, b.value.lastIndexOf('.'));
-
-      if (aPath === bPath) {
-        return a.sortIdx - b.sortIdx;
-      }
-
-      const aParts = a.value.split('.');
-      const bParts = b.value.split('.');
-      let commonPath = '';
-      let i = 0;
-
-      while (i < aParts.length && i < bParts.length && aParts[i] === bParts[i]) {
-        commonPath += aParts[i] + '.';
-        i++;
-      }
-
-      if (Array.isArray(aObj) && typeof aObj[0] === 'object') {
-        return 1;
-      } else if (Array.isArray(bObj) && typeof bObj[0] === 'object') {
-        return -1;
-      }
-
-      let aSortIdx = a.sortIdx;
-      let bSortIdx = b.sortIdx;
-
-      if (i !== aParts.length - 1 && aParts[i] !== 'geometry' && typeof aObj === 'object') {
-        const props = this.getFieldProperties(commonPath + '.' + aParts[i], jsonForm);
-        aSortIdx = props ? props.sortIdx : 10000;
-      }
-
-      if (i !== bParts.length - 1 && bParts[i] !== 'geometry' && typeof bObj === 'object') {
-        const props = this.getFieldProperties(commonPath + '.' + bParts[i], jsonForm);
-        bSortIdx = props ? props.sortIdx : 10000;
-      }
-
-      return aSortIdx - bSortIdx;
-    });
-  }*/
 
   private getFieldProperties(field: string, jsonForm: any): any {
     const splitted = field.split('.');
@@ -306,17 +270,19 @@ export class DocumentExportService {
 
     let properties = jsonForm.fields;
     let fieldProperties;
+    let sortIdx = '';
 
     for (let i = 0; i < splitted.length; i++) {
       for (let j = 0; j < properties.length; j++) {
         if (splitted[i] === properties[j].name) {
           if (i === splitted.length - 1) {
-            fieldProperties = {label: properties[j].label, sortIdx: j};
+            fieldProperties = {label: properties[j].label, sortIdx: sortIdx + j};
 
             if (properties[j].options && properties[j].options.value_options) {
               fieldProperties.enums = properties[j].options.value_options;
             }
           } else {
+            sortIdx += properties[j].type === 'collection' ? 10000 : 1000;
             properties = properties[j].fields;
           }
           break;
