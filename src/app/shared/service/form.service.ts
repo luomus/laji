@@ -132,11 +132,16 @@ export class FormService {
         return Observable.of(
           Object.keys(this.formDataStorage[userID])
             .filter((key) => this.isTmpId(key))
-            .map((key) => {
+            .reduce((array, key) => {
               const document = this.getTmpDoc(userID, key);
-              document.id = key;
-              return document;
-            })
+              if (!document._hasChanges) {
+                delete this.formDataStorage[userID][key];
+              } else {
+                document.id = key;
+                array.push(document);
+              }
+              return array;
+            }, [])
             .reverse()
         );
       });
