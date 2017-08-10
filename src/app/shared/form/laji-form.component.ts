@@ -120,7 +120,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               settings: settings,
               apiClient: this.apiClient,
               lang: this.lang,
-              renderSubmit: false
+              renderSubmit: false,
+              topOffset: 50,
+              bottomOffset: 50
             });
           });
         } catch (err) {
