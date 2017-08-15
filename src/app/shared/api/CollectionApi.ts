@@ -44,7 +44,7 @@ export class CollectionApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findAll(lang?: string, idIn?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Collection>>> {
+  public findAll(lang?: string, idIn?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Collection>> {
     const path = this.basePath + '/collections';
 
     let queryParameters = new URLSearchParams();

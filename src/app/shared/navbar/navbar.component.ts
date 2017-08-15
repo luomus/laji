@@ -88,16 +88,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
         },
         err => console.log(err)
       );
-    let notifications;
+    let notificationsCache;
     this.sublangChange = this.translate.onLangChange
       .filter(() => !!this.notifications)
       .filter(() => this.userService.isLoggedIn)
-      .do(() => notifications = [...this.notifications.results])
+      .do(() => notificationsCache = [...this.notifications.results])
       .do(() => this.notifications.results = [])
       .do(() => this.changeDetector.markForCheck())
       .delay(10)
       .subscribe(() => {
-        this.notifications.results = notifications;
+        this.notifications.results = notificationsCache;
         this.changeDetector.markForCheck();
       });
   }
@@ -185,13 +185,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.dropDown.autoClose = true;
         }, 100);
-        if (result) {
+        if (result && notification.id) {
           if (!notification.seen) {
             this.notificationsNotSeen--;
           }
           this.changeDetector.markForCheck();
           this.notificationService
-            .delete(notification.id, this.userService.getToken())
+            .delete(notification.id || '', this.userService.getToken())
             .switchMap(() => this.notificationService.fetch(
               this.userService.getToken(),
               '' + this.currentNotificationPage,

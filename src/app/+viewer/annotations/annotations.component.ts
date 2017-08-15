@@ -23,7 +23,7 @@ export class AnnotationsComponent implements OnInit {
   adding = false;
   type: Annotation.TypeEnum;
   annotation: Annotation = {};
-  annotation$: Observable<Annotation>;
+  annotation$: Observable<Annotation[]>;
 
   constructor(private annotationService: AnnotationService) { }
 

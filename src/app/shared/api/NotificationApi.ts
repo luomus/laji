@@ -79,7 +79,7 @@ export class NotificationApi {
       });
   }
 
-  public delete(id: Notification, personToken: string, extraHttpRequestParams?: any ): Observable<Notification> {
+  public delete(id: string, personToken: string, extraHttpRequestParams?: any ): Observable<any> {
     const path = this.basePath + `/notifications/${id}`;
 
     const queryParameters = new URLSearchParams();
