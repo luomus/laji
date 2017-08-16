@@ -239,6 +239,9 @@ export class FormService {
     if (formId === environment.nafiForm) {
       return '/theme/nafi/form/' + documentId;
     }
+    if (formId === environment.wbcForm) {
+      return '/theme/wbc/form/' + documentId;
+    }
     if (!formId) {
       formId = environment.defaultForm;
     }
