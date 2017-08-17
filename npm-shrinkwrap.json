@@ -483,9 +483,6 @@
       "integrity": "sha512-YTCb4ZpdBZFdJoqxqH1lOZBL3HCcrj8654QFFFikaOvgnMVOxl6kGp9RLnz5XiUMJVloY3UZF77JVaKX4Cgm5w==",
       "dev": true
     },
-    "Leaflet.vector-markers": {
-      "version": "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
-    },
     "abbrev": {
       "version": "1.1.0",
       "resolved": "https://registry.npmjs.org/abbrev/-/abbrev-1.1.0.tgz",
@@ -4853,9 +4850,9 @@
       }
     },
     "laji-form": {
-      "version": "0.0.221",
-      "resolved": "https://registry.npmjs.org/laji-form/-/laji-form-0.0.221.tgz",
-      "integrity": "sha512-ESvlxr/qXfMD5e0tJ8dKoXq2oRDZTEnj9hTmbVX+6IdkiCttwY1TD2lZvT8KGhVzF0quF2+0bhZ4h1X+LzxbRg==",
+      "version": "0.0.222",
+      "resolved": "https://registry.npmjs.org/laji-form/-/laji-form-0.0.222.tgz",
+      "integrity": "sha512-LWYpGxR1kLnFGwTP2PE5LWOWfPRletg4lx+FjgUjSbTA4lPp/kWuVPdrqzX3eNzWFaEjS+HvEm0qxoGn2PYRng==",
       "requires": {
         "babel-runtime": "6.25.0",
         "deep-equal": "1.0.1",
@@ -4887,7 +4884,6 @@
       "resolved": "https://registry.npmjs.org/laji-map/-/laji-map-1.0.245.tgz",
       "integrity": "sha512-chmRKkL/saa/Jx8UXZKtv9XTDAllTH9Ybe0XXCCZ6MalTMCETmnwuRpfgu1jImiUr8bb0c9TF31bA9miPRmjEw==",
       "requires": {
-        "Leaflet.vector-markers": "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6",
         "babel-runtime": "6.25.0",
         "leaflet": "1.0.3",
         "leaflet-contextmenu": "1.1.1",
@@ -4896,6 +4892,7 @@
         "leaflet-mml-layers": "2.0.1",
         "leaflet-textpath": "git+https://git@github.com/makinacorpus/Leaflet.textPath.git#ad1afd910b387e075989b258d487cd7d6db93b0b",
         "leaflet.markercluster": "1.0.3",
+        "Leaflet.vector-markers": "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6",
         "nouislider": "10.1.0",
         "proj4": "2.3.16",
         "proj4leaflet": "1.0.1"
@@ -4978,6 +4975,9 @@
       "version": "1.0.3",
       "resolved": "https://registry.npmjs.org/leaflet.markercluster/-/leaflet.markercluster-1.0.3.tgz",
       "integrity": "sha1-ZMd5NlwJUfSIXDQUAkqZTz7/xwg="
+    },
+    "Leaflet.vector-markers": {
+      "version": "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     },
     "less": {
       "version": "2.7.2",
@@ -8450,6 +8450,15 @@
       "resolved": "https://registry.npmjs.org/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz",
       "integrity": "sha1-J5siXfHVgrH1TmWt3UNS4Y+qBxM="
     },
+    "string_decoder": {
+      "version": "1.0.3",
+      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-1.0.3.tgz",
+      "integrity": "sha512-4AH6Z5fzNNBcH+6XDMfA/BTt87skxqJlO0lAh3Dker5zThcAxG6mKz+iGu308UKoPPQ8Dcqx/4JhujzltRa+hQ==",
+      "dev": true,
+      "requires": {
+        "safe-buffer": "5.1.1"
+      }
+    },
     "string-width": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/string-width/-/string-width-1.0.2.tgz",
@@ -8459,15 +8468,6 @@
         "code-point-at": "1.1.0",
         "is-fullwidth-code-point": "1.0.0",
         "strip-ansi": "3.0.1"
-      }
-    },
-    "string_decoder": {
-      "version": "1.0.3",
-      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-1.0.3.tgz",
-      "integrity": "sha512-4AH6Z5fzNNBcH+6XDMfA/BTt87skxqJlO0lAh3Dker5zThcAxG6mKz+iGu308UKoPPQ8Dcqx/4JhujzltRa+hQ==",
-      "dev": true,
-      "requires": {
-        "safe-buffer": "5.1.1"
       }
     },
     "stringstream": {
