@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { DocumentExportService } from './document_export.service';
 import { WindowRef } from '../../../shared/windows-ref';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
+import { ModalDirective } from 'ngx-bootstrap';
 
 @Component({
   selector: 'laji-own-datatable',
@@ -23,10 +24,10 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() year: number;
   @Input() documents: Document[];
-  @Input() loadError: '';
+  @Input() loadError = '';
   formsById = {};
 
-  totalMessage: '';
+  totalMessage = '';
   publicity = Document.PublicityRestrictionsEnum;
   columns = [
     {prop: 'dateEdited', mode: 'medium'},
@@ -45,7 +46,11 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   subTrans: Subscription;
   rowData$: Subscription;
 
+  downloadedDocumentIdx: number;
+  fileType = 'csv';
+
   @ViewChild(DatatableComponent) table: DatatableComponent;
+  @ViewChild('chooseFileTypeModal') public modal: ModalDirective;
 
   constructor(
     private translate: TranslateService,
@@ -155,13 +160,17 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     );
   }
 
-  downloadAll(fileType: string) {
-    this.documentExportService.downloadDocuments(this.documents, this.year, fileType);
+  openChooseFileTypeModal(docIdx: number) {
+    this.downloadedDocumentIdx = docIdx;
+    this.modal.show();
   }
 
-  downloadDocument(index: number, fileType: string) {
-    const doc = this.documents[index];
-    this.documentExportService.downloadDocument(doc, fileType);
+  download() {
+    if (this.downloadedDocumentIdx === -1) {
+      this.documentExportService.downloadDocuments(this.documents, this.year, this.fileType);
+    } else {
+      this.documentExportService.downloadDocument(this.documents[this.downloadedDocumentIdx], this.fileType);
+    }
   }
 
   toStatisticsPage(docId: string) {

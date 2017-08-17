@@ -50,8 +50,9 @@ export class DocumentExportService {
   }
 
   private downloadData(buffer: any, fileName: string, fileExtension: string) {
-    let type;
+    fileName = fileName.replace('ä', 'a');
 
+    let type;
     if (fileExtension === 'ods') {
       type = this.odsMimeType;
     } else if (fileExtension === 'xlsx') {
