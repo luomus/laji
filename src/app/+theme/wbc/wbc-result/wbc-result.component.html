@@ -1,6 +1,77 @@
-<div>
-  <h3>
-    {{'wbc.title' | translate}}
-  </h3>
-  <p>Tilastoja...</p>
+<h3>
+  {{'wbc.title' | translate}}
+  <span *ngIf="fromYear">
+    {{fromMonth | translate}}
+    {{fromYear}}
+  </span>
+</h3>
+<div class="row">
+  <div class="col-sm-12">
+    <p>
+      {{'nafi.stats.times' | translate}}
+      <br>
+      <a [routerLink] [queryParams]="{time: '1991-01-01/', type: type}">{{'theme.filterAll' | translate:{year: currentYear} }}</a>
+      <br>
+      <a [routerLink] [queryParams]="{time: currentYear, type: type}">{{'wholeYear'| translate:{year:currentYear} }}</a>
+      <a *ngIf="currentMonth > 2" > | </a>
+      <a *ngIf="currentMonth >= 3" [routerLink] [queryParams]="{time: currentYear + '-03', type: type}">{{'m-03' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth > 3" > | </a>
+      <a *ngIf="currentMonth >= 4" [routerLink] [queryParams]="{time: currentYear + '-04', type: type}">{{'m-04' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth > 4" > | </a>
+      <a *ngIf="currentMonth >= 5" [routerLink] [queryParams]="{time: currentYear + '-05', type: type}">{{'m-05' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth > 5" > | </a>
+      <a *ngIf="currentMonth >= 6" [routerLink] [queryParams]="{time: currentYear + '-06', type: type}">{{'m-06' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth > 6" > | </a>
+      <a *ngIf="currentMonth >= 7" [routerLink] [queryParams]="{time: currentYear + '-07', type: type}">{{'m-07' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth > 7" > | </a>
+      <a *ngIf="currentMonth >= 8" [routerLink] [queryParams]="{time: currentYear + '-08', type: type}">{{'m-08' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth > 8" > | </a>
+      <a *ngIf="currentMonth >= 9" [routerLink] [queryParams]="{time: currentYear + '-09', type: type}">{{'m-09' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth > 9" > | </a>
+      <a *ngIf="currentMonth >= 10" [routerLink] [queryParams]="{time: currentYear + '-10', type: type}">{{'m-10' | translate}}&nbsp;{{currentYear}}</a>
+      <br>
+      <a [routerLink] [queryParams]="{time: year, type: type}">{{'wholeYear'| translate:{year:year} }}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-03', type: type}">{{'m-03' | translate}}&nbsp;{{year}}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-04', type: type}">{{'m-04' | translate}}&nbsp;{{year}}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-05', type: type}">{{'m-05' | translate}}&nbsp;{{year}}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-06', type: type}">{{'m-06' | translate}}&nbsp;{{year}}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-07', type: type}">{{'m-07' | translate}}&nbsp;{{year}}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-08', type: type}">{{'m-08' | translate}}&nbsp;{{year}}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-09', type: type}">{{'m-09' | translate}}&nbsp;{{year}}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-10', type: type}">{{'m-10' | translate}}&nbsp;{{year}}</a>
+    </p>
+  </div>
 </div>
+<div class="row">
+  <div class="col-sm-5 col-sm-push-7 map-col">
+    <laji-theme-map
+      (onGridClick)="showGridObservations($event)"
+      [query]="mapQuery"
+      [type]="type">
+    </laji-theme-map>
+    <a class="type-switch link" (click)="changeLegendType('count')">{{'theme.count' | translate}}</a> |
+    <a class="type-switch link" (click)="changeLegendType('individuals')">{{'theme.individualCount' | translate}}</a> |
+    <a class="type-switch link" (click)="changeLegendType('newest')">{{'theme.newest' | translate}}</a>
+  </div>
+  <div class="col-sm-7 col-sm-pull-5 table-col">
+    <laji-theme-result
+      *ngIf="query && !query.ykj3Center"
+      (onNameClick)="navigate($event)"
+      [tbodyHeight]="610"
+      [query]="resultQuery"
+      [type]="type"
+      [lang]="lang"
+    ></laji-theme-result>
+    <laji-theme-observation-list
+      *ngIf="query && query.ykj3Center"
+      (onListClose)="closeList()"
+      (onPageChange)="goToPage($event)"
+      [tbodyHeight]="610"
+      [query]="query"
+      [type]="type"
+      [page]="page"
+    >
+    </laji-theme-observation-list>
+  </div>
+</div>
+

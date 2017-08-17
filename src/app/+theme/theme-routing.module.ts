@@ -20,8 +20,8 @@ const routes: Routes = [
     path: 'wbc',
     component: WbcComponent,
     children: [
-      {path: '', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'nafi.stats.title' }},
-      {path: 'stats', pathMatch: 'full', component: WbcResultComponent, data: { title: 'nafi.stats.title' }},
+      {path: '', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' }},
+      {path: 'stats', pathMatch: 'full', component: WbcResultComponent, data: { title: 'wbc.title' }},
       {path: 'form', pathMatch: 'full', component: WbcFormComponent, canActivate: [OnlyLoggedIn]},
       {
         path: 'form/:id',
@@ -30,7 +30,7 @@ const routes: Routes = [
         canActivate: [OnlyLoggedIn],
         canDeactivate: [DocumentDeActivateGuard]
       },
-      {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'nafi.stats.title' } }
+      {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' } }
     ]
   },
   {
