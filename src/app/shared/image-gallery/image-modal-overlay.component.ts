@@ -4,40 +4,7 @@ import { Image } from './image.interface';
 @Component({
   selector: 'laji-image-gallery-overlay',
   styleUrls: ['./image-modal.component.css'],
-  template: `<div class="ng-overlay">
-  <div class="ng-gallery-content">
-  <div class="uil-ring-css" *ngIf="loading"><laji-spinner [spinning]="loading" [light]="true"></laji-spinner></div>
-    <a href="{{img.fullURL || img.largeURL}}" download="{{img.fullURL || img.largeURL}}" class="download-img">
-      <i class="glyphicon glyphicon-download-alt"></i>
-    </a>
-    <a class="close-popup" (click)="closeGallery()"><i class="glyphicon glyphicon-remove"></i></a>
-    <a class="nav-left" *ngIf="modalImages.length >1" (click)="prevImage()"><i class="glyphicon glyphicon-chevron-left"></i></a>
-    <laji-image 
-      id="openseadragon-wrapper" 
-      *ngIf="img" 
-      (loading)="handleLoading($event)" 
-      [src]="img.fullURL || img.largeURL" 
-      class="effect"></laji-image>
-    <a class="nav-right" *ngIf="modalImages.length > 1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
-    <span class="info-text" *ngIf="img">
-      <span *ngIf="img.vernacularName">{{img.vernacularName | multiLang}}</span>
-      <span *ngIf="img.vernacularName && img.scientificName">-</span>
-      <span *ngIf="img.scientificName"><em>{{img.scientificName}}</em></span>
-      <br>
-      <span *ngIf="img.author">{{img.author}},</span>
-      <span *ngIf="img.copyrightOwner && (!img.author || img.author.indexOf(img.copyrightOwner) === -1)">
-        {{img.copyrightOwner}},
-      </span>
-      <span *ngIf="img.licenseId">{{img.licenseId | toQName | label}}</span>
-      <span *ngIf="img.licenseAbbreviation && !img.licenseId" [innerHtml]="img.licenseAbbreviation"></span>
-      <br *ngIf="img.author || img.copyrightOwner || img.licenseId || img.licenseAbbreviation">
-      <a *ngIf="img.documentId" target="_blank" [routerLink]="'/view' | localize" [queryParams]="{'uri':img.documentId}">
-        {{'more' | translate}}
-      </a>
-     ({{ currentImageIndex + 1 }}/{{ modalImages.length }})
-     </span>
-  </div>
-</div>`
+  templateUrl: './image-modal-overlay.component.html'
 })
 export class ImageModalOverlayComponent implements OnInit {
   public img: Image;
