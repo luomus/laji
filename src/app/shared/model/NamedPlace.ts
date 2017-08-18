@@ -30,6 +30,8 @@ export interface NamedPlace {
    */
   active?: NamedPlaceActive;
 
+  alternativeID?: string;
+
   alternativeIDs?: Array<string>;
 
   /**
