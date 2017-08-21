@@ -78,7 +78,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.namedPlaces$.subscribe(
         data => {
           this.setActiveNP(-1);
-          data.sort(this.naturalSort);
+          data.sort(this.sortFunction);
           this.namedPlaces = data;
         },
         err => {
@@ -135,37 +135,51 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.errorMsg = msg;
   }
 
-  private naturalSort(a, b) {
-      /*function chunkify(t) {
-        const tz = [];
-        let x = 0, y = -1, n = false, i, j;
+  private sortFunction(a, b) {
+    let aa, bb;
 
-        while (i = (j = t.charAt(x++)).charCodeAt(0)) {
-          const m = (i === 46 || (i >= 48 && i <= 57));
+    if (Number(a.alternativeID) && Number(b.alternativeID)) {
+      aa = Number(a.alternativeID);
+      bb = Number(b.alternativeID);
+    } else {
+      aa = a.name.toLowerCase();
+      bb = b.name.toLowerCase();
+    }
+
+    return aa < bb ? -1 : aa > bb ? 1 : 0;
+  }
+
+  /*private naturalSort(a, b) {
+    function chunkify(t) {
+      const tz = [];
+      let x = 0, y = -1, n = false, i, j;
+
+      while (i = (j = t.charAt(x++)).charCodeAt(0)) {
+        const m = (i === 46 || (i >= 48 && i <= 57));
           if (m !== n) {
             tz[++y] = '';
             n = m;
           }
           tz[y] += j;
-        }
-        return tz;
-      }
+       }
+      return tz;
+    }
 
-      const aa = chunkify(a.name);
-      const bb = chunkify(b.name);*/
-      const aa = a.name.toLowerCase().split(' ');
-      const bb = b.name.toLowerCase().split(' ');
+    const aa = chunkify(a.name);
+    const bb = chunkify(b.name);
+    const aa = a.name.toLowerCase().split(' ');
+    const bb = b.name.toLowerCase().split(' ');
 
-      for (let x = 0; aa[x] && bb[x]; x++) {
-        if (aa[x] !== bb[x]) {
-          const c = Number(aa[x]), d = Number(bb[x]);
-          if (c !== null && d !== null) {
-            return c - d;
-          } else {
-            return (aa[x] > bb[x]) ? 1 : -1;
-          }
+    for (let x = 0; aa[x] && bb[x]; x++) {
+      if (aa[x] !== bb[x]) {
+        const c = Number(aa[x]), d = Number(bb[x]);
+        if (c !== null && d !== null) {
+          return c - d;
+        } else {
+          return (aa[x] > bb[x]) ? 1 : -1;
         }
       }
-      return aa.length - bb.length;
-  }
+    }
+    return aa.length - bb.length;
+  }*/
 }
