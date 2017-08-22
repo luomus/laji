@@ -59,7 +59,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       .switchMap(() => this.userService.getUser())
       .subscribe(person => {
         this.personID = person.id;
-        this.changeDetector.markForCheck();
+        this.updateView();
       });
   }
 
@@ -114,6 +114,10 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     this.showFacts = !this.showFacts;
   }
 
+  updateView() {
+    this.changeDetector.markForCheck();
+  }
+
   private parseDoc(doc, found) {
     this.hasDoc = found;
     if (found) {
@@ -156,7 +160,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
         .interval(this.recheckIterval)
         .subscribe(() => this.updateDocument());
     }
-    this.changeDetector.markForCheck();
+    this.updateView();
   }
 
 }

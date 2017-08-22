@@ -40,6 +40,7 @@
           </a>
           <button class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
                   [popover]="docMeta"
+                  (onShown)="updateView()"
                   placement="left"
                   triggers="click mouseenter:mouseleave"><i class="glyphicon glyphicon-user"></i>
           </button>
