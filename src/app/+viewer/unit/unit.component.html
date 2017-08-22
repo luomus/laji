@@ -46,6 +46,7 @@
           [personID]="personID"
           [rootID]="documentID"
           [targetID]="unitID"
+          [annotations]="unit.annotations || []"
           (close)="hideAnnotations()"
           (onChange)="initAnnotationStatus()"
         ></laji-annotations>

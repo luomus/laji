@@ -47,10 +47,8 @@ export class UnitComponent implements OnInit {
   }
 
   initAnnotationStatus() {
-    this.annotationClass$ = this.annotationService.getAnnotationClassInEffect(
-      IdService.getId(this.documentID),
-      IdService.getId(this.unitID
-      ))
+    this.annotationClass$ = this.annotationService
+      .getAnnotationClassInEffect(this.unit.annotations)
       .map(annotationClass => {
         this.annotationIcon = annotationClass ? 'fa-comments' : 'fa-comment-o';
         switch (annotationClass) {

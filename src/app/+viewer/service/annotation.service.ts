@@ -2,15 +2,11 @@ import { Injectable } from '@angular/core';
 import { AnnotationApi } from '../../shared/api/AnnotationApi';
 import { Observable } from 'rxjs/Observable';
 import { Annotation } from '../../shared/model/Annotation';
-import { Observer } from 'rxjs/Observer';
 import { UserService } from '../../shared/service/user.service';
+import { IdService } from '../../shared/service/id.service';
 
 @Injectable()
 export class AnnotationService {
-
-  private annotations: Annotation[];
-  private currentRoot: string;
-  private pending: any;
 
   constructor(
     private annotationApi: AnnotationApi,
@@ -18,60 +14,19 @@ export class AnnotationService {
   ) { }
 
   delete(annotation: Annotation): Observable<any> {
-    return this.annotationApi.deleteAnnotation(annotation.id, this.userService.getToken())
-      .do(() => {
-        const curLen = this.annotations.length;
-        this.annotations = this.annotations.filter(ann => ann.id !== annotation.id);
-        if (curLen === this.annotations.length) {
-          this.currentRoot = '';
-        }
-      });
+    return this.annotationApi
+      .deleteAnnotation(IdService.getId(annotation.id), this.userService.getToken());
   }
 
   save(annotation: Annotation): Observable<Annotation> {
     return this.annotationApi
-      .createAnnotation(annotation, this.userService.getToken())
-      .do((ann) => {
-        if (this.currentRoot === ann.rootID) {
-          this.annotations = [ann, ...this.annotations];
-        } else {
-          this.currentRoot = '';
-        }
-      });
-  }
-
-  getAllFromRoot(rootID: string): Observable<Annotation[]> {
-    if (this.currentRoot === rootID) {
-      if (this.annotations) {
-        return Observable.of(this.annotations);
-      }
-    } else {
-      this.annotations = undefined;
-      this.currentRoot = rootID;
-      this.pending = this._fetchAll(rootID)
-        .map(this.sortAnnotations)
-        .do(annotations => this.annotations = annotations)
-        .share();
-    }
-
-    return Observable.create((observer: Observer<Annotation[]>) => {
-      this.pending.subscribe(data => {
-        observer.next(data);
-        observer.complete();
-      });
-    });
+      .createAnnotation(annotation, this.userService.getToken());
   }
 
   getAnnotationClassInEffect(annotations: Annotation[]): Observable<Annotation.AnnotationClassEnum>;
-  getAnnotationClassInEffect(rootID: string, targetID: string): Observable<Annotation.AnnotationClassEnum>;
   getAnnotationClassInEffect(
-    arg1: string|Annotation[],
-    targetID?: string
+    annotations: Annotation[] = []
   ): Observable<Annotation.AnnotationClassEnum> {
-    if (typeof arg1 === 'string') {
-      return Observable.of([])
-        .switchMap((annotations) => this.getAnnotationClassInEffect(annotations));
-    }
     const classes = Annotation.AnnotationClassEnum;
     const cnt = {
       [classes.AnnotationClassReliable]: 0,
@@ -81,26 +36,28 @@ export class AnnotationService {
     };
     const persons = {};
     let status: Annotation.AnnotationClassEnum;
-    for (const annotation of arg1) {
-      if (annotation.type === Annotation.TypeEnum.TypeOpinion &&
-          annotation.annotationClass === classes.AnnotationClassAcknowledged) {
+    for (const annotation of annotations) {
+      const annotationType = IdService.getId(annotation.type);
+      const annotationClass = IdService.getId(annotation.annotationClass);
+      if (annotationType === Annotation.TypeEnum.TypeOpinion &&
+          annotationClass === classes.AnnotationClassAcknowledged) {
         break;
       } else if (annotation.annotationBySystem && !status) {
-        status = annotation.annotationClass;
+        status = annotationClass;
       } else if (
-          annotation.type !== Annotation.TypeEnum.TypeOpinion ||
-          annotation.annotationClass === classes.AnnotationClassNeutral ||
+          annotationType !== Annotation.TypeEnum.TypeOpinion ||
+          annotationClass === classes.AnnotationClassNeutral ||
           !annotation.annotationByPerson ||
           persons[annotation.annotationByPerson] ||
-          typeof cnt[annotation.annotationClass] === 'undefined'
+          typeof cnt[annotationClass] === 'undefined'
       ) {
         continue;
       }
       persons[annotation.annotationByPerson] = true;
-      cnt[annotation.annotationClass]++;
+      cnt[annotationClass]++;
       status = classes.AnnotationClassNeutral; // We've got use data so this will always override the machine.
     }
-    if (!status && arg1.length > 0) {
+    if (!status && annotations && annotations.length > 0) {
       status = classes.AnnotationClassNeutral;
     }
     const statusTotal = cnt[classes.AnnotationClassReliable] + cnt[classes.AnnotationClassLikely]
@@ -113,26 +70,8 @@ export class AnnotationService {
       status = cnt[classes.AnnotationClassUnreliable] > cnt[classes.AnnotationClassSuspicious] ?
           classes.AnnotationClassUnreliable : classes.AnnotationClassSuspicious;
     }
+    console.log(status, statusTotal, annotations);
     return Observable.of(status);
-  }
-
-  private _fetchAll(rootID: string, page = 1): Observable<Annotation[]> {
-    return this.annotationApi.findAnnotations('' + page, '100', rootID)
-      .switchMap(result => {
-        if (result.currentPage < result.lastPage) {
-          return this._fetchAll(rootID, ++page)
-            .map(res => [...result.results, ...res]);
-        }
-        return Observable.of(result.results || []);
-      });
-  }
-
-  private sortAnnotations(annotations: Annotation[]) {
-    annotations.sort((a: Annotation, b: Annotation) =>
-      parseInt(b.id.replace(/[^\d]/g, ''), 10) - parseInt(a.id.replace(/[^\d]/g, ''), 10)
-    );
-
-    return annotations;
   }
 
 }

@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12" *ngIf="!isEditor">
           {{'MAN.opinion' | label}}:
           <input
             [ngClass]="{loading: typeaheadLoading}"

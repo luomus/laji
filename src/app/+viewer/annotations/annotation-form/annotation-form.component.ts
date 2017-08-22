@@ -19,7 +19,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   @Input() personID: string;
   @Input() annotations: Annotation[];
   @Input() annotation: Annotation;
-  @Output() success = new EventEmitter<any>();
+  @Output() success = new EventEmitter<Annotation>();
   @Output() cancel = new EventEmitter<any>();
 
   taxonAutocomplete: Observable<any>;
