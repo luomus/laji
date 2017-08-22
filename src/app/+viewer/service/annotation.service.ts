@@ -70,7 +70,6 @@ export class AnnotationService {
       status = cnt[classes.AnnotationClassUnreliable] > cnt[classes.AnnotationClassSuspicious] ?
           classes.AnnotationClassUnreliable : classes.AnnotationClassSuspicious;
     }
-    console.log(status, statusTotal, annotations);
     return Observable.of(status);
   }
 

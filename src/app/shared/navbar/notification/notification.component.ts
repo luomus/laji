@@ -57,11 +57,7 @@ export class NotificationComponent implements OnInit {
           this.addStateToCache(this.notification.annotationID);
         },
         err => {
-          if (err.status === 404) {
-            this.removeNotification.emit(this.notification);
-          } else {
-            console.log(err);
-          }
+          console.log(err);
         });
     }
   }
