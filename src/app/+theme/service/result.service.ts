@@ -64,7 +64,7 @@ export class ResultService {
     return this._fetch('result', JSON.stringify(query) + ':' + lang, this.warehouseApi.warehouseQueryAggregateGet(
       query,
       ['unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.taxonomicOrder', vernacular],
-      ['3'],
+      ['unit.linkings.taxon.taxonomicOrder'],
       1000,
       1,
       false,
@@ -86,7 +86,7 @@ export class ResultService {
     return this._fetch('list', JSON.stringify(query) + ':' + page, this.warehouseApi.warehouseQueryListGet(
       query,
       ['document.documentId,gathering.eventDate.begin,gathering.eventDate.end,gathering.municipality,gathering.province,' +
-      'gathering.team,gathering.timeBegin,gathering.timeEnd,unit.unitId,unit.linkings.taxon.scientificName'],
+      'unit.unitId,unit.linkings.taxon.scientificName'],
       undefined,
       100,
       page
@@ -98,8 +98,8 @@ export class ResultService {
       this.warehouseApi
         .warehouseQueryAggregateGet(
           query,
-          ['gathering.conversions.ykj3Center.lat,gathering.conversions.ykj3Center.lon'],
-          ['1'],
+          ['gathering.conversions.ykj10kmCenter.lat,gathering.conversions.ykj10kmCenter.lon'],
+          undefined,
           5000,
           1,
           false,
@@ -137,15 +137,15 @@ export class ResultService {
     const features = [];
     data.map(result => {
       features.push(this.coordinateService.convertYkjToGeoJsonFeature(
-        result.aggregateBy['gathering.conversions.ykj3Center.lat'],
-        result.aggregateBy['gathering.conversions.ykj3Center.lon'],
+        result.aggregateBy['gathering.conversions.ykj10kmCenter.lat'],
+        result.aggregateBy['gathering.conversions.ykj10kmCenter.lon'],
         {
           count: result.count || 0,
           individualCountSum: result.individualCountSum || 0,
           newestRecord: result.newestRecord || '',
           oldestRecord: result.oldestRecord || '',
-          grid: parseInt(result.aggregateBy['gathering.conversions.ykj3Center.lat'], 10) + ':'
-          + parseInt(result.aggregateBy['gathering.conversions.ykj3Center.lon'], 10)
+          grid: parseInt(result.aggregateBy['gathering.conversions.ykj10kmCenter.lat'], 10) + ':'
+          + parseInt(result.aggregateBy['gathering.conversions.ykj10kmCenter.lon'], 10)
         }
       ));
     });

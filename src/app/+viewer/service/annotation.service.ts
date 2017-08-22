@@ -69,8 +69,7 @@ export class AnnotationService {
     targetID?: string
   ): Observable<Annotation.AnnotationClassEnum> {
     if (typeof arg1 === 'string') {
-      return this.getAllFromRoot(arg1)
-        .map(annotations => annotations.filter(ann => ann.targetID === targetID))
+      return Observable.of([])
         .switchMap((annotations) => this.getAnnotationClassInEffect(annotations));
     }
     const classes = Annotation.AnnotationClassEnum;

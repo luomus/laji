@@ -22,9 +22,9 @@
         <th>Pääsarkaprosentti</th>
         <td>{{counts.onPsPros}}%</td>
       </tr>
-      <tr *ngIf="counts.ykj3N">
+      <tr *ngIf="counts.ykj10kmN">
         <th>Ykj-ruutu</th>
-        <td>{{counts.ykj3N}}:{{counts.ykj3E}}</td>
+        <td>{{counts.ykj10kmN}}:{{counts.ykj10kmE}}</td>
       </tr>
     </table>
     <table class="table">
@@ -44,12 +44,12 @@
       </tbody>
     </table>
   </div>
-  <div class="col-sm-6 col-md-5 col-lg-4" *ngIf="counts.onPsPros && counts.ykj3N">
+  <div class="col-sm-6 col-md-5 col-lg-4" *ngIf="counts.onPsPros && counts.ykj10kmN">
     <div class="row">
       <div class="col-sm-12" style="height: 200px">
         <laji-line-transect-chart
           [terms]="onMainTerms"
-          [ykj3]="counts.ykj3N"
+          [ykj10km]="counts.ykj10kmN"
           [value]="counts.onPsPros"
         ></laji-line-transect-chart>
       </div>
@@ -64,7 +64,7 @@
         <laji-line-transect-chart
           [terms]="perKmTerms"
           [yRange]="[0, 50]"
-          [ykj3]="counts.ykj3N"
+          [ykj10km]="counts.ykj10kmN"
           [value]="counts.couplesPerKm"
         ></laji-line-transect-chart>
       </div>

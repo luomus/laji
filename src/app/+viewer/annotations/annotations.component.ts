@@ -42,8 +42,9 @@ export class AnnotationsComponent implements OnInit {
   }
 
   updateAnnotationList() {
-    this.annotation$ = this.annotationService.getAllFromRoot(IdService.getId(this.rootID))
-      .map(annotations => annotations.filter(annotation => annotation.targetID === IdService.getId(this.targetID)));
+    this.annotation$ = Observable.of([]);
+    // this.annotationService.getAllFromRoot(IdService.getId(this.rootID))
+      // .map(annotations => annotations.filter(annotation => annotation.targetID === IdService.getId(this.targetID)));
   }
 
   toggleAddForm() {

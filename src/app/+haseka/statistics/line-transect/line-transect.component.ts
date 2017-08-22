@@ -12,8 +12,8 @@ interface LineTransectCount {
   onPs: number;
   onPsPros: number;
   routeLength?: number;
-  ykj3N?: number;
-  ykj3E?: number;
+  ykj10kmN?: number;
+  ykj10kmE?: number;
   couplesPerKm?: number;
   species: {id: string, psCouples: number, tsCouples: number, name?: string}[];
 }
@@ -142,13 +142,13 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
       for (const altId of this.namedPlace.alternativeIDs) {
         if (altId.match(/[0-9]{3}:[0-9]{3}/)) {
           const parts = altId.split(':');
-          this.counts.ykj3N = +parts[0];
-          this.counts.ykj3E = +parts[1];
+          this.counts.ykj10kmN = +parts[0];
+          this.counts.ykj10kmE = +parts[1];
           break;
         }
       }
     }
-    this.counts.ykj3N = +this.namedPlace.alternativeIDs[1].substring(0, 3);
+    this.counts.ykj10kmN = +this.namedPlace.alternativeIDs[1].substring(0, 3);
     if (this.document.gatherings) {
       return MapUtil.latLngSegmentsToGeoJSONGeometry(
         this.document.gatherings

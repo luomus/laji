@@ -140,7 +140,7 @@ export interface WarehouseQueryInterface {
   secureReason?: Array<string>;
   editorId?: Array<string>;
   secured?: boolean;
-  ykj3?: string;
-  ykj3Center?: string;
+  ykj10km?: string;
+  ykj10kmCenter?: string;
   cache?: boolean;
 }
