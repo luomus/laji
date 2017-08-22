@@ -4831,9 +4831,9 @@
       }
     },
     "laji-form": {
-      "version": "0.0.223",
-      "resolved": "https://registry.npmjs.org/laji-form/-/laji-form-0.0.223.tgz",
-      "integrity": "sha512-dxksVVdAgPgEA3gf41BSIJf0/ylxkEQVSQ0Sda+NOkViUZfPHPoEILJprT54N8k/O0zOFe00MKC1/VC44PHg4g==",
+      "version": "0.0.225",
+      "resolved": "https://registry.npmjs.org/laji-form/-/laji-form-0.0.225.tgz",
+      "integrity": "sha512-AAV5ct65YSTyLHVeXM8naZWqJMn6BnlFtBEHKjVjL+ql6Ui7sxRcZXlDEe54Zj/Bw6TiwfLoJ6oSKHHjuvhHcw==",
       "requires": {
         "babel-runtime": "6.26.0",
         "deep-equal": "1.0.1",
@@ -4893,6 +4893,11 @@
       "requires": {
         "moment": "2.18.1",
         "validate.js": "github:vixriihi/validate.js#80e90badb7063df9305ff2efc8b01ecbe3b3f9e6"
+      },
+      "dependencies": {
+        "validate.js": {
+          "version": "github:vixriihi/validate.js#80e90badb7063df9305ff2efc8b01ecbe3b3f9e6"
+        }
       }
     },
     "lazy-cache": {
@@ -9356,9 +9361,6 @@
         "spdx-correct": "1.0.2",
         "spdx-expression-parse": "1.0.4"
       }
-    },
-    "validate.js": {
-      "version": "github:vixriihi/validate.js#80e90badb7063df9305ff2efc8b01ecbe3b3f9e6"
     },
     "vary": {
       "version": "1.1.1",
