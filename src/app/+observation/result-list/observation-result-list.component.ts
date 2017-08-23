@@ -53,7 +53,6 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
       sortBy: 'gathering.interpretations.municipalityDisplayname', translation: 'observation.form.municipality'},
     {field: 'gathering.locality', visible: true},
     {field: 'gathering.conversions.ykj', visible: false, sortBy: false},
-    {field: 'gathering.conversions.ykj1kmCenter', visible: false, sortBy: false},
     {field: 'gathering.conversions.euref', visible: false, sortBy: false},
     {field: 'gathering.conversions.wgs84', visible: false, sortBy: false},
     {field: 'gathering.interpretations.coordinateAccuracy', visible: false},
