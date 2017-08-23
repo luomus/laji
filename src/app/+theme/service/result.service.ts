@@ -85,8 +85,17 @@ export class ResultService {
   getList(query: WarehouseQueryInterface, page: number): Observable<any> {
     return this._fetch('list', JSON.stringify(query) + ':' + page, this.warehouseApi.warehouseQueryListGet(
       query,
-      ['document.documentId,gathering.eventDate.begin,gathering.eventDate.end,gathering.municipality,gathering.province,' +
-      'unit.unitId,unit.linkings.taxon.scientificName'],
+      [
+        'document.documentId,' +
+        'gathering.eventDate.begin,' +
+        'gathering.eventDate.end,' +
+        'gathering.municipality,' +
+        'gathering.biogeographicalProvince,' +
+        'gathering.team,' +
+        'gathering.province,' +
+        'unit.unitId,' +
+        'unit.linkings.taxon.scientificName'
+      ],
       undefined,
       100,
       page
