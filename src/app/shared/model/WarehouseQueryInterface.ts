@@ -143,4 +143,5 @@ export interface WarehouseQueryInterface {
   ykj10km?: string;
   ykj10kmCenter?: string;
   cache?: boolean;
+  reliable?: boolean;
 }

@@ -10,6 +10,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FormattedNumber implements PipeTransform {
   transform(value: string, thousandSeparator: string = ''): string {
+    if (!value) {
+      return '';
+    }
     return ('' + value).replace(/(\d)(?=(\d{3})+(\.\d*)?$)/g, '$1' + thousandSeparator);
   }
 }

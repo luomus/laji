@@ -17,6 +17,7 @@ export class ValueDecoratorService {
     'gathering.team': 'makeArrayToSemiColon',
     'unit.taxonVerbatim': 'makeTaxonLocal',
     'unit.linkings.taxon': 'makeTaxon',
+    'unit.quality.taxon': 'makeJson',
     'gathering.conversions.wgs84CenterPoint': 'makeMapPoint',
     'document.secureLevel': 'makeSecure',
     'unit.sex': 'makeLabel',
@@ -25,7 +26,10 @@ export class ValueDecoratorService {
     'document.secureReasons': 'makeLabelFromArray',
     'document.collectionId': 'makeCollectionName',
     'document.sourceId': 'makeSourceName',
-    'gathering.conversions.ykj': 'makeYkj',
+    'gathering.conversions.ykj1kmCenter': 'makeYkj',
+    'gathering.conversions.ykj': 'makeMinMaxYkj',
+    'gathering.conversions.wgs84': 'makeMinMaxCoordinate',
+    'gathering.conversions.euref': 'makeMinMaxCoordinate',
     'gathering.interpretations.coordinateAccuracy': 'makeLongNumber'
   };
 
@@ -50,6 +54,10 @@ export class ValueDecoratorService {
     return this[this.decoratable[field]](value, context);
   }
 
+  protected makeJson(value) {
+    return JSON.stringify(value);
+  }
+
   protected makeDateRange(value) {
     if (value.begin !== value.end) {
       return `${this.makeDate(value.begin)} - ${this.makeDate(value.end)}`;
@@ -66,7 +74,7 @@ export class ValueDecoratorService {
   }
 
   protected makeLongNumber(value) {
-    return this.numberFormater.transform(value, '&nbsp;');
+    return this.numberFormater.transform(value, '&nbsp;') || '';
   }
 
   protected makeSecure(value) {
@@ -97,6 +105,22 @@ export class ValueDecoratorService {
   }
 
   protected makeYkj(value) {
+    if (value && value.lat && value.lon) {
+      return `${value.lat}:${value.lon}`;
+    }
+    return '';
+  }
+
+  protected makeMinMaxCoordinate(value) {
+    if (value && value.latMax && value.latMin && value.lonMax && value.lonMin) {
+      const lat = value.latMax === value.latMin ? value.latMax : value.latMin + '-' + value.latMax;
+      const lon = value.lonMax === value.lonMin ? value.lonMax : value.lonMin + '-' + value.lonMax;
+      return `${lat} ${lon}`;
+    }
+    return '';
+  }
+
+  protected makeMinMaxYkj(value) {
     if (value && value.latMin) {
       const lat = this.getYkjCoord(value.latMin, value.latMax);
       return lat + ':' + this.getYkjCoord(value.lonMin, value.lonMax, lat.split('-')[0].length);
