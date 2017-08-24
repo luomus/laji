@@ -119,7 +119,7 @@
   "result.gathering.municipality": "Kommun",
   "result.gathering.locality": "Plats",
   "result.unit.abundanceString": "Mängd",
-  "result.unit.interpretations.individualCount": "Mängd (tolkas)",
+  "result.unit.interpretations.individualCount": "Individsantal (tolkas)",
   "result.document.collectionId": "Samling",
   "observation.download.publicTitle": "Offentliga data",
   "result.load.introPublic": "Din sökning består av <strong>{{count}}</strong> offentliga observationer varav <strong>{{private}}</strong> är diffuserade. Du kan ladda ner offentliga datan som en textfil (CSV). Tryck på \"Hämta data\" -knappen och du får en länk till nedladdningssidan via e-post. Nedladdningstiden beror på storleken på data.",

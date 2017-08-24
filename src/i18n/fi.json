@@ -122,7 +122,7 @@
   "result.gathering.coordinatesVerbatim": "Koordinaatit",
   "result.unit.lifeStage": "Koordinaatit",
   "result.unit.abundanceString": "Määrä",
-  "result.unit.interpretations.individualCount": "Määrä (tulkittu)",
+  "result.unit.interpretations.individualCount": "Yksilömäärä (tulkittu)",
   "result.document.documentId": "Tunniste",
   "result.document.collectionId": "Kokoelma",
   "result.document.secureLevel": "Karkeistustaso",
