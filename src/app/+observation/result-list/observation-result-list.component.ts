@@ -62,7 +62,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
     {field: 'unit.recordBasis', visible: false, translation: 'observation.filterBy.recordBasis'},
     {field: 'unit.nativeOccurrence', visible: false},
     {field: 'document.collectionId', visible: false},
-    {field: 'unit.notes', visible: false, sortBy: false},
+    {field: 'unit.notes', visible: false, sortBy: false, translation: 'result.document.notes'},
     {field: 'document.documentId', visible: false, skip: true},
     {field: 'document.secureLevel', visible: false},
     {field: 'document.secureReasons', visible: false, sortBy: false},

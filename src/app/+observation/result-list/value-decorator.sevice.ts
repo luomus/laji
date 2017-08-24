@@ -17,12 +17,13 @@ export class ValueDecoratorService {
     'gathering.team': 'makeArrayToSemiColon',
     'unit.taxonVerbatim': 'makeTaxonLocal',
     'unit.linkings.taxon': 'makeTaxon',
-    'unit.quality.taxon': 'makeJson',
+    'unit.quality.taxon': 'makeTaxonQuality',
     'gathering.conversions.wgs84CenterPoint': 'makeMapPoint',
     'document.secureLevel': 'makeSecure',
     'unit.sex': 'makeLabel',
     'unit.lifeStage': 'makeLabel',
     'unit.recordBasis': 'makeLabel',
+    'unit.reportedTaxonConfidence': 'makeLabel',
     'document.secureReasons': 'makeLabelFromArray',
     'document.collectionId': 'makeCollectionName',
     'document.sourceId': 'makeSourceName',
@@ -86,6 +87,13 @@ export class ValueDecoratorService {
 
   protected makeLabelFromFullUri(value) {
     return this.makeLabel(this.toQNamePipe.transform(value));
+  }
+
+  protected makeTaxonQuality(value) {
+    if (!value && !value.reliability) {
+      return '';
+    }
+    return this.makeLabel(value.reliability);
   }
 
   protected makeCollectionName(value) {
