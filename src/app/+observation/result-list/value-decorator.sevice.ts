@@ -109,7 +109,7 @@ export class ValueDecoratorService {
   }
 
   protected makeLabel(value) {
-    return this.labelPipe.transform(value, true);
+    return this.labelPipe.transform(value, 'warehouse');
   }
 
   protected makeYkj(value) {

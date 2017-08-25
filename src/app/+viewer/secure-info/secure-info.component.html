@@ -1,0 +1,9 @@
+<span *ngIf="secureLevel !== 'NONE'">
+  <strong>{{'secureLevel' | label: 'warehouse'}}:</strong>
+  {{secureLevel | label: 'warehouse'}}
+  <br>
+</span>
+<span *ngIf="secureReasons">
+  <strong>{{'result.document.secureReasons' | translate}}:</strong>
+  <span *ngFor="let reason of secureReasons; let i=index"><span *ngIf="i > 0">,</span> {{reason | label: 'warehouse'}}</span>
+</span>

@@ -36,7 +36,8 @@ export class NotificationComponent implements OnInit {
       this.info = IdService.getUri(annotation.rootID);
       this.targetQuery = {
         uri: IdService.getUri(annotation.rootID),
-        highlight: IdService.getUri(annotation.targetID)
+        highlight: IdService.getUri(annotation.targetID),
+        own: 'true'
       };
       this.changeDetectorRef.markForCheck();
     }

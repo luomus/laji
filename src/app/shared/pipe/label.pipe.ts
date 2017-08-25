@@ -2,6 +2,9 @@ import { ChangeDetectorRef, EventEmitter, OnDestroy, Pipe, PipeTransform } from 
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../service/triplestore-label.service';
+import { IdService } from '../service/id.service';
+
+type labelType = 'fullUri'|'warehouse';
 
 /**
  * Triplestores label maker
@@ -24,8 +27,8 @@ export class LabelPipe implements PipeTransform, OnDestroy {
               private _ref: ChangeDetectorRef) {
   }
 
-  updateValue(key: string, mapWarehouse = false): void {
-    if (mapWarehouse) {
+  updateValue(key: string, type?: labelType): void {
+    if (type === 'warehouse') {
       this.warehouseService.getOriginalKey(key)
         .timeout(1000)
         .subscribe(
@@ -40,12 +43,13 @@ export class LabelPipe implements PipeTransform, OnDestroy {
           (err) => this._updateValue(key)
         );
     } else {
-      this._updateValue(key);
+      this._updateValue(key, type);
     }
   }
 
-  transform(value: string, mapWarehouse = false): any {
-    if (!value || value.length === 0) {
+  transform(value: string, type?: labelType): any {
+    if (!value || typeof value !== 'string' || value.length === 0 ||
+       (type === 'fullUri' && value.indexOf('http') !== 0)) {
       return value;
     }
     // if we ask another time for the same key, return the last value
@@ -56,7 +60,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     this.lastKey = value;
 
     // set the value
-    this.updateValue(value, mapWarehouse);
+    this.updateValue(value, type);
 
     // if there is a subscription to onLangChange, clean it
     this._dispose();
@@ -65,7 +69,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     if (!this.onLangChange) {
       this.onLangChange = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
         this.lastKey = null; // we want to make sure it doesn't return the same value until it's been updated
-        this.updateValue(value, mapWarehouse);
+        this.updateValue(value, type);
       });
     }
     return this.value;
@@ -86,8 +90,8 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     this._dispose();
   }
 
-  private _updateValue(key: string): void {
-    this.triplestoreLabelService.get(key, this.translate.currentLang)
+  private _updateValue(key: string, type?: labelType): void {
+    this.triplestoreLabelService.get(type === 'fullUri' ? IdService.getId(key) : key, this.translate.currentLang)
       .subscribe((res: string) => {
         this.value = res ? res : key;
         this._ref.markForCheck();

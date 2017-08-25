@@ -308,6 +308,11 @@ export class WarehouseApi {
       throw new Error('Required parameter documentId was null or undefined when calling warehouseQuerySingleGet.');
     }
 
+    if (extraHttpRequestParams) {
+      Object.keys(extraHttpRequestParams)
+        .map(key => queryParameters.set(key, extraHttpRequestParams[key]));
+    }
+
     queryParameters.set('documentId', documentId);
 
     // headerParams.set('accept', accept);

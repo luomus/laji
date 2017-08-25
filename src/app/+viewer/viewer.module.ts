@@ -16,6 +16,7 @@ import { AnnotationListComponent } from './annotations/annotation-list/annotatio
 import { AnnotationService } from './service/annotation.service';
 import { AnnotationApi } from '../shared/api/AnnotationApi';
 import { TypeaheadModule } from 'ngx-bootstrap';
+import { SecureInfoComponent } from './secure-info/secure-info.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,7 @@ import { TypeaheadModule } from 'ngx-bootstrap';
   ],
   providers: [ToQNamePipe, AnnotationService, AnnotationApi],
   declarations: [ViewerComponent, DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
-    GatheringComponent, UnitComponent, LcFirstPipe, AnnotationsComponent, AnnotationFormComponent, AnnotationListComponent],
+    GatheringComponent, UnitComponent, LcFirstPipe, AnnotationsComponent, AnnotationFormComponent, AnnotationListComponent, SecureInfoComponent],
   exports: [ViewerComponent, DocumentComponent]
 })
 export class ViewerModule { }

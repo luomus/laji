@@ -3,33 +3,40 @@
     <div class="col-sm-7">
       <div class="page-header" [ngClass]="{tight: !showTitle}">
         <h3>
-          {{'viewer.document' | translate }} <small>{{document.documentId}}<br></small>
+          {{'viewer.document' | translate }}
+          <small>
+            <a *ngIf="!showTitle" [routerLink]="['/view']" [queryParams]="{
+                uri: document.documentId,
+                highlight: highlight,
+                own: own === true
+               }" target="_blank">
+              {{document.documentId}}
+            </a>
+            <span *ngIf="showTitle">
+              {{document.documentId}}
+            </span>
+            <br>
+          </small>
         </h3>
         <laji-row [noTitleSpace]="true" [noRow]="true" [value]="document.collectionId | toQName | collectionName"> (<a href="{{document.collectionId}}">{{document.collectionId}}</a>)</laji-row>
       </div>
-      <div *ngIf="document.secured">
-        <laji-row [title]="'secureLevel'" [value]="document.secureLevel | label: true"></laji-row>
-          <laji-row [title]="'result.document.secureReasons' | translate" [value]="document.secureLevel" [hideValue]="true">
-            <span *ngFor="let reason of document.secureReasons">
-              {{reason | label: true}}<br>
-            </span>
-          </laji-row>
-      </div>
+      <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
+      <laji-row [title]="'keywords'" [value]="document.keywords"></laji-row>
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
-      <div class="facts" *ngIf="showFacts">
-        <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label: true" *ngFor="let item of document.facts"></laji-row>
+      <div class="facts" *ngIf="showFacts && document.facts">
+        <laji-row [title]="item.fact | label:'fullUri'" [value]="item.value | label: 'fullUri'" *ngFor="let item of document.facts"></laji-row>
       </div>
     </div>
     <div class="col-sm-5">
       <div class="row">
         <div class="col-sm-12 doc-meta">
           <ng-template #docMeta>
-            <laji-row [title]="'MZ.editor'" *ngIf="document.linkings && document.linkings.editors">
+            <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors[0] && document.linkings.editors[0].fullName">
               {{document.linkings.editors | values:', ':'fullName' }}
             </laji-row>
-            <laji-row [title]="'MZ.dateCreated'" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
-            <laji-row [title]="'MZ.dateEdited'" [value]="document.modifiedDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
-            <laji-row [title]="'loadDate'" [value]="document.loadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
+            <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
+            <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
+            <laji-row [title]="'loadDate' | label" [value]="document.loadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
           </ng-template>
           <a class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
              *ngIf="externalViewUrl"
@@ -50,6 +57,31 @@
                   (click)="toggleFacts()">
             <i class="glyphicon" [ngClass]="{'glyphicon-eye-open': showFacts, 'glyphicon-eye-close': !showFacts}"></i>
           </button>
+          <div style="margin-top: 35px;">
+            <alert [type]="document.secured ?  'warning' : 'info'">
+              <span *ngIf="!document.secured; else isSecured">
+                {{'viewer.secured.none' | translate}}
+              </span>
+              <ng-template #isSecured>
+                <span *ngIf="document.public">
+                  {{'viewer.secured.secured' | translate}}
+                </span>
+                <span *ngIf="!document.public">
+                  {{'viewer.secured.own1' | translate}}
+                  (<a [routerLink]="['/view'] | localize" [queryParams]="{
+                    uri: document.documentId,
+                    highlight: highlight
+                   }" target="_blank">{{'viewer.secured.own2' | translate}}</a>).
+                </span>
+              </ng-template>
+              <div *ngIf="document.secured">
+                <laji-secure-info
+                  [secureLevel]="document.secureLevel"
+                  [secureReasons]="document.secureReasons"
+                ></laji-secure-info>
+              </div>
+            </alert>
+          </div>
         </div>
       </div>
       <div class="row" *ngIf="document.media">
@@ -60,11 +92,6 @@
     </div>
   </div>
   <div *ngIf="document.gatherings && document.gatherings.length > 1" class="gatherings">
-    <div class="row">
-      <div class="col-sm-7">
-        <laji-row [title]="'viewer.gatherings' | translate" [showWithoutValue]="true"></laji-row>
-      </div>
-    </div>
     <ul class="nav nav-tabs link">
       <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
         <a (click)="setActive(i)">

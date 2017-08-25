@@ -28,6 +28,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
   @Input() uri: string;
   @Input() highlight: string;
+  @Input() own: boolean;
   @Input() showTitle = false;
   @Input() useWorldMap = true;
 
@@ -90,7 +91,10 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     }
     const findDox$ = this.uri === this._uri ?
       Observable.of(this.document) :
-      this.warehouseApi.warehouseQuerySingleGet(this.uri)
+      this.warehouseApi
+        .warehouseQuerySingleGet(this.uri, this.own ? {
+          editorOrObserverPersonToken: this.userService.getToken()
+        } : undefined)
         .map(doc => doc.document)
         .do(() => this._uri = this.uri);
     findDox$

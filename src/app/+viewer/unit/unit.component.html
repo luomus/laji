@@ -1,25 +1,34 @@
 <hr>
-<div class="unit">
+<div class="unit" *ngIf="unit">
   <div [ngClass]="{'highlight': highlight === unit.unitId}">
-    <laji-row [title]="'MY.recordBasis'" [value]="unit.recordBasis | label: true"></laji-row>
-    <laji-row [title]="'MY.taxon'" *ngIf="unit && unit.linkings && unit.linkings.taxon">
-      <span class="vernacularName" *ngIf="unit.linkings.taxon.vernacularName">
-        {{unit.linkings.taxon.vernacularName | multiLang}}
-      </span>
-      <span class="scientificName">
-        (<i *ngIf="unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</i><span *ngIf="!unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</span>)
-        <a [routerLink]="['/taxon/' + unit.linkings.taxonId] | localize"><i class="glyphicon glyphicon-modal-window"></i></a>
+    <laji-row [title]="unit.recordBasis | label: 'warehouse'">
+      <span *ngIf="unit.linkings && unit.linkings.taxon">
+        <span class="vernacularName" *ngIf="unit.linkings.taxon.vernacularName">
+          {{unit.linkings.taxon.vernacularName | multiLang}}
+        </span>
+        <span class="scientificName">
+          (<span [class.cursive]="unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</span>)
+          <a [routerLink]="['/taxon/' + unit.linkings.taxonId] | localize" target="_blank"><i class="glyphicon glyphicon-modal-window"></i></a>
+        </span>
       </span>
     </laji-row>
-    <div *ngIf="unit && (!unit.linkings || !unit.linkings.taxon)">
-      <laji-row [title]="'taxonVerbatim'" [value]="unit.taxonVerbatim"></laji-row>
+    <div *ngIf="!unit.linkings || !unit.linkings.taxon">
+      <laji-row [title]="'taxonVerbatim' | label: 'warehouse'" [value]="unit.taxonVerbatim"></laji-row>
     </div>
-    <laji-row [title]="'MY.count'" [value]="unit.abundanceString"></laji-row>
-    <laji-row [title]="'lifeStage'" [value]="unit.lifeStage | label: true"></laji-row>
-    <laji-row [title]="'sex'" [value]="unit.sex | label: true"></laji-row>
-    <laji-row [title]="'MY.notes'" [value]="unit.notes"></laji-row>
-    <div class="facts" *ngIf="showFacts">
-      <laji-row [title]="item.fact | lcFirst" [value]="item.value | toQName | label: true" *ngFor="let item of unit.facts"></laji-row>
+    <div *ngIf="showFacts && unit.quality && unit.quality.taxon && unit.quality.taxon.reliability">
+      <laji-row [title]="'result.unit.quality.taxon'|translate">
+        {{unit.quality.taxon.reliability | label: 'warehouse'}}
+        <span *ngIf="unit.quality.taxon.source">
+          ({{unit.quality.taxon.source | label: 'warehouse'}})
+        </span>
+      </laji-row>
+    </div>
+    <laji-row [title]="'MY.count' | label" [value]="unit.abundanceString"></laji-row>
+    <laji-row [title]="'MY.lifeStage' | label" [value]="unit.lifeStage | label: 'warehouse'"></laji-row>
+    <laji-row [title]="'MY.sex' | label" [value]="unit.sex | label: 'warehouse'"></laji-row>
+    <laji-row [title]="'MY.notes' | label" [value]="unit.notes"></laji-row>
+    <div class="facts" *ngIf="showFacts && unit.facts">
+      <laji-row [title]="item.fact | label:'fullUri'" [value]="item.value | label:'fullUri'" *ngFor="let item of unit.facts"></laji-row>
     </div>
 
     <div class="row">
