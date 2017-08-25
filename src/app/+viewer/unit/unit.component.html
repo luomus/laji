@@ -1,7 +1,7 @@
 <hr>
 <div class="unit" *ngIf="unit">
   <div [ngClass]="{'highlight': highlight === unit.unitId}">
-    <laji-row [title]="unit.recordBasis | label: 'warehouse'">
+    <laji-row *ngIf="unit.linkings && unit.linkings.taxon; else taxonVerbatim" [title]="unit.recordBasis | label: 'warehouse'">
       <span *ngIf="unit.linkings && unit.linkings.taxon">
         <span class="vernacularName" *ngIf="unit.linkings.taxon.vernacularName">
           {{unit.linkings.taxon.vernacularName | multiLang}}
@@ -12,9 +12,9 @@
         </span>
       </span>
     </laji-row>
-    <div *ngIf="!unit.linkings || !unit.linkings.taxon">
-      <laji-row [title]="'taxonVerbatim' | label: 'warehouse'" [value]="unit.taxonVerbatim"></laji-row>
-    </div>
+    <ng-template #taxonVerbatim>
+      <laji-row [title]="unit.recordBasis | label: 'warehouse'" [value]="unit.taxonVerbatim"></laji-row>
+    </ng-template>
     <div *ngIf="showFacts && unit.quality && unit.quality.taxon && unit.quality.taxon.reliability">
       <laji-row [title]="'result.unit.quality.taxon'|translate">
         {{unit.quality.taxon.reliability | label: 'warehouse'}}
