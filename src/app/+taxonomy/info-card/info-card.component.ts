@@ -164,7 +164,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
       .taxonomyFindBySubject(id, 'multi')
       .catch(err => {
         this.logger.warn('Failed to fetch taxon by id', err);
-        return Observable.of(false);
+        return Observable.of({});
       });
   }
 

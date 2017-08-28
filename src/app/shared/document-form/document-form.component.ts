@@ -196,6 +196,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         this.translate.get('haseka.form.success')
           .subscribe(value => {
             this.toastsService.showSuccess(value);
+            this.changeDetector.markForCheck();
           });
         this.onSuccess.emit({document: result, form: this.form});
       },
@@ -212,6 +213,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         this.translate.get('haseka.form.error')
           .subscribe(value => {
             this.toastsService.showError(value);
+            this.changeDetector.markForCheck();
           });
     });
   }

@@ -22,10 +22,10 @@
           </div>
           <div *ngSwitchDefault class="row">
             <div class="key-{{curr.key}} key col-sm-4">
-              {{curr.key | label: true}}<span *ngIf="curr.key">:</span>
+              {{curr.key | label: 'warehouse'}}<span *ngIf="curr.key">:</span>
             </div>
             <div class="value col-sm-8">
-              {{curr.value | label: true}}
+              {{curr.value | label: 'warehouse'}}
             </div>
           </div>
         </div>

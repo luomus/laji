@@ -4,7 +4,7 @@
        [class.odd]="isOdd">
     <div class="row">
       <div class="col-xs-9 row-title">
-        <span [ngSwitch]="annotation.annotationClass" [tooltip]="annotation.annotationClass | label"
+        <span [ngSwitch]="annotation.annotationClass | toQName" [tooltip]="annotation.annotationClass | label"
           class="annotation-class">
           <span *ngSwitchCase="annotationClass.AnnotationClassAcknowledged">
             <i class="fa fa-check-square-o"></i>
@@ -28,7 +28,7 @@
           </span>
         </span>
         <small>
-          <span class="annotation-author">{{annotation.annotationByPerson | users}}</span>
+          <span class="annotation-author">{{annotation.annotationByPerson | toQName | users}}</span>
           <span *ngIf="!changingLocale">{{annotation.created | amTimeAgo}}</span>
         </small>
       </div>
@@ -38,7 +38,7 @@
             type="button"
             class="btn btn-danger btn-xs"
             (click)="onDelete.emit(annotation)"
-            *ngIf="annotation.annotationByPerson === personID">
+            *ngIf="(annotation.annotationByPerson | toQName) === personID">
             <i class="glyphicon glyphicon-remove"></i>
           </button>
         </span>

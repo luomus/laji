@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { ModalDirective } from 'ngx-bootstrap';
 import { AnnotationService } from '../service/annotation.service';
 import { Annotation } from '../../shared/model/Annotation';
-import { Observable } from 'rxjs/Observable';
 import { IdService } from '../../shared/service/id.service';
 
 @Component({
@@ -17,18 +16,17 @@ export class AnnotationsComponent implements OnInit {
   @Input() targetID: string;
   @Input() editors: string[];
   @Input() personID: string;
+  @Input() annotations: Annotation[] = [];
   @Output() close = new EventEmitter<any>();
   @Output() onChange = new EventEmitter<any>();
   error = false;
   adding = false;
   type: Annotation.TypeEnum;
   annotation: Annotation = {};
-  annotation$: Observable<Annotation>;
 
   constructor(private annotationService: AnnotationService) { }
 
   ngOnInit() {
-    this.updateAnnotationList();
     this.initEmptyAnnotation();
   }
 
@@ -41,20 +39,13 @@ export class AnnotationsComponent implements OnInit {
     };
   }
 
-  updateAnnotationList() {
-    this.annotation$ = this.annotationService.getAllFromRoot(IdService.getId(this.rootID))
-      .map(annotations => annotations.filter(annotation => annotation.targetID === IdService.getId(this.targetID)));
-  }
-
   toggleAddForm() {
     this.adding = !this.adding;
   }
 
-  onSuccess() {
-    this.onChange.emit();
-    this.closeAddForm();
-    this.updateAnnotationList();
-    this.initEmptyAnnotation();
+  onSuccess(annotation: Annotation) {
+    this.saveDone();
+    this.annotations = [annotation, ...this.annotations];
   }
 
   closeAddForm() {
@@ -63,7 +54,19 @@ export class AnnotationsComponent implements OnInit {
 
   onDelete(annotation: Annotation) {
     this.annotationService.delete(annotation)
-      .subscribe(() => this.onSuccess());
+      .subscribe(
+        () => {
+          this.annotations = this.annotations.filter(value => value.id !== annotation.id);
+          this.saveDone();
+        },
+        (e) => console.log(e)
+      );
+  }
+
+  private saveDone() {
+    this.onChange.emit();
+    this.closeAddForm();
+    this.initEmptyAnnotation();
   }
 
 }

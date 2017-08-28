@@ -14,8 +14,8 @@
           </select>
         </div>
       </div>
-      <div class="row" *ngIf="newName.indexOf(annotation.annotationClass) > -1">
-        <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-12" *ngIf="!isEditor">
           {{'MAN.opinion' | label}}:
           <input
             [ngClass]="{loading: typeaheadLoading}"

@@ -23,7 +23,7 @@ export class AreaService {
   constructor(private areaApi: AreaApi) {
   }
 
-  getAllAsLookUp(lang: string) {
+  getAllAsLookUp(lang: string): Observable<any> {
     if (lang === this.currentLang) {
       if (this.areas) {
         return Observable.of(this.areas);
@@ -46,7 +46,8 @@ export class AreaService {
         const lkObject = {};
         areas.map(area => { lkObject[area['id']] = {
           name: area['name'],
-          areaType: area['areaType']
+          areaType: area['areaType'],
+          provinceCodeAlpha: area['provinceCodeAlpha']
         }; });
         return lkObject;
       })
@@ -59,6 +60,11 @@ export class AreaService {
 
   getBiogeographicalProvinces(lang: string) {
     return this.getAreaType(lang, this.types.Biogeographical);
+  }
+
+  getProvinceCode(id: string, lang: string) {
+    return this.getAllAsLookUp(lang)
+      .map(data => data[id] && data[id].provinceCodeAlpha || '');
   }
 
   getMunicipalities(lang: string) {

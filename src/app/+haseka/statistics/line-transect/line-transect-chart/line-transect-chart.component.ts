@@ -21,7 +21,7 @@ export interface LineTransectChartTerms {
 })
 export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnDestroy {
 
-  @Input() ykj3: number;
+  @Input() ykj10km: number;
   @Input() value: number;
   @Input() terms: LineTransectChartTerms;
   @Input() xRange: [number, number] = [660, 780];
@@ -51,7 +51,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
         () => {
           this.d3Loaded = true;
           this.createChart();
-          if (this.value && this.ykj3) {
+          if (this.value && this.ykj10km) {
             this.updateChart();
           }
         }
@@ -129,7 +129,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
 
   updateChart() {
     const update = this.chart.selectAll('.mark')
-      .data([[this.ykj3, this.value]]);
+      .data([[this.ykj10km, this.value]]);
 
     // remove exiting bars
     update.exit().remove();

@@ -17,6 +17,10 @@
   margin-bottom: 5px;
 }
 
+#filter-row-container > * {
+  margin-bottom: 2px;
+}
+
 @media only screen and (min-width : 768px) {
   #download-button-container {
     float: right;
@@ -30,13 +34,11 @@
 
 @media only screen and (max-width : 767px) {
   #download-button-container {
-    display: flex;
-  }
-
-  #download-button-container > button {
-    flex: 0 0 auto;
+    float: none;
+    width: 100%;
   }
 }
+
 
 .inline-block {
   display: inline-block;

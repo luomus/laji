@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
@@ -21,6 +21,7 @@ export class UnitComponent implements OnInit {
   annotationVisible = false;
   annotationClass$: Observable<string>;
   annotationIcon: string;
+  annotations: Annotation[] = [];
 
   unitID: string;
   skipFacts: string[] = ['UnitGUID', 'InformalNameString'];
@@ -47,10 +48,8 @@ export class UnitComponent implements OnInit {
   }
 
   initAnnotationStatus() {
-    this.annotationClass$ = this.annotationService.getAnnotationClassInEffect(
-      IdService.getId(this.documentID),
-      IdService.getId(this.unitID
-      ))
+    this.annotationClass$ = this.annotationService
+      .getAnnotationClassInEffect(this.unit.annotations)
       .map(annotationClass => {
         this.annotationIcon = annotationClass ? 'fa-comments' : 'fa-comment-o';
         switch (annotationClass) {
@@ -65,6 +64,9 @@ export class UnitComponent implements OnInit {
             return 'btn-default';
         }
       });
+    if (this.unit.annotations) {
+      this.annotations = this.unit.annotations.reverse();
+    }
   }
 
   toggleAnnotations() {

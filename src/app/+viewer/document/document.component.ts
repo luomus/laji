@@ -28,6 +28,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
   @Input() uri: string;
   @Input() highlight: string;
+  @Input() own: boolean;
   @Input() showTitle = false;
   @Input() useWorldMap = true;
 
@@ -59,7 +60,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       .switchMap(() => this.userService.getUser())
       .subscribe(person => {
         this.personID = person.id;
-        this.changeDetector.markForCheck();
+        this.updateView();
       });
   }
 
@@ -90,7 +91,10 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     }
     const findDox$ = this.uri === this._uri ?
       Observable.of(this.document) :
-      this.warehouseApi.warehouseQuerySingleGet(this.uri)
+      this.warehouseApi
+        .warehouseQuerySingleGet(this.uri, this.own ? {
+          editorOrObserverPersonToken: this.userService.getToken()
+        } : undefined)
         .map(doc => doc.document)
         .do(() => this._uri = this.uri);
     findDox$
@@ -114,6 +118,10 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     this.showFacts = !this.showFacts;
   }
 
+  updateView() {
+    this.changeDetector.markForCheck();
+  }
+
   private parseDoc(doc, found) {
     this.hasDoc = found;
     if (found) {
@@ -124,8 +132,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       if (doc.documentId) {
         this.documentID = IdService.getId(doc.documentId);
       }
-      if (doc.editors) {
-        this.editors = doc.editors.map(editor => IdService.getId(editor));
+      if (doc.editorUserIds) {
+        this.editors = doc.editorUserIds.map(editor => IdService.getId(editor));
       } else {
         this.editors = [];
       }
@@ -156,7 +164,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
         .interval(this.recheckIterval)
         .subscribe(() => this.updateDocument());
     }
-    this.changeDetector.markForCheck();
+    this.updateView();
   }
 
 }

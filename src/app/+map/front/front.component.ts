@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQuery } from '../../+observation/search-query.model';
@@ -13,7 +13,7 @@ import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
   templateUrl: './front.component.html',
   styleUrls: ['./front.component.css']
 })
-export class FrontComponent implements OnInit, OnDestroy {
+export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MapComponent) lajiMap: MapComponent;
 
   readonly instructions = {
@@ -101,8 +101,6 @@ export class FrontComponent implements OnInit, OnDestroy {
     }
     if (params['coordinates']) {
       this.drawData.featureCollection = ISO6709ToGeoJSON(params['coordinates']);
-      this.lajiMap.initDrawData();
-      this.lajiMap.map.focusToLayer(0);
       len--;
     }
     this.hasQuery = len > 0;
@@ -117,6 +115,14 @@ export class FrontComponent implements OnInit, OnDestroy {
     }
     this.searchQuery.setQueryFromQueryObject(params);
     this.query = Util.clone(this.searchQuery.query);
+  }
+
+  ngAfterViewInit() {
+    const params = this.route.snapshot.queryParams;
+    if (params['coordinates']) {
+      this.lajiMap.initDrawData();
+      this.lajiMap.map.focusToLayer(0);
+    }
   }
 
   ngOnDestroy() {

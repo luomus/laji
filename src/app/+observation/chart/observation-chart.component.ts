@@ -121,7 +121,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
     sources.push(this.warehouseService
       .warehouseQueryAggregateGet(
         query,
-        ['unit.linkings.taxon.informalTaxonGroup'],
+        ['unit.linkings.taxon.informalTaxonGroups'],
         undefined,
         1000
       ));
@@ -139,7 +139,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
                 this.data = data[1].results
                   .map(item => {
                     return {
-                      id: IdService.getId(item.aggregateBy['unit.linkings.taxon.informalTaxonGroup']),
+                      id: IdService.getId(item.aggregateBy['unit.linkings.taxon.informalTaxonGroups']),
                       value: item.count,
                       label: ''
                     };
@@ -159,7 +159,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
           this.data = data[1].results
             .map(item => {
               return {
-                id: IdService.getId(item.aggregateBy['unit.linkings.taxon.informalTaxonGroup']),
+                id: IdService.getId(item.aggregateBy['unit.linkings.taxon.informalTaxonGroups']),
                 value: item.count,
                 label: ''
               };

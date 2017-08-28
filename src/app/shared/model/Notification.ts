@@ -1,3 +1,5 @@
+import { Annotation } from './Annotation';
+
 export interface Notification {
 
   id?: string;
@@ -10,7 +12,7 @@ export interface Notification {
   /**
    * Annotation connected to this
    */
-  annotationID?: string;
+  annotation?: Annotation;
 
   /**
    * Has the annotation been marked as seen

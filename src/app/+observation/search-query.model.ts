@@ -56,7 +56,8 @@ export class SearchQuery {
     'hasUnitMedia',
     'hasMedia',
     'secured',
-    'cache'
+    'cache',
+    'reliable'
   ];
 
   numericTypes = [
@@ -69,8 +70,8 @@ export class SearchQuery {
 
   stringTypes = [
     'taxonRankId',
-    'ykj3',
-    'ykj3Center'
+    'ykj10km',
+    'ykj10kmCenter'
   ];
 
   constructor(
