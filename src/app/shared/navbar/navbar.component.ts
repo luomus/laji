@@ -179,7 +179,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   removeNotification(notification: Notification) {
     this.translate.get('notification.delete')
-      .switchMap(msg => this.dialogService.confirm(msg))
+      .switchMap(msg => notification.seen ? Observable.of(true) : this.dialogService.confirm(msg))
       .subscribe(result => {
         this.dropDown.autoClose = false;
         setTimeout(() => {

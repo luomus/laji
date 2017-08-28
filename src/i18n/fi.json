@@ -469,5 +469,5 @@
   "todoTranslation": "Tämän sivun teksti on vielä käännettävänä.",
   "notification.title": "Ilmoitukset",
   "notification.delete": "Haluatko varmasti poistaa ilmoituksen",
-  "notification.annotation": "Kommentti havaintoerässä<br><small>{{uri}}</small>"
+  "notification.annotation": "{{person}} on kommenttoinut havaintoerääsi."
 }

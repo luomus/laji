@@ -5,13 +5,20 @@
 }
 
 .notification {
-  background: none !important;
   border-top: 1px solid #ccc;
   padding-right: 40px;
 }
 
+.notification:hover {
+  background: #dfdfdf;
+}
+
 .unseen {
-  border-left: 3px solid #E7D759;
+  background-color: #fcf8e3;
+}
+
+.unseen:hover {
+  background-color: #faebcc;
 }
 
 .delete {
@@ -26,5 +33,5 @@
 
 .delete:hover,
 .delete:focus {
-  background: #ccc;
+  background: #c2c2c2;
 }

@@ -4,6 +4,6 @@
    [routerLink]="[targetPath] | localize"
    [queryParams]="targetQuery">
   <small>{{notification.created | amTimeAgo}}</small><br>
-  <span [innerHtml]="'notification.annotation' | translate: {uri: info}"></span>
+  <small [innerHtml]="'notification.annotation' | translate: {uri: target, person: (by | users)}"></small>
 </a>
 <button type="button" class="delete" (click)="onRemove(notification)"><i class="glyphicon glyphicon-remove"></i></button>

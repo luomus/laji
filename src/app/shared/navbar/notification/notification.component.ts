@@ -15,7 +15,8 @@ export class NotificationComponent implements OnInit {
 
   targetPath: string;
   targetQuery: any;
-  info: string;
+  target: string;
+  by: string;
 
   @Input() notification: Notification;
   @Output() removeNotification = new EventEmitter<Notification>();
@@ -33,7 +34,8 @@ export class NotificationComponent implements OnInit {
     if (this.notification.annotation) {
       const annotation = this.notification.annotation;
       this.targetPath = '/view';
-      this.info = IdService.getUri(annotation.rootID);
+      this.target = IdService.getUri(annotation.rootID);
+      this.by = IdService.getId(annotation.annotationByPerson || annotation.annotationBySystem);
       this.targetQuery = {
         uri: IdService.getUri(annotation.rootID),
         highlight: IdService.getUri(annotation.targetID),

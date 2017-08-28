@@ -454,5 +454,5 @@
   "todoTranslation": "The texts for this page are under translation.",
   "notification.title": "Notifications",
   "notification.delete": "Do you really want to delete this notification?",
-  "notification.annotation": "Comment in observation<br><small>{{uri}}</small>"
+  "notification.annotation": "{{person}} has commented your observation."
 }

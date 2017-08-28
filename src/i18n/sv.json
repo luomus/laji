@@ -455,5 +455,5 @@
   "todoTranslation": "Texterna på denna sida är under översättning.",
   "notification.title": "Anmälningar",
   "notification.delete": "Vill du verkligen radera denna anmälan?",
-  "notification.annotation": "Kommentera i observation<br><small>{{uri}}</small>"
+  "notification.annotation": "{{person}} har kommenterat din observation"
 }
