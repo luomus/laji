@@ -45,7 +45,7 @@
             <div class="panel panel-default">
               <div class="panel-body resent-map">
                 <div class="link resent-map-overlay" [routerLink]="['/observation'] | localize" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}"></div>
-                <laji-observation-map [settingsKey]="'frontMap'" [height]="305" [showControls]="false" [initWithWorldMap]="false" [showItemsWhenLessThan]="500" [draw]="false" [query]="{time: mapStartDate + '/', countryId: 'ML.206', cache: true}"></laji-observation-map>
+                <laji-observation-map [settingsKey]="'frontMap'" [height]="305" [showControls]="false" [initWithWorldMap]="false" [showItemsWhenLessThan]="2000" [draw]="false" [query]="{time: mapStartDate + '/', countryId: 'ML.206', cache: true}"></laji-observation-map>
               </div>
               <div class="panel-footer">
                 <h2 class="panel-title">{{ 'home.main-page.recent' | translate }}</h2>

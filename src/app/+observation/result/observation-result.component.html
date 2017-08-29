@@ -32,7 +32,7 @@
 </ul>
 <div [hidden]="active !== 'map'" *ngIf="activated['map']">
   <laji-observation-map
-          [showItemsWhenLessThan]="500"
+          [showItemsWhenLessThan]="2000"
           [opacity]="0.5"
           [tick]="searchQuery.tack"
           [visible]="active === 'map'"
