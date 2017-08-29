@@ -20,6 +20,7 @@
         </h3>
         <laji-row [noTitleSpace]="true" [noRow]="true" [value]="document.collectionId | toQName | collectionName"> (<a href="{{document.collectionId}}">{{document.collectionId}}</a>)</laji-row>
       </div>
+      <laji-issues [data]="document"></laji-issues>
       <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
       <laji-row [title]="'keywords'" [value]="document.keywords"></laji-row>
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->

@@ -392,6 +392,7 @@
   "viewer.secured.secured": "Tähän havaintoerään liittyy havaintoja joita ei näytetä salaussyistä.",
   "viewer.secured.own1": "Tämä on havaintoerän salaamaton näkymä. Julkinen näkymä voi näyttää toisenlaiselta",
   "viewer.secured.own2": "Siirry julkiseen näkymään",
+  "viewer.issue": "Ongelma",
   "np.title": "Nimetyt paikat",
   "np.defaultDescription": "Aloita valitsemalla paikka.",
   "np.defaultUse": "Käytä tätä paikkaa",

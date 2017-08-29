@@ -380,6 +380,7 @@
   "viewer.secured.secured": "This submission has observations that are not shown for security reasons.",
   "viewer.secured.own1": "This is the private view of the submission. The public view may look different",
   "viewer.secured.own2": "Go to public view",
+  "viewer.issue": "Issue",
   "np.title": "Names places",
   "np.defaultDescription": "Start by choosing a place.",
   "np.defaultUse": "Use this place",

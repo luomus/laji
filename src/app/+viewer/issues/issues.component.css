@@ -1,0 +1,14 @@
+:host >>> .issue .key:before {
+  color: #d9534f;
+  font-family:FontAwesome;
+  font-style:normal;
+  font-weight:400;
+  speak:none;
+  display:inline-block;
+  text-decoration:inherit;
+  margin-right:.2em;
+  text-align:center;
+  font-variant:normal;
+  text-transform:none;
+  content:'\f071';
+}

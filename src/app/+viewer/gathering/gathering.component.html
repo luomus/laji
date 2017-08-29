@@ -1,4 +1,5 @@
 <div [hidden]="!visible">
+  <laji-issues [data]="gathering"></laji-issues>
   <laji-row [title]="'viewer.field.observer' | translate" [value]="gathering.team | values"></laji-row>
   <laji-row [title]="'viewer.field.time' | translate" *ngIf="gathering.eventDate">
     {{ gathering.eventDate.begin | amDateFormat:'DD.MM.YYYY' }}

@@ -365,6 +365,7 @@
   "viewer.document": "Observationer",
   "viewer.gathering": "Plats",
   "viewer.unit": "Observationer",
+  "viewer.issue": "Problem",
   "observation.form.biogeographicalProvince": "Biogeografiskt provins",
   "observation.form.municipality": "Grevskap",
   "observation.active.countryId": "Land",

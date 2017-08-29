@@ -23,6 +23,7 @@
         </span>
       </laji-row>
     </div>
+    <laji-issues [data]="unit"></laji-issues>
     <laji-row [title]="'MY.count' | label" [value]="unit.abundanceString"></laji-row>
     <laji-row [title]="'MY.lifeStage' | label" [value]="unit.lifeStage | label: 'warehouse'"></laji-row>
     <laji-row [title]="'MY.sex' | label" [value]="unit.sex | label: 'warehouse'"></laji-row>

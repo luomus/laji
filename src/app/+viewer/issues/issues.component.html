@@ -1,0 +1,6 @@
+<laji-row class="issue" *ngIf="hasIssue" [title]="'viewer.issue' | translate">
+  <laji-issue [issue]="data.quality.issue"></laji-issue>
+  <laji-issue [issue]="data.quality.locationIssue"></laji-issue>
+  <laji-issue [issue]="data.quality.timeIssue"></laji-issue>
+  <laji-issue [issue]="data.quality.taxon"></laji-issue>
+</laji-row>
