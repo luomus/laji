@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { FeedbackApi } from '../api/FeedbackApi';
 import { UserService } from '../service/user.service';
@@ -14,6 +14,8 @@ import { WindowRef } from '../windows-ref';
   templateUrl: './feedback.component.html'
 })
 export class FeedbackComponent {
+
+  @Input() iconOnly = false;
 
   @SessionStorage() public feedback: IFeedback = {
     subject: '',

@@ -12,7 +12,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class FooterComponent implements OnInit, OnDestroy{
 
-  public onFrontPage = true;
+  public onFrontPage = false;
+  public onMapPage = false;
   public subRouteEvent: Subscription;
   public subLangChange: Subscription;
   public tree;
@@ -32,10 +33,12 @@ export class FooterComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit() {
-    this.onFrontPage = this.router.isActive('/', true);
-    this.subRouteEvent = this.router.events.subscribe(() => {
-      this.onFrontPage = this.router.isActive('/', true);
-    });
+    this.subRouteEvent = this.router.events
+      .startWith(null)
+      .subscribe(() => {
+        this.onFrontPage = this.router.isActive('/', true);
+        this.onMapPage = this.router.isActive('/map', false);
+      });
     this.fetchTreeData();
     this.subLangChange = this.translate.onLangChange.subscribe(() => {
       this.fetchTreeData(true);

@@ -1,6 +1,11 @@
-<a class="link" (click)="modal.show()">
-  {{'feedback' | translate}}
+<a class="link icon" (click)="modal.show()" *ngIf="iconOnly; else label">
+  <i class="fa fa-envelope-o" placement="left" [tooltip]="'feedback' | translate"></i>
 </a>
+<ng-template #label>
+  <a class="link" (click)="modal.show()">
+    {{'feedback' | translate}}
+  </a>
+</ng-template>
 <div bsModal #childModal="bs-modal" class="modal fade" tabIndex="-1" role="dialog">
   <div class="modal-dialog modal-md">
     <div class="modal-content">

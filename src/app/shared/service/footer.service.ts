@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class FooterService {
-  private _footerVisible: boolean = true;
+  private _footerVisible = true;
 
   set footerVisible(visible) {
     if (visible !== this._footerVisible) {
