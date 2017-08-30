@@ -3,8 +3,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 const QualityErrors = [
   'issue',
   'locationIssue',
-  'timeIssue',
-  'taxon'
+  'timeIssue'
 ];
 
 @Component({
