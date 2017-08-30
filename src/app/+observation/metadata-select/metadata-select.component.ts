@@ -29,13 +29,14 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   @Input() field: string;
   @Input() alt: string;
   @Input() name: string;
-  @Input() multiple = false;
+  @Input() multiple = true;
   @Input() lang = 'fi';
   @Input() placeholder = 'select';
   @Input() mapToWarehouse = false;
   @Input() pick: MetadataSelectPick;
+  @Input() options: string[];
 
-  options = [];
+  _options: {id: string, name: string}[] = [];
   active = [];
   selectedTitle = '';
 
@@ -80,12 +81,26 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   }
 
   initOptions() {
-    if (!this.field && !this.alt) {
+    if (!this.field && !this.alt && !this.options) {
       return;
     }
 
-    this.subOptions = this.getDataObservable()
+    const byField$ = this.getDataObservable()
       .map(result => this.pickValue(result))
+      .catch(err => {
+        this.logger.warn('Failed to fetch metadata select', {
+          field: this.field,
+          alt: this.alt,
+          lang: this.lang,
+          err: err
+        });
+        return Observable.of([]);
+      });
+
+    const byOptions$ = Observable.of(this.options)
+      .map(options => options.map(option => ({id: option, name: option})));
+
+    this.subOptions = (this.options ? byOptions$ : byField$)
       .switchMap(options => {
         if (this.mapToWarehouse) {
           const requests = [];
@@ -95,30 +110,22 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
           return Observable
             .forkJoin(requests)
             .map(mapping => options.reduce((prev, curr, idx) => {
-              if (mapping[idx] !== options[idx].id) {
-                prev.push({id: mapping[idx], name: curr.name});
-              } else {
-                this.logger.log('No ETL mapping for', mapping[idx]);
-              }
-              return prev;
-            }, [])
-          );
+                if (mapping[idx] !== options[idx].id) {
+                  prev.push({id: mapping[idx], name: curr.name});
+                } else {
+                  this.logger.log('No ETL mapping for', mapping[idx]);
+                }
+                return prev;
+              }, [])
+            );
         } else {
           return Observable.of(options);
         }
       })
-      .subscribe(
-        options => {
-          this.options = options;
-          this.initActive();
-        },
-        err => this.logger.warn('Failed to fetch metadata select', {
-          field: this.field,
-          alt: this.alt,
-          lang: this.lang,
-          err: err
-        })
-      );
+      .subscribe(options => {
+        this._options = options;
+        this.initActive();
+      });
   }
 
   initActive(): any {
@@ -128,14 +135,14 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
       return;
     }
     if (typeof this.value === 'string') {
-      this.active = this.options.reduce((cumulative, current) => {
+      this.active = this._options.reduce((cumulative, current) => {
         if (this.value === current.id) {
           cumulative.push(current.id);
         }
         return cumulative;
       }, []);
     } else {
-      this.active = this.options.reduce((cumulative, current) => {
+      this.active = this._options.reduce((cumulative, current) => {
         if (this.value.indexOf(current.id) > -1) {
           cumulative.push(current.id);
         }
@@ -203,7 +210,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
     if (!this.pick) {
       return data.map(value => ({id: value.id, name: value.value}));
     }
-    return data.retuce((total, item) => {
+    return data.reduce((total, item) => {
       if (typeof this.pick[item.id] !== 'undefined' && this.pick[item.id] === '') {
         total.push({id: item.id, name: item.value});
       }

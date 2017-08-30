@@ -21,6 +21,6 @@
     allSelected: 'allSelected' | translate
   }"
   [ngModel]="active"
-  [options]="options || []"
+  [options]="_options || []"
   (ngModelChange)="refreshValue($event)">
 </ss-multiselect-dropdown>

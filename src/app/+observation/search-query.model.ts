@@ -71,7 +71,8 @@ export class SearchQuery {
   stringTypes = [
     'taxonRankId',
     'ykj10km',
-    'ykj10kmCenter'
+    'ykj10kmCenter',
+    'qualityIssues'
   ];
 
   obscure = [

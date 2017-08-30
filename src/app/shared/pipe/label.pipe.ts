@@ -30,7 +30,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
   updateValue(key: string, type?: labelType): void {
     if (type === 'warehouse') {
       this.warehouseService.getOriginalKey(key)
-        .timeout(1000)
+        .timeout(5000)
         .subscribe(
           (res: string) => {
             if (res) {

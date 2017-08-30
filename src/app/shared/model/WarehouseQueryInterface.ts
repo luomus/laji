@@ -146,4 +146,5 @@ export interface WarehouseQueryInterface {
   reliable?: boolean;
   observerPersonToken?: string;
   editorPersonToken?: string;
+  qualityIssues?: string;
 }
