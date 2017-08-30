@@ -526,6 +526,28 @@
               </label>
             </div>
           </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [(ngModel)]="formQuery.asEditor"
+                       (ngModelChange)="onFormQueryChage()"
+                       name="asEditor">
+                {{'observation.form.asEditor' | translate}}
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [(ngModel)]="formQuery.asObserver"
+                       (ngModelChange)="onFormQueryChage()"
+                       name="asObserver">
+                {{'observation.form.asObserver' | translate}}
+              </label>
+            </div>
+          </div>
         </div>
       </div><!-- filters end -->
       <div class="form-filters-fill"></div>

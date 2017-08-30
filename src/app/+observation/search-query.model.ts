@@ -74,6 +74,11 @@ export class SearchQuery {
     'ykj10kmCenter'
   ];
 
+  obscure = [
+    'editorPersonToken',
+    'observerPersonToken'
+  ];
+
   constructor(
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
@@ -110,7 +115,7 @@ export class SearchQuery {
       }
     }
 
-    for (const i of this.stringTypes) {
+    for (const i of [...this.stringTypes, ...this.obscure]) {
       if (typeof query[i] !== 'undefined') {
         this.query[i] = query[i];
       } else {
@@ -153,7 +158,7 @@ export class SearchQuery {
       }
     }
 
-    for (const i of this.stringTypes) {
+    for (const i of [...this.stringTypes, ...this.obscure]) {
       if (queryParameters.has(i)) {
         this.query[i] = queryParameters.get(i);
       } else {
@@ -166,7 +171,7 @@ export class SearchQuery {
     }
   }
 
-  public getQueryObject(skipParams: string[] = []) {
+  public getQueryObject(skipParams: string[] = [], obscure = true) {
     const result = {};
     if (this.query) {
       for (const i of this.arrayTypes) {
@@ -216,6 +221,15 @@ export class SearchQuery {
           result[i] =  this.query[i];
         }
       }
+
+      for (const i of this.obscure) {
+        if (skipParams.indexOf(i) > -1) {
+          continue;
+        }
+        if (this.query[i] !== undefined) {
+          result[i] = obscure ? 'true' : this.query[i];
+        }
+      }
     }
 
     if (result['target']) {
@@ -254,7 +268,7 @@ export class SearchQuery {
     if (!queryParameters) {
       queryParameters = new URLSearchParams();
     }
-    const query = this.getQueryObject(skipParams);
+    const query = this.getQueryObject(skipParams, false);
     Object.keys(query).map((key) => {
       queryParameters.set(key, query[key]);
     });

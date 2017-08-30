@@ -15,4 +15,6 @@ export interface ObservationFormQuery {
   allInvasiveSpecies: boolean;
   zeroObservations: boolean;
   onlyFromCollectionSystems: boolean;
+  asObserver: boolean;
+  asEditor: boolean;
 }

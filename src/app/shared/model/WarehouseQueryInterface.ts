@@ -144,4 +144,6 @@ export interface WarehouseQueryInterface {
   ykj10kmCenter?: string;
   cache?: boolean;
   reliable?: boolean;
+  observerPersonToken?: string;
+  editorPersonToken?: string;
 }

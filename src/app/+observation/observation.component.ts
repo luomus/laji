@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
 import { SearchQuery } from './search-query.model';
+import { UserService } from '../shared/service/user.service';
 
 @Component({
   selector: 'laji-observation',
@@ -26,6 +27,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
   private subQuery: Subscription;
 
   constructor(private route: ActivatedRoute,
+              private userSerivce: UserService,
               public searchQuery: SearchQuery) {
   }
 
@@ -40,6 +42,14 @@ export class ObservationComponent implements OnInit, OnDestroy {
       }
       if (params['target']) {
         this.searchQuery.query.target = [params['target']];
+      }
+      if (this.searchQuery.query.editorPersonToken === 'true') {
+        console.log('HAS EDITOR', this.userSerivce.getToken());
+        this.searchQuery.query.editorPersonToken = this.userSerivce.getToken();
+      }
+      if (this.searchQuery.query.observerPersonToken === 'true') {
+        console.log('HAS OBSERVER');
+        this.searchQuery.query.observerPersonToken = this.userSerivce.getToken();
       }
       this.searchQuery.queryUpdate({formSubmit: !!params['reset'], newData: true});
     });

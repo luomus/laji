@@ -19,6 +19,7 @@ import { WindowRef } from '../../shared/windows-ref';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Autocomplete } from '../../shared/model/Autocomplete';
 import { AreaType } from '../../shared/service/area.service';
+import { UserService } from '../../shared/service/user.service';
 
 @Component({
   selector: 'laji-observation-form',
@@ -112,6 +113,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   constructor(public searchQuery: SearchQuery,
               public translate: TranslateService,
               public collectionService: CollectionApi,
+              private userService: UserService,
               private autocompleteService: AutocompleteApi,
               private sourceService: SourceApi,
               private mapService: MapService,
@@ -229,7 +231,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       nationalInvasiveSpeciesStrategy: undefined,
       allInvasiveSpecies: undefined,
       zeroObservations: undefined,
-      onlyFromCollectionSystems: undefined
+      onlyFromCollectionSystems: undefined,
+      asEditor: false,
+      asObserver: false
     };
 
     if (refresh) {
@@ -384,6 +388,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
+  onFormQueryChage() {
+    this.formQueryToQuery(this.formQuery);
+    this.onQueryChange();
+  }
+
   onQueryChange() {
     this.taxonName = null;
     this.delayedSearchSource.next(true);
@@ -451,7 +460,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       otherInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.otherInvasiveSpeciesList'),
       nationalInvasiveSpeciesStrategy: this.hasInMulti(query.administrativeStatusId, 'MX.nationalInvasiveSpeciesStrategy'),
       allInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
-      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3'], true)
+      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3'], true),
+      asObserver: !!query.observerPersonToken,
+      asEditor: !!query.editorPersonToken,
     };
     if (this.formQuery.taxon && (
       this.formQuery.taxon.indexOf('MX.') === 0 || this.formQuery.taxon.indexOf('http:') === 0)) {
@@ -489,6 +500,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     if (formQuery.onlyFromCollectionSystems) {
       query.sourceId = ['KE.167', 'KE.3'];
     }
+    query.editorPersonToken = formQuery.asEditor ? this.userService.getToken() : undefined;
+    query.observerPersonToken = formQuery.asObserver ? this.userService.getToken() : undefined;
     this.invasiveStatuses
       .map((key) => {
         const value = 'MX.' + key;
