@@ -30,8 +30,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   @Input() highlight: string;
   @Input() own: boolean;
   @Input() showTitle = false;
-  @Input() useWorldMap = true;
 
+  useWorldMap = true;
   externalViewUrl: string;
   document: any;
   documentID: string;
@@ -109,6 +109,12 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     if (this.document && this.document.gatherings) {
       this.activeGathering = this.document.gatherings[i] || {};
     }
+    this.useWorldMap = !(
+      this.activeGathering.interpretations &&
+      this.activeGathering.interpretations.country &&
+      this.activeGathering.interpretations.country === 'http://tun.fi/ML.206'
+    );
+
     if (this.map) {
       this.map.setActiveIndex(i);
     }
