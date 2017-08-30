@@ -1,39 +1,37 @@
 <div id="haseka-container" class="flex-column">
-  <only-logged class="flex-column">
-    <div out>
-      <div class="row">
-        <div class="col-sm-8">
+  <div *lajiLoggedIn="false" class="flex-column">
+    <div class="row">
+      <div class="col-sm-8">
+        <h1>{{'haseka.title' | translate}}</h1>
+        <p>
+          {{'haseka.pleaseLogin' | translate}}
+        </p>
+        <div [innerHtml]="'haseka.intro' | translate"></div>
+      </div>
+    </div>
+  </div>
+  <div *lajiLoggedIn class="flex-column">
+    <div class="row flex-column flex-row">
+      <div class="col-sm-9 col-md-9 col-lg-10" id="content-container">
+        <div>
           <h1>{{'haseka.title' | translate}}</h1>
-          <p>
-            {{'haseka.pleaseLogin' | translate}}
-          </p>
           <div [innerHtml]="'haseka.intro' | translate"></div>
-        </div>
-      </div>
-    </div>
-    <div in class="flex-column">
-      <div class="row flex-column flex-row">
-        <div class="col-sm-9 col-md-9 col-lg-10" id="content-container">
-          <div>
-            <h1>{{'haseka.title' | translate}}</h1>
-            <div [innerHtml]="'haseka.intro' | translate"></div>
-            <div class="pull-right toggle-intro" *ngIf="!vihkoSettings.showIntro">
-              <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
-            </div>
-            <alert *ngIf="vihkoSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-              <div [innerHtml]="'haseka.intro2' | translate"></div>
-            </alert>
-            <a [routerLink]="'/vihko/terms-of-service' | localize">{{'haseka.termsOfService' | translate}}</a>
-            <router-outlet></router-outlet>
+          <div class="pull-right toggle-intro" *ngIf="!vihkoSettings.showIntro">
+            <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
           </div>
-        </div>
-        <div class="col-sm-3 col-md-3 col-lg-2 more-info flex-column" *ngIf="userService.isLoggedIn">
-          <laji-haseka-latest [userToken]="userService.getToken()"
-                              (onShowViewer)="showDocumentViewer($event)"></laji-haseka-latest>
+          <alert *ngIf="vihkoSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+            <div [innerHtml]="'haseka.intro2' | translate"></div>
+          </alert>
+          <a [routerLink]="'/vihko/terms-of-service' | localize">{{'haseka.termsOfService' | translate}}</a>
+          <router-outlet></router-outlet>
         </div>
       </div>
+      <div class="col-sm-3 col-md-3 col-lg-2 more-info flex-column" *ngIf="userService.isLoggedIn">
+        <laji-haseka-latest [userToken]="userService.getToken()"
+                            (onShowViewer)="showDocumentViewer($event)"></laji-haseka-latest>
+      </div>
     </div>
-  </only-logged>
+  </div>
 </div>
 
 <div class="modal fade" bsModal #documentModal="bs-modal"

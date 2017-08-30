@@ -1,10 +1,9 @@
 <div class="container-fluid">
-  <only-logged>
-    <div class="container" out>
+    <div class="container"  *lajiLoggedIn="false">
       <h1>{{'haseka.title' | translate}}</h1>
       <p>{{'haseka.pleaseLogin' | translate}}</p>
     </div>
-    <div in>
+    <div *lajiLoggedIn>
       <laji-document-form
         (onSuccess)="onSuccess($event)"
         (onTmpLoad)="onTmlLoad($event)"
@@ -15,5 +14,4 @@
         [formId]="formId"
         [documentId]="documentId"></laji-document-form>
     </div>
-  </only-logged>
 </div>

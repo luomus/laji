@@ -81,6 +81,32 @@
         </div>
       </div>
       <div class="row">
+        <div *lajiLoggedIn="true">
+          <div laji-panel [title]="'observation.form.own' | translate" [autoToggle]="true">
+            <div class="row">
+              <div class="col-sm-12">
+                <label>
+                  <input type="checkbox"
+                         [(ngModel)]="formQuery.asEditor"
+                         (ngModelChange)="onFormQueryChage()"
+                         name="asEditor">
+                  {{'observation.form.asEditor' | translate}}
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <label>
+                  <input type="checkbox"
+                         [(ngModel)]="formQuery.asObserver"
+                         (ngModelChange)="onFormQueryChage()"
+                         name="asObserver">
+                  {{'observation.form.asObserver' | translate}}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
         <div laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true">
           <div class="row">
             <div class="col-lg-12">
@@ -523,28 +549,6 @@
                        (ngModelChange)="onCheckBoxToggle('reliable')"
                        name="reliable">
                 {{'observation.form.reliable' | translate}}
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <label>
-                <input type="checkbox"
-                       [(ngModel)]="formQuery.asEditor"
-                       (ngModelChange)="onFormQueryChage()"
-                       name="asEditor">
-                {{'observation.form.asEditor' | translate}}
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <label>
-                <input type="checkbox"
-                       [(ngModel)]="formQuery.asObserver"
-                       (ngModelChange)="onFormQueryChage()"
-                       name="asObserver">
-                {{'observation.form.asObserver' | translate}}
               </label>
             </div>
           </div>

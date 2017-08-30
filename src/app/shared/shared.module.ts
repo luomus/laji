@@ -26,7 +26,6 @@ import { OmniSearchComponent } from './omni-search/omni-search.component';
 import { SafePipe } from './pipe/safe.pipe';
 import { MultiLangPipe } from './pipe/multi-lang.pipe';
 import { NewsService } from './service/news.service';
-import { OnlyLoggedComponent } from './only-logged/only-logged.component';
 import { ImageModalComponent } from './image-gallery/image-modal.component';
 import { MapService } from './map/map.service';
 import { ToQNamePipe } from './pipe/to-qname.pipe';
@@ -85,6 +84,7 @@ import { LocalizePipe } from '../locale/localize.pipe';
 import { CacheService } from './service/cache.service';
 import { NotificationComponent } from './navbar/notification/notification.component';
 import { HideScrollDirective } from './directive/hide-scroll';
+import { LoggedInDirective } from './directive/logged-in.directive';
 
 
 @NgModule({
@@ -95,9 +95,9 @@ import { HideScrollDirective } from './directive/hide-scroll';
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, FormattedNumber,
     AreaNamePipe, CollectionNamePipe, FormNamePipe,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
-    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, ImageModalOverlayComponent,
+    PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
-    FixedInViewDirective, NotificationComponent, HideScrollDirective
+    FixedInViewDirective, NotificationComponent, HideScrollDirective, LoggedInDirective
   ],
   imports: [
     ToastModule,
@@ -117,8 +117,9 @@ import { HideScrollDirective } from './directive/hide-scroll';
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe, LajiFormComponent, DocumentFormComponent,
     ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
-    PanelComponent, OmniSearchComponent, OnlyLoggedComponent, ImageModalComponent, NlToBrPipe,
-    AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, FixedInViewDirective, LocalizePipe, HideScrollDirective
+    PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe,
+    AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, FixedInViewDirective, LocalizePipe, HideScrollDirective,
+    LoggedInDirective
   ]
 })
 export class SharedModule {

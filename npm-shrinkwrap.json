@@ -4838,9 +4838,9 @@
       }
     },
     "laji-form": {
-      "version": "0.0.227",
-      "resolved": "https://registry.npmjs.org/laji-form/-/laji-form-0.0.227.tgz",
-      "integrity": "sha1-nJjNSzSntzFrpnND71hxHzEd7Mg=",
+      "version": "0.0.228",
+      "resolved": "https://registry.npmjs.org/laji-form/-/laji-form-0.0.228.tgz",
+      "integrity": "sha512-ZpJzzPGd3HCJrWc9YpXwwaT0w2Eq+oed93xNW0lRxMBN1mC7Z3JbmQQD2BmbrUn/WjVu4Eyncv/XSKX4UdgXqg==",
       "requires": {
         "babel-runtime": "6.26.0",
         "deep-equal": "1.0.1",
@@ -4865,6 +4865,17 @@
         "react-transition-group": "1.2.0",
         "react-widgets": "3.4.8",
         "scroll-into-view-if-needed": "1.1.0"
+      },
+      "dependencies": {
+        "react-jsonschema-form": {
+          "version": "git+https://git@github.com/olzraiti/react-jsonschema-form.git#47a55f5793f23f55537258fa9f52fd4a8ba11b73",
+          "requires": {
+            "jsonschema": "1.2.0",
+            "lodash.topath": "4.5.2",
+            "prop-types": "15.5.10",
+            "setimmediate": "1.0.5"
+          }
+        }
       }
     },
     "laji-map": {
@@ -7301,15 +7312,6 @@
       "requires": {
         "httpplease": "0.16.4",
         "once": "1.4.0"
-      }
-    },
-    "react-jsonschema-form": {
-      "version": "git+https://git@github.com/olzraiti/react-jsonschema-form.git#47a55f5793f23f55537258fa9f52fd4a8ba11b73",
-      "requires": {
-        "jsonschema": "1.2.0",
-        "lodash.topath": "4.5.2",
-        "prop-types": "15.5.10",
-        "setimmediate": "1.0.5"
       }
     },
     "react-overlays": {
