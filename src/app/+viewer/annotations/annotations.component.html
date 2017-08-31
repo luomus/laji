@@ -4,7 +4,9 @@
       <i class="glyphicon glyphicon-remove"></i>
     </button>
     <h4>
-      {{'annotation.title' | translate}}
+      <span class="comment-title">
+        {{'annotation.title' | translate}}
+      </span>
       <span *ngIf="!adding">
         <button class="btn btn-xs btn-success" (click)="toggleAddForm()"><i class="glyphicon glyphicon-plus"></i></button>
       </span>

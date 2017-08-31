@@ -7,11 +7,11 @@
       </span>
       <span class="scientificName">
         (<span [class.cursive]="unit.linkings.originalTaxon.cursiveName">{{unit.linkings.originalTaxon.scientificName}}</span>)
-        <a [routerLink]="['/taxon/' + unit.linkings.originalTaxonId] | localize" target="_blank"><i class="glyphicon glyphicon-modal-window"></i></a>
+        <a [routerLink]="['/taxon/' + (unit.linkings.originalTaxon.qname | toQName)] | localize" target="_blank"><i class="glyphicon glyphicon-modal-window"></i></a>
       </span>
     </laji-row>
     <ng-template #taxonVerbatim>
-      <laji-row [title]="unit.recordBasis | label: 'warehouse'" [value]="unit.originalTaxonVerbatim"></laji-row>
+      <laji-row [title]="unit.recordBasis | label: 'warehouse'" [value]="unit.taxonVerbatim"></laji-row>
     </ng-template>
     <div *ngIf="showFacts && unit.quality && unit.quality.taxon && unit.quality.taxon.reliability">
       <laji-row [title]="'result.unit.quality.taxon'|translate">
@@ -23,12 +23,13 @@
     </div>
     <laji-row
       *ngIf="unit.linkings && unit.linkings.taxon && unit.linkings.originalTaxon && unit.linkings.taxon.qname !== unit.linkings.originalTaxon.qname"
-      [title]="'MAN.opinion' | label">
+      [title]="'Korjattu määritys'">
       <span class="vernacularName" *ngIf="unit.linkings.taxon.vernacularName">
         {{unit.linkings.taxon.vernacularName | multiLang}}
       </span>
       <span class="scientificName">
         (<span [class.cursive]="unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</span>)
+        <a [routerLink]="['/taxon/' + (unit.linkings.taxon.qname | toQName)] | localize" target="_blank"><i class="glyphicon glyphicon-modal-window"></i></a>
       </span>
     </laji-row>
     <laji-issues [data]="unit"></laji-issues>
@@ -36,10 +37,6 @@
     <laji-row [title]="'MY.lifeStage' | label" [value]="unit.lifeStage | label: 'warehouse'"></laji-row>
     <laji-row [title]="'MY.sex' | label" [value]="unit.sex | label: 'warehouse'"></laji-row>
     <laji-row [title]="'MY.notes' | label" [value]="unit.notes"></laji-row>
-    <div class="facts" *ngIf="showFacts && unit.facts">
-      <laji-row [title]="item.fact | label:'fullUri'" [value]="item.value | label:'fullUri'" *ngFor="let item of unit.facts"></laji-row>
-    </div>
-
     <div class="row">
       <div class="col-xs-12 col-md-8 col-md-offset-4">
         <div class="image-holder">
@@ -47,6 +44,7 @@
         </div>
       </div>
     </div>
+    <laji-facts [show]="showFacts" [facts]="unit.facts"></laji-facts>
   </div>
   <div class="annotation-btn">
     <button type="button"
@@ -58,7 +56,7 @@
   </div>
   <div *ngIf="annotationVisible">
     <div class="row">
-      <div class="col-xs-12 col-md-10 col-md-offset-2">
+      <div class="col-xs-12 col-md-10 col-md-offset-2 annotations">
         <laji-annotations
           [editors]="editors"
           [personID]="personID"

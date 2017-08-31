@@ -18,15 +18,13 @@
             <br>
           </small>
         </h3>
-        <laji-row [noTitleSpace]="true" [noRow]="true" [value]="document.collectionId | toQName | collectionName"> (<a href="{{document.collectionId}}">{{document.collectionId}}</a>)</laji-row>
+        <laji-row [noTitleSpace]="true" [noRow]="true" [value]="document.collectionId | toQName | collectionName"> (<a target="_blank" href="{{document.collectionId}}">{{document.collectionId}}</a>)</laji-row>
       </div>
       <laji-issues [data]="document"></laji-issues>
       <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
       <laji-row [title]="'keywords'" [value]="document.keywords"></laji-row>
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
-      <div class="facts" *ngIf="showFacts && document.facts">
-        <laji-row [title]="item.fact | label:'fullUri'" [value]="item.value | label: 'fullUri'" *ngFor="let item of document.facts"></laji-row>
-      </div>
+      <laji-facts [show]="showFacts" [facts]="document.facts"></laji-facts>
     </div>
     <div class="col-sm-5">
       <div class="row">
@@ -37,7 +35,7 @@
             </laji-row>
             <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
             <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
-            <laji-row [title]="'loadDate' | label" [value]="document.loadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
+            <laji-row [title]="'viewer.loadDate' | label" [value]="document.loadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
           </ng-template>
           <a class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
              *ngIf="externalViewUrl"
@@ -65,7 +63,12 @@
               </span>
               <ng-template #isSecured>
                 <span *ngIf="document.public">
-                  {{'viewer.secured.secured' | translate}}
+                  <span *ngIf="document.secureLevel !== 'NONE' || (document.secureReasons && document.secureReasons.length > 0)">
+                    {{'viewer.secured.secured' | translate}}
+                  </span>
+                  <span *ngIf="document.partial">
+                    Havaintoerästä on poistettua salaittavia havaintoja.
+                  </span>
                 </span>
                 <span *ngIf="!document.public">
                   {{'viewer.secured.own1' | translate}}

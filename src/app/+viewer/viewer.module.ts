@@ -19,6 +19,7 @@ import { TypeaheadModule } from 'ngx-bootstrap';
 import { SecureInfoComponent } from './secure-info/secure-info.component';
 import { IssueComponent } from './issue/issue.component';
 import { IssuesComponent } from './issues/issues.component';
+import { FactsComponent } from './facts/facts.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,7 @@ import { IssuesComponent } from './issues/issues.component';
   providers: [ToQNamePipe, AnnotationService, AnnotationApi],
   declarations: [ViewerComponent, DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
     GatheringComponent, UnitComponent, LcFirstPipe, AnnotationsComponent, AnnotationFormComponent, AnnotationListComponent,
-    SecureInfoComponent, IssueComponent, IssuesComponent],
+    SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent],
   exports: [ViewerComponent, DocumentComponent]
 })
 export class ViewerModule { }

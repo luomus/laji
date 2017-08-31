@@ -12,9 +12,3 @@
   width: 430px;
   max-width: 430px;
 }
-
-:host >>> .facts {
-/*  background-color: #f5f5f5;
-  border-radius: 4px;
-  border: 1px solid #ccc; */
-}

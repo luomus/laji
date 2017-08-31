@@ -13,6 +13,7 @@ hr {
 }
 .annotation-btn {
   position: absolute;
+  margin-right: -28px;
   right: 0;
   top: 0;
 }

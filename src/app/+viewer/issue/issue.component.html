@@ -1,4 +1,18 @@
 
-<span *ngIf="error" [tooltip]="error.source | label: 'warehouse'">
-  {{error.issue | label: 'warehouse'}}<br>
+<span *ngIf="error">
+  {{error.issue | label: 'warehouse'}}
+  <i class="link glyphicon glyphicon-info-sign"
+     [tooltip]="infoContent" placement="right">
+  </i>
+  <br>
 </span>
+<ng-template #infoContent>
+  <p>
+    Lähde:
+    {{error.source | label: 'warehouse'}}
+  </p>
+  <p>
+    Viesti:
+    {{error.message}}
+  </p>
+</ng-template>
