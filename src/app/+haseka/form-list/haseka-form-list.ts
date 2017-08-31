@@ -8,7 +8,6 @@ import { FormService } from '../../shared/service/form.service';
 import { UserService } from '../../shared/service/user.service';
 import { FormPermissionService } from '../form-permission/form-permission.service';
 import { Person } from '../../shared/model/Person';
-import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-haseka-form-list',
@@ -30,7 +29,6 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
               private logger: Logger,
               private userService: UserService,
               private formPermissionService: FormPermissionService,
-              private localizeRouterService: LocalizeRouterService,
               private changeDetector: ChangeDetectorRef) {
   }
 

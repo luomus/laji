@@ -15,11 +15,11 @@
       <div class="col-sm-9 col-md-9 col-lg-10" id="content-container">
         <div>
           <h1>{{'haseka.title' | translate}}</h1>
-          <div [innerHtml]="'haseka.intro' | translate"></div>
-          <div class="pull-right toggle-intro" *ngIf="!vihkoSettings.showIntro">
+          <div [innerHtml]="'haseka.intro' | translate" *ngIf="isFront"></div>
+          <div class="pull-right toggle-intro" *ngIf="!vihkoSettings.showIntro && isFront">
             <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
           </div>
-          <alert *ngIf="vihkoSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+          <alert *ngIf="vihkoSettings.showIntro && isFront" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
             <div [innerHtml]="'haseka.intro2' | translate"></div>
           </alert>
           <a [routerLink]="'/vihko/terms-of-service' | localize">{{'haseka.termsOfService' | translate}}</a>
