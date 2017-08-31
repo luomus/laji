@@ -1,7 +1,7 @@
 <div class="ng-overlay" *ngIf="modalImages">
   <div class="ng-gallery-content">
     <div class="uil-ring-css" *ngIf="loading"><laji-spinner [spinning]="loading" [light]="true"></laji-spinner></div>
-    <a href="{{img.fullURL || img.largeURL}}" download="{{img.fullURL || img.largeURL}}" class="download-img">
+    <a href="{{img.fullURL || img.largeURL}}" target="_blank" download="{{img.fullURL || img.largeURL}}" class="download-img">
       <i class="glyphicon glyphicon-download-alt"></i>
     </a>
     <a class="close-popup" (click)="closeGallery()"><i class="glyphicon glyphicon-remove"></i></a>
