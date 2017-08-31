@@ -347,7 +347,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  onCheckBoxToggle(field, selectValue = true, isDirect = true) {
+  onCheckBoxToggle(field, selectValue: any = true, isDirect = true) {
     if (isDirect) {
       this.searchQuery.query[field] = typeof this.searchQuery.query[field] === 'undefined'
       ||  this.searchQuery.query[field] !== selectValue
