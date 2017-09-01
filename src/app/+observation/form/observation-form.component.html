@@ -26,11 +26,13 @@
       </div>
       <div class="lj-filter-wrap" lajiHideScroll>
         <div class="taxon-panel">
-          <div class="form-group">
+          <div class="row">
             <label class="col-lg-12">
               {{'observation.active.informalTaxonGroupId' | translate}}:
             </label>
-            <div class="col-lg-12">
+          </div>
+          <div class="row">
+            <div class="lj-input-wrap">
               <observation-group-select
                       [(ngModel)]="formQuery.informalTaxonGroupId"
                       name="informalTaxonGroupId"
@@ -110,7 +112,7 @@
           </div>
           <div laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true">
             <div class="row">
-              <div class="col-lg-12">
+              <div class="lj-input-wrap">
                 <laji-datepicker
                         [(ngModel)]="formQuery.timeStart"
                         [viewFormat]="'DD.MM.YYYY'"
@@ -122,7 +124,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-12">
+              <div class="lj-input-wrap">
                 <laji-datepicker
                         [(ngModel)]="formQuery.timeEnd"
                         [viewFormat]="'DD.MM.YYYY'"
