@@ -611,11 +611,10 @@ body > .ui-select-bootstrap.open {
 }
 
 /** scrollbar **/
-/*
 ::-webkit-scrollbar {
   height: 16px;
   overflow: visible;
-  width: 16px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-button {
@@ -660,7 +659,6 @@ body > .ui-select-bootstrap.open {
   border: 1px rgba(0, 0, 0, .1);
   background-color: rgba(0,0,0,.05);
 }
-*/
 /** /scrollbar **/
 
 @media only screen and (min-width : 768px) {

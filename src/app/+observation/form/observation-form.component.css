@@ -105,14 +105,23 @@ hr {
 .fixed-element {
   background-color: #fff;
 }
+.lj-filter-wrap {
+  margin: -15px -15px 0 -15px;
+  padding: 0 15px 10px 15px;
+}
 
 @media only screen and (min-width : 768px) {
+  .lj-filter-wrap {
+    max-height: calc(100vh - 130px);
+    overflow: auto;
+  }
+
   .form-filters-fill {
     background-color: #ECF0F1;
     width: calc(100% + 30px);
     flex: 1 1 auto;
     margin: 0 -15px;
-    min-height: 100px;
+    min-height: 10px;
   }
 
   .fixed-container {
