@@ -24,8 +24,6 @@ import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 import { CoordinateService } from '../../shared/service/coordinate.service';
 import LatLngBounds = L.LatLngBounds;
 
-const maxCoordinateAccuracy = 10000;
-
 @Component({
   selector: 'laji-observation-map',
   templateUrl: './observation-map.component.html',
@@ -87,7 +85,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   private reset = true;
   private showingItems = false;
   private dataCache: any;
-  private accuracy;
 
 
   private static getValue(row: any, propertyName: string): string {
@@ -243,7 +240,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       };
     };
     if (!this.query.coordinates) {
-      this.accuracy = maxCoordinateAccuracy;
       return;
     }
     const features = [];
@@ -251,22 +247,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       const parts = coord.split(':');
       const system = parts.pop();
       if (system === 'WGS84' && parts.length === 4) {
-        if (!this.query.coordinateAccuracyMax) {
-          const spot1 = new (L as any).LatLng(+parts[2], +parts[0]);
-          const spot2 = new (L as any).LatLng(+parts[2], +parts[1]);
-          const spot3 = new (L as any).LatLng(+parts[3], +parts[1]);
-          setTimeout(() => {
-            if (!this.query.coordinateAccuracyMax) {
-              this.query.coordinateAccuracyMax = Math.max(Math.pow(10, Math.ceil(
-                Math.log(Math.min(
-                  spot1.distanceTo(spot3),
-                  spot1.distanceTo(spot2),
-                  maxCoordinateAccuracy
-                )) * Math.LOG10E)), 1
-              );
-            }
-          });
-        }
         features.push(ObservationMapComponent.getFeature({
           type: 'Polygon',
           coordinates: [[
@@ -276,11 +256,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           ]]
         }));
       } else if (system === 'YKJ' && parts.length === 2) {
-        if (!this.query.coordinateAccuracyMax) {
-          setTimeout(() => {
-            this.query.coordinateAccuracyMax = Math.pow(10, 7 - parts[0].length);
-          });
-        }
         features.push(
           this.coordinateService.convertYkjToGeoJsonFeature(
             parts[0], parts[1]
