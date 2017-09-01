@@ -111,7 +111,7 @@
   "result.gathering.eventDate": "Time",
   "result.document.createdDate": "Date of creation",
   "result.gathering.country": "Country",
-  "result.unit.abundanceString": "Amount",
+  "result.unit.abundanceString": "Number",
   "result.unit.interpretations.individualCount": "Individual count (interpreted)",
   "result.document.collectionId": "Collection",
   "result.gathering.countryId": "Country",
