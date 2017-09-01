@@ -19,6 +19,7 @@ import { ObservationComponent } from './observation.component';
 import { ViewerModule } from '../+viewer/viewer.module';
 import { NvD3Module } from '../ng2-nvd3/ng2-nvd3.module';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
+import { SelectComponent } from './select/select.component';
 
 @NgModule({
   imports: [routing, NvD3Module, SharedModule, TypeaheadModule, ViewerModule, MultiselectDropdownModule],
@@ -27,7 +28,7 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
     ObservationFilterComponent, ObservationFormComponent, ObservationGroupSelectComponent,
     MultiRadioComponent, ObservationResultComponent,
     ObservationResultListComponent, MetadataSelectComponent,
-    PieChartComponent, DatePickerComponent, ObservationDownloadComponent]
+    PieChartComponent, DatePickerComponent, ObservationDownloadComponent, SelectComponent]
 })
 export class ObservationModule {
 }

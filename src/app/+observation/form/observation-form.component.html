@@ -151,38 +151,38 @@
              [title]="'observation.form.place' | translate">
           <div class="form-group">
             <div class="col-sm-12">
-              <laji-select
+              <laji-metadata-select
                       [(ngModel)]="searchQuery.query.countryId"
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
                       [placeholder]="'result.gathering.country'"
                       name="countryId"
                       [field]="areaType.Country"
-                      [lang]="translate.currentLang"></laji-select>
+                      [lang]="translate.currentLang"></laji-metadata-select>
             </div>
           </div>
           <div class="form-group">
             <div class="col-sm-12">
-              <laji-select
+              <laji-metadata-select
                       [(ngModel)]="searchQuery.query.biogeographicalProvinceId"
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
                       [placeholder]="'result.gathering.biogeographicalProvince'"
                       name="biogeographicalProvinceId"
                       [field]="areaType.Biogeographical"
-                      [lang]="translate.currentLang"></laji-select>
+                      [lang]="translate.currentLang"></laji-metadata-select>
             </div>
           </div>
           <div class="form-group">
             <div class="col-sm-12">
-              <laji-select
+              <laji-metadata-select
                       [(ngModel)]="searchQuery.query.finnishMunicipalityId"
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
                       [placeholder]="'observation.form.municipality'"
                       name="finnishMunicipalityId"
                       [field]="areaType.Municipality"
-                      [lang]="translate.currentLang"></laji-select>
+                      [lang]="translate.currentLang"></laji-metadata-select>
             </div>
           </div>
           <div class="form-group">
@@ -246,7 +246,7 @@
         <div laji-panel [title]="'MY.recordBasis' | label" [autoToggle]="true">
           <div class="row">
             <div class="col-sm-12">
-              <laji-select
+              <laji-metadata-select
                       [(ngModel)]="searchQuery.query.recordBasis"
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
@@ -254,7 +254,7 @@
                       [mapToWarehouse]="true"
                       [placeholder]="'MY.recordBasis' | label"
                       [alt]="'MY.recordBases'"
-                      [lang]="translate.currentLang"></laji-select>
+                      [lang]="translate.currentLang"></laji-metadata-select>
             </div>
           </div>
         </div>
@@ -295,28 +295,30 @@
           </div>
           <div class="form-group">
             <div class="col-lg-12">
-              <laji-select
+              <laji-metadata-select
                       [(ngModel)]="searchQuery.query.sex"
                       [alt]="'MY.sexes'"
                       [multiple]="true"
                       [placeholder]="'observation.form.sex'"
                       (ngModelChange)="onQueryChange()"
                       [mapToWarehouse]="true"
+                      [useFilter]="false"
                       name="sex"
-                      [lang]="translate.currentLang"></laji-select>
+                      [lang]="translate.currentLang"></laji-metadata-select>
             </div>
           </div>
           <div class="row">
             <div class="col-lg-12">
-              <laji-select
+              <laji-metadata-select
                       [(ngModel)]="searchQuery.query.lifeStage"
                       (ngModelChange)="onQueryChange()"
                       [alt]="'MY.lifeStages'"
                       [multiple]="true"
+                      [useFilter]="false"
                       [placeholder]="'MY.lifeStage' | label"
                       [mapToWarehouse]="true"
                       name="lifeStage"
-                      [lang]="translate.currentLang"></laji-select>
+                      [lang]="translate.currentLang"></laji-metadata-select>
             </div>
           </div>
         </div>
@@ -356,7 +358,7 @@
         <div laji-panel [title]="'observation.form.source' | translate" [autoToggle]="true">
           <div class="form-group">
             <div class="col-sm-12">
-              <laji-select
+              <laji-metadata-select
                       [(ngModel)]="searchQuery.query.collectionId"
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
@@ -364,45 +366,46 @@
                       [placeholder]="'MY.collectionID' | label"
                       [mapToWarehouse]="false"
                       name="collectionID"
-                      [lang]="translate.currentLang"></laji-select>
+                      [lang]="translate.currentLang"></laji-metadata-select>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-12">
-              <laji-select
+              <laji-metadata-select
                       [(ngModel)]="searchQuery.query.sourceId"
                       (ngModelChange)="onSystemIDChange()"
                       [placeholder]="'observation.form.system'"
                       [multiple]="true"
                       name="sourceId"
                       [field]="'KE.informationSystem'"
-                      [lang]="translate.currentLang"></laji-select>
+                      [lang]="translate.currentLang"></laji-metadata-select>
             </div>
           </div>
         </div>
         <div laji-panel [title]="'observation.form.speciesFeatures' | translate" [autoToggle]="true">
           <div class="form-group">
             <div class="col-sm-12">
-              <laji-select
+              <laji-metadata-select
                       [(ngModel)]="searchQuery.query.administrativeStatusId"
                       (ngModelChange)="onAdministrativeStatusChange()"
                       [multiple]="true"
                       [placeholder]="'MX.hasAdminStatus' | label"
                       name="administrativeStatusId"
                       [alt]="'MX.adminStatusEnum'"
-                      [lang]="translate.currentLang"></laji-select>
+                      [lang]="translate.currentLang"></laji-metadata-select>
             </div>
           </div>
           <div class="form-group">
             <div class="col-sm-12">
-              <laji-select
+              <laji-metadata-select
                       [(ngModel)]="searchQuery.query.redListStatusId"
                       (ngModelChange)="onQueryChange()"
                       [multiple]="true"
+                      [useFilter]="false"
                       name="redListStatusId"
                       [placeholder]="'observation.form.redListStatusId'"
                       [alt]="'MX.iucnStatuses'"
-                      [lang]="translate.currentLang"></laji-select>
+                      [lang]="translate.currentLang"></laji-metadata-select>
             </div>
           </div>
           <div class="row">
@@ -464,12 +467,12 @@
         <div laji-panel [title]="'observation.form.invasiveClassification' | translate" [autoToggle]="true">
           <div class="row" *lajiAuthorities="true">
             <div class="col-sm-12">
-              <laji-select
+              <laji-metadata-select
                 [multiple]="true"
                 name="invasiveControlEffectiveness"
                 [placeholder]="'MY.invasiveControlEffectiveness' | label"
                 [alt]="'MY.invasiveControlEffectivenessEnum'"
-                [lang]="translate.currentLang"></laji-select>
+                [lang]="translate.currentLang"></laji-metadata-select>
             </div>
           </div>
           <hr *lajiAuthorities="true">
@@ -613,32 +616,28 @@
       <alert *ngIf="observationSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
         <div [innerHtml]="'observation.intro' | translate"></div>
       </alert>
-      <div class="fixed-container">
-        <div class="fixed-element" lajiFixedInView [offsetTop]="55" [offsetBottom]="25">
-          <div class="row">
-            <div class="col-sm-12">
-              <h2 class="counts">
-                <laji-observation-count
-                  [timeout]="30000"
-                  [query]="searchQuery.query"
-                  [tick]="searchQuery.tack"></laji-observation-count>
-                {{'observation.results.observation' | translate}}
-                <laji-observation-count
-                  [timeout]="30000"
-                  [query]="searchQuery.query"
-                  [tick]="searchQuery.tack"
-                  [field]="'unit.linkings.taxon.speciesId'"
-                  [overrideInQuery]="{includeNonValidTaxa: false}">
-                </laji-observation-count>
-                {{'observation.results.species' | translate}}
-              </h2>
-            </div>
-          </div>
-          <div #tabs>
-            <laji-observation-result [(active)]="activeTab" [(filters)]="filters"
-                                     (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>
-          </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <h2 class="counts">
+            <laji-observation-count
+              [timeout]="30000"
+              [query]="searchQuery.query"
+              [tick]="searchQuery.tack"></laji-observation-count>
+            {{'observation.results.observation' | translate}}
+            <laji-observation-count
+              [timeout]="30000"
+              [query]="searchQuery.query"
+              [tick]="searchQuery.tack"
+              [field]="'unit.linkings.taxon.speciesId'"
+              [overrideInQuery]="{includeNonValidTaxa: false}">
+            </laji-observation-count>
+            {{'observation.results.species' | translate}}
+          </h2>
         </div>
+      </div>
+      <div #tabs>
+        <laji-observation-result [(active)]="activeTab" [(filters)]="filters"
+                                 (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>
       </div>
     </div>
   </div>

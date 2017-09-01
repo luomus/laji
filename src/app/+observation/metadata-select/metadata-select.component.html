@@ -1,3 +1,14 @@
+<laji-select
+  [options]="_options || []"
+  [title]="placeholder | translate"
+  [filterPlaceHolder]="'haseka.submissions.filter' | translate"
+  [useFilter]="useFilter"
+  [selected]="active"
+  (selectedChanged)="refreshValue($event)"
+>
+</laji-select>
+
+<!--
 <ss-multiselect-dropdown
   [settings]="{
     showUncheckAll: true,
@@ -24,3 +35,4 @@
   [options]="_options || []"
   (ngModelChange)="refreshValue($event)">
 </ss-multiselect-dropdown>
+-->

@@ -21,7 +21,7 @@ export const METADATA_SELECT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'laji-select',
+  selector: 'laji-metadata-select',
   templateUrl: './metadata-select.component.html',
   providers: [METADATA_SELECT_VALUE_ACCESSOR]
 })
@@ -35,6 +35,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   @Input() mapToWarehouse = false;
   @Input() pick: MetadataSelectPick;
   @Input() options: string[];
+  @Input() useFilter = true;
 
   _options: {id: string, name: string}[] = [];
   active = [];
@@ -123,7 +124,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
         }
       })
       .subscribe(options => {
-        this._options = options;
+        this._options = options.sort((a, b) => a.name.localeCompare(b.name));
         this.initActive();
       });
   }
