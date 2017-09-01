@@ -63,16 +63,18 @@ export class HideScrollDirective {
         )
       ) {
         let isTargetScrolling;
-        event.path.map(element => {
-          if (typeof isTargetScrolling === 'undefined') {
-            if (element === this.el) {
-              isTargetScrolling = true;
-            }
-            if (element.scrollWidth > element.clientWidth) {
-              isTargetScrolling = false;
-            }
+        let element = event.target;
+
+        do {
+          if (element === this.el) {
+            isTargetScrolling = true;
+            break;
           }
-        });
+          if (element.scrollWidth > element.clientWidth) {
+            isTargetScrolling = false;
+            break;
+          }
+        } while (element = element.parentNode);
         if (isTargetScrolling) {
           event.stopPropagation();
           event.preventDefault();
