@@ -15,7 +15,7 @@
   "navigation.haseka": "Notebook",
   "navigation.notify": "Report observations",
   "navigation.user": "User settings",
-  "navigation.user.login": "Login",
+  "navigation.user.login": "Login | Register",
   "navigation.user.logout": "Logout",
   "navigation.user.profile": "Profile",
   "navigation.theme": "Themes",
