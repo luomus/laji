@@ -156,6 +156,7 @@
                         [(ngModel)]="searchQuery.query.countryId"
                         (ngModelChange)="onQueryChange()"
                         [multiple]="true"
+                        [firstOptions]="['ML.206']"
                         [placeholder]="'result.gathering.country'"
                         name="countryId"
                         [field]="areaType.Country"

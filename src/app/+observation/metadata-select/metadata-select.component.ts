@@ -36,6 +36,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   @Input() pick: MetadataSelectPick;
   @Input() options: string[];
   @Input() useFilter = true;
+  @Input() firstOptions = [];
 
   _options: {id: string, name: string}[] = [];
   active = [];
@@ -124,7 +125,22 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
         }
       })
       .subscribe(options => {
-        this._options = options.sort((a, b) => a.name.localeCompare(b.name));
+        if (this.firstOptions.length > 0) {
+          this._options = options.sort((a, b) => {
+            const hasA = this.firstOptions.indexOf(a.id) > -1
+            const hasB = this.firstOptions.indexOf(b.id) > -1
+            if (hasA || hasB) {
+              if (hasA && hasB) {
+                return a.name.localeCompare(b.name)
+              } else {
+                return hasA ? -1 : 1;
+              }
+            }
+            return a.name.localeCompare(b.name)
+          });
+        } else {
+          this._options = options.sort((a, b) => a.name.localeCompare(b.name));
+        }
         this.initActive();
       });
   }
