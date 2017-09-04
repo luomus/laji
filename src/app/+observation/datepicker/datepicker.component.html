@@ -1,42 +1,45 @@
 <div class="input-group" [ngClass]="{'has-error': !validDate}">
   <input type="text"
          class="ng-datepicker-input form-control input-sm"
-         [(ngModel)]="value">
+         [(ngModel)]="value"
+         #dateInput>
   <span *ngIf="viewDate !== ''" class="input-group-addon link clear" (click)="clear()">x</span>
   <span class="input-group-addon link" (click)="toggle()"><i class="glyphicon glyphicon-calendar"></i></span>
 </div>
 
-<div class="ng-datepicker" *ngIf="opened">
-  <div class="controls">
-    <div class="left">
-      <i class="glyphicon glyphicon-backward" (click)="prevYear()"></i>
-      &nbsp;
-      <i class="glyphicon glyphicon-chevron-left" (click)="prevMonth()"></i>
-    </div>
-    <span class="date">
-      {{ date.format('MMMM YYYY') }}
-    </span>
-    <div class="right">
-      <i class="glyphicon glyphicon-chevron-right" (click)="nextMonth()"></i>
-      &nbsp;
-      <i class="glyphicon glyphicon-forward" (click)="nextYear()"></i>
-    </div>
-  </div>
-  <div class="day-names">
-    <span>Mon</span>
-    <span>Tue</span>
-    <span>Wed</span>
-    <span>Thu</span>
-    <span>Fri</span>
-    <span>Sat</span>
-    <span>Sun</span>
-  </div>
-  <div class="calendar">
-      <span *ngFor="let d of days; let i = index">
-        <span class="day" [ngClass]="{'disabled': !d.enabled, 'selected': d.selected && d.enabled}"
-              (click)="selectDate($event, i)">
-          {{ d.day }}
-        </span>
+<div *ngIf="opened">
+  <div class="ng-datepicker" [lajiFixedBelow]="dateInput">
+    <div class="controls">
+      <div class="left">
+        <i class="glyphicon glyphicon-backward" (click)="prevYear()"></i>
+        &nbsp;
+        <i class="glyphicon glyphicon-chevron-left" (click)="prevMonth()"></i>
+      </div>
+      <span class="date">
+        {{ date.format('MMMM YYYY') }}
       </span>
+      <div class="right">
+        <i class="glyphicon glyphicon-chevron-right" (click)="nextMonth()"></i>
+        &nbsp;
+        <i class="glyphicon glyphicon-forward" (click)="nextYear()"></i>
+      </div>
+    </div>
+    <div class="day-names">
+      <span>Mon</span>
+      <span>Tue</span>
+      <span>Wed</span>
+      <span>Thu</span>
+      <span>Fri</span>
+      <span>Sat</span>
+      <span>Sun</span>
+    </div>
+    <div class="calendar">
+        <span *ngFor="let d of days; let i = index">
+          <span class="day" [ngClass]="{'disabled': !d.enabled, 'selected': d.selected && d.enabled}"
+                (click)="selectDate($event, i)">
+            {{ d.day }}
+          </span>
+        </span>
+    </div>
   </div>
 </div>

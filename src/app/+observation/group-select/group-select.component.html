@@ -1,5 +1,5 @@
 <input type="hidden" [(ngModel)]="value">
-<a class="btn btn-default btn-block informal-group-select" type="button" (click)="openMenu()">
+<a class="btn btn-default btn-block informal-group-select" type="button" (click)="openMenu()" #groupBtn>
   <span *ngIf="!innerValue">
     <ng-content></ng-content>
   </span>
@@ -16,7 +16,7 @@
     </span>
   </span>
 </a>
-<div class="informal-group-container" [ngClass]="{hidden: !open}">
+<div class="informal-group-container" *ngIf="open" [lajiFixedBelow]="groupBtn">
   <table>
     <tr *ngFor="let idx of range">
       <td

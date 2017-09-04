@@ -13,7 +13,7 @@ hr {
   flex-direction: column;
 }
 .form-filters {
-  z-index: 100;
+  z-index: 1029;
   border-left: 1px solid #e1e1e1;
   background-color: #ECF0F1;
 }

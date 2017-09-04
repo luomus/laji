@@ -85,6 +85,7 @@ import { CacheService } from './service/cache.service';
 import { NotificationComponent } from './navbar/notification/notification.component';
 import { HideScrollDirective } from './directive/hide-scroll';
 import { LoggedInDirective } from './directive/logged-in.directive';
+import { FixedBelowDirective } from './directive/fixed-below.directive';
 
 
 @NgModule({
@@ -97,7 +98,7 @@ import { LoggedInDirective } from './directive/logged-in.directive';
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
-    FixedInViewDirective, NotificationComponent, HideScrollDirective, LoggedInDirective
+    FixedInViewDirective, NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective
   ],
   imports: [
     ToastModule,
@@ -119,7 +120,7 @@ import { LoggedInDirective } from './directive/logged-in.directive';
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, FixedInViewDirective, LocalizePipe, HideScrollDirective,
-    LoggedInDirective
+    LoggedInDirective, FixedBelowDirective
   ]
 })
 export class SharedModule {

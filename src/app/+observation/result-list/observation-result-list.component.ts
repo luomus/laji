@@ -38,7 +38,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   public columns: Column[] = [
     {
       field: 'unit.taxonVerbatim,unit.linkings.taxon.vernacularName',
-      translation: 'result.unit.taxonVerbatim', visible: true, sortBy: false
+      translation: 'result.unit.taxonVerbatim', visible: true, sortBy: 'unit.linkings.taxon.taxonomicOrder'
     },
     {field: 'unit.linkings.taxon.scientificName', translation: 'result.scientificName', visible: true},
     {field: 'unit.reportedTaxonConfidence', visible: false},
