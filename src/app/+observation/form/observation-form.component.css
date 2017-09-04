@@ -13,7 +13,7 @@ hr {
   flex-direction: column;
 }
 .form-filters {
-  z-index: auto;
+  z-index: 100;
   border-left: 1px solid #e1e1e1;
   background-color: #ECF0F1;
 }
@@ -117,6 +117,12 @@ hr {
   .lj-filter-wrap {
     max-height: calc(100vh - 100px);
     overflow: auto;
+  }
+
+  .form-filters {
+    position: fixed;
+    top: 50px;
+    bottom: 0;
   }
 
   .form-filters-fill {

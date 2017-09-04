@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
 import { SearchQuery } from './search-query.model';
 import { UserService } from '../shared/service/user.service';
+import { FooterService } from '../shared/service/footer.service';
 
 @Component({
   selector: 'laji-observation',
@@ -27,11 +28,13 @@ export class ObservationComponent implements OnInit, OnDestroy {
   private subQuery: Subscription;
 
   constructor(private route: ActivatedRoute,
-              private userSerivce: UserService,
+              private footerService: FooterService,
+              private userService: UserService,
               public searchQuery: SearchQuery) {
   }
 
   ngOnInit() {
+    this.footerService.footerVisible = false;
     this.subParam = this.route.params.subscribe(params => {
       this.tab = params['tab'] || 'map';
     });
@@ -44,16 +47,17 @@ export class ObservationComponent implements OnInit, OnDestroy {
         this.searchQuery.query.target = [params['target']];
       }
       if (this.searchQuery.query.editorPersonToken === 'true') {
-        this.searchQuery.query.editorPersonToken = this.userSerivce.getToken();
+        this.searchQuery.query.editorPersonToken = this.userService.getToken();
       }
       if (this.searchQuery.query.observerPersonToken === 'true') {
-        this.searchQuery.query.observerPersonToken = this.userSerivce.getToken();
+        this.searchQuery.query.observerPersonToken = this.userService.getToken();
       }
       this.searchQuery.queryUpdate({formSubmit: !!params['reset'], newData: true});
     });
   }
 
   ngOnDestroy() {
+    this.footerService.footerVisible = true;
     if (this.subParam) {
       this.subParam.unsubscribe();
     }

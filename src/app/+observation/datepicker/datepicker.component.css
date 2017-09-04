@@ -1,11 +1,11 @@
 .ng-datepicker-input {
   position: relative;
   width: 100%;
+  z-index: 0;
 }
 
 .clear {
   position: absolute;
-  z-index: 2;
   right: 45px;
   width: 10px;
   background: none;

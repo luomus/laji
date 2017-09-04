@@ -72,8 +72,8 @@
                 [expand]="'right'"></laji-omni-search>
             </li>
             <li [routerLinkActive]="['active']" *ngIf="isLoggedIn" dropdown #userMenu="bs-dropdown">
-              <a dropdownToggle class="link language-toggle user">
-                <span class="hidden-sm">{{(userService.getUser()|async)?.id | users}}</span>
+              <a dropdownToggle class="link user">
+                <span class="hidden-sm name"><small>{{(userService.getUser()|async)?.id | users}}</small></span>
                 <i class="glyphicon glyphicon-user"></i>
                 <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{notificationsNotSeen}}</span>
               </a>
