@@ -122,7 +122,7 @@ hr {
   .form-filters {
     position: fixed;
     top: 50px;
-    bottom: 0;
+    height: calc(100vh - 50px);
   }
 
   .form-filters-fill {
