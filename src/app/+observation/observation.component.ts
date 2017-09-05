@@ -34,7 +34,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.footerService.footerVisible = false;
+    this.footerService.footerContainer = 'col-sm-8 col-md-9 col-lg-10';
     this.subParam = this.route.params.subscribe(params => {
       this.tab = params['tab'] || 'map';
     });
@@ -57,7 +57,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.footerService.footerVisible = true;
+    this.footerService.footerContainer = '';
     if (this.subParam) {
       this.subParam.unsubscribe();
     }
