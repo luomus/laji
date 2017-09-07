@@ -24,7 +24,6 @@ import { MapComponent } from './map/map.component';
 import { PanelComponent } from './panel/panel.component';
 import { OmniSearchComponent } from './omni-search/omni-search.component';
 import { SafePipe } from './pipe/safe.pipe';
-import { MultiLangPipe } from './pipe/multi-lang.pipe';
 import { NewsService } from './service/news.service';
 import { ImageModalComponent } from './image-gallery/image-modal.component';
 import { MapService } from './map/map.service';
@@ -74,7 +73,6 @@ import { FormNamePipe } from './pipe/form-name.pipe';
 import { CoordinateService } from './service/coordinate.service';
 import { TaxonomyApi } from './api/TaxonomyApi';
 import { NlToBrPipe } from './pipe/nl-to-br.pipe';
-import { Map2Component } from './map/map2.component';
 import { DocumentFormHeaderComponent } from './document-form-header/document-form-header.component';
 import { FixedInViewDirective } from './directive/fixed-in-view.directive';
 import { DialogService } from './service/dialog.service';
@@ -86,6 +84,7 @@ import { NotificationComponent } from './navbar/notification/notification.compon
 import { HideScrollDirective } from './directive/hide-scroll';
 import { LoggedInDirective } from './directive/logged-in.directive';
 import { FixedBelowDirective } from './directive/fixed-below.directive';
+import { LangModule } from '../shared-modules/lang/lang.module';
 
 
 @NgModule({
@@ -93,9 +92,9 @@ import { FixedBelowDirective } from './directive/fixed-below.directive';
   declarations: [
     NewsListComponent, DocumentFormComponent, LocalizePipe, NotificationComponent,
     SpinnerComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
-    UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe, FormattedNumber,
+    UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, FormattedNumber,
     AreaNamePipe, CollectionNamePipe, FormNamePipe,
-    ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
+    ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
     FixedInViewDirective, NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective
@@ -106,6 +105,7 @@ import { FixedBelowDirective } from './directive/fixed-below.directive';
     CommonModule,
     HttpModule,
     RouterModule,
+    LangModule,
     TranslateModule,
     ReactiveFormsModule,
     MomentModule,
@@ -114,10 +114,10 @@ import { FixedBelowDirective } from './directive/fixed-below.directive';
   providers: [ ], // keep this empty!
   exports: [
     CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent,
-    AreaNamePipe, NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, MultiLangPipe,
+    AreaNamePipe, NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe,
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe, LajiFormComponent, DocumentFormComponent,
     ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
-    FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent, Map2Component,
+    FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, FixedInViewDirective, LocalizePipe, HideScrollDirective,
     LoggedInDirective, FixedBelowDirective

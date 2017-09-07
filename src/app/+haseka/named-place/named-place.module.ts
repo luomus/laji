@@ -13,12 +13,14 @@ import { NpInfoRowComponent } from './np-edit/np-info/np-info-row/np-info-row.co
 import { NpInfoMapComponent } from './np-edit/np-info/np-info-map/np-info-map.component';
 import { NpPrintComponent } from './np-print/np-print.component';
 import { LineTransectComponent } from './np-print/line-transect/line-transect.component';
+import { LajiMapModule } from '../../shared-modules/map/laji-map.module';
 
 @NgModule({
   providers: [],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    LajiMapModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,

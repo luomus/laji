@@ -20,15 +20,25 @@ import { ViewerModule } from '../+viewer/viewer.module';
 import { NvD3Module } from '../ng2-nvd3/ng2-nvd3.module';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { SelectComponent } from './select/select.component';
+import { YkjModule } from '../shared-modules/ykj/ykj.module';
+import { MainResultComponent } from './main-result/main-result.component';
 
 @NgModule({
-  imports: [routing, NvD3Module, SharedModule, TypeaheadModule, ViewerModule, MultiselectDropdownModule],
+  imports: [
+    routing,
+    NvD3Module,
+    SharedModule,
+    TypeaheadModule,
+    ViewerModule,
+    MultiselectDropdownModule,
+    YkjModule
+  ],
   declarations: [ObservationComponent, ObservationActiveComponent,
     ObservationAggregateComponent, ObservationChartComponent,
     ObservationFilterComponent, ObservationFormComponent, ObservationGroupSelectComponent,
     MultiRadioComponent, ObservationResultComponent,
     ObservationResultListComponent, MetadataSelectComponent,
-    PieChartComponent, DatePickerComponent, ObservationDownloadComponent, SelectComponent]
+    PieChartComponent, DatePickerComponent, ObservationDownloadComponent, SelectComponent, MainResultComponent]
 })
 export class ObservationModule {
 }

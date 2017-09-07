@@ -421,6 +421,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     if (this.lastQuery === cacheKey) {
       return;
     }
+    this.searchQuery.query = {...this.searchQuery.query};
     this.lastQuery = cacheKey;
     this.searchQuery.tack++;
     this.searchQuery.updateUrl([

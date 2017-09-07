@@ -5,7 +5,7 @@ import { MetadataApi } from '../api/MetadataApi';
 import { Logger } from '../logger/logger.service';
 import { MetadataService } from './metadata.service';
 import { CacheService } from './cache.service';
-import { MultiLangService } from './multi-lang.service';
+import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 
 @Injectable()
 export class TriplestoreLabelService {

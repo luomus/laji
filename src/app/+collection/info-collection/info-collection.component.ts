@@ -3,7 +3,7 @@ import { Collection } from '../../shared/model/Collection';
 import { TranslateService } from '@ngx-translate/core';
 import { IdService } from '../../shared/service/id.service';
 import { Title } from '@angular/platform-browser';
-import { MultiLangService } from '../../shared/service/multi-lang.service';
+import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 
 @Component({
   selector: 'laji-info-collection',

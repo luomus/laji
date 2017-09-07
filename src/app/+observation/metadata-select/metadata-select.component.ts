@@ -8,7 +8,7 @@ import { CollectionService } from '../../shared/service/collection.service';
 import { AreaService, AreaType } from '../../shared/service/area.service';
 import { SourceService } from '../../shared/service/source.service';
 import { MetadataService } from '../../shared/service/metadata.service';
-import { MultiLangService } from '../../shared/service/multi-lang.service';
+import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 
 export interface MetadataSelectPick {
   [field: string]: string;

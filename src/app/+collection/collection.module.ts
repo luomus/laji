@@ -5,9 +5,10 @@ import { SharedModule } from '../shared/shared.module';
 import { CollectionTreeComponent } from './tree-collection/tree-collection.component';
 import { TreeModule } from 'angular-tree-component';
 import { InfoCollectionComponent } from './info-collection/info-collection.component';
+import { LangModule } from '../shared-modules/lang/lang.module';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, TreeModule],
+  imports: [routing, SharedModule, RouterModule, TreeModule, LangModule],
   declarations: [CollectionComponent, CollectionTreeComponent, InfoCollectionComponent]
 })
 export class CollectionModule {

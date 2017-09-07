@@ -20,11 +20,13 @@ import { SecureInfoComponent } from './secure-info/secure-info.component';
 import { IssueComponent } from './issue/issue.component';
 import { IssuesComponent } from './issues/issues.component';
 import { FactsComponent } from './facts/facts.component';
+import { LangModule } from '../shared-modules/lang/lang.module';
 
 @NgModule({
   imports: [
     SharedModule,
-    TypeaheadModule
+    TypeaheadModule,
+    LangModule
   ],
   providers: [ToQNamePipe, AnnotationService, AnnotationApi],
   declarations: [ViewerComponent, DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
