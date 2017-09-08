@@ -8,7 +8,7 @@ import { CollectionService } from '../../shared/service/collection.service';
 import { AreaService, AreaType } from '../../shared/service/area.service';
 import { SourceService } from '../../shared/service/source.service';
 import { MetadataService } from '../../shared/service/metadata.service';
-import { MultiLangService } from '../../shared/service/multi-lang.service';
+import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 
 export interface MetadataSelectPick {
   [field: string]: string;
@@ -41,6 +41,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   _options: {id: string, name: string}[] = [];
   active = [];
   selectedTitle = '';
+  shouldSort = false;
 
   private subOptions: Subscription;
   private innerValue = '';
@@ -127,8 +128,8 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
       .subscribe(options => {
         if (this.firstOptions.length > 0) {
           this._options = options.sort((a, b) => {
-            const hasA = this.firstOptions.indexOf(a.id) > -1
-            const hasB = this.firstOptions.indexOf(b.id) > -1
+            const hasA = this.firstOptions.indexOf(a.id) > -1;
+            const hasB = this.firstOptions.indexOf(b.id) > -1;
             if (hasA || hasB) {
               if (hasA && hasB) {
                 return a.name.localeCompare(b.name)
@@ -139,7 +140,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
             return a.name.localeCompare(b.name)
           });
         } else {
-          this._options = options.sort((a, b) => a.name.localeCompare(b.name));
+          this._options = this.shouldSort ? options.sort((a, b) => a.name.localeCompare(b.name)) : options;
         }
         this.initActive();
       });
@@ -200,6 +201,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
 
   private getDataObservable() {
     if (this.field) {
+      this.shouldSort = true;
       switch (this.field) {
         case 'MY.collectionID':
           return this.collectionService.getAllAsLookUp(this.lang);
@@ -219,6 +221,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
           throw new Error('Could not find mapping for ' + this.field);
       }
     }
+    this.shouldSort = false;
     return this.metadataService.getRange(this.alt)
       .map(range => range.map(options => ({id: options.id, value: MultiLangService.getValue(options.value, this.lang)})));
   }

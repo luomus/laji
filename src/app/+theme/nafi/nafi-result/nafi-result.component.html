@@ -44,11 +44,11 @@
 </div>
 <div class="row">
   <div class="col-sm-5 col-sm-push-7 map-col">
-    <laji-theme-map
+    <laji-ykj-map
             (onGridClick)="showGridObservations($event)"
             [query]="mapQuery"
             [type]="type">
-    </laji-theme-map>
+    </laji-ykj-map>
     <a class="type-switch link" (click)="changeLegendType('count')">{{'theme.count' | translate}}</a> |
     <a class="type-switch link" (click)="changeLegendType('individuals')">{{'theme.individualCount' | translate}}</a> |
     <a class="type-switch link" (click)="changeLegendType('newest')">{{'theme.newest' | translate}}</a>

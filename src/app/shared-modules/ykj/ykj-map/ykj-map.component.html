@@ -1,19 +1,16 @@
-<div class="map-wrap" *ngIf="query">
+<div class="map-wrap" *ngIf="query" [style.height]="height">
   <div class="title">
     <span *ngIf="taxon" [ngClass]="{cursive: taxon.cursiveName}">{{taxon.scientificName}}</span>
     <span *ngIf="taxon && taxon.vernacularName">
       <br>{{taxon.vernacularName | multiLang}}
     </span>
   </div>
-  <laji-map
+  <laji-map3
+    [options]="mapOptions"
     [loading]="loading"
-    [draw]="false"
-    [lang]="translate.currentLang"
     [maxBounds]="maxBounds"
-    [zoom]="2"
-    [tileOpacity]="0.5"
-    [center]="[64.709804, 25]">
-  </laji-map>
+    [tileOpacity]="0.5">
+  </laji-map3>
   <div class="legend">
     <span [ngSwitch]="type">
       <span *ngSwitchCase="'individuals'">

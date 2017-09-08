@@ -1,4 +1,6 @@
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class MultiLangService {
 
   static readonly lang = ['en', 'fi', 'sv'];

@@ -26,9 +26,11 @@ import { LineTransectChartComponent } from './statistics/line-transect/line-tran
 import { YearSliderComponent } from './own-submissions/year-slider/year-slider.component';
 import { FilterColumnsPipe } from './own-submissions/own-datatable/filter-columns.pipe';
 import { FormRowComponent } from './form-list/form-row/form-row.component';
+import { LajiMapModule } from '../shared-modules/map/laji-map.module';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, AlertModule, NgxDatatableModule, NouisliderModule, NamedPlaceModule, ViewerModule,
+    LajiMapModule,
     FormPermissionModule],
   providers: [ FormApi, DocumentApi ],
   declarations: [

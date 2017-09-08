@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IdService } from '../shared/service/id.service';
 import { Collection } from '../shared/model/Collection';
 import { TranslateService } from '@ngx-translate/core';
-import { MultiLangService } from '../shared/service/multi-lang.service';
+import { MultiLangService } from '../shared-modules/lang/service/multi-lang.service';
 
 @Component({
   selector: 'laji-collection',

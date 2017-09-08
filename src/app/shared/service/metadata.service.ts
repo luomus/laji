@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { MetadataApi } from '../api/MetadataApi';
 import { CacheService } from './cache.service';
-import { MultiLangService } from './multi-lang.service';
+import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 
 
 @Injectable()

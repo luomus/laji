@@ -13,8 +13,8 @@ import { TreeComponent, TreeModel, TreeNode } from 'angular-tree-component';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { IdService } from '../../shared/service/id.service';
-import { MultiLangService } from '../../shared/service/multi-lang.service';
 import { TranslateService } from '@ngx-translate/core';
+import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 
 @Component({
   selector: '[laji-collection-tree]',

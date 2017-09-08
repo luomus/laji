@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
-import { LajiMapOptions, Map2Component } from '../../../shared/map/map2.component';
 import * as MapUtil from 'laji-map/lib/utils';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
+import { Map3Component } from '../../../shared-modules/map/map.component';
+import { LajiMapOptions } from '../../../shared-modules/map/map-options.interface';
 
 interface LineTransectCount {
   psCouples: number;
@@ -24,8 +25,8 @@ interface LineTransectCount {
   styleUrls: ['./line-transect.component.css']
 })
 export class LineTransectComponent implements OnChanges, AfterViewInit {
-  @ViewChild(Map2Component)
-  public lajiMap: Map2Component;
+  @ViewChild(Map3Component)
+  public lajiMap: Map3Component;
 
   @Input() document: Document;
   @Input() namedPlace: NamedPlace;
@@ -148,7 +149,6 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
         }
       }
     }
-    this.counts.ykj10kmN = +this.namedPlace.alternativeIDs[1].substring(0, 3);
     if (this.document.gatherings) {
       return MapUtil.latLngSegmentsToGeoJSONGeometry(
         this.document.gatherings

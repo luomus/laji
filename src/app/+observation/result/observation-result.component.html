@@ -1,5 +1,10 @@
 <ul class="nav nav-tabs nav-justified">
   <li role="presentation" [ngClass]="{active: active === 'map'}">
+    <a [routerLink]="'/observation/result' | localize" [queryParams]="queryParams">
+      {{ 'search.result.result' | translate }}
+    </a>
+  </li>
+  <li role="presentation" [ngClass]="{active: active === 'map'}">
     <a [routerLink]="'/observation/map' | localize" [queryParams]="queryParams">
       {{ 'search.result.map' | translate }}
     </a>
@@ -30,6 +35,9 @@
     </a>
   </li>
 </ul>
+<div [hidden]="active !== 'result'" *ngIf="activated['result']">
+  <laji-main-result [query]="searchQuery.query"></laji-main-result>
+</div>
 <div [hidden]="active !== 'map'" *ngIf="activated['map']">
   <laji-observation-map
           [showItemsWhenLessThan]="2000"

@@ -1,13 +1,7 @@
 import { ChangeDetectorRef, EventEmitter, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { MultiLangService } from '../service/multi-lang.service';
-import has = Reflect.has;
-/**
- * Format a multi lang field to asked string
- * Takes object or string and returns it with lang code if the value wasn't active
- * Usage:
- *   value | multiLang
- */
+
 @Pipe({
   name: 'multiLang',
   pure: false

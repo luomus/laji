@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
-import { LajiMapOptions, Map2Component } from '../../../../shared/map/map2.component';
 import * as MapUtil from 'laji-map/lib/utils';
 import { Person } from '../../../../shared/model/Person';
+import { LajiMapOptions } from '../../../../shared-modules/map/map-options.interface';
+import { Map3Component } from '../../../../shared-modules/map/map.component';
 
 @Component({
   selector: 'laji-line-transect',
@@ -11,8 +12,8 @@ import { Person } from '../../../../shared/model/Person';
 })
 export class LineTransectComponent implements OnChanges, AfterViewInit {
 
-  @ViewChild(Map2Component)
-  public lajiMap: Map2Component;
+  @ViewChild(Map3Component)
+  public lajiMap: Map3Component;
   @Input()
   public namedPlace: NamedPlace;
   @Input()

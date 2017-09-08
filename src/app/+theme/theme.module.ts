@@ -7,7 +7,6 @@ import { HerpetologyComponent } from './herpetology/herpetology.component';
 import { SharedModule } from '../shared/shared.module';
 import { ThemeResultComponent } from './theme-result/theme-result.component';
 import { NafiResultComponent } from './nafi/nafi-result/nafi-result.component';
-import { ThemeMapComponent } from './theme-map/theme-map.component';
 import { ResultService } from './service/result.service';
 import { FixedTableDirective } from './directive/fixed-table.directive';
 import { ThemeObservationListComponent } from './theme-observation-list/theme-observation-list.component';
@@ -22,20 +21,23 @@ import { WbcComponent } from './wbc/wbc.component';
 import { WbcFormComponent } from './wbc/wbc-form/wbc-form.component';
 import { WbcResultComponent } from './wbc/wbc-result/wbc-result.component';
 import { WbcInstructionsComponent } from './wbc/wbc-instructions/wbc-instructions.component';
+import { LangModule } from '../shared-modules/lang/lang.module';
+import { YkjModule } from '../shared-modules/ykj/ykj.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ThemeRoutingModule,
     SharedModule,
-    ViewerModule
+    ViewerModule,
+    LangModule,
+    YkjModule
   ],
   declarations: [
     NafiComponent,
     HerpetologyComponent,
     ThemeResultComponent,
     NafiResultComponent,
-    ThemeMapComponent,
     FixedTableDirective,
     ThemeObservationListComponent,
     NafiFormComponent,

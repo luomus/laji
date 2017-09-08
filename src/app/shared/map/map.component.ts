@@ -13,8 +13,8 @@ import {
 import { Logger } from '../logger/logger.service';
 import { MapService } from './map.service';
 import { LajiExternalService } from '../service/laji-external.service';
-import { LajiMapOptions } from './map2.component';
 import { USER_INFO, UserService } from '../service/user.service';
+import { LajiMapOptions } from '../../shared-modules/map/map-options.interface';
 
 @Component({
   selector: 'laji-map',

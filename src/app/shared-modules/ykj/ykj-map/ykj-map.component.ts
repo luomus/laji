@@ -1,20 +1,26 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
+  ViewChild
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
-import { MapComponent } from '../../shared/map/map.component';
-import { ResultService } from '../service/result.service';
-import { Taxonomy } from '../../shared/model/Taxonomy';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs/Subscription';
-import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { Map3Component } from '../../map/map.component';
+import { LajiMapOptions } from '../../map/map-options.interface';
+import { YkjService } from '../service/ykj.service';
+import { Util } from '../../../shared/service/util.service';
 
 @Component({
-  selector: 'laji-theme-map',
-  templateUrl: './theme-map.component.html',
-  styleUrls: ['./theme-map.component.css']
+  selector: 'laji-ykj-map',
+  templateUrl: './ykj-map.component.html',
+  styleUrls: ['./ykj-map.component.css']
 })
-export class ThemeMapComponent implements OnInit, AfterViewInit, OnChanges {
+export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
-  @ViewChild(MapComponent) lajiMap: MapComponent;
+  @ViewChild(Map3Component) mapComponent: Map3Component;
 
+  @Input() height = '605px';
   @Input() query: WarehouseQueryInterface;
   @Input() type = 'count';
   @Input() colorRange: string[] = ['#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
@@ -22,9 +28,21 @@ export class ThemeMapComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() timeBreak: string[] = ['2020-01-01', '2015-01-01', '2010-01-01', '2005-01-01', '2000-01-01', '1991-01-01'];
   @Input() countLabel: string[] = ['1-4', '5-9', '10-49', '50-99', '100-499', '500-'];
   @Input() timeLabel: string[] = ['2020', '2015-', '2010-', '2005-', '2000-', '1990-'];
+  @Input() maxBounds: [[number, number], [number, number]] = [[58.0, 19.0], [72.0, 35.0]];
+  @Input() mapOptions: LajiMapOptions = {
+    controlSettings: {
+      draw: false,
+      drawCopy: false,
+      drawClear: false,
+      coordinates: false,
+      lineTransect: false,
+      coordinateInput: false
+    },
+    center: [64.709804, 25],
+    zoom: 2
+  };
   @Output() onGridClick = new EventEmitter<WarehouseQueryInterface>();
 
-  maxBounds = [[58.0, 19.0], [72.0, 35.0]];
   geoJsonLayer;
   loading = false;
   mapInit = false;
@@ -35,10 +53,11 @@ export class ThemeMapComponent implements OnInit, AfterViewInit, OnChanges {
   private currentColor;
   private current;
   private subQuery: Subscription;
+  private subLang: Subscription;
 
   constructor(
-    private resultService: ResultService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private ykjService: YkjService
   ) {
     const now = new Date();
     this.timeLabel[0] = '' + now.getFullYear();
@@ -46,6 +65,10 @@ export class ThemeMapComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnInit() {
+    this.subLang = this.translate.onLangChange.subscribe(() => {
+      this.mapOptions = {...this.mapOptions, lang: this.translate.currentLang}
+    });
+    this.mapOptions['lang'] = this.translate.currentLang;
     this.initMapdata();
   }
 
@@ -57,11 +80,17 @@ export class ThemeMapComponent implements OnInit, AfterViewInit, OnChanges {
     this.initMapdata();
   }
 
+  ngOnDestroy() {
+    this.subLang.unsubscribe();
+  }
+
   initMapdata() {
     if (!this.query) {
       return;
     }
-    const key = JSON.stringify(this.query);
+    const query = Util.clone(this.query);
+    query.countryId = query.countryId || ['ML.206'];
+    const key = JSON.stringify(query);
     if (this.current === key) {
       const colorKey = this.getColorKey();
       if (this.currentColor !== colorKey  && this.geoJsonLayer) {
@@ -76,18 +105,18 @@ export class ThemeMapComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.subQuery) {
       this.subQuery.unsubscribe();
     }
-    this.subQuery = this.resultService
-      .getGeoJson(this.query)
+    this.subQuery = this.ykjService
+      .getGeoJson(query)
       .subscribe(geoJson => {
-        this.geoJsonLayer.addData(geoJson);
-        this.currentColor = '';
-        this.loading = false;
-        this.initColor();
-        this.initTitle();
-      },
-      error => {
-        this.loading = false;
-      });
+          this.geoJsonLayer.addData(geoJson);
+          this.currentColor = '';
+          this.loading = false;
+          this.initColor();
+          this.initTitle();
+        },
+        error => {
+          this.loading = false;
+        });
   }
 
   initLegend() {
@@ -130,8 +159,6 @@ export class ThemeMapComponent implements OnInit, AfterViewInit, OnChanges {
     if (!this.query || !this.query.taxonId || this.query.taxonId.length === 0) {
       this.taxon = undefined;
     } else {
-      this.resultService.getTaxon(this.query.taxonId[0])
-        .subscribe(taxon => this.taxon = taxon);
     }
   }
 
@@ -206,13 +233,15 @@ export class ThemeMapComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   private initMap() {
-    if (this.mapInit || !this.lajiMap || !this.lajiMap.map || !this.lajiMap.map.map || !this.geoJsonLayer) {
+    if (this.mapInit || !this.mapComponent || !this.mapComponent.lajiMap || !this.mapComponent.lajiMap.map) {
       return;
     }
     this.mapInit = true;
-    this.lajiMap.map.map.options.maxZoom = 8;
-    this.lajiMap.map.map.options.minZoom = 2;
-    this.geoJsonLayer.addTo(this.lajiMap.map.map);
+    this.mapComponent.lajiMap.map.options.maxZoom = 8;
+    this.mapComponent.lajiMap.map.options.minZoom = 2;
+    if (this.geoJsonLayer) {
+      this.geoJsonLayer.addTo(this.mapComponent.lajiMap.map);
+    }
   }
 
   private getColorKey() {
