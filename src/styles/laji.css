@@ -612,7 +612,7 @@ body > .ui-select-bootstrap.open {
 
 /** scrollbar **/
 ::-webkit-scrollbar {
-  height: 16px;
+  height: 8px;
   overflow: visible;
   width: 8px;
 }
@@ -693,3 +693,11 @@ body > .ui-select-bootstrap.open {
     display: none !important;
   }
 }
+
+/** workaround to https://github.com/swimlane/ngx-datatable/issues/943 **/
+input[type="checkbox"],
+input[type="radio"]
+{
+  display: inline;
+}
+/** end of workaround **/
