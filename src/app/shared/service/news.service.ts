@@ -7,7 +7,6 @@ import { NewsApi } from '../api/NewsApi';
 @Injectable()
 export class NewsService {
 
-  private currentKey: string;
   private currentData: PagedResult<News>;
 
   constructor(
@@ -15,15 +14,14 @@ export class NewsService {
   ) {}
 
   getPage(lang: string, page: number, pageSize = 5): Observable<PagedResult<News>> {
-    const cacheKey = lang + page + ':' + pageSize;
-    if (cacheKey === this.currentKey) {
-      return Observable.of(this.currentData);
-    }
-    return this.newsApi.findAll(lang, '' + page,  '' + pageSize)
+    return Observable
+      .interval(60100)
+      .startWith(0)
+      .switchMap(() => this.newsApi.findAll(lang, '' + page,  '' + pageSize))
       .do(data => {
         this.currentData = data;
-        this.currentKey = cacheKey;
-      });
+      })
+      .startWith(this.currentData);
   }
 
   get(id: string): Observable<News> {
