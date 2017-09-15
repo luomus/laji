@@ -23,8 +23,6 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { SelectComponent } from './select/select.component';
 import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { MainResultComponent } from './main-result/main-result.component';
-import { AggregatedDatatableComponent } from './main-result/aggregated-datatable/aggregated-datatable.component';
-import { ObservationsDatatableComponent } from './main-result/observations-datatable/observations-datatable.component';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
 
 @NgModule({
@@ -44,9 +42,8 @@ import { ObservationResultModule } from '../shared-modules/observation-result/ob
     ObservationFilterComponent, ObservationFormComponent, ObservationGroupSelectComponent,
     MultiRadioComponent, ObservationResultComponent,
     ObservationResultListComponent, MetadataSelectComponent,
-    PieChartComponent, DatePickerComponent, ObservationDownloadComponent, SelectComponent, MainResultComponent,
-    AggregatedDatatableComponent,
-    ObservationsDatatableComponent]
+    PieChartComponent, DatePickerComponent, ObservationDownloadComponent, SelectComponent, MainResultComponent
+  ]
 })
 export class ObservationModule {
 }
