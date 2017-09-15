@@ -1,7 +1,7 @@
 <div class="observation-table-wrapper">
   <laji-datatable
     class="observation-table"
-    (rowSelect)="rowSelect.emit($event, selected)"
+    (rowSelect)="rowSelect.emit($event)"
     [height]="height"
     [rows]='result.results'
     (pageChange)="setPage($event)"
