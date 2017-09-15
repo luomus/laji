@@ -46,17 +46,19 @@ export class YkjService {
     }
     this.pendingKey = key;
     this.pending = this.warehouseApi
-        .warehouseQueryAggregateGet(
-          query,
-          [`gathering.conversions.ykj${grid}.lat,gathering.conversions.ykj${grid}.lon`],
-          undefined,
-          5000,
-          1,
-          false,
-          false
-        )
-        .map(data => data.results)
-        .map(data => this.resultToGeoJson(data, grid));
+      .warehouseQueryAggregateGet(
+        query,
+        [`gathering.conversions.ykj${grid}.lat,gathering.conversions.ykj${grid}.lon`],
+        undefined,
+        5000,
+        1,
+        false,
+        false
+      )
+      .retryWhen(errors => errors.delay(500).take(3))
+      .map(data => data.results)
+      .map(data => this.resultToGeoJson(data, grid))
+      .do(data => this.data);
     return this.pending;
   }
 

@@ -4,6 +4,7 @@ import { Util } from '../../shared/service/util.service';
 import { TaxonomyImage } from '../../shared/model/Taxonomy';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Logger } from '../../shared/logger/logger.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-gallery',
@@ -56,6 +57,7 @@ export class GalleryComponent implements OnChanges {
         'document.documentId'
       ], undefined, this.pageSize, this.page)
       .timeout(WarehouseApi.longTimeout)
+      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .map((data) => {
         const images = [];
         this.total = data.total;

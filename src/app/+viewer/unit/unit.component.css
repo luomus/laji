@@ -10,10 +10,12 @@ hr {
 }
 .unit {
   position: relative;
+  min-height: 30px;
 }
 .annotation-btn {
   position: absolute;
   margin-right: -28px;
   right: 0;
   top: 0;
+  z-index: 1;
 }

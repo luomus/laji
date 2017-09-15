@@ -14,7 +14,6 @@ import {
 } from 'ngx-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';
-import { SpinnerComponent } from './spinner/spinner.component';
 import { UsersPipe } from './pipe/users.pipe';
 import { LabelPipe } from './pipe/label.pipe';
 import { FormattedNumber } from './pipe/formated-number.pipe';
@@ -85,13 +84,14 @@ import { HideScrollDirective } from './directive/hide-scroll';
 import { LoggedInDirective } from './directive/logged-in.directive';
 import { FixedBelowDirective } from './directive/fixed-below.directive';
 import { LangModule } from '../shared-modules/lang/lang.module';
+import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
 
 
 @NgModule({
   entryComponents: [ImageModalOverlayComponent],
   declarations: [
     NewsListComponent, DocumentFormComponent, LocalizePipe, NotificationComponent,
-    SpinnerComponent, ToQNamePipe, ToFullUriPipe, ValuesPipe,
+    ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, FormattedNumber,
     AreaNamePipe, CollectionNamePipe, FormNamePipe,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
@@ -109,12 +109,13 @@ import { LangModule } from '../shared-modules/lang/lang.module';
     TranslateModule,
     ReactiveFormsModule,
     MomentModule,
+    SpinnerModule,
     TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule
   ],
   providers: [ ], // keep this empty!
   exports: [
     CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent,
-    AreaNamePipe, NewsListComponent, SpinnerComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe,
+    AreaNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe, LajiFormComponent, DocumentFormComponent,
     ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,

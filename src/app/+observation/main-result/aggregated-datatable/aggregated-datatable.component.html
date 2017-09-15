@@ -1,0 +1,17 @@
+<ngx-datatable
+  class='material'
+  [cssClasses]="{
+        sortAscending: 'glyphicon glyphicon-chevron-down',
+        sortDescending: 'glyphicon glyphicon-chevron-up',
+        pagerLeftArrow: 'glyphicon glyphicon-chevron-left',
+        pagerRightArrow: 'glyphicon glyphicon-chevron-right',
+        pagerPrevious: 'glyphicon glyphicon-step-backward',
+        pagerNext: 'glyphicon glyphicon-step-forward'
+      }"
+  [rows]='rows'
+  [columns]="columns"
+  [columnMode]="'force'"
+  [headerHeight]="50"
+  [footerHeight]="50"
+  [rowHeight]="'auto'">
+</ngx-datatable>

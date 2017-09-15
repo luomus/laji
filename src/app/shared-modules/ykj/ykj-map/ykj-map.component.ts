@@ -20,6 +20,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   @ViewChild(Map3Component) mapComponent: Map3Component;
 
+  @Input() title: string;
   @Input() height = '605px';
   @Input() query: WarehouseQueryInterface;
   @Input() type = 'count';
@@ -88,9 +89,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     if (!this.query) {
       return;
     }
-    const query = Util.clone(this.query);
-    query.countryId = query.countryId || ['ML.206'];
-    const key = JSON.stringify(query);
+    const key = JSON.stringify(this.query);
     if (this.current === key) {
       const colorKey = this.getColorKey();
       if (this.currentColor !== colorKey  && this.geoJsonLayer) {
@@ -106,7 +105,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       this.subQuery.unsubscribe();
     }
     this.subQuery = this.ykjService
-      .getGeoJson(query)
+      .getGeoJson(this.query)
       .subscribe(geoJson => {
           this.geoJsonLayer.addData(geoJson);
           this.currentColor = '';

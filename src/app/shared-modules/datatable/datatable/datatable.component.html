@@ -1,0 +1,44 @@
+<laji-spinner [spinning]="loading" [overlay]="true">
+  <ngx-datatable
+    class='material striped laji-datatable'
+    [style.height]="height"
+    [cssClasses]="{
+          sortAscending: 'glyphicon glyphicon-chevron-down',
+          sortDescending: 'glyphicon glyphicon-chevron-up',
+          pagerLeftArrow: 'glyphicon glyphicon-chevron-left',
+          pagerRightArrow: 'glyphicon glyphicon-chevron-right',
+          pagerPrevious: 'glyphicon glyphicon-step-backward',
+          pagerNext: 'glyphicon glyphicon-step-forward'
+        }"
+    [rows]='rows'
+    [disablePagingOnScroll]="true"
+    [externalPaging]="true"
+    [externalSorting]="true"
+    [sortType]="'multi'"
+    [count]="count"
+    [offset]="_offset"
+    [limit]="pageSize"
+    [columns]="_columns"
+    [columnMode]="'force'"
+    [scrollbarH]="true"
+    [scrollbarV]="true"
+    [headerHeight]="38"
+    [footerHeight]="50"
+    [trackByProp]="'name'"
+    [rowHeight]="35"
+    (sort)="sortChange.emit($event)"
+    (page)="onPage($event)"
+    (activate)="onRowSelect($event)"
+  >
+  </ngx-datatable>
+</laji-spinner>
+
+<ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template #headerTpl>
+  <span class="datatable-header-cell-wrapper sort-full-width"
+        (click)="sort()"
+        title="{{column.name}}">
+    <span class="datatable-header-cell-label draggable">
+      <span title="{{column.label | translate}}">{{column.label | translate}}</span>
+    </span>
+  </span>
+</ng-template>

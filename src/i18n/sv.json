@@ -114,7 +114,7 @@
   "result.gathering.biogeographicalProvince": "Biogeografisk provins",
   "result.gathering.conversions.ykj": "Enhetskoordinater (EKS)",
   "result.gathering.coordinatesVerbatim": "Koordinater",
-  "result.unit.lifeStage": "Koordinater",
+  "result.unit.lifeStage": "Livsfas",
   "result.document.documentId": "Identifierare",
   "result.document.secureLevel": "Diffuseringsgrad",
   "result.document.secureReasons": "Orsaken för diffusering",

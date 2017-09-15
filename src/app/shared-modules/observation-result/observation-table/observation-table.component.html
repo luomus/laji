@@ -1,0 +1,138 @@
+<div class="observation-table-wrapper">
+  <laji-datatable
+    class="observation-table"
+    (rowSelect)="rowSelect.emit($event, selected)"
+    [height]="height"
+    [rows]='result.results'
+    (pageChange)="setPage($event)"
+    (sortChange)="onSort($event)"
+    [loading]="loading"
+    [count]="result.total"
+    [page]="result.currentPage"
+    [pageSize]="result.pageSize"
+    [columns]="columns">
+  </laji-datatable>
+  <div class="setting-menu link" (click)="openModal(isAggregate ? aggregateSettingsMenu : observationSettingsMenu)" *ngIf="showSettingsMenu">
+    <i class="glyphicon glyphicon-cog"></i>
+  </div>
+</div>
+
+<ng-template #aggregateSettingsMenu>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{'result.settings.aggregate' | translate}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm-6 col-lg-4">
+        <laji-selected-field-group
+          title="result.aggregate"
+          [fields]="[
+            'unit.linkings.taxon',
+            'unit.linkings.taxon.scientificName',
+            'document.collectionId',
+            'document.sourceId'
+            ]"
+          [columnsLookup]="columnLookup"
+          [selected]="selected"
+          (toggle)="toggleSelectedField($event)"
+        ></laji-selected-field-group>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <laji-page-size-select [pageSize]="pageSize" (pageSizeChange)="onPageSizeChange($event)"></laji-page-size-select>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #observationSettingsMenu>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">{{'result.settings.list' | translate}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm-6 col-lg-4">
+        <laji-selected-field-group
+          title="result.unit"
+          [fields]="[
+            'unit.linkings.taxon',
+            'unit.linkings.taxon.scientificName',
+            'unit.reportedTaxonConfidence',
+            'unit.quality.taxon.reliability',
+            'unit.abundanceString',
+            'unit.interpretations.individualCount',
+            'unit.lifeStage',
+            'unit.sex',
+            'unit.recordBasis',
+            'unit.notes'
+            ]"
+          [columnsLookup]="columnLookup"
+          [selected]="selected"
+          (toggle)="toggleSelectedField($event)"
+        ></laji-selected-field-group>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <laji-selected-field-group
+          title="result.gathering"
+          [fields]="[
+            'gathering.team',
+            'gathering.displayDateTime',
+            'gathering.locality',
+            'gathering.interpretations.municipalityDisplayname',
+            'gathering.interpretations.biogeographicalProvinceDisplayname',
+            'gathering.interpretations.countryDisplayname',
+            'gathering.conversions.ykj',
+            'gathering.conversions.euref',
+            'gathering.conversions.wgs84',
+            'gathering.conversions.coordinateAccuracy'
+            ]"
+          [columnsLookup]="columnLookup"
+          [selected]="selected"
+          (toggle)="toggleSelectedField($event)"
+        ></laji-selected-field-group>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <laji-selected-field-group
+          title="result.document"
+          [fields]="['document.collectionId', 'document.sourceId', 'document.secureLevel', 'document.secureReasons']"
+          [columnsLookup]="columnLookup"
+          [selected]="selected"
+          (toggle)="toggleSelectedField($event)"
+        ></laji-selected-field-group>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <laji-page-size-select [pageSize]="pageSize" (pageSizeChange)="onPageSizeChange($event)"></laji-page-size-select>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template let-value="value" #warehouseLabel>
+  <span *ngIf="value" title="{{value | label: 'warehouse'}}">
+    {{value | label: 'warehouse'}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #toSemicolon>
+  <span *ngIf="value" title="{{value.join('; ')}}">
+    {{value.join('; ')}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #vernacularName>
+  <span *ngIf="value.vernacularName" title="{{value.vernacularName | multiLang}}">
+    {{value.vernacularName | multiLang}}
+  </span>
+</ng-template>
+<ng-template let-value="value" ngx-datatable-cell-template #eventDate>
+  <span *ngIf="value && value.end && value.begin">
+    <span *ngIf="value.begin === value.end; else dateRange" title="{{value.begin}}">{{value.begin}}</span>
+    <ng-template #dateRange><span title="{{value.begin}} - {{value.end}}">{{value.begin}} - {{value.end}}</span></ng-template>
+  </span>
+</ng-template>

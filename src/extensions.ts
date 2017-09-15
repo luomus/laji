@@ -15,6 +15,7 @@ import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/timeout';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/retry';
+import 'rxjs/add/operator/retryWhen';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/mergeAll';

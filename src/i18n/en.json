@@ -118,7 +118,7 @@
   "result.gathering.biogeographicalProvince": "Biogeographical province",
   "result.gathering.conversions.ykj": "Finnish uniform grid",
   "result.gathering.coordinatesVerbatim": "Coordinates",
-  "result.unit.lifeStage": "Coordinates",
+  "result.unit.lifeStage": "Life stage",
   "result.document.documentId": "Identifier",
   "result.document.secureLevel": "Coarseninglevel",
   "result.document.secureReasons": "Reason for coarsening",

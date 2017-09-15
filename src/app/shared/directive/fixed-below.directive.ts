@@ -7,7 +7,6 @@ export class FixedBelowDirective {
 
   @Input() set lajiFixedBelow(parent: Element) {
     const viewportOffset = parent.getBoundingClientRect();
-    console.log(viewportOffset);
     this.renderer.setStyle(this.el.nativeElement, 'top', viewportOffset.bottom + 'px');
   }
 

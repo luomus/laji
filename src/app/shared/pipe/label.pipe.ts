@@ -3,6 +3,7 @@ import { WarehouseValueMappingService } from '../service/warehouse-value-mapping
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../service/triplestore-label.service';
 import { IdService } from '../service/id.service';
+import { Observable } from 'rxjs/Observable';
 
 type labelType = 'fullUri'|'warehouse';
 
@@ -31,6 +32,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     if (type === 'warehouse') {
       this.warehouseService.getOriginalKey(key)
         .timeout(5000)
+        .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
         .subscribe(
           (res: string) => {
             if (res) {

@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Util } from '../../shared/service/util.service';
 import { Logger } from '../../shared/logger/logger.service';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({
@@ -93,6 +94,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
     this.subCount = this.warehouseService
       .warehouseQueryAggregateGet(query, [this.field], undefined, pageSize)
       .timeout(this.timeout)
+      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .delay(100)
       .subscribe(
         result => {

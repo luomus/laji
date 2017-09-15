@@ -7,17 +7,17 @@ import { SourceApi } from '../api/SourceApi';
 @Injectable()
 export class SourceService {
 
-  private areas;
+  private sources;
   private currentLang;
   private pending: Observable<any>;
 
   constructor(private sourceApi: SourceApi) {
   }
 
-  getAllAsLookUp(lang: string) {
+  getAllAsLookUp(lang: string): Observable<any> {
     if (lang === this.currentLang) {
-      if (this.areas) {
-        return Observable.of(this.areas);
+      if (this.sources) {
+        return Observable.of(this.sources);
       } else if (this.pending) {
         return Observable.create((observer: Observer<any>) => {
           const onComplete = (res: any) => {
@@ -25,7 +25,7 @@ export class SourceService {
             observer.complete();
           };
           this.pending.subscribe(
-            () => { onComplete(this.areas); }
+            () => { onComplete(this.sources); }
           );
         });
       }
@@ -33,12 +33,12 @@ export class SourceService {
     this.pending = this.sourceApi
       .findAll(lang, undefined, '1', '1000')
       .map(paged => paged.results)
-      .map(areas => {
+      .map(sources => {
         const lkObject = {};
-        areas.map(area => { lkObject[area['id']] = area['name']; });
+        sources.map(source => { lkObject[source['id']] = source['name']; });
         return lkObject;
       })
-      .do(locations => { this.areas = locations; })
+      .do(locations => { this.sources = locations; })
       .share();
     this.currentLang = lang;
 

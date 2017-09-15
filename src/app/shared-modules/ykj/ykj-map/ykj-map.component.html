@@ -4,6 +4,7 @@
     <span *ngIf="taxon && taxon.vernacularName">
       <br>{{taxon.vernacularName | multiLang}}
     </span>
+    <span *ngIf="title" [innerHtml]="title"></span>
   </div>
   <laji-map3
     [options]="mapOptions"

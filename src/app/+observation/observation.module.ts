@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ObservationActiveComponent } from './active/observation-active.component';
 import { ObservationChartComponent } from './chart/observation-chart.component';
 import { ObservationFilterComponent } from './filter/observation-filter.component';
@@ -22,6 +23,9 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { SelectComponent } from './select/select.component';
 import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { MainResultComponent } from './main-result/main-result.component';
+import { AggregatedDatatableComponent } from './main-result/aggregated-datatable/aggregated-datatable.component';
+import { ObservationsDatatableComponent } from './main-result/observations-datatable/observations-datatable.component';
+import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
 
 @NgModule({
   imports: [
@@ -31,14 +35,18 @@ import { MainResultComponent } from './main-result/main-result.component';
     TypeaheadModule,
     ViewerModule,
     MultiselectDropdownModule,
-    YkjModule
+    YkjModule,
+    NgxDatatableModule,
+    ObservationResultModule
   ],
   declarations: [ObservationComponent, ObservationActiveComponent,
     ObservationAggregateComponent, ObservationChartComponent,
     ObservationFilterComponent, ObservationFormComponent, ObservationGroupSelectComponent,
     MultiRadioComponent, ObservationResultComponent,
     ObservationResultListComponent, MetadataSelectComponent,
-    PieChartComponent, DatePickerComponent, ObservationDownloadComponent, SelectComponent, MainResultComponent]
+    PieChartComponent, DatePickerComponent, ObservationDownloadComponent, SelectComponent, MainResultComponent,
+    AggregatedDatatableComponent,
+    ObservationsDatatableComponent]
 })
 export class ObservationModule {
 }

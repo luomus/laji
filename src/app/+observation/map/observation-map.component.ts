@@ -363,6 +363,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       })
       .timeout(WarehouseApi.longTimeout * 3)
       .delay(100)
+      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .subscribe((data: any) => {
           if (data.featureCollection) {
             if (this.reset) {

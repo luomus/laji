@@ -120,7 +120,7 @@
   "result.gathering.biogeographicalProvince": "Eliömaakunta",
   "result.gathering.conversions.ykj": "Yhtenäiskoordinaatit (YKJ)",
   "result.gathering.coordinatesVerbatim": "Koordinaatit",
-  "result.unit.lifeStage": "Koordinaatit",
+  "result.unit.lifeStage": "Elinvaihe",
   "result.unit.abundanceString": "Määrä",
   "result.unit.interpretations.individualCount": "Yksilömäärä (tulkittu)",
   "result.document.documentId": "Tunniste",

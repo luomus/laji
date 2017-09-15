@@ -701,3 +701,25 @@ input[type="radio"]
   display: inline;
 }
 /** end of workaround **/
+
+
+/** datatable global styling **/
+.ngx-datatable.material {
+  box-shadow: none;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+.ngx-datatable.fixed-row .datatable-scroll .datatable-body-row .datatable-body-cell span {
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  width: 100%;
+}
+
+.ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell {
+  font-size: 85%;
+}
+
+.ngx-datatable.material.striped .datatable-row-odd {
+  background-color: #f9f9f9;
+}
