@@ -1,5 +1,6 @@
 import {
-  AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
+  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy,
+  OnInit, Output,
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core/src/translate.service';
@@ -14,7 +15,8 @@ import { Util } from '../../../shared/service/util.service';
 @Component({
   selector: 'laji-ykj-map',
   templateUrl: './ykj-map.component.html',
-  styleUrls: ['./ykj-map.component.css']
+  styleUrls: ['./ykj-map.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
@@ -58,7 +60,8 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   constructor(
     public translate: TranslateService,
-    private ykjService: YkjService
+    private ykjService: YkjService,
+    private cd: ChangeDetectorRef
   ) {
     const now = new Date();
     this.timeLabel[0] = '' + now.getFullYear();
@@ -67,7 +70,8 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   ngOnInit() {
     this.subLang = this.translate.onLangChange.subscribe(() => {
-      this.mapOptions = {...this.mapOptions, lang: this.translate.currentLang}
+      this.mapOptions = {...this.mapOptions, lang: this.translate.currentLang};
+      this.cd.markForCheck();
     });
     this.mapOptions['lang'] = this.translate.currentLang;
     this.initMapdata();
@@ -117,9 +121,11 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
           this.loading = false;
           this.initColor();
           this.initTitle();
+          this.cd.markForCheck();
         },
         error => {
           this.loading = false;
+          this.cd.markForCheck();
         });
   }
 
@@ -216,7 +222,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   countColor(feature, prop = 'count') {
-    const cnt = feature.properties[prop] || 0;
+    const cnt = typeof feature.properties[prop] !== 'undefined' ? feature.properties[prop] : 1;
     let newColor = '#ffffff';
     for (const idx in this.countBreak) {
       if (!this.countBreak.hasOwnProperty(idx)) {

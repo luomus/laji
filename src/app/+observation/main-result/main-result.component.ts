@@ -1,4 +1,7 @@
-import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Input, OnChanges, OnInit, SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { MainResultService } from './main-result.service';
 import { ModalDirective } from 'ngx-bootstrap';
@@ -9,7 +12,8 @@ import { ObservationTableComponent } from '../../shared-modules/observation-resu
   selector: 'laji-main-result',
   templateUrl: './main-result.component.html',
   styleUrls: ['./main-result.component.css'],
-  providers: [MainResultService]
+  providers: [MainResultService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainResultComponent implements OnInit, OnChanges {
 
@@ -50,7 +54,10 @@ export class MainResultComponent implements OnInit, OnChanges {
     'document.sourceId'
   ];
 
-  constructor(private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    private cd: ChangeDetectorRef
+  ) { }
 
   @HostListener('document:keydown', ['$event'])
   onCtrlDownHandler(event: KeyboardEvent) {
@@ -88,6 +95,7 @@ export class MainResultComponent implements OnInit, OnChanges {
         }
         this.initialized = true;
         this.initInternalQueries();
+        this.cd.markForCheck();
       });
   }
 
@@ -109,7 +117,6 @@ export class MainResultComponent implements OnInit, OnChanges {
     }
     this.mapQuery = {...this.aggrQuery};
     this.listQuery = {...this.aggrQuery};
-
   }
 
   closeMap() {

@@ -50,7 +50,7 @@ export class YkjService {
         query,
         [`gathering.conversions.ykj${grid}.lat,gathering.conversions.ykj${grid}.lon`],
         undefined,
-        5000,
+        10000,
         1,
         false,
         false
