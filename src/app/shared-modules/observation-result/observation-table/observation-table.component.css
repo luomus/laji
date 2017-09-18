@@ -4,11 +4,11 @@
 
 .setting-menu {
   height: 37px;
-  width: 32px;
+  width: 28px;
   position: absolute;
   right: 0;
   top: 1px;
-  padding: 10px 9px;
+  padding: 10px 7px;
   background-color: #fff;
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;

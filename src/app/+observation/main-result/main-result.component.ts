@@ -1,9 +1,9 @@
-import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { MainResultService } from './main-result.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import { UserService } from '../../shared/service/user.service';
-import { Observable } from 'rxjs/Observable';
+import { ObservationTableComponent } from '../../shared-modules/observation-result/observation-table/observation-table.component';
 
 @Component({
   selector: 'laji-main-result',
@@ -13,9 +13,11 @@ import { Observable } from 'rxjs/Observable';
 })
 export class MainResultComponent implements OnInit, OnChanges {
 
+  @ViewChild('aggregatedDataTable') public aggregatedDataTable: ObservationTableComponent;
   @ViewChild('documentModal') public modal: ModalDirective;
 
   @Input() query: WarehouseQueryInterface;
+  @Input() visible = true;
 
   aggrQuery: WarehouseQueryInterface;
   mapQuery: WarehouseQueryInterface;
@@ -27,8 +29,10 @@ export class MainResultComponent implements OnInit, OnChanges {
   highlightId: string;
   pageSize = 1000;
 
+  ctrlDown = false;
   showObservationList = false;
-  hasAggregateResult = false;
+  showQueryOnMap = false;
+  documentModalVisible = false;
   initialized = false;
 
   aggregateBy = [
@@ -48,6 +52,32 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   constructor(private userService: UserService) { }
 
+  @HostListener('document:keydown', ['$event'])
+  onCtrlDownHandler(event: KeyboardEvent) {
+    if (!this.visible) {
+      return;
+    }
+    if (event.keyCode === 17) {
+      this.ctrlDown = true;
+    }
+    if (event.keyCode === 27 && !this.documentModalVisible) {
+      if (this.showObservationList && this.listQuery.ykj10kmCenter) {
+        this.removeGridFromList();
+      } else if (this.showObservationList) {
+        this.closeList();
+      } else if (this.showQueryOnMap) {
+        this.closeMap();
+      }
+    }
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  onCtrlUpHandler(event: KeyboardEvent) {
+    if (event.keyCode === 17) {
+      this.ctrlDown = false;
+    }
+  }
+
   ngOnInit() {
     this.userService.getItem<any>(UserService.SETTINGS_RESULT_LIST)
       .subscribe(data => {
@@ -61,14 +91,18 @@ export class MainResultComponent implements OnInit, OnChanges {
       });
   }
 
-  ngOnChanges() {
-    if (this.initialized) {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.query && this.initialized) {
       this.initInternalQueries();
+    }
+    if (changes.visible && this.visible && this.aggregatedDataTable) {
+      this.aggregatedDataTable.refreshTable();
     }
   }
 
   initInternalQueries() {
-    this.hasAggregateResult = false;
+    this.title = '';
+    this.showQueryOnMap = false;
     this.aggrQuery = {...this.query};
     if (!this.aggrQuery.countryId) {
       this.aggrQuery.countryId = ['ML.206'];
@@ -78,15 +112,16 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   }
 
-  showAllOnMap() {
+  closeMap() {
     this.title = '';
-    this.hasAggregateResult = false;
-    this.showObservationList = false;
+    this.showQueryOnMap = false;
     this.mapQuery = {...this.aggrQuery};
+    this.closeList();
   }
 
   closeList() {
     this.showObservationList = false;
+    this.aggregatedDataTable.refreshTable();
   }
 
   onGridSelect(event) {
@@ -95,12 +130,18 @@ export class MainResultComponent implements OnInit, OnChanges {
   }
 
   removeGridFromList() {
-    this.listQuery = {...this.listQuery, ykj10kmCenter: ''};
+    const query = {...this.listQuery};
+    if (query.ykj10kmCenter) {
+      delete query.ykj10kmCenter;
+    }
+    this.listQuery = query;
   }
 
   onAggregateSelect(event) {
-    this.hasAggregateResult = true;
-    this.showObservationList = true;
+    this.showQueryOnMap = true;
+    if (this.ctrlDown) {
+      this.showObservationList = true;
+    }
     const mapQuery = {...this.aggrQuery};
     const title: string[] = [];
     this.aggregateBy.map(key => {
@@ -133,8 +174,13 @@ export class MainResultComponent implements OnInit, OnChanges {
     if (event.document && event.document.documentId && event.unit && event.unit.unitId) {
       this.highlightId = event.unit.unitId;
       this.documentId = event.document.documentId;
+      this.documentModalVisible = true;
       this.modal.show();
     }
+  }
+
+  onHideDocument() {
+    this.documentModalVisible = false;
   }
 
   setPageSize(event) {

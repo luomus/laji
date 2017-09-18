@@ -1,5 +1,6 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output,
+  SimpleChanges,
   TemplateRef,
   ViewChild
 } from '@angular/core';
@@ -9,6 +10,7 @@ import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
+import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 
 
 @Component({
@@ -18,6 +20,7 @@ import { Subscription } from 'rxjs/Subscription';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationTableComponent implements OnInit, OnChanges {
+  @ViewChild('dataTable') public datatable: DatatableComponent;
 
   @Input() query: WarehouseQueryInterface;
   @Input() pageSize = 1000;
@@ -31,11 +34,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Output() pageSizeChange = new EventEmitter<number>();
   @Output() selectChange = new EventEmitter<string[]>();
   @Output() rowSelect = new EventEmitter<any>();
-
-  @ViewChild('eventDate') eventDate: TemplateRef<any>;
-  @ViewChild('vernacularName') vernacularName: TemplateRef<any>;
-  @ViewChild('warehouseLabel') warehouseLabel: TemplateRef<any>;
-  @ViewChild('toSemicolon') toSemicolon: TemplateRef<any>;
 
   modalRef: BsModalRef;
   rows: any[] = [];
@@ -56,10 +54,13 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   columns: ObservationTableColumn[] = [];
 
   allColumns: ObservationTableColumn[] = [
-    { name: 'unit.linkings.taxon', cellTemplate: 'vernacularName', sortBy: 'unit.linkings.taxon.taxonomicOrder',
+    { name: 'unit.linkings.taxon', cellTemplate: 'vernacularName', sortBy: 'unit.linkings.taxon.nameFinnish',
       label: 'taxonomy.vernacular.name',
-      aggregateBy: 'unit.linkings.taxon.nameFinnish,unit.linkings.taxon.id'},
-    { name: 'unit.linkings.taxon.scientificName', label: 'result.scientificName', sortBy: 'unit.linkings.taxon.taxonomicOrder' },
+      aggregateBy: 'unit.linkings.taxon.nameFinnish,unit.linkings.taxon.id' },
+    { name: 'unit.linkings.taxon.scientificName', label: 'result.scientificName', sortBy: 'unit.linkings.taxon.scientificName',
+      aggregateBy: 'unit.linkings.taxon.scientificName,unit.linkings.taxon.id' },
+    { name: 'unit.linkings.taxon.taxonomicOrder', label: 'result.taxonomicOrder',
+      aggregateBy: 'unit.linkings.taxon.taxonomicOrder,unit.linkings.taxon.id', width: 70 },
     { name: 'unit.reportedTaxonConfidence', cellTemplate: 'warehouseLabel' },
     { name: 'unit.quality.taxon.reliability', cellTemplate: 'warehouseLabel', label: 'result.unit.quality.taxon' },
     { name: 'gathering.team', cellTemplate: 'toSemicolon' },
@@ -80,8 +81,11 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'document.secureLevel', cellTemplate: 'warehouseLabel' },
     { name: 'document.secureReasons', sortable: false },
     { name: 'document.sourceId', prop: 'document.source' },
-    { name: 'count', draggable: false, label: 'theme.countShort', width: 50 },
-    { name: 'individualCountSum', draggable: false, label: 'theme.individualCountShort', width: 80 }
+    { name: 'oldestRecord', width: 85 },
+    { name: 'newestRecord', width: 85 },
+    { name: 'count', draggable: false, label: 'theme.countShort', width: 65 },
+    { name: 'individualCountMax', label: 'theme.individualCountMaxShort', width: 70 },
+    { name: 'individualCountSum', label: 'theme.individualCountShort', width: 70 }
   ];
 
   /*
@@ -121,13 +125,14 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     }
   }
 
+  refreshTable() {
+    this.datatable.refreshTable();
+  }
+
   initColumns() {
     this.allColumns = this.allColumns
       .map(column => {
         this.columnLookup[column.name] = column;
-        if (typeof column.cellTemplate === 'string') {
-          column.cellTemplate = this[column.cellTemplate];
-        }
         if (!column.label) {
           column.label = 'result.' + column.name;
         }
@@ -141,7 +146,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     });
     if (this.isAggregate) {
       this.columns.push(this.columnLookup['count']);
-      this.columns.push(this.columnLookup['individualCountSum']);
     }
   }
 
@@ -192,10 +196,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   onPageSizeChange(size: number) {
     this.pageSizeChange.emit(size);
-  }
-
-  onRowSelect(event) {
-    this.rowSelect.emit(event);
   }
 
   fetchPage(page = 1) {

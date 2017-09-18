@@ -6,12 +6,14 @@ import { LajiMapModule } from '../map/laji-map.module';
 import { YkjService } from './service/ykj.service';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
+import { BsDropdownModule } from 'ngx-bootstrap';
 
 @NgModule({
   imports: [
     CommonModule,
     LangModule,
-    LajiMapModule
+    LajiMapModule,
+    BsDropdownModule
   ],
   declarations: [YkjMapComponent],
   providers: [YkjService, WarehouseApi, TaxonomyApi, YkjService],

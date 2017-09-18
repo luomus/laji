@@ -1,8 +1,10 @@
 import {
-  ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, TemplateRef,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, TemplateRef,
   ViewChild
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
+import { DatatableComponent as NgxDatatableComponent } from '@swimlane/ngx-datatable';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-datatable',
@@ -12,7 +14,13 @@ import { DatatableColumn } from '../model/datatable-column';
 })
 export class DatatableComponent {
 
+  @ViewChild('dataTable') public datatable: NgxDatatableComponent;
+
   @ViewChild('headerTpl') headerTpl: TemplateRef<any>;
+  @ViewChild('eventDate') eventDateTpl: TemplateRef<any>;
+  @ViewChild('vernacularName') vernacularNameTpl: TemplateRef<any>;
+  @ViewChild('warehouseLabel') warehouseLabelTpl: TemplateRef<any>;
+  @ViewChild('toSemicolon') toSemicolonTpl: TemplateRef<any>;
 
   @Input() rows: any[];
   @Input() loading = false;
@@ -27,7 +35,9 @@ export class DatatableComponent {
   _offset: number;
   _columns: DatatableColumn[];
 
-  constructor() { }
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef
+  ) { }
 
 
   @Input() set page(page: number) {
@@ -38,6 +48,9 @@ export class DatatableComponent {
     this._columns = columns.map((column) => {
       if (!column.headerTemplate) {
         column.headerTemplate = this.headerTpl;
+      }
+      if (typeof column.cellTemplate === 'string') {
+        column.cellTemplate = this[column.cellTemplate + 'Tpl'];
       }
       if (!column.prop) {
         column.prop = column.name;
@@ -57,6 +70,16 @@ export class DatatableComponent {
       return;
     }
     this.pageChange.emit(event);
+  }
+
+  refreshTable() {
+    Observable
+      .interval()
+      .take(1)
+      .subscribe(() => {
+        this.rows = [...this.rows];
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
 }

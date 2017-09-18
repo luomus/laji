@@ -4,13 +4,15 @@ import { DatatableComponent } from './datatable/datatable.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LangModule } from '../lang/lang.module';
 import { SpinnerModule } from '../spinner/spinner.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     NgxDatatableModule,
     LangModule,
-    SpinnerModule
+    SpinnerModule,
+    SharedModule
   ],
   declarations: [DatatableComponent],
   exports: [DatatableComponent]

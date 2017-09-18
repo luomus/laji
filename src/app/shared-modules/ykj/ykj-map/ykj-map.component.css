@@ -51,6 +51,10 @@
   padding-right: 10px;
 }
 
+.link {
+  padding: 3px 20px;
+}
+
 :host >>> .leaflet-container {
   background-color: #eee;
 }

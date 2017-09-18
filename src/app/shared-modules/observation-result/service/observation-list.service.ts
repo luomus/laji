@@ -13,15 +13,16 @@ import { IdService } from '../../../shared/service/id.service';
 @Injectable()
 export class ObservationListService {
 
-  private key: undefined;
+  private key: string;
   private data: PagedResult<any>;
   private pending: Observable<any>;
   private pendingKey: string;
 
-  private aggregateKey: undefined;
+  private aggregateKey: string;
   private aggregateData: PagedResult<any>;
   private aggregatePending: Observable<any>;
   private aggregatePendingKey: string;
+  private removeAggregateFields =  ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum'];
 
   constructor(
     private warehouseApi: WarehouseApi,
@@ -37,6 +38,7 @@ export class ObservationListService {
     orderBy: string[] = [],
     lang: string
   ): Observable<PagedResult<any>> {
+    aggregateBy = aggregateBy.filter(val => this.removeAggregateFields.indexOf(val) === -1);
     const key = JSON.stringify(query) + [aggregateBy.join(','), orderBy.join(','), lang, page, pageSize].join(':');
     if (this.aggregateKey === key && this.aggregateData) {
       return Observable.of(this.aggregateData);
@@ -64,7 +66,10 @@ export class ObservationListService {
       .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .map(data => this.convertAggregateResult(data))
       .switchMap(data => this.openIds(data, aggregateBy, lang))
-      .do(data => this.data = data)
+      .do(data => {
+        this.aggregateData = data;
+        this.aggregateKey = key;
+      })
       .share();
     return this.aggregatePending;
   }
@@ -101,7 +106,10 @@ export class ObservationListService {
       )
       .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .switchMap(data => this.openIds(data, selected, lang))
-      .do(data => this.data = data)
+      .do(data => {
+        this.data = data;
+        this.key = key;
+      })
       .share();
     return this.pending;
   }

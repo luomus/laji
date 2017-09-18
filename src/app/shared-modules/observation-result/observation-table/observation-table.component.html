@@ -1,5 +1,6 @@
 <div class="observation-table-wrapper">
   <laji-datatable
+    #dataTable
     class="observation-table"
     (rowSelect)="rowSelect.emit($event)"
     [height]="height"
@@ -32,8 +33,23 @@
           [fields]="[
             'unit.linkings.taxon',
             'unit.linkings.taxon.scientificName',
+            'unit.linkings.taxon.taxonomicOrder',
             'document.collectionId',
             'document.sourceId'
+            ]"
+          [columnsLookup]="columnLookup"
+          [selected]="selected"
+          (toggle)="toggleSelectedField($event)"
+        ></laji-selected-field-group>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <laji-selected-field-group
+          title="result.aggregate"
+          [fields]="[
+            'oldestRecord',
+            'newestRecord',
+            'individualCountMax',
+            'individualCountSum'
             ]"
           [columnsLookup]="columnLookup"
           [selected]="selected"
@@ -112,27 +128,4 @@
       </div>
     </div>
   </div>
-</ng-template>
-
-
-<ng-template let-value="value" #warehouseLabel>
-  <span *ngIf="value" title="{{value | label: 'warehouse'}}">
-    {{value | label: 'warehouse'}}
-  </span>
-</ng-template>
-<ng-template let-value="value" #toSemicolon>
-  <span *ngIf="value" title="{{value.join('; ')}}">
-    {{value.join('; ')}}
-  </span>
-</ng-template>
-<ng-template let-value="value" #vernacularName>
-  <span *ngIf="value.vernacularName" title="{{value.vernacularName | multiLang}}">
-    {{value.vernacularName | multiLang}}
-  </span>
-</ng-template>
-<ng-template let-value="value" ngx-datatable-cell-template #eventDate>
-  <span *ngIf="value && value.end && value.begin">
-    <span *ngIf="value.begin === value.end; else dateRange" title="{{value.begin}}">{{value.begin}}</span>
-    <ng-template #dateRange><span title="{{value.begin}} - {{value.end}}">{{value.begin}} - {{value.end}}</span></ng-template>
-  </span>
 </ng-template>

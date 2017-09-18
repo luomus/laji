@@ -85,6 +85,11 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.subLang.unsubscribe();
   }
 
+  changeType(type: string) {
+    this.type = type;
+    this.initMapdata();
+  }
+
   initMapdata() {
     if (!this.query) {
       return;

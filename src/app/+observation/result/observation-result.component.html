@@ -36,7 +36,7 @@
   </li>
 </ul>
 <div [hidden]="active !== 'result'" *ngIf="activated['result']">
-  <laji-main-result [query]="searchQuery.query"></laji-main-result>
+  <laji-main-result [query]="searchQuery.query" [visible]="active === 'result'"></laji-main-result>
 </div>
 <div [hidden]="active !== 'map'" *ngIf="activated['map']">
   <laji-observation-map
