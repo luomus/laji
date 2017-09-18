@@ -196,12 +196,12 @@ export class MainResultComponent implements OnInit, OnChanges {
   }
 
   setAggregateBy(event) {
-    this.aggregateBy = [...event];
+    this.aggregateBy = event.length ? [...event] : [...this.aggregateBy];
     this.saveSettings();
   }
 
   setSelectedFields(event) {
-    this.selected = [...event];
+    this.selected = event.length ? [...event] : [...this.selected];
     this.saveSettings();
   }
 

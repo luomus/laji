@@ -13,20 +13,20 @@
     [pageSize]="result.pageSize"
     [columns]="columns">
   </laji-datatable>
-  <div class="setting-menu link" (click)="openModal(isAggregate ? aggregateSettingsMenu : observationSettingsMenu)" *ngIf="showSettingsMenu">
+  <div class="setting-menu link" (click)="openModal(settingsMenu)" *ngIf="showSettingsMenu">
     <i class="glyphicon glyphicon-cog"></i>
   </div>
 </div>
 
-<ng-template #aggregateSettingsMenu>
+<ng-template #settingsMenu>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">{{'result.settings.aggregate' | translate}}</h4>
+    <h4 class="modal-title pull-left">{{isAggregate ? 'result.settings.aggregate' : 'result.settings.list' | translate}}</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <div class="row">
+    <div class="row" *ngIf="isAggregate">
       <div class="col-sm-6 col-lg-4">
         <laji-selected-field-group
           title="result.aggregate"
@@ -38,7 +38,7 @@
             'document.sourceId'
             ]"
           [columnsLookup]="columnLookup"
-          [selected]="selected"
+          [selected]="_selected"
           (toggle)="toggleSelectedField($event)"
         ></laji-selected-field-group>
       </div>
@@ -52,32 +52,19 @@
             'individualCountSum'
             ]"
           [columnsLookup]="columnLookup"
-          [selected]="selected"
+          [selected]="_selected"
           (toggle)="toggleSelectedField($event)"
         ></laji-selected-field-group>
       </div>
-      <div class="col-sm-6 col-lg-4">
-        <laji-page-size-select [pageSize]="pageSize" (pageSizeChange)="onPageSizeChange($event)"></laji-page-size-select>
-      </div>
     </div>
-  </div>
-</ng-template>
-
-<ng-template #observationSettingsMenu>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">{{'result.settings.list' | translate}}</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div class="row">
+    <div class="row" *ngIf="!isAggregate">
       <div class="col-sm-6 col-lg-4">
         <laji-selected-field-group
           title="result.unit"
           [fields]="[
             'unit.linkings.taxon',
             'unit.linkings.taxon.scientificName',
+            'unit.linkings.taxon.taxonomicOrder',
             'unit.reportedTaxonConfidence',
             'unit.quality.taxon.reliability',
             'unit.abundanceString',
@@ -88,7 +75,7 @@
             'unit.notes'
             ]"
           [columnsLookup]="columnLookup"
-          [selected]="selected"
+          [selected]="_selected"
           (toggle)="toggleSelectedField($event)"
         ></laji-selected-field-group>
       </div>
@@ -108,7 +95,7 @@
             'gathering.conversions.coordinateAccuracy'
             ]"
           [columnsLookup]="columnLookup"
-          [selected]="selected"
+          [selected]="_selected"
           (toggle)="toggleSelectedField($event)"
         ></laji-selected-field-group>
       </div>
@@ -117,14 +104,17 @@
           title="result.document"
           [fields]="['document.collectionId', 'document.sourceId', 'document.secureLevel', 'document.secureReasons']"
           [columnsLookup]="columnLookup"
-          [selected]="selected"
+          [selected]="_selected"
           (toggle)="toggleSelectedField($event)"
         ></laji-selected-field-group>
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-6">
         <laji-page-size-select [pageSize]="pageSize" (pageSizeChange)="onPageSizeChange($event)"></laji-page-size-select>
+      </div>
+      <div class="col-sm-6 clear-btn">
+        <button type="button" tabindex="-1" class="btn btn-primary btn-sm pull-right" (click)="clear()">{{'result.clear' | translate}}</button>
       </div>
     </div>
   </div>

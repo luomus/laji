@@ -26,7 +26,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Input() pageSize = 1000;
   @Input() page = 1;
   @Input() isAggregate = true;
-  @Input() selected: string[] = [];
   @Input() height = '100%';
   @Input() showSettingsMenu = false;
   @Input() lang = 'fi';
@@ -40,6 +39,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   cache: any = {};
   orderBy: string[] = [];
   columnLookup = {};
+  _selected: string[] = [];
 
   result: PagedResult<any> = {
     currentPage: 1,
@@ -109,6 +109,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     private modalService: BsModalService
   ) { }
 
+  @Input() set selected(sel: string[]) {
+    this._selected = [...sel];
+  };
+
   ngOnInit() {
     this.initColumns();
     this.fetchPage(this.page);
@@ -139,7 +143,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
         return column;
       });
     this.aggregateBy = [];
-    this.columns = this.selected.map(name => {
+    this.columns = this._selected.map(name => {
       this.aggregateBy.push((this.columnLookup[name].aggregateBy || this.columnLookup[name].name)
        + (this.columnLookup[name].sortBy ? ',' + this.columnLookup[name].sortBy : ''));
       return this.columnLookup[name];
@@ -153,7 +157,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this.hasChanges = false;
     this.modalSub = this.modalService.onHide.subscribe(() => {
       if (this.hasChanges) {
-        this.selectChange.emit(this.selected);
+        this.selectChange.emit(this._selected);
       }
       this.modalSub.unsubscribe();
     });
@@ -163,15 +167,20 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   toggleSelectedField(field: string) {
     this.hasChanges = true;
-    const idx = this.selected.indexOf(field);
+    const idx = this._selected.indexOf(field);
     if (idx === -1) {
-      this.selected = [...this.selected, field];
+      this.selected = [...this._selected, field];
     } else {
-      this.selected = [
-        ...this.selected.slice(0, idx),
-        ...this.selected.slice(idx + 1)
+      this._selected = [
+        ...this._selected.slice(0, idx),
+        ...this._selected.slice(idx + 1)
       ]
     }
+  }
+
+  clear() {
+    this.hasChanges = true;
+    this._selected = [];
   }
 
   setPage(pageInfo) {
@@ -203,7 +212,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this.changeDetectorRef.markForCheck();
     (this.isAggregate ?
       this.resultService.getAggregate(this.query, this.aggregateBy, page, this.pageSize, this.orderBy, this.lang) :
-      this.resultService.getList(this.query, this.selected, page, this.pageSize, this.orderBy, this.lang)
+      this.resultService.getList(this.query, this._selected, page, this.pageSize, this.orderBy, this.lang)
     ).subscribe(data => {
         this.result = data;
         this.loading = false;
