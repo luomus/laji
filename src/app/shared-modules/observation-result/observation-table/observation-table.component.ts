@@ -23,7 +23,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
   @Input() query: WarehouseQueryInterface;
-  @Input() pageSize = 1000;
+  @Input() pageSize;
   @Input() page = 1;
   @Input() isAggregate = true;
   @Input() height = '100%';
@@ -35,7 +35,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Output() rowSelect = new EventEmitter<any>();
 
   modalRef: BsModalRef;
-  rows: any[] = [];
   cache: any = {};
   orderBy: string[] = [];
   columnLookup = {};
@@ -46,7 +45,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     lastPage: 1,
     results: [],
     total: 0,
-    pageSize: this.pageSize
+    pageSize: 0
   };
   loading: boolean;
   loadingPage: number;
@@ -208,6 +207,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   fetchPage(page = 1) {
+    if (!this.pageSize) {
+      return;
+    }
     this.loading = true;
     this.changeDetectorRef.markForCheck();
     (this.isAggregate ?

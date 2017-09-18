@@ -9,9 +9,13 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 export class PageSizeSelectComponent {
 
   @Input() pageSizes = [50, 100, 500, 1000, 5000, 10000];
-  @Input() pageSize: number;
   @Output() pageSizeChange = new EventEmitter<number>();
+  _pageSize: number;
 
   constructor() { }
+
+  @Input() set pageSize(val: any) {
+    this._pageSize = +val;
+  }
 
 }

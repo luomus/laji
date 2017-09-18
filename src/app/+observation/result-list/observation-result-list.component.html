@@ -1,76 +1,16 @@
-<div class="container-relative" style="min-height: 100px">
-  <div dropdown
-       #setting="bs-dropdown"
-       [autoClose]="true"
-       (onShown)="onSettingsOpen()"
-       (onHidden)="onSettingsClose()"
-       class="setting-menu pull-right">
-    <button type="button" class="btn btn-primary btn-sm" dropdownToggle>
-      <i class="glyphicon glyphicon-cog"></i>
-    </button>
-    <ul class="dropdown-menu" role="menu" *dropdownMenu>
-      <li *ngFor="let column of columns" [ngClass]="{active: column.visible}">
-        <a class="dropdown-item link" (click)="toggleColumn(column)">
-          {{(column.translation || 'result.' + column.field) | translate}}
-        </a>
-      </li>
-    </ul>
-  </div>
-  <laji-spinner [spinning]="loading" [overlay]="true">
-    <div class="table-responsive">
-      <table class="table table-striped table-bordered table-condensed dataTable">
-        <thead>
-        <tr role="row">
-          <th *ngFor="let column of userColumns"
-              (click)="setSort(column)"
-              [ngClass]="{link: column.sortBy !== false}">
-            {{(column.translation || 'result.' + column.field) | translate}}
-            <i *ngIf="column.sort" class="pull-right glyphicon"
-               [ngClass]="{'glyphicon-triangle-bottom': column.sort === 'DESC', 'glyphicon-triangle-top': column.sort === 'ASC'}"></i>
-          </th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let row of result?.results">
-          <td *ngFor="let column of userColumns">
-            <span *ngIf="row[column.field]">
-              <span *ngIf="!column.async" [innerHtml]="row[column.field]"></span>
-              <span *ngIf="column.async" [innerHtml]="row[column.field] | async"></span>
-            </span>
-          </td>
-          <td class="viewer-column">
-            <button
-                    type="button"
-                    placement="right"
-                    container="body"
-                    [tooltip]="'result.showViewer' | translate"
-                    class="btn btn-primary btn-xs"
-                    (click)="showDocument(row)">
-              <i class="glyphicon glyphicon-eye-open"></i>
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </laji-spinner>
-</div>
-<pagination
-        *ngIf="showPager"
-        [totalItems]="result?.total"
-        [itemsPerPage]="result?.pageSize"
-        [(ngModel)]="page"
-        (pageChanged)="pageChanged($event)"
-        [maxSize]="7"
-        [boundaryLinks]="true"
-        [firstText]="'paginator.first' | translate"
-        [lastText]="'paginator.last' | translate"
-        [previousText]="'paginator.previous' | translate"
-        [nextText]="'paginator.next' | translate"
-></pagination>
+<laji-observation-table
+  [lang]="translate.currentLang"
+  (rowSelect)="showDocument($event)"
+  (pageSizeChange)="setPageSize($event)"
+  (selectChange)="setSelectedFields($event)"
+  [pageSize]="pageSize"
+  [height]="'calc(80vh - 30px)'"
+  [query]="query"
+  [showSettingsMenu]="true"
+  [isAggregate]="false"
+  [selected]="selected"
+></laji-observation-table>
 <div class="modal fade" bsModal #documentModal="bs-modal"
-     [config]="{backdrop: false}"
      tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">

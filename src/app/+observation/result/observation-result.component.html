@@ -53,7 +53,7 @@
   ></laji-observation-map>
 </div>
 <div [hidden]="active !== 'list'" *ngIf="activated['list']">
-  <laji-observation-result-list *ngIf="activated['list']"></laji-observation-result-list>
+  <laji-observation-result-list *ngIf="activated['list']" [query]="searchQuery.query"></laji-observation-result-list>
 </div>
 <div [hidden]="active !== 'species'" *ngIf="activated['species']" class="species-list">
   <div class="row">

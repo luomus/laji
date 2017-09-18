@@ -114,7 +114,10 @@
         <laji-page-size-select [pageSize]="pageSize" (pageSizeChange)="onPageSizeChange($event)"></laji-page-size-select>
       </div>
       <div class="col-sm-6 clear-btn">
-        <button type="button" tabindex="-1" class="btn btn-primary btn-sm pull-right" (click)="clear()">{{'result.clear' | translate}}</button>
+        <div class="pull-right">
+          <button type="button" tabindex="-1" class="btn btn-default btn-sm" (click)="clear()">{{'result.clear' | translate}}</button>
+          <button type="button" tabindex="-1" class="btn btn-primary btn-sm" (click)="modalRef.hide()">Ok</button>
+        </div>
       </div>
     </div>
   </div>
