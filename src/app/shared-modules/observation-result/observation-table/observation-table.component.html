@@ -32,7 +32,7 @@
     <div class="row" *ngIf="isAggregate">
       <div class="col-sm-6 col-lg-4">
         <laji-selected-field-group
-          title="result.aggregate"
+          title="result.aggregate.fields"
           [fields]="[
             'unit.linkings.taxon',
             'unit.linkings.taxon.scientificName',
@@ -48,7 +48,7 @@
       </div>
       <div class="col-sm-6 col-lg-4">
         <laji-selected-field-group
-          title="result.aggregate"
+          title="result.aggregate.numbers"
           [fields]="[
             'oldestRecord',
             'newestRecord',

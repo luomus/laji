@@ -89,8 +89,12 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'oldestRecord', width: 85 },
     { name: 'newestRecord', width: 85 },
     { name: 'count', draggable: false, label: 'theme.countShort', width: 75, cellTemplate: 'numeric' },
-    { name: 'individualCountMax', label: 'theme.individualCountMaxShort', width: 80, cellTemplate: 'numeric' },
-    { name: 'individualCountSum', label: 'theme.individualCountShort', width: 80, cellTemplate: 'numeric' }
+    { name: 'individualCountMax', label: 'theme.individualCountMax', width: 80, cellTemplate: 'numeric' },
+    { name: 'individualCountSum', label: 'theme.individualCount', width: 80, cellTemplate: 'numeric' },
+    { name: 'gathering.conversions.ykj', sortable: false },
+    { name: 'gathering.conversions.euref', sortable: false },
+    { name: 'gathering.conversions.wgs84', sortable: false },
+    { name: 'gathering.interpretations.coordinateAccuracy' }
   ];
 
   /*
@@ -98,9 +102,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       field: 'unit.taxonVerbatim,unit.linkings.taxon.vernacularName',
       translation: 'result.unit.taxonVerbatim', visible: true, sortBy: 'unit.linkings.taxon.taxonomicOrder'
     },
-    {field: 'gathering.conversions.ykj', visible: false, sortBy: false},
-    {field: 'gathering.conversions.euref', visible: false, sortBy: false},
-    {field: 'gathering.conversions.wgs84', visible: false, sortBy: false},
     {}
    */
 

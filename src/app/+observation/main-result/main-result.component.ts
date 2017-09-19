@@ -174,7 +174,7 @@ export class MainResultComponent implements OnInit, OnChanges {
       const cells = [].slice.call(event.cellElement.parentElement.children);
       cells.map(cellElem => {
           const value = (cellElem.innterText || cellElem.textContent).trim();
-          if (!value.match(/^[0-9\-,.+ T:]+$/)) {
+          if (!value.match(/^[0-9\-,.+\sT:]+$/)) {
             title.push(value);
           }
         });

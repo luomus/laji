@@ -416,7 +416,7 @@
   "np.municipality": "Kunta",
   "np.biogeographicalProvince": "Eliömaakunta",
   "theme.filterAll": "Koko aineisto 1991 - {{year}}",
-  "theme.individualCount": "Yksilömäärä",
+  "theme.individualCount": "Yksilösumma",
   "theme.individualCountShort": "Ykslkm",
   "theme.newest": "Uusin",
   "theme.total": "Yhteensä",
@@ -477,5 +477,13 @@
   "todoTranslation": "Tämän sivun teksti on vielä käännettävänä.",
   "notification.title": "Ilmoitukset",
   "notification.delete": "Haluatko varmasti poistaa ilmoituksen",
-  "notification.annotation": "{{person}} on kommenttoinut havaintoerääsi."
+  "notification.annotation": "{{person}} on kommenttoinut havaintoerääsi.",
+  "result.taxonomicOrder": "Taksonominen järjestys",
+  "theme.individualCountMax": "Yksilömaksimi",
+  "result.clear": "Tyhjennä",
+  "result.pageSize": "Sivun koko",
+  "result.newestRecord": "Uusin",
+  "result.oldestRecord": "Vanhin",
+  "result.aggregate.fields": "Selitesarakkeet",
+  "result.aggregate.numbers": "Tunnusluvut"
 }
