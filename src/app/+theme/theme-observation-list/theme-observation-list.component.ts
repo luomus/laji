@@ -1,23 +1,19 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
-import { ResultService } from '../service/result.service';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal/modal.component';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-theme-observation-list',
   templateUrl: './theme-observation-list.component.html',
   styleUrls: ['./theme-observation-list.component.css']
 })
-export class ThemeObservationListComponent implements OnInit, OnChanges {
+export class ThemeObservationListComponent {
 
   @ViewChild('documentModal') public modal: ModalDirective;
 
   @Input() query: WarehouseQueryInterface;
-  @Input() type: string;
-  @Input() tbodyHeight = 400;
-  @Input() page: number;
+  @Input() height;
   @Output() onListClose = new EventEmitter<WarehouseQueryInterface>();
   @Output() onPageChange = new EventEmitter<number>();
 
@@ -27,45 +23,17 @@ export class ThemeObservationListComponent implements OnInit, OnChanges {
   highlightId = '';
   current: string;
 
-  private subQuery: Subscription;
-
   constructor(
-    private resultService: ResultService,
-    private router: Router
+    public translate: TranslateService
   ) { }
 
-  ngOnInit() {
-    this.updateDocuments();
-  }
-
-  ngOnChanges() {
-    this.updateDocuments();
-  }
-
-  updateDocuments() {
-    const key = JSON.stringify(this.query) + ':' + this.page;
-    if (this.current === key) {
-      return;
+  showDocument(event) {
+    const row = event.row || {};
+    if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
+      this.highlightId = row.unit.unitId;
+      this.shownDocument = row.document.documentId;
+      this.modal.show();
     }
-    if (this.subQuery) {
-      this.subQuery.unsubscribe();
-    }
-    this.current = key;
-    this.loading = true;
-    this.subQuery = this.resultService.getList(this.query, this.page)
-      .subscribe(data => {
-        this.results = data;
-        this.loading = false;
-      },
-      error => {
-        this.loading = false;
-      });
-  }
-
-  showDocument(documentId, highlightId) {
-    this.shownDocument = documentId;
-    this.highlightId = highlightId;
-    this.modal.show();
   }
 
   pageChanged(pager) {

@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { ResultService } from '../../service/result.service';
+import { Taxonomy } from '../../../shared/model/Taxonomy';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-nafi-result',
@@ -14,11 +17,11 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   informalTaxonGroup = 'MVL.181';
   collectionId = 'HR.175';
   page;
-  type;
   lang;
   query: WarehouseQueryInterface;
   mapQuery: WarehouseQueryInterface;
   resultQuery: WarehouseQueryInterface;
+  taxon$: Observable<Taxonomy>;
 
   year;
   currentMonth;
@@ -33,7 +36,8 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private resultService: ResultService
   ) {
     const now = new Date();
     this.currentYear = now.getFullYear();
@@ -60,12 +64,14 @@ export class NafiResultComponent implements OnInit, OnDestroy {
       this.resultQuery = this.clone(this.query);
       if (taxonId) {
         this.query.taxonId = [taxonId];
+        this.taxon$ = this.resultService.getTaxon(taxonId);
+      } else {
+        this.taxon$ = Observable.of(null);
       }
       this.mapQuery = this.clone(this.query);
       if (params['grid']) {
         this.query.ykj10kmCenter = params['grid'];
       }
-      this.type = params['type'] || 'count';
       this.page = +params['page'] || 1;
     });
   }
@@ -75,18 +81,8 @@ export class NafiResultComponent implements OnInit, OnDestroy {
     this.subTrans.unsubscribe();
   }
 
-  goToPage(page) {
-    this.page = page;
-    this.navigate(this.query);
-  }
-
   closeList() {
     this.query.ykj10kmCenter = undefined;
-    this.navigate(this.query);
-  }
-
-  changeLegendType(type) {
-    this.type = type;
     this.navigate(this.query);
   }
 
@@ -107,7 +103,6 @@ export class NafiResultComponent implements OnInit, OnDestroy {
       grid: query.ykj10kmCenter,
       time: query.time,
       taxonId: query.taxonId,
-      type: this.type,
       page: this.page
     }});
   }

@@ -410,7 +410,7 @@
   "theme.countShort": "Count",
   "theme.searching": "Searching...",
   "theme.noHits": "No observations found with the given criteria.",
-  "theme.grid": "Grids {{grid}} observations ({{total}})",
+  "theme.grid": "Grids {{grid}} observations",
   "theme.observationDays": "Observation days",
   "nafi.stats": "Results",
   "nafi.form": "Send observations",

@@ -3,7 +3,6 @@ import { SharedModule } from '../shared/shared.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ObservationActiveComponent } from './active/observation-active.component';
 import { ObservationChartComponent } from './chart/observation-chart.component';
-import { ObservationFilterComponent } from './filter/observation-filter.component';
 import { ObservationFormComponent } from './form/observation-form.component';
 import { ObservationGroupSelectComponent } from './group-select/group-select.component';
 import { MultiRadioComponent } from './multi-radio/multi-radio.component';
@@ -13,7 +12,6 @@ import { MetadataSelectComponent } from './metadata-select/metadata-select.compo
 import { PieChartComponent } from './chart/pie/pie-chart.component';
 import { TypeaheadModule } from 'ngx-bootstrap';
 import { DatePickerComponent } from './datepicker/datepicker.component';
-import { ObservationAggregateComponent } from './aggregate/observation-aggregate.component';
 import { ObservationDownloadComponent } from './download/observation-download.component';
 import { routing } from './observation.routes';
 import { ObservationComponent } from './observation.component';
@@ -24,6 +22,7 @@ import { SelectComponent } from './select/select.component';
 import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { MainResultComponent } from './main-result/main-result.component';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
+import { ObservationFiltersComponent } from './observation-filters/observation-filters.component';
 
 @NgModule({
   imports: [
@@ -37,12 +36,11 @@ import { ObservationResultModule } from '../shared-modules/observation-result/ob
     NgxDatatableModule,
     ObservationResultModule
   ],
-  declarations: [ObservationComponent, ObservationActiveComponent,
-    ObservationAggregateComponent, ObservationChartComponent,
-    ObservationFilterComponent, ObservationFormComponent, ObservationGroupSelectComponent,
+  declarations: [ObservationComponent, ObservationActiveComponent, ObservationChartComponent,
+    ObservationFormComponent, ObservationGroupSelectComponent,
     MultiRadioComponent, ObservationResultComponent,
     ObservationResultListComponent, MetadataSelectComponent,
-    PieChartComponent, DatePickerComponent, ObservationDownloadComponent, SelectComponent, MainResultComponent
+    PieChartComponent, DatePickerComponent, ObservationDownloadComponent, SelectComponent, MainResultComponent, ObservationFiltersComponent
   ]
 })
 export class ObservationModule {

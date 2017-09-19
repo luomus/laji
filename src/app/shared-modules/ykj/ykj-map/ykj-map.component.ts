@@ -44,12 +44,13 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     center: [64.709804, 25],
     zoom: 2
   };
+  @Input() taxon: Taxonomy;
+
   @Output() onGridClick = new EventEmitter<WarehouseQueryInterface>();
 
   geoJsonLayer;
   loading = false;
   mapInit = false;
-  taxon: Taxonomy;
   count: {[k: string]: number} = {};
   legendList: {color: string, label: string}[] = [];
 
@@ -120,7 +121,6 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
           this.currentColor = '';
           this.loading = false;
           this.initColor();
-          this.initTitle();
           this.cd.markForCheck();
         },
         error => {
@@ -162,13 +162,6 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
         query.ykj10kmCenter = evt.layer.feature.properties.grid;
         this.onGridClick.emit(query);
       });
-    }
-  }
-
-  initTitle() {
-    if (!this.query || !this.query.taxonId || this.query.taxonId.length === 0) {
-      this.taxon = undefined;
-    } else {
     }
   }
 

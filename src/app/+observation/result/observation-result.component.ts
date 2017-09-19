@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
-import { IdService } from '../../shared/service/id.service';
 import { UserService } from '../../shared/service/user.service';
-import { ObservationFilterInterface } from '../filter/observation-filter.interface';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationMapComponent } from '../map/observation-map.component';
 import { Subscription } from 'rxjs/Subscription';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 
 @Component({
@@ -15,10 +14,9 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() filters: {[name: string]: ObservationFilterInterface};
-  @Input() active = 'list';
+  @Input() active = 'result';
   @Output() activeChange: EventEmitter<string> = new EventEmitter<string>();
-  @Output() onFilterSelect: EventEmitter<ObservationFilterInterface> = new EventEmitter<ObservationFilterInterface>();
+  @Output() onFilterSelect: EventEmitter<WarehouseQueryInterface> = new EventEmitter<WarehouseQueryInterface>();
 
   @ViewChild(ObservationMapComponent) observationMap: ObservationMapComponent;
 
@@ -52,38 +50,6 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
     }
   }
 
-  pickValue(aggr, lang) {
-    let vernacular = '';
-    const scientific = aggr['unit.linkings.taxon.speciesScientificName'] || '';
-    switch (lang) {
-      case 'fi':
-        vernacular = aggr['unit.linkings.taxon.speciesNameFinnish'] || '';
-        break;
-      case 'en':
-        vernacular = aggr['unit.linkings.taxon.speciesNameEnglish'] || '';
-        break;
-      case 'sv':
-        vernacular = aggr['unit.linkings.taxon.speciesNameSwedish'] || '';
-        break;
-      default:
-        vernacular = '';
-    }
-
-    if (vernacular) {
-      return vernacular + ' (<i>' + scientific + '</i>)';
-    }
-    return scientific;
-  }
-
-  pickLink(aggr) {
-    if (!aggr['unit.linkings.taxon.speciesId']) {
-      return undefined;
-    }
-    return {
-      local: '/taxon/' + IdService.getId(aggr['unit.linkings.taxon.speciesId']),
-      content: '<i class="glyphicon glyphicon-modal-window"></i>'
-    };
-  }
 
   pickLocation(e) {
     if (e.coordinateVerbatim) {

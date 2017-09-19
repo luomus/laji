@@ -46,9 +46,10 @@ export class ObservationResultListComponent implements OnInit {
   }
 
   showDocument(event) {
-    if (event.document && event.document.documentId && event.unit && event.unit.unitId) {
-      this.highlightId = event.unit.unitId;
-      this.shownDocument = event.document.documentId;
+    const row = event.row || {};
+    if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
+      this.highlightId = row.unit.unitId;
+      this.shownDocument = row.document.documentId;
       this.modal.show();
     }
   }

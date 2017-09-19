@@ -410,7 +410,7 @@
   "theme.countShort": "Räkna",
   "theme.searching": "Sökande...",
   "theme.noHits": "Inga kommentarer hittades med de givna kriterier.",
-  "theme.grid": "Grids {{grid}} observations ({{total}})",
+  "theme.grid": "Grids {{grid}} observations",
   "nafi.stats": "Resultaten",
   "nafi.form": "Skicka observationer",
   "nafi.myObservations": "Mina observationer",

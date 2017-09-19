@@ -49,7 +49,10 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     }
   }
 
-  transform(value: string, type?: labelType): any {
+  transform(value: string, type?: labelType, joinBy = '; '): any {
+    if (Array.isArray(value)) {
+      return value.map(v => this.transform(v, type))
+    }
     if (!value || typeof value !== 'string' || value.length === 0 ||
        (type === 'fullUri' && value.indexOf('http') !== 0)) {
       return value;

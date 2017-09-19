@@ -1,0 +1,49 @@
+<div class="form-group">
+  <div class="col-sm-12">
+    <h4>{{'observation.filterBy.recordBasis' | translate}}</h4>
+    <laji-observation-table
+      [lang]="translate.currentLang"
+      (rowSelect)="onRecordBasis($event)"
+      [showHeader]="false"
+      [showFooter]="false"
+      [virtualScrolling]="false"
+      [pageSize]="100"
+      [query]="query"
+      [showSettingsMenu]="false"
+      [isAggregate]="true"
+      [selected]="['unit.superRecordBasis']"
+    ></laji-observation-table>
+  </div>
+</div>
+<div class="form-group">
+  <div class="col-sm-12">
+    <h4>{{'observation.filterBy.image' | translate}}</h4>
+    <laji-observation-table
+      [lang]="translate.currentLang"
+      (rowSelect)="onMediaSelect($event)"
+      [showHeader]="false"
+      [showFooter]="false"
+      [virtualScrolling]="false"
+      [pageSize]="100"
+      [query]="query"
+      [showSettingsMenu]="false"
+      [isAggregate]="true"
+      [selected]="['unit.media.mediaType']"
+    ></laji-observation-table>
+  </div>
+</div>
+<div class="form-group">
+  <div class="col-sm-12">
+    <h4>{{'observation.filterBy.collectionId' | translate}}</h4>
+    <laji-observation-table
+      [lang]="translate.currentLang"
+      (rowSelect)="onCollectionSelect($event)"
+      [height]="'350px'"
+      [pageSize]="100"
+      [query]="query"
+      [showSettingsMenu]="false"
+      [isAggregate]="true"
+      [selected]="['document.collectionId']"
+    ></laji-observation-table>
+  </div>
+</div>

@@ -29,6 +29,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Input() height = '100%';
   @Input() showSettingsMenu = false;
   @Input() lang = 'fi';
+  @Input() showHeader = true;
+  @Input() showFooter = true;
+  @Input() virtualScrolling = true;
+  @Input() defaultOrder: string;
 
   @Output() pageSizeChange = new EventEmitter<number>();
   @Output() selectChange = new EventEmitter<string[]>();
@@ -68,23 +72,25 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'gathering.interpretations.municipalityDisplayname', label: 'observation.form.municipality' },
     { name: 'gathering.locality' },
     { name: 'gathering.displayDateTime' },
-    { name: 'gathering.interpretations.coordinateAccuracy' },
+    { name: 'gathering.interpretations.coordinateAccuracy', cellTemplate: 'numeric' },
     { name: 'gathering.conversions.ykj10kmCenter', sortable: false},
-    { name: 'unit.abundanceString' },
-    { name: 'unit.interpretations.individualCount', sortable: false },
+    { name: 'unit.abundanceString', cellTemplate: 'numeric' },
+    { name: 'unit.interpretations.individualCount', sortable: false, cellTemplate: 'numeric' },
     { name: 'unit.lifeStage', cellTemplate: 'warehouseLabel', label: 'observation.form.lifeStage' },
     { name: 'unit.sex', cellTemplate: 'warehouseLabel', label: 'observation.form.sex' },
     { name: 'unit.recordBasis', cellTemplate: 'warehouseLabel', label: 'observation.filterBy.recordBasis' },
+    { name: 'unit.media.mediaType', cellTemplate: 'warehouseLabel', label: 'observation.filterBy.image' },
     { name: 'document.collectionId', prop: 'document.collection', width: 300, sortable: false },
     { name: 'unit.notes', sortable: false, width: 300, label: 'result.document.notes' },
     { name: 'document.secureLevel', cellTemplate: 'warehouseLabel' },
-    { name: 'document.secureReasons', sortable: false },
+    { name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel' },
     { name: 'document.sourceId', prop: 'document.source' },
+    { name: 'unit.superRecordBasis', cellTemplate: 'warehouseLabel', label: 'observation.active.superRecordBasis' },
     { name: 'oldestRecord', width: 85 },
     { name: 'newestRecord', width: 85 },
-    { name: 'count', draggable: false, label: 'theme.countShort', width: 65 },
-    { name: 'individualCountMax', label: 'theme.individualCountMaxShort', width: 70 },
-    { name: 'individualCountSum', label: 'theme.individualCountShort', width: 70 }
+    { name: 'count', draggable: false, label: 'theme.countShort', width: 75, cellTemplate: 'numeric' },
+    { name: 'individualCountMax', label: 'theme.individualCountMaxShort', width: 80, cellTemplate: 'numeric' },
+    { name: 'individualCountSum', label: 'theme.individualCountShort', width: 80, cellTemplate: 'numeric' }
   ];
 
   /*
@@ -213,8 +219,15 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this.loading = true;
     this.changeDetectorRef.markForCheck();
     (this.isAggregate ?
-      this.resultService.getAggregate(this.query, this.aggregateBy, page, this.pageSize, this.orderBy, this.lang) :
-      this.resultService.getList(this.query, this._selected, page, this.pageSize, this.orderBy, this.lang)
+      this.resultService.getAggregate(
+        this.query,
+        [...this.aggregateBy, this.defaultOrder],
+        page,
+        this.pageSize,
+        [...this.orderBy, this.defaultOrder],
+        this.lang
+      ) :
+      this.resultService.getList(this.query, this._selected, page, this.pageSize, [...this.orderBy, this.defaultOrder], this.lang)
     ).subscribe(data => {
         this.result = data;
         this.loading = false;

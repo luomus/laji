@@ -58,19 +58,15 @@
 <div [hidden]="active !== 'species'" *ngIf="activated['species']" class="species-list">
   <div class="row">
     <div class="col-sm-12">
-      <laji-observation-aggregate
-        [field]="{
-              'en': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish',
-              'fi': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
-              'sv': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameSwedish'
-            }"
-        [title]="'search.result.species' | translate"
-        [valuePicker]="pickValue"
-        [linkPicker]="pickLink"
+      <laji-observation-table
         [lang]="translate.currentLang"
-        [queryOverride]="{includeNonValidTaxa: false}"
-        [limit]="searchQuery.pageSize"
-        [showPager]="true"></laji-observation-aggregate>
+        [pageSize]="100"
+        [height]="'calc(80vh - 30px)'"
+        [query]="searchQuery.query"
+        [showSettingsMenu]="false"
+        [isAggregate]="true"
+        [selected]="['unit.linkings.taxon', 'unit.linkings.taxon.scientificName']"
+      ></laji-observation-table>
     </div>
   </div>
 </div>
@@ -91,31 +87,7 @@
         ></laji-observation-chart>
       </div>
       <div class="col-md-6">
-        <div class="form-group">
-          <div class="col-sm-12">
-            <laji-observation-filter
-                    [(filter)]="filters.recordBasis"
-                    (onSelect)="onFilterSelect.emit($event)"
-                    [lang]="translate.currentLang"></laji-observation-filter>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="col-sm-12">
-            <laji-observation-filter
-                    [override]="{hasMedia: true}"
-                    [(filter)]="filters.image"
-                    (onSelect)="onFilterSelect.emit($event)"
-                    [lang]="translate.currentLang"></laji-observation-filter>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="col-sm-12">
-            <laji-observation-filter
-                    [(filter)]="filters.collection"
-                    (onSelect)="onFilterSelect.emit($event)"
-                    [lang]="translate.currentLang"></laji-observation-filter>
-          </div>
-        </div>
+        <laji-observation-filters [query]="searchQuery.query" (queryChange)="onFilterSelect.emit($event)"></laji-observation-filters>
       </div>
     </div>
   </div>

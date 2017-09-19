@@ -23,6 +23,7 @@ import { WbcResultComponent } from './wbc/wbc-result/wbc-result.component';
 import { WbcInstructionsComponent } from './wbc/wbc-instructions/wbc-instructions.component';
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { YkjModule } from '../shared-modules/ykj/ykj.module';
+import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { YkjModule } from '../shared-modules/ykj/ykj.module';
     SharedModule,
     ViewerModule,
     LangModule,
-    YkjModule
+    YkjModule,
+    ObservationResultModule
   ],
   declarations: [
     NafiComponent,

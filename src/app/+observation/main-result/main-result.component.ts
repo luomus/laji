@@ -150,37 +150,45 @@ export class MainResultComponent implements OnInit, OnChanges {
       this.showObservationList = true;
     }
     const mapQuery = {...this.aggrQuery};
-    const title: string[] = [];
     this.aggregateBy.map(key => {
       try {
-        if (key === 'unit.linkings.taxon' && event.unit.linkings.taxon.id) {
-          mapQuery.taxonId = event.unit.linkings.taxon.id;
-          title.push(event.unit.linkings.taxon.nameFinnish)
+        if (key === 'unit.linkings.taxon' && event.row.unit.linkings.taxon.id) {
+          mapQuery.taxonId = event.row.unit.linkings.taxon.id;
         }
-        if (key === 'unit.linkings.taxon.scientificName' && event.unit.linkings.taxon.id) {
-          mapQuery.taxonId = event.unit.linkings.taxon.id;
-          title.push(event.unit.linkings.taxon.scientificName);
+        if (key === 'unit.linkings.taxon.scientificName' && event.row.unit.linkings.taxon.id) {
+          mapQuery.taxonId = event.row.unit.linkings.taxon.id;
         }
-        if (key === 'document.collectionId' && event.document.collectionId ) {
-          mapQuery.collectionId = event.document.collectionId;
-          title.push(event.document.collection)
+        if (key === 'document.collectionId' && event.row.document.collectionId ) {
+          mapQuery.collectionId = event.row.document.collectionId;
         }
-
-        if (key === 'document.sourceId' && event.document.sourceId ) {
-          mapQuery.sourceId = event.document.sourceId;
-          title.push(event.document.source)
+        if (key === 'document.sourceId' && event.row.document.sourceId ) {
+          mapQuery.sourceId = event.row.document.sourceId;
+        }
+        if (key === 'unit.superRecordBasis' && event.unit.row.superRecordBasis ) {
+          mapQuery.superRecordBasis = event.unit.superRecordBasis;
         }
       } catch (e) {console.log(e)}
     });
+    const title: string[] = [];
+    try {
+      const cells = [].slice.call(event.cellElement.parentElement.children);
+      cells.map(cellElem => {
+          const value = (cellElem.innterText || cellElem.textContent).trim();
+          if (!value.match(/^[0-9\-,.+ T:]+$/)) {
+            title.push(value);
+          }
+        });
+    } catch (e) { console.log(e)}
     this.title = title.join('<br>');
     this.mapQuery = mapQuery;
     this.listQuery = {...mapQuery};
   }
 
   showDocument(event) {
-    if (event.document && event.document.documentId && event.unit && event.unit.unitId) {
-      this.highlightId = event.unit.unitId;
-      this.documentId = event.document.documentId;
+    const row = event.row || {};
+    if (row.document && row.document.documentId && row.unit && row.unit.unitId) {
+      this.highlightId = row.unit.unitId;
+      this.documentId = row.document.documentId;
       this.documentModalVisible = true;
       this.modal.show();
     }

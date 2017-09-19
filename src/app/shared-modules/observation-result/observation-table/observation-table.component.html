@@ -3,6 +3,9 @@
     #dataTable
     class="observation-table"
     (rowSelect)="rowSelect.emit($event)"
+    [showHeader]="showHeader"
+    [showFooter]="showFooter"
+    [virtualScrolling]="virtualScrolling"
     [height]="height"
     [rows]='result.results'
     (pageChange)="setPage($event)"
@@ -35,7 +38,8 @@
             'unit.linkings.taxon.scientificName',
             'unit.linkings.taxon.taxonomicOrder',
             'document.collectionId',
-            'document.sourceId'
+            'document.sourceId',
+            'unit.superRecordBasis'
             ]"
           [columnsLookup]="columnLookup"
           [selected]="_selected"

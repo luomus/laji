@@ -21,12 +21,16 @@ export class DatatableComponent {
   @ViewChild('vernacularName') vernacularNameTpl: TemplateRef<any>;
   @ViewChild('warehouseLabel') warehouseLabelTpl: TemplateRef<any>;
   @ViewChild('toSemicolon') toSemicolonTpl: TemplateRef<any>;
+  @ViewChild('numeric') numericTpl: TemplateRef<any>;
 
   @Input() rows: any[];
   @Input() loading = false;
   @Input() count: number;
   @Input() pageSize: number;
   @Input() height = '100%';
+  @Input() showHeader = true;
+  @Input() showFooter = true;
+  @Input() virtualScrolling = true;
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
@@ -61,7 +65,7 @@ export class DatatableComponent {
 
   onRowSelect(event) {
     if (event.type === 'click' || event.type === 'dblClick') {
-      this.rowSelect.emit(event.row);
+      this.rowSelect.emit(event);
     }
   }
 

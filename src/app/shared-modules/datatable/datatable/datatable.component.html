@@ -22,9 +22,9 @@
     [columns]="_columns"
     [columnMode]="'force'"
     [scrollbarH]="true"
-    [scrollbarV]="true"
-    [headerHeight]="38"
-    [footerHeight]="50"
+    [scrollbarV]="virtualScrolling"
+    [headerHeight]="showHeader ? 38 : 0"
+    [footerHeight]="showFooter ? 50 : 0"
     [trackByProp]="'name'"
     [rowHeight]="35"
     (sort)="sortChange.emit($event)"
@@ -52,6 +52,11 @@
 <ng-template let-value="value" #toSemicolon>
   <span *ngIf="value" title="{{value.join('; ')}}">
     {{value.join('; ')}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #numeric>
+  <span *ngIf="value" title="{{value | formattedNumber:' '}}">
+    <span [innerHtml]="value | formattedNumber:'&nbsp;'"></span>
   </span>
 </ng-template>
 <ng-template let-value="value" #vernacularName>

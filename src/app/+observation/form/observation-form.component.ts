@@ -6,13 +6,9 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
 import { TranslateService } from '@ngx-translate/core';
-import { ObservationFilterInterface } from '../filter/observation-filter.interface';
 import { ObservationFormQuery } from './observation-form-query.interface';
 import { CollectionApi } from '../../shared/api/CollectionApi';
-import { Collection } from '../../shared/model/Collection';
-import { IdService } from '../../shared/service/id.service';
 import { SourceApi } from '../../shared/api/SourceApi';
-import { Source } from '../../shared/model/Source';
 import { LocalStorage } from 'ng2-webstorage';
 import { MapService } from '../../shared/map/map.service';
 import { WindowRef } from '../../shared/windows-ref';
@@ -20,6 +16,7 @@ import { ObservationResultComponent } from '../result/observation-result.compone
 import { Autocomplete } from '../../shared/model/Autocomplete';
 import { AreaType } from '../../shared/service/area.service';
 import { UserService } from '../../shared/service/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-observation-form',
@@ -46,52 +43,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   public taxonName: Autocomplete;
   public areaType = AreaType;
 
-  public filters: {[name: string]: ObservationFilterInterface} = {
-    recordBasis: {
-      title: 'observation.filterBy.recordBasis',
-      field: 'unit.superRecordBasis',
-      filter: 'superRecordBasis',
-      type: 'array',
-      size: 10,
-      selected: []
-    },
-    image: {
-      title: 'observation.filterBy.image',
-      field: 'unit.media.mediaType',
-      pick: [
-        'IMAGE'
-      ],
-      booleanMap: {
-        'IMAGE': true
-      },
-      size: 10,
-      filter: 'hasMedia',
-      type: 'boolean',
-      selected: []
-    },
-    source: {
-      title: 'observation.filterBy.sourceId',
-      field: 'document.sourceId',
-      size: 10,
-      filter: 'sourceId',
-      type: 'array',
-      selected: [],
-      pager: true,
-      map: this.fetchSourceName.bind(this)
-    },
-    collection: {
-      title: 'observation.filterBy.collectionId',
-      field: 'document.collectionId',
-      size: 10,
-      filter: 'collectionId',
-      booleanMap: IdService.getId,
-      type: 'array',
-      selected: [],
-      pager: true,
-      map: this.fetchCollectionName.bind(this)
-    }
-  };
-
   public drawing = false;
   public drawingShape: string;
   public dateFormat = 'YYYY-MM-DD';
@@ -112,10 +63,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   constructor(public searchQuery: SearchQuery,
               public translate: TranslateService,
-              public collectionService: CollectionApi,
+              private route: Router,
               private userService: UserService,
               private autocompleteService: AutocompleteApi,
-              private sourceService: SourceApi,
               private mapService: MapService,
               private winRef: WindowRef) {
     this.dataSource = Observable.create((observer: any) => {
@@ -190,7 +140,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   draw(type: string) {
     this.drawingShape = type;
     if (this.activeTab !== 'map') {
-      this.activeTab = 'map';
+      this.route.navigate(['/observation/map'], {preserveQueryParams: true});
     }
     setTimeout(() => {
       this.results.observationMap.drawToMap(type);
@@ -266,40 +216,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       return;
     }
     this.showPlace = !this.showPlace;
-  }
-
-  fetchCollectionName(data) {
-    return this.collectionService.findAll(
-      this.translate.currentLang,
-      data.map(col => IdService.getId(col.value)).join(','),
-      '1',
-      '1000'
-    ).map(res => {
-      const lookUp = {};
-      res.results.map((collection: Collection) => {
-        lookUp[IdService.getUri(collection.id)] = collection.longName;
-      });
-      return data.map(col => {
-        col['label'] = lookUp[col['value']];
-        return col;
-      });
-    });
-  }
-
-  fetchSourceName(data) {
-    return this.sourceService.findAll(
-      this.translate.currentLang,
-      data.map(col => IdService.getId(col.value)).join(',')
-    ).map(res => {
-      const lookUp = {};
-      res.results.map((source: Source) => {
-        lookUp[IdService.getUri(source.id)] = source.name;
-      });
-      return data.map(col => {
-        col['label'] = lookUp[col['value']];
-        return col;
-      });
-    });
   }
 
   onOnlyFromCollectionCheckBoxToggle() {
@@ -434,6 +350,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   onFilterSelect(event) {
+    this.searchQuery.query = event;
     this.onSubmit();
   }
 

@@ -1,8 +1,6 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
-import { ResultService } from '../service/result.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
+import { IdService } from '../../shared/service/id.service';
 
 
 @Component({
@@ -10,61 +8,24 @@ import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
   templateUrl: './theme-result.component.html',
   styleUrls: ['./theme-result.component.css']
 })
-export class ThemeResultComponent implements OnInit, OnChanges, OnDestroy {
+export class ThemeResultComponent {
 
   @Input() query: WarehouseQueryInterface;
-  @Input() path = 'nafi';
-  @Input() type: string;
-  @Input() tbodyHeight = 400;
+  @Input() height;
   @Input() lang;
+  @Input() fields = ['unit.linkings.taxon', 'unit.linkings.taxon.scientificName', 'individualCountSum'];
   @Output() onNameClick = new EventEmitter<WarehouseQueryInterface>();
 
-  list = [];
-  loading = false;
-  private current;
-  private subQuery: Subscription;
+  constructor() { }
 
-  constructor(
-    private resultService: ResultService,
-    private toQname: ToQNamePipe
-  ) { }
-
-  ngOnInit() {
-    this.initList();
-  }
-
-  ngOnDestroy() {
-  }
-
-  ngOnChanges() {
-    this.initList();
-  }
-
-  initList() {
-    if (!this.query) {
-      return;
+  onRowSelect(event) {
+    if (event.row
+      && event.row.unit
+      && event.row.unit.linkings
+      && event.row.unit.linkings.taxon
+      && event.row.unit.linkings.taxon.id) {
+      this.onNameClick.emit({...this.query, taxonId: IdService.getId(event.row.unit.linkings.taxon.id)});
     }
-    const key = JSON.stringify(this.query);
-    if (this.current === key) {
-      return;
-    }
-    if (this.subQuery)  {
-      this.subQuery.unsubscribe();
-    }
-    this.current = key;
-    this.loading = true;
-    this.list = [];
-    this.subQuery = this.resultService.getResults(this.query, this.lang)
-      .subscribe(data => {
-        this.loading = false;
-        this.list = data;
-      });
-  }
-
-  nameClick(uri) {
-    const query = JSON.parse(JSON.stringify(this.query));
-    query.taxonId = this.toQname.transform(uri);
-    this.onNameClick.emit(query);
   }
 
 }
