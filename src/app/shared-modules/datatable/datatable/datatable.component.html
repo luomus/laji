@@ -11,6 +11,10 @@
           pagerPrevious: 'glyphicon glyphicon-step-backward',
           pagerNext: 'glyphicon glyphicon-step-forward'
         }"
+    [messages]="{
+          emptyMessage: '',
+          totalMessage: ('datatable.total' | translate)
+        }"
     [rows]='rows'
     [disablePagingOnScroll]="true"
     [externalPaging]="true"

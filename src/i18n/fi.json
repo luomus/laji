@@ -488,5 +488,6 @@
   "result.newestRecord": "Uusin",
   "result.oldestRecord": "Vanhin",
   "result.aggregate.fields": "Selitesarakkeet",
-  "result.aggregate.numbers": "Tunnusluvut"
+  "result.aggregate.numbers": "Tunnusluvut",
+  "datatable.total": ""
 }
