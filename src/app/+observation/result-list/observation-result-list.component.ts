@@ -36,7 +36,6 @@ export class ObservationResultListComponent implements OnInit {
   ngOnInit() {
     this.userService.getItem<any>(UserService.SETTINGS_RESULT_LIST)
       .subscribe(data => {
-        console.log(data);
         if (data) {
           this.aggregateBy = data.aggregateBy;
           this.selected = data.selected || this.selected;

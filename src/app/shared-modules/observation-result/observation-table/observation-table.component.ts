@@ -17,6 +17,7 @@ import { DatatableComponent } from '../../datatable/datatable/datatable.componen
   selector: 'laji-observation-table',
   templateUrl: './observation-table.component.html',
   styleUrls: ['./observation-table.component.css'],
+  providers: [ObservationListService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationTableComponent implements OnInit, OnChanges {
@@ -43,6 +44,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   orderBy: string[] = [];
   columnLookup = {};
   _selected: string[] = [];
+  _selectedNumbers: string[] = [];
 
   result: PagedResult<any> = {
     currentPage: 1,
@@ -97,6 +99,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'gathering.interpretations.coordinateAccuracy' }
   ];
 
+  private numberFields = ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum'];
+
   /*
       {
       field: 'unit.taxonVerbatim,unit.linkings.taxon.vernacularName',
@@ -116,7 +120,17 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   ) { }
 
   @Input() set selected(sel: string[]) {
-    this._selected = [...sel];
+    const selected = [];
+    const selectedNumbers = [];
+    sel.map(field => {
+      if (this.numberFields.indexOf(field) > -1) {
+        selectedNumbers.push(field);
+      } else {
+        selected.push(field);
+      }
+    });
+    this._selected = selected;
+    this._selectedNumbers = selectedNumbers;
   };
 
   ngOnInit() {
@@ -140,6 +154,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   initColumns() {
+    const selected = this.isAggregate ? [...this._selected, 'count', ...this._selectedNumbers] : [...this._selected];
     this.allColumns = this.allColumns
       .map(column => {
         this.columnLookup[column.name] = column;
@@ -149,21 +164,18 @@ export class ObservationTableComponent implements OnInit, OnChanges {
         return column;
       });
     this.aggregateBy = [];
-    this.columns = this._selected.map(name => {
+    this.columns = selected.map(name => {
       this.aggregateBy.push((this.columnLookup[name].aggregateBy || this.columnLookup[name].name)
        + (this.columnLookup[name].sortBy ? ',' + this.columnLookup[name].sortBy : ''));
       return this.columnLookup[name];
     });
-    if (this.isAggregate) {
-      this.columns.push(this.columnLookup['count']);
-    }
   }
 
   openModal(modal: TemplateRef<any>) {
     this.hasChanges = false;
     this.modalSub = this.modalService.onHide.subscribe(() => {
       if (this.hasChanges) {
-        this.selectChange.emit(this._selected);
+        this.selectChange.emit([...this._selected, ...this._selectedNumbers]);
       }
       this.modalSub.unsubscribe();
     });
@@ -171,11 +183,24 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   }
 
+  toggleSelectedNumberField(field: string) {
+    this.hasChanges = true;
+    const idx = this._selectedNumbers.indexOf(field);
+    if (idx === -1) {
+      this._selectedNumbers = [...this._selectedNumbers, field];
+    } else {
+      this._selectedNumbers = [
+        ...this._selectedNumbers.slice(0, idx),
+        ...this._selectedNumbers.slice(idx + 1)
+      ]
+    }
+  }
+
   toggleSelectedField(field: string) {
     this.hasChanges = true;
     const idx = this._selected.indexOf(field);
     if (idx === -1) {
-      this.selected = [...this._selected, field];
+      this._selected = [...this._selected, field];
     } else {
       this._selected = [
         ...this._selected.slice(0, idx),
@@ -187,6 +212,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   clear() {
     this.hasChanges = true;
     this._selected = [];
+    this._selectedNumbers = [];
   }
 
   setPage(pageInfo) {

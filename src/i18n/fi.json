@@ -482,6 +482,8 @@
   "theme.individualCountMax": "Yksilömaksimi",
   "search.result.finnish": "Suomessa",
   "result.clear": "Tyhjennä",
+  "result.settings.aggregate": "Tilaston asetukset",
+  "result.settings.list": "Luettelon asetukset",
   "result.pageSize": "Sivun koko",
   "result.newestRecord": "Uusin",
   "result.oldestRecord": "Vanhin",

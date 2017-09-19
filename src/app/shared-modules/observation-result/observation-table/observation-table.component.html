@@ -23,7 +23,7 @@
 
 <ng-template #settingsMenu>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">{{isAggregate ? 'result.settings.aggregate' : 'result.settings.list' | translate}}</h4>
+    <h4 class="modal-title pull-left">{{isAggregate ? ('result.settings.aggregate' | translate) : ('result.settings.list' | translate)}}</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -56,8 +56,8 @@
             'individualCountSum'
             ]"
           [columnsLookup]="columnLookup"
-          [selected]="_selected"
-          (toggle)="toggleSelectedField($event)"
+          [selected]="_selectedNumbers"
+          (toggle)="toggleSelectedNumberField($event)"
         ></laji-selected-field-group>
       </div>
     </div>
@@ -96,7 +96,7 @@
             'gathering.conversions.ykj',
             'gathering.conversions.euref',
             'gathering.conversions.wgs84',
-            'gathering.conversions.coordinateAccuracy'
+            'gathering.interpretations.coordinateAccuracy'
             ]"
           [columnsLookup]="columnLookup"
           [selected]="_selected"
