@@ -11,6 +11,7 @@ import { IdService } from '../../shared/service/id.service';
 export class ObservationFiltersComponent implements OnInit {
 
   @Input() query: WarehouseQueryInterface;
+  @Input() visible: boolean;
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
 
   constructor(

@@ -21,7 +21,7 @@ export class MainResultComponent implements OnInit, OnChanges {
   @ViewChild('documentModal') public modal: ModalDirective;
 
   @Input() query: WarehouseQueryInterface;
-  @Input() visible = true;
+  @Input() visible: boolean;
 
   aggrQuery: WarehouseQueryInterface;
   mapQuery: WarehouseQueryInterface;
@@ -102,9 +102,6 @@ export class MainResultComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.query && this.initialized) {
       this.initInternalQueries();
-    }
-    if (changes.visible && this.visible && this.aggregatedDataTable) {
-      this.aggregatedDataTable.refreshTable();
     }
   }
 

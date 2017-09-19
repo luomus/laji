@@ -53,12 +53,13 @@
   ></laji-observation-map>
 </div>
 <div [hidden]="active !== 'list'" *ngIf="activated['list']">
-  <laji-observation-result-list [query]="searchQuery.query"></laji-observation-result-list>
+  <laji-observation-result-list [visible]="active === 'list'" [query]="searchQuery.query"></laji-observation-result-list>
 </div>
 <div [hidden]="active !== 'species'" *ngIf="activated['species']" class="species-list">
   <div class="row">
     <div class="col-sm-12">
       <laji-observation-table
+        [visible]="active === 'species'"
         [lang]="translate.currentLang"
         [pageSize]="100"
         [height]="'calc(80vh - 30px)'"
@@ -87,7 +88,7 @@
         ></laji-observation-chart>
       </div>
       <div class="col-md-6">
-        <laji-observation-filters [query]="searchQuery.query" (queryChange)="onFilterSelect.emit($event)"></laji-observation-filters>
+        <laji-observation-filters [visible]="active === 'stats'" [query]="searchQuery.query" (queryChange)="onFilterSelect.emit($event)"></laji-observation-filters>
       </div>
     </div>
   </div>

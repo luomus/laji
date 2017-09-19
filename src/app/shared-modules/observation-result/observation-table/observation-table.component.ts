@@ -34,6 +34,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Input() showFooter = true;
   @Input() virtualScrolling = true;
   @Input() defaultOrder: string;
+  @Input() visible: boolean;
 
   @Output() pageSizeChange = new EventEmitter<number>();
   @Output() selectChange = new EventEmitter<string[]>();
@@ -146,6 +147,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
         || (changes.page && !changes.page.isFirstChange())
         || (changes.pageSize && !changes.pageSize.isFirstChange())) {
       this.fetchPage(changes.page ? this.page : 1);
+    }
+    if (changes.visible && this.visible) {
+      this.refreshTable();
     }
   }
 

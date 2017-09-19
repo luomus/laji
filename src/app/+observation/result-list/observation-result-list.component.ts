@@ -18,6 +18,7 @@ import { UserService } from '../../shared/service/user.service';
 export class ObservationResultListComponent implements OnInit {
   @ViewChild('documentModal') public modal: ModalDirective;
   @Input() query: WarehouseQueryInterface;
+  @Input() visible: boolean;
 
   selected: string[] = [];
   pageSize: number;
