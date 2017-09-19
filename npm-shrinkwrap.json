@@ -241,7 +241,7 @@
       "integrity": "sha1-dR/WtRLYDzp0jS3o38lt/vopr+A="
     },
     "@swimlane/ngx-datatable": {
-      "version": "github:vixriihi/ngx-datatable#aefe7a11dcef9c18129bd995a117f8d3eae9144f"
+      "version": "github:vixriihi/ngx-datatable#7563979a9460c1c48b9a5b16f53dc9aa32411396"
     },
     "@types/d3": {
       "version": "3.5.38",
