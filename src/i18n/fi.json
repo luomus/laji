@@ -480,6 +480,7 @@
   "notification.annotation": "{{person}} on kommenttoinut havaintoerääsi.",
   "result.taxonomicOrder": "Taksonominen järjestys",
   "theme.individualCountMax": "Yksilömaksimi",
+  "search.result.finnish": "Suomessa",
   "result.clear": "Tyhjennä",
   "result.pageSize": "Sivun koko",
   "result.newestRecord": "Uusin",

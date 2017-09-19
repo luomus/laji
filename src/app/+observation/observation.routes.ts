@@ -9,7 +9,7 @@ export const observationRoutes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'result'
+        redirectTo: 'map'
       },
       {
         path: ':tab',
