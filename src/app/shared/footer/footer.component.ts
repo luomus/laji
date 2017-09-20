@@ -36,7 +36,9 @@ export class FooterComponent implements OnInit, OnDestroy{
     this.subRouteEvent = this.router.events
       .startWith(null)
       .subscribe(() => {
-        this.onFrontPage = this.router.isActive('/', true);
+        this.onFrontPage = this.router.isActive('/', true)
+          || this.router.isActive('/en', true)
+          || this.router.isActive('/sv', true);
         this.onMapPage = this.router.isActive('/map', false);
       });
     this.fetchTreeData();
