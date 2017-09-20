@@ -65,7 +65,7 @@
     <div class="row" *ngIf="!isAggregate">
       <div class="col-sm-6 col-lg-4">
         <laji-selected-field-group
-          title="result.unit"
+          title="viewer.unit"
           [fields]="[
             'unit.linkings.taxon',
             'unit.linkings.taxon.scientificName',
@@ -85,7 +85,7 @@
       </div>
       <div class="col-sm-6 col-lg-4">
         <laji-selected-field-group
-          title="result.gathering"
+          title="viewer.gathering"
           [fields]="[
             'gathering.team',
             'gathering.displayDateTime',
@@ -105,7 +105,7 @@
       </div>
       <div class="col-sm-6 col-lg-4">
         <laji-selected-field-group
-          title="result.document"
+          title="viewer.document"
           [fields]="['document.collectionId', 'document.sourceId', 'document.secureLevel', 'document.secureReasons']"
           [columnsLookup]="columnLookup"
           [selected]="_selected"

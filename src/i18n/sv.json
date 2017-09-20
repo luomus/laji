@@ -462,5 +462,17 @@
   "todoTranslation": "Texterna på denna sida är under översättning.",
   "notification.title": "Anmälningar",
   "notification.delete": "Vill du verkligen radera denna anmälan?",
-  "notification.annotation": "{{person}} har kommenterat din observation"
+  "notification.annotation": "{{person}} har kommenterat din observation",
+  "result.taxonomicOrder": "Taxonomic order",
+  "theme.individualCountMax": "Individuell räkning max",
+  "search.result.finnish": "I Finland",
+  "result.clear": "Clear",
+  "result.settings.aggregate": "Inställningar för statistiken",
+  "result.settings.list": "Inställningar för listan",
+  "result.pageSize": "Sidstorlek",
+  "result.newestRecord": "Nyaste",
+  "result.oldestRecord": "Oldest",
+  "result.aggregate.fields": "Gruppering av kolumner",
+  "result.aggregate.numbers": "Åtgärder",
+  "theme.cnt": "count"
 }
