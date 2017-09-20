@@ -70,7 +70,7 @@ export class YkjService {
         result.aggregateBy[`gathering.conversions.ykj${grid}.lon`],
         {
           count: result.count || 0,
-          individualCountSum: result.individualCountSum || 0,
+          individualCountSum: result.individualCountSum,
           newestRecord: result.newestRecord || '',
           oldestRecord: result.oldestRecord || '',
           grid: parseInt(result.aggregateBy[`gathering.conversions.ykj${grid}.lat`], 10) + ':'

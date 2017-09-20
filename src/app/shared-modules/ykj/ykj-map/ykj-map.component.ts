@@ -27,8 +27,11 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() query: WarehouseQueryInterface;
   @Input() type = 'count';
   @Input() colorRange: string[] = ['#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
+  @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', '#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
+  @Input() individualBreak: number[] = [0, null, 1, 5, 10, 50, 100, 500];
   @Input() countBreak: number[] = [1, 5, 10, 50, 100, 500];
   @Input() timeBreak: string[] = ['2020-01-01', '2015-01-01', '2010-01-01', '2005-01-01', '2000-01-01', '1991-01-01'];
+  @Input() individualLabel: string[] = ['0', '1+', '1-4', '5-9', '10-49', '50-99', '100-499', '500-'];
   @Input() countLabel: string[] = ['1-4', '5-9', '10-49', '50-99', '100-499', '500-'];
   @Input() timeLabel: string[] = ['2020', '2015-', '2010-', '2005-', '2000-', '1990-'];
   @Input() maxBounds: [[number, number], [number, number]] = [[58.0, 19.0], [72.0, 35.0]];
@@ -132,16 +135,24 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   initLegend() {
     let labelSrc = 'countLabel';
     let rangeSrc = 'countBreak';
+    let colorRange = [...this.colorRange];
     switch (this.type) {
       case 'oldest':
       case 'newest':
         labelSrc = 'timeLabel';
         rangeSrc = 'timeBreak';
+        break;
+      case 'individuals':
+      case 'individualCountSum':
+      case 'individualCountMax':
+        labelSrc = 'individualLabel';
+        rangeSrc = 'individualBreak';
+        colorRange = [...this.individualColorRange];
     }
     this.legendList = [];
     this[rangeSrc].map((breakPoint, idx) => this.legendList.push({
       label: this[labelSrc][idx] || breakPoint,
-      color: this.colorRange[idx]
+      color: colorRange[idx]
     }));
   }
 
@@ -202,7 +213,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
         break;
       }
     }
-    if (!this.count[newColor]) {
+    if (typeof this.count[newColor] === 'undefined') {
       this.count[newColor] = 0;
     }
     this.count[newColor]++;
@@ -211,18 +222,24 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   individualsColor(feature) {
-    return this.countColor(feature, 'individualCountSum');
+    return this.countColor(feature, 'individualCountSum', this.individualBreak, this.individualColorRange);
   }
 
-  countColor(feature, prop = 'count') {
-    const cnt = typeof feature.properties[prop] !== 'undefined' ? feature.properties[prop] : 1;
+  countColor(feature, prop = 'count', breaks = this.countBreak, range = this.colorRange) {
+    const isDefined = typeof feature.properties[prop] !== 'undefined';
+    const cnt = isDefined ? feature.properties[prop] : 1;
     let newColor = '#ffffff';
-    for (const idx in this.countBreak) {
-      if (!this.countBreak.hasOwnProperty(idx)) {
+    for (const idx in breaks) {
+      if (!breaks.hasOwnProperty(idx)) {
         continue;
       }
-      if (cnt >= this.countBreak[idx]) {
-        newColor = this.colorRange[idx];
+      if (breaks[idx] === null) {
+        if (!isDefined) {
+          newColor = range[idx];
+          break;
+        }
+      } else if (cnt >= breaks[idx]) {
+        newColor = range[idx];
       } else {
         break;
       }
