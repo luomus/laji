@@ -191,6 +191,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this.hasChanges = false;
     this.modalSub = this.modalService.onHide.subscribe(() => {
       if (this.hasChanges) {
+        this.orderBy = [];
         this.selectChange.emit([...this._selected, ...this._selectedNumbers]);
       }
       this.modalSub.unsubscribe();
