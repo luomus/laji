@@ -80,3 +80,13 @@
     <ng-template #dateRange><span title="{{value.begin}} - {{value.end}}">{{value.begin}} - {{value.end}}</span></ng-template>
   </span>
 </ng-template>
+<ng-template let-value="value" #ykj>
+  <span *ngIf="value" title="{{makeMinMaxYkj(value)}}">
+    {{makeMinMaxYkj(value)}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #coordinates>
+  <span *ngIf="value" title="{{makeMinMaxCoordinate(value)}}">
+    {{makeMinMaxCoordinate(value)}}
+  </span>
+</ng-template>

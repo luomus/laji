@@ -114,9 +114,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'count', draggable: false, label: 'theme.countShort', width: 75, cellTemplate: 'numeric' },
     { name: 'individualCountMax', label: 'theme.individualCountMax', width: 80, cellTemplate: 'numeric' },
     { name: 'individualCountSum', label: 'theme.individualCount', width: 80, cellTemplate: 'numeric' },
-    { name: 'gathering.conversions.ykj', sortable: false },
-    { name: 'gathering.conversions.euref', sortable: false },
-    { name: 'gathering.conversions.wgs84', sortable: false },
+    { name: 'gathering.conversions.ykj', sortable: false, cellTemplate: 'ykj' },
+    { name: 'gathering.conversions.euref', sortable: false, cellTemplate: 'coordinates' },
+    { name: 'gathering.conversions.wgs84', sortable: false, cellTemplate: 'coordinates' },
     { name: 'gathering.interpretations.coordinateAccuracy' }
   ];
 
