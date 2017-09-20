@@ -14,6 +14,7 @@
     [count]="result.total"
     [page]="result.currentPage"
     [pageSize]="result.pageSize"
+    [totalMessage]="'haseka.submissions.total' | translate"
     [columns]="columns">
   </laji-datatable>
   <div class="setting-menu link" (click)="openModal(settingsMenu)" *ngIf="showSettingsMenu">
@@ -68,7 +69,6 @@
           [fields]="[
             'unit.linkings.taxon',
             'unit.linkings.taxon.scientificName',
-            'unit.linkings.taxon.taxonomicOrder',
             'unit.reportedTaxonConfidence',
             'unit.quality.taxon.reliability',
             'unit.abundanceString',

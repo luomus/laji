@@ -131,10 +131,17 @@ export class ObservationListService {
             'sv': result.aggregateBy['unit.linkings.taxon.nameSwedish']
           };
         }
+        if (result.aggregateBy['unit.linkings.taxon.speciesNameFinnish']) {
+          result.aggregateBy['unit.linkings.taxon.speciesVernacularName'] = {
+            'fi': result.aggregateBy['unit.linkings.taxon.speciesNameFinnish'],
+            'en': result.aggregateBy['unit.linkings.taxon.speciesNameEnglish'],
+            'sv': result.aggregateBy['unit.linkings.taxon.speciesNameSwedish']
+          };
+        }
+        Object.keys(result.aggregateBy).map(key => {
+          this.stringToObj(key, result.aggregateBy[key], aggregate);
+        });
       }
-      Object.keys(result.aggregateBy).map(key => {
-        this.stringToObj(key, result.aggregateBy[key], aggregate);
-      });
       return aggregate;
     });
     return data;

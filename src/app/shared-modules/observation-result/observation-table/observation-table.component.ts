@@ -62,11 +62,31 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   allColumns: ObservationTableColumn[] = [
     { name: 'unit.linkings.taxon', cellTemplate: 'vernacularName', sortBy: 'unit.linkings.taxon.nameFinnish',
       label: 'taxonomy.vernacular.name',
-      aggregateBy: 'unit.linkings.taxon.nameFinnish,unit.linkings.taxon.id' },
+      aggregateBy: 'unit.linkings.taxon.id,' +
+      'unit.linkings.taxon.nameFinnish,' +
+      'unit.linkings.taxon.nameEnglish,' +
+      'unit.linkings.taxon.nameSwedish' },
     { name: 'unit.linkings.taxon.scientificName', label: 'result.scientificName', sortBy: 'unit.linkings.taxon.scientificName',
-      aggregateBy: 'unit.linkings.taxon.scientificName,unit.linkings.taxon.id' },
+      aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.scientificName' },
     { name: 'unit.linkings.taxon.taxonomicOrder', label: 'result.taxonomicOrder',
-      aggregateBy: 'unit.linkings.taxon.taxonomicOrder,unit.linkings.taxon.id', width: 70 },
+      aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.taxonomicOrder', width: 70 },
+    { name: 'unit.linkings.species', prop: 'unit.linkings.taxon', cellTemplate: 'speciesVernacularName',
+      sortBy: 'unit.linkings.taxon.speciesNameFinnish',
+      label: 'taxonomy.vernacular.name',
+      aggregateBy: 'unit.linkings.taxon.speciesId,' +
+      'unit.linkings.taxon.speciesNameFinnish,' +
+      'unit.linkings.taxon.speciesNameEnglish,' +
+      'unit.linkings.taxon.speciesNameSwedish' },
+    { name: 'unit.linkings.species.scientificName',
+      prop: 'unit.linkings.taxon.speciesScientificName',
+      label: 'result.scientificName',
+      sortBy: 'unit.linkings.taxon.speciesScientificName',
+      aggregateBy: 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName' },
+    { name: 'unit.linkings.species.taxonomicOrder',
+      prop: 'unit.linkings.taxon.taxonomicOrder',
+      label: 'result.taxonomicOrder',
+      aggregateBy: 'unit.linkings.taxon.species,unit.linkings.taxon.taxonomicOrder',
+      width: 70 },
     { name: 'unit.reportedTaxonConfidence', cellTemplate: 'warehouseLabel' },
     { name: 'unit.quality.taxon.reliability', cellTemplate: 'warehouseLabel', label: 'result.unit.quality.taxon' },
     { name: 'gathering.team', cellTemplate: 'toSemicolon' },
@@ -101,14 +121,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   ];
 
   private numberFields = ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum'];
-
-  /*
-      {
-      field: 'unit.taxonVerbatim,unit.linkings.taxon.vernacularName',
-      translation: 'result.unit.taxonVerbatim', visible: true, sortBy: 'unit.linkings.taxon.taxonomicOrder'
-    },
-    {}
-   */
 
   private modalSub: Subscription;
   private hasChanges = false;

@@ -60,7 +60,7 @@ export class ObservationResultListComponent implements OnInit {
   }
 
   setSelectedFields(event) {
-    this.selected = event.length ? [...event] : [...this.selected];
+    this.selected = [...event];
     this.saveSettings();
   }
 

@@ -201,12 +201,12 @@ export class MainResultComponent implements OnInit, OnChanges {
   }
 
   setAggregateBy(event) {
-    this.aggregateBy = event.length ? [...event] : [...this.aggregateBy];
+    this.aggregateBy = [...event];
     this.saveSettings();
   }
 
   setSelectedFields(event) {
-    this.selected = event.length ? [...event] : [...this.selected];
+    this.selected = [...event];
     this.saveSettings();
   }
 

@@ -19,6 +19,7 @@ export class DatatableComponent {
   @ViewChild('headerTpl') headerTpl: TemplateRef<any>;
   @ViewChild('eventDate') eventDateTpl: TemplateRef<any>;
   @ViewChild('vernacularName') vernacularNameTpl: TemplateRef<any>;
+  @ViewChild('speciesVernacularName') speciesVernacularNameTpl: TemplateRef<any>;
   @ViewChild('warehouseLabel') warehouseLabelTpl: TemplateRef<any>;
   @ViewChild('toSemicolon') toSemicolonTpl: TemplateRef<any>;
   @ViewChild('numeric') numericTpl: TemplateRef<any>;
@@ -31,6 +32,7 @@ export class DatatableComponent {
   @Input() showHeader = true;
   @Input() showFooter = true;
   @Input() virtualScrolling = true;
+  @Input() totalMessage = '';
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
