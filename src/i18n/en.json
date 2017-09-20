@@ -308,6 +308,10 @@
   "friend.requests": "Friend request",
   "friend.requestSent": "Friend request sent",
   "friend.alreadyFriends": "You are already friends",
+  "friend.accept": "Accept",
+  "friend.remove": "Remove",
+  "friend.block": "Block",
+  "friend.removeBlock": "Remove block",
   "profile.friends": "Friends",
   "profile.friendsInfo": "You may ask another user to become your Friend by copying your profile address (URL) and sending it to your friend.  After your friend has clicked the “Add as a Friend” button, and you have confirmed his request at your own profile, you become Friends and you may e.g. make common observation records at the Notebook-observation service.",
   "profile.accountSettings": "My account",
@@ -473,5 +477,6 @@
   "result.oldestRecord": "Oldest",
   "result.aggregate.fields": "Grouping columns",
   "result.aggregate.numbers": "Measures",
-  "theme.cnt": "count"
+  "theme.cnt": "count",
+  "result.load.personalData": "Please note that the own observations filters are ignore on this page."
 }

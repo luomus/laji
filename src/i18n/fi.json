@@ -318,6 +318,10 @@
   "friend.requests": "Kaveripyynnöt",
   "friend.requestSent": "Kaveripyyntö lähetetty",
   "friend.alreadyFriends": "Olette jo kavereita",
+  "friend.accept": "Hyväksy",
+  "friend.remove": "Poista",
+  "friend.block": "Estä",
+  "friend.removeBlock": "Poista esto",
   "profile.friends": "Kaverit",
   "profile.friendsInfo": "Voit pyytää toista käyttäjää kaveriksesi kopioimalla selaimen osoitekentästä oman profiilisi osoitteen ja lähettämällä sen kaverillesi sähköpostilla. Sen jälkeen kun kaverisi on klikannut \"Lisää kaveriksi\" -painiketta, ja olet vahvistanut hänen pyyntönsä omassa profiilissasi, olette kavereita ja voitte esim. Vihko-palvelussa tallentaa yhteisiä havaintoja.",
   "profile.accountSettings": "Käyttäjätilini",
@@ -488,5 +492,6 @@
   "result.newestRecord": "Uusin",
   "result.oldestRecord": "Vanhin",
   "result.aggregate.fields": "Selitesarakkeet",
-  "result.aggregate.numbers": "Tunnusluvut"
+  "result.aggregate.numbers": "Tunnusluvut",
+  "result.load.personalData": "Huom! Tällä sivulla ei huomioida omat havainnot osion rajauksia."
 }

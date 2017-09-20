@@ -308,6 +308,10 @@
   "friend.requests": "Vänbegäran",
   "friend.requestSent": "Vänbegäran sänt",
   "friend.alreadyFriends": "Ni är redan vänner",
+  "friend.accept": "Accept",
+  "friend.remove": "Remove",
+  "friend.block": "Block",
+  "friend.removeBlock": "Ta bort block",
   "profile.friends": "Vänner",
   "profile.friendsInfo": "Du kan be att dina vänner skickar dig länken till deras profilsidor. När du har fått länken, kan du be dem att bli dina vänner. När din begäran är godkänt, ser du här länken till deras profil.",
   "profile.accountSettings": "Min användarkonto",
@@ -474,5 +478,6 @@
   "result.oldestRecord": "Oldest",
   "result.aggregate.fields": "Gruppering av kolumner",
   "result.aggregate.numbers": "Åtgärder",
-  "theme.cnt": "count"
+  "theme.cnt": "count",
+  "result.load.personalData": "Observera att de egna observatörs filtren ignoreras på den här sidan."
 }

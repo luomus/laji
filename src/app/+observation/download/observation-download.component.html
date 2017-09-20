@@ -2,6 +2,9 @@
   {{'force.login' | translate}}
 </div>
 <div *lajiLoggedIn="true">
+  <alert *ngIf="hasPersonalData">
+    <strong>{{'result.load.personalData' | translate}}</strong>
+  </alert>
   <h3>{{'observation.download.publicTitle' | translate}}</h3>
   <div class="form-group">
     <div class="col-sm-12" *ngIf="loadLimit < count.count">

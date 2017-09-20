@@ -4,7 +4,7 @@
     <ul>
       <li *ngFor="let id of usersProfile.friends">
         <a [routerLink]="['/user/' + id] | localize">{{id|users}}</a>
-        <a (click)="removeFriend(id)" [tooltip]="'firend.remove' | translate"><i class="glyphicon glyphicon-remove"></i></a>
+        <a (click)="removeFriend(id)" [tooltip]="'friend.remove' | translate"><i class="glyphicon glyphicon-remove"></i></a>
       </li>
     </ul>
   </div>
@@ -15,10 +15,10 @@
     <ul>
       <li *ngFor="let id of usersProfile.friendRequests">
         <a [routerLink]="['/user/' + id] | localize">{{id|users}}</a>
-        <a (click)="acceptFriendRequest(id)" [tooltip]="'firend.accept' | translate"><i
+        <a (click)="acceptFriendRequest(id)" [tooltip]="'friend.accept' | translate"><i
                 class="glyphicon glyphicon-ok"></i></a>
-        <a (click)="removeFriend(id)" [tooltip]="'firend.remove' | translate"><i class="glyphicon glyphicon-remove"></i></a>
-        <a (click)="removeFriend(id, true)" [tooltip]="'firend.block' | translate"><i
+        <a (click)="removeFriend(id)" [tooltip]="'friend.remove' | translate"><i class="glyphicon glyphicon-remove"></i></a>
+        <a (click)="removeFriend(id, true)" [tooltip]="'friend.block' | translate"><i
                 class="glyphicon glyphicon-ban-circle"></i></a>
       </li>
     </ul>
@@ -31,7 +31,7 @@
     <ul>
       <li *ngFor="let id of usersProfile.blocked">
         <a [routerLink]="['/user/' + id] | localize">{{id|users}}</a>
-        <a (click)="removeBlock(id)" [tooltip]="'firend.removeBlock' | translate"><i
+        <a (click)="removeBlock(id)" [tooltip]="'friend.removeBlock' | translate"><i
                 class="glyphicon glyphicon-remove"></i></a>
       </li>
     </ul>
