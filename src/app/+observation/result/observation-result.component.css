@@ -1,8 +1,8 @@
+.results {
+  padding-top: 20px;
+}
 @media only screen and (min-width : 768px) {
   .spacer, .species-list {
     padding-right: 10px;
-  }
-  .species-list {
-    padding-top: 10px;
   }
 }

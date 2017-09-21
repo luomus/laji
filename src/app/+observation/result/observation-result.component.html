@@ -35,64 +35,66 @@
     </a>
   </li>
 </ul>
-<div [hidden]="active !== 'finnish'" *ngIf="activated['finnish']">
-  <laji-main-result [query]="searchQuery.query" [visible]="active === 'finnish'"></laji-main-result>
-</div>
-<div [hidden]="active !== 'map'" *ngIf="activated['map']">
-  <laji-observation-map
-          [showItemsWhenLessThan]="2000"
-          [opacity]="0.5"
-          [tick]="searchQuery.tack"
-          [visible]="active === 'map'"
-          [height]="500"
+<div class="results">
+  <div [hidden]="active !== 'finnish'" *ngIf="activated['finnish']">
+    <laji-main-result [query]="searchQuery.query" [visible]="active === 'finnish'"></laji-main-result>
+  </div>
+  <div [hidden]="active !== 'map'" *ngIf="activated['map']">
+    <laji-observation-map
+            [showItemsWhenLessThan]="2000"
+            [opacity]="0.5"
+            [tick]="searchQuery.tack"
+            [visible]="active === 'map'"
+            [height]="500"
+            [query]="searchQuery.query"
+            [draw]="{rectangle: true, marker: false, polygon: false, polyline: false, circle: false}"
+            [legend]="true"
+            [initWithWorldMap]="true"
+            (create)="pickLocation($event)"
+    ></laji-observation-map>
+  </div>
+  <div [hidden]="active !== 'list'" *ngIf="activated['list']">
+    <laji-observation-result-list [visible]="active === 'list'" [query]="searchQuery.query"></laji-observation-result-list>
+  </div>
+  <div [hidden]="active !== 'species'" *ngIf="activated['species']" class="species-list">
+    <div class="row">
+      <div class="col-sm-12">
+        <laji-observation-table
+          [visible]="active === 'species'"
+          [lang]="translate.currentLang"
+          [pageSize]="100"
+          [height]="'calc(80vh - 30px)'"
           [query]="searchQuery.query"
-          [draw]="{rectangle: true, marker: false, polygon: false, polyline: false, circle: false}"
-          [legend]="true"
-          [initWithWorldMap]="true"
-          (create)="pickLocation($event)"
-  ></laji-observation-map>
-</div>
-<div [hidden]="active !== 'list'" *ngIf="activated['list']">
-  <laji-observation-result-list [visible]="active === 'list'" [query]="searchQuery.query"></laji-observation-result-list>
-</div>
-<div [hidden]="active !== 'species'" *ngIf="activated['species']" class="species-list">
-  <div class="row">
-    <div class="col-sm-12">
-      <laji-observation-table
-        [visible]="active === 'species'"
-        [lang]="translate.currentLang"
-        [pageSize]="100"
-        [height]="'calc(80vh - 30px)'"
-        [query]="searchQuery.query"
-        [showSettingsMenu]="false"
-        [isAggregate]="true"
-        [selected]="['unit.linkings.species', 'unit.linkings.species.scientificName']"
-      ></laji-observation-table>
-    </div>
-  </div>
-</div>
-<div [hidden]="active !== 'images'" *ngIf="activated['images']" style="min-height: 180px; padding: 10px 10px 0 0">
-  <laji-gallery
-          [tick]="searchQuery.tack"
-          [query]="searchQuery.query">
-  </laji-gallery>
-</div>
-<div [hidden]="active !== 'stats'" *ngIf="activated['stats']">
-  <div *ngIf="activated['stats']">
-    <div class="form-group spacer">
-      <div class="col-md-6">
-        <laji-observation-chart
-                [height]="300"
-                [showLegend]="true"
-                [visible]="active === 'stats'"
-        ></laji-observation-chart>
-      </div>
-      <div class="col-md-6">
-        <laji-observation-filters [visible]="active === 'stats'" [query]="searchQuery.query" (queryChange)="onFilterSelect.emit($event)"></laji-observation-filters>
+          [showSettingsMenu]="false"
+          [isAggregate]="true"
+          [selected]="['unit.linkings.species', 'unit.linkings.species.scientificName']"
+        ></laji-observation-table>
       </div>
     </div>
   </div>
-</div>
-<div [hidden]="active !== 'load'" *ngIf="activated['load']" style="padding: 10px 10px 10px 0">
-  <laji-observation-download [query]="searchQuery.query"></laji-observation-download>
+  <div [hidden]="active !== 'images'" *ngIf="activated['images']" style="min-height: 180px; padding: 10px 10px 0 0">
+    <laji-gallery
+            [tick]="searchQuery.tack"
+            [query]="searchQuery.query">
+    </laji-gallery>
+  </div>
+  <div [hidden]="active !== 'stats'" *ngIf="activated['stats']">
+    <div *ngIf="activated['stats']">
+      <div class="form-group spacer">
+        <div class="col-md-6">
+          <laji-observation-chart
+                  [height]="300"
+                  [showLegend]="true"
+                  [visible]="active === 'stats'"
+          ></laji-observation-chart>
+        </div>
+        <div class="col-md-6">
+          <laji-observation-filters [visible]="active === 'stats'" [query]="searchQuery.query" (queryChange)="onFilterSelect.emit($event)"></laji-observation-filters>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div [hidden]="active !== 'load'" *ngIf="activated['load']">
+    <laji-observation-download [query]="searchQuery.query"></laji-observation-download>
+  </div>
 </div>
