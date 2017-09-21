@@ -40,7 +40,7 @@ export class FormApi {
    *
    * @param lang forms language
    */
-  public formFindAll(lang?: string, extraHttpRequestParams?: any): Observable<models.PagedResult<models.FormListInterface>> {
+  public formFindAll(lang?: string, extraHttpRequestParams?: any): Observable<models.PagedResult<models.Form.List>> {
     const path = this.basePath + '/forms';
 
     let queryParameters = new URLSearchParams();

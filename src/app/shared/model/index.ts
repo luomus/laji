@@ -7,7 +7,7 @@ export * from './Information';
 export * from './InformationItem';
 export * from './WarehouseQueryInterface';
 export * from './WarehouseCountResultInterface';
-export * from './FormListInterface';
+export * from './Form';
 export * from './InformalTaxonGroup';
 export * from './Autocomplete';
 export * from './PersonToken';

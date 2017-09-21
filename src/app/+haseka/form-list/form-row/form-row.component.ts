@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormListInterface } from '../../../shared/model/FormListInterface';
+import { Form } from '../../../shared/model/Form';
 
 @Component({
   selector: 'laji-form-row',
@@ -11,7 +11,7 @@ export class FormRowComponent implements OnInit {
 
   @Input() tmpDocuments: {[formId: string]: string} = {};
   @Input() hasAdminRight = false;
-  @Input() form: FormListInterface;
+  @Input() form: Form.List;
 
   constructor() { }
 

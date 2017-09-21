@@ -3,7 +3,7 @@ import { FormPermissionApi } from '../../shared/api/FormPermissionApi';
 import { Observable } from 'rxjs/Observable';
 import { FormPermission } from '../../shared/model/FormPermission';
 import { Person } from '../../shared/model/Person';
-import { Form, FormListInterface } from '../../shared/model/FormListInterface';
+import { Form } from '../../shared/model/Form';
 import { UserService } from '../../shared/service/user.service';
 
 @Injectable()
@@ -20,8 +20,7 @@ export class FormPermissionService {
 
   isEditAllowed(formPermission: FormPermission, person: Person): boolean {
     if ((formPermission.editors && formPermission.editors.indexOf(person.id) > -1) ||
-        (formPermission.admins && formPermission.admins.indexOf(person.id) > -1))
-    {
+        (formPermission.admins && formPermission.admins.indexOf(person.id) > -1)) {
       return true;
     }
     return false;
@@ -64,7 +63,7 @@ export class FormPermissionService {
       .do(fp => this.changes$.emit(fp));
   }
 
-  hasEditAccess(form: FormListInterface): Observable<boolean> {
+  hasEditAccess(form: Form.List): Observable<boolean> {
     if (!form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
       return Observable.of(true);
     }

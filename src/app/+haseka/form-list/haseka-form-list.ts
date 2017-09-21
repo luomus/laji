@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { Form, FormListInterface } from '../../shared/model/FormListInterface';
+import { Form } from '../../shared/model/Form';
 import { Logger } from '../../shared/logger/logger.service';
 import { FormService } from '../../shared/service/form.service';
 import { UserService } from '../../shared/service/user.service';
@@ -16,7 +16,7 @@ import { Person } from '../../shared/model/Person';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HaSeKaFormListComponent implements OnInit, OnDestroy {
-  public formList: FormListInterface[] = [];
+  public formList: Form.List[] = [];
   public tmpDocument: { [formId: string]: string } = {};
   private subTrans: Subscription;
   private subFetch: Subscription;
@@ -82,7 +82,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       );
   }
 
-  hasAdminRight(form: FormListInterface) {
+  hasAdminRight(form: Form.List) {
     if (!this.userService.isLoggedIn || !form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
       return Observable.of(false);
     }

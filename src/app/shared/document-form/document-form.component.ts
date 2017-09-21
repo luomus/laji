@@ -19,7 +19,7 @@ import { FooterService } from '../service/footer.service';
 import { LajiFormComponent } from '../form/laji-form.component';
 import { FormService } from '../service/form.service';
 import { ToastsService } from '../service/toasts.service';
-import { Form } from '../model/FormListInterface';
+import { Form } from '../model/Form';
 import { Logger } from '../logger/logger.service';
 import { NamedPlacesService } from '../../+haseka/named-place/named-places.service';
 import { Document } from '../model/Document';
