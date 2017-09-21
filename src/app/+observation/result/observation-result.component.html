@@ -1,40 +1,71 @@
-<ul class="nav nav-tabs nav-justified">
-  <li role="presentation" [ngClass]="{active: active === 'map'}">
+<ul class="nav nav-pills">
+  <li role="presentation" [ngClass]="{active: ['map', 'list', 'images', 'species', 'stats', 'load'].indexOf(active) > -1}">
     <a [routerLink]="'/observation/map' | localize" [queryParams]="queryParams">
-      {{ 'search.result.map' | translate }}
-    </a>
-  </li>
-  <li role="presentation" [ngClass]="{active: active === 'list'}">
-    <a [routerLink]="'/observation/list' | localize" [queryParams]="queryParams">
-      {{ 'search.result.list' | translate }}
-    </a>
-  </li>
-  <li role="presentation" [ngClass]="{active: active === 'images'}">
-    <a [routerLink]="'/observation/images' | localize" [queryParams]="queryParams">
-      {{ 'search.result.images' | translate }}
-    </a>
-  </li>
-  <li role="presentation" [ngClass]="{active: active === 'species'}">
-    <a [routerLink]="'/observation/species' | localize" [queryParams]="queryParams">
-      {{ 'search.result.species' | translate }}
-    </a>
-  </li>
-  <li role="presentation" [ngClass]="{active: active === 'stats'}">
-    <a [routerLink]="'/observation/stats' | localize" [queryParams]="queryParams">
-      {{ 'search.result.stats' | translate }}
+      Kaikki havainnot
     </a>
   </li>
   <li role="presentation" [ngClass]="{active: active === 'finnish'}">
     <a [routerLink]="'/observation/finnish' | localize" [queryParams]="queryParams">
-      {{ 'search.result.finnish' | translate }}
-    </a>
-  </li>
-  <li role="presentation" [ngClass]="{active: active === 'load'}">
-    <a [routerLink]="'/observation/load' | localize" [queryParams]="queryParams">
-      {{ 'search.result.load' | translate }}
+    Suomen havainnot
     </a>
   </li>
 </ul>
+
+<div class="row">
+  <div class="col-sm-12">
+    <h2 class="counts">
+      <laji-observation-count
+        [timeout]="30000"
+        [query]="searchQuery.query"
+        [tick]="searchQuery.tack"></laji-observation-count>
+      {{'observation.results.observation' | translate}}
+      <laji-observation-count
+        [timeout]="30000"
+        [query]="searchQuery.query"
+        [tick]="searchQuery.tack"
+        [field]="'unit.linkings.taxon.speciesId'"
+        [overrideInQuery]="{includeNonValidTaxa: false}">
+      </laji-observation-count>
+      {{'observation.results.species' | translate}}
+    </h2>
+  </div>
+</div>
+
+<div class="whole-data-list" *ngIf="['map', 'list', 'images', 'species', 'stats', 'load'].indexOf(active) > -1">
+  <ul class="nav nav-tabs nav-justified">
+    <li role="presentation" [ngClass]="{active: active === 'map'}">
+      <a [routerLink]="'/observation/map' | localize" [queryParams]="queryParams">
+        {{ 'search.result.map' | translate }}
+      </a>
+    </li>
+    <li role="presentation" [ngClass]="{active: active === 'list'}">
+      <a [routerLink]="'/observation/list' | localize" [queryParams]="queryParams">
+        {{ 'search.result.list' | translate }}
+      </a>
+    </li>
+    <li role="presentation" [ngClass]="{active: active === 'images'}">
+      <a [routerLink]="'/observation/images' | localize" [queryParams]="queryParams">
+        {{ 'search.result.images' | translate }}
+      </a>
+    </li>
+    <li role="presentation" [ngClass]="{active: active === 'species'}">
+      <a [routerLink]="'/observation/species' | localize" [queryParams]="queryParams">
+        {{ 'search.result.species' | translate }}
+      </a>
+    </li>
+    <li role="presentation" [ngClass]="{active: active === 'stats'}">
+      <a [routerLink]="'/observation/stats' | localize" [queryParams]="queryParams">
+        {{ 'search.result.stats' | translate }}
+      </a>
+    </li>
+    <li role="presentation" [ngClass]="{active: active === 'load'}">
+      <a [routerLink]="'/observation/load' | localize" [queryParams]="queryParams">
+        {{ 'search.result.load' | translate }}
+      </a>
+    </li>
+  </ul>
+</div>
+
 <div class="results">
   <div [hidden]="active !== 'finnish'" *ngIf="activated['finnish']">
     <laji-main-result [query]="searchQuery.query" [visible]="active === 'finnish'"></laji-main-result>

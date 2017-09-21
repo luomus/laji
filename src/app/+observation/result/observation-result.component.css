@@ -1,6 +1,15 @@
-.results {
+.results, .whole-data-list {
   padding-top: 20px;
 }
+
+.counts {
+  font-size: 130%;
+  font-weight: 400;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #777;
+}
+
 @media only screen and (min-width : 768px) {
   .spacer, .species-list {
     padding-right: 10px;

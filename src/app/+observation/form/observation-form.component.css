@@ -25,12 +25,6 @@ hr {
   margin: -15px;
   padding: 15px;
 }
-.counts {
-  font-size: 130%;
-  font-weight: 400;
-  margin-top: 0;
-  color: #777;
-}
 :host {
   flex: 1 0 auto;
   display: flex;
@@ -54,7 +48,7 @@ hr {
 }
 
 .toggle-intro {
-  padding: 30px 10px 0 0;
+  padding: 10px 20px 0 0;
   font-size: 13px;
   color: #3498DB;
 }
