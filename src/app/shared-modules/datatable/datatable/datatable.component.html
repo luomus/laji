@@ -69,6 +69,16 @@
     {{value.vernacularName | multiLang}}
   </span>
 </ng-template>
+<ng-template let-value="value" #scientificName>
+  <span *ngIf="value.scientificName" title="{{value.scientificName}}" [class.cursive]="value.cursiveName">
+    {{value.scientificName}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #speciesScientificName>
+  <span *ngIf="value.speciesScientificName" title="{{value.speciesScientificName}}" [class.cursive]="value.cursiveName">
+    {{value.speciesScientificName}}
+  </span>
+</ng-template>
 <ng-template let-value="value" #speciesVernacularName>
   <span *ngIf="value.speciesVernacularName" title="{{value.speciesVernacularName | multiLang}}">
     {{value.speciesVernacularName | multiLang}}
@@ -78,15 +88,5 @@
   <span *ngIf="value && value.end && value.begin">
     <span *ngIf="value.begin === value.end; else dateRange" title="{{value.begin}}">{{value.begin}}</span>
     <ng-template #dateRange><span title="{{value.begin}} - {{value.end}}">{{value.begin}} - {{value.end}}</span></ng-template>
-  </span>
-</ng-template>
-<ng-template let-value="value" #ykj>
-  <span *ngIf="value" title="{{makeMinMaxYkj(value)}}">
-    {{makeMinMaxYkj(value)}}
-  </span>
-</ng-template>
-<ng-template let-value="value" #coordinates>
-  <span *ngIf="value" title="{{makeMinMaxCoordinate(value)}}">
-    {{makeMinMaxCoordinate(value)}}
   </span>
 </ng-template>

@@ -6,8 +6,6 @@ import { Observer } from 'rxjs/Observer';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { SourceService } from '../../../shared/service/source.service';
 import { CollectionService } from '../../../shared/service/collection.service';
-import { switchMap } from 'rxjs/operator/switchMap';
-import { TranslateService } from '@ngx-translate/core';
 import { IdService } from '../../../shared/service/id.service';
 
 @Injectable()
@@ -23,6 +21,7 @@ export class ObservationListService {
   private aggregatePending: Observable<any>;
   private aggregatePendingKey: string;
   private removeAggregateFields =  ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum'];
+  private locationCache: any;
 
   constructor(
     private warehouseApi: WarehouseApi,
@@ -65,7 +64,7 @@ export class ObservationListService {
     )
       .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .map(data => this.convertAggregateResult(data))
-      .switchMap(data => this.openIds(data, aggregateBy, lang))
+      .switchMap(data => this.openValues(data, aggregateBy, lang))
       .do(data => {
         this.aggregateData = data;
         this.aggregateKey = key;
@@ -105,7 +104,7 @@ export class ObservationListService {
         page
       )
       .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
-      .switchMap(data => this.openIds(data, selected, lang))
+      .switchMap(data => this.openValues(data, selected, lang))
       .do(data => {
         this.data = data;
         this.key = key;
@@ -147,9 +146,13 @@ export class ObservationListService {
     return data;
   }
 
-  private openIds(data, selected: string[], lang: string): Observable<any> {
+  private openValues(data, selected: string[], lang: string): Observable<any> {
     const allMappers = [];
     const uriCache = {};
+    this.locationCache = {};
+    const openYkj = selected.indexOf('gathering.conversions.ykj') > -1;
+    const openEuref = selected.indexOf('gathering.conversions.euref') > -1;
+    const openWgs84 = selected.indexOf('gathering.conversions.wgs84') > -1;
 
     if (selected.indexOf('document.sourceId') > -1) {
       allMappers.push(this.sourceService.getAllAsLookUp(lang).map(sources => ({'document.sourceId': sources})));
@@ -164,19 +167,17 @@ export class ObservationListService {
         .map(collections => ({'document.collectionId': collections})));
     }
 
-    const mappers$ = Observable.forkJoin(allMappers)
+    const mappers$ = allMappers.length === 0 ? Observable.of({}) : Observable.forkJoin(allMappers)
       .map(mappers => mappers.reduce((cumulative, current) => {
         return {...cumulative, ...current};
       }, {}));
-    if (allMappers.length === 0) {
-      return Observable.of(data);
-    }
+
     return Observable.forkJoin(
       Observable.of(data),
       mappers$,
       (response, mappers) => {
         response.results = response.results.map(document => {
-          if (document.document.sourceId && mappers['document.sourceId']) {
+          if (mappers['document.sourceId'] && document.document.sourceId) {
             if (!uriCache[document.document.sourceId]) {
               uriCache[document.document.sourceId] = IdService.getId(document.document.sourceId);
             }
@@ -184,7 +185,7 @@ export class ObservationListService {
             document.document.source = mappers['document.sourceId'][qname] ?
               mappers['document.sourceId'][qname] : document.document.sourceId;
           }
-          if (document.document.collectionId && mappers['document.collectionId']) {
+          if (mappers['document.collectionId'] && document.document.collectionId) {
             if (!uriCache[document.document.collectionId]) {
               uriCache[document.document.collectionId] = IdService.getId(document.document.collectionId);
             }
@@ -192,11 +193,52 @@ export class ObservationListService {
             document.document.collection = mappers['document.collectionId'][qname] ?
               mappers['document.collectionId'][qname] : document.document.collectionId;
           }
+
+          if (openYkj && document.gathering.conversions && document.gathering.conversions.ykj) {
+            document.gathering.conversions.ykj.verbatim = this.makeMinMaxYkj(document.gathering.conversions.ykj);
+          }
+          if (openEuref && document.gathering.conversions && document.gathering.conversions.euref) {
+            document.gathering.conversions.euref.verbatim = this.makeMinMaxCoordinate(document.gathering.conversions.euref);
+          }
+          if (openWgs84 && document.gathering.conversions && document.gathering.conversions.wgs84) {
+            document.gathering.conversions.wgs84.verbatim = this.makeMinMaxCoordinate(document.gathering.conversions.wgs84);
+          }
+
           return document;
         });
         return data;
       }
     );
+  }
+
+  private makeMinMaxCoordinate(value) {
+    if (value.latMax && value.latMin && value.lonMax && value.lonMin) {
+      const lat = value.latMax === value.latMin ? value.latMax : value.latMin + '-' + value.latMax;
+      const lon = value.lonMax === value.lonMin ? value.lonMax : value.lonMin + '-' + value.lonMax;
+      return `${lat} ${lon}`;
+    }
+    return '';
+  }
+
+  private makeMinMaxYkj(value) {
+    if (value.latMin) {
+      const lat = this.getYkjCoord(value.latMin, value.latMax);
+      return lat + ':' + this.getYkjCoord(value.lonMin, value.lonMax, lat.split('-')[0].length);
+    }
+    return '';
+  }
+
+  private getYkjCoord(min, max, minLen = 3) {
+    const key = min + ':' + max;
+    if (!this.locationCache[key]) {
+      let tmpMin = ('' + min).replace(/[0]*$/, '');
+      let tmpMax = ('' + max).replace(/[0]*$/, '');
+      const targetLen = Math.max(tmpMin.length, tmpMax.length, minLen);
+      tmpMin = tmpMin + '0000000'.substr(tmpMin.length, (targetLen - tmpMin.length));
+      tmpMax = '' + (+(tmpMax + '0000000'.substr(tmpMax.length, (targetLen - tmpMax.length))) - 1);
+      this.locationCache[key] = tmpMin === tmpMax ? tmpMin : tmpMin + '-' + tmpMax;
+    }
+    return this.locationCache[key];
   }
 
   private stringToObj(path, value, obj) {

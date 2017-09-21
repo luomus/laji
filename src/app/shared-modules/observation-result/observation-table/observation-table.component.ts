@@ -60,17 +60,27 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   columns: ObservationTableColumn[] = [];
 
   allColumns: ObservationTableColumn[] = [
-    { name: 'unit.linkings.taxon', cellTemplate: 'vernacularName', sortBy: 'unit.linkings.taxon.nameFinnish',
+    { name: 'unit.linkings.taxon',
+      cellTemplate: 'vernacularName',
+      sortBy: 'unit.linkings.taxon.nameFinnish',
       label: 'taxonomy.vernacular.name',
       aggregateBy: 'unit.linkings.taxon.id,' +
       'unit.linkings.taxon.nameFinnish,' +
       'unit.linkings.taxon.nameEnglish,' +
       'unit.linkings.taxon.nameSwedish' },
-    { name: 'unit.linkings.taxon.scientificName', label: 'result.scientificName', sortBy: 'unit.linkings.taxon.scientificName',
+    { name: 'unit.linkings.taxon.scientificName',
+      prop: 'unit.linkings.taxon',
+      cellTemplate: 'scientificName',
+      label: 'result.scientificName',
+      sortBy: 'unit.linkings.taxon.scientificName',
       aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.scientificName' },
-    { name: 'unit.linkings.taxon.taxonomicOrder', label: 'result.taxonomicOrder',
-      aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.taxonomicOrder', width: 70 },
-    { name: 'unit.linkings.species', prop: 'unit.linkings.taxon', cellTemplate: 'speciesVernacularName',
+    { name: 'unit.linkings.taxon.taxonomicOrder',
+      label: 'result.taxonomicOrder',
+      aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.taxonomicOrder',
+      width: 70 },
+    { name: 'unit.linkings.species',
+      prop: 'unit.linkings.taxon',
+      cellTemplate: 'speciesVernacularName',
       sortBy: 'unit.linkings.taxon.speciesNameFinnish',
       label: 'taxonomy.vernacular.name',
       aggregateBy: 'unit.linkings.taxon.speciesId,' +
@@ -114,9 +124,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'count', draggable: false, label: 'theme.countShort', width: 75, cellTemplate: 'numeric' },
     { name: 'individualCountMax', label: 'theme.individualCountMax', width: 80, cellTemplate: 'numeric' },
     { name: 'individualCountSum', label: 'theme.individualCount', width: 80, cellTemplate: 'numeric' },
-    { name: 'gathering.conversions.ykj', sortable: false, cellTemplate: 'ykj' },
-    { name: 'gathering.conversions.euref', sortable: false, cellTemplate: 'coordinates' },
-    { name: 'gathering.conversions.wgs84', sortable: false, cellTemplate: 'coordinates' },
+    { name: 'gathering.conversions.ykj', prop: 'gathering.conversions.ykj.verbatim', sortable: false },
+    { name: 'gathering.conversions.euref', prop: 'gathering.conversions.euref.verbatim', sortable: false },
+    { name: 'gathering.conversions.wgs84', prop: 'gathering.conversions.wgs84.verbatim', sortable: false },
     { name: 'gathering.interpretations.coordinateAccuracy' }
   ];
 
