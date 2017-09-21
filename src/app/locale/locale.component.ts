@@ -8,7 +8,7 @@ export abstract class LocaleComponent {
   protected setLocale(lang) {
     if (this.translateService.currentLang !== lang) {
       this.translateService.use(lang);
-      // this.translateService.setDefaultLang('fi');
+      this.translateService.setDefaultLang('fi');
     }
     try {
       this.windowRef.nativeWindow.document.documentElement.lang = lang;
