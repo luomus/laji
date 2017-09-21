@@ -7,4 +7,5 @@
   -ms-user-select: none; /* IE10+ */
   -o-user-select: none;
   user-select: none;
+  font-size: inherit;
 }

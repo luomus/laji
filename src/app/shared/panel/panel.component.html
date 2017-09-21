@@ -1,7 +1,7 @@
 <div class="panel-heading" [ngClass]="{link: headerLink}" aria-expanded="true" role="tab" (click)="activateCurrent()">
-  <h4 class="panel-title">
+  <strong class="panel-title">
     {{ title }}
-  </h4>
+  </strong>
 </div>
 <div class="panel-collapse" [ngClass]="{closed: hideInside}"
      (@visibilityState.done)="animationDone($event)"
