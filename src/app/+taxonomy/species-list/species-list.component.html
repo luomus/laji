@@ -1,32 +1,18 @@
-<div *ngIf="loading">
-	loading...
-</div>
-<div *ngIf="!loading && !!speciesPage">
+<div *ngIf="speciesPage">
   <h3>{{'species.list.header' | translate:{informalGroup: informalGroup.name} }}</h3>
-	<table class="table table-bordered table-striped">
-		<thead>
-			<tr>
-				<td>{{ 'taxonomy.vernacular.name' | translate }}</td>
-				<th>{{ 'taxonomy.scientific.name' | translate }}</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let taxon of speciesPage.results">
-				<td>{{ taxon.vernacularName }}</td>
-        <th><a [routerLink]="['/taxon/' + taxon.id] | localize"><em>{{ taxon.scientificName }}</em></a></th>
-			</tr>
-		</tbody>
-	</table>
-	<pagination
-		[totalItems]="speciesPage.total"
-		[ngModel]="speciesPage.currentPage"
-		[itemsPerPage]="speciesPage.pageSize"
-		[maxSize]="10"
-		[rotate]="false"
-		[boundaryLinks]="true"
-		[directionLinks]="false"
-		firstText="&laquo"
-		lastText="&raquo"
-		(pageChanged)="pageChanged($event)">
-	</pagination>
+  <laji-datatable
+    #dataTable
+    class="observation-table"
+    (rowSelect)="onRowSelect($event)"
+    [virtualScrolling]="true"
+    [clientSideSorting]="true"
+    [height]="'50vh'"
+    [rows]='speciesPage.results'
+    (pageChange)="pageChanged($event)"
+    [loading]="loading"
+    [count]="speciesPage.total"
+    [page]="speciesPage.currentPage"
+    [pageSize]="speciesPage.pageSize"
+    [columns]="columns">
+  </laji-datatable>
 </div>

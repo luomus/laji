@@ -1,16 +1,15 @@
-<div *ngIf="(children$ | async)?.length" class="table-responsive">
-  <table class="table table-bordered table-striped">
-    <thead>
-    <tr>
-      <td>{{ 'taxonomy.vernacular.name' | translate }}</td>
-      <th>{{ 'taxonomy.scientific.name' | translate }}</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let taxon of children$ | async">
-      <td>{{ taxon.vernacularName }}</td>
-      <th><i><a [routerLink]="['/taxon/' + taxon.id] | localize">{{ taxon.scientificName }}</a></i></th>
-    </tr>
-    </tbody>
-  </table>
+<div *ngIf="children$ | async; let children">
+  <laji-datatable
+    #dataTable
+    class="observation-table"
+    (rowSelect)="onRowSelect($event)"
+    [showFooter]="false"
+    [virtualScrolling]="false"
+    [clientSideSorting]="true"
+    [rows]='children'
+    [count]="children.length"
+    [page]="1"
+    [pageSize]="children.length"
+    [columns]="columns">
+  </laji-datatable>
 </div>

@@ -20,6 +20,7 @@ export class DatatableComponent {
   @ViewChild('eventDate') eventDateTpl: TemplateRef<any>;
   @ViewChild('vernacularName') vernacularNameTpl: TemplateRef<any>;
   @ViewChild('scientificName') scientificNameTpl: TemplateRef<any>;
+  @ViewChild('taxonScientificName') taxonScientificNameTpl: TemplateRef<any>;
   @ViewChild('speciesScientificName') speciesScientificNameTpl: TemplateRef<any>;
   @ViewChild('speciesVernacularName') speciesVernacularNameTpl: TemplateRef<any>;
   @ViewChild('warehouseLabel') warehouseLabelTpl: TemplateRef<any>;
@@ -35,6 +36,7 @@ export class DatatableComponent {
   @Input() showFooter = true;
   @Input() virtualScrolling = true;
   @Input() totalMessage = '';
+  @Input() clientSideSorting = false;
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();

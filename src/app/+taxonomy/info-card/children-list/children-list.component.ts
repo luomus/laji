@@ -3,6 +3,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { Observable } from 'rxjs/Observable';
+import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
+import { Router } from '@angular/router';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
 
 
 @Component({
@@ -14,7 +17,32 @@ export class ChildrenListComponent implements OnInit, OnChanges {
 
   children$: Observable<Taxonomy[]>;
 
-  constructor(private translate: TranslateService, private taxonService: TaxonomyApi) {
+  columns: ObservationTableColumn[] = [
+    {
+      name: 'vernacularName',
+      label: 'taxonomy.vernacular.name',
+      sortable: true
+    },
+    {
+      name: 'scientificName',
+      label: 'taxonomy.scientific.name',
+      cellTemplate: 'taxonScientificName',
+      sortable: true
+    }
+  ];
+
+  constructor(
+    private translate: TranslateService,
+    private taxonService: TaxonomyApi,
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService
+  ) {
+  }
+
+  onRowSelect(event) {
+    if (event.row && event.row.id) {
+      this.router.navigate(this.localizeRouterService.translateRoute(['/taxon', event.row.id]));
+    }
   }
 
   ngOnInit() {
@@ -31,7 +59,9 @@ export class ChildrenListComponent implements OnInit, OnChanges {
     if (changes['parentId']) {
       this.children$ = this
         .taxonService
-        .taxonomyFindChildren(this.parentId, this.translate.currentLang);
+        .taxonomyFindChildren(this.parentId, this.translate.currentLang, undefined, {
+          selectedFields: 'vernacularName,scientificName,cursiveName,id'
+        });
     }
   }
 }

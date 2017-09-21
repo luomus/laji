@@ -16,9 +16,10 @@ import { InformalTaxonGroupApi } from '../shared/api/InformalTaxonGroupApi';
 import { TaxonInfoComponent } from './info-card/taxon/taxon-info.component';
 import { TreeModule } from 'angular-tree-component';
 import { LangModule } from '../shared-modules/lang/lang.module';
+import { DatatableModule } from '../shared-modules/datatable/datatable.module';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, TreeModule, LangModule],
+  imports: [routing, SharedModule, RouterModule, TreeModule, LangModule, DatatableModule],
   providers: [TaxonomyApi, InformalTaxonGroupApi],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,

@@ -18,7 +18,7 @@
     [rows]='rows'
     [disablePagingOnScroll]="true"
     [externalPaging]="true"
-    [externalSorting]="true"
+    [externalSorting]="!clientSideSorting"
     [preFetchY]="300"
     [sortType]="'multi'"
     [count]="count"
@@ -31,7 +31,7 @@
     [headerHeight]="showHeader ? 38 : 0"
     [footerHeight]="showFooter ? 50 : 0"
     [trackByProp]="'name'"
-    [rowHeight]="35"
+    [rowHeight]="virtualScrolling ? 35 : 'auto'"
     (sort)="sortChange.emit($event)"
     (page)="onPage($event)"
     (activate)="onRowSelect($event)"
@@ -67,6 +67,11 @@
 <ng-template let-value="value" #vernacularName>
   <span *ngIf="value.vernacularName" title="{{value.vernacularName | multiLang}}">
     {{value.vernacularName | multiLang}}
+  </span>
+</ng-template>
+<ng-template let-row="row" #taxonScientificName>
+  <span *ngIf="row.scientificName" title="{{row.scientificName}}" [class.cursive]="row.cursiveName">
+    {{row.scientificName}}
   </span>
 </ng-template>
 <ng-template let-value="value" #scientificName>

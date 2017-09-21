@@ -20,12 +20,7 @@ export class LocalizeRouterService {
     return routes;
   }
 
-  constructor(private translateService: TranslateService, private location: Location) {
-    this.translateService.onLangChange
-      .subscribe(() => {
-
-      });
-  }
+  constructor(private translateService: TranslateService, private location: Location) { }
 
   translateRoute<T>(query: T, lang?: string): T;
   translateRoute(query: string | any[], lang?: string): string | any[] {
