@@ -1,6 +1,6 @@
 <ul class="nav nav-pills">
   <li role="presentation" [ngClass]="{active: ['map', 'list', 'images', 'species', 'stats', 'load'].indexOf(active) > -1}">
-    <a [routerLink]="'/observation/map' | localize" [queryParams]="queryParams">
+    <a [routerLink]="['/observation', this.lastAllActive] | localize" [queryParams]="queryParams">
       Kaikki havainnot
     </a>
   </li>

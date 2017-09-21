@@ -14,7 +14,6 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 })
 export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() active = 'result';
   @Output() activeChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() onFilterSelect: EventEmitter<WarehouseQueryInterface> = new EventEmitter<WarehouseQueryInterface>();
 
@@ -22,17 +21,30 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
 
   public activated = {};
   public queryParams = {};
+  public lastAllActive = 'map';
 
   private subQueryUpdate: Subscription;
+  private _active;
 
   constructor(public searchQuery: SearchQuery,
               public userService: UserService,
               public translate: TranslateService) {
   }
 
+  @Input() set active(value) {
+    this._active = value;
+    if (value !== 'finnish') {
+      this.lastAllActive = value;
+    }
+  }
+
+  get active() {
+    return this._active;
+  }
+
   ngOnInit() {
     this.updateQueryParams();
-    this.activated[this.active] = true;
+    this.activated[this._active] = true;
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(() => {
       this.updateQueryParams();
     });
@@ -46,7 +58,7 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
 
   ngOnChanges(changes) {
     if (changes.active) {
-      this.activate(this.active, true);
+      this.activate(this._active, true);
     }
   }
 
@@ -70,12 +82,12 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   activate(tab: string, forceUpdate = false) {
-    if (!forceUpdate && this.active === tab) {
+    if (!forceUpdate && this._active === tab) {
       return;
     }
     this.active = tab;
     this.activated[tab] = true;
-    this.activeChange.emit(this.active);
+    this.activeChange.emit(this._active);
     this.searchQuery.updateUrl([
       'selected',
       'pageSize',
