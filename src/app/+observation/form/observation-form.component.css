@@ -48,7 +48,9 @@ hr {
 }
 
 .toggle-intro {
-  padding: 10px 20px 0 0;
+  position: absolute;
+  right: 0;
+  padding: 10px 30px 0 0;
   font-size: 13px;
   color: #3498DB;
 }

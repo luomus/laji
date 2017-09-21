@@ -584,6 +584,7 @@
       </div>
     </div>
     <div
+      style="margin-top: 10px;"
      [ngClass]="{
        'result-list col-sm-8 col-md-9 col-lg-10': showFilter,
        'col-sm-12': !showFilter
@@ -608,7 +609,7 @@
           </div>
         </div>
       </div>
-      <alert *ngIf="observationSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'" style="margin-top: 10px;">
+      <alert *ngIf="observationSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
         <div [innerHtml]="'observation.intro' | translate"></div>
       </alert>
       <div #tabs>
