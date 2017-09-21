@@ -161,8 +161,11 @@ export class MainResultComponent implements OnInit, OnChanges {
         if (key === 'document.sourceId' && event.row.document.sourceId ) {
           mapQuery.sourceId = event.row.document.sourceId;
         }
-        if (key === 'unit.superRecordBasis' && event.unit.row.superRecordBasis ) {
-          mapQuery.superRecordBasis = event.unit.superRecordBasis;
+        if (key === 'unit.superRecordBasis' && event.row.unit.superRecordBasis ) {
+          mapQuery.superRecordBasis = event.row.unit.superRecordBasis;
+        }
+        if (key === 'unit.media.mediaType' && event.row.unit.media.mediaType) {
+          mapQuery.hasUnitMedia = event.row.unit.media.mediaType === 'IMAGE';
         }
       } catch (e) {console.log(e)}
     });
