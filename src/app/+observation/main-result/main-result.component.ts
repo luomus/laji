@@ -7,6 +7,7 @@ import { MainResultService } from './main-result.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import { UserService } from '../../shared/service/user.service';
 import { ObservationTableComponent } from '../../shared-modules/observation-result/observation-table/observation-table.component';
+import { ObservationTableQueryService } from '../../shared-modules/observation-result/service/observation-table-query.service';
 
 @Component({
   selector: 'laji-main-result',
@@ -147,28 +148,7 @@ export class MainResultComponent implements OnInit, OnChanges {
       this.showObservationList = true;
     }
     const mapQuery = {...this.aggrQuery};
-    this.aggregateBy.map(key => {
-      try {
-        if (key === 'unit.linkings.taxon' && event.row.unit.linkings.taxon.id) {
-          mapQuery.taxonId = event.row.unit.linkings.taxon.id;
-        }
-        if (key === 'unit.linkings.taxon.scientificName' && event.row.unit.linkings.taxon.id) {
-          mapQuery.taxonId = event.row.unit.linkings.taxon.id;
-        }
-        if (key === 'document.collectionId' && event.row.document.collectionId ) {
-          mapQuery.collectionId = event.row.document.collectionId;
-        }
-        if (key === 'document.sourceId' && event.row.document.sourceId ) {
-          mapQuery.sourceId = event.row.document.sourceId;
-        }
-        if (key === 'unit.superRecordBasis' && event.row.unit.superRecordBasis ) {
-          mapQuery.superRecordBasis = event.row.unit.superRecordBasis;
-        }
-        if (key === 'unit.media.mediaType' && event.row.unit.media.mediaType) {
-          mapQuery.hasUnitMedia = event.row.unit.media.mediaType === 'IMAGE';
-        }
-      } catch (e) {console.log(e)}
-    });
+    ObservationTableQueryService.fieldsToQuery(this.aggregateBy, event.row, mapQuery);
     const title: string[] = [];
     try {
       const cells = [].slice.call(event.cellElement.parentElement.children);
