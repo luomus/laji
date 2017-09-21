@@ -1,19 +1,16 @@
 <ul class="nav nav-pills">
   <li role="presentation" [ngClass]="{active: ['map', 'list', 'images', 'species', 'stats', 'load'].indexOf(active) > -1}">
     <a [routerLink]="['/observation', this.lastAllActive] | localize" [queryParams]="queryParams">
-      Kaikki havainnot
+      <strong>{{'search.result.all' | translate}}</strong>
     </a>
   </li>
-  <li role="presentation" [ngClass]="{active: active === 'finnish'}">
+  <li role="presentation" class="beta" [ngClass]="{active: active === 'finnish'}">
     <a [routerLink]="'/observation/finnish' | localize" [queryParams]="queryParams">
-    Suomen havainnot
+      <strong>{{'search.result.finnish' | translate}}</strong>
     </a>
   </li>
-</ul>
-
-<div class="row">
-  <div class="col-sm-12">
-    <h2 class="counts">
+  <li class="counts">
+    <strong>
       <laji-observation-count
         [timeout]="30000"
         [query]="searchQuery.query"
@@ -27,9 +24,9 @@
         [overrideInQuery]="{includeNonValidTaxa: false}">
       </laji-observation-count>
       {{'observation.results.species' | translate}}
-    </h2>
-  </div>
-</div>
+    </strong>
+  </li>
+</ul>
 
 <div class="whole-data-list" *ngIf="['map', 'list', 'images', 'species', 'stats', 'load'].indexOf(active) > -1">
   <ul class="nav nav-tabs nav-justified">

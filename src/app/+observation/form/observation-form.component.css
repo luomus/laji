@@ -73,6 +73,7 @@ hr {
 
 .form-title {
   z-index: 2;
+  padding: 15px 0 15px 10px;
 }
 
 .form-title h2 {
