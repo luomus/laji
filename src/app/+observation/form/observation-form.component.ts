@@ -108,7 +108,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.subSearch = this.delayedSearch
       .debounceTime(this.debouchAfterChange)
       .subscribe(() => {
-        this.onSubmit()
+        this.onSubmit();
         this.cd.markForCheck();
       });
     if (!this.observationSettings) {

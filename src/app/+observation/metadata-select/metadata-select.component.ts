@@ -156,6 +156,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
     if (!this.value) {
       this.active = [];
       this.selectedTitle = '';
+      this.cd.markForCheck();
       return;
     }
     if (typeof this.value === 'string') {
@@ -174,6 +175,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
       }, []);
     }
     this.selectedTitle = this.active.length > 0 ? ' (' + this.active.length + ')' : '';
+    this.cd.markForCheck();
   }
 
   public refreshValue(value: any): void {

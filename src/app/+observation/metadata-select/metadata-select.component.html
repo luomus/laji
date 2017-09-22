@@ -7,32 +7,3 @@
   (selectedChanged)="refreshValue($event)"
 >
 </laji-select>
-
-<!--
-<ss-multiselect-dropdown
-  [settings]="{
-    showUncheckAll: true,
-    pullRight: true,
-    enableSearch: true,
-    fixedTitle: true,
-    checkedStyle: 'checkboxes',
-    buttonClasses: 'btn btn-default btn-block btn-sm',
-    displayAllSelectedText: true,
-    containerClasses: '',
-    dynamicTitleMaxItems: 1,
-    maxHeight: '50vh'
-}"
-  [texts]="{
-    checkAll: 'checkAll' | translate,
-    uncheckAll: 'uncheckAll' | translate,
-    checked: 'checked' | translate,
-    checkedPlural: 'checkedPlural' | translate,
-    searchPlaceholder: 'search-bar.input' | translate,
-    defaultTitle: (placeholder | translate) + selectedTitle,
-    allSelected: 'allSelected' | translate
-  }"
-  [ngModel]="active"
-  [options]="_options || []"
-  (ngModelChange)="refreshValue($event)">
-</ss-multiselect-dropdown>
--->
