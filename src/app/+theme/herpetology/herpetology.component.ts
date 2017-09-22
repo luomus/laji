@@ -1,7 +1,7 @@
 /**
  * Created by mjtahtin on 18.4.2017.
  */
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxonomy, TaxonomyImage } from '../../shared/model/Taxonomy';
@@ -14,7 +14,8 @@ import { CacheService } from '../../shared/service/cache.service';
 @Component({
   selector: '[laji-herpetology]',
   templateUrl: './herpetology.component.html',
-  styleUrls: ['./herpetology.component.css']
+  styleUrls: ['./herpetology.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HerpetologyComponent implements OnInit {
 
@@ -36,12 +37,13 @@ export class HerpetologyComponent implements OnInit {
     private translate: TranslateService,
     private taxonomyApi: TaxonomyApi,
     private cacheService: CacheService,
+    private cd: ChangeDetectorRef,
     private logger: Logger) {
     const now = new Date();
     this.currentYear = now.getFullYear() + '-01-01';
-    this.taxonImages = new Array();
-    this.amphibianImages = new Array();
-    this.amphibianGalleries = new Array();
+    this.taxonImages = [];
+    this.amphibianImages = [];
+    this.amphibianGalleries = [];
   }
 
   ngOnInit() {
@@ -95,9 +97,11 @@ export class HerpetologyComponent implements OnInit {
           this.amphibianTaxa = data[0];
           this.reptileTaxa = data[1];
           this.occasionalTaxa = data[2];
+          this.cd.markForCheck();
         },
         (err) => {
           this.logger.error('Failed to load herpetology images', err);
+          this.cd.markForCheck();
         }
       );
   }

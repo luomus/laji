@@ -171,15 +171,16 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
           this.taxa = data;
           this.loading = false;
           this.activate(0);
+          this.changeDetector.markForCheck();
         },
         err => {
-          this.changeDetector.markForCheck();
           this.logger.warn('OmniSearch failed to find data', {
             taxon: this.search,
             lang: 'multi',
             limit: this.limit,
             err: err
           });
+          this.changeDetector.markForCheck();
         }
       );
   }

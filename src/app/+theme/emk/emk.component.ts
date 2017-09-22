@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -8,7 +8,8 @@ import { TranslateService } from '@ngx-translate/core';
     .alternative {
       background-color: #fffacf;
     }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmkComponent {
 

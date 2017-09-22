@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { SearchQuery } from '../+observation/search-query.model';
 import { NewsApi } from '../shared/api/NewsApi';
 import { TranslateService } from '@ngx-translate/core';
-import { AutocompleteMatchType } from '../shared/api/AutocompleteApi';
 
 @Component({
   selector: 'laji-home',
@@ -11,13 +10,12 @@ import { AutocompleteMatchType } from '../shared/api/AutocompleteApi';
     NewsApi
   ],
   styleUrls: ['./home.component.css'],
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
 
   mapStartDate;
-
-  autocompleteMatchTypes = AutocompleteMatchType;
 
   constructor(public translate: TranslateService) {
   }
