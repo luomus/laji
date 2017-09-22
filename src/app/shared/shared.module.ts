@@ -73,7 +73,6 @@ import { CoordinateService } from './service/coordinate.service';
 import { TaxonomyApi } from './api/TaxonomyApi';
 import { NlToBrPipe } from './pipe/nl-to-br.pipe';
 import { DocumentFormHeaderComponent } from './document-form-header/document-form-header.component';
-import { FixedInViewDirective } from './directive/fixed-in-view.directive';
 import { DialogService } from './service/dialog.service';
 import { DocumentDeActivateGuard } from './document-form/document-de-activate.guard';
 import { ScriptService } from './service/script.service';
@@ -97,7 +96,7 @@ import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
-    FixedInViewDirective, NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective
+    NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective
   ],
   imports: [
     ToastModule,
@@ -120,7 +119,7 @@ import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
     ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe,
-    AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, FixedInViewDirective, LocalizePipe, HideScrollDirective,
+    AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, LocalizePipe, HideScrollDirective,
     LoggedInDirective, FixedBelowDirective
   ]
 })

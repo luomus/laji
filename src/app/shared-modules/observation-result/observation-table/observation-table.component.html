@@ -68,7 +68,7 @@
     <div class="row" *ngIf="!isAggregate">
       <div class="col-sm-6 col-lg-4">
         <laji-selected-field-group
-          title="viewer.unit"
+          title="viewer.document"
           [fields]="[
             'unit.taxon',
             'unit.linkings.taxon.vernacularName',
@@ -81,7 +81,11 @@
             'unit.lifeStage',
             'unit.sex',
             'unit.recordBasis',
-            'unit.notes'
+            'unit.notes',
+            'document.collectionId',
+            'document.sourceId',
+            'document.secureLevel',
+            'document.secureReasons'
             ]"
           [columnsLookup]="columnLookup"
           [selected]="_selected"
@@ -103,15 +107,6 @@
             'gathering.conversions.wgs84',
             'gathering.interpretations.coordinateAccuracy'
             ]"
-          [columnsLookup]="columnLookup"
-          [selected]="_selected"
-          (toggle)="toggleSelectedField($event)"
-        ></laji-selected-field-group>
-      </div>
-      <div class="col-sm-6 col-lg-4">
-        <laji-selected-field-group
-          title="viewer.document"
-          [fields]="['document.collectionId', 'document.sourceId', 'document.secureLevel', 'document.secureReasons']"
           [columnsLookup]="columnLookup"
           [selected]="_selected"
           (toggle)="toggleSelectedField($event)"

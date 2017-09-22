@@ -17,7 +17,6 @@ import { routing } from './observation.routes';
 import { ObservationComponent } from './observation.component';
 import { ViewerModule } from '../+viewer/viewer.module';
 import { NvD3Module } from '../ng2-nvd3/ng2-nvd3.module';
-import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { SelectComponent } from './select/select.component';
 import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { MainResultComponent } from './main-result/main-result.component';
@@ -31,7 +30,6 @@ import { ObservationFiltersComponent } from './observation-filters/observation-f
     SharedModule,
     TypeaheadModule,
     ViewerModule,
-    MultiselectDropdownModule,
     YkjModule,
     NgxDatatableModule,
     ObservationResultModule

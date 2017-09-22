@@ -30,7 +30,6 @@
     [scrollbarV]="virtualScrolling"
     [headerHeight]="showHeader ? 38 : 0"
     [footerHeight]="showFooter ? 50 : 0"
-    [trackByProp]="'name'"
     [rowHeight]="virtualScrolling ? 35 : 'auto'"
     (sort)="sortChange.emit($event)"
     (page)="onPage($event)"
