@@ -18,6 +18,7 @@
   "navigation.notify": "Vihko",
   "navigation.user": "Käyttäjäasetukset",
   "navigation.user.login": "Kirjaudu | Rekisteröidy",
+  "login": "Kirjaudu",
   "navigation.user.logout": "Kirjaudu ulos",
   "navigation.user.profile": "Profiili",
   "navigation.theme": "Teemat",

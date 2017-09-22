@@ -16,6 +16,7 @@
   "navigation.notify": "Rapportera observationer",
   "navigation.user": "Användarinställning",
   "navigation.user.login": "Logga in | Registrera",
+  "login": "Logga in",
   "navigation.user.logout": "Logga ut",
   "navigation.user.profile": "Profil",
   "navigation.theme": "Teman",

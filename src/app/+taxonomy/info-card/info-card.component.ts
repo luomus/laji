@@ -126,9 +126,6 @@ export class InfoCardComponent implements OnInit, OnDestroy {
 
   private initTaxon() {
     this.loading = true;
-    this.getTaxon(this.taxonId);
-    this.getTaxonDescription(this.taxonId);
-    this.getTaxonMedia(this.taxonId);
     Observable.forkJoin(
       this.getTaxon(this.taxonId),
       this.getTaxonDescription(this.taxonId),

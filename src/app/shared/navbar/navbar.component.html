@@ -114,7 +114,14 @@
               </ul>
             </li>
             <li *ngIf="!isLoggedIn">
-              <a href="#login" (click)="doLogin($event)"><small>{{ 'navigation.user.login' | translate }}</small></a>
+              <a href="#login" (click)="doLogin($event)">
+                <small class="hidden-sm">
+                  {{ 'navigation.user.login' | translate }}
+                </small>
+                <small class="visible-sm">
+                  {{ 'login' | translate }}
+                </small>
+              </a>
             </li>
             <li dropdown>
               <a dropdownToggle class="link language-toggle">

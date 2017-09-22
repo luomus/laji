@@ -16,6 +16,7 @@
   "navigation.notify": "Report observations",
   "navigation.user": "User settings",
   "navigation.user.login": "Login | Register",
+  "login": "Login",
   "navigation.user.logout": "Logout",
   "navigation.user.profile": "Profile",
   "navigation.theme": "Themes",
