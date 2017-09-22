@@ -46,9 +46,18 @@ export class TriplestoreLabelService {
 
   private getAllLabels() {
     this.pending = Observable.forkJoin(
-      Observable.of('').delay(200).switchMap(() => this.metadataService.getAllRangesAsLookUp('multi')),
-      Observable.of('').delay(200).switchMap(() => this.metadataApi.metadataAllProperties('multi')),
-      Observable.of('').delay(200).switchMap(() => this.metadataApi.metadataAllClasses('multi'))
+      Observable.of('')
+        .delay(200)
+        .switchMap(() => this.metadataService.getAllRangesAsLookUp('multi'))
+        .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors))),
+      Observable.of('')
+        .delay(200)
+        .switchMap(() => this.metadataApi.metadataAllProperties('multi'))
+        .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors))),
+      Observable.of('')
+        .delay(200)
+        .switchMap(() => this.metadataApi.metadataAllClasses('multi'))
+        .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
     )
       .map(data => this.parseResult(data))
       .do(data => this.cacheService.setItem(TriplestoreLabelService.cacheTriplestoreLabels, data))
