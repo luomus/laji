@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
   ViewChild
 } from '@angular/core';
@@ -14,7 +15,8 @@ interface SelectOptions {
 @Component({
   selector: 'laji-select',
   templateUrl: './select.component.html',
-  styleUrls: ['./select.component.css']
+  styleUrls: ['./select.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -35,7 +37,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
 
   private filterSub: Subscription;
 
-  constructor() { }
+  constructor(private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.filterSub = this.filterInput
@@ -44,6 +46,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe((value) => {
         this.filterBy = value.toLowerCase();
         this.initOptions(this.selected, this.filterBy);
+        this.cd.markForCheck();
       });
     this.initOptions(this.selected);
   }

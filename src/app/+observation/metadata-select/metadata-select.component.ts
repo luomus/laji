@@ -1,4 +1,7 @@
-import { Component, forwardRef, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy,
+  OnInit
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -23,7 +26,8 @@ export const METADATA_SELECT_VALUE_ACCESSOR: any = {
 @Component({
   selector: 'laji-metadata-select',
   templateUrl: './metadata-select.component.html',
-  providers: [METADATA_SELECT_VALUE_ACCESSOR]
+  providers: [METADATA_SELECT_VALUE_ACCESSOR],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
   @Input() field: string;
@@ -51,6 +55,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
               private collectionService: CollectionService,
               private areaService: AreaService,
               private sourceService: SourceService,
+              private cd: ChangeDetectorRef,
               private logger: Logger
   ) {
   }
@@ -143,6 +148,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
           this._options = this.shouldSort ? options.sort((a, b) => a.name.localeCompare(b.name)) : options;
         }
         this.initActive();
+        this.cd.markForCheck();
       });
   }
 

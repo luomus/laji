@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   EventEmitter,
   forwardRef,
@@ -24,7 +25,8 @@ export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
   selector: 'observation-group-select',
   templateUrl: './group-select.component.html',
   styleUrls: ['./group-select.component.css'],
-  providers: [InformalTaxonGroupApi, OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR]
+  providers: [InformalTaxonGroupApi, OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationGroupSelectComponent implements ControlValueAccessor, OnChanges {
   @Input() lang = 'fi';
@@ -59,6 +61,7 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
 
   constructor(
     viewContainerRef: ViewContainerRef,
+    private cd: ChangeDetectorRef,
     private informalTaxonService: InformalTaxonGroupApi,
     private logger: Logger
   ) {
@@ -99,8 +102,12 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
         groups => {
           this.groups = groups;
           this.initRange();
+          this.cd.markForCheck();
         },
-        err => this.logger.warn('Was unable to fetch informal taxon group data', err)
+        err => {
+          this.logger.warn('Was unable to fetch informal taxon group data', err);
+          this.cd.markForCheck();
+        }
       );
   }
 
@@ -163,8 +170,14 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
       this.subLabel = this.informalTaxonService.informalTaxonGroupFindById(groupId, this.lang)
         .map(group => group.name)
         .subscribe(
-          name => this.label = name,
-          err => this.logger.warn('Unable to find taxon group by id', err)
+          name => {
+            this.label = name
+            this.cd.markForCheck();
+          },
+          err => {
+            this.logger.warn('Unable to find taxon group by id', err);
+            this.cd.markForCheck();
+          }
         );
     }
   }

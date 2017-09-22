@@ -1,4 +1,7 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit,
+  ViewChild
+} from '@angular/core';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Observable } from 'rxjs/Observable';
@@ -22,7 +25,8 @@ import { Router } from '@angular/router';
   selector: 'laji-observation-form',
   templateUrl: './observation-form.component.html',
   styleUrls: ['./observation-form.component.css'],
-  providers: [CollectionApi, SourceApi]
+  providers: [CollectionApi, SourceApi],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationFormComponent implements OnInit, OnDestroy {
 
@@ -64,6 +68,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   constructor(public searchQuery: SearchQuery,
               public translate: TranslateService,
               private route: Router,
+              private cd: ChangeDetectorRef,
               private userService: UserService,
               private autocompleteService: AutocompleteApi,
               private mapService: MapService,
@@ -102,7 +107,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subSearch = this.delayedSearch
       .debounceTime(this.debouchAfterChange)
-      .subscribe(() => this.onSubmit());
+      .subscribe(() => {
+        this.onSubmit()
+        this.cd.markForCheck();
+      });
     if (!this.observationSettings) {
       this.observationSettings = { showIntro: true };
     }
@@ -384,7 +392,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     };
     if (this.formQuery.taxon && (
       this.formQuery.taxon.indexOf('MX.') === 0 || this.formQuery.taxon.indexOf('http:') === 0)) {
-      this.getTaxa(this.formQuery.taxon, true).subscribe(data => this.taxonName = data);
+      this.getTaxa(this.formQuery.taxon, true).subscribe(data => {
+        this.taxonName = data;
+        this.cd.markForCheck();
+      });
     } else {
       this.taxonName = null;
     }
