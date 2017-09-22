@@ -732,7 +732,7 @@
       "dev": true,
       "requires": {
         "browserslist": "1.7.7",
-        "caniuse-db": "1.0.30000733",
+        "caniuse-db": "1.0.30000734",
         "normalize-range": "0.1.2",
         "num2fraction": "1.2.2",
         "postcss": "5.2.17",
@@ -1167,7 +1167,7 @@
       "integrity": "sha1-C9dnBCWL6CmyOYu1Dkti0aFmsLk=",
       "dev": true,
       "requires": {
-        "caniuse-db": "1.0.30000733",
+        "caniuse-db": "1.0.30000734",
         "electron-to-chromium": "1.3.21"
       }
     },
@@ -1259,15 +1259,15 @@
       "dev": true,
       "requires": {
         "browserslist": "1.7.7",
-        "caniuse-db": "1.0.30000733",
+        "caniuse-db": "1.0.30000734",
         "lodash.memoize": "4.1.2",
         "lodash.uniq": "4.5.0"
       }
     },
     "caniuse-db": {
-      "version": "1.0.30000733",
-      "resolved": "https://registry.npmjs.org/caniuse-db/-/caniuse-db-1.0.30000733.tgz",
-      "integrity": "sha1-OmJbxBx6n5nVnWRVKFfdGvDt2dQ=",
+      "version": "1.0.30000734",
+      "resolved": "https://registry.npmjs.org/caniuse-db/-/caniuse-db-1.0.30000734.tgz",
+      "integrity": "sha1-lgs3vuJujw0P0p2fBwPKTUYpShc=",
       "dev": true
     },
     "caseless": {
@@ -3732,9 +3732,9 @@
       }
     },
     "http-parser-js": {
-      "version": "0.4.6",
-      "resolved": "https://registry.npmjs.org/http-parser-js/-/http-parser-js-0.4.6.tgz",
-      "integrity": "sha1-GVJz9YcExFLWcQdr4gEyndNB3FU=",
+      "version": "0.4.8",
+      "resolved": "https://registry.npmjs.org/http-parser-js/-/http-parser-js-0.4.8.tgz",
+      "integrity": "sha512-jmHp99g6/fLx0pRNJqzsQgjsclCHAY7NhIeA3/U+bsGNvgbvUCQFQY9m5AYpqpAxY/2VcikfbKpjQozSTiz0jA==",
       "dev": true
     },
     "http-proxy": {
@@ -4814,9 +4814,9 @@
       }
     },
     "laji-form": {
-      "version": "0.0.232",
-      "resolved": "https://registry.npmjs.org/laji-form/-/laji-form-0.0.232.tgz",
-      "integrity": "sha512-uIJdVqj9f71K+Jy4DNUzcQMo/emYK5WU/dhPavmdxYEnHLT143S7zXI4RYIV/5NKH0+WCAaXiCDAJ5FrxkwStQ==",
+      "version": "0.0.228",
+      "resolved": "https://registry.npmjs.org/laji-form/-/laji-form-0.0.228.tgz",
+      "integrity": "sha512-ZpJzzPGd3HCJrWc9YpXwwaT0w2Eq+oed93xNW0lRxMBN1mC7Z3JbmQQD2BmbrUn/WjVu4Eyncv/XSKX4UdgXqg==",
       "requires": {
         "babel-runtime": "6.26.0",
         "deep-equal": "1.0.1",
@@ -7636,7 +7636,7 @@
         "qs": "6.5.1",
         "safe-buffer": "5.1.1",
         "stringstream": "0.0.5",
-        "tough-cookie": "2.3.2",
+        "tough-cookie": "2.3.3",
         "tunnel-agent": "0.6.0",
         "uuid": "3.1.0"
       }
@@ -8861,9 +8861,9 @@
       "dev": true
     },
     "tough-cookie": {
-      "version": "2.3.2",
-      "resolved": "https://registry.npmjs.org/tough-cookie/-/tough-cookie-2.3.2.tgz",
-      "integrity": "sha1-8IH3bkyFcg5sN6X6ztc3FQ2EByo=",
+      "version": "2.3.3",
+      "resolved": "https://registry.npmjs.org/tough-cookie/-/tough-cookie-2.3.3.tgz",
+      "integrity": "sha1-C2GKVWW23qkL80JdBNVe3EdadWE=",
       "dev": true,
       "requires": {
         "punycode": "1.4.1"
@@ -9792,7 +9792,7 @@
       "integrity": "sha1-DK+dLXVdk67gSdS90NP+LMoqJOs=",
       "dev": true,
       "requires": {
-        "http-parser-js": "0.4.6",
+        "http-parser-js": "0.4.8",
         "websocket-extensions": "0.1.2"
       }
     },
