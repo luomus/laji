@@ -82,7 +82,7 @@
 
 <div class="results">
   <div [hidden]="active !== 'finnish'" *ngIf="activated['finnish']">
-    <laji-main-result [query]="searchQuery.query" [visible]="active === 'finnish'"></laji-main-result>
+    <laji-main-result [lang]="translate.currentLang" [query]="searchQuery.query" [visible]="active === 'finnish'"></laji-main-result>
   </div>
   <div [hidden]="active !== 'map'" *ngIf="activated['map']">
     <laji-observation-map
@@ -112,7 +112,7 @@
           [query]="searchQuery.query"
           [showSettingsMenu]="false"
           [isAggregate]="true"
-          [selected]="['unit.linkings.species', 'unit.linkings.species.scientificName']"
+          [selected]="['unit.species']"
         ></laji-observation-table>
       </div>
     </div>

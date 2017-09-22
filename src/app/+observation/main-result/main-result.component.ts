@@ -23,6 +23,7 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;
+  @Input() lang: string;
 
   aggrQuery: WarehouseQueryInterface;
   mapQuery: WarehouseQueryInterface;
@@ -41,12 +42,12 @@ export class MainResultComponent implements OnInit, OnChanges {
   initialized = false;
 
   aggregateBy = [
-    'unit.linkings.taxon',
+    'unit.taxon',
     'unit.linkings.taxon.scientificName'
   ];
 
   selected = [
-    'unit.linkings.taxon',
+    'unit.taxon',
     'document.collectionId',
     'unit.notes',
     'gathering.locality',
@@ -154,7 +155,7 @@ export class MainResultComponent implements OnInit, OnChanges {
       const cells = [].slice.call(event.cellElement.parentElement.children);
       cells.map(cellElem => {
           const value = (cellElem.innterText || cellElem.textContent).trim();
-          if (!value.match(/^[0-9\-,.+\sT:]+$/)) {
+          if (value && !value.match(/^[0-9\-,.+\sT:]+$/)) {
             title.push(value);
           }
         });

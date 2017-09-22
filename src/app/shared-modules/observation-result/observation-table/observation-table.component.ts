@@ -57,12 +57,35 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   loading: boolean;
   loadingPage: number;
 
+  private langMap = {
+    'fi': 'Finnish',
+    'sv': 'Swedish',
+    'en': 'English'
+  };
+
   columns: ObservationTableColumn[] = [];
 
   allColumns: ObservationTableColumn[] = [
-    { name: 'unit.linkings.taxon',
-      cellTemplate: 'vernacularName',
-      sortBy: 'unit.linkings.taxon.nameFinnish',
+    { name: 'unit.taxon',
+      prop: 'unit',
+      target: '_blank',
+      label: 'result.unit.taxonVerbatim',
+      cellTemplate: 'taxon',
+      sortBy: 'unit.linkings.taxon.name%longLang%',
+      selectField: 'unit',
+      aggregateBy: 'unit.linkings.taxon.id,' +
+      'unit.linkings.taxon.nameFinnish,' +
+      'unit.linkings.taxon.nameEnglish,' +
+      'unit.linkings.taxon.nameSwedish,' +
+      'unit.linkings.taxon.scientificName,' +
+      'unit.taxonVerbatim'
+    },
+    { name: 'unit.taxonVerbatim',
+      prop: 'unit.taxonVerbatim',
+      label: 'taxonVerbatim' },
+    { name: 'unit.linkings.taxon.vernacularName',
+      cellTemplate: 'multiLang',
+      sortBy: 'unit.linkings.taxon.name%longLang%',
       label: 'taxonomy.vernacular.name',
       aggregateBy: 'unit.linkings.taxon.id,' +
       'unit.linkings.taxon.nameFinnish,' +
@@ -78,10 +101,23 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       label: 'result.taxonomicOrder',
       aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.taxonomicOrder',
       width: 70 },
-    { name: 'unit.linkings.species',
-      prop: 'unit.linkings.taxon',
-      cellTemplate: 'speciesVernacularName',
-      sortBy: 'unit.linkings.taxon.speciesNameFinnish',
+    { name: 'unit.species',
+      prop: 'unit',
+      target: '_blank',
+      label: 'result.unit.taxonVerbatim',
+      cellTemplate: 'species',
+      sortBy: 'unit.linkings.taxon.name%longLang%',
+      selectField: 'unit',
+      aggregateBy: 'unit.linkings.taxon.speciesId,' +
+      'unit.linkings.taxon.speciesNameFinnish,' +
+      'unit.linkings.taxon.speciesNameEnglish,' +
+      'unit.linkings.taxon.speciesNameSwedish,' +
+      'unit.linkings.taxon.scientificName'
+    },
+    { name: 'unit.linkings.species.vernacularName',
+      prop: 'unit.linkings.taxon.speciesVernacularName',
+      cellTemplate: 'multiLang',
+      sortBy: 'unit.linkings.taxon.speciesName%longLang%',
       label: 'taxonomy.vernacular.name',
       aggregateBy: 'unit.linkings.taxon.speciesId,' +
       'unit.linkings.taxon.speciesNameFinnish,' +
@@ -149,7 +185,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       if (this.numberFields.indexOf(field) > -1) {
         selectedNumbers.push(field);
       } else {
-        selected.push(field);
+        if (this.allColumns.find((col) => col.name === field)) {
+          selected.push(field);
+        }
       }
     });
     this._selected = selected;
@@ -192,7 +230,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this.aggregateBy = [];
     this.columns = selected.map(name => {
       this.aggregateBy.push((this.columnLookup[name].aggregateBy || this.columnLookup[name].name)
-       + (this.columnLookup[name].sortBy ? ',' + this.columnLookup[name].sortBy : ''));
+       + (this.columnLookup[name].sortBy ? ',' + this.setLangParams(this.columnLookup[name].sortBy) : ''));
       return this.columnLookup[name];
     });
   }
@@ -257,7 +295,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       if (!col) {
         return '';
       }
-      return (col.sortBy || col.prop) + ' ' + sort.dir.toUpperCase();
+      return this.setLangParams((col.sortBy || col.prop) + ' ' + sort.dir.toUpperCase());
     });
     this.fetchPage(this.page);
   }
@@ -281,7 +319,14 @@ export class ObservationTableComponent implements OnInit, OnChanges {
         [...this.orderBy, this.defaultOrder],
         this.lang
       ) :
-      this.resultService.getList(this.query, this._selected, page, this.pageSize, [...this.orderBy, this.defaultOrder], this.lang)
+      this.resultService.getList(
+        this.query,
+        this.getSelectFields(this._selected),
+        page,
+        this.pageSize,
+        [...this.orderBy, this.defaultOrder],
+        this.lang
+      )
     ).subscribe(data => {
         this.result = data;
         this.loading = false;
@@ -292,5 +337,14 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
         this.changeDetectorRef.markForCheck();
       });
+  }
+
+  private getSelectFields(selected: string[]) {
+    return selected.map(field => this.columnLookup[field].selectField || field);
+  }
+
+  private setLangParams(value: string) {
+    return (value || '')
+      .replace('%longLang%', this.langMap[this.lang] || 'Finnish')
   }
 }

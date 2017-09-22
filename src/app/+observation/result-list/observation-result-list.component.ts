@@ -1,11 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ValueDecoratorService } from './value-decorator.sevice';
 import { SearchQuery } from '../search-query.model';
 import { TranslateService } from '@ngx-translate/core';
-import { LabelPipe } from '../../shared/pipe/label.pipe';
-import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { ModalDirective } from 'ngx-bootstrap';
-import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { UserService } from '../../shared/service/user.service';
 
@@ -13,14 +9,21 @@ import { UserService } from '../../shared/service/user.service';
   selector: 'laji-observation-result-list',
   templateUrl: './observation-result-list.component.html',
   styleUrls: ['./observation-result-list.component.css'],
-  providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe]
 })
 export class ObservationResultListComponent implements OnInit {
   @ViewChild('documentModal') public modal: ModalDirective;
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;
 
-  selected: string[] = [];
+  selected: string[] = [
+    'unit.taxon',
+    'document.collectionId',
+    'unit.notes',
+    'gathering.locality',
+    'unit.sex',
+    'unit.lifeStage',
+    'document.sourceId'
+  ];
   pageSize: number;
   aggregateBy: string[] = [];
 

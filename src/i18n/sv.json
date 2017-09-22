@@ -481,5 +481,6 @@
   "result.aggregate.fields": "Gruppering av kolumner",
   "result.aggregate.numbers": "Åtgärder",
   "theme.cnt": "count",
-  "result.load.personalData": "Observera att de egna observatörs filtren ignoreras på den här sidan."
+  "result.load.personalData": "Observera att de egna observatörs filtren ignoreras på den här sidan.",
+  "taxonVerbatim": "Ursprungligt namn"
 }
