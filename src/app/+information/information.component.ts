@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,7 +12,8 @@ import { Title } from '@angular/platform-browser';
   selector: 'laji-information',
   templateUrl: './information.component.html',
   styleUrls: ['./information.component.css'],
-  providers: [InformationApi]
+  providers: [InformationApi],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InformationComponent implements OnDestroy {
 
@@ -25,6 +26,7 @@ export class InformationComponent implements OnDestroy {
               private translate: TranslateService,
               private informationService: InformationService,
               private logger: Logger,
+              private cd: ChangeDetectorRef,
               private title: Title
   ) {
     this.paramSub = this.route.params.subscribe(params => {
@@ -60,8 +62,12 @@ export class InformationComponent implements OnDestroy {
         information => {
           this.information = information;
           this.title.setTitle(information.title + ' | ' + this.title.getTitle());
+          this.cd.markForCheck();
         },
-        err => this.logger.warn('Failed to fetch root informations', err)
+        err => {
+          this.logger.warn('Failed to fetch root informations', err);
+          this.cd.markForCheck();
+        }
       );
   }
 

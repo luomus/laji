@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { News } from '../shared';
@@ -8,7 +8,8 @@ import { Logger } from '../shared/logger/logger.service';
 @Component({
   selector: 'laji-news',
   templateUrl: './news.component.html',
-  styleUrls: ['./news.component.css']
+  styleUrls: ['./news.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewsComponent implements OnInit, OnDestroy {
   public newsItem: News;
@@ -16,6 +17,7 @@ export class NewsComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
               private newsService: NewsService,
+              private cd: ChangeDetectorRef,
               private logger: Logger
   ) {
   }
@@ -23,8 +25,14 @@ export class NewsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subTrans = this.route.params.subscribe(params => {
       this.newsService.get(params['id']).subscribe(
-        newsItem => this.newsItem = newsItem,
-        err => this.logger.warn('Failed to fetch news by id', err)
+        newsItem => {
+          this.newsItem = newsItem
+          this.cd.markForCheck();
+        },
+        err => {
+          this.logger.warn('Failed to fetch news by id', err);
+          this.cd.markForCheck();
+        }
       );
     });
   }
