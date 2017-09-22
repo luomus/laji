@@ -1,4 +1,7 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy,
+  OnInit
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
@@ -15,7 +18,8 @@ import { Util } from '../../shared/service/util.service';
   selector: 'laji-observation-chart',
   templateUrl: './observation-char.component.html',
   styleUrls: ['./observation-char.component.css'],
-  providers: [InformalTaxonGroupApi]
+  providers: [InformalTaxonGroupApi],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
 
@@ -41,7 +45,8 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
               private warehouseService: WarehouseApi,
               private informalGroupService: InformalTaxonGroupApi,
               private translate: TranslateService,
-              private logger: Logger
+              private logger: Logger,
+              private cd: ChangeDetectorRef
   ) {
   }
 
@@ -168,7 +173,10 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
           this.updateLabels();
         }
       },
-      err => this.logger.warn('Failed to build informal taxon pie', err)
+      err => {
+        this.logger.warn('Failed to build informal taxon pie', err);
+        this.cd.markForCheck();
+      }
     );
   }
 
@@ -197,6 +205,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
           label: this.getInformalGroupName(value.id)
         };
       });
+    this.cd.markForCheck();
   }
 
 

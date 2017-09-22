@@ -1,9 +1,13 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
+  ViewChild
+} from '@angular/core';
 import { nvD3 } from '../../../ng2-nvd3/ng2-nvd3.component';
 
 @Component({
   selector: 'laji-pie-chart',
-  template: '<nvd3 *ngIf="innerVisibility" [options]="options" [data]="data"></nvd3>'
+  template: '<nvd3 *ngIf="innerVisibility" [options]="options" [data]="data"></nvd3>',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PieChartComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(nvD3)
@@ -19,7 +23,9 @@ export class PieChartComponent implements OnInit, OnChanges, OnDestroy {
   public innerVisibility = true;
   public options: any;
 
-  constructor() {
+  constructor(
+    private cd: ChangeDetectorRef
+  ) {
   }
 
   ngOnInit() {
@@ -33,6 +39,7 @@ export class PieChartComponent implements OnInit, OnChanges, OnDestroy {
         if (!this.innerVisibility) {
           this.nvD3.clearElement();
         }
+        this.cd.markForCheck();
       }, 100);
     } else {
       this.refreshOptions();
