@@ -68,7 +68,7 @@
               <div [hidden]="activeImageTab !== 'taxon'" *ngIf="hasTaxonImages">
                 <laji-image-gallery [modalImages]="taxonImages"></laji-image-gallery>
               </div>
-              <div [hidden]="activeImageTab !== 'collection' || !hasCollectionImages">
+              <div *ngIf="isFromMasterChecklist" [hidden]="activeImageTab !== 'collection' || !hasCollectionImages">
                 <laji-gallery
                         *ngIf="taxon.species"
                         [shortPager]="true"
@@ -111,7 +111,7 @@
             </div>
           </div>
         </div>
-        <div [ngClass]="{
+        <div *ngIf="isFromMasterChecklist" [ngClass]="{
               'col-sm-6': !hasDescription && ((hasCollectionImages || hasTaxonImages) || (!hasCollectionImages && !hasTaxonImages)),
               'col-md-3': !hasDescription && (hasCollectionImages || hasTaxonImages)
             }">

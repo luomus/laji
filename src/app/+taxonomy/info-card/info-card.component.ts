@@ -1,4 +1,7 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit,
+  ViewChild
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +15,8 @@ import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'laji-info-card',
   templateUrl: './info-card.component.html',
-  styleUrls: ['./info-card.component.css']
+  styleUrls: ['./info-card.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoCardComponent implements OnInit, OnDestroy {
   @ViewChild(ObservationMapComponent) map: ObservationMapComponent;
@@ -23,7 +27,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   public activePanel = 0;
   public activeImage = 1;
   public activeImageTab: string;
-  public hasCollectionImages = true;
+  public hasCollectionImages = false;
   public hasTaxonImages = true;
   public hasDescription = true;
   public activeDescription = 0;
@@ -41,7 +45,8 @@ export class InfoCardComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private logger: Logger,
     private router: Router,
-    private title: Title
+    private title: Title,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -113,6 +118,13 @@ export class InfoCardComponent implements OnInit, OnDestroy {
     });
   }
 
+  get isFromMasterChecklist() {
+    if (!this.taxon || !this.taxon.checklist) {
+      return false;
+    }
+    return this.taxon.checklist.indexOf('MR.1') > -1;
+  }
+
   private updateMap() {
     if (!this.map) {
       return;
@@ -120,6 +132,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       if (this.map) {
         this.map.invalidateSize();
+        this.cd.markForCheck();
       }
     }, 100);
   }
@@ -147,6 +160,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
         });
         this.setTitle();
         this.updateMap();
+        this.cd.markForCheck();
       });
   }
 

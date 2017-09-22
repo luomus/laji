@@ -35,6 +35,8 @@ export interface Taxonomy {
 
   sortOrder?: number;
 
+  checklist?: string[];
+
   redListStatus2000Finland?: string;
 
   redListStatus2010Finland?: string;
