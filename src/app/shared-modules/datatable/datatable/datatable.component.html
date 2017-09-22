@@ -76,7 +76,7 @@
           ({{value.linkings.taxon.scientificName}})
       </span>
       <a
-        target="{{column.target || '_self'}}" [routerLink]="['/taxon', (value.linkings.taxon.id | toQName)] | localize">
+        target="{{column.target || '_self'}}" [routerLink]="['/taxon', (value.linkings.taxon.speciesId | toQName)] | localize">
         <i class="glyphicon glyphicon-tag"></i>
       </a>
     </span>
