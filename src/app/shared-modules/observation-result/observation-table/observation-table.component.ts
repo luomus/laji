@@ -200,10 +200,12 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
     if (changes.selected && !changes.selected.isFirstChange()) {
       this.initColumns();
       this.fetchPage(changes.page ? this.page : 1);
-    } else if ((changes.query && !changes.query.isFirstChange())
+    }
+    if ((changes.query && !changes.query.isFirstChange())
         || (changes.page && !changes.page.isFirstChange())
         || (changes.pageSize && !changes.pageSize.isFirstChange())) {
       this.fetchPage(changes.page ? this.page : 1);

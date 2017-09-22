@@ -24,7 +24,7 @@ export class ObservationResultListComponent implements OnInit {
     'unit.lifeStage',
     'document.sourceId'
   ];
-  pageSize: number;
+  pageSize = 100;
   aggregateBy: string[] = [];
 
   shownDocument = '';
