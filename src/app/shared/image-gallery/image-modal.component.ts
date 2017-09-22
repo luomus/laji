@@ -58,16 +58,16 @@ import { ImageModalOverlayComponent } from './image-modal-overlay.component';
   templateUrl: './image-modal.component.html'
 })
 export class ImageModalComponent implements OnInit, OnDestroy {
-  public opened: boolean = false;
+  public opened = false;
   public img: Image;
-  public loading: boolean= false;
-  public showRepeat: boolean= false;
+  public loading = false;
+  public showRepeat = false;
   @Input('modalImages') public modalImages: Image[];
   @Input('imagePointer') public imagePointer: number;
   @Output('cancelEvent') cancelEvent = new EventEmitter<any>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
   private _overlay: ComponentLoader<ImageModalOverlayComponent>;
-  private _isShown: boolean = false;
+  private _isShown = false;
 
   constructor(_viewContainerRef: ViewContainerRef,
               _renderer: Renderer,

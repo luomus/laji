@@ -1,4 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges,
+  Output
+} from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Util } from '../../shared/service/util.service';
 import { TaxonomyImage } from '../../shared/model/Taxonomy';
@@ -10,6 +13,7 @@ import { Observable } from 'rxjs/Observable';
   selector: 'laji-gallery',
   styleUrls: ['./gallery.component.css'],
   templateUrl: './gallery.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GalleryComponent implements OnChanges {
   @Input() query: WarehouseQueryInterface;
@@ -25,6 +29,7 @@ export class GalleryComponent implements OnChanges {
 
   constructor(
     private warehouseApi: WarehouseApi,
+    private cd: ChangeDetectorRef,
     private logger: Logger
   ) {
   }
@@ -49,6 +54,7 @@ export class GalleryComponent implements OnChanges {
     }
     this.loading = true;
     query.hasUnitMedia = true;
+    this.cd.markForCheck();
     this.warehouseApi.warehouseQueryListGet(query, [
         'unit.taxonVerbatim,unit.linkings.taxon.vernacularName,unit.linkings.taxon.scientificName',
         'unit.media',
@@ -88,10 +94,12 @@ export class GalleryComponent implements OnChanges {
         this.loading = false;
         this.images = images;
         this.hasData.emit(images.length > 0);
+        this.cd.markForCheck();
       }, (err) => {
         this.loading = false;
         this.hasData.emit(false);
         this.logger.error('Unable to fetch image from warehouse', err);
+        this.cd.markForCheck();
       });
   }
 }

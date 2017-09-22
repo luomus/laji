@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
 import { SearchQuery } from './search-query.model';
@@ -16,7 +16,8 @@ import { FooterService } from '../shared/service/footer.service';
       z-index: auto;
     }
   `],
-  providers: [SearchQuery]
+  providers: [SearchQuery],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationComponent implements OnInit, OnDestroy {
   public tab: string;
@@ -30,6 +31,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               private footerService: FooterService,
               private userService: UserService,
+              private cd: ChangeDetectorRef,
               public searchQuery: SearchQuery) {
   }
 
@@ -53,6 +55,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
         this.searchQuery.query.observerPersonToken = this.userService.getToken();
       }
       this.searchQuery.queryUpdate({formSubmit: !!params['reset'], newData: true});
+      this.cd.markForCheck();
     });
   }
 
