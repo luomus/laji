@@ -723,3 +723,7 @@ input[type="radio"]
 .ngx-datatable.material.striped .datatable-row-odd {
   background-color: #f9f9f9;
 }
+
+.ngx-datatable.material .datatable-footer .page-count {
+  white-space: nowrap;
+}

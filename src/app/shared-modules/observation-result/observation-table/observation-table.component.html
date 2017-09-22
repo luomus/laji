@@ -35,8 +35,10 @@
         <laji-selected-field-group
           title="result.aggregate.fields"
           [fields]="[
-            'unit.linkings.taxon',
+            'unit.taxon',
+            'unit.linkings.taxon.vernacularName',
             'unit.linkings.taxon.scientificName',
+            'unit.taxonVerbatim',
             'unit.linkings.taxon.taxonomicOrder',
             'document.collectionId',
             'document.sourceId',
@@ -68,8 +70,10 @@
         <laji-selected-field-group
           title="viewer.unit"
           [fields]="[
-            'unit.linkings.taxon',
+            'unit.taxon',
+            'unit.linkings.taxon.vernacularName',
             'unit.linkings.taxon.scientificName',
+            'unit.taxonVerbatim',
             'unit.reportedTaxonConfidence',
             'unit.quality.taxon.reliability',
             'unit.abundanceString',

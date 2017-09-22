@@ -495,5 +495,6 @@
   "result.oldestRecord": "Vanhin",
   "result.aggregate.fields": "Selitesarakkeet",
   "result.aggregate.numbers": "Tunnusluvut",
-  "result.load.personalData": "Huom! Tällä sivulla ei huomioida omat havainnot osion rajauksia."
+  "result.load.personalData": "Huom! Tällä sivulla ei huomioida omat havainnot osion rajauksia.",
+  "taxonVerbatim": "Alkuperäinen nimi"
 }

@@ -49,6 +49,42 @@
   </span>
 </ng-template>
 
+<ng-template let-value="value" let-column="column" #taxon>
+  <span *ngIf="value" title="{{value.taxonVerbatim}}">
+    <span style="display: inline"
+      *ngIf="value.linkings && value.linkings.taxon && (value.linkings.taxon.id || value.linkings.taxon.qname); else taxonVerbatim">
+      {{value.linkings.taxon.vernacularName | multiLang}}
+      <span style="display: inline" [class.cursive]="value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.scientificName">
+          ({{value.linkings.taxon.scientificName}})
+      </span>
+      <a
+        target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings.taxon.id || value.linkings.taxon.qname) | toQName)] | localize">
+        <i class="glyphicon glyphicon-tag"></i>
+      </a>
+    </span>
+    <ng-template #taxonVerbatim>
+      {{value.taxonVerbatim}}
+    </ng-template>
+  </span>
+</ng-template>
+<ng-template let-value="value" let-column="column" #species>
+  <span *ngIf="value" title="{{value.taxonVerbatim}}">
+    <span style="display: inline"
+          *ngIf="value.linkings && value.linkings.taxon && value.linkings.taxon.speciesId; else taxonVerbatim">
+      {{value.linkings.taxon.speciesVernacularName | multiLang}}
+      <span style="display: inline" [class.cursive]="value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.scientificName">
+          ({{value.linkings.taxon.scientificName}})
+      </span>
+      <a
+        target="{{column.target || '_self'}}" [routerLink]="['/taxon', (value.linkings.taxon.id | toQName)] | localize">
+        <i class="glyphicon glyphicon-tag"></i>
+      </a>
+    </span>
+    <ng-template #taxonVerbatim>
+      {{value.taxonVerbatim}}
+    </ng-template>
+  </span>
+</ng-template>
 <ng-template let-value="value" #warehouseLabel>
   <span *ngIf="value" title="{{value | label: 'warehouse'}}">
     {{value | label: 'warehouse'}}
@@ -64,9 +100,9 @@
     <span [innerHtml]="value | formattedNumber:'&nbsp;'"></span>
   </span>
 </ng-template>
-<ng-template let-value="value" #vernacularName>
-  <span *ngIf="value.vernacularName" title="{{value.vernacularName | multiLang}}">
-    {{value.vernacularName | multiLang}}
+<ng-template let-value="value" #multiLang>
+  <span *ngIf="value" title="{{value | multiLang}}">
+    {{value | multiLang}}
   </span>
 </ng-template>
 <ng-template let-row="row" #taxonScientificName>

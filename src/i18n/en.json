@@ -480,5 +480,6 @@
   "result.aggregate.fields": "Grouping columns",
   "result.aggregate.numbers": "Measures",
   "theme.cnt": "count",
-  "result.load.personalData": "Please note that the own observations filters are ignore on this page."
+  "result.load.personalData": "Please note that the own observations filters are ignore on this page.",
+  "taxonVerbatim": "Original name"
 }

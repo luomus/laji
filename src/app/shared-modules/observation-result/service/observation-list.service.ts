@@ -37,7 +37,7 @@ export class ObservationListService {
     orderBy: string[] = [],
     lang: string
   ): Observable<PagedResult<any>> {
-    aggregateBy = aggregateBy.filter(val => this.removeAggregateFields.indexOf(val) === -1);
+    aggregateBy = this.prepareFields(aggregateBy).filter(val => this.removeAggregateFields.indexOf(val) === -1);
     const key = JSON.stringify(query) + [aggregateBy.join(','), orderBy.join(','), lang, page, pageSize].join(':');
     if (this.aggregateKey === key && this.aggregateData) {
       return Observable.of(this.aggregateData);
@@ -81,6 +81,7 @@ export class ObservationListService {
     orderBy: string[] = [],
     lang: string
   ): Observable<PagedResult<any>> {
+    selected = this.prepareFields(selected);
     const key = JSON.stringify(query) + [selected.join(','), orderBy.join(','), lang, page, pageSize].join(':');
     if (this.key === key && this.data) {
       return Observable.of(this.data);
@@ -111,6 +112,17 @@ export class ObservationListService {
       })
       .share();
     return this.pending;
+  }
+
+  private prepareFields(select: string[]): string[] {
+    const exist = {};
+    return select.join(',').split(',').filter((val) => {
+      if (exist[val]) {
+        return false;
+      }
+      exist[val] = true;
+      return true;
+    });
   }
 
   private convertAggregateResult(data) {

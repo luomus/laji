@@ -16,8 +16,11 @@ export class DatatableComponent {
 
   @ViewChild('dataTable') public datatable: NgxDatatableComponent;
 
+  @ViewChild('taxon') taxonTpl: TemplateRef<any>;
+  @ViewChild('species') speciesTpl: TemplateRef<any>;
   @ViewChild('headerTpl') headerTpl: TemplateRef<any>;
   @ViewChild('eventDate') eventDateTpl: TemplateRef<any>;
+  @ViewChild('multiLang') multiLangTpl: TemplateRef<any>;
   @ViewChild('vernacularName') vernacularNameTpl: TemplateRef<any>;
   @ViewChild('scientificName') scientificNameTpl: TemplateRef<any>;
   @ViewChild('taxonScientificName') taxonScientificNameTpl: TemplateRef<any>;
