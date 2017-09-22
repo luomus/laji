@@ -72,7 +72,6 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     if (warehouseQuery.observerPersonToken) {
       delete warehouseQuery.observerPersonToken;
     }
-    console.log(warehouseQuery);
     this._query = warehouseQuery;
     const cacheKey = JSON.stringify(this._query);
     if (this.queryCache !== cacheKey) {
