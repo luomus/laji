@@ -55,7 +55,6 @@ export class SpeciesListComponent implements OnChanges {
   }
 
   onRowSelect(event) {
-    console.log(event);
     if (event.row && event.row.id) {
       this.router.navigate(this.localizeRouterService.translateRoute(['/taxon', event.row.id]));
     }
