@@ -54,7 +54,7 @@ export class ObservationListService {
     }
     this.aggregatePendingKey = key;
     this.aggregatePending = this.warehouseApi.warehouseQueryAggregateGet(
-      query,
+      {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
       [...aggregateBy],
       orderBy,
       pageSize,
@@ -98,7 +98,7 @@ export class ObservationListService {
     }
     this.pendingKey = key;
     this.pending = this.warehouseApi.warehouseQueryListGet(
-        query,
+      {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
         [...selected, 'unit.unitId', 'document.documentId'],
         orderBy,
         pageSize,

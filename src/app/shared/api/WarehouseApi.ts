@@ -44,8 +44,21 @@ export class WarehouseApi {
   }
 
   public static isEmptyQuery(query: WarehouseQueryInterface = {}) {
-    const paramCnt = Object.keys(query).length;
-    return paramCnt === 0 || (paramCnt === 1 && typeof query.includeNonValidTaxa !== 'undefined');
+    const keys = Object.keys(query);
+    for (const key of keys) {
+      if (typeof query[key] === 'undefined') {
+        continue;
+      } else if (key === 'countryId') {
+        if (query.countryId.length === 0 || (query.countryId.length === 1 && query.countryId.indexOf('ML.206') > -1)) {
+          continue;
+        }
+        return false;
+      } else if (['includeNonValidTaxa', 'cache'].indexOf(key) > -1) {
+        continue;
+      }
+      return false;
+    }
+    return true;
   }
 
   /**

@@ -11,3 +11,6 @@
 .top-info {
   left: 15px;
 }
+.list-spacer {
+  min-height: 30px;
+}

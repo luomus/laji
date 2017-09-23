@@ -34,11 +34,10 @@
       {{'observation.results.observation' | translate}}
       <laji-observation-count
         [timeout]="30000"
-        [overrideInQuery]="{countryId: 'ML.206'}"
+        [overrideInQuery]="{countryId: 'ML.206', includeNonValidTaxa: false}"
         [query]="searchQuery.query"
         [tick]="searchQuery.tack"
-        [field]="'unit.linkings.taxon.speciesId'"
-        [overrideInQuery]="{includeNonValidTaxa: false}">
+        [field]="'unit.linkings.taxon.speciesId'">
       </laji-observation-count>
       {{'observation.results.species' | translate}}
     </strong>

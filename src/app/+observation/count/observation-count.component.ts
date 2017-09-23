@@ -4,6 +4,7 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Util } from '../../shared/service/util.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { Observable } from 'rxjs/Observable';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   @Input() field: string;
   @Input() pick: any;
   @Input() query: any;
-  @Input() overrideInQuery: any;
+  @Input() overrideInQuery: WarehouseQueryInterface;
   @Input() pageSize = 20;
   @Input() tick: number;
   @Input() lightLoader = false;
@@ -53,7 +54,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
   update() {
     let query = Util.clone(this.query);
     if (this.overrideInQuery) {
-      query = Object.assign(query, this.overrideInQuery);
+      query = {...query, ...this.overrideInQuery};
     }
     if (WarehouseApi.isEmptyQuery(query)) {
       query.cache = true;

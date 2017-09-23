@@ -107,6 +107,13 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     const secretQuery: WarehouseQueryInterface = Util.clone(this._query);
     const speciesQuery: WarehouseQueryInterface = Util.clone(this._query);
 
+    if (WarehouseApi.isEmptyQuery(secretQuery)) {
+      secretQuery.cache = true;
+    }
+    if (WarehouseApi.isEmptyQuery(speciesQuery)) {
+      speciesQuery.cache = true;
+    }
+
     secretQuery.secured = true;
     speciesQuery.taxonRankId = 'MX.species';
     speciesQuery.includeNonValidTaxa = false;
