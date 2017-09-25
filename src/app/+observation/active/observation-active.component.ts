@@ -11,7 +11,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
 
   @Input() skip: string[] = [];
   public active: ActiveList[] = [];
-  public showList: boolean = false;
+  public showList = false;
 
   private subQueryUpdate: Subscription;
   private el: Element;
@@ -51,7 +51,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   }
 
   remove(item: ActiveList) {
-    let query = this.searchQuery.query;
+    const query = this.searchQuery.query;
     if (typeof query[item.field] !== 'undefined') {
       query[item.field] = undefined;
     }
@@ -62,7 +62,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   }
 
   removeAll() {
-    let query = this.searchQuery.query;
+    const query = this.searchQuery.query;
     Object.keys(query).map((key) => {
       if (this.skip.indexOf(key) === -1 && typeof query[key] !== 'undefined') {
         query[key] = undefined;
@@ -74,9 +74,9 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   }
 
   updateSelectedList() {
-    let query = this.searchQuery.query;
+    const query = this.searchQuery.query;
     this.active = [];
-    let keys = Object.keys(query);
+    const keys = Object.keys(query);
     if (!keys || keys.length === 0) {
       return;
     }
@@ -84,7 +84,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
       if (this.skip.indexOf(i) > -1) {
         return;
       }
-      let type = typeof query[i];
+      const type = typeof query[i];
       if (type !== 'undefined') {
         if (type === 'boolean' || type === 'number' || (query[i] && query[i].length > 0)) {
           this.active.push({field: i, value: query[i]});
