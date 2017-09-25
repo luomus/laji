@@ -49,6 +49,7 @@
   <div class="annotation-btn">
     <button type="button"
             [tooltip]="'annotation.title' | translate"
+            placement="left"
             class="btn btn-xs {{annotationClass$ | async}}"
             (click)="toggleAnnotations()">
       <i class="fa {{annotationIcon}}"></i>
