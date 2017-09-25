@@ -309,6 +309,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     if (!this.pageSize) {
       return;
     }
+    if (this.result.results) {
+      this.result.results = [];
+    }
     this.loading = true;
     this.changeDetectorRef.markForCheck();
     (this.isAggregate ?
