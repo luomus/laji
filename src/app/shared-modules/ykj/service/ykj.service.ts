@@ -55,7 +55,7 @@ export class YkjService {
         false,
         false
       )
-      .retryWhen(errors => errors.delay(500).take(3))
+      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .map(data => data.results)
       .map(data => this.resultToGeoJson(data, grid))
       .do(data => this.data);

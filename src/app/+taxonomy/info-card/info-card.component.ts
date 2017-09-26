@@ -173,6 +173,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   private getTaxon(id) {
     return this.taxonService
       .taxonomyFindBySubject(id, 'multi')
+      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .catch(err => {
         this.logger.warn('Failed to fetch taxon by id', err);
         return Observable.of({});
