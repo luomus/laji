@@ -10,7 +10,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { Map3Component } from '../../map/map.component';
 import { LajiMapOptions } from '../../map/map-options.interface';
 import { YkjService } from '../service/ykj.service';
-import { Util } from '../../../shared/service/util.service';
 
 @Component({
   selector: 'laji-ykj-map',
@@ -28,11 +27,11 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() type = 'count';
   @Input() colorRange: string[] = ['#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
   @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', '#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
-  @Input() individualBreak: number[] = [0, null, 1, 5, 10, 50, 100, 500];
-  @Input() countBreak: number[] = [1, 5, 10, 50, 100, 500];
+  @Input() individualBreak: number[] = [0, null, 1, 10, 100, 1000, 10000, 100000];
+  @Input() countBreak: number[] = [1, 10, 100, 1000, 10000, 100000];
   @Input() timeBreak: string[] = ['2020-01-01', '2015-01-01', '2010-01-01', '2005-01-01', '2000-01-01', '1991-01-01'];
-  @Input() individualLabel: string[] = ['0', '1+', '1-4', '5-9', '10-49', '50-99', '100-499', '500-'];
-  @Input() countLabel: string[] = ['1-4', '5-9', '10-49', '50-99', '100-499', '500-'];
+  @Input() individualLabel: string[] = ['0', '1+', '1-', '10-', '100-', '1 000-', '10 000-', '100 000-'];
+  @Input() countLabel: string[] = ['1-', '10-', '100-', '1 000-', '10 000', '100 000-'];
   @Input() timeLabel: string[] = ['2020', '2015-', '2010-', '2005-', '2000-', '1990-'];
   @Input() maxBounds: [[number, number], [number, number]] = [[58.0, 19.0], [72.0, 35.0]];
   @Input() mapOptions: LajiMapOptions = {
