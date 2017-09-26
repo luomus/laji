@@ -40,10 +40,9 @@
 
 <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template #headerTpl>
   <span class="datatable-header-cell-wrapper sort-full-width"
-        (click)="sort()"
-        title="{{column.name}}">
+        (click)="sort()" title="{{column.label | translate}}">
     <span class="datatable-header-cell-label draggable">
-      <span title="{{column.label | translate}}">{{column.label | translate}}</span>
+      {{column.label | translate}}
     </span>
   </span>
 </ng-template>
