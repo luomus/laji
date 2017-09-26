@@ -50,8 +50,8 @@ export class MainResultComponent implements OnInit, OnChanges {
     'document.collectionId',
     'unit.notes',
     'gathering.locality',
-    'unit.sex',
-    'unit.lifeStage',
+    'gathering.displayDateTime',
+    'gathering.team',
     'document.sourceId'
   ];
 
