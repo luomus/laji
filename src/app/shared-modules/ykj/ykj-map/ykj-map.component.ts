@@ -31,7 +31,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() countBreak: number[] = [1, 10, 100, 1000, 10000, 100000];
   @Input() timeBreak: string[] = ['2020-01-01', '2015-01-01', '2010-01-01', '2005-01-01', '2000-01-01', '1991-01-01'];
   @Input() individualLabel: string[] = ['0', '1+', '1-', '10-', '100-', '1 000-', '10 000-', '100 000-'];
-  @Input() countLabel: string[] = ['1-', '10-', '100-', '1 000-', '10 000', '100 000-'];
+  @Input() countLabel: string[] = ['1-', '10-', '100-', '1 000-', '10 000-', '100 000-'];
   @Input() timeLabel: string[] = ['2020', '2015-', '2010-', '2005-', '2000-', '1990-'];
   @Input() maxBounds: [[number, number], [number, number]] = [[58.0, 19.0], [72.0, 35.0]];
   @Input() mapOptions: LajiMapOptions = {
