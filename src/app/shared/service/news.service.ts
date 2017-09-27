@@ -17,7 +17,10 @@ export class NewsService {
     return Observable
       .interval(60100)
       .startWith(0)
-      .switchMap(() => this.newsApi.findAll(lang, '' + page,  '' + pageSize))
+      .switchMap(() => this.newsApi
+        .findAll(lang, '' + page,  '' + pageSize)
+        .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
+      )
       .do(data => {
         this.currentData = data;
       })
