@@ -404,7 +404,7 @@
   "viewer.field.time": "Aika",
   "viewer.secured.none": "Tässä havaintoerässä ei ole salattua tietoa.",
   "viewer.secured.secured": "Tätä havaintoerää on karkeistettu.",
-  "viewer.secured.partial": "Havaintoerästä on poistettu salaittavia havaintoja.",
+  "viewer.secured.partial": "Havaintoerästä on poistettu salattuja havaintoja.",
   "viewer.secured.own1": "Tämä on havaintoerän salaamaton näkymä. Julkinen näkymä voi näyttää toisenlaiselta",
   "viewer.secured.own2": "Siirry julkiseen näkymään",
   "viewer.issue": "Ongelma",
