@@ -44,6 +44,7 @@ export class MetadataService {
       });
     }
     this.pendingRanges = this.metadataApi.metadataFindAllRanges('multi')
+      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .do(ranges =>  this.cacheService.setItem(MetadataService.rangesCacheKey, ranges))
       .merge(this.cacheService.getItem(MetadataService.rangesCacheKey))
       .filter(ranges => !!ranges)
