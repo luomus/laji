@@ -71,6 +71,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
     this.subCount = this.warehouseService
       .warehouseQueryCountGet(query)
       .timeout(this.timeout)
+      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .delay(10)
       .subscribe(result => {
           this.loading = false;
