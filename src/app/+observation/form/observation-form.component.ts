@@ -20,6 +20,9 @@ import { Autocomplete } from '../../shared/model/Autocomplete';
 import { AreaType } from '../../shared/service/area.service';
 import { UserService } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
+import { FormService } from '../../shared/service/form.service';
+import { environment } from '../../../environments/environment';
+import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
 
 @Component({
   selector: 'laji-observation-form',
@@ -35,6 +38,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   @ViewChild('tabs') tabs;
   @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
 
+  public hasInvasiveControleRights = false;
   public debouchAfterChange = 500;
   public limit = 10;
   public formQuery: ObservationFormQuery;
@@ -71,6 +75,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
               private cd: ChangeDetectorRef,
               private userService: UserService,
               private autocompleteService: AutocompleteApi,
+              private formService: FormService,
+              private formPermissionService: FormPermissionService,
               private mapService: MapService,
               private winRef: WindowRef) {
     this.dataSource = Observable.create((observer: any) => {
@@ -105,6 +111,13 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (environment.invasiveControlForm) {
+      this.formService
+        .load(environment.invasiveControlForm, this.translate.currentLang)
+        .switchMap((form) => this.formPermissionService.hasEditAccess(form))
+        .subscribe(hasPermission => this.hasInvasiveControleRights = hasPermission);
+    }
+
     this.subSearch = this.delayedSearch
       .debounceTime(this.debouchAfterChange)
       .subscribe(() => {
@@ -360,6 +373,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   onFilterSelect(event) {
     this.searchQuery.query = event;
     this.onSubmit();
+  }
+
+  toInvasiveControlForm() {
+    this.formService.populate({URL: this.winRef.nativeWindow.document.location.href});
+    this.route.navigate(['/vihko', environment.invasiveControlForm]);
   }
 
   public changeTypeaheadLoading(e: boolean): void {

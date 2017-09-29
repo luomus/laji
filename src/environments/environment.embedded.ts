@@ -8,6 +8,7 @@ export const environment = {
   formWhitelist: [],
   defaultForm: 'JX.519',
   nafiForm: 'JX.123648',
+  invasiveControlForm: '',
   wbcForm: 'MHL.3',
   namedPlaceForm: 'JX.6668',
   loginUrl: 'https://login.laji.fi/login',

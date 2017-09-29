@@ -580,6 +580,11 @@
             </div>
           </div>
         </div><!-- filters end -->
+        <div style="padding-top: 10px" *ngIf="hasInvasiveControleRights">
+          <button type="button" class="btn btn-default" (click)="toInvasiveControlForm()">
+            Tee torjuntatoimia
+          </button>
+        </div>
         <div class="form-filters-fill"></div>
       </div>
     </div>

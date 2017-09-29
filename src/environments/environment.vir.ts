@@ -5,6 +5,7 @@ export const environment = {
   nafiForm: 'JX.123648',
   wbcForm: 'MHL.3',
   namedPlaceForm: 'JX.6668',
+  invasiveControlForm: '',
   loginUrl: '/user/virannomaiset',
   selfPage: 'https://login.laji.fi/self',
   production: true,
