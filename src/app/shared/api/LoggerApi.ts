@@ -33,121 +33,152 @@ import { Log, Status } from '../model/Log';
 
 @Injectable()
 export class LoggerApi {
-    protected basePath = '/api';
-    public defaultHeaders: Headers = new Headers({'Content-Type': 'application/json'});
+  protected basePath = '/api';
+  public defaultHeaders: Headers = new Headers({'Content-Type': 'application/json'});
 
-    constructor(protected http: Http) {
-    }
+  constructor(protected http: Http) {
+  }
 
-    /**
-     * Send error level log msg
-     *
-     * @param data Model instance data
-     */
-    public logError (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
-        const path = this.basePath + '/logger/error';
+  protected serializer() {
+    const stack = [], keys = [];
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        let requestOptions: RequestOptionsArgs = {
-            method: 'POST',
-            headers: headerParams,
-            search: queryParameters
-        };
-        requestOptions.body = JSON.stringify(data);
+    const cycleReplacer = function(key, value) {
+      if (stack[0] === value) {
+        return '[Circular ~]';
+      }
+      return '[Circular ~.' + keys.slice(0, stack.indexOf(value)).join('.') + ']';
+    };
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
-    }
-
-    /**
-     * Send info level log msg
-     *
-     * @param data Model instance data
-     */
-    public logInfo (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
-        const path = this.basePath + '/logger/info';
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        let requestOptions: RequestOptionsArgs = {
-            method: 'POST',
-            headers: headerParams,
-            search: queryParameters
-        };
-        requestOptions.body = JSON.stringify(data);
-
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
-    }
-
-    /**
-     * Send error level log msg
-     *
-     * @param minutesBack How many minutes back to look for items in the log
-     */
-    public logStatus (minutesBack?: number, extraHttpRequestParams?: any ): Observable<Status> {
-        const path = this.basePath + '/logger/status';
-
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        if (minutesBack !== undefined) {
-            queryParameters.set('minutesBack', '' + minutesBack);
+    return function(key, value) {
+      if (stack.length > 0) {
+        const thisPos = stack.indexOf(this);
+        if (thisPos > -1) {
+          stack.splice(thisPos + 1);
+          keys.splice(thisPos, Infinity, key);
+        } else {
+          stack.push(this);
+          keys.push(key);
         }
+        if (stack.indexOf(value) > -1) {
+          value = cycleReplacer.call(this, key, value);
+        }
+      } else {
+        stack.push(value);
+      }
 
-        let requestOptions: RequestOptionsArgs = {
-            method: 'GET',
-            headers: headerParams,
-            search: queryParameters
-        };
+      return value;
+    }
+  }
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+  /**
+   * Send error level log msg
+   *
+   * @param data Model instance data
+   */
+  public logError (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
+    const path = this.basePath + '/logger/error';
+
+    const queryParameters = new URLSearchParams();
+    const headerParams = this.defaultHeaders;
+    const requestOptions: RequestOptionsArgs = {
+      method: 'POST',
+      headers: headerParams,
+      search: queryParameters
+    };
+    requestOptions.body = JSON.stringify(data, this.serializer());
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  /**
+   * Send info level log msg
+   *
+   * @param data Model instance data
+   */
+  public logInfo (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
+    const path = this.basePath + '/logger/info';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    let requestOptions: RequestOptionsArgs = {
+      method: 'POST',
+      headers: headerParams,
+      search: queryParameters
+    };
+    requestOptions.body = JSON.stringify(data);
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  /**
+   * Send error level log msg
+   *
+   * @param minutesBack How many minutes back to look for items in the log
+   */
+  public logStatus (minutesBack?: number, extraHttpRequestParams?: any ): Observable<Status> {
+    const path = this.basePath + '/logger/status';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    if (minutesBack !== undefined) {
+      queryParameters.set('minutesBack', '' + minutesBack);
     }
 
-    /**
-     * Send warn level log msg
-     *
-     * @param data Model instance data
-     */
-    public logWarn (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
-        const path = this.basePath + '/logger/warn';
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
 
-        let queryParameters = new URLSearchParams();
-        let headerParams = this.defaultHeaders;
-        let requestOptions: RequestOptionsArgs = {
-            method: 'POST',
-            headers: headerParams,
-            search: queryParameters
-        };
-        requestOptions.body = JSON.stringify(data);
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
 
-        return this.http.request(path, requestOptions)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
-    }
+  /**
+   * Send warn level log msg
+   *
+   * @param data Model instance data
+   */
+  public logWarn (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
+    const path = this.basePath + '/logger/warn';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    let requestOptions: RequestOptionsArgs = {
+      method: 'POST',
+      headers: headerParams,
+      search: queryParameters
+    };
+    requestOptions.body = JSON.stringify(data);
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
 
 }
