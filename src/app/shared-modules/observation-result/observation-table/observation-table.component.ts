@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output,
   SimpleChanges,
   TemplateRef,
   ViewChild
@@ -78,7 +78,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       'unit.linkings.taxon.nameEnglish,' +
       'unit.linkings.taxon.nameSwedish,' +
       'unit.linkings.taxon.scientificName,' +
-      'unit.taxonVerbatim'
+      'unit.taxonVerbatim',
+      width: 300
     },
     { name: 'unit.taxonVerbatim',
       prop: 'unit.taxonVerbatim',
@@ -112,7 +113,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       'unit.linkings.taxon.speciesNameFinnish,' +
       'unit.linkings.taxon.speciesNameEnglish,' +
       'unit.linkings.taxon.speciesNameSwedish,' +
-      'unit.linkings.taxon.scientificName'
+      'unit.linkings.taxon.scientificName',
+      width: 300
     },
     { name: 'unit.linkings.species.vernacularName',
       prop: 'unit.linkings.taxon.speciesVernacularName',
