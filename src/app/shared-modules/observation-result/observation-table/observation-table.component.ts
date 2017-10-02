@@ -152,7 +152,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'unit.recordBasis', cellTemplate: 'warehouseLabel', label: 'observation.filterBy.recordBasis' },
     { name: 'unit.media.mediaType', cellTemplate: 'warehouseLabel', label: 'observation.filterBy.image' },
     { name: 'document.collectionId', prop: 'document.collection', width: 300, sortable: false },
-    { name: 'unit.notes', sortable: false, width: 300, label: 'result.document.notes' },
+    { name: 'unit.notes', sortable: false, label: 'result.document.notes' },
     { name: 'document.secureLevel', cellTemplate: 'warehouseLabel' },
     { name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel' },
     { name: 'document.sourceId', prop: 'document.source' },
