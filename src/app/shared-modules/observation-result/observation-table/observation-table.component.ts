@@ -113,7 +113,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       'unit.linkings.taxon.speciesNameFinnish,' +
       'unit.linkings.taxon.speciesNameEnglish,' +
       'unit.linkings.taxon.speciesNameSwedish,' +
-      'unit.linkings.taxon.scientificName',
+      'unit.linkings.taxon.speciesScientificName',
       width: 300
     },
     { name: 'unit.linkings.species.vernacularName',

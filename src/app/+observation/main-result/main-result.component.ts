@@ -42,7 +42,7 @@ export class MainResultComponent implements OnInit, OnChanges {
   initialized = false;
 
   aggregateBy = [
-    'unit.taxon'
+    'unit.species'
   ];
 
   selected = [
