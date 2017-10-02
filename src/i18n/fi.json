@@ -500,5 +500,6 @@
   "result.aggregate.fields": "Selitesarakkeet",
   "result.aggregate.numbers": "Tunnusluvut",
   "result.load.personalData": "Huom! Tällä sivulla ei huomioida omat havainnot osion rajauksia.",
-  "taxonVerbatim": "Alkuperäinen nimi"
+  "taxonVerbatim": "Alkuperäinen nimi",
+  "toICForm": "Tee torjuntatoimia"
 }
