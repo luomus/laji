@@ -68,11 +68,8 @@ laji-locale-sv > div,
   display: inline;
 }
 
-.comma-list li:after {
+.comma-list li + li:before {
   content: ", ";
-}
-.comma-list li:last-child:after {
-  content: "";
 }
 
 
