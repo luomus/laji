@@ -77,8 +77,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       'unit.linkings.taxon.nameFinnish,' +
       'unit.linkings.taxon.nameEnglish,' +
       'unit.linkings.taxon.nameSwedish,' +
-      'unit.linkings.taxon.scientificName,' +
-      'unit.taxonVerbatim',
+      'unit.linkings.taxon.scientificName,',
       width: 300
     },
     { name: 'unit.taxonVerbatim',
