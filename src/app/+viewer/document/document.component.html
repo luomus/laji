@@ -5,11 +5,9 @@
         <h3>
           {{'viewer.document' | translate }}
           <small>
-            <a *ngIf="!showTitle" [routerLink]="['/view']" [queryParams]="{
-                uri: document.documentId,
-                highlight: highlight,
-                own: own === true
-               }" target="_blank">
+            <a *ngIf="!showTitle" [routerLink]="['/view']" [queryParams]="highlight ?
+            {uri: document.documentId, highlight: highlight, own: own === true} :
+            {uri: document.documentId, own: own === true}" target="_blank">
               {{document.documentId}}
             </a>
             <span *ngIf="showTitle">
