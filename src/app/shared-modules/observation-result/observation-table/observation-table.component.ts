@@ -136,6 +136,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       width: 70 },
     { name: 'unit.reportedTaxonConfidence', cellTemplate: 'warehouseLabel' },
     { name: 'unit.quality.taxon.reliability', cellTemplate: 'warehouseLabel', label: 'result.unit.quality.taxon' },
+    { name: 'unit.quality.taxon.source', cellTemplate: 'warehouseLabel', label: 'result.unit.quality.source' },
     { name: 'gathering.team', cellTemplate: 'toSemicolon' },
     { name: 'gathering.interpretations.countryDisplayname', label: 'result.gathering.country' },
     { name: 'gathering.interpretations.biogeographicalProvinceDisplayname', label: 'result.gathering.biogeographicalProvince' },
