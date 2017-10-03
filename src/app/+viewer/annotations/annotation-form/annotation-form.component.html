@@ -54,7 +54,7 @@
   </div>
   <div class="actions">
     <button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{'feedback.cancel' | translate}}</button>
-    <button type="submit" [disabled]="!annotationForm.form.valid" class="btn btn-success btn-sm">{{'feedback.send' | translate}}</button>
+    <button type="submit" [disabled]="!annotationForm.form.valid || sending" class="btn btn-success btn-sm">{{'feedback.send' | translate}}</button>
   </div>
 </form>
 <div *lajiLoggedIn="false" class="annotation-form">

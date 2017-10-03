@@ -25,6 +25,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   taxonAutocomplete: Observable<any>;
   error: any;
   isEditor: boolean;
+  sending = false;
   needsAck: boolean;
   annotationOptions$: Observable<{id: Annotation.AnnotationClassEnum, value: object}[]>;
   types = Annotation.TypeEnum;
@@ -101,16 +102,22 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   }
 
   saveAnnotation() {
+    if (this.sending) {
+      return;
+    }
+    this.sending = true;
     this.annotationService
       .save(this.annotation)
       .subscribe(
         annotation => {
           this.annotation = annotation;
           this.success.emit(annotation);
+          this.sending = false;
         },
         error => {
           this.error = true;
           this.loggerService.error('Unable to save annotation', error);
+          this.sending = false;
         }
       );
   }
