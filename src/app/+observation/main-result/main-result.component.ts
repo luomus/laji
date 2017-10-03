@@ -90,6 +90,13 @@ export class MainResultComponent implements OnInit, OnChanges {
     this.userService.getItem<any>(UserService.SETTINGS_RESULT_LIST)
       .subscribe(data => {
         if (data) {
+          // change aggregatedBy field to another if needed!
+          if (data.aggregateBy) {
+            const idx = data.aggregateBy.indexOf('unit.taxon');
+            if (idx > -1) {
+              data.aggregateBy[idx] = 'unit.species';
+            }
+          }
           this.aggregateBy = data.aggregateBy || this.aggregateBy;
           this.selected = data.selected || this.selected;
           this.pageSize = data.pageSize || this.pageSize;
