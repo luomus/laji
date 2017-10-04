@@ -100,14 +100,28 @@
               <h4 class="panel-title">{{ 'taxonomy.browse.title' | translate }}</h4>
             </div>
             <div class="panel-body">
-              <p>
-                <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id}">
-                  {{ 'taxonomy.browse' | translate }}
-                </a><br>
-                <a [routerLink]="'/observation/load' | localize" [queryParams]="{target: taxon.id}">
-                  {{ 'taxonomy.browse.download' | translate }}
-                </a><br>
-              </p>
+              <ul class="br-list">
+                <li>
+                  <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id}">
+                    {{ 'taxonomy.browse' | translate }}
+                  </a>
+                </li>
+                <li>
+                  <a [routerLink]="'/observation/load' | localize" [queryParams]="{target: taxon.id}">
+                    {{ 'taxonomy.browse.download' | translate }}
+                  </a>
+                </li>
+                <li [hidden]="!taxon.hasChildren">
+                  <a href="https://vanha.laji.fi/taksonomia/lataus/{{taxon.id}}.csv?locale={{translate.currentLang}}" rel="noopener" target="_blank">
+                    {{ 'taxonomy.browse.downloadSpecies' | translate }}
+                  </a>
+                </li>
+                <li [hidden]="!taxon.hasChildren">
+                  <a href="https://vanha.laji.fi/taksonomia/lataus/finnish/{{taxon.id}}.csv?locale={{translate.currentLang}}" rel="noopener" target="_blank">
+                    {{ 'taxonomy.browse.downloadSpeciesFinnish' | translate }}
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>

@@ -40,8 +40,8 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   private subTrans: Subscription;
 
   constructor(
+    public translate: TranslateService,
     private taxonService: TaxonomyApi,
-    private translate: TranslateService,
     private route: ActivatedRoute,
     private logger: Logger,
     private router: Router,
