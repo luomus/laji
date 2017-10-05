@@ -12,7 +12,7 @@ export class WbcComponent implements OnInit {
   showForm =  false;
   isFormPage = false;
 
-  constructor(private router: Router) {}
+  constructor(public router: Router) {}
 
   ngOnInit() {
     this.showForm = !environment.production;
