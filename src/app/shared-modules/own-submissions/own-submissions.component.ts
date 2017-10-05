@@ -66,7 +66,7 @@ export class OwnSubmissionsComponent implements OnInit {
     }
 
     if (this.documentCache[String(year)]) {
-      this.activeDocuments = this.documentCache[String(year)];
+      this.activeDocuments = this.filterDocuments(this.documentCache[String(year)]);
       return;
     }
 
