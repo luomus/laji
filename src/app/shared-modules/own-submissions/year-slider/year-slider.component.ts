@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class YearSliderComponent implements OnInit {
   @Input() yearInfo: any[];
+  @Input() showCounts = true;
   countByYear = {};
 
   sliderRange: number;
@@ -91,7 +92,11 @@ export class YearSliderComponent implements OnInit {
         format: {
           to: (value) => {
             const pcs = this.countByYear[value] === 1 ? this.pcString : this.pcsString;
-            return '<div style="margin: 2px 5px; min-width: 90px">' + value + '<br>' + this.countByYear[value] + ' ' + pcs + '</div>';
+            return this.showCounts ?
+              '<div style="margin: 2px 5px; min-width: 90px">' +
+                value + '<br>' + this.countByYear[value] + ' ' + pcs +
+              '</div>' :
+              '<div style="margin: 2px 5px; min-width: 90px">' + value + '</div>';
           }
         }
       }
