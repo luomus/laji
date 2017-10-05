@@ -69,7 +69,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
         schema: this.formData.schema,
         uiSchema: this.formData.uiSchema,
         formData: this.formData.formData,
-        validators: this.formData.validators
+        validators: this.formData.validators,
+        warnings: this.formData.warnings
       });
     }
   }
@@ -114,6 +115,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               uiSchemaContext: uiSchemaContext,
               formData: this.formData.formData,
               validators: this.formData.validators,
+              warnings: this.formData.warnings,
               onSubmit: this._onSubmit.bind(this),
               onChange: this._onChange.bind(this),
               onSettingsChange: this._onSettingsChange.bind(this),
