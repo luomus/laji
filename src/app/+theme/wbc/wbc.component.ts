@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -9,8 +10,9 @@ import { environment } from '../../../environments/environment';
 export class WbcComponent implements OnInit {
 
   showForm =  false;
+  isFormPage = false;
 
-  constructor() { }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.showForm = !environment.production;
