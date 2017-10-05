@@ -6,6 +6,7 @@
         <li><a [routerLink]="['../wbc', 'instructions']">{{'instructions' | translate}}</a></li>
         <li><a [routerLink]="['../wbc', 'stats']">{{'nafi.stats' | translate}}</a></li>
         <li *ngIf="showForm"><a [routerLink]="['../wbc', 'form']">{{'nafi.form' | translate}}</a></li>
+        <li *ngIf="showForm"><a [routerLink]="['../wbc', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
       </ul>
     </div>
     <div class="col-sm-9 col-md-9 col-lg-10 wbc-content">

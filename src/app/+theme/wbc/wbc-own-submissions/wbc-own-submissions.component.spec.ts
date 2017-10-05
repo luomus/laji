@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OwnSubmissionsComponent } from './own-submissions.component';
+import { WbcOwnSubmissionsComponent } from './wbc-own-submissions.component';
 
-describe('OwnSubmissionsComponent', () => {
-  let component: OwnSubmissionsComponent;
-  let fixture: ComponentFixture<OwnSubmissionsComponent>;
+describe('WbcOwnSubmissionsComponent', () => {
+  let component: WbcOwnSubmissionsComponent;
+  let fixture: ComponentFixture<WbcOwnSubmissionsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OwnSubmissionsComponent ]
+      declarations: [ WbcOwnSubmissionsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OwnSubmissionsComponent);
+    fixture = TestBed.createComponent(WbcOwnSubmissionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

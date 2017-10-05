@@ -6,6 +6,7 @@
         <li><a [routerLink]="['../nafi', 'instructions']">{{'instructions' | translate}}</a></li>
         <li><a [routerLink]="['../nafi', 'stats']">{{'nafi.stats' | translate}}</a></li>
         <li *ngIf="showForm"><a [routerLink]="['../nafi', 'form']">{{'nafi.form' | translate}}</a></li>
+        <li *ngIf="showForm"><a [routerLink]="['../nafi', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
       </ul>
     </div>
     <div class="col-sm-9 col-md-9 col-lg-10 nafi-content">

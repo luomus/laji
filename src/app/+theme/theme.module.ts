@@ -24,6 +24,8 @@ import { WbcInstructionsComponent } from './wbc/wbc-instructions/wbc-instruction
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
+import { OwnSubmissionsModule } from '../shared-modules/own-submissions/own-submissions.module';
+import { WbcOwnSubmissionsComponent } from './wbc/wbc-own-submissions/wbc-own-submissions.component';
 
 @NgModule({
   imports: [
@@ -33,7 +35,8 @@ import { ObservationResultModule } from '../shared-modules/observation-result/ob
     ViewerModule,
     LangModule,
     YkjModule,
-    ObservationResultModule
+    ObservationResultModule,
+    OwnSubmissionsModule
   ],
   declarations: [
     NafiComponent,
@@ -51,7 +54,8 @@ import { ObservationResultModule } from '../shared-modules/observation-result/ob
     WbcComponent,
     WbcFormComponent,
     WbcResultComponent,
-    WbcInstructionsComponent
+    WbcInstructionsComponent,
+    WbcOwnSubmissionsComponent
   ],
   providers: [ ResultService ]
 })

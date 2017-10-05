@@ -14,6 +14,7 @@ import { WbcComponent } from './wbc/wbc.component';
 import { WbcInstructionsComponent } from './wbc/wbc-instructions/wbc-instructions.component';
 import { WbcResultComponent } from './wbc/wbc-result/wbc-result.component';
 import { WbcFormComponent } from './wbc/wbc-form/wbc-form.component';
+import { WbcOwnSubmissionsComponent } from './wbc/wbc-own-submissions/wbc-own-submissions.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,7 @@ const routes: Routes = [
         canActivate: [OnlyLoggedIn],
         canDeactivate: [DocumentDeActivateGuard]
       },
+      {path: 'ownSubmissions', pathMatch: 'full', component: WbcOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' } }
     ]
   },
@@ -47,7 +49,7 @@ const routes: Routes = [
         canActivate: [OnlyLoggedIn],
         canDeactivate: [DocumentDeActivateGuard]
       },
-      {path: 'myObservations', pathMatch: 'full', component: NafiMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'ownSubmissions', pathMatch: 'full', component: NafiMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: NafiInstructionsComponent, data: { title: 'nafi.stats.title' } }
     ]
   },

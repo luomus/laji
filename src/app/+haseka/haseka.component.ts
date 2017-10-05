@@ -3,14 +3,13 @@ import { UserService } from '../shared/service/user.service';
 import { LocalStorage } from 'ng2-webstorage';
 import { NavigationEnd, Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
-import { RouterChildrenEventService } from './router-children-event.service';
 import { Subscription } from 'rxjs/Subscription';
+import { RouterChildrenEventService } from '../shared-modules/own-submissions/service/router-children-event.service';
 
 @Component({
   selector: 'haseka',
   templateUrl: './haseka.component.html',
-  styleUrls: ['./haseka.component.css'],
-  providers: [RouterChildrenEventService]
+  styleUrls: ['./haseka.component.css']
 })
 export class HasekaComponent implements OnInit, OnDestroy {
 

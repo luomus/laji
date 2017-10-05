@@ -6,11 +6,11 @@ import { UserService } from '../../../shared/service/user.service';
 import { CollectionService } from '../../../shared/service/collection.service';
 import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { DocumentInfoService } from '../../document-info.service';
 import { geoJSONToISO6709 } from 'laji-map/lib/utils';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { Observable } from 'rxjs/Observable';
+import { DocumentInfoService } from '../service/document-info.service';
 
 
 @Injectable()
@@ -215,7 +215,7 @@ export class DocumentExportService {
       obj = next.obj;
       key = next.key;
       path = next.path;
-      formId = next.formId;
+      formId = next.formID;
 
       for (const i in obj) {
         if (!obj.hasOwnProperty(i) || obj[i] == null || i.charAt(0) === '@'

@@ -2,7 +2,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 import { HasekaComponent } from './haseka.component';
 import { HaSeKaFormListComponent } from './form-list/haseka-form-list';
-import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { HaSeKaFormComponent } from './form/haseka-form.component';
@@ -14,6 +13,7 @@ import { AcceptComponent } from './form-permission/admin/accept/accept.component
 import { ManageComponent } from './form-permission/admin/manage/manage.component';
 import { NpPrintComponent } from './named-place/np-print/np-print.component';
 import { DocumentDeActivateGuard } from '../shared/document-form/document-de-activate.guard';
+import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
 
 export const hasekaRoutes: Routes = [
   {
@@ -37,7 +37,7 @@ export const hasekaRoutes: Routes = [
     component: NpPrintComponent
   },
   {
-    path: 'places/:collectionId/:formId',
+    path: 'places/:collectionId/:formID',
     pathMatch: 'full',
     component: NamedPlaceComponent
   },
@@ -56,12 +56,12 @@ export const hasekaRoutes: Routes = [
     component: RequestComponent
   },
   {
-    path: ':formId',
+    path: ':formID',
     pathMatch: 'full',
     component: HaSeKaFormComponent
   },
   {
-    path: ':formId/:documentId',
+    path: ':formID/:documentId',
     pathMatch: 'full',
     component: HaSeKaFormComponent,
     canDeactivate: [DocumentDeActivateGuard]

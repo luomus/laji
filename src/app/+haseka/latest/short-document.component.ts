@@ -5,7 +5,7 @@ import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WindowRef } from '../../shared/windows-ref';
 import { Subscription } from 'rxjs/Subscription';
-import { DocumentInfoService } from '../document-info.service';
+import { DocumentInfoService } from '../../shared-modules/own-submissions/service/document-info.service';
 
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 

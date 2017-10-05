@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Document } from '../shared/model/Document';
+import { Document } from '../../../shared/model/Document';
 
 /**
  * Document service

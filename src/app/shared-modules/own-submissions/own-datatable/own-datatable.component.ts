@@ -1,13 +1,16 @@
-import { Component, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { Document } from '../../../shared/model/Document';
-import { DocumentInfoService } from '../../document-info.service';
+import { DocumentInfoService } from '../service/document-info.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { UserService } from '../../../shared/service/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Person } from '../../../shared/model/Person';
 import { FormService } from '../../../shared/service/form.service';
-import { RouterChildrenEventService } from '../../router-children-event.service';
+import { RouterChildrenEventService } from '../service/router-children-event.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { DocumentExportService } from './document_export.service';
@@ -25,6 +28,10 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() year: number;
   @Input() documents: Document[];
   @Input() loadError = '';
+  @Input() showDownloadAll = true;
+  @Input() useInternalDocumentViewer = false;
+  @Output() documentClicked = new EventEmitter();
+
   formsById = {};
 
   totalMessage = '';
@@ -150,7 +157,11 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   showViewer(docId: string) {
-    this.eventService.showViewerClicked(docId);
+    if (!this.useInternalDocumentViewer) {
+      this.eventService.showViewerClicked(docId);
+    } else {
+      this.documentClicked.emit(docId);
+    }
   }
 
   toEditPage(row: any) {
