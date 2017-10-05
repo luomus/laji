@@ -1,14 +1,13 @@
 <div class="container-fluid wbc">
-  <div class="row" id="wrapper">
-    <div style="background-color: #ECF0F1;" class="col-sm-3 col-md-3 col-lg-2">
-      <h3>{{'wbc.title' | translate}}</h3>
+  <div [ngClass]="{'row': router.url.indexOf('form') === -1}" id="wrapper">
+    <div *ngIf="router.url.indexOf('form') === -1" style="background-color: #ECF0F1;" class="col-sm-3 col-md-3 col-lg-2">
       <ul class="sidebar-nav">
         <li><a [routerLink]="['../wbc', 'instructions']">{{'instructions' | translate}}</a></li>
         <li><a [routerLink]="['../wbc', 'stats']">{{'nafi.stats' | translate}}</a></li>
         <li *ngIf="showForm"><a [routerLink]="['../wbc', 'form']">{{'nafi.form' | translate}}</a></li>
       </ul>
     </div>
-    <div class="col-sm-9 col-md-9 col-lg-10 wbc-content">
+    <div [ngClass]="{'col-sm-9 col-md-9 col-lg-10': router.url.indexOf('form') === -1}" class="wbc-content">
       <router-outlet></router-outlet>
     </div>
   </div>
