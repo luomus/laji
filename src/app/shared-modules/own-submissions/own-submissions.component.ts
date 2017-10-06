@@ -17,6 +17,7 @@ export class OwnSubmissionsComponent implements OnInit {
   @Input() formID;
   @Input() showDownloadAll = true;
   @Input() useInternalDocumentViewer = false;
+  @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
   @ViewChild('documentModal') public modal: ModalDirective;
 
   activeDocuments: Document[];
