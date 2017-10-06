@@ -1,2 +1,6 @@
 <h3>{{'haseka.ownSubmissions.title' | translate}}</h3>
-<laji-own-submissions [formID]="formId" [useInternalDocumentViewer]="true" [showDownloadAll]="false"></laji-own-submissions>
+<laji-own-submissions
+  [columns]="['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'id']"
+  [formID]="formId"
+  [useInternalDocumentViewer]="true"
+  [showDownloadAll]="false"></laji-own-submissions>

@@ -30,13 +30,15 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() loadError = '';
   @Input() showDownloadAll = true;
   @Input() useInternalDocumentViewer = false;
+  @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
   @Output() documentClicked = new EventEmitter();
 
   formsById = {};
 
   totalMessage = '';
   publicity = Document.PublicityRestrictionsEnum;
-  columns = [
+  useColumns = [];
+  allColumns = [
     {prop: 'dateEdited', mode: 'medium'},
     {prop: 'dateObserved', mode: 'small'},
     {prop: 'locality', mode: 'small'},
@@ -71,6 +73,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   ) {}
 
   ngOnInit() {
+    this.initColumns();
     this.updateTranslations();
 
     this.subTrans = this.translate.onLangChange.subscribe(() => {
@@ -90,11 +93,18 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     if (changes['documents']) {
       this.updateRows();
     }
+    if (changes['column']) {
+      this.initColumns();
+    }
   }
 
   @HostListener('window:resize')
   onResize() {
     this.updateDisplayMode();
+  }
+
+  private initColumns() {
+    this.useColumns = this.allColumns.filter(column => this.columns.indexOf(column.prop) > -1);
   }
 
   private updateDisplayMode() {
@@ -114,7 +124,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
-    const columns = this.columns;
+    const columns = this.useColumns;
 
     this.rows = this.temp.filter(function (row) {
       for (let i = 0; i < columns.length; i++) {
