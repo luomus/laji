@@ -37,7 +37,7 @@ export const hasekaRoutes: Routes = [
     component: NpPrintComponent
   },
   {
-    path: 'places/:collectionId/:formID',
+    path: 'places/:collectionId/:formId',
     pathMatch: 'full',
     component: NamedPlaceComponent
   },
@@ -56,12 +56,12 @@ export const hasekaRoutes: Routes = [
     component: RequestComponent
   },
   {
-    path: ':formID',
+    path: ':formId',
     pathMatch: 'full',
     component: HaSeKaFormComponent
   },
   {
-    path: ':formID/:documentId',
+    path: ':formId/:documentId',
     pathMatch: 'full',
     component: HaSeKaFormComponent,
     canDeactivate: [DocumentDeActivateGuard]
