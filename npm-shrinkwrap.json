@@ -338,9 +338,6 @@
       "integrity": "sha512-YTCb4ZpdBZFdJoqxqH1lOZBL3HCcrj8654QFFFikaOvgnMVOxl6kGp9RLnz5XiUMJVloY3UZF77JVaKX4Cgm5w==",
       "dev": true
     },
-    "Leaflet.vector-markers": {
-      "version": "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
-    },
     "abbrev": {
       "version": "1.1.1",
       "resolved": "https://registry.npmjs.org/abbrev/-/abbrev-1.1.1.tgz",
@@ -4726,16 +4723,16 @@
       }
     },
     "laji-form": {
-      "version": "0.0.234",
-      "resolved": "https://registry.npmjs.org/laji-form/-/laji-form-0.0.234.tgz",
-      "integrity": "sha512-EVSHEwAMxLuINhLwKiNFvc08NnD/8hbbnmdDV9fuYvOa1OVetT+8Nf0ugkf9kMGwL6CLWc4mBlnB1p7ndBghug==",
+      "version": "0.0.235",
+      "resolved": "https://registry.npmjs.org/laji-form/-/laji-form-0.0.235.tgz",
+      "integrity": "sha512-al5XYl2rVPexaReCf+mWTU5Qp1AH+qvJV5ktaVQ9yo2v66yxX9fm7uX9s6LQX5FfhdJzhGdXdtMTYkDnmwdSSg==",
       "requires": {
         "babel-runtime": "6.26.0",
         "deep-equal": "1.0.1",
         "deepmerge": "1.5.1",
         "immutability-helper": "2.4.0",
-        "laji-map": "1.0.252",
-        "laji-validate": "0.0.30",
+        "laji-map": "1.0.253",
+        "laji-validate": "0.0.31",
         "moment": "2.18.1",
         "prop-types": "15.6.0",
         "react": "15.6.2",
@@ -4753,14 +4750,36 @@
         "react-transition-group": "1.2.1",
         "react-widgets": "3.5.0",
         "scroll-into-view-if-needed": "1.2.1"
+      },
+      "dependencies": {
+        "laji-validate": {
+          "version": "0.0.31",
+          "resolved": "https://registry.npmjs.org/laji-validate/-/laji-validate-0.0.31.tgz",
+          "integrity": "sha512-WZaOuArkRdZfozrjUcs+COnxNRkyA7p3sQo7JjXaNURSq1Baz8RT2nUpWffh9Z871BWvpnror/VKdXgQw8hVqA==",
+          "requires": {
+            "moment": "2.18.1",
+            "validate.js": "github:vixriihi/validate.js#43e293c8832703046f9c405fe6d71ac207c0ba69"
+          }
+        },
+        "react-jsonschema-form": {
+          "version": "git+https://git@github.com/olzraiti/react-jsonschema-form.git#1de7f10c351b675935aa2b58012da6b8bbd7dff0",
+          "requires": {
+            "jsonschema": "1.2.0",
+            "lodash.topath": "4.5.2",
+            "prop-types": "15.6.0",
+            "setimmediate": "1.0.5"
+          }
+        },
+        "validate.js": {
+          "version": "github:vixriihi/validate.js#43e293c8832703046f9c405fe6d71ac207c0ba69"
+        }
       }
     },
     "laji-map": {
-      "version": "1.0.252",
-      "resolved": "https://registry.npmjs.org/laji-map/-/laji-map-1.0.252.tgz",
-      "integrity": "sha512-rM7A/r+1ZjUvMir14a2l0s7NsBun5dC0BcAmA8Og3GWEE6CpvsAj1PcAC8IBF3ND7mod9EGiceclzMe3N8ZfWA==",
+      "version": "1.0.253",
+      "resolved": "https://registry.npmjs.org/laji-map/-/laji-map-1.0.253.tgz",
+      "integrity": "sha512-jO5RKJtycc4mfl5QKSHasRtV1mdZMyMCr01pnCdphg0bHW0OMNHKCOuId3dvcMmZbGgaO7ZsKRF8AInDXoZ+3Q==",
       "requires": {
-        "Leaflet.vector-markers": "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6",
         "babel-runtime": "6.26.0",
         "leaflet": "1.0.3",
         "leaflet-contextmenu": "1.1.1",
@@ -4769,6 +4788,7 @@
         "leaflet-mml-layers": "2.0.1",
         "leaflet-textpath": "git+https://git@github.com/makinacorpus/Leaflet.textPath.git#ad1afd910b387e075989b258d487cd7d6db93b0b",
         "leaflet.markercluster": "1.0.3",
+        "Leaflet.vector-markers": "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6",
         "nouislider": "10.1.0",
         "proj4": "2.3.16",
         "proj4leaflet": "1.0.1"
@@ -4779,15 +4799,6 @@
           "resolved": "https://registry.npmjs.org/nouislider/-/nouislider-10.1.0.tgz",
           "integrity": "sha512-lENwxlpoYg4/5gjdaY/PMNHeVL+CMJyrO+7RzXi1MqhSSGwuJsQSJteXCQV5bE2UKEdSLARWrqIF8XSWAq7h+A=="
         }
-      }
-    },
-    "laji-validate": {
-      "version": "0.0.30",
-      "resolved": "https://registry.npmjs.org/laji-validate/-/laji-validate-0.0.30.tgz",
-      "integrity": "sha512-YpMY76udOFvbGqPy8OU2dZiM6mIL0RST9nmIvUISa7AfJtOIWjxcaPRKHMXexrddSWeEnBt+jHDpT3jkaNKFig==",
-      "requires": {
-        "moment": "2.18.1",
-        "validate.js": "github:vixriihi/validate.js#43e293c8832703046f9c405fe6d71ac207c0ba69"
       }
     },
     "lazy-cache": {
@@ -4846,6 +4857,9 @@
       "version": "1.0.3",
       "resolved": "https://registry.npmjs.org/leaflet.markercluster/-/leaflet.markercluster-1.0.3.tgz",
       "integrity": "sha1-ZMd5NlwJUfSIXDQUAkqZTz7/xwg="
+    },
+    "Leaflet.vector-markers": {
+      "version": "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     },
     "less": {
       "version": "2.7.2",
@@ -7224,15 +7238,6 @@
         "once": "1.4.0"
       }
     },
-    "react-jsonschema-form": {
-      "version": "git+https://git@github.com/olzraiti/react-jsonschema-form.git#1de7f10c351b675935aa2b58012da6b8bbd7dff0",
-      "requires": {
-        "jsonschema": "1.2.0",
-        "lodash.topath": "4.5.2",
-        "prop-types": "15.6.0",
-        "setimmediate": "1.0.5"
-      }
-    },
     "react-overlays": {
       "version": "0.7.2",
       "resolved": "https://registry.npmjs.org/react-overlays/-/react-overlays-0.7.2.tgz",
@@ -8500,6 +8505,11 @@
       "resolved": "https://registry.npmjs.org/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz",
       "integrity": "sha1-J5siXfHVgrH1TmWt3UNS4Y+qBxM="
     },
+    "string_decoder": {
+      "version": "0.10.31",
+      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz",
+      "integrity": "sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ="
+    },
     "string-width": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/string-width/-/string-width-1.0.2.tgz",
@@ -8510,11 +8520,6 @@
         "is-fullwidth-code-point": "1.0.0",
         "strip-ansi": "3.0.1"
       }
-    },
-    "string_decoder": {
-      "version": "0.10.31",
-      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz",
-      "integrity": "sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ="
     },
     "stringstream": {
       "version": "0.0.5",
@@ -9183,9 +9188,6 @@
         "spdx-correct": "1.0.2",
         "spdx-expression-parse": "1.0.4"
       }
-    },
-    "validate.js": {
-      "version": "github:vixriihi/validate.js#43e293c8832703046f9c405fe6d71ac207c0ba69"
     },
     "vary": {
       "version": "1.1.2",
