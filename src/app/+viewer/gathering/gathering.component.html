@@ -24,7 +24,7 @@
     </laji-row>
     <laji-row [title]="'MY.notes' | label" [value]="gathering.notes"></laji-row>
   </div>
-  <laji-facts [show]="showFacts" [facts]="gathering.taxon"></laji-facts>
+  <laji-facts [show]="showFacts" [facts]="gathering.facts"></laji-facts>
   <div *ngFor="let unit of gathering?.units">
     <laji-unit [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit>
   </div>
