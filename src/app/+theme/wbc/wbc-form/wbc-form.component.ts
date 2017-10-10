@@ -49,7 +49,7 @@ export class WbcFormComponent implements OnInit, OnDestroy, ComponentCanDeactiva
   }
 
   onSuccess(data) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/wbc/stats']));
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/wbc/ownSubmissions']));
   }
 
   onError() {

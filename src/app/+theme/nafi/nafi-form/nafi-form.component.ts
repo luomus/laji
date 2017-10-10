@@ -49,7 +49,7 @@ export class NafiFormComponent implements OnInit, OnDestroy, ComponentCanDeactiv
   }
 
   onSuccess(data) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/nafi/stats']));
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/nafi/ownSubmissions']));
   }
 
   onError() {
