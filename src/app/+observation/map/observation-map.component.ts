@@ -308,7 +308,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           if (!coordinates[0] || !coordinates[0]) {
             return;
           }
-          const properties = {title: 1};
+          const properties = {count: 1};
           this.itemFields.map(field => {
             const name = field.split('.').pop();
             properties[name] = ObservationMapComponent.getValue(row, field);
@@ -454,8 +454,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
   private getStyle(data: StyleParam) {
     let currentColor = '#00aa00';
-    if (data.feature && data.feature.properties && data.feature.properties.title) {
-      currentColor = this.style(+data.feature.properties.title);
+    if (data.feature && data.feature.properties && data.feature.properties.count) {
+      currentColor = this.style(+data.feature.properties.count);
     }
     return {
       weight: 1,
@@ -471,7 +471,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       .subscribe((moreInfo) => {
         try {
           const properties = this.mapData[0].featureCollection.features[idx].properties;
-          const cnt = properties.title;
+          const cnt = properties.count;
           let description = '';
           this.itemFields.map(field => {
             const name = field.split('.').pop();
