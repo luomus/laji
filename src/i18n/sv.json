@@ -488,5 +488,7 @@
   "result.load.personalData": "Observera att de egna observatörs filtren ignoreras på den här sidan.",
   "taxonVerbatim": "Ursprungligt namn",
   "result.unit.quality.source": "Källa till tillförlitlighet",
-  "toICForm": "Ta invasiv kontrollåtgärd"
+  "toICForm": "Ta invasiv kontrollåtgärd",
+  "taxonomy.browse.downloadSpecies": "Hämta artlista",
+  "taxonomy.browse.downloadSpeciesFinnish": "Hämta finska artlistan"
 }

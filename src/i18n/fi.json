@@ -502,5 +502,7 @@
   "result.load.personalData": "Huom! Tällä sivulla ei huomioida omat havainnot osion rajauksia.",
   "result.unit.quality.source": "Hav. luotettavuuden lähde",
   "taxonVerbatim": "Alkuperäinen nimi",
-  "toICForm": "Tee torjuntatoimia"
+  "toICForm": "Tee torjuntatoimia",
+  "taxonomy.browse.downloadSpecies": "Lataa lajiluettelo",
+  "taxonomy.browse.downloadSpeciesFinnish": "Lataa suomen lajiluettelo"
 }

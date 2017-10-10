@@ -487,5 +487,7 @@
   "result.load.personalData": "Please note that the own observations filters are ignore on this page.",
   "taxonVerbatim": "Original name",
   "result.unit.quality.source": "Source of reliability",
-  "toICForm": "Take invasive control action"
+  "toICForm": "Take invasive control action",
+  "taxonomy.browse.downloadSpecies": "Download species list",
+  "taxonomy.browse.downloadSpeciesFinnish": "Download finnish species list"
 }

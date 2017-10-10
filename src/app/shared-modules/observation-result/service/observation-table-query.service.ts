@@ -12,6 +12,9 @@ export class ObservationTableQueryService {
             query.target = data.unit.taxonVerbatim;
           }
         }
+        if (key === 'unit.species' && data.unit.linkings.taxon.speciesId) {
+          query.taxonId = data.unit.linkings.taxon.speciesId;
+        }
         if (key === 'unit.taxonVerbatim' && data.unit.taxonVerbatim) {
           query.target = data.unit.taxonVerbatim;
         }

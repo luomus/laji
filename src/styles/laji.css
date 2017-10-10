@@ -57,6 +57,12 @@ laji-locale-sv > div,
   font-style: italic;
 }
 
+.br-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .comma-list {
   display: inline;
   list-style: none;
