@@ -168,9 +168,12 @@ export class WbcResultComponent implements OnInit, OnDestroy {
   }
 
   private getTimeRange(year, season: SEASON) {
-    return season === 'winter' ?
-      this.getTime(year, season) + '/' + this.getTime((+year) + 1, season, false) :
-      this.getTime(year, season) + '/' + this.getTime(year, season, false);
+    if (season === 'winter') {
+      return this.getTime(year, season) + '/' + this.getTime((+year) + 1, season, false);
+    } else if (season === 'spring') {
+      return this.getTime((+year) + 1, season) + '/' + this.getTime((+year) + 1, season, false);
+    }
+    return this.getTime(year, season) + '/' + this.getTime(year, season, false);
   }
 
   private getTime(year, season: SEASON, start = true) {
@@ -214,8 +217,8 @@ export class WbcResultComponent implements OnInit, OnDestroy {
       date = date.substr(0, idx);
     }
     const time = this.parseDateTime(date);
-    this.activeYear = time.year;
     this.activeSeason = this.getSeason(time.month, time.day);
+    this.activeYear = this.activeSeason === 'spring' ? time.year - 1 : time.year;
 
     return originalDate;
   }
