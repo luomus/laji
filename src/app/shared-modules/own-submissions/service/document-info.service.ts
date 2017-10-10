@@ -72,7 +72,11 @@ export class DocumentInfoService {
   }
 
   public static isEmptyUnit(unit, form: any) {
-    if (form.features && form.features.indexOf('MHL.featurePrepopulateWithInformalTaxonGroups') !== -1) {
+    if (form.features && (
+        form.features.indexOf('MHL.featurePrepopulateWithInformalTaxonGroups') !== -1 ||
+        form.features.indexOf('MHL.featureEmptyOnNoCount') !== -1
+      )
+    ) {
       return !(unit.count || unit.individualCount || unit.pairCount || unit.abundanceString);
     }
 
