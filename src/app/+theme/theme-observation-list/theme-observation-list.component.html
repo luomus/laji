@@ -5,11 +5,13 @@
     [height]="height"
     [lang]="translate.currentLang"
     (rowSelect)="showDocument($event)"
+    (selectChange)="selectChange.emit($event)"
     [pageSize]="1000"
     [query]="query"
-    [showSettingsMenu]="false"
+    [showSettingsMenu]="showSettings"
+    [showPageSize]="false"
     [isAggregate]="false"
-    [selected]="['unit.linkings.taxon', 'unit.linkings.taxon.scientificName', 'gathering.displayDateTime', 'gathering.team']"
+    [selected]="selected"
   ></laji-observation-table>
 </div>
 <div class="modal fade" bsModal #documentModal="bs-modal"

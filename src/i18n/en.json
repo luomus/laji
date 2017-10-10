@@ -489,5 +489,9 @@
   "result.unit.quality.source": "Source of reliability",
   "toICForm": "Take invasive control action",
   "taxonomy.browse.downloadSpecies": "Download species list",
-  "taxonomy.browse.downloadSpeciesFinnish": "Download finnish species list"
+  "taxonomy.browse.downloadSpeciesFinnish": "Download finnish species list",
+  "wbc.stats.seasons": "Select census period",
+  "wbc.season.fall": "fall",
+  "wbc.season.winter": "winter",
+  "wbc.season.spring": "spring"
 }

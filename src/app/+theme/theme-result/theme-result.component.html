@@ -3,10 +3,18 @@
     [height]="height"
     [lang]="lang"
     (rowSelect)="onRowSelect($event)"
+    (selectChange)="selectChange.emit($event)"
+    [allAggregateFields]="[
+      'unit.species',
+      'unit.linkings.taxon.vernacularName',
+      'unit.linkings.taxon.scientificName',
+      'unit.linkings.taxon.taxonomicOrder'
+    ]"
     [pageSize]="1000"
     [query]="query"
     [defaultOrder]="'unit.linkings.taxon.taxonomicOrder'"
-    [showSettingsMenu]="false"
+    [showSettingsMenu]="showSettings"
+    [showPageSize]="false"
     [isAggregate]="true"
     [selected]="fields"
   ></laji-observation-table>
