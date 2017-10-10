@@ -14,8 +14,11 @@ export class ThemeObservationListComponent {
 
   @Input() query: WarehouseQueryInterface;
   @Input() height;
+  @Input() showSettings = false;
+  @Input() selected = ['unit.linkings.taxon', 'unit.linkings.taxon.scientificName', 'gathering.displayDateTime', 'gathering.team'];
   @Output() onListClose = new EventEmitter<WarehouseQueryInterface>();
   @Output() onPageChange = new EventEmitter<number>();
+  @Output() selectChange = new EventEmitter();
 
   loading = false;
   results = {results: []};

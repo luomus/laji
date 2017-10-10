@@ -29,12 +29,24 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Input() isAggregate = true;
   @Input() height = '100%';
   @Input() showSettingsMenu = false;
+  @Input() showPageSize = true;
   @Input() lang = 'fi';
   @Input() showHeader = true;
   @Input() showFooter = true;
   @Input() virtualScrolling = true;
   @Input() defaultOrder: string;
   @Input() visible: boolean;
+  @Input() allAggregateFields = [
+    'unit.species',
+    'unit.linkings.taxon.vernacularName',
+    'unit.linkings.taxon.scientificName',
+    'unit.taxonVerbatim',
+    'unit.linkings.taxon.taxonomicOrder',
+    'document.collectionId',
+    'document.sourceId',
+    'unit.superRecordBasis',
+    'unit.media.mediaType'
+  ];
 
   @Output() pageSizeChange = new EventEmitter<number>();
   @Output() selectChange = new EventEmitter<string[]>();

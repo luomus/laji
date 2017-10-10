@@ -10,11 +10,13 @@ import { IdService } from '../../shared/service/id.service';
 })
 export class ThemeResultComponent {
 
+  @Input() showSettings = false;
   @Input() query: WarehouseQueryInterface;
   @Input() height;
   @Input() lang;
-  @Input() fields = ['unit.linkings.taxon', 'unit.linkings.taxon.scientificName', 'individualCountSum'];
+  @Input() fields = ['unit.linkings.taxon.vernacularName', 'unit.linkings.taxon.scientificName', 'individualCountSum'];
   @Output() onNameClick = new EventEmitter<WarehouseQueryInterface>();
+  @Output() selectChange = new EventEmitter();
 
   constructor() { }
 
@@ -25,6 +27,12 @@ export class ThemeResultComponent {
       && event.row.unit.linkings.taxon
       && event.row.unit.linkings.taxon.id) {
       this.onNameClick.emit({...this.query, taxonId: IdService.getId(event.row.unit.linkings.taxon.id)});
+    } else if (event.row
+      && event.row.unit
+      && event.row.unit.linkings
+      && event.row.unit.linkings.taxon
+      && event.row.unit.linkings.taxon.speciesId) {
+      this.onNameClick.emit({...this.query, taxonId: IdService.getId(event.row.unit.linkings.taxon.speciesId)});
     }
   }
 

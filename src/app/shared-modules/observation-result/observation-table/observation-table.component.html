@@ -34,17 +34,7 @@
       <div class="col-sm-6 col-lg-4">
         <laji-selected-field-group
           title="result.aggregate.fields"
-          [fields]="[
-            'unit.species',
-            'unit.linkings.taxon.vernacularName',
-            'unit.linkings.taxon.scientificName',
-            'unit.taxonVerbatim',
-            'unit.linkings.taxon.taxonomicOrder',
-            'document.collectionId',
-            'document.sourceId',
-            'unit.superRecordBasis',
-            'unit.media.mediaType'
-            ]"
+          [fields]="allAggregateFields"
           [columnsLookup]="columnLookup"
           [selected]="_selected"
           (toggle)="toggleSelectedField($event)"
@@ -116,7 +106,9 @@
     </div>
     <div class="row">
       <div class="col-sm-6">
-        <laji-page-size-select [pageSize]="pageSize" (pageSizeChange)="onPageSizeChange($event)"></laji-page-size-select>
+        <div *ngIf="showPageSize">
+          <laji-page-size-select [pageSize]="pageSize" (pageSizeChange)="onPageSizeChange($event)"></laji-page-size-select>
+        </div>
       </div>
       <div class="col-sm-6 clear-btn">
         <div class="pull-right">
