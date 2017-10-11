@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { ResultService } from '../../service/result.service';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
@@ -20,7 +19,6 @@ export class WbcResultComponent implements OnInit, OnDestroy {
   collectionId = 'HR.39';
   page;
   type;
-  lang;
   query: WarehouseQueryInterface;
   mapQuery: WarehouseQueryInterface;
   resultQuery: WarehouseQueryInterface;
@@ -53,7 +51,6 @@ export class WbcResultComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private translate: TranslateService,
     private resultService: ResultService
   ) {
   }
@@ -67,10 +64,6 @@ export class WbcResultComponent implements OnInit, OnDestroy {
     this.activeYear = this.currentYear;
     this.initYears();
 
-    this.lang = this.translate.currentLang;
-    this.subTrans = this.translate.onLangChange.subscribe(res => {
-      this.lang = res.lang;
-    });
     this.subQuery = this.route.queryParams.subscribe(params => {
       const time = (params['time'] && Array.isArray(params['time'])) ?
         params['time'][0] : params['time'];

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { IdService } from '../../shared/service/id.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -13,12 +14,11 @@ export class ThemeResultComponent {
   @Input() showSettings = false;
   @Input() query: WarehouseQueryInterface;
   @Input() height;
-  @Input() lang;
   @Input() fields = ['unit.linkings.taxon.vernacularName', 'unit.linkings.taxon.scientificName', 'individualCountSum'];
   @Output() onNameClick = new EventEmitter<WarehouseQueryInterface>();
   @Output() selectChange = new EventEmitter();
 
-  constructor() { }
+  constructor(public translate: TranslateService) { }
 
   onRowSelect(event) {
     if (event.row
