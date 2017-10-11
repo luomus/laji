@@ -338,9 +338,6 @@
       "integrity": "sha512-YTCb4ZpdBZFdJoqxqH1lOZBL3HCcrj8654QFFFikaOvgnMVOxl6kGp9RLnz5XiUMJVloY3UZF77JVaKX4Cgm5w==",
       "dev": true
     },
-    "Leaflet.vector-markers": {
-      "version": "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
-    },
     "abbrev": {
       "version": "1.1.1",
       "resolved": "https://registry.npmjs.org/abbrev/-/abbrev-1.1.1.tgz",
@@ -4726,9 +4723,9 @@
       }
     },
     "laji-form": {
-      "version": "0.0.235",
-      "resolved": "https://registry.npmjs.org/laji-form/-/laji-form-0.0.235.tgz",
-      "integrity": "sha512-al5XYl2rVPexaReCf+mWTU5Qp1AH+qvJV5ktaVQ9yo2v66yxX9fm7uX9s6LQX5FfhdJzhGdXdtMTYkDnmwdSSg==",
+      "version": "0.0.236",
+      "resolved": "https://registry.npmjs.org/laji-form/-/laji-form-0.0.236.tgz",
+      "integrity": "sha512-Y0T5L4YzzC0ZJR/8xobCLFZuRUgGP+Z5nRA7y5m05++TKXSmLlOD++/U6rnhQhVQ6ImvbLrn1faOjIkfpfDazw==",
       "requires": {
         "babel-runtime": "6.26.0",
         "deep-equal": "1.0.1",
@@ -4753,6 +4750,17 @@
         "react-transition-group": "1.2.1",
         "react-widgets": "3.5.0",
         "scroll-into-view-if-needed": "1.2.1"
+      },
+      "dependencies": {
+        "react-jsonschema-form": {
+          "version": "git+https://git@github.com/olzraiti/react-jsonschema-form.git#1de7f10c351b675935aa2b58012da6b8bbd7dff0",
+          "requires": {
+            "jsonschema": "1.2.0",
+            "lodash.topath": "4.5.2",
+            "prop-types": "15.6.0",
+            "setimmediate": "1.0.5"
+          }
+        }
       }
     },
     "laji-map": {
@@ -4760,7 +4768,6 @@
       "resolved": "https://registry.npmjs.org/laji-map/-/laji-map-1.0.253.tgz",
       "integrity": "sha512-jO5RKJtycc4mfl5QKSHasRtV1mdZMyMCr01pnCdphg0bHW0OMNHKCOuId3dvcMmZbGgaO7ZsKRF8AInDXoZ+3Q==",
       "requires": {
-        "Leaflet.vector-markers": "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6",
         "babel-runtime": "6.26.0",
         "leaflet": "1.0.3",
         "leaflet-contextmenu": "1.1.1",
@@ -4769,6 +4776,7 @@
         "leaflet-mml-layers": "2.0.1",
         "leaflet-textpath": "git+https://git@github.com/makinacorpus/Leaflet.textPath.git#ad1afd910b387e075989b258d487cd7d6db93b0b",
         "leaflet.markercluster": "1.0.3",
+        "Leaflet.vector-markers": "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6",
         "nouislider": "10.1.0",
         "proj4": "2.3.16",
         "proj4leaflet": "1.0.1"
@@ -4846,6 +4854,9 @@
       "version": "1.0.3",
       "resolved": "https://registry.npmjs.org/leaflet.markercluster/-/leaflet.markercluster-1.0.3.tgz",
       "integrity": "sha1-ZMd5NlwJUfSIXDQUAkqZTz7/xwg="
+    },
+    "Leaflet.vector-markers": {
+      "version": "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     },
     "less": {
       "version": "2.7.2",
@@ -7224,15 +7235,6 @@
         "once": "1.4.0"
       }
     },
-    "react-jsonschema-form": {
-      "version": "git+https://git@github.com/olzraiti/react-jsonschema-form.git#1de7f10c351b675935aa2b58012da6b8bbd7dff0",
-      "requires": {
-        "jsonschema": "1.2.0",
-        "lodash.topath": "4.5.2",
-        "prop-types": "15.6.0",
-        "setimmediate": "1.0.5"
-      }
-    },
     "react-overlays": {
       "version": "0.7.2",
       "resolved": "https://registry.npmjs.org/react-overlays/-/react-overlays-0.7.2.tgz",
@@ -8500,6 +8502,11 @@
       "resolved": "https://registry.npmjs.org/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz",
       "integrity": "sha1-J5siXfHVgrH1TmWt3UNS4Y+qBxM="
     },
+    "string_decoder": {
+      "version": "0.10.31",
+      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz",
+      "integrity": "sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ="
+    },
     "string-width": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/string-width/-/string-width-1.0.2.tgz",
@@ -8510,11 +8517,6 @@
         "is-fullwidth-code-point": "1.0.0",
         "strip-ansi": "3.0.1"
       }
-    },
-    "string_decoder": {
-      "version": "0.10.31",
-      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz",
-      "integrity": "sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ="
     },
     "stringstream": {
       "version": "0.0.5",
