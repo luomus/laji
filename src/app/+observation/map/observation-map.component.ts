@@ -22,7 +22,6 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { MapComponent } from '../../shared/map/map.component';
 import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 import { CoordinateService } from '../../shared/service/coordinate.service';
-import LatLngBounds = L.LatLngBounds;
 
 @Component({
   selector: 'laji-observation-map',
@@ -79,9 +78,9 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   private subLang: Subscription;
   private style: (count: number) => string;
   private lastQuery: any;
-  private viewBound: LatLngBounds;
+  private viewBound: any;
   private activeLevel = 0;
-  private activeBounds: LatLngBounds;
+  private activeBounds: any;
   private reset = true;
   private showingItems = false;
   private dataCache: any;
@@ -112,6 +111,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
               private logger: Logger,
               private changeDetector: ChangeDetectorRef
   ) {
+    this.viewBound = L.latLngBounds;
+    this.activeBounds = L.latLngBounds;
   }
 
   ngOnInit() {
