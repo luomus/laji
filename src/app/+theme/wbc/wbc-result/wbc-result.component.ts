@@ -45,7 +45,6 @@ export class WbcResultComponent implements OnInit, OnDestroy {
   aggregateFields = ['unit.linkings.taxon.vernacularName', 'unit.linkings.taxon.scientificName', 'individualCountSum'];
   listFields = ['unit.linkings.taxon', 'unit.linkings.taxon.scientificName', 'gathering.displayDateTime', 'gathering.team'];
 
-  private subTrans: Subscription;
   private subQuery: Subscription;
 
   constructor(
@@ -92,7 +91,6 @@ export class WbcResultComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subQuery.unsubscribe();
-    this.subTrans.unsubscribe();
   }
 
   goToPage(page) {
