@@ -11,6 +11,7 @@ import { ObservationTableColumn } from '../model/observation-table-column';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
+import { Logger } from '../../../shared/logger/logger.service';
 
 
 @Component({
@@ -189,7 +190,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   constructor(
     private resultService: ObservationListService,
     private changeDetectorRef: ChangeDetectorRef,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private logger: Logger
   ) { }
 
   @Input() set selected(sel: string[]) {
@@ -320,37 +322,37 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   fetchPage(page = 1) {
-    if (!this.pageSize) {
+    if (!this.pageSize || this.loading) {
       return;
     }
     this.loading = true;
     this.changeDetectorRef.markForCheck();
-    (this.isAggregate ?
-      this.resultService.getAggregate(
-        this.query,
-        [...this.aggregateBy, this.defaultOrder],
-        page,
-        this.pageSize,
-        [...this.orderBy, this.defaultOrder],
-        this.lang
-      ) :
-      this.resultService.getList(
-        this.query,
-        this.getSelectFields(this._selected),
-        page,
-        this.pageSize,
-        [...this.orderBy, this.defaultOrder],
-        this.lang
-      )
-    ).subscribe(data => {
+    const aggregate$ = this.resultService.getAggregate(
+      this.query,
+      [...this.aggregateBy, this.defaultOrder],
+      page,
+      this.pageSize,
+      [...this.orderBy, this.defaultOrder],
+      this.lang
+    );
+    const list$ = this.resultService.getList(
+      this.query,
+      this.getSelectFields(this._selected),
+      page,
+      this.pageSize,
+      [...this.orderBy, this.defaultOrder],
+      this.lang
+    );
+
+    (this.isAggregate ? aggregate$ : list$)
+      .subscribe(data => {
         this.result = data;
         this.loading = false;
-
         this.changeDetectorRef.markForCheck();
       }, (err) => {
         this.loading = false;
-
         this.changeDetectorRef.markForCheck();
+        this.logger.error('Observation table data handling failed!', err);
       });
   }
 

@@ -1,14 +1,17 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { UserService } from '../../shared/service/user.service';
 
+const DEFAULT_PAGE_SIZE = 100;
+
 @Component({
   selector: 'laji-observation-result-list',
   templateUrl: './observation-result-list.component.html',
   styleUrls: ['./observation-result-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationResultListComponent implements OnInit {
   @ViewChild('documentModal') public modal: ModalDirective;
@@ -24,7 +27,7 @@ export class ObservationResultListComponent implements OnInit {
     'unit.lifeStage',
     'document.sourceId'
   ];
-  pageSize = 100;
+  pageSize;
   aggregateBy: string[] = [];
 
   shownDocument = '';
@@ -33,6 +36,7 @@ export class ObservationResultListComponent implements OnInit {
   constructor(
     public translate: TranslateService,
     private userService: UserService,
+    private cd: ChangeDetectorRef,
     public searchQuery: SearchQuery
   ) {
   }
@@ -43,8 +47,11 @@ export class ObservationResultListComponent implements OnInit {
         if (data) {
           this.aggregateBy = data.aggregateBy;
           this.selected = data.selected || this.selected;
-          this.pageSize = data.pageSize || this.pageSize;
+          this.pageSize = data.pageSize || DEFAULT_PAGE_SIZE;
+        } else {
+          this.pageSize = DEFAULT_PAGE_SIZE;
         }
+        this.cd.markForCheck();
       });
   }
 

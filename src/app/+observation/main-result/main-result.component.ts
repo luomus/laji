@@ -9,6 +9,8 @@ import { UserService } from '../../shared/service/user.service';
 import { ObservationTableComponent } from '../../shared-modules/observation-result/observation-table/observation-table.component';
 import { ObservationTableQueryService } from '../../shared-modules/observation-result/service/observation-table-query.service';
 
+const DEFAULT_PAGE_SIZE = 1000;
+
 @Component({
   selector: 'laji-main-result',
   templateUrl: './main-result.component.html',
@@ -33,7 +35,7 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   documentId: string;
   highlightId: string;
-  pageSize = 1000;
+  pageSize;
 
   ctrlDown = false;
   showObservationList = false;
@@ -99,7 +101,9 @@ export class MainResultComponent implements OnInit, OnChanges {
           }
           this.aggregateBy = data.aggregateBy || this.aggregateBy;
           this.selected = data.selected || this.selected;
-          this.pageSize = data.pageSize || this.pageSize;
+          this.pageSize = data.pageSize || DEFAULT_PAGE_SIZE;
+        } else {
+          this.pageSize = DEFAULT_PAGE_SIZE;
         }
         this.initialized = true;
         this.initInternalQueries();
