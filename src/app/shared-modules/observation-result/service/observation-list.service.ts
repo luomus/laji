@@ -189,31 +189,35 @@ export class ObservationListService {
       mappers$,
       (response, mappers) => {
         response.results = response.results.map(document => {
-          if (mappers['document.sourceId'] && document.document.sourceId) {
-            if (!uriCache[document.document.sourceId]) {
-              uriCache[document.document.sourceId] = IdService.getId(document.document.sourceId);
+          if (document.document) {
+            if (mappers['document.sourceId'] && document.document.sourceId) {
+              if (!uriCache[document.document.sourceId]) {
+                uriCache[document.document.sourceId] = IdService.getId(document.document.sourceId);
+              }
+              const qname = uriCache[document.document.sourceId];
+              document.document.source = mappers['document.sourceId'][qname] ?
+                mappers['document.sourceId'][qname] : document.document.sourceId;
             }
-            const qname = uriCache[document.document.sourceId];
-            document.document.source = mappers['document.sourceId'][qname] ?
-              mappers['document.sourceId'][qname] : document.document.sourceId;
-          }
-          if (mappers['document.collectionId'] && document.document.collectionId) {
-            if (!uriCache[document.document.collectionId]) {
-              uriCache[document.document.collectionId] = IdService.getId(document.document.collectionId);
+            if (mappers['document.collectionId'] && document.document.collectionId) {
+              if (!uriCache[document.document.collectionId]) {
+                uriCache[document.document.collectionId] = IdService.getId(document.document.collectionId);
+              }
+              const qname = uriCache[document.document.collectionId];
+              document.document.collection = mappers['document.collectionId'][qname] ?
+                mappers['document.collectionId'][qname] : document.document.collectionId;
             }
-            const qname = uriCache[document.document.collectionId];
-            document.document.collection = mappers['document.collectionId'][qname] ?
-              mappers['document.collectionId'][qname] : document.document.collectionId;
           }
 
-          if (openYkj && document.gathering.conversions && document.gathering.conversions.ykj) {
-            document.gathering.conversions.ykj.verbatim = this.makeMinMaxYkj(document.gathering.conversions.ykj);
-          }
-          if (openEuref && document.gathering.conversions && document.gathering.conversions.euref) {
-            document.gathering.conversions.euref.verbatim = this.makeMinMaxCoordinate(document.gathering.conversions.euref);
-          }
-          if (openWgs84 && document.gathering.conversions && document.gathering.conversions.wgs84) {
-            document.gathering.conversions.wgs84.verbatim = this.makeMinMaxCoordinate(document.gathering.conversions.wgs84);
+          if (document.gathering) {
+            if (openYkj && document.gathering.conversions && document.gathering.conversions.ykj) {
+              document.gathering.conversions.ykj.verbatim = this.makeMinMaxYkj(document.gathering.conversions.ykj);
+            }
+            if (openEuref && document.gathering.conversions && document.gathering.conversions.euref) {
+              document.gathering.conversions.euref.verbatim = this.makeMinMaxCoordinate(document.gathering.conversions.euref);
+            }
+            if (openWgs84 && document.gathering.conversions && document.gathering.conversions.wgs84) {
+              document.gathering.conversions.wgs84.verbatim = this.makeMinMaxCoordinate(document.gathering.conversions.wgs84);
+            }
           }
 
           return document;
