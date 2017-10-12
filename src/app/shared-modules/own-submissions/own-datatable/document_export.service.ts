@@ -145,7 +145,7 @@ export class DocumentExportService {
   }
 
   private getData(obj: any, form: any, fields: any, path = ''): Observable<any> {
-    let unwindKey;
+    const unwindKeys = [];
     const observables = [];
 
     for (const key in obj) {
@@ -160,7 +160,7 @@ export class DocumentExportService {
             obj[key] = label;
           }));
       } else if (Array.isArray(child) && typeof child[0] === 'object') {
-        unwindKey = key;
+        unwindKeys.push(key);
       } else if (typeof child === 'object' && key !== 'geometry') {
         observables.push(this.getData(child, form, fields, path + key + '.'));
       }
@@ -170,27 +170,43 @@ export class DocumentExportService {
 
     return observable.switchMap(
       () => {
-        if (unwindKey) {
-          const getDataObservables = [];
-          for (let i = 0; i < obj[unwindKey].length; i++) {
-            if (!this.isEmpty(unwindKey, obj[unwindKey][i], form)) {
-              getDataObservables.push(this.getData(obj[unwindKey][i], form, fields, path + unwindKey + '.'));
-            }
-          }
+        if (unwindKeys.length > 0) {
+          const getDataForAllKeysObservables = unwindKeys.map((unwindKey) => {
+            const getDataObservables = [];
+              for (let i = 0; i < obj[unwindKey].length; i++) {
+                if (!this.isEmpty(unwindKey, obj[unwindKey][i], form)) {
+                  getDataObservables.push(this.getData(obj[unwindKey][i], form, fields, path + unwindKey + '.'));
+                }
+              }
 
-          if (getDataObservables.length > 0) {
-            return Observable.forkJoin(getDataObservables)
-              .map((arrays) => {
-                obj[unwindKey] = [].concat.apply([], arrays);
-                return this.unwind(unwindKey, obj);
-              });
-          } else {
-            return Observable.of(this.unwind(unwindKey, obj));
-          }
+
+            if (getDataObservables.length > 0) {
+              return Observable.forkJoin(getDataObservables)
+                .map((arrays) => {
+                  obj[unwindKey] = [].concat.apply([], arrays);
+                  return Observable.of(obj);
+                });
+            }
+            return Observable.of(obj);
+          });
+
+          return Observable.forkJoin(getDataForAllKeysObservables)
+            .map(() => {
+              return this.unwindAll(unwindKeys, obj);
+            });
         } else {
           return Observable.of([obj]);
         }
       });
+  }
+
+  private unwindAll(keys: string[], obj: any) {
+    return keys.reduce((prevObjs, key) => {
+      return prevObjs.reduce((result, currObj) => {
+          result =  result.concat.apply(result, this.unwind(key, currObj));
+          return result;
+      }, []);
+    }, [obj]);
   }
 
   private unwind(key: string, obj: any) {
@@ -215,7 +231,7 @@ export class DocumentExportService {
       obj = next.obj;
       key = next.key;
       path = next.path;
-      formId = next.formID;
+      formId = next.formId;
 
       for (const i in obj) {
         if (!obj.hasOwnProperty(i) || obj[i] == null || i.charAt(0) === '@'
