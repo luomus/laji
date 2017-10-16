@@ -15,7 +15,8 @@
           ({{gathering.interpretations.biogeographicalProvince | toQName | area:'provinceCode'}})</li>
         <li [tooltip]="'MY.biologicalProvince' | label"
           *ngIf="!gathering.interpretations.biogeographicalProvince && gathering.biogeographicalProvince">{{gathering.biogeographicalProvince}}</li>
-        <li *ngIf="gathering.interpretations.finnishMunicipalities && gathering.interpretations.finnishMunicipalities.length === 1; else municipality" [tooltip]="'MY.municipality' | label">{{gathering.interpretations.finnishMunicipalities[0] | toQName | area}}</li>
+        <li *ngIf="gathering.interpretations.finnishMunicipalities; else municipality" [tooltip]="'MY.municipality' | label">{{gathering.interpretations.finnishMunicipalities | toQName | area | values}}
+        </li>
         <ng-template #municipality>
           <li *ngIf="gathering.municipality" [tooltip]="'MY.municipality' | label">{{gathering.municipality}}</li>
         </ng-template>

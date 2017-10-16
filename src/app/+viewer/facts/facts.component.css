@@ -13,7 +13,9 @@
 .title {
   text-align: right;
 }
-
+.title {
+  width: 33.33333333%;
+}
 .title span:after {
   content: ':';
 }

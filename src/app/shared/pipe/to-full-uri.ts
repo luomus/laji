@@ -11,6 +11,9 @@ import { IdService } from '../service/id.service';
 })
 export class ToFullUriPipe implements PipeTransform {
   transform(value: string): any {
+    if (Array.isArray(value)) {
+      return value.map(val => this.transform(val));
+    }
     return IdService.getUri(value);
   }
 }

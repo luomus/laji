@@ -13,7 +13,7 @@ export class ValuesPipe implements PipeTransform {
     const type = typeof value;
     const values = [];
     if (Array.isArray(value)) {
-      for(const item of value) {
+      for (const item of value) {
         values.push(this.transform(item, sep, objKey));
       }
     } else if (type === 'object') {
@@ -27,7 +27,7 @@ export class ValuesPipe implements PipeTransform {
         });
       }
     } else {
-      values.push(value);
+      return value;
     }
     return values.join(sep);
   }
