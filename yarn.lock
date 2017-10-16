@@ -3309,26 +3309,9 @@ laji-form@*:
     react-widgets "^3.4.8"
     scroll-into-view-if-needed "^1.1.0"
 
-laji-map@*:
-  version "1.0.254"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.254.tgz#de2055ce2c30271488b1b2b9666e4e12ea4861a6"
-  dependencies:
-    Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
-    babel-runtime "^6.18.0"
-    leaflet "1.0.3"
-    leaflet-contextmenu "1.1.1"
-    leaflet-draw "0.4.9"
-    leaflet-geometryutil "^0.8.0"
-    leaflet-mml-layers "2.0.1"
-    leaflet-textpath "git+https://git@github.com/makinacorpus/Leaflet.textPath.git#ad1afd910b387e075989b258d487cd7d6db93b0b"
-    leaflet.markercluster "1.0.3"
-    nouislider "^10.0.0"
-    proj4 "2.3.16"
-    proj4leaflet "1.0.1"
-
 laji-map@^1.0.255:
-  version "1.0.255"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.255.tgz#2e78ae5eb1b5d12aecaa202c9a5de86367b963f2"
+  version "1.0.256"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.256.tgz#a7e247914ca926c82748fc1da99bd6f35df4ef0e"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     babel-runtime "^6.18.0"
