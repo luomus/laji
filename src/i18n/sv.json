@@ -494,5 +494,9 @@
   "wbc.stats.seasons": "Välj folkräkningstid",
   "wbc.season.fall": "fall",
   "wbc.season.winter": "winter",
-  "wbc.season.spring": "våren"
+  "wbc.season.spring": "våren",
+  "result.gathering.conversions.ykj10km": "10km, hela observationsområdet i rutnätet",
+  "result.gathering.conversions.ykj10kmCenter": "10km, centrum för observationsområdet",
+  "result.gathering.conversions.ykj1km": "1km, hela observationsområdet i rutnätet",
+  "result.gathering.conversions.ykj1kmCenter": "1km, mitten av observationsområdet"
 }

@@ -493,5 +493,9 @@
   "wbc.stats.seasons": "Select census period",
   "wbc.season.fall": "fall",
   "wbc.season.winter": "winter",
-  "wbc.season.spring": "spring"
+  "wbc.season.spring": "spring",
+  "result.gathering.conversions.ykj10km": "10km, whole observation area in the grid",
+  "result.gathering.conversions.ykj10kmCenter": "10km, the center of the observation area",
+  "result.gathering.conversions.ykj1km": "1km, whole observation area in the grid",
+  "result.gathering.conversions.ykj1kmCenter": "1km, the center of the observation area"
 }

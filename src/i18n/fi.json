@@ -508,5 +508,9 @@
   "wbc.stats.seasons": "Valitse näytettävä laskentajakso",
   "wbc.season.fall": "syksy",
   "wbc.season.winter": "talvi",
-  "wbc.season.spring": "kevät"
+  "wbc.season.spring": "kevät",
+  "result.gathering.conversions.ykj10km": "10km, havaintoalue kokonaan ruudussa",
+  "result.gathering.conversions.ykj10kmCenter": "10km, havaintoalueen keskipisteen ruutu",
+  "result.gathering.conversions.ykj1km": "1km, havaintoalue kokonaan ruudussa",
+  "result.gathering.conversions.ykj1kmCenter": "1km, havaintoalueen keskipisteen ruutu"
 }

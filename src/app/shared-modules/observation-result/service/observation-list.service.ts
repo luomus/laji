@@ -163,6 +163,10 @@ export class ObservationListService {
     const uriCache = {};
     this.locationCache = {};
     const openYkj = selected.indexOf('gathering.conversions.ykj') > -1;
+    const openYkj10Km = selected.indexOf('gathering.conversions.ykj10km') > -1;
+    const openYkj10KmCenter = selected.indexOf('gathering.conversions.ykj10kmCenter') > -1;
+    const openYkj1Km = selected.indexOf('gathering.conversions.ykj1km') > -1;
+    const openYkj1KmCenter = selected.indexOf('gathering.conversions.ykj1kmCenter') > -1;
     const openEuref = selected.indexOf('gathering.conversions.euref') > -1;
     const openWgs84 = selected.indexOf('gathering.conversions.wgs84') > -1;
 
@@ -209,14 +213,28 @@ export class ObservationListService {
           }
 
           if (document.gathering) {
-            if (openYkj && document.gathering.conversions && document.gathering.conversions.ykj) {
-              document.gathering.conversions.ykj.verbatim = this.makeMinMaxYkj(document.gathering.conversions.ykj);
-            }
-            if (openEuref && document.gathering.conversions && document.gathering.conversions.euref) {
-              document.gathering.conversions.euref.verbatim = this.makeMinMaxCoordinate(document.gathering.conversions.euref);
-            }
-            if (openWgs84 && document.gathering.conversions && document.gathering.conversions.wgs84) {
-              document.gathering.conversions.wgs84.verbatim = this.makeMinMaxCoordinate(document.gathering.conversions.wgs84);
+            if (document.gathering.conversions) {
+              if (openYkj && document.gathering.conversions.ykj) {
+                document.gathering.conversions.ykj.verbatim = this.makeMinMaxYkj(document.gathering.conversions.ykj);
+              }
+              if (openEuref && document.gathering.conversions.euref) {
+                document.gathering.conversions.euref.verbatim = this.makeMinMaxCoordinate(document.gathering.conversions.euref);
+              }
+              if (openWgs84 && document.gathering.conversions.wgs84) {
+                document.gathering.conversions.wgs84.verbatim = this.makeMinMaxCoordinate(document.gathering.conversions.wgs84);
+              }
+              if (openYkj10Km && document.gathering.conversions.ykj10km) {
+                document.gathering.conversions.ykj10km.verbatim = this.joinCoordinate(document.gathering.conversions.ykj10km);
+              }
+              if (openYkj10KmCenter && document.gathering.conversions.ykj10kmCenter) {
+                document.gathering.conversions.ykj10kmCenter.verbatim = this.joinCoordinate(document.gathering.conversions.ykj10kmCenter);
+              }
+              if (openYkj1Km && document.gathering.conversions.ykj1km) {
+                document.gathering.conversions.ykj1km.verbatim = this.joinCoordinate(document.gathering.conversions.ykj1km);
+              }
+              if (openYkj1KmCenter && document.gathering.conversions.ykj1kmCenter) {
+                document.gathering.conversions.ykj1kmCenter.verbatim = this.joinCoordinate(document.gathering.conversions.ykj1kmCenter);
+              }
             }
           }
 
@@ -225,6 +243,13 @@ export class ObservationListService {
         return data;
       }
     );
+  }
+
+  private joinCoordinate(value) {
+    if (value.lat && value.lon) {
+      return `${value.lat}:${value.lon}`;
+    }
+    return '';
   }
 
   private makeMinMaxCoordinate(value) {
