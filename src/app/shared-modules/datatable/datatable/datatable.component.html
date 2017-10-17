@@ -98,7 +98,7 @@
   </span>
 </ng-template>
 <ng-template let-value="value" #numeric>
-  <span *ngIf="value" title="{{value | formattedNumber:' '}}">
+  <span *ngIf="'' + value" title="{{value | formattedNumber:' '}}">
     <span [innerHtml]="value | formattedNumber:'&nbsp;'"></span>
   </span>
 </ng-template>
