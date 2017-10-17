@@ -33,7 +33,7 @@
             </laji-row>
             <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
             <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
-            <laji-row [title]="'viewer.loadDate' | label" [value]="document.loadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
+            <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
           </ng-template>
           <a class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
              *ngIf="externalViewUrl"
