@@ -1,18 +1,17 @@
 <alert *ngIf="yearInfoError" type="danger">{{yearInfoError}}</alert>
 
-<laji-spinner [spinning]="!(yearInfo || yearInfoError)" [overlay]="false">
-  <div *ngIf="!yearInfoError && !!yearInfo">
-    <laji-year-slider [showCounts]="!formID" (onRangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo"></laji-year-slider>
-    <laji-own-datatable
-      (documentClicked)="onDocumentClick($event)"
-      [columns]="columns"
-      [showDownloadAll]="showDownloadAll"
-      [useInternalDocumentViewer]="useInternalDocumentViewer"
-      [loadError]="documentError"
-      [year]="year"
-      [documents]="activeDocuments"></laji-own-datatable>
-  </div>
-</laji-spinner>
+
+<div *ngIf="!yearInfoError">
+  <laji-year-slider *ngIf="!onlyTemplates && !!yearInfo" [showCounts]="!formID" (onRangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo"></laji-year-slider>
+  <laji-own-datatable
+    (documentClicked)="onDocumentClick($event)"
+    [columns]="onlyTemplates ? templateColumns : columns"
+    [showDownloadAll]="showDownloadAll && !onlyTemplates"
+    [useInternalDocumentViewer]="useInternalDocumentViewer"
+    [loadError]="documentError"
+    [year]="year"
+    [documents]="activeDocuments"></laji-own-datatable>
+</div>
 
 
 <div class="modal fade" bsModal #documentModal="bs-modal"

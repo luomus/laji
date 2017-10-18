@@ -23,6 +23,7 @@ import { FormRowComponent } from './form-list/form-row/form-row.component';
 import { LajiMapModule } from '../shared-modules/map/laji-map.module';
 import { OwnSubmissionsModule } from '../shared-modules/own-submissions/own-submissions.module';
 import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
+import { TemplatesComponent } from './templates/templates.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, AlertModule, NamedPlaceModule, ViewerModule,
@@ -33,7 +34,7 @@ import { OwnSubmissionsComponent } from './own-submissions/own-submissions.compo
   declarations: [
     HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
     ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent,
-    StatisticsComponent, LineTransectComponent, LineTransectChartComponent, FormRowComponent, OwnSubmissionsComponent
+    StatisticsComponent, LineTransectComponent, LineTransectChartComponent, FormRowComponent, OwnSubmissionsComponent, TemplatesComponent
   ]
 })
 export class HasekaModule {

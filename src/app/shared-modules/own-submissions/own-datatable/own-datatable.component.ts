@@ -39,6 +39,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   publicity = Document.PublicityRestrictionsEnum;
   useColumns = [];
   allColumns = [
+    {prop: 'templateName', mode: 'small'},
+    {prop: 'templateDescription', mode: 'small'},
     {prop: 'dateEdited', mode: 'medium'},
     {prop: 'dateObserved', mode: 'small'},
     {prop: 'locality', mode: 'small'},
@@ -241,6 +243,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
           dateObserved += gatheringInfo.dateEnd ? ' - ' + moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
 
           return {
+            templateName: document.templateName,
+            templateDescription: document.templateDescription,
             publicity: document.publicityRestrictions,
             dateEdited: document.dateEdited ? moment(document.dateEdited).format('DD.MM.YYYY HH:mm') : '',
             dateObserved: dateObserved,

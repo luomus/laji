@@ -150,6 +150,12 @@ export class DocumentApi {
       queryParameters.set('observationYear', observationYear);
     }
 
+    if (typeof extraHttpRequestParams === 'object') {
+      Object.keys(extraHttpRequestParams).map((key) => {
+        queryParameters.set(key, extraHttpRequestParams[key]);
+      })
+    }
+
     let requestOptions: RequestOptionsArgs = {
       method: 'GET',
       headers: headerParams,

@@ -243,6 +243,9 @@ export interface Document {
    */
   verificationStatus?: Document.VerificationStatusEnum;
 
+  templateName?: string;
+  templateDescription?: string;
+
   /**
    * Fields that tels if there is local changes on the form
    */

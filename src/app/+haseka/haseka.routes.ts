@@ -14,6 +14,7 @@ import { ManageComponent } from './form-permission/admin/manage/manage.component
 import { NpPrintComponent } from './named-place/np-print/np-print.component';
 import { DocumentDeActivateGuard } from '../shared/document-form/document-de-activate.guard';
 import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
+import { TemplatesComponent } from './templates/templates.component';
 
 export const hasekaRoutes: Routes = [
   {
@@ -23,6 +24,7 @@ export const hasekaRoutes: Routes = [
       {path: '', pathMatch: 'full', component: HaSeKaFormListComponent},
       {path: 'forms', pathMatch: 'full', component: HaSeKaFormListComponent},
       {path: 'ownSubmissions', pathMatch: 'full', component: OwnSubmissionsComponent},
+      {path: 'templates', pathMatch: 'full', component: TemplatesComponent},
       {path: 'statistics', pathMatch: 'full', component: StatisticsComponent},
       {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent}
     ]

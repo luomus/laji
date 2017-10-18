@@ -18,12 +18,16 @@ export class OwnSubmissionsComponent implements OnInit {
   @Input() showDownloadAll = true;
   @Input() useInternalDocumentViewer = false;
   @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
+  @Input() templateColumns = ['templateName', 'templateDescription', 'dateEdited', 'form'];
+  @Input() onlyTemplates = false;
   @ViewChild('documentModal') public modal: ModalDirective;
 
   activeDocuments: Document[];
   documentCache = {};
   documents$: Subscription;
+  templates$: Subscription;
   shownDocument: string;
+  loading: boolean;
 
   year: number;
   yearInfo: any[];
@@ -38,17 +42,11 @@ export class OwnSubmissionsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.documentService.countByYear(this.userService.getToken()).subscribe(
-      (results) => {
-        this.yearInfo = results;
-        this.year = results.length > 0 ? results[results.length - 1].year : null;
-        this.getDocumentsByYear(this.year);
-      },
-      (err) => {
-        this.translate.get('haseka.form.genericError')
-          .subscribe(msg => (this.yearInfoError = msg));
-      }
-    );
+    if (this.onlyTemplates) {
+      this.initTemplates();
+    } else {
+      this.initDocuments();
+    }
   }
 
   sliderRangeChange(newYear: number) {
@@ -59,6 +57,51 @@ export class OwnSubmissionsComponent implements OnInit {
   onDocumentClick(docId) {
     this.shownDocument = docId;
     this.modal.show();
+  }
+
+  private initDocuments() {
+    this.documentService.countByYear(this.userService.getToken()).subscribe(
+      (results) => {
+        const now = new Date();
+        this.yearInfo = results;
+        this.year = results.length > 0 ? results[results.length - 1].year : now.getFullYear();
+        this.getDocumentsByYear(this.year);
+      },
+      (err) => {
+        this.translate.get('haseka.form.genericError')
+          .subscribe(msg => (this.yearInfoError = msg));
+      }
+    );
+  }
+
+  private initTemplates() {
+    if (this.templates$) {
+      return;
+    }
+    const tmpCacheKey = '_templates';
+    if (this.documentCache[tmpCacheKey]) {
+      this.activeDocuments = this.documentCache[tmpCacheKey];
+      return;
+    }
+    this.activeDocuments = null;
+    this.documentError = '';
+    this.loading = true;
+    this.documents$ = this.getAllDocuments({onlyTemplates: true})
+      .subscribe(
+        result => {
+          this.documentCache[tmpCacheKey] = result;
+          this.activeDocuments = this.filterDocuments(result);
+          this.loading = false;
+        },
+        err => {
+          this.loading = false;
+          this.translate.get('haseka.template.loadError')
+            .subscribe(msg => {
+              this.activeDocuments = [];
+              this.documentError = msg;
+            });
+        }
+      );
   }
 
   private getDocumentsByYear(year: number) {
@@ -75,14 +118,16 @@ export class OwnSubmissionsComponent implements OnInit {
     this.documentError = '';
 
     if (!year) { return; }
-
-    this.documents$ = this.getAllDocumentsByYear(year)
+    this.loading = true;
+    this.documents$ = this.getAllDocuments({year: year})
       .subscribe(
         result => {
           this.documentCache[String(year)] = result;
           this.activeDocuments = this.filterDocuments(result);
+          this.loading = false;
         },
         err => {
+          this.loading = false;
           this.translate.get('haseka.submissions.loadError', {year: year})
             .subscribe(msg => {
               this.activeDocuments = [];
@@ -101,19 +146,20 @@ export class OwnSubmissionsComponent implements OnInit {
     });
   }
 
-  private getAllDocumentsByYear(year: number, page = 1, documents = []): Observable<Document[]> {
+  private getAllDocuments(query: {year?: number, onlyTemplates?: boolean} = {}, page = 1, documents = []): Observable<Document[]> {
     return this.documentService
       .findAll(
         this.userService.getToken(),
         String(page),
         String(1000),
-        String(year)
+        query.year ? String(query.year) : undefined,
+        query.onlyTemplates ? {templates: 'true'} : undefined
       )
       .switchMap(
         result => {
           documents.push(...result.results);
           if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
-            return this.getAllDocumentsByYear(year, result.currentPage + 1, documents);
+            return this.getAllDocuments(query, result.currentPage + 1, documents);
           } else {
             return Observable.of(documents);
           }

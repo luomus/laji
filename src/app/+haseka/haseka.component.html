@@ -27,6 +27,13 @@
         </div>
       </div>
       <div class="col-sm-3 col-md-3 col-lg-2 more-info flex-column" *ngIf="userService.isLoggedIn">
+        <ul class="sidebar-nav">
+          <li><a class="link" [routerLink]="['/vihko', 'forms'] | localize">{{'haseka.forms.title' | translate}}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'ownSubmissions'] | localize">{{'haseka.ownSubmissions.title' | translate}}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'templates'] | localize">{{'haseka.templates.title' | translate}}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'statistics'] | localize">{{'haseka.statistics.title' | translate}}</a></li>
+        </ul>
+
         <laji-haseka-latest [userToken]="userService.getToken()"
                             (onShowViewer)="showDocumentViewer($event)"></laji-haseka-latest>
       </div>

@@ -1,10 +1,4 @@
 <div id="haseka-latest">
-  <ul class="sidebar-nav">
-    <li><a class="link" [routerLink]="['/vihko', 'forms'] | localize">{{'haseka.forms.title' | translate}}</a></li>
-    <li><a class="link" [routerLink]="['/vihko', 'ownSubmissions'] | localize">{{'haseka.ownSubmissions.title' | translate}}</a></li>
-    <li><a class="link" [routerLink]="['/vihko', 'statistics'] | localize">{{'haseka.statistics.title' | translate}}</a></li>
-  </ul>
-
   <div>
     <div *ngIf="unpublishedDocuments && unpublishedDocuments.length > 0">
       <h4>{{'haseka.users.unsaved' | translate}}</h4>
