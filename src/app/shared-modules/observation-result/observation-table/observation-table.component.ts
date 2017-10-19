@@ -169,6 +169,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'document.secureLevel', cellTemplate: 'warehouseLabel' },
     { name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel' },
     { name: 'document.sourceId', prop: 'document.source' },
+    { name: 'gathering.conversions.dayOfYearBegin'},
+    { name: 'gathering.conversions.dayOfYearEnd'},
     { name: 'unit.superRecordBasis', cellTemplate: 'warehouseLabel', label: 'observation.active.superRecordBasis' },
     { name: 'oldestRecord', width: 85 },
     { name: 'newestRecord', width: 85 },

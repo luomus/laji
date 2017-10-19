@@ -520,5 +520,7 @@
   "template.error": "Failed to save the template. Try again little later.",
   "delete.noId": "Could not find the id for observation. Try again little later.",
   "delete.success": "Observation removed successfully.",
-  "delete.error": "Failed to delete. Try again little later."
+  "delete.error": "Failed to delete. Try again little later.",
+  "result.gathering.conversions.dayOfYearBegin": "Begin day of year",
+  "result.gathering.conversions.dayOfYearEnd": "End day of year"
 }

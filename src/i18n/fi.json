@@ -535,5 +535,7 @@
   "template.error": "Lomakepohjan tallennus epäonnistui. Yritä hetken kuluttua uudelleen.",
   "delete.noId": "Havaintoerän tunnistetta ei löytynyt. Lataa sivu uudelleen ja koita hetken kuluttua uudelleen.",
   "delete.success": "Poisto onnistui.",
-  "delete.error": "Poisto epäonnistui. Yritä hetken kuluttua uudelleen."
+  "delete.error": "Poisto epäonnistui. Yritä hetken kuluttua uudelleen.",
+  "result.gathering.conversions.dayOfYearBegin": "Alkupäivän numero",
+  "result.gathering.conversions.dayOfYearEnd": "Loppupäivän numero"
 }
