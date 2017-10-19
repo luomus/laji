@@ -40,6 +40,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Output() documentClicked = new EventEmitter();
 
   formsById = {};
+  deleteRow: any;
 
   templateForm: TemplateForm = {
     name: '',
@@ -75,6 +76,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('chooseFileTypeModal') public modal: ModalDirective;
   @ViewChild('saveAsTemplate') public templateModal: ModalDirective;
+  @ViewChild('deleteModal') public deleteModal: ModalDirective;
 
   constructor(
     private translate: TranslateService,
@@ -96,8 +98,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
     this.subTrans = this.translate.onLangChange.subscribe(() => {
       this.formsById = {};
-      this.updateRows();
-      this.updateTranslations();
+      this.initRows();
     });
 
     this.updateDisplayMode();
@@ -119,6 +120,11 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @HostListener('window:resize')
   onResize() {
     this.updateDisplayMode();
+  }
+
+  private initRows() {
+    this.updateRows();
+    this.updateTranslations();
   }
 
   private initColumns() {
@@ -197,6 +203,36 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.router.navigate(
       this.localizeRouterService.translateRoute([this.formService.getEditUrlPath(formId, row.id)])
     );
+  }
+
+  deleteDialog(row: any) {
+    const document = this.documents[row.index] || {};
+    if (document.id && row.id === document.id) {
+      this.deleteRow = row;
+      this.deleteModal.show();
+    } else {
+      this.toastService.showError('No id found for the row. Place refresh the page and try again.')
+    }
+  }
+
+  deleteDocument() {
+    this.documentService.deleteDocument(this.deleteRow.id)
+      .subscribe(
+        () => {
+          this.documents = [
+            ...this.documents.slice(0, this.deleteRow.index),
+            ...this.documents.slice(this.deleteRow.index + 1)
+          ];
+          this.initRows();
+          this.toastService.showSuccess('Observation deleted');
+          this.deleteModal.hide();
+        },
+        (err) => {
+          this.toastService.showError('Failed delete. Try again little later');
+          this.logger.error('Deleting failed', err);
+          this.deleteModal.hide();
+        }
+      )
   }
 
   makeTemplate(row: any) {

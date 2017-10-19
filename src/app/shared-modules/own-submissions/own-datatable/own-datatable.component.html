@@ -124,7 +124,14 @@
                   [placement]="'left'"
                   [container]="'body'"
                   (click)="toStatisticsPage(row.id)">
-              <i class="glyphicon glyphicon glyphicon-stats"></i>
+              <i class="glyphicon glyphicon-stats"></i>
+            </span>
+            <span class="label label-danger link inline-block"
+                  [tooltip]="'haseka.submissions.delete' | translate"
+                  [placement]="'left'"
+                  [container]="'body'"
+                  (click)="deleteDialog(row)">
+              <i class="glyphicon glyphicon-remove"></i>
             </span>
           </div>
         </ng-template>
@@ -191,6 +198,27 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" (click)="saveTemplate()">
           <span>{{"tamplate.save" | translate}}</span>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal" tabindex="-1" role="dialog" bsModal #deleteModal="bs-modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close pull-right" type="button" (click)="deleteModal.hide()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <h4 class="modal-title">{{'haseka.delete.description' | translate:{id: deleteRow?.id} }}</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success pull-left" (click)="deleteModal.hide()">
+          <span>{{"haseka.delete.cancel" | translate}}</span>
+        </button>
+        <button type="button" class="btn btn-danger" (click)="deleteDocument()">
+          <span>{{"haseka.delete.ok" | translate}}</span>
         </button>
       </div>
     </div><!-- /.modal-content -->

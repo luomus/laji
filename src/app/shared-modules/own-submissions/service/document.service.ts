@@ -48,6 +48,10 @@ export class DocumentService {
 
   constructor(private documentApi: DocumentApi, private userService: UserService) { }
 
+  deleteDocument(id: string) {
+    return this.documentApi.delete(id, this.userService.getToken());
+  }
+
   saveTemplate(templateData: TemplateForm): Observable<Document> {
     const template: Document = Util.clone(templateData.document);
     this.removeMeta(template, templateData.type === 'unit' ? this.removableUnit : this.removableGathering);

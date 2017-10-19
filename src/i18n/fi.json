@@ -516,5 +516,9 @@
   "result.gathering.conversions.ykj10km": "10km, havaintoalue kokonaan ruudussa",
   "result.gathering.conversions.ykj10kmCenter": "10km, havaintoalueen keskipisteen ruutu",
   "result.gathering.conversions.ykj1km": "1km, havaintoalue kokonaan ruudussa",
-  "result.gathering.conversions.ykj1kmCenter": "1km, havaintoalueen keskipisteen ruutu"
+  "result.gathering.conversions.ykj1kmCenter": "1km, havaintoalueen keskipisteen ruutu",
+  "haseka.delete.title": "Poista",
+  "haseka.delete.description": "Oletko varma että haluat poistaa {{id}}:n?",
+  "haseka.delete.cancel": "En",
+  "haseka.delete.ok": "Kyllä"
 }

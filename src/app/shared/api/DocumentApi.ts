@@ -251,4 +251,33 @@ export class DocumentApi {
         }
       });
   }
+
+  public delete(id: string, personToken: string, extraHttpRequestParams?: any ): Observable<any> {
+    const path = this.basePath + `/documents/${id}`;
+
+    const queryParameters = new URLSearchParams();
+    const headerParams = this.defaultHeaders;
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');
+    }
+    if (personToken === null || personToken === undefined) {
+      throw new Error('Required parameter personToken was null.');
+    }
+    queryParameters.set('personToken', personToken);
+
+    const requestOptions: RequestOptionsArgs = {
+      method: 'DELETE',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
 }
