@@ -617,6 +617,10 @@ body > .ui-select-bootstrap.open {
   z-index: 1020;
 }
 
+.required {
+  color: #D44950;
+}
+
 /** scrollbar **/
 ::-webkit-scrollbar {
   height: 8px;

@@ -69,6 +69,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
   subTrans: Subscription;
   rowData$: Subscription;
+  saveTemplate$: Subscription;
+  delete$: Subscription;
 
   downloadedDocumentIdx: number;
   fileType = 'csv';
@@ -211,12 +213,16 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       this.deleteRow = row;
       this.deleteModal.show();
     } else {
-      this.toastService.showError('No id found for the row. Place refresh the page and try again.')
+      this.translate.get('delete.noId')
+        .subscribe((value) => this.toastService.showSuccess(value));
     }
   }
 
   deleteDocument() {
-    this.documentService.deleteDocument(this.deleteRow.id)
+    if (this.delete$) {
+      return;
+    }
+    this.delete$ = this.documentService.deleteDocument(this.deleteRow.id)
       .subscribe(
         () => {
           this.documents = [
@@ -224,11 +230,13 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
             ...this.documents.slice(this.deleteRow.index + 1)
           ];
           this.initRows();
-          this.toastService.showSuccess('Observation deleted');
+          this.translate.get('delete.success')
+            .subscribe((value) => this.toastService.showSuccess(value));
           this.deleteModal.hide();
         },
         (err) => {
-          this.toastService.showError('Failed delete. Try again little later');
+          this.translate.get('delete.error')
+            .subscribe((value) => this.toastService.showSuccess(value));
           this.logger.error('Deleting failed', err);
           this.deleteModal.hide();
         }
@@ -242,14 +250,19 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
   saveTemplate() {
     this.templateModal.hide();
-    if (!this.templateForm.document) {
-      this.toastService.showError('No document to save!');
+    if (this.saveTemplate$) {
       return;
     }
-    this.documentService.saveTemplate(this.templateForm)
+    if (!this.templateForm.document) {
+      this.translate.get('template.missingDocument')
+        .subscribe((value) => this.toastService.showSuccess(value));
+      return;
+    }
+    this.saveTemplate$ = this.documentService.saveTemplate(this.templateForm)
       .subscribe(
         () => {
-          this.toastService.showSuccess('Tempalate saved');
+          this.translate.get('template.success')
+            .subscribe((value) => this.toastService.showSuccess(value));
           this.templateForm = {
             name: '',
             description: '',
@@ -257,7 +270,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
           };
         },
         (err) => {
-          this.toastService.showError('Failed to save template. Try again little later');
+          this.translate.get('template.error')
+            .subscribe((value) => this.toastService.showSuccess(value));
           this.logger.error('Template saving failed', err);
         });
   }
