@@ -18,7 +18,7 @@ export class OwnSubmissionsComponent implements OnInit {
   @Input() showDownloadAll = true;
   @Input() useInternalDocumentViewer = false;
   @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
-  @Input() templateColumns = ['templateName', 'templateDescription', 'dateEdited', 'form'];
+  @Input() templateColumns = ['templateName', 'templateDescription', 'dateEdited', 'form', 'id'];
   @Input() onlyTemplates = false;
   @ViewChild('documentModal') public modal: ModalDirective;
 
