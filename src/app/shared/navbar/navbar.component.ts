@@ -53,6 +53,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.isAuthority = environment.forAuthorities;
   }
 
+  test() {
+    console.log('CDCDCD');
+  }
+
   ngOnInit() {
     this.subUser = this.userService.action$
       .debounceTime(50)

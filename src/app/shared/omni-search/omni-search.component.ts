@@ -59,16 +59,6 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.el = viewContainerRef.element.nativeElement;
   }
 
-  @HostListener('body:click', ['$event.target'])
-  onHostClick(target) {
-    if (!(this.taxa.length > 0 && this.search.length > 0) || !target) {
-      return;
-    }
-    if (this.el !== target && !this.el.contains((<any>target))) {
-      this.close();
-    }
-  }
-
   ngOnInit() {
     this.inputChange = this.searchControl.valueChanges
       .do(value => this.search = value)

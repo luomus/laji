@@ -84,6 +84,7 @@ import { LoggedInDirective } from './directive/logged-in.directive';
 import { FixedBelowDirective } from './directive/fixed-below.directive';
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
+import { ClickOutSideDirective } from './directive/click-out-side.directive';
 
 
 @NgModule({
@@ -96,7 +97,7 @@ import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
-    NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective
+    NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective
   ],
   imports: [
     ToastModule,
@@ -120,7 +121,7 @@ import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, LocalizePipe, HideScrollDirective,
-    LoggedInDirective, FixedBelowDirective
+    LoggedInDirective, FixedBelowDirective, ClickOutSideDirective
   ]
 })
 export class SharedModule {

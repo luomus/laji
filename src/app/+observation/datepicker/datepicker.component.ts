@@ -25,8 +25,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import { Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output,
+  ViewContainerRef
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 
 export interface CalendarDate {
   day: number;
@@ -47,7 +52,8 @@ export const CALENDAR_VALUE_ACCESSOR: any = {
   selector: 'laji-datepicker',
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.css'],
-  providers: [CALENDAR_VALUE_ACCESSOR]
+  providers: [CALENDAR_VALUE_ACCESSOR],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDestroy {
   @Input() classAttr: string;
@@ -64,11 +70,16 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   public viewDate: string = null;
   private date: any = moment();
   private el: Element;
-  private bodyEl: Element;
   private days: CalendarDate[] = [];
-  private cbFunc: any;
+  private currentValue;
 
-  constructor(private viewContainerRef: ViewContainerRef) {
+  private valueSource = new Subject();
+  private value$: Subscription;
+
+  constructor(
+    private viewContainerRef: ViewContainerRef,
+    private cd: ChangeDetectorRef
+  ) {
     this.el = viewContainerRef.element.nativeElement;
   }
 
@@ -99,6 +110,11 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
       this.date = date;
     }
     this.onChangeCallback(value);
+    if (this.currentValue !== value) {
+      this.currentValue = value;
+      this.onSelect.emit(value);
+      this.cd.markForCheck();
+    }
   }
 
   ngOnInit() {
@@ -111,17 +127,17 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
       if (this.viewDate) {
         this.value = this.viewDate;
         this.generateCalendar();
+        this.cd.markForCheck();
       }
     });
-
-    this.bodyEl = document.querySelector('body');
-    this.cbFunc = this.closeEvent.bind(this);
-    this.bodyEl.addEventListener('click', this.cbFunc, false);
+    this.value$ = this.valueSource
+      .debounceTime(500)
+      .subscribe((val) => this.value = val);
   }
 
   ngOnDestroy() {
-    if (this.cbFunc) {
-      this.bodyEl.removeEventListener('click', this.cbFunc, false);
+    if (this.value$) {
+      this.value$.unsubscribe();
     }
   }
 
@@ -205,6 +221,10 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   nextMonth() {
     this.date = this.date.add(1, 'month');
     this.generateCalendar();
+  }
+
+  updateValue(value) {
+    this.valueSource.next(value);
   }
 
   writeValue(value: any) {

@@ -1,4 +1,5 @@
 import {
+  ApplicationRef,
   ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -60,23 +61,10 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
   }
 
   constructor(
-    viewContainerRef: ViewContainerRef,
     private cd: ChangeDetectorRef,
     private informalTaxonService: InformalTaxonGroupApi,
     private logger: Logger
-  ) {
-    this.el = viewContainerRef.element.nativeElement;
-  }
-
-  @HostListener('body:click', ['$event.target'])
-  onHostClick(target) {
-    if (!this.open || !target) {
-      return;
-    }
-    if (this.el !== target && !this.el.contains((<any>target))) {
-      this.close();
-    }
-  }
+  ) { }
 
   ngOnChanges() {
     this.initGroups();
@@ -194,6 +182,9 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
   }
 
   close() {
+    if (!this.open) {
+      return;
+    }
     this.value = this.innerValue;
     this.onTouched();
     this.open = false;

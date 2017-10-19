@@ -1,14 +1,15 @@
 <div class="input-group" [ngClass]="{'has-error': !validDate}">
   <input type="text"
          class="ng-datepicker-input form-control input-sm"
-         [(ngModel)]="value"
+         [value]="value"
+         (keyup)="updateValue(dateInput.value)"
          #dateInput>
   <span *ngIf="viewDate !== ''" class="input-group-addon link clear" (click)="clear()">x</span>
   <span class="input-group-addon link" (click)="toggle()"><i class="glyphicon glyphicon-calendar"></i></span>
 </div>
 
 <div *ngIf="opened">
-  <div class="ng-datepicker" [lajiFixedBelow]="dateInput">
+  <div class="ng-datepicker" [lajiFixedBelow]="dateInput" (lajiClickOutSide)="close()">
     <div class="controls">
       <div class="left">
         <i class="glyphicon glyphicon-backward" (click)="prevYear()"></i>
