@@ -17,6 +17,11 @@ import { DocumentExportService } from './document_export.service';
 import { WindowRef } from '../../../shared/windows-ref';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { ModalDirective } from 'ngx-bootstrap';
+import { ToastsService } from '../../../shared/service/toasts.service';
+import { DocumentService } from '../service/document.service';
+import { TemplateForm } from '../models/template-form';
+import { Logger } from '../../../shared/logger/logger.service';
+
 
 @Component({
   selector: 'laji-own-datatable',
@@ -31,9 +36,16 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() showDownloadAll = true;
   @Input() useInternalDocumentViewer = false;
   @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
+  @Input() onlyTemplates = false;
   @Output() documentClicked = new EventEmitter();
 
   formsById = {};
+
+  templateForm: TemplateForm = {
+    name: '',
+    description: '',
+    type: 'gathering'
+  };
 
   totalMessage = '';
   publicity = Document.PublicityRestrictionsEnum;
@@ -62,6 +74,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
   @ViewChild('chooseFileTypeModal') public modal: ModalDirective;
+  @ViewChild('saveAsTemplate') public templateModal: ModalDirective;
 
   constructor(
     private translate: TranslateService,
@@ -71,7 +84,10 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     private eventService: RouterChildrenEventService,
     private localizeRouterService: LocalizeRouterService,
     private documentExportService: DocumentExportService,
-    private window: WindowRef
+    private documentService: DocumentService,
+    private toastService: ToastsService,
+    private window: WindowRef,
+    private logger: Logger
   ) {}
 
   ngOnInit() {
@@ -181,6 +197,33 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.router.navigate(
       this.localizeRouterService.translateRoute([this.formService.getEditUrlPath(formId, row.id)])
     );
+  }
+
+  makeTemplate(row: any) {
+    this.templateForm.document = this.documents[row.index] || null;
+    this.templateModal.show();
+  }
+
+  saveTemplate() {
+    this.templateModal.hide();
+    if (!this.templateForm.document) {
+      this.toastService.showError('No document to save!');
+      return;
+    }
+    this.documentService.saveTemplate(this.templateForm)
+      .subscribe(
+        () => {
+          this.toastService.showSuccess('Tempalate saved');
+          this.templateForm = {
+            name: '',
+            description: '',
+            type: 'gathering'
+          };
+        },
+        (err) => {
+          this.toastService.showError('Failed to save template. Try again little later');
+          this.logger.error('Template saving failed', err);
+        });
   }
 
   openChooseFileTypeModal(docIdx: number) {

@@ -180,6 +180,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     const data = event.data.formData;
     data['publicityRestrictions'] = this.publicityRestrictions;
     delete data._hasChanges;
+    delete data._isTemplate;
     let doc$;
     if (this.isEdit) {
       doc$ = this.documentService
@@ -268,6 +269,20 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     }
     this.formService
       .load(this.formId, this.translate.currentLang, this.documentId)
+      .switchMap((data) => {
+        if (data.formData._isTemplate && !this.formService.isTmpId(this.documentId)) {
+          return this.formService.store(data.formData)
+            .do(() => {
+              this.onTmpLoad.emit({
+                formID: this.formId,
+                tmpID: data.currentId
+              });
+            })
+            .map(() => false);
+        }
+        return Observable.of(data);
+      })
+      .filter((value) => value !== false)
       .switchMap(
         data => data.formData.namedPlaceID ? this.namedPlaceService.getNamedPlace(
           data.formData.namedPlaceID,
@@ -298,6 +313,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
             }
           }
           if (this.formService.isTmpId(this.documentId)) {
+            delete data.formData._isTemplate;
             this.isEdit = false;
             data.formData.id = undefined;
           }

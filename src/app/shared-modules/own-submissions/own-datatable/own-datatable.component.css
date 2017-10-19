@@ -2,6 +2,10 @@
   display:inline-block;
   /*width:calc(100% - 20px);*/
 }
+.radio {
+  display: inline-block;
+  margin: 0;
+}
 
 :host >>> .center-text {
   text-align: center !important;

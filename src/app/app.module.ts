@@ -35,6 +35,7 @@ import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocalizeRouterService } from './locale/localize-router.service';
 import { FormPermissionModule } from './+haseka/form-permission/form-permission.module';
 import { environment } from '../environments/environment';
+import { DocumentService } from './shared-modules/own-submissions/service/document.service';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -81,6 +82,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TranslateModule
   ],
   providers: [
+    DocumentService,
     {provide: ErrorHandler, useClass: LajiErrorHandler},
     LocalizeRouterService,
     {provide: LocationStrategy, useClass: PathLocationStrategy},

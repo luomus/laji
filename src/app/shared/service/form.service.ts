@@ -9,6 +9,7 @@ import { Document } from '../model/Document';
 import { environment } from '../../../environments/environment';
 import * as deepmerge from 'deepmerge';
 import { Observer } from 'rxjs/Observer';
+import { DocumentService } from '../../shared-modules/own-submissions/service/document.service';
 
 
 @Injectable()
@@ -32,7 +33,8 @@ export class FormService {
   constructor(
     private formApi: FormApi,
     private userService: UserService,
-    private documentApi: DocumentApi
+    private documentApi: DocumentApi,
+    private documentService: DocumentService
   ) {
     if (!this.formDataStorage) {
       this.formDataStorage = {};
@@ -54,23 +56,25 @@ export class FormService {
     this.getUserId()
       .switchMap(userID => {
         if (this.formDataStorage[userID] && this.formDataStorage[userID][id]) {
-          delete this.formDataStorage[userID][id];
-          this.formDataStorage = {...this.formDataStorage};
-          this.localChanged.emit(true);
+          if (!this.formDataStorage[userID][id].formData || !this.formDataStorage[userID][id].formData._isTemplate) {
+            delete this.formDataStorage[userID][id];
+            this.formDataStorage = {...this.formDataStorage};
+            this.localChanged.emit(true);
+          }
         }
         return Observable.of(true);
       })
       .subscribe();
   }
 
-  store(formData: Document): Observable<string> {
+  store(document: Document): Observable<string> {
     if (this.currentKey) {
       return this.getUserId()
         .switchMap(userID => {
           if (!this.formDataStorage[userID]) {
             this.formDataStorage[userID] = {};
           }
-          this.formDataStorage[userID][this.currentKey] = { 'formData': formData, 'dateStored': new Date() };
+          this.formDataStorage[userID][this.currentKey] = { 'formData': document, 'dateStored': new Date() };
           this.formDataStorage = {...this.formDataStorage};
           return Observable.of(this.currentKey);
         });
@@ -193,18 +197,30 @@ export class FormService {
         const tmpDoc = this.getTmpDoc(userID, documentId);
         return this.isTmpId(documentId) && tmpDoc ?
           Observable.of(tmpDoc) :
-          this.documentApi.findById(documentId, this.userService.getToken());
+          this.documentApi.findById(documentId, this.userService.getToken())
+            .switchMap((document: Document) => {
+              if (!document.isTemplate) {
+                return Observable.of(document)
+                  .do(data => this.setCurrentData(data));
+              }
+              documentId = '';
+              const newDocument = this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);
+              newDocument._isTemplate = true;
+              this.populate(newDocument);
+              return Observable.of(newDocument);
+            });
       }) :
-      this.userService.getDefaultFormData();
+      this.userService.getDefaultFormData()
+        .do(data => this.setCurrentData(data));
 
     return data$
-      .do(data => this.setCurrentData(data))
       .switchMap(data => {
         return form$
           .combineLatest(
             this.getDefaultData(formId, documentId, data),
             (form, current) => {
               form.formData = current;
+              form.currentId = this.currentKey;
               if (!documentId && form.prepopulatedDocument) {
                 form.formData = deepmerge(form.formData || {}, form.prepopulatedDocument || {});
               }

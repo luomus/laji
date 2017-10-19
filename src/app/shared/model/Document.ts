@@ -243,6 +243,7 @@ export interface Document {
    */
   verificationStatus?: Document.VerificationStatusEnum;
 
+  isTemplate?: boolean;
   templateName?: string;
   templateDescription?: string;
 
@@ -250,6 +251,11 @@ export interface Document {
    * Fields that tels if there is local changes on the form
    */
   _hasChanges?: boolean;
+
+  /**
+   * Fields that tels if the data is from template
+   */
+  _isTemplate?: boolean;
 }
 export namespace Document {
 

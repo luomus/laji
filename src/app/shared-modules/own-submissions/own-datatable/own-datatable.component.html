@@ -58,7 +58,7 @@
           </span>
         </ng-template>
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-          <span *ngIf="value === publicity.publicityRestrictionsPublic">
+          <span *ngIf="onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
             <span class="label label-primary link inline-block"
                   [tooltip]="'result.showViewer' | translate"
                   [placement]="'right'"
@@ -66,7 +66,7 @@
               <i class="glyphicon glyphicon-eye-open"></i>
             </span>
           </span>
-          <span *ngIf="value === publicity.publicityRestrictionsPrivate">
+          <span *ngIf="onlyTemplates === false && value === publicity.publicityRestrictionsPrivate">
             <span class="label label-warning inline-block"
                   [tooltip]="'haseka.form.private' | translate"
                   [placement]="'right'">
@@ -74,10 +74,18 @@
             </span>
           </span>
           <span class="label label-primary link inline-block"
-                [tooltip]="'haseka.submissions.toEdit' | translate"
+                [tooltip]="(onlyTemplates ? 'template.use' : 'haseka.submissions.toEdit') | translate"
                 [placement]="'right'"
                 (click)="toEditPage(row)">
               <i class="glyphicon glyphicon-edit"></i>
+          </span>
+          <span *ngIf="onlyTemplates === false">
+            <span class="label label-warning inline-block"
+                  (click)="makeTemplate(row)"
+                  [tooltip]="'haseka.form.saveTemplate' | translate"
+                  [placement]="'right'">
+              <i class="glyphicon glyphicon-floppy-disk"></i>
+            </span>
           </span>
         </ng-template>
       </ngx-datatable-column>
@@ -128,12 +136,13 @@
 <div class="modal" tabindex="-1" role="dialog" bsModal #chooseFileTypeModal="bs-modal">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
-      <div class="modal-body">
+      <div class="modal-header">
         <button class="close pull-right" type="button" (click)="modal.hide()">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
-        <h4>{{"haseka.submissions.chooseFormat" | translate}}</h4>
-
+        <h4>{{'haseka.submissions.chooseFormat' | translate}}</h4>
+      </div>
+      <div class="modal-body">
         <div>
           <div class="radio">
             <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="csv">.csv</label>
@@ -145,9 +154,43 @@
             <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="xlsx">.xlsx</label>
           </div>
         </div>
-
+      </div>
+      <div class="modal-footer">
         <button type="button" class="btn btn-default" (click)="download()">
           <span>{{"haseka.submissions.download" | translate}}</span>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal" tabindex="-1" role="dialog" bsModal #saveAsTemplate="bs-modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close pull-right" type="button" (click)="templateModal.hide()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <h4 class="modal-title">{{'template.formTitle' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <label for="templateName">{{'template.name'}}</label>
+        <input id="templateName" class="form-control" type="text" [(ngModel)]="templateForm.name" name="name">
+        <label for="templateDescription">{{'template.description'}}</label>
+        <textarea id="templateDescription" class="form-control" [(ngModel)]="templateForm.description" name="description"></textarea>
+        <div>
+          <label>{{'template.chooseType' | translate}}</label>
+          <div class="radio">
+            <label><input type="radio" name="templateType" [(ngModel)]="templateForm.type" value="gathering">{{'template.saveGathering' | translate}}</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" name="templateType" [(ngModel)]="templateForm.type" value="unit">{{'template.saveUnit' | translate}}</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="saveTemplate()">
+          <span>{{"tamplate.save" | translate}}</span>
         </button>
       </div>
     </div><!-- /.modal-content -->
