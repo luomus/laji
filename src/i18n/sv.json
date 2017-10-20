@@ -505,7 +505,7 @@
   "haseka.submissions.templateDescription": "Description",
   "haseka.delete.title": "Remove",
   "haseka.delete.description": "Är du säker på att du vill ta bort observationen ({{id}})?",
-  "haseka.delete.template": "Är du säker på att du vill ta bort mallen ({{id}})?",
+  "haseka.delete.template": "Är du säker på att du vill ta bort mallen<br>{{name}} ({{id}})?",
   "haseka.delete.cancel": "Nej",
   "haseka.delete.ok": "Ja",
   "haseka.form.saveTemplate": "Spara som mall.",

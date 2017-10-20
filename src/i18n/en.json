@@ -504,7 +504,7 @@
   "haseka.submissions.templateDescription": "Description",
   "haseka.delete.title": "Remove",
   "haseka.delete.description": "Are you sure that you want to remove the observation ({{id}})?",
-  "haseka.delete.template": "Are you sure that you want to remove the template ({{id}})?",
+  "haseka.delete.template": "Are you sure that you want to remove the template<br>{{name}} ({{id}})?",
   "haseka.delete.cancel": "No",
   "haseka.delete.ok": "Yes",
   "haseka.form.saveTemplate": "Save as template.",

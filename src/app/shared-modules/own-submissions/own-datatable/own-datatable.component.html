@@ -215,7 +215,7 @@
         <button class="close pull-right" type="button" (click)="deleteModal.hide()">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
-        <h4 class="modal-title">{{(onlyTemplates ? 'haseka.delete.template' : 'haseka.delete.description') | translate:{id: deleteRow?.id} }}</h4>
+        <h4 class="modal-title" [innerHtml]="(onlyTemplates ? 'haseka.delete.template' : 'haseka.delete.description') | translate:{id: deleteRow?.id, name: deleteRow?.templateName}"></h4>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success pull-left" (click)="deleteModal.hide()">

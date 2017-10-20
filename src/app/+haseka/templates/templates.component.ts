@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LocalStorage } from 'ng2-webstorage';
 
 @Component({
   selector: 'laji-templates',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TemplatesComponent implements OnInit {
 
+  @LocalStorage() public showTemplateIntro;
+
   constructor() { }
 
   ngOnInit() {
+    console.log(this.showTemplateIntro);
+    if (this.showTemplateIntro === null) {
+      this.showTemplateIntro = true;
+    }
+  }
+
+  toggleInfo() {
+    this.showTemplateIntro = !this.showTemplateIntro;
   }
 
 }

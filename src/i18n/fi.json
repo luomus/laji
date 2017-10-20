@@ -519,7 +519,7 @@
   "result.gathering.conversions.ykj1kmCenter": "YKJ 1km, havaintoalueen keskipisteen ruutu",
   "haseka.delete.title": "Poista",
   "haseka.delete.description": "Oletko varma että haluat poistaa havaintoerän ({{id}})?",
-  "haseka.delete.template": "Oletko varma että haluat poistaa lomakepohjan ({{id}})?",
+  "haseka.delete.template": "Oletko varma että haluat poistaa lomakepohjan<br>{{name}} ({{id}})?",
   "haseka.delete.cancel": "En",
   "haseka.delete.ok": "Kyllä",
   "haseka.form.saveTemplate": "Tallenna lomakepohjaksi.",
