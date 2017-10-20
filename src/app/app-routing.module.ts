@@ -59,7 +59,7 @@ const routesWithLang: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routesWithLang, {enableTracing: false, preloadingStrategy: CustomPreloadingStrategy})],
+  imports: [RouterModule.forRoot(routesWithLang, {enableTracing: false})],
   exports: [RouterModule],
   providers: [CustomPreloadingStrategy]
 })
