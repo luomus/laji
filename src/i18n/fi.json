@@ -537,5 +537,6 @@
   "delete.success": "Poisto onnistui.",
   "delete.error": "Poisto epäonnistui. Yritä hetken kuluttua uudelleen.",
   "result.gathering.conversions.dayOfYearBegin": "Alkupäivän numero",
-  "result.gathering.conversions.dayOfYearEnd": "Loppupäivän numero"
+  "result.gathering.conversions.dayOfYearEnd": "Loppupäivän numero",
+  "haseka.templates.intro": "Voit luoda uusia lomakepohjia \"Omat havaintoeräni\" sivulta. Valitse havaintoerä josta haluat luoda lomakepohjan ja paina \"Tallenna lomakepohjaksi\" -painiketta."
 }

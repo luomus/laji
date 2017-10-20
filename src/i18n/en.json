@@ -522,5 +522,6 @@
   "delete.success": "Observation removed successfully.",
   "delete.error": "Failed to delete. Try again little later.",
   "result.gathering.conversions.dayOfYearBegin": "Begin day of year",
-  "result.gathering.conversions.dayOfYearEnd": "End day of year"
+  "result.gathering.conversions.dayOfYearEnd": "End day of year",
+  "haseka.templates.intro": "You can create a template from \"Own submissions\" page. Choose an observation for the template and press \"Save as template\" -button."
 }
