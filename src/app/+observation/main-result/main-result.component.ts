@@ -47,14 +47,14 @@ export class MainResultComponent implements OnInit, OnChanges {
     'unit.species'
   ];
 
-  selected = [
+  selected: string[] = [
     'unit.taxon',
-    'document.collectionId',
-    'unit.notes',
-    'gathering.locality',
-    'gathering.displayDateTime',
+    'unit.quality.taxon.reliability',
+    'unit.abundanceString',
     'gathering.team',
-    'document.sourceId'
+    'gathering.displayDateTime',
+    'gathering.locality',
+    'unit.notes'
   ];
 
   constructor(

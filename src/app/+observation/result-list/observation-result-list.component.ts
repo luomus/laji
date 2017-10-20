@@ -20,12 +20,12 @@ export class ObservationResultListComponent implements OnInit {
 
   selected: string[] = [
     'unit.taxon',
-    'document.collectionId',
-    'unit.notes',
+    'unit.quality.taxon.reliability',
+    'unit.abundanceString',
+    'gathering.team',
+    'gathering.displayDateTime',
     'gathering.locality',
-    'unit.sex',
-    'unit.lifeStage',
-    'document.sourceId'
+    'unit.notes'
   ];
   pageSize;
   aggregateBy: string[] = [];
