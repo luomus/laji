@@ -54,6 +54,7 @@ export class MainResultComponent implements OnInit, OnChanges {
     'gathering.team',
     'gathering.displayDateTime',
     'gathering.locality',
+    'document.collectionId',
     'unit.notes'
   ];
 

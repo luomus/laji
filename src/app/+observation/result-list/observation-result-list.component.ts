@@ -25,6 +25,7 @@ export class ObservationResultListComponent implements OnInit {
     'gathering.team',
     'gathering.displayDateTime',
     'gathering.locality',
+    'document.collectionId',
     'unit.notes'
   ];
   pageSize;
