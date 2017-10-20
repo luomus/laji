@@ -166,6 +166,12 @@
   dependencies:
     tsickle "^0.21.0"
 
+"@mapbox/geojson-area@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@mapbox/geojson-area/-/geojson-area-0.2.2.tgz#18d7814aa36bf23fbbcc379f8e26a22927debf10"
+  dependencies:
+    wgs84 "0.0.0"
+
 "@ngtools/json-schema@1.1.0", "@ngtools/json-schema@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"
@@ -244,6 +250,10 @@
 "@types/underscore@1.8.1":
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/@types/underscore/-/underscore-1.8.1.tgz#bf5d680f24277284d4e42fed86bd86e5a59a44a4"
+
+"JSV@>= 4.0.x":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/JSV/-/JSV-4.0.2.tgz#d077f6825571f82132f9dffaed587b4029feff57"
 
 "Leaflet.vector-markers@git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6":
   version "0.0.6"
@@ -389,6 +399,10 @@ ansi-styles@^3.1.0:
   dependencies:
     color-convert "^1.9.0"
 
+ansi-styles@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-1.0.0.tgz#cb102df1c56f5123eab8b67cd7b98027a0279178"
+
 anymatch@^1.3.0:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/anymatch/-/anymatch-1.3.2.tgz#553dcb8f91e3c889845dfdba34c77721b90b9d7a"
@@ -495,7 +509,7 @@ assert-plus@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/assert-plus/-/assert-plus-0.2.0.tgz#d74e1b87e7affc0db8aadb7021f3fe48101ab234"
 
-assert@^1.1.1:
+assert@^1.1.1, assert@^1.3.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/assert/-/assert-1.4.1.tgz#99912d591836b5a6f5b345c0f07eefc08fc65d91"
   dependencies:
@@ -942,7 +956,7 @@ chain-function@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/chain-function/-/chain-function-1.0.0.tgz#0d4ab37e7e18ead0bdc47b920764118ce58733dc"
 
-chalk@^1.1.1, chalk@^1.1.3:
+chalk@^1.1.0, chalk@^1.1.1, chalk@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
   dependencies:
@@ -959,6 +973,14 @@ chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0:
     ansi-styles "^3.1.0"
     escape-string-regexp "^1.0.5"
     supports-color "^4.0.0"
+
+chalk@~0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-0.4.0.tgz#5199a3ddcd0c1efe23bc08c1b027b06176e0c64f"
+  dependencies:
+    ansi-styles "~1.0.0"
+    has-color "~0.1.0"
+    strip-ansi "~0.1.0"
 
 charenc@~0.0.1:
   version "0.0.2"
@@ -985,6 +1007,10 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+circle-to-polygon@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/circle-to-polygon/-/circle-to-polygon-1.0.0.tgz#41c9831628b336662cf963da3648beac1fb76282"
 
 circular-dependency-plugin@^3.0.0:
   version "3.0.0"
@@ -1167,6 +1193,14 @@ compression@^1.5.2:
 concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
+
+concat-stream@~1.4.4:
+  version "1.4.10"
+  resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-1.4.10.tgz#acc3bbf5602cb8cc980c6ac840fa7d8603e3ef36"
+  dependencies:
+    inherits "~2.0.1"
+    readable-stream "~1.1.9"
+    typedarray "~0.0.5"
 
 connect-history-api-fallback@^1.3.0:
   version "1.4.0"
@@ -2326,6 +2360,30 @@ gaze@^1.0.0:
   dependencies:
     globule "^1.0.0"
 
+geojson-area@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/geojson-area/-/geojson-area-0.2.1.tgz#2537b0982db86309f21d2c428a4257c7a6282cc6"
+  dependencies:
+    wgs84 "0.0.0"
+
+geojson-bounds@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/geojson-bounds/-/geojson-bounds-1.0.1.tgz#bf633601367a4382876659961cead8dc918284bc"
+  dependencies:
+    assert "^1.3.0"
+    geojsonhint "^1.1.0"
+    should "^8.2.1"
+
+geojsonhint@^1.1.0:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/geojsonhint/-/geojsonhint-1.2.1.tgz#5348270ecac3c428b455cfedab245d40a5ae9fc7"
+  dependencies:
+    chalk "^1.1.0"
+    concat-stream "~1.4.4"
+    jsonlint-lines "1.7.1"
+    minimist "1.1.1"
+    text-table "^0.2.0"
+
 get-caller-file@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.2.tgz#f702e63127e7e231c160a80c1554acb70d5047e5"
@@ -2471,6 +2529,10 @@ has-binary@0.1.7:
   resolved "https://registry.yarnpkg.com/has-binary/-/has-binary-0.1.7.tgz#68e61eb16210c9545a0a5cce06a873912fe1e68c"
   dependencies:
     isarray "0.0.1"
+
+has-color@~0.1.0:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/has-color/-/has-color-0.1.7.tgz#67144a5260c34fc3cca677d041daf52fe7b78b2f"
 
 has-cors@1.1.0:
   version "1.1.0"
@@ -3166,6 +3228,13 @@ jsonify@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
 
+jsonlint-lines@1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/jsonlint-lines/-/jsonlint-lines-1.7.1.tgz#507de680d3fb8c4be1641cc57d6f679f29f178ff"
+  dependencies:
+    JSV ">= 4.0.x"
+    nomnom ">= 1.5.x"
+
 jsonschema@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/jsonschema/-/jsonschema-1.2.0.tgz#d6ebaf70798db7b3a20c544f6c9ef9319b077de2"
@@ -3277,16 +3346,16 @@ kind-of@^4.0.0:
   dependencies:
     is-buffer "^1.1.5"
 
-laji-form@0.0.245:
-  version "0.0.245"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.245.tgz#8aa0e09f808ee27e98fb651ac425901ee51b425f"
+laji-form@~0.0.249:
+  version "0.0.249"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.249.tgz#c21b3a57d3204d7430a4c59b871cc6002ef217e7"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
     laji-map "^1.0.261"
-    laji-validate "0.0.31"
+    laji-validate "0.0.32"
     moment "*"
     prop-types "^15.5.8"
     react "^15.5.0"
@@ -3305,12 +3374,14 @@ laji-form@0.0.245:
     react-widgets "^3.4.8"
     scroll-into-view-if-needed "^1.1.0"
 
-laji-map@1.0.261, laji-map@^1.0.261:
-  version "1.0.261"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.261.tgz#acedc86d5d41bd318a8564f1c7c650ef2ba72032"
+laji-map@^1.0.261, laji-map@~1.0.262:
+  version "1.0.262"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.262.tgz#b80ef32540b83623135b6d9d27610b88ccb85a4b"
   dependencies:
+    "@mapbox/geojson-area" "^0.2.2"
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     babel-runtime "^6.18.0"
+    circle-to-polygon "^1.0.0"
     leaflet "1.0.3"
     leaflet-contextmenu "1.1.1"
     leaflet-draw "0.4.9"
@@ -3322,10 +3393,13 @@ laji-map@1.0.261, laji-map@^1.0.261:
     proj4 "2.3.16"
     proj4leaflet "1.0.1"
 
-laji-validate@0.0.31:
-  version "0.0.31"
-  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.31.tgz#79ce7bd90ecb04797e22921bbde5f2332a24d5a9"
+laji-validate@0.0.32:
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.32.tgz#6c2a713d10ca3566a640476ab0c4b0d8ad50df61"
   dependencies:
+    circle-to-polygon "^1.0.0"
+    geojson-area "^0.2.1"
+    geojson-bounds "^1.0.1"
     moment "*"
     validate.js "github:vixriihi/validate.js#dev"
 
@@ -3691,6 +3765,10 @@ minimist@0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
 
+minimist@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.1.1.tgz#1bc2bc71658cdca5712475684363615b0b4f695b"
+
 minimist@^1.1.3, minimist@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
@@ -3887,6 +3965,13 @@ node-sass@^4.3.0:
     request "^2.79.0"
     sass-graph "^2.1.1"
     stdout-stream "^1.4.0"
+
+"nomnom@>= 1.5.x":
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/nomnom/-/nomnom-1.8.1.tgz#2151f722472ba79e50a76fc125bb8c8f2e4dc2a7"
+  dependencies:
+    chalk "~0.4.0"
+    underscore "~1.6.0"
 
 "nopt@2 || 3":
   version "3.0.6"
@@ -4971,6 +5056,15 @@ readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.5, readable
     string_decoder "~1.0.3"
     util-deprecate "~1.0.1"
 
+readable-stream@~1.1.9:
+  version "1.1.14"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"
+  dependencies:
+    core-util-is "~1.0.0"
+    inherits "~2.0.1"
+    isarray "0.0.1"
+    string_decoder "~0.10.x"
+
 readdirp@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/readdirp/-/readdirp-2.1.0.tgz#4ed0ad060df3073300c48440373f72d1cc642d78"
@@ -5387,6 +5481,30 @@ shebang-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
 
+should-equal@0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/should-equal/-/should-equal-0.8.0.tgz#a3f05732ff45bac1b7ba412f8408856819641299"
+  dependencies:
+    should-type "0.2.0"
+
+should-format@0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/should-format/-/should-format-0.3.2.tgz#a59831e01a2ddee149911bc7148be5c80319e1ff"
+  dependencies:
+    should-type "0.2.0"
+
+should-type@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/should-type/-/should-type-0.2.0.tgz#6707ef95529d989dcc098fe0753ab1f9136bb7f6"
+
+should@^8.2.1:
+  version "8.4.0"
+  resolved "https://registry.yarnpkg.com/should/-/should-8.4.0.tgz#5e60889d3e644bbdd397a30cd34fad28fcf90bc0"
+  dependencies:
+    should-equal "0.8.0"
+    should-format "0.3.2"
+    should-type "0.2.0"
+
 signal-exit@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
@@ -5658,6 +5776,10 @@ strip-ansi@^4.0.0:
   dependencies:
     ansi-regex "^3.0.0"
 
+strip-ansi@~0.1.0:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-0.1.1.tgz#39e8a98d044d150660abe4a6808acf70bb7bc991"
+
 strip-bom@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/strip-bom/-/strip-bom-2.0.0.tgz#6219a85616520491f35788bdbf1447a99c7e6b0e"
@@ -5763,6 +5885,10 @@ tar@^2.0.0, tar@^2.2.1:
     block-stream "*"
     fstream "^1.0.2"
     inherits "2"
+
+text-table@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
 
 through2@^0.6.2, through2@^0.6.5:
   version "0.6.5"
@@ -5918,6 +6044,10 @@ type-is@~1.6.15:
     media-typer "0.3.0"
     mime-types "~2.1.15"
 
+typedarray@~0.0.5:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
+
 typescript@2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.2.tgz#f8395f85d459276067c988aa41837a8f82870844"
@@ -5979,6 +6109,10 @@ uncontrollable@^4.0.0, uncontrollable@^4.1.0:
   resolved "https://registry.yarnpkg.com/uncontrollable/-/uncontrollable-4.1.0.tgz#e0358291252e1865222d90939b19f2f49f81c1a9"
   dependencies:
     invariant "^2.1.0"
+
+underscore@~1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.6.0.tgz#8b38b10cacdef63337b8b24e4ff86d45aea529a8"
 
 uniq@^1.0.1:
   version "1.0.1"
@@ -6285,6 +6419,10 @@ websocket-driver@>=0.5.1:
 websocket-extensions@>=0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.2.tgz#0e18781de629a18308ce1481650f67ffa2693a5d"
+
+wgs84@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/wgs84/-/wgs84-0.0.0.tgz#34fdc555917b6e57cf2a282ed043710c049cdc76"
 
 whatwg-fetch@>=0.10.0:
   version "2.0.3"
