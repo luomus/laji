@@ -112,7 +112,7 @@
         <ng-template ngx-datatable-header-template><span></span></ng-template>
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
           <div>
-            <span class="label label-default link inline-block"
+            <span *ngIf="onlyTemplates === false" class="label label-default link inline-block"
                   [tooltip]="('haseka.submissions.download' | translate) + ' ' + ('haseka.submissions.submission' | translate)"
                   [placement]="'left'"
                   [container]="'body'"
