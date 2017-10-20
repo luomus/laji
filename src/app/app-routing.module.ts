@@ -8,11 +8,11 @@ import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
 
 export class CustomPreloadingStrategy implements PreloadingStrategy {
-  preload(route: Route, fn: () => Observable<boolean>): Observable<boolean> {
+  preload(route: Route, load: () => Observable<boolean>): Observable<boolean> {
     if (route.data && route.data['noPreload']) {
-      return Observable.of(false);
+      return Observable.of(null);
     }
-    return fn();
+    return load();
   }
 }
 
