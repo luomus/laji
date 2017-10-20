@@ -317,7 +317,7 @@
   "profile.friendsInfo": "Du kan be att dina vänner skickar dig länken till deras profilsidor. När du har fått länken, kan du be dem att bli dina vänner. När din begäran är godkänt, ser du här länken till deras profil.",
   "profile.accountSettings": "Min användarkonto",
   "profile.friends.needProfile": "Du måste göra först din egen profil för att kunna lägga till som vänner.",
-  "profile.missing": "Användaren har inte en offentlig profil",
+  "profile.missing": "Användaren hittades inte.",
   "footer.title1": "Finlands Artdatacenter",
   "footer.inANutshell": "I ett nötskal",
   "footer.introduction": "Introduktion till projektet",

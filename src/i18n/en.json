@@ -320,7 +320,7 @@
   "profile.friendsInfo": "You may ask another user to become your Friend by copying your profile address (URL) and sending it to your friend.  After your friend has clicked the “Add as a Friend” button, and you have confirmed his request at your own profile, you become Friends and you may e.g. make common observation records at the Notebook-observation service.",
   "profile.accountSettings": "My account",
   "profile.friends.needProfile": "You need to make first your own profile to be able to add friends.",
-  "profile.missing": "User doesn't have a public profile",
+  "profile.missing": "User not found.",
   "footer.title1": "Finnish Biodiversity Info Facility",
   "footer.inANutshell": "In a nutshell",
   "footer.introduction": "Project introduction",

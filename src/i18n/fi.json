@@ -334,7 +334,7 @@
   "profile.friendsInfo": "Voit pyytää toista käyttäjää kaveriksesi kopioimalla selaimen osoitekentästä oman profiilisi osoitteen ja lähettämällä sen kaverillesi sähköpostilla. Sen jälkeen kun kaverisi on klikannut \"Lisää kaveriksi\" -painiketta, ja olet vahvistanut hänen pyyntönsä omassa profiilissasi, olette kavereita ja voitte esim. Vihko-palvelussa tallentaa yhteisiä havaintoja.",
   "profile.accountSettings": "Käyttäjätilini",
   "profile.friends.needProfile": "Voit pyytää kavereita luotuasi ensin oman profiilisivun.",
-  "profile.missing": "Julkista Laji.fi-profiilia ei ole vielä luotu.",
+  "profile.missing": "Käyttäjää ei löytynyt.",
   "footer.title1": "Suomen Lajitietokeskus",
   "footer.inANutshell": "Pähkinänkuoressa",
   "footer.introduction": "Hanke-esittely",
