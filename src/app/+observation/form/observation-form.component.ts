@@ -325,7 +325,12 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  onFormQueryChage() {
+  ownItemSelected() {
+    this.searchQuery.query.qualityIssues = 'BOTH';
+    this.onFormQueryChange();
+  }
+
+  onFormQueryChange() {
     this.formQueryToQuery(this.formQuery);
     this.onQueryChange();
   }

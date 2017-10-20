@@ -88,7 +88,7 @@
                   <label>
                     <input type="checkbox"
                            [(ngModel)]="formQuery.asEditor"
-                           (ngModelChange)="onFormQueryChage()"
+                           (ngModelChange)="ownItemSelected()"
                            name="asEditor">
                     {{'observation.form.asEditor' | translate}}
                   </label>
@@ -99,7 +99,7 @@
                   <label>
                     <input type="checkbox"
                            [(ngModel)]="formQuery.asObserver"
-                           (ngModelChange)="onFormQueryChage()"
+                           (ngModelChange)="ownItemSelected()"
                            name="asObserver">
                     {{'observation.form.asObserver' | translate}}
                   </label>
