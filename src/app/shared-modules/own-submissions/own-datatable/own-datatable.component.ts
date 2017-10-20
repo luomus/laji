@@ -64,6 +64,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   ];
   temp = [];
   rows: any[];
+  userId;
 
   displayMode: string;
 
@@ -71,6 +72,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   rowData$: Subscription;
   saveTemplate$: Subscription;
   delete$: Subscription;
+  usersId$: Subscription;
 
   downloadedDocumentIdx: number;
   fileType = 'csv';
@@ -104,10 +106,14 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     this.updateDisplayMode();
+    this.usersId$ = this.userService.getUser()
+      .map(user => user.id)
+      .subscribe(userId => this.userId = userId);
   }
 
   ngOnDestroy() {
     this.subTrans.unsubscribe();
+    this.usersId$.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -192,6 +198,10 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.translate.get('haseka.submissions.total').subscribe((value) => this.totalMessage = value);
   }
 
+  rowIdentity(row) {
+    return row.id;
+  }
+
   showViewer(docId: string) {
     if (!this.useInternalDocumentViewer) {
       this.eventService.showViewerClicked(docId);
@@ -214,7 +224,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       this.deleteModal.show();
     } else {
       this.translate.get('delete.noId')
-        .subscribe((value) => this.toastService.showSuccess(value));
+        .subscribe((value) => this.toastService.showError(value));
     }
   }
 
@@ -237,7 +247,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
         },
         (err) => {
           this.translate.get('delete.error')
-            .subscribe((value) => this.toastService.showSuccess(value));
+            .subscribe((value) => this.toastService.showError(value));
           this.logger.error('Deleting failed', err);
           this.deleteModal.hide();
           this.delete$ = null;
@@ -257,7 +267,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     }
     if (!this.templateForm.document) {
       this.translate.get('template.missingDocument')
-        .subscribe((value) => this.toastService.showSuccess(value));
+        .subscribe((value) => this.toastService.showError(value));
       return;
     }
     this.saveTemplate$ = this.documentService.saveTemplate(this.templateForm)
@@ -274,7 +284,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
         },
         (err) => {
           this.translate.get('template.error')
-            .subscribe((value) => this.toastService.showSuccess(value));
+            .subscribe((value) => this.toastService.showError(value));
           this.logger.error('Template saving failed', err);
           this.saveTemplate$ = null;
         });
@@ -340,6 +350,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
           dateObserved += gatheringInfo.dateEnd ? ' - ' + moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
 
           return {
+            creator: document.creator,
             templateName: document.templateName,
             templateDescription: document.templateDescription,
             publicity: document.publicityRestrictions,

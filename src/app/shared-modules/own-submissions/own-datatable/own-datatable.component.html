@@ -23,6 +23,7 @@
         pagerNext: 'glyphicon glyphicon-step-forward'
       }"
       [rows]="rows"
+      [rowIdentity]="rowIdentity"
       [sorts]="[{ prop: 'dateEdited', dir: 'asc' }]"
       [columnMode]="'flex'"
       [rowHeight]="'auto'"
@@ -126,7 +127,7 @@
                   (click)="toStatisticsPage(row.id)">
               <i class="glyphicon glyphicon-stats"></i>
             </span>
-            <span class="label label-danger link inline-block"
+            <span *ngIf="row.creator === userId" class="label label-danger link inline-block"
                   [tooltip]="'friend.remove' | translate"
                   [placement]="'left'"
                   [container]="'body'"
