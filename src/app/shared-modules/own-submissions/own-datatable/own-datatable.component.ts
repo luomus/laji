@@ -233,12 +233,14 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
           this.translate.get('delete.success')
             .subscribe((value) => this.toastService.showSuccess(value));
           this.deleteModal.hide();
+          this.delete$ = null;
         },
         (err) => {
           this.translate.get('delete.error')
             .subscribe((value) => this.toastService.showSuccess(value));
           this.logger.error('Deleting failed', err);
           this.deleteModal.hide();
+          this.delete$ = null;
         }
       )
   }
@@ -268,11 +270,13 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
             description: '',
             type: 'gathering'
           };
+          this.saveTemplate$ = null;
         },
         (err) => {
           this.translate.get('template.error')
             .subscribe((value) => this.toastService.showSuccess(value));
           this.logger.error('Template saving failed', err);
+          this.saveTemplate$ = null;
         });
   }
 
