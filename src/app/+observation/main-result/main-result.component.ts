@@ -49,11 +49,11 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   selected: string[] = [
     'unit.taxon',
-    'unit.quality.taxon.reliability',
     'unit.abundanceString',
     'gathering.team',
     'gathering.displayDateTime',
     'gathering.locality',
+    'gathering.conversions.ykj10kmCenter',
     'document.collectionId',
     'unit.notes'
   ];
