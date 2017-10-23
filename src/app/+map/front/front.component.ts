@@ -30,7 +30,7 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
     getFeatureStyle: function () {
       return {color: '#000000', fillColor: '#000000', weight: 2};
     },
-    getTooltip: (i, geometry) => {
+    getTooltip: (i, {geometry}) => {
       switch (geometry.type) {
           case 'LineString': {
             let prevLatLng = undefined;
