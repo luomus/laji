@@ -112,7 +112,7 @@ export class UsersLatestComponent implements OnChanges {
                 document._hasChanges = true;
 
                 if (storeDate && (!document.dateEdited || new Date(storeDate) > new Date(document.dateEdited))) {
-                  document.dateEdited = storeDate;
+                  document.dateEdited = <any>storeDate;
                 }
                 return document;
               }

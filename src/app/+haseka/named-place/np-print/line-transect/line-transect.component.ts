@@ -23,7 +23,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   public pagedDistance: number[][] = [];
   public total: number;
   public routeLength: number;
-  public neDistance = 0;
+  public neDistance: any = 0;
   public ykjGrid: string;
   public info: {key: string, data: string}[];
 

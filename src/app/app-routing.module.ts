@@ -31,6 +31,7 @@ const routes: Routes = [
   {path: 'map', loadChildren: './+map/map.module#MapModule', data: {title: 'navigation.map', noPreload: true}},
   {path: 'error', loadChildren: './+error/error.module#ErrorModule', data: {noPreload: true}},
   {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule', data: {noPreload: true}},
+//  {path: 'admin', loadChildren: './admin/admin.module#AdminModule', data: {noPreload: true}},
   {path: 'forum', component: ForumComponent, data: {noPreload: true}}
 ];
 

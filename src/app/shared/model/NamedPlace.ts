@@ -1,14 +1,4 @@
-import { NamedPlaceActive } from './NamedPlaceActive';
-import { NamedPlaceReserve } from './NamedPlaceReserve';
-import { Document } from './Document';
 /**
- * API documentation
- * To use this api you need an access token. To get the token, send a post request
- * with your email address to api-users resource and one will be send to your.
- * See below for information on how to use this api and if you have any questions
- * you can contact us at helpdesk@laji.fi.
- * Place refer to [schema.laji.fi](http://schema.laji.fi/) for more information about the used vocabulary
- *
  * OpenAPI spec version: 0.1
  *
  *
@@ -17,83 +7,95 @@ import { Document } from './Document';
  * Do not edit the class manually.
  */
 
+import * as models from './index';
+
 export interface NamedPlace {
-  /**
-   * Unique ID for the object. This will be automatically generated.
-   */
-  id?: string;
+    /**
+     * Unique ID for the object. This will be automatically generated.
+     */
+    id?: string;
 
-  accessibility?: NamedPlace.AccessibilityEnum;
+    accessibility?: NamedPlace.AccessibilityEnum;
 
-  /**
-   * instance of active
-   */
-  active?: NamedPlaceActive;
+    /**
+     * instance of active
+     */
+    active?: models.Active;
 
-  alternativeID?: string;
+    alternativeID?: string;
 
-  alternativeIDs?: Array<string>;
+    alternativeIDs?: Array<string>;
 
-  /**
-   * QName for MY.collection
-   */
-  collectionID?: string;
+    /**
+     * QName for ML.area
+     */
+    birdAssociationArea?: Array<string>;
 
-  /**
-   * Persons who have rights to see and use the named places in their documents. QName for MA.person
-   */
-  editors?: Array<string>;
+    /**
+     * QName for MY.collection
+     */
+    collectionID?: string;
 
-  /**
-   * Using GeoJSONs geometry object specification. QName for MZ.geometry
-   */
-  geometry: any;
+    /**
+     * Persons who have rights to see and use the named places in their documents. QName for MA.person
+     */
+    editors?: Array<string>;
 
-  name: string;
+    /**
+     * Using GeoJSONs geometry object specification. QName for MZ.geometry
+     */
+    geometry: string;
 
-  notes?: string;
+    /**
+     * QName for ML.area
+     */
+    municipality?: Array<string>;
 
-  /**
-   * Persons who have full use access and rights to edit the named place. QName for MA.person
-   */
-  owners?: Array<string>;
+    name: string;
 
-  priority?: NamedPlace.PriorityEnum;
+    notes?: string;
 
-  privateNotes?: string;
+    /**
+     * Persons who have full use access and rights to edit the named place. QName for MA.person
+     */
+    owners?: Array<string>;
 
-  /**
-   * Is the named place publicaly available. Defaults to false)
-   */
+    /**
+     * instance of prepopulatedDocument
+     */
+    prepopulatedDocument?: models.Document;
+
+    priority?: NamedPlace.PriorityEnum;
+
+    privateNotes?: string;
+
+    /**
+     * Is the named place publicaly available. (Defaults to false)
+     */
     public?: boolean;
 
-  /**
-   * instance of reserve
-   */
-  reserve?: NamedPlaceReserve;
+    /**
+     * instance of reserve
+     */
+    reserve?: models.Reserve;
 
-  /**
-   * QName for MX.taxon
-   */
-  taxonIDs?: Array<string>;
-
-  /**
-   * Document data to prepopulate form with
-   */
-  prepopulatedDocument?: Document;
+    /**
+     * QName for MX.taxon
+     */
+    taxonIDs?: Array<string>;
 
 }
 export namespace NamedPlace {
-  export enum AccessibilityEnum {
-    AccessibilityEasy = <any> 'MNP.accessibilityEasy',
-    AccessibilityModerate = <any> 'MNP.accessibilityModerate',
-    AccessibilityDifficult = <any> 'MNP.accessibilityDifficult'
-  }
-  export enum PriorityEnum {
-    Priority1 = <any> 'MNP.priority1',
-    Priority2 = <any> 'MNP.priority2',
-    Priority3 = <any> 'MNP.priority3',
-    Priority4 = <any> 'MNP.priority4',
-    Priority5 = <any> 'MNP.priority5'
-  }
+    export enum AccessibilityEnum {
+        AccessibilityEasy = <any> 'MNP.accessibilityEasy',
+        AccessibilityModerate = <any> 'MNP.accessibilityModerate',
+        AccessibilityDifficult = <any> 'MNP.accessibilityDifficult'
+    }
+    export enum PriorityEnum {
+        Priority1 = <any> 'MNP.priority1',
+        Priority2 = <any> 'MNP.priority2',
+        Priority3 = <any> 'MNP.priority3',
+        Priority4 = <any> 'MNP.priority4',
+        Priority5 = <any> 'MNP.priority5'
+    }
 }

@@ -6,6 +6,7 @@ import { LineTransectChartTerms } from './line-transect-chart/line-transect-char
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { Map3Component } from '../../../shared-modules/map/map.component';
 import { LajiMapOptions } from '../../../shared-modules/map/map-options.interface';
+import { Units } from '../../../shared/model/Units';
 
 interface LineTransectCount {
   psCouples: number;
@@ -107,7 +108,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
                   name: unit.identifications[0].taxon || ''
                 };
               }
-              const cntKey = unit.lineTransectRouteFieldType === 'MY.lineTransectRouteFieldTypeOuter' ?
+              const cntKey = unit.lineTransectRouteFieldType === Units.LineTransectRouteFieldTypeEnum.LineTransectRouteFieldTypeOuter ?
                 'tsCouples' : 'psCouples';
               if (cntKey === 'psCouples') {
                 count.onPs++;
