@@ -9,7 +9,7 @@ import { TemplateForm } from '../models/template-form';
 @Injectable()
 export class DocumentService {
 
-  private removableUnit = [
+  public static readonly removableUnit = [
     'images',
     'dateBegin',
     'dateEnd',
@@ -33,7 +33,7 @@ export class DocumentService {
     'movingStatus'
   ];
 
-  private removableGathering = [
+  public static readonly removableGathering = [
     'units',
     'images',
     'dateBegin',
@@ -43,7 +43,15 @@ export class DocumentService {
     'notes',
     'observationDays',
     'observationMinutes',
-    'weather'
+    'iceCover',
+    'cloudAndRain',
+    'meanTemperature',
+    'snowAndIceOnTrees',
+    'snowCover',
+    'typeOfSnowCover',
+    'visibility',
+    'weather',
+    'wind'
   ];
 
   constructor(private documentApi: DocumentApi, private userService: UserService) { }
@@ -54,7 +62,7 @@ export class DocumentService {
 
   saveTemplate(templateData: TemplateForm): Observable<Document> {
     const template: Document = Util.clone(templateData.document);
-    this.removeMeta(template, templateData.type === 'unit' ? this.removableUnit : this.removableGathering);
+    this.removeMeta(template, templateData.type === 'unit' ? DocumentService.removableUnit : DocumentService.removableGathering);
     template.isTemplate = true;
     template.templateName = templateData.name;
     template.templateDescription = templateData.description;

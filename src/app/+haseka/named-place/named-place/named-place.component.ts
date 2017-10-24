@@ -73,7 +73,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   private updateNP() {
     if (this.collectionId) {
       this.namedPlaces$ = this.namedPlaceService
-        .getAllNamePlacesByCollectionId(this.collectionId)
+        .getAllNamePlacesByCollectionId(this.collectionId);
 
       this.namedPlaces$.subscribe(
         data => {

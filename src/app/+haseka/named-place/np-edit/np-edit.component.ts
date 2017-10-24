@@ -7,6 +7,7 @@ import { FormService } from '../../../shared/service/form.service';
 import { environment } from '../../../../environments/environment';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
+import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
 
 @Component({
   selector: 'laji-np-edit',
@@ -37,7 +38,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     private formService: FormService,
     private translate: TranslateService,
     private localizeRouterService: LocalizeRouterService,
-    private router: Router
+    private router: Router,
+    private documentService: DocumentService
   ) { }
 
   ngOnInit() {
@@ -137,7 +139,9 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
   useClick() {
     this.populateForm();
-    this.router.navigate(this.localizeRouterService.translateRoute(['/vihko/' + this.formId]));
+    this.router.navigate(this.localizeRouterService.translateRoute([
+      this.formService.getAddUrlPath(this.formId)
+    ]));
   }
 
   editReady(np: NamedPlace) {
@@ -146,8 +150,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
   private populateForm() {
     const np = this.namedPlace;
-
-    const populate: any = np.prepopulatedDocument ? np.prepopulatedDocument : {};
+    const populate: any = np.prepopulatedDocument ? Util.clone(np.prepopulatedDocument) : {};
 
     populate.namedPlaceID = np.id;
 
@@ -166,7 +169,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       populate.gatheringEvent.namedPlaceNotes = this.namedPlace.notes;
     }
 
-    this.formService.populate(populate);
+    this.formService.populate(this.documentService.removeMeta(populate, DocumentService.removableGathering));
   }
 
   private getDrawData() {

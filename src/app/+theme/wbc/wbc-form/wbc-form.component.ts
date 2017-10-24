@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentFormComponent } from '../../../shared/document-form/document-form.component';
 import { ComponentCanDeactivate } from '../../../shared/document-form/document-de-activate.guard';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
+import { FormService } from '../../../shared/service/form.service';
 
 @Component({
   selector: 'laji-wbc-form',
@@ -15,12 +16,14 @@ export class WbcFormComponent implements OnInit, OnDestroy, ComponentCanDeactiva
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
   formId;
   documentId;
+  hasNS = false;
   private subParam: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
+    private formService: FormService
   ) { }
 
   ngOnInit() {
@@ -28,6 +31,13 @@ export class WbcFormComponent implements OnInit, OnDestroy, ComponentCanDeactiva
     this.subParam = this.route.params.subscribe(params => {
       this.documentId = params['id'] || null;
     });
+    if (!this.formService.hasNamedPlace()) {
+      this.router.navigate(
+        this.localizeRouterService.translateRoute(['/vihko/places/HR.39/MHL.3'])
+      );
+    } else {
+      this.hasNS = true;
+    }
   }
 
   ngOnDestroy() {
@@ -58,5 +68,9 @@ export class WbcFormComponent implements OnInit, OnDestroy, ComponentCanDeactiva
 
   onCancel() {
     this.router.navigate(this.localizeRouterService.translateRoute(['/theme/wbc/stats']));
+  }
+
+  onMissingNamedplace(data) {
+
   }
 }

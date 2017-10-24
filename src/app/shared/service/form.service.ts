@@ -44,6 +44,10 @@ export class FormService {
     }
   }
 
+  hasNamedPlace(): boolean {
+    return !!(this._populate && this._populate.namedPlaceID) || !!(this.currentData && this.currentData.namedPlaceID);
+  }
+
   getUserId(): Observable<string> {
     return this.userService.getUser()
       .map(person => person.id);
@@ -249,6 +253,19 @@ export class FormService {
 
   populate(data: any) {
     this._populate = deepmerge(this._populate || {}, data || {});
+  }
+
+  getAddUrlPath(formId) {
+    if (formId === environment.nafiForm) {
+      return '/theme/nafi/form';
+    }
+    if (formId === environment.wbcForm) {
+      return '/theme/wbc/form';
+    }
+    if (!formId) {
+      formId = environment.defaultForm;
+    }
+    return '/vihko/' + formId;
   }
 
   getEditUrlPath(formId, documentId) {
