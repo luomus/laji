@@ -24,6 +24,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   npFormData: any;
 
   @Input() editMode = false;
+  @Input() allowEdit = true;
   @Output() onEditButtonClick = new EventEmitter();
   @Output() onEditReady = new EventEmitter();
   @Output() onError = new EventEmitter();

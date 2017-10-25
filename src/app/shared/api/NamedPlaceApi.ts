@@ -29,6 +29,14 @@ import * as models from '../model';
 import { PagedResult } from '../model/PagedResult';
 import { NamedPlace } from '../model/NamedPlace';
 
+export interface NamedPlaceQuery {
+  userToken?: string;
+  collectionID?: string;
+  alternativeIDs?: string;
+  municipality?: string;
+  birdAssociationArea?: string;
+}
+
 @Injectable()
 export class NamedPlaceApi {
   protected basePath = '/api';
@@ -117,15 +125,13 @@ export class NamedPlaceApi {
   /**
    * Get all named places
    *
-   * @param userToken
-   * @param collectionID
-   * @param alternativeIDs
+   * @param query
    * @param page
    * @param pageSize
    * @param extraHttpRequestParams
    * @returns {Observable<PagedResult<NamedPlace>>
    */
-  public findAll(userToken?: string, collectionID?: string, alternativeIDs?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<NamedPlace>> {
+  public findAll(query: NamedPlaceQuery, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<NamedPlace>> {
     const path = this.basePath + '/named-places';
 
     let queryParameters = new URLSearchParams();
@@ -138,16 +144,24 @@ export class NamedPlaceApi {
       queryParameters.set('pageSize', pageSize);
     }
 
-    if (userToken !== undefined) {
-      queryParameters.set('personToken', userToken);
+    if (query.userToken !== undefined) {
+      queryParameters.set('personToken', query.userToken);
     }
 
-    if (collectionID !== undefined) {
-      queryParameters.set('collectionID', collectionID);
+    if (query.collectionID !== undefined) {
+      queryParameters.set('collectionID', query.collectionID);
     }
 
-    if (alternativeIDs !== undefined) {
-      queryParameters.set('alternativeIDs', alternativeIDs);
+    if (query.alternativeIDs !== undefined) {
+      queryParameters.set('alternativeIDs', query.alternativeIDs);
+    }
+
+    if (query.municipality !== undefined) {
+      queryParameters.set('municipality', query.municipality);
+    }
+
+    if (query.birdAssociationArea !== undefined) {
+      queryParameters.set('birdAssociationArea', query.birdAssociationArea);
     }
 
     let requestOptions: RequestOptionsArgs = {

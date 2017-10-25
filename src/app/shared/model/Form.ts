@@ -4,6 +4,9 @@
 export namespace Form {
   export enum Feature {
     NoNewNamedPlaces = <any> 'MHL.featureAddingNamedPlacesNotAllowed',
+    NoEditingNamedPlaces = <any> 'MHL.featureEditingNamedPlacesNotAllowed',
+    FilterNamedPlacesByMunicipality = <any> 'MHL.featureFilterNamedPlacesByMunicipality',
+    FilterNamedPlacesByBirdAssociationArea = <any> 'MHL.featureFilterNamedPlacesByBirdAssociationArea',
     NamedPlace = <any> 'MHL.featureNamedPlace',
     NoPrivate = <any> 'MHL.featureNoPrivate',
     Reserve = <any> 'MHL.featureReserve',

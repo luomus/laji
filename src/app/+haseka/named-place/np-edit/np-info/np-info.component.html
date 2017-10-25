@@ -30,7 +30,7 @@
                  target="_blank"
                  [routerLink]="['/vihko/places/', namedPlace.id, 'print', targetForm.printType] | localize">{{'np.print' | translate}}</a>
             </span>
-            <button *ngIf="editButtonVisible"
+            <button *ngIf="allowEdit && editButtonVisible"
                     class="btn btn-sm btn-default"
                     (click)="editClick()">{{'np.edit' | translate}}</button>
           </div>

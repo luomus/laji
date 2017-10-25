@@ -1,0 +1,4 @@
+<select class="form-control" #areaSelect (change)="select.emit(areaSelect.value)">
+  <option>{{'select' | translate}}</option>
+  <option *ngFor="let option of options" [value]="option.id">{{option.value}}</option>
+</select>

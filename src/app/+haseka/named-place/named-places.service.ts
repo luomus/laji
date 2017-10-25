@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NamedPlaceApi } from '../../shared/api/NamedPlaceApi';
+import { NamedPlaceApi, NamedPlaceQuery } from '../../shared/api/NamedPlaceApi';
 import { NamedPlace } from '../../shared/model/NamedPlace';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../shared/service/user.service';
@@ -15,13 +15,14 @@ export class NamedPlacesService {
     private userService: UserService
   ) { }
 
-  getAllNamePlacesByCollectionId(collectionID: string)  {
-    if (this.cacheKey === collectionID) {
+  getAllNamePlaces(query: NamedPlaceQuery)  {
+    const key = JSON.stringify(query);
+    if (this.cacheKey === key) {
       return Observable.of(this.cache);
     }
-    return this._getAllNamePlacesByCollectionId(collectionID)
+    return this._getAllNamePlaces(query)
       .do(data => {
-        this.cacheKey = collectionID;
+        this.cacheKey = key;
         this.cache = data;
       });
   }
@@ -55,12 +56,13 @@ export class NamedPlacesService {
       );
   }
 
-  private _getAllNamePlacesByCollectionId(collectionID: string, page = 1, namedPlaces = [])  {
+  private _getAllNamePlaces(query: NamedPlaceQuery, page = 1, namedPlaces = [])  {
     return this.namedPlaceApi
       .findAll(
-        this.userService.getToken(),
-        collectionID,
-        undefined,
+        {
+          ...query,
+          userToken: this.userService.getToken()
+        },
         '' + page,
         '1000'
       )
@@ -68,7 +70,7 @@ export class NamedPlacesService {
         result => {
           namedPlaces.push(...result.results);
           if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
-            return this._getAllNamePlacesByCollectionId(collectionID, result.currentPage + 1, namedPlaces);
+            return this._getAllNamePlaces(query, result.currentPage + 1, namedPlaces);
           } else {
             return Observable.of(namedPlaces);
           }

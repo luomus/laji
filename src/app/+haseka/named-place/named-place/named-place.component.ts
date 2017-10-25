@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
@@ -8,11 +8,15 @@ import { FormService } from '../../../shared/service/form.service';
 import { NpChooseComponent } from '../np-choose/np-choose.component';
 import { Observable } from 'rxjs/Observable';
 import { FooterService } from '../../../shared/service/footer.service';
+import { NamedPlaceQuery } from '../../../shared/api/NamedPlaceApi';
+import { Form } from '../../../shared/model/Form';
+import { AreaType } from '../../../shared/service/area.service';
 
 @Component({
   selector: 'laji-named-place',
   templateUrl: './named-place.component.html',
-  styleUrls: ['./named-place.component.css']
+  styleUrls: ['./named-place.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NamedPlaceComponent implements OnInit, OnDestroy {
   formId;
@@ -24,7 +28,15 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   activeNP = -1;
   namedPlace: NamedPlace;
 
+  areaTypes = AreaType;
   editMode = false;
+  loading = false;
+  allowEdit = true;
+  filterByMunicipality = false;
+  filterByBirdAssociationArea = false;
+
+  birdAssociationArea = '';
+  municipality = '';
 
   errorMsg = '';
 
@@ -39,23 +51,24 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     private namedPlaceService: NamedPlacesService,
     private formService: FormService,
     private footerService: FooterService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.subParam = this.route.params.subscribe(params => {
-      this.formId = params['formId'];
-      this.collectionId = params['collectionId'];
-    });
+    this.loading = true;
+    this.subParam = this.route.params
+      .switchMap((params) => {
+        this.formId = params['formId'];
+        this.collectionId = params['collectionId'];
 
-    this.updateNP();
-    this.getFormInfo();
-    this.subTrans = this.translate.onLangChange.subscribe(
-      () => {
-        this.formData = null;
-        this.getFormInfo();
-      }
-    );
+        return this.getFormInfo();
+      })
+      .switchMap((form) => this.updateNP(form))
+      .subscribe(() => {
+        this.loading = false;
+        this.cd.markForCheck();
+      });
 
     this.footerService.footerVisible = false;
   }
@@ -70,36 +83,71 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.footerService.footerVisible = true;
   }
 
-  private updateNP() {
-    if (this.collectionId) {
-      this.namedPlaces$ = this.namedPlaceService
-        .getAllNamePlacesByCollectionId(this.collectionId);
-
-      this.namedPlaces$.subscribe(
-        data => {
-          this.setActiveNP(-1);
-          data.sort(this.sortFunction);
-          this.namedPlaces = data;
-        },
-        err => {
-          this.translate.get('np.loadError')
-            .subscribe(msg => (this.setErrorMessage(msg)));
-        }
-      );
-    }
+  updateBirdAssociationAreaFilter(value) {
+    this.birdAssociationArea = value;
+    this.updateList();
   }
 
-  private getFormInfo() {
-    this.formService.getForm(this.formId, this.translate.currentLang)
-      .subscribe(data => {
-          this.formData = data;
-        },
-        err => {
-          const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
-          this.translate.get(msgKey, {formId: this.formId})
-            .subscribe(msg => this.setErrorMessage(msg));
-        }
-      );
+  updateMunicipalityFilter(value) {
+    this.municipality = value;
+    this.updateList();
+  }
+
+  private updateList() {
+    this.loading = true;
+    this.updateNP(this.formData)
+      .subscribe(() => {
+        this.loading = false;
+        this.cd.markForCheck();
+      });
+  }
+
+  private updateNP(formData: any): Observable<any> {
+    if (formData && formData.features && Array.isArray(formData.features)) {
+      this.filterByBirdAssociationArea = formData.features.indexOf(Form.Feature.FilterNamedPlacesByBirdAssociationArea) > -1;
+      this.filterByMunicipality = formData.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality) > -1;
+    }
+
+    if (!this.collectionId) {
+      return Observable.of([]);
+    }
+    const query: NamedPlaceQuery = {
+      collectionID: this.collectionId
+    };
+    if (this.filterByMunicipality) {
+      if (!this.municipality) {
+        return Observable.of([]);
+      }
+      query.municipality = this.municipality;
+    }
+    if (this.filterByBirdAssociationArea) {
+      if (!this.birdAssociationArea) {
+        return Observable.of([]);
+      }
+      query.birdAssociationArea = this.birdAssociationArea;
+    }
+    return this.namedPlaceService.getAllNamePlaces(query)
+      .catch(() => {
+        this.translate.get('np.loadError')
+          .subscribe(msg => (this.setErrorMessage(msg)));
+        return Observable.of([]);
+      })
+      .do(data => {
+        this.setActiveNP(-1);
+        data.sort(this.sortFunction);
+        this.namedPlaces = data
+      });
+  }
+
+  private getFormInfo(): Observable<any> {
+    return this.formService.getForm(this.formId, this.translate.currentLang)
+      .catch((err) => {
+        const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
+        this.translate.get(msgKey, {formId: this.formId})
+          .subscribe(msg => this.setErrorMessage(msg));
+        return Observable.of({});
+      })
+      .do(form => this.formData = form);
   }
 
   setActiveNP(idx: number) {
@@ -148,38 +196,4 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
     return aa < bb ? -1 : aa > bb ? 1 : 0;
   }
-
-  /*private naturalSort(a, b) {
-    function chunkify(t) {
-      const tz = [];
-      let x = 0, y = -1, n = false, i, j;
-
-      while (i = (j = t.charAt(x++)).charCodeAt(0)) {
-        const m = (i === 46 || (i >= 48 && i <= 57));
-          if (m !== n) {
-            tz[++y] = '';
-            n = m;
-          }
-          tz[y] += j;
-       }
-      return tz;
-    }
-
-    const aa = chunkify(a.name);
-    const bb = chunkify(b.name);
-    const aa = a.name.toLowerCase().split(' ');
-    const bb = b.name.toLowerCase().split(' ');
-
-    for (let x = 0; aa[x] && bb[x]; x++) {
-      if (aa[x] !== bb[x]) {
-        const c = Number(aa[x]), d = Number(bb[x]);
-        if (c !== null && d !== null) {
-          return c - d;
-        } else {
-          return (aa[x] > bb[x]) ? 1 : -1;
-        }
-      }
-    }
-    return aa.length - bb.length;
-  }*/
 }

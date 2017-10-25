@@ -14,6 +14,7 @@ import { NpInfoMapComponent } from './np-edit/np-info/np-info-map/np-info-map.co
 import { NpPrintComponent } from './np-print/np-print.component';
 import { LineTransectComponent } from './np-print/line-transect/line-transect.component';
 import { LajiMapModule } from '../../shared-modules/map/laji-map.module';
+import { AreaSelectComponent } from './area-select/area-select.component';
 
 @NgModule({
   providers: [],
@@ -24,7 +25,8 @@ import { LajiMapModule } from '../../shared-modules/map/laji-map.module';
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,
-    NpEditFormComponent, NpInfoComponent, NpInfoRowComponent, NpInfoMapComponent, NpPrintComponent, LineTransectComponent
+    NpEditFormComponent, NpInfoComponent, NpInfoRowComponent, NpInfoMapComponent, NpPrintComponent, LineTransectComponent,
+    AreaSelectComponent
   ],
   exports: [NamedPlaceComponent, NpPrintComponent]
 })

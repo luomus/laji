@@ -9,7 +9,15 @@
 
       <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
 
-      <laji-spinner [spinning]="!(namedPlaces && formData) && !errorMsg" [overlay]="true" class="full-height">
+      <ng-container *ngIf="filterByMunicipality">
+        <label>{{'MNP.municipality' | label}}</label>
+        <laji-area-select [field]="areaTypes.Municipality" (select)="updateMunicipalityFilter($event)"></laji-area-select>
+      </ng-container>
+      <ng-container *ngIf="filterByBirdAssociationArea">
+        <label>{{'MNP.birdAssociationArea' | label}}</label>
+        <laji-area-select [field]="areaTypes.BirdAssociationArea" (select)="updateBirdAssociationAreaFilter($event)"></laji-area-select>
+      </ng-container>
+      <laji-spinner [spinning]="loading" [overlay]="true" class="full-height">
         <div *ngIf="namedPlaces && formData && !errorMsg" class="full-height">
           <div class="row np-row full-height">
             <div [ngClass]="{'col-xs-12 col-sm-6 full-height': !editMode}">

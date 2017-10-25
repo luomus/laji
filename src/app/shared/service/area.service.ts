@@ -8,6 +8,8 @@ export enum AreaType {
   Country = <any>'ML.country',
   Biogeographical = <any>'ML.biogeographicalProvince',
   Municipality = <any>'ML.municipality',
+  OldMunicipality = <any>'ML.oldMunicipality',
+  BirdAssociationArea = <any>'ML.birdAssociationArea',
   IucnEvaluationArea = <any>'ML.iucnEvaluationArea',
 }
 
@@ -69,6 +71,10 @@ export class AreaService {
 
   getMunicipalities(lang: string) {
     return this.getAreaType(lang, this.types.Municipality);
+  }
+
+  getBirdAssociationAreas(lang: string) {
+    return this.getAreaType(lang, this.types.BirdAssociationArea);
   }
 
   getCountries(lang: string) {
