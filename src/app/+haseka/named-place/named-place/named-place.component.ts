@@ -106,6 +106,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (formData && formData.features && Array.isArray(formData.features)) {
       this.filterByBirdAssociationArea = formData.features.indexOf(Form.Feature.FilterNamedPlacesByBirdAssociationArea) > -1;
       this.filterByMunicipality = formData.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality) > -1;
+      this.allowEdit = this.formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1
     }
 
     if (!this.collectionId) {
