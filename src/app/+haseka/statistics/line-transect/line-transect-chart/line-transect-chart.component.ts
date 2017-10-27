@@ -1,4 +1,7 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges,
+  OnDestroy
+} from '@angular/core';
 import { ScriptService } from '../../../../shared/service/script.service';
 
 declare const d3: any;
@@ -17,7 +20,8 @@ export interface LineTransectChartTerms {
 @Component({
   selector: 'laji-line-transect-chart',
   template: `<div class="line-chart"></div>`,
-  styleUrls: ['./line-transect-chart.component.css']
+  styleUrls: ['./line-transect-chart.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnDestroy {
 
@@ -40,7 +44,8 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
 
   constructor(
     element: ElementRef,
-    private scriptService: ScriptService
+    private scriptService: ScriptService,
+    private cd: ChangeDetectorRef
   ) {
     this.nativeElement = element.nativeElement;
   }
@@ -54,6 +59,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
           if (this.value && this.ykj10km) {
             this.updateChart();
           }
+          this.cd.markForCheck();
         }
       )
       .catch((err) => console.log(err));

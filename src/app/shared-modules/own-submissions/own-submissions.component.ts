@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
@@ -10,7 +10,8 @@ import { ModalDirective } from 'ngx-bootstrap';
 @Component({
   selector: 'laji-own-submissions',
   templateUrl: './own-submissions.component.html',
-  styleUrls: ['./own-submissions.component.css']
+  styleUrls: ['./own-submissions.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OwnSubmissionsComponent implements OnInit {
 
@@ -38,7 +39,8 @@ export class OwnSubmissionsComponent implements OnInit {
   constructor(
     private documentService: DocumentApi,
     private userService: UserService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -66,10 +68,14 @@ export class OwnSubmissionsComponent implements OnInit {
         this.yearInfo = results;
         this.year = results.length > 0 ? results[results.length - 1].year : now.getFullYear();
         this.getDocumentsByYear(this.year);
+        this.cd.markForCheck();
       },
       (err) => {
         this.translate.get('haseka.form.genericError')
-          .subscribe(msg => (this.yearInfoError = msg));
+          .subscribe(msg => {
+            this.yearInfoError = msg;
+            this.cd.markForCheck();
+          });
       }
     );
   }
@@ -92,6 +98,7 @@ export class OwnSubmissionsComponent implements OnInit {
           this.documentCache[tmpCacheKey] = result;
           this.activeDocuments = this.filterDocuments(result);
           this.loading = false;
+          this.cd.markForCheck();
         },
         err => {
           this.loading = false;
@@ -99,6 +106,7 @@ export class OwnSubmissionsComponent implements OnInit {
             .subscribe(msg => {
               this.activeDocuments = [];
               this.documentError = msg;
+              this.cd.markForCheck();
             });
         }
       );
@@ -125,6 +133,7 @@ export class OwnSubmissionsComponent implements OnInit {
           this.documentCache[String(year)] = result;
           this.activeDocuments = this.filterDocuments(result);
           this.loading = false;
+          this.cd.markForCheck();
         },
         err => {
           this.loading = false;
@@ -132,6 +141,7 @@ export class OwnSubmissionsComponent implements OnInit {
             .subscribe(msg => {
               this.activeDocuments = [];
               this.documentError = msg;
+              this.cd.markForCheck();
             });
         }
       );

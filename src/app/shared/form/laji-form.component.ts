@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -19,7 +19,8 @@ import { LajiExternalService } from '../service/laji-external.service';
 @Component({
   selector: 'laji-form',
   template: '<div></div>',
-  providers: [FormApiClient]
+  providers: [FormApiClient],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
 
@@ -42,7 +43,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               private userService: UserService,
               private lajiExternalService: LajiExternalService,
               private logger: Logger,
-              private ngZone: NgZone
+              private ngZone: NgZone,
+              private cd: ChangeDetectorRef
   ) {
     this.elem = elementRef.nativeElement;
   }

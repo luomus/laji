@@ -1,4 +1,7 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit,
+  SimpleChanges
+} from '@angular/core';
 import { FormService } from '../service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
@@ -7,7 +10,8 @@ import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'laji-document-form-header',
   templateUrl: './document-form-header.component.html',
-  styleUrls: ['./document-form-header.component.css']
+  styleUrls: ['./document-form-header.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -23,7 +27,8 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   constructor(
     private title: Title,
     private formService: FormService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -51,6 +56,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
       .subscribe(form => {
         this.form = form;
         this.title.setTitle(form.title + ' | ' + this.title.getTitle());
+        this.cd.markForCheck();
       });
   }
 

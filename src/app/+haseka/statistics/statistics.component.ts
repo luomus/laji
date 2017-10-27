@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { UserService } from '../../shared/service/user.service';
@@ -10,7 +10,8 @@ import { NamedPlacesService } from '../named-place/named-places.service';
 @Component({
   selector: 'laji-statistics',
   templateUrl: './statistics.component.html',
-  styleUrls: ['./statistics.component.css']
+  styleUrls: ['./statistics.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StatisticsComponent implements OnInit {
 
@@ -24,7 +25,8 @@ export class StatisticsComponent implements OnInit {
     private userService: UserService,
     private formService: FormService,
     private documentApi: DocumentApi,
-    private namedPlacesService: NamedPlacesService
+    private namedPlacesService: NamedPlacesService,
+    private cd: ChangeDetectorRef
   ) {
   }
 
@@ -44,6 +46,7 @@ export class StatisticsComponent implements OnInit {
           this.form = data.form;
           this.ns = data.ns;
           this.loaded = true;
+          this.cd.markForCheck();
         });
     } else {
       this.loaded = true;

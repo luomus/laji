@@ -66,6 +66,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   private success = '';
   private error: any;
   private isEdit = false;
+  private readyForForm = false;
   private leaveMsg;
   private publicityRestrictions;
   private current;
@@ -84,6 +85,9 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   ngAfterViewInit() {
+    if (!this.documentId) {
+      return;
+    }
     this.footerService.footerVisible = false;
     this.subTrans = this.translate.onLangChange.subscribe(
       () => this.onLangChange()
@@ -124,7 +128,9 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
-    this.subTrans.unsubscribe();
+    if (this.subTrans) {
+      this.subTrans.unsubscribe();
+    }
     this.footerService.footerVisible = true;
   }
 
@@ -263,6 +269,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       this.changeDetector.markForCheck();
       return;
     }
+    this.readyForForm = false;
     this.current = key;
     if (this.subFetch) {
       this.subFetch.unsubscribe();
@@ -310,6 +317,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
                 collectionID: data.collectionID,
                 formID: data.id
               });
+              return;
             }
           }
           if (this.formService.isTmpId(this.documentId)) {
@@ -324,6 +332,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           data.uiSchemaContext.formID = this.formId;
           this.form = data;
           this.lang = this.translate.currentLang;
+          this.readyForForm = true;
           if (this.hasChanges()) {
             this.saveVisibility = 'shown';
             this.status = 'unsaved';

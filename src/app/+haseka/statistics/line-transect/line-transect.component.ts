@@ -1,4 +1,7 @@
-import { AfterViewInit, Component, Input, OnChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges,
+  ViewChild
+} from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import * as MapUtil from 'laji-map/lib/utils';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
@@ -23,7 +26,8 @@ interface LineTransectCount {
 @Component({
   selector: 'laji-line-transect-stats',
   templateUrl: './line-transect.component.html',
-  styleUrls: ['./line-transect.component.css']
+  styleUrls: ['./line-transect.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineTransectComponent implements OnChanges, AfterViewInit {
   @ViewChild(Map3Component)
@@ -65,7 +69,8 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   };
 
   constructor(
-    private coordinateService: CoordinateService
+    private coordinateService: CoordinateService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnChanges() {
@@ -81,6 +86,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
         this.counts.routeLength = parseInt(this.lajiMap.lajiMap.pointIdxsToDistances[lastKey], 10);
         this.counts.couplesPerKm = (this.counts.tsCouples + this.counts.psCouples) /
           (this.counts.routeLength / 1000);
+        this.cd.markForCheck();
       }, 100);
 
     }

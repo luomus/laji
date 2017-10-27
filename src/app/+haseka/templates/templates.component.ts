@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { LocalStorage } from 'ng2-webstorage';
 
 @Component({
   selector: 'laji-templates',
   templateUrl: './templates.component.html',
-  styleUrls: ['./templates.component.css']
+  styleUrls: ['./templates.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TemplatesComponent implements OnInit {
 

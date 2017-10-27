@@ -1,4 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges,
+  Output
+} from '@angular/core';
 import { Logger } from '../../shared/logger/logger.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { FormService } from '../../shared/service/form.service';
@@ -10,7 +13,8 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'laji-haseka-latest',
   templateUrl: './haseka-users-latest.component.html',
-  styleUrls: ['./haseka-users-latest.component.css']
+  styleUrls: ['./haseka-users-latest.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsersLatestComponent implements OnChanges {
   @Input() userToken: string;
@@ -28,7 +32,8 @@ export class UsersLatestComponent implements OnChanges {
     private documentService: DocumentApi,
     private formService: FormService,
     private translate: TranslateService,
-    private logger: Logger
+    private logger: Logger,
+    private cd: ChangeDetectorRef
   ) {
   }
 
@@ -47,11 +52,10 @@ export class UsersLatestComponent implements OnChanges {
       return;
     }
     this.formService.getAllTempDocuments()
-      .subscribe(documents => {
-        this.processDocuments(documents)
-          .subscribe((docs) => {
-            this.unpublishedDocuments.push(...docs);
-          });
+      .switchMap(documents => this.processDocuments(documents))
+      .subscribe((documents) => {
+        this.unpublishedDocuments.push(...documents);
+        this.cd.markForCheck();
       });
   }
 
@@ -60,18 +64,24 @@ export class UsersLatestComponent implements OnChanges {
       return;
     }
     this.documentService.findAll(this.userToken, String(this.page), String(this.pageSize))
+      .switchMap(response => Observable.of(response)
+        .combineLatest(
+          response.results ? this.processDocuments(response.results) : Observable.of([]),
+          ((result, docs) => ({...result, docs: docs}))
+        )
+      )
       .subscribe(
         result => {
-          if (result.results) {
-            this.processDocuments(result.results)
-              .subscribe((docs) => {
-                this.documents.push(...docs);
-                this.loading = false;
-              });
-          }
+          this.documents = result.docs;
           this.total = result.total || 0;
+          this.loading = false;
+          this.cd.markForCheck();
         },
-        err => this.logger.warn('Unable to fetch users documents', err)
+        err => {
+          this.logger.warn('Unable to fetch users documents', err);
+          this.loading = false;
+          this.cd.markForCheck();
+        }
       );
   }
 
@@ -86,6 +96,7 @@ export class UsersLatestComponent implements OnChanges {
           doc => {
             documents[i] = doc;
             documents.sort(this.compareEditDate);
+            this.cd.markForCheck();
           }
         );
     }

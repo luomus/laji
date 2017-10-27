@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
   ViewChild
 } from '@angular/core';
@@ -27,7 +28,8 @@ import { Logger } from '../../../shared/logger/logger.service';
   selector: 'laji-own-datatable',
   templateUrl: './own-datatable.component.html',
   styleUrls: ['./own-datatable.component.css'],
-  providers: [DocumentExportService]
+  providers: [DocumentExportService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() year: number;
@@ -93,7 +95,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     private documentService: DocumentService,
     private toastService: ToastsService,
     private window: WindowRef,
-    private logger: Logger
+    private logger: Logger,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -108,7 +111,10 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.updateDisplayMode();
     this.usersId$ = this.userService.getUser()
       .map(user => user.id)
-      .subscribe(userId => this.userId = userId);
+      .subscribe(userId => {
+        this.userId = userId;
+        this.cd.markForCheck();
+      });
   }
 
   ngOnDestroy() {
@@ -191,11 +197,15 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe((array) => {
         this.temp = array;
         this.rows = this.temp;
+        this.cd.markForCheck();
       });
   }
 
   private updateTranslations() {
-    this.translate.get('haseka.submissions.total').subscribe((value) => this.totalMessage = value);
+    this.translate.get('haseka.submissions.total').subscribe((value) => {
+      this.totalMessage = value;
+      this.cd.markForCheck();
+    });
   }
 
   rowIdentity(row) {
@@ -244,6 +254,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
             .subscribe((value) => this.toastService.showSuccess(value));
           this.deleteModal.hide();
           this.delete$ = null;
+          this.cd.markForCheck();
         },
         (err) => {
           this.translate.get('delete.error')
@@ -251,6 +262,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
           this.logger.error('Deleting failed', err);
           this.deleteModal.hide();
           this.delete$ = null;
+          this.cd.markForCheck();
         }
       )
   }
@@ -281,12 +293,14 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
             type: 'gathering'
           };
           this.saveTemplate$ = null;
+          this.cd.markForCheck();
         },
         (err) => {
           this.translate.get('template.error')
             .subscribe((value) => this.toastService.showError(value));
           this.logger.error('Template saving failed', err);
           this.saveTemplate$ = null;
+          this.cd.markForCheck();
         });
   }
 

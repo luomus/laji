@@ -9,6 +9,10 @@ import { UserService } from '../../shared/service/user.service';
 import { FormPermissionService } from '../form-permission/form-permission.service';
 import { Person } from '../../shared/model/Person';
 
+interface FormList extends Form.List {
+  hasAdminRight: boolean;
+}
+
 @Component({
   selector: 'laji-haseka-form-list',
   templateUrl: './haseka-form-list.component.html',
@@ -16,13 +20,13 @@ import { Person } from '../../shared/model/Person';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HaSeKaFormListComponent implements OnInit, OnDestroy {
-  public formList: Form.List[] = [];
+  public formList: FormList[] = [];
   public tmpDocument: { [formId: string]: string } = {};
   private subTrans: Subscription;
   private subFetch: Subscription;
   private subTmp: Subscription;
   private person: Person;
-
+  private loadedLang: string;
 
   constructor(private formService: FormService,
               private translate: TranslateService,
@@ -69,10 +73,28 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
   }
 
   updateForms() {
+    const lang = this.translate.currentLang;
     if (this.subFetch) {
+      if (this.loadedLang === lang) {
+        return;
+      }
       this.subFetch.unsubscribe();
     }
-    this.subFetch = this.formService.getAllForms(this.translate.currentLang)
+    this.loadedLang = lang;
+    this.subFetch = this.formService.getAllForms(this.loadedLang)
+      .switchMap((forms) => {
+        if (forms.length === 0) {
+          return Observable.of(forms);
+        }
+        const subs = [];
+        forms.map(form => {
+          subs.push(
+            this.hasAdminRight(form)
+              .map(hasAdminRight => ({...form, hasAdminRight: hasAdminRight}))
+          )
+        });
+        return Observable.forkJoin(subs);
+      })
       .subscribe(
         forms => {
           this.formList = forms;
@@ -82,7 +104,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       );
   }
 
-  hasAdminRight(form: Form.List) {
+  hasAdminRight(form: Form.List): Observable<boolean> {
     if (!this.userService.isLoggedIn || !form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
       return Observable.of(false);
     }

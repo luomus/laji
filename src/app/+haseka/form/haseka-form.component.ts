@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,7 +10,8 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 @Component({
   selector: 'laji-haseka-form',
   templateUrl: './haseka-form.component.html',
-  styleUrls: ['./haseka-form.component.css']
+  styleUrls: ['./haseka-form.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
@@ -23,6 +24,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
               private router: Router,
               private footerService: FooterService,
               private localizeRouterService: LocalizeRouterService,
+              private cd: ChangeDetectorRef,
               public translate: TranslateService
   ) {
   }
@@ -32,6 +34,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
     this.subParam = this.route.params.subscribe(params => {
       this.formId = params['formId'];
       this.documentId = params['documentId'] || null;
+      this.cd.markForCheck();
     });
   }
 
