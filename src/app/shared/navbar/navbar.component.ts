@@ -71,15 +71,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .startWith(0)
       .delay(5000)
       .filter(() => this.userService.isLoggedIn)
-      .switchMap(() => Observable.forkJoin(
-        this.notificationService.fetch(
-          this.userService.getToken(),
-          '' + this.currentNotificationPage,
-          '' + this.notificationPageSize
-        ),
-        this.notificationService.fetch(this.userService.getToken(), '1', '1', 'true'),
-        (notifications, unseen) => ({...notifications, unseen: unseen.total || 0})
-      ))
+      .switchMap(() => this.notificationService
+        .fetch(this.userService.getToken(), '' + this.currentNotificationPage, '' + this.notificationPageSize)
+        .switchMap((notifications) => notifications.total <= this.notificationPageSize ?
+          Observable.of({
+            ...notifications,
+            unseen: notifications.results.reduce((cumulative, current) => cumulative + (current.seen ? 0 : 1), 0)
+          }) :
+          this.notificationService.fetch(this.userService.getToken(), '1', '1', 'true')
+            .map(unseen => ({...notifications, unseen: unseen.total || 0}))
+        )
+      )
       .subscribe(
         notifications => {
           this.notifications = notifications;

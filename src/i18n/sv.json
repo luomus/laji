@@ -530,5 +530,7 @@
   "profile.save": "Spara",
   "profile.search": "Sök användare",
   "notification.friendRequest": "{{person}} har skickat dig en vänförfrågan.",
-  "notification.friendRequestAccepted": "{{person}} har accepterat din vänförfrågan."
+  "notification.friendRequestAccepted": "{{person}} har accepterat din vänförfrågan.",
+  "viewer.fixedName": "Reviderat namn",
+  "viewer.otherUnits": "Visa alla observationer ({{cnt}} andra)"
 }

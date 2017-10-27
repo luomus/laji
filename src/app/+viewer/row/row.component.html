@@ -4,6 +4,6 @@
     <ng-content select="[key-row]"></ng-content>
   </div>
   <div class="value" [ngClass]="{'col-xs-8': !noTitleSpace, 'com-xs-12': noTitleSpace}">
-    <span *ngIf="!hideValue">{{value}}</span><ng-content></ng-content>
+    <span *ngIf="!hideValue">{{value| values}}</span><ng-content></ng-content>
   </div>
 </div>

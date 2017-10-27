@@ -1,10 +1,14 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit, ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { MapComponent } from '../../shared/map/map.component';
 
 @Component({
   selector: 'laji-viewer-map',
   templateUrl: './viewer-map.component.html',
-  styleUrls: ['./viewer-map.component.css']
+  styleUrls: ['./viewer-map.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(MapComponent) lajiMap: MapComponent;

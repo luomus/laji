@@ -12,6 +12,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
   public uri: string;
   public highlight: string;
   public own: boolean;
+  public openAnnotation: boolean;
   private subQuery: Subscription;
 
   constructor(private route: ActivatedRoute) { }
@@ -21,6 +22,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
       this.uri = params['uri'] || '';
       this.highlight = (params['highlight'] || '').replace('_', '#');
       this.own = params['own'] === 'true';
+      this.openAnnotation = params['openAnnotation'] === 'true';
     });
   }
 

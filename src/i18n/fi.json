@@ -544,5 +544,7 @@
   "profile.save": "Tallenna",
   "profile.search": "Hae käyttäjiä",
   "notification.friendRequest": "{{person}} on lähettänyt sinulle kaveripyynnön.",
-  "notification.friendRequestAccepted": "{{person}} on hyväksynyt kaveripyyntösi."
+  "notification.friendRequestAccepted": "{{person}} on hyväksynyt kaveripyyntösi.",
+  "viewer.fixedName": "Korjattu määritys",
+  "viewer.otherUnits": "Näytä erän kaikki havainnot ({{cnt}} muuta)"
 }

@@ -13,17 +13,9 @@
     <ng-template #taxonVerbatim>
       <laji-row [title]="unit.recordBasis | label: 'warehouse'" [value]="unit.taxonVerbatim"></laji-row>
     </ng-template>
-    <div *ngIf="showFacts && unit.quality && unit.quality.taxon && unit.quality.taxon.reliability">
-      <laji-row [title]="'result.unit.quality.taxon'|translate">
-        {{unit.quality.taxon.reliability | label: 'warehouse'}}
-        <span *ngIf="unit.quality.taxon.source">
-          ({{unit.quality.taxon.source | label: 'warehouse'}})
-        </span>
-      </laji-row>
-    </div>
     <laji-row
       *ngIf="unit.linkings && unit.linkings.taxon && unit.linkings.originalTaxon && unit.linkings.taxon.qname !== unit.linkings.originalTaxon.qname"
-      [title]="'Korjattu määritys'">
+      [title]="'viewer.fixedName'|translate">
       <span class="vernacularName" *ngIf="unit.linkings.taxon.vernacularName">
         {{unit.linkings.taxon.vernacularName | multiLang}}
       </span>
@@ -32,6 +24,15 @@
         <a [routerLink]="['/taxon/' + (unit.linkings.taxon.qname | toQName)] | localize" target="_blank"><i class="glyphicon glyphicon-modal-window"></i></a>
       </span>
     </laji-row>
+    <laji-row [title]="'MY.det' | label" [value]="unit.det"></laji-row>
+    <div *ngIf="unit.quality && unit.quality.taxon && unit.quality.taxon.reliability && (showFacts || unit.quality.taxon.reliability !== 'NEUTRAL')">
+      <laji-row [title]="'result.unit.quality.taxon'|translate">
+        {{unit.quality.taxon.reliability | label: 'warehouse'}}
+        <span *ngIf="unit.quality.taxon.source">
+          ({{unit.quality.taxon.source | label: 'warehouse'}})
+        </span>
+      </laji-row>
+    </div>
     <laji-issues [data]="unit"></laji-issues>
     <laji-row [title]="'MY.count' | label" [value]="unit.abundanceString"></laji-row>
     <laji-row [title]="'MY.lifeStage' | label" [value]="unit.lifeStage | label: 'warehouse'"></laji-row>
@@ -55,7 +56,7 @@
       <i class="fa {{annotationIcon}}"></i>
     </button>
   </div>
-  <div *ngIf="annotationVisible">
+  <ng-container *ngIf="annotationVisible">
     <div class="row">
       <div class="col-xs-12 col-md-10 col-md-offset-2 annotations">
         <laji-annotations
@@ -69,5 +70,5 @@
         ></laji-annotations>
       </div>
     </div>
-  </div>
+  </ng-container>
 </div>

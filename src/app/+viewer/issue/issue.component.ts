@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 
 export interface Issue {
   issue: string;
@@ -9,7 +9,8 @@ export interface Issue {
 @Component({
   selector: 'laji-issue',
   templateUrl: './issue.component.html',
-  styleUrls: ['./issue.component.css']
+  styleUrls: ['./issue.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IssueComponent implements OnInit, OnChanges {
 

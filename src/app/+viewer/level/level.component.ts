@@ -1,17 +1,18 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { isArray } from 'util';
 
 @Component({
   selector: 'laji-level',
   templateUrl: './level.component.html',
-  styleUrls: ['./level.component.css']
+  styleUrls: ['./level.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LevelComponent implements OnInit, OnChanges {
 
   @Input() item: Object;
   @Input() skip: string[] = [];
   @Input() subLevels: string[] = [];
-  @Input() level: string = 'document';
+  @Input() level = 'document';
   @Input() showTitle = true;
   @Input() keyMap: KeyMap = {};
   items: ViewRow[] = [];

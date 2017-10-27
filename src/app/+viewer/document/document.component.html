@@ -1,4 +1,4 @@
-<div *ngIf="hasDoc && document">
+<ng-container *ngIf="hasDoc && document">
   <div class="row">
     <div class="col-sm-7">
       <div class="page-header" [ngClass]="{tight: !showTitle}">
@@ -93,7 +93,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="document.gatherings && document.gatherings.length > 1" class="gatherings">
+  <div *ngIf="document.gatherings && document.gatherings.length > 1 && !showOnlyHighlighted" class="gatherings">
     <ul class="nav nav-tabs link">
       <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
         <a (click)="setActive(i)">
@@ -104,19 +104,19 @@
   </div>
   <div class="row">
     <div class="col-sm-7">
-      <div *ngFor="let gathering of document.gatherings; let i=index">
-        <laji-gathering [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
-      </div>
+      <ng-container *ngFor="let gathering of document.gatherings; let i=index">
+        <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
+      </ng-container>
     </div>
     <div class="col-sm-5">
       <laji-viewer-map [useWorldMap]="useWorldMap" [active]="active" *ngIf="mapData.length > 0" [data]="mapData"></laji-viewer-map>
       <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media"></laji-image-gallery>
     </div>
   </div>
-</div>
-<div *ngIf="hasDoc === false">
+</ng-container>
+<ng-container *ngIf="hasDoc === false">
   <div class="page-header">
     <h2>{{'viewer.notFound' | translate}}</h2>
   </div>
-</div>
+</ng-container>
 <!--<pre>{{document | json}}</pre>-->

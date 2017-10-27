@@ -1,9 +1,10 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 
 @Component({
   selector: 'laji-images',
   templateUrl: './images.component.html',
-  styleUrls: ['./images.component.css']
+  styleUrls: ['./images.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImagesComponent implements OnInit, OnChanges {
 

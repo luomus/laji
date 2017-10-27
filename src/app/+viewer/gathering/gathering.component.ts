@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'laji-gathering',
   templateUrl: './gathering.component.html',
-  styleUrls: ['./gathering.component.css']
+  styleUrls: ['./gathering.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GatheringComponent {
 
@@ -14,6 +15,10 @@ export class GatheringComponent {
   @Input() highlight: string;
   @Input() visible = true;
   @Input() showFacts = false;
+  @Input() unitCnt: number;
+  @Input() openAnnotation: boolean;
+  @Input() showOnlyHighlightedUnit: boolean;
+  @Output() showAllUnits = new EventEmitter();
 
   constructor() { }
 

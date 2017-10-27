@@ -31,6 +31,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   @Input() own: boolean;
   @Input() showTitle = false;
   @Input() useWorldMap = true;
+  @Input() openAnnotation = false;
 
   externalViewUrl: string;
   document: any;
@@ -41,7 +42,9 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   mapData: any = [];
   hasDoc: boolean;
   active = 0;
+  unitCnt;
   isViewInited = false;
+  showOnlyHighlighted = true;
   @SessionStorage() showFacts = false;
   private _uri: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
@@ -51,7 +54,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   constructor(
     private warehouseApi: WarehouseApi,
     private userService: UserService,
-    private changeDetector: ChangeDetectorRef
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -60,7 +63,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       .switchMap(() => this.userService.getUser())
       .subscribe(person => {
         this.personID = person.id;
-        this.updateView();
+        this.cd.markForCheck();
       });
   }
 
@@ -96,7 +99,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
           editorOrObserverPersonToken: this.userService.getToken()
         } : undefined)
         .map(doc => doc.document)
-        .do(() => this._uri = this.uri);
+        .do(() => this._uri = this.uri)
+        .do(() => this.showOnlyHighlighted = !!this.highlight);
     findDox$
       .subscribe(
         doc => this.parseDoc(doc, doc),
@@ -124,12 +128,13 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     this.showFacts = !this.showFacts;
   }
 
-  updateView() {
-    this.changeDetector.markForCheck();
+  toggleShowOnlyHighlighted() {
+    this.showOnlyHighlighted = !this.showOnlyHighlighted;
   }
 
   private parseDoc(doc, found) {
     this.hasDoc = found;
+    this.unitCnt = 0;
     if (found) {
       this.document = doc;
       this.mapData = [];
@@ -153,6 +158,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
             activeIdx = idx;
           }
           if (gathering.units) {
+            this.unitCnt += gathering.units.length;
             gathering.units.map(unit => {
               if (this.highlight && unit.unitId === this.highlight) {
                 activeIdx = idx;
@@ -170,7 +176,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
         .interval(this.recheckIterval)
         .subscribe(() => this.updateDocument());
     }
-    this.updateView();
+    this.cd.markForCheck();
   }
 
 }

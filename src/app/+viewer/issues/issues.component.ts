@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 
 const QualityErrors = [
   'issue',
@@ -9,7 +9,8 @@ const QualityErrors = [
 @Component({
   selector: 'laji-issues',
   templateUrl: './issues.component.html',
-  styleUrls: ['./issues.component.css']
+  styleUrls: ['./issues.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IssuesComponent implements OnInit, OnChanges {
 

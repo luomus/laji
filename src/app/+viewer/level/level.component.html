@@ -2,8 +2,8 @@
   <div class="col-sm-12">
     <h3 *ngIf="showTitle">{{level}}</h3>
     <div class="level {{level}}">
-      <div *ngFor="let curr of items">
-        <div [ngSwitch]="curr.type">
+      <ng-container *ngFor="let curr of items">
+        <ng-container [ngSwitch]="curr.type">
           <div *ngSwitchCase="'subArray'">
             <div *ngFor="let sub of curr.value">
               <laji-level [item]="sub" [subLevels]="subLevels" [level]="curr.key " [skip]="skip" [keyMap]="keyMap"></laji-level>
@@ -28,8 +28,8 @@
               {{curr.value | label: 'warehouse'}}
             </div>
           </div>
-        </div>
-      </div>
+        </ng-container>
+      </ng-container>
     </div>
   </div>
 </div>

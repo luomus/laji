@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
@@ -8,7 +8,8 @@ import { Annotation } from '../../shared/model/Annotation';
 @Component({
   selector: 'laji-unit',
   templateUrl: './unit.component.html',
-  styleUrls: ['./unit.component.css']
+  styleUrls: ['./unit.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UnitComponent implements OnInit {
 
@@ -17,7 +18,9 @@ export class UnitComponent implements OnInit {
   @Input() documentID: string;
   @Input() unit: any;
   @Input() highlight: string;
+  @Input() openAnnotation: boolean;
   @Input() showFacts = false;
+
   annotationVisible = false;
   annotationClass$: Observable<string>;
   annotationIcon: string;
@@ -67,6 +70,7 @@ export class UnitComponent implements OnInit {
     if (this.unit.annotations) {
       this.annotations = this.unit.annotations.reverse();
     }
+    this.annotationVisible = this.openAnnotation && this.highlight === this.unit.unitId
   }
 
   toggleAnnotations() {

@@ -529,5 +529,7 @@
   "profile.save": "Save",
   "profile.search": "Search users",
   "notification.friendRequest": "{{person}} has send you a friend request.",
-  "notification.friendRequestAccepted": "{{person}} has accepted your friend request."
+  "notification.friendRequestAccepted": "{{person}} has accepted your friend request.",
+  "viewer.fixedName": "Revised name",
+  "viewer.otherUnits": "Show all observations ({{cnt}} other)"
 }
