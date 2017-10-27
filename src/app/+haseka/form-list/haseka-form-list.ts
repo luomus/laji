@@ -97,6 +97,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       })
       .subscribe(
         forms => {
+          forms.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
           this.formList = forms;
           this.changeDetector.markForCheck();
         },
