@@ -23,6 +23,7 @@ import { Router } from '@angular/router';
 import { FormService } from '../../shared/service/form.service';
 import { environment } from '../../../environments/environment';
 import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
+import { CoordinateService } from '../../shared/service/coordinate.service';
 
 @Component({
   selector: 'laji-observation-form',
@@ -77,6 +78,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
               private autocompleteService: AutocompleteApi,
               private formService: FormService,
               private formPermissionService: FormPermissionService,
+              private coordinateService: CoordinateService,
               private mapService: MapService,
               private winRef: WindowRef) {
     this.dataSource = Observable.create((observer: any) => {
@@ -381,7 +383,14 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   toInvasiveControlForm() {
-    this.formService.populate({URL: this.winRef.nativeWindow.document.location.href});
+    this.formService.populate({
+      URL: this.winRef.nativeWindow.document.location.href,
+      gatherings: [
+        {
+          geometry: this.coordinateService.convertLajiEtlCoordinatesToGeometry(this.searchQuery.query.coordinates)
+        }
+      ]
+    });
     this.route.navigate(['/vihko', environment.invasiveControlForm]);
   }
 

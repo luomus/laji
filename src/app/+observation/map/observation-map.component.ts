@@ -96,14 +96,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     return val;
   }
 
-  private static getFeature(geometry: Object) {
-    return {
-      type: 'Feature',
-      properties: {},
-      geometry: geometry
-    };
-  }
-
   constructor(private warehouseService: WarehouseApi,
               public translate: TranslateService,
               private decorator: ValueDecoratorService,
@@ -248,24 +240,11 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     }
     const features = [];
     this.query.coordinates.map(coord => {
-      const parts = coord.split(':');
-      const system = parts.pop();
-      if (system === 'WGS84' && parts.length === 4) {
-        features.push(ObservationMapComponent.getFeature({
-          type: 'Polygon',
-          coordinates: [[
-            [parts[2], parts[0]], [parts[2], parts[1]],
-            [parts[3], parts[1]], [parts[3], parts[0]],
-            [parts[2], parts[0]]
-          ]]
-        }));
-      } else if (system === 'YKJ' && parts.length === 2) {
-        features.push(
-          this.coordinateService.convertYkjToGeoJsonFeature(
-            parts[0], parts[1]
-          )
-        );
-      }
+      features.push(
+        this.coordinateService.getFeature(
+          this.coordinateService.convertLajiEtlCoordinatesToGeometry(coord)
+        )
+      );
     });
     if (features.length) {
       this.drawData.featureCollection.features = features;
