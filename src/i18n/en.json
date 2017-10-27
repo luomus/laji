@@ -317,7 +317,7 @@
   "friend.block": "Block",
   "friend.removeBlock": "Remove block",
   "profile.friends": "Friends",
-  "profile.friendsInfo": "You may ask another user to become your Friend by copying your profile address (URL) and sending it to your friend.  After your friend has clicked the “Add as a Friend” button, and you have confirmed his request at your own profile, you become Friends and you may e.g. make common observation records at the Notebook-observation service.",
+  "profile.friendsInfo": "You may ask another user to become your Friend by searching your friends profile from above and by clicking the “Add as a Friend” button on their profile page. After your friend has confirmed your request on their profile page, you become Friends and you may e.g. make common observation records at the Notebook-observation service.",
   "profile.accountSettings": "My account",
   "profile.friends.needProfile": "You need to make first your own profile to be able to add friends.",
   "profile.missing": "User not found.",
@@ -523,5 +523,11 @@
   "delete.error": "Failed to delete. Try again little later.",
   "result.gathering.conversions.dayOfYearBegin": "Begin day of year",
   "result.gathering.conversions.dayOfYearEnd": "End day of year",
-  "haseka.templates.intro": "You can create a template from \"Own submissions\" page. Choose an observation for the template and press \"Save as template\" -button."
+  "haseka.templates.intro": "You can create a template from \"Own submissions\" page. Choose an observation for the template and press \"Save as template\" -button.",
+  "profile.image": "Image",
+  "profile.description": "Description",
+  "profile.save": "Save",
+  "profile.search": "Search users",
+  "notification.friendRequest": "{{person}} has send you a friend request.",
+  "notification.friendRequestAccepted": "{{person}} has accepted your friend request."
 }

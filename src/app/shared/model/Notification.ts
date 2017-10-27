@@ -14,6 +14,10 @@ export interface Notification {
    */
   annotation?: Annotation;
 
+  friendRequest?: string;
+
+  friendRequestAccepted?: string;
+
   /**
    * Has the annotation been marked as seen
    */

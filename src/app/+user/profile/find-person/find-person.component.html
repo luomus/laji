@@ -1,0 +1,23 @@
+<input
+  [ngClass]="{loading: typeaheadLoading}"
+  type="text"
+  class="form-control input-sm"
+  name="person"
+  [placeholder]="'profile.search' | translate"
+  [(ngModel)]="value"
+  [typeahead]="dataSource"
+  [typeaheadOptionsLimit]="limit"
+  [typeaheadWaitMs]="200"
+  [typeaheadMinLength]="3"
+  [typeaheadOptionField]="'value'"
+  [typeaheadItemTemplate]="person"
+  (typeaheadLoading)="changeTypeaheadLoading($event)"
+  (typeaheadOnSelect)="personSelected($event)"
+  autocomplete="off"
+  autocorrect="off"
+>
+<ng-template #person let-model="item">
+  <h5 class="autosuggest-value">
+    {{model.value}} ({{model.key}})
+  </h5>
+</ng-template>

@@ -314,7 +314,7 @@
   "friend.block": "Block",
   "friend.removeBlock": "Ta bort block",
   "profile.friends": "Vänner",
-  "profile.friendsInfo": "Du kan be att dina vänner skickar dig länken till deras profilsidor. När du har fått länken, kan du be dem att bli dina vänner. När din begäran är godkänt, ser du här länken till deras profil.",
+  "profile.friendsInfo": "Du kan begära att en annan användare blir din vän genom att söka efter dina vänners profil ovanifrån och genom att klicka på knappen \"Be om en vän\" på sin profilsida. Efter att din vän har bekräftat din förfrågan på sin profilsida, blir du vänner och du kan t.ex. göra vanliga observationer i Notebook-observatörstjänsten.",
   "profile.accountSettings": "Min användarkonto",
   "profile.friends.needProfile": "Du måste göra först din egen profil för att kunna lägga till som vänner.",
   "profile.missing": "Användaren hittades inte.",
@@ -524,5 +524,11 @@
   "delete.error": "Misslyckades att ta bort. Försök igen lite senare.",
   "result.gathering.conversions.dayOfYearBegin": "Börja dagen på året",
   "result.gathering.conversions.dayOfYearEnd": "Slutdagen på ett år",
-  "haseka.templates.intro": "Du kan skapa en mall från sidan \"Mina observationer\". Välj en observation för mallen och tryck på \"Spara som mall\" -knappen."
+  "haseka.templates.intro": "Du kan skapa en mall från sidan \"Mina observationer\". Välj en observation för mallen och tryck på \"Spara som mall\" -knappen.",
+  "profile.image": "Image",
+  "profile.description": "Beskrivning",
+  "profile.save": "Spara",
+  "profile.search": "Sök användare",
+  "notification.friendRequest": "{{person}} har skickat dig en vänförfrågan.",
+  "notification.friendRequestAccepted": "{{person}} har accepterat din vänförfrågan."
 }

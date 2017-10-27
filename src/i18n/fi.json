@@ -331,7 +331,7 @@
   "friend.block": "Estä",
   "friend.removeBlock": "Poista esto",
   "profile.friends": "Kaverit",
-  "profile.friendsInfo": "Voit pyytää toista käyttäjää kaveriksesi kopioimalla selaimen osoitekentästä oman profiilisi osoitteen ja lähettämällä sen kaverillesi sähköpostilla. Sen jälkeen kun kaverisi on klikannut \"Lisää kaveriksi\" -painiketta, ja olet vahvistanut hänen pyyntönsä omassa profiilissasi, olette kavereita ja voitte esim. Vihko-palvelussa tallentaa yhteisiä havaintoja.",
+  "profile.friendsInfo": "Voit pyytää toista käyttäjää kaveriksesi etisimällä hänen profiilinsa ylläolevalla haulla ja klikkaamalla hänen profiili sivullaan olevaa \"Lisää kaveriksi\" -painiketta. Sen jälkeen kun hän on vahvistanut pyyntösi omassa profiilissaan, olette kavereita ja voitte esim. Vihko-palvelussa tallentaa yhteisiä havaintoja.",
   "profile.accountSettings": "Käyttäjätilini",
   "profile.friends.needProfile": "Voit pyytää kavereita luotuasi ensin oman profiilisivun.",
   "profile.missing": "Käyttäjää ei löytynyt.",
@@ -538,5 +538,11 @@
   "delete.error": "Poisto epäonnistui. Yritä hetken kuluttua uudelleen.",
   "result.gathering.conversions.dayOfYearBegin": "Alkupäivän numero",
   "result.gathering.conversions.dayOfYearEnd": "Loppupäivän numero",
-  "haseka.templates.intro": "Voit luoda uusia lomakepohjia \"Omat havaintoeräni\" sivulta. Valitse havaintoerä josta haluat luoda lomakepohjan ja paina \"Tallenna lomakepohjaksi\" -painiketta."
+  "haseka.templates.intro": "Voit luoda uusia lomakepohjia \"Omat havaintoeräni\" sivulta. Valitse havaintoerä josta haluat luoda lomakepohjan ja paina \"Tallenna lomakepohjaksi\" -painiketta.",
+  "profile.image": "Kuva",
+  "profile.description": "Kuvaus",
+  "profile.save": "Tallenna",
+  "profile.search": "Hae käyttäjiä",
+  "notification.friendRequest": "{{person}} on lähettänyt sinulle kaveripyynnön.",
+  "notification.friendRequestAccepted": "{{person}} on hyväksynyt kaveripyyntösi."
 }
