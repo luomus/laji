@@ -58,6 +58,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   public enablePrivate = true;
   public errorMsg: string;
   public namedPlace;
+  public readyForForm = false;
 
   private subTrans: Subscription;
   private subFetch: Subscription;
@@ -66,7 +67,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   private success = '';
   private error: any;
   private isEdit = false;
-  private readyForForm = false;
   private leaveMsg;
   private publicityRestrictions;
   private current;
