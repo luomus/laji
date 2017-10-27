@@ -38,7 +38,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
     if (this._data && this._data[idx]) {
       this.lajiMap.map.setData([this._data[idx] || {}]);
       this.lajiMap.map.map.fitBounds(
-        this.lajiMap.map.dataLayerGroups[0].getBounds(),
+        this.lajiMap.map.data[0].group.getBounds(),
         {maxZoom: this.lajiMap.map.map.getZoom()}
       );
     } else {

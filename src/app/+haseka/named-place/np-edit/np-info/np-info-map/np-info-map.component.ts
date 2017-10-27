@@ -62,7 +62,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   setZoom() {
     if (this._data && this.lajiMap.map) {
-      const geojsonLayer = this.lajiMap.map.dataLayerGroups[0];
+      const geojsonLayer = this.lajiMap.map.data[0].group;
 
       this.lajiMap.map.map.fitBounds(
         geojsonLayer.getBounds(), { maxZoom: 4 });

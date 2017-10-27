@@ -59,7 +59,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   private setNewActivePlace(oldActive: number, newActive: number) {
     if (!this.lajiMap.map) { return; }
 
-    const geojsonLayer = this.lajiMap.map.dataLayerGroups[0];
+    const geojsonLayer = this.lajiMap.map.data[0].group;
 
     const that = this;
     geojsonLayer.eachLayer(function (layer) {
