@@ -17,6 +17,7 @@ export class NotificationComponent implements OnInit {
   targetQuery: any;
   target: string;
   by: string;
+  type: 'annotation'|'friendRequest'|'friendRequestAccepted';
 
   @Input() notification: Notification;
   @Output() removeNotification = new EventEmitter<Notification>();
@@ -32,6 +33,7 @@ export class NotificationComponent implements OnInit {
 
   initTargets() {
     if (this.notification.annotation) {
+      this.type = 'annotation';
       const annotation = this.notification.annotation;
       this.targetPath = '/view';
       this.target = IdService.getUri(annotation.rootID);
@@ -41,7 +43,14 @@ export class NotificationComponent implements OnInit {
         highlight: IdService.getUri(annotation.targetID),
         own: 'true'
       };
-      this.changeDetectorRef.markForCheck();
+    } else if (this.notification.friendRequest) {
+      this.type = 'friendRequest';
+      this.by = IdService.getId(this.notification.friendRequest);
+      this.targetPath = '/user/' + this.notification.toPerson;
+    } else if (this.notification.friendRequestAccepted) {
+      this.type = 'friendRequestAccepted';
+      this.by = IdService.getId(this.notification.friendRequestAccepted);
+      this.targetPath = '/user/' + this.notification.toPerson;
     }
   }
 

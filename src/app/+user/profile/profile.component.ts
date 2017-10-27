@@ -2,11 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
 import { Profile } from '../../shared/model/Profile';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Logger } from '../../shared/logger/logger.service';
 import { environment } from '../../../environments/environment';
+import { Person } from '../../shared/model';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-user',
@@ -36,7 +38,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService,
               private personService: PersonApi,
+              private localizeRouterService: LocalizeRouterService,
               private route: ActivatedRoute,
+              private router: Router,
               private logger: Logger
   ) {
     this.personSelfUrl = environment.selfPage;
@@ -102,6 +106,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
         },
         err => this.logger.warn('Failed to save profile', err)
       );
+  }
+
+  selectPerson(person: Person) {
+    if (!person.id) {
+      return;
+    }
+    this.router.navigate(
+      this.localizeRouterService.translateRoute(['/user', person.id])
+    );
   }
 
   private getProfile(): Profile {

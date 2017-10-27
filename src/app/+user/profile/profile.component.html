@@ -19,21 +19,22 @@
         </div>
         <div *ngIf="editing" class="profile-edit">
           <div class="profile-edit-row">
-            image
+            {{'profile.image' | translate}}
             <input class="form-control" placeholder="Image url" [(ngModel)]="profile.image">
           </div>
           <div class="profile-edit-row">
-            description:
+            {{'profile.description' | translate}}
             <textarea class="form-control" [(ngModel)]="profile.profileDescription"></textarea>
           </div>
           <div class="profile-edit-row">
-            <div class="btn btn-default" (click)="saveProfile()">save</div>
+            <div class="btn btn-default" (click)="saveProfile()">{{'profile.save' | translate}}</div>
           </div>
         </div>
       </div>
       <div class="col-md-4 col-xs-12">
         <div class="form-group">
           <div class="col-sm-12 well">
+            <laji-find-person (select)="selectPerson($event)"></laji-find-person>
             <friends [profile]="profile" [usersProfile]="personsProfile"></friends>
           </div>
         </div>
