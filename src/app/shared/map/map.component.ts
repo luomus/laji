@@ -252,9 +252,9 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
 
   initDrawData() {
     if (this.map && this.drawData) {
-      this.map.setDrawData(this.drawData);
+      this.map.setDraw({...this.draw, ...this.drawData});
       if (this.bringDrawLayerToBack) {
-        this.map.drawLayerGroup.bringToBack();
+        this.map.draw.group.bringToBack();
       }
     }
   }
