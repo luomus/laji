@@ -36,7 +36,9 @@ export class StatisticsComponent implements OnInit {
         .switchMap((document: Document) => Observable.forkJoin(
             this.formService.getForm(document.formID, 'fi'),
             document.namedPlaceID ?
-              this.namedPlacesService.getNamedPlace(document.namedPlaceID, this.userService.getToken()) :
+              this.namedPlacesService
+                .getNamedPlace(document.namedPlaceID, this.userService.getToken())
+                .catch(() => Observable.of({})) :
               Observable.of({}),
             (form, ns) => ({form, ns})
           ),

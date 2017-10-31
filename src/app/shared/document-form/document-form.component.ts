@@ -277,7 +277,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     this.formService
       .load(this.formId, this.translate.currentLang, this.documentId)
       .switchMap((data) => {
-        if (data.formData._isTemplate && !this.formService.isTmpId(this.documentId)) {
+        if (data.formData._isTemplate && !this.documentId) {
           return this.formService.store(data.formData)
             .do(() => {
               this.onTmpLoad.emit({
@@ -291,10 +291,10 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       })
       .filter((value) => value !== false)
       .switchMap(
-        data => data.formData.namedPlaceID ? this.namedPlaceService.getNamedPlace(
-          data.formData.namedPlaceID,
-          this.userService.getToken()
-        ) : Observable.of(undefined),
+        data => data.formData.namedPlaceID ? this.namedPlaceService
+          .getNamedPlace(data.formData.namedPlaceID, this.userService.getToken())
+          .catch(() => Observable.of({}))
+          .do((test) => console.log(test)) : Observable.of(undefined),
         (data, namedPace) => ({data, namedPace})
       )
       .switchMap(

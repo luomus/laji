@@ -42,7 +42,9 @@ export class NpPrintComponent implements OnInit, OnDestroy {
         lang: lang
       }))
       .switchMap(data => Observable.forkJoin(
-        this.namedPlaceService.getNamedPlace(data.params['npId'], this.userService.getToken()),
+        this.namedPlaceService
+          .getNamedPlace(data.params['npId'], this.userService.getToken())
+          .catch(() => Observable.of({})),
         (ns) => ({
           person: data.person,
           ns: ns,

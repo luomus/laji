@@ -30,7 +30,7 @@ export class WbcFormComponent implements OnInit, OnDestroy, ComponentCanDeactiva
     this.formId = environment.wbcForm;
     this.subParam = this.route.params.subscribe(params => {
       this.documentId = params['id'] || null;
-      if (!this.formService.hasNamedPlace() && !this.formService.isTmpId(this.documentId)) {
+      if (!this.formService.hasNamedPlace() && !this.documentId) {
         this.router.navigate(
           this.localizeRouterService.translateRoute(['/vihko/places/HR.39', environment.wbcForm])
         );
