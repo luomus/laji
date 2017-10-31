@@ -104,6 +104,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.userService.getUserSetting(this.settingsKey)
       .subscribe(settings => {
         try {
+          console.log('USERS SETTINGS', settings);
           this.ngZone.runOutsideAngular(() => {
             const uiSchemaContext = this.formData.uiSchemaContext || {};
             uiSchemaContext['creator'] = this.formData.formData.creator;
