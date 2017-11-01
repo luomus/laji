@@ -35,7 +35,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() timeLabel: string[] = ['2020', '2015-', '2010-', '2005-', '2000-', '1990-'];
   @Input() maxBounds: [[number, number], [number, number]] = [[58.0, 19.0], [72.0, 35.0]];
   @Input() mapOptions: LajiMapOptions = {
-    controlSettings: {
+    controls: {
       draw: false,
       drawCopy: false,
       drawClear: false,

@@ -12,7 +12,7 @@ export interface LajiMapOptions {
   };
   markerPopupOffset?: number;
   featurePopupOffset?: number;
-  controlSettings?: {
+  controls?: {
     draw?: boolean;
     drawCopy?: boolean;
     drawClear?: boolean;

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal/modal.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { TranslateService } from '@ngx-translate/core';
@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './theme-observation-list.component.html',
   styleUrls: ['./theme-observation-list.component.css']
 })
-export class ThemeObservationListComponent {
+export class ThemeObservationListComponent implements OnInit {
 
   @ViewChild('documentModal') public modal: ModalDirective;
 
@@ -29,6 +29,10 @@ export class ThemeObservationListComponent {
   constructor(
     public translate: TranslateService
   ) { }
+
+  ngOnInit() {
+    this.modal.isAnimated = false;
+  }
 
   showDocument(event) {
     const row = event.row || {};

@@ -43,6 +43,7 @@ export class ObservationResultListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.modal.isAnimated = false;
     this.userService.getItem<any>(UserService.SETTINGS_RESULT_LIST)
       .subscribe(data => {
         if (data) {

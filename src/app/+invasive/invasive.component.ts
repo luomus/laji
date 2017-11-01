@@ -31,6 +31,7 @@ export class InvasiveComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.modal.isAnimated = false;
     this.updateObservations();
     this.updateTaxa();
   }

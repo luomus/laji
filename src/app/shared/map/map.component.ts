@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -25,6 +25,7 @@ import { LajiMapOptions } from '../../shared-modules/map/map-options.interface';
   <ng-content></ng-content>
 </div>`,
   styleUrls: ['./map.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: []
 })
 export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit {
@@ -68,7 +69,8 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
     private mapService: MapService,
     private logger: Logger,
     private lajiExternalService: LajiExternalService,
-    private userService: UserService
+    private userService: UserService,
+    private cd: ChangeDetectorRef
   ) {
 
   }
@@ -83,12 +85,15 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
         this.settings = settings;
         if (this.map) {
           this.map.setOptions(settings);
+          this.cd.markForCheck();
         }
       });
   }
 
   ngAfterViewInit() {
+    try {
       const draw = this.draw;
+
       if (this.draw) {
         draw.onChange = draw.onChange || (e => this.onChange(e));
         draw.getDraftStyle = draw.getDraftStyle || this.getDrawingDraftStyle;
@@ -109,7 +114,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
         markerPopupOffset: 5,
         featurePopupOffset: 0,
         rootElem: this.elemRef.nativeElement,
-        controlSettings: this.controlSettings,
+        controls: this.controlSettings,
         overlayNames: this.overlayNames
       };
 
@@ -146,6 +151,9 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
       this.updateData();
       this.initDrawData();
       this.moveEvent('moveend');
+    } catch (err) {
+      this.logger.error('Failed init map', {error: err});
+    }
   }
 
   moveEvent(type: string) {
@@ -247,14 +255,22 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
   }
 
   addData(data) {
-    this.map.addData(data);
+    try {
+      this.map.addData(data);
+    } catch (err) {
+      this.logger.error('Failed add data', {error: err});
+    }
   }
 
   initDrawData() {
     if (this.map && this.drawData) {
-      this.map.setDraw({...this.draw, ...this.drawData});
-      if (this.bringDrawLayerToBack) {
-        this.map.draw.group.bringToBack();
+      try {
+        this.map.setDraw({...this.draw, ...this.drawData});
+        if (this.bringDrawLayerToBack) {
+          this.map.draw.group.bringToBack();
+        }
+      } catch (err) {
+        this.logger.error('Failed init draw data', {error: err});
       }
     }
   }

@@ -10,8 +10,6 @@ import { IdService } from '../../shared/service/id.service';
   styleUrls: ['./annotations.component.css']
 })
 export class AnnotationsComponent implements OnInit {
-  @ViewChild('childModal') public modal: ModalDirective;
-
   @Input() rootID: string;
   @Input() targetID: string;
   @Input() editors: string[];
