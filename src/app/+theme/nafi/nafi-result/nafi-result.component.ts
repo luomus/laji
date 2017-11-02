@@ -56,7 +56,6 @@ export class NafiResultComponent implements OnInit, OnDestroy {
       const taxonId = (params['taxonId'] && Array.isArray(params['taxonId'])) ?
         params['taxonId'][0] : params['taxonId'];
       this.query = {
-        taxonRankId: 'MX.species',
         time: [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
         collectionId: [this.collectionId],
         informalTaxonGroupId: [this.informalTaxonGroup]

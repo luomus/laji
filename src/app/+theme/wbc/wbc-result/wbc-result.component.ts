@@ -42,7 +42,7 @@ export class WbcResultComponent implements OnInit, OnDestroy {
   activeSeason: SEASON = 'spring';
   activeYear: number;
 
-  aggregateFields = ['unit.linkings.taxon.vernacularName', 'unit.linkings.taxon.scientificName', 'individualCountSum'];
+  aggregateFields = ['unit.linkings.species.vernacularName', 'unit.linkings.species.scientificName', 'individualCountSum'];
   listFields = ['unit.linkings.taxon', 'unit.linkings.taxon.scientificName', 'gathering.displayDateTime', 'gathering.team'];
 
   private subQuery: Subscription;

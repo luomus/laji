@@ -1,8 +1,9 @@
-import { Component, Input, OnChanges, OnInit, SimpleChange } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({
@@ -10,29 +11,39 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: './parents.component.html',
   styleUrls: ['./parents.component.css']
 })
-export class ParentsComponent implements OnInit, OnChanges {
+export class ParentsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() current: Taxonomy;
   @Input() includeCurrent = true;
 
   parents$: Observable<Taxonomy[]>;
+  langSub: Subscription;
 
   constructor(private translate: TranslateService, private taxonService: TaxonomyApi) {
   }
 
   ngOnInit() {
-    this.translate.onLangChange.subscribe(() => {
-      this.parents$ = this
-        .taxonService
-        .taxonomyFindParents(this.current.id, this.translate.currentLang);
+    this.langSub = this.translate.onLangChange.subscribe(() => {
+      this.initParents();
     });
   }
 
   ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
     if (changes['current']) {
-      this.parents$ = this
-        .taxonService
-        .taxonomyFindParents(this.current.id, this.translate.currentLang);
+      this.initParents();
     }
+  }
+
+  ngOnDestroy() {
+    this.langSub.unsubscribe();
+  }
+
+  initParents() {
+    if (!this.current || !this.current.id) {
+      return;
+    }
+    this.parents$ = this
+      .taxonService
+      .taxonomyFindParents(this.current.id, this.translate.currentLang);
   }
 
 }

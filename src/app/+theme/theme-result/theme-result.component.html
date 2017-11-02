@@ -6,13 +6,13 @@
     (selectChange)="selectChange.emit($event)"
     [allAggregateFields]="[
       'unit.species',
-      'unit.linkings.taxon.vernacularName',
-      'unit.linkings.taxon.scientificName',
-      'unit.linkings.taxon.taxonomicOrder'
+      'unit.linkings.species.vernacularName',
+      'unit.linkings.species.scientificName',
+      'unit.linkings.species.taxonomicOrder'
     ]"
     [pageSize]="1000"
     [query]="query"
-    [defaultOrder]="'unit.linkings.taxon.taxonomicOrder'"
+    [defaultOrder]="'unit.linkings.taxon.speciesTaxonomicOrder'"
     [showSettingsMenu]="showSettings"
     [showPageSize]="false"
     [isAggregate]="true"

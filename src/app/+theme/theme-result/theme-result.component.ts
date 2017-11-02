@@ -14,7 +14,7 @@ export class ThemeResultComponent {
   @Input() showSettings = false;
   @Input() query: WarehouseQueryInterface;
   @Input() height;
-  @Input() fields = ['unit.linkings.taxon.vernacularName', 'unit.linkings.taxon.scientificName', 'individualCountSum'];
+  @Input() fields = ['unit.linkings.species.vernacularName', 'unit.linkings.species.scientificName', 'individualCountSum'];
   @Output() onNameClick = new EventEmitter<WarehouseQueryInterface>();
   @Output() selectChange = new EventEmitter();
 
