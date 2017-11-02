@@ -109,6 +109,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       prop: 'unit.linkings.taxon',
       cellTemplate: 'scientificName',
       label: 'result.scientificName',
+      selectField: 'unit.linkings.taxon.scientificName,unit.linkings.taxon.cursiveName',
       sortBy: 'unit.linkings.taxon.scientificName',
       aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.scientificName,unit.linkings.taxon.cursiveName' },
     { name: 'unit.linkings.taxon.taxonomicOrder',
