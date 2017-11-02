@@ -90,7 +90,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       'unit.linkings.taxon.nameFinnish,' +
       'unit.linkings.taxon.nameEnglish,' +
       'unit.linkings.taxon.nameSwedish,' +
-      'unit.linkings.taxon.scientificName',
+      'unit.linkings.taxon.scientificName' +
+      'unit.linkings.taxon.cursiveName',
       width: 300
     },
     { name: 'unit.taxonVerbatim',
@@ -109,7 +110,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       cellTemplate: 'scientificName',
       label: 'result.scientificName',
       sortBy: 'unit.linkings.taxon.scientificName',
-      aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.scientificName' },
+      aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.scientificName,unit.linkings.taxon.cursiveName' },
     { name: 'unit.linkings.taxon.taxonomicOrder',
       label: 'result.taxonomicOrder',
       aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.taxonomicOrder',
@@ -140,6 +141,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'unit.linkings.species.scientificName',
       prop: 'unit.linkings.taxon.speciesScientificName',
       label: 'result.scientificName',
+      cellTemplate: 'cursive',
       sortBy: 'unit.linkings.taxon.speciesScientificName',
       aggregateBy: 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName' },
     { name: 'unit.linkings.species.taxonomicOrder',

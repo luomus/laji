@@ -117,9 +117,9 @@
     {{value.scientificName}}
   </span>
 </ng-template>
-<ng-template let-value="value" #speciesScientificName>
-  <span *ngIf="value.speciesScientificName" title="{{value.speciesScientificName}}" [class.cursive]="value.cursiveName">
-    {{value.speciesScientificName}}
+<ng-template let-value="value" #cursive>
+  <span *ngIf="value" title="{{value}}" class="cursive">
+    {{value}}
   </span>
 </ng-template>
 <ng-template let-value="value" #speciesVernacularName>
