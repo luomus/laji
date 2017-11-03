@@ -57,7 +57,8 @@ export class SearchQuery {
     'hasMedia',
     'secured',
     'cache',
-    'reliable'
+    'reliable',
+    'unidentified'
   ];
 
   numericTypes = [

@@ -142,6 +142,7 @@ export interface WarehouseQueryInterface {
   secured?: boolean;
   ykj10km?: string;
   ykj10kmCenter?: string;
+  unidentified?: boolean;
   cache?: boolean;
   reliable?: boolean;
   observerPersonToken?: string;

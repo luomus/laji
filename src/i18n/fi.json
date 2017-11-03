@@ -156,7 +156,7 @@
   "observation.form.noImages": "Annetuilla hakuehdoilla ei löytynyt yhtään kuvaa.",
   "observation.form.thisYear": "Tänä vuonna",
   "observation.form.preservedSpecimens": "Kokoelmanäytteitä",
-  "observation.form.typeSpecimen": "Vain tyyppinäytteet",
+  "observation.form.typeSpecimen": "Tyyppinäytteet",
   "observation.form.invasiveClassification": "Vieraslajiluokittelu",
   "observation.form.invasive": "Vieraslajit",
   "observation.form.nonInvasive": "Ei-vieraslajit",
@@ -175,7 +175,7 @@
   "observation.form.count": "Yksilömäärä",
   "observation.form.countMin": "min",
   "observation.form.countMax": "max",
-  "observation.form.reliable": "Vain varmistetut",
+  "observation.form.reliable": "Varmistetut",
   "observation.form.lifeStage": "Elinvaihe",
   "observation.form.sex": "Sukupuoli",
   "observation.form.administrativeStatus": "Hallinnollinen tila",
@@ -198,8 +198,8 @@
   "observation.form.own": "Omat havainnot",
   "observation.form.asEditor": "Muokkausoikeus",
   "observation.form.asObserver": "Havainnoitsijana",
-  "observation.form.issueBoth": "Näytä myös ongelmalliset",
-  "observation.form.issueOnly": "Näytä vain ongelmalliset",
+  "observation.form.issueBoth": "Myös ongelmalliset",
+  "observation.form.issueOnly": "Vain ongelmalliset",
   "observation.filters.unit": "Näyte",
   "observation.filters.collection": "Kokoelma",
   "observation.filters.administrative": "Hallinnolliset",
@@ -546,5 +546,6 @@
   "notification.friendRequest": "{{person}} on lähettänyt sinulle kaveripyynnön.",
   "notification.friendRequestAccepted": "{{person}} on hyväksynyt kaveripyyntösi.",
   "viewer.fixedName": "Korjattu määritys",
-  "viewer.otherUnits": "Näytä erän kaikki havainnot ({{cnt}} muuta)"
+  "viewer.otherUnits": "Näytä erän kaikki havainnot ({{cnt}} muuta)",
+  "filter.unidentified": "Määritystä vaativat"
 }
