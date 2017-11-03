@@ -60,7 +60,7 @@ export class GalleryComponent implements OnChanges {
         'unit.media',
         // 'gathering.media',
         // 'document.media',
-        'document.documentId'
+        'document.documentId,unit.unitId'
       ], undefined, this.pageSize, this.page)
       .timeout(WarehouseApi.longTimeout)
       .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
@@ -74,6 +74,7 @@ export class GalleryComponent implements OnChanges {
               if (items[key] && items[key].media) {
                 items[key].media.map(media => {
                   media['documentId'] = items['document']['documentId'];
+                  media['unitId'] = items['unit']['unitId'];
                   media['vernacularName'] = items.unit
                     && items.unit.linkings
                     && items.unit.linkings.taxon

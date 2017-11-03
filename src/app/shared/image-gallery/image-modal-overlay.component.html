@@ -25,7 +25,7 @@
       <span *ngIf="img.licenseId">{{img.licenseId | toQName | label}}</span>
       <span *ngIf="img.licenseAbbreviation && !img.licenseId" [innerHtml]="img.licenseAbbreviation"></span>
       <br *ngIf="img.author || img.copyrightOwner || img.licenseId || img.licenseAbbreviation">
-      <a *ngIf="img.documentId" target="_blank" [routerLink]="'/view' | localize" [queryParams]="{'uri':img.documentId}">
+      <a *ngIf="img.documentId" target="_blank" [routerLink]="'/view' | localize" [queryParams]="{'uri':img.documentId, highlight: img.unitId}">
         {{'more' | translate}}
       </a>
      ({{ currentImageIndex + 1 }}/{{ modalImages.length }})
