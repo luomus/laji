@@ -404,7 +404,6 @@
   "np.save": "Save",
   "np.list": "List",
   "np.map": "Map",
-  "np.additionalInfo": "Additional info",
   "np.loadError": "Failed to load the places. Please try again a little later.",
   "np.form.success": "Place saved!",
   "np.print": "Print",

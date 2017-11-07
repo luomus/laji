@@ -1,11 +1,10 @@
 .np-info {
-  padding-bottom: 20px;
   margin-bottom: 3px;
 }
 
 .np-info legend {
-  font-size: 15px;
-  padding: 6px;
+  margin-top: 5px;
+  margin-bottom: 12px;
 }
 
 .np-info button, .np-info a {
@@ -22,8 +21,13 @@ laji-np-info-map {
 
 .use-button {
   width: 100%;
+  margin-bottom: 3px;
 }
 
 #info-box {
-  padding: 10px 0 10px 0;
+  padding: 10px 0 7px 0;
+}
+
+#btn-container {
+  text-align: right;
 }
