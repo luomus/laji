@@ -3336,15 +3336,15 @@ kind-of@^4.0.0:
   dependencies:
     is-buffer "^1.1.5"
 
-laji-form@^0.0.268:
-  version "0.0.268"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.268.tgz#14c5a6d2eebdd8f89716ce7a8a51a71b954dbad8"
+laji-form@^0.0.267:
+  version "0.0.267"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.267.tgz#dade85567f13e0931cf35bb0a4e096851ac11d2d"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.279"
+    laji-map "^1.0.278"
     laji-validate "0.0.35"
     moment "*"
     prop-types "^15.5.8"
@@ -3364,9 +3364,26 @@ laji-form@^0.0.268:
     react-widgets "^3.4.8"
     scroll-into-view-if-needed "^1.1.0"
 
-laji-map@^1.0.279:
-  version "1.0.279"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.279.tgz#a404717b2a762354d9404dcdf26dde0508961112"
+laji-map@^1.0.272:
+  version "1.0.272"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.272.tgz#d6ef5e3a7d2067179f7aa9e2e4a63eb7774a5547"
+  dependencies:
+    Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
+    babel-runtime "^6.18.0"
+    leaflet "1.0.3"
+    leaflet-contextmenu "1.1.1"
+    leaflet-draw "0.4.9"
+    leaflet-geometryutil "^0.8.0"
+    leaflet-mml-layers "2.0.1"
+    leaflet-textpath "git+https://git@github.com/makinacorpus/Leaflet.textPath.git#ad1afd910b387e075989b258d487cd7d6db93b0b"
+    leaflet.markercluster "1.0.3"
+    nouislider "^10.0.0"
+    proj4 "2.3.16"
+    proj4leaflet "1.0.1"
+
+laji-map@^1.0.278:
+  version "1.0.278"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.278.tgz#4cac294267e1394660387505f427ef37ab030d68"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     babel-runtime "^6.18.0"
@@ -3423,6 +3440,12 @@ leaflet-mml-layers@2.0.1:
   resolved "https://registry.yarnpkg.com/leaflet-mml-layers/-/leaflet-mml-layers-2.0.1.tgz#1161923dd5cb2f366dc1bdb484026a16994d6e27"
   dependencies:
     leaflet "^1.0.1"
+
+"leaflet-textpath@git+https://git@github.com/makinacorpus/Leaflet.textPath.git#ad1afd910b387e075989b258d487cd7d6db93b0b":
+  version "0.2.2"
+  resolved "git+https://git@github.com/makinacorpus/Leaflet.textPath.git#ad1afd910b387e075989b258d487cd7d6db93b0b"
+  dependencies:
+    leaflet "*"
 
 "leaflet-textpath@git+https://git@github.com/olzraiti/Leaflet.textPath.git#leaflet-0.8-dev-absoluteXLinkHrefPath":
   version "0.2.2"
