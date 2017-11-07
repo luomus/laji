@@ -146,14 +146,11 @@ export class ObservationMapComponent implements OnInit, OnChanges {
         this.activeLevel = i + 1;
       }
     }
-    if (this.activeBounds && !this.activeBounds.contains) {
-      this.activeBounds = e.bounds.pad(1);
-    }
     if (
       !this.showingItems &&
       e.type === 'moveend' && (
         curActive !== this.activeLevel ||
-        (this.activeLevel >= this.onlyViewPortThreshold && !this.activeBounds.contains(e.bounds))
+        (this.activeLevel >= this.onlyViewPortThreshold && (!this.activeBounds || !this.activeBounds.contains(e.bounds)))
       )
     ) {
       this.activeBounds = e.bounds.pad(1);
@@ -420,9 +417,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
   private getCacheKey(query: WarehouseQueryInterface) {
     const cache = JSON.stringify(query);
-    if (!(this.activeBounds && this.activeBounds.toBBoxString)) {
-      return cache + this.activeLevel;
-    }
     if ((!this.activeBounds || this.activeLevel < this.onlyViewPortThreshold) || query.coordinates) {
       return cache + this.activeLevel;
     }
