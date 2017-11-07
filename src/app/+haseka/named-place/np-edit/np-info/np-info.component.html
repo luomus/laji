@@ -19,32 +19,32 @@
   </div><!-- /.modal -->
 
   <ng-template #contentTemplate let-isModal="isModal">
+    <a *ngIf="useButtonVisible"
+       type="button"
+       class="btn btn-md btn-primary use-button"
+       (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</a>
     <div class="well well-sm np-info">
       <fieldset>
-        <legend>
-          <span>{{'np.additionalInfo' | translate}}</span>
-          <div class="pull-right">
-            <span [ngSwitch]="targetForm.printType">
-              <a *ngSwitchCase="'MHL.printTypeLineTransect'"
-                 class="btn btn-sm btn-default"
-                 target="_blank"
-                 [routerLink]="['/vihko/places/', namedPlace.id, 'print', targetForm.printType] | localize">{{'np.print' | translate}}</a>
-            </span>
-            <button *ngIf="allowEdit && editButtonVisible"
-                    class="btn btn-sm btn-default"
-                    (click)="editClick()">{{'np.edit' | translate}}</button>
-          </div>
-        </legend>
         <laji-np-info-map [visible]="isModal || infoBox?.nativeElement?.offsetParent !== null"
                           [namedPlace]="namedPlace"></laji-np-info-map>
         <div *ngFor="let k of keys">
           <laji-np-info-row [key]="k" [value]="values[k]" [fields]="fields"></laji-np-info-row>
         </div>
       </fieldset>
+      <div *ngIf="(targetForm.printType && targetForm.printType.indexOf('MHL.printTypeLineTransect') > -1) || (allowEdit && editButtonVisible)">
+        <legend></legend>
+        <div id="btn-container">
+            <span [ngSwitch]="targetForm.printType">
+              <a *ngSwitchCase="'MHL.printTypeLineTransect'"
+                 class="btn btn-sm btn-default"
+                 target="_blank"
+                 [routerLink]="['/vihko/places/', namedPlace.id, 'print', targetForm.printType] | localize">{{'np.print' | translate}}</a>
+            </span>
+          <button *ngIf="allowEdit && editButtonVisible"
+                  class="btn btn-sm btn-default"
+                  (click)="editClick()">{{'np.edit' | translate}}</button>
+        </div>
+      </div>
     </div>
-    <a *ngIf="useButtonVisible"
-       type="button"
-       class="btn btn-md btn-primary use-button"
-       (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</a>
   </ng-template>
 </div>
