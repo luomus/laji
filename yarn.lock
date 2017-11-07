@@ -3336,15 +3336,15 @@ kind-of@^4.0.0:
   dependencies:
     is-buffer "^1.1.5"
 
-laji-form@^0.0.264:
-  version "0.0.264"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.264.tgz#3dfc7c17680b6d028db5c5242f58eb92c300b91d"
+laji-form@^0.0.267:
+  version "0.0.267"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.267.tgz#dade85567f13e0931cf35bb0a4e096851ac11d2d"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.272"
+    laji-map "^1.0.278"
     laji-validate "0.0.35"
     moment "*"
     prop-types "^15.5.8"
@@ -3376,6 +3376,23 @@ laji-map@^1.0.272:
     leaflet-geometryutil "^0.8.0"
     leaflet-mml-layers "2.0.1"
     leaflet-textpath "git+https://git@github.com/makinacorpus/Leaflet.textPath.git#ad1afd910b387e075989b258d487cd7d6db93b0b"
+    leaflet.markercluster "1.0.3"
+    nouislider "^10.0.0"
+    proj4 "2.3.16"
+    proj4leaflet "1.0.1"
+
+laji-map@^1.0.278:
+  version "1.0.278"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.278.tgz#4cac294267e1394660387505f427ef37ab030d68"
+  dependencies:
+    Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
+    babel-runtime "^6.18.0"
+    leaflet "1.0.3"
+    leaflet-contextmenu "1.1.1"
+    leaflet-draw "0.4.9"
+    leaflet-geometryutil "^0.8.0"
+    leaflet-mml-layers "2.0.1"
+    leaflet-textpath "git+https://git@github.com/olzraiti/Leaflet.textPath.git#leaflet-0.8-dev-absoluteXLinkHrefPath"
     leaflet.markercluster "1.0.3"
     nouislider "^10.0.0"
     proj4 "2.3.16"
@@ -3427,6 +3444,12 @@ leaflet-mml-layers@2.0.1:
 "leaflet-textpath@git+https://git@github.com/makinacorpus/Leaflet.textPath.git#ad1afd910b387e075989b258d487cd7d6db93b0b":
   version "0.2.2"
   resolved "git+https://git@github.com/makinacorpus/Leaflet.textPath.git#ad1afd910b387e075989b258d487cd7d6db93b0b"
+  dependencies:
+    leaflet "*"
+
+"leaflet-textpath@git+https://git@github.com/olzraiti/Leaflet.textPath.git#leaflet-0.8-dev-absoluteXLinkHrefPath":
+  version "0.2.2"
+  resolved "git+https://git@github.com/olzraiti/Leaflet.textPath.git#2ee1b6e7c81912ea6272c743a565c1cf9fda91db"
   dependencies:
     leaflet "*"
 
