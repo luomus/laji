@@ -3381,6 +3381,23 @@ laji-map@^1.0.284:
     proj4 "2.3.16"
     proj4leaflet "1.0.1"
 
+laji-map@^1.0.285:
+  version "1.0.285"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.285.tgz#a834a2604dc7d9e160ed4d27fba8f93c8f41eec0"
+  dependencies:
+    Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
+    babel-runtime "^6.18.0"
+    leaflet "1.0.3"
+    leaflet-contextmenu "1.1.1"
+    leaflet-draw "0.4.9"
+    leaflet-geometryutil "^0.8.0"
+    leaflet-mml-layers "2.0.1"
+    leaflet-textpath "git+https://git@github.com/olzraiti/Leaflet.textPath.git#leaflet-0.8-dev-absoluteXLinkHrefPath"
+    leaflet.markercluster "1.0.3"
+    nouislider "^10.0.0"
+    proj4 "2.3.16"
+    proj4leaflet "1.0.1"
+
 laji-validate@0.0.35:
   version "0.0.35"
   resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.35.tgz#a668044e2a99d1debd65cc9fb70fd40141a5b77b"
