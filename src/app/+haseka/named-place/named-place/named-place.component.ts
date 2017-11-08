@@ -11,6 +11,7 @@ import { FooterService } from '../../../shared/service/footer.service';
 import { NamedPlaceQuery } from '../../../shared/api/NamedPlaceApi';
 import { Form } from '../../../shared/model/Form';
 import { AreaType } from '../../../shared/service/area.service';
+import { NpEditComponent } from '../np-edit/np-edit.component';
 
 @Component({
   selector: 'laji-named-place',
@@ -41,10 +42,10 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   errorMsg = '';
 
   private subParam: Subscription;
-  private namedPlaces$: Observable<NamedPlace[]>;
   private subTrans: Subscription;
 
   @ViewChild(NpChooseComponent) chooseView: NpChooseComponent;
+  @ViewChild(NpEditComponent) editView: NpEditComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -155,6 +156,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.activeNP = idx;
     if (this.activeNP >= 0) {
       this.namedPlace = this.namedPlaces[this.activeNP];
+      this.editView.npClick();
     } else {
       this.namedPlace = null;
     }

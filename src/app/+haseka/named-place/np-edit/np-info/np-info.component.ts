@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterViewInit, ChangeDetectorRef,
   Component,
   EventEmitter,
   HostListener,
@@ -42,8 +42,10 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   modalIsVisible = false;
   viewIsInitialized = false;
+  resizeCanOpenModal = false;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService,
+              private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.updateFields();
@@ -51,8 +53,8 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.modal.onShown.subscribe(() => { this.modalIsVisible = true; });
-    this.modal.onHidden.subscribe(() => { this.modalIsVisible = false; });
+    this.modal.onShown.subscribe(() => { this.modalIsVisible = true; this.cdRef.markForCheck(); });
+    this.modal.onHidden.subscribe(() => { this.modalIsVisible = false; this.cdRef.markForCheck(); });
     if (this.infoBox.nativeElement.offsetParent === null) {
       this.modal.show();
     }
@@ -62,16 +64,25 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['namedPlace']) {
       this.updateFields();
-      if (this.viewIsInitialized && this.infoBox.nativeElement.offsetParent === null) {
-        this.modal.show();
-      }
+    }
+  }
+
+  npClick() {
+    if (this.viewIsInitialized && this.infoBox.nativeElement.offsetParent === null) {
+      this.modal.show();
     }
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    if (this.modalIsVisible && this.infoBox.nativeElement.offsetParent !== null) {
-      this.modal.hide();
+    if (this.infoBox.nativeElement.offsetParent !== null) {
+      if (this.modalIsVisible) {
+        this.modal.hide();
+      }
+      this.resizeCanOpenModal = true;
+    } else if (this.viewIsInitialized && this.resizeCanOpenModal) {
+      this.resizeCanOpenModal = false;
+      this.modal.show();
     }
   }
 

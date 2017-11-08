@@ -4,7 +4,7 @@
   </div>
 
   <div class="modal" tabindex="-1" role="dialog" bsModal #infoModal="bs-modal">
-    <div class="modal-dialog modal-sm" *ngIf="modalIsVisible">
+    <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">
           <button class="close pull-right" type="button" (click)="modal.hide()">
@@ -25,7 +25,7 @@
        (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</a>
     <div class="well well-sm np-info">
       <fieldset>
-        <laji-np-info-map [visible]="isModal || infoBox?.nativeElement?.offsetParent !== null"
+        <laji-np-info-map [visible]="(isModal && modalIsVisible) || infoBox?.nativeElement?.offsetParent !== null"
                           [namedPlace]="namedPlace"></laji-np-info-map>
         <div *ngFor="let k of keys">
           <laji-np-info-row [key]="k" [value]="values[k]" [fields]="fields"></laji-np-info-row>
