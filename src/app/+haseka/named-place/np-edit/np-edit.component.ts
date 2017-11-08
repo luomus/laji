@@ -1,4 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
@@ -8,6 +11,7 @@ import { environment } from '../../../../environments/environment';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
+import { NpInfoComponent } from './np-info/np-info.component';
 
 @Component({
   selector: 'laji-np-edit',
@@ -34,6 +38,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   private npFormId: string;
   private npForm$: Subscription;
   private subTrans: Subscription;
+
+  @ViewChild(NpInfoComponent) infoComponent: NpInfoComponent;
 
   constructor(
     private formService: FormService,
@@ -64,6 +70,12 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['namedPlace']) {
       this.setFormData();
+    }
+  }
+
+  npClick() {
+    if (this.infoComponent) {
+      this.infoComponent.npClick();
     }
   }
 
