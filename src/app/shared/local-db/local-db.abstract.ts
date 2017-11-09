@@ -12,11 +12,11 @@ export abstract class LocalDb {
   }
 
   setItem<T>(key: string, value: T): Observable<T> {
-    return Observable.fromPromise(this.db.setItem(key, value));
+    return Observable.fromPromise<T>(this.db.setItem(key, value)).catch(() => Observable.of(value));
   }
 
   getItem<T>(key: string): Observable<T> {
-    return Observable.fromPromise(this.db.getItem(key));
+    return Observable.fromPromise<T>(this.db.getItem(key)).catch(() => Observable.of(null));
   }
 
 }
