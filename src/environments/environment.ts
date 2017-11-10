@@ -9,6 +9,7 @@ export const environment = {
   forceLogin: false,
   disableAnalytics: true,
   forAuthorities: false,
+  sourceKotka: 'KE.3',
   systemID: 'KE.389',
   formWhitelist: ['JX.519', 'JX.652', 'JX.111715', 'MHL.1', 'JX.123759', 'JX.123757', 'JX.123659', 'MHL.3'],
   defaultForm: 'JX.519',
@@ -21,5 +22,8 @@ export const environment = {
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
   externalViewers: {
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'
+  },
+  sources: {
+    kotka: 'KE.3'
   }
 };

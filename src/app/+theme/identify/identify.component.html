@@ -1,0 +1,44 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Tunnista lajeja</h1>
+      <p>
+        Tähän jotain info tekstiä. Lorem ipsum
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4 form-container">
+      <form>
+        <observation-group-select
+          name="group'"
+          (onSelect)="onSelectGroup()"
+          [position]="'left'"
+          [(ngModel)]="group"
+          [lang]="translateService.currentLang">
+          {{'observation.active.informalTaxonGroupAll'|translate}}
+        </observation-group-select>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 image-container">
+      <ng-container *ngIf="query">
+        <laji-gallery [query]="query" [eventOnImageClick]="true" (selected)="onImageSelect($event)"></laji-gallery>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<div class="modal fade" bsModal #documentModal="bs-modal"
+     tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <laji-document [identifying]="true" [hideHeader]="true" [uri]="documentId" [highlight]="unitId" [own]="false" [showTitle]="false" [openAnnotation]="true"></laji-document>
+      </div>
+    </div>
+  </div>
+</div>

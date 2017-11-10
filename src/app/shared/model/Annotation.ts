@@ -76,6 +76,7 @@ export namespace Annotation {
         TypeOpinion = <any> 'MAN.typeOpinion',
         TypeInvasiveControlEffectiveness = <any> 'MAN.typeInvasiveControlEffectiveness',
         TypeComment = <any> 'MAN.typeComment',
-        TypeAcknowledged = <any> 'MAN.typeAcknowledged'
+        TypeAcknowledged = <any> 'MAN.typeAcknowledged',
+        TypeUnidentifiable = <any> 'MAN.typeUnidentifiable'
     }
 }

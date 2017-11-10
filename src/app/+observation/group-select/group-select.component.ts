@@ -31,6 +31,7 @@ export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
 })
 export class ObservationGroupSelectComponent implements ControlValueAccessor, OnChanges {
   @Input() lang = 'fi';
+  @Input() position: 'right'|'left' = 'right';
   @Output() onSelect = new EventEmitter();
 
   public groups: InformalTaxonGroup[] = [];

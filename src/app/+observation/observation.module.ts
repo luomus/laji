@@ -35,7 +35,7 @@ import { ObservationFiltersComponent } from './observation-filters/observation-f
     ObservationResultModule
   ],
   declarations: [ObservationComponent, ObservationActiveComponent, ObservationChartComponent,
-    ObservationFormComponent, ObservationGroupSelectComponent,
+    ObservationFormComponent,
     MultiRadioComponent, ObservationResultComponent,
     ObservationResultListComponent, MetadataSelectComponent,
     PieChartComponent, DatePickerComponent, ObservationDownloadComponent, SelectComponent, MainResultComponent, ObservationFiltersComponent

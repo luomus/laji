@@ -1,0 +1,47 @@
+<div class="ngx-datatable material laji-pager">
+    <div class="datatable-footer">
+    <div class="datatable-pager">
+      <ul class="pager">
+        <li [class.disabled]="!canPrevious()">
+          <a
+            href="javascript:void(0)"
+            (click)="selectPage(1)">
+            <i class="glyphicon glyphicon-step-backward"></i>
+          </a>
+        </li>
+        <li [class.disabled]="!canPrevious()">
+          <a
+            href="javascript:void(0)"
+            (click)="prevPage()">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+          </a>
+        </li>
+        <li
+          class="pages"
+          *ngFor="let pg of pages"
+          [class.active]="pg.number === page">
+          <a
+            href="javascript:void(0)"
+            (click)="selectPage(pg.number)">
+            {{pg.text}}
+          </a>
+        </li>
+        <li [class.disabled]="!canNext()">
+          <a
+            href="javascript:void(0)"
+            (click)="nextPage()">
+            <i class="glyphicon glyphicon-chevron-right"></i>
+          </a>
+        </li>
+        <li [class.disabled]="!canNext()">
+          <a
+            href="javascript:void(0)"
+            (click)="selectPage(totalPages)">
+
+            <i class="glyphicon glyphicon-step-forward"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

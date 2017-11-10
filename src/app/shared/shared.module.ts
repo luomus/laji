@@ -8,7 +8,6 @@ import {
   AlertModule,
   BsDropdownModule,
   ModalModule,
-  PaginationModule,
   PopoverModule,
   TooltipModule
 } from 'ngx-bootstrap';
@@ -85,6 +84,8 @@ import { FixedBelowDirective } from './directive/fixed-below.directive';
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
 import { ClickOutSideDirective } from './directive/click-out-side.directive';
+import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
+import { ObservationGroupSelectComponent } from '../+observation/group-select/group-select.component';
 
 
 @NgModule({
@@ -97,7 +98,8 @@ import { ClickOutSideDirective } from './directive/click-out-side.directive';
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
-    NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective
+    NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
+    ObservationGroupSelectComponent
   ],
   imports: [
     ToastModule,
@@ -110,18 +112,19 @@ import { ClickOutSideDirective } from './directive/click-out-side.directive';
     ReactiveFormsModule,
     MomentModule,
     SpinnerModule,
-    TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule
+    PaginatorModule,
+    TooltipModule, BsDropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule
   ],
   providers: [ ], // keep this empty!
   exports: [
     CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent,
     AreaNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe, LajiFormComponent, DocumentFormComponent,
-    ToFullUriPipe, TooltipModule, PaginationModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
+    ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
-    PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe,
+    PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, LocalizePipe, HideScrollDirective,
-    LoggedInDirective, FixedBelowDirective, ClickOutSideDirective
+    LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent
   ]
 })
 export class SharedModule {

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { MetadataService } from '../../../shared/service/metadata.service';
-import { AnnotationService } from '../../service/annotation.service';
+import { AnnotationService } from '../../../+viewer/service/annotation.service';
 import { Observable } from 'rxjs/Observable';
 import { Logger } from '../../../shared/logger/logger.service';
 import { AutocompleteApi } from '../../../shared/api/AutocompleteApi';
@@ -19,20 +19,18 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   @Input() personID: string;
   @Input() annotations: Annotation[];
   @Input() annotation: Annotation;
+  @Input() identifying: boolean;
   @Output() success = new EventEmitter<Annotation>();
   @Output() cancel = new EventEmitter<any>();
 
   taxonAutocomplete: Observable<any>;
   error: any;
+  unIdentifyable = false;
   isEditor: boolean;
   sending = false;
   needsAck: boolean;
   annotationOptions$: Observable<{id: Annotation.AnnotationClassEnum, value: object}[]>;
   types = Annotation.TypeEnum;
-  newName = [
-    Annotation.AnnotationClassEnum.AnnotationClassSuspicious,
-    Annotation.AnnotationClassEnum.AnnotationClassUnreliable
-  ];
   ownerTypes = [
     Annotation.AnnotationClassEnum.AnnotationClassNeutral,
     Annotation.AnnotationClassEnum.AnnotationClassAcknowledged
@@ -106,6 +104,10 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
       return;
     }
     this.sending = true;
+    if (this.unIdentifyable) {
+      this.annotation.type = Annotation.TypeEnum.TypeUnidentifiable;
+      delete this.annotation.annotationClass;
+    }
     this.annotationService
       .save(this.annotation)
       .subscribe(

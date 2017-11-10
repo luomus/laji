@@ -7,7 +7,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  Renderer,
+  Renderer2,
   ViewContainerRef
 } from '@angular/core';
 import { Image } from './image.interface';
@@ -62,15 +62,17 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   public img: Image;
   public loading = false;
   public showRepeat = false;
-  @Input('modalImages') public modalImages: Image[];
-  @Input('imagePointer') public imagePointer: number;
-  @Output('cancelEvent') cancelEvent = new EventEmitter<any>();
+  @Input() eventOnClick = false;
+  @Input() modalImages: Image[];
+  @Input() imagePointer: number;
+  @Output() cancelEvent = new EventEmitter<any>();
+  @Output() select = new EventEmitter<{documentId: string, unitId: string}>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
   private _overlay: ComponentLoader<ImageModalOverlayComponent>;
   private _isShown = false;
 
   constructor(_viewContainerRef: ViewContainerRef,
-              _renderer: Renderer,
+              _renderer: Renderer2,
               _elementRef: ElementRef,
               cis: ComponentLoaderFactory) {
     this._overlay = cis
@@ -92,6 +94,15 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   }
 
   openImage(index) {
+    if (this.eventOnClick) {
+      if (this.modalImages[index]) {
+        this.select.emit({
+          documentId: this.modalImages[index].documentId,
+          unitId: this.modalImages[index].unitId
+        })
+      }
+      return;
+    }
     this._overlay
       .attach(ImageModalOverlayComponent)
       .to('body')

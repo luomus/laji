@@ -20,5 +20,8 @@ export const environment = {
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
   externalViewers: {
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'
+  },
+  sources: {
+    kotka: 'KE.3'
   }
 };

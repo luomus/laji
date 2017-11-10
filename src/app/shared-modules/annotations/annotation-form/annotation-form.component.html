@@ -2,8 +2,23 @@
   <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
     {{'haseka.form.error' | translate}}
   </alert>
-  <div *ngIf="annotation.type === types.TypeOpinion">
-    <div class="row annotation-class">
+  <ng-container *ngIf="annotation.type === types.TypeOpinion">
+    <ng-container *ngIf="identifying">
+      <div class="row annotation-unidentifiable">
+        <div class="col-sm-12">
+          <label>
+            <input
+              type="checkbox"
+              name="unIdentifyable"
+              [(ngModel)]="unIdentifyable"
+              [disabled]="!!annotation.opinion"
+            >
+            {{'MAN.typeUnidentifiable' | label}}
+          </label>
+        </div>
+      </div>
+    </ng-container>
+    <div class="row annotation-class" *ngIf="!identifying">
       <div class="col-sm-12">
         {{'MAN.annotationClass' | label}}:
         <select [(ngModel)]="annotation.annotationClass" name="annotationClass" class="form-control input-sm">
@@ -21,6 +36,7 @@
           type="text"
           class="form-control input-sm"
           name="opinion"
+          [disabled]="unIdentifyable"
           [(ngModel)]="annotation.opinion"
           [typeahead]="taxonAutocomplete"
           [typeaheadOptionsLimit]="20"
@@ -38,7 +54,7 @@
         </ng-template>
       </div>
     </div>
-  </div>
+  </ng-container>
   <div class="row message"
     [ngClass]="{
       'has-error': notes.errors && (notes.dirty || notes.touched)

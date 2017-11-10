@@ -27,7 +27,7 @@
   <laji-facts [show]="showFacts" [facts]="gathering.facts"></laji-facts>
   <ng-container *ngFor="let unit of gathering?.units">
     <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
-      <laji-unit [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit>
+      <laji-unit [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit>
     </ng-container>
   </ng-container>
   <laji-row [showWithoutValue]="true" *ngIf="showOnlyHighlightedUnit && unitCnt > 1">

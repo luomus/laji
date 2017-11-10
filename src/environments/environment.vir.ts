@@ -15,5 +15,8 @@ export const environment = {
   forAuthorities: true,
   externalViewers: {
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'
+  },
+  sources: {
+    kotka: 'KE.3'
   }
 };

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
-import { AnnotationService } from '../service/annotation.service';
+import { AnnotationService } from '../../+viewer/service/annotation.service';
 import { Annotation } from '../../shared/model/Annotation';
 import { IdService } from '../../shared/service/id.service';
 
@@ -14,6 +13,7 @@ export class AnnotationsComponent implements OnInit {
   @Input() targetID: string;
   @Input() editors: string[];
   @Input() personID: string;
+  @Input() identifying = false;
   @Input() annotations: Annotation[] = [];
   @Output() close = new EventEmitter<any>();
   @Output() onChange = new EventEmitter<any>();
@@ -26,6 +26,9 @@ export class AnnotationsComponent implements OnInit {
 
   ngOnInit() {
     this.initEmptyAnnotation();
+    if (this.identifying) {
+      this.adding = true;
+    }
   }
 
   initEmptyAnnotation() {

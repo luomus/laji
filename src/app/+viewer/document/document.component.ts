@@ -32,6 +32,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   @Input() showTitle = false;
   @Input() useWorldMap = true;
   @Input() openAnnotation = false;
+  @Input() hideHeader = false;
+  @Input() identifying = false;
 
   externalViewUrl: string;
   document: any;

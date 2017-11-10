@@ -1,7 +1,7 @@
 <ng-container *ngIf="hasDoc && document">
   <div class="row">
     <div class="col-sm-7">
-      <div class="page-header" [ngClass]="{tight: !showTitle}">
+      <div class="page-header" *ngIf="!hideHeader" [ngClass]="{tight: !showTitle}">
         <h3>
           {{'viewer.document' | translate }}
           <small>
@@ -26,7 +26,7 @@
     </div>
     <div class="col-sm-5">
       <div class="row">
-        <div class="col-sm-12 doc-meta">
+        <div class="col-sm-12 doc-meta" *ngIf="!hideHeader">
           <ng-template #docMeta>
             <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors[0] && document.linkings.editors[0].fullName">
               {{document.linkings.editors | values:', ':'fullName' }}
@@ -104,7 +104,7 @@
   <div class="row">
     <div class="col-sm-7">
       <ng-container *ngFor="let gathering of document.gatherings; let i=index">
-        <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
+        <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [visible]="active === i"></laji-gathering>
       </ng-container>
     </div>
     <div class="col-sm-5">

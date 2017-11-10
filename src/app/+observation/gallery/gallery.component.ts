@@ -20,6 +20,8 @@ export class GalleryComponent implements OnChanges {
   @Input() tick;
   @Input() pageSize = 50;
   @Input() shortPager = false;
+  @Input() eventOnImageClick = false;
+  @Output() selected = new EventEmitter<boolean>();
   @Output() hasData = new EventEmitter<boolean>();
 
   images: TaxonomyImage[] = [];

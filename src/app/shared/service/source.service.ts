@@ -14,7 +14,10 @@ export class SourceService {
   constructor(private sourceApi: SourceApi) {
   }
 
-  getAllAsLookUp(lang: string): Observable<any> {
+  getAllAsLookUp(lang?: string): Observable<any> {
+    if (!lang) {
+      lang = this.currentLang || 'fi';
+    }
     if (lang === this.currentLang) {
       if (this.sources) {
         return Observable.of(this.sources);

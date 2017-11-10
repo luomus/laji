@@ -26,6 +26,7 @@ import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
 import { OwnSubmissionsModule } from '../shared-modules/own-submissions/own-submissions.module';
 import { WbcOwnSubmissionsComponent } from './wbc/wbc-own-submissions/wbc-own-submissions.component';
+import { IdentifyComponent } from './identify/identify.component';
 
 @NgModule({
   imports: [
@@ -55,7 +56,8 @@ import { WbcOwnSubmissionsComponent } from './wbc/wbc-own-submissions/wbc-own-su
     WbcFormComponent,
     WbcResultComponent,
     WbcInstructionsComponent,
-    WbcOwnSubmissionsComponent
+    WbcOwnSubmissionsComponent,
+    IdentifyComponent
   ],
   providers: [ ResultService ]
 })
