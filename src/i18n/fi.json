@@ -539,6 +539,7 @@
   "result.gathering.conversions.dayOfYearEnd": "Loppupäivän numero",
   "haseka.templates.intro": "Voit luoda uusia lomakepohjia \"Omat havaintoeräni\" sivulta. Valitse havaintoerä josta haluat luoda lomakepohjan ja paina \"Tallenna lomakepohjaksi\" -painiketta.",
   "profile.image": "Kuva",
+  "profile.imagePlaceholder": "Linkki kuvaan, esim http//example.com/kuva.jpg",
   "profile.description": "Kuvaus",
   "profile.save": "Tallenna",
   "profile.search": "Hae käyttäjiä",
@@ -546,5 +547,6 @@
   "notification.friendRequestAccepted": "{{person}} on hyväksynyt kaveripyyntösi.",
   "viewer.fixedName": "Korjattu määritys",
   "viewer.otherUnits": "Näytä erän kaikki havainnot ({{cnt}} muuta)",
-  "filter.unidentified": "Määritystä vaativat"
+  "filter.unidentified": "Määritystä vaativat",
+  "navigation.identify": "Tunnista"
 }

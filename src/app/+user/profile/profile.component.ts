@@ -75,6 +75,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.profile = data.profile || {};
           this.personsProfile = data.currentProfile || {};
           this.loading = false;
+          this.editing = false;
         },
         err => this.logger.warn('Failed to init profile', err)
       );

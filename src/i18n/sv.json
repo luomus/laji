@@ -524,12 +524,14 @@
   "result.gathering.conversions.dayOfYearBegin": "Börja dagen på året",
   "result.gathering.conversions.dayOfYearEnd": "Slutdagen på ett år",
   "haseka.templates.intro": "Du kan skapa en mall från sidan \"Mina observationer\". Välj en observation för mallen och tryck på \"Spara som mall\" -knappen.",
-  "profile.image": "Image",
+  "profile.image": "Bild",
+  "profile.imagePlaceholder": "Länk till bild t.ex. http://example.com/bild.jpg",
   "profile.description": "Beskrivning",
   "profile.save": "Spara",
   "profile.search": "Sök användare",
   "notification.friendRequest": "{{person}} har skickat dig en vänförfrågan.",
   "notification.friendRequestAccepted": "{{person}} har accepterat din vänförfrågan.",
   "viewer.fixedName": "Reviderat namn",
-  "viewer.otherUnits": "Visa alla observationer ({{cnt}} andra)"
+  "viewer.otherUnits": "Visa alla observationer ({{cnt}} andra)",
+  "navigation.identify": "Identify"
 }

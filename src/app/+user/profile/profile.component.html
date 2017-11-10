@@ -20,7 +20,7 @@
         <div *ngIf="editing" class="profile-edit">
           <div class="profile-edit-row">
             {{'profile.image' | translate}}
-            <input class="form-control" placeholder="Image url" [(ngModel)]="profile.image">
+            <input class="form-control" placeholder="{{'profile.imagePlaceholder' | translate}}" [(ngModel)]="profile.image">
           </div>
           <div class="profile-edit-row">
             {{'profile.description' | translate}}

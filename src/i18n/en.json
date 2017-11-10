@@ -524,11 +524,13 @@
   "result.gathering.conversions.dayOfYearEnd": "End day of year",
   "haseka.templates.intro": "You can create a template from \"Own submissions\" page. Choose an observation for the template and press \"Save as template\" -button.",
   "profile.image": "Image",
+  "profile.imagePlaceholder": "Link to picture e.g. http//example.com/image.jpg",
   "profile.description": "Description",
   "profile.save": "Save",
   "profile.search": "Search users",
   "notification.friendRequest": "{{person}} has send you a friend request.",
   "notification.friendRequestAccepted": "{{person}} has accepted your friend request.",
   "viewer.fixedName": "Revised name",
-  "viewer.otherUnits": "Show all observations ({{cnt}} other)"
+  "viewer.otherUnits": "Show all observations ({{cnt}} other)",
+  "navigation.identify": "Identify"
 }
