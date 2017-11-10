@@ -3336,15 +3336,15 @@ kind-of@^4.0.0:
   dependencies:
     is-buffer "^1.1.5"
 
-laji-form@^0.0.274:
-  version "0.0.274"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.274.tgz#02b23c253bc4e549a25b8cfd1e21928e776b0998"
+laji-form@^0.0.276:
+  version "0.0.276"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.276.tgz#faa5bec35cad33252c9bfebdf8a9350742613035"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.284"
+    laji-map "^1.0.285"
     laji-validate "0.0.35"
     moment "*"
     prop-types "^15.5.8"
@@ -3363,23 +3363,6 @@ laji-form@^0.0.274:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
     scroll-into-view-if-needed "^1.1.0"
-
-laji-map@^1.0.284:
-  version "1.0.284"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.284.tgz#04fce95da791455dfaee01dbac990196b792363a"
-  dependencies:
-    Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
-    babel-runtime "^6.18.0"
-    leaflet "1.0.3"
-    leaflet-contextmenu "1.1.1"
-    leaflet-draw "0.4.9"
-    leaflet-geometryutil "^0.8.0"
-    leaflet-mml-layers "2.0.1"
-    leaflet-textpath "git+https://git@github.com/olzraiti/Leaflet.textPath.git#leaflet-0.8-dev-absoluteXLinkHrefPath"
-    leaflet.markercluster "1.0.3"
-    nouislider "^10.0.0"
-    proj4 "2.3.16"
-    proj4leaflet "1.0.1"
 
 laji-map@^1.0.285:
   version "1.0.285"
