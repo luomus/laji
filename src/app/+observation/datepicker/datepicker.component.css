@@ -16,7 +16,7 @@
   position: fixed;
   right: 15px;
   z-index: 9999;
-  width: 250px;
+  width: 253px;
   background: #fff;
   font-size: 12px;
   color: #565a5c;
@@ -28,7 +28,7 @@
 }
 
 .ng-datepicker > .controls {
-  width: 250px;
+  width: 253px;
   display: inline-block;
   padding: 5px 0 0 0;
 }
@@ -90,7 +90,7 @@
 }
 
 .ng-datepicker > .day-names {
-  width: 250px;
+  width: 253px;
   border-bottom: 1px solid #c4c4c4;
   display: inline-block;
 }
@@ -104,7 +104,7 @@
 }
 
 .ng-datepicker > .calendar {
-  width: 250px;
+  width: 253px;
   display: inline-block;
   margin: -5px 0 -6px -1px;
   padding: 0;
