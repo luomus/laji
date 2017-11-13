@@ -1,8 +1,45 @@
 <div class="ng-gallery" *ngIf="showRepeat">
-  <div *ngFor ="let i of modalImages; let index = index">
-    <img src="{{ i.thumbnailURL || i.largeURL || i.fullURL }}"
-         class="ng-thumb"
-         (click)="openImage(index)"
-         alt="Image {{ index + 1 }}" />
+  <div class="form-group" *ngIf="showViewSwitch">
+    <div class="col-sm-12">
+      <div class="btn-group pull-right" role="group" aria-label="view type">
+        <button type="button" class="btn btn-default" (click)="setView('full')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
+        <button type="button" class="btn btn-default" (click)="setView('compact')" [class.active]="view === 'compact'"><i class="glyphicon glyphicon-th"></i></button>
+      </div>
+    </div>
   </div>
+  <ng-container *ngIf="view === 'compact' else fullView">
+    <div class="image-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
+      <img src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+           [popover]="compact"
+           placement="bottom"
+           triggers="mouseenter:mouseleave"
+           class="ng-thumb compact"
+           alt="Image {{ index + 1 }}" />
+      <ng-template #compact>
+        <ng-container *ngTemplateOutlet="fullInfo; context: {$implicit: img}"></ng-container>
+      </ng-template>
+    </div>
+  </ng-container>
 </div>
+<ng-template #fullView>
+  <div class="image-container fullContainer" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
+    <img src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+         class="ng-thumb full"
+         alt="Image {{ index + 1 }}" />
+    <ng-container *ngTemplateOutlet="fullInfo; context: {$implicit: img}"></ng-container>
+  </div>
+</ng-template>
+<ng-template #fullInfo let-data>
+  <ng-container *ngIf="data.vernacularName">
+    <strong>{{data.vernacularName | multiLang}}</strong><br>
+  </ng-container>
+  <ng-container *ngIf="data.scientificName">
+    <strong>{{data.scientificName}}</strong><br>
+  </ng-container>
+  <ng-container *ngIf="data.author">
+    {{data.author}}<br>
+  </ng-container>
+  <ng-container *ngIf="data.caption">
+    {{data.caption}}<br>
+  </ng-container>
+</ng-template>

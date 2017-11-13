@@ -33,6 +33,7 @@ export class IdentifyComponent implements OnInit {
         this.query = {
           sourceId: sources,
           unidentified: true,
+          countryId: ['ML.206'],
           informalTaxonGroupId: this.group ? [this.group] : []
         };
         this.cd.markForCheck();

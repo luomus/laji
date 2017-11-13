@@ -62,8 +62,10 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   public loading = false;
   public showRepeat = false;
   @Input() eventOnClick = false;
+  @Input() view: 'compact'|'full' = 'compact';
   @Input() modalImages: Image[];
   @Input() imagePointer: number;
+  @Input() showViewSwitch = false;
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() select = new EventEmitter<{documentId: string, unitId: string}>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
@@ -121,5 +123,11 @@ export class ImageModalComponent implements OnInit, OnDestroy {
     }
     this._isShown = false;
     this._overlay.hide();
+  }
+
+  setView(viewType) {
+    if (this.view !== viewType) {
+      this.view = viewType;
+    }
   }
 }

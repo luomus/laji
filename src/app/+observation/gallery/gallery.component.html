@@ -1,5 +1,5 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
   <div *ngIf="!loading && images.length === 0">{{'observation.form.noImages' | translate}}</div>
-  <laji-image-gallery [modalImages]="images" [eventOnClick]="eventOnImageClick" (select)="selected.emit($event)"></laji-image-gallery>
+  <laji-image-gallery [showViewSwitch]="showViewSwitch" [view]="view" [modalImages]="images" [eventOnClick]="eventOnImageClick" (select)="selected.emit($event)"></laji-image-gallery>
   <laji-paginator [page]="page" [count]="total" [size]="pageSize" (change)="pageChanged($event)"></laji-paginator>
 </laji-spinner>

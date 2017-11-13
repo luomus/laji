@@ -29,15 +29,38 @@
   width: 100%;
   display: inline-block;
 }
+.image-container {
+  cursor: hand;
+  cursor: pointer;
+}
+
+.fullContainer {
+  width: 360px;
+  float:left;
+  margin: 3px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  height: 102px;
+  overflow: hidden;
+}
 
 img.ng-thumb {
   object-fit: cover;
-  width:89px;
-  height:70px;
   float: left;
   display: block;
   cursor: pointer;
+}
+
+img.ng-thumb.compact {
+  width:89px;
+  height:70px;
   margin: 2px 2px 0 0;
+}
+
+img.ng-thumb.full {
+  width:120px;
+  height:100px;
+  margin: 0 5px 0 0;
 }
 
 .ng-overlay {
