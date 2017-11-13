@@ -281,6 +281,7 @@
   "haseka.submissions.dateStart": "Startdatum",
   "haseka.submissions.dateEnd": "Slutdatum",
   "haseka.submissions.dateObserved": "Observationdatum",
+  "haseka.submissions.namedPlaceName": "Plats",
   "haseka.submissions.locality": "Lokalitet",
   "haseka.submissions.unitCount": "Observationer",
   "haseka.submissions.observer": "Observatör",
