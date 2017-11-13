@@ -532,5 +532,8 @@
   "notification.friendRequestAccepted": "{{person}} has accepted your friend request.",
   "viewer.fixedName": "Revised name",
   "viewer.otherUnits": "Show all observations ({{cnt}} other)",
-  "navigation.identify": "Identify"
+  "filter.informalTaxonGroup": "Filter by informal taxon group",
+  "navigation.identify": "Identify species",
+  "identify.intro": "Here you can browse observations without a species level identification. Click an image to see more information about the observation and a larger image. On the information page you can also suggest an identification. If you feel that based on the image it is not possible to come to a species level identification, you can check the \"Unidentifiable\" checkbox. When many users say an image is not identifiable, the image will no longer be shown on this page.",
+  "identify.selectIntro": "You can filter the images by informal group, but the page will only be able to show those observations that can be assosiated with a group. For example the given name \"fungi\" can be linked but the name \"some fungi perhaps?\" can not be linked."
 }

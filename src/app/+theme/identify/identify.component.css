@@ -4,3 +4,12 @@
 .form-container {
   position: relative;
 }
+.select-intro {
+  margin-top: -3px;
+}
+
+@media only screen and (min-width : 768px) {
+  .select-intro {
+    padding-left: 0;
+  }
+}

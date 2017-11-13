@@ -1,10 +1,15 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-12">
-      <h1>Tunnista lajeja</h1>
+      <h1>{{'navigation.identify' | translate}}</h1>
       <p>
-        Tähän jotain info tekstiä. Lorem ipsum
+        {{'identify.intro' | translate}}
       </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <label>{{'filter.informalTaxonGroup' | translate}}:</label>
     </div>
   </div>
   <div class="row">
@@ -19,6 +24,9 @@
           {{'observation.active.informalTaxonGroupAll'|translate}}
         </observation-group-select>
       </form>
+    </div>
+    <div class="col-sm-8 select-intro">
+      <small>{{'identify.selectIntro' | translate}}</small>
     </div>
   </div>
   <div class="row">
@@ -37,7 +45,7 @@
         <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
-        <laji-document [identifying]="true" [hideHeader]="true" [uri]="documentId" [highlight]="unitId" [own]="false" [showTitle]="false" [openAnnotation]="true"></laji-document>
+        <laji-document [identifying]="true" [uri]="documentId" [highlight]="unitId" [own]="false" [showTitle]="false" [openAnnotation]="true"></laji-document>
       </div>
     </div>
   </div>
