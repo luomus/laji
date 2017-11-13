@@ -3345,15 +3345,15 @@ kind-of@^4.0.0:
   dependencies:
     is-buffer "^1.1.5"
 
-laji-form@^0.0.278:
-  version "0.0.278"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.278.tgz#b8105009a38a2cb6bed952debd4d354386cd2bd3"
+laji-form@^0.0.276:
+  version "0.0.276"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.276.tgz#faa5bec35cad33252c9bfebdf8a9350742613035"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.286"
+    laji-map "^1.0.285"
     laji-validate "0.0.35"
     moment "*"
     prop-types "^15.5.8"
@@ -3373,7 +3373,7 @@ laji-form@^0.0.278:
     react-widgets "^3.4.8"
     scroll-into-view-if-needed "^1.1.0"
 
-laji-map@^1.0.286:
+laji-map@^1.0.285:
   version "1.0.286"
   resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.286.tgz#c34ffd84e5f11837d5686a32a76ae7b1027d8597"
   dependencies:
