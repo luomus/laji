@@ -292,6 +292,7 @@
   "haseka.submissions.dateStart": "Alkupvm",
   "haseka.submissions.dateEnd": "Loppupvm",
   "haseka.submissions.dateObserved": "Havaintopvm",
+  "haseka.submissions.namedPlaceName": "Paikka",
   "haseka.submissions.locality": "Paikka",
   "haseka.submissions.unitCount": "Havaintolkm",
   "haseka.submissions.observer": "Havainnoitsija",

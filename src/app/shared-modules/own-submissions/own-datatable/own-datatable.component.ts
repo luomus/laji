@@ -20,8 +20,10 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { DocumentService } from '../service/document.service';
+import { NamedPlacesService } from '../../../+haseka/named-place/named-places.service';
 import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
+import { NamedPlace } from '../../../shared/model/NamedPlace';
 
 
 @Component({
@@ -42,6 +44,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Output() documentClicked = new EventEmitter();
 
   formsById = {};
+  namedPlaceNames = {};
   deleteRow: any;
 
   templateForm: TemplateForm = {
@@ -58,6 +61,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     {prop: 'templateDescription', mode: 'small'},
     {prop: 'dateEdited', mode: 'medium'},
     {prop: 'dateObserved', mode: 'small'},
+    {prop: 'namedPlaceName', mode: 'small'},
     {prop: 'locality', mode: 'small'},
     {prop: 'unitCount', mode: 'medium'},
     {prop: 'observer', mode: 'large'},
@@ -93,6 +97,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     private localizeRouterService: LocalizeRouterService,
     private documentExportService: DocumentExportService,
     private documentService: DocumentService,
+    private namedPlacesService: NamedPlacesService,
     private toastService: ToastsService,
     private window: WindowRef,
     private logger: Logger,
@@ -359,7 +364,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       return Observable.forkJoin(
         this.getLocality(gatheringInfo),
         this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
-        (locality, observers) => {
+        this.getNamedPlaceName(document.namedPlaceID),
+        (locality, observers, npName) => {
           let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
           dateObserved += gatheringInfo.dateEnd ? ' - ' + moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
 
@@ -370,6 +376,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
             publicity: document.publicityRestrictions,
             dateEdited: document.dateEdited ? moment(document.dateEdited).format('DD.MM.YYYY HH:mm') : '',
             dateObserved: dateObserved,
+            namedPlaceName: npName,
             locality: locality,
             unitCount: gatheringInfo.unitList.length,
             observer: observers,
@@ -423,6 +430,20 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       .getForm(formId, this.translate.currentLang)
       .do((res: any) => {
         this.formsById[formId] = res;
+      });
+  }
+
+  private getNamedPlaceName(npId: string): Observable<any> {
+    if (!npId || this.columns.indexOf('namedPlaceName') === -1) {return Observable.of(''); }
+
+    if (this.namedPlaceNames[npId]) { return Observable.of(this.namedPlaceNames[npId]); }
+
+    return this.namedPlacesService
+      .getNamedPlace(npId)
+      .map((np: NamedPlace) => (np.name || npId))
+      .catch((err) => Observable.of(npId))
+      .do((res: string) => {
+        this.namedPlaceNames[npId] = res;
       });
   }
 }
