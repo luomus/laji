@@ -3336,15 +3336,15 @@ kind-of@^4.0.0:
   dependencies:
     is-buffer "^1.1.5"
 
-laji-form@^0.0.276:
-  version "0.0.276"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.276.tgz#faa5bec35cad33252c9bfebdf8a9350742613035"
+laji-form@^0.0.279:
+  version "0.0.279"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.279.tgz#cba15596ebd2eda3a5d7b23db6c7c9f0eea0739a"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.285"
+    laji-map "^1.0.286"
     laji-validate "0.0.35"
     moment "*"
     prop-types "^15.5.8"
@@ -3364,9 +3364,9 @@ laji-form@^0.0.276:
     react-widgets "^3.4.8"
     scroll-into-view-if-needed "^1.1.0"
 
-laji-map@^1.0.285:
-  version "1.0.285"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.285.tgz#a834a2604dc7d9e160ed4d27fba8f93c8f41eec0"
+laji-map@^1.0.286:
+  version "1.0.286"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.286.tgz#c34ffd84e5f11837d5686a32a76ae7b1027d8597"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     babel-runtime "^6.18.0"
