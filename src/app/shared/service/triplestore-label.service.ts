@@ -60,13 +60,20 @@ export class TriplestoreLabelService {
         .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
     )
       .map(data => this.parseResult(data))
-      .do(data => this.cacheService.setItem(TriplestoreLabelService.cacheTriplestoreLabels, data))
+      .do(data => {
+        if (data) {
+          this.cacheService.setItem(TriplestoreLabelService.cacheTriplestoreLabels, data)
+        }
+      })
       .merge(this.cacheService.getItem(TriplestoreLabelService.cacheTriplestoreLabels))
       .filter(labels => !!labels)
       .share();
   }
 
   private parseResult(result) {
+    if (result.length !== 3 || !Array.isArray(result[1].results) || !Array.isArray(result[2].results)) {
+      return false;
+    }
     this.labels = result[0];
     result[1].results.map(property => {
       this.labels[property['shortName']] = property.label || '';
