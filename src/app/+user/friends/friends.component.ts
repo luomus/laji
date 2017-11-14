@@ -3,6 +3,9 @@ import { Profile } from '../../shared/model/Profile';
 import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
 import { Logger } from '../../shared/logger/logger.service';
+import { DialogService } from '../../shared/service/dialog.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'friends',
@@ -19,7 +22,9 @@ export class FriendsComponent implements OnInit {
 
   constructor(private userService: UserService,
               private personService: PersonApi,
-              private logger: Logger
+              private logger: Logger,
+              private translateService: TranslateService,
+              private dialogService: DialogService
   ) {
   }
 
@@ -50,7 +55,12 @@ export class FriendsComponent implements OnInit {
   }
 
   removeFriend(userId, block = false) {
-    this.personService.personRemoveFriend(this.userService.getToken(), userId, block)
+    this.translateService.get(block ? 'friend.blockConfirm' : 'friend.removeConfirm')
+      .switchMap(confirmMessage => this.dialogService.confirm(confirmMessage))
+      .switchMap((confirm) => confirm ?
+        this.personService.personRemoveFriend(this.userService.getToken(), userId, block) :
+        Observable.of(this.usersProfile)
+      )
       .subscribe(
         profile => this.usersProfile = profile,
         err => this.logger.warn('Failed remove friend', err)
