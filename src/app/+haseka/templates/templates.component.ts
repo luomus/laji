@@ -14,7 +14,6 @@ export class TemplatesComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.showTemplateIntro);
     if (this.showTemplateIntro === null) {
       this.showTemplateIntro = true;
     }
