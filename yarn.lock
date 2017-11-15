@@ -3345,9 +3345,9 @@ kind-of@^4.0.0:
   dependencies:
     is-buffer "^1.1.5"
 
-laji-form@^0.0.283:
-  version "0.0.283"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.283.tgz#6d43dd9f35291564512a18fe6090a1266909c531"
+laji-form@^0.0.284:
+  version "0.0.284"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.284.tgz#dfb54cd18d61ffacd253fafd28af84de42fc64a0"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -3366,7 +3366,7 @@ laji-form@^0.0.283:
     react-dom "^15.5.0"
     react-dropzone "^3.12.3"
     react-inlinesvg "^0.6.0"
-    react-jsonschema-form "git+https://git@github.com/olzraiti/react-jsonschema-form.git#8e8f6180409caea0b1a913693512c9d82961101f"
+    react-jsonschema-form "git+https://git@github.com/olzraiti/react-jsonschema-form.git#cc03f97741116e99569ade724a0e62af6eb8344f"
     react-sortable-hoc "^0.6.3"
     react-spinner "^0.2.7"
     react-transition-group "^1.1.1"
@@ -4920,9 +4920,9 @@ react-inlinesvg@^0.6.0:
     httpplease "^0.16"
     once "^1.4"
 
-"react-jsonschema-form@git+https://git@github.com/olzraiti/react-jsonschema-form.git#8e8f6180409caea0b1a913693512c9d82961101f":
+"react-jsonschema-form@git+https://git@github.com/olzraiti/react-jsonschema-form.git#cc03f97741116e99569ade724a0e62af6eb8344f":
   version "1.0.0"
-  resolved "git+https://git@github.com/olzraiti/react-jsonschema-form.git#8e8f6180409caea0b1a913693512c9d82961101f"
+  resolved "git+https://git@github.com/olzraiti/react-jsonschema-form.git#cc03f97741116e99569ade724a0e62af6eb8344f"
   dependencies:
     ajv "^5.2.3"
     lodash.topath "^4.5.2"
