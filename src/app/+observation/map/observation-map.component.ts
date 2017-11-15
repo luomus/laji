@@ -60,6 +60,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() tick: number;
   @Input() itemFields: string[] = [
     'unit.linkings.taxon',
+    'unit.taxonVerbatim',
     'gathering.team',
     'gathering.eventDate',
     'document.documentId',
@@ -462,6 +463,9 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           this.itemFields.map(field => {
             const name = field.split('.').pop();
             if (properties[name] && name !== 'documentId' && name !== 'unitId') {
+              if (field === 'unit.taxonVerbatim' && properties['taxon']) {
+                return;
+              }
               description += this.decorator.decorate(field, properties[name], {}) + '<br>';
             }
           });
