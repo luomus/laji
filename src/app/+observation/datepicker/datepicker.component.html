@@ -17,7 +17,7 @@
         <i class="glyphicon glyphicon-chevron-left" (click)="prevMonth()"></i>
       </div>
       <span class="date">
-        {{ date.format('MMMM YYYY') }}
+        {{('m-' + date.format('MM')) | translate}} {{ date.format('YYYY') }}
       </span>
       <div class="right">
         <i class="glyphicon glyphicon-chevron-right" (click)="nextMonth()"></i>
@@ -26,13 +26,13 @@
       </div>
     </div>
     <div class="day-names">
-      <span>Mon</span>
-      <span>Tue</span>
-      <span>Wed</span>
-      <span>Thu</span>
-      <span>Fri</span>
-      <span>Sat</span>
-      <span>Sun</span>
+      <span>{{'Mon' | translate}}</span>
+      <span>{{'Tue' | translate}}</span>
+      <span>{{'Wed' | translate}}</span>
+      <span>{{'Thu' | translate}}</span>
+      <span>{{'Fri' | translate}}</span>
+      <span>{{'Sat' | translate}}</span>
+      <span>{{'Sun' | translate}}</span>
     </div>
     <div class="calendar">
         <span *ngFor="let d of days; let i = index">
