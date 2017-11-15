@@ -48,9 +48,8 @@
                   triggers="click mouseenter:mouseleave"><i class="glyphicon glyphicon-user"></i>
           </button>
           <button class="btn btn-default btn-xs pull-right"
-                  [tooltip]="showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate)"
-                  placement="left"
                   (click)="toggleFacts()">
+            {{showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate)}}
             <i class="glyphicon" [ngClass]="{'glyphicon-eye-open': showFacts, 'glyphicon-eye-close': !showFacts}"></i>
           </button>
           <div style="margin-top: 35px;">
