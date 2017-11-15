@@ -33,6 +33,7 @@
     [rowHeight]="virtualScrolling ? 35 : 'auto'"
     (sort)="sortChange.emit($event)"
     (page)="onPage($event)"
+    [rowClass]="getRowClass"
     (activate)="onRowSelect($event)"
   >
   </ngx-datatable>

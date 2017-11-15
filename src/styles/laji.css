@@ -621,6 +621,10 @@ body > .ui-select-bootstrap.open {
   color: #D44950;
 }
 
+.issues {
+  background-color: #ebcccc !important;
+}
+
 /** scrollbar **/
 ::-webkit-scrollbar {
   height: 8px;

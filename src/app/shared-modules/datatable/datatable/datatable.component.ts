@@ -96,4 +96,20 @@ export class DatatableComponent {
         }
       });
   }
+
+  getRowClass(row) {
+    return {
+      'issues':
+        !!(row.document && row.document.quality && row.document.quality.issue) ||
+        !!(row.gathering && row.gathering.quality && (
+          row.gathering.quality.issue ||
+          row.gathering.quality.locationIssue ||
+          row.gathering.quality.timeIssue
+        )) ||
+        !!(row.unit && row.unit.quality && (
+          row.unit.quality.documentGatheringUnitQualityIssues ||
+          row.unit.quality.issue
+        ))
+    };
+  }
 }

@@ -348,7 +348,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     );
     const list$ = this.resultService.getList(
       this.query,
-      this.getSelectFields(this._selected),
+      this.getSelectFields(this._selected, this.query),
       page,
       this.pageSize,
       [...this.orderBy, this.defaultOrder],
@@ -367,8 +367,12 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       });
   }
 
-  private getSelectFields(selected: string[]) {
-    return selected.map(field => this.columnLookup[field].selectField || field);
+  private getSelectFields(selected: string[], query: WarehouseQueryInterface) {
+    const selects = selected.map(field => this.columnLookup[field].selectField || field);
+    if (query.editorPersonToken || query.observerPersonToken) {
+      selects.push('document.quality,gathering.quality,unit.quality');
+    }
+    return selects;
   }
 
   private setLangParams(value: string) {
