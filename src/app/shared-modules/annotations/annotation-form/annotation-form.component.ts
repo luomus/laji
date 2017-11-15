@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Logger } from '../../../shared/logger/logger.service';
 import { AutocompleteApi } from '../../../shared/api/AutocompleteApi';
 import { TranslateService } from '@ngx-translate/core';
-import ownKeys = Reflect.ownKeys;
+
 
 @Component({
   selector: 'laji-annotation-form',
