@@ -539,5 +539,7 @@
   "identify.intro": "Här kan du bläddra i observationer utan identifiering av artnivå. Klicka på en bild för att se mer information om observationen och en större bild. På informationssidan kan du också föreslå en identifiering. Om du känner det bilden är oidentifierbar på artnivå, kan du kryssrutan \"Oidentifierbar\". När många användare säger att en bild är oidentifierbar, bilden visas inte på den här sidan.",
   "identify.selectIntro": "Du kan filtrera bilderna efter en organismgrupp, men sidan kommer bara att kunna visa de observationer som kan associeras med en grupp. Till exempel kan namnet \"svampar\" kopplas till en grupp men namnet \"vissa svampar kanske?\" kan inte.",
   "friend.blockConfirm": "Är du säker på att du vill blockera den här användaren?",
-  "friend.removeConfirm": "Är du säker på att du vill ta bort den här vännen?"
+  "friend.removeConfirm": "Är du säker på att du vill ta bort den här vännen?",
+  "result.document.quality.reliabilityOfCollection": "Kvalitet för samling",
+  "result.unit.det": "Det."
 }

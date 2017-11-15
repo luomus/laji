@@ -554,5 +554,7 @@
   "identify.intro": "Tällä sivulla voit selailla kuvia havainnoista joille ei ole lajitason määritystä. Klikkaamalla kuvaa näet enemmän tietoa havainnosta ja avautuvassa tietoikkunassa voit tarkastella kuvaa suurempana. Tietosivulla voit myös ehdottaa kuvalle lajimääritystä. Jos mielestäsi kuvan perusteella ei ole mahdollista päästä lajitason määritykseen, voit ruksia \"Ei voida määritää\". Jos riitävän moni käyttäjä ruksii \"Ei voida määrittää\", kuvaa ei enää tarjota jatkossa tunnistuspalvelussa.",
   "identify.selectIntro": "Voit rajata kuvia lajiryhmittäin, mutta lajiryhmään kuuluvat vain ne havainnot, jotka on ilmoitetut nimellä, joka voidaan liittää kyseiseen lajiryhmään. Esimerkiksi ilmoitettu nimi \"sieni\" voidaan liittää ryhmään \"sienet\" mutta ilmoitettua nimeä \"jokin sieni\" ei voida.",
   "friend.blockConfirm": "Haluatko varmasi estää käyttäjän?",
-  "friend.removeConfirm": "Haluatko varmasi poistaa ystävän?"
+  "friend.removeConfirm": "Haluatko varmasi poistaa ystävän?",
+  "result.document.quality.reliabilityOfCollection": "Kokoelman laatu",
+  "result.unit.det": "Määrittäjä (det.)"
 }
