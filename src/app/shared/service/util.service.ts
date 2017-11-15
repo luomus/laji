@@ -17,4 +17,8 @@ export class Util {
   public static equals(o1, o2) {
     return JSON.stringify(o1) === JSON.stringify(o2);
   }
+
+  public static isEmptyObj(value: any) {
+    return value && typeof value === 'object' && Object.keys(value).length === 0
+  }
 }

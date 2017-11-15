@@ -4,6 +4,7 @@ import { Observer } from 'rxjs/Observer';
 import { MetadataApi } from '../api/MetadataApi';
 import { CacheService } from './cache.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
+import { Util } from './util.service';
 
 
 @Injectable()
@@ -32,26 +33,27 @@ export class MetadataService {
       return Observable.of(this.ranges);
     } else if (this.pendingRanges) {
       return Observable.create((observer: Observer<any>) => {
-        const onComplete = (res: any) => {
-          observer.next(res);
-          observer.complete();
-        };
         this.pendingRanges.subscribe(
           (ranges) => {
-            onComplete(ranges);
-          }
+            observer.next(ranges);
+          },
+          (err) => console.log(err),
+          () => observer.complete()
         );
       });
     }
-    this.pendingRanges = this.metadataApi.metadataFindAllRanges('multi')
-      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.of(false)))
-      .do(ranges =>  {
-        if (ranges) {
-          this.cacheService.setItem(MetadataService.rangesCacheKey, ranges);
-        }
+    this.pendingRanges = this.cacheService.getItem(MetadataService.rangesCacheKey)
+      .merge(this.metadataApi.metadataFindAllRanges('multi')
+        .retryWhen(errors => errors.delay(1000).take(2).concat(Observable.of(false)))
+        .do(ranges =>  {
+          if (!Util.isEmptyObj(ranges)) {
+            this.cacheService.setItem(MetadataService.rangesCacheKey, ranges);
+          }
+        })
+      )
+      .filter(ranges => {
+        return !Util.isEmptyObj(ranges);
       })
-      .merge(this.cacheService.getItem(MetadataService.rangesCacheKey))
-      .filter(ranges => !!ranges)
       .do(ranges => { this.ranges = ranges; })
       .share();
 

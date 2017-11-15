@@ -43,7 +43,7 @@ export class MetadataApi {
    *
    * @param lang
    */
-  public metadataAllClasses(lang?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Metadata>>> {
+  public metadataAllClasses(lang?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Metadata>> {
     const path = this.basePath + '/metadata/classes';
 
     let queryParameters = new URLSearchParams();
@@ -73,7 +73,7 @@ export class MetadataApi {
    *
    * @param lang
    */
-  public metadataAllProperties(lang?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Property>>> {
+  public metadataAllProperties(lang?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Property>> {
     const path = this.basePath + '/metadata/properties';
 
     let queryParameters = new URLSearchParams();
