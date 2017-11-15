@@ -8,6 +8,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { DatatableModule } from '../datatable/datatable.module';
 import { SelectedFieldGroupComponent } from './selected-field-group/selected-field-group.component';
 import { PageSizeSelectComponent } from './page-size-select/page-size-select.component';
+import { SelectedFieldItemComponent } from './selected-field-item/selected-field-item.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,7 @@ import { PageSizeSelectComponent } from './page-size-select/page-size-select.com
     SharedModule,
     DatatableModule
   ],
-  declarations: [ObservationTableComponent, SelectedFieldGroupComponent, PageSizeSelectComponent],
+  declarations: [ObservationTableComponent, SelectedFieldGroupComponent, PageSizeSelectComponent, SelectedFieldItemComponent],
   providers: [ObservationListService],
   exports: [ObservationTableComponent]
 })

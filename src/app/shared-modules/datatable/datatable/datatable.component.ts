@@ -59,6 +59,7 @@ export class DatatableComponent {
 
   @Input() set columns(columns: DatatableColumn[]) {
     this._columns = columns.map((column) => {
+      column.draggable = false;
       if (!column.headerTemplate) {
         column.headerTemplate = this.headerTpl;
       }

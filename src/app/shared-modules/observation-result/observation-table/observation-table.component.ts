@@ -289,6 +289,29 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     }
   }
 
+  moveFieldDown(field: string) {
+    const idx = this._selected.indexOf(field);
+    if (idx === -1 || idx === 0) {
+      return;
+    }
+    const tmp = this._selected[idx];
+    this._selected[idx] = this._selected[idx - 1];
+    this._selected[idx - 1] = tmp;
+    this._selected = [...this._selected];
+  }
+
+  moveFieldUp(field: string) {
+    const idx = this._selected.indexOf(field);
+    const len = this._selected.length;
+    if (idx === len - 1) {
+      return;
+    }
+    const tmp = this._selected[idx];
+    this._selected[idx] = this._selected[idx + 1];
+    this._selected[idx + 1] = tmp;
+    this._selected = [...this._selected];
+  }
+
   toggleSelectedField(field: string) {
     this.hasChanges = true;
     const idx = this._selected.indexOf(field);

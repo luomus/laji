@@ -50,7 +50,7 @@
           <button class="btn btn-default btn-xs pull-right"
                   (click)="toggleFacts()">
             {{showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate)}}
-            <i class="glyphicon" [ngClass]="{'glyphicon-eye-open': showFacts, 'glyphicon-eye-close': !showFacts}"></i>
+            <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
           </button>
           <div style="margin-top: 35px;">
             <alert [type]="document.secured ?  'warning' : 'info'">

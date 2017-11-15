@@ -1,13 +1,17 @@
-<h5 *ngIf="title">{{title | translate}}</h5>
+<h5 *ngIf="header">{{header | translate}}</h5>
 <ul class="list-group">
   <li class="list-group-item link"
       *ngFor="let field of fields"
       (click)="toggle.emit(field)"
       [ngClass]="{active: selected.indexOf(field) > -1}">
-    <span *ngIf="selected.indexOf(field) > -1">{{selected.indexOf(field) + 1}}.</span>
-    <span *ngIf="columnsLookup[field]; else fieldOnly">
-      {{columnsLookup[field].label | translate}}
-    </span>
-    <ng-template #fieldOnly>{{field}}</ng-template>
+    <laji-selected-field-item
+      [field]="field"
+      [label]="columnsLookup[field].label | translate"
+      [idx]="selected.indexOf(field)"
+      [len]="selected.length"
+      (toggle)="toggle.emit($event)"
+      (moveUp)="moveUp.emit($event)"
+      (moveDown)="moveDown.emit($event)"
+    ></laji-selected-field-item>
   </li>
 </ul>

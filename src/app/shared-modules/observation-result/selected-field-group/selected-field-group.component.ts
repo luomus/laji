@@ -8,11 +8,13 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 })
 export class SelectedFieldGroupComponent {
 
-  @Input() title: string;
+  @Input() header: string;
   @Input() fields: string[] = [];
   @Input() selected: string[] = [];
   @Input() columnsLookup: any = {};
   @Output() toggle = new EventEmitter<string>();
+  @Output() moveUp = new EventEmitter<string>();
+  @Output() moveDown = new EventEmitter<string>();
 
   constructor() { }
 

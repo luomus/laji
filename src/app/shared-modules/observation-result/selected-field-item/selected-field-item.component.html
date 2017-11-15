@@ -1,0 +1,14 @@
+<ng-container *ngIf="idx > -1">
+  <div class="btn-group pull-right">
+    <button (click)="moveFieldDown(field, $event)" class="btn btn-default btn-xs" [class.disabled]="idx === 0">
+      <i class="glyphicon glyphicon-minus"></i>
+    </button>
+    <button (click)="moveFieldUp(field, $event)" class="btn btn-default btn-xs" [class.disabled]="idx === len - 1">
+      <i class="glyphicon glyphicon-plus"></i>
+    </button>
+  </div>
+  {{idx + 1}}.
+</ng-container>
+<ng-container>
+  {{label}}
+</ng-container>

@@ -742,3 +742,20 @@ input[type="radio"]
 .ngx-datatable.material .datatable-footer .page-count {
   white-space: nowrap;
 }
+.ngx-datatable .datatable-header .datatable-header-cell .resize-handle {
+  background-color: rgba(0, 0, 0, 0.12);
+}
+.ngx-datatable .datatable-header .datatable-header-cell.sortable .datatable-header-cell-wrapper {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.ngx-datatable .datatable-header .datatable-header-cell .sort-btn {
+  position: absolute;
+  left: 1px;
+  top: 13px;
+  font-size: 10px;
+}
