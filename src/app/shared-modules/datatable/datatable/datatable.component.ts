@@ -59,7 +59,6 @@ export class DatatableComponent {
 
   @Input() set columns(columns: DatatableColumn[]) {
     this._columns = columns.map((column) => {
-      column.draggable = false;
       if (!column.headerTemplate) {
         column.headerTemplate = this.headerTpl;
       }
@@ -80,7 +79,7 @@ export class DatatableComponent {
   }
 
   onPage(event) {
-    if (this.loading || this._offset === event.offset) {
+    if (this.loading) {
       return;
     }
     this.pageChange.emit(event);

@@ -17,161 +17,146 @@
     [totalMessage]="'haseka.submissions.total' | translate"
     [columns]="columns">
   </laji-datatable>
-  <div class="setting-menu link" (click)="openModal(settingsMenu)" *ngIf="showSettingsMenu">
+  <div class="setting-menu link" (click)="settingsModal.show()" *ngIf="showSettingsMenu">
     <i class="glyphicon glyphicon-cog"></i>
   </div>
 </div>
 
-<ng-template #settingsMenu>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">{{isAggregate ? ('result.settings.aggregate' | translate) : ('result.settings.list' | translate)}}</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div class="row" *ngIf="isAggregate">
-      <div class="col-sm-6">
-        <laji-selected-field-group
-          header="result.aggregate.fields"
-          [fields]="allAggregateFields"
-          [columnsLookup]="columnLookup"
-          [selected]="_selected"
-          (toggle)="toggleSelectedField($event)"
-          (moveUp)="moveFieldUp($event)"
-          (moveDown)="moveFieldDown($event)"
-        ></laji-selected-field-group>
+<div bsModal #settingsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">{{isAggregate ? ('result.settings.aggregate' | translate) : ('result.settings.list' | translate)}}</h4>
       </div>
-      <div class="col-sm-6">
-        <laji-selected-field-group
-          header="result.aggregate.numbers"
-          [fields]="[
-            'individualCountSum',
-            'individualCountMax',
-            'oldestRecord',
-            'newestRecord'
-            ]"
-          [columnsLookup]="columnLookup"
-          [selected]="_selectedNumbers"
-          (toggle)="toggleSelectedNumberField($event)"
-          (moveUp)="moveSelectedFieldUp($event)"
-          (moveDown)="moveSelectedFieldDown($event)"
-        ></laji-selected-field-group>
-      </div>
-    </div>
-    <div class="row" *ngIf="!isAggregate">
-      <div class="col-sm-6">
-        <laji-selected-field-group
-          header="observation.form.specimen"
-          [fields]="[
-            'unit.taxon',
-            'unit.linkings.taxon.vernacularName',
-            'unit.linkings.taxon.scientificName',
-            'unit.taxonVerbatim'
-            ]"
-          [columnsLookup]="columnLookup"
-          [selected]="_selected"
-          (toggle)="toggleSelectedField($event)"
-          (moveUp)="moveFieldUp($event)"
-          (moveDown)="moveFieldDown($event)"
-        ></laji-selected-field-group>
-        <laji-selected-field-group
-          header="observation.form.place"
-          [fields]="[
-            'gathering.locality',
-            'gathering.interpretations.municipalityDisplayname',
-            'gathering.interpretations.biogeographicalProvinceDisplayname',
-            'gathering.interpretations.countryDisplayname',
-            'gathering.interpretations.coordinateAccuracy'
-            ]"
-          [columnsLookup]="columnLookup"
-          [selected]="_selected"
-          (toggle)="toggleSelectedField($event)"
-          (moveUp)="moveFieldUp($event)"
-          (moveDown)="moveFieldDown($event)"
-        ></laji-selected-field-group>
-        <laji-selected-field-group
-          header="result.gathering.coordinatesVerbatim"
-          [fields]="[
-            'gathering.conversions.ykj',
-            'gathering.conversions.ykj10kmCenter',
-            'gathering.conversions.ykj10km',
-            'gathering.conversions.ykj1kmCenter',
-            'gathering.conversions.ykj1km',
-            'gathering.conversions.euref',
-            'gathering.conversions.wgs84'
-            ]"
-          [columnsLookup]="columnLookup"
-          [selected]="_selected"
-          (toggle)="toggleSelectedField($event)"
-          (moveUp)="moveFieldUp($event)"
-          (moveDown)="moveFieldDown($event)"
-        ></laji-selected-field-group>
-      </div>
-      <div class="col-sm-6">
-        <laji-selected-field-group
-          header="observation.form.date"
-          [fields]="[
-            'gathering.displayDateTime',
-            'gathering.conversions.dayOfYearBegin',
-            'gathering.conversions.dayOfYearEnd'
-            ]"
-          [columnsLookup]="columnLookup"
-          [selected]="_selected"
-          (toggle)="toggleSelectedField($event)"
-          (moveUp)="moveFieldUp($event)"
-          (moveDown)="moveFieldDown($event)"
-        ></laji-selected-field-group>
-        <laji-selected-field-group
-          header="observation.form.unit"
-          [fields]="[
-            'unit.abundanceString',
-            'unit.interpretations.individualCount',
-            'unit.lifeStage',
-            'unit.sex'
-            ]"
-          [columnsLookup]="columnLookup"
-          [selected]="_selected"
-          (toggle)="toggleSelectedField($event)"
-          (moveUp)="moveFieldUp($event)"
-          (moveDown)="moveFieldDown($event)"
-        ></laji-selected-field-group>
-        <laji-selected-field-group
-          header="observation.filters.other"
-          [fields]="[
-            'unit.reportedTaxonConfidence',
-            'unit.quality.taxon.reliability',
-            'unit.quality.taxon.source',
-            'document.quality.reliabilityOfCollection',
-            'unit.recordBasis',
-            'unit.notes',
-            'document.collectionId',
-            'document.sourceId',
-            'document.secureLevel',
-            'document.secureReasons',
-            'gathering.team',
-            'unit.det'
-            ]"
-          [columnsLookup]="columnLookup"
-          [selected]="_selected"
-          (toggle)="toggleSelectedField($event)"
-          (moveUp)="moveFieldUp($event)"
-          (moveDown)="moveFieldDown($event)"
-        ></laji-selected-field-group>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <div *ngIf="showPageSize">
-          <laji-page-size-select [pageSize]="pageSize" (pageSizeChange)="onPageSizeChange($event)"></laji-page-size-select>
+      <div class="modal-body">
+        <div class="row" *ngIf="isAggregate">
+          <div class="col-sm-6">
+            <laji-selected-field-group
+              header="result.aggregate.fields"
+              [fields]="allAggregateFields"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+          </div>
+          <div class="col-sm-6">
+            <laji-selected-field-group
+              header="result.aggregate.numbers"
+              [fields]="[
+                'individualCountSum',
+                'individualCountMax',
+                'oldestRecord',
+                'newestRecord'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selectedNumbers"
+              (toggle)="toggleSelectedNumberField($event)"
+            ></laji-selected-field-group>
+          </div>
         </div>
-      </div>
-      <div class="col-sm-6 clear-btn">
-        <div class="pull-right">
-          <button type="button" tabindex="-1" class="btn btn-default btn-sm" (click)="clear()">{{'result.clear' | translate}}</button>
-          <button type="button" tabindex="-1" class="btn btn-primary btn-sm" (click)="modalRef.hide()">Ok</button>
+        <div class="row" *ngIf="!isAggregate">
+          <div class="col-sm-6">
+            <laji-selected-field-group
+              header="identification"
+              [fields]="[
+                'unit.taxon',
+                'unit.linkings.taxon.vernacularName',
+                'unit.linkings.taxon.scientificName',
+                'unit.taxonVerbatim'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+            <laji-selected-field-group
+              header="observation.form.place"
+              [fields]="[
+                'gathering.locality',
+                'gathering.interpretations.municipalityDisplayname',
+                'gathering.interpretations.biogeographicalProvinceDisplayname',
+                'gathering.interpretations.countryDisplayname',
+                'gathering.interpretations.coordinateAccuracy'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+            <laji-selected-field-group
+              header="result.gathering.coordinatesVerbatim"
+              [fields]="[
+                'gathering.conversions.ykj',
+                'gathering.conversions.ykj10kmCenter',
+                'gathering.conversions.ykj10km',
+                'gathering.conversions.ykj1kmCenter',
+                'gathering.conversions.ykj1km',
+                'gathering.conversions.euref',
+                'gathering.conversions.wgs84'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+          </div>
+          <div class="col-sm-6">
+            <laji-selected-field-group
+              header="observation.form.date"
+              [fields]="[
+                'gathering.displayDateTime',
+                'gathering.conversions.dayOfYearBegin',
+                'gathering.conversions.dayOfYearEnd'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+            <laji-selected-field-group
+              header="observation.form.unit"
+              [fields]="[
+                'unit.abundanceString',
+                'unit.interpretations.individualCount',
+                'unit.lifeStage',
+                'unit.sex'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+            <laji-selected-field-group
+              header="observation.filters.other"
+              [fields]="[
+                'unit.reportedTaxonConfidence',
+                'unit.quality.taxon.reliability',
+                'unit.quality.taxon.source',
+                'document.quality.reliabilityOfCollection',
+                'unit.recordBasis',
+                'unit.notes',
+                'document.collectionId',
+                'document.sourceId',
+                'document.secureLevel',
+                'document.secureReasons',
+                'gathering.team',
+                'unit.det'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div *ngIf="showPageSize">
+              <laji-page-size-select [pageSize]="pageSize" (pageSizeChange)="onPageSizeChange($event)"></laji-page-size-select>
+            </div>
+          </div>
+          <div class="col-sm-6 clear-btn">
+            <div class="pull-right">
+              <button type="button" tabindex="-1" class="btn btn-default btn-sm" (click)="clear()">{{'result.clear' | translate}}</button>
+              <button type="button" tabindex="-1" class="btn btn-primary btn-sm" (click)="closeOkModal()">Ok</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</ng-template>
+</div>

@@ -753,6 +753,9 @@ input[type="radio"]
   -ms-user-select: none;
   user-select: none;
 }
+.ngx-datatable .datatable-header .datatable-header-cell {
+  border-left: 1px solid rgba(0, 0, 0, 0.12);
+}
 .ngx-datatable .datatable-header .datatable-header-cell .sort-btn {
   position: absolute;
   left: 1px;

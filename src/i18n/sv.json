@@ -483,7 +483,7 @@
   "theme.individualCountMax": "Individuell räkning max",
   "search.result.finnish": "Observationer i Finland (beta)",
   "search.result.all": "Alla observationer",
-  "result.clear": "Clear",
+  "result.clear": "Klar",
   "result.settings.aggregate": "Inställningar för statistiken",
   "result.settings.list": "Inställningar för listan",
   "result.pageSize": "Sidstorlek",
@@ -548,5 +548,6 @@
   "friend.blockConfirm": "Är du säker på att du vill blockera den här användaren?",
   "friend.removeConfirm": "Är du säker på att du vill ta bort den här vännen?",
   "result.document.quality.reliabilityOfCollection": "Kvalitet för samling",
-  "result.unit.det": "Det."
+  "result.unit.det": "Det.",
+  "identification": "Identifiering"
 }

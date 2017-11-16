@@ -23,6 +23,7 @@ import { Logger } from '../../../shared/logger/logger.service';
 })
 export class ObservationTableComponent implements OnInit, OnChanges {
   @ViewChild('dataTable') public datatable: DatatableComponent;
+  @ViewChild('settingsModal') public modalRef: BsModalRef;
 
   @Input() query: WarehouseQueryInterface;
   @Input() pageSize;
@@ -53,7 +54,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   @Output() selectChange = new EventEmitter<string[]>();
   @Output() rowSelect = new EventEmitter<any>();
 
-  modalRef: BsModalRef;
   cache: any = {};
   orderBy: string[] = [];
   columnLookup = {};
@@ -263,17 +263,17 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     });
   }
 
-  openModal(modal: TemplateRef<any>) {
+  openModal() {
     this.hasChanges = false;
-    this.modalSub = this.modalService.onHide.subscribe(() => {
-      if (this.hasChanges) {
-        this.orderBy = [];
-        this.selectChange.emit([...this._selected, ...this._selectedNumbers]);
-      }
-      this.modalSub.unsubscribe();
-    });
-    this.modalRef = this.modalService.show(modal);
+    this.modalService.show(this.modalRef);
+  }
 
+  closeOkModal() {
+    if (this.hasChanges) {
+      this.orderBy = [];
+      this.selectChange.emit([...this._selected, ...this._selectedNumbers]);
+    }
+    this.modalRef.hide();
   }
 
   toggleSelectedNumberField(field: string) {

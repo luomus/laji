@@ -563,5 +563,6 @@
   "friend.blockConfirm": "Haluatko varmasi estää käyttäjän?",
   "friend.removeConfirm": "Haluatko varmasi poistaa ystävän?",
   "result.document.quality.reliabilityOfCollection": "Kokoelman laatu",
-  "result.unit.det": "Määrittäjä (det.)"
+  "result.unit.det": "Määrittäjä (det.)",
+  "identification": "Määritys"
 }
