@@ -8,7 +8,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { ObservationListService } from '../service/observation-list.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Logger } from '../../../shared/logger/logger.service';
@@ -23,7 +23,7 @@ import { Logger } from '../../../shared/logger/logger.service';
 })
 export class ObservationTableComponent implements OnInit, OnChanges {
   @ViewChild('dataTable') public datatable: DatatableComponent;
-  @ViewChild('settingsModal') public modalRef: BsModalRef;
+  @ViewChild('settingsModal') public modalRef: ModalDirective;
 
   @Input() query: WarehouseQueryInterface;
   @Input() pageSize;
@@ -58,7 +58,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   orderBy: string[] = [];
   columnLookup = {};
   _selected: string[] = [];
+  _originalSelected: string[] = [];
   _selectedNumbers: string[] = [];
+  _originalSelectedNumbers: string[] = [];
 
   result: PagedResult<any> = {
     currentPage: 1,
@@ -219,6 +221,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     });
     this._selected = selected;
     this._selectedNumbers = selectedNumbers;
+    this._originalSelected = [...selected];
+    this._originalSelectedNumbers = [...selectedNumbers];
   };
 
   ngOnInit() {
@@ -265,7 +269,14 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   openModal() {
     this.hasChanges = false;
-    this.modalService.show(this.modalRef);
+    this.modalRef.show();
+    this.modalSub = this.modalRef.onHide.subscribe((modal: ModalDirective) => {
+      if (modal.dismissReason !== null) {
+        this._selected = [...this._originalSelected];
+        this._selectedNumbers = [...this._originalSelectedNumbers];
+      }
+      this.modalSub.unsubscribe();
+    })
   }
 
   closeOkModal() {
@@ -289,51 +300,19 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     }
   }
 
-  moveSelectedFieldDown(field) {
-    const idx = this._selectedNumbers.indexOf(field);
-    if (idx === -1 || idx === 0) {
+  onReorder(event) {
+    if (
+      !event.column ||
+      !event.column.name ||
+      this._selected.indexOf(event.column.name) === -1 ||
+      typeof event.newValue !== 'number' ||
+      typeof event.prevValue !== 'number'
+    ) {
       return;
     }
-    const tmp = this._selectedNumbers[idx];
-    this._selectedNumbers[idx] = this._selectedNumbers[idx - 1];
-    this._selectedNumbers[idx - 1] = tmp;
-    this._selectedNumbers = [...this._selectedNumbers];
-  }
-
-
-  moveSelectedFieldUp(field: string) {
-    const idx = this._selectedNumbers.indexOf(field);
-    const len = this._selectedNumbers.length;
-    if (idx === len - 1) {
-      return;
-    }
-    const tmp = this._selectedNumbers[idx];
-    this._selectedNumbers[idx] = this._selectedNumbers[idx + 1];
-    this._selectedNumbers[idx + 1] = tmp;
-    this._selectedNumbers = [...this._selectedNumbers];
-  }
-
-  moveFieldDown(field: string) {
-    const idx = this._selected.indexOf(field);
-    if (idx === -1 || idx === 0) {
-      return;
-    }
-    const tmp = this._selected[idx];
-    this._selected[idx] = this._selected[idx - 1];
-    this._selected[idx - 1] = tmp;
-    this._selected = [...this._selected];
-  }
-
-  moveFieldUp(field: string) {
-    const idx = this._selected.indexOf(field);
-    const len = this._selected.length;
-    if (idx === len - 1) {
-      return;
-    }
-    const tmp = this._selected[idx];
-    this._selected[idx] = this._selected[idx + 1];
-    this._selected[idx + 1] = tmp;
-    this._selected = [...this._selected];
+    this._selected.splice(event.newValue, 0, this._selected.splice(event.prevValue, 1)[0]);
+    console.log(this._selected);
+    this.selectChange.emit([...this._selected, ...this._selectedNumbers]);
   }
 
   toggleSelectedField(field: string) {

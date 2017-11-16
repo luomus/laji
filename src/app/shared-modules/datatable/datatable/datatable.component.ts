@@ -43,6 +43,8 @@ export class DatatableComponent {
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
+  @Output() reorder = new EventEmitter<any>();
+  @Output() resize = new EventEmitter<any>();
   @Output() rowSelect = new EventEmitter<{documentId: string, unitId: string}>();
 
   _offset: number;
