@@ -549,5 +549,7 @@
   "friend.removeConfirm": "Är du säker på att du vill ta bort den här vännen?",
   "result.document.quality.reliabilityOfCollection": "Kvalitet för samling",
   "result.unit.det": "Det.",
-  "identification": "Identifiering"
+  "identification": "Identifiering",
+  "observation.active.taxonReliability": "Tillförlitlighet av observation",
+  "reliability": "Tillförlitlighet av observation"
 }

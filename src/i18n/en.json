@@ -283,7 +283,6 @@
   "haseka.submissions.dateStart": "Start date",
   "haseka.submissions.dateEnd": "End date",
   "haseka.submissions.dateObserved": "Observation date",
-  "haseka.submissions.namedPlaceName": "Place",
   "haseka.submissions.locality": "Locality",
   "haseka.submissions.unitCount": "Observations",
   "haseka.submissions.observer": "Observer",
@@ -318,7 +317,7 @@
   "friend.block": "Block",
   "friend.removeBlock": "Remove block",
   "profile.friends": "Friends",
-  "profile.friendsInfo": "You may ask another user to become your Friend by searching your friends profile from above and by clicking the “Add as a Friend” button on their profile page. After your friend has confirmed your request on their profile page, you become Friends and you may e.g. make common observation records at the Notebook-observation service.",
+  "profile.friendsInfo": "You may ask another user to become your Friend by copying your profile address (URL) and sending it to your friend.  After your friend has clicked the “Add as a Friend” button, and you have confirmed his request at your own profile, you become Friends and you may e.g. make common observation records at the Notebook-observation service.",
   "profile.accountSettings": "My account",
   "profile.friends.needProfile": "You need to make first your own profile to be able to add friends.",
   "profile.missing": "User not found.",
@@ -548,5 +547,7 @@
   "friend.removeConfirm": "Are you sure that you want to remove this friend?",
   "result.document.quality.reliabilityOfCollection": "Quality of collection",
   "result.unit.det": "Det.",
-  "identification": "Identification"
+  "identification": "Identification",
+  "observation.active.taxonReliability": "Reliability of observation",
+  "reliability": "Reliability of observation"
 }

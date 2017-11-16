@@ -534,6 +534,19 @@
             </div>
             <div class="row">
               <div class="col-sm-12">
+                <laji-metadata-select
+                  [(ngModel)]="searchQuery.query.taxonReliability"
+                  (ngModelChange)="onQueryChange()"
+                  [multiple]="true"
+                  name="taxonReliability"
+                  [mapToWarehouse]="true"
+                  [placeholder]="'reliability' | translate"
+                  [alt]="'MAN.annotationClassEnum'"
+                  [lang]="translate.currentLang"></laji-metadata-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
                 <hr>
                 <label>
                   <input type="checkbox"

@@ -292,7 +292,6 @@
   "haseka.submissions.dateStart": "Alkupvm",
   "haseka.submissions.dateEnd": "Loppupvm",
   "haseka.submissions.dateObserved": "Havaintopvm",
-  "haseka.submissions.namedPlaceName": "Paikka",
   "haseka.submissions.locality": "Paikka",
   "haseka.submissions.unitCount": "Havaintolkm",
   "haseka.submissions.observer": "Havainnoitsija",
@@ -564,5 +563,7 @@
   "friend.removeConfirm": "Haluatko varmasi poistaa ystävän?",
   "result.document.quality.reliabilityOfCollection": "Kokoelman laatu",
   "result.unit.det": "Määrittäjä (det.)",
-  "identification": "Määritys"
+  "identification": "Määritys",
+  "observation.active.taxonReliability": "Havainnon luotettavuus",
+  "reliability": "Havainnon luotettavuus"
 }
