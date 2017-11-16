@@ -14,10 +14,11 @@
     [count]="result.total"
     [page]="result.currentPage"
     [pageSize]="result.pageSize"
+    (reorder)="onReorder($event)"
     [totalMessage]="'haseka.submissions.total' | translate"
     [columns]="columns">
   </laji-datatable>
-  <div class="setting-menu link" (click)="settingsModal.show()" *ngIf="showSettingsMenu">
+  <div class="setting-menu link" (click)="openModal()" *ngIf="showSettingsMenu">
     <i class="glyphicon glyphicon-cog"></i>
   </div>
 </div>

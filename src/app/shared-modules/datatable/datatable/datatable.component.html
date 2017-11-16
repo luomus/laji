@@ -32,6 +32,8 @@
     [footerHeight]="showFooter ? 50 : 0"
     [rowHeight]="virtualScrolling ? 35 : 'auto'"
     (sort)="sortChange.emit($event)"
+    (reorder)="reorder.emit($event)"
+    (resize)="resize.emit($event)"
     (page)="onPage($event)"
     [rowClass]="getRowClass"
     (activate)="onRowSelect($event)"
