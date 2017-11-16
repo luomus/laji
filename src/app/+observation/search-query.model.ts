@@ -43,7 +43,8 @@ export class SearchQuery {
     'unitId',
     'individualId',
     'secureReason',
-    'editorId'
+    'editorId',
+    'taxonReliability'
   ];
 
   booleanTypes = [

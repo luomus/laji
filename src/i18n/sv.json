@@ -524,5 +524,6 @@
   "delete.error": "Misslyckades att ta bort. Försök igen lite senare.",
   "result.gathering.conversions.dayOfYearBegin": "Börja dagen på året",
   "result.gathering.conversions.dayOfYearEnd": "Slutdagen på ett år",
-  "haseka.templates.intro": "Du kan skapa en mall från sidan \"Mina observationer\". Välj en observation för mallen och tryck på \"Spara som mall\" -knappen."
+  "haseka.templates.intro": "Du kan skapa en mall från sidan \"Mina observationer\". Välj en observation för mallen och tryck på \"Spara som mall\" -knappen.",
+  "reliability": "Havainnon luotettavuus"
 }
