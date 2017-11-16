@@ -311,7 +311,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       return;
     }
     this._selected.splice(event.newValue, 0, this._selected.splice(event.prevValue, 1)[0]);
-    console.log(this._selected);
     this.selectChange.emit([...this._selected, ...this._selectedNumbers]);
   }
 
