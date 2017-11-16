@@ -51,9 +51,14 @@ export class UnitComponent implements OnInit {
     }
   }
 
-  initAnnotationStatus() {
+  initAnnotationStatus(annotation?: Annotation) {
+    const annotations = this.unit.annotations || [];
+    if (annotation) {
+      annotations.push(annotation);
+      this.unit.annotations = annotations;
+    }
     this.annotationClass$ = this.annotationService
-      .getAnnotationClassInEffect(this.unit.annotations)
+      .getAnnotationClassInEffect(annotations)
       .map(annotationClass => {
         this.annotationIcon = annotationClass ? 'fa-comments' : 'fa-comment-o';
         switch (annotationClass) {
@@ -71,7 +76,7 @@ export class UnitComponent implements OnInit {
     if (this.unit.annotations) {
       this.annotations = this.unit.annotations.reverse();
     }
-    this.annotationVisible = this.openAnnotation && this.highlight === this.unit.unitId
+    this.annotationVisible = this.openAnnotation || this.highlight === this.unit.unitId
   }
 
   toggleAnnotations() {

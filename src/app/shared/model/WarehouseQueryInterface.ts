@@ -126,7 +126,6 @@ export interface WarehouseQueryInterface {
   lifeStage?: Array<string>;
   taxonReliability?: Array<string>;
   sex?: Array<string>;
-  taxonReliability?: Array<string>;
   documentId?: Array<string>;
   unitId?: Array<string>;
   individualId?: Array<string>;

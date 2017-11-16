@@ -3,7 +3,16 @@
   <div class="annotation" *ngFor="let annotation of annotations let isOdd=odd"
        [class.odd]="isOdd">
     <div class="row">
-      <div class="col-xs-9 row-title">
+      <div class="col-xs-12 row-title">
+        <span class="person pull-right">
+          <button
+            type="button"
+            class="btn btn-danger btn-xs"
+            (click)="onDelete.emit(annotation)"
+            *ngIf="(annotation.annotationByPerson | toQName) === personID">
+            <i class="glyphicon glyphicon-remove"></i>
+          </button>
+        </span>
         <span [ngSwitch]="annotation.annotationClass | toQName" [tooltip]="annotation.annotationClass | toQName | label"
           class="annotation-class">
           <span *ngSwitchCase="annotationClass.AnnotationClassAcknowledged">
@@ -35,17 +44,6 @@
           <span class="annotation-author" *ngIf="annotation.annotationByPerson">{{annotation.annotationByPerson | toQName | users}}</span>
           <span *ngIf="!changingLocale">{{annotation.created | amTimeAgo}}</span>
         </small>
-      </div>
-      <div class="col-xs-3">
-        <span class="person pull-right">
-          <button
-            type="button"
-            class="btn btn-danger btn-xs"
-            (click)="onDelete.emit(annotation)"
-            *ngIf="(annotation.annotationByPerson | toQName) === personID">
-            <i class="glyphicon glyphicon-remove"></i>
-          </button>
-        </span>
       </div>
     </div>
     <div class="row" *ngIf="annotation.opinion">

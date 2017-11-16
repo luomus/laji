@@ -45,8 +45,8 @@ export class AnnotationsComponent implements OnInit {
   }
 
   onSuccess(annotation: Annotation) {
-    this.saveDone();
     this.annotations = [annotation, ...this.annotations];
+    this.saveDone(annotation);
   }
 
   closeAddForm() {
@@ -64,8 +64,8 @@ export class AnnotationsComponent implements OnInit {
       );
   }
 
-  private saveDone() {
-    this.onChange.emit();
+  private saveDone(annotation?: Annotation) {
+    this.onChange.emit(annotation);
     this.closeAddForm();
     this.initEmptyAnnotation();
   }
