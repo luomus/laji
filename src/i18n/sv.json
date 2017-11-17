@@ -551,5 +551,6 @@
   "result.unit.det": "Det.",
   "identification": "Identifiering",
   "observation.active.taxonReliability": "Tillförlitlighet av observation",
-  "reliability": "Tillförlitlighet av observation"
+  "reliability": "Tillförlitlighet av observation",
+  "persons": "Personer"
 }

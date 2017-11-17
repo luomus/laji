@@ -14,6 +14,7 @@
     [count]="result.total"
     [page]="result.currentPage"
     [pageSize]="result.pageSize"
+    [columnMode]="isAggregate ? 'force' : 'standard'"
     (reorder)="onReorder($event)"
     [totalMessage]="'haseka.submissions.total' | translate"
     [columns]="columns">
@@ -31,7 +32,7 @@
       </div>
       <div class="modal-body">
         <div class="row" *ngIf="isAggregate">
-          <div class="col-sm-6">
+          <div class="col-sm-6 col-md-4">
             <laji-selected-field-group
               header="result.aggregate.fields"
               [fields]="allAggregateFields"
@@ -40,7 +41,7 @@
               (toggle)="toggleSelectedField($event)"
             ></laji-selected-field-group>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-6 col-md-4">
             <laji-selected-field-group
               header="result.aggregate.numbers"
               [fields]="[
@@ -56,7 +57,7 @@
           </div>
         </div>
         <div class="row" *ngIf="!isAggregate">
-          <div class="col-sm-6">
+          <div class="col-sm-6 col-md-4">
             <laji-selected-field-group
               header="identification"
               [fields]="[
@@ -70,13 +71,62 @@
               (toggle)="toggleSelectedField($event)"
             ></laji-selected-field-group>
             <laji-selected-field-group
+              header="observation.form.date"
+              [fields]="[
+                'gathering.displayDateTime',
+                'gathering.conversions.dayOfYearBegin',
+                'gathering.conversions.dayOfYearEnd'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+            <laji-selected-field-group
+              header="persons"
+              [fields]="[
+                'gathering.team',
+                'unit.det'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+
+            <laji-selected-field-group
+              header="observation.form.unit"
+              [fields]="[
+                'unit.abundanceString',
+                'unit.interpretations.individualCount',
+                'unit.lifeStage',
+                'unit.sex'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+            <laji-selected-field-group
+              class="hidden-md hidden-lg"
+              header="reliability"
+              [fields]="[
+                'unit.reportedTaxonConfidence',
+                'unit.quality.taxon.reliability',
+                'unit.quality.taxon.source',
+                'document.quality.reliabilityOfCollection',
+                'unit.recordBasis'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <laji-selected-field-group
               header="observation.form.place"
               [fields]="[
                 'gathering.locality',
                 'gathering.interpretations.municipalityDisplayname',
                 'gathering.interpretations.biogeographicalProvinceDisplayname',
-                'gathering.interpretations.countryDisplayname',
-                'gathering.interpretations.coordinateAccuracy'
+                'gathering.interpretations.countryDisplayname'
                 ]"
               [columnsLookup]="columnLookup"
               [selected]="_selected"
@@ -91,32 +141,23 @@
                 'gathering.conversions.ykj1kmCenter',
                 'gathering.conversions.ykj1km',
                 'gathering.conversions.euref',
-                'gathering.conversions.wgs84'
+                'gathering.conversions.wgs84',
+                'gathering.interpretations.coordinateAccuracy'
                 ]"
               [columnsLookup]="columnLookup"
               [selected]="_selected"
               (toggle)="toggleSelectedField($event)"
             ></laji-selected-field-group>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-6 col-md-4">
             <laji-selected-field-group
-              header="observation.form.date"
+              header="reliability"
+              class="hidden-sm hidden-xs"
               [fields]="[
-                'gathering.displayDateTime',
-                'gathering.conversions.dayOfYearBegin',
-                'gathering.conversions.dayOfYearEnd'
-                ]"
-              [columnsLookup]="columnLookup"
-              [selected]="_selected"
-              (toggle)="toggleSelectedField($event)"
-            ></laji-selected-field-group>
-            <laji-selected-field-group
-              header="observation.form.unit"
-              [fields]="[
-                'unit.abundanceString',
-                'unit.interpretations.individualCount',
-                'unit.lifeStage',
-                'unit.sex'
+                'unit.reportedTaxonConfidence',
+                'unit.quality.taxon.reliability',
+                'unit.quality.taxon.source',
+                'document.quality.reliabilityOfCollection'
                 ]"
               [columnsLookup]="columnLookup"
               [selected]="_selected"
@@ -125,18 +166,12 @@
             <laji-selected-field-group
               header="observation.filters.other"
               [fields]="[
-                'unit.reportedTaxonConfidence',
-                'unit.quality.taxon.reliability',
-                'unit.quality.taxon.source',
-                'document.quality.reliabilityOfCollection',
-                'unit.recordBasis',
                 'unit.notes',
+                'unit.recordBasis',
                 'document.collectionId',
                 'document.sourceId',
                 'document.secureLevel',
-                'document.secureReasons',
-                'gathering.team',
-                'unit.det'
+                'document.secureReasons'
                 ]"
               [columnsLookup]="columnLookup"
               [selected]="_selected"

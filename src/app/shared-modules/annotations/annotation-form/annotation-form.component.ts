@@ -36,7 +36,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     Annotation.AnnotationClassEnum.AnnotationClassAcknowledged
   ];
 
-  private emptyAnnotationClass = Annotation.AnnotationClassEnum.AnnotationClassNeutral;
+  emptyAnnotationClass = Annotation.AnnotationClassEnum.AnnotationClassNeutral;
 
   constructor(
     private metadataService: MetadataService,

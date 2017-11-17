@@ -13,29 +13,31 @@
             <i class="glyphicon glyphicon-remove"></i>
           </button>
         </span>
-        <span [ngSwitch]="annotation.annotationClass | toQName" [tooltip]="annotation.annotationClass | toQName | label"
-          class="annotation-class">
-          <span *ngSwitchCase="annotationClass.AnnotationClassAcknowledged">
-            <i class="fa fa-check-square-o"></i>
+        <ng-container *ngIf="annotation.annotationClass">
+          <span [ngSwitch]="annotation.annotationClass | toQName" [tooltip]="annotation.annotationClass | toQName | label"
+            class="annotation-class">
+            <span *ngSwitchCase="annotationClass.AnnotationClassAcknowledged">
+              <i class="fa fa-check-square-o"></i>
+            </span>
+            <span *ngSwitchCase="annotationClass.AnnotationClassReliable" class="annotation-positive">
+              <i class="fa fa-check-circle-o"></i>
+              <i class="fa fa-check-circle-o"></i>
+            </span>
+            <span *ngSwitchCase="annotationClass.AnnotationClassLikely"  class="annotation-positive">
+              <i class="fa fa-check-circle-o"></i>
+            </span>
+            <span *ngSwitchCase="annotationClass.AnnotationClassSuspicious"  class="annotation-negative">
+              <i class="fa fa-exclamation-circle"></i>
+            </span>
+            <span *ngSwitchCase="annotationClass.AnnotationClassUnreliable"  class="annotation-negative">
+              <i class="fa fa-exclamation-circle"></i>
+              <i class="fa fa-exclamation-circle"></i>
+            </span>
+            <span *ngSwitchDefault="">
+              <i class="fa fa-comment-o"></i>
+            </span>
           </span>
-          <span *ngSwitchCase="annotationClass.AnnotationClassReliable" class="annotation-positive">
-            <i class="fa fa-check-circle-o"></i>
-            <i class="fa fa-check-circle-o"></i>
-          </span>
-          <span *ngSwitchCase="annotationClass.AnnotationClassLikely"  class="annotation-positive">
-            <i class="fa fa-check-circle-o"></i>
-          </span>
-          <span *ngSwitchCase="annotationClass.AnnotationClassSuspicious"  class="annotation-negative">
-            <i class="fa fa-exclamation-circle"></i>
-          </span>
-          <span *ngSwitchCase="annotationClass.AnnotationClassUnreliable"  class="annotation-negative">
-            <i class="fa fa-exclamation-circle"></i>
-            <i class="fa fa-exclamation-circle"></i>
-          </span>
-          <span *ngSwitchDefault="">
-            <i class="fa fa-comment-o"></i>
-          </span>
-        </span>
+        </ng-container>
         <small>
           <span class="annotation-author" *ngIf="annotation.type === types.TypeUnidentifiable">
             {{'MAN.typeUnidentifiable' | label}}

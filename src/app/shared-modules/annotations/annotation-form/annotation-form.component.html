@@ -3,7 +3,7 @@
     {{'haseka.form.error' | translate}}
   </alert>
   <ng-container *ngIf="annotation.type === types.TypeOpinion">
-    <ng-container *ngIf="identifying">
+    <ng-container>
       <div class="row annotation-unidentifiable">
         <div class="col-sm-12">
           <label>
@@ -11,7 +11,7 @@
               type="checkbox"
               name="unIdentifyable"
               [(ngModel)]="unIdentifyable"
-              [disabled]="!!annotation.opinion"
+              [disabled]="!!annotation.opinion || annotation.annotationClass !== emptyAnnotationClass"
             >
             {{'MAN.typeUnidentifiable' | label}}
           </label>
@@ -21,7 +21,10 @@
     <div class="row annotation-class" *ngIf="!identifying">
       <div class="col-sm-12">
         {{'MAN.annotationClass' | label}}:
-        <select [(ngModel)]="annotation.annotationClass" name="annotationClass" class="form-control input-sm">
+        <select [(ngModel)]="annotation.annotationClass"
+                [disabled]="unIdentifyable"
+                name="annotationClass"
+                class="form-control input-sm">
           <option *ngFor="let option of annotationOptions$ | async" [value]="option.id">
             {{option.value | multiLang}}
           </option>

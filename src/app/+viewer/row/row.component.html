@@ -1,9 +1,9 @@
 <div *ngIf="show" [ngClass]="{row: !noRow}">
   <div class="key col-xs-4" *ngIf="!noTitleSpace">
-    {{_title}}<span *ngIf="_title">:</span>
+    {{_title}}<ng-container *ngIf="_title">:</ng-container>
     <ng-content select="[key-row]"></ng-content>
   </div>
   <div class="value" [ngClass]="{'col-xs-8': !noTitleSpace, 'com-xs-12': noTitleSpace}">
-    <span *ngIf="!hideValue">{{value| values}}</span><ng-content></ng-content>
+    <ng-container *ngIf="!hideValue">{{value| values}}</ng-container><ng-content></ng-content>
   </div>
 </div>
