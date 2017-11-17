@@ -549,5 +549,6 @@
   "result.unit.det": "Det.",
   "identification": "Identification",
   "observation.active.taxonReliability": "Reliability of observation",
-  "reliability": "Reliability of observation"
+  "reliability": "Reliability of observation",
+  "persons": "Persons"
 }

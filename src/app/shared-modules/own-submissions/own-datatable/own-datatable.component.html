@@ -93,6 +93,8 @@
 
       <ngx-datatable-column *ngFor="let col of useColumns | filterColumns:this.displayMode"
                             [prop]="col.prop"
+                            [resizeable]="false"
+                            [draggable]="false"
                             [name]="'haseka.submissions.' + col.prop | translate"
                             [flexGrow]="3"
                             [comparator]="comparator(col.prop)"

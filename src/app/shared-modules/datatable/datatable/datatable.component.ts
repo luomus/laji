@@ -5,6 +5,11 @@ import {
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent } from '@swimlane/ngx-datatable';
 import { Observable } from 'rxjs/Observable';
+import { CacheService } from '../../../shared/service/cache.service';
+
+const CACHE_COLUMN_SETINGS = 'datatable-col-width';
+
+interface Settings {[key: string]: DatatableColumn}
 
 @Component({
   selector: 'laji-datatable',
@@ -13,6 +18,8 @@ import { Observable } from 'rxjs/Observable';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatatableComponent {
+
+  private static settings: Settings;
 
   @ViewChild('dataTable') public datatable: NgxDatatableComponent;
 
@@ -40,37 +47,52 @@ export class DatatableComponent {
   @Input() virtualScrolling = true;
   @Input() totalMessage = '';
   @Input() clientSideSorting = false;
+  @Input() columnMode = 'force';
+  @Input() resizable = true;
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
   @Output() reorder = new EventEmitter<any>();
-  @Output() resize = new EventEmitter<any>();
   @Output() rowSelect = new EventEmitter<{documentId: string, unitId: string}>();
 
   _offset: number;
   _columns: DatatableColumn[];
 
   constructor(
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private cacheService: CacheService
   ) { }
-
 
   @Input() set page(page: number) {
     this._offset = page - 1;
   };
 
   @Input() set columns(columns: DatatableColumn[]) {
-    this._columns = columns.map((column) => {
-      if (!column.headerTemplate) {
-        column.headerTemplate = this.headerTpl;
-      }
-      if (typeof column.cellTemplate === 'string') {
-        column.cellTemplate = this[column.cellTemplate + 'Tpl'];
-      }
-      if (!column.prop) {
-        column.prop = column.name;
-      }
-      return column;
+    const settings$ = DatatableComponent.settings ?
+      Observable.of(DatatableComponent.settings) :
+      this.cacheService.getItem<Settings>(CACHE_COLUMN_SETINGS)
+        .map(value => value || {})
+        .do(value => DatatableComponent.settings = value);
+
+    settings$.subscribe(settings => {
+      this._columns = columns.map((column) => {
+        if (!column.headerTemplate) {
+          column.headerTemplate = this.headerTpl;
+        }
+        if (typeof column.cellTemplate === 'string') {
+          column.cellTemplate = this[column.cellTemplate + 'Tpl'];
+        }
+        if (!column.prop) {
+          column.prop = column.name;
+        }
+        if (settings[column.name] && settings[column.name].width) {
+          column.width = settings[column.name].width;
+        }
+        if (this.resizable === false) {
+          column.resizeable = false;
+        }
+        return column;
+      });
     });
   }
 
@@ -113,5 +135,35 @@ export class DatatableComponent {
           row.unit.quality.issue
         ))
     };
+  }
+
+  onResize(event) {
+    if (event && event.column && event.column.name && event.newValue) {
+      DatatableComponent.settings[event.column.name] = {width: event.newValue};
+      this.cacheService.setItem<Settings>(CACHE_COLUMN_SETINGS, DatatableComponent.settings)
+        .subscribe();
+    }
+  }
+
+  private initSettings() {
+    let hasChanges = false;
+    const settings = DatatableComponent.settings;
+
+    if (!this._columns || settings) {
+      return;
+    }
+
+    const cols = this._columns.map((column) => {
+      if (settings[column.name] && settings[column.name].width) {
+        column.width = settings[column.name].width;
+        hasChanges = true;
+      }
+      return column;
+    });
+    if (hasChanges) {
+      console.log('UPDATE COLUMNSS!!!!');
+      this._columns = [...cols];
+      console.log(this._columns);
+    }
   }
 }

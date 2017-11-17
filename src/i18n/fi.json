@@ -565,5 +565,6 @@
   "result.unit.det": "Määrittäjä (det.)",
   "identification": "Määritys",
   "observation.active.taxonReliability": "Havainnon luotettavuus",
-  "reliability": "Havainnon luotettavuus"
+  "reliability": "Havainnon luotettavuus",
+  "persons": "Henkilöt"
 }
