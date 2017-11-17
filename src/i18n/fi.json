@@ -402,7 +402,7 @@
   "viewer.unit": "havaintoa",
   "viewer.notFound": "Havaintoerää ei ole vielä ladattu Lajitietokeskuksen tietovarastoon, ole hyvä ja odota hetki.",
   "viewer.valueInterpreted": "tulkittu",
-  "viewer.showFacts": "Näytä lisämuuttujat",
+  "viewer.showFacts": "Näytä lisätiedot",
   "viewer.hideFacts": "Piilota lisämuuttujat",
   "viewer.field.observer": "Havainnoija",
   "viewer.field.time": "Aika",
