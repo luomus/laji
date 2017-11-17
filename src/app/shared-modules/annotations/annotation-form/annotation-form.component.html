@@ -3,7 +3,7 @@
     {{'haseka.form.error' | translate}}
   </alert>
   <ng-container *ngIf="annotation.type === types.TypeOpinion">
-    <ng-container>
+    <ng-container *ngIf="!isEditor">
       <div class="row annotation-unidentifiable">
         <div class="col-sm-12">
           <label>

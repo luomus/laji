@@ -25,14 +25,17 @@
       </span>
     </laji-row>
     <laji-row [title]="'MY.det' | label" [value]="unit.det"></laji-row>
-    <div *ngIf="unit.quality && unit.quality.taxon && unit.quality.taxon.reliability && (showFacts || unit.quality.taxon.reliability !== 'NEUTRAL')">
+    <ng-container *ngIf="unit.reportedTaxonConfidence && (showFacts || unit.reportedTaxonConfidence !== 'SURE')">
+      <laji-row [title]="'MY.taxonConfidence' | label" [value]="unit.reportedTaxonConfidence | label: 'warehouse'"></laji-row>
+    </ng-container>
+    <ng-container *ngIf="unit.quality && unit.quality.taxon && unit.quality.taxon.reliability && (showFacts || unit.quality.taxon.reliability !== 'NEUTRAL')">
       <laji-row [title]="'result.unit.quality.taxon'|translate">
         {{unit.quality.taxon.reliability | label: 'warehouse'}}
         <span *ngIf="unit.quality.taxon.source">
           ({{unit.quality.taxon.source | label: 'warehouse'}})
         </span>
       </laji-row>
-    </div>
+    </ng-container>
     <laji-issues [data]="unit"></laji-issues>
     <laji-row [title]="'MY.count' | label" [value]="unit.abundanceString"></laji-row>
     <laji-row [title]="'MY.lifeStage' | label" [value]="unit.lifeStage | label: 'warehouse'"></laji-row>
