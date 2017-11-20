@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ComponentRef,
   ElementRef,
@@ -54,7 +55,8 @@ import { ImageModalOverlayComponent } from './image-modal-overlay.component';
 @Component({
   selector: 'laji-image-gallery',
   styleUrls: ['./image-modal.component.css'],
-  templateUrl: './image-modal.component.html'
+  templateUrl: './image-modal.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageModalComponent implements OnInit, OnDestroy {
   public opened = false;
