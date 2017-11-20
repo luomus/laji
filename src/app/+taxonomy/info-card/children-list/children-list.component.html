@@ -1,15 +1,13 @@
-<div *ngIf="children$ | async; let children">
-  <laji-datatable
-    #dataTable
-    class="observation-table"
-    (rowSelect)="onRowSelect($event)"
-    [showFooter]="false"
-    [virtualScrolling]="false"
-    [clientSideSorting]="true"
-    [rows]='children'
-    [count]="children.length"
-    [page]="1"
-    [pageSize]="children.length"
-    [columns]="columns">
-  </laji-datatable>
-</div>
+<laji-datatable
+  #dataTable
+  class="observation-table"
+  (rowSelect)="onRowSelect($event)"
+  [showFooter]="false"
+  [virtualScrolling]="false"
+  [clientSideSorting]="true"
+  [rows]='children'
+  [count]="size"
+  [page]="1"
+  [pageSize]="size"
+  [columns]="columns">
+</laji-datatable>
