@@ -32,7 +32,7 @@
   <div class="row">
     <div class="col-sm-12 image-container">
       <ng-container *ngIf="query">
-        <laji-gallery [view]="'full'" [showViewSwitch]="true" [query]="query" [eventOnImageClick]="true" (selected)="onImageSelect($event)"></laji-gallery>
+        <laji-gallery [view]="'full'" [sort]="['document.loadDate']" [showViewSwitch]="true" [query]="query" [eventOnImageClick]="true" (selected)="onImageSelect($event)"></laji-gallery>
       </ng-container>
     </div>
   </div>

@@ -22,6 +22,7 @@ export class GalleryComponent implements OnChanges {
   @Input() shortPager = false;
   @Input() eventOnImageClick = false;
   @Input() showViewSwitch = false;
+  @Input() sort: string[];
   @Input() view: 'compact'|'full' = 'compact';
   @Output() selected = new EventEmitter<boolean>();
   @Output() hasData = new EventEmitter<boolean>();
@@ -65,7 +66,7 @@ export class GalleryComponent implements OnChanges {
         // 'gathering.media',
         // 'document.media',
         'document.documentId,unit.unitId'
-      ], undefined, this.pageSize, this.page)
+      ], this.sort, this.pageSize, this.page)
       .timeout(WarehouseApi.longTimeout)
       .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .map((data) => {
