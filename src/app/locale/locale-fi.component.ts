@@ -13,10 +13,10 @@ export class LocaleFiComponent extends LocaleComponent implements OnInit {
 
   constructor(protected translateService: TranslateService, protected windowRef: WindowRef) {
     super();
+    moment.locale('fi');
+    this.setLocale('fi');
   }
 
   ngOnInit() {
-    moment.locale('fi');
-    this.setLocale('fi');
   }
 }

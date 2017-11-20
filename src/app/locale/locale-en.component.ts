@@ -12,10 +12,10 @@ export class LocaleEnComponent extends LocaleComponent implements OnInit {
 
   constructor(protected translateService: TranslateService, protected windowRef: WindowRef) {
     super();
+    moment.locale('en');
+    this.setLocale('en');
   }
 
   ngOnInit() {
-    moment.locale('en');
-    this.setLocale('en');
   }
 }

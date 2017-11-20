@@ -13,10 +13,10 @@ export class LocaleSvComponent extends LocaleComponent implements OnInit {
 
   constructor(protected translateService: TranslateService, protected windowRef: WindowRef) {
     super();
+    moment.locale('sv');
+    this.setLocale('sv');
   }
 
   ngOnInit() {
-    moment.locale('sv');
-    this.setLocale('sv');
   }
 }
