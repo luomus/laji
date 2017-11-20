@@ -15,9 +15,11 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.userService.getUser().subscribe(
-      user => this.router.navigate(
-        this.localizeRouterService.translateRoute(['/user', user.id])
-      )
+      user => {
+        this.router.navigate(
+          this.localizeRouterService.translateRoute((!user || !user.id) ? ['/'] : ['/user', user.id])
+        )
+      }
     );
   }
 }
