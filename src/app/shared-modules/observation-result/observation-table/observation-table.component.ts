@@ -163,7 +163,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'gathering.interpretations.coordinateAccuracy', cellTemplate: 'numeric' },
     { name: 'gathering.conversions.ykj10kmCenter', sortable: false},
     { name: 'unit.abundanceString', cellTemplate: 'numeric' },
-    { name: 'unit.interpretations.individualCount', sortable: false, cellTemplate: 'numeric' },
+    { name: 'unit.interpretations.individualCount', cellTemplate: 'numeric' },
     { name: 'unit.lifeStage', cellTemplate: 'warehouseLabel', label: 'observation.form.lifeStage' },
     { name: 'unit.sex', cellTemplate: 'warehouseLabel', label: 'observation.form.sex' },
     { name: 'unit.recordBasis', cellTemplate: 'warehouseLabel', label: 'observation.filterBy.recordBasis' },
