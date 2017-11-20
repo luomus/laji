@@ -1,17 +1,19 @@
-import { ChangeDetectorRef, Injectable, Pipe, PipeTransform } from '@angular/core';
+import { ChangeDetectorRef, Injectable, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizeRouterService } from './localize-router.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
 @Pipe({
   name: 'localize',
   pure: false // required to update the value when the promise is resolved
 })
-export class LocalizePipe implements PipeTransform {
+export class LocalizePipe implements PipeTransform, OnDestroy {
   private value: string | any[] = '';
   private lastKey: string | any[];
   private lastLanguage: string;
+  private subLang: Subscription;
 
   constructor(
     private localizeRouterService: LocalizeRouterService,
@@ -19,9 +21,16 @@ export class LocalizePipe implements PipeTransform {
     private router: Router,
     private _ref: ChangeDetectorRef
   ) {
-    this.translateService.onLangChange.subscribe(() => {
+    this.subLang = this.translateService.onLangChange.subscribe(() => {
       this.transform(this.lastKey);
     });
+  }
+
+  ngOnDestroy() {
+    if (this.subLang) {
+      this.subLang.unsubscribe();
+      this.subLang = undefined;
+    }
   }
 
   /**
