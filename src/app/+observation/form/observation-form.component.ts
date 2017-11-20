@@ -83,7 +83,15 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
               private winRef: WindowRef) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.formQuery.taxon);
-    }).mergeMap((token: string) => this.getTaxa(token));
+    })
+      .distinctUntilChanged()
+      .switchMap((token: string) => this.getTaxa(token))
+      .switchMap((data) => {
+        if (this.formQuery.taxon) {
+          return Observable.of(data);
+        }
+        return Observable.of([]);
+      });
   }
 
   public getTaxa(token: string, onlyFirstMatch = false): Observable<any> {
@@ -342,6 +350,20 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.delayedSearchSource.next(true);
   }
 
+  onTaxonSelect(event) {
+    if ((event.key === 'Enter' || (event.value && event.item)) && this.formQuery.taxon) {
+      this.searchQuery.query.target = this.searchQuery.query.target ?
+        [...this.searchQuery.query.target, this.formQuery.taxon] : [this.formQuery.taxon];
+      this.formQuery.taxon = '';
+      this.onQueryChange();
+    }
+  }
+
+  updateTargetList(list) {
+    this.searchQuery.query.target = list;
+    this.onQueryChange();
+  }
+
   enableAccuracySlider() {
     if (!this.searchQuery.query.coordinateAccuracyMax) {
       this.searchQuery.query.coordinateAccuracyMax = 1000;
@@ -402,7 +424,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onAccuracyValueChange();
     const time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
     this.formQuery = {
-      taxon: query.target && query.target[0] ? query.target[0] : '',
+      taxon: '',
       timeStart: this.getValidDate(time[0]),
       timeEnd: this.getValidDate(time[1]),
       informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
@@ -448,7 +470,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     const time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
     const query = this.searchQuery.query;
 
-    query.target = taxon.length > 0 ? [taxon] : undefined;
+    // query.target = taxon.length > 0 ? [taxon] : undefined;
     query.time = time.length > 0 ? [time] : undefined;
     query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? [formQuery.informalTaxonGroupId] : undefined;
     query.invasive = formQuery.isNotInvasive ? false : query.invasive;

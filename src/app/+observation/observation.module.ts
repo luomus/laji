@@ -22,6 +22,7 @@ import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { MainResultComponent } from './main-result/main-result.component';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
 import { ObservationFiltersComponent } from './observation-filters/observation-filters.component';
+import { PillListComponent } from './pill-list/pill-list.component';
 
 @NgModule({
   imports: [
@@ -38,7 +39,7 @@ import { ObservationFiltersComponent } from './observation-filters/observation-f
     ObservationFormComponent,
     MultiRadioComponent, ObservationResultComponent,
     ObservationResultListComponent, MetadataSelectComponent,
-    PieChartComponent, DatePickerComponent, ObservationDownloadComponent, SelectComponent, MainResultComponent, ObservationFiltersComponent
+    PieChartComponent, DatePickerComponent, ObservationDownloadComponent, SelectComponent, MainResultComponent, ObservationFiltersComponent, PillListComponent
   ]
 })
 export class ObservationModule {

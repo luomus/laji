@@ -57,8 +57,8 @@
                       [typeaheadOptionField]="'value'"
                       [typeaheadItemTemplate]="taxonItem"
                       (typeaheadLoading)="changeTypeaheadLoading($event)"
-                      (typeaheadOnSelect)="onQueryChange()"
-                      (change)="onQueryChange()"
+                      (typeaheadOnSelect)="onTaxonSelect($event)"
+                      (keyup)="onTaxonSelect($event)"
                       autocomplete="off"
                       autocorrect="off"
               >
@@ -67,6 +67,10 @@
                   {{model.value}}
                 </h5>
               </ng-template>
+              <laji-pill-list
+                [list]="searchQuery.query.target || []"
+                (updateList)="updateTargetList($event)"
+              ></laji-pill-list>
               <span *ngIf="taxonName && taxonName.value" style="margin-left: 5px;">
                 <span *ngIf="taxonName?.payload.vernacularName; else taxonNameScientific">
                   {{taxonName?.payload.vernacularName}}
