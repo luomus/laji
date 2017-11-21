@@ -277,7 +277,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     this.formService
       .load(this.formId, this.translate.currentLang, this.documentId)
       .switchMap((data) => {
-        if (data.formData._isTemplate && !this.documentId) {
+        if (data.formData._isTemplate && !this.formService.isTmpId(this.documentId)) {
           return this.formService.store(data.formData)
             .do(() => {
               this.onTmpLoad.emit({
