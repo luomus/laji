@@ -3345,16 +3345,16 @@ kind-of@^4.0.0:
   dependencies:
     is-buffer "^1.1.5"
 
-laji-form@^0.0.291:
-  version "0.0.291"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.291.tgz#520aacea23878c20402ec031db6bd94ac37aa543"
+laji-form@^0.0.292:
+  version "0.0.292"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.292.tgz#2023fb6a34f7b973ad9aee4ea8853a565534853d"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
     laji-map "^1.0.288"
-    laji-validate "0.0.43"
+    laji-validate "0.0.48"
     moment "*"
     prop-types "^15.5.8"
     react "^15.5.0"
@@ -3390,9 +3390,9 @@ laji-map@^1.0.288:
     proj4 "2.3.16"
     proj4leaflet "1.0.1"
 
-laji-validate@0.0.43:
-  version "0.0.43"
-  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.43.tgz#656c2fb43597b6de5d1933369630e22766c28146"
+laji-validate@0.0.48:
+  version "0.0.48"
+  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.48.tgz#aad5c64400747aa37e6ff4a782f2d46f357fd69e"
   dependencies:
     "@mapbox/geojson-area" "^0.2.2"
     geojson-bounds "^1.0.1"
