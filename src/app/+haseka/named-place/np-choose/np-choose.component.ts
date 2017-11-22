@@ -13,6 +13,7 @@ export class NpChooseComponent {
   @Input() formData: any;
   @Input() namedPlaces: NamedPlace[];
   @Input() visible = true;
+  @Input() allowCreate = false;
 
   @Output() onActivePlaceChange = new EventEmitter<number>();
   @Output() onCreateButtonClick = new EventEmitter();

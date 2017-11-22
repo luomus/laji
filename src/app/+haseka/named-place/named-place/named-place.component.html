@@ -9,11 +9,11 @@
 
       <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
 
-      <ng-container *ngIf="filterByMunicipality">
+      <ng-container *ngIf="filterByMunicipality && !editMode">
         <label>{{'MNP.municipality' | label}}</label>
         <laji-area-select [field]="areaTypes.Municipality" (select)="updateMunicipalityFilter($event)"></laji-area-select>
       </ng-container>
-      <ng-container *ngIf="filterByBirdAssociationArea">
+      <ng-container *ngIf="filterByBirdAssociationArea && !editMode">
         <label>{{'MNP.birdAssociationArea' | label}}</label>
         <laji-area-select [field]="areaTypes.BirdAssociationArea" (select)="updateBirdAssociationAreaFilter($event)"></laji-area-select>
       </ng-container>
@@ -24,6 +24,7 @@
               <laji-np-choose [namedPlaces]="namedPlaces"
                               [formData]="formData"
                               [visible]="!editMode"
+                              [allowCreate]="allowCreate"
                               (onActivePlaceChange)="setActiveNP($event)"
                               (onCreateButtonClick)="toEditMode(true)"
                               class="full-height"></laji-np-choose>
@@ -31,7 +32,7 @@
             <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-sm-6 nav-margin'">
               <laji-np-edit [editMode]="editMode"
                             [formId]="formId"
-                            [collectionId]="collectionId"
+                            [prepopulatedNamedPlace]="prepopulatedNamedPlace"
                             [namedPlace]="namedPlace"
                             [formData]="formData"
                             [allowEdit]="allowEdit"

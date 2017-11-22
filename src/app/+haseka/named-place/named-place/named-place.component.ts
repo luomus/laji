@@ -8,6 +8,8 @@ import { FormService } from '../../../shared/service/form.service';
 import { NpChooseComponent } from '../np-choose/np-choose.component';
 import { Observable } from 'rxjs/Observable';
 import { FooterService } from '../../../shared/service/footer.service';
+import { UserService } from '../../../shared/service/user.service';
+import { FormPermissionService } from '../../form-permission/form-permission.service';
 import { NamedPlaceQuery } from '../../../shared/api/NamedPlaceApi';
 import { Form } from '../../../shared/model/Form';
 import { AreaType } from '../../../shared/service/area.service';
@@ -24,6 +26,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   collectionId;
 
   formData;
+  prepopulatedNamedPlace = {};
 
   namedPlaces: NamedPlace[];
   activeNP = -1;
@@ -32,7 +35,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   areaTypes = AreaType;
   editMode = false;
   loading = false;
-  allowEdit = true;
+  allowEdit = false;
+  allowCreate = false;
+
   filterByMunicipality = false;
   filterByBirdAssociationArea = false;
 
@@ -53,6 +58,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     private formService: FormService,
     private footerService: FooterService,
     private translate: TranslateService,
+    private userService: UserService,
+    private formPermissionService: FormPermissionService,
     private cd: ChangeDetectorRef
   ) {}
 
@@ -62,10 +69,12 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       .switchMap((params) => {
         this.formId = params['formId'];
         this.collectionId = params['collectionId'];
+        this.prepopulatedNamedPlace['collectionId'] = this.collectionId;
 
         return this.getFormInfo();
       })
-      .switchMap((form) => this.updateNP(form))
+      .switchMap((form) => this.updateSettings(form))
+      .switchMap(() => this.updateNP())
       .subscribe(() => {
         this.loading = false;
         this.cd.markForCheck();
@@ -86,30 +95,26 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   updateBirdAssociationAreaFilter(value) {
     this.birdAssociationArea = value;
+    this.prepopulatedNamedPlace['birdAssociationArea'] = [value];
     this.updateList();
   }
 
   updateMunicipalityFilter(value) {
     this.municipality = value;
+    this.prepopulatedNamedPlace['municipality'] = [value];
     this.updateList();
   }
 
   private updateList() {
     this.loading = true;
-    this.updateNP(this.formData)
+    this.updateNP()
       .subscribe(() => {
         this.loading = false;
         this.cd.markForCheck();
       });
   }
 
-  private updateNP(formData: any): Observable<any> {
-    if (formData && formData.features && Array.isArray(formData.features)) {
-      this.filterByBirdAssociationArea = formData.features.indexOf(Form.Feature.FilterNamedPlacesByBirdAssociationArea) > -1;
-      this.filterByMunicipality = formData.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality) > -1;
-      this.allowEdit = this.formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1
-    }
-
+  private updateNP(): Observable<any> {
     if (!this.collectionId) {
       return Observable.of([]);
     }
@@ -139,6 +144,20 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         data.sort(this.sortFunction);
         this.namedPlaces = data
       });
+  }
+
+  private updateSettings(formData: any) {
+    if (formData && formData.features && Array.isArray(formData.features)) {
+      this.filterByBirdAssociationArea = formData.features.indexOf(Form.Feature.FilterNamedPlacesByBirdAssociationArea) > -1;
+      this.filterByMunicipality = formData.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality) > -1;
+      this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1
+    }
+
+    return this.userService.getUser().do(user => {
+      this.allowCreate = !formData || !formData.features
+        || formData.features.indexOf('MHL.featureAddingNamedPlacesNotAllowed') === -1
+        || this.formPermissionService.isAdmin({'id': ''}, user);
+    });
   }
 
   private getFormInfo(): Observable<any> {

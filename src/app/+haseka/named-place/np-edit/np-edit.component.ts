@@ -21,7 +21,7 @@ import { NpInfoComponent } from './np-info/np-info.component';
 export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() namedPlace: NamedPlace;
   @Input() formId: string;
-  @Input() collectionId: string;
+  @Input() prepopulatedNamedPlace: string;
   @Input() formData: any;
 
   drawData: any;
@@ -142,7 +142,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
       this.npFormData.formData.namedPlace = [npData];
     } else {
-      this.npFormData.formData.namedPlace = [{ 'collectionID': this.collectionId }];
+      this.npFormData.formData.namedPlace = [this.prepopulatedNamedPlace];
     }
   }
 
