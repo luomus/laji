@@ -283,6 +283,7 @@
   "haseka.submissions.dateStart": "Start date",
   "haseka.submissions.dateEnd": "End date",
   "haseka.submissions.dateObserved": "Observation date",
+  "haseka.submissions.namedPlaceName": "Place",
   "haseka.submissions.locality": "Locality",
   "haseka.submissions.unitCount": "Observations",
   "haseka.submissions.observer": "Observer",
