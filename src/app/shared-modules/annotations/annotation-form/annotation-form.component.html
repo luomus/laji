@@ -2,78 +2,71 @@
   <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
     {{'haseka.form.error' | translate}}
   </alert>
-  <ng-container *ngIf="annotation.type === types.TypeOpinion">
-    <ng-container *ngIf="!isEditor">
-      <div class="row annotation-unidentifiable">
-        <div class="col-sm-12">
-          <label>
-            <input
-              type="checkbox"
-              name="unIdentifyable"
-              [(ngModel)]="unIdentifyable"
-              [disabled]="!!annotation.opinion || annotation.annotationClass !== emptyAnnotationClass"
-            >
-            {{'MAN.typeUnidentifiable' | label}}
-          </label>
-        </div>
-      </div>
-    </ng-container>
-    <div class="row annotation-class" *ngIf="!identifying">
-      <div class="col-sm-12">
-        {{'MAN.annotationClass' | label}}:
-        <select [(ngModel)]="annotation.annotationClass"
-                [disabled]="unIdentifyable"
-                name="annotationClass"
-                class="form-control input-sm">
-          <option *ngFor="let option of annotationOptions$ | async" [value]="option.id">
-            {{option.value | multiLang}}
-          </option>
-        </select>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12" *ngIf="!isEditor">
-        {{'MAN.opinion' | label}}:
-        <input
-          [ngClass]="{loading: typeaheadLoading}"
-          type="text"
-          class="form-control input-sm"
-          name="opinion"
-          [disabled]="unIdentifyable"
-          [(ngModel)]="annotation.opinion"
-          [typeahead]="taxonAutocomplete"
-          [typeaheadOptionsLimit]="20"
-          [typeaheadWaitMs]="200"
-          [typeaheadMinLength]="3"
-          [typeaheadOptionField]="'value'"
-          [typeaheadItemTemplate]="taxonItem"
-          autocomplete="off"
-          autocorrect="off"
-        >
-        <ng-template #taxonItem let-model="item">
-          <h5 class="autosuggest-value {{model.groups}} informal-group-image">
-            {{model.value}}
-          </h5>
-        </ng-template>
-      </div>
-    </div>
-  </ng-container>
-  <div class="row message"
-    [ngClass]="{
-      'has-error': notes.errors && (notes.dirty || notes.touched)
-    }">
+  <div class="row annotation-unidentifiable" *ngIf="!isEditor && identifying">
     <div class="col-sm-12">
-      {{'MAN.notes' | label}}:<span *ngIf="annotation.type === types.TypeComment">*</span>
+      <label>
+        <input
+          type="checkbox"
+          name="unIdentifyable"
+          [(ngModel)]="unIdentifyable"
+          [disabled]="!!annotation.opinion || annotation.annotationClass !== emptyAnnotationClass"
+        >
+        {{'MAN.typeUnidentifiable' | label}}
+      </label>
+    </div>
+  </div>
+  <div class="row annotation-class" *ngIf="!identifying">
+    <div class="col-sm-12">
+      {{'MAN.annotationClass' | label}}:
+      <select [(ngModel)]="annotation.annotationClass"
+              [disabled]="unIdentifyable"
+              name="annotationClass"
+              class="form-control input-sm">
+        <option *ngFor="let option of annotationOptions$ | async" [value]="option.id">
+          {{option.value | multiLang}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12" *ngIf="!isEditor">
+      {{'MAN.opinion' | label}}:
+      <input
+        [ngClass]="{loading: typeaheadLoading}"
+        type="text"
+        class="form-control input-sm"
+        name="opinion"
+        [disabled]="unIdentifyable"
+        [(ngModel)]="annotation.opinion"
+        [typeahead]="taxonAutocomplete"
+        [typeaheadOptionsLimit]="20"
+        [typeaheadWaitMs]="200"
+        [typeaheadMinLength]="3"
+        [typeaheadOptionField]="'value'"
+        [typeaheadItemTemplate]="taxonItem"
+        autocomplete="off"
+        autocorrect="off"
+      >
+      <ng-template #taxonItem let-model="item">
+        <h5 class="autosuggest-value {{model.groups}} informal-group-image">
+          {{model.value}}
+        </h5>
+      </ng-template>
+    </div>
+  </div>
+  <div class="row message">
+    <div class="col-sm-12">
+      {{'MAN.notes' | label}}:
       <textarea #notes="ngModel"
                 name="notes"
-                [required]="annotation.type === types.TypeComment"
+                [required]="annotation.annotationClass === emptyAnnotationClass && !annotation.opinion && !unIdentifyable"
                 class="form-control feedback-text input-sm"
                 [(ngModel)]="annotation.notes"></textarea>
     </div>
   </div>
   <div class="actions">
     <button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{'feedback.cancel' | translate}}</button>
-    <button type="submit" [disabled]="!annotationForm.form.valid || sending" class="btn btn-success btn-sm">{{'feedback.send' | translate}}</button>
+    <button type="submit" [disabled]="annotationForm.form.pristine || !annotationForm.form.valid || sending" class="btn btn-success btn-sm">{{'feedback.send' | translate}}</button>
   </div>
 </form>
 <div *lajiLoggedIn="false" class="annotation-form">
