@@ -86,6 +86,7 @@ import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
 import { ClickOutSideDirective } from './directive/click-out-side.directive';
 import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
 import { ObservationGroupSelectComponent } from '../+observation/group-select/group-select.component';
+import { SourcePipe } from './pipe/source.pipe';
 
 
 @NgModule({
@@ -99,7 +100,7 @@ import { ObservationGroupSelectComponent } from '../+observation/group-select/gr
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
-    ObservationGroupSelectComponent
+    ObservationGroupSelectComponent, SourcePipe
   ],
   imports: [
     ToastModule,
@@ -124,7 +125,8 @@ import { ObservationGroupSelectComponent } from '../+observation/group-select/gr
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, LocalizePipe, HideScrollDirective,
-    LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent
+    LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
+    SourcePipe
   ]
 })
 export class SharedModule {
