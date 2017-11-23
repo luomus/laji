@@ -745,7 +745,7 @@ input[type="radio"]
 .ngx-datatable .datatable-header .datatable-header-cell .resize-handle {
   background-color: rgba(0, 0, 0, 0.12);
 }
-.ngx-datatable .datatable-header .datatable-header-cell.sortable .datatable-header-cell-wrapper {
+.ngx-datatable .datatable-header .datatable-header-cell .datatable-header-cell-wrapper {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
