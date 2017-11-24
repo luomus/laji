@@ -186,24 +186,20 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getDrawData() {
-    const form = this.formData;
+    const uiSchema = this.formData.uiSchema;
 
-    if (!form.uiSchema) {
+    if (!uiSchema) {
       return null;
     }
 
-    if (form.uiSchema.gatherings) {
-      if (form.uiSchema.gatherings['ui:options'] && form.uiSchema.gatherings['ui:options']['draw']) {
-        return form.uiSchema.gatherings['ui:options']['draw'];
-      } else {
-        return null;
-      }
-    } else {
-      return this.getObjectByKey(form.uiSchema, 'draw');
-    }
+    return this.findObjectByKey(uiSchema, 'draw', ['gatherings', 'uiSchema', 'ui:options', 'mapOptions']);
   }
 
-  private getObjectByKey(obj, key) {
+  private findObjectByKey(obj, key, allowedObjectsInPath, recursionLimit = 5) {
+    if (recursionLimit <= 0) {
+      return null;
+    }
+
     let foundObject = null;
 
     for (const i in obj) {
@@ -213,8 +209,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
       if (i === key) {
         foundObject = obj[i];
-      } else if (typeof obj[i] === 'object') {
-        foundObject = this.getObjectByKey(obj[i], key);
+      } else if (typeof obj[i] === 'object' && allowedObjectsInPath.indexOf(i) !== -1) {
+        foundObject = this.findObjectByKey(obj[i], key, allowedObjectsInPath, recursionLimit - 1);
       }
 
       if (foundObject !== null) {
