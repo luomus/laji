@@ -27,9 +27,6 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
       type: 'FeatureCollection',
       features: []
     },
-    getFeatureStyle: function () {
-      return {color: '#000000', fillColor: '#000000', weight: 2};
-    },
     getTooltip: (i, {geometry}) => {
       switch (geometry.type) {
           case 'LineString': {
