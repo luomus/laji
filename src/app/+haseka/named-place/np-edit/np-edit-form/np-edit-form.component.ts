@@ -1,6 +1,5 @@
 import {
   Component,
-  ContentChildren,
   EventEmitter,
   HostListener,
   Input,
@@ -15,6 +14,7 @@ import { NamedPlacesService } from '../../named-places.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { WindowRef } from '../../../../shared/windows-ref';
 import { ToastsService } from '../../../../shared/service/toasts.service';
+import { FormPermissionService } from '../../../form-permission/form-permission.service';
 
 @Component({
   selector: 'laji-np-edit-form',
@@ -31,22 +31,26 @@ export class NpEditFormComponent implements OnInit {
   saving = false;
   status = '';
   error = '';
+  publicAllowed = false;
 
   private hasChanges = false;
+  private isPublic = false;
 
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
-  @ContentChildren(LajiFormComponent) lajiFormChildren;
 
   constructor(
     private  userService: UserService,
     private namedPlaceService: NamedPlacesService,
     private winRef: WindowRef,
     private translate: TranslateService,
-    private toastsService: ToastsService
+    private toastsService: ToastsService,
+    private formPermissionService: FormPermissionService
   ) { }
 
   ngOnInit() {
-
+    this.userService.getUser().subscribe(user => {
+      this.publicAllowed = this.formPermissionService.isAdmin({'id': ''}, user);
+    });
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -71,6 +75,7 @@ export class NpEditFormComponent implements OnInit {
     this.saving = true;
     this.lajiForm.block();
     const data = this.getNamedPlaceData(event);
+    data.public = this.isPublic;
 
     let result$;
     if (this.namedPlace) {
@@ -104,6 +109,12 @@ export class NpEditFormComponent implements OnInit {
   }
 
   submitPublic() {
+    this.isPublic = true;
+    this.lajiForm.submit();
+  }
+
+  submitPrivate() {
+    this.isPublic = false;
     this.lajiForm.submit();
   }
 
@@ -134,8 +145,7 @@ export class NpEditFormComponent implements OnInit {
       }
     }
 
-    data['geometry'] = formData.geometry.geometries[0];
-    data['public'] = false;
+    data.geometry = formData.geometry.geometries[0];
 
     this.localityToPrepopulatedDocument(data, formData);
 

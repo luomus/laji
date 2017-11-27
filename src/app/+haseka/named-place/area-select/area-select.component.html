@@ -1,4 +1,4 @@
-<select class="form-control" #areaSelect (change)="select.emit(areaSelect.value)" *ngIf="options.length > 0">
+<select class="form-control" #areaSelect (change)="select.emit(areaSelect.value)" *ngIf="options.length > 0" [disabled]="disabled">
   <option>{{'select' | translate}}</option>
   <option *ngFor="let option of options" [value]="option.id">{{option.value}}</option>
 </select>

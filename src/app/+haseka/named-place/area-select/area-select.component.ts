@@ -16,6 +16,7 @@ export class AreaSelectComponent implements OnInit {
 
   @Input() field: string;
   @Input() lang: string;
+  @Input() disabled = false;
 
   @Output() select = new EventEmitter<string>();
 
