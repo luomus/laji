@@ -2,7 +2,7 @@
   <input type="text"
          class="ng-datepicker-input form-control input-sm"
          [value]="value"
-         (keyup)="updateValue(dateInput.value)"
+         (blur)="updateValue(dateInput.value)"
          #dateInput>
   <span *ngIf="viewDate !== ''" class="input-group-addon link clear" (click)="clear()">x</span>
   <span class="input-group-addon link" (click)="toggle()"><i class="glyphicon glyphicon-calendar"></i></span>
