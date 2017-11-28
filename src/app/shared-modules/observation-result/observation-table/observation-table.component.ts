@@ -196,6 +196,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   private numberFields = ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum'];
 
   private modalSub: Subscription;
+  private fetchSub: Subscription;
+  private queryKey: string;
   private hasChanges = false;
   private aggregateBy: string[] = [];
 
@@ -357,8 +359,16 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   fetchPage(page = 1) {
-    if (!this.pageSize || this.loading) {
+    if (!this.pageSize) {
       return;
+    }
+    const queryKey = JSON.stringify(this.query);
+    if (this.loading && this.queryKey === queryKey) {
+      return;
+    }
+    this.queryKey = queryKey;
+    if (this.fetchSub) {
+      this.fetchSub.unsubscribe();
     }
     this.loading = true;
     this.changeDetectorRef.markForCheck();
@@ -379,7 +389,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       this.lang
     );
 
-    (this.isAggregate ? aggregate$ : list$)
+    this.fetchSub = (this.isAggregate ? aggregate$ : list$)
       .subscribe(data => {
         this.result = data;
         this.loading = false;
