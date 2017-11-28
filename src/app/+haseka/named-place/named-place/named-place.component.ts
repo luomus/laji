@@ -69,7 +69,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       .switchMap((params) => {
         this.formId = params['formId'];
         this.collectionId = params['collectionId'];
-        this.prepopulatedNamedPlace['collectionId'] = this.collectionId;
+        this.prepopulatedNamedPlace['collectionID'] = this.collectionId;
 
         return this.getFormInfo();
       })
