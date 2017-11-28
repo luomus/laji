@@ -5,7 +5,7 @@
 <alert *ngIf="showTemplateIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
   <p>{{'haseka.templates.intro' | translate}}</p>
 </alert>
-<laji-own-submissions   [columns]="['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'id']"
+<laji-own-submissions   [templateColumns]="['templateName', 'templateDescription', 'dateEdited', 'id']"
                         [formID]="formId"
                         [useInternalDocumentViewer]="true"
                         [showDownloadAll]="false"

@@ -26,6 +26,7 @@
       [rowIdentity]="rowIdentity"
       [sorts]="[{ prop: 'dateEdited', dir: 'asc' }]"
       [columnMode]="'flex'"
+      [headerHeight]="38"
       [rowHeight]="'auto'"
       [limit]="20"
       [footerHeight]="30"
@@ -40,7 +41,8 @@
         </ng-template>
       </ngx-datatable-row-detail>
 
-      <ngx-datatable-column [flexGrow]="1" [draggable]="false" [cellClass]="'center-text'" *ngIf="displayMode !== 'large'">
+      <ngx-datatable-column [flexGrow]="1" [resizeable]="false"
+                            [draggable]="false" *ngIf="displayMode !== 'large'" [headerClass]="'empty-header'">
         <ng-template ngx-datatable-header-template><span></span></ng-template>
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="link">
@@ -51,12 +53,10 @@
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate"
-                            [flexGrow]="1" [cellClass]="'center-text'">
+      <ngx-datatable-column [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate" [cellClass]="'center-text'"
+                            [flexGrow]="1" [resizeable]="false" [draggable]="false" [headerClass]="'empty-header'">
         <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-          <span class="datatable-header-cell-wrapper link" (click)="sort()" title="{{column.name}}">
-            <span class="datatable-header-cell-label draggable" style="color: white">---</span>
-          </span>
+          <span class="datatable-header-cell-wrapper link"><span></span></span>
         </ng-template>
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
           <span *ngIf="onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
@@ -100,7 +100,7 @@
                             [comparator]="comparator(col.prop)"
                             [cellClass]="'break-word'">
         <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
-          <span class="datatable-header-cell-wrapper sort-full-width"
+          <span class="datatable-header-cell-wrapper"
                 (click)="sort()"
                 title="{{column.name}}">
             <span class="datatable-header-cell-label draggable">
@@ -110,7 +110,7 @@
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column [flexGrow]="1" [draggable]="false" [cellClass]="'center-text'">
+      <ngx-datatable-column [flexGrow]="1" [draggable]="false" [resizeable]="false" [cellClass]="'center-text'">
         <ng-template ngx-datatable-header-template><span></span></ng-template>
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
           <div>
