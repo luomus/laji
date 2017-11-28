@@ -27,6 +27,7 @@ import { ObservationResultModule } from '../shared-modules/observation-result/ob
 import { OwnSubmissionsModule } from '../shared-modules/own-submissions/own-submissions.module';
 import { WbcOwnSubmissionsComponent } from './wbc/wbc-own-submissions/wbc-own-submissions.component';
 import { IdentifyComponent } from './identify/identify.component';
+import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
 
 @NgModule({
   imports: [
@@ -57,7 +58,8 @@ import { IdentifyComponent } from './identify/identify.component';
     WbcResultComponent,
     WbcInstructionsComponent,
     WbcOwnSubmissionsComponent,
-    IdentifyComponent
+    IdentifyComponent,
+    NafiTemplatesComponent
   ],
   providers: [ ResultService ]
 })
