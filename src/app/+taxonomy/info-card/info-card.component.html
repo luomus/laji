@@ -74,11 +74,6 @@
                         [shortPager]="true"
                         (hasData)="onCollectionImagesLoaded($event)"
                         [query]="{taxonId: taxon.id, taxonRankId: taxon.taxonRank, superRecordBasis: 'PRESERVED_SPECIMEN', sourceId: 'KE.3'}" [pageSize]="10"></laji-gallery>
-                <laji-gallery
-                        *ngIf="!taxon.species"
-                        [shortPager]="true"
-                        (hasData)="onCollectionImagesLoaded($event)"
-                        [query]="{taxonId: taxon.id, superRecordBasis: 'PRESERVED_SPECIMEN', sourceId: 'KE.3'}" [pageSize]="10"></laji-gallery>
               </div>
             </div>
           </div>
