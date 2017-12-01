@@ -16,6 +16,7 @@ import { WbcResultComponent } from './wbc/wbc-result/wbc-result.component';
 import { WbcFormComponent } from './wbc/wbc-form/wbc-form.component';
 import { WbcOwnSubmissionsComponent } from './wbc/wbc-own-submissions/wbc-own-submissions.component';
 import { IdentifyComponent } from './identify/identify.component';
+import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
 
 const routes: Routes = [
   {
@@ -51,6 +52,7 @@ const routes: Routes = [
         canDeactivate: [DocumentDeActivateGuard]
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: NafiMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'templates', pathMatch: 'full', component: NafiTemplatesComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: NafiInstructionsComponent, data: { title: 'nafi.stats.title' } }
     ]
   },

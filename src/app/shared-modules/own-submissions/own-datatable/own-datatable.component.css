@@ -1,21 +1,11 @@
-.sort-full-width {
-  display:inline-block;
-  /*width:calc(100% - 20px);*/
-}
-.radio {
-  display: inline-block;
-  margin: 0;
+:host >>> .empty-header {
+  height: 38px;
 }
 
 :host >>> .center-text {
   text-align: center !important;
   padding: 0 !important;
 }
-
-/*:host >>> .break-word {
-  word-wrap: break-word;
-  hyphens: auto;
-}*/
 
 #filter-row-container {
   margin-bottom: 5px;
