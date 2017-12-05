@@ -24,7 +24,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() prepopulatedNamedPlace: string;
   @Input() formData: any;
 
-  drawData: any;
+  mapOptionsData: any;
   npFormData: any;
 
   @Input() editMode = false;
@@ -51,11 +51,11 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.npFormId = environment.namedPlaceForm;
+    this.mapOptionsData = this.getMapOptions();
     this.fetchForm();
     this.subTrans = this.translate.onLangChange.subscribe(
       () => this.onLangChange()
     );
-    this.drawData = this.getDrawData();
   }
 
   ngOnDestroy() {
@@ -89,8 +89,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       .getForm(this.npFormId, this.translate.currentLang)
       .subscribe(form => {
         form['formData'] = data;
-        if (this.drawData) {
-          form['uiSchema']['namedPlace']['ui:options']['draw'] = this.drawData;
+        if (this.mapOptionsData) {
+          form['uiSchema']['namedPlace']['ui:options']['mapOptions'] = this.mapOptionsData;
         }
         this.lang = this.translate.currentLang;
         this.npFormData = form;
@@ -106,8 +106,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       .load(this.npFormId, this.lang)
       .subscribe(
         data => {
-          if (this.drawData) {
-            data['uiSchema']['namedPlace']['ui:options']['draw'] = this.drawData;
+          if (this.mapOptionsData) {
+            data['uiSchema']['namedPlace']['ui:options']['mapOptions'] = this.mapOptionsData;
           }
           this.npFormData = data;
           this.setFormData();
@@ -185,14 +185,14 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     this.formService.populate(this.documentService.removeMeta(populate, DocumentService.removableGathering));
   }
 
-  private getDrawData() {
+  private getMapOptions() {
     const uiSchema = this.formData.uiSchema;
 
     if (!uiSchema) {
       return null;
     }
 
-    return this.findObjectByKey(uiSchema, 'draw', ['gatherings', 'uiSchema', 'ui:options', 'mapOptions']);
+    return this.findObjectByKey(uiSchema, 'mapOptions', ['gatherings', 'uiSchema', 'ui:options']);
   }
 
   private findObjectByKey(obj, key, allowedObjectsInPath, recursionLimit = 5) {
