@@ -14,7 +14,11 @@
         <laji-area-select [disabled]="editMode" [field]="areaTypes.Municipality" (select)="updateMunicipalityFilter($event)"></laji-area-select>
       </ng-container>
       <ng-container *ngIf="filterByBirdAssociationArea">
-        <label>{{'MNP.birdAssociationArea' | label}}</label>
+        <label>{{'MNP.birdAssociationArea' | label}}
+          <span *ngIf="formData.namedPlaceOptions && formData.namedPlaceOptions.birdAssociationAreaHelp"
+                class="label-info laji-form-help-glyph"
+                [tooltip]="birdAssociationAreaHelp" [placement]="'right'"><strong>?</strong></span>
+        </label>
         <laji-area-select [disabled]="editMode" [field]="areaTypes.BirdAssociationArea" (select)="updateBirdAssociationAreaFilter($event)"></laji-area-select>
       </ng-container>
       <laji-spinner [spinning]="loading" [overlay]="true" class="full-height">
@@ -46,3 +50,9 @@
     </div>
   </div>
 </div>
+
+<ng-template #birdAssociationAreaHelp>
+  <strong>{{'MNP.birdAssociationArea' | label}}</strong>
+  <br>
+  {{formData.namedPlaceOptions.birdAssociationAreaHelp}}
+</ng-template>
