@@ -23,6 +23,7 @@
 .np-row {
   flex-flow: row;
   flex: 1 0 auto;
+  min-height: 600px;
 }
 
 .np-row [class^="col-"] {

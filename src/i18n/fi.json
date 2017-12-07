@@ -567,5 +567,6 @@
   "identification": "Määritys",
   "observation.active.taxonReliability": "Havainnon luotettavuus",
   "reliability": "Havainnon luotettavuus",
-  "persons": "Henkilöt"
+  "persons": "Henkilöt",
+  "np.earlier": "Aiemmat ilmoitukset"
 }

@@ -552,5 +552,6 @@
   "identification": "Identifiering",
   "observation.active.taxonReliability": "Tillförlitlighet av observation",
   "reliability": "Tillförlitlighet av observation",
-  "persons": "Personer"
+  "persons": "Personer",
+  "np.earlier": "Tidigare observationer"
 }

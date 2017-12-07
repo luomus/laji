@@ -53,13 +53,13 @@
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate" [cellClass]="'center-text'"
+      <ngx-datatable-column *ngIf="actions" [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate" [cellClass]="'center-text'"
                             [flexGrow]="1" [resizeable]="false" [draggable]="false" [headerClass]="'empty-header'">
         <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
           <span class="datatable-header-cell-wrapper link"><span></span></span>
         </ng-template>
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-          <span *ngIf="onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
+          <span *ngIf="actions.indexOf('view') > -1 && onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
             <span class="label label-primary link inline-block"
                   [tooltip]="'result.showViewer' | translate"
                   [placement]="'right'"
@@ -67,20 +67,20 @@
               <i class="glyphicon glyphicon-eye-open"></i>
             </span>
           </span>
-          <span *ngIf="onlyTemplates === false && value === publicity.publicityRestrictionsPrivate">
+          <span *ngIf="actions.indexOf('view') > -1 && onlyTemplates === false && value === publicity.publicityRestrictionsPrivate">
             <span class="label label-warning inline-block"
                   [tooltip]="'haseka.form.private' | translate"
                   [placement]="'right'">
               <i class="glyphicon glyphicon-eye-close"></i>
             </span>
           </span>
-          <span class="label label-primary link inline-block"
+          <span *ngIf="actions.indexOf('edit') > -1" class="label label-primary link inline-block"
                 [tooltip]="(onlyTemplates ? 'template.use' : 'haseka.submissions.toEdit') | translate"
-                [placement]="'right'"
-                (click)="toEditPage(row)">
+                (click)="toEditPage(row)"
+                [placement]="'right'">
               <i class="glyphicon glyphicon-edit"></i>
           </span>
-          <span *ngIf="onlyTemplates === false">
+          <span *ngIf="actions.indexOf('template') > -1 && onlyTemplates === false">
             <span class="label label-warning link inline-block"
                   (click)="makeTemplate(row)"
                   [tooltip]="'haseka.form.saveTemplate' | translate"
@@ -110,18 +110,18 @@
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column [flexGrow]="1" [draggable]="false" [resizeable]="false" [cellClass]="'center-text'">
+      <ngx-datatable-column *ngIf="actions && (actions.indexOf('download') > -1 || actions.indexOf('stats') > -1 || actions.indexOf('delete') > -1)" [flexGrow]="1" [draggable]="false" [resizeable]="false" [cellClass]="'center-text'">
         <ng-template ngx-datatable-header-template><span></span></ng-template>
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
           <div>
-            <span *ngIf="onlyTemplates === false" class="label label-default link inline-block"
+            <span *ngIf="actions.indexOf('download') > -1 && onlyTemplates === false" class="label label-default link inline-block"
                   [tooltip]="('haseka.submissions.download' | translate) + ' ' + ('haseka.submissions.submission' | translate)"
                   [placement]="'left'"
                   [container]="'body'"
                   (click)="openChooseFileTypeModal(row.index)">
               <i class="glyphicon glyphicon-download-alt"></i>
             </span>
-            <span *ngIf="formsById[documents[row.index].formID].viewerType === 'MHL.viewerTypeLineTransect'"
+            <span *ngIf="actions.indexOf('stats') > -1 && formsById[documents[row.index].formID].viewerType === 'MHL.viewerTypeLineTransect'"
                   class="label label-warning link inline-block"
                   [tooltip]="'haseka.submissions.toStatistics' | translate"
                   [placement]="'left'"
@@ -129,7 +129,7 @@
                   (click)="toStatisticsPage(row.id)">
               <i class="glyphicon glyphicon-stats"></i>
             </span>
-            <span *ngIf="row.creator === userId" class="label label-danger link inline-block"
+            <span *ngIf="actions.indexOf('delete') > -1 && row.creator === userId" class="label label-danger link inline-block"
                   [tooltip]="'friend.remove' | translate"
                   [placement]="'left'"
                   [container]="'body'"

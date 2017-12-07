@@ -1,4 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit,
+  ViewChild
+} from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
@@ -13,14 +16,16 @@ import { ModalDirective } from 'ngx-bootstrap';
   styleUrls: ['./own-submissions.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OwnSubmissionsComponent implements OnInit {
+export class OwnSubmissionsComponent implements OnInit, OnChanges {
 
   @Input() formID;
   @Input() showDownloadAll = true;
   @Input() useInternalDocumentViewer = false;
+  @Input() actions: string[]|false = ['edit', 'view', 'template', 'download', 'stats', 'delete'];
   @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
   @Input() templateColumns = ['templateName', 'templateDescription', 'dateEdited', 'form', 'id'];
   @Input() onlyTemplates = false;
+  @Input() namedPlace: string;
   @ViewChild('documentModal') public modal: ModalDirective;
 
   activeDocuments: Document[];
@@ -52,6 +57,14 @@ export class OwnSubmissionsComponent implements OnInit {
     }
   }
 
+  ngOnChanges() {
+    if (this.onlyTemplates) {
+      this.initTemplates();
+    } else {
+      this.initDocuments();
+    }
+  }
+
   sliderRangeChange(newYear: number) {
     this.year = newYear;
     this.getDocumentsByYear(this.year);
@@ -63,21 +76,29 @@ export class OwnSubmissionsComponent implements OnInit {
   }
 
   private initDocuments() {
-    this.documentService.countByYear(this.userService.getToken()).subscribe(
-      (results) => {
-        const now = new Date();
-        this.yearInfo = results;
-        this.year = results.length > 0 ? results[results.length - 1].year : now.getFullYear();
-        this.getDocumentsByYear(this.year);
-        this.cd.markForCheck();
-      },
-      (err) => {
-        this.translate.get('haseka.form.genericError')
-          .subscribe(msg => {
-            this.yearInfoError = msg;
-            this.cd.markForCheck();
-          });
-      }
+    if (this.namedPlace) {
+      this.getDocumentsByQuery({
+        year: this.year,
+        namedPlace: this.namedPlace
+      });
+      return;
+    }
+    this.documentService.countByYear(this.userService.getToken())
+      .subscribe(
+        (results) => {
+          const now = new Date();
+          this.yearInfo = results;
+          this.year = results.length > 0 ? results[results.length - 1].year : now.getFullYear();
+          this.getDocumentsByYear(this.year);
+          this.cd.markForCheck();
+        },
+        (err) => {
+          this.translate.get('haseka.form.genericError')
+            .subscribe(msg => {
+              this.yearInfoError = msg;
+              this.cd.markForCheck();
+            });
+        }
     );
   }
 
@@ -104,6 +125,34 @@ export class OwnSubmissionsComponent implements OnInit {
         err => {
           this.loading = false;
           this.translate.get('haseka.template.loadError')
+            .subscribe(msg => {
+              this.activeDocuments = [];
+              this.documentError = msg;
+              this.cd.markForCheck();
+            });
+        }
+      );
+  }
+
+  private getDocumentsByQuery(query?: {year?: number, namedPlace?: string}) {
+    if (this.documents$) {
+      this.documents$.unsubscribe();
+    }
+
+    this.activeDocuments = null;
+    this.documentError = '';
+
+    this.loading = true;
+    this.documents$ = this.getAllDocuments(query)
+      .subscribe(
+        result => {
+          this.activeDocuments = this.filterDocuments(result);
+          this.loading = false;
+          this.cd.markForCheck();
+        },
+        err => {
+          this.loading = false;
+          this.translate.get('np.loadError')
             .subscribe(msg => {
               this.activeDocuments = [];
               this.documentError = msg;
@@ -157,14 +206,21 @@ export class OwnSubmissionsComponent implements OnInit {
     });
   }
 
-  private getAllDocuments(query: {year?: number, onlyTemplates?: boolean} = {}, page = 1, documents = []): Observable<Document[]> {
+  private getAllDocuments(
+    query: {year?: number, onlyTemplates?: boolean, namedPlace?: string} = {},
+    page = 1,
+    documents = []
+  ): Observable<Document[]> {
     return this.documentService
       .findAll(
         this.userService.getToken(),
         String(page),
         String(1000),
         query.year ? String(query.year) : undefined,
-        query.onlyTemplates ? {templates: 'true'} : undefined
+        {
+          templates: query.onlyTemplates ? 'true' : undefined,
+          namedPlace: query.namedPlace
+        }
       )
       .switchMap(
         result => {

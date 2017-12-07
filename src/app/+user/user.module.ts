@@ -10,12 +10,17 @@ import {
 } from './index';
 import { TypeaheadModule } from 'ngx-bootstrap';
 import { SharedModule } from '../shared/shared.module';
-import { FindPersonComponent } from './profile/find-person/find-person.component';
+import { FindPersonModule } from '../shared-modules/find-person/find-person.module';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule,
-    TypeaheadModule],
-  declarations: [UserComponent, ProfileComponent, FriendsComponent, UserLoginComponent, UserLogoutComponent, FindPersonComponent]
+  imports: [
+    routing,
+    SharedModule,
+    RouterModule,
+    TypeaheadModule,
+    FindPersonModule
+  ],
+  declarations: [UserComponent, ProfileComponent, FriendsComponent, UserLoginComponent, UserLogoutComponent]
 })
 export class UserModule {
 }

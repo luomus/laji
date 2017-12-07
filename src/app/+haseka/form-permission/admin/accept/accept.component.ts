@@ -56,6 +56,12 @@ export class AcceptComponent implements OnInit, OnDestroy {
       );
   }
 
+  selectPerson(event) {
+    if (confirm('Oletko varma että haluat antaa oikeudet lomakkeeseen käyttäjälle:\n' + event.fullName)) {
+      this.accept(event.id);
+    }
+  }
+
   private initFormPermission() {
     if (!this.collectionId) {
       return;

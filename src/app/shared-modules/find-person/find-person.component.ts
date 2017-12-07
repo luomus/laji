@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { AutocompleteApi } from '../../../shared/api/AutocompleteApi';
-import { Person } from '../../../shared/model';
+import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
+import { Person } from '../../shared/model';
 
 @Component({
   selector: 'laji-find-person',
@@ -40,7 +40,7 @@ export class FindPersonComponent implements OnInit {
       fullName: event.item.value || ''
     })
   }
-zxc
+
   changeTypeaheadLoading(loading) {
     this.typeaheadLoading = loading;
   }

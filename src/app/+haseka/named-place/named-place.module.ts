@@ -15,13 +15,15 @@ import { NpPrintComponent } from './np-print/np-print.component';
 import { LineTransectComponent } from './np-print/line-transect/line-transect.component';
 import { LajiMapModule } from '../../shared-modules/map/laji-map.module';
 import { AreaSelectComponent } from './area-select/area-select.component';
+import { OwnSubmissionsModule } from '../../shared-modules/own-submissions/own-submissions.module';
 
 @NgModule({
   providers: [],
   imports: [
     CommonModule,
     SharedModule,
-    LajiMapModule
+    LajiMapModule,
+    OwnSubmissionsModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,

@@ -5,6 +5,7 @@
   <laji-year-slider *ngIf="!onlyTemplates && !!yearInfo" [showCounts]="!formID" (onRangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo"></laji-year-slider>
   <laji-own-datatable
     (documentClicked)="onDocumentClick($event)"
+    [actions]="actions"
     [columns]="onlyTemplates ? templateColumns : columns"
     [showDownloadAll]="showDownloadAll && !onlyTemplates"
     [useInternalDocumentViewer]="useInternalDocumentViewer"

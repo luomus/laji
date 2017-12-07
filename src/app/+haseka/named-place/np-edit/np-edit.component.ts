@@ -182,7 +182,9 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       populate.gatheringEvent.namedPlaceNotes = this.namedPlace.notes;
     }
 
-    this.formService.populate(this.documentService.removeMeta(populate, DocumentService.removableGathering));
+    this.formService.populate(
+      this.documentService.removeMeta(populate, this.formData.excludeFromCopy || DocumentService.removableGathering)
+    );
   }
 
   private getMapOptions() {

@@ -106,7 +106,9 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
   }
 
   hasAdminRight(form: Form.List): Observable<boolean> {
-    if (!this.userService.isLoggedIn || !form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
+    if (!this.userService.isLoggedIn || !form.collectionID || !form.features ||
+      (form.features.indexOf(Form.Feature.Restricted) === -1 && form.features.indexOf(Form.Feature.Administer) === -1)
+    ) {
       return Observable.of(false);
     }
     return this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken())

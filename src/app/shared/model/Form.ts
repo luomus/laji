@@ -10,7 +10,8 @@ export namespace Form {
     NamedPlace = <any> 'MHL.featureNamedPlace',
     NoPrivate = <any> 'MHL.featureNoPrivate',
     Reserve = <any> 'MHL.featureReserve',
-    Restricted = <any> 'MHL.featureRestrictAccess'
+    Restricted = <any> 'MHL.featureRestrictAccess',
+    Administer = <any> 'MHL.featureAdminister'
   }
   export interface List {
     id: string;
