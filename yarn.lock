@@ -204,7 +204,7 @@
 
 "@swimlane/ngx-datatable@vixriihi/ngx-datatable.git#dev":
   version "10.2.3"
-  resolved "https://codeload.github.com/vixriihi/ngx-datatable/tar.gz/b51665cab2fe0fc1dbe0e1325dafd05452dec02e"
+  resolved "https://codeload.github.com/vixriihi/ngx-datatable/tar.gz/af14396204cac9d9656f47998047fb43eaba332c"
 
 "@types/d3@3.5.38", "@types/d3@^3":
   version "3.5.38"
