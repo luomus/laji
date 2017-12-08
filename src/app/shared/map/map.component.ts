@@ -52,6 +52,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
   };
   @Input() settingsKey: string;
   @Input() overlayNames: string[];
+  @Input() availableTileLayerNamesBlacklist: string[];
 
   @Output() select = new EventEmitter();
   @Output() onCreate = new EventEmitter();
@@ -115,7 +116,8 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
         featurePopupOffset: 0,
         rootElem: this.elemRef.nativeElement,
         controls: this.controlSettings,
-        overlayNames: this.overlayNames
+        overlayNames: this.overlayNames,
+        availableTileLayerNamesBlacklist: this.availableTileLayerNamesBlacklist
       };
 
       if (this.settingsKey) {
