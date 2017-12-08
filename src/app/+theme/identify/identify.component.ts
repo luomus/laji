@@ -26,7 +26,7 @@ export class IdentifyComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.modal.isAnimated = false;
+    this.modal.config = {animated: false};
     this.sourceService.getAllAsLookUp()
       .map(sources => Object.keys(sources).filter((source) => source !== environment.sources.kotka))
       .subscribe(sources => {

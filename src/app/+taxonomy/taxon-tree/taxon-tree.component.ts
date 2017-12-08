@@ -130,6 +130,7 @@ export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {
       if (elem.id === id) {
         if (parents.length > 0) {
           elem.expand()
+            .loadNodeChildren()
             .then(() => {
               this.tree.treeModel.update();
               if (elem.children) {

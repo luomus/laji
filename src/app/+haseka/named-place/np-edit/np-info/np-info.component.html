@@ -1,6 +1,6 @@
 <div [ngClass]="{'hidden': editButtonVisible === undefined && useButtonVisible === undefined}">
   <div class="hidden-xs" #infoBox id="info-box">
-    <ng-template [ngTemplateOutlet]="contentTemplate" [ngOutletContext]="{isModal: false}"></ng-template>
+    <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{isModal: false}"></ng-template>
   </div>
 
   <div class="modal" tabindex="-1" role="dialog" bsModal #infoModal="bs-modal">
@@ -12,7 +12,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <ng-template [ngTemplateOutlet]="contentTemplate" [ngOutletContext]="{isModal: true}"></ng-template>
+          <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{isModal: true}"></ng-template>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

@@ -7,7 +7,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Output, Renderer,
+  Output, Renderer, Renderer2,
   ViewContainerRef
 } from '@angular/core';
 import { Image } from './image.interface';
@@ -75,7 +75,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   private _isShown = false;
 
   constructor(_viewContainerRef: ViewContainerRef,
-              _renderer: Renderer,
+              _renderer: Renderer2,
               _elementRef: ElementRef,
               cis: ComponentLoaderFactory) {
     this._overlay = cis

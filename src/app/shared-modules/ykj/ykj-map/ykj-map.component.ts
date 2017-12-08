@@ -3,13 +3,13 @@ import {
   OnInit, Output,
   ViewChild
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core/src/translate.service';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs/Subscription';
 import { Map3Component } from '../../map/map.component';
 import { LajiMapOptions } from '../../map/map-options.interface';
 import { YkjService } from '../service/ykj.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-ykj-map',

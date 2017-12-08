@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal/modal.component';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -31,7 +31,7 @@ export class ThemeObservationListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.modal.isAnimated = false;
+    this.modal.config = {animated: false};
   }
 
   showDocument(event) {

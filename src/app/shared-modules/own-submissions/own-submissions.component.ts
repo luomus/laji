@@ -49,7 +49,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.modal.isAnimated = false;
+    this.modal.config = {animated: false};
     if (this.onlyTemplates) {
       this.initTemplates();
     } else {

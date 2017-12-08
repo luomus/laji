@@ -31,7 +31,7 @@ export class HasekaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.modal.isAnimated = false;
+    this.modal.config = {animated: false};
     if (!this.vihkoSettings) {
       this.vihkoSettings = { showIntro: true };
     }

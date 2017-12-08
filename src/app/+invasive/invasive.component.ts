@@ -4,7 +4,7 @@ import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { Taxonomy } from '../shared/model/Taxonomy';
 import { IdService } from '../shared/service/id.service';
 import { Observable } from 'rxjs/Observable';
-import { ModalDirective } from 'ngx-bootstrap/modal/modal.component';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'laji-invasive',
@@ -31,7 +31,7 @@ export class InvasiveComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.modal.isAnimated = false;
+    this.modal.config = {animated: false};
     this.updateObservations();
     this.updateTaxa();
   }
