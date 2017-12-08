@@ -1,13 +1,16 @@
-<div *ngIf="namedPlaces" class="table-responsive np-list">
-  <table class="table table-bordered table-striped table-condensed">
-    <tbody>
-      <tr *ngFor="let np of namedPlaces; let i = index;">
-        <td>
-          <a class="link" [ngStyle]="{'font-weight': activeNP == i ? 'bold' : 'normal'}" (click)="changeActivePlace(i)">
-            {{np.name}}
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div *ngIf="data" class="table-responsive np-list">
+  <laji-datatable
+    #dataTable
+    class="observation-table"
+    (rowSelect)="changeActivePlace($event)"
+    [virtualScrolling]="true"
+    [clientSideSorting]="true"
+    [height]="'490px'"
+    [rows]='data'
+    [loading]="false"
+    [count]="data.length"
+    [page]="1"
+    [pageSize]="data.length"
+    [columns]="columns">
+  </laji-datatable>
 </div>

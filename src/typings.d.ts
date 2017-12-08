@@ -8,6 +8,7 @@ declare const OpenSeadragon: any;
 declare let d3: any;
 declare const moment: any;
 declare const L: any;
+declare const JSONPath: any;
 
 declare module '*.json' {
    const value: any;

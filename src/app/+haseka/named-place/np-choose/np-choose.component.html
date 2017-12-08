@@ -11,7 +11,7 @@
   </div>
 
   <div class="full-height" [ngClass]="{hidden: active !== 'list'}" id="list-container">
-    <laji-np-list [namedPlaces]="namedPlaces" [activeNP]="activeNP" (onActivePlaceChange)="setActiveNP($event)"></laji-np-list>
+    <laji-np-list [namedPlaces]="namedPlaces" [formData]="formData" [activeNP]="activeNP" (onActivePlaceChange)="setActiveNP($event)"></laji-np-list>
   </div>
 
   <div class="full-height" [ngClass]="{hidden: active !== 'map'}" *ngIf="mapIsActivated" class="full-height">

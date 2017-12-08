@@ -29,7 +29,8 @@
         "styles/laji.css"
       ],
       "scripts": [
-        "../node_modules/moment/moment.js"
+        "../node_modules/moment/moment.js",
+        "../node_modules/jsonpath-plus/lib/jsonpath.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

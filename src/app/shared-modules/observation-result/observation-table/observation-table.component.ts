@@ -335,12 +335,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   setPage(pageInfo) {
-    const pageWanted = pageInfo.offset + 1;
-    if (this.loadingPage !== pageWanted) {
-      this.loadingPage = pageWanted;
-      this.result.currentPage = pageWanted;
-      this.fetchPage(pageWanted);
-    }
+    this.fetchPage(pageInfo.offset + 1)
   }
 
   onSort(event) {
@@ -362,7 +357,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     if (!this.pageSize) {
       return;
     }
-    const queryKey = JSON.stringify(this.query);
+    const queryKey = JSON.stringify(this.query) + [this.pageSize, page].join(':');
     if (this.loading && this.queryKey === queryKey) {
       return;
     }

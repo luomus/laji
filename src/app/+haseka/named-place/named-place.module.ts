@@ -16,6 +16,7 @@ import { LineTransectComponent } from './np-print/line-transect/line-transect.co
 import { LajiMapModule } from '../../shared-modules/map/laji-map.module';
 import { AreaSelectComponent } from './area-select/area-select.component';
 import { OwnSubmissionsModule } from '../../shared-modules/own-submissions/own-submissions.module';
+import { DatatableModule } from '../../shared-modules/datatable/datatable.module';
 
 @NgModule({
   providers: [],
@@ -23,6 +24,7 @@ import { OwnSubmissionsModule } from '../../shared-modules/own-submissions/own-s
     CommonModule,
     SharedModule,
     LajiMapModule,
+    DatatableModule,
     OwnSubmissionsModule
   ],
   declarations: [

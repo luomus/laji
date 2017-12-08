@@ -40,9 +40,9 @@ export class CoordinateService {
     }
   }
 
-  convertYkjToGeoJsonFeature(lat: any, lng: any, properties: {[k: string]: any} = {}) {
-    lat = parseInt(lat, 10);
-    lng = parseInt(lng, 10);
+  convertYkjToGeoJsonFeature(origLat: any, origLng: any, properties: {[k: string]: any} = {}) {
+    const lat = parseInt(origLat, 10);
+    const lng = parseInt(origLng, 10);
     const latStart = this.pad(lat);
     const latEnd = this.pad(lat + 1);
     const lonStart = this.pad(lng);
@@ -52,13 +52,14 @@ export class CoordinateService {
       properties: properties,
       geometry: {
         type: 'Polygon',
-          coordinates: [[
+        coordinates: [[
           [latStart, lonStart],
           [latStart, lonEnd],
           [latEnd, lonEnd],
           [latEnd, lonStart],
           [latStart, lonStart],
-        ].map(this.convertYkjToWgs)]
+        ].map(this.convertYkjToWgs)],
+        coordinateVerbatim: origLat + ':' + origLng
       }
     };
   }
