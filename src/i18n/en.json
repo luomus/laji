@@ -428,6 +428,7 @@
   "nafi.stats.intro": "",
   "nafi.stats.times": "Choose the time period to observe:",
   "wbc.title": "",
+  "wbc.instructions.title": "",
   "herpetology.title": "Atlas of amphibians and reptiles in Finland",
   "herpetology.intro": "Finnish Museum of Natural History (LUOMUS) coordinates a research project ´Atlas of amphibians and reptiles in Finland´. The main aim of the project is to collect comprehensive knowledge on the geographical distribution of amphibians and reptiles in Finland in the decade of 2010s. Since the data will be comparable with the earlier atlas work performed in the 1980s, 1990s and early 2000s the data gathered know will provide an invaluable opportunity to study long-term changes in the distributions of individual species and herptile species diversity as a whole.",
   "herpetology.observation": "You can report your observations using the report -link on species description pages or directly using the link bellow. You can access species descriptions by clicking a species on this page's list. Species descriptions contain useful information for identifying species.",
