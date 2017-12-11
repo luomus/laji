@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ObservationTableColumn } from '../../../../shared-modules/observation-result/model/observation-table-column';
 import { environment } from '../../../../../environments/environment';
+import { DatatableComponent } from '../../../../shared-modules/datatable/datatable/datatable.component';
 
 @Component({
   selector: 'laji-np-list',
@@ -26,6 +27,9 @@ export class NpListComponent {
   _fields: any[];
   data: any[] = [];
   columns: ObservationTableColumn[];
+
+
+  @ViewChild('dataTable') public datatable: DatatableComponent;
 
   @Output() onActivePlaceChange = new EventEmitter<number>();
 
@@ -74,6 +78,11 @@ export class NpListComponent {
         row[path] = value;
       }
       results.push(row);
+    }
+    if (this.data.length === 0) {
+      setTimeout(() => {
+        this.datatable.refreshTable();
+      }, 500)
     }
     this.data = results;
     this.cd.markForCheck();

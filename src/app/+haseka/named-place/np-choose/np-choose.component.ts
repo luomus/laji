@@ -11,7 +11,7 @@ export class NpChooseComponent {
   mapIsActivated = false;
 
   @Input() formData: any;
-  @Input() namedPlaces: NamedPlace[];
+  @Input() namedPlaces: NamedPlace[] = [];
   @Input() visible = true;
   @Input() allowCreate = false;
 
