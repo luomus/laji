@@ -552,5 +552,6 @@
   "observation.active.taxonReliability": "Reliability of observation",
   "reliability": "Reliability of observation",
   "persons": "Persons",
-  "np.earlier": "Previous observations"
+  "np.earlier": "Previous observations",
+  "lastCensus": "Previous census"
 }

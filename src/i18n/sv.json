@@ -553,5 +553,6 @@
   "observation.active.taxonReliability": "Tillförlitlighet av observation",
   "reliability": "Tillförlitlighet av observation",
   "persons": "Personer",
-  "np.earlier": "Tidigare observationer"
+  "np.earlier": "Tidigare observationer",
+  "lastCensus": "Tidigare census"
 }

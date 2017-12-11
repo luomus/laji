@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ObservationTableColumn } from '../../../../shared-modules/observation-result/model/observation-table-column';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'laji-np-list',
@@ -15,6 +16,11 @@ export class NpListComponent {
     '$.geometry.coordinateVerbatim': 'result.gathering.conversions.ykj',
     '$.prepopulatedDocument.gatheringEvent.dateBegin': 'haseka.submissions.dateStart',
     '$.prepopulatedDocument.gatheringEvent.dateEnd': 'haseka.submissions.dateEnd'
+  };
+
+  wbcLabelMap = {
+    '$.prepopulatedDocument.gatheringEvent.dateBegin': 'lastCensus',
+    '$.prepopulatedDocument.gatheringEvent.dateEnd': 'lastCensus'
   };
 
   _namedPlaces: NamedPlace[];
@@ -39,11 +45,12 @@ export class NpListComponent {
 
   @Input() set formData(formData: any) {
     this._fields =  formData.options && formData.options.namedPlaceList ? formData.options.namedPlaceList : ['$.name'];
+    const labels = environment.wbcForm === formData.id ? {...this.labelMap, ...this.wbcLabelMap} : this.labelMap;
     const cols: ObservationTableColumn[] = [];
     for (const path of this._fields) {
       cols.push({
         name: path,
-        label: this.labelMap[path] || path,
+        label: labels[path] || path,
         width: path === '$.name' ? 100 : 50
       });
     }

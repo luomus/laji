@@ -568,5 +568,6 @@
   "observation.active.taxonReliability": "Havainnon luotettavuus",
   "reliability": "Havainnon luotettavuus",
   "persons": "Henkilöt",
-  "np.earlier": "Aiemmat ilmoitukset"
+  "np.earlier": "Aiemmat ilmoitukset",
+  "lastCensus": "Edellinen laskenta"
 }
