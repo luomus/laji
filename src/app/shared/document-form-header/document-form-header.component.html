@@ -5,15 +5,15 @@
   }">
     <h3>{{form.title}}</h3>
     <div [innerHtml]="form.description"></div><br>
+    <div *ngIf="includeNpDescription">
+      <div [innerHtml]="form.namedPlaceOptions?.description ? form.namedPlaceOptions.description : 'np.defaultDescription' | translate"></div>
+      <br>
+    </div>
     <span *ngIf="form.instructions && form.instructions[translate.currentLang]">
       <a href="{{form.instructions[translate.currentLang]}}" target="_blank">{{'haseka.instructions' | translate}}</a>
       |
     </span>
     <a [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank">{{'haseka.termsOfService' | translate}}</a>
-    <div *ngIf="includeNpDescription">
-      <br>
-      <div [innerHtml]="form.namedPlaceOptions?.description ? form.namedPlaceOptions.description : 'np.defaultDescription' | translate"></div>
-    </div>
   </div>
   <div class="col-sm-4" *ngIf="form.logo">
     <div class="form-logo pull-right" *ngIf="form.logo">
