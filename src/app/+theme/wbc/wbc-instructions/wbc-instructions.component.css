@@ -1,0 +1,18 @@
+.text-container {
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+.child-text-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+h5 {
+  margin-top: 20px
+}
+
+.italic-title {
+  font-weight: normal;
+  font-style: italic;
+}

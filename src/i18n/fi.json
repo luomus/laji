@@ -448,6 +448,7 @@
   "nafi.stats.times": "Valitse näytettävä havaintojakso:",
   "nafi.stats.all": "Valitse näytettävä havaintojakso",
   "wbc.title": "Talvilintulaskenta",
+  "wbc.instructions.title": "Talvilintulaskennan havaintojen ilmoittaminen Vihko-järjestelmän kautta",
   "herpetology.title": "Sammakkoeläinten ja matelijoiden levinneisyyskartoitus",
   "herpetology.intro": "Luonnontieteellinen keskusmuseo Luomus tutkii sammakkoeläinten ja matelijoiden levinneisyyttä ja siinä tapahtuneita muutoksia Suomessa keräämällä havaintoja koko maasta. Havaintoaineiston avulla on tarkoitus koota ajantasainen 2010-luvun levinneisyyksiä kuvaava tieto. Aineiston avulla lajien levinneisyyksien muutoksista saadaan täysin uutta tietoa, sillä tuloksia päästään vertaamaan 1980–2000-luvuilla kerättyihin levinneisyystietoihin.",
   "herpetology.observation": "Voit ilmoittaa omat havaintosi lajikorteilta löytyvää ilmoituslinkkiä käyttäen, tai siirtymällä suoraan ilmoituslomakkeelle. Lajikortit löydät klikkaamalla lajia oheisesta lajiluettelosta. Lajikorteissa on hyödyllistä tietoa lajien tunnistamiseksi.",
