@@ -5,6 +5,7 @@ import { MetadataApi } from '../api/MetadataApi';
 import { CacheService } from './cache.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 import { Util } from './util.service';
+import { Subject } from 'rxjs/Subject';
 
 
 @Injectable()
@@ -13,6 +14,7 @@ export class MetadataService {
   static readonly rangesCacheKey = 'ranges';
 
   private ranges;
+  private source = new Subject<any>();
   private pendingRanges: Observable<any>;
 
   constructor(private metadataApi: MetadataApi, private cacheService: CacheService) {
@@ -42,7 +44,11 @@ export class MetadataService {
         );
       });
     }
-    this.pendingRanges = this.cacheService.getItem(MetadataService.rangesCacheKey)
+    this.pendingRanges = this.source
+      .asObservable()
+      .share();
+
+    this.cacheService.getItem(MetadataService.rangesCacheKey)
       .merge(this.metadataApi.metadataFindAllRanges('multi')
         .retryWhen(errors => errors.delay(1000).take(2).concat(Observable.of(false)))
         .do(ranges =>  {
@@ -54,8 +60,11 @@ export class MetadataService {
       .filter(ranges => {
         return !Util.isEmptyObj(ranges);
       })
-      .do(ranges => { this.ranges = ranges; })
-      .share();
+      .subscribe(ranges => {
+        this.ranges = ranges;
+        this.source.next(ranges);
+        this.source.complete();
+      });
 
     return this.pendingRanges;
   }
@@ -69,7 +78,7 @@ export class MetadataService {
   getAllRangesAsLookUp(lang: string) {
     return this.getAllRanges()
       .map(ranges => Object
-        .keys(ranges)
+        .keys(ranges || {})
         .reduce((total, key) => {
           ranges[key].map(range => {
             total[range['id']] = MultiLangService.getValue(range['value'], lang, range['id']);
