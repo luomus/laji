@@ -18,7 +18,18 @@ export class Util {
     return JSON.stringify(o1) === JSON.stringify(o2);
   }
 
+  /**
+   * Checks if the given value is empty object
+   *
+   * Values that are not objects are considered to be empty objects
+   *
+   * @param value
+   * @returns {boolean}
+   */
   public static isEmptyObj(value: any) {
-    return value && typeof value === 'object' && Object.keys(value).length === 0
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      return true;
+    }
+    return Object.keys(value).length === 0
   }
 }
