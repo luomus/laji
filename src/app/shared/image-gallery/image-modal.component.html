@@ -9,12 +9,20 @@
   </div>
   <ng-container *ngIf="view === 'compact' else fullView">
     <div class="image-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
-      <img src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
-           [popover]="compact"
-           placement="bottom"
-           triggers="mouseenter:mouseleave"
-           class="ng-thumb compact"
-           alt="Image {{ index + 1 }}" />
+      <ng-container *ngIf="showPopover else onlyImage">
+        <img src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+             [popover]="compact"
+             placement="bottom"
+             triggers="mouseenter:mouseleave"
+             class="ng-thumb compact"
+             alt="Image {{ index + 1 }}" />
+      </ng-container>
+      <ng-template #onlyImage>
+        <img src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+             class="ng-thumb compact"
+             alt="Image {{ index + 1 }}" />
+      </ng-template>
+
       <ng-template #compact>
         <ng-container *ngTemplateOutlet="fullInfo; context: {$implicit: img}"></ng-container>
       </ng-template>

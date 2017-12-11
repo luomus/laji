@@ -22,6 +22,7 @@ export class GalleryComponent implements OnChanges {
   @Input() shortPager = false;
   @Input() eventOnImageClick = false;
   @Input() showViewSwitch = false;
+  @Input() showPopover = false;
   @Input() sort: string[];
   @Input() view: 'compact'|'full' = 'compact';
   @Output() selected = new EventEmitter<boolean>();

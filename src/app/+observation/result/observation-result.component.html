@@ -118,6 +118,7 @@
   </div>
   <div [hidden]="active !== 'images'" *ngIf="activated['images']" style="min-height: 180px; padding: 0 10px 0 0">
     <laji-gallery
+      [showPopover]="true"
       [showViewSwitch]="true"
       [tick]="searchQuery.tack"
       [query]="searchQuery.query">

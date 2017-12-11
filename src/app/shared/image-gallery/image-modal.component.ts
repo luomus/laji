@@ -68,6 +68,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   @Input() modalImages: Image[];
   @Input() imagePointer: number;
   @Input() showViewSwitch = false;
+  @Input() showPopover = false;
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() select = new EventEmitter<{documentId: string, unitId: string}>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
