@@ -17,10 +17,10 @@
   <div class="form-footer">
     <div class="row">
       <div class="col-xs-3 col-sm-2">
-        <button class="btn btn-default btn-sm" [disabled]="saving" type="submit" (click)="submitPublic()">{{'haseka.form.savePublic'|translate}}</button>
+        <button class="btn btn-success btn-sm" [disabled]="saving" type="submit" (click)="submitPublic()">{{'haseka.form.savePublic'|translate}}</button>
       </div>
       <div class="col-xs-3 col-sm-2">
-        <button *ngIf="enablePrivate" class="btn btn-default btn-sm" [disabled]="saving" type="submit" (click)="submitPrivate()">{{'haseka.form.savePrivate'|translate}}</button>
+        <button *ngIf="enablePrivate" class="btn btn-warning btn-sm" [disabled]="saving" type="submit" (click)="submitPrivate()">{{'haseka.form.savePrivate'|translate}}</button>
       </div>
       <div class="col-xs-3 col-sm-6 info" [ngSwitch]="status">
         <div *ngSwitchCase="'success'" class="success status">
@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="col-xs-3 col-sm-2">
-        <button class="btn btn-default btn-sm pull-right" [disabled]="saving" type="submit" (click)="onCancel.emit()">{{'haseka.form.back'|translate}}</button>
+        <button class="btn btn-danger btn-sm pull-right" [disabled]="saving" type="submit" (click)="onCancel.emit()">{{'haseka.form.back'|translate}}</button>
       </div>
     </div>
   </div>
