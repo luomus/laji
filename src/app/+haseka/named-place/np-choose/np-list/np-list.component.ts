@@ -19,13 +19,12 @@ export class NpListComponent {
   };
 
   wbcLabelMap = {
-    '$.prepopulatedDocument.gatheringEvent.dateBegin': 'lastCensus',
-    '$.prepopulatedDocument.gatheringEvent.dateEnd': 'lastCensus'
+    '$.prepopulatedDocument.gatheringEvent.dateBegin': 'lastCensus'
   };
 
   _namedPlaces: NamedPlace[];
   _fields: any[];
-  data: any[];
+  data: any[] = [];
   columns: ObservationTableColumn[];
 
   @Output() onActivePlaceChange = new EventEmitter<number>();

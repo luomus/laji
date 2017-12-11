@@ -10,7 +10,7 @@
     </ul>
   </div>
 
-  <div class="full-height" [ngClass]="{hidden: active !== 'list'}" id="list-container">
+  <div class="full-height" *ngIf="active === 'list'" id="list-container">
     <laji-np-list [namedPlaces]="namedPlaces" [formData]="formData" [activeNP]="activeNP" (onActivePlaceChange)="setActiveNP($event)"></laji-np-list>
   </div>
 
