@@ -3536,9 +3536,9 @@ kind-of@^4.0.0:
   dependencies:
     is-buffer "^1.1.5"
 
-laji-form@^0.0.309:
-  version "0.0.309"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.309.tgz#1b1a95790d40d186822f8079dbd33ccb02de6109"
+laji-form@^0.0.311:
+  version "0.0.311"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.311.tgz#1001a02f304bcab76ab04861f7c3b9dbbaedf0d6"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
