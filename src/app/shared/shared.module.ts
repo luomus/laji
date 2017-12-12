@@ -87,6 +87,7 @@ import { ClickOutSideDirective } from './directive/click-out-side.directive';
 import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
 import { ObservationGroupSelectComponent } from '../+observation/group-select/group-select.component';
 import { SourcePipe } from './pipe/source.pipe';
+import { TaxonNamePipe } from './pipe/taxon-name.pipe';
 
 
 @NgModule({
@@ -95,7 +96,7 @@ import { SourcePipe } from './pipe/source.pipe';
     NewsListComponent, DocumentFormComponent, LocalizePipe, NotificationComponent,
     ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, FormattedNumber,
-    AreaNamePipe, CollectionNamePipe, FormNamePipe,
+    AreaNamePipe, TaxonNamePipe, CollectionNamePipe, FormNamePipe,
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
@@ -119,7 +120,7 @@ import { SourcePipe } from './pipe/source.pipe';
   providers: [ ], // keep this empty!
   exports: [
     CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent,
-    AreaNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
+    AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe, LajiFormComponent, DocumentFormComponent,
     ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
