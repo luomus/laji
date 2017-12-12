@@ -89,6 +89,9 @@ export class AreaService {
   private getAreaType(lang: string, type: AreaType) {
     return this.getAllAsLookUp(lang)
       .map(area => {
+        if (!area) {
+          return [];
+        }
         return Object.keys(area).reduce((total, key) => {
           if (this.areas[key].areaType === type) {
             total.push({id: key, value: this.areas[key].name});

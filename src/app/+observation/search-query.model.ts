@@ -236,7 +236,7 @@ export class SearchQuery {
       }
     }
 
-    if (result['target']) {
+    if (result['target'] && Array.isArray(result['target'])) {
       result['target'] = result['target'].map(target => target.replace(/http:\/\/tun\.fi\//g, ''));
     }
 
