@@ -337,6 +337,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   ownItemSelected() {
     this.searchQuery.query.qualityIssues = 'BOTH';
+    if (!this.formQuery.asEditor || !this.formQuery.asObserver) {
+      delete this.searchQuery.query.editorOrObserverPersonToken;
+    }
     this.onFormQueryChange();
   }
 
@@ -441,8 +444,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       nationalInvasiveSpeciesStrategy: this.hasInMulti(query.administrativeStatusId, 'MX.nationalInvasiveSpeciesStrategy'),
       allInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
       onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3'], true),
-      asObserver: !!query.observerPersonToken,
-      asEditor: !!query.editorPersonToken,
+      asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
+      asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
     };
     if (this.formQuery.taxon && (
       this.formQuery.taxon.indexOf('MX.') === 0 || this.formQuery.taxon.indexOf('http:') === 0)) {

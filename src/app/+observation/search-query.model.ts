@@ -79,7 +79,8 @@ export class SearchQuery {
 
   obscure = [
     'editorPersonToken',
-    'observerPersonToken'
+    'observerPersonToken',
+    'editorOrObserverPersonToken'
   ];
 
   constructor(
@@ -175,7 +176,7 @@ export class SearchQuery {
   }
 
   public getQueryObject(skipParams: string[] = [], obscure = true) {
-    const result = {};
+    const result: WarehouseQueryInterface = {};
     if (this.query) {
       for (const i of this.arrayTypes) {
         if (skipParams.indexOf(i) > -1) {
@@ -236,7 +237,7 @@ export class SearchQuery {
     }
 
     if (result['target']) {
-      result['target'] = result['target'].replace(/http:\/\/tun\.fi\//g, '');
+      result['target'] = result['target'].map(target => target.replace(/http:\/\/tun\.fi\//g, ''));
     }
 
     if (this.query && this.query.loadedLaterThan !== undefined) {
@@ -262,6 +263,12 @@ export class SearchQuery {
 
     if (this.page !== undefined && skipParams.indexOf('page') === -1) {
       result['page'] = String(this.page);
+    }
+
+    if (result.editorPersonToken && result.observerPersonToken && result.observerPersonToken === result.editorPersonToken) {
+      result.editorOrObserverPersonToken = result.observerPersonToken;
+      delete result.editorPersonToken;
+      delete result.observerPersonToken;
     }
 
     return result;

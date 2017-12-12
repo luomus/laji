@@ -398,7 +398,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   private getSelectFields(selected: string[], query: WarehouseQueryInterface) {
     const selects = selected.map(field => this.columnLookup[field].selectField || field);
-    if (query.editorPersonToken || query.observerPersonToken) {
+    if (query.editorPersonToken || query.observerPersonToken || query.editorOrObserverPersonToken) {
       selects.push('document.quality,gathering.quality,unit.quality');
     }
     return selects;

@@ -64,13 +64,16 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   }
 
   @Input() set query(query: WarehouseQueryInterface) {
-    this.hasPersonalData = !!query.editorPersonToken || !!query.observerPersonToken;
+    this.hasPersonalData = !!query.editorPersonToken || !!query.observerPersonToken || !!query.editorOrObserverPersonToken;
     const warehouseQuery: WarehouseQueryInterface = Util.clone(query);
     if (warehouseQuery.editorPersonToken) {
       delete warehouseQuery.editorPersonToken;
     }
     if (warehouseQuery.observerPersonToken) {
       delete warehouseQuery.observerPersonToken;
+    }
+    if (warehouseQuery.editorOrObserverPersonToken) {
+      delete warehouseQuery.editorOrObserverPersonToken;
     }
     this._query = warehouseQuery;
     const cacheKey = JSON.stringify(this._query);
@@ -135,13 +138,16 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   updateCsvLink() {
     const queryParams = this.searchQuery.getQueryObject();
     queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang];
-    queryParams['includeNonValidTaxa'] = 'false';
+    queryParams['includeNonValidTaxa'] = false;
     queryParams['pageSize'] = this.taxaLimit;
     if (queryParams['editorPersonToken']) {
       delete queryParams['editorPersonToken'];
     }
     if (queryParams['observerPersonToken']) {
       delete queryParams['observerPersonToken'];
+    }
+    if (queryParams['editorOrObserverPersonToken']) {
+      delete queryParams['editorOrObserverPersonToken'];
     }
     this.csvParams = queryString.stringify(queryParams);
   }

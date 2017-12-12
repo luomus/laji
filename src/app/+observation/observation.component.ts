@@ -54,6 +54,9 @@ export class ObservationComponent implements OnInit, OnDestroy {
       if (this.searchQuery.query.observerPersonToken === 'true') {
         this.searchQuery.query.observerPersonToken = this.userService.getToken();
       }
+      if (this.searchQuery.query.editorOrObserverPersonToken === 'true') {
+        this.searchQuery.query.editorOrObserverPersonToken = this.userService.getToken();
+      }
       this.searchQuery.queryUpdate({formSubmit: !!params['reset'], newData: true});
       this.cd.markForCheck();
     });

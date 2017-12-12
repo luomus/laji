@@ -61,7 +61,7 @@
         <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
-        <laji-document [uri]="documentId" [highlight]="highlightId" [own]="listQuery && (!!listQuery.observerPersonToken || !!listQuery.editorPersonToken)"></laji-document>
+        <laji-document [uri]="documentId" [highlight]="highlightId" [own]="listQuery && (!!listQuery.observerPersonToken || !!listQuery.editorPersonToken || !!listQuery.editorOrObserverPersonToken)"></laji-document>
       </div>
     </div>
   </div>
