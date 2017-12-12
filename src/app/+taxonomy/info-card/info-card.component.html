@@ -33,7 +33,9 @@
             </div>
           </div>
         </div>
-        {{ 'taxonomy.source' | translate }}: {{taxonDescription[activeDescription]?.title}}
+        <ng-container *ngIf="taxonDescription[activeDescription]?.id !== 'default'">
+          {{ 'taxonomy.source' | translate }}: {{taxonDescription[activeDescription]?.title}}
+        </ng-container>
         <div *ngIf="taxonDescription[activeDescription]?.speciesCardAuthors">
           {{taxonDescription[activeDescription]?.speciesCardAuthors.title}}:
           <span [innerHTML]="taxonDescription[activeDescription]?.speciesCardAuthors.content"></span>
