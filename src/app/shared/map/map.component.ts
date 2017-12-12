@@ -269,7 +269,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
       try {
         this.map.setDraw({...this.draw, ...this.drawData});
         if (this.bringDrawLayerToBack) {
-          this.map.draw.group.bringToBack();
+          this.map.getDraw().group.bringToBack();
         }
       } catch (err) {
         this.logger.error('Failed init draw data', {error: err});
