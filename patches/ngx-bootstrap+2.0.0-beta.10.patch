@@ -1,0 +1,72 @@
+patch-package
+--- a/node_modules/ngx-bootstrap/typeahead/typeahead-container.component.js
++++ b/node_modules/ngx-bootstrap/typeahead/typeahead-container.component.js
+@@ -6,6 +6,7 @@ var TypeaheadContainerComponent = (function () {
+     function TypeaheadContainerComponent(element, renderer) {
+         this.renderer = renderer;
+         this.isFocused = false;
++        this.selectFirst = true;
+         this._matches = [];
+         this.isScrolledIntoView = function (elem) {
+             var containerViewTop = this.ulElement.nativeElement.scrollTop;
+@@ -43,7 +44,7 @@ var TypeaheadContainerComponent = (function () {
+                     _this.setScrollableMode();
+                 });
+             }
+-            if (this._matches.length > 0) {
++            if (this.selectFirst && this._matches.length > 0) {
+                 this._active = this._matches[0];
+                 if (this._active.isHeader()) {
+                     this.nextActiveMatch();
+@@ -82,7 +83,9 @@ var TypeaheadContainerComponent = (function () {
+         configurable: true
+     });
+     TypeaheadContainerComponent.prototype.selectActiveMatch = function () {
+-        this.selectMatch(this._active);
++        if (this._active) {
++            this.selectMatch(this._active);
++        }
+     };
+     TypeaheadContainerComponent.prototype.prevActiveMatch = function () {
+         var index = this.matches.indexOf(this._active);
+--- a/node_modules/ngx-bootstrap/typeahead/typeahead.directive.js
++++ b/node_modules/ngx-bootstrap/typeahead/typeahead.directive.js
+@@ -50,6 +50,8 @@ var TypeaheadDirective = (function () {
+         this.typeaheadScrollable = false;
+         /** specifies number of options to show in scroll view  */
+         this.typeaheadOptionsInScrollableView = 5;
++        /** specifies if the first option is selected automatically */
++        this.typeaheadFocusFirst = true;
+         /** fired when 'busy' state of this component was changed,
+          * fired on async mode only, returns boolean
+          */
+@@ -129,7 +131,12 @@ var TypeaheadDirective = (function () {
+             }
+             // enter, tab
+             if (e.keyCode === 13 || e.keyCode === 9) {
+-                this._container.selectActiveMatch();
++                if (this._container.active) {
++                    this._container.selectActiveMatch();
++                }
++                else {
++                    this.hide();
++                }
+                 return;
+             }
+         }
+@@ -192,6 +199,7 @@ var TypeaheadDirective = (function () {
+         });
+         this._container = this._typeahead.instance;
+         this._container.parent = this;
++        this._container.selectFirst = this.typeaheadFocusFirst;
+         // This improves the speed as it won't have to be done for each list item
+         var normalizedQuery = (this.typeaheadLatinize
+             ? latinize(this.ngControl.control.value)
+@@ -369,6 +377,7 @@ var TypeaheadDirective = (function () {
+         'optionsListTemplate': [{ type: Input },],
+         'typeaheadScrollable': [{ type: Input },],
+         'typeaheadOptionsInScrollableView': [{ type: Input },],
++        'typeaheadFocusFirst': [{ type: Input },],
+         'typeaheadLoading': [{ type: Output },],
+         'typeaheadNoResults': [{ type: Output },],
+         'typeaheadOnSelect': [{ type: Output },],
