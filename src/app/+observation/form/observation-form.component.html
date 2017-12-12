@@ -76,7 +76,7 @@
                   {{taxonName?.payload.vernacularName}}
                 </span>
                 <ng-template #taxonNameScientific>
-                  <span [ngClass]="{'cursive': taxonName.payload.cursiveName}">
+                  <span class="scientificName" [ngClass]="{'cursive': taxonName.payload.cursiveName}">
                     {{taxonName?.payload?.scientificName}}
                   </span>
                 </ng-template>

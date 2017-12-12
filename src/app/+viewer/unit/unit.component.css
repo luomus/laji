@@ -4,10 +4,6 @@ hr {
 .highlight {
   border-left: 3px solid #E7D759;
 }
-.scientificName {
-  display: inline-block;
-  white-space: nowrap;
-}
 .unit {
   position: relative;
   min-height: 30px;

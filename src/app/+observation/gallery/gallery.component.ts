@@ -17,6 +17,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class GalleryComponent implements OnChanges {
   @Input() query: WarehouseQueryInterface;
+  @Input() extendedInfo = false;
   @Input() tick;
   @Input() pageSize = 50;
   @Input() shortPager = false;
@@ -66,7 +67,8 @@ export class GalleryComponent implements OnChanges {
         'unit.media',
         // 'gathering.media',
         // 'document.media',
-        'document.documentId,unit.unitId'
+        'document.documentId,unit.unitId',
+        this.extendedInfo ? '' : ''
       ], this.sort, this.pageSize, this.page)
       .timeout(WarehouseApi.longTimeout)
       .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))

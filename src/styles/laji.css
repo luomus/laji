@@ -119,6 +119,11 @@ laji-locale-sv > div,
   white-space: normal !important;
 }
 /** generic **/
+.scientificName {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .pagination {
   margin: 0 0 20px 0;
 }

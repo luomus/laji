@@ -175,7 +175,7 @@ export class ValueDecoratorService {
     if (value.qname) {
       result += value.vernacularName && value.vernacularName[this.lang] ?
         value.vernacularName[this.lang] : '';
-      result += ' <i>(' + value.scientificName + ')</i>';
+      result += ' <i class="scientificName">(' + value.scientificName + ')</i>';
     }
     return result;
   }

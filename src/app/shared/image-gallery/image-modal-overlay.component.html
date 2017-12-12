@@ -16,7 +16,7 @@
     <span class="info-text" *ngIf="img">
       <span *ngIf="img.vernacularName">{{img.vernacularName | multiLang}}</span>
       <span *ngIf="img.vernacularName && img.scientificName">-</span>
-      <span *ngIf="img.scientificName"><em>{{img.scientificName}}</em></span>
+      <span *ngIf="img.scientificName"><em class="scientificName">{{img.scientificName}}</em></span>
       <br>
       <span *ngIf="img.author">{{img.author}},</span>
       <span *ngIf="img.copyrightOwner && (!img.author || img.author.indexOf(img.copyrightOwner) === -1)">

@@ -9,8 +9,7 @@
         [{{node.data.taxonRank | label}}]
       </span>
       <span class="name">
-        <i *ngIf="node.data.cursiveName">{{ node.data.scientificName }}</i>
-        <span *ngIf="!node.data.cursiveName">{{ node.data.scientificName }}</span>
+        <span class="scientificName" [class.cursive]="node.data.cursiveName">{{node.data.scientificName}}</span>
         {{ node.data.vernacularName ? ' - ' + (node.data.vernacularName | multiLang) : '' }}
       </span>
       <a [routerLink]="'/taxon/' + node.data.id | localize">

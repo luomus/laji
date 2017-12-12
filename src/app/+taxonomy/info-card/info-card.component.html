@@ -3,8 +3,8 @@
     <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
     <h1>
       {{taxon.vernacularName | multiLang}}
-      <span *ngIf="taxon.vernacularName" [class.cursive]="taxon.cursiveName">({{taxon.scientificName}})</span>
-      <span *ngIf="!taxon.vernacularName" [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
+      <span class="scientificName" *ngIf="taxon.vernacularName" [class.cursive]="taxon.cursiveName">({{taxon.scientificName}})</span>
+      <span class="scientificName" *ngIf="!taxon.vernacularName" [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
     </h1>
       <div class="row">
       <div class="col-sm-6 descriptions" *ngIf="hasDescription">

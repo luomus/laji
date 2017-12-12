@@ -3,7 +3,7 @@
   <tr>
     <th>{{ 'taxonomy.scientific.name' | translate }}</th>
     <td>
-      <span [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
+      <span class="scientificName" [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
     </td>
   </tr>
   <tr *ngIf="taxon.scientificNameAuthorship">
@@ -18,7 +18,7 @@
     <th>{{ 'taxonomy.synonyms' | translate }}</th>
     <td>
       <ul class="comma-list">
-        <li *ngFor="let synonym of taxon.synonyms"><span [class.cursive]="synonym.cursiveName">{{synonym.scientificName}}</span></li>
+        <li *ngFor="let synonym of taxon.synonyms"><span class="scientificName" [class.cursive]="synonym.cursiveName">{{synonym.scientificName}}</span></li>
       </ul>
     </td>
   </tr>

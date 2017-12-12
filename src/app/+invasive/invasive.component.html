@@ -20,7 +20,7 @@
       <td>
           <a [routerLink]="['/observation'] | localize" [queryParams]="{target: taxon.id}">
             {{taxon.vernacularName | multiLang}}
-            (<i *ngIf="taxon.cursiveName">{{taxon.scientificName}}</i>)
+            (<span class="scientificName" [ngClass]="{'cursive': taxon.cursiveName}">{{taxon.scientificName}}</span>)
           </a>
           <a [routerLink]="['/taxon/' + taxon.id] | localize">
             <i class="glyphicon glyphicon-modal-window"></i>

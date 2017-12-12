@@ -1,6 +1,6 @@
 <div class="map-wrap" *ngIf="query" [style.height]="height">
   <div class="title">
-    <span *ngIf="taxon" [ngClass]="{cursive: taxon.cursiveName}">{{taxon.scientificName}}</span>
+    <span *ngIf="taxon" class="scientificName" [ngClass]="{cursive: taxon.cursiveName}">{{taxon.scientificName}}</span>
     <span *ngIf="taxon && taxon.vernacularName">
       <br>{{taxon.vernacularName | multiLang}}
     </span>
