@@ -118,7 +118,7 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
     const params = this.route.snapshot.queryParams;
     if (params['coordinates']) {
       this.lajiMap.initDrawData();
-      this.lajiMap.map.focusToLayer(0);
+      this.lajiMap.map.zoomToData();
     }
   }
 
@@ -127,16 +127,10 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onCreate(e) {
-    if (e.coordinates) {
-      this.router.navigate([], {
-        queryParams: {coordinates: geoJSONToISO6709({features: [{
-          type: 'Feature',
-          properties: {},
-          geometry: e
-        }]})},
-        relativeTo: this.route
-      });
-    }
+    this.router.navigate([], {
+      queryParams: {coordinates: geoJSONToISO6709(this.lajiMap.map.getDraw().featureCollection.features)},
+      relativeTo: this.route
+    });
   }
 
 }
