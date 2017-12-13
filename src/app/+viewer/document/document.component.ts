@@ -42,6 +42,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   personID: string;
   activeGathering: any;
   mapData: any = [];
+  hasMapData = false;
   hasDoc: boolean;
   active = 0;
   unitCnt;
@@ -139,6 +140,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     this.unitCnt = 0;
     if (found) {
       this.document = doc;
+      this.hasMapData = false;
       const mapData = [];
       this.externalViewUrl = environment.externalViewers[doc.sourceId] ?
         environment.externalViewers[doc.sourceId].replace('%uri%', doc.documentId) : '';
@@ -155,6 +157,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
         doc.gatherings.map((gathering, idx) => {
           if (gathering.conversions && gathering.conversions.wgs84Geo) {
             mapData[idx] = gathering.conversions.wgs84Geo;
+            this.hasMapData = true;
           }
           if (this.highlight && gathering.gatheringId === this.highlight) {
             activeIdx = idx;
