@@ -6,7 +6,7 @@
         {{unit.linkings.originalTaxon.vernacularName | multiLang}}
       </span>
       (<span class="scientificName" [class.cursive]="unit.linkings.originalTaxon.cursiveName">{{unit.linkings.originalTaxon.scientificName}}</span>)
-      <a [routerLink]="['/taxon/' + (unit.linkings.originalTaxon.qname | toQName)] | localize" target="_blank"><i class="glyphicon glyphicon-modal-window"></i></a>
+      <a [routerLink]="['/taxon/' + (unit.linkings.originalTaxon.qname | toQName)] | localize" target="_blank" [tooltip]="'showSpeciesCard' | translate"><i class="glyphicon glyphicon-tag"></i></a>
     </laji-row>
     <ng-template #taxonVerbatim>
       <laji-row [title]="unit.recordBasis | label: 'warehouse'" [value]="unit.taxonVerbatim"></laji-row>

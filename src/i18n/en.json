@@ -554,5 +554,6 @@
   "reliability": "Reliability of observation",
   "persons": "Persons",
   "np.earlier": "Previous observations",
-  "lastCensus": "Previous census"
+  "lastCensus": "Previous census",
+  "showSpeciesCard": "Show species card"
 }

@@ -570,5 +570,6 @@
   "reliability": "Havainnon luotettavuus",
   "persons": "Henkilöt",
   "np.earlier": "Aiemmat ilmoitukset",
-  "lastCensus": "Edellinen laskenta"
+  "lastCensus": "Edellinen laskenta",
+  "showSpeciesCard": "Näytä lajikortti"
 }

@@ -555,5 +555,6 @@
   "reliability": "Tillförlitlighet av observation",
   "persons": "Personer",
   "np.earlier": "Tidigare observationer",
-  "lastCensus": "Tidigare census"
+  "lastCensus": "Tidigare census",
+  "showSpeciesCard": "Visa artkort"
 }
