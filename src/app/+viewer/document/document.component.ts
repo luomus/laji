@@ -139,7 +139,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     this.unitCnt = 0;
     if (found) {
       this.document = doc;
-      this.mapData = [];
+      const mapData = [];
       this.externalViewUrl = environment.externalViewers[doc.sourceId] ?
         environment.externalViewers[doc.sourceId].replace('%uri%', doc.documentId) : '';
       if (doc.documentId) {
@@ -154,7 +154,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       if (doc && doc.gatherings) {
         doc.gatherings.map((gathering, idx) => {
           if (gathering.conversions && gathering.conversions.wgs84Geo) {
-            this.mapData[idx] = gathering.conversions.wgs84Geo;
+            mapData[idx] = gathering.conversions.wgs84Geo;
           }
           if (this.highlight && gathering.gatheringId === this.highlight) {
             activeIdx = idx;
@@ -169,6 +169,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
           }
         });
       }
+      this.mapData = mapData;
       this.setActive(activeIdx);
       if (this.interval) {
         this.interval.unsubscribe();
