@@ -11,10 +11,7 @@
           pagerPrevious: 'glyphicon glyphicon-step-backward',
           pagerNext: 'glyphicon glyphicon-step-forward'
         }"
-    [messages]="{
-          emptyMessage: '',
-          totalMessage: ''
-        }"
+    [messages]="{ emptyMessage: '', totalMessage: '' }"
     [rows]='rows'
     [disablePagingOnScroll]="true"
     [externalPaging]="true"
@@ -52,12 +49,12 @@
 
 <ng-template let-value="value" let-column="column" #taxon>
   <span *ngIf="value">
-    <span class="scientificName"
-      *ngIf="value.linkings && value.linkings.taxon && (value.linkings.taxon.id || value.linkings.taxon.qname); else taxonVerbatim"
-      title="{{(value.linkings.taxon.vernacularName | multiLang) + ' (' + value.linkings.taxon.scientificName + ')'}}"
+    <span style="display: inline"
+          *ngIf="value.linkings && value.linkings.taxon && (value.linkings.taxon.id || value.linkings.taxon.qname); else taxonVerbatim"
+          title="{{(value.linkings.taxon.vernacularName | multiLang) + ' (' + value.linkings.taxon.scientificName + ')'}}"
     >
       {{value.linkings.taxon.vernacularName | multiLang}}
-      <span class="scientificName" [class.cursive]="value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.scientificName">
+      <span style="display: inline" [class.cursive]="value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.scientificName">
           ({{value.linkings.taxon.scientificName}})
       </span>
       <a
@@ -111,12 +108,12 @@
   </span>
 </ng-template>
 <ng-template let-row="row" #taxonScientificName>
-  <span class="scientificName" *ngIf="row.scientificName" title="{{row.scientificName}}" [class.cursive]="row.cursiveName">
+  <span *ngIf="row.scientificName" title="{{row.scientificName}}" [class.cursive]="row.cursiveName">
     {{row.scientificName}}
   </span>
 </ng-template>
 <ng-template let-value="value" #scientificName>
-  <span class="scientificName" *ngIf="value.scientificName" title="{{value.scientificName}}" [class.cursive]="value.cursiveName">
+  <span *ngIf="value.scientificName" title="{{value.scientificName}}" [class.cursive]="value.cursiveName">
     {{value.scientificName}}
   </span>
 </ng-template>
