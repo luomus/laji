@@ -152,12 +152,18 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.filterByMunicipality = formData.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality) > -1;
       this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1
     }
-
-    return this.userService.getUser().do(user => {
-      this.allowCreate = !formData || !formData.features
-        || formData.features.indexOf('MHL.featureAddingNamedPlacesNotAllowed') === -1
-        || this.formPermissionService.isAdmin({'id': ''}, user);
-    });
+    return this.userService
+      .getUser()
+      .do(user => {
+        if (formData && formData.features && formData.collectionID && formData.features.indexOf(Form.Feature.NoNewNamedPlaces) > -1) {
+          this.formPermissionService
+            .getFormPermission(formData.collectionID, this.userService.getToken())
+            .take(1)
+            .subscribe(data => this.allowCreate = this.formPermissionService.isAdmin(data, user));
+        } else {
+          this.allowCreate = false;
+        }
+      });
   }
 
   private getFormInfo(): Observable<any> {
