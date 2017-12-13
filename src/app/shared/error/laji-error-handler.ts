@@ -27,7 +27,7 @@ export class LajiErrorHandler extends ErrorHandler {
     }
     const location = this.injector.get(LocationStrategy);
     const url = location instanceof PathLocationStrategy ? location.path() : '';
-    this.getLogger().error('Guru Meditation!', {clientPath: url, error: error});
+    this.getLogger().error('Guru Meditation!', {clientPath: url, error: error, errorMsg: error.toString()});
     this.pause = true;
     setTimeout(() => {
       this.pause = false;
