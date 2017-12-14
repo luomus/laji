@@ -226,6 +226,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this._originalSelectedNumbers = [...selectedNumbers];
   };
 
+  @Input() showRowAsLink = true;
+
   ngOnInit() {
     this.initColumns();
     this.fetchPage(this.page);

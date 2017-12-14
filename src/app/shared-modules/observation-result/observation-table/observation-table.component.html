@@ -3,6 +3,7 @@
     #dataTable
     class="observation-table"
     (rowSelect)="rowSelect.emit($event)"
+    [showRowAsLink]="showRowAsLink"
     [showHeader]="showHeader"
     [showFooter]="showFooter"
     [virtualScrolling]="virtualScrolling"

@@ -49,6 +49,7 @@ export class DatatableComponent {
   @Input() clientSideSorting = false;
   @Input() columnMode = 'force';
   @Input() resizable = true;
+  @Input() showRowAsLink = true;
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
@@ -62,6 +63,7 @@ export class DatatableComponent {
     private changeDetectorRef: ChangeDetectorRef,
     private cacheService: CacheService
   ) { }
+
 
   @Input() set page(page: number) {
     this._offset = page - 1;
@@ -123,6 +125,7 @@ export class DatatableComponent {
 
   getRowClass(row) {
     return {
+      'link': this.showRowAsLink,
       'issues':
         !!(row.document && row.document.quality && row.document.quality.issue) ||
         !!(row.gathering && row.gathering.quality && (
@@ -161,7 +164,6 @@ export class DatatableComponent {
       return column;
     });
     if (hasChanges) {
-      console.log('UPDATE COLUMNSS!!!!');
       this._columns = [...cols];
       console.log(this._columns);
     }
