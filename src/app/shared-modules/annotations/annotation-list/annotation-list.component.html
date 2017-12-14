@@ -39,12 +39,15 @@
           </span>
         </ng-container>
         <small>
-          <span class="annotation-author" *ngIf="(annotation.type | toQName) === types.TypeUnidentifiable">
+          <span class="annotation-title" *ngIf="annotation.annotationBySystem">
+            {{'annotationBySystem' | translate}}
+            <!--{{annotation.annotationBySystem | toQName | source}}-->
+          </span>
+          <span class="annotation-title" *ngIf="(annotation.type | toQName) === types.TypeUnidentifiable">
             {{'MAN.typeUnidentifiable' | label }}
           </span>
-          <span class="annotation-author" *ngIf="annotation.annotationClass">{{annotation.annotationClass | toQName | label}}</span>
-          <span class="annotation-author" *ngIf="annotation.annotationByPerson">{{annotation.annotationByPerson | toQName | users}}</span>
-          <span class="annotation-author" *ngIf="annotation.annotationBySystem">{{annotation.annotationBySystem | toQName | source}}</span>
+          <span class="annotation-title" *ngIf="annotation.annotationClass">{{annotation.annotationClass | toQName | label}}</span>
+          <span class="annotation-title" *ngIf="annotation.annotationByPerson">{{annotation.annotationByPerson | toQName | users}}</span>
           <span *ngIf="!changingLocale">{{annotation.created | amTimeAgo}}</span>
         </small>
       </div>

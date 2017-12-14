@@ -15,7 +15,7 @@
   font-size: larger;
 }
 
-.annotation-author:after {
+.annotation-title:after {
   content: "\B7";
   padding: 0 0 0 3px;
   display: inline;

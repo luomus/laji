@@ -555,5 +555,6 @@
   "persons": "Persons",
   "np.earlier": "Previous observations",
   "lastCensus": "Previous census",
+  "annotationBySystem": "This observation has been automatically annotated for quality.",
   "showSpeciesCard": "Show species card"
 }

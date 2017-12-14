@@ -556,5 +556,6 @@
   "persons": "Personer",
   "np.earlier": "Tidigare observationer",
   "lastCensus": "Tidigare census",
+  "annotationBySystem": "Denna observation har blivit annoterad automatiskt för kvalitet.",
   "showSpeciesCard": "Visa artkort"
 }

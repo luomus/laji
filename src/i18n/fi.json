@@ -571,5 +571,6 @@
   "persons": "Henkilöt",
   "np.earlier": "Aiemmat ilmoitukset",
   "lastCensus": "Edellinen laskenta",
+  "annotationBySystem": "Tähän havaintoon on tehty automaattinen laatumerkintä.",
   "showSpeciesCard": "Näytä lajikortti"
 }
