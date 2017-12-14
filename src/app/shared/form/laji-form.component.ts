@@ -37,7 +37,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   reactElem: any;
   renderElem: any;
   private _block = false;
-  private dataKey: string;
 
   constructor(@Inject(ElementRef) elementRef: ElementRef,
               private apiClient: FormApiClient,
@@ -64,13 +63,11 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (!this.lajiFormWrapper) {
       return;
     }
-    console.log('NG ON CHANGES');
     this.ngZone.runOutsideAngular(() => {
       if (changes['lang']) {
         this.lajiFormWrapper.setState({lang: this.lang});
       }
       if (changes['formData']) {
-        console.log('FORMDATA CHANGED! SETTING STATE!!!', JSON.stringify(this.formData.formData));
         this.lajiFormWrapper.setState({
           schema: this.formData.schema,
           uiSchema: this.formData.uiSchema,
@@ -112,7 +109,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (!this.formData || !this.formData.formData || !this.lang) {
       return;
     }
-    console.log('MOUNTING');
     this.userService.getUserSetting(this.settingsKey)
       .subscribe(settings => {
         try {
@@ -153,18 +149,10 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   _onChange(formData) {
-    const cachkey = JSON.stringify(formData);
-    if (this.dataKey === cachkey) {
-      console.log('SAME DATA NOT SENDING!!!', JSON.stringify(formData));
-      return;
-    }
-    this.dataKey = cachkey;
-    console.log('FORM ON CHANGE', JSON.stringify(formData));
     this.onChange.emit(formData);
   }
 
   _onSubmit(data) {
-    console.log('FORM ON SUBMIT');
     this.ngZone.run(() => {
       this.onSubmit.emit({
         data: data,
@@ -175,7 +163,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   unMount() {
-    console.log('UNMOUNTING');
     try {
       if (this.lajiFormWrapper) {
         this.ngZone.runOutsideAngular(() => {

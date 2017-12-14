@@ -293,8 +293,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       .switchMap(
         data => data.formData.namedPlaceID ? this.namedPlaceService
           .getNamedPlace(data.formData.namedPlaceID, this.userService.getToken())
-          .catch(() => Observable.of({}))
-          .do((test) => console.log(test)) : Observable.of(undefined),
+          .catch(() => Observable.of({})) : Observable.of(undefined),
         (data, namedPace) => ({data, namedPace})
       )
       .switchMap(

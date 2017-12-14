@@ -165,7 +165,6 @@ export class DatatableComponent {
     });
     if (hasChanges) {
       this._columns = [...cols];
-      console.log(this._columns);
     }
   }
 }

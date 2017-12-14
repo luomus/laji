@@ -185,7 +185,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   showMakeTemplate(row): boolean {
-    console.log(row);
     if (this.actions === false || this.onlyTemplates === true) {
       return false;
     }
