@@ -3,6 +3,7 @@ import {
   Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
   ViewChild
 } from '@angular/core';
+import { environment } from '../../../../environments/environment';
 import { Document } from '../../../shared/model/Document';
 import { DocumentInfoService } from '../service/document-info.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -181,6 +182,17 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     this.table.offset = 0;
+  }
+
+  showMakeTemplate(row): boolean {
+    console.log(row);
+    if (this.actions === false || this.onlyTemplates === true) {
+      return false;
+    }
+    if (row && row.formID && row.formID === environment.wbcForm) {
+      return false;
+    }
+    return this.actions.indexOf('template') > -1;
   }
 
   private updateRows() {
@@ -381,6 +393,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
             locality: locality,
             unitCount: gatheringInfo.unitList.length,
             observer: observers,
+            formID: document.formID,
             form: form.title || document.formID,
             id: document.id,
             index: idx

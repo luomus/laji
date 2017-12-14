@@ -80,7 +80,7 @@
                 [placement]="'right'">
               <i class="glyphicon glyphicon-edit"></i>
           </span>
-          <span *ngIf="actions.indexOf('template') > -1 && onlyTemplates === false">
+          <span *ngIf="showMakeTemplate(row)">
             <span class="label label-warning link inline-block"
                   (click)="makeTemplate(row)"
                   [tooltip]="'haseka.form.saveTemplate' | translate"
