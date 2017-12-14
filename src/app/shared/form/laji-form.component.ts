@@ -37,6 +37,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   reactElem: any;
   renderElem: any;
   private _block = false;
+  private dataKey: string;
 
   constructor(@Inject(ElementRef) elementRef: ElementRef,
               private apiClient: FormApiClient,
@@ -63,37 +64,47 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (!this.lajiFormWrapper) {
       return;
     }
-    if (changes['lang']) {
-      this.lajiFormWrapper.setState({lang: this.lang});
-    }
-    if (changes['formData']) {
-      this.lajiFormWrapper.setState({
-        schema: this.formData.schema,
-        uiSchema: this.formData.uiSchema,
-        formData: this.formData.formData,
-        validators: this.formData.validators,
-        warnings: this.formData.warnings
-      });
-    }
+    console.log('NG ON CHANGES');
+    this.ngZone.runOutsideAngular(() => {
+      if (changes['lang']) {
+        this.lajiFormWrapper.setState({lang: this.lang});
+      }
+      if (changes['formData']) {
+        console.log('FORMDATA CHANGED! SETTING STATE!!!', JSON.stringify(this.formData.formData));
+        this.lajiFormWrapper.setState({
+          schema: this.formData.schema,
+          uiSchema: this.formData.uiSchema,
+          formData: this.formData.formData,
+          validators: this.formData.validators,
+          warnings: this.formData.warnings
+        });
+      }
+    });
   }
 
   block() {
     if (!this._block) {
-      this.lajiFormWrapper.pushBlockingLoader();
+      this.ngZone.runOutsideAngular(() => {
+        this.lajiFormWrapper.pushBlockingLoader();
+      });
       this._block = true;
     }
   }
 
   unBlock() {
     if (this._block) {
-      this.lajiFormWrapper.popBlockingLoader();
+      this.ngZone.runOutsideAngular(() => {
+        this.lajiFormWrapper.popBlockingLoader();
+      });
       this._block = false;
     }
   }
 
   submit() {
     if (this.lajiFormWrapper) {
-      this.lajiFormWrapper.submit();
+      this.ngZone.runOutsideAngular(() => {
+        this.lajiFormWrapper.submit();
+      });
     }
   }
 
@@ -101,6 +112,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (!this.formData || !this.formData.formData || !this.lang) {
       return;
     }
+    console.log('MOUNTING');
     this.userService.getUserSetting(this.settingsKey)
       .subscribe(settings => {
         try {
@@ -141,22 +153,35 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   _onChange(formData) {
+    const cachkey = JSON.stringify(formData);
+    if (this.dataKey === cachkey) {
+      console.log('SAME DATA NOT SENDING!!!', JSON.stringify(formData));
+      return;
+    }
+    this.dataKey = cachkey;
+    console.log('FORM ON CHANGE', JSON.stringify(formData));
     this.onChange.emit(formData);
-    this.ngZone.run(() => {});
   }
 
   _onSubmit(data) {
-    this.onSubmit.emit({
-      data: data,
-      makeBlock: this.lajiFormWrapper.pushBlockingLoader,
-      clearBlock: this.lajiFormWrapper.popBlockingLoader
+    console.log('FORM ON SUBMIT');
+    this.ngZone.run(() => {
+      this.onSubmit.emit({
+        data: data,
+        makeBlock: this.lajiFormWrapper.pushBlockingLoader,
+        clearBlock: this.lajiFormWrapper.popBlockingLoader
+      });
     });
-    this.ngZone.run(() => {});
   }
 
   unMount() {
+    console.log('UNMOUNTING');
     try {
-      this.lajiFormWrapper.unmount();
+      if (this.lajiFormWrapper) {
+        this.ngZone.runOutsideAngular(() => {
+          this.lajiFormWrapper.unmount();
+        });
+      }
     } catch (err) {
       this.logger.warn('Unmounting failed', err);
     }
