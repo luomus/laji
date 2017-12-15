@@ -211,6 +211,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
             this.toastsService.showSuccess(value);
             this.changeDetector.markForCheck();
           });
+        this.namedPlaceService.invalidateCache();
         this.onSuccess.emit({document: result, form: this.form});
       },
       (err) => {

@@ -15,6 +15,10 @@ export class NamedPlacesService {
     private userService: UserService
   ) { }
 
+  invalidateCache() {
+    this.cacheKey = '';
+  }
+
   getAllNamePlaces(query: NamedPlaceQuery)  {
     const key = JSON.stringify(query);
     if (this.cacheKey === key) {
