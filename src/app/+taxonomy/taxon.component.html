@@ -21,7 +21,9 @@
 				<div class="col-xs-12">
 					<laji-informal-list-breadcrumb [groups]="groups" [informalGroup]="selectedInformalGroup"></laji-informal-list-breadcrumb>
 					<laji-informal-list *ngIf="selectedInformalGroup" [tree]="selectedInformalGroup"></laji-informal-list>
-          <laji-species-list *ngIf="(id | async) && selectedInformalGroup" [informalGroup]="selectedInformalGroup"></laji-species-list>
+          <div class="list-wrap">
+            <laji-species-list *ngIf="(id | async) && selectedInformalGroup" [informalGroup]="selectedInformalGroup"></laji-species-list>
+          </div>
 				</div>
 			</div>
 			<div *ngIf="(type | async) == 'taxonomy'" class="row">
