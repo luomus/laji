@@ -162,7 +162,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'gathering.displayDateTime' },
     { name: 'gathering.interpretations.coordinateAccuracy', cellTemplate: 'numeric' },
     { name: 'gathering.conversions.ykj10kmCenter', sortable: false},
-    { name: 'unit.abundanceString', cellTemplate: 'numeric' },
+    { name: 'unit.abundanceString', cellTemplate: 'numeric', sortBy: 'unit.interpretations.individualCount,unit.abundanceString' },
     { name: 'unit.interpretations.individualCount', cellTemplate: 'numeric' },
     { name: 'unit.lifeStage', cellTemplate: 'warehouseLabel', label: 'observation.form.lifeStage' },
     { name: 'unit.sex', cellTemplate: 'warehouseLabel', label: 'observation.form.sex' },
@@ -172,7 +172,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'unit.notes', sortable: false, label: 'result.document.notes' },
     { name: 'document.secureLevel', cellTemplate: 'warehouseLabel' },
     { name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel' },
-    { name: 'document.sourceId', prop: 'document.source' },
+    { name: 'document.sourceId', prop: 'document.source', sortable: false },
     { name: 'document.quality.reliabilityOfCollection'},
     { name: 'unit.det'},
     { name: 'gathering.conversions.dayOfYearBegin'},
@@ -346,7 +346,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       if (!col) {
         return '';
       }
-      return this.setLangParams((col.sortBy || col.prop) + ' ' + sort.dir.toUpperCase());
+      const sortBy: string = col.sortBy || '' + col.prop;
+      return sortBy.split(',').map(val => val + ' ' + sort.dir.toUpperCase()).join(',');
     });
     this.fetchPage(this.page);
   }
