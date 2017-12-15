@@ -6,7 +6,7 @@
     "ng": "ng",
     "ng:version": "ng --version",
     "prepare": "patch-package",
-    "start": "NODE_ENV=production ng serve --aot --build-optimizer --output-hashing=all --sourcemaps=false --named-chunks=false --environment=local --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000 --extract-css",
+    "start": "ng serve --environment=local --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000",
     "start:local:prod": "NODE_ENV=development ng serve --aot=false --build-optimizer=false --environment=local --prod --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000 --extract-css",
     "start:aot": "ng serve --environment=local --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000 --aot --extract-css",
     "start:prod": "ng serve --environment=prod --proxy-config proxy.conf.js --host 0.0.0.0 --port 3000 --extract-css",
