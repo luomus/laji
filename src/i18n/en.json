@@ -556,5 +556,7 @@
   "np.earlier": "Previous observations",
   "lastCensus": "Previous census",
   "annotationBySystem": "This observation has been automatically annotated for quality.",
-  "showSpeciesCard": "Show species card"
+  "showSpeciesCard": "Show species card",
+  "closed.title": "Closed",
+  "closed.intro": "Vihko is now closed for maintenance. We'll notify you on the <a href=\"/en\">front page</a> when it's opened again."
 }

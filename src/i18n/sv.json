@@ -557,5 +557,7 @@
   "np.earlier": "Tidigare observationer",
   "lastCensus": "Tidigare census",
   "annotationBySystem": "Denna observation har blivit annoterad automatiskt för kvalitet.",
-  "showSpeciesCard": "Visa artkort"
+  "showSpeciesCard": "Visa artkort",
+  "closed.title": "Closed",
+  "closed.intro": "Vihko is now closed for maintenance. We'll notify you on the <a href=\"/sv\">front page</a> when it's opened again."
 }

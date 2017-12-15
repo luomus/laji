@@ -29,6 +29,12 @@ import { Observable } from 'rxjs/Observable';
 import { ComponentCanDeactivate } from './document-de-activate.guard';
 import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
 
+/*
+ * Change tamplateUrl to close or open the Vihko
+ * open: './document-form.component.html'
+ * closed: './document-form.component-closed.html'
+ */
+
 @Component({
   selector: 'laji-document-form',
   templateUrl: './document-form.component.html',
