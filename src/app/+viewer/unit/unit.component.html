@@ -6,7 +6,9 @@
         {{unit.linkings.originalTaxon.vernacularName | multiLang}}
       </span>
       (<span class="scientificName" [class.cursive]="unit.linkings.originalTaxon.cursiveName">{{unit.linkings.originalTaxon.scientificName}}</span>)
-      <a [routerLink]="['/taxon/' + (unit.linkings.originalTaxon.qname | toQName)] | localize" target="_blank" [tooltip]="'showSpeciesCard' | translate"><i class="glyphicon glyphicon-tag"></i></a>
+      <a [routerLink]="['/taxon/' + (unit.linkings.originalTaxon.qname | toQName)] | localize" target="_blank" [tooltip]="'showSpeciesCard' | translate" placement="right">
+        <i class="glyphicon glyphicon-tag"></i>
+      </a>
     </laji-row>
     <ng-template #taxonVerbatim>
       <laji-row [title]="unit.recordBasis | label: 'warehouse'" [value]="unit.taxonVerbatim"></laji-row>
@@ -18,7 +20,10 @@
         {{unit.linkings.taxon.vernacularName | multiLang}}
       </span>
       (<span class="scientificName" [class.cursive]="unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</span>)
-      <a [routerLink]="['/taxon/' + (unit.linkings.taxon.qname | toQName)] | localize" target="_blank"><i class="glyphicon glyphicon-modal-window"></i></a>
+      <a [routerLink]="['/taxon/' + (unit.linkings.taxon.qname | toQName)] | localize"
+         [tooltip]="'showSpeciesCard' | translate"
+         placement="right"
+         target="_blank"><i class="glyphicon glyphicon-tag"></i></a>
     </laji-row>
     <laji-row [title]="'MY.det' | label" [value]="unit.det"></laji-row>
     <ng-container *ngIf="unit.reportedTaxonConfidence && (showFacts || unit.reportedTaxonConfidence !== 'SURE')">
