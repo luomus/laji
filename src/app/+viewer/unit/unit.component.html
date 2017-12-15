@@ -39,6 +39,11 @@
     </ng-container>
     <laji-issues [data]="unit"></laji-issues>
     <laji-row [title]="'MY.count' | label" [value]="unit.abundanceString"></laji-row>
+    <ng-container *ngIf="unit.interpretations">
+      <ng-container *ngIf="unit.abundanceString !== '' + unit.interpretations.individualCount">
+        <laji-row [title]="'result.unit.interpretations.individualCount' | translate" [value]="unit.interpretations.individualCount"></laji-row>
+      </ng-container>
+    </ng-container>
     <laji-row [title]="'MY.lifeStage' | label" [value]="unit.lifeStage | label: 'warehouse'"></laji-row>
     <laji-row [title]="'MY.sex' | label" [value]="unit.sex | label: 'warehouse'"></laji-row>
     <laji-row [title]="'MY.notes' | label" [value]="unit.notes"></laji-row>
