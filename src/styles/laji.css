@@ -12,6 +12,10 @@ body {
   -moz-osx-font-smoothing:grayscale;
 }
 
+p {
+  max-width: 800px;
+}
+
 #lajiApp {
   height: 100%;
   display: flex;
