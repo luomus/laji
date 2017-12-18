@@ -33,7 +33,7 @@ const routes: Routes = [
   {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule', data: {noPreload: true}},
   // {path: 'admin', loadChildren: './admin/admin.module#AdminModule', data: {noPreload: true}},
   // {path: 'shell', component: ForumComponent, data: {noPreload: true}},
-  {path: 'theme', loadChildren: './+theme/theme.module#ThemeModule', data: {noPreload: true}}
+  {path: 'forum', component: ForumComponent, data: {noPreload: true}}
 ];
 
 const routesWithLang: Routes = [
