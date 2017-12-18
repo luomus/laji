@@ -72,16 +72,6 @@
                 [list]="searchQuery.query.target || []"
                 (updateList)="updateTargetList($event)"
               ></laji-pill-list>
-              <span *ngIf="taxonName && taxonName.value" style="margin-left: 5px;">
-                <span *ngIf="taxonName?.payload.vernacularName; else taxonNameScientific">
-                  {{taxonName?.payload.vernacularName}}
-                </span>
-                <ng-template #taxonNameScientific>
-                  <span class="scientificName" [ngClass]="{'cursive': taxonName.payload.cursiveName}">
-                    {{taxonName?.payload?.scientificName}}
-                  </span>
-                </ng-template>
-              </span>
             </div>
           </div>
         </div>
