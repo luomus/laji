@@ -49,7 +49,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   public logCoordinateAccuracyMax = 4;
   public showPlace = false;
   public showFilter = true;
-  public taxonName: Autocomplete;
   public areaType = AreaType;
 
   public drawing = false;
@@ -187,7 +186,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     const now = moment();
     this.formQuery.timeStart = now.subtract(dates, 'days').format('YYYY-MM-DD');
     this.formQuery.timeEnd = '';
-    this.onSubmit();
+    this.onQueryChange();
   }
 
   empty(refresh: boolean, query?: WarehouseQueryInterface) {
@@ -254,7 +253,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     if (this.formQuery.onlyFromCollectionSystems === false) {
       this.searchQuery.query.sourceId = [];
     }
-    this.onSubmit();
+    this.onQueryChange();
   }
 
   onInvasiveCheckBoxToggle(field) {
@@ -267,11 +266,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
         this.formQuery.allInvasiveSpecies = false;
       }
     }
-    this.onSubmit();
-    this.onAdministrativeStatusChange(false);
+    this.formQueryToQuery(this.formQuery);
+    this.onAdministrativeStatusChange();
   }
 
-  onAdministrativeStatusChange(doChange = true) {
+  onAdministrativeStatusChange() {
     const admins = this.searchQuery.query.administrativeStatusId;
     let cnt = 0;
     this.invasiveStatuses.map(key => {
@@ -282,9 +281,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       }
     });
     this.formQuery.allInvasiveSpecies = cnt === this.invasiveStatuses.length;
-    if (doChange) {
-      this.onQueryChange();
-    }
+    this.onQueryChange();
   }
 
   onSystemIDChange() {
@@ -327,7 +324,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       this.searchQuery.query.individualCountMin = undefined;
       this.searchQuery.query.individualCountMax = undefined;
     }
-    this.onSubmit();
+    this.delayedSearchSource.next();
   }
 
   onIndirectChange() {
@@ -349,7 +346,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   onQueryChange() {
-    this.taxonName = null;
     this.delayedSearchSource.next(true);
   }
 
@@ -404,7 +400,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   onFilterSelect(event) {
     this.searchQuery.query = event;
-    this.onSubmit();
+    this.delayedSearchSource.next();
   }
 
   toInvasiveControlForm() {
@@ -447,15 +443,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
       asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
     };
-    if (this.formQuery.taxon && (
-      this.formQuery.taxon.indexOf('MX.') === 0 || this.formQuery.taxon.indexOf('http:') === 0)) {
-      this.getTaxa(this.formQuery.taxon, true).subscribe(data => {
-        this.taxonName = data;
-        this.cd.markForCheck();
-      });
-    } else {
-      this.taxonName = null;
-    }
   }
 
   private hasInMulti(multi, value, noOther = false) {

@@ -190,6 +190,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
         this.value = '';
       }
     }
+    this.onChange(this.value);
   }
 
   writeValue(value: any): void {
