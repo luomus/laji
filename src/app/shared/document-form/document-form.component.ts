@@ -21,13 +21,13 @@ import { FormService } from '../service/form.service';
 import { ToastsService } from '../service/toasts.service';
 import { Form } from '../model/Form';
 import { Logger } from '../logger/logger.service';
-import { NamedPlacesService } from '../../+haseka/named-place/named-places.service';
 import { Document } from '../model/Document';
 import { DialogService } from '../service/dialog.service';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { ComponentCanDeactivate } from './document-de-activate.guard';
 import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
+import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
 
 /*
  * Change tamplateUrl to close or open the Vihko

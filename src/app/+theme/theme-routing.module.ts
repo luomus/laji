@@ -17,6 +17,7 @@ import { WbcFormComponent } from './wbc/wbc-form/wbc-form.component';
 import { WbcOwnSubmissionsComponent } from './wbc/wbc-own-submissions/wbc-own-submissions.component';
 import { IdentifyComponent } from './identify/identify.component';
 import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
+import { NamedPlaceComponent } from '../shared-modules/named-place/named-place/named-place.component';
 
 const routes: Routes = [
   {
@@ -34,7 +35,8 @@ const routes: Routes = [
         canDeactivate: [DocumentDeActivateGuard]
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: WbcOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' } }
+      {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' } },
+      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent }
     ]
   },
   {

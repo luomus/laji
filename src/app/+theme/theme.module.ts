@@ -28,6 +28,7 @@ import { OwnSubmissionsModule } from '../shared-modules/own-submissions/own-subm
 import { WbcOwnSubmissionsComponent } from './wbc/wbc-own-submissions/wbc-own-submissions.component';
 import { IdentifyComponent } from './identify/identify.component';
 import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
+import { NamedPlaceModule } from '../shared-modules/named-place/named-place.module';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.com
     LangModule,
     YkjModule,
     ObservationResultModule,
-    OwnSubmissionsModule
+    OwnSubmissionsModule,
+    NamedPlaceModule
   ],
   declarations: [
     NafiComponent,

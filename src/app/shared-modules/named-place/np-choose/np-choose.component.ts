@@ -37,4 +37,13 @@ export class NpChooseComponent {
   createButtonClick() {
     this.onCreateButtonClick.emit();
   }
+
+  showMap() {
+    return !(
+      this.formData &&
+      this.formData.namedPlaceOptions &&
+      this.formData.namedPlaceOptions.hideMapTab &&
+      this.formData.namedPlaceOptions.hideMapTab === 'true'
+    );
+  }
 }

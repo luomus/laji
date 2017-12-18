@@ -21,10 +21,10 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { DocumentService } from '../service/document.service';
-import { NamedPlacesService } from '../../../+haseka/named-place/named-places.service';
 import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
+import { NamedPlacesService } from '../../named-place/named-places.service';
 
 
 @Component({

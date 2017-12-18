@@ -14,7 +14,7 @@ import { NamedPlacesService } from '../../named-places.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { WindowRef } from '../../../../shared/windows-ref';
 import { ToastsService } from '../../../../shared/service/toasts.service';
-import { FormPermissionService } from '../../../form-permission/form-permission.service';
+import { FormPermissionService } from '../../../../+haseka/form-permission/form-permission.service';
 
 @Component({
   selector: 'laji-np-edit-form',

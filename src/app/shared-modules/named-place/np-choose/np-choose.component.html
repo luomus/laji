@@ -4,7 +4,7 @@
       <li role="presentation" [ngClass]="{active: active === 'list'}">
         <a (click)="setActive('list')">{{'np.list' | translate}}</a>
       </li>
-      <li role="presentation" [ngClass]="{active: active === 'map'}">
+      <li role="presentation" [ngClass]="{active: active === 'map'}" *ngIf="showMap()">
         <a (click)="setActive('map')">{{'np.map' | translate}}</a>
       </li>
     </ul>

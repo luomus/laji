@@ -27,7 +27,6 @@ import {
 import { Ng2Webstorage } from 'ng2-webstorage';
 import { ViewerModule } from './+viewer/viewer.module';
 import { ToastModule } from 'ng2-toastr/src/toast.module';
-import { NamedPlaceModule } from './+haseka/named-place/named-place.module';
 import { ForumComponent } from './forum/forum.component';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
@@ -36,6 +35,7 @@ import { LocalizeRouterService } from './locale/localize-router.service';
 import { FormPermissionModule } from './+haseka/form-permission/form-permission.module';
 import { environment } from '../environments/environment';
 import { DocumentService } from './shared-modules/own-submissions/service/document.service';
+import { NamedPlaceModule } from './shared-modules/named-place/named-place.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {

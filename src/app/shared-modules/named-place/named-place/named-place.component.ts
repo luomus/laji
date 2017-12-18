@@ -9,11 +9,11 @@ import { NpChooseComponent } from '../np-choose/np-choose.component';
 import { Observable } from 'rxjs/Observable';
 import { FooterService } from '../../../shared/service/footer.service';
 import { UserService } from '../../../shared/service/user.service';
-import { FormPermissionService } from '../../form-permission/form-permission.service';
 import { NamedPlaceQuery } from '../../../shared/api/NamedPlaceApi';
 import { Form } from '../../../shared/model/Form';
 import { AreaType } from '../../../shared/service/area.service';
 import { NpEditComponent } from '../np-edit/np-edit.component';
+import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
 
 @Component({
   selector: 'laji-named-place',
