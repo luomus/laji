@@ -5,16 +5,17 @@ import { HaSeKaFormListComponent } from './form-list/haseka-form-list';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { HaSeKaFormComponent } from './form/haseka-form.component';
-import { NamedPlaceComponent } from './named-place/named-place/named-place.component';
+import { NpPrintComponent } from '../shared-modules/named-place/np-print/np-print.component';
 import { RequestComponent } from './form-permission/request/request.component';
 import { AdminComponent } from './form-permission/admin/admin.component';
 import { IntroComponent } from './form-permission/admin/intro/intro.component';
 import { AcceptComponent } from './form-permission/admin/accept/accept.component';
 import { ManageComponent } from './form-permission/admin/manage/manage.component';
-import { NpPrintComponent } from './named-place/np-print/np-print.component';
+import { NamedPlaceComponent } from '../shared-modules/named-place/named-place/named-place.component';
 import { DocumentDeActivateGuard } from '../shared/document-form/document-de-activate.guard';
 import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
 import { TemplatesComponent } from './templates/templates.component';
+import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';
 
 export const hasekaRoutes: Routes = [
   {
@@ -41,7 +42,7 @@ export const hasekaRoutes: Routes = [
   {
     path: 'places/:collectionId/:formId',
     pathMatch: 'full',
-    component: NamedPlaceComponent
+    component: NamedPlaceWrapperComponent
   },
   {
     path: 'fp/:collectionId/admin',

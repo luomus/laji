@@ -13,10 +13,10 @@ import { NpInfoRowComponent } from './np-edit/np-info/np-info-row/np-info-row.co
 import { NpInfoMapComponent } from './np-edit/np-info/np-info-map/np-info-map.component';
 import { NpPrintComponent } from './np-print/np-print.component';
 import { LineTransectComponent } from './np-print/line-transect/line-transect.component';
-import { LajiMapModule } from '../../shared-modules/map/laji-map.module';
 import { AreaSelectComponent } from './area-select/area-select.component';
-import { OwnSubmissionsModule } from '../../shared-modules/own-submissions/own-submissions.module';
-import { DatatableModule } from '../../shared-modules/datatable/datatable.module';
+import { LajiMapModule } from '../map/laji-map.module';
+import { DatatableModule } from '../datatable/datatable.module';
+import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module';
 
 @NgModule({
   providers: [],
