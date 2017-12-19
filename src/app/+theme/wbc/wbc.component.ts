@@ -20,7 +20,6 @@ export class WbcComponent implements OnInit {
   }
 
   showNavigation() {
-    console.log(this.router.url);
     return this.router.url.indexOf('form') === -1;
   }
 }
