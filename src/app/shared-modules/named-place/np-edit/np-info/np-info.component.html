@@ -48,7 +48,7 @@
       <strong>{{(isAdmin ? 'np.earlier' : 'np.myEarlier') | translate}}</strong>:
       <laji-own-submissions
         [actions]="['edit']"
-        [columns]="['dateEdited', 'dateObserved', 'observer']"
+        [columns]="['dateObserved', 'observer', 'dateEdited']"
         [formID]="formId"
         [namedPlace]="namedPlace.id"
         [showDownloadAll]="false"

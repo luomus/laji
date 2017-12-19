@@ -149,7 +149,17 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private initColumns() {
-    this.useColumns = this.allColumns.filter(column => this.columns.indexOf(column.prop) > -1);
+    if (!Array.isArray(this.columns)) {
+      return;
+    }
+    const useCols = [];
+    this.columns.map(col => {
+      const column = this.allColumns.find((value) => value.prop === col);
+      if (column) {
+        useCols.push(column);
+      }
+    });
+    this.useColumns = useCols;
   }
 
   private updateDisplayMode() {
@@ -367,6 +377,13 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     return (a, b) => {
       return ('' + a).localeCompare('' + b);
     };
+  }
+
+  getDefaultSort() {
+    if (this.useColumns && this.useColumns.length > 0) {
+      return [{prop: this.useColumns[0].prop, dir: 'asc'}];
+    }
+    return [{ prop: 'dateEdited', dir: 'asc' }];
   }
 
   private setRowData(document: Document, idx: number): Observable<any> {

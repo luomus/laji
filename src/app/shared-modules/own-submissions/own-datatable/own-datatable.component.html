@@ -24,7 +24,7 @@
       }"
       [rows]="rows"
       [rowIdentity]="rowIdentity"
-      [sorts]="[{ prop: 'dateEdited', dir: 'asc' }]"
+      [sorts]="getDefaultSort()"
       [columnMode]="'flex'"
       [headerHeight]="38"
       [rowHeight]="'auto'"
