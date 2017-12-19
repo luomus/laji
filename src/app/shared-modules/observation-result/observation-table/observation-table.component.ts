@@ -122,7 +122,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       target: '_blank',
       label: 'result.unit.taxonVerbatim',
       cellTemplate: 'species',
-      sortBy: 'unit.linkings.taxon.name%longLang%',
+      sortBy: 'unit.linkings.taxon.speciesName%longLang%',
       selectField: 'unit',
       aggregateBy: 'unit.linkings.taxon.speciesId,' +
       'unit.linkings.taxon.speciesNameFinnish,' +
