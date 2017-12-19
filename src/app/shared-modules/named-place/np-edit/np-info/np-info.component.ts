@@ -26,6 +26,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() collectionId: string;
   @Input() editMode: boolean;
   @Input() allowEdit: boolean;
+  @Input() isAdmin = false;
 
   editButtonVisible: boolean;
   useButtonVisible: boolean;

@@ -37,6 +37,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   loading = false;
   allowEdit = false;
   allowCreate = false;
+  isAdmin = false;
 
   filterByMunicipality = false;
   filterByBirdAssociationArea = false;
@@ -155,14 +156,19 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     return this.userService
       .getUser()
       .do(user => {
-        if (formData && formData.features && formData.collectionID && formData.features.indexOf(Form.Feature.NoNewNamedPlaces) > -1) {
-          this.formPermissionService
-            .getFormPermission(formData.collectionID, this.userService.getToken())
-            .take(1)
-            .subscribe(data => this.allowCreate = this.formPermissionService.isAdmin(data, user));
-        } else {
-          this.allowCreate = false;
+        this.isAdmin = false;
+        this.allowCreate = false;
+        if (!formData || !formData.collectionID || !this.userService.isLoggedIn) {
+          return;
         }
+        this.formPermissionService
+          .getFormPermission(formData.collectionID, this.userService.getToken())
+          .take(1)
+          .subscribe(data => {
+            this.isAdmin = this.formPermissionService.isAdmin(data, user);
+            this.allowCreate = (formData.features && formData.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1) || this.isAdmin;
+            this.cd.markForCheck();
+          });
       });
   }
 

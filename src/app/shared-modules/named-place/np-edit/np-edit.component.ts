@@ -23,6 +23,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() formId: string;
   @Input() prepopulatedNamedPlace: string;
   @Input() formData: any;
+  @Input() isAdmin = false;
 
   mapOptionsData: any;
   npFormData: any;

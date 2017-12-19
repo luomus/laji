@@ -45,7 +45,7 @@
                   (click)="editClick()">{{'np.edit' | translate}}</button>
         </div>
       </ng-container>
-      <strong>{{'np.earlier' | translate}}</strong>:
+      <strong>{{(isAdmin ? 'np.earlier' : 'np.myEarlier') | translate}}</strong>:
       <laji-own-submissions
         [actions]="['edit']"
         [columns]="['dateEdited', 'dateObserved', 'observer']"

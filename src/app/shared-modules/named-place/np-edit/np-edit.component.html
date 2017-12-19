@@ -2,6 +2,7 @@
 <ng-container *ngIf="npFormData">
   <ng-container *ngIf="namedPlace && !editMode">
     <laji-np-info [namedPlace]="namedPlace"
+                  [isAdmin]="isAdmin"
                   [formData]="npFormData"
                   [targetForm]="formData"
                   [allowEdit]="allowEdit"

@@ -35,7 +35,8 @@ import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wr
   declarations: [
     HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
     ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent,
-    StatisticsComponent, LineTransectComponent, LineTransectChartComponent, FormRowComponent, OwnSubmissionsComponent, TemplatesComponent, NamedPlaceWrapperComponent
+    StatisticsComponent, LineTransectComponent, LineTransectChartComponent, FormRowComponent, OwnSubmissionsComponent, TemplatesComponent,
+    NamedPlaceWrapperComponent
   ]
 })
 export class HasekaModule {
