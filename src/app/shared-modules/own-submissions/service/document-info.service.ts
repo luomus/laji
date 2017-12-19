@@ -84,7 +84,7 @@ export class DocumentInfoService {
       for (let j = 0; j < unit.identifications.length; j++) {
         const ident = unit.identifications[j];
 
-        if (unit.informalNameString || ident.taxon || ident.taxonID || ident.taxonVerbatim) {
+        if (unit.informalNameString || ident.taxon || ident.taxonID || ident.taxonVerbatim || unit.informalTaxonGroups) {
           return false;
         }
       }
