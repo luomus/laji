@@ -61,7 +61,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   public status = '';
   public saveVisibility = 'hidden';
   public saving = false;
-  public enablePrivate = true;
   public errorMsg: string;
   public namedPlace;
   public readyForForm = false;
@@ -317,7 +316,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
             return;
           }
           if (data.features) {
-            this.enablePrivate = data.features.indexOf(Form.Feature.NoPrivate) === -1;
             if (data.features.indexOf(Form.Feature.NamedPlace) > -1 && !this.namedPlace) {
               this.onMissingNamedplace.emit({
                 collectionID: data.collectionID,
@@ -356,6 +354,25 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               });
         }
       );
+  }
+
+  show(place: 'save'|'temp'|'cancel') {
+    if (!this.form || !this.form.actions) {
+      return true;
+    }
+    return place in this.form.actions;
+  }
+
+  buttonLabel(place: 'save'|'temp'|'cancel') {
+    if (this.form && this.form.actions && this.form.actions[place]) {
+      return this.form.actions[place];
+    }
+    if (place === 'save') {
+      return 'haseka.form.savePublic';
+    } else if (place === 'temp') {
+      return 'haseka.form.savePrivate';
+    }
+    return 'haseka.form.back';
   }
 
   private parseErrorMessage(err) {
