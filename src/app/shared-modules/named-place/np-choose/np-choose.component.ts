@@ -43,7 +43,7 @@ export class NpChooseComponent {
       this.formData &&
       this.formData.namedPlaceOptions &&
       this.formData.namedPlaceOptions.hideMapTab &&
-      this.formData.namedPlaceOptions.hideMapTab === 'true'
+      this.formData.namedPlaceOptions.hideMapTab === true
     );
   }
 }
