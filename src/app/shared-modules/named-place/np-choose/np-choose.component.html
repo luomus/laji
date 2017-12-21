@@ -1,4 +1,4 @@
-<div *ngIf="visible" id="container" class="full-height">
+<div *ngIf="visible" id="container">
   <div id="navbar">
     <ul class="nav nav-tabs nav-justified">
       <li role="presentation" [ngClass]="{active: active === 'list'}">
@@ -10,16 +10,16 @@
     </ul>
   </div>
 
-  <div class="full-height" *ngIf="active === 'list'" id="list-container">
-    <laji-np-list [namedPlaces]="namedPlaces" [formData]="formData" [activeNP]="activeNP" (onActivePlaceChange)="setActiveNP($event)"></laji-np-list>
+  <div *ngIf="active === 'list'" id="list-container">
+    <laji-np-list [height]="height" [namedPlaces]="namedPlaces" [formData]="formData" [activeNP]="activeNP" (onActivePlaceChange)="setActiveNP($event)"></laji-np-list>
   </div>
 
-  <div class="full-height" [ngClass]="{hidden: active !== 'map'}" *ngIf="mapIsActivated" class="full-height">
+  <div [ngClass]="{hidden: active !== 'map'}" *ngIf="mapIsActivated">
     <laji-np-map [namedPlaces]="namedPlaces"
+                 [height]="height"
                  [activeNP]="activeNP"
                  [visible]="active === 'map' && visible"
-                 (onActivePlaceChange)="setActiveNP($event)"
-                 class="full-height"></laji-np-map>
+                 (onActivePlaceChange)="setActiveNP($event)"></laji-np-map>
   </div>
 
   <button *ngIf="allowCreate"

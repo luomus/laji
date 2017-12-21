@@ -22,6 +22,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() visible = false;
   @Input() namedPlaces: NamedPlace[];
   @Input() activeNP: number;
+  @Input() height: string;
   @Output() onActivePlaceChange = new EventEmitter<number>();
 
   private _data: any;
