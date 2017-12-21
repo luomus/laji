@@ -14,12 +14,14 @@ laji-np-info-map {
   position: relative;
 }
 
-.use-button {
+#use-button-container {
+  display: flex;
+  #margin: 0 0 6px -3px;
+}
+
+#use-button {
   white-space: normal;
-  word-wrap: break-word;
-  max-width: calc(45% - 4px);
-  margin-top: 6px;
-  margin-left: -3px;
+  margin: 6px 9px 6px 0;
 }
 
 #info-box {

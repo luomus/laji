@@ -103,7 +103,8 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     const displayedById =
       this.formData.uiSchema.namedPlace.uiSchema.items.placeWrapper['ui:options'].fieldScopes.collectionID;
     const displayed = displayedById[this.collectionId] ? displayedById[this.collectionId] : displayedById['*'];
-
+    console.log(displayedById);
+    console.log(this.collectionId);
     let gData = null;
     const np = this.namedPlace;
 
