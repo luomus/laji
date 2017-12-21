@@ -75,6 +75,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   userId;
 
   displayMode: string;
+  defaultSort: any;
 
   subTrans: Subscription;
   rowData$: Subscription;
@@ -108,6 +109,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     this.initColumns();
+    this.defaultSort = this.getDefaultSort();
     this.updateTranslations();
 
     this.subTrans = this.translate.onLangChange.subscribe(() => {
@@ -135,6 +137,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     }
     if (changes['column']) {
       this.initColumns();
+      this.defaultSort = this.getDefaultSort();
     }
   }
 
