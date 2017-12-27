@@ -3694,15 +3694,15 @@ kind-of@^4.0.0:
   dependencies:
     is-buffer "^1.1.5"
 
-laji-form@^0.0.323:
-  version "0.0.323"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.323.tgz#7cb87598a88954cf99f719861851a09204e02f85"
+laji-form@^0.0.324:
+  version "0.0.324"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.324.tgz#2905dfc2b0519b6def86967458625a9ec44e047c"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.302"
+    laji-map "^1.0.303"
     laji-validate "0.0.51"
     moment "*"
     prop-types "^15.5.8"
@@ -3720,28 +3720,10 @@ laji-form@^0.0.323:
     react-spinner "^0.2.7"
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
-    scroll-into-view-if-needed "^1.4.0"
 
-laji-map@^1.0.300:
-  version "1.0.300"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.300.tgz#82b0aeec05df872e7c8db52769161eccb240e010"
-  dependencies:
-    Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
-    babel-runtime "^6.18.0"
-    leaflet "1.0.3"
-    leaflet-contextmenu "1.1.1"
-    leaflet-draw "0.4.9"
-    leaflet-geometryutil "^0.8.0"
-    leaflet-mml-layers "2.0.1"
-    leaflet-textpath "git+https://git@github.com/olzraiti/Leaflet.textPath.git#leaflet-0.8-dev-absoluteXLinkHrefPath"
-    leaflet.markercluster "1.0.3"
-    nouislider "^10.0.0"
-    proj4 "2.3.16"
-    proj4leaflet "1.0.1"
-
-laji-map@^1.0.302:
-  version "1.0.302"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.302.tgz#092e3625f0f6fb49c80a386392b23b03257dccdb"
+laji-map@^1.0.303:
+  version "1.0.303"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.303.tgz#9ab017836c708f0c7eb20ebc0e8e281c41ef81d7"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     babel-runtime "^6.18.0"
@@ -5849,10 +5831,6 @@ schema-utils@^0.3.0:
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-0.3.0.tgz#f5877222ce3e931edae039f17eb3716e7137f8cf"
   dependencies:
     ajv "^5.0.0"
-
-scroll-into-view-if-needed@^1.4.0:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/scroll-into-view-if-needed/-/scroll-into-view-if-needed-1.4.1.tgz#763580091fb8e0bd4dc2d68b475d755f66574a0e"
 
 scss-tokenizer@^0.2.3:
   version "0.2.3"
