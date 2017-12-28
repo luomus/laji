@@ -153,6 +153,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
         this.hasTaxonImages = data.media.length > 0;
         this.activeImageTab = this.hasTaxonImages ? 'taxon' : 'collection';
         this.taxonImages = data.media;
+        this.hasCollectionImages = false;
         this.taxonDescription.map((description, idx) => {
           if (description.id === this.context) {
             this.activeDescription = idx;
