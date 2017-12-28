@@ -392,7 +392,7 @@
   "viewer.field.observer": "Observer",
   "viewer.field.time": "Time",
   "viewer.secured.none": "There is no secured data in this submission.",
-  "viewer.secured.secured": "This submission has observations that are not shown for security reasons.",
+  "viewer.secured.secured": "This observation has been coarsened.",
   "viewer.secured.partial": "This submission has observations that are removed for security reasons.",
   "viewer.secured.own1": "This is the private view of the submission. The public view may look different",
   "viewer.secured.own2": "Go to public view",
