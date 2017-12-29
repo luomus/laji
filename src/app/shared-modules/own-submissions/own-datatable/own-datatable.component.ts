@@ -109,7 +109,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     this.initColumns();
-    this.defaultSort = this.getDefaultSort();
     this.updateTranslations();
 
     this.subTrans = this.translate.onLangChange.subscribe(() => {
@@ -137,7 +136,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     }
     if (changes['column']) {
       this.initColumns();
-      this.defaultSort = this.getDefaultSort();
     }
   }
 
@@ -163,6 +161,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
     this.useColumns = useCols;
+    this.defaultSort = this.getDefaultSort();
   }
 
   private updateDisplayMode() {

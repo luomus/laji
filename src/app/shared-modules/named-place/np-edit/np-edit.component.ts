@@ -173,9 +173,6 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     } else if (!populate.gatherings[0]) {
       populate.gatherings[0] = {};
     }
-    if (!populate.gatherings[0].geometry) {
-      populate.gatherings[0]['geometry'] = {type: 'GeometryCollection', geometries: [np.geometry]};
-    }
     if (this.namedPlace.notes) {
       if (!populate.gatheringEvent) {
         populate.gatheringEvent = {};
