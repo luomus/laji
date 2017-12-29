@@ -157,9 +157,7 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   onAggregateSelect(event) {
     this.showQueryOnMap = true;
-    if (this.ctrlDown) {
-      this.showObservationList = true;
-    }
+    this.showObservationList = !this.ctrlDown;
     const mapQuery = {...this.aggrQuery};
     ObservationTableQueryService.fieldsToQuery(this.aggregateBy, event.row, mapQuery);
     const title: string[] = [];
