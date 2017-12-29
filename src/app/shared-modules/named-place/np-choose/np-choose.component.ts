@@ -1,13 +1,15 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
+import { WindowRef } from '../../../shared/windows-ref';
 
 @Component({
   selector: 'laji-np-choose',
   templateUrl: './np-choose.component.html',
   styleUrls: ['./np-choose.component.css']
 })
-export class NpChooseComponent {
+export class NpChooseComponent implements OnInit {
   active = 'list';
+  height = '600px';
   mapIsActivated = false;
 
   @Input() formData: any;
@@ -20,7 +22,20 @@ export class NpChooseComponent {
 
   activeNP = -1;
 
-  constructor() {}
+  constructor( private window: WindowRef) {}
+
+  ngOnInit() {
+    this.updateHeight();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.updateHeight();
+  }
+
+  updateHeight() {
+    this.height = Math.min(this.window.nativeWindow.innerHeight - 70, 490) + 'px';
+  }
 
   setActive(newActive: string) {
     this.active = newActive;

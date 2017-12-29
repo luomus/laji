@@ -34,6 +34,7 @@ export class NpListComponent {
   @Output() onActivePlaceChange = new EventEmitter<number>();
 
   @Input() activeNP: number;
+  @Input() height: string;
 
   constructor(private cd: ChangeDetectorRef) { }
 

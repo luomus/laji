@@ -370,12 +370,6 @@ alphanum-sort@^1.0.1, alphanum-sort@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/alphanum-sort/-/alphanum-sort-1.0.2.tgz#97a1119649b211ad33691d9f9f486a8ec9fbe0a3"
 
-amator@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/amator/-/amator-1.0.1.tgz#0fd3663fef5f3334d088cf68a70ba74398aa0e26"
-  dependencies:
-    bezier-easing "^2.0.3"
-
 amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
@@ -712,10 +706,6 @@ better-assert@~1.0.0:
   resolved "https://registry.yarnpkg.com/better-assert/-/better-assert-1.0.2.tgz#40866b9e1b9e0b55b481894311e68faffaebc522"
   dependencies:
     callsite "1.0.0"
-
-bezier-easing@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/bezier-easing/-/bezier-easing-2.0.3.tgz#cb493fddb7f8920ecca00973344ce0518885f17e"
 
 big.js@^3.1.3:
   version "3.2.0"
@@ -3704,15 +3694,15 @@ kind-of@^4.0.0:
   dependencies:
     is-buffer "^1.1.5"
 
-laji-form@^0.0.320:
-  version "0.0.320"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.320.tgz#58f57e10347f95e02e2b148c490d3b64ad502be7"
+laji-form@^0.0.324:
+  version "0.0.324"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.324.tgz#2905dfc2b0519b6def86967458625a9ec44e047c"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.299"
+    laji-map "^1.0.303"
     laji-validate "0.0.51"
     moment "*"
     prop-types "^15.5.8"
@@ -3730,11 +3720,10 @@ laji-form@^0.0.320:
     react-spinner "^0.2.7"
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
-    scroll-into-view-if-needed "^1.1.0"
 
-laji-map@^1.0.299:
-  version "1.0.299"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.299.tgz#b9fbcaa6c47bd15ad1c70f818bc7ce4a5c66aca4"
+laji-map@^1.0.303:
+  version "1.0.303"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.303.tgz#9ab017836c708f0c7eb20ebc0e8e281c41ef81d7"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     babel-runtime "^6.18.0"
@@ -5842,12 +5831,6 @@ schema-utils@^0.3.0:
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-0.3.0.tgz#f5877222ce3e931edae039f17eb3716e7137f8cf"
   dependencies:
     ajv "^5.0.0"
-
-scroll-into-view-if-needed@^1.1.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/scroll-into-view-if-needed/-/scroll-into-view-if-needed-1.4.0.tgz#f01720833c0f7e7f433fdf5eee7f6ceb29944854"
-  dependencies:
-    amator "1.0.1"
 
 scss-tokenizer@^0.2.3:
   version "0.2.3"

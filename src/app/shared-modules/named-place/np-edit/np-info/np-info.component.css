@@ -7,11 +7,6 @@
   margin-bottom: 12px;
 }
 
-.np-info button, .np-info a {
-  margin-bottom: 2px;
-  margin-top: -7px;
-}
-
 laji-np-info-map {
   float: right;
   width: 55%;
@@ -19,9 +14,14 @@ laji-np-info-map {
   position: relative;
 }
 
-.use-button {
-  width: 100%;
-  margin-bottom: 3px;
+#use-button-container {
+  display: flex;
+  #margin: 0 0 6px -3px;
+}
+
+#use-button {
+  white-space: normal;
+  margin: 6px 9px 6px 0;
 }
 
 #info-box {
@@ -30,4 +30,6 @@ laji-np-info-map {
 
 #btn-container {
   text-align: right;
+  margin-top: -5px;
+  margin-bottom: 5px;
 }

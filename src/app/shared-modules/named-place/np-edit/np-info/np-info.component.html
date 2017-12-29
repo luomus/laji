@@ -19,32 +19,34 @@
   </div><!-- /.modal -->
 
   <ng-template #contentTemplate let-isModal="isModal">
-    <a *ngIf="useButtonVisible"
-       type="button"
-       class="btn btn-md btn-primary use-button"
-       (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</a>
     <div class="well well-sm np-info">
       <fieldset>
-        <laji-np-info-map [visible]="(isModal && modalIsVisible) || infoBox?.nativeElement?.offsetParent !== null"
-                          [namedPlace]="namedPlace"></laji-np-info-map>
-        <div *ngFor="let k of keys">
-          <laji-np-info-row [key]="k" [value]="values[k]" [fields]="fields"></laji-np-info-row>
-        </div>
-      </fieldset>
-      <ng-container *ngIf="(targetForm.printType && targetForm.printType.indexOf('MHL.printTypeLineTransect') > -1) || (allowEdit && editButtonVisible)">
-        <legend></legend>
-        <div id="btn-container">
+        <legend *ngIf="(targetForm.printType && targetForm.printType.indexOf('MHL.printTypeLineTransect') > -1) || (allowEdit && editButtonVisible)">
+          <div id="btn-container">
             <span [ngSwitch]="targetForm.printType">
               <a *ngSwitchCase="'MHL.printTypeLineTransect'"
                  class="btn btn-sm btn-default"
                  target="_blank"
                  [routerLink]="['/vihko/places/', namedPlace.id, 'print', targetForm.printType] | localize">{{'np.print' | translate}}</a>
             </span>
-          <button *ngIf="allowEdit && editButtonVisible"
-                  class="btn btn-sm btn-default"
-                  (click)="editClick()">{{'np.edit' | translate}}</button>
+            <button *ngIf="allowEdit && editButtonVisible"
+                    class="btn btn-sm btn-default"
+                    (click)="editClick()">{{'np.edit' | translate}}</button>
+          </div>
+        </legend>
+        <laji-np-info-map [visible]="(isModal && modalIsVisible) || infoBox?.nativeElement?.offsetParent !== null"
+                          [namedPlace]="namedPlace"></laji-np-info-map>
+        <div *ngFor="let k of keys">
+          <laji-np-info-row [key]="k" [value]="values[k]" [fields]="fields"></laji-np-info-row>
         </div>
-      </ng-container>
+        <div id="use-button-container">
+          <a *ngIf="useButtonVisible"
+             type="button"
+             id="use-button"
+             class="btn btn-md btn-primary"
+            (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</a>
+          </div>
+      </fieldset>
       <strong>{{(isAdmin ? 'np.earlier' : 'np.myEarlier') | translate}}</strong>:
       <laji-own-submissions
         [actions]="['edit']"

@@ -394,7 +394,7 @@
   "viewer.field.observer": "Göm extra info",
   "viewer.field.time": "Tid",
   "viewer.secured.none": "Det finns inga säkrade uppgifter i den här inlämningen.",
-  "viewer.secured.secured": "Detta inlägg har observationer som inte visas av säkerhetsskäl.",
+  "viewer.secured.secured": "Denna observation har grovmåttats.",
   "viewer.secured.partial": "Detta inlägg har observationer som tas bort av säkerhetsskäl.",
   "viewer.secured.own1": "Detta är den privata syn på inlämningen. Den offentliga uppfattningen kan se annorlunda ut",
   "viewer.secured.own2": "Gå till offentlig visning",

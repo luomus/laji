@@ -75,6 +75,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   userId;
 
   displayMode: string;
+  defaultSort: any;
 
   subTrans: Subscription;
   rowData$: Subscription;
@@ -160,6 +161,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
     this.useColumns = useCols;
+    this.defaultSort = this.getDefaultSort();
   }
 
   private updateDisplayMode() {
