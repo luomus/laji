@@ -346,7 +346,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       if (!col) {
         return '';
       }
-      const sortBy: string = col.sortBy || '' + col.prop;
+      const sortBy: string =  this.setLangParams(col.sortBy || '' + col.prop);
       return sortBy.split(',').map(val => val + ' ' + sort.dir.toUpperCase()).join(',');
     });
     this.fetchPage(this.page);
