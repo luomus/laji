@@ -16,6 +16,8 @@ export interface LajiMapOptions {
   controls?: {
     draw?: boolean;
     drawCopy?: boolean;
+    drawUndo?: boolean;
+    drawRedo?: boolean;
     drawClear?: boolean;
     coordinates?: boolean;
     lineTransect?: boolean;

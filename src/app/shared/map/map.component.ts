@@ -48,7 +48,9 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
     drawCopy: false,
     drawClear: false,
     coordinates: false,
-    coordinateInput: false
+    coordinateInput: false,
+    drawUndo: false,
+    drawRedo: false
   };
   @Input() settingsKey: string;
   @Input() overlayNames: string[];

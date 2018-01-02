@@ -41,7 +41,9 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       drawClear: false,
       coordinates: false,
       lineTransect: false,
-      coordinateInput: false
+      coordinateInput: false,
+      drawUndo: false,
+      drawRedo: false
     },
     center: [64.709804, 25],
     zoom: 2
