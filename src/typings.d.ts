@@ -3,7 +3,6 @@
 declare module 'laji-form/lib/laji-form';
 declare module 'laji-map/lib/utils';
 declare module 'laji-map/lib/map';
-declare module 'query-string';
 declare const OpenSeadragon: any;
 declare let d3: any;
 declare const moment: any;
