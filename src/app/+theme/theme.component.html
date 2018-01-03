@@ -1,0 +1,120 @@
+<div class="container-fluid">
+  <h1>
+    Teemasivut
+  </h1>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue ante nunc, efficitur gravida lacus porttitor quis. Suspendisse sed aliquet risus. Etiam ullamcorper et eros eget luctus. Morbi et gravida odio. Etiam viverra, nisi id laoreet bibendum, neque purus dapibus justo, vitae scelerisque mauris diam ut odio. Morbi ligula magna, fermentum vel nisl vel, suscipit pretium lectus. Morbi ac facilisis ex, a venenatis mi.
+  </p>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <strong>Lajitietokeskuksen palvelut</strong>
+    </div>
+    <div class="panel-body">
+      <table class="table table-bordered">
+        <tr>
+          <th>
+            <a [routerLink]="['/theme/identify'] | localize">
+              {{ 'navigation.identify' | translate }}
+            </a>
+          </th>
+          <td>
+            Selaile lajilleen määritämättömien havintojen kuvia ja ehdota lajimäärityksiä.
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <strong>Paikkatieto</strong>
+    </div>
+    <div class="panel-body">
+      <table class="table table-bordered">
+        <tr>
+          <th>
+            <a [routerLink]="['/map'] | localize">
+              {{ 'navigation.map' | translate }}
+            </a>
+          </th>
+          <td>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vel maximus mauris, nec dignissim risus. Curabitur eget fermentum mauris. Ut.
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <a [routerLink]="['/ykj'] | localize">
+              {{ 'navigation.ykj' | translate }}
+            </a>
+          </th>
+          <td>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultricies diam odio, vitae tristique turpis.
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <a [routerLink]="['/emk'] | localize">
+              {{ 'navigation.emk' | translate }}
+            </a>
+          </th>
+          <td>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vel maximus mauris, nec dignissim risus. Curabitur eget fermentum mauris. Ut.
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <strong>Seurantatutkimukset</strong>
+    </div>
+    <div class="panel-body">
+      <table class="table table-bordered">
+        <tr>
+          <th>
+            <a [routerLink]="['/nafi'] | localize">
+              {{ 'nafi.stats.title' | translate }}
+            </a>
+          </th>
+          <td>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vel maximus mauris, nec dignissim risus. Curabitur eget fermentum mauris. Ut.
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <a [routerLink]="['/wbc'] | localize">
+              {{ 'wbc.title' | translate }}
+            </a>
+          </th>
+          <td>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultricies diam odio, vitae tristique turpis.
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <a [routerLink]="['/theme/herpetology'] | localize">
+              {{ 'navigation.herpetology' | translate }}
+            </a>
+          </th>
+          <td>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vel maximus mauris, nec dignissim risus. Curabitur eget fermentum mauris. Ut.
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <a href="https://satelliitti.laji.fi" target="_blank" rel="noopener">
+              {{ 'navigation.satelliitti' | translate }}
+            </a>
+            <i class="glyphicon glyphicon-new-window small"></i>
+          </th>
+          <td>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultricies diam odio, vitae tristique turpis.
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</div>

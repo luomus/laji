@@ -29,6 +29,7 @@ import { WbcOwnSubmissionsComponent } from './wbc/wbc-own-submissions/wbc-own-su
 import { IdentifyComponent } from './identify/identify.component';
 import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
 import { NamedPlaceModule } from '../shared-modules/named-place/named-place.module';
+import { ThemeComponent } from './theme.component';
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import { NamedPlaceModule } from '../shared-modules/named-place/named-place.modu
     WbcInstructionsComponent,
     WbcOwnSubmissionsComponent,
     IdentifyComponent,
-    NafiTemplatesComponent
+    NafiTemplatesComponent,
+    ThemeComponent
   ],
   providers: [ ResultService ]
 })

@@ -18,8 +18,10 @@ import { WbcOwnSubmissionsComponent } from './wbc/wbc-own-submissions/wbc-own-su
 import { IdentifyComponent } from './identify/identify.component';
 import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
 import { NamedPlaceComponent } from '../shared-modules/named-place/named-place/named-place.component';
+import { ThemeComponent } from './theme.component';
 
 const routes: Routes = [
+  {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
   {
     path: 'wbc',
     component: WbcComponent,
