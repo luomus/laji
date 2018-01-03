@@ -14,14 +14,23 @@ export interface LajiMapOptions {
   markerPopupOffset?: number;
   featurePopupOffset?: number;
   controls?: {
-    draw?: boolean;
-    drawCopy?: boolean;
-    drawUndo?: boolean;
-    drawRedo?: boolean;
-    drawClear?: boolean;
+    draw?: {
+      marker?: boolean;
+      polyline?: boolean;
+      polygon?: boolean;
+      circle?: boolean;
+      rectangle?: boolean;
+      copy?: boolean;
+      upload?: boolean;
+      undo?: boolean;
+      redo?: boolean;
+      clear?: boolean;
+      delete?: boolean;
+      reverse?: boolean;
+      coordinateInput?: boolean;
+    } | boolean;
     coordinates?: boolean;
     lineTransect?: boolean;
-    coordinateInput?: boolean;
   };
   on?: {
     tileLayerChange?: (arg: {tileLayerName: string, type: string, target: any}) => void;
