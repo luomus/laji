@@ -21,9 +21,11 @@
           [overlayNames]="overlayNames"
           [availableTileLayerNamesBlacklist]="['pohjakartta']"
           [controlSettings]="{
-           drawCopy: true,
-           drawUpload: true,
-           drawClear: true,
+           draw: {
+            copy: true,
+            upload: true,
+            clear: true
+           },
            coordinates: true
           }"
           [lang]="translate.currentLang"

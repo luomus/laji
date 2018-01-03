@@ -44,13 +44,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
   @Input() zoom = 1;
   @Input() tileOpacity: number;
   @Input() controlSettings: any = {
-    draw: false,
-    drawCopy: false,
-    drawClear: false,
-    coordinates: false,
-    coordinateInput: false,
-    drawUndo: false,
-    drawRedo: false
+    draw: false
   };
   @Input() settingsKey: string;
   @Input() overlayNames: string[];
