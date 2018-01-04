@@ -8,13 +8,13 @@
           </div>
         </div>
         <div style="margin-top: 20px;" class="row">
+          <laji-stat-item [colClass]="'col-md-4 col-sm-5'" [description]="'home.carousel.observations' | translate">
+            <laji-observation-count [lightLoader]="true" [query]="{cache: true}"></laji-observation-count>
+          </laji-stat-item>
           <laji-stat-item [colClass]="'col-md-3 col-sm-4'" [description]="'home.carousel.species' | translate">
             <laji-observation-count [lightLoader]="true" [field]="'unit.linkings.taxon.id'"
                                     [query]="{taxonRankId: 'MX.species', cache: true}">
             </laji-observation-count>
-          </laji-stat-item>
-          <laji-stat-item [colClass]="'col-md-4 col-sm-5'" [description]="'home.carousel.observations' | translate">
-            <laji-observation-count [lightLoader]="true" [query]="{cache: true}"></laji-observation-count>
           </laji-stat-item>
           <laji-stat-item [colClass]="'col-md-3 col-sm-3'" [description]="'home.carousel.collections' | translate">
             <laji-observation-count [lightLoader]="true" [field]="'document.collectionId'"
