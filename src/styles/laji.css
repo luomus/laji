@@ -86,6 +86,10 @@ laji-locale-sv > div,
   content: "";
 }
 
+.dark-bg {
+  background-color: #ECF0F1;
+}
+
 
 #footer footer {
   flex: none;

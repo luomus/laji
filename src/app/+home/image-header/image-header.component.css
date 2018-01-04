@@ -17,6 +17,10 @@
   height: 300px;
 }
 
+.text-container {
+  margin-top: 20px;
+}
+
 @media (min-width: 1200px) {
   /*
   .header-image {

@@ -575,5 +575,6 @@
   "annotationBySystem": "Tähän havaintoon on tehty automaattinen laatumerkintä.",
   "showSpeciesCard": "Näytä lajikortti",
   "closed.title": "Suljettu",
-  "closed.intro": "Vihko on suljettu huoltotöiden ajaksi. Ilmoitamme <a href=\"/\">etusivulla</a>, kun se on jälleen käytettävissä."
+  "closed.intro": "Vihko on suljettu huoltotöiden ajaksi. Ilmoitamme <a href=\"/\">etusivulla</a>, kun se on jälleen käytettävissä.",
+  "home.identify": "Auta tunnistamaan havaintoja"
 }

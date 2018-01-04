@@ -7,7 +7,7 @@
             <img class="pull-left" src="https://cdn.laji.fi/images/logos/LAJI_FI_valk.png"/>
           </div>
         </div>
-        <div style="margin-top: 20px;" class="row">
+        <div class="row text-container">
           <laji-stat-item [colClass]="'col-md-4 col-sm-5'" [description]="'home.carousel.observations' | translate">
             <laji-observation-count [lightLoader]="true" [query]="{cache: true}"></laji-observation-count>
           </laji-stat-item>
@@ -30,7 +30,7 @@
             <img class="pull-left" src="https://cdn.laji.fi/images/logos/LAJI_FI_valk.png"/>
           </div>
         </div>
-        <div style="margin-top: 20px;" class="row">
+        <div class="row text-container">
           <laji-stat-item [colClass]="'col-lg-4 col-md-5 col-sm-6'" [description]="'home.carousel.preserved' | translate" colClass="col-sm-4">
             <laji-observation-count [lightLoader]="true"
                                     [query]="{superRecordBasis: 'PRESERVED_SPECIMEN', cache: true}"></laji-observation-count>

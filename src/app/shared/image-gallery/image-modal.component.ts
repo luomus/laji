@@ -67,6 +67,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   @Input() view: 'compact'|'full' = 'compact';
   @Input() modalImages: Image[];
   @Input() imagePointer: number;
+  @Input() showPaginator: number;
   @Input() showViewSwitch = false;
   @Input() showPopover = false;
   @Output() cancelEvent = new EventEmitter<any>();

@@ -20,6 +20,8 @@ export class GalleryComponent implements OnChanges {
   @Input() extendedInfo = false;
   @Input() tick;
   @Input() pageSize = 50;
+  @Input() limit = 1000;
+  @Input() showPaginator = true;
   @Input() shortPager = false;
   @Input() eventOnImageClick = false;
   @Input() showViewSwitch = false;
@@ -74,12 +76,16 @@ export class GalleryComponent implements OnChanges {
       .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .map((data) => {
         const images = [];
-        this.total = data.total;
+        this.total = Math.min(data.total, this.limit);
         if (data.results) {
-          data.results.map((items) => {
+          let cnt = 1;
+          data.results.map(items => {
             const verbatim = (items['unit'] && items['unit']['taxonVerbatim']) ? items['unit']['taxonVerbatim'] : '';
             ['unit'].map((key) => {
               if (items[key] && items[key].media) {
+                if (++cnt >= this.limit) {
+                  return;
+                }
                 items[key].media.map(media => {
                   media['documentId'] = items['document']['documentId'];
                   media['unitId'] = items['unit']['unitId'];
