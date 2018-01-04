@@ -13,7 +13,7 @@
         </a>
       </div>
       <div>
-        <span class="label label-default">{{item.tag}}</span>
+        <span class="label label-default">{{item.tag | translate}}</span>
         <span class="pull-right">{{ item.posted | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY' }}</span>
       </div>
     </div>

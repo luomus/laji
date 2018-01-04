@@ -576,5 +576,7 @@
   "showSpeciesCard": "Näytä lajikortti",
   "closed.title": "Suljettu",
   "closed.intro": "Vihko on suljettu huoltotöiden ajaksi. Ilmoitamme <a href=\"/\">etusivulla</a>, kun se on jälleen käytettävissä.",
-  "home.identify": "Auta tunnistamaan havaintoja"
+  "home.identify": "Auta tunnistamaan havaintoja",
+  "release": "tiedote",
+  "technical": "tekninen"
 }
