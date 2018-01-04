@@ -36,14 +36,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() maxBounds: [[number, number], [number, number]] = [[58.0, 19.0], [72.0, 35.0]];
   @Input() mapOptions: LajiMapOptions = {
     controls: {
-      draw: false,
-      drawCopy: false,
-      drawClear: false,
-      coordinates: false,
-      lineTransect: false,
-      coordinateInput: false,
-      drawUndo: false,
-      drawRedo: false
+      draw: false
     },
     center: [64.709804, 25],
     zoom: 2
