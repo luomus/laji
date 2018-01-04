@@ -1,25 +1,46 @@
 <h3>
-  Tee tallennuslomake
+  Tee massatallennus pohja
 </h3>
 
-<div class="row">
+<div class="row form-meta">
   <div class="col-sm-5">
     <select class="form-control" [ngModel]="formID" (ngModelChange)="formSelected($event)" #form>
+      <option value="" selected disabled>Valitse lomake</option>
       <option *ngFor="let form of forms$ | async" [value]="form.id">
         {{form.title}}
       </option>
     </select>
   </div>
-</div>
-
-<div class="row" *ngIf="formID">
-  <div class="col-sm-6">
-    <ul>
-      <li *ngFor="let field of fields">
-        {{field.label}} - {{field.key}} ({{field.parent}})
-      </li>
-    </ul>
-    <!--{{fields | json}}-->
+  <div class="col-sm-7">
+    <button (click)="selectAll()" type="button" class="btn btn-default" [class.disabled]="!formID">
+      Valitse kaikki
+    </button>
+    <button (click)="clearSelected()" type="button" class="btn btn-default" [class.disabled]="!formID || selected.length === 0">
+      Poista valinnat
+    </button>
+    <button (click)="generate()" type="button" class="btn btn-default pull-right" [class.disabled]="!formID">
+      Tee pohja
+    </button>
   </div>
 </div>
-
+<ng-container *ngIf="formID">
+  <div class="row">
+    <div class="col-sm-4" *ngIf="parents.indexOf('document') > -1 || parents.indexOf('gatheringEvent') > -1 || parents.indexOf('taxonCensus') > -1">
+      <laji-field-list (toggle)="toggleField($event)" [selected]="selected" [title]="'MY.document' | label" [fields]="fields" parent="document" *ngIf="parents.indexOf('document') > -1"></laji-field-list>
+      <laji-field-list (toggle)="toggleField($event)" [selected]="selected" [title]="'MZ.gatheringEvent' | label" [fields]="fields" parent="gatheringEvent" *ngIf="parents.indexOf('gatheringEvent') > -1"></laji-field-list>
+      <laji-field-list (toggle)="toggleField($event)" [selected]="selected" [title]="'MY.taxonCensusClass' | label" [fields]="fields" parent="taxonCensus" *ngIf="parents.indexOf('taxonCensus') > -1"></laji-field-list>
+    </div>
+    <div class="col-sm-4" *ngIf="parents.indexOf('gatherings') > -1 || parents.indexOf('gatheringFact') > -1">
+      <laji-field-list (toggle)="toggleField($event)" [selected]="selected" [title]="'MY.gathering' | label" [fields]="fields" parent="gatherings" *ngIf="parents.indexOf('gatherings') > -1"></laji-field-list>
+      <laji-field-list (toggle)="toggleField($event)" [selected]="selected" [title]="'MY.gatheringFactClass' | label" [fields]="fields" parent="gatheringFact" *ngIf="parents.indexOf('gatheringFact') > -1"></laji-field-list>
+    </div>
+    <div class="col-sm-4" *ngIf="parents.indexOf('identifications') > -1 || parents.indexOf('units') > -1 || parents.indexOf('unitFact') > -1">
+      <laji-field-list (toggle)="toggleField($event)" [selected]="selected" [title]="'MY.identification' | label" [fields]="fields" parent="identifications" *ngIf="parents.indexOf('identifications') > -1"></laji-field-list>
+      <laji-field-list (toggle)="toggleField($event)" [selected]="selected" [title]="'MY.unit' | label" [fields]="fields" parent="units" *ngIf="parents.indexOf('units') > -1"></laji-field-list>
+      <laji-field-list (toggle)="toggleField($event)" [selected]="selected" [title]="'MY.unitFactClass' | label" [fields]="fields" parent="unitFact" *ngIf="parents.indexOf('unitFact') > -1"></laji-field-list>
+    </div>
+  </div>
+  <p>
+    <span class="required">*</span> pakollinen kenttä
+  </p>
+</ng-container>

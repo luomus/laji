@@ -6,6 +6,9 @@ import { ToolsComponent } from './tools.component';
 import { ImporterComponent } from './importer/importer.component';
 import { ExcelGeneratorComponent } from './excel-generator/excel-generator.component';
 import { SharedModule } from '../../shared/shared.module';
+import { FieldListComponent } from './excel-generator/field-list/field-list.component';
+import { LevelFilterPipe } from './excel-generator/pipes/level-filter.pipe';
+import { SpreadSheetService } from './service/spread-sheet.service';
 
 @NgModule({
   imports: [
@@ -13,6 +16,7 @@ import { SharedModule } from '../../shared/shared.module';
     SharedModule,
     ToolsRoutingModule
   ],
-  declarations: [ToolsComponent, ImporterComponent, ExcelGeneratorComponent]
+  declarations: [ToolsComponent, ImporterComponent, ExcelGeneratorComponent, FieldListComponent, LevelFilterPipe],
+  providers: [SpreadSheetService]
 })
 export class ToolsModule { }
