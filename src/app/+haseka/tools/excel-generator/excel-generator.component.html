@@ -1,0 +1,25 @@
+<h3>
+  Tee tallennuslomake
+</h3>
+
+<div class="row">
+  <div class="col-sm-5">
+    <select class="form-control" [ngModel]="formID" (ngModelChange)="formSelected($event)" #form>
+      <option *ngFor="let form of forms$ | async" [value]="form.id">
+        {{form.title}}
+      </option>
+    </select>
+  </div>
+</div>
+
+<div class="row" *ngIf="formID">
+  <div class="col-sm-6">
+    <ul>
+      <li *ngFor="let field of fields">
+        {{field.label}} - {{field.key}} ({{field.parent}})
+      </li>
+    </ul>
+    <!--{{fields | json}}-->
+  </div>
+</div>
+
