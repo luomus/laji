@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
-import { Form } from '../../../shared/model';
+import { Form } from '../../../shared/model/Form';
 
 interface FormField {
   label: string;
