@@ -6,6 +6,7 @@ export const environment = {
   forAuthorities: false,
   systemID: 'KE.389',
   formWhitelist: [],
+  massForms: [],
   defaultForm: 'JX.519',
   nafiForm: 'JX.123648',
   invasiveControlForm: '',

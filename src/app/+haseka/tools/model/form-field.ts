@@ -7,4 +7,6 @@ export interface FormField {
   enum?: string[];
   enumNames?: string[];
   default?: any;
+  col?: string;
+  previousValue?: any;
 }

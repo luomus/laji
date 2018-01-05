@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
+import { environment } from '../../../../../environments/environment';
 import { FormService } from '../../../../shared/service/form.service';
 
 @Component({
@@ -30,7 +31,7 @@ export class FormSelectComponent implements OnInit, OnDestroy {
     this.formSub = this.formService.getAllForms(this.translateService.currentLang)
       .map(forms => forms.sort((a, b) => a.title.localeCompare(b.title)))
       .subscribe(forms => {
-        this.forms = forms;
+        this.forms = forms.filter(form => environment.massForms.indexOf(form.id) > -1);
         this.cdr.markForCheck();
       })
   }

@@ -1,6 +1,7 @@
 export const environment = {
   systemID: 'KE.601',
   formWhitelist: ['JX.519', 'JX.6485'],
+  massForms: ['JX.519'],
   defaultForm: 'JX.519',
   nafiForm: 'JX.123648',
   wbcForm: 'MHL.3',

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MappingService } from './service/mapping.service';
 
+import { DatatableModule } from '../../shared-modules/datatable/datatable.module';
 import { ToolsRoutingModule } from './tools-routing.module';
 import { ToolsComponent } from './tools.component';
 import { ImporterComponent } from './importer/importer.component';
@@ -16,7 +17,8 @@ import { FormSelectComponent } from './shared/form-select/form-select.component'
   imports: [
     CommonModule,
     SharedModule,
-    ToolsRoutingModule
+    ToolsRoutingModule,
+    DatatableModule
   ],
   declarations: [
     ToolsComponent,
