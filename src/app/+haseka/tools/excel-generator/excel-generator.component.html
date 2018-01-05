@@ -3,12 +3,7 @@
 </h3>
 <div class="row form-meta">
   <div class="col-sm-5">
-    <select class="form-control" [ngModel]="formID" (ngModelChange)="formSelected($event)">
-      <option value="" selected disabled>Valitse lomake</option>
-      <option *ngFor="let form of forms$ | async" [value]="form.id">
-        {{form.title}}
-      </option>
-    </select>
+    <laji-form-select [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
   </div>
   <div class="col-sm-7">
     <button (click)="selectAll()" type="button" class="btn btn-default" [class.disabled]="!formID">

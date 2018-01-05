@@ -29,17 +29,10 @@ export class ExcelGeneratorComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) { }
 
-  ngOnInit() {
-    this.forms$ = this.formService.getAllForms(this.translateService.currentLang)
-      .map(forms => forms.sort((a, b) => a.title.localeCompare(b.title)))
-  }
+  ngOnInit() { }
 
   formSelected(event) {
-    this.formID = event;
-    this.initFormFields();
-  }
-
-  initFormFields() {
+    this.formID = event.id;
     this.formService.getForm(this.formID, this.translateService.currentLang)
       .subscribe((form: any) => {
         this.formTitle = form.title;
@@ -72,7 +65,7 @@ export class ExcelGeneratorComponent implements OnInit {
 
   generate() {
     this.spreadSheetService.generate(
-      'Vihko - ' + (this.formTitle || this.formID),
+      'Vihko - ' + this.formTitle + ' (' + this.formID + ')',
       this.fields.filter(field => this.selected.indexOf(field.key) > -1 || field.required),
       this.useLabels,
       this.type
