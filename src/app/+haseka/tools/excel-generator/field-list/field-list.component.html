@@ -4,7 +4,8 @@
   </div>
   <div class="panel-body">
     <ul class="list-group">
-      <li class="list-group-item link"
+      <li class="list-group-item"
+          [class.link]="!field.required"
           *ngFor="let field of fields | levelFilter:parent"
           (click)="onClick(field)"
           [ngClass]="{active: selected.indexOf(field.key) > -1 || field.required}">

@@ -1,10 +1,9 @@
 <h3>
   Tee massatallennus pohja
 </h3>
-
 <div class="row form-meta">
   <div class="col-sm-5">
-    <select class="form-control" [ngModel]="formID" (ngModelChange)="formSelected($event)" #form>
+    <select class="form-control" [ngModel]="formID" (ngModelChange)="formSelected($event)">
       <option value="" selected disabled>Valitse lomake</option>
       <option *ngFor="let form of forms$ | async" [value]="form.id">
         {{form.title}}
@@ -21,6 +20,12 @@
     <button (click)="generate()" type="button" class="btn btn-default pull-right" [class.disabled]="!formID">
       Tee pohja
     </button>
+    <!--
+    <select class="form-control pull-right type-select" [(ngModel)]="type">
+      <option value="xlsx" selected>.xlsx</option>
+      <option value="ods">.ods</option>
+    </select>
+    -->
   </div>
 </div>
 <ng-container *ngIf="formID">
@@ -44,3 +49,6 @@
     <span class="required">*</span> pakollinen kenttä
   </p>
 </ng-container>
+<!--
+<pre>{{fields | json}}</pre>
+-->

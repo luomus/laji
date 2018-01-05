@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MappingService } from './service/mapping.service';
 
 import { ToolsRoutingModule } from './tools-routing.module';
 import { ToolsComponent } from './tools.component';
@@ -17,6 +18,6 @@ import { SpreadSheetService } from './service/spread-sheet.service';
     ToolsRoutingModule
   ],
   declarations: [ToolsComponent, ImporterComponent, ExcelGeneratorComponent, FieldListComponent, LevelFilterPipe],
-  providers: [SpreadSheetService]
+  providers: [SpreadSheetService, MappingService]
 })
 export class ToolsModule { }

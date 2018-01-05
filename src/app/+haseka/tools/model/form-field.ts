@@ -4,4 +4,7 @@ export interface FormField {
   parent: string;
   required: boolean;
   type: string;
+  enum?: string[];
+  enumNames?: string[];
+  default?: any;
 }
