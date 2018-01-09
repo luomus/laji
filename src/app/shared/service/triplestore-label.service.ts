@@ -7,9 +7,13 @@ import { MetadataService } from './metadata.service';
 import { CacheService } from './cache.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 import { Util } from './util.service';
+import { InformalTaxonGroup } from '../model';
+import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 
 @Injectable()
 export class TriplestoreLabelService {
+
+  static cache = {};
 
   static readonly cacheProps = 'triplestoreLabels';
   static readonly cacheClasses = 'triplestoreClassLabels';
@@ -20,12 +24,27 @@ export class TriplestoreLabelService {
   constructor(private metadataApi: MetadataApi,
               private metadataService: MetadataService,
               private logger: Logger,
+              private informalTaxonService: InformalTaxonGroupApi,
               private cacheService: CacheService
   ) {
     this.getAllLabels();
   };
 
   public get(key, lang): Observable<string> {
+    const parts = key.split('.');
+    switch (parts[0]) {
+      case 'MVL':
+        if (TriplestoreLabelService.cache[key]) {
+          return Observable.of(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
+        }
+        return this.informalTaxonService.informalTaxonGroupFindById(key, 'multi')
+          .map((group: InformalTaxonGroup) => group.name)
+          .map(name => {
+            TriplestoreLabelService.cache[key] = name;
+            return MultiLangService.getValue(TriplestoreLabelService.cache[key], lang);
+          });
+    }
+
     if (this.labels) {
       return Observable.of(MultiLangService.getValue(this.labels[key], lang));
     } else if (this.pending) {

@@ -88,6 +88,7 @@ import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
 import { ObservationGroupSelectComponent } from '../+observation/group-select/group-select.component';
 import { SourcePipe } from './pipe/source.pipe';
 import { TaxonNamePipe } from './pipe/taxon-name.pipe';
+import { InformalTaxonGroupApi } from './api/InformalTaxonGroupApi';
 
 
 @NgModule({
@@ -135,6 +136,7 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
+        InformalTaxonGroupApi,
         LajiExternalService,
         UserService,
         NewsApi,

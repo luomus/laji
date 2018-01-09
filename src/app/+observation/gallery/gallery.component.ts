@@ -65,7 +65,7 @@ export class GalleryComponent implements OnChanges {
     query.hasUnitMedia = true;
     this.cd.markForCheck();
     this.warehouseApi.warehouseQueryListGet(query, [
-        'unit.taxonVerbatim,unit.linkings.taxon.vernacularName,unit.linkings.taxon.scientificName',
+        'unit.taxonVerbatim,unit.linkings.taxon.vernacularName,unit.linkings.taxon.scientificName,unit.reportedInformalTaxonGroup',
         'unit.media',
         // 'gathering.media',
         // 'document.media',
@@ -79,6 +79,7 @@ export class GalleryComponent implements OnChanges {
         this.total = Math.min(data.total, this.limit);
         if (data.results) {
           data.results.map(items => {
+            const group = (items['unit'] && items['unit']['reportedInformalTaxonGroup']) ? items['unit']['reportedInformalTaxonGroup'] : '';
             const verbatim = (items['unit'] && items['unit']['taxonVerbatim']) ? items['unit']['taxonVerbatim'] : '';
             ['unit'].map((key) => {
               if (items[key] && items[key].media) {
@@ -95,7 +96,7 @@ export class GalleryComponent implements OnChanges {
                   media['scientificName'] = items['unit']
                     && items['unit']['linkings']
                     && items['unit']['linkings']['taxon']
-                    && items['unit']['linkings']['taxon']['scientificName'] || verbatim || '';
+                    && items['unit']['linkings']['taxon']['scientificName'] || verbatim || group || '';
                   images.push(media);
                 });
               }
