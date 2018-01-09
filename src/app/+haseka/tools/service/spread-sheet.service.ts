@@ -6,7 +6,7 @@ import * as FileSaver from 'file-saver';
 import { environment } from '../../../../environments/environment';
 import { TriplestoreLabelService } from '../../../shared/service';
 
-import { FormField } from '../model/form-field';
+import { FieldMap, FormField } from '../model/form-field';
 import { MappingService } from './mapping.service';
 
 @Injectable()
@@ -68,8 +68,26 @@ export class SpreadSheetService {
     this.downloadData(XLSX.write(book, {bookType: type, type: 'buffer'}), filename, type);
   }
 
-  formToFlatFields(form: any): FormField[] {
-    const result = [];
+  formToFlatFieldsLookUp(form: any, addIgnore = false): {[key: string]: FormField} {
+    const result = {};
+    this.formToFlatFields(form, addIgnore)
+      .map(field => {
+        result[field.key] = field;
+      });
+    return result;
+  }
+
+  formToFlatFields(form: any, addIgnore = false): FormField[] {
+    const result: FormField[] = [];
+    if (addIgnore) {
+      result.push({
+        parent: '',
+        required: false,
+        type: 'string',
+        key: FieldMap.ignore,
+        label: 'ignore'
+      });
+    }
     if (form && form.schema && form.schema.properties) {
       this.parserFields(form.schema, {properties: form.validators}, result, '', 'document');
     }
@@ -141,12 +159,12 @@ export class SpreadSheetService {
     }
   }
 
-  getColMapFromComments(sheet: XLSX.WorkSheet, fields: FormField[]) {
+  getColMapFromComments(sheet: XLSX.WorkSheet, fields: {[key: string]: FormField}) {
     let idx = 0, col;
     const lookup = {};
-    fields.map((field, index) => {
-      lookup[field.key.toLocaleUpperCase()] = index;
-      lookup[this.sheetHeaderLabel(field).toLocaleUpperCase()] = index;
+    Object.keys(fields).map((key) => {
+      lookup[key.toLocaleUpperCase()] = fields[key];
+      lookup[this.sheetHeaderLabel(fields[key]).toLocaleUpperCase()] = fields[key];
     });
     const map = {};
     let address = XLSX.utils.encode_cell({r: 0, c: idx});
@@ -157,7 +175,7 @@ export class SpreadSheetService {
           if (col.c.t) {
             const comment = col.c.t.toLocaleLowerCase();
             if (typeof lookup[comment] !== 'undefined') {
-              map[XLSX.utils.encode_col(idx)] = lookup[comment];
+              map[XLSX.utils.encode_col(idx)] = lookup[comment].key;
               found = true;
               break;
             }
@@ -170,15 +188,11 @@ export class SpreadSheetService {
       if (col.v) {
         const val = col.v.toLocaleUpperCase();
         if (typeof lookup[val] !== 'undefined') {
-          map[XLSX.utils.encode_col(idx)] = lookup[val];
+          map[XLSX.utils.encode_col(idx)] = lookup[val].key;
         }
       }
       address = XLSX.utils.encode_cell({r: 0, c: ++idx});
     }
-    const keys = Object.keys(map);
-    keys.map((key) => {
-      fields[map[key]].col = key;
-    });
     return map;
   }
 

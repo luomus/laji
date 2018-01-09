@@ -28,9 +28,21 @@
   </div>
   <div class="row data-container">
     <div class="col-sm-12">
-      <button type="button" class="btn btn-primary">{{'validate' | translate}}</button>
-      <button type="button" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
-      <button type="button" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
+      <button type="button" [disabled]="status !== 'importReady'" class="btn btn-primary">{{'validate' | translate}}</button>
+      <button type="button" [disabled]="status !== 'importReady'" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
+      <button type="button" [disabled]="status !== 'importReady'" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
     </div>
   </div>
 </ng-container>
+
+<div class="modal fade" bsModal #mappingModal="bs-modal" tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <laji-col-mapper *ngIf="status === 'colMapping'" (mappingDone)="colMappingDone($event)" [fields]="fields" [headers]="header" [mapping]="colMap" (fieldSelected)="mapCol($event)"></laji-col-mapper>
+        <laji-cell-value-mapping *ngIf="status === 'dataMapping'"></laji-cell-value-mapping>
+      </div>
+    </div>
+  </div>
+</div>

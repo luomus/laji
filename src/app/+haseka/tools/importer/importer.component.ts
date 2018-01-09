@@ -4,8 +4,9 @@ import * as XLSX from 'xlsx';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
 import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
 import { FormService } from '../../../shared/service/form.service';
-import { FormField } from '../model/form-field';
+import { FieldMap, FormField } from '../model/form-field';
 import { SpreadSheetService } from '../service/spread-sheet.service';
+import { ModalDirective } from 'ngx-bootstrap';
 
 @Component({
   selector: 'laji-importer',
@@ -15,16 +16,18 @@ import { SpreadSheetService } from '../service/spread-sheet.service';
 })
 export class ImporterComponent implements OnInit {
 
+  @ViewChild(ModalDirective) mappingModal: ModalDirective;
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
-  data: any;
+  data: any[];
   header: {[key: string]: string};
-  fields: FormField[] = [];
+  fields: {[key: string]: FormField};
   dataColumns: ObservationTableColumn[];
   colMap: {[key: string]: string};
   formID: string;
   form: any;
   bstr: string;
+  status: 'empty'|'importingFile'|'colMapping'|'dataMapping'|'importReady'|'validating'|'importing'|'doneOk'|'doneWithErrors' = 'empty';
 
   constructor(
     private formService: FormService,
@@ -34,13 +37,16 @@ export class ImporterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.status = 'empty';
   }
 
   onFileChange(evt: any) {
     const target: DataTransfer = <DataTransfer>(evt.target);
     if (target.files.length !== 1) {
+      this.status = 'empty';
       return;
     }
+    this.status = 'importingFile';
     const fileName = evt.target.value;
     const reader: FileReader = new FileReader();
     reader.onload = (e: any) => {
@@ -70,10 +76,12 @@ export class ImporterComponent implements OnInit {
           this.header = data.shift();
           this.data = data;
         }
-        this.fields = this.spreadSheetService.formToFlatFields(form);
+        this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, true);
         this.colMap = this.spreadSheetService.getColMapFromComments(sheet, this.fields);
 
         this.initDataColumns();
+        this.status = 'colMapping';
+        this.mappingModal.show();
         this.cdr.markForCheck();
       });
   }
@@ -109,8 +117,13 @@ export class ImporterComponent implements OnInit {
     return 'haseka.form.savePrivate';
   }
 
-  onRowSelect() {
+  mapCol(event) {
+    this.colMap = {...this.colMap, [event.col]: event.key};
+  }
 
+  colMappingDone(mapping) {
+    this.status = 'dataMapping';
+    this.colMap = mapping;
   }
 
 }

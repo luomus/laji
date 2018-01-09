@@ -1,0 +1,4 @@
+<select [ngModel]="value" (ngModelChange)="selected.emit($event)" class="form-control">
+  <option value="" disabled selected>Valitse sarakkeen merkitys</option>
+  <option *ngFor="let key of options" [value]="key">{{key === fieldMap.ignore ? (fields[key].label | translate) : (fields[key] && fields[key].label || key)}}</option>
+</select>

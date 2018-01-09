@@ -12,6 +12,9 @@ import { FieldListComponent } from './excel-generator/field-list/field-list.comp
 import { LevelFilterPipe } from './excel-generator/pipes/level-filter.pipe';
 import { SpreadSheetService } from './service/spread-sheet.service';
 import { FormSelectComponent } from './shared/form-select/form-select.component';
+import { ColMapperComponent } from './importer/col-mapper/col-mapper.component';
+import { HeaderSelectComponent } from './importer/col-mapper/header-select/header-select.component';
+import { CellValueMappingComponent } from './importer/cell-value-mapping/cell-value-mapping.component';
 
 @NgModule({
   imports: [
@@ -26,7 +29,10 @@ import { FormSelectComponent } from './shared/form-select/form-select.component'
     ExcelGeneratorComponent,
     FieldListComponent,
     LevelFilterPipe,
-    FormSelectComponent
+    FormSelectComponent,
+    ColMapperComponent,
+    HeaderSelectComponent,
+    CellValueMappingComponent
   ],
   providers: [SpreadSheetService, MappingService]
 })

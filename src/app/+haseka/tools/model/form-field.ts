@@ -1,3 +1,7 @@
+export enum FieldMap {
+  ignore = '_ignore'
+}
+
 export interface FormField {
   label: string;
   key: string;
