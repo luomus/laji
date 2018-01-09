@@ -78,15 +78,14 @@ export class GalleryComponent implements OnChanges {
         const images = [];
         this.total = Math.min(data.total, this.limit);
         if (data.results) {
-          let cnt = 1;
           data.results.map(items => {
             const verbatim = (items['unit'] && items['unit']['taxonVerbatim']) ? items['unit']['taxonVerbatim'] : '';
             ['unit'].map((key) => {
               if (items[key] && items[key].media) {
-                if (++cnt >= this.limit) {
-                  return;
-                }
                 items[key].media.map(media => {
+                  if (images.length >= this.limit) {
+                    return;
+                  }
                   media['documentId'] = items['document']['documentId'];
                   media['unitId'] = items['unit']['unitId'];
                   media['vernacularName'] = items.unit
