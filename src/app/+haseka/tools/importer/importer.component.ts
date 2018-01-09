@@ -126,4 +126,9 @@ export class ImporterComponent implements OnInit {
     this.colMap = mapping;
   }
 
+  rowMappingDone() {
+    this.status = 'importReady';
+    this.mappingModal.hide();
+  }
+
 }

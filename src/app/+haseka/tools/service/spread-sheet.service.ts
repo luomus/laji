@@ -94,6 +94,10 @@ export class SpreadSheetService {
     return result;
   }
 
+  hasInvalidValue(value: any, field: FormField) {
+    return this.mappingService.map(value, field) === null;
+  }
+
   private parserFields(form: any, validators: any, result: FormField[], root, parent, lastKey = '', lastLabel = '', required = []) {
     if (!form || !form.type || (form.options && form.options.excludeFromSpreadSheet)) {
       return;
@@ -232,8 +236,8 @@ export class SpreadSheetService {
         validation.push({
           sqref: dataRange,
           values: [
-            this.mappingService.mapBoolean(true),
-            this.mappingService.mapBoolean(false)
+            this.mappingService.mapFromBoolean(true),
+            this.mappingService.mapFromBoolean(false)
           ]
         })
       }

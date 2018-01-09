@@ -1,5 +1,6 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormField } from '../../model/form-field';
+import { SpreadSheetService } from '../../service/spread-sheet.service';
 
 @Component({
   selector: 'laji-cell-value-mapping',
@@ -12,11 +13,14 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
   @Input() fields: {[key: string]: FormField} = {};
   @Input() mapping: {[key: string]: string} = {};
 
-  cols: string[];
-  mappingDone = false;
-  currentKey;
+  @Output() done = new EventEmitter();
 
-  constructor() { }
+  cols: string[];
+  invalid: string[] = [];
+  currentKey: string;
+  allMapped = false;
+
+  constructor(private spreadsheetService: SpreadSheetService) { }
 
   ngOnInit() {
     this.initCols();
@@ -24,21 +28,34 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['fields'] && changes['fields'].isFirstChange() === false) {
+    if (changes['mapping'] && changes['mapping'].isFirstChange() === false) {
       this.initCols();
     }
   }
 
   initCols() {
-    this.cols = Object.keys(this.fields);
+    this.cols = Object.keys(this.mapping);
   }
 
   analyseNextColumn() {
-
+    const current = this.cols.shift();
+    if (!current) {
+      this.done.emit();
+      return;
+    }
+    const field = this.fields[this.mapping[current]];
+    const invalidValues = {};
+    this.data.map(row => {
+      if (this.spreadsheetService.hasInvalidValue(row[current], field)) {
+        invalidValues[row[current]] = true;
+      }
+    });
+    this.invalid = Object.keys(invalidValues);
+    if (this.invalid.length === 0) {
+      this.analyseNextColumn();
+      return;
+    }
+    this.allMapped = true;
+    this.currentKey = current;
   }
-
-  saveMapping() {
-
-  }
-
 }

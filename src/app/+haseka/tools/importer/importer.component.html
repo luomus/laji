@@ -41,7 +41,7 @@
     <div class="modal-content">
       <div class="modal-body">
         <laji-col-mapper *ngIf="status === 'colMapping'" (mappingDone)="colMappingDone($event)" [fields]="fields" [headers]="header" [mapping]="colMap" (fieldSelected)="mapCol($event)"></laji-col-mapper>
-        <laji-cell-value-mapping *ngIf="status === 'dataMapping'"></laji-cell-value-mapping>
+        <laji-cell-value-mapping *ngIf="status === 'dataMapping'" (done)="rowMappingDone()" [fields]="fields" [data]="data" [mapping]="colMap"></laji-cell-value-mapping>
       </div>
     </div>
   </div>

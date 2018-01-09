@@ -1,11 +1,15 @@
 <h1>
-  Solun arvojen linkittäminen <small>(2/2)</small>
+  Solun arvojen linkittäminen
 </h1>
 
-
+<ul>
+  <li *ngFor="let val of invalid">
+    {{val}}
+  </li>
+</ul>
 
 <div class="row">
   <div class="col-sm-12">
-    <button class="btn btn-primary pull-right" [disabled]="!mappingDone" (click)="saveMapping()">Seuraava</button>
+    <button class="btn btn-primary pull-right" [disabled]="!allMapped" (click)="analyseNextColumn()">Seuraava</button>
   </div>
 </div>

@@ -24,6 +24,9 @@ export class ColMapperComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.initCols();
     this.initAllFields();
+    if (!this.missingMappings()) {
+      this.mappingDone.emit(this.mapping);
+    }
   }
 
   ngOnChanges(change: SimpleChanges) {
@@ -41,7 +44,7 @@ export class ColMapperComponent implements OnInit, OnChanges {
   }
 
   missingMappings() {
-    return this.cols.length !== Object.keys(this.mapping).length;
+    return this.cols.length === 0 || this.cols.length !== Object.keys(this.mapping).length;
   }
 
   saveMapping() {
