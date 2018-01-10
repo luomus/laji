@@ -1,3 +1,5 @@
+export const DOCUMENT_LEVEL = 'document';
+
 export enum FieldMap {
   ignore = '_ignore'
 }

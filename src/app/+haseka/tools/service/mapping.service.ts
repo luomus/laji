@@ -25,14 +25,20 @@ export class MappingService {
 
   constructor(private translationService: TranslateService) { }
 
-  map(value: any, field?: FormField) {
+  map(value: any, field: FormField) {
     switch (field.type) {
       case 'string':
+        if (field.key.endsWith('[*]')) {
+          value = this.valueToArray(value, field);
+        }
         if (!field.enum) {
           return value;
         }
         this.initStringMap(field);
-        return this.mapping.string[field.key] || null;
+        if (Array.isArray(value)) {
+          return value.map(val => this.mapping.string[field.key] && this.mapping.string[field.key][val.toUpperCase()] || null);
+        }
+        return this.mapping.string[field.key] && this.mapping.string[field.key][value.toUpperCase()] || null;
       case 'number':
         const num = Number(value);
         if (isNaN(num)) {
@@ -40,9 +46,13 @@ export class MappingService {
         }
         return num;
       case 'boolean':
-        return this.mapFromBoolean(value);
+        return this.mapToBoolean(value);
     }
     return null;
+  }
+
+  valueToArray(value: any, field: FormField) {
+    return value.split(';').map(val => val.trim());
   }
 
   reverseMap(value: any, field: FormField): any {
@@ -61,9 +71,9 @@ export class MappingService {
       this.mapping.string[field.key] = {};
     }
     field.enum.map((value, idx) => {
-      const label = field.enumNames[idx].toLocaleUpperCase();
-      this.mapping.string[value.toLocaleUpperCase()] = value;
-      this.mapping.string[label] = value;
+      const label = field.enumNames[idx].toUpperCase();
+      this.mapping.string[field.key][value.toUpperCase()] = value;
+      this.mapping.string[field.key][label.toUpperCase()] = value;
     });
   }
 
@@ -71,7 +81,7 @@ export class MappingService {
     if (!this.mapping.boolean) {
       this.initBooleanMapping();
     }
-    return this.mapping.boolean[value] || null;
+    return this.mapping.boolean[value.toUpperCase()] || null;
   }
 
   mapFromBoolean(value: boolean): string {
@@ -89,12 +99,12 @@ export class MappingService {
     }
     for (const key in this.booleanMap.true) {
       if (this.booleanMap.true.hasOwnProperty(key)) {
-        this.mapping.boolean[this.booleanMap.true[key]] = true;
+        this.mapping.boolean[this.booleanMap.true[key].toUpperCase()] = true;
       }
     }
     for (const key in this.booleanMap.false) {
       if (this.booleanMap.true.hasOwnProperty(key)) {
-        this.mapping.boolean[this.booleanMap.true[key]] = false;
+        this.mapping.boolean[this.booleanMap.true[key].toUpperCase()] = false;
       }
     }
   }

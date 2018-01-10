@@ -4,7 +4,7 @@ import * as XLSX from 'xlsx';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
 import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
 import { FormService } from '../../../shared/service/form.service';
-import { FieldMap, FormField } from '../model/form-field';
+import { FormField } from '../model/form-field';
 import { SpreadSheetService } from '../service/spread-sheet.service';
 import { ModalDirective } from 'ngx-bootstrap';
 
@@ -19,7 +19,8 @@ export class ImporterComponent implements OnInit {
   @ViewChild(ModalDirective) mappingModal: ModalDirective;
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
-  data: any[];
+  data: {[key: string]: any}[];
+  parsedData: {document: Document, rows: {[row: number]: {[level: string]: number}}}[];
   header: {[key: string]: string};
   fields: {[key: string]: FormField};
   dataColumns: ObservationTableColumn[];
@@ -129,6 +130,12 @@ export class ImporterComponent implements OnInit {
   rowMappingDone() {
     this.status = 'importReady';
     this.mappingModal.hide();
+    this.cdr.markForCheck();
+  }
+
+  validate() {
+    // this.status = 'validating';
+    this.parsedData = this.spreadSheetService.flatFieldsToDocuments(this.data, this.colMap, this.fields);
   }
 
 }

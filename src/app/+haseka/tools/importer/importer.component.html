@@ -28,12 +28,16 @@
   </div>
   <div class="row data-container">
     <div class="col-sm-12">
-      <button type="button" [disabled]="status !== 'importReady'" class="btn btn-primary">{{'validate' | translate}}</button>
+      <button type="button" [disabled]="status !== 'importReady'" (click)="validate()" class="btn btn-primary">{{'validate' | translate}}</button>
+
       <button type="button" [disabled]="status !== 'importReady'" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
       <button type="button" [disabled]="status !== 'importReady'" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
     </div>
   </div>
 </ng-container>
+<pre>
+{{parsedData | json}}
+</pre>
 
 <div class="modal fade" bsModal #mappingModal="bs-modal" tabindex="-1" role="dialog"
      aria-labelledby="mySmallModalLabel" aria-hidden="true">

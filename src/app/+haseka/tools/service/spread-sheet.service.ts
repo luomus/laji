@@ -6,7 +6,7 @@ import * as FileSaver from 'file-saver';
 import { environment } from '../../../../environments/environment';
 import { TriplestoreLabelService } from '../../../shared/service';
 
-import { FieldMap, FormField } from '../model/form-field';
+import { DOCUMENT_LEVEL, FieldMap, FormField } from '../model/form-field';
 import { MappingService } from './mapping.service';
 
 @Injectable()
@@ -89,13 +89,145 @@ export class SpreadSheetService {
       });
     }
     if (form && form.schema && form.schema.properties) {
-      this.parserFields(form.schema, {properties: form.validators}, result, '', 'document');
+      this.parserFields(form.schema, {properties: form.validators}, result, '', DOCUMENT_LEVEL);
     }
     return result;
   }
 
-  hasInvalidValue(value: any, field: FormField) {
-    return this.mappingService.map(value, field) === null;
+  flatFieldsToDocuments(
+    data: {[col: string]: any}[],
+    mapping: {[col: string]: string},
+    fields: {[key: string]: FormField}
+  ): {document: Document, rows: {[row: number]: {[level: string]: number}}}[] {
+    const cols = Object.keys(mapping);
+    const parents = cols.reduce((previous, current) => {
+      const field = fields[mapping[current]];
+      if (previous.indexOf(field.parent) === -1) {
+        previous.push(field.parent);
+      }
+      return previous;
+    }, []);
+    const spot = parents.reduce((previous, current) => ({...previous, [current]: 0}), {});
+    this.resetPreviousValue(fields);
+
+    return this.rowsToDocument(data, mapping, fields, spot);
+  }
+
+  private rowsToDocument(
+    rows: {[col: string]: any}[],
+    mapping: {[col: string]: string},
+    fields: {[key: string]: FormField},
+    spot: {[level: string]: number}
+  ): {document: Document, rows: {[row: number]: {[level: string]: number}}}[] {
+    // TODO: Handle identifications (only one per unit)
+    const cols = Object.keys(mapping);
+    const result: {document: Document, rows: {[row: number]: {[level: string]: number}}}[] = [];
+    const allLevels = [];
+    let document: any = {};
+    let rowSpots: {[row: number]: {[level: string]: number}} = {};
+    cols.map(col => {
+      const field = fields[mapping[col]];
+      if (allLevels.indexOf(field.parent) === -1) {
+        allLevels.push(field.parent);
+      }
+    });
+    rows.map((row, rowIdx) => {
+      const newLevels = [];
+      const values = {};
+      cols.map((col) => {
+        const field = fields[mapping[col]];
+        values[field.key] = this.mappingService.map(row[col], field);
+        if (field.previousValue !== null && field.previousValue !== row[col] && newLevels.indexOf(field.parent) === -1) {
+          newLevels.push(field.parent);
+        }
+        field.previousValue = row[col];
+      });
+      if (newLevels.indexOf(DOCUMENT_LEVEL)  !== -1) {
+        this.resetPreviousValue(fields);
+        Object.keys(spot).map(level => spot[level] = 0);
+        result.push({document: document, rows: rowSpots});
+        document = {};
+        rowSpots = {};
+      } else {
+        const toZero = [];
+        newLevels.map(level => {
+          cols.map(col => {
+            const field = fields[mapping[col]];
+            allLevels.map(subLevel => {
+              if (subLevel === level || toZero.indexOf(subLevel) > -1) {
+                return;
+              }
+              const subLevelRegExp = new RegExp(`\\b${level}\\[\\*\\].*\\b${subLevel}\\[\\*\\]`, 'g');
+              if (subLevelRegExp.test(field.key)) {
+                toZero.push(subLevel);
+              }
+            });
+          });
+          spot[level]++;
+        });
+        toZero.map(subLevel => {
+          spot[subLevel] = 0;
+          this.resetPreviousValue(fields, subLevel);
+        });
+      }
+      rowSpots[rowIdx] = {...spot};
+      this.valuesToDocument(this.relativePahtToAbsolute(values, spot), document);
+    });
+    result.push({document: document, rows: rowSpots});
+
+    return result;
+  }
+
+  private relativePahtToAbsolute(values: {[key: string]: any}, spot: {[level: string]: number}): {[key: string]: any} {
+    const replaces: {from: string, to: string}[] = [];
+    const result = {};
+    Object.keys(spot).map(level => {
+      if (level === DOCUMENT_LEVEL) {
+        return;
+      }
+      replaces.push({from: `\\b${level}\\[\\*\\]`, to: `${level}[${spot[level]}]`})
+    });
+    Object.keys(values).map(key => {
+      let targetKey = key;
+      replaces.map(replace => {
+        const regExp = new RegExp(replace.from, 'g');
+        targetKey = targetKey.replace(regExp, replace.to);
+      });
+      if (targetKey.endsWith('[*]')) {
+        targetKey = targetKey.slice(0, -3);
+      }
+      result[targetKey] = values[key];
+    });
+    return result;
+  }
+
+  private valuesToDocument(values: {[key: string]: any}, document: any) {
+    Object.keys(values).map(path => {
+      const re = /[.(\[\])]/;
+      const parts = path.split(re).filter(value => value !== '');
+      let pointer = document;
+      let now: string|number = parts.shift();
+      while (parts.length > 0) {
+        if (!pointer[now]) {
+          pointer[now] = this.isNumber(parts[1] || '') ? {} : [];
+        }
+        pointer = pointer[now];
+        now = parts.shift();
+      }
+      pointer[now] = values[path];
+    });
+  }
+
+  private isNumber(value: any) {
+    return !isNaN(Number(value));
+  }
+
+  private resetPreviousValue(fields: {[key: string]: FormField}, level?: string) {
+    Object.keys(fields).map(key => {
+      if ((level && fields[key].parent === level) || !level) {
+        fields[key].previousValue = null;
+      }
+    });
   }
 
   private parserFields(form: any, validators: any, result: FormField[], root, parent, lastKey = '', lastLabel = '', required = []) {

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormField } from '../../model/form-field';
-import { SpreadSheetService } from '../../service/spread-sheet.service';
+import { ImportService } from '../../service/import.service';
 
 @Component({
   selector: 'laji-cell-value-mapping',
@@ -20,7 +20,7 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
   currentKey: string;
   allMapped = false;
 
-  constructor(private spreadsheetService: SpreadSheetService) { }
+  constructor(private importService: ImportService) { }
 
   ngOnInit() {
     this.initCols();
@@ -46,7 +46,7 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
     const field = this.fields[this.mapping[current]];
     const invalidValues = {};
     this.data.map(row => {
-      if (this.spreadsheetService.hasInvalidValue(row[current], field)) {
+      if (this.importService.hasInvalidValue(row[current], field)) {
         invalidValues[row[current]] = true;
       }
     });

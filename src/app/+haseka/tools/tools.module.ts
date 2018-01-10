@@ -15,6 +15,7 @@ import { FormSelectComponent } from './shared/form-select/form-select.component'
 import { ColMapperComponent } from './importer/col-mapper/col-mapper.component';
 import { HeaderSelectComponent } from './importer/col-mapper/header-select/header-select.component';
 import { CellValueMappingComponent } from './importer/cell-value-mapping/cell-value-mapping.component';
+import { ImportService } from './service/import.service';
 
 @NgModule({
   imports: [
@@ -34,6 +35,6 @@ import { CellValueMappingComponent } from './importer/cell-value-mapping/cell-va
     HeaderSelectComponent,
     CellValueMappingComponent
   ],
-  providers: [SpreadSheetService, MappingService]
+  providers: [SpreadSheetService, MappingService, ImportService]
 })
 export class ToolsModule { }
