@@ -25,6 +25,6 @@ patch-package
  
  	if(ws['!merges'] != null && ws['!merges'].length > 0) o[o.length] = (write_ws_xml_merges(ws['!merges']));
 +  if(ws['!dataValidation']) o[o.length] = write_ws_xml_datavalidation(ws['!dataValidation']);
-   
+ 
  	/* phoneticPr */
  	/* conditionalFormatting */
