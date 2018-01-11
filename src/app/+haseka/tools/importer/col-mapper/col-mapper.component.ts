@@ -11,11 +11,12 @@ export class ColMapperComponent implements OnInit, OnChanges {
 
   @Input() fields: {[key: string]: FormField};
   @Input() headers: {[key: string]: string} = {};
-  @Input() mapping: {[key: string]: string} = {};
+  @Input() colMapping: {[col: string]: string} = {};
   @Output() fieldSelected = new EventEmitter<{col: string, key: string}>();
   @Output() mappingDone = new EventEmitter<{[key: string]: string}>();
 
   allFields: string[] = [];
+  missingMapping = [];
 
   cols: string[];
 
@@ -25,7 +26,7 @@ export class ColMapperComponent implements OnInit, OnChanges {
     this.initCols();
     this.initAllFields();
     if (!this.missingMappings()) {
-      this.mappingDone.emit(this.mapping);
+      this.mappingDone.emit(this.colMapping);
     }
   }
 
@@ -36,7 +37,14 @@ export class ColMapperComponent implements OnInit, OnChanges {
   }
 
   initCols() {
+    const missing = [];
     this.cols = Object.keys(this.headers);
+    this.cols.map(col => {
+      if (!this.colMapping[col]) {
+        missing.push(col);
+      }
+    });
+    this.missingMapping = missing;
   }
 
   initAllFields() {
@@ -44,10 +52,10 @@ export class ColMapperComponent implements OnInit, OnChanges {
   }
 
   missingMappings() {
-    return this.cols.length === 0 || this.cols.length !== Object.keys(this.mapping).length;
+    return this.cols.length === 0 || this.cols.length !== Object.keys(this.colMapping).length;
   }
 
   saveMapping() {
-    this.mappingDone.emit(this.mapping);
+    this.mappingDone.emit(this.colMapping);
   }
 }

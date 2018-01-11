@@ -4,9 +4,10 @@ import { Observable } from 'rxjs/Observable';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { environment } from '../../../../environments/environment';
+import { Document } from '../../../shared/model';
 import { TriplestoreLabelService } from '../../../shared/service';
 
-import { DOCUMENT_LEVEL, FieldMap, FormField } from '../model/form-field';
+import { DOCUMENT_LEVEL, FormField, IGNORE_VALUE } from '../model/form-field';
 import { MappingService } from './mapping.service';
 
 @Injectable()
@@ -58,6 +59,10 @@ export class SpreadSheetService {
 
   }
 
+  isValidType(type) {
+    return [this.odsMimeType, this.xlsxMimeType].indexOf(type) > -1;
+  }
+
   generate(filename: string, fields: FormField[], useLabels = true, type: 'ods' | 'xlsx' = 'xlsx') {
     const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels));
     const book = XLSX.utils.book_new();
@@ -84,8 +89,9 @@ export class SpreadSheetService {
         parent: '',
         required: false,
         type: 'string',
-        key: FieldMap.ignore,
-        label: 'ignore'
+        key: IGNORE_VALUE,
+        label: 'ignore',
+        fullLabel: 'ignore'
       });
     }
     if (form && form.schema && form.schema.properties) {
@@ -97,7 +103,8 @@ export class SpreadSheetService {
   flatFieldsToDocuments(
     data: {[col: string]: any}[],
     mapping: {[col: string]: string},
-    fields: {[key: string]: FormField}
+    fields: {[key: string]: FormField},
+    formID: string
   ): {document: Document, rows: {[row: number]: {[level: string]: number}}}[] {
     const cols = Object.keys(mapping);
     const parents = cols.reduce((previous, current) => {
@@ -110,14 +117,27 @@ export class SpreadSheetService {
     const spot = parents.reduce((previous, current) => ({...previous, [current]: 0}), {});
     this.resetPreviousValue(fields);
 
-    return this.rowsToDocument(data, mapping, fields, spot);
+    return this.rowsToDocument(data, mapping, fields, spot, formID);
+  }
+
+  loadSheet(data: any) {
+    const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'binary', cellDates: true});
+    const sheetName: string = workBook.SheetNames[0];
+    const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
+
+    this.setDateFormat(sheet);
+    return [
+      <any>XLSX.utils.sheet_to_json<{[key: string]: string}>(sheet, {header: 'A'}),
+      sheet
+    ]
   }
 
   private rowsToDocument(
     rows: {[col: string]: any}[],
     mapping: {[col: string]: string},
     fields: {[key: string]: FormField},
-    spot: {[level: string]: number}
+    spot: {[level: string]: number},
+    formID: string
   ): {document: Document, rows: {[row: number]: {[level: string]: number}}}[] {
     // TODO: Handle identifications (only one per unit)
     const cols = Object.keys(mapping);
@@ -133,8 +153,11 @@ export class SpreadSheetService {
     });
     rows.map((row, rowIdx) => {
       const newLevels = [];
-      const values = {};
+      const values = {'formID': formID};
       cols.map((col) => {
+        if (!row[col]) {
+          return;
+        }
         const field = fields[mapping[col]];
         values[field.key] = this.mappingService.map(row[col], field);
         if (field.previousValue !== null && field.previousValue !== row[col] && newLevels.indexOf(field.parent) === -1) {
@@ -234,6 +257,7 @@ export class SpreadSheetService {
     if (!form || !form.type || (form.options && form.options.excludeFromSpreadSheet)) {
       return;
     }
+    const label = form.title || lastLabel;
     switch (form.type) {
       case 'object':
         if (form.properties) {
@@ -247,14 +271,15 @@ export class SpreadSheetService {
               root ? root + '.' + key : key,
               form.properties[key].type === 'object' && Object.keys(form.properties[key].properties).length > 0 ? key : parent,
               key,
-              form.title || lastLabel,
+              label,
               form.required || []
             )
           });
           if (!found) {
             result.push({
               type: form.type,
-              label: form.title || lastLabel,
+              label: label,
+              fullLabel: label + ' - ' + (this.translations[parent] || parent),
               key: root,
               parent: parent,
               required: this.hasRequiredValidator(lastKey, validators, required),
@@ -268,13 +293,14 @@ export class SpreadSheetService {
       case 'array':
         if (form.items) {
           const newParent = ['object', 'array'].indexOf(form.items.type) > -1 ? lastKey : parent;
-          this.parserFields(form.items, validators.items || validators, result, root + '[*]', newParent, lastKey, form.title || lastLabel);
+          this.parserFields(form.items, validators.items || validators, result, root + '[*]', newParent, lastKey, label);
         }
         break;
       default:
         result.push({
           type: form.type,
-          label: form.title || lastLabel,
+          label: label,
+          fullLabel: label + ' - ' + (this.translations[parent] || parent),
           key: root,
           parent: parent,
           required: this.hasRequiredValidator(lastKey, validators, required),
@@ -299,8 +325,8 @@ export class SpreadSheetService {
     let idx = 0, col;
     const lookup = {};
     Object.keys(fields).map((key) => {
-      lookup[key.toLocaleUpperCase()] = fields[key];
-      lookup[this.sheetHeaderLabel(fields[key]).toLocaleUpperCase()] = fields[key];
+      lookup[key.toUpperCase()] = fields[key];
+      lookup[fields[key].fullLabel.toUpperCase()] = fields[key];
     });
     const map = {};
     let address = XLSX.utils.encode_cell({r: 0, c: idx});
@@ -309,7 +335,7 @@ export class SpreadSheetService {
       if (Array.isArray(col.c)) {
         for (let i = 0; i < col.c.length; i++) {
           if (col.c.t) {
-            const comment = col.c.t.toLocaleLowerCase();
+            const comment = col.c.t.toUpperCase();
             if (typeof lookup[comment] !== 'undefined') {
               map[XLSX.utils.encode_col(idx)] = lookup[comment].key;
               found = true;
@@ -322,7 +348,7 @@ export class SpreadSheetService {
         }
       }
       if (col.v) {
-        const val = col.v.toLocaleUpperCase();
+        const val = col.v.toUpperCase();
         if (typeof lookup[val] !== 'undefined') {
           map[XLSX.utils.encode_col(idx)] = lookup[val].key;
         }
@@ -390,14 +416,10 @@ export class SpreadSheetService {
       } else if (field.type === 'boolean') {
         value = this.mappingService.reverseMap(value, field)
       }
-      result[0][idx] = this.sheetHeaderLabel(field);
+      result[0][idx] = field.fullLabel;
       result[1][idx] = value;
     });
     return result;
-  }
-
-  private sheetHeaderLabel(field: FormField) {
-    return field.label + ' - ' + this.translations[field.parent] || field.parent;
   }
 
   private downloadData(buffer: any, fileName: string, fileExtension: string) {

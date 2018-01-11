@@ -1,12 +1,16 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import * as XLSX from 'xlsx';
+import { Observable } from 'rxjs/Observable';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
 import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
+import { Document } from '../../../shared/model';
 import { FormService } from '../../../shared/service/form.service';
 import { FormField } from '../model/form-field';
+import { ImportService } from '../service/import.service';
+import { MappingService } from '../service/mapping.service';
 import { SpreadSheetService } from '../service/spread-sheet.service';
 import { ModalDirective } from 'ngx-bootstrap';
+import PublicityRestrictionsEnum = Document.PublicityRestrictionsEnum;
 
 @Component({
   selector: 'laji-importer',
@@ -17,7 +21,8 @@ import { ModalDirective } from 'ngx-bootstrap';
 export class ImporterComponent implements OnInit {
 
   @ViewChild(ModalDirective) mappingModal: ModalDirective;
-  @ViewChild('dataTable') public datatable: DatatableComponent;
+  @ViewChild('dataTable') datatable: DatatableComponent;
+  @ViewChild('rowNumber') rowNumberTpl: TemplateRef<any>;
 
   data: {[key: string]: any}[];
   parsedData: {document: Document, rows: {[row: number]: {[level: string]: number}}}[];
@@ -28,13 +33,19 @@ export class ImporterComponent implements OnInit {
   formID: string;
   form: any;
   bstr: string;
-  status: 'empty'|'importingFile'|'colMapping'|'dataMapping'|'importReady'|'validating'|'importing'|'doneOk'|'doneWithErrors' = 'empty';
+  errors: any;
+  valid = false;
+  priv = PublicityRestrictionsEnum.publicityRestrictionsPrivate;
+  publ = PublicityRestrictionsEnum.publicityRestrictionsPublic;
+  status: 'empty'|'invalidFileType'|'importingFile'|'colMapping'|'dataMapping'|'importReady'|'validating'|'importing'|'doneOk'|'doneWithErrors' = 'empty';
 
   constructor(
     private formService: FormService,
     private spreadSheetService: SpreadSheetService,
     private translateService: TranslateService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private importService: ImportService,
+    private mappingService: MappingService
   ) { }
 
   ngOnInit() {
@@ -47,15 +58,20 @@ export class ImporterComponent implements OnInit {
       this.status = 'empty';
       return;
     }
-    this.status = 'importingFile';
-    const fileName = evt.target.value;
     const reader: FileReader = new FileReader();
+    const fileName = evt.target.value;
+    this.status = 'importingFile';
     reader.onload = (e: any) => {
+      this.valid = false;
       this.bstr = e.target.result;
       this.formID = this.spreadSheetService.findFormIdFromFilename(fileName);
       this.initForm();
     };
-    reader.readAsBinaryString(target.files[0]);
+    if (this.spreadSheetService.isValidType(target.files[0].type)) {
+      reader.readAsBinaryString(target.files[0]);
+    } else {
+      this.status = 'invalidFileType';
+    }
   }
 
   initForm() {
@@ -65,13 +81,8 @@ export class ImporterComponent implements OnInit {
     }
     this.formService.getForm(this.formID, this.translateService.currentLang)
       .subscribe(form => {
-        const workBook: XLSX.WorkBook = XLSX.read(this.bstr, {type: 'binary', cellDates: true});
-        const sheetName: string = workBook.SheetNames[0];
-        const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
-
+        const [data, sheet] = this.spreadSheetService.loadSheet(this.bstr);
         this.bstr = undefined;
-        this.spreadSheetService.setDateFormat(sheet);
-        const data = XLSX.utils.sheet_to_json<{[key: string]: string}>(sheet, {header: 'A'});
 
         if (Array.isArray(data) || data[0]) {
           this.header = data.shift();
@@ -91,9 +102,10 @@ export class ImporterComponent implements OnInit {
     if (!this.header) {
       return;
     }
-    const columns: ObservationTableColumn[] = [{
-      prop: 'status', label: 'status', sortable: false, width: 55
-    }];
+    const columns: ObservationTableColumn[] = [
+      {prop: 'status', label: 'status', sortable: false, width: 55},
+      {prop: '_idx', label: '#', sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
+    ];
     Object.keys(this.header).map(address => {
       columns.push({prop: address, label: this.header[address], sortable: false})
     });
@@ -125,17 +137,56 @@ export class ImporterComponent implements OnInit {
   colMappingDone(mapping) {
     this.status = 'dataMapping';
     this.colMap = mapping;
+    this.cdr.markForCheck();
   }
 
-  rowMappingDone() {
+  rowMappingDone(mappings) {
     this.status = 'importReady';
     this.mappingModal.hide();
+    this.mappingService.addUserMapping(mappings);
     this.cdr.markForCheck();
   }
 
   validate() {
-    // this.status = 'validating';
-    this.parsedData = this.spreadSheetService.flatFieldsToDocuments(this.data, this.colMap, this.fields);
+    this.status = 'validating';
+    this.parsedData = this.spreadSheetService.flatFieldsToDocuments(this.data, this.colMap, this.fields, this.formID);
+    const validationObservation = Observable.from(this.parsedData)
+      .mergeMap(data => this.importService.validateData(data.document))
+      .subscribe(
+        () => {
+          this.status = 'importReady';
+          this.valid = true;
+          this.cdr.markForCheck();
+        },
+        (err) => {
+          const body = err.json();
+          if (body.error && body.error.details) {
+            this.errors = body.error.details;
+          }
+          this.status = 'importReady';
+          this.cdr.markForCheck();
+        }
+      );
+  }
+
+  save(publicityRestrictions: PublicityRestrictionsEnum) {
+    const validationObservation = Observable.from(this.parsedData)
+      .mergeMap(data => this.importService.sendData(data.document, publicityRestrictions))
+      .subscribe(
+        () => {
+          this.status = 'doneOk';
+          this.valid = true;
+          this.cdr.markForCheck();
+        },
+        (err) => {
+          const body = err.json();
+          if (body.error && body.error.details) {
+            this.errors = body.error.details;
+          }
+          this.status = 'doneWithErrors';
+          this.cdr.markForCheck();
+        }
+      );
   }
 
 }

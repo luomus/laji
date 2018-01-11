@@ -1,11 +1,13 @@
 export const DOCUMENT_LEVEL = 'document';
+export const IGNORE_VALUE = '_IGNORE_';
 
 export enum FieldMap {
-  ignore = '_ignore'
+  ignore = <any>IGNORE_VALUE
 }
 
 export interface FormField {
   label: string;
+  fullLabel: string;
   key: string;
   parent: string;
   required: boolean;

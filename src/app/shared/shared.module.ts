@@ -88,6 +88,7 @@ import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
 import { ObservationGroupSelectComponent } from '../+observation/group-select/group-select.component';
 import { SourcePipe } from './pipe/source.pipe';
 import { TaxonNamePipe } from './pipe/taxon-name.pipe';
+import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
 
 
 @NgModule({
@@ -101,7 +102,7 @@ import { TaxonNamePipe } from './pipe/taxon-name.pipe';
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
-    ObservationGroupSelectComponent, SourcePipe
+    ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe
   ],
   imports: [
     ToastModule,
@@ -127,7 +128,7 @@ import { TaxonNamePipe } from './pipe/taxon-name.pipe';
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, LocalizePipe, HideScrollDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
-    SourcePipe
+    SourcePipe, RemoveEmptyPipe
   ]
 })
 export class SharedModule {

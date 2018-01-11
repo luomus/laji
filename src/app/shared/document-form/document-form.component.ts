@@ -21,13 +21,14 @@ import { FormService } from '../service/form.service';
 import { ToastsService } from '../service/toasts.service';
 import { Form } from '../model/Form';
 import { Logger } from '../logger/logger.service';
-import { Document } from '../model/Document';
+import { Document, PublicityRestrictionsEnum } from '../model/Document';
 import { DialogService } from '../service/dialog.service';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { ComponentCanDeactivate } from './document-de-activate.guard';
 import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
 import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
+import PublicityRestrictionsEnum = Document.PublicityRestrictionsEnum;
 
 /*
  * Change tamplateUrl to close or open the Vihko
@@ -232,12 +233,12 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   submitPublic() {
-    this.publicityRestrictions = 'MZ.publicityRestrictionsPublic';
+    this.publicityRestrictions = PublicityRestrictionsEnum.publicityRestrictionsPublic;
     this.lajiForm.submit();
   }
 
   submitPrivate() {
-    this.publicityRestrictions = 'MZ.publicityRestrictionsPrivate';
+    this.publicityRestrictions = PublicityRestrictionsEnum.publicityRestrictionsPrivate;
     this.lajiForm.submit();
   }
 

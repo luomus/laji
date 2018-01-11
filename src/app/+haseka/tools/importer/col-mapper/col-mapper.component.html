@@ -1,15 +1,15 @@
 <h1>
-  Sarakkeiden linkittäminen <small>(1/2)</small>
+  Sarakkeiden linkittäminen
 </h1>
 <table class="table">
-  <tr *ngFor="let col of cols">
+  <tr *ngFor="let col of missingMapping">
     <td>
       <div class="form-control-static">
         <small>{{col}}:</small> {{headers[col] || ''}}
       </div>
     </td>
     <td>
-      <laji-header-select [value]="mapping[col] || ''" [options]="allFields" [fields]="fields" (selected)="fieldSelected.emit({col: col, key: $event})"></laji-header-select>
+      <laji-mapping-select [value]="colMapping[col] || ''" [options]="allFields" [fields]="fields" (selected)="fieldSelected.emit({col: col, key: $event})"></laji-mapping-select>
     </td>
   </tr>
 </table>

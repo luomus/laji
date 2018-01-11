@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HeaderSelectComponent } from './header-select.component';
+import { CellValueSelectComponent } from './cell-value-select.component';
 
-describe('HeaderSelectComponent', () => {
-  let component: HeaderSelectComponent;
-  let fixture: ComponentFixture<HeaderSelectComponent>;
+describe('CellValueSelectComponent', () => {
+  let component: CellValueSelectComponent;
+  let fixture: ComponentFixture<CellValueSelectComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HeaderSelectComponent ]
+      declarations: [ CellValueSelectComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HeaderSelectComponent);
+    fixture = TestBed.createComponent(CellValueSelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

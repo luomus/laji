@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FieldMap, FormField } from '../../../model/form-field';
+import { FormField, IGNORE_VALUE } from '../../model/form-field';
 
 @Component({
-  selector: 'laji-header-select',
-  templateUrl: './header-select.component.html',
-  styleUrls: ['./header-select.component.css'],
+  selector: 'laji-mapping-select',
+  templateUrl: './mapping-select.component.html',
+  styleUrls: ['./mapping-select.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderSelectComponent implements OnInit {
+export class MappingSelectComponent implements OnInit {
 
   @Input() options: string[] = [];
   @Input() fields: {[key: string]: FormField};
   @Output() selected = new EventEmitter<string>();
 
-  fieldMap = FieldMap;
+  skipValue = IGNORE_VALUE;
 
   @Input() value: string;
 

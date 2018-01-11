@@ -11,14 +11,16 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
 
   @Input() data: any[] = [];
   @Input() fields: {[key: string]: FormField} = {};
-  @Input() mapping: {[key: string]: string} = {};
+  @Input() colMapping: {[key: string]: string} = {};
 
-  @Output() done = new EventEmitter();
+  @Output() done = new EventEmitter<{[key: string]: {[value: string]: string}}>();
 
   cols: string[];
   invalid: string[] = [];
   currentKey: string;
   allMapped = false;
+  field: FormField;
+  valueMap: {[key: string]: {[value: string]: string}} = {};
 
   constructor(private importService: ImportService) { }
 
@@ -28,25 +30,28 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['mapping'] && changes['mapping'].isFirstChange() === false) {
+    if (changes['colMapping'] && changes['colMapping'].isFirstChange() === false) {
       this.initCols();
     }
   }
 
   initCols() {
-    this.cols = Object.keys(this.mapping);
+    this.cols = Object.keys(this.colMapping);
   }
 
   analyseNextColumn() {
     const current = this.cols.shift();
     if (!current) {
-      this.done.emit();
+      this.done.emit(this.valueMap);
       return;
     }
-    const field = this.fields[this.mapping[current]];
+    this.field = this.fields[this.colMapping[current]];
     const invalidValues = {};
     this.data.map(row => {
-      if (this.importService.hasInvalidValue(row[current], field)) {
+      if (!row[current]) {
+        return;
+      }
+      if (this.importService.hasInvalidValue(row[current], this.field)) {
         invalidValues[row[current]] = true;
       }
     });
@@ -55,7 +60,15 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
       this.analyseNextColumn();
       return;
     }
-    this.allMapped = true;
+    this.allMapped = false;
     this.currentKey = current;
+    this.valueMap[this.field.key] = {};
+  }
+
+  onMapping(mapping) {
+    this.valueMap[this.field.key] = mapping;
+    if (Object.keys(mapping).length === this.invalid.length) {
+      this.allMapped = true;
+    }
   }
 }
