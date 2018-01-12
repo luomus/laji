@@ -89,6 +89,7 @@ import { ObservationGroupSelectComponent } from '../+observation/group-select/gr
 import { SourcePipe } from './pipe/source.pipe';
 import { TaxonNamePipe } from './pipe/taxon-name.pipe';
 import { InformalTaxonGroupApi } from './api/InformalTaxonGroupApi';
+import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
 
 
 @NgModule({
@@ -102,7 +103,7 @@ import { InformalTaxonGroupApi } from './api/InformalTaxonGroupApi';
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
-    ObservationGroupSelectComponent, SourcePipe
+    ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe
   ],
   imports: [
     ToastModule,
@@ -128,7 +129,7 @@ import { InformalTaxonGroupApi } from './api/InformalTaxonGroupApi';
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, LocalizePipe, HideScrollDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
-    SourcePipe
+    SourcePipe, RemoveEmptyPipe
   ]
 })
 export class SharedModule {

@@ -1,0 +1,11 @@
+<select [ngModel]="value" (ngModelChange)="selected.emit($event)" class="form-control">
+  <option value="" disabled selected>Valitse sarakkeen merkitys</option>
+  <option *ngFor="let key of options | removeEmpty" [value]="key">
+    <ng-container *ngIf="fields; else option">
+      {{key === skipValue ? ('ignore'| translate) : (fields[key] && fields[key].fullLabel || key)}}
+    </ng-container>
+    <ng-template #option>
+      {{key === skipValue ? ('ignore'| translate) : key}}
+    </ng-template>
+  </option>
+</select>

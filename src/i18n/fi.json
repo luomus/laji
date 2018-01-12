@@ -578,5 +578,6 @@
   "closed.intro": "Vihko on suljettu huoltotöiden ajaksi. Ilmoitamme <a href=\"/\">etusivulla</a>, kun se on jälleen käytettävissä.",
   "home.identify": "Auta tunnistamaan havaintoja",
   "release": "tiedote",
-  "technical": "tekninen"
+  "technical": "tekninen",
+  "haseka.tools": "Työkalut"
 }

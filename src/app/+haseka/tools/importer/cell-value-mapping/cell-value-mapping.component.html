@@ -1,0 +1,18 @@
+<h1>
+  Solun arvojen linkittäminen
+</h1>
+
+<h3 *ngIf="field">{{field.fullLabel}}</h3>
+
+<laji-cell-value-select
+  [field]="field"
+  [invalidValues]="invalid"
+  [mapping]="valueMap[field.key]"
+  (mappingChanged)="onMapping($event)"
+></laji-cell-value-select>
+
+<div class="row">
+  <div class="col-sm-12">
+    <button class="btn btn-primary pull-right" [disabled]="!allMapped" (click)="analyseNextColumn()">Seuraava</button>
+  </div>
+</div>

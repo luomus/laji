@@ -561,5 +561,6 @@
   "showSpeciesCard": "Visa artkort",
   "closed.title": "Closed",
   "closed.intro": "Vihko is now closed for maintenance. We'll notify you on the <a href=\"/sv\">front page</a> when it's opened again.",
-  "home.identify": "Hjälp identifiera observationer"
+  "home.identify": "Hjälp identifiera observationer",
+  "haseka.tools": "Verktyg"
 }

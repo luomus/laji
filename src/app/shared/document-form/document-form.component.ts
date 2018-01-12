@@ -232,12 +232,12 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   submitPublic() {
-    this.publicityRestrictions = 'MZ.publicityRestrictionsPublic';
+    this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
     this.lajiForm.submit();
   }
 
   submitPrivate() {
-    this.publicityRestrictions = 'MZ.publicityRestrictionsPrivate';
+    this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
     this.lajiForm.submit();
   }
 
