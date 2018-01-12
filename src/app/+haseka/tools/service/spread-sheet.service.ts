@@ -132,6 +132,60 @@ export class SpreadSheetService {
     ]
   }
 
+  setDateFormat(sheet: XLSX.WorkSheet) {
+    for (const i in sheet) {
+      if (!sheet.hasOwnProperty(i) || !sheet[i].t || sheet[i].t !== 'd') {
+        continue;
+      }
+      sheet[i].z = sheet[i].w.length <= 10 ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss';
+      delete sheet[i].w;
+    }
+  }
+
+  getColMapFromComments(sheet: XLSX.WorkSheet, fields: {[key: string]: FormField}) {
+    const map = {};
+    let idx = 0, col;
+    let address = XLSX.utils.encode_cell({r: 0, c: idx});
+
+    this.mappingService.initColMap(fields);
+    while (col = sheet[address]) {
+      let found = false;
+      if (Array.isArray(col.c)) {
+        for (let i = 0; i < col.c.length; i++) {
+          if (col.c.t) {
+            const commentKey = this.mappingService.colMap(col.c.t);
+            if (commentKey !== null) {
+              map[XLSX.utils.encode_col(idx)] = commentKey;
+              found = true;
+              break;
+            }
+          }
+        }
+        if (found) {
+          break;
+        }
+      }
+      if (col.v) {
+        const valueKey = this.mappingService.colMap(col.v);
+        if (valueKey !== null) {
+          map[XLSX.utils.encode_col(idx)] = valueKey;
+        }
+      }
+      address = XLSX.utils.encode_cell({r: 0, c: ++idx});
+    }
+    return map;
+  }
+
+  findFormIdFromFilename(filename: string): string {
+    for (const id of environment.massForms) {
+      const regEx = new RegExp('\\b' + id + '\\b');
+      if (regEx.test(filename)) {
+        return id;
+      }
+    }
+    return '';
+  }
+
   private rowsToDocument(
     rows: {[col: string]: any}[],
     mapping: {[col: string]: string},
@@ -194,14 +248,14 @@ export class SpreadSheetService {
         });
       }
       rowSpots[rowIdx] = {...spot};
-      this.valuesToDocument(this.relativePahtToAbsolute(values, spot), document);
+      this.valuesToDocument(this.relativePathToAbsolute(values, spot), document);
     });
     result.push({document: document, rows: rowSpots});
 
     return result;
   }
 
-  private relativePahtToAbsolute(values: {[key: string]: any}, spot: {[level: string]: number}): {[key: string]: any} {
+  private relativePathToAbsolute(values: {[key: string]: any}, spot: {[level: string]: number}): {[key: string]: any} {
     const replaces: {from: string, to: string}[] = [];
     const result = {};
     Object.keys(spot).map(level => {
@@ -310,64 +364,6 @@ export class SpreadSheetService {
         });
     }
   }
-
-  setDateFormat(sheet: XLSX.WorkSheet) {
-    for (const i in sheet) {
-      if (!sheet.hasOwnProperty(i) || !sheet[i].t || sheet[i].t !== 'd') {
-        continue;
-      }
-      sheet[i].z = sheet[i].w.length <= 10 ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss';
-      delete sheet[i].w;
-    }
-  }
-
-  getColMapFromComments(sheet: XLSX.WorkSheet, fields: {[key: string]: FormField}) {
-    let idx = 0, col;
-    const lookup = {};
-    Object.keys(fields).map((key) => {
-      lookup[key.toUpperCase()] = fields[key];
-      lookup[fields[key].fullLabel.toUpperCase()] = fields[key];
-    });
-    const map = {};
-    let address = XLSX.utils.encode_cell({r: 0, c: idx});
-    while (col = sheet[address]) {
-      let found = false;
-      if (Array.isArray(col.c)) {
-        for (let i = 0; i < col.c.length; i++) {
-          if (col.c.t) {
-            const comment = col.c.t.toUpperCase();
-            if (typeof lookup[comment] !== 'undefined') {
-              map[XLSX.utils.encode_col(idx)] = lookup[comment].key;
-              found = true;
-              break;
-            }
-          }
-        }
-        if (found) {
-          break;
-        }
-      }
-      if (col.v) {
-        const val = col.v.toUpperCase();
-        if (typeof lookup[val] !== 'undefined') {
-          map[XLSX.utils.encode_col(idx)] = lookup[val].key;
-        }
-      }
-      address = XLSX.utils.encode_cell({r: 0, c: ++idx});
-    }
-    return map;
-  }
-
-  findFormIdFromFilename(filename: string): string {
-    for (const id of environment.massForms) {
-      const regEx = new RegExp('\\b' + id + '\\b');
-      if (regEx.test(filename)) {
-        return id;
-      }
-    }
-    return '';
-  }
-
 
   private hasRequiredValidator(lastKey, validator, required) {
     return !!validator.presence || (validator.geometry && validator.geometry.requireShape) || required.indexOf(lastKey) > -1;

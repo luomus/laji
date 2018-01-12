@@ -25,7 +25,10 @@ export class MappingService {
     'string': {}
   };
 
-  private userMappings = {};
+  private colMapping: Object;
+
+  private userColMappings = {};
+  private userValueMappings = {};
 
   private speciels = {
     'gatherings[*].geometry': 'geometry',
@@ -39,7 +42,16 @@ export class MappingService {
     this.lajiExternalService.getMap({})
   }
 
-  addUserMapping(mapping) {
+  addUserColMapping(mapping) {
+    if (typeof mapping !== 'object' || Array.isArray(mapping)) {
+      return;
+    }
+    Object.keys(mapping).map(col => {
+      this.userColMappings[col.toUpperCase()] = mapping[col];
+    });
+  }
+
+  addUserValueMapping(mapping) {
     if (typeof mapping !== 'object' || Array.isArray(mapping)) {
       return;
     }
@@ -47,14 +59,35 @@ export class MappingService {
       if (typeof mapping[field] !== 'object' || Array.isArray(mapping[field])) {
         return;
       }
-      if (!this.userMappings[field]) {
-        this.userMappings[field] = {};
+      if (!this.userValueMappings[field]) {
+        this.userValueMappings[field] = {};
       }
       Object.keys(mapping[field])
         .map(key => {
-          this.userMappings[field][key.toUpperCase()] = mapping[field][key];
+          this.userValueMappings[field][key.toUpperCase()] = mapping[field][key];
         });
     });
+  }
+
+  initColMap(fields: {[key: string]: FormField}) {
+    const lookup = {};
+    Object.keys(fields).map((key) => {
+      lookup[key.toUpperCase()] = key;
+      lookup[fields[key].fullLabel.toUpperCase()] = key;
+    });
+    this.colMapping = lookup;
+  }
+
+  colMap(value: string) {
+    if (!this.colMapping) {
+      throw new ErrorEvent('Column map is not initialized!')
+    }
+    value = ('' + value).toUpperCase();
+    return this.colMapping[value] || this.userColMappings[value] || null;
+  }
+
+  getUserValueMappings() {
+    return this.userValueMappings;
   }
 
   map(value: any, field: FormField) {
@@ -156,8 +189,8 @@ export class MappingService {
         const str = ('' + value).toUpperCase();
         if (this.mapping.string[field.key] && this.mapping.string[field.key][str]) {
           return this.mapping.string[field.key][str];
-        } else if (this.userMappings[field.key] && this.userMappings[field.key][str]) {
-          return this.userMappings[field.key][str];
+        } else if (this.userValueMappings[field.key] && this.userValueMappings[field.key][str]) {
+          return this.userValueMappings[field.key][str];
         }
     }
     return null;

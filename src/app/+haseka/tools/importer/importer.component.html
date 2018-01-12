@@ -1,5 +1,5 @@
 <h3>
-  Tuo massatannus pohja
+  Tallenna havaintoja massatallennuspohjalla
 </h3>
 
 <div class="row data-container">
@@ -45,16 +45,18 @@
         Valmis tallennettavaksi
       </strong>
       <ng-template #invalid>
-        <button type="button" [disabled]="status !== 'importReady'" (click)="validate()" class="btn btn-primary">{{'validate' | translate}}</button>
+        <button type="button" [disabled]="status !== 'importReady'" (click)="validate()" class="btn btn-primary">Tarkista data</button>
       </ng-template>
 
-      <button type="button" [disabled]="status !== 'importReady'" (click)="save(publ)" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
-      <button type="button" [disabled]="status !== 'importReady'" (click)="save(priv)" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
+      <button type="button" [disabled]="status !== 'importReady' || errors" (click)="save(publ)" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
+      <button type="button" [disabled]="status !== 'importReady' || errors" (click)="save(priv)" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
     </div>
   </div>
 </ng-container>
 
 <!-- DEBUG -->
+<h5>Debug:</h5>
+{{status}}
 <ng-container *ngIf="errors">
 Errors:
 <pre>
@@ -79,8 +81,13 @@ Document:
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
-        <laji-col-mapper *ngIf="status === 'colMapping'" (mappingDone)="colMappingDone($event)" [fields]="fields" [headers]="header"
-                         [colMapping]="colMap" (fieldSelected)="mapCol($event)"></laji-col-mapper>
+        <laji-col-mapper
+          *ngIf="status === 'colMapping'"
+          (mappingDone)="colMappingDone($event)"
+          [fields]="fields"
+          [headers]="header"
+          [colMapping]="colMap"
+          (fieldSelected)="mapCol($event)"></laji-col-mapper>
         <laji-cell-value-mapping
           *ngIf="status === 'dataMapping'"
           (done)="rowMappingDone($event)"

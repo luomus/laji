@@ -10,7 +10,18 @@ import { ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadSheetService } from '../service/spread-sheet.service';
 import { ModalDirective } from 'ngx-bootstrap';
-import PublicityRestrictionsEnum = Document.PublicityRestrictionsEnum;
+
+type states
+  = 'empty'
+  | 'invalidFileType'
+  | 'importingFile'
+  | 'colMapping'
+  | 'dataMapping'
+  | 'importReady'
+  | 'validating'
+  | 'importing'
+  | 'doneOk'
+  | 'doneWithErrors';
 
 @Component({
   selector: 'laji-importer',
@@ -35,9 +46,9 @@ export class ImporterComponent implements OnInit {
   bstr: string;
   errors: any;
   valid = false;
-  priv = PublicityRestrictionsEnum.publicityRestrictionsPrivate;
-  publ = PublicityRestrictionsEnum.publicityRestrictionsPublic;
-  status: 'empty'|'invalidFileType'|'importingFile'|'colMapping'|'dataMapping'|'importReady'|'validating'|'importing'|'doneOk'|'doneWithErrors' = 'empty';
+  priv = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
+  publ = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
+  status: states = 'empty';
 
   constructor(
     private formService: FormService,
@@ -63,6 +74,7 @@ export class ImporterComponent implements OnInit {
     this.status = 'importingFile';
     reader.onload = (e: any) => {
       this.valid = false;
+      this.errors = undefined;
       this.bstr = e.target.result;
       this.formID = this.spreadSheetService.findFormIdFromFilename(fileName);
       this.initForm();
@@ -132,6 +144,7 @@ export class ImporterComponent implements OnInit {
 
   mapCol(event) {
     this.colMap = {...this.colMap, [event.col]: event.key};
+    this.mappingService.addUserColMapping({[event.userValue]: event.key});
   }
 
   colMappingDone(mapping) {
@@ -143,7 +156,7 @@ export class ImporterComponent implements OnInit {
   rowMappingDone(mappings) {
     this.status = 'importReady';
     this.mappingModal.hide();
-    this.mappingService.addUserMapping(mappings);
+    this.mappingService.addUserValueMapping(mappings);
     this.cdr.markForCheck();
   }
 
@@ -169,7 +182,7 @@ export class ImporterComponent implements OnInit {
       );
   }
 
-  save(publicityRestrictions: PublicityRestrictionsEnum) {
+  save(publicityRestrictions: Document.PublicityRestrictionsEnum) {
     const validationObservation = Observable.from(this.parsedData)
       .mergeMap(data => this.importService.sendData(data.document, publicityRestrictions))
       .subscribe(

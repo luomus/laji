@@ -12,7 +12,7 @@ export class ColMapperComponent implements OnInit, OnChanges {
   @Input() fields: {[key: string]: FormField};
   @Input() headers: {[key: string]: string} = {};
   @Input() colMapping: {[col: string]: string} = {};
-  @Output() fieldSelected = new EventEmitter<{col: string, key: string}>();
+  @Output() fieldSelected = new EventEmitter<{col: string, key: string, userValue: string}>();
   @Output() mappingDone = new EventEmitter<{[key: string]: string}>();
 
   allFields: string[] = [];

@@ -9,7 +9,7 @@
       </div>
     </td>
     <td>
-      <laji-mapping-select [value]="colMapping[col] || ''" [options]="allFields" [fields]="fields" (selected)="fieldSelected.emit({col: col, key: $event})"></laji-mapping-select>
+      <laji-mapping-select [value]="colMapping[col] || ''" [options]="allFields" [fields]="fields" (selected)="fieldSelected.emit({col: col, key: $event, userValue: headers[col]})"></laji-mapping-select>
     </td>
   </tr>
 </table>
