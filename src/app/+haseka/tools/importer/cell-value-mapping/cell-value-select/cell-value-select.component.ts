@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormField, IGNORE_VALUE } from '../../../model/form-field';
+import { MappingService } from '../../../service/mapping.service';
 
 @Component({
   selector: 'laji-cell-value-select',
@@ -9,11 +10,13 @@ import { FormField, IGNORE_VALUE } from '../../../model/form-field';
 export class CellValueSelectComponent implements OnInit {
 
   @Input() invalidValues: string[];
-  @Input() mapping: {[value: string]: string} = {};
+  @Input() mapping: {[value: string]: any} = {};
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
 
   _field: FormField;
   labels: string[] = [];
+  ignore = IGNORE_VALUE;
+  booleanValues = [IGNORE_VALUE, 'true', 'false'];
 
   constructor() { }
 
@@ -28,18 +31,21 @@ export class CellValueSelectComponent implements OnInit {
   ngOnInit() {
   }
 
-  valueMapped(value, label) {
+  valueMapped(value, to) {
     const mapping = {...this.mapping};
 
-    if (label === IGNORE_VALUE) {
-      mapping[value] = label;
+    if (to === IGNORE_VALUE) {
+      mapping[value] = to;
     } else if (this._field.enumNames) {
-      const idx = this._field.enumNames.indexOf(label);
+      const idx = this._field.enumNames.indexOf(to);
       if (idx > -1) {
         mapping[value] = this._field.enum[idx];
       }
+    } else if (this._field.type === 'boolean') {
+      mapping[value] = to === 'true';
+    } else if (typeof to !== 'undefined') {
+      mapping[value] = to;
     }
     this.mappingChanged.emit(mapping);
   }
-
 }

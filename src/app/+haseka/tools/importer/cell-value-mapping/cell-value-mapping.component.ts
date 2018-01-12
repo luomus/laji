@@ -20,7 +20,7 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
   currentKey: string;
   allMapped = false;
   field: FormField;
-  valueMap: {[key: string]: {[value: string]: string}} = {};
+  valueMap: {[key: string]: {[value: string]: any}} = {};
 
   constructor(private importService: ImportService) { }
 

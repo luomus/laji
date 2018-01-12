@@ -201,6 +201,9 @@ export class SpreadSheetService {
     let rowSpots: {[row: number]: {[level: string]: number}} = {};
     cols.map(col => {
       const field = fields[mapping[col]];
+      if (field.key === IGNORE_VALUE) {
+        return;
+      }
       if (allLevels.indexOf(field.parent) === -1) {
         allLevels.push(field.parent);
       }
@@ -213,7 +216,11 @@ export class SpreadSheetService {
           return;
         }
         const field = fields[mapping[col]];
-        values[field.key] = this.mappingService.map(row[col], field);
+        const value = this.mappingService.map(row[col], field);
+        if (field.key === IGNORE_VALUE || value === IGNORE_VALUE) {
+          return;
+        }
+        values[field.key] = value;
         if (field.previousValue !== null && field.previousValue !== row[col] && newLevels.indexOf(field.parent) === -1) {
           newLevels.push(field.parent);
         }
@@ -259,7 +266,7 @@ export class SpreadSheetService {
     const replaces: {from: string, to: string}[] = [];
     const result = {};
     Object.keys(spot).map(level => {
-      if (level === DOCUMENT_LEVEL) {
+      if (level === DOCUMENT_LEVEL || level === '') {
         return;
       }
       replaces.push({from: `\\b${level}\\[\\*\\]`, to: `${level}[${spot[level]}]`})

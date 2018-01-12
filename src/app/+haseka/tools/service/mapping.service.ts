@@ -110,14 +110,19 @@ export class MappingService {
           return value.map(val => this.getMappedValue(val, field));
         }
         return this.getMappedValue(value, field);
-      case 'number':
+      case 'integer':
+        const mappedValue = this.getUserMappedValue(('' + value).toUpperCase(), field);
+        if (mappedValue !== null) {
+          value = mappedValue;
+        }
         const num = Number(value);
         if (isNaN(num)) {
           return null;
         }
         return num;
       case 'boolean':
-        return this.mapToBoolean(value);
+        this.initBooleanMapping();
+        return this.getMappedValue(value, field);
     }
     return null;
   }
@@ -140,12 +145,10 @@ export class MappingService {
   }
 
   initStringMap(field: FormField) {
-    if (!field.enum) {
+    if (!field.enum || this.mapping.string[field.key]) {
       return;
     }
-    if (!this.mapping.string[field.key]) {
-      this.mapping.string[field.key] = {};
-    }
+    this.mapping.string[field.key] = {};
     field.enum.map((value, idx) => {
       if (value === '') {
         return;
@@ -154,14 +157,6 @@ export class MappingService {
       this.mapping.string[field.key][value.toUpperCase()] = value;
       this.mapping.string[field.key][label.toUpperCase()] = value;
     });
-  }
-
-  mapToBoolean(value): boolean|null {
-    if (!this.mapping.boolean) {
-      this.initBooleanMapping();
-    }
-    const bKey = ('' + value).trim().toUpperCase();
-    return typeof this.mapping.boolean[bKey] !== 'undefined' ? this.mapping.boolean[bKey] : null;
   }
 
   mapFromBoolean(value: boolean): string {
@@ -184,22 +179,29 @@ export class MappingService {
   }
 
   private getMappedValue(value: any, field: FormField) {
+    const str = ('' + value).toUpperCase();
     switch (field.type) {
       case 'string':
-        const str = ('' + value).toUpperCase();
-        if (this.mapping.string[field.key] && this.mapping.string[field.key][str]) {
-          return this.mapping.string[field.key][str];
-        } else if (this.userValueMappings[field.key] && this.userValueMappings[field.key][str]) {
-          return this.userValueMappings[field.key][str];
-        }
+        return this.getUserMappedValue(str, field) ||
+          (this.mapping.string[field.key] && this.mapping.string[field.key][str] || null);
+      case 'boolean':
+        const userValue = this.getUserMappedValue(str, field);
+        return typeof userValue !== 'undefined' ?
+          userValue : (typeof this.mapping.boolean[str] !== 'undefined' ? this.mapping.boolean[str] : null);
     }
     return null;
   }
 
+  private getUserMappedValue(upperCaseValue: any, field: FormField) {
+    return this.userValueMappings[field.key] && typeof this.userValueMappings[field.key][upperCaseValue] !== 'undefined' ?
+      this.userValueMappings[field.key] && this.userValueMappings[field.key][upperCaseValue] : null;
+  }
+
   private initBooleanMapping() {
-    if (!this.mapping.boolean) {
-      this.mapping.boolean = {};
+    if (this.mapping.boolean) {
+      return;
     }
+    this.mapping.boolean = {};
     for (const key in this.booleanMap.true) {
       if (this.booleanMap.true.hasOwnProperty(key)) {
         this.mapping.boolean[this.booleanMap.true[key].toUpperCase()] = true;
