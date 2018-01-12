@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiExternalService } from '../../../shared/service/laji-external.service';
 import { FormField } from '../model/form-field';
-import { ISO6709ToGeoJSON } from 'laji-map/lib/utils';
+import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 
 @Injectable()
 export class MappingService {
@@ -170,7 +170,7 @@ export class MappingService {
 
   private analyzeGeometry(value: any) {
     if (typeof value === 'string') {
-      const data = ISO6709ToGeoJSON(value);
+      const data = convertAnyToWGS84GeoJSON(value);
       if (data && data.features && data.features[0] && data.features[0].geometry) {
         value = data.features[0].geometry;
       }

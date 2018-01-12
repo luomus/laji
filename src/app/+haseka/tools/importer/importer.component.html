@@ -8,7 +8,7 @@
   </div>
 </div>
 
-<div class="row data-container" *ngIf="!formID && bstr">
+<div class="row data-container" *ngIf="!formID && !!bstr">
   <div class="col-sm-5">
     <laji-form-select [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
   </div>
@@ -48,8 +48,8 @@
         <button type="button" [disabled]="status !== 'importReady'" (click)="validate()" class="btn btn-primary">Tarkista data</button>
       </ng-template>
 
-      <button type="button" [disabled]="status !== 'importReady' || errors" (click)="save(publ)" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
-      <button type="button" [disabled]="status !== 'importReady' || errors" (click)="save(priv)" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
+      <button type="button" [disabled]="status !== 'importReady' || !!errors" (click)="save(publ)" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
+      <button type="button" [disabled]="status !== 'importReady' || !!errors" (click)="save(priv)" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
     </div>
   </div>
 </ng-container>
