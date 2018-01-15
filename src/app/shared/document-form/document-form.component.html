@@ -14,36 +14,9 @@
           [settingsKey]="formId"
           (onChange)="onChange($event)"
           (onSubmit)="onSubmit($event)"></laji-form>
-  <div class="form-footer">
-    <div class="row">
-      <div class="col-xs-3 col-sm-2">
-        <button *ngIf="show('save')" class="btn btn-success btn-sm" [disabled]="saving" type="submit" (click)="submitPublic()">{{buttonLabel('save') | translate}}</button>
-      </div>
-      <div class="col-xs-3 col-sm-2">
-        <button *ngIf="show('temp')" class="btn btn-warning btn-sm" [disabled]="saving" type="submit" (click)="submitPrivate()">{{buttonLabel('temp') | translate}}</button>
-      </div>
-      <div class="col-xs-3 col-sm-6 info" [ngSwitch]="status">
-        <div *ngSwitchCase="'success'" class="success status">
-          {{'haseka.form.success'|translate}}
-        </div>
-        <div *ngSwitchCase="'error'" class="error status">
-          {{'haseka.form.error' | translate}}
-        </div>
-        <div *ngSwitchCase="'unsaved'" class="unsaved status">
-          <span *ngIf="form.formData.dateEdited">
-            {{'haseka.form.unsaved' | translate:{saveTime: form.formData.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'} }}
-          </span>
-          <span *ngIf="!form.formData.dateEdited">
-            {{'haseka.form.unsavedNever' | translate}}
-          </span>
-          <span class="pull-right">
-
-          </span>
-        </div>
-      </div>
-      <div class="col-xs-3 col-sm-2">
-        <button *ngIf="show('cancel')" class="btn btn-danger btn-sm pull-right" [disabled]="saving" type="submit" (click)="onCancel.emit()">{{buttonLabel('cancel') | translate}}</button>
-      </div>
-    </div>
-  </div>
+  <laji-document-form-footer
+          [form]="form"
+          (onSubmitPublic)="submitPublic()"
+          (onSubmitPrivate)="submitPrivate()"
+          (onCancel)="onCancel.emit()"></laji-document-form-footer>
 </div>
