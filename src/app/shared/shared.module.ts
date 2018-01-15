@@ -89,6 +89,8 @@ import { ObservationGroupSelectComponent } from '../+observation/group-select/gr
 import { SourcePipe } from './pipe/source.pipe';
 import { TaxonNamePipe } from './pipe/taxon-name.pipe';
 import { DocumentFormFooterComponent } from './document-form-footer/document-form-footer.component';
+import { InformalTaxonGroupApi } from './api/InformalTaxonGroupApi';
+import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
 
 
 @NgModule({
@@ -102,7 +104,7 @@ import { DocumentFormFooterComponent } from './document-form-footer/document-for
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
-    ObservationGroupSelectComponent, SourcePipe, DocumentFormFooterComponent
+    ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent
   ],
   imports: [
     ToastModule,
@@ -128,7 +130,7 @@ import { DocumentFormFooterComponent } from './document-form-footer/document-for
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, LocalizePipe, HideScrollDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
-    SourcePipe, DocumentFormFooterComponent
+    SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent
   ]
 })
 export class SharedModule {
@@ -136,6 +138,7 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
+        InformalTaxonGroupApi,
         LajiExternalService,
         UserService,
         NewsApi,

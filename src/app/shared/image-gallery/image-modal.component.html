@@ -42,7 +42,7 @@
     <strong>{{data.vernacularName | multiLang}}</strong><br>
   </ng-container>
   <ng-container *ngIf="data.scientificName">
-    <strong class="scientificName">{{data.scientificName}}</strong><br>
+    <strong class="scientificName">{{data.scientificName | label:'fullUri'}}</strong><br>
   </ng-container>
   <ng-container *ngIf="data.author">
     {{data.author}}<br>

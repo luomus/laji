@@ -65,7 +65,7 @@ export class GalleryComponent implements OnChanges {
     query.hasUnitMedia = true;
     this.cd.markForCheck();
     this.warehouseApi.warehouseQueryListGet(query, [
-        'unit.taxonVerbatim,unit.linkings.taxon.vernacularName,unit.linkings.taxon.scientificName',
+        'unit.taxonVerbatim,unit.linkings.taxon.vernacularName,unit.linkings.taxon.scientificName,unit.reportedInformalTaxonGroup',
         'unit.media',
         // 'gathering.media',
         // 'document.media',
@@ -78,15 +78,15 @@ export class GalleryComponent implements OnChanges {
         const images = [];
         this.total = Math.min(data.total, this.limit);
         if (data.results) {
-          let cnt = 1;
           data.results.map(items => {
+            const group = (items['unit'] && items['unit']['reportedInformalTaxonGroup']) ? items['unit']['reportedInformalTaxonGroup'] : '';
             const verbatim = (items['unit'] && items['unit']['taxonVerbatim']) ? items['unit']['taxonVerbatim'] : '';
             ['unit'].map((key) => {
               if (items[key] && items[key].media) {
-                if (++cnt >= this.limit) {
-                  return;
-                }
                 items[key].media.map(media => {
+                  if (images.length >= this.limit) {
+                    return;
+                  }
                   media['documentId'] = items['document']['documentId'];
                   media['unitId'] = items['unit']['unitId'];
                   media['vernacularName'] = items.unit
@@ -96,7 +96,7 @@ export class GalleryComponent implements OnChanges {
                   media['scientificName'] = items['unit']
                     && items['unit']['linkings']
                     && items['unit']['linkings']['taxon']
-                    && items['unit']['linkings']['taxon']['scientificName'] || verbatim || '';
+                    && items['unit']['linkings']['taxon']['scientificName'] || verbatim || group || '';
                   images.push(media);
                 });
               }

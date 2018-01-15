@@ -47,6 +47,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
     draw: false
   };
   @Input() settingsKey: string;
+  @Input() tileLayerName: string;
   @Input() overlayNames: string[];
   @Input() availableTileLayerNamesBlacklist: string[];
 
@@ -101,8 +102,10 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
         draw.polyline = draw.polyline !== false ? draw.polyline : false;
         draw.hasActive = draw.hasActive !== true ? draw.hasActive : true;
       }
+      let tileLayerName = this.initWithWorldMap ?  'openStreetMap' : 'taustakartta';
+      if (this.tileLayerName) tileLayerName = this.tileLayerName;
       const mapOptions: LajiMapOptions = {
-        tileLayerName: this.initWithWorldMap ? 'openStreetMap' : 'taustakartta',
+        tileLayerName: tileLayerName,
         zoom: this.zoom,
         center: this.center || [65, 26],
         lang: this.lang,

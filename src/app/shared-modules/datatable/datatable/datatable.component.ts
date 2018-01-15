@@ -44,6 +44,7 @@ export class DatatableComponent {
   @Input() height = '100%';
   @Input() showHeader = true;
   @Input() showFooter = true;
+  @Input() sortType = 'multi';
   @Input() virtualScrolling = true;
   @Input() totalMessage = '';
   @Input() clientSideSorting = false;
