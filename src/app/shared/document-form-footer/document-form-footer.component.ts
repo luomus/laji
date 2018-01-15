@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class DocumentFormFooterComponent {
   @Input() form: any;
+  @Input() status = '';
   @Input() restrictSubmitPublic = false
   @Output() onSubmitPublic = new EventEmitter();
   @Output() onSubmitPrivate = new EventEmitter();
