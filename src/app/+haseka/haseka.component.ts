@@ -5,6 +5,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
 import { RouterChildrenEventService } from '../shared-modules/own-submissions/service/router-children-event.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'haseka',
@@ -16,6 +17,7 @@ export class HasekaComponent implements OnInit, OnDestroy {
   @LocalStorage() public vihkoSettings;
   public email: string;
   public isFront = false;
+  public showTools = false;
 
   public shownDocument: string;
   @ViewChild('documentModal') public modal: ModalDirective;
@@ -31,6 +33,7 @@ export class HasekaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.showTools = !environment.production;
     this.modal.config = {animated: false};
     if (!this.vihkoSettings) {
       this.vihkoSettings = { showIntro: true };
