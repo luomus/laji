@@ -2,7 +2,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 import { HasekaComponent } from './haseka.component';
 import { HaSeKaFormListComponent } from './form-list/haseka-form-list';
-import { StatisticsComponent } from './statistics/statistics.component';
+import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { HaSeKaFormComponent } from './form/haseka-form.component';
 import { NpPrintComponent } from '../shared-modules/named-place/np-print/np-print.component';

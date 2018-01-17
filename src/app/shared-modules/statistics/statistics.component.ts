@@ -5,7 +5,7 @@ import { UserService } from '../../shared/service/user.service';
 import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
 import { Observable } from 'rxjs/Observable';
-import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
+import { NamedPlacesService } from '../named-place/named-places.service';
 
 @Component({
   selector: 'laji-statistics',

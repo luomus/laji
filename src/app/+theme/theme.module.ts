@@ -35,6 +35,7 @@ import { LineTransectResultComponent } from './line-transect/line-transect-resul
 import { LineTransectFormComponent } from './line-transect/line-transect-form/line-transect-form.component';
 import { LineTransectInstructionsComponent } from './line-transect/line-transect-instructions/line-transect-instructions.component';
 import { LineTransectMyDocumentListComponent } from './line-transect/line-transect-my-document-list/line-transect-my-document-list.component';
+import { StatisticsModule } from '../shared-modules/statistics/statistics.module';
 
 @NgModule({
   imports: [
@@ -46,7 +47,8 @@ import { LineTransectMyDocumentListComponent } from './line-transect/line-transe
     YkjModule,
     ObservationResultModule,
     OwnSubmissionsModule,
-    NamedPlaceModule
+    NamedPlaceModule,
+    StatisticsModule
   ],
   declarations: [
     NafiComponent,

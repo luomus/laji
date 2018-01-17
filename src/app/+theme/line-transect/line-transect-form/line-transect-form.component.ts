@@ -59,7 +59,7 @@ export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCa
   }
 
   onSuccess(data) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/line-transect/ownSubmissions']));
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/line-transect/statistics', data.document.id]));
   }
 
   onError() {

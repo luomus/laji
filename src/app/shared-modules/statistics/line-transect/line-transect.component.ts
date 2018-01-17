@@ -7,8 +7,8 @@ import * as MapUtil from 'laji-map/lib/utils';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
-import { Map3Component } from '../../../shared-modules/map/map.component';
-import { LajiMapOptions } from '../../../shared-modules/map/map-options.interface';
+import { Map3Component } from '../../map/map.component';
+import { LajiMapOptions } from '../../map/map-options.interface';
 import { Units } from '../../../shared/model/Units';
 
 interface LineTransectCount {

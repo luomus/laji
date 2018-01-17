@@ -24,6 +24,7 @@ import { LineTransectInstructionsComponent } from './line-transect/line-transect
 import { LineTransectResultComponent } from './line-transect/line-transect-result/line-transect-result.component';
 import { LineTransectFormComponent } from './line-transect/line-transect-form/line-transect-form.component';
 import { LineTransectMyDocumentListComponent } from './line-transect/line-transect-my-document-list/line-transect-my-document-list.component';
+import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 
 const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
@@ -81,7 +82,8 @@ const routes: Routes = [
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: LineTransectMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' } },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent }
+      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent },
+      {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent }
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
