@@ -26,5 +26,6 @@ export const environment = {
   },
   sources: {
     kotka: 'KE.3'
-  }
+  },
+  googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE'
 };
