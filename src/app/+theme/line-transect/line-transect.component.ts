@@ -1,26 +1,27 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
-  selector: '[laji-wbc]',
-  templateUrl: './wbc.component.html',
-  styleUrls: ['./wbc.component.css'],
+  selector: '[laji-line-transect]',
+  templateUrl: './line-transect.component.html',
+  styleUrls: ['./line-transect.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class WbcComponent implements OnInit, OnDestroy {
+export class LineTransectComponent implements OnInit, OnDestroy {
 
   showForm =  false;
   showNav = true;
   routeSub: Subscription;
 
-  constructor(public router: Router) {}
+  constructor(public router: Router) { }
 
   ngOnInit() {
     this.showForm = !environment.production;
     this.showNav = this.router.url.indexOf('form') === -1;
-    this.routeSub = this.router.events
+    this.routeSub = this.router
+      .events
       .subscribe(event => {
         if (event instanceof NavigationEnd) {
           this.showNav = event.url.indexOf('form') === -1;

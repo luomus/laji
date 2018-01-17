@@ -412,7 +412,7 @@
   "np.municipality": "Municipality",
   "np.biogeographicalProvince": "Biogeographical province",
   "theme.individualCount": "Individual count",
-  "theme.filterAll": "Whole material 1991 - {{year}}",
+  "theme.filterAll": "Whole material {{from}} - {{to}}",
   "theme.newest": "Newest",
   "theme.total": "Total",
   "theme.count": "Count",
@@ -562,5 +562,6 @@
   "closed.intro": "Vihko is now closed for maintenance. We'll notify you on the <a href=\"/en\">front page</a> when it's opened again.",
   "home.identify": "Help identifying observations",
   "haseka.tools": "Tools",
-  "selfUrl.intro": "Here you can manage the user names from other systems, etc."
+  "selfUrl.intro": "Here you can manage the user names from other systems, etc.",
+  "lineTransect.title": "Line transect"
 }

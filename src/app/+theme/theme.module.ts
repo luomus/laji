@@ -30,6 +30,11 @@ import { IdentifyComponent } from './identify/identify.component';
 import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
 import { NamedPlaceModule } from '../shared-modules/named-place/named-place.module';
 import { ThemeComponent } from './theme.component';
+import { LineTransectComponent } from './line-transect/line-transect.component';
+import { LineTransectResultComponent } from './line-transect/line-transect-result/line-transect-result.component';
+import { LineTransectFormComponent } from './line-transect/line-transect-form/line-transect-form.component';
+import { LineTransectInstructionsComponent } from './line-transect/line-transect-instructions/line-transect-instructions.component';
+import { LineTransectMyDocumentListComponent } from './line-transect/line-transect-my-document-list/line-transect-my-document-list.component';
 
 @NgModule({
   imports: [
@@ -61,6 +66,11 @@ import { ThemeComponent } from './theme.component';
     WbcResultComponent,
     WbcInstructionsComponent,
     WbcOwnSubmissionsComponent,
+    LineTransectComponent,
+    LineTransectResultComponent,
+    LineTransectFormComponent,
+    LineTransectInstructionsComponent,
+    LineTransectMyDocumentListComponent,
     IdentifyComponent,
     NafiTemplatesComponent,
     ThemeComponent

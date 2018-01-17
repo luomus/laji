@@ -424,7 +424,7 @@
   "nafi.form": "Skicka observationer",
   "nafi.myObservations": "Mina observationer",
   "nafi.stats.title": "Den riksomfattande dagfjärilsmoniteringen i Finland (NAFI)",
-  "theme.filterAll": "Hela materialet 1991 - {{year}}",
+  "theme.filterAll": "Hela materialet {{from}} - {{to}}",
   "theme.observationDays": "Observation dagar",
   "nafi.stats.intro": "",
   "nafi.stats.times": "Välj tidsperiod för att observera:",
@@ -563,5 +563,6 @@
   "closed.intro": "Vihko is now closed for maintenance. We'll notify you on the <a href=\"/sv\">front page</a> when it's opened again.",
   "home.identify": "Hjälp identifiera observationer",
   "haseka.tools": "Verktyg",
-  "selfUrl.intro": "Här kan du hantera användarnamnen från andra system etc."
+  "selfUrl.intro": "Här kan du hantera användarnamnen från andra system etc.",
+  "lineTransect.title": "Line transect"
 }

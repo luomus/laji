@@ -5,6 +5,7 @@ export const environment = {
   defaultForm: 'JX.519',
   nafiForm: 'JX.123648',
   wbcForm: 'MHL.3',
+  lineTransectForm: 'MHL.1',
   namedPlaceForm: 'JX.6668',
   invasiveControlForm: '',
   loginUrl: '/user/virannomaiset',

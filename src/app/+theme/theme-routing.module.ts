@@ -19,6 +19,11 @@ import { IdentifyComponent } from './identify/identify.component';
 import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
 import { NamedPlaceComponent } from '../shared-modules/named-place/named-place/named-place.component';
 import { ThemeComponent } from './theme.component';
+import { LineTransectComponent } from './line-transect/line-transect.component';
+import { LineTransectInstructionsComponent } from './line-transect/line-transect-instructions/line-transect-instructions.component';
+import { LineTransectResultComponent } from './line-transect/line-transect-result/line-transect-result.component';
+import { LineTransectFormComponent } from './line-transect/line-transect-form/line-transect-form.component';
+import { LineTransectMyDocumentListComponent } from './line-transect/line-transect-my-document-list/line-transect-my-document-list.component';
 
 const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
@@ -58,6 +63,25 @@ const routes: Routes = [
       {path: 'ownSubmissions', pathMatch: 'full', component: NafiMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
       {path: 'templates', pathMatch: 'full', component: NafiTemplatesComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: NafiInstructionsComponent, data: { title: 'nafi.stats.title' } }
+    ]
+  },
+  {
+    path: 'line-transect',
+    component: LineTransectComponent,
+    children: [
+      {path: '', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' }},
+      {path: 'stats', pathMatch: 'full', component: LineTransectResultComponent, data: { title: 'lineTransect.title' }},
+      {path: 'form', pathMatch: 'full', component: LineTransectFormComponent, canActivate: [OnlyLoggedIn]},
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: LineTransectFormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard]
+      },
+      {path: 'ownSubmissions', pathMatch: 'full', component: LineTransectMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'instructions', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' } },
+      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent }
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},

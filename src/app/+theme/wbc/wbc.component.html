@@ -1,6 +1,6 @@
 <div class="container-fluid wbc">
   <div [ngClass]="{'row': router.url.indexOf('form') === -1}" id="wrapper">
-    <div *ngIf="showNavigation()" style="background-color: #ECF0F1;" class="col-sm-3 col-md-3 col-lg-2">
+    <div *ngIf="showNav" style="background-color: #ECF0F1;" class="col-sm-3 col-md-3 col-lg-2">
       <ul class="sidebar-nav">
         <li><a [routerLink]="['../wbc', 'instructions']">{{'instructions' | translate}}</a></li>
         <li><a [routerLink]="['../wbc', 'stats']">{{'nafi.stats' | translate}}</a></li>

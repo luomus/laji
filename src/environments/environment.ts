@@ -17,6 +17,7 @@ export const environment = {
   nafiForm: 'JX.123648',
   invasiveControlForm: 'JX.111715',
   wbcForm: 'MHL.3',
+  lineTransectForm: 'MHL.1',
   namedPlaceForm: 'JX.123608',
   apiBase: '/api',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',

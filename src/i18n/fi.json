@@ -428,7 +428,7 @@
   "np.country": "Maa",
   "np.municipality": "Kunta",
   "np.biogeographicalProvince": "Eliömaakunta",
-  "theme.filterAll": "Koko aineisto 1991 - {{year}}",
+  "theme.filterAll": "Koko aineisto {{from}} - {{to}}",
   "theme.individualCount": "Yksilösumma",
   "theme.individualCountShort": "Ykslkm",
   "theme.newest": "Uusin",
@@ -580,5 +580,6 @@
   "release": "tiedote",
   "technical": "tekninen",
   "haseka.tools": "Työkalut",
-  "selfUrl.intro": "Täällä voit hallita muiden järjestelmien tunnuksia yms."
+  "selfUrl.intro": "Täällä voit hallita muiden järjestelmien tunnuksia yms.",
+  "lineTransect.title": "Linjalaskenta"
 }
