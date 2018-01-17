@@ -148,7 +148,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
         this.documentID = IdService.getId(doc.documentId);
       }
       if (doc.linkings && doc.linkings.editors) {
-        this.editors = doc.linkings.editors.map(editor => IdService.getId(editor.id));
+        this.editors = doc.linkings.editors.map(editor => IdService.getId(editor.id)).filter(val => val);
       } else {
         this.editors = [];
       }
