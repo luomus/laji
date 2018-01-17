@@ -579,5 +579,6 @@
   "home.identify": "Auta tunnistamaan havaintoja",
   "release": "tiedote",
   "technical": "tekninen",
-  "haseka.tools": "Työkalut"
+  "haseka.tools": "Työkalut",
+  "selfUrl.intro": "Täällä voit hallita muiden järjestelmien tunnuksia yms."
 }

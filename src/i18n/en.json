@@ -561,5 +561,6 @@
   "closed.title": "Closed",
   "closed.intro": "Vihko is now closed for maintenance. We'll notify you on the <a href=\"/en\">front page</a> when it's opened again.",
   "home.identify": "Help identifying observations",
-  "haseka.tools": "Tools"
+  "haseka.tools": "Tools",
+  "selfUrl.intro": "Here you can manage the user names from other systems, etc."
 }
