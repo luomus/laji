@@ -17,13 +17,15 @@ import { MappingSelectComponent } from './shared/mapping-select/mapping-select.c
 import { CellValueMappingComponent } from './importer/cell-value-mapping/cell-value-mapping.component';
 import { ImportService } from './service/import.service';
 import { CellValueSelectComponent } from './importer/cell-value-mapping/cell-value-select/cell-value-select.component';
+import { LajiMapModule } from '../../shared-modules/map/laji-map.module';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
     ToolsRoutingModule,
-    DatatableModule
+    DatatableModule,
+    LajiMapModule
   ],
   declarations: [
     ToolsComponent,

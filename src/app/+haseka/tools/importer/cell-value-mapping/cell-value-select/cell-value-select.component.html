@@ -6,29 +6,39 @@
       </div>
     </td>
     <td>
-      <ng-container [ngSwitch]="_field.type">
-        <ng-container *ngSwitchCase="'string'">
-          <laji-mapping-select
-            [value]="mapping[_field.key] || ''"
-            [options]="labels"
-            (selected)="valueMapped(value, $event)"></laji-mapping-select>
-        </ng-container>
-        <ng-container *ngSwitchCase="'boolean'">
-          <laji-mapping-select
-            [value]="mapping[_field.key] || ''"
-            [options]="booleanValues"
-            (selected)="valueMapped(value, $event)"></laji-mapping-select>
-        </ng-container>
-        <ng-container *ngSwitchCase="'integer'">
-          <div class="row">
-            <div class="col-sm-10">
-              <input type="number" class="form-control" value="" #number>
-            </div>
-            <div class="col-sm-2">
-              <button type="button" class="btn btn-success btn-sm" (click)="valueMapped(value, number.value)"><i class="glyphicon glyphicon-ok"></i></button>
-              <button type="button" class="btn btn-danger btn-sm" (click)="valueMapped(value, ignore)"><i class="glyphicon glyphicon-remove"></i></button>
-            </div>
+      <ng-container [ngSwitch]="special">
+        <ng-container *ngSwitchCase="specials.geometry">
+          <div style="height: 400px; width: 400px;">
+            <laji-map3 [options]="lajiMapOptions" #lajiMap></laji-map3>
           </div>
+        </ng-container>
+
+        <ng-container *ngSwitchDefault>
+          <ng-container [ngSwitch]="_field.type">
+            <ng-container *ngSwitchCase="'string'">
+              <laji-mapping-select
+                [value]="mapping[_field.key] || ''"
+                [options]="labels"
+                (selected)="valueMapped(value, $event)"></laji-mapping-select>
+            </ng-container>
+            <ng-container *ngSwitchCase="'boolean'">
+              <laji-mapping-select
+                [value]="mapping[_field.key] || ''"
+                [options]="booleanValues"
+                (selected)="valueMapped(value, $event)"></laji-mapping-select>
+            </ng-container>
+            <ng-container *ngSwitchCase="'integer'">
+              <div class="row">
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" value="" #number>
+                </div>
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-success btn-sm" (click)="valueMapped(value, number.value)"><i class="glyphicon glyphicon-ok"></i></button>
+                  <button type="button" class="btn btn-danger btn-sm" (click)="valueMapped(value, ignore)"><i class="glyphicon glyphicon-remove"></i></button>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
         </ng-container>
       </ng-container>
     </td>

@@ -4,6 +4,10 @@ import { LajiExternalService } from '../../../shared/service/laji-external.servi
 import { FormField } from '../model/form-field';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 
+export enum SpeciesTypes {
+  geometry = 'geometry'
+}
+
 @Injectable()
 export class MappingService {
 
@@ -30,9 +34,9 @@ export class MappingService {
   private userColMappings = {};
   private userValueMappings = {};
 
-  private speciels = {
-    'gatherings[*].geometry': 'geometry',
-    'gatherings[*].units[*].unitGathering.geometry': 'geometry'
+  private specials = {
+    'gatherings[*].geometry': SpeciesTypes.geometry,
+    'gatherings[*].units[*].unitGathering.geometry': SpeciesTypes.geometry
   };
 
   constructor(
@@ -90,12 +94,17 @@ export class MappingService {
     return this.userValueMappings;
   }
 
+  getSpecial(field: FormField): SpeciesTypes|null {
+    if (field.key && this.specials[field.key]) {
+      return this.specials[field.key];
+    }
+    return null;
+  }
+
   map(value: any, field: FormField) {
-    if (this.speciels[field.key]) {
-      switch (this.speciels[field.key]) {
-        case 'geometry':
-          return this.analyzeGeometry(value);
-      }
+    switch (this.getSpecial(field)) {
+      case SpeciesTypes.geometry:
+        return this.analyzeGeometry(value);
     }
     switch (field.type) {
       case 'string':
@@ -170,9 +179,13 @@ export class MappingService {
 
   private analyzeGeometry(value: any) {
     if (typeof value === 'string') {
-      const data = convertAnyToWGS84GeoJSON(value);
-      if (data && data.features && data.features[0] && data.features[0].geometry) {
-        value = data.features[0].geometry;
+      try {
+        const data = convertAnyToWGS84GeoJSON(value);
+        if (data && data.features && data.features[0] && data.features[0].geometry) {
+          value = data.features[0].geometry;
+        }
+      } catch (e) {
+        return null;
       }
     }
     return value;
