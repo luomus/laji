@@ -4,6 +4,9 @@
 .form-container {
   position: relative;
 }
+.identify-intro {
+  margin-bottom: 20px;
+}
 .select-intro {
   margin-top: -3px;
 }

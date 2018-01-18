@@ -17,6 +17,7 @@ export const environment = {
   invasiveControlForm: 'JX.111715',
   wbcForm: 'MHL.3',
   lineTransectForm: 'MHL.1',
+  whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'JX.123608',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',

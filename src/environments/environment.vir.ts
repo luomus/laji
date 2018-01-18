@@ -6,6 +6,7 @@ export const environment = {
   nafiForm: 'JX.123648',
   wbcForm: 'MHL.3',
   lineTransectForm: 'MHL.1',
+  whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'JX.6668',
   invasiveControlForm: '',
   loginUrl: '/user/virannomaiset',

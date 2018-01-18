@@ -19,6 +19,8 @@ export class IdentifyComponent implements OnInit {
   documentId: string;
   unitId: string;
 
+  formId: string;
+
   constructor(
     public translateService: TranslateService,
     private sourceService: SourceService,
@@ -26,6 +28,7 @@ export class IdentifyComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.formId = environment.whichSpeciesForm;
     this.modal.config = {animated: false};
     this.sourceService.getAllAsLookUp()
       .map(sources => Object.keys(sources).filter((source) => source !== environment.sources.kotka))
