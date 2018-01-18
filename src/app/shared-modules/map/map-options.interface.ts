@@ -13,14 +13,6 @@ export interface LajiMapOptions {
     polygon?: boolean;
     circle?: boolean;
     rectangle?: boolean;
-    copy?: boolean;
-    upload?: boolean;
-    undo?: boolean;
-    redo?: boolean;
-    clear?: boolean;
-    delete?: boolean;
-    reverse?: boolean;
-    coordinateInput?: boolean;
   };
   lineTransect?: {
     feature: any;
@@ -28,6 +20,21 @@ export interface LajiMapOptions {
   markerPopupOffset?: number;
   featurePopupOffset?: number;
   controls?: {
+    draw?: {
+      marker?: boolean;
+      polyline?: boolean;
+      polygon?: boolean;
+      circle?: boolean;
+      rectangle?: boolean;
+      copy?: boolean;
+      upload?: boolean;
+      undo?: boolean;
+      redo?: boolean;
+      clear?: boolean;
+      delete?: boolean;
+      reverse?: boolean;
+      coordinateInput?: boolean;
+    } | boolean;
     coordinates?: boolean;
     lineTransect?: boolean;
   };

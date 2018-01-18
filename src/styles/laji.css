@@ -260,14 +260,22 @@ treenode:last-child > .tree-node > .tree-children::after {
 
 /** /informal taxon groups **/
 
-/** forms **/
-.checkbox {
-  background: none;
-}
-
+/** Laji-Map **/
 .laji-map {
   width: 100%;
   height: 100%;
+}
+.laji-map-dialog {
+  z-index: 1051;
+}
+.laji-map-blocker {
+  z-index: 1050;
+}
+/** Laji-Map **/
+
+/** forms **/
+.checkbox {
+  background: none;
 }
 
 .laji-form .laji-form-map-container, .laji-form .popover {

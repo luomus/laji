@@ -4,12 +4,23 @@
 
 <h3 *ngIf="field">{{field.fullLabel}}</h3>
 
-<laji-cell-value-select
-  [field]="field"
-  [invalidValues]="invalid"
-  [mapping]="valueMap[field.key]"
-  (mappingChanged)="onMapping($event)"
-></laji-cell-value-select>
+<ng-container [ngSwitch]="special">
+  <ng-container *ngSwitchCase="specials.geometry">
+    <laji-special-geometry
+      [invalidValues]="invalid"
+      [mapping]="valueMap[field.key]"
+      (mappingChanged)="onMapping($event)"
+    ></laji-special-geometry>
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <laji-cell-value-select
+      [field]="field"
+      [invalidValues]="invalid"
+      [mapping]="valueMap[field.key]"
+      (mappingChanged)="onMapping($event)"
+    ></laji-cell-value-select>
+  </ng-container>
+</ng-container>
 
 <div class="row">
   <div class="col-sm-12">

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormField } from '../../model/form-field';
 import { ImportService } from '../../service/import.service';
+import { MappingService, SpeciesTypes } from '../../service/mapping.service';
 
 @Component({
   selector: 'laji-cell-value-mapping',
@@ -14,7 +15,8 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
   @Input() colMapping: {[key: string]: string} = {};
 
   @Output() done = new EventEmitter<{[key: string]: {[value: string]: string}}>();
-
+  specials = SpeciesTypes;
+  special = null;
   cols: string[];
   invalid: string[] = [];
   currentKey: string;
@@ -22,7 +24,10 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
   field: FormField;
   valueMap: {[key: string]: {[value: string]: any}} = {};
 
-  constructor(private importService: ImportService) { }
+  constructor(
+    private importService: ImportService,
+    private mappingService: MappingService
+  ) { }
 
   ngOnInit() {
     this.initCols();
@@ -46,6 +51,7 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
       return;
     }
     this.field = this.fields[this.colMapping[current]];
+    this.special = this.mappingService.getSpecial(this.field);
     const invalidValues = {};
     this.data.map(row => {
       if (!row[current]) {

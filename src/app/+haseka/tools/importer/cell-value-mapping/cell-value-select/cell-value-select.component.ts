@@ -1,8 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormField, IGNORE_VALUE } from '../../../model/form-field';
-import { MappingService, SpeciesTypes } from '../../../service/mapping.service';
-import { LajiMapOptions } from '../../../../../shared-modules/map/map-options.interface';
-import { Map3Component } from '../../../../../shared-modules/map/map.component';
 
 @Component({
   selector: 'laji-cell-value-select',
@@ -11,51 +8,20 @@ import { Map3Component } from '../../../../../shared-modules/map/map.component';
 })
 export class CellValueSelectComponent implements OnInit {
 
-  @ViewChild(Map3Component)
-  lajiMap: Map3Component;
   @Input() invalidValues: string[];
   @Input() mapping: {[value: string]: any} = {};
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
 
-  specials = SpeciesTypes;
-  lajiMapOptions: LajiMapOptions = {
-    draw: {
-      marker: true,
-      polyline: true,
-      polygon: true,
-      circle: true,
-      rectangle: true,
-      copy: true,
-      upload: true,
-      undo: true,
-      redo: true,
-      clear: true,
-      delete: true,
-      reverse: true,
-      coordinateInput: true
-    },
-    controls: true
-  };
-
   _field: FormField;
   labels: string[] = [];
   ignore = IGNORE_VALUE;
-  special = null;
   booleanValues = [IGNORE_VALUE, 'true', 'false'];
 
-  constructor(private mappingService: MappingService) { }
+  constructor() { }
 
   @Input() set field(field: FormField) {
     this._field = field;
     this.labels = [];
-    this.special = this.mappingService.getSpecial(field);
-
-    if (this.special === SpeciesTypes.geometry) {
-      setTimeout(() => {
-        console.log('INVALIDATE SIZE');
-        this.lajiMap.invalidateSize();
-      }, 1000);
-    }
 
     if (field.enum) {
       this.labels = [IGNORE_VALUE, ...field.enumNames];
