@@ -1,0 +1,13 @@
+.most-active-table {
+  margin-bottom: 10px;
+}
+.ngx-datatable.material.datatable-top-header-wrapper {
+  border-bottom: none;
+}
+.ngx-datatable.material .datatable-header.datatable-top-header {
+  border-bottom: none;
+}
+.datatable-top-header.datatable-header .datatable-header-cell {
+  border-right: none;
+  width: 100%;
+}
