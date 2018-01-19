@@ -347,7 +347,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   toStatisticsPage(docId: string) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/line-transect/statistics/' + docId]));
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/vakiolinjat/statistics/' + docId]));
   }
 
   toggleExpandRow(row: any) {

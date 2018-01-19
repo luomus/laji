@@ -67,7 +67,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'line-transect',
+    path: 'vakiolinjat',
     component: LineTransectComponent,
     children: [
       {path: '', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' }},

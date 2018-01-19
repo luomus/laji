@@ -265,7 +265,7 @@ export class FormService {
       case environment.wbcForm:
         return '/theme/wbc/form';
       case environment.lineTransectForm:
-        return '/theme/line-transect/form';
+        return '/theme/vakiolinjat/form';
     }
     return '/vihko/' + formId;
   }

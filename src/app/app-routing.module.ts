@@ -41,6 +41,7 @@ const routesWithLang: Routes = [
     {path: 'nafi', redirectTo: '/en/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/en/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/en/theme/emk', pathMatch: 'full'},
+    {path: 'vakiolinjat', redirectTo: '/en/theme/vakiolinjat', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/en/error/404'}
   ], component: LocaleEnComponent},
@@ -48,6 +49,7 @@ const routesWithLang: Routes = [
     {path: 'nafi', redirectTo: '/sv/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/sv/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/sv/theme/emk', pathMatch: 'full'},
+      {path: 'vakiolinjat', redirectTo: '/sv/theme/vakiolinjat', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/sv/error/404'}
   ], component: LocaleSvComponent},
@@ -55,6 +57,7 @@ const routesWithLang: Routes = [
     {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
+    {path: 'vakiolinjat', redirectTo: '/theme/vakiolinjat', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/error/404'}
   ], component: LocaleFiComponent}
