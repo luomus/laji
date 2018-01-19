@@ -16,7 +16,7 @@
     "build:local": "ng build --environment=local --prod --aot",
     "build:embedded": "ng build --environment=embedded --prod --aot",
     "build:vir": "ng build --environment=vir --prod --aot",
-    "build:dev": "ng build --environment=dev --prod --aot",
+    "build:dev": "node --max_old_space_size=12288 ng build --environment=dev --prod --aot",
     "bundle-report": "ng build --prod --aot --stats-json && webpack-bundle-analyzer dist/stats.json",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test",
