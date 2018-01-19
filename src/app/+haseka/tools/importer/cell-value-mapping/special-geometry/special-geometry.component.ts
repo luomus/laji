@@ -1,20 +1,30 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output,
+  ViewChild
+} from '@angular/core';
 import { LajiMapOptions } from '../../../../../shared-modules/map/map-options.interface';
 import { Map3Component } from '../../../../../shared-modules/map/map.component';
+import {FormField, IGNORE_VALUE} from '../../../model/form-field';
+import {CoordinateService} from '../../../../../shared/service/coordinate.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-special-geometry',
   templateUrl: './special-geometry.component.html',
-  styleUrls: ['./special-geometry.component.css']
+  styleUrls: ['./special-geometry.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
-export class SpecialGeometryComponent implements OnInit {
+export class SpecialGeometryComponent implements AfterViewInit {
 
   @Input() invalidValues: string[];
   @Input() mapping: {[value: string]: any} = {};
+  @Input() field: FormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
-  @ViewChild(Map3Component) lajiMap: Map3Component;
+  @ViewChild(Map3Component) lajiMapComponent: Map3Component;
 
+  ignore = IGNORE_VALUE;
   lajiMapOptions: LajiMapOptions = {
+    drawIdx: 0,
     draw: {
       marker: true,
       polyline: true,
@@ -29,7 +39,7 @@ export class SpecialGeometryComponent implements OnInit {
         polygon: true,
         circle: true,
         rectangle: true,
-        copy: false,
+        copy: true,
         upload: true,
         undo: false,
         redo: false,
@@ -40,14 +50,57 @@ export class SpecialGeometryComponent implements OnInit {
       }
     }
   };
-  active = 0;
+  active: number;
+  value: any;
 
-  constructor() { }
+  constructor(
+    private coordinateService: CoordinateService,
+    private translateService: TranslateService,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.lajiMapOptions.lang = this.translateService.currentLang;
+  }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     setTimeout(() => {
-      this.lajiMap.invalidateSize();
-    }, 500);
+      this.lajiMapComponent.invalidateSize();
+      this.lajiMapComponent.lajiMap.setData([{}]);
+      this.setActive(0);
+      this.cdr.markForCheck();
+    }, 200);
+  }
+
+  setActive(idx) {
+    this.active = idx;
+    this.value = this.invalidValues[idx];
+    if (this.mapping[this.value] && this.mapping[this.value] !== IGNORE_VALUE) {
+      this.lajiMapComponent.lajiMap.setDraw({
+        featureCollection: this.coordinateService.getFeatureCollectionFromGeometry(this.mapping[this.value]),
+        onChange: this.onChange.bind(this)
+      });
+      this.lajiMapComponent.lajiMap.focusToDrawLayer(0);
+    } else {
+      this.lajiMapComponent.lajiMap.setDraw({
+        featureCollection: {},
+        onChange: this.onChange.bind(this)
+      });
+    }
+  }
+
+  onChange() {
+    const drawnData = this.lajiMapComponent.lajiMap.getDraw();
+    this.valueMap(this.value, this.coordinateService.getGeometryFromFeatureCollection(drawnData.featureCollection));
+  }
+
+  valueMap(value, to) {
+    const mapping = {...this.mapping};
+
+    if (to === undefined && mapping[value]) {
+      delete mapping[value];
+    } else {
+      mapping[value] = to;
+    }
+    this.mappingChanged.emit(mapping);
   }
 
 }

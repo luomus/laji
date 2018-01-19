@@ -22,11 +22,14 @@
         <ng-container *ngSwitchCase="'integer'">
           <div class="row">
             <div class="col-sm-10">
-              <input type="number" class="form-control" value="" #number>
+              <input (change)="valueMapped(value, number.value)" type="number" class="form-control" value="1" #number>
             </div>
             <div class="col-sm-2">
-              <button type="button" class="btn btn-success btn-sm" (click)="valueMapped(value, number.value)"><i class="glyphicon glyphicon-ok"></i></button>
-              <button type="button" class="btn btn-danger btn-sm" (click)="valueMapped(value, ignore)"><i class="glyphicon glyphicon-remove"></i></button>
+              <button type="button"
+                      [ngClass]="{'active btn-danger': mapping[value] === ignore}"
+                      class="btn btn-sm"
+                      (click)="valueMapped(value, mapping[value] === ignore ? number.value : ignore)"
+              ><i class="glyphicon glyphicon-remove"></i></button>
             </div>
           </div>
         </ng-container>

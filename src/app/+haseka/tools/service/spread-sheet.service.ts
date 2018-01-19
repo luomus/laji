@@ -4,11 +4,11 @@ import { Observable } from 'rxjs/Observable';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { environment } from '../../../../environments/environment';
-import { Document } from '../../../shared/model';
-import { TriplestoreLabelService } from '../../../shared/service';
+import {Document, Person} from '../../../shared/model';
+import {TriplestoreLabelService, UserService} from '../../../shared/service';
 
 import { DOCUMENT_LEVEL, FormField, IGNORE_VALUE } from '../model/form-field';
-import { MappingService } from './mapping.service';
+import {MappingService, SpeciesTypes} from './mapping.service';
 
 @Injectable()
 export class SpreadSheetService {
@@ -17,11 +17,15 @@ export class SpreadSheetService {
   private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
   private translations = {};
+  private newToParent = {
+    'identifications': 'units'
+  };
 
   constructor(
     private mappingService: MappingService,
     private labelService: TriplestoreLabelService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private userService: UserService
   ) {
     this.translateService.onLangChange
       .map(() => this.translateService.currentLang)
@@ -64,13 +68,17 @@ export class SpreadSheetService {
   }
 
   generate(filename: string, fields: FormField[], useLabels = true, type: 'ods' | 'xlsx' = 'xlsx') {
-    const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels));
-    const book = XLSX.utils.book_new();
+    this.userService.getUser()
+      .subscribe((person) => {
+        const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels, {person: person}));
+        const book = XLSX.utils.book_new();
 
-    this.addMetaDataToSheet(fields, sheet, useLabels);
-    XLSX.utils.book_append_sheet(book, sheet);
+        this.addMetaDataToSheet(fields, sheet, useLabels);
+        XLSX.utils.book_append_sheet(book, sheet);
 
-    this.downloadData(XLSX.write(book, {bookType: type, type: 'buffer'}), filename, type);
+        this.downloadData(XLSX.write(book, {bookType: type, type: 'buffer'}), filename, type);
+      });
+
   }
 
   formToFlatFieldsLookUp(form: any, addIgnore = false): {[key: string]: FormField} {
@@ -201,11 +209,12 @@ export class SpreadSheetService {
     let rowSpots: {[row: number]: {[level: string]: number}} = {};
     cols.map(col => {
       const field = fields[mapping[col]];
+      const parent = this.getParent(field);
       if (field.key === IGNORE_VALUE) {
         return;
       }
-      if (allLevels.indexOf(field.parent) === -1) {
-        allLevels.push(field.parent);
+      if (allLevels.indexOf(parent) === -1) {
+        allLevels.push(parent);
       }
     });
     rows.map((row, rowIdx) => {
@@ -217,12 +226,13 @@ export class SpreadSheetService {
         }
         const field = fields[mapping[col]];
         const value = this.mappingService.map(row[col], field);
+        const parent = this.getParent(field);
         if (field.key === IGNORE_VALUE || value === IGNORE_VALUE) {
           return;
         }
         values[field.key] = value;
-        if (field.previousValue !== null && field.previousValue !== row[col] && newLevels.indexOf(field.parent) === -1) {
-          newLevels.push(field.parent);
+        if (field.previousValue !== null && field.previousValue !== row[col] && newLevels.indexOf(parent) === -1) {
+          newLevels.push(this.getParent(field));
         }
         field.previousValue = row[col];
       });
@@ -262,6 +272,10 @@ export class SpreadSheetService {
     return result;
   }
 
+  private getParent(field: FormField) {
+    return this.newToParent[field.parent] ? this.newToParent[field.parent] : field.parent;
+  }
+
   private relativePathToAbsolute(values: {[key: string]: any}, spot: {[level: string]: number}): {[key: string]: any} {
     const replaces: {from: string, to: string}[] = [];
     const result = {};
@@ -280,6 +294,7 @@ export class SpreadSheetService {
       if (targetKey.endsWith('[*]')) {
         targetKey = targetKey.slice(0, -3);
       }
+      targetKey = targetKey.replace(/\[\*]/g, '[0]');
       result[targetKey] = values[key];
     });
     return result;
@@ -408,10 +423,17 @@ export class SpreadSheetService {
     }
   }
 
-  private fieldsToAOA(fields: FormField[], useLabels: boolean) {
+  private fieldsToAOA(fields: FormField[], useLabels: boolean, specials: {person: Person}) {
     const result = [[], []];
     fields.map((field, idx) => {
+      const special = this.mappingService.getSpecial(field);
       let value = field.default;
+
+      switch (special) {
+        case SpeciesTypes.person:
+          value = specials.person && specials.person.id || '';
+          break;
+      }
 
       if (useLabels && field.enum && field.default) {
         const valueIdx = field.enum.indexOf(field.default);

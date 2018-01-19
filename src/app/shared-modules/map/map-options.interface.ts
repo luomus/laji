@@ -7,12 +7,14 @@ export interface LajiMapOptions {
   center?: [number, number];
   lang?: string;
   data?: any;
+  drawIdx?: number;
   draw?: {
     marker?: boolean;
     polyline?: boolean;
     polygon?: boolean;
     circle?: boolean;
     rectangle?: boolean;
+    onChange?: (eventData: any) => void;
   };
   lineTransect?: {
     feature: any;

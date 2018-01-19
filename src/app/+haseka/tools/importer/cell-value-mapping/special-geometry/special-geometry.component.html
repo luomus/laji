@@ -1,14 +1,30 @@
 <table class="table">
   <tr>
     <td>
-      <div class="form-control-static">
-        {{invalidValues[active]}}
+      <ul class="source-list">
+        <li
+          *ngFor="let invalidValue of invalidValues; let i = index"
+          class="link"
+          [class.active]="i === active"
+          (click)="setActive(i)"
+        >
+          <i *ngIf="i === active" class="glyphicon glyphicon-triangle-right"></i>
+          {{invalidValue}}
+        </li>
+      </ul>
+    </td>
+    <td>
+      <div class="map-container">
+        <laji-map3 [options]="lajiMapOptions" #lajiMap></laji-map3>
       </div>
     </td>
     <td>
-      <div style="height: 500px; width: 400px;">
-        <laji-map3 [options]="lajiMapOptions" #lajiMap></laji-map3>
-      </div>
+      <button type="button"
+              *ngIf="field && !field.required"
+              [ngClass]="{'active btn-danger': mapping[value] === ignore}"
+              class="btn btn-sm"
+              (click)="valueMap(value, mapping[value] === ignore ? undefined : ignore)"
+      ><i class="glyphicon glyphicon-remove"></i></button>
     </td>
   </tr>
 </table>

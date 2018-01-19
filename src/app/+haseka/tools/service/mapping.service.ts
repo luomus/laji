@@ -5,7 +5,8 @@ import { FormField } from '../model/form-field';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 
 export enum SpeciesTypes {
-  geometry = 'geometry'
+  geometry = 'geometry',
+  person = 'person'
 }
 
 @Injectable()
@@ -35,6 +36,9 @@ export class MappingService {
   private userValueMappings = {};
 
   private specials = {
+    'editors[*]': SpeciesTypes.person,
+    'gatheringEvent.leg[*]': SpeciesTypes.person,
+    'gatherings[*].leg': SpeciesTypes.person,
     'gatherings[*].geometry': SpeciesTypes.geometry,
     'gatherings[*].units[*].unitGathering.geometry': SpeciesTypes.geometry
   };
@@ -104,6 +108,10 @@ export class MappingService {
   map(value: any, field: FormField) {
     switch (this.getSpecial(field)) {
       case SpeciesTypes.geometry:
+        const mappedValue = this.getUserMappedValue(('' + value).toUpperCase(), field);
+        if (mappedValue !== null) {
+          return mappedValue;
+        }
         return this.analyzeGeometry(value);
     }
     switch (field.type) {
