@@ -44,7 +44,8 @@ export class SearchQuery {
     'individualId',
     'secureReason',
     'editorId',
-    'taxonReliability'
+    'taxonReliability',
+    'annotationType'
   ];
 
   booleanTypes = [
@@ -68,6 +69,10 @@ export class SearchQuery {
     'individualCountMin',
     'individualCountMax',
     'coordinateAccuracyMax'
+  ];
+
+  dateTypes = [
+    'annotatedLaterThan'
   ];
 
   stringTypes = [
@@ -214,6 +219,15 @@ export class SearchQuery {
         const type = typeof this.query[i];
         if (type === 'number' || type === 'string') {
           result[i] = String(this.query[i]);
+        }
+      }
+
+      for (const i of this.dateTypes) {
+        if (skipParams.indexOf(i) > -1) {
+          continue;
+        }
+        if (this.query[i] instanceof Date) {
+          result[i] = this.query[i].toISOString().split('T')[0];
         }
       }
 

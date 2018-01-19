@@ -36,6 +36,10 @@ import { LineTransectFormComponent } from './line-transect/line-transect-form/li
 import { LineTransectInstructionsComponent } from './line-transect/line-transect-instructions/line-transect-instructions.component';
 import { LineTransectMyDocumentListComponent } from './line-transect/line-transect-my-document-list/line-transect-my-document-list.component';
 import { StatisticsModule } from '../shared-modules/statistics/statistics.module';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { QualityService } from './quality/quality.service';
+import { QualityComponent } from './quality/quality.component';
+import { QualityMostActiveTableComponent } from './quality/quality-most-active-table/quality-most-active-table.component';
 
 @NgModule({
   imports: [
@@ -48,7 +52,8 @@ import { StatisticsModule } from '../shared-modules/statistics/statistics.module
     ObservationResultModule,
     OwnSubmissionsModule,
     NamedPlaceModule,
-    StatisticsModule
+    StatisticsModule,
+    NgxDatatableModule
   ],
   declarations: [
     NafiComponent,
@@ -75,8 +80,10 @@ import { StatisticsModule } from '../shared-modules/statistics/statistics.module
     LineTransectMyDocumentListComponent,
     IdentifyComponent,
     NafiTemplatesComponent,
-    ThemeComponent
+    ThemeComponent,
+    QualityComponent,
+    QualityMostActiveTableComponent
   ],
-  providers: [ ResultService ]
+  providers: [ ResultService, QualityService ]
 })
 export class ThemeModule { }

@@ -42,6 +42,13 @@
       </ng-container>
     </div>
   </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>{{'identify.mostActiveTitle' | translate}}</h2>
+      <laji-quality-most-active-table [maxLength]="5"></laji-quality-most-active-table>
+      <p><a [routerLink]="['/theme/quality' | localize]">{{'identify.toQualityPage' | translate}}</a></p>
+    </div>
+  </div>
 </div>
 <div class="modal fade" bsModal #documentModal="bs-modal"
      tabindex="-1" role="dialog" aria-hidden="true">
