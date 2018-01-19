@@ -29,7 +29,7 @@ import { StatisticsComponent } from '../shared-modules/statistics/statistics.com
 const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
   {
-    path: 'wbc',
+    path: 'talvilintulaskenta',
     component: WbcComponent,
     children: [
       {path: '', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' }},

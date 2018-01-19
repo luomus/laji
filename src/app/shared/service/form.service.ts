@@ -263,7 +263,7 @@ export class FormService {
       case environment.nafiForm:
         return '/theme/nafi/form';
       case environment.wbcForm:
-        return '/theme/wbc/form';
+        return '/theme/talvilintulaskenta/form';
       case environment.lineTransectForm:
         return '/theme/vakiolinjat/form';
     }
@@ -278,7 +278,7 @@ export class FormService {
       case environment.nafiForm:
         return '/theme/nafi/form/' + documentId;
       case environment.wbcForm:
-        return '/theme/wbc/form/' + documentId;
+        return '/theme/talvilintulaskenta/form/' + documentId;
       case environment.lineTransectForm:
         return '/theme/line-transect/form/' + documentId;
     }
