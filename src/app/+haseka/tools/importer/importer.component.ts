@@ -75,6 +75,7 @@ export class ImporterComponent implements OnInit {
     reader.onload = (e: any) => {
       this.valid = false;
       this.errors = undefined;
+      this.parsedData = undefined;
       this.bstr = e.target.result;
       this.formID = this.spreadSheetService.findFormIdFromFilename(fileName);
       this.initForm();
@@ -162,7 +163,7 @@ export class ImporterComponent implements OnInit {
 
   validate() {
     this.status = 'validating';
-    this.parsedData = this.spreadSheetService.flatFieldsToDocuments(this.data, this.colMap, this.fields, this.formID);
+    this.initParsedData();
     const validationObservation = Observable.from(this.parsedData)
       .mergeMap(data => this.importService.validateData(data.document))
       .subscribe(
@@ -183,6 +184,8 @@ export class ImporterComponent implements OnInit {
   }
 
   save(publicityRestrictions: Document.PublicityRestrictionsEnum) {
+    this.status = 'importing';
+    this.initParsedData();
     const validationObservation = Observable.from(this.parsedData)
       .mergeMap(data => this.importService.sendData(data.document, publicityRestrictions))
       .subscribe(
@@ -200,6 +203,12 @@ export class ImporterComponent implements OnInit {
           this.cdr.markForCheck();
         }
       );
+  }
+
+  initParsedData() {
+    if (!this.parsedData) {
+      this.parsedData = this.spreadSheetService.flatFieldsToDocuments(this.data, this.colMap, this.fields, this.formID);
+    }
   }
 
 }
