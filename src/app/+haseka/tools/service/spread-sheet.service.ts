@@ -129,7 +129,7 @@ export class SpreadSheetService {
   }
 
   loadSheet(data: any) {
-    const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'binary', cellDates: true});
+    const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true});
     const sheetName: string = workBook.SheetNames[0];
     const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
 
@@ -201,7 +201,6 @@ export class SpreadSheetService {
     spot: {[level: string]: number},
     formID: string
   ): {document: Document, rows: {[row: number]: {[level: string]: number}}}[] {
-    // TODO: Handle identifications (only one per unit)
     const cols = Object.keys(mapping);
     const result: {document: Document, rows: {[row: number]: {[level: string]: number}}}[] = [];
     const allLevels = [];

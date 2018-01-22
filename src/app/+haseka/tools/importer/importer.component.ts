@@ -81,7 +81,7 @@ export class ImporterComponent implements OnInit {
       this.initForm();
     };
     if (this.spreadSheetService.isValidType(target.files[0].type)) {
-      reader.readAsBinaryString(target.files[0]);
+      reader.readAsArrayBuffer(target.files[0]);
     } else {
       this.status = 'invalidFileType';
     }
