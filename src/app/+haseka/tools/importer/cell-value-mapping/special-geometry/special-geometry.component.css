@@ -11,10 +11,13 @@
   font-weight: bold;
 }
 
-.map-container {
-  min-height: 200px;
+.map-cell, .map-container {
   width: 40vw;
-  height: 60vh;
   max-width: 600px;
   min-width: 200px;
+}
+
+.map-container {
+  min-height: 200px;
+  height: 60vh;
 }

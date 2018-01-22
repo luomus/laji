@@ -11,6 +11,7 @@
       [invalidValues]="invalid"
       [mapping]="valueMap[field.key]"
       (mappingChanged)="onMapping($event)"
+      (done)="analyseNextColumn()"
     ></laji-special-geometry>
   </ng-container>
   <ng-container *ngSwitchDefault>

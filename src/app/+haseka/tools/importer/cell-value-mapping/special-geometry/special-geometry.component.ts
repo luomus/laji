@@ -20,6 +20,7 @@ export class SpecialGeometryComponent implements AfterViewInit {
   @Input() mapping: {[value: string]: any} = {};
   @Input() field: FormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
+  @Output() done = new EventEmitter();
   @ViewChild(Map3Component) lajiMapComponent: Map3Component;
 
   ignore = IGNORE_VALUE;
@@ -51,6 +52,7 @@ export class SpecialGeometryComponent implements AfterViewInit {
     }
   };
   active: number;
+  last: number;
   value: any;
 
   constructor(
@@ -66,11 +68,15 @@ export class SpecialGeometryComponent implements AfterViewInit {
       this.lajiMapComponent.invalidateSize();
       this.lajiMapComponent.lajiMap.setData([{}]);
       this.setActive(0);
+      this.initLast();
       this.cdr.markForCheck();
     }, 200);
   }
 
   setActive(idx) {
+    if (idx > this.last) {
+      return this.done.emit();
+    }
     this.active = idx;
     this.value = this.invalidValues[idx];
     if (this.mapping[this.value] && this.mapping[this.value] !== IGNORE_VALUE) {
@@ -88,8 +94,13 @@ export class SpecialGeometryComponent implements AfterViewInit {
   }
 
   onChange() {
+    this.initLast();
     const drawnData = this.lajiMapComponent.lajiMap.getDraw();
     this.valueMap(this.value, this.coordinateService.getGeometryFromFeatureCollection(drawnData.featureCollection));
+  }
+
+  initLast() {
+    this.last = this.invalidValues ? (this.invalidValues.length - 1) : 0;
   }
 
   valueMap(value, to) {
