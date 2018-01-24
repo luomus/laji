@@ -19,6 +19,7 @@ import { ImportService } from './service/import.service';
 import { CellValueSelectComponent } from './importer/cell-value-mapping/cell-value-select/cell-value-select.component';
 import { LajiMapModule } from '../../shared-modules/map/laji-map.module';
 import { SpecialGeometryComponent } from './importer/cell-value-mapping/special-geometry/special-geometry.component';
+import {GeneratorService} from './service/generator.service';
 
 @NgModule({
   imports: [
@@ -41,6 +42,6 @@ import { SpecialGeometryComponent } from './importer/cell-value-mapping/special-
     CellValueSelectComponent,
     SpecialGeometryComponent
   ],
-  providers: [SpreadSheetService, MappingService, ImportService]
+  providers: [SpreadSheetService, MappingService, ImportService, GeneratorService]
 })
 export class ToolsModule { }

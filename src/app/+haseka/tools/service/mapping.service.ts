@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LajiExternalService } from '../../../shared/service/laji-external.service';
 import { FormField } from '../model/form-field';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
+import {CoordinateService} from '../../../shared/service/coordinate.service';
 
 export enum SpeciesTypes {
   geometry = 'geometry',
@@ -46,6 +47,7 @@ export class MappingService {
   constructor(
     private translationService: TranslateService,
     private lajiExternalService: LajiExternalService,
+    private coordinateService: CoordinateService
   ) {
     this.lajiExternalService.getMap({})
   }
@@ -187,6 +189,12 @@ export class MappingService {
 
   private analyzeGeometry(value: any) {
     if (typeof value === 'string') {
+      if (value.match(/^[0-9]{3,7}:[0-9]{3,7}$/)) {
+        const parts = value.split(':');
+        if (parts[0].length === parts[1].length) {
+          return this.coordinateService.convertYkjToGeoJsonFeature(parts[0], parts[1]).geometry;
+        }
+      }
       try {
         const data = convertAnyToWGS84GeoJSON(value);
         if (data && data.features && data.features[0] && data.features[0].geometry) {
@@ -207,7 +215,7 @@ export class MappingService {
           (this.mapping.string[field.key] && this.mapping.string[field.key][str] || null);
       case 'boolean':
         const userValue = this.getUserMappedValue(str, field);
-        return typeof userValue !== 'undefined' ?
+        return userValue !== null ?
           userValue : (typeof this.mapping.boolean[str] !== 'undefined' ? this.mapping.boolean[str] : null);
     }
     return null;

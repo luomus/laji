@@ -109,6 +109,7 @@ export class SpecialGeometryComponent implements AfterViewInit {
     if (to === undefined && mapping[value]) {
       delete mapping[value];
     } else {
+      to['coordinateVerbatim'] = value;
       mapping[value] = to;
     }
     this.mappingChanged.emit(mapping);
