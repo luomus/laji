@@ -21,6 +21,8 @@ export class SpreadSheetService {
     'identifications': 'units'
   };
 
+  private requiredFields = {};
+
   constructor(
     private mappingService: MappingService,
     private labelService: TriplestoreLabelService,
@@ -80,6 +82,10 @@ export class SpreadSheetService {
         this.downloadData(XLSX.write(book, {bookType: type, type: 'buffer'}), filename, type);
       });
 
+  }
+
+  setRequiredFields(fields: object) {
+    this.requiredFields = fields;
   }
 
   formToFlatFieldsLookUp(form: any, addIgnore = false): {[key: string]: FormField} {
@@ -358,7 +364,7 @@ export class SpreadSheetService {
               fullLabel: label + ' - ' + (this.translations[parent] || parent),
               key: root,
               parent: parent,
-              required: this.hasRequiredValidator(lastKey, validators, required),
+              required: this.hasRequiredValidator(lastKey, validators, required, root),
               enum: form.enum,
               enumNames: form.enumNames,
               default: form.default
@@ -379,7 +385,7 @@ export class SpreadSheetService {
           fullLabel: label + ' - ' + (this.translations[parent] || parent),
           key: root,
           parent: parent,
-          required: this.hasRequiredValidator(lastKey, validators, required),
+          required: this.hasRequiredValidator(lastKey, validators, required, root),
           enum: form.enum,
           enumNames: form.enumNames,
           default: form.default
@@ -387,58 +393,65 @@ export class SpreadSheetService {
     }
   }
 
-  private hasRequiredValidator(lastKey, validator, required) {
+  private hasRequiredValidator(lastKey, validator, required, key) {
+    if (typeof this.requiredFields[key] !== 'undefined') {
+      return this.requiredFields[key];
+    }
     return !!validator.presence || (validator.geometry && validator.geometry.requireShape) || required.indexOf(lastKey) > -1;
   }
 
   private addMetaDataToSheet(fields: FormField[], sheet: XLSX.WorkSheet, useLabels: boolean) {
     const validation = [];
     const vSheet = [];
+    const cache = {};
+    let vColumn = 0;
     fields.map((field, idx) => {
       const headerAddress = XLSX.utils.encode_cell({r: 0, c: idx});
       const dataRange = XLSX.utils.encode_range({r: 1, c: idx}, {r: 1000, c: idx});
       const headerCell = sheet[headerAddress];
 
-      /*
+      /* Comments do not work nicely with excel (leaves comments open on hover)
       if (!headerCell.c) {
         headerCell.c = [];
       }
       headerCell.c.push({a: 'laji.fi', t: field.key});
       */
 
+      let validValues;
       if (field.enum) {
-        let current = 0;
-
-        for (const vIdx in field.enum) {
-          if (!field.enum.hasOwnProperty(vIdx) || field.enum[vIdx] === '') {
-            continue;
-          }
-          if (!vSheet[current]) {
-            vSheet[current] = [];
-          }
-          vSheet[current][idx] = useLabels ? field.enumNames[vIdx] : field.enum[vIdx];
-          current++;
-        }
-        const validationRange = XLSX.utils.encode_range({r: 0, c: idx}, {r: current, c: idx});
-        validation.push({
-          sqref: dataRange,
-          sqtarget: 'Sheet2!' + validationRange
-        })
+        validValues = (useLabels ? field.enumNames : field.enum).filter(val => val !== '');
       } else if (field.type === 'boolean') {
+        validValues = [this.mappingService.mapFromBoolean(true), this.mappingService.mapFromBoolean(false)];
+      }
+
+      if (validValues) {
+        const cacheKey = JSON.stringify(validValues);
+        if (!cache[cacheKey]) {
+          this.addToValidationSheetData(validValues, vColumn, vSheet);
+          cache[cacheKey] = 'Sheet2!' + XLSX.utils.encode_range({r: 0, c: vColumn}, {r: validValues.length - 1, c: vColumn});
+          vColumn++;
+        }
         validation.push({
           sqref: dataRange,
-          values: [
-            this.mappingService.mapFromBoolean(true),
-            this.mappingService.mapFromBoolean(false)
-          ]
-        })
+          sqtarget: cache[cacheKey]
+        });
       }
     });
     if (validation.length > 0) {
       sheet['!dataValidation'] = validation;
     }
-    console.log(vSheet);
     return XLSX.utils.aoa_to_sheet(vSheet);
+  }
+
+  private addToValidationSheetData(valid: string[], vColumn, vSheet) {
+    let current = 0;
+    for (const validItem of valid) {
+      if (!vSheet[current]) {
+        vSheet[current] = [];
+      }
+      vSheet[current][vColumn] = validItem;
+      current++;
+    }
   }
 
   private fieldsToAOA(fields: FormField[], useLabels: boolean, specials: {person: Person}) {
@@ -449,7 +462,8 @@ export class SpreadSheetService {
 
       switch (special) {
         case SpeciesTypes.person:
-          value = specials.person && specials.person.id || '';
+          const person = specials.person || {};
+          value = `${person.fullName} (${person.id})`;
           break;
       }
 

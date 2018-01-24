@@ -29,7 +29,13 @@ export class ExcelGeneratorComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.spreadSheetService.setRequiredFields({
+      'gatherings[*].taxonCensus[*].censusTaxonID': false,
+      'gatherings[*].taxonCensus[*].taxonCensusType': false,
+      'gatherings[*].units[*].identifications[*].taxon': true
+    });
+  }
 
   formSelected(event) {
     this.formID = event.id;

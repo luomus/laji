@@ -4,16 +4,17 @@ patch-package
 @@ -12120,6 +12120,18 @@ var WS_XML_ROOT = writextag('worksheet', null, {
  	'xmlns:r': XMLNS.r
  });
- 
+
 +function write_ws_xml_datavalidation(validations) {
-+  var o = '<dataValidations>';
++  var o = '<extLst><ext uri="{CCE6A557-97BC-4b89-ADB6-D9C93CAAB3DF}" xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main"><x14:dataValidations count="' + validations.length + '" xmlns:xm="http://schemas.microsoft.com/office/excel/2006/main">';
 +  for(var i=0; i < validations.length; i++) {
 +    var validation = validations[i];
-+    o += '<dataValidation type="list" allowBlank="1" sqref="' + validation.sqref + '">';
-+    o += '<formula1>&quot;' + validation.values + '&quot;</formula1>';
-+    o += '</dataValidation>';
++    o += '<x14:dataValidation type="list" allowBlank="1" showInputMessage="1">';
++    o += '<x14:formula1><xm:f>' + validation.sqtarget + '</xm:f></x14:formula1><xm:sqref>' + validation.sqref + '</xm:sqref>';
++    o += '</x14:dataValidation>';
 +  }
-+  o += '</dataValidations>';
++  o += '</x14:dataValidations></ext></extLst>';
++
 +  return o;
 +}
 +
@@ -22,9 +23,9 @@ patch-package
  	var s = wb.SheetNames[idx], sidx = 0, rdata = "";
 @@ -12169,6 +12181,7 @@ function write_ws_xml(idx, opts, wb, rels) {
  	/* customSheetViews */
- 
+
  	if(ws['!merges'] != null && ws['!merges'].length > 0) o[o.length] = (write_ws_xml_merges(ws['!merges']));
 +  if(ws['!dataValidation']) o[o.length] = write_ws_xml_datavalidation(ws['!dataValidation']);
- 
+
  	/* phoneticPr */
  	/* conditionalFormatting */
