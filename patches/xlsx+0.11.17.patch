@@ -1,10 +1,10 @@
 patch-package
 --- a/node_modules/xlsx/xlsx.js
 +++ b/node_modules/xlsx/xlsx.js
-@@ -12120,6 +12120,18 @@ var WS_XML_ROOT = writextag('worksheet', null, {
+@@ -12120,6 +12120,19 @@ var WS_XML_ROOT = writextag('worksheet', null, {
  	'xmlns:r': XMLNS.r
  });
-
+ 
 +function write_ws_xml_datavalidation(validations) {
 +  var o = '<extLst><ext uri="{CCE6A557-97BC-4b89-ADB6-D9C93CAAB3DF}" xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main"><x14:dataValidations count="' + validations.length + '" xmlns:xm="http://schemas.microsoft.com/office/excel/2006/main">';
 +  for(var i=0; i < validations.length; i++) {
@@ -21,11 +21,11 @@ patch-package
  function write_ws_xml(idx, opts, wb, rels) {
  	var o = [XML_HEADER, WS_XML_ROOT];
  	var s = wb.SheetNames[idx], sidx = 0, rdata = "";
-@@ -12169,6 +12181,7 @@ function write_ws_xml(idx, opts, wb, rels) {
+@@ -12169,6 +12182,7 @@ function write_ws_xml(idx, opts, wb, rels) {
  	/* customSheetViews */
-
+ 
  	if(ws['!merges'] != null && ws['!merges'].length > 0) o[o.length] = (write_ws_xml_merges(ws['!merges']));
 +  if(ws['!dataValidation']) o[o.length] = write_ws_xml_datavalidation(ws['!dataValidation']);
-
+ 
  	/* phoneticPr */
  	/* conditionalFormatting */
