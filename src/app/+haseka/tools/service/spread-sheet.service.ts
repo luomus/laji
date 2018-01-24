@@ -428,7 +428,9 @@ export class SpreadSheetService {
         const cacheKey = JSON.stringify(validValues);
         if (!cache[cacheKey]) {
           this.addToValidationSheetData(validValues, vColumn, vSheet);
-          cache[cacheKey] = 'Sheet2!' + XLSX.utils.encode_range({r: 0, c: vColumn}, {r: validValues.length - 1, c: vColumn});
+          cache[cacheKey] = 'Sheet2!' + this.makeExactRange(
+            XLSX.utils.encode_range({r: 0, c: vColumn}, {r: validValues.length - 1, c: vColumn})
+          );
           vColumn++;
         }
         validation.push({
@@ -441,6 +443,10 @@ export class SpreadSheetService {
       sheet['!dataValidation'] = validation;
     }
     return XLSX.utils.aoa_to_sheet(vSheet);
+  }
+
+  private makeExactRange(range) {
+    return range.split(':').map(cell => cell.replace(/^([A-Z]+)([0-9]+)$/, '$$$1$$$2')).join(':');
   }
 
   private addToValidationSheetData(valid: string[], vColumn, vSheet) {
