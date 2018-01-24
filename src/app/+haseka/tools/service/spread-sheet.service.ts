@@ -73,8 +73,9 @@ export class SpreadSheetService {
         const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels, {person: person}));
         const book = XLSX.utils.book_new();
 
-        this.addMetaDataToSheet(fields, sheet, useLabels);
+        const validationSheet = this.addMetaDataToSheet(fields, sheet, useLabels);
         XLSX.utils.book_append_sheet(book, sheet);
+        XLSX.utils.book_append_sheet(book, validationSheet);
 
         this.downloadData(XLSX.write(book, {bookType: type, type: 'buffer'}), filename, type);
       });
@@ -392,20 +393,36 @@ export class SpreadSheetService {
 
   private addMetaDataToSheet(fields: FormField[], sheet: XLSX.WorkSheet, useLabels: boolean) {
     const validation = [];
+    const vSheet = [];
     fields.map((field, idx) => {
       const headerAddress = XLSX.utils.encode_cell({r: 0, c: idx});
       const dataRange = XLSX.utils.encode_range({r: 1, c: idx}, {r: 1000, c: idx});
       const headerCell = sheet[headerAddress];
 
+      /*
       if (!headerCell.c) {
         headerCell.c = [];
       }
       headerCell.c.push({a: 'laji.fi', t: field.key});
+      */
 
       if (field.enum) {
+        let current = 0;
+
+        for (const vIdx in field.enum) {
+          if (!field.enum.hasOwnProperty(vIdx) || field.enum[vIdx] === '') {
+            continue;
+          }
+          if (!vSheet[current]) {
+            vSheet[current] = [];
+          }
+          vSheet[current][idx] = useLabels ? field.enumNames[vIdx] : field.enum[vIdx];
+          current++;
+        }
+        const validationRange = XLSX.utils.encode_range({r: 0, c: idx}, {r: current, c: idx});
         validation.push({
           sqref: dataRange,
-          values: (useLabels ? field.enumNames : field.enum).filter(value => value !== '')
+          sqtarget: 'Sheet2!' + validationRange
         })
       } else if (field.type === 'boolean') {
         validation.push({
@@ -420,6 +437,8 @@ export class SpreadSheetService {
     if (validation.length > 0) {
       sheet['!dataValidation'] = validation;
     }
+    console.log(vSheet);
+    return XLSX.utils.aoa_to_sheet(vSheet);
   }
 
   private fieldsToAOA(fields: FormField[], useLabels: boolean, specials: {person: Person}) {

@@ -10,6 +10,7 @@ import { ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadSheetService } from '../service/spread-sheet.service';
 import { ModalDirective } from 'ngx-bootstrap';
+import {ToastsService} from '../../../shared/service/toasts.service';
 
 type states
   = 'empty'
@@ -56,7 +57,8 @@ export class ImporterComponent implements OnInit {
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef,
     private importService: ImportService,
-    private mappingService: MappingService
+    private mappingService: MappingService,
+    private toastsService: ToastsService
   ) { }
 
   ngOnInit() {
@@ -192,6 +194,7 @@ export class ImporterComponent implements OnInit {
         () => {
           this.status = 'doneOk';
           this.valid = true;
+          this.toastsService.showSuccess('Havaintoerät tallennettu');
           this.cdr.markForCheck();
         },
         (err) => {
@@ -200,6 +203,7 @@ export class ImporterComponent implements OnInit {
             this.errors = body.error.details;
           }
           this.status = 'doneWithErrors';
+          this.toastsService.showError('Tallennus epäonnistui!');
           this.cdr.markForCheck();
         }
       );
