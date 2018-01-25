@@ -5,6 +5,14 @@
 <h3 *ngIf="field">{{field.fullLabel}}</h3>
 
 <ng-container [ngSwitch]="special">
+  <ng-container *ngSwitchCase="specials.person">
+    <laji-special-friend
+      [field]="field"
+      [invalidValues]="invalid"
+      [mapping]="valueMap[field.key]"
+      (mappingChanged)="onMapping($event)"
+    ></laji-special-friend>
+  </ng-container>
   <ng-container *ngSwitchCase="specials.geometry">
     <laji-special-geometry
       [field]="field"

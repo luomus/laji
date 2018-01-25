@@ -91,6 +91,7 @@ import { TaxonNamePipe } from './pipe/taxon-name.pipe';
 import { DocumentFormFooterComponent } from './document-form-footer/document-form-footer.component';
 import { InformalTaxonGroupApi } from './api/InformalTaxonGroupApi';
 import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
+import {FriendService} from './service/friend.service';
 
 
 @NgModule({
@@ -168,6 +169,7 @@ export class SharedModule {
         DialogService,
         ScriptService,
         DocumentDeActivateGuard,
+        FriendService,
         {provide: Http, useClass: AuthenticatedHttpService}
       ]
     };

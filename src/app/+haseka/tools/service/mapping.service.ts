@@ -13,6 +13,8 @@ export enum SpeciesTypes {
 @Injectable()
 export class MappingService {
 
+  private static readonly valueSplitter = ';';
+
   private readonly booleanMap = {
     'true': {
       'fi': 'Kyllä',
@@ -50,6 +52,17 @@ export class MappingService {
     private coordinateService: CoordinateService
   ) {
     this.lajiExternalService.getMap({})
+  }
+
+
+  rawValueToArray(value, field: FormField) {
+    if (field.isArray) {
+      if (typeof value === 'string') {
+        return value.split(MappingService.valueSplitter).map(val => val.trim());
+      }
+      return [value];
+    }
+    return value;
   }
 
   addUserColMapping(mapping) {
@@ -107,52 +120,39 @@ export class MappingService {
     return null;
   }
 
-  map(value: any, field: FormField) {
-    switch (this.getSpecial(field)) {
-      case SpeciesTypes.geometry:
-        const mappedValue = this.getUserMappedValue(('' + value).toUpperCase(), field);
-        if (mappedValue !== null) {
-          return mappedValue;
-        }
-        return this.analyzeGeometry(value);
+  map(value: any, field: FormField, allowUnMapped = false) {
+    if (value === '' || value === null) {
+      return value;
     }
-    switch (field.type) {
-      case 'string':
-        if (field.key.endsWith('[*]')) {
-          value = this.valueToArray(value, field);
-        }
-        if (!field.enum || value === null) {
-          return value;
-        }
-        this.initStringMap(field);
-        if (Array.isArray(value)) {
-          return value.map(val => this.getMappedValue(val, field));
-        }
-        return this.getMappedValue(value, field);
-      case 'integer':
-        const mappedValue = this.getUserMappedValue(('' + value).toUpperCase(), field);
-        if (mappedValue !== null) {
-          value = mappedValue;
-        }
-        const num = Number(value);
-        if (isNaN(num)) {
-          return null;
-        }
-        return num;
-      case 'boolean':
-        this.initBooleanMapping();
-        return this.getMappedValue(value, field);
-    }
-    return null;
+    return this._map(value, field, allowUnMapped);
   }
 
-  valueToArray(value: any, field: FormField) {
-    if (typeof value === 'string') {
-      return value.split(';').map(val => val.trim());
-    } else if (typeof value === 'undefined') {
-      return [];
+  mapByFieldType(value: any, field: FormField) {
+    const upperValue = ('' + value).toUpperCase();
+    let realValue = null;
+    switch (field.type) {
+      case 'string':
+        if (!field.enum) {
+          realValue = value;
+        } else {
+          this.initStringMap(field);
+          realValue = Array.isArray(upperValue) ?
+            upperValue.map(val => this.getMappedValue(('' + val).toUpperCase(), field)) :
+            this.getMappedValue(upperValue, field);
+        }
+        break;
+      case 'integer':
+        const num = Number(upperValue);
+        if (!isNaN(num)) {
+          realValue = num;
+        }
+        break;
+      case 'boolean':
+        this.initBooleanMapping();
+        realValue = this.getMappedValue(upperValue, field);
+        break;
     }
-    return null;
+    return realValue;
   }
 
   reverseMap(value: any, field: FormField): any {
@@ -187,6 +187,52 @@ export class MappingService {
     return this.booleanMap[key][lang];
   }
 
+  private _map(value: any, field: FormField, allowUnMapped = false, convertToArray = true) {
+    if (Array.isArray(value)) {
+      value = value.map(val => this._map(val, field, allowUnMapped, false));
+      if (!field.isArray) {
+        value = value.join(MappingService.valueSplitter);
+      } else if (value.length === 0) {
+        return null;
+      }
+      return value;
+    }
+    const upperValue = ('' + value).toUpperCase();
+    let targetValue = this.getUserMappedValue(upperValue, field);
+
+    if (targetValue === null) {
+      switch (this.getSpecial(field)) {
+        case SpeciesTypes.geometry:
+          if (targetValue === null) {
+            targetValue = this.analyzeGeometry(value);
+          }
+          break;
+        case SpeciesTypes.person:
+          targetValue = this.mapPerson(value, allowUnMapped);;
+          break;
+        default:
+          targetValue = this.mapByFieldType(value, field);
+      }
+    }
+    if (convertToArray && field.isArray && !Array.isArray(targetValue)) {
+      targetValue = [targetValue];
+    }
+    return targetValue;
+  }
+
+  private mapPerson(value, allowUnMapped = false) {
+    if (typeof value === 'string') {
+      const match = value.match(/(MA\.[0-9]+)/);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    if (allowUnMapped) {
+      return value;
+    }
+    return null;
+  }
+
   private analyzeGeometry(value: any) {
     if (typeof value === 'string') {
       if (value.match(/^[0-9]{3,7}:[0-9]{3,7}$/)) {
@@ -208,15 +254,14 @@ export class MappingService {
   }
 
   private getMappedValue(value: any, field: FormField) {
-    const str = ('' + value).toUpperCase();
     switch (field.type) {
       case 'string':
-        return this.getUserMappedValue(str, field) ||
-          (this.mapping.string[field.key] && this.mapping.string[field.key][str] || null);
+        return this.getUserMappedValue(value, field) ||
+          (this.mapping.string[field.key] && this.mapping.string[field.key][value] || null);
       case 'boolean':
-        const userValue = this.getUserMappedValue(str, field);
+        const userValue = this.getUserMappedValue(value, field);
         return userValue !== null ?
-          userValue : (typeof this.mapping.boolean[str] !== 'undefined' ? this.mapping.boolean[str] : null);
+          userValue : (typeof this.mapping.boolean[value] !== 'undefined' ? this.mapping.boolean[value] : null);
     }
     return null;
   }

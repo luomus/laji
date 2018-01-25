@@ -211,7 +211,7 @@ export class ImporterComponent implements OnInit {
 
   initParsedData() {
     if (!this.parsedData) {
-      this.parsedData = this.spreadSheetService.flatFieldsToDocuments(this.data, this.colMap, this.fields, this.formID);
+      this.parsedData = this.importService.flatFieldsToDocuments(this.data, this.colMap, this.fields, this.formID);
     }
   }
 
