@@ -82,7 +82,9 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
 
   onMapping(mapping) {
     this.valueMap[this.field.key] = mapping;
-    if (Object.keys(mapping).length === this.invalid.length) {
+    const mapped = Object.keys(mapping);
+    const intersection = this.invalid.filter((val) => mapped.indexOf(val) === -1);
+    if (intersection.length === 0) {
       this.allMapped = true;
     }
   }

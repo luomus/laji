@@ -11,6 +11,8 @@ import {MappingService} from './mapping.service';
 @Injectable()
 export class SpreadSheetService {
 
+  public static readonly nameSeparator = ' - ';
+
   private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
   private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
@@ -190,7 +192,7 @@ export class SpreadSheetService {
             result.push({
               type: form.type,
               label: label,
-              fullLabel: label + ' - ' + (this.translations[parent] || parent),
+              fullLabel: label + SpreadSheetService.nameSeparator + (this.translations[parent] || parent),
               key: root,
               parent: parent,
               isArray: root.endsWith('[*]'),
@@ -212,7 +214,7 @@ export class SpreadSheetService {
         result.push({
           type: form.type,
           label: label,
-          fullLabel: label + ' - ' + (this.translations[parent] || parent),
+          fullLabel: label + SpreadSheetService.nameSeparator + (this.translations[parent] || parent),
           key: root,
           parent: parent,
           isArray: root.endsWith('[*]'),

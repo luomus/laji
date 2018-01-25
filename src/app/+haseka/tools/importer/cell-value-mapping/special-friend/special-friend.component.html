@@ -7,7 +7,7 @@
     </td>
     <td>
       <laji-mapping-select
-        [value]="''"
+        [value]="currentValues && currentValues[value] || ''"
         [options]="validValues"
         (selected)="valueMapped(value, $event)"></laji-mapping-select>
     </td>

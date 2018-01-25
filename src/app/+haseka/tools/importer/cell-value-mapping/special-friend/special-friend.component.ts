@@ -1,23 +1,41 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormField, IGNORE_VALUE} from '../../../model/form-field';
 import {FriendService} from '../../../../../shared/service/friend.service';
 
 @Component({
   selector: 'laji-special-friend',
   templateUrl: './special-friend.component.html',
-  styleUrls: ['./special-friend.component.css']
+  styleUrls: ['./special-friend.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpecialFriendComponent implements OnInit {
 
   @Input() invalidValues: string[];
-  @Input() mapping: {[value: string]: any} = {};
-  @Input() field: FormField;
+  _field: FormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
+  _mapping: {[value: string]: any};
+  lastKnownField: string;
   validValues = [];
   validIds = [];
   valueAsIs = 'Arvo sellaisenaan';
+  currentValues;
 
-  constructor(private friendsService: FriendService) {}
+  constructor(
+    private friendsService: FriendService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  @Input()
+  set field(field: FormField) {
+    this._field = field;
+    this.initCurrentValue();
+  }
+
+  @Input()
+  set mapping(mapping: {[value: string]: any}) {
+    this._mapping = mapping;
+    this.initCurrentValue();
+  }
 
   ngOnInit() {
     const validIds = ['', ''];
@@ -30,11 +48,44 @@ export class SpecialFriendComponent implements OnInit {
         });
         this.validIds = validIds;
         this.validValues = validValues;
+        this.initCurrentValue();
       })
   }
 
+  initCurrentValue() {
+    const currentKey = this._field && this._field.key || '';
+    if (!this._mapping || !this.validValues || this.validValues.length === 0 || this.lastKnownField === currentKey) {
+      return;
+    }
+    this.lastKnownField = currentKey;
+
+    let hasMapping = false;
+    const values = {};
+    const mapping = {...this._mapping};
+    this.invalidValues.forEach(value => {
+      const idx = this.validValues.indexOf(value);
+      const keyIdx = this.validIds.indexOf(this._mapping[value]);
+      if (mapping[value] && keyIdx > -1) {
+        hasMapping = true;
+        values[value] = this.validValues[keyIdx];
+      } else if (mapping[value]) {
+        hasMapping = true;
+        values[value] = mapping[value];
+      } else if (idx > -1) {
+        hasMapping = true;
+        values[value] = value;
+        mapping[value] = this.validIds[idx];
+      }
+    });
+    if (hasMapping) {
+      this.currentValues = values;
+      this.mappingChanged.emit(mapping);
+      this.cdr.markForCheck();
+    }
+  }
+
   valueMapped(value, to) {
-    const mapping = {...this.mapping};
+    const mapping = {...this._mapping};
 
     if (to === IGNORE_VALUE) {
       mapping[value] = to;

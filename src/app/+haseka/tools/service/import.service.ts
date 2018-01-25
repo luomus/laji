@@ -6,14 +6,17 @@ import { Document } from '../../../shared/model';
 import { UserService } from '../../../shared/service/user.service';
 import {DOCUMENT_LEVEL, FormField, IGNORE_VALUE} from '../model/form-field';
 import { MappingService } from './mapping.service';
-import PublicityRestrictionsEnum = Document.PublicityRestrictionsEnum;
 
 @Injectable()
 export class ImportService {
 
   private documentReady = false;
   private newToParent = {
-    'identifications': 'units'
+    'identifications': 'units',
+    'gatheringEvent': 'document',
+    'gatheringFact': 'gatherings',
+    'unitFact': 'units',
+    'unitGathering': 'units'
   };
 
   constructor(
@@ -36,7 +39,7 @@ export class ImportService {
     })
   }
 
-  sendData(document: Document, publicityRestrictions: PublicityRestrictionsEnum): Observable<any> {
+  sendData(document: Document, publicityRestrictions: Document.PublicityRestrictionsEnum): Observable<any> {
     document.publicityRestrictions = publicityRestrictions;
     return this.documentApi.create(document, this.userService.getToken())
   }
@@ -103,8 +106,14 @@ export class ImportService {
           return;
         }
         const field = fields[mapping[col]];
-        const value = this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true);
         const parent = this.getParent(field);
+        let value = this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true);
+        if (Array.isArray(value)) {
+          value = value.filter(val => val !== IGNORE_VALUE && val !== '');
+          if (value.length === 0) {
+            return;
+          }
+        }
         if (field.key === IGNORE_VALUE || value === IGNORE_VALUE) {
           return;
         }
