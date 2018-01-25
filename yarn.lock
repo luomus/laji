@@ -3948,15 +3948,15 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-laji-form@^0.0.353:
-  version "0.0.353"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.353.tgz#74fcb547cc2f8e32988064469a1542f3c3ccac42"
+laji-form@^0.0.355:
+  version "0.0.355"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.355.tgz#018da013c48b3d3de4f9084ab0beb12ec6f73da0"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.314"
+    laji-map "^1.0.316"
     laji-validate "0.0.51"
     moment "*"
     prop-types "^15.5.8"
@@ -3975,22 +3975,22 @@ laji-form@^0.0.353:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@^1.0.314:
-  version "1.0.314"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.314.tgz#9a1ba76211b0aa97bec089df2f413bf5334d4c50"
+laji-map@^1.0.316:
+  version "1.0.316"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.316.tgz#6ee7d39506139d3d1794a65ef4aade6a040afe38"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     babel-runtime "^6.18.0"
-    leaflet "1.0.3"
-    leaflet-contextmenu "1.1.1"
-    leaflet-draw "0.4.9"
+    leaflet "1.3.1"
+    leaflet-contextmenu "1.4.0"
+    leaflet-draw "1.0.1"
     leaflet-geometryutil "^0.8.0"
     leaflet-mml-layers "2.0.1"
     leaflet-textpath "git+https://git@github.com/olzraiti/Leaflet.textPath.git#leaflet-0.8-dev-absoluteXLinkHrefPath"
-    leaflet.markercluster "1.0.3"
+    leaflet.markercluster "1.3.0"
     nouislider "^10.0.0"
     proj4 "2.3.16"
-    proj4leaflet "1.0.1"
+    proj4leaflet "1.0.2"
 
 laji-validate@0.0.51:
   version "0.0.51"
@@ -4027,13 +4027,13 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-leaflet-contextmenu@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/leaflet-contextmenu/-/leaflet-contextmenu-1.1.1.tgz#a99809b52f8bb7d4f5a5c69446aa1751657a6b46"
+leaflet-contextmenu@1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/leaflet-contextmenu/-/leaflet-contextmenu-1.4.0.tgz#e2bda481af1026080eabaa32997e531fd44f605c"
 
-leaflet-draw@0.4.9:
-  version "0.4.9"
-  resolved "https://registry.yarnpkg.com/leaflet-draw/-/leaflet-draw-0.4.9.tgz#44105088310f47e4856d5ede37d47ecfad0cf2d5"
+leaflet-draw@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/leaflet-draw/-/leaflet-draw-1.0.1.tgz#a9f944552ff49b36735ebf8c5afe316b9221a964"
 
 leaflet-geometryutil@^0.8.0:
   version "0.8.1"
@@ -4053,13 +4053,17 @@ leaflet-mml-layers@2.0.1:
   dependencies:
     leaflet "*"
 
-leaflet.markercluster@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.0.3.tgz#64c779365c0951f4885c3414024a994f3effc708"
+leaflet.markercluster@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.3.0.tgz#58eb0654e90bd3274a660390ab0bc734212b204d"
 
-leaflet@*, leaflet@1.0.3, leaflet@>=0.7.0, leaflet@^1.0.1:
+leaflet@*, leaflet@>=0.7.0, leaflet@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.0.3.tgz#1f401b98b45c8192134c6c8d69686253805007c8"
+
+leaflet@1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.3.1.tgz#86f336d2fb0e2d0ff446677049a5dc34cf0ea60e"
 
 less-loader@^4.0.5:
   version "4.0.5"
@@ -5451,9 +5455,9 @@ proj4@2.3.16, proj4@^2.3.14:
   dependencies:
     mgrs "~0.0.2"
 
-proj4leaflet@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/proj4leaflet/-/proj4leaflet-1.0.1.tgz#965484904473045dc69581a19e94c964047d97e7"
+proj4leaflet@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/proj4leaflet/-/proj4leaflet-1.0.2.tgz#dec59f1e8a77a1682e320673e1e56f4161714d2a"
   dependencies:
     proj4 "^2.3.14"
 
