@@ -650,6 +650,13 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
+babel-runtime@6.18.0:
+  version "6.18.0"
+  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.18.0.tgz#0f4177ffd98492ef13b9f823e9994a02584c9078"
+  dependencies:
+    core-js "^2.4.0"
+    regenerator-runtime "^0.9.5"
+
 babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
@@ -3948,15 +3955,15 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-laji-form@^0.0.356:
-  version "0.0.356"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.356.tgz#2cd9f1065186cbd8d7063261a1c065c206f9616d"
+laji-form@^0.0.357:
+  version "0.0.357"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.357.tgz#865145efd32b2248d1493655f5526512e628094d"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.317"
+    laji-map "^1.0.318"
     laji-validate "0.0.51"
     moment "*"
     prop-types "^15.5.8"
@@ -3975,20 +3982,20 @@ laji-form@^0.0.356:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@^1.0.317:
-  version "1.0.317"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.317.tgz#4e5eb2de77e0b0c9751ff95d55926786f440fc21"
+laji-map@^1.0.318:
+  version "1.0.318"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.318.tgz#fec0cf81f16ef328dfef9d5c7ba4ba54816c0113"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
-    babel-runtime "^6.18.0"
+    babel-runtime "6.18.0"
     leaflet "1.3.1"
     leaflet-contextmenu "1.4.0"
-    leaflet-draw "^1.0.0"
-    leaflet-geometryutil "^0.8.0"
+    leaflet-draw "1.0.0"
+    leaflet-geometryutil "0.8.0"
     leaflet-mml-layers "2.0.1"
     leaflet-textpath "git+https://git@github.com/olzraiti/Leaflet.textPath.git#leaflet-0.8-dev-absoluteXLinkHrefPath"
     leaflet.markercluster "1.3.0"
-    nouislider "^10.0.0"
+    nouislider "10.0.0"
     proj4 "2.3.16"
     proj4leaflet "1.0.2"
 
@@ -4031,13 +4038,13 @@ leaflet-contextmenu@1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/leaflet-contextmenu/-/leaflet-contextmenu-1.4.0.tgz#e2bda481af1026080eabaa32997e531fd44f605c"
 
-leaflet-draw@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/leaflet-draw/-/leaflet-draw-1.0.1.tgz#a9f944552ff49b36735ebf8c5afe316b9221a964"
+leaflet-draw@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/leaflet-draw/-/leaflet-draw-1.0.0.tgz#1c914bca686731518bf90d7a9e7fc4f6048dee9e"
 
-leaflet-geometryutil@^0.8.0:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/leaflet-geometryutil/-/leaflet-geometryutil-0.8.1.tgz#d12c70c9db466497c13bab4e8067b6d5fb4423fe"
+leaflet-geometryutil@0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/leaflet-geometryutil/-/leaflet-geometryutil-0.8.0.tgz#c09c0fc37628f402846ad5723c80ef95b3d2057c"
   dependencies:
     leaflet ">=0.7.0"
 
@@ -4057,11 +4064,7 @@ leaflet.markercluster@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.3.0.tgz#58eb0654e90bd3274a660390ab0bc734212b204d"
 
-leaflet@*, leaflet@>=0.7.0, leaflet@^1.0.1:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.0.3.tgz#1f401b98b45c8192134c6c8d69686253805007c8"
-
-leaflet@1.3.1:
+leaflet@*, leaflet@>=0.7.0, leaflet@^1.0.1, leaflet@1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.3.1.tgz#86f336d2fb0e2d0ff446677049a5dc34cf0ea60e"
 
@@ -4708,13 +4711,13 @@ normalize-url@^1.4.0:
     query-string "^4.1.0"
     sort-keys "^1.0.0"
 
+nouislider@10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-10.0.0.tgz#166145168bc05701ef5168c17d171f79154c174e"
+
 nouislider@9.2.0:
   version "9.2.0"
   resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-9.2.0.tgz#e87c507de2b0b4d075038b5a42547c7dbbebaf69"
-
-nouislider@^10.0.0:
-  version "10.1.0"
-  resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-10.1.0.tgz#7bdd0411fd62d4584bfe88cb92bb8d06e64c6b47"
 
 npm-run-path@^2.0.0:
   version "2.0.2"
@@ -5917,6 +5920,10 @@ regenerate@^1.2.1:
 regenerator-runtime@^0.11.0:
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
+
+regenerator-runtime@^0.9.5:
+  version "0.9.6"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.9.6.tgz#d33eb95d0d2001a4be39659707c51b0cb71ce029"
 
 regex-cache@^0.4.2:
   version "0.4.4"
