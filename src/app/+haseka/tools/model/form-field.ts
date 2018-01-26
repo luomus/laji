@@ -11,6 +11,7 @@ export interface FormField {
   key: string;
   parent: string;
   required: boolean;
+  isArray: boolean;
   type: string;
   enum?: string[];
   enumNames?: string[];

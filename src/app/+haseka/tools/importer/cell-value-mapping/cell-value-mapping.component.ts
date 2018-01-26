@@ -53,12 +53,21 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
     this.field = this.fields[this.colMapping[current]];
     this.special = this.mappingService.getSpecial(this.field);
     const invalidValues = {};
+    const analyzed = {};
     this.data.map(row => {
-      if (!row[current]) {
+      if (!row[current] || analyzed[row[current]]) {
         return;
       }
-      if (this.importService.hasInvalidValue(row[current], this.field)) {
-        invalidValues[row[current]] = true;
+      analyzed[row[current]] = true;
+      const rawValue = this.mappingService.rawValueToArray(row[current], this.field);
+      if (Array.isArray(rawValue)) {
+        rawValue.forEach((value) => {
+          if (this.importService.hasInvalidValue(value, this.field)) {
+            invalidValues[value] = true;
+          }
+        });
+      } else if (this.importService.hasInvalidValue(rawValue, this.field)) {
+        invalidValues[rawValue] = true;
       }
     });
     this.invalid = Object.keys(invalidValues);
@@ -73,7 +82,9 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
 
   onMapping(mapping) {
     this.valueMap[this.field.key] = mapping;
-    if (Object.keys(mapping).length === this.invalid.length) {
+    const mapped = Object.keys(mapping);
+    const intersection = this.invalid.filter((val) => mapped.indexOf(val) === -1);
+    if (intersection.length === 0) {
       this.allMapped = true;
     }
   }

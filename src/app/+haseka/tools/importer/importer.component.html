@@ -13,12 +13,6 @@
     <laji-form-select [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
   </div>
 </div>
-<alert [type]="'success'" *ngIf="status === 'doneOk'">
-  Havaintoerät tallennettu
-</alert>
-<alert [type]="'danger'" *ngIf="status === 'doneWithErrors'">
-  Tallennus epäonnistui
-</alert>
 <alert [type]="'danger'" *ngIf="status === 'invalidFileType'">
   <strong>Virheellinen tiedosto formaatti.</strong> Tällä hetkellä tuettuina ovat vain Excel sekä OpenDocument lomakeet.
 </alert>
@@ -41,7 +35,7 @@
   </div>
   <div class="row data-container">
     <div class="col-sm-12">
-      <strong *ngIf="valid; else invalid">
+      <strong *ngIf="valid && status === 'importReady'; else invalid">
         Valmis tallennettavaksi
       </strong>
       <ng-template #invalid>

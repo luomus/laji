@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { FormField } from '../model/form-field';
 import { SpreadSheetService } from '../service/spread-sheet.service';
+import {GeneratorService} from '../service/generator.service';
 
 @Component({
   selector: 'laji-excel-generator',
@@ -26,10 +27,22 @@ export class ExcelGeneratorComponent implements OnInit {
     private formService: FormService,
     private translateService: TranslateService,
     private spreadSheetService: SpreadSheetService,
+    private generatorService: GeneratorService,
     private cdr: ChangeDetectorRef
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.spreadSheetService.setRequiredFields({
+      'gatherings[*].taxonCensus[*].censusTaxonID': false,
+      'gatherings[*].taxonCensus[*].taxonCensusType': false,
+      'gatherings[*].units[*].identifications[*].taxon': true
+    });
+    this.spreadSheetService.setHiddenFeilds([
+      'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID',
+      'gatherings[*].images[*]',
+      'gatherings[*].units[*].images[*]'
+    ]);
+  }
 
   formSelected(event) {
     this.formID = event.id;
@@ -64,7 +77,7 @@ export class ExcelGeneratorComponent implements OnInit {
   }
 
   generate() {
-    this.spreadSheetService.generate(
+    this.generatorService.generate(
       'Vihko - ' + this.formTitle + ' (' + this.formID + ')',
       this.fields.filter(field => this.selected.indexOf(field.key) > -1 || field.required),
       this.useLabels,

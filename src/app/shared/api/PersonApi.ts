@@ -40,10 +40,10 @@ export class PersonApi {
   }
 
   /**
-   * Accept friend request
+   * Accept person request
    *
    * @param token User token
-   * @param userId Accept this user as a friend
+   * @param userId Accept this user as a person
    */
   public personAcceptFriendRequest(token: string, userId: string, extraHttpRequestParams?: any): Observable<models.Profile> {
     const path = this.basePath + '/person/{token}/friends/{userId}'
@@ -275,11 +275,11 @@ export class PersonApi {
   }
 
   /**
-   * Remove friend request or friend
+   * Remove person request or person
    *
    * @param token User token
-   * @param userId Accept this user as a friend
-   * @param block if the removed friend should be blocked also
+   * @param userId Accept this user as a person
+   * @param block if the removed person should be blocked also
    */
   public personRemoveFriend(token: string, userId: string, block: boolean = false, extraHttpRequestParams?: any): Observable<models.Profile> {
     const path = this.basePath + '/person/{token}/friends/{userId}'

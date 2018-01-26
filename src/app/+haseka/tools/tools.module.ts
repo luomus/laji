@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MappingService } from './service/mapping.service';
+import {TypeaheadModule} from 'ngx-bootstrap';
 
 import { DatatableModule } from '../../shared-modules/datatable/datatable.module';
 import { ToolsRoutingModule } from './tools-routing.module';
@@ -19,6 +20,9 @@ import { ImportService } from './service/import.service';
 import { CellValueSelectComponent } from './importer/cell-value-mapping/cell-value-select/cell-value-select.component';
 import { LajiMapModule } from '../../shared-modules/map/laji-map.module';
 import { SpecialGeometryComponent } from './importer/cell-value-mapping/special-geometry/special-geometry.component';
+import {GeneratorService} from './service/generator.service';
+import { SpecialFriendComponent } from './importer/cell-value-mapping/special-friend/special-friend.component';
+import { SpecialTaxonIdComponent } from './importer/cell-value-mapping/special-taxon-id/special-taxon-id.component';
 
 @NgModule({
   imports: [
@@ -26,7 +30,8 @@ import { SpecialGeometryComponent } from './importer/cell-value-mapping/special-
     SharedModule,
     ToolsRoutingModule,
     DatatableModule,
-    LajiMapModule
+    LajiMapModule,
+    TypeaheadModule
   ],
   declarations: [
     ToolsComponent,
@@ -39,8 +44,10 @@ import { SpecialGeometryComponent } from './importer/cell-value-mapping/special-
     MappingSelectComponent,
     CellValueMappingComponent,
     CellValueSelectComponent,
-    SpecialGeometryComponent
+    SpecialGeometryComponent,
+    SpecialFriendComponent,
+    SpecialTaxonIdComponent
   ],
-  providers: [SpreadSheetService, MappingService, ImportService]
+  providers: [SpreadSheetService, MappingService, ImportService, GeneratorService]
 })
 export class ToolsModule { }

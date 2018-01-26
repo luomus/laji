@@ -1,11 +1,17 @@
 <select [ngModel]="value" (ngModelChange)="selected.emit($event)" class="form-control">
-  <option value="" disabled selected>Valitse sarakkeen merkitys</option>
-  <option *ngFor="let key of options | removeEmpty" [value]="key">
-    <ng-container *ngIf="fields; else option">
-      {{key === skipValue ? ('ignore'| translate) : (fields[key] && fields[key].fullLabel || key)}}
-    </ng-container>
-    <ng-template #option>
+  <ng-container *ngIf="_fields; else valueOption">
+    <option value="" disabled>Valitse sarakkeen merkitys</option>
+    <option [value]="skipValue">{{'ignore'| translate}}</option>
+    <optgroup *ngFor="let group of fieldGroups | removeEmpty" [label]="fieldGroupsLabel[group]">
+      <option *ngFor="let key of groups[group] | removeEmpty" [value]="key">
+        {{key === skipValue ? ('ignore'| translate) : (_fields[key] && _fields[key].label || key)}}
+      </option>
+    </optgroup>
+  </ng-container>
+  <ng-template #valueOption>
+    <option value="" disabled>Valitse arvon merkitys</option>
+    <option *ngFor="let key of options | removeEmpty" [value]="key">
       {{key === skipValue ? ('ignore'| translate) : key}}
-    </ng-template>
-  </option>
+    </option>
+  </ng-template>
 </select>

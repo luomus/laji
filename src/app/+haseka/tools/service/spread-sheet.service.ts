@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import * as XLSX from 'xlsx';
-import * as FileSaver from 'file-saver';
 import { environment } from '../../../../environments/environment';
-import {Document, Person} from '../../../shared/model';
-import {TriplestoreLabelService, UserService} from '../../../shared/service';
+import {TriplestoreLabelService} from '../../../shared/service';
 
 import { DOCUMENT_LEVEL, FormField, IGNORE_VALUE } from '../model/form-field';
-import {MappingService, SpeciesTypes} from './mapping.service';
+import {MappingService} from './mapping.service';
 
 @Injectable()
 export class SpreadSheetService {
+
+  public static readonly nameSeparator = ' - ';
 
   private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
   private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
@@ -21,11 +21,14 @@ export class SpreadSheetService {
     'identifications': 'units'
   };
 
+  private requiredFields = {};
+
+  private hiddenFields: string[] = [];
+
   constructor(
     private mappingService: MappingService,
     private labelService: TriplestoreLabelService,
-    private translateService: TranslateService,
-    private userService: UserService
+    private translateService: TranslateService
   ) {
     this.translateService.onLangChange
       .map(() => this.translateService.currentLang)
@@ -67,18 +70,12 @@ export class SpreadSheetService {
     return [this.odsMimeType, this.xlsxMimeType].indexOf(type) > -1;
   }
 
-  generate(filename: string, fields: FormField[], useLabels = true, type: 'ods' | 'xlsx' = 'xlsx') {
-    this.userService.getUser()
-      .subscribe((person) => {
-        const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels, {person: person}));
-        const book = XLSX.utils.book_new();
+  setRequiredFields(fields: object) {
+    this.requiredFields = fields;
+  }
 
-        this.addMetaDataToSheet(fields, sheet, useLabels);
-        XLSX.utils.book_append_sheet(book, sheet);
-
-        this.downloadData(XLSX.write(book, {bookType: type, type: 'buffer'}), filename, type);
-      });
-
+  setHiddenFeilds(fields: string[]) {
+    this.hiddenFields = fields;
   }
 
   formToFlatFieldsLookUp(form: any, addIgnore = false): {[key: string]: FormField} {
@@ -96,6 +93,7 @@ export class SpreadSheetService {
       result.push({
         parent: '',
         required: false,
+        isArray: false,
         type: 'string',
         key: IGNORE_VALUE,
         label: 'ignore',
@@ -106,26 +104,6 @@ export class SpreadSheetService {
       this.parserFields(form.schema, {properties: form.validators}, result, '', DOCUMENT_LEVEL);
     }
     return result;
-  }
-
-  flatFieldsToDocuments(
-    data: {[col: string]: any}[],
-    mapping: {[col: string]: string},
-    fields: {[key: string]: FormField},
-    formID: string
-  ): {document: Document, rows: {[row: number]: {[level: string]: number}}}[] {
-    const cols = Object.keys(mapping);
-    const parents = cols.reduce((previous, current) => {
-      const field = fields[mapping[current]];
-      if (previous.indexOf(field.parent) === -1) {
-        previous.push(field.parent);
-      }
-      return previous;
-    }, []);
-    const spot = parents.reduce((previous, current) => ({...previous, [current]: 0}), {});
-    this.resetPreviousValue(fields);
-
-    return this.rowsToDocument(data, mapping, fields, spot, formID);
   }
 
   loadSheet(data: any) {
@@ -194,140 +172,6 @@ export class SpreadSheetService {
     return '';
   }
 
-  private rowsToDocument(
-    rows: {[col: string]: any}[],
-    mapping: {[col: string]: string},
-    fields: {[key: string]: FormField},
-    spot: {[level: string]: number},
-    formID: string
-  ): {document: Document, rows: {[row: number]: {[level: string]: number}}}[] {
-    const cols = Object.keys(mapping);
-    const result: {document: Document, rows: {[row: number]: {[level: string]: number}}}[] = [];
-    const allLevels = [];
-    let document: any = {};
-    let rowSpots: {[row: number]: {[level: string]: number}} = {};
-    cols.map(col => {
-      const field = fields[mapping[col]];
-      const parent = this.getParent(field);
-      if (field.key === IGNORE_VALUE) {
-        return;
-      }
-      if (allLevels.indexOf(parent) === -1) {
-        allLevels.push(parent);
-      }
-    });
-    rows.map((row, rowIdx) => {
-      const newLevels = [];
-      const values = {'formID': formID};
-      cols.map((col) => {
-        if (!row[col]) {
-          return;
-        }
-        const field = fields[mapping[col]];
-        const value = this.mappingService.map(row[col], field);
-        const parent = this.getParent(field);
-        if (field.key === IGNORE_VALUE || value === IGNORE_VALUE) {
-          return;
-        }
-        values[field.key] = value;
-        if (field.previousValue !== null && field.previousValue !== row[col] && newLevels.indexOf(parent) === -1) {
-          newLevels.push(this.getParent(field));
-        }
-        field.previousValue = row[col];
-      });
-      if (newLevels.indexOf(DOCUMENT_LEVEL)  !== -1) {
-        this.resetPreviousValue(fields);
-        Object.keys(spot).map(level => spot[level] = 0);
-        result.push({document: document, rows: rowSpots});
-        document = {};
-        rowSpots = {};
-      } else {
-        const toZero = [];
-        newLevels.map(level => {
-          cols.map(col => {
-            const field = fields[mapping[col]];
-            allLevels.map(subLevel => {
-              if (subLevel === level || toZero.indexOf(subLevel) > -1) {
-                return;
-              }
-              const subLevelRegExp = new RegExp(`\\b${level}\\[\\*\\].*\\b${subLevel}\\[\\*\\]`, 'g');
-              if (subLevelRegExp.test(field.key)) {
-                toZero.push(subLevel);
-              }
-            });
-          });
-          spot[level]++;
-        });
-        toZero.map(subLevel => {
-          spot[subLevel] = 0;
-          this.resetPreviousValue(fields, subLevel);
-        });
-      }
-      rowSpots[rowIdx] = {...spot};
-      this.valuesToDocument(this.relativePathToAbsolute(values, spot), document);
-    });
-    result.push({document: document, rows: rowSpots});
-
-    return result;
-  }
-
-  private getParent(field: FormField) {
-    return this.newToParent[field.parent] ? this.newToParent[field.parent] : field.parent;
-  }
-
-  private relativePathToAbsolute(values: {[key: string]: any}, spot: {[level: string]: number}): {[key: string]: any} {
-    const replaces: {from: string, to: string}[] = [];
-    const result = {};
-    Object.keys(spot).map(level => {
-      if (level === DOCUMENT_LEVEL || level === '') {
-        return;
-      }
-      replaces.push({from: `\\b${level}\\[\\*\\]`, to: `${level}[${spot[level]}]`})
-    });
-    Object.keys(values).map(key => {
-      let targetKey = key;
-      replaces.map(replace => {
-        const regExp = new RegExp(replace.from, 'g');
-        targetKey = targetKey.replace(regExp, replace.to);
-      });
-      if (targetKey.endsWith('[*]')) {
-        targetKey = targetKey.slice(0, -3);
-      }
-      targetKey = targetKey.replace(/\[\*]/g, '[0]');
-      result[targetKey] = values[key];
-    });
-    return result;
-  }
-
-  private valuesToDocument(values: {[key: string]: any}, document: any) {
-    Object.keys(values).map(path => {
-      const re = /[.(\[\])]/;
-      const parts = path.split(re).filter(value => value !== '');
-      let pointer = document;
-      let now: string|number = parts.shift();
-      while (parts.length > 0) {
-        if (!pointer[now]) {
-          pointer[now] = this.isNumber(parts[1] || '') ? {} : [];
-        }
-        pointer = pointer[now];
-        now = parts.shift();
-      }
-      pointer[now] = values[path];
-    });
-  }
-
-  private isNumber(value: any) {
-    return !isNaN(Number(value));
-  }
-
-  private resetPreviousValue(fields: {[key: string]: FormField}, level?: string) {
-    Object.keys(fields).map(key => {
-      if ((level && fields[key].parent === level) || !level) {
-        fields[key].previousValue = null;
-      }
-    });
-  }
-
   private parserFields(form: any, validators: any, result: FormField[], root, parent, lastKey = '', lastLabel = '', required = []) {
     if (!form || !form.type || (form.options && form.options.excludeFromSpreadSheet)) {
       return;
@@ -351,13 +195,17 @@ export class SpreadSheetService {
             )
           });
           if (!found) {
+            if (this.hiddenFields.indexOf(root) > -1) {
+              return;
+            }
             result.push({
               type: form.type,
               label: label,
-              fullLabel: label + ' - ' + (this.translations[parent] || parent),
+              fullLabel: label + SpreadSheetService.nameSeparator + (this.translations[parent] || parent),
               key: root,
               parent: parent,
-              required: this.hasRequiredValidator(lastKey, validators, required),
+              isArray: root.endsWith('[*]'),
+              required: this.hasRequiredValidator(lastKey, validators, required, root),
               enum: form.enum,
               enumNames: form.enumNames,
               default: form.default
@@ -372,13 +220,17 @@ export class SpreadSheetService {
         }
         break;
       default:
+        if (this.hiddenFields.indexOf(root) > -1) {
+          return;
+        }
         result.push({
           type: form.type,
           label: label,
-          fullLabel: label + ' - ' + (this.translations[parent] || parent),
+          fullLabel: label + SpreadSheetService.nameSeparator + (this.translations[parent] || parent),
           key: root,
           parent: parent,
-          required: this.hasRequiredValidator(lastKey, validators, required),
+          isArray: root.endsWith('[*]'),
+          required: this.hasRequiredValidator(lastKey, validators, required, root),
           enum: form.enum,
           enumNames: form.enumNames,
           default: form.default
@@ -386,74 +238,10 @@ export class SpreadSheetService {
     }
   }
 
-  private hasRequiredValidator(lastKey, validator, required) {
+  private hasRequiredValidator(lastKey, validator, required, key) {
+    if (typeof this.requiredFields[key] !== 'undefined') {
+      return this.requiredFields[key];
+    }
     return !!validator.presence || (validator.geometry && validator.geometry.requireShape) || required.indexOf(lastKey) > -1;
   }
-
-  private addMetaDataToSheet(fields: FormField[], sheet: XLSX.WorkSheet, useLabels: boolean) {
-    const validation = [];
-    fields.map((field, idx) => {
-      const headerAddress = XLSX.utils.encode_cell({r: 0, c: idx});
-      const dataRange = XLSX.utils.encode_range({r: 1, c: idx}, {r: 1000, c: idx});
-      const headerCell = sheet[headerAddress];
-
-      if (!headerCell.c) {
-        headerCell.c = [];
-      }
-      headerCell.c.push({a: 'laji.fi', t: field.key});
-
-      if (field.enum) {
-        validation.push({
-          sqref: dataRange,
-          values: (useLabels ? field.enumNames : field.enum).filter(value => value !== '')
-        })
-      } else if (field.type === 'boolean') {
-        validation.push({
-          sqref: dataRange,
-          values: [
-            this.mappingService.mapFromBoolean(true),
-            this.mappingService.mapFromBoolean(false)
-          ]
-        })
-      }
-    });
-    if (validation.length > 0) {
-      sheet['!dataValidation'] = validation;
-    }
-  }
-
-  private fieldsToAOA(fields: FormField[], useLabels: boolean, specials: {person: Person}) {
-    const result = [[], []];
-    fields.map((field, idx) => {
-      const special = this.mappingService.getSpecial(field);
-      let value = field.default;
-
-      switch (special) {
-        case SpeciesTypes.person:
-          value = specials.person && specials.person.id || '';
-          break;
-      }
-
-      if (useLabels && field.enum && field.default) {
-        const valueIdx = field.enum.indexOf(field.default);
-        value = field.enumNames[valueIdx];
-      } else if (field.type === 'boolean') {
-        value = this.mappingService.reverseMap(value, field)
-      }
-      result[0][idx] = field.fullLabel;
-      result[1][idx] = value;
-    });
-    return result;
-  }
-
-  private downloadData(buffer: any, fileName: string, fileExtension: string) {
-    const type = fileExtension === 'ods' ? this.odsMimeType : this.xlsxMimeType;
-
-    const data: Blob = new Blob([buffer], {
-      type: type
-    });
-
-    FileSaver.saveAs(data, fileName + '.' + fileExtension);
-  }
-
 }
