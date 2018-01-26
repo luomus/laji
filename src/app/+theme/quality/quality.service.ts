@@ -10,6 +10,20 @@ export class QualityService {
     private warehouseApi: WarehouseApi
   ) { }
 
+  getAnnotationList(page = 1, pageSize = 50): Observable<any> {
+    const query: WarehouseQueryInterface = {};
+    query.annotationType = ['TAXON_RELIABILITY', 'IDENTIFICATION', 'UNIDENTIFIABLE', 'COMMENT'];
+
+    return this._fetch(this.warehouseApi.warehouseQueryAnnotationListGet(
+      query,
+      ['annotation', 'unit.media', 'document.documentId', 'unit.unitId', 'gathering.team', 'unit.taxonVerbatim',
+       'unit.linkings.taxon', 'unit.reportedInformalTaxonGroup'],
+      undefined,
+      pageSize,
+      page
+    ))
+  }
+
   getMostActiveUsers(maxLength = 50, lastDate = undefined): Observable<any> {
     const query: WarehouseQueryInterface = {};
     query.annotationType = ['TAXON_RELIABILITY', 'IDENTIFICATION', 'UNIDENTIFIABLE'];
@@ -29,8 +43,7 @@ export class QualityService {
       .map(data => data.results)
       .map(data => {
         return data.map(row => {
-          const user = row.aggregateBy['unit.annotations.annotationByPerson'] || '';
-          row.userId = user.substring(user.lastIndexOf('/') + 1);
+          row.userId = row.aggregateBy['unit.annotations.annotationByPerson'] || '';
           return row;
         });
       });

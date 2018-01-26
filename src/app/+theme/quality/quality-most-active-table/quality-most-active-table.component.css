@@ -1,3 +1,7 @@
+:host >>> .ngx-datatable .datatable-body {
+  max-height: 600px;
+}
+
 .most-active-table {
   margin-bottom: 10px;
 }

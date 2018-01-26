@@ -1,5 +1,5 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
-  <div class="row" *ngIf="!loading">
+  <div class="row">
     <div *ngFor="let table of tables" class="col-xs-12 col-sm-4 most-active-table">
       <div class="datatable-top-header-wrapper ngx-datatable material">
         <div class="datatable-top-header datatable-header">
@@ -13,31 +13,16 @@
         </div>
       </div>
 
-      <ngx-datatable
-        class="material striped"
+      <laji-datatable
+        class="most-active-table"
         [rows]="table.data"
+        [columns]="columns"
+        [loading]="loading"
         [columnMode]="'force'"
-        [headerHeight]="0"
-        [rowHeight]="'auto'"
-        [messages]="{ emptyMessage: '', totalMessage: '' }">
-
-        <ngx-datatable-column [prop]="'userId'"
-                              [sortable]="false"
-                              [resizeable]="false"
-                              [draggable]="false"
-                              [flexGrow]="1">
-
-          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            {{value | users}}
-          </ng-template>
-        </ngx-datatable-column>
-        <ngx-datatable-column [prop]="'count'"
-                              [sortable]="false"
-                              [resizeable]="false"
-                              [draggable]="false"
-                              [flexGrow]="1">
-        </ngx-datatable-column>
-      </ngx-datatable>
+        [virtualScrolling]="false"
+        [showFooter]="false"
+        [showHeader]="false">
+      </laji-datatable>
     </div>
   </div>
 </laji-spinner>

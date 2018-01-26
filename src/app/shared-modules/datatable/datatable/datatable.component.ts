@@ -36,6 +36,10 @@ export class DatatableComponent {
   @ViewChild('warehouseLabel') warehouseLabelTpl: TemplateRef<any>;
   @ViewChild('toSemicolon') toSemicolonTpl: TemplateRef<any>;
   @ViewChild('numeric') numericTpl: TemplateRef<any>;
+  @ViewChild('date') dateTpl: TemplateRef<any>;
+  @ViewChild('fullUser') fullUserTpl: TemplateRef<any>;
+  @ViewChild('annotation') annotationTpl: TemplateRef<any>;
+  @ViewChild('image') imageTpl: TemplateRef<any>;
 
   @Input() rows: any[];
   @Input() loading = false;

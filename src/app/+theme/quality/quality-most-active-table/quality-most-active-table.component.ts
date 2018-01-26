@@ -8,13 +8,19 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./quality-most-active-table.component.css']
 })
 export class QualityMostActiveTableComponent implements OnInit {
-  @Input() maxLength = 50
+  @Input() maxLength = 50;
 
   tables = [
-    {prop: 'sevenDays', date: moment().subtract(1, 'week').toDate(), data: []},
-    {prop: 'year', date: moment().subtract(1, 'year').toDate(), data: []},
-    {prop: 'allTime', date: null, data: []}
+    {prop: 'sevenDays', date: moment().subtract(1, 'week').toDate(), data: null},
+    {prop: 'year', date: moment().subtract(1, 'year').toDate(), data: null},
+    {prop: 'allTime', date: null, data: null}
   ];
+
+  columns = [
+    { prop: 'userId', cellTemplate: 'fullUser' },
+    { prop: 'count' }
+  ];
+
   loading = true;
 
   constructor(
@@ -28,14 +34,15 @@ export class QualityMostActiveTableComponent implements OnInit {
     this.tables.map((table) => {
       observables.push(
         this.qualityService.getMostActiveUsers(this.maxLength, table['date'])
-          .do(res => {
-            table['data'] = res;
-          })
       );
     });
 
     Observable.forkJoin(observables)
-      .subscribe(() => {
+      .subscribe((results) => {
+        results.map((res, i) => {
+          this.tables[i].data = res;
+        });
+
         this.loading = false;
         this.cd.markForCheck();
       });

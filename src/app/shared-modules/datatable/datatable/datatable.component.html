@@ -137,3 +137,22 @@
     <ng-template #dateRange><span title="{{value.begin}} - {{value.end}}">{{value.begin}} - {{value.end}}</span></ng-template>
   </span>
 </ng-template>
+
+<ng-template let-value="value" #date>
+  <span *ngIf="value" title="{{value}}">
+    {{value | amDateFormat: 'DD.MM.YYYY HH:mm'}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #fullUser>
+  <span *ngIf="value" title="{{value}}">
+    {{value | toQName | users}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #annotation>
+  <span *ngIf="value.annotationClass">{{value.annotationClass | toQName | label}}</span>
+</ng-template>
+<ng-template let-value="value" #image>
+  <span *ngIf="value">
+    <img class="compact" src="{{value.thumbnailURL}}" alt="Image">
+  </span>
+</ng-template>

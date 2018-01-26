@@ -1,0 +1,30 @@
+<laji-datatable [height]="'auto'"
+                [rows]="result.results"
+                [columns]="columns"
+                [showRowAsLink]="true"
+                [virtualScrolling]="false"
+                [count]="result.total"
+                [page]="result.currentPage"
+                [pageSize]="result.pageSize"
+                (pageChange)="setPage($event)">
+</laji-datatable>
+
+<!--div #dataTable
+         class="observation-table"
+         (rowSelect)="rowSelect.emit($event)"
+         [showRowAsLink]="showRowAsLink"
+         [showHeader]="showHeader"
+         [showFooter]="showFooter"
+         [virtualScrolling]="virtualScrolling"
+         [height]="height"
+         [rows]='result.results'
+         (pageChange)="setPage($event)"
+         (sortChange)="onSort($event)"
+         [loading]="loading"
+         [count]="result.total"
+         [page]="result.currentPage"
+         [pageSize]="result.pageSize"
+         [columnMode]="isAggregate ? 'force' : 'standard'"
+         (reorder)="onReorder($event)"
+         [totalMessage]="'haseka.submissions.total' | translate"
+         [columns]="columns"></div-->

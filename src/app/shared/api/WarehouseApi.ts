@@ -345,6 +345,41 @@ export class WarehouseApi {
         }
       });
   }
+  /**
+   * Get list of annotations using given filters
+   * Get list of results as a 'flat row'. Application/json and application/xml responses respect the "selected" parameter, but application/dwc+xml (unfinished) does not support all fields.
+   * @param query to make to the warehouse
+   * @param selected Define what fields to include to the result. Defaults to [document.documentId, gathering.gatheringId, unit.unitId, document.sourceId, document.collectionId, document.namedPlaceId, document.secureLevel, document.secureReason, document.keywords, gathering.team, gathering.eventDate.begin, gathering.eventDate.end, gathering.timeBegin, gathering.timeEnd, gathering.higherGeography, gathering.country, gathering.province, gathering.municipality, gathering.locality, gathering.conversions.wgs84CenterPoint.lat, gathering.conversions.wgs84CenterPoint.lon, gathering.interpretations.coordinateAccuracy, gathering.interpretations.sourceOfCoordinates, unit.linkings.taxon.qname, unit.linkings.taxon.species, unit.linkings.taxon.scientificName, unit.linkings.taxon.vernacularName, unit.taxonVerbatim, unit.abundanceString, unit.recordBasis, unit.mediaCount, unit.notes] Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
+   * @param orderBy Define what fields to use when sorting results. If using default select, defaults to [gathering.eventDate.begin DESC, document.loadDate DESC, unit.taxonVerbatim ASC]. If using custom select there is no default order. Each fieldname given as parameter defaults to ASC - if you want to sort using descending order, add \&quot; DESC\&quot; to the end of the field name. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
+   * @param pageSize Set number of results in one page.
+   * @param page Set current page.
+   */
+  public warehouseQueryAnnotationListGet (query: WarehouseQueryInterface, selected?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, extraHttpRequestParams?: any) : Observable<string> {
+    const path = this.basePath + '/warehouse/query/annotation/list';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+
+    this.addMetaToQuery(selected, orderBy, pageSize, page);
+    this.addQueryToQueryParams(query, queryParameters);
+
+    //   headerParams.set('accept', accept);
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
 
   /**
    * Enumeration labels.
