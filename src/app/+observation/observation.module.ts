@@ -39,7 +39,8 @@ import { PillListComponent } from './pill-list/pill-list.component';
     ObservationFormComponent,
     MultiRadioComponent, ObservationResultComponent,
     ObservationResultListComponent, MetadataSelectComponent,
-    PieChartComponent, DatePickerComponent, ObservationDownloadComponent, SelectComponent, MainResultComponent, ObservationFiltersComponent, PillListComponent
+    PieChartComponent, DatePickerComponent, ObservationDownloadComponent, SelectComponent, MainResultComponent, ObservationFiltersComponent,
+    PillListComponent
   ]
 })
 export class ObservationModule {

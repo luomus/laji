@@ -37,6 +37,11 @@ export class ExcelGeneratorComponent implements OnInit {
       'gatherings[*].taxonCensus[*].taxonCensusType': false,
       'gatherings[*].units[*].identifications[*].taxon': true
     });
+    this.spreadSheetService.setHiddenFeilds([
+      'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID',
+      'gatherings[*].images[*]',
+      'gatherings[*].units[*].images[*]'
+    ]);
   }
 
   formSelected(event) {

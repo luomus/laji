@@ -23,6 +23,8 @@ export class SpreadSheetService {
 
   private requiredFields = {};
 
+  private hiddenFields: string[] = [];
+
   constructor(
     private mappingService: MappingService,
     private labelService: TriplestoreLabelService,
@@ -70,6 +72,10 @@ export class SpreadSheetService {
 
   setRequiredFields(fields: object) {
     this.requiredFields = fields;
+  }
+
+  setHiddenFeilds(fields: string[]) {
+    this.hiddenFields = fields;
   }
 
   formToFlatFieldsLookUp(form: any, addIgnore = false): {[key: string]: FormField} {
@@ -189,6 +195,9 @@ export class SpreadSheetService {
             )
           });
           if (!found) {
+            if (this.hiddenFields.indexOf(root) > -1) {
+              return;
+            }
             result.push({
               type: form.type,
               label: label,
@@ -211,6 +220,9 @@ export class SpreadSheetService {
         }
         break;
       default:
+        if (this.hiddenFields.indexOf(root) > -1) {
+          return;
+        }
         result.push({
           type: form.type,
           label: label,

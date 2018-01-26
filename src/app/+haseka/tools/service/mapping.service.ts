@@ -7,7 +7,13 @@ import {CoordinateService} from '../../../shared/service/coordinate.service';
 
 export enum SpeciesTypes {
   geometry = 'geometry',
-  person = 'person'
+  person = 'person',
+  taxonID = 'taxonID',
+  informalTaxonGroupID = 'informalTaxonGroupID',
+  dateOptionalTime = 'dateOptionalTime',
+  dateTime = 'dateTime',
+  date = 'date',
+  time = 'time',
 }
 
 @Injectable()
@@ -43,7 +49,13 @@ export class MappingService {
     'gatheringEvent.leg[*]': SpeciesTypes.person,
     'gatherings[*].leg': SpeciesTypes.person,
     'gatherings[*].geometry': SpeciesTypes.geometry,
-    'gatherings[*].units[*].unitGathering.geometry': SpeciesTypes.geometry
+    'gatherings[*].units[*].unitGathering.geometry': SpeciesTypes.geometry,
+    'gatherings[*].taxonCensus[*].censusTaxonID': SpeciesTypes.taxonID,
+    'gatherings[*].units[*].hostID': SpeciesTypes.taxonID,
+    'gatherings[*].units[*].informalTaxonGroups[*]': SpeciesTypes.informalTaxonGroupID,
+    'gatherings[*].dateBegin': SpeciesTypes.dateOptionalTime,
+    'gatherings[*].dateEnd': SpeciesTypes.dateOptionalTime,
+    'gatherings[*].units[*].identifications[*].detDate': SpeciesTypes.dateOptionalTime
   };
 
   constructor(
@@ -208,7 +220,10 @@ export class MappingService {
           }
           break;
         case SpeciesTypes.person:
-          targetValue = this.mapPerson(value, allowUnMapped);;
+          targetValue = this.mapPerson(value, allowUnMapped);
+          break;
+        case SpeciesTypes.taxonID:
+          targetValue = this.mapTaxonId(value);
           break;
         default:
           targetValue = this.mapByFieldType(value, field);
@@ -218,6 +233,16 @@ export class MappingService {
       targetValue = [targetValue];
     }
     return targetValue;
+  }
+
+  private mapTaxonId(value) {
+    if (typeof value === 'string') {
+      const match = value.match(/(MX\.[0-9]+)/);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    return null;
   }
 
   private mapPerson(value, allowUnMapped = false) {
