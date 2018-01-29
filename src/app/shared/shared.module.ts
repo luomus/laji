@@ -92,6 +92,7 @@ import { DocumentFormFooterComponent } from './document-form-footer/document-for
 import { InformalTaxonGroupApi } from './api/InformalTaxonGroupApi';
 import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
 import {FriendService} from './service/friend.service';
+import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 
 
 @NgModule({
@@ -105,7 +106,7 @@ import {FriendService} from './service/friend.service';
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
-    ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent
+    ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, TaxonNameComponent
   ],
   imports: [
     ToastModule,
@@ -131,7 +132,7 @@ import {FriendService} from './service/friend.service';
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, LocalizePipe, HideScrollDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
-    SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent
+    SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, TaxonNameComponent
   ]
 })
 export class SharedModule {

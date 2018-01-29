@@ -1,0 +1,14 @@
+<span *ngIf="taxon" class="taxon-name">
+  {{taxon.vernacularName}}
+  <ng-container *ngIf="taxon.vernacularName && taxon.scientificName">
+    &ndash;
+  </ng-container>
+  <span [class.cursive]="taxon.cursiveName">
+    {{taxon.scientificName}}
+  </span>
+  <ng-container *ngIf="addLink">
+    <a [routerLink]="['/taxon/' + ((taxon.id || taxonID) | toQName)] | localize" target="_blank" [tooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
+      <i class="glyphicon glyphicon-tag"></i>
+    </a>
+  </ng-container>
+</span>

@@ -23,6 +23,7 @@ import { SpecialGeometryComponent } from './importer/cell-value-mapping/special-
 import {GeneratorService} from './service/generator.service';
 import { SpecialFriendComponent } from './importer/cell-value-mapping/special-friend/special-friend.component';
 import { SpecialTaxonIdComponent } from './importer/cell-value-mapping/special-taxon-id/special-taxon-id.component';
+import { TaxonAutocompleteComponent } from './importer/cell-value-mapping/special-taxon-id/taxon-autocomplete/taxon-autocomplete.component';
 
 @NgModule({
   imports: [
@@ -46,7 +47,8 @@ import { SpecialTaxonIdComponent } from './importer/cell-value-mapping/special-t
     CellValueSelectComponent,
     SpecialGeometryComponent,
     SpecialFriendComponent,
-    SpecialTaxonIdComponent
+    SpecialTaxonIdComponent,
+    TaxonAutocompleteComponent
   ],
   providers: [SpreadSheetService, MappingService, ImportService, GeneratorService]
 })

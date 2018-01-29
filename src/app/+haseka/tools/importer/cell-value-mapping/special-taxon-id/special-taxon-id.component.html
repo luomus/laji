@@ -1,35 +1,21 @@
 <table class="table">
   <tr *ngFor="let value of invalidValues">
-    <td>
+    <td class="value-col">
       <div class="form-control-static">
         {{value}}
       </div>
     </td>
     <td>
-      Mapping to taxon id is not done yet!
-      <input
-        [ngClass]="{loading: typeaheadLoading}"
-        type="text"
-        class="form-control input-sm"
-        name="target"
-        [(ngModel)]="taxon[value]"
-        [typeahead]="dataSource"
-        [typeaheadOptionsLimit]="10"
-        [typeaheadWaitMs]="200"
-        [typeaheadMinLength]="3"
-        [typeaheadFocusFirst]="false"
-        [typeaheadOptionField]="'value'"
-        [typeaheadItemTemplate]="taxonItem"
-        (typeaheadOnSelect)="onTaxonSelect(value, $event)"
-        (keyup)="onTaxonSelect(value, $event)"
-        autocomplete="off"
-        autocorrect="off"
-      >
+      <laji-taxon-autocomplete
+        [placeholder]="'Etsi haluttu laji'"
+        [taxon]="value"
+        (taxonSelect)="onTaxonSelect(value, $event)"
+      ></laji-taxon-autocomplete>
+    </td>
+    <td class="ok-col">
+      <span class="label label-success" *ngIf="mapping[value]">
+        <i class="glyphicon glyphicon-ok btn-success"></i>
+      </span>
     </td>
   </tr>
-  <ng-template #taxonItem let-model="item">
-    <h5 class="autosuggest-value {{model.groups}} informal-group-image">
-      {{model.value}}
-    </h5>
-  </ng-template>
 </table>
