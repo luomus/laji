@@ -11,8 +11,8 @@ export class QualityMostActiveTableComponent implements OnInit {
   @Input() maxLength = 50;
 
   tables = [
-    {prop: 'sevenDays', date: moment().subtract(1, 'week').toDate(), data: null},
-    {prop: 'year', date: moment().subtract(1, 'year').toDate(), data: null},
+    {prop: 'sevenDays', date: moment().subtract(1, 'week').format('YYYY-MM-DD'), data: null},
+    {prop: 'year', date: moment().subtract(1, 'year').format('YYYY-MM-DD'), data: null},
     {prop: 'allTime', date: null, data: null}
   ];
 

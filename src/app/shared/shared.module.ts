@@ -92,6 +92,7 @@ import { DocumentFormFooterComponent } from './document-form-footer/document-for
 import { InformalTaxonGroupApi } from './api/InformalTaxonGroupApi';
 import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
 import {FriendService} from './service/friend.service';
+import { DatePickerComponent } from './datepicker/datepicker.component'
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 
 
@@ -106,7 +107,8 @@ import { TaxonNameComponent } from './taxon-name/taxon-name.component';
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
-    ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, TaxonNameComponent
+    ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, DatePickerComponent,
+    TaxonNameComponent
   ],
   imports: [
     ToastModule,
@@ -132,7 +134,7 @@ import { TaxonNameComponent } from './taxon-name/taxon-name.component';
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, LocalizePipe, HideScrollDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
-    SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, TaxonNameComponent
+    SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, DatePickerComponent, TaxonNameComponent
   ]
 })
 export class SharedModule {
