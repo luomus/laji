@@ -64,6 +64,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   @Input() viewFormat: string;
   @Input() firstWeekdaySunday: boolean;
   @Input() toLastOfYear= false;
+  @Input() addonText: string;
   @Output() onSelect = new EventEmitter();
 
   public validDate = true;

@@ -1,15 +1,22 @@
-import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, Input } from '@angular/core';
 import { QualityService } from '../quality.service';
+import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'laji-quality-annotation-table',
   templateUrl: './quality-annotation-table.component.html',
   styleUrls: ['./quality-annotation-table.component.css']
 })
-export class QualityAnnotationTableComponent implements OnInit {
+export class QualityAnnotationTableComponent implements OnInit, OnDestroy {
   @Input() pageSize = 50;
+
+  page = 1;
+  group = '';
+  timeStart = '';
+  timeEnd = '';
 
   result: PagedResult<any> = {
     currentPage: 1,
@@ -40,22 +47,42 @@ export class QualityAnnotationTableComponent implements OnInit {
   ];
   loading = true;
 
+  private delayedSearchSource = new Subject<any>();
+  private delayedSearch = this.delayedSearchSource.asObservable();
+  private debouchAfterChange = 500;
+  private subSearch: Subscription;
   private fetchSub: Subscription;
 
   constructor(
     private qualityService: QualityService,
+    private translateService: TranslateService,
     private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    this.fetchPage(1);
+    this.subSearch = this.delayedSearch
+      .debounceTime(this.debouchAfterChange)
+      .subscribe(() => {
+        this.fetchPage();
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.subSearch) {
+      this.subSearch.unsubscribe();
+    }
+  }
+
+  onSelectChange() {
+    this.delayedSearchSource.next();
   }
 
   setPage(pageInfo) {
-    this.fetchPage(pageInfo.offset + 1)
+    this.page = pageInfo.offset + 1;
+    this.delayedSearchSource.next();
   }
 
-  fetchPage(page = 1) {
+  fetchPage() {
     if (this.fetchSub) {
       this.fetchSub.unsubscribe();
     }
@@ -64,7 +91,7 @@ export class QualityAnnotationTableComponent implements OnInit {
     this.cd.markForCheck();
 
     this.fetchSub = this.qualityService
-      .getAnnotationList(page, this.pageSize)
+      .getAnnotationList(this.page, this.pageSize, this.group, this.timeStart, this.timeEnd)
       .subscribe(data => {
         this.result = data;
         this.loading = false;

@@ -1,4 +1,5 @@
 <div class="input-group" [ngClass]="{'has-error': !validDate}">
+  <span *ngIf="addonText" class="input-group-addon">{{addonText}}</span>
   <input type="text"
          class="ng-datepicker-input form-control input-sm"
          [value]="value"
@@ -36,7 +37,7 @@
     </div>
     <div class="calendar">
         <span *ngFor="let d of days; let i = index">
-          <span class="day" [ngClass]="{'disabled': !d.enabled, 'selected': d.selected && d.enabled}"
+          <span class="day" [ngClass]="{'disabled': !d.enabled, 'selected': d.selected && d.enabled}"h
                 (click)="selectDate($event, i)">
             {{ d.day }}
           </span>
