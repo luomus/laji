@@ -10,13 +10,18 @@ import { MappingService } from './mapping.service';
 @Injectable()
 export class ImportService {
 
-  private documentReady = false;
   private newToParent = {
     'identifications': 'units',
     'gatheringEvent': 'document',
     'gatheringFact': 'gatherings',
     'unitFact': 'units',
     'unitGathering': 'units'
+  };
+
+  fieldToNewParent = {
+    // 'gatherings[*].dateBegin': 'document', Changing gatheringEvent date already makes new gathering
+    // 'gatherings[*].dateEnd': 'document',
+    'gatherings[*].geometry': 'document'
   };
 
   constructor(
@@ -73,6 +78,9 @@ export class ImportService {
   }
 
   private getParent(field: FormField) {
+    if (this.fieldToNewParent[field.key]) {
+      return this.fieldToNewParent[field.key];
+    }
     return this.newToParent[field.parent] ? this.newToParent[field.parent] : field.parent;
   }
 
