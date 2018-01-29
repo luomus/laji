@@ -10,13 +10,21 @@ import { MappingService } from './mapping.service';
 @Injectable()
 export class ImportService {
 
-  private documentReady = false;
-  private newToParent = {
+  private readonly maxUnitsPerDocument = 500;
+
+  private readonly newToParent = {
     'identifications': 'units',
     'gatheringEvent': 'document',
     'gatheringFact': 'gatherings',
     'unitFact': 'units',
     'unitGathering': 'units'
+  };
+
+  private readonly fieldToNewParent = {
+    // 'gatherings[*].dateBegin': 'document', Changing gatheringEvent date already makes new gathering
+    // 'gatherings[*].dateEnd': 'document',
+    'gatherings[*].geometry': 'document',
+    'gatherings[*].namedPlaceID': 'document'
   };
 
   constructor(
@@ -73,6 +81,9 @@ export class ImportService {
   }
 
   private getParent(field: FormField) {
+    if (this.fieldToNewParent[field.key]) {
+      return this.fieldToNewParent[field.key];
+    }
     return this.newToParent[field.parent] ? this.newToParent[field.parent] : field.parent;
   }
 
@@ -114,7 +125,7 @@ export class ImportService {
             return;
           }
         }
-        if (field.key === IGNORE_VALUE || value === IGNORE_VALUE) {
+        if (value === IGNORE_VALUE || value === '') {
           return;
         }
         values[field.key] = value;

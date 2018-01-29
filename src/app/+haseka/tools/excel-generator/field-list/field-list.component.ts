@@ -13,6 +13,7 @@ export class FieldListComponent implements OnInit {
   @Input() fields: FormField[];
   @Input() parent = 'document';
   @Input() title = '';
+  @Input() showTitle = true;
   @Output() toggle = new EventEmitter<FormField>();
 
   constructor() { }

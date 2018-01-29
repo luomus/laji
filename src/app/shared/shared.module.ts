@@ -93,6 +93,7 @@ import { InformalTaxonGroupApi } from './api/InformalTaxonGroupApi';
 import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
 import {FriendService} from './service/friend.service';
 import { DatePickerComponent } from './datepicker/datepicker.component'
+import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 
 
 @NgModule({
@@ -105,9 +106,9 @@ import { DatePickerComponent } from './datepicker/datepicker.component'
     ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
-    NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective,
-    ClickOutSideDirective, ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent,
-    DatePickerComponent
+    NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
+    ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, DatePickerComponent,
+    TaxonNameComponent
   ],
   imports: [
     ToastModule,
@@ -133,7 +134,7 @@ import { DatePickerComponent } from './datepicker/datepicker.component'
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, LocalizePipe, HideScrollDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
-    SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, DatePickerComponent
+    SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, DatePickerComponent, TaxonNameComponent
   ]
 })
 export class SharedModule {

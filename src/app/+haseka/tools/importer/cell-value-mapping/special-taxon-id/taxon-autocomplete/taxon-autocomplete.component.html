@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-sm-6">
+    <input
+      type="text"
+      class="form-control input-sm"
+      name="target"
+      [placeholder]="placeholder"
+      [(ngModel)]="value"
+      [typeahead]="dataSource"
+      [typeaheadOptionsLimit]="limit"
+      [typeaheadWaitMs]="200"
+      [typeaheadMinLength]="3"
+      [typeaheadOptionField]="'value'"
+      [typeaheadItemTemplate]="taxonItem"
+      (typeaheadOnSelect)="onTaxonSelect($event)"
+      autocomplete="off"
+      autocorrect="off"
+    >
+    <ng-template #taxonItem let-model="item">
+      <h5 class="autosuggest-value {{model.groups}} informal-group-image">
+        {{model.value}}
+      </h5>
+    </ng-template>
+  </div>
+  <div class="col-sm-6 form-control-static" *ngIf="result && result.payload">
+    <laji-taxon-name [taxon]="result.payload" [taxonID]="result.key"></laji-taxon-name>
+  </div>
+</div>

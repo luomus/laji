@@ -17,9 +17,6 @@ export class SpreadSheetService {
   private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
   private translations = {};
-  private newToParent = {
-    'identifications': 'units'
-  };
 
   private requiredFields = {};
 
