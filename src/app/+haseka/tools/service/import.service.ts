@@ -21,7 +21,8 @@ export class ImportService {
   fieldToNewParent = {
     // 'gatherings[*].dateBegin': 'document', Changing gatheringEvent date already makes new gathering
     // 'gatherings[*].dateEnd': 'document',
-    'gatherings[*].geometry': 'document'
+    'gatherings[*].geometry': 'document',
+    'gatherings[*].namedPlaceID': 'document'
   };
 
   constructor(
