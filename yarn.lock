@@ -3955,9 +3955,9 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-laji-form@^0.0.357:
-  version "0.0.357"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.357.tgz#865145efd32b2248d1493655f5526512e628094d"
+laji-form@^0.0.358:
+  version "0.0.358"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.358.tgz#dfad7660d2511382e448241f0e75460a45cca444"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -4064,7 +4064,7 @@ leaflet.markercluster@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.3.0.tgz#58eb0654e90bd3274a660390ab0bc734212b204d"
 
-leaflet@*, leaflet@>=0.7.0, leaflet@^1.0.1, leaflet@1.3.1:
+leaflet@*, leaflet@1.3.1, leaflet@>=0.7.0, leaflet@^1.0.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.3.1.tgz#86f336d2fb0e2d0ff446677049a5dc34cf0ea60e"
 
