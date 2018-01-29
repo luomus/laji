@@ -70,6 +70,9 @@ export class MappingService {
 
 
   rawValueToArray(value, field: FormField) {
+    if (typeof value === 'string') {
+      value = value.trim();
+    }
     if (field.isArray) {
       if (typeof value === 'string') {
         return value.split(MappingService.valueSplitter).map(val => val.trim());

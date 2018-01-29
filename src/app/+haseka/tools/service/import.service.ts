@@ -10,7 +10,9 @@ import { MappingService } from './mapping.service';
 @Injectable()
 export class ImportService {
 
-  private newToParent = {
+  private readonly maxUnitsPerDocument = 500;
+
+  private readonly newToParent = {
     'identifications': 'units',
     'gatheringEvent': 'document',
     'gatheringFact': 'gatherings',
@@ -18,7 +20,7 @@ export class ImportService {
     'unitGathering': 'units'
   };
 
-  fieldToNewParent = {
+  private readonly fieldToNewParent = {
     // 'gatherings[*].dateBegin': 'document', Changing gatheringEvent date already makes new gathering
     // 'gatherings[*].dateEnd': 'document',
     'gatherings[*].geometry': 'document',
@@ -123,7 +125,7 @@ export class ImportService {
             return;
           }
         }
-        if (field.key === IGNORE_VALUE || value === IGNORE_VALUE) {
+        if (value === IGNORE_VALUE || value === '') {
           return;
         }
         values[field.key] = value;

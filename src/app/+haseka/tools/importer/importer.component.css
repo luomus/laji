@@ -5,3 +5,7 @@
 .action {
   margin-left: 3px;
 }
+
+.mapping-body {
+  overflow: auto;
+}

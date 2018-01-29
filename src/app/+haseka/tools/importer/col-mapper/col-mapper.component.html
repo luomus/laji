@@ -3,12 +3,12 @@
 </h1>
 <table class="table">
   <tr *ngFor="let col of missingMapping">
-    <td>
+    <td class="field-col">
       <div class="form-control-static">
-        <small>{{col}}:</small> {{headers[col] || ''}}
+        <small>{{col}}:</small>&nbsp;{{headers[col] || ''}}
       </div>
     </td>
-    <td>
+    <td class="mapping-col">
       <laji-mapping-select [value]="colMapping[col] || ''" [fields]="fields" (selected)="fieldSelected.emit({col: col, key: $event, userValue: headers[col]})"></laji-mapping-select>
     </td>
   </tr>
