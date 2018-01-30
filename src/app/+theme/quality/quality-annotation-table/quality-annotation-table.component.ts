@@ -54,8 +54,8 @@ export class QualityAnnotationTableComponent implements OnInit, OnDestroy {
   private fetchSub: Subscription;
 
   constructor(
+    public translateService: TranslateService,
     private qualityService: QualityService,
-    private translateService: TranslateService,
     private cd: ChangeDetectorRef
   ) { }
 
