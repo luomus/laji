@@ -1,6 +1,8 @@
-<ng-container *ngIf="count > 0; else zero">
-  <a [href]="link" target="_blank" rel="noopener">{{count}}</a>
+<ng-container *ngIf="link">
+  <ng-container *ngIf="count > 0; else zero">
+    <a [href]="link" target="_blank" rel="noopener">{{count}}</a>
+  </ng-container>
+  <ng-template #zero>
+    {{count}}
+  </ng-template>
 </ng-container>
-<ng-template #zero>
-  {{count}}
-</ng-template>
