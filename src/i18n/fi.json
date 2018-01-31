@@ -601,5 +601,6 @@
   "technical": "tekninen",
   "haseka.tools": "Työkalut",
   "selfUrl.intro": "Täällä voit hallita muiden järjestelmien tunnuksia yms.",
-  "lineTransect.title": "Linjalaskenta"
+  "lineTransect.title": "Linjalaskenta",
+  "taxonomy.bold": "DNA-viivakoodien lkm"
 }

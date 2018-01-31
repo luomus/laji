@@ -583,5 +583,6 @@
   "home.identify": "Help identifying observations",
   "haseka.tools": "Tools",
   "selfUrl.intro": "Here you can manage the user names from other systems, etc.",
-  "lineTransect.title": "Line transect"
+  "lineTransect.title": "Line transect",
+  "taxonomy.bold": "number of DNA barcodes"
 }
