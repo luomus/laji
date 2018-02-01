@@ -584,5 +584,6 @@
   "home.identify": "Hjälp identifiera observationer",
   "haseka.tools": "Verktyg",
   "selfUrl.intro": "Här kan du hantera användarnamnen från andra system etc.",
-  "lineTransect.title": "Line transect"
+  "lineTransect.title": "Line transect",
+  "taxonomy.bold": "antal DNA-streckkoder"
 }
