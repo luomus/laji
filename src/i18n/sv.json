@@ -560,7 +560,7 @@
   "quality.creator": "Skaparen",
   "quality.qualityLabel": "Kvalitetsetiket",
   "quality.observer": "Observatör",
-  "quality.species": "Arter",
+  "quality.taxon": "Arter",
   "quality.image": "Bild",
   "quality.mostActive.title": "De mest aktiva kvalitetskontrollerna",
   "quality.mostActive.sevenDays": "7 dagar",

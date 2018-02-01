@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { QualityService } from '../quality.service';
+import { QualityService } from '../../service/quality.service';
 import { Observable } from 'rxjs/Observable';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { MostActiveUsersTable } from '../model/most-active-users-table';

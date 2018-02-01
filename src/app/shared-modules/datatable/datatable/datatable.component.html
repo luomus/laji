@@ -143,9 +143,9 @@
     {{value | amDateFormat: 'DD.MM.YYYY HH:mm'}}
   </span>
 </ng-template>
-<ng-template let-value="value" #fullUser>
+<ng-template let-value="value" #user>
   <span *ngIf="value" title="{{value}}">
-    {{value | toQName | users}}
+    {{value | users}}
   </span>
 </ng-template>
 <ng-template let-value="value" #annotation>
@@ -172,9 +172,12 @@
       <i class="fa fa-comment-o"></i>
     </span>
   </span>
-  <div *ngIf="(value.type | toQName) === annotationTypes.TypeUnidentifiable">
-    {{'MAN.typeUnidentifiable' | label }}
-  </div>
+  <small>
+    <span class="annotation-title" *ngIf="(value.type | toQName) === annotationTypes.TypeUnidentifiable">
+      {{'MAN.typeUnidentifiable' | label }}
+    </span>
+    <span class="annotation-title" *ngIf="value.annotationClass">{{value.annotationClass | toQName | label}}</span>
+  </small>
   <div *ngIf="value.opinion">
     {{'MAN.opinion' | label}}:
     {{value.opinion | truncate}}

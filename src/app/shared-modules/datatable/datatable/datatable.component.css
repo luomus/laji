@@ -1,3 +1,10 @@
+img.compact {
+  width: 89px;
+  height: 70px;
+  object-fit: cover;
+  display: block;
+  margin: auto;
+}
 .annotation-positive {
   color: #4cae4c;
 }

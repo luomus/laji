@@ -559,7 +559,7 @@
   "quality.creator": "Creator",
   "quality.qualityLabel": "Quality label",
   "quality.observer": "Observer",
-  "quality.species": "Species",
+  "quality.taxon": "Species",
   "quality.image": "Image",
   "quality.mostActive.title": "Most active quality controllers",
   "quality.mostActive.sevenDays": "7 days",

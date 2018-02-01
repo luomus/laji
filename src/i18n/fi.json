@@ -575,7 +575,7 @@
   "quality.creator": "Laatumerkinnän tekijä",
   "quality.qualityLabel": "Laatumerkintä",
   "quality.observer": "Havainnoija",
-  "quality.species": "Ilmoitettu laji",
+  "quality.taxon": "Ilmoitettu laji",
   "quality.image": "Kuva",
   "quality.mostActive.title": "Aktiivisimmat laadunvalvojat",
   "quality.mostActive.sevenDays": "7 päivää",

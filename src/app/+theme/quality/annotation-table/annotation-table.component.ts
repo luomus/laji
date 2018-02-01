@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, Input, ViewChild } from '@angular/core';
-import { QualityService } from '../quality.service';
+import { QualityService } from '../../service/quality.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ModalDirective } from 'ngx-bootstrap';
@@ -31,18 +31,45 @@ export class AnnotationTableComponent implements OnInit, OnDestroy {
   };
 
   columns: AnnotationTableColumn[] = [
-    { prop: 'annotation.created', cellTemplate: 'date', label: 'quality.created', sortable: false },
-    { prop: 'annotation.annotationByPerson', cellTemplate: 'fullUser', label: 'quality.creator', sortable: false },
-    { prop: 'annotation', cellTemplate: 'annotation', label: 'quality.qualityLabel', sortable: false },
-    { prop: 'gathering.team', label: 'quality.observer' },
-    { name: 'unit.taxon',
+    {
+      prop: 'annotation.created',
+      cellTemplate: 'date',
+      label: 'quality.created',
+      sortBy: 'unit.annotations.created',
+      width: 100
+    },
+    {
+      prop: 'annotation.annotationByPersonName',
+      cellTemplate: 'user',
+      label: 'quality.creator',
+      sortBy: 'unit.annotations.annotationByPersonName'
+    },
+    {
+      prop: 'annotation',
+      cellTemplate: 'annotation',
+      label: 'quality.qualityLabel',
+      sortable: false,
+      width: 200
+    },
+    {
+      prop: 'gathering.team',
+      label: 'quality.observer'
+    },
+    {
+      name: 'unit.taxon',
       prop: 'unit',
       target: '_blank',
-      label: 'quality.species',
+      label: 'quality.taxon',
       cellTemplate: 'taxon',
-      sortBy: 'unit.linkings.taxon.speciesName%longLang%'
+      sortBy: 'unit.linkings.taxon.name%longLang%'
     },
-    { prop: 'unit.media.0', cellTemplate: 'image', label: 'quality.image', sortable: false }
+    {
+      prop: 'unit.media.0',
+      cellTemplate: 'image',
+      label: 'quality.image',
+      sortable: false,
+      width: 100
+    }
   ];
 
   loading = true;
