@@ -1,22 +1,24 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { QualityService } from '../quality.service';
 import { Observable } from 'rxjs/Observable';
+import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
+import { MostActiveUsersTable } from '../model/most-active-users-table';
 
 @Component({
-  selector: 'laji-quality-most-active-table',
-  templateUrl: './quality-most-active-table.component.html',
-  styleUrls: ['./quality-most-active-table.component.css']
+  selector: 'laji-most-active-users-table',
+  templateUrl: './most-active-users-table.component.html',
+  styleUrls: ['./most-active-users-table.component.css']
 })
-export class QualityMostActiveTableComponent implements OnInit {
+export class MostActiveUsersTableComponent implements OnInit {
   @Input() maxLength = 50;
 
-  tables = [
-    {prop: 'sevenDays', date: moment().subtract(1, 'week').format('YYYY-MM-DD'), data: null},
-    {prop: 'year', date: moment().subtract(1, 'year').format('YYYY-MM-DD'), data: null},
-    {prop: 'allTime', date: null, data: null}
+  tables: MostActiveUsersTable[] = [
+    { prop: 'sevenDays', date: moment().subtract(1, 'week').format('YYYY-MM-DD') },
+    { prop: 'year', date: moment().subtract(1, 'year').format('YYYY-MM-DD') },
+    { prop: 'allTime'}
   ];
 
-  columns = [
+  columns: DatatableColumn[] = [
     { prop: 'userId', cellTemplate: 'fullUser' },
     { prop: 'count' }
   ];
@@ -33,7 +35,7 @@ export class QualityMostActiveTableComponent implements OnInit {
 
     this.tables.map((table) => {
       observables.push(
-        this.qualityService.getMostActiveUsers(this.maxLength, table['date'])
+        this.qualityService.getMostActiveUsers(this.maxLength, table.date)
       );
     });
 

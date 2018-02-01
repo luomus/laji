@@ -46,5 +46,21 @@
                 [count]="result.total"
                 [page]="result.currentPage"
                 [pageSize]="result.pageSize"
-                (pageChange)="setPage($event)">
+                (rowSelect)="showDocument($event)"
+                (pageChange)="setPage($event)"
+                (sortChange)="onSort($event)">
 </laji-datatable>
+
+<div class="modal fade" bsModal #documentModal="bs-modal"
+     tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <laji-document [uri]="shownDocument" [highlight]="highlightId"></laji-document>
+      </div>
+    </div>
+  </div>
+</div>

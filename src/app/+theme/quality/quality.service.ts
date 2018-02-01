@@ -10,7 +10,7 @@ export class QualityService {
     private warehouseApi: WarehouseApi
   ) { }
 
-  getAnnotationList(page = 1, pageSize = 50, informalTaxonGroup?, timeStart?, timeEnd?): Observable<any> {
+  getAnnotationList(page = 1, pageSize = 50, orderBy?, informalTaxonGroup?, timeStart?, timeEnd?): Observable<any> {
     const query: WarehouseQueryInterface = {};
     query.annotationType = ['TAXON_RELIABILITY', 'IDENTIFICATION', 'UNIDENTIFIABLE', 'COMMENT'];
     if (informalTaxonGroup) {
@@ -22,12 +22,12 @@ export class QualityService {
     if (timeEnd) {
       query.annotatedBefore = timeEnd;
     }
-    console.log(query);
+
     return this._fetch(this.warehouseApi.warehouseQueryAnnotationListGet(
       query,
       ['annotation', 'unit.media', 'document.documentId', 'unit.unitId', 'gathering.team', 'unit.taxonVerbatim',
-       'unit.linkings.taxon', 'unit.reportedInformalTaxonGroup'],
-      undefined,
+       'unit.linkings.originalTaxon', 'unit.reportedInformalTaxonGroup'],
+      orderBy,
       pageSize,
       page
     ))

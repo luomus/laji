@@ -149,7 +149,39 @@
   </span>
 </ng-template>
 <ng-template let-value="value" #annotation>
-  <span *ngIf="value.annotationClass">{{value.annotationClass | toQName | label}}</span>
+  <span [ngSwitch]="value.annotationClass | toQName" [tooltip]="value.annotationClass | toQName | label"
+        class="annotation-class">
+    <span *ngSwitchCase="annotationClass.AnnotationClassAcknowledged">
+      <i class="fa fa-check-square-o"></i>
+    </span>
+    <span *ngSwitchCase="annotationClass.AnnotationClassReliable" class="annotation-positive">
+      <i class="fa fa-check-circle-o"></i>
+      <i class="fa fa-check-circle-o"></i>
+    </span>
+    <span *ngSwitchCase="annotationClass.AnnotationClassLikely"  class="annotation-positive">
+      <i class="fa fa-check-circle-o"></i>
+    </span>
+    <span *ngSwitchCase="annotationClass.AnnotationClassSuspicious"  class="annotation-negative">
+      <i class="fa fa-exclamation-circle"></i>
+    </span>
+    <span *ngSwitchCase="annotationClass.AnnotationClassUnreliable"  class="annotation-negative">
+      <i class="fa fa-exclamation-circle"></i>
+      <i class="fa fa-exclamation-circle"></i>
+    </span>
+    <span *ngSwitchDefault="">
+      <i class="fa fa-comment-o"></i>
+    </span>
+  </span>
+  <div *ngIf="(value.type | toQName) === annotationTypes.TypeUnidentifiable">
+    {{'MAN.typeUnidentifiable' | label }}
+  </div>
+  <div *ngIf="value.opinion">
+    {{'MAN.opinion' | label}}:
+    {{value.opinion | truncate}}
+  </div>
+  <div *ngIf="value.notes">
+    {{value.notes | truncate}}
+  </div>
 </ng-template>
 <ng-template let-value="value" #image>
   <span *ngIf="value">
