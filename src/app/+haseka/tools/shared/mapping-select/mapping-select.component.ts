@@ -12,6 +12,7 @@ export class MappingSelectComponent implements OnInit {
 
   @Input() options: string[] = [];
   @Input() value: string;
+  @Input() disabled = false;
   @Output() selected = new EventEmitter<string>();
   skipValue = IGNORE_VALUE;
 

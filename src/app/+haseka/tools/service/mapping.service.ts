@@ -204,6 +204,39 @@ export class MappingService {
     return this.booleanMap[key][lang];
   }
 
+  mapTaxonId(value) {
+    if (typeof value === 'string') {
+      const match = value.match(/(MX\.[0-9]+)/);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    return null;
+  }
+
+  mapNamedPlaceID(value) {
+    if (typeof value === 'string') {
+      const match = value.match(/(MNP\.[0-9]+)/);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    return null;
+  }
+
+  mapPerson(value, allowUnMapped = false) {
+    if (typeof value === 'string') {
+      const match = value.match(/(MA\.[0-9]+)/);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    if (allowUnMapped) {
+      return value;
+    }
+    return null;
+  }
+
   private _map(value: any, field: FormField, allowUnMapped = false, convertToArray = true) {
     if (Array.isArray(value)) {
       value = value.map(val => this._map(val, field, allowUnMapped, false));
@@ -217,50 +250,30 @@ export class MappingService {
     const upperValue = ('' + value).toUpperCase();
     let targetValue = this.getUserMappedValue(upperValue, field);
 
-    if (targetValue === null) {
-      switch (this.getSpecial(field)) {
-        case SpeciesTypes.geometry:
-          if (targetValue === null) {
-            targetValue = this.analyzeGeometry(value);
-          }
-          break;
-        case SpeciesTypes.person:
-          targetValue = this.mapPerson(value, allowUnMapped);
-          break;
-        case SpeciesTypes.taxonID:
-          targetValue = this.mapTaxonId(value);
-          break;
-        default:
+    switch (this.getSpecial(field)) {
+      case SpeciesTypes.geometry:
+        if (targetValue === null) {
+          targetValue = this.analyzeGeometry(value);
+        }
+        break;
+      case SpeciesTypes.person:
+        targetValue = this.mapPerson(targetValue || value, allowUnMapped);
+        break;
+      case SpeciesTypes.taxonID:
+        targetValue = this.mapTaxonId(targetValue || value);
+        break;
+      case SpeciesTypes.namedPlaceID:
+        targetValue = this.mapNamedPlaceID(targetValue || value);
+        break;
+      default:
+        if (targetValue === null) {
           targetValue = this.mapByFieldType(value, field);
-      }
+        }
     }
     if (convertToArray && field.isArray && !Array.isArray(targetValue)) {
       targetValue = [targetValue];
     }
     return targetValue;
-  }
-
-  private mapTaxonId(value) {
-    if (typeof value === 'string') {
-      const match = value.match(/(MX\.[0-9]+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
-    }
-    return null;
-  }
-
-  private mapPerson(value, allowUnMapped = false) {
-    if (typeof value === 'string') {
-      const match = value.match(/(MA\.[0-9]+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
-    }
-    if (allowUnMapped) {
-      return value;
-    }
-    return null;
   }
 
   private analyzeGeometry(value: any) {

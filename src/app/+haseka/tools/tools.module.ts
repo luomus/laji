@@ -24,6 +24,7 @@ import {GeneratorService} from './service/generator.service';
 import { SpecialFriendComponent } from './importer/cell-value-mapping/special-friend/special-friend.component';
 import { SpecialTaxonIdComponent } from './importer/cell-value-mapping/special-taxon-id/special-taxon-id.component';
 import { TaxonAutocompleteComponent } from './importer/cell-value-mapping/special-taxon-id/taxon-autocomplete/taxon-autocomplete.component';
+import { SpecialNamedPlacesComponent } from './importer/cell-value-mapping/special-named-places/special-named-places.component';
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import { TaxonAutocompleteComponent } from './importer/cell-value-mapping/specia
     SpecialGeometryComponent,
     SpecialFriendComponent,
     SpecialTaxonIdComponent,
-    TaxonAutocompleteComponent
+    TaxonAutocompleteComponent,
+    SpecialNamedPlacesComponent
   ],
   providers: [SpreadSheetService, MappingService, ImportService, GeneratorService]
 })
