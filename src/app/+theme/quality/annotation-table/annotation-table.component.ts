@@ -49,7 +49,7 @@ export class AnnotationTableComponent implements OnInit, OnDestroy {
       cellTemplate: 'annotation',
       label: 'quality.qualityLabel',
       sortable: false,
-      width: 200
+      width: 250
     },
     {
       prop: 'gathering.team',
@@ -61,7 +61,8 @@ export class AnnotationTableComponent implements OnInit, OnDestroy {
       target: '_blank',
       label: 'quality.taxon',
       cellTemplate: 'taxon',
-      sortBy: 'unit.linkings.taxon.name%longLang%'
+      sortBy: 'unit.linkings.taxon.name%longLang%',
+      width: 250
     },
     {
       prop: 'unit.media.0',

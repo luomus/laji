@@ -6,8 +6,20 @@ import { Observer } from 'rxjs/Observer';
 
 @Injectable()
 export class QualityService {
-  private cache = {};
-  private pending = {};
+  private state = {
+    annotations: {
+      key: '',
+      data: [],
+      pending: undefined,
+      pendingKey: ''
+    },
+    users: {
+      key: '',
+      data: [],
+      pending: undefined,
+      pendingKey: ''
+    }
+  };
 
   constructor(
     private warehouseApi: WarehouseApi
@@ -26,7 +38,9 @@ export class QualityService {
       query.annotatedBefore = timeEnd;
     }
 
-    return this._fetch('annotationList,query=' + JSON.stringify(query),
+    const cacheKey = JSON.stringify({page, pageSize, orderBy, informalTaxonGroup, timeStart, timeEnd});
+
+    return this._fetch('annotations', cacheKey,
       this.warehouseApi.warehouseQueryAnnotationListGet(
         query,
         ['annotation', 'unit.media', 'document.documentId', 'unit.unitId', 'gathering.team', 'unit.taxonVerbatim',
@@ -44,7 +58,9 @@ export class QualityService {
       query.annotatedLaterThan = lastDate;
     }
 
-    return this._fetch('activeUsers,query=' + JSON.stringify(query),
+    const cacheKey = JSON.stringify({maxLength, lastDate});
+
+    return this._fetch('users', cacheKey,
       this.warehouseApi.warehouseQueryAggregateGet(
         query,
         ['unit.annotations.annotationByPerson', 'unit.annotations.annotationByPersonName'],
@@ -63,26 +79,26 @@ export class QualityService {
       });
   }
 
-  private _fetch(cacheKey, request): Observable<any> {
-    return request;
-    /*if (this.cache[cacheKey]) {
-      return Observable.of(this.cache[cacheKey]);
-    } else if (this.pending[cacheKey]) {
+  private _fetch(type: 'annotations'|'users', cacheKey: string, request): Observable<any> {
+    if (this.state[type].key === cacheKey) {
+      return Observable.of(this.state[type].data);
+    } else if (this.state[type].pendingKey === cacheKey && this.state[type].pending) {
       return Observable.create((observer: Observer<any>) => {
         const onComplete = (res: any) => {
           observer.next(res);
           observer.complete();
         };
-        this.pending[cacheKey].subscribe(
+        this.state[type].pending.subscribe(
           (data) => { onComplete(data); }
         );
       });
     }
-
-    this.pending[cacheKey]    = request
+    this.state[type].pendingKey = cacheKey;
+    this.state[type].pending    = request
       .do(data => {
-        this.cache[cacheKey] = data;
+        this.state[type].data = data;
+        this.state[type].key  = cacheKey;
       });
-    return this.pending[cacheKey];*/
+    return this.state[type].pending ;
   }
 }

@@ -49,23 +49,30 @@
 
 <ng-template let-value="value" let-column="column" #taxon>
   <span *ngIf="value">
-    <span style="display: inline"
-          *ngIf="value.linkings && value.linkings.taxon && (value.linkings.taxon.id || value.linkings.taxon.qname); else taxonVerbatim"
-          title="{{(value.linkings.taxon.vernacularName | multiLang) + ' (' + value.linkings.taxon.scientificName + ')'}}"
-    >
-      {{value.linkings.taxon.vernacularName | multiLang}}
-      <span style="display: inline" [class.cursive]="value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.scientificName">
-          ({{value.linkings.taxon.scientificName}})
+    <ng-container *ngTemplateOutlet="taxonLinkings; context: {$implicit: value.linkings && value.linkings.originalTaxon ? 'originalTaxon': 'taxon'}"></ng-container>
+
+    <ng-template #taxonLinkings let-taxon>
+      <span style="display: inline"
+                *ngIf="value.linkings && value.linkings[taxon] && (value.linkings[taxon].id || value.linkings[taxon].qname); else taxonVerbatim"
+                title="{{(value.linkings[taxon].vernacularName | multiLang) + ' (' + value.linkings[taxon].scientificName + ')'}}"
+          >
+        {{value.linkings[taxon].vernacularName | multiLang}}
+        <span style="display: inline" [class.cursive]="value.linkings[taxon].cursiveName" *ngIf="value.linkings[taxon].scientificName">
+          ({{value.linkings[taxon].scientificName}})
+        </span>
+        <a
+          [tooltip]="'showSpeciesCard' | translate"
+          [placement]="'right'"
+          target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings[taxon].id || value.linkings[taxon].qname) | toQName)] | localize">
+          <i class="glyphicon glyphicon-tag"></i>
+        </a>
       </span>
-      <a
-        [tooltip]="'showSpeciesCard' | translate"
-        [placement]="'right'"
-        target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings.taxon.id || value.linkings.taxon.qname) | toQName)] | localize">
-        <i class="glyphicon glyphicon-tag"></i>
-      </a>
-    </span>
+    </ng-template>
     <ng-template #taxonVerbatim>
-      <span title="{{value.taxonVerbatim}}">{{value.taxonVerbatim}}</span>
+      <span *ngIf="value.taxonVerbatim; else reportedInformalTaxonGroup" title="{{value.taxonVerbatim}}">{{value.taxonVerbatim}}</span>
+    </ng-template>
+    <ng-template #reportedInformalTaxonGroup>
+      <span title="{{value.reportedInformalTaxonGroup | toQName | taxon | multiLang}}">{{value.reportedInformalTaxonGroup | toQName | taxon | multiLang}}</span>
     </ng-template>
   </span>
 </ng-template>

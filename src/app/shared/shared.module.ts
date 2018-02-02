@@ -175,6 +175,8 @@ export class SharedModule {
         DocumentDeActivateGuard,
         FriendService,
         TruncatePipe,
+        TaxonNamePipe,
+        ToQNamePipe,
         {provide: Http, useClass: AuthenticatedHttpService}
       ]
     };
