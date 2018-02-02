@@ -32,7 +32,6 @@ export class GeneratorService {
       (person, namedPlaces) => ({person: person, namedPlaces: namedPlaces})
     )
       .subscribe((data) => {
-        console.log(data.namedPlaces);
         const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels, data));
         const book = XLSX.utils.book_new();
 

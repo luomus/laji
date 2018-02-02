@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { FormField, IGNORE_VALUE } from '../../../model/form-field';
 
 @Component({
   selector: 'laji-cell-value-select',
   templateUrl: './cell-value-select.component.html',
-  styleUrls: ['./cell-value-select.component.css']
+  styleUrls: ['./cell-value-select.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CellValueSelectComponent implements OnInit {
 

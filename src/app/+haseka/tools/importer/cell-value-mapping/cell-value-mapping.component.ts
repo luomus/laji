@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import { FormField } from '../../model/form-field';
 import { ImportService } from '../../service/import.service';
 import { MappingService, SpeciesTypes } from '../../service/mapping.service';
@@ -6,7 +6,8 @@ import { MappingService, SpeciesTypes } from '../../service/mapping.service';
 @Component({
   selector: 'laji-cell-value-mapping',
   templateUrl: './cell-value-mapping.component.html',
-  styleUrls: ['./cell-value-mapping.component.css']
+  styleUrls: ['./cell-value-mapping.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CellValueMappingComponent implements OnInit, OnChanges {
 
