@@ -54,11 +54,14 @@
     <ng-template #taxonLinkings let-taxon>
       <span style="display: inline"
                 *ngIf="value.linkings && value.linkings[taxon] && (value.linkings[taxon].id || value.linkings[taxon].qname); else taxonVerbatim"
-                title="{{(value.linkings[taxon].vernacularName | multiLang) + ' (' + value.linkings[taxon].scientificName + ')'}}"
+                title="{{(value.linkings[taxon].vernacularName ? (value.linkings[taxon].vernacularName | multiLang) : '')
+                + (value.linkings[taxon].vernacularName && value.linkings[taxon].scientificName ? ' &mdash; ': '')
+                + (value.linkings[taxon].scientificName ? value.linkings[taxon].scientificName : '')}}"
           >
         {{value.linkings[taxon].vernacularName | multiLang}}
+        <span style="display: inline" *ngIf="value.linkings[taxon].vernacularName && value.linkings[taxon].scientificName"> &mdash; </span>
         <span style="display: inline" [class.cursive]="value.linkings[taxon].cursiveName" *ngIf="value.linkings[taxon].scientificName">
-          ({{value.linkings[taxon].scientificName}})
+          {{value.linkings[taxon].scientificName}}
         </span>
         <a
           [tooltip]="'showSpeciesCard' | translate"
@@ -80,11 +83,14 @@
   <span *ngIf="value" title="{{value.taxonVerbatim}}">
     <span style="display: inline"
           *ngIf="value.linkings && value.linkings.taxon && value.linkings.taxon.speciesId; else taxonVerbatim"
-          title="{{(value.linkings.taxon.speciesVernacularName | multiLang) + ' (' + value.linkings.taxon.speciesScientificName + ')'}}"
+          title="{{(value.linkings.taxon.speciesVernacularName ? (value.linkings.taxon.speciesVernacularName | multiLang) : '')
+                + (value.linkings.taxon.speciesVernacularName && value.linkings.taxon.speciesScientificName ? ' &mdash; ': '')
+                + (value.linkings.taxon.speciesScientificName ? value.linkings.taxon.speciesScientificName : '')}}"
     >
       {{value.linkings.taxon.speciesVernacularName | multiLang}}
+      <span style="display: inline" *ngIf="value.linkings.taxon.speciesVernacularName && value.linkings.taxon.speciesScientificName"> &mdash; </span>
       <span style="display: inline" [class.cursive]="true || value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.speciesScientificName">
-          ({{value.linkings.taxon.speciesScientificName}})
+          {{value.linkings.taxon.speciesScientificName}}
       </span>
       <a
         [tooltip]="'showSpeciesCard' | translate"
