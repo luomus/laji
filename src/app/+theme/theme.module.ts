@@ -37,10 +37,10 @@ import { LineTransectInstructionsComponent } from './line-transect/line-transect
 import { LineTransectMyDocumentListComponent } from './line-transect/line-transect-my-document-list/line-transect-my-document-list.component';
 import { StatisticsModule } from '../shared-modules/statistics/statistics.module';
 import { DatatableModule } from '../shared-modules/datatable/datatable.module'
-import { QualityService } from './quality/quality.service';
+import { QualityService } from './service/quality.service';
 import { QualityComponent } from './quality/quality.component';
-import { QualityMostActiveTableComponent } from './quality/quality-most-active-table/quality-most-active-table.component';
-import { QualityAnnotationTableComponent } from './quality/quality-annotation-table/quality-annotation-table.component';
+import { MostActiveUsersTableComponent } from './quality/most-active-users-table/most-active-users-table.component';
+import { AnnotationTableComponent } from './quality/annotation-table/annotation-table.component';
 
 @NgModule({
   imports: [
@@ -83,8 +83,8 @@ import { QualityAnnotationTableComponent } from './quality/quality-annotation-ta
     NafiTemplatesComponent,
     ThemeComponent,
     QualityComponent,
-    QualityMostActiveTableComponent,
-    QualityAnnotationTableComponent
+    MostActiveUsersTableComponent,
+    AnnotationTableComponent
   ],
   providers: [ ResultService, QualityService ]
 })

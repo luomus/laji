@@ -1,5 +1,6 @@
 :host >>> .ngx-datatable .datatable-body {
   max-height: calc(75vh - 30px - 50px);
+  overflow-x: hidden !important;
 }
 
 .most-active-table {
