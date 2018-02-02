@@ -549,7 +549,7 @@
   "identify.requiresAuthentication": "requires authentication",
   "identify.selectIntro": "You can filter the images by informal group, but the page will only be able to show those observations that can be assosiated with a group. For example the given name \"fungi\" can be linked but the name \"some fungi perhaps?\" can not be linked.",
   "identify.mostActiveTitle": "Most active identification providers",
-  "identify.toQualityPage": "Browse all identifications and quality labels >>",
+  "identify.toQualityPage": "Browse all identifications and quality labels",
   "navigation.quality": "Quality control",
   "quality.annotations.title": "Quality labels",
   "quality.filterByDate": "Filter by date",

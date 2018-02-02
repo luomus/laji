@@ -42,7 +42,8 @@ export class AnnotationTableComponent implements OnInit, OnDestroy {
       prop: 'annotation.annotationByPersonName',
       cellTemplate: 'user',
       label: 'quality.creator',
-      sortBy: 'unit.annotations.annotationByPersonName'
+      sortBy: 'unit.annotations.annotationByPersonName',
+      width: 150
     },
     {
       prop: 'annotation',
@@ -53,7 +54,8 @@ export class AnnotationTableComponent implements OnInit, OnDestroy {
     },
     {
       prop: 'gathering.team',
-      label: 'quality.observer'
+      label: 'quality.observer',
+      width: 150
     },
     {
       name: 'unit.taxon',

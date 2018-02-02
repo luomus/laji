@@ -565,7 +565,7 @@
   "identify.requiresAuthentication": "vaatii sisäänkirjautumisen",
   "identify.selectIntro": "Voit rajata kuvia lajiryhmittäin, mutta lajiryhmään kuuluvat vain ne havainnot, jotka on ilmoitetut nimellä, joka voidaan liittää kyseiseen lajiryhmään. Esimerkiksi ilmoitettu nimi \"sieni\" voidaan liittää ryhmään \"sienet\" mutta ilmoitettua nimeä \"jokin sieni\" ei voida.",
   "identify.mostActiveTitle": "Aktiivisimmat määrittäjät",
-  "identify.toQualityPage": "Selaa kaikkia määrityksiä ja laatumerkintöjä >>",
+  "identify.toQualityPage": "Selaa kaikkia määrityksiä ja laatumerkintöjä",
   "navigation.quality": "Laadunvalvonta",
   "quality.annotations.title": "Käyttäjien laatumerkintöjä",
   "quality.filterByDate": "Rajaa laatumerkinnän tekohetkellä",

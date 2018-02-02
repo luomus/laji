@@ -550,7 +550,7 @@
   "identify.requiresAuthentication": "kräver autentisering",
   "identify.selectIntro": "Du kan filtrera bilderna efter en organismgrupp, men sidan kommer bara att kunna visa de observationer som kan associeras med en grupp. Till exempel kan namnet \"svampar\" kopplas till en grupp men namnet \"vissa svampar kanske?\" kan inte.",
   "identify.mostActiveTitle": "De mest aktiva determinanterna",
-  "identify.toQualityPage": "Bläddra bland alla identifieringar och kvalitetsetiketter >>",
+  "identify.toQualityPage": "Bläddra bland alla identifieringar och kvalitetsetiketter",
   "navigation.quality": "Kvalitetskontroll",
   "quality.annotations.title": "Kvalitetsetiketter",
   "quality.filterByDate": "Filtrera efter datum",
