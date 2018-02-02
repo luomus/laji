@@ -163,7 +163,7 @@
 </ng-template>
 <ng-template let-value="value" #annotation>
   <span [ngSwitch]="value.annotationClass | toQName" [tooltip]="value.annotationClass | toQName | label"
-        class="annotation-class">
+        [container]="'body'" class="annotation-class">
     <span *ngSwitchCase="annotationClass.AnnotationClassAcknowledged">
       <i class="fa fa-check-square-o"></i>
     </span>
@@ -191,12 +191,15 @@
     </span>
     <span class="annotation-title" *ngIf="value.annotationClass">{{value.annotationClass | toQName | label}}</span>
   </small>
-  <div *ngIf="value.opinion">
-    {{'MAN.opinion' | label}}:
-    {{value.opinion | truncate}}
-  </div>
-  <div *ngIf="value.notes">
-    {{value.notes | truncate}}
+  <div title="{{(value.opinion ? ('MAN.opinion' | label) + ': ' + value.opinion + '\n' : '')
+                + (value.notes ? value.notes : '')}}">
+    <div *ngIf="value.opinion">
+      {{'MAN.opinion' | label}}:
+      {{value.opinion | truncate}}
+    </div>
+    <div *ngIf="value.notes">
+      {{value.notes | truncate}}
+    </div>
   </div>
 </ng-template>
 <ng-template let-value="value" #image>
