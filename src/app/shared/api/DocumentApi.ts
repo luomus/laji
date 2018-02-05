@@ -61,6 +61,12 @@ export class DocumentApi {
       queryParameters.set('personToken', userToken);
     }
 
+    if (typeof extraHttpRequestParams === 'object') {
+      Object.keys(extraHttpRequestParams).map((key) => {
+        queryParameters.set(key, extraHttpRequestParams[key]);
+      })
+    }
+
     let requestOptions: RequestOptionsArgs = {
       method: 'POST',
       headers: headerParams,

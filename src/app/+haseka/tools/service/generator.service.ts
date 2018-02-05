@@ -5,6 +5,9 @@ import {FormField} from '../model/form-field';
 import { UserService} from '../../../shared/service';
 import {MappingService, SpeciesTypes} from './mapping.service';
 import {Person} from '../../../shared/model';
+import {Observable} from 'rxjs/Observable';
+import {NamedPlacesService} from '../../../shared-modules/named-place/named-places.service';
+import {NamedPlace} from '../../../shared/model/NamedPlace';
 
 @Injectable()
 export class GeneratorService {
@@ -15,21 +18,30 @@ export class GeneratorService {
 
   constructor(
     private mappingService: MappingService,
-    private userService: UserService
+    private userService: UserService,
+    private namedPlaces: NamedPlacesService
   ) { }
 
-  generate(filename: string, fields: FormField[], useLabels = true, type: 'ods' | 'xlsx' = 'xlsx') {
-    this.userService.getUser()
-      .subscribe((person) => {
-        const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels, {person: person}));
+  generate(filename: string, fields: FormField[], useLabels = true, type: 'ods' | 'xlsx' = 'xlsx', next: () => void = () => {}) {
+    Observable.forkJoin(
+      this.userService.getUser(),
+      this.namedPlaces.getAllNamePlaces({
+        userToken: this.userService.getToken(),
+        includePublic: false
+      }),
+      (person, namedPlaces) => ({person: person, namedPlaces: namedPlaces})
+    )
+      .subscribe((data) => {
+        const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels, data));
         const book = XLSX.utils.book_new();
 
-        const validationSheet = this.addMetaDataToSheet(fields, sheet, useLabels);
+        const validationSheet = this.addMetaDataToSheet(fields, sheet, data, useLabels);
         XLSX.utils.book_append_sheet(book, sheet);
         XLSX.utils.book_append_sheet(book, validationSheet);
 
         this.downloadData(XLSX.write(book, {bookType: type, type: 'buffer'}), filename, type);
-      });
+        next();
+      }, () => next());
 
   }
 
@@ -58,7 +70,12 @@ export class GeneratorService {
     return result;
   }
 
-  private addMetaDataToSheet(fields: FormField[], sheet: XLSX.WorkSheet, useLabels: boolean) {
+  private addMetaDataToSheet(
+    fields: FormField[],
+    sheet: XLSX.WorkSheet,
+    extra: {person: Person, namedPlaces: NamedPlace[]},
+    useLabels: boolean
+  ) {
     const validation = [];
     const vSheet = [];
     const cache = {};
@@ -67,6 +84,7 @@ export class GeneratorService {
       const headerAddress = XLSX.utils.encode_cell({r: 0, c: idx});
       const dataRange = XLSX.utils.encode_range({r: 1, c: idx}, {r: 1000, c: idx});
       const headerCell = sheet[headerAddress];
+      const special = this.mappingService.getSpecial(field);
 
       /* Comments do not work nicely with excel (leaves comments open on hover)
       if (!headerCell.c) {
@@ -80,11 +98,20 @@ export class GeneratorService {
         validValues = (useLabels ? field.enumNames : field.enum).filter(val => val !== '');
       } else if (field.type === 'boolean') {
         validValues = [this.mappingService.mapFromBoolean(true), this.mappingService.mapFromBoolean(false)];
+      } else if (special) {
+        switch (special) {
+          case SpeciesTypes.namedPlaceID:
+            if (extra.namedPlaces && extra.namedPlaces.length > 0) {
+              validValues = extra.namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)
+            }
+            break;
+        }
       }
 
       if (validValues) {
         const cacheKey = JSON.stringify(validValues);
         if (!cache[cacheKey]) {
+          validValues.sort();
           this.addToValidationSheetData(validValues, vColumn, vSheet);
           cache[cacheKey] = 'Sheet2!' + this.makeExactRange(
             XLSX.utils.encode_range({r: 0, c: vColumn}, {r: validValues.length - 1, c: vColumn})

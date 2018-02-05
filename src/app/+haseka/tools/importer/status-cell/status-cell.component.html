@@ -1,0 +1,22 @@
+<ng-container *ngIf="value">
+  <ng-container [ngSwitch]="value.status">
+    <ng-container *ngSwitchCase="'ok'">
+      <span class="label label-success">
+        Ok
+      </span>
+    </ng-container>
+    <ng-container *ngSwitchCase="'invalid'">
+      <span class="label label-warning link" [popover]="error" triggers="hover" container="body" placement="right">
+        Virhe
+      </span>
+    </ng-container>
+    <ng-container *ngSwitchCase="'error'">
+      <span class="label label-danger link" [popover]="error" triggers="hover" container="body" placement="right">
+        Virhe
+      </span>
+    </ng-container>
+  </ng-container>
+</ng-container>
+<ng-template #error>
+  <laji-error-list [errors]="value.error" [fields]="fields"></laji-error-list>
+</ng-template>

@@ -7,6 +7,11 @@
     <input type="file" class="form-control" (change)="onFileChange($event)" multiple="false" />
   </div>
 </div>
+<div class="row data-container" *ngIf="filename">
+  <div class="col-sm-10">
+    Käsitellään tiedostoa: <strong>{{filename}}</strong>
+  </div>
+</div>
 
 <div class="row data-container" *ngIf="!formID && !!bstr">
   <div class="col-sm-5">
@@ -14,7 +19,7 @@
   </div>
 </div>
 <alert [type]="'danger'" *ngIf="status === 'invalidFileType'">
-  <strong>Virheellinen tiedosto formaatti.</strong> Tällä hetkellä tuettuina ovat vain Excel sekä OpenDocument lomakeet.
+  <strong>Virheellinen tiedosto formaatti.</strong> Tällä hetkellä tuettuina ovat vain Excel sekä OpenDocument formaatit.
 </alert>
 <ng-container *ngIf="formID && dataColumns && data">
   <div class="data-container">
@@ -68,6 +73,10 @@ Document:
 
 <ng-template let-rowIndex="rowIndex" #rowNumber>
   {{rowIndex + 2}}
+</ng-template>
+
+<ng-template let-value="value" #statusCol>
+  <laji-status-cell [value]="value" [fields]="fields"></laji-status-cell>
 </ng-template>
 
 <div class="modal fade" bsModal #mappingModal="bs-modal" tabindex="-1" role="dialog"

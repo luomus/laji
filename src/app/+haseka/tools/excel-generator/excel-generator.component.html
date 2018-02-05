@@ -5,16 +5,20 @@
   <div class="col-sm-5">
     <laji-form-select [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
   </div>
-  <div class="col-sm-7">
+  <div class="col-sm-5">
     <button (click)="selectAll()" type="button" class="btn btn-default" [class.disabled]="!formID">
       Valitse kaikki
     </button>
     <button (click)="clearSelected()" type="button" class="btn btn-default" [class.disabled]="!formID || selected.length === 0">
       Poista valinnat
     </button>
-    <button (click)="generate()" type="button" class="btn btn-default pull-right" [class.disabled]="!formID">
-      Tee pohja
-    </button>
+  </div>
+  <div class="col-sm-2">
+    <laji-spinner [spinning]="generating" [overlay]="true">
+      <button (click)="generate()" [disabled]="generating" type="button" class="btn btn-default pull-right" [class.disabled]="!formID || generating">
+        Tee pohja
+      </button>
+    </laji-spinner>
     <!--
     <select class="form-control pull-right type-select" [(ngModel)]="type">
       <option value="xlsx" selected>.xlsx</option>

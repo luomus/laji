@@ -49,7 +49,10 @@ export class ImportService {
 
   sendData(document: Document, publicityRestrictions: Document.PublicityRestrictionsEnum): Observable<any> {
     document.publicityRestrictions = publicityRestrictions;
-    return this.documentApi.create(document, this.userService.getToken())
+    return this.documentApi.create(document, this.userService.getToken(), {
+      lang: this.translateService.currentLang,
+      validationErrorFormat: 'jsonPath'
+    })
   }
 
   flatFieldsToDocuments(
@@ -135,7 +138,6 @@ export class ImportService {
         field.previousValue = row[col];
       });
       if (newLevels.indexOf(DOCUMENT_LEVEL)  !== -1) {
-        this.resetPreviousValue(fields);
         Object.keys(spot).map(level => spot[level] = 0);
         result.push({document: document, rows: rowSpots});
         document = {};

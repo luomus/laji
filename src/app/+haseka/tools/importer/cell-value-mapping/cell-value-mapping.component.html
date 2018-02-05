@@ -29,6 +29,14 @@
       (mappingChanged)="onMapping($event)"
     ></laji-special-taxon-id>
   </ng-container>
+  <ng-container *ngSwitchCase="specials.namedPlaceID">
+    <laji-special-named-places
+      [field]="field"
+      [invalidValues]="invalid"
+      [mapping]="valueMap[field.key]"
+      (mappingChanged)="onMapping($event)"
+    ></laji-special-named-places>
+  </ng-container>
   <ng-container *ngSwitchDefault>
     <laji-cell-value-select
       [field]="field"

@@ -1,11 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormField, IGNORE_VALUE} from '../../../model/form-field';
 import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-special-taxon-id',
   templateUrl: './special-taxon-id.component.html',
-  styleUrls: ['./special-taxon-id.component.css']
+  styleUrls: ['./special-taxon-id.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpecialTaxonIdComponent implements OnInit {
 

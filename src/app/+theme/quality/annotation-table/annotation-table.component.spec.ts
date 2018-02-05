@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QualityAnnotationTableComponent } from './quality-annotation-table.component';
+import { AnnotationTableComponent } from './annotation-table.component';
 
 describe('QualityAnnotationTableComponent', () => {
-  let component: QualityAnnotationTableComponent;
-  let fixture: ComponentFixture<QualityAnnotationTableComponent>;
+  let component: AnnotationTableComponent;
+  let fixture: ComponentFixture<AnnotationTableComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QualityAnnotationTableComponent ]
+      declarations: [ AnnotationTableComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QualityAnnotationTableComponent);
+    fixture = TestBed.createComponent(AnnotationTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

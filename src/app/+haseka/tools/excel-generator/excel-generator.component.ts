@@ -22,6 +22,7 @@ export class ExcelGeneratorComponent implements OnInit {
   parents: string[] = [];
   selected: string[] = [];
   useLabels = true;
+  generating = false;
 
   constructor(
     private formService: FormService,
@@ -40,8 +41,7 @@ export class ExcelGeneratorComponent implements OnInit {
     this.spreadSheetService.setHiddenFeilds([
       'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID',
       'gatherings[*].images[*]',
-      'gatherings[*].units[*].images[*]',
-      'gatherings[*].namedPlaceID'
+      'gatherings[*].units[*].images[*]'
     ]);
   }
 
@@ -78,11 +78,16 @@ export class ExcelGeneratorComponent implements OnInit {
   }
 
   generate() {
+    this.generating = true;
     this.generatorService.generate(
       'Vihko - ' + this.formTitle + ' (' + this.formID + ')',
       this.fields.filter(field => this.selected.indexOf(field.key) > -1 || field.required),
       this.useLabels,
-      this.type
+      this.type,
+      () => {
+        this.generating = false;
+        this.cdr.markForCheck();
+      }
     );
   }
 

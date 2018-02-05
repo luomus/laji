@@ -35,6 +35,7 @@ export class ImporterComponent implements OnInit {
   @ViewChild(ModalDirective) mappingModal: ModalDirective;
   @ViewChild('dataTable') datatable: DatatableComponent;
   @ViewChild('rowNumber') rowNumberTpl: TemplateRef<any>;
+  @ViewChild('statusCol') statusColTpl: TemplateRef<any>;
 
   data: {[key: string]: any}[];
   parsedData: {document: Document, rows: {[row: number]: {[level: string]: number}}}[];
@@ -50,6 +51,7 @@ export class ImporterComponent implements OnInit {
   priv = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
   publ = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
   status: states = 'empty';
+  filename = '';
 
   constructor(
     private formService: FormService,
@@ -75,6 +77,7 @@ export class ImporterComponent implements OnInit {
     const fileName = evt.target.value;
     this.status = 'importingFile';
     reader.onload = (e: any) => {
+      evt.target.value = '';
       this.valid = false;
       this.errors = undefined;
       this.parsedData = undefined;
@@ -83,6 +86,7 @@ export class ImporterComponent implements OnInit {
       this.initForm();
     };
     if (this.spreadSheetService.isValidType(target.files[0].type)) {
+      this.filename = target.files[0].name;
       reader.readAsArrayBuffer(target.files[0]);
     } else {
       this.status = 'invalidFileType';
@@ -110,6 +114,10 @@ export class ImporterComponent implements OnInit {
         this.status = 'colMapping';
         this.mappingModal.show();
         this.cdr.markForCheck();
+        setTimeout(() => {
+          this.data = [...this.data];
+          this.cdr.markForCheck();
+        }, 1000);
       });
   }
 
@@ -118,7 +126,7 @@ export class ImporterComponent implements OnInit {
       return;
     }
     const columns: ObservationTableColumn[] = [
-      {prop: 'status', label: 'status', sortable: false, width: 55},
+      {prop: '_status', label: 'status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
       {prop: '_idx', label: '#', sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
     ];
     Object.keys(this.header).map(address => {
@@ -166,12 +174,26 @@ export class ImporterComponent implements OnInit {
   validate() {
     this.status = 'validating';
     this.initParsedData();
-    const validationObservation = Observable.from(this.parsedData)
-      .mergeMap(data => this.importService.validateData(data.document))
+    let success = true;
+    Observable.from(this.parsedData)
+      .mergeMap(data => this.importService
+        .validateData(data.document)
+        .switchMap(result => Observable.of({result: result, source: data}))
+        .catch(err => Observable.of(err.json())
+          .map(body => body.error && body.error.details || body)
+          .map(error => ({result: {_error: error}, source: data}))
+        )
+      )
       .subscribe(
-        () => {
-          this.status = 'importReady';
-          this.valid = true;
+        (data) => {
+          if (data.result._error) {
+            success = false;
+            Object.keys(data.source.rows).forEach(key => this.data[key]['_status'] = {
+              status: 'invalid',
+              error: data.result._error
+            });
+          }
+          this.data = [...this.data];
           this.cdr.markForCheck();
         },
         (err) => {
@@ -179,6 +201,10 @@ export class ImporterComponent implements OnInit {
           if (body.error && body.error.details) {
             this.errors = body.error.details;
           }
+          this.cdr.markForCheck();
+        },
+        () => {
+          this.valid = success;
           this.status = 'importReady';
           this.cdr.markForCheck();
         }
@@ -188,22 +214,47 @@ export class ImporterComponent implements OnInit {
   save(publicityRestrictions: Document.PublicityRestrictionsEnum) {
     this.status = 'importing';
     this.initParsedData();
-    const validationObservation = Observable.from(this.parsedData)
-      .mergeMap(data => this.importService.sendData(data.document, publicityRestrictions))
+    let success = true;
+    Observable.from(this.parsedData)
+      .mergeMap(data => this.importService
+        .sendData(data.document, publicityRestrictions)
+        .switchMap(result => Observable.of({result: result, source: data}))
+        .catch(err => Observable.of(err.json())
+          .map(body => body.error && body.error.details || body)
+          .map(error => ({result: {_error: error}, source: data}))
+        )
+      )
       .subscribe(
-        () => {
-          this.status = 'doneOk';
-          this.valid = true;
-          this.toastsService.showSuccess('Havaintoerät tallennettu');
+        (data) => {
+          if (data.result._error) {
+            success = false;
+            Object.keys(data.source.rows).forEach(key => this.data[key]['_status'] = {
+              status: 'error',
+              error: data.result._error
+            });
+          } else {
+            Object.keys(data.source.rows).forEach(key => this.data[key]['_status'] = {status: 'ok'});
+          }
+          this.data = [...this.data];
           this.cdr.markForCheck();
         },
         (err) => {
+          success = false;
           const body = err.json();
           if (body.error && body.error.details) {
             this.errors = body.error.details;
           }
-          this.status = 'doneWithErrors';
-          this.toastsService.showError('Tallennus epäonnistui!');
+          this.cdr.markForCheck();
+        },
+        () => {
+          if (success) {
+            this.status = 'doneOk';
+            this.toastsService.showSuccess('Havaintoerät tallennettu');
+            this.valid = true;
+          } else {
+            this.status = 'doneWithErrors';
+            this.toastsService.showError('Havaintoerien tallennus epäonnistui!');
+          }
           this.cdr.markForCheck();
         }
       );
