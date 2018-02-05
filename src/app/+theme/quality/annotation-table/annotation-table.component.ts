@@ -61,7 +61,7 @@ export class AnnotationTableComponent implements OnInit, OnDestroy {
       target: '_blank',
       label: 'quality.taxon',
       cellTemplate: 'taxon',
-      sortBy: 'unit.linkings.taxon.name%longLang%',
+      sortBy: 'unit.linkings.originalTaxon.name%longLang%',
       width: 280
     },
     {
