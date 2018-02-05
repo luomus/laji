@@ -92,7 +92,7 @@ export class NamedPlaceApi {
    * @param id Find document with the id
    * @param userToken User authentication token
    */
-  public findById(id: string, userToken?: string, extraHttpRequestParams?: any): Observable<models.Document> {
+  public findById(id: string, userToken?: string, extraHttpRequestParams?: any): Observable<NamedPlace> {
     const path = this.basePath + '/named-places/{id}'
         .replace('{' + 'id' + '}', String(id));
 

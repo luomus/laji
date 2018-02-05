@@ -87,4 +87,15 @@ export class DocumentService {
     return document;
   }
 
+  combine(to: any, from: any) {
+    if (typeof to === 'object' && typeof from === 'object' && !Array.isArray(from)) {
+      Object.keys(from).forEach(key => {
+        if (typeof to[key] === 'undefined') {
+          to[key] = from[key];
+        }
+      })
+    }
+    return to;
+  }
+
 }

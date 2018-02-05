@@ -27,6 +27,7 @@ import { TaxonAutocompleteComponent } from './importer/cell-value-mapping/specia
 import { SpecialNamedPlacesComponent } from './importer/cell-value-mapping/special-named-places/special-named-places.component';
 import { StatusCellComponent } from './importer/status-cell/status-cell.component';
 import { ErrorListComponent } from './importer/status-cell/error-list/error-list.component';
+import { AugmentService } from './service/augment.service';
 
 @NgModule({
   imports: [
@@ -56,6 +57,6 @@ import { ErrorListComponent } from './importer/status-cell/error-list/error-list
     StatusCellComponent,
     ErrorListComponent
   ],
-  providers: [SpreadSheetService, MappingService, ImportService, GeneratorService]
+  providers: [SpreadSheetService, MappingService, ImportService, GeneratorService, AugmentService]
 })
 export class ToolsModule { }
