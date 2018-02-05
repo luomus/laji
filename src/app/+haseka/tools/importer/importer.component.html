@@ -32,6 +32,10 @@
 <alert [type]="'danger'" *ngIf="status === 'invalidFileType'">
   <strong>Virheellinen tiedosto formaatti.</strong> Tällä hetkellä tuettuina ovat vain Excel sekä OpenDocument formaatit.
 </alert>
+<alert [type]="'danger'" *ngIf="status === 'ambiguousColumns'">
+  <strong>Otsikko rivullä usea samanniminen sarake!</strong>
+  <br>Varmista että otsikko rivillä ei esiinny samaa nimeä useaan kertaan. Nyt löytyi sarakkeet "{{ambiguousColumns.join('", "')}}" useaan kertaan.
+</alert>
 <ng-container *ngIf="formID && dataColumns && data">
   <div class="data-container">
     <laji-datatable

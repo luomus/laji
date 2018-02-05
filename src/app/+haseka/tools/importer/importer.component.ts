@@ -16,6 +16,7 @@ import {DialogService} from '../../../shared/service/dialog.service';
 
 type states
   = 'empty'
+  | 'ambiguousColumns'
   | 'invalidFileType'
   | 'importingFile'
   | 'colMapping'
@@ -59,6 +60,7 @@ export class ImporterComponent implements OnInit {
   excludedFromCopy: string[] = [];
   userMappings: any;
   hasUserMapping = false;
+  ambiguousColumns = [];
 
   constructor(
     private formService: FormService,
@@ -122,8 +124,27 @@ export class ImporterComponent implements OnInit {
         this.colMap = this.spreadSheetService.getColMapFromComments(sheet, this.fields);
 
         this.initDataColumns();
-        this.status = 'colMapping';
-        this.mappingModal.show();
+
+        // Check that data has no ambiguous columns
+        const cols = Object.keys(this.header).map(key => this.header[key]);
+        const hasCol = {};
+        const ambiguousCols = new Set();
+        let hasAmbiguousColumns = false;
+        cols.forEach(col => {
+          if (hasCol[col]) {
+            hasAmbiguousColumns = true;
+            ambiguousCols.add(col);
+          } else {
+            hasCol[col] = true;
+          }
+        });
+        if (hasAmbiguousColumns) {
+          this.status = 'ambiguousColumns';
+          this.ambiguousColumns = Array.from(ambiguousCols);
+        } else {
+          this.status = 'colMapping';
+          this.mappingModal.show();
+        }
         this.cdr.markForCheck();
         setTimeout(() => {
           this.data = [...this.data];
