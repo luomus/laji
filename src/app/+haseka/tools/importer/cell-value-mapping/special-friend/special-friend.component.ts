@@ -14,7 +14,6 @@ export class SpecialFriendComponent implements OnInit {
   _field: FormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
   _mapping: {[value: string]: any};
-  lastKnownField: string;
   validValues = [];
   validIds = [];
   valueAsIs = 'Arvo sellaisenaan';
@@ -53,11 +52,9 @@ export class SpecialFriendComponent implements OnInit {
   }
 
   initCurrentValue() {
-    const currentKey = this._field && this._field.key || '';
-    if (!this._mapping || !this.validValues || this.validValues.length === 0 || this.lastKnownField === currentKey) {
+    if (!this._mapping || !this.validValues || this.validValues.length === 0) {
       return;
     }
-    this.lastKnownField = currentKey;
 
     let hasMapping = false;
     const values = {};
@@ -80,8 +77,8 @@ export class SpecialFriendComponent implements OnInit {
     if (hasMapping) {
       this.currentValues = values;
       this.mappingChanged.emit(mapping);
-      this.cdr.markForCheck();
     }
+    this.cdr.markForCheck();
   }
 
   valueMapped(value, to) {

@@ -1,7 +1,7 @@
 patch-package
 --- a/node_modules/xlsx/xlsx.js
 +++ b/node_modules/xlsx/xlsx.js
-@@ -12120,6 +12120,19 @@ var WS_XML_ROOT = writextag('worksheet', null, {
+@@ -12056,6 +12056,19 @@ var WS_XML_ROOT = writextag('worksheet', null, {
  	'xmlns:r': XMLNS.r
  });
  
@@ -21,7 +21,7 @@ patch-package
  function write_ws_xml(idx, opts, wb, rels) {
  	var o = [XML_HEADER, WS_XML_ROOT];
  	var s = wb.SheetNames[idx], sidx = 0, rdata = "";
-@@ -12169,6 +12182,7 @@ function write_ws_xml(idx, opts, wb, rels) {
+@@ -12105,6 +12118,7 @@ function write_ws_xml(idx, opts, wb, rels) {
  	/* customSheetViews */
  
  	if(ws['!merges'] != null && ws['!merges'].length > 0) o[o.length] = (write_ws_xml_merges(ws['!merges']));
