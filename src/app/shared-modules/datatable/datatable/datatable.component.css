@@ -1,3 +1,10 @@
+.inline {
+  display: inline !important;
+}
+.inline * {
+  display: inline !important;
+}
+
 img.compact {
   width: 89px;
   height: 70px;
