@@ -11,6 +11,7 @@ import { MappingService } from '../service/mapping.service';
 import { SpreadSheetService } from '../service/spread-sheet.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import {ToastsService} from '../../../shared/service/toasts.service';
+import {AugmentService} from '../service/augment.service';
 
 type states
   = 'empty'
@@ -52,6 +53,7 @@ export class ImporterComponent implements OnInit {
   publ = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
   status: states = 'empty';
   filename = '';
+  excludedFromCopy: string[] = [];
 
   constructor(
     private formService: FormService,
@@ -60,7 +62,8 @@ export class ImporterComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private importService: ImportService,
     private mappingService: MappingService,
-    private toastsService: ToastsService
+    private toastsService: ToastsService,
+    private augmentService: AugmentService
   ) { }
 
   ngOnInit() {
@@ -107,6 +110,7 @@ export class ImporterComponent implements OnInit {
           this.header = data.shift();
           this.data = data;
         }
+        this.excludedFromCopy = form.excludeFromCopy || [];
         this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, true);
         this.colMap = this.spreadSheetService.getColMapFromComments(sheet, this.fields);
 
@@ -176,10 +180,11 @@ export class ImporterComponent implements OnInit {
     this.initParsedData();
     let success = true;
     Observable.from(this.parsedData)
-      .mergeMap(data => this.importService
-        .validateData(data.document)
+      .mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy)
+        .switchMap(document => this.importService.validateData(document))
         .switchMap(result => Observable.of({result: result, source: data}))
-        .catch(err => Observable.of(err.json())
+        .catch(err => Observable.of(typeof err.json === 'function' ? err.json() : err)
+          .do(err => console.log(err))
           .map(body => body.error && body.error.details || body)
           .map(error => ({result: {_error: error}, source: data}))
         )
@@ -197,6 +202,7 @@ export class ImporterComponent implements OnInit {
           this.cdr.markForCheck();
         },
         (err) => {
+          console.log(err);
           const body = err.json();
           if (body.error && body.error.details) {
             this.errors = body.error.details;
@@ -216,8 +222,8 @@ export class ImporterComponent implements OnInit {
     this.initParsedData();
     let success = true;
     Observable.from(this.parsedData)
-      .mergeMap(data => this.importService
-        .sendData(data.document, publicityRestrictions)
+      .mergeMap(data => this.augmentService.augmentDocument(data.document)
+        .switchMap(document => this.importService.sendData(document, publicityRestrictions))
         .switchMap(result => Observable.of({result: result, source: data}))
         .catch(err => Observable.of(err.json())
           .map(body => body.error && body.error.details || body)
