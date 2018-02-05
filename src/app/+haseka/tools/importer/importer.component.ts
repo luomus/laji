@@ -34,7 +34,9 @@ type states
 })
 export class ImporterComponent implements OnInit {
 
-  @ViewChild(ModalDirective) mappingModal: ModalDirective;
+  @ViewChild('currentUserMapModal') currentUserMapModal: ModalDirective;
+  @ViewChild('userMapModal') userMapModal: ModalDirective;
+  @ViewChild('mappingModal') mappingModal: ModalDirective;
   @ViewChild('dataTable') datatable: DatatableComponent;
   @ViewChild('rowNumber') rowNumberTpl: TemplateRef<any>;
   @ViewChild('statusCol') statusColTpl: TemplateRef<any>;
@@ -55,6 +57,8 @@ export class ImporterComponent implements OnInit {
   status: states = 'empty';
   filename = '';
   excludedFromCopy: string[] = [];
+  userMappings: any;
+  hasUserMapping = false;
 
   constructor(
     private formService: FormService,
@@ -70,6 +74,7 @@ export class ImporterComponent implements OnInit {
 
   ngOnInit() {
     this.status = 'empty';
+    this.hasUserMapping = this.mappingService.hasUserMapping();
   }
 
   onFileChange(evt: any) {
@@ -172,6 +177,7 @@ export class ImporterComponent implements OnInit {
 
   rowMappingDone(mappings) {
     this.status = 'importReady';
+    this.hasUserMapping = this.mappingService.hasUserMapping();
     this.mappingModal.hide();
     this.mappingService.addUserValueMapping(mappings);
     this.cdr.markForCheck();
@@ -273,12 +279,44 @@ export class ImporterComponent implements OnInit {
   }
 
   shouldCloseMapping() {
-    this.dialogService.confirm('Haluatko varmasti keskeyttää!')
+    this.dialogService.confirm('Haluatko varmasti keskeyttää?')
       .subscribe(result => {
         if (result) {
           this.mappingModal.hide();
         }
       })
+  }
+
+  showUserMapping() {
+    if (!this.hasUserMapping) {
+      return;
+    }
+    this.userMappings = this.mappingService.getUserMappings();
+    this.currentUserMapModal.show();
+  }
+
+  useUserMapping(value) {
+    try {
+      this.mappingService.setUserMapping(JSON.parse(value));
+    } catch (err) {
+      console.log(err);
+    }
+    this.userMapModal.hide();
+    this.hasUserMapping = this.mappingService.hasUserMapping();
+  }
+
+  clearUserMapping() {
+    if (!this.hasUserMapping) {
+      return;
+    }
+    this.dialogService.confirm('Oletko varma että halut poistaa datan kuvauksen?')
+      .subscribe((result) => {
+        if (result) {
+          this.status = 'empty';
+          this.mappingService.clearUserMapping();
+          this.hasUserMapping = this.mappingService.hasUserMapping();
+        }
+      });
   }
 
 }
