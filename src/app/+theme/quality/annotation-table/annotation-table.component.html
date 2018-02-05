@@ -38,14 +38,14 @@
 </div>
 
 <laji-datatable [loading]="loading"
-                [height]="'auto'"
                 [rows]="result.results"
                 [columns]="columns"
                 [showRowAsLink]="true"
-                [virtualScrolling]="false"
                 [count]="result.total"
                 [page]="result.currentPage"
                 [pageSize]="result.pageSize"
+                [height]="'calc(80vh - 30px)'"
+                [rowHeight]="getRowHeight"
                 (rowSelect)="showDocument($event)"
                 (pageChange)="setPage($event)"
                 (sortChange)="onSort($event)">

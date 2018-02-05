@@ -1,7 +1,3 @@
-:host >>> .ngx-datatable .datatable-body {
-  max-height: calc(80vh - 50px - 50px - 37px) !important;
-}
-
 #datepicker-container {
   margin-bottom: 15px;
 }

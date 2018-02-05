@@ -91,7 +91,6 @@ import { TaxonNamePipe } from './pipe/taxon-name.pipe';
 import { DocumentFormFooterComponent } from './document-form-footer/document-form-footer.component';
 import { InformalTaxonGroupApi } from './api/InformalTaxonGroupApi';
 import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
-import { TruncatePipe } from './pipe/truncate.pipe';
 import {FriendService} from './service/friend.service';
 import { DatePickerComponent } from './datepicker/datepicker.component'
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
@@ -109,7 +108,7 @@ import { TaxonNameComponent } from './taxon-name/taxon-name.component';
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
     ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, DatePickerComponent,
-    TaxonNameComponent, TruncatePipe
+    TaxonNameComponent
   ],
   imports: [
     ToastModule,
@@ -135,7 +134,7 @@ import { TaxonNameComponent } from './taxon-name/taxon-name.component';
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, LocalizePipe, HideScrollDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
-    SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, DatePickerComponent, TaxonNameComponent, TruncatePipe
+    SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, DatePickerComponent, TaxonNameComponent
   ]
 })
 export class SharedModule {
@@ -174,7 +173,6 @@ export class SharedModule {
         ScriptService,
         DocumentDeActivateGuard,
         FriendService,
-        TruncatePipe,
         TaxonNamePipe,
         ToQNamePipe,
         {provide: Http, useClass: AuthenticatedHttpService}

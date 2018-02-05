@@ -142,6 +142,20 @@ export class AnnotationTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  getRowHeight(row) {
+    if (!row) { return 37; }
+
+    if (row.unit && row.unit.media && row.unit.media[0]) {
+      return 88;
+    } else if (row.annotation && row.annotation.opinion && row.annotation.notes) {
+      return 77;
+    } else if (row.annotation && (row.annotation.opinion || row.annotation.notes)) {
+      return 57;
+    }
+
+    return 37;
+  }
+
   private fetchPage() {
     if (this.fetchSub) {
       this.fetchSub.unsubscribe();
