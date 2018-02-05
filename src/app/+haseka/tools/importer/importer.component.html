@@ -6,6 +6,17 @@
   <div class="col-sm-8">
     <input type="file" class="form-control" (change)="onFileChange($event)" multiple="false" />
   </div>
+  <div class="col-sm-3 map-buttons">
+    <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="clearUserMapping()" tooltip="Poista datan kuvaus" placement="left">
+      <i class="glyphicon glyphicon-remove"></i>
+    </div>
+    <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="showUserMapping()" tooltip="Nykyinen datan kuvaus" placement="left">
+      <i class="glyphicon glyphicon-open"></i>
+    </div>
+    <div class="btn btn-default pull-right" (click)="userMapModal.show()" tooltip="Tuo datan kuvaus" placement="left">
+      <i class="glyphicon glyphicon-save"></i>
+    </div>
+  </div>
 </div>
 <div class="row data-container" *ngIf="filename">
   <div class="col-sm-10">
@@ -20,6 +31,10 @@
 </div>
 <alert [type]="'danger'" *ngIf="status === 'invalidFileType'">
   <strong>Virheellinen tiedosto formaatti.</strong> Tällä hetkellä tuettuina ovat vain Excel sekä OpenDocument formaatit.
+</alert>
+<alert [type]="'danger'" *ngIf="status === 'ambiguousColumns'">
+  <strong>Otsikko rivullä usea samanniminen sarake!</strong>
+  <br>Varmista että otsikko rivillä ei esiinny samaa nimeä useaan kertaan. Nyt löytyi sarakkeet "{{ambiguousColumns.join('", "')}}" useaan kertaan.
 </alert>
 <ng-container *ngIf="formID && dataColumns && data">
   <div class="data-container">
@@ -46,30 +61,13 @@
       <ng-template #invalid>
         <button type="button" [disabled]="status !== 'importReady'" (click)="validate()" class="btn btn-primary">Tarkista data</button>
       </ng-template>
+      <laji-spinner [spinning]="status === 'validating'"></laji-spinner>
 
       <button type="button" [disabled]="status !== 'importReady' || !valid" (click)="save(publ)" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
       <button type="button" [disabled]="status !== 'importReady' || !valid" (click)="save(priv)" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
     </div>
   </div>
 </ng-container>
-
-<!-- DEBUG -->
-<h5>Debug:</h5>
-{{status}}
-<ng-container *ngIf="errors">
-Errors:
-<pre>
-{{errors | json}}
-</pre>
-</ng-container>
-
-<ng-container *ngIf="parsedData">
-Document:
-<pre *ngFor="let parsed of parsedData">
-{{parsed.document | json}}
-</pre>
-</ng-container>
-<!-- END DEBUG -->
 
 <ng-template let-rowIndex="rowIndex" #rowNumber>
   {{rowIndex + 2}}
@@ -85,6 +83,9 @@ Document:
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body mapping-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="shouldCloseMapping()">
+          <span aria-hidden="true">&times;</span>
+        </button>
         <laji-col-mapper
           *ngIf="status === 'colMapping'"
           (mappingDone)="colMappingDone($event)"
@@ -98,6 +99,48 @@ Document:
           [fields]="fields"
           [data]="data"
           [colMapping]="colMap"></laji-cell-value-mapping>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #userMapModal="bs-modal" tabindex="-1" role="dialog"
+     aria-labelledby="column and value mapping" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-body mapping-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="userMapModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h1>
+          Kuvauksen tuonti
+        </h1>
+        <p>Voit kopioida alla olevaan kenttään laji.fi:n ymmärtävän kuvauksen datastasi.</p>
+        <textarea rows="10" #userMapping class="form-control"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" tabindex="-1" class="btn btn-primary btn-sm" (click)="useUserMapping(userMapping.value)">Käytä</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #currentUserMapModal="bs-modal" tabindex="-1" role="dialog"
+     aria-labelledby="column and value mapping" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-body mapping-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="currentUserMapModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h1>
+          Datan nykyinen kuvaus
+        </h1>
+        <p>
+          Ottamalla talteen tämän kuvauksen, voit tuoda jatkossa saman muotoista dataa ilman, että sinun tarvitsee
+          uudelleen kertoa mistä arvoissa on kyse.
+        </p>
+        <textarea rows="10" class="form-control">{{userMappings | json}}</textarea>
       </div>
     </div>
   </div>

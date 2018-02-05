@@ -126,8 +126,27 @@ export class MappingService {
     return this.colMapping[value] || this.userColMappings[value] || null;
   }
 
-  getUserValueMappings() {
-    return this.userValueMappings;
+  clearUserMapping() {
+    this.userColMappings = {};
+    this.userValueMappings = {};
+  }
+
+  getUserMappings(): {col: any, value: any} {
+    return {
+      col: this.userColMappings,
+      value: this.userValueMappings
+    }
+  }
+
+  setUserMapping(mapping: {col: any, value: any}) {
+    if (mapping && mapping.col && mapping.value) {
+      this.userColMappings = mapping.col;
+      this.userValueMappings = mapping.value;
+    }
+  }
+
+  hasUserMapping() {
+    return Object.keys(this.userColMappings).length > 0 || Object.keys(this.userValueMappings).length > 0
   }
 
   getSpecial(field: FormField): SpeciesTypes|null {

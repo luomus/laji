@@ -9,3 +9,7 @@
 .mapping-body {
   overflow: auto;
 }
+
+.map-buttons .btn {
+  margin-left: 5px;
+}

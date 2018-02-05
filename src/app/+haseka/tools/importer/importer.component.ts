@@ -12,9 +12,11 @@ import { SpreadSheetService } from '../service/spread-sheet.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import {ToastsService} from '../../../shared/service/toasts.service';
 import {AugmentService} from '../service/augment.service';
+import {DialogService} from '../../../shared/service/dialog.service';
 
 type states
   = 'empty'
+  | 'ambiguousColumns'
   | 'invalidFileType'
   | 'importingFile'
   | 'colMapping'
@@ -33,7 +35,9 @@ type states
 })
 export class ImporterComponent implements OnInit {
 
-  @ViewChild(ModalDirective) mappingModal: ModalDirective;
+  @ViewChild('currentUserMapModal') currentUserMapModal: ModalDirective;
+  @ViewChild('userMapModal') userMapModal: ModalDirective;
+  @ViewChild('mappingModal') mappingModal: ModalDirective;
   @ViewChild('dataTable') datatable: DatatableComponent;
   @ViewChild('rowNumber') rowNumberTpl: TemplateRef<any>;
   @ViewChild('statusCol') statusColTpl: TemplateRef<any>;
@@ -54,6 +58,9 @@ export class ImporterComponent implements OnInit {
   status: states = 'empty';
   filename = '';
   excludedFromCopy: string[] = [];
+  userMappings: any;
+  hasUserMapping = false;
+  ambiguousColumns = [];
 
   constructor(
     private formService: FormService,
@@ -63,11 +70,13 @@ export class ImporterComponent implements OnInit {
     private importService: ImportService,
     private mappingService: MappingService,
     private toastsService: ToastsService,
-    private augmentService: AugmentService
+    private augmentService: AugmentService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
     this.status = 'empty';
+    this.hasUserMapping = this.mappingService.hasUserMapping();
   }
 
   onFileChange(evt: any) {
@@ -115,8 +124,27 @@ export class ImporterComponent implements OnInit {
         this.colMap = this.spreadSheetService.getColMapFromComments(sheet, this.fields);
 
         this.initDataColumns();
-        this.status = 'colMapping';
-        this.mappingModal.show();
+
+        // Check that data has no ambiguous columns
+        const cols = Object.keys(this.header).map(key => this.header[key]);
+        const hasCol = {};
+        const ambiguousCols = new Set();
+        let hasAmbiguousColumns = false;
+        cols.forEach(col => {
+          if (hasCol[col]) {
+            hasAmbiguousColumns = true;
+            ambiguousCols.add(col);
+          } else {
+            hasCol[col] = true;
+          }
+        });
+        if (hasAmbiguousColumns) {
+          this.status = 'ambiguousColumns';
+          this.ambiguousColumns = Array.from(ambiguousCols);
+        } else {
+          this.status = 'colMapping';
+          this.mappingModal.show();
+        }
         this.cdr.markForCheck();
         setTimeout(() => {
           this.data = [...this.data];
@@ -170,6 +198,7 @@ export class ImporterComponent implements OnInit {
 
   rowMappingDone(mappings) {
     this.status = 'importReady';
+    this.hasUserMapping = this.mappingService.hasUserMapping();
     this.mappingModal.hide();
     this.mappingService.addUserValueMapping(mappings);
     this.cdr.markForCheck();
@@ -184,7 +213,6 @@ export class ImporterComponent implements OnInit {
         .switchMap(document => this.importService.validateData(document))
         .switchMap(result => Observable.of({result: result, source: data}))
         .catch(err => Observable.of(typeof err.json === 'function' ? err.json() : err)
-          .do(err => console.log(err))
           .map(body => body.error && body.error.details || body)
           .map(error => ({result: {_error: error}, source: data}))
         )
@@ -202,8 +230,7 @@ export class ImporterComponent implements OnInit {
           this.cdr.markForCheck();
         },
         (err) => {
-          console.log(err);
-          const body = err.json();
+          const body = typeof err.json === 'function' ? err.json() : err;
           if (body.error && body.error.details) {
             this.errors = body.error.details;
           }
@@ -270,6 +297,47 @@ export class ImporterComponent implements OnInit {
     if (!this.parsedData) {
       this.parsedData = this.importService.flatFieldsToDocuments(this.data, this.colMap, this.fields, this.formID);
     }
+  }
+
+  shouldCloseMapping() {
+    this.dialogService.confirm('Haluatko varmasti keskeyttää?')
+      .subscribe(result => {
+        if (result) {
+          this.mappingModal.hide();
+        }
+      })
+  }
+
+  showUserMapping() {
+    if (!this.hasUserMapping) {
+      return;
+    }
+    this.userMappings = this.mappingService.getUserMappings();
+    this.currentUserMapModal.show();
+  }
+
+  useUserMapping(value) {
+    try {
+      this.mappingService.setUserMapping(JSON.parse(value));
+    } catch (err) {
+      console.log(err);
+    }
+    this.userMapModal.hide();
+    this.hasUserMapping = this.mappingService.hasUserMapping();
+  }
+
+  clearUserMapping() {
+    if (!this.hasUserMapping) {
+      return;
+    }
+    this.dialogService.confirm('Oletko varma että halut poistaa datan kuvauksen?')
+      .subscribe((result) => {
+        if (result) {
+          this.status = 'empty';
+          this.mappingService.clearUserMapping();
+          this.hasUserMapping = this.mappingService.hasUserMapping();
+        }
+      });
   }
 
 }
