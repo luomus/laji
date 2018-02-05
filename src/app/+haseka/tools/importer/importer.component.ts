@@ -12,6 +12,7 @@ import { SpreadSheetService } from '../service/spread-sheet.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import {ToastsService} from '../../../shared/service/toasts.service';
 import {AugmentService} from '../service/augment.service';
+import {DialogService} from '../../../shared/service/dialog.service';
 
 type states
   = 'empty'
@@ -63,7 +64,8 @@ export class ImporterComponent implements OnInit {
     private importService: ImportService,
     private mappingService: MappingService,
     private toastsService: ToastsService,
-    private augmentService: AugmentService
+    private augmentService: AugmentService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -268,6 +270,15 @@ export class ImporterComponent implements OnInit {
     if (!this.parsedData) {
       this.parsedData = this.importService.flatFieldsToDocuments(this.data, this.colMap, this.fields, this.formID);
     }
+  }
+
+  shouldCloseMapping() {
+    this.dialogService.confirm('Haluatko varmasti keskeyttää!')
+      .subscribe(result => {
+        if (result) {
+          this.mappingModal.hide();
+        }
+      })
   }
 
 }

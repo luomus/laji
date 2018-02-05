@@ -67,6 +67,9 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body mapping-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="shouldCloseMapping()">
+          <span aria-hidden="true">&times;</span>
+        </button>
         <laji-col-mapper
           *ngIf="status === 'colMapping'"
           (mappingDone)="colMappingDone($event)"
