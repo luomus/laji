@@ -3,13 +3,13 @@
 </h3>
 <div class="row form-meta">
   <div class="col-sm-5">
-    <laji-form-select [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
+    <laji-form-select [formID]="formID" (selected)="formSelected($event)" [disabled]="generating"></laji-form-select>
   </div>
   <div class="col-sm-5">
-    <button (click)="selectAll()" type="button" class="btn btn-default" [class.disabled]="!formID">
+    <button (click)="selectAll()" type="button" class="btn btn-default" [class.disabled]="!formID || generating">
       Valitse kaikki
     </button>
-    <button (click)="clearSelected()" type="button" class="btn btn-default" [class.disabled]="!formID || selected.length === 0">
+    <button (click)="clearSelected()" type="button" class="btn btn-default" [class.disabled]="!formID || selected.length === 0 || generating">
       Poista valinnat
     </button>
   </div>

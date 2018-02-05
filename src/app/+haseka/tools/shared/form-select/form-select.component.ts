@@ -16,6 +16,7 @@ import { FormService } from '../../../../shared/service/form.service';
 export class FormSelectComponent implements OnInit, OnDestroy {
 
   @Input() formID = '';
+  @Input() disabled = false;
   @Output() selected = new EventEmitter<any>();
 
   formSub: Subscription;
