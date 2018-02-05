@@ -53,24 +53,6 @@
   </div>
 </ng-container>
 
-<!-- DEBUG -->
-<h5>Debug:</h5>
-{{status}}
-<ng-container *ngIf="errors">
-Errors:
-<pre>
-{{errors | json}}
-</pre>
-</ng-container>
-
-<ng-container *ngIf="parsedData">
-Document:
-<pre *ngFor="let parsed of parsedData">
-{{parsed.document | json}}
-</pre>
-</ng-container>
-<!-- END DEBUG -->
-
 <ng-template let-rowIndex="rowIndex" #rowNumber>
   {{rowIndex + 2}}
 </ng-template>

@@ -184,7 +184,6 @@ export class ImporterComponent implements OnInit {
         .switchMap(document => this.importService.validateData(document))
         .switchMap(result => Observable.of({result: result, source: data}))
         .catch(err => Observable.of(typeof err.json === 'function' ? err.json() : err)
-          .do(err => console.log(err))
           .map(body => body.error && body.error.details || body)
           .map(error => ({result: {_error: error}, source: data}))
         )
@@ -202,8 +201,7 @@ export class ImporterComponent implements OnInit {
           this.cdr.markForCheck();
         },
         (err) => {
-          console.log(err);
-          const body = err.json();
+          const body = typeof err.json === 'function' ? err.json() : err;
           if (body.error && body.error.details) {
             this.errors = body.error.details;
           }
