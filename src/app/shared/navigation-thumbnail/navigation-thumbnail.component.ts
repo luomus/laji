@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 
 @Component({
   selector: 'laji-navigation-thumbnail',
@@ -10,14 +10,16 @@ import { Component, Input } from '@angular/core';
       </div>
         <div class="panel-body">
           <div class="icon" [style.background-image]="'url(/static/images/icons/' + icon + '.svg)'"></div>
+          <div *ngIf="info" class="info" [tooltip]="info" placement="bottom"><i class="glyphicon glyphicon-info-sign"></i></div>
         </div>
     </a>
   </div>
 `, styleUrls: ['./navigation-thumbnail.component.css'],
-
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationThumbnailComponent {
   @Input() icon: string;
   @Input() name: string;
   @Input() path: string;
+  @Input() info: string;
 }

@@ -126,6 +126,10 @@ laji-locale-sv > div,
 .ui-select-choices-row a {
   white-space: normal !important;
 }
+.home-page .tooltip {
+  min-width: 200px;
+}
+
 /** generic **/
 .scientificName {
   display: inline-block;

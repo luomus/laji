@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { SearchQuery } from '../+observation/search-query.model';
 import { NewsApi } from '../shared/api/NewsApi';
 import { TranslateService } from '@ngx-translate/core';
+import {environment} from '../../environments/environment.vir';
 
 @Component({
   selector: 'laji-home',
@@ -16,6 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class HomeComponent implements OnInit {
 
   mapStartDate;
+  formId = environment.whichSpeciesForm;
 
   constructor(public translate: TranslateService) {
   }

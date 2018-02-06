@@ -9,9 +9,20 @@
   text-decoration: none;
   text-align: center;
   padding: 0;
+  position: relative;
 }
 
 /** Angular takes care of that this will stay within the component! **/
 .glyphicon {
   font-size: 4em;
+}
+
+.info {
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
+}
+
+.info .glyphicon {
+  font-size: 1.5em;
 }

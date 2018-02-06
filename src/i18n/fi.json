@@ -33,7 +33,7 @@
   "home.authority.title": "Suomen Lajitietokeskus – Viranomaispalvelut",
   "home.authority.text": "<p>Tervetuloa käyttämään Suomen Lajitietokeskuksen viranomaistoimintaa varten perustettua palvelua. Palvelu ei ole avoin ja perustuu rajoitettuun käyttöoikeuteen. Palvelu on pääsääntöisesti vain ympäristö- ja luonnonvaraviranomaistahojen käytettävissä.</p><p>Palveluita toteutetaan tukemaan viranomaistoimintoja, jotka vaativat luotettavaa luonnon monimuotoisuustietoa tehtäessä päätöksiä mm. kestävän luonnonvarojen käytön, maankäytön ja luonnonsuojelun suhteen.</p><p>Palvelussa oleva lajitieto on alkuperäisessä, salaamattomassa muodossa ja sen johdosta sen käyttöön on suhtauduttava riittävällä varovaisuudella noudattaen lajitiedon avoimuutta säätelevää voimassa olevaa lainsäädäntöä. Palvelun lajitieto ei ole kokonaisuudessaan ns. viranomaistietoa ja sen jakaminen eteenpäin vaatii aina aineiston omistajan suostumuksen. Kaikki palvelussa tehdyt aineistohaut tallennetaan pysyvästi Luomuksen ylläpitämään tietovarastoon.</p><p>Tähän portaaliin lisätään uusia toimintoja vuoden 2017 aikana Luonnontieteellisen keskusmuseon Luomuksen johtaman Suomen Lajitietokeskus-hankkeen toimesta. Hanke on osa laajempaa Suomen ympäristökeskuksen hallinnoimaa Envibase-hankekokonaisuutta. Viranomaispalvelujen käyttöehdoista ja -oikeuksista päätetään erikseen vuoden 2017 aikana Lajitietokeskushankkeen viranomaistyöryhmän päätösten ohjauksella.",
   "home.main-page.title": "Suomen Lajitietokeskus",
-  "home.main-page.recent": "Uusimpia havaintoja Suomesta",
+  "home.main-page.recent": "Uusimpia havaintoja",
   "home.main-page.text": "Suomen Lajitietokeskus kerää ja yhdistää suomalaisen lajitiedon yhtenäiseksi ja avoimeksi kokonaisuudeksi. Laji.fi:ssa voit tutustua lajeihin ja niiden esiintymiseen, selata havaintoja suomalaisista lajitietokannoista sekä pitää kirjaa omista luontohavainnoistasi.",
   "home.news-list.current": "Ajankohtaista",
   "home.navigation-thumbnail.species": "Suomen lajit",
@@ -596,11 +596,17 @@
   "showSpeciesCard": "Näytä lajikortti",
   "closed.title": "Suljettu",
   "closed.intro": "Vihko on suljettu huoltotöiden ajaksi. Ilmoitamme <a href=\"/\">etusivulla</a>, kun se on jälleen käytettävissä.",
-  "home.identify": "Auta tunnistamaan havaintoja",
+  "home.identify": "Apua tunnistamiseen",
   "release": "tiedote",
   "technical": "tekninen",
   "haseka.tools": "Työkalut",
   "selfUrl.intro": "Täällä voit hallita muiden järjestelmien tunnuksia yms.",
   "lineTransect.title": "Linjalaskenta",
-  "taxonomy.bold": "DNA-viivakoodien lkm"
+  "taxonomy.bold": "DNA-viivakoodien lkm",
+  "home.taxon-intro": "Lajihaku - Hae tietoa maamme eläimistä, kasveista ja sienistä. Lajikortit sisältävät monipuolista tietoa mm. lajien esiintymisestä, piirteistä ja elintavoista.",
+  "home.observation-intro": "Havaintohaku - Selaa Lajitietokeskukseeen tallennettuja lajihavaintoja monipuolisen rajustyökalun avulla kartoilla ja taulukossa. Kaikki avoimessa käytössä olevat aineistot ovat ladattavissa käyttöösi.",
+  "home.notebook-intro": "Havaintohallintajärjestelmä Vihko - Tallenna, jaa ja hallinnoi luontohavaintojasi. Havainnot tulevat valintasi mukaan yleiseen käyttöön mm. harrastuksen, tutkimuksen ja viranomaistyön avuksi.",
+  "home.identify-title": "Pyydä tunnistusapua",
+  "home.identify-help-title": "Auta tunnistamaan havaintoja",
+  "home.identify-help-intro": "Alla näet uusimpia tunnistuspyyntöjä. Voit auttaa käyttäjiä määrittämällä näitä havaintoja."
 }

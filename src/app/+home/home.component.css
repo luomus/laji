@@ -9,8 +9,24 @@
 }
 .thumbnail {
   text-decoration: none;
+  text-align: center;
   padding: 0;
   color: inherit;
+}
+.identifications {
+  text-align: left;
+}
+
+.identifications .btn {
+  margin-top: 5px !important;
+}
+
+.identification-images {
+  position: relative;
+}
+
+.identify-form {
+  z-index: 1000;
 }
 
 .forum, .forum:hover, .forum:visited, .forum:active {

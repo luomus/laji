@@ -8,7 +8,7 @@
       <p>
         {{'identify.reportIntro' | translate}}
         <br/>
-        <a class="link btn btn-primary btn" [routerLink]="['/vihko/' + formId | localize]">{{'identify.report' | translate}}</a>
+        <a class="link btn btn-primary" [routerLink]="['/vihko/' + formId | localize]">{{'identify.report' | translate}}</a>
         <span *lajiLoggedIn="false">({{'identify.requiresAuthentication' | translate}})</span>
       </p>
     </div>
