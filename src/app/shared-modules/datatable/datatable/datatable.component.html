@@ -152,7 +152,7 @@
 </ng-template>
 
 <ng-template let-value="value" #date>
-  <span *ngIf="value" title="{{value}}">
+  <span *ngIf="value" title="{{value | amDateFormat: 'DD.MM.YYYY HH:mm'}}">
     {{value | amDateFormat: 'DD.MM.YYYY HH:mm'}}
   </span>
 </ng-template>

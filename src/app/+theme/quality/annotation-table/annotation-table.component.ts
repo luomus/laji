@@ -36,26 +36,24 @@ export class AnnotationTableComponent implements OnInit, OnDestroy {
       cellTemplate: 'date',
       label: 'quality.created',
       sortBy: 'unit.annotations.created',
-      width: 100
+      width: 120
     },
     {
       prop: 'annotation.annotationByPersonName',
       cellTemplate: 'user',
       label: 'quality.creator',
-      sortBy: 'unit.annotations.annotationByPersonName',
-      width: 150
+      sortBy: 'unit.annotations.annotationByPersonName'
     },
     {
       prop: 'annotation',
       cellTemplate: 'annotation',
       label: 'quality.qualityLabel',
       sortable: false,
-      width: 250
+      width: 280
     },
     {
       prop: 'gathering.team',
-      label: 'quality.observer',
-      width: 150
+      label: 'quality.observer'
     },
     {
       name: 'unit.taxon',
@@ -63,8 +61,8 @@ export class AnnotationTableComponent implements OnInit, OnDestroy {
       target: '_blank',
       label: 'quality.taxon',
       cellTemplate: 'taxon',
-      sortBy: 'unit.linkings.taxon.name%longLang%',
-      width: 250
+      sortBy: 'unit.linkings.originalTaxon.name%longLang%',
+      width: 280
     },
     {
       prop: 'unit.media.0',
