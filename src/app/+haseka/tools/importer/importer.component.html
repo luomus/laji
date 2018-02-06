@@ -59,12 +59,12 @@
         Valmis tallennettavaksi
       </strong>
       <ng-template #invalid>
-        <button type="button" [disabled]="status !== 'importReady'" (click)="validate()" class="btn btn-primary">Tarkista data</button>
+        <button type="button" [disabled]="status !== 'importReady' && status !== 'invalidData'" (click)="validate()" class="btn btn-primary">Tarkista data</button>
       </ng-template>
       <laji-spinner [spinning]="status === 'validating'"></laji-spinner>
 
-      <button type="button" [disabled]="status !== 'importReady' || !valid" (click)="save(publ)" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
-      <button type="button" [disabled]="status !== 'importReady' || !valid" (click)="save(priv)" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
+      <button type="button" [disabled]="status !== 'importReady'" (click)="save(publ)" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
+      <button type="button" [disabled]="status !== 'importReady'" (click)="save(priv)" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
     </div>
   </div>
 </ng-container>
@@ -115,7 +115,7 @@
         <h1>
           Kuvauksen tuonti
         </h1>
-        <p>Voit kopioida alla olevaan kenttään laji.fi:n ymmärtävän kuvauksen datastasi.</p>
+        <p>Voit kopioida alla olevaan kenttään laji.fi:n ymmärtämän kuvauksen datastasi.</p>
         <textarea rows="10" #userMapping class="form-control"></textarea>
       </div>
       <div class="modal-footer">
@@ -137,7 +137,7 @@
           Datan nykyinen kuvaus
         </h1>
         <p>
-          Ottamalla talteen tämän kuvauksen, voit tuoda jatkossa saman muotoista dataa ilman, että sinun tarvitsee
+          Ottamalla talteen tämän kuvauksen, voit tuoda jatkossa samanmuotoista dataa ilman, että sinun tarvitsee
           uudelleen kertoa mistä arvoissa on kyse.
         </p>
         <textarea rows="10" class="form-control">{{userMappings | json}}</textarea>

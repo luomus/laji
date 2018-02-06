@@ -142,6 +142,8 @@ export class MappingService {
     if (mapping && mapping.col && mapping.value) {
       this.userColMappings = mapping.col;
       this.userValueMappings = mapping.value;
+    } else {
+      throw new Error('Map has to have both col and value keys!');
     }
   }
 
