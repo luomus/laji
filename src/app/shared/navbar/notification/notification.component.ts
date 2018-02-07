@@ -57,6 +57,7 @@ export class NotificationComponent implements OnInit {
 
   onRemove(notification) {
     this.removeNotification.emit(notification);
+    this.changeDetectorRef.markForCheck();
   }
 
 }
