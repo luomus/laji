@@ -11,7 +11,10 @@
       </a>
     </laji-row>
     <ng-template #taxonVerbatim>
-      <laji-row [title]="unit.recordBasis | label: 'warehouse'" [value]="unit.taxonVerbatim"></laji-row>
+      <laji-row *ngIf="unit.taxonVerbatim; else reportedInformalTaxonGroup" [title]="unit.recordBasis | label: 'warehouse'" [value]="unit.taxonVerbatim"></laji-row>
+    </ng-template>
+    <ng-template #reportedInformalTaxonGroup>
+      <laji-row [title]="unit.recordBasis | label: 'warehouse'" [value]="unit.reportedInformalTaxonGroup | toQName | label"></laji-row>
     </ng-template>
     <laji-row
       *ngIf="unit.linkings && unit.linkings.taxon && unit.linkings.originalTaxon && unit.linkings.taxon.qname !== unit.linkings.originalTaxon.qname"
@@ -54,7 +57,7 @@
         </div>
       </div>
     </div>
-    <laji-facts [show]="showFacts" [facts]="unit.facts"></laji-facts>
+    <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>
   </div>
   <div class="annotation-btn">
     <button type="button"

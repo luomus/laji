@@ -9,6 +9,7 @@ import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.s
 import { Util } from './util.service';
 import { InformalTaxonGroup } from '../model';
 import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
+import {SourceService} from './source.service';
 
 @Injectable()
 export class TriplestoreLabelService {
@@ -26,6 +27,7 @@ export class TriplestoreLabelService {
               private metadataService: MetadataService,
               private logger: Logger,
               private informalTaxonService: InformalTaxonGroupApi,
+              private sourceService: SourceService,
               private cacheService: CacheService
   ) {
     this.getAllLabels();
@@ -57,6 +59,8 @@ export class TriplestoreLabelService {
             .share();
         }
         return TriplestoreLabelService.requestCache[key];
+      case 'KE':
+        return this.sourceService.getName(key, lang);
     }
 
     if (this.labels) {
