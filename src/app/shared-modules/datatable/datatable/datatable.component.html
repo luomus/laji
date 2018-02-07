@@ -75,7 +75,7 @@
       <span *ngIf="value.taxonVerbatim; else reportedInformalTaxonGroup" title="{{value.taxonVerbatim}}">{{value.taxonVerbatim}}</span>
     </ng-template>
     <ng-template #reportedInformalTaxonGroup>
-      <span title="{{value.reportedInformalTaxonGroup | toQName | taxon | multiLang}}">{{value.reportedInformalTaxonGroup | toQName | taxon | multiLang}}</span>
+      <span title="{{value.reportedInformalTaxonGroup | toQName | label}}">{{value.reportedInformalTaxonGroup | toQName | label}}</span>
     </ng-template>
   </span>
 </ng-template>

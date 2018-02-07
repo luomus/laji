@@ -14,6 +14,7 @@ import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 export class TriplestoreLabelService {
 
   static cache = {};
+  static requestCache = {};
 
   static readonly cacheProps = 'triplestoreLabels';
   static readonly cacheClasses = 'triplestoreClassLabels';
@@ -31,18 +32,31 @@ export class TriplestoreLabelService {
   };
 
   public get(key, lang): Observable<string> {
+    return this._get(key, lang)
+      .catch(err => {
+        this.logger.warn('Failed to fetch label for ' + key, err);
+        return Observable.of(key);
+      })
+  }
+
+  private _get(key, lang): Observable<string> {
+    if (TriplestoreLabelService.cache[key]) {
+      if (TriplestoreLabelService.requestCache[key]) {
+        delete TriplestoreLabelService.requestCache[key];
+      }
+      return Observable.of(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
+    }
     const parts = key.split('.');
     switch (parts[0]) {
       case 'MVL':
-        if (TriplestoreLabelService.cache[key]) {
-          return Observable.of(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
+        if (!TriplestoreLabelService.requestCache[key]) {
+          TriplestoreLabelService.requestCache[key] = this.informalTaxonService.informalTaxonGroupFindById(key, 'multi')
+            .map((group: InformalTaxonGroup) => group.name)
+            .do(name => TriplestoreLabelService.cache[key] = name)
+            .map(name => MultiLangService.getValue((name as any), lang))
+            .share();
         }
-        return this.informalTaxonService.informalTaxonGroupFindById(key, 'multi')
-          .map((group: InformalTaxonGroup) => group.name)
-          .map(name => {
-            TriplestoreLabelService.cache[key] = name;
-            return MultiLangService.getValue(TriplestoreLabelService.cache[key], lang);
-          });
+        return TriplestoreLabelService.requestCache[key];
     }
 
     if (this.labels) {

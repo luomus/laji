@@ -4,6 +4,9 @@ import { AbsractLabelPipe } from './abstract-label.pipe';
 import { TaxonomyApi } from '../api';
 import { Taxonomy } from '../model';
 
+/**
+ * This is meant for getting single taxon names and is not yet usable on lists
+ */
 @Pipe({
   name: 'taxon',
   pure: false
