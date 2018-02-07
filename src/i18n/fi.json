@@ -560,7 +560,7 @@
   "filter.informalTaxonGroup": "Rajaa lajiryhmällä",
   "navigation.identify": "Lajien tunnistuspalvelu",
   "identify.intro": "Tällä sivulla voit selailla kuvia havainnoista joille ei ole lajitason määritystä. Klikkaamalla kuvaa näet enemmän tietoa havainnosta ja avautuvassa tietoikkunassa voit tarkastella kuvaa suurempana. Tietosivulla voit myös ehdottaa kuvalle lajimääritystä. Jos mielestäsi kuvan perusteella ei ole mahdollista päästä lajitason määritykseen, voit rastittaa \"Ei voida määrittää\". Jos riittävän moni käyttäjä rastittaa \"Ei voida määrittää\", kuvaa ei enää tarjota jatkossa tunnistuspalvelussa.",
-  "identify.reportIntro": "Voit lähettää kuvallisia havaintoja määritettäväksi Lajitietokeskuksen Vihko palvelun avulla täällä:",
+  "identify.reportIntro": "Vihko-palvelun kautta voit lähettää tunnistamattomia kuvallisia havaintoja muille Lajitietokeskuksen käyttäjille määritettäväksi. Huomaathan, että palvelun nopeus ja toimivuus riippuvat vapaaehtoisten asiantuntijoiden aktiivisuudesta!",
   "identify.report": "ILMOITA",
   "identify.requiresAuthentication": "vaatii sisäänkirjautumisen",
   "identify.selectIntro": "Voit rajata kuvia lajiryhmittäin, mutta lajiryhmään kuuluvat vain ne havainnot, jotka on ilmoitetut nimellä, joka voidaan liittää kyseiseen lajiryhmään. Esimerkiksi ilmoitettu nimi \"sieni\" voidaan liittää ryhmään \"sienet\" mutta ilmoitettua nimeä \"jokin sieni\" ei voida.",
@@ -608,5 +608,5 @@
   "home.notebook-intro": "Havaintohallintajärjestelmä Vihko - Tallenna, jaa ja hallinnoi luontohavaintojasi. Havainnot tulevat valintasi mukaan yleiseen käyttöön mm. harrastuksen, tutkimuksen ja viranomaistyön avuksi.",
   "home.identify-title": "Pyydä tunnistusapua",
   "home.identify-help-title": "Auta tunnistamaan havaintoja",
-  "home.identify-help-intro": "Alla näet uusimpia tunnistuspyyntöjä. Voit auttaa käyttäjiä määrittämällä näitä havaintoja."
+  "home.identify-help-intro": "Harrastaja - asiantuntemustasi tarvitaan! Alla on uusimpia Lajitietokeskukseen tallennettuja kuvia havainnoista, joita ei ole kyetty tunnistamaan varmasti. Voit auttaa käyttäjiä lajintunnistuksessa!"
 }
