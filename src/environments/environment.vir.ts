@@ -11,6 +11,7 @@ export const environment = {
   invasiveControlForm: '',
   loginUrl: '/user/virannomaiset',
   selfPage: 'https://login.laji.fi/self',
+  apiBase: '/api',
   production: true,
   isEmbedded: false,
   forceLogin: true,

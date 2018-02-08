@@ -95,6 +95,8 @@ import {FriendService} from './service/friend.service';
 import { DatePickerComponent } from './datepicker/datepicker.component'
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { FactNotInPipe } from './pipe/fact-not-in.pipe';
+import {HttpClientModule} from '@angular/common/http';
+import {LajiApiService} from './service/laji-api.service';
 
 
 @NgModule({
@@ -117,6 +119,7 @@ import { FactNotInPipe } from './pipe/fact-not-in.pipe';
     FormsModule,
     CommonModule,
     HttpModule,
+    HttpClientModule,
     RouterModule,
     LangModule,
     TranslateModule,
@@ -178,6 +181,7 @@ export class SharedModule {
         FriendService,
         TaxonNamePipe,
         ToQNamePipe,
+        LajiApiService,
         {provide: Http, useClass: AuthenticatedHttpService}
       ]
     };

@@ -1,8 +1,9 @@
-<div class="no-print print-wrap">
-  <button type="button" class="btn btn-default" (click)="print()">PDF <i class="glyphicon glyphicon-file"></i></button>
-</div>
-<laji-line-transect
-  *ngIf="namedPlace"
-  [namedPlace]="namedPlace"
-  [person]="person"
-></laji-line-transect>
+<ng-container *ngIf="namedPlace">
+  <div class="no-print print-wrap">
+    <button type="button" class="btn btn-default" (click)="print(namedPlace.name)">PDF <i class="glyphicon glyphicon-file"></i></button>
+  </div>
+  <laji-line-transect
+    [namedPlace]="namedPlace"
+    [person]="person"
+  ></laji-line-transect>
+</ng-container>

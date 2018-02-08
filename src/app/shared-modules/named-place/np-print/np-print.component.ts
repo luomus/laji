@@ -1,6 +1,7 @@
-import {Component, ElementRef, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import { PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import * as FileSaver from 'file-saver';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,6 +11,7 @@ import { UserService } from '../../../shared/service/user.service';
 import { FooterService } from '../../../shared/service/footer.service';
 import { Person } from '../../../shared/model/Person';
 import {isPlatformBrowser} from '@angular/common';
+import {LajiApi, LajiApiService} from '../../../shared/service/laji-api.service';
 
 @Component({
   selector: 'laji-np-print',
@@ -30,7 +32,8 @@ export class NpPrintComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private namedPlaceService: NamedPlacesService,
     private userService: UserService,
-    private footerService: FooterService
+    private footerService: FooterService,
+    private lajiApiService: LajiApiService
   ) { }
 
   ngOnInit() {
@@ -68,23 +71,17 @@ export class NpPrintComponent implements OnInit, OnDestroy {
     }
   }
 
-  print() {
+  print(fileName) {
     if (isPlatformBrowser(this.platformId)) {
-      console.log(this.stripScripts(document.getElementsByTagName('html')[0].innerHTML));
+      this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, this.stripScripts(document.getElementsByTagName('html')[0].innerHTML))
+        .subscribe((response) => {
+          FileSaver.saveAs(response, fileName + '.pdf');
+        });
     }
   }
 
-  private stripScripts(s) {
-    if (isPlatformBrowser(this.platformId)) {
-      const div = document.createElement('div');
-      div.innerHTML = s;
-      const scripts = div.getElementsByTagName('script');
-      let i = scripts.length;
-      while (i--) {
-        scripts[i].parentNode.removeChild(scripts[i]);
-      }
-      return div.innerHTML;
-    }
+  private stripScripts(s: string) {
+    return s.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
   }
 
 }
