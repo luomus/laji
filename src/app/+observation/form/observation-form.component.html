@@ -100,6 +100,18 @@
                   </label>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <hr>
+                  <label>
+                    <input type="checkbox"
+                           [checked]="searchQuery.query.qualityIssues === 'BOTH'"
+                           (change)="onCheckBoxToggle('qualityIssues', 'BOTH')"
+                           name="qualityIssues">
+                    {{'observation.form.issueBoth' | translate}}
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
           <div laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true">

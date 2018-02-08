@@ -333,9 +333,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   ownItemSelected() {
-    this.searchQuery.query.qualityIssues = 'BOTH';
     if (!this.formQuery.asEditor || !this.formQuery.asObserver) {
       delete this.searchQuery.query.editorOrObserverPersonToken;
+    }
+    if (this.formQuery.asEditor || this.formQuery.asObserver) {
+      this.searchQuery.query.qualityIssues = 'BOTH';
     }
     this.onFormQueryChange();
   }
