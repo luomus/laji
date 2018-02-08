@@ -1,0 +1,12 @@
+.panel-body {
+  padding: 0;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table th {
+  padding-left: 15px;
+  width: 225px;
+}

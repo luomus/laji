@@ -232,12 +232,12 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   submitPublic() {
-    this.publicityRestrictions = 'MZ.publicityRestrictionsPublic';
+    this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
     this.lajiForm.submit();
   }
 
   submitPrivate() {
-    this.publicityRestrictions = 'MZ.publicityRestrictionsPrivate';
+    this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
     this.lajiForm.submit();
   }
 
@@ -357,25 +357,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               });
         }
       );
-  }
-
-  show(place: 'save'|'temp'|'cancel') {
-    if (!this.form || !this.form.actions) {
-      return true;
-    }
-    return place in this.form.actions;
-  }
-
-  buttonLabel(place: 'save'|'temp'|'cancel') {
-    if (this.form && this.form.actions && this.form.actions[place]) {
-      return this.form.actions[place];
-    }
-    if (place === 'save') {
-      return 'haseka.form.savePublic';
-    } else if (place === 'temp') {
-      return 'haseka.form.savePrivate';
-    }
-    return 'haseka.form.back';
   }
 
   private parseErrorMessage(err) {

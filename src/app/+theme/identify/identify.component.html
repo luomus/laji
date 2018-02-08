@@ -1,9 +1,15 @@
 <div class="container-fluid">
-  <div class="row">
+  <div class="row identify-intro">
     <div class="col-sm-12">
       <h1>{{'navigation.identify' | translate}}</h1>
       <p>
         {{'identify.intro' | translate}}
+      </p>
+      <p>
+        {{'identify.reportIntro' | translate}}
+        <br/>
+        <a class="link btn btn-primary" [routerLink]="['/vihko/' + formId | localize]">{{'identify.report' | translate}}</a>
+        <span *lajiLoggedIn="false">({{'identify.requiresAuthentication' | translate}})</span>
       </p>
     </div>
   </div>
@@ -34,6 +40,13 @@
       <ng-container *ngIf="query">
         <laji-gallery [showPopover]="true" [view]="'full'" [sort]="['document.firstLoadDate DESC']" [showViewSwitch]="true" [query]="query" [eventOnImageClick]="true" (selected)="onImageSelect($event)"></laji-gallery>
       </ng-container>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>{{'identify.mostActiveTitle' | translate}}</h2>
+      <laji-most-active-users-table [maxLength]="5"></laji-most-active-users-table>
+      <p><a [routerLink]="['/theme/quality' | localize]">{{'identify.toQualityPage' | translate}}</a></p>
     </div>
   </div>
 </div>

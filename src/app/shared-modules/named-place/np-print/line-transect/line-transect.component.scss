@@ -80,6 +80,12 @@ $perPage: 10;
   }
 }
 
+.map-wrap {
+  overflow: hidden;
+  height: 267mm; // With higher number 671:323 Turku Muhkuri area in linetransect has a map artifact on the page following the map page
+  width: 100%;
+}
+
 /** Input table **/
 .line-table {
   width: 100%;

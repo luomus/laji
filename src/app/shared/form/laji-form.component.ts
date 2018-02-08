@@ -15,6 +15,7 @@ import { FormApiClient } from '../api';
 import { UserService } from '../service/user.service';
 import { Logger } from '../logger/logger.service';
 import { LajiExternalService } from '../service/laji-external.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'laji-form',
@@ -135,7 +136,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               lang: this.lang,
               renderSubmit: false,
               topOffset: 50,
-              bottomOffset: 50
+              bottomOffset: 50,
+              googleApiKey: environment.googleApiKey
             });
           });
         } catch (err) {

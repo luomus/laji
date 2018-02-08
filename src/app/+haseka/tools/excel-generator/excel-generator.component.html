@@ -1,0 +1,54 @@
+<h3>
+  Tee uusi massatallennuspohja
+</h3>
+<div class="row form-meta">
+  <div class="col-sm-5">
+    <laji-form-select [formID]="formID" (selected)="formSelected($event)" [disabled]="generating"></laji-form-select>
+  </div>
+  <div class="col-sm-5">
+    <button (click)="selectAll()" type="button" class="btn btn-default" [class.disabled]="!formID || generating">
+      Valitse kaikki
+    </button>
+    <button (click)="clearSelected()" type="button" class="btn btn-default" [class.disabled]="!formID || selected.length === 0 || generating">
+      Poista valinnat
+    </button>
+  </div>
+  <div class="col-sm-2">
+    <laji-spinner [spinning]="generating" [overlay]="true">
+      <button (click)="generate()" [disabled]="generating" type="button" class="btn btn-default pull-right" [class.disabled]="!formID || generating">
+        Tee pohja
+      </button>
+    </laji-spinner>
+    <!--
+    <select class="form-control pull-right type-select" [(ngModel)]="type">
+      <option value="xlsx" selected>.xlsx</option>
+      <option value="ods">.ods</option>
+    </select>
+    -->
+  </div>
+</div>
+<ng-container *ngIf="formID">
+  <div class="row">
+    <div class="col-sm-4" *ngIf="parents.indexOf('document') > -1 || parents.indexOf('gatheringEvent') > -1 || parents.indexOf('taxonCensus') > -1">
+      <laji-field-list (toggle)="toggleField($event)" [selected]="selected" [title]="'MY.document' | label" [fields]="fields" parent="document" *ngIf="parents.indexOf('document') > -1"></laji-field-list>
+      <laji-field-list [showTitle]="false" (toggle)="toggleField($event)" [selected]="selected" [title]="'MZ.gatheringEvent' | label" [fields]="fields" parent="gatheringEvent" *ngIf="parents.indexOf('gatheringEvent') > -1"></laji-field-list>
+      <laji-field-list [showTitle]="false"  (toggle)="toggleField($event)" [selected]="selected" [title]="'MY.taxonCensusClass' | label" [fields]="fields" parent="taxonCensus" *ngIf="parents.indexOf('taxonCensus') > -1"></laji-field-list>
+    </div>
+    <div class="col-sm-4" *ngIf="parents.indexOf('gatherings') > -1 || parents.indexOf('gatheringFact') > -1">
+      <laji-field-list (toggle)="toggleField($event)" [selected]="selected" [title]="'MY.gathering' | label" [fields]="fields" parent="gatherings" *ngIf="parents.indexOf('gatherings') > -1"></laji-field-list>
+      <laji-field-list [showTitle]="false" (toggle)="toggleField($event)" [selected]="selected" [title]="'MY.gatheringFactClass' | label" [fields]="fields" parent="gatheringFact" *ngIf="parents.indexOf('gatheringFact') > -1"></laji-field-list>
+      <laji-field-list (toggle)="toggleField($event)" [selected]="selected" [title]="'MZ.unitGathering' | label" [fields]="fields" parent="unitGathering" *ngIf="parents.indexOf('unitGathering') > -1"></laji-field-list>
+    </div>
+    <div class="col-sm-4" *ngIf="parents.indexOf('identifications') > -1 || parents.indexOf('units') > -1 || parents.indexOf('unitFact') > -1">
+      <laji-field-list (toggle)="toggleField($event)" [selected]="selected" [title]="'MY.identification' | label" [fields]="fields" parent="identifications" *ngIf="parents.indexOf('identifications') > -1"></laji-field-list>
+      <laji-field-list (toggle)="toggleField($event)" [selected]="selected" [title]="'MY.unit' | label" [fields]="fields" parent="units" *ngIf="parents.indexOf('units') > -1"></laji-field-list>
+      <laji-field-list [showTitle]="false" (toggle)="toggleField($event)" [selected]="selected" [title]="'MY.unitFactClass' | label" [fields]="fields" parent="unitFact" *ngIf="parents.indexOf('unitFact') > -1"></laji-field-list>
+    </div>
+  </div>
+  <p>
+    <span class="required">*</span> pakollinen kenttä
+  </p>
+</ng-container>
+<!--
+<pre>{{fields | json}}</pre>
+-->

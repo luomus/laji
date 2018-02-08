@@ -1,0 +1,23 @@
+.source-list {
+  list-style: none;
+  padding: 0;
+}
+
+.source-list li {
+  padding: 5px 0;
+}
+
+.active {
+  font-weight: bold;
+}
+
+.map-cell, .map-container {
+  width: 40vw;
+  max-width: 600px;
+  min-width: 200px;
+}
+
+.map-container {
+  min-height: 200px;
+  height: 60vh;
+}

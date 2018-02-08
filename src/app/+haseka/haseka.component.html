@@ -32,6 +32,7 @@
           <li><a class="link" [routerLink]="['/vihko', 'ownSubmissions'] | localize">{{'haseka.ownSubmissions.title' | translate}}</a></li>
           <li><a class="link" [routerLink]="['/vihko', 'templates'] | localize">{{'haseka.templates.title' | translate}}</a></li>
           <li><a class="link" [routerLink]="['/vihko', 'statistics'] | localize">{{'haseka.statistics.title' | translate}}</a></li>
+          <li *ngIf="showTools"><a class="link" [routerLink]="['/vihko', 'tools'] | localize">{{'haseka.tools' | translate}}</a></li>
         </ul>
 
         <laji-haseka-latest [userToken]="userService.getToken()"

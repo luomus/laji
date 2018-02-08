@@ -1,0 +1,39 @@
+<table class="table">
+  <tr *ngFor="let value of invalidValues">
+    <td>
+      <div class="form-control-static">
+        {{value}}
+      </div>
+    </td>
+    <td>
+      <ng-container [ngSwitch]="_field.type">
+        <ng-container *ngSwitchCase="'string'">
+          <laji-mapping-select
+            [value]="mapping[_field.key] || ''"
+            [options]="labels"
+            (selected)="valueMapped(value, $event)"></laji-mapping-select>
+        </ng-container>
+        <ng-container *ngSwitchCase="'boolean'">
+          <laji-mapping-select
+            [value]="mapping[_field.key] || ''"
+            [options]="booleanValues"
+            (selected)="valueMapped(value, $event)"></laji-mapping-select>
+        </ng-container>
+        <ng-container *ngSwitchCase="'integer'">
+          <div class="row">
+            <div class="col-sm-10">
+              <input (change)="valueMapped(value, number.value)" type="number" class="form-control" value="1" #number>
+            </div>
+            <div class="col-sm-2">
+              <button type="button"
+                      [ngClass]="{'active btn-danger': mapping[value] === ignore}"
+                      class="btn btn-sm"
+                      (click)="valueMapped(value, mapping[value] === ignore ? number.value : ignore)"
+              ><i class="glyphicon glyphicon-remove"></i></button>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </td>
+  </tr>
+</table>

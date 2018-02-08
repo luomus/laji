@@ -1,17 +1,41 @@
 import { Injectable } from '@angular/core';
 import * as MapUtil from 'laji-map/lib/utils';
+import {GeometryCollection} from 'geojson';
 
 @Injectable()
 export class CoordinateService {
 
   constructor() { }
 
-  getFeature(geometry: Object, properties = {}) {
+  getFeatureFromGeometry(geometry: Object, properties = {}) {
     return {
       type: 'Feature',
       properties: properties,
       geometry: geometry
     };
+  }
+
+  getFeatureCollectionFromGeometry(geometry: Object, properties = {}) {
+    return {
+      type: 'FeatureCollection',
+      features: [this.getFeatureFromGeometry(geometry, properties)]
+    };
+  }
+
+  getGeometryFromFeatureCollection(featureCollection: any) {
+    if (featureCollection && Array.isArray(featureCollection.features)) {
+      if (featureCollection.features.length === 0) {
+        return undefined;
+      }
+      if (featureCollection.features.length === 1) {
+        return featureCollection.features[0].geometry;
+      }
+      return {
+        type: 'GeometryCollection',
+        geometries: featureCollection.features.map(feature => feature.geometry)
+      }
+    }
+    return undefined;
   }
 
   convertLajiEtlCoordinatesToGeometry(coordinate) {

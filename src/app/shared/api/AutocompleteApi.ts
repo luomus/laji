@@ -37,6 +37,7 @@ export interface AutocompleteParams {
   q?: string;
   limit?: string;
   includePayload?: boolean;
+  includeSelf?: boolean;
   lang?: string;
   checklist?: string;
   informalTaxonGroup?: string;

@@ -82,6 +82,44 @@ export class TaxonomyApi {
       });
   }
 
+
+  /**
+   * return bold information
+   */
+  public bold(scientificName: string, extraHttpRequestParams?: any): Observable<Array<models.Taxonomy>> {
+    const path = this.basePath + '/taxa/bold';
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (scientificName === null || scientificName === undefined) {
+      throw new Error('Required parameter scientificName was null or undefined when calling bold.');
+    }
+    if (scientificName !== undefined) {
+      queryParameters.set('scientificName', scientificName);
+    }
+
+    if (extraHttpRequestParams) {
+      Object.keys(extraHttpRequestParams)
+        .map(key => queryParameters.set(key, extraHttpRequestParams[key]));
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'GET',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
   /**
    * return children of the given taxon
    *

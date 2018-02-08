@@ -10,7 +10,7 @@
     <p>
       {{'nafi.stats.times' | translate}}
       <br>
-      <a [routerLink] [queryParams]="{time: '1991-01-01/'}">{{'theme.filterAll' | translate:{year: currentYear} }}</a>
+      <a [routerLink] [queryParams]="{time: '1991-01-01/'}">{{'theme.filterAll' | translate:{from: '1991', to: currentYear} }}</a>
       <br>
       <a [routerLink] [queryParams]="{time: currentYear}">{{'wholeYear'| translate:{year:currentYear} }}</a>
       <a *ngIf="currentMonth > 2" > | </a>

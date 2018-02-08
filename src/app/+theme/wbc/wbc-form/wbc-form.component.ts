@@ -32,7 +32,7 @@ export class WbcFormComponent implements OnInit, OnDestroy, ComponentCanDeactiva
       this.documentId = params['id'] || null;
       if (!this.formService.hasNamedPlace() && !this.documentId) {
         this.router.navigate(
-          this.localizeRouterService.translateRoute(['/theme/wbc/places/HR.39', environment.wbcForm])
+          this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/places/HR.39', environment.wbcForm])
         );
       } else {
         this.hasNS = true;
@@ -53,26 +53,26 @@ export class WbcFormComponent implements OnInit, OnDestroy, ComponentCanDeactiva
 
   onTmlLoad(data) {
     this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/wbc/form/', data.tmpID]),
+      this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/form/', data.tmpID]),
       { replaceUrl: true }
     );
   }
 
   onSuccess(data) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/wbc/ownSubmissions']));
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/ownSubmissions']));
   }
 
   onError() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/wbc/stats']));
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/stats']));
   }
 
   onCancel() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/wbc/stats']));
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/stats']));
   }
 
   onMissingNamedplace(data) {
     this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/wbc/form']),
+      this.localizeRouterService.translateRoute(['/theme/wtalvilintulaskentabc/form']),
       { replaceUrl: true }
     );
   }

@@ -1,0 +1,47 @@
+<div class="input-group" [ngClass]="{'has-error': !validDate}">
+  <span *ngIf="addonText" class="input-group-addon">{{addonText}}</span>
+  <input type="text"
+         class="ng-datepicker-input form-control input-sm"
+         [value]="value"
+         (blur)="updateValue(dateInput.value)"
+         #dateInput>
+  <span *ngIf="viewDate !== ''" class="input-group-addon link clear" (click)="clear()">x</span>
+  <span class="input-group-addon link" (click)="toggle()"><i class="glyphicon glyphicon-calendar"></i></span>
+</div>
+
+<div *ngIf="opened">
+  <div class="ng-datepicker" [lajiFixedBelow]="dateInput" (lajiClickOutSide)="close()">
+    <div class="controls">
+      <div class="left">
+        <i class="glyphicon glyphicon-backward" (click)="prevYear()"></i>
+        &nbsp;
+        <i class="glyphicon glyphicon-chevron-left" (click)="prevMonth()"></i>
+      </div>
+      <span class="date">
+        {{('m-' + date.format('MM')) | translate}} {{ date.format('YYYY') }}
+      </span>
+      <div class="right">
+        <i class="glyphicon glyphicon-chevron-right" (click)="nextMonth()"></i>
+        &nbsp;
+        <i class="glyphicon glyphicon-forward" (click)="nextYear()"></i>
+      </div>
+    </div>
+    <div class="day-names">
+      <span>{{'Mon' | translate}}</span>
+      <span>{{'Tue' | translate}}</span>
+      <span>{{'Wed' | translate}}</span>
+      <span>{{'Thu' | translate}}</span>
+      <span>{{'Fri' | translate}}</span>
+      <span>{{'Sat' | translate}}</span>
+      <span>{{'Sun' | translate}}</span>
+    </div>
+    <div class="calendar">
+        <span *ngFor="let d of days; let i = index">
+          <span class="day" [ngClass]="{'disabled': !d.enabled, 'selected': d.selected && d.enabled}"h
+                (click)="selectDate($event, i)">
+            {{ d.day }}
+          </span>
+        </span>
+    </div>
+  </div>
+</div>

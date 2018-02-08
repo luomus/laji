@@ -256,27 +256,31 @@ export class FormService {
   }
 
   getAddUrlPath(formId) {
-    if (formId === environment.nafiForm) {
-      return '/theme/nafi/form';
-    }
-    if (formId === environment.wbcForm) {
-      return '/theme/wbc/form';
-    }
     if (!formId) {
       formId = environment.defaultForm;
+    }
+    switch (formId) {
+      case environment.nafiForm:
+        return '/theme/nafi/form';
+      case environment.wbcForm:
+        return '/theme/talvilintulaskenta/form';
+      case environment.lineTransectForm:
+        return '/theme/vakiolinjat/form';
     }
     return '/vihko/' + formId;
   }
 
   getEditUrlPath(formId, documentId) {
-    if (formId === environment.nafiForm) {
-      return '/theme/nafi/form/' + documentId;
-    }
-    if (formId === environment.wbcForm) {
-      return '/theme/wbc/form/' + documentId;
-    }
     if (!formId) {
       formId = environment.defaultForm;
+    }
+    switch (formId) {
+      case environment.nafiForm:
+        return '/theme/nafi/form/' + documentId;
+      case environment.wbcForm:
+        return '/theme/talvilintulaskenta/form/' + documentId;
+      case environment.lineTransectForm:
+        return '/theme/line-transect/form/' + documentId;
     }
     return '/vihko/' + formId + '/' + documentId;
   }

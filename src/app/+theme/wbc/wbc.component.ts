@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: '[laji-wbc]',
@@ -8,18 +9,26 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./wbc.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class WbcComponent implements OnInit {
+export class WbcComponent implements OnInit, OnDestroy {
 
   showForm =  false;
-  isFormPage = false;
+  showNav = true;
+  routeSub: Subscription;
 
   constructor(public router: Router) {}
 
   ngOnInit() {
     this.showForm = !environment.production;
+    this.showNav = this.router.url.indexOf('form') === -1;
+    this.routeSub = this.router.events
+      .subscribe(event => {
+        if (event instanceof NavigationEnd) {
+          this.showNav = event.url.indexOf('form') === -1;
+        }
+      });
   }
 
-  showNavigation() {
-    return this.router.url.indexOf('form') === -1;
+  ngOnDestroy() {
+    this.routeSub.unsubscribe();
   }
 }

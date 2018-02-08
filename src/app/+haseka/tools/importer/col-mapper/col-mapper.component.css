@@ -1,0 +1,7 @@
+.field-col {
+  overflow: auto;
+  max-width: 400px;
+}
+.mapping-col {
+  min-width: 150px;
+}

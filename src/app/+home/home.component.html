@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
           <laji-omni-search
-            [placeholder]="'search-bar.input' | translate"
+            [placeholder]="'species.search' | translate"
           ></laji-omni-search>
         </div>
         <div class="col-sm-5 col-md-4 col-lg-3">
@@ -21,40 +21,65 @@
       </div>
     </div>
   </div>
-  <div class="container-fluid">
+  <div class="container-fluid home-page">
     <div id="wrapper" class="row">
       <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
         <h1>{{ 'home.main-page.title' | translate }}</h1>
         <p>{{ 'home.main-page.text' | translate }}</p>
         <div class="row">
-          <div class="col-md-7">
-            <div class="row">
-              <laji-navigation-thumbnail name="navigation.taxonomy" icon="species" path="taxon"></laji-navigation-thumbnail>
-              <laji-navigation-thumbnail name="navigation.observation" icon="observations" path="observation"></laji-navigation-thumbnail>
-            </div>
-            <div style="height: 170px;" class="panel panel-default">
+          <laji-navigation-thumbnail name="navigation.taxonomy" icon="species" path="taxon" intro="Tutustu lajeihin" [info]="'home.taxon-intro' | translate"></laji-navigation-thumbnail>
+          <laji-navigation-thumbnail name="navigation.observation" icon="observations" path="observation" intro="Selaa havaintoja" [info]="'home.observation-intro' | translate"></laji-navigation-thumbnail>
+          <laji-navigation-thumbnail name="navigation.haseka" icon="vihko" path="vihko" intro="Ilmoita havaintosi" [info]="'home.notebook-intro' | translate"></laji-navigation-thumbnail>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-5">
+            <a [routerLink]="['/observation'] | localize" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}" class="thumbnail panel panel-default">
               <div class="panel-heading">
-                <h3 class="panel-title">{{ 'haseka.slogan' | translate }}</h3>
+                <h2 class="panel-title caption">{{ 'home.main-page.recent' | translate }}</h2>
               </div>
-              <div class="panel-body">
-                <a class="btn btn-primary center-block" [routerLink]="['/vihko'] | localize" role="button">{{ 'haseka.button' | translate }}</a>
+              <div class="panel-body resent-map">
+                <div class="link blocking-overlay"></div>
+                <laji-observation-map [settingsKey]="'frontMap'" [height]="438" [showControls]="false" [initWithWorldMap]="false" [showItemsWhenLessThan]="2000" [draw]="false" [query]="{time: mapStartDate + '/', countryId: 'ML.206', cache: true}"></laji-observation-map>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-8 col-md-7">
+            <div class="row">
+              <div class="col-sm-12">
+                <a [routerLink]="['/vihko/' + formId | localize]" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}" class="thumbnail panel panel-default">
+                  <div class="panel-heading">
+                    <h2 class="panel-title caption">{{'home.identify-title' | translate}}</h2>
+                  </div>
+                  <div class="panel-body identifications">
+                    <p>
+                      {{'identify.reportIntro' | translate}}<br>
+                      <a class="link btn btn-primary identify-form" [routerLink]="['/vihko/' + formId | localize]">{{'identify.report' | translate}}</a>
+                      <span *lajiLoggedIn="false">({{'identify.requiresAuthentication' | translate}})</span>
+                    </p>
+                  </div>
+                </a>
               </div>
             </div>
-          </div>
-          <div class="col-md-5">
-            <div class="panel panel-default">
-              <div class="panel-body resent-map">
-                <div class="link resent-map-overlay" [routerLink]="['/observation'] | localize" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}"></div>
-                <laji-observation-map [settingsKey]="'frontMap'" [height]="305" [showControls]="false" [initWithWorldMap]="false" [showItemsWhenLessThan]="2000" [draw]="false" [query]="{time: mapStartDate + '/', countryId: 'ML.206', cache: true}"></laji-observation-map>
-              </div>
-              <div class="panel-footer">
-                <h2 class="panel-title">{{ 'home.main-page.recent' | translate }}</h2>
+            <div class="row">
+              <div class="col-sm-12">
+                <a [routerLink]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}" class="thumbnail panel panel-default">
+                  <div class="panel-heading">
+                    <h2 class="panel-title caption">{{'home.identify-help-title' | translate}}</h2>
+                  </div>
+                  <div class="panel-body identifications">
+                    <p>{{'home.identify-help-intro' | translate}}</p>
+                    <div class="identification-images">
+                      <div class="link blocking-overlay"></div>
+                      <laji-gallery [showPaginator]="false" [limit]="12" [showPopover]="false" [view]="'compact'" [sort]="['document.firstLoadDate DESC']" [showViewSwitch]="false" [query]="{}" [pageSize]="20"></laji-gallery>
+                    </div>
+                  </div>
+                </a>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div style="background-color: #ECF0F1;" class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1">
+      <div class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1 dark-bg">
         <div class="news-panel">
           <laji-news-list></laji-news-list>
         </div>

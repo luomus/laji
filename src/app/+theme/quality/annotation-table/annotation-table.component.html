@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col-sm-4" id="group-select-container">
+    <label>{{'filter.informalTaxonGroup' | translate}}:</label>
+    <observation-group-select
+      name="group'"
+      (onSelect)="onSelectChange()"
+      [position]="'left'"
+      [(ngModel)]="group"
+      [lang]="translateService.currentLang">
+      {{'observation.active.informalTaxonGroupAll'|translate}}
+    </observation-group-select>
+  </div>
+  <div class="col-sm-5 col-md-4 pull-right" id="datepicker-container">
+    <label>{{'quality.filterByDate' | translate}}:</label>
+    <div class="form-inline">
+      <laji-datepicker
+        [(ngModel)]="timeStart"
+        [viewFormat]="'DD.MM.YYYY'"
+        [otherFormats]="['D.M.YYYY', 'YYYY']"
+        [format]="'YYYY-MM-DD'"
+        [addonText]="'quality.timeStart' | translate"
+        (onSelect)="onSelectChange()"
+        (change)="onSelectChange()"
+        name="timeStart"></laji-datepicker>
+      <laji-datepicker
+        [(ngModel)]="timeEnd"
+        [viewFormat]="'DD.MM.YYYY'"
+        [otherFormats]="['D.M.YYYY', 'YYYY']"
+        [toLastOfYear]="true"
+        [format]="'YYYY-MM-DD'"
+        [addonText]="'quality.timeEnd' | translate"
+        (onSelect)="onSelectChange()"
+        (change)="onSelectChange()"
+        name="timeEnd"></laji-datepicker>
+    </div>
+
+  </div>
+</div>
+
+<laji-datatable [loading]="loading"
+                [rows]="result.results"
+                [columns]="columns"
+                [showRowAsLink]="true"
+                [count]="result.total"
+                [page]="result.currentPage"
+                [pageSize]="result.pageSize"
+                [height]="'calc(80vh - 30px)'"
+                [rowHeight]="getRowHeight"
+                (rowSelect)="showDocument($event)"
+                (pageChange)="setPage($event)"
+                (sortChange)="onSort($event)">
+</laji-datatable>
+
+<div class="modal fade" bsModal #documentModal="bs-modal"
+     tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <laji-document [uri]="shownDocument" [highlight]="highlightId"></laji-document>
+      </div>
+    </div>
+  </div>
+</div>

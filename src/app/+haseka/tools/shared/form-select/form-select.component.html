@@ -1,0 +1,6 @@
+<select class="form-control" [ngModel]="formID" (ngModelChange)="formSelected($event)" [disabled]="forms.length === 0 || disabled">
+  <option value="" selected disabled>Valitse lomake</option>
+  <option *ngFor="let form of forms" [value]="form.id">
+    {{form.title}}
+  </option>
+</select>

@@ -1,0 +1,27 @@
+<div class="row">
+  <div *ngFor="let table of tables" class="col-xs-12 col-sm-4 most-active-table">
+    <div class="datatable-top-header-wrapper ngx-datatable material">
+      <div class="datatable-top-header datatable-header">
+        <div class="datatable-header-cell">
+          <span class="datatable-header-cell-wrapper" title="{{'quality.mostActive.' + table.prop | translate}}">
+            <span class="datatable-header-cell-label">
+              {{'quality.mostActive.' + table.prop | translate}}
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <laji-datatable
+      class="most-active-table"
+      [rows]="table.data"
+      [columns]="columns"
+      [loading]="loading"
+      [columnMode]="'force'"
+      [virtualScrolling]="false"
+      [showFooter]="false"
+      [showHeader]="false">
+    </laji-datatable>
+  </div>
+</div>
+

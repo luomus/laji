@@ -20,6 +20,8 @@ export class GalleryComponent implements OnChanges {
   @Input() extendedInfo = false;
   @Input() tick;
   @Input() pageSize = 50;
+  @Input() limit = 1000;
+  @Input() showPaginator = true;
   @Input() shortPager = false;
   @Input() eventOnImageClick = false;
   @Input() showViewSwitch = false;
@@ -63,7 +65,7 @@ export class GalleryComponent implements OnChanges {
     query.hasUnitMedia = true;
     this.cd.markForCheck();
     this.warehouseApi.warehouseQueryListGet(query, [
-        'unit.taxonVerbatim,unit.linkings.taxon.vernacularName,unit.linkings.taxon.scientificName',
+        'unit.taxonVerbatim,unit.linkings.taxon.vernacularName,unit.linkings.taxon.scientificName,unit.reportedInformalTaxonGroup',
         'unit.media',
         // 'gathering.media',
         // 'document.media',
@@ -74,13 +76,17 @@ export class GalleryComponent implements OnChanges {
       .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .map((data) => {
         const images = [];
-        this.total = data.total;
+        this.total = Math.min(data.total, this.limit);
         if (data.results) {
-          data.results.map((items) => {
+          data.results.map(items => {
+            const group = (items['unit'] && items['unit']['reportedInformalTaxonGroup']) ? items['unit']['reportedInformalTaxonGroup'] : '';
             const verbatim = (items['unit'] && items['unit']['taxonVerbatim']) ? items['unit']['taxonVerbatim'] : '';
             ['unit'].map((key) => {
               if (items[key] && items[key].media) {
                 items[key].media.map(media => {
+                  if (images.length >= this.limit) {
+                    return;
+                  }
                   media['documentId'] = items['document']['documentId'];
                   media['unitId'] = items['unit']['unitId'];
                   media['vernacularName'] = items.unit
@@ -90,7 +96,7 @@ export class GalleryComponent implements OnChanges {
                   media['scientificName'] = items['unit']
                     && items['unit']['linkings']
                     && items['unit']['linkings']['taxon']
-                    && items['unit']['linkings']['taxon']['scientificName'] || verbatim || '';
+                    && items['unit']['linkings']['taxon']['scientificName'] || verbatim || group || '';
                   images.push(media);
                 });
               }

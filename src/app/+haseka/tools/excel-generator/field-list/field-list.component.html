@@ -1,0 +1,16 @@
+<div class="panel panel-default">
+  <div class="panel-heading" *ngIf="showTitle">
+    <strong>{{title}}</strong>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      <li class="list-group-item"
+          [class.link]="!field.required"
+          *ngFor="let field of fields | levelFilter:parent"
+          (click)="onClick(field)"
+          [ngClass]="{active: selected.indexOf(field.key) > -1 || field.required}">
+        {{field.label || field.key}} <span class="required" *ngIf="field.required">*</span>
+      </li>
+    </ul>
+  </div>
+</div>

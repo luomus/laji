@@ -1,0 +1,15 @@
+.data-container {
+  margin-bottom: 15px;
+}
+
+.action {
+  margin-left: 3px;
+}
+
+.mapping-body {
+  overflow: auto;
+}
+
+.map-buttons .btn {
+  margin-left: 5px;
+}

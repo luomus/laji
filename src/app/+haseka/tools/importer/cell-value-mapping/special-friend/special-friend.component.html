@@ -1,0 +1,16 @@
+<table class="table">
+  <tr *ngFor="let value of invalidValues">
+    <td>
+      <div class="form-control-static">
+        {{value}}
+      </div>
+    </td>
+    <td>
+      <laji-mapping-select
+        [disabled]="validValues.length === 0"
+        [value]="currentValues && currentValues[value] || ''"
+        [options]="validValues"
+        (selected)="valueMapped(value, $event)"></laji-mapping-select>
+    </td>
+  </tr>
+</table>

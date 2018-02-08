@@ -27,7 +27,7 @@
       <li *ngFor="let census of gathering.taxonCensus" [tooltip]="census.type | toQName | label">{{census.taxonId | toQName | taxon}}</li>
     </ul>
   </laji-row>
-  <laji-facts [show]="showFacts" [facts]="gathering.facts"></laji-facts>
+  <laji-facts [show]="showFacts" [facts]="gathering.facts | factNotIn:['http://tun.fi/MY.namedPlaceID']"></laji-facts>
   <ng-container *ngFor="let unit of gathering?.units">
     <ng-container *ngIf="(unit.unitId === highlight && showOnlyHighlightedUnit) || !showOnlyHighlightedUnit">
       <laji-unit [identifying]="identifying" [openAnnotation]="openAnnotation" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [unit]="unit" [highlight]="highlight"></laji-unit>

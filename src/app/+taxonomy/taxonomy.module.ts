@@ -13,17 +13,19 @@ import { SpeciesListComponent } from './species-list/species-list.component';
 import { ChildrenListComponent } from './info-card/children-list/children-list.component';
 import { TaxonomyApi } from '../shared/api/TaxonomyApi';
 import { InformalTaxonGroupApi } from '../shared/api/InformalTaxonGroupApi';
-import { TaxonInfoComponent } from './info-card/taxon/taxon-info.component';
+import { TaxonInfoComponent } from './info-card/taxon-info/taxon-info.component';
 import { TreeModule } from 'angular-tree-component';
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { DatatableModule } from '../shared-modules/datatable/datatable.module';
+import {BoldSequenceComponent} from './info-card/taxon-info/bold-sequence/bold-sequence.component';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, TreeModule, LangModule, DatatableModule],
+  imports: [routing, SharedModule, RouterModule, TreeModule, LangModule, DatatableModule, HttpClientModule],
   providers: [TaxonomyApi, InformalTaxonGroupApi],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
-    ChildrenListComponent
+    ChildrenListComponent, BoldSequenceComponent
   ],
 })
 export class TaxonomyModule {

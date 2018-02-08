@@ -19,3 +19,8 @@
 .profile-edit-row + .profile-edit-row {
   padding-top: 10px;
 }
+
+.self-link {
+  float: left;
+  margin-right: 15px;
+}

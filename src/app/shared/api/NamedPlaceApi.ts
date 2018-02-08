@@ -35,6 +35,7 @@ export interface NamedPlaceQuery {
   alternativeIDs?: string;
   municipality?: string;
   birdAssociationArea?: string;
+  includePublic?: boolean;
 }
 
 @Injectable()
@@ -91,7 +92,7 @@ export class NamedPlaceApi {
    * @param id Find document with the id
    * @param userToken User authentication token
    */
-  public findById(id: string, userToken?: string, extraHttpRequestParams?: any): Observable<models.Document> {
+  public findById(id: string, userToken?: string, extraHttpRequestParams?: any): Observable<NamedPlace> {
     const path = this.basePath + '/named-places/{id}'
         .replace('{' + 'id' + '}', String(id));
 
@@ -144,25 +145,14 @@ export class NamedPlaceApi {
       queryParameters.set('pageSize', pageSize);
     }
 
-    if (query.userToken !== undefined) {
-      queryParameters.set('personToken', query.userToken);
-    }
-
-    if (query.collectionID !== undefined) {
-      queryParameters.set('collectionID', query.collectionID);
-    }
-
-    if (query.alternativeIDs !== undefined) {
-      queryParameters.set('alternativeIDs', query.alternativeIDs);
-    }
-
-    if (query.municipality !== undefined) {
-      queryParameters.set('municipality', query.municipality);
-    }
-
-    if (query.birdAssociationArea !== undefined) {
-      queryParameters.set('birdAssociationArea', query.birdAssociationArea);
-    }
+    Object.keys(query).forEach(key => {
+      if (typeof query[key] === 'string') {
+        let targetKey = key === 'userToken' ? 'personToken' : key;
+        queryParameters.set(targetKey, query[key]);
+      } else if (typeof query[key] === 'boolean') {
+        queryParameters.set(key, query[key] ? 'true' : 'false');
+      }
+    });
 
     let requestOptions: RequestOptionsArgs = {
       method: 'GET',

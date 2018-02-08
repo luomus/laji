@@ -44,7 +44,8 @@ export class SearchQuery {
     'individualId',
     'secureReason',
     'editorId',
-    'taxonReliability'
+    'taxonReliability',
+    'annotationType'
   ];
 
   booleanTypes = [
@@ -74,7 +75,9 @@ export class SearchQuery {
     'taxonRankId',
     'ykj10km',
     'ykj10kmCenter',
-    'qualityIssues'
+    'qualityIssues',
+    'annotatedBefore',
+    'annotatedLaterThan'
   ];
 
   obscure = [

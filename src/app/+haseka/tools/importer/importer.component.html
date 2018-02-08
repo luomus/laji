@@ -1,0 +1,147 @@
+<h3>
+  Tallenna havaintoja massatallennuspohjalla
+</h3>
+
+<div class="row data-container">
+  <div class="col-sm-8">
+    <input type="file" class="form-control" (change)="onFileChange($event)" multiple="false" />
+  </div>
+  <div class="col-sm-3 map-buttons">
+    <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="clearUserMapping()" tooltip="Poista datan kuvaus" placement="left">
+      <i class="glyphicon glyphicon-remove"></i>
+    </div>
+    <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="showUserMapping()" tooltip="Nykyinen datan kuvaus" placement="left">
+      <i class="glyphicon glyphicon-open"></i>
+    </div>
+    <div class="btn btn-default pull-right" (click)="userMapModal.show()" tooltip="Tuo datan kuvaus" placement="left">
+      <i class="glyphicon glyphicon-save"></i>
+    </div>
+  </div>
+</div>
+<div class="row data-container" *ngIf="filename">
+  <div class="col-sm-10">
+    Käsitellään tiedostoa: <strong>{{filename}}</strong>
+  </div>
+</div>
+
+<div class="row data-container" *ngIf="!formID && !!bstr">
+  <div class="col-sm-5">
+    <laji-form-select [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
+  </div>
+</div>
+<alert [type]="'danger'" *ngIf="status === 'invalidFileType'">
+  <strong>Virheellinen tiedosto formaatti.</strong> Tällä hetkellä tuettuina ovat vain Excel sekä OpenDocument formaatit.
+</alert>
+<alert [type]="'danger'" *ngIf="status === 'ambiguousColumns'">
+  <strong>Otsikko rivullä usea samanniminen sarake!</strong>
+  <br>Varmista että otsikko rivillä ei esiinny samaa nimeä useaan kertaan. Nyt löytyi sarakkeet "{{ambiguousColumns.join('", "')}}" useaan kertaan.
+</alert>
+<ng-container *ngIf="formID && dataColumns && data">
+  <div class="data-container">
+    <laji-datatable
+      #dataTable
+      class="import-table"
+      [showRowAsLink]="false"
+      [showFooter]="false"
+      [virtualScrolling]="true"
+      [clientSideSorting]="false"
+      [height]="'50vh'"
+      [rows]='data'
+      [count]="data.length"
+      [page]="1"
+      [pageSize]="data.length"
+      [columns]="dataColumns">
+    </laji-datatable>
+  </div>
+  <div class="row data-container">
+    <div class="col-sm-12">
+      <strong *ngIf="valid && status === 'importReady'; else invalid">
+        Valmis tallennettavaksi
+      </strong>
+      <ng-template #invalid>
+        <button type="button" [disabled]="status !== 'importReady' && status !== 'invalidData'" (click)="validate()" class="btn btn-primary">Tarkista data</button>
+      </ng-template>
+      <laji-spinner [spinning]="status === 'validating'"></laji-spinner>
+
+      <button type="button" [disabled]="status !== 'importReady'" (click)="save(publ)" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
+      <button type="button" [disabled]="status !== 'importReady'" (click)="save(priv)" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template let-rowIndex="rowIndex" #rowNumber>
+  {{rowIndex + 2}}
+</ng-template>
+
+<ng-template let-value="value" #statusCol>
+  <laji-status-cell [value]="value" [fields]="fields"></laji-status-cell>
+</ng-template>
+
+<div class="modal fade" bsModal #mappingModal="bs-modal" tabindex="-1" role="dialog"
+     [config]="{keyboard: false, ignoreBackdropClick: true}"
+     aria-labelledby="column and value mapping" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body mapping-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="shouldCloseMapping()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <laji-col-mapper
+          *ngIf="status === 'colMapping'"
+          (mappingDone)="colMappingDone($event)"
+          [fields]="fields"
+          [headers]="header"
+          [colMapping]="colMap"
+          (fieldSelected)="mapCol($event)"></laji-col-mapper>
+        <laji-cell-value-mapping
+          *ngIf="status === 'dataMapping'"
+          (done)="rowMappingDone($event)"
+          [fields]="fields"
+          [data]="data"
+          [colMapping]="colMap"></laji-cell-value-mapping>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #userMapModal="bs-modal" tabindex="-1" role="dialog"
+     aria-labelledby="column and value mapping" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-body mapping-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="userMapModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h1>
+          Kuvauksen tuonti
+        </h1>
+        <p>Voit kopioida alla olevaan kenttään laji.fi:n ymmärtämän kuvauksen datastasi.</p>
+        <textarea rows="10" #userMapping class="form-control"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" tabindex="-1" class="btn btn-primary btn-sm" (click)="useUserMapping(userMapping.value)">Käytä</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #currentUserMapModal="bs-modal" tabindex="-1" role="dialog"
+     aria-labelledby="column and value mapping" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-body mapping-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="currentUserMapModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h1>
+          Datan nykyinen kuvaus
+        </h1>
+        <p>
+          Ottamalla talteen tämän kuvauksen, voit tuoda jatkossa samanmuotoista dataa ilman, että sinun tarvitsee
+          uudelleen kertoa mistä arvoissa on kyse.
+        </p>
+        <textarea rows="10" class="form-control">{{userMappings | json}}</textarea>
+      </div>
+    </div>
+  </div>
+</div>

@@ -8,9 +8,9 @@ import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { Util } from '../../shared/service/util.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import queryString from 'query-string';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
+import { HttpParams } from '@angular/common/http';
 
 enum RequestStatus {
   error = <any> 'error',
@@ -64,6 +64,9 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   }
 
   @Input() set query(query: WarehouseQueryInterface) {
+    if (!query) {
+      return;
+    }
     this.hasPersonalData = !!query.editorPersonToken || !!query.observerPersonToken || !!query.editorOrObserverPersonToken;
     const warehouseQuery: WarehouseQueryInterface = Util.clone(query);
     if (warehouseQuery.editorPersonToken) {
@@ -149,7 +152,8 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     if (queryParams['editorOrObserverPersonToken']) {
       delete queryParams['editorOrObserverPersonToken'];
     }
-    this.csvParams = queryString.stringify(queryParams);
+    const params = new HttpParams({fromObject: <any>queryParams});
+    this.csvParams = params.toString();
   }
 
   makePrivateRequest() {

@@ -40,7 +40,8 @@
         </div>
         <div class="form-group" *ngIf="(getCurrentUser() | async).id === userId">
           <div class="col-sm-12 well">
-            <a [href]="personSelfUrl | safe:'url'" class="btn btn-success">{{'profile.accountSettings'|translate}}</a>
+            <a [href]="personSelfUrl | safe:'url'" class="btn btn-success self-link">{{'profile.accountSettings'|translate}}</a>
+            <p>{{'selfUrl.intro' | translate}}</p>
           </div>
         </div>
       </div>

@@ -3,7 +3,6 @@ import {
   EventEmitter,
   HostListener,
   Input,
-  OnInit,
   Output,
   ViewChild
 } from '@angular/core';
@@ -14,14 +13,13 @@ import { NamedPlacesService } from '../../named-places.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { WindowRef } from '../../../../shared/windows-ref';
 import { ToastsService } from '../../../../shared/service/toasts.service';
-import { FormPermissionService } from '../../../../+haseka/form-permission/form-permission.service';
 
 @Component({
   selector: 'laji-np-edit-form',
   templateUrl: './np-edit-form.component.html',
   styleUrls: ['./np-edit-form.component.css']
 })
-export class NpEditFormComponent implements OnInit {
+export class NpEditFormComponent {
   @Input() lang: string;
   @Input() formData: any;
   @Input() namedPlace: NamedPlace;
@@ -31,7 +29,6 @@ export class NpEditFormComponent implements OnInit {
   saving = false;
   status = '';
   error = '';
-  publicAllowed = false;
 
   private hasChanges = false;
   private isPublic = false;
@@ -43,15 +40,8 @@ export class NpEditFormComponent implements OnInit {
     private namedPlaceService: NamedPlacesService,
     private winRef: WindowRef,
     private translate: TranslateService,
-    private toastsService: ToastsService,
-    private formPermissionService: FormPermissionService
+    private toastsService: ToastsService
   ) { }
-
-  ngOnInit() {
-    this.userService.getUser().subscribe(user => {
-      this.publicAllowed = this.formPermissionService.isAdmin({'id': ''}, user);
-    });
-  }
 
   @HostListener('window:beforeunload', ['$event'])
   preventLeave($event) {

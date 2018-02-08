@@ -60,7 +60,7 @@ export class NamedPlacesService {
       );
   }
 
-  private _getAllNamePlaces(query: NamedPlaceQuery, page = 1, namedPlaces = [])  {
+  private _getAllNamePlaces(query: NamedPlaceQuery, page = 1, namedPlaces = []): Observable<NamedPlace[]>  {
     return this.namedPlaceApi
       .findAll(
         {

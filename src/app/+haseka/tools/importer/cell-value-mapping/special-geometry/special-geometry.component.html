@@ -1,0 +1,38 @@
+<table class="table" *ngIf="mapping">
+  <tr>
+    <td>
+      <ul class="source-list">
+        <li
+          *ngFor="let invalidValue of invalidValues; let i = index"
+          class="link"
+          [class.active]="i === active"
+          (click)="setActive(i)"
+        >
+          <i *ngIf="i === active" class="glyphicon glyphicon-triangle-right"></i>
+          {{invalidValue}}
+        </li>
+      </ul>
+    </td>
+    <td class="map-cell">
+      <div class="map-container">
+        <laji-map3 [options]="lajiMapOptions" #lajiMap></laji-map3>
+      </div>
+    </td>
+    <td>
+      <button type="button"
+              *ngIf="field && !field.required"
+              [ngClass]="{'active btn-danger': mapping[value] === ignore}"
+              class="btn btn-sm"
+              (click)="valueMap(value, mapping[value] === ignore ? undefined : ignore)"
+      ><i class="glyphicon glyphicon-remove"></i></button>
+    </td>
+    <td>
+      <button type="button"
+              [disabled]="!mapping[value]"
+              [ngClass]="{'btn-success': mapping[value]}"
+              class="btn btn-sm pull-left"
+              (click)="setActive(active + 1)"
+      ><i class="glyphicon glyphicon-ok"></i></button>
+    </td>
+  </tr>
+</table>

@@ -77,7 +77,7 @@ export class Map3Component implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   setData(data) {
-    if (!this.lajiMap || !this.data) {
+    if (!this.lajiMap || !data) {
       return;
     }
     this.lajiMap.setData(data);

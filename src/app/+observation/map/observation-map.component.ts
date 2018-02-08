@@ -242,7 +242,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     const features = [];
     this.query.coordinates.map(coord => {
       features.push(
-        this.coordinateService.getFeature(
+        this.coordinateService.getFeatureFromGeometry(
           this.coordinateService.convertLajiEtlCoordinatesToGeometry(coord)
         )
       );

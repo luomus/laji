@@ -73,19 +73,31 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    Object.keys(this.lajiMap.lajiMap.pointIdxsToDistances)
-      .map(idx => {
-        const page = Math.floor((+idx) / this.pageSize);
-        if (!this.pagedDistance[page]) {
-          this.pagedDistance[page] = [];
-        }
-        const dist = parseInt(this.lajiMap.lajiMap.pointIdxsToDistances[idx], 10);
-        this.pagedDistance[page].push(dist);
-      });
-    if (this.lajiMap.lajiMap._corridorLayers && this.lajiMap.lajiMap._corridorLayers[0]) {
-      const group = L.featureGroup(this.lajiMap.lajiMap._corridorLayers[0]);
-      this.lajiMap.lajiMap.map.fitBounds(group.getBounds(), {padding: [-20, -20]});
+    const geometries = this.getGeometry();
+    if (!geometries.coordinates) {
+      return;
     }
+    let last;
+    geometries.coordinates.forEach((coord, idx) => {
+      const page = Math.floor((+idx) / this.pageSize);
+      if (!this.pagedDistance[page]) {
+        this.pagedDistance[page] = [];
+      }
+      const dist = MapUtil.getLineTransectStartEndDistancesForIdx({geometry: geometries}, idx, 10);
+      if (last && last[0] === dist[0]) {
+        return;
+      }
+      last = dist;
+      this.pagedDistance[page].push(last[0]);
+    });
+    if (last) {
+      const lastPage = Math.floor(geometries.coordinates.length / this.pageSize);
+      if (!this.pagedDistance[lastPage]) {
+        this.pagedDistance[lastPage] = [];
+      }
+      this.pagedDistance[lastPage].push(last[1]);
+    }
+    this.lajiMap.lajiMap.zoomToData();
     setTimeout(() => {
       const pages = this.pagedDistance.length;
       this.total = pages + 1;
@@ -102,11 +114,9 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     };
   }
 
-  private getGeometry() {
+  private getGeometry(): any {
     if (this.namedPlace.prepopulatedDocument && this.namedPlace.prepopulatedDocument.gatherings) {
-      return MapUtil.latLngSegmentsToGeoJSONGeometry(this.namedPlace.prepopulatedDocument.gatherings
-        .map(gathering => gathering.geometry && gathering.geometry.coordinates || [0, 0])
-      );
+      return {type: 'MultiLineString', coordinates: this.namedPlace.prepopulatedDocument.gatherings.map(item => item.geometry.coordinates)};
     }
     return {};
   }

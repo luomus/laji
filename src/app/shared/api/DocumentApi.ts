@@ -61,6 +61,12 @@ export class DocumentApi {
       queryParameters.set('personToken', userToken);
     }
 
+    if (typeof extraHttpRequestParams === 'object') {
+      Object.keys(extraHttpRequestParams).map((key) => {
+        queryParameters.set(key, extraHttpRequestParams[key]);
+      })
+    }
+
     let requestOptions: RequestOptionsArgs = {
       method: 'POST',
       headers: headerParams,
@@ -241,6 +247,34 @@ export class DocumentApi {
       headers: headerParams,
       search: queryParameters
     };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  public validate(data: models.Document, extraHttpRequestParams?: any ): Observable<any> {
+    const path = this.basePath + `/documents/validate`;
+
+    const queryParameters = new URLSearchParams();
+    const headerParams = this.defaultHeaders;
+    if (typeof extraHttpRequestParams === 'object') {
+      Object.keys(extraHttpRequestParams).map((key) => {
+        queryParameters.set(key, extraHttpRequestParams[key]);
+      })
+    }
+
+    const requestOptions: RequestOptionsArgs = {
+      method: 'POST',
+      headers: headerParams,
+      search: queryParameters
+    };
+    requestOptions.body = JSON.stringify(data);
 
     return this.http.request(path, requestOptions)
       .map((response: Response) => {

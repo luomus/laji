@@ -1,0 +1,21 @@
+<table class="table">
+  <tr *ngFor="let value of invalidValues">
+    <td class="value-col">
+      <div class="form-control-static">
+        {{value}}
+      </div>
+    </td>
+    <td>
+      <laji-taxon-autocomplete
+        [placeholder]="'Etsi haluttu laji'"
+        [taxon]="value"
+        (taxonSelect)="onTaxonSelect(value, $event)"
+      ></laji-taxon-autocomplete>
+    </td>
+    <td class="ok-col">
+      <span class="label label-success" *ngIf="mapping[value]">
+        <i class="glyphicon glyphicon-ok btn-success"></i>
+      </span>
+    </td>
+  </tr>
+</table>

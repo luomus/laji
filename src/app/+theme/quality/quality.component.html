@@ -1,0 +1,13 @@
+<div class="container-fluid">
+  <h1>{{'navigation.quality' | translate}}</h1>
+
+  <div>
+    <h2>{{'quality.annotations.title' | translate}}</h2>
+    <laji-annotation-table></laji-annotation-table>
+  </div>
+
+  <div>
+    <h2>{{'quality.mostActive.title' | translate}}</h2>
+    <laji-most-active-users-table [maxLength]="50"></laji-most-active-users-table>
+  </div>
+</div>

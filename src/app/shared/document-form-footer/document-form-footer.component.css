@@ -1,0 +1,33 @@
+.form-footer {
+  position: fixed;
+  z-index: 2;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  padding:10px 40px 10px 10px;
+  background-color: rgba(44, 62, 80, 0.9);
+}
+
+.info {
+  color: #fff;
+  padding-top: 4px;
+}
+
+.info a {
+  color: #fff;
+}
+.info a:hover {
+  color: #c8c8c8;
+  text-decoration: none;
+}
+.status {
+}
+
+.success {
+  color: #8cc182;
+}
+
+.error {
+  color: #fd8d8d;
+}

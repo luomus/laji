@@ -88,6 +88,15 @@ import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
 import { ObservationGroupSelectComponent } from '../+observation/group-select/group-select.component';
 import { SourcePipe } from './pipe/source.pipe';
 import { TaxonNamePipe } from './pipe/taxon-name.pipe';
+import { DocumentFormFooterComponent } from './document-form-footer/document-form-footer.component';
+import { InformalTaxonGroupApi } from './api/InformalTaxonGroupApi';
+import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
+import {FriendService} from './service/friend.service';
+import { DatePickerComponent } from './datepicker/datepicker.component'
+import { TaxonNameComponent } from './taxon-name/taxon-name.component';
+import { FactNotInPipe } from './pipe/fact-not-in.pipe';
+import {HttpClientModule} from '@angular/common/http';
+import {LajiApiService} from './service/laji-api.service';
 
 
 @NgModule({
@@ -101,13 +110,16 @@ import { TaxonNamePipe } from './pipe/taxon-name.pipe';
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
-    ObservationGroupSelectComponent, SourcePipe
+    ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, DatePickerComponent,
+    TaxonNameComponent,
+    FactNotInPipe
   ],
   imports: [
     ToastModule,
     FormsModule,
     CommonModule,
     HttpModule,
+    HttpClientModule,
     RouterModule,
     LangModule,
     TranslateModule,
@@ -127,7 +139,8 @@ import { TaxonNamePipe } from './pipe/taxon-name.pipe';
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, LocalizePipe, HideScrollDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
-    SourcePipe
+    SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, DatePickerComponent, TaxonNameComponent,
+    FactNotInPipe
   ]
 })
 export class SharedModule {
@@ -135,6 +148,7 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
+        InformalTaxonGroupApi,
         LajiExternalService,
         UserService,
         NewsApi,
@@ -164,6 +178,10 @@ export class SharedModule {
         DialogService,
         ScriptService,
         DocumentDeActivateGuard,
+        FriendService,
+        TaxonNamePipe,
+        ToQNamePipe,
+        LajiApiService,
         {provide: Http, useClass: AuthenticatedHttpService}
       ]
     };

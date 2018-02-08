@@ -7,9 +7,15 @@ import { MetadataService } from './metadata.service';
 import { CacheService } from './cache.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 import { Util } from './util.service';
+import { InformalTaxonGroup } from '../model';
+import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
+import {SourceService} from './source.service';
 
 @Injectable()
 export class TriplestoreLabelService {
+
+  static cache = {};
+  static requestCache = {};
 
   static readonly cacheProps = 'triplestoreLabels';
   static readonly cacheClasses = 'triplestoreClassLabels';
@@ -20,12 +26,43 @@ export class TriplestoreLabelService {
   constructor(private metadataApi: MetadataApi,
               private metadataService: MetadataService,
               private logger: Logger,
+              private informalTaxonService: InformalTaxonGroupApi,
+              private sourceService: SourceService,
               private cacheService: CacheService
   ) {
     this.getAllLabels();
   };
 
   public get(key, lang): Observable<string> {
+    return this._get(key, lang)
+      .catch(err => {
+        this.logger.warn('Failed to fetch label for ' + key, err);
+        return Observable.of(key);
+      })
+  }
+
+  private _get(key, lang): Observable<string> {
+    if (TriplestoreLabelService.cache[key]) {
+      if (TriplestoreLabelService.requestCache[key]) {
+        delete TriplestoreLabelService.requestCache[key];
+      }
+      return Observable.of(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
+    }
+    const parts = key.split('.');
+    switch (parts[0]) {
+      case 'MVL':
+        if (!TriplestoreLabelService.requestCache[key]) {
+          TriplestoreLabelService.requestCache[key] = this.informalTaxonService.informalTaxonGroupFindById(key, 'multi')
+            .map((group: InformalTaxonGroup) => group.name)
+            .do(name => TriplestoreLabelService.cache[key] = name)
+            .map(name => MultiLangService.getValue((name as any), lang))
+            .share();
+        }
+        return TriplestoreLabelService.requestCache[key];
+      case 'KE':
+        return this.sourceService.getName(key, lang);
+    }
+
     if (this.labels) {
       return Observable.of(MultiLangService.getValue(this.labels[key], lang));
     } else if (this.pending) {

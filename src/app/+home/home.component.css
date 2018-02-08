@@ -4,6 +4,30 @@
   flex-direction: column;
   z-index: auto;
 }
+.vihko-box {
+  height: 170px;
+}
+.thumbnail {
+  text-decoration: none;
+  text-align: center;
+  padding: 0;
+  color: inherit;
+}
+.identifications {
+  text-align: left;
+}
+
+.identifications .btn {
+  margin-top: 5px !important;
+}
+
+.identification-images {
+  position: relative;
+}
+
+.identify-form {
+  z-index: 1000;
+}
 
 .forum, .forum:hover, .forum:visited, .forum:active {
   color: #fff;
@@ -16,7 +40,7 @@
   padding: 6px;
   position: relative;
 }
-.resent-map-overlay {
+.blocking-overlay {
   position: absolute;
   z-index: 1000;
   top: 0;

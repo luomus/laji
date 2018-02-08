@@ -16,12 +16,21 @@ import { WbcResultComponent } from './wbc/wbc-result/wbc-result.component';
 import { WbcFormComponent } from './wbc/wbc-form/wbc-form.component';
 import { WbcOwnSubmissionsComponent } from './wbc/wbc-own-submissions/wbc-own-submissions.component';
 import { IdentifyComponent } from './identify/identify.component';
+import { QualityComponent } from './quality/quality.component';
 import { NafiTemplatesComponent } from './nafi/nafi-templates/nafi-templates.component';
 import { NamedPlaceComponent } from '../shared-modules/named-place/named-place/named-place.component';
+import { ThemeComponent } from './theme.component';
+import { LineTransectComponent } from './line-transect/line-transect.component';
+import { LineTransectInstructionsComponent } from './line-transect/line-transect-instructions/line-transect-instructions.component';
+import { LineTransectResultComponent } from './line-transect/line-transect-result/line-transect-result.component';
+import { LineTransectFormComponent } from './line-transect/line-transect-form/line-transect-form.component';
+import { LineTransectMyDocumentListComponent } from './line-transect/line-transect-my-document-list/line-transect-my-document-list.component';
+import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 
 const routes: Routes = [
+  {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
   {
-    path: 'wbc',
+    path: 'talvilintulaskenta',
     component: WbcComponent,
     children: [
       {path: '', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' }},
@@ -58,8 +67,29 @@ const routes: Routes = [
       {path: 'instructions', pathMatch: 'full', component: NafiInstructionsComponent, data: { title: 'nafi.stats.title' } }
     ]
   },
+  {
+    path: 'vakiolinjat',
+    component: LineTransectComponent,
+    children: [
+      {path: '', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' }},
+      {path: 'stats', pathMatch: 'full', component: LineTransectResultComponent, data: { title: 'lineTransect.title' }},
+      {path: 'form', pathMatch: 'full', component: LineTransectFormComponent, canActivate: [OnlyLoggedIn]},
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: LineTransectFormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard]
+      },
+      {path: 'ownSubmissions', pathMatch: 'full', component: LineTransectMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'instructions', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' } },
+      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent },
+      {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent }
+    ]
+  },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
   {path: 'identify',  pathMatch: 'full', component: IdentifyComponent, data: {title: 'navigation.identify'}},
+  {path: 'quality',  pathMatch: 'full', component: QualityComponent, data: {title: 'navigation.quality'}},
   {path: 'ykj',  pathMatch: 'full', component: YkjComponent, data: {title: 'navigation.ykj'}},
   {path: 'emk',  pathMatch: 'full', component: EmkComponent, data: {title: 'Eliömaakunnat'}}
 ];

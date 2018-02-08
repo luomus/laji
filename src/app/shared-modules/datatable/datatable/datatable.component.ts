@@ -6,6 +6,7 @@ import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent } from '@swimlane/ngx-datatable';
 import { Observable } from 'rxjs/Observable';
 import { CacheService } from '../../../shared/service/cache.service';
+import { Annotation } from '../../../shared/model/Annotation';
 
 const CACHE_COLUMN_SETINGS = 'datatable-col-width';
 
@@ -36,6 +37,10 @@ export class DatatableComponent {
   @ViewChild('warehouseLabel') warehouseLabelTpl: TemplateRef<any>;
   @ViewChild('toSemicolon') toSemicolonTpl: TemplateRef<any>;
   @ViewChild('numeric') numericTpl: TemplateRef<any>;
+  @ViewChild('date') dateTpl: TemplateRef<any>;
+  @ViewChild('user') userTpl: TemplateRef<any>;
+  @ViewChild('annotation') annotationTpl: TemplateRef<any>;
+  @ViewChild('image') imageTpl: TemplateRef<any>;
 
   @Input() rows: any[];
   @Input() loading = false;
@@ -44,17 +49,22 @@ export class DatatableComponent {
   @Input() height = '100%';
   @Input() showHeader = true;
   @Input() showFooter = true;
+  @Input() sortType = 'multi';
   @Input() virtualScrolling = true;
   @Input() totalMessage = '';
   @Input() clientSideSorting = false;
   @Input() columnMode = 'force';
   @Input() resizable = true;
   @Input() showRowAsLink = true;
+  @Input() rowHeight = 35;
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
   @Output() reorder = new EventEmitter<any>();
   @Output() rowSelect = new EventEmitter<{documentId: string, unitId: string}>();
+
+  annotationTypes = Annotation.TypeEnum;
+  annotationClass = Annotation.AnnotationClassEnum;
 
   _offset: number;
   _columns: DatatableColumn[];

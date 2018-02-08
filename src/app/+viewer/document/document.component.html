@@ -22,7 +22,7 @@
       <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
       <laji-row [title]="'MM.keywords'" [value]="document.keywords"></laji-row>
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
-      <laji-facts [show]="showFacts" [facts]="document.facts"></laji-facts>
+      <laji-facts [show]="showFacts" [facts]="document.facts | factNotIn:['http://tun.fi/MY.formID','http://tun.fi/MZ.publicityRestrictions']"></laji-facts>
     </div>
     <div class="col-sm-5">
       <div class="row">
