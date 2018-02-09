@@ -7,15 +7,16 @@ import { MetadataService } from './metadata.service';
 import { CacheService } from './cache.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 import { Util } from './util.service';
-import { InformalTaxonGroup } from '../model';
+import { InformalTaxonGroup, Taxonomy } from '../model';
 import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
-import {SourceService} from './source.service';
+import { SourceService } from './source.service';
+import { TaxonomyApi } from '../api';
 
 @Injectable()
 export class TriplestoreLabelService {
 
   static cache = {};
-  static requestCache = {};
+  static requestCache: any = {};
 
   static readonly cacheProps = 'triplestoreLabels';
   static readonly cacheClasses = 'triplestoreClassLabels';
@@ -28,7 +29,8 @@ export class TriplestoreLabelService {
               private logger: Logger,
               private informalTaxonService: InformalTaxonGroupApi,
               private sourceService: SourceService,
-              private cacheService: CacheService
+              private cacheService: CacheService,
+              private taxonApi: TaxonomyApi
   ) {
     this.getAllLabels();
   };
@@ -61,6 +63,15 @@ export class TriplestoreLabelService {
         return TriplestoreLabelService.requestCache[key];
       case 'KE':
         return this.sourceService.getName(key, lang);
+      case 'MX':
+        if (!TriplestoreLabelService.requestCache[key]) {
+          TriplestoreLabelService.requestCache[key] = this.taxonApi.taxonomyFindBySubject(key, 'multi')
+            .map((taxon: Taxonomy) => taxon.vernacularName || taxon.scientificName)
+            .do(name => TriplestoreLabelService.cache[key] = name)
+            .map(name => MultiLangService.getValue((name as any), lang))
+            .share();
+        }
+        return TriplestoreLabelService.requestCache[key];
     }
 
     if (this.labels) {
