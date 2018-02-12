@@ -584,5 +584,7 @@
   "haseka.tools": "Tools",
   "selfUrl.intro": "Here you can manage the user names from other systems, etc.",
   "lineTransect.title": "Line transect",
-  "taxonomy.bold": "number of DNA barcodes"
+  "taxonomy.bold": "number of DNA barcodes",
+  "Forum": "Forum",
+  "technical": "technical"
 }

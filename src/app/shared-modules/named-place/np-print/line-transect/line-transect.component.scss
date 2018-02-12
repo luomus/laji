@@ -1,4 +1,4 @@
-$rowHeight: 29mm;
+$rowHeight: 27mm;
 $perPage: 10;
 
 @page {
@@ -7,9 +7,9 @@ $perPage: 10;
 }
 .page {
   position: relative;
-  margin: 0 auto;
-  width: 210mm;
-  height: 297mm;
+  margin: 10mm;
+  width: 190mm;
+  height: 277mm;
   padding-top: 5mm;
 }
 
