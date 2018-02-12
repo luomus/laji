@@ -585,5 +585,7 @@
   "haseka.tools": "Verktyg",
   "selfUrl.intro": "Här kan du hantera användarnamnen från andra system etc.",
   "lineTransect.title": "Line transect",
-  "taxonomy.bold": "antal DNA-streckkoder"
+  "taxonomy.bold": "antal DNA-streckkoder",
+  "Forum": "Forum",
+  "technical": "technical"
 }
