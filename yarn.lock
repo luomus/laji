@@ -3976,15 +3976,15 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-laji-form@^0.0.374:
-  version "0.0.374"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.374.tgz#10264d545c4643fc4cfa596eafac45df07ec48c5"
+laji-form@^0.0.375:
+  version "0.0.375"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.375.tgz#3ab4ef50e6442336307fc3fda92193a9aca57dee"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.323"
+    laji-map "^1.0.325"
     laji-validate "0.0.53"
     moment "*"
     prop-types "^15.5.8"
@@ -4003,9 +4003,9 @@ laji-form@^0.0.374:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@^1.0.323:
-  version "1.0.325"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.325.tgz#4cb60334cc6b510fddd56429fb2511082b3a5ce5"
+laji-map@^1.0.325, laji-map@^1.0.326:
+  version "1.0.326"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.326.tgz#15a65a516fc57c4a1af592b0f34f46584d59d751"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     babel-runtime "6.18.0"
@@ -4346,10 +4346,6 @@ merge-descriptors@1.0.1:
 methods@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
-
-mgrs@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/mgrs/-/mgrs-1.0.0.tgz#fb91588e78c90025672395cb40b25f7cd6ad1829"
 
 mgrs@~0.0.2:
   version "0.0.3"
@@ -7639,10 +7635,6 @@ widest-line@^2.0.0:
 window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
-
-wkt-parser@^1.2.0:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/wkt-parser/-/wkt-parser-1.2.1.tgz#3339689dbc549c103fc5c7447543534785ff8d4d"
 
 wordwrap@0.0.2:
   version "0.0.2"
