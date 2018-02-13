@@ -17,9 +17,10 @@ import { Title } from '@angular/platform-browser';
 })
 export class InformationComponent implements OnDestroy {
 
+  private static currentLang;
+
   information: Information;
   private paramSub: Subscription;
-  private transSub: Subscription;
 
   constructor(private route: ActivatedRoute,
               private informationApi: InformationApi,
@@ -30,18 +31,17 @@ export class InformationComponent implements OnDestroy {
               private title: Title
   ) {
     this.paramSub = this.route.params.subscribe(params => {
-      this.getInformation(params['id'] || null);
-    });
-    this.transSub = this.translate.onLangChange.subscribe(
-      () => {
+      if (InformationComponent.currentLang && InformationComponent.currentLang !== this.translate.currentLang) {
         this.getInformation();
+      } else {
+        this.getInformation(params['id'] || null);
       }
-    );
+      InformationComponent.currentLang = this.translate.currentLang;
+    });
   }
 
   ngOnDestroy() {
     this.paramSub.unsubscribe();
-    this.transSub.unsubscribe();
   }
 
   private getInformation(id?) {
