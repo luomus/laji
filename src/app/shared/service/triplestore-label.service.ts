@@ -51,27 +51,29 @@ export class TriplestoreLabelService {
       return Observable.of(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
     }
     const parts = key.split('.');
-    switch (parts[0]) {
-      case 'MVL':
-        if (!TriplestoreLabelService.requestCache[key]) {
-          TriplestoreLabelService.requestCache[key] = this.informalTaxonService.informalTaxonGroupFindById(key, 'multi')
-            .map((group: InformalTaxonGroup) => group.name)
-            .do(name => TriplestoreLabelService.cache[key] = name)
-            .map(name => MultiLangService.getValue((name as any), lang))
-            .share();
-        }
-        return TriplestoreLabelService.requestCache[key];
-      case 'KE':
-        return this.sourceService.getName(key, lang);
-      case 'MX':
-        if (!TriplestoreLabelService.requestCache[key]) {
-          TriplestoreLabelService.requestCache[key] = this.taxonApi.taxonomyFindBySubject(key, 'multi')
-            .map((taxon: Taxonomy) => taxon.vernacularName || taxon.scientificName)
-            .do(name => TriplestoreLabelService.cache[key] = name)
-            .map(name => MultiLangService.getValue((name as any), lang))
-            .share();
-        }
-        return TriplestoreLabelService.requestCache[key];
+    if (parts && typeof parts[1] === 'string' && !isNaN(parts[1])) {
+      switch (parts[0]) {
+        case 'MVL':
+          if (!TriplestoreLabelService.requestCache[key]) {
+            TriplestoreLabelService.requestCache[key] = this.informalTaxonService.informalTaxonGroupFindById(key, 'multi')
+              .map((group: InformalTaxonGroup) => group.name)
+              .do(name => TriplestoreLabelService.cache[key] = name)
+              .map(name => MultiLangService.getValue((name as any), lang))
+              .share();
+          }
+          return TriplestoreLabelService.requestCache[key];
+        case 'KE':
+          return this.sourceService.getName(key, lang);
+        case 'MX':
+          if (!TriplestoreLabelService.requestCache[key]) {
+            TriplestoreLabelService.requestCache[key] = this.taxonApi.taxonomyFindBySubject(key, 'multi')
+              .map((taxon: Taxonomy) => taxon.vernacularName || taxon.scientificName)
+              .do(name => TriplestoreLabelService.cache[key] = name)
+              .map(name => MultiLangService.getValue((name as any), lang))
+              .share();
+          }
+          return TriplestoreLabelService.requestCache[key];
+      }
     }
 
     if (this.labels) {
