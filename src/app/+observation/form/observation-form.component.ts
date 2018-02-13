@@ -124,6 +124,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       this.formService
         .load(environment.invasiveControlForm, this.translate.currentLang)
         .switchMap((form) => this.formPermissionService.hasEditAccess(form))
+        .catch(() => Observable.of(false))
         .subscribe(hasPermission => this.hasInvasiveControleRights = hasPermission);
     }
 
