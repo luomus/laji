@@ -15,7 +15,14 @@ import { DocumentService } from '../../shared-modules/own-submissions/service/do
 @Injectable()
 export class FormService {
 
-  public localChanged = new EventEmitter();
+  readonly forms = {
+    [environment.nafiForm]: '/theme/nafi/form',
+    [environment.wbcForm]: '/theme/talvilintulaskenta/form',
+    [environment.lineTransectForm]: '/theme/vakiolinjat/form',
+    default: '/vihko'
+  };
+
+  localChanged = new EventEmitter();
 
   @LocalStorage() private formDataStorage;
   @LocalStorage() private tmpDocId;
@@ -259,30 +266,14 @@ export class FormService {
     if (!formId) {
       formId = environment.defaultForm;
     }
-    switch (formId) {
-      case environment.nafiForm:
-        return '/theme/nafi/form';
-      case environment.wbcForm:
-        return '/theme/talvilintulaskenta/form';
-      case environment.lineTransectForm:
-        return '/theme/vakiolinjat/form';
+    if (this.forms[formId]) {
+      return `${this.forms[formId]}`;
     }
-    return '/vihko/' + formId;
+    return  `${this.forms.default}/${formId}`;
   }
 
   getEditUrlPath(formId, documentId) {
-    if (!formId) {
-      formId = environment.defaultForm;
-    }
-    switch (formId) {
-      case environment.nafiForm:
-        return '/theme/nafi/form/' + documentId;
-      case environment.wbcForm:
-        return '/theme/talvilintulaskenta/form/' + documentId;
-      case environment.lineTransectForm:
-        return '/theme/line-transect/form/' + documentId;
-    }
-    return '/vihko/' + formId + '/' + documentId;
+    return `${this.getAddUrlPath(formId)}/${documentId}`;
   }
 
 
