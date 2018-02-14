@@ -51,11 +51,12 @@
   <span *ngIf="value">
     <span style="display: inline"
           *ngIf="value.linkings && value.linkings.taxon && (value.linkings.taxon.id || value.linkings.taxon.qname); else taxonVerbatim"
-          title="{{(value.linkings.taxon.vernacularName | multiLang) + ' (' + value.linkings.taxon.scientificName + ')'}}"
+          title="{{(value.linkings.taxon.vernacularName | multiLang) + ' &mdash; ' + value.linkings.taxon.scientificName}}"
     >
       {{value.linkings.taxon.vernacularName | multiLang}}
+      <span class="inline" *ngIf="value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName"> &mdash; </span>
       <span style="display: inline" [class.cursive]="value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.scientificName">
-          ({{value.linkings.taxon.scientificName}})
+          {{value.linkings.taxon.scientificName}}
       </span>
       <a
         [tooltip]="'showSpeciesCard' | translate"
