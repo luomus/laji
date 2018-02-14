@@ -127,7 +127,10 @@ $perPage: 10;
 .short-hand {
   position: absolute;
   bottom: 0;
-  font-size: small;
+}
+
+.short-hand, .table {
+  font-size: 12px;
 }
 
 .biotopelist {

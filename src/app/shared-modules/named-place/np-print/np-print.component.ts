@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import { PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as FileSaver from 'file-saver';
@@ -16,13 +16,15 @@ import {LajiApi, LajiApiService} from '../../../shared/service/laji-api.service'
 @Component({
   selector: 'laji-np-print',
   templateUrl: './np-print.component.html',
-  styleUrls: ['./np-print.component.css']
+  styleUrls: ['./np-print.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NpPrintComponent implements OnInit, OnDestroy {
 
-  public form: any;
-  public namedPlace: NamedPlace;
-  public person: Person;
+  form: any;
+  namedPlace: NamedPlace;
+  person: Person;
+  loading = false;
 
   private subData: Subscription;
 
@@ -33,7 +35,8 @@ export class NpPrintComponent implements OnInit, OnDestroy {
     private namedPlaceService: NamedPlacesService,
     private userService: UserService,
     private footerService: FooterService,
-    private lajiApiService: LajiApiService
+    private lajiApiService: LajiApiService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -61,6 +64,7 @@ export class NpPrintComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.namedPlace = data.ns;
         this.person = data.person;
+        this.cdr.markForCheck();
       });
   }
 
@@ -72,10 +76,16 @@ export class NpPrintComponent implements OnInit, OnDestroy {
   }
 
   print(fileName) {
+    this.loading = true;
     if (isPlatformBrowser(this.platformId)) {
       this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, this.stripScripts(document.getElementsByTagName('html')[0].innerHTML))
         .subscribe((response) => {
           FileSaver.saveAs(response, fileName + '.pdf');
+          this.loading = false;
+          this.cdr.markForCheck();
+        }, () => {
+          this.loading = false;
+          this.cdr.markForCheck();
         });
     }
   }

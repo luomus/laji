@@ -2,6 +2,7 @@ export interface LajiMapOptions {
   rootElem?: Element;
   tileLayerName?: string;
   overlayNames?: string[];
+  tileLayerOpacity?: number;
   availableTileLayerNamesBlacklist?: string[];
   zoom?: number;
   center?: [number, number];
