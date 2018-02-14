@@ -290,6 +290,10 @@ treenode:last-child > .tree-node > .tree-children::after {
 	z-index: 2;
 }
 
+.laji-form .leaflet-rrose {
+  min-width: 200px;
+}
+
 /** /forms **/
 
 /* Style when highlighting a search. */
