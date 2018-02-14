@@ -40,6 +40,9 @@
               </a>
               <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu">
                 <li role="menuitem">
+                  <a [routerLink]="['/theme/quality'] | localize" class="navbar-link link">{{'navigation.quality' | translate}}</a>
+                </li>
+                <li role="menuitem">
                   <a [routerLink]="['/theme/identify'] | localize" class="navbar-link link">{{ 'navigation.identify' | translate }}</a>
                 </li>
                 <li role="menuitem">
