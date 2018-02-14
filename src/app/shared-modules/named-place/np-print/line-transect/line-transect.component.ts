@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, ViewChild } from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, ViewChild} from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import * as MapUtil from 'laji-map/lib/utils';
 import { Person } from '../../../../shared/model/Person';
@@ -8,7 +8,8 @@ import { Map3Component } from '../../../../shared-modules/map/map.component';
 @Component({
   selector: 'laji-line-transect',
   templateUrl: './line-transect.component.html',
-  styleUrls: ['./line-transect.component.scss']
+  styleUrls: ['./line-transect.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineTransectComponent implements OnChanges, AfterViewInit {
 
@@ -20,7 +21,8 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   public person: Person;
 
   public lajiMapOptions: LajiMapOptions;
-  public pagedDistance: number[][] = [];
+  public biotopes: {[distRow: number]: string[]};
+  public pages: number[][] = [];
   public total: number;
   public routeLength: number;
   public neDistance: any = 0;
@@ -28,8 +30,11 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   public info: {key: string, data: string}[];
 
   private pageSize = 10;
+  private formSplit = 50;
 
-  constructor() { }
+  constructor(
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnChanges() {
     if (
@@ -74,34 +79,45 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     const geometries = this.getGeometry();
-    if (!geometries.coordinates) {
+    if (!Array.isArray(geometries.coordinates)) {
       return;
     }
-    let last;
+    const biotopes: {[distRow: number]: string[]} = {};
+    const pages: number[][] = [];
+    let total = 0;
+    let currentPage = 0;
+    let current = 0;
     geometries.coordinates.forEach((coord, idx) => {
-      const page = Math.floor((+idx) / this.pageSize);
-      if (!this.pagedDistance[page]) {
-        this.pagedDistance[page] = [];
-      }
       const dist = MapUtil.getLineTransectStartEndDistancesForIdx({geometry: geometries}, idx, 10);
-      if (last && last[0] === dist[0]) {
-        return;
+      const biotopeKey = current + this.formSplit;
+      if (!biotopes[biotopeKey]) {
+        biotopes[biotopeKey] = [];
       }
-      last = dist;
-      this.pagedDistance[page].push(last[0]);
+      biotopes[biotopeKey].unshift('Biotooppi ' + idx);
+      total = dist[1];
+      while (current < total) {
+        if (!pages[currentPage]) {
+          pages[currentPage] = [];
+        } else if (pages[currentPage].length >= this.pageSize) {
+          currentPage++;
+          pages[currentPage] = [];
+        }
+        current += this.formSplit;
+        pages[currentPage].unshift(current);
+      }
     });
-    if (last) {
-      const lastPage = Math.floor(geometries.coordinates.length / this.pageSize);
-      if (!this.pagedDistance[lastPage]) {
-        this.pagedDistance[lastPage] = [];
+    if (pages[currentPage]) {
+      if (pages[currentPage][0] > total) {
+        pages[currentPage][0] = total;
       }
-      this.pagedDistance[lastPage].push(last[1]);
     }
+    this.biotopes = biotopes;
     this.lajiMap.lajiMap.zoomToData();
     setTimeout(() => {
-      const pages = this.pagedDistance.length;
-      this.total = pages + 1;
-      this.routeLength = this.pagedDistance[pages - 1][this.pagedDistance[pages - 1].length - 1];
+      this.pages = pages;
+      this.total = pages.length;
+      this.routeLength = total;
+      this.cdr.markForCheck();
     });
   }
 

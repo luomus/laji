@@ -18,6 +18,7 @@ export interface LajiMapOptions {
   };
   lineTransect?: {
     feature: any;
+    printMode?: boolean;
   };
   markerPopupOffset?: number;
   featurePopupOffset?: number;
@@ -41,6 +42,7 @@ export interface LajiMapOptions {
     lineTransect?: boolean;
   };
   on?: {
+    load?: any;
     tileLayerChange?: (arg: {tileLayerName: string, type: string, target: any}) => void;
     tileLayerOpacityChange?: (event: {tileLayerOpacity: string, type: string, target: any}) => void;
     tileLayerOpacityChangeEnd?: (event: {tileLayerOpacity: string, type: string, target: any}) => void;

@@ -141,8 +141,8 @@
     <laji-map3 [options]="lajiMapOptions"></laji-map3>
   </div>
 </div>
-<div *ngIf="pagedDistance">
-  <div class="page no-page-break page-break-after table-page" *ngFor="let page of pagedDistance; let i = index">
+<div *ngIf="pages">
+  <div class="page no-page-break page-break-after table-page" *ngFor="let page of pages; let i = index">
     <div class="pager">
       <h2>{{namedPlace.name}}&nbsp;&nbsp;<span>{{i + 2}}/{{total}}</span></h2>
     </div>
@@ -158,7 +158,12 @@
         <td></td>
         <td></td>
         <td></td>
-        <td><div class="distance">{{distance}}</div></td>
+        <td>
+          <ul *ngIf="biotopes[distance]" class="biotopelist">
+            <li *ngFor="let biotope of biotopes[distance]">{{biotope}}</li>
+          </ul>
+          <div class="distance">{{distance}}</div>
+        </td>
       </tr>
     </table>
   </div>
