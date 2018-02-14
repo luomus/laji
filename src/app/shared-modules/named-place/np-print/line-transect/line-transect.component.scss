@@ -1,4 +1,4 @@
-$rowHeight: 27mm;
+$rowHeight: 25mm;
 $perPage: 10;
 
 @page {
@@ -135,4 +135,15 @@ $perPage: 10;
   margin: 1mm;
   padding: 0;
   position: absolute;
+}
+.time {
+  position: absolute;
+  margin: 1mm;
+  bottom: 0;
+  left: 0;
+  width: 100mm;
+  border-bottom: 1px solid #000000;
+}
+.user-input {
+  border-bottom: 1px solid #000000;
 }
