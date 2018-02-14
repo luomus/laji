@@ -17,7 +17,7 @@
       <laji-row [title]="unit.recordBasis | label: 'warehouse'" [value]="unit.reportedInformalTaxonGroup | toQName | label"></laji-row>
     </ng-template>
     <laji-row
-      *ngIf="unit.linkings && unit.linkings.taxon && unit.linkings.originalTaxon && unit.linkings.taxon.qname !== unit.linkings.originalTaxon.qname"
+      *ngIf="unit.linkings && unit.linkings.taxon && ((unit.linkings.originalTaxon && unit.linkings.taxon.qname !== unit.linkings.originalTaxon.qname) || !unit.linkings.originalTaxon)"
       [title]="'viewer.fixedName'|translate">
       <span class="vernacularName" *ngIf="unit.linkings.taxon.vernacularName">
         {{unit.linkings.taxon.vernacularName | multiLang}}
