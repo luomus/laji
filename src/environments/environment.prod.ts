@@ -5,7 +5,7 @@ export const environment = {
   disableAnalytics: false,
   forAuthorities: false,
   systemID: 'KE.389',
-  formWhitelist: ['JX.519', 'JX.652'],
+  formWhitelist: ['JX.519', 'JX.652', 'MHL.9'],
   massForms: ['JX.519', 'JX.652'],
   defaultForm: 'JX.519',
   nafiForm: 'JX.123648',
