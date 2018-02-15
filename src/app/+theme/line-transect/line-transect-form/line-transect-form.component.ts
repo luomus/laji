@@ -6,6 +6,8 @@ import { DocumentFormComponent } from '../../../shared/document-form/document-fo
 import { ComponentCanDeactivate } from '../../../shared/document-form/document-de-activate.guard';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { FormService } from '../../../shared/service/form.service';
+import {ToastsService} from '../../../shared/service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-line-transect-form',
@@ -23,7 +25,9 @@ export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCa
     private route: ActivatedRoute,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private formService: FormService
+    private formService: FormService,
+    private toastService: ToastsService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
@@ -75,5 +79,16 @@ export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCa
       this.localizeRouterService.translateRoute(['/theme/vakiolinjat/form']),
       { replaceUrl: true }
     );
+  }
+
+  onAccessDenied() {
+    this.translateService.get('form.permission.no-access')
+      .subscribe(msg => {
+        this.toastService.showWarning(msg)
+        this.router.navigate(
+          this.localizeRouterService.translateRoute(['/theme/vakiolinjat']),
+          { replaceUrl: true }
+        );
+      });
   }
 }

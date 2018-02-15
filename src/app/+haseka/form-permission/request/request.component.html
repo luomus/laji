@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row" *ngIf="!isAlreadyAllowed && !isAlreadyRequested">
     <div class="col-sm-6">
-      <h3>Sinulla ei ole vielä pääsyä kyseiseen lomakkeeseen</h3>
+      <h3>{{'form.permission.no-access' | translate}}</h3>
       <p>
         Tämän lomakkeen käyttäminen vaatii erillisen luvan.
         Voit halutessasi pyytää sen painamalla alla olevaa "Pyydä pääsy"-nappia.
