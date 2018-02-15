@@ -10,6 +10,7 @@ export const environment = {
   defaultForm: 'JX.519',
   nafiForm: 'JX.123648',
   invasiveControlForm: '',
+  apiBase: '/api',
   wbcForm: 'MHL.3',
   lineTransectForm: 'MHL.1',
   whichSpeciesForm: 'MHL.9',

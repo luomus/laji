@@ -23,6 +23,7 @@ type states
   | 'dataMapping'
   | 'importReady'
   | 'validating'
+  | 'invalidData'
   | 'importing'
   | 'doneOk'
   | 'doneWithErrors';
@@ -225,6 +226,8 @@ export class ImporterComponent implements OnInit {
               status: 'invalid',
               error: data.result._error
             });
+          } else {
+            Object.keys(data.source.rows).forEach(key => this.data[key]['_status'] = {});
           }
           this.data = [...this.data];
           this.cdr.markForCheck();
@@ -238,7 +241,7 @@ export class ImporterComponent implements OnInit {
         },
         () => {
           this.valid = success;
-          this.status = 'importReady';
+          this.status = success ? 'importReady' : 'invalidData';
           this.cdr.markForCheck();
         }
       );
@@ -317,13 +320,30 @@ export class ImporterComponent implements OnInit {
   }
 
   useUserMapping(value) {
+    this.userMapModal.hide();
     try {
       this.mappingService.setUserMapping(JSON.parse(value));
     } catch (err) {
       console.log(err);
+      this.toastsService.showWarning('Kuvausta ei tunnistettu!');
+      return;
     }
-    this.userMapModal.hide();
     this.hasUserMapping = this.mappingService.hasUserMapping();
+    if (this.hasUserMapping) {
+      this.userColToColMap();
+      this.parsedData = undefined;
+    }
+  }
+
+  userColToColMap() {
+    if (!this.header || !this.colMap) {
+      return;
+    }
+    const result = {...this.header};
+    Object.keys(result).forEach(key => {
+      result[key] = this.mappingService.colMap(result[key]) || this.colMap[key];
+    });
+    this.colMap = result;
   }
 
   clearUserMapping() {

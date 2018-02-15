@@ -2,6 +2,7 @@ export interface LajiMapOptions {
   rootElem?: Element;
   tileLayerName?: string;
   overlayNames?: string[];
+  tileLayerOpacity?: number;
   availableTileLayerNamesBlacklist?: string[];
   zoom?: number;
   center?: [number, number];
@@ -18,6 +19,7 @@ export interface LajiMapOptions {
   };
   lineTransect?: {
     feature: any;
+    printMode?: boolean;
   };
   markerPopupOffset?: number;
   featurePopupOffset?: number;
@@ -41,6 +43,7 @@ export interface LajiMapOptions {
     lineTransect?: boolean;
   };
   on?: {
+    load?: any;
     tileLayerChange?: (arg: {tileLayerName: string, type: string, target: any}) => void;
     tileLayerOpacityChange?: (event: {tileLayerOpacity: string, type: string, target: any}) => void;
     tileLayerOpacityChangeEnd?: (event: {tileLayerOpacity: string, type: string, target: any}) => void;

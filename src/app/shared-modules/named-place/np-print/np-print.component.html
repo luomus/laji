@@ -1,5 +1,11 @@
-<laji-line-transect
-  *ngIf="namedPlace"
-  [namedPlace]="namedPlace"
-  [person]="person"
-></laji-line-transect>
+<ng-container *ngIf="namedPlace">
+  <div class="no-print print-wrap">
+    <laji-spinner [spinning]="loading" [overlay]="true">
+    <button type="button" [disabled]="loading" class="btn btn-default no-print" (click)="print(namedPlace.name)">PDF <i class="glyphicon glyphicon-file"></i></button>
+    </laji-spinner>
+  </div>
+  <laji-line-transect
+    [namedPlace]="namedPlace"
+    [person]="person"
+  ></laji-line-transect>
+</ng-container>

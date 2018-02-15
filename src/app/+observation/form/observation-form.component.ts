@@ -124,6 +124,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       this.formService
         .load(environment.invasiveControlForm, this.translate.currentLang)
         .switchMap((form) => this.formPermissionService.hasEditAccess(form))
+        .catch(() => Observable.of(false))
         .subscribe(hasPermission => this.hasInvasiveControleRights = hasPermission);
     }
 
@@ -333,9 +334,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   ownItemSelected() {
-    this.searchQuery.query.qualityIssues = 'BOTH';
     if (!this.formQuery.asEditor || !this.formQuery.asObserver) {
       delete this.searchQuery.query.editorOrObserverPersonToken;
+    }
+    if (this.formQuery.asEditor || this.formQuery.asObserver) {
+      this.searchQuery.query.qualityIssues = 'BOTH';
     }
     this.onFormQueryChange();
   }

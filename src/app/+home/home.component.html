@@ -21,21 +21,21 @@
       </div>
     </div>
   </div>
-  <div class="container-fluid">
+  <div class="container-fluid home-page">
     <div id="wrapper" class="row">
       <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
         <h1>{{ 'home.main-page.title' | translate }}</h1>
         <p>{{ 'home.main-page.text' | translate }}</p>
         <div class="row">
-          <laji-navigation-thumbnail name="navigation.taxonomy" icon="species" path="taxon"></laji-navigation-thumbnail>
-          <laji-navigation-thumbnail name="navigation.observation" icon="observations" path="observation"></laji-navigation-thumbnail>
-          <laji-navigation-thumbnail name="navigation.haseka" icon="vihko" path="vihko"></laji-navigation-thumbnail>
+          <laji-navigation-thumbnail name="navigation.taxonomy" icon="species" path="taxon" [intro]="'home.taxon-sub-intro' | translate" [info]="'home.taxon-intro' | translate"></laji-navigation-thumbnail>
+          <laji-navigation-thumbnail name="navigation.observation" icon="observations" path="observation" [intro]="'home.observation-sub-intro' | translate" [info]="'home.observation-intro' | translate"></laji-navigation-thumbnail>
+          <laji-navigation-thumbnail name="navigation.haseka" icon="vihko" path="vihko" [intro]="'home.notebook-sub-intro' | translate" [info]="'home.notebook-intro' | translate"></laji-navigation-thumbnail>
         </div>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-lg-4 col-md-5">
             <a [routerLink]="['/observation'] | localize" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}" class="thumbnail panel panel-default">
               <div class="panel-heading">
-                <h2 class="panel-title">{{ 'home.main-page.recent' | translate }}</h2>
+                <h2 class="panel-title caption">{{ 'home.main-page.recent' | translate }}</h2>
               </div>
               <div class="panel-body resent-map">
                 <div class="link blocking-overlay"></div>
@@ -43,16 +43,39 @@
               </div>
             </a>
           </div>
-          <div class="col-md-6">
-            <a [routerLink]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}" class="thumbnail panel panel-default">
-              <div class="panel-heading">
-                <h2 class="panel-title">{{ 'home.identify' | translate }}</h2>
+          <div class="col-lg-8 col-md-7">
+            <div class="row">
+              <div class="col-sm-12">
+                <a [routerLink]="['/vihko/' + formId | localize]" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}" class="thumbnail panel panel-default">
+                  <div class="panel-heading">
+                    <h2 class="panel-title caption">{{'home.identify-title' | translate}}</h2>
+                  </div>
+                  <div class="panel-body identifications">
+                    <p>
+                      {{'identify.reportIntro' | translate}}<br>
+                      <a class="link btn btn-primary identify-form" [routerLink]="['/vihko/' + formId | localize]">{{'identify.report' | translate}}</a>
+                      <span *lajiLoggedIn="false">({{'identify.requiresAuthentication' | translate}})</span>
+                    </p>
+                  </div>
+                </a>
               </div>
-              <div class="panel-body resent-map">
-                <div class="link blocking-overlay"></div>
-                <laji-gallery [showPaginator]="false" [limit]="4" [showPopover]="false" [view]="'full'" [sort]="['document.firstLoadDate DESC']" [showViewSwitch]="false" [query]="{}" [pageSize]="6"></laji-gallery>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <a [routerLink]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}" class="thumbnail panel panel-default">
+                  <div class="panel-heading">
+                    <h2 class="panel-title caption">{{'home.identify-help-title' | translate}}</h2>
+                  </div>
+                  <div class="panel-body identifications">
+                    <p>{{'home.identify-help-intro' | translate}}</p>
+                    <div class="identification-images">
+                      <div class="link blocking-overlay"></div>
+                      <laji-gallery [showPaginator]="false" [limit]="12" [showPopover]="false" [view]="'compact'" [sort]="['document.firstLoadDate DESC']" [showViewSwitch]="false" [query]="{}" [pageSize]="20"></laji-gallery>
+                    </div>
+                  </div>
+                </a>
               </div>
-            </a>
+            </div>
           </div>
         </div>
       </div>

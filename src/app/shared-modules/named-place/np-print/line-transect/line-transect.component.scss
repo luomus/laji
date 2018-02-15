@@ -1,4 +1,4 @@
-$rowHeight: 29mm;
+$rowHeight: 25mm;
 $perPage: 10;
 
 @page {
@@ -7,9 +7,9 @@ $perPage: 10;
 }
 .page {
   position: relative;
-  margin: 0 auto;
-  width: 210mm;
-  height: 297mm;
+  margin: 10mm;
+  width: 190mm;
+  height: 277mm;
   padding-top: 5mm;
 }
 
@@ -80,6 +80,12 @@ $perPage: 10;
   }
 }
 
+.map-wrap {
+  overflow: hidden;
+  height: 267mm; // With higher number 671:323 Turku Muhkuri area in linetransect has a map artifact on the page following the map page
+  width: 100%;
+}
+
 /** Input table **/
 .line-table {
   width: 100%;
@@ -121,5 +127,26 @@ $perPage: 10;
 .short-hand {
   position: absolute;
   bottom: 0;
-  font-size: small;
+}
+
+.short-hand, .table {
+  font-size: 12px;
+}
+
+.biotopelist {
+  list-style: none;
+  margin: 1mm;
+  padding: 0;
+  position: absolute;
+}
+.time {
+  position: absolute;
+  margin: 1mm;
+  bottom: 0;
+  left: 0;
+  width: 100mm;
+  border-bottom: 1px solid #000000;
+}
+.user-input {
+  border-bottom: 1px solid #000000;
 }

@@ -1,5 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import { PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import * as FileSaver from 'file-saver';
 import { Subscription } from 'rxjs/Subscription';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TranslateService } from '@ngx-translate/core';
@@ -8,25 +10,33 @@ import { NamedPlacesService } from '../named-places.service';
 import { UserService } from '../../../shared/service/user.service';
 import { FooterService } from '../../../shared/service/footer.service';
 import { Person } from '../../../shared/model/Person';
+import {isPlatformBrowser} from '@angular/common';
+import {LajiApi, LajiApiService} from '../../../shared/service/laji-api.service';
 
 @Component({
   selector: 'laji-np-print',
-  templateUrl: './np-print.component.html'
+  templateUrl: './np-print.component.html',
+  styleUrls: ['./np-print.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NpPrintComponent implements OnInit, OnDestroy {
 
-  public form: any;
-  public namedPlace: NamedPlace;
-  public person: Person;
+  form: any;
+  namedPlace: NamedPlace;
+  person: Person;
+  loading = false;
 
   private subData: Subscription;
 
   constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
     private route: ActivatedRoute,
     private translate: TranslateService,
     private namedPlaceService: NamedPlacesService,
     private userService: UserService,
-    private footerService: FooterService
+    private footerService: FooterService,
+    private lajiApiService: LajiApiService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -54,6 +64,7 @@ export class NpPrintComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.namedPlace = data.ns;
         this.person = data.person;
+        this.cdr.markForCheck();
       });
   }
 
@@ -62,6 +73,25 @@ export class NpPrintComponent implements OnInit, OnDestroy {
     if (this.subData) {
       this.subData.unsubscribe();
     }
+  }
+
+  print(fileName) {
+    this.loading = true;
+    if (isPlatformBrowser(this.platformId)) {
+      this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, this.stripScripts(document.getElementsByTagName('html')[0].innerHTML))
+        .subscribe((response) => {
+          FileSaver.saveAs(response, fileName + '.pdf');
+          this.loading = false;
+          this.cdr.markForCheck();
+        }, () => {
+          this.loading = false;
+          this.cdr.markForCheck();
+        });
+    }
+  }
+
+  private stripScripts(s: string) {
+    return s.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
   }
 
 }

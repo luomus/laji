@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, ViewChild } from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, ViewChild} from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import * as MapUtil from 'laji-map/lib/utils';
 import { Person } from '../../../../shared/model/Person';
@@ -8,7 +8,8 @@ import { Map3Component } from '../../../../shared-modules/map/map.component';
 @Component({
   selector: 'laji-line-transect',
   templateUrl: './line-transect.component.html',
-  styleUrls: ['./line-transect.component.scss']
+  styleUrls: ['./line-transect.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineTransectComponent implements OnChanges, AfterViewInit {
 
@@ -20,7 +21,8 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   public person: Person;
 
   public lajiMapOptions: LajiMapOptions;
-  public pagedDistance: number[][] = [];
+  public biotopes: {[distRow: number]: string[]};
+  public pages: number[][] = [];
   public total: number;
   public routeLength: number;
   public neDistance: any = 0;
@@ -28,8 +30,11 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   public info: {key: string, data: string}[];
 
   private pageSize = 10;
+  private formSplit = 50;
 
-  constructor() { }
+  constructor(
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnChanges() {
     if (
@@ -73,40 +78,63 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    Object.keys(this.lajiMap.lajiMap.pointIdxsToDistances)
-      .map(idx => {
-        const page = Math.floor((+idx) / this.pageSize);
-        if (!this.pagedDistance[page]) {
-          this.pagedDistance[page] = [];
-        }
-        const dist = parseInt(this.lajiMap.lajiMap.pointIdxsToDistances[idx], 10);
-        this.pagedDistance[page].push(dist);
-      });
-    if (this.lajiMap.lajiMap._corridorLayers && this.lajiMap.lajiMap._corridorLayers[0]) {
-      const group = L.featureGroup(this.lajiMap.lajiMap._corridorLayers[0]);
-      this.lajiMap.lajiMap.map.fitBounds(group.getBounds(), {padding: [-20, -20]});
+    const geometries = this.getGeometry();
+    if (!Array.isArray(geometries.coordinates)) {
+      return;
     }
+    const biotopes: {[distRow: number]: string[]} = {};
+    const pages: number[][] = [];
+    let total = 0;
+    let currentPage = 0;
+    let current = 0;
+    geometries.coordinates.forEach((coord, idx) => {
+      const dist = MapUtil.getLineTransectStartEndDistancesForIdx({geometry: geometries}, idx, 10);
+      const biotopeKey = current + this.formSplit;
+      if (!biotopes[biotopeKey]) {
+        biotopes[biotopeKey] = [];
+      }
+      biotopes[biotopeKey].unshift('Biotooppi ' + idx);
+      total = dist[1];
+      while (current < total) {
+        if (!pages[currentPage]) {
+          pages[currentPage] = [];
+        } else if (pages[currentPage].length >= this.pageSize) {
+          currentPage++;
+          pages[currentPage] = [];
+        }
+        current += this.formSplit;
+        pages[currentPage].unshift(current);
+      }
+    });
+    if (pages[currentPage]) {
+      if (pages[currentPage][0] > total) {
+        pages[currentPage][0] = total;
+      }
+    }
+    this.biotopes = biotopes;
+    this.lajiMap.lajiMap.zoomToData();
     setTimeout(() => {
-      const pages = this.pagedDistance.length;
-      this.total = pages + 1;
-      this.routeLength = this.pagedDistance[pages - 1][this.pagedDistance[pages - 1].length - 1];
+      this.pages = pages;
+      this.total = pages.length;
+      this.routeLength = total;
+      this.cdr.markForCheck();
     });
   }
 
   private initMapOptions() {
     this.lajiMapOptions = {
       tileLayerName: 'maastokartta',
+      tileLayerOpacity: 0.7,
       lineTransect: {
+        printMode: true,
         feature: {geometry: this.getGeometry()}
       }
     };
   }
 
-  private getGeometry() {
+  private getGeometry(): any {
     if (this.namedPlace.prepopulatedDocument && this.namedPlace.prepopulatedDocument.gatherings) {
-      return MapUtil.latLngSegmentsToGeoJSONGeometry(this.namedPlace.prepopulatedDocument.gatherings
-        .map(gathering => gathering.geometry && gathering.geometry.coordinates || [0, 0])
-      );
+      return {type: 'MultiLineString', coordinates: this.namedPlace.prepopulatedDocument.gatherings.map(item => item.geometry.coordinates)};
     }
     return {};
   }

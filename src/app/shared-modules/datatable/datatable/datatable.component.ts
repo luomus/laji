@@ -25,6 +25,7 @@ export class DatatableComponent {
   @ViewChild('dataTable') public datatable: NgxDatatableComponent;
 
   @ViewChild('taxon') taxonTpl: TemplateRef<any>;
+  @ViewChild('originalTaxon') originalTaxonTpl: TemplateRef<any>;
   @ViewChild('species') speciesTpl: TemplateRef<any>;
   @ViewChild('headerTpl') headerTpl: TemplateRef<any>;
   @ViewChild('eventDate') eventDateTpl: TemplateRef<any>;
@@ -154,26 +155,6 @@ export class DatatableComponent {
       DatatableComponent.settings[event.column.name] = {width: event.newValue};
       this.cacheService.setItem<Settings>(CACHE_COLUMN_SETINGS, DatatableComponent.settings)
         .subscribe();
-    }
-  }
-
-  private initSettings() {
-    let hasChanges = false;
-    const settings = DatatableComponent.settings;
-
-    if (!this._columns || settings) {
-      return;
-    }
-
-    const cols = this._columns.map((column) => {
-      if (settings[column.name] && settings[column.name].width) {
-        column.width = settings[column.name].width;
-        hasChanges = true;
-      }
-      return column;
-    });
-    if (hasChanges) {
-      this._columns = [...cols];
     }
   }
 }

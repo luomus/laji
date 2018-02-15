@@ -94,6 +94,9 @@ import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
 import {FriendService} from './service/friend.service';
 import { DatePickerComponent } from './datepicker/datepicker.component'
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
+import { FactNotInPipe } from './pipe/fact-not-in.pipe';
+import {HttpClientModule} from '@angular/common/http';
+import {LajiApiService} from './service/laji-api.service';
 
 
 @NgModule({
@@ -108,13 +111,15 @@ import { TaxonNameComponent } from './taxon-name/taxon-name.component';
     AuthoritiesDirective, ImageComponent, LajiFormComponent, NlToBrPipe, DocumentFormHeaderComponent,
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
     ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, DatePickerComponent,
-    TaxonNameComponent
+    TaxonNameComponent,
+    FactNotInPipe
   ],
   imports: [
     ToastModule,
     FormsModule,
     CommonModule,
     HttpModule,
+    HttpClientModule,
     RouterModule,
     LangModule,
     TranslateModule,
@@ -134,7 +139,8 @@ import { TaxonNameComponent } from './taxon-name/taxon-name.component';
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, LocalizePipe, HideScrollDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
-    SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, DatePickerComponent, TaxonNameComponent
+    SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, DatePickerComponent, TaxonNameComponent,
+    FactNotInPipe
   ]
 })
 export class SharedModule {
@@ -175,6 +181,7 @@ export class SharedModule {
         FriendService,
         TaxonNamePipe,
         ToQNamePipe,
+        LajiApiService,
         {provide: Http, useClass: AuthenticatedHttpService}
       ]
     };

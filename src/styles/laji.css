@@ -126,6 +126,10 @@ laji-locale-sv > div,
 .ui-select-choices-row a {
   white-space: normal !important;
 }
+.home-page .tooltip {
+  min-width: 200px;
+}
+
 /** generic **/
 .scientificName {
   display: inline-block;
@@ -284,6 +288,10 @@ treenode:last-child > .tree-node > .tree-children::after {
 
 .laji-form .blocking-loader {
 	z-index: 2;
+}
+
+.laji-form .leaflet-rrose {
+  min-width: 200px;
 }
 
 /** /forms **/

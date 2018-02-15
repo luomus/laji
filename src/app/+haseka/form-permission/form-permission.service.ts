@@ -75,7 +75,8 @@ export class FormPermissionService {
         (person: Person) => this.getFormPermission(form.collectionID, this.userSerivce.getToken()),
         (person: Person, formPermission: FormPermission) => ({person, formPermission})
       )
-      .switchMap(data => Observable.of(this.isEditAllowed(data.formPermission, data.person)));
+      .switchMap(data => Observable.of(this.isEditAllowed(data.formPermission, data.person)))
+      .catch(() => Observable.of(false));
   }
 
 }
