@@ -6,11 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./quality.component.css']
 })
 export class QualityComponent implements OnInit {
-  filters = {
-    group: '',
-    timeStart: '',
-    timeEnd: ''
-  };
+  group = '';
+  timeStart = '';
+  timeEnd = '';
 
   constructor() {}
 
@@ -18,6 +16,8 @@ export class QualityComponent implements OnInit {
   }
 
   setFilters(filters) {
-    this.filters = filters;
+    this.group = filters.group;
+    this.timeStart = filters.timeStart;
+    this.timeEnd = filters.timeEnd;
   }
 }
