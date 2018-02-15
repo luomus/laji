@@ -51,14 +51,17 @@ export class QualityService {
     ))
   }
 
-  getMostActiveUsers(maxLength = 50, lastDate?): Observable<any> {
+  getMostActiveUsers(maxLength = 50, informalTaxonGroup?, lastDate?): Observable<any> {
     const query: WarehouseQueryInterface = {};
     query.annotationType = ['TAXON_RELIABILITY', 'IDENTIFICATION', 'UNIDENTIFIABLE'];
+    if (informalTaxonGroup) {
+      query.informalTaxonGroupId = informalTaxonGroup;
+    }
     if (lastDate) {
       query.annotatedLaterThan = lastDate;
     }
 
-    const cacheKey = JSON.stringify({maxLength, lastDate});
+    const cacheKey = JSON.stringify({maxLength, informalTaxonGroup, lastDate});
 
     return this._fetch('users', cacheKey,
       this.warehouseApi.warehouseQueryAggregateGet(

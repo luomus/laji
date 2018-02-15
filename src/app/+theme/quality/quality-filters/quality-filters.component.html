@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-sm-4" id="group-select-container">
+    <label>{{'filter.informalTaxonGroup' | translate}}:</label>
+    <observation-group-select
+      name="group'"
+      (onSelect)="onSelectChange()"
+      [position]="'left'"
+      [(ngModel)]="filters.group"
+      [lang]="translateService.currentLang">
+      {{'observation.active.informalTaxonGroupAll'|translate}}
+    </observation-group-select>
+  </div>
+  <div class="col-sm-5 col-md-4 pull-right" id="datepicker-container">
+    <label>{{'quality.filterByDate' | translate}}:</label>
+    <div class="form-inline">
+      <laji-datepicker
+        [(ngModel)]="filters.timeStart"
+        [viewFormat]="'DD.MM.YYYY'"
+        [otherFormats]="['D.M.YYYY', 'YYYY']"
+        [format]="'YYYY-MM-DD'"
+        [addonText]="'quality.timeStart' | translate"
+        (onSelect)="onSelectChange()"
+        (change)="onSelectChange()"
+        name="timeStart"></laji-datepicker>
+      <laji-datepicker
+        [(ngModel)]="filters.timeEnd"
+        [viewFormat]="'DD.MM.YYYY'"
+        [otherFormats]="['D.M.YYYY', 'YYYY']"
+        [toLastOfYear]="true"
+        [format]="'YYYY-MM-DD'"
+        [addonText]="'quality.timeEnd' | translate"
+        (onSelect)="onSelectChange()"
+        (change)="onSelectChange()"
+        name="timeEnd"></laji-datepicker>
+    </div>
+  </div>
+</div>

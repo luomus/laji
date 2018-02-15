@@ -1,16 +1,18 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { QualityService } from '../../service/quality.service';
 import { Observable } from 'rxjs/Observable';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { MostActiveUsersTable } from '../model/most-active-users-table';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'laji-most-active-users-table',
   templateUrl: './most-active-users-table.component.html',
   styleUrls: ['./most-active-users-table.component.css']
 })
-export class MostActiveUsersTableComponent implements OnInit {
+export class MostActiveUsersTableComponent implements OnInit, OnChanges {
   @Input() maxLength = 50;
+  @Input() group = '';
 
   tables: MostActiveUsersTable[] = [
     { prop: 'sevenDays', date: moment().subtract(1, 'week').format('YYYY-MM-DD') },
@@ -25,21 +27,37 @@ export class MostActiveUsersTableComponent implements OnInit {
 
   loading = true;
 
+  private fetchSub: Subscription;
+
   constructor(
     private qualityService: QualityService,
     private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
+    this.getData();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.group && !changes.group.isFirstChange()) {
+      this.getData();
+    }
+  }
+
+  getData() {
+    if (this.fetchSub) {
+      this.fetchSub.unsubscribe();
+    }
+
     const observables = [];
 
     this.tables.map((table) => {
       observables.push(
-        this.qualityService.getMostActiveUsers(this.maxLength, table.date)
+        this.qualityService.getMostActiveUsers(this.maxLength, this.group, table.date)
       );
     });
 
-    Observable.forkJoin(observables)
+    this.fetchSub = Observable.forkJoin(observables)
       .subscribe((results) => {
         results.map((res, i) => {
           this.tables[i].data = res;

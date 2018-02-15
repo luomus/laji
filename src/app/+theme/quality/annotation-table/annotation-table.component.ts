@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, ChangeDetectorRef, Input, ViewChild } from '@angular/core';
 import { QualityService } from '../../service/quality.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../../../shared/model/PagedResult';
@@ -12,14 +12,15 @@ import { AnnotationTableColumn } from '../model/annotation-table-column';
   templateUrl: './annotation-table.component.html',
   styleUrls: ['./annotation-table.component.css']
 })
-export class AnnotationTableComponent implements OnInit, OnDestroy {
+export class AnnotationTableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() pageSize = 50;
+  @Input() group = '';
+  @Input() timeStart = '';
+  @Input() timeEnd = '';
+
   @ViewChild('documentModal') public modal: ModalDirective;
 
   page = 1;
-  group = '';
-  timeStart = '';
-  timeEnd = '';
   orderBy: string[] = [];
 
   result: PagedResult<any> = {
@@ -101,6 +102,7 @@ export class AnnotationTableComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.fetchPage();
       });
+    this.delayedSearchSource.next();
   }
 
   ngOnDestroy() {
@@ -109,7 +111,7 @@ export class AnnotationTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSelectChange() {
+  ngOnChanges() {
     this.page = 1;
     this.delayedSearchSource.next();
   }

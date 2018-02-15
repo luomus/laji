@@ -41,6 +41,7 @@ import { QualityService } from './service/quality.service';
 import { QualityComponent } from './quality/quality.component';
 import { MostActiveUsersTableComponent } from './quality/most-active-users-table/most-active-users-table.component';
 import { AnnotationTableComponent } from './quality/annotation-table/annotation-table.component';
+import { QualityFiltersComponent } from './quality/quality-filters/quality-filters.component';
 
 @NgModule({
   imports: [
@@ -84,7 +85,8 @@ import { AnnotationTableComponent } from './quality/annotation-table/annotation-
     ThemeComponent,
     QualityComponent,
     MostActiveUsersTableComponent,
-    AnnotationTableComponent
+    AnnotationTableComponent,
+    QualityFiltersComponent
   ],
   providers: [ ResultService, QualityService ]
 })
