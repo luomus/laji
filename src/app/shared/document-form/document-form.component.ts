@@ -28,6 +28,8 @@ import { Observable } from 'rxjs/Observable';
 import { ComponentCanDeactivate } from './document-de-activate.guard';
 import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
 import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
+import {LajiApi, LajiApiService} from '../service/laji-api.service';
+import {Annotation} from '../model/Annotation';
 
 /*
  * Change tamplateUrl to close or open the Vihko
@@ -86,6 +88,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               private dialogService: DialogService,
               private formPermissionService: FormPermissionService,
               private logger: Logger,
+              private lajiApi: LajiApiService,
               private changeDetector: ChangeDetectorRef) {
   }
 
@@ -303,18 +306,32 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         (data, namedPace) => ({data, namedPace})
       )
       .switchMap(
-        result => this.formPermissionService.hasEditAccess(result.data),
-        (result, hasEditAccess) => ({...result, hasEditAccess})
+        result => Observable.forkJoin(
+          this.formPermissionService.getRights(result.data),
+          this.fetchAnnotations(this.documentId)
+              .map(annotations => {
+                const lookup = {};
+                if (Array.isArray(annotations) && annotations.length > 0) {
+                  annotations.forEach(annotation => {
+                    const target = annotation.targetID || annotation.rootID;
+                    if (!lookup[target]) {
+                      lookup[target] = [];
+                    }
+                    lookup[target].push(annotation);
+                  });
+                }
+                return lookup;
+              }),
+          (rights, annotations) => ({rights, annotations})
+        ),
+        (result, meta) => ({...result, ...meta})
       )
       .subscribe(
         result => {
+          console.log(result);
           const data = result.data;
           this.namedPlace = result.namedPace;
           this.isEdit = true;
-          if (result.hasEditAccess === false) {
-            this.onAccessDenied.emit(data.collectionID);
-            return;
-          }
           if (data.features) {
             if (data.features.indexOf(Form.Feature.NamedPlace) > -1 && !this.namedPlace) {
               this.onMissingNamedplace.emit({
@@ -323,6 +340,10 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               });
               return;
             }
+          }
+          if (result.rights.edit === false) {
+            this.onAccessDenied.emit(data.collectionID);
+            return;
           }
           if (this.formService.isTmpId(this.documentId)) {
             delete data.formData._isTemplate;
@@ -337,6 +358,8 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           }
           data.uiSchemaContext.activeGatheringIdx = this.isEdit ? null : 0;
           data.uiSchemaContext.formID = this.formId;
+          data.uiSchemaContext.isAdmin = result.rights.admin;
+          data.uiSchemaContext.annotations = result.annotations;
           this.form = data;
           this.lang = this.translate.currentLang;
           this.readyForForm = true;
@@ -357,6 +380,20 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               });
         }
       );
+  }
+
+  private fetchAnnotations(documentID, page = 1, results = []): Observable<Annotation[]> {
+    return this.formService.isTmpId(documentID) ?
+      Observable.of([]) :
+      this.lajiApi.get(
+        LajiApi.Endpoints.annotations,
+        {personToken: this.userService.getToken(), rootID: this.documentId, pageSize: 100, page: page}
+      )
+        .mergeMap(result => (result.currentPage < result.lastPage) ?
+          this.fetchAnnotations(this.documentId, result.currentPage + 1, [...results, ...result.results]) :
+          Observable.of([...results, ...result.results])
+        )
+        .catch(() => Observable.of([]));
   }
 
   private parseErrorMessage(err) {
