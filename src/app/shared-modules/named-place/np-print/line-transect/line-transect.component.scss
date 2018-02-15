@@ -1,5 +1,6 @@
 $rowHeight: 25mm;
 $perPage: 10;
+$baseFontSize: 12pt;
 
 @page {
   size: A4;
@@ -11,6 +12,7 @@ $perPage: 10;
   width: 190mm;
   height: 277mm;
   padding-top: 5mm;
+  font-size: $baseFontSize;
 }
 
 @media not print {
@@ -44,7 +46,7 @@ $perPage: 10;
   h1 {
     margin: 0;
     padding: 0;
-    font-size: 20px;
+    font-size: $baseFontSize + 5;
     font-weight: bold;
   }
 }
@@ -58,7 +60,7 @@ $perPage: 10;
   padding: 0;
   margin: 0;
   h2 {
-    font-size: 10px;
+    font-size: $baseFontSize - 6;
     margin: 0;
     padding: 0;
   }
@@ -68,7 +70,7 @@ $perPage: 10;
 .info {
   position: absolute;
   top: 60mm;
-  font-size: small;
+  font-size: $baseFontSize - 4;
   td {
     vertical-align: top;
     padding: 0.3mm;
@@ -103,6 +105,7 @@ $perPage: 10;
   th {
     text-align: center;
     border-bottom: solid 1px #000;
+    font-size: $baseFontSize;
   }
   td:nth-child(0), th:nth-child(0),
   td:nth-child(1), th:nth-child(1),
@@ -122,15 +125,15 @@ $perPage: 10;
 }
 .distance {
   margin: 0 1mm;
-  font-size: smaller;
+  font-size: $baseFontSize - 4;
 }
 .short-hand {
   position: absolute;
   bottom: 0;
 }
 
-.short-hand, .table {
-  font-size: 12px;
+.short-hand, .table, .line-table {
+  font-size: $baseFontSize - 4;
 }
 
 .biotopelist {
@@ -138,11 +141,12 @@ $perPage: 10;
   margin: 1mm;
   padding: 0;
   position: absolute;
+  font-size: $baseFontSize;
 }
 .time {
   position: absolute;
   margin: 1mm;
-  bottom: 0;
+  bottom: 1mm;
   left: 0;
   width: 100mm;
   border-bottom: 1px solid #000000;

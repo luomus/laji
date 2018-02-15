@@ -124,7 +124,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   private initMapOptions() {
     this.lajiMapOptions = {
       tileLayerName: 'maastokartta',
-      tileLayerOpacity: 0.7,
+      tileLayerOpacity: 0.5,
       lineTransect: {
         printMode: true,
         feature: {geometry: this.getGeometry()}
