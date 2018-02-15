@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy, OnChanges, ChangeDetectorRef, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, OnChanges, ChangeDetectorRef, Input, ViewChild, SimpleChanges } from '@angular/core';
 import { QualityService } from '../../service/quality.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
 import { AnnotationTableColumn } from '../model/annotation-table-column';
 
 @Component({
@@ -12,7 +11,7 @@ import { AnnotationTableColumn } from '../model/annotation-table-column';
   templateUrl: './annotation-table.component.html',
   styleUrls: ['./annotation-table.component.css']
 })
-export class AnnotationTableComponent implements OnInit, OnDestroy, OnChanges {
+export class AnnotationTableComponent implements OnInit, OnChanges {
   @Input() pageSize = 50;
   @Input() group = '';
   @Input() timeStart = '';
@@ -78,10 +77,6 @@ export class AnnotationTableComponent implements OnInit, OnDestroy, OnChanges {
   shownDocument = '';
   highlightId = '';
 
-  private delayedSearchSource = new Subject<any>();
-  private delayedSearch = this.delayedSearchSource.asObservable();
-  private debouchAfterChange = 500;
-  private subSearch: Subscription;
   private fetchSub: Subscription;
 
   private langMap = {
@@ -97,28 +92,22 @@ export class AnnotationTableComponent implements OnInit, OnDestroy, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.subSearch = this.delayedSearch
-      .debounceTime(this.debouchAfterChange)
-      .subscribe(() => {
-        this.fetchPage();
-      });
-    this.delayedSearchSource.next();
+    this.fetchPage();
   }
 
-  ngOnDestroy() {
-    if (this.subSearch) {
-      this.subSearch.unsubscribe();
+  ngOnChanges(changes: SimpleChanges) {
+    if ((changes.group && changes.group.isFirstChange()) ||
+      (changes.timeStart && changes.timeStart.isFirstChange()) ||
+      (changes.timeEnd && changes.timeEnd.isFirstChange())) {
+      return;
     }
-  }
-
-  ngOnChanges() {
     this.page = 1;
-    this.delayedSearchSource.next();
+    this.fetchPage();
   }
 
   setPage(pageInfo) {
     this.page = pageInfo.offset + 1;
-    this.delayedSearchSource.next();
+    this.fetchPage();
   }
 
   onSort(event) {
@@ -130,7 +119,7 @@ export class AnnotationTableComponent implements OnInit, OnDestroy, OnChanges {
       const sortBy: string =  this.setLangParams(col.sortBy || '' + col.prop);
       return sortBy.split(',').map(val => val + ' ' + sort.dir.toUpperCase()).join(',');
     });
-    this.delayedSearchSource.next();
+    this.fetchPage();
   }
 
   showDocument(event) {
