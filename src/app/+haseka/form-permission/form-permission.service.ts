@@ -6,6 +6,11 @@ import { Person } from '../../shared/model/Person';
 import { Form } from '../../shared/model/Form';
 import { UserService } from '../../shared/service/user.service';
 
+export interface Rights {
+  edit: boolean;
+  admin: boolean;
+}
+
 @Injectable()
 export class FormPermissionService {
 
@@ -79,4 +84,22 @@ export class FormPermissionService {
       .catch(() => Observable.of(false));
   }
 
+  getRights(form: Form.List): Observable<Rights> {
+    if (!this.userSerivce.isLoggedIn) {
+      return Observable.of({edit: false, admin: false});
+    }
+    if (!form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
+      return Observable.of({edit: true, admin: false});
+    }
+    return this.userSerivce.getUser()
+      .switchMap(
+        () => this.getFormPermission(form.collectionID, this.userSerivce.getToken()),
+        (person: Person, formPermission: FormPermission) => ({person, formPermission})
+      )
+      .switchMap(data => Observable.of({
+        edit: this.isEditAllowed(data.formPermission, data.person),
+        admin: this.isAdmin(data.formPermission, data.person)
+      }))
+      .catch(() => Observable.of({edit: false, admin: false}));
+  }
 }
