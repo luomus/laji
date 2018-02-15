@@ -156,11 +156,6 @@
     {{value | amDateFormat: 'DD.MM.YYYY HH:mm'}}
   </span>
 </ng-template>
-<ng-template let-value="value" #user>
-  <span *ngIf="value" title="{{value}}">
-    {{value | users}}
-  </span>
-</ng-template>
 <ng-template let-value="value" #annotation>
   <span [ngSwitch]="value.annotationClass | toQName" [tooltip]="value.annotationClass | toQName | label"
         [container]="'body'" class="inline">
@@ -191,7 +186,7 @@
     </span>
     <span *ngIf="value.annotationClass">{{value.annotationClass | toQName | label}}</span>
   </small>
-  <div title="{{(value.opinion ? ('MAN.opinion' | label) + ': ' + value.opinion + '\n' : '')
+  <span title="{{(value.opinion ? ('MAN.opinion' | label) + ': ' + value.opinion + '\n' : '')
                 + (value.notes ? value.notes : '')}}">
     <span *ngIf="value.opinion">
       {{'MAN.opinion' | label}}:
@@ -200,7 +195,7 @@
     <span *ngIf="value.notes">
       {{value.notes}}
     </span>
-  </div>
+  </span>
 </ng-template>
 <ng-template let-value="value" #image>
   <span *ngIf="value">

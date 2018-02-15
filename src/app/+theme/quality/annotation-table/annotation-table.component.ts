@@ -40,7 +40,6 @@ export class AnnotationTableComponent implements OnInit, OnDestroy {
     },
     {
       prop: 'annotation.annotationByPersonName',
-      cellTemplate: 'user',
       label: 'quality.creator',
       sortBy: 'unit.annotations.annotationByPersonName'
     },
@@ -111,6 +110,7 @@ export class AnnotationTableComponent implements OnInit, OnDestroy {
   }
 
   onSelectChange() {
+    this.page = 1;
     this.delayedSearchSource.next();
   }
 
