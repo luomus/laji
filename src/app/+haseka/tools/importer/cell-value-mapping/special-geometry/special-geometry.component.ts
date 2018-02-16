@@ -113,6 +113,7 @@ export class SpecialGeometryComponent implements AfterViewInit {
       mapping[value] = to;
     }
     this.mappingChanged.emit(mapping);
+    this.cdr.markForCheck();
   }
 
 }
