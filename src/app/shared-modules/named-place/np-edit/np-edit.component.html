@@ -3,12 +3,15 @@
   <ng-container *ngIf="namedPlace && !editMode">
     <laji-np-info [namedPlace]="namedPlace"
                   [formRights]="formRights"
-                  [formData]="npFormData"
+                  [npFormData]="npFormData"
                   [targetForm]="formData"
                   [allowEdit]="allowEdit"
+                  [loading]="loading"
                   [accessRequested]="accessRequested"
                   [collectionId]="formData.collectionID"
                   [editMode]="editMode"
+                  (onReleaseButtonClick)="onRelease.emit()"
+                  (onReserveButtonClick)="onReserve.emit()"
                   (onRequestAccessButtonClick)="requestAccessClick()"
                   (onEditButtonClick)="editClick()"
                   (onUseButtonClick)="useClick()"></laji-np-info>

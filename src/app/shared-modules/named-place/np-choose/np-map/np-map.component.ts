@@ -23,12 +23,17 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlaces: NamedPlace[];
   @Input() activeNP: number;
   @Input() height: string;
+  @Input() userID: string;
   @Output() onActivePlaceChange = new EventEmitter<number>();
 
   private _data: any;
 
   private placeColor = '#00aa00';
-  private activePlaceColor = '#007700';
+  private placeActiveColor = '#007700';
+  private reservedColor = '#d11e08';
+  private reservedActiveColor = '#771508';
+  private mineColor = '#5294cc';
+  private mineActiveColor = '#375577';
 
   constructor() { }
 
@@ -66,9 +71,9 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
     geojsonLayer.eachLayer(function (layer) {
       let color = null;
       if (layer.feature.properties.lajiMapIdx === newActive) {
-        color = that.activePlaceColor;
+        color = that.getFeatureColor(layer.feature);
       } else if (layer.feature.properties.lajiMapIdx === oldActive) {
-        color = that.placeColor;
+        color = that.getFeatureColor(layer.feature, newActive);
       }
 
       if (color) {
@@ -97,9 +102,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
             fillOpacity: 0.3,
             color: ''
           };
-
-          style.color = o.featureIdx === this.activeNP ? this.activePlaceColor : this.placeColor;
-
+          style.color = this.getFeatureColor(o.feature, this.activeNP);
           return style;
         },
         on: {
@@ -112,10 +115,37 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
           features: this.namedPlaces.map((np, i) => ({
             type: 'Feature',
             geometry: np.geometry,
-            properties: { }
+            properties: {
+              reserved: this.getReservationStatus(np)
+            }
           }))
         }
       };
     } catch (e) { }
+  }
+
+  private getFeatureColor(feature, active?) {
+    switch (feature.properties.reserved) {
+      case 'reserved':
+        return feature.featureIdx === active ? this.reservedActiveColor : this.reservedColor;
+      case 'mine':
+        return feature.featureIdx === active ? this.mineActiveColor : this.mineColor;
+      default:
+        return feature.featureIdx === active ? this.placeActiveColor : this.placeColor;
+    }
+  }
+
+  private getReservationStatus(np: NamedPlace): 'free'|'mine'|'reserved' {
+    if (!np.reserve) {
+      return 'free'
+    }
+    const now = new Date();
+    const until = new Date(np.reserve.until);
+    if (now > until) {
+      return 'free';
+    } else if (np.reserve.reserver === this.userID) {
+      return 'mine'
+    }
+    return 'reserved';
   }
 }

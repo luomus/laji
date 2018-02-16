@@ -24,11 +24,12 @@ import {Form} from '../../../../shared/model';
 })
 export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace: NamedPlace;
-  @Input() formData: any;
+  @Input() npFormData: any;
   @Input() targetForm: any;
   @Input() collectionId: string;
   @Input() editMode: boolean;
   @Input() allowEdit: boolean;
+  @Input() loading: boolean;
   @Input() accessRequested: boolean;
   @Input() formRights: Rights = {
     admin: false,
@@ -40,6 +41,8 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() onEditButtonClick = new EventEmitter();
   @Output() onUseButtonClick = new EventEmitter();
   @Output() onRequestAccessButtonClick = new EventEmitter();
+  @Output() onReserveButtonClick = new EventEmitter();
+  @Output() onReleaseButtonClick = new EventEmitter();
 
   @ViewChild('infoModal') public modal: ModalDirective;
   @ViewChild('infoBox') infoBox;
@@ -106,14 +109,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     this.onUseButtonClick.emit();
   }
 
-  reserve() {
-
-  }
-
-  releaseClick() {
-
-  }
-
   private updateButtons() {
     if (!this.namedPlace) {
       return;
@@ -123,8 +118,12 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       let btnStatus;
       if (!this.formRights.edit) {
         btnStatus = this.accessRequested ? 'accessRequested' : 'nouse';
-      } else if (this.formData && Array.isArray(this.formData.features) && this.formData.features.indexOf(Form.Feature.Reserve)) {
-        if (!this.namedPlace.reserve) {
+      } else if (
+        this.targetForm &&
+        Array.isArray(this.targetForm.features) &&
+        this.targetForm.features.indexOf(Form.Feature.Reserve) > -1
+      ) {
+        if (!this.namedPlace.reserve || new Date() > new Date(this.namedPlace.reserve.until)) {
           btnStatus = 'reservable';
         } else if (this.namedPlace.reserve.reserver === person.id) {
           btnStatus = 'reservedByYou';
@@ -146,10 +145,10 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   private updateFields() {
     this.keys = [];
     this.values = {};
-    this.fields = this.formData.schema.properties.namedPlace.items.properties;
+    this.fields = this.npFormData.schema.properties.namedPlace.items.properties;
 
     const displayedById =
-      this.formData.uiSchema.namedPlace.uiSchema.items.placeWrapper['ui:options'].fieldScopes.collectionID;
+      this.npFormData.uiSchema.namedPlace.uiSchema.items.placeWrapper['ui:options'].fieldScopes.collectionID;
     const displayed = displayedById[this.collectionId] ? displayedById[this.collectionId] : displayedById['*'];
 
     let gData = null;

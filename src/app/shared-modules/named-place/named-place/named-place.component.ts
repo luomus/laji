@@ -32,6 +32,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   activeNP = -1;
   namedPlace: NamedPlace;
 
+  userID: string;
   areaTypes = AreaType;
   editMode = false;
   loading = false;
@@ -83,6 +84,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.cd.markForCheck();
       });
+    this.userService.getUser()
+      .subscribe(person => this.userID = person.id);
 
     this.footerService.footerVisible = false;
   }
@@ -107,6 +110,42 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.municipality = value;
     this.prepopulatedNamedPlace['municipality'] = [value];
     this.updateList();
+  }
+
+  release() {
+    this.loading = true;
+    this.namedPlaceService
+      .releaseReservation(this.namedPlace.id)
+      .subscribe(np => {
+        this.loading = false;
+        this.namedPlace = np;
+        this.updateNPInNPList(np);
+        this.cd.markForCheck();
+      },() => {
+        this.loading = false;
+      })
+  }
+
+  reserve() {
+    this.loading = true;
+    this.namedPlaceService
+      .reserve(this.namedPlace.id)
+      .subscribe(np => {
+        this.loading = false;
+        this.namedPlace = np;
+        this.updateNPInNPList(np);
+        this.cd.markForCheck();
+      }, () => {
+        this.loading = false;
+      });
+  }
+
+  updateNPInNPList(np: NamedPlace) {
+    const idx = this.namedPlaces.findIndex(v => v.id === np.id);
+    if (idx > -1) {
+      this.namedPlaces[idx] = np;
+      this.namedPlaces = [...this.namedPlaces];
+    }
   }
 
   private updateList() {

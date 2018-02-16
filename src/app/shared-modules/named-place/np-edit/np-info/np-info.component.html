@@ -11,7 +11,7 @@
             <i class="glyphicon glyphicon-remove"></i>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" *ngIf="modalIsVisible">
           <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{isModal: true}"></ng-template>
         </div>
       </div><!-- /.modal-content -->
@@ -41,42 +41,66 @@
         </div>
         <div id="use-button-container" [ngSwitch]="useButton">
           <ng-container *ngSwitchCase="'usable'">
-            <button type="button"
-               class="btn btn-md btn-primary use-button"
-               (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</button>
+            <div class="row-container">
+              <button type="button"
+                 class="btn btn-md btn-primary btn-block use-button"
+                 (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</button>
+            </div>
           </ng-container>
           <ng-container *ngSwitchCase="'reservedByYou'">
-            <button type="button"
-                    class="btn btn-md btn-primary use-button"
-                    (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</button>
-            <button type="button"
-                    class="btn btn-md btn-primary use-button"
-                    (click)="releaseClick()">{{targetForm.namedPlaceOptions?.releaseLabel ? targetForm.namedPlaceOptions.releaseLabel : 'np.release.button' | translate}}</button>
+            <div class="row-container">
+              <button type="button"
+                      [disabled]="loading"
+                      class="btn btn-md btn-primary btn-block use-button"
+                      (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</button>
+              <button type="button"
+                      [disabled]="loading"
+                      class="btn btn-md btn-primary btn-block use-button"
+                      (click)="onReleaseButtonClick.emit()">{{targetForm.namedPlaceOptions?.releaseLabel ? targetForm.namedPlaceOptions.releaseLabel : 'np.release' | translate}}</button>
+            </div>
           </ng-container>
           <ng-container *ngSwitchCase="'nouse'">
             <div class="row-container">
-              <p>{{'np.requestAccess.intro' | translate}}</p>
+              <p>{{'np.requestAccess-intro' | translate}}</p>
               <button type="button"
-                 class="btn btn-md btn-primary use-button"
-                 (click)="onRequestAccessButtonClick.emit()">{{targetForm.namedPlaceOptions?.accessLabel ? targetForm.namedPlaceOptions.accessLabel : 'np.requestAccess.button' | translate}}</button>
+                 class="btn btn-md btn-primary btn-block use-button"
+                 [disabled]="loading"
+                 (click)="onRequestAccessButtonClick.emit()">{{targetForm.namedPlaceOptions?.accessLabel ? targetForm.namedPlaceOptions.accessLabel : 'np.requestAccess' | translate}}</button>
             </div>
           </ng-container>
           <ng-container *ngSwitchCase="'accessRequested'">
             <div class="row-container">
-              <p>{{'np.requestAccess.intro' | translate}}</p>
+              <p>{{'np.requestAccess-intro' | translate}}</p>
               <button type="button"
-                      class="btn btn-md btn-primary use-button"
-                      [disabled]="true">{{targetForm.namedPlaceOptions?.requestSendLabel ? targetForm.namedPlaceOptions.requestSendLabel : 'np.requestSend.button' | translate}}</button>
+                      class="btn btn-md btn-primary btn-block use-button"
+                      [disabled]="true">{{targetForm.namedPlaceOptions?.requestSendLabel ? targetForm.namedPlaceOptions.requestSendLabel : 'np.requestSend' | translate}}</button>
             </div>
           </ng-container>
           <ng-container *ngSwitchCase="'reservable'">
-            <button type="button"
-                    class="btn btn-md btn-primary use-button"
-                    (click)="reserve()">{{targetForm.namedPlaceOptions?.reservableLabel ? targetForm.namedPlaceOptions.reservableLabel : 'np.defaultReservable' | translate}}</button>
+            <div class="row-container">
+              <button type="button"
+                      class="btn btn-md btn-primary btn-block use-button"
+                      [disabled]="loading"
+                      (click)="onReserveButtonClick.emit()">{{targetForm.namedPlaceOptions?.reservableLabel ? targetForm.namedPlaceOptions.reservableLabel : 'np.reserve' | translate}}</button>
+            </div>
           </ng-container>
           <ng-container *ngSwitchCase="'reservedByOther'">
-            <button type="button"
-               class="btn btn-md btn-primary use-button" [disabled]="true">{{targetForm.namedPlaceOptions?.reservedLabel ? targetForm.namedPlaceOptions.reservedLabel : 'np.defaultReserved' | translate}}</button>
+            <div class="row-container">
+              <button type="button"
+                 class="btn btn-md btn-primary btn-block use-button" [disabled]="true">{{targetForm.namedPlaceOptions?.reservedLabel ? targetForm.namedPlaceOptions.reservedLabel : 'np.reserved' | translate}}</button>
+              <ng-container *ngIf="formRights.admin">
+                <div class="key">
+                  <strong>Varauksen omistaja:</strong>
+                </div>
+                <div class="value">
+                  {{namedPlace.reserve.reserver | users}}
+                </div>
+                <button type="button"
+                        [disabled]="loading"
+                        class="btn btn-md btn-primary btn-block use-button"
+                        (click)="onReleaseButtonClick.emit()">{{targetForm.namedPlaceOptions?.releaseLabel ? targetForm.namedPlaceOptions.releaseLabel : 'np.release' | translate}} (admin)</button>
+              </ng-container>
+            </div>
           </ng-container>
         </div>
       </fieldset>
@@ -84,7 +108,7 @@
       <laji-own-submissions
         [actions]="['edit']"
         [columns]="['dateObserved', 'observer', 'dateEdited']"
-        [formID]="formData.id"
+        [formID]="npFormData.id"
         [namedPlace]="namedPlace.id"
         [showDownloadAll]="false"
       ></laji-own-submissions>

@@ -82,7 +82,9 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
       .subscribe(settings => {
         this.settings = settings;
         if (this.map) {
-          this.map.setOptions(settings);
+          try {
+            this.map.setOptions(settings);
+          } catch (e) {}
           this.cd.markForCheck();
         }
       });
@@ -216,7 +218,9 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
       this.initDrawData();
     }
     if (changes.lang && this.map) {
-      this.map.setLang(this.lang);
+      try {
+        this.map.setLang(this.lang);
+      } catch (e) {}
     }
   }
 
@@ -277,14 +281,16 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
   }
 
   initMapOptions() {
-    if (!this.map) {
-      return;
-    }
-    if (this.tileOpacity) {
-      this.map.tileLayer.setOpacity(this.tileOpacity);
-    }
-    if (this.maxBounds) {
-      this.map.map.setMaxBounds(this.maxBounds);
-    }
+    try {
+      if (!this.map) {
+        return;
+      }
+      if (this.tileOpacity) {
+        this.map.tileLayer.setOpacity(this.tileOpacity);
+      }
+      if (this.maxBounds) {
+        this.map.map.setMaxBounds(this.maxBounds);
+      }
+    } catch (e) {}
   }
 }
