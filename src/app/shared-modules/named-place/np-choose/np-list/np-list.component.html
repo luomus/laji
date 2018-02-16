@@ -14,3 +14,9 @@
     [columns]="columns">
   </laji-datatable>
 </div>
+
+<ng-template let-value="value" ngx-datatable-cell-template #personID>
+  <span *ngIf="value">
+    {{value | label}}
+  </span>
+</ng-template>
