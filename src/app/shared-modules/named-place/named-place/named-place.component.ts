@@ -13,7 +13,7 @@ import { NamedPlaceQuery } from '../../../shared/api/NamedPlaceApi';
 import { Form } from '../../../shared/model/Form';
 import { AreaType } from '../../../shared/service/area.service';
 import { NpEditComponent } from '../np-edit/np-edit.component';
-import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
+import {FormPermissionService, Rights} from '../../../+haseka/form-permission/form-permission.service';
 
 @Component({
   selector: 'laji-named-place',
@@ -37,7 +37,10 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   loading = false;
   allowEdit = false;
   allowCreate = false;
-  isAdmin = false;
+  formRights: Rights = {
+    admin: false,
+    edit: false
+  };
 
   filterByMunicipality = false;
   filterByBirdAssociationArea = false;
@@ -153,22 +156,21 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.filterByMunicipality = formData.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality) > -1;
       this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1
     }
-    return this.userService
-      .getUser()
-      .do(user => {
-        this.isAdmin = false;
-        this.allowCreate = false;
-        if (!formData || !formData.collectionID || !this.userService.isLoggedIn) {
-          return;
-        }
-        this.formPermissionService
-          .getFormPermission(formData.collectionID, this.userService.getToken())
-          .take(1)
-          .subscribe(data => {
-            this.isAdmin = this.formPermissionService.isAdmin(data, user);
-            this.allowCreate = (formData.features && formData.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1) || this.isAdmin;
-            this.cd.markForCheck();
-          });
+    this.formRights = {
+      admin: false,
+      edit: false
+    };
+    this.allowCreate = false;
+    if (!formData || !formData.collectionID || !this.userService.isLoggedIn) {
+      return Observable.of(null);
+    }
+    return this.formPermissionService
+      .getRights(formData)
+      .take(1)
+      .switchMap(rights => {
+        this.formRights = rights;
+        this.allowCreate = (formData.features && formData.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1) || rights.admin;
+        return Observable.of(null);
       });
   }
 

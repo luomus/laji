@@ -596,5 +596,7 @@
   "home.identify-title": "Ask for identification help",
   "home.identify-help-title": "Help to identify observations",
   "home.identify-help-intro": "Hobbyist - Your expertise is needed! Below are the most recent images of observations that were not identified with certainty. You can help users in species identification!",
-  "form.permission.no-access": "You don't yet have access to this form"
+  "form.permission.no-access": "You don't yet have access to this form",
+  "np.defaultRequestAccess": "Request access",
+  "np.requestSend.button": "Request already sent"
 }

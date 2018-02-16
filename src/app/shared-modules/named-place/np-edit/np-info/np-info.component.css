@@ -7,6 +7,10 @@
   margin-bottom: 12px;
 }
 
+.row-container {
+  margin-top: 10px;
+}
+
 laji-np-info-map {
   float: right;
   width: 55%;
@@ -19,7 +23,7 @@ laji-np-info-map {
   #margin: 0 0 6px -3px;
 }
 
-#use-button {
+.use-button {
   white-space: normal;
   margin: 6px 9px 6px 0;
 }

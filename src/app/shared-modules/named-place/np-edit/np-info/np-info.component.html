@@ -1,4 +1,4 @@
-<div [ngClass]="{'hidden': editButtonVisible === undefined && useButtonVisible === undefined}">
+<div [ngClass]="{'hidden': editButtonVisible === undefined && useButton === undefined}">
   <div class="hidden-xs" #infoBox id="info-box">
     <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{isModal: false}"></ng-template>
   </div>
@@ -39,19 +39,52 @@
         <div *ngFor="let k of keys">
           <laji-np-info-row [key]="k" [value]="values[k]" [fields]="fields"></laji-np-info-row>
         </div>
-        <div id="use-button-container">
-          <a *ngIf="useButtonVisible"
-             type="button"
-             id="use-button"
-             class="btn btn-md btn-primary"
-            (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</a>
-          </div>
+        <div id="use-button-container" [ngSwitch]="useButton">
+          <ng-container *ngSwitchCase="'usable'">
+            <button type="button"
+               class="btn btn-md btn-primary use-button"
+               (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</button>
+          </ng-container>
+          <ng-container *ngSwitchCase="'reservedByYou'">
+            <button type="button"
+                    class="btn btn-md btn-primary use-button"
+                    (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</button>
+            <button type="button"
+                    class="btn btn-md btn-primary use-button"
+                    (click)="releaseClick()">{{targetForm.namedPlaceOptions?.releaseLabel ? targetForm.namedPlaceOptions.releaseLabel : 'np.release.button' | translate}}</button>
+          </ng-container>
+          <ng-container *ngSwitchCase="'nouse'">
+            <div class="row-container">
+              <p>{{'np.requestAccess.intro' | translate}}</p>
+              <button type="button"
+                 class="btn btn-md btn-primary use-button"
+                 (click)="onRequestAccessButtonClick.emit()">{{targetForm.namedPlaceOptions?.accessLabel ? targetForm.namedPlaceOptions.accessLabel : 'np.requestAccess.button' | translate}}</button>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="'accessRequested'">
+            <div class="row-container">
+              <p>{{'np.requestAccess.intro' | translate}}</p>
+              <button type="button"
+                      class="btn btn-md btn-primary use-button"
+                      [disabled]="true">{{targetForm.namedPlaceOptions?.requestSendLabel ? targetForm.namedPlaceOptions.requestSendLabel : 'np.requestSend.button' | translate}}</button>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="'reservable'">
+            <button type="button"
+                    class="btn btn-md btn-primary use-button"
+                    (click)="reserve()">{{targetForm.namedPlaceOptions?.reservableLabel ? targetForm.namedPlaceOptions.reservableLabel : 'np.defaultReservable' | translate}}</button>
+          </ng-container>
+          <ng-container *ngSwitchCase="'reservedByOther'">
+            <button type="button"
+               class="btn btn-md btn-primary use-button" [disabled]="true">{{targetForm.namedPlaceOptions?.reservedLabel ? targetForm.namedPlaceOptions.reservedLabel : 'np.defaultReserved' | translate}}</button>
+          </ng-container>
+        </div>
       </fieldset>
-      <strong>{{(isAdmin ? 'np.earlier' : 'np.myEarlier') | translate}}</strong>:
+      <strong>{{(formRights.admin ? 'np.earlier' : 'np.myEarlier') | translate}}</strong>:
       <laji-own-submissions
         [actions]="['edit']"
         [columns]="['dateObserved', 'observer', 'dateEdited']"
-        [formID]="formId"
+        [formID]="formData.id"
         [namedPlace]="namedPlace.id"
         [showDownloadAll]="false"
       ></laji-own-submissions>

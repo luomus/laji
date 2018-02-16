@@ -87,10 +87,30 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
         type: 'FeatureCollection',
         features: [{
           type: 'Feature',
-          geometry: this.namedPlace.geometry,
+          geometry: this.getGeometry(),
           properties: {}
         }]
       }
     };
+  }
+
+  private getGeometry() {
+    if (this.namedPlace.prepopulatedDocument && this.namedPlace.prepopulatedDocument.gatherings) {
+      const geometries = this.namedPlace.prepopulatedDocument.gatherings.reduce((prev, curr) => {
+        if (curr.geometry) {
+          prev.push(curr.geometry);
+        }
+        return prev;
+      }, []);
+      if (geometries.length === 1) {
+        return geometries[0];
+      } else if (geometries.length === 1) {
+        return {
+          type: 'GeometryCollection',
+          geometries: geometries
+        };
+      }
+    }
+    return this.namedPlace.geometry;
   }
 }

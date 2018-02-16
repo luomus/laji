@@ -597,5 +597,7 @@
   "home.identify-title": "Be om identifieringshjälp",
   "home.identify-help-title": "Hjälp att identifiera observationer",
   "home.identify-help-intro": "Specialist - din expertis behövs! Nedan visas de senaste bilderna av observationer som inte identifierades med säkerhet. Du kan hjälpa användare med identifiering av arter!",
-  "form.permission.no-access": "Du har inte tillgång till denna blankett"
+  "form.permission.no-access": "Du har inte tillgång till denna blankett",
+  "np.defaultRequestAccess": "Begär tillgång",
+  "np.requestSend.button": "Begäran redan skickad"
 }

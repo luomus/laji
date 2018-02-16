@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
   ViewChild
 } from '@angular/core';
@@ -12,18 +13,26 @@ import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
 import { NpInfoComponent } from './np-info/np-info.component';
+import {FormPermissionService, Rights} from '../../../+haseka/form-permission/form-permission.service';
+import {FormPermission} from '../../../shared/model/FormPermission';
+import {ToastsService, UserService} from '../../../shared/service';
+import {Logger} from '../../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-np-edit',
   templateUrl: './np-edit.component.html',
-  styleUrls: ['./np-edit.component.css']
+  styleUrls: ['./np-edit.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() namedPlace: NamedPlace;
   @Input() formId: string;
   @Input() prepopulatedNamedPlace: string;
   @Input() formData: any;
-  @Input() isAdmin = false;
+  @Input() formRights: Rights = {
+    edit: false,
+    admin: false
+  };
 
   mapOptionsData: any;
   npFormData: any;
@@ -35,6 +44,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Output() onError = new EventEmitter();
 
   lang: string;
+  accessRequested = false;
 
   private npFormId: string;
   private npForm$: Subscription;
@@ -47,7 +57,12 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     private translate: TranslateService,
     private localizeRouterService: LocalizeRouterService,
     private router: Router,
-    private documentService: DocumentService
+    private documentService: DocumentService,
+    private formPermissionService: FormPermissionService,
+    private userService: UserService,
+    private toastsService: ToastsService,
+    private logger: Logger,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -55,7 +70,10 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     this.mapOptionsData = this.getMapOptions();
     this.fetchForm();
     this.subTrans = this.translate.onLangChange.subscribe(
-      () => this.onLangChange()
+      () => {
+        this.onLangChange();
+        this.cdr.markForCheck();
+      }
     );
   }
 
@@ -71,6 +89,9 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['namedPlace']) {
       this.setFormData();
+    }
+    if (changes['formData']) {
+      this.checkAccessRequested();
     }
   }
 
@@ -95,6 +116,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
         }
         this.lang = this.translate.currentLang;
         this.npFormData = form;
+        this.cdr.markForCheck();
       });
   }
 
@@ -112,11 +134,15 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
           }
           this.npFormData = data;
           this.setFormData();
+          this.cdr.markForCheck();
         },
         err => {
           const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
            this.translate.get(msgKey, {formId: this.npFormId})
-           .subscribe(msg => this.onError.emit(msg));
+           .subscribe(msg => {
+             this.onError.emit(msg);
+             this.cdr.markForCheck();
+           });
         }
       );
   }
@@ -149,6 +175,37 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
   editClick() {
     this.onEditButtonClick.emit();
+  }
+
+  checkAccessRequested() {
+    if (!this.formData) {
+      return;
+    }
+    this.formPermissionService.hasPendingAccess(this.formData)
+      .subscribe(pending => {
+        this.accessRequested = pending;
+        this.cdr.markForCheck();
+      })
+  }
+
+  requestAccessClick() {
+    this.formPermissionService.makeAccessRequest(this.formData.collectionID, this.userService.getToken())
+      .subscribe(
+        (formPermission: FormPermission) => {
+          this.accessRequested = true;
+          this.toastsService.showSuccess('Pyyntösi on lähetetty eteenpäin');
+          this.cdr.markForCheck();
+        },
+        (err) => {
+          if (err.status !== 406) {
+            this.toastsService.showError('Pyyntöäsi lähetys epäonnistui');
+            this.logger.error('Failed to send formPermission request', {
+              collectionId: this.formData.collectionID
+            });
+            this.cdr.markForCheck();
+          }
+        }
+      );
   }
 
   useClick() {

@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
@@ -40,6 +40,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
 
   yearInfoError: string;
   documentError: string;
+  currentDataKey: string;
 
   constructor(
     private documentService: DocumentApi,
@@ -57,7 +58,13 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    const cacheKey = [this.formID, this.namedPlace, this.onlyTemplates].join(':');
+    if (this.currentDataKey === cacheKey || !this.formID || !this.namedPlace) {
+      return;
+    }
+    this.currentDataKey = cacheKey;
+
     if (this.onlyTemplates) {
       this.initTemplates();
     } else {

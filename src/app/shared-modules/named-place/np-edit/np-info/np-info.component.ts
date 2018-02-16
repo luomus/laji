@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, ChangeDetectorRef,
+  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   EventEmitter,
   HostListener,
@@ -13,11 +13,14 @@ import {
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { UserService } from '../../../../shared/service/user.service';
 import { ModalDirective } from 'ngx-bootstrap';
+import {Rights} from '../../../../+haseka/form-permission/form-permission.service';
+import {Form} from '../../../../shared/model';
 
 @Component({
   selector: 'laji-np-info',
   templateUrl: './np-info.component.html',
-  styleUrls: ['./np-info.component.css']
+  styleUrls: ['./np-info.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace: NamedPlace;
@@ -26,13 +29,17 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() collectionId: string;
   @Input() editMode: boolean;
   @Input() allowEdit: boolean;
-  @Input() isAdmin = false;
+  @Input() accessRequested: boolean;
+  @Input() formRights: Rights = {
+    admin: false,
+    edit: false
+  };
 
   editButtonVisible: boolean;
-  useButtonVisible: boolean;
 
   @Output() onEditButtonClick = new EventEmitter();
   @Output() onUseButtonClick = new EventEmitter();
+  @Output() onRequestAccessButtonClick = new EventEmitter();
 
   @ViewChild('infoModal') public modal: ModalDirective;
   @ViewChild('infoBox') infoBox;
@@ -44,13 +51,13 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   modalIsVisible = false;
   viewIsInitialized = false;
   resizeCanOpenModal = false;
+  useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther'|'accessRequested';
 
   constructor(private userService: UserService,
               private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.updateFields();
-    this.userService.getUser().subscribe(data => { this.setButtonVisibilities(data.id); });
   }
 
   ngAfterViewInit() {
@@ -63,8 +70,12 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['namedPlace']) {
+    if (changes['namedPlace'] && !changes['namedPlace'].firstChange) {
       this.updateFields();
+      this.updateButtons();
+    }
+    if (changes['accessRequested']) {
+      this.updateButtons();
     }
   }
 
@@ -93,6 +104,43 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   useClick() {
     this.onUseButtonClick.emit();
+  }
+
+  reserve() {
+
+  }
+
+  releaseClick() {
+
+  }
+
+  private updateButtons() {
+    if (!this.namedPlace) {
+      return;
+    }
+    this.userService.getUser().subscribe(person => {
+      this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1);
+      let btnStatus;
+      if (!this.formRights.edit) {
+        btnStatus = this.accessRequested ? 'accessRequested' : 'nouse';
+      } else if (this.formData && Array.isArray(this.formData.features) && this.formData.features.indexOf(Form.Feature.Reserve)) {
+        if (!this.namedPlace.reserve) {
+          btnStatus = 'reservable';
+        } else if (this.namedPlace.reserve.reserver === person.id) {
+          btnStatus = 'reservedByYou';
+        } else {
+          btnStatus = 'reservedByOther';
+        }
+      } else {
+        btnStatus = (
+          this.namedPlace.public ||
+          (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1) ||
+          (this.namedPlace.editors && this.namedPlace.editors.indexOf(person.id) !== -1)
+        ) ? 'usable' : (this.accessRequested ? 'accessRequested' : 'nouse');
+      }
+      this.useButton = btnStatus;
+      this.cdRef.markForCheck();
+    });
   }
 
   private updateFields() {
@@ -125,14 +173,5 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   private isEmpty(value: string) {
     return value == null || value === '';
-  }
-
-  private setButtonVisibilities(userId) {
-    if (this.namedPlace) {
-      this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(userId) !== -1);
-      this.useButtonVisible = (this.namedPlace.public ||
-      (this.namedPlace.owners && this.namedPlace.owners.indexOf(userId) !== -1) ||
-      (this.namedPlace.editors && this.namedPlace.editors.indexOf(userId) !== -1));
-    }
   }
 }

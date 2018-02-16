@@ -612,5 +612,10 @@
   "home.identify-title": "Pyydä tunnistusapua",
   "home.identify-help-title": "Auta tunnistamaan havaintoja",
   "home.identify-help-intro": "Harrastaja - asiantuntemustasi tarvitaan! Alla on uusimpia Lajitietokeskukseen tallennettuja kuvia havainnoista, joita ei ole kyetty tunnistamaan varmasti. Voit auttaa käyttäjiä lajintunnistuksessa!",
-  "form.permission.no-access": "Sinulla ei ole vielä pääsyä kyseiseen lomakkeeseen"
+  "form.permission.no-access": "Sinulla ei ole vielä pääsyä kyseiseen lomakkeeseen",
+  "np.requestAccess.intro": "Varataksesi reitin, sinun täytyy pyytää lupa osallistua tähän tutkimukseen:",
+  "np.requestAccess.button": "Pyydä pääsyä",
+  "np.reserve.button": "Varaa",
+  "np.release.button": "Vapauta",
+  "np.requestSend.button": "Pääsy pyyntö lähetetty"
 }
