@@ -2,7 +2,7 @@
   <div id="navbar">
     <ul class="nav nav-tabs nav-justified">
       <li role="presentation" [ngClass]="{active: active === 'list'}">
-        <a (click)="setActive('list')">{{'np.list' | translate}}</a>
+        <a (click)="setActive('list')">{{formData.namedPlaceOptions?.listLabel ? formData.namedPlaceOptions.listLabel : 'np.list' | translate}}</a>
       </li>
       <li role="presentation" [ngClass]="{active: active === 'map'}" *ngIf="showMap()">
         <a (click)="setActive('map')">{{'np.map' | translate}}</a>

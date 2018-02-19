@@ -27,7 +27,7 @@
               <a *ngSwitchCase="'MHL.printTypeLineTransect'"
                  class="btn btn-sm btn-default"
                  target="_blank"
-                 [routerLink]="['/vihko/places/', namedPlace.id, 'print', targetForm.printType] | localize">{{'np.print' | translate}}</a>
+                 [routerLink]="['/vihko/places/', namedPlace.id, 'print', targetForm.printType] | localize">{{targetForm.namedPlaceOptions?.printLabel ? targetForm.namedPlaceOptions?.printLabel : 'np.print' | translate}}</a>
             </span>
             <button *ngIf="allowEdit && editButtonVisible"
                     class="btn btn-sm btn-default"
