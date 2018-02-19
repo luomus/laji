@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ObservationTableColumn } from '../../../../shared-modules/observation-result/model/observation-table-column';
 import { environment } from '../../../../../environments/environment';
 import { DatatableComponent } from '../../../../shared-modules/datatable/datatable/datatable.component';
+import {DatatableColumn} from '../../../datatable/model/datatable-column';
 
 @Component({
   selector: 'laji-np-list',
@@ -13,6 +14,9 @@ import { DatatableComponent } from '../../../../shared-modules/datatable/datatab
 export class NpListComponent {
 
   labelMap = {
+    '$.alternativeIDs[0]': 'route.nro',
+    '$.reserve.reserver': 'result.gathering.team',
+    '$.reserve.until': 'result.gathering.eventDate',
     '$.name': 'observation.form.specimen',
     '$.geometry.coordinateVerbatim': 'result.gathering.conversions.ykj',
     '$.prepopulatedDocument.gatheringEvent.dateBegin': 'haseka.submissions.dateStart',
@@ -29,6 +33,7 @@ export class NpListComponent {
   columns: ObservationTableColumn[];
 
 
+  @ViewChild('personID') personIDTpl: TemplateRef<any>;
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
   @Output() onActivePlaceChange = new EventEmitter<number>();
@@ -52,11 +57,16 @@ export class NpListComponent {
     const labels = environment.wbcForm === formData.id ? {...this.labelMap, ...this.wbcLabelMap} : this.labelMap;
     const cols: ObservationTableColumn[] = [];
     for (const path of this._fields) {
-      cols.push({
+      const col: DatatableColumn = {
         name: path,
         label: labels[path] || path,
         width: path === '$.name' ? 100 : 50
-      });
+      };
+      if (path === '$.reserve.reserver') {
+        col.cellTemplate = this.personIDTpl;
+        col.width = 100;
+      }
+      cols.push(col);
     }
     this.columns = cols;
     this.initData();

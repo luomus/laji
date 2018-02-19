@@ -60,6 +60,16 @@ export class NamedPlacesService {
       );
   }
 
+  reserve(id: string, options?: {until?: string, personID?: string}): Observable<NamedPlace> {
+    return this.namedPlaceApi
+      .reserve(id, this.userService.getToken(), options);
+  }
+
+  releaseReservation(id: string): Observable<NamedPlace> {
+    return this.namedPlaceApi
+      .releaseReservation(id, this.userService.getToken());
+  }
+
   private _getAllNamePlaces(query: NamedPlaceQuery, page = 1, namedPlaces = []): Observable<NamedPlace[]>  {
     return this.namedPlaceApi
       .findAll(

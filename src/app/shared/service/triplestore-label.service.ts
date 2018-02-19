@@ -11,6 +11,7 @@ import { InformalTaxonGroup, Taxonomy } from '../model';
 import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 import { SourceService } from './source.service';
 import { TaxonomyApi } from '../api';
+import {UserService} from './user.service';
 
 @Injectable()
 export class TriplestoreLabelService {
@@ -30,13 +31,15 @@ export class TriplestoreLabelService {
               private informalTaxonService: InformalTaxonGroupApi,
               private sourceService: SourceService,
               private cacheService: CacheService,
-              private taxonApi: TaxonomyApi
+              private taxonApi: TaxonomyApi,
+              private userService: UserService
   ) {
     this.getAllLabels();
   };
 
   public get(key, lang): Observable<string> {
     return this._get(key, lang)
+      .do(val => console.log(val))
       .catch(err => {
         this.logger.warn('Failed to fetch label for ' + key, err);
         return Observable.of(key);
@@ -59,6 +62,14 @@ export class TriplestoreLabelService {
               .map((group: InformalTaxonGroup) => group.name)
               .do(name => TriplestoreLabelService.cache[key] = name)
               .map(name => MultiLangService.getValue((name as any), lang))
+              .share();
+          }
+          return TriplestoreLabelService.requestCache[key];
+        case 'MA':
+          if (!TriplestoreLabelService.requestCache[key]) {
+            TriplestoreLabelService.requestCache[key] = this.userService.getUser(key)
+              .map(person => person.fullName)
+              .do(name => TriplestoreLabelService.cache[key] = name)
               .share();
           }
           return TriplestoreLabelService.requestCache[key];

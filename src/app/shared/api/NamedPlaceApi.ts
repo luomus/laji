@@ -216,4 +216,77 @@ export class NamedPlaceApi {
       });
   }
 
+  public reserve(id: string, personToken: string, extraHttpRequestParams?: {until?: string, personID?: string}): Observable<NamedPlace> {
+    const path = this.basePath + '/named-places/{id}/reservation'
+      .replace('{' + 'id' + '}', String(id));
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');
+    }
+    // verify required parameter 'personToken' is not null or undefined
+    if (personToken === null || personToken === undefined) {
+      throw new Error('Required parameter personToken was null or undefined when calling documentUpdateWithUser.');
+    }
+    if (personToken !== undefined) {
+      queryParameters.set('personToken', personToken);
+    }
+    if (typeof extraHttpRequestParams === 'object') {
+      Object.keys(extraHttpRequestParams).map((key) => {
+        queryParameters.set(key, extraHttpRequestParams[key]);
+      })
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'POST',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
+  public releaseReservation(id: string, personToken: string): Observable<NamedPlace> {
+    const path = this.basePath + '/named-places/{id}/reservation'
+      .replace('{' + 'id' + '}', String(id));
+
+    let queryParameters = new URLSearchParams();
+    let headerParams = this.defaultHeaders;
+    // verify required parameter 'id' is not null or undefined
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');
+    }
+    // verify required parameter 'personToken' is not null or undefined
+    if (personToken === null || personToken === undefined) {
+      throw new Error('Required parameter personToken was null or undefined when calling documentUpdateWithUser.');
+    }
+    if (personToken !== undefined) {
+      queryParameters.set('personToken', personToken);
+    }
+
+    let requestOptions: RequestOptionsArgs = {
+      method: 'DELETE',
+      headers: headerParams,
+      search: queryParameters
+    };
+
+    return this.http.request(path, requestOptions)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
 }

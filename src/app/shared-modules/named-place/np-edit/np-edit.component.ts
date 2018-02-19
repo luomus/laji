@@ -27,6 +27,7 @@ import {Logger} from '../../../shared/logger/logger.service';
 export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() namedPlace: NamedPlace;
   @Input() formId: string;
+  @Input() loading: boolean;
   @Input() prepopulatedNamedPlace: string;
   @Input() formData: any;
   @Input() formRights: Rights = {
@@ -39,6 +40,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() editMode = false;
   @Input() allowEdit = true;
+  @Output() onReserve = new EventEmitter();
+  @Output() onRelease = new EventEmitter();
   @Output() onEditButtonClick = new EventEmitter();
   @Output() onEditReady = new EventEmitter();
   @Output() onError = new EventEmitter();
@@ -189,21 +192,24 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   requestAccessClick() {
+    this.loading = true;
     this.formPermissionService.makeAccessRequest(this.formData.collectionID, this.userService.getToken())
       .subscribe(
         (formPermission: FormPermission) => {
+          this.loading = false;
           this.accessRequested = true;
           this.toastsService.showSuccess('Pyyntösi on lähetetty eteenpäin');
           this.cdr.markForCheck();
         },
         (err) => {
+          this.loading = false;
           if (err.status !== 406) {
             this.toastsService.showError('Pyyntöäsi lähetys epäonnistui');
             this.logger.error('Failed to send formPermission request', {
               collectionId: this.formData.collectionID
             });
-            this.cdr.markForCheck();
           }
+          this.cdr.markForCheck();
         }
       );
   }

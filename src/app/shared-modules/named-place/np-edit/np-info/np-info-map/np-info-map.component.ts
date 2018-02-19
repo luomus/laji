@@ -54,19 +54,19 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   setData() {
     if (this._data && this.lajiMap.map) {
-      this.lajiMap.map.setData([this._data]);
-
+      try {
+        this.lajiMap.map.setData([this._data]);
+      } catch (e) {}
       this.setZoom();
     }
   }
 
   setZoom() {
-    if (this._data && this.lajiMap.map) {
-      const geojsonLayer = this.lajiMap.map.data[0].group;
-
-      this.lajiMap.map.map.fitBounds(
-        geojsonLayer.getBounds(), { maxZoom: 4 });
-    }
+    try {
+      if (this._data && this.lajiMap.map) {
+        this.lajiMap.map.zoomToData();
+      }
+    } catch (e) {}
   }
 
   initData() {
@@ -104,7 +104,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
       }, []);
       if (geometries.length === 1) {
         return geometries[0];
-      } else if (geometries.length === 1) {
+      } else if (geometries.length > 1) {
         return {
           type: 'GeometryCollection',
           geometries: geometries
