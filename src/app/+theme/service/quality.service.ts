@@ -26,7 +26,7 @@ export class QualityService {
   ) { }
 
   getAnnotationList(page = 1, pageSize = 50, orderBy?, informalTaxonGroup?, timeStart?, timeEnd?): Observable<any> {
-    const query: WarehouseQueryInterface = {};
+    const query: WarehouseQueryInterface = {cache: true};
     query.annotationType = ['TAXON_RELIABILITY', 'IDENTIFICATION', 'UNIDENTIFIABLE', 'COMMENT'];
     if (informalTaxonGroup) {
       query.informalTaxonGroupId = informalTaxonGroup;
@@ -52,7 +52,7 @@ export class QualityService {
   }
 
   getMostActiveUsers(maxLength = 50, informalTaxonGroup?, lastDate?): Observable<any> {
-    const query: WarehouseQueryInterface = {};
+    const query: WarehouseQueryInterface = {cache: true};
     query.annotationType = ['TAXON_RELIABILITY', 'IDENTIFICATION', 'UNIDENTIFIABLE'];
     if (informalTaxonGroup) {
       query.informalTaxonGroupId = informalTaxonGroup;
@@ -71,7 +71,7 @@ export class QualityService {
         maxLength,
         1,
         false,
-        false
+        true
     ))
       .map(data => data.results)
       .map(data => {

@@ -105,6 +105,8 @@ export class DatatableComponent {
         }
         return column;
       });
+
+      this.changeDetectorRef.markForCheck();
     });
   }
 
