@@ -78,7 +78,7 @@ export class NpPrintComponent implements OnInit, OnDestroy {
   print(fileName) {
     this.loading = true;
     if (isPlatformBrowser(this.platformId)) {
-      this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, this.stripScripts(document.getElementsByTagName('html')[0].innerHTML))
+      this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, this.stripHTML(document.getElementsByTagName('html')[0].innerHTML))
         .subscribe((response) => {
           FileSaver.saveAs(response, fileName + '.pdf');
           this.loading = false;
@@ -90,8 +90,12 @@ export class NpPrintComponent implements OnInit, OnDestroy {
     }
   }
 
-  private stripScripts(s: string) {
-    return s.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+  private stripHTML(s: string) {
+    // Strip scripts
+    s = s.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+    // Make absolute SVG ids relative
+    s = s.replace(/xlink:href=".*?#/g, 'xlink:href="#');
+    return s;
   }
 
 }
