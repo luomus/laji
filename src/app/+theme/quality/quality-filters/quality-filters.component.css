@@ -10,3 +10,6 @@
   width: 1%;
   display: table-cell;
 }
+:host >>> #datepicker-container .input-group-addon:first-child {
+  min-width: 120px;
+}
