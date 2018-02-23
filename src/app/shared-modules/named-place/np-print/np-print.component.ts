@@ -39,7 +39,7 @@ export class NpPrintComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef
   ) { }
 
-  ngOnInit() {
+ ngOnInit() {
     this.footerService.footerVisible = false;
     this.subData = Observable.combineLatest(
       this.userService.getUser(),

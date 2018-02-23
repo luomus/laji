@@ -6,6 +6,7 @@ export interface LajiMapOptions {
   availableTileLayerNamesBlacklist?: string[];
   zoom?: number;
   center?: [number, number];
+  zoomToData?: object | boolean,
   lang?: string;
   data?: any;
   drawIdx?: number;

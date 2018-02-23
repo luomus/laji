@@ -112,7 +112,14 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
       }
     }
     this.biotopes = biotopes;
-    this.lajiMap.lajiMap.zoomToData();
+    this.lajiMap.lajiMap.zoomToData({paddingInMeters: 100});
+    this.lajiMap.lajiMap.map.dragging.disable();
+    this.lajiMap.lajiMap.map.touchZoom.disable();
+    this.lajiMap.lajiMap.map.doubleClickZoom.disable();
+    this.lajiMap.lajiMap.map.scrollWheelZoom.disable();
+    this.lajiMap.lajiMap.map.boxZoom.disable();
+    this.lajiMap.lajiMap.map.keyboard.disable();
+    if (this.lajiMap.lajiMap.map.tap) this.lajiMap.lajiMap.map.tap.disable();
     setTimeout(() => {
       this.pages = pages;
       this.total = pages.length;
