@@ -11,8 +11,9 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class LineTransectComponent implements OnInit, OnDestroy {
 
-  showForm =  false;
+  showForm = false;
   showNav = true;
+  formData: any;
   routeSub: Subscription;
 
   constructor(public router: Router) { }
