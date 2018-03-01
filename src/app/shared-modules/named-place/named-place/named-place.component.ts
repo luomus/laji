@@ -14,6 +14,7 @@ import { Form } from '../../../shared/model/Form';
 import { AreaType } from '../../../shared/service/area.service';
 import { NpEditComponent } from '../np-edit/np-edit.component';
 import {FormPermissionService, Rights} from '../../../+haseka/form-permission/form-permission.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'laji-named-place',
@@ -128,8 +129,10 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   reserve() {
     this.loading = true;
+    const namedPlaceOptions = this.formData.namedPlaceOptions || {};
+    const until = namedPlaceOptions.reservationUntil;
     this.namedPlaceService
-      .reserve(this.namedPlace.id)
+      .reserve(this.namedPlace.id, until ? {until: until.replace('${year}', moment().year())} : undefined)
       .subscribe(np => {
         this.loading = false;
         this.namedPlace = np;
