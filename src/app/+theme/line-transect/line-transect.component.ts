@@ -13,7 +13,6 @@ export class LineTransectComponent implements OnInit, OnDestroy {
 
   showForm = false;
   showNav = true;
-  formData: any;
   routeSub: Subscription;
 
   constructor(public router: Router) { }

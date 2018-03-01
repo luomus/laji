@@ -5,7 +5,7 @@
       <ul class="sidebar-nav">
         <li><a [routerLink]="['../vakiolinjat', 'instructions']">{{'instructions' | translate}}</a></li>
         <li><a [routerLink]="['../vakiolinjat', 'stats']">{{'nafi.stats' | translate}}</a></li>
-        <li *ngIf="showForm"><a [routerLink]="['../vakiolinjat', 'form']">{{formData.namedPlaceOptions?.formNavLabel ? formData.namedPlaceOptions.formNavLabel : 'nafi.form' | translate}}</a></li>
+        <li *ngIf="showForm"><a [routerLink]="['../vakiolinjat', 'form']">{{'nafi.form' | translate}}</a></li>
         <li *ngIf="showForm"><a [routerLink]="['../vakiolinjat', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
       </ul>
     </div>
