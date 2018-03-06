@@ -3803,15 +3803,15 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-laji-form@^0.0.394:
-  version "0.0.394"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.394.tgz#c1a8d41dad571d6ecb55cd30e3d0131481bbd50c"
+laji-form@^0.0.397:
+  version "0.0.397"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.397.tgz#c5f8427cb12b9a27dffc82bd69f6432ba8dba090"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.334"
+    laji-map "^1.0.335"
     laji-validate "0.0.57"
     moment "*"
     prop-types "^15.5.8"
@@ -3824,15 +3824,15 @@ laji-form@^0.0.394:
     react-dom "^15.5.0"
     react-dropzone "^3.12.3"
     react-inlinesvg "^0.6.0"
-    react-jsonschema-form "git+https://git@github.com/olzraiti/react-jsonschema-form.git#cc03f97741116e99569ade724a0e62af6eb8344f"
+    react-jsonschema-form "git+https://git@github.com/olzraiti/react-jsonschema-form.git#453552e958aa42bea1daaac8ba14e177c7825494"
     react-sortable-hoc "^0.6.3"
     react-spinner "^0.2.7"
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@^1.0.334:
-  version "1.0.334"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.334.tgz#b43b1990e60e0b1552037e768fc157c6303b8ff6"
+laji-map@^1.0.335:
+  version "1.0.335"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.335.tgz#548c2f62f3331faca039511269b8509fe1f40566"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     babel-runtime "6.18.0"
@@ -5325,9 +5325,9 @@ react-inlinesvg@^0.6.0:
     httpplease "^0.16"
     once "^1.4"
 
-"react-jsonschema-form@git+https://git@github.com/olzraiti/react-jsonschema-form.git#cc03f97741116e99569ade724a0e62af6eb8344f":
+"react-jsonschema-form@git+https://git@github.com/olzraiti/react-jsonschema-form.git#453552e958aa42bea1daaac8ba14e177c7825494":
   version "1.0.0"
-  resolved "git+https://git@github.com/olzraiti/react-jsonschema-form.git#cc03f97741116e99569ade724a0e62af6eb8344f"
+  resolved "git+https://git@github.com/olzraiti/react-jsonschema-form.git#453552e958aa42bea1daaac8ba14e177c7825494"
   dependencies:
     ajv "^5.2.3"
     lodash.topath "^4.5.2"
