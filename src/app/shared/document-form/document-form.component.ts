@@ -210,7 +210,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         this.formService.setCurrentData(result, true);
         this.translate.get('haseka.form.success')
           .subscribe(value => {
-            this.toastsService.showSuccess(value);
+            this.toastsService.showSuccess(this.getMessage('success', value));
             this.changeDetector.markForCheck();
           });
         this.namedPlaceService.invalidateCache();
@@ -228,7 +228,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         });
         this.translate.get('haseka.form.error')
           .subscribe(value => {
-            this.toastsService.showError(value);
+            this.toastsService.showError(this.getMessage('error', value));
             this.changeDetector.markForCheck();
           });
     });
@@ -380,6 +380,13 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               });
         }
       );
+  }
+
+  private getMessage(type, defaultValue) {
+    if (this.form && this.form.options && this.form.options.messages && this.form.options.messages[type]) {
+      return this.form.options.messages[type];
+    }
+    return defaultValue;
   }
 
   private fetchAnnotations(documentID, page = 1, results = []): Observable<Annotation[]> {
