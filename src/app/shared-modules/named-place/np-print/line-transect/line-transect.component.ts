@@ -112,7 +112,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
       }
     }
     this.biotopes = biotopes;
-    this.lajiMap.lajiMap.zoomToData({paddingInMeters: 100});
+    this.lajiMap.lajiMap.zoomToData({paddingInMeters: 200});
     this.lajiMap.lajiMap.map.dragging.disable();
     this.lajiMap.lajiMap.map.touchZoom.disable();
     this.lajiMap.lajiMap.map.doubleClickZoom.disable();
