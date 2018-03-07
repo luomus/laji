@@ -575,7 +575,7 @@
   "reliability": "Tillförlitlighet av observation",
   "persons": "Personer",
   "np.earlier": "Observationer",
-  "np.myEarlier": "Mina tidigare observationer",
+  "np.myEarlier": "Nedan ser du bara dina egna observationer, inte allas.",
   "lastCensus": "Tidigare census",
   "annotationBySystem": "Denna observation har blivit annoterad automatiskt för kvalitet.",
   "showSpeciesCard": "Visa artkort",

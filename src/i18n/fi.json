@@ -590,7 +590,7 @@
   "reliability": "Havainnon luotettavuus",
   "persons": "Henkilöt",
   "np.earlier": "Ilmoitukset",
-  "np.myEarlier": "Aiemmat ilmoitukseni",
+  "np.myEarlier": "Alla näkyvät vain sinun tunnuksellasi tallennetut laskennat, ei kaikkia reitin laskentoja.",
   "lastCensus": "Edellinen laskenta",
   "annotationBySystem": "Tähän havaintoon on tehty automaattinen laatumerkintä.",
   "showSpeciesCard": "Näytä lajikortti",

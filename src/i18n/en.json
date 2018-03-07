@@ -574,7 +574,7 @@
   "reliability": "Reliability of observation",
   "persons": "Persons",
   "np.earlier": "Observations",
-  "np.myEarlier": "My previous observations",
+  "np.myEarlier": "Underneath you'll see only your own observations not everyone's.",
   "lastCensus": "Previous census",
   "annotationBySystem": "This observation has been automatically annotated for quality.",
   "showSpeciesCard": "Show species card",
