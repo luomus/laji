@@ -157,15 +157,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
       }
     }
     if (this.document.gatherings) {
-      return MapUtil.latLngSegmentsToGeoJSONGeometry(
-        this.document.gatherings
-          .map(gathering => {
-            if (gathering.geometry && gathering.geometry.coordinates) {
-              return gathering.geometry.coordinates;
-            }
-            return [0, 0];
-          })
-      );
+      return {type: 'MultiLineString', coordinates: this.document.gatherings.map(item => item.geometry.coordinates)};
     }
     return {};
   }
