@@ -8,6 +8,10 @@
   }
 }
 
+.container-fluid {
+  padding-bottom: 300px;
+}
+
 .np-row [class^="col-"] {
   padding-right: 1px;
   padding-left: 1px;
