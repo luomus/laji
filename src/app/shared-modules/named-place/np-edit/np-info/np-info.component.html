@@ -104,14 +104,16 @@
           </ng-container>
         </div>
       </fieldset>
-      <strong>{{(formRights.admin ? 'np.earlier' : 'np.myEarlier') | translate}}</strong>:
-      <laji-own-submissions
-        [actions]="['edit']"
-        [columns]="['dateObserved', 'observer', 'dateEdited']"
-        [formID]="npFormData.id"
-        [namedPlace]="namedPlace.id"
-        [showDownloadAll]="false"
-      ></laji-own-submissions>
+      <div class="own-submissions-container">
+        <strong>{{(formRights.admin ? 'np.earlier' : 'np.myEarlier') | translate}}</strong>:
+        <laji-own-submissions
+          [actions]="['edit']"
+          [columns]="['dateObserved', 'observer', 'dateEdited']"
+          [formID]="npFormData.id"
+          [namedPlace]="namedPlace.id"
+          [showDownloadAll]="false"
+        ></laji-own-submissions>
+      </div>
     </div>
   </ng-template>
 </div>
