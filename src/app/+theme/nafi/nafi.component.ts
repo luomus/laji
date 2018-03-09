@@ -8,11 +8,8 @@ import { environment } from '../../../environments/environment';
 })
 export class NafiComponent implements OnInit {
 
-  showForm =  false;
-
   constructor() { }
 
   ngOnInit() {
-    this.showForm = !environment.production;
   }
 }

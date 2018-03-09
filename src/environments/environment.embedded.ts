@@ -8,7 +8,7 @@ export const environment = {
   formWhitelist: [],
   massForms: [],
   defaultForm: 'JX.519',
-  nafiForm: 'JX.123648',
+  nafiForm: 'MHL.6',
   invasiveControlForm: '',
   apiBase: '/api',
   wbcForm: 'MHL.3',
