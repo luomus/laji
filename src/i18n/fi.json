@@ -620,5 +620,6 @@
   "np.reserved": "Reitti varattu",
   "np.release": "Vapauta varaus",
   "np.requestSend": "Pääsy pyyntö lähetetty",
-  "route.nro": "Reitin numero"
+  "route.nro": "Reitin numero",
+  "form.administer": "Hallinnoi lomakkeen käyttöä"
 }

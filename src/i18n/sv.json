@@ -600,5 +600,6 @@
   "home.identify-help-intro": "Specialist - din expertis behövs! Nedan visas de senaste bilderna av observationer som inte identifierades med säkerhet. Du kan hjälpa användare med identifiering av arter!",
   "form.permission.no-access": "Du har inte tillgång till denna blankett",
   "np.requestAccess": "Begär tillgång",
-  "np.requestSend": "Begäran redan skickad"
+  "np.requestSend": "Begäran redan skickad",
+  "form.administer": "Hantera åtkomst till form"
 }

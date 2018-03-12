@@ -7,6 +7,7 @@
         <li><a [routerLink]="['../linjalaskenta', 'stats']">{{'nafi.stats' | translate}}</a></li>
         <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'form']">{{'wbc.form' | translate}}</a></li>
         <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
+        <li *ngIf="(rights | async)?.admin"><a [routerLink]="['/vihko/fp/HR.61/admin']">{{'form.administer' | translate}}</a></li>
       </ul>
     </div>
     <div class="col-sm-9 col-md-9 col-lg-10 main-content" [ngClass]="{
