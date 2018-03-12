@@ -135,6 +135,10 @@
       <td>Lomakkeen täyttäjä:</td>
       <td class="user-input"></td>
     </tr>
+    <tr>
+      <td>Päivämäärä:</td>
+      <td class="user-input"></td>
+    </tr>
   </table>
 </div>
 <div class="page no-page-break page-break-after" *ngIf="lajiMapOptions">
@@ -157,14 +161,14 @@
         <th>Apusarka</th>
         <th>Biotooppi pääsaralla</th>
       </tr>
-      <tr *ngFor="let distance of page">
+      <tr *ngFor="let distance of page; let j = index">
         <td><div class="distance">{{distance}}</div></td>
         <td></td>
         <td></td>
         <td></td>
-        <td>
-          <ul *ngIf="biotopes[distance]" class="biotopelist">
-            <li *ngFor="let biotope of biotopes[distance]">{{biotope}}</li>
+        <td class="biotope-container">
+          <ul *ngIf="biotopes[(distance - formSplit)]" class="biotopelist">
+            <li *ngFor="let biotope of biotopes[(distance - formSplit)]">{{biotope}}</li>
           </ul>
           <div class="distance">{{distance}}</div>
         </td>
