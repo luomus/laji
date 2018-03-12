@@ -189,16 +189,18 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   onSubmit(event) {
+    let doc$;
     this.saving = true;
     this.lajiForm.block();
     const data = event.data.formData;
     data['publicityRestrictions'] = this.publicityRestrictions;
     delete data._hasChanges;
     delete data._isTemplate;
-    let doc$;
+    if (event.data.errorSchema) {
+      data.warnings = event.data.errorSchema;
+    }
     if (this.isEdit) {
-      doc$ = this.documentService
-        .update(data.id || this.documentId, data, this.userService.getToken());
+      doc$ = this.documentService.update(data.id || this.documentId, data, this.userService.getToken());
     } else {
       doc$ = this.documentService.create(data, this.userService.getToken());
     }
