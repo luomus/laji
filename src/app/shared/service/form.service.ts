@@ -18,7 +18,7 @@ export class FormService {
   readonly forms = {
     [environment.nafiForm]: '/theme/nafi/form',
     [environment.wbcForm]: '/theme/talvilintulaskenta/form',
-    [environment.lineTransectForm]: '/theme/vakiolinjat/form',
+    [environment.lineTransectForm]: '/theme/linjalaskenta/form',
     default: '/vihko'
   };
 

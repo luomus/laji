@@ -36,7 +36,7 @@ export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCa
       this.documentId = params['id'] || null;
       if (!this.formService.hasNamedPlace() && !this.documentId) {
         this.router.navigate(
-          this.localizeRouterService.translateRoute(['/theme/vakiolinjat/places/HR.61', environment.lineTransectForm])
+          this.localizeRouterService.translateRoute(['/theme/linjalaskenta/places/HR.61', environment.lineTransectForm])
         );
       } else {
         this.hasNS = true;
@@ -57,26 +57,26 @@ export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCa
 
   onTmlLoad(data) {
     this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/vakiolinjat/form/', data.tmpID]),
+      this.localizeRouterService.translateRoute(['/theme/linjalaskenta/form/', data.tmpID]),
       { replaceUrl: true }
     );
   }
 
   onSuccess(data) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/vakiolinjat/statistics', data.document.id]));
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/linjalaskenta/statistics', data.document.id]));
   }
 
   onError() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/vakiolinjat/stats']));
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/linjalaskenta/stats']));
   }
 
   onCancel() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/vakiolinjat/stats']));
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/linjalaskenta/stats']));
   }
 
   onMissingNamedplace(data) {
     this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/vakiolinjat/form']),
+      this.localizeRouterService.translateRoute(['/theme/linjalaskenta/form']),
       { replaceUrl: true }
     );
   }
@@ -86,7 +86,7 @@ export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCa
       .subscribe(msg => {
         this.toastService.showWarning(msg)
         this.router.navigate(
-          this.localizeRouterService.translateRoute(['/theme/vakiolinjat']),
+          this.localizeRouterService.translateRoute(['/theme/linjalaskenta']),
           { replaceUrl: true }
         );
       });
