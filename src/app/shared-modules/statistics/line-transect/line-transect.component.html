@@ -11,35 +11,38 @@
         <td>{{counts.species.length}}</td>
       </tr>
       <tr>
-        <th>PS parisumma</th>
+        <th>Pääsaran parisumma</th>
         <td>{{counts.psCouples}}</td>
       </tr>
       <tr>
-        <th>TS parisumma</th>
-        <td>{{counts.tsCouples}}</td>
+        <th>Parisumma yhteensä</th>
+        <td>{{counts.tsCouples + counts.psCouples}}</td>
       </tr>
       <tr>
         <th>Pääsarkaprosentti</th>
         <td>{{counts.onPsPros}}%</td>
       </tr>
-      <tr *ngIf="counts.ykj10kmN">
-        <th>Ykj-ruutu</th>
-        <td>{{counts.ykj10kmN}}:{{counts.ykj10kmE}}</td>
+      <tr>
+        <th>Laskentanopeus</th>
+        <td>
+          {{counts.minPerKm}}min/km
+          (<span class="speed-warning" *ngIf="counts.minPerKm > 50; else slowSpeed">keskimääräistä hitaampi</span><ng-template #slowSpeed><span class="speed-warning" *ngIf="counts.minPerKm < 35; else normalSpeed">kesimääräistä nopeampi</span></ng-template><ng-template #normalSpeed><span class="speed-ok">normaali</span></ng-template>)
+        </td>
       </tr>
     </table>
     <table class="table">
       <thead>
       <tr>
         <th>Laji</th>
-        <th>PS</th>
-        <th>TS</th>
+        <th>Pääsaran parisumma</th>
+        <th>Parisumma yhteensä</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let species of counts.species">
         <td>{{species.name || species.id}}</td>
         <td>{{species.psCouples}}</td>
-        <td>{{species.tsCouples}}</td>
+        <td>{{species.tsCouples + species.psCouples}}</td>
       </tr>
       </tbody>
     </table>
@@ -74,6 +77,24 @@
         <strong>Pareja / 1km</strong>
       </div>
     </div>
+  </div>
+</div>
+<div class="row" *ngIf="warnings.length > 0">
+  <div class="col-sm-12">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Kuitattu virhe</th>
+        <th>lkm</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let warning of warnings">
+        <td>{{warning.message}}</td>
+        <td>{{warning.cnt}}</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 <div class="row">

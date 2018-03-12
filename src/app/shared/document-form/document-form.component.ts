@@ -197,7 +197,8 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     delete data._hasChanges;
     delete data._isTemplate;
     if (event.data.errorSchema) {
-      data.warnings = event.data.errorSchema;
+      const errors = this.errorsToPath(event.data.errorSchema);
+      data.acknowledgedWarnings = Object.keys(errors).map(key => ({location: key, messages: errors[key]}));
     }
     if (this.isEdit) {
       doc$ = this.documentService.update(data.id || this.documentId, data, this.userService.getToken());
@@ -382,6 +383,23 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               });
         }
       );
+  }
+
+  private errorsToPath(err, obj = {}, path = '$') {
+    Object.keys(err).forEach(key => {
+      if (key === '__errors' || key === '__error') {
+        err[key].forEach(message => {
+          if (!obj[path]) {
+            obj[path] = [];
+          }
+          obj[path].push(message);
+        });
+      } else {
+        const currentPath = path + (isNaN(+key) ? '.' + key : '[' + key + ']');
+        this.errorsToPath(err[key], obj, currentPath);
+      }
+    });
+    return obj;
   }
 
   private getMessage(type, defaultValue) {

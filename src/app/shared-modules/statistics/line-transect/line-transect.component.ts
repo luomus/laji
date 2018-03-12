@@ -1,10 +1,9 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges,
+  ChangeDetectionStrategy, Component, Input, OnChanges, OnInit,
   ViewChild
 } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import * as MapUtil from 'laji-map/lib/utils';
-import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { Map3Component } from '../../map/map.component';
@@ -20,6 +19,7 @@ interface LineTransectCount {
   ykj10kmN?: number;
   ykj10kmE?: number;
   couplesPerKm?: number;
+  minPerKm: number;
   species: {id: string, psCouples: number, tsCouples: number, name?: string}[];
 }
 
@@ -29,7 +29,7 @@ interface LineTransectCount {
   styleUrls: ['./line-transect.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LineTransectComponent implements OnChanges, AfterViewInit {
+export class LineTransectComponent implements OnChanges, OnInit {
   @ViewChild(Map3Component)
   public lajiMap: Map3Component;
 
@@ -67,38 +67,34 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
       term: 260.897
     }
   };
+  warnings: {message: string; cnt: number}[] = [];
+  private ykj10kmN = 0;
+  private ykj10kmE = 0;
 
-  constructor(
-    private coordinateService: CoordinateService,
-    private cd: ChangeDetectorRef
-  ) {}
+  constructor() {}
 
   ngOnChanges() {
     this.initCounts();
+    this.initWarnings();
     this.initMapOptions();
   }
 
-  ngAfterViewInit() {
-    if (this.lajiMap && this.lajiMap.lajiMap.pointIdxsToDistances) {
-      const keys = Object.keys(this.lajiMap.lajiMap.pointIdxsToDistances);
-      const lastKey = keys.pop();
-      setTimeout(() => {
-        this.counts.routeLength = parseInt(this.lajiMap.lajiMap.pointIdxsToDistances[lastKey], 10);
-        this.counts.couplesPerKm = (this.counts.tsCouples + this.counts.psCouples) /
-          (this.counts.routeLength / 1000);
-        this.cd.markForCheck();
-      }, 100);
-
-    }
+  ngOnInit() {
   }
 
   private initCounts() {
-    const count = {
+    const geometries = this.getGeometry();
+    const count: LineTransectCount = {
       psCouples: 0,
       tsCouples: 0,
       onPs: 0,
       onPsPros: 0,
-      species: []
+      species: [],
+      couplesPerKm: 0,
+      routeLength: 0,
+      ykj10kmN: this.ykj10kmN,
+      ykj10kmE: this.ykj10kmE,
+      minPerKm: 0
     };
     const species = {};
     if (this.document.gatherings) {
@@ -125,6 +121,9 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
           });
         }
       });
+      const dist = MapUtil.getLineTransectStartEndDistancesForIdx({geometry: geometries}, geometries.coordinates.length - 1, 10);
+      count.routeLength = dist[1];
+      count.couplesPerKm = (count.tsCouples + count.psCouples) / (count.routeLength / 1000);
     }
     Object.keys(species).map(taxon => {
       count.species.push({...species[taxon], id: taxon});
@@ -133,7 +132,37 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     if (total > 0) {
       count.onPsPros = Math.round((count.psCouples / (total)) * 100);
     }
+    count.couplesPerKm = (count.tsCouples + count.psCouples) / (count.routeLength / 1000);
+    if (this.document.gatheringEvent &&
+      this.document.gatheringEvent.dateBegin &&
+      this.document.gatheringEvent.timeStart &&
+      this.document.gatheringEvent.timeEnd
+    ) {
+      const diff = +new Date(this.document.gatheringEvent.dateBegin + ' ' + this.document.gatheringEvent.timeEnd) -
+        +new Date((this.document.gatheringEvent.dateEnd || this.document.gatheringEvent.dateBegin) + ' ' + this.document.gatheringEvent.timeStart);
+      count.minPerKm = Math.round((diff / 1000 / 60) / (count.routeLength / 1000));
+    }
     this.counts = count;
+  }
+
+  private initWarnings() {
+    const warnings: {message: string; cnt: number}[] = [];
+    if (this.document.acknowledgedWarnings) {
+      const messages = this.getErrors(this.document.acknowledgedWarnings);
+      Object.keys(messages).forEach(message => {
+        warnings.push({message: message.replace('[warning]', ''), cnt: messages[message]});
+      })
+    }
+    this.warnings = warnings;
+  }
+
+  private getErrors(warnings: {location: string, messages: string[]}[], messages = {}) {
+    warnings.forEach(error => {
+      error.messages.forEach(msg => {
+        messages[msg] = messages[msg] ? messages[msg] + 1 : 1;
+      });
+    });
+    return messages;
   }
 
   private initMapOptions() {
@@ -150,8 +179,8 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
       for (const altId of this.namedPlace.alternativeIDs) {
         if (altId.match(/[0-9]{3}:[0-9]{3}/)) {
           const parts = altId.split(':');
-          this.counts.ykj10kmN = +parts[0];
-          this.counts.ykj10kmE = +parts[1];
+          this.ykj10kmN = +parts[0];
+          this.ykj10kmE = +parts[1];
           break;
         }
       }
@@ -159,7 +188,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     if (this.document.gatherings) {
       return {type: 'MultiLineString', coordinates: this.document.gatherings.map(item => item.geometry.coordinates)};
     }
-    return {};
+    return {coordinates: []};
   }
 
 }
