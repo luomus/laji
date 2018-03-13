@@ -55,32 +55,28 @@
   </div>
   <div class="col-sm-6 col-md-5 col-lg-4" *ngIf="counts.onPsPros && counts.ykj10kmN">
     <div class="row">
-      <div class="col-sm-12" style="height: 200px">
+      <div class="col-sm-12" style="height: 250px">
         <laji-line-transect-chart
           [terms]="onMainTerms"
           [ykj10km]="counts.ykj10kmN"
           [value]="counts.onPsPros"
+          [title]="'Pääsarkaprosentti'"
+          [xLabel]="'ykj n'"
+          [yLabel]="'%'"
         ></laji-line-transect-chart>
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-12 chart-title">
-        <strong>Pääsarkaprosentti</strong>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12" style="height: 200px">
+      <div class="col-sm-12" style="height: 250px; margin-top: 15px;">
         <laji-line-transect-chart
           [terms]="perKmTerms"
           [yRange]="[0, 50]"
           [ykj10km]="counts.ykj10kmN"
           [value]="counts.couplesPerKm"
+          [title]="'Pareja / 1km'"
+          [xLabel]="'ykj n'"
+          [yLabel]="'lkm'"
         ></laji-line-transect-chart>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12 chart-title">
-        <strong>Pareja / 1km</strong>
       </div>
     </div>
   </div>
