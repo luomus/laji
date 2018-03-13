@@ -601,5 +601,6 @@
   "form.permission.no-access": "Du har inte tillgång till denna blankett",
   "np.requestAccess": "Begär tillgång",
   "np.requestSend": "Begäran redan skickad",
-  "form.administer": "Hantera åtkomst till form"
+  "form.administer": "Hantera åtkomst till form",
+  "result.reserve.until": "Reserverad tills"
 }

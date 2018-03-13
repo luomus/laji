@@ -621,5 +621,6 @@
   "np.release": "Vapauta varaus",
   "np.requestSend": "Pääsy pyyntö lähetetty",
   "route.nro": "Reitin numero",
-  "form.administer": "Hallinnoi lomakkeen käyttöä"
+  "form.administer": "Hallinnoi lomakkeen käyttöä",
+  "result.reserve.until": "Varattu"
 }
