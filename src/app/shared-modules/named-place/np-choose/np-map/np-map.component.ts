@@ -24,16 +24,19 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() activeNP: number;
   @Input() height: string;
   @Input() userID: string;
+  @Input() isSent: (np: NamedPlace) => boolean;
   @Output() onActivePlaceChange = new EventEmitter<number>();
 
   private _data: any;
 
-  private placeColor = '#00aa00';
-  private placeActiveColor = '#007700';
-  private reservedColor = '#d11e08';
-  private reservedActiveColor = '#771508';
-  private mineColor = '#5294cc';
-  private mineActiveColor = '#375577';
+  private placeColor = '#5294cc';
+  private placeActiveColor = '#375577';
+  private reservedColor = '#d1c400';
+  private reservedActiveColor = '#77720c';
+  private mineColor = '#d16e04';
+  private mineActiveColor = '#774000';
+  private sentColor = '#00aa00';
+  private sentActiveColor = '#007700';
 
   constructor() { }
 
@@ -126,6 +129,8 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   private getFeatureColor(feature, active?) {
     switch (feature.properties.reserved) {
+      case 'sent':
+        return feature.featureIdx === active ? this.sentActiveColor : this.sentColor;
       case 'reserved':
         return feature.featureIdx === active ? this.reservedActiveColor : this.reservedColor;
       case 'mine':
@@ -135,7 +140,10 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  private getReservationStatus(np: NamedPlace): 'free'|'mine'|'reserved' {
+  private getReservationStatus(np: NamedPlace): 'free'|'mine'|'reserved'|'sent' {
+    if (this.isSent && this.isSent(np)) {
+      return 'sent';
+    }
     if (!np.reserve) {
       return 'free'
     }
