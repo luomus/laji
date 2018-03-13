@@ -29,6 +29,12 @@
           (<span class="speed-warning" *ngIf="counts.minPerKm > 50; else slowSpeed">keskimääräistä hitaampi</span><ng-template #slowSpeed><span class="speed-warning" *ngIf="counts.minPerKm < 35; else normalSpeed">kesimääräistä nopeampi</span></ng-template><ng-template #normalSpeed><span class="speed-ok">normaali</span></ng-template>)
         </td>
       </tr>
+      <tr *ngIf="stats$ | async let diff">
+        <th>Poikkeama laskentapäivän mediaanista</th>
+        <td>
+          {{diff}}
+        </td>
+      </tr>
     </table>
     <table class="table">
       <thead>
