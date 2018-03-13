@@ -331,7 +331,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       )
       .subscribe(
         result => {
-          console.log(result);
           const data = result.data;
           this.namedPlace = result.namedPace;
           this.isEdit = true;

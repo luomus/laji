@@ -73,7 +73,7 @@ const routes: Routes = [
     children: [
       {path: '', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' }},
       {path: 'stats', pathMatch: 'full', component: LineTransectResultComponent, data: { title: 'lineTransect.title' }},
-      {path: 'form', pathMatch: 'full', component: LineTransectFormComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'form', pathMatch: 'full', component: LineTransectFormComponent},
       {
         path: 'form/:id',
         pathMatch: 'full',

@@ -42,7 +42,10 @@
         <ng-container *ngIf="namedPlace?.prepopulatedDocument?.gatheringEvent?.dateBegin">
           <laji-np-info-row [key]="'dateBegin'" [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin" [fields]="{dateBegin: {title: ('lastCensus' | translate)}}"></laji-np-info-row>
         </ng-container>
-        <div id="use-button-container" [ngSwitch]="useButton">
+        <div *lajiLoggedIn="false" style="margin-top: 20px;">
+          <strong>Sinun täytyy kirjautua sisälle varatakseksi reittejä</strong>
+        </div>
+        <div *lajiLoggedIn="true" id="use-button-container" [ngSwitch]="useButton">
           <ng-container *ngSwitchCase="'usable'">
             <div class="row-container">
               <button type="button"
@@ -107,7 +110,7 @@
           </ng-container>
         </div>
       </fieldset>
-      <div class="own-submissions-container">
+      <div class="own-submissions-container" *lajiLoggedIn="true">
         <strong>{{(formRights.admin ? 'np.earlier' : 'np.myEarlier') | translate}}</strong>:
         <laji-own-submissions
           [actions]="['edit']"
