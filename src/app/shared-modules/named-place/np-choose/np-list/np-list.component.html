@@ -20,3 +20,19 @@
     {{value | label}}
   </span>
 </ng-template>
+
+<ng-template let-value="value" ngx-datatable-cell-template #status>
+  <ng-container *ngIf="value">
+    <ng-container [ngSwitch]="value">
+      <span *ngSwitchCase="'free'" >
+        Vapaa
+      </span>
+      <span *ngSwitchCase="'sent'">
+        Ilmoitettu
+      </span>
+      <span *ngSwitchDefault="">
+        Varattu
+      </span>
+    </ng-container>
+  </ng-container>
+</ng-template>

@@ -18,6 +18,7 @@ export class NpListComponent {
     '$.reserve.reserver': 'result.gathering.team',
     '$.reserve.until': 'result.reserve.until',
     '$.name': 'observation.form.specimen',
+    '$._status': 'Tila',
     '$.geometry.coordinateVerbatim': 'result.gathering.conversions.ykj',
     '$.prepopulatedDocument.gatheringEvent.dateBegin': 'lastCensus',
     '$.prepopulatedDocument.gatheringEvent.dateEnd': 'haseka.submissions.dateEnd'
@@ -30,6 +31,7 @@ export class NpListComponent {
 
 
   @ViewChild('personID') personIDTpl: TemplateRef<any>;
+  @ViewChild('status') statusTpl: TemplateRef<any>;
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
   @Output() onActivePlaceChange = new EventEmitter<number>();
@@ -61,6 +63,9 @@ export class NpListComponent {
       if (path === '$.reserve.reserver') {
         col.cellTemplate = this.personIDTpl;
         col.width = 100;
+      } else if (path === '$._status') {
+        col.cellTemplate = this.statusTpl;
+        col.width = 20;
       }
       cols.push(col);
     }
