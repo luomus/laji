@@ -39,7 +39,6 @@ export class TriplestoreLabelService {
 
   public get(key, lang): Observable<string> {
     return this._get(key, lang)
-      .do(val => console.log(val))
       .catch(err => {
         this.logger.warn('Failed to fetch label for ' + key, err);
         return Observable.of(key);
