@@ -575,7 +575,7 @@
   "reliability": "Reliability of observation",
   "persons": "Persons",
   "np.earlier": "Observations",
-  "np.myEarlier": "Underneath you'll see only your own observations not everyone's.",
+  "np.myEarlier": "Underneath you'll see only your own observations not everyone's",
   "lastCensus": "Previous census",
   "annotationBySystem": "This observation has been automatically annotated for quality.",
   "showSpeciesCard": "Show species card",
@@ -599,5 +599,7 @@
   "home.identify-help-intro": "Hobbyist - Your expertise is needed! Below are the most recent images of observations that were not identified with certainty. You can help users in species identification!",
   "form.permission.no-access": "You don't yet have access to this form",
   "np.requestAccess": "Request access",
-  "np.requestSend": "Request already sent"
+  "np.requestSend": "Request already sent",
+  "form.administer": "Manage access to form",
+  "result.reserve.until": "Reserved"
 }

@@ -13,3 +13,7 @@
 :host >>> .axis text {
   font: 10px sans-serif;
 }
+
+:host >>> .title {
+  font-weight: bold;
+}

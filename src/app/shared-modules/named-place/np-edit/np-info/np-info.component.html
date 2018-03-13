@@ -36,10 +36,16 @@
         </legend>
         <laji-np-info-map [visible]="(isModal && modalIsVisible) || infoBox?.nativeElement?.offsetParent !== null"
                           [namedPlace]="namedPlace"></laji-np-info-map>
-        <div *ngFor="let k of keys">
+        <ng-container *ngFor="let k of keys">
           <laji-np-info-row [key]="k" [value]="values[k]" [fields]="fields"></laji-np-info-row>
+        </ng-container>
+        <ng-container *ngIf="namedPlace?.prepopulatedDocument?.gatheringEvent?.dateBegin">
+          <laji-np-info-row [key]="'dateBegin'" [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin" [fields]="{dateBegin: {title: ('lastCensus' | translate)}}"></laji-np-info-row>
+        </ng-container>
+        <div *lajiLoggedIn="false" style="margin-top: 20px;">
+          <strong>Sinun täytyy kirjautua sisälle varatakseksi reittejä</strong>
         </div>
-        <div id="use-button-container" [ngSwitch]="useButton">
+        <div *lajiLoggedIn="true" id="use-button-container" [ngSwitch]="useButton">
           <ng-container *ngSwitchCase="'usable'">
             <div class="row-container">
               <button type="button"
@@ -104,14 +110,16 @@
           </ng-container>
         </div>
       </fieldset>
-      <strong>{{(formRights.admin ? 'np.earlier' : 'np.myEarlier') | translate}}</strong>:
-      <laji-own-submissions
-        [actions]="['edit']"
-        [columns]="['dateObserved', 'observer', 'dateEdited']"
-        [formID]="npFormData.id"
-        [namedPlace]="namedPlace.id"
-        [showDownloadAll]="false"
-      ></laji-own-submissions>
+      <div class="own-submissions-container" *lajiLoggedIn="true">
+        <strong>{{(formRights.admin ? 'np.earlier' : 'np.myEarlier') | translate}}</strong>:
+        <laji-own-submissions
+          [actions]="['edit']"
+          [columns]="['dateObserved', 'observer', 'dateEdited']"
+          [formID]="targetForm.id"
+          [namedPlace]="namedPlace.id"
+          [showDownloadAll]="false"
+        ></laji-own-submissions>
+      </div>
     </div>
   </ng-template>
 </div>

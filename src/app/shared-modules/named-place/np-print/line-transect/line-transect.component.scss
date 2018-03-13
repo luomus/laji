@@ -135,13 +135,17 @@ $baseFontSize: 12pt;
 .short-hand, .table, .line-table {
   font-size: $baseFontSize - 4;
 }
-
+.biotope-container {
+  position: relative;
+}
 .biotopelist {
   list-style: none;
   margin: 1mm;
   padding: 0;
   position: absolute;
-  font-size: $baseFontSize;
+  font-size: small;
+  text-align: left;
+  bottom: 0;
 }
 .time {
   position: absolute;

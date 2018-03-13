@@ -27,12 +27,19 @@ export class NpChooseComponent implements OnInit, OnChanges {
 
   activeNP = -1;
 
+  sent = this.isSent.bind(this);
+
+
+  private seasonStart;
+  private seasonEnd;
+
   constructor(
     private window: WindowRef,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
+    this.initEarliestAndLatest();
     this.updateHeight();
   }
 
@@ -44,6 +51,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
       } else {
         this.active = 'list';
       }
+      this.initEarliestAndLatest();
     }
   }
 
@@ -80,4 +88,34 @@ export class NpChooseComponent implements OnInit, OnChanges {
       this.formData.namedPlaceOptions.hideMapTab === true
     );
   }
+
+
+  isSent(np: NamedPlace) {
+    if (this.seasonStart && this.seasonEnd) {
+      if (np && np.prepopulatedDocument && np.prepopulatedDocument.gatheringEvent && np.prepopulatedDocument.gatheringEvent.dateBegin) {
+        const dateBegin = new Date(np.prepopulatedDocument.gatheringEvent.dateBegin);
+        return this.seasonStart <= dateBegin && dateBegin <= this.seasonEnd;
+      }
+    }
+    return false;
+  }
+
+
+  private initEarliestAndLatest() {
+    if (this.formData.options && this.formData.options.season && this.formData.options.season.start && this.formData.options.season.end) {
+      const now = new Date();
+      const delta = now < new Date(this.analyseData(this.formData.options.season.start)) ? -1 : 0;
+      this.seasonStart = new Date(this.analyseData(this.formData.options.season.start, delta));
+      this.seasonEnd = new Date(this.analyseData(this.formData.options.season.end, delta));
+    } else {
+      this.seasonStart = undefined;
+      this.seasonEnd = undefined;
+    }
+  }
+
+  private analyseData(date: string, yearDelta = 0): string {
+    const now = new Date();
+    return date.replace('${year}', '' + (now.getFullYear() + yearDelta))
+  }
+
 }

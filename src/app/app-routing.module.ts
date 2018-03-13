@@ -41,7 +41,7 @@ const routesWithLang: Routes = [
     {path: 'nafi', redirectTo: '/en/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/en/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/en/theme/emk', pathMatch: 'full'},
-    {path: 'vakiolinjat', redirectTo: '/en/theme/vakiolinjat', pathMatch: 'full'},
+    {path: 'linjalaskenta', redirectTo: '/en/theme/linjalaskenta', pathMatch: 'full'},
     {path: 'talvilintu', redirectTo: '/en/theme/talvilintulaskenta', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/en/error/404'}
@@ -50,7 +50,7 @@ const routesWithLang: Routes = [
     {path: 'nafi', redirectTo: '/sv/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/sv/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/sv/theme/emk', pathMatch: 'full'},
-    {path: 'vakiolinjat', redirectTo: '/sv/theme/vakiolinjat', pathMatch: 'full'},
+    {path: 'linjalaskenta', redirectTo: '/sv/theme/linjalaskenta', pathMatch: 'full'},
     {path: 'talvilintu', redirectTo: '/sv/theme/talvilintulaskenta', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/sv/error/404'}
@@ -59,7 +59,7 @@ const routesWithLang: Routes = [
     {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
     {path: 'ykj', redirectTo: '/theme/ykj', pathMatch: 'full'},
     {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
-    {path: 'vakiolinjat', redirectTo: '/theme/vakiolinjat', pathMatch: 'full'},
+    {path: 'linjalaskenta', redirectTo: '/theme/linjalaskenta', pathMatch: 'full'},
     {path: 'talvilintu', redirectTo: '/theme/talvilintulaskenta', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/error/404'}

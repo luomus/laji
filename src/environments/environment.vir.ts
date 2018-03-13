@@ -3,7 +3,7 @@ export const environment = {
   formWhitelist: ['JX.519', 'JX.6485'],
   massForms: ['JX.519'],
   defaultForm: 'JX.519',
-  nafiForm: 'JX.123648',
+  nafiForm: 'MHL.6',
   wbcForm: 'MHL.3',
   lineTransectForm: 'MHL.1',
   whichSpeciesForm: 'MHL.9',

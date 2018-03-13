@@ -51,8 +51,8 @@
     "ie-shim": "^0.1.0",
     "intl": "^1.2.5",
     "jsonpath-plus": "^0.16.0",
-    "laji-form": "^0.0.398",
-    "laji-map": "^1.0.336",
+    "laji-form": "^0.0.401",
+    "laji-map": "^1.0.337",
     "localforage": "^1.5.5",
     "moment": "^2.19.3",
     "ng2-nouislider": "1.6.2",
@@ -63,7 +63,7 @@
     "openseadragon": "^2.3.1",
     "rxjs": "^5.5.5",
     "web-animations-js": "^2.3.1",
-    "xlsx": "^0.11.12",
+    "xlsx": "0.11.18",
     "zone.js": "^0.8.18"
   },
   "devDependencies": {
@@ -96,6 +96,9 @@
     "tslint": "5.8.0",
     "typescript": "2.4.2",
     "webpack-bundle-analyzer": "^2.9.1"
+  },
+  "resolutions": {
+    "proj4": "2.3.16"
   },
   "keywords": [
     "laji.fi"

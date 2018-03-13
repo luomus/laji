@@ -5,3 +5,9 @@ table th:first-of-type {
   text-align: center;
   margin-bottom: 15px;
 }
+.speed-warning {
+  color: #dd6c34;
+}
+.speed-ok {
+  color: #2e921c;
+}

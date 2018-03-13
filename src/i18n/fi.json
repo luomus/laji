@@ -591,7 +591,7 @@
   "reliability": "Havainnon luotettavuus",
   "persons": "Henkilöt",
   "np.earlier": "Ilmoitukset",
-  "np.myEarlier": "Alla näkyvät vain sinun tunnuksellasi tallennetut laskennat, ei kaikkia reitin laskentoja.",
+  "np.myEarlier": "Alla näkyvät vain sinun tunnuksellasi tallennetut laskennat, ei kaikkia reitin laskentoja",
   "lastCensus": "Edellinen laskenta",
   "annotationBySystem": "Tähän havaintoon on tehty automaattinen laatumerkintä.",
   "showSpeciesCard": "Näytä lajikortti",
@@ -620,5 +620,7 @@
   "np.reserved": "Reitti varattu",
   "np.release": "Vapauta varaus",
   "np.requestSend": "Pääsy pyyntö lähetetty",
-  "route.nro": "Reitin numero"
+  "route.nro": "Reitin numero",
+  "form.administer": "Hallinnoi lomakkeen käyttöä",
+  "result.reserve.until": "Varattu"
 }

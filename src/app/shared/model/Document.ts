@@ -292,6 +292,8 @@ export interface Document {
 
     voucherSpecimenID?: string;
 
+    acknowledgedWarnings?: {location: string, messages: string[]}[];
+
   /**
    * Fields that tels if there is local changes on the form
    */

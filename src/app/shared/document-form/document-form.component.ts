@@ -189,16 +189,19 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   onSubmit(event) {
+    let doc$;
     this.saving = true;
     this.lajiForm.block();
     const data = event.data.formData;
     data['publicityRestrictions'] = this.publicityRestrictions;
     delete data._hasChanges;
     delete data._isTemplate;
-    let doc$;
+    if (event.data.errorSchema) {
+      const errors = this.errorsToPath(event.data.errorSchema);
+      data.acknowledgedWarnings = Object.keys(errors).map(key => ({location: key, messages: errors[key]}));
+    }
     if (this.isEdit) {
-      doc$ = this.documentService
-        .update(data.id || this.documentId, data, this.userService.getToken());
+      doc$ = this.documentService.update(data.id || this.documentId, data, this.userService.getToken());
     } else {
       doc$ = this.documentService.create(data, this.userService.getToken());
     }
@@ -328,7 +331,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       )
       .subscribe(
         result => {
-          console.log(result);
           const data = result.data;
           this.namedPlace = result.namedPace;
           this.isEdit = true;
@@ -380,6 +382,23 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               });
         }
       );
+  }
+
+  private errorsToPath(err, obj = {}, path = '$') {
+    Object.keys(err).forEach(key => {
+      if (key === '__errors' || key === '__error') {
+        err[key].forEach(message => {
+          if (!obj[path]) {
+            obj[path] = [];
+          }
+          obj[path].push(message);
+        });
+      } else {
+        const currentPath = path + (isNaN(+key) ? '.' + key : '[' + key + ']');
+        this.errorsToPath(err[key], obj, currentPath);
+      }
+    });
+    return obj;
   }
 
   private getMessage(type, defaultValue) {

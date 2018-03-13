@@ -12,6 +12,10 @@
   width: 100%;
 }
 
+.own-submissions-container {
+  margin-top: 15px;
+}
+
 laji-np-info-map {
   float: right;
   width: 55%;

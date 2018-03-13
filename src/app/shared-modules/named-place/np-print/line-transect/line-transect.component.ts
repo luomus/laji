@@ -28,9 +28,9 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   public neDistance: any = 0;
   public ykjGrid: string;
   public info: {key: string, data: string}[];
+  public formSplit = 50;
 
   private pageSize = 10;
-  private formSplit = 50;
 
   constructor(
     private cdr: ChangeDetectorRef
@@ -89,11 +89,11 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     let current = 0;
     geometries.coordinates.forEach((coord, idx) => {
       const dist = MapUtil.getLineTransectStartEndDistancesForIdx({geometry: geometries}, idx, 10);
-      const biotopeKey = current + this.formSplit;
-      if (!biotopes[biotopeKey]) {
-        biotopes[biotopeKey] = [];
+      const biotopeSlot = current === dist[0] ? current : current - this.formSplit;
+      if (!biotopes[biotopeSlot]) {
+        biotopes[biotopeSlot] = [];
       }
-      biotopes[biotopeKey].unshift('Biotooppi ' + idx);
+      biotopes[biotopeSlot].unshift(current !== dist[0] ? 'Biotooppi ' + idx + ' (' + dist[0] + 'm.)' : 'Biotooppi ' + idx);
       total = dist[1];
       while (current < total) {
         if (!pages[currentPage]) {
@@ -119,7 +119,9 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     this.lajiMap.lajiMap.map.scrollWheelZoom.disable();
     this.lajiMap.lajiMap.map.boxZoom.disable();
     this.lajiMap.lajiMap.map.keyboard.disable();
-    if (this.lajiMap.lajiMap.map.tap) this.lajiMap.lajiMap.map.tap.disable();
+    if (this.lajiMap.lajiMap.map.tap) {
+      this.lajiMap.lajiMap.map.tap.disable();
+    }
     setTimeout(() => {
       this.pages = pages;
       this.total = pages.length;

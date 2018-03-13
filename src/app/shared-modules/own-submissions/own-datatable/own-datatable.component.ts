@@ -257,7 +257,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   deleteDialog(row: any) {
-    const document = this.documents[row.index] || {};
+    const document: any = this.documents[row.index] || {};
     if (document.id && row.id === document.id) {
       this.deleteRow = row;
       this.deleteModal.show();
@@ -347,7 +347,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   toStatisticsPage(docId: string) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/vakiolinjat/statistics/' + docId]));
+    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/linjalaskenta/statistics/' + docId]));
   }
 
   toggleExpandRow(row: any) {
