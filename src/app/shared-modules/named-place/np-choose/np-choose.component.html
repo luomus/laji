@@ -11,15 +11,14 @@
   </div>
 
   <div *ngIf="active === 'list'" id="list-container">
-    <laji-np-list [height]="height" [namedPlaces]="namedPlaces" [formData]="formData" [activeNP]="activeNP" (onActivePlaceChange)="setActiveNP($event)"></laji-np-list>
+    <laji-np-list [height]="height" [namedPlaces]="_namedPlaces" [formData]="formData" [activeNP]="activeNP" (onActivePlaceChange)="setActiveNP($event)"></laji-np-list>
   </div>
 
   <div [ngClass]="{hidden: active !== 'map'}" *ngIf="mapIsActivated">
-    <laji-np-map [namedPlaces]="namedPlaces"
+    <laji-np-map [namedPlaces]="_namedPlaces"
                  [height]="height"
                  [activeNP]="activeNP"
                  [userID]="userID"
-                 [isSent]="sent"
                  [visible]="active === 'map' && visible"
                  (onActivePlaceChange)="setActiveNP($event)"></laji-np-map>
   </div>

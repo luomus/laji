@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { WindowRef } from '../../../shared/windows-ref';
+import { ExtendedNamedPlace } from '../model/extended-named-place';
 
 @Component({
   selector: 'laji-np-choose',
@@ -15,9 +16,9 @@ export class NpChooseComponent implements OnInit, OnChanges {
   active = 'list';
   height = '600px';
   mapIsActivated = false;
+  _namedPlaces: ExtendedNamedPlace[] = [];
 
   @Input() formData: any;
-  @Input() namedPlaces: NamedPlace[] = [];
   @Input() visible = true;
   @Input() allowCreate = false;
   @Input() userID: string;
@@ -34,12 +35,10 @@ export class NpChooseComponent implements OnInit, OnChanges {
   private seasonEnd;
 
   constructor(
-    private window: WindowRef,
-    private cdr: ChangeDetectorRef
+    private window: WindowRef
   ) {}
 
   ngOnInit() {
-    this.initEarliestAndLatest();
     this.updateHeight();
   }
 
@@ -51,8 +50,18 @@ export class NpChooseComponent implements OnInit, OnChanges {
       } else {
         this.active = 'list';
       }
+    }
+  }
+
+  @Input() set namedPlaces(namedPlaces: NamedPlace[]) {
+    if (!this.seasonStart) {
       this.initEarliestAndLatest();
     }
+    const extendedNamedPlaces: ExtendedNamedPlace[] = [];
+    for (const namedPlace of namedPlaces) {
+      extendedNamedPlaces.push({...namedPlace, _status: this.getNamedPlaceStatus(namedPlace)})
+    }
+    this._namedPlaces = extendedNamedPlaces;
   }
 
   @HostListener('window:resize', ['$event'])
@@ -98,6 +107,24 @@ export class NpChooseComponent implements OnInit, OnChanges {
       }
     }
     return false;
+  }
+
+  private getNamedPlaceStatus(np: NamedPlace): 'free'|'mine'|'reserved'|'sent' {
+    if (this.isSent(np)) {
+      console.log('YEEE');
+      return 'sent';
+    }
+    if (!np.reserve) {
+      return 'free'
+    }
+    const now = new Date();
+    const until = new Date(np.reserve.until);
+    if (now > until) {
+      return 'free';
+    } else if (np.reserve.reserver === this.userID) {
+      return 'mine'
+    }
+    return 'reserved';
   }
 
 
