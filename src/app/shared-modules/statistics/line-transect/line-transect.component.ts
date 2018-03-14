@@ -160,8 +160,8 @@ export class LineTransectComponent implements OnChanges, OnInit {
 
   private dateDiffFromDoc(date) {
     if (this.document && this.document.gatheringEvent && this.document.gatheringEvent.dateBegin) {
-      const date1 = new Date(this.document.gatheringEvent.dateBegin.slice(5));
-      const date2 = new Date(date);
+      const date1 = new Date(this.document.gatheringEvent.dateBegin);
+      const date2 = new Date(this.document.gatheringEvent.dateBegin.slice(0, 5) + date);
       const diff = Math.floor(((+date2) - (+date1)) / (1000 * 60 * 60 * 24));
       return diff > 0 ? '+' + diff : '' + diff;
     }
