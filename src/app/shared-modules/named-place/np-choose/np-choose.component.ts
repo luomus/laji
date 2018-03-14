@@ -111,7 +111,6 @@ export class NpChooseComponent implements OnInit, OnChanges {
 
   private getNamedPlaceStatus(np: NamedPlace): 'free'|'mine'|'reserved'|'sent' {
     if (this.isSent(np)) {
-      console.log('YEEE');
       return 'sent';
     }
     if (!np.reserve) {
@@ -130,19 +129,17 @@ export class NpChooseComponent implements OnInit, OnChanges {
 
   private initEarliestAndLatest() {
     if (this.formData.options && this.formData.options.season && this.formData.options.season.start && this.formData.options.season.end) {
-      const now = new Date();
-      const delta = now < new Date(this.analyseData(this.formData.options.season.start)) ? -1 : 0;
-      this.seasonStart = new Date(this.analyseData(this.formData.options.season.start, delta));
-      this.seasonEnd = new Date(this.analyseData(this.formData.options.season.end, delta));
+      this.seasonStart = new Date(this.analyseData(this.formData.options.season.start));
+      this.seasonEnd = new Date(this.analyseData(this.formData.options.season.end));
     } else {
       this.seasonStart = undefined;
       this.seasonEnd = undefined;
     }
   }
 
-  private analyseData(date: string, yearDelta = 0): string {
+  private analyseData(date: string): string {
     const now = new Date();
-    return date.replace('${year}', '' + (now.getFullYear() + yearDelta))
+    return date.replace('${year}', '' + now.getFullYear())
   }
 
 }
