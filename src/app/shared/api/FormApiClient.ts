@@ -62,7 +62,7 @@ export class FormApiClient {
       case '/autocomplete/taxon':
         queryParameters.set(
           'excludeNameTypes',
-          'MX.misappliedCircumscription,MX.misspelledCircumscription,MX.uncertainCircumscription'
+          'MX.hasMisappliedName,MX.hasMisspelledName,MX.hasUncertainSynonym,MX.hasOrthographicVariant'
         );
     }
 
