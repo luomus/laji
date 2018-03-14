@@ -197,8 +197,8 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     delete data._hasChanges;
     delete data._isTemplate;
     if (event.data.errorSchema) {
-      const errors = this.errorsToPath(event.data.errorSchema);
-      data.acknowledgedWarnings = Object.keys(errors).map(key => ({location: key, messages: errors[key]}));
+      // const errors = this.errorsToPath(event.data.errorSchema);
+      // data.acknowledgedWarnings = Object.keys(errors).map(key => ({location: key, messages: errors[key]}));
     }
     if (this.isEdit) {
       doc$ = this.documentService.update(data.id || this.documentId, data, this.userService.getToken());
