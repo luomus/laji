@@ -227,7 +227,8 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
   private populateForm() {
     const np = this.namedPlace;
-    const populate: any = np.prepopulatedDocument ? Util.clone(np.prepopulatedDocument) : {};
+    const populate: any = np.acceptedDocument ?
+      Util.clone(np.acceptedDocument) : (np.prepopulatedDocument ? Util.clone(np.prepopulatedDocument) : {});
 
     populate.namedPlaceID = np.id;
 
