@@ -62,6 +62,7 @@ export class ImporterComponent implements OnInit {
   userMappings: any;
   hasUserMapping = false;
   ambiguousColumns = [];
+  maxUnits = ImportService.maxPerDocument;
 
   constructor(
     private formService: FormService,
@@ -209,8 +210,10 @@ export class ImporterComponent implements OnInit {
     this.status = 'validating';
     this.initParsedData();
     let success = true;
+    console.log('PARSED DATA', this.parsedData);
     Observable.from(this.parsedData)
       .mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy)
+        .do(doc => console.log(doc))
         .switchMap(document => this.importService.validateData(document))
         .switchMap(result => Observable.of({result: result, source: data}))
         .catch(err => Observable.of(typeof err.json === 'function' ? err.json() : err)
@@ -237,7 +240,10 @@ export class ImporterComponent implements OnInit {
           if (body.error && body.error.details) {
             this.errors = body.error.details;
           }
+          this.valid = false;
+          this.status = 'invalidData';
           this.cdr.markForCheck();
+          console.error(err);
         },
         () => {
           this.valid = success;
@@ -289,7 +295,7 @@ export class ImporterComponent implements OnInit {
             this.valid = true;
           } else {
             this.status = 'doneWithErrors';
-            this.toastsService.showError('Havaintoerien tallennus epäonnistui!');
+            this.toastsService.showError('Kaikkia havaintoeriä ei onnistuttu tallentamaan!');
           }
           this.cdr.markForCheck();
         }

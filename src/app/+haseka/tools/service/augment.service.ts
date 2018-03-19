@@ -21,15 +21,17 @@ export class AugmentService {
   augmentDocument(document: Document, excluded: string[] = []): Observable<Document> {
     const namedPlaces = [];
     const idxLookup = {};
-    document.gatherings.forEach((gathering, idx) => {
-      if (gathering.namedPlaceID) {
-        namedPlaces.push(gathering.namedPlaceID);
-        if (!idxLookup[gathering.namedPlaceID]) {
-          idxLookup[gathering.namedPlaceID] = [];
+    if (document && document.gatherings) {
+      document.gatherings.forEach((gathering, idx) => {
+        if (gathering.namedPlaceID) {
+          namedPlaces.push(gathering.namedPlaceID);
+          if (!idxLookup[gathering.namedPlaceID]) {
+            idxLookup[gathering.namedPlaceID] = [];
+          }
+          idxLookup[gathering.namedPlaceID].push(idx);
         }
-        idxLookup[gathering.namedPlaceID].push(idx);
-      }
-    });
+      });
+    }
     if (namedPlaces.length === 0) {
       return Observable.of(document);
     }

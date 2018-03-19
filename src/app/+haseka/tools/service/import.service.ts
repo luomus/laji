@@ -4,13 +4,14 @@ import { Observable } from 'rxjs/Observable';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { Document } from '../../../shared/model';
 import { UserService } from '../../../shared/service/user.service';
-import {DOCUMENT_LEVEL, FormField, IGNORE_VALUE} from '../model/form-field';
+import {DOCUMENT_LEVEL, GATHERING_LEVEL, FormField, IGNORE_VALUE} from '../model/form-field';
 import { MappingService } from './mapping.service';
+import {Util} from '../../../shared/service';
 
 @Injectable()
 export class ImportService {
 
-  private readonly maxUnitsPerDocument = 500;
+  static readonly maxPerDocument = 500;
 
   private readonly newToParent = {
     'identifications': 'units',
@@ -100,6 +101,8 @@ export class ImportService {
     const cols = Object.keys(mapping);
     const result: {document: Document, rows: {[row: number]: {[level: string]: number}}}[] = [];
     const allLevels = [];
+    let unitCnt = 0;
+    let unitsInGathering = this.cntUnitsInGathering(rows, cols, fields, mapping);
     let document: any = {};
     let rowSpots: {[row: number]: {[level: string]: number}} = {};
     cols.map(col => {
@@ -122,27 +125,31 @@ export class ImportService {
         const field = fields[mapping[col]];
         const parent = this.getParent(field);
         let value = this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true);
-        if (Array.isArray(value)) {
-          value = value.filter(val => val !== IGNORE_VALUE && val !== '');
-          if (value.length === 0) {
-            return;
-          }
-        }
-        if (value === IGNORE_VALUE || value === '') {
+        if (!this.hasValue(value)) {
           return;
         }
+        if (Array.isArray(value)) {
+          value = value.filter(val => val !== IGNORE_VALUE && val !== '');
+        }
         values[field.key] = value;
-        if (field.previousValue !== null && field.previousValue !== row[col] && newLevels.indexOf(parent) === -1) {
+        if (this.hasNewLevel(field, row[col], newLevels, parent)) {
           newLevels.push(this.getParent(field));
         }
         field.previousValue = row[col];
       });
-      if (newLevels.indexOf(DOCUMENT_LEVEL)  !== -1) {
+      unitCnt++;
+      unitsInGathering--;
+      if (newLevels.indexOf(DOCUMENT_LEVEL) !== -1 || (unitCnt + Math.max(unitsInGathering, 0)) > ImportService.maxPerDocument) {
         Object.keys(spot).map(level => spot[level] = 0);
         result.push({document: document, rows: rowSpots});
+        unitCnt = 1;
         document = {};
         rowSpots = {};
+        unitsInGathering = rows[rowIdx + 1] ? this.cntUnitsInGathering(rows.slice(rowIdx + 1), cols, fields, mapping) - 1 : 1;
       } else {
+        if (unitsInGathering < 0) {
+          unitsInGathering = this.cntUnitsInGathering(rows.slice(rowIdx), cols, fields, mapping);
+        }
         const toZero = [];
         newLevels.map(level => {
           cols.map(col => {
@@ -170,6 +177,47 @@ export class ImportService {
     result.push({document: document, rows: rowSpots});
 
     return result;
+  }
+
+  private cntUnitsInGathering(rows, cols, rawFields, mapping) {
+    const fields = Util.clone(rawFields);
+    let unitCnt = 0;
+
+    for (const row of rows) {
+      const newLevels = [];
+      cols.map((col) => {
+        if (!row[col]) {
+          return;
+        }
+        const field = fields[mapping[col]];
+        const parent = this.getParent(field);
+        const value = this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true);
+        if (!this.hasValue(value)) {
+          return;
+        }
+        if (this.hasNewLevel(field, row[col], newLevels, parent)) {
+          newLevels.push(this.getParent(field));
+        }
+        field.previousValue = row[col];
+      });
+      if (newLevels.indexOf(DOCUMENT_LEVEL) !== -1 || newLevels.indexOf(GATHERING_LEVEL) !== -1) {
+        return Math.min(unitCnt, ImportService.maxPerDocument);
+      }
+      unitCnt++;
+    }
+    return Math.min(unitCnt, ImportService.maxPerDocument);
+  }
+
+  private hasNewLevel(field, value, newLevels, parent): boolean {
+    return field.previousValue !== null && field.previousValue !== value && newLevels.indexOf(parent) === -1;
+  }
+
+  private hasValue(value): boolean {
+    if (Array.isArray(value)) {
+      value = value.filter(this.hasValue);
+      return value.filter(this.hasValue).length !== 0;
+    }
+    return value !== IGNORE_VALUE && value !== '';
   }
 
   private valuesToDocument(values: {[key: string]: any}, document: any) {

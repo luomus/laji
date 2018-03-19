@@ -1,6 +1,26 @@
 <h3>
   Tallenna havaintoja massatallennuspohjalla
 </h3>
+<div class="row">
+  <div class="col-sm-12">
+    <p>
+      Tällä sivulla voit tuoda massatallennuspohjaan tallennetut havainnot osaksi Vihkon havaintoja.
+      Voit myös tuoda omia pohjia, kunhan niissä ensimmäinen rivi on otsikko rivi, joka kertoo mitä kenttä sisältää.
+      Tunnistetut tiedosto fomaatit ovat Microsoft Excel Open XML Spreadsheet (xlsx), OpenDocument Text (odt) ja comma separated values file (csv).
+      Yhdessä havaintoerässä saa olla maksimissaan {{maxUnits}} yksittäistä havaintoa.
+    </p>
+    <p>Havaintojen tallentaminen tapahtuu seuraavasti:</p>
+    <ol>
+      <li>Valitse tiedosto alla olevaan kenttään.</li>
+      <li>Jos tiedosto nimestä ei voinut päätellä Vihkon lomaketta, kysyy Vihko erikseen mitä lomaketta tulisi tallennuksessa käyttää.</li>
+      <li>Jos sarakkeita ei pystytty automaattisesti tunnistamaan valitse sarakkeiden merkitys alasvetovalikosta.</li>
+      <li>Taustalla Vihko käy läpi jokaisen sarakkeen arvot ja jos arvoa ei tunnisteta, Vihko kysyy mitä tunnettua arvoa havaittu arvo tarkoittaa.</li>
+      <li>Kun sarakkeiden ja arvojen kuvaaminen on valmis voit ottaa kuvauksen talteen myöhempää käyttöä varten.</li>
+      <li>Voit tarkistaa datan virheiden varalta tai voit tallentaa datan suoraan Vihkoon. Huom jos tallennus vaiheessa havaitaan virheitä näitä havaintoeriä ei tallenneta ja mahdollisesta virheistä.</li>
+      <li>Tarkista että jokaisen rivin kohdalla on merkintä onnistuneesta tallennuksesta.</li>
+    </ol>
+  </div>
+</div>
 
 <div class="row data-container">
   <div class="col-sm-8">
@@ -56,7 +76,7 @@
   <div class="row data-container">
     <div class="col-sm-12">
       <strong *ngIf="valid && status === 'importReady'; else invalid">
-        Valmis tallennettavaksi
+        Ei virheitä havaittu.
       </strong>
       <ng-template #invalid>
         <button type="button" [disabled]="status !== 'importReady' && status !== 'invalidData'" (click)="validate()" class="btn btn-primary">Tarkista data</button>
@@ -116,6 +136,9 @@
           Kuvauksen tuonti
         </h1>
         <p>Voit kopioida alla olevaan kenttään laji.fi:n ymmärtämän kuvauksen datastasi.</p>
+        <p>
+          Kuvauksen voi tehdä ladattuasi haluamasi massatallennuspohjan laji.fi:hin.
+        </p>
         <textarea rows="10" #userMapping class="form-control"></textarea>
       </div>
       <div class="modal-footer">
