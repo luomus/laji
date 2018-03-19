@@ -37,12 +37,11 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   ) { }
 
   ngOnChanges() {
+    const baseDoc = this.namedPlace.acceptedDocument || this.namedPlace.prepopulatedDocument || {};
     if (
-      this.namedPlace.prepopulatedDocument &&
-      this.namedPlace.prepopulatedDocument.gatheringEvent &&
-      this.namedPlace.prepopulatedDocument.gatheringEvent.startDistanceFromNECorner
+      baseDoc.gatheringEvent && baseDoc.gatheringEvent.startDistanceFromNECorner
     ) {
-      this.neDistance = this.namedPlace.prepopulatedDocument.gatheringEvent.startDistanceFromNECorner;
+      this.neDistance = baseDoc.gatheringEvent.startDistanceFromNECorner;
     }
     if (this.namedPlace.alternativeIDs) {
       this.namedPlace.alternativeIDs.map(id => {
@@ -82,6 +81,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     if (!Array.isArray(geometries.coordinates)) {
       return;
     }
+    const baseDoc = this.namedPlace.acceptedDocument || this.namedPlace.prepopulatedDocument || {};
     const biotopes: {[distRow: number]: string[]} = {};
     const pages: number[][] = [];
     let total = 0;
@@ -93,7 +93,11 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
       if (!biotopes[biotopeSlot]) {
         biotopes[biotopeSlot] = [];
       }
-      biotopes[biotopeSlot].unshift(current !== dist[0] ? 'Biotooppi ' + idx + ' (' + dist[0] + 'm.)' : 'Biotooppi ' + idx);
+      let biotope = '_________';
+      if (baseDoc.gatherings && baseDoc.gatherings[idx] && baseDoc.gatherings[idx].habitatClassification) {
+        biotope = baseDoc.gatherings[idx].habitatClassification;
+      }
+      biotopes[biotopeSlot].unshift(biotope + (current !== dist[0] ?  ' (' + dist[0] + 'm.)' : ''));
       total = dist[1];
       while (current < total) {
         if (!pages[currentPage]) {
@@ -112,7 +116,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
       }
     }
     this.biotopes = biotopes;
-    this.lajiMap.lajiMap.zoomToData({paddingInMeters: 100});
+    this.lajiMap.lajiMap.zoomToData({paddingInMeters: 200});
     this.lajiMap.lajiMap.map.dragging.disable();
     this.lajiMap.lajiMap.map.touchZoom.disable();
     this.lajiMap.lajiMap.map.doubleClickZoom.disable();
@@ -142,6 +146,9 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   }
 
   private getGeometry(): any {
+    if (this.namedPlace.acceptedDocument && this.namedPlace.acceptedDocument.gatherings) {
+      return {type: 'MultiLineString', coordinates: this.namedPlace.acceptedDocument.gatherings.map(item => item.geometry.coordinates)};
+    }
     if (this.namedPlace.prepopulatedDocument && this.namedPlace.prepopulatedDocument.gatherings) {
       return {type: 'MultiLineString', coordinates: this.namedPlace.prepopulatedDocument.gatherings.map(item => item.geometry.coordinates)};
     }

@@ -23,6 +23,11 @@ import { LajiMapOptions } from '../../shared-modules/map/map-options.interface';
   <div #map class="laji-map"></div>
   <div class="loading-map loading" *ngIf="loading"></div>
   <ng-content></ng-content>
+  <ul class="legend" *ngIf="_legend && _legend.length > 0" [ngStyle]="{'margin-top': topMargin }">
+    <li *ngFor="let leg of _legend">
+      <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{leg.label}}
+    </li>
+  </ul>
 </div>`,
   styleUrls: ['./map.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,6 +63,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
   @ViewChild('map') elemRef: ElementRef;
 
   map: any;
+  _legend: {color: string, label: string}[];
   private initEvents = false;
   private failureSend = false;
   private userSettings: any = {};
@@ -157,6 +163,14 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
     } catch (err) {
       this.logger.error('Failed init map', {error: err});
     }
+  }
+
+  @Input() set legend(legend: {[color: string]: string}) {
+    const leg = [];
+    Object.keys(legend).forEach(color => {
+      leg.push({color, label: legend[color]});
+    });
+    this._legend = leg;
   }
 
   moveEvent(type: string) {

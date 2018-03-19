@@ -95,6 +95,22 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private getGeometry() {
+    if (this.namedPlace.acceptedDocument && this.namedPlace.acceptedDocument.gatherings) {
+      const geometries = this.namedPlace.acceptedDocument.gatherings.reduce((prev, curr) => {
+        if (curr.geometry) {
+          prev.push(curr.geometry);
+        }
+        return prev;
+      }, []);
+      if (geometries.length === 1) {
+        return geometries[0];
+      } else if (geometries.length > 1) {
+        return {
+          type: 'GeometryCollection',
+          geometries: geometries
+        };
+      }
+    }
     if (this.namedPlace.prepopulatedDocument && this.namedPlace.prepopulatedDocument.gatherings) {
       const geometries = this.namedPlace.prepopulatedDocument.gatherings.reduce((prev, curr) => {
         if (curr.geometry) {

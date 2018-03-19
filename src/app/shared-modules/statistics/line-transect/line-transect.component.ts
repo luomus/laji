@@ -9,6 +9,9 @@ import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { Map3Component } from '../../map/map.component';
 import { LajiMapOptions } from '../../map/map-options.interface';
 import { Units } from '../../../shared/model/Units';
+import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { Observable } from 'rxjs/Observable';
+import { UserService } from '../../../shared/service';
 
 interface LineTransectCount {
   psCouples: number;
@@ -31,14 +34,14 @@ interface LineTransectCount {
 })
 export class LineTransectComponent implements OnChanges, OnInit {
   @ViewChild(Map3Component)
-  public lajiMap: Map3Component;
+  lajiMap: Map3Component;
 
   @Input() document: Document;
   @Input() namedPlace: NamedPlace;
 
-  public counts: LineTransectCount;
-  public lajiMapOptions: LajiMapOptions;
-  public perKmTerms: LineTransectChartTerms = {
+  counts: LineTransectCount;
+  lajiMapOptions: LajiMapOptions;
+  perKmTerms: LineTransectChartTerms = {
     upper: {
       slope: -0.1233,
       term: 116.921
@@ -53,7 +56,7 @@ export class LineTransectComponent implements OnChanges, OnInit {
     }
   };
 
-  public onMainTerms: LineTransectChartTerms = {
+  onMainTerms: LineTransectChartTerms = {
     upper: {
       slope: -0.279,
       term: 221.88
@@ -68,10 +71,15 @@ export class LineTransectComponent implements OnChanges, OnInit {
     }
   };
   warnings: {message: string; cnt: number}[] = [];
+  stats$: Observable<string>;
+
   private ykj10kmN = 0;
   private ykj10kmE = 0;
 
-  constructor() {}
+  constructor(
+    private lajiApiService: LajiApiService,
+    private userSerivce: UserService
+  ) {}
 
   ngOnChanges() {
     this.initCounts();
@@ -80,6 +88,7 @@ export class LineTransectComponent implements OnChanges, OnInit {
   }
 
   ngOnInit() {
+
   }
 
   private initCounts() {
@@ -97,6 +106,10 @@ export class LineTransectComponent implements OnChanges, OnInit {
       minPerKm: 0
     };
     const species = {};
+    this.stats$ = this.lajiApiService.get(LajiApi.Endpoints.documentStats,
+      {personToken: this.userSerivce.getToken(), namedPlace: this.namedPlace.id})
+      .map(stats => this.dateDiffFromDoc(stats.dateMedian))
+      .catch(() => Observable.of(''));
     if (this.document.gatherings) {
       this.document.gatherings.map(gathering => {
         if (gathering.units) {
@@ -143,6 +156,16 @@ export class LineTransectComponent implements OnChanges, OnInit {
       count.minPerKm = Math.round((diff / 1000 / 60) / (count.routeLength / 1000));
     }
     this.counts = count;
+  }
+
+  private dateDiffFromDoc(date) {
+    if (this.document && this.document.gatheringEvent && this.document.gatheringEvent.dateBegin) {
+      const date1 = new Date(this.document.gatheringEvent.dateBegin);
+      const date2 = new Date(this.document.gatheringEvent.dateBegin.slice(0, 5) + date);
+      const diff = Math.floor(((+date2) - (+date1)) / (1000 * 60 * 60 * 24));
+      return diff > 0 ? '+' + diff : '' + diff;
+    }
+    return '';
   }
 
   private initWarnings() {

@@ -30,9 +30,13 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   @Input() terms: LineTransectChartTerms;
   @Input() xRange: [number, number] = [660, 780];
   @Input() yRange: [number, number] = [0, 100];
+  @Input() xLabel: string;
+  @Input() yLabel: string;
+  @Input() title: string;
+  @Input() margin: { top: number, bottom: number, left: number, right: number} = { top: 30, bottom: 40, left: 40, right: 10};
+
   private nativeElement: any;
   private svg: any;
-  private margin: any = { top: 10, bottom: 20, left: 30, right: 10};
   private chart: any;
   private width: number;
   private height: number;
@@ -119,6 +123,33 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
     svg.append('path')
       .datum([this.getLine(this.terms.middle, this.xRange[0]), this.getLine(this.terms.middle, this.xRange[1])])
       .attr({d: line, stroke: 'black', 'stroke-width': 2, fill: 'none' });
+
+    if (this.xLabel) {
+      svg.append('text')
+        .attr('class', 'x label')
+        .attr('text-anchor', 'end')
+        .attr('x', element.offsetWidth)
+        .attr('y', element.offsetHeight - 6)
+        .text(this.xLabel);
+    }
+
+    if (this.yLabel) {
+      svg.append('text')
+        .attr('class', 'y label')
+        .attr('text-anchor', 'end')
+        .attr('x', this.margin.left - 10)
+        .attr('y', this.margin.top - 10)
+        .text(this.yLabel);
+    }
+
+    if (this.title) {
+      svg.append('text')
+        .attr('class', 'title')
+        .attr('text-anchor', 'middle')
+        .attr('x', element.offsetWidth / 2)
+        .attr('y', 13)
+        .text(this.title);
+    }
 
     // x & y axis
     this.xAxis = svg.append('g')

@@ -600,5 +600,6 @@
   "form.permission.no-access": "You don't yet have access to this form",
   "np.requestAccess": "Request access",
   "np.requestSend": "Request already sent",
-  "form.administer": "Manage access to form"
+  "form.administer": "Manage access to form",
+  "result.reserve.until": "Reserved"
 }

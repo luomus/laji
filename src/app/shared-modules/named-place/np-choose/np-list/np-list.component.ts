@@ -16,15 +16,12 @@ export class NpListComponent {
   labelMap = {
     '$.alternativeIDs[0]': 'route.nro',
     '$.reserve.reserver': 'result.gathering.team',
-    '$.reserve.until': 'result.gathering.eventDate',
+    '$.reserve.until': 'result.reserve.until',
     '$.name': 'observation.form.specimen',
+    '$._status': 'Tila',
     '$.geometry.coordinateVerbatim': 'result.gathering.conversions.ykj',
-    '$.prepopulatedDocument.gatheringEvent.dateBegin': 'haseka.submissions.dateStart',
+    '$.prepopulatedDocument.gatheringEvent.dateBegin': 'lastCensus',
     '$.prepopulatedDocument.gatheringEvent.dateEnd': 'haseka.submissions.dateEnd'
-  };
-
-  wbcLabelMap = {
-    '$.prepopulatedDocument.gatheringEvent.dateBegin': 'lastCensus'
   };
 
   _namedPlaces: NamedPlace[];
@@ -34,6 +31,7 @@ export class NpListComponent {
 
 
   @ViewChild('personID') personIDTpl: TemplateRef<any>;
+  @ViewChild('status') statusTpl: TemplateRef<any>;
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
   @Output() onActivePlaceChange = new EventEmitter<number>();
@@ -53,8 +51,8 @@ export class NpListComponent {
   }
 
   @Input() set formData(formData: any) {
-    this._fields =  formData.options && formData.options.namedPlaceList ? formData.options.namedPlaceList : ['$.name'];
-    const labels = environment.wbcForm === formData.id ? {...this.labelMap, ...this.wbcLabelMap} : this.labelMap;
+    this._fields = formData.options && formData.options.namedPlaceList ? formData.options.namedPlaceList : ['$.name'];
+    const labels = this.labelMap;
     const cols: ObservationTableColumn[] = [];
     for (const path of this._fields) {
       const col: DatatableColumn = {
@@ -65,6 +63,9 @@ export class NpListComponent {
       if (path === '$.reserve.reserver') {
         col.cellTemplate = this.personIDTpl;
         col.width = 100;
+      } else if (path === '$._status') {
+        col.cellTemplate = this.statusTpl;
+        col.width = 20;
       }
       cols.push(col);
     }

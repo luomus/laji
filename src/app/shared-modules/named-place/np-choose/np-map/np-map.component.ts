@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { MapComponent } from '../../../../shared/map/map.component';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
+import { ExtendedNamedPlace } from '../../model/extended-named-place';
 
 @Component({
   selector: 'laji-np-map',
@@ -20,20 +21,23 @@ import { NamedPlace } from '../../../../shared/model/NamedPlace';
 export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(MapComponent) lajiMap: MapComponent;
   @Input() visible = false;
-  @Input() namedPlaces: NamedPlace[];
+  @Input() namedPlaces: ExtendedNamedPlace[];
   @Input() activeNP: number;
   @Input() height: string;
   @Input() userID: string;
   @Output() onActivePlaceChange = new EventEmitter<number>();
+  legend;
 
   private _data: any;
 
-  private placeColor = '#00aa00';
-  private placeActiveColor = '#007700';
-  private reservedColor = '#d11e08';
-  private reservedActiveColor = '#771508';
-  private mineColor = '#5294cc';
-  private mineActiveColor = '#375577';
+  private placeColor = '#5294cc';
+  private placeActiveColor = '#375577';
+  private reservedColor = '#d1c400';
+  private reservedActiveColor = '#77720c';
+  private mineColor = '#d16e04';
+  private mineActiveColor = '#774000';
+  private sentColor = '#00aa00';
+  private sentActiveColor = '#007700';
 
   constructor() { }
 
@@ -70,8 +74,10 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
     const that = this;
     geojsonLayer.eachLayer(function (layer) {
       let color = null;
+      let weight = 5;
       if (layer.feature.properties.lajiMapIdx === newActive) {
         color = that.getFeatureColor(layer.feature);
+        weight = 10;
       } else if (layer.feature.properties.lajiMapIdx === oldActive) {
         color = that.getFeatureColor(layer.feature, newActive);
       }
@@ -82,7 +88,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
           icon.options.markerColor = color;
           layer.setIcon(icon);
         } else {
-          layer.setStyle({color: color});
+          layer.setStyle({color: color, weight: weight});
         }
       }
     });
@@ -92,6 +98,12 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
     if (!this.namedPlaces) {
       return;
     }
+    this.legend = {
+      [this.placeColor]: 'Vapaa',
+      [this.reservedColor]: 'Varattu',
+      [this.mineColor]: 'Itselle varattu',
+      [this.sentColor]: 'Ilmoitettu'
+    };
 
     try {
       this._data = {
@@ -116,7 +128,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
             type: 'Feature',
             geometry: np.geometry,
             properties: {
-              reserved: this.getReservationStatus(np)
+              reserved: np._status
             }
           }))
         }
@@ -126,6 +138,8 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   private getFeatureColor(feature, active?) {
     switch (feature.properties.reserved) {
+      case 'sent':
+        return feature.featureIdx === active ? this.sentActiveColor : this.sentColor;
       case 'reserved':
         return feature.featureIdx === active ? this.reservedActiveColor : this.reservedColor;
       case 'mine':
@@ -135,17 +149,4 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  private getReservationStatus(np: NamedPlace): 'free'|'mine'|'reserved' {
-    if (!np.reserve) {
-      return 'free'
-    }
-    const now = new Date();
-    const until = new Date(np.reserve.until);
-    if (now > until) {
-      return 'free';
-    } else if (np.reserve.reserver === this.userID) {
-      return 'mine'
-    }
-    return 'reserved';
-  }
 }

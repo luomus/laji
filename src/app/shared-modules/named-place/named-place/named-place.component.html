@@ -1,57 +1,51 @@
 <div class="container-fluid" style="width: 100%">
-  <div>
-    <div *lajiLoggedIn="false">
-      <h1>{{'haseka.title' | translate}}</h1>
-      <p>{{'haseka.pleaseLogin' | translate}}</p>
+  <div id="container">
+    <laji-document-form-header *ngIf="formData" [formID]="formId" [includeNpDescription]="true" class="no-flex"></laji-document-form-header>
+
+    <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
+
+    <ng-container *ngIf="filterByMunicipality">
+      <label>{{'MNP.municipality' | label}}</label>
+      <laji-area-select [disabled]="editMode" [field]="areaTypes.Municipality" (select)="updateMunicipalityFilter($event)"></laji-area-select>
+    </ng-container>
+    <div *ngIf="filterByBirdAssociationArea">
+      <label [tooltip]="birdAssociationAreaHelp"
+             [placement]="'right'"
+             [isDisabled]="!formData.namedPlaceOptions || !formData.namedPlaceOptions.birdAssociationAreaHelp">{{'MNP.birdAssociationArea' | label}}
+        <span *ngIf="formData.namedPlaceOptions && formData.namedPlaceOptions.birdAssociationAreaHelp" class="label-info laji-form-help-glyph"><strong>?</strong></span>
+      </label>
+      <laji-area-select [disabled]="editMode" [field]="areaTypes.BirdAssociationArea" (select)="updateBirdAssociationAreaFilter($event)"></laji-area-select>
     </div>
-    <div *lajiLoggedIn="true" id="container">
-      <laji-document-form-header *ngIf="formData" [formID]="formId" [includeNpDescription]="true" class="no-flex"></laji-document-form-header>
-
-      <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
-
-      <ng-container *ngIf="filterByMunicipality">
-        <label>{{'MNP.municipality' | label}}</label>
-        <laji-area-select [disabled]="editMode" [field]="areaTypes.Municipality" (select)="updateMunicipalityFilter($event)"></laji-area-select>
-      </ng-container>
-      <div *ngIf="filterByBirdAssociationArea">
-        <label [tooltip]="birdAssociationAreaHelp"
-               [placement]="'right'"
-               [isDisabled]="!formData.namedPlaceOptions || !formData.namedPlaceOptions.birdAssociationAreaHelp">{{'MNP.birdAssociationArea' | label}}
-          <span *ngIf="formData.namedPlaceOptions && formData.namedPlaceOptions.birdAssociationAreaHelp" class="label-info laji-form-help-glyph"><strong>?</strong></span>
-        </label>
-        <laji-area-select [disabled]="editMode" [field]="areaTypes.BirdAssociationArea" (select)="updateBirdAssociationAreaFilter($event)"></laji-area-select>
-      </div>
-      <laji-spinner [spinning]="loading" [overlay]="true">
-        <div *ngIf="namedPlaces && formData && !errorMsg">
-          <div class="row np-row">
-            <div [ngClass]="{'col-xs-12 col-sm-6': !editMode}">
-              <laji-np-choose [namedPlaces]="namedPlaces"
-                              [formData]="formData"
-                              [userID]="userID"
-                              [visible]="!editMode"
-                              [allowCreate]="allowCreate"
-                              (onActivePlaceChange)="setActiveNP($event)"
-                              (onCreateButtonClick)="toEditMode(true)"></laji-np-choose>
-            </div>
-            <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-sm-6 nav-margin'">
-              <laji-np-edit [editMode]="editMode"
-                            [formId]="formId"
-                            [loading]="loading"
-                            [prepopulatedNamedPlace]="prepopulatedNamedPlace"
-                            [namedPlace]="namedPlace"
-                            [formRights]="formRights"
+    <laji-spinner [spinning]="loading" [overlay]="true">
+      <div *ngIf="namedPlaces && formData && !errorMsg">
+        <div class="row np-row">
+          <div [ngClass]="{'col-xs-12 col-sm-6': !editMode}">
+            <laji-np-choose [namedPlaces]="namedPlaces"
                             [formData]="formData"
-                            [allowEdit]="allowEdit"
-                            (onReserve)="reserve()"
-                            (onRelease)="release()"
-                            (onEditButtonClick)="toEditMode(false)"
-                            (onEditReady)="toNormalMode($event)"
-                            (onError)="setErrorMessage($event)"></laji-np-edit>
-            </div>
+                            [userID]="userID"
+                            [visible]="!editMode"
+                            [allowCreate]="allowCreate"
+                            (onActivePlaceChange)="setActiveNP($event)"
+                            (onCreateButtonClick)="toEditMode(true)"></laji-np-choose>
+          </div>
+          <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-sm-6 nav-margin'">
+            <laji-np-edit [editMode]="editMode"
+                          [formId]="formId"
+                          [loading]="loading"
+                          [prepopulatedNamedPlace]="prepopulatedNamedPlace"
+                          [namedPlace]="namedPlace"
+                          [formRights]="formRights"
+                          [formData]="formData"
+                          [allowEdit]="allowEdit"
+                          (onReserve)="reserve()"
+                          (onRelease)="release()"
+                          (onEditButtonClick)="toEditMode(false)"
+                          (onEditReady)="toNormalMode($event)"
+                          (onError)="setErrorMessage($event)"></laji-np-edit>
           </div>
         </div>
-      </laji-spinner>
-    </div>
+      </div>
+    </laji-spinner>
   </div>
 </div>
 

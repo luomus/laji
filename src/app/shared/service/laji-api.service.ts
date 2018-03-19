@@ -10,6 +10,7 @@ export class LajiApiService {
 
   constructor(private httpClient: HttpClient) { }
 
+  get(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
   get(endpoint: LajiApi.Endpoints.annotations, query: LajiApi.Query.AnnotationQuery): Observable<LajiApi.Response.AnnotationListResponse>;
   get(endpoint: LajiApi.Endpoints, query: object = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}`;
@@ -34,6 +35,7 @@ export class LajiApiService {
 
 export namespace LajiApi {
   export enum Endpoints {
+    documentStats = 'documents/stats',
     htmlToPdf = 'html-to-pdf',
     annotations = 'annotations',
   }
@@ -49,24 +51,24 @@ export namespace LajiApi {
       personToken: string;
       rootID: string;
     }
+
+    export interface DocumentStatsQuery {
+      personToken: string;
+      namedPlace: string;
+    }
   }
 
   export namespace Response {
+    export interface DocumentStats {
+      dateMedian: string;
+    }
+
     export interface HtmlToPdf {
       base64pdf: string
     }
 
     export interface AnnotationListResponse extends PagedResult<Annotation> {
     }
-  }
-
-  export interface Query {
-    lang?: string;
-    informalGroupFilters?: string;
-    invasiveSpeciesFilter?: boolean;
-    pageSize?: number;
-    onlyFinnish?: boolean;
-    blacklist?: string;
   }
 
 }

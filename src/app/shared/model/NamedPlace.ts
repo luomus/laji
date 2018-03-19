@@ -64,6 +64,7 @@ export interface NamedPlace {
      * instance of prepopulatedDocument
      */
     prepopulatedDocument?: models.Document;
+    acceptedDocument?: models.Document;
 
     priority?: NamedPlace.PriorityEnum;
 
