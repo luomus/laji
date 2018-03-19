@@ -143,8 +143,8 @@ export class UserService extends LocalDb {
     return this.usersFetch[id];
   }
 
-  public doLogin(): void {
-    this.returnUrl = this.location.path(true);
+  public doLogin(returnUrl?: string): void {
+    this.returnUrl = returnUrl || this.location.path(true);
     this.winRef.nativeWindow.location.href = UserService.getLoginUrl(this.returnUrl, this.translate.currentLang);
   }
 

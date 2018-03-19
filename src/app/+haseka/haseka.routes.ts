@@ -15,6 +15,7 @@ import { DocumentDeActivateGuard } from '../shared/document-form/document-de-act
 import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
 import { TemplatesComponent } from './templates/templates.component';
 import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';
+import {OnlyLoggedIn} from '../shared/route/only-logged-in';
 
 export const hasekaRoutes: Routes = [
   {
@@ -23,11 +24,11 @@ export const hasekaRoutes: Routes = [
     children: [
       {path: '', pathMatch: 'full', component: HaSeKaFormListComponent},
       {path: 'forms', pathMatch: 'full', component: HaSeKaFormListComponent},
-      {path: 'ownSubmissions', pathMatch: 'full', component: OwnSubmissionsComponent},
-      {path: 'templates', pathMatch: 'full', component: TemplatesComponent},
-      {path: 'statistics', pathMatch: 'full', component: StatisticsComponent},
-      {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent},
-      {path: 'tools', loadChildren: './tools/tools.module#ToolsModule'},
+      {path: 'ownSubmissions', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: OwnSubmissionsComponent},
+      {path: 'templates', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: TemplatesComponent},
+      {path: 'statistics', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: StatisticsComponent},
+      {path: 'statistics/:documentID', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: StatisticsComponent},
+      {path: 'tools',  canActivate: [OnlyLoggedIn], loadChildren: './tools/tools.module#ToolsModule'},
     ]
   },
   {
@@ -46,6 +47,7 @@ export const hasekaRoutes: Routes = [
   },
   {
     path: 'fp/:collectionId/admin',
+    canActivate: [OnlyLoggedIn],
     component: AdminComponent,
     children: [
       {path: '', pathMatch: 'full', component: IntroComponent},
@@ -56,16 +58,19 @@ export const hasekaRoutes: Routes = [
   {
     path: 'fp/:collectionId',
     pathMatch: 'full',
+    canActivate: [OnlyLoggedIn],
     component: RequestComponent
   },
   {
     path: ':formId',
     pathMatch: 'full',
+    canActivate: [OnlyLoggedIn],
     component: HaSeKaFormComponent
   },
   {
     path: ':formId/:documentId',
     pathMatch: 'full',
+    canActivate: [OnlyLoggedIn],
     component: HaSeKaFormComponent,
     canDeactivate: [DocumentDeActivateGuard]
   }

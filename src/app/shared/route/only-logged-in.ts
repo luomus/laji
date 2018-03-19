@@ -13,7 +13,7 @@ export class OnlyLoggedIn implements CanActivate {
     | Promise<boolean>
     | boolean {
     if (!this.userService.isLoggedIn) {
-      this.userService.doLogin();
+      this.userService.doLogin(state.url);
     }
     return this.userService.isLoggedIn;
   }
