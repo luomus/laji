@@ -87,7 +87,7 @@ export class SpecialGeometryComponent implements AfterViewInit {
       this.lajiMapComponent.lajiMap.focusToDrawLayer(0);
     } else {
       this.lajiMapComponent.lajiMap.setDraw({
-        featureCollection: {},
+        featureCollection: undefined,
         onChange: this.onChange.bind(this)
       });
     }

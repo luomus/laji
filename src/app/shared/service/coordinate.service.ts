@@ -11,7 +11,7 @@ export class CoordinateService {
     return {
       type: 'Feature',
       properties: properties,
-      geometry: geometry
+      geometry: geometry || {}
     };
   }
 
