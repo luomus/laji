@@ -60,6 +60,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
   @Output() onCreate = new EventEmitter();
   @Output() onMove = new EventEmitter();
   @Output() onFailure =  new EventEmitter();
+  @Output() onTileLayerChange =  new EventEmitter();
   @ViewChild('map') elemRef: ElementRef;
 
   map: any;
@@ -127,10 +128,12 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
         availableTileLayerNamesBlacklist: this.availableTileLayerNamesBlacklist
       };
 
+      let hasTilelayer = false;
       if (this.settingsKey) {
         mapOptions.on = {
           tileLayerChange: (event) => {
             this.userSettings.tileLayerName = event.tileLayerName;
+            this.onTileLayerChange.emit(event.tileLayerName);
             this.userService.setUserSetting(this.settingsKey, this.userSettings);
           },
           tileLayerOpacityChangeEnd: (event) => {
@@ -145,8 +148,16 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
         for (const key in this.settings) {
           if (this.settings.hasOwnProperty(key)) {
             mapOptions[key] = this.settings[key];
+            if (key === 'tileLayerName') {
+              hasTilelayer = true;
+              this.onTileLayerChange.emit(this.settings[key]);
+            }
           }
         }
+      }
+
+      if (!hasTilelayer) {
+        this.onTileLayerChange.emit(tileLayerName);
       }
 
       this.map = this.lajiExternalService.getMap(mapOptions);

@@ -66,6 +66,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     'document.documentId',
     'unit.unitId'
   ];
+  limitResults = false;
 
   public mapData;
   public drawData: any = {featureCollection: {type: 'featureCollection', features: []}};
@@ -201,6 +202,14 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     }, 200);
   }
 
+  onTileLayerChange(layer) {
+    const shouldLimit = ['googleSatellite', 'openStreetMap'].indexOf(layer) === -1;
+    if (this.limitResults !== shouldLimit) {
+      this.limitResults = shouldLimit;
+      this.updateMapData();
+    }
+  }
+
   private initColorScale() {
     if (typeof this.color === 'string') {
       this.style = () => String(this.color);
@@ -277,7 +286,10 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   private addToMap(query: WarehouseQueryInterface, page = 1) {
-   const items$ = this.warehouseService.warehouseQueryListGet(query, [
+    if (this.limitResults && !query.coordinates) {
+      query = {...query, coordinates: ['51.692882:72.887912:-6.610917:60.892721:WGS84']}
+    }
+    const items$ = this.warehouseService.warehouseQueryListGet(query, [
       'gathering.conversions.wgs84CenterPoint.lon',
       'gathering.conversions.wgs84CenterPoint.lat',
       ...this.itemFields
@@ -420,7 +432,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   private getCacheKey(query: WarehouseQueryInterface) {
-    const cache = JSON.stringify(query);
+    const cache = JSON.stringify(query) + ':' + this.limitResults;
     if (!(this.activeBounds && this.activeBounds.toBBoxString)) {
       return cache + this.activeLevel;
     }
