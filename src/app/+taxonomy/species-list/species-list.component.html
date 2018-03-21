@@ -1,5 +1,5 @@
-<div *ngIf="speciesPage">
-  <h3>{{'species.list.header' | translate:{informalGroup: informalGroup.name} }}</h3>
+<div>
+  <h3 *ngIf="informalGroup">{{'species.list.header' | translate:{informalGroup: informalGroup.name} }}</h3>
   <laji-datatable
     #dataTable
     class="observation-table"

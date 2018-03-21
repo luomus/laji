@@ -1,0 +1,120 @@
+<form (ngSubmit)="onSubmit()" #observationForm="ngForm" class="form-horizontal" id="wrapper">
+  <div class="row">
+    <laji-search-filters (onShowFilterChange)="showFilter = $event" [top]="filtersTop" [height]="filtersHeight">
+      <div class="taxon-panel">
+        <div class="row">
+          <label class="col-sm-12">
+            {{'observation.active.informalTaxonGroupId' | translate}}:
+          </label>
+        </div>
+        <div class="row">
+          <div class="lj-input-wrap">
+            <observation-group-select
+              [(ngModel)]="informalTaxonGroupId"
+              name="informalTaxonGroupId"
+              [lang]="translate.currentLang"
+              (onSelect)="onQueryChange()">
+              {{'observation.active.informalTaxonGroupAll'|translate}}
+            </observation-group-select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-12">
+            {{'species.form.specimen' | translate}}:
+          </label>
+          <div class="col-sm-12">
+            <input
+              [ngClass]="{loading: typeaheadLoading}"
+              type="text"
+              class="form-control input-sm"
+              name="target"
+              [(ngModel)]="taxon"
+              [typeahead]="dataSource"
+              [typeaheadOptionsLimit]="limit"
+              [typeaheadWaitMs]="200"
+              [typeaheadMinLength]="3"
+              [typeaheadFocusFirst]="false"
+              [typeaheadOptionField]="'value'"
+              (typeaheadLoading)="changeTypeaheadLoading($event)"
+              (typeaheadOnSelect)="onTaxonSelect($event)"
+              (keyup)="onTaxonSelect($event)"
+              autocomplete="off"
+              autocorrect="off"
+            >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-12">
+            <div class="btn-group" name="onlyFinnish" btnRadioGroup [(ngModel)]="formQuery.onlyFinnish">
+              <label class="btn btn-primary active" btnRadio="true">Suomalaiset</label>
+              <label class="btn btn-primary" btnRadio="false">Kaikki</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-12">
+            <laji-metadata-select
+              [(ngModel)]="searchQuery.query.redListStatusId"
+              (ngModelChange)="onQueryChange()"
+              [multiple]="true"
+              [useFilter]="false"
+              name="redListStatusId"
+              [placeholder]="'observation.form.redListStatusId'"
+              [alt]="'MX.iucnStatuses'"
+              [lang]="translate.currentLang"></laji-metadata-select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-12">
+            <laji-metadata-select
+              [(ngModel)]="searchQuery.query.administrativeStatusId"
+              (ngModelChange)="onQueryChange()"
+              [multiple]="true"
+              [placeholder]="'MX.hasAdminStatus' | label"
+              name="administrativeStatusId"
+              [alt]="'MX.adminStatusEnum'"
+              [lang]="translate.currentLang"></laji-metadata-select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div laji-panel [title]="'Vieraslajit'" [autoToggle]="true">
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [ngModel]="formQuery.invasive"
+                       (ngModelChange)="onCheckBoxToggle('invasive')"
+                       name="invasive">
+                {{'observation.form.invasive' | translate}}
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label>
+                <input type="checkbox"
+                       [ngModel]="formQuery.isNotInvasive"
+                       (ngModelChange)="onCheckBoxToggle('invasive', false, false)"
+                       name="isNotInvasive">
+                {{'observation.form.nonInvasive' | translate}}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </laji-search-filters>
+
+    <div style="margin-top: 10px;" [ngClass]="{
+       'result-list col-sm-8 col-md-9 col-lg-10': showFilter,
+       'col-sm-12': !showFilter
+     }">
+      <laji-species-list></laji-species-list>
+    </div>
+  </div>
+</form>

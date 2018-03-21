@@ -19,13 +19,18 @@ import { LangModule } from '../shared-modules/lang/lang.module';
 import { DatatableModule } from '../shared-modules/datatable/datatable.module';
 import {BoldSequenceComponent} from './info-card/taxon-info/bold-sequence/bold-sequence.component';
 import {HttpClientModule} from '@angular/common/http';
+import { SpeciesFormComponent } from './species-form/species-form.component';
+import { InformalComponent } from './informal/informal.component';
+import { TypeaheadModule, ButtonsModule } from 'ngx-bootstrap';
+import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, TreeModule, LangModule, DatatableModule, HttpClientModule],
+  imports: [routing, SharedModule, RouterModule, TreeModule, LangModule, DatatableModule, HttpClientModule,
+    TypeaheadModule, ButtonsModule, SearchFiltersModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
-    ChildrenListComponent, BoldSequenceComponent
+    ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, InformalComponent
   ],
 })
 export class TaxonomyModule {

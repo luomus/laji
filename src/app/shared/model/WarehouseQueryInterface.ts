@@ -156,4 +156,5 @@ export interface WarehouseQueryInterface {
   annotationType?: Array<string>;
   annotatedBefore?: Date;
   annotatedLaterThan?: Date;
+  onlyFinnish?: boolean;
 }

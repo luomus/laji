@@ -372,6 +372,7 @@
   "species.search": "Lajihaku",
   "species.title.short": "Hae tietoa maamme eläimistä, kasveista ja sienistä.",
   "species.title.long": "Lajitietokeskus ylläpitää tietoja ja kansallista nimistöluetteloa Suomen eliölajeista. Tässä voit monipuolisten hakutoimintojen avulla tutustua lajien tietoihin, esiintymiseen, kuviin ja sukulaisuussuhteisiin.",
+  "species.form.specimen": "Taksonominen rajaus",
   "feedback": "Palaute",
   "feedback.intro.loggedIn": "Sähköpostiosoitteesi liitetään automaattisesti tähän palautteeseen.",
   "feedback.intro.guest": "Jos kirjaudut järjestelmään, palautteeseesi pystytään vastaamaan suoraan.",

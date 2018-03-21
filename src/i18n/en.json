@@ -358,6 +358,7 @@
   "species.search": "Species search",
   "species.title.short": "Browse and discover species information, descriptions and pictures.",
   "species.title.long": "Finnish Biodiversity Information Facility maintains the national catalogue of Finnish species. With the help of versatile search tool, you can familiarize with species information including e.g. descriptions, distribution maps, occurrences data, images and taxonomic relationships.",
+  "species.form.specimen": "Taxonomic delimitation",
   "feedback": "Feedback",
   "feedback.intro.loggedIn": "Your e-mail address will be added automatically to this feedback",
   "feedback.intro.guest": "If you log in, it's possible to answer direct to your feedback.",

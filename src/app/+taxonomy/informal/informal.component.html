@@ -1,0 +1,7 @@
+<div style="background-color: #ECF0F1; padding: 20px; height: 160px;">
+  <h1 style="margin: 0">{{ 'species.search' | translate }}<br><small>{{ 'species.title.short' | translate }}</small></h1>
+  <div>{{ 'species.title.long' | translate }}</div>
+</div>
+<div class="container">
+  <laji-species-form *ngIf="informalTaxonGroupId" [informalTaxonGroupId]="informalTaxonGroupId"></laji-species-form>
+</div>

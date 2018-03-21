@@ -1,0 +1,18 @@
+.result-list {
+  display: flex;
+  flex-direction: column;
+}
+.taxon-panel {
+  background-color: #ffffff;
+  margin: -15px;
+  padding: 15px;
+}
+:host {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  z-index: auto;
+}
+.lj-input-wrap {
+  padding: 0 15px;
+}

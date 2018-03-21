@@ -1,5 +1,6 @@
 import { RouterModule, Routes, UrlSegment } from '@angular/router';
 import { TaxonComponent } from './taxon.component';
+import { InformalComponent } from './informal/informal.component';
 import { InfoCardComponent } from './info-card/info-card.component';
 import { ModuleWithProviders } from '@angular/core';
 
@@ -12,7 +13,7 @@ export function decideTaxonFront(url: UrlSegment[]) {
     }
   }
   return null;
-};
+}
 
 export const taxonomyRoutes: Routes = [
   {
@@ -25,7 +26,12 @@ export const taxonomyRoutes: Routes = [
     component: TaxonComponent
   },
   {
-    path: ':type/:id',
+    path: 'informal/:id',
+    pathMatch: 'full',
+    component: InformalComponent
+  },
+  {
+    path: 'taxonomy/:id',
     pathMatch: 'full',
     component: TaxonComponent
   },

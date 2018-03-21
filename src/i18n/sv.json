@@ -355,6 +355,7 @@
   "species.search": "Artsökning",
   "species.title.short": "Sök information om finska djur, växter och svampar.",
   "species.title.long": "Finlands Artdatacenter uppehåller nationella katalogen av finländska arter. Du kan bekanta här med artinformation, förekomst, bilder och släktförhållanden med hjälp av mångsidiga sökningen.",
+  "species.form.specimen": "Taksonomisk avgränsning",
   "feedback": "Feedback",
   "feedback.intro.loggedIn": "Din e-postadress kommer att läggas till denna feedback automatiskt",
   "feedback.intro.guest": "Om du loggar in, är det möjligt att svara direkt till din feedback.",

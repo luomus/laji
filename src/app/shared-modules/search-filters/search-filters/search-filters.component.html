@@ -1,0 +1,44 @@
+<div class="form-filters"
+     [ngClass]="{
+        'col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10': showFilter,
+        'hidden-xs hidden-sm hidden-md hidden-lg': !showFilter
+      }"
+     [ngStyle]="{'top': top, 'height': height}">
+  <div class="filter-toggle link" (click)="toggleFilters()">
+    <i class="glyphicon"
+       [ngClass]="{
+            'glyphicon-arrow-right': showFilter,
+            'glyphicon-arrow-left': !showFilter
+           }"
+    ></i>
+  </div>
+  <div class="form-group">
+    <div class="col-xs-12 form-title">
+      <strong>
+        {{'observation.form.title' | translate}}
+        <laji-observation-active></laji-observation-active>
+      </strong>
+    </div>
+  </div>
+  <div class="lj-filter-wrap">
+    <ng-content></ng-content>
+  </div>
+  <div style="padding-top: 10px" *ngIf="hasInvasiveControleRights">
+    <button type="button" class="btn btn-default" (click)="toInvasiveControlForm()">
+      {{'toICForm' | translate}}
+    </button>
+  </div>
+  <div class="form-filters-fill"></div>
+</div>
+<div *ngIf="!showFilter"
+     class="filter-toggle link"
+     style="right: 0"
+     (click)="toggleFilters()"
+>
+  <i class="glyphicon"
+     [ngClass]="{
+            'glyphicon-arrow-right': showFilter,
+            'glyphicon-arrow-left': !showFilter
+           }"
+  ></i>
+</div>

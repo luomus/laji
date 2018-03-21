@@ -51,6 +51,7 @@ export class SearchQuery {
   booleanTypes = [
     'includeNonValidTaxa',
     'finnish',
+    'onlyFinnish',
     'invasive',
     'typeSpecimen',
     'hasDocumentMedia',
