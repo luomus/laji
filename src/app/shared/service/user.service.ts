@@ -68,8 +68,11 @@ export class UserService extends LocalDb {
   }
 
   public login(userToken: string) {
-    if (this.token === userToken || this.subUser) {
+    if (this.token === userToken) {
       return;
+    }
+    if (this.subUser) {
+      this.subUser.unsubscribe();
     }
     setTimeout(() => {
       this.isLoggedIn = true;
