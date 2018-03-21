@@ -49,6 +49,12 @@
     <laji-form-select [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
   </div>
 </div>
+<alert [type]="'danger'" *ngIf="status === 'fileAlreadyUploadedPartially'">
+  <strong>Tiedosto on osittain ladattu.</strong> Poista tiedostosta rivit jotka ovat jo onnistuneesti tallenettu ja yritä uudelleen.
+</alert>
+<alert [type]="'danger'" *ngIf="status === 'fileAlreadyUploaded'">
+  <strong>Tiedosto on jo tallennettu.</strong> Varmista että valitsit oikean tiedoston.
+</alert>
 <alert [type]="'danger'" *ngIf="status === 'invalidFileType'">
   <strong>Virheellinen tiedosto formaatti.</strong> Tällä hetkellä tuettuina ovat vain Excel sekä OpenDocument formaatit.
 </alert>
