@@ -9,6 +9,7 @@ export enum SpecialTypes {
   geometry = 'geometry',
   person = 'person',
   taxonID = 'taxonID',
+  unitTaxon = 'unitTaxon',
   informalTaxonGroupID = 'informalTaxonGroupID',
   namedPlaceID = 'namedPlaceID',
   dateOptionalTime = 'dateOptionalTime',
