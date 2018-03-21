@@ -3,7 +3,7 @@ import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import {FormField} from '../model/form-field';
 import { UserService} from '../../../shared/service';
-import {MappingService, SpeciesTypes} from './mapping.service';
+import {MappingService, SpecialTypes} from './mapping.service';
 import {Person} from '../../../shared/model';
 import {Observable} from 'rxjs/Observable';
 import {NamedPlacesService} from '../../../shared-modules/named-place/named-places.service';
@@ -52,7 +52,7 @@ export class GeneratorService {
       let value = field.default;
 
       switch (special) {
-        case SpeciesTypes.person:
+        case SpecialTypes.person:
           const person = specials.person || {};
           value = `${person.fullName} (${person.id})`;
           break;
@@ -100,7 +100,7 @@ export class GeneratorService {
         validValues = [this.mappingService.mapFromBoolean(true), this.mappingService.mapFromBoolean(false)];
       } else if (special) {
         switch (special) {
-          case SpeciesTypes.namedPlaceID:
+          case SpecialTypes.namedPlaceID:
             if (extra.namedPlaces && extra.namedPlaces.length > 0) {
               validValues = extra.namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)
             }
