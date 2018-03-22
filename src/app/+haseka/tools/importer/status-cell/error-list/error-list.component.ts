@@ -25,7 +25,7 @@ export class ErrorListComponent implements OnInit {
       Object.keys(data).forEach(field => {
         errors.push({
           field: this.pathToKey(field),
-          errors: data[field]
+          errors: Array.isArray(data[field]) ? data[field] : this.pickErrors(data[field])
         })
       });
       this._errors = errors;
@@ -37,6 +37,17 @@ export class ErrorListComponent implements OnInit {
       path = path.substring(1);
     }
     return path.replace(/\[[0-9]+]/g, '[*]');
+  }
+
+  private pickErrors(value) {
+    if (typeof value === 'string') {
+      return [value];
+    } else if (Array.isArray(value)) {
+      return value;
+    } else if (typeof value === 'object') {
+      return Object.keys(value).reduce((prev, current) => [...prev, ...this.pickErrors(current)], []);
+    }
+    return [value];
   }
 
 }

@@ -14,6 +14,7 @@ export class TaxonAutocompleteComponent {
 
   @Input() limit = 10;
   @Input() placeholder = '';
+  @Input() allowInvalid = false;
   @Output() taxonSelect = new EventEmitter<Autocomplete>();
 
   dataSource: Observable<any>;
@@ -85,6 +86,18 @@ export class TaxonAutocompleteComponent {
     this.result = result;
     this.taxonSelect.emit(result);
     this.cdr.markForCheck();
+  }
+
+  keyEvent(e) {
+    if (e.keyCode === 13) {
+      if (this.allowInvalid) {
+        this.onTaxonSelect(<Autocomplete>{id: '', value: this.value, payload: {
+            id: '',
+            cursiveName: false,
+            vernacularName: this.value
+      }})
+      }
+    }
   }
 
 }
