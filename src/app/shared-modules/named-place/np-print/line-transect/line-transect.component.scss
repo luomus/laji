@@ -14,6 +14,14 @@ $baseFontSize: 12pt;
   padding-top: 5mm;
   font-size: $baseFontSize;
 }
+.page-landscape {
+  padding-top: 5mm;
+  position: absolute;
+  width: 277mm !important;
+  height: 190mm !important;
+  transform: rotate(270deg);
+  transform-origin: 137mm 137mm;
+}
 
 @media not print {
   .page {
@@ -86,6 +94,10 @@ $baseFontSize: 12pt;
   overflow: hidden;
   height: 267mm; // With higher number 671:323 Turku Muhkuri area in linetransect has a map artifact on the page following the map page
   width: 100%;
+}
+
+.page-landscape .map-wrap {
+  height: 180mm !important;
 }
 
 /** Input table **/
