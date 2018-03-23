@@ -28,6 +28,7 @@ export class NpListComponent {
   _fields: any[];
   data: any[] = [];
   columns: ObservationTableColumn[];
+  sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
 
 
   @ViewChild('personID') personIDTpl: TemplateRef<any>;
@@ -69,6 +70,7 @@ export class NpListComponent {
       }
       cols.push(col);
     }
+    this.sorts = cols[0] ? [{prop: cols[0].name, dir: 'asc'}] : [];
     this.columns = cols;
     this.initData();
   }
