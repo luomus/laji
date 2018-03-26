@@ -1,3 +1,8 @@
+:host >>> .bootstrap-switch {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
 .result-list {
   display: flex;
   flex-direction: column;
@@ -15,4 +20,7 @@
 }
 .lj-input-wrap {
   padding: 0 15px;
+}
+#wrapper {
+  height: calc(70vh + 60px);
 }

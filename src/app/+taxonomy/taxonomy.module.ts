@@ -23,10 +23,11 @@ import { SpeciesFormComponent } from './species-form/species-form.component';
 import { InformalComponent } from './informal/informal.component';
 import { TypeaheadModule, ButtonsModule } from 'ngx-bootstrap';
 import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
+import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, TreeModule, LangModule, DatatableModule, HttpClientModule,
-    TypeaheadModule, ButtonsModule, SearchFiltersModule ],
+    TypeaheadModule, ButtonsModule, SearchFiltersModule, JWBootstrapSwitchModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,

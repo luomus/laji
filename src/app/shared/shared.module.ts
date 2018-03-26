@@ -85,7 +85,7 @@ import { LangModule } from '../shared-modules/lang/lang.module';
 import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
 import { ClickOutSideDirective } from './directive/click-out-side.directive';
 import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
-import { ObservationGroupSelectComponent } from '../+observation/group-select/group-select.component';
+import { ObservationGroupSelectComponent } from './group-select/group-select.component';
 import { SourcePipe } from './pipe/source.pipe';
 import { TaxonNamePipe } from './pipe/taxon-name.pipe';
 import { DocumentFormFooterComponent } from './document-form-footer/document-form-footer.component';

@@ -7,4 +7,4 @@ export * from './form/observation-form.component';
 export * from './count/observation-count.component';
 export * from './download/observation-download.component';
 export * from './map/observation-map.component';
-export * from './active/observation-active.component';
+export * from '../shared-modules/search-filters/active/observation-active.component';

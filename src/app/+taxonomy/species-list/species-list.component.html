@@ -6,7 +6,7 @@
     (rowSelect)="onRowSelect($event)"
     [virtualScrolling]="true"
     [clientSideSorting]="true"
-    [height]="'50vh'"
+    [height]="'calc(70vh - 30px)'"
     [rows]='speciesPage.results'
     (pageChange)="pageChanged($event)"
     [loading]="loading"

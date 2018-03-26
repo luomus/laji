@@ -5,6 +5,7 @@ import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
 import { Observable } from 'rxjs/Observable';
 import { SearchQuery } from '../../+observation/search-query.model';
 import { SpeciesFormQuery } from './species-form-query.interface';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'laji-species-form',
@@ -24,7 +25,10 @@ export class SpeciesFormComponent implements OnInit {
   public limit = 10;
 
   public taxon: string;
-  public formQuery: SpeciesFormQuery;
+  public formQuery: SpeciesFormQuery = {};
+  public lastQuery: string;
+
+  public subUpdate: Subscription;
 
   constructor(
     private window: WindowRef,
@@ -46,20 +50,24 @@ export class SpeciesFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formQuery = {
-      informalTaxonGroupId: this.informalTaxonGroupId,
-      taxonId: 'MX.37600',
-      onlyFinnish: 'true'
-    };
+    this.empty();
     this.onScroll();
-    this.formQueryToQuery();
+
+    this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
+      res => {
+        if (res.formSubmit) {
+          this.queryToFormQuery();
+        }
+      });
   }
 
   @HostListener('window:scroll')
   onScroll() {
     const top = 50 + Math.max(160 - this.window.nativeWindow.scrollY, 0);
+    const height = 'calc(70vh + ' + (60 + 50 + 160 - top - this.window.nativeWindow.scrollY)  +  'px)';
+
     this.filtersTop = top + 'px';
-    this.filtersHeight = 'calc(100vh - ' + top + 'px)';
+    this.filtersHeight = height;
   }
 
   public getTaxa(token: string, onlyFirstMatch = false): Observable<any> {
@@ -89,7 +97,7 @@ export class SpeciesFormComponent implements OnInit {
       });
   }
 
-  public changeTypeaheadLoading(e: boolean): void {
+  changeTypeaheadLoading(e: boolean): void {
     this.typeaheadLoading = e;
   }
 
@@ -98,18 +106,66 @@ export class SpeciesFormComponent implements OnInit {
       this.formQuery.taxonId = event.item.key;
     }
     if (this.taxon === '') {
-      this.formQuery.taxonId = 'MX.37600';
+      this.formQuery.taxonId = undefined;
     }
+    this.onQueryChange();
+  }
+
+  onCheckBoxToggle(key) {
+    this.formQuery[key] = !this.formQuery[key];
+    this.onQueryChange();
   }
 
   onQueryChange() {
-    //this.query = Util.clone(this.formQuery);
+    this.onSubmit();
+  }
+
+  empty() {
+    if (this.searchQuery.query) {
+      this.queryToFormQuery();
+      return;
+    }
+    Object.keys(this.searchQuery.query).map(key => this.searchQuery.query[key] = undefined);
+    this.formQuery = {
+      informalTaxonGroupId: this.informalTaxonGroupId,
+      onlyFinnish: true,
+      onlyInvasive: false
+    };
+    this.formQueryToQuery();
+  }
+
+  onSubmit() {
+    this.formQueryToQuery();
+    const cacheKey = JSON.stringify(this.searchQuery.query);
+    if (this.lastQuery === cacheKey) {
+      return;
+    }
+    this.searchQuery.query = {...this.searchQuery.query};
+    this.lastQuery = cacheKey;
+    this.searchQuery.tack++;
+    this.searchQuery.updateUrl([
+      'selected',
+      'pageSize',
+      'page'
+    ], false);
+    this.searchQuery.queryUpdate();
+    return false;
   }
 
   private formQueryToQuery() {
     const query = this.searchQuery.query;
-    query.informalTaxonGroupId = [this.formQuery.informalTaxonGroupId];
-    query.target = [this.formQuery.taxonId];
-    query.onlyFinnish = this.formQuery.onlyFinnish === 'true';
+    query.informalTaxonGroupId = this.formQuery.informalTaxonGroupId ? [this.formQuery.informalTaxonGroupId] : undefined;
+    query.target = this.formQuery.taxonId ? [this.formQuery.taxonId] : undefined;
+    query.finnish = this.formQuery.onlyFinnish ? true : undefined;
+    query.invasive = this.formQuery.onlyInvasive ? true : undefined;
+  }
+
+  private queryToFormQuery() {
+    const query = this.searchQuery.query;
+    this.formQuery.informalTaxonGroupId = query.informalTaxonGroupId ? query.informalTaxonGroupId[0] : undefined;
+    this.formQuery.taxonId = query.target ? query.target[0] : undefined;
+    this.formQuery.onlyFinnish = !!query.finnish;
+    this.formQuery.onlyInvasive = !!query.invasive;
+    this.taxon = '';
   }
 }

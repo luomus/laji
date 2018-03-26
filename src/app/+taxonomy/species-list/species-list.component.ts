@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../shared/model/Taxonomy';
@@ -19,7 +19,7 @@ import { SearchQuery } from '../../+observation/search-query.model';
   styleUrls: ['./species-list.component.css'],
   providers: []
 })
-export class SpeciesListComponent implements OnInit {
+export class SpeciesListComponent implements OnInit, OnDestroy {
   public informalGroup: InformalTaxonGroup;
 
   loading = false;
@@ -45,6 +45,14 @@ export class SpeciesListComponent implements OnInit {
     }
   ];
 
+  private warehouseToTaxaQueryMap = {
+    'finnish': 'onlyFinnish',
+    'redListStatusId': 'redListStatusFilters',
+    'administrativeStatusId': 'adminStatusFilters',
+    'invasive': 'onlyInvasive'
+  };
+
+  private subQueryUpdate: Subscription;
   private subFetch: Subscription;
 
   constructor(
@@ -60,7 +68,14 @@ export class SpeciesListComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.refreshSpeciesList();
-    this.onInformalTaxonGroupChange();
+
+    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
+      () => this.refreshSpeciesList()
+    );
+  }
+
+  ngOnDestroy() {
+    this.subQueryUpdate.unsubscribe();
   }
 
   onRowSelect(event) {
@@ -78,11 +93,18 @@ export class SpeciesListComponent implements OnInit {
       this.subFetch.unsubscribe();
     }
     this.loading = true;
+
+    const query = this.searchQueryToTaxaQuery();
+
+    if (!this.informalGroup || this.informalGroup.id !== query.informalTaxonGroupId) {
+      this.onInformalTaxonGroupChange(query.informalTaxonGroupId);
+    }
+
     this.subFetch = this.taxonomyService
       .taxonomyFindSpecies(
-        this.searchQuery.query.target[0],
+        query.target,
         this.translate.currentLang,
-        this.searchQuery.query.informalTaxonGroupId[0],
+        query.informalTaxonGroupId,
         undefined,
         undefined,
         undefined,
@@ -90,7 +112,7 @@ export class SpeciesListComponent implements OnInit {
         `${page}`,
         '1000',
         undefined,
-        {selectedFields: 'vernacularName,scientificName,cursiveName,id'}
+        query.extraParameters
         // 'finnish_name'
       )
       .subscribe(data => {
@@ -109,20 +131,36 @@ export class SpeciesListComponent implements OnInit {
       );
   }
 
-  onInformalTaxonGroupChange() {
-    console.log(this.searchQuery.query);
-    const id = this.searchQuery.query.informalTaxonGroupId[0];
-    console.log(id);
+  private searchQueryToTaxaQuery() {
+    const informalTaxonGroupId = this.searchQuery.query.informalTaxonGroupId ? this.searchQuery.query.informalTaxonGroupId[0] : undefined;
+    const target = this.searchQuery.query.target && this.searchQuery.query.target[0] ? this.searchQuery.query.target[0] : 'MX.37600';
+    const extraParameters = {...this.searchQuery.query};
+    extraParameters['target'] = undefined;
+    extraParameters['informalTaxonGroupId'] = undefined;
+    extraParameters['selectedFields'] = 'vernacularName,scientificName,cursiveName,id';
+    for (const key in this.warehouseToTaxaQueryMap) {
+      if (extraParameters[key]) {
+        extraParameters[this.warehouseToTaxaQueryMap[key]] = extraParameters[key];
+        extraParameters[key] = undefined
+      }
+    }
 
-    this.informalTaxonService.informalTaxonGroupGetChildren(id, this.translate.currentLang)
-      .combineLatest(this.informalTaxonService.informalTaxonGroupFindById(id, this.translate.currentLang))
-      .map(data => this.parseInformalTaxonGroup(data))
-      .subscribe(data => this.informalGroup = data);
+    return {
+      informalTaxonGroupId,
+      target,
+      extraParameters
+    }
   }
 
-  private parseInformalTaxonGroup(data) {
-    const { results } = data[0];
-    const { id, name } = data[1];
-    return { results, id, name };
-  };
+  private onInformalTaxonGroupChange(id) {
+    if (!id) {
+      this.translate.get('species.list.all')
+        .subscribe((name) => {
+          this.informalGroup = {name: name};
+        })
+    } else {
+      this.informalTaxonService.informalTaxonGroupFindById(id, this.translate.currentLang)
+        .subscribe(data => this.informalGroup = data);
+    }
+  }
 }

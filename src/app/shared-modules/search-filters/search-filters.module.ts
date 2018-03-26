@@ -12,6 +12,6 @@ import { SearchFiltersComponent } from './search-filters/search-filters.componen
     SharedModule
   ],
   declarations: [SelectComponent, MetadataSelectComponent, ObservationActiveComponent, SearchFiltersComponent],
-  exports: [SelectComponent, MetadataSelectComponent, ObservationActiveComponent, SearchFiltersComponent]
+  exports: [MetadataSelectComponent, SearchFiltersComponent]
 })
 export class SearchFiltersModule { }
