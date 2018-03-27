@@ -9,7 +9,7 @@ export const environment = {
   whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'JX.6668',
   invasiveControlForm: '',
-  loginUrl: '/user/virannomaiset',
+  loginUrl: '/user/viranomaiset',
   selfPage: 'https://login.laji.fi/self',
   apiBase: '/api',
   production: true,

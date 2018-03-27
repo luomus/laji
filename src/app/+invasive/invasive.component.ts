@@ -23,6 +23,11 @@ export class InvasiveComponent implements OnInit {
   shownDocument = '';
   highlightId;
 
+  invasiveQuery = {
+    countryId: ['ML.206'],
+    administrativeStatusId: ['MX.euInvasiveSpeciesList']
+  };
+
   constructor(
     private taxonomyApi: TaxonomyApi,
     private warehouseApi: WarehouseApi
@@ -49,10 +54,7 @@ export class InvasiveComponent implements OnInit {
 
   updateObservations() {
     this.warehouseApi.warehouseQueryAggregateGet(
-      {
-        countryId: ['ML.206'],
-        administrativeStatusId: ['MX.euInvasiveSpeciesList']
-      },
+      this.invasiveQuery,
       ['unit.linkings.taxon.id'],
       undefined,
       undefined,
@@ -71,7 +73,7 @@ export class InvasiveComponent implements OnInit {
   }
 
   showLatestDocument(taxonID) {
-    this.warehouseApi.warehouseQueryListGet({taxonId: taxonID}, ['document.documentId', 'unit.unitId'], undefined, 1)
+    this.warehouseApi.warehouseQueryListGet({...this.invasiveQuery, taxonId: taxonID}, ['document.documentId', 'unit.unitId'], undefined, 1)
       .map(data => data.results[0])
       .subscribe(result => {
         this.shownDocument = result.document && result.document.documentId || '';

@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiExternalService } from '../../../shared/service/laji-external.service';
-import { FormField } from '../model/form-field';
+import { FormField, IGNORE_VALUE } from '../model/form-field';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 import {CoordinateService} from '../../../shared/service/coordinate.service';
 
-export enum SpeciesTypes {
+export enum SpecialTypes {
   geometry = 'geometry',
   person = 'person',
   taxonID = 'taxonID',
+  unitTaxon = 'unitTaxon',
   informalTaxonGroupID = 'informalTaxonGroupID',
   namedPlaceID = 'namedPlaceID',
   dateOptionalTime = 'dateOptionalTime',
@@ -20,6 +21,7 @@ export enum SpeciesTypes {
 @Injectable()
 export class MappingService {
 
+  public static readonly mergeKey = '_merge_';
   private static readonly valueSplitter = ';';
 
   private readonly booleanMap = {
@@ -46,18 +48,19 @@ export class MappingService {
   private userValueMappings = {};
 
   private specials = {
-    'editors[*]': SpeciesTypes.person,
-    'gatheringEvent.leg[*]': SpeciesTypes.person,
-    'gatherings[*].leg': SpeciesTypes.person,
-    'gatherings[*].geometry': SpeciesTypes.geometry,
-    'gatherings[*].namedPlaceID': SpeciesTypes.namedPlaceID,
-    'gatherings[*].units[*].unitGathering.geometry': SpeciesTypes.geometry,
-    'gatherings[*].taxonCensus[*].censusTaxonID': SpeciesTypes.taxonID,
-    'gatherings[*].units[*].hostID': SpeciesTypes.taxonID,
-    'gatherings[*].units[*].informalTaxonGroups[*]': SpeciesTypes.informalTaxonGroupID,
-    'gatherings[*].dateBegin': SpeciesTypes.dateOptionalTime,
-    'gatherings[*].dateEnd': SpeciesTypes.dateOptionalTime,
-    'gatherings[*].units[*].identifications[*].detDate': SpeciesTypes.dateOptionalTime
+    'editors[*]': SpecialTypes.person,
+    'gatheringEvent.leg[*]': SpecialTypes.person,
+    'gatherings[*].leg': SpecialTypes.person,
+    'gatherings[*].geometry': SpecialTypes.geometry,
+    'gatherings[*].namedPlaceID': SpecialTypes.namedPlaceID,
+    'gatherings[*].units[*].unitGathering.geometry': SpecialTypes.geometry,
+    'gatherings[*].taxonCensus[*].censusTaxonID': SpecialTypes.taxonID,
+    'gatherings[*].units[*].hostID': SpecialTypes.taxonID,
+    'gatherings[*].units[*].informalTaxonGroups[*]': SpecialTypes.informalTaxonGroupID,
+    'gatherings[*].dateBegin': SpecialTypes.dateOptionalTime,
+    'gatherings[*].dateEnd': SpecialTypes.dateOptionalTime,
+    'gatherings[*].units[*].identifications[*].detDate': SpecialTypes.dateOptionalTime,
+    'gatherings[*].units[*].identifications[*].taxon': SpecialTypes.unitTaxon
   };
 
   constructor(
@@ -151,7 +154,7 @@ export class MappingService {
     return Object.keys(this.userColMappings).length > 0 || Object.keys(this.userValueMappings).length > 0
   }
 
-  getSpecial(field: FormField): SpeciesTypes|null {
+  getSpecial(field: FormField): SpecialTypes|null {
     if (field.key && this.specials[field.key]) {
       return this.specials[field.key];
     }
@@ -225,6 +228,13 @@ export class MappingService {
     return this.booleanMap[key][lang];
   }
 
+  mapUnitTaxon(value) {
+    if (value === IGNORE_VALUE || (typeof value === 'object' && value[MappingService.mergeKey])) {
+      return value;
+    }
+    return null;
+  }
+
   mapTaxonId(value) {
     if (typeof value === 'string') {
       const match = value.match(/(MX\.[0-9]+)/);
@@ -272,18 +282,21 @@ export class MappingService {
     let targetValue = this.getUserMappedValue(upperValue, field);
 
     switch (this.getSpecial(field)) {
-      case SpeciesTypes.geometry:
+      case SpecialTypes.geometry:
         if (targetValue === null) {
           targetValue = this.analyzeGeometry(value);
         }
         break;
-      case SpeciesTypes.person:
+      case SpecialTypes.person:
         targetValue = this.mapPerson(targetValue || value, allowUnMapped);
         break;
-      case SpeciesTypes.taxonID:
+      case SpecialTypes.taxonID:
         targetValue = this.mapTaxonId(targetValue || value);
         break;
-      case SpeciesTypes.namedPlaceID:
+      case SpecialTypes.unitTaxon:
+        targetValue = this.mapUnitTaxon(targetValue || value);
+        break;
+      case SpecialTypes.namedPlaceID:
         targetValue = this.mapNamedPlaceID(targetValue || value);
         break;
       default:

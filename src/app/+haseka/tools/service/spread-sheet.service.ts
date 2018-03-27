@@ -126,18 +126,22 @@ export class SpreadSheetService {
     }
   }
 
-  getColMapFromComments(sheet: XLSX.WorkSheet, fields: {[key: string]: FormField}) {
+  getColMapFromComments(sheet: XLSX.WorkSheet, fields: {[key: string]: FormField}, len: number) {
     const map = {};
-    let idx = 0, col;
-    let address = XLSX.utils.encode_cell({r: 0, c: idx});
+    let idx = -1, col;
 
     this.mappingService.initColMap(fields);
-    while (col = sheet[address]) {
+    while (idx <= len) {
+      const address = XLSX.utils.encode_cell({r: 0, c: ++idx});
+      col = sheet[address];
+      if (!col) {
+        continue;
+      }
       let found = false;
       if (Array.isArray(col.c)) {
         for (let i = 0; i < col.c.length; i++) {
           if (col.c.t) {
-            const commentKey = this.mappingService.colMap(col.c.t);
+            const commentKey = this.mappingService.colMap(this.normalizeHeader(col.c.t));
             if (commentKey !== null) {
               map[XLSX.utils.encode_col(idx)] = commentKey;
               found = true;
@@ -146,16 +150,15 @@ export class SpreadSheetService {
           }
         }
         if (found) {
-          break;
+          continue;
         }
       }
       if (col.v) {
-        const valueKey = this.mappingService.colMap(col.v);
+        const valueKey = this.mappingService.colMap(this.normalizeHeader(col.v));
         if (valueKey !== null) {
           map[XLSX.utils.encode_col(idx)] = valueKey;
         }
       }
-      address = XLSX.utils.encode_cell({r: 0, c: ++idx});
     }
     return map;
   }
@@ -168,6 +171,15 @@ export class SpreadSheetService {
       }
     }
     return '';
+  }
+
+  private normalizeHeader(value: string) {
+    return (value || '')
+      .replace('\u2012', '-')
+      .replace('\u2013', '-')
+      .replace('\u2014', '-')
+      .replace('\u2015', '-')
+      .trim();
   }
 
   private parserFields(form: any, validators: any, result: FormField[], root, parent, lastKey = '', lastLabel = '', required = []) {
