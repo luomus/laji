@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../shared/model/Taxonomy';
@@ -62,7 +62,8 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     private logger: Logger,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private searchQuery: SearchQuery
+    private searchQuery: SearchQuery,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -123,10 +124,12 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
           }
           this.speciesPage = data;
           this.loading = false;
+          this.cd.markForCheck();
         },
         err => {
           this.logger.warn('Failed to fetch species list', err);
           this.loading = false;
+          this.cd.markForCheck();
         }
       );
   }
