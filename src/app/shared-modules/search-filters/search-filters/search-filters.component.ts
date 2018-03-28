@@ -9,8 +9,7 @@ import { WindowRef } from '../../../shared/windows-ref';
 export class SearchFiltersComponent implements OnInit {
   public showFilter = true;
 
-  @Input() top = '50px';
-  @Input() height = 'calc(100vh - 50px)';
+  @Input() wrapperStyle = {top: '50px', height: 'calc(100vh - 50px)'};
   @Input() hasInvasiveControlRights = false;
   @Output() onShowFilterChange = new EventEmitter<boolean>();
   @Output() onInvasiveControlClick = new EventEmitter();

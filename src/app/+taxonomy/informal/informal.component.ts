@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FooterService } from '../../shared/service/footer.service';
 import { SearchQuery } from '../../+observation/search-query.model';
+import { WindowRef } from '../../shared/windows-ref';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -9,8 +9,11 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './informal.component.html',
   styleUrls: ['./informal.component.css']
 })
-export class InformalComponent implements OnInit, OnDestroy {
-  public informalTaxonGroupId: string;
+export class InformalComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('header') headerRef: ElementRef;
+  @ViewChild('content') contentRef: ElementRef;
+
+  public filtersNgStyle = {};
 
   private subParam: Subscription;
   private subQuery: Subscription;
@@ -18,24 +21,21 @@ export class InformalComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private searchQuery: SearchQuery,
-    private footerService: FooterService,
+    private window: WindowRef,
     private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    this.subParam = this.route.params.map(params => params['id']).subscribe(id => {
-      this.informalTaxonGroupId = id;
-    });
-
     this.subQuery = this.route.queryParams.subscribe(params => {
-      this.searchQuery.setQueryFromQueryObject(params);
-      if (params['reset']) {
-        this.searchQuery.query = {};
+      if (Object.keys(params).length === 0) {
+        this.searchQuery.query = {
+          finnish: true
+        };
+      } else {
+        this.searchQuery.setQueryFromQueryObject(params);
       }
-      if (params['target']) {
-        this.searchQuery.query.target = [params['target']];
-      }
-      this.searchQuery.queryUpdate({formSubmit: !!params['reset'], newData: true});
+
+      this.searchQuery.queryUpdate({formSubmit: false, newData: true});
       this.cd.markForCheck();
     });
   }
@@ -46,6 +46,44 @@ export class InformalComponent implements OnInit, OnDestroy {
     }
     if (this.subQuery) {
       this.subQuery.unsubscribe();
+    }
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.setFiltersSize();
+    }, 0);
+  }
+
+  @HostListener('window:scroll')
+  onScroll() {
+    this.setFiltersSize();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.setFiltersSize();
+  }
+
+  private setFiltersSize() {
+    const headerHeight = this.headerRef.nativeElement.offsetHeight;
+    const contentHeight = this.contentRef.nativeElement.offsetHeight;
+    const top = 50 + Math.max(headerHeight - this.window.nativeWindow.scrollY, 0);
+    const height = contentHeight + 50 + headerHeight - top - this.window.nativeWindow.scrollY;
+
+    if (this.window.nativeWindow.scrollY < headerHeight) {
+      this.filtersNgStyle = {
+        position: 'relative',
+        top: 0,
+        left: 0,
+        float: 'right'
+      }
+    } else {
+      this.filtersNgStyle = {
+        position: 'fixed',
+        top: '50px',
+        height: height + 'px'
+      }
     }
   }
 }

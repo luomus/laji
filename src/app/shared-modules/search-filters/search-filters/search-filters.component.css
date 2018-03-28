@@ -61,6 +61,7 @@
 @media only screen and (min-width : 768px) {
   .lj-filter-wrap {
     max-height: calc(100vh - 100px);
+    height: calc(100% - 51px);
     overflow: auto;
   }
 
@@ -74,5 +75,14 @@
     flex: 1 1 auto;
     margin: 0 -15px;
     min-height: 30px;
+  }
+}
+
+@media only screen and (max-width : 767px) {
+  .form-filters {
+    top: 0 !important;
+    height: auto !important;
+    position: relative !important;
+    float: none !important;
   }
 }

@@ -3,9 +3,9 @@
   margin-right: auto;
   margin-left: auto;
 }
-.result-list {
-  display: flex;
-  flex-direction: column;
+:host >>> .form-filters {
+  border-top: 1px solid #e1e1e1;
+  z-index: 1 !important;
 }
 .taxon-panel {
   background-color: #ffffff;
@@ -21,6 +21,17 @@
 .lj-input-wrap {
   padding: 0 15px;
 }
-#wrapper {
-  height: calc(70vh + 60px);
+#species-list-container {
+  padding-top: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#fill-height {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  z-index: -1;
+  border-left: 1px solid #e1e1e1;
+  background-color: #ECF0F1;
 }

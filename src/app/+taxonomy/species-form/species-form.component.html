@@ -1,6 +1,6 @@
-<form (ngSubmit)="onSubmit()" #observationForm="ngForm" class="form-horizontal" id="wrapper">
-  <div class="row">
-    <laji-search-filters (onShowFilterChange)="showFilter = $event" [top]="filtersTop" [height]="filtersHeight">
+<div class="form-horizontal">
+  <div class="row" id="species-form-container">
+    <laji-search-filters (onShowFilterChange)="showFilter = $event" [wrapperStyle]="filtersNgStyle">
       <div class="taxon-panel">
         <div class="row">
           <label class="col-sm-12">
@@ -49,9 +49,10 @@
           <div class="col-sm-12">
             <bSwitch
               name="onlyFinnish"
-              [switch-off-text]="'Kaikki'"
-              [switch-on-text]="'Suomalaiset'"
+              [switch-off-text]="'species.form.all' | translate"
+              [switch-on-text]="'species.form.finnish' | translate"
               [switch-on-color]="'primary'"
+              [switch-size]="'small'"
               [(ngModel)]="formQuery.onlyFinnish"
               [switch-base-class]="'bootstrap-switch'"
               (onChangeState)="onQueryChange()">
@@ -115,11 +116,16 @@
       </div>
     </laji-search-filters>
 
-    <div style="margin-top: 10px;" [ngClass]="{
+    <div id="fill-height" class="hidden-xs" [ngClass]="{
+        'col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10': showFilter,
+        'hidden-sm hidden-md hidden-lg': !showFilter
+      }"></div>
+
+    <div id="species-list-container" [ngClass]="{
        'result-list col-sm-8 col-md-9 col-lg-10': showFilter,
        'col-sm-12': !showFilter
      }">
       <laji-species-list></laji-species-list>
     </div>
   </div>
-</form>
+</div>

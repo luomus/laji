@@ -3,7 +3,7 @@
         'col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10': showFilter,
         'hidden-xs hidden-sm hidden-md hidden-lg': !showFilter
       }"
-     [ngStyle]="{'top': top, 'height': height}">
+     [ngStyle]="wrapperStyle">
   <div class="filter-toggle link" (click)="toggleFilters()">
     <i class="glyphicon"
        [ngClass]="{
@@ -22,13 +22,13 @@
   </div>
   <div class="lj-filter-wrap">
     <ng-content></ng-content>
+    <div style="padding-top: 10px" *ngIf="hasInvasiveControleRights">
+      <button type="button" class="btn btn-default" (click)="toInvasiveControlForm()">
+        {{'toICForm' | translate}}
+      </button>
+    </div>
+    <div class="form-filters-fill"></div>
   </div>
-  <div style="padding-top: 10px" *ngIf="hasInvasiveControleRights">
-    <button type="button" class="btn btn-default" (click)="toInvasiveControlForm()">
-      {{'toICForm' | translate}}
-    </button>
-  </div>
-  <div class="form-filters-fill"></div>
 </div>
 <div *ngIf="!showFilter"
      class="filter-toggle link"

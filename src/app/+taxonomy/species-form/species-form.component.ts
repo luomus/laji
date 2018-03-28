@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, HostListener } from '@angular/core';
-import { WindowRef } from '../../shared/windows-ref';
 import { TranslateService } from '@ngx-translate/core';
 import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
 import { Observable } from 'rxjs/Observable';
@@ -13,12 +12,10 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./species-form.component.css']
 })
 export class SpeciesFormComponent implements OnInit {
-  @Input() informalTaxonGroupId: string;
+  @Input() filtersNgStyle: string;
 
   public dataSource: Observable<any>;
 
-  public filtersTop: string;
-  public filtersHeight: string;
   public showFilter = true;
 
   public typeaheadLoading = false;
@@ -31,7 +28,6 @@ export class SpeciesFormComponent implements OnInit {
   public subUpdate: Subscription;
 
   constructor(
-    private window: WindowRef,
     public translate: TranslateService,
     private autocompleteService: AutocompleteApi,
     private searchQuery: SearchQuery
@@ -51,7 +47,6 @@ export class SpeciesFormComponent implements OnInit {
 
   ngOnInit() {
     this.empty();
-    this.onScroll();
 
     this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
       res => {
@@ -61,15 +56,6 @@ export class SpeciesFormComponent implements OnInit {
       });
   }
 
-  @HostListener('window:scroll')
-  onScroll() {
-    const top = 50 + Math.max(160 - this.window.nativeWindow.scrollY, 0);
-    const height = 'calc(70vh + ' + (60 + 50 + 160 - top - this.window.nativeWindow.scrollY)  +  'px)';
-
-    this.filtersTop = top + 'px';
-    this.filtersHeight = height;
-  }
-
   public getTaxa(token: string, onlyFirstMatch = false): Observable<any> {
     return this.autocompleteService.autocompleteFindByField({
       field: 'taxon',
@@ -77,7 +63,7 @@ export class SpeciesFormComponent implements OnInit {
       limit: onlyFirstMatch ? '1' : '' + this.limit,
       includePayload: true,
       lang: this.translate.currentLang,
-      informalTaxonGroup: this.informalTaxonGroupId
+      informalTaxonGroup: this.formQuery.informalTaxonGroupId
     })
       .map(data => {
         if (onlyFirstMatch) {
@@ -125,13 +111,6 @@ export class SpeciesFormComponent implements OnInit {
       this.queryToFormQuery();
       return;
     }
-    Object.keys(this.searchQuery.query).map(key => this.searchQuery.query[key] = undefined);
-    this.formQuery = {
-      informalTaxonGroupId: this.informalTaxonGroupId,
-      onlyFinnish: true,
-      onlyInvasive: false
-    };
-    this.formQueryToQuery();
   }
 
   onSubmit() {

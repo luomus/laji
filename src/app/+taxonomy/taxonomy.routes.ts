@@ -26,7 +26,7 @@ export const taxonomyRoutes: Routes = [
     component: TaxonComponent
   },
   {
-    path: 'informal/:id',
+    path: 'informal/list',
     pathMatch: 'full',
     component: InformalComponent
   },

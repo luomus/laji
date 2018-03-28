@@ -1,5 +1,10 @@
 <div>
-  <h3 *ngIf="informalGroup">{{'species.list.header' | translate:{informalGroup: informalGroup.name} }}</h3>
+  <h3>{{'species.list.headerStart' | translate }}
+    <laji-spinner [spinning]="!informalGroup" [light]="lightLoader">
+      <span [innerHtml]="informalGroup.name" *ngIf="informalGroup"></span>
+    </laji-spinner>
+    {{'species.list.headerEnd' | translate }}
+  </h3>
   <laji-datatable
     #dataTable
     class="observation-table"
