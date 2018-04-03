@@ -3810,16 +3810,16 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-laji-form@^0.0.412:
-  version "0.0.412"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.412.tgz#94625e0356f8066f0606bf5af861064bf483acf2"
+laji-form@^0.0.413:
+  version "0.0.413"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.413.tgz#375bec3eab6ee3bbe79d2a270d1dbe51ed2c6d64"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
     laji-map "^1.0.342"
-    laji-validate "0.0.57"
+    laji-validate "0.0.58"
     moment "*"
     prop-types "^15.5.8"
     react "^15.5.0"
@@ -3854,9 +3854,9 @@ laji-map@^1.0.342:
     proj4 "2.3.16"
     proj4leaflet "1.0.2"
 
-laji-validate@0.0.57:
-  version "0.0.57"
-  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.57.tgz#6cfcacecef972ba2f79743651b3d0551bcff6c02"
+laji-validate@0.0.58:
+  version "0.0.58"
+  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.58.tgz#230833bbabedaf36f8668d9d561c4f417ad40246"
   dependencies:
     "@mapbox/geojson-area" "^0.2.2"
     geojson-bounds "^1.0.1"
