@@ -11,4 +11,7 @@
       <i class="glyphicon glyphicon-tag"></i>
     </a>
   </ng-container>
+  <ng-container *ngIf="warningOnMissingTaxonID && !(taxon.id || taxonID)">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+  </ng-container>
 </span>

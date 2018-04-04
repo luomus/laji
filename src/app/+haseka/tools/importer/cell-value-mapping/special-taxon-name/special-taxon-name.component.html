@@ -14,9 +14,7 @@
       ></laji-taxon-autocomplete>
     </td>
     <td class="ok-col">
-      <span class="label label-success" *ngIf="mapping[value]">
-        <i class="glyphicon glyphicon-ok btn-success"></i>
-      </span>
+      <laji-tool-success [success]="mapping[value]"></laji-tool-success>
     </td>
   </tr>
 </table>

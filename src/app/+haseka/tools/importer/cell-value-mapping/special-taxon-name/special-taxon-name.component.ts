@@ -21,11 +21,10 @@ export class SpecialTaxonNameComponent implements OnInit {
 
   onTaxonSelect(value, to) {
     const mapping = {...this.mapping};
-    console.log(to);
 
     if (to === IGNORE_VALUE) {
       mapping[value] = to;
-    } else if (typeof to !== 'undefined' && to.key && to.value) {
+    } else if (typeof to !== 'undefined' && typeof to.key !== 'undefined' && to.value) {
       if (this.addTaxonIDTo) {
         const newValue = to.value.toUpperCase() === (value || '').toUpperCase() ? value : to.value;
         mapping[value] = {_merge_: {[this.field.key]: newValue, [this.addTaxonIDTo]: to.key}};

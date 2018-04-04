@@ -82,6 +82,9 @@ export class TaxonAutocompleteComponent {
     if (result.item) {
       result = result.item;
     }
+    if (typeof result.key === 'undefined') {
+      return;
+    }
     this.value = '';
     this.result = result;
     this.taxonSelect.emit(result);
@@ -91,13 +94,20 @@ export class TaxonAutocompleteComponent {
   keyEvent(e) {
     if (e.keyCode === 13) {
       if (this.allowInvalid) {
-        this.onTaxonSelect(<Autocomplete>{id: '', value: this.value, payload: {
-            id: '',
-            cursiveName: false,
-            vernacularName: this.value
-      }})
+        this.useCurrentValue();
       }
     }
+  }
+
+  useCurrentValue() {
+    if (!this.value) {
+      return;
+    }
+    this.onTaxonSelect(<Autocomplete>{key: '', value: this.value, payload: {
+        key: '',
+        cursiveName: false,
+        vernacularName: this.value
+      }});
   }
 
 }

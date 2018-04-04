@@ -1,23 +1,33 @@
 <div class="row">
   <div class="col-sm-6">
-    <input
-      (keyup)="keyEvent($event)"
-      type="text"
-      class="form-control input-sm"
-      name="target"
-      [placeholder]="placeholder"
-      [(ngModel)]="value"
-      [typeahead]="dataSource"
-      [typeaheadOptionsLimit]="limit"
-      [typeaheadWaitMs]="200"
-      [typeaheadMinLength]="3"
-      [typeaheadOptionField]="'value'"
-      [typeaheadItemTemplate]="taxonItem"
-      (typeaheadOnSelect)="onTaxonSelect($event)"
-      [typeaheadFocusFirst]="!allowInvalid"
-      autocomplete="off"
-      autocorrect="off"
-    >
+    <div [ngClass]="{'input-group': allowInvalid}">
+      <input
+        (keyup)="keyEvent($event)"
+        type="text"
+        class="form-control input-sm"
+        name="target"
+        [placeholder]="placeholder"
+        [(ngModel)]="value"
+        [typeahead]="dataSource"
+        [typeaheadOptionsLimit]="limit"
+        [typeaheadWaitMs]="200"
+        [typeaheadMinLength]="3"
+        [typeaheadOptionField]="'value'"
+        [typeaheadItemTemplate]="taxonItem"
+        (typeaheadOnSelect)="onTaxonSelect($event)"
+        [typeaheadFocusFirst]="!allowInvalid"
+        autocomplete="off"
+        autocorrect="off"
+      >
+      <ng-container *ngIf="allowInvalid">
+        <span class="input-group-btn">
+          <button class="btn btn-default btn-sm"
+                  [class.disabled]="!value"
+                  (click)="useCurrentValue()"
+          ><i class="glyphicon glyphicon-arrow-right"></i></button>
+        </span>
+      </ng-container>
+    </div>
     <ng-template #taxonItem let-model="item">
       <h5 class="autosuggest-value {{model.groups}} informal-group-image">
         {{model.value}}
@@ -25,6 +35,6 @@
     </ng-template>
   </div>
   <div class="col-sm-6 form-control-static" *ngIf="result && result.payload">
-    <laji-taxon-name [taxon]="result.payload" [taxonID]="result.key"></laji-taxon-name>
+    <laji-taxon-name [taxon]="result.payload" [taxonID]="result.key" [warningOnMissingTaxonID]="true"></laji-taxon-name>
   </div>
 </div>

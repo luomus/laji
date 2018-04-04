@@ -16,6 +16,7 @@ export class TaxonNameComponent implements OnInit {
   };
   @Input() taxonID: string;
   @Input() addLink = true;
+  @Input() warningOnMissingTaxonID = false;
 
   constructor() { }
 
