@@ -1,6 +1,6 @@
 import {
   AfterViewInit,
-  ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output,
   ViewChild
 } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
@@ -23,8 +23,6 @@ interface LineTransectCount {
   onPs: number;
   onPsPros: number;
   routeLength?: number;
-  ykj10kmN?: number;
-  ykj10kmE?: number;
   couplesPerKm?: number;
   minPerKm: number;
   species: {id: string, psCouples: number, tsCouples: number, name?: string}[];
@@ -85,8 +83,8 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
   isAdmin = false;
   activeMapLine = 'document';
 
-  private ykj10kmN = 0;
-  private ykj10kmE = 0;
+  ykj10kmN = 0;
+  ykj10kmE = 0;
 
   constructor(
     private lajiApiService: LajiApiService,
@@ -94,16 +92,21 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     private namedPlacesService: NamedPlacesService,
     private formPermissionService: FormPermissionService,
     private toastsService: ToastsService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnChanges() {
     this.initCounts();
     this.initWarnings();
     this.initMapOptions();
-    this.initIsAdmin(() => {
-      this.initPlacesDiff();
-      this.initMapZoom();
-    });
+    this.initYkj();
+    this.initIsAdmin()
+      .subscribe(data => {
+        this.isAdmin = this.formPermissionService.isAdmin(data.formPermission, data.user);
+        this.initPlacesDiff();
+        this.initMapZoom();
+        this.cdr.markForCheck();
+      });
   }
 
   ngOnInit() {
@@ -133,8 +136,6 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
       species: [],
       couplesPerKm: 0,
       routeLength: 0,
-      ykj10kmN: this.ykj10kmN,
-      ykj10kmE: this.ykj10kmE,
       minPerKm: 0
     };
     const species = {};
@@ -231,9 +232,18 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     };
   }
 
+  private initYkj() {
+    if (this.namedPlace && this.namedPlace.name) {
+      const match = this.namedPlace.name.match(/([0-9]{3}):([0-9]{3})/);
+      if (match) {
+        this.ykj10kmN = +match[1];
+        this.ykj10kmE = +match[2];
+      }
+    }
+  }
+
   private initPlacesDiff() {
     const diff = !equals(this.getGeometry('document'), this.getGeometry(('acceptedDocument')));
-    console.log("init placesDiff", diff);
     this.placesDiff = diff;
   }
 
@@ -242,30 +252,18 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
         ? this.document
         : this.namedPlace.acceptedDocument;
 
-    if (this.namedPlace.alternativeIDs) {
-      for (const altId of this.namedPlace.alternativeIDs) {
-        if (altId.match(/[0-9]{3}:[0-9]{3}/)) {
-          const parts = altId.split(':');
-          this.ykj10kmN = +parts[0];
-          this.ykj10kmE = +parts[1];
-          break;
-        }
-      }
-    }
     if (document.gatherings) {
       return {type: 'MultiLineString', coordinates: document.gatherings.map(item => item.geometry.coordinates)};
     }
     return {coordinates: []};
   }
 
-  initIsAdmin(next) {
-    this.formPermissionService.getFormPermission(this.namedPlace.collectionID, this.userSerivce.getToken())
-      .subscribe(formPermission => {
-        this.userSerivce.getUser().subscribe(user => {
-          this.isAdmin = this.formPermissionService.isAdmin(formPermission, user);
-          next && next(this.isAdmin);
-        });
-      });
+  initIsAdmin() {
+    return this.formPermissionService.getFormPermission(this.namedPlace.collectionID, this.userSerivce.getToken())
+      .combineLatest(
+        this.userSerivce.getUser(),
+        (formPermission, user) => ({formPermission, user})
+      );
   }
 
   setActiveMapLine(activeMapLine) {
