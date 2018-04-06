@@ -6,6 +6,7 @@ import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
 import { Observable } from 'rxjs/Observable';
 import { NamedPlacesService } from '../named-place/named-places.service';
+import { NamedPlace } from '../../shared/model/NamedPlace';
 
 @Component({
   selector: 'laji-statistics',
@@ -53,6 +54,10 @@ export class StatisticsComponent implements OnInit {
     } else {
       this.loaded = true;
     }
+  }
+
+  updateNamedPlace(namedPlace: NamedPlace) {
+    this.ns = namedPlace;
   }
 
 }

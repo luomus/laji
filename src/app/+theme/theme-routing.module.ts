@@ -84,7 +84,7 @@ const routes: Routes = [
       {path: 'ownSubmissions', pathMatch: 'full', component: LineTransectMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' } },
       {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent },
-      {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent }
+      {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent, canActivate: [OnlyLoggedIn] }
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
