@@ -3,6 +3,7 @@
     #dataTable
     class="observation-table"
     (rowSelect)="changeActivePlace($event)"
+    [getRowClass]="getRowClass"
     [virtualScrolling]="true"
     [clientSideSorting]="true"
     [height]="height"

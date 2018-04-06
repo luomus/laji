@@ -33,7 +33,7 @@
     (reorder)="reorder.emit($event)"
     (resize)="onResize($event)"
     (page)="onPage($event)"
-    [rowClass]="getRowClass.bind(this)"
+    [rowClass]="_getRowClass.bind(this)"
     (activate)="onRowSelect($event)"
   >
   </ngx-datatable>
