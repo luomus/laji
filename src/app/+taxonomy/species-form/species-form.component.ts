@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
 import { Observable } from 'rxjs/Observable';
-import { SearchQuery } from '../../+observation/search-query.model';
+import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 import { SpeciesFormQuery } from './species-form-query.interface';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./species-form.component.css']
 })
 export class SpeciesFormComponent implements OnInit {
+  @Input() searchQuery: TaxonomySearchQuery;
   @Input() filtersNgStyle: string;
 
   public dataSource: Observable<any>;
@@ -21,7 +22,6 @@ export class SpeciesFormComponent implements OnInit {
   public typeaheadLoading = false;
   public limit = 10;
 
-  public taxon: string;
   public formQuery: SpeciesFormQuery = {};
   public lastQuery: string;
 
@@ -29,16 +29,15 @@ export class SpeciesFormComponent implements OnInit {
 
   constructor(
     public translate: TranslateService,
-    private autocompleteService: AutocompleteApi,
-    private searchQuery: SearchQuery
+    private autocompleteService: AutocompleteApi
   ) {
     this.dataSource = Observable.create((observer: any) => {
-      observer.next(this.taxon);
+      observer.next(this.formQuery.taxon);
     })
       .distinctUntilChanged()
       .switchMap((token: string) => this.getTaxa(token))
       .switchMap((data) => {
-        if (this.taxon) {
+        if (this.formQuery.taxon) {
           return Observable.of(data);
         }
         return Observable.of([]);
@@ -52,6 +51,7 @@ export class SpeciesFormComponent implements OnInit {
       res => {
         if (res.formSubmit) {
           this.queryToFormQuery();
+          this.onSubmit();
         }
       });
   }
@@ -63,7 +63,7 @@ export class SpeciesFormComponent implements OnInit {
       limit: onlyFirstMatch ? '1' : '' + this.limit,
       includePayload: true,
       lang: this.translate.currentLang,
-      informalTaxonGroup: this.formQuery.informalTaxonGroupId
+      informalTaxonGroup: this.searchQuery.query.informalTaxonGroupId
     })
       .map(data => {
         if (onlyFirstMatch) {
@@ -89,16 +89,27 @@ export class SpeciesFormComponent implements OnInit {
 
   onTaxonSelect(event) {
     if (event.value && event.item) {
-      this.formQuery.taxonId = event.item.key;
+      this.searchQuery.query.target = event.item.key;
     }
-    if (this.taxon === '') {
-      this.formQuery.taxonId = undefined;
+    if (this.formQuery.taxon === '') {
+      this.searchQuery.query.target = undefined;
     }
     this.onQueryChange();
   }
 
-  onCheckBoxToggle(key) {
-    this.formQuery[key] = !this.formQuery[key];
+  onInvasiveToggle() {
+    this.formQuery.onlyInvasive = !this.formQuery.onlyInvasive;
+    if (this.formQuery.onlyInvasive) {
+      this.formQuery.onlyNonInvasive = false;
+    }
+    this.onQueryChange();
+  }
+
+  onNonInvasiveToggle() {
+    this.formQuery.onlyNonInvasive = !this.formQuery.onlyNonInvasive;
+    if (this.formQuery.onlyNonInvasive) {
+      this.formQuery.onlyInvasive = false;
+    }
     this.onQueryChange();
   }
 
@@ -121,30 +132,21 @@ export class SpeciesFormComponent implements OnInit {
     }
     this.searchQuery.query = {...this.searchQuery.query};
     this.lastQuery = cacheKey;
-    this.searchQuery.tack++;
-    this.searchQuery.updateUrl([
-      'selected',
-      'pageSize',
-      'page'
-    ], false);
+    this.searchQuery.updateUrl(false);
     this.searchQuery.queryUpdate();
     return false;
   }
 
   private formQueryToQuery() {
     const query = this.searchQuery.query;
-    query.informalTaxonGroupId = this.formQuery.informalTaxonGroupId ? [this.formQuery.informalTaxonGroupId] : undefined;
-    query.target = this.formQuery.taxonId ? [this.formQuery.taxonId] : undefined;
-    query.finnish = this.formQuery.onlyFinnish ? true : undefined;
-    query.invasive = this.formQuery.onlyInvasive ? true : undefined;
+    query.onlyFinnish = this.formQuery.onlyFinnish ? true : undefined;
+    query.invasiveSpeciesFilter = this.formQuery.onlyInvasive ? true : (this.formQuery.onlyNonInvasive ? false : undefined);
   }
 
   private queryToFormQuery() {
     const query = this.searchQuery.query;
-    this.formQuery.informalTaxonGroupId = query.informalTaxonGroupId ? query.informalTaxonGroupId[0] : undefined;
-    this.formQuery.taxonId = query.target ? query.target[0] : undefined;
-    this.formQuery.onlyFinnish = !!query.finnish;
-    this.formQuery.onlyInvasive = !!query.invasive;
-    this.taxon = '';
+    this.formQuery.onlyFinnish = !!query.onlyFinnish;
+    this.formQuery.onlyInvasive = !!query.invasiveSpeciesFilter;
+    this.formQuery.taxon = query.target;
   }
 }

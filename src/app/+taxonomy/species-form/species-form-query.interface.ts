@@ -1,6 +1,6 @@
 export interface SpeciesFormQuery {
-  informalTaxonGroupId?: string;
-  taxonId?: string;
+  taxon?: string;
   onlyFinnish?: boolean;
   onlyInvasive?: boolean;
+  onlyNonInvasive?: boolean;
 }

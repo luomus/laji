@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, Input } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../shared/model/Taxonomy';
@@ -10,7 +10,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { ObservationTableColumn } from '../../shared-modules/observation-result/model/observation-table-column';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import { SearchQuery } from '../../+observation/search-query.model';
+import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 
 
 @Component({
@@ -20,6 +20,7 @@ import { SearchQuery } from '../../+observation/search-query.model';
   providers: []
 })
 export class SpeciesListComponent implements OnInit, OnDestroy {
+  @Input() searchQuery: TaxonomySearchQuery;
   public informalGroup: InformalTaxonGroup;
 
   loading = false;
@@ -45,13 +46,6 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     }
   ];
 
-  private warehouseToTaxaQueryMap = {
-    'finnish': 'onlyFinnish',
-    'redListStatusId': 'redListStatusFilters',
-    'administrativeStatusId': 'adminStatusFilters',
-    'invasive': 'onlyInvasive'
-  };
-
   private subQueryUpdate: Subscription;
   private subFetch: Subscription;
 
@@ -62,7 +56,6 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     private logger: Logger,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private searchQuery: SearchQuery,
     private cd: ChangeDetectorRef
   ) { }
 
@@ -135,18 +128,13 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   }
 
   private searchQueryToTaxaQuery() {
-    const informalTaxonGroupId = this.searchQuery.query.informalTaxonGroupId ? this.searchQuery.query.informalTaxonGroupId[0] : undefined;
-    const target = this.searchQuery.query.target && this.searchQuery.query.target[0] ? this.searchQuery.query.target[0] : 'MX.37600';
-    const extraParameters = {...this.searchQuery.query};
+    const query = this.searchQuery.query;
+    const informalTaxonGroupId = query.informalTaxonGroupId;
+    const target = query.target ? query.target : 'MX.37600';
+    const extraParameters = {...query};
     extraParameters['target'] = undefined;
     extraParameters['informalTaxonGroupId'] = undefined;
     extraParameters['selectedFields'] = 'vernacularName,scientificName,cursiveName,id';
-    for (const key in this.warehouseToTaxaQueryMap) {
-      if (extraParameters[key]) {
-        extraParameters[this.warehouseToTaxaQueryMap[key]] = extraParameters[key];
-        extraParameters[key] = undefined
-      }
-    }
 
     return {
       informalTaxonGroupId,

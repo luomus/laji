@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SearchQuery } from '../../+observation/search-query.model';
 import { WindowRef } from '../../shared/windows-ref';
 import { Subscription } from 'rxjs/Subscription';
+import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 
 @Component({
   selector: 'laji-informal',
@@ -20,22 +20,15 @@ export class InformalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private route: ActivatedRoute,
-    private searchQuery: SearchQuery,
+    private searchQuery: TaxonomySearchQuery,
     private window: WindowRef,
     private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
     this.subQuery = this.route.queryParams.subscribe(params => {
-      if (Object.keys(params).length === 0) {
-        this.searchQuery.query = {
-          finnish: true
-        };
-      } else {
-        this.searchQuery.setQueryFromQueryObject(params);
-      }
-
-      this.searchQuery.queryUpdate({formSubmit: false, newData: true});
+      this.searchQuery.setQueryFromParams(params);
+      this.searchQuery.queryUpdate({formSubmit: false});
       this.cd.markForCheck();
     });
   }

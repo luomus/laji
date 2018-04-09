@@ -24,11 +24,12 @@ import { InformalComponent } from './informal/informal.component';
 import { TypeaheadModule, ButtonsModule } from 'ngx-bootstrap';
 import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
 import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+import { TaxonomySearchQuery } from './taxonomy-search-query.model';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, TreeModule, LangModule, DatatableModule, HttpClientModule,
     TypeaheadModule, ButtonsModule, SearchFiltersModule, JWBootstrapSwitchModule ],
-  providers: [TaxonomyApi, InformalTaxonGroupApi],
+  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
     ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, InformalComponent

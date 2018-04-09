@@ -1,6 +1,8 @@
 <div class="form-horizontal">
   <div class="row" id="species-form-container">
-    <laji-search-filters (onShowFilterChange)="showFilter = $event" [wrapperStyle]="filtersNgStyle">
+    <laji-search-filters [searchQuery]="searchQuery"
+                         (onShowFilterChange)="showFilter = $event"
+                         [wrapperStyle]="filtersNgStyle">
       <div class="taxon-panel">
         <div class="row">
           <label class="col-sm-12">
@@ -10,7 +12,7 @@
         <div class="row">
           <div class="lj-input-wrap">
             <observation-group-select
-              [(ngModel)]="formQuery.informalTaxonGroupId"
+              [(ngModel)]="searchQuery.query.informalTaxonGroupId"
               name="informalTaxonGroupId"
               [lang]="translate.currentLang"
               (onSelect)="onQueryChange()">
@@ -29,7 +31,7 @@
               type="text"
               class="form-control input-sm"
               name="target"
-              [(ngModel)]="taxon"
+              [(ngModel)]="formQuery.taxon"
               [typeahead]="dataSource"
               [typeaheadOptionsLimit]="limit"
               [typeaheadWaitMs]="200"
@@ -63,7 +65,7 @@
         <div class="form-group">
           <div class="col-sm-12">
             <laji-metadata-select
-              [(ngModel)]="searchQuery.query.redListStatusId"
+              [(ngModel)]="searchQuery.query.redListStatusFilters"
               (ngModelChange)="onSubmit()"
               [multiple]="true"
               [useFilter]="false"
@@ -77,7 +79,7 @@
         <div class="form-group">
           <div class="col-sm-12">
             <laji-metadata-select
-              [(ngModel)]="searchQuery.query.administrativeStatusId"
+              [(ngModel)]="searchQuery.query.adminStatusFilters"
               (ngModelChange)="onSubmit()"
               [multiple]="true"
               [placeholder]="'MX.hasAdminStatus' | label"
@@ -95,23 +97,23 @@
               <label>
                 <input type="checkbox"
                        [ngModel]="formQuery.onlyInvasive"
-                       (ngModelChange)="onCheckBoxToggle('onlyInvasive')"
+                       (ngModelChange)="onInvasiveToggle()"
                        name="invasive">
                 {{'observation.form.invasive' | translate}}
               </label>
             </div>
           </div>
-          <!--div class="row">
+          <div class="row">
             <div class="col-sm-12">
               <label>
                 <input type="checkbox"
-                       [ngModel]="formQuery.isNotInvasive"
-                       (ngModelChange)="onCheckBoxToggle('invasive', false, false)"
+                       [ngModel]="formQuery.onlyNonInvasive"
+                       (ngModelChange)="onNonInvasiveToggle()"
                        name="isNotInvasive">
                 {{'observation.form.nonInvasive' | translate}}
               </label>
             </div>
-          </div-->
+          </div>
         </div>
       </div>
     </laji-search-filters>
@@ -125,7 +127,7 @@
        'result-list col-sm-8 col-md-9 col-lg-10': showFilter,
        'col-sm-12': !showFilter
      }">
-      <laji-species-list></laji-species-list>
+      <laji-species-list [searchQuery]="searchQuery"></laji-species-list>
     </div>
   </div>
 </div>

@@ -1,6 +1,6 @@
 <div class="row poks">
   <div *ngFor="let group of tree.results" class="col-xs-6 col-md-4 col-lg-3">
-    <a [routerLink]="['/taxon/informal/list'] | localize" [queryParams]="{informalTaxonGroupId: group.id, finnish: true}" class="niks thumbnail panel panel-default">
+    <a [routerLink]="['/taxon/informal/list'] | localize" [queryParams]="{informalTaxonGroupId: group.id, onlyFinnish: true}" class="niks thumbnail panel panel-default">
       <div class="panel-heading">
         <h3 style="height: 52px;" class="panel-title caption">{{group.name}}</h3>
       </div>

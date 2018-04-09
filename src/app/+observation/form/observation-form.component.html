@@ -1,6 +1,9 @@
 <form (ngSubmit)="onSubmit()" #observationForm="ngForm" class="form-horizontal" id="wrapper">
   <div class="row">
-    <laji-search-filters [hasInvasiveControlRights]="hasInvasiveControleRights" (onShowFilterChange)="showFilter = $event" (onInvasiveControlClick)="toInvasiveControlForm()">
+    <laji-search-filters [searchQuery]="searchQuery"
+                         [hasInvasiveControlRights]="hasInvasiveControleRights"
+                         (onShowFilterChange)="showFilter = $event"
+                         (onInvasiveControlClick)="toInvasiveControlForm()">
       <div class="taxon-panel">
         <div class="row">
           <label class="col-lg-12">
