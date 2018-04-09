@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormField, IGNORE_VALUE } from '../../../model/form-field';
+import { FormField, VALUE_IGNORE } from '../../../model/form-field';
 
 @Component({
   selector: 'laji-special-taxon-name',
@@ -22,7 +22,7 @@ export class SpecialTaxonNameComponent implements OnInit {
   onTaxonSelect(value, to) {
     const mapping = {...this.mapping};
 
-    if (to === IGNORE_VALUE) {
+    if (to === VALUE_IGNORE) {
       mapping[value] = to;
     } else if (typeof to !== 'undefined' && typeof to.key !== 'undefined' && to.value) {
       if (this.addTaxonIDTo) {

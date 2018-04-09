@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiExternalService } from '../../../shared/service/laji-external.service';
-import { FormField, IGNORE_VALUE } from '../model/form-field';
+import { FormField, VALUE_IGNORE } from '../model/form-field';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 import {CoordinateService} from '../../../shared/service/coordinate.service';
 
@@ -229,7 +229,7 @@ export class MappingService {
   }
 
   mapUnitTaxon(value) {
-    if (value === IGNORE_VALUE || (typeof value === 'object' && value[MappingService.mergeKey])) {
+    if (value === VALUE_IGNORE || (typeof value === 'object' && value[MappingService.mergeKey])) {
       return value;
     }
     return null;

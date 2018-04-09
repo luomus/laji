@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { Document } from '../../../shared/model';
 import { UserService } from '../../../shared/service/user.service';
-import {DOCUMENT_LEVEL, GATHERING_LEVEL, FormField, IGNORE_VALUE} from '../model/form-field';
+import {DOCUMENT_LEVEL, GATHERING_LEVEL, FormField, VALUE_IGNORE} from '../model/form-field';
 import { MappingService } from './mapping.service';
 import {Util} from '../../../shared/service';
 
@@ -108,7 +108,7 @@ export class ImportService {
     cols.map(col => {
       const field = fields[mapping[col]];
       const parent = this.getParent(field);
-      if (field.key === IGNORE_VALUE) {
+      if (field.key === VALUE_IGNORE) {
         return;
       }
       if (allLevels.indexOf(parent) === -1) {
@@ -129,7 +129,7 @@ export class ImportService {
           return;
         }
         if (Array.isArray(value)) {
-          value = value.filter(val => val !== IGNORE_VALUE && val !== '');
+          value = value.filter(val => val !== VALUE_IGNORE && val !== '');
         }
         if (typeof value === 'object' && value[MappingService.mergeKey]) {
           Object.keys(value[MappingService.mergeKey]).forEach(location => {
@@ -223,7 +223,7 @@ export class ImportService {
       value = value.filter(this.hasValue);
       return value.filter(this.hasValue).length !== 0;
     }
-    return value !== IGNORE_VALUE && value !== '';
+    return value !== VALUE_IGNORE && value !== '';
   }
 
   private valuesToDocument(values: {[key: string]: any}, document: any) {

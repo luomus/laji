@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import { environment } from '../../../../environments/environment';
 import {TriplestoreLabelService} from '../../../shared/service';
 
-import { DOCUMENT_LEVEL, FormField, IGNORE_VALUE } from '../model/form-field';
+import { DOCUMENT_LEVEL, FormField, VALUE_IGNORE } from '../model/form-field';
 import {MappingService} from './mapping.service';
 
 @Injectable()
@@ -93,7 +93,7 @@ export class SpreadSheetService {
         required: false,
         isArray: false,
         type: 'string',
-        key: IGNORE_VALUE,
+        key: VALUE_IGNORE,
         label: 'ignore',
         fullLabel: 'ignore'
       });
