@@ -796,3 +796,25 @@ input[type="radio"]
   top: 13px;
   font-size: 10px;
 }
+
+
+/** datatable styles for named place statuses **/
+
+.datatable-body-row.datatable-row-even.reserved {
+  background: #d1c400 !important;
+}
+.datatable-body-row.datatable-row-odd.reserved {
+  background: #a1b400 !important;
+}
+.datatable-body-row.datatable-row-even.mine {
+  background: #d16e04 !important;
+}
+.datatable-body-row.datatable-row-odd.mine {
+  background: #c15e04 !important;
+}
+.datatable-body-row.datatable-row-even.sent {
+  background: #00aa00 !important;
+}
+.datatable-body-row.datatable-row-odd.sent {
+  background: #009a00 !important;
+}

@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import { FormField } from '../../model/form-field';
 import { ImportService } from '../../service/import.service';
-import { MappingService, SpeciesTypes } from '../../service/mapping.service';
+import { MappingService, SpecialTypes } from '../../service/mapping.service';
 
 @Component({
   selector: 'laji-cell-value-mapping',
@@ -16,7 +16,7 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
   @Input() colMapping: {[key: string]: string} = {};
 
   @Output() done = new EventEmitter<{[key: string]: {[value: string]: string}}>();
-  specials = SpeciesTypes;
+  specials = SpecialTypes;
   special = null;
   cols: string[];
   invalid: string[] = [];

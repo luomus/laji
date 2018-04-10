@@ -3,12 +3,15 @@
     #dataTable
     class="observation-table"
     (rowSelect)="changeActivePlace($event)"
+    [getRowClass]="getRowClass"
     [virtualScrolling]="true"
     [clientSideSorting]="true"
     [height]="height"
     [rows]='data'
     [loading]="false"
     [count]="data.length"
+    [sorts]="sorts"
+    [sortType]="'single'"
     [page]="1"
     [pageSize]="data.length"
     [columns]="columns">

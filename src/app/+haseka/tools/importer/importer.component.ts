@@ -10,12 +10,16 @@ import { ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadSheetService } from '../service/spread-sheet.service';
 import { ModalDirective } from 'ngx-bootstrap';
-import {ToastsService} from '../../../shared/service/toasts.service';
-import {AugmentService} from '../service/augment.service';
-import {DialogService} from '../../../shared/service/dialog.service';
+import { ToastsService } from '../../../shared/service/toasts.service';
+import { AugmentService } from '../service/augment.service';
+import { DialogService } from '../../../shared/service/dialog.service';
+import { LocalStorage } from 'ng2-webstorage';
+import * as Hash from 'object-hash';
 
-type states
+export type States
   = 'empty'
+  | 'fileAlreadyUploadedPartially'
+  | 'fileAlreadyUploaded'
   | 'ambiguousColumns'
   | 'invalidFileType'
   | 'importingFile'
@@ -38,10 +42,12 @@ export class ImporterComponent implements OnInit {
 
   @ViewChild('currentUserMapModal') currentUserMapModal: ModalDirective;
   @ViewChild('userMapModal') userMapModal: ModalDirective;
-  @ViewChild('mappingModal') mappingModal: ModalDirective;
   @ViewChild('dataTable') datatable: DatatableComponent;
   @ViewChild('rowNumber') rowNumberTpl: TemplateRef<any>;
   @ViewChild('statusCol') statusColTpl: TemplateRef<any>;
+
+  @LocalStorage() uploadedFiles;
+  @LocalStorage() partiallyUploadedFiles;
 
   data: {[key: string]: any}[];
   parsedData: {document: Document, rows: {[row: number]: {[level: string]: number}}}[];
@@ -56,13 +62,14 @@ export class ImporterComponent implements OnInit {
   valid = false;
   priv = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
   publ = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
-  status: states = 'empty';
+  status: States = 'empty';
   filename = '';
   excludedFromCopy: string[] = [];
   userMappings: any;
   hasUserMapping = false;
   ambiguousColumns = [];
   maxUnits = ImportService.maxPerDocument;
+  hash;
 
   constructor(
     private formService: FormService,
@@ -116,6 +123,17 @@ export class ImporterComponent implements OnInit {
       .subscribe(form => {
         const [data, sheet] = this.spreadSheetService.loadSheet(this.bstr);
         this.bstr = undefined;
+        this.hash = Hash.sha1(data);
+
+        if (this.partiallyUploadedFiles && this.partiallyUploadedFiles.indexOf(this.hash) > -1) {
+          this.status = 'fileAlreadyUploadedPartially';
+          this.cdr.markForCheck();
+          return;
+        } else if (this.uploadedFiles && this.uploadedFiles.indexOf(this.hash) > -1) {
+          this.status = 'fileAlreadyUploaded';
+          this.cdr.markForCheck();
+          return;
+        }
 
         if (Array.isArray(data) || data[0]) {
           this.header = data.shift();
@@ -123,7 +141,7 @@ export class ImporterComponent implements OnInit {
         }
         this.excludedFromCopy = form.excludeFromCopy || [];
         this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, true);
-        this.colMap = this.spreadSheetService.getColMapFromComments(sheet, this.fields);
+        this.colMap = this.spreadSheetService.getColMapFromComments(sheet, this.fields, Object.keys(this.header).length);
 
         this.initDataColumns();
 
@@ -145,7 +163,6 @@ export class ImporterComponent implements OnInit {
           this.ambiguousColumns = Array.from(ambiguousCols);
         } else {
           this.status = 'colMapping';
-          this.mappingModal.show();
         }
         this.cdr.markForCheck();
         setTimeout(() => {
@@ -201,7 +218,6 @@ export class ImporterComponent implements OnInit {
   rowMappingDone(mappings) {
     this.status = 'importReady';
     this.hasUserMapping = this.mappingService.hasUserMapping();
-    this.mappingModal.hide();
     this.mappingService.addUserValueMapping(mappings);
     this.cdr.markForCheck();
   }
@@ -210,7 +226,6 @@ export class ImporterComponent implements OnInit {
     this.status = 'validating';
     this.initParsedData();
     let success = true;
-    console.log('PARSED DATA', this.parsedData);
     Observable.from(this.parsedData)
       .mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy)
         .do(doc => console.log(doc))
@@ -257,6 +272,7 @@ export class ImporterComponent implements OnInit {
     this.status = 'importing';
     this.initParsedData();
     let success = true;
+    let hadSuccess = false;
     Observable.from(this.parsedData)
       .mergeMap(data => this.augmentService.augmentDocument(data.document)
         .switchMap(document => this.importService.sendData(document, publicityRestrictions))
@@ -275,6 +291,7 @@ export class ImporterComponent implements OnInit {
               error: data.result._error
             });
           } else {
+            hadSuccess = true;
             Object.keys(data.source.rows).forEach(key => this.data[key]['_status'] = {status: 'ok'});
           }
           this.data = [...this.data];
@@ -293,7 +310,11 @@ export class ImporterComponent implements OnInit {
             this.status = 'doneOk';
             this.toastsService.showSuccess('Havaintoerät tallennettu');
             this.valid = true;
+            this.uploadedFiles = [...this.partiallyUploadedFiles, this.hash];
           } else {
+            if (hadSuccess) {
+              this.partiallyUploadedFiles = [...this.partiallyUploadedFiles, this.hash];
+            }
             this.status = 'doneWithErrors';
             this.toastsService.showError('Kaikkia havaintoeriä ei onnistuttu tallentamaan!');
           }
@@ -306,15 +327,6 @@ export class ImporterComponent implements OnInit {
     if (!this.parsedData) {
       this.parsedData = this.importService.flatFieldsToDocuments(this.data, this.colMap, this.fields, this.formID);
     }
-  }
-
-  shouldCloseMapping() {
-    this.dialogService.confirm('Haluatko varmasti keskeyttää?')
-      .subscribe(result => {
-        if (result) {
-          this.mappingModal.hide();
-        }
-      })
   }
 
   showUserMapping() {
@@ -364,6 +376,11 @@ export class ImporterComponent implements OnInit {
           this.hasUserMapping = this.mappingService.hasUserMapping();
         }
       });
+  }
+
+  activate(status) {
+    this.status = status;
+    this.cdr.markForCheck();
   }
 
 }

@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import { environment } from '../../../../environments/environment';
 import {TriplestoreLabelService} from '../../../shared/service';
 
-import { DOCUMENT_LEVEL, FormField, IGNORE_VALUE } from '../model/form-field';
+import { DOCUMENT_LEVEL, FormField, VALUE_IGNORE } from '../model/form-field';
 import {MappingService} from './mapping.service';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class SpreadSheetService {
 
   private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
   private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-  private csvMimeType = 'text/csv';
+  private csvMimeTypes = ['text/csv', 'text/plain'];
 
   private translations = {};
 
@@ -65,7 +65,7 @@ export class SpreadSheetService {
   }
 
   isValidType(type) {
-    return [this.odsMimeType, this.xlsxMimeType, this.csvMimeType].indexOf(type) > -1;
+    return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes].indexOf(type) > -1;
   }
 
   setRequiredFields(fields: object) {
@@ -93,7 +93,7 @@ export class SpreadSheetService {
         required: false,
         isArray: false,
         type: 'string',
-        key: IGNORE_VALUE,
+        key: VALUE_IGNORE,
         label: 'ignore',
         fullLabel: 'ignore'
       });
@@ -126,18 +126,22 @@ export class SpreadSheetService {
     }
   }
 
-  getColMapFromComments(sheet: XLSX.WorkSheet, fields: {[key: string]: FormField}) {
+  getColMapFromComments(sheet: XLSX.WorkSheet, fields: {[key: string]: FormField}, len: number) {
     const map = {};
-    let idx = 0, col;
-    let address = XLSX.utils.encode_cell({r: 0, c: idx});
+    let idx = -1, col;
 
     this.mappingService.initColMap(fields);
-    while (col = sheet[address]) {
+    while (idx <= len) {
+      const address = XLSX.utils.encode_cell({r: 0, c: ++idx});
+      col = sheet[address];
+      if (!col) {
+        continue;
+      }
       let found = false;
       if (Array.isArray(col.c)) {
         for (let i = 0; i < col.c.length; i++) {
           if (col.c.t) {
-            const commentKey = this.mappingService.colMap(col.c.t);
+            const commentKey = this.mappingService.colMap(this.normalizeHeader(col.c.t));
             if (commentKey !== null) {
               map[XLSX.utils.encode_col(idx)] = commentKey;
               found = true;
@@ -146,16 +150,15 @@ export class SpreadSheetService {
           }
         }
         if (found) {
-          break;
+          continue;
         }
       }
       if (col.v) {
-        const valueKey = this.mappingService.colMap(col.v);
+        const valueKey = this.mappingService.colMap(this.normalizeHeader(col.v));
         if (valueKey !== null) {
           map[XLSX.utils.encode_col(idx)] = valueKey;
         }
       }
-      address = XLSX.utils.encode_cell({r: 0, c: ++idx});
     }
     return map;
   }
@@ -168,6 +171,15 @@ export class SpreadSheetService {
       }
     }
     return '';
+  }
+
+  private normalizeHeader(value: string) {
+    return (value || '')
+      .replace('\u2012', '-')
+      .replace('\u2013', '-')
+      .replace('\u2014', '-')
+      .replace('\u2015', '-')
+      .trim();
   }
 
   private parserFields(form: any, validators: any, result: FormField[], root, parent, lastKey = '', lastLabel = '', required = []) {

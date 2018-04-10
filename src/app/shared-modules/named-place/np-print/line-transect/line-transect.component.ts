@@ -29,6 +29,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   public ykjGrid: string;
   public info: {key: string, data: string}[];
   public formSplit = 50;
+  public landscape = false;
 
   private pageSize = 10;
 
@@ -87,6 +88,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     let total = 0;
     let currentPage = 0;
     let current = 0;
+    let minX = 999, maxX = 0, minY = 999, maxY = 0;
     geometries.coordinates.forEach((coord, idx) => {
       const dist = MapUtil.getLineTransectStartEndDistancesForIdx({geometry: geometries}, idx, 10);
       const biotopeSlot = current === dist[0] ? current : current - this.formSplit;
@@ -135,14 +137,42 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   }
 
   private initMapOptions() {
+    const geometry = this.getGeometry();
+    this.checkOrientation(geometry);
     this.lajiMapOptions = {
       tileLayerName: 'maastokartta',
       tileLayerOpacity: 0.5,
       lineTransect: {
         printMode: true,
-        feature: {geometry: this.getGeometry()}
+        feature: {geometry: geometry}
       }
     };
+  }
+
+  private checkOrientation(geometries) {
+    let minX = 999, maxX = 0, minY = 999, maxY = 0;
+    geometries.coordinates.forEach(coord => {
+      if (Array.isArray(coord) && Array.isArray(coord[0]) && typeof coord[0][0] === 'number') {
+        coord.forEach(point => {
+          if (point[0] > maxX) {
+            maxX = point[0];
+          }
+          if (point[0] < minX) {
+            minX = point[0];
+          }
+          if (point[1] > maxY) {
+            maxY = point[1];
+          }
+          if (point[1] < minY) {
+            minY = point[1];
+          }
+        })
+      }
+    });
+
+    const diffX = (maxX - minX) / 2;
+    const diffY = maxY - minY;
+    this.landscape = diffX > diffY;
   }
 
   private getGeometry(): any {

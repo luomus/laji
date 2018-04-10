@@ -28,6 +28,7 @@ export class NpListComponent {
   _fields: any[];
   data: any[] = [];
   columns: ObservationTableColumn[];
+  sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
 
 
   @ViewChild('personID') personIDTpl: TemplateRef<any>;
@@ -43,6 +44,11 @@ export class NpListComponent {
 
   changeActivePlace(event) {
     this.onActivePlaceChange.emit(this.data.indexOf(event.row));
+  }
+
+  getRowClass(row) {
+    const status = (row['$._status'] || [])[0];
+    if (status !== 'free') return status;
   }
 
   @Input() set namedPlaces(nps: NamedPlace[]) {
@@ -69,6 +75,7 @@ export class NpListComponent {
       }
       cols.push(col);
     }
+    this.sorts = cols[0] ? [{prop: cols[0].name, dir: 'asc'}] : [];
     this.columns = cols;
     this.initData();
   }

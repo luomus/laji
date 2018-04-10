@@ -630,5 +630,7 @@
   "np.requestSend": "Pääsy pyyntö lähetetty",
   "route.nro": "Reitin numero",
   "form.administer": "Hallinnoi lomakkeen käyttöä",
-  "result.reserve.until": "Varattu"
+  "result.reserve.until": "Varattu",
+  "asIs": "Arvo sellaisenaan",
+  "ignore": "jätä huomiomatta"
 }

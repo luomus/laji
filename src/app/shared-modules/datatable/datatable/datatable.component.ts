@@ -57,6 +57,8 @@ export class DatatableComponent {
   @Input() resizable = true;
   @Input() showRowAsLink = true;
   @Input() rowHeight = 35;
+  @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
+  @Input() getRowClass: (row: any) => any;
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
@@ -73,7 +75,6 @@ export class DatatableComponent {
     private changeDetectorRef: ChangeDetectorRef,
     private cacheService: CacheService
   ) { }
-
 
   @Input() set page(page: number) {
     this._offset = page - 1;
@@ -135,7 +136,14 @@ export class DatatableComponent {
       });
   }
 
-  getRowClass(row) {
+  _getRowClass(row) {
+    if (this.getRowClass) {
+      const rowClass = this.getRowClass(row);
+      if (rowClass) {
+        return rowClass;
+      }
+    }
+
     return {
       'link': this.showRowAsLink,
       'issues':

@@ -6,9 +6,12 @@
   <span [class.cursive]="taxon.cursiveName">
     {{taxon.scientificName}}
   </span>
-  <ng-container *ngIf="addLink">
+  <ng-container *ngIf="addLink && (taxon.id || taxonID)">
     <a [routerLink]="['/taxon/' + ((taxon.id || taxonID) | toQName)] | localize" target="_blank" [tooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
       <i class="glyphicon glyphicon-tag"></i>
     </a>
+  </ng-container>
+  <ng-container *ngIf="warningOnMissingTaxonID && !(taxon.id || taxonID)">
+      <span class="glyphicon glyphicon-warning-sign"></span>
   </ng-container>
 </span>

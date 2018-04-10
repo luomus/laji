@@ -10,45 +10,22 @@
       Yhdessä havaintoerässä saa olla maksimissaan {{maxUnits}} yksittäistä havaintoa.
     </p>
     <p>Havaintojen tallentaminen tapahtuu seuraavasti:</p>
-    <ol>
-      <li>Valitse tiedosto alla olevaan kenttään.</li>
-      <li>Jos tiedosto nimestä ei voinut päätellä Vihkon lomaketta, kysyy Vihko erikseen mitä lomaketta tulisi tallennuksessa käyttää.</li>
-      <li>Jos sarakkeita ei pystytty automaattisesti tunnistamaan valitse sarakkeiden merkitys alasvetovalikosta.</li>
-      <li>Taustalla Vihko käy läpi jokaisen sarakkeen arvot ja jos arvoa ei tunnisteta, Vihko kysyy mitä tunnettua arvoa havaittu arvo tarkoittaa.</li>
-      <li>Kun sarakkeiden ja arvojen kuvaaminen on valmis voit ottaa kuvauksen talteen myöhempää käyttöä varten.</li>
-      <li>Voit tarkistaa datan virheiden varalta tai voit tallentaa datan suoraan Vihkoon. Huom jos tallennus vaiheessa havaitaan virheitä näitä havaintoeriä ei tallenneta ja mahdollisesta virheistä.</li>
-      <li>Tarkista että jokaisen rivin kohdalla on merkintä onnistuneesta tallennuksesta.</li>
-    </ol>
   </div>
 </div>
+
 
 <div class="row data-container">
-  <div class="col-sm-8">
-    <input type="file" class="form-control" (change)="onFileChange($event)" multiple="false" />
-  </div>
-  <div class="col-sm-3 map-buttons">
-    <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="clearUserMapping()" tooltip="Poista datan kuvaus" placement="left">
-      <i class="glyphicon glyphicon-remove"></i>
-    </div>
-    <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="showUserMapping()" tooltip="Nykyinen datan kuvaus" placement="left">
-      <i class="glyphicon glyphicon-open"></i>
-    </div>
-    <div class="btn btn-default pull-right" (click)="userMapModal.show()" tooltip="Tuo datan kuvaus" placement="left">
-      <i class="glyphicon glyphicon-save"></i>
-    </div>
-  </div>
-</div>
-<div class="row data-container" *ngIf="filename">
   <div class="col-sm-10">
-    Käsitellään tiedostoa: <strong>{{filename}}</strong>
+    <span *ngIf="filename">Käsitellään tiedostoa: <strong>{{filename}}</strong></span>&nbsp;
   </div>
 </div>
 
-<div class="row data-container" *ngIf="!formID && !!bstr">
-  <div class="col-sm-5">
-    <laji-form-select [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
-  </div>
-</div>
+<alert [type]="'danger'" *ngIf="status === 'fileAlreadyUploadedPartially'">
+  <strong>Tiedosto on osittain ladattu.</strong> Poista tiedostosta rivit jotka ovat jo onnistuneesti tallenettu ja yritä uudelleen.
+</alert>
+<alert [type]="'danger'" *ngIf="status === 'fileAlreadyUploaded'">
+  <strong>Tiedosto on jo tallennettu.</strong> Varmista että valitsit oikean tiedoston.
+</alert>
 <alert [type]="'danger'" *ngIf="status === 'invalidFileType'">
   <strong>Virheellinen tiedosto formaatti.</strong> Tällä hetkellä tuettuina ovat vain Excel sekä OpenDocument formaatit.
 </alert>
@@ -56,9 +33,65 @@
   <strong>Otsikko rivullä usea samanniminen sarake!</strong>
   <br>Varmista että otsikko rivillä ei esiinny samaa nimeä useaan kertaan. Nyt löytyi sarakkeet "{{ambiguousColumns.join('", "')}}" useaan kertaan.
 </alert>
-<ng-container *ngIf="formID && dataColumns && data">
+
+<div class="well">
+
+  <laji-stepper [state]="status"
+                (onActive)="activate($event)"
+  ></laji-stepper>
+
+<ng-container *ngIf="['empty', 'importingFile', 'fileAlreadyUploaded', 'fileAlreadyUploadedPartially', 'invalidFileType', 'ambiguousColumns'].indexOf(status) > -1">
+  <div><p>Valitse tiedosto alla olevaan kenttään. Jos tiedosto nimestä ei voinut päätellä Vihkon lomaketta, kysyy Vihko erikseen mitä lomaketta tulisi tallennuksessa käyttää.</p></div>
+  <div class="row data-container">
+    <div class="col-sm-8">
+      <input type="file" class="form-control" (change)="onFileChange($event)" multiple="false" />
+    </div>
+    <div class="col-sm-3 map-buttons">
+      <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="clearUserMapping()" tooltip="Poista datan kuvaus" placement="left">
+        <i class="glyphicon glyphicon-remove"></i>
+      </div>
+      <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="showUserMapping()" tooltip="Nykyinen datan kuvaus" placement="left">
+        <i class="glyphicon glyphicon-open"></i>
+      </div>
+      <div class="btn btn-default pull-right" (click)="userMapModal.show()" tooltip="Tuo datan kuvaus" placement="left">
+        <i class="glyphicon glyphicon-save"></i>
+      </div>
+    </div>
+  </div>
+  <div class="row data-container" *ngIf="!formID && !!bstr">
+    <div class="col-sm-5">
+      <laji-form-select [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
+    </div>
+  </div>
+</ng-container>
+
+<laji-col-mapper
+  *ngIf="status === 'colMapping'"
+  (mappingDone)="colMappingDone($event)"
+  [fields]="fields"
+  [headers]="header"
+  [colMapping]="colMap"
+  (fieldSelected)="mapCol($event)"></laji-col-mapper>
+
+
+<laji-cell-value-mapping
+  *ngIf="status === 'dataMapping'"
+  (done)="rowMappingDone($event)"
+  [fields]="fields"
+  [data]="data"
+  [colMapping]="colMap"></laji-cell-value-mapping>
+
+
+<ng-container *ngIf="status === 'importReady' || status === 'invalidData' || status === 'validating' || status === 'doneOk' || status === 'doneWithErrors' || status === 'importing'">
+  <p>
+    Voit tarkistaa datan virheiden varalta tai voit tallentaa datan suoraan Vihkoon. Huom jos tallennus vaiheessa havaitaan virheitä näitä havaintoeriä ei tallenneta.
+  </p>
+  <p>
+    Tarkista että jokaisen rivin kohdalla on merkintä onnistuneesta tallennuksesta.
+  </p>
+
   <div class="data-container">
-    <laji-datatable
+  <laji-datatable
       #dataTable
       class="import-table"
       [showRowAsLink]="false"
@@ -88,6 +121,7 @@
     </div>
   </div>
 </ng-container>
+</div>
 
 <ng-template let-rowIndex="rowIndex" #rowNumber>
   {{rowIndex + 2}}
@@ -96,33 +130,6 @@
 <ng-template let-value="value" #statusCol>
   <laji-status-cell [value]="value" [fields]="fields"></laji-status-cell>
 </ng-template>
-
-<div class="modal fade" bsModal #mappingModal="bs-modal" tabindex="-1" role="dialog"
-     [config]="{keyboard: false, ignoreBackdropClick: true}"
-     aria-labelledby="column and value mapping" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-body mapping-body">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="shouldCloseMapping()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <laji-col-mapper
-          *ngIf="status === 'colMapping'"
-          (mappingDone)="colMappingDone($event)"
-          [fields]="fields"
-          [headers]="header"
-          [colMapping]="colMap"
-          (fieldSelected)="mapCol($event)"></laji-col-mapper>
-        <laji-cell-value-mapping
-          *ngIf="status === 'dataMapping'"
-          (done)="rowMappingDone($event)"
-          [fields]="fields"
-          [data]="data"
-          [colMapping]="colMap"></laji-cell-value-mapping>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="modal fade" bsModal #userMapModal="bs-modal" tabindex="-1" role="dialog"
      aria-labelledby="column and value mapping" aria-hidden="true">

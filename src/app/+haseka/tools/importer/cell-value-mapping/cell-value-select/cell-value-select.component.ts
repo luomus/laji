@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import { FormField, IGNORE_VALUE } from '../../../model/form-field';
+import { FormField, VALUE_IGNORE } from '../../../model/form-field';
 
 @Component({
   selector: 'laji-cell-value-select',
@@ -15,8 +15,8 @@ export class CellValueSelectComponent implements OnInit {
 
   _field: FormField;
   labels: string[] = [];
-  ignore = IGNORE_VALUE;
-  booleanValues = [IGNORE_VALUE, 'true', 'false'];
+  ignore = VALUE_IGNORE;
+  booleanValues = [VALUE_IGNORE, 'true', 'false'];
 
   constructor() { }
 
@@ -25,7 +25,7 @@ export class CellValueSelectComponent implements OnInit {
     this.labels = [];
 
     if (field.enum) {
-      this.labels = [IGNORE_VALUE, ...field.enumNames];
+      this.labels = [VALUE_IGNORE, ...field.enumNames];
     }
   }
 
@@ -35,7 +35,7 @@ export class CellValueSelectComponent implements OnInit {
   valueMapped(value, to) {
     const mapping = {...this.mapping};
 
-    if (to === IGNORE_VALUE) {
+    if (to === VALUE_IGNORE) {
       mapping[value] = to;
     } else if (this._field.enumNames) {
       const idx = this._field.enumNames.indexOf(to);

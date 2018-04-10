@@ -47,8 +47,8 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
   @Input() initWithWorldMap = false;
   @Input() bringDrawLayerToBack = true;
   @Input() zoom = 1;
-  @Input() tileOpacity: number;
-  @Input() controlSettings: any = {
+  @Input() tileLayerOpacity: number;
+  @Input() controls: any = {
     draw: false
   };
   @Input() settingsKey: string;
@@ -60,6 +60,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
   @Output() onCreate = new EventEmitter();
   @Output() onMove = new EventEmitter();
   @Output() onFailure =  new EventEmitter();
+  @Output() onTileLayerChange =  new EventEmitter();
   @ViewChild('map') elemRef: ElementRef;
 
   map: any;
@@ -122,15 +123,17 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
         markerPopupOffset: 5,
         featurePopupOffset: 0,
         rootElem: this.elemRef.nativeElement,
-        controls: this.controlSettings,
+        controls: this.controls,
         overlayNames: this.overlayNames,
         availableTileLayerNamesBlacklist: this.availableTileLayerNamesBlacklist
       };
 
+      let hasTilelayer = false;
       if (this.settingsKey) {
         mapOptions.on = {
           tileLayerChange: (event) => {
             this.userSettings.tileLayerName = event.tileLayerName;
+            this.onTileLayerChange.emit(event.tileLayerName);
             this.userService.setUserSetting(this.settingsKey, this.userSettings);
           },
           tileLayerOpacityChangeEnd: (event) => {
@@ -145,8 +148,16 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
         for (const key in this.settings) {
           if (this.settings.hasOwnProperty(key)) {
             mapOptions[key] = this.settings[key];
+            if (key === 'tileLayerName') {
+              hasTilelayer = true;
+              this.onTileLayerChange.emit(this.settings[key]);
+            }
           }
         }
+      }
+
+      if (!hasTilelayer) {
+        this.onTileLayerChange.emit(tileLayerName);
       }
 
       this.map = this.lajiExternalService.getMap(mapOptions);
@@ -219,7 +230,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
   }
 
   ngOnChanges(changes) {
-    if (changes.tileOpacity) {
+    if (changes.tileLayerOpacity) {
       this.initMapOptions();
     }
     if (changes.visible) {
@@ -299,8 +310,8 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
       if (!this.map) {
         return;
       }
-      if (this.tileOpacity) {
-        this.map.tileLayer.setOpacity(this.tileOpacity);
+      if (this.tileLayerOpacity) {
+        this.map.setOpacity(this.tileLayerOpacity);
       }
       if (this.maxBounds) {
         this.map.map.setMaxBounds(this.maxBounds);

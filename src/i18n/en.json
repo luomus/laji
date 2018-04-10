@@ -609,5 +609,7 @@
   "np.requestAccess": "Request access",
   "np.requestSend": "Request already sent",
   "form.administer": "Manage access to form",
-  "result.reserve.until": "Reserved"
+  "result.reserve.until": "Reserved",
+  "asIs": "Value as is",
+  "ignore": "ignore"
 }
