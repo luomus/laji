@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
 import { Observable } from 'rxjs/Observable';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './species-form.component.html',
   styleUrls: ['./species-form.component.css']
 })
-export class SpeciesFormComponent implements OnInit {
+export class SpeciesFormComponent implements OnInit, OnDestroy {
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() filtersNgStyle: string;
 
@@ -26,6 +26,14 @@ export class SpeciesFormComponent implements OnInit {
   public lastQuery: string;
 
   public subUpdate: Subscription;
+
+  public invasiveStatuses: string[] = [
+    'nationallySignificantInvasiveSpecies',
+    'nationalInvasiveSpeciesStrategy',
+    'otherInvasiveSpeciesList',
+    'euInvasiveSpeciesList',
+    'quarantinePlantPest'
+  ];
 
   constructor(
     public translate: TranslateService,
@@ -54,6 +62,12 @@ export class SpeciesFormComponent implements OnInit {
           this.onSubmit();
         }
       });
+  }
+
+  ngOnDestroy() {
+    if (this.subUpdate) {
+      this.subUpdate.unsubscribe();
+    }
   }
 
   public getTaxa(token: string, onlyFirstMatch = false): Observable<any> {
@@ -113,6 +127,34 @@ export class SpeciesFormComponent implements OnInit {
     this.onQueryChange();
   }
 
+  onInvasiveCheckBoxToggle(field) {
+    if (Array.isArray(field)) {
+      this.formQuery.allInvasiveSpecies = !this.formQuery.allInvasiveSpecies;
+      field.map(status => {this.formQuery[status] = this.formQuery.allInvasiveSpecies; });
+    } else {
+      this.formQuery[field] = !this.formQuery[field];
+      if (!this.formQuery[field] && this.formQuery.allInvasiveSpecies) {
+        this.formQuery.allInvasiveSpecies = false;
+      }
+    }
+    this.formQueryToQuery();
+    this.onAdministrativeStatusChange();
+  }
+
+  onAdministrativeStatusChange() {
+    const admins = this.searchQuery.query.adminStatusFilters;
+    let cnt = 0;
+    this.invasiveStatuses.map(key => {
+      const realKey = 'MX.' + key;
+      this.formQuery[key] = admins && admins.indexOf(realKey) > -1;
+      if (this.formQuery[key]) {
+        cnt++;
+      }
+    });
+    this.formQuery.allInvasiveSpecies = cnt === this.invasiveStatuses.length;
+    this.onQueryChange();
+  }
+
   onQueryChange() {
     this.onSubmit();
   }
@@ -130,7 +172,6 @@ export class SpeciesFormComponent implements OnInit {
     if (this.lastQuery === cacheKey) {
       return;
     }
-    this.searchQuery.query = {...this.searchQuery.query};
     this.lastQuery = cacheKey;
     this.searchQuery.updateUrl(false);
     this.searchQuery.queryUpdate();
@@ -141,12 +182,58 @@ export class SpeciesFormComponent implements OnInit {
     const query = this.searchQuery.query;
     query.onlyFinnish = this.formQuery.onlyFinnish ? true : undefined;
     query.invasiveSpeciesFilter = this.formQuery.onlyInvasive ? true : (this.formQuery.onlyNonInvasive ? false : undefined);
+
+    if (this.formQuery.allInvasiveSpecies) {
+      query.adminStatusFilters = this.invasiveStatuses.map(val => 'MX.' + val);
+    }
+
+    this.invasiveStatuses
+      .map((key) => {
+        const value = 'MX.' + key;
+        if (!this.formQuery[key]) {
+          if (query.adminStatusFilters) {
+            const idx = query.adminStatusFilters.indexOf(value);
+            if (idx > -1) {
+              query.adminStatusFilters.splice(idx, 1);
+            }
+          }
+          return;
+        }
+        if (!query.adminStatusFilters) {
+          query.adminStatusFilters = [];
+        }
+        if (query.adminStatusFilters.indexOf(value) === -1) {
+          query.adminStatusFilters.push(value);
+        }
+      });
+
+    if (query.adminStatusFilters && query.adminStatusFilters.length === 0) {
+      query.adminStatusFilters = undefined;
+    }
   }
 
   private queryToFormQuery() {
     const query = this.searchQuery.query;
-    this.formQuery.onlyFinnish = !!query.onlyFinnish;
-    this.formQuery.onlyInvasive = !!query.invasiveSpeciesFilter;
-    this.formQuery.taxon = query.target;
+
+    this.formQuery = {
+      onlyFinnish: !!query.onlyFinnish,
+      onlyInvasive: query.invasiveSpeciesFilter === true,
+      onlyNonInvasive: query.invasiveSpeciesFilter === false,
+      taxon: query.target,
+      nationallySignificantInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, 'MX.nationallySignificantInvasiveSpecies'),
+      euInvasiveSpeciesList: this.hasInMulti(query.adminStatusFilters, 'MX.euInvasiveSpeciesList'),
+      quarantinePlantPest: this.hasInMulti(query.adminStatusFilters, 'MX.quarantinePlantPest'),
+      allInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, this.invasiveStatuses.map(val => 'MX.' + val))
+    }
+  }
+
+  private hasInMulti(multi, value, noOther = false) {
+    if (Array.isArray(value)) {
+      return value.filter(val => !this.hasInMulti(multi, val, noOther)).length === 0;
+    }
+    if (Array.isArray(multi) && multi.indexOf(value) > -1) {
+      return noOther ? multi.length === (Array.isArray(value) ? value.length : 1) : true;
+    }
+    return false;
   }
 }

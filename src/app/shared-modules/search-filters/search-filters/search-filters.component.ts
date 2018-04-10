@@ -8,7 +8,7 @@ import { WindowRef } from '../../../shared/windows-ref';
 })
 export class SearchFiltersComponent implements OnInit {
   public showFilter = true;
-  @Input() searchQuery: string;
+  @Input() searchQuery: any;
 
   @Input() wrapperStyle = {top: '50px', height: 'calc(100vh - 50px)'};
   @Input() hasInvasiveControlRights = false;

@@ -66,10 +66,11 @@ export class InformalComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.window.nativeWindow.scrollY < headerHeight) {
       this.filtersNgStyle = {
-        position: 'relative',
-        top: 0,
-        left: 0,
-        float: 'right'
+        position: 'absolute',
+        top: headerHeight + 'px',
+        right: 0,
+        float: 'right',
+        height: height + 'px'
       }
     } else {
       this.filtersNgStyle = {

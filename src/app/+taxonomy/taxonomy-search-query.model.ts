@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Router, Params } from '@angular/router';
 import { TaxonomySearchQueryInterface } from './taxonomy-search-query.interface';
+import { Util } from '../shared/service/util.service';
 
 @Injectable()
 export class TaxonomySearchQuery {
@@ -47,11 +48,13 @@ export class TaxonomySearchQuery {
     }
     this.query.redListStatusFilters = redListFilters;
 
-    let adminFilters = params['adminStatusFilters'];
-    if (adminFilters && !Array.isArray(adminFilters)) {
-      adminFilters = [adminFilters];
+    if (params['adminStatusFilters']) {
+      let adminFilters = Util.clone(params['adminStatusFilters']);
+      if (adminFilters && !Array.isArray(adminFilters)) {
+        adminFilters = [adminFilters];
+      }
+      this.query.adminStatusFilters = adminFilters;
     }
-    this.query.adminStatusFilters = adminFilters;
   }
 
   public queryUpdate(data = {}): void {

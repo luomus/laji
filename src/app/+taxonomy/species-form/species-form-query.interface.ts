@@ -3,4 +3,8 @@ export interface SpeciesFormQuery {
   onlyFinnish?: boolean;
   onlyInvasive?: boolean;
   onlyNonInvasive?: boolean;
+  euInvasiveSpeciesList?: boolean,
+  nationallySignificantInvasiveSpecies?: boolean,
+  quarantinePlantPest?: boolean,
+  allInvasiveSpecies?: boolean
 }
