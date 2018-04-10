@@ -23,7 +23,6 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   public limit = 10;
 
   public formQuery: SpeciesFormQuery = {};
-  public lastQuery: string;
 
   public subUpdate: Subscription;
 
@@ -168,11 +167,6 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.formQueryToQuery();
-    const cacheKey = JSON.stringify(this.searchQuery.query);
-    if (this.lastQuery === cacheKey) {
-      return;
-    }
-    this.lastQuery = cacheKey;
     this.searchQuery.updateUrl(false);
     this.searchQuery.queryUpdate();
     return false;

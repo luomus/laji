@@ -69,14 +69,15 @@ export class InformalComponent implements OnInit, OnDestroy, AfterViewInit {
         position: 'absolute',
         top: headerHeight + 'px',
         right: 0,
-        float: 'right',
-        height: height + 'px'
+        height: '100%',
+        'max-height': height + 'px'
       }
     } else {
       this.filtersNgStyle = {
         position: 'fixed',
         top: '50px',
-        height: height + 'px'
+        height: '100%',
+        'max-height': height + 'px'
       }
     }
   }

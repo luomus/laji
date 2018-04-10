@@ -26,3 +26,12 @@
   padding-left: 15px;
   padding-right: 15px;
 }
+
+#fill-height {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  z-index: -1;
+  border-left: 1px solid #e1e1e1;
+  background-color: #ECF0F1;
+}

@@ -46,6 +46,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     }
   ];
 
+  lastQuery: string;
   private subQueryUpdate: Subscription;
   private subFetch: Subscription;
 
@@ -64,7 +65,14 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     this.refreshSpeciesList();
 
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
-      () => this.refreshSpeciesList()
+      () => {
+        const cacheKey = JSON.stringify(this.searchQuery.query);
+        if (this.lastQuery === cacheKey) {
+          return;
+        }
+        this.lastQuery = cacheKey;
+        this.refreshSpeciesList()
+      }
     );
   }
 
