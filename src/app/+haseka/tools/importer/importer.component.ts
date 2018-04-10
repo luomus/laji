@@ -16,7 +16,7 @@ import { DialogService } from '../../../shared/service/dialog.service';
 import { LocalStorage } from 'ng2-webstorage';
 import * as Hash from 'object-hash';
 
-type states
+export type States
   = 'empty'
   | 'fileAlreadyUploadedPartially'
   | 'fileAlreadyUploaded'
@@ -42,7 +42,6 @@ export class ImporterComponent implements OnInit {
 
   @ViewChild('currentUserMapModal') currentUserMapModal: ModalDirective;
   @ViewChild('userMapModal') userMapModal: ModalDirective;
-  @ViewChild('mappingModal') mappingModal: ModalDirective;
   @ViewChild('dataTable') datatable: DatatableComponent;
   @ViewChild('rowNumber') rowNumberTpl: TemplateRef<any>;
   @ViewChild('statusCol') statusColTpl: TemplateRef<any>;
@@ -63,7 +62,7 @@ export class ImporterComponent implements OnInit {
   valid = false;
   priv = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
   publ = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
-  status: states = 'empty';
+  status: States = 'empty';
   filename = '';
   excludedFromCopy: string[] = [];
   userMappings: any;
@@ -164,7 +163,6 @@ export class ImporterComponent implements OnInit {
           this.ambiguousColumns = Array.from(ambiguousCols);
         } else {
           this.status = 'colMapping';
-          this.mappingModal.show();
         }
         this.cdr.markForCheck();
         setTimeout(() => {
@@ -220,7 +218,6 @@ export class ImporterComponent implements OnInit {
   rowMappingDone(mappings) {
     this.status = 'importReady';
     this.hasUserMapping = this.mappingService.hasUserMapping();
-    this.mappingModal.hide();
     this.mappingService.addUserValueMapping(mappings);
     this.cdr.markForCheck();
   }
@@ -332,15 +329,6 @@ export class ImporterComponent implements OnInit {
     }
   }
 
-  shouldCloseMapping() {
-    this.dialogService.confirm('Haluatko varmasti keskeyttää?')
-      .subscribe(result => {
-        if (result) {
-          this.mappingModal.hide();
-        }
-      })
-  }
-
   showUserMapping() {
     if (!this.hasUserMapping) {
       return;
@@ -388,6 +376,11 @@ export class ImporterComponent implements OnInit {
           this.hasUserMapping = this.mappingService.hasUserMapping();
         }
       });
+  }
+
+  activate(status) {
+    this.status = status;
+    this.cdr.markForCheck();
   }
 
 }

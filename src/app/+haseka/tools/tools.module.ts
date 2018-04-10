@@ -30,6 +30,7 @@ import { ErrorListComponent } from './importer/status-cell/error-list/error-list
 import { AugmentService } from './service/augment.service';
 import { SpecialTaxonNameComponent } from './importer/cell-value-mapping/special-taxon-name/special-taxon-name.component';
 import { ToolSuccessComponent } from './shared/tool-success/tool-success.component';
+import { StepperComponent } from './shared/stepper/stepper.component';
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { ToolSuccessComponent } from './shared/tool-success/tool-success.compone
     StatusCellComponent,
     ErrorListComponent,
     SpecialTaxonNameComponent,
-    ToolSuccessComponent
+    ToolSuccessComponent,
+    StepperComponent
   ],
   providers: [SpreadSheetService, MappingService, ImportService, GeneratorService, AugmentService]
 })
