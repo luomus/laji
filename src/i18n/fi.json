@@ -632,5 +632,13 @@
   "form.administer": "Hallinnoi lomakkeen käyttöä",
   "result.reserve.until": "Varattu",
   "asIs": "Arvo sellaisenaan",
-  "ignore": "jätä huomiomatta"
+  "ignore": "jätä huomiomatta",
+  "excel.info.personID": "Kenttään tulee käyttäjien MA tunnuksia, jos kenttä on pakollinen, niin tähän automaattisesti lisätään kirjautuneen käyttäjän tunnus. Jos haluat lisätä mukaan ystäviäsi niin voit tehdä sen joko lisäämällä suoraan heidän MA tunnuksen kyseiseen kenttään tai sitten kirjoittaa tähän hänen nimensä ja tuonti vaiheessa ilmoittaa Vihkolle kenestä ystävästäsi oli kyse.",
+  "excel.info.date": "Suositeltu muoto päivämäärälle on YYYY-MM-DD esim. 2018-04-03. Myös päivämäärä tyyppinen kentän arvo on sallittu.",
+  "excel.info.taxonID": "Kenttään tulee taxon tunniste. Voit joko käydä etsimässä sen laji sivuilta tai sitten kirjoittaa laji nimi sellaisenaan. Jos kirjoitat lajinimen, niin sisään vienti vaiheessa arvo muunnetaan taxon tunnisteeksi.",
+  "excel.info.geometry": "Tähän kenttää voit antaa ykj ruudun tai sitten arvon jonka olet kopioinut https://laji.fi/map sivun \"Kopioi piirrettyjen kuvioiden koordinaatit\" työkalulla. Voit myös halutessasi kirjoittaa tähän mitä tahansa ja jos sisään vienti vaiheessa ei tarkkaa geometriaa pystytty löytämään, kysyy Vihko sinua piirtämään arvoa vastaava kuvio karttaan.",
+  "excel.info.namedPlaceID": "Kenttään tulee nimetyn paikan tunniste. Exclissä ja OpenOfficessa tämän kentän arvot löytyvät pudotusvalikosta. Voit kuitenkin pistää tähän mitä haluat ja sitten sisään vienti vaiheessa kertoa mitä nimetty paikka tarkoitit.",
+  "excel.info.taxon": "Kirjoita havaitun lajin nimi tähän kenttään.",
+  "excel.info.array": "Voit antaa usean arvon yhdessä kentässä erottamalla arvot toisistaan \"{{separator}}\"-merkillä."
+
 }

@@ -41,7 +41,11 @@ export class ExcelGeneratorComponent implements OnInit {
     this.spreadSheetService.setHiddenFeilds([
       'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID',
       'gatherings[*].images[*]',
-      'gatherings[*].units[*].images[*]'
+      'gatherings[*].units[*].images[*]',
+      'gatherings[*].dateBegin',
+      'gatherings[*].dateEnd',
+      'gatherings[*].units[*].unitGathering.dateBegin',
+      'gatherings[*].units[*].unitGathering.dateEnd',
     ]);
   }
 
