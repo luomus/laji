@@ -20,7 +20,7 @@ export class InformalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private route: ActivatedRoute,
-    private searchQuery: TaxonomySearchQuery,
+    public searchQuery: TaxonomySearchQuery,
     private window: WindowRef,
     private cd: ChangeDetectorRef
   ) { }
