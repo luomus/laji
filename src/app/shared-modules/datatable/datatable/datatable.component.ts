@@ -34,7 +34,10 @@ export class DatatableComponent {
   @ViewChild('scientificName') scientificNameTpl: TemplateRef<any>;
   @ViewChild('taxonScientificName') taxonScientificNameTpl: TemplateRef<any>;
   @ViewChild('cursive') cursiveTpl: TemplateRef<any>;
+  @ViewChild('boolean') booleanTpl: TemplateRef<any>;
   @ViewChild('speciesVernacularName') speciesVernacularNameTpl: TemplateRef<any>;
+  @ViewChild('label') labelTpl: TemplateRef<any>;
+  @ViewChild('labelArray') labelArrayTpl: TemplateRef<any>;
   @ViewChild('warehouseLabel') warehouseLabelTpl: TemplateRef<any>;
   @ViewChild('toSemicolon') toSemicolonTpl: TemplateRef<any>;
   @ViewChild('numeric') numericTpl: TemplateRef<any>;

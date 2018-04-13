@@ -90,6 +90,7 @@
   "taxonomy.source": "Lähde",
   "taxonomy.synonyms": "Synonyymit",
   "taxonomy.notFound": "Lajia ei löytynyt",
+  "taxonomy.finnish": "Suomalainen",
   "news.title": "Uutiset",
   "news.earlier": "edelliset",
   "news.newer": "seuraavat",
@@ -639,6 +640,6 @@
   "excel.info.geometry": "Tähän kenttää voit antaa ykj ruudun tai sitten arvon jonka olet kopioinut https://laji.fi/map sivun \"Kopioi piirrettyjen kuvioiden koordinaatit\" työkalulla. Voit myös halutessasi kirjoittaa tähän mitä tahansa ja jos sisään vienti vaiheessa ei tarkkaa geometriaa pystytty löytämään, kysyy Vihko sinua piirtämään arvoa vastaava kuvio karttaan.",
   "excel.info.namedPlaceID": "Kenttään tulee nimetyn paikan tunniste. Exclissä ja OpenOfficessa tämän kentän arvot löytyvät pudotusvalikosta. Voit kuitenkin pistää tähän mitä haluat ja sitten sisään vienti vaiheessa kertoa mitä nimetty paikka tarkoitit.",
   "excel.info.taxon": "Kirjoita havaitun lajin nimi tähän kenttään.",
-  "excel.info.array": "Voit antaa usean arvon yhdessä kentässä erottamalla arvot toisistaan \"{{separator}}\"-merkillä."
-
+  "excel.info.array": "Voit antaa usean arvon yhdessä kentässä erottamalla arvot toisistaan \"{{separator}}\"-merkillä.",
+  "datatable.yes": "Kyllä"
 }

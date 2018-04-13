@@ -32,16 +32,53 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     pageSize: 0
   };
 
+  selected: String[] = [ 'id', 'taxonRank', 'scientificName', 'scientificNameAuthorship', 'vernacularName',
+    'cursiveName', 'finnish', 'typesOfOccurrenceInFinland'];
+
   columns: ObservationTableColumn[] = [
     {
-      name: 'vernacularName',
-      label: 'taxonomy.vernacular.name',
-      sortable: false
+      name: 'id',
+      label: 'taxonomy.card.id',
+      sortable: false,
+      width: 95
+    },
+    {
+      name: 'taxonRank',
+      label: 'taxonomy.rank',
+      cellTemplate: 'label',
+      sortable: false,
+      width: 90
     },
     {
       name: 'scientificName',
       label: 'taxonomy.scientific.name',
       cellTemplate: 'taxonScientificName',
+      sortable: false,
+      width: 200
+    },
+    {
+      name: 'scientificNameAuthorship',
+      label: 'taxonomy.author',
+      sortable: false,
+      width: 200
+    },
+    {
+      name: 'vernacularName',
+      label: 'taxonomy.vernacular.name',
+      sortable: false,
+      width: 200
+    },
+    {
+      name: 'finnish',
+      label: 'taxonomy.finnish',
+      cellTemplate: 'boolean',
+      sortable: false,
+      width: 90
+    },
+    {
+      name: 'typeOfOccurrenceInFinland',
+      label: 'taxonomy.typesOfOccurrenceInFinland',
+      cellTemplate: 'labelArray',
       sortable: false
     }
   ];
@@ -142,7 +179,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     const extraParameters = {...query};
     extraParameters['target'] = undefined;
     extraParameters['informalTaxonGroupId'] = undefined;
-    extraParameters['selectedFields'] = 'vernacularName,scientificName,cursiveName,id';
+    extraParameters['selectedFields'] = this.selected.join(',');
 
     return {
       informalTaxonGroupId,

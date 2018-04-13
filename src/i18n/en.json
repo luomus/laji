@@ -84,6 +84,7 @@
   "taxonomy.source": "Source",
   "taxonomy.synonyms": "Synonyms",
   "taxonomy.notFound": "Species not found",
+  "taxonomy.finnish": "Finnish taxon",
   "news.title": "News",
   "news.earlier": "previous",
   "news.newer": "next",
@@ -611,5 +612,6 @@
   "form.administer": "Manage access to form",
   "result.reserve.until": "Reserved",
   "asIs": "Value as is",
-  "ignore": "ignore"
+  "ignore": "ignore",
+  "datatable.yes": "Yes"
 }

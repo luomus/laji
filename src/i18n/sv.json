@@ -84,6 +84,7 @@
   "taxonomy.source": "Källa",
   "taxonomy.synonyms": "Synonymer",
   "taxonomy.notFound": "Arter hittades inte",
+  "taxonomy.finnish": "Finska taxon",
   "news.title": "Nyheter",
   "news.earlier": "föregående",
   "news.newer": "nästa",
@@ -612,5 +613,6 @@
   "form.administer": "Hantera åtkomst till form",
   "result.reserve.until": "Reserverad tills",
   "asIs": "Värde som det är",
-  "ignore": "ignorera"
+  "ignore": "ignorera",
+  "datatable.yes": "Ja"
 }
