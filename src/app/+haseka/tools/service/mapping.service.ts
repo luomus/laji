@@ -22,7 +22,7 @@ export enum SpecialTypes {
 export class MappingService {
 
   public static readonly mergeKey = '_merge_';
-  private static readonly valueSplitter = ';';
+  public static readonly valueSplitter = ';';
 
   private readonly booleanMap = {
     'true': {
