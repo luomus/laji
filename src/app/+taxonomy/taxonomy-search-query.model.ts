@@ -20,7 +20,7 @@ export class TaxonomySearchQuery {
   public updateUrl(skipHistory: boolean = true): void {
     const extra = {skipLocationChange: skipHistory};
     if (Object.keys(this.query).length > 0) {
-      extra['queryParams'] = this.query;
+      extra['queryParams'] = {...this.query};
     } else {
       extra['preserveQueryParams'] = false;
     }
