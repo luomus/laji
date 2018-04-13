@@ -38,7 +38,7 @@ export class SearchFiltersComponent implements OnInit {
     } catch (e) {}
   }
 
-  toInvasiveControlFrom() {
+  toInvasiveControlForm() {
     this.onInvasiveControlClick.emit();
   }
 }
