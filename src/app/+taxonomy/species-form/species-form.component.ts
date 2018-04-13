@@ -76,7 +76,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       limit: onlyFirstMatch ? '1' : '' + this.limit,
       includePayload: true,
       lang: this.translate.currentLang,
-      informalTaxonGroup: this.formQuery.informalTaxonGroupId
+      informalTaxonGroup: this.searchQuery.query.informalTaxonGroupId
     })
       .map(data => {
         if (onlyFirstMatch) {
@@ -174,7 +174,6 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
   private formQueryToQuery() {
     const query = this.searchQuery.query;
-    query.informalTaxonGroupId = this.formQuery.informalTaxonGroupId ? this.formQuery.informalTaxonGroupId : undefined;
     query.onlyFinnish = this.formQuery.onlyFinnish ? true : undefined;
     query.invasiveSpeciesFilter = this.formQuery.onlyInvasive ? true : (this.formQuery.onlyNonInvasive ? false : undefined);
 
@@ -215,7 +214,6 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       onlyInvasive: query.invasiveSpeciesFilter === true,
       onlyNonInvasive: query.invasiveSpeciesFilter === false,
       taxon: query.target,
-      informalTaxonGroupId: query.informalTaxonGroupId ? query.informalTaxonGroupId : '',
       nationallySignificantInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, 'MX.nationallySignificantInvasiveSpecies'),
       euInvasiveSpeciesList: this.hasInMulti(query.adminStatusFilters, 'MX.euInvasiveSpeciesList'),
       quarantinePlantPest: this.hasInMulti(query.adminStatusFilters, 'MX.quarantinePlantPest'),

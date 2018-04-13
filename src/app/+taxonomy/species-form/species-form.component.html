@@ -12,7 +12,7 @@
         <div class="row">
           <div class="lj-input-wrap">
             <observation-group-select
-              [(ngModel)]="formQuery.informalTaxonGroupId"
+              [(ngModel)]="searchQuery.query.informalTaxonGroupId"
               name="informalTaxonGroupId"
               [lang]="translate.currentLang"
               (onSelect)="onQueryChange()">
