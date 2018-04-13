@@ -5,6 +5,22 @@
     </laji-spinner>
     {{'species.list.headerEnd' | translate }}
   </h3>
+  <div class="form-group">
+    <label class="col-sm-12">
+      {{'species.order' | translate}}:
+    </label>
+    <select class="form-control" style="width: auto; margin-left: 15px;" [ngModel]="sortOrder" (ngModelChange)="sortOrderChanged($event)">
+      <option [value]="'taxonomic'">
+        {{'species.order.taxonomicOrder' | translate}}
+      </option>
+      <option [value]="'scientific_name'">
+        {{'species.order.scientificName' | translate}}
+      </option>
+      <option [value]="'finnish_name'">
+        {{'species.order.finnishName' | translate}}
+      </option>
+    </select>
+  </div>
   <laji-datatable
     #dataTable
     class="observation-table"

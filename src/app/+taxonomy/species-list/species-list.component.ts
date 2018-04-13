@@ -32,6 +32,8 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     pageSize: 0
   };
 
+  page = 1;
+  sortOrder = 'taxonomic';
   selected: String[] = [ 'id', 'taxonRank', 'scientificName', 'scientificNameAuthorship', 'vernacularName',
     'cursiveName', 'finnish', 'typesOfOccurrenceInFinland'];
 
@@ -108,7 +110,8 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
           return;
         }
         this.lastQuery = cacheKey;
-        this.refreshSpeciesList()
+        this.page = 1;
+        this.refreshSpeciesList();
       }
     );
   }
@@ -124,10 +127,16 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(event) {
-    this.refreshSpeciesList(event.offset + 1);
+    this.page = event.offset + 1;
+    this.refreshSpeciesList();
   }
 
-  refreshSpeciesList(page = 1) {
+  sortOrderChanged(event) {
+    this.sortOrder = event;
+    this.refreshSpeciesList();
+  }
+
+  refreshSpeciesList() {
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
@@ -148,9 +157,9 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
         undefined,
         undefined,
         undefined,
-        `${page}`,
+        `${this.page}`,
         '1000',
-        undefined,
+        this.sortOrder,
         query.extraParameters
         // 'finnish_name'
       )
