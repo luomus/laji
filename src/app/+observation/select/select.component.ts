@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 interface SelectOptions {
   id: string,
-  name: string
+  value: string
 }
 
 @Component({
@@ -25,12 +25,12 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
   @Input() selected: string[] = [];
+  @Input() open = false;
   @Output() selectedChanged = new EventEmitter<string[]>();
   @ViewChild('filter') filter: ElementRef;
 
   selectedOptions: SelectOptions[] = [];
   unselectedOptions: SelectOptions[] = [];
-  open = false;
   filterInput = new Subject<string>();
   filterBy: string;
   selectedIdx = -1;
@@ -139,7 +139,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     this.options.map(option => {
       if (selected.indexOf(option.id) > -1) {
         this.selectedOptions.push(option);
-      } else if (!filterBy || option.name.toLowerCase().indexOf(filterBy) > -1) {
+      } else if (!filterBy || option.value.toLowerCase().indexOf(filterBy) > -1) {
         this.unselectedOptions.push(option);
       }
     });

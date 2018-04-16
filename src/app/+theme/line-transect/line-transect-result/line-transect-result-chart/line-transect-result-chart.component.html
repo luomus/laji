@@ -1,0 +1,19 @@
+<label for="area-select">Valitse lintualueyhdistys:</label>
+<laji-area-select
+  id="area-select"
+  [field]="areaTypes.BirdAssociationArea"
+  (select)="updateBirdAssociationArea($event)"
+  [value]="birdAssociationAreas"
+  [multiselect]="true"
+></laji-area-select>
+
+<label for="taxon-select">Valitse laji:</label>
+<laji-taxon-autocomplete
+  id="taxon-select"
+  [placeholder]="'Etsi haluttu laji'"
+  [taxon]="taxonId"
+  (taxonSelect)="onTaxonSelect(value, $event)"
+  [informalTaxonGroup]="'MVL.1'"
+  [showResult]="false"
+  [clearValueOnSelect]="false"
+></laji-taxon-autocomplete>

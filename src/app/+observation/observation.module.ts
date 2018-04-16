@@ -10,7 +10,7 @@ import { ObservationResultComponent } from './result/observation-result.componen
 import { ObservationResultListComponent } from './result-list/observation-result-list.component';
 import { MetadataSelectComponent } from './metadata-select/metadata-select.component';
 import { PieChartComponent } from './chart/pie/pie-chart.component';
-import { TypeaheadModule } from 'ngx-bootstrap';;
+import { TypeaheadModule } from 'ngx-bootstrap';
 import { ObservationDownloadComponent } from './download/observation-download.component';
 import { routing } from './observation.routes';
 import { ObservationComponent } from './observation.component';
@@ -40,7 +40,8 @@ import { PillListComponent } from './pill-list/pill-list.component';
     ObservationResultListComponent, MetadataSelectComponent,
     PieChartComponent, ObservationDownloadComponent, SelectComponent, MainResultComponent, ObservationFiltersComponent,
     PillListComponent
-  ]
+  ],
+  exports: [SelectComponent]
 })
 export class ObservationModule {
 }

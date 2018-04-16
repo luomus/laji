@@ -34,7 +34,7 @@
       </h5>
     </ng-template>
   </div>
-  <div class="col-sm-6 form-control-static" *ngIf="result && result.payload">
+  <div class="col-sm-6 form-control-static" *ngIf="showResult && result && result.payload">
     <laji-taxon-name [taxon]="result.payload" [taxonID]="result.key" [warningOnMissingTaxonID]="true"></laji-taxon-name>
   </div>
 </div>

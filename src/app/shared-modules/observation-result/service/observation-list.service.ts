@@ -53,6 +53,7 @@ export class ObservationListService {
       });
     }
     this.aggregatePendingKey = key;
+    console.log("Q", query); //Miks network queryssä ei lähde pairCounts ja namedPlaceId????????
     this.aggregatePending = this.warehouseApi.warehouseQueryAggregateGet(
       {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
       [...aggregateBy],

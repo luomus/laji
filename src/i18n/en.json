@@ -603,5 +603,7 @@
   "form.administer": "Manage access to form",
   "result.reserve.until": "Reserved",
   "asIs": "Value as is",
-  "ignore": "ignore"
+  "ignore": "ignore",
+  "line-transect-result.chart": "Progress of species amount",
+  "line-transect-result.grid": "Statistics by grid squares and species"
 }

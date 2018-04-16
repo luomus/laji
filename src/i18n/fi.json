@@ -624,5 +624,7 @@
   "form.administer": "Hallinnoi lomakkeen käyttöä",
   "result.reserve.until": "Varattu",
   "asIs": "Arvo sellaisenaan",
-  "ignore": "jätä huomiomatta"
+  "ignore": "jätä huomiomatta",
+  "line-transect-result.chart": "Lajimäärän kehitys",
+  "line-transect-result.grid": "Tilasto ruuduittain ja lajeittain"
 }
