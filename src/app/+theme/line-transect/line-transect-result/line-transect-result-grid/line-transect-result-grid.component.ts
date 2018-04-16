@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,7 +13,7 @@ import { WarehouseApi } from '../../../../shared/api/index';
   templateUrl: './line-transect-result-grid.component.html',
   styleUrls: ['./line-transect-result-grid.component.css']
 })
-export class LineTransectResultGridComponent implements onInit, onDestroy {
+export class LineTransectResultGridComponent implements OnInit, OnDestroy {
 
   @Input() informalTaxonGroup: string;
   @Input() collectionId: string;

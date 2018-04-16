@@ -25,8 +25,8 @@ export interface LineTransectChartTerms {
 })
 export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnDestroy {
 
-  @Input() ykj10km: number;
-  @Input() value: number;
+  @Input() xValue: number;
+  @Input() yValue: number;
   @Input() terms: LineTransectChartTerms;
   @Input() xRange: [number, number] = [660, 780];
   @Input() yRange: [number, number] = [0, 100];
@@ -34,6 +34,8 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   @Input() yLabel: string;
   @Input() title: string;
   @Input() margin: { top: number, bottom: number, left: number, right: number} = { top: 30, bottom: 40, left: 40, right: 10};
+  @Input() line: [number];
+  @Input() xTickFormat: any;
 
   private nativeElement: any;
   private svg: any;
@@ -60,7 +62,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
         () => {
           this.d3Loaded = true;
           this.createChart();
-          if (this.value && this.ykj10km) {
+          if (this.yValue && this.xValue || this.line) {
             this.updateChart();
           }
           this.cd.markForCheck();
@@ -70,6 +72,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   }
 
   ngOnChanges() {
+    console.log("changes");
     if (this.d3Loaded && this.chart) {
       this.updateChart();
     }
@@ -82,6 +85,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   }
 
   createChart() {
+    console.log("create chart");
     const element = this.nativeElement;
     this.width = element.offsetWidth - (this.margin.left + this.margin.right);
     this.height = element.offsetHeight - (this.margin.top + this.margin.bottom);
@@ -95,7 +99,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
       .attr('class', 'drawing')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
-     // create scales
+    // create scales
     this.xScale = d3.scale.linear().domain([this.xRange[0], this.xRange[1]]).range([0, this.width]);
     this.yScale = d3.scale.linear().domain([this.yRange[1], this.yRange[0]]).range([0, this.height]);
 
@@ -111,18 +115,20 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
       .x((d) => this.xScale(d[0]) + this.margin.left)
       .y((d) => this.yScale(d[1]) + this.margin.top);
 
-    svg.append('path')
-      .datum([this.getLine(this.terms.upper, this.xRange[0]), this.getLine(this.terms.upper, this.xRange[1])])
-      .attr({d: line, stroke: 'red', 'stroke-dasharray': '7,7', 'stroke-width': 2, fill: 'none' });
+    if (this.terms) {
+      svg.append('path')
+        .datum([this.getLine(this.terms.upper, this.xRange[0]), this.getLine(this.terms.upper, this.xRange[1])])
+        .attr({d: line, stroke: 'red', 'stroke-dasharray': '7,7', 'stroke-width': 2, fill: 'none'});
 
-    svg.append('path')
-      .datum([this.getLine(this.terms.lower, this.xRange[0]), this.getLine(this.terms.lower, this.xRange[1])])
-      .attr({d: line, stroke: 'red', 'stroke-dasharray': '7,7', 'stroke-width': 2, fill: 'none' });
+      svg.append('path')
+        .datum([this.getLine(this.terms.lower, this.xRange[0]), this.getLine(this.terms.lower, this.xRange[1])])
+        .attr({d: line, stroke: 'red', 'stroke-dasharray': '7,7', 'stroke-width': 2, fill: 'none'});
 
 
-    svg.append('path')
-      .datum([this.getLine(this.terms.middle, this.xRange[0]), this.getLine(this.terms.middle, this.xRange[1])])
-      .attr({d: line, stroke: 'black', 'stroke-width': 2, fill: 'none' });
+      svg.append('path')
+        .datum([this.getLine(this.terms.middle, this.xRange[0]), this.getLine(this.terms.middle, this.xRange[1])])
+        .attr({d: line, stroke: 'black', 'stroke-width': 2, fill: 'none'});
+    }
 
     if (this.xLabel) {
       svg.append('text')
@@ -152,10 +158,14 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
     }
 
     // x & y axis
+    const svgXAxis = d3.svg.axis().scale(this.xScale).orient('bottom');
+    if (this.xTickFormat) {
+      svgXAxis.tickFormat(d3.format(this.xTickFormat));
+    }
     this.xAxis = svg.append('g')
       .attr('class', 'axis axis-x')
       .attr('transform', `translate(${this.margin.left},${(this.height + this.margin.top)})`)
-      .call(d3.svg.axis().scale(this.xScale).orient('bottom'));
+      .call(svgXAxis);
 
     this.yAxis = svg.append('g')
       .attr('class', 'axis axis-y')
@@ -165,8 +175,45 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   }
 
   updateChart() {
+    console.log("update chart");
     const update = this.chart.selectAll('.mark')
-      .data([[this.ykj10km, this.value]]);
+      .data([[this.xValue, this.yValue]]);
+
+    if (this.line) {
+      console.log("bars", this.line);
+      //this.chart.selectAll("rect")
+      //   .data(this.bars)
+      //   .attr("x", function(d, i) {return i * 60;})
+      //   .attr("y", function(d, i) {return i * 60;})
+      //   .enter().append("rect");
+      const line = d3.svg.line()
+        .x((d, i) => { console.log("?", i); return this.xScale(this.xRange[0] + i); })
+        .y((d, i) => { console.log("??", d); return this.yScale(d); });
+      this.chart.append("path")
+      .data([this.line])
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-linejoin", "round")
+      .attr("stroke-linecap", "round")
+      .attr("stroke-width", 1.5)
+      .attr("d", line);
+
+
+      //g.selectAll(".bar")
+      //  .data(this.bars)
+      //  .enter().append("rect")
+      //  .attr("class", "bar")
+      //  .attr("x", function (d) {
+      //    return x(d.letter);
+      //  })
+      //  .attr("y", function (d) {
+      //    return y(d.frequency);
+      //  })
+      //  .attr("width", x.bandwidth())
+      //  .attr("height", function (d) {
+      //    return height - y(d.frequency);
+      //  });
+    }
 
     // remove exiting bars
     update.exit().remove();

@@ -157,5 +157,5 @@ export interface WarehouseQueryInterface {
   annotatedBefore?: Date;
   annotatedLaterThan?: Date;
   namedPlaceId?: Array<string>;
-  pairCount?: boolean;
+  pairCounts?: boolean;
 }

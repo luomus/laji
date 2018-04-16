@@ -1,7 +1,7 @@
-import {Component, Input } from '@angular/core';
+import {Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { AreaType } from '../../../../shared/service/area.service';
 import { WarehouseApi } from '../../../../shared/api';
-import { WarehouseQueryInterface } from '../../../../shared/model';
+import {PagedResult, WarehouseQueryInterface} from '../../../../shared/model';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs/Subscription";
 import {ObservationListService} from "../../../../shared-modules/observation-result/service/observation-list.service";
@@ -11,7 +11,7 @@ import {ObservationListService} from "../../../../shared-modules/observation-res
   templateUrl: './line-transect-result-chart.component.html',
   styleUrls: ['./line-transect-result-chart.component.css']
 })
-export class LineTransectResultChartComponent implements onInit, onDestroy {
+export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
   @Input() informalTaxonGroup: string;
   @Input() collectionId: string;
@@ -24,6 +24,20 @@ export class LineTransectResultChartComponent implements onInit, onDestroy {
   private taxonId: string;
   query: WarehouseQueryInterface;
   private subQuery: Subscription;
+  private fetchSub: Subscription;
+  result: PagedResult<any> = {
+    currentPage: 1,
+    lastPage: 1,
+    results: [],
+    total: 0,
+    pageSize: 0
+  };
+  years = [];
+  yearLineLengths: any;
+  minYear: number;
+  maxYear: number;
+  line = [];
+  afterBothFetched: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,14 +51,35 @@ export class LineTransectResultChartComponent implements onInit, onDestroy {
       if (birdAssociationAreas) this.birdAssociationAreas = birdAssociationAreas.split(',');
       this.fetch();
     });
-    //this.query = {
-    //  //time: [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
-    //  collectionId: [this.collectionId],
-    //  namedPlaceId: this.birdAssociationAreas,
-    //  taxonId: this.taxonId,
-    //  aggregateBy: ['gathering.conversions.year'],
-    //  pairCounts: true
-    //};
+    this.fetchSub = this.resultService.getAggregate(
+      {
+        collectionId: [this.collectionId],
+        namedPlaceId: this.birdAssociationAreas
+      },
+      ['gathering.conversions.year'],
+      1,
+      1000,
+      [],
+      this.lang
+    ).subscribe(data => {
+      const yearLineLengths = {};
+      let minYear, maxYear;
+      data.results.forEach(result => {
+        const {year} = result.gathering.conversions;
+        if (!year) return;
+        yearLineLengths[year] = result.count;
+        if (minYear === undefined || year < minYear) minYear = +year;
+        if (maxYear === undefined || year > maxYear) maxYear = +year;
+      });
+      this.yearLineLengths = yearLineLengths;
+      this.minYear = minYear;
+      this.maxYear = maxYear;
+      console.log("initial data", this.minYear, this.maxYear);
+      if (this.afterBothFetched) {
+        this.afterBothFetched();
+        this.afterBothFetched = undefined;
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -70,7 +105,7 @@ export class LineTransectResultChartComponent implements onInit, onDestroy {
         //time: [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
         collectionId: [this.collectionId],
         namedPlaceId: this.birdAssociationAreas,
-        taxonId: this.taxonId,
+        taxonId: [this.taxonId],
         pairCounts: true
       },
       ['gathering.conversions.year'],
@@ -80,18 +115,35 @@ export class LineTransectResultChartComponent implements onInit, onDestroy {
       this.lang
     ).subscribe(data => {
         this.result = data;
-        console.log(this.result);
+        console.log("got data, should update", data);
         this.loading = false;
-        this.changeDetectorRef.markForCheck();
+        let yearsToPairCounts = {};
+        data.results.forEach(result => {
+          const {year} = result.gathering.conversions;
+          if (!year) return;
+          yearsToPairCounts[year] = result.individualCountSum;
+        });
+        this.afterBothFetched = () => {
+          this.line = Object.keys(this.yearLineLengths).map(year => {
+            return yearsToPairCounts[year];
+          });
+          console.log("this.line", this.line);
+        };
+
+        if (this.yearLineLengths) {
+          console.log("RIGHT AWAY");
+          this.afterBothFetched();
+          this.afterBothFetched = undefined;
+        }
+        //this.changeDetectorRef.markForCheck();
       }, (err) => {
         this.loading = false;
-        this.changeDetectorRef.markForCheck();
-        this.logger.error('Observation table data handling failed!', err);
+        //this.changeDetectorRef.markForCheck();
+        //this.logger.error('Observation table data handling failed!', err);
       });
   }
 
   updateBirdAssociationArea(value) {
-    console.log(this.birdAssociationAreas, value);
     this.birdAssociationAreas = value;
     this.update();
   }
