@@ -18,7 +18,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   @Input() formID: string;
   @Input() namedPlaceID: string;
   @Input() printType: string;
-  @Input() includeNpDescription = false;
+  @Input() onlyNpDescription = false;
 
   form: any;
 
