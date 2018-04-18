@@ -1,10 +1,11 @@
-import {Component, Input, OnInit, OnDestroy } from '@angular/core';
+import {Component, Input, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import { AreaType } from '../../../../shared/service/area.service';
 import { WarehouseApi } from '../../../../shared/api';
 import {PagedResult, WarehouseQueryInterface} from '../../../../shared/model';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs/Subscription";
 import {ObservationListService} from "../../../../shared-modules/observation-result/service/observation-list.service";
+import {Logger} from "../../../../shared/logger";
 
 @Component({
   selector: 'laji-line-transect-result-chart',
@@ -22,7 +23,6 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   birdAssociationAreas = [];
   taxon: string;
   private taxonId: string;
-  query: WarehouseQueryInterface;
   private subQuery: Subscription;
   private fetchSub: Subscription;
   result: PagedResult<any> = {
@@ -32,17 +32,18 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     total: 0,
     pageSize: 0
   };
-  years = [];
-  yearLineLengths: any;
+  private yearLineLengths: any;
   minYear: number;
   maxYear: number;
-  line = [];
-  afterBothFetched: any;
+  line: number[][];
+  private afterBothFetched: any;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private resultService: ObservationListService
+    private resultService: ObservationListService,
+    private logger: Logger,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -51,10 +52,10 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       if (birdAssociationAreas) this.birdAssociationAreas = birdAssociationAreas.split(',');
       this.fetch();
     });
+    this.loading = true;
     this.fetchSub = this.resultService.getAggregate(
       {
-        collectionId: [this.collectionId],
-        namedPlaceId: this.birdAssociationAreas
+        collectionId: [this.collectionId]
       },
       ['gathering.conversions.year'],
       1,
@@ -66,15 +67,20 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       let minYear, maxYear;
       data.results.forEach(result => {
         const {year} = result.gathering.conversions;
-        if (!year) return;
+        if (!year) {
+          return;
+        }
         yearLineLengths[year] = result.count;
-        if (minYear === undefined || year < minYear) minYear = +year;
-        if (maxYear === undefined || year > maxYear) maxYear = +year;
+        if (minYear === undefined || year < minYear) {
+          minYear = +year;
+        }
+        if (maxYear === undefined || year > maxYear) {
+          maxYear = +year;
+        }
       });
       this.yearLineLengths = yearLineLengths;
       this.minYear = minYear;
       this.maxYear = maxYear;
-      console.log("initial data", this.minYear, this.maxYear);
       if (this.afterBothFetched) {
         this.afterBothFetched();
         this.afterBothFetched = undefined;
@@ -94,7 +100,6 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   }
 
   private update() {
-    console.log('update', this.taxonId, this.birdAssociationAreas);
     this.navigate(this.taxonId, this.birdAssociationAreas);
   }
 
@@ -102,7 +107,6 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.fetchSub = this.resultService.getAggregate(
       {
-        //time: [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
         collectionId: [this.collectionId],
         namedPlaceId: this.birdAssociationAreas,
         taxonId: [this.taxonId],
@@ -115,31 +119,27 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       this.lang
     ).subscribe(data => {
         this.result = data;
-        console.log("got data, should update", data);
-        this.loading = false;
-        let yearsToPairCounts = {};
+        const yearsToPairCounts = {};
         data.results.forEach(result => {
           const {year} = result.gathering.conversions;
           if (!year) return;
           yearsToPairCounts[year] = result.individualCountSum;
         });
         this.afterBothFetched = () => {
-          this.line = Object.keys(this.yearLineLengths).map(year => {
-            return yearsToPairCounts[year];
-          });
-          console.log("this.line", this.line);
+          this.line = Object.keys(yearsToPairCounts).map(year =>
+            [+year, yearsToPairCounts[year] / this.yearLineLengths[year]]
+          );
+          console.log(this.line);
+          this.loading = false;
+          this.cdr.markForCheck();
         };
 
         if (this.yearLineLengths) {
-          console.log("RIGHT AWAY");
           this.afterBothFetched();
           this.afterBothFetched = undefined;
         }
-        //this.changeDetectorRef.markForCheck();
       }, (err) => {
-        this.loading = false;
-        //this.changeDetectorRef.markForCheck();
-        //this.logger.error('Observation table data handling failed!', err);
+        this.logger.error('Line transect chart data handling failed!', err);
       });
   }
 

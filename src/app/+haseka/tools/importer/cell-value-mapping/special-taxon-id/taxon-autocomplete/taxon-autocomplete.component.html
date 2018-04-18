@@ -19,7 +19,7 @@
         autocomplete="off"
         autocorrect="off"
       >
-      <ng-container *ngIf="allowInvalid">
+      <ng-container *ngIf="allowInvalid && renderButton">
         <span class="input-group-btn">
           <button class="btn btn-default btn-sm"
                   [class.disabled]="!value"

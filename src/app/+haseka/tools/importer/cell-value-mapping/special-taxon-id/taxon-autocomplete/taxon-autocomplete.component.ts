@@ -18,6 +18,8 @@ export class TaxonAutocompleteComponent {
   @Input() informalTaxonGroup = '';
   @Input() showResult = true;
   @Input() clearValueOnSelect = true;
+  @Input() allowEmpty = false;
+  @Input() renderButton = true;
   @Output() taxonSelect = new EventEmitter<Autocomplete>();
 
   dataSource: Observable<any>;
@@ -107,7 +109,7 @@ export class TaxonAutocompleteComponent {
   }
 
   useCurrentValue() {
-    if (!this.value) {
+    if (!this.allowEmpty && !this.value) {
       return;
     }
     this.onTaxonSelect(<Autocomplete>{key: '', value: this.value, payload: {

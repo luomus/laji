@@ -19,7 +19,7 @@ export interface LineTransectChartTerms {
 
 @Component({
   selector: 'laji-line-transect-chart',
-  template: `<div class="line-chart"></div>`,
+  template: `<div class='line-chart'></div>`,
   styleUrls: ['./line-transect-chart.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -34,7 +34,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   @Input() yLabel: string;
   @Input() title: string;
   @Input() margin: { top: number, bottom: number, left: number, right: number} = { top: 30, bottom: 40, left: 40, right: 10};
-  @Input() line: [number];
+  @Input() line: number[][];
   @Input() xTickFormat: any;
 
   private nativeElement: any;
@@ -72,7 +72,6 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   }
 
   ngOnChanges() {
-    console.log("changes");
     if (this.d3Loaded && this.chart) {
       this.updateChart();
     }
@@ -85,7 +84,6 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   }
 
   createChart() {
-    console.log("create chart");
     const element = this.nativeElement;
     this.width = element.offsetWidth - (this.margin.left + this.margin.right);
     this.height = element.offsetHeight - (this.margin.top + this.margin.bottom);
@@ -175,68 +173,53 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   }
 
   updateChart() {
-    console.log("update chart");
-    const update = this.chart.selectAll('.mark')
-      .data([[this.xValue, this.yValue]]);
-
     if (this.line) {
-      console.log("bars", this.line);
-      //this.chart.selectAll("rect")
-      //   .data(this.bars)
-      //   .attr("x", function(d, i) {return i * 60;})
-      //   .attr("y", function(d, i) {return i * 60;})
-      //   .enter().append("rect");
+      const update = this.chart.selectAll('.line-data');
+      if (update) {
+        update.remove();
+      }
       const line = d3.svg.line()
-        .x((d, i) => { console.log("?", i); return this.xScale(this.xRange[0] + i); })
-        .y((d, i) => { console.log("??", d); return this.yScale(d); });
-      this.chart.append("path")
-      .data([this.line])
-      .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-linejoin", "round")
-      .attr("stroke-linecap", "round")
-      .attr("stroke-width", 1.5)
-      .attr("d", line);
-
-
-      //g.selectAll(".bar")
-      //  .data(this.bars)
-      //  .enter().append("rect")
-      //  .attr("class", "bar")
-      //  .attr("x", function (d) {
-      //    return x(d.letter);
-      //  })
-      //  .attr("y", function (d) {
-      //    return y(d.frequency);
-      //  })
-      //  .attr("width", x.bandwidth())
-      //  .attr("height", function (d) {
-      //    return height - y(d.frequency);
-      //  });
+        .x(([column]) => this.xScale(column))
+        .y(([column, value]) => this.yScale(value));
+      this.chart.append('path')
+        .attr({
+          'class': 'line-data',
+          'fill': 'none',
+          'stroke': 'steelblue',
+          'stroke-linejoin': 'round',
+          'stroke-linecap': 'round',
+          'stroke-width': 1.5,
+          'd': line(this.line)
+        });
     }
 
-    // remove exiting bars
-    update.exit().remove();
+    if (this.xValue && this.yValue) {
+      const update = this.chart.selectAll('.mark')
+        .data([[this.xValue, this.yValue]]);
 
-    // update existing bars
-    this.chart.selectAll('.mark').transition()
-      .attr({
-        cx: (d) => this.xScale(d[0]),
-        cy: (d) => this.yScale(d[1])
-      });
+      // remove exiting bars
+      update.exit().remove();
 
-    // add new bars
-    update
-      .enter()
-      .append('circle')
-      .attr({
-        'class': 'mark',
-        cx: (d) => this.xScale(d[0]),
-        cy: (d) => this.yScale(d[1]),
-        r: 3,
-        fill: 'red',
-        stroke: 'black'
-      });
+      // update existing bars
+      this.chart.selectAll('.mark').transition()
+        .attr({
+          cx: (d) => this.xScale(d[0]),
+          cy: (d) => this.yScale(d[1])
+        });
+
+      // add new bars
+      update
+        .enter()
+        .append('circle')
+        .attr({
+          'class': 'mark',
+          cx: (d) => this.xScale(d[0]),
+          cy: (d) => this.yScale(d[1]),
+          r: 3,
+          fill: 'red',
+          stroke: 'black'
+        });
+    }
   }
 
   styleGridlineNodes(axisNodes) {

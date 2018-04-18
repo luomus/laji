@@ -20,18 +20,23 @@
       [informalTaxonGroup]="'MVL.1'"
       [showResult]="false"
       [clearValueOnSelect]="false"
+      [allowInvalid]="true"
+      [allowEmpty]="true"
+      [renderButton]="false"
     ></laji-taxon-autocomplete>
   </div>
 </div>
-<laji-line-transect-chart *ngIf="minYear"
-  [xValue]="0"
-  [yValue]="0"
-  [xRange]="[minYear, maxYear]"
-  [yRange]="[0, 2000]"
-  [title]="'test'"
-  [line]="line"
-  [xLabel]="'Vuodet'"
-  [yLabel]="'Parimäärä'"
-  [xTickFormat]="'d'"
-></laji-line-transect-chart>
+<laji-spinner [spinning]="loading" [overlay]="true">
+  <laji-line-transect-chart
+    [xValue]="0"
+    [yValue]="0"
+    [xRange]="[minYear, maxYear]"
+    [yRange]="[0, 6]"
+    [title]="'test'"
+    [line]="line"
+    [xLabel]="'Vuodet'"
+    [yLabel]="'Parimäärä'"
+    [xTickFormat]="'d'"
+  ></laji-line-transect-chart>
+</laji-spinner>
 
