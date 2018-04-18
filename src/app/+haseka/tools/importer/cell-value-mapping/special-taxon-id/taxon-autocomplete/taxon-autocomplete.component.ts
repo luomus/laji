@@ -15,6 +15,11 @@ export class TaxonAutocompleteComponent {
   @Input() limit = 10;
   @Input() placeholder = '';
   @Input() allowInvalid = false;
+  @Input() informalTaxonGroup = '';
+  @Input() showResult = true;
+  @Input() clearValueOnSelect = true;
+  @Input() allowEmpty = false;
+  @Input() renderButton = true;
   @Output() taxonSelect = new EventEmitter<Autocomplete>();
 
   dataSource: Observable<any>;
@@ -41,7 +46,6 @@ export class TaxonAutocompleteComponent {
 
   @Input()
   set taxon(value: string) {
-    this.value = value;
     this.getTaxa(value, true)
       .subscribe(result => {
         this.onTaxonSelect(result);
@@ -55,7 +59,8 @@ export class TaxonAutocompleteComponent {
       limit: '' + this.limit,
       includePayload: true,
       lang: this.translateService.currentLang,
-      matchType: AutocompleteMatchType.partial
+      matchType: AutocompleteMatchType.partial,
+      informalTaxonGroup: this.informalTaxonGroup
     })
       .map(data => {
         if (onlyExact) {
@@ -85,7 +90,11 @@ export class TaxonAutocompleteComponent {
     if (typeof result.key === 'undefined') {
       return;
     }
-    this.value = '';
+    if (this.clearValueOnSelect) {
+      this.value = '';
+    } else if (!this.value) {
+      this.value = result.value;
+    }
     this.result = result;
     this.taxonSelect.emit(result);
     this.cdr.markForCheck();
@@ -100,7 +109,7 @@ export class TaxonAutocompleteComponent {
   }
 
   useCurrentValue() {
-    if (!this.value) {
+    if (!this.allowEmpty && !this.value) {
       return;
     }
     this.onTaxonSelect(<Autocomplete>{key: '', value: this.value, payload: {

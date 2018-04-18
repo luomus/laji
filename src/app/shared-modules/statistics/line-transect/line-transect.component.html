@@ -58,8 +58,8 @@
       <div class="col-sm-12" style="height: 250px">
         <laji-line-transect-chart
           [terms]="onMainTerms"
-          [ykj10km]="ykj10kmN"
-          [value]="counts.onPsPros"
+          [xValue]="ykj10kmN"
+          [yValue]="counts.onPsPros"
           [title]="'Pääsarkaprosentti'"
           [xLabel]="'ykj n'"
           [yLabel]="'%'"
@@ -71,8 +71,8 @@
         <laji-line-transect-chart
           [terms]="perKmTerms"
           [yRange]="[0, 50]"
-          [ykj10km]="ykj10kmN"
-          [value]="counts.couplesPerKm"
+          [xValue]="ykj10kmN"
+          [yValue]="counts.couplesPerKm"
           [title]="'Pareja / 1km'"
           [xLabel]="'ykj n'"
           [yLabel]="'lkm'"

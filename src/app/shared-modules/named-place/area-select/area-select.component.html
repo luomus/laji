@@ -1,4 +1,17 @@
-<select class="form-control" #areaSelect (change)="select.emit(areaSelect.value)" *ngIf="options.length > 0" [disabled]="disabled">
-  <option>{{'select' | translate}}</option>
-  <option *ngFor="let option of options" [value]="option.id">{{option.value}}</option>
-</select>
+<ng-container *ngIf="!multiselect">
+    <select class="form-control" #areaSelect (change)="select.emit(areaSelect.value)" *ngIf="options.length > 0" [disabled]="disabled">
+      <option>{{'select' | translate}}</option>
+      <option *ngFor="let option of options" [value]="option.id">{{option.value}}</option>
+    </select>
+</ng-container>
+<ng-container *ngIf="multiselect">
+  <laji-select
+    [options]="options || []"
+    [filterPlaceHolder]="'Filtteröi...'"
+    [useFilter]="'true'"
+    [selected]="value"
+    (selectedChanged)="select.emit($event)"
+    [open]="true"
+  >
+  </laji-select>
+</ng-container>
