@@ -184,7 +184,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'individualCountMax', label: 'theme.individualCountMax', width: 80, cellTemplate: 'numeric' },
     { name: 'individualCountSum', label: 'theme.individualCount', width: 80, cellTemplate: 'numeric' },
     { name: 'gathering.conversions.ykj', prop: 'gathering.conversions.ykj.verbatim', sortable: false },
-    { name: 'gathering.conversions.ykj10km', prop: 'gathering.conversions.ykj10km.verbatim', sortable: false },
+    { name: 'gathering.conversions.xValue', prop: 'gathering.conversions.xValue.verbatim', sortable: false },
     { name: 'gathering.conversions.ykj10kmCenter', prop: 'gathering.conversions.ykj10kmCenter.verbatim', sortable: false },
     { name: 'gathering.conversions.ykj1km', prop: 'gathering.conversions.ykj1km.verbatim', sortable: false },
     { name: 'gathering.conversions.ykj1kmCenter', prop: 'gathering.conversions.ykj1kmCenter.verbatim', sortable: false },

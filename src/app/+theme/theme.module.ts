@@ -32,6 +32,8 @@ import { NamedPlaceModule } from '../shared-modules/named-place/named-place.modu
 import { ThemeComponent } from './theme.component';
 import { LineTransectComponent } from './line-transect/line-transect.component';
 import { LineTransectResultComponent } from './line-transect/line-transect-result/line-transect-result.component';
+import { LineTransectResultGridComponent } from './line-transect/line-transect-result/line-transect-result-grid/line-transect-result-grid.component';
+import { LineTransectResultChartComponent } from './line-transect/line-transect-result/line-transect-result-chart/line-transect-result-chart.component';
 import { LineTransectFormComponent } from './line-transect/line-transect-form/line-transect-form.component';
 import { LineTransectInstructionsComponent } from './line-transect/line-transect-instructions/line-transect-instructions.component';
 import { LineTransectMyDocumentListComponent } from './line-transect/line-transect-my-document-list/line-transect-my-document-list.component';
@@ -42,6 +44,7 @@ import { QualityComponent } from './quality/quality.component';
 import { MostActiveUsersTableComponent } from './quality/most-active-users-table/most-active-users-table.component';
 import { AnnotationTableComponent } from './quality/annotation-table/annotation-table.component';
 import { QualityFiltersComponent } from './quality/quality-filters/quality-filters.component';
+import { ToolsModule } from '../+haseka/tools/tools.module';
 
 @NgModule({
   imports: [
@@ -55,7 +58,8 @@ import { QualityFiltersComponent } from './quality/quality-filters/quality-filte
     OwnSubmissionsModule,
     NamedPlaceModule,
     StatisticsModule,
-    DatatableModule
+    DatatableModule,
+    ToolsModule
   ],
   declarations: [
     NafiComponent,
@@ -77,6 +81,8 @@ import { QualityFiltersComponent } from './quality/quality-filters/quality-filte
     WbcOwnSubmissionsComponent,
     LineTransectComponent,
     LineTransectResultComponent,
+    LineTransectResultGridComponent,
+    LineTransectResultChartComponent,
     LineTransectFormComponent,
     LineTransectInstructionsComponent,
     LineTransectMyDocumentListComponent,

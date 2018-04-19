@@ -114,7 +114,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-      this.initMapZoom();
+    this.initMapZoom();
   }
 
   initMapZoom() {

@@ -5,67 +5,17 @@
     {{fromYear}}
   </span>
 </h3>
-<div class="row">
-  <div class="col-sm-12">
-    <p>
-      {{'nafi.stats.times' | translate}}
-      <br>
-      <small>
-      <a [routerLink] [queryParams]="{time: '1991-01-01/'}">{{'theme.filterAll' | translate:{from: startYear, to: endYear} }}</a>
-      <br>
-        <span *ngFor="let year of years">
-          <a [routerLink] [queryParams]="{time: year}">{{'wholeYear'| translate:{year:year} }}</a>
-          <ng-container *ngIf="(year === currentYear && currentMonth > 3) || year !== currentYear">
-            | <a [routerLink] [queryParams]="{time: year + '-04'}">{{'m-04' | translate}}&nbsp;{{year}}</a>
-          </ng-container>
-          <ng-container *ngIf="(year === currentYear && currentMonth > 4) || year !== currentYear">
-            | <a [routerLink] [queryParams]="{time: year + '-05'}">{{'m-05' | translate}}&nbsp;{{year}}</a>
-          </ng-container>
-          <ng-container *ngIf="(year === currentYear && currentMonth > 5) || year !== currentYear">
-            | <a [routerLink] [queryParams]="{time: year + '-06'}">{{'m-06' | translate}}&nbsp;{{year}}</a>
-          </ng-container>
-          <ng-container *ngIf="(year === currentYear && currentMonth > 6) || year !== currentYear">
-            | <a [routerLink] [queryParams]="{time: year + '-07'}">{{'m-07' | translate}}&nbsp;{{year}}</a>
-          </ng-container>
-          <ng-container *ngIf="(year === currentYear && currentMonth > 7) || year !== currentYear">
-            | <a [routerLink] [queryParams]="{time: year + '-08'}">{{'m-08' | translate}}&nbsp;{{year}}</a>
-          </ng-container>
-          <ng-container *ngIf="(year === currentYear && currentMonth > 8) || year !== currentYear">
-            | <a [routerLink] [queryParams]="{time: year + '-09'}">{{'m-09' | translate}}&nbsp;{{year}}</a>
-          </ng-container>
-          <br>
-        </span>
-      <br>
-      </small>
-    </p>
-  </div>
+
+<div id="navbar">
+  <ul class="nav nav-tabs nav-justified">
+    <li role="presentation" [ngClass]="{active: tab === 'chart'}">
+      <a [routerLink]="'../chart'">{{'line-transect-result.chart' | translate}}</a>
+    </li>
+    <li role="presentation" [ngClass]="{active: tab === 'grid'}">
+      <a [routerLink]="'../grid'">{{'line-transect-result.grid' | translate}}</a>
+    </li>
+  </ul>
 </div>
-<div class="row">
-  <div class="col-sm-5 col-sm-push-7 map-col">
-    <laji-ykj-map
-      (onGridClick)="showGridObservations($event)"
-      [taxon]="taxon$ | async"
-      [height]="'calc(80vh - 50px)'"
-      [individualBreak]="[0, null, 1, 5, 10, 50, 100, 500]"
-      [individualLabel]="['0', '1+', '1-4', '5-9', '10-49', '50-99', '100-499', '500-']"
-      [countBreak]="[1, 5, 10, 50, 100, 500]"
-      [countLabel]="['1-4', '5-9', '10-49', '50-99', '100-499', '500-']"
-      [query]="mapQuery">
-    </laji-ykj-map>
-  </div>
-  <div class="col-sm-7 col-sm-pull-5 table-col">
-    <laji-theme-result
-            *ngIf="query && !query.ykj10kmCenter"
-            (onNameClick)="navigate($event)"
-            [query]="resultQuery"
-            [height]="'calc(80vh - 50px)'"
-    ></laji-theme-result>
-    <laji-theme-observation-list
-            *ngIf="query && query.ykj10kmCenter"
-            (onListClose)="closeList()"
-            (onPageChange)="goToPage($event)"
-            [query]="query"
-            [height]="'calc(80vh - 50px)'"
-    ></laji-theme-observation-list>
-  </div>
-</div>
+
+<laji-line-transect-result-grid *ngIf="tab === 'grid'" [informalTaxonGroup]="informalTaxonGroup" [collectionId]="collectionId"></laji-line-transect-result-grid>
+<laji-line-transect-result-chart *ngIf="tab === 'chart'" [informalTaxonGroup]="informalTaxonGroup" [collectionId]="collectionId"></laji-line-transect-result-chart>

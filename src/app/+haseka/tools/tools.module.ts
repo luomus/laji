@@ -63,6 +63,9 @@ import { StepperComponent } from './shared/stepper/stepper.component';
     ToolSuccessComponent,
     StepperComponent
   ],
-  providers: [SpreadSheetService, MappingService, ImportService, GeneratorService, AugmentService]
+  providers: [SpreadSheetService, MappingService, ImportService, GeneratorService, AugmentService],
+  exports: [
+    TaxonAutocompleteComponent
+  ]
 })
 export class ToolsModule { }
