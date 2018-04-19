@@ -128,11 +128,12 @@ export class ImportService {
     rows.forEach((row, rowIdx) => {
       const newLevels = [];
       const values = {'formID': formID};
+      const possible = {};
       cols.forEach((col) => {
-        if (!row[col]) {
+        const field = fields[mapping[col]];
+        if (!row[col] || field.key === VALUE_IGNORE) {
           return;
         }
-        const field = fields[mapping[col]];
         const parent = this.getParent(field);
         let value = this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true);
         if (!this.hasValue(value)) {
@@ -143,20 +144,34 @@ export class ImportService {
         }
         if (typeof value === 'object' && value[MappingService.mergeKey]) {
           Object.keys(value[MappingService.mergeKey]).forEach(location => {
-            values[location] = value[MappingService.mergeKey][location];
+            possible[location] = value[MappingService.mergeKey][location];
           });
         } else {
-          values[field.key] = value;
+          possible[field.key] = value;
         }
         if (this.hasNewLevel(field, row[col], newLevels, parent)) {
           newLevels.push(this.getParent(field));
         }
-        field.previousValue = row[col];
       });
-      if (!this.hasCountValue(values)) {
+      if (!this.hasCountValue(possible)) {
         skipped.push(rowIdx);
         return;
+      } else {
+        Object.keys(possible).forEach(key => {
+          values[key] = possible[key];
+        });
       }
+      cols.forEach((col) => {
+        if (!row[col]) {
+          return;
+        }
+        const field = fields[mapping[col]];
+        const value = this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true);
+        if (!this.hasValue(value)) {
+          return;
+        }
+        field.previousValue = row[col];
+      });
       unitCnt++;
       unitsInGathering--;
       if (newLevels.indexOf(DOCUMENT_LEVEL) !== -1 || (unitCnt + Math.max(unitsInGathering, 0)) > ImportService.maxPerDocument) {
@@ -172,10 +187,10 @@ export class ImportService {
           unitsInGathering = this.cntUnitsInGathering(rows.slice(rowIdx), cols, fields, mapping);
         }
         const toZero = [];
-        newLevels.map(level => {
-          cols.map(col => {
+        newLevels.forEach(level => {
+          cols.forEach(col => {
             const field = fields[mapping[col]];
-            allLevels.map(subLevel => {
+            allLevels.forEach(subLevel => {
               if (subLevel === level || toZero.indexOf(subLevel) > -1) {
                 return;
               }
@@ -187,7 +202,7 @@ export class ImportService {
           });
           spot[level]++;
         });
-        toZero.map(subLevel => {
+        toZero.forEach(subLevel => {
           spot[subLevel] = 0;
           this.resetPreviousValue(fields, subLevel);
         });
