@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LajiExternalService } from '../../../shared/service/laji-external.service';
 import { FormField, VALUE_IGNORE } from '../model/form-field';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
-import {CoordinateService} from '../../../shared/service/coordinate.service';
+import { CoordinateService } from '../../../shared/service/coordinate.service';
 
 export enum SpecialTypes {
   geometry = 'geometry',
@@ -159,6 +159,25 @@ export class MappingService {
       return this.specials[field.key];
     }
     return null;
+  }
+
+  getLabel(value:any, field: FormField) {
+    if (Array.isArray(value)) {
+      return value.map((val) => this.getLabel(val, field));
+    }
+    switch (field.type) {
+      case 'string':
+        if (field.enum && field.enumNames) {
+          const idx = field.enum.indexOf(value);
+          if (idx !== -1) {
+            return field.enumNames[idx];
+          }
+        }
+        break;
+      case 'boolean':
+        return this.mapFromBoolean(value);
+    }
+    return value;
   }
 
   map(value: any, field: FormField, allowUnMapped = false) {

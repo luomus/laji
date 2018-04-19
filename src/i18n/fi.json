@@ -632,6 +632,7 @@
   "excel.info.namedPlaceID": "Kenttään tulee nimetyn paikan tunniste. Exclissä ja OpenOfficessa tämän kentän arvot löytyvät pudotusvalikosta. Voit kuitenkin pistää tähän mitä haluat ja sitten sisään vienti vaiheessa kertoa mitä nimetty paikka tarkoitit.",
   "excel.info.taxon": "Kirjoita havaitun lajin nimi tähän kenttään.",
   "excel.info.array": "Voit antaa usean arvon yhdessä kentässä erottamalla arvot toisistaan \"{{separator}}\"-merkillä.",
+  "excel.skip-row": "Riviltä ei löytynyt havainto määrää, joten sitä ei huomioida. Vain rivit joissa on ilmoitettu määrä huomioidaan.",
   "line-transect-result.chart": "Lajimäärän kehitys",
   "line-transect-result.grid": "Tilasto ruuduittain ja lajeittain",
   "theme.pairCount": "Parimäärä"

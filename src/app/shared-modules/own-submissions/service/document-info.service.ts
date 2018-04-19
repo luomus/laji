@@ -77,7 +77,14 @@ export class DocumentInfoService {
         form.features.indexOf('MHL.featureEmptyOnNoCount') !== -1
       )
     ) {
-      return !(unit.count || unit.individualCount || unit.pairCount || unit.abundanceString);
+      return !(
+        unit.count ||
+        unit.individualCount ||
+        unit.pairCount ||
+        unit.abundanceString ||
+        unit.maleIndividualCount ||
+        unit.femaleIndividualCount
+      );
     }
 
     if (unit.identifications) {
