@@ -20,7 +20,7 @@ export class ObservationListService {
   private aggregateData: PagedResult<any>;
   private aggregatePending: Observable<any>;
   private aggregatePendingKey: string;
-  private removeAggregateFields =  ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum'];
+  private removeAggregateFields =  ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCount'];
   private locationCache: any;
 
   constructor(

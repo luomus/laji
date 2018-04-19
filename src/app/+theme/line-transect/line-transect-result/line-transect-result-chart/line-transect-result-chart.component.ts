@@ -129,7 +129,6 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
           this.line = Object.keys(yearsToPairCounts).map(year =>
             [+year, yearsToPairCounts[year] / this.yearLineLengths[year]]
           );
-          console.log(this.line);
           this.loading = false;
           this.cdr.markForCheck();
         };

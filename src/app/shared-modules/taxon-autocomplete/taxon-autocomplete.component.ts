@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {AutocompleteApi, AutocompleteMatchType} from '../../../../../../shared/api/AutocompleteApi';
+import {AutocompleteApi, AutocompleteMatchType} from '../../shared/api/AutocompleteApi';
 import {TranslateService} from '@ngx-translate/core';
-import {Autocomplete} from '../../../../../../shared/model';
+import {Autocomplete} from '../../shared/model/index';
 
 @Component({
   selector: 'laji-taxon-autocomplete',
