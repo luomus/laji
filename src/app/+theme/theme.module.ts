@@ -44,7 +44,7 @@ import { QualityComponent } from './quality/quality.component';
 import { MostActiveUsersTableComponent } from './quality/most-active-users-table/most-active-users-table.component';
 import { AnnotationTableComponent } from './quality/annotation-table/annotation-table.component';
 import { QualityFiltersComponent } from './quality/quality-filters/quality-filters.component';
-import { ToolsModule } from '../+haseka/tools/tools.module';
+import { TaxonAutocompleteModule } from '../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
 
 @NgModule({
   imports: [
@@ -59,7 +59,7 @@ import { ToolsModule } from '../+haseka/tools/tools.module';
     NamedPlaceModule,
     StatisticsModule,
     DatatableModule,
-    ToolsModule
+    TaxonAutocompleteModule
   ],
   declarations: [
     NafiComponent,
