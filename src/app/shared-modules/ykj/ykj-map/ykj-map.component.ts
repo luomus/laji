@@ -25,6 +25,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() height = '605px';
   @Input() query: WarehouseQueryInterface;
   @Input() type = 'count';
+  @Input() types = ['count', 'individualCount', 'newest'];
   @Input() colorRange: string[] = ['#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
   @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', '#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
   @Input() individualBreak: number[] = [0, null, 1, 10, 100, 1000, 10000, 100000];
@@ -136,7 +137,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
         labelSrc = 'timeLabel';
         rangeSrc = 'timeBreak';
         break;
-      case 'individuals':
+      case 'individualCount':
       case 'individualCountSum':
       case 'individualCountMax':
         labelSrc = 'individualLabel';
@@ -179,11 +180,14 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.currentColor = colorKey;
     let col;
     switch (this.type) {
-      case 'individuals':
+      case 'individualCount':
         col = this.individualsColor.bind(this);
         break;
       case 'newest':
         col = this.newestColor.bind(this);
+        break;
+      case 'pairCount':
+        col = this.pairCountColor.bind(this);
         break;
       default:
         col = this.countColor.bind(this);
@@ -217,6 +221,10 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   individualsColor(feature) {
     return this.countColor(feature, 'individualCountSum', this.individualBreak, this.individualColorRange);
+  }
+
+  pairCountColor(feature) {
+    return this.countColor(feature, 'pairCount');
   }
 
   countColor(feature, prop = 'count', breaks = this.countBreak, range = this.colorRange) {

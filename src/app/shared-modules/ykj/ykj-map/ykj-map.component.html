@@ -17,23 +17,24 @@
       <span class="cnt">
         {{'theme.cnt' | translate}}
       </span>
-      <span [ngSwitch]="type" dropdown container="body">
-        <a href dropdownToggle (click)="false">
-          <span *ngSwitchCase="'individuals'">
-            {{'theme.individualCount' | translate}}
+      <span dropdown container="body">
+        <ng-container *ngIf="types.length > 1">
+          <a href dropdownToggle (click)="false">
+            <span>
+              {{'theme.' + type | translate}}
+            </span>
+          </a>
+          <ul *dropdownMenu class="dropdown-menu" role="menu">
+              <ng-container *ngFor="let type of types">
+                <li><a class="link" (click)="changeType(type)">{{'theme.' + type | translate}}</a></li>
+              </ng-container>
+          </ul>
+        </ng-container>
+        <ng-container *ngIf="types.length <= 1">
+          <span>
+            {{'theme.' + type | translate}}
           </span>
-          <span *ngSwitchCase="'newest'">
-            {{'theme.newest' | translate}}
-          </span>
-          <span *ngSwitchDefault>
-            {{'theme.count' | translate}}
-          </span>
-        </a>
-        <ul *dropdownMenu class="dropdown-menu" role="menu">
-          <li><a class="link" (click)="changeType('count')">{{'theme.count' | translate}}</a></li>
-          <li><a class="link" (click)="changeType('individuals')">{{'theme.individualCount' | translate}}</a></li>
-          <li><a class="link" (click)="changeType('newest')">{{'theme.newest' | translate}}</a></li>
-        </ul>
+        </ng-container>
       </span>
     </div>
     <ul>
