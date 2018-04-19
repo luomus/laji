@@ -5,6 +5,7 @@
         (keyup)="keyEvent($event)"
         type="text"
         class="form-control input-sm"
+        [class.loading]="loading"
         name="target"
         [placeholder]="placeholder"
         [(ngModel)]="value"
