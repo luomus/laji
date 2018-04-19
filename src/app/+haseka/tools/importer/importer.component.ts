@@ -15,6 +15,7 @@ import { AugmentService } from '../service/augment.service';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { LocalStorage } from 'ng2-webstorage';
 import * as Hash from 'object-hash';
+import { ImportTableColumn } from '../model/import-table-column';
 
 export type States
   = 'empty'
@@ -45,15 +46,17 @@ export class ImporterComponent implements OnInit {
   @ViewChild('dataTable') datatable: DatatableComponent;
   @ViewChild('rowNumber') rowNumberTpl: TemplateRef<any>;
   @ViewChild('statusCol') statusColTpl: TemplateRef<any>;
+  @ViewChild('valueCol') valueColTpl: TemplateRef<any>;
 
   @LocalStorage() uploadedFiles;
   @LocalStorage() partiallyUploadedFiles;
 
   data: {[key: string]: any}[];
+  mappedData: {[key: string]: any}[];
   parsedData: {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[];
   header: {[key: string]: string};
   fields: {[key: string]: FormField};
-  dataColumns: ObservationTableColumn[];
+  dataColumns: ImportTableColumn[];
   colMap: {[key: string]: string};
   formID: string;
   form: any;
@@ -69,7 +72,13 @@ export class ImporterComponent implements OnInit {
   hasUserMapping = false;
   ambiguousColumns = [];
   maxUnits = ImportService.maxPerDocument;
+  separator = MappingService.valueSplitter;
   hash;
+
+  private externalLabel = [
+    'editors[*]',
+    'gatheringEvent.leg[*]'
+  ];
 
   constructor(
     private formService: FormService,
@@ -176,12 +185,18 @@ export class ImporterComponent implements OnInit {
     if (!this.header) {
       return;
     }
-    const columns: ObservationTableColumn[] = [
+    const columns: ImportTableColumn[] = [
       {prop: '_status', label: 'status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
       {prop: '_idx', label: '#', sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
     ];
     Object.keys(this.header).map(address => {
-      columns.push({prop: address, label: this.header[address], sortable: false})
+      columns.push({
+        prop: address,
+        label: this.header[address],
+        sortable: false,
+        cellTemplate: this.valueColTpl,
+        externalLabel: this.externalLabel.indexOf(this.colMap[address]) !== -1
+      })
     });
     this.dataColumns = columns;
     setTimeout(() => {
@@ -224,7 +239,12 @@ export class ImporterComponent implements OnInit {
     if (this.parsedData) {
       this.parsedData.forEach(data => skipped.push(...data.skipped));
     }
-    this.data = [...this.data.map((row, idx) => ({...row, _status: skipped.indexOf(idx) !== -1 ? {status: 'ignore'} : undefined}))];
+    this.mappedData = [
+      ...this.data.map((row, idx) => ({
+        ...this.getMappedValues(row, this.colMap, this.fields),
+        _status: skipped.indexOf(idx) !== -1 ? {status: 'ignore'} : undefined
+      }))
+    ];
     setTimeout(() => {
       this.cdr.detectChanges();
     });
@@ -386,6 +406,27 @@ export class ImporterComponent implements OnInit {
   activate(status) {
     this.status = status;
     this.cdr.markForCheck();
+  }
+
+  private getMappedValues(row, mapping, fields) {
+    const cols = Object.keys(mapping);
+    const result = {};
+    cols.forEach((col) => {
+      if (!row[col]) {
+        return;
+      }
+      const field = fields[mapping[col]];
+      const value = this.mappingService.getLabel(
+        this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true),
+        field
+      );
+      if (typeof value === 'object' && value[MappingService.mergeKey]) {
+        result[col] = value[MappingService.mergeKey][Object.keys(value[MappingService.mergeKey])[0]];
+      } else {
+        result[col] = value;
+      }
+    });
+    return result;
   }
 
 }
