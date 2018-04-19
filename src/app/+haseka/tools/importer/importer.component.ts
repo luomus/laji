@@ -50,7 +50,7 @@ export class ImporterComponent implements OnInit {
   @LocalStorage() partiallyUploadedFiles;
 
   data: {[key: string]: any}[];
-  parsedData: {document: Document, rows: {[row: number]: {[level: string]: number}}}[];
+  parsedData: {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[];
   header: {[key: string]: string};
   fields: {[key: string]: FormField};
   dataColumns: ObservationTableColumn[];
@@ -219,16 +219,22 @@ export class ImporterComponent implements OnInit {
     this.status = 'importReady';
     this.hasUserMapping = this.mappingService.hasUserMapping();
     this.mappingService.addUserValueMapping(mappings);
-    this.cdr.markForCheck();
+    this.initParsedData();
+    const skipped = [];
+    if (this.parsedData) {
+      this.parsedData.forEach(data => skipped.push(...data.skipped));
+    }
+    this.data = [...this.data.map((row, idx) => ({...row, _status: skipped.indexOf(idx) !== -1 ? {status: 'ignore'} : undefined}))];
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    });
   }
 
   validate() {
     this.status = 'validating';
-    this.initParsedData();
     let success = true;
     Observable.from(this.parsedData)
       .mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy)
-        .do(doc => console.log(doc))
         .switchMap(document => this.importService.validateData(document))
         .switchMap(result => Observable.of({result: result, source: data}))
         .catch(err => Observable.of(typeof err.json === 'function' ? err.json() : err)
@@ -270,7 +276,6 @@ export class ImporterComponent implements OnInit {
 
   save(publicityRestrictions: Document.PublicityRestrictionsEnum) {
     this.status = 'importing';
-    this.initParsedData();
     let success = true;
     let hadSuccess = false;
     Observable.from(this.parsedData)
