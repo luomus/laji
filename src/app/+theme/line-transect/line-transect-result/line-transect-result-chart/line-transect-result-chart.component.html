@@ -16,7 +16,7 @@
       id="taxon-select"
       [placeholder]="'Etsi haluttu laji'"
       [taxon]="taxonId"
-      (taxonSelect)="onTaxonSelect(value, $event)"
+      (taxonSelect)="onTaxonSelect($event)"
       [informalTaxonGroup]="'MVL.1'"
       [showResult]="false"
       [clearValueOnSelect]="false"

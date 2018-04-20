@@ -22,7 +22,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   areaTypes = AreaType;
   birdAssociationAreas = [];
   taxon: string;
-  private taxonId: string;
+  taxonId: string;
   private subQuery: Subscription;
   private fetchSub: Subscription;
   result: PagedResult<any> = {
@@ -147,7 +147,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     this.update();
   }
 
-  onTaxonSelect(value, result) {
+  onTaxonSelect(result) {
     this.taxonId = result.key;
     this.update();
   }
