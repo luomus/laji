@@ -15,6 +15,7 @@ import { AugmentService } from '../service/augment.service';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { LocalStorage } from 'ng2-webstorage';
 import * as Hash from 'object-hash';
+import { ImportTableColumn } from '../model/import-table-column';
 
 export type States
   = 'empty'
@@ -45,15 +46,17 @@ export class ImporterComponent implements OnInit {
   @ViewChild('dataTable') datatable: DatatableComponent;
   @ViewChild('rowNumber') rowNumberTpl: TemplateRef<any>;
   @ViewChild('statusCol') statusColTpl: TemplateRef<any>;
+  @ViewChild('valueCol') valueColTpl: TemplateRef<any>;
 
   @LocalStorage() uploadedFiles;
   @LocalStorage() partiallyUploadedFiles;
 
   data: {[key: string]: any}[];
-  parsedData: {document: Document, rows: {[row: number]: {[level: string]: number}}}[];
+  mappedData: {[key: string]: any}[];
+  parsedData: {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[];
   header: {[key: string]: string};
   fields: {[key: string]: FormField};
-  dataColumns: ObservationTableColumn[];
+  dataColumns: ImportTableColumn[];
   colMap: {[key: string]: string};
   formID: string;
   form: any;
@@ -69,7 +72,13 @@ export class ImporterComponent implements OnInit {
   hasUserMapping = false;
   ambiguousColumns = [];
   maxUnits = ImportService.maxPerDocument;
+  separator = MappingService.valueSplitter;
   hash;
+
+  private externalLabel = [
+    'editors[*]',
+    'gatheringEvent.leg[*]'
+  ];
 
   constructor(
     private formService: FormService,
@@ -176,12 +185,19 @@ export class ImporterComponent implements OnInit {
     if (!this.header) {
       return;
     }
-    const columns: ObservationTableColumn[] = [
+    const columns: ImportTableColumn[] = [
       {prop: '_status', label: 'status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
+      {prop: '_doc', label: 'erä', sortable: false, width: 40, cellTemplate: this.valueColTpl},
       {prop: '_idx', label: '#', sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
     ];
     Object.keys(this.header).map(address => {
-      columns.push({prop: address, label: this.header[address], sortable: false})
+      columns.push({
+        prop: address,
+        label: this.header[address],
+        sortable: false,
+        cellTemplate: this.valueColTpl,
+        externalLabel: this.externalLabel.indexOf(this.colMap[address]) !== -1
+      })
     });
     this.dataColumns = columns;
     setTimeout(() => {
@@ -219,16 +235,35 @@ export class ImporterComponent implements OnInit {
     this.status = 'importReady';
     this.hasUserMapping = this.mappingService.hasUserMapping();
     this.mappingService.addUserValueMapping(mappings);
-    this.cdr.markForCheck();
+    this.initParsedData();
+    const skipped = [];
+    const docs = {};
+    if (this.parsedData) {
+      this.parsedData.forEach((data, idx) => {
+        skipped.push(...data.skipped);
+        const docNum = idx + 1;
+        Object.keys(data.rows).forEach(row => {
+          docs[row] = docNum;
+        })
+      });
+    }
+    this.mappedData = [
+      ...this.data.map((row, idx) => ({
+        ...this.getMappedValues(row, this.colMap, this.fields),
+        _status: skipped.indexOf(idx) !== -1 ? {status: 'ignore'} : undefined,
+        _doc: docs[idx]
+      }))
+    ];
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    });
   }
 
   validate() {
     this.status = 'validating';
-    this.initParsedData();
     let success = true;
     Observable.from(this.parsedData)
       .mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy)
-        .do(doc => console.log(doc))
         .switchMap(document => this.importService.validateData(document))
         .switchMap(result => Observable.of({result: result, source: data}))
         .catch(err => Observable.of(typeof err.json === 'function' ? err.json() : err)
@@ -270,7 +305,6 @@ export class ImporterComponent implements OnInit {
 
   save(publicityRestrictions: Document.PublicityRestrictionsEnum) {
     this.status = 'importing';
-    this.initParsedData();
     let success = true;
     let hadSuccess = false;
     Observable.from(this.parsedData)
@@ -381,6 +415,27 @@ export class ImporterComponent implements OnInit {
   activate(status) {
     this.status = status;
     this.cdr.markForCheck();
+  }
+
+  private getMappedValues(row, mapping, fields) {
+    const cols = Object.keys(mapping);
+    const result = {};
+    cols.forEach((col) => {
+      if (!row[col]) {
+        return;
+      }
+      const field = fields[mapping[col]];
+      const value = this.mappingService.getLabel(
+        this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true),
+        field
+      );
+      if (typeof value === 'object' && value[MappingService.mergeKey]) {
+        result[col] = value[MappingService.mergeKey][Object.keys(value[MappingService.mergeKey])[0]];
+      } else {
+        result[col] = value;
+      }
+    });
+    return result;
   }
 
 }

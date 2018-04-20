@@ -23,7 +23,6 @@ import { SpecialGeometryComponent } from './importer/cell-value-mapping/special-
 import {GeneratorService} from './service/generator.service';
 import { SpecialFriendComponent } from './importer/cell-value-mapping/special-friend/special-friend.component';
 import { SpecialTaxonIdComponent } from './importer/cell-value-mapping/special-taxon-id/special-taxon-id.component';
-import { TaxonAutocompleteComponent } from './importer/cell-value-mapping/special-taxon-id/taxon-autocomplete/taxon-autocomplete.component';
 import { SpecialNamedPlacesComponent } from './importer/cell-value-mapping/special-named-places/special-named-places.component';
 import { StatusCellComponent } from './importer/status-cell/status-cell.component';
 import { ErrorListComponent } from './importer/status-cell/error-list/error-list.component';
@@ -31,6 +30,7 @@ import { AugmentService } from './service/augment.service';
 import { SpecialTaxonNameComponent } from './importer/cell-value-mapping/special-taxon-name/special-taxon-name.component';
 import { ToolSuccessComponent } from './shared/tool-success/tool-success.component';
 import { StepperComponent } from './shared/stepper/stepper.component';
+import { TaxonAutocompleteModule } from '../../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
 
 @NgModule({
   imports: [
@@ -39,7 +39,8 @@ import { StepperComponent } from './shared/stepper/stepper.component';
     ToolsRoutingModule,
     DatatableModule,
     LajiMapModule,
-    TypeaheadModule
+    TypeaheadModule,
+    TaxonAutocompleteModule
   ],
   declarations: [
     ToolsComponent,
@@ -55,7 +56,6 @@ import { StepperComponent } from './shared/stepper/stepper.component';
     SpecialGeometryComponent,
     SpecialFriendComponent,
     SpecialTaxonIdComponent,
-    TaxonAutocompleteComponent,
     SpecialNamedPlacesComponent,
     StatusCellComponent,
     ErrorListComponent,
@@ -63,6 +63,7 @@ import { StepperComponent } from './shared/stepper/stepper.component';
     ToolSuccessComponent,
     StepperComponent
   ],
-  providers: [SpreadSheetService, MappingService, ImportService, GeneratorService, AugmentService]
+  providers: [SpreadSheetService, MappingService, ImportService, GeneratorService, AugmentService],
+  exports: []
 })
 export class ToolsModule { }

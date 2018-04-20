@@ -5,6 +5,7 @@
         (keyup)="keyEvent($event)"
         type="text"
         class="form-control input-sm"
+        [class.loading]="loading"
         name="target"
         [placeholder]="placeholder"
         [(ngModel)]="value"
@@ -19,7 +20,7 @@
         autocomplete="off"
         autocorrect="off"
       >
-      <ng-container *ngIf="allowInvalid">
+      <ng-container *ngIf="allowInvalid && renderButton">
         <span class="input-group-btn">
           <button class="btn btn-default btn-sm"
                   [class.disabled]="!value"
@@ -34,7 +35,7 @@
       </h5>
     </ng-template>
   </div>
-  <div class="col-sm-6 form-control-static" *ngIf="result && result.payload">
+  <div class="col-sm-6 form-control-static" *ngIf="showResult && result && result.payload">
     <laji-taxon-name [taxon]="result.payload" [taxonID]="result.key" [warningOnMissingTaxonID]="true"></laji-taxon-name>
   </div>
 </div>

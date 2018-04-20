@@ -17,6 +17,7 @@ import { AreaSelectComponent } from './area-select/area-select.component';
 import { LajiMapModule } from '../map/laji-map.module';
 import { DatatableModule } from '../datatable/datatable.module';
 import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module';
+import { LajiSelectModule } from '../select/select.module';
 
 @NgModule({
   providers: [],
@@ -25,14 +26,15 @@ import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module'
     SharedModule,
     LajiMapModule,
     DatatableModule,
-    OwnSubmissionsModule
+    OwnSubmissionsModule,
+    LajiSelectModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,
     NpEditFormComponent, NpInfoComponent, NpInfoRowComponent, NpInfoMapComponent, NpPrintComponent, LineTransectComponent,
     AreaSelectComponent
   ],
-  exports: [NamedPlaceComponent, NpPrintComponent]
+  exports: [NamedPlaceComponent, NpPrintComponent, AreaSelectComponent]
 })
 export class NamedPlaceModule {
   static forRoot(): ModuleWithProviders {

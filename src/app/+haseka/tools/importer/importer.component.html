@@ -47,11 +47,8 @@
       <input type="file" class="form-control" (change)="onFileChange($event)" multiple="false" />
     </div>
     <div class="col-sm-3 map-buttons">
-      <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="clearUserMapping()" tooltip="Poista datan kuvaus" placement="left">
+      <div class="btn btn-default pull-right" *ngIf="hasUserMapping" (click)="clearUserMapping()" tooltip="Poista datan kuvaus" placement="left">
         <i class="glyphicon glyphicon-remove"></i>
-      </div>
-      <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="showUserMapping()" tooltip="Nykyinen datan kuvaus" placement="left">
-        <i class="glyphicon glyphicon-open"></i>
       </div>
       <div class="btn btn-default pull-right" (click)="userMapModal.show()" tooltip="Tuo datan kuvaus" placement="left">
         <i class="glyphicon glyphicon-save"></i>
@@ -83,12 +80,21 @@
 
 
 <ng-container *ngIf="status === 'importReady' || status === 'invalidData' || status === 'validating' || status === 'doneOk' || status === 'doneWithErrors' || status === 'importing'">
-  <p>
-    Voit tarkistaa datan virheiden varalta tai voit tallentaa datan suoraan Vihkoon. Huom jos tallennus vaiheessa havaitaan virheitä näitä havaintoeriä ei tallenneta.
-  </p>
-  <p>
-    Tarkista että jokaisen rivin kohdalla on merkintä onnistuneesta tallennuksesta.
-  </p>
+  <div class="row">
+    <div class="col-sm-9">
+      <p>
+        Voit tarkistaa datan virheiden varalta tai voit tallentaa datan suoraan Vihkoon. Huom jos tallennus vaiheessa havaitaan virheitä näitä havaintoeriä ei tallenneta.
+      </p>
+      <p>
+        Tarkista että jokaisen rivin kohdalla on merkintä onnistuneesta tallennuksesta.
+      </p>
+    </div>
+    <div class="col-sm-3 map-buttons">
+      <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="showUserMapping()" tooltip="Nykyinen datan kuvaus" placement="left">
+        <i class="glyphicon glyphicon-open"></i>
+      </div>
+    </div>
+  </div>
 
   <div class="data-container">
   <laji-datatable
@@ -99,10 +105,10 @@
       [virtualScrolling]="true"
       [clientSideSorting]="false"
       [height]="'50vh'"
-      [rows]='data'
-      [count]="data.length"
+      [rows]='mappedData'
+      [count]="mappedData.length"
       [page]="1"
-      [pageSize]="data.length"
+      [pageSize]="mappedData.length"
       [columns]="dataColumns">
     </laji-datatable>
   </div>
@@ -125,6 +131,13 @@
 
 <ng-template let-rowIndex="rowIndex" #rowNumber>
   {{rowIndex + 2}}
+</ng-template>
+
+<ng-template let-value="value" let-column="column" #valueCol>
+  <ng-container *ngIf="column.externalLabel; else valueAsIs">
+    {{value | label:'withKey' | values:separator}}
+  </ng-container>
+  <ng-template #valueAsIs>{{value | values:separator}}</ng-template>
 </ng-template>
 
 <ng-template let-value="value" #statusCol>

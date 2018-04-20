@@ -19,6 +19,7 @@ import { ObservationResultModule } from '../shared-modules/observation-result/ob
 import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
 import { ObservationFiltersComponent } from './observation-filters/observation-filters.component';
 import { PillListComponent } from './pill-list/pill-list.component';
+import { LajiSelectModule } from '../shared-modules/select/select.module';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { PillListComponent } from './pill-list/pill-list.component';
     YkjModule,
     NgxDatatableModule,
     ObservationResultModule,
-    SearchFiltersModule
+    SearchFiltersModule,
+    LajiSelectModule
   ],
   declarations: [ObservationComponent, ObservationChartComponent,
     ObservationFormComponent,

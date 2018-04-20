@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LajiExternalService } from '../../../shared/service/laji-external.service';
 import { FormField, VALUE_IGNORE } from '../model/form-field';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
-import {CoordinateService} from '../../../shared/service/coordinate.service';
+import { CoordinateService } from '../../../shared/service/coordinate.service';
 
 export enum SpecialTypes {
   geometry = 'geometry',
@@ -90,7 +90,7 @@ export class MappingService {
       return;
     }
     Object.keys(mapping).map(col => {
-      this.userColMappings[col.toUpperCase()] = mapping[col];
+      this.userColMappings[col.toLowerCase()] = mapping[col];
     });
   }
 
@@ -107,7 +107,7 @@ export class MappingService {
       }
       Object.keys(mapping[field])
         .map(key => {
-          this.userValueMappings[field][key.toUpperCase()] = mapping[field][key];
+          this.userValueMappings[field][key.toLowerCase()] = mapping[field][key];
         });
     });
   }
@@ -115,8 +115,8 @@ export class MappingService {
   initColMap(fields: {[key: string]: FormField}) {
     const lookup = {};
     Object.keys(fields).map((key) => {
-      lookup[key.toUpperCase()] = key;
-      lookup[fields[key].fullLabel.toUpperCase()] = key;
+      lookup[key.toLowerCase()] = key;
+      lookup[fields[key].fullLabel.toLowerCase()] = key;
     });
     this.colMapping = lookup;
   }
@@ -125,7 +125,7 @@ export class MappingService {
     if (!this.colMapping) {
       throw new ErrorEvent('Column map is not initialized!')
     }
-    value = ('' + value).toUpperCase();
+    value = ('' + value).toLowerCase();
     return this.colMapping[value] || this.userColMappings[value] || null;
   }
 
@@ -161,6 +161,25 @@ export class MappingService {
     return null;
   }
 
+  getLabel(value:any, field: FormField) {
+    if (Array.isArray(value)) {
+      return value.map((val) => this.getLabel(val, field));
+    }
+    switch (field.type) {
+      case 'string':
+        if (field.enum && field.enumNames) {
+          const idx = field.enum.indexOf(value);
+          if (idx !== -1) {
+            return field.enumNames[idx];
+          }
+        }
+        break;
+      case 'boolean':
+        return this.mapFromBoolean(value);
+    }
+    return value;
+  }
+
   map(value: any, field: FormField, allowUnMapped = false) {
     if (value === '' || value === null) {
       return value;
@@ -169,7 +188,7 @@ export class MappingService {
   }
 
   mapByFieldType(value: any, field: FormField) {
-    const upperValue = ('' + value).toUpperCase();
+    const upperValue = ('' + value).toLowerCase();
     let realValue = null;
     switch (field.type) {
       case 'string':
@@ -178,7 +197,7 @@ export class MappingService {
         } else {
           this.initStringMap(field);
           realValue = Array.isArray(upperValue) ?
-            upperValue.map(val => this.getMappedValue(('' + val).toUpperCase(), field)) :
+            upperValue.map(val => this.getMappedValue(('' + val).toLowerCase(), field)) :
             this.getMappedValue(upperValue, field);
         }
         break;
@@ -213,9 +232,9 @@ export class MappingService {
       if (value === '') {
         return;
       }
-      const label = field.enumNames[idx].toUpperCase();
-      this.mapping.string[field.key][value.toUpperCase()] = value;
-      this.mapping.string[field.key][label.toUpperCase()] = value;
+      const label = field.enumNames[idx].toLowerCase();
+      this.mapping.string[field.key][value.toLowerCase()] = value;
+      this.mapping.string[field.key][label.toLowerCase()] = value;
     });
   }
 
@@ -278,7 +297,7 @@ export class MappingService {
       }
       return value;
     }
-    const upperValue = ('' + value).toUpperCase();
+    const upperValue = ('' + value).toLowerCase();
     let targetValue = this.getUserMappedValue(upperValue, field);
 
     switch (this.getSpecial(field)) {
@@ -355,12 +374,12 @@ export class MappingService {
     this.mapping.boolean = {};
     for (const key in this.booleanMap.true) {
       if (this.booleanMap.true.hasOwnProperty(key)) {
-        this.mapping.boolean[this.booleanMap.true[key].toUpperCase()] = true;
+        this.mapping.boolean[this.booleanMap.true[key].toLowerCase()] = true;
       }
     }
     for (const key in this.booleanMap.false) {
       if (this.booleanMap.true.hasOwnProperty(key)) {
-        this.mapping.boolean[this.booleanMap.false[key].toUpperCase()] = false;
+        this.mapping.boolean[this.booleanMap.false[key].toLowerCase()] = false;
       }
     }
   }

@@ -42,7 +42,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   @Input() useFilter = true;
   @Input() firstOptions = [];
 
-  _options: {id: string, name: string}[] = [];
+  _options: {id: string, value: string}[] = [];
   active = [];
   selectedTitle = '';
   shouldSort = false;
@@ -106,7 +106,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
       });
 
     const byOptions$ = Observable.of(this.options)
-      .map(options => options.map(option => ({id: option, name: option})));
+      .map(options => options.map(option => ({id: option, value: option})));
 
     this.subOptions = (this.options ? byOptions$ : byField$)
       .switchMap(options => {
@@ -119,7 +119,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
             .forkJoin(requests)
             .map(mapping => options.reduce((prev, curr, idx) => {
                 if (mapping[idx] !== options[idx].id) {
-                  prev.push({id: mapping[idx], name: curr.name});
+                  prev.push({id: mapping[idx], value: curr.value});
                 } else {
                   this.logger.log('No ETL mapping for', mapping[idx]);
                 }
@@ -137,15 +137,15 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
             const hasB = this.firstOptions.indexOf(b.id) > -1;
             if (hasA || hasB) {
               if (hasA && hasB) {
-                return a.name.localeCompare(b.name)
+                return a.value.localeCompare(b.value)
               } else {
                 return hasA ? -1 : 1;
               }
             }
-            return a.name.localeCompare(b.name)
+            return a.value.localeCompare(b.value)
           });
         } else {
-          this._options = this.shouldSort ? options.sort((a, b) => a.name.localeCompare(b.name)) : options;
+          this._options = this.shouldSort ? options.sort((a, b) => a.value.localeCompare(b.value)) : options;
         }
         this.initActive();
         this.cd.markForCheck();
@@ -237,11 +237,11 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
 
   private pickValue(data) {
     if (!this.pick) {
-      return data.map(value => ({id: value.id, name: value.value}));
+      return data.map(value => ({id: value.id, value: value.value}));
     }
     return data.reduce((total, item) => {
       if (typeof this.pick[item.id] !== 'undefined' && this.pick[item.id] === '') {
-        total.push({id: item.id, name: item.value});
+        total.push({id: item.id, value: item.value});
       }
       return total;
     }, []);

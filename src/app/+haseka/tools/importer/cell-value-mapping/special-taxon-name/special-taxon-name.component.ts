@@ -26,7 +26,7 @@ export class SpecialTaxonNameComponent implements OnInit {
       mapping[value] = to;
     } else if (typeof to !== 'undefined' && typeof to.key !== 'undefined' && to.value) {
       if (this.addTaxonIDTo) {
-        const newValue = to.value.toUpperCase() === (value || '').toUpperCase() ? value : to.value;
+        const newValue = to.value.toLowerCase() === (value || '').toLowerCase() ? value : to.value;
         mapping[value] = {_merge_: {[this.field.key]: newValue, [this.addTaxonIDTo]: to.key}};
       } else {
         mapping[value] = to;

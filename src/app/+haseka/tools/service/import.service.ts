@@ -13,6 +13,15 @@ export class ImportService {
 
   static readonly maxPerDocument = 500;
 
+  private readonly countFields = [
+    'gatherings[*].units[*].count',
+    'gatherings[*].units[*].abundanceString',
+    'gatherings[*].units[*].individualCount',
+    'gatherings[*].units[*].pairCount',
+    'gatherings[*].units[*].maleIndividualCount',
+    'gatherings[*].units[*].femaleIndividualCount'
+  ];
+
   private readonly newToParent = {
     'identifications': 'units',
     'gatheringEvent': 'document',
@@ -61,7 +70,7 @@ export class ImportService {
     mapping: {[col: string]: string},
     fields: {[key: string]: FormField},
     formID: string
-  ): {document: Document, rows: {[row: number]: {[level: string]: number}}}[] {
+  ): {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[] {
     const cols = Object.keys(mapping);
     const parents = cols.reduce((previous, current) => {
       const field = fields[mapping[current]];
@@ -97,12 +106,13 @@ export class ImportService {
     fields: {[key: string]: FormField},
     spot: {[level: string]: number},
     formID: string
-  ): {document: Document, rows: {[row: number]: {[level: string]: number}}}[] {
+  ): {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[] {
     const cols = Object.keys(mapping);
-    const result: {document: Document, rows: {[row: number]: {[level: string]: number}}}[] = [];
+    const result: {document: Document, skipped: number[], rows: {[row: number]: {[level: string]: number}}}[] = [];
     const allLevels = [];
     let unitCnt = 0;
     let unitsInGathering = this.cntUnitsInGathering(rows, cols, fields, mapping);
+    let skipped = [];
     let document: any = {};
     let rowSpots: {[row: number]: {[level: string]: number}} = {};
     cols.map(col => {
@@ -115,14 +125,15 @@ export class ImportService {
         allLevels.push(parent);
       }
     });
-    rows.map((row, rowIdx) => {
+    rows.forEach((row, rowIdx) => {
       const newLevels = [];
       const values = {'formID': formID};
-      cols.map((col) => {
-        if (!row[col]) {
+      const possible = {};
+      cols.forEach((col) => {
+        const field = fields[mapping[col]];
+        if (!row[col] || field.key === VALUE_IGNORE) {
           return;
         }
-        const field = fields[mapping[col]];
         const parent = this.getParent(field);
         let value = this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true);
         if (!this.hasValue(value)) {
@@ -133,13 +144,31 @@ export class ImportService {
         }
         if (typeof value === 'object' && value[MappingService.mergeKey]) {
           Object.keys(value[MappingService.mergeKey]).forEach(location => {
-            values[location] = value[MappingService.mergeKey][location];
+            possible[location] = value[MappingService.mergeKey][location];
           });
         } else {
-          values[field.key] = value;
+          possible[field.key] = value;
         }
         if (this.hasNewLevel(field, row[col], newLevels, parent)) {
           newLevels.push(this.getParent(field));
+        }
+      });
+      if (!this.hasCountValue(possible)) {
+        skipped.push(rowIdx);
+        return;
+      } else {
+        Object.keys(possible).forEach(key => {
+          values[key] = possible[key];
+        });
+      }
+      cols.forEach((col) => {
+        if (!row[col]) {
+          return;
+        }
+        const field = fields[mapping[col]];
+        const value = this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true);
+        if (!this.hasValue(value)) {
+          return;
         }
         field.previousValue = row[col];
       });
@@ -147,20 +176,21 @@ export class ImportService {
       unitsInGathering--;
       if (newLevels.indexOf(DOCUMENT_LEVEL) !== -1 || (unitCnt + Math.max(unitsInGathering, 0)) > ImportService.maxPerDocument) {
         Object.keys(spot).map(level => spot[level] = 0);
-        result.push({document: document, rows: rowSpots});
+        result.push({document: document, rows: rowSpots, skipped: skipped});
         unitCnt = 1;
         document = {};
         rowSpots = {};
+        skipped = [];
         unitsInGathering = rows[rowIdx + 1] ? this.cntUnitsInGathering(rows.slice(rowIdx + 1), cols, fields, mapping) - 1 : 1;
       } else {
         if (unitsInGathering < 0) {
           unitsInGathering = this.cntUnitsInGathering(rows.slice(rowIdx), cols, fields, mapping);
         }
         const toZero = [];
-        newLevels.map(level => {
-          cols.map(col => {
+        newLevels.forEach(level => {
+          cols.forEach(col => {
             const field = fields[mapping[col]];
-            allLevels.map(subLevel => {
+            allLevels.forEach(subLevel => {
               if (subLevel === level || toZero.indexOf(subLevel) > -1) {
                 return;
               }
@@ -172,7 +202,7 @@ export class ImportService {
           });
           spot[level]++;
         });
-        toZero.map(subLevel => {
+        toZero.forEach(subLevel => {
           spot[subLevel] = 0;
           this.resetPreviousValue(fields, subLevel);
         });
@@ -180,7 +210,7 @@ export class ImportService {
       rowSpots[rowIdx] = {...spot};
       this.valuesToDocument(this.relativePathToAbsolute(values, spot), document);
     });
-    result.push({document: document, rows: rowSpots});
+    result.push({document: document, rows: rowSpots, skipped: skipped});
 
     return result;
   }
@@ -272,4 +302,12 @@ export class ImportService {
   }
 
 
+  private hasCountValue(values: any) {
+    for (const field of this.countFields) {
+      if (typeof values[field] !== 'undefined') {
+        return true;
+      }
+    }
+    return false;
+  }
 }

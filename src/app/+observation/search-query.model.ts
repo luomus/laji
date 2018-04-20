@@ -45,7 +45,8 @@ export class SearchQuery {
     'secureReason',
     'editorId',
     'taxonReliability',
-    'annotationType'
+    'annotationType',
+    'namedPlaceId'
   ];
 
   booleanTypes = [
@@ -60,7 +61,8 @@ export class SearchQuery {
     'secured',
     'cache',
     'reliable',
-    'unidentified'
+    'unidentified',
+    'pairCounts'
   ];
 
   numericTypes = [
@@ -73,7 +75,7 @@ export class SearchQuery {
 
   stringTypes = [
     'taxonRankId',
-    'ykj10km',
+    'xValue',
     'ykj10kmCenter',
     'qualityIssues',
     'annotatedBefore',
