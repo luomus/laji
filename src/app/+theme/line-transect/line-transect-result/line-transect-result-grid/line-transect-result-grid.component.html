@@ -43,6 +43,8 @@
       [individualLabel]="['0', '1+', '1-4', '5-9', '10-49', '50-99', '100-499', '500-']"
       [countBreak]="[1, 5, 10, 50, 100, 500]"
       [countLabel]="['1-4', '5-9', '10-49', '50-99', '100-499', '500-']"
+      [types]="['pairCount']"
+      [type]="'pairCount'"
       [query]="mapQuery">
     </laji-ykj-map>
   </div>
@@ -52,6 +54,7 @@
             (onNameClick)="navigate($event)"
             [query]="resultQuery"
             [height]="'calc(80vh - 50px)'"
+            [fields]="['unit.linkings.species.vernacularName', 'unit.linkings.species.scientificName', 'pairCount']"
     ></laji-theme-result>
     <laji-theme-observation-list
             *ngIf="query && query.ykj10kmCenter"

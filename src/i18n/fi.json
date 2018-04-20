@@ -634,5 +634,6 @@
   "excel.info.array": "Voit antaa usean arvon yhdessä kentässä erottamalla arvot toisistaan \"{{separator}}\"-merkillä.",
   "excel.skip-row": "Riviltä ei löytynyt havainto määrää, joten sitä ei huomioida. Vain rivit joissa on ilmoitettu määrä huomioidaan.",
   "line-transect-result.chart": "Lajimäärän kehitys",
-  "line-transect-result.grid": "Tilasto ruuduittain ja lajeittain"
+  "line-transect-result.grid": "Tilasto ruuduittain ja lajeittain",
+  "theme.pairCount": "Parimäärä"
 }

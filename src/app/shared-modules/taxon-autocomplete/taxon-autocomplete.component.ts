@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {AutocompleteApi, AutocompleteMatchType} from '../../../../../../shared/api/AutocompleteApi';
+import {AutocompleteApi, AutocompleteMatchType} from '../../shared/api/AutocompleteApi';
 import {TranslateService} from '@ngx-translate/core';
-import {Autocomplete} from '../../../../../../shared/model';
+import {Autocomplete} from '../../shared/model/index';
 
 @Component({
   selector: 'laji-taxon-autocomplete',
@@ -25,6 +25,7 @@ export class TaxonAutocompleteComponent {
   dataSource: Observable<any>;
   value = '';
   result: Autocomplete;
+  loading = false;
 
   constructor(
     private autocompleteService: AutocompleteApi,
@@ -48,11 +49,18 @@ export class TaxonAutocompleteComponent {
   set taxon(value: string) {
     this.getTaxa(value, true)
       .subscribe(result => {
-        this.onTaxonSelect(result);
+        if (result && result.key) {
+          this.onTaxonSelect(result);
+        } else {
+          this.value = value;
+          this.cdr.markForCheck();
+        }
       });
   }
 
   getTaxa(token: string, onlyExact = false): Observable<any> {
+    this.loading = true;
+    this.cdr.markForCheck();
     return this.autocompleteService.autocompleteFindByField({
       field: 'taxon',
       q: token,
@@ -64,7 +72,9 @@ export class TaxonAutocompleteComponent {
     })
       .map(data => {
         if (onlyExact) {
-          if (data[0] && data[0].payload.matchType && data[0].payload.matchType === 'exactMatches') {
+          if (data[0] && data[0].payload.matchType && data[0].payload.matchType === 'exactMatches' && (
+            !data[1] || data[1].payload.matchType && data[1].payload.matchType !== 'exactMatches'
+          )) {
             return data[0];
           }
           return {};
@@ -79,11 +89,15 @@ export class TaxonAutocompleteComponent {
           item['groups'] = groups;
           return item;
         });
+      })
+      .do(() => {
+        this.loading = false;
+        this.cdr.markForCheck();
       });
   }
 
 
-  onTaxonSelect(result: any) {
+  onTaxonSelect(result: any, keepValue = false) {
     if (result.item) {
       result = result.item;
     }

@@ -183,6 +183,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'count', draggable: false, label: 'theme.countShort', width: 75, cellTemplate: 'numeric' },
     { name: 'individualCountMax', label: 'theme.individualCountMax', width: 80, cellTemplate: 'numeric' },
     { name: 'individualCountSum', label: 'theme.individualCount', width: 80, cellTemplate: 'numeric' },
+    { name: 'pairCount', label: 'theme.pairCount', width: 75, cellTemplate: 'numeric' },
     { name: 'gathering.conversions.ykj', prop: 'gathering.conversions.ykj.verbatim', sortable: false },
     { name: 'gathering.conversions.xValue', prop: 'gathering.conversions.xValue.verbatim', sortable: false },
     { name: 'gathering.conversions.ykj10kmCenter', prop: 'gathering.conversions.ykj10kmCenter.verbatim', sortable: false },
@@ -193,7 +194,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'gathering.interpretations.coordinateAccuracy' }
   ];
 
-  private numberFields = ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum'];
+  private numberFields = ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCount'];
 
   private modalSub: Subscription;
   private fetchSub: Subscription;
@@ -253,7 +254,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   initColumns() {
-    const selected = this.isAggregate ? [...this._selected, 'count', ...this._selectedNumbers] : [...this._selected];
+    const selected = this.isAggregate ? [...this._selected, ...this._selectedNumbers] : [...this._selected];
     this.allColumns = this.allColumns
       .map(column => {
         this.columnLookup[column.name] = column;
