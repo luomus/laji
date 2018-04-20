@@ -2,10 +2,10 @@ import {Component, Input, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/c
 import { AreaType } from '../../../../shared/service/area.service';
 import { WarehouseApi } from '../../../../shared/api';
 import {PagedResult, WarehouseQueryInterface} from '../../../../shared/model';
-import {ActivatedRoute, Router} from "@angular/router";
-import {Subscription} from "rxjs/Subscription";
-import {ObservationListService} from "../../../../shared-modules/observation-result/service/observation-list.service";
-import {Logger} from "../../../../shared/logger";
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {ObservationListService} from '../../../../shared-modules/observation-result/service/observation-list.service';
+import {Logger} from '../../../../shared/logger';
 
 @Component({
   selector: 'laji-line-transect-result-chart',
