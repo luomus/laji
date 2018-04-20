@@ -187,6 +187,7 @@ export class ImporterComponent implements OnInit {
     }
     const columns: ImportTableColumn[] = [
       {prop: '_status', label: 'status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
+      {prop: '_doc', label: 'erä', sortable: false, width: 40, cellTemplate: this.valueColTpl},
       {prop: '_idx', label: '#', sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
     ];
     Object.keys(this.header).map(address => {
@@ -236,13 +237,21 @@ export class ImporterComponent implements OnInit {
     this.mappingService.addUserValueMapping(mappings);
     this.initParsedData();
     const skipped = [];
+    const docs = {};
     if (this.parsedData) {
-      this.parsedData.forEach(data => skipped.push(...data.skipped));
+      this.parsedData.forEach((data, idx) => {
+        skipped.push(...data.skipped);
+        const docNum = idx + 1;
+        Object.keys(data.rows).forEach(row => {
+          docs[row] = docNum;
+        })
+      });
     }
     this.mappedData = [
       ...this.data.map((row, idx) => ({
         ...this.getMappedValues(row, this.colMap, this.fields),
-        _status: skipped.indexOf(idx) !== -1 ? {status: 'ignore'} : undefined
+        _status: skipped.indexOf(idx) !== -1 ? {status: 'ignore'} : undefined,
+        _doc: docs[idx]
       }))
     ];
     setTimeout(() => {

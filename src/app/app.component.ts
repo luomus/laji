@@ -103,6 +103,12 @@ export class AppComponent {
 
           this.currentRoute = newRoute;
         }
+        const tree = router.parseUrl(router.url);
+
+        if (tree.fragment) {
+          const element = document.querySelector('#' + tree.fragment);
+          if (element) { element.scrollIntoView(true); }
+        }
       }
     });
   }
