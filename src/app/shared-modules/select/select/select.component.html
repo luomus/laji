@@ -1,5 +1,5 @@
 <div class="lj-select" [ngClass]="{'lj-close': open, 'lj-open': !open}">
-  <strong class="lj-title link" (click)="toggle(filter)">{{title}}</strong>
+  <strong *ngIf="title !== undefined && title !== ''" class="lj-title link" (click)="toggle(filter)">{{title}}</strong>
   <label class="lj-item selected" *ngFor="let option of selectedOptions; trackBy: track">
     <input type="checkbox" checked (change)="remove(option.id)">
     <span>{{option.value}}</span>
