@@ -17,7 +17,7 @@ import { AreaSelectComponent } from './area-select/area-select.component';
 import { LajiMapModule } from '../map/laji-map.module';
 import { DatatableModule } from '../datatable/datatable.module';
 import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module';
-import { ObservationModule } from '../../+observation/observation.module';
+import { LajiSelectModule } from '../select/select.module';
 
 @NgModule({
   providers: [],
@@ -26,7 +26,8 @@ import { ObservationModule } from '../../+observation/observation.module';
     SharedModule,
     LajiMapModule,
     DatatableModule,
-    OwnSubmissionsModule
+    OwnSubmissionsModule,
+    LajiSelectModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,
