@@ -26,8 +26,7 @@ import { ObservationModule } from '../../+observation/observation.module';
     SharedModule,
     LajiMapModule,
     DatatableModule,
-    OwnSubmissionsModule,
-    ObservationModule
+    OwnSubmissionsModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,
