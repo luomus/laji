@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-6 ">
+    <label for="taxon-select">Valitse laji:</label>
+    <laji-taxon-autocomplete
+      id="taxon-select"
+      [placeholder]="'Etsi haluttu laji'"
+      [taxon]="taxonId"
+      (taxonSelect)="onTaxonSelect($event)"
+      [informalTaxonGroup]="'MVL.1'"
+      [showResult]="false"
+      [clearValueOnSelect]="false"
+      [allowInvalid]="true"
+      [allowEmpty]="true"
+      [renderButton]="false"
+    ></laji-taxon-autocomplete>
+    <label for="area-select">Valitse lintualueyhdistys:</label>
+    <laji-area-select
+          id="area-select"
+          [field]="areaTypes.BirdAssociationArea"
+          (select)="updateBirdAssociationArea($event)"
+          [value]="birdAssociationAreas"
+          [multiselect]="true"
+    ></laji-area-select>
+  </div>
+  <div class="col-xs-12 col-sm-6">
+    <laji-spinner [spinning]="loading" [overlay]="true">
+      <laji-line-transect-chart
+        style="height: 250px;"
+        [xValue]="0"
+        [yValue]="0"
+        [xRange]="[minYear, maxYear]"
+        [yRange]="[0, 6]"
+        [title]="''"
+        [line]="line"
+        [xLabel]="'Vuodet'"
+        [yLabel]="'Parimäärä'"
+        [xTickFormat]="'d'"
+      ></laji-line-transect-chart>
+    </laji-spinner>
+  </div>
+</div>

@@ -1,9 +1,12 @@
 <div class="cell-value-map-wrap">
-  <h1>
+  <!--<h1>
     Solun arvojen linkittäminen
-  </h1>
+  </h1>-->
+  <p>
+    Mitä tunnettua arvoa havaittu arvo tarkoittaa.
+  </p>
 
-  <h3 *ngIf="field">{{field.fullLabel}}</h3>
+  <h4 *ngIf="field">{{field.fullLabel}}</h4>
   <ng-container [ngSwitch]="special">
     <ng-container *ngSwitchCase="specials.person">
       <laji-special-friend

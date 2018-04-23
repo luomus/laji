@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import { environment } from '../../../../environments/environment';
 import {TriplestoreLabelService} from '../../../shared/service';
 
-import { DOCUMENT_LEVEL, FormField, IGNORE_VALUE } from '../model/form-field';
+import { DOCUMENT_LEVEL, FormField, VALUE_IGNORE } from '../model/form-field';
 import {MappingService} from './mapping.service';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class SpreadSheetService {
 
   private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
   private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-  private csvMimeType = 'text/csv';
+  private csvMimeTypes = ['text/csv', 'text/plain'];
 
   private translations = {};
 
@@ -65,7 +65,7 @@ export class SpreadSheetService {
   }
 
   isValidType(type) {
-    return [this.odsMimeType, this.xlsxMimeType, this.csvMimeType].indexOf(type) > -1;
+    return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes].indexOf(type) > -1;
   }
 
   setRequiredFields(fields: object) {
@@ -93,7 +93,7 @@ export class SpreadSheetService {
         required: false,
         isArray: false,
         type: 'string',
-        key: IGNORE_VALUE,
+        key: VALUE_IGNORE,
         label: 'ignore',
         fullLabel: 'ignore'
       });

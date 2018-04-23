@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { LajiMapOptions } from '../../../../../shared-modules/map/map-options.interface';
 import { Map3Component } from '../../../../../shared-modules/map/map.component';
-import {FormField, IGNORE_VALUE} from '../../../model/form-field';
+import {FormField, VALUE_IGNORE} from '../../../model/form-field';
 import {CoordinateService} from '../../../../../shared/service/coordinate.service';
 import {TranslateService} from '@ngx-translate/core';
 
@@ -23,7 +23,7 @@ export class SpecialGeometryComponent implements AfterViewInit {
   @Output() done = new EventEmitter();
   @ViewChild(Map3Component) lajiMapComponent: Map3Component;
 
-  ignore = IGNORE_VALUE;
+  ignore = VALUE_IGNORE;
   lajiMapOptions: LajiMapOptions = {
     drawIdx: 0,
     draw: {
@@ -79,7 +79,7 @@ export class SpecialGeometryComponent implements AfterViewInit {
     }
     this.active = idx;
     this.value = this.invalidValues[idx];
-    if (this.mapping[this.value] && this.mapping[this.value] !== IGNORE_VALUE) {
+    if (this.mapping[this.value] && this.mapping[this.value] !== VALUE_IGNORE) {
       this.lajiMapComponent.lajiMap.setDraw({
         featureCollection: this.coordinateService.getFeatureCollectionFromGeometry(this.mapping[this.value]),
         onChange: this.onChange.bind(this)

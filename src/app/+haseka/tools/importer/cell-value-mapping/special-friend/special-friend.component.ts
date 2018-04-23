@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormField, IGNORE_VALUE} from '../../../model/form-field';
+import { FormField, VALUE_IGNORE, VALUE_AS_IS } from '../../../model/form-field';
 import {FriendService} from '../../../../../shared/service/friend.service';
 
 @Component({
@@ -16,7 +16,6 @@ export class SpecialFriendComponent implements OnInit {
   _mapping: {[value: string]: any};
   validValues = [];
   validIds = [];
-  valueAsIs = 'Arvo sellaisenaan';
   currentValues;
 
   constructor(
@@ -38,7 +37,7 @@ export class SpecialFriendComponent implements OnInit {
 
   ngOnInit() {
     const validIds = ['', ''];
-    const validValues = [this.valueAsIs, IGNORE_VALUE];
+    const validValues = [VALUE_AS_IS, VALUE_IGNORE];
     this.friendsService.allFriends()
       .subscribe((friends) => {
         friends.forEach(friend => {
@@ -84,9 +83,9 @@ export class SpecialFriendComponent implements OnInit {
   valueMapped(value, to) {
     const mapping = {...this._mapping};
 
-    if (to === IGNORE_VALUE) {
+    if (to === VALUE_IGNORE) {
       mapping[value] = to;
-    } else if (to === this.valueAsIs) {
+    } else if (to === VALUE_AS_IS) {
       mapping[value] = value;
     } else if (typeof to !== 'undefined') {
       const idx = this.validValues.indexOf(to);

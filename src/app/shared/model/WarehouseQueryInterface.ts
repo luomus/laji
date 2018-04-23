@@ -48,6 +48,7 @@
  * Short forms for \&quot;last N days\&quot; can be used: 0 is today, -1 is yesterday and so on;
  * for example -7/0 isa range between 7 days ago and today. Multiple values are seperated by a comma (,) or by giving
  * the HTTP parameter multiple times. When multiple values are given, this is an OR search.
+ * @property yearMonth Time filter for statistics query. Uses same syntax as @property time.
  * @property dayOfYearBegin Filter using day of year. For example day of year begin &#x3D; 100, day of year end &#x3D;
  * 160 gives all records during \&quot;spring time\&quot;.
  * @property dayOfYearEnd Filter using day of year. For example day of year begin &#x3D; 100, day of year end &#x3D;
@@ -118,6 +119,7 @@ export interface WarehouseQueryInterface {
   biogeographicalProvinceId?: Array<string>;
   area?: Array<string>;
   time?: Array<string>;
+  yearMonth?: Array<string>;
   dayOfYearBegin?: number;
   dayOfYearEnd?: number;
   keyword?: Array<string>;
@@ -156,4 +158,6 @@ export interface WarehouseQueryInterface {
   annotationType?: Array<string>;
   annotatedBefore?: Date;
   annotatedLaterThan?: Date;
+  namedPlaceId?: Array<string>;
+  pairCounts?: boolean;
 }

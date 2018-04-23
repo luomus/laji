@@ -20,7 +20,7 @@ export class Map3Component implements OnDestroy, OnChanges, AfterViewInit {
   @Input() loading = false;
   @Input() showControls = true;
   @Input() maxBounds: [[number, number], [number, number]];
-  @Input() tileOpacity: number;
+  @Input() tileLayerOpacity: number;
 
   @ViewChild('lajiMap') elemRef: ElementRef;
 
@@ -45,8 +45,8 @@ export class Map3Component implements OnDestroy, OnChanges, AfterViewInit {
     if ((changes.options || changes.maxBounds) && this.lajiMap) {
       this.initMap();
     }
-    if (changes.tileOpacity && this.lajiMap && this.lajiMap.tileLayer) {
-      this.lajiMap.tileLayer.setOpacity(typeof this.tileOpacity === 'undefined' ? this.tileOpacity : 1);
+    if (changes.tileLayerOpacity && this.lajiMap && this.lajiMap.tileLayer) {
+      this.lajiMap.setTileLayerOpacity(typeof this.tileLayerOpacity === 'undefined' ? this.tileLayerOpacity : 1);
     }
   }
 
@@ -62,8 +62,8 @@ export class Map3Component implements OnDestroy, OnChanges, AfterViewInit {
     if (this.maxBounds) {
       this.lajiMap.map.setMaxBounds(this.maxBounds);
     }
-    if (this.tileOpacity) {
-      this.lajiMap.tileLayer.setOpacity(this.tileOpacity);
+    if (this.tileLayerOpacity) {
+      this.lajiMap.setTileLayerOpacity(this.tileLayerOpacity);
     }
   }
 
