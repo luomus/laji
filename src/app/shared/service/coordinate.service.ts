@@ -60,7 +60,7 @@ export class CoordinateService {
         ]]
       };
     } else if (system === 'YKJ' && parts.length === 2) {
-      return this.convertYkjToGeoJsonFeature(parts[0], parts[1]);
+      return this.convertYkjToGeoJsonFeature(parts[0], parts[1]).geometry;
     }
   }
 
