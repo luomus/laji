@@ -275,14 +275,14 @@ export class ImporterComponent implements OnInit {
         (data) => {
           if (data.result._error) {
             success = false;
-            Object.keys(data.source.rows).forEach(key => this.data[key]['_status'] = {
+            Object.keys(data.source.rows).forEach(key => this.mappedData[key]['_status'] = {
               status: 'invalid',
               error: data.result._error
             });
           } else {
-            Object.keys(data.source.rows).forEach(key => this.data[key]['_status'] = {});
+            Object.keys(data.source.rows).forEach(key => this.mappedData[key]['_status'] = {});
           }
-          this.data = [...this.data];
+          this.mappedData = [...this.mappedData];
           this.cdr.markForCheck();
         },
         (err) => {
@@ -320,13 +320,13 @@ export class ImporterComponent implements OnInit {
         (data) => {
           if (data.result._error) {
             success = false;
-            Object.keys(data.source.rows).forEach(key => this.data[key]['_status'] = {
+            Object.keys(data.source.rows).forEach(key => this.mappedData[key]['_status'] = {
               status: 'error',
               error: data.result._error
             });
           } else {
             hadSuccess = true;
-            Object.keys(data.source.rows).forEach(key => this.data[key]['_status'] = {status: 'ok'});
+            Object.keys(data.source.rows).forEach(key => this.mappedData[key]['_status'] = {status: 'ok'});
           }
           this.data = [...this.data];
           this.cdr.markForCheck();
