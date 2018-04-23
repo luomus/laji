@@ -6,3 +6,24 @@
   margin: 0px;
   box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
 }
+
+.legend {
+  padding: 10px;
+  background-color: #eeeeee;
+  border: 1px solid #dddddd;
+  margin-top: 5px;
+}
+
+.legend .color {
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  margin-right: 5px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+.legend li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
