@@ -29,7 +29,7 @@ export class SpecialTaxonIdComponent implements OnInit {
 
     if (to === IGNORE_VALUE) {
       mapping[value] = to;
-    } else if (typeof to !== 'undefined' && to.key) {
+    } else if (typeof to !== 'undefined' && typeof to.key !== 'undefined') {
       mapping[value] = to.key;
     }
     this.mappingChanged.emit(mapping);

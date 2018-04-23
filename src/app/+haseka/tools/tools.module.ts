@@ -28,6 +28,8 @@ import { SpecialNamedPlacesComponent } from './importer/cell-value-mapping/speci
 import { StatusCellComponent } from './importer/status-cell/status-cell.component';
 import { ErrorListComponent } from './importer/status-cell/error-list/error-list.component';
 import { AugmentService } from './service/augment.service';
+import { SpecialTaxonNameComponent } from './importer/cell-value-mapping/special-taxon-name/special-taxon-name.component';
+import { ToolSuccessComponent } from './shared/tool-success/tool-success.component';
 
 @NgModule({
   imports: [
@@ -55,7 +57,9 @@ import { AugmentService } from './service/augment.service';
     TaxonAutocompleteComponent,
     SpecialNamedPlacesComponent,
     StatusCellComponent,
-    ErrorListComponent
+    ErrorListComponent,
+    SpecialTaxonNameComponent,
+    ToolSuccessComponent
   ],
   providers: [SpreadSheetService, MappingService, ImportService, GeneratorService, AugmentService]
 })

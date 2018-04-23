@@ -1,54 +1,64 @@
-<h1>
-  Solun arvojen linkittäminen
-</h1>
+<div class="cell-value-map-wrap">
+  <h1>
+    Solun arvojen linkittäminen
+  </h1>
 
-<h3 *ngIf="field">{{field.fullLabel}}</h3>
-<ng-container [ngSwitch]="special">
-  <ng-container *ngSwitchCase="specials.person">
-    <laji-special-friend
-      [field]="field"
-      [invalidValues]="invalid"
-      [mapping]="valueMap[field.key]"
-      (mappingChanged)="onMapping($event)"
-    ></laji-special-friend>
+  <h3 *ngIf="field">{{field.fullLabel}}</h3>
+  <ng-container [ngSwitch]="special">
+    <ng-container *ngSwitchCase="specials.person">
+      <laji-special-friend
+        [field]="field"
+        [invalidValues]="invalid"
+        [mapping]="valueMap[field.key]"
+        (mappingChanged)="onMapping($event)"
+      ></laji-special-friend>
+    </ng-container>
+    <ng-container *ngSwitchCase="specials.geometry">
+      <laji-special-geometry
+        [field]="field"
+        [invalidValues]="invalid"
+        [mapping]="valueMap[field.key]"
+        (mappingChanged)="onMapping($event)"
+        (done)="analyseNextColumn()"
+      ></laji-special-geometry>
+    </ng-container>
+    <ng-container *ngSwitchCase="specials.taxonID">
+      <laji-special-taxon-id
+        [field]="field"
+        [invalidValues]="invalid"
+        [mapping]="valueMap[field.key]"
+        (mappingChanged)="onMapping($event)"
+      ></laji-special-taxon-id>
+    </ng-container>
+    <ng-container *ngSwitchCase="specials.unitTaxon">
+      <laji-special-taxon-name
+        [field]="field"
+        [invalidValues]="invalid"
+        [mapping]="valueMap[field.key]"
+        (mappingChanged)="onMapping($event)"
+      ></laji-special-taxon-name>
+    </ng-container>
+    <ng-container *ngSwitchCase="specials.namedPlaceID">
+      <laji-special-named-places
+        [field]="field"
+        [invalidValues]="invalid"
+        [mapping]="valueMap[field.key]"
+        (mappingChanged)="onMapping($event)"
+      ></laji-special-named-places>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <laji-cell-value-select
+        [field]="field"
+        [invalidValues]="invalid"
+        [mapping]="valueMap[field.key]"
+        (mappingChanged)="onMapping($event)"
+      ></laji-cell-value-select>
+    </ng-container>
   </ng-container>
-  <ng-container *ngSwitchCase="specials.geometry">
-    <laji-special-geometry
-      [field]="field"
-      [invalidValues]="invalid"
-      [mapping]="valueMap[field.key]"
-      (mappingChanged)="onMapping($event)"
-      (done)="analyseNextColumn()"
-    ></laji-special-geometry>
-  </ng-container>
-  <ng-container *ngSwitchCase="specials.taxonID">
-    <laji-special-taxon-id
-      [field]="field"
-      [invalidValues]="invalid"
-      [mapping]="valueMap[field.key]"
-      (mappingChanged)="onMapping($event)"
-    ></laji-special-taxon-id>
-  </ng-container>
-  <ng-container *ngSwitchCase="specials.namedPlaceID">
-    <laji-special-named-places
-      [field]="field"
-      [invalidValues]="invalid"
-      [mapping]="valueMap[field.key]"
-      (mappingChanged)="onMapping($event)"
-    ></laji-special-named-places>
-  </ng-container>
-  <ng-container *ngSwitchDefault>
-    <laji-cell-value-select
-      [field]="field"
-      [invalidValues]="invalid"
-      [mapping]="valueMap[field.key]"
-      (mappingChanged)="onMapping($event)"
-    ></laji-cell-value-select>
-  </ng-container>
-</ng-container>
 
-<div class="row">
-  <div class="col-sm-12">
-    <button class="btn btn-primary pull-right" [disabled]="!allMapped" (click)="analyseNextColumn()">Seuraava</button>
+  <div class="row">
+    <div class="col-sm-12">
+      <button class="btn btn-primary pull-right" [disabled]="!allMapped" (click)="analyseNextColumn()">Seuraava</button>
+    </div>
   </div>
 </div>

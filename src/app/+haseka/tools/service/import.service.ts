@@ -131,7 +131,13 @@ export class ImportService {
         if (Array.isArray(value)) {
           value = value.filter(val => val !== IGNORE_VALUE && val !== '');
         }
-        values[field.key] = value;
+        if (typeof value === 'object' && value[MappingService.mergeKey]) {
+          Object.keys(value[MappingService.mergeKey]).forEach(location => {
+            values[location] = value[MappingService.mergeKey][location];
+          });
+        } else {
+          values[field.key] = value;
+        }
         if (this.hasNewLevel(field, row[col], newLevels, parent)) {
           newLevels.push(this.getParent(field));
         }

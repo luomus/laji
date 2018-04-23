@@ -1,0 +1,4 @@
+.cell-value-map-wrap {
+  min-height: calc(100vh - 450px);
+  margin-bottom: 400px;
+}

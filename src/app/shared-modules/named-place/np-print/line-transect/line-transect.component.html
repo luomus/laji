@@ -141,12 +141,14 @@
     </tr>
   </table>
 </div>
-<div class="page no-page-break page-break-after" *ngIf="lajiMapOptions">
-  <div class="pager">
-    <h2>{{namedPlace.name}}&nbsp;&nbsp;<span>2/{{total}}</span></h2>
-  </div>
-  <div class="map-wrap">
-    <laji-map3 [options]="lajiMapOptions"></laji-map3>
+<div class="page">
+  <div class="no-page-break page-break-after" [ngClass]="{'page-landscape': landscape}" *ngIf="lajiMapOptions">
+    <div class="pager">
+      <h2>{{namedPlace.name}}&nbsp;&nbsp;<span>2/{{total}}</span></h2>
+    </div>
+    <div class="map-wrap">
+      <laji-map3 [options]="lajiMapOptions"></laji-map3>
+    </div>
   </div>
 </div>
 <div *ngIf="pages">

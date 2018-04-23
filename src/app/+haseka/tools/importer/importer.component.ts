@@ -142,7 +142,7 @@ export class ImporterComponent implements OnInit {
         }
         this.excludedFromCopy = form.excludeFromCopy || [];
         this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, true);
-        this.colMap = this.spreadSheetService.getColMapFromComments(sheet, this.fields);
+        this.colMap = this.spreadSheetService.getColMapFromComments(sheet, this.fields, Object.keys(this.header).length);
 
         this.initDataColumns();
 

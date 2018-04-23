@@ -57,6 +57,7 @@ export class DatatableComponent {
   @Input() resizable = true;
   @Input() showRowAsLink = true;
   @Input() rowHeight = 35;
+  @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();

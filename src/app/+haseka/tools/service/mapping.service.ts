@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiExternalService } from '../../../shared/service/laji-external.service';
-import { FormField } from '../model/form-field';
+import { FormField, IGNORE_VALUE } from '../model/form-field';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 import {CoordinateService} from '../../../shared/service/coordinate.service';
 
@@ -21,6 +21,7 @@ export enum SpecialTypes {
 @Injectable()
 export class MappingService {
 
+  public static readonly mergeKey = '_merge_';
   private static readonly valueSplitter = ';';
 
   private readonly booleanMap = {
@@ -58,7 +59,8 @@ export class MappingService {
     'gatherings[*].units[*].informalTaxonGroups[*]': SpecialTypes.informalTaxonGroupID,
     'gatherings[*].dateBegin': SpecialTypes.dateOptionalTime,
     'gatherings[*].dateEnd': SpecialTypes.dateOptionalTime,
-    'gatherings[*].units[*].identifications[*].detDate': SpecialTypes.dateOptionalTime
+    'gatherings[*].units[*].identifications[*].detDate': SpecialTypes.dateOptionalTime,
+    'gatherings[*].units[*].identifications[*].taxon': SpecialTypes.unitTaxon
   };
 
   constructor(
@@ -226,6 +228,13 @@ export class MappingService {
     return this.booleanMap[key][lang];
   }
 
+  mapUnitTaxon(value) {
+    if (value === IGNORE_VALUE || (typeof value === 'object' && value[MappingService.mergeKey])) {
+      return value;
+    }
+    return null;
+  }
+
   mapTaxonId(value) {
     if (typeof value === 'string') {
       const match = value.match(/(MX\.[0-9]+)/);
@@ -283,6 +292,9 @@ export class MappingService {
         break;
       case SpecialTypes.taxonID:
         targetValue = this.mapTaxonId(targetValue || value);
+        break;
+      case SpecialTypes.unitTaxon:
+        targetValue = this.mapUnitTaxon(targetValue || value);
         break;
       case SpecialTypes.namedPlaceID:
         targetValue = this.mapNamedPlaceID(targetValue || value);

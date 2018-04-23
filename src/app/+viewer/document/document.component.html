@@ -20,7 +20,7 @@
       </div>
       <laji-issues [data]="document"></laji-issues>
       <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
-      <laji-row [title]="'MM.keywords' | label" [value]="document.keywords"></laji-row>
+      <laji-row [title]="'MY.keywords' | label" [value]="document.keywords"></laji-row>
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
       <laji-facts [show]="showFacts" [facts]="document.facts | factNotIn:['http://tun.fi/MY.formID','http://tun.fi/MZ.publicityRestrictions']"></laji-facts>
     </div>
