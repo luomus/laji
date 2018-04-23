@@ -421,6 +421,7 @@
   "theme.noHits": "No observations found with the given criteria.",
   "theme.grid": "Grids {{grid}} observations",
   "theme.observationDays": "Observation days",
+  "theme.admin.submissions": "All submissions",
   "nafi.stats": "Results",
   "nafi.form": "Send observations",
   "nafi.myObservations": "My observations",
