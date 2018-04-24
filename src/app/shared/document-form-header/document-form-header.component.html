@@ -4,11 +4,13 @@
     'col-sm-12': !(form.logo)
   }">
     <h3>{{form.title}}</h3>
-    <div [innerHtml]="form.description"></div><br>
-    <div *ngIf="includeNpDescription">
+    <ng-container *ngIf="onlyNpDescription && form.namedPlaceOptions && form.namedPlaceOptions.description; else description">
       <div [innerHtml]="form.namedPlaceOptions?.description ? form.namedPlaceOptions.description : 'np.defaultDescription' | translate"></div>
       <br>
-    </div>
+    </ng-container>
+    <ng-template #description>
+      <div [innerHtml]="form.description"></div><br>
+    </ng-template>
     <span *ngIf="form.instructions && form.instructions[translate.currentLang]">
       <a href="{{form.instructions[translate.currentLang]}}" target="_blank">{{'haseka.instructions' | translate}}</a>
       |

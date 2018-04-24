@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormField, IGNORE_VALUE } from '../../model/form-field';
+import { FormField, VALUE_IGNORE, VALUE_AS_IS } from '../../model/form-field';
 import {SpreadSheetService} from '../../service/spread-sheet.service';
 
 @Component({
@@ -11,10 +11,11 @@ import {SpreadSheetService} from '../../service/spread-sheet.service';
 export class MappingSelectComponent implements OnInit {
 
   @Input() options: string[] = [];
-  @Input() value: string;
+  _value: string;
   @Input() disabled = false;
   @Output() selected = new EventEmitter<string>();
-  skipValue = IGNORE_VALUE;
+  skipValue = VALUE_IGNORE;
+  asIsValue = VALUE_AS_IS;
 
   fieldGroups: string[] = [];
   groups: {[group: string]: string[]};
@@ -22,6 +23,15 @@ export class MappingSelectComponent implements OnInit {
   _fields: {[key: string]: FormField};
 
   constructor() {}
+
+  @Input()
+  set value(value: string) {
+    if (value && this.options.indexOf(value) === -1 && !this._fields) {
+      this._value = VALUE_AS_IS;
+    } else {
+      this._value = value;
+    }
+  }
 
   @Input()
   set fields(fields: {[key: string]: FormField}) {

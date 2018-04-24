@@ -20,7 +20,7 @@ export class ObservationListService {
   private aggregateData: PagedResult<any>;
   private aggregatePending: Observable<any>;
   private aggregatePendingKey: string;
-  private removeAggregateFields =  ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum'];
+  private removeAggregateFields =  ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCount'];
   private locationCache: any;
 
   constructor(
@@ -163,7 +163,7 @@ export class ObservationListService {
     const uriCache = {};
     this.locationCache = {};
     const openYkj = selected.indexOf('gathering.conversions.ykj') > -1;
-    const openYkj10Km = selected.indexOf('gathering.conversions.ykj10km') > -1;
+    const openYkj10Km = selected.indexOf('gathering.conversions.xValue') > -1;
     const openYkj10KmCenter = selected.indexOf('gathering.conversions.ykj10kmCenter') > -1;
     const openYkj1Km = selected.indexOf('gathering.conversions.ykj1km') > -1;
     const openYkj1KmCenter = selected.indexOf('gathering.conversions.ykj1kmCenter') > -1;
@@ -223,8 +223,8 @@ export class ObservationListService {
               if (openWgs84 && document.gathering.conversions.wgs84) {
                 document.gathering.conversions.wgs84.verbatim = this.makeMinMaxCoordinate(document.gathering.conversions.wgs84);
               }
-              if (openYkj10Km && document.gathering.conversions.ykj10km) {
-                document.gathering.conversions.ykj10km.verbatim = this.joinCoordinate(document.gathering.conversions.ykj10km);
+              if (openYkj10Km && document.gathering.conversions.xValue) {
+                document.gathering.conversions.xValue.verbatim = this.joinCoordinate(document.gathering.conversions.xValue);
               }
               if (openYkj10KmCenter && document.gathering.conversions.ykj10kmCenter) {
                 document.gathering.conversions.ykj10kmCenter.verbatim = this.joinCoordinate(document.gathering.conversions.ykj10kmCenter);

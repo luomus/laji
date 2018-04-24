@@ -72,7 +72,22 @@ const routes: Routes = [
     component: LineTransectComponent,
     children: [
       {path: '', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' }},
-      {path: 'stats', pathMatch: 'full', component: LineTransectResultComponent, data: { title: 'lineTransect.title' }},
+      {
+        path: 'stats',
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'chart'
+          },
+          {
+            path: ':tab',
+            pathMatch: 'full',
+            component: LineTransectResultComponent,
+            data: { title: 'lineTransect.title' }
+          }
+        ]
+      },
       {path: 'form', pathMatch: 'full', component: LineTransectFormComponent},
       {
         path: 'form/:id',
@@ -84,7 +99,7 @@ const routes: Routes = [
       {path: 'ownSubmissions', pathMatch: 'full', component: LineTransectMyDocumentListComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' } },
       {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent },
-      {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent }
+      {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent, canActivate: [OnlyLoggedIn] }
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},

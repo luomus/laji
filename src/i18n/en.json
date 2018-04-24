@@ -421,6 +421,7 @@
   "theme.noHits": "No observations found with the given criteria.",
   "theme.grid": "Grids {{grid}} observations",
   "theme.observationDays": "Observation days",
+  "theme.admin.submissions": "All submissions",
   "nafi.stats": "Results",
   "nafi.form": "Send observations",
   "nafi.myObservations": "My observations",
@@ -601,5 +602,10 @@
   "np.requestAccess": "Request access",
   "np.requestSend": "Request already sent",
   "form.administer": "Manage access to form",
-  "result.reserve.until": "Reserved"
+  "result.reserve.until": "Reserved",
+  "asIs": "Value as is",
+  "ignore": "ignore",
+  "line-transect-result.chart": "Progress of species amount",
+  "line-transect-result.grid": "Statistics by grid squares and species",
+  "theme.pairCount": "Pair count"
 }

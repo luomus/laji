@@ -30,7 +30,6 @@ export class NpChooseComponent implements OnInit, OnChanges {
 
   sent = this.isSent.bind(this);
 
-
   private seasonStart;
   private seasonEnd;
 

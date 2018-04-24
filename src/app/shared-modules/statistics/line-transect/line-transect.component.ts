@@ -1,5 +1,6 @@
 import {
-  ChangeDetectionStrategy, Component, Input, OnChanges, OnInit,
+  AfterViewInit,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output,
   ViewChild
 } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
@@ -11,7 +12,10 @@ import { LajiMapOptions } from '../../map/map-options.interface';
 import { Units } from '../../../shared/model/Units';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { Observable } from 'rxjs/Observable';
-import { UserService } from '../../../shared/service';
+import {ToastsService, UserService} from '../../../shared/service';
+import { NamedPlacesService } from '../../named-place/named-places.service';
+import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
+import * as equals from 'deep-equal';
 
 interface LineTransectCount {
   psCouples: number;
@@ -19,8 +23,6 @@ interface LineTransectCount {
   onPs: number;
   onPsPros: number;
   routeLength?: number;
-  ykj10kmN?: number;
-  ykj10kmE?: number;
   couplesPerKm?: number;
   minPerKm: number;
   species: {id: string, psCouples: number, tsCouples: number, name?: string}[];
@@ -32,12 +34,14 @@ interface LineTransectCount {
   styleUrls: ['./line-transect.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LineTransectComponent implements OnChanges, OnInit {
+export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
   @ViewChild(Map3Component)
   lajiMap: Map3Component;
 
   @Input() document: Document;
   @Input() namedPlace: NamedPlace;
+
+  @Output() onNamedPlaceChange = new EventEmitter();
 
   counts: LineTransectCount;
   lajiMapOptions: LajiMapOptions;
@@ -73,22 +77,53 @@ export class LineTransectComponent implements OnChanges, OnInit {
   warnings: {message: string; cnt: number}[] = [];
   stats$: Observable<string>;
 
-  private ykj10kmN = 0;
-  private ykj10kmE = 0;
+  mapZoomInitialized = false;
+
+  placesDiff = false;
+  isAdmin = false;
+  activeMapLine = 'document';
+
+  ykj10kmN = 0;
+  ykj10kmE = 0;
 
   constructor(
     private lajiApiService: LajiApiService,
-    private userSerivce: UserService
+    private userSerivce: UserService,
+    private namedPlacesService: NamedPlacesService,
+    private formPermissionService: FormPermissionService,
+    private toastsService: ToastsService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnChanges() {
     this.initCounts();
     this.initWarnings();
     this.initMapOptions();
+    this.initYkj();
+    this.initIsAdmin()
+      .subscribe(data => {
+        this.isAdmin = this.formPermissionService.isAdmin(data.formPermission, data.user);
+        this.initPlacesDiff();
+        this.initMapZoom();
+        this.cdr.markForCheck();
+      });
   }
 
   ngOnInit() {
 
+  }
+
+  ngAfterViewInit() {
+    this.initMapZoom();
+  }
+
+  initMapZoom() {
+    if (!this.isAdmin || !this.placesDiff || !this.lajiMap.lajiMap || this.mapZoomInitialized) {
+      return;
+    }
+
+    this.lajiMap.lajiMap.zoomToData({paddingInMeters: 100});
+    this.mapZoomInitialized = true;
   }
 
   private initCounts() {
@@ -101,8 +136,6 @@ export class LineTransectComponent implements OnChanges, OnInit {
       species: [],
       couplesPerKm: 0,
       routeLength: 0,
-      ykj10kmN: this.ykj10kmN,
-      ykj10kmE: this.ykj10kmE,
       minPerKm: 0
     };
     const species = {};
@@ -174,7 +207,7 @@ export class LineTransectComponent implements OnChanges, OnInit {
       const messages = this.getErrors(this.document.acknowledgedWarnings);
       Object.keys(messages).forEach(message => {
         warnings.push({message: message.replace('[warning]', ''), cnt: messages[message]});
-      })
+      });
     }
     this.warnings = warnings;
   }
@@ -192,26 +225,60 @@ export class LineTransectComponent implements OnChanges, OnInit {
     this.lajiMapOptions = {
       tileLayerName: 'maastokartta',
       lineTransect: {
-        feature: {geometry: this.getGeometry()}
-      }
+        feature: {geometry: this.getGeometry(this.activeMapLine)},
+        editable: false
+      },
+      tileLayerOpacity: 0.5
     };
   }
 
-  private getGeometry() {
-    if (this.namedPlace.alternativeIDs) {
-      for (const altId of this.namedPlace.alternativeIDs) {
-        if (altId.match(/[0-9]{3}:[0-9]{3}/)) {
-          const parts = altId.split(':');
-          this.ykj10kmN = +parts[0];
-          this.ykj10kmE = +parts[1];
-          break;
-        }
+  private initYkj() {
+    if (this.namedPlace && this.namedPlace.name) {
+      const match = this.namedPlace.name.match(/([0-9]{3}):([0-9]{3})/);
+      if (match) {
+        this.ykj10kmN = +match[1];
+        this.ykj10kmE = +match[2];
       }
     }
-    if (this.document.gatherings) {
-      return {type: 'MultiLineString', coordinates: this.document.gatherings.map(item => item.geometry.coordinates)};
+  }
+
+  private initPlacesDiff() {
+    const diff = !equals(this.getGeometry('document'), this.getGeometry(('acceptedDocument')));
+    this.placesDiff = diff;
+  }
+
+  private getGeometry(documentName = 'document') {
+    const document = documentName === 'document'
+        ? this.document
+        : this.namedPlace.acceptedDocument;
+
+    if (document.gatherings) {
+      return {type: 'MultiLineString', coordinates: document.gatherings.map(item => item.geometry.coordinates)};
     }
     return {coordinates: []};
   }
 
+  initIsAdmin() {
+    return this.formPermissionService.getFormPermission(this.namedPlace.collectionID, this.userSerivce.getToken())
+      .combineLatest(
+        this.userSerivce.getUser(),
+        (formPermission, user) => ({formPermission, user})
+      );
+  }
+
+  setActiveMapLine(activeMapLine) {
+    this.activeMapLine = activeMapLine;
+    this.lajiMap.lajiMap.setLineTransect({...this.lajiMapOptions.lineTransect, feature: {geometry: this.getGeometry(this.activeMapLine)}})
+  }
+
+  acceptNamedPlaceChanges() {
+    this.namedPlacesService.updateNamedPlace(
+      this.namedPlace.id,
+      {...this.namedPlace, acceptedDocument: this.document},
+      this.userSerivce.getToken()
+    ).subscribe((np: NamedPlace) => {
+      this.onNamedPlaceChange.emit(np);
+      this.toastsService.showSuccess('Linjan päivitys onnistui. Tämän laskennan karttaa käytetään pohjana tämän linjan laskennoille jatkossa');
+    });
+  }
 }

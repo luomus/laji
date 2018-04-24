@@ -53,13 +53,13 @@
       </tbody>
     </table>
   </div>
-  <div class="col-sm-6 col-md-5 col-lg-4" *ngIf="counts.onPsPros && counts.ykj10kmN">
+  <div class="col-sm-6 col-md-5 col-lg-4" *ngIf="counts.onPsPros && ykj10kmN">
     <div class="row">
       <div class="col-sm-12" style="height: 250px">
         <laji-line-transect-chart
           [terms]="onMainTerms"
-          [ykj10km]="counts.ykj10kmN"
-          [value]="counts.onPsPros"
+          [xValue]="ykj10kmN"
+          [yValue]="counts.onPsPros"
           [title]="'Pääsarkaprosentti'"
           [xLabel]="'ykj n'"
           [yLabel]="'%'"
@@ -71,8 +71,8 @@
         <laji-line-transect-chart
           [terms]="perKmTerms"
           [yRange]="[0, 50]"
-          [ykj10km]="counts.ykj10kmN"
-          [value]="counts.couplesPerKm"
+          [xValue]="ykj10kmN"
+          [yValue]="counts.couplesPerKm"
           [title]="'Pareja / 1km'"
           [xLabel]="'ykj n'"
           [yLabel]="'lkm'"
@@ -100,7 +100,20 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-sm-12" style="height: 0; position: absolute; top: -999px">
+  <div *ngIf="isAdmin && placesDiff" class="col-xs-12" style="padding-bottom: 5px;">
+    <div class="btn-group" role="group">
+      <button type="button"
+              (click)="setActiveMapLine('document')"
+              class="btn btn-sm btn-default {{activeMapLine === 'document' ? 'active' : ''}}">Näytä tämän laskennan reitti</button>
+      <button type="button"
+              (click)="setActiveMapLine('acceptedDocument')"
+              class="btn btn-sm btn-default {{activeMapLine !== 'document' ? 'active' : ''}}">Näytä viimeksi hyväksytty reitti</button>
+    </div>
+    <button type="button"
+            (click)="acceptNamedPlaceChanges()"
+            class="btn btn-sm btn-success">Hyväksy muutokset</button>
+  </div>
+  <div class="col-xs-12" [style.height.px]="500" [style.display]="isAdmin && placesDiff ? 'block' : 'none'">
     <laji-map3 [options]="lajiMapOptions"></laji-map3>
   </div>
 </div>

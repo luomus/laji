@@ -13,6 +13,6 @@ import { LajiMapModule } from '../map/laji-map.module';
     LajiMapModule
   ],
   declarations: [StatisticsComponent, LineTransectComponent, LineTransectChartComponent],
-  exports: [StatisticsComponent]
+  exports: [StatisticsComponent, LineTransectChartComponent]
 })
 export class StatisticsModule { }

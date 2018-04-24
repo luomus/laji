@@ -420,6 +420,7 @@
   "theme.searching": "Sökande...",
   "theme.noHits": "Inga kommentarer hittades med de givna kriterier.",
   "theme.grid": "Grids {{grid}} observations",
+  "theme.admin.submissions": "Alla inlagor",
   "nafi.stats": "Resultaten",
   "nafi.form": "Skicka observationer",
   "nafi.myObservations": "Mina observationer",
@@ -602,5 +603,10 @@
   "np.requestAccess": "Begär tillgång",
   "np.requestSend": "Begäran redan skickad",
   "form.administer": "Hantera åtkomst till form",
-  "result.reserve.until": "Reserverad tills"
+  "result.reserve.until": "Reserverad tills",
+  "asIs": "Värde som det är",
+  "ignore": "ignorera",
+  "line-transect-result.chart": "framsteg av artens mängd",
+  "line-transect-result.grid": "Statistik enligt rutnät och art",
+  "theme.pairCount": "Parräkning"
 }

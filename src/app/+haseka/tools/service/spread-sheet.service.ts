@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import { environment } from '../../../../environments/environment';
 import {TriplestoreLabelService} from '../../../shared/service';
 
-import { DOCUMENT_LEVEL, FormField, IGNORE_VALUE } from '../model/form-field';
+import { DOCUMENT_LEVEL, FormField, VALUE_IGNORE } from '../model/form-field';
 import {MappingService} from './mapping.service';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class SpreadSheetService {
 
   private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
   private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-  private csvMimeType = 'text/csv';
+  private csvMimeTypes = ['text/csv', 'text/plain'];
 
   private translations = {};
 
@@ -65,7 +65,7 @@ export class SpreadSheetService {
   }
 
   isValidType(type) {
-    return [this.odsMimeType, this.xlsxMimeType, this.csvMimeType].indexOf(type) > -1;
+    return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes].indexOf(type) > -1;
   }
 
   setRequiredFields(fields: object) {
@@ -93,13 +93,13 @@ export class SpreadSheetService {
         required: false,
         isArray: false,
         type: 'string',
-        key: IGNORE_VALUE,
+        key: VALUE_IGNORE,
         label: 'ignore',
         fullLabel: 'ignore'
       });
     }
     if (form && form.schema && form.schema.properties) {
-      this.parserFields(form.schema, {properties: form.validators}, result, '', DOCUMENT_LEVEL);
+      this.parserFields(form.schema, {properties: form.validators}, result, '', DOCUMENT_LEVEL, this.findUnitSubGroups(form.uiSchema));
     }
     return result;
   }
@@ -182,7 +182,17 @@ export class SpreadSheetService {
       .trim();
   }
 
-  private parserFields(form: any, validators: any, result: FormField[], root, parent, lastKey = '', lastLabel = '', required = []) {
+  private parserFields(
+    form: any,
+    validators: any,
+    result: FormField[],
+    root,
+    parent,
+    unitSubGroups = {},
+    lastKey = '',
+    lastLabel = '',
+    required = []
+  ) {
     if (!form || !form.type || (form.options && form.options.excludeFromSpreadSheet)) {
       return;
     }
@@ -193,16 +203,7 @@ export class SpreadSheetService {
           let found = false;
           Object.keys(form.properties).map(key => {
             found = true;
-            this.parserFields(
-              form.properties[key],
-              validators.properties && validators.properties && validators.properties[key] || {},
-              result,
-              root ? root + '.' + key : key,
-              form.properties[key].type === 'object' && Object.keys(form.properties[key].properties).length > 0 ? key : parent,
-              key,
-              label,
-              form.required || []
-            )
+            this.parserFields(form.properties[key], validators.properties && validators.properties && validators.properties[key] || {}, result, root ? root + '.' + key : key, form.properties[key].type === 'object' && Object.keys(form.properties[key].properties).length > 0 ? key : parent, unitSubGroups, key, label, form.required || [])
           });
           if (!found) {
             if (this.hiddenFields.indexOf(root) > -1) {
@@ -216,6 +217,7 @@ export class SpreadSheetService {
               parent: parent,
               isArray: root.endsWith('[*]'),
               required: this.hasRequiredValidator(lastKey, validators, required, root),
+              subGroup: this.analyzeSubGroup(root, parent, unitSubGroups),
               enum: form.enum,
               enumNames: form.enumNames,
               default: form.default
@@ -226,7 +228,7 @@ export class SpreadSheetService {
       case 'array':
         if (form.items) {
           const newParent = ['object', 'array'].indexOf(form.items.type) > -1 ? lastKey : parent;
-          this.parserFields(form.items, validators.items || validators, result, root + '[*]', newParent, lastKey, label);
+          this.parserFields(form.items, validators.items || validators, result, root + '[*]', newParent, unitSubGroups, lastKey, label, required);
         }
         break;
       default:
@@ -241,6 +243,7 @@ export class SpreadSheetService {
           parent: parent,
           isArray: root.endsWith('[*]'),
           required: this.hasRequiredValidator(lastKey, validators, required, root),
+          subGroup: this.analyzeSubGroup(root, parent, unitSubGroups),
           enum: form.enum,
           enumNames: form.enumNames,
           default: form.default
@@ -253,5 +256,41 @@ export class SpreadSheetService {
       return this.requiredFields[key];
     }
     return !!validator.presence || (validator.geometry && validator.geometry.requireShape) || required.indexOf(lastKey) > -1;
+  }
+
+  analyzeSubGroup(path, parent, unitSubGroups): string {
+    const field = path.split('.').pop();
+    if (parent === 'units') {
+      if (unitSubGroups[field]) {
+        return unitSubGroups[field];
+      }
+    }
+    return undefined;
+  }
+
+  private findUnitSubGroups(form) {
+    const subGroups = {};
+    if (form &&
+      form.gatherings &&
+      form.gatherings.items &&
+      form.gatherings.items.units &&
+      form.gatherings.items.units.items &&
+      form.gatherings.items.units.items['ui:options'] &&
+      form.gatherings.items.units.items['ui:options'].fieldScopes &&
+      form.gatherings.items.units.items['ui:options'].fieldScopes.informalTaxonGroups
+    ) {
+      const groups = form.gatherings.items.units.items['ui:options'].fieldScopes.informalTaxonGroups;
+      Object.keys(groups).forEach(key => {
+        if (key === '*') {
+          return;
+        }
+        if (Array.isArray(groups[key].additionalFields)) {
+          groups[key].additionalFields.forEach(field => {
+            subGroups[field] = key;
+          })
+        }
+      });
+    }
+    return subGroups;
   }
 }

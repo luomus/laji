@@ -41,7 +41,11 @@ export class ExcelGeneratorComponent implements OnInit {
     this.spreadSheetService.setHiddenFeilds([
       'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID',
       'gatherings[*].images[*]',
-      'gatherings[*].units[*].images[*]'
+      'gatherings[*].units[*].images[*]',
+      'gatherings[*].dateBegin',
+      'gatherings[*].dateEnd',
+      'gatherings[*].units[*].unitGathering.dateBegin',
+      'gatherings[*].units[*].unitGathering.dateEnd',
     ]);
   }
 
@@ -61,8 +65,12 @@ export class ExcelGeneratorComponent implements OnInit {
       })
   }
 
-  toggleField(field: FormField) {
+  toggleField(field: FormField | FormField[]) {
     if (this.generating) {
+      return;
+    }
+    if (Array.isArray(field)) {
+      field.forEach(value => this.toggleField(value));
       return;
     }
     if (this.selected.indexOf(field.key) === -1) {

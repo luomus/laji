@@ -21,6 +21,7 @@ export interface LajiMapOptions {
   lineTransect?: {
     feature: any;
     printMode?: boolean;
+    editable?: boolean;
   };
   markerPopupOffset?: number;
   featurePopupOffset?: number;

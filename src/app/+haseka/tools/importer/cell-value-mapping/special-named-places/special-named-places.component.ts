@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormField, IGNORE_VALUE} from '../../../model/form-field';
+import {FormField, VALUE_IGNORE} from '../../../model/form-field';
 import {NamedPlacesService} from '../../../../../shared-modules/named-place/named-places.service';
 import {UserService} from '../../../../../shared/service';
 import {MappingService} from '../../../service/mapping.service';
@@ -34,7 +34,7 @@ export class SpecialNamedPlacesComponent implements OnInit {
       .map(namedPlaces => namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`))
       .subscribe(places => {
         places.sort();
-        this.namedPlaces = [IGNORE_VALUE, ...places];
+        this.namedPlaces = [VALUE_IGNORE, ...places];
         this.cdr.markForCheck();
       });
   }

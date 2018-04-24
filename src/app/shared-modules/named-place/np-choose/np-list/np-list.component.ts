@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ObservationTableColumn } from '../../../../shared-modules/observation-result/model/observation-table-column';
-import { environment } from '../../../../../environments/environment';
 import { DatatableComponent } from '../../../../shared-modules/datatable/datatable/datatable.component';
 import {DatatableColumn} from '../../../datatable/model/datatable-column';
 
@@ -29,7 +28,12 @@ export class NpListComponent {
   data: any[] = [];
   columns: ObservationTableColumn[];
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
-
+  legendList = [
+    {label: 'Vapaa', color: '#ffffff'},
+    {label: 'Varattu', color: '#d1c400'},
+    {label: 'Itselle varattu', color: '#d16e04'},
+    {label: 'Ilmoitettu', color: '#00aa00'}
+  ];
 
   @ViewChild('personID') personIDTpl: TemplateRef<any>;
   @ViewChild('status') statusTpl: TemplateRef<any>;
@@ -44,6 +48,11 @@ export class NpListComponent {
 
   changeActivePlace(event) {
     this.onActivePlaceChange.emit(this.data.indexOf(event.row));
+  }
+
+  getRowClass(row) {
+    const status = (row['$._status'] || [])[0];
+    if (status !== 'free') return status;
   }
 
   @Input() set namedPlaces(nps: NamedPlace[]) {

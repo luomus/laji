@@ -47,8 +47,8 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
   @Input() initWithWorldMap = false;
   @Input() bringDrawLayerToBack = true;
   @Input() zoom = 1;
-  @Input() tileOpacity: number;
-  @Input() controlSettings: any = {
+  @Input() tileLayerOpacity: number;
+  @Input() controls: any = {
     draw: false
   };
   @Input() settingsKey: string;
@@ -123,7 +123,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
         markerPopupOffset: 5,
         featurePopupOffset: 0,
         rootElem: this.elemRef.nativeElement,
-        controls: this.controlSettings,
+        controls: this.controls,
         overlayNames: this.overlayNames,
         availableTileLayerNamesBlacklist: this.availableTileLayerNamesBlacklist
       };
@@ -230,7 +230,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
   }
 
   ngOnChanges(changes) {
-    if (changes.tileOpacity) {
+    if (changes.tileLayerOpacity) {
       this.initMapOptions();
     }
     if (changes.visible) {
@@ -310,8 +310,8 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
       if (!this.map) {
         return;
       }
-      if (this.tileOpacity) {
-        this.map.tileLayer.setOpacity(this.tileOpacity);
+      if (this.tileLayerOpacity) {
+        this.map.setOpacity(this.tileLayerOpacity);
       }
       if (this.maxBounds) {
         this.map.map.setMaxBounds(this.maxBounds);

@@ -10,18 +10,18 @@ import { ObservationResultComponent } from './result/observation-result.componen
 import { ObservationResultListComponent } from './result-list/observation-result-list.component';
 import { MetadataSelectComponent } from './metadata-select/metadata-select.component';
 import { PieChartComponent } from './chart/pie/pie-chart.component';
-import { TypeaheadModule } from 'ngx-bootstrap';;
+import { TypeaheadModule } from 'ngx-bootstrap';
 import { ObservationDownloadComponent } from './download/observation-download.component';
 import { routing } from './observation.routes';
 import { ObservationComponent } from './observation.component';
 import { ViewerModule } from '../+viewer/viewer.module';
 import { NvD3Module } from '../ng2-nvd3/ng2-nvd3.module';
-import { SelectComponent } from './select/select.component';
 import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { MainResultComponent } from './main-result/main-result.component';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
 import { ObservationFiltersComponent } from './observation-filters/observation-filters.component';
 import { PillListComponent } from './pill-list/pill-list.component';
+import { LajiSelectModule } from '../shared-modules/select/select.module';
 
 @NgModule({
   imports: [
@@ -32,13 +32,14 @@ import { PillListComponent } from './pill-list/pill-list.component';
     ViewerModule,
     YkjModule,
     NgxDatatableModule,
-    ObservationResultModule
+    ObservationResultModule,
+    LajiSelectModule
   ],
   declarations: [ObservationComponent, ObservationActiveComponent, ObservationChartComponent,
     ObservationFormComponent,
     MultiRadioComponent, ObservationResultComponent,
     ObservationResultListComponent, MetadataSelectComponent,
-    PieChartComponent, ObservationDownloadComponent, SelectComponent, MainResultComponent, ObservationFiltersComponent,
+    PieChartComponent, ObservationDownloadComponent, MainResultComponent, ObservationFiltersComponent,
     PillListComponent
   ]
 })

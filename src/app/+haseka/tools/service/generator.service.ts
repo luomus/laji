@@ -8,6 +8,7 @@ import {Person} from '../../../shared/model';
 import {Observable} from 'rxjs/Observable';
 import {NamedPlacesService} from '../../../shared-modules/named-place/named-places.service';
 import {NamedPlace} from '../../../shared/model/NamedPlace';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class GeneratorService {
@@ -15,29 +16,65 @@ export class GeneratorService {
   private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
   private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
+  private sheetNames = {
+    'base': 'Tallennuspohja',
+    'vars': 'Muuttujat', // This name cannot have spaces in it
+    'info': 'Ohjeet'
+  };
+
+  private instructionArray = 'excel.info.array';
+
+  private instructionMapping: {[place: string]: string} = {
+    'editors[*]': 'excel.info.personID',
+    'gatheringEvent.leg[*]': 'excel.info.personID',
+    'gatheringEvent.dateBegin': 'excel.info.date',
+    'gatheringEvent.dateEnd': 'excel.info.date',
+    'gatherings[*].units[*].unitGathering.dateBegin': 'excel.info.date',
+    'gatherings[*].units[*].unitGathering.dateEnd': 'excel.info.date',
+    'gatherings[*].units[*].identifications[*].detDate': 'excel.info.date',
+    'gatherings[*].units[*].hostID': 'excel.info.taxonID',
+    'gatherings[*].taxonCensus[*].censusTaxonID': 'excel.info.taxonID',
+    'gatherings[*].units[*].unitGathering.geometry': 'excel.info.geometry',
+    'gatherings[*].geometry': 'excel.info.geometry',
+    'gatherings[*].namedPlaceID': 'excel.info.namedPlaceID',
+  };
 
   constructor(
     private mappingService: MappingService,
     private userService: UserService,
-    private namedPlaces: NamedPlacesService
+    private namedPlaces: NamedPlacesService,
+    private translateService: TranslateService,
   ) { }
 
   generate(filename: string, fields: FormField[], useLabels = true, type: 'ods' | 'xlsx' = 'xlsx', next: () => void = () => {}) {
+    const allTranslations = Object.keys(this.instructionMapping).map(key => this.instructionMapping[key]);
+    allTranslations.push(this.instructionArray);
     Observable.forkJoin(
       this.userService.getUser(),
       this.namedPlaces.getAllNamePlaces({
         userToken: this.userService.getToken(),
         includePublic: false
       }),
-      (person, namedPlaces) => ({person: person, namedPlaces: namedPlaces})
+      this.translateService.get(allTranslations, {separator: MappingService.valueSplitter})
+        .map(translated => Object.keys(this.instructionMapping).reduce((cumulative, current) => {
+          if (translated[this.instructionMapping[current]]) {
+            cumulative[current] = translated[this.instructionMapping[current]];
+          }
+          return cumulative;
+        }, {[this.instructionArray]: translated[this.instructionArray]}))
+      ,
+      (person, namedPlaces, translations) => ({person, namedPlaces, translations})
     )
       .subscribe((data) => {
         const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels, data));
         const book = XLSX.utils.book_new();
 
         const validationSheet = this.addMetaDataToSheet(fields, sheet, data, useLabels);
-        XLSX.utils.book_append_sheet(book, sheet);
-        XLSX.utils.book_append_sheet(book, validationSheet);
+        validationSheet['!protect'] = {password: '¡secret!'};
+
+        XLSX.utils.book_append_sheet(book, sheet, this.sheetNames.base);
+        XLSX.utils.book_append_sheet(book, this.getInstructionSheet(fields, data.translations), this.sheetNames.info);
+        XLSX.utils.book_append_sheet(book, validationSheet, this.sheetNames.vars);
 
         this.downloadData(XLSX.write(book, {bookType: type, type: 'buffer'}), filename, type);
         next();
@@ -113,7 +150,7 @@ export class GeneratorService {
         if (!cache[cacheKey]) {
           validValues.sort();
           this.addToValidationSheetData(validValues, vColumn, vSheet);
-          cache[cacheKey] = 'Sheet2!' + this.makeExactRange(
+          cache[cacheKey] = this.sheetNames.vars + '!' + this.makeExactRange(
             XLSX.utils.encode_range({r: 0, c: vColumn}, {r: validValues.length - 1, c: vColumn})
           );
           vColumn++;
@@ -128,6 +165,41 @@ export class GeneratorService {
       sheet['!dataValidation'] = validation;
     }
     return XLSX.utils.aoa_to_sheet(vSheet);
+  }
+
+  private getInstructionSheet(fields: FormField[], translations: {[key: string]: string}) {
+    const vSheet = [];
+    const given = {};
+    let labelColLen = 10;
+    let instructionColLen = 10;
+    fields.forEach(field => {
+      const label = field.label;
+      if (given[label] || (!translations[field.key] && !translations[field.type] && !field.isArray)) {
+        return;
+      }
+      given[label] = true;
+      let instruction = translations[field.key] || translations[field.type];
+      if (field.isArray) {
+        instruction = (instruction ? instruction + ' ' : '') + translations[this.instructionArray];
+      }
+      if (label.length > labelColLen) {
+        labelColLen = label.length;
+      }
+      if (instruction.length > instructionColLen) {
+        instructionColLen = instruction.length;
+      }
+      vSheet.push([label, instruction]);
+    });
+    vSheet.sort((a, b) => {
+      return a[0].localeCompare(b[0]);
+    });
+    const sheet = XLSX.utils.aoa_to_sheet(vSheet);
+    sheet['!cols'] = [
+      {wch: labelColLen},
+      {wch: instructionColLen}
+    ];
+
+    return sheet;
   }
 
   private makeExactRange(range) {

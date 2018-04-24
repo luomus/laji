@@ -10,7 +10,7 @@ import {FormField} from '../../model/form-field';
 export class StatusCellComponent implements OnInit {
 
   @Input() value: {
-    status: 'ok'|'fail',
+    status: 'ok'|'invalid'|'fail'|'ignore',
     error: any
   };
   @Input() fields: {[key: string]: FormField};

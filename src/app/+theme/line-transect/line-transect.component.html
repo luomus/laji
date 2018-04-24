@@ -1,13 +1,18 @@
 <div class="container-fluid line">
   <div class="row" id="wrapper">
     <div *ngIf="showNav" style="background-color: #ECF0F1;" class="col-sm-3 col-md-3 col-lg-2">
-      <h1>Linja- laskenta</h1>
+      <h1>Linja&shy;laskenta</h1>
       <ul class="sidebar-nav">
         <li><a [routerLink]="['../linjalaskenta', 'instructions']">{{'instructions' | translate}}</a></li>
         <li><a [routerLink]="['../linjalaskenta', 'stats']">{{'nafi.stats' | translate}}</a></li>
         <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'form']">{{'wbc.form' | translate}}</a></li>
-        <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
-        <li *ngIf="(rights | async)?.admin"><a [routerLink]="['/vihko/fp/HR.61/admin']">{{'form.administer' | translate}}</a></li>
+        <ng-container *ngIf="(rights | async)?.admin; else normalUsers">
+          <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'ownSubmissions']">{{'theme.admin.submissions' | translate}}</a></li>
+          <li><a [routerLink]="['/vihko/fp/HR.61/admin']">{{'form.administer' | translate}}</a></li>
+        </ng-container>
+        <ng-template #normalUsers>
+          <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
+        </ng-template>
       </ul>
     </div>
     <div class="col-sm-9 col-md-9 col-lg-10 main-content" [ngClass]="{

@@ -109,6 +109,15 @@ $baseFontSize: 12pt;
     vertical-align: top;
     border-bottom: dashed 1px #000;
   }
+  .biotopes-2 td{
+    height: $rowHeight / 2;
+  }
+  .biotopes-3 td{
+    height: $rowHeight / 3;
+  }
+  .biotopes-4 td{
+    height: $rowHeight / 4;
+  }
   td:last-of-type {
     text-align: right;
     width: 45mm;

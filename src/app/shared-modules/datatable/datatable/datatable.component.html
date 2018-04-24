@@ -33,7 +33,7 @@
     (reorder)="reorder.emit($event)"
     (resize)="onResize($event)"
     (page)="onPage($event)"
-    [rowClass]="getRowClass.bind(this)"
+    [rowClass]="_getRowClass.bind(this)"
     (activate)="onRowSelect($event)"
   >
   </ngx-datatable>
@@ -52,7 +52,9 @@
   <span *ngIf="value">
     <span style="display: inline"
           *ngIf="value.linkings && value.linkings.taxon && (value.linkings.taxon.id || value.linkings.taxon.qname); else taxonVerbatim"
-          title="{{(value.linkings.taxon.vernacularName | multiLang) + ' &mdash; ' + value.linkings.taxon.scientificName}}"
+          title="{{(value.linkings.taxon.vernacularName ? (value.linkings.taxon.vernacularName | multiLang) : '')
+                + (value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName ? ' &mdash; ': '')
+                + (value.linkings.taxon.scientificName ? value.linkings.taxon.scientificName : '')}}"
     >
       {{value.linkings.taxon.vernacularName | multiLang}}
       <span class="inline" *ngIf="value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName"> &mdash; </span>
