@@ -254,7 +254,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   initColumns() {
-    const selected = this.isAggregate ? [...this._selected, 'count', ...this._selectedNumbers] : [...this._selected];
+    const selected = this.isAggregate ? [...this._selected, ...this._selectedNumbers] : [...this._selected];
     this.allColumns = this.allColumns
       .map(column => {
         this.columnLookup[column.name] = column;
