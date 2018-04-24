@@ -39,9 +39,7 @@ export class YkjService {
           observer.next(res);
           observer.complete();
         };
-        this.pending.subscribe(
-          (data) => { onComplete(data); }
-        );
+        this.pending.subscribe((data) => { onComplete(data); });
       });
     }
     this.pendingKey = key;
@@ -59,8 +57,7 @@ export class YkjService {
       )
       .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .map(data => data.results)
-      .map(data => this.resultToGeoJson(data, grid))
-      .do(data => this.data);
+      .map(data => this.resultToGeoJson(data, grid));
     return this.pending;
   }
 
