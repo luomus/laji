@@ -46,8 +46,8 @@ export class YkjService {
     }
     this.pendingKey = key;
     const sourceMethod = useStatistics
-        ? this.warehouseApi.warehouseQueryStatisticsGet
-        : this.warehouseApi.warehouseQueryAggregateGet;
+        ? this.warehouseApi.warehouseQueryStatisticsGet.bind(this.warehouseApi)
+        : this.warehouseApi.warehouseQueryAggregateGet.bind(this.warehouseApi);
     this.pending = sourceMethod(
         {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
         [`gathering.conversions.ykj${grid}.lat,gathering.conversions.ykj${grid}.lon`],
