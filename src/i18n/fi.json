@@ -453,6 +453,7 @@
   "theme.noHits": "Ei havaintoja annetuilla ehdoilla.",
   "theme.grid": "Ruudun {{grid}} havainnot",
   "theme.observationDays": "Havaintopäiviä",
+  "theme.admin.submissions": "Kaikki havaintoerät",
   "nafi.stats": "Tulokset",
   "nafi.form": "Ilmoita",
   "nafi.myObservations": "Omat havaintoni",
@@ -648,6 +649,7 @@
   "datatable.yes": "Kyllä",
   "excel.skip-row": "Riviltä ei löytynyt havainto määrää, joten sitä ei huomioida. Vain rivit joissa on ilmoitettu määrä huomioidaan.",
   "line-transect-result.chart": "Lajimäärän kehitys",
+  "line-transect-result.grid": "Tilasto ruuduittain ja lajeittain",
   "line-transect-result.grid": "Tilasto ruuduittain ja lajeittain",
   "theme.pairCount": "Parimäärä"
 }

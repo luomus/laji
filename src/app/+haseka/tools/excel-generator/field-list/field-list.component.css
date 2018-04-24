@@ -10,3 +10,8 @@
 .list-group-item.active {
   border-top: 1px solid #ddd;
 }
+.sub-header {
+  padding: 3px 15px;
+  font-weight: bold;
+  background-color: #f5f5f5;
+}

@@ -433,6 +433,7 @@
   "theme.searching": "Sökande...",
   "theme.noHits": "Inga kommentarer hittades med de givna kriterier.",
   "theme.grid": "Grids {{grid}} observations",
+  "theme.admin.submissions": "Alla inlagor",
   "nafi.stats": "Resultaten",
   "nafi.form": "Skicka observationer",
   "nafi.myObservations": "Mina observationer",
