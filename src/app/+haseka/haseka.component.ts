@@ -18,6 +18,7 @@ export class HasekaComponent implements OnInit, OnDestroy {
   public email: string;
   public isFront = false;
   public showTools = false;
+  public documentModalVisible = false;
 
   public shownDocument: string;
   @ViewChild('documentModal') public modal: ModalDirective;

@@ -411,6 +411,7 @@
   "viewer.secured.partial": "Detta inlägg har observationer som tas bort av säkerhetsskäl.",
   "viewer.secured.own1": "Detta är den privata syn på inlämningen. Den offentliga uppfattningen kan se annorlunda ut",
   "viewer.secured.own2": "Gå till offentlig visning",
+  "viewer.taxonVerbatim": "Rapporterad nami",
   "np.title": "Namn på platser",
   "np.defaultDescription": "Börja med att välja en plats.",
   "np.defaultUse": "Använd denna plats",

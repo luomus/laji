@@ -26,7 +26,7 @@ export class YkjService {
     private warehouseApi: WarehouseApi
   ) { }
 
-  getGeoJson(query: WarehouseQueryInterface, grid: Grid = '10kmCenter', key?: string): Observable<any> {
+  getGeoJson(query: WarehouseQueryInterface, grid: Grid = '10kmCenter', key?: string, useStatistics = false): Observable<any> {
     if (!key) {
       key = JSON.stringify(query);
     }
@@ -39,14 +39,14 @@ export class YkjService {
           observer.next(res);
           observer.complete();
         };
-        this.pending.subscribe(
-          (data) => { onComplete(data); }
-        );
+        this.pending.subscribe((data) => { onComplete(data); });
       });
     }
     this.pendingKey = key;
-    this.pending = this.warehouseApi
-      .warehouseQueryStatisticsGet(
+    const sourceMethod = useStatistics
+        ? this.warehouseApi.warehouseQueryStatisticsGet.bind(this.warehouseApi)
+        : this.warehouseApi.warehouseQueryAggregateGet.bind(this.warehouseApi);
+    this.pending = sourceMethod(
         {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
         [`gathering.conversions.ykj${grid}.lat,gathering.conversions.ykj${grid}.lon`],
         undefined,
@@ -57,8 +57,7 @@ export class YkjService {
       )
       .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .map(data => data.results)
-      .map(data => this.resultToGeoJson(data, grid))
-      .do(data => this.data);
+      .map(data => this.resultToGeoJson(data, grid));
     return this.pending;
   }
 
