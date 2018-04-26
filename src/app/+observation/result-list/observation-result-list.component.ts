@@ -33,6 +33,7 @@ export class ObservationResultListComponent implements OnInit {
 
   shownDocument = '';
   highlightId = '';
+  documentModalVisible = false;
 
   constructor(
     public translate: TranslateService,

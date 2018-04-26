@@ -59,10 +59,12 @@
   </table>
 </div>
 <div class="modal fade" bsModal #documentModal="bs-modal"
+     (onHidden)="documentModalVisible = false"
+     (onShow)="documentModalVisible = true"
      tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-body">
+      <div class="modal-body" *ngIf="documentModalVisible">
         <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>

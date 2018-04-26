@@ -41,6 +41,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   yearInfoError: string;
   documentError: string;
   currentDataKey: string;
+  documentModalVisible = false;
 
   constructor(
     private documentService: DocumentApi,
