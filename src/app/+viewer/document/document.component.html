@@ -5,20 +5,18 @@
         <h3>
           {{'viewer.document' | translate }}
           <small>
-            <a *ngIf="!showTitle" [routerLink]="['/view']" [queryParams]="highlight ?
-            {uri: document.documentId, highlight: highlight, own: own === true} :
-            {uri: document.documentId, own: own === true}" target="_blank">
+            <a [routerLink]="['/view']" [queryParams]="highlight ?
+            {uri: document.documentId, highlight: highlight} :
+            {uri: document.documentId}" target="_blank">
               {{document.documentId}}
             </a>
-            <span *ngIf="showTitle">
-              {{document.documentId}}
-            </span>
-            <br>
           </small>
         </h3>
-        <laji-row [noTitleSpace]="true" [noRow]="true" [value]="document.collectionId | toQName | collectionName"> (<a target="_blank" href="{{document.collectionId}}">{{document.collectionId}}</a>)</laji-row>
       </div>
       <laji-issues [data]="document"></laji-issues>
+      <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionId | toQName | collectionName">
+        <span *ngIf="showFacts"><a target="_blank" href="{{document.collectionId}}">{{document.collectionId}}</a></span>
+      </laji-row>
       <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
       <laji-row [title]="'MY.keywords' | label" [value]="document.keywords"></laji-row>
       <!-- <laji-row [title]="'namedPlaceId'" [value]="document.namedPlaceId"></laji-row>-->
