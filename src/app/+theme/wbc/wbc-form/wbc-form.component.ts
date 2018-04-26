@@ -72,7 +72,7 @@ export class WbcFormComponent implements OnInit, OnDestroy, ComponentCanDeactiva
 
   onMissingNamedplace(data) {
     this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/wtalvilintulaskentabc/form']),
+      this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/form']),
       { replaceUrl: true }
     );
   }
