@@ -414,6 +414,7 @@
   "viewer.secured.own2": "Siirry julkiseen näkymään",
   "viewer.issue": "Ongelma",
   "viewer.loadDate": "Ladattu Lajitietokeskukseen",
+  "viewer.taxonVerbatim": "Kirjattu nimi",
   "np.title": "Nimetyt paikat",
   "np.defaultDescription": "Aloita valitsemalla paikka.",
   "np.defaultUse": "Käytä tätä paikkaa",
