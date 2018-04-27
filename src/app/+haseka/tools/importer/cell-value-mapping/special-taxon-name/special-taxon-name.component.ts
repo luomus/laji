@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FormField, VALUE_IGNORE } from '../../../model/form-field';
+import {MappingService} from '../../../service/mapping.service';
 
 @Component({
   selector: 'laji-special-taxon-name',
   templateUrl: './special-taxon-name.component.html',
-  styleUrls: ['./special-taxon-name.component.css']
+  styleUrls: ['./special-taxon-name.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpecialTaxonNameComponent implements OnInit {
 
@@ -14,9 +16,41 @@ export class SpecialTaxonNameComponent implements OnInit {
   @Input() addTaxonIDTo = 'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID';
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
 
+  mergeKey = MappingService.mergeKey;
+  linkedVisible = true;
+  hiddenValues: {[value: string]: boolean} = {};
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  toggleLinkedVisible() {
+    this.linkedVisible = !this.linkedVisible;
+    if (!this.linkedVisible) {
+      const hide = {};
+      this.invalidValues.forEach(value => {
+        if (this.mapping[value]) {
+          hide[value] = true;
+        }
+      });
+      this.hiddenValues = hide;
+    } else {
+      this.hiddenValues = {};
+    }
+  }
+
+  lajiValue(value) {
+    if (
+      this.mapping &&
+      this.field &&
+      this.mapping[value] &&
+      this.mapping[value][this.mergeKey] &&
+      this.mapping[value][this.mergeKey][this.field.key]
+    ) {
+      return this.mapping[value][this.mergeKey][this.field.key];
+    }
+    return '';
   }
 
   onTaxonSelect(value, to) {
@@ -27,7 +61,7 @@ export class SpecialTaxonNameComponent implements OnInit {
     } else if (typeof to !== 'undefined' && typeof to.key !== 'undefined' && to.value) {
       if (this.addTaxonIDTo) {
         const newValue = to.value.toLowerCase() === (value || '').toLowerCase() ? value : to.value;
-        mapping[value] = {_merge_: {[this.field.key]: newValue, [this.addTaxonIDTo]: to.key}};
+        mapping[value] = {[this.mergeKey]: {[this.field.key]: newValue, [this.addTaxonIDTo]: to.key}};
       } else {
         mapping[value] = to;
       }
