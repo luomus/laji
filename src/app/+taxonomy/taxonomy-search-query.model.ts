@@ -10,6 +10,11 @@ export class TaxonomySearchQuery {
   public queryUpdatedSource = new Subject<any>();
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
 
+  public page = 1;
+  public sortOrder = 'taxonomic';
+  public selected: string[] = [ 'id', 'taxonRank', 'scientificName', 'scientificNameAuthorship', 'vernacularName',
+    'finnish', 'typeOfOccurrenceInFinland'];
+
   public query: TaxonomySearchQueryInterface = {};
 
   constructor(
