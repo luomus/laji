@@ -46,6 +46,8 @@ export class ExcelGeneratorComponent implements OnInit {
       'gatherings[*].dateEnd',
       'gatherings[*].units[*].unitGathering.dateBegin',
       'gatherings[*].units[*].unitGathering.dateEnd',
+      'gatherings[*].units[*].unitGathering.geometry',
+      'gatherings[*].units[*].checklistID',
     ]);
   }
 
