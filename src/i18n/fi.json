@@ -150,7 +150,7 @@
   "observation.form.collection": "Kokoelmanäytteet",
   "observation.form.coordinateAccuracyMax": "Havaintopaikan koordinaattien tarkkuus vähintään",
   "observation.form.filter": "Rajaa",
-  "observation.form.specimen": "Nimi",
+  "observation.form.specimen": "Laji",
   "observation.form.place": "Paikka",
   "observation.form.date": "Aika",
   "observation.form.noImages": "Annetuilla hakuehdoilla ei löytynyt yhtään kuvaa.",
