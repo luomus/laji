@@ -23,16 +23,16 @@
         <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
           <ul class="nav navbar-nav">
             <li [routerLinkActive]="['active']" *lajiAuthorities="false">
-              <a [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
+              <a (click)="closeMenu()" [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']">
-              <a [routerLink]="['/observation'] | localize" [queryParams]="{reset: true}">{{ 'navigation.observation' | translate }}</a>
+              <a (click)="closeMenu()" [routerLink]="['/observation'] | localize" [queryParams]="{reset: true}">{{ 'navigation.observation' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiAuthorities="true">
-              <a [routerLink]="['/invasive'] | localize">{{ 'navigation.invasive' | translate }}</a>
+              <a (click)="closeMenu()" [routerLink]="['/invasive'] | localize">{{ 'navigation.invasive' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']">
-              <a [routerLink]="['/vihko'] | localize">{{ 'navigation.haseka' | translate }}</a>
+              <a (click)="closeMenu()" [routerLink]="['/vihko'] | localize">{{ 'navigation.haseka' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiAuthorities="false" dropdown>
               <a dropdownToggle class="link themes">
@@ -40,28 +40,28 @@
               </a>
               <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu">
                 <li role="menuitem">
-                  <a [routerLink]="['/theme/quality'] | localize" class="navbar-link link">{{'navigation.quality' | translate}}</a>
+                  <a (click)="closeMenu()" [routerLink]="['/theme/quality'] | localize" class="navbar-link link">{{'navigation.quality' | translate}}</a>
                 </li>
                 <li role="menuitem">
-                  <a [routerLink]="['/theme/identify'] | localize" class="navbar-link link">{{ 'navigation.identify' | translate }}</a>
+                  <a (click)="closeMenu()" [routerLink]="['/theme/identify'] | localize" class="navbar-link link">{{ 'navigation.identify' | translate }}</a>
                 </li>
                 <li role="menuitem">
-                  <a [routerLink]="['/map'] | localize" class="navbar-link link">{{ 'navigation.map' | translate }}</a>
+                  <a (click)="closeMenu()" [routerLink]="['/map'] | localize" class="navbar-link link">{{ 'navigation.map' | translate }}</a>
                 </li>
                 <li role="menuitem">
-                  <a [routerLink]="['/ykj'] | localize" class="navbar-link link">{{ 'navigation.ykj' | translate }}</a>
+                  <a (click)="closeMenu()" [routerLink]="['/ykj'] | localize" class="navbar-link link">{{ 'navigation.ykj' | translate }}</a>
                 </li>
                 <li role="menuitem">
-                  <a [routerLink]="['/emk'] | localize" class="navbar-link link">{{ 'navigation.emk' | translate }}</a>
+                  <a (click)="closeMenu()" [routerLink]="['/emk'] | localize" class="navbar-link link">{{ 'navigation.emk' | translate }}</a>
                 </li>
                 <li role="menuitem">
-                  <a [routerLink]="['/nafi'] | localize" class="navbar-link link">{{ 'nafi.stats.title' | translate }}</a>
+                  <a (click)="closeMenu()" [routerLink]="['/nafi'] | localize" class="navbar-link link">{{ 'nafi.stats.title' | translate }}</a>
                 </li>
                 <li role="menuitem">
-                  <a [routerLink]="['/theme/herpetology'] | localize" class="navbar-link link">{{ 'navigation.herpetology' | translate }}</a>
+                  <a (click)="closeMenu()" [routerLink]="['/theme/herpetology'] | localize" class="navbar-link link">{{ 'navigation.herpetology' | translate }}</a>
                 </li>
                 <li role="menuitem">
-                  <a href="https://satelliitti.laji.fi" class="navbar-link link">{{ 'navigation.satelliitti' | translate }}</a>
+                  <a (click)="closeMenu()" href="https://satelliitti.laji.fi" class="navbar-link link">{{ 'navigation.satelliitti' | translate }}</a>
                 </li>
               </ul>
             </li>
@@ -85,10 +85,10 @@
               </a>
               <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
                 <li role="menuitem">
-                  <a [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
+                  <a (click)="closeMenu()" [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
                 </li>
                 <li role="menuitem">
-                  <a [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
+                  <a (click)="closeMenu()" [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
                 </li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">
@@ -144,13 +144,13 @@
               </a>
               <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
                 <li *ngIf="'fi' !== translate.currentLang" role="menuitem">
-                  <a rel="alternate" hreflang="fi" class="navbar-link link" [routerLink]="[] | localize:'fi'" preserveQueryParams>Suomeksi</a>
+                  <a (click)="closeMenu()" rel="alternate" hreflang="fi" class="navbar-link link" [routerLink]="[] | localize:'fi'" preserveQueryParams>Suomeksi</a>
                 </li>
                 <li *ngIf="'sv' !== translate.currentLang" role="menuitem">
-                  <a rel="alternate" hreflang="sv" class="navbar-link link" [routerLink]="[] | localize:'sv'" preserveQueryParams>På svenska</a>
+                  <a (click)="closeMenu()" rel="alternate" hreflang="sv" class="navbar-link link" [routerLink]="[] | localize:'sv'" preserveQueryParams>På svenska</a>
                 </li>
                 <li *ngIf="'en' !== translate.currentLang" role="menuitem">
-                  <a rel="alternate" hreflang="en" class="navbar-link link" [routerLink]="[] | localize:'en'" preserveQueryParams>In English</a>
+                  <a (click)="closeMenu()" rel="alternate" hreflang="en" class="navbar-link link" [routerLink]="[] | localize:'en'" preserveQueryParams>In English</a>
                 </li>
               </ul>
             </li>
