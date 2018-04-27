@@ -74,6 +74,8 @@ export class ImporterComponent implements OnInit {
   maxUnits = ImportService.maxPerDocument;
   separator = MappingService.valueSplitter;
   hash;
+  currentTitle: string;
+  fileLoading = false;
 
   private externalLabel = [
     'editors[*]',
@@ -106,9 +108,11 @@ export class ImporterComponent implements OnInit {
     const reader: FileReader = new FileReader();
     const fileName = evt.target.value;
     this.status = 'importingFile';
+    this.fileLoading = true;
     reader.onload = (e: any) => {
       evt.target.value = '';
       this.valid = false;
+      this.fileLoading = false;
       this.errors = undefined;
       this.parsedData = undefined;
       this.bstr = e.target.result;
@@ -120,6 +124,7 @@ export class ImporterComponent implements OnInit {
       reader.readAsArrayBuffer(target.files[0]);
     } else {
       this.status = 'invalidFileType';
+      this.fileLoading = false;
     }
   }
 
@@ -257,6 +262,7 @@ export class ImporterComponent implements OnInit {
     setTimeout(() => {
       this.cdr.detectChanges();
     });
+    this.validate();
   }
 
   validate() {

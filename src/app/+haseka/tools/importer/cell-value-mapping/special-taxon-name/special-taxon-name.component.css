@@ -1,0 +1,15 @@
+.ok-col {
+  width: 30px;
+}
+.result-col {
+  width: 20%;
+}
+.map-col {
+  width: 80%;
+}
+.value-col {
+  width: 150px;
+}
+.hidden {
+  display: none;
+}
