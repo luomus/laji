@@ -76,6 +76,7 @@ export class AnnotationTableComponent implements OnInit, OnChanges {
 
   shownDocument = '';
   highlightId = '';
+  documentModalVisible = false;
 
   private fetchSub: Subscription;
 

@@ -306,7 +306,7 @@
   "haseka.submissions.form": "Lomake",
   "haseka.submissions.id": "Tunniste",
   "haseka.submissions.total": "Yhteensä",
-  "haseka.submissions.filter": "Filteröi...",
+  "haseka.submissions.filter": "Rajaa...",
   "haseka.submissions.pcs.singular": "kpl",
   "haseka.submissions.pcs": "kpl",
   "haseka.submissions.chooseFormat": "Valitse formaatti",
@@ -436,6 +436,7 @@
   "viewer.secured.own2": "Siirry julkiseen näkymään",
   "viewer.issue": "Ongelma",
   "viewer.loadDate": "Ladattu Lajitietokeskukseen",
+  "viewer.taxonVerbatim": "Kirjattu nimi",
   "np.title": "Nimetyt paikat",
   "np.defaultDescription": "Aloita valitsemalla paikka.",
   "np.defaultUse": "Käytä tätä paikkaa",
@@ -462,6 +463,7 @@
   "theme.noHits": "Ei havaintoja annetuilla ehdoilla.",
   "theme.grid": "Ruudun {{grid}} havainnot",
   "theme.observationDays": "Havaintopäiviä",
+  "theme.admin.submissions": "Kaikki havaintoerät",
   "nafi.stats": "Tulokset",
   "nafi.form": "Ilmoita",
   "nafi.myObservations": "Omat havaintoni",
@@ -657,6 +659,7 @@
   "datatable.yes": "Kyllä",
   "excel.skip-row": "Riviltä ei löytynyt havainto määrää, joten sitä ei huomioida. Vain rivit joissa on ilmoitettu määrä huomioidaan.",
   "line-transect-result.chart": "Lajimäärän kehitys",
+  "line-transect-result.grid": "Tilasto ruuduittain ja lajeittain",
   "line-transect-result.grid": "Tilasto ruuduittain ja lajeittain",
   "theme.pairCount": "Parimäärä"
 }

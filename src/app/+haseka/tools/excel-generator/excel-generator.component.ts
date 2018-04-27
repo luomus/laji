@@ -65,8 +65,12 @@ export class ExcelGeneratorComponent implements OnInit {
       })
   }
 
-  toggleField(field: FormField) {
+  toggleField(field: FormField | FormField[]) {
     if (this.generating) {
+      return;
+    }
+    if (Array.isArray(field)) {
+      field.forEach(value => this.toggleField(value));
       return;
     }
     if (this.selected.indexOf(field.key) === -1) {

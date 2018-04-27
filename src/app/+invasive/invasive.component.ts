@@ -27,6 +27,7 @@ export class InvasiveComponent implements OnInit {
     countryId: ['ML.206'],
     administrativeStatusId: ['MX.euInvasiveSpeciesList']
   };
+  documentModalVisible = false;
 
   constructor(
     private taxonomyApi: TaxonomyApi,
