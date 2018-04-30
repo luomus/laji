@@ -11,6 +11,12 @@
               {{document.documentId}}
             </a>
           </small>
+          <laji-edit-link
+            [editors]="editors"
+            [personID]="personID"
+            [documentID]="document.documentId"
+            [formID]="document.formId"
+          ></laji-edit-link>
         </h3>
       </div>
       <laji-issues [data]="document"></laji-issues>
