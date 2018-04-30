@@ -20,6 +20,7 @@ import {
   BsDropdownModule,
   ModalModule,
   PaginationModule,
+  ProgressbarModule,
   PopoverModule,
   TooltipModule,
   TypeaheadModule
@@ -73,6 +74,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),
+    ProgressbarModule.forRoot(),
     Ng2Webstorage.forRoot({ prefix: 'laji-', separator: '' }),
     AppRoutingModule,
     ViewerModule,

@@ -50,6 +50,7 @@
     <div><p>Valitse tiedosto alla olevaan kenttään. Jos tiedosto nimestä ei voinut päätellä Vihkon lomaketta, kysyy Vihko erikseen mitä lomaketta tulisi tallennuksessa käyttää.</p></div>
     <div class="row data-container">
       <div class="col-sm-9">
+        <span *ngIf="hasUserMapping"><strong>Huom</strong> olet lataamassa tiedostoa olemassaolevan kuvauksen kanssa. Jos et halunnut tätä niin voit poistaa kuvauksen oikealla olevasta ruksista.</span>
         <input type="file" class="form-control" (change)="onFileChange($event)" />
         <span *ngIf="fileLoading">Ladataan...</span>
       </div>
@@ -90,7 +91,7 @@
     <div class="row">
       <div class="col-sm-12 spacer">
         <ng-container *ngIf="status === 'validating'">
-          <laji-spinner [spinning]="status === 'validating'"></laji-spinner>
+          <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{current}}/{{total}}</progressbar>
         </ng-container>
         <ng-container *ngIf="status === 'invalidData'">
           <p>
@@ -114,7 +115,7 @@
       </div>
     </div>
 
-    <div class="data-container">
+    <div class="data-container" *ngIf="status !== 'validating'">
     <laji-datatable
         #dataTable
         class="import-table"
@@ -134,7 +135,7 @@
 
   <ng-container *ngIf="status === 'importing'">
     <h4>Tiedostoa ladataan</h4>
-    Progress bar!
+    <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{current}}/{{total}}</progressbar>
   </ng-container>
 
   <ng-container *ngIf="status === 'doneOk' || status === 'doneWithErrors'">

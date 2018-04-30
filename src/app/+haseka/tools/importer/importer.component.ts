@@ -76,6 +76,8 @@ export class ImporterComponent implements OnInit {
   hash;
   currentTitle: string;
   fileLoading = false;
+  total = 0;
+  current = 0;
 
   private externalLabel = [
     'editors[*]',
@@ -268,6 +270,8 @@ export class ImporterComponent implements OnInit {
   validate() {
     this.status = 'validating';
     let success = true;
+    this.total = this.parsedData.length;
+    this.current = 1;
     Observable.from(this.parsedData)
       .mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy)
         .switchMap(document => this.importService.validateData(document))
@@ -276,6 +280,10 @@ export class ImporterComponent implements OnInit {
           .map(body => body.error && body.error.details || body)
           .map(error => ({result: {_error: error}, source: data}))
         )
+        .do(() => {
+          this.current++;
+          this.cdr.markForCheck();
+        })
       )
       .subscribe(
         (data) => {
@@ -313,6 +321,8 @@ export class ImporterComponent implements OnInit {
     this.status = 'importing';
     let success = true;
     let hadSuccess = false;
+    this.total = this.parsedData.length;
+    this.current = 1;
     Observable.from(this.parsedData)
       .mergeMap(data => this.augmentService.augmentDocument(data.document)
         .switchMap(document => this.importService.sendData(document, publicityRestrictions))
@@ -321,6 +331,10 @@ export class ImporterComponent implements OnInit {
           .map(body => body.error && body.error.details || body)
           .map(error => ({result: {_error: error}, source: data}))
         )
+        .do(() => {
+          this.current++;
+          this.cdr.markForCheck();
+        })
       )
       .subscribe(
         (data) => {
