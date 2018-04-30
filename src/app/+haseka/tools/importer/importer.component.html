@@ -82,6 +82,7 @@
   <laji-cell-value-mapping
     *ngIf="status === 'dataMapping'"
     (done)="rowMappingDone($event)"
+    [valueMap]="valueMap"
     [fields]="fields"
     [data]="data"
     [colMapping]="colMap"></laji-cell-value-mapping>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
@@ -57,7 +57,9 @@ export class ImporterComponent implements OnInit {
   header: {[key: string]: string};
   fields: {[key: string]: FormField};
   dataColumns: ImportTableColumn[];
+  origColMap: {[key: string]: string};
   colMap: {[key: string]: string};
+  valueMap: {[key: string]: {[value: string]: any}} = {};
   formID: string;
   form: any;
   bstr: string;
@@ -158,6 +160,7 @@ export class ImporterComponent implements OnInit {
         this.excludedFromCopy = form.excludeFromCopy || [];
         this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, true);
         this.colMap = this.spreadSheetService.getColMapFromComments(sheet, this.fields, Object.keys(this.header).length);
+        this.origColMap = JSON.parse(JSON.stringify(this.colMap));
 
         this.initDataColumns();
 
@@ -433,6 +436,17 @@ export class ImporterComponent implements OnInit {
   }
 
   activate(status) {
+    console.log(status);
+    if (status === 'dataMapping') {
+      this.mappingService.clearUserValueMapping();
+      this.valueMap = {};
+    } else if (status === 'colMapping' || status === 'empty') {
+      this.mappingService.clearUserColMapping();
+      this.mappingService.clearUserValueMapping();
+      this.colMap = JSON.parse(JSON.stringify(this.origColMap));
+      this.valueMap = {};
+    }
+    this.hasUserMapping = this.mappingService.hasUserMapping();
     this.status = status;
     this.cdr.markForCheck();
   }

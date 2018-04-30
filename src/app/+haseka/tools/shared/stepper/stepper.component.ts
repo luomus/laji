@@ -56,7 +56,7 @@ export class StepperComponent implements OnInit {
   }
 
   backTo(idx) {
-    if (idx === 0) {
+    if (idx < this.active) {
       this.activate.emit(this.steps[idx].returnState);
     }
   }

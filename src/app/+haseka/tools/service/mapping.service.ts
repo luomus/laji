@@ -112,6 +112,14 @@ export class MappingService {
     });
   }
 
+  clearUserValueMapping() {
+    this.userValueMappings = {};
+  }
+
+  clearUserColMapping() {
+    this.userColMappings = {};
+  }
+
   initColMap(fields: {[key: string]: FormField}) {
     const lookup = {};
     Object.keys(fields).map((key) => {
