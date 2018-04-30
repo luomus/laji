@@ -436,7 +436,6 @@ export class ImporterComponent implements OnInit {
   }
 
   activate(status) {
-    console.log(status);
     if (status === 'dataMapping') {
       this.mappingService.clearUserValueMapping();
       this.valueMap = {};
