@@ -49,7 +49,7 @@
   <ng-container *ngIf="['empty', 'importingFile', 'fileAlreadyUploaded', 'fileAlreadyUploadedPartially', 'invalidFileType', 'ambiguousColumns'].indexOf(status) > -1">
     <div><p>Valitse tiedosto alla olevaan kenttään. Jos tiedosto nimestä ei voinut päätellä Vihkon lomaketta, kysyy Vihko erikseen mitä lomaketta tulisi tallennuksessa käyttää.</p></div>
     <div class="row data-container">
-      <div class="col-sm-8">
+      <div class="col-sm-9">
         <input type="file" class="form-control" (change)="onFileChange($event)" />
         <span *ngIf="fileLoading">Ladataan...</span>
       </div>
@@ -88,17 +88,17 @@
 
   <ng-container *ngIf="status === 'importReady' || status === 'invalidData' || status === 'validating'">
     <div class="row">
-      <div class="col-sm-9 spacer">
+      <div class="col-sm-12 spacer">
         <ng-container *ngIf="status === 'validating'">
           <laji-spinner [spinning]="status === 'validating'"></laji-spinner>
         </ng-container>
         <ng-container *ngIf="status === 'invalidData'">
           <p>
             Tiedoston datassa oli virheitä jotka estivät latauksen. Alla olevasta taulukosta löydät havaitut ongelmat.
-            Voit tehdä tarvittavat korjaukset tiedostoon ja yrittää ladata se uudestaan suoraan tästä:
+            Voit tehdä tarvittavat korjaukset tiedostoon ja ladata se uudestaan suoraan tästä:
           </p>
           <div class="row">
-            <div class="col-sm-8">
+            <div class="col-sm-9">
               <input type="file" class="form-control" (change)="onFileChange($event)" />
               <span *ngIf="fileLoading">Ladataan...</span>
             </div>
@@ -107,10 +107,8 @@
         <ng-container *ngIf="status === 'importReady'">
           <button type="button" (click)="save(publ)" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
           <button type="button" (click)="save(priv)" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
-          <div class="col-sm-3 map-buttons">
-            <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="showUserMapping()" tooltip="Nykyinen datan kuvaus" placement="left">
-              <i class="glyphicon glyphicon-open"></i>
-            </div>
+          <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="showUserMapping()" tooltip="Nykyinen datan kuvaus" placement="left">
+            <i class="glyphicon glyphicon-open"></i>
           </div>
         </ng-container>
       </div>

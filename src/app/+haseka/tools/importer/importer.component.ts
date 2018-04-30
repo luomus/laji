@@ -238,8 +238,8 @@ export class ImporterComponent implements OnInit {
 
   rowMappingDone(mappings) {
     this.status = 'importReady';
-    this.hasUserMapping = this.mappingService.hasUserMapping();
     this.mappingService.addUserValueMapping(mappings);
+    this.hasUserMapping = this.mappingService.hasUserMapping();
     this.initParsedData();
     const skipped = [];
     const docs = {};
