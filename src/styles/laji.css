@@ -129,6 +129,9 @@ laji-locale-sv > div,
 .home-page .tooltip {
   min-width: 200px;
 }
+.tooltip-inner {
+  text-align: left;
+}
 
 /** generic **/
 .scientificName {

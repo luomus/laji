@@ -1,15 +1,11 @@
+<button class="btn btn-default toggle-linked" (click)="toggleLinkedVisible()">{{linkedVisible ? 'Piilota' : 'Näytä'}} linkitetyt</button><br>
 <table class="table">
   <tr>
     <th colspan="2">
       Tiedostossa oleva arvo
     </th>
     <th colspan="2">
-      <div class="row">
-        <div class="col-sm-12">
-          Vihkoon vietävä arvo
-          <button class="btn btn-default pull-right" (click)="toggleLinkedVisible()">{{linkedVisible ? 'Piilota' : 'Näytä'}} linkitetyt</button>
-        </div>
-      </div>
+      Vihkoon vietävä arvo
     </th>
   </tr>
   <ng-container *ngFor="let value of invalidValues">

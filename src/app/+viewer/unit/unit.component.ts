@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
@@ -41,8 +41,17 @@ export class UnitComponent implements OnInit {
       if (this.unit.linkings) {
         this.unit.linkings.taxonId = this.toQname.transform(this.unit.linkings.taxon.qname);
       }
-      if (this.unit.facts) {
-        this.unit.facts = this.unit.facts.filter(item => this.skipFacts.indexOf(item.fact) === -1);
+      if (Array.isArray(this.unit.facts)) {
+        this.unit.facts = this.unit.facts.reduce((cumulative, current) => {
+          if (this.skipFacts.indexOf(current.fact) !== -1) {
+            return cumulative;
+          }
+          if (typeof current.value === 'string' && current.value.match(/^MX\.[0-9]+$/)) {
+            current.value = IdService.getUri(current.value);
+          }
+          cumulative.push(current);
+          return cumulative;
+        }, []);
       }
       if (this.unit.unitId) {
         this.unitID = IdService.getId(this.unit.unitId);

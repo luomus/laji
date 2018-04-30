@@ -13,3 +13,8 @@
 .hidden {
   display: none;
 }
+.toggle-linked {
+  position: absolute;
+  top: 15px;
+  right: 0;
+}
