@@ -106,17 +106,20 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     },
     {
       name: 'typeOfOccurrenceInFinland',
-      label: 'taxonomy.typesOfOccurrenceInFinland',
       cellTemplate: 'labelArray'
     },
     {
       name: 'typeOfOccurrenceInFinlandNotes'
     },
     {
-      name: 'occurrenceInFinlandPublications'
+      name: 'occurrenceInFinlandPublication',
+      cellTemplate: 'publicationArray',
+      width: 300
     },
     {
-      name: 'originalPublications'
+      name: 'originalPublication',
+      cellTemplate: 'publication',
+      width: 300
     },
     {
       name: 'latestRedListStatusFinland'
@@ -298,7 +301,10 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       .replace('typeOfOccurrenceInFinland', 'typesOfOccurrenceInFinland')
       .replace('alternativeVernacularName', 'alternativeVernacularNames')
       .replace('obsoleteVernacularName', 'obsoleteVernacularNames')
-      .replace('tradeName', 'tradeNames');
+      .replace('tradeName', 'tradeNames')
+      .replace('typeOfOccurrenceInFinlandNotes', 'typesOfOccurrenceInFinlandNotes')
+      .replace('occurrenceInFinlandPublication', 'occurrenceInFinlandPublications')
+      .replace('originalPublication', 'originalPublications');
     extraParameters['lang'] = 'multi';
 
     return {

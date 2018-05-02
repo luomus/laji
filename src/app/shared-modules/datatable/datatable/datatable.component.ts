@@ -42,6 +42,8 @@ export class DatatableComponent {
   @ViewChild('toSemicolon') toSemicolonTpl: TemplateRef<any>;
   @ViewChild('numeric') numericTpl: TemplateRef<any>;
   @ViewChild('date') dateTpl: TemplateRef<any>;
+  @ViewChild('publication') publicationTpl: TemplateRef<any>;
+  @ViewChild('publicationArray') publicationArrayTpl: TemplateRef<any>;
   @ViewChild('annotation') annotationTpl: TemplateRef<any>;
   @ViewChild('image') imageTpl: TemplateRef<any>;
 

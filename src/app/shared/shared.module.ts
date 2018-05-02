@@ -97,6 +97,8 @@ import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { FactNotInPipe } from './pipe/fact-not-in.pipe';
 import {HttpClientModule} from '@angular/common/http';
 import {LajiApiService} from './service/laji-api.service';
+import { PublicationApi } from './api/PublicationApi';
+import { PublicationService } from './service/publication.service';
 
 
 @NgModule({
@@ -182,6 +184,8 @@ export class SharedModule {
         TaxonNamePipe,
         ToQNamePipe,
         LajiApiService,
+        PublicationApi,
+        PublicationService,
         {provide: Http, useClass: AuthenticatedHttpService}
       ]
     };

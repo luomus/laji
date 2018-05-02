@@ -192,11 +192,18 @@
     <ng-template #dateRange><span title="{{value.begin}} - {{value.end}}">{{value.begin}} - {{value.end}}</span></ng-template>
   </span>
 </ng-template>
-
 <ng-template let-value="value" #date>
   <span *ngIf="value" title="{{value | amDateFormat: 'DD.MM.YYYY HH:mm'}}">
     {{value | amDateFormat: 'DD.MM.YYYY HH:mm'}}
   </span>
+</ng-template>
+<ng-template let-value="value" #publication>
+  <span *ngIf="value" title="{{value | publication}}">
+    {{value | publication}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #publicationArray>
+  <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | publication}"></ng-container>
 </ng-template>
 <ng-template let-value="value" #annotation>
   <span [ngSwitch]="value.annotationClass | toQName" [tooltip]="value.annotationClass | toQName | label"
