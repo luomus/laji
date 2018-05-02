@@ -313,7 +313,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       .replace('tradeName', 'tradeNames')
       .replace('typeOfOccurrenceInFinlandNotes', 'typesOfOccurrenceInFinlandNotes')
       .replace('occurrenceInFinlandPublication', 'occurrenceInFinlandPublications')
-      .replace('originalPublication', 'originalPublications')
+      .replace('originalPublication', 'originalPublications');
     extraParameters['lang'] = 'multi';
 
     return {
