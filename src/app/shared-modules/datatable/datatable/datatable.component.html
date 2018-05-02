@@ -197,6 +197,11 @@
     {{value | amDateFormat: 'DD.MM.YYYY HH:mm'}}
   </span>
 </ng-template>
+<ng-template let-value="value" #user>
+    <span *ngIf="value" title="{{value | users}}">
+    {{value | users}}
+  </span>
+</ng-template>
 <ng-template let-value="value" #publication>
   <span *ngIf="value" title="{{value | publication}}">
     {{value | publication}}
@@ -204,6 +209,11 @@
 </ng-template>
 <ng-template let-value="value" #publicationArray>
   <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | publication}"></ng-container>
+</ng-template>
+<ng-template let-value="value" #iucnStatus>
+  <span *ngIf="value" title="{{value.status.replace('MX.iucn', '')}} ({{value.year}})">
+    {{value.status.replace('MX.iucn', '')}} ({{value.year}})
+  </span>
 </ng-template>
 <ng-template let-value="value" #annotation>
   <span [ngSwitch]="value.annotationClass | toQName" [tooltip]="value.annotationClass | toQName | label"
