@@ -18,9 +18,11 @@
   </laji-datatable>
   <div class="test"></div>
   <ul class="legend">
-    <li *ngFor="let leg of legendList">
-      <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{leg.label}}
-    </li>
+    <ng-container *ngIf="showLegendList">
+      <li *ngFor="let leg of legendList">
+        <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{leg.label}}
+      </li>
+    </ng-container>
   </ul>
 </div>
 
