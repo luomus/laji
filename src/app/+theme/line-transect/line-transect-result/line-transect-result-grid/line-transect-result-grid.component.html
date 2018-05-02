@@ -8,24 +8,6 @@
       <br>
         <span *ngFor="let year of years">
           <a [routerLink] [queryParams]="{time: year}">{{'wholeYear'| translate:{year:year} }}</a>
-          <ng-container *ngIf="(year === currentYear && currentMonth > 3) || year !== currentYear">
-            | <a [routerLink] [queryParams]="{time: year + '-04'}">{{'m-04' | translate}}&nbsp;{{year}}</a>
-          </ng-container>
-          <ng-container *ngIf="(year === currentYear && currentMonth > 4) || year !== currentYear">
-            | <a [routerLink] [queryParams]="{time: year + '-05'}">{{'m-05' | translate}}&nbsp;{{year}}</a>
-          </ng-container>
-          <ng-container *ngIf="(year === currentYear && currentMonth > 5) || year !== currentYear">
-            | <a [routerLink] [queryParams]="{time: year + '-06'}">{{'m-06' | translate}}&nbsp;{{year}}</a>
-          </ng-container>
-          <ng-container *ngIf="(year === currentYear && currentMonth > 6) || year !== currentYear">
-            | <a [routerLink] [queryParams]="{time: year + '-07'}">{{'m-07' | translate}}&nbsp;{{year}}</a>
-          </ng-container>
-          <ng-container *ngIf="(year === currentYear && currentMonth > 7) || year !== currentYear">
-            | <a [routerLink] [queryParams]="{time: year + '-08'}">{{'m-08' | translate}}&nbsp;{{year}}</a>
-          </ng-container>
-          <ng-container *ngIf="(year === currentYear && currentMonth > 8) || year !== currentYear">
-            | <a [routerLink] [queryParams]="{time: year + '-09'}">{{'m-09' | translate}}&nbsp;{{year}}</a>
-          </ng-container>
           <br>
         </span>
       <br>
