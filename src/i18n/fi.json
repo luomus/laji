@@ -62,6 +62,8 @@
   "taxonomy.vernacular.name.sv": "Ruotsinkielinen nimi",
   "taxonomy.vernacular.name.en": "Englanninkielinen nimi",
   "taxonomy.alternative.vernacular.names": "Vaihtoehtoiset yleiskieliset nimet",
+  "taxonomy.obsolete.vernacular.name": "Vanhahtavat kansankieliset nimet",
+  "taxonomy.trade.name": "Kauppanimi",
   "taxonomy.occurrenceInFinland": "Esiintyminen Suomessa",
   "taxonomy.typesOfOccurrenceInFinland": "Esiintymisen tyyppi",
   "taxonomy.redListStatus2010Finland": "Uhanalaisuus Suomessa",

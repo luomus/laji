@@ -30,12 +30,12 @@ export class DatatableComponent {
   @ViewChild('headerTpl') headerTpl: TemplateRef<any>;
   @ViewChild('eventDate') eventDateTpl: TemplateRef<any>;
   @ViewChild('multiLang') multiLangTpl: TemplateRef<any>;
+  @ViewChild('multiLangAll') multiLangAllTpl: TemplateRef<any>;
   @ViewChild('vernacularName') vernacularNameTpl: TemplateRef<any>;
   @ViewChild('scientificName') scientificNameTpl: TemplateRef<any>;
   @ViewChild('taxonScientificName') taxonScientificNameTpl: TemplateRef<any>;
   @ViewChild('cursive') cursiveTpl: TemplateRef<any>;
   @ViewChild('boolean') booleanTpl: TemplateRef<any>;
-  @ViewChild('speciesVernacularName') speciesVernacularNameTpl: TemplateRef<any>;
   @ViewChild('label') labelTpl: TemplateRef<any>;
   @ViewChild('labelArray') labelArrayTpl: TemplateRef<any>;
   @ViewChild('warehouseLabel') warehouseLabelTpl: TemplateRef<any>;

@@ -58,6 +58,8 @@
   "taxonomy.vernacular.name.sv": "Swedish name",
   "taxonomy.vernacular.name.en": "English name",
   "taxonomy.alternative.vernacular.names": "Alternative vernacular names",
+  "taxonomy.obsolete.vernacular.name": "Obsolete vernacular names",
+  "taxonomy.trade.name": "Trade name",
   "taxonomy.occurrenceInFinland": "Occurrence in Finland",
   "taxonomy.typesOfOccurrenceInFinland": "Type of occurrence",
   "taxonomy.redListStatus2010Finland": "Conservation status in Finland",

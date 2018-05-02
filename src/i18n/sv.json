@@ -58,6 +58,8 @@
   "taxonomy.vernacular.name.sv": "Svenska namn",
   "taxonomy.vernacular.name.en": "Engelskt namn",
   "taxonomy.alternative.vernacular.names": "Alternativa folkspråkliga namn",
+  "taxonomy.obsolete.vernacular.name": "Föråldrade folkspråkliga namn",
+  "taxonomy.trade.name": "Handelsnamn",
   "taxonomy.occurrenceInFinland": "Förekommer i Finland",
   "taxonomy.typesOfOccurrenceInFinland": "Typ av förekomst",
   "taxonomy.redListStatus2010Finland": "Rödlistekategori",

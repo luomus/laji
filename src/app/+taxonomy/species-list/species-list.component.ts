@@ -83,18 +83,20 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       width: 200
     },
     {
-      name: 'alternativeVernacularNames',
+      name: 'alternativeVernacularName',
       label: 'taxonomy.alternative.vernacular.names',
+      cellTemplate: 'multiLangAll',
       width: 200
     },
     {
       name: 'obsoleteVernacularName',
       label: 'taxonomy.obsolete.vernacular.name',
+      cellTemplate: 'multiLangAll',
       width: 200
     },
     {
-      name: 'tradeNames',
-      label: 'taxonomy.trade.names',
+      name: 'tradeName',
+      label: 'taxonomy.trade.name',
       width: 200
     },
     {
@@ -292,7 +294,11 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     extraParameters['target'] = undefined;
     extraParameters['informalTaxonGroupId'] = undefined;
     extraParameters['selectedFields'] = this.searchQuery.selected.join(',');
-    extraParameters['selectedFields'] = extraParameters['selectedFields'].replace('typeOfOccurrenceInFinland', 'typesOfOccurrenceInFinland');
+    extraParameters['selectedFields'] = extraParameters['selectedFields']
+      .replace('typeOfOccurrenceInFinland', 'typesOfOccurrenceInFinland')
+      .replace('alternativeVernacularName', 'alternativeVernacularNames')
+      .replace('obsoleteVernacularName', 'obsoleteVernacularNames')
+      .replace('tradeName', 'tradeNames');
     extraParameters['lang'] = 'multi';
 
     return {
