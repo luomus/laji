@@ -26,6 +26,7 @@ export class LajiErrorHandler extends ErrorHandler {
       if (error.message.indexOf('QuotaExceededError') !== -1 ||
         error.message.indexOf('ExpressionChangedAfterItHasBeenCheckedError:') === 0
       ) {
+        this.pauseMessage();
         return super.handleError(error);
       }
     }
