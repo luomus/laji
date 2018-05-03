@@ -8,6 +8,8 @@
   "error.404.intro": "Kontrollera att webbadressen är korrekt skriven.",
   "error.login": "Unable to login. Please try again little later",
   "error.logout": "Unable to logout. Please try again little later",
+  "error.scheduled.title": "Underhållsavbrott den första torsdagen i varje månad",
+  "error.scheduled.intro": "Avbrottet varar i ungefär tio minuter och går mellan 8:00 och 10:00. Under den här tiden kommer de flesta av FinBIF-tjänsterna inte att fungera.",
   "navigation.taxonomy": "Artlista",
   "navigation.observation": "Observationer",
   "navigation.information": "Artdatacenter",
