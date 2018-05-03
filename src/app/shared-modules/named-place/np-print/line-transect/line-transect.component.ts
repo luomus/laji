@@ -95,25 +95,26 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     let total = 0;
     let currentPage = 0;
     let current = 0;
-    let minLat = 90, maxLat = -90, minLng = 180, maxLng = -180;
+    let minLat =  9999999, maxLat = 0, minLng = 9999999, maxLng = 0;
     let startPoint = {lat: 0, lng: 0};
     geometries.coordinates.forEach((coord, idx) => {
       if (Array.isArray(coord) && coord.length > 0) {
-        if (idx === 0) {
-          startPoint = this.getYkj(coord[0][1], coord[0][0]);
-        }
-        coord.forEach(coord => {
-          if (coord[0] < minLng) {
-            minLng = coord[0];
+        coord.forEach((coord, coodIdx) => {
+          const ykjPoint = this.getYkj(coord[1], coord[0]);
+          if (idx === 0 && coodIdx === 0) {
+            startPoint = ykjPoint;
           }
-          if (coord[0] > maxLng) {
-            maxLng = coord[0];
+          if (ykjPoint.lng < minLng) {
+            minLng = ykjPoint.lng;
           }
-          if (coord[1] < minLat) {
-            minLat = coord[1];
+          if (ykjPoint.lng > maxLng) {
+            maxLng = ykjPoint.lng;
           }
-          if (coord[1] > maxLat) {
-            maxLat = coord[1];
+          if (ykjPoint.lat < minLat) {
+            minLat = ykjPoint.lat;
+          }
+          if (ykjPoint.lat > maxLat) {
+            maxLat = ykjPoint.lat;
           }
         });
       }
@@ -141,8 +142,8 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     });
     this.startPoint = startPoint;
     this.bounds = {
-      sw: this.getYkj(minLat, minLng),
-      ne: this.getYkj(maxLat, maxLng)
+      sw: {lat: minLat, lng: minLng},
+      ne: {lat: maxLat, lng: maxLng}
     };
     if (pages[currentPage]) {
       if (pages[currentPage][0] > total) {
