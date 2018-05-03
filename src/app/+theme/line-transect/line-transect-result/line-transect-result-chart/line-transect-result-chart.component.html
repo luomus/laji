@@ -7,6 +7,7 @@
       [taxon]="taxonId"
       (taxonSelect)="onTaxonSelect($event)"
       [informalTaxonGroup]="'MVL.1'"
+      [onlyFinnish]="true"
       [showResult]="false"
       [clearValueOnSelect]="false"
       [allowInvalid]="true"
@@ -24,7 +25,7 @@
   </div>
   <div class="col-xs-12 col-sm-6">
     <laji-spinner [spinning]="loading" [overlay]="true">
-      <laji-line-transect-chart
+      <laji-line-transect-chart *ngIf="minYear"
         style="height: 250px;"
         [xValue]="0"
         [yValue]="0"
@@ -33,7 +34,7 @@
         [title]="''"
         [line]="line"
         [xLabel]="'Vuodet'"
-        [yLabel]="'Parimäärä'"
+        [yLabel]="'Parim.'"
         [xTickFormat]="'d'"
       ></laji-line-transect-chart>
     </laji-spinner>

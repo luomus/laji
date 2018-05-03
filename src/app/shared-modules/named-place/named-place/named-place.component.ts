@@ -38,7 +38,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   editMode = false;
   loading = false;
   allowEdit = false;
-  allowCreate = false;
+  allowCreate = true;
   formRights: Rights = {
     admin: false,
     edit: false
@@ -202,7 +202,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       admin: false,
       edit: false
     };
-    this.allowCreate = false;
+    this.allowCreate = true;
     if (!formData || !formData.collectionID || !this.userService.isLoggedIn) {
       return Observable.of(null);
     }
@@ -211,7 +211,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       .take(1)
       .switchMap(rights => {
         this.formRights = rights;
-        this.allowCreate = (formData.features && formData.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1) || rights.admin;
+        this.allowCreate = !formData.features || formData.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1 || rights.admin;
         return Observable.of(null);
       });
   }

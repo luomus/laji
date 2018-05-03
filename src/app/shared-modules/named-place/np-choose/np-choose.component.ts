@@ -20,7 +20,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
 
   @Input() formData: any;
   @Input() visible = true;
-  @Input() allowCreate = false;
+  @Input() allowCreate = true;
   @Input() userID: string;
 
   @Output() onActivePlaceChange = new EventEmitter<number>();
