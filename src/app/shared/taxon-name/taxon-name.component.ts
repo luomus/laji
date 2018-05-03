@@ -8,10 +8,11 @@ import {Component, Input, OnInit} from '@angular/core';
 export class TaxonNameComponent implements OnInit {
 
   @Input() taxon: {
-    id: string;
+    id?: string;
+    qname?: string;
     cursiveName?: boolean;
     scientificName?: string;
-    vernacularName?: string;
+    vernacularName?: string | {[lang: string]: string};
     scientificNameAuthorship?: string;
   };
   @Input() taxonID: string;
