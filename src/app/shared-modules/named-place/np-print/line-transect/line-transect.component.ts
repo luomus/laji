@@ -4,6 +4,7 @@ import * as MapUtil from 'laji-map/lib/utils';
 import { Person } from '../../../../shared/model/Person';
 import { LajiMapOptions } from '../../../../shared-modules/map/map-options.interface';
 import { Map3Component } from '../../../../shared-modules/map/map.component';
+import { CoordinateService } from '../../../../shared/service/coordinate.service';
 
 @Component({
   selector: 'laji-line-transect',
@@ -30,10 +31,16 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   public info: {key: string, data: string}[];
   public formSplit = 50;
   public landscape = false;
+  public startPoint = {lat: 0, lng: 0};
+  public bounds = {
+    'ne': {lat: 0, lng: 0},
+    'sw': {lat: 0, lng: 0}
+  };
 
   private pageSize = 10;
 
   constructor(
+    private coordinateService: CoordinateService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -88,8 +95,28 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     let total = 0;
     let currentPage = 0;
     let current = 0;
-    let minX = 999, maxX = 0, minY = 999, maxY = 0;
+    let minLat = 90, maxLat = -90, minLng = 180, maxLng = -180;
+    let startPoint = {lat: 0, lng: 0};
     geometries.coordinates.forEach((coord, idx) => {
+      if (Array.isArray(coord) && coord.length > 0) {
+        if (idx === 0) {
+          startPoint = this.getYkj(coord[0][1], coord[0][0]);
+        }
+        coord.forEach(coord => {
+          if (coord[0] < minLng) {
+            minLng = coord[0];
+          }
+          if (coord[0] > maxLng) {
+            maxLng = coord[0];
+          }
+          if (coord[1] < minLat) {
+            minLat = coord[1];
+          }
+          if (coord[1] > maxLat) {
+            maxLat = coord[1];
+          }
+        });
+      }
       const dist = MapUtil.getLineTransectStartEndDistancesForIdx({geometry: geometries}, idx, 10);
       const biotopeSlot = current === dist[0] ? current : current - this.formSplit;
       if (!biotopes[biotopeSlot]) {
@@ -112,6 +139,11 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
         pages[currentPage].unshift(current);
       }
     });
+    this.startPoint = startPoint;
+    this.bounds = {
+      sw: this.getYkj(minLat, minLng),
+      ne: this.getYkj(maxLat, maxLng)
+    };
     if (pages[currentPage]) {
       if (pages[currentPage][0] > total) {
         pages[currentPage][0] = total;
@@ -147,6 +179,14 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
         feature: {geometry: geometry}
       }
     };
+  }
+
+  private getYkj(lat, lng): {lat: number, lng: number} {
+    const coord = this.coordinateService.convertWgs84ToYkj(lat, lng).map(coord => Math.round(coord / 10) * 10);
+    return {
+      lat: coord[1],
+      lng: coord[0]
+    }
   }
 
   private checkOrientation(geometries) {

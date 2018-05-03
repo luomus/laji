@@ -88,7 +88,7 @@ export class CoordinateService {
     };
   }
 
-  convertWgs84ToYkj(lat: any, lng: any) {
+  convertWgs84ToYkj(lat: any, lng: any): [number, number] {
     return MapUtil.convertLatLng([lat, lng], 'WGS84', 'EPSG:2393');
   }
 
