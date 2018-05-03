@@ -3861,9 +3861,9 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-laji-form@^0.0.430:
-  version "0.0.430"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.430.tgz#a28a0e8496fb37b93313c043593db79aadd068fe"
+laji-form@^0.0.431:
+  version "0.0.431"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.431.tgz#8f42be15ef451813918fb7d16ae9dabe75084151"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
