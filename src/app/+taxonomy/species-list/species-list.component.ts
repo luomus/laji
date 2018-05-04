@@ -294,7 +294,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   }
 
   closeOkModal() {
-    this.searchQuery.selected = [...this._selected];
+    this.searchQuery.setSelectedFields(this._selected);
     this.searchQuery.queryUpdate({formSubmit: false});
     this.modalRef.hide();
   }
