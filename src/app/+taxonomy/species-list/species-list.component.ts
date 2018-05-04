@@ -97,6 +97,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     {
       name: 'tradeName',
       label: 'taxonomy.trade.name',
+      cellTemplate: 'multiLangAll',
       width: 200
     },
     {
@@ -306,14 +307,6 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     extraParameters['target'] = undefined;
     extraParameters['informalTaxonGroupId'] = undefined;
     extraParameters['selectedFields'] = this.searchQuery.selected.join(',');
-    extraParameters['selectedFields'] = extraParameters['selectedFields']
-      .replace('typeOfOccurrenceInFinland', 'typesOfOccurrenceInFinland')
-      .replace('alternativeVernacularName', 'alternativeVernacularNames')
-      .replace('obsoleteVernacularName', 'obsoleteVernacularNames')
-      .replace('tradeName', 'tradeNames')
-      .replace('typeOfOccurrenceInFinlandNotes', 'typesOfOccurrenceInFinlandNotes')
-      .replace('occurrenceInFinlandPublication', 'occurrenceInFinlandPublications')
-      .replace('originalPublication', 'originalPublications');
     extraParameters['lang'] = 'multi';
 
     return {
