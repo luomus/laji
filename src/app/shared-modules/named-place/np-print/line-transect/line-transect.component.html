@@ -135,7 +135,7 @@
     <tr *ngIf="person">
       <td>Havainnoja:</td>
       <td>
-        {{person.id | users}} ({{person.id}})<br>
+        {{person.id | users:'fullname'}} ({{person.id}})<br>
         {{person.emailAddress}}
       </td>
     </tr>

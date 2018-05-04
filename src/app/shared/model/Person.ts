@@ -39,6 +39,11 @@ export interface Person {
   fullName?: string;
 
   /**
+   * Users group
+   */
+  group?: string;
+
+  /**
    * Email address for the user
    */
   emailAddress?: Array<string>;
