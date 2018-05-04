@@ -352,9 +352,15 @@ export class MappingService {
   private analyzeGeometry(value: any) {
     if (typeof value === 'string') {
       if (value.match(/^[0-9]{3,7}:[0-9]{3,7}$/)) {
-        const parts = value.split(':');
-        if (parts[0].length === parts[1].length) {
-          return this.coordinateService.convertYkjToGeoJsonFeature(parts[0], parts[1]).geometry;
+        const ykjParts = value.split(':');
+        if (ykjParts[0].length === ykjParts[1].length) {
+          return this.coordinateService.convertYkjToGeoJsonFeature(ykjParts[0], ykjParts[1]).geometry;
+        }
+      } else if (value.match(/^-?[0-9]{1,2}\.[0-9]+,-?1?[0-9]{1,2}\.[0-9]+/)) {
+        const wgsParts = value.split(',');
+        return {
+          type: 'Point',
+          coordinates: [+wgsParts[1], +wgsParts[0]]
         }
       }
       try {

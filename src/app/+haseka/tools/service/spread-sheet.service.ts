@@ -41,6 +41,7 @@ export class SpreadSheetService {
         this.labelService.get('MY.identification', lang),
         this.labelService.get('MY.unit', lang),
         this.labelService.get('MY.unitFactClass', lang),
+        this.labelService.get('MZ.unitGathering', lang),
         (
           document,
           gatheringEvent,
@@ -49,7 +50,8 @@ export class SpreadSheetService {
           gatheringFact,
           identifications,
           units,
-          unitFact
+          unitFact,
+          unitGathering
         ) => ({
           document,
           gatheringEvent,
@@ -58,7 +60,8 @@ export class SpreadSheetService {
           gatheringFact,
           identifications,
           units,
-          unitFact
+          unitFact,
+          unitGathering
         })))
       .subscribe(translations => this.translations = translations)
 
