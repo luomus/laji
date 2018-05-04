@@ -8,7 +8,7 @@ import {
   AlertModule,
   BsDropdownModule,
   ModalModule,
-  PopoverModule,
+  PopoverModule, ProgressbarModule,
   TooltipModule
 } from 'ngx-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -129,14 +129,14 @@ import { PublicationService } from './service/publication.service';
     MomentModule,
     SpinnerModule,
     PaginatorModule,
-    TooltipModule, BsDropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule
+    TooltipModule, BsDropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule, ProgressbarModule
   ],
   providers: [ ], // keep this empty!
   exports: [
     CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent,
     AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe, LajiFormComponent, DocumentFormComponent,
-    ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
+    ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule, ProgressbarModule,
     FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, DocumentFormHeaderComponent, LocalizePipe, HideScrollDirective,

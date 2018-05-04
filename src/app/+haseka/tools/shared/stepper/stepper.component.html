@@ -2,8 +2,7 @@
   <li *ngFor="let step of steps; let i=index"
       (click)="backTo(i)"
       [ngClass]="{
-        'link': i === 0,
-        'completed': i < active,
+        'completed link': i < active,
         'active': i === active,
         'incomplete': i > active
       }">

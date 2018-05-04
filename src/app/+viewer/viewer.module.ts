@@ -19,6 +19,7 @@ import { IssuesComponent } from './issues/issues.component';
 import { FactsComponent } from './facts/facts.component';
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { AnnotationsModule } from '../shared-modules/annotations/annotations.module';
+import { EditLinkComponent } from './edit-link/edit-link.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,7 @@ import { AnnotationsModule } from '../shared-modules/annotations/annotations.mod
   providers: [ToQNamePipe, AnnotationService, AnnotationApi],
   declarations: [ViewerComponent, DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
     GatheringComponent, UnitComponent, LcFirstPipe,
-    SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent],
+    SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent, EditLinkComponent],
   exports: [ViewerComponent, DocumentComponent]
 })
 export class ViewerModule { }

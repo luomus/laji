@@ -112,11 +112,31 @@ export class MappingService {
     });
   }
 
+  clearUserValueMapping() {
+    this.userValueMappings = {};
+  }
+
+  clearUserColMapping() {
+    this.userColMappings = {};
+  }
+
   initColMap(fields: {[key: string]: FormField}) {
     const lookup = {};
-    Object.keys(fields).map((key) => {
+    const simpleCols: {[label: string]: {cnt: number, key: string}} = {};
+    Object.keys(fields).forEach((key) => {
+      const label = fields[key].label.toLowerCase();
       lookup[key.toLowerCase()] = key;
       lookup[fields[key].fullLabel.toLowerCase()] = key;
+      if (!simpleCols[label]) {
+        simpleCols[label] = {cnt: 1, key: key};
+      } else {
+        simpleCols[label].cnt++;
+      }
+    });
+    Object.keys(simpleCols).forEach(label => {
+      if (simpleCols[label].cnt === 1) {
+        lookup[label] = simpleCols[label].key;
+      }
     });
     this.colMapping = lookup;
   }

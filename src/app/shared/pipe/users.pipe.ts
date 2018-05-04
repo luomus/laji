@@ -23,7 +23,7 @@ export class UsersPipe implements PipeTransform {
               private _ref: ChangeDetectorRef) {
   }
 
-  transform(value: string, format = 'fullname'): any {
+  transform(value: string, format = 'fullnameWithGroup'): any {
     if (!value || value.length === 0) {
       return value;
     }
@@ -45,8 +45,10 @@ export class UsersPipe implements PipeTransform {
     this.userService.getUser(id)
       .subscribe(
         (user: Person) => {
-          if (format === 'fullname') {
-            this.value = user.fullName || '';
+          if (format === 'fullnameWithGroup') {
+            this.value = (user.fullName || '') + (user.group ? ' (' + user.group + ')' : '');
+          } else if (format === 'fullname') {
+            this.value = (user.fullName || '');
           } else {
             this.value = '';
           }

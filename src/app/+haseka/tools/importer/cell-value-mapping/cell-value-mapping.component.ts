@@ -14,6 +14,7 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
   @Input() data: any[] = [];
   @Input() fields: {[key: string]: FormField} = {};
   @Input() colMapping: {[key: string]: string} = {};
+  @Input() valueMap: {[key: string]: {[value: string]: any}} = {};
 
   @Output() done = new EventEmitter<{[key: string]: {[value: string]: string}}>();
   specials = SpecialTypes;
@@ -23,7 +24,6 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
   currentKey: string;
   allMapped = false;
   field: FormField;
-  valueMap: {[key: string]: {[value: string]: any}} = {};
 
   constructor(
     private importService: ImportService,

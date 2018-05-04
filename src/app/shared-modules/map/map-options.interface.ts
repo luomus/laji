@@ -51,4 +51,5 @@ export interface LajiMapOptions {
     tileLayerOpacityChangeEnd?: (event: {tileLayerOpacity: string, type: string, target: any}) => void;
     overlaysChange?: (event: {overlayNames: string[], type: string, target: any}) => void;
   };
+  clickBeforeZoomAndSpan?: boolean;
 }

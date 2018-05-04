@@ -3,7 +3,7 @@
   <div *ngIf="usersProfile.friends && usersProfile.friends.length > 0" class="friends">
     <ul>
       <li *ngFor="let id of usersProfile.friends">
-        <a [routerLink]="['/user/' + id] | localize">{{id|users}}</a>
+        <a [routerLink]="['/user/' + id] | localize">{{id|users:'fullname'}}</a>
         <button class="btn btn-default btn-xs" (click)="removeFriend(id)">{{'friend.remove' | translate}} <i class="glyphicon glyphicon-remove"></i></button>
       </li>
     </ul>
@@ -14,7 +14,7 @@
     </h4>
     <ul>
       <li *ngFor="let id of usersProfile.friendRequests">
-        <a [routerLink]="['/user/' + id] | localize">{{id|users}}</a>
+        <a [routerLink]="['/user/' + id] | localize">{{id|users:'fullname'}}</a>
         <div class="btn-group">
           <button class="btn btn-default btn-xs" (click)="acceptFriendRequest(id)">{{'friend.accept'  | translate}} <i class="glyphicon glyphicon-ok"></i></button>
           <button class="btn btn-default btn-xs" (click)="removeFriend(id)">{{'friend.remove' | translate}} <i class="glyphicon glyphicon-remove"></i></button>
@@ -30,7 +30,7 @@
     </h4>
     <ul>
       <li *ngFor="let id of usersProfile.blocked">
-        <a [routerLink]="['/user/' + id] | localize">{{id|users}}</a>
+        <a [routerLink]="['/user/' + id] | localize">{{id|users:'fullname'}}</a>
         <button class="btn btn-default btn-xs" (click)="removeBlock(id)">{{'friend.removeBlock' | translate}} <i class="glyphicon glyphicon-remove"></i></button>
       </li>
     </ul>

@@ -29,6 +29,13 @@ li {
 
 .active .bubble {
   background-color: #2980B9;
+  width: 26px;
+  height: 26px;
+  font-size: 19px;
+  margin-top: -13px;
+  border-left: 1px solid #333;
+  border-bottom: 1px solid #333;
+  border-right: 1px solid #333;
 }
 
 .completed .bubble {

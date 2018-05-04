@@ -9,6 +9,7 @@ import { Document } from '../../shared/model/Document';
 import { Observable } from 'rxjs/Observable';
 import { Util } from '../../shared/service/util.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'laji-haseka-latest',
@@ -27,6 +28,8 @@ export class UsersLatestComponent implements OnChanges {
   public page = 1;
   public pageSize = 10;
   public loading = true;
+
+  private docUpdateSub: Subscription;
 
   constructor(
     private documentService: DocumentApi,
@@ -63,7 +66,12 @@ export class UsersLatestComponent implements OnChanges {
     if (!this.userToken) {
       return;
     }
-    this.documentService.findAll(this.userToken, String(this.page), String(this.pageSize))
+    if (this.docUpdateSub) {
+      this.docUpdateSub.unsubscribe();
+    }
+    this.docUpdateSub = Observable.of(null)
+      .delay(1000)
+      .switchMap(() => this.documentService.findAll(this.userToken, String(this.page), String(this.pageSize)))
       .switchMap(response => Observable.of(response)
         .combineLatest(
           response.results ? this.processDocuments(response.results) : Observable.of([]),

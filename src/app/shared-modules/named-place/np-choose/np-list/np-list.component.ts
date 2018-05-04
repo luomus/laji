@@ -28,6 +28,7 @@ export class NpListComponent {
   data: any[] = [];
   columns: ObservationTableColumn[];
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
+  showLegendList = false;
   legendList = [
     {label: 'Vapaa', color: '#ffffff'},
     {label: 'Varattu', color: '#d1c400'},
@@ -81,6 +82,9 @@ export class NpListComponent {
     }
     this.sorts = cols[0] ? [{prop: cols[0].name, dir: 'asc'}] : [];
     this.columns = cols;
+    if (formData.namedPlaceOptions && formData.namedPlaceOptions) {
+      this.showLegendList = formData.namedPlaceOptions.showLegendList;
+    }
     this.initData();
   }
 

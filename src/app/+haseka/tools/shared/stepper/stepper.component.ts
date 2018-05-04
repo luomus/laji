@@ -11,7 +11,8 @@ export class StepperComponent implements OnInit {
 
   _state: States;
   active: number;
-  @Output() onActive = new EventEmitter<string>();
+  @Output() activate = new EventEmitter<string>();
+  @Output() title = new EventEmitter<string>();
 
   mapping = {
     'empty': 'file',
@@ -35,7 +36,7 @@ export class StepperComponent implements OnInit {
     {name: 'colMapping', label: 'Sarakkeiden linkittäminen', returnState: 'colMapping'},
     {name: 'valueMapping', label: 'Arvojen linkittäminen', returnState: 'dataMapping'},
     {name: 'send', label: 'Tarkistus ja Lähetys', returnState: 'importReady'},
-    {name: 'done', label: 'valmis', returnState: 'importReady'}
+    {name: 'done', label: 'Valmis', returnState: 'importReady'}
   ];
 
   constructor() { }
@@ -49,11 +50,14 @@ export class StepperComponent implements OnInit {
     this.active = this.steps.findIndex((step) => {
       return step.name === mappedState;
     });
+    if (this.active > -1) {
+      this.title.emit(this.steps[this.active].label);
+    }
   }
 
   backTo(idx) {
-    if (idx === 0) {
-      this.onActive.emit(this.steps[idx].returnState);
+    if (idx < this.active) {
+      this.activate.emit(this.steps[idx].returnState);
     }
   }
 

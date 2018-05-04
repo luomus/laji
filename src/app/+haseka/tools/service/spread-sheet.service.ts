@@ -126,7 +126,7 @@ export class SpreadSheetService {
     }
   }
 
-  getColMapFromComments(sheet: XLSX.WorkSheet, fields: {[key: string]: FormField}, len: number) {
+  getColMapFromSheet(sheet: XLSX.WorkSheet, fields: {[key: string]: FormField}, len: number) {
     const map = {};
     let idx = -1, col;
 

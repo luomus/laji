@@ -129,7 +129,10 @@ laji-locale-sv > div,
   white-space: normal !important;
 }
 .home-page .tooltip {
-  min-width: 200px;
+  min-width: 300px;
+}
+.tooltip-inner {
+  text-align: left;
 }
 
 /** generic **/
