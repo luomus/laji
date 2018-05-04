@@ -306,7 +306,11 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     const extraParameters = {...query};
     extraParameters['target'] = undefined;
     extraParameters['informalTaxonGroupId'] = undefined;
-    extraParameters['selectedFields'] = this.searchQuery.selected.join(',');
+    const selected = [...this.searchQuery.selected];
+    if (selected.indexOf('id') === -1) {
+      selected.push('id');
+    }
+    extraParameters['selectedFields'] = selected.join(',');
     extraParameters['lang'] = 'multi';
 
     return {
