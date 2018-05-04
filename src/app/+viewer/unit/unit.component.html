@@ -19,7 +19,7 @@
     <laji-row *ngIf="showFacts" [title]="'MY.recordBasis' | label" [value]="unit.recordBasis | label: 'warehouse'"></laji-row>
     <laji-row [title]="'MY.det' | label" [value]="unit.det"></laji-row>
     <ng-container *ngIf="unit.reportedTaxonConfidence && (showFacts || unit.reportedTaxonConfidence !== 'SURE')">
-      <laji-row [title]="'MY.taxonConfidence' | label" [value]="unit.reportedTaxonConfidence | label: 'warehouse'"></laji-row>
+      <laji-row [title]="'result.unit.reportedTaxonConfidence' | translate" [value]="unit.reportedTaxonConfidence | label: 'warehouse'"></laji-row>
     </ng-container>
     <ng-container *ngIf="unit.quality && unit.quality.taxon && unit.quality.taxon.reliability && (showFacts || unit.quality.taxon.reliability !== 'NEUTRAL')">
       <laji-row [title]="'result.unit.quality.taxon'|translate">

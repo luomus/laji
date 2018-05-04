@@ -108,7 +108,7 @@
   "search.result.load": "Lataa tiedostona",
   "search.result.species": "Lajit",
   "search.result.map": "Kartta",
-  "result.unit.reportedTaxonConfidence": "Havainnon ilmoitettu varmuus",
+  "result.unit.reportedTaxonConfidence": "Havainnoisijan oman määrityksen varmuus",
   "result.unit.quality.taxon": "Havainnon luotettavuus",
   "result.gathering.displayDateTime": "Aika",
   "result.gathering.conversions.euref": "EUREF",
