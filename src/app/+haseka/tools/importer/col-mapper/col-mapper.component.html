@@ -1,14 +1,12 @@
 <ng-container *ngIf="missingMapping.length > 0; else allMapped">
-  <p>
-    Valitse sarakkeiden merkitys alasvetovalikosta.
-  </p>
+  <p>{{'excel.map.col-intro' | translate}}</p>
   <table class="table">
     <tr>
       <th>
-        Tiedostossa oleva otsikko
+        {{'excel.map.col-user' | translate}}
       </th>
       <th>
-        Vihkon kenttä
+        {{'excel.map.col-mapped' | translate}}
       </th>
     </tr>
     <tr *ngFor="let col of missingMapping">
@@ -25,7 +23,7 @@
 </ng-container>
 <ng-template #allMapped>
   <alert type="success">
-    Kaikki sarakkeet onnistuttiin tunnistamaan automaattisesti.
+    {{'excel.map.col-ok' | translate}}
   </alert>
 </ng-template>
 <div class="row">

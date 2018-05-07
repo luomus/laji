@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { States } from '../../importer/importer.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-stepper',
@@ -32,16 +33,32 @@ export class StepperComponent implements OnInit {
   };
 
   steps: {name: string, label: string, returnState: string}[] = [
-    {name: 'file', label: 'Valitse tiedosto', returnState: 'empty'},
-    {name: 'colMapping', label: 'Sarakkeiden linkittäminen', returnState: 'colMapping'},
-    {name: 'valueMapping', label: 'Arvojen linkittäminen', returnState: 'dataMapping'},
-    {name: 'send', label: 'Tarkistus ja Lähetys', returnState: 'importReady'},
-    {name: 'done', label: 'Valmis', returnState: 'importReady'}
+    {name: 'file', label: 'excel.step1', returnState: 'empty'},
+    {name: 'colMapping', label: 'excel.step2', returnState: 'colMapping'},
+    {name: 'valueMapping', label: 'excel.step3', returnState: 'dataMapping'},
+    {name: 'send', label: 'excel.step4', returnState: 'empty'},
+    {name: 'done', label: 'excel.step5', returnState: 'importReady'}
   ];
 
-  constructor() { }
+  private labels = false;
+
+  constructor(
+    private translateService: TranslateService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
+    this.translateService.get(this.steps.map(step => step.label))
+      .subscribe(labels => {
+        this.steps.forEach(step => {
+          if (labels[step.label]) {
+            step.label = labels[step.label];
+          }
+        });
+        this.labels = true;
+        this.sendActive();
+        this.cdr.markForCheck();
+      });
   }
 
   @Input() set state(state: States) {
@@ -50,14 +67,20 @@ export class StepperComponent implements OnInit {
     this.active = this.steps.findIndex((step) => {
       return step.name === mappedState;
     });
-    if (this.active > -1) {
-      this.title.emit(this.steps[this.active].label);
-    }
+    this.sendActive();
   }
 
   backTo(idx) {
     if (idx < this.active) {
       this.activate.emit(this.steps[idx].returnState);
+    }
+  }
+
+  private sendActive() {
+    console.log('TRYING TO SEND');
+    if (this.active > -1 && this.labels) {
+      console.log('TRYING TO SEND OK!!!');
+      this.title.emit(this.steps[this.active].label);
     }
   }
 
