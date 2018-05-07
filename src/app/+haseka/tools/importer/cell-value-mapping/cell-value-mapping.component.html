@@ -30,6 +30,14 @@
         (mappingChanged)="onMapping($event)"
       ></laji-special-taxon-id>
     </ng-container>
+    <ng-container *ngSwitchCase="specials.informalTaxonGroupID">
+      <laji-special-informal-taxon-groups
+        [field]="field"
+        [invalidValues]="invalid"
+        [mapping]="valueMap[field.key]"
+        (mappingChanged)="onMapping($event)"
+      ></laji-special-informal-taxon-groups>
+    </ng-container>
     <ng-container *ngSwitchCase="specials.unitTaxon">
       <laji-special-taxon-name
         [field]="field"
