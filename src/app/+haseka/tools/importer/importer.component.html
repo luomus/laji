@@ -41,9 +41,6 @@
     <strong>Otsikko rivullä usea samanniminen sarake!</strong>
     <br>Varmista että otsikko rivillä ei esiinny samaa nimeä useaan kertaan. Nyt löytyi sarakkeet "{{ambiguousColumns.join('", "')}}" useaan kertaan.
   </alert>
-  <alert [type]="'danger'" *ngIf="status === 'doneWithErrors'">
-    <strong>Kaikkea havaintoeriä ei onnistuttu tallentamaan!</strong>
-  </alert>
 
   <ng-container *ngIf="['empty', 'importingFile', 'fileAlreadyUploaded', 'fileAlreadyUploadedPartially', 'invalidFileType', 'ambiguousColumns'].indexOf(status) > -1">
     <div><p>Valitse tiedosto alla olevaan kenttään. Jos tiedosto nimestä ei voinut päätellä Vihkon lomaketta, kysyy Vihko erikseen mitä lomaketta tulisi tallennuksessa käyttää.</p></div>
@@ -137,7 +134,7 @@
   </ng-container>
 
   <ng-container *ngIf="status === 'importing'">
-    <h4>Tiedostoa ladataan</h4>
+    <h4>Tiedostoa lähetetään</h4>
     <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{current}}/{{total}}</progressbar>
   </ng-container>
 
