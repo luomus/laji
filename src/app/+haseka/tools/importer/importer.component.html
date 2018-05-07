@@ -41,9 +41,6 @@
     <strong>Otsikko rivullä usea samanniminen sarake!</strong>
     <br>Varmista että otsikko rivillä ei esiinny samaa nimeä useaan kertaan. Nyt löytyi sarakkeet "{{ambiguousColumns.join('", "')}}" useaan kertaan.
   </alert>
-  <alert [type]="'danger'" *ngIf="status === 'doneWithErrors'">
-    <strong>Kaikkea havaintoeriä ei onnistuttu tallentamaan!</strong>
-  </alert>
 
   <ng-container *ngIf="['empty', 'importingFile', 'fileAlreadyUploaded', 'fileAlreadyUploadedPartially', 'invalidFileType', 'ambiguousColumns'].indexOf(status) > -1">
     <div><p>Valitse tiedosto alla olevaan kenttään. Jos tiedosto nimestä ei voinut päätellä Vihkon lomaketta, kysyy Vihko erikseen mitä lomaketta tulisi tallennuksessa käyttää.</p></div>
@@ -95,7 +92,7 @@
         </ng-container>
         <ng-container *ngIf="status === 'invalidData'">
           <p>
-            Tiedoston datasta ei löytynyt havaintoja jotka olisi voitu tallentaa. Alla olevan taulukon ensimmäisestä sarakkeesta löydät lisätietoja ongelman syistä.
+            Tiedoston datasta ei löytynyt havaintoja jotka olisi voitu tallentaa. Alla olevan taulukon ensimmäisestä sarakkeesta löydät lisätietoja syistä.
             Voit tehdä muutoksia tiedostoon ja ladata se uudestaan suoraan tästä:
           </p>
           <div class="row">
@@ -111,6 +108,9 @@
           <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="showUserMapping()" tooltip="Nykyinen datan kuvaus" placement="left">
             <i class="glyphicon glyphicon-open"></i>
           </div>
+          <p class="action">
+            Alla olevasta taulukosta näet tiedot, jotka ovat valmiita tallennettavaksi Vihkoon. Taulukon erä sarakkeessa on tieto siitä monenteen havaintoerään kyseisen rivin tiedot tallentuvat.
+          </p>
         </ng-container>
       </div>
     </div>
@@ -134,7 +134,7 @@
   </ng-container>
 
   <ng-container *ngIf="status === 'importing'">
-    <h4>Tiedostoa ladataan</h4>
+    <h4>Tiedostoa lähetetään</h4>
     <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{current}}/{{total}}</progressbar>
   </ng-container>
 
@@ -142,11 +142,12 @@
     <p *ngIf="status === 'doneOk'">
       Tiedosto tallennettiin onnistuneesti
     </p>
-    <p *ngIf="status === 'doneWithErrors'">
+    <alert [type]="'danger'"  *ngIf="status === 'doneWithErrors'">
+      <strong>Kaikkia havaintoeriä ei onnistuttu tallentamaan!</strong>
       Alla olevasta taulukon ensimmäisestä sarakkeesta näet ne rivit joiden lähetys epäonnistui.
-      Voit kokeilla uudelleen lähettämistä poistamalla tiedosta ne rivit joissa lähetys onnistui ja lähettämällä kyseinen tiedosto uudelleen.
+      Voit kokeilla uudelleen lähettämistä poistamalla tiedosta ne rivit joissa lähetys onnistui ja lähettämällä epäonnistuneet rivit uudelleen.
       Jos ongelma ei korjaannut, niin ota yhteyttä ylläpitoon ja jos mahdollista, niin pistä ongelmallinen tiedosto myös mukaan.
-    </p>
+    </alert>
     <div class="data-container">
       <laji-datatable
         #dataTable
