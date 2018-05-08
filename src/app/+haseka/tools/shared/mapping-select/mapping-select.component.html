@@ -1,6 +1,6 @@
 <select [ngModel]="_value" (ngModelChange)="selected.emit($event)" class="form-control" [disabled]="disabled">
   <ng-container *ngIf="_fields; else valueOption">
-    <option value="" disabled>Valitse sarakkeen merkitys</option>
+    <option value="" disabled>{{'excel.map.col-select' | translate}}</option>
     <option [value]="skipValue">{{'ignore'| translate}}</option>
     <optgroup *ngFor="let group of fieldGroups | removeEmpty" [label]="fieldGroupsLabel[group]">
       <option *ngFor="let key of groups[group] | removeEmpty" [value]="key">
@@ -9,7 +9,7 @@
     </optgroup>
   </ng-container>
   <ng-template #valueOption>
-    <option value="" disabled>Valitse arvon merkitys</option>
+    <option value="" disabled>{{'excel.map.value-select' | translate}}</option>
     <option *ngFor="let key of options | removeEmpty" [value]="key">
       <ng-container [ngSwitch]="key">
         <ng-container *ngSwitchCase="skipValue">
