@@ -17,7 +17,6 @@ export class HasekaComponent implements OnInit, OnDestroy {
   @LocalStorage() public vihkoSettings;
   public email: string;
   public isFront = false;
-  public showTools = false;
   public documentModalVisible = false;
 
   public shownDocument: string;
@@ -34,7 +33,6 @@ export class HasekaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.showTools = !environment.production;
     this.modal.config = {animated: false};
     if (!this.vihkoSettings) {
       this.vihkoSettings = { showIntro: true };

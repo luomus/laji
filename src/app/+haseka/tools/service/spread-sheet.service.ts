@@ -21,7 +21,18 @@ export class SpreadSheetService {
 
   private requiredFields = {};
 
-  private hiddenFields: string[] = [];
+  private hiddenFields: string[] = [
+    'gatherings[*].units[*].unitFact.autocompleteSelectedTaxonID',
+    'gatherings[*].images[*]',
+    'gatherings[*].units[*].images[*]',
+    'gatherings[*].dateBegin',
+    'gatherings[*].dateEnd',
+    'gatherings[*].units[*].unitGathering.dateBegin',
+    'gatherings[*].units[*].unitGathering.dateEnd',
+    'gatherings[*].units[*].unitGathering.geometry',
+    'gatherings[*].units[*].checklistID',
+    'gatherings[*].units[*].hostID',
+  ];
 
   constructor(
     private mappingService: MappingService,
