@@ -620,7 +620,7 @@
   "excel.skip-row": "Row skipped because could not find count from the row. Only rows that have some count value are included.",
   "excel.skip-status": "Skipped",
   "excel.import": "Import bulk upload template",
-  "excel.import.intro": "On this page, you can bring observations to Notebook. You can bring your own templates also as long as the first row of the file is a tittle row. The recognized file extensions are Microsoft Excel Open XML Spreadsheets (xlsx), OpenDocument Text (odt), and comma separated values ​​file (csv). One observation batch must have a maximum of {{maxUnits}} individual observations.",
+  "excel.import.intro": "On this page, you can bring observations to Notebook. You can bring your own templates also as long as the first row of the file is a tittle row. The recognized file extensions are Microsoft Excel Open XML Spreadsheets (xlsx), OpenDocument Text (odt), and comma separated values ​​file (csv).",
   "excel.import.workingOn": "Working on file:",
   "excel.import.error.alreadyUploaded": "<strong>File already uploaded.</strong> Make sure that you selected correct file.",
   "excel.import.error.alreadyUploadedPartially": "<strong>File has already been partly uploaded.</strong> Remove rows that where successfully saved and try again.",
