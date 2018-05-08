@@ -19,12 +19,12 @@
        'result-list col-sm-8 col-md-9 col-lg-10': showFilter,
        'col-sm-12': !showFilter
       }">
-        <laji-species-list [searchQuery]="searchQuery"></laji-species-list>
+        <laji-species-list [searchQuery]="searchQuery" #speciesList></laji-species-list>
       </div>
     </div>
   </div>
 
   <br/>
-  <laji-species-download></laji-species-download>
+  <laji-species-download [data]="speciesList.speciesPage.results" [columns]="speciesList.selectedColumns"></laji-species-download>
 </div>
 

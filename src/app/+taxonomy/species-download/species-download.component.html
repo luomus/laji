@@ -5,8 +5,39 @@
         <h4 class="panel-title">{{'species.download' | translate}}</h4>
       </div>
       <div class="panel-body">
-        <a href="#">{{'species.download' | translate}}</a>
+        <a (click)="modal.show()">{{'species.download' | translate}}</a>
       </div>
     </div>
   </div>
 </div>
+
+<div class="modal" tabindex="-1" role="dialog" bsModal #chooseFileTypeModal="bs-modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close pull-right" type="button" (click)="modal.hide()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <h4>{{'haseka.submissions.chooseFormat' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="radio">
+            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="tsv">.tsv</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="ods">.ods</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="xlsx">.xlsx</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="download()">
+          <span>{{"haseka.submissions.download" | translate}}</span>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

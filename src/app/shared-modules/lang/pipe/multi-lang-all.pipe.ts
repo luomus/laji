@@ -19,22 +19,6 @@ export class MultiLangAllPipe implements PipeTransform {
   }
 
   private langToString(value) {
-    const values = [];
-    for (let i = 0; i < MultiLangService.lang.length; i++) {
-      const lang = MultiLangService.lang[i];
-
-      if (MultiLangService.hasValue(value, lang)) {
-        const val = MultiLangService.getValue(value, lang);
-        if (Array.isArray(val)) {
-          for (let j = 0; j < val.length; j++) {
-            values.push(val[j] + ' (' + lang + ')');
-          }
-        } else {
-          values.push(val + ' (' + lang + ')');
-        }
-      }
-    }
-
-    return values.join('; ');
+    return MultiLangService.valueToString(value);
   }
 }

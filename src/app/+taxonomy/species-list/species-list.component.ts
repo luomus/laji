@@ -37,6 +37,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   _selected: string[];
 
   columns: ObservationTableColumn[] = [];
+  selectedColumns: ObservationTableColumn[] = [];
 
   allColumns: ObservationTableColumn[] = [
     {
@@ -242,9 +243,10 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
         // 'finnish_name'
       )
       .subscribe(data => {
-          this.columns = this.searchQuery.selected.map(name => {
+          this.selectedColumns = this.searchQuery.selected.map(name => {
             return this.columnLookup[name];
           });
+          this.columns = [...this.selectedColumns];
 
           if (data.lastPage && data.lastPage === 1) {
             this.columns = this.columns.map(column => ({...column, sortable: true}));

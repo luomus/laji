@@ -12,6 +12,7 @@ import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 export class InformalComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('header') headerRef: ElementRef;
   @ViewChild('content') contentRef: ElementRef;
+  @ViewChild('speciesList') speciesList: ElementRef;
 
   public filtersNgStyle = {};
   public showFilter = true;
