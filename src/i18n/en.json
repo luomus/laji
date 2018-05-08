@@ -244,6 +244,8 @@
   "observation.download.wip": "Work in progress<br><br>The data request for authorities or other data owners can be made for the time being according to present practice.",
   "observation.download.label": "Optional description for data request",
   "observation.download.description.left": "characters left",
+  "observations.form.1d": "1d",
+  "observations.form.7d": "7d",
   "haseka.title": "Notebook",
   "haseka.slogan": "Record, manage and share your species observations",
   "haseka.intro": "<p>You can record and share your species observations at Laji.fi <strong>Notebook</strong>. The service provides adaptable forms for you to tailor your own observation record sheets. You can also choose the manner how to share your sightings with other users.</p>",
