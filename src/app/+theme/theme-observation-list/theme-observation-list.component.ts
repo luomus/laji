@@ -25,6 +25,7 @@ export class ThemeObservationListComponent implements OnInit {
   shownDocument = '';
   highlightId = '';
   current: string;
+  documentModalVisible = false;
 
   constructor(
     public translate: TranslateService

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
@@ -57,7 +57,9 @@ export class ImporterComponent implements OnInit {
   header: {[key: string]: string};
   fields: {[key: string]: FormField};
   dataColumns: ImportTableColumn[];
+  origColMap: {[key: string]: string};
   colMap: {[key: string]: string};
+  valueMap: {[key: string]: {[value: string]: any}} = {};
   formID: string;
   form: any;
   bstr: string;
@@ -74,6 +76,10 @@ export class ImporterComponent implements OnInit {
   maxUnits = ImportService.maxPerDocument;
   separator = MappingService.valueSplitter;
   hash;
+  currentTitle: string;
+  fileLoading = false;
+  total = 0;
+  current = 0;
 
   private externalLabel = [
     'editors[*]',
@@ -106,9 +112,11 @@ export class ImporterComponent implements OnInit {
     const reader: FileReader = new FileReader();
     const fileName = evt.target.value;
     this.status = 'importingFile';
+    this.fileLoading = true;
     reader.onload = (e: any) => {
       evt.target.value = '';
       this.valid = false;
+      this.fileLoading = false;
       this.errors = undefined;
       this.parsedData = undefined;
       this.bstr = e.target.result;
@@ -120,6 +128,7 @@ export class ImporterComponent implements OnInit {
       reader.readAsArrayBuffer(target.files[0]);
     } else {
       this.status = 'invalidFileType';
+      this.fileLoading = false;
     }
   }
 
@@ -150,7 +159,8 @@ export class ImporterComponent implements OnInit {
         }
         this.excludedFromCopy = form.excludeFromCopy || [];
         this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, true);
-        this.colMap = this.spreadSheetService.getColMapFromComments(sheet, this.fields, Object.keys(this.header).length);
+        this.colMap = this.spreadSheetService.getColMapFromSheet(sheet, this.fields, Object.keys(this.header).length);
+        this.origColMap = JSON.parse(JSON.stringify(this.colMap));
 
         this.initDataColumns();
 
@@ -185,24 +195,27 @@ export class ImporterComponent implements OnInit {
     if (!this.header) {
       return;
     }
-    const columns: ImportTableColumn[] = [
-      {prop: '_status', label: 'status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
-      {prop: '_doc', label: 'erä', sortable: false, width: 40, cellTemplate: this.valueColTpl},
-      {prop: '_idx', label: '#', sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
-    ];
-    Object.keys(this.header).map(address => {
-      columns.push({
-        prop: address,
-        label: this.header[address],
-        sortable: false,
-        cellTemplate: this.valueColTpl,
-        externalLabel: this.externalLabel.indexOf(this.colMap[address]) !== -1
-      })
-    });
-    this.dataColumns = columns;
-    setTimeout(() => {
-      this.datatable.refreshTable();
-    }, 200);
+    this.translateService.get('excel.batch')
+      .subscribe(label => {
+        const columns: ImportTableColumn[] = [
+          {prop: '_status', label: 'status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
+          {prop: '_doc', label: label, sortable: false, width: 40, cellTemplate: this.valueColTpl},
+          {prop: '_idx', label: '#', sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
+        ];
+        Object.keys(this.header).map(address => {
+          columns.push({
+            prop: address,
+            label: this.header[address],
+            sortable: false,
+            cellTemplate: this.valueColTpl,
+            externalLabel: this.externalLabel.indexOf(this.colMap[address]) !== -1
+          })
+        });
+        this.dataColumns = columns;
+        setTimeout(() => {
+          this.datatable.refreshTable();
+        }, 200);
+      });
   }
 
   formSelected(event) {
@@ -233,8 +246,8 @@ export class ImporterComponent implements OnInit {
 
   rowMappingDone(mappings) {
     this.status = 'importReady';
-    this.hasUserMapping = this.mappingService.hasUserMapping();
     this.mappingService.addUserValueMapping(mappings);
+    this.hasUserMapping = this.mappingService.hasUserMapping();
     this.initParsedData();
     const skipped = [];
     const docs = {};
@@ -257,11 +270,14 @@ export class ImporterComponent implements OnInit {
     setTimeout(() => {
       this.cdr.detectChanges();
     });
+    this.validate();
   }
 
   validate() {
     this.status = 'validating';
     let success = true;
+    this.total = this.parsedData.length;
+    this.current = 1;
     Observable.from(this.parsedData)
       .mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy)
         .switchMap(document => this.importService.validateData(document))
@@ -270,6 +286,10 @@ export class ImporterComponent implements OnInit {
           .map(body => body.error && body.error.details || body)
           .map(error => ({result: {_error: error}, source: data}))
         )
+        .do(() => {
+          this.current++;
+          this.cdr.markForCheck();
+        })
       )
       .subscribe(
         (data) => {
@@ -307,6 +327,8 @@ export class ImporterComponent implements OnInit {
     this.status = 'importing';
     let success = true;
     let hadSuccess = false;
+    this.total = this.parsedData.length;
+    this.current = 1;
     Observable.from(this.parsedData)
       .mergeMap(data => this.augmentService.augmentDocument(data.document)
         .switchMap(document => this.importService.sendData(document, publicityRestrictions))
@@ -315,6 +337,10 @@ export class ImporterComponent implements OnInit {
           .map(body => body.error && body.error.details || body)
           .map(error => ({result: {_error: error}, source: data}))
         )
+        .do(() => {
+          this.current++;
+          this.cdr.markForCheck();
+        })
       )
       .subscribe(
         (data) => {
@@ -342,15 +368,17 @@ export class ImporterComponent implements OnInit {
         () => {
           if (success) {
             this.status = 'doneOk';
-            this.toastsService.showSuccess('Havaintoerät tallennettu');
             this.valid = true;
             this.uploadedFiles = [...this.partiallyUploadedFiles, this.hash];
+            this.translateService.get('excel.import.done')
+              .subscribe(msg => this.toastsService.showSuccess(msg))
           } else {
             if (hadSuccess) {
               this.partiallyUploadedFiles = [...this.partiallyUploadedFiles, this.hash];
             }
             this.status = 'doneWithErrors';
-            this.toastsService.showError('Kaikkia havaintoeriä ei onnistuttu tallentamaan!');
+            this.translateService.get('excel.import.failed')
+              .subscribe(msg => this.toastsService.showError(msg));
           }
           this.cdr.markForCheck();
         }
@@ -413,6 +441,16 @@ export class ImporterComponent implements OnInit {
   }
 
   activate(status) {
+    if (status === 'dataMapping') {
+      this.mappingService.clearUserValueMapping();
+      this.valueMap = {};
+    } else if (status === 'colMapping' || status === 'empty') {
+      this.mappingService.clearUserColMapping();
+      this.mappingService.clearUserValueMapping();
+      this.colMap = JSON.parse(JSON.stringify(this.origColMap));
+      this.valueMap = {};
+    }
+    this.hasUserMapping = this.mappingService.hasUserMapping();
     this.status = status;
     this.cdr.markForCheck();
   }

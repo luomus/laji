@@ -32,7 +32,7 @@
           <li><a class="link" [routerLink]="['/vihko', 'ownSubmissions'] | localize">{{'haseka.ownSubmissions.title' | translate}}</a></li>
           <li><a class="link" [routerLink]="['/vihko', 'templates'] | localize">{{'haseka.templates.title' | translate}}</a></li>
           <li><a class="link" [routerLink]="['/vihko', 'statistics'] | localize">{{'haseka.statistics.title' | translate}}</a></li>
-          <li *ngIf="showTools"><a class="link" [routerLink]="['/vihko', 'tools'] | localize">{{'haseka.tools' | translate}}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'tools'] | localize">{{'haseka.tools' | translate}}</a></li>
         </ul>
 
         <laji-haseka-latest [userToken]="userService.getToken()"
@@ -43,9 +43,11 @@
 </div>
 
 <div class="modal fade" bsModal #documentModal="bs-modal"
+     (onHidden)="documentModalVisible = false"
+     (onShow)="documentModalVisible = true"
      tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+    <div class="modal-content" *ngIf="documentModalVisible">
       <div class="modal-body">
         <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
           <span aria-hidden="true">&times;</span>

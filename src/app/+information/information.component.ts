@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../shared/logger/logger.service';
@@ -7,6 +7,7 @@ import { InformationApi } from '../shared/api/InformationApi';
 import { Information } from '../shared/model/Information';
 import { InformationService } from './information.service';
 import { Title } from '@angular/platform-browser';
+import {LocalizeRouterService} from '../locale/localize-router.service';
 
 @Component({
   selector: 'laji-information',
@@ -27,6 +28,8 @@ export class InformationComponent implements OnDestroy {
               private translate: TranslateService,
               private informationService: InformationService,
               private logger: Logger,
+              private router: Router,
+              private localizeRouterService: LocalizeRouterService,
               private cd: ChangeDetectorRef,
               private title: Title
   ) {
@@ -60,9 +63,13 @@ export class InformationComponent implements OnDestroy {
       })
       .subscribe(
         information => {
-          this.information = information;
-          this.title.setTitle(information.title + ' | ' + this.title.getTitle());
-          this.cd.markForCheck();
+          if (!id && information.id) {
+            this.router.navigate(this.localizeRouterService.translateRoute(['/about', information.id]));
+          } else {
+            this.information = information;
+            this.title.setTitle(information.title + ' | ' + this.title.getTitle());
+            this.cd.markForCheck();
+          }
         },
         err => {
           this.logger.warn('Failed to fetch root informations', err);

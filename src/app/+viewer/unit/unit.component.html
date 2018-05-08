@@ -1,36 +1,25 @@
 <hr>
 <div class="unit" *ngIf="unit">
   <div [ngClass]="{'highlight': highlight === unit.unitId}">
-    <laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon; else taxonVerbatim" [title]="unit.recordBasis | label: 'warehouse'">
-      <span class="vernacularName" *ngIf="unit.linkings.originalTaxon.vernacularName">
-        {{unit.linkings.originalTaxon.vernacularName | multiLang}}
-      </span>
-      (<span class="scientificName" [class.cursive]="unit.linkings.originalTaxon.cursiveName">{{unit.linkings.originalTaxon.scientificName}}</span>)
-      <a [routerLink]="['/taxon/' + (unit.linkings.originalTaxon.qname | toQName)] | localize" target="_blank" [tooltip]="'showSpeciesCard' | translate" placement="right">
-        <i class="glyphicon glyphicon-tag"></i>
-      </a>
+    <laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon; else taxonVerbatim" [title]="'result.unit.taxonVerbatim' | translate">
+      <laji-taxon-name [taxon]="unit.linkings.originalTaxon" [addLink]="true"></laji-taxon-name>
     </laji-row>
     <ng-template #taxonVerbatim>
-      <laji-row *ngIf="unit.taxonVerbatim; else reportedInformalTaxonGroup" [title]="unit.recordBasis | label: 'warehouse'" [value]="unit.taxonVerbatim"></laji-row>
+      <laji-row *ngIf="unit.taxonVerbatim; else reportedInformalTaxonGroup" [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
     </ng-template>
     <ng-template #reportedInformalTaxonGroup>
-      <laji-row [title]="unit.recordBasis | label: 'warehouse'" [value]="unit.reportedInformalTaxonGroup | toQName | label"></laji-row>
+      <laji-row [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.reportedInformalTaxonGroup | toQName | label"></laji-row>
     </ng-template>
     <laji-row
       *ngIf="unit.linkings && unit.linkings.taxon && ((unit.linkings.originalTaxon && unit.linkings.taxon.qname !== unit.linkings.originalTaxon.qname) || !unit.linkings.originalTaxon)"
       [title]="'viewer.fixedName'|translate">
-      <span class="vernacularName" *ngIf="unit.linkings.taxon.vernacularName">
-        {{unit.linkings.taxon.vernacularName | multiLang}}
-      </span>
-      (<span class="scientificName" [class.cursive]="unit.linkings.taxon.cursiveName">{{unit.linkings.taxon.scientificName}}</span>)
-      <a [routerLink]="['/taxon/' + (unit.linkings.taxon.qname | toQName)] | localize"
-         [tooltip]="'showSpeciesCard' | translate"
-         placement="right"
-         target="_blank"><i class="glyphicon glyphicon-tag"></i></a>
+      <laji-taxon-name [taxon]="unit.linkings.taxon" [addLink]="true"></laji-taxon-name>
     </laji-row>
+    <laji-row *ngIf="showFacts" [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
+    <laji-row *ngIf="showFacts" [title]="'MY.recordBasis' | label" [value]="unit.recordBasis | label: 'warehouse'"></laji-row>
     <laji-row [title]="'MY.det' | label" [value]="unit.det"></laji-row>
     <ng-container *ngIf="unit.reportedTaxonConfidence && (showFacts || unit.reportedTaxonConfidence !== 'SURE')">
-      <laji-row [title]="'MY.taxonConfidence' | label" [value]="unit.reportedTaxonConfidence | label: 'warehouse'"></laji-row>
+      <laji-row [title]="'result.unit.reportedTaxonConfidence' | translate" [value]="unit.reportedTaxonConfidence | label: 'warehouse'"></laji-row>
     </ng-container>
     <ng-container *ngIf="unit.quality && unit.quality.taxon && unit.quality.taxon.reliability && (showFacts || unit.quality.taxon.reliability !== 'NEUTRAL')">
       <laji-row [title]="'result.unit.quality.taxon'|translate">
@@ -42,6 +31,8 @@
     </ng-container>
     <laji-issues [data]="unit"></laji-issues>
     <laji-row [title]="'MY.count' | label" [value]="unit.abundanceString"></laji-row>
+    <laji-row [title]="'MY.femaleIndividualCount' | label" [value]="unit.individualCountFemale"></laji-row>
+    <laji-row [title]="'MY.maleIndividualCount' | label" [value]="unit.individualCountMale"></laji-row>
     <!--
     <ng-container *ngIf="unit.interpretations">
       <ng-container *ngIf="unit.abundanceString !== '' + unit.interpretations.individualCount">

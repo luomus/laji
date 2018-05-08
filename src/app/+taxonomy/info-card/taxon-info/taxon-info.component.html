@@ -86,7 +86,7 @@
     <th>{{ (taxon.taxonExpert.length > 1 ? 'taxonomy.experts' : 'taxonomy.expert') | translate }}</th>
     <td>
       <ul class="comma-list">
-        <li *ngFor="let export of taxon.taxonExpert">{{export | users}}</li>
+        <li *ngFor="let export of taxon.taxonExpert">{{export | users:'fullname'}}</li>
       </ul>
     </td>
   </tr>

@@ -4,6 +4,8 @@ import { LajiExternalService } from '../../../shared/service/laji-external.servi
 import { FormField, VALUE_IGNORE } from '../model/form-field';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
+import { InformalTaxonGroup } from '../../../shared/model';
+import { NamedPlace } from '../../../shared/model/NamedPlace';
 
 export enum SpecialTypes {
   geometry = 'geometry',
@@ -23,6 +25,21 @@ export class MappingService {
 
   public static readonly mergeKey = '_merge_';
   public static readonly valueSplitter = ';';
+
+  static namedPlacesToList(namedPlaces: NamedPlace[]) {
+    return namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)
+  }
+
+  static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result = [], parent = ''): string[] {
+    groups.forEach(group => {
+      const name = parent ? `${parent} — ${group.name}` : group.name;
+      result.push(`${name} (${group.id})`);
+      if (Array.isArray(group.hasSubGroup)) {
+        MappingService.informalTaxonGroupsToList(group.hasSubGroup as InformalTaxonGroup[], result, name);
+      }
+    });
+    return result;
+  }
 
   private readonly booleanMap = {
     'true': {
@@ -56,6 +73,7 @@ export class MappingService {
     'gatherings[*].units[*].unitGathering.geometry': SpecialTypes.geometry,
     'gatherings[*].taxonCensus[*].censusTaxonID': SpecialTypes.taxonID,
     'gatherings[*].units[*].hostID': SpecialTypes.taxonID,
+    'gatherings[*].units[*].informalTaxonGroup': SpecialTypes.informalTaxonGroupID,
     'gatherings[*].units[*].informalTaxonGroups[*]': SpecialTypes.informalTaxonGroupID,
     'gatherings[*].dateBegin': SpecialTypes.dateOptionalTime,
     'gatherings[*].dateEnd': SpecialTypes.dateOptionalTime,
@@ -112,11 +130,31 @@ export class MappingService {
     });
   }
 
+  clearUserValueMapping() {
+    this.userValueMappings = {};
+  }
+
+  clearUserColMapping() {
+    this.userColMappings = {};
+  }
+
   initColMap(fields: {[key: string]: FormField}) {
     const lookup = {};
-    Object.keys(fields).map((key) => {
+    const simpleCols: {[label: string]: {cnt: number, key: string}} = {};
+    Object.keys(fields).forEach((key) => {
+      const label = fields[key].label.toLowerCase();
       lookup[key.toLowerCase()] = key;
       lookup[fields[key].fullLabel.toLowerCase()] = key;
+      if (!simpleCols[label]) {
+        simpleCols[label] = {cnt: 1, key: key};
+      } else {
+        simpleCols[label].cnt++;
+      }
+    });
+    Object.keys(simpleCols).forEach(label => {
+      if (simpleCols[label].cnt === 1) {
+        lookup[label] = simpleCols[label].key;
+      }
     });
     this.colMapping = lookup;
   }
@@ -254,6 +292,16 @@ export class MappingService {
     return null;
   }
 
+  mapInformalTaxonGroupId(value) {
+    if (typeof value === 'string') {
+      const match = value.match(/(MVL\.[0-9]+)/);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    return null;
+  }
+
   mapTaxonId(value) {
     if (typeof value === 'string') {
       const match = value.match(/(MX\.[0-9]+)/);
@@ -312,6 +360,9 @@ export class MappingService {
       case SpecialTypes.taxonID:
         targetValue = this.mapTaxonId(targetValue || value);
         break;
+      case SpecialTypes.informalTaxonGroupID:
+        targetValue = this.mapInformalTaxonGroupId(targetValue || value);
+        break;
       case SpecialTypes.unitTaxon:
         targetValue = this.mapUnitTaxon(targetValue || value);
         break;
@@ -332,9 +383,15 @@ export class MappingService {
   private analyzeGeometry(value: any) {
     if (typeof value === 'string') {
       if (value.match(/^[0-9]{3,7}:[0-9]{3,7}$/)) {
-        const parts = value.split(':');
-        if (parts[0].length === parts[1].length) {
-          return this.coordinateService.convertYkjToGeoJsonFeature(parts[0], parts[1]).geometry;
+        const ykjParts = value.split(':');
+        if (ykjParts[0].length === ykjParts[1].length) {
+          return this.coordinateService.convertYkjToGeoJsonFeature(ykjParts[0], ykjParts[1]).geometry;
+        }
+      } else if (value.match(/^-?[0-9]{1,2}\.[0-9]+,-?1?[0-9]{1,2}\.[0-9]+/)) {
+        const wgsParts = value.split(',');
+        return {
+          type: 'Point',
+          coordinates: [+wgsParts[1], +wgsParts[0]]
         }
       }
       try {

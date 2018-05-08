@@ -1,9 +1,6 @@
 <div class="cell-value-map-wrap">
-  <!--<h1>
-    Solun arvojen linkittäminen
-  </h1>-->
   <p>
-    Mitä tunnettua arvoa havaittu arvo tarkoittaa.
+    {{'excel.map.value-intro' | translate}}
   </p>
 
   <h4 *ngIf="field">{{field.fullLabel}}</h4>
@@ -33,6 +30,14 @@
         (mappingChanged)="onMapping($event)"
       ></laji-special-taxon-id>
     </ng-container>
+    <ng-container *ngSwitchCase="specials.informalTaxonGroupID">
+      <laji-special-informal-taxon-groups
+        [field]="field"
+        [invalidValues]="invalid"
+        [mapping]="valueMap[field.key]"
+        (mappingChanged)="onMapping($event)"
+      ></laji-special-informal-taxon-groups>
+    </ng-container>
     <ng-container *ngSwitchCase="specials.unitTaxon">
       <laji-special-taxon-name
         [field]="field"
@@ -61,7 +66,7 @@
 
   <div class="row">
     <div class="col-sm-12">
-      <button class="btn btn-primary pull-right" [disabled]="!allMapped" (click)="analyseNextColumn()">Seuraava</button>
+      <button class="btn btn-primary pull-right" [disabled]="!allMapped" (click)="analyseNextColumn()">{{'paginator.next' | translate}}</button>
     </div>
   </div>
 </div>

@@ -1,9 +1,9 @@
 <table class="table">
   <tr>
-    <th>
+    <th class="value-col">
       {{'excel.map.value-user' | translate}}
     </th>
-    <th>
+    <th class="map-col">
       {{'excel.map.value-mapped' | translate}}
     </th>
   </tr>
@@ -15,9 +15,9 @@
     </td>
     <td>
       <laji-mapping-select
-        [disabled]="validValues.length === 0"
-        [value]="currentValues && currentValues[value] || ''"
-        [options]="validValues"
+        [disabled]="!informalTaxonGroups"
+        [value]="mapping && mapping[value] || ''"
+        [options]="informalTaxonGroups"
         (selected)="valueMapped(value, $event)"></laji-mapping-select>
     </td>
   </tr>

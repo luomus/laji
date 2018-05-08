@@ -16,6 +16,7 @@ export class TaxonAutocompleteComponent {
   @Input() placeholder = '';
   @Input() allowInvalid = false;
   @Input() informalTaxonGroup = '';
+  @Input() onlyFinnish = false;
   @Input() showResult = true;
   @Input() clearValueOnSelect = true;
   @Input() allowEmpty = false;
@@ -68,7 +69,8 @@ export class TaxonAutocompleteComponent {
       includePayload: true,
       lang: this.translateService.currentLang,
       matchType: AutocompleteMatchType.partial,
-      informalTaxonGroup: this.informalTaxonGroup
+      informalTaxonGroup: this.informalTaxonGroup,
+      onlyFinnish: this.onlyFinnish
     })
       .map(data => {
         if (onlyExact) {
@@ -95,7 +97,6 @@ export class TaxonAutocompleteComponent {
         this.cdr.markForCheck();
       });
   }
-
 
   onTaxonSelect(result: any, keepValue = false) {
     if (result.item) {

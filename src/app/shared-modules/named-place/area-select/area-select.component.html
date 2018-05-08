@@ -7,7 +7,7 @@
 <ng-container *ngIf="multiselect">
   <laji-select
     [options]="options || []"
-    [filterPlaceHolder]="'Filtteröi...'"
+    [filterPlaceHolder]="'haseka.submissions.filter' | translate"
     [useFilter]="'true'"
     [selected]="value"
     (selectedChanged)="select.emit($event)"

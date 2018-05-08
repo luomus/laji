@@ -1,15 +1,13 @@
 <h3>
-  Tee uusi massatallennuspohja
+  {{'excel.generate' | translate}}
 </h3>
 <p>
-  Tällä sivulla voit tehdä excel pohjan jonka avulla voit tuoda suuren määrän havaintoja Vihkoon.
-  Tämän pohjan käyttäminen ei ole pakollista, mutta pohjan käyttäminen nopeuttaa tietojen tuomista.
-  Pohjain voit muodostaa seuraavasti:
+  {{'excel.generate.intro'| translate}}
 </p>
 <ol>
-  <li>Valitse lomake jolle haluat muodostaa pohjan.</li>
-  <li>Valitse kentät jotka haluat näkyvän lomakkeella.</li>
-  <li>Paina "Tee pohja"-nappia muodostaaksesi massatallennuspohjan.</li>
+  <li>{{'excel.generate.intro1'| translate}}</li>
+  <li>{{'excel.generate.intro2'| translate}}</li>
+  <li>{{'excel.generate.intro3'| translate}}</li>
 </ol>
 <div class="row form-meta">
   <div class="col-sm-5">
@@ -17,16 +15,16 @@
   </div>
   <div class="col-sm-5">
     <button (click)="selectAll()" type="button" class="btn btn-default" [class.disabled]="!formID || generating">
-      Valitse kaikki
+      {{'checkAll' | translate}}
     </button>
     <button (click)="clearSelected()" type="button" class="btn btn-default" [class.disabled]="!formID || selected.length === 0 || generating">
-      Poista valinnat
+      {{'uncheckAll' | translate}}
     </button>
   </div>
   <div class="col-sm-2">
     <laji-spinner [spinning]="generating" [overlay]="true">
       <button (click)="generate()" [disabled]="generating" type="button" class="btn btn-default pull-right" [class.disabled]="!formID || generating">
-        Tee pohja
+        {{'excel.generate.button' | translate}}
       </button>
     </laji-spinner>
     <!--
@@ -56,7 +54,7 @@
     </div>
   </div>
   <p>
-    <span class="required">*</span> pakollinen kenttä
+    <span class="required">*</span> {{'required' | translate}}
   </p>
 </ng-container>
 <!--

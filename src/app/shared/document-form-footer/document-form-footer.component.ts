@@ -1,42 +1,56 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import { UserService } from '../service/user.service';
 import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-document-form-footer',
   templateUrl: './document-form-footer.component.html',
-  styleUrls: ['./document-form-footer.component.css']
+  styleUrls: ['./document-form-footer.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentFormFooterComponent {
-  @Input() form: any;
   @Input() status = '';
-  @Input() restrictSubmitPublic = false
+  @Input() saving = false;
+  @Input() restrictSubmitPublic = false;
   @Output() onSubmitPublic = new EventEmitter();
   @Output() onSubmitPrivate = new EventEmitter();
   @Output() onCancel = new EventEmitter();
+  _form: any
+  show = {
+    save: false,
+    temp: false,
+    cancel: false
+  };
 
   constructor(
     private  userService: UserService,
-    private formPermissionService: FormPermissionService
+    private formPermissionService: FormPermissionService,
+    private cdr: ChangeDetectorRef
   ) { }
 
-  show(place: 'save'|'temp'|'cancel') {
-    let show: boolean;
+  @Input()
+  set form(form: any) {
+    this._form = form;
+    ['save', 'temp', 'cancel'].forEach(place => {
+      let show: boolean;
 
-    if (!this.form || !this.form.actions) {
-      show = true;
-    } else {
-      show = place in this.form.actions;
-    }
+      if (!form || !form.actions) {
+        show = true;
+      } else {
+        show = place in form.actions;
+      }
+      this.show[place] = show;
+    });
 
-    if (this.restrictSubmitPublic && place === 'save' && show === true) {
-      return this.userService.getUser().map(user =>
+    if (this.restrictSubmitPublic && this.show.save === true) {
+      this.show.save = false;
+      this.userService.getUser().map(user =>
         this.formPermissionService.isAdmin({'id': ''}, user)
-      );
+      ).subscribe(showSave => {
+        this.show.save = showSave;
+        this.cdr.markForCheck();
+      })
     }
-
-    return Observable.of(show);
   }
 
   buttonLabel(place: 'save'|'temp'|'cancel') {

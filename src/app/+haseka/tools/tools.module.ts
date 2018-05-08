@@ -31,6 +31,7 @@ import { SpecialTaxonNameComponent } from './importer/cell-value-mapping/special
 import { ToolSuccessComponent } from './shared/tool-success/tool-success.component';
 import { StepperComponent } from './shared/stepper/stepper.component';
 import { TaxonAutocompleteModule } from '../../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
+import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mapping/special-informal-taxon-groups/special-informal-taxon-groups.component';
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import { TaxonAutocompleteModule } from '../../shared-modules/taxon-autocomplete
     ErrorListComponent,
     SpecialTaxonNameComponent,
     ToolSuccessComponent,
-    StepperComponent
+    StepperComponent,
+    SpecialInformalTaxonGroupsComponent
   ],
   providers: [SpreadSheetService, MappingService, ImportService, GeneratorService, AugmentService],
   exports: []

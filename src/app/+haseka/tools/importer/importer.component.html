@@ -1,132 +1,166 @@
 <h3>
-  Tallenna havaintoja massatallennuspohjalla
+  {{'excel.import' | translate}}
 </h3>
 <div class="row">
   <div class="col-sm-12">
     <p>
-      Tällä sivulla voit tuoda massatallennuspohjaan tallennetut havainnot osaksi Vihkon havaintoja.
-      Voit myös tuoda omia pohjia, kunhan niissä ensimmäinen rivi on otsikko rivi, joka kertoo mitä kenttä sisältää.
-      Tunnistetut tiedosto fomaatit ovat Microsoft Excel Open XML Spreadsheet (xlsx), OpenDocument Text (odt) ja comma separated values file (csv).
-      Yhdessä havaintoerässä saa olla maksimissaan {{maxUnits}} yksittäistä havaintoa.
+      {{'excel.import.intro' | translate:{maxUnits: maxUnits} }}
     </p>
-    <p>Havaintojen tallentaminen tapahtuu seuraavasti:</p>
   </div>
 </div>
 
 
 <div class="row data-container">
   <div class="col-sm-10">
-    <span *ngIf="filename">Käsitellään tiedostoa: <strong>{{filename}}</strong></span>&nbsp;
+    <span *ngIf="filename">{{'excel.import.workingOn' | translate}} <strong>{{filename}}</strong></span>&nbsp;
   </div>
 </div>
-
-<alert [type]="'danger'" *ngIf="status === 'fileAlreadyUploadedPartially'">
-  <strong>Tiedosto on osittain ladattu.</strong> Poista tiedostosta rivit jotka ovat jo onnistuneesti tallenettu ja yritä uudelleen.
-</alert>
-<alert [type]="'danger'" *ngIf="status === 'fileAlreadyUploaded'">
-  <strong>Tiedosto on jo tallennettu.</strong> Varmista että valitsit oikean tiedoston.
-</alert>
-<alert [type]="'danger'" *ngIf="status === 'invalidFileType'">
-  <strong>Virheellinen tiedosto formaatti.</strong> Tällä hetkellä tuettuina ovat vain Excel sekä OpenDocument formaatit.
-</alert>
-<alert [type]="'danger'" *ngIf="status === 'ambiguousColumns'">
-  <strong>Otsikko rivullä usea samanniminen sarake!</strong>
-  <br>Varmista että otsikko rivillä ei esiinny samaa nimeä useaan kertaan. Nyt löytyi sarakkeet "{{ambiguousColumns.join('", "')}}" useaan kertaan.
-</alert>
 
 <div class="well">
 
   <laji-stepper [state]="status"
-                (onActive)="activate($event)"
+                (activate)="activate($event)"
+                (title)="currentTitle = $event"
   ></laji-stepper>
 
-<ng-container *ngIf="['empty', 'importingFile', 'fileAlreadyUploaded', 'fileAlreadyUploadedPartially', 'invalidFileType', 'ambiguousColumns'].indexOf(status) > -1">
-  <div><p>Valitse tiedosto alla olevaan kenttään. Jos tiedosto nimestä ei voinut päätellä Vihkon lomaketta, kysyy Vihko erikseen mitä lomaketta tulisi tallennuksessa käyttää.</p></div>
-  <div class="row data-container">
-    <div class="col-sm-8">
-      <input type="file" class="form-control" (change)="onFileChange($event)" multiple="false" />
-    </div>
-    <div class="col-sm-3 map-buttons">
-      <div class="btn btn-default pull-right" *ngIf="hasUserMapping" (click)="clearUserMapping()" tooltip="Poista datan kuvaus" placement="left">
-        <i class="glyphicon glyphicon-remove"></i>
+  <h2>{{currentTitle}}</h2>
+
+  <alert [type]="'danger'" *ngIf="status === 'fileAlreadyUploadedPartially'">
+    <div [innerHtml]="'excel.import.error.alreadyUploadedPartially' | translate"></div>
+  </alert>
+  <alert [type]="'danger'" *ngIf="status === 'fileAlreadyUploaded'">
+    <div [innerHtml]="'excel.import.error.alreadyUploaded' | translate"></div>
+  </alert>
+  <alert [type]="'danger'" *ngIf="status === 'invalidFileType'">
+    <div [innerHtml]="'excel.import.error.invalidFileType' | translate"></div>
+  </alert>
+  <alert [type]="'danger'" *ngIf="status === 'ambiguousColumns'">
+    <div [innerHtml]="'excel.import.error.ambiguousColumns' | translate: {ambiguousColumns: ambiguousColumns.join(', ')}"></div>
+  </alert>
+
+  <ng-container *ngIf="['empty', 'importingFile', 'fileAlreadyUploaded', 'fileAlreadyUploadedPartially', 'invalidFileType', 'ambiguousColumns'].indexOf(status) > -1">
+    <div><p>{{'excel.import.step1.intro' | translate}}</p></div>
+    <div class="row data-container spacer">
+      <div class="col-sm-9">
+        <span *ngIf="hasUserMapping">{{'excel.import.step1.hasUserMapping' | translate}}</span>
+        <input type="file" class="form-control" (change)="onFileChange($event)" />
+        <span *ngIf="fileLoading">{{'laoding' | translate}}</span>
       </div>
-      <div class="btn btn-default pull-right" (click)="userMapModal.show()" tooltip="Tuo datan kuvaus" placement="left">
-        <i class="glyphicon glyphicon-save"></i>
-      </div>
-    </div>
-  </div>
-  <div class="row data-container" *ngIf="!formID && !!bstr">
-    <div class="col-sm-5">
-      <laji-form-select [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
-    </div>
-  </div>
-</ng-container>
-
-<laji-col-mapper
-  *ngIf="status === 'colMapping'"
-  (mappingDone)="colMappingDone($event)"
-  [fields]="fields"
-  [headers]="header"
-  [colMapping]="colMap"
-  (fieldSelected)="mapCol($event)"></laji-col-mapper>
-
-
-<laji-cell-value-mapping
-  *ngIf="status === 'dataMapping'"
-  (done)="rowMappingDone($event)"
-  [fields]="fields"
-  [data]="data"
-  [colMapping]="colMap"></laji-cell-value-mapping>
-
-
-<ng-container *ngIf="status === 'importReady' || status === 'invalidData' || status === 'validating' || status === 'doneOk' || status === 'doneWithErrors' || status === 'importing'">
-  <div class="row">
-    <div class="col-sm-9">
-      <p>
-        Voit tarkistaa datan virheiden varalta tai voit tallentaa datan suoraan Vihkoon. Huom jos tallennus vaiheessa havaitaan virheitä näitä havaintoeriä ei tallenneta.
-      </p>
-      <p>
-        Tarkista että jokaisen rivin kohdalla on merkintä onnistuneesta tallennuksesta.
-      </p>
-    </div>
-    <div class="col-sm-3 map-buttons">
-      <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="showUserMapping()" tooltip="Nykyinen datan kuvaus" placement="left">
-        <i class="glyphicon glyphicon-open"></i>
+      <div class="col-sm-3 map-buttons">
+        <div class="btn btn-default pull-right" *ngIf="hasUserMapping" (click)="clearUserMapping()" [tooltip]="'excel.import.step1.removeUserMapping' | translate" placement="left">
+          <i class="glyphicon glyphicon-remove"></i>
+        </div>
+        <div class="btn btn-default pull-right" (click)="userMapModal.show()" [tooltip]="'excel.import.step1.addUserMapping' | translate" placement="left">
+          <i class="glyphicon glyphicon-save"></i>
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="data-container">
-  <laji-datatable
-      #dataTable
-      class="import-table"
-      [showRowAsLink]="false"
-      [showFooter]="false"
-      [virtualScrolling]="true"
-      [clientSideSorting]="false"
-      [height]="'50vh'"
-      [rows]='mappedData'
-      [count]="mappedData.length"
-      [page]="1"
-      [pageSize]="mappedData.length"
-      [columns]="dataColumns">
-    </laji-datatable>
-  </div>
-  <div class="row data-container">
-    <div class="col-sm-12">
-      <strong *ngIf="valid && status === 'importReady'; else invalid">
-        Ei virheitä havaittu.
-      </strong>
-      <ng-template #invalid>
-        <button type="button" [disabled]="status !== 'importReady' && status !== 'invalidData'" (click)="validate()" class="btn btn-primary">Tarkista data</button>
-      </ng-template>
-      <laji-spinner [spinning]="status === 'validating'"></laji-spinner>
-
-      <button type="button" [disabled]="status !== 'importReady'" (click)="save(publ)" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
-      <button type="button" [disabled]="status !== 'importReady'" (click)="save(priv)" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
+    <div class="row data-container" *ngIf="!formID && !!bstr">
+      <div class="col-sm-5">
+        <laji-form-select [formID]="formID" (selected)="formSelected($event)"></laji-form-select>
+      </div>
     </div>
-  </div>
-</ng-container>
+  </ng-container>
+
+  <laji-col-mapper
+    *ngIf="status === 'colMapping'"
+    (mappingDone)="colMappingDone($event)"
+    [fields]="fields"
+    [headers]="header"
+    [colMapping]="colMap"
+    (fieldSelected)="mapCol($event)"></laji-col-mapper>
+
+
+  <laji-cell-value-mapping
+    *ngIf="status === 'dataMapping'"
+    (done)="rowMappingDone($event)"
+    [valueMap]="valueMap"
+    [fields]="fields"
+    [data]="data"
+    [colMapping]="colMap"></laji-cell-value-mapping>
+
+
+  <ng-container *ngIf="status === 'importReady' || status === 'invalidData' || status === 'validating'">
+    <div class="row">
+      <div class="col-sm-12 spacer">
+        <ng-container *ngIf="status === 'validating'">
+          <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{current}}/{{total}}</progressbar>
+        </ng-container>
+        <ng-container *ngIf="status === 'invalidData'">
+          <p>{{'excel.import.step4.invalidData' | translate}}</p>
+          <div class="row">
+            <div class="col-sm-9">
+              <input type="file" class="form-control" (change)="onFileChange($event)" />
+              <span *ngIf="fileLoading">{{'loading' | translate}}</span>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="status === 'importReady'">
+          <button type="button" (click)="save(publ)" class="btn btn-success pull-right action">{{buttonLabel('save') | translate}}</button>
+          <button type="button" (click)="save(priv)" class="btn btn-warning pull-right action">{{buttonLabel('temp') | translate}}</button>
+          <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="showUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
+            <i class="glyphicon glyphicon-open"></i>
+          </div>
+          <p class="action">{{'excel.import.step4.importReady' | translate}}</p>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="data-container" *ngIf="status !== 'validating'">
+    <laji-datatable
+        #dataTable
+        class="import-table"
+        [showRowAsLink]="false"
+        [showFooter]="false"
+        [virtualScrolling]="true"
+        [clientSideSorting]="false"
+        [height]="'50vh'"
+        [rows]='mappedData'
+        [count]="mappedData.length"
+        [page]="1"
+        [pageSize]="mappedData.length"
+        [columns]="dataColumns">
+      </laji-datatable>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="status === 'importing'">
+    <h4>{{'sending' | translate}}</h4>
+    <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{current}}/{{total}}</progressbar>
+  </ng-container>
+
+  <ng-container *ngIf="status === 'doneOk' || status === 'doneWithErrors'">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="btn btn-default pull-right" [class.disabled]="!hasUserMapping" (click)="showUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
+          <i class="glyphicon glyphicon-open"></i>
+        </div>
+        <p *ngIf="status === 'doneOk'">
+          {{'excel.import.done' | translate}}
+        </p>
+      </div>
+    </div>
+    <alert [type]="'danger'"  *ngIf="status === 'doneWithErrors'">
+      <div [innerHtml]="'excel.import.error.doneWithErrors' | translate"></div>
+    </alert>
+    <div class="data-container">
+      <laji-datatable
+        #dataTable
+        class="import-table"
+        [showRowAsLink]="false"
+        [showFooter]="false"
+        [virtualScrolling]="true"
+        [clientSideSorting]="false"
+        [height]="'50vh'"
+        [rows]='mappedData'
+        [count]="mappedData.length"
+        [page]="1"
+        [pageSize]="mappedData.length"
+        [columns]="dataColumns">
+      </laji-datatable>
+    </div>
+  </ng-container>
+
 </div>
 
 <ng-template let-rowIndex="rowIndex" #rowNumber>
@@ -152,13 +186,7 @@
         <button type="button" class="close pull-right" aria-label="Close" (click)="userMapModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h1>
-          Kuvauksen tuonti
-        </h1>
-        <p>Voit kopioida alla olevaan kenttään laji.fi:n ymmärtämän kuvauksen datastasi.</p>
-        <p>
-          Kuvauksen voi tehdä ladattuasi haluamasi massatallennuspohjan laji.fi:hin.
-        </p>
+        <div [innerHtml]="'excel.userMapping.add' | translate"></div>
         <textarea rows="10" #userMapping class="form-control"></textarea>
       </div>
       <div class="modal-footer">
@@ -176,13 +204,7 @@
         <button type="button" class="close pull-right" aria-label="Close" (click)="currentUserMapModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h1>
-          Datan nykyinen kuvaus
-        </h1>
-        <p>
-          Ottamalla talteen tämän kuvauksen, voit tuoda jatkossa samanmuotoista dataa ilman, että sinun tarvitsee
-          uudelleen kertoa mistä arvoissa on kyse.
-        </p>
+        <div [innerHtml]="'excel.userMapping.get' | translate"></div>
         <textarea rows="10" class="form-control">{{userMappings | json}}</textarea>
       </div>
     </div>
