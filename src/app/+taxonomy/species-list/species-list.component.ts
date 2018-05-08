@@ -68,6 +68,10 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       width: 200
     },
     {
+      name: 'allSynonyms',
+      selectField: 'synonyms,basionyms,uncertainSynonyms'
+    },
+    {
       name: 'vernacularName.fi',
       label: 'taxonomy.vernacular.name.fi',
       width: 200
@@ -306,11 +310,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     const extraParameters = {...query};
     extraParameters['target'] = undefined;
     extraParameters['informalTaxonGroupId'] = undefined;
-    const selected = [...this.searchQuery.selected];
-    if (selected.indexOf('id') === -1) {
-      selected.push('id');
-    }
-    extraParameters['selectedFields'] = selected.join(',');
+    extraParameters['selectedFields'] = this.getSelectedFields();
     extraParameters['lang'] = 'multi';
 
     return {
@@ -330,5 +330,14 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       this.informalTaxonService.informalTaxonGroupFindById(id, this.translate.currentLang)
         .subscribe(data => this.informalGroup = data);
     }
+  }
+
+  private getSelectedFields() {
+    const selects = this.searchQuery.selected.map(field => this.columnLookup[field].selectField || field);
+
+    if (selects.indexOf('id') === -1) {
+      selects.push('id');
+    }
+    return selects.join(',');
   }
 }

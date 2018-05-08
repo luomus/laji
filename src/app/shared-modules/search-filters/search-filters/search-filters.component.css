@@ -1,7 +1,9 @@
-.form-filters {
-  z-index: 1029;
+.filters-container {
   border-left: 1px solid #e1e1e1;
   background-color: #ECF0F1;
+  height: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
 }
 :host >>> .panel-heading, .form-title {
   background-color: #ECF0F1;
@@ -65,10 +67,6 @@
     overflow: auto;
   }
 
-  .form-filters {
-    position: fixed;
-  }
-
   .form-filters-fill {
     background-color: #ECF0F1;
     width: calc(100% + 30px);
@@ -78,11 +76,3 @@
   }
 }
 
-@media only screen and (max-width : 767px) {
-  .form-filters {
-    top: 0 !important;
-    height: auto !important;
-    position: relative !important;
-    float: none !important;
-  }
-}

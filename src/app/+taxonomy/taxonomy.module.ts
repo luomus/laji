@@ -26,6 +26,7 @@ import { SearchFiltersModule } from '../shared-modules/search-filters/search-fil
 import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { TaxonomySearchQuery } from './taxonomy-search-query.model';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
+import { SpeciesDownloadComponent } from './species-download/species-download.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, TreeModule, LangModule, DatatableModule, HttpClientModule,
@@ -33,7 +34,7 @@ import { ObservationResultModule } from '../shared-modules/observation-result/ob
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
-    ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, InformalComponent
+    ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, InformalComponent, SpeciesDownloadComponent
   ],
 })
 export class TaxonomyModule {

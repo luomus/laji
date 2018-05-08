@@ -3,5 +3,28 @@
   <div>{{ 'species.title.long' | translate }}</div>
 </div>
 <div class="container" style="padding-bottom: 30px; width: 100%;" #content>
-  <laji-species-form [searchQuery]="searchQuery" [filtersNgStyle]="filtersNgStyle"></laji-species-form>
+  <div class="form-horizontal">
+    <div class="row">
+      <div [ngStyle]="filtersNgStyle" class="form-filters col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10">
+        <laji-species-form [searchQuery]="searchQuery"
+                           [showFilter]="showFilter"
+                           (onShowFilterChange)="showFilter = $event"></laji-species-form>
+      </div>
+      <div id="fill-height" class="hidden-xs" [ngClass]="{
+        'col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10': showFilter,
+        'hidden-sm hidden-md hidden-lg': !showFilter
+      }"></div>
+
+      <div id="species-list-container" [ngClass]="{
+       'result-list col-sm-8 col-md-9 col-lg-10': showFilter,
+       'col-sm-12': !showFilter
+      }">
+        <laji-species-list [searchQuery]="searchQuery"></laji-species-list>
+      </div>
+    </div>
+  </div>
+
+  <br/>
+  <laji-species-download></laji-species-download>
 </div>
+

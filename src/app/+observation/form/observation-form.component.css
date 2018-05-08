@@ -38,3 +38,18 @@ hr {
 :host >>> .alert-warning {
   margin-right: 10px;
 }
+
+.form-filters {
+  z-index: 1029;
+  position: fixed;
+  top: 50px;
+  height: calc(100vh - 50px);
+  padding: 0;
+}
+@media only screen and (max-width : 767px) {
+  .form-filters {
+    top: 0;
+    height: auto;
+    position: relative;
+  }
+}

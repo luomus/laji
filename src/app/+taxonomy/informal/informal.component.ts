@@ -14,6 +14,7 @@ export class InformalComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('content') contentRef: ElementRef;
 
   public filtersNgStyle = {};
+  public showFilter = true;
 
   private subParam: Subscription;
   private subQuery: Subscription;

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
 import { Observable } from 'rxjs/Observable';
@@ -13,11 +13,11 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class SpeciesFormComponent implements OnInit, OnDestroy {
   @Input() searchQuery: TaxonomySearchQuery;
-  @Input() filtersNgStyle: string;
+  @Input() showFilter = true;
+
+  @Output() onShowFilterChange = new EventEmitter<boolean>();
 
   public dataSource: Observable<any>;
-
-  public showFilter = true;
 
   public typeaheadLoading = false;
   public limit = 10;
@@ -170,6 +170,11 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.searchQuery.updateUrl(false);
     this.searchQuery.queryUpdate();
     return false;
+  }
+
+  private showFilterChange(showFilter: boolean) {
+    this.showFilter = showFilter;
+    this.onShowFilterChange.emit(showFilter);
   }
 
   private formQueryToQuery() {
