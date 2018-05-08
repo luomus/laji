@@ -50,6 +50,7 @@ export class TaxonomySearchQuery {
   }
 
   public setQueryFromParams(params: Params) {
+    this.query = {};
     this.query.informalTaxonGroupId = params['informalTaxonGroupId'];
     this.query.target = params['target'];
     this.query.onlyFinnish = params['onlyFinnish'] === 'true' ? true : undefined;
