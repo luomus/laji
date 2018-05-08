@@ -290,7 +290,7 @@ export class InformalTaxonGroupApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public informalTaxonGroupGetTree(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.InformalTaxonGroup>>> {
+  public informalTaxonGroupGetTree(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.InformalTaxonGroup>> {
     const path = this.basePath + '/informal-taxon-groups/tree';
 
     let queryParameters = new URLSearchParams();

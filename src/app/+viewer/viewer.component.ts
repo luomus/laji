@@ -22,7 +22,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
       this.uri = params['uri'] || '';
       this.highlight = (params['highlight'] || '').replace('_', '#');
       this.own = params['own'] === 'true';
-      this.openAnnotation = params['openAnnotation'] === 'true' || !!this.highlight;
+      this.openAnnotation = params['openAnnotation'] === 'true';
     });
   }
 

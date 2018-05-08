@@ -48,7 +48,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() draw: any = false;
   @Input() center: [number, number];
   @Input() showControls = true;
-  @Input() height = 500;
+  @Input() height;
   @Input() selectColor = '#00aa00';
   @Input() color: any;
   @Input() showLoadMore = true;

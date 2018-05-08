@@ -1,10 +1,10 @@
-<div class="form-footer" *ngIf="form">
+<div class="form-footer" *ngIf="_form">
   <div class="row">
-    <div class="col-xs-3 col-sm-2">
-      <button *ngIf="show('save') | async" class="btn btn-success btn-sm" [disabled]="saving" type="submit" (click)="onSubmitPublic.emit()">{{buttonLabel('save') | translate}}</button>
+    <div class="col-xs-3 col-sm-2" *ngIf="show.save">
+      <button class="btn btn-success btn-sm" [disabled]="saving" type="submit" (click)="onSubmitPublic.emit()">{{buttonLabel('save') | translate}}</button>
     </div>
-    <div class="col-xs-3 col-sm-2">
-      <button *ngIf="show('temp') | async" class="btn btn-warning btn-sm" [disabled]="saving" type="submit" (click)="onSubmitPrivate.emit()">{{buttonLabel('temp') | translate}}</button>
+    <div [ngClass]="{'col-xs-3 col-sm-2': show.save, 'col-xs-5 col-sm-3': !show.save}">
+      <button *ngIf="show.temp" class="btn btn-warning btn-sm" [disabled]="saving" type="submit" (click)="onSubmitPrivate.emit()">{{buttonLabel('temp') | translate}}</button>
     </div>
     <div class="col-xs-3 col-sm-6 info" [ngSwitch]="status">
       <div *ngSwitchCase="'success'" class="success status">
@@ -13,11 +13,11 @@
       <div *ngSwitchCase="'error'" class="error status">
         {{'haseka.form.error' | translate}}
       </div>
-      <div *ngSwitchCase="'unsaved'" class="unsaved status">
-          <span *ngIf="form.formData.dateEdited">
-            {{'haseka.form.unsaved' | translate:{saveTime: form.formData.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'} }}
+      <div *ngSwitchCase="'unsaved'" class="unsaved status hidden-xs hidden-sm">
+          <span *ngIf="_form.formData.dateEdited">
+            {{'haseka.form.unsaved' | translate:{saveTime: _form.formData.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'} }}
           </span>
-        <span *ngIf="!form.formData.dateEdited">
+        <span *ngIf="!_form.formData.dateEdited">
             {{'haseka.form.unsavedNever' | translate}}
           </span>
         <span class="pull-right">
@@ -25,8 +25,8 @@
         </span>
       </div>
     </div>
-    <div class="col-xs-3 col-sm-2">
-      <button *ngIf="show('cancel') | async" class="btn btn-danger btn-sm pull-right" [disabled]="saving" type="submit" (click)="onCancel.emit()">{{buttonLabel('cancel') | translate}}</button>
+    <div [ngClass]="{'col-xs-3 col-sm-2': show.save, 'col-xs-4 col-sm-3': !show.save}">
+      <button *ngIf="show.cancel" class="btn btn-danger btn-sm pull-right" [disabled]="saving" type="submit" (click)="onCancel.emit()">{{buttonLabel('cancel') | translate}}</button>
     </div>
   </div>
 </div>

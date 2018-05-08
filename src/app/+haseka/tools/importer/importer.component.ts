@@ -195,24 +195,27 @@ export class ImporterComponent implements OnInit {
     if (!this.header) {
       return;
     }
-    const columns: ImportTableColumn[] = [
-      {prop: '_status', label: 'status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
-      {prop: '_doc', label: 'erä', sortable: false, width: 40, cellTemplate: this.valueColTpl},
-      {prop: '_idx', label: '#', sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
-    ];
-    Object.keys(this.header).map(address => {
-      columns.push({
-        prop: address,
-        label: this.header[address],
-        sortable: false,
-        cellTemplate: this.valueColTpl,
-        externalLabel: this.externalLabel.indexOf(this.colMap[address]) !== -1
-      })
-    });
-    this.dataColumns = columns;
-    setTimeout(() => {
-      this.datatable.refreshTable();
-    }, 200);
+    this.translateService.get('excel.batch')
+      .subscribe(label => {
+        const columns: ImportTableColumn[] = [
+          {prop: '_status', label: 'status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
+          {prop: '_doc', label: label, sortable: false, width: 40, cellTemplate: this.valueColTpl},
+          {prop: '_idx', label: '#', sortable: false, width: 40, cellTemplate: this.rowNumberTpl}
+        ];
+        Object.keys(this.header).map(address => {
+          columns.push({
+            prop: address,
+            label: this.header[address],
+            sortable: false,
+            cellTemplate: this.valueColTpl,
+            externalLabel: this.externalLabel.indexOf(this.colMap[address]) !== -1
+          })
+        });
+        this.dataColumns = columns;
+        setTimeout(() => {
+          this.datatable.refreshTable();
+        }, 200);
+      });
   }
 
   formSelected(event) {
@@ -365,15 +368,17 @@ export class ImporterComponent implements OnInit {
         () => {
           if (success) {
             this.status = 'doneOk';
-            this.toastsService.showSuccess('Havaintoerät tallennettu');
             this.valid = true;
             this.uploadedFiles = [...this.partiallyUploadedFiles, this.hash];
+            this.translateService.get('excel.import.done')
+              .subscribe(msg => this.toastsService.showSuccess(msg))
           } else {
             if (hadSuccess) {
               this.partiallyUploadedFiles = [...this.partiallyUploadedFiles, this.hash];
             }
             this.status = 'doneWithErrors';
-            this.toastsService.showError('Kaikkia havaintoeriä ei onnistuttu tallentamaan!');
+            this.translateService.get('excel.import.failed')
+              .subscribe(msg => this.toastsService.showError(msg));
           }
           this.cdr.markForCheck();
         }

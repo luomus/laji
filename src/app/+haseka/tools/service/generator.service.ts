@@ -4,11 +4,12 @@ import * as FileSaver from 'file-saver';
 import {FormField} from '../model/form-field';
 import { UserService} from '../../../shared/service';
 import {MappingService, SpecialTypes} from './mapping.service';
-import {Person} from '../../../shared/model';
+import { InformalTaxonGroup, Person } from '../../../shared/model';
 import {Observable} from 'rxjs/Observable';
 import {NamedPlacesService} from '../../../shared-modules/named-place/named-places.service';
 import {NamedPlace} from '../../../shared/model/NamedPlace';
 import { TranslateService } from '@ngx-translate/core';
+import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
 
 @Injectable()
 export class GeneratorService {
@@ -44,6 +45,7 @@ export class GeneratorService {
     private userService: UserService,
     private namedPlaces: NamedPlacesService,
     private translateService: TranslateService,
+    private informalTaxonApi: InformalTaxonGroupApi
   ) { }
 
   generate(filename: string, fields: FormField[], useLabels = true, type: 'ods' | 'xlsx' = 'xlsx', next: () => void = () => {}) {
@@ -55,6 +57,7 @@ export class GeneratorService {
         userToken: this.userService.getToken(),
         includePublic: false
       }),
+      this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.currentLang).map(result => result.results),
       this.translateService.get(allTranslations, {separator: MappingService.valueSplitter})
         .map(translated => Object.keys(this.instructionMapping).reduce((cumulative, current) => {
           if (translated[this.instructionMapping[current]]) {
@@ -63,7 +66,7 @@ export class GeneratorService {
           return cumulative;
         }, {[this.instructionArray]: translated[this.instructionArray]}))
       ,
-      (person, namedPlaces, translations) => ({person, namedPlaces, translations})
+      (person, namedPlaces, informalTaxonGroups, translations) => ({person, namedPlaces, informalTaxonGroups, translations})
     )
       .subscribe((data) => {
         const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels, data));
@@ -110,7 +113,7 @@ export class GeneratorService {
   private addMetaDataToSheet(
     fields: FormField[],
     sheet: XLSX.WorkSheet,
-    extra: {person: Person, namedPlaces: NamedPlace[]},
+    extra: {person: Person, namedPlaces: NamedPlace[], informalTaxonGroups: InformalTaxonGroup[]},
     useLabels: boolean
   ) {
     const validation = [];
@@ -138,8 +141,13 @@ export class GeneratorService {
       } else if (special) {
         switch (special) {
           case SpecialTypes.namedPlaceID:
-            if (extra.namedPlaces && extra.namedPlaces.length > 0) {
-              validValues = extra.namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)
+            if (Array.isArray(extra.namedPlaces) && extra.namedPlaces.length > 0) {
+              validValues = MappingService.namedPlacesToList(extra.namedPlaces);
+            }
+            break;
+          case SpecialTypes.informalTaxonGroupID:
+            if (Array.isArray(extra.informalTaxonGroups) && extra.informalTaxonGroups.length > 0) {
+              validValues = MappingService.informalTaxonGroupsToList(extra.informalTaxonGroups);
             }
             break;
         }

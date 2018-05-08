@@ -85,7 +85,7 @@ export class UnitComponent implements OnInit {
     if (this.unit.annotations) {
       this.annotations = this.unit.annotations.reverse();
     }
-    this.annotationVisible = this.openAnnotation || this.highlight === this.unit.unitId
+    this.annotationVisible = this.openAnnotation || this.highlight === this.unit.unitId || (Array.isArray(this.annotations) && this.annotations.length > 0)
   }
 
   toggleAnnotations() {
