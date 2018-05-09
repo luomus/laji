@@ -39,7 +39,8 @@ export class HomeComponent implements OnInit {
         this.query = {
           sourceId: sources,
           unidentified: true,
-          countryId: ['ML.206']
+          countryId: ['ML.206'],
+          cache: true
         };
         this.cd.markForCheck();
       });
