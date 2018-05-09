@@ -42,7 +42,7 @@
     <div><p>{{'excel.import.step1.intro' | translate}}</p></div>
     <div class="row data-container spacer">
       <div class="col-sm-9">
-        <span *ngIf="hasUserMapping">{{'excel.import.step1.hasUserMapping' | translate}}</span>
+        <span *ngIf="hasUserMapping" [innerHtml]="'excel.import.step1.hasUserMapping' | translate"></span>
         <input type="file" class="form-control" (change)="onFileChange($event)" />
         <span *ngIf="fileLoading">{{'laoding' | translate}}</span>
       </div>
