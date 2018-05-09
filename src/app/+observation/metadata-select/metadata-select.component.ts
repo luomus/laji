@@ -41,6 +41,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   @Input() options: string[];
   @Input() useFilter = true;
   @Input() firstOptions = [];
+  @Input() info: string;
 
   _options: {id: string, value: string}[] = [];
   active = [];

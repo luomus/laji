@@ -267,6 +267,10 @@ treenode:last-child > .tree-node > .tree-children::after {
 
 /** /informal taxon groups **/
 
+.popover-lg {
+  min-width: 400px;
+}
+
 /** Laji-Map **/
 .laji-map {
   width: 100%;

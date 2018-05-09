@@ -4,7 +4,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ObservationActiveComponent } from './active/observation-active.component';
 import { ObservationChartComponent } from './chart/observation-chart.component';
 import { ObservationFormComponent } from './form/observation-form.component';
-import { ObservationGroupSelectComponent } from './group-select/group-select.component';
 import { MultiRadioComponent } from './multi-radio/multi-radio.component';
 import { ObservationResultComponent } from './result/observation-result.component';
 import { ObservationResultListComponent } from './result-list/observation-result-list.component';
@@ -22,6 +21,7 @@ import { ObservationResultModule } from '../shared-modules/observation-result/ob
 import { ObservationFiltersComponent } from './observation-filters/observation-filters.component';
 import { PillListComponent } from './pill-list/pill-list.component';
 import { LajiSelectModule } from '../shared-modules/select/select.module';
+import { InfoModule } from '../shared-modules/info/info.module';
 
 @NgModule({
   imports: [
@@ -33,7 +33,8 @@ import { LajiSelectModule } from '../shared-modules/select/select.module';
     YkjModule,
     NgxDatatableModule,
     ObservationResultModule,
-    LajiSelectModule
+    LajiSelectModule,
+    InfoModule
   ],
   declarations: [ObservationComponent, ObservationActiveComponent, ObservationChartComponent,
     ObservationFormComponent,

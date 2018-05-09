@@ -50,6 +50,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   public showPlace = false;
   public showFilter = true;
   public areaType = AreaType;
+  public taxonExtra = false;
 
   public drawing = false;
   public drawingShape: string;

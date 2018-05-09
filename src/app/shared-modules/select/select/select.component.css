@@ -33,11 +33,13 @@
   padding: 6px 15px;
   display: block;
   min-height: 32px;
+  position: relative;
 }
 .lj-title:after {
   font-family: "Glyphicons Halflings";
   float: right;
   color: #ccc;
+  position: absolute;
 }
 
 .lj-open .lj-title:after {

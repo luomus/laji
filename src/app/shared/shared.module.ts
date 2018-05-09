@@ -112,7 +112,7 @@ import {LajiApiService} from './service/laji-api.service';
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
     ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DocumentFormFooterComponent, DatePickerComponent,
     TaxonNameComponent,
-    FactNotInPipe
+    FactNotInPipe,
   ],
   imports: [
     ToastModule,

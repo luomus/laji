@@ -1,18 +1,42 @@
 <div class="lj-select" [ngClass]="{'lj-close': open, 'lj-open': !open}">
-  <strong *ngIf="title !== undefined && title !== ''" class="lj-title link" (click)="toggle(filter)">{{title}}</strong>
-  <label class="lj-item selected" *ngFor="let option of selectedOptions; trackBy: track">
-    <input type="checkbox" checked (change)="remove(option.id)">
-    <span>{{option.value}}</span>
-  </label>
+  <strong *ngIf="title !== undefined && title !== ''" class="lj-title link" (click)="toggle($event, filter)">{{title}}<laji-info *ngIf="info">
+    {{info}}
+  </laji-info></strong>
+  <ng-container *ngIf="multiple; else select">
+    <label class="lj-item selected" *ngFor="let option of selectedOptions; trackBy: track">
+      <input type="checkbox" checked (change)="remove(option.id)">
+      <span>{{option.value}}</span>
+    </label>
+    <div class="lj-filter" [hidden]="!useFilter || !open">
+      <input #filter (keyup)="onFilterChange($event, filter.value)" class="form-control" type="search" placeholder="{{filterPlaceHolder}}">
+    </div>
+    <div *ngIf="open" class="lj-item-container">
+      <div [class.lj-active]="i === selectedIdx" *ngFor="let option of unselectedOptions; let i = index; trackBy: track">
+        <label class="lj-item">
+          <input type="checkbox" (change)="add(option.id)">
+          <span>{{option.value}}</span>
+        </label>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #select>
+  <ng-container *ngIf="!open">
+    <label class="lj-item selected" *ngFor="let option of selectedOptions; trackBy: track">
+      <input type="checkbox" checked (change)="remove(option.id)">
+      <span>{{option.value}}</span>
+    </label>
+  </ng-container>
   <div class="lj-filter" [hidden]="!useFilter || !open">
     <input #filter (keyup)="onFilterChange($event, filter.value)" class="form-control" type="search" placeholder="{{filterPlaceHolder}}">
   </div>
   <div *ngIf="open" class="lj-item-container">
-    <div [class.lj-active]="i === selectedIdx" *ngFor="let option of unselectedOptions; let i = index; trackBy: track">
+    <div [class.lj-active]="i === selectedIdx" *ngFor="let option of options; let i = index; trackBy: track">
       <label class="lj-item">
-        <input type="checkbox" (change)="add(option.id)">
+        <input type="checkbox" [checked]="selectedOptions.indexOf(option) !== -1" (change)="toggleValue(option.id)">
         <span>{{option.value}}</span>
       </label>
     </div>
   </div>
-</div>
+</ng-template>
