@@ -15,7 +15,7 @@ export class SpreadSheetService {
 
   private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
   private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-  private csvMimeTypes = ['text/csv', 'text/plain'];
+  private csvMimeTypes = ['text/csv', 'text/plain', 'application/vnd.ms-excel'];
 
   private translations = {};
 
@@ -79,6 +79,7 @@ export class SpreadSheetService {
   }
 
   isValidType(type) {
+    console.log(type);
     return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes].indexOf(type) > -1;
   }
 
