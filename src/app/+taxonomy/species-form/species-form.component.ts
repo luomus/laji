@@ -168,7 +168,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  private showFilterChange(showFilter: boolean) {
+  showFilterChange(showFilter: boolean) {
     this.showFilter = showFilter;
     this.onShowFilterChange.emit(showFilter);
   }
