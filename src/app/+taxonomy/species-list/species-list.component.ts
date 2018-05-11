@@ -159,7 +159,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   private subQueryUpdate: Subscription;
   private subFetch: Subscription;
 
-  private settingsLoaded = false;
+  private settingsLoaded = true;
 
   constructor(
     private taxonomyService: TaxonomyApi,
