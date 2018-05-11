@@ -175,6 +175,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading = true;
     this.initColumns();
+    this.refreshSpeciesList();
 
     this.userService.getItem<any>(UserService.SETTINGS_TAXONOMY_LIST)
       .subscribe(data => {
