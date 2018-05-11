@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Router, Params } from '@angular/router';
 import { TaxonomySearchQueryInterface } from './taxonomy-search-query.interface';
+import { AutocompleteApi } from '../shared/api/AutocompleteApi';
 import { Util } from '../shared/service/util.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class TaxonomySearchQuery {
@@ -16,12 +19,17 @@ export class TaxonomySearchQuery {
     'finnish', 'typeOfOccurrenceInFinland'];
 
   public query: TaxonomySearchQueryInterface = {};
+  public targetId: string;
+
+  public loading = false;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private translate: TranslateService,
+    private autocompleteService: AutocompleteApi
   ) { }
 
-  public updateUrl(skipHistory: boolean = true): void {
+  public updateUrl(skipHistory: boolean = false): void {
     const extra = {skipLocationChange: skipHistory};
     if (Object.keys(this.query).length > 0) {
       for (const key in this.query) {
@@ -37,6 +45,15 @@ export class TaxonomySearchQuery {
       [],
       extra
     );
+  }
+
+  public empty(): void {
+    this.query = {};
+    this.page = 1;
+    this.sortOrder = 'taxonomic';
+    this.selected = [ 'id', 'taxonRank', 'scientificName', 'scientificNameAuthorship', 'vernacularName',
+      'finnish', 'typeOfOccurrenceInFinland'];
+    this.targetId = undefined;
   }
 
   public setQueryFromParams(params: Params) {
@@ -65,6 +82,24 @@ export class TaxonomySearchQuery {
       }
       this.query.adminStatusFilters = adminFilters;
     }
+  }
+
+  public initTargetId(): Observable<boolean> {
+    this.loading = true;
+
+    return this.autocompleteService.autocompleteFindByField({
+        field: 'taxon',
+        q: this.query.target,
+        limit: '1',
+        includePayload: true,
+        lang: this.translate.currentLang,
+        informalTaxonGroup: this.query.informalTaxonGroupId
+      })
+        .map(data => {
+          this.targetId = data[0].key;
+          this.loading = false;
+          return true;
+        });
   }
 
   public queryUpdate(data = {}): void {

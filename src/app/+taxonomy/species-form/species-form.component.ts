@@ -52,7 +52,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.empty();
+    this.queryToFormQuery();
 
     this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
       res => {
@@ -102,11 +102,14 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
   onTaxonSelect(event) {
     if (event.value && event.item) {
-      this.searchQuery.query.target = event.item.key;
+      this.searchQuery.targetId = event.item.key;
+      this.searchQuery.query.target = this.formQuery.taxon;
     }
     if (this.formQuery.taxon === '') {
+      this.searchQuery.targetId = undefined;
       this.searchQuery.query.target = undefined;
     }
+
     this.onQueryChange();
   }
 
@@ -158,16 +161,9 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.onSubmit();
   }
 
-  empty() {
-    if (this.searchQuery.query) {
-      this.queryToFormQuery();
-      return;
-    }
-  }
-
   onSubmit() {
     this.formQueryToQuery();
-    this.searchQuery.updateUrl(false);
+    this.searchQuery.updateUrl();
     this.searchQuery.queryUpdate();
     return false;
   }
@@ -223,7 +219,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       euInvasiveSpeciesList: this.hasInMulti(query.adminStatusFilters, 'MX.euInvasiveSpeciesList'),
       quarantinePlantPest: this.hasInMulti(query.adminStatusFilters, 'MX.quarantinePlantPest'),
       allInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, this.invasiveStatuses.map(val => 'MX.' + val))
-    }
+    };
   }
 
   private hasInMulti(multi, value, noOther = false) {

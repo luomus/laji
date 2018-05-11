@@ -220,7 +220,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       sortOrder: this.searchQuery.sortOrder,
       selected: this.searchQuery.selected
     });
-    if (this.lastQuery === cacheKey || !this.settingsLoaded) {
+    if (this.lastQuery === cacheKey || !this.settingsLoaded || this.searchQuery.loading) {
       return;
     }
     this.lastQuery = cacheKey;
@@ -318,7 +318,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   private searchQueryToTaxaQuery() {
     const query = this.searchQuery.query;
     const informalTaxonGroupId = query.informalTaxonGroupId;
-    const target = query.target ? query.target : 'MX.37600';
+    const target = query.target ? this.searchQuery.targetId : 'MX.37600';
     const extraParameters = {...query};
     extraParameters['target'] = undefined;
     extraParameters['informalTaxonGroupId'] = undefined;
