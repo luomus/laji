@@ -29,16 +29,19 @@ export class InformalComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.searchQuery.empty();
+    this.searchQuery.loading = true;
 
     this.subQuery = this.route.queryParams.subscribe(params => {
       this.searchQuery.setQueryFromParams(params);
       if (this.searchQuery.query.target && !this.searchQuery.targetId) {
         this.searchQuery.initTargetId()
-          .subscribe(() => {
-            this.searchQuery.queryUpdate({formSubmit: false});
+          .subscribe((formSubmit) => {
+            this.searchQuery.loading = false;
+            this.searchQuery.queryUpdate({formSubmit: formSubmit});
             this.cd.markForCheck();
           });
       } else {
+        this.searchQuery.loading = false;
         this.searchQuery.queryUpdate({formSubmit: false});
         this.cd.markForCheck();
       }

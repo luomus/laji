@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Router, Params } from '@angular/router';
 import { TaxonomySearchQueryInterface } from './taxonomy-search-query.interface';
-import { AutocompleteApi } from '../shared/api/AutocompleteApi';
+import { AutocompleteApi, AutocompleteMatchType } from '../shared/api/AutocompleteApi';
 import { Util } from '../shared/service/util.service';
-import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
@@ -25,7 +24,6 @@ export class TaxonomySearchQuery {
 
   constructor(
     private router: Router,
-    private translate: TranslateService,
     private autocompleteService: AutocompleteApi
   ) { }
 
@@ -85,20 +83,26 @@ export class TaxonomySearchQuery {
   }
 
   public initTargetId(): Observable<boolean> {
-    this.loading = true;
+    const taxon = this.query.target;
+    let formSubmit = false;
 
     return this.autocompleteService.autocompleteFindByField({
         field: 'taxon',
-        q: this.query.target,
+        q: taxon,
         limit: '1',
-        includePayload: true,
-        lang: this.translate.currentLang,
-        informalTaxonGroup: this.query.informalTaxonGroupId
+        informalTaxonGroup: this.query.informalTaxonGroupId,
+        matchType: AutocompleteMatchType.exact
       })
         .map(data => {
-          this.targetId = data[0].key;
-          this.loading = false;
-          return true;
+          if (taxon === this.query.target) {
+            if (data.length === 1) {
+              this.targetId = data[0].key;
+            } else {
+              this.query.target = undefined;
+              formSubmit = true;
+            }
+          }
+          return formSubmit;
         });
   }
 
