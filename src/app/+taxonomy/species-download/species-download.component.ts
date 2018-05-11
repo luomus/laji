@@ -13,7 +13,7 @@ import { Router } from '@angular/router'
 })
 export class SpeciesDownloadComponent implements OnInit {
   @Input() data: any;
-  @Input() columns: ObservationTableColumn[] = [];
+  @Input() columnLookup: ObservationTableColumn[] = [];
   @Input() searchQuery: TaxonomySearchQuery;
 
   fileType = 'tsv';
@@ -28,7 +28,10 @@ export class SpeciesDownloadComponent implements OnInit {
   ngOnInit() { }
 
   download() {
-    this.taxonExportService.downloadTaxons(this.columns, this.data, this.fileType);
+    const columns = this.searchQuery.selected.map(name => {
+      return this.columnLookup[name];
+    });
+    this.taxonExportService.downloadTaxons(columns, this.data, this.fileType);
   }
 
   browse() {

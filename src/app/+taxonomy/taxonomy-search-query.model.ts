@@ -3,7 +3,6 @@ import { Subject } from 'rxjs/Subject';
 import { Router, Params } from '@angular/router';
 import { TaxonomySearchQueryInterface } from './taxonomy-search-query.interface';
 import { Util } from '../shared/service/util.service';
-import { UserService } from '../shared/service/user.service';
 
 @Injectable()
 export class TaxonomySearchQuery {
@@ -19,17 +18,8 @@ export class TaxonomySearchQuery {
   public query: TaxonomySearchQueryInterface = {};
 
   constructor(
-    private router: Router,
-    private userService: UserService
-  ) {
-    this.userService.getItem<any>(UserService.SETTINGS_TAXONOMY_LIST)
-      .subscribe(data => {
-        if (data.selected) {
-          this.selected = data.selected;
-          this.queryUpdate({formSubmit: false});
-        }
-      });
-  }
+    private router: Router
+  ) { }
 
   public updateUrl(skipHistory: boolean = true): void {
     const extra = {skipLocationChange: skipHistory};
@@ -79,16 +69,5 @@ export class TaxonomySearchQuery {
 
   public queryUpdate(data = {}): void {
     this.queryUpdatedSource.next(data);
-  }
-
-  public setSelectedFields(event) {
-    this.selected = [...event];
-    this.saveSettings();
-  }
-
-  private saveSettings() {
-    this.userService.setItem(UserService.SETTINGS_TAXONOMY_LIST, {
-      selected: this.selected
-    }).subscribe();
   }
 }

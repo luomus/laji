@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 import { ModalDirective } from 'ngx-bootstrap';
+import { UserService } from '../../shared/service/user.service';
 
 
 @Component({
@@ -35,10 +36,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   };
 
   _selected: string[];
-
   columns: ObservationTableColumn[] = [];
-  selectedColumns: ObservationTableColumn[] = [];
-
   allColumns: ObservationTableColumn[] = [
     {
       name: 'id',
@@ -155,12 +153,13 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       name: 'notes'
     }
   ];
-
   columnLookup = {};
 
   lastQuery: string;
   private subQueryUpdate: Subscription;
   private subFetch: Subscription;
+
+  private settingsLoaded = false;
 
   constructor(
     private taxonomyService: TaxonomyApi,
@@ -169,26 +168,25 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     private logger: Logger,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
-    this.initColumns();
     this.loading = true;
-    this.refreshSpeciesList();
+    this.initColumns();
+
+    this.userService.getItem<any>(UserService.SETTINGS_TAXONOMY_LIST)
+      .subscribe(data => {
+        if (data.selected) {
+          this.searchQuery.selected = data.selected;
+        }
+        this.settingsLoaded = true;
+        this.refreshSpeciesList();
+      });
 
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
-        const cacheKey = JSON.stringify({
-            query: this.searchQuery.query,
-            page: this.searchQuery.page,
-            sortOrder: this.searchQuery.sortOrder,
-            selected: this.searchQuery.selected
-        });
-        if (this.lastQuery === cacheKey) {
-          return;
-        }
-        this.lastQuery = cacheKey;
         this.searchQuery.page = 1;
         this.refreshSpeciesList();
       }
@@ -216,6 +214,17 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   }
 
   refreshSpeciesList() {
+    const cacheKey = JSON.stringify({
+      query: this.searchQuery.query,
+      page: this.searchQuery.page,
+      sortOrder: this.searchQuery.sortOrder,
+      selected: this.searchQuery.selected
+    });
+    if (this.lastQuery === cacheKey || !this.settingsLoaded) {
+      return;
+    }
+    this.lastQuery = cacheKey;
+
     if (this.subFetch) {
       this.subFetch.unsubscribe();
     }
@@ -243,10 +252,9 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
         // 'finnish_name'
       )
       .subscribe(data => {
-          this.selectedColumns = this.searchQuery.selected.map(name => {
+          this.columns = this.searchQuery.selected.map(name => {
             return this.columnLookup[name];
           });
-          this.columns = [...this.selectedColumns];
 
           if (data.lastPage && data.lastPage === 1) {
             this.columns = this.columns.map(column => ({...column, sortable: true}));
@@ -300,8 +308,10 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   }
 
   closeOkModal() {
-    this.searchQuery.setSelectedFields(this._selected);
-    this.searchQuery.queryUpdate({formSubmit: false});
+    this.searchQuery.selected = [...this._selected];
+    this.searchQuery.page = 1;
+    this.refreshSpeciesList();
+    this.saveSettings();
     this.modalRef.hide();
   }
 
@@ -341,5 +351,11 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       selects.push('id');
     }
     return selects.join(',');
+  }
+
+  private saveSettings() {
+    this.userService.setItem(UserService.SETTINGS_TAXONOMY_LIST, {
+      selected: this.searchQuery.selected
+    }).subscribe();
   }
 }
