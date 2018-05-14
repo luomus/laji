@@ -26,6 +26,7 @@ export class UserService extends LocalDb {
 
   public static readonly UNKOWN_USER = 'unknown';
   public static readonly SETTINGS_RESULT_LIST = 'result-list';
+  public static readonly SETTINGS_TAXONOMY_LIST = 'taxonomy-list';
 
   private actionSource = new Subject<any>();
   public action$ = this.actionSource.asObservable();

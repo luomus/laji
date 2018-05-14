@@ -1,18 +1,142 @@
-<div *ngIf="speciesPage">
-  <h3>{{'species.list.header' | translate:{informalGroup: informalGroup.name} }}</h3>
-  <laji-datatable
-    #dataTable
-    class="observation-table"
-    (rowSelect)="onRowSelect($event)"
-    [virtualScrolling]="true"
-    [clientSideSorting]="true"
-    [height]="'50vh'"
-    [rows]='speciesPage.results'
-    (pageChange)="pageChanged($event)"
-    [loading]="loading"
-    [count]="speciesPage.total"
-    [page]="speciesPage.currentPage"
-    [pageSize]="speciesPage.pageSize"
-    [columns]="columns">
-  </laji-datatable>
+<div>
+  <h3>{{'species.list.headerStart' | translate }}
+    <laji-spinner [spinning]="!informalGroup">
+      <span [innerHtml]="informalGroup.name" *ngIf="informalGroup"></span>
+    </laji-spinner>
+    {{'species.list.headerEnd' | translate }}
+  </h3>
+  <div class="form-group">
+    <label class="col-sm-12">
+      {{'species.order' | translate}}:
+    </label>
+    <select class="form-control" style="width: auto; margin-left: 15px;" [ngModel]="searchQuery.sortOrder" (ngModelChange)="sortOrderChanged($event)">
+      <option [value]="'taxonomic'">
+        {{'species.order.taxonomicOrder' | translate}}
+      </option>
+      <option [value]="'scientific_name'">
+        {{'species.order.scientificName' | translate}}
+      </option>
+      <option [value]="'finnish_name'">
+        {{'species.order.finnishName' | translate}}
+      </option>
+    </select>
+  </div>
+  <div class="species-table-wrapper">
+    <laji-datatable
+      #dataTable
+      class="observation-table"
+      (rowSelect)="onRowSelect($event)"
+      [virtualScrolling]="true"
+      [clientSideSorting]="true"
+      [height]="'calc(70vh - 30px)'"
+      [rows]='speciesPage.results'
+      (pageChange)="pageChanged($event)"
+      [loading]="loading"
+      [count]="speciesPage.total"
+      [page]="speciesPage.currentPage"
+      [pageSize]="speciesPage.pageSize"
+      [columns]="columns">
+    </laji-datatable>
+    <div class="setting-menu link" (click)="openModal()">
+      <i class="glyphicon glyphicon-cog"></i>
+    </div>
+  </div>
+</div>
+
+<div bsModal #settingsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">{{'result.settings.list' | translate}}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row" >
+          <div class="col-sm-6">
+            <laji-selected-field-group
+              header="species.list.basicInfo"
+              [fields]="[
+                'id',
+                'taxonRank',
+                'scientificName',
+                'scientificNameAuthorship',
+                'vernacularName'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+            <laji-selected-field-group
+              header="species.list.names"
+              [fields]="[
+                'allSynonyms',
+                'vernacularName.fi',
+                'vernacularName.sv',
+                'vernacularName.en',
+                'alternativeVernacularName',
+                'obsoleteVernacularName',
+                'tradeName'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+            <laji-selected-field-group
+              header="species.list.statusInFinland"
+              [fields]="[
+                'finnish',
+                'typeOfOccurrenceInFinland',
+                'typeOfOccurrenceInFinlandNotes'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+          </div>
+          <div class="col-sm-6">
+            <laji-selected-field-group
+              header="species.list.publications"
+              [fields]="[
+                'occurrenceInFinlandPublication',
+                'originalPublication'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+            <laji-selected-field-group
+              header="species.list.attributes"
+              [fields]="[
+                'latestRedListStatusFinland',
+                'informalTaxonGroups',
+                'invasiveSpecies',
+                'administrativeStatuses'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+            <laji-selected-field-group
+              header="species.list.misc"
+              [fields]="[
+                'taxonExpert',
+                'notes'
+                ]"
+              [columnsLookup]="columnLookup"
+              [selected]="_selected"
+              (toggle)="toggleSelectedField($event)"
+            ></laji-selected-field-group>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6"></div>
+          <div class="col-sm-6 clear-btn">
+            <div class="pull-right">
+              <button type="button" tabindex="-1" class="btn btn-default btn-sm" (click)="clear()">{{'result.clear' | translate}}</button>
+              <button type="button" tabindex="-1" class="btn btn-primary btn-sm" (click)="closeOkModal()">Ok</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,0 +1,18 @@
+:host >>> .bootstrap-switch {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+:host >>> .form-filters {
+  border-top: 1px solid #e1e1e1;
+  z-index: 1 !important;
+}
+.taxon-panel {
+  background-color: #ffffff;
+  margin: -15px;
+  padding: 15px;
+}
+.lj-input-wrap {
+  padding: 0 15px;
+}
+

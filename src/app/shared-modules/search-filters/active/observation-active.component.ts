@@ -1,5 +1,4 @@
 import { Component, HostListener, Input, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
-import { SearchQuery } from '../search-query.model';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -10,13 +9,14 @@ import { Subscription } from 'rxjs/Subscription';
 export class ObservationActiveComponent implements OnInit, OnDestroy {
 
   @Input() skip: string[] = [];
+  @Input() searchQuery: any;
   public active: ActiveList[] = [];
   public showList = false;
 
   private subQueryUpdate: Subscription;
   private el: Element;
 
-  constructor(viewContainerRef: ViewContainerRef, public searchQuery: SearchQuery) {
+  constructor(viewContainerRef: ViewContainerRef) {
     this.el = viewContainerRef.element.nativeElement;
   }
 

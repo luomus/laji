@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MultiLangPipe } from './pipe/multi-lang.pipe';
+import { MultiLangAllPipe } from './pipe/multi-lang-all.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
@@ -9,10 +10,12 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule
   ],
   declarations: [
-    MultiLangPipe
+    MultiLangPipe,
+    MultiLangAllPipe
   ],
   exports: [
     MultiLangPipe,
+    MultiLangAllPipe,
     TranslateModule
   ]
 })

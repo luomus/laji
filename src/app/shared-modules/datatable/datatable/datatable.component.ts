@@ -30,15 +30,22 @@ export class DatatableComponent {
   @ViewChild('headerTpl') headerTpl: TemplateRef<any>;
   @ViewChild('eventDate') eventDateTpl: TemplateRef<any>;
   @ViewChild('multiLang') multiLangTpl: TemplateRef<any>;
+  @ViewChild('multiLangAll') multiLangAllTpl: TemplateRef<any>;
   @ViewChild('vernacularName') vernacularNameTpl: TemplateRef<any>;
   @ViewChild('scientificName') scientificNameTpl: TemplateRef<any>;
   @ViewChild('taxonScientificName') taxonScientificNameTpl: TemplateRef<any>;
   @ViewChild('cursive') cursiveTpl: TemplateRef<any>;
-  @ViewChild('speciesVernacularName') speciesVernacularNameTpl: TemplateRef<any>;
+  @ViewChild('boolean') booleanTpl: TemplateRef<any>;
+  @ViewChild('label') labelTpl: TemplateRef<any>;
+  @ViewChild('labelArray') labelArrayTpl: TemplateRef<any>;
   @ViewChild('warehouseLabel') warehouseLabelTpl: TemplateRef<any>;
   @ViewChild('toSemicolon') toSemicolonTpl: TemplateRef<any>;
   @ViewChild('numeric') numericTpl: TemplateRef<any>;
   @ViewChild('date') dateTpl: TemplateRef<any>;
+  @ViewChild('user') userTpl: TemplateRef<any>;
+  @ViewChild('publication') publicationTpl: TemplateRef<any>;
+  @ViewChild('publicationArray') publicationArrayTpl: TemplateRef<any>;
+  @ViewChild('iucnStatus') iucnStatusTpl: TemplateRef<any>;
   @ViewChild('annotation') annotationTpl: TemplateRef<any>;
   @ViewChild('image') imageTpl: TemplateRef<any>;
 

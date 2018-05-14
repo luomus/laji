@@ -28,6 +28,7 @@ import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
 
 export enum AutocompleteMatchType {
+  exact = <any> 'exact',
   partial = <any> 'exact,partial',
   likely = <any> 'exact,likely'
 }

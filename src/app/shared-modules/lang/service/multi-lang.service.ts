@@ -46,4 +46,23 @@ export class MultiLangService {
     return '';
   }
 
+  static valueToString(multi: object): string {
+    const values = [];
+    for (let i = 0; i < MultiLangService.lang.length; i++) {
+      const lang = MultiLangService.lang[i];
+
+      if (MultiLangService.hasValue(multi, lang)) {
+        const val = MultiLangService.getValue(multi, lang);
+        if (Array.isArray(val)) {
+          for (let j = 0; j < val.length; j++) {
+            values.push(val[j] + ' (' + lang + ')');
+          }
+        } else {
+          values.push(val + ' (' + lang + ')');
+        }
+      }
+    }
+
+    return values.join('; ');
+  }
 }

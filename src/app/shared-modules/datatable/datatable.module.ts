@@ -5,6 +5,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { LangModule } from '../lang/lang.module';
 import { SpinnerModule } from '../spinner/spinner.module';
 import { SharedModule } from '../../shared/shared.module';
+import { PublicationPipe } from './pipe/publication.pipe';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { SharedModule } from '../../shared/shared.module';
     SpinnerModule,
     SharedModule
   ],
-  declarations: [DatatableComponent],
+  declarations: [DatatableComponent, PublicationPipe],
   exports: [DatatableComponent]
 })
 export class DatatableModule { }

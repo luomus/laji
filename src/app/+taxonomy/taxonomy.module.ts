@@ -19,13 +19,22 @@ import { LangModule } from '../shared-modules/lang/lang.module';
 import { DatatableModule } from '../shared-modules/datatable/datatable.module';
 import {BoldSequenceComponent} from './info-card/taxon-info/bold-sequence/bold-sequence.component';
 import {HttpClientModule} from '@angular/common/http';
+import { SpeciesFormComponent } from './species-form/species-form.component';
+import { InformalComponent } from './informal/informal.component';
+import { TypeaheadModule, ButtonsModule } from 'ngx-bootstrap';
+import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
+import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+import { TaxonomySearchQuery } from './taxonomy-search-query.model';
+import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
+import { SpeciesDownloadComponent } from './species-download/species-download.component';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, TreeModule, LangModule, DatatableModule, HttpClientModule],
-  providers: [TaxonomyApi, InformalTaxonGroupApi],
+  imports: [routing, SharedModule, RouterModule, TreeModule, LangModule, DatatableModule, HttpClientModule,
+    TypeaheadModule, ButtonsModule, SearchFiltersModule, JWBootstrapSwitchModule, ObservationResultModule ],
+  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
-    ChildrenListComponent, BoldSequenceComponent
+    ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, InformalComponent, SpeciesDownloadComponent
   ],
 })
 export class TaxonomyModule {

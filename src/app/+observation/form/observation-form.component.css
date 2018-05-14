@@ -5,20 +5,9 @@ hr {
   border: none;
   box-shadow: none;
 }
-.faded {
-  color: #fff;
-}
 .result-list {
   display: flex;
   flex-direction: column;
-}
-.form-filters {
-  z-index: 1029;
-  border-left: 1px solid #e1e1e1;
-  background-color: #ECF0F1;
-}
-.checkbox-label {
-  padding-left:0;
 }
 .taxon-panel {
   background-color: #ffffff;
@@ -34,19 +23,9 @@ hr {
 :host >>> .alert.alert-info {
   margin-right: 10px;
 }
-:host >>> .panel-heading, .form-title {
-  background-color: #ECF0F1;
-  border-bottom: 1px solid #e1e1e1;
+.lj-input-wrap {
+  padding: 0 15px;
 }
-:host >>> .panel-body {
-  background-color: #ffffff;
-}
-
-:host >>> .form-filters .btn {
-  white-space: normal;
-  text-align: left;
-}
-
 .toggle-intro {
   position: absolute;
   right: 0;
@@ -56,84 +35,21 @@ hr {
   font-size: 13px;
   color: #3498DB;
 }
-
-.filter-toggle {
-  position: absolute;
-  font-size: 16px;
-  color: #777;
-  margin-left: -37px;
-  margin-top: 10px;
-  background-color: #ECF0F1;
-  z-index: 1;
-  padding: 5px;
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-  border-top: 1px solid #e1e1e1;
-  border-left: 1px solid #e1e1e1;
-  border-bottom: 1px solid #e1e1e1;
-}
-
-.form-title {
-  z-index: 2;
-  padding: 15px 0 15px 10px;
-}
-
-.form-title h2 {
-  font-size: 16px;
-}
-
 :host >>> .alert-warning {
   margin-right: 10px;
 }
 
-:host >>> .panel-heading a:hover {
-  text-decoration: none;
+.form-filters {
+  z-index: 1029;
+  position: fixed;
+  top: 50px;
+  height: calc(100vh - 50px);
+  padding: 0;
 }
-
-:host >>> .panel-body {
-  padding-top: 6px;
-  margin-top: 0;
-}
-
-:host >>> .panel-body .close {
-  margin: 0 -2px 0 0;
-}
-.fixed-container {
-  position: relative;
-}
-.fixed-element {
-  background-color: #fff;
-}
-.lj-filter-wrap {
-  margin: -15px -15px 0 -15px;
-  padding: 15px 15px 10px 15px;
-}
-.lj-input-wrap {
-  padding: 0 15px;
-}
-
-@media only screen and (min-width : 768px) {
-  .lj-filter-wrap {
-    max-height: calc(100vh - 100px);
-    overflow: auto;
-  }
-
+@media only screen and (max-width : 767px) {
   .form-filters {
-    position: fixed;
-    top: 50px;
-    height: calc(100vh - 50px);
+    top: 0;
+    height: auto;
+    position: relative;
   }
-
-  .form-filters-fill {
-    background-color: #ECF0F1;
-    width: calc(100% + 30px);
-    flex: 1 1 auto;
-    margin: 0 -15px;
-    min-height: 30px;
-  }
-
-  .fixed-container {
-    flex: 1 1 auto;
-  }
-
 }

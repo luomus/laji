@@ -1,43 +1,19 @@
-table {
-  width: 100%;
-  border-left: none;
+.species-table-wrapper {
+  position: relative;
 }
 
-thead, tbody, tr, td, th {
-  display: block;
+.setting-menu {
+  height: 37px;
+  width: 28px;
+  position: absolute;
+  right: 0;
+  top: 1px;
+  padding: 10px 7px;
+  background-color: #fff;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
 }
 
-tbody tr:first-child td, tbody tr:first-child th {
-  border-top: none;
+.setting-menu:hover {
+  background-color: #dfdfdf;
 }
-
-tr:after {
-  content: ' ';
-  display: block;
-  visibility: hidden;
-  clear: both;
-}
-
-thead th {
-  border-right: 0px;
-}
-
-thead th, thead td {
-  border-bottom-width: 1px;
-}
-
-thead th, thead td, tbody th, tbody td {
-  height: 38px;
-}
-
-tbody {
-  height: 240px;
-  overflow-y: auto;
-}
-
-tbody td, thead td {
-  width: 160px;
-  float: left;
-  margin-right: 8px;
-}
-

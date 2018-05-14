@@ -3,7 +3,7 @@
     <a [routerLink]="'/taxon/informal' | localize">{{ 'observation.active.informalTaxonGroupAll' | translate }}</a>
   </li>
   <li *ngFor="let group of groups; let i = index; let active = last;">
-    <a [routerLink]="['/taxon/informal/' + group.id] | localize">{{group.name}}</a>
+    <a [routerLink]="['/taxon/informal/list'] | localize" [queryParams]="{informalTaxonGroupId: group.id, onlyFinnish: true}">{{group.name}}</a>
   </li>
   <li *ngIf="informalGroup" class="active">
     <span>{{informalGroup.name}}</span>

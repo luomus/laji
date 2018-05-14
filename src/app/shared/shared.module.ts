@@ -85,7 +85,7 @@ import { LangModule } from '../shared-modules/lang/lang.module';
 import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
 import { ClickOutSideDirective } from './directive/click-out-side.directive';
 import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
-import { ObservationGroupSelectComponent } from '../+observation/group-select/group-select.component';
+import { ObservationGroupSelectComponent } from './group-select/group-select.component';
 import { SourcePipe } from './pipe/source.pipe';
 import { TaxonNamePipe } from './pipe/taxon-name.pipe';
 import { DocumentFormFooterComponent } from './document-form-footer/document-form-footer.component';
@@ -97,6 +97,8 @@ import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { FactNotInPipe } from './pipe/fact-not-in.pipe';
 import {HttpClientModule} from '@angular/common/http';
 import {LajiApiService} from './service/laji-api.service';
+import { PublicationApi } from './api/PublicationApi';
+import { PublicationService } from './service/publication.service';
 
 
 @NgModule({
@@ -182,6 +184,8 @@ export class SharedModule {
         TaxonNamePipe,
         ToQNamePipe,
         LajiApiService,
+        PublicationApi,
+        PublicationService,
         {provide: Http, useClass: AuthenticatedHttpService}
       ]
     };
