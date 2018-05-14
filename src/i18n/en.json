@@ -485,7 +485,7 @@
   "todoTranslation": "The texts for this page are under translation.",
   "notification.title": "Notifications",
   "notification.delete": "Do you really want to delete this notification?",
-  "notification.annotation": "{{person}} has commented your observation.",
+  "notification.annotation": "{{person}} has commented observation.",
   "result.taxonomicOrder": "Taxonomic order",
   "theme.individualCountMax": "Individual count max",
   "search.result.finnish": "Observations in Finland (beta)",

@@ -506,7 +506,7 @@
   "todoTranslation": "Tämän sivun teksti on vielä käännettävänä.",
   "notification.title": "Ilmoitukset",
   "notification.delete": "Haluatko varmasti poistaa ilmoituksen",
-  "notification.annotation": "{{person}} on kommentoinut havaintoerääsi.",
+  "notification.annotation": "{{person}} on kommentoinut havaintoerää.",
   "result.taxonomicOrder": "Taksonominen järjestys",
   "theme.individualCountMax": "Yksilömaksimi",
   "search.result.finnish": "Suomen havainnot (beta)",
