@@ -22,10 +22,19 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   public typeaheadLoading = false;
   public limit = 10;
 
-  public formQuery: SpeciesFormQuery = {};
+  public formQuery: SpeciesFormQuery = {
+    onlyFinnish: true,
+    onlyInvasive: false,
+    onlyNonInvasive: false,
+    euInvasiveSpeciesList: false,
+    nationallySignificantInvasiveSpecies: false,
+    quarantinePlantPest: false,
+    allInvasiveSpecies: false
+  };
 
   public subUpdate: Subscription;
 
+  public invasiveSelected: string[] = [];
   public invasiveStatuses: string[] = [
     'nationallySignificantInvasiveSpecies',
     'nationalInvasiveSpeciesStrategy',
@@ -113,26 +122,52 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  onInvasiveToggle() {
+  onInvasiveChange(id) {
+    if (id === 'onlyInvasive') {
+      this.onInvasiveToggle();
+    } else if (id === 'onlyNonInvasive') {
+      this.onNonInvasiveToggle();
+    } else {
+      this.onInvasiveCheckBoxToggle(id);
+    }
+  }
+
+  private updateInvasiveSelected() {
+    const invasiveSelected = [];
+    const allFields = [
+      'onlyInvasive', 'onlyNonInvasive', 'euInvasiveSpeciesList',
+      'nationallySignificantInvasiveSpecies', 'quarantinePlantPest', 'allInvasiveSpecies'
+    ];
+    for (const i in allFields) {
+      if (this.formQuery[allFields[i]]) {
+        invasiveSelected.push(allFields[i]);
+      }
+    }
+    this.invasiveSelected = invasiveSelected;
+  }
+
+  private onInvasiveToggle() {
     this.formQuery.onlyInvasive = !this.formQuery.onlyInvasive;
     if (this.formQuery.onlyInvasive) {
       this.formQuery.onlyNonInvasive = false;
     }
+    this.updateInvasiveSelected();
     this.onQueryChange();
   }
 
-  onNonInvasiveToggle() {
+  private onNonInvasiveToggle() {
     this.formQuery.onlyNonInvasive = !this.formQuery.onlyNonInvasive;
     if (this.formQuery.onlyNonInvasive) {
       this.formQuery.onlyInvasive = false;
     }
+    this.updateInvasiveSelected();
     this.onQueryChange();
   }
 
-  onInvasiveCheckBoxToggle(field) {
-    if (Array.isArray(field)) {
+  private onInvasiveCheckBoxToggle(field) {
+    if (field === 'allInvasiveSpecies') {
       this.formQuery.allInvasiveSpecies = !this.formQuery.allInvasiveSpecies;
-      field.map(status => {this.formQuery[status] = this.formQuery.allInvasiveSpecies; });
+      this.invasiveStatuses.map(status => {this.formQuery[status] = this.formQuery.allInvasiveSpecies; });
     } else {
       this.formQuery[field] = !this.formQuery[field];
       if (!this.formQuery[field] && this.formQuery.allInvasiveSpecies) {
@@ -154,6 +189,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       }
     });
     this.formQuery.allInvasiveSpecies = cnt === this.invasiveStatuses.length;
+    this.updateInvasiveSelected();
     this.onQueryChange();
   }
 
@@ -220,6 +256,8 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       quarantinePlantPest: this.hasInMulti(query.adminStatusFilters, 'MX.quarantinePlantPest'),
       allInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, this.invasiveStatuses.map(val => 'MX.' + val))
     };
+
+    this.updateInvasiveSelected();
   }
 
   private hasInMulti(multi, value, noOther = false) {

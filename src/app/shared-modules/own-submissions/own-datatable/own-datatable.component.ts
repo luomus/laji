@@ -430,14 +430,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     return locality$
-      .switchMap((gathering) => this.translate.get(['haseka.users.latest.localityMissing', 'haseka.users.latest.other'])
-        .map(translations => {
-          let locality = gathering.locality || translations['haseka.users.latest.localityMissing'];
-          if (gathering.localityCount > 0) {
-            locality += ' (' + gathering.localityCount + ' ' + translations['haseka.users.latest.other'] + ')';
-          }
-          return locality;
-        }));
+      .switchMap((gathering) => this.translate.get('haseka.users.latest.localityMissing')
+        .map(missing => gathering.locality || missing));
   }
 
   private getObservers(userArray: string[] = []): Observable<string> {

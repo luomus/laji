@@ -12,12 +12,11 @@ export class TaxonomySearchQuery {
   public queryUpdatedSource = new Subject<any>();
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
 
-  public page = 1;
-  public sortOrder = 'taxonomic';
-  public selected: string[] = [ 'id', 'taxonRank', 'scientificName', 'scientificNameAuthorship', 'vernacularName',
-    'finnish', 'typeOfOccurrenceInFinland'];
+  public page: number;
+  public sortOrder: string;
+  public selected: string[];
 
-  public query: TaxonomySearchQueryInterface = {};
+  public query: TaxonomySearchQueryInterface;
   public targetId: string;
 
   public loading = false;
@@ -25,7 +24,9 @@ export class TaxonomySearchQuery {
   constructor(
     private router: Router,
     private autocompleteService: AutocompleteApi
-  ) { }
+  ) {
+    this.empty();
+  }
 
   public updateUrl(skipHistory: boolean = false): void {
     const extra = {skipLocationChange: skipHistory};
@@ -49,8 +50,8 @@ export class TaxonomySearchQuery {
     this.query = {};
     this.page = 1;
     this.sortOrder = 'taxonomic';
-    this.selected = [ 'id', 'taxonRank', 'scientificName', 'scientificNameAuthorship', 'vernacularName',
-      'finnish', 'typeOfOccurrenceInFinland'];
+    this.selected = ['vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
+      'latestRedListStatusFinland', 'administrativeStatuses', 'allSynonyms'];
     this.targetId = undefined;
   }
 
