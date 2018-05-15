@@ -23,8 +23,7 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { DocumentService } from '../service/document.service';
 import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
-import { NamedPlace } from '../../../shared/model/NamedPlace';
-import { NamedPlacesService } from '../../named-place/named-places.service';
+import { TriplestoreLabelService } from '../../../shared/service';
 
 
 @Component({
@@ -100,11 +99,11 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     private localizeRouterService: LocalizeRouterService,
     private documentExportService: DocumentExportService,
     private documentService: DocumentService,
-    private namedPlacesService: NamedPlacesService,
     private toastService: ToastsService,
     private window: WindowRef,
     private logger: Logger,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private labelService: TriplestoreLabelService
   ) {}
 
   ngOnInit() {
@@ -393,7 +392,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
 
       return Observable.forkJoin(
-        this.getLocality(gatheringInfo),
+        this.getLocality(gatheringInfo, document.namedPlaceID),
         this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
         this.getNamedPlaceName(document.namedPlaceID),
         (locality, observers, npName) => {
@@ -421,21 +420,18 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  private getLocality(gatheringInfo: any): Observable<string> {
-    let locality = gatheringInfo.locality;
+  private getLocality(gatheringInfo: any, namedPlaceID): Observable<string> {
+    let locality$ = Observable.of(gatheringInfo);
+    const npID = gatheringInfo.namedPlaceID || namedPlaceID;
 
-    return this.translate.get('haseka.users.latest.localityMissing').switchMap((localityMissing) => {
-      if (!locality) {
-        locality = localityMissing;
-      }
+    if (!gatheringInfo.locality && npID) {
+      locality$ = this.labelService.get(npID, 'multi')
+        .map(namedPlace => ({...gatheringInfo, locality: namedPlace}));
+    }
 
-      return this.translate.get('haseka.users.latest.other').switchMap((other) => {
-        if (gatheringInfo.localityCount > 0) {
-          locality += ' (' + gatheringInfo.localityCount + ' ' + other + ')';
-        }
-        return Observable.of(locality);
-      });
-    });
+    return locality$
+      .switchMap((gathering) => this.translate.get('haseka.users.latest.localityMissing')
+        .map(missing => gathering.locality || missing));
   }
 
   private getObservers(userArray: string[] = []): Observable<string> {
@@ -465,17 +461,11 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
-  private getNamedPlaceName(npId: string): Observable<any> {
+  private getNamedPlaceName(npId: string): Observable<string> {
     if (!npId || this.columns.indexOf('namedPlaceName') === -1) {return Observable.of(''); }
 
     if (this.namedPlaceNames[npId]) { return Observable.of(this.namedPlaceNames[npId]); }
 
-    return this.namedPlacesService
-      .getNamedPlace(npId)
-      .map((np: NamedPlace) => (np.name || npId))
-      .catch((err) => Observable.of(npId))
-      .do((res: string) => {
-        this.namedPlaceNames[npId] = res;
-      });
+    return this.labelService.get(npId, 'multi');
   }
 }

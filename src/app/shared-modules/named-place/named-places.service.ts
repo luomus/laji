@@ -31,7 +31,7 @@ export class NamedPlacesService {
       });
   }
 
-  getNamedPlace(id, userToken?: string) {
+  getNamedPlace(id, userToken?: string): Observable<NamedPlace> {
     if (this.cache) {
       for (const place of this.cache) {
         if (place.id === id) {

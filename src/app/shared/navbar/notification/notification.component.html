@@ -6,6 +6,7 @@
   <small>{{notification.created | amTimeAgo}}</small><br>
   <ng-container [ngSwitch]="type">
     <small *ngSwitchCase="'annotation'" [innerHtml]="'notification.annotation' | translate: {uri: target, person: (by | users:'fullname')}"></small>
+    <small *ngSwitchCase="'annotationCommented'" [innerHtml]="'notification.annotationCommented' | translate: {uri: target, person: (by | users:'fullname')}"></small>
     <small *ngSwitchCase="'friendRequest'" [innerHtml]="'notification.friendRequest' | translate: {uri: target, person: (by | users:'fullname')}"></small>
     <small *ngSwitchCase="'friendRequestAccepted'" [innerHtml]="'notification.friendRequestAccepted' | translate: {uri: target, person: (by | users:'fullname')}"></small>
   </ng-container>

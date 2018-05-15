@@ -12,6 +12,7 @@ export class DocumentInfoService {
       dateEnd: null,
       unsavedUnitCount: 0,
       locality: null,
+      namedPlaceID: null,
       localityCount: 0,
       unitList: []
     };
@@ -24,6 +25,7 @@ export class DocumentInfoService {
       const gathering = document.gatherings[i];
       if (i === 0) {
         info.locality = gathering.locality;
+        info.namedPlaceID = gathering.namedPlaceID;
         info.localityCount = document.gatherings.length - 1;
       }
       DocumentInfoService.updateMinMaxDates(info, gathering.dateBegin);
