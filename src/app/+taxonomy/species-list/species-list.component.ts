@@ -159,7 +159,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   private subQueryUpdate: Subscription;
   private subFetch: Subscription;
 
-  private settingsLoaded = true;
+  private settingsLoaded = false;
 
   constructor(
     private taxonomyService: TaxonomyApi,
@@ -175,11 +175,10 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading = true;
     this.initColumns();
-    this.refreshSpeciesList();
 
     this.userService.getItem<any>(UserService.SETTINGS_TAXONOMY_LIST)
       .subscribe(data => {
-        if (data.selected) {
+        if (data && data.selected) {
           this.searchQuery.selected = data.selected;
         }
         this.settingsLoaded = true;
