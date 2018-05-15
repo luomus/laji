@@ -411,6 +411,7 @@
   "species.form.finnish": "Suomalaiset",
   "species.form.all": "Kaikki",
   "species.download": "Lataa lajiluettelo",
+  "species.download.textFile": "Tekstitiedosto",
   "species.browse": "Selaa havaintoja",
   "feedback": "Palaute",
   "feedback.intro.loggedIn": "Sähköpostiosoitteesi liitetään automaattisesti tähän palautteeseen.",

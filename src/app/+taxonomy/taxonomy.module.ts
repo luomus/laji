@@ -23,6 +23,7 @@ import { SpeciesFormComponent } from './species-form/species-form.component';
 import { InformalComponent } from './informal/informal.component';
 import { TypeaheadModule, ButtonsModule } from 'ngx-bootstrap';
 import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
+import { LajiSelectModule } from '../shared-modules/select/select.module';
 import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { TaxonomySearchQuery } from './taxonomy-search-query.model';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
@@ -30,7 +31,7 @@ import { SpeciesDownloadComponent } from './species-download/species-download.co
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, TreeModule, LangModule, DatatableModule, HttpClientModule,
-    TypeaheadModule, ButtonsModule, SearchFiltersModule, JWBootstrapSwitchModule, ObservationResultModule ],
+    TypeaheadModule, ButtonsModule, SearchFiltersModule, LajiSelectModule, JWBootstrapSwitchModule, ObservationResultModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,

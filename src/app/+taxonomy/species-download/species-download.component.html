@@ -35,13 +35,13 @@
       <div class="modal-body">
         <div>
           <div class="radio">
-            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="tsv">.tsv</label>
+            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="tsv">{{'species.download.textFile' | translate}} (.tsv)</label>
           </div>
           <div class="radio">
-            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="ods">.ods</label>
+            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="ods">OpenDocument Spreadsheet (.ods)</label>
           </div>
           <div class="radio">
-            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="xlsx">.xlsx</label>
+            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="xlsx">Excel (.xlsx)</label>
           </div>
         </div>
       </div>

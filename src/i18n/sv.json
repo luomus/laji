@@ -394,6 +394,7 @@
   "species.form.finnish": "Finska",
   "species.form.all": "Alla",
   "species.download": "Ladda ner artlistan",
+  "species.download.textFile": "Textfil",
   "species.browse": "Bläddra observationer",
   "feedback": "Feedback",
   "feedback.intro.loggedIn": "Din e-postadress kommer att läggas till denna feedback automatiskt",

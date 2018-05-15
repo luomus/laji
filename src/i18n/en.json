@@ -397,6 +397,7 @@
   "species.form.finnish": "Finnish",
   "species.form.all": "All",
   "species.download": "Download species list",
+  "species.download.textFile": "Text file",
   "species.browse": "Browser observations",
   "feedback": "Feedback",
   "feedback.intro.loggedIn": "Your e-mail address will be added automatically to this feedback",
