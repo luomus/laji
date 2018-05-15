@@ -6,10 +6,10 @@ import { ModuleWithProviders } from '@angular/core';
 
 export function decideTaxonFront(url: UrlSegment[]) {
   if (url.length === 1) {
-    if (url[0].path.startsWith('informal')) {
-      return {consumed: url, posParams: {'type': new UrlSegment('informal', {})}};
-    } else if (url[0].path.startsWith('taxonomy')) {
-      return {consumed: url, posParams: {'type': new UrlSegment('taxonomy', {})}};
+    if (url[0].path.endsWith('list')) {
+      return {consumed: url, posParams: {'type': new UrlSegment('list', {})}};
+    } else if (url[0].path.endsWith('tree')) {
+      return {consumed: url, posParams: {'type': new UrlSegment('tree', {})}};
     }
   }
   return null;
@@ -22,18 +22,17 @@ export const taxonomyRoutes: Routes = [
     redirectTo: 'informal'
   },
   {
-    matcher: decideTaxonFront,
+    path: 'informal',
     component: TaxonComponent
   },
   {
-    path: 'informal/list',
-    pathMatch: 'full',
+    matcher: decideTaxonFront,
     component: InformalComponent
   },
   {
-    path: 'taxonomy/:id',
+    path: 'informal/:type',
     pathMatch: 'full',
-    component: TaxonComponent
+    component: InformalComponent
   },
   {
     path: ':id',

@@ -29,9 +29,3 @@
 .list-wrap {
   position: relative;
 }
-
-@media only screen and (min-width : 768px) {
-  #wrapper {
-    display: flex;
-  }
-}

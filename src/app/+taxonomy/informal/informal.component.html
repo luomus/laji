@@ -19,14 +19,22 @@
        'result-list col-sm-8 col-md-9 col-lg-10': showFilter,
        'col-sm-12': !showFilter
       }">
-        <laji-species-list [searchQuery]="searchQuery" #speciesList></laji-species-list>
+        <ul style="margin-top: 24px;" class="nav nav-tabs nav-justified">
+          <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a [routerLink]="'/taxon/informal/list' | localize">
+              <h3>{{ 'species.groups' | translate }}<br><small>{{ 'species.groups.short' | translate }}</small></h3>
+            </a>
+          </li>
+          <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a [routerLink]="'/taxon/informal/tree' | localize">
+              <h3>{{ 'species.taxa' | translate }}<br><small>{{ 'species.taxa.short' | translate }}</small></h3>
+            </a>
+          </li>
+        </ul>
+        <laji-species-list *ngIf="(type | async) == 'list'" [searchQuery]="searchQuery"></laji-species-list>
+        <laji-tree *ngIf="(type | async) == 'tree'"></laji-tree>
       </div>
     </div>
   </div>
-
-  <br/>
-  <laji-species-download [searchQuery]="searchQuery"
-                         [data]="speciesList.speciesPage.results"
-                         [columnLookup]="speciesList.columnLookup"></laji-species-download>
 </div>
 

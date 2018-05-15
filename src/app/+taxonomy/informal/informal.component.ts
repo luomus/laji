@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef,
 import { ActivatedRoute } from '@angular/router';
 import { WindowRef } from '../../shared/windows-ref';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 
 @Component({
@@ -12,7 +13,8 @@ import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 export class InformalComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('header') headerRef: ElementRef;
   @ViewChild('content') contentRef: ElementRef;
-  @ViewChild('speciesList') speciesList: ElementRef;
+
+  public type: Observable<string>;
 
   public filtersNgStyle = {};
   public showFilter = true;
@@ -46,6 +48,8 @@ export class InformalComponent implements OnInit, OnDestroy, AfterViewInit {
         this.cd.markForCheck();
       }
     });
+
+    this.type = this.route.params.map(params => params['type']);
   }
 
   ngOnDestroy() {
