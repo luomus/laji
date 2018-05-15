@@ -86,6 +86,12 @@ export class UserService extends LocalDb {
       return;
     }
     this.subLogout = this.tokenService.personTokenDeleteToken(this.token)
+      .catch(err => {
+        if (err.status === 404) {
+          return Observable.of(null);
+        }
+        return Observable.throw(err);
+      })
       .retry(5)
       .subscribe(
         () => {
