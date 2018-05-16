@@ -21,7 +21,8 @@ export class FeedbackComponent {
     subject: '',
     other: '',
     message: '',
-    meta: ''
+    meta: '',
+    email: ''
   };
   public error = false;
 
@@ -45,33 +46,30 @@ export class FeedbackComponent {
     this.error = false;
     const subject = (['other', ''].indexOf(this.feedback.subject) > -1 ?  '' : (this.feedback.subject + ': ')) +
       this.feedback.other;
-    const message = this.feedback.message;
+    const message = this.userService.isLoggedIn ? this.feedback.message : this.feedback.message + "\n\n---\n" + this.feedback.email;
     if (!this.feedback.other || !message) {
       this.error = true;
       return;
     }
     const meta = this.getMeta();
     this.userService.getUser()
-      .subscribe(user => {
-        this.feedbackApi.send(
-          {subject, message, meta},
-          user.emailAddress ? this.userService.getToken() : undefined
-        ).subscribe(
-          () => {
-            this.feedback = {
-              subject: '',
-              other: '',
-              message: '',
-              meta: ''
-            };
-            this.modal.hide();
-            this.sendMessage('showSuccess', 'feedback.success');
-          },
-          () => {
-            this.sendMessage('showError', 'feedback.failure');
-          }
-        );
-      });
+      .switchMap(user => this.feedbackApi.send({subject, message, meta}, user.emailAddress ? this.userService.getToken() : undefined))
+      .subscribe(
+        () => {
+          this.feedback = {
+            subject: '',
+            other: '',
+            message: '',
+            meta: '',
+            email: ''
+          };
+          this.modal.hide();
+          this.sendMessage('showSuccess', 'feedback.success');
+        },
+        () => {
+          this.sendMessage('showError', 'feedback.failure');
+        }
+      );
   }
 
   private getMeta(): string {
@@ -96,5 +94,6 @@ export interface IFeedback {
   subject: string;
   other: string;
   message: string;
+  email: string;
   meta: string;
 }
