@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-
+import { Router } from '@angular/router';
+import { LocalizeRouterService } from '../locale/localize-router.service';
 
 @Component({
   selector: 'laji-taxonomy',
@@ -7,5 +8,18 @@ import { Component } from '@angular/core';
   styleUrls: ['./taxon.component.css']
 })
 export class TaxonComponent {
-  constructor() { }
+  constructor(
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService
+  ) { }
+
+  goToBrowsePage(groupId: string) {
+    this.router.navigate(
+      this.localizeRouterService.translateRoute(['/taxon/list']),
+      {queryParams: {
+        informalTaxonGroupId: groupId,
+        onlyFinnish: true
+      }}
+    );
+  }
 }
