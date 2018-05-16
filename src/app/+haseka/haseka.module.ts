@@ -23,6 +23,8 @@ import { OwnSubmissionsComponent } from './own-submissions/own-submissions.compo
 import { TemplatesComponent } from './templates/templates.component';
 import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';
 import { StatisticsModule } from '../shared-modules/statistics/statistics.module';
+import { FormCategoryComponent } from './form-list/form-category/form-category.component';
+import { FormCategorySurveyComponent } from './form-list/form-category-survey/form-category-survey.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, AlertModule, NamedPlaceModule, ViewerModule,
@@ -35,7 +37,9 @@ import { StatisticsModule } from '../shared-modules/statistics/statistics.module
     HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
     ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent,
     FormRowComponent, OwnSubmissionsComponent, TemplatesComponent,
-    NamedPlaceWrapperComponent
+    NamedPlaceWrapperComponent,
+    FormCategoryComponent,
+    FormCategorySurveyComponent
   ]
 })
 export class HasekaModule {

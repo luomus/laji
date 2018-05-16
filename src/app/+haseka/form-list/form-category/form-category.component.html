@@ -1,0 +1,10 @@
+<h3>{{title}}</h3>
+<ul class="form-list">
+  <li *ngFor="let form of formList; trackBy: trackForm">
+    <laji-form-row
+      [tmpDocuments]="tmpDocument"
+      [form]="form"
+      [hasAdminRight]="form.hasAdminRight">
+    </laji-form-row>
+  </li>
+</ul>

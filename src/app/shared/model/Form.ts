@@ -17,8 +17,10 @@ export namespace Form {
     id: string;
     title: string;
     description: string;
+    shortDescription: string;
     supportedLanguage: string[];
-    category: string;
+    logo?: string;
+    category?: string;
     collectionID: string;
     features: Form.Feature[];
   }

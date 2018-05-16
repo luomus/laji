@@ -5,7 +5,7 @@ import { TriplestoreLabelService } from '../service/triplestore-label.service';
 import { IdService } from '../service/id.service';
 import { Observable } from 'rxjs/Observable';
 
-type labelType = 'fullUri'|'warehouse'|'withKey';
+type labelType = 'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
 
 /**
  * Triplestores label maker
@@ -110,7 +110,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
         break;
     }
     obs.subscribe((res: string) => {
-        this.value = res ? res : key;
+        this.value = res && res !== key ? res : (type === 'emptyWhenMissing' ? '' : key);
         this._ref.markForCheck();
       });
   }
