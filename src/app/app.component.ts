@@ -59,7 +59,7 @@ export class AppComponent {
         const newRoute = location.path() || '/';
         if (this.currentRoute !== newRoute) {
           // Check if on page that should be scrolled to top
-          if (!newRoute.match(/^\/(en\/|sv\/)?(taxon\/informal|observation|theme\/nafi)\//)) {
+          if (!newRoute.match(/^\/(en\/|sv\/)?(taxon\/list|observation|theme\/nafi)\//)) {
             windowRef.nativeWindow.scroll(0, 0); // remove when container scrolling is supported by the form
             const content = windowRef.nativeWindow.document.getElementById('content');
             if (content) {

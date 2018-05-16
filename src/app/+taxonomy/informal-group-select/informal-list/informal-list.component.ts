@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { InformalTaxonGroup } from '../../../shared';
 import { PagedResult } from '../../../shared/model/PagedResult';
 
@@ -11,5 +11,7 @@ import { PagedResult } from '../../../shared/model/PagedResult';
 export class InformalListComponent {
 
   @Input() tree: PagedResult<InformalTaxonGroup>;
+  @Input() compact = false;
+  @Output() onInformalGroupSelect = new EventEmitter<string>();
 
 }

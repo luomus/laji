@@ -10,7 +10,7 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12">
-      <laji-informal-group-select [showBreadcrumb]="false"></laji-informal-group-select>
+      <laji-informal-group-select (onInformalGroupSelect)="goToBrowsePage($event)" [showBreadcrumb]="false"></laji-informal-group-select>
     </div>
   </div>
 </div>

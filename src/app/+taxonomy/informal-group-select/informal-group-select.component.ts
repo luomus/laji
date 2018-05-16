@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Input } from '@angular/core';
+import { Component, OnDestroy, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
@@ -10,9 +10,11 @@ import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
   templateUrl: './informal-group-select.component.html',
   styleUrls: ['./informal-group-select.component.css']
 })
-export class InformalGroupSelectComponent implements OnInit, OnDestroy {
-  public id;
+export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() id: string;
+  @Input() compact = false;
   @Input() showBreadcrumb = true;
+  @Output() onInformalGroupSelect = new EventEmitter<string>();
 
   public selectedInformalGroup: InformalTaxonGroup;
   public groups: Array<InformalTaxonGroup>;
@@ -26,6 +28,12 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.refreshInformalGroups();
     this.subTrans = this.translate.onLangChange.subscribe(this.refreshInformalGroups.bind(this));
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.id) {
+      this.refreshInformalGroups();
+    }
   }
 
   ngOnDestroy() {

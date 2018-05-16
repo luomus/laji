@@ -65,6 +65,11 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
     }
   }
 
+  informalGroupSelect(groupId) {
+    this.searchQuery.query.informalTaxonGroupId = groupId;
+    this.searchQuery.queryUpdate({formSubmit: true});
+  }
+
   @HostListener('window:scroll')
   onScroll() {
     this.setFiltersSize();

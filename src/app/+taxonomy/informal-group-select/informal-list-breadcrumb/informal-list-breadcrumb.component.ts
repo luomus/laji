@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { InformalTaxonGroup } from '../../../shared';
 
 @Component({
@@ -11,5 +11,7 @@ export class InformalListBreadcrumbComponent {
 
   @Input() informalGroup: InformalTaxonGroup;
   @Input() groups: Array<InformalTaxonGroup>;
+
+  @Output() onInformalGroupSelect = new EventEmitter<string>();
 
 }
