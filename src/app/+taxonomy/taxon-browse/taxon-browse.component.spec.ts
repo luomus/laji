@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InformalComponent } from './informal.component';
+import { TaxonBrowseComponent } from './taxon-browse.component';
 
-describe('InformalComponent', () => {
-  let component: InformalComponent;
-  let fixture: ComponentFixture<InformalComponent>;
+describe('BrowseComponent', () => {
+  let component: TaxonBrowseComponent;
+  let fixture: ComponentFixture<TaxonBrowseComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InformalComponent ]
+      declarations: [ TaxonBrowseComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InformalComponent);
+    fixture = TestBed.createComponent(TaxonBrowseComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

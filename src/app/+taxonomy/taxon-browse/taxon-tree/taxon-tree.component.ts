@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { TREE_ACTIONS, TreeComponent, TreeNode } from 'angular-tree-component';
-import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
+import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { ITreeNode } from 'angular-tree-component/dist/defs/api';
 
 @Component({

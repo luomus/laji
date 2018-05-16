@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
+import { AutocompleteApi } from '../../../shared/api/AutocompleteApi';
 import { Observable } from 'rxjs/Observable';
 import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 import { SpeciesFormQuery } from './species-form-query.interface';
