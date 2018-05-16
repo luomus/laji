@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
-import { ObservationTableColumn } from '../../shared-modules/observation-result/model/observation-table-column';
+import { ObservationTableColumn } from '../../../../shared-modules/observation-result/model/observation-table-column';
 import { TaxonExportService } from './taxon-export.service';
-import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
+import { TaxonomySearchQuery } from '../../taxonomy-search-query.model';
 import { Router } from '@angular/router'
 
 @Component({

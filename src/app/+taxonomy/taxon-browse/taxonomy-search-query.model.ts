@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Router, Params } from '@angular/router';
 import { TaxonomySearchQueryInterface } from './taxonomy-search-query.interface';
-import { AutocompleteApi, AutocompleteMatchType } from '../shared/api/AutocompleteApi';
-import { Util } from '../shared/service/util.service';
+import { AutocompleteApi, AutocompleteMatchType } from '../../shared/api/AutocompleteApi';
+import { Util } from '../../shared/service/util.service';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()

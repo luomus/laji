@@ -1,25 +1,24 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WindowRef } from '../../shared/windows-ref';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
+import { TaxonomySearchQuery } from './taxonomy-search-query.model';
 
 @Component({
-  selector: 'laji-informal',
-  templateUrl: './informal.component.html',
-  styleUrls: ['./informal.component.css']
+  selector: 'laji-taxon-browse',
+  templateUrl: './taxon-browse.component.html',
+  styleUrls: ['./taxon-browse.component.css']
 })
-export class InformalComponent implements OnInit, OnDestroy, AfterViewInit {
+export class TaxonBrowseComponent implements OnInit, OnDestroy {
   @ViewChild('header') headerRef: ElementRef;
   @ViewChild('content') contentRef: ElementRef;
 
-  public type: Observable<string>;
+  public type: string;
 
   public filtersNgStyle = {};
   public showFilter = true;
 
-  private subParam: Subscription;
+  private subData: Subscription;
   private subQuery: Subscription;
 
   constructor(
@@ -48,23 +47,22 @@ export class InformalComponent implements OnInit, OnDestroy, AfterViewInit {
         this.cd.markForCheck();
       }
     });
-
-    this.type = this.route.params.map(params => params['type']);
+    this.subData = this.route.data.subscribe(data => {
+      this.type = data['type'];
+      this.cd.markForCheck();
+      setTimeout(() => {
+        this.setFiltersSize();
+      }, 0);
+    });
   }
 
   ngOnDestroy() {
-    if (this.subParam) {
-      this.subParam.unsubscribe();
+    if (this.subData) {
+      this.subData.unsubscribe();
     }
     if (this.subQuery) {
       this.subQuery.unsubscribe();
     }
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.setFiltersSize();
-    }, 0);
   }
 
   @HostListener('window:scroll')

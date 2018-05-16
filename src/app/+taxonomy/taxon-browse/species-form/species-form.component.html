@@ -2,23 +2,6 @@
                      [showFilter]="showFilter"
                      (onShowFilterChange)="showFilterChange($event)">
   <div class="taxon-panel">
-    <div class="row">
-      <label class="col-sm-12">
-        {{'observation.active.informalTaxonGroupId' | translate}}:
-      </label>
-    </div>
-    <div class="row">
-      <div class="lj-input-wrap">
-        <observation-group-select
-          [(ngModel)]="searchQuery.query.informalTaxonGroupId"
-          name="informalTaxonGroupId"
-          [lang]="translate.currentLang"
-          (onSelect)="onQueryChange()">
-          {{'observation.active.informalTaxonGroupAll'|translate}}
-        </observation-group-select>
-      </div>
-    </div>
-
     <div class="form-group">
       <label class="col-sm-12">
         {{'species.form.specimen' | translate}}:

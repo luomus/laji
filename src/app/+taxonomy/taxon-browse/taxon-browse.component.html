@@ -5,12 +5,12 @@
 <div class="container" style="padding-bottom: 30px; width: 100%;" #content>
   <div class="form-horizontal">
     <div class="row">
-      <div [ngStyle]="filtersNgStyle" class="form-filters col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10">
+      <div *ngIf="type !== 'tree'" [ngStyle]="filtersNgStyle" class="form-filters col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10">
         <laji-species-form [searchQuery]="searchQuery"
                            [showFilter]="showFilter"
                            (onShowFilterChange)="showFilter = $event"></laji-species-form>
       </div>
-      <div id="fill-height" class="hidden-xs" [ngClass]="{
+      <div *ngIf="type !== 'tree'" id="fill-height" class="hidden-xs" [ngClass]="{
         'col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10': showFilter,
         'hidden-sm hidden-md hidden-lg': !showFilter
       }"></div>
@@ -21,18 +21,18 @@
       }">
         <ul style="margin-top: 24px;" class="nav nav-tabs nav-justified">
           <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-            <a [routerLink]="'/taxon/informal/list' | localize">
+            <a [routerLink]="'/taxon/list' | localize">
               <h3>{{ 'species.groups' | translate }}<br><small>{{ 'species.groups.short' | translate }}</small></h3>
             </a>
           </li>
           <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-            <a [routerLink]="'/taxon/informal/tree' | localize">
+            <a [routerLink]="'/taxon/tree' | localize">
               <h3>{{ 'species.taxa' | translate }}<br><small>{{ 'species.taxa.short' | translate }}</small></h3>
             </a>
           </li>
         </ul>
-        <laji-species-list *ngIf="(type | async) == 'list'" [searchQuery]="searchQuery"></laji-species-list>
-        <laji-tree *ngIf="(type | async) == 'tree'"></laji-tree>
+        <laji-species-list *ngIf="type === 'list'" [searchQuery]="searchQuery"></laji-species-list>
+        <laji-tree *ngIf="type === 'tree'"></laji-tree>
       </div>
     </div>
   </div>

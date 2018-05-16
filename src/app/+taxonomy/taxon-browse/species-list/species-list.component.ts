@@ -1,18 +1,18 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, Input, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
-import { Taxonomy } from '../../shared/model/Taxonomy';
+import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
+import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
-import { PagedResult } from '../../shared/model/PagedResult';
-import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
-import { InformalTaxonGroup } from '../../shared';
-import { Logger } from '../../shared/logger/logger.service';
-import { ObservationTableColumn } from '../../shared-modules/observation-result/model/observation-table-column';
+import { PagedResult } from '../../../shared/model/PagedResult';
+import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
+import { InformalTaxonGroup } from '../../../shared';
+import { Logger } from '../../../shared/logger/logger.service';
+import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
 import { Router } from '@angular/router';
-import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 import { ModalDirective } from 'ngx-bootstrap';
-import { UserService } from '../../shared/service/user.service';
+import { UserService } from '../../../shared/service/user.service';
 
 
 @Component({

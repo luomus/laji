@@ -10,26 +10,7 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12">
-      <laji-informal-list *ngIf="selectedInformalGroup" [tree]="selectedInformalGroup"></laji-informal-list>
+      <laji-informal-group-select [showBreadcrumb]="false"></laji-informal-group-select>
     </div>
   </div>
 </div>
-
-<!--ul style="margin-top: 24px;" class="nav nav-tabs nav-justified">
-          <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-              <a [routerLink]="'/taxon/informal' | localize">
-                  <h3>{{ 'species.groups' | translate }}<br><small>{{ 'species.groups.short' | translate }}</small></h3>
-              </a>
-          </li>
-          <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-              <a [routerLink]="'/taxon/taxonomy' | localize">
-                  <h3>{{ 'species.taxa' | translate }}<br><small>{{ 'species.taxa.short' | translate }}</small></h3>
-              </a>
-          </li>
-      </ul-->
-
-<!--div *ngIf="(type | async) == 'taxonomy'" class="row">
-          <div class="col-sm-12">
-              <laji-tree [openId]="id | async"></laji-tree>
-          </div>
-      </div-->

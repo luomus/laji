@@ -1,38 +1,30 @@
-import { RouterModule, Routes, UrlSegment } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { TaxonComponent } from './taxon.component';
-import { InformalComponent } from './informal/informal.component';
+import { TaxonBrowseComponent } from './taxon-browse/taxon-browse.component';
 import { InfoCardComponent } from './info-card/info-card.component';
 import { ModuleWithProviders } from '@angular/core';
-
-export function decideTaxonFront(url: UrlSegment[]) {
-  if (url.length === 1) {
-    if (url[0].path.endsWith('list')) {
-      return {consumed: url, posParams: {'type': new UrlSegment('list', {})}};
-    } else if (url[0].path.endsWith('tree')) {
-      return {consumed: url, posParams: {'type': new UrlSegment('tree', {})}};
-    }
-  }
-  return null;
-}
 
 export const taxonomyRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'informal'
-  },
-  {
-    path: 'informal',
     component: TaxonComponent
   },
   {
-    matcher: decideTaxonFront,
-    component: InformalComponent
+    path: 'list',
+    pathMatch: 'full',
+    component: TaxonBrowseComponent,
+    data: {
+      type: 'list'
+    }
   },
   {
-    path: 'informal/:type',
+    path: 'tree',
     pathMatch: 'full',
-    component: InformalComponent
+    component: TaxonBrowseComponent,
+    data: {
+      type: 'tree'
+    }
   },
   {
     path: ':id',
