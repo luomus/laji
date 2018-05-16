@@ -2,7 +2,7 @@
   <div class="col-sm-6">
     <h3>Henkilöt jotka ovat pyytäneet pääsyä tälle lomakkeelle</h3>
     <p *ngIf="formPermission.permissionRequests.length === 0">
-      Ei käsittelemättömiä pääsy pyyntöjä.
+      Ei käsittelemättömiä pyyntöjä.
     </p>
     <ul>
       <li *ngFor="let person of formPermission.permissionRequests">
@@ -17,7 +17,7 @@
 </div>
 <div class="row">
   <div class="col-sm-3">
-    <h3>Lisää käyttäjä</h3>
+    <h3>Lisää pääsy</h3>
     <laji-find-person (select)="selectPerson($event)"></laji-find-person>
   </div>
 </div>
