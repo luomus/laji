@@ -18,17 +18,19 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-sm-12">
-            <p *ngIf="userService.isLoggedIn">
-              {{'feedback.intro.loggedIn' | translate}}
-            </p>
-            <p *ngIf="!userService.isLoggedIn">
-              {{'feedback.intro.guest' | translate}}
+            <p>
+              {{'feedback.intro' | translate}}
             </p>
           </div>
         </div>
         <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
           {{'feedback.invalid' | translate}}
         </alert>
+        <div class="row email" *ngIf="!userService.isLoggedIn">
+          <div class="col-sm-12">
+            <input [(ngModel)]="feedback.email" type="text" placeholder="{{'email' | translate}}" class="form-control">
+          </div>
+        </div>
         <div class="row subject">
           <div class="col-sm-12">
             {{'feedback.topic' | translate}}:
