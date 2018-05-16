@@ -14,10 +14,15 @@
       class="effect"></laji-image>
     <a class="nav-right" *ngIf="modalImages.length > 1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
     <span class="info-text" *ngIf="img">
-      <span *ngIf="img.vernacularName">{{img.vernacularName | multiLang}}</span>
-      <span *ngIf="img.vernacularName && img.scientificName">-</span>
-      <span *ngIf="img.scientificName"><em class="scientificName">{{img.scientificName | label:'fullUri'}}</em></span>
+      <ng-container *ngIf="img.vernacularName">{{img.vernacularName | multiLang}}</ng-container>
+      <ng-container *ngIf="img.vernacularName && img.scientificName">-</ng-container>
+      <ng-container *ngIf="img.scientificName"><em class="scientificName">{{img.scientificName | label:'fullUri'}}</em></ng-container>
+      <ng-container *ngIf="img.taxonId">{{img.taxonId | label}}</ng-container>
       <br>
+      <ng-container *ngIf="img.caption">
+        {{img.caption | multiLang}}
+        <br>
+      </ng-container>
       <span *ngIf="img.author">{{img.author}},</span>
       <span *ngIf="img.copyrightOwner && (!img.author || img.author.indexOf(img.copyrightOwner) === -1)">
         {{img.copyrightOwner}},
