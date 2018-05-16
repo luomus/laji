@@ -8,9 +8,17 @@ import { FormService } from '../../shared/service/form.service';
 import { UserService } from '../../shared/service/user.service';
 import { FormPermissionService } from '../form-permission/form-permission.service';
 import { Person } from '../../shared/model/Person';
+import { environment } from '../../../environments/environment';
 
-interface FormList extends Form.List {
+const DEFAULT_CATEFORY = 'MHL.categoryGeneric';
+
+export interface FormList extends Form.List {
   hasAdminRight: boolean;
+}
+
+interface FormCategory {
+  forms: FormList[],
+  category: string;
 }
 
 @Component({
@@ -20,7 +28,8 @@ interface FormList extends Form.List {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HaSeKaFormListComponent implements OnInit, OnDestroy {
-  public formList: FormList[] = [];
+  public surveyCategory = ['MHL.categorySurvey', 'MHL.categoryBirdMonitoringSchemes'];
+  public categories: FormCategory[] = [];
   public tmpDocument: { [formId: string]: string } = {};
   private subTrans: Subscription;
   private subFetch: Subscription;
@@ -87,7 +96,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
           return Observable.of(forms);
         }
         const subs = [];
-        forms.map(form => {
+        forms.forEach(form => {
           subs.push(
             this.hasAdminRight(form)
               .map(hasAdminRight => ({...form, hasAdminRight: hasAdminRight}))
@@ -97,8 +106,23 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       })
       .subscribe(
         forms => {
-          forms.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
-          this.formList = forms;
+          const categories: FormCategory[] = [];
+          const idxRef = {};
+          let idx = 0;
+          forms.sort((a, b) => environment.formWhitelist.indexOf(a.id) - environment.formWhitelist.indexOf(b.id));
+          forms.forEach((form: FormList) => {
+            const category = form.category || DEFAULT_CATEFORY;
+            if (typeof idxRef[category] === 'undefined') {
+              categories.push({
+                category: category,
+                forms: []
+              });
+              idxRef[category] = idx;
+              idx++;
+            }
+            categories[idxRef[category]].forms.push(form);
+          });
+          this.categories = categories;
           this.changeDetector.markForCheck();
         },
         err => this.logger.log('Failed to fetch all forms', err)
@@ -119,8 +143,8 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       .map(data => this.formPermissionService.isAdmin(data.permission, data.person));
   }
 
-  trackForm(idx, form) {
-    return form ? form.id : undefined;
+  trackCategory(idx, category) {
+    return category ? category.category : undefined;
   }
 
 }

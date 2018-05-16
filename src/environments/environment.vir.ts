@@ -1,5 +1,10 @@
 export const environment = {
   systemID: 'KE.601',
+  formsTheme: {
+    'MHL.6': '/nafi',
+    'MHL.1': '/linjalaskenta',
+    'MHL.3': '/talvilintu',
+  },
   formWhitelist: ['JX.519', 'JX.6485'],
   massForms: ['JX.519'],
   defaultForm: 'JX.519',

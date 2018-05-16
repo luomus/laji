@@ -5,6 +5,11 @@ export const environment = {
   disableAnalytics: false,
   forAuthorities: false,
   systemID: 'KE.389',
+  formsTheme: {
+    'MHL.6': '/nafi',
+    'MHL.1': '/linjalaskenta',
+    'MHL.3': '/talvilintu',
+  },
   formWhitelist: [],
   massForms: [],
   defaultForm: 'JX.519',

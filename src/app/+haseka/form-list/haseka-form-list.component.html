@@ -1,10 +1,16 @@
-<h3>{{'haseka.forms.title' | translate}}</h3>
-<ul class="form-list">
-  <li *ngFor="let form of formList; trackBy: trackForm">
-    <laji-form-row
-      [tmpDocuments]="tmpDocument"
-      [form]="form"
-      [hasAdminRight]="form.hasAdminRight">
-    </laji-form-row>
-  </li>
-</ul>
+<ng-container *ngFor="let category of categories; trackBy: trackCategory">
+  <ng-container *ngIf="surveyCategory.includes(category.category); else otherCategory">
+    <laji-form-category-survey
+      [title]="category.category | label:'emptyWhenMissing'"
+      [formList]="category.forms"
+      [tmpDocument]="tmpDocument"
+    ></laji-form-category-survey>
+  </ng-container>
+  <ng-template #otherCategory>
+    <laji-form-category
+      [title]="category.category | label:'emptyWhenMissing'"
+      [formList]="category.forms"
+      [tmpDocument]="tmpDocument"
+    ></laji-form-category>
+  </ng-template>
+</ng-container>

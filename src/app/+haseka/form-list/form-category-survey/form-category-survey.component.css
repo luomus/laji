@@ -1,0 +1,36 @@
+.form-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.form-list li {
+  font-size: 12px;
+  margin: 0 15px 15px 0;
+  display: inline-block;
+}
+
+.survey-box {
+  height: 200px;
+  width: 200px;
+  position: relative;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-clip: content-box;
+  background-color: #ecf0f1;
+}
+
+.survey-title {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 5px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: white;
+  font-weight: bold;
+}
+
+.description {
+  color: black;
+}
