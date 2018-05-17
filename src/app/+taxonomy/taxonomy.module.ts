@@ -30,6 +30,7 @@ import { ObservationResultModule } from '../shared-modules/observation-result/ob
 import { SpeciesDownloadComponent } from './taxon-browse/species-list/species-download/species-download.component';
 import { InformalGroupSelectComponent } from './informal-group-select/informal-group-select.component';
 import { InformalGroupRedirectComponent } from './informal-group-redirect/informal-group-redirect.component';
+import { SpeciesImagesComponent } from './taxon-browse/species-images/species-images.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, TreeModule, LangModule, DatatableModule, HttpClientModule,
@@ -38,8 +39,8 @@ import { InformalGroupRedirectComponent } from './informal-group-redirect/inform
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
     ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent, SpeciesDownloadComponent,
-    InformalGroupSelectComponent,
-    InformalGroupRedirectComponent
+    InformalGroupRedirectComponent,
+    InformalGroupSelectComponent, SpeciesImagesComponent
   ],
 })
 export class TaxonomyModule {

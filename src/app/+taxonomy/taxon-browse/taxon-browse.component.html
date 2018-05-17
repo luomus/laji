@@ -2,7 +2,7 @@
   <h1 style="margin: 0">{{ 'species.search' | translate }}<br><small>{{ 'species.title.short' | translate }}</small></h1>
   <div>{{ 'species.title.long' | translate }}</div>
 </div>
-<div class="container" style="padding-bottom: 30px; width: 100%;" #content>
+<div id="content-container" class="container" #content>
   <div class="form-horizontal">
     <div class="row">
       <div *ngIf="type !== 'tree'" [ngStyle]="filtersNgStyle" class="form-filters col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10">
@@ -20,14 +20,19 @@
        'col-sm-12': !showFilter
       }">
         <ul style="margin-top: 24px;" class="nav nav-tabs nav-justified">
-          <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-            <a [routerLink]="'/taxon/list' | localize">
-              <h3>{{ 'species.groups' | translate }}<br><small>{{ 'species.groups.short' | translate }}</small></h3>
+          <li role="presentation"  [ngClass]="{active: type === 'list'}">
+            <a [routerLink]="'/taxon/list' | localize" [queryParamsHandling]="'merge'">
+              {{"species.list" | translate}}
             </a>
           </li>
-          <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-            <a [routerLink]="'/taxon/tree' | localize">
-              <h3>{{ 'species.taxa' | translate }}<br><small>{{ 'species.taxa.short' | translate }}</small></h3>
+          <!--li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a [routerLink]="'/taxon/images' | localize">
+              {{"species.images" | translate}}
+            </a>
+          </li-->
+          <li role="presentation" [ngClass]="{active: type === 'tree'}">
+            <a [routerLink]="'/taxon/tree' | localize" [queryParamsHandling]="'merge'">
+              {{"species.taxa" | translate}}
             </a>
           </li>
         </ul>
@@ -36,6 +41,7 @@
                                     [compact]="true"
                                     (onInformalGroupSelect)="informalGroupSelect($event)"></laji-informal-group-select>
         <laji-species-list *ngIf="type === 'list'" [searchQuery]="searchQuery"></laji-species-list>
+        <laji-species-images *ngIf="type === 'images'" [searchQuery]="searchQuery"></laji-species-images>
         <laji-tree *ngIf="type === 'tree'"></laji-tree>
       </div>
     </div>

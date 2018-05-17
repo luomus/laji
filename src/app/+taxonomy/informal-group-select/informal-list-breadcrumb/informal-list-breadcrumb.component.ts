@@ -11,6 +11,7 @@ export class InformalListBreadcrumbComponent {
 
   @Input() informalGroup: InformalTaxonGroup;
   @Input() groups: Array<InformalTaxonGroup>;
+  @Input() compact = false;
 
   @Output() onInformalGroupSelect = new EventEmitter<string>();
 

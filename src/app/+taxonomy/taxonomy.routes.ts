@@ -20,6 +20,14 @@ export const taxonomyRoutes: Routes = [
     }
   },
   {
+    path: 'images',
+    pathMatch: 'full',
+    component: TaxonBrowseComponent,
+    data: {
+      type: 'images'
+    }
+  },
+  {
     path: 'tree',
     pathMatch: 'full',
     component: TaxonBrowseComponent,
