@@ -17,7 +17,7 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
   @Output() onInformalGroupSelect = new EventEmitter<string>();
 
   public selectedInformalGroup: InformalTaxonGroup;
-  public groups: Array<InformalTaxonGroup>;
+  public groups: Array<InformalTaxonGroup> = [];
   private subTrans: Subscription;
 
   constructor(
@@ -41,12 +41,13 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
   }
 
   private refreshInformalGroups() {
+    this.groups = [];
+    this.selectedInformalGroup = null;
+
     if (!this.id) {
       this.informalTaxonService
         .informalTaxonGroupFindRoots(this.translate.currentLang)
         .subscribe(this.setSelectedInformalGroup.bind(this));
-      this.groups = [];
-      this.selectedInformalGroup = null;
     } else {
       this.informalTaxonService.informalTaxonGroupGetChildren(this.id, this.translate.currentLang)
         .combineLatest(this.informalTaxonService.informalTaxonGroupFindById(this.id, this.translate.currentLang))

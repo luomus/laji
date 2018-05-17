@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   isEmbedded: true,
   forceLogin: false,
-  disableAnalytics: false,
+  disableAnalytics: true,
   forAuthorities: false,
   systemID: 'KE.389',
   formsTheme: {

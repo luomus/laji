@@ -1,10 +1,4 @@
 <div>
-  <h3>{{'species.list.headerStart' | translate }}
-    <laji-spinner [spinning]="!informalGroup">
-      <span [innerHtml]="informalGroup.name" *ngIf="informalGroup"></span>
-    </laji-spinner>
-    {{'species.list.headerEnd' | translate }}
-  </h3>
   <div class="form-group">
     <label class="col-sm-12">
       {{'species.order' | translate}}:
@@ -74,7 +68,7 @@
             <laji-selected-field-group
               header="species.list.names"
               [fields]="[
-                'allSynonyms',
+                'synonymNames',
                 'vernacularName.fi',
                 'vernacularName.sv',
                 'vernacularName.en',
