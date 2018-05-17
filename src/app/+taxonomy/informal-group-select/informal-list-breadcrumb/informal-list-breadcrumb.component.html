@@ -1,0 +1,11 @@
+<ol class="breadcrumb">
+  <li *ngIf="informalGroup && informalGroup.id" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+    <a (click)="onInformalGroupSelect.emit(null)">{{ 'observation.active.informalTaxonGroupAll' | translate }}</a>
+  </li>
+  <li *ngFor="let group of groups; let i = index; let active = last;">
+    <a (click)="onInformalGroupSelect.emit(group.id)">{{group.name}}</a>
+  </li>
+  <li *ngIf="informalGroup" class="active">
+    <span>{{informalGroup.name}}</span>
+  </li>
+</ol>

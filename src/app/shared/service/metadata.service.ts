@@ -53,7 +53,7 @@ export class MetadataService {
         .retryWhen(errors => errors.delay(1000).take(2).concat(Observable.of(false)))
         .do(ranges =>  {
           if (!Util.isEmptyObj(ranges)) {
-            this.cacheService.setItem(MetadataService.rangesCacheKey, ranges);
+            this.cacheService.setItem(MetadataService.rangesCacheKey, ranges).subscribe(() => {}, () => {});
           }
         })
       )

@@ -117,12 +117,6 @@ export interface Units {
 
     lifeStageDescription?: string;
 
-    lineTransectObsType?: Units.LineTransectObsTypeEnum;
-
-    lineTransectPairCountChanged?: boolean;
-
-    lineTransectRouteFieldType?: Units.LineTransectRouteFieldTypeEnum;
-
     macroscopy?: string;
 
     /**

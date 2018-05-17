@@ -3770,6 +3770,10 @@ jszip@^3.1.3:
     pako "~1.0.2"
     readable-stream "~2.0.6"
 
+jw-bootstrap-switch-ng2@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/jw-bootstrap-switch-ng2/-/jw-bootstrap-switch-ng2-1.0.10.tgz#4bb010c1d1e535d312d23ad1a5e427f0465e7175"
+
 karma-chrome-launcher@2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/karma-chrome-launcher/-/karma-chrome-launcher-2.2.0.tgz#cf1b9d07136cc18fe239327d24654c3dbc368acf"
@@ -3870,16 +3874,16 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-laji-form@^0.0.445:
-  version "0.0.445"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.445.tgz#f5fad9ebfb8ffc513cb08c0fde9a409ae38c4d43"
+laji-form@^0.0.453:
+  version "0.0.453"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.453.tgz#dd0e6331264c63305f22409fd9b80b8eff151be4"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.367"
-    laji-validate "0.0.61"
+    laji-map "^1.0.369"
+    laji-validate "0.0.64"
     moment "*"
     prop-types "^15.5.8"
     react "^15.5.0"
@@ -3897,9 +3901,9 @@ laji-form@^0.0.445:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@^1.0.367:
-  version "1.0.367"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.367.tgz#ec3e888b912034d5d7d02b14bbf2439f5959fba2"
+laji-map@^1.0.369:
+  version "1.0.369"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.369.tgz#12f561f92c55a6b51ff4d0fdab1b6024ed030f94"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     babel-runtime "6.18.0"
@@ -3914,9 +3918,9 @@ laji-map@^1.0.367:
     proj4 "2.3.16"
     proj4leaflet "1.0.2"
 
-laji-validate@0.0.61:
-  version "0.0.61"
-  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.61.tgz#7938b191576c01f1d1e3481f6f3f51a5782b87d9"
+laji-validate@0.0.64:
+  version "0.0.64"
+  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.64.tgz#ccebf6497bcddcbf155e30def859145900a52f13"
   dependencies:
     "@mapbox/geojson-area" "^0.2.2"
     geojson-bounds "^1.0.1"

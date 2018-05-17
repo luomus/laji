@@ -17,7 +17,7 @@ export class NotificationComponent implements OnInit {
   targetQuery: any;
   target: string;
   by: string;
-  type: 'annotation'|'friendRequest'|'friendRequestAccepted';
+  type: 'annotation'|'annotationCommented'|'friendRequest'|'friendRequestAccepted';
 
   @Input() notification: Notification;
   @Output() removeNotification = new EventEmitter<Notification>();
@@ -33,7 +33,9 @@ export class NotificationComponent implements OnInit {
 
   initTargets() {
     if (this.notification.annotation) {
-      this.type = 'annotation';
+      this.type = this.notification.notificationReason &&
+        this.notification.notificationReason === Notification.NotificationReasonEnum.notificationReasonAnnotatedDocumentAnnotated ?
+        'annotationCommented' : 'annotation';
       const annotation = this.notification.annotation;
       this.targetPath = '/view';
       this.target = IdService.getUri(annotation.rootID);

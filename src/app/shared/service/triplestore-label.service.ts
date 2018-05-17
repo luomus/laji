@@ -12,6 +12,8 @@ import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 import { SourceService } from './source.service';
 import { TaxonomyApi } from '../api';
 import {UserService} from './user.service';
+import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
+import { NamedPlace } from '../model/NamedPlace';
 
 @Injectable()
 export class TriplestoreLabelService {
@@ -29,6 +31,7 @@ export class TriplestoreLabelService {
               private metadataService: MetadataService,
               private logger: Logger,
               private informalTaxonService: InformalTaxonGroupApi,
+              private namedPlacesService: NamedPlacesService,
               private sourceService: SourceService,
               private cacheService: CacheService,
               private taxonApi: TaxonomyApi,
@@ -46,7 +49,7 @@ export class TriplestoreLabelService {
   }
 
   private _get(key, lang): Observable<string> {
-    if (TriplestoreLabelService.cache[key]) {
+    if (typeof TriplestoreLabelService.cache[key] !== 'undefined') {
       if (TriplestoreLabelService.requestCache[key]) {
         delete TriplestoreLabelService.requestCache[key];
       }
@@ -55,6 +58,15 @@ export class TriplestoreLabelService {
     const parts = key.split('.');
     if (parts && typeof parts[1] === 'string' && !isNaN(parts[1])) {
       switch (parts[0]) {
+        case 'MNP':
+          if (typeof TriplestoreLabelService.requestCache[key] === 'undefined') {
+            TriplestoreLabelService.requestCache[key] = this.namedPlacesService.getNamedPlace(key, this.userService.getToken())
+              .map((np: NamedPlace) => np.name)
+              .catch(() => Observable.of(''))
+              .do(name => TriplestoreLabelService.cache[key] = name)
+              .share();
+          }
+          return TriplestoreLabelService.requestCache[key];
         case 'MVL':
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.informalTaxonService.informalTaxonGroupFindById(key, 'multi')
@@ -109,7 +121,7 @@ export class TriplestoreLabelService {
         .merge(apiCall
           .do(data => {
             if (!Util.isEmptyObj(data)) {
-              this.cacheService.setItem(cacheKey, data)
+              this.cacheService.setItem(cacheKey, data).subscribe(() => {}, () => {})
             }
           })
         )

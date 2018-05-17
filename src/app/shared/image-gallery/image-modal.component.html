@@ -44,10 +44,10 @@
   <ng-container *ngIf="data.scientificName">
     <strong class="scientificName">{{data.scientificName | label:'fullUri'}}</strong><br>
   </ng-container>
-  <ng-container *ngIf="data.author">
-    {{data.author}}<br>
-  </ng-container>
   <ng-container *ngIf="data.caption">
     {{data.caption}}<br>
+  </ng-container>
+  <ng-container *ngIf="data.author">
+    {{data.author}}<br>
   </ng-container>
 </ng-template>

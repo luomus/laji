@@ -209,7 +209,7 @@ export class MainResultComponent implements OnInit, OnChanges {
       aggregateBy: this.aggregateBy,
       selected: this.selected,
       pageSize: this.pageSize
-    }).subscribe();
+    }).subscribe(() => {}, () => {});
   }
 
 }

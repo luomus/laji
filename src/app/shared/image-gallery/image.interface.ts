@@ -2,6 +2,8 @@ import { TaxonomyImage } from '../model/Taxonomy';
 
 export interface Image extends TaxonomyImage {
 
+  taxonId?: string;
+
   documentId?: string;
 
   unitId?: string;
@@ -10,4 +12,5 @@ export interface Image extends TaxonomyImage {
 
   scientificName?: string;
 
+  caption?: string;
 }

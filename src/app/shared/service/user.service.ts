@@ -26,6 +26,7 @@ export class UserService extends LocalDb {
 
   public static readonly UNKOWN_USER = 'unknown';
   public static readonly SETTINGS_RESULT_LIST = 'result-list';
+  public static readonly SETTINGS_TAXONOMY_LIST = 'taxonomy-list';
 
   private actionSource = new Subject<any>();
   public action$ = this.actionSource.asObservable();
@@ -85,6 +86,12 @@ export class UserService extends LocalDb {
       return;
     }
     this.subLogout = this.tokenService.personTokenDeleteToken(this.token)
+      .catch(err => {
+        if (err.status === 404) {
+          return Observable.of(null);
+        }
+        return Observable.throw(err);
+      })
       .retry(5)
       .subscribe(
         () => {
@@ -192,7 +199,7 @@ export class UserService extends LocalDb {
     }
     this.setItem(this.currentUserId, {...this.userSettings, [key]: value})
       .do((settings) => this.userSettings = settings)
-      .subscribe();
+      .subscribe(() => {}, () => {});
   };
 
   private loadUserInfo(token: string) {

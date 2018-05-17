@@ -1,3 +1,5 @@
+import { Units } from './Units';
+
 /**
  * OpenAPI spec version: 0.1
  *
@@ -49,5 +51,9 @@ export interface UnitFact {
      * Non-negative integer
      */
     individualCountBiotopeH?: number;
+
+    lineTransectObsType?: Units.LineTransectObsTypeEnum;
+
+    lineTransectRouteFieldType?: Units.LineTransectRouteFieldTypeEnum;
 
 }

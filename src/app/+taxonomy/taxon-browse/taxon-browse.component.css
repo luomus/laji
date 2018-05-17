@@ -1,0 +1,32 @@
+#species-list-container {
+  padding-top: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  flex-direction: column;
+}
+.form-horizontal {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  z-index: auto;
+}
+.form-filters {
+  z-index: 1;
+  padding: 0;
+}
+@media only screen and (max-width : 767px) {
+  .form-filters {
+    top: 0 !important;
+    height: auto !important;
+    position: relative !important;
+  }
+}
+#fill-height {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  z-index: -1;
+  border-left: 1px solid #e1e1e1;
+  background-color: #ECF0F1;
+}

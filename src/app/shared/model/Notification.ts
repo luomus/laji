@@ -27,4 +27,13 @@ export interface Notification {
    * dateTime string using ISO8601 format
    */
   created?: string;
+
+  notificationReason?: Notification.NotificationReasonEnum;
+}
+
+export namespace Notification {
+  export enum NotificationReasonEnum {
+    notificationReasonOwnDocumentAnnotated = <any> 'MHN.notificationReasonOwnDocumentAnnotated',
+    notificationReasonAnnotatedDocumentAnnotated = <any> 'MHN.notificationReasonAnnotatedDocumentAnnotated',
+  }
 }

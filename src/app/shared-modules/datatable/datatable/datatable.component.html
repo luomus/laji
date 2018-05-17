@@ -133,6 +133,14 @@
     </ng-template>
   </span>
 </ng-template>
+<ng-template let-value="value" #label>
+  <span *ngIf="value" title="{{value | label}}">
+    {{value | label}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #labelArray>
+  <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | label}"></ng-container>
+</ng-template>
 <ng-template let-value="value" #warehouseLabel>
   <span *ngIf="value" title="{{value | label: 'warehouse'}}">
     {{value | label: 'warehouse'}}
@@ -153,6 +161,11 @@
     {{value | multiLang}}
   </span>
 </ng-template>
+<ng-template let-value="value" #multiLangAll>
+  <span *ngIf="value" title="{{value | multiLangAll}}">
+    {{value | multiLangAll}}
+  </span>
+</ng-template>
 <ng-template let-row="row" #taxonScientificName>
   <span *ngIf="row.scientificName" title="{{row.scientificName}}" [class.cursive]="row.cursiveName">
     {{row.scientificName}}
@@ -168,9 +181,9 @@
     {{value}}
   </span>
 </ng-template>
-<ng-template let-value="value" #speciesVernacularName>
-  <span *ngIf="value.speciesVernacularName" title="{{value.speciesVernacularName | multiLang}}">
-    {{value.speciesVernacularName | multiLang}}
+<ng-template let-value="value" #boolean>
+  <span *ngIf="value" title="{{'datatable.yes' | translate}}">
+    {{'datatable.yes' | translate}}
   </span>
 </ng-template>
 <ng-template let-value="value" ngx-datatable-cell-template #eventDate>
@@ -179,10 +192,27 @@
     <ng-template #dateRange><span title="{{value.begin}} - {{value.end}}">{{value.begin}} - {{value.end}}</span></ng-template>
   </span>
 </ng-template>
-
 <ng-template let-value="value" #date>
   <span *ngIf="value" title="{{value | amDateFormat: 'DD.MM.YYYY HH:mm'}}">
     {{value | amDateFormat: 'DD.MM.YYYY HH:mm'}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #user>
+    <span *ngIf="value" title="{{value | users}}">
+    {{value | users}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #publication>
+  <span *ngIf="value" title="{{value | publication}}">
+    {{value | publication}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #publicationArray>
+  <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | publication}"></ng-container>
+</ng-template>
+<ng-template let-value="value" #iucnStatus>
+  <span *ngIf="value" title="{{value.status.replace('MX.iucn', '')}} ({{value.year}})">
+    {{value.status.replace('MX.iucn', '')}} ({{value.year}})
   </span>
 </ng-template>
 <ng-template let-value="value" #annotation>

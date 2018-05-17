@@ -1,27 +1,11 @@
 <form (ngSubmit)="onSubmit()" #observationForm="ngForm" class="form-horizontal" id="wrapper">
   <div class="row">
-    <div class="form-filters"
-      [ngClass]="{
-        'col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10': showFilter,
-        'hidden-xs hidden-sm hidden-md hidden-lg': !showFilter
-      }">
-      <div class="filter-toggle link" (click)="toggleFilters()">
-        <i class="glyphicon"
-           [ngClass]="{
-            'glyphicon-arrow-right': showFilter,
-            'glyphicon-arrow-left': !showFilter
-           }"
-        ></i>
-      </div>
-      <div class="form-group">
-        <div class="col-xs-12 form-title">
-          <strong>
-            {{'observation.form.title' | translate}}
-            <laji-observation-active></laji-observation-active>
-          </strong>
-        </div>
-      </div>
-      <div class="lj-filter-wrap">
+    <div class="form-filters col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10" >
+      <laji-search-filters [searchQuery]="searchQuery"
+                           [hasInvasiveControlRights]="hasInvasiveControleRights"
+                           [showFilter]="showFilter"
+                           (onShowFilterChange)="showFilter = $event"
+                           (onInvasiveControlClick)="toInvasiveControlForm()">
         <div class="taxon-panel">
           <div class="row">
             <label class="col-lg-12">
@@ -31,10 +15,10 @@
           <div class="row">
             <div class="lj-input-wrap">
               <observation-group-select
-                      [(ngModel)]="formQuery.informalTaxonGroupId"
-                      name="informalTaxonGroupId"
-                      [lang]="translate.currentLang"
-                      (onSelect)="onQueryChange()">
+                [(ngModel)]="formQuery.informalTaxonGroupId"
+                name="informalTaxonGroupId"
+                [lang]="translate.currentLang"
+                (onSelect)="onQueryChange()">
                 {{'observation.active.informalTaxonGroupAll'|translate}}
               </observation-group-select>
             </div>
@@ -45,23 +29,23 @@
             </label>
             <div class="col-lg-12">
               <input
-                      [ngClass]="{loading: typeaheadLoading}"
-                      type="text"
-                      class="form-control input-sm"
-                      name="target"
-                      [(ngModel)]="formQuery.taxon"
-                      [typeahead]="dataSource"
-                      [typeaheadOptionsLimit]="limit"
-                      [typeaheadWaitMs]="200"
-                      [typeaheadMinLength]="3"
-                      [typeaheadFocusFirst]="false"
-                      [typeaheadOptionField]="'value'"
-                      [typeaheadItemTemplate]="taxonItem"
-                      (typeaheadLoading)="changeTypeaheadLoading($event)"
-                      (typeaheadOnSelect)="onTaxonSelect($event)"
-                      (keyup)="onTaxonSelect($event)"
-                      autocomplete="off"
-                      autocorrect="off"
+                [ngClass]="{loading: typeaheadLoading}"
+                type="text"
+                class="form-control input-sm"
+                name="target"
+                [(ngModel)]="formQuery.taxon"
+                [typeahead]="dataSource"
+                [typeaheadOptionsLimit]="limit"
+                [typeaheadWaitMs]="200"
+                [typeaheadMinLength]="3"
+                [typeaheadFocusFirst]="false"
+                [typeaheadOptionField]="'value'"
+                [typeaheadItemTemplate]="taxonItem"
+                (typeaheadLoading)="changeTypeaheadLoading($event)"
+                (typeaheadOnSelect)="onTaxonSelect($event)"
+                (keyup)="onTaxonSelect($event)"
+                autocomplete="off"
+                autocorrect="off"
               >
               <ng-template #taxonItem let-model="item">
                 <h5 class="autosuggest-value {{model.groups}} informal-group-image">
@@ -118,26 +102,26 @@
             <div class="row">
               <div class="lj-input-wrap">
                 <laji-datepicker
-                        [(ngModel)]="formQuery.timeStart"
-                        [viewFormat]="'DD.MM.YYYY'"
-                        [otherFormats]="['D.M.YYYY', 'YYYY']"
-                        [format]="warehouseDateFormat"
-                        (onSelect)="onQueryChange()"
-                        (change)="onQueryChange()"
-                        name="timeStart"></laji-datepicker>
+                  [(ngModel)]="formQuery.timeStart"
+                  [viewFormat]="'DD.MM.YYYY'"
+                  [otherFormats]="['D.M.YYYY', 'YYYY']"
+                  [format]="warehouseDateFormat"
+                  (onSelect)="onQueryChange()"
+                  (change)="onQueryChange()"
+                  name="timeStart"></laji-datepicker>
               </div>
             </div>
             <div class="row">
               <div class="lj-input-wrap">
                 <laji-datepicker
-                        [(ngModel)]="formQuery.timeEnd"
-                        [viewFormat]="'DD.MM.YYYY'"
-                        [otherFormats]="['D.M.YYYY', 'YYYY']"
-                        [toLastOfYear]="true"
-                        [format]="warehouseDateFormat"
-                        (onSelect)="onQueryChange()"
-                        (change)="onQueryChange()"
-                        name="timeEnd"></laji-datepicker>
+                  [(ngModel)]="formQuery.timeEnd"
+                  [viewFormat]="'DD.MM.YYYY'"
+                  [otherFormats]="['D.M.YYYY', 'YYYY']"
+                  [toLastOfYear]="true"
+                  [format]="warehouseDateFormat"
+                  (onSelect)="onQueryChange()"
+                  (change)="onQueryChange()"
+                  name="timeEnd"></laji-datepicker>
               </div>
             </div>
             <div class="form-group">
@@ -159,38 +143,38 @@
             <div class="form-group">
               <div class="col-sm-12">
                 <laji-metadata-select
-                        [(ngModel)]="searchQuery.query.countryId"
-                        (ngModelChange)="onQueryChange()"
-                        [multiple]="true"
-                        [firstOptions]="['ML.206']"
-                        [placeholder]="'result.gathering.country'"
-                        name="countryId"
-                        [field]="areaType.Country"
-                        [lang]="translate.currentLang"></laji-metadata-select>
+                  [(ngModel)]="searchQuery.query.countryId"
+                  (ngModelChange)="onQueryChange()"
+                  [multiple]="true"
+                  [firstOptions]="['ML.206']"
+                  [placeholder]="'result.gathering.country'"
+                  name="countryId"
+                  [field]="areaType.Country"
+                  [lang]="translate.currentLang"></laji-metadata-select>
               </div>
             </div>
             <div class="form-group">
               <div class="col-sm-12">
                 <laji-metadata-select
-                        [(ngModel)]="searchQuery.query.biogeographicalProvinceId"
-                        (ngModelChange)="onQueryChange()"
-                        [multiple]="true"
-                        [placeholder]="'result.gathering.biogeographicalProvince'"
-                        name="biogeographicalProvinceId"
-                        [field]="areaType.Biogeographical"
-                        [lang]="translate.currentLang"></laji-metadata-select>
+                  [(ngModel)]="searchQuery.query.biogeographicalProvinceId"
+                  (ngModelChange)="onQueryChange()"
+                  [multiple]="true"
+                  [placeholder]="'result.gathering.biogeographicalProvince'"
+                  name="biogeographicalProvinceId"
+                  [field]="areaType.Biogeographical"
+                  [lang]="translate.currentLang"></laji-metadata-select>
               </div>
             </div>
             <div class="form-group">
               <div class="col-sm-12">
                 <laji-metadata-select
-                        [(ngModel)]="searchQuery.query.finnishMunicipalityId"
-                        (ngModelChange)="onQueryChange()"
-                        [multiple]="true"
-                        [placeholder]="'observation.form.municipality'"
-                        name="finnishMunicipalityId"
-                        [field]="areaType.Municipality"
-                        [lang]="translate.currentLang"></laji-metadata-select>
+                  [(ngModel)]="searchQuery.query.finnishMunicipalityId"
+                  (ngModelChange)="onQueryChange()"
+                  [multiple]="true"
+                  [placeholder]="'observation.form.municipality'"
+                  name="finnishMunicipalityId"
+                  [field]="areaType.Municipality"
+                  [lang]="translate.currentLang"></laji-metadata-select>
               </div>
             </div>
             <div class="form-group">
@@ -289,29 +273,29 @@
             <div class="form-group">
               <div class="col-lg-12">
                 <laji-metadata-select
-                        [(ngModel)]="searchQuery.query.sex"
-                        [alt]="'MY.sexes'"
-                        [multiple]="true"
-                        [placeholder]="'observation.form.sex'"
-                        (ngModelChange)="onQueryChange()"
-                        [mapToWarehouse]="true"
-                        [useFilter]="false"
-                        name="sex"
-                        [lang]="translate.currentLang"></laji-metadata-select>
+                  [(ngModel)]="searchQuery.query.sex"
+                  [alt]="'MY.sexes'"
+                  [multiple]="true"
+                  [placeholder]="'observation.form.sex'"
+                  (ngModelChange)="onQueryChange()"
+                  [mapToWarehouse]="true"
+                  [useFilter]="false"
+                  name="sex"
+                  [lang]="translate.currentLang"></laji-metadata-select>
               </div>
             </div>
             <div class="row">
               <div class="col-lg-12">
                 <laji-metadata-select
-                        [(ngModel)]="searchQuery.query.lifeStage"
-                        (ngModelChange)="onQueryChange()"
-                        [alt]="'MY.lifeStages'"
-                        [multiple]="true"
-                        [useFilter]="false"
-                        [placeholder]="'MY.lifeStage' | label"
-                        [mapToWarehouse]="true"
-                        name="lifeStage"
-                        [lang]="translate.currentLang"></laji-metadata-select>
+                  [(ngModel)]="searchQuery.query.lifeStage"
+                  (ngModelChange)="onQueryChange()"
+                  [alt]="'MY.lifeStages'"
+                  [multiple]="true"
+                  [useFilter]="false"
+                  [placeholder]="'MY.lifeStage' | label"
+                  [mapToWarehouse]="true"
+                  name="lifeStage"
+                  [lang]="translate.currentLang"></laji-metadata-select>
               </div>
             </div>
           </div>
@@ -322,11 +306,11 @@
               </label>
               <div class="col-lg-12">
                 <input
-                        class="form-control input-sm"
-                        type="text"
-                        name="documentId"
-                        (ngModelChange)="onQueryChange()"
-                        [(ngModel)]="searchQuery.query.documentId">
+                  class="form-control input-sm"
+                  type="text"
+                  name="documentId"
+                  (ngModelChange)="onQueryChange()"
+                  [(ngModel)]="searchQuery.query.documentId">
               </div>
             </div>
             <div class="row">
@@ -352,26 +336,26 @@
             <div class="form-group">
               <div class="col-sm-12">
                 <laji-metadata-select
-                        [(ngModel)]="searchQuery.query.collectionId"
-                        (ngModelChange)="onQueryChange()"
-                        [multiple]="true"
-                        [field]="'MY.collectionID'"
-                        [placeholder]="'MY.collectionID' | label"
-                        [mapToWarehouse]="false"
-                        name="collectionID"
-                        [lang]="translate.currentLang"></laji-metadata-select>
+                  [(ngModel)]="searchQuery.query.collectionId"
+                  (ngModelChange)="onQueryChange()"
+                  [multiple]="true"
+                  [field]="'MY.collectionID'"
+                  [placeholder]="'MY.collectionID' | label"
+                  [mapToWarehouse]="false"
+                  name="collectionID"
+                  [lang]="translate.currentLang"></laji-metadata-select>
               </div>
             </div>
             <div class="row">
               <div class="col-sm-12">
                 <laji-metadata-select
-                        [(ngModel)]="searchQuery.query.sourceId"
-                        (ngModelChange)="onSystemIDChange()"
-                        [placeholder]="'observation.form.system'"
-                        [multiple]="true"
-                        name="sourceId"
-                        [field]="'KE.informationSystem'"
-                        [lang]="translate.currentLang"></laji-metadata-select>
+                  [(ngModel)]="searchQuery.query.sourceId"
+                  (ngModelChange)="onSystemIDChange()"
+                  [placeholder]="'observation.form.system'"
+                  [multiple]="true"
+                  name="sourceId"
+                  [field]="'KE.informationSystem'"
+                  [lang]="translate.currentLang"></laji-metadata-select>
               </div>
             </div>
           </div>
@@ -379,26 +363,26 @@
             <div class="form-group">
               <div class="col-sm-12">
                 <laji-metadata-select
-                        [(ngModel)]="searchQuery.query.administrativeStatusId"
-                        (ngModelChange)="onAdministrativeStatusChange()"
-                        [multiple]="true"
-                        [placeholder]="'MX.hasAdminStatus' | label"
-                        name="administrativeStatusId"
-                        [alt]="'MX.adminStatusEnum'"
-                        [lang]="translate.currentLang"></laji-metadata-select>
+                  [(ngModel)]="searchQuery.query.administrativeStatusId"
+                  (ngModelChange)="onAdministrativeStatusChange()"
+                  [multiple]="true"
+                  [placeholder]="'MX.hasAdminStatus' | label"
+                  name="administrativeStatusId"
+                  [alt]="'MX.adminStatusEnum'"
+                  [lang]="translate.currentLang"></laji-metadata-select>
               </div>
             </div>
             <div class="form-group">
               <div class="col-sm-12">
                 <laji-metadata-select
-                        [(ngModel)]="searchQuery.query.redListStatusId"
-                        (ngModelChange)="onQueryChange()"
-                        [multiple]="true"
-                        [useFilter]="false"
-                        name="redListStatusId"
-                        [placeholder]="'observation.form.redListStatusId'"
-                        [alt]="'MX.iucnStatuses'"
-                        [lang]="translate.currentLang"></laji-metadata-select>
+                  [(ngModel)]="searchQuery.query.redListStatusId"
+                  (ngModelChange)="onQueryChange()"
+                  [multiple]="true"
+                  [useFilter]="false"
+                  name="redListStatusId"
+                  [placeholder]="'observation.form.redListStatusId'"
+                  [alt]="'MX.iucnStatuses'"
+                  [lang]="translate.currentLang"></laji-metadata-select>
               </div>
             </div>
             <div class="row">
@@ -599,34 +583,16 @@
               </div>
             </div>
           </div>
-        </div><!-- filters end -->
-        <div style="padding-top: 10px" *ngIf="hasInvasiveControleRights">
-          <button type="button" class="btn btn-default" (click)="toInvasiveControlForm()">
-            {{'toICForm' | translate}}
-          </button>
         </div>
-        <div class="form-filters-fill"></div>
-      </div>
+      </laji-search-filters>
     </div>
     <div
       style="margin-top: 10px;"
-     [ngClass]="{
+      [ngClass]="{
        'result-list col-sm-8 col-md-9 col-lg-10': showFilter,
        'col-sm-12': !showFilter
      }"
     >
-      <div *ngIf="!showFilter"
-           class="filter-toggle link"
-           style="right: 0"
-           (click)="toggleFilters()"
-      >
-        <i class="glyphicon"
-           [ngClass]="{
-            'glyphicon-arrow-right': showFilter,
-            'glyphicon-arrow-left': !showFilter
-           }"
-        ></i>
-      </div>
       <div class="row">
         <div class="col-xs-12">
           <div class="pull-right toggle-intro" *ngIf="!observationSettings.showIntro">

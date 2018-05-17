@@ -1,0 +1,78 @@
+.filters-container {
+  border-left: 1px solid #e1e1e1;
+  background-color: #ECF0F1;
+  height: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+:host >>> .panel-heading, .form-title {
+  background-color: #ECF0F1;
+  border-bottom: 1px solid #e1e1e1;
+}
+:host >>> .panel-body {
+  background-color: #ffffff;
+}
+
+:host >>> .form-filters .btn {
+  white-space: normal;
+  text-align: left;
+}
+
+.filter-toggle {
+  position: absolute;
+  font-size: 16px;
+  color: #777;
+  margin-left: -37px;
+  margin-top: 10px;
+  background-color: #ECF0F1;
+  z-index: 1;
+  padding: 5px;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  border-top: 1px solid #e1e1e1;
+  border-left: 1px solid #e1e1e1;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.form-title {
+  z-index: 2;
+  padding: 15px 0 15px 10px;
+}
+
+.form-title h2 {
+  font-size: 16px;
+}
+
+:host >>> .panel-heading a:hover {
+  text-decoration: none;
+}
+
+:host >>> .panel-body {
+  padding-top: 6px;
+  margin-top: 0;
+}
+
+:host >>> .panel-body .close {
+  margin: 0 -2px 0 0;
+}
+.lj-filter-wrap {
+  margin: -15px -15px 0 -15px;
+  padding: 15px 15px 10px 15px;
+}
+
+@media only screen and (min-width : 768px) {
+  .lj-filter-wrap {
+    max-height: calc(100vh - 100px);
+    height: calc(100% - 51px);
+    overflow: auto;
+  }
+
+  .form-filters-fill {
+    background-color: #ECF0F1;
+    width: calc(100% + 30px);
+    flex: 1 1 auto;
+    margin: 0 -15px;
+    min-height: 30px;
+  }
+}
+

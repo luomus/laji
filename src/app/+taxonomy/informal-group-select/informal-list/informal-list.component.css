@@ -1,0 +1,36 @@
+.naks {
+  height: 120px;
+  padding: 12px 8px;
+  margin-bottom: 12px;
+}
+
+.poks {
+  text-align: center;
+}
+
+.niks {
+  padding: 0;
+}
+
+.compact-list {
+  margin: 0;
+}
+
+.compact-list [class^=col] {
+  padding: 5px;
+  padding: 5px;
+}
+
+.compact-list .panel {
+  margin-bottom: 0;
+}
+
+.compact-list .panel-heading {
+  padding: 10px 0;
+}
+
+
+.compact-list h3 {
+  font-size: 13px;
+  height: 45px !important;
+}

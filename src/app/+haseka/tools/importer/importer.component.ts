@@ -280,11 +280,12 @@ export class ImporterComponent implements OnInit {
     this.current = 1;
     Observable.from(this.parsedData)
       .mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy)
-        .switchMap(document => this.importService.validateData(document))
-        .switchMap(result => Observable.of({result: result, source: data}))
-        .catch(err => Observable.of(typeof err.json === 'function' ? err.json() : err)
-          .map(body => body.error && body.error.details || body)
-          .map(error => ({result: {_error: error}, source: data}))
+        .concatMap(document => this.importService.validateData(document)
+          .switchMap(result => Observable.of({result: result, source: data}))
+          .catch(err => Observable.of(typeof err.json === 'function' ? err.json() : err)
+            .map(body => body.error && body.error.details || body)
+            .map(error => ({result: {_error: error}, source: data}))
+          )
         )
         .do(() => {
           this.current++;
@@ -331,11 +332,12 @@ export class ImporterComponent implements OnInit {
     this.current = 1;
     Observable.from(this.parsedData)
       .mergeMap(data => this.augmentService.augmentDocument(data.document)
-        .switchMap(document => this.importService.sendData(document, publicityRestrictions))
-        .switchMap(result => Observable.of({result: result, source: data}))
-        .catch(err => Observable.of(err.json())
-          .map(body => body.error && body.error.details || body)
-          .map(error => ({result: {_error: error}, source: data}))
+        .concatMap(document => this.importService.sendData(document, publicityRestrictions)
+          .switchMap(result => Observable.of({result: result, source: data}))
+          .catch(err => Observable.of(err.json())
+            .map(body => body.error && body.error.details || body)
+            .map(error => ({result: {_error: error}, source: data}))
+          )
         )
         .do(() => {
           this.current++;

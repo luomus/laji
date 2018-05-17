@@ -25,3 +25,7 @@
 .message, .other {
   margin-top: 10px;
 }
+
+.message, .email {
+  margin-bottom: 10px;
+}

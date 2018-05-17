@@ -1,0 +1,11 @@
+<laji-informal-list-breadcrumb *ngIf="showBreadcrumb"
+                               [informalGroup]="selectedInformalGroup"
+                               [groups]="groups"
+                               (onInformalGroupSelect)="onInformalGroupSelect.emit($event)">
+
+</laji-informal-list-breadcrumb>
+<laji-informal-list *ngIf="selectedInformalGroup"
+                    [tree]="selectedInformalGroup"
+                    [compact]="compact"
+                    (onInformalGroupSelect)="onInformalGroupSelect.emit($event)">
+</laji-informal-list>

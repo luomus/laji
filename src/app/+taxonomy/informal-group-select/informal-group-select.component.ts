@@ -1,0 +1,73 @@
+import { Component, OnDestroy, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs/Subscription';
+import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
+import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
+
+
+@Component({
+  selector: 'laji-informal-group-select',
+  templateUrl: './informal-group-select.component.html',
+  styleUrls: ['./informal-group-select.component.css']
+})
+export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() id: string;
+  @Input() compact = false;
+  @Input() showBreadcrumb = true;
+  @Output() onInformalGroupSelect = new EventEmitter<string>();
+
+  public selectedInformalGroup: InformalTaxonGroup;
+  public groups: Array<InformalTaxonGroup>;
+  private subTrans: Subscription;
+
+  constructor(
+    public translate: TranslateService,
+    private informalTaxonService: InformalTaxonGroupApi
+  ) { }
+
+  ngOnInit() {
+    this.refreshInformalGroups();
+    this.subTrans = this.translate.onLangChange.subscribe(this.refreshInformalGroups.bind(this));
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.id) {
+      this.refreshInformalGroups();
+    }
+  }
+
+  ngOnDestroy() {
+    this.subTrans.unsubscribe();
+  }
+
+  private refreshInformalGroups() {
+    if (!this.id) {
+      this.informalTaxonService
+        .informalTaxonGroupFindRoots(this.translate.currentLang)
+        .subscribe(this.setSelectedInformalGroup.bind(this));
+      this.groups = [];
+      this.selectedInformalGroup = null;
+    } else {
+      this.informalTaxonService.informalTaxonGroupGetChildren(this.id, this.translate.currentLang)
+        .combineLatest(this.informalTaxonService.informalTaxonGroupFindById(this.id, this.translate.currentLang))
+        .map(this.parseInformalTaxonGroup.bind(this))
+        .subscribe(this.setSelectedInformalGroup.bind(this), () => {});
+      this.informalTaxonService.informalTaxonGroupGetParents(this.id, this.translate.currentLang)
+        .subscribe(data => {
+          this.groups = data;
+        }, (error) => {
+          this.groups = [];
+        });
+    }
+  }
+
+  private parseInformalTaxonGroup(data) {
+    const { results } = data[0];
+    const { id, name } = data[1];
+    return { results, id, name };
+  };
+
+  private setSelectedInformalGroup(data: InformalTaxonGroup) {
+    this.selectedInformalGroup = data;
+  }
+}

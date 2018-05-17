@@ -16,7 +16,6 @@ import { LocalStorage } from 'ng2-webstorage';
 import { MapService } from '../../shared/map/map.service';
 import { WindowRef } from '../../shared/windows-ref';
 import { ObservationResultComponent } from '../result/observation-result.component';
-import { Autocomplete } from '../../shared/model/Autocomplete';
 import { AreaType } from '../../shared/service/area.service';
 import { UserService } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
@@ -220,21 +219,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     if (refresh) {
       this.onSubmit();
     }
-  }
-
-  toggleFilters() {
-    this.showFilter = !this.showFilter;
-    try {
-      setTimeout(() => {
-        try {
-          this.winRef.nativeWindow.dispatchEvent(new Event('resize'));
-        } catch (e) {
-          const evt = this.winRef.nativeWindow.document.createEvent('UIEvents');
-          evt.initUIEvent('resize', true, false, window, 0);
-          this.winRef.nativeWindow.dispatchEvent(evt);
-        }
-      }, 50);
-    } catch (e) {}
   }
 
   toggleInfo() {

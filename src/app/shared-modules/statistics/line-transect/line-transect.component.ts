@@ -85,6 +85,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
 
   ykj10kmN = 0;
   ykj10kmE = 0;
+  missingNS = false;
 
   constructor(
     private lajiApiService: LajiApiService,
@@ -102,6 +103,11 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     this.initYkj();
     this.initIsAdmin()
       .subscribe(data => {
+        if (data === null) {
+          this.missingNS = true;
+          return;
+        }
+        this.missingNS = false;
         this.isAdmin = this.formPermissionService.isAdmin(data.formPermission, data.user);
         this.initPlacesDiff();
         this.initMapZoom();
@@ -156,7 +162,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
                   name: unit.identifications[0].taxon || ''
                 };
               }
-              const cntKey = unit.lineTransectRouteFieldType === Units.LineTransectRouteFieldTypeEnum.LineTransectRouteFieldTypeOuter ?
+              const cntKey = unit.unitFact && unit.unitFact.lineTransectRouteFieldType === Units.LineTransectRouteFieldTypeEnum.LineTransectRouteFieldTypeOuter ?
                 'tsCouples' : 'psCouples';
               if (cntKey === 'psCouples') {
                 count.onPs++;
@@ -259,6 +265,9 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   initIsAdmin() {
+    if (!this.namedPlace || !this.namedPlace.collectionID) {
+      return Observable.of(null);
+    }
     return this.formPermissionService.getFormPermission(this.namedPlace.collectionID, this.userSerivce.getToken())
       .combineLatest(
         this.userSerivce.getUser(),

@@ -3,6 +3,9 @@
     <h3>Laskennan tulokset linjalta {{namedPlace.name}}</h3>
   </div>
 </div>
+<alert *ngIf="missingNS" [type]="'danger'">
+  Havaintoerässä käytettyä nimettyä paikkaa ei löytynyt!
+</alert>
 <div class="row">
   <div class="col-sm-6">
     <table class="table">
@@ -73,7 +76,7 @@
           [yRange]="[0, 50]"
           [xValue]="ykj10kmN"
           [yValue]="counts.couplesPerKm"
-          [title]="'Pareja / 1km'"
+          [title]="'Parihavaintoja / km'"
           [xLabel]="'ykj n'"
           [yLabel]="'lkm'"
         ></laji-line-transect-chart>

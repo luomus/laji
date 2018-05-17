@@ -1,0 +1,92 @@
+<laji-search-filters [searchQuery]="searchQuery"
+                     [showFilter]="showFilter"
+                     (onShowFilterChange)="showFilterChange($event)">
+  <div class="taxon-panel">
+    <div class="form-group">
+      <label class="col-sm-12">
+        {{'species.form.specimen' | translate}}:
+      </label>
+      <div class="col-sm-12">
+        <input
+          [ngClass]="{loading: typeaheadLoading}"
+          type="text"
+          class="form-control input-sm"
+          name="target"
+          [(ngModel)]="formQuery.taxon"
+          [typeahead]="dataSource"
+          [typeaheadOptionsLimit]="limit"
+          [typeaheadWaitMs]="200"
+          [typeaheadMinLength]="3"
+          [typeaheadFocusFirst]="false"
+          [typeaheadOptionField]="'value'"
+          (typeaheadLoading)="changeTypeaheadLoading($event)"
+          (typeaheadOnSelect)="onTaxonSelect($event)"
+          (keyup)="onTaxonSelect($event)"
+          autocomplete="off"
+          autocorrect="off"
+        >
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <bSwitch
+          name="onlyFinnish"
+          [switch-off-text]="'species.form.all' | translate"
+          [switch-on-text]="'species.form.finnish' | translate"
+          [switch-on-color]="'primary'"
+          [switch-size]="'small'"
+          [(ngModel)]="formQuery.onlyFinnish"
+          [switch-base-class]="'bootstrap-switch'"
+          (onChangeState)="onQueryChange()">
+        </bSwitch>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [(ngModel)]="searchQuery.query.redListStatusFilters"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [useFilter]="false"
+          name="redListStatusId"
+          [placeholder]="'observation.form.redListStatusId'"
+          [alt]="'MX.iucnStatuses'"
+          [lang]="translate.currentLang"></laji-metadata-select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [(ngModel)]="searchQuery.query.adminStatusFilters"
+          (ngModelChange)="onAdministrativeStatusChange()"
+          [multiple]="true"
+          [placeholder]="'MX.hasAdminStatus' | label"
+          name="administrativeStatusId"
+          [alt]="'MX.adminStatusEnum'"
+          [lang]="translate.currentLang"></laji-metadata-select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-select [options]="[
+                        {id: 'onlyInvasive', value: 'observation.form.invasive' | translate},
+                        {id: 'onlyNonInvasive', value: 'observation.form.nonInvasive' | translate},
+                        {id: 'euInvasiveSpeciesList', value: 'MX.euInvasiveSpeciesList' | label},
+                        {id: 'nationallySignificantInvasiveSpecies', value: 'MX.nationallySignificantInvasiveSpecies' | label},
+                        {id: 'quarantinePlantPest', value: 'MX.quarantinePlantPest' | label},
+                        {id: 'allInvasiveSpecies', value: 'observation.form.allInvasive' | translate}
+                     ]"
+                     [selected]="invasiveSelected"
+                     [title]="'observation.form.invasive' | translate"
+                     [useFilter]="false"
+                     [outputOnlyId]="true"
+                     (selectedChanged)="onInvasiveChange($event)"></laji-select>
+      </div>
+    </div>
+  </div>
+</laji-search-filters>
+

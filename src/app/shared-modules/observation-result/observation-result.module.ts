@@ -20,6 +20,6 @@ import { SelectedFieldItemComponent } from './selected-field-item/selected-field
   ],
   declarations: [ObservationTableComponent, SelectedFieldGroupComponent, PageSizeSelectComponent, SelectedFieldItemComponent],
   providers: [ObservationListService],
-  exports: [ObservationTableComponent]
+  exports: [ObservationTableComponent, SelectedFieldGroupComponent]
 })
 export class ObservationResultModule { }

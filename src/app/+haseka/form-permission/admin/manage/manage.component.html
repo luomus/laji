@@ -1,7 +1,7 @@
 <div class="row" *ngIf="formPermission">
   <div class="col-sm-6">
     <h3 *ngIf="type === 'admins'; else editorsTitle">
-      Lomakkeen adminit<br>
+      Lomakkeen ylläpitäjät<br>
       <small>Näillä käyttäjillä on oikeus hyväksyä pääsypyyntöjä, sekä nähdä kaikki havaintoerät jotka on tallennettu kyseiseen kokoelmaan.</small>
     </h3>
     <ng-template #editorsTitle>
@@ -14,8 +14,8 @@
       <ul>
         <li *ngFor="let person of formPermission[type]">
           <button class="btn btn-warning btn-sm" (click)="reject(person)">Poista pääsy</button>
-          <button *ngIf="type === 'admins'" class="btn btn-warning btn-sm" (click)="makeEditor(person)">Tee editori</button>
-          <button *ngIf="type === 'editors'" class="btn btn-danger btn-sm" (click)="makeAdmin(person)">Tee admin</button>
+          <button *ngIf="type === 'admins'" class="btn btn-warning btn-sm" (click)="makeEditor(person)">Poista ylläpitäjän oikeudet</button>
+          <button *ngIf="type === 'editors'" class="btn btn-danger btn-sm" (click)="makeAdmin(person)">Myönnä ylläpitäjän oikeudet</button>
           <span class="form-control-static">
               {{person | users}} ({{person}})
           </span>

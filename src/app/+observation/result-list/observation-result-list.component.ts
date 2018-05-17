@@ -82,7 +82,7 @@ export class ObservationResultListComponent implements OnInit {
       aggregateBy: this.aggregateBy,
       selected: this.selected,
       pageSize: this.pageSize
-    }).subscribe();
+    }).subscribe(() => {}, () => {});
   }
 
 }
