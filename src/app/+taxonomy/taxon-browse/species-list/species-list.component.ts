@@ -4,8 +4,6 @@ import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../../../shared/model/PagedResult';
-import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
-import { InformalTaxonGroup } from '../../../shared';
 import { Logger } from '../../../shared/logger/logger.service';
 import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
 import { Router } from '@angular/router';
@@ -24,7 +22,6 @@ import { UserService } from '../../../shared/service/user.service';
 export class SpeciesListComponent implements OnInit, OnDestroy {
   @ViewChild('settingsModal') public modalRef: ModalDirective;
   @Input() searchQuery: TaxonomySearchQuery;
-  public informalGroup: InformalTaxonGroup;
 
   loading = false;
   speciesPage: PagedResult<Taxonomy> = {
@@ -164,7 +161,6 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
 
   constructor(
     private taxonomyService: TaxonomyApi,
-    private informalTaxonService: InformalTaxonGroupApi,
     private translate: TranslateService,
     private logger: Logger,
     private router: Router,
@@ -232,10 +228,6 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     const query = this.searchQueryToTaxaQuery();
-
-    if (!this.informalGroup || this.informalGroup.id !== query.informalTaxonGroupId) {
-      this.onInformalTaxonGroupChange(query.informalTaxonGroupId);
-    }
 
     this.subFetch = this.taxonomyService
       .taxonomyFindSpecies(
@@ -330,18 +322,6 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       informalTaxonGroupId,
       target,
       extraParameters
-    }
-  }
-
-  private onInformalTaxonGroupChange(id) {
-    if (!id) {
-      this.translate.get('species.list.all')
-        .subscribe((name) => {
-          this.informalGroup = {name: name};
-        })
-    } else {
-      this.informalTaxonService.informalTaxonGroupFindById(id, this.translate.currentLang)
-        .subscribe(data => this.informalGroup = data);
     }
   }
 

@@ -37,6 +37,7 @@
           </li>
         </ul>
         <laji-informal-group-select *ngIf="type !== 'tree'"
+                                    style="padding-bottom: 20px"
                                     [id]="searchQuery.query.informalTaxonGroupId"
                                     [compact]="true"
                                     (onInformalGroupSelect)="informalGroupSelect($event)"></laji-informal-group-select>

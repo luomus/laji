@@ -13,12 +13,12 @@
 }
 
 .compact-list {
-  margin: -5px;
+  margin-right: -2px;
+  margin-left: -2px;
 }
 
-.compact-list [class^=col] {
-  padding: 5px;
-  padding: 5px;
+.compact-list [class^='col-'] {
+  padding: 2px;
 }
 
 .compact-list .panel {
@@ -26,11 +26,33 @@
 }
 
 .compact-list .panel-heading {
-  padding: 10px 0;
+  padding: 0;
 }
 
 
 .compact-list h3 {
-  font-size: 13px;
-  height: 45px !important;
+  font-size: 12px;
+  font-weight: normal;
+  height: auto !important;
+  padding: 3px 9px;
+}
+
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+}
+.row-eq-height > [class^='col-'] {
+  display: flex;
+  flex-direction: column;
+}
+
+.row-eq-height .panel, .row-eq-height .panel-heading {
+  height: 100%;
+}
+
+.row-eq-height h3 {
+  min-height: 100%;
 }
