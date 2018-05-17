@@ -48,6 +48,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     },
     {
       name: 'scientificName',
+      selectField: 'scientificName,cursiveName',
       label: 'taxonomy.scientific.name',
       cellTemplate: 'taxonScientificName',
       width: 200
@@ -326,7 +327,13 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   }
 
   private getSelectedFields() {
-    const selects = this.searchQuery.selected;
+    const selects = this.searchQuery.selected.map(field => {
+      if (this.columnLookup[field] && this.columnLookup[field].selectField) {
+        return this.columnLookup[field].selectField;
+      } else {
+        return field;
+      }
+    });
 
     if (selects.indexOf('id') === -1) {
       selects.push('id');

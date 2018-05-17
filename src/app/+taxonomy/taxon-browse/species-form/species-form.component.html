@@ -50,7 +50,7 @@
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
           [useFilter]="false"
-          name="redListStatusId"
+          name="redListStatusFilters"
           [placeholder]="'observation.form.redListStatusId'"
           [alt]="'MX.iucnStatuses'"
           [lang]="translate.currentLang"></laji-metadata-select>
@@ -64,7 +64,7 @@
           (ngModelChange)="onAdministrativeStatusChange()"
           [multiple]="true"
           [placeholder]="'MX.hasAdminStatus' | label"
-          name="administrativeStatusId"
+          name="adminStatusFilters"
           [alt]="'MX.adminStatusEnum'"
           [lang]="translate.currentLang"></laji-metadata-select>
       </div>
