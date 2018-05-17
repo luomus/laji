@@ -121,7 +121,7 @@ export class TriplestoreLabelService {
         .merge(apiCall
           .do(data => {
             if (!Util.isEmptyObj(data)) {
-              this.cacheService.setItem(cacheKey, data)
+              this.cacheService.setItem(cacheKey, data).subscribe(() => {}, () => {})
             }
           })
         )

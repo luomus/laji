@@ -171,7 +171,7 @@ export class DatatableComponent {
     if (event && event.column && event.column.name && event.newValue) {
       DatatableComponent.settings[event.column.name] = {width: event.newValue};
       this.cacheService.setItem<Settings>(CACHE_COLUMN_SETINGS, DatatableComponent.settings)
-        .subscribe();
+        .subscribe(() => {}, () => {});
     }
   }
 }

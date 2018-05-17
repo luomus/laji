@@ -356,6 +356,6 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   private saveSettings() {
     this.userService.setItem(UserService.SETTINGS_TAXONOMY_LIST, {
       selected: this.searchQuery.selected
-    }).subscribe();
+    }).subscribe(() => {}, () => {});
   }
 }

@@ -199,7 +199,7 @@ export class UserService extends LocalDb {
     }
     this.setItem(this.currentUserId, {...this.userSettings, [key]: value})
       .do((settings) => this.userSettings = settings)
-      .subscribe();
+      .subscribe(() => {}, () => {});
   };
 
   private loadUserInfo(token: string) {
