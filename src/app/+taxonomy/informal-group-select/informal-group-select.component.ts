@@ -55,7 +55,6 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
         .subscribe(this.setSelectedInformalGroup.bind(this), () => {});
       this.informalTaxonService.informalTaxonGroupGetParents(this.id, this.translate.currentLang)
         .subscribe(data => {
-          console.log(data);
           this.groups = data;
         }, (error) => {
           this.groups = [];
@@ -71,6 +70,5 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
 
   private setSelectedInformalGroup(data: InformalTaxonGroup) {
     this.selectedInformalGroup = data;
-    console.log(data);
   }
 }

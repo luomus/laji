@@ -67,8 +67,9 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       width: 200
     },
     {
-      name: 'allSynonyms',
-      selectField: 'synonyms,basionyms,uncertainSynonyms'
+      name: 'synonymNames',
+      cellTemplate: 'cursive',
+      width: 200
     },
     {
       name: 'vernacularName.fi',
@@ -345,7 +346,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   }
 
   private getSelectedFields() {
-    const selects = this.searchQuery.selected.map(field => this.columnLookup[field].selectField || field);
+    const selects = this.searchQuery.selected;
 
     if (selects.indexOf('id') === -1) {
       selects.push('id');
