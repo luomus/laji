@@ -13,7 +13,7 @@
 }
 
 .compact-list {
-  margin: 0;
+  margin: -5px;
 }
 
 .compact-list [class^=col] {
