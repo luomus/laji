@@ -15,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class LineTransectComponent implements OnInit, OnDestroy {
 
-  showForm = false;
+  showForm = true;
   showNav = true;
   routeSub: Subscription;
   rights: Observable<Rights>;
