@@ -202,7 +202,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       admin: false,
       edit: false
     };
-    this.allowCreate = true;
+    this.allowCreate = false;
     if (!formData || !formData.collectionID || !this.userService.isLoggedIn) {
       return Observable.of(null);
     }
