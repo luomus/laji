@@ -45,6 +45,8 @@ import { MostActiveUsersTableComponent } from './quality/most-active-users-table
 import { AnnotationTableComponent } from './quality/annotation-table/annotation-table.component';
 import { QualityFiltersComponent } from './quality/quality-filters/quality-filters.component';
 import { TaxonAutocompleteModule } from '../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
+import { LineTransectFormEiVakioComponent } from './line-transect/line-transect-form-ei-vakio/line-transect-form-ei-vakio.component';
+import { LineTransectFormKartoitusComponent } from './line-transect/line-transect-form-kartoitus/line-transect-form-kartoitus.component';
 
 @NgModule({
   imports: [
@@ -92,7 +94,9 @@ import { TaxonAutocompleteModule } from '../shared-modules/taxon-autocomplete/ta
     QualityComponent,
     MostActiveUsersTableComponent,
     AnnotationTableComponent,
-    QualityFiltersComponent
+    QualityFiltersComponent,
+    LineTransectFormEiVakioComponent,
+    LineTransectFormKartoitusComponent
   ],
   providers: [ ResultService, QualityService ]
 })

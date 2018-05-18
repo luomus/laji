@@ -10,11 +10,10 @@ import {ToastsService} from '../../../shared/service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
-  selector: 'laji-line-transect-form',
-  templateUrl: './line-transect-form.component.html',
-  styleUrls: ['./line-transect-form.component.css']
+  selector: 'laji-line-transect-form-ei-vakio',
+  templateUrl: './line-transect-form-ei-vakio.component.html'
 })
-export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
+export class LineTransectFormEiVakioComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
   formId;
   documentId;
@@ -31,12 +30,12 @@ export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCa
   ) { }
 
   ngOnInit() {
-    this.formId = environment.lineTransectForm;
+    this.formId = environment.lineTransectEiVakioForm;
     this.subParam = this.route.params.subscribe(params => {
       this.documentId = params['id'] || null;
       if (!this.formService.hasNamedPlace() && !this.documentId) {
         this.router.navigate(
-          this.localizeRouterService.translateRoute(['/theme/linjalaskenta/places/HR.61', environment.lineTransectForm])
+          this.localizeRouterService.translateRoute(['/theme/linjalaskenta/places/HR.2691', environment.lineTransectEiVakioForm])
         );
       } else {
         this.hasNS = true;
@@ -57,7 +56,7 @@ export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCa
 
   onTmlLoad(data) {
     this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/linjalaskenta/form/', data.tmpID]),
+      this.localizeRouterService.translateRoute(['/theme/linjalaskenta/ei-vakiolinjat/', data.tmpID]),
       { replaceUrl: true }
     );
   }
@@ -76,7 +75,7 @@ export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCa
 
   onMissingNamedplace(data) {
     this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/linjalaskenta/form']),
+      this.localizeRouterService.translateRoute(['/theme/linjalaskenta/ei-vakiolinjat']),
       { replaceUrl: true }
     );
   }

@@ -13,6 +13,8 @@ export const environment = {
   formsTheme: {
     'MHL.6': '/nafi',
     'MHL.1': '/linjalaskenta',
+    'MHL.27': '/linjalaskenta',
+    'MHL.28': '/linjalaskenta',
     'MHL.3': '/talvilintu',
   },
   formWhitelist: ['JX.519', 'MHL.9', 'MHL.25', 'JX.652', 'MHL.1',  'MHL.3', 'MHL.23', 'JX.111715', 'JX.123759', 'JX.123757', 'JX.123659', 'MHL.6'],
@@ -23,6 +25,8 @@ export const environment = {
   wbcForm: 'MHL.3',
   apiBase: '/api',
   lineTransectForm: 'MHL.1',
+  lineTransectEiVakioForm: 'MHL.27',
+  lineTransectKartoitusForm: 'MHL.28',
   whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'JX.123608',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',

@@ -93,15 +93,13 @@ export class AppComponent {
                 }
               });
             });
-
-          // Use analytics
-          if (this.hasAnalytics && newRoute.indexOf('/user') !== 0) {
-            try {
-              ga('send', 'pageview', newRoute);
-            } catch (e) {}
-          }
-
           this.currentRoute = newRoute;
+        }
+        // Use analytics
+        if (this.hasAnalytics && newRoute.indexOf('/user') !== 0) {
+          try {
+            ga('send', 'pageview', newRoute);
+          } catch (e) {}
         }
         const tree = router.parseUrl(router.url);
 
