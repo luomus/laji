@@ -26,6 +26,8 @@ import { LineTransectResultComponent } from './line-transect/line-transect-resul
 import { LineTransectFormComponent } from './line-transect/line-transect-form/line-transect-form.component';
 import { LineTransectMyDocumentListComponent } from './line-transect/line-transect-my-document-list/line-transect-my-document-list.component';
 import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
+import { LineTransectFormEiVakioComponent } from './line-transect/line-transect-form-ei-vakio/line-transect-form-ei-vakio.component';
+import { LineTransectFormKartoitusComponent } from './line-transect/line-transect-form-kartoitus/line-transect-form-kartoitus.component';
 
 const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
@@ -93,6 +95,22 @@ const routes: Routes = [
         path: 'form/:id',
         pathMatch: 'full',
         component: LineTransectFormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard]
+      },
+      {path: 'ei-vakiolinjat', pathMatch: 'full', component: LineTransectFormEiVakioComponent},
+      {
+        path: 'ei-vakiolinjat/:id',
+        pathMatch: 'full',
+        component: LineTransectFormEiVakioComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard]
+      },
+      {path: 'kartoitus', pathMatch: 'full', component: LineTransectFormKartoitusComponent},
+      {
+        path: 'kartoitus/:id',
+        pathMatch: 'full',
+        component: LineTransectFormKartoitusComponent,
         canActivate: [OnlyLoggedIn],
         canDeactivate: [DocumentDeActivateGuard]
       },

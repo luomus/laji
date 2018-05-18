@@ -3,6 +3,8 @@ export const environment = {
   formsTheme: {
     'MHL.6': '/nafi',
     'MHL.1': '/linjalaskenta',
+    'MHL.27': '/linjalaskenta',
+    'MHL.28': '/linjalaskenta',
     'MHL.3': '/talvilintu',
   },
   formWhitelist: ['JX.519', 'JX.6485'],
@@ -11,6 +13,8 @@ export const environment = {
   nafiForm: 'MHL.6',
   wbcForm: 'MHL.3',
   lineTransectForm: 'MHL.1',
+  lineTransectEiVakioForm: 'MHL.27',
+  lineTransectKartoitusForm: 'MHL.28',
   whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'JX.6668',
   invasiveControlForm: '',

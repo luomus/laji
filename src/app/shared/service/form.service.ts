@@ -19,6 +19,8 @@ export class FormService {
     [environment.nafiForm]: '/theme/nafi/form',
     [environment.wbcForm]: '/theme/talvilintulaskenta/form',
     [environment.lineTransectForm]: '/theme/linjalaskenta/form',
+    [environment.lineTransectEiVakioForm]: '/theme/linjalaskenta/ei-vakiolinjat',
+    [environment.lineTransectKartoitusForm]: '/theme/linjalaskenta/kartoitus',
     default: '/vihko'
   };
 

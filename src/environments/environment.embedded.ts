@@ -8,6 +8,8 @@ export const environment = {
   formsTheme: {
     'MHL.6': '/nafi',
     'MHL.1': '/linjalaskenta',
+    'MHL.27': '/linjalaskenta',
+    'MHL.28': '/linjalaskenta',
     'MHL.3': '/talvilintu',
   },
   formWhitelist: [],
@@ -18,6 +20,8 @@ export const environment = {
   apiBase: '/api',
   wbcForm: 'MHL.3',
   lineTransectForm: 'MHL.1',
+  lineTransectEiVakioForm: 'MHL.27',
+  lineTransectKartoitusForm: 'MHL.28',
   whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'JX.6668',
   loginUrl: 'https://login.laji.fi/login',

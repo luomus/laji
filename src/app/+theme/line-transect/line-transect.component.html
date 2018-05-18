@@ -5,8 +5,10 @@
       <ul class="sidebar-nav">
         <li><a [routerLink]="['../linjalaskenta', 'instructions']">{{'instructions' | translate}}</a></li>
         <li><a [routerLink]="['../linjalaskenta', 'stats']">{{'nafi.stats' | translate}}</a></li>
-        <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'form']">{{'wbc.form' | translate}}</a></li>
+        <li><a [routerLink]="['../linjalaskenta', 'form']">{{'linjalaskenta.form1' | translate}}</a></li>
+        <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'ei-vakiolinjat']">{{'linjalaskenta.form2' | translate}}</a></li>
         <ng-container *ngIf="(rights | async)?.admin; else normalUsers">
+          <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'kartoitus']">{{'linjalaskenta.form3' | translate}}</a></li>
           <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'ownSubmissions']">{{'theme.admin.submissions' | translate}}</a></li>
           <li><a [routerLink]="['/vihko/fp/HR.61/admin']">{{'form.administer' | translate}}</a></li>
         </ng-container>
