@@ -3,6 +3,7 @@ import { TaxonComponent } from './taxon.component';
 import { TaxonBrowseComponent } from './taxon-browse/taxon-browse.component';
 import { InfoCardComponent } from './info-card/info-card.component';
 import { ModuleWithProviders } from '@angular/core';
+import { InformalGroupRedirectComponent } from './informal-group-redirect/informal-group-redirect.component';
 
 export const taxonomyRoutes: Routes = [
   {
@@ -19,12 +20,28 @@ export const taxonomyRoutes: Routes = [
     }
   },
   {
+    path: 'images',
+    pathMatch: 'full',
+    component: TaxonBrowseComponent,
+    data: {
+      type: 'images'
+    }
+  },
+  {
     path: 'tree',
     pathMatch: 'full',
     component: TaxonBrowseComponent,
     data: {
       type: 'tree'
     }
+  },
+  {
+    path: 'informal',
+    redirectTo: 'list'
+  },
+  {
+    path: 'informal/:id',
+    component: InformalGroupRedirectComponent
   },
   {
     path: ':id',

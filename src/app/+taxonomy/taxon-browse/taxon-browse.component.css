@@ -1,3 +1,9 @@
+#content-container {
+  padding-bottom: 30px;
+  width: 100%;
+  min-height: 200px;
+}
+
 #species-list-container {
   padding-top: 10px;
   padding-left: 15px;

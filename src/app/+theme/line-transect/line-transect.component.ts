@@ -29,7 +29,7 @@ export class LineTransectComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.showForm = !environment.production;
+    // this.showForm = !environment.production;
     this.showNav = this.router.url.indexOf('form') === -1;
     this.routeSub = this.router
       .events

@@ -4,8 +4,6 @@ import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../../../shared/model/PagedResult';
-import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
-import { InformalTaxonGroup } from '../../../shared';
 import { Logger } from '../../../shared/logger/logger.service';
 import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
 import { Router } from '@angular/router';
@@ -24,7 +22,6 @@ import { UserService } from '../../../shared/service/user.service';
 export class SpeciesListComponent implements OnInit, OnDestroy {
   @ViewChild('settingsModal') public modalRef: ModalDirective;
   @Input() searchQuery: TaxonomySearchQuery;
-  public informalGroup: InformalTaxonGroup;
 
   loading = false;
   speciesPage: PagedResult<Taxonomy> = {
@@ -51,6 +48,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     },
     {
       name: 'scientificName',
+      selectField: 'scientificName,cursiveName',
       label: 'taxonomy.scientific.name',
       cellTemplate: 'taxonScientificName',
       width: 200
@@ -67,8 +65,9 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       width: 200
     },
     {
-      name: 'allSynonyms',
-      selectField: 'synonyms,basionyms,uncertainSynonyms'
+      name: 'synonymNames',
+      cellTemplate: 'cursive',
+      width: 200
     },
     {
       name: 'vernacularName.fi',
@@ -163,7 +162,6 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
 
   constructor(
     private taxonomyService: TaxonomyApi,
-    private informalTaxonService: InformalTaxonGroupApi,
     private translate: TranslateService,
     private logger: Logger,
     private router: Router,
@@ -231,10 +229,6 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     const query = this.searchQueryToTaxaQuery();
-
-    if (!this.informalGroup || this.informalGroup.id !== query.informalTaxonGroupId) {
-      this.onInformalTaxonGroupChange(query.informalTaxonGroupId);
-    }
 
     this.subFetch = this.taxonomyService
       .taxonomyFindSpecies(
@@ -332,20 +326,14 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     }
   }
 
-  private onInformalTaxonGroupChange(id) {
-    if (!id) {
-      this.translate.get('species.list.all')
-        .subscribe((name) => {
-          this.informalGroup = {name: name};
-        })
-    } else {
-      this.informalTaxonService.informalTaxonGroupFindById(id, this.translate.currentLang)
-        .subscribe(data => this.informalGroup = data);
-    }
-  }
-
   private getSelectedFields() {
-    const selects = this.searchQuery.selected.map(field => this.columnLookup[field].selectField || field);
+    const selects = this.searchQuery.selected.map(field => {
+      if (this.columnLookup[field] && this.columnLookup[field].selectField) {
+        return this.columnLookup[field].selectField;
+      } else {
+        return field;
+      }
+    });
 
     if (selects.indexOf('id') === -1) {
       selects.push('id');

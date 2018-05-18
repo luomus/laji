@@ -51,7 +51,7 @@ export class TaxonomySearchQuery {
     this.page = 1;
     this.sortOrder = 'taxonomic';
     this.selected = ['vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
-      'latestRedListStatusFinland', 'administrativeStatuses', 'allSynonyms'];
+      'latestRedListStatusFinland', 'administrativeStatuses', 'synonymNames'];
     this.targetId = undefined;
   }
 

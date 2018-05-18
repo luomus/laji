@@ -5,4 +5,6 @@ export interface TaxonomySearchQueryInterface {
   invasiveSpeciesFilter?: boolean;
   redListStatusFilters?: string[];
   adminStatusFilters?: string[];
+  typesOfOccurrenceFilters?: string[];
+  typesOfNotOccurrenceFilters?: string[];
 }

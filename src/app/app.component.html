@@ -5,4 +5,4 @@
   </div>
 </div>
 <laji-footer id="footer" *ngIf="!isEmbedded"></laji-footer>
-<laji-feedback [iconOnly]="true"></laji-feedback>
+<laji-feedback *ngIf="!isEmbedded" [iconOnly]="true"></laji-feedback>
