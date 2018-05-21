@@ -3,12 +3,12 @@ import { TranslateService } from '@ngx-translate/core';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { Observable } from 'rxjs/Observable';
-import { TriplestoreLabelService } from '../../../../shared/service/triplestore-label.service';
-import { MultiLangService } from '../../../../shared-modules/lang/service/multi-lang.service';
-import { PublicationService } from '../../../../shared/service/publication.service';
-import { Publication } from '../../../../shared/model/Publication';
-import { UserService } from '../../../../shared/service/user.service';
-import { Person } from '../../../../shared/model/Person';
+import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
+import { MultiLangService } from '../../../shared-modules/lang/service/multi-lang.service';
+import { PublicationService } from '../../../shared/service/publication.service';
+import { Publication } from '../../../shared/model/Publication';
+import { UserService } from '../../../shared/service/user.service';
+import { Person } from '../../../shared/model/Person';
 
 @Injectable()
 export class TaxonExportService {
@@ -23,10 +23,11 @@ export class TaxonExportService {
     private userService: UserService
   ) {}
 
-  public downloadTaxons(columns, data, type = 'tsv') {
-    this.getBuffer(columns, data, type).subscribe((buffer) => {
-      this.translate.get('taxon-export').subscribe((fileName) => {
+  public downloadTaxons(columns, data, type = 'tsv'): Observable<boolean> {
+    return this.getBuffer(columns, data, type).switchMap((buffer) => {
+      return this.translate.get('taxon-export').map((fileName) => {
         this.downloadData(buffer, fileName, type);
+        return true;
       });
     });
   }

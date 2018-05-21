@@ -30,21 +30,21 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.searchQuery.empty();
-    this.searchQuery.loading = true;
 
     this.subQuery = this.route.queryParams.subscribe(params => {
-      this.searchQuery.setQueryFromParams(params);
-      if (this.searchQuery.query.target && !this.searchQuery.targetId) {
-        this.searchQuery.initTargetId()
-          .subscribe((formSubmit) => {
-            this.searchQuery.loading = false;
-            this.searchQuery.queryUpdate({formSubmit: formSubmit});
-            this.cd.markForCheck();
-          });
-      } else {
-        this.searchQuery.loading = false;
-        this.searchQuery.queryUpdate({formSubmit: false});
+      const changed = this.searchQuery.setQueryFromParams(params);
+
+      if (changed) {
+        this.searchQuery.queryUpdate({formSubmit: true});
         this.cd.markForCheck();
+
+        if (!this.searchQuery.hasCorrectTargetInfo()) {
+          this.searchQuery.setTargetInfo()
+            .subscribe((formSubmit) => {
+              this.searchQuery.queryUpdate({formSubmit: formSubmit});
+              this.cd.markForCheck();
+            });
+        }
       }
     });
     this.subData = this.route.data.subscribe(data => {
