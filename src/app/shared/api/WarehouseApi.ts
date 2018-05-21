@@ -40,7 +40,8 @@ export class WarehouseApi {
   public defaultHeaders: Headers = new Headers();
 
   constructor(protected http: Http, private queryService: SearchQuery) {
-
+    this.warehouseQueryAggregateGet = this.warehouseQueryAggregateGet.bind(this);
+    this.warehouseQueryStatisticsGet = this.warehouseQueryStatisticsGet.bind(this);
   }
 
   public static isEmptyQuery(query: WarehouseQueryInterface = {}) {
@@ -140,7 +141,6 @@ export class WarehouseApi {
    * @param page Set current page.
    * @param geoJSON returns data as geojson.
    * @param onlyCount return only count in result items (default true).
-   * @oaram onlyCount return only counts of items default true
    */
   public warehouseQueryAggregateGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
     return this.warehouseQueryAggregateOrStatisticsGet('aggregate', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
@@ -151,6 +151,13 @@ export class WarehouseApi {
    */
   public warehouseQueryStatisticsGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
     return this.warehouseQueryAggregateOrStatisticsGet('statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
+  }
+
+  /**
+   * Same as aggrate query, but performs the query on private data also.
+   */
+  public warehouseQueryGatheringStatisticsGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
+    return this.warehouseQueryAggregateOrStatisticsGet('gathering/statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }
 
   public downloadApprovalRequest(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, description: string, extraHttpRequestParams?: any): Observable<string> {
@@ -182,7 +189,6 @@ export class WarehouseApi {
     if (description !== undefined) {
       queryParameters.set('description', description);
     }
-
 
     this.addQueryToQueryParams(query, queryParameters);
 

@@ -27,7 +27,8 @@
       [countLabel]="['1-4', '5-9', '10-49', '50-99', '100-499', '500-']"
       [types]="['pairCount']"
       [type]="'pairCount'"
-      [query]="mapQuery">
+      [query]="mapQuery"
+      [useStatistics]="true">
     </laji-ykj-map>
   </div>
   <div class="col-sm-7 col-sm-pull-5 table-col">
@@ -36,7 +37,8 @@
             (onNameClick)="navigate($event)"
             [query]="resultQuery"
             [height]="'calc(80vh - 50px)'"
-            [fields]="['unit.linkings.species.vernacularName', 'unit.linkings.species.scientificName', 'pairCount']"
+            [fields]="['unit.linkings.species.vernacularName', 'unit.linkings.species.scientificName', 'pairCountSum']"
+            [useStatistics]="true"
     ></laji-theme-result>
     <laji-theme-observation-list
             *ngIf="query && query.ykj10kmCenter"

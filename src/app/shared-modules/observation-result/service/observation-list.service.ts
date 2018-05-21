@@ -35,7 +35,8 @@ export class ObservationListService {
     page: number,
     pageSize: number,
     orderBy: string[] = [],
-    lang: string
+    lang: string,
+    useStatistics: boolean = false
   ): Observable<PagedResult<any>> {
     aggregateBy = this.prepareFields(aggregateBy).filter(val => this.removeAggregateFields.indexOf(val) === -1);
     const key = JSON.stringify(query) + [aggregateBy.join(','), orderBy.join(','), lang, page, pageSize].join(':');
@@ -53,7 +54,11 @@ export class ObservationListService {
       });
     }
     this.aggregatePendingKey = key;
-    this.aggregatePending = this.warehouseApi.warehouseQueryAggregateGet(
+    const method = useStatistics
+      ? this.warehouseApi.warehouseQueryStatisticsGet
+      : this.warehouseApi.warehouseQueryAggregateGet;
+
+    this.aggregatePending = method(
       {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
       [...aggregateBy],
       orderBy,
@@ -61,15 +66,14 @@ export class ObservationListService {
       page,
       false,
       false
-    )
-      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
+    ).retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
       .map(data => this.convertAggregateResult(data))
       .switchMap(data => this.openValues(data, aggregateBy, lang))
       .do(data => {
         this.aggregateData = data;
         this.aggregateKey = key;
       })
-      .share();
+      .share()
     return this.aggregatePending;
   }
 
@@ -133,6 +137,7 @@ export class ObservationListService {
         individualCountMax: result.individualCountMax,
         oldestRecord: result.oldestRecord,
         newestRecord: result.newestRecord,
+        pairCountSum: result.pairCountSum,
       };
       if (result.aggregateBy) {
         if (result.aggregateBy['unit.linkings.taxon.nameFinnish']) {

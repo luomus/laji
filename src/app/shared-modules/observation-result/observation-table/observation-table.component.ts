@@ -46,8 +46,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     'document.collectionId',
     'document.sourceId',
     'unit.superRecordBasis',
-    'unit.media.mediaType'
+    'unit.media.mediaType',
+    'pairCountSum'
   ];
+  @Input() useStatistics: boolean;
 
   @Output() pageSizeChange = new EventEmitter<number>();
   @Output() selectChange = new EventEmitter<string[]>();
@@ -183,7 +185,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'count', draggable: false, label: 'theme.countShort', width: 75, cellTemplate: 'numeric' },
     { name: 'individualCountMax', label: 'theme.individualCountMax', width: 80, cellTemplate: 'numeric' },
     { name: 'individualCountSum', label: 'theme.individualCount', width: 80, cellTemplate: 'numeric' },
-    { name: 'pairCount', label: 'theme.pairCount', width: 75, cellTemplate: 'numeric' },
+    { name: 'pairCountSum', label: 'theme.pairCount', width: 75, cellTemplate: 'numeric', aggregate: false},
     { name: 'gathering.conversions.ykj', prop: 'gathering.conversions.ykj.verbatim', sortable: false },
     { name: 'gathering.conversions.xValue', prop: 'gathering.conversions.xValue.verbatim', sortable: false },
     { name: 'gathering.conversions.ykj10kmCenter', prop: 'gathering.conversions.ykj10kmCenter.verbatim', sortable: false },
@@ -194,7 +196,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'gathering.interpretations.coordinateAccuracy' }
   ];
 
-  private numberFields = ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCount'];
+  private numberFields = ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCountSum'];
 
   private modalSub: Subscription;
   private fetchSub: Subscription;
@@ -265,7 +267,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       });
     this.aggregateBy = [];
     this.columns = selected.map(name => {
-      this.aggregateBy.push((this.columnLookup[name].aggregateBy || this.columnLookup[name].name)
+      const column = this.columnLookup[name];
+      column.aggregate !== false && this.aggregateBy.push((column.aggregateBy || column.name)
        + (this.columnLookup[name].sortBy ? ',' + this.setLangParams(this.columnLookup[name].sortBy) : ''));
       return this.columnLookup[name];
     });
@@ -377,7 +380,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       page,
       this.pageSize,
       [...this.orderBy, this.defaultOrder],
-      this.lang
+      this.lang,
+      this.useStatistics
     );
     const list$ = this.resultService.getList(
       this.query,

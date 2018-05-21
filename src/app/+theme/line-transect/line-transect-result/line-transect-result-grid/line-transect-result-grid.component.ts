@@ -79,7 +79,8 @@ export class LineTransectResultGridComponent implements OnInit, OnDestroy {
       this.query = {
         yearMonth: [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
         collectionId: [this.collectionId],
-        informalTaxonGroupId: [this.informalTaxonGroup]
+        informalTaxonGroupId: [this.informalTaxonGroup],
+        pairCounts: true
       };
       this.resultQuery = this.clone(this.query);
       if (taxonId) {

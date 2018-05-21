@@ -42,6 +42,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private resultService: ObservationListService,
+    private warehouseApi: WarehouseApi,
     private logger: Logger,
     private cdr: ChangeDetectorRef
   ) {}
@@ -53,24 +54,25 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       this.fetch();
     });
     this.loading = true;
-    this.fetchSub = this.resultService.getAggregate(
+    this.warehouseApi.warehouseQueryGatheringStatisticsGet(
       {
         collectionId: [this.collectionId]
       },
       ['gathering.conversions.year'],
+      ['gathering.conversions.year DESC'],
+      100,
       1,
-      1000,
-      [],
-      this.lang
+      false,
+      false
     ).subscribe(data => {
       const yearLineLengths = {};
       let minYear, maxYear;
       data.results.forEach(result => {
-        const {year} = result.gathering.conversions;
+        const {'gathering.conversions.year': year} = result.aggregateBy;
         if (!year) {
           return;
         }
-        yearLineLengths[year] = result.count;
+        yearLineLengths[year] = result.lineLengthSum;
         if (minYear === undefined || year < minYear) {
           minYear = +year;
         }
@@ -105,7 +107,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
   private fetch() {
     this.loading = true;
-    this.fetchSub = this.resultService.getAggregate(
+    this.fetchSub = this.warehouseApi.warehouseQueryStatisticsGet(
       {
         collectionId: [this.collectionId],
         namedPlaceId: this.birdAssociationAreas,
@@ -113,22 +115,21 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
         pairCounts: true
       },
       ['gathering.conversions.year'],
-      1,
-      1000,
-      [],
-      this.lang
+        ['gathering.conversions.year DESC'],
+      100,
+      1
     ).subscribe(data => {
         this.result = data;
         const yearsToPairCounts = {};
         data.results.forEach(result => {
-          const {year} = result.gathering.conversions;
+          const {'gathering.conversions.year': year} = result.aggregateBy;
           if (!year) return;
-          yearsToPairCounts[year] = result.individualCountSum;
+          yearsToPairCounts[year] = result.pairCountSum;
         });
         this.afterBothFetched = () => {
-          this.line = Object.keys(yearsToPairCounts).map(year =>
-            [+year, yearsToPairCounts[year] / this.yearLineLengths[year]]
-          );
+          this.line = Object.keys(yearsToPairCounts).map(year => {
+            return [+year, yearsToPairCounts[year] / this.yearLineLengths[year]]
+          });
           this.loading = false;
           this.cdr.markForCheck();
         };

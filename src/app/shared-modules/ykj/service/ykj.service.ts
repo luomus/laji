@@ -44,8 +44,8 @@ export class YkjService {
     }
     this.pendingKey = key;
     const sourceMethod = useStatistics
-        ? this.warehouseApi.warehouseQueryStatisticsGet.bind(this.warehouseApi)
-        : this.warehouseApi.warehouseQueryAggregateGet.bind(this.warehouseApi);
+      ? this.warehouseApi.warehouseQueryStatisticsGet.bind(this.warehouseApi)
+      : this.warehouseApi.warehouseQueryAggregateGet.bind(this.warehouseApi);
     this.pending = sourceMethod(
         {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
         [`gathering.conversions.ykj${grid}.lat,gathering.conversions.ykj${grid}.lon`],
@@ -70,6 +70,7 @@ export class YkjService {
         {
           count: result.count || 0,
           individualCountSum: result.individualCountSum,
+          pairCountSum: result.pairCountSum,
           newestRecord: result.newestRecord || '',
           oldestRecord: result.oldestRecord || '',
           grid: parseInt(result.aggregateBy[`gathering.conversions.ykj${grid}.lat`], 10) + ':'
