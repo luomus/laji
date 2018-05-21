@@ -16,7 +16,7 @@ export class NpListComponent {
     '$.alternativeIDs[0]': 'route.nro',
     '$.reserve.reserver': 'result.gathering.team',
     '$.reserve.until': 'result.reserve.until',
-    '$.name': 'observation.form.specimen',
+    '$.name': 'observation.form.placeName',
     '$._status': 'Tila',
     '$.geometry.coordinateVerbatim': 'result.gathering.conversions.ykj',
     '$.prepopulatedDocument.gatheringEvent.dateBegin': 'lastCensus',

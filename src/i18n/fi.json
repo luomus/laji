@@ -171,6 +171,7 @@
   "observation.form.filter": "Rajaa",
   "observation.form.specimen": "Laji",
   "observation.form.place": "Paikka",
+  "observation.form.placeName": "Nimi",
   "observation.form.date": "Aika",
   "observation.form.noImages": "Annetuilla hakuehdoilla ei löytynyt yhtään kuvaa.",
   "observation.form.thisYear": "Tänä vuonna",

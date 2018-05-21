@@ -166,6 +166,7 @@
   "observation.form.filter": "Filtrera",
   "observation.form.specimen": "Arter",
   "observation.form.place": "Plats",
+  "observation.form.placeName": "Namn",
   "observation.form.date": "Observationsdatum",
   "observation.form.noImages": "Inga bilder hittades med givna sökparametrar.",
   "observation.form.thisYear": "Detta år",

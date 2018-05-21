@@ -167,6 +167,7 @@
   "observation.form.filter": "Filter",
   "observation.form.specimen": "Species",
   "observation.form.place": "Location",
+  "observation.form.placeName": "Name",
   "observation.form.date": "Date of observation",
   "observation.form.noImages": "No images found with given search parameters.",
   "observation.form.thisYear": "This year",
