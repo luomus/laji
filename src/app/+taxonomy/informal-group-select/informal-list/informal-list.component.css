@@ -13,12 +13,12 @@
 }
 
 .compact-list {
-  margin-right: -2px;
-  margin-left: -2px;
+  margin-left: 0;
+  margin-right: -3px;
 }
 
 .compact-list [class^='col-'] {
-  padding: 2px;
+  padding: 0 3px 3px 0;
 }
 
 .compact-list .panel {
@@ -34,7 +34,7 @@
   font-size: 13px;
   font-weight: normal;
   height: auto !important;
-  padding: 3px 9px;
+  padding: 4px 9px;
 }
 
 .row-eq-height {

@@ -61,9 +61,12 @@
           </div>
           {{ 'omniSearch.links' | translate }}
           <div class="row">
-            <div class="col-md-offset-1 col-md-11 taxonomy" *ngIf="taxon">
-              <a [routerLink]="['/taxon/taxonomy/' + taxon.key] | localize" (click)="close()">
+            <div class="col-md-offset-1 col-md-11 taxonomy" *ngIf="taxon && !taxon.payload.species">
+              <!--a [routerLink]="['/taxon/taxonomy/' + taxon.key] | localize" (click)="close()">
                 {{'omniSearch.taxonTree'|translate}}
+              </a-->
+              <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.value)}" (click)="close()">
+                {{'omniSearch.taxonList'|translate}}
               </a>
             </div>
           </div>

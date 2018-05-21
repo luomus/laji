@@ -111,11 +111,11 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
   onTaxonSelect(event) {
     if (event.value && event.item) {
-      this.searchQuery.targetId = event.item.key;
+      this.searchQuery.targetInfo = {id: event.item.key, name: this.formQuery.taxon};
       this.searchQuery.query.target = this.formQuery.taxon;
     }
     if (this.formQuery.taxon === '') {
-      this.searchQuery.targetId = undefined;
+      this.searchQuery.targetInfo = undefined;
       this.searchQuery.query.target = undefined;
     }
 
