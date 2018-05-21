@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SpeciesDownloadComponent } from './species-download.component';
+import { SpeciesToolsComponent } from './species-tools.component';
 
-describe('SpeciesDownloadComponent', () => {
-  let component: SpeciesDownloadComponent;
-  let fixture: ComponentFixture<SpeciesDownloadComponent>;
+describe('SpeciesToolsComponent', () => {
+  let component: SpeciesToolsComponent;
+  let fixture: ComponentFixture<SpeciesToolsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SpeciesDownloadComponent ]
+      declarations: [ SpeciesToolsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SpeciesDownloadComponent);
+    fixture = TestBed.createComponent(SpeciesToolsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

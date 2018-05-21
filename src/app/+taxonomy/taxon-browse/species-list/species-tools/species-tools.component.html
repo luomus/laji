@@ -46,9 +46,15 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="download()">
-          <span>{{"haseka.submissions.download" | translate}}</span>
-        </button>
+        <div class="row">
+          <div class="col-xs-push-10 col-xs-2 col-sm-push-8 col-sm-4">
+            <laji-spinner [spinning]="downloadLoading" [overlay]="true">
+              <button type="button" class="btn btn-default" [disabled]="downloadLoading" (click)="download()">
+                <span>{{"haseka.submissions.download" | translate}}</span>
+              </button>
+            </laji-spinner>
+          </div>
+        </div>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
