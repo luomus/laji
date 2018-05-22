@@ -21,6 +21,7 @@ export class PublicationService {
       return Observable.of(this.cache[id]);
     } else if (!this.pending[id]) {
       this.pending[id] = this.publicationApi.publicationFindById(id, lang)
+        .catch((err) => undefined)
         .do((res) => this.cache[id] = res)
         .share();
     }

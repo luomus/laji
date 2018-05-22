@@ -85,7 +85,7 @@ export class TaxonExportService {
         const template = cols[j].cellTemplate;
         aoa[i + 1].push(value);
 
-        if (!value || !template) {
+        if (value === undefined || value === null || !template) {
           continue;
         }
 
@@ -102,10 +102,10 @@ export class TaxonExportService {
             aoa[i + 1][j] = MultiLangService.valueToString(value);
             break;
           case 'boolean':
-            if (value) {
+            if (value === true) {
               observable = this.translate.get('datatable.yes');
             } else {
-              aoa[i + 1][j] = undefined;
+              observable = this.translate.get('datatable.no');
             }
             break;
           case 'publication':

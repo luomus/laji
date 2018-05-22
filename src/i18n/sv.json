@@ -702,6 +702,7 @@
   "asIs": "Värde som det är",
   "ignore": "ignorera",
   "datatable.yes": "Ja",
+  "datatable.no": "Nej",
   "line-transect-result.chart": "framsteg av artens mängd",
   "line-transect-result.grid": "Statistik enligt rutnät och art",
   "theme.pairCount": "Parräkning"
