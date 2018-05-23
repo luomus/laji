@@ -1,7 +1,21 @@
-<nouislider *ngIf="sliderRange && sliderConfig"
-            #sliderRef
-            [config]="sliderConfig"
-            [ngModel]="sliderRange"
-            (change)="sliderRangeChange($event)"
-            [ngStyle]="{'width': sliderWidth}"
-            class="slider"></nouislider>
+<div class="row" *ngIf="selectList.length > 1">
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 year-select-cont">
+    <select [ngModel]="selectValue" (ngModelChange)="yearSelectChange($event)" class="form-control year-select">
+      <option value="latest">{{'haseka.submissions.latest' | translate}}</option>
+      <option *ngFor="let y of selectList" [value]="y.year">
+        {{y.year}} ({{y.count}} <ng-container *ngIf="y.count === 1">{{pcString}}</ng-container><ng-container *ngIf="y.count > 1">{{pcsString}}</ng-container>)
+      </option>
+    </select>
+  </div>
+  <div class="col-xs-12 slider-cont" [ngClass]="{'col-sm-8 col-md-8 col-lg-9': selectList.length > 1}" *ngIf="selectValue === 'latest'">
+    <nouislider *ngIf="sliderRange && sliderConfig"
+                #sliderRef
+                [config]="sliderConfig"
+                [ngModel]="sliderRange"
+                (change)="sliderRangeChange($event)"
+                [ngStyle]="{'width': '100%', 'max-width': maxSliderWidth}"
+                class="slider">
+    </nouislider>
+  </div>
+</div>
+
