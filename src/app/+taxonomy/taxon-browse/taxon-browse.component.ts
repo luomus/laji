@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WindowRef } from '../../shared/windows-ref';
 import { Subscription } from 'rxjs/Subscription';
@@ -10,7 +10,7 @@ import { FooterService } from '../../shared/service/footer.service';
   templateUrl: './taxon-browse.component.html',
   styleUrls: ['./taxon-browse.component.css']
 })
-export class TaxonBrowseComponent implements OnInit, OnDestroy {
+export class TaxonBrowseComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('header') headerRef: ElementRef;
 
   public type: string;
@@ -51,11 +51,13 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
     });
     this.subData = this.route.data.subscribe(data => {
       this.type = data['type'];
+      this.setFiltersSize();
       this.cd.markForCheck();
-      setTimeout(() => {
-        this.setFiltersSize();
-      }, 0);
     });
+  }
+
+  ngAfterViewInit() {
+    this.setFiltersSize();
   }
 
   ngOnDestroy() {
@@ -74,10 +76,6 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:scroll')
-  onScroll() {
-    this.setFiltersSize();
-  }
-
   @HostListener('window:resize')
   onResize() {
     this.setFiltersSize();
