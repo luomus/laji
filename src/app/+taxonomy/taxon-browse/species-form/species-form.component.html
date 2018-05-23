@@ -87,6 +87,20 @@
                      (selectedChanged)="onInvasiveChange($event)"></laji-select>
       </div>
     </div>
+
+    <!--div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [(ngModel)]="searchQuery.query.typesOfOccurrenceFilters"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [useFilter]="false"
+          name="typeOfOccurrence"
+          [placeholder]="'Esiintymistyyppi'"
+          [alt]="'MX.typeOfOccurrenceEnum'"
+          [lang]="translate.currentLang"></laji-metadata-select>
+      </div>
+    </div-->
   </div>
 </laji-search-filters>
 

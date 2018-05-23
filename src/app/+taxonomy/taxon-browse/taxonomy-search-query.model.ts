@@ -2,9 +2,6 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Router, Params } from '@angular/router';
 import { TaxonomySearchQueryInterface } from './taxonomy-search-query.interface';
-import { AutocompleteApi, AutocompleteMatchType } from '../../shared/api/AutocompleteApi';
-import { Util } from '../../shared/service/util.service';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class TaxonomySearchQuery {
@@ -17,11 +14,9 @@ export class TaxonomySearchQuery {
   public selected: string[];
 
   public query: TaxonomySearchQueryInterface;
-  public targetInfo: {id: string, name: string};
 
   constructor(
-    private router: Router,
-    private autocompleteService: AutocompleteApi
+    private router: Router
   ) {
     this.empty();
   }
@@ -50,7 +45,6 @@ export class TaxonomySearchQuery {
     this.sortOrder = 'taxonomic';
     this.selected = ['vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
       'latestRedListStatusFinland', 'administrativeStatuses', 'synonymNames'];
-    this.targetInfo = undefined;
   }
 
   public setQueryFromParams(params: Params): boolean {
@@ -66,18 +60,10 @@ export class TaxonomySearchQuery {
       newQuery.invasiveSpeciesFilter = false;
     }
 
-    let redListFilters = params['redListStatusFilters'];
-    if (redListFilters && !Array.isArray(redListFilters)) {
-      redListFilters = [redListFilters];
-    }
-    newQuery.redListStatusFilters = redListFilters;
-
-    if (params['adminStatusFilters']) {
-      let adminFilters = Util.clone(params['adminStatusFilters']);
-      if (adminFilters && !Array.isArray(adminFilters)) {
-        adminFilters = [adminFilters];
-      }
-      newQuery.adminStatusFilters = adminFilters;
+    const arrayKeys = ['redListStatusFilters', 'adminStatusFilters', 'typesOfOccurrenceFilters'];
+    for (let i = 0; i < arrayKeys.length; i++) {
+      const key = arrayKeys[i];
+      newQuery[key] = this.getArrayParam(params, key);
     }
 
     if (this.queryAsString(this.query) !== this.queryAsString(newQuery)) {
@@ -86,6 +72,14 @@ export class TaxonomySearchQuery {
     }
 
     return false;
+  }
+
+  private getArrayParam(params, key) {
+    let value = params[key];
+    if (value && !Array.isArray(value)) {
+      value = [value];
+    }
+    return value;
   }
 
   private queryAsString(query) {
@@ -99,38 +93,6 @@ export class TaxonomySearchQuery {
       typesOfOccurrenceFilters: query.typesOfOccurrenceFilters,
       typesOfNotOccurrenceFilters: query.typesOfNotOccurrenceFilters
     });
-  }
-
-  public setTargetInfo(): Observable<boolean> {
-    const taxon = this.query.target;
-    let formSubmit = false;
-
-    return this.autocompleteService.autocompleteFindByField({
-        field: 'taxon',
-        q: taxon,
-        limit: '1',
-        informalTaxonGroup: this.query.informalTaxonGroupId,
-        matchType: AutocompleteMatchType.exact
-      })
-        .map(data => {
-          if (taxon === this.query.target) {
-            if (data.length === 1) {
-              this.targetInfo = {id: data[0].key, name: taxon};
-            } else {
-              this.query.target = undefined;
-              formSubmit = true;
-            }
-          }
-          return formSubmit;
-        });
-  }
-
-  public hasCorrectTargetInfo(): boolean {
-    if (!this.query.target) {
-      return true;
-    }
-
-    return this.targetInfo && this.targetInfo.name === this.query.target;
   }
 
   public queryUpdate(data = {}): void {
