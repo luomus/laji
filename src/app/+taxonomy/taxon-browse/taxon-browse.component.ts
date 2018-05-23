@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { WindowRef } from '../../shared/windows-ref';
 import { Subscription } from 'rxjs/Subscription';
 import { TaxonomySearchQuery } from './taxonomy-search-query.model';
+import { FooterService } from '../../shared/service/footer.service';
 
 @Component({
   selector: 'laji-taxon-browse',
@@ -11,7 +12,6 @@ import { TaxonomySearchQuery } from './taxonomy-search-query.model';
 })
 export class TaxonBrowseComponent implements OnInit, OnDestroy {
   @ViewChild('header') headerRef: ElementRef;
-  @ViewChild('content') contentRef: ElementRef;
 
   public type: string;
 
@@ -25,10 +25,12 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public searchQuery: TaxonomySearchQuery,
     private window: WindowRef,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private footerService: FooterService
   ) { }
 
   ngOnInit() {
+    this.footerService.footerVisible = false;
     this.searchQuery.empty();
 
     this.subQuery = this.route.queryParams.subscribe(params => {
@@ -57,6 +59,7 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.footerService.footerVisible = true;
     if (this.subData) {
       this.subData.unsubscribe();
     }
@@ -82,24 +85,19 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
 
   private setFiltersSize() {
     const headerHeight = this.headerRef.nativeElement.offsetHeight;
-    const contentHeight = this.contentRef.nativeElement.offsetHeight;
-    const top = 50 + Math.max(headerHeight - this.window.nativeWindow.scrollY, 0);
-    const height = contentHeight + 50 + headerHeight - top - this.window.nativeWindow.scrollY;
 
     if (this.window.nativeWindow.scrollY < headerHeight) {
       this.filtersNgStyle = {
         position: 'absolute',
         top: headerHeight + 'px',
         right: 0,
-        height: '100%',
-        'max-height': height + 'px'
+        height: 'calc(100% - ' + headerHeight + 'px)'
       }
     } else {
       this.filtersNgStyle = {
         position: 'fixed',
         top: '50px',
-        height: '100%',
-        'max-height': height + 'px'
+        height: '100%'
       }
     }
   }

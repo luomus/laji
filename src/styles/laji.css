@@ -90,9 +90,6 @@ laji-locale-sv > div,
   background-color: #ECF0F1;
 }
 
-#footer {
-  z-index: 2;
-}
 #footer footer {
   flex: none;
   color: #fff;

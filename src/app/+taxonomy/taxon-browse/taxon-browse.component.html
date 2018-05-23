@@ -2,7 +2,7 @@
   <h1 style="margin: 0">{{ 'species.search' | translate }}<br><small>{{ 'species.title.short' | translate }}</small></h1>
   <div>{{ 'species.title.long' | translate }}</div>
 </div>
-<div id="content-container" class="container" #content>
+<div id="content-container" class="container">
   <div class="form-horizontal">
     <div class="row">
       <div *ngIf="type !== 'tree'" [ngStyle]="filtersNgStyle" class="form-filters col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10">
@@ -10,10 +10,6 @@
                            [showFilter]="showFilter"
                            (onShowFilterChange)="showFilter = $event"></laji-species-form>
       </div>
-      <div *ngIf="type !== 'tree'" id="fill-height" class="hidden-xs" [ngClass]="{
-        'col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10': showFilter,
-        'hidden-sm hidden-md hidden-lg': !showFilter
-      }"></div>
 
       <div id="species-list-container" [ngClass]="{
        'result-list col-sm-8 col-md-9 col-lg-10': showFilter,
