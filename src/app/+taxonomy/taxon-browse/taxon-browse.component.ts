@@ -39,14 +39,6 @@ export class TaxonBrowseComponent implements OnInit, AfterViewInit, OnDestroy {
       if (changed) {
         this.searchQuery.queryUpdate({formSubmit: true});
         this.cd.markForCheck();
-
-        if (!this.searchQuery.hasCorrectTargetInfo()) {
-          this.searchQuery.setTargetInfo()
-            .subscribe((formSubmit) => {
-              this.searchQuery.queryUpdate({formSubmit: formSubmit});
-              this.cd.markForCheck();
-            });
-        }
       }
     });
     this.subData = this.route.data.subscribe(data => {

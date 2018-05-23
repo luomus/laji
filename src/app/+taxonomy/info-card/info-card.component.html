@@ -109,12 +109,12 @@
                   </a>
                 </li>
                 <li [hidden]="!taxon.hasChildren">
-                  <a href="https://vanha.laji.fi/taksonomia/lataus/{{taxon.id}}.csv?locale={{translate.currentLang}}" rel="noopener" target="_blank">
+                  <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id)}">
                     {{ 'taxonomy.browse.downloadSpecies' | translate }}
                   </a>
                 </li>
                 <li [hidden]="!taxon.hasChildren">
-                  <a href="https://vanha.laji.fi/taksonomia/lataus/finnish/{{taxon.id}}.csv?locale={{translate.currentLang}}" rel="noopener" target="_blank">
+                  <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id), onlyFinnish: true}">
                     {{ 'taxonomy.browse.downloadSpeciesFinnish' | translate }}
                   </a>
                 </li>
