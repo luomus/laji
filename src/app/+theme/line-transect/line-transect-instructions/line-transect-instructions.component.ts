@@ -16,7 +16,7 @@ export class LineTransectInstructionsComponent implements OnInit {
 
   ngOnInit() {
       this.route.fragment.subscribe((frag) => {
-          window.location.hash = frag;
+          frag && window.location.hash = frag;
     });
   }
 
