@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'laji-line-transect-instructions',
@@ -8,9 +9,18 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class LineTransectInstructionsComponent implements OnInit {
 
-  constructor(public translate: TranslateService) { }
+  constructor(
+      public translate: TranslateService,
+      private route: ActivatedRoute,
+  ) {}
 
   ngOnInit() {
+      this.route.fragment.subscribe((frag) => {
+          window.location.hash = frag;
+    });
   }
 
+  toFragment(fragment) {
+      window.location.hash = fragment;
+  }
 }

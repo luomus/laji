@@ -6,79 +6,236 @@
 <div class="row">
   <div class="col-md-8">
     <h3>Linjalaskenta</h3>
+
     <p>
-      Tämä on Luonnontieteellisen keskusmuseon Linnustonseurannan vakiolinjalaskentojen havaintojen ilmoitusjärjestelmä. Muiden linjojen kuin vakiolinjojen tulokset ilmoitetaan toistaiseksi tuttuun tapaan Excel-lomakkeella. Lisätietoa laskennoista ja laskentaohjeita löydät Linnustonseurannan sivuilta: <a rel="noopener noreferrer" target="_blank" href="https://www.luomus.fi/fi/pesimalintujen-linja-pistelaskenta">https://www.luomus.fi/fi/pesimalintujen-linja-pistelaskenta</a>
+    Tämä on Luonnontieteellisen keskusmuseon Linnustonseurannan linjalaskentojen havaintojen ilmoitusjärjestelmä. Täällä voit tarkastella linjojen sijaintia ja tietoja, varata vakiolinjan, ilmoittaa laskennan havainnot ja tarkastella linjalaskentojen tuloksia. Lisätietoa laskennoista ja laskentaohjeita löydät Linnustonseurannan sivuilta: <a href="https://www.luomus.fi/fi/pesimalintujen-linja-pistelaskenta" target="_blank" rel="noopener noreferrer">https://www.luomus.fi/fi/pesimalintujen-linja-pistelaskenta</a>
+    </p>
+
+    <p>
+    (voisiko alla olevasta listasta tehdä linkitykset alemmas ohjeeseen?)
+    </p>
+
+    <ol>
+    	<li>
+    	  <a (click)="toFragment('reserve')">Linjojen tarkastelu ja vakiolinjan varaaminen</a>
+    	</li>
+    	<li>
+    	  <a (click)="toFragment('form')">Havaintojen ilmoittaminen</a>
+    	</li>
+    	<li>
+    	  <a (click)="toFragment('map')">Karttatyökalu</a>
+          <ol style="list-style-type: lower-alpha">
+            <li>
+              <a (click)="toFragment('biotopes')">Biotooppipätkät</a>
+            </li>
+            <li>
+              <a (click)="toFragment('line-edit')">Biotooppipätkien pituuden ja reitin kulun muuttaminen</a>
+            </li>
+            <li>
+              <a (click)="toFragment('map-tools')">Karttatyökalujen selitteitä</a>
+            </li>
+          </ol>
+    	</li>
+    	<li>
+    	  <a (click)="toFragment('results')">Tulospalvelu</a>
+    	</li>
+    	<li>
+    	  <a (click)="toFragment('editing')">Omien linjalaskentahavaintojen tarkastelu ja muokkaus</a>
+    	</li>
+    </ol>
+
+    <h4 id="reserve">Linjojen tarkastelu ja vakiolinjan varaaminen</h4>
+
+    <p>
+    Valitsemalla ”<i>Vakiolinjat ja ilmoittaminen</i>” pääset katsomaan vakiolinjaluetteloa ja linjoja kartalla. Ei-vakiolinjat ovat henkilökohtaisia, niiden sijaintia (toistaiseksi karkeaa) ja tietoja pääsee katsomaan, mutta niitä ei voi varata vaan laskija pysyy samana vuodesta toiseen. Varataksesi vakiolinjan ja ilmoittaaksesi tekemäsi linjalaskennan havainnot, sinun pitää kirjautua ja pyytää pääsy lomakkeelle:
+    </p>
+
+    <ol>
+    	<li>
+    		<b>Rekisteröidy ja kirjaudu laji.fi:n</b> (oikea ylänurkka). <a href="https://laji.fi/about/2189" target="_blank" rel="noopener noreferrer">Linkki lisäohjeeseen</a>
+    	</li>
+    	<li>
+    		Kun olet kirjautunut, <b>valitse oikea linja ja pyydä pääsyä lomakkeelle</b>. Käyttäjä pyytää pääsyä linjalaskentalomakkeelle vain ensimmäisellä kerralla, myöhemmin käyttäjä tunnistetaan linjalaskentatutkimuksen osallistujaksi.
+    	</li>
+    	<li>
+    		Ennen vakiolinjahavaintojen ilmoitusta <b>varaa vakiolinjalinja</b> itsellesi (huom! vuonna 2018 varauksiin on vielä käytössä <a href="http://koivu.luomus.fi/seurannat/linjalaskenta/vakiolinjat.php" target="_blank" rel="noopener noreferrer">vanha varausjärjestelmä </a> josta varaukset eivät välity automaattisesti uuteen järjestelmään).
+    	</li>
+    </ol>
+
+    <h4 id="form">Havaintojen ilmoittaminen</h4>
+
+    <p>
+    Kirjautumisen, pääsypyynnön ja varauksen jälkeen (ks. edellä) valitse ”<i>ilmoita uusi laskenta tälle reitille</i>” ja siirryt ilmoituslomakkeelle. Ilmoita lomakkeella laskennan ja reitin perustiedot sekä havaitut linnut biotoopeittain. <b>Saat lisäohjeita ?-kuvakkeista kenttien vieressä.</b>
     </p>
     <ol>
-      <li>Ilmoita lomakkeella laskennan ja reitin perustiedot sekä havaitut linnut biotoopeittain. Saat lisäohjeita ?-kuvakkeista kenttien vieressä.</li>
-      <li>Lomakkeella voit siirtyä kentästä toiseen joko hiiren avulla tai pikanäppäimillä (tab = seuraavaan kenttään, Alt + nuoli ylös = edelliselle havaintoriville, Alt + nuoli alas = seuraavalle havaintoriville).</li>
-      <li>
-        Kirjaa havaitut linnut biotoopeittain. Voit valita biotooppipätkät joko kartalta klikkaamalla tai liikkua biotooppipätkästä toiseen ”Edellinen” ja ”Seuraava” -nuolista havaintojensyötön yläpuolella. Kirjaa muuttuneet biotoopit ”pääsaran biotooppi” -kenttään. Kirjaa kellonaikoja noin 500 m välein (maastolomakkeen sivun vaihtuessa).
-        <img src="https://cdn.laji.fi/images/line-transect/intro-1.png">
-      </li>
-      <li>Tee mahdolliset muutokset biotooppipätkien pituuteen tai reitin kulkuun kartan työkaluja käyttäen. Voit muokata linjan pistettä ensin tuplaklikkaamalla ja sitten raahaamalla. Pisteen voi poistaa klikkaamalla sitä hiiren oikealla näppäimellä. Jos teit virheen kartan muokkauksessa, käytä ”Kumoa”-työkalua kartan oikeasta reunasta. Seuraa kartalla kursorin viereen tulevia ohjetekstejä ja katso <a [routerLink]="[]" fragment="map">tarkempaa ohjetta alla</a>.</li>
-      <li>
-        Havaintoja voit syöttää joko ns. pikasyöttötilassa tai erillisten kenttien avulla. Pikasyöttötilaan ja siitä pois siirrytään havaintojensyötön oikean reunan nuolikuvakkeesta. Käytössä ovat 3+3 lyhenteet, tieteelliset ja suomenkieliset nimet sekä pikasyöttötilassa lisäksi yleisimpien lajien <a rel="noopener noreferrer" target="_blank" href="https://www.luomus.fi/fi/linjalaskennassa-sallitut-kaksikirjaimiset-lajilyhenteet">2-kirjaimiset lyhenteet</a>. Voit käyttää pieniä tai isoja kirjaimia ja käyttää välilyöntejä tai kirjoittaa kaiken yhteen. Katso ohjetta ”Havainnot”-kentän alla.
-        <img src="https://cdn.laji.fi/images/line-transect/intro-2.png">
-      </li>
-      <li>Kun olet syöttänyt havainnot, ja haluat tallentaa ja lähettää tiedot eteenpäin Linnustonseurannalle, paina: ”Tallenna julkisena”. Erillistä välitallennus-painiketta ei ole, vaan tiedot tallentuvat tallentajan käyttämälle koneelle. Jos selain kaatuu tms. kesken tallennuksen, avaa sivu uudelleen samalla selaimella ja tietojen pitäisi olla tallessa.</li>
-      <li>Tallennuksen jälkeen tulee näkyviin lista mahdollisista virheistä ja varoituksista. Korjaa virheet ja tallenna uudelleen.</li>
-      <li>Tallennuksen jälkeen näet koosteen tallentamastasi havaintoerästä, esimerkiksi havaituista lajeista ja parimääristä, pääsarkaprosentista, kokonaislajimäärästä, etenemisnopeudesta jne.</li>
-      <li id="map">Pääset tarvittaessa muokkaamaan tallennettua havaintoerää ”Omat havaintoeräni” –kohdasta. Kunkin havaintoerän vasemmassa laidassa on valittavana ”Näytä havaintoerä” ja ”Siirry muokkaussivulle” -kuvakkeet. Muokkauksia voi tehdä kyseisen vuoden elokuun loppuun asti.</li>
+    	<li>
+    		<b>Kentästä toiseen voi siirtyä joko hiiren avulla tai pikanäppäimillä</b> (tab = seuraavaan kenttään, Alt + nuoli ylös = edelliselle havaintoriville, Alt + nuoli alas = seuraavalle havaintoriville).
+    	</li>
+    	<li>
+    		Tee <b>mahdolliset muutokset biotooppipätkien pituuteen tai reitin kulkuun kartan työkaluja käyttäen</b>. Mahdolliset muutokset reitin kulkuun kannattaa tehdä ennen havaintojen ilmoittamista, niin vältät mahdollisen turhan työn. Voit <b>muokata linjan pistettä tuplaklikkaamalla ja sitten raahaamalla</b>. Pisteen voi poistaa klikkaamalla sitä hiiren oikealla näppäimellä. Jos teit virheen kartan muokkauksessa, käytä ”<i>Kumoa</i>”-työkalua kartan oikeasta reunasta. Seuraa kartalla kursorin viereen tulevia ohjetekstejä ja katso <a (click)="toFragment('map')">tarkempaa ohjetta alla</a>.
+    	</li>
+    	<li>
+    		Kirjaa <b>havaitut linnut biotoopeittain</b>. Voit valita biotooppipätkät joko kartalta klikkaamalla tai liikkua biotooppipätkästä toiseen ”<i>Edellinen</i>” ja ”<i>Seuraava</i>” -nuolista havaintojensyötön yläpuolella. Kirjaa muuttuneet biotoopit ”<i>pääsaran biotooppi</i>” -kenttään. Kirjaa kellonaikoja noin 500 m välein (maastolomakkeen sivun vaihtuessa).
+    		<img src="https://cdn.laji.fi/images/line-transect/intro-1.png">
+    	</li>
+    	<li>
+    		Myös kuullut ja nähdyt <b>nisäkkäät voi ilmoittaa</b>. Jos kirjasit kaikki havaitut nisäkkäät, valitse <i>Kaikki havaitut nisäkkäät kirjattu</i> -kenttään <i>Kyllä</i>.
+    	</li>
+    	<li>
+    		Havaintoja voit syöttää joko ns. <b>pikasyöttötilassa tai erillisten kenttien avulla</b>. Pikasyöttötilaan ja siitä pois siirrytään havaintojensyötön oikean reunan nuolikuvakkeesta. Käytössä ovat <b>pikasyöttötilassa 3+3 lyhenteet ja yleisimpien lajien <a href="https://www.luomus.fi/fi/linjalaskennassa-sallitut-kaksikirjaimiset-lajilyhenteet" target="_blank" rel="noopener noreferrer">2-kirjaimiset lyhenteet</a></b>. Erillisissä kentissä ovat käytössä 3+3 lyhenteet sekä tieteelliset ja suomenkieliset nimet. Voit käyttää pieniä tai isoja kirjaimia ja käyttää välilyöntejä tai kirjoittaa kaiken yhteen. Katso ohjetta ”<i>Havainnot</i>”-kentän alla.
+
+    		<img src="https://cdn.laji.fi/images/line-transect/intro-2.png">
+    	</li>
+    	<li>
+    		Kun olet syöttänyt havainnot, ja haluat tallentaa ja lähettää tiedot eteenpäin Linnustonseurannalle, paina: ”<b><i>Tallenna julkisena</i></b>”. Erillistä välitallennus-painiketta ei ole, vaan tiedot tallentuvat tallentajan käyttämälle koneelle. Jos selain kaatuu tms. kesken tallennuksen, avaa sivu uudelleen samalla selaimella ja tietojen pitäisi olla tallessa.
+    	</li>
+    	<li>
+    		Tallennuksen jälkeen tulee näkyviin <b>lista mahdollisista virheistä ja varoituksista</b>. Korjaa virheet ja tallenna uudelleen.
+    	</li>
+    	<li>
+    		Tallennuksen jälkeen näet <b>koosteen tallentamastasi havaintoerästä</b>, esimerkiksi havaituista lajeista ja parimääristä, pääsarkaprosentista, kokonaislajimäärästä, etenemisnopeudesta jne.
+    	</li>
+    	<li>
+    		Pääset tarvittaessa <b>muokkaamaan tallennettua havaintoerää ”<i>Omat havaintoeräni</i>” –kohdasta</b>. Kunkin havaintoerän vasemmassa laidassa on valittavana ”<i>Näytä havaintoerä</i>” ja ”<i>Siirry muokkaussivulle</i>” -kuvakkeet. Muokkauksia voi tehdä kyseisen vuoden elokuun loppuun asti.
+    	</li>
     </ol>
 
-    <h4>Karttatyökalun ohje</h4>
-    <p>Karttatyökalujen avulla tehdään muutoksia biotooppien pituuksiin ja linjan kulkuun. Vakiolinjojen kulkua muutetaan vain pakottavista syistä, mutta jos muutoksia tulee, laskija tekee ne itse karttaan havaintoja tallentaessa. Jos muutoksia ei tullut, lomakkeen karttaa ei tarvita havaintoja tallentaessa.</p>
+    <h4 id="map">Karttatyökalun ohje</h4>
+
+    <p>
+    Karttatyökalujen avulla tehdään muutoksia biotooppien pituuksiin ja linjan kulkuun. Vakiolinjojen kulkua muutetaan vain pakottavista syistä, mutta jos muutoksia tulee, laskija tekee ne itse karttaan havaintoja tallentaessa. Jos muutoksia ei tullut, lomakkeen karttaa ei tarvita havaintoja tallentaessa.
+    </p>
+
     <div class="row">
-      <div class="col-sm-9">
-        <img src="https://cdn.laji.fi/images/line-transect/intro-3.png">
-      </div>
+    	<div class="col-sm-9">
+    		<img src="https://cdn.laji.fi/images/line-transect/intro-3.png">
+    	</div>
     </div>
 
-    <p>Vakiolinjan biotooppijako näkyy reittikartassa. Reitti koostuu kartalla pisteistä ja niitä yhdistävistä viivoista. Isot pisteet ovat biotoopin vaihtumisesta kertovia pisteitä ja niiden välit ovat niin sanottuja biotooppipätkiä. Pienistä pisteistä muokataan reittiviivan muotoa saman biotoopin sisällä (kuva 2).</p>
+    <h4 id="biotopes">Biotooppipätkät</h4>
+
+    <p>
+    Vakiolinjan biotooppijako näkyy reittikartassa. Reitti koostuu kartalla pisteistä ja niitä yhdistävistä viivoista. Isot pisteet ovat biotoopin vaihtumisesta kertovia pisteitä ja niiden välit ovat niin sanottuja biotooppipätkiä. Pienistä pisteistä muokataan reittiviivan muotoa saman biotoopin sisällä (kuva 2).
+    </p>
+
     <div class="row">
-      <div class="col-sm-7">
-        <img src="https://cdn.laji.fi/images/line-transect/intro-4.png">
-      </div>
+    	<div class="col-sm-7">
+    		<img src="https://cdn.laji.fi/images/line-transect/intro-4.png">
+    	</div>
     </div>
 
-    <p>Havaintojenilmoituksessa aktiivinen biotooppipätkä näkyy kartalla vihreänä. Kun klikkaat kartalla biotooppipätkää kerran, pääset ilmoittamaan havainnot kyseiseltä biotooppipätkältä (kartan oikealla puolella havaintojensyöttökentissä). Viedessäsi hiiren kartalle, sillä kohdalla oleva linjan biotooppipätkän väri muuttuu ja näkyviin tulee biotooppipätkän alku ja loppumetrit harmaalle pohjalle (kuva 3).</p>
+    <p>
+    Havaintojenilmoituksessa aktiivinen biotooppipätkä näkyy kartalla vihreänä. Kun klikkaat kartalla biotooppipätkää kerran, pääset ilmoittamaan havainnot kyseiseltä biotooppipätkältä (kartan oikealla puolella havaintojensyöttökentissä). Viedessäsi hiiren kartalle, sillä kohdalla oleva linjan biotooppipätkän väri muuttuu ja näkyviin tulee biotooppipätkän alku ja loppumetrit harmaalle pohjalle (kuva 3). Reitin kulun paikkatiedon pieni epätarkkuus saattaa näkyä uuden järjestelmän karttaikkunassa ja laskijoita pyydetään tarkistamaan reitin kulku tuloksia ilmoittaessa.
+    </p>
+
     <img src="https://cdn.laji.fi/images/line-transect/intro-5.png">
 
-    <h4 id="modify">Reitin muokkaus</h4>
+    <h4 id="line-edit">Biotooppipätkien pituuden ja reitin kulun muuttaminen</h4>
 
-    <p>Reitin muokkaaminen tapahtuu pisteitä siirtelemällä, pisteitä poistamalla ja uusia pisteitä lisäämällä. Kun viet hiiren lähellä linjan pistettä, muuttuu piste punaiseksi.</p>
+    <p>
+    Reitin muokkaaminen, esimerkiksi biotooppipätkän pituuden muokkaus tai uusi rakennuksen kierto tms., tapahtuu pisteitä siirtelemällä, pisteitä poistamalla ja uusia pisteitä lisäämällä. Kun viet hiiren lähellä linjan pistettä, muuttuu piste punaiseksi.
+    </p>
 
     <ol>
-      <li>Aloita pisteen muokkaaminen tuplaklikkaamalla pistettä.</li>
-      <li>Raahaa pistettä joko
-        <ol style="list-style-type: lower-alpha">
-          <li>linjan suuntaisesti (jolloin voit muokata biotooppipätkän pituutta linjan kulkua muuttamatta)</li>
-          <li>sivusuuntaan (jolloin linjaan tulee kierto)</li>
-        </ol>
-        TAI<br>
-        Poista piste kokonaan klikkaamalla oikealla näppäimellä.
-      </li>
+    	<li>
+    		Aloita pisteen muokkaaminen tuplaklikkaamalla pistettä.
+    	</li>
+    	<li>
+    		Raahaa pistettä joko
+    		<ol style="list-style-type: lower-alpha">
+    			<li>
+    				linjan suuntaisesti (jolloin voit muokata biotooppipätkän pituutta linjan kulkua muuttamatta)
+    			</li>
+    			<li>
+    				sivusuuntaan (jolloin linjaan tulee kierto)
+    			</li>
+    		</ol>
+    		TAI<br>
+    		Poista piste kokonaan klikkaamalla oikealla näppäimellä.
+    	</li>
     </ol>
-    <img src="https://cdn.laji.fi/images/line-transect/intro-6.png">
-    <p>Epäonnistuneet muokkausyritykset voit kumota käyttämällä kumoa-työkalua. Älä käytä internetselaimen taaksepäin-nuolinäppäintä, sillä se siirtää sinut pois tallennuslomakkeelta.</p>
-    <p>Jos biotooppipätkän biotooppikoodissa tai havainnoissa on virheitä, jotka vaativat korjauksen, biotooppipätkä näkyy kartalla punaisena.</p>
 
-    <h4 id="map-def">Karttatyökalujen selitteitä</h4>
+    <img src="https://cdn.laji.fi/images/line-transect/intro-6.png">
+
+    <p>
+    Epäonnistuneet muokkausyritykset voit kumota käyttämällä kumoa-työkalua. Älä käytä internetselaimen taaksepäin-nuolinäppäintä, sillä se siirtää sinut pois tallennuslomakkeelta.
+    </p>
+
+    <p>
+    Jos biotooppipätkän biotooppikoodissa tai havainnoissa on virheitä, jotka vaativat korjauksen, biotooppipätkä näkyy kartalla punaisena.
+    </p>
+
+    <h4 id="map-tools">Karttatyökalujen selitteitä</h4>
 
     <dl>
-      <dt>Taustakartan valinta:</dt>
-      <dd>Voit muuttaa taustan karttaa avautuvasta valikosta. Vakiolinjalaskennan kartaksi soveltuvat parhaiten oletuskarttana oleva Suomen maastokartta tai satelliittikartta.</dd>
-      <dt>Katkaise biotooppi:</dt>
-      <dd>Käytetään kun linjalle on syntynyt uusi biotooppi, esimerkiksi metsään on tehty hakkuu. Valitse työkalu klikkaamalla ja klikkaa kartalle kohtaan, josta alkaa uusi lisättävä biotooppi. Uudelle biotooppipätkälle lisätään koodi havaintojensyöttökentässä kartan oikealla puolella. Uutta biotooppirajaa edeltävälle biotooppipätkälle jää alkuperäinen biotooppikoodi.</dd>
-      <dt>Katkaise biotooppi metriluvulla:</dt>
-      <dd>Kuten edellä, mutta katkaistaan biotooppi tunnetulta metriluvulta. Valitse työkalu klikkaamalla ja ruudulle ilmestyy kenttä, johon kirjoitetaan haluttu uuden biotoopin alkukohta metreinä. Uudelle biotooppipätkälle lisätään koodi havaintojensyöttökentässä kartan oikealla puolella. Uutta biotooppirajaa edeltävälle biotooppipätkälle jää alkuperäinen biotooppikoodi.</dd>
-      <dt>Yhdistä linjan osat:</dt>
-      <dd>Työkalulla voidaan yhdistää ei-peräkkäisiä linjan osia. Valitse työkalu käyttöön klikkaamalla ja klikkaa ensin ensimmäistä yhdistettävää osaa, sitten toista. Mahdolliset yhdistettävien pätkien väliin jäävät linjan osat pyyhkiytyvät pois. Työkalua tarvitaan hyvin harvoin.</dd>
-      <dt>Luo piste:</dt>
-      <dd>Lisäämällä pisteitä voidaan muokata linjan muotoa saman biotooppipätkän sisällä. Pisteen lisääminen ei muuta biotooppirajoja (vrt. Katkaise biotooppi -työkalut). Valitse työkalu klikkaamalla ja klikkaa kartalla kohtaan johon haluat lisätä pisteen. Voit edelleen muokata lisättyjä pisteitä tuplaklikkaamalla ja raahaamalla (ks alla).</dd>
-      <dt>Aloituspiste:</dt>
-      <dd>Voi muokata aloituspistettä. Muutoksia tehdään hyvin harvoin.</dd>
+    	<dt>Taustakartan valinta:</dt>
+    	<dd>Voit muuttaa taustan karttaa avautuvasta valikosta. Vakiolinjalaskennan kartaksi soveltuvat parhaiten oletuskarttana oleva Suomen maastokartta tai satelliittikartta.</dd>
+    	<dt>Katkaise biotooppi:</dt>
+    	<dd>Käytetään kun linjalle on syntynyt uusi biotooppi, esimerkiksi metsään on tehty hakkuu. Valitse työkalu klikkaamalla ja klikkaa kartalle kohtaan, josta alkaa uusi lisättävä biotooppi. Uudelle biotooppipätkälle lisätään koodi havaintojensyöttökentässä kartan oikealla puolella. Uutta biotooppirajaa edeltävälle biotooppipätkälle jää alkuperäinen biotooppikoodi.</dd>
+    	<td>Katkaise biotooppi metriluvulla:</td>
+    	<dd>Kuten edellä, mutta katkaistaan biotooppi tunnetulta metriluvulta. Valitse työkalu klikkaamalla ja ruudulle ilmestyy kenttä, johon kirjoitetaan haluttu uuden biotoopin alkukohta metreinä. Uudelle biotooppipätkälle lisätään koodi havaintojensyöttökentässä kartan oikealla puolella. Uutta biotooppirajaa edeltävälle biotooppipätkälle jää alkuperäinen biotooppikoodi.</dd>
+    	<td>Yhdistä linjan osat:</td>
+    	<dd>Työkalulla voidaan yhdistää ei-peräkkäisiä linjan osia. Valitse työkalu käyttöön klikkaamalla ja klikkaa ensin ensimmäistä yhdistettävää osaa, sitten toista. Mahdolliset yhdistettävien pätkien väliin jäävät linjan osat pyyhkiytyvät pois. Työkalua tarvitaan hyvin harvoin.</dd>
+    	<dt>Luo piste:</dt>
+    	<dd>Lisäämällä pisteitä voidaan muokata linjan muotoa saman biotooppipätkän sisällä. Pisteen lisääminen ei muuta biotooppirajoja (vrt. Katkaise biotooppi -työkalut). Valitse työkalu klikkaamalla ja klikkaa kartalla kohtaan johon haluat lisätä pisteen. Voit edelleen muokata lisättyjä pisteitä tuplaklikkaamalla ja raahaamalla (ks alla).</dd>
+    	<dt>Aloituspiste:</dt>
+    	<dd>Voi muokata aloituspistettä. Muutoksia tehdään hyvin harvoin.</dd>
     </dl>
+
+    <h4 id="result">Tulospalvelu</h4>
+
+    <p>
+    Linjalaskentojen tulososiota kehitetään parhaillaan ja ohjetta täydennetään sitä mukaa kun uusia ominaisuuksia otetaan käyttöön.
+    </p>
+    <p>
+    Tarkastellaksesi lajikohtaista suhteellisten parimäärien vuosivaihtelua, valitse 1) laji ja 2) haluamasi lintuyhdistys tai yhdistykset.
+    </p>
+    <p>
+    Tulososiossa sovelletaan Suomen Lajitietokeskuksen<a href="https://laji.fi/about/709" target="_blank" rel="noopener noreferrer">sensitiivisen lajitiedon käsittelyn periaatteita</a>.
+    </p>
+    <p>
+    Toistaiseksi nisäkkäät eivät näy tulososiossa.
+    </p>
+
+    <h4 id="editing">Omien linjahavaintojen tarkastelu ja muokkaus</h4>
+
+    <p>
+    Tuoreita ilmoittamiasi linjalaskennan havaintoja pääset tarkastelemaan ja tarvittaessa muokkaamaan tallennettua havaintoerää ”<i>Omat havaintoeräni</i>” –kohdasta. Kunkin havaintoerän vasemmassa laidassa on valittavana ”<i>Näytä havaintoerä</i>” ja ”<i>Siirry muokkaussivulle</i>” -kuvakkeet. Muokkauksia voi tehdä kyseisen vuoden elokuun loppuun asti.
+    </p>
+    <p>
+    Jotta pääset katsomaan omia vanhoja linjahavaintojasi, sinun täytyy ensin linkittää laji.fi profiilisi Lintuvaaratunnukseen (eli rengastaja- tai havainnoijanumeroon). <a href="https://laji.fi/about/2189" target="_blank" rel="noopener noreferrer">Lisätietoja</a>
+    </p>
+
+    <p>
+    Uusi tunnus lisätään seuraavasti:
+    </p>
+
+    <ol>
+    	<li>
+    		Kirjaudu Laji.fi:in (<a href="https://login.laji.fi/" target="_blank" rel="noopener noreferrer">https://login.laji.fi/</a>) nykyisellä tunnuksellasi
+    	</li>
+    	<li>
+    		Etusivun oikeasta ylälaidasta valitse Oma Nimesi -> <i>Profiili</i>
+    	</li>
+    	<li>
+    		Klikkaa painiketta ”<i>Käyttäjätilini</i>”.
+    	</li>
+    	<li>
+    		Kirjaudu uudelleen sisään, mikäli järjestelmä sitä pyytää (valitsemalla tunnistautumistapa ja kirjautumalla sisään)
+    	</li>
+    	<li>
+    		Omat tietoni -sivulla klikkaa oikean laidan painiketta ”<i>Liitä muu tunnus</i>”.
+    	</li>
+    	<li>
+    		Valitse järjestelmä, jonka tunnuksen haluat liittää
+    	</li>
+    	<li>
+    		Syötä kysyttäessä kyseisen järjestelmän käyttäjänimi ja salasana, ja klikkaa Lähetä.
+    	</li>
+    </ol>
+
+    <p>
+    Omia aiempien vuosien linjalaskennan havaintojen muokkausmahdollisuus on työn alla ja toistaiseksi omia vanhoja linjalaskentahavaintojaan ei pääse muokkaamaan.
+    </p>
   </div>
 </div>
