@@ -10,17 +10,19 @@ import { ActivatedRoute } from "@angular/router";
 export class LineTransectInstructionsComponent implements OnInit {
 
   constructor(
-      public translate: TranslateService,
-      private route: ActivatedRoute,
+    public translate: TranslateService,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
       this.route.fragment.subscribe((frag) => {
-          frag && window.location.hash = frag;
+        if (frag) {
+          window.location.hash = frag;
+        }
     });
   }
 
   toFragment(fragment) {
-      window.location.hash = fragment;
+    window.location.hash = fragment;
   }
 }
