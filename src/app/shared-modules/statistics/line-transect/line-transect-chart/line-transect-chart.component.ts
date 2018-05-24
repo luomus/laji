@@ -36,6 +36,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   @Input() margin: { top: number, bottom: number, left: number, right: number} = { top: 30, bottom: 40, left: 40, right: 10};
   @Input() line: number[][];
   @Input() xTickFormat: any;
+  @Input() yLabelAnchor: string;
 
   private nativeElement: any;
   private svg: any;
@@ -140,7 +141,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
     if (this.yLabel) {
       svg.append('text')
         .attr('class', 'y label')
-        .attr('text-anchor', 'end')
+        .attr('text-anchor', this.yLabelAnchor || 'end')
         .attr('x', this.margin.left - 10)
         .attr('y', this.margin.top - 10)
         .text(this.yLabel);

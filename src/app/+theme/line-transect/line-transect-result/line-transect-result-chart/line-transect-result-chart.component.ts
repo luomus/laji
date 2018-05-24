@@ -72,7 +72,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
         if (!year) {
           return;
         }
-        yearLineLengths[year] = result.lineLengthSum;
+        yearLineLengths[year] = result.lineLengthSum / 1000;
         if (minYear === undefined || year < minYear) {
           minYear = +year;
         }
