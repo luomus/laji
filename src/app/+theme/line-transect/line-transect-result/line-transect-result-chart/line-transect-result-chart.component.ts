@@ -20,7 +20,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
   loading = false;
   areaTypes = AreaType;
-  birdAssociationAreas = [];
+  birdAssociationAreas: string[] = [];
   taxon: string;
   taxonId: string;
   private subQuery: Subscription;
@@ -56,7 +56,8 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.warehouseApi.warehouseQueryGatheringStatisticsGet(
       {
-        collectionId: [this.collectionId]
+        collectionId: [this.collectionId],
+        includeSubCollections: false,
       },
       ['gathering.conversions.year'],
       ['gathering.conversions.year DESC'],
@@ -110,9 +111,10 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     this.fetchSub = this.warehouseApi.warehouseQueryStatisticsGet(
       {
         collectionId: [this.collectionId],
-        namedPlaceId: this.birdAssociationAreas,
+        birdAssociationAreaId: this.birdAssociationAreas,
         taxonId: [this.taxonId],
-        pairCounts: true
+        pairCounts: true,
+        includeSubCollections: false
       },
       ['gathering.conversions.year'],
         ['gathering.conversions.year DESC'],
