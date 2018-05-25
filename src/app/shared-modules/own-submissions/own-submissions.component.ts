@@ -94,9 +94,9 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
     this.documentService.countByYear(this.userService.getToken())
       .subscribe(
         (results) => {
-          const now = new Date();
+          results = results.map(res => ({...res, year: parseInt(res.year, 10)}));
           this.yearInfo = results;
-          this.year = results.length > 0 ? results[results.length - 1].year : now.getFullYear();
+          this.year = results.length > 0 ? results[results.length - 1].year : new Date().getFullYear();
           this.getDocumentsByYear(this.year);
           this.cd.markForCheck();
         },

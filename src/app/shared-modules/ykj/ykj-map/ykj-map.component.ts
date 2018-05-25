@@ -43,6 +43,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     zoom: 2
   };
   @Input() taxon: Taxonomy;
+  @Input() useStatistics = false;
 
   @Output() onGridClick = new EventEmitter<WarehouseQueryInterface>();
 
@@ -113,7 +114,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       this.subQuery.unsubscribe();
     }
     this.subQuery = this.ykjService
-      .getGeoJson(this.query)
+      .getGeoJson(this.query, undefined, undefined, this.useStatistics)
       .subscribe(geoJson => {
           this.geoJsonLayer.addData(geoJson);
           this.currentColor = '';
@@ -224,7 +225,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   pairCountColor(feature) {
-    return this.countColor(feature, 'pairCount');
+    return this.countColor(feature, 'pairCountSum');
   }
 
   countColor(feature, prop = 'count', breaks = this.countBreak, range = this.colorRange) {

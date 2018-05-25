@@ -1,37 +1,28 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
-import { ObservationTableColumn } from '../../../../shared-modules/observation-result/model/observation-table-column';
-import { TaxonExportService } from './taxon-export.service';
 import { TaxonomySearchQuery } from '../../taxonomy-search-query.model';
 import { Router } from '@angular/router'
 
 @Component({
-  selector: 'laji-species-download',
-  templateUrl: './species-download.component.html',
-  styleUrls: ['./species-download.component.css'],
-  providers: [TaxonExportService],
+  selector: 'laji-species-tools',
+  templateUrl: './species-tools.component.html',
+  styleUrls: ['./species-tools.component.css'],
 })
-export class SpeciesDownloadComponent implements OnInit {
-  @Input() data: any;
-  @Input() columnLookup: ObservationTableColumn[] = [];
+export class SpeciesToolsComponent {
   @Input() searchQuery: TaxonomySearchQuery;
+  @Input() downloadLoading = false;
 
   fileType = 'tsv';
 
+  @Output() onDownload = new EventEmitter<string>();
   @ViewChild('chooseFileTypeModal') public modal: ModalDirective;
 
   constructor(
-    private taxonExportService: TaxonExportService,
     private router: Router
   ) { }
 
-  ngOnInit() { }
-
   download() {
-    const columns = this.searchQuery.selected.map(name => {
-      return this.columnLookup[name];
-    });
-    this.taxonExportService.downloadTaxons(columns, this.data, this.fileType);
+    this.onDownload.emit(this.fileType);
   }
 
   browse() {

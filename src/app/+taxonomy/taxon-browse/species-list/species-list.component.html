@@ -37,11 +37,11 @@
   </div>
 </div>
 <br/>
-<laji-species-download [searchQuery]="searchQuery"
-                       [data]="speciesPage.results"
-                       [columnLookup]="columnLookup">
-
-</laji-species-download>
+<laji-species-tools #speciesTools
+                    [searchQuery]="searchQuery"
+                    [downloadLoading]="downloadLoading"
+                    (onDownload)="download($event)">
+</laji-species-tools>
 
 <div bsModal #settingsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">

@@ -53,7 +53,7 @@ export class LineTransectResultGridComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.warehouseApi.warehouseQueryStatisticsGet(
-      {collectionId: [this.collectionId]},
+      {collectionId: [this.collectionId], includeSubCollections: false},
       ['gathering.conversions.year'],
       ['gathering.conversions.year DESC'],
       200
@@ -79,7 +79,9 @@ export class LineTransectResultGridComponent implements OnInit, OnDestroy {
       this.query = {
         yearMonth: [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
         collectionId: [this.collectionId],
-        informalTaxonGroupId: [this.informalTaxonGroup]
+        informalTaxonGroupId: [this.informalTaxonGroup],
+        pairCounts: true,
+        includeSubCollections: false
       };
       this.resultQuery = this.clone(this.query);
       if (taxonId) {

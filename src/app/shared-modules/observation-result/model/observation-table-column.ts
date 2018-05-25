@@ -4,4 +4,5 @@ export interface ObservationTableColumn extends DatatableColumn {
   sortBy?: string;
   aggregateBy?: string;
   selectField?: string;
+  aggregate?: boolean;
 }

@@ -31,17 +31,21 @@ export class LineTransectComponent implements OnInit, OnDestroy {
   ngOnInit() {
     //TODO: Tämän arvon pitää olla true jos haluaa ei vakio linjat ja kartoitus lomakkeet näkyviin!
     this.showForm = !environment.production;
-    this.showNav = this.router.url.indexOf('form') === -1;
+    this.showNav = this.shouldShowNav(this.router.url);
     this.routeSub = this.router
       .events
       .subscribe(event => {
         if (event instanceof NavigationEnd) {
-          this.showNav = event.url.indexOf('form') === -1;
+          this.showNav = this.shouldShowNav(event.url);
         }
       });
     this.rights = this.formService.getForm(environment.lineTransectForm, this.translateService.currentLang)
       .switchMap(form => this.formPermissionService.getRights(form))
       .catch(() => Observable.of({edit: false, admin: false}))
+  }
+
+  shouldShowNav(url) {
+     return ['form', 'ei-vakio', 'kartoitus'].every(path => url.indexOf(path) === -1);
   }
 
   ngOnDestroy() {

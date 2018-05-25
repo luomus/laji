@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, Input, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,19 +12,22 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 import { ModalDirective } from 'ngx-bootstrap';
 import { UserService } from '../../../shared/service/user.service';
+import { TaxonExportService } from './taxon-export.service';
 
 
 @Component({
   selector: 'laji-species-list',
   templateUrl: './species-list.component.html',
   styleUrls: ['./species-list.component.css'],
-  providers: []
+  providers: [TaxonExportService]
 })
 export class SpeciesListComponent implements OnInit, OnDestroy {
-  @ViewChild('settingsModal') public modalRef: ModalDirective;
+  @ViewChild('settingsModal') modalRef: ModalDirective;
+  @ViewChild('speciesTools') speciesTools;
   @Input() searchQuery: TaxonomySearchQuery;
 
   loading = false;
+  downloadLoading = false;
   speciesPage: PagedResult<Taxonomy> = {
     currentPage: 1,
     lastPage: 1,
@@ -167,7 +171,8 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private cd: ChangeDetectorRef,
-    private userService: UserService
+    private userService: UserService,
+    private taxonExportService: TaxonExportService
   ) { }
 
   ngOnInit() {
@@ -218,7 +223,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       sortOrder: this.searchQuery.sortOrder,
       selected: this.searchQuery.selected
     });
-    if (this.lastQuery === cacheKey || !this.settingsLoaded || this.searchQuery.loading) {
+    if (this.lastQuery === cacheKey || !this.settingsLoaded) {
       return;
     }
     this.lastQuery = cacheKey;
@@ -228,23 +233,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     }
     this.loading = true;
 
-    const query = this.searchQueryToTaxaQuery();
-
-    this.subFetch = this.taxonomyService
-      .taxonomyFindSpecies(
-        query.target,
-        this.translate.currentLang,
-        query.informalTaxonGroupId,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        `${this.searchQuery.page}`,
-        '1000',
-        this.searchQuery.sortOrder,
-        query.extraParameters
-        // 'finnish_name'
-      )
+    this.subFetch = this.fetchPage(this.searchQuery.page)
       .subscribe(data => {
           this.columns = this.searchQuery.selected.map(name => {
             return this.columnLookup[name];
@@ -309,10 +298,62 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     this.modalRef.hide();
   }
 
+  download(fileType: string) {
+    this.downloadLoading = true;
+
+    const columns = this.searchQuery.selected.map(name => {
+      return this.columnLookup[name];
+    });
+    this.fetchAllPages()
+      .subscribe(data =>  {
+        this.taxonExportService.downloadTaxons(columns, data, fileType)
+          .subscribe(() => {
+            this.downloadLoading = false;
+            this.speciesTools.modal.hide();
+            this.cd.markForCheck();
+          });
+      });
+  }
+
+  private fetchAllPages(page = 1, data = []): Observable<any> {
+    return this.fetchPage(page)
+      .switchMap(result => {
+        data.push(...result.results);
+        if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
+          return this.fetchAllPages(result.currentPage + 1, data);
+        } else {
+          return Observable.of(data);
+        }
+      });
+  }
+
+  private fetchPage(page: number): Observable<PagedResult<Taxonomy>> {
+    if (!this.loading && this.speciesPage.currentPage === page) {
+      return Observable.of(this.speciesPage);
+    }
+
+    const query = this.searchQueryToTaxaQuery();
+
+    return this.taxonomyService
+      .taxonomyFindSpecies(
+        query.target,
+        this.translate.currentLang,
+        query.informalTaxonGroupId,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        '' + page,
+        '1000',
+        this.searchQuery.sortOrder,
+        query.extraParameters
+      )
+  }
+
   private searchQueryToTaxaQuery() {
     const query = this.searchQuery.query;
     const informalTaxonGroupId = query.informalTaxonGroupId;
-    const target = query.target ? this.searchQuery.targetId : 'MX.37600';
+    const target = query.target ? query.target : 'MX.37600';
     const extraParameters = {...query};
     extraParameters['target'] = undefined;
     extraParameters['informalTaxonGroupId'] = undefined;

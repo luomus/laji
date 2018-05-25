@@ -46,7 +46,8 @@ export class SearchQuery {
     'editorId',
     'taxonReliability',
     'annotationType',
-    'namedPlaceId'
+    'namedPlaceId',
+    'birdAssociationAreaId'
   ];
 
   booleanTypes = [
@@ -62,7 +63,8 @@ export class SearchQuery {
     'cache',
     'reliable',
     'unidentified',
-    'pairCounts'
+    'pairCounts',
+    'includeSubCollections'
   ];
 
   numericTypes = [

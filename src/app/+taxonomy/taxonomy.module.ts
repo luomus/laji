@@ -27,7 +27,7 @@ import { LajiSelectModule } from '../shared-modules/select/select.module';
 import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { TaxonomySearchQuery } from './taxon-browse/taxonomy-search-query.model';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
-import { SpeciesDownloadComponent } from './taxon-browse/species-list/species-download/species-download.component';
+import { SpeciesToolsComponent } from './taxon-browse/species-list/species-tools/species-tools.component';
 import { InformalGroupSelectComponent } from './informal-group-select/informal-group-select.component';
 import { InformalGroupRedirectComponent } from './informal-group-redirect/informal-group-redirect.component';
 import { SpeciesImagesComponent } from './taxon-browse/species-images/species-images.component';
@@ -38,7 +38,7 @@ import { SpeciesImagesComponent } from './taxon-browse/species-images/species-im
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
-    ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent, SpeciesDownloadComponent,
+    ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent, SpeciesToolsComponent,
     InformalGroupRedirectComponent,
     InformalGroupSelectComponent, SpeciesImagesComponent
   ],

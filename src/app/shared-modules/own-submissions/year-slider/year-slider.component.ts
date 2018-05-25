@@ -11,12 +11,13 @@ export class YearSliderComponent implements OnInit {
   @Input() yearInfo: any[];
   @Input() showCounts = true;
   countByYear = {};
+  selectList: {year: number, count: number}[] = [];
+  selectValue = 'latest';
 
   sliderRange: number;
   sliderConfig: any;
-  sliderWidth: string;
-
-  oneStepWidth = 100;
+  maxSliderWidth: string;
+  maxStepWidth = 80;
 
   pcsString: string;
   pcString: string;
@@ -43,42 +44,58 @@ export class YearSliderComponent implements OnInit {
       }
     });
 
+    this.initSelectList();
     this.initSlider();
   }
 
-  sliderRangeChange(newRange) {
+  yearSelectChange(val: string) {
+    this.selectValue = val;
+    if (val === 'latest') {
+      this.onRangeChange.emit(this.sliderRange);
+    } else {
+      this.onRangeChange.emit(parseInt(val, 10));
+    }
+  }
+
+  sliderRangeChange(newRange: number) {
     if (this.sliderRange === newRange) { return; }
 
     this.sliderRange = newRange;
     this.onRangeChange.emit(newRange);
   }
 
+  private initSelectList() {
+    for (let i = this.yearInfo.length - 11; i >= 0; i--) {
+      this.selectList.push(this.yearInfo[i]);
+    }
+  }
+
   private initSlider() {
     if (this.yearInfo.length < 2) { return; }
 
-    const stepCount = this.yearInfo.length - 1;
+    const startIdx = Math.max(this.yearInfo.length - 10, 0);
+    const stepCount = this.yearInfo.length - startIdx - 1;
     const percentage = 100 / stepCount;
     const range = {};
 
-
-    for (let i = 0; i < this.yearInfo.length; i++) {
-      this.yearInfo[i].year = parseInt(this.yearInfo[i].year, 10);
-      this.countByYear[this.yearInfo[i].year] = this.yearInfo[i].count;
+    for (let i = startIdx; i < this.yearInfo.length; i++) {
+      const year = this.yearInfo[i].year;
+      this.countByYear[year] = this.yearInfo[i].count;
 
       let key = '';
 
-      if (i === 0) {
+      if (i === startIdx) {
         key = 'min';
       } else if (i === this.yearInfo.length - 1) {
         key = 'max';
       } else {
-        key = percentage * i + '%';
+        key = percentage * (i - startIdx) + '%';
       }
 
       range[key] = this.yearInfo[i].year;
     }
 
-    this.sliderWidth = stepCount * this.oneStepWidth + 'px';
+    this.maxSliderWidth = stepCount * this.maxStepWidth + 'px';
     this.sliderRange = range['max'];
 
     this.sliderConfig = {
