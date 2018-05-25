@@ -15,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class LineTransectComponent implements OnInit, OnDestroy {
 
-  showForm = false;
+  showForm = true;
   showNav = true;
   routeSub: Subscription;
   rights: Observable<Rights>;
@@ -29,8 +29,6 @@ export class LineTransectComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    //TODO: Tämän arvon pitää olla true jos haluaa ei vakio linjat ja kartoitus lomakkeet näkyviin!
-    this.showForm = !environment.production;
     this.showNav = this.shouldShowNav(this.router.url);
     this.routeSub = this.router
       .events
