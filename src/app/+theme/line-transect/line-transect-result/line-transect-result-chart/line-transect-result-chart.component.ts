@@ -35,6 +35,8 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   private yearLineLengths: any;
   minYear: number;
   maxYear: number;
+  minPairCountSum: number;
+  maxPairCountSum: number;
   line: number[][];
   private afterBothFetched: any;
 
@@ -129,9 +131,15 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
           yearsToPairCounts[year] = result.pairCountSum;
         });
         this.afterBothFetched = () => {
+          let min, max;
           this.line = Object.keys(yearsToPairCounts).map(year => {
-            return [+year, yearsToPairCounts[year] / this.yearLineLengths[year]]
+            const value = yearsToPairCounts[year] / this.yearLineLengths[year];
+            if (min === undefined || value < min) min = value;
+            if (max === undefined || value > max) max = value;
+            return [+year, value];
           });
+          this.minPairCountSum = min;
+          this.maxPairCountSum = max;
           this.loading = false;
           this.cdr.markForCheck();
         };
