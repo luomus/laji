@@ -43,7 +43,7 @@ export class NotificationComponent implements OnInit {
       this.targetQuery = {
         uri: IdService.getUri(annotation.rootID),
         highlight: IdService.getUri(annotation.targetID),
-        own: 'true',
+        own: this.notification.notificationReason !== Notification.NotificationReasonEnum.notificationReasonAnnotatedDocumentAnnotated,
         openAnnotation: 'true'
       };
     } else if (this.notification.friendRequest) {
