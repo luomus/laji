@@ -213,6 +213,8 @@
   "observation.form.asObserver": "As observer",
   "observation.form.issueBoth": "Include with issues",
   "observation.form.issueOnly": "Only with issues",
+  "observation.form.typeOfOccurrenceId": "Status in Finland is",
+  "observation.form.typeOfOccurrenceIdNot": "Status in Finland is not",
   "observation.filters.unit": "Specimen",
   "observation.filters.collection": "Collection",
   "observation.filters.administrative": "Administrative",

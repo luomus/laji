@@ -211,6 +211,8 @@
   "observation.form.asObserver": "Som observatör",
   "observation.form.issueBoth": "Include with issues",
   "observation.form.issueOnly": "Only with issues",
+  "observation.form.typeOfOccurrenceId": "Status i Finland är",
+  "observation.form.typeOfOccurrenceIdNot": "Status in Finland är inte",
   "observation.filters.unit": "Prov",
   "observation.filters.collection": "Samling",
   "observation.filters.administrative": "Administrativa",
