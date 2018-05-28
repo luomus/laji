@@ -158,7 +158,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   ];
   columnLookup = {};
 
-  lastQuery: string;
+  private lastQuery: string;
   private subQueryUpdate: Subscription;
   private subFetch: Subscription;
 
