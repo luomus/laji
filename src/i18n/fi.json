@@ -88,7 +88,7 @@
   "taxonomy.invasive.title": "vieraslaji",
   "observation.active.onlyFinnish": "Vain suomalaiset taksonit",
   "observation.active.typesOfOccurrenceFilters": "Asema Suomessa on",
-  "observation.active.typesOfNotOccurrenceFilters": "Asema Suomessa ei ole",
+  "observation.active.typesOfOccurrenceNotFilters": "Asema Suomessa ei ole",
   "taxonomy.map.summary": "Yhteenvetokartta",
   "taxonomy.images.taxon": "Valitut",
   "taxonomy.images.collection": "Kokoelmanäytteiden",

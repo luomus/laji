@@ -6,5 +6,5 @@ export interface TaxonomySearchQueryInterface {
   redListStatusFilters?: string[];
   adminStatusFilters?: string[];
   typesOfOccurrenceFilters?: string[];
-  typesOfNotOccurrenceFilters?: string[];
+  typesOfOccurrenceNotFilters?: string[];
 }

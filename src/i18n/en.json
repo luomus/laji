@@ -84,7 +84,7 @@
   "taxonomy.invasive.title": "invasive",
   "observation.active.onlyFinnish": "Only Finnish taxa",
   "observation.active.typesOfOccurrenceFilters": "Status in Finland is",
-  "observation.active.typesOfNotOccurrenceFilters": "Status in Finland is not",
+  "observation.active.typesOfOccurrenceNotFilters": "Status in Finland is not",
   "taxonomy.map.summary": "Summary map",
   "taxonomy.rank": "Taxon rank",
   "taxonomy.distribution": "Distribution",

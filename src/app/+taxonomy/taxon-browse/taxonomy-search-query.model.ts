@@ -60,7 +60,7 @@ export class TaxonomySearchQuery {
       newQuery.invasiveSpeciesFilter = false;
     }
 
-    const arrayKeys = ['redListStatusFilters', 'adminStatusFilters', 'typesOfOccurrenceFilters', 'typesOfNotOccurrenceFilters'];
+    const arrayKeys = ['redListStatusFilters', 'adminStatusFilters', 'typesOfOccurrenceFilters', 'typesOfOccurrenceNotFilters'];
     for (let i = 0; i < arrayKeys.length; i++) {
       const key = arrayKeys[i];
       newQuery[key] = this.getArrayParam(params, key);

@@ -84,7 +84,7 @@
   "taxonomy.invasive.title": "en invasiv art",
   "observation.active.onlyFinnish": "Endast finska taxonen",
   "observation.active.typesOfOccurrenceFilters": "Status i Finland är",
-  "observation.active.typesOfNotOccurrenceFilters": "Status i Finland är inte",
+  "observation.active.typesOfOccurrenceNotFilters": "Status i Finland är inte",
   "taxonomy.map.summary": "Sammanfattande karta",
   "taxonomy.rank": "Taxonomisk nivå",
   "taxonomy.distribution": "Fördelning",
