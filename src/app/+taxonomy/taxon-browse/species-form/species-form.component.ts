@@ -216,6 +216,10 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       query.adminStatusFilters = this.invasiveStatuses.map(val => 'MX.' + val);
     }
 
+    if (query.adminStatusFilters) {
+      query.adminStatusFilters = [...query.adminStatusFilters];
+    }
+
     this.invasiveStatuses
       .map((key) => {
         const value = 'MX.' + key;
@@ -235,10 +239,6 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
           query.adminStatusFilters.push(value);
         }
       });
-
-    if (query.adminStatusFilters && query.adminStatusFilters.length === 0) {
-      query.adminStatusFilters = undefined;
-    }
   }
 
   private queryToFormQuery() {
