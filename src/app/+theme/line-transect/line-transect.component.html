@@ -1,6 +1,6 @@
 <div class="container-fluid line">
   <div class="row" id="wrapper">
-    <div *ngIf="showNav" style="background-color: #ECF0F1;" class="col-sm-3 col-md-3 col-lg-2">
+    <div *ngIf="showNav" style="background-color: #ECF0F1;" class="col-sm-3 col-md-2 col-lg-2">
       <h1>Linja&shy;laskenta</h1>
       <ul class="sidebar-nav">
         <li><a [routerLink]="['../linjalaskenta', 'instructions']">{{'instructions' | translate}}</a></li>
@@ -17,8 +17,8 @@
         </ng-template>
       </ul>
     </div>
-    <div class="col-sm-9 col-md-9 col-lg-10 main-content" [ngClass]="{
-      'col-sm-9 col-md-9 col-lg-10': showNav,
+    <div class="col-sm-9 col-md-10 col-lg-10 main-content" [ngClass]="{
+      'col-sm-9 col-md-10 col-lg-10': showNav,
       'col-sm-12': !showNav
     }">
       <router-outlet></router-outlet>

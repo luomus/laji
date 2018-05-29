@@ -1,10 +1,10 @@
 <div [ngClass]="{'hidden': editButtonVisible === undefined && useButton === undefined}">
-  <div class="hidden-xs" #infoBox id="info-box">
+  <div class="hidden-xs hidden-sm" #infoBox id="info-box">
     <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{isModal: false}"></ng-template>
   </div>
 
   <div class="modal" tabindex="-1" role="dialog" bsModal #infoModal="bs-modal">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">
           <button class="close pull-right" type="button" (click)="modal.hide()">

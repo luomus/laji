@@ -1,6 +1,6 @@
 <div class="container-fluid form-admin">
   <div class="row" id="wrapper">
-    <div style="background-color: #ECF0F1;" class="col-sm-3 col-md-3 col-lg-2">
+    <div style="background-color: #ECF0F1;" class="col-sm-3 col-md-2 col-lg-2">
       <h3 class="menu-title">{{collectionId | collectionName}}</h3>
       <ul class="sidebar-nav">
         <li><a [routerLink]="['./']">
@@ -32,7 +32,7 @@
         </a></li>
       </ul>
     </div>
-    <div class="col-sm-9 col-md-9 col-lg-10 nafi-content">
+    <div class="col-sm-9 col-md-10 col-lg-10 nafi-content">
       <router-outlet></router-outlet>
     </div>
   </div>
