@@ -1,5 +1,5 @@
 export interface TaxonomySearchQueryInterface {
-  informalTaxonGroupId?: string;
+  informalGroupFilters?: string;
   target?: string;
   onlyFinnish?: boolean;
   invasiveSpeciesFilter?: boolean;

@@ -16,7 +16,7 @@ export class InformalGroupRedirectComponent implements OnInit {
 
   ngOnInit() {
     const params = this.route.snapshot.params;
-    this.router.navigate(this.localizeRouterService.translateRoute(['/taxon/list']), {queryParams: {informalTaxonGroupId: params['id']}});
+    this.router.navigate(this.localizeRouterService.translateRoute(['/taxon/list']), {queryParams: {informalGroupFilters: params['id']}});
   }
 
 }

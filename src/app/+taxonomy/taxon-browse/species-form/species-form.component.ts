@@ -85,7 +85,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       limit: onlyFirstMatch ? '1' : '' + this.limit,
       includePayload: true,
       lang: this.translate.currentLang,
-      informalTaxonGroup: this.searchQuery.query.informalTaxonGroupId,
+      informalTaxonGroup: this.searchQuery.query.informalGroupFilters,
       onlyFinnish: this.formQuery.onlyFinnish
     })
       .map(data => {

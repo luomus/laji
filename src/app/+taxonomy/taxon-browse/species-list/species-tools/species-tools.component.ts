@@ -29,7 +29,7 @@ export class SpeciesToolsComponent {
     const query = this.searchQuery.query;
 
     const parameters = {
-      informalTaxonGroupId: query.informalTaxonGroupId ? [query.informalTaxonGroupId] : undefined,
+      informalTaxonGroupId: query.informalGroupFilters ? [query.informalGroupFilters] : undefined,
       target: query.target,
       finnish: query.onlyFinnish,
       invasive: query.invasiveSpeciesFilter,

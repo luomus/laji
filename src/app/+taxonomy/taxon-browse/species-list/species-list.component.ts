@@ -338,7 +338,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       .taxonomyFindSpecies(
         query.target,
         this.translate.currentLang,
-        query.informalTaxonGroupId,
+        undefined,
         undefined,
         undefined,
         undefined,
@@ -352,16 +352,13 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
 
   private searchQueryToTaxaQuery() {
     const query = this.searchQuery.query;
-    const informalTaxonGroupId = query.informalTaxonGroupId;
     const target = query.target ? query.target : 'MX.37600';
     const extraParameters = {...query};
     extraParameters['target'] = undefined;
-    extraParameters['informalTaxonGroupId'] = undefined;
     extraParameters['selectedFields'] = this.getSelectedFields();
     extraParameters['lang'] = 'multi';
 
     return {
-      informalTaxonGroupId,
       target,
       extraParameters
     }

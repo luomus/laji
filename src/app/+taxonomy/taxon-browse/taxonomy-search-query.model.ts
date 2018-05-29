@@ -49,7 +49,7 @@ export class TaxonomySearchQuery {
 
   public setQueryFromParams(params: Params): boolean {
     const newQuery: TaxonomySearchQueryInterface = {};
-    newQuery.informalTaxonGroupId = params['informalTaxonGroupId'];
+    newQuery.informalGroupFilters = params['informalGroupFilters'];
     newQuery.target = params['target'];
     newQuery.onlyFinnish = params['onlyFinnish'] === 'true' ? true : undefined;
 
@@ -84,7 +84,7 @@ export class TaxonomySearchQuery {
 
   private queryAsString(query) {
     return JSON.stringify({
-      informalTaxonGroupId: query.informalTaxonGroupId,
+      informalGroupFilters: query.informalGroupFilters,
       target: query.target,
       onlyFinnish: query.onlyFinnish,
       invasiveSpeciesFilter: query.invasiveSpeciesFilter,

@@ -17,7 +17,7 @@ export class TaxonComponent {
     this.router.navigate(
       this.localizeRouterService.translateRoute(['/taxon/list']),
       {queryParams: {
-        informalTaxonGroupId: groupId,
+        informalGroupFilters: groupId,
         onlyFinnish: true
       }}
     );

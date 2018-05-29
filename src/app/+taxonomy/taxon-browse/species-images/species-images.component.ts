@@ -75,7 +75,7 @@ export class SpeciesImagesComponent implements OnInit {
       .taxonomyFindSpecies(
         query.target,
         this.translate.currentLang,
-        query.informalTaxonGroupId,
+        undefined,
         undefined,
         undefined,
         undefined,
@@ -89,16 +89,13 @@ export class SpeciesImagesComponent implements OnInit {
 
   private searchQueryToTaxaQuery() {
     const query = this.searchQuery.query;
-    const informalTaxonGroupId = query.informalTaxonGroupId;
     const target = query.target ? query.target : 'MX.37600';
     const extraParameters = {...query};
     extraParameters['target'] = undefined;
-    extraParameters['informalTaxonGroupId'] = undefined;
     extraParameters['selectedFields'] = 'id, media';
     extraParameters['lang'] = 'multi';
 
     return {
-      informalTaxonGroupId,
       target,
       extraParameters
     }
