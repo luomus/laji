@@ -11,7 +11,7 @@
   "error.scheduled.title": "Maintenance break on the first Thursday of every month",
   "error.scheduled.intro": "The break lasts for about ten minutes and runs between 8am and 10am. During this time, most of the FinBIF services will not work.",
   "navigation.taxonomy": "Species",
-  "navigation.observation": "Browse observations",
+  "navigation.observation": "Occurrences",
   "navigation.information": "FinBIF",
   "navigation.collection": "Information sources",
   "navigation.haseka": "Notebook",
