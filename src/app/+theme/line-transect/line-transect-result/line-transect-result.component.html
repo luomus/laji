@@ -2,16 +2,23 @@
   Linjalaskenta
 </h3>
 
+    <!-- 
 <div id="navbar">
   <ul class="nav nav-tabs nav-justified">
     <li role="presentation" [ngClass]="{active: tab === 'chart'}">
       <a [routerLink]="'../chart'">{{'line-transect-result.chart' | translate}}</a>
     </li>
+
     <li role="presentation" [ngClass]="{active: tab === 'grid'}">
       <a [routerLink]="'../grid'">{{'line-transect-result.grid' | translate}}</a>
     </li>
   </ul>
 </div>
+-->
 
+<!--
 <laji-line-transect-result-grid *ngIf="tab === 'grid'" [informalTaxonGroup]="informalTaxonGroup" [collectionId]="collectionId"></laji-line-transect-result-grid>
+-->
 <laji-line-transect-result-chart *ngIf="tab === 'chart'" [informalTaxonGroup]="informalTaxonGroup" [collectionId]="collectionId"></laji-line-transect-result-chart>
+
+  
