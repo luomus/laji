@@ -52,7 +52,7 @@ export class LineTransectResultGridComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.warehouseApi.warehouseQueryStatisticsGet(
+    this.warehouseApi.warehouseQueryAggregateGet(
       {collectionId: [this.collectionId], includeSubCollections: false},
       ['gathering.conversions.year'],
       ['gathering.conversions.year DESC'],
