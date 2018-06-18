@@ -260,6 +260,7 @@
   "observation.active.administrativeStatusId": "Hallinnollinen asema",
   "observation.active.adminStatusFilters": "Hallinnollinen asema",
   "observation.active.informalTaxonGroupId": "Lajiryhmä",
+  "observation.active.informalGroupFilters": "Lajiryhmä",
   "observation.active.informalTaxonGroupAll": "Kaikki",
   "observation.active.individualCountMax": "Maksimiyksilömäärä",
   "observation.active.includeNonValidTaxa": "Vain tunnetut nimet",

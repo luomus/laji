@@ -252,6 +252,7 @@
   "observation.active.administrativeStatusId": "Administrative status",
   "observation.active.adminStatusFilters": "Administrative status",
   "observation.active.informalTaxonGroupId": "Informal group",
+  "observation.active.informalGroupFilters": "Informal group",
   "observation.active.informalTaxonGroupAll": "All",
   "observation.active.individualCountMax": "Max individual count",
   "observation.active.includeNonValidTaxa": "Only known names",

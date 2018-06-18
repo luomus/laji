@@ -249,6 +249,7 @@
   "observation.active.administrativeStatusId": "Administrativ status",
   "observation.active.adminStatusFilters": "Administrativ status",
   "observation.active.informalTaxonGroupId": "Organismgrupp",
+  "observation.active.informalGroupFilters": "Organismgrupp",
   "observation.active.informalTaxonGroupAll": "Alla",
   "observation.active.individualCountMax": "Max individsantal",
   "observation.active.includeNonValidTaxa": "Endast kända namn",
