@@ -76,16 +76,19 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     {
       name: 'vernacularName.fi',
       label: 'taxonomy.vernacular.name.fi',
+      selectField: 'vernacularName',
       width: 200
     },
     {
       name: 'vernacularName.sv',
       label: 'taxonomy.vernacular.name.sv',
+      selectField: 'vernacularName',
       width: 200
     },
     {
       name: 'vernacularName.en',
       label: 'taxonomy.vernacular.name.en',
+      selectField: 'vernacularName',
       width: 200
     },
     {
@@ -365,13 +368,16 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   }
 
   private getSelectedFields() {
-    const selects = this.searchQuery.selected.map(field => {
+    const selects = this.searchQuery.selected.reduce((arr, field) => {
+      let addedField = field;
       if (this.columnLookup[field] && this.columnLookup[field].selectField) {
-        return this.columnLookup[field].selectField;
-      } else {
-        return field;
+        addedField = this.columnLookup[field].selectField;
       }
-    });
+      if (arr.indexOf(addedField) === -1) {
+        arr.push(addedField);
+      }
+      return arr;
+    }, []);
 
     if (selects.indexOf('id') === -1) {
       selects.push('id');
