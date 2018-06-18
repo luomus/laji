@@ -24,18 +24,25 @@
       </ng-template>
 
       <ng-template #compact>
-        <ng-container *ngTemplateOutlet="fullInfo; context: {$implicit: img}"></ng-container>
+        <ng-container *ngIf="showCompactInfo">
+          <ng-container *ngTemplateOutlet="compactInfo; context: {$implicit: img}"></ng-container>
+        </ng-container>
+        <ng-container *ngIf="!showCompactInfo">
+          <ng-container *ngTemplateOutlet="fullInfo; context: {$implicit: img}"></ng-container>
+        </ng-container>
       </ng-template>
     </div>
   </ng-container>
 </div>
 <ng-template #fullView>
-  <div class="image-container fullContainer" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
-    <img src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
-         class="ng-thumb full"
-         alt="Image {{ index + 1 }}" />
-    <ng-container *ngTemplateOutlet="fullInfo; context: {$implicit: img}"></ng-container>
-  </div>
+  <ng-container *ngIf="!showCompactInfo else fullImageView">
+    <div class="image-container fullContainer" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
+      <img src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+           class="ng-thumb full"
+           alt="Image {{ index + 1 }}" />
+      <ng-container *ngTemplateOutlet="fullInfo; context: {$implicit: img}"></ng-container>
+    </div>
+  </ng-container>
 </ng-template>
 <ng-template #fullInfo let-data>
   <ng-container *ngIf="data.vernacularName">
@@ -49,5 +56,21 @@
   </ng-container>
   <ng-container *ngIf="data.author">
     {{data.author}}<br>
+  </ng-container>
+</ng-template>
+<ng-template #fullImageView>
+  <div class="image-container full-image-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
+    <img src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+         class="ng-thumb large"
+         alt="Image {{ index + 1 }}" />
+    <h4><ng-container *ngTemplateOutlet="compactInfo; context: {$implicit: img}"></ng-container></h4>
+  </div>
+</ng-template>
+<ng-template #compactInfo let-data>
+  <ng-container *ngIf="data.vernacularName">
+    <strong>{{data.vernacularName | multiLang}}</strong><br>
+  </ng-container>
+  <ng-container *ngIf="data.scientificName">
+    <strong class="scientificName">{{data.scientificName | label:'fullUri'}}</strong><br>
   </ng-container>
 </ng-template>

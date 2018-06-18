@@ -65,13 +65,14 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   public showRepeat = false;
   @Input() eventOnClick = false;
   @Input() view: 'compact'|'full' = 'compact';
+  @Input() showCompactInfo = false;
   @Input() modalImages: Image[];
   @Input() imagePointer: number;
   @Input() showPaginator: number;
   @Input() showViewSwitch = false;
   @Input() showPopover = false;
   @Output() cancelEvent = new EventEmitter<any>();
-  @Output() select = new EventEmitter<{documentId: string, unitId: string}>();
+  @Output() select = new EventEmitter<{taxonId: string, documentId: string, unitId: string}>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
   private _overlay: ComponentLoader<ImageModalOverlayComponent>;
   private _isShown = false;
@@ -102,6 +103,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
     if (this.eventOnClick) {
       if (this.modalImages[index]) {
         this.select.emit({
+          taxonId: this.modalImages[index].taxonId,
           documentId: this.modalImages[index].documentId,
           unitId: this.modalImages[index].unitId
         })

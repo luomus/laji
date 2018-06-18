@@ -63,6 +63,27 @@ img.ng-thumb.full {
   margin: 0 5px 0 0;
 }
 
+.full-image-container {
+  position: relative;
+  float: left;
+  width: 170px;
+  height: 160px;
+  margin: -5px 5px 0 0;
+}
+.full-image-container img.ng-thumb {
+  width: 170px;
+  height: 150px;
+}
+.full-image-container h4 {
+  font-size: .8em;
+  background-color: rgba(0,0,0,.7);
+  color: #fff;
+  width: 170px;
+  padding: .5em;
+  margin-right: 10px;
+  position: absolute;
+  bottom: 0;
+}
 .ng-overlay {
   position: fixed;
   top: 0;
