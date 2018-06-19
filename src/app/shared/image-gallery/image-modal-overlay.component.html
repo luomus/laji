@@ -17,7 +17,7 @@
       <ng-container *ngIf="img.vernacularName">{{img.vernacularName | multiLang}}</ng-container>
       <ng-container *ngIf="img.vernacularName && img.scientificName">-</ng-container>
       <ng-container *ngIf="img.scientificName"><em class="scientificName">{{img.scientificName | label:'fullUri'}}</em></ng-container>
-      <ng-container *ngIf="img.taxonId">{{img.taxonId | label}}</ng-container>
+      <ng-container *ngIf="img.taxonId && !(img.vernacularName && img.scientificName)">{{img.taxonId | label}}</ng-container>
       <br>
       <ng-container *ngIf="img.caption">
         {{img.caption | multiLang}}
