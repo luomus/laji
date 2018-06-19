@@ -58,7 +58,8 @@ export class NafiResultComponent implements OnInit, OnDestroy {
       this.query = {
         time: [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
         collectionId: [this.collectionId],
-        informalTaxonGroupId: [this.informalTaxonGroup]
+        informalTaxonGroupId: [this.informalTaxonGroup],
+        countryId: ['ML.206']
       };
       this.resultQuery = this.clone(this.query);
       if (taxonId) {
