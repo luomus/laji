@@ -1,4 +1,6 @@
 import { Component, HostListener, Input, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
+import { SearchQuery } from '../../../+observation/search-query.model';
+import { TaxonomySearchQuery } from '../../../+taxonomy/taxon-browse/taxonomy-search-query.model';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -9,7 +11,8 @@ import { Subscription } from 'rxjs/Subscription';
 export class ObservationActiveComponent implements OnInit, OnDestroy {
 
   @Input() skip: string[] = [];
-  @Input() searchQuery: any;
+  @Input() searchQuery: SearchQuery|TaxonomySearchQuery;
+  public searchQueryType: 'observation'|'taxonomy';
   public active: ActiveList[] = [];
   public showList = false;
 
@@ -21,6 +24,11 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (this.searchQuery instanceof SearchQuery) {
+      this.searchQueryType = 'observation';
+    } else {
+      this.searchQueryType = 'taxonomy';
+    }
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => this.updateSelectedList()
     );

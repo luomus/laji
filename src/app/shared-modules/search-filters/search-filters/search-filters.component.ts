@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { SearchQuery } from '../../../+observation/search-query.model';
+import { TaxonomySearchQuery } from '../../../+taxonomy/taxon-browse/taxonomy-search-query.model';
 import { WindowRef } from '../../../shared/windows-ref';
 
 @Component({
@@ -8,7 +10,7 @@ import { WindowRef } from '../../../shared/windows-ref';
 })
 export class SearchFiltersComponent implements OnInit {
   @Input() showFilter = true;
-  @Input() searchQuery: any;
+  @Input() searchQuery: SearchQuery|TaxonomySearchQuery;
 
   @Input() hasInvasiveControlRights = false;
   @Output() onShowFilterChange = new EventEmitter<boolean>();
