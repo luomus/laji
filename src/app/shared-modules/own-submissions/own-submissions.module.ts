@@ -6,7 +6,6 @@ import { YearSliderComponent } from './year-slider/year-slider.component';
 import { OwnDatatableComponent } from './own-datatable/own-datatable.component';
 import { FilterColumnsPipe } from './own-datatable/filter-columns.pipe';
 import { DocumentInfoService } from './service/document-info.service';
-import { NouisliderModule } from 'ng2-nouislider';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RouterModule } from '@angular/router';
 import { RouterChildrenEventService } from './service/router-children-event.service';
@@ -17,7 +16,6 @@ import { ViewerModule } from '../../+viewer/viewer.module';
     CommonModule,
     RouterModule,
     SharedModule,
-    NouisliderModule,
     NgxDatatableModule,
     ViewerModule
   ],

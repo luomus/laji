@@ -95,8 +95,8 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
       .subscribe(
         (results) => {
           results = results.map(res => ({...res, year: parseInt(res.year, 10)}));
-          this.yearInfo = results;
           this.year = results.length > 0 ? results[results.length - 1].year : new Date().getFullYear();
+          this.yearInfo = results.reverse();
           this.getDocumentsByYear(this.year);
           this.cd.markForCheck();
         },

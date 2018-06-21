@@ -2,7 +2,7 @@
 
 
 <div *ngIf="!yearInfoError">
-  <laji-year-slider *ngIf="!onlyTemplates && !!yearInfo" [showCounts]="!formID" (onRangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo"></laji-year-slider>
+  <laji-year-slider *ngIf="!onlyTemplates && !!yearInfo" [year]="year" [showCounts]="!formID" (onRangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo"></laji-year-slider>
   <laji-own-datatable
     (documentClicked)="onDocumentClick($event)"
     [actions]="actions"
