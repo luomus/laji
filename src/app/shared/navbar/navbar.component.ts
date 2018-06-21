@@ -5,18 +5,17 @@ import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
-import { NotificationApi } from '../api/NotificationApi';
 import { Observable } from 'rxjs/Observable';
-import { Notification } from '../model/Notification';
-import { PagedResult } from '../model/PagedResult';
 import { BsDropdownDirective } from 'ngx-bootstrap';
 import { DialogService } from '../service/dialog.service';
+import {LajiApi, LajiApiService} from '../service/laji-api.service';
+import {PagedResult} from '../model';
+import {Notification} from '../model/Notification';
 
 @Component({
   selector: 'laji-navbar',
   styleUrls: ['./navbar.component.css'],
   templateUrl: './navbar.component.html',
-  providers: [NotificationApi],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavbarComponent implements OnInit, OnDestroy {
@@ -45,7 +44,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private changeDetector: ChangeDetectorRef,
-    private notificationService: NotificationApi,
+    private lajiApi: LajiApiService,
     public translate: TranslateService,
     private dialogService: DialogService
   ) {
@@ -71,19 +70,27 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .startWith(0)
       .delay(5000)
       .filter(() => this.userService.isLoggedIn)
-      .switchMap(() => this.notificationService
-        .fetch(this.userService.getToken(), '' + this.currentNotificationPage, '' + this.notificationPageSize)
+      .switchMap(() => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
+          personToken: this.userService.getToken(),
+          page: this.currentNotificationPage,
+          pageSize: this.notificationPageSize
+        })
         .switchMap((notifications) => notifications.total <= this.notificationPageSize ?
           Observable.of({
             ...notifications,
             unseen: notifications.results.reduce((cumulative, current) => cumulative + (current.seen ? 0 : 1), 0)
           }) :
-          this.notificationService.fetch(this.userService.getToken(), '1', '1', 'true')
+          this.lajiApi.getList(LajiApi.Endpoints.notifications, {
+            personToken: this.userService.getToken(),
+            page: 1,
+            pageSize: 1,
+            onlyUnSeen: true
+          })
             .map(unseen => ({...notifications, unseen: unseen.total || 0}))
         )
       )
       .subscribe(
-        notifications => {
+        (notifications: any) => {
           this.notifications = notifications;
           this.notificationsNotSeen = notifications.unseen;
           this.changeDetector.markForCheck();
@@ -125,11 +132,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (this.visibleNotificationPage === page) {
       return;
     }
-    this.subNotificationPage = this.notificationService.fetch(
-      this.userService.getToken(),
-      '' + page,
-      '' + this.notificationPageSize
-    )
+    this.subNotificationPage = this.lajiApi.getList(LajiApi.Endpoints.notifications, {
+      personToken: this.userService.getToken(),
+      page: page,
+      pageSize: this.notificationPageSize
+    })
       .subscribe(notifications => {
         this.notifications = notifications;
         this.visibleNotificationPage = notifications.currentPage;
@@ -177,8 +184,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
       return;
     }
     notification.seen = true;
-    this.notificationService
-      .update(notification, this.userService.getToken())
+    this.lajiApi
+      .update(LajiApi.Endpoints.notifications, notification, {personToken: this.userService.getToken()})
       .subscribe(() => {
         this.notificationsNotSeen--;
         this.changeDetector.markForCheck();
@@ -186,6 +193,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   removeNotification(notification: Notification) {
+    if (!notification || !notification.id) {
+      return;
+    }
     this.translate.get('notification.delete')
       .switchMap(msg => notification.seen ? Observable.of(true) : this.dialogService.confirm(msg))
       .subscribe(result => {
@@ -198,13 +208,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
             this.notificationsNotSeen--;
           }
           this.changeDetector.markForCheck();
-          this.notificationService
-            .delete(notification.id || '', this.userService.getToken())
-            .switchMap(() => this.notificationService.fetch(
-              this.userService.getToken(),
-              '' + this.currentNotificationPage,
-              '' + this.notificationPageSize
-            ))
+          this.lajiApi
+            .remove(LajiApi.Endpoints.notifications, notification.id, {personToken: this.userService.getToken()})
+            .switchMap(() => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
+              personToken: this.userService.getToken(),
+              page: this.currentNotificationPage,
+              pageSize: this.notificationPageSize
+            }))
             .subscribe((notifications) => {
               this.notifications = notifications;
               this.changeDetector.markForCheck();

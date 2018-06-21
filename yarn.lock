@@ -1394,7 +1394,7 @@ cache-base@^1.0.1:
   dependencies:
     collection-visit "^1.0.0"
     component-emitter "^1.2.1"
-    get-value "^2.0.6"
+    getList-value "^2.0.6"
     has-value "^1.0.0"
     isobject "^3.0.1"
     set-value "^2.0.0"
@@ -2616,7 +2616,7 @@ execa@^0.7.0:
   resolved "https://registry.yarnpkg.com/execa/-/execa-0.7.0.tgz#944becd34cc41ee32a63a9faf27ad5a65fc59777"
   dependencies:
     cross-spawn "^5.0.1"
-    get-stream "^3.0.0"
+    getList-stream "^3.0.0"
     is-stream "^1.1.0"
     npm-run-path "^2.0.0"
     p-finally "^1.0.0"
@@ -3110,19 +3110,19 @@ geojsonhint@^1.1.0:
 
 get-caller-file@^1.0.1:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.2.tgz#f702e63127e7e231c160a80c1554acb70d5047e5"
+  resolved "https://registry.yarnpkg.com/getList-caller-file/-/getList-caller-file-1.0.2.tgz#f702e63127e7e231c160a80c1554acb70d5047e5"
 
 get-stdin@^4.0.1:
   version "4.0.1"
-  resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-4.0.1.tgz#b968c6b0a04384324902e8bf1a5df32579a450fe"
+  resolved "https://registry.yarnpkg.com/getList-stdin/-/getList-stdin-4.0.1.tgz#b968c6b0a04384324902e8bf1a5df32579a450fe"
 
 get-stream@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-3.0.0.tgz#8e943d1358dc37555054ecbe2edb05aa174ede14"
+  resolved "https://registry.yarnpkg.com/getList-stream/-/getList-stream-3.0.0.tgz#8e943d1358dc37555054ecbe2edb05aa174ede14"
 
 get-uri@^2.0.0:
   version "2.0.2"
-  resolved "https://registry.yarnpkg.com/get-uri/-/get-uri-2.0.2.tgz#5c795e71326f6ca1286f2fc82575cd2bab2af578"
+  resolved "https://registry.yarnpkg.com/getList-uri/-/getList-uri-2.0.2.tgz#5c795e71326f6ca1286f2fc82575cd2bab2af578"
   dependencies:
     data-uri-to-buffer "1"
     debug "2"
@@ -3133,7 +3133,7 @@ get-uri@^2.0.0:
 
 get-value@^2.0.3, get-value@^2.0.6:
   version "2.0.6"
-  resolved "https://registry.yarnpkg.com/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
+  resolved "https://registry.yarnpkg.com/getList-value/-/getList-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
 
 getpass@^0.1.1:
   version "0.1.7"
@@ -3259,7 +3259,7 @@ got@^6.7.1:
   dependencies:
     create-error-class "^3.0.0"
     duplexer3 "^0.1.4"
-    get-stream "^3.0.0"
+    getList-stream "^3.0.0"
     is-redirect "^1.0.0"
     is-retry-allowed "^1.0.0"
     is-stream "^1.0.0"
@@ -3369,7 +3369,7 @@ has-value@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/has-value/-/has-value-0.3.1.tgz#7b1f58bada62ca827ec0a2078025654845995e1f"
   dependencies:
-    get-value "^2.0.3"
+    getList-value "^2.0.3"
     has-values "^0.1.4"
     isobject "^2.0.0"
 
@@ -3377,7 +3377,7 @@ has-value@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/has-value/-/has-value-1.0.0.tgz#18b281da585b1c5c51def24c930ed29a0be6b177"
   dependencies:
-    get-value "^2.0.6"
+    getList-value "^2.0.6"
     has-values "^1.0.0"
     isobject "^3.0.0"
 
@@ -5156,7 +5156,7 @@ node-sass@^4.9.0:
     chalk "^1.1.1"
     cross-spawn "^3.0.0"
     gaze "^1.0.0"
-    get-stdin "^4.0.1"
+    getList-stdin "^4.0.1"
     glob "^7.0.3"
     in-publish "^2.0.0"
     lodash.assign "^4.2.0"
@@ -5531,7 +5531,7 @@ pac-proxy-agent@^2.0.1:
   dependencies:
     agent-base "^4.2.0"
     debug "^3.1.0"
-    get-uri "^2.0.0"
+    getList-uri "^2.0.0"
     http-proxy-agent "^2.1.0"
     https-proxy-agent "^2.2.1"
     pac-resolver "^3.0.0"
@@ -7356,7 +7356,7 @@ strip-indent@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/strip-indent/-/strip-indent-1.0.1.tgz#0c7962a6adefa7bbd4ac366460a638552ae1a0a2"
   dependencies:
-    get-stdin "^4.0.1"
+    getList-stdin "^4.0.1"
 
 strip-json-comments@~2.0.1:
   version "2.0.1"
@@ -7740,7 +7740,7 @@ union-value@^1.0.0:
   resolved "https://registry.yarnpkg.com/union-value/-/union-value-1.0.0.tgz#5c71c34cb5bad5dcebe3ea0cd08207ba5aa1aea4"
   dependencies:
     arr-union "^3.1.0"
-    get-value "^2.0.6"
+    getList-value "^2.0.6"
     is-extendable "^0.1.1"
     set-value "^0.4.3"
 
@@ -8375,7 +8375,7 @@ yargs@11.0.0:
     cliui "^4.0.0"
     decamelize "^1.1.1"
     find-up "^2.1.0"
-    get-caller-file "^1.0.1"
+    getList-caller-file "^1.0.1"
     os-locale "^2.0.0"
     require-directory "^2.1.1"
     require-main-filename "^1.0.1"
@@ -8392,7 +8392,7 @@ yargs@^7.0.0:
     camelcase "^3.0.0"
     cliui "^3.2.0"
     decamelize "^1.1.1"
-    get-caller-file "^1.0.1"
+    getList-caller-file "^1.0.1"
     os-locale "^1.4.0"
     read-pkg-up "^1.0.1"
     require-directory "^2.1.1"

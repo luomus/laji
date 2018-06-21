@@ -1,19 +1,32 @@
+/* tslint:disable:max-line-length */
+
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {environment} from '../../../environments/environment';
 import {PagedResult} from '../model';
 import {Annotation} from '../model/Annotation';
+import {Notification} from '../model/Notification';
+import {Information} from '../model/Information';
 
 @Injectable()
 export class LajiApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  get(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
-  get(endpoint: LajiApi.Endpoints.annotations, query: LajiApi.Query.AnnotationQuery): Observable<LajiApi.Response.AnnotationListResponse>;
-  get(endpoint: LajiApi.Endpoints, query: object = {}): Observable<any> {
+  getList(endpoint: LajiApi.Endpoints.annotations, query: LajiApi.Query.AnnotationQuery): Observable<LajiApi.Response.AnnotationListResponse>;
+  getList(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
+  getList(endpoint: LajiApi.Endpoints.information, query: LajiApi.Query.InformationQuery): Observable<Information>;
+  getList(endpoint: LajiApi.Endpoints.notifications, query: LajiApi.Query.NotificationListQuery): Observable<LajiApi.Response.NotificationListResponse>;
+  getList(endpoint: LajiApi.Endpoints, query: object = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}`;
+    const options = { params: {...query} };
+    return this.httpClient.get(url, options);
+  }
+
+  get(endpoint: LajiApi.Endpoints.information, id: string, query: LajiApi.Query.InformationQuery): Observable<Information>;
+  get(endpoint: LajiApi.Endpoints, id: string, query: object = {}): Observable<any> {
+    const url = `${environment.apiBase}/${endpoint}/${id}`;
     const options = { params: {...query} };
     return this.httpClient.get(url, options);
   }
@@ -31,13 +44,36 @@ export class LajiApiService {
       options
     );
   }
+
+  update(endpoint: LajiApi.Endpoints.notifications, data: Notification, query: LajiApi.Query.NotificationQuery): Observable<Notification>;
+  update(endpoint: LajiApi.Endpoints, data: any, query: object = {}): Observable<any> {
+    const url = `${environment.apiBase}/${endpoint}/${data.id}`;
+    const options = { params: {...query} };
+    return this.httpClient.put(
+      url,
+      data,
+      options
+    );
+  }
+
+  remove(endpoint: LajiApi.Endpoints.notifications, id: string, query: LajiApi.Query.NotificationQuery): Observable<any>;
+  remove(endpoint: LajiApi.Endpoints, id: string, query: object = {}): Observable<any> {
+    const url = `${environment.apiBase}/${endpoint}`;
+    const options = { params: {...query} };
+    return this.httpClient.delete(
+      url,
+      options
+    );
+  }
 }
 
 export namespace LajiApi {
   export enum Endpoints {
+    annotations = 'annotations',
     documentStats = 'documents/stats',
     htmlToPdf = 'html-to-pdf',
-    annotations = 'annotations',
+    information = 'information',
+    notifications = 'notifications'
   }
 
   export namespace Query {
@@ -56,6 +92,19 @@ export namespace LajiApi {
       personToken: string;
       namedPlace: string;
     }
+
+    export interface NotificationListQuery extends Paged {
+      personToken: string;
+      onlyUnSeen?: boolean;
+    }
+
+    export interface NotificationQuery {
+      personToken: string;
+    }
+
+    export interface InformationQuery {
+      lang?: string;
+    }
   }
 
   export namespace Response {
@@ -68,6 +117,10 @@ export namespace LajiApi {
     }
 
     export interface AnnotationListResponse extends PagedResult<Annotation> {
+    }
+
+    export interface NotificationListResponse extends PagedResult<Notification> {
+
     }
   }
 

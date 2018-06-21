@@ -409,7 +409,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   private fetchAnnotations(documentID, page = 1, results = []): Observable<Annotation[]> {
     return this.formService.isTmpId(documentID) ?
       Observable.of([]) :
-      this.lajiApi.get(
+      this.lajiApi.getList(
         LajiApi.Endpoints.annotations,
         {personToken: this.userService.getToken(), rootID: this.documentId, pageSize: 100, page: page}
       )

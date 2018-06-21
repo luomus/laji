@@ -8,12 +8,12 @@ import { Information } from '../shared/model/Information';
 import { InformationService } from './information.service';
 import { Title } from '@angular/platform-browser';
 import {LocalizeRouterService} from '../locale/localize-router.service';
+import {LajiApi, LajiApiService} from '../shared/service/laji-api.service';
 
 @Component({
   selector: 'laji-information',
   templateUrl: './information.component.html',
   styleUrls: ['./information.component.css'],
-  providers: [InformationApi],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InformationComponent implements OnDestroy {
@@ -24,9 +24,9 @@ export class InformationComponent implements OnDestroy {
   private paramSub: Subscription;
 
   constructor(private route: ActivatedRoute,
-              private informationApi: InformationApi,
               private translate: TranslateService,
               private informationService: InformationService,
+              private lajiApi: LajiApiService,
               private logger: Logger,
               private router: Router,
               private localizeRouterService: LocalizeRouterService,
@@ -50,8 +50,8 @@ export class InformationComponent implements OnDestroy {
   private getInformation(id?) {
     const lang = this.translate.currentLang;
     (id ?
-      (this.informationApi.informationFindById(this.informationService.resolveId(id, lang), lang)) :
-      (this.informationApi.informationFindAll(lang)))
+      (this.lajiApi.get(LajiApi.Endpoints.information, id, {lang})) :
+      (this.lajiApi.getList(LajiApi.Endpoints.information, {lang})))
       .map(data => {
         if (data.children) {
           data.children = data.children.map(item => {

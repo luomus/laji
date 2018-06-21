@@ -390,7 +390,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
         (err) => {
           this.loading = false;
           this.changeDetector.markForCheck();
-          this.logger.warn('Could not get list for the map!', err);
+          this.logger.warn('Could not getList list for the map!', err);
         }
       );
   }
@@ -494,7 +494,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
             cb(description);
           } else if (cnt) {
             return;
-            // this.translate.get('result.allObservation')
+            // this.translate.getList('result.allObservation')
             //  .subscribe(translation => cb(`${cnt} ${translation}`));
           }
         } catch (e) {

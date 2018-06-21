@@ -119,7 +119,7 @@ export interface Gatherings {
     geometry?: models.Geometry;
 
     /**
-     * Use for OLD SPECIMENS: What source was used to get coordinates from locality name
+     * Use for OLD SPECIMENS: What source was used to getList coordinates from locality name
      */
     georeferenceSource?: Gatherings.GeoreferenceSourceEnum;
 

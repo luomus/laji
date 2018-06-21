@@ -2,7 +2,7 @@
  * Query interface for warehouse
  *
  * @property includeNonValidTaxa By default, query results include also entries where target name does not match taxonomy.
- * To get only entries where one and only one taxon matches given target name, set this parameter to false.
+ * To getList only entries where one and only one taxon matches given target name, set this parameter to false.
  * @property taxonId Filter based on URI or Qname identifier of a taxon. Use Taxonomy-API to find identifiers.
  * Will only return entries where reported target name matches one of the names given to this and only this taxon.
  * Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times. When multiple values
@@ -63,7 +63,7 @@
  * Use InformationSystem-API to resolve identifiers.
  * Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
  * When multiple values are given, this is an OR search.
- * @property recordBasis Filter using record basis. This can be used for example to get only preserved specimens.
+ * @property recordBasis Filter using record basis. This can be used for example to getList only preserved specimens.
  * Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
  * When multiple values are given, this is an OR search.
  * @property lifeStage Filter using life stage of an unit. Multiple values are seperated by a comma (,) or by giving

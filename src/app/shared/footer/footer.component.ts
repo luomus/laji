@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from '../service/footer.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { InformationApi } from '../api/InformationApi';
 import { TranslateService } from '@ngx-translate/core';
 import {Logger} from '../logger/logger.service';
+import {LajiApi, LajiApiService} from '../service/laji-api.service';
 
 @Component({
   selector: 'laji-footer',
@@ -28,7 +28,7 @@ export class FooterComponent implements OnInit, OnDestroy{
   constructor(
     public footerService: FooterService,
     private router: Router,
-    private informationApi: InformationApi,
+    private lajiApi: LajiApiService,
     private translate: TranslateService,
     private logger: Logger
   ) {
@@ -60,8 +60,7 @@ export class FooterComponent implements OnInit, OnDestroy{
 
   fetchTreeData(force = false) {
     if (force || !this.tree) {
-      this.informationApi
-        .informationIndex(this.translate.currentLang)
+      this.lajiApi.get(LajiApi.Endpoints.information, 'index', {lang: this.translate.currentLang})
         .map(tree => tree.children || [])
         .subscribe(
           tree => this.tree = tree,

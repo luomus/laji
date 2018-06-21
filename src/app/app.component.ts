@@ -2,7 +2,6 @@ import { Component, ViewContainerRef } from '@angular/core';
 import { CollectionApi } from './shared/api/CollectionApi';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { InformationApi } from './shared/api/InformationApi';
 import { WindowRef } from './shared/windows-ref';
 import { environment } from '../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
@@ -23,10 +22,6 @@ const ALL_META_KEYS = [
 
 @Component({
   selector: 'laji-app',
-  providers: [
-    CollectionApi,
-    InformationApi
-  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

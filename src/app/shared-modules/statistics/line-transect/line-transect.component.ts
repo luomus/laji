@@ -145,7 +145,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
       minPerKm: 0
     };
     const species = {};
-    this.stats$ = this.lajiApiService.get(LajiApi.Endpoints.documentStats,
+    this.stats$ = this.lajiApiService.getList(LajiApi.Endpoints.documentStats,
       {personToken: this.userSerivce.getToken(), namedPlace: this.namedPlace.id})
       .map(stats => this.dateDiffFromDoc(stats.dateMedian))
       .catch(() => Observable.of(''));

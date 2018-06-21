@@ -10,7 +10,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
-import { CollectionApi } from '../../shared/api/CollectionApi';
 import { SourceApi } from '../../shared/api/SourceApi';
 import { LocalStorage } from 'ng2-webstorage';
 import { MapService } from '../../shared/map/map.service';
@@ -28,7 +27,7 @@ import { CoordinateService } from '../../shared/service/coordinate.service';
   selector: 'laji-observation-form',
   templateUrl: './observation-form.component.html',
   styleUrls: ['./observation-form.component.css'],
-  providers: [CollectionApi, SourceApi],
+  providers: [SourceApi],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationFormComponent implements OnInit, OnDestroy {
