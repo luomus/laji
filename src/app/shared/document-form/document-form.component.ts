@@ -303,10 +303,9 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       })
       .filter((value) => value !== false)
       .switchMap(
-        data => data.formData.namedPlaceID ? this.namedPlaceService
+        data => (data.formData.namedPlaceID ? this.namedPlaceService
           .getNamedPlace(data.formData.namedPlaceID, this.userService.getToken())
-          .catch(() => Observable.of({})) : Observable.of(undefined),
-        (data, namedPace) => ({data, namedPace})
+          .catch(() => Observable.of({})) : Observable.of(undefined)).map(namedPace => ({data, namedPace})),
       )
       .switchMap(
         result => Observable.forkJoin(
@@ -326,8 +325,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
                 return lookup;
               }),
           (rights, annotations) => ({rights, annotations})
-        ),
-        (result, meta) => ({...result, ...meta})
+        ).map(meta => ({...result, ...meta}))
       )
       .subscribe(
         result => {

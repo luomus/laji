@@ -1,5 +1,4 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { ToastsManager } from 'ng2-toastr';
 import { CollectionApi } from './shared/api/CollectionApi';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -10,6 +9,8 @@ import { Meta, Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { LocalizeRouterService } from './locale/localize-router.service';
+import {ToastrService} from 'ngx-toastr';
+import {map, switchMap, tap} from 'rxjs/operators';
 
 declare const ga: Function;
 
@@ -39,7 +40,6 @@ export class AppComponent {
   constructor(
     router: Router,
     location: Location,
-    toastr: ToastsManager,
     viewContainerRef: ViewContainerRef,
     windowRef: WindowRef,
     title: Title,
@@ -50,7 +50,6 @@ export class AppComponent {
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.isEmbedded || false;
-    toastr.setRootViewContainerRef(viewContainerRef);
 
     translateService.use(localizeRouterService.getLocationLang());
 
@@ -77,12 +76,11 @@ export class AppComponent {
             });
 
           // Set page meta tags
-          this.getDeepestMeta(router.routerState.snapshot.root)
-            .map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
-            .switchMap(
-              meta => translateService.get(Object.keys(meta).map(key => meta[key])),
-              (meta, translations) => ({meta, translations})
-            )
+          this.getDeepestMeta(router.routerState.snapshot.root).pipe(
+            map(meta => ({description: MAIN_DESCRIPTION, ...meta})),
+            switchMap(meta => translateService.get(Object.keys(meta).map(key => meta[key])).pipe(
+              map(translations => ({meta, translations}))
+            )))
             .subscribe(data => {
               ALL_META_KEYS.map((key) => {
                 const propertySelector = `property='${key}'`;

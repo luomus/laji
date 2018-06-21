@@ -27,7 +27,6 @@ import {
 } from 'ngx-bootstrap';
 import { Ng2Webstorage } from 'ng2-webstorage';
 import { ViewerModule } from './+viewer/viewer.module';
-import { ToastModule } from 'ng2-toastr/src/toast.module';
 import { ForumComponent } from './forum/forum.component';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
@@ -37,6 +36,7 @@ import { FormPermissionModule } from './+haseka/form-permission/form-permission.
 import { environment } from '../environments/environment';
 import { DocumentService } from './shared-modules/own-submissions/service/document.service';
 import { NamedPlaceModule } from './shared-modules/named-place/named-place.module';
+import {ToastrModule} from 'ngx-toastr';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -65,7 +65,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     }),
     FormPermissionModule.forRoot(),
     NamedPlaceModule.forRoot(),
-    ToastModule.forRoot(),
+    ToastrModule.forRoot(),
     SharedModule.forRoot(),
     PaginationModule.forRoot(),
     ModalModule.forRoot(),

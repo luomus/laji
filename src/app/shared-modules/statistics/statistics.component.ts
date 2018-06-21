@@ -7,6 +7,7 @@ import { Document } from '../../shared/model/Document';
 import { Observable } from 'rxjs/Observable';
 import { NamedPlacesService } from '../named-place/named-places.service';
 import { NamedPlace } from '../../shared/model/NamedPlace';
+import {map, switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'laji-statistics',
@@ -33,17 +34,18 @@ export class StatisticsComponent implements OnInit {
 
   ngOnInit() {
     if (this.route.snapshot.params.documentID) {
-      this.documentApi.findById(this.route.snapshot.params.documentID, this.userService.getToken())
-        .switchMap((document: Document) => Observable.forkJoin(
-            this.formService.getForm(document.formID, 'fi'),
-            document.namedPlaceID ?
-              this.namedPlacesService
-                .getNamedPlace(document.namedPlaceID, this.userService.getToken())
-                .catch(() => Observable.of({})) :
-              Observable.of({}),
-            (form, ns) => ({form, ns})
-          ),
-          (document, formData) => ({form: formData.form, ns: formData.ns, document}))
+      this.documentApi.findById(this.route.snapshot.params.documentID, this.userService.getToken()).pipe(
+        switchMap((document: Document) => Observable.forkJoin(
+          this.formService.getForm(document.formID, 'fi'),
+          document.namedPlaceID ?
+            this.namedPlacesService
+              .getNamedPlace(document.namedPlaceID, this.userService.getToken())
+              .catch(() => Observable.of({})) :
+            Observable.of({}),
+          (form, ns) => ({form, ns})
+        ).pipe(
+          map(formData => ({form: formData.form, ns: formData.ns, document}))
+        )))
         .subscribe((data) => {
           this.document = data.document;
           this.form = data.form;

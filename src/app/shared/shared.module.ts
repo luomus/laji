@@ -1,5 +1,4 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { Http, HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -32,7 +31,6 @@ import { GalleryComponent } from '../+observation/gallery/gallery.component';
 import { AuthoritiesDirective } from './authorities/authorities.directive';
 import { UserService } from './service/user.service';
 import { NewsApi } from './api/NewsApi';
-import { ToastModule } from 'ng2-toastr';
 import { ToastsService } from './service/toasts.service';
 import { PersonTokenApi } from './api/PersonTokenApi';
 import { PersonApi } from './api/PersonApi';
@@ -46,7 +44,7 @@ import { MetadataApi } from './api/MetadataApi';
 import { Ng2Webstorage } from 'ng2-webstorage';
 import { FooterService } from './service/footer.service';
 import { AutocompleteApi } from './api/AutocompleteApi';
-import { AuthenticatedHttpService } from './service/authenticated-http.service';
+import { AuthenticatedHttpInterceptor } from './service/authenticated-http.interceptor';
 import { ImageComponent } from './image/image.component';
 import { ValuesPipe } from './pipe/values.pipe';
 import { CollectionService } from './service/collection.service';
@@ -95,10 +93,11 @@ import {FriendService} from './service/friend.service';
 import { DatePickerComponent } from './datepicker/datepicker.component'
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { FactNotInPipe } from './pipe/fact-not-in.pipe';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {LajiApiService} from './service/laji-api.service';
 import { PublicationApi } from './api/PublicationApi';
 import { PublicationService } from './service/publication.service';
+import {ToastrModule} from 'ngx-toastr';
 
 
 @NgModule({
@@ -117,10 +116,9 @@ import { PublicationService } from './service/publication.service';
     FactNotInPipe
   ],
   imports: [
-    ToastModule,
+    ToastrModule,
     FormsModule,
     CommonModule,
-    HttpModule,
     HttpClientModule,
     RouterModule,
     LangModule,
@@ -133,7 +131,7 @@ import { PublicationService } from './service/publication.service';
   ],
   providers: [ ], // keep this empty!
   exports: [
-    CommonModule, HttpModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent,
+    CommonModule, HttpClientModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent,
     AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe, LajiFormComponent, DocumentFormComponent,
     ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule, ProgressbarModule,
@@ -186,7 +184,11 @@ export class SharedModule {
         LajiApiService,
         PublicationApi,
         PublicationService,
-        {provide: Http, useClass: AuthenticatedHttpService}
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: AuthenticatedHttpInterceptor,
+          multi: true
+        }
       ]
     };
   }

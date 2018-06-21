@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import {ToastrService} from 'ngx-toastr';
 
 @Injectable()
 export class ToastsService {
 
   constructor(
-    private toastr: ToastsManager
+    private toastr: ToastrService
   ) {}
 
   getToests() {
@@ -30,7 +30,7 @@ export class ToastsService {
 
   private toast(type, message, title?: string, options?: Object) {
     if (!options) {
-      let time = 4000 + ((message + title).length * 100);
+      const time = 4000 + ((message + title).length * 100);
       options = {toastLife: time, showCloseButton: true};
     }
     this.toastr[type](message, title, options);

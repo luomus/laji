@@ -5,6 +5,7 @@ import { FormPermission } from '../../shared/model/FormPermission';
 import { Person } from '../../shared/model/Person';
 import { Form } from '../../shared/model/Form';
 import { UserService } from '../../shared/service/user.service';
+import {catchError, map, switchMap} from 'rxjs/operators';
 
 export interface Rights {
   edit: boolean;
@@ -107,12 +108,12 @@ export class FormPermissionService {
     if (!form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
       return Observable.of(notRestricted);
     }
-    return this.userSerivce.getUser()
-      .switchMap(
-        () => this.getFormPermission(form.collectionID, this.userSerivce.getToken()),
-        (person: Person, formPermission: FormPermission) => ({person, formPermission})
-      )
-      .switchMap(data => Observable.of(cb(data.formPermission, data.person)))
-      .catch(() => Observable.of(notLoggedIn));
+    return this.userSerivce.getUser().pipe(
+      switchMap((person: Person) => this.getFormPermission(form.collectionID, this.userSerivce.getToken()).pipe(
+        map((formPermission: FormPermission) => ({person, formPermission}))
+      )),
+      switchMap(data => Observable.of(cb(data.formPermission, data.person))),
+      catchError(() => Observable.of(notLoggedIn))
+    );
   }
 }

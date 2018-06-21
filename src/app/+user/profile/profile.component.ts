@@ -9,6 +9,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { environment } from '../../../environments/environment';
 import { Person } from '../../shared/model';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
+import {combineLatest, concatMap, map, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'laji-user',
@@ -47,26 +48,29 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subProfile = this.route.params
-      .do((_) => this.loading = true)
-      .map(params => params['userId'])
-      .combineLatest(this.userService.getUser(), (id, user) => ({id: id, currentUser: user}))
-      .flatMap((data) => {
-          const currentActive = data.currentUser.id === data.id;
-          const empty$ = Observable.of({});
-          const false$ = Observable.of(false);
-          return Observable.forkJoin(
-            data.currentUser.id ? this.personService.personFindProfileByToken(this.userService.getToken()).catch((e) => false$) : empty$,
-            currentActive ? false$ : this.personService.personFindProfileByUserId(data.id).catch((e) => empty$)
-          );
-        },
-        (data, profiles) => ({
-          id: data.id,
-          currentUser: data.currentUser,
-          currentProfile: profiles[0],
-          profile: profiles[1] || profiles[0]
-        })
-      )
+    this.subProfile = this.route.params.pipe(
+      tap(() => this.loading = true),
+      map(params => params['userId']),
+      concatMap((id) => this.userService.getUser().pipe(
+        map(user => ({id: id, currentUser: user}))
+      )),
+      concatMap(data => {
+        const currentActive = data.currentUser.id === data.id;
+        const empty$ = Observable.of({});
+        const false$ = Observable.of(false);
+        return Observable.forkJoin(
+          data.currentUser.id ? this.personService.personFindProfileByToken(this.userService.getToken()).catch((e) => false$) : empty$,
+          currentActive ? false$ : this.personService.personFindProfileByUserId(data.id).catch((e) => empty$)
+        ).pipe(
+          map(profiles => ({
+            id: data.id,
+            currentUser: data.currentUser,
+            currentProfile: profiles[0],
+            profile: profiles[1] || profiles[0]
+          }))
+        )
+      })
+    )
       .subscribe(
         data => {
           this.isCurrentUser = data.id === data.currentUser.id;
