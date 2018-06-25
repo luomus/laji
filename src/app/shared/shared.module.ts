@@ -31,7 +31,6 @@ import { GalleryComponent } from '../+observation/gallery/gallery.component';
 import { AuthoritiesDirective } from './authorities/authorities.directive';
 import { UserService } from './service/user.service';
 import { ToastsService } from './service/toasts.service';
-import { PersonTokenApi } from './api/PersonTokenApi';
 import { PersonApi } from './api/PersonApi';
 import { SearchQuery } from '../+observation/search-query.model';
 import { WarehouseApi } from './api/WarehouseApi';
@@ -90,7 +89,6 @@ import { FactNotInPipe } from './pipe/fact-not-in.pipe';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {LajiApiService} from './service/laji-api.service';
 import { PublicationService } from './service/publication.service';
-import {ToastrModule} from 'ngx-toastr';
 
 
 @NgModule({
@@ -109,7 +107,6 @@ import {ToastrModule} from 'ngx-toastr';
     FactNotInPipe
   ],
   imports: [
-    ToastrModule,
     FormsModule,
     CommonModule,
     HttpClientModule,
@@ -154,7 +151,7 @@ export class SharedModule {
         WindowRef,
         CoordinateService,
         ToastsService,
-        PersonTokenApi, PersonApi, SearchQuery, WarehouseApi,
+        PersonApi, SearchQuery, WarehouseApi,
         TaxonomyApi,
         AreaService,
         SourceService,

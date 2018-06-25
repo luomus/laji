@@ -14,6 +14,7 @@ import { TaxonomyApi } from '../api';
 import {UserService} from './user.service';
 import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
+import { forkJoin } from 'rxjs';
 
 @Injectable()
 export class TriplestoreLabelService {
@@ -130,40 +131,37 @@ export class TriplestoreLabelService {
         })
     };
 
-    const fromApi$ = Observable.combineLatest(
-      Observable.of('')
-        .mergeMap(() => this.metadataService.getAllRangesAsLookUp('multi')),
-      Observable.of('')
-        .mergeMap(() => cached(
-          TriplestoreLabelService.cacheProps,
-          this.metadataApi.metadataAllProperties('multi')
-            .retryWhen(errors => errors.delay(1000).take(2).concat(Observable.throw(errors)))
-            .map(data => {
-              const props = {};
-              if (data && data.results) {
-                data.results.map(property => {
-                  props[property['shortName']] = property.label || '';
-                  props[property['property']] = property.label || '';
-                });
-              }
+    const fromApi$ = forkJoin(
+      this.metadataService.getAllRangesAsLookUp('multi'),
+      cached(
+        TriplestoreLabelService.cacheProps,
+        this.metadataApi.metadataAllProperties('multi')
+          .retryWhen(errors => errors.delay(1000).take(2).concat(Observable.throw(errors)))
+          .map(data => {
+            const props = {};
+            if (data && data.results) {
+              data.results.map(property => {
+                props[property['shortName']] = property.label || '';
+                props[property['property']] = property.label || '';
+              });
+            }
 
-              return props;
-            })
-        )),
-      Observable.of('')
-        .mergeMap(() => cached(
-          TriplestoreLabelService.cacheClasses,
-          this.metadataApi.metadataAllClasses('multi')
-            .map(data => {
-              const classes = {};
-              if (data && data.results) {
-                data.results.map(classData => {
-                  classes[classData.class] = classData.label;
-                });
-              }
-              return classes;
-            })
-        ))
+            return props;
+          })
+      ),
+      cached(
+        TriplestoreLabelService.cacheClasses,
+        this.metadataApi.metadataAllClasses('multi')
+          .map(data => {
+            const classes = {};
+            if (data && data.results) {
+              data.results.map(classData => {
+                classes[classData.class] = classData.label;
+              });
+            }
+            return classes;
+          })
+      )
     );
 
     this.pending = fromApi$
