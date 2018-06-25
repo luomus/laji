@@ -3,13 +3,13 @@ import { Observable } from 'rxjs/Observable';
 import { LocalStorage } from 'ng2-webstorage';
 import { UserService } from './user.service';
 import { Util } from './util.service';
-import { FormApi } from '../api/FormApi';
 import { DocumentApi } from '../api/DocumentApi';
 import { Document } from '../model/Document';
 import { environment } from '../../../environments/environment';
 import * as deepmerge from 'deepmerge';
 import { Observer } from 'rxjs/Observer';
 import { DocumentService } from '../../shared-modules/own-submissions/service/document.service';
+import { LajiApi, LajiApiService } from './laji-api.service';
 
 
 @Injectable()
@@ -40,7 +40,7 @@ export class FormService {
   private _populate: any;
 
   constructor(
-    private formApi: FormApi,
+    private lajiApi: LajiApiService,
     private userService: UserService,
     private documentApi: DocumentApi,
     private documentService: DocumentService
@@ -172,7 +172,7 @@ export class FormService {
     if (this.formCache[formId]) {
       return Observable.of(this.formCache[formId]);
     } else if (!this.formPending[formId]) {
-      this.formPending[formId] = this.formApi.formFindById(formId, lang)
+      this.formPending[formId] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang})
         .do((schema) => this.formCache[formId] = schema)
         .share();
     }
@@ -192,7 +192,7 @@ export class FormService {
     if (this.jsonFormCache[formId]) {
       return Observable.of(this.jsonFormCache[formId]);
     } else {
-      return this.formApi.formFindById(formId, lang, 'json')
+      return this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang, format: 'json'})
         .do((jsonForm) => this.formCache[formId] = jsonForm);
     }
   }
@@ -201,7 +201,7 @@ export class FormService {
     this.setLang(lang);
     const form$ = this.formCache[formId] ?
       Observable.of(this.formCache[formId]) :
-      this.formApi.formFindById(formId, lang)
+      this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang})
         .do((schema) => {
           this.formCache[formId] = schema;
         });
@@ -255,7 +255,7 @@ export class FormService {
     this.setLang(lang);
     return this.allForms ?
       Observable.of(this.allForms) :
-      this.formApi.formFindAll(this.currentLang)
+      this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang})
         .map((forms) => forms.results.filter(form => this.isFormAllowed(form.id)))
         .do((forms) => this.allForms = forms);
   }

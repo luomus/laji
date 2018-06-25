@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import { AreaApi } from '../api/AreaApi';
+import { LajiApi, LajiApiService } from './laji-api.service';
 
 
 export enum AreaType {
@@ -22,7 +22,7 @@ export class AreaService {
   private currentLang;
   private pending: Observable<any>;
 
-  constructor(private areaApi: AreaApi) {
+  constructor(private lajiApi: LajiApiService) {
   }
 
   getAllAsLookUp(lang: string): Observable<any> {
@@ -41,8 +41,8 @@ export class AreaService {
         });
       }
     }
-    this.pending = this.areaApi
-      .findAll(lang, undefined, '1', '1000')
+    this.pending = this.lajiApi
+      .getList(LajiApi.Endpoints.areas, {lang, page: 1, pageSize: 1000})
       .map(paged => paged.results)
       .map(areas => {
         const lkObject = {};

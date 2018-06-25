@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AutocompleteApi } from '../../../shared/api/AutocompleteApi';
 import { Observable } from 'rxjs/Observable';
 import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 import { SpeciesFormQuery } from './species-form-query.interface';
 import { Subscription } from 'rxjs/Subscription';
+import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 
 @Component({
   selector: 'laji-species-form',
@@ -45,7 +45,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
   constructor(
     public translate: TranslateService,
-    private autocompleteService: AutocompleteApi
+    private lajiApi: LajiApiService
   ) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.formQuery.taxon);
@@ -79,8 +79,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   }
 
   public getTaxa(token: string, onlyFirstMatch = false): Observable<any> {
-    return this.autocompleteService.autocompleteFindByField({
-      field: 'taxon',
+    return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
       limit: onlyFirstMatch ? '1' : '' + this.limit,
       includePayload: true,

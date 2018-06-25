@@ -22,11 +22,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
 import { PagedResult } from '../model/PagedResult';
+import { HttpClient } from '@angular/common/http';
 
 
 'use strict';
@@ -34,9 +34,8 @@ import { PagedResult } from '../model/PagedResult';
 @Injectable()
 export class InformalTaxonGroupApi {
   protected basePath = '/api';
-  public defaultHeaders: Headers = new Headers();
 
-  constructor(protected http: Http) {
+  constructor(protected http: HttpClient) {
   }
 
   /**
@@ -49,34 +48,20 @@ export class InformalTaxonGroupApi {
   public informalTaxonGroupFind(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.InformalTaxonGroup>> {
     const path = this.basePath + '/informal-taxon-groups';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (page !== undefined) {
-      queryParameters.set('page', page);
+      queryParameters['page'] = page;
     }
 
     if (pageSize !== undefined) {
-      queryParameters.set('pageSize', pageSize);
+      queryParameters['pageSize'] = pageSize;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<PagedResult<models.InformalTaxonGroup>>(path, {params: queryParameters});
   }
 
   /**
@@ -89,30 +74,16 @@ export class InformalTaxonGroupApi {
     const path = this.basePath + '/informal-taxon-groups/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupFindById.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<models.InformalTaxonGroup>(path, {params: queryParameters});
   }
 
   /**
@@ -125,34 +96,20 @@ export class InformalTaxonGroupApi {
   public informalTaxonGroupFindRoots(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.InformalTaxonGroup>> {
     const path = this.basePath + '/informal-taxon-groups/roots';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (page !== undefined) {
-      queryParameters.set('page', page);
+      queryParameters['page'] = page;
     }
 
     if (pageSize !== undefined) {
-      queryParameters.set('pageSize', pageSize);
+      queryParameters['pageSize'] = pageSize;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<PagedResult<models.InformalTaxonGroup>>(path, {params: queryParameters});
   }
 
   /**
@@ -167,38 +124,24 @@ export class InformalTaxonGroupApi {
     const path = this.basePath + '/informal-taxon-groups/{id}/children'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetChildren.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (page !== undefined) {
-      queryParameters.set('page', page);
+      queryParameters['page'] = page;
     }
 
     if (pageSize !== undefined) {
-      queryParameters.set('pageSize', pageSize);
+      queryParameters['pageSize'] = pageSize;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<PagedResult<models.InformalTaxonGroup>>(path, {params: queryParameters});
   }
 
   /**
@@ -211,30 +154,16 @@ export class InformalTaxonGroupApi {
     const path = this.basePath + '/informal-taxon-groups/{id}/parents'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetChildren.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<models.InformalTaxonGroup[]>(path, {params: queryParameters});
   }
 
   /**
@@ -249,38 +178,24 @@ export class InformalTaxonGroupApi {
     const path = this.basePath + '/informal-taxon-groups/{id}/parentLevel'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetParentLevel.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (page !== undefined) {
-      queryParameters.set('page', page);
+      queryParameters['page'] = page;
     }
 
     if (pageSize !== undefined) {
-      queryParameters.set('pageSize', pageSize);
+      queryParameters['pageSize'] = pageSize;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<PagedResult<Array<models.InformalTaxonGroup>>>(path, {params: queryParameters});
   }
 
   /**
@@ -293,34 +208,20 @@ export class InformalTaxonGroupApi {
   public informalTaxonGroupGetTree(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.InformalTaxonGroup>> {
     const path = this.basePath + '/informal-taxon-groups/tree';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (page !== undefined) {
-      queryParameters.set('page', page);
+      queryParameters['page'] = page;
     }
 
     if (pageSize !== undefined) {
-      queryParameters.set('pageSize', pageSize);
+      queryParameters['pageSize'] = pageSize;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<PagedResult<models.InformalTaxonGroup>>(path, {params: queryParameters});
   }
 
   /**
@@ -335,38 +236,24 @@ export class InformalTaxonGroupApi {
     const path = this.basePath + '/informal-taxon-groups/{id}/siblings'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetWithSiblings.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (page !== undefined) {
-      queryParameters.set('page', page);
+      queryParameters['page'] = page;
     }
 
     if (pageSize !== undefined) {
-      queryParameters.set('pageSize', pageSize);
+      queryParameters['pageSize'] = pageSize;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<PagedResult<models.InformalTaxonGroup>>(path, {params: queryParameters});
   }
 
 }

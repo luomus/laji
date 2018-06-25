@@ -22,12 +22,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as models from '../model/index';
 import { PagedResult } from '../model/PagedResult';
 import { TaxonomyImage } from '../model/Taxonomy';
+import { HttpClient } from '@angular/common/http';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
@@ -36,9 +36,8 @@ import { TaxonomyImage } from '../model/Taxonomy';
 @Injectable()
 export class TaxonomyApi {
   protected basePath = '/api';
-  public defaultHeaders: Headers = new Headers();
 
-  constructor(protected http: Http) {
+  constructor(protected http: HttpClient) {
   }
 
   /**
@@ -51,35 +50,16 @@ export class TaxonomyApi {
     const path = this.basePath + '/taxa/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling taxonomyFindBySubject.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
-    if (extraHttpRequestParams) {
-      Object.keys(extraHttpRequestParams)
-        .map(key => queryParameters.set(key, extraHttpRequestParams[key]));
-    }
-
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get(path, {params: queryParameters});
   }
 
 
@@ -89,35 +69,16 @@ export class TaxonomyApi {
   public bold(scientificName: string, extraHttpRequestParams?: any): Observable<Array<models.Taxonomy>> {
     const path = this.basePath + '/taxa/bold';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'id' is not null or undefined
     if (scientificName === null || scientificName === undefined) {
       throw new Error('Required parameter scientificName was null or undefined when calling bold.');
     }
     if (scientificName !== undefined) {
-      queryParameters.set('scientificName', scientificName);
+      queryParameters['scientificName'] = scientificName;
     }
 
-    if (extraHttpRequestParams) {
-      Object.keys(extraHttpRequestParams)
-        .map(key => queryParameters.set(key, extraHttpRequestParams[key]));
-    }
-
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<models.Taxonomy[]>(path, {params: queryParameters});
   }
 
   /**
@@ -131,40 +92,20 @@ export class TaxonomyApi {
     const path = this.basePath + '/taxa/{id}/children'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling taxonomyFindChildren.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (maxLevel !== undefined) {
-      queryParameters.set('maxLevel', maxLevel);
+      queryParameters['maxLevel'] = maxLevel;
     }
 
-
-    if (extraHttpRequestParams) {
-      Object.keys(extraHttpRequestParams)
-        .map(key => queryParameters.set(key, extraHttpRequestParams[key]));
-    }
-
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<models.Taxonomy[]>(path, {params: queryParameters});
   }
 
   /**
@@ -176,33 +117,19 @@ export class TaxonomyApi {
   public taxonomyFindDescriptions(id: string, lang?: string, langFallback?: boolean, extraHttpRequestParams?: any): Observable<Array<any>> {
     const path = `${this.basePath}/taxa/${id}/descriptions?blacklist=eol%3Aapi`;
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling taxonomyFindDescriptions.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
     if (langFallback !== undefined) {
-      queryParameters.set('langFallback', langFallback ? 'true' : 'false');
+      queryParameters['langFallback'] = langFallback;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<any[]>(path, {params: queryParameters});
   }
 
   /**
@@ -214,30 +141,16 @@ export class TaxonomyApi {
   public taxonomyFindMedia(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<TaxonomyImage>> {
     const path = `${this.basePath}/taxa/${id}/media?blacklist=eol%3Aapi`;
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling taxonomyFindMedia.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<TaxonomyImage[]>(path, {params: queryParameters});
   }
 
   /**
@@ -250,30 +163,16 @@ export class TaxonomyApi {
     const path = this.basePath + '/taxa/{id}/parents'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling taxonomyFindParents.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<models.Taxonomy[]>(path, {params: queryParameters});
   }
 
   /**
@@ -294,70 +193,48 @@ export class TaxonomyApi {
     const path = this.basePath + '/taxa/{id}/species'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling taxonomyFindSpecies.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (informalGroupFilters !== undefined) {
-      queryParameters.set('informalGroupFilters', informalGroupFilters);
+      queryParameters['informalGroupFilters'] = informalGroupFilters
     }
 
     if (adminStatusFilters !== undefined) {
-      queryParameters.set('adminStatusFilters', adminStatusFilters);
+      queryParameters['adminStatusFilters'] = adminStatusFilters
     }
 
     if (redListStatusFilters !== undefined) {
-      queryParameters.set('redListStatusFilters', redListStatusFilters);
+      queryParameters['redListStatusFilters'] = redListStatusFilters
     }
 
     if (typesOfOccurrenceFilters !== undefined) {
-      queryParameters.set('typesOfOccurrenceFilters', typesOfOccurrenceFilters);
+      queryParameters['typesOfOccurrenceFilters'] = typesOfOccurrenceFilters
     }
 
     if (invasiveSpeciesFilter !== undefined) {
-      queryParameters.set('invasiveSpeciesFilter', invasiveSpeciesFilter ? 'true' : 'false');
+      queryParameters['invasiveSpeciesFilter'] = invasiveSpeciesFilter
     }
 
     if (page !== undefined) {
-      queryParameters.set('page', page);
+      queryParameters['page'] = page
     }
 
     if (pageSize !== undefined) {
-      queryParameters.set('pageSize', pageSize);
+      queryParameters['pageSize'] = pageSize
     }
 
     if (sortOrder !== undefined) {
-      queryParameters.set('sortOrder', sortOrder);
+      queryParameters['sortOrder'] = sortOrder
     }
 
-    if (extraHttpRequestParams !== undefined) {
-      for(const key in extraHttpRequestParams) {
-        if (extraHttpRequestParams.hasOwnProperty(key)) {
-          queryParameters.set(key, extraHttpRequestParams[key]);
-        }
-      }
-    }
-
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<PagedResult<models.Taxonomy>>(path, {params: queryParameters});
   }
 
   /**
@@ -370,38 +247,24 @@ export class TaxonomyApi {
   public taxonomySearch(query: string, limit?: string, checklist?: string, extraHttpRequestParams?: any): Observable<models.LajiTaxonSearch> {
     const path = this.basePath + '/taxa/search';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'query' is not null or undefined
     if (query === null || query === undefined) {
       throw new Error('Required parameter query was null or undefined when calling taxonomySearch.');
     }
     if (query !== undefined) {
-      queryParameters.set('query', query);
+      queryParameters['query'] = query
     }
 
     if (limit !== undefined) {
-      queryParameters.set('limit', limit);
+      queryParameters['limit'] = limit
     }
 
     if (checklist !== undefined) {
-      queryParameters.set('checklist', checklist);
+      queryParameters['checklist'] = checklist
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get(path, {params: queryParameters});
   }
 
 }

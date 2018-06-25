@@ -7,10 +7,8 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
-import { SourceApi } from '../../shared/api/SourceApi';
 import { LocalStorage } from 'ng2-webstorage';
 import { MapService } from '../../shared/map/map.service';
 import { WindowRef } from '../../shared/windows-ref';
@@ -22,12 +20,12 @@ import { FormService } from '../../shared/service/form.service';
 import { environment } from '../../../environments/environment';
 import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
 import { CoordinateService } from '../../shared/service/coordinate.service';
+import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 
 @Component({
   selector: 'laji-observation-form',
   templateUrl: './observation-form.component.html',
   styleUrls: ['./observation-form.component.css'],
-  providers: [SourceApi],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationFormComponent implements OnInit, OnDestroy {
@@ -72,7 +70,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
               private route: Router,
               private cd: ChangeDetectorRef,
               private userService: UserService,
-              private autocompleteService: AutocompleteApi,
+              private lajiApi: LajiApiService,
               private formService: FormService,
               private formPermissionService: FormPermissionService,
               private coordinateService: CoordinateService,
@@ -92,8 +90,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   public getTaxa(token: string, onlyFirstMatch = false): Observable<any> {
-    return this.autocompleteService.autocompleteFindByField({
-        field: 'taxon',
+    return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
         q: token,
         limit: onlyFirstMatch ? '1' : '' + this.limit,
         includePayload: true,

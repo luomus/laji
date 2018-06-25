@@ -22,20 +22,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
 import { PagedResult } from '../model/PagedResult';
+import { HttpClient } from '@angular/common/http';
 
 'use strict';
 
 @Injectable()
 export class DocumentApi {
   protected basePath = '/api';
-  public defaultHeaders: Headers = new Headers({'Content-Type': 'application/json'});
 
-  constructor(protected http: Http) {
+  constructor(protected http: HttpClient) {
   }
 
   /**
@@ -47,8 +46,7 @@ export class DocumentApi {
   public create(data: models.Document, userToken: string, extraHttpRequestParams?: any): Observable<models.Document> {
     const path = this.basePath + '/documents';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'data' is not null or undefined
     if (data === null || data === undefined) {
       throw new Error('Required parameter data was null or undefined when calling documentCreateWithUser.');
@@ -58,30 +56,10 @@ export class DocumentApi {
       throw new Error('Required parameter personToken was null or undefined when calling documentCreateWithUser.');
     }
     if (userToken !== undefined) {
-      queryParameters.set('personToken', userToken);
+      queryParameters['personToken'] = userToken;
     }
 
-    if (typeof extraHttpRequestParams === 'object') {
-      Object.keys(extraHttpRequestParams).map((key) => {
-        queryParameters.set(key, extraHttpRequestParams[key]);
-      })
-    }
-
-    let requestOptions: RequestOptionsArgs = {
-      method: 'POST',
-      headers: headerParams,
-      search: queryParameters
-    };
-    requestOptions.body = JSON.stringify(data);
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.post<models.Document>(path, data, {params: queryParameters});
   }
 
   /**
@@ -94,8 +72,7 @@ export class DocumentApi {
     const path = this.basePath + '/documents/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling documentFindByIdWithUser.');
@@ -105,23 +82,10 @@ export class DocumentApi {
       throw new Error('Required parameter personToken was null or undefined when calling documentFindByIdWithUser.');
     }
     if (userToken !== undefined) {
-      queryParameters.set('personToken', userToken);
+      queryParameters['personToken'] = userToken;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<models.Document>(path, {params: queryParameters});
   }
 
   /**
@@ -134,48 +98,28 @@ export class DocumentApi {
   public findAll(userToken: string, page?: string, pageSize?: string, observationYear?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Document>> {
     const path = this.basePath + '/documents';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'personToken' is not null or undefined
     if (userToken === null || userToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling documentFindWithUser.');
     }
     if (page !== undefined) {
-      queryParameters.set('page', page);
+      queryParameters['page'] = page;
     }
 
     if (pageSize !== undefined) {
-      queryParameters.set('pageSize', pageSize);
+      queryParameters['pageSize'] = pageSize;
     }
 
     if (userToken !== undefined) {
-      queryParameters.set('personToken', userToken);
+      queryParameters['personToken'] = userToken;
     }
 
     if (observationYear !== undefined) {
-      queryParameters.set('observationYear', observationYear);
+      queryParameters['observationYear'] = observationYear;
     }
 
-    if (typeof extraHttpRequestParams === 'object') {
-      Object.keys(extraHttpRequestParams).map((key) => {
-        queryParameters.set(key, extraHttpRequestParams[key]);
-      })
-    }
-
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<PagedResult<models.Document>>(path, {params: queryParameters});
   }
 
   /**
@@ -189,8 +133,7 @@ export class DocumentApi {
     const path = this.basePath + '/documents/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');
@@ -204,24 +147,10 @@ export class DocumentApi {
       throw new Error('Required parameter personToken was null or undefined when calling documentUpdateWithUser.');
     }
     if (userToken !== undefined) {
-      queryParameters.set('personToken', userToken);
+      queryParameters['personToken'] = userToken;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'PUT',
-      headers: headerParams,
-      search: queryParameters
-    };
-    requestOptions.body = JSON.stringify(data);
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.put<models.Document>(path, data, {params: queryParameters});
   }
 
   /**
@@ -231,52 +160,25 @@ export class DocumentApi {
   public countByYear(userToken: string, extraHttpRequestParams?: any): Observable<any> {
     const path = this.basePath + '/documents/count/byYear';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
 
     // verify required parameter 'personToken' is not null or undefined
     if (userToken === null || userToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling documentFindByYearWithUser.');
     }
     if (userToken !== undefined) {
-      queryParameters.set('personToken', userToken);
+      queryParameters['personToken'] = userToken;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get(path, {params: queryParameters});
   }
 
   public validate(data: models.Document, extraHttpRequestParams?: any ): Observable<any> {
     const path = this.basePath + `/documents/validate`;
 
-    const queryParameters = new URLSearchParams();
-    const headerParams = this.defaultHeaders;
-    if (typeof extraHttpRequestParams === 'object') {
-      Object.keys(extraHttpRequestParams).map((key) => {
-        queryParameters.set(key, extraHttpRequestParams[key]);
-      })
-    }
+    const queryParameters = {...extraHttpRequestParams};
 
-    const requestOptions: RequestOptionsArgs = {
-      method: 'POST',
-      headers: headerParams,
-      search: queryParameters
-    };
-    requestOptions.body = JSON.stringify(data);
-
-    return this.http.request(path, requestOptions)
+    return this.http.post(path, data, {params: queryParameters})
       .map((response: Response) => {
         if (response.status === 204) {
           return undefined;
@@ -289,29 +191,16 @@ export class DocumentApi {
   public delete(id: string, personToken: string, extraHttpRequestParams?: any ): Observable<any> {
     const path = this.basePath + `/documents/${id}`;
 
-    const queryParameters = new URLSearchParams();
-    const headerParams = this.defaultHeaders;
+    const queryParameters = {...extraHttpRequestParams};
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');
     }
     if (personToken === null || personToken === undefined) {
       throw new Error('Required parameter personToken was null.');
     }
-    queryParameters.set('personToken', personToken);
+    queryParameters['personToken'] = personToken;
 
-    const requestOptions: RequestOptionsArgs = {
-      method: 'DELETE',
-      headers: headerParams,
-      search: queryParameters
-    };
 
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.delete(path, {params: queryParameters});
   }
 }

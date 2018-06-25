@@ -1,12 +1,12 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
-import { FeedbackApi } from '../api/FeedbackApi';
 import { UserService } from '../service/user.service';
 import { SessionStorage } from 'ng2-webstorage';
 import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
 import { WindowRef } from '../windows-ref';
+import { LajiApi, LajiApiService } from '../service/laji-api.service';
 
 @Component({
   selector: 'laji-feedback',
@@ -31,7 +31,7 @@ export class FeedbackComponent {
   constructor(
     public userService: UserService,
     public translate: TranslateService,
-    private feedbackApi: FeedbackApi,
+    private lajiApi: LajiApiService,
     private toastsService: ToastsService,
     private location: Location,
     private windowsRef: WindowRef
@@ -53,7 +53,11 @@ export class FeedbackComponent {
     }
     const meta = this.getMeta();
     this.userService.getUser()
-      .switchMap(user => this.feedbackApi.send({subject, message, meta}, user.emailAddress ? this.userService.getToken() : undefined))
+      .switchMap(user => this.lajiApi.post(
+        LajiApi.Endpoints.feedback,
+        {subject, message, meta},
+        {personToken: user.emailAddress ? this.userService.getToken() : undefined})
+      )
       .subscribe(
         () => {
           this.feedback = {

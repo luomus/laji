@@ -1,4 +1,5 @@
-/* tslint:disable */
+/* tslint:disable:no-unused-variable member-ordering max-line-length */
+
 /**
  * API documentation
  * To use this api you need an access token.  To getList the token, send a post request with your email address to api-users resource and one will be send to your. Each endpoint bellow has more information on how to use this API. If you have any questions you can contact us at helpdesk@laji.fi.  You can find more documentation here: [in Finnish](https://beta.laji.fi/about/806), in English (todo). Please refer to [schema.laji.fi](http://schema.laji.fi/) for information about the used vocabulary.  Endpoints Observations and collections * Warehouse - Warehouse API * Collection - Collection metadata * Source - Informatin sources (IT systems) * Annotation - Quality control   Taxonomy * Taxa - Taxonomy API * InformalTaxonGroup - Informal taxon groups are used in taxa and warehouse endpoints * Publication - Scientific publications * Checklist - Mainly you only work with one checklits: the FinBIF master checklist. There are others.   Other master data * Metadata - Variable descriptions * Area - Countries, Finnish municipalities, biogeographical provinces, etc. * Person - Information about people.   Helpers * APIUser - Register as an API user * Autocomplete - For making an autocomplete filed for taxa, collections or persons (friends) * PersonToken - Information about an authorized person   Vihko observation system * Form - Form definition * Document - Document instance of a form * Image - Image of a document   Laji.fi portal * Feedback - Feedback form API * Information - CMS content of information pages * Logger - Error logging from user's browsers to FinBIF * News - News
@@ -12,45 +13,20 @@
  */
 
 import { Injectable } from '@angular/core';
-import {
-  Headers,
-  Http,
-  RequestMethod,
-  RequestOptions,
-  RequestOptionsArgs,
-  Response,
-  URLSearchParams
-} from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 
 import * as models from '../model';
 import { FormPermission } from '../model/FormPermission';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
-/* tslint:disable:no-unused-variable member-ordering */
 
 
 @Injectable()
 export class FormPermissionApi {
     protected basePath = '/api';
-    public defaultHeaders: Headers = new Headers();
 
-    constructor(protected http: Http) {
-    }
-
-    /**
-     *
-     * Extends object by coping non-existing properties.
-     * @param objA object to be extended
-     * @param objB source object
-     */
-    private extendObj<T1, T2>(objA: T1, objB: T2) {
-        for (let key in objB){
-            if(objB.hasOwnProperty(key)) {
-                (objA as any)[key] = (objB as any)[key];
-            }
-        }
-        return <T1&T2>objA;
+    constructor(protected http: HttpClient) {
     }
 
     /**
@@ -62,7 +38,7 @@ export class FormPermissionApi {
      */
     public acceptRequest(collectionID: string, personID: string, personToken: string, type?: FormPermission.Type, extraHttpRequestParams?: any): Observable<models.FormPermission> {
         return this.acceptRequestWithHttpInfo(collectionID, personID, personToken, type, extraHttpRequestParams)
-            .map((response: Response) => {
+            .map((response: HttpResponse) => {
                 if (response.status === 204) {
                     return undefined;
                 } else {
@@ -79,7 +55,7 @@ export class FormPermissionApi {
      */
     public findByCollectionID(collectionID: string, personToken?: string, extraHttpRequestParams?: any): Observable<models.FormPermission> {
         return this.findByCollectionIDWithHttpInfo(collectionID, personToken, extraHttpRequestParams)
-            .map((response: Response) => {
+            .map((response: HttpResponse) => {
                 if (response.status === 204) {
                     return undefined;
                 } else {
@@ -96,7 +72,7 @@ export class FormPermissionApi {
      */
     public requestAccess(collectionID: string, personToken: string, extraHttpRequestParams?: any): Observable<models.FormPermission> {
         return this.requestAccessWithHttpInfo(collectionID, personToken, extraHttpRequestParams)
-            .map((response: Response) => {
+            .map((response: HttpResponse) => {
                 if (response.status === 204) {
                     return undefined;
                 } else {
@@ -114,7 +90,7 @@ export class FormPermissionApi {
      */
     public revokeAccess(collectionID: string, personID: string, personToken: string, extraHttpRequestParams?: any): Observable<models.FormPermission> {
         return this.revokeAccessWithHttpInfo(collectionID, personID, personToken, extraHttpRequestParams)
-            .map((response: Response) => {
+            .map((response: HttpResponse) => {
                 if (response.status === 204) {
                     return undefined;
                 } else {
@@ -135,8 +111,7 @@ export class FormPermissionApi {
     public acceptRequestWithHttpInfo(collectionID: string, personID: string, personToken: string, type?: FormPermission.Type, extraHttpRequestParams?: any): Observable<Response> {
         const path = this.basePath + `/formPermissions/${collectionID}/${personID}`;
 
-        let queryParameters = new URLSearchParams();
-        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        const queryParameters = {...extraHttpRequestParams};
         // verify required parameter 'collectionID' is not null or undefined
         if (collectionID === null || collectionID === undefined) {
             throw new Error('Required parameter collectionID was null or undefined when calling formPermissionAcceptRequest.');
@@ -150,43 +125,13 @@ export class FormPermissionApi {
             throw new Error('Required parameter personToken was null or undefined when calling formPermissionAcceptRequest.');
         }
         if (personToken !== undefined) {
-            queryParameters.set('personToken', <any>personToken);
+            queryParameters['personToken'] = personToken;
         }
         if (type !== undefined) {
-            queryParameters.set('type', <any>type);
+            queryParameters['type'] = type;
         }
 
-
-        // to determine the Content-Type header
-        let consumes: string[] = [
-            'application/json',
-            'application/x-www-form-urlencoded',
-            'application/xml',
-            'text/xml'
-        ];
-
-        // to determine the Accept header
-        let produces: string[] = [
-            'application/json',
-            'application/xml',
-            'text/xml',
-            'application/javascript',
-            'text/javascript'
-        ];
-
-
-        let requestOptions: RequestOptionsArgs = new RequestOptions({
-            method: RequestMethod.Put,
-            headers: headers,
-            search: queryParameters
-        });
-
-        // https://github.com/swagger-api/swagger-codegen/issues/4037
-        if (extraHttpRequestParams) {
-            requestOptions = this.extendObj(requestOptions, extraHttpRequestParams);
-        }
-
-        return this.http.request(path, requestOptions);
+        return this.http.put(path, undefined, {params: queryParameters});
     }
 
     /**
@@ -195,53 +140,19 @@ export class FormPermissionApi {
      * @param collectionID collection id
      * @param personToken person token
      */
-    public findByCollectionIDWithHttpInfo(collectionID: string, personToken?: string, extraHttpRequestParams?: any): Observable<Response> {
+    public findByCollectionIDWithHttpInfo(collectionID: string, personToken?: string, extraHttpRequestParams?: any): Observable<HttpResponse> {
         const path = this.basePath + `/formPermissions/${collectionID}`;
 
-        let queryParameters = new URLSearchParams();
-        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        const queryParameters = {...extraHttpRequestParams};
         // verify required parameter 'collectionID' is not null or undefined
         if (collectionID === null || collectionID === undefined) {
             throw new Error('Required parameter collectionID was null or undefined when calling formPermissionFindByCollectionID.');
         }
         if (personToken !== undefined) {
-            queryParameters.set('personToken', <any>personToken);
+            queryParameters['personToken'] = personToken;
         }
 
-
-        // to determine the Content-Type header
-        let consumes: string[] = [
-            'application/json',
-            'application/x-www-form-urlencoded',
-            'application/xml',
-            'text/xml'
-        ];
-
-        // to determine the Accept header
-        let produces: string[] = [
-            'application/json',
-            'application/xml',
-            'text/xml',
-            'application/javascript',
-            'text/javascript'
-        ];
-
-
-
-
-
-        let requestOptions: RequestOptionsArgs = new RequestOptions({
-            method: RequestMethod.Get,
-            headers: headers,
-            search: queryParameters
-        });
-
-        // https://github.com/swagger-api/swagger-codegen/issues/4037
-        if (extraHttpRequestParams) {
-            requestOptions = this.extendObj(requestOptions, extraHttpRequestParams);
-        }
-
-        return this.http.request(path, requestOptions);
+        return this.http.get(path, {params: queryParameters});
     }
 
     /**
@@ -250,11 +161,10 @@ export class FormPermissionApi {
      * @param collectionID collection id
      * @param personToken person token for the one who is requesting access
      */
-    public requestAccessWithHttpInfo(collectionID: string, personToken: string, extraHttpRequestParams?: any): Observable<Response> {
+    public requestAccessWithHttpInfo(collectionID: string, personToken: string, extraHttpRequestParams?: any): Observable<HttpResponse> {
         const path = this.basePath + `/formPermissions/${collectionID}`;
 
-        let queryParameters = new URLSearchParams();
-        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        const queryParameters = {...extraHttpRequestParams};
         // verify required parameter 'collectionID' is not null or undefined
         if (collectionID === null || collectionID === undefined) {
             throw new Error('Required parameter collectionID was null or undefined when calling formPermissionRequestAccess.');
@@ -264,43 +174,10 @@ export class FormPermissionApi {
             throw new Error('Required parameter personToken was null or undefined when calling formPermissionRequestAccess.');
         }
         if (personToken !== undefined) {
-            queryParameters.set('personToken', <any>personToken);
+            queryParameters['personToken'] = personToken;
         }
 
-
-        // to determine the Content-Type header
-        let consumes: string[] = [
-            'application/json',
-            'application/x-www-form-urlencoded',
-            'application/xml',
-            'text/xml'
-        ];
-
-        // to determine the Accept header
-        let produces: string[] = [
-            'application/json',
-            'application/xml',
-            'text/xml',
-            'application/javascript',
-            'text/javascript'
-        ];
-
-
-
-
-
-        let requestOptions: RequestOptionsArgs = new RequestOptions({
-            method: RequestMethod.Post,
-            headers: headers,
-            search: queryParameters
-        });
-
-        // https://github.com/swagger-api/swagger-codegen/issues/4037
-        if (extraHttpRequestParams) {
-            requestOptions = this.extendObj(requestOptions, extraHttpRequestParams);
-        }
-
-        return this.http.request(path, requestOptions);
+        return this.http.post(path, undefined, {params: queryParameters});
     }
 
     /**
@@ -310,11 +187,10 @@ export class FormPermissionApi {
      * @param personID Person id
      * @param personToken person token who is authorised to revoke access to form
      */
-    public revokeAccessWithHttpInfo(collectionID: string, personID: string, personToken: string, extraHttpRequestParams?: any): Observable<Response> {
+    public revokeAccessWithHttpInfo(collectionID: string, personID: string, personToken: string, extraHttpRequestParams?: any): Observable<HttpResponse> {
         const path = this.basePath + `/formPermissions/${collectionID}/${personID}`;
 
-        let queryParameters = new URLSearchParams();
-        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        const queryParameters = {...extraHttpRequestParams};
         // verify required parameter 'collectionID' is not null or undefined
         if (collectionID === null || collectionID === undefined) {
             throw new Error('Required parameter collectionID was null or undefined when calling formPermissionRevokeAccess.');
@@ -328,43 +204,10 @@ export class FormPermissionApi {
             throw new Error('Required parameter personToken was null or undefined when calling formPermissionRevokeAccess.');
         }
         if (personToken !== undefined) {
-            queryParameters.set('personToken', <any>personToken);
+            queryParameters['personToken'] = personToken;
         }
 
-
-        // to determine the Content-Type header
-        let consumes: string[] = [
-            'application/json',
-            'application/x-www-form-urlencoded',
-            'application/xml',
-            'text/xml'
-        ];
-
-        // to determine the Accept header
-        let produces: string[] = [
-            'application/json',
-            'application/xml',
-            'text/xml',
-            'application/javascript',
-            'text/javascript'
-        ];
-
-
-
-
-
-        let requestOptions: RequestOptionsArgs = new RequestOptions({
-            method: RequestMethod.Delete,
-            headers: headers,
-            search: queryParameters
-        });
-
-        // https://github.com/swagger-api/swagger-codegen/issues/4037
-        if (extraHttpRequestParams) {
-            requestOptions = this.extendObj(requestOptions, extraHttpRequestParams);
-        }
-
-        return this.http.request(path, requestOptions);
+        return this.http.delete(path, {params: queryParameters, observe: 'response'});
     }
 
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {AutocompleteApi} from '../api/AutocompleteApi';
 import {Autocomplete} from '../model';
 import {Observable} from 'rxjs/Observable';
 import {UserService} from './user.service';
+import { LajiApi, LajiApiService } from './laji-api.service';
 
 @Injectable()
 export class FriendService {
@@ -10,7 +10,7 @@ export class FriendService {
   private friends: Autocomplete[];
 
   constructor(
-    private autocompleteApi: AutocompleteApi,
+    private lajiApi: LajiApiService,
     private userService: UserService
   ) { }
 
@@ -21,9 +21,8 @@ export class FriendService {
     if (!this.userService.isLoggedIn) {
       return Observable.of([]);
     }
-    return this.autocompleteApi
-      .autocompleteFindByField({
-        field: 'friends',
+    return this.lajiApi
+      .get(LajiApi.Endpoints.autocomplete, 'friends', {
         includeSelf: true,
         personToken: this.userService.getToken()
       })

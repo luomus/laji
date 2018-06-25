@@ -30,20 +30,17 @@ import { ToFullUriPipe } from './pipe/to-full-uri';
 import { GalleryComponent } from '../+observation/gallery/gallery.component';
 import { AuthoritiesDirective } from './authorities/authorities.directive';
 import { UserService } from './service/user.service';
-import { NewsApi } from './api/NewsApi';
 import { ToastsService } from './service/toasts.service';
 import { PersonTokenApi } from './api/PersonTokenApi';
 import { PersonApi } from './api/PersonApi';
 import { SearchQuery } from '../+observation/search-query.model';
 import { WarehouseApi } from './api/WarehouseApi';
-import { FeedbackApi } from './api/FeedbackApi';
 import { LoggerApi } from './api/LoggerApi';
 import { WarehouseValueMappingService } from './service/warehouse-value-mapping.service';
 import { TriplestoreLabelService } from './service/triplestore-label.service';
 import { MetadataApi } from './api/MetadataApi';
 import { Ng2Webstorage } from 'ng2-webstorage';
 import { FooterService } from './service/footer.service';
-import { AutocompleteApi } from './api/AutocompleteApi';
 import { AuthenticatedHttpInterceptor } from './service/authenticated-http.interceptor';
 import { ImageComponent } from './image/image.component';
 import { ValuesPipe } from './pipe/values.pipe';
@@ -51,13 +48,10 @@ import { CollectionService } from './service/collection.service';
 import { CollectionNamePipe } from './pipe/collection-name.pipe';
 import { AreaService } from './service/area.service';
 import { AreaNamePipe } from './pipe/area-name.pipe';
-import { AreaApi } from './api/AreaApi';
 import { SourceService } from './service/source.service';
-import { SourceApi } from './api/SourceApi';
 import { MetadataService } from './service/metadata.service';
 import { ImageModalOverlayComponent } from './image-gallery/image-modal-overlay.component';
 import { NamedPlaceApi } from './api/NamedPlaceApi';
-import { FormApi } from './api/FormApi';
 import { DocumentApi } from './api/DocumentApi';
 import { LajiFormComponent } from './form/laji-form.component';
 import { OnlyLoggedIn } from './route/only-logged-in';
@@ -95,7 +89,6 @@ import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { FactNotInPipe } from './pipe/fact-not-in.pipe';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {LajiApiService} from './service/laji-api.service';
-import { PublicationApi } from './api/PublicationApi';
 import { PublicationService } from './service/publication.service';
 import {ToastrModule} from 'ngx-toastr';
 
@@ -151,10 +144,8 @@ export class SharedModule {
         InformalTaxonGroupApi,
         LajiExternalService,
         UserService,
-        NewsApi,
         FormService,
         CacheService,
-        FormApi,
         DocumentApi,
         NamedPlaceApi,
         NewsService,
@@ -165,12 +156,12 @@ export class SharedModule {
         ToastsService,
         PersonTokenApi, PersonApi, SearchQuery, WarehouseApi,
         TaxonomyApi,
-        AreaApi, AreaService,
-        SourceApi, SourceService,
-        FeedbackApi, LoggerApi,
+        AreaService,
+        SourceService,
+        LoggerApi,
         MetadataService,
         WarehouseValueMappingService, TriplestoreLabelService, MetadataApi,
-        AutocompleteApi, FooterService, Ng2Webstorage,
+        FooterService, Ng2Webstorage,
         DateFormatPipe,
         FormattedNumber,
         ToQNamePipe,
@@ -182,7 +173,6 @@ export class SharedModule {
         TaxonNamePipe,
         ToQNamePipe,
         LajiApiService,
-        PublicationApi,
         PublicationService,
         {
           provide: HTTP_INTERCEPTORS,

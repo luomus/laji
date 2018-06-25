@@ -1,5 +1,4 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { CollectionApi } from './shared/api/CollectionApi';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { WindowRef } from './shared/windows-ref';

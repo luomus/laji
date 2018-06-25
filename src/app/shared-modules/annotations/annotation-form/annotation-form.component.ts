@@ -4,8 +4,8 @@ import { MetadataService } from '../../../shared/service/metadata.service';
 import { AnnotationService } from '../../../+viewer/service/annotation.service';
 import { Observable } from 'rxjs/Observable';
 import { Logger } from '../../../shared/logger/logger.service';
-import { AutocompleteApi } from '../../../shared/api/AutocompleteApi';
 import { TranslateService } from '@ngx-translate/core';
+import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 
 
 @Component({
@@ -42,7 +42,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     private metadataService: MetadataService,
     private annotationService: AnnotationService,
     private loggerService: Logger,
-    private autocompleteService: AutocompleteApi,
+    private lajiApi: LajiApiService,
     private translate: TranslateService
   ) { }
 
@@ -54,8 +54,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
   }
 
   public getTaxa(token: string): Observable<any> {
-    return this.autocompleteService.autocompleteFindByField({
-      field: 'taxon',
+    return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
       limit: '10',
       includePayload: true,

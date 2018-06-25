@@ -1,3 +1,4 @@
+/* tslint:disable:no-unused-variable member-ordering */
 /**
  * API documentation
  * To use this api you need an access token. To getList the token, send a post request with your email address to
@@ -24,19 +25,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Log, Status } from '../model/Log';
-
-/* tslint:disable:no-unused-variable member-ordering */
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class LoggerApi {
   protected basePath = '/api';
-  public defaultHeaders: Headers = new Headers({'Content-Type': 'application/json'});
 
-  constructor(protected http: Http) {
+  constructor(protected http: HttpClient) {
   }
 
   protected serializer() {
@@ -78,23 +76,9 @@ export class LoggerApi {
   public logError (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/error';
 
-    const queryParameters = new URLSearchParams();
-    const headerParams = this.defaultHeaders;
-    const requestOptions: RequestOptionsArgs = {
-      method: 'POST',
-      headers: headerParams,
-      search: queryParameters
-    };
-    requestOptions.body = JSON.stringify(data, this.serializer());
+    const queryParameters = {...extraHttpRequestParams};
 
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.post(path, JSON.stringify(data, this.serializer()), {params: queryParameters});
   }
 
   /**
@@ -105,23 +89,9 @@ export class LoggerApi {
   public logInfo (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/info';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
-    let requestOptions: RequestOptionsArgs = {
-      method: 'POST',
-      headers: headerParams,
-      search: queryParameters
-    };
-    requestOptions.body = JSON.stringify(data);
+    const queryParameters = {...extraHttpRequestParams};
 
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.post(path, JSON.stringify(data, this.serializer()), {params: queryParameters});
   }
 
   /**
@@ -132,26 +102,12 @@ export class LoggerApi {
   public logStatus (minutesBack?: number, extraHttpRequestParams?: any ): Observable<Status> {
     const path = this.basePath + '/logger/status';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...extraHttpRequestParams};
     if (minutesBack !== undefined) {
       queryParameters.set('minutesBack', '' + minutesBack);
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<Status>(path, {params: queryParameters});
   }
 
   /**
@@ -162,23 +118,9 @@ export class LoggerApi {
   public logWarn (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/warn';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
-    let requestOptions: RequestOptionsArgs = {
-      method: 'POST',
-      headers: headerParams,
-      search: queryParameters
-    };
-    requestOptions.body = JSON.stringify(data);
+    const queryParameters = {...extraHttpRequestParams};
 
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.post(path, JSON.stringify(data, this.serializer()), {params: queryParameters});
   }
 
 }

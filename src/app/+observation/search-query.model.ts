@@ -281,13 +281,13 @@ export class SearchQuery {
     return result;
   }
 
-  public getURLSearchParams(queryParameters?: URLSearchParams, skipParams: string[] = []): URLSearchParams {
+  public getURLSearchParams(queryParameters?: object, skipParams: string[] = []): object {
     if (!queryParameters) {
-      queryParameters = new URLSearchParams();
+      queryParameters = {};
     }
     const query = this.getQueryObject(skipParams, false);
     Object.keys(query).map((key) => {
-      queryParameters.set(key, query[key]);
+      queryParameters[key] = query[key];
     });
 
     return queryParameters;

@@ -11,7 +11,6 @@ import {
 } from './index';
 import { SharedModule } from '../shared/shared.module';
 import { AlertModule } from 'ngx-bootstrap';
-import { FormApi } from '../shared/api/FormApi';
 import { DocumentApi } from '../shared/api/DocumentApi';
 import { NamedPlaceModule } from '../shared-modules/named-place/named-place.module';
 import { FormPermissionModule } from './form-permission/form-permission.module';
@@ -32,7 +31,7 @@ import { FormCategorySurveyComponent } from './form-list/form-category-survey/fo
     OwnSubmissionsModule,
     StatisticsModule,
     FormPermissionModule],
-  providers: [ FormApi, DocumentApi ],
+  providers: [ DocumentApi ],
   declarations: [
     HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
     ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent,

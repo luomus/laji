@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {AutocompleteApi, AutocompleteMatchType} from '../../shared/api/AutocompleteApi';
 import {TranslateService} from '@ngx-translate/core';
 import {Autocomplete} from '../../shared/model/index';
+import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 
 @Component({
   selector: 'laji-taxon-autocomplete',
@@ -29,7 +29,7 @@ export class TaxonAutocompleteComponent {
   loading = false;
 
   constructor(
-    private autocompleteService: AutocompleteApi,
+    private lajiApi: LajiApiService,
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef
   ) {
@@ -62,13 +62,12 @@ export class TaxonAutocompleteComponent {
   getTaxa(token: string, onlyExact = false): Observable<any> {
     this.loading = true;
     this.cdr.markForCheck();
-    return this.autocompleteService.autocompleteFindByField({
-      field: 'taxon',
+    return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
       limit: '' + this.limit,
       includePayload: true,
       lang: this.translateService.currentLang,
-      matchType: AutocompleteMatchType.partial,
+      matchType: LajiApi.AutocompleteMatchType.partial,
       informalTaxonGroup: this.informalTaxonGroup,
       onlyFinnish: this.onlyFinnish
     })

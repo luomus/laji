@@ -1,6 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { SearchQuery } from '../+observation/search-query.model';
-import { NewsApi } from '../shared/api/NewsApi';
 import { TranslateService } from '@ngx-translate/core';
 import {environment} from '../../environments/environment.vir';
 import {WarehouseQueryInterface} from '../shared/model/WarehouseQueryInterface';
@@ -9,8 +8,7 @@ import {SourceService} from '../shared/service/source.service';
 @Component({
   selector: 'laji-home',
   providers: [
-    SearchQuery,
-    NewsApi
+    SearchQuery
   ],
   styleUrls: ['./home.component.css'],
   templateUrl: './home.component.html',

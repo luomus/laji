@@ -17,6 +17,7 @@ import { Subject } from 'rxjs/Subject';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { LocalDb } from '../local-db/local-db.abstract';
 import { environment } from '../../../environments/environment';
+import { LajiApi, LajiApiService } from './laji-api.service';
 
 export const USER_INFO = '[user]: info';
 export const USER_LOGOUT_ACTION = '[user]: logout';
@@ -52,7 +53,7 @@ export class UserService extends LocalDb {
     + '&next=' + next).replace('%lang%', lang);
   }
 
-  constructor(private tokenService: PersonTokenApi,
+  constructor(private lajiApi: LajiApiService,
               private userService: PersonApi,
               private router: Router,
               private location: Location,
@@ -85,7 +86,7 @@ export class UserService extends LocalDb {
     if (this.token === '' || this.subLogout) {
       return;
     }
-    this.subLogout = this.tokenService.personTokenDeleteToken(this.token)
+    this.subLogout = this.lajiApi.remove(LajiApi.Endpoints.personToken, this.token)
       .catch(err => {
         if (err.status === 404) {
           return Observable.of(null);

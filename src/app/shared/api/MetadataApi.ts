@@ -22,20 +22,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as models from '../model';
 import { PagedResult } from '../model/PagedResult';
+import { HttpClient } from '@angular/common/http';
 
 'use strict';
 
 @Injectable()
 export class MetadataApi {
   protected basePath = '/api';
-  public defaultHeaders: Headers = new Headers();
 
-  constructor(protected http: Http) {
+  constructor(protected http: HttpClient) {
   }
 
   /**
@@ -46,26 +45,12 @@ export class MetadataApi {
   public metadataAllClasses(lang?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Metadata>> {
     const path = this.basePath + '/metadata/classes';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<PagedResult<models.Metadata>>(path, {params: queryParameters});
   }
 
   /**
@@ -76,26 +61,12 @@ export class MetadataApi {
   public metadataAllProperties(lang?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Property>> {
     const path = this.basePath + '/metadata/properties';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<PagedResult<models.Property>>(path, {params: queryParameters});
   }
 
   /**
@@ -107,30 +78,16 @@ export class MetadataApi {
   public metadataFindAllRanges(lang?: string, asLookupObject?: boolean, extraHttpRequestParams?: any): Observable<any> {
     const path = this.basePath + '/metadata/ranges';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (asLookupObject !== undefined) {
-      queryParameters.set('asLookupObject', asLookupObject ? 'true' : 'false');
+      queryParameters['asLookupObject'] = asLookupObject;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get(path, {params: queryParameters});
   }
 
   /**
@@ -143,30 +100,16 @@ export class MetadataApi {
     const path = this.basePath + '/metadata/classes/{class}'
         .replace('{' + 'class' + '}', String(_class));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter '_class' is not null or undefined
     if (_class === null || _class === undefined) {
       throw new Error('Required parameter _class was null or undefined when calling metadataFindClass.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get(path, {params: queryParameters});
   }
 
   /**
@@ -179,30 +122,16 @@ export class MetadataApi {
     const path = this.basePath + '/metadata/classes/{class}/properties'
         .replace('{' + 'class' + '}', String(_class));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter '_class' is not null or undefined
     if (_class === null || _class === undefined) {
       throw new Error('Required parameter _class was null or undefined when calling metadataFindClassProperties.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get(path, {params: queryParameters});
   }
 
   /**
@@ -216,34 +145,20 @@ export class MetadataApi {
     const path = this.basePath + '/metadata/classes/{class}/ranges'
         .replace('{' + 'class' + '}', String(_class));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter '_class' is not null or undefined
     if (_class === null || _class === undefined) {
       throw new Error('Required parameter _class was null or undefined when calling metadataFindClassRanges.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (asLookupObject !== undefined) {
-      queryParameters.set('asLookupObject', asLookupObject ? 'true' : 'false');
+      queryParameters['asLookupObject'] = asLookupObject;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get(path, {params: queryParameters});
   }
 
   /**
@@ -258,38 +173,24 @@ export class MetadataApi {
     const path = this.basePath + '/metadata/properties/{property}/ranges'
         .replace('{' + 'property' + '}', String(property));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'property' is not null or undefined
     if (property === null || property === undefined) {
       throw new Error('Required parameter property was null or undefined when calling metadataFindPropertiesRanges.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (asLookupObject !== undefined) {
-      queryParameters.set('asLookupObject', asLookupObject ? 'true' : 'false');
+      queryParameters['asLookupObject'] = asLookupObject;
     }
 
     if (classTypeAsList !== undefined) {
-      queryParameters.set('classTypeAsList', classTypeAsList ? 'true' : 'false');
+      queryParameters['classTypeAsList'] = classTypeAsList;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get(path, {params: queryParameters});
   }
 
   /**
@@ -302,30 +203,16 @@ export class MetadataApi {
     const path = this.basePath + '/metadata/properties/{property}'
         .replace('{' + 'property' + '}', String(property));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'property' is not null or undefined
     if (property === null || property === undefined) {
       throw new Error('Required parameter property was null or undefined when calling metadataFindProperty.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<models.Property>(path, {params: queryParameters});
   }
 
   /**
@@ -339,34 +226,20 @@ export class MetadataApi {
     const path = this.basePath + '/metadata/ranges/{range}'
         .replace('{' + 'range' + '}', String(range));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {...extraHttpRequestParams};
     // verify required parameter 'range' is not null or undefined
     if (range === null || range === undefined) {
       throw new Error('Required parameter range was null or undefined when calling metadataFindRange.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (asLookupObject !== undefined) {
-      queryParameters.set('asLookupObject', asLookupObject ? 'true' : 'false');
+      queryParameters['asLookupObject'] = asLookupObject;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get(path, {params: queryParameters});
   }
 
 }
