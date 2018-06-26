@@ -47,21 +47,6 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
   lajiMapOptions: LajiMapOptions;
   perKmTerms: LineTransectChartTerms = {
     upper: {
-      slope: -0.1233,
-      term: 116.921
-    },
-    middle: {
-      slope: -0.1233,
-      term: 104.4
-    },
-    lower: {
-      slope: -0.1233,
-      term: 91.84713
-    }
-  };
-
-  onMainTerms: LineTransectChartTerms = {
-    upper: {
       slope: -0.279,
       term: 221.88
     },
@@ -72,6 +57,21 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     lower: {
       slope: -0.2791,
       term: 260.897
+    }
+  };
+
+  onMainTerms: LineTransectChartTerms = {
+    upper: {
+      slope: -0.1233,
+      term: 116.921
+    },
+    middle: {
+      slope: -0.1233,
+      term: 104.4
+    },
+    lower: {
+      slope: -0.1233,
+      term: 91.84713
     }
   };
   warnings: {message: string; cnt: number}[] = [];

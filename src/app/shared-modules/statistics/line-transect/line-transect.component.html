@@ -61,6 +61,7 @@
       <div class="col-sm-12" style="height: 250px">
         <laji-line-transect-chart
           [terms]="onMainTerms"
+          [yRange]="[0, 50]"
           [xValue]="ykj10kmN"
           [yValue]="counts.onPsPros"
           [title]="'Pääsarkaprosentti'"
@@ -73,7 +74,6 @@
       <div class="col-sm-12" style="height: 250px; margin-top: 15px;">
         <laji-line-transect-chart
           [terms]="perKmTerms"
-          [yRange]="[0, 50]"
           [xValue]="ykj10kmN"
           [yValue]="counts.couplesPerKm"
           [title]="'Parihavaintoja / km'"
