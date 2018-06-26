@@ -6,7 +6,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  Output,
+  Output, SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
@@ -114,7 +114,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       this.color = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
     }
     this.lastQuery = JSON.stringify(this.query);
-    this.updateMapData();
     this.initColorScale();
     this.lang = this.translate.currentLang;
     this.subLang = this.translate.onLangChange.subscribe(() => {
@@ -123,9 +122,12 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     this.decorator.lang = this.translate.currentLang;
-    this.updateMapData();
+    // First change is triggered by tile layer change event from the laji-map
+    if (changes['query'] && !changes['query'].firstChange) {
+      this.updateMapData();
+    }
     this.initLegendTopMargin();
     this.initLegend();
   }
@@ -206,8 +208,8 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     const shouldLimit = ['googleSatellite', 'openStreetMap'].indexOf(layer) === -1;
     if (this.limitResults !== shouldLimit) {
       this.limitResults = shouldLimit;
-      this.updateMapData();
     }
+    this.updateMapData();
   }
 
   private initColorScale() {

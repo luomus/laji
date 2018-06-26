@@ -49,6 +49,37 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   private yAxis: any;
   private d3Loaded = false;
 
+  // Add stuff here from createChart() that need to be updated dynamically.
+  // TODO transition animations
+  private updates = {
+    'axis axis-y': () => this.chart.append('g')
+      .call(d3.svg.axis().scale(this.yScale).orient('left')),
+    '_grid-lines': () => {
+      const yGridlinesAxis = d3.svg.axis().scale(this.yScale).orient('left');
+      const yGridlineNodes = this.chart.append('g')
+        .call(yGridlinesAxis.tickSize(-this.width, 0, 0).tickFormat(''));
+      this.styleGridlineNodes(yGridlineNodes);
+      return yGridlineNodes;
+    },
+    'line-data': () => {
+      if (!this.line) {
+        return;
+      }
+      const line = d3.svg.line()
+        .x(([column]) => this.xScale(column))
+        .y(([column, value]) => this.yScale(value));
+      return this.chart.append('path')
+        .attr({
+          'fill': 'none',
+          'stroke': 'steelblue',
+          'stroke-linejoin': 'round',
+          'stroke-linecap': 'round',
+          'stroke-width': 1.5,
+          'd': line(this.line)
+        });
+    }
+  };
+
   constructor(
     element: ElementRef,
     private scriptService: ScriptService,
@@ -160,34 +191,6 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
       .call(svgXAxis);
   }
 
-  // Add stuff here from createChart() that need to be updated dynamically.
-  // TODO transition animations
-  updates = {
-    'axis axis-y': () => this.chart.append('g')
-      .call(d3.svg.axis().scale(this.yScale).orient('left')),
-    '_grid-lines': () => {
-      const yGridlinesAxis = d3.svg.axis().scale(this.yScale).orient('left');
-      const yGridlineNodes = this.chart.append('g')
-        .call(yGridlinesAxis.tickSize(-this.width, 0, 0).tickFormat(''));
-      this.styleGridlineNodes(yGridlineNodes);
-      return yGridlineNodes;
-    },
-    'line-data': () => {
-      const line = d3.svg.line()
-        .x(([column]) => this.xScale(column))
-        .y(([column, value]) => this.yScale(value));
-      return this.chart.append('path')
-        .attr({
-          'fill': 'none',
-          'stroke': 'steelblue',
-          'stroke-linejoin': 'round',
-          'stroke-linecap': 'round',
-          'stroke-width': 1.5,
-          'd': line(this.line)
-        });
-    }
-  }
-
   updateChart() {
     this.yScale = d3.scale.linear().domain([this.yRange[1], this.yRange[0]]).range([0, this.height]);
     Object.keys(this.updates).forEach(className => {
@@ -205,17 +208,17 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
       const update = this.chart.selectAll('.mark')
         .data([[this.xValue, this.yValue]]);
 
-      // remove exiting bars
+      // remove exiting point
       update.exit().remove();
 
-      // update existing bars
+      // update existing point
       this.chart.selectAll('.mark').transition()
         .attr({
           cx: (d) => this.xScale(d[0]),
           cy: (d) => this.yScale(d[1])
         });
 
-      // add new bars
+      // add new pint
       update
         .enter()
         .append('circle')
