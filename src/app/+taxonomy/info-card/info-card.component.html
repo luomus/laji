@@ -121,6 +121,14 @@
               </ul>
             </div>
           </div>
+          <div *ngIf="taxon && taxon['skosExactMatch'] && false" class="panel panel-default">
+            <div class="panel-heading" role="tab">
+              <h4 class="panel-title">{{ 'taxonomy.taxonConcept' | translate }}</h4>
+            </div>
+            <div class="panel-body">
+              <laji-taxon-concept-info [taxon]="taxon"></laji-taxon-concept-info>
+            </div>
+          </div>
         </div>
         <div *ngIf="isFromMasterChecklist" [ngClass]="{
               'col-sm-6': !hasDescription && ((hasCollectionImages || hasTaxonImages) || (!hasCollectionImages && !hasTaxonImages)),
