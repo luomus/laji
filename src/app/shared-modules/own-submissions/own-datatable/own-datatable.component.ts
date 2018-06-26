@@ -23,7 +23,7 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { DocumentService } from '../service/document.service';
 import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
-import { TriplestoreLabelService } from '../../../shared/service';
+import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 
 
 @Component({

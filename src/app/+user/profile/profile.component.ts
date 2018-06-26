@@ -7,9 +7,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Logger } from '../../shared/logger/logger.service';
 import { environment } from '../../../environments/environment';
-import { Person } from '../../shared/model';
+import { Person } from '../../shared/model/Person';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import {combineLatest, concatMap, map, tap} from 'rxjs/operators';
+import { concatMap, map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-user',

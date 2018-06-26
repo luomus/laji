@@ -24,7 +24,8 @@
  */
 
 'use strict';
-import * as models from './index';
+
+import { InformationItem } from './InformationItem';
 
 export interface Information {
 
@@ -43,7 +44,7 @@ export interface Information {
 
   modified?: string;
 
-  children?: Array<models.InformationItem>;
+  children?: Array<InformationItem>;
 
-  parents?: Array<models.InformationItem>;
+  parents?: Array<InformationItem>;
 }

@@ -6,8 +6,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-
-import * as models from './index';
+import { GatheringEvent } from './GatheringEvent';
+import { Gatherings } from './Gatherings';
 
 export interface Document {
     /**
@@ -156,12 +156,12 @@ export interface Document {
     /**
      * instance of gatheringEvent
      */
-    gatheringEvent?: models.GatheringEvent;
+    gatheringEvent?: GatheringEvent;
 
     /**
      * Array of gatherings
      */
-    gatherings?: Array<models.Gatherings>;
+    gatherings?: Array<Gatherings>;
 
     /**
      * You can include additonal comment by separating them with colon, e.g. \\\"AY123456:comments here\\\"

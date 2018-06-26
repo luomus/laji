@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormField, VALUE_IGNORE} from '../../../model/form-field';
 import {NamedPlacesService} from '../../../../../shared-modules/named-place/named-places.service';
-import {UserService} from '../../../../../shared/service';
+import {UserService} from '../../../../../shared/service/user.service';
 import {MappingService} from '../../../service/mapping.service';
 
 @Component({

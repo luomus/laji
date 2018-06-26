@@ -25,8 +25,8 @@
 import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import * as models from '../model';
 import { PagedResult } from '../model/PagedResult';
+import { Collection } from '../model/Collection';
 
 @Injectable()
 export class CollectionApi {
@@ -44,7 +44,7 @@ export class CollectionApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findAll(lang?: string, idIn?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Collection>> {
+  public findAll(lang?: string, idIn?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Collection>> {
     const path = this.basePath + '/collections';
 
     let queryParameters = new URLSearchParams();
@@ -87,7 +87,7 @@ export class CollectionApi {
    * @param id
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
-  public findById(id: string, lang?: string, extraHttpRequestParams?: any): Observable<models.Collection> {
+  public findById(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Collection> {
     const path = this.basePath + '/collections/{id}'
         .replace('{' + 'id' + '}', String(id));
 
@@ -125,7 +125,7 @@ export class CollectionApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findChildren(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Collection>>> {
+  public findChildren(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<Collection>>> {
     const path = this.basePath + '/collections/{id}/children'
         .replace('{' + 'id' + '}', String(id));
 
@@ -170,7 +170,7 @@ export class CollectionApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findRoots(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Collection>>> {
+  public findRoots(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<Collection>>> {
     const path = this.basePath + '/collections/roots';
 
     let queryParameters = new URLSearchParams();

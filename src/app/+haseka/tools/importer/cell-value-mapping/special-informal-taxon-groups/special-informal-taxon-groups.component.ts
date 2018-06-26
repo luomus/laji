@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormField, VALUE_IGNORE } from '../../../model/form-field';
 import { MappingService } from '../../../service/mapping.service';
-import { UserService } from '../../../../../shared/service';
+import { UserService } from '../../../../../shared/service/user.service';
 import { InformalTaxonGroupApi } from '../../../../../shared/api/InformalTaxonGroupApi';
 import { TranslateService } from '@ngx-translate/core';
 

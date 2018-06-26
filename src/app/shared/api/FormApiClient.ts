@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RequestOptionsArgs } from '@angular/http';
-import { HttpParamsOptions } from '@angular/common/http/src/params';
 import { map } from 'rxjs/operators';
+import { Util } from '../service/util.service';
 
 @Injectable()
 export class FormApiClient {
@@ -32,7 +31,7 @@ export class FormApiClient {
   public fetch(resource: string, query: any, options?: {method?: string, body?: any, headers?: {[header: string]: string | string[]}}): Promise<any> {
     const path = this.basePath + resource;
 
-    const queryParameters = {...query};
+    const queryParameters = {...Util.removeUndefinedFromObject(query)};
 
     if (this._lang !== undefined) {
       queryParameters['lang'] = this._lang;

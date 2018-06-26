@@ -24,8 +24,10 @@
  */
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import * as models from '../model';
 import { HttpClient } from '@angular/common/http';
+import { Util } from '../service/util.service';
+import { Profile } from '../model/Profile';
+import { Person } from '../model/Person';
 
 'use strict';
 
@@ -42,12 +44,12 @@ export class PersonApi {
    * @param token User token
    * @param userId Accept this user as a person
    */
-  public personAcceptFriendRequest(token: string, userId: string, extraHttpRequestParams?: any): Observable<models.Profile> {
+  public personAcceptFriendRequest(token: string, userId: string, extraHttpRequestParams?: any): Observable<Profile> {
     const path = this.basePath + '/person/{token}/friends/{userId}'
         .replace('{' + 'token' + '}', String(token))
         .replace('{' + 'userId' + '}', String(userId));
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personAcceptFriendRequest.');
@@ -71,7 +73,7 @@ export class PersonApi {
         .replace('{' + 'token' + '}', String(token))
         .replace('{' + 'profileKey' + '}', String(profileKey));
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personAddFriendRequest.');
@@ -90,11 +92,11 @@ export class PersonApi {
    * @param profile
    * @param token
    */
-  public personCreateProfileByToken(profile: models.Profile, token: string, extraHttpRequestParams?: any): Observable<models.Profile> {
+  public personCreateProfileByToken(profile: Profile, token: string, extraHttpRequestParams?: any): Observable<Profile> {
     const path = this.basePath + '/person/{token}/profile'
         .replace('{' + 'token' + '}', String(token));
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'profile' is not null or undefined
     if (profile === null || profile === undefined) {
       throw new Error('Required parameter profile was null or undefined when calling personCreateProfileByToken.');
@@ -111,11 +113,11 @@ export class PersonApi {
    *
    * @param token
    */
-  public personFindByToken(token: string, extraHttpRequestParams?: any): Observable<models.Person> {
+  public personFindByToken(token: string, extraHttpRequestParams?: any): Observable<Person> {
     const path = this.basePath + '/person/{token}'
         .replace('{' + 'token' + '}', String(token));
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personFindByToken.');
@@ -129,11 +131,11 @@ export class PersonApi {
    *
    * @param id
    */
-  public personFindByUserId(id: string, extraHttpRequestParams?: any): Observable<models.Person> {
+  public personFindByUserId(id: string, extraHttpRequestParams?: any): Observable<Person> {
     const path = this.basePath + '/person/by-id/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling personFindByUserId.');
@@ -147,11 +149,11 @@ export class PersonApi {
    *
    * @param id
    */
-  public personFindProfileByUserId(id: string, extraHttpRequestParams?: any): Observable<models.Profile> {
+  public personFindProfileByUserId(id: string, extraHttpRequestParams?: any): Observable<Profile> {
     const path = this.basePath + '/person/by-id/{id}/profile'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling personFindByUserId.');
@@ -165,11 +167,11 @@ export class PersonApi {
    *
    * @param token
    */
-  public personFindProfileByToken(token: string, extraHttpRequestParams?: any): Observable<models.Profile> {
+  public personFindProfileByToken(token: string, extraHttpRequestParams?: any): Observable<Profile> {
     const path = this.basePath + '/person/{token}/profile'
         .replace('{' + 'token' + '}', String(token));
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personFindProfileByToken.');
@@ -185,12 +187,12 @@ export class PersonApi {
    * @param userId Accept this user as a person
    * @param block if the removed person should be blocked also
    */
-  public personRemoveFriend(token: string, userId: string, block: boolean = false, extraHttpRequestParams?: any): Observable<models.Profile> {
+  public personRemoveFriend(token: string, userId: string, block: boolean = false, extraHttpRequestParams?: any): Observable<Profile> {
     const path = this.basePath + '/person/{token}/friends/{userId}'
         .replace('{' + 'token' + '}', String(token))
         .replace('{' + 'userId' + '}', String(userId));
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personRemoveFriend.');
@@ -212,11 +214,11 @@ export class PersonApi {
    * @param profile
    * @param token
    */
-  public personUpdateProfileByToken(profile: models.Profile, token: string, extraHttpRequestParams?: any): Observable<models.Profile> {
+  public personUpdateProfileByToken(profile: Profile, token: string, extraHttpRequestParams?: any): Observable<Profile> {
     const path = this.basePath + '/person/{token}/profile'
         .replace('{' + 'token' + '}', String(token));
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'profile' is not null or undefined
     if (profile === null || profile === undefined) {
       throw new Error('Required parameter profile was null or undefined when calling personUpdateProfileByToken.');

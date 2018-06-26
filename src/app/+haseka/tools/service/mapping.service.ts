@@ -4,7 +4,7 @@ import { LajiExternalService } from '../../../shared/service/laji-external.servi
 import { FormField, VALUE_IGNORE } from '../model/form-field';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
-import { InformalTaxonGroup } from '../../../shared/model';
+import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 
 export enum SpecialTypes {

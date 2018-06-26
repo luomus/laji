@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import { AreaType } from '../../../../shared/service/area.service';
-import { WarehouseApi } from '../../../../shared/api';
-import {PagedResult, WarehouseQueryInterface} from '../../../../shared/model';
+import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
+import {PagedResult } from '../../../../shared/model/PagedResult';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {ObservationListService} from '../../../../shared-modules/observation-result/service/observation-list.service';

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
-import { isArray } from 'util';
 
 @Component({
   selector: 'laji-level',
@@ -29,9 +28,9 @@ export class LevelComponent implements OnInit, OnChanges {
 
   keyType(key) {
     if (this.subLevels.indexOf(key) > -1) {
-      return isArray(this.item[key]) ? 'subArray' : 'subObject';
+      return Array.isArray(this.item[key]) ? 'subArray' : 'subObject';
     }
-    return isArray(this.item[key]) ? 'array' : (typeof this.item[key] === 'object' ? 'object' : 'other');
+    return Array.isArray(this.item[key]) ? 'array' : (typeof this.item[key] === 'object' ? 'object' : 'other');
   }
 
   initDocument() {

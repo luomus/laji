@@ -6,7 +6,7 @@ import { DocumentFormComponent } from '../../../shared/document-form/document-fo
 import { ComponentCanDeactivate } from '../../../shared/document-form/document-de-activate.guard';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { FormService } from '../../../shared/service/form.service';
-import {ToastsService} from '../../../shared/service';
+import {ToastsService} from '../../../shared/service/toasts.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({

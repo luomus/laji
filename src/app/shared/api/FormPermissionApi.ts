@@ -16,9 +16,9 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
-import * as models from '../model';
 import { FormPermission } from '../model/FormPermission';
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Util } from '../service/util.service';
 
 
 
@@ -36,9 +36,9 @@ export class FormPermissionApi {
      * @param personID Person id
      * @param personToken person token who is authorised to accept requests
      */
-    public acceptRequest(collectionID: string, personID: string, personToken: string, type?: FormPermission.Type, extraHttpRequestParams?: any): Observable<models.FormPermission> {
+    public acceptRequest(collectionID: string, personID: string, personToken: string, type?: FormPermission.Type, extraHttpRequestParams?: any): Observable<FormPermission> {
         return this.acceptRequestWithHttpInfo(collectionID, personID, personToken, type, extraHttpRequestParams)
-            .map((response: HttpResponse<models.FormPermission>) => {
+            .map((response: HttpResponse<FormPermission>) => {
                 if (response.status === 204) {
                     return undefined;
                 } else {
@@ -53,9 +53,9 @@ export class FormPermissionApi {
      * @param collectionID collection id
      * @param personToken person token
      */
-    public findByCollectionID(collectionID: string, personToken?: string, extraHttpRequestParams?: any): Observable<models.FormPermission> {
+    public findByCollectionID(collectionID: string, personToken?: string, extraHttpRequestParams?: any): Observable<FormPermission> {
         return this.findByCollectionIDWithHttpInfo(collectionID, personToken, extraHttpRequestParams)
-            .map((response: HttpResponse<models.FormPermission>) => {
+            .map((response: HttpResponse<FormPermission>) => {
                 if (response.status === 204) {
                     return undefined;
                 } else {
@@ -70,9 +70,9 @@ export class FormPermissionApi {
      * @param collectionID collection id
      * @param personToken person token for the one who is requesting access
      */
-    public requestAccess(collectionID: string, personToken: string, extraHttpRequestParams?: any): Observable<models.FormPermission> {
+    public requestAccess(collectionID: string, personToken: string, extraHttpRequestParams?: any): Observable<FormPermission> {
         return this.requestAccessWithHttpInfo(collectionID, personToken, extraHttpRequestParams)
-            .map((response: HttpResponse<models.FormPermission>) => {
+            .map((response: HttpResponse<FormPermission>) => {
                 if (response.status === 204) {
                     return undefined;
                 } else {
@@ -88,9 +88,9 @@ export class FormPermissionApi {
      * @param personID Person id
      * @param personToken person token who is authorised to revoke access to form
      */
-    public revokeAccess(collectionID: string, personID: string, personToken: string, extraHttpRequestParams?: any): Observable<models.FormPermission> {
+    public revokeAccess(collectionID: string, personID: string, personToken: string, extraHttpRequestParams?: any): Observable<FormPermission> {
         return this.revokeAccessWithHttpInfo(collectionID, personID, personToken, extraHttpRequestParams)
-            .map((response: HttpResponse<models.FormPermission>) => {
+            .map((response: HttpResponse<FormPermission>) => {
                 if (response.status === 204) {
                     return undefined;
                 } else {
@@ -108,10 +108,10 @@ export class FormPermissionApi {
      * @param personToken person token who is authorised to accept requests
      * @param type type of permission granted
      */
-    public acceptRequestWithHttpInfo(collectionID: string, personID: string, personToken: string, type?: FormPermission.Type, extraHttpRequestParams?: any): Observable<HttpResponse<models.FormPermission>> {
+    public acceptRequestWithHttpInfo(collectionID: string, personID: string, personToken: string, type?: FormPermission.Type, extraHttpRequestParams?: any): Observable<HttpResponse<FormPermission>> {
         const path = this.basePath + `/formPermissions/${collectionID}/${personID}`;
 
-        const queryParameters = {...extraHttpRequestParams};
+        const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
         // verify required parameter 'collectionID' is not null or undefined
         if (collectionID === null || collectionID === undefined) {
             throw new Error('Required parameter collectionID was null or undefined when calling formPermissionAcceptRequest.');
@@ -131,7 +131,7 @@ export class FormPermissionApi {
             queryParameters['type'] = type;
         }
 
-        return this.http.put<models.FormPermission>(path, undefined, {params: queryParameters, observe: 'response'});
+        return this.http.put<FormPermission>(path, undefined, {params: queryParameters, observe: 'response'});
     }
 
     /**
@@ -140,10 +140,10 @@ export class FormPermissionApi {
      * @param collectionID collection id
      * @param personToken person token
      */
-    public findByCollectionIDWithHttpInfo(collectionID: string, personToken?: string, extraHttpRequestParams?: any): Observable<HttpResponse<models.FormPermission>> {
+    public findByCollectionIDWithHttpInfo(collectionID: string, personToken?: string, extraHttpRequestParams?: any): Observable<HttpResponse<FormPermission>> {
         const path = this.basePath + `/formPermissions/${collectionID}`;
 
-        const queryParameters = {...extraHttpRequestParams};
+        const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
         // verify required parameter 'collectionID' is not null or undefined
         if (collectionID === null || collectionID === undefined) {
             throw new Error('Required parameter collectionID was null or undefined when calling formPermissionFindByCollectionID.');
@@ -152,7 +152,7 @@ export class FormPermissionApi {
             queryParameters['personToken'] = personToken;
         }
 
-        return this.http.get<models.FormPermission>(path, {params: queryParameters, observe: 'response'});
+        return this.http.get<FormPermission>(path, {params: queryParameters, observe: 'response'});
     }
 
     /**
@@ -161,10 +161,10 @@ export class FormPermissionApi {
      * @param collectionID collection id
      * @param personToken person token for the one who is requesting access
      */
-    public requestAccessWithHttpInfo(collectionID: string, personToken: string, extraHttpRequestParams?: any): Observable<HttpResponse<models.FormPermission>> {
+    public requestAccessWithHttpInfo(collectionID: string, personToken: string, extraHttpRequestParams?: any): Observable<HttpResponse<FormPermission>> {
         const path = this.basePath + `/formPermissions/${collectionID}`;
 
-        const queryParameters = {...extraHttpRequestParams};
+        const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
         // verify required parameter 'collectionID' is not null or undefined
         if (collectionID === null || collectionID === undefined) {
             throw new Error('Required parameter collectionID was null or undefined when calling formPermissionRequestAccess.');
@@ -177,7 +177,7 @@ export class FormPermissionApi {
             queryParameters['personToken'] = personToken;
         }
 
-        return this.http.post<models.FormPermission>(path, undefined, {params: queryParameters, observe: 'response'});
+        return this.http.post<FormPermission>(path, undefined, {params: queryParameters, observe: 'response'});
     }
 
     /**
@@ -187,10 +187,10 @@ export class FormPermissionApi {
      * @param personID Person id
      * @param personToken person token who is authorised to revoke access to form
      */
-    public revokeAccessWithHttpInfo(collectionID: string, personID: string, personToken: string, extraHttpRequestParams?: any): Observable<HttpResponse<models.FormPermission>> {
+    public revokeAccessWithHttpInfo(collectionID: string, personID: string, personToken: string, extraHttpRequestParams?: any): Observable<HttpResponse<FormPermission>> {
         const path = this.basePath + `/formPermissions/${collectionID}/${personID}`;
 
-        const queryParameters = {...extraHttpRequestParams};
+        const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
         // verify required parameter 'collectionID' is not null or undefined
         if (collectionID === null || collectionID === undefined) {
             throw new Error('Required parameter collectionID was null or undefined when calling formPermissionRevokeAccess.');
@@ -207,7 +207,7 @@ export class FormPermissionApi {
             queryParameters['personToken'] = personToken;
         }
 
-        return this.http.delete<models.FormPermission>(path, {params: queryParameters, observe: 'response'});
+        return this.http.delete<FormPermission>(path, {params: queryParameters, observe: 'response'});
     }
 
 }

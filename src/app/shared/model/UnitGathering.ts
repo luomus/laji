@@ -6,8 +6,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-
-import * as models from './index';
+import { Geometry } from './Geometry';
 
 export interface UnitGathering {
 
@@ -20,7 +19,7 @@ export interface UnitGathering {
     /**
      * Geological information about gathering
      */
-    geometry?: models.Geometry;
+    geometry?: Geometry;
 
     /**
      * Informal description of the habitat

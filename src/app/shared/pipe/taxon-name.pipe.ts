@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AbsractLabelPipe } from './abstract-label.pipe';
 import { TaxonomyApi } from '../api/TaxonomyApi';
-import { Taxonomy } from '../model';
+import { Taxonomy } from '../model/Taxonomy';
 
 /**
  * This is meant for getting single taxon names and is not yet usable on lists

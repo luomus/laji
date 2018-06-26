@@ -24,11 +24,11 @@
  */
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import * as models from '../model/index';
 import { PagedResult } from '../model/PagedResult';
-import { TaxonomyImage } from '../model/Taxonomy';
+import { Taxonomy, TaxonomyImage } from '../model/Taxonomy';
 import { HttpClient } from '@angular/common/http';
-import { Util } from '../service';
+import { Util } from '../service/util.service';
+import { LajiTaxonSearch } from '../model/LajiTaxonSearch';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
@@ -47,7 +47,7 @@ export class TaxonomyApi {
    * @param id id of the taxon
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
-  public taxonomyFindBySubject(id: string, lang?: string, extraHttpRequestParams?: any): Observable<models.Taxonomy> {
+  public taxonomyFindBySubject(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Taxonomy> {
     const path = this.basePath + '/taxa/{id}'
         .replace('{' + 'id' + '}', String(id));
 
@@ -67,7 +67,7 @@ export class TaxonomyApi {
   /**
    * return bold information
    */
-  public bold(scientificName: string, extraHttpRequestParams?: any): Observable<Array<models.Taxonomy>> {
+  public bold(scientificName: string, extraHttpRequestParams?: any): Observable<Array<Taxonomy>> {
     const path = this.basePath + '/taxa/bold';
 
     const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
@@ -79,7 +79,7 @@ export class TaxonomyApi {
       queryParameters['scientificName'] = scientificName;
     }
 
-    return this.http.get<models.Taxonomy[]>(path, {params: queryParameters});
+    return this.http.get<Taxonomy[]>(path, {params: queryParameters});
   }
 
   /**
@@ -89,7 +89,7 @@ export class TaxonomyApi {
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    * @param maxLevel How many levels of children to show (default: 1)
    */
-  public taxonomyFindChildren(id: string, lang?: string, maxLevel?: string, extraHttpRequestParams?: any): Observable<Array<models.Taxonomy>> {
+  public taxonomyFindChildren(id: string, lang?: string, maxLevel?: string, extraHttpRequestParams?: any): Observable<Array<Taxonomy>> {
     const path = this.basePath + '/taxa/{id}/children'
         .replace('{' + 'id' + '}', String(id));
 
@@ -106,7 +106,7 @@ export class TaxonomyApi {
       queryParameters['maxLevel'] = maxLevel;
     }
 
-    return this.http.get<models.Taxonomy[]>(path, {params: queryParameters});
+    return this.http.get<Taxonomy[]>(path, {params: queryParameters});
   }
 
   /**
@@ -160,7 +160,7 @@ export class TaxonomyApi {
    * @param id id of the taxon
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
-  public taxonomyFindParents(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<models.Taxonomy>> {
+  public taxonomyFindParents(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<Taxonomy>> {
     const path = this.basePath + '/taxa/{id}/parents'
         .replace('{' + 'id' + '}', String(id));
 
@@ -173,7 +173,7 @@ export class TaxonomyApi {
       queryParameters['lang'] = lang;
     }
 
-    return this.http.get<models.Taxonomy[]>(path, {params: queryParameters});
+    return this.http.get<Taxonomy[]>(path, {params: queryParameters});
   }
 
   /**
@@ -190,7 +190,7 @@ export class TaxonomyApi {
    * @param pageSize Page size
    * @param sortOrder Sort order
    */
-  public taxonomyFindSpecies(id: string, lang?: string, informalGroupFilters?: string, adminStatusFilters?: string, redListStatusFilters?: string, typesOfOccurrenceFilters?: string, invasiveSpeciesFilter?: boolean, page?: string, pageSize?: string, sortOrder?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Taxonomy>> {
+  public taxonomyFindSpecies(id: string, lang?: string, informalGroupFilters?: string, adminStatusFilters?: string, redListStatusFilters?: string, typesOfOccurrenceFilters?: string, invasiveSpeciesFilter?: boolean, page?: string, pageSize?: string, sortOrder?: string, extraHttpRequestParams?: any): Observable<PagedResult<Taxonomy>> {
     const path = this.basePath + '/taxa/{id}/species'
         .replace('{' + 'id' + '}', String(id));
 
@@ -235,7 +235,7 @@ export class TaxonomyApi {
       queryParameters['sortOrder'] = sortOrder
     }
 
-    return this.http.get<PagedResult<models.Taxonomy>>(path, {params: queryParameters});
+    return this.http.get<PagedResult<Taxonomy>>(path, {params: queryParameters});
   }
 
   /**
@@ -245,7 +245,7 @@ export class TaxonomyApi {
    * @param limit limit the pageSize of results (defaults to 10)
    * @param checklist search taxon from specified checklist (defaults to master)
    */
-  public taxonomySearch(query: string, limit?: string, checklist?: string, extraHttpRequestParams?: any): Observable<models.LajiTaxonSearch> {
+  public taxonomySearch(query: string, limit?: string, checklist?: string, extraHttpRequestParams?: any): Observable<LajiTaxonSearch> {
     const path = this.basePath + '/taxa/search';
 
     const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};

@@ -11,7 +11,7 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { FormApiClient } from '../api';
+import { FormApiClient } from '../api/FormApiClient';
 import { UserService } from '../service/user.service';
 import { Logger } from '../logger/logger.service';
 import { LajiExternalService } from '../service/laji-external.service';

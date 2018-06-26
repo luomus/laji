@@ -29,6 +29,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Log, Status } from '../model/Log';
 import { HttpClient } from '@angular/common/http';
+import { Util } from '../service/util.service';
 
 @Injectable()
 export class LoggerApi {
@@ -76,7 +77,7 @@ export class LoggerApi {
   public logError (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/error';
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
 
     return this.http.post(path, JSON.stringify(data, this.serializer()), {params: queryParameters});
   }
@@ -89,7 +90,7 @@ export class LoggerApi {
   public logInfo (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/info';
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
 
     return this.http.post(path, JSON.stringify(data, this.serializer()), {params: queryParameters});
   }
@@ -102,9 +103,9 @@ export class LoggerApi {
   public logStatus (minutesBack?: number, extraHttpRequestParams?: any ): Observable<Status> {
     const path = this.basePath + '/logger/status';
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     if (minutesBack !== undefined) {
-      queryParameters.set('minutesBack', '' + minutesBack);
+      queryParameters['minutesBack'] = '' + minutesBack;
     }
 
     return this.http.get<Status>(path, {params: queryParameters});
@@ -118,7 +119,7 @@ export class LoggerApi {
   public logWarn (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/warn';
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
 
     return this.http.post(path, JSON.stringify(data, this.serializer()), {params: queryParameters});
   }

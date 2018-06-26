@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {Observable, from as ObservableFrom} from 'rxjs';
 import {NamedPlace} from '../../../shared/model/NamedPlace';
 import {NamedPlaceApi} from '../../../shared/api/NamedPlaceApi';
-import {UserService} from '../../../shared/service';
-import {Document} from '../../../shared/model';
+import {UserService} from '../../../shared/service/user.service';
+import {Document} from '../../../shared/model/Document';
 import {DocumentService} from '../../../shared-modules/own-submissions/service/document.service';
 import { map, mergeMap } from 'rxjs/operators';
 

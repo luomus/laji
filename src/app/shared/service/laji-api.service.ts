@@ -4,15 +4,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
-import { Area, Autocomplete, PagedResult, Source, Taxonomy } from '../model';
+import { Area } from '../model/Area';
+import { Autocomplete } from '../model/Autocomplete';
+import { PagedResult } from '../model/PagedResult';
+import { Source } from '../model/Source';
+import { Taxonomy } from '../model/Taxonomy';
+import { Form } from '../model/Form';
 import { Annotation } from '../model/Annotation';
 import { Notification } from '../model/Notification';
 import { Information } from '../model/Information';
 import { Publication } from '../model/Publication';
 import { Feedback } from '../model/Feedback';
-import * as models from '../model';
 import { News } from '../model/News';
-import { instantiateRendererFactory } from '@angular/platform-browser/animations/src/providers';
 
 @Injectable()
 export class LajiApiService {
@@ -231,7 +234,7 @@ export namespace LajiApi {
 
     export interface NewsListResponse extends PagedResult<News> { }
 
-    export interface FormsListResponse extends PagedResult<models.Form.List> { }
+    export interface FormsListResponse extends PagedResult<Form.List> { }
 
     export interface NotificationListResponse extends PagedResult<Notification> { }
 

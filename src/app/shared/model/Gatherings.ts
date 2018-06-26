@@ -8,8 +8,13 @@
  * Do not edit the class manually.
  */
 
+
 'use strict';
-import * as models from './index';
+
+import { GatheringFact } from './GatheringFact';
+import { Geometry } from './Geometry';
+import { TaxonCensus } from './TaxonCensus';
+import { Units } from './Units';
 
 export interface Gatherings {
 
@@ -111,12 +116,12 @@ export interface Gatherings {
     /**
      * instance of gatheringFact
      */
-    gatheringFact?: models.GatheringFact;
+    gatheringFact?: GatheringFact;
 
     /**
      * Geological information about gathering
      */
-    geometry?: models.Geometry;
+    geometry?: Geometry;
 
     /**
      * Use for OLD SPECIMENS: What source was used to getList coordinates from locality name
@@ -245,7 +250,7 @@ export interface Gatherings {
     /**
      * Array of taxonCensus
      */
-    taxonCensus?: Array<models.TaxonCensus>;
+    taxonCensus?: Array<TaxonCensus>;
 
     temperature?: number;
 
@@ -258,14 +263,14 @@ export interface Gatherings {
     /**
      * Array of units
      */
-    units?: Array<models.Units>;
+    units?: Array<Units>;
 
     weather?: string;
 
     /**
      * Geological information about gathering in wgs84 format
      */
-    wgs84Geometry?: models.Geometry;
+    wgs84Geometry?: Geometry;
 
     wgs84Latitude?: string;
 

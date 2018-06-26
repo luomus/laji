@@ -24,9 +24,11 @@
  */
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import * as models from '../model';
 import { PagedResult } from '../model/PagedResult';
 import { HttpClient } from '@angular/common/http';
+import { Util } from '../service/util.service';
+import { Metadata } from '../model/Metadata';
+import { Property } from '../model/Property';
 
 'use strict';
 
@@ -42,15 +44,15 @@ export class MetadataApi {
    *
    * @param lang
    */
-  public metadataAllClasses(lang?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Metadata>> {
+  public metadataAllClasses(lang?: string, extraHttpRequestParams?: any): Observable<PagedResult<Metadata>> {
     const path = this.basePath + '/metadata/classes';
 
-    let queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     if (lang !== undefined) {
       queryParameters['lang'] = lang;
     }
 
-    return this.http.get<PagedResult<models.Metadata>>(path, {params: queryParameters});
+    return this.http.get<PagedResult<Metadata>>(path, {params: queryParameters});
   }
 
   /**
@@ -58,15 +60,15 @@ export class MetadataApi {
    *
    * @param lang
    */
-  public metadataAllProperties(lang?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Property>> {
+  public metadataAllProperties(lang?: string, extraHttpRequestParams?: any): Observable<PagedResult<Property>> {
     const path = this.basePath + '/metadata/properties';
 
-    let queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     if (lang !== undefined) {
       queryParameters['lang'] = lang;
     }
 
-    return this.http.get<PagedResult<models.Property>>(path, {params: queryParameters});
+    return this.http.get<PagedResult<Property>>(path, {params: queryParameters});
   }
 
   /**
@@ -78,7 +80,7 @@ export class MetadataApi {
   public metadataFindAllRanges(lang?: string, asLookupObject?: boolean, extraHttpRequestParams?: any): Observable<any> {
     const path = this.basePath + '/metadata/ranges';
 
-    let queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     if (lang !== undefined) {
       queryParameters['lang'] = lang;
     }
@@ -96,11 +98,11 @@ export class MetadataApi {
    * @param _class
    * @param lang
    */
-  public metadataFindClass(_class: string, lang?: string, extraHttpRequestParams?: any): Observable<models.Metadata> {
+  public metadataFindClass(_class: string, lang?: string, extraHttpRequestParams?: any): Observable<Metadata> {
     const path = this.basePath + '/metadata/classes/{class}'
         .replace('{' + 'class' + '}', String(_class));
 
-    let queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter '_class' is not null or undefined
     if (_class === null || _class === undefined) {
       throw new Error('Required parameter _class was null or undefined when calling metadataFindClass.');
@@ -122,7 +124,7 @@ export class MetadataApi {
     const path = this.basePath + '/metadata/classes/{class}/properties'
         .replace('{' + 'class' + '}', String(_class));
 
-    let queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter '_class' is not null or undefined
     if (_class === null || _class === undefined) {
       throw new Error('Required parameter _class was null or undefined when calling metadataFindClassProperties.');
@@ -145,7 +147,7 @@ export class MetadataApi {
     const path = this.basePath + '/metadata/classes/{class}/ranges'
         .replace('{' + 'class' + '}', String(_class));
 
-    let queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter '_class' is not null or undefined
     if (_class === null || _class === undefined) {
       throw new Error('Required parameter _class was null or undefined when calling metadataFindClassRanges.');
@@ -173,7 +175,7 @@ export class MetadataApi {
     const path = this.basePath + '/metadata/properties/{property}/ranges'
         .replace('{' + 'property' + '}', String(property));
 
-    let queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'property' is not null or undefined
     if (property === null || property === undefined) {
       throw new Error('Required parameter property was null or undefined when calling metadataFindPropertiesRanges.');
@@ -199,11 +201,11 @@ export class MetadataApi {
    * @param property
    * @param lang
    */
-  public metadataFindProperty(property: string, lang?: string, extraHttpRequestParams?: any): Observable<models.Property> {
+  public metadataFindProperty(property: string, lang?: string, extraHttpRequestParams?: any): Observable<Property> {
     const path = this.basePath + '/metadata/properties/{property}'
         .replace('{' + 'property' + '}', String(property));
 
-    let queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'property' is not null or undefined
     if (property === null || property === undefined) {
       throw new Error('Required parameter property was null or undefined when calling metadataFindProperty.');
@@ -212,7 +214,7 @@ export class MetadataApi {
       queryParameters['lang'] = lang;
     }
 
-    return this.http.get<models.Property>(path, {params: queryParameters});
+    return this.http.get<Property>(path, {params: queryParameters});
   }
 
   /**
@@ -226,7 +228,7 @@ export class MetadataApi {
     const path = this.basePath + '/metadata/ranges/{range}'
         .replace('{' + 'range' + '}', String(range));
 
-    let queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'range' is not null or undefined
     if (range === null || range === undefined) {
       throw new Error('Required parameter range was null or undefined when calling metadataFindRange.');

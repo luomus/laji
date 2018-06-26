@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Autocomplete} from '../model';
+import {Autocomplete} from '../model/Autocomplete';
 import {Observable} from 'rxjs/Observable';
 import {UserService} from './user.service';
 import { LajiApi, LajiApiService } from './laji-api.service';

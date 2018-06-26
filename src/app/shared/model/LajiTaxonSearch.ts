@@ -24,7 +24,8 @@
  */
 
 'use strict';
-import * as models from './index';
+
+import { LajiInformalGroup } from './LajiInformalGroup';
 
 export interface LajiTaxonSearch {
 
@@ -67,5 +68,5 @@ export interface LajiTaxonSearch {
   /**
    * Informal group
    */
-  informalGroup?: Array<models.LajiInformalGroup>;
+  informalGroup?: Array<LajiInformalGroup>;
 }

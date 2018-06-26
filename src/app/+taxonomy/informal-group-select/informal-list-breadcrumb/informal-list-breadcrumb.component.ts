@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { InformalTaxonGroup } from '../../../shared';
+import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 
 @Component({
   selector: 'laji-informal-list-breadcrumb',

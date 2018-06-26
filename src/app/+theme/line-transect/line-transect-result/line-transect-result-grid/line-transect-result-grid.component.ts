@@ -6,7 +6,7 @@ import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQuery
 import { ResultService } from '../../../service/result.service';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { Observable } from 'rxjs/Observable';
-import { WarehouseApi } from '../../../../shared/api/index';
+import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 
 @Component({
   selector: 'laji-line-transect-result-grid',

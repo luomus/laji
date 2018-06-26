@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { BsDropdownDirective } from 'ngx-bootstrap';
 import { DialogService } from '../service/dialog.service';
 import {LajiApi, LajiApiService} from '../service/laji-api.service';
-import {PagedResult} from '../model';
+import {PagedResult} from '../model/PagedResult';
 import {Notification} from '../model/Notification';
 
 @Component({
