@@ -66,7 +66,8 @@
     "rxjs-compat": "^6.2.1",
     "web-animations-js": "^2.3.1",
     "xlsx": "0.11.18",
-    "zone.js": "^0.8.18"
+    "zone.js": "^0.8.18",
+    "rdflib": "^0.17.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.6.8",
