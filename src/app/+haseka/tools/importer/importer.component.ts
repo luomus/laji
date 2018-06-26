@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf, from as ObservableFrom } from 'rxjs';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
-import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
 import { Document } from '../../../shared/model';
 import { FormService } from '../../../shared/service/form.service';
 import { FormField } from '../model/form-field';
@@ -16,6 +15,7 @@ import { DialogService } from '../../../shared/service/dialog.service';
 import { LocalStorage } from 'ng2-webstorage';
 import * as Hash from 'object-hash';
 import { ImportTableColumn } from '../model/import-table-column';
+import { catchError, concatMap, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 
 export type States
   = 'empty'
@@ -278,20 +278,20 @@ export class ImporterComponent implements OnInit {
     let success = true;
     this.total = this.parsedData.length;
     this.current = 1;
-    Observable.from(this.parsedData)
-      .mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy)
-        .concatMap(document => this.importService.validateData(document)
-          .switchMap(result => Observable.of({result: result, source: data}))
-          .catch(err => Observable.of(typeof err.json === 'function' ? err.json() : err)
-            .map(body => body.error && body.error.details || body)
-            .map(error => ({result: {_error: error}, source: data}))
-          )
-        )
-        .do(() => {
+    ObservableFrom(this.parsedData).pipe(
+      mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy).pipe(
+        concatMap(document => this.importService.validateData(document).pipe(
+          switchMap(result => Observable.of({result: result, source: data})),
+          catchError(err => Observable.of(typeof err.json === 'function' ? err.json() : err).pipe(
+            map(body => body.error && body.error.details || body),
+            map(error => ({result: {_error: error}, source: data}))
+          ))
+        )),
+        tap(() => {
           this.current++;
           this.cdr.markForCheck();
         })
-      )
+      )))
       .subscribe(
         (data) => {
           if (data.result._error) {
@@ -330,20 +330,21 @@ export class ImporterComponent implements OnInit {
     let hadSuccess = false;
     this.total = this.parsedData.length;
     this.current = 1;
-    Observable.from(this.parsedData)
-      .mergeMap(data => this.augmentService.augmentDocument(data.document)
-        .concatMap(document => this.importService.sendData(document, publicityRestrictions)
-          .switchMap(result => Observable.of({result: result, source: data}))
-          .catch(err => Observable.of(err.json())
-            .map(body => body.error && body.error.details || body)
-            .map(error => ({result: {_error: error}, source: data}))
-          )
-        )
-        .do(() => {
+    ObservableFrom(this.parsedData)
+    ObservableFrom(this.parsedData).pipe(
+      mergeMap(data => this.augmentService.augmentDocument(data.document).pipe(
+        concatMap(document => this.importService.sendData(document, publicityRestrictions).pipe(
+          switchMap(result => Observable.of({result: result, source: data})),
+          catchError(err => Observable.of(typeof err.json === 'function' ? err.json() : err).pipe(
+            map(body => body.error && body.error.details || body),
+            map(error => ({result: {_error: error}, source: data}))
+          ))
+        )),
+        tap(() => {
           this.current++;
           this.cdr.markForCheck();
         })
-      )
+      )))
       .subscribe(
         (data) => {
           if (data.result._error) {

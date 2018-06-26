@@ -6,10 +6,11 @@ import { Logger } from '../../shared/logger/logger.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
-import { Observable } from 'rxjs/Observable';
 import { Util } from '../../shared/service/util.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable, from as ObservableFrom, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-haseka-latest',
@@ -69,12 +70,12 @@ export class UsersLatestComponent implements OnChanges {
     if (this.docUpdateSub) {
       this.docUpdateSub.unsubscribe();
     }
-    this.docUpdateSub = Observable.of(null)
+    this.docUpdateSub = ObservableOf(null)
       .delay(1000)
       .switchMap(() => this.documentService.findAll(this.userToken, String(this.page), String(this.pageSize)))
-      .switchMap(response => Observable.of(response)
+      .switchMap(response => ObservableOf(response)
         .combineLatest(
-          response.results ? this.processDocuments(response.results) : Observable.of([]),
+          response.results ? this.processDocuments(response.results) : ObservableOf([]),
           ((result, docs) => ({...result, docs: docs}))
         )
       )
@@ -115,29 +116,31 @@ export class UsersLatestComponent implements OnChanges {
   }
 
   private processDocuments(docs: Document[]) {
-    return Observable.from(docs.map((doc) => {
-      return Observable.forkJoin(
+    return ObservableFrom(docs.map((doc) => {
+      return ObservableForkJoin(
         this.formService.hasUnsavedData(doc.id),
         this.getForm(doc.formID),
         (hasUnsavedData, form) => (hasUnsavedData)
       ).switchMap(
         (hasUnsavedData) => {
           if (hasUnsavedData) {
-            return Observable.forkJoin(
+            return ObservableForkJoin(
               this.formService.getTmpDocumentIfNewerThanCurrent(doc),
-              this.formService.getTmpDocumentStoreDate(doc.id),
-              (document, storeDate) => {
-                document = Util.clone(document);
+              this.formService.getTmpDocumentStoreDate(doc.id)
+            ).pipe(
+              map(data => {
+                const storeDate = data[1];
+                const document = Util.clone(data[0]);
                 document._hasChanges = true;
 
                 if (storeDate && (!document.dateEdited || new Date(storeDate) > new Date(document.dateEdited))) {
                   document.dateEdited = <any>storeDate;
                 }
                 return document;
-              }
+              })
             );
           } else {
-            return Observable.of(doc);
+            return ObservableOf(doc);
           }
         });
     }))
@@ -149,7 +152,7 @@ export class UsersLatestComponent implements OnChanges {
   }
 
   private getForm(formId: string): Observable<any> {
-    if (this.formsById[formId]) { return Observable.of(this.formsById[formId]); }
+    if (this.formsById[formId]) { return ObservableOf(this.formsById[formId]); }
 
     return this.formService
       .getForm(formId, this.translate.currentLang)

@@ -78,7 +78,6 @@ export class FieldListComponent implements OnInit {
       return cumulative;
     }, {});
     this.visibleFields = Object.keys(visibleFields).map(key => visibleFields[key]);
-    console.log(this.visibleFields);
   }
 
 }

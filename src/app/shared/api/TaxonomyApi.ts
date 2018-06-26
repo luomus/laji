@@ -28,6 +28,7 @@ import * as models from '../model/index';
 import { PagedResult } from '../model/PagedResult';
 import { TaxonomyImage } from '../model/Taxonomy';
 import { HttpClient } from '@angular/common/http';
+import { Util } from '../service';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
@@ -50,7 +51,7 @@ export class TaxonomyApi {
     const path = this.basePath + '/taxa/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling taxonomyFindBySubject.');
@@ -69,7 +70,7 @@ export class TaxonomyApi {
   public bold(scientificName: string, extraHttpRequestParams?: any): Observable<Array<models.Taxonomy>> {
     const path = this.basePath + '/taxa/bold';
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (scientificName === null || scientificName === undefined) {
       throw new Error('Required parameter scientificName was null or undefined when calling bold.');
@@ -92,7 +93,7 @@ export class TaxonomyApi {
     const path = this.basePath + '/taxa/{id}/children'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling taxonomyFindChildren.');
@@ -117,7 +118,7 @@ export class TaxonomyApi {
   public taxonomyFindDescriptions(id: string, lang?: string, langFallback?: boolean, extraHttpRequestParams?: any): Observable<Array<any>> {
     const path = `${this.basePath}/taxa/${id}/descriptions?blacklist=eol%3Aapi`;
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling taxonomyFindDescriptions.');
@@ -126,7 +127,7 @@ export class TaxonomyApi {
       queryParameters['lang'] = lang;
     }
     if (langFallback !== undefined) {
-      queryParameters['langFallback'] = langFallback;
+      queryParameters['langFallback'] = langFallback ? 'true' : 'false';
     }
 
     return this.http.get<any[]>(path, {params: queryParameters});
@@ -141,7 +142,7 @@ export class TaxonomyApi {
   public taxonomyFindMedia(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Array<TaxonomyImage>> {
     const path = `${this.basePath}/taxa/${id}/media?blacklist=eol%3Aapi`;
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling taxonomyFindMedia.');
@@ -163,7 +164,7 @@ export class TaxonomyApi {
     const path = this.basePath + '/taxa/{id}/parents'
         .replace('{' + 'id' + '}', String(id));
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling taxonomyFindParents.');
@@ -193,7 +194,7 @@ export class TaxonomyApi {
     const path = this.basePath + '/taxa/{id}/species'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling taxonomyFindSpecies.');
@@ -219,7 +220,7 @@ export class TaxonomyApi {
     }
 
     if (invasiveSpeciesFilter !== undefined) {
-      queryParameters['invasiveSpeciesFilter'] = invasiveSpeciesFilter
+      queryParameters['invasiveSpeciesFilter'] = invasiveSpeciesFilter ? 'true' : 'false'
     }
 
     if (page !== undefined) {
@@ -247,7 +248,7 @@ export class TaxonomyApi {
   public taxonomySearch(query: string, limit?: string, checklist?: string, extraHttpRequestParams?: any): Observable<models.LajiTaxonSearch> {
     const path = this.basePath + '/taxa/search';
 
-    const queryParameters = {...extraHttpRequestParams};
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'query' is not null or undefined
     if (query === null || query === undefined) {
       throw new Error('Required parameter query was null or undefined when calling taxonomySearch.');

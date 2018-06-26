@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {Observable, from as ObservableFrom} from 'rxjs';
 import {NamedPlace} from '../../../shared/model/NamedPlace';
 import {NamedPlaceApi} from '../../../shared/api/NamedPlaceApi';
 import {UserService} from '../../../shared/service';
 import {Document} from '../../../shared/model';
 import {DocumentService} from '../../../shared-modules/own-submissions/service/document.service';
+import { map, mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class AugmentService {
@@ -35,9 +36,10 @@ export class AugmentService {
     if (namedPlaces.length === 0) {
       return Observable.of(document);
     }
-    return Observable.from(namedPlaces)
-      .mergeMap(id => this.getNamedPlace(id))
-      .map(namedPlace => this.addNamedPlaceData(document, namedPlace, idxLookup, excluded))
+    return ObservableFrom(namedPlaces).pipe(
+      mergeMap(id => this.getNamedPlace(id)),
+      map(namedPlace => this.addNamedPlaceData(document, namedPlace, idxLookup, excluded))
+    )
   }
 
   private addNamedPlaceData(document: Document, namedPlace: NamedPlace, idxs: {[key: string]: number[]}, excluded: string[]) {

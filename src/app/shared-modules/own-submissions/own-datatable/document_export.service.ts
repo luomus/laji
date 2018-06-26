@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { geoJSONToISO6709 } from 'laji-map/lib/utils';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
-import { Observable } from 'rxjs/Observable';
+import { Observable, from as ObservableFrom } from 'rxjs';
 import { DocumentInfoService } from '../service/document-info.service';
 
 
@@ -321,7 +321,7 @@ export class DocumentExportService {
             geometry: obj,
           }]}).replace(/\n$/, '');
       } else if (Array.isArray(obj)) {
-        return Observable.from(obj.map((labelKey) => {
+        return ObservableFrom(obj.map((labelKey) => {
           return this.getLabel(labelKey, fieldData);
         }))
           .mergeAll()

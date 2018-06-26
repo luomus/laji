@@ -9,7 +9,7 @@ import { DocumentInfoService } from '../service/document-info.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { UserService } from '../../../shared/service/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, from as ObservableFrom } from 'rxjs';
 import { Person } from '../../../shared/model/Person';
 import { FormService } from '../../../shared/service/form.service';
 import { RouterChildrenEventService } from '../service/router-children-event.service';
@@ -217,7 +217,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       this.rowData$.unsubscribe();
     }
 
-    this.rowData$ = Observable.from(this.documents.map((doc, i) => {
+    this.rowData$ = ObservableFrom(this.documents.map((doc, i) => {
       return this.setRowData(doc, i);
     }))
       .mergeAll()
@@ -435,7 +435,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private getObservers(userArray: string[] = []): Observable<string> {
-    return Observable.from(userArray.map((userId) => {
+    return ObservableFrom(userArray.map((userId) => {
       if (userId.indexOf('MA.') === 0) {
         return this.userService.getUser(userId)
           .map((user: Person) => {

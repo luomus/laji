@@ -3,7 +3,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../shared/logger/logger.service';
-import { InformationApi } from '../shared/api/InformationApi';
 import { Information } from '../shared/model/Information';
 import { InformationService } from './information.service';
 import { Title } from '@angular/platform-browser';

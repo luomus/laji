@@ -11,7 +11,6 @@ import { UnitComponent } from './unit/unit.component';
 import { ToQNamePipe } from '../shared/pipe/to-qname.pipe';
 import { LcFirstPipe } from './pipe/lc-first.pipe';
 import { AnnotationService } from './service/annotation.service';
-import { AnnotationApi } from '../shared/api/AnnotationApi';
 import { TypeaheadModule } from 'ngx-bootstrap';
 import { SecureInfoComponent } from './secure-info/secure-info.component';
 import { IssueComponent } from './issue/issue.component';
@@ -28,7 +27,7 @@ import { EditLinkComponent } from './edit-link/edit-link.component';
     LangModule,
     AnnotationsModule
   ],
-  providers: [ToQNamePipe, AnnotationService, AnnotationApi],
+  providers: [ToQNamePipe, AnnotationService],
   declarations: [ViewerComponent, DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
     GatheringComponent, UnitComponent, LcFirstPipe,
     SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent, EditLinkComponent],

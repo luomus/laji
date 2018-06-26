@@ -1,14 +1,16 @@
-import { Headers, Http, RequestOptionsArgs, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { RequestOptionsArgs } from '@angular/http';
+import { HttpParamsOptions } from '@angular/common/http/src/params';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class FormApiClient {
   protected basePath = '/api';
-  public defaultHeaders: Headers = new Headers();
   private _lang: string;
   private _personToken: string;
 
-  constructor(protected http: Http) {
+  constructor(protected http: HttpClient) {
   }
 
   public set lang(lang) {
@@ -27,45 +29,33 @@ export class FormApiClient {
     return this._personToken;
   }
 
-  public fetch(resource: string, query: any, options?: RequestOptionsArgs): Promise<any> {
+  public fetch(resource: string, query: any, options?: {method?: string, body?: any, headers?: {[header: string]: string | string[]}}): Promise<any> {
     const path = this.basePath + resource;
 
-    const queryParameters = new URLSearchParams();
+    const queryParameters = {...query};
 
     if (this._lang !== undefined) {
-      queryParameters.set('lang', this._lang);
+      queryParameters['lang'] = this._lang;
     }
     if (this._personToken !== undefined) {
-      queryParameters.set('personToken', this._personToken);
+      queryParameters['personToken'] = this._personToken;
     }
 
-    for (const param in query) {
-      if (!query.hasOwnProperty(param)) {
-        continue;
-      }
-      if (query[param] !== undefined) {
-        queryParameters.set(param, query[param]);
-      }
-    }
     if (!options) {
       options = {};
     }
 
-    const requestOptions: RequestOptionsArgs = {
-      method: options['method'] || 'GET',
-      headers: options['headers'] ? new Headers(options['headers']) : this.defaultHeaders,
-      params: queryParameters,
-      body: options['body'] || undefined
-    };
-
     switch (resource) {
       case '/autocomplete/taxon':
-        queryParameters.set(
-          'excludeNameTypes',
-          'MX.hasMisappliedName,MX.hasMisspelledName,MX.hasUncertainSynonym,MX.hasOrthographicVariant'
-        );
+        queryParameters['excludeNameTypes'] ='MX.hasMisappliedName,MX.hasMisspelledName,MX.hasUncertainSynonym,MX.hasOrthographicVariant';
     }
 
-    return this.http.request(path, requestOptions).toPromise(Promise);
+    return this.http.request(
+      options['method'] || 'GET',
+      path,
+      {headers: options['headers'], params: queryParameters, body: options['body'] || undefined, observe: 'response'}
+    ).pipe(
+      map((response) => ({...response, json: () => response.body}))
+    ).toPromise(Promise);
   }
 }

@@ -32,4 +32,16 @@ export class Util {
     }
     return Object.keys(value).length === 0
   }
+
+  public static removeUndefinedFromObject(obj: object) {
+    if (typeof obj !== 'object') {
+      return obj;
+    }
+    return Object.keys(obj).reduce((cumulative, current) => {
+      if (typeof obj[current] !== 'undefined') {
+        cumulative[current] = obj[current];
+      }
+      return cumulative;
+    }, {})
+  }
 }

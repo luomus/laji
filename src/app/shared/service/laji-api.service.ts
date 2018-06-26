@@ -12,13 +12,14 @@ import { Publication } from '../model/Publication';
 import { Feedback } from '../model/Feedback';
 import * as models from '../model';
 import { News } from '../model/News';
+import { instantiateRendererFactory } from '@angular/platform-browser/animations/src/providers';
 
 @Injectable()
 export class LajiApiService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getList(endpoint: LajiApi.Endpoints.annotations, query: LajiApi.Query.AnnotationQuery): Observable<LajiApi.Response.AnnotationListResponse>;
+  getList(endpoint: LajiApi.Endpoints.annotations, query: LajiApi.Query.AnnotationListQuery): Observable<LajiApi.Response.AnnotationListResponse>;
   getList(endpoint: LajiApi.Endpoints.areas, query: LajiApi.Query.AreaQuery): Observable<LajiApi.Response.AreaListResponse>;
   getList(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
   getList(endpoint: LajiApi.Endpoints.forms, query: LajiApi.Query.FormsListQuery): Observable<LajiApi.Response.FormsListResponse>;
@@ -43,6 +44,7 @@ export class LajiApiService {
     return this.httpClient.get<T>(url, options);
   }
 
+  post(endpoint: LajiApi.Endpoints.annotations, data: Annotation, query: LajiApi.Query.AnnotationQuery): Observable<Annotation>;
   post(endpoint: LajiApi.Endpoints.feedback, data: Feedback, query: LajiApi.Query.FeedbackQuery): Observable<void>;
   post(endpoint: LajiApi.Endpoints.htmlToPdf, data: any): Observable<LajiApi.Response.HtmlToPdf>;
   post(endpoint: LajiApi.Endpoints, data: any, query: object = {}): Observable<any> {
@@ -69,6 +71,8 @@ export class LajiApiService {
     );
   }
 
+
+  remove(endpoint: LajiApi.Endpoints.annotations, id: string, query: LajiApi.Query.AnnotationQuery): Observable<void>;
   remove(endpoint: LajiApi.Endpoints.personToken, id: string): Observable<void>;
   remove(endpoint: LajiApi.Endpoints.notifications, id: string, query: LajiApi.Query.NotificationQuery): Observable<any>;
   remove(endpoint: LajiApi.Endpoints, id: string, query: object = {}): Observable<any> {
@@ -135,7 +139,9 @@ export namespace LajiApi {
       langFallback?: boolean;
     }
 
-    export interface AnnotationQuery extends Paged, PersonToken {
+    export interface AnnotationQuery extends PersonToken { }
+
+    export interface AnnotationListQuery extends Paged, PersonToken {
       rootID: string;
     }
 

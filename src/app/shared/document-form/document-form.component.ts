@@ -30,6 +30,7 @@ import { FormPermissionService } from '../../+haseka/form-permission/form-permis
 import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
 import {LajiApi, LajiApiService} from '../service/laji-api.service';
 import {Annotation} from '../model/Annotation';
+import { catchError, mergeMap } from 'rxjs/operators';
 
 /*
  * Change tamplateUrl to close or open the Vihko
@@ -407,17 +408,17 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   private fetchAnnotations(documentID, page = 1, results = []): Observable<Annotation[]> {
-    return this.formService.isTmpId(documentID) ?
+    return (this.formService.isTmpId(documentID) ?
       Observable.of([]) :
       this.lajiApi.getList(
         LajiApi.Endpoints.annotations,
         {personToken: this.userService.getToken(), rootID: this.documentId, pageSize: 100, page: page}
-      )
-        .mergeMap(result => (result.currentPage < result.lastPage) ?
+      )).pipe(
+        mergeMap(result => (result.currentPage < result.lastPage) ?
           this.fetchAnnotations(this.documentId, result.currentPage + 1, [...results, ...result.results]) :
-          Observable.of([...results, ...result.results])
-        )
-        .catch(() => Observable.of([]));
+          Observable.of([...results, ...result.results])),
+        catchError(() => Observable.of([]))
+      )
   }
 
   private parseErrorMessage(err) {

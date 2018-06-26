@@ -1,26 +1,24 @@
 import { Injectable } from '@angular/core';
-import { AnnotationApi } from '../../shared/api/AnnotationApi';
 import { Observable } from 'rxjs/Observable';
 import { Annotation } from '../../shared/model/Annotation';
 import { UserService } from '../../shared/service/user.service';
 import { IdService } from '../../shared/service/id.service';
+import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 
 @Injectable()
 export class AnnotationService {
 
   constructor(
-    private annotationApi: AnnotationApi,
+    private lajiApi: LajiApiService,
     private userService: UserService
   ) { }
 
   delete(annotation: Annotation): Observable<any> {
-    return this.annotationApi
-      .deleteAnnotation(IdService.getId(annotation.id), this.userService.getToken());
+    return this.lajiApi.remove(LajiApi.Endpoints.annotations, IdService.getId(annotation.id), {personToken: this.userService.getToken()});
   }
 
   save(annotation: Annotation): Observable<Annotation> {
-    return this.annotationApi
-      .createAnnotation(annotation, this.userService.getToken());
+    return this.lajiApi.post(LajiApi.Endpoints.annotations, annotation, {personToken: this.userService.getToken()});
   }
 
   getAnnotationClassInEffect(annotations: Annotation[]): Observable<Annotation.AnnotationClassEnum>;

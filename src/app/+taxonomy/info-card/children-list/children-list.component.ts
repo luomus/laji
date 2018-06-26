@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
 import { Subscription } from 'rxjs/Subscription';
+import { mergeMap } from 'rxjs/operators';
 
 const query = {
   selectedFields: 'vernacularName,scientificName,cursiveName,id'
@@ -60,8 +61,9 @@ export class ChildrenListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.subLang = this.translate.onLangChange
-      .mergeMap(() => this.taxonService.taxonomyFindChildren(this.parentId, this.translate.currentLang, undefined, query))
+    this.subLang = this.translate.onLangChange.pipe(
+      mergeMap(() => this.taxonService.taxonomyFindChildren(this.parentId, this.translate.currentLang, undefined, query))
+    )
       .subscribe((data) => {
         this.children = data;
         this.size = data.length;

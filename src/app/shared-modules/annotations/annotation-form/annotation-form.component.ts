@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { mergeMap } from 'rxjs/operators';
 
 
 @Component({
@@ -50,7 +51,9 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     this.initAnnotation();
     this.taxonAutocomplete = Observable.create((observer: any) => {
       observer.next(this.annotation.opinion);
-    }).mergeMap((query: string) => this.getTaxa(query));
+    }).pipe(
+      mergeMap((query: string) => this.getTaxa(query))
+    );
   }
 
   public getTaxa(token: string): Observable<any> {
