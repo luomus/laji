@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
-import { Area, Autocomplete, PagedResult, Source } from '../model';
+import { Area, Autocomplete, PagedResult, Source, Taxonomy } from '../model';
 import { Annotation } from '../model/Annotation';
 import { Notification } from '../model/Notification';
 import { Information } from '../model/Information';
@@ -38,6 +38,7 @@ export class LajiApiService {
   get(endpoint: LajiApi.Endpoints.information, id: string, query: LajiApi.Query.InformationQuery): Observable<Information>;
   get(endpoint: LajiApi.Endpoints.news, id: string): Observable<News>;
   get(endpoint: LajiApi.Endpoints.publications, id: string, query: LajiApi.Query.PublicationQuery): Observable<Publication>;
+  get(endpoint: LajiApi.Endpoints.taxon, id: string, query: LajiApi.Query.TaxaQuery): Observable<Taxonomy>
   get<T>(endpoint: LajiApi.Endpoints, id: string, query: object = {}): Observable<T> {
     const url = `${environment.apiBase}/${endpoint}/${id}`;
     const options = { params: {...query} };
@@ -101,6 +102,7 @@ export namespace LajiApi {
     personToken = 'person-token',
     publications = 'publications',
     sources = 'sources',
+    taxon = 'taxa',
   }
 
   export type AutocompleteField = 'taxon'|'collection'|'friends'|'unit'|'person';
@@ -195,6 +197,23 @@ export namespace LajiApi {
     export interface SourceQuery extends LangWithFallback, Paged {
       idIn?: string;
     }
+
+    export interface TaxaQuery extends LangWithFallback {
+      maxLevel?: number;
+      selectedFields?: string;
+      informalGroupFilters?: string;
+      adminStatusFilters?: string;
+      redListStatusFilters?: string;
+      typesOfOccurrenceFilters?: string;
+      typesOfOccurrenceNotFilters?: string;
+      invasiveSpeciesFilter?: boolean;
+      includeHidden?: boolean;
+      includeMedia?: boolean;
+      includeDescriptions?: boolean;
+      externalSources?: string;
+      onlyFinnish?: boolean;
+      sortOrder?: 'taxonomic'|'scientific_name'|'finnish_name';
+    }
   }
 
   export namespace Response {
@@ -217,6 +236,10 @@ export namespace LajiApi {
     export interface NotificationListResponse extends PagedResult<Notification> { }
 
     export interface SourceListResponse extends PagedResult<Source> { }
+
+    export interface TaxonResponse extends Taxonomy {
+
+    }
   }
 
 }

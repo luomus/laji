@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AbsractLabelPipe } from './abstract-label.pipe';
-import { TaxonomyApi } from '../api';
+import { TaxonomyApi } from '../api/TaxonomyApi';
 import { Taxonomy } from '../model';
 
 /**

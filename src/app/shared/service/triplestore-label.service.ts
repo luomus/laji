@@ -10,11 +10,11 @@ import { Util } from './util.service';
 import { InformalTaxonGroup, Taxonomy } from '../model';
 import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 import { SourceService } from './source.service';
-import { TaxonomyApi } from '../api';
 import {UserService} from './user.service';
 import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
 import { forkJoin } from 'rxjs';
+import { LajiApi, LajiApiService } from './laji-api.service';
 
 @Injectable()
 export class TriplestoreLabelService {
@@ -35,7 +35,7 @@ export class TriplestoreLabelService {
               private namedPlacesService: NamedPlacesService,
               private sourceService: SourceService,
               private cacheService: CacheService,
-              private taxonApi: TaxonomyApi,
+              private lajiApi: LajiApiService,
               private userService: UserService
   ) {
     this.getAllLabels();
@@ -89,7 +89,7 @@ export class TriplestoreLabelService {
           return this.sourceService.getName(key, lang);
         case 'MX':
           if (!TriplestoreLabelService.requestCache[key]) {
-            TriplestoreLabelService.requestCache[key] = this.taxonApi.taxonomyFindBySubject(key, 'multi')
+            TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.taxon, key, {lang: 'multi'})
               .map((taxon: Taxonomy) => taxon.vernacularName || taxon.scientificName)
               .do(name => TriplestoreLabelService.cache[key] = name)
               .map(name => MultiLangService.getValue((name as any), lang))
