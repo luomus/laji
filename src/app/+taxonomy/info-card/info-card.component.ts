@@ -149,6 +149,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.taxon = data.taxon;
         // this.taxon['skosExactMatch'] = '2627C0';
+        this.taxon['skosExactMatch'] = 'B2B21A';
         this.taxonDescription = data.descriptions;
         this.hasDescription = data.descriptions.length > 0;
         this.hasTaxonImages = data.media.length > 0;
