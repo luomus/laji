@@ -1,16 +1,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import * as rdflib from 'rdflib';
+import { Observable, of as ObservableOf } from 'rxjs';
+// import * as rdflib from 'rdflib';
 import { TaxonInfo } from './taxon-info.model';
 
 @Injectable()
 export class TaxonConceptService {
-  private RDF = rdflib.Namespace('http://www.w3.org/2000/01/rdf-schema#');
-  private TAXONID = rdflib.Namespace('http://taxonid.org/');
-  private TUN = rdflib.Namespace('http://tun.fi/');
-  private SKOS = rdflib.Namespace('http://www.w3.org/2004/02/skos/core#');
-  private DWC = rdflib.Namespace('http://rs.tdwg.org/dwc/terms/');
+  // private RDF = rdflib.Namespace('http://www.w3.org/2000/01/rdf-schema#');
+  // private TAXONID = rdflib.Namespace('http://taxonid.org/');
+  // private TUN = rdflib.Namespace('http://tun.fi/');
+  // private SKOS = rdflib.Namespace('http://www.w3.org/2004/02/skos/core#');
+  // private DWC = rdflib.Namespace('http://rs.tdwg.org/dwc/terms/');
 
   constructor(protected http: HttpClient) {
   }
@@ -25,6 +25,8 @@ export class TaxonConceptService {
   }
 
   private getMatches(id: string, taxonId: string): Observable<string[]> {
+    return ObservableOf([]);
+    /*
     const path = this.TAXONID(taxonId).value;
 
     return this.makeRdfRequest(path)
@@ -38,9 +40,12 @@ export class TaxonConceptService {
           return arr;
         }, []);
       });
+    */
   }
 
   private getTaxonInfo(path: string): Observable<TaxonInfo> {
+    return ObservableOf(null);
+    /*
     return this.makeRdfRequest(path)
       .switchMap(store => {
         const result: TaxonInfo = {id: path, scientificName: '', inScheme: '', inSchemeLabel: {}};
@@ -63,9 +68,12 @@ export class TaxonConceptService {
           return result;
         });
       });
+      */
   }
 
   private getSchemeInfo(path: string): Observable<any> {
+    return ObservableOf(null);
+    /*
     return this.makeRdfRequest(path)
       .map(store => {
         const result = {};
@@ -78,9 +86,12 @@ export class TaxonConceptService {
 
         return result;
       });
+    */
   }
 
   private makeRdfRequest(path: string): Observable<any> {
+    return ObservableOf(null);
+    /*
     return this.http.get(path, {
       headers: new HttpHeaders({'Accept': 'application/rdf+xml'}),
       responseType: 'text',
@@ -91,5 +102,6 @@ export class TaxonConceptService {
         rdflib.parse(data, store, path, 'application/rdf+xml');
         return store;
       });
+    */
   }
 }
