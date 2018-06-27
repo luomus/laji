@@ -20,6 +20,7 @@ import { SearchFiltersModule } from '../shared-modules/search-filters/search-fil
 import { ObservationFiltersComponent } from './observation-filters/observation-filters.component';
 import { PillListComponent } from './pill-list/pill-list.component';
 import { LajiSelectModule } from '../shared-modules/select/select.module';
+import { InfoModule } from '../shared-modules/info/info.module';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { LajiSelectModule } from '../shared-modules/select/select.module';
     NgxDatatableModule,
     ObservationResultModule,
     SearchFiltersModule,
-    LajiSelectModule
+    LajiSelectModule,
+    InfoModule
   ],
   declarations: [ObservationComponent, ObservationChartComponent,
     ObservationFormComponent,

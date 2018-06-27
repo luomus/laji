@@ -28,6 +28,8 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() open = false;
   @Input() outputOnlyId = false;
   @Output() selectedChanged = new EventEmitter<string[]|string>();
+  @Input() multiple = true;
+  @Input() info: string;
   @ViewChild('filter') filter: ElementRef;
 
   selectedOptions: SelectOptions[] = [];
@@ -60,8 +62,20 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     this.filterSub.unsubscribe();
   }
 
+  toggleValue(id: string) {
+    if (this.selectedOptions.findIndex(option => option.id === id) === -1) {
+      this.add(id);
+    } else {
+      this.remove(id);
+    }
+  }
+
   add(id: string) {
-    this.selected.push(id);
+    if (this.multiple) {
+      this.selected.push(id);
+    } else {
+      this.selected = [id];
+    }
     this.selectedIdx = -1;
     this.filter.nativeElement.value = '';
     this.filterBy = '';
@@ -84,7 +98,10 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  toggle(el) {
+  toggle(event, el) {
+    if (event.target.classList.contains('no-propagation')) {
+      return;
+    }
     this.open = !this.open;
     if (this.open && this.useFilter) {
       Observable.interval(10)
