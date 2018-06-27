@@ -1,107 +1,126 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of as ObservableOf } from 'rxjs';
-// import * as rdflib from 'rdflib';
-import { TaxonInfo } from './taxon-info.model';
+import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { TaxonMatch } from './taxon-match.model';
 
 @Injectable()
 export class TaxonConceptService {
-  // private RDF = rdflib.Namespace('http://www.w3.org/2000/01/rdf-schema#');
-  // private TAXONID = rdflib.Namespace('http://taxonid.org/');
-  // private TUN = rdflib.Namespace('http://tun.fi/');
-  // private SKOS = rdflib.Namespace('http://www.w3.org/2004/02/skos/core#');
-  // private DWC = rdflib.Namespace('http://rs.tdwg.org/dwc/terms/');
+  private XML = 'http://www.w3.org/XML/1998/namespace';
+  private RDFS = 'http://www.w3.org/2000/01/rdf-schema#';
+  private RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+  private TAXONID = 'http://taxonid.org/';
+  private TUN = 'http://tun.fi/';
+  private SKOS = 'http://www.w3.org/2004/02/skos/core#';
+  private DWC = 'http://rs.tdwg.org/dwc/terms/';
 
-  constructor(protected http: HttpClient) {
-  }
+  constructor(protected http: HttpClient) { }
 
-  public getExactMatches(id: string, taxonId: string): Observable<TaxonInfo[]> {
-    return this.getMatches(id, taxonId).switchMap(matches => {
-      if (matches.length === 0) {
-        return Observable.of([]);
-      }
-      return Observable.forkJoin(matches.map(taxonPath => this.getTaxonInfo(taxonPath)));
-    });
-  }
-
-  private getMatches(id: string, taxonId: string): Observable<string[]> {
-    return ObservableOf([]);
-    /*
-    const path = this.TAXONID(taxonId).value;
+  public getMatches(id: string, taxonId: string): Observable<string[]> {
+    const path = this.TAXONID + taxonId;
 
     return this.makeRdfRequest(path)
-      .map(store => {
-        const matches = store.statementsMatching(undefined, this.SKOS('exactMatch'));
-        return matches.reduce((arr, stm) => {
-          const match = stm.object.value;
-          if (match !== this.TUN(id).value) {
-            arr.push(match);
+      .pipe(
+        map(xml => {
+          const matches = xml.getElementsByTagNameNS(this.SKOS, 'exactMatch');
+          const result = [];
+
+          for (let i = 0; i < matches.length; i++) {
+            const match = this.getValueOrResource(matches[i]);
+            if (match && match !== this.TUN + id) {
+              result.push(match);
+            }
           }
-          return arr;
-        }, []);
-      });
-    */
-  }
-
-  private getTaxonInfo(path: string): Observable<TaxonInfo> {
-    return ObservableOf(null);
-    /*
-    return this.makeRdfRequest(path)
-      .switchMap(store => {
-        const result: TaxonInfo = {id: path, scientificName: '', inScheme: '', inSchemeLabel: {}};
-        const variables = [
-          {name: 'scientificName', namespace: this.DWC},
-          {name: 'scientificNameAuthorship', namespace: this.DWC},
-          {name: 'inScheme', namespace: this.SKOS}
-        ];
-
-        for (let i = 0; i < variables.length; i++) {
-          const variable = variables[i];
-          const match = store.statementsMatching(undefined, variable.namespace(variable.name));
-          if (match && match.length > 0) {
-            result[variable.name] = match[0].object.value;
-          }
-        }
-
-        return this.getSchemeInfo(result.inScheme).map(schemeInfo => {
-          result.inSchemeLabel = schemeInfo;
           return result;
-        });
-      });
-      */
+        })
+      );
+  }
+
+  public getMatchInfo(path: string): Observable<TaxonMatch> {
+    return this.makeRdfRequest(path)
+      .pipe(
+        switchMap(xml => {
+          const result: TaxonMatch = {id: path, scientificName: '', inScheme: '', inSchemeLabel: {}};
+          const variables = [
+            {name: 'scientificName', namespace: this.DWC},
+            {name: 'scientificNameAuthorship', namespace: this.DWC},
+            {name: 'inScheme', namespace: this.SKOS}
+          ];
+
+          for (let i = 0; i < variables.length; i++) {
+            const variable = variables[i];
+            const match = xml.getElementsByTagNameNS(variable.namespace, variable.name);
+            if (match && match.length > 0) {
+              const value = this.getValueOrResource(match[0]);
+              if (value) {
+                result[variable.name] = value;
+              }
+            }
+          }
+
+          return this.getSchemeInfo(result.inScheme).map(schemeInfo => {
+            result.inSchemeLabel = schemeInfo;
+            return result;
+          });
+        })
+      );
   }
 
   private getSchemeInfo(path: string): Observable<any> {
-    return ObservableOf(null);
-    /*
     return this.makeRdfRequest(path)
-      .map(store => {
-        const result = {};
-        const matches = store.statementsMatching(undefined, this.RDF('label'));
+      .pipe(
+        map(xml => {
+          const result = {};
+          const matches = xml.getElementsByTagNameNS(this.RDFS, 'label');
 
-        for (let i = 0; i < matches.length; i++) {
-          const match = matches[i];
-          result[match.object.lang] = match.object.value;
-        }
+          for (let i = 0; i < matches.length; i++) {
+            const match = matches[i];
+            const lang = this.getAttribute(match, this.XML, 'lang');
+            const value = this.getValueOrResource(match);
+            if (lang && value) {
+              result[lang] = value;
+            }
+          }
 
-        return result;
-      });
-    */
+          return result;
+        })
+      );
   }
 
   private makeRdfRequest(path: string): Observable<any> {
-    return ObservableOf(null);
-    /*
     return this.http.get(path, {
       headers: new HttpHeaders({'Accept': 'application/rdf+xml'}),
       responseType: 'text',
       params: {format: 'skos'}
     })
-      .map(data => {
-        const store = rdflib.graph();
-        rdflib.parse(data, store, path, 'application/rdf+xml');
-        return store;
-      });
-    */
+      .pipe(
+        map(data => {
+          const parser = new DOMParser();
+          return parser.parseFromString(data, 'text/xml');
+        })
+      );
+  }
+
+  private getValueOrResource(dom: any) {
+    let value = this.getAttribute(dom, this.RDF, 'resource');
+
+    if (!value && dom.childNodes && dom.childNodes.length > 0) {
+      value = dom.childNodes[0].nodeValue;
+    }
+
+    return value;
+  }
+
+  private getAttribute(dom: any, namespace: string, name: string) {
+    if (!dom.attributes) {
+      return null;
+    }
+
+    const node = dom.attributes.getNamedItemNS(namespace, name);
+    if (node) {
+      return node.nodeValue;
+    }
+
+    return null;
   }
 }
