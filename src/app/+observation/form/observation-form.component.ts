@@ -4,9 +4,7 @@ import {
 } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subject ,  Subscription, of as ObservableOf } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
 import { LocalStorage } from 'ng2-webstorage';
@@ -84,9 +82,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       .switchMap((token: string) => this.getTaxa(token))
       .switchMap((data) => {
         if (this.formQuery.taxon) {
-          return Observable.of(data);
+          return ObservableOf(data);
         }
-        return Observable.of([]);
+        return ObservableOf([]);
       });
   }
 
@@ -120,7 +118,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       this.formService
         .load(environment.invasiveControlForm, this.translate.currentLang)
         .switchMap((form) => this.formPermissionService.hasEditAccess(form))
-        .catch(() => Observable.of(false))
+        .catch(() => ObservableOf(false))
         .subscribe(hasPermission => this.hasInvasiveControleRights = hasPermission);
     }
 

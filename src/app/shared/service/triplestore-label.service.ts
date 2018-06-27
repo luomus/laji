@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+
+import {throwError as observableThrowError,  Observable ,  Observer ,  forkJoin, of as ObservableOf } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { MetadataApi } from '../api/MetadataApi';
 import { Logger } from '../logger/logger.service';
@@ -14,7 +14,6 @@ import { SourceService } from './source.service';
 import {UserService} from './user.service';
 import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
-import { forkJoin } from 'rxjs';
 import { LajiApi, LajiApiService } from './laji-api.service';
 
 @Injectable()
@@ -46,7 +45,7 @@ export class TriplestoreLabelService {
     return this._get(key, lang)
       .catch(err => {
         this.logger.warn('Failed to fetch label for ' + key, err);
-        return Observable.of(key);
+        return ObservableOf(key);
       })
   }
 
@@ -55,7 +54,7 @@ export class TriplestoreLabelService {
       if (TriplestoreLabelService.requestCache[key]) {
         delete TriplestoreLabelService.requestCache[key];
       }
-      return Observable.of(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
+      return ObservableOf(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
     }
     const parts = key.split('.');
     if (parts && typeof parts[1] === 'string' && !isNaN(parts[1])) {
@@ -64,7 +63,7 @@ export class TriplestoreLabelService {
           if (typeof TriplestoreLabelService.requestCache[key] === 'undefined') {
             TriplestoreLabelService.requestCache[key] = this.namedPlacesService.getNamedPlace(key, this.userService.getToken())
               .map((np: NamedPlace) => np.name)
-              .catch(() => Observable.of(''))
+              .catch(() => ObservableOf(''))
               .do(name => TriplestoreLabelService.cache[key] = name)
               .share();
           }
@@ -101,7 +100,7 @@ export class TriplestoreLabelService {
     }
 
     if (this.labels) {
-      return Observable.of(MultiLangService.getValue(this.labels[key], lang));
+      return ObservableOf(MultiLangService.getValue(this.labels[key], lang));
     } else if (this.pending) {
       return Observable.create((observer: Observer<string>) => {
         this.pending.subscribe(
@@ -113,7 +112,7 @@ export class TriplestoreLabelService {
         );
       });
     } else {
-      return Observable.of(MultiLangService.getValue(this.labels[key], lang));
+      return ObservableOf(MultiLangService.getValue(this.labels[key], lang));
     }
   }
 
@@ -137,7 +136,7 @@ export class TriplestoreLabelService {
       cached(
         TriplestoreLabelService.cacheProps,
         this.metadataApi.metadataAllProperties('multi')
-          .retryWhen(errors => errors.delay(1000).take(2).concat(Observable.throw(errors)))
+          .retryWhen(errors => errors.delay(1000).take(2).concat(observableThrowError(errors)))
           .map(data => {
             const props = {};
             if (data && data.results) {

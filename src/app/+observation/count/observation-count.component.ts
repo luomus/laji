@@ -1,9 +1,9 @@
+
+import {throwError as observableThrowError,  Subscription ,  Observable } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Util } from '../../shared/service/util.service';
 import { Logger } from '../../shared/logger/logger.service';
-import { Observable } from 'rxjs/Observable';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
 
@@ -71,7 +71,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
     this.subCount = this.warehouseService
       .warehouseQueryCountGet(query)
       .timeout(this.timeout)
-      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
+      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .delay(10)
       .subscribe(result => {
           this.loading = false;
@@ -96,7 +96,7 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
     this.subCount = this.warehouseService
       .warehouseQueryAggregateGet(query, [this.field], undefined, pageSize)
       .timeout(this.timeout)
-      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
+      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .delay(100)
       .subscribe(
         result => {

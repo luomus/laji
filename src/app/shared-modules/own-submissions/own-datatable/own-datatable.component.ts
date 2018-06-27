@@ -9,12 +9,11 @@ import { DocumentInfoService } from '../service/document-info.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { UserService } from '../../../shared/service/user.service';
-import { Observable, from as ObservableFrom } from 'rxjs';
+import { Observable, from as ObservableFrom ,  Subscription, of as ObservableOf } from 'rxjs';
 import { Person } from '../../../shared/model/Person';
 import { FormService } from '../../../shared/service/form.service';
 import { RouterChildrenEventService } from '../service/router-children-event.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
 import { DocumentExportService } from './document_export.service';
 import { WindowRef } from '../../../shared/windows-ref';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
@@ -421,7 +420,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private getLocality(gatheringInfo: any, namedPlaceID): Observable<string> {
-    let locality$ = Observable.of(gatheringInfo);
+    let locality$ = ObservableOf(gatheringInfo);
     const npID = gatheringInfo.namedPlaceID || namedPlaceID;
 
     if (!gatheringInfo.locality && npID) {
@@ -442,7 +441,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
             return user.fullName;
           });
       }
-      return Observable.of(userId);
+      return ObservableOf(userId);
     }))
       .mergeAll()
       .toArray()
@@ -452,7 +451,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private getForm(formId: string): Observable<any> {
-    if (this.formsById[formId]) { return Observable.of(this.formsById[formId]); }
+    if (this.formsById[formId]) { return ObservableOf(this.formsById[formId]); }
 
     return this.formService
       .getForm(formId, this.translate.currentLang)
@@ -462,9 +461,9 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private getNamedPlaceName(npId: string): Observable<string> {
-    if (!npId || this.columns.indexOf('namedPlaceName') === -1) {return Observable.of(''); }
+    if (!npId || this.columns.indexOf('namedPlaceName') === -1) {return ObservableOf(''); }
 
-    if (this.namedPlaceNames[npId]) { return Observable.of(this.namedPlaceNames[npId]); }
+    if (this.namedPlaceNames[npId]) { return ObservableOf(this.namedPlaceNames[npId]); }
 
     return this.labelService.get(npId, 'multi');
   }

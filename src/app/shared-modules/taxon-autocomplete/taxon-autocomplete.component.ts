@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {Observable, of as ObservableOf} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 import {Autocomplete} from '../../shared/model/Autocomplete';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
@@ -40,9 +40,9 @@ export class TaxonAutocompleteComponent {
       .switchMap((token: string) => this.getTaxa(token))
       .switchMap((data) => {
         if (this.value) {
-          return Observable.of(data);
+          return ObservableOf(data);
         }
-        return Observable.of([]);
+        return ObservableOf([]);
       });
   }
 

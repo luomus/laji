@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { geoJSONToISO6709 } from 'laji-map/lib/utils';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
-import { Observable, from as ObservableFrom } from 'rxjs';
+import { Observable, from as ObservableFrom, of as ObservableOf } from 'rxjs';
 import { DocumentInfoService } from '../service/document-info.service';
 
 
@@ -96,7 +96,7 @@ export class DocumentExportService {
 
   private getJsonForms(docs: Document[], jsonForms = {}, idx = 0): Observable<any> {
     if (idx >= docs.length) {
-      return Observable.of(jsonForms);
+      return ObservableOf(jsonForms);
     }
 
     const formId = docs[idx].formID;
@@ -166,7 +166,7 @@ export class DocumentExportService {
       }
     }
 
-    const observable = observables.length > 0 ? Observable.forkJoin(observables) : Observable.of([]);
+    const observable = observables.length > 0 ? Observable.forkJoin(observables) : ObservableOf([]);
 
     return observable.switchMap(
       () => {
@@ -184,10 +184,10 @@ export class DocumentExportService {
               return Observable.forkJoin(getDataObservables)
                 .map((arrays) => {
                   obj[unwindKey] = [].concat.apply([], arrays);
-                  return Observable.of(obj);
+                  return ObservableOf(obj);
                 });
             }
-            return Observable.of(obj);
+            return ObservableOf(obj);
           });
 
           return Observable.forkJoin(getDataForAllKeysObservables)
@@ -195,7 +195,7 @@ export class DocumentExportService {
               return this.unwindAll(unwindKeys, obj);
             });
         } else {
-          return Observable.of([obj]);
+          return ObservableOf([obj]);
         }
       });
   }
@@ -334,16 +334,16 @@ export class DocumentExportService {
       }
     }
 
-    return Observable.of(value);
+    return ObservableOf(value);
   }
 
   private getLabel(key: string, fieldData?: any): Observable<string> {
     if (typeof key !== 'string') {
-      return Observable.of(String(key));
+      return ObservableOf(String(key));
     }
 
     if (fieldData && fieldData.enums && fieldData.enums[key]) {
-      return Observable.of(fieldData.enums[key]);
+      return ObservableOf(fieldData.enums[key]);
     }
 
     if (key.match(new RegExp('^' + this.valuePrefixes.person + '\.[0-9]+$'))) {
@@ -370,7 +370,7 @@ export class DocumentExportService {
         });
     }
 
-    return Observable.of(key);
+    return ObservableOf(key);
   }
 
   private isEmpty(key: string, obj: any, form: any) {

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable ,  Observer, of as ObservableOf } from 'rxjs';
 import { Publication } from '../model/Publication';
 import { LajiApi, LajiApiService } from './laji-api.service';
 
@@ -18,7 +17,7 @@ export class PublicationService {
     this.setLang(lang);
 
     if (this.cache[id]) {
-      return Observable.of(this.cache[id]);
+      return ObservableOf(this.cache[id]);
     } else if (!this.pending[id]) {
       this.pending[id] = this.lajiApi.get(LajiApi.Endpoints.publications, id, {lang})
         .catch((err) => undefined)

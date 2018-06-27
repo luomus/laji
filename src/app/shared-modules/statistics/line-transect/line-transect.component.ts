@@ -11,7 +11,7 @@ import { Map3Component } from '../../map/map.component';
 import { LajiMapOptions } from '../../map/map-options.interface';
 import { Units } from '../../../shared/model/Units';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { NamedPlacesService } from '../../named-place/named-places.service';
@@ -149,7 +149,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     this.stats$ = this.lajiApiService.getList(LajiApi.Endpoints.documentStats,
       {personToken: this.userSerivce.getToken(), namedPlace: this.namedPlace.id})
       .map(stats => this.dateDiffFromDoc(stats.dateMedian))
-      .catch(() => Observable.of(''));
+      .catch(() => ObservableOf(''));
     if (this.document.gatherings) {
       this.document.gatherings.map(gathering => {
         if (gathering.units) {
@@ -267,7 +267,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
 
   initIsAdmin() {
     if (!this.namedPlace || !this.namedPlace.collectionID) {
-      return Observable.of(null);
+      return ObservableOf(null);
     }
     return this.formPermissionService.getFormPermission(this.namedPlace.collectionID, this.userSerivce.getToken())
       .combineLatest(

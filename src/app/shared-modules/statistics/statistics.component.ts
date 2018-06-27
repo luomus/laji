@@ -4,7 +4,7 @@ import { DocumentApi } from '../../shared/api/DocumentApi';
 import { UserService } from '../../shared/service/user.service';
 import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { NamedPlacesService } from '../named-place/named-places.service';
 import { NamedPlace } from '../../shared/model/NamedPlace';
 import {map, switchMap} from 'rxjs/operators';
@@ -40,8 +40,8 @@ export class StatisticsComponent implements OnInit {
           document.namedPlaceID ?
             this.namedPlacesService
               .getNamedPlace(document.namedPlaceID, this.userService.getToken())
-              .catch(() => Observable.of({})) :
-            Observable.of({}),
+              .catch(() => ObservableOf({})) :
+            ObservableOf({}),
           (form, ns) => ({form, ns})
         ).pipe(
           map(formData => ({form: formData.form, ns: formData.ns, document}))

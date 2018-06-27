@@ -5,7 +5,7 @@ import { WindowRef } from './shared/windows-ref';
 import { environment } from '../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { LocalizeRouterService } from './locale/localize-router.service';
 import {ToastrService} from 'ngx-toastr';
 import {map, switchMap, tap} from 'rxjs/operators';
@@ -109,7 +109,7 @@ export class AppComponent {
       return this.getDeepestMeta(routeSnapshot.firstChild)
         .map(childMeta => ({...meta, ...childMeta}));
     }
-    return Observable.of(meta);
+    return ObservableOf(meta);
   }
 
   private getDeepestTitle(routeSnapshot: ActivatedRouteSnapshot): Observable<string[]> {
@@ -121,6 +121,6 @@ export class AppComponent {
       return this.getDeepestTitle(routeSnapshot.firstChild)
         .map(label => [...label, ...title]);
     }
-    return Observable.of(title);
+    return ObservableOf(title);
   }
 }

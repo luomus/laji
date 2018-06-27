@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { Annotation } from '../../shared/model/Annotation';
 import { UserService } from '../../shared/service/user.service';
 import { IdService } from '../../shared/service/id.service';
@@ -68,7 +68,7 @@ export class AnnotationService {
       status = cnt[classes.AnnotationClassUnreliable] > cnt[classes.AnnotationClassSuspicious] ?
           classes.AnnotationClassUnreliable : classes.AnnotationClassSuspicious;
     }
-    return Observable.of(status);
+    return ObservableOf(status);
   }
 
 }

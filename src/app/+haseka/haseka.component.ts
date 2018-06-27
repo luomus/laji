@@ -3,7 +3,7 @@ import { UserService } from '../shared/service/user.service';
 import { LocalStorage } from 'ng2-webstorage';
 import { NavigationEnd, Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { RouterChildrenEventService } from '../shared-modules/own-submissions/service/router-children-event.service';
 import { environment } from '../../environments/environment';
 

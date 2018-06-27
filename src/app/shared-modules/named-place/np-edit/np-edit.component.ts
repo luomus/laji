@@ -4,7 +4,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { Util } from '../../../shared/service/util.service';
 import { FormService } from '../../../shared/service/form.service';

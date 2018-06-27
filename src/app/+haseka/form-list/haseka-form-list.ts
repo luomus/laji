@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Subscription,  Observable, merge as ObservableMerge, of as ObservableOf } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import { Logger } from '../../shared/logger/logger.service';
 import { FormService } from '../../shared/service/form.service';
@@ -46,7 +45,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subTmp = Observable.merge(
+    this.subTmp = ObservableMerge(
       this.formService.getAllTempDocuments(),
       this.formService.localChanged
         .switchMap(() => this.formService.getAllTempDocuments())
@@ -93,7 +92,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     this.subFetch = this.formService.getAllForms(this.loadedLang)
       .switchMap((forms) => {
         if (forms.length === 0) {
-          return Observable.of(forms);
+          return ObservableOf(forms);
         }
         const subs = [];
         forms.forEach(form => {
@@ -133,11 +132,11 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     if (!this.userService.isLoggedIn || !form.collectionID || !form.features ||
       (form.features.indexOf(Form.Feature.Restricted) === -1 && form.features.indexOf(Form.Feature.Administer) === -1)
     ) {
-      return Observable.of(false);
+      return ObservableOf(false);
     }
     return this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken())
       .combineLatest(
-        this.person ? Observable.of(this.person) : this.userService.getUser(),
+        this.person ? ObservableOf(this.person) : this.userService.getUser(),
         (permission, person) => ({permission, person})
       )
       .map(data => this.formPermissionService.isAdmin(data.permission, data.person));

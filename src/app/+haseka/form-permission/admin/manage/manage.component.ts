@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable } from 'rxjs';
 import { FormPermissionService } from '../../form-permission.service';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import { FormPermission } from '../../../../shared/model/FormPermission';
 import { UserService } from '../../../../shared/service/user.service';
 import { Logger } from '../../../../shared/logger/logger.service';
-import { Observable } from 'rxjs/Observable';
 import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 
 @Component({

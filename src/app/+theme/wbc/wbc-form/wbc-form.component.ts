@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentFormComponent } from '../../../shared/document-form/document-form.component';
 import { ComponentCanDeactivate } from '../../../shared/document-form/document-de-activate.guard';

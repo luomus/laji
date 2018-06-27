@@ -1,8 +1,8 @@
+
+import {throwError as observableThrowError,  Observable ,  Observer, of as ObservableOf } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { Observer } from 'rxjs/Observer';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { SourceService } from '../../../shared/service/source.service';
 import { CollectionService } from '../../../shared/service/collection.service';
@@ -41,7 +41,7 @@ export class ObservationListService {
     aggregateBy = this.prepareFields(aggregateBy).filter(val => this.removeAggregateFields.indexOf(val) === -1);
     const key = JSON.stringify(query) + [aggregateBy.join(','), orderBy.join(','), lang, page, pageSize].join(':');
     if (this.aggregateKey === key && this.aggregateData) {
-      return Observable.of(this.aggregateData);
+      return ObservableOf(this.aggregateData);
     } else if (this.aggregatePendingKey === key && this.aggregatePending) {
       return Observable.create((observer: Observer<any>) => {
         const onComplete = (res: any) => {
@@ -66,7 +66,7 @@ export class ObservationListService {
       page,
       false,
       false
-    ).retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
+    ).retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .map(data => this.convertAggregateResult(data))
       .switchMap(data => this.openValues(data, aggregateBy, lang))
       .do(data => {
@@ -88,7 +88,7 @@ export class ObservationListService {
     selected = this.prepareFields(selected);
     const key = JSON.stringify(query) + [selected.join(','), orderBy.join(','), lang, page, pageSize].join(':');
     if (this.key === key && this.data) {
-      return Observable.of(this.data);
+      return ObservableOf(this.data);
     } else if (this.pendingKey === key && this.pending) {
       return Observable.create((observer: Observer<any>) => {
         const onComplete = (res: any) => {
@@ -108,7 +108,7 @@ export class ObservationListService {
         pageSize,
         page
       )
-      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
+      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .switchMap(data => this.openValues(data, selected, lang))
       .do(data => {
         this.data = data;
@@ -188,13 +188,13 @@ export class ObservationListService {
         .map(collections => ({'document.collectionId': collections})));
     }
 
-    const mappers$ = allMappers.length === 0 ? Observable.of({}) : Observable.forkJoin(allMappers)
+    const mappers$ = allMappers.length === 0 ? ObservableOf({}) : Observable.forkJoin(allMappers)
       .map(mappers => mappers.reduce((cumulative, current) => {
         return {...cumulative, ...current};
       }, {}));
 
     return Observable.forkJoin(
-      Observable.of(data),
+      ObservableOf(data),
       mappers$,
       (response, mappers) => {
         response.results = response.results.map(document => {

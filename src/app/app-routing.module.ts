@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
 import { ViewerComponent } from './+viewer/viewer.component';
 import { ForumComponent } from './forum/forum.component';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
@@ -10,7 +10,7 @@ import { LocaleFiComponent } from './locale/locale-fi.component';
 export class CustomPreloadingStrategy implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<boolean>): Observable<boolean> {
     if (route.data && route.data['noPreload']) {
-      return Observable.of(null);
+      return ObservableOf(null);
     }
     return load();
   }

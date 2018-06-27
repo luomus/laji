@@ -10,10 +10,9 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subscription } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ng2-webstorage';
-import { Subscription } from 'rxjs/Subscription';
 import { IdService } from '../../shared/service/id.service';
 import { UserService } from '../../shared/service/user.service';
 import { environment } from '../../../environments/environment';

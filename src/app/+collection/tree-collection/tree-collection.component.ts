@@ -10,8 +10,7 @@ import {
 } from '@angular/core';
 import { Collection } from '../../shared/model/Collection';
 import { TreeComponent, TreeModel, TreeNode } from 'angular-tree-component';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject ,  Subscription } from 'rxjs';
 import { IdService } from '../../shared/service/id.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';

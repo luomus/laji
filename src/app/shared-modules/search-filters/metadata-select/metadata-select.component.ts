@@ -3,8 +3,7 @@ import {
   OnInit
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subscription, of as ObservableOf } from 'rxjs';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import { CollectionService } from '../../../shared/service/collection.service';
@@ -103,10 +102,10 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
           lang: this.lang,
           err: err
         });
-        return Observable.of([]);
+        return ObservableOf([]);
       });
 
-    const byOptions$ = Observable.of(this.options)
+    const byOptions$ = ObservableOf(this.options)
       .map(options => options.map(option => ({id: option, value: option})));
 
     this.subOptions = (this.options ? byOptions$ : byField$)
@@ -128,7 +127,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
               }, [])
             );
         } else {
-          return Observable.of(options);
+          return ObservableOf(options);
         }
       })
       .subscribe(options => {

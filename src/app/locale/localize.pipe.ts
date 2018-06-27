@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Injectable, OnDestroy, Pipe, PipeTransform } from '@
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizeRouterService } from './localize-router.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Injectable()
 @Pipe({

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { TranslateService } from '@ngx-translate/core';
 import { News } from '../model/News';
 import { PagedResult } from '../model/PagedResult';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { NewsService } from '../service/news.service';
 import { Logger } from '../logger/logger.service';
 

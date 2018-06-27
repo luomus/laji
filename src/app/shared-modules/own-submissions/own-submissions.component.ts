@@ -6,8 +6,7 @@ import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
 import { ModalDirective } from 'ngx-bootstrap';
 
 @Component({
@@ -236,7 +235,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
           if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
             return this.getAllDocuments(query, result.currentPage + 1, documents);
           } else {
-            return Observable.of(documents);
+            return ObservableOf(documents);
           }
         }
       );

@@ -14,7 +14,7 @@
 
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { FormPermission } from '../model/FormPermission';
 import { HttpClient, HttpResponse } from '@angular/common/http';

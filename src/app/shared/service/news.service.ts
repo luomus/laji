@@ -1,5 +1,6 @@
+
+import {throwError as observableThrowError,  Observable, of as ObservableOf } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { PagedResult } from '../model/PagedResult';
 import { News } from '../model/News';
 import { LajiApi, LajiApiService } from './laji-api.service';
@@ -18,7 +19,7 @@ export class NewsService {
       .interval(60100)
       .startWith(0)
       .switchMap(() => this.lajiApi.getList(LajiApi.Endpoints.news, {lang, page, pageSize})
-        .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
+        .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       )
       .do(data => {
         this.currentData = data;
@@ -30,7 +31,7 @@ export class NewsService {
     if (this.currentData && this.currentData.results) {
       const result = this.currentData.results.filter(data => data.id === id);
       if (result.length === 1) {
-        return Observable.of(result[0]);
+        return ObservableOf(result[0]);
       }
     }
     return this.lajiApi.get(LajiApi.Endpoints.news, id);

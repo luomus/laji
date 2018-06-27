@@ -4,8 +4,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
 import { BsDropdownDirective } from 'ngx-bootstrap';
 import { DialogService } from '../service/dialog.service';
 import {LajiApi, LajiApiService} from '../service/laji-api.service';
@@ -76,7 +75,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
           pageSize: this.notificationPageSize
         })
         .switchMap((notifications) => notifications.total <= this.notificationPageSize ?
-          Observable.of({
+          ObservableOf({
             ...notifications,
             unseen: notifications.results.reduce((cumulative, current) => cumulative + (current.seen ? 0 : 1), 0)
           }) :
@@ -197,7 +196,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       return;
     }
     this.translate.get('notification.delete')
-      .switchMap(msg => notification.seen ? Observable.of(true) : this.dialogService.confirm(msg))
+      .switchMap(msg => notification.seen ? ObservableOf(true) : this.dialogService.confirm(msg))
       .subscribe(result => {
         this.dropDown.autoClose = false;
         setTimeout(() => {

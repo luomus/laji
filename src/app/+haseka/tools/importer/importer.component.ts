@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, from as ObservableFrom } from 'rxjs';
+import { Observable, from as ObservableFrom, of as ObservableOf } from 'rxjs';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
@@ -281,8 +281,8 @@ export class ImporterComponent implements OnInit {
     ObservableFrom(this.parsedData).pipe(
       mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy).pipe(
         concatMap(document => this.importService.validateData(document).pipe(
-          switchMap(result => Observable.of({result: result, source: data})),
-          catchError(err => Observable.of(typeof err.json === 'function' ? err.json() : err).pipe(
+          switchMap(result => ObservableOf({result: result, source: data})),
+          catchError(err => ObservableOf(typeof err.json === 'function' ? err.json() : err).pipe(
             map(body => body.error && body.error.details || body),
             map(error => ({result: {_error: error}, source: data}))
           ))
@@ -334,8 +334,8 @@ export class ImporterComponent implements OnInit {
     ObservableFrom(this.parsedData).pipe(
       mergeMap(data => this.augmentService.augmentDocument(data.document).pipe(
         concatMap(document => this.importService.sendData(document, publicityRestrictions).pipe(
-          switchMap(result => Observable.of({result: result, source: data})),
-          catchError(err => Observable.of(typeof err.json === 'function' ? err.json() : err).pipe(
+          switchMap(result => ObservableOf({result: result, source: data})),
+          catchError(err => ObservableOf(typeof err.json === 'function' ? err.json() : err).pipe(
             map(body => body.error && body.error.details || body),
             map(error => ({result: {_error: error}, source: data}))
           ))

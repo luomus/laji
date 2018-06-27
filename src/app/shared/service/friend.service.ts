@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Autocomplete} from '../model/Autocomplete';
-import {Observable} from 'rxjs/Observable';
+import {Observable, of as ObservableOf} from 'rxjs';
 import {UserService} from './user.service';
 import { LajiApi, LajiApiService } from './laji-api.service';
 
@@ -16,10 +16,10 @@ export class FriendService {
 
   allFriends(): Observable<Autocomplete[]> {
     if (this.friends) {
-      return Observable.of(this.friends);
+      return ObservableOf(this.friends);
     }
     if (!this.userService.isLoggedIn) {
-      return Observable.of([]);
+      return ObservableOf([]);
     }
     return this.lajiApi
       .get(LajiApi.Endpoints.autocomplete, 'friends', {

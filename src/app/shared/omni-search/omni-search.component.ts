@@ -11,8 +11,7 @@ import {
   Output,
   ViewContainerRef
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
@@ -94,7 +93,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         .map(group => group.name)
         .reverse();
       this.subCnt =
-        Observable.of(this.taxon.key).combineLatest(
+        ObservableOf(this.taxon.key).combineLatest(
           this.warehouseApi.warehouseQueryCountGet({taxonId: this.taxon.key}),
           (id, cnt) => {
             return {id: id, cnt: cnt.total};

@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable ,  Observer ,  Subject, of as ObservableOf } from 'rxjs';
 import { MetadataApi } from '../api/MetadataApi';
 import { CacheService } from './cache.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 import { Util } from './util.service';
-import { Subject } from 'rxjs/Subject';
 
 
 @Injectable()
@@ -32,7 +30,7 @@ export class MetadataService {
    */
   getAllRanges() {
     if (this.ranges) {
-      return Observable.of(this.ranges);
+      return ObservableOf(this.ranges);
     } else if (this.pendingRanges) {
       return Observable.create((observer: Observer<any>) => {
         this.pendingRanges.subscribe(
@@ -50,7 +48,7 @@ export class MetadataService {
 
     this.cacheService.getItem(MetadataService.rangesCacheKey)
       .merge(this.metadataApi.metadataFindAllRanges('multi')
-        .retryWhen(errors => errors.delay(1000).take(2).concat(Observable.of(false)))
+        .retryWhen(errors => errors.delay(1000).take(2).concat(ObservableOf(false)))
         .do(ranges =>  {
           if (!Util.isEmptyObj(ranges)) {
             this.cacheService.setItem(MetadataService.rangesCacheKey, ranges).subscribe(() => {}, () => {});

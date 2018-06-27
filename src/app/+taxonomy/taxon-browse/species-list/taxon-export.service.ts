@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { MultiLangService } from '../../../shared-modules/lang/service/multi-lang.service';
 import { PublicationService } from '../../../shared/service/publication.service';

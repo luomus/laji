@@ -1,15 +1,15 @@
+
+import {throwError as observableThrowError,  Subscription ,  Observable, of as ObservableOf } from 'rxjs';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit,
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Logger } from '../../shared/logger/logger.service';
 import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { ObservationMapComponent } from '../../+observation/map/observation-map.component';
-import { Observable } from 'rxjs/Observable';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -176,10 +176,10 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   private getTaxon(id) {
     return this.taxonService
       .taxonomyFindBySubject(id, 'multi')
-      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
+      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .catch(err => {
         this.logger.warn('Failed to fetch taxon by id', err);
-        return Observable.of({});
+        return ObservableOf({});
       });
   }
 
@@ -188,7 +188,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
       .taxonomyFindDescriptions(id, this.translate.currentLang, false)
       .catch(err => {
         this.logger.warn('Failed to fetch taxon description by id', err);
-        return Observable.of([]);
+        return ObservableOf([]);
       })
       .map(descriptions => descriptions.reduce((prev, current) => {
           if (!current.title) {
@@ -206,7 +206,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
       .taxonomyFindMedia(id, this.translate.currentLang)
       .catch(err => {
         this.logger.warn('Failed to fetch taxon media by id', err);
-        return Observable.of([]);
+        return ObservableOf([]);
       });
   }
 }

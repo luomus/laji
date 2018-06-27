@@ -9,7 +9,7 @@ import { ObservationTableColumn } from '../../../shared-modules/observation-resu
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 const query = {

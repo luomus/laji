@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
 import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
-import { Observable } from 'rxjs/Observable';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -39,7 +38,7 @@ export class LineTransectComponent implements OnInit, OnDestroy {
       });
     this.rights = this.formService.getForm(environment.lineTransectForm, this.translateService.currentLang)
       .switchMap(form => this.formPermissionService.getRights(form))
-      .catch(() => Observable.of({edit: false, admin: false}))
+      .catch(() => ObservableOf({edit: false, admin: false}))
   }
 
   shouldShowNav(url) {

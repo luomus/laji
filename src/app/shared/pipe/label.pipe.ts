@@ -1,9 +1,10 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { ChangeDetectorRef, EventEmitter, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../service/triplestore-label.service';
 import { IdService } from '../service/id.service';
-import { Observable } from 'rxjs/Observable';
 
 type labelType = 'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
 
@@ -32,7 +33,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     if (type === 'warehouse') {
       this.warehouseService.getOriginalKey(key)
         .timeout(10000)
-        .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
+        .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
         .subscribe(
           (res: string) => {
             if (res) {

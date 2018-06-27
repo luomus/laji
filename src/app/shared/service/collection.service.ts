@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Observer, of as ObservableOf } from 'rxjs';
 import { MetadataApi } from '../api/MetadataApi';
-import { Observer } from 'rxjs/Observer';
 
 
 @Injectable()
@@ -19,7 +18,7 @@ export class CollectionService {
   getAllAsLookUp(lang: string) {
     if (lang === this.currentLang) {
       if (this.collectionsLookup) {
-        return Observable.of(this.collectionsLookup);
+        return ObservableOf(this.collectionsLookup);
       } else if (this.pending) {
         return Observable.create((observer: Observer<any>) => {
           const onComplete = (res: any) => {

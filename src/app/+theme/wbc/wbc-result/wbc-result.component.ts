@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { ResultService } from '../../service/result.service';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
-import { Observable } from 'rxjs/Observable';
 
 type SEASON = 'spring'|'fall'|'winter';
 
@@ -78,7 +77,7 @@ export class WbcResultComponent implements OnInit, OnDestroy {
         this.query.taxonId = [taxonId];
         this.taxon$ = this.resultService.getTaxon(taxonId);
       } else {
-        this.taxon$ = Observable.of(null);
+        this.taxon$ = ObservableOf(null);
       }
       this.mapQuery = this.clone(this.query);
       if (params['grid']) {

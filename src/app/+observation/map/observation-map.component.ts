@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError,  Observable ,  Subscription, of as ObservableOf } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,8 +12,6 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 import { Util } from '../../shared/service/util.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ValueDecoratorService } from '../result-list/value-decorator.sevice';
@@ -352,7 +352,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
           ));
         }
       });
-    this.subDataFetch = Observable.of(this.showItemsWhenLessThan)
+    this.subDataFetch = ObservableOf(this.showItemsWhenLessThan)
       .switchMap((less) => {
         return less > 0 ? count$ : this.warehouseService.warehouseQueryAggregateGet(
           this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
@@ -361,7 +361,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       })
       .timeout(WarehouseApi.longTimeout * 3)
       .delay(100)
-      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
+      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .subscribe((data: any) => {
           if (data.featureCollection) {
             if (this.reset) {

@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlacesService } from '../named-places.service';
 import { FormService } from '../../../shared/service/form.service';
 import { NpChooseComponent } from '../np-choose/np-choose.component';
-import { Observable } from 'rxjs/Observable';
 import { FooterService } from '../../../shared/service/footer.service';
 import { UserService } from '../../../shared/service/user.service';
 import { NamedPlaceQuery } from '../../../shared/api/NamedPlaceApi';
@@ -162,20 +161,20 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   private updateNP(): Observable<any> {
     if (!this.collectionId) {
-      return Observable.of([]);
+      return ObservableOf([]);
     }
     const query: NamedPlaceQuery = {
       collectionID: this.collectionId
     };
     if (this.filterByMunicipality) {
       if (!this.municipality) {
-        return Observable.of([]);
+        return ObservableOf([]);
       }
       query.municipality = this.municipality;
     }
     if (this.filterByBirdAssociationArea) {
       if (!this.birdAssociationArea) {
-        return Observable.of([]);
+        return ObservableOf([]);
       }
       query.birdAssociationArea = this.birdAssociationArea;
     }
@@ -183,7 +182,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       .catch(() => {
         this.translate.get('np.loadError')
           .subscribe(msg => (this.setErrorMessage(msg)));
-        return Observable.of([]);
+        return ObservableOf([]);
       })
       .do(data => {
         this.setActiveNP(-1);
@@ -204,7 +203,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     };
     this.allowCreate = false;
     if (!formData || !formData.collectionID || !this.userService.isLoggedIn) {
-      return Observable.of(null);
+      return ObservableOf(null);
     }
     return this.formPermissionService
       .getRights(formData)
@@ -212,7 +211,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       .switchMap(rights => {
         this.formRights = rights;
         this.allowCreate = !formData.features || formData.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1 || rights.admin;
-        return Observable.of(null);
+        return ObservableOf(null);
       });
   }
 
@@ -222,7 +221,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
         this.translate.get(msgKey, {formId: this.formId})
           .subscribe(msg => this.setErrorMessage(msg));
-        return Observable.of({});
+        return ObservableOf({});
       })
       .do(form => this.formData = form);
   }

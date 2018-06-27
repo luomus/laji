@@ -1,9 +1,8 @@
+
+import {throwError as observableThrowError,  Observer ,  Observable ,  Subscription ,  Subject, of as ObservableOf } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Response } from '@angular/http';
-import { Observer } from 'rxjs/Observer';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
 import { LocalStorage } from 'ng2-webstorage';
@@ -12,7 +11,6 @@ import { Logger } from '../logger/logger.service';
 import { WindowRef } from '../windows-ref';
 import { ToastsService } from './toasts.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs/Subject';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { LocalDb } from '../local-db/local-db.abstract';
 import { environment } from '../../../environments/environment';
@@ -88,9 +86,9 @@ export class UserService extends LocalDb {
     this.subLogout = this.lajiApi.remove(LajiApi.Endpoints.personToken, this.token)
       .catch(err => {
         if (err.status === 404) {
-          return Observable.of(null);
+          return ObservableOf(null);
         }
-        return Observable.throw(err);
+        return observableThrowError(err);
       })
       .retry(5)
       .subscribe(
@@ -128,11 +126,11 @@ export class UserService extends LocalDb {
             this.logger.error('Failed to fetch current users information', err);
           }
           this.logout(false);
-          return Observable.of({});
+          return ObservableOf({});
         });
     }
     if (this.users[id]) {
-      return Observable.of(this.users[id]);
+      return ObservableOf(this.users[id]);
     } else if (!this.usersFetch[id]) {
       this.usersFetch[id] = Observable.create((observer: Observer<Person>) => {
         const onComplete = (user: Person) => {
@@ -141,7 +139,7 @@ export class UserService extends LocalDb {
           delete this.usersFetch[id];
         };
         this.userService.personFindByUserId(id)
-          .catch((e) => Observable.of({}))
+          .catch((e) => ObservableOf({}))
           .subscribe(
             (user: Person) => {
               this.addUser(user);
@@ -173,7 +171,7 @@ export class UserService extends LocalDb {
 
   public getDefaultFormData(): Observable<any> {
     if (this.defaultFormData) {
-      return Observable.of(this.defaultFormData);
+      return ObservableOf(this.defaultFormData);
     } else if (this.formDefaultObservable) {
       return this.formDefaultObservable;
     }
@@ -190,7 +188,7 @@ export class UserService extends LocalDb {
   }
 
   public getUserSetting(key): Observable<any> {
-    return Observable.of(this.userSettings && this.userSettings[key] ? this.userSettings[key] : undefined);
+    return ObservableOf(this.userSettings && this.userSettings[key] ? this.userSettings[key] : undefined);
   }
 
   public setUserSetting(key: string, value: any): void {
@@ -220,10 +218,10 @@ export class UserService extends LocalDb {
 
   private getCurrentUser() {
     if (!this.token) {
-      return Observable.of({});
+      return ObservableOf({});
     }
     if (this.currentUserId && this.users[this.currentUserId]) {
-      return Observable.of(this.users[this.currentUserId]);
+      return ObservableOf(this.users[this.currentUserId]);
     } else if (this.observable) {
       return this.observable;
     }

@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+
+import {throwError as observableThrowError,  Observable ,  Observer, of as ObservableOf } from 'rxjs';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Injectable } from '@angular/core';
 
@@ -13,7 +13,7 @@ export class WarehouseValueMappingService {
   constructor(private warehouseService: WarehouseApi) {
     this.pending = this.warehouseService.warehouseEnumerationLabels()
       .timeout(WarehouseApi.longTimeout)
-      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
+      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .map(data => this.parseResult(data))
       .share();
   };
@@ -39,7 +39,7 @@ export class WarehouseValueMappingService {
           );
       });
     } else {
-      return Observable.of(this[list][value] || value);
+      return ObservableOf(this[list][value] || value);
     }
   }
 

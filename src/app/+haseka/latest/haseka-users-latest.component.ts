@@ -8,8 +8,7 @@ import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
 import { Util } from '../../shared/service/util.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable, from as ObservableFrom, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
+import { Subscription ,  Observable, from as ObservableFrom, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Observer } from 'rxjs';
 import { WindowRef } from '../windows-ref';
-import { Observer } from 'rxjs/Observer';
 
 @Injectable()
 export class DialogService {

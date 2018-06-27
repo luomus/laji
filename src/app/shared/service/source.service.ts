@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable,  Observer, of as ObservableOf } from 'rxjs';
 import { LajiApi, LajiApiService } from './laji-api.service';
 
 
@@ -20,7 +19,7 @@ export class SourceService {
     }
     if (lang === this.currentLang) {
       if (this.sources) {
-        return Observable.of(this.sources);
+        return ObservableOf(this.sources);
       } else if (this.pending) {
         return Observable.create((observer: Observer<any>) => {
           const onComplete = (res: any) => {

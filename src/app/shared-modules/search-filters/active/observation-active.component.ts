@@ -1,7 +1,7 @@
 import { Component, HostListener, Input, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { SearchQuery } from '../../../+observation/search-query.model';
 import { TaxonomySearchQuery } from '../../../+taxonomy/taxon-browse/taxonomy-search-query.model';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-observation-active',

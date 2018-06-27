@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable, from as ObservableFrom} from 'rxjs';
+import {Observable, from as ObservableFrom, of as ObservableOf} from 'rxjs';
 import {NamedPlace} from '../../../shared/model/NamedPlace';
 import {NamedPlaceApi} from '../../../shared/api/NamedPlaceApi';
 import {UserService} from '../../../shared/service/user.service';
@@ -34,7 +34,7 @@ export class AugmentService {
       });
     }
     if (namedPlaces.length === 0) {
-      return Observable.of(document);
+      return ObservableOf(document);
     }
     return ObservableFrom(namedPlaces).pipe(
       mergeMap(id => this.getNamedPlace(id)),
@@ -65,7 +65,7 @@ export class AugmentService {
 
   private getNamedPlace(id: string): Observable<NamedPlace> {
     if (this.npCache[id]) {
-      return Observable.of(this.npCache[id]);
+      return ObservableOf(this.npCache[id]);
     }
     if (!this.requests[id]) {
       return this.requests[id] = this.namedPlaceApi

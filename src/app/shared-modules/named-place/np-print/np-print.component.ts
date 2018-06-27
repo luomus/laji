@@ -2,10 +2,9 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy
 import { PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as FileSaver from 'file-saver';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
 import { NamedPlacesService } from '../named-places.service';
 import { UserService } from '../../../shared/service/user.service';
 import { FooterService } from '../../../shared/service/footer.service';
@@ -54,7 +53,7 @@ export class NpPrintComponent implements OnInit, OnDestroy {
       .switchMap(data => Observable.forkJoin(
         this.namedPlaceService
           .getNamedPlace(data.params['npId'], this.userService.getToken())
-          .catch(() => Observable.of({} as NamedPlace)),
+          .catch(() => ObservableOf({} as NamedPlace)),
         (ns) => ({
           person: data.person,
           ns: ns,

@@ -6,7 +6,7 @@ import { UserService} from '../../../shared/service/user.service';
 import {MappingService, SpecialTypes} from './mapping.service';
 import { Person } from '../../../shared/model/Person';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {NamedPlacesService} from '../../../shared-modules/named-place/named-places.service';
 import {NamedPlace} from '../../../shared/model/NamedPlace';
 import { TranslateService } from '@ngx-translate/core';

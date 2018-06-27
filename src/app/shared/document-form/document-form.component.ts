@@ -12,7 +12,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Subject ,  Observable, of as ObservableOf, merge as ObservableMerge } from 'rxjs';
 import { DocumentApi } from '../api/DocumentApi';
 import { UserService } from '../service/user.service';
 import { FooterService } from '../service/footer.service';
@@ -23,8 +23,6 @@ import { Form } from '../model/Form';
 import { Logger } from '../logger/logger.service';
 import { Document } from '../model/Document';
 import { DialogService } from '../service/dialog.service';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
 import { ComponentCanDeactivate } from './document-de-activate.guard';
 import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
 import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
@@ -101,7 +99,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     this.subTrans = this.translate.onLangChange.subscribe(
       () => this.onLangChange()
     );
-    this.subChanges = Observable.merge(
+    this.subChanges = ObservableMerge(
         this.changeEvent$.throttleTime(3000),
         this.changeEvent$.debounceTime(3000)
       )
@@ -300,13 +298,13 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
             })
             .map(() => false);
         }
-        return Observable.of(data);
+        return ObservableOf(data);
       })
       .filter((value) => value !== false)
       .switchMap(
         data => (data.formData.namedPlaceID ? this.namedPlaceService
           .getNamedPlace(data.formData.namedPlaceID, this.userService.getToken())
-          .catch(() => Observable.of({})) : Observable.of(undefined)).map(namedPace => ({data, namedPace})),
+          .catch(() => ObservableOf({})) : ObservableOf(undefined)).map(namedPace => ({data, namedPace})),
       )
       .switchMap(
         result => Observable.forkJoin(
@@ -409,15 +407,15 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
 
   private fetchAnnotations(documentID, page = 1, results = []): Observable<Annotation[]> {
     return (this.formService.isTmpId(documentID) ?
-      Observable.of([]) :
+      ObservableOf([]) :
       this.lajiApi.getList(
         LajiApi.Endpoints.annotations,
         {personToken: this.userService.getToken(), rootID: this.documentId, pageSize: 100, page: page}
       )).pipe(
         mergeMap(result => (result.currentPage < result.lastPage) ?
           this.fetchAnnotations(this.documentId, result.currentPage + 1, [...results, ...result.results]) :
-          Observable.of([...results, ...result.results])),
-        catchError(() => Observable.of([]))
+          ObservableOf([...results, ...result.results])),
+        catchError(() => ObservableOf([]))
       )
   }
 

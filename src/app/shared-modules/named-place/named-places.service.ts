@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NamedPlaceApi, NamedPlaceQuery } from '../../shared/api/NamedPlaceApi';
 import { NamedPlace } from '../../shared/model/NamedPlace';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { UserService } from '../../shared/service/user.service';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class NamedPlacesService {
   getAllNamePlaces(query: NamedPlaceQuery)  {
     const key = JSON.stringify(query);
     if (this.cacheKey === key) {
-      return Observable.of(this.cache);
+      return ObservableOf(this.cache);
     }
     return this._getAllNamePlaces(query)
       .do(data => {
@@ -35,7 +35,7 @@ export class NamedPlacesService {
     if (this.cache) {
       for (const place of this.cache) {
         if (place.id === id) {
-          return Observable.of(place);
+          return ObservableOf(place);
         }
       }
     }
@@ -86,7 +86,7 @@ export class NamedPlacesService {
           if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
             return this._getAllNamePlaces(query, result.currentPage + 1, namedPlaces);
           } else {
-            return Observable.of(namedPlaces);
+            return ObservableOf(namedPlaces);
           }
         }
       );

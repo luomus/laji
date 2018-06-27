@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, Input, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
@@ -325,14 +324,14 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
         if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
           return this.fetchAllPages(result.currentPage + 1, data);
         } else {
-          return Observable.of(data);
+          return ObservableOf(data);
         }
       });
   }
 
   private fetchPage(page: number): Observable<PagedResult<Taxonomy>> {
     if (!this.loading && this.speciesPage.currentPage === page) {
-      return Observable.of(this.speciesPage);
+      return ObservableOf(this.speciesPage);
     }
 
     const query = this.searchQueryToTaxaQuery();

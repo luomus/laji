@@ -2,13 +2,11 @@
  * Created by mjtahtin on 18.4.2017.
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxonomy, TaxonomyImage } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { Logger } from '../../shared/logger/logger.service';
-
-import { Observable } from 'rxjs/Observable';
 import { CacheService } from '../../shared/service/cache.service';
 
 @Component({

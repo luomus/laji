@@ -3,7 +3,7 @@ import { AreaType } from '../../../../shared/service/area.service';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 import {PagedResult } from '../../../../shared/model/PagedResult';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {ObservationListService} from '../../../../shared-modules/observation-result/service/observation-list.service';
 import {Logger} from '../../../../shared/logger';
 

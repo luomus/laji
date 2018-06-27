@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { AreaService, AreaType } from '../../../shared/service/area.service';
 import { CollectionService } from '../../../shared/service/collection.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'laji-area-select',

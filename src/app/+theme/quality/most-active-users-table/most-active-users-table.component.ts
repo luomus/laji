@@ -1,9 +1,8 @@
 import { Component, OnInit, OnChanges, Input, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { QualityService } from '../../service/quality.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subscription } from 'rxjs';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { MostActiveUsersTable } from '../model/most-active-users-table';
-import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'laji-most-active-users-table',

@@ -1,5 +1,5 @@
 import { TranslateLoader } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 
 export class TranslateFileLoader implements TranslateLoader {
   private translations = {
@@ -10,8 +10,8 @@ export class TranslateFileLoader implements TranslateLoader {
 
   getTranslation(lang: string): Observable<any> {
     if (!this.translations[lang]) {
-      return Observable.of({});
+      return ObservableOf({});
     }
-    return Observable.of(this.translations[lang]);
+    return ObservableOf(this.translations[lang]);
   }
 }

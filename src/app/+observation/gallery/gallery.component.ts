@@ -1,3 +1,5 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges,
   Output
@@ -7,7 +9,6 @@ import { Util } from '../../shared/service/util.service';
 import { TaxonomyImage } from '../../shared/model/Taxonomy';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Logger } from '../../shared/logger/logger.service';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-gallery',
@@ -73,7 +74,7 @@ export class GalleryComponent implements OnChanges {
         this.extendedInfo ? '' : ''
       ], this.sort, this.pageSize, this.page)
       .timeout(WarehouseApi.longTimeout)
-      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
+      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .map((data) => {
         const images = [];
         this.total = Math.min(data.total, this.limit);

@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Map3Component } from '../../map/map.component';
 import { LajiMapOptions } from '../../map/map-options.interface';
 import { YkjService } from '../service/ykj.service';

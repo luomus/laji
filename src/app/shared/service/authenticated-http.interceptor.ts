@@ -1,5 +1,6 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { WindowRef } from '../windows-ref';
 import { environment } from '../../../environments/environment';
 import { UserService } from './user.service';
@@ -20,7 +21,7 @@ export class AuthenticatedHttpInterceptor implements HttpInterceptor {
           if (environment.forceLogin && (err.status === 401 || err.status === 403)) {
             this.winRef.nativeWindow.location.href = UserService.getLoginUrl();
           } else {
-            return Observable.throw(err);
+            return observableThrowError(err);
           }
         }
       });

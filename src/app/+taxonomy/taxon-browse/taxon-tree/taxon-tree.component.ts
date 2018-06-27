@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { TREE_ACTIONS, TreeComponent, TreeNode } from 'angular-tree-component';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { ITreeNode } from 'angular-tree-component/dist/defs/api';
@@ -47,7 +47,7 @@ export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {
 
   ngAfterViewInit() {
     (TaxonTreeComponent.cache ?
-      Observable.of(TaxonTreeComponent.cache).delay(100) :
+      ObservableOf(TaxonTreeComponent.cache).delay(100) :
       this.taxonService
         .taxonomyFindBySubject('MX.37600', 'multi', {selectedFields: this.selectedFields})
         .map(data => [data] ))

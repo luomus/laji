@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Log, Status } from '../model/Log';
 import { HttpClient } from '@angular/common/http';
 import { Util } from '../service/util.service';

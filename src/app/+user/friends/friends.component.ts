@@ -5,7 +5,7 @@ import { PersonApi } from '../../shared/api/PersonApi';
 import { Logger } from '../../shared/logger/logger.service';
 import { DialogService } from '../../shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 
 @Component({
   selector: 'friends',
@@ -59,7 +59,7 @@ export class FriendsComponent implements OnInit {
       .switchMap(confirmMessage => this.dialogService.confirm(confirmMessage))
       .switchMap((confirm) => confirm ?
         this.personService.personRemoveFriend(this.userService.getToken(), userId, block) :
-        Observable.of(this.usersProfile)
+        ObservableOf(this.usersProfile)
       )
       .subscribe(
         profile => this.usersProfile = profile,

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable ,  Observer, of as ObservableOf } from 'rxjs';
 
 @Injectable()
 export class QualityService {
@@ -84,7 +83,7 @@ export class QualityService {
 
   private _fetch(type: 'annotations'|'users', cacheKey: string, request): Observable<any> {
     if (this.state[type].key === cacheKey) {
-      return Observable.of(this.state[type].data);
+      return ObservableOf(this.state[type].data);
     } else if (this.state[type].pendingKey === cacheKey && this.state[type].pending) {
       return Observable.create((observer: Observer<any>) => {
         const onComplete = (res: any) => {

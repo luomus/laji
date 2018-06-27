@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WindowRef } from '../../shared/windows-ref';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { TaxonomySearchQuery } from './taxonomy-search-query.model';
 import { FooterService } from '../../shared/service/footer.service';
 

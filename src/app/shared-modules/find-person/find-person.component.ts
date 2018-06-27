@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Person } from '../../shared/model/Person';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { mergeMap } from 'rxjs/operators';

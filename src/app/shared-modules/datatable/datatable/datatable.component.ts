@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent } from '@swimlane/ngx-datatable';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { CacheService } from '../../../shared/service/cache.service';
 import { Annotation } from '../../../shared/model/Annotation';
 
@@ -89,7 +89,7 @@ export class DatatableComponent {
 
   @Input() set columns(columns: DatatableColumn[]) {
     const settings$ = DatatableComponent.settings ?
-      Observable.of(DatatableComponent.settings) :
+      ObservableOf(DatatableComponent.settings) :
       this.cacheService.getItem<Settings>(CACHE_COLUMN_SETINGS)
         .map(value => value || {})
         .do(value => DatatableComponent.settings = value);

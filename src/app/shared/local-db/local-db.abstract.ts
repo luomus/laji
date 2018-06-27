@@ -1,5 +1,5 @@
 import * as localForage from 'localforage';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 
 export abstract class LocalDb {
 
@@ -12,11 +12,11 @@ export abstract class LocalDb {
   }
 
   setItem<T>(key: string, value: T): Observable<T> {
-    return Observable.fromPromise<T>(this.db.setItem(key, value)).catch(() => Observable.of(value));
+    return Observable.fromPromise<T>(this.db.setItem(key, value)).catch(() => ObservableOf(value));
   }
 
   getItem<T>(key: string): Observable<T> {
-    return Observable.fromPromise<T>(this.db.getItem(key)).catch(() => Observable.of(null));
+    return Observable.fromPromise<T>(this.db.getItem(key)).catch(() => ObservableOf(null));
   }
 
 }

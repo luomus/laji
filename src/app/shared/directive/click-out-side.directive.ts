@@ -1,8 +1,8 @@
+
+import {fromEvent as observableFromEvent,  Subscription ,  Observable } from 'rxjs';
 import {
   Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 import { WindowRef } from '../windows-ref';
 
 @Directive({
@@ -23,7 +23,7 @@ export class ClickOutSideDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.init = false;
-    this.sub = Observable.fromEvent(this._windowRef.nativeWindow.document, 'click').subscribe((e: MouseEvent) => {
+    this.sub = observableFromEvent(this._windowRef.nativeWindow.document, 'click').subscribe((e: MouseEvent) => {
       if (!this.init || !this.clickOutSideActive) {
         this.init = true;
         return;

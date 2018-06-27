@@ -3,7 +3,7 @@ import { TaxonomyApi } from '../shared/api/TaxonomyApi';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { Taxonomy } from '../shared/model/Taxonomy';
 import { IdService } from '../shared/service/id.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -44,7 +44,7 @@ export class InvasiveComponent implements OnInit {
 
   updateTaxa() {
     if (InvasiveComponent.taxa) {
-      this.taxa = Observable.of(InvasiveComponent.taxa);
+      this.taxa = ObservableOf(InvasiveComponent.taxa);
     } else {
       this.taxa = this.taxonomyApi
         .taxonomyFindSpecies('MX.37600', 'multi', undefined, 'MX.euInvasiveSpeciesList')
