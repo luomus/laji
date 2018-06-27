@@ -1,4 +1,4 @@
-export interface TaxonInfo {
+export interface TaxonMatch {
   id: string;
   scientificName: string;
   scientificNameAuthorship?: string;

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnChanges, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { TaxonConceptService } from './taxon-concept.service';
-import { TaxonInfo } from './taxon-info.model';
+import { TaxonMatch } from './taxon-match.model';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 export class TaxonConceptInfoComponent implements OnInit, OnChanges {
 
   @Input() taxon: Taxonomy;
-  matches: TaxonInfo[];
+  matches: TaxonMatch[];
 
   private subs: Subscription[] = [];
 
@@ -49,7 +49,7 @@ export class TaxonConceptInfoComponent implements OnInit, OnChanges {
       for (let i = 0; i < matches.length; i++) {
         const match = matches[i];
 
-        this.subs.push(this.taxonConceptService.getTaxonInfo(match).subscribe(info => {
+        this.subs.push(this.taxonConceptService.getMatchInfo(match).subscribe(info => {
           this.matches.push(info);
           this.cd.markForCheck();
         }));

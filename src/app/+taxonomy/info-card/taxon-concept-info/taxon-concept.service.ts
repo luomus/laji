@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TaxonInfo } from './taxon-info.model';
+import { map, switchMap } from 'rxjs/operators';
+import { TaxonMatch } from './taxon-match.model';
 
 @Injectable()
 export class TaxonConceptService {
@@ -19,65 +20,71 @@ export class TaxonConceptService {
     const path = this.TAXONID + taxonId;
 
     return this.makeRdfRequest(path)
-      .map(xml => {
-        const matches = xml.getElementsByTagNameNS(this.SKOS, 'exactMatch');
-        const result = [];
+      .pipe(
+        map(xml => {
+          const matches = xml.getElementsByTagNameNS(this.SKOS, 'exactMatch');
+          const result = [];
 
-        for (let i = 0; i < matches.length; i++) {
-          const match = this.getValueOrResource(matches[i]);
-          if (match && match !== this.TUN + id) {
-            result.push(match);
-          }
-        }
-        return result;
-      });
-  }
-
-  public getTaxonInfo(path: string): Observable<TaxonInfo> {
-    return this.makeRdfRequest(path)
-      .switchMap(xml => {
-        const result: TaxonInfo = {id: path, scientificName: '', inScheme: '', inSchemeLabel: {}};
-        const variables = [
-          {name: 'scientificName', namespace: this.DWC},
-          {name: 'scientificNameAuthorship', namespace: this.DWC},
-          {name: 'inScheme', namespace: this.SKOS}
-        ];
-
-        for (let i = 0; i < variables.length; i++) {
-          const variable = variables[i];
-          const match = xml.getElementsByTagNameNS(variable.namespace, variable.name);
-          if (match && match.length > 0) {
-            const value = this.getValueOrResource(match[0]);
-            if (value) {
-              result[variable.name] = value;
+          for (let i = 0; i < matches.length; i++) {
+            const match = this.getValueOrResource(matches[i]);
+            if (match && match !== this.TUN + id) {
+              result.push(match);
             }
           }
-        }
-
-        return this.getSchemeInfo(result.inScheme).map(schemeInfo => {
-          result.inSchemeLabel = schemeInfo;
           return result;
-        });
-      });
+        })
+      );
+  }
+
+  public getMatchInfo(path: string): Observable<TaxonMatch> {
+    return this.makeRdfRequest(path)
+      .pipe(
+        switchMap(xml => {
+          const result: TaxonMatch = {id: path, scientificName: '', inScheme: '', inSchemeLabel: {}};
+          const variables = [
+            {name: 'scientificName', namespace: this.DWC},
+            {name: 'scientificNameAuthorship', namespace: this.DWC},
+            {name: 'inScheme', namespace: this.SKOS}
+          ];
+
+          for (let i = 0; i < variables.length; i++) {
+            const variable = variables[i];
+            const match = xml.getElementsByTagNameNS(variable.namespace, variable.name);
+            if (match && match.length > 0) {
+              const value = this.getValueOrResource(match[0]);
+              if (value) {
+                result[variable.name] = value;
+              }
+            }
+          }
+
+          return this.getSchemeInfo(result.inScheme).map(schemeInfo => {
+            result.inSchemeLabel = schemeInfo;
+            return result;
+          });
+        })
+      );
   }
 
   private getSchemeInfo(path: string): Observable<any> {
     return this.makeRdfRequest(path)
-      .map(xml => {
-        const result = {};
-        const matches = xml.getElementsByTagNameNS(this.RDFS, 'label');
+      .pipe(
+        map(xml => {
+          const result = {};
+          const matches = xml.getElementsByTagNameNS(this.RDFS, 'label');
 
-        for (let i = 0; i < matches.length; i++) {
-          const match = matches[i];
-          const lang = this.getAttribute(match, this.XML, 'lang')
-          const value = this.getValueOrResource(match);
-          if (lang && value) {
-            result[lang] = value;
+          for (let i = 0; i < matches.length; i++) {
+            const match = matches[i];
+            const lang = this.getAttribute(match, this.XML, 'lang');
+            const value = this.getValueOrResource(match);
+            if (lang && value) {
+              result[lang] = value;
+            }
           }
-        }
 
-        return result;
-      });
+          return result;
+        })
+      );
   }
 
   private makeRdfRequest(path: string): Observable<any> {
@@ -86,15 +93,16 @@ export class TaxonConceptService {
       responseType: 'text',
       params: {format: 'skos'}
     })
-      .map(data => {
-        const parser = new DOMParser();
-        return parser.parseFromString(data, 'text/xml');
-      });
+      .pipe(
+        map(data => {
+          const parser = new DOMParser();
+          return parser.parseFromString(data, 'text/xml');
+        })
+      );
   }
 
   private getValueOrResource(dom: any) {
     let value = this.getAttribute(dom, this.RDF, 'resource');
-
 
     if (!value && dom.childNodes && dom.childNodes.length > 0) {
       value = dom.childNodes[0].nodeValue;
