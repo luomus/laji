@@ -19,14 +19,14 @@ export const taxonomyRoutes: Routes = [
       type: 'list'
     }
   },
-  /*{
+  {
     path: 'images',
     pathMatch: 'full',
     component: TaxonBrowseComponent,
     data: {
       type: 'images'
     }
-  },*/
+  },
   {
     path: 'tree',
     pathMatch: 'full',

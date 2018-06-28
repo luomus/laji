@@ -21,11 +21,11 @@
               {{"species.list" | translate}}
             </a>
           </li>
-          <!--li role="presentation" [ngClass]="{active: type === 'images'}">
+          <li role="presentation" [ngClass]="{active: type === 'images'}">
             <a [routerLink]="'/taxon/images' | localize" [queryParamsHandling]="'merge'">
               {{"species.images" | translate}}
             </a>
-          </li-->
+          </li>
           <li role="presentation" [ngClass]="{active: type === 'tree'}">
             <a [routerLink]="'/taxon/tree' | localize" [queryParamsHandling]="'merge'">
               {{"species.taxa" | translate}}

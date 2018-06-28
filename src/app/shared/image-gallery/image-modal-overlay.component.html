@@ -15,8 +15,9 @@
     <a class="nav-right" *ngIf="modalImages.length > 1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
     <span class="info-text" *ngIf="img">
       <ng-container *ngIf="img.vernacularName">{{img.vernacularName | multiLang}}</ng-container>
-      <ng-container *ngIf="img.vernacularName && img.scientificName">-</ng-container>
+      <ng-container *ngIf="img.vernacularName && img.scientificName"> (</ng-container>
       <ng-container *ngIf="img.scientificName"><em class="scientificName">{{img.scientificName | label:'fullUri'}}</em></ng-container>
+            <ng-container *ngIf="img.vernacularName && img.scientificName">)</ng-container>
       <ng-container *ngIf="img.taxonId && !(img.vernacularName && img.scientificName)">{{img.taxonId | label}}</ng-container>
       <br>
       <ng-container *ngIf="img.caption">
