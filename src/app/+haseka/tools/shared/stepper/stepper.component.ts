@@ -77,9 +77,7 @@ export class StepperComponent implements OnInit {
   }
 
   private sendActive() {
-    console.log('TRYING TO SEND');
     if (this.active > -1 && this.labels) {
-      console.log('TRYING TO SEND OK!!!');
       this.title.emit(this.steps[this.active].label);
     }
   }

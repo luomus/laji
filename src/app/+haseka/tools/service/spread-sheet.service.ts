@@ -75,7 +75,6 @@ export class SpreadSheetService {
   }
 
   isValidType(type) {
-    console.log(type);
     return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes].indexOf(type) > -1;
   }
 

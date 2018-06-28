@@ -9,7 +9,14 @@ import { environment } from '../../../environments/environment';
 import * as deepmerge from 'deepmerge';
 import { DocumentService } from '../../shared-modules/own-submissions/service/document.service';
 import { LajiApi, LajiApiService } from './laji-api.service';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { FormList } from '../../+haseka/form-list/haseka-form-list';
 
+
+export interface LoadResponse extends FormList {
+  formData: Document;
+  currentId: string;
+}
 
 @Injectable()
 export class FormService {
@@ -196,7 +203,15 @@ export class FormService {
     }
   }
 
-  load(formId: string, lang: string, documentId?: string): Observable<any> {
+  /**
+   * Loads the form and populates the default data of the Document
+   *
+   * @param {string} formId
+   * @param {string} lang
+   * @param {string} documentId
+   * @returns {Observable<any>}
+   */
+  load(formId: string, lang: string, documentId?: string): Observable<LoadResponse> {
     this.setLang(lang);
     const form$ = this.formCache[formId] ?
       ObservableOf(this.formCache[formId]) :
@@ -234,7 +249,7 @@ export class FormService {
               form.formData = current;
               form.currentId = this.currentKey;
               if (!documentId && form.prepopulatedDocument) {
-                form.formData = deepmerge(form.formData || {}, form.prepopulatedDocument || {});
+                form.formData = deepmerge(form.formData || {}, form.prepopulatedDocument);
               }
               this.currentData = Util.clone(form.formData);
               return form;
@@ -254,9 +269,10 @@ export class FormService {
     this.setLang(lang);
     return this.allForms ?
       ObservableOf(this.allForms) :
-      this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang})
-        .map((forms) => forms.results.filter(form => this.isFormAllowed(form.id)))
-        .do((forms) => this.allForms = forms);
+      this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang}).pipe(
+        map((forms) => forms.results.filter(form => this.isFormAllowed(form.id))),
+        tap(forms => this.allForms = forms)
+      );
   }
 
   populate(data: any) {
@@ -279,20 +295,21 @@ export class FormService {
 
 
   getTmpDocumentStoreDate(id: string): Observable<Date> {
-    return this.getUserId()
-      .switchMap(userID => {
+    return this.getUserId().pipe(
+      switchMap(userID => {
         if (this.formDataStorage[userID] && this.formDataStorage[userID][id] && this.formDataStorage[userID][id].dateStored) {
           return ObservableOf(this.formDataStorage[userID][id].dateStored);
         }
         return ObservableOf(null);
-      });
+      })
+    );
   }
 
   getTmpDocumentIfNewerThanCurrent(current: Document, documentId?: string): Observable<Document> {
     if (!documentId) { documentId = current.id; }
 
-    return this.getUserId()
-      .switchMap(userID => {
+    return this.getUserId().pipe(
+      switchMap(userID => {
         const tmpDoc = this.getTmpDoc(userID, documentId);
 
         if (!tmpDoc) {
@@ -305,7 +322,8 @@ export class FormService {
         delete this.formDataStorage[userID][documentId];
         this.formDataStorage = Util.clone(this.formDataStorage);
         return ObservableOf(current);
-      });
+      })
+    );
   }
 
   private isFormAllowed(formId: string) {
@@ -350,17 +368,28 @@ export class FormService {
     return this.getTmpDocumentIfNewerThanCurrent(current, documentId);
   }
 
-  private defaultFormData(formId: string) {
+  /**
+   * Fetch current document and merges populate values into it
+   * After merge deletes the populate data
+   *
+   * @param {string} formId
+   * @returns {Observable<Document>}
+   */
+  private defaultFormData(formId: string): Observable<Document> {
     this.currentKey = this.generateTmpId();
-    return this.userService.getDefaultFormData()
-      .map((data: Document) => {
-        return deepmerge(deepmerge( data || {}, {formID: formId}), this._populate || {});
-      })
-      .do(() => {
-        delete this._populate;
-      });
+    return this.userService.getDefaultFormData().pipe(
+      map((data: Document) => ({...(data || {}),formID: formId})),
+      map((data: Document) => this._populate ? deepmerge(data, this._populate) : data),
+      tap(() => delete this._populate)
+    );
   }
 
+  /**
+   * Return true if local dataEdited is newer than the remote dateEdited
+   * @param local
+   * @param remote
+   * @returns {boolean}
+   */
   private isLocalNewest(local, remote): boolean {
     if (remote.dateEdited) {
       if (!local.dateEdited ||

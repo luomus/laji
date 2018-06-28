@@ -17,7 +17,7 @@ import { DocumentApi } from '../api/DocumentApi';
 import { UserService } from '../service/user.service';
 import { FooterService } from '../service/footer.service';
 import { LajiFormComponent } from '../form/laji-form.component';
-import { FormService } from '../service/form.service';
+import { FormService, LoadResponse } from '../service/form.service';
 import { ToastsService } from '../service/toasts.service';
 import { Form } from '../model/Form';
 import { Logger } from '../logger/logger.service';
@@ -287,7 +287,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     }
     this.formService
       .load(this.formId, this.translate.currentLang, this.documentId)
-      .switchMap((data) => {
+      .switchMap<any, LoadResponse>((data) => {
         if (data.formData._isTemplate && !this.formService.isTmpId(this.documentId)) {
           return this.formService.store(data.formData)
             .do(() => {
@@ -300,7 +300,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         }
         return ObservableOf(data);
       })
-      .filter((value) => value !== false)
+      .filter((value: any) => value !== false)
       .switchMap(
         data => (data.formData.namedPlaceID ? this.namedPlaceService
           .getNamedPlace(data.formData.namedPlaceID, this.userService.getToken())
@@ -313,6 +313,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               const lookup = {};
               if (Array.isArray(annotations) && annotations.length > 0) {
                 annotations.forEach(annotation => {
+                  if (!annotation) return;
                   const target = annotation.targetID || annotation.rootID;
                   if (!lookup[target]) {
                     lookup[target] = [];
@@ -406,12 +407,12 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   private fetchAnnotations(documentID, page = 1, results = []): Observable<Annotation[]> {
-    return (this.formService.isTmpId(documentID) ?
+    return this.formService.isTmpId(documentID) ?
       ObservableOf([]) :
       this.lajiApi.getList(
         LajiApi.Endpoints.annotations,
         {personToken: this.userService.getToken(), rootID: this.documentId, pageSize: 100, page: page}
-      )).pipe(
+      ).pipe(
         mergeMap(result => (result.currentPage < result.lastPage) ?
           this.fetchAnnotations(this.documentId, result.currentPage + 1, [...results, ...result.results]) :
           ObservableOf([...results, ...result.results])),
