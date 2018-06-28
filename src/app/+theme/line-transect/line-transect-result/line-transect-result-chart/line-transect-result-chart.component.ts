@@ -51,8 +51,8 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subQuery = this.route.queryParams.subscribe(({taxonId, birdAssociationAreas}) => {
-      if (taxonId) this.taxonId = taxonId;
-      if (birdAssociationAreas) this.birdAssociationAreas = birdAssociationAreas.split(',');
+      if (taxonId) { this.taxonId = taxonId; }
+      if (birdAssociationAreas) { this.birdAssociationAreas = birdAssociationAreas.split(','); }
       this.fetch();
     });
     this.loading = true;
@@ -127,15 +127,15 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
         const yearsToPairCounts = {};
         data.results.forEach(result => {
           const {'gathering.conversions.year': year} = result.aggregateBy;
-          if (!year) return;
+          if (!year) { return; }
           yearsToPairCounts[year] = result.pairCountSum;
         });
         this.afterBothFetched = () => {
           let min, max;
           this.line = Object.keys(yearsToPairCounts).map(year => {
             const value = yearsToPairCounts[year] / this.yearLineLengths[year];
-            if (min === undefined || value < min) min = value;
-            if (max === undefined || value > max) max = value;
+            if (min === undefined || value < min) { min = value; }
+            if (max === undefined || value > max) { max = value; }
             return [+year, value];
           });
           this.minPairCountSum = min;

@@ -121,7 +121,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         this.namedPlace = np;
         this.updateNPInNPList(np);
         this.cd.markForCheck();
-      },() => {
+      }, () => {
         this.loading = false;
       })
   }

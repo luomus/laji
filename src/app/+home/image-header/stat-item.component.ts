@@ -18,5 +18,5 @@ import { Component, Input } from '@angular/core';
 export class StatItemComponent {
   @Input() value: number;
   @Input() description: string;
-  @Input() colClass: string = 'col-sm-3';
+  @Input() colClass = 'col-sm-3';
 }

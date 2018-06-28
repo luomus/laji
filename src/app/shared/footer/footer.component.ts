@@ -11,7 +11,7 @@ import {LajiApi, LajiApiService} from '../service/laji-api.service';
   styleUrls: ['./footer.component.css'],
   templateUrl: './footer.component.html'
 })
-export class FooterComponent implements OnInit, OnDestroy{
+export class FooterComponent implements OnInit, OnDestroy {
 
   public onFrontPage = false;
   public onMapPage = false;

@@ -199,7 +199,7 @@ export class MappingService {
     return null;
   }
 
-  getLabel(value:any, field: FormField) {
+  getLabel(value: any, field: FormField) {
     if (Array.isArray(value)) {
       return value.map((val) => this.getLabel(val, field));
     }

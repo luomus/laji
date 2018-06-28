@@ -378,7 +378,7 @@ export class FormService {
   private defaultFormData(formId: string): Observable<Document> {
     this.currentKey = this.generateTmpId();
     return this.userService.getDefaultFormData().pipe(
-      map((data: Document) => ({...(data || {}),formID: formId})),
+      map((data: Document) => ({...(data || {}), formID: formId})),
       map((data: Document) => this._populate ? deepmerge(data, this._populate) : data),
       tap(() => delete this._populate)
     );

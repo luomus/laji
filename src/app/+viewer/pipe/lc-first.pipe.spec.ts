@@ -3,7 +3,7 @@ import { LcFirstPipe } from './lc-first.pipe';
 
 describe('LcFirstPipe', () => {
   it('create an instance', () => {
-    let pipe = new LcFirstPipe();
+    const pipe = new LcFirstPipe();
     expect(pipe).toBeTruthy();
   });
 });

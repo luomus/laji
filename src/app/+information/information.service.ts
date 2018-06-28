@@ -13,7 +13,7 @@ export class InformationService {
   private idMapping = {};
 
   constructor() {
-    for (let i in this.urlMapping) {
+    for (const i in this.urlMapping) {
       if (!this.urlMapping.hasOwnProperty(i)) {
         continue;
       }

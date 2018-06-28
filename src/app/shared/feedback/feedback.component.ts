@@ -46,7 +46,7 @@ export class FeedbackComponent {
     this.error = false;
     const subject = (['other', ''].indexOf(this.feedback.subject) > -1 ?  '' : (this.feedback.subject + ': ')) +
       this.feedback.other;
-    const message = this.userService.isLoggedIn ? this.feedback.message : this.feedback.message + "\n\n---\n" + this.feedback.email;
+    const message = this.userService.isLoggedIn ? this.feedback.message : this.feedback.message + '\n\n---\n' + this.feedback.email;
     if (!this.feedback.other || !message) {
       this.error = true;
       return;

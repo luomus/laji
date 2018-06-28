@@ -112,7 +112,7 @@ export class MapComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit
         draw.hasActive = draw.hasActive !== true ? draw.hasActive : true;
       }
       let tileLayerName = this.initWithWorldMap ?  'openStreetMap' : 'taustakartta';
-      if (this.tileLayerName) tileLayerName = this.tileLayerName;
+      if (this.tileLayerName) { tileLayerName = this.tileLayerName; }
       const mapOptions: LajiMapOptions = {
         tileLayerName: tileLayerName,
         zoom: this.zoom,

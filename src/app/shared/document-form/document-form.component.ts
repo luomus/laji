@@ -313,7 +313,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
               const lookup = {};
               if (Array.isArray(annotations) && annotations.length > 0) {
                 annotations.forEach(annotation => {
-                  if (!annotation) return;
+                  if (!annotation) { return; }
                   const target = annotation.targetID || annotation.rootID;
                   if (!lookup[target]) {
                     lookup[target] = [];

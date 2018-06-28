@@ -197,7 +197,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
       const fn = this.updates[className];
       let update = this.chart.selectAll(className.split(' ').map(s => `.${s}`).join(''));
       if (update) {
-        if (update.exit) update = update.exit();
+        if (update.exit) { update = update.exit(); }
         update.remove();
       }
       const svg = fn();

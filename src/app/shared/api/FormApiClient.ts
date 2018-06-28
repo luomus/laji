@@ -46,7 +46,7 @@ export class FormApiClient {
 
     switch (resource) {
       case '/autocomplete/taxon':
-        queryParameters['excludeNameTypes'] ='MX.hasMisappliedName,MX.hasMisspelledName,MX.hasUncertainSynonym,MX.hasOrthographicVariant';
+        queryParameters['excludeNameTypes'] = 'MX.hasMisappliedName,MX.hasMisspelledName,MX.hasUncertainSynonym,MX.hasOrthographicVariant';
     }
 
     return this.http.request(

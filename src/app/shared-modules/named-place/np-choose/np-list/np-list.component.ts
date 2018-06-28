@@ -53,7 +53,7 @@ export class NpListComponent {
 
   getRowClass(row) {
     const status = (row['$._status'] || [])[0];
-    if (status !== 'free') return status;
+    if (status !== 'free') { return status; }
   }
 
   @Input() set namedPlaces(nps: NamedPlace[]) {

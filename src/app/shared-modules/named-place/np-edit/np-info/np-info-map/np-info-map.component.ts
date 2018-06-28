@@ -47,7 +47,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
   onResize(event) {
     clearTimeout(this.resize);
     const that = this;
-    this.resize = setTimeout(function(){
+    this.resize = setTimeout(function() {
       that.setZoom();
     }, 500);
   }
