@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable ,  Observer } from 'rxjs';
 import { WindowRef } from '../windows-ref';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class DialogService {
 
   constructor(private windowRef: WindowRef) { }

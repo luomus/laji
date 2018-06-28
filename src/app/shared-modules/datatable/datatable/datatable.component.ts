@@ -49,9 +49,7 @@ export class DatatableComponent {
   @ViewChild('annotation') annotationTpl: TemplateRef<any>;
   @ViewChild('image') imageTpl: TemplateRef<any>;
 
-  @Input() rows: any[];
   @Input() loading = false;
-  @Input() count: number;
   @Input() pageSize: number;
   @Input() height = '100%';
   @Input() showHeader = true;
@@ -75,6 +73,8 @@ export class DatatableComponent {
   annotationTypes = Annotation.TypeEnum;
   annotationClass = Annotation.AnnotationClassEnum;
 
+  _rows: any[];
+  _count: number;
   _offset: number;
   _columns: DatatableColumn[];
 
@@ -82,6 +82,14 @@ export class DatatableComponent {
     private changeDetectorRef: ChangeDetectorRef,
     private cacheService: CacheService
   ) { }
+
+  @Input() set count(cnt: number) {
+    this._count = typeof cnt === 'number' ? cnt  : 0;
+  }
+
+  @Input() set rows(rows: any[]) {
+    this._rows = rows || [];
+  }
 
   @Input() set page(page: number) {
     this._offset = page - 1;

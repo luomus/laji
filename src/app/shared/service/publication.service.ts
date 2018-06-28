@@ -4,7 +4,7 @@ import { Publication } from '../model/Publication';
 import { LajiApi, LajiApiService } from './laji-api.service';
 
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class PublicationService {
   private currentLang: string;
   private cache: {[key: string]: any} = {};

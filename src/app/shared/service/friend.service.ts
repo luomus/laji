@@ -4,7 +4,7 @@ import {Observable, of as ObservableOf} from 'rxjs';
 import {UserService} from './user.service';
 import { LajiApi, LajiApiService } from './laji-api.service';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class FriendService {
 
   private friends: Autocomplete[];

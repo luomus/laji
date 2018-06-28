@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { UserService } from '../service/user.service';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class OnlyLoggedIn implements CanActivate {
 
   constructor(private userService: UserService) { }

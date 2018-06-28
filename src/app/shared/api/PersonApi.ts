@@ -31,7 +31,7 @@ import { Person } from '../model/Person';
 
 'use strict';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class PersonApi {
   protected basePath = '/api';
 

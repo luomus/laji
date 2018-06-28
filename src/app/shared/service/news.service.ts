@@ -5,7 +5,7 @@ import { PagedResult } from '../model/PagedResult';
 import { News } from '../model/News';
 import { LajiApi, LajiApiService } from './laji-api.service';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NewsService {
 
   private currentData: PagedResult<News>;

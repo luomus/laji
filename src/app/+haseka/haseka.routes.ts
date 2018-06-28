@@ -11,7 +11,7 @@ import { AdminComponent } from './form-permission/admin/admin.component';
 import { IntroComponent } from './form-permission/admin/intro/intro.component';
 import { AcceptComponent } from './form-permission/admin/accept/accept.component';
 import { ManageComponent } from './form-permission/admin/manage/manage.component';
-import { DocumentDeActivateGuard } from '../shared/document-form/document-de-activate.guard';
+import { DocumentDeActivateGuard } from '../shared/guards/document-de-activate.guard';
 import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
 import { TemplatesComponent } from './templates/templates.component';
 import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';

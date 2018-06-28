@@ -7,7 +7,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiFormComponent } from '../../../../shared/form/laji-form.component';
+import { LajiFormComponent } from '../../../laji-form/laji-form/laji-form.component';
 import { UserService } from '../../../../shared/service/user.service';
 import { NamedPlacesService } from '../../named-places.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';

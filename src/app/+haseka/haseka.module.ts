@@ -24,10 +24,12 @@ import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wr
 import { StatisticsModule } from '../shared-modules/statistics/statistics.module';
 import { FormCategoryComponent } from './form-list/form-category/form-category.component';
 import { FormCategorySurveyComponent } from './form-list/form-category-survey/form-category-survey.component';
+import { LajiFormModule } from '../shared-modules/laji-form/laji-form.module';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, AlertModule, NamedPlaceModule, ViewerModule,
     LajiMapModule,
+    LajiFormModule,
     OwnSubmissionsModule,
     StatisticsModule,
     FormPermissionModule],

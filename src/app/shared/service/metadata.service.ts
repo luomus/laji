@@ -6,7 +6,7 @@ import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.s
 import { Util } from './util.service';
 
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class MetadataService {
 
   static readonly rangesCacheKey = 'ranges';

@@ -17,7 +17,7 @@ import { Publication } from '../model/Publication';
 import { Feedback } from '../model/Feedback';
 import { News } from '../model/News';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class LajiApiService {
 
   constructor(private httpClient: HttpClient) { }

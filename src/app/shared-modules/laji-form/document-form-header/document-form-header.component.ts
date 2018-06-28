@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit,
   SimpleChanges
 } from '@angular/core';
-import { FormService } from '../service/form.service';
+import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Title } from '@angular/platform-browser';

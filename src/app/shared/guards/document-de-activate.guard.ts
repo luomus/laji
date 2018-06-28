@@ -6,7 +6,7 @@ export interface ComponentCanDeactivate {
   canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class DocumentDeActivateGuard implements CanDeactivate<ComponentCanDeactivate> {
 
   canDeactivate(component: ComponentCanDeactivate): Observable<boolean> | Promise<boolean> | boolean {

@@ -3,7 +3,7 @@ import { Observable,  Observer, of as ObservableOf } from 'rxjs';
 import { LajiApi, LajiApiService } from './laji-api.service';
 
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class SourceService {
 
   private sources;

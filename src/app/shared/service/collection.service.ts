@@ -3,7 +3,7 @@ import { Observable ,  Observer, of as ObservableOf } from 'rxjs';
 import { MetadataApi } from '../api/MetadataApi';
 
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class CollectionService {
 
   private collectionsLookup;

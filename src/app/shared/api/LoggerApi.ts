@@ -31,7 +31,7 @@ import { Log, Status } from '../model/Log';
 import { HttpClient } from '@angular/common/http';
 import { Util } from '../service/util.service';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class LoggerApi {
   protected basePath = '/api';
 

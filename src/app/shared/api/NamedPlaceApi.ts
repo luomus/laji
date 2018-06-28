@@ -38,7 +38,7 @@ export interface NamedPlaceQuery {
   includePublic?: boolean;
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NamedPlaceApi {
   protected basePath = '/api';
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ScriptStore } from '../../../lazy-loaded-scripts-store';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class ScriptService {
 
   private scripts: any = {};

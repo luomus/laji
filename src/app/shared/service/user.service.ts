@@ -19,7 +19,7 @@ import { LajiApi, LajiApiService } from './laji-api.service';
 export const USER_INFO = '[user]: info';
 export const USER_LOGOUT_ACTION = '[user]: logout';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class UserService extends LocalDb {
 
   public static readonly UNKOWN_USER = 'unknown';

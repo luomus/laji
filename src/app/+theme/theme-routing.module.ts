@@ -7,7 +7,7 @@ import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 import { NafiMyDocumentListComponent } from './nafi/nafi-my-document-list/nafi-my-document-list.component';
 import { NafiInstructionsComponent } from './nafi/nafi-instructions/nafi-instructions.component';
 import { HerpetologyComponent } from './herpetology/herpetology.component';
-import { DocumentDeActivateGuard } from '../shared/document-form/document-de-activate.guard';
+import { DocumentDeActivateGuard } from '../shared/guards/document-de-activate.guard';
 import { YkjComponent } from './ykj/ykj.component';
 import { EmkComponent } from './emk/emk.component';
 import { WbcComponent } from './wbc/wbc.component';

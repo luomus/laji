@@ -31,7 +31,7 @@ import { Document } from '../model/Document';
 
 'use strict';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class DocumentApi {
   protected basePath = '/api';
 

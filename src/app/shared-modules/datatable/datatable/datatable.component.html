@@ -12,13 +12,13 @@
           pagerNext: 'glyphicon glyphicon-step-forward'
         }"
     [messages]="{ emptyMessage: '', totalMessage: '' }"
-    [rows]='rows'
+    [rows]='_rows'
     [disablePagingOnScroll]="true"
     [externalPaging]="true"
     [externalSorting]="!clientSideSorting"
     [preFetchY]="300"
     [sortType]="sortType"
-    [count]="count"
+    [count]="0"
     [offset]="_offset"
     [limit]="pageSize"
     [columns]="_columns"

@@ -18,7 +18,7 @@ export interface LoadResponse extends FormList {
   currentId: string;
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class FormService {
 
   readonly forms = {

@@ -13,21 +13,21 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription ,  Subject ,  Observable, of as ObservableOf, merge as ObservableMerge, forkJoin as ObservableForkJoin } from 'rxjs';
-import { DocumentApi } from '../api/DocumentApi';
-import { UserService } from '../service/user.service';
-import { FooterService } from '../service/footer.service';
-import { LajiFormComponent } from '../form/laji-form.component';
-import { FormService, LoadResponse } from '../service/form.service';
-import { ToastsService } from '../service/toasts.service';
-import { Form } from '../model/Form';
-import { Logger } from '../logger/logger.service';
-import { Document } from '../model/Document';
-import { DialogService } from '../service/dialog.service';
-import { ComponentCanDeactivate } from './document-de-activate.guard';
-import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
-import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
-import {LajiApi, LajiApiService} from '../service/laji-api.service';
-import {Annotation} from '../model/Annotation';
+import { DocumentApi } from '../../../shared/api/DocumentApi';
+import { UserService } from '../../../shared/service/user.service';
+import { FooterService } from '../../../shared/service/footer.service';
+import { LajiFormComponent } from '../laji-form/laji-form.component';
+import { FormService, LoadResponse } from '../../../shared/service/form.service';
+import { ToastsService } from '../../../shared/service/toasts.service';
+import { Form } from '../../../shared/model/Form';
+import { Logger } from '../../../shared/logger/logger.service';
+import { Document } from '../../../shared/model/Document';
+import { DialogService } from '../../../shared/service/dialog.service';
+import { ComponentCanDeactivate } from '../../../shared/guards/document-de-activate.guard';
+import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
+import { NamedPlacesService } from '../../named-place/named-places.service';
+import {LajiApi, LajiApiService} from '../../../shared/service/laji-api.service';
+import {Annotation} from '../../../shared/model/Annotation';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 
 /*

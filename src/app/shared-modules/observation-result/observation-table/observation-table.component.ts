@@ -394,6 +394,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
     this.fetchSub = (this.isAggregate ? aggregate$ : list$)
       .subscribe(data => {
+        console.log('GOT DATA', data);
         this.result = data;
         this.loading = false;
         this.changeDetectorRef.markForCheck();

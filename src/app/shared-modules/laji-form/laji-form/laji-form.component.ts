@@ -11,11 +11,12 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { FormApiClient } from '../api/FormApiClient';
-import { UserService } from '../service/user.service';
-import { Logger } from '../logger/logger.service';
-import { LajiExternalService } from '../service/laji-external.service';
-import { environment } from '../../../environments/environment';
+import { FormApiClient } from '../../../shared/api/FormApiClient';
+import { UserService } from '../../../shared/service/user.service';
+import { Logger } from '../../../shared/logger/logger.service';
+import { LajiExternalService } from '../../../shared/service/laji-external.service';
+import { environment } from '../../../../environments/environment';
+import LajiForm from 'laji-form/lib/laji-form';
 
 @Component({
   selector: 'laji-form',
@@ -119,7 +120,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
             uiSchemaContext['creator'] = this.formData.formData.creator;
             this.apiClient.lang = this.lang;
             this.apiClient.personToken = this.userService.getToken();
-            this.lajiFormWrapper = this.lajiExternalService.getForm({
+            this.lajiFormWrapper = new LajiForm({
               staticImgPath: '/static/lajiForm/',
               rootElem: this.elem,
               schema: this.formData.schema,

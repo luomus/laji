@@ -34,7 +34,7 @@ import { LajiTaxonSearch } from '../model/LajiTaxonSearch';
 
 'use strict';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class TaxonomyApi {
   protected basePath = '/api';
 

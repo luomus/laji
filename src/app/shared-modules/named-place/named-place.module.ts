@@ -18,6 +18,7 @@ import { LajiMapModule } from '../map/laji-map.module';
 import { DatatableModule } from '../datatable/datatable.module';
 import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module';
 import { LajiSelectModule } from '../select/select.module';
+import { LajiFormModule } from '../laji-form/laji-form.module';
 
 @NgModule({
   providers: [],
@@ -27,7 +28,8 @@ import { LajiSelectModule } from '../select/select.module';
     LajiMapModule,
     DatatableModule,
     OwnSubmissionsModule,
-    LajiSelectModule
+    LajiSelectModule,
+    LajiFormModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,
@@ -36,13 +38,4 @@ import { LajiSelectModule } from '../select/select.module';
   ],
   exports: [NamedPlaceComponent, NpPrintComponent, AreaSelectComponent]
 })
-export class NamedPlaceModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: SharedModule,
-      providers: [
-        NamedPlacesService
-      ]
-    };
-  }
-}
+export class NamedPlaceModule {}

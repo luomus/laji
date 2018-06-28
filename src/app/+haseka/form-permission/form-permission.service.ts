@@ -12,7 +12,7 @@ export interface Rights {
   admin: boolean;
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class FormPermissionService {
 
   private static formPermissions = {};

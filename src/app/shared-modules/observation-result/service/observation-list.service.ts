@@ -1,4 +1,3 @@
-
 import { throwError as observableThrowError, Observable, Observer, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
@@ -7,7 +6,6 @@ import { PagedResult } from '../../../shared/model/PagedResult';
 import { SourceService } from '../../../shared/service/source.service';
 import { CollectionService } from '../../../shared/service/collection.service';
 import { IdService } from '../../../shared/service/id.service';
-import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ObservationListService {
@@ -74,7 +72,7 @@ export class ObservationListService {
         this.aggregateData = data;
         this.aggregateKey = key;
       })
-      .share()
+      .share();
     return this.aggregatePending;
   }
 
@@ -104,11 +102,11 @@ export class ObservationListService {
     this.pendingKey = key;
     this.pending = this.warehouseApi.warehouseQueryListGet(
       {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
-        [...selected, 'unit.unitId', 'document.documentId'],
-        orderBy,
-        pageSize,
-        page
-      )
+      [...selected, 'unit.unitId', 'document.documentId'],
+      orderBy,
+      pageSize,
+      page
+    )
       .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .switchMap(data => this.openValues(data, selected, lang))
       .do(data => {
@@ -196,10 +194,8 @@ export class ObservationListService {
 
     return ObservableForkJoin(
       ObservableOf(data),
-      mappers$
-    ).pipe(
-      map(data => {
-        const response = data[0], mappers = data[1];
+      mappers$,
+      (response, mappers) => {
         response.results = response.results.map(document => {
           if (document.document) {
             if (mappers['document.sourceId'] && document.document.sourceId) {
@@ -249,7 +245,7 @@ export class ObservationListService {
           return document;
         });
         return data;
-      })
+      }
     );
   }
 

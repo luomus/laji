@@ -35,7 +35,7 @@ import { Util } from '../service/util.service';
 
 'use strict';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class WarehouseApi {
   public static readonly longTimeout = 10000;
   protected basePath = '/api';

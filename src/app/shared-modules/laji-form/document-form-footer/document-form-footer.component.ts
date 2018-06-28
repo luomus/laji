@@ -1,6 +1,6 @@
 import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
-import { UserService } from '../service/user.service';
-import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
+import { UserService } from '../../../shared/service/user.service';
+import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
 
 @Component({
   selector: 'laji-document-form-footer',

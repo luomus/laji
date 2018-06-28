@@ -32,7 +32,7 @@ import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 
 'use strict';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class InformalTaxonGroupApi {
   protected basePath = '/api';
 

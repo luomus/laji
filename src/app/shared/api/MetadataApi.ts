@@ -32,7 +32,7 @@ import { Property } from '../model/Property';
 
 'use strict';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class MetadataApi {
   protected basePath = '/api';
 

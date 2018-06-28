@@ -12,7 +12,7 @@ export enum AreaType {
   IucnEvaluationArea = <any>'ML.iucnEvaluationArea',
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class AreaService {
 
   public types = AreaType;

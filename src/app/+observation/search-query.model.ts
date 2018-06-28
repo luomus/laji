@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../locale/localize-router.service';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class SearchQuery {
 
   public queryUpdatedSource = new Subject<any>();

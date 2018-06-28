@@ -22,7 +22,7 @@ import { Util } from '../service/util.service';
 
 
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class FormPermissionApi {
     protected basePath = '/api';
 

@@ -4,7 +4,7 @@ import { NamedPlace } from '../../shared/model/NamedPlace';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { UserService } from '../../shared/service/user.service';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NamedPlacesService {
 
   private cache;

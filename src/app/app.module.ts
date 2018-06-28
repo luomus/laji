@@ -32,11 +32,9 @@ import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocalizeRouterService } from './locale/localize-router.service';
-import { FormPermissionModule } from './+haseka/form-permission/form-permission.module';
 import { environment } from '../environments/environment';
 import { DocumentService } from './shared-modules/own-submissions/service/document.service';
-import { NamedPlaceModule } from './shared-modules/named-place/named-place.module';
-import {ToastrModule} from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -63,8 +61,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
         useClass: TranslateFileLoader
       }
     }),
-    FormPermissionModule.forRoot(),
-    NamedPlaceModule.forRoot(),
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
     PaginationModule.forRoot(),

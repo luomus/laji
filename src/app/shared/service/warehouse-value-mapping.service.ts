@@ -3,7 +3,7 @@ import {throwError as observableThrowError,  Observable ,  Observer, of as Obser
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class WarehouseValueMappingService {
 
   private mapping;

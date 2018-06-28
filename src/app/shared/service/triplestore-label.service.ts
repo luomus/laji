@@ -16,7 +16,7 @@ import { NamedPlacesService } from '../../shared-modules/named-place/named-place
 import { NamedPlace } from '../model/NamedPlace';
 import { LajiApi, LajiApiService } from './laji-api.service';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {
 
   static cache = {};

@@ -47,6 +47,7 @@ import { QualityFiltersComponent } from './quality/quality-filters/quality-filte
 import { TaxonAutocompleteModule } from '../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
 import { LineTransectFormEiVakioComponent } from './line-transect/line-transect-form-ei-vakio/line-transect-form-ei-vakio.component';
 import { LineTransectFormKartoitusComponent } from './line-transect/line-transect-form-kartoitus/line-transect-form-kartoitus.component';
+import { LajiFormModule } from '../shared-modules/laji-form/laji-form.module';
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import { LineTransectFormKartoitusComponent } from './line-transect/line-transec
     NamedPlaceModule,
     StatisticsModule,
     DatatableModule,
-    TaxonAutocompleteModule
+    TaxonAutocompleteModule,
+    LajiFormModule
   ],
   declarations: [
     NafiComponent,
