@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription ,  Observable } from 'rxjs';
+import { Subscription,  combineLatest as ObservableCombineLatest } from 'rxjs';
 import { FormPermissionService } from '../../form-permission.service';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import { FormPermission } from '../../../../shared/model/FormPermission';
 import { UserService } from '../../../../shared/service/user.service';
 import { Logger } from '../../../../shared/logger/logger.service';
 import { LocalizeRouterService } from '../../../../locale/localize-router.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-manage',
@@ -33,10 +34,11 @@ export class ManageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subParam = Observable.combineLatest(
+    this.subParam = ObservableCombineLatest(
       this.route.parent.params,
-      this.route.params,
-      (parent, current) => ({...parent, ...current})
+      this.route.params
+    ).pipe(
+      map(data => ({...data[0], ...data[1]}))
     ).subscribe(params => {
       this.collectionId = params['collectionId'];
       this.type = params['type'] || 'editors';

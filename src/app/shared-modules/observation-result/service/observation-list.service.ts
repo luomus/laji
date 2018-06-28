@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable ,  Observer, of as ObservableOf } from 'rxjs';
+import { throwError as observableThrowError, Observable, Observer, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
@@ -7,6 +7,7 @@ import { PagedResult } from '../../../shared/model/PagedResult';
 import { SourceService } from '../../../shared/service/source.service';
 import { CollectionService } from '../../../shared/service/collection.service';
 import { IdService } from '../../../shared/service/id.service';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ObservationListService {
@@ -188,15 +189,17 @@ export class ObservationListService {
         .map(collections => ({'document.collectionId': collections})));
     }
 
-    const mappers$ = allMappers.length === 0 ? ObservableOf({}) : Observable.forkJoin(allMappers)
+    const mappers$ = allMappers.length === 0 ? ObservableOf({}) : ObservableForkJoin(allMappers)
       .map(mappers => mappers.reduce((cumulative, current) => {
         return {...cumulative, ...current};
       }, {}));
 
-    return Observable.forkJoin(
+    return ObservableForkJoin(
       ObservableOf(data),
-      mappers$,
-      (response, mappers) => {
+      mappers$
+    ).pipe(
+      map(data => {
+        const response = data[0], mappers = data[1];
         response.results = response.results.map(document => {
           if (document.document) {
             if (mappers['document.sourceId'] && document.document.sourceId) {
@@ -246,7 +249,7 @@ export class ObservationListService {
           return document;
         });
         return data;
-      }
+      })
     );
   }
 

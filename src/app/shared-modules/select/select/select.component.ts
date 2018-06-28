@@ -3,7 +3,7 @@ import {
   Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
   ViewChild
 } from '@angular/core';
-import { Observable ,  Subject ,  Subscription } from 'rxjs';
+import { Observable,  Subject,  Subscription, interval as ObservableInterval } from 'rxjs';
 import { debounceTime, take } from 'rxjs/operators';
 
 interface SelectOptions {
@@ -104,7 +104,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.open = !this.open;
     if (this.open && this.useFilter) {
-      Observable.interval(10).pipe(take(1))
+      ObservableInterval(10).pipe(take(1))
         .subscribe(() => el.focus());
     }
   }

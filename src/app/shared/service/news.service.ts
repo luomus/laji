@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable, of as ObservableOf } from 'rxjs';
+import { throwError as observableThrowError,  Observable, of as ObservableOf, interval as ObservableInterval } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { PagedResult } from '../model/PagedResult';
 import { News } from '../model/News';
@@ -15,8 +15,7 @@ export class NewsService {
   ) {}
 
   getPage(lang: string, page: number, pageSize = 5): Observable<PagedResult<News>> {
-    return Observable
-      .interval(60100)
+    return ObservableInterval(60100)
       .startWith(0)
       .switchMap(() => this.lajiApi.getList(LajiApi.Endpoints.news, {lang, page, pageSize})
         .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))

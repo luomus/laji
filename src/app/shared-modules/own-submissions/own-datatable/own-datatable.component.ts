@@ -9,7 +9,7 @@ import { DocumentInfoService } from '../service/document-info.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { UserService } from '../../../shared/service/user.service';
-import { Observable, from as ObservableFrom ,  Subscription, of as ObservableOf } from 'rxjs';
+import { Observable, from as ObservableFrom ,  Subscription, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
 import { Person } from '../../../shared/model/Person';
 import { FormService } from '../../../shared/service/form.service';
 import { RouterChildrenEventService } from '../service/router-children-event.service';
@@ -23,6 +23,7 @@ import { DocumentService } from '../service/document.service';
 import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -390,11 +391,13 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     return this.getForm(document.formID).switchMap((form) => {
       const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
 
-      return Observable.forkJoin(
+      return ObservableForkJoin(
         this.getLocality(gatheringInfo, document.namedPlaceID),
         this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
-        this.getNamedPlaceName(document.namedPlaceID),
-        (locality, observers, npName) => {
+        this.getNamedPlaceName(document.namedPlaceID)
+      ).pipe(
+        map(data => {
+          const locality = data[0], observers = data[1], npName = data[2];
           let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
           dateObserved += gatheringInfo.dateEnd ? ' - ' + moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
 
@@ -414,8 +417,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
             id: document.id,
             index: idx
           };
-        }
-      );
+        })
+      )
     });
   }
 

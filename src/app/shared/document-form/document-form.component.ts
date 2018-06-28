@@ -12,7 +12,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription ,  Subject ,  Observable, of as ObservableOf, merge as ObservableMerge } from 'rxjs';
+import { Subscription ,  Subject ,  Observable, of as ObservableOf, merge as ObservableMerge, forkJoin as ObservableForkJoin } from 'rxjs';
 import { DocumentApi } from '../api/DocumentApi';
 import { UserService } from '../service/user.service';
 import { FooterService } from '../service/footer.service';
@@ -28,7 +28,7 @@ import { FormPermissionService } from '../../+haseka/form-permission/form-permis
 import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
 import {LajiApi, LajiApiService} from '../service/laji-api.service';
 import {Annotation} from '../model/Annotation';
-import { catchError, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 
 /*
  * Change tamplateUrl to close or open the Vihko
@@ -306,25 +306,25 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           .getNamedPlace(data.formData.namedPlaceID, this.userService.getToken())
           .catch(() => ObservableOf({})) : ObservableOf(undefined)).map(namedPace => ({data, namedPace})),
       )
-      .switchMap(
-        result => Observable.forkJoin(
-          this.formPermissionService.getRights(result.data),
+      .switchMap(result => ObservableForkJoin(
+        this.formPermissionService.getRights(result.data),
           this.fetchAnnotations(this.documentId)
-              .map(annotations => {
-                const lookup = {};
-                if (Array.isArray(annotations) && annotations.length > 0) {
-                  annotations.forEach(annotation => {
-                    const target = annotation.targetID || annotation.rootID;
-                    if (!lookup[target]) {
-                      lookup[target] = [];
-                    }
-                    lookup[target].push(annotation);
-                  });
-                }
-                return lookup;
-              }),
-          (rights, annotations) => ({rights, annotations})
-        ).map(meta => ({...result, ...meta}))
+            .map(annotations => {
+              const lookup = {};
+              if (Array.isArray(annotations) && annotations.length > 0) {
+                annotations.forEach(annotation => {
+                  const target = annotation.targetID || annotation.rootID;
+                  if (!lookup[target]) {
+                    lookup[target] = [];
+                  }
+                  lookup[target].push(annotation);
+                });
+              }
+              return lookup;
+            })
+        ).pipe(
+          map(data => ({...result, rights: data[0], annotations: data[1]}))
+        )
       )
       .subscribe(
         result => {

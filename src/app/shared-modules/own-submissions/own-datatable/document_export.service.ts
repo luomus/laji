@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { geoJSONToISO6709 } from 'laji-map/lib/utils';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
-import { Observable, from as ObservableFrom, of as ObservableOf } from 'rxjs';
+import { Observable, from as ObservableFrom, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
 import { DocumentInfoService } from '../service/document-info.service';
 
 
@@ -74,7 +74,7 @@ export class DocumentExportService {
         return this.getFields(docs, jsonForms)
           .switchMap((fields) => {
             const dataObservables = docs.map((doc) => (this.getData(Util.clone(doc), jsonForms[doc.formID], fields)));
-            return Observable.forkJoin(dataObservables)
+            return ObservableForkJoin(dataObservables)
               .map((data) => {
                 const mergedData = [].concat.apply([], data);
 
@@ -166,7 +166,7 @@ export class DocumentExportService {
       }
     }
 
-    const observable = observables.length > 0 ? Observable.forkJoin(observables) : ObservableOf([]);
+    const observable = observables.length > 0 ? ObservableForkJoin(observables) : ObservableOf([]);
 
     return observable.switchMap(
       () => {
@@ -181,7 +181,7 @@ export class DocumentExportService {
 
 
             if (getDataObservables.length > 0) {
-              return Observable.forkJoin(getDataObservables)
+              return ObservableForkJoin(getDataObservables)
                 .map((arrays) => {
                   obj[unwindKey] = [].concat.apply([], arrays);
                   return ObservableOf(obj);
@@ -190,7 +190,7 @@ export class DocumentExportService {
             return ObservableOf(obj);
           });
 
-          return Observable.forkJoin(getDataForAllKeysObservables)
+          return ObservableForkJoin(getDataForAllKeysObservables)
             .map(() => {
               return this.unwindAll(unwindKeys, obj);
             });
@@ -277,7 +277,7 @@ export class DocumentExportService {
       return a.sortIdx - b.sortIdx;
     });
 
-    return Observable.forkJoin(labelObservables$)
+    return ObservableForkJoin(labelObservables$)
       .map(() => (fields));
   }
 

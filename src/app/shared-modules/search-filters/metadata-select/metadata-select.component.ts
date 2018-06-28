@@ -3,7 +3,7 @@ import {
   OnInit
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable ,  Subscription, of as ObservableOf } from 'rxjs';
+import { Subscription, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import { CollectionService } from '../../../shared/service/collection.service';
@@ -115,8 +115,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
           options.map(item => {
             requests.push(this.warehouseMapper.getWarehouseKey(item.id));
           });
-          return Observable
-            .forkJoin(requests)
+          return ObservableForkJoin(requests)
             .map(mapping => options.reduce((prev, curr, idx) => {
                 if (mapping[idx] !== options[idx].id) {
                   prev.push({id: mapping[idx], value: curr.value});

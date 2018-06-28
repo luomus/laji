@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin as ObservableForkJoin } from 'rxjs';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { MultiLangService } from '../../../shared-modules/lang/service/multi-lang.service';
 import { PublicationService } from '../../../shared/service/publication.service';
 import { Publication } from '../../../shared/model/Publication';
 import { UserService } from '../../../shared/service/user.service';
 import { Person } from '../../../shared/model/Person';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class TaxonExportService {
@@ -123,17 +124,16 @@ export class TaxonExportService {
         }
 
         if (observable) {
-          observables.push(observable.do((val) => {
+          observables.push(observable.pipe(tap(((val) => {
             aoa[i + 1][j] = val;
-          }));
+          }))));
         }
       }
     }
 
-    return Observable.forkJoin(observables)
-      .map(() => {
-        return aoa;
-      });
+    return ObservableForkJoin(observables).pipe(
+      map(() => aoa)
+    );
   }
 
   private getLabels(values): Observable<string> {
@@ -146,9 +146,9 @@ export class TaxonExportService {
         this.labelService.get(values[i], this.translate.currentLang)
       )
     }
-    return Observable.forkJoin(labelObservables).map(labels => {
-      return labels.join('; ');
-    });
+    return ObservableForkJoin(labelObservables).pipe(
+      map(labels => labels.join('; '))
+    );
   }
 
   private getPublications(values): Observable<string> {
@@ -164,9 +164,9 @@ export class TaxonExportService {
         })
       )
     }
-    return Observable.forkJoin(labelObservables).map(labels => {
-      return labels.join('; ');
-    });
+    return ObservableForkJoin(labelObservables).pipe(
+      map(labels => labels.join('; '))
+    );
   }
 
 

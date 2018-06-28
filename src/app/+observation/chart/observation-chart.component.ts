@@ -5,7 +5,7 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Observable ,  Subscription } from 'rxjs';
+import { Observable,  Subscription, forkJoin as ObservableForkJoin } from 'rxjs';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { IdService } from '../../shared/service/id.service';
@@ -129,7 +129,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
         undefined,
         1000
       ));
-    this.subData = Observable.forkJoin(sources).subscribe(
+    this.subData = ObservableForkJoin(sources).subscribe(
       (data: any) => {
         if (data[0].total === 0 && this.group !== '') {
           this.subData = this

@@ -3,7 +3,7 @@ import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
 import { Profile } from '../../shared/model/Profile';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
+import { Subscription ,  Observable, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import { environment } from '../../../environments/environment';
 import { Person } from '../../shared/model/Person';
@@ -57,7 +57,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         const currentActive = data.currentUser.id === data.id;
         const empty$ = ObservableOf({});
         const false$ = ObservableOf(false);
-        return Observable.forkJoin(
+        return ObservableForkJoin(
           data.currentUser.id ? this.personService.personFindProfileByToken(this.userService.getToken()).catch((e) => false$) : empty$,
           currentActive ? false$ : this.personService.personFindProfileByUserId(data.id).catch((e) => empty$)
         ).pipe(

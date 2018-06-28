@@ -10,7 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Observable ,  Subscription } from 'rxjs';
+import { Observable,  Subscription, interval as ObservableInterval } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ng2-webstorage';
 import { IdService } from '../../shared/service/id.service';
@@ -174,8 +174,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
         this.interval.unsubscribe();
       }
     } else if (!this.interval) {
-      this.interval = Observable
-        .interval(this.recheckIterval)
+      this.interval = ObservableInterval(this.recheckIterval)
         .subscribe(() => this.updateDocument());
     }
     this.cd.markForCheck();

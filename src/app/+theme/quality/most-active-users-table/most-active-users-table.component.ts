@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { QualityService } from '../../service/quality.service';
-import { Observable ,  Subscription } from 'rxjs';
+import { Observable ,  Subscription, forkJoin as ObservableForkJoin } from 'rxjs';
 import { DatatableColumn } from '../../../shared-modules/datatable/model/datatable-column';
 import { MostActiveUsersTable } from '../model/most-active-users-table';
 
@@ -56,7 +56,7 @@ export class MostActiveUsersTableComponent implements OnInit, OnChanges {
       );
     });
 
-    this.fetchSub = Observable.forkJoin(observables)
+    this.fetchSub = ObservableForkJoin(observables)
       .subscribe((results) => {
         results.map((res, i) => {
           this.tables[i].data = res;

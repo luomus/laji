@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription,  Observable, merge as ObservableMerge, of as ObservableOf } from 'rxjs';
+import { Subscription,  Observable, merge as ObservableMerge, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import { Logger } from '../../shared/logger/logger.service';
 import { FormService } from '../../shared/service/form.service';
@@ -101,7 +101,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
               .map(hasAdminRight => ({...form, hasAdminRight: hasAdminRight}))
           )
         });
-        return Observable.forkJoin(subs);
+        return ObservableForkJoin(subs);
       })
       .subscribe(
         forms => {

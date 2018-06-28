@@ -6,11 +6,12 @@ import { UserService} from '../../../shared/service/user.service';
 import {MappingService, SpecialTypes} from './mapping.service';
 import { Person } from '../../../shared/model/Person';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
-import {Observable} from 'rxjs';
+import { forkJoin as ObservableForkJoin } from 'rxjs';
 import {NamedPlacesService} from '../../../shared-modules/named-place/named-places.service';
 import {NamedPlace} from '../../../shared/model/NamedPlace';
 import { TranslateService } from '@ngx-translate/core';
 import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class GeneratorService {
@@ -52,7 +53,7 @@ export class GeneratorService {
   generate(filename: string, fields: FormField[], useLabels = true, type: 'ods' | 'xlsx' = 'xlsx', next: () => void = () => {}) {
     const allTranslations = Object.keys(this.instructionMapping).map(key => this.instructionMapping[key]);
     allTranslations.push(this.instructionArray);
-    Observable.forkJoin(
+    ObservableForkJoin(
       this.userService.getUser(),
       this.namedPlaces.getAllNamePlaces({
         userToken: this.userService.getToken(),
@@ -66,8 +67,8 @@ export class GeneratorService {
           }
           return cumulative;
         }, {[this.instructionArray]: translated[this.instructionArray]}))
-      ,
-      (person, namedPlaces, informalTaxonGroups, translations) => ({person, namedPlaces, informalTaxonGroups, translations})
+    ).pipe(
+      map((data) => ({person: data[0], namedPlaces: data[1], informalTaxonGroups: data[2], translations: data[3]}))
     )
       .subscribe((data) => {
         const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels, data));

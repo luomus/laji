@@ -2,7 +2,7 @@
  * Created by mjtahtin on 18.4.2017.
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Subscription ,  Observable } from 'rxjs';
+import { Subscription ,  Observable, forkJoin as ObservableForkJoin } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxonomy, TaxonomyImage } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
@@ -53,7 +53,7 @@ export class HerpetologyComponent implements OnInit {
 }
 
   updateTaxa() {
-    const fetchData$ = Observable.forkJoin(
+    const fetchData$ = ObservableForkJoin(
       this.taxonomyApi
         .taxonomyFindSpecies(
           'MX.37609', 'multi', 'MVL.26',  undefined, undefined, 'MX.typeOfOccurrenceStablePopulation', undefined, '1', '10', undefined,
@@ -61,7 +61,7 @@ export class HerpetologyComponent implements OnInit {
         )
         .map(species => species.results)
         .switchMap(data => {
-          return Observable.forkJoin(data.map(taxon => this.taxonomyApi
+          return ObservableForkJoin(data.map(taxon => this.taxonomyApi
             .taxonomyFindMedia(taxon.id, 'multi')
             .map(images => ({taxon: taxon, images: images[0] || {} }))
           ));
@@ -70,7 +70,7 @@ export class HerpetologyComponent implements OnInit {
         .taxonomyFindSpecies('MX.37610', 'multi', 'MVL.162',  undefined, undefined, 'MX.typeOfOccurrenceStablePopulation')
         .map(species => species.results)
         .switchMap(data => {
-          return Observable.forkJoin(data.map(taxon => this.taxonomyApi
+          return ObservableForkJoin(data.map(taxon => this.taxonomyApi
             .taxonomyFindMedia(taxon.id, 'multi')
             .map(images => ({taxon: taxon, images: images[0] || {}}))
           ));
@@ -80,7 +80,7 @@ export class HerpetologyComponent implements OnInit {
           'MX.typeOfOccurrenceAnthropogenic,MX.typeOfOccurrenceRareVagrant,MX.typeOfOccurrenceVagrant')
         .map(species => species.results)
         .switchMap(data => {
-          return Observable.forkJoin(data.map(taxon => this.taxonomyApi
+          return ObservableForkJoin(data.map(taxon => this.taxonomyApi
             .taxonomyFindMedia(taxon.id, 'multi')
             .map(images => ({taxon: taxon, images: images[0] || {}}))
           ));

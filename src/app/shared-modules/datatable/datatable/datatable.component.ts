@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent } from '@swimlane/ngx-datatable';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { Observable, of as ObservableOf, interval as ObservableInterval } from 'rxjs';
 import { CacheService } from '../../../shared/service/cache.service';
 import { Annotation } from '../../../shared/model/Annotation';
 
@@ -132,8 +132,7 @@ export class DatatableComponent {
   }
 
   refreshTable() {
-    Observable
-      .interval()
+    ObservableInterval()
       .take(1)
       .subscribe(() => {
         if (this.rows) {

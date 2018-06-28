@@ -4,7 +4,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
+import { Subscription,  Observable, of as ObservableOf, interval as ObservableInterval } from 'rxjs';
 import { BsDropdownDirective } from 'ngx-bootstrap';
 import { DialogService } from '../service/dialog.service';
 import {LajiApi, LajiApiService} from '../service/laji-api.service';
@@ -64,8 +64,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.changeDetector.markForCheck();
       }
     });
-    this.subNotification = Observable
-      .interval(60000)
+    this.subNotification = ObservableInterval(60000)
       .startWith(0)
       .delay(5000)
       .filter(() => this.userService.isLoggedIn)

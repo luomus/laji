@@ -3,7 +3,7 @@ import { SearchQuery } from '../search-query.model';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Subscription ,  Observable } from 'rxjs';
+import { Subscription , forkJoin as ObservableForkJoin } from 'rxjs';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { Util } from '../../shared/service/util.service';
@@ -123,7 +123,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     speciesQuery.taxonRankId = 'MX.species';
     speciesQuery.includeNonValidTaxa = false;
 
-    Observable.forkJoin(
+    ObservableForkJoin(
       this.warehouseService.warehouseQueryCountGet(this._query)
         .combineLatest(this.warehouseService.warehouseQueryCountGet(secretQuery),
           (count, priva) => ({'count': count.total, 'private': priva.total})),

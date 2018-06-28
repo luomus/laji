@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Subscription ,  Observable, of as ObservableOf } from 'rxjs';
+import { throwError as observableThrowError, Subscription, Observable, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit,
   ViewChild
@@ -11,6 +11,7 @@ import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../shared/model
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { ObservationMapComponent } from '../../+observation/map/observation-map.component';
 import { Title } from '@angular/platform-browser';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-info-card',
@@ -71,7 +72,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
       .do(() => this.loading = true)
       .delay(0)
       .switchMap(() => {
-        return Observable.forkJoin(
+        return ObservableForkJoin(
           this.getTaxonDescription(this.taxonId),
           this.getTaxonMedia(this.taxonId)
         );
@@ -139,11 +140,12 @@ export class InfoCardComponent implements OnInit, OnDestroy {
 
   private initTaxon() {
     this.loading = true;
-    Observable.forkJoin(
+    ObservableForkJoin(
       this.getTaxon(this.taxonId),
       this.getTaxonDescription(this.taxonId),
-      this.getTaxonMedia(this.taxonId),
-      (taxon, descriptions, media) => ({taxon, descriptions, media})
+      this.getTaxonMedia(this.taxonId)
+    ).pipe(
+      map(data => ({taxon: data[0], descriptions: data[1], media: data[2]}))
     )
       .subscribe(data => {
         this.loading = false;
