@@ -1,6 +1,7 @@
 {
   "rulesDirectory": [
-    "node_modules/codelyzer"
+    "node_modules/codelyzer",
+    "node_modules/rxjs-tslint"
   ],
   "rules": {
     "callable-types": true,
