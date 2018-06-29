@@ -1,24 +1,19 @@
 <div class="observation-map" [ngStyle]="{height: height ? height + 'px' : '100%'}">
-  <laji-map
+  <laji-map3
           *ngIf="!reloading"
-          [visible]="visible"
+          [options]="_mapOptions"
           [data]="mapData"
-          [drawData]="drawData"
-          [draw]="draw"
-          [center]="center"
           [lang]="lang"
-          [showControls]="showControls"
-          (onCreate)="onCreate($event)"
-          (onMove)="onMove($event)"
-          (onFailure)="refreshMap()"
           [settingsKey]="settingsKey"
+          (onCreate)="onCreate($event)"
+          (onFailure)="refreshMap()"
           (onTileLayerChange)="onTileLayerChange($event)"
-          [initWithWorldMap]="initWithWorldMap">
+          (onMove)="onMove($event)">
     <div class="loading-map loading" *ngIf="loading"></div>
     <ul class="legend" *ngIf="legend" [ngStyle]="{'margin-top': topMargin }">
       <li *ngFor="let leg of legendList">
         <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{leg.range}}
       </li>
     </ul>
-  </laji-map>
+  </laji-map3>
 </div>

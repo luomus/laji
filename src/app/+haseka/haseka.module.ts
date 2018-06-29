@@ -16,7 +16,7 @@ import { NamedPlaceModule } from '../shared-modules/named-place/named-place.modu
 import { FormPermissionModule } from './form-permission/form-permission.module';
 import { ViewerModule } from '../+viewer/viewer.module';
 import { FormRowComponent } from './form-list/form-row/form-row.component';
-import { LajiMapModule } from '../shared-modules/map/laji-map.module';
+import { LajiMapModule } from '@laji-map/laji-map.module';
 import { OwnSubmissionsModule } from '../shared-modules/own-submissions/own-submissions.module';
 import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
 import { TemplatesComponent } from './templates/templates.component';
@@ -24,7 +24,7 @@ import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wr
 import { StatisticsModule } from '../shared-modules/statistics/statistics.module';
 import { FormCategoryComponent } from './form-list/form-category/form-category.component';
 import { FormCategorySurveyComponent } from './form-list/form-category-survey/form-category-survey.component';
-import { LajiFormModule } from '../shared-modules/laji-form/laji-form.module';
+import { LajiFormModule } from '@laji-form/laji-form.module';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, AlertModule, NamedPlaceModule, ViewerModule,

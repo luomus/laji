@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Map3Component } from './map.component';
+import { LajiMapComponent } from './laji-map.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: [Map3Component],
-  exports: [Map3Component]
+  declarations: [LajiMapComponent],
+  exports: [LajiMapComponent]
 })
 export class LajiMapModule { }

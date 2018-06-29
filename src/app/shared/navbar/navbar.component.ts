@@ -143,10 +143,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subUser.unsubscribe();
-    this.subParams.unsubscribe();
-    this.subNotification.unsubscribe();
-    this.sublangChange.unsubscribe();
+    if (this.subUser) {
+      this.subUser.unsubscribe();
+    }
+    if (this.subParams) {
+      this.subParams.unsubscribe();
+    }
+    if (this.subNotification) {
+      this.subNotification.unsubscribe();
+    }
+    if (this.sublangChange) {
+      this.sublangChange.unsubscribe();
+    }
   }
 
   updateView() {

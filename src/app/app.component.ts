@@ -1,4 +1,5 @@
-import { Component, ViewContainerRef } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
+import { Component, ViewContainerRef , Inject} from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { WindowRef } from './shared/windows-ref';
@@ -32,10 +33,10 @@ export class AppComponent {
   private currentRoute: string;
 
   constructor(
+    @Inject(WINDOW) private window: Window,
     router: Router,
     location: Location,
     viewContainerRef: ViewContainerRef,
-    windowRef: WindowRef,
     title: Title,
     translateService: TranslateService,
     localizeRouterService: LocalizeRouterService,
@@ -53,11 +54,13 @@ export class AppComponent {
         if (this.currentRoute !== newRoute) {
           // Check if on page that should be scrolled to top
           if (!newRoute.match(/^\/(en\/|sv\/)?(taxon\/list|taxon\/images|taxon\/tree)|((observation|theme\/nafi)\/)/)) {
-            windowRef.nativeWindow.scroll(0, 0); // remove when container scrolling is supported by the form
-            const content = windowRef.nativeWindow.document.getElementById('content');
+            this.window.scroll(0, 0); // remove when container scrolling is supported by the form
+            /*
+            const content = this.window.document.getElementById('content');
             if (content) {
-              // content.scrollTop = 0;
+              content.scrollTop = 0;
             }
+            */
           }
 
           // Set page title

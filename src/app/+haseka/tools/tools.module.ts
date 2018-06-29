@@ -18,7 +18,7 @@ import { MappingSelectComponent } from './shared/mapping-select/mapping-select.c
 import { CellValueMappingComponent } from './importer/cell-value-mapping/cell-value-mapping.component';
 import { ImportService } from './service/import.service';
 import { CellValueSelectComponent } from './importer/cell-value-mapping/cell-value-select/cell-value-select.component';
-import { LajiMapModule } from '../../shared-modules/map/laji-map.module';
+import { LajiMapModule } from '@laji-map/laji-map.module';
 import { SpecialGeometryComponent } from './importer/cell-value-mapping/special-geometry/special-geometry.component';
 import {GeneratorService} from './service/generator.service';
 import { SpecialFriendComponent } from './importer/cell-value-mapping/special-friend/special-friend.component';

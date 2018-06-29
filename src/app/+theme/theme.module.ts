@@ -47,7 +47,8 @@ import { QualityFiltersComponent } from './quality/quality-filters/quality-filte
 import { TaxonAutocompleteModule } from '../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
 import { LineTransectFormEiVakioComponent } from './line-transect/line-transect-form-ei-vakio/line-transect-form-ei-vakio.component';
 import { LineTransectFormKartoitusComponent } from './line-transect/line-transect-form-kartoitus/line-transect-form-kartoitus.component';
-import { LajiFormModule } from '../shared-modules/laji-form/laji-form.module';
+import { LajiFormModule } from '@laji-form/laji-form.module';
+import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 
 @NgModule({
   imports: [
@@ -63,7 +64,8 @@ import { LajiFormModule } from '../shared-modules/laji-form/laji-form.module';
     StatisticsModule,
     DatatableModule,
     TaxonAutocompleteModule,
-    LajiFormModule
+    LajiFormModule,
+    ObservationMapModule
   ],
   declarations: [
     NafiComponent,

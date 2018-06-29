@@ -2,7 +2,8 @@ import {
   AfterViewInit, ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { MapComponent } from '../../shared/map/map.component';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { LajiMap } from '../../shared-modules/laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-viewer-map',
@@ -11,14 +12,20 @@ import { MapComponent } from '../../shared/map/map.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild(MapComponent) lajiMap: MapComponent;
+  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
   @Input() data: any;
   @Input() height = 300;
   @Input() visible = true;
   @Input() active = 0;
   @Input() useWorldMap = true;
 
-  public _data: any;
+  _data: any;
+  mapOptions: LajiMap.Options = {
+    controls: {
+      coordinates: false
+    },
+    zoom: 4
+  };
 
   constructor() { }
 

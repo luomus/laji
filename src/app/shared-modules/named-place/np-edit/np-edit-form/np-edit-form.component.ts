@@ -1,3 +1,5 @@
+import { Inject } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
 import {
   Component,
   EventEmitter,
@@ -7,7 +9,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiFormComponent } from '../../../laji-form/laji-form/laji-form.component';
+import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
 import { UserService } from '../../../../shared/service/user.service';
 import { NamedPlacesService } from '../../named-places.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
@@ -35,7 +37,7 @@ export class NpEditFormComponent {
 
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
 
-  constructor(
+  constructor(@Inject(WINDOW) private window: Window,
     private  userService: UserService,
     private namedPlaceService: NamedPlacesService,
     private winRef: WindowRef,

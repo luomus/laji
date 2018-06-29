@@ -16,8 +16,6 @@ import { UsersPipe } from './pipe/users.pipe';
 import { LabelPipe } from './pipe/label.pipe';
 import { FormattedNumber } from './pipe/formated-number.pipe';
 import { ObservationCountComponent } from '../+observation/count/observation-count.component';
-import { ObservationMapComponent } from '../+observation/map/observation-map.component';
-import { MapComponent } from './map/map.component';
 import { PanelComponent } from './panel/panel.component';
 import { OmniSearchComponent } from './omni-search/omni-search.component';
 import { SafePipe } from './pipe/safe.pipe';
@@ -62,7 +60,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
     ToQNamePipe, ToFullUriPipe, ValuesPipe,
     UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, FormattedNumber,
     AreaNamePipe, TaxonNamePipe, CollectionNamePipe, FormNamePipe,
-    ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
+    ObservationCountComponent, GalleryComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, NlToBrPipe,
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
@@ -89,7 +87,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
     AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe,
     ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule, ProgressbarModule,
-    FormattedNumber, ObservationCountComponent, ObservationMapComponent, GalleryComponent, MapComponent,
+    FormattedNumber, ObservationCountComponent, GalleryComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
     AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,

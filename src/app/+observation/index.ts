@@ -6,5 +6,5 @@ export * from './result-list/observation-result-list.component';
 export * from './form/observation-form.component';
 export * from './count/observation-count.component';
 export * from './download/observation-download.component';
-export * from './map/observation-map.component';
+export * from '../shared-modules/observation-map/observation-map/observation-map.component';
 export * from '../shared-modules/search-filters/active/observation-active.component';

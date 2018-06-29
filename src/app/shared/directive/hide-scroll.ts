@@ -1,4 +1,5 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
+import { Directive, ElementRef, HostListener , Inject} from '@angular/core';
 
 /**
  * Fixes the element to view when scrolling relative to parent container
@@ -12,7 +13,7 @@ export class HideScrollDirective {
   private isTouching = false;
   private el: any;
 
-  constructor(ref: ElementRef) {
+  constructor(@Inject(WINDOW) private window: Window,ref: ElementRef) {
     this.el = ref.nativeElement;
   }
 

@@ -9,9 +9,8 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { MapComponent } from '../../../../shared/map/map.component';
-import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ExtendedNamedPlace } from '../../model/extended-named-place';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
 
 @Component({
   selector: 'laji-np-map',
@@ -19,7 +18,7 @@ import { ExtendedNamedPlace } from '../../model/extended-named-place';
   styleUrls: ['./np-map.component.css']
 })
 export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild(MapComponent) lajiMap: MapComponent;
+  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
   @Input() visible = false;
   @Input() namedPlaces: ExtendedNamedPlace[];
   @Input() activeNP: number;

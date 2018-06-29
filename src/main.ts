@@ -1,3 +1,4 @@
+import { AppBrowserModule } from '.././src/app/app.browser.module';
 import './extensions';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { enableProdMode } from '@angular/core';
@@ -8,4 +9,4 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule);
+platformBrowserDynamic().bootstrapModule(AppBrowserModule);

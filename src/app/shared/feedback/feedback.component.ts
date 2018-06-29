@@ -1,4 +1,5 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
+import { Component, Input, ViewChild , Inject} from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { UserService } from '../service/user.service';
 import { SessionStorage } from 'ng2-webstorage';
@@ -28,7 +29,7 @@ export class FeedbackComponent {
 
   @ViewChild('childModal') public modal: ModalDirective;
 
-  constructor(
+  constructor(@Inject(WINDOW) private window: Window,
     public userService: UserService,
     public translate: TranslateService,
     private lajiApi: LajiApiService,

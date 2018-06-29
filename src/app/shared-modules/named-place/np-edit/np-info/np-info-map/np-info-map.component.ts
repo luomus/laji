@@ -1,3 +1,5 @@
+import { Inject } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
 import {
   AfterViewInit,
   Component,
@@ -9,7 +11,8 @@ import {
   ViewChild
 } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
-import { MapComponent } from '../../../../../shared/map/map.component';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { LajiMap } from '../../../../laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-np-info-map',
@@ -17,15 +20,21 @@ import { MapComponent } from '../../../../../shared/map/map.component';
   styleUrls: ['./np-info-map.component.css']
 })
 export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild(MapComponent) lajiMap: MapComponent;
+  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
   @Input() visible: boolean;
   @Input() namedPlace: NamedPlace;
+
+  mapOptions: LajiMap.Options = {
+    tileLayerName: LajiMap.TileLayer.maastokartta,
+    tileLayerOpacity: 0.5,
+    controls: {location: false}
+  };
 
   private _data: any;
   private resize: any;
   private viewIsInitialized = false;
 
-  constructor() { }
+  constructor(@Inject(WINDOW) private window: Window,) { }
 
   ngOnInit() {
     this.initData();

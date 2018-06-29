@@ -21,6 +21,7 @@ import { ObservationFiltersComponent } from './observation-filters/observation-f
 import { PillListComponent } from './pill-list/pill-list.component';
 import { LajiSelectModule } from '../shared-modules/select/select.module';
 import { InfoModule } from '../shared-modules/info/info.module';
+import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { InfoModule } from '../shared-modules/info/info.module';
     ObservationResultModule,
     SearchFiltersModule,
     LajiSelectModule,
+    ObservationMapModule,
     InfoModule
   ],
   declarations: [ObservationComponent, ObservationChartComponent,

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
+import { Component, OnInit , Inject} from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
@@ -10,7 +11,7 @@ import { environment } from '../../../environments/environment';
   templateUrl: './user-logout.component.html'
 })
 export class UserLogoutComponent implements OnInit {
-  constructor(
+  constructor(@Inject(WINDOW) private window: Window,
     private userService: UserService,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,

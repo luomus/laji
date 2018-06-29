@@ -1,6 +1,6 @@
+import { WindowModule } from '@ng-toolkit/universal';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LocationStrategy, PathLocationStrategy, CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -14,7 +14,6 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { AppRoutingModule } from './app-routing.module';
 import { TranslateFileLoader } from './shared/translate/translate-file-loader';
 import { WhatsNewComponent } from './shared/whats-new/whats-new.component';
-import { BrowserModule } from '@angular/platform-browser';
 import {
   AlertModule,
   BsDropdownModule,
@@ -54,7 +53,8 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     LocaleSvComponent
   ],
   imports: [
-    BrowserAnimationsModule,
+    CommonModule,
+    WindowModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -71,10 +71,9 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),
-    Ng2Webstorage.forRoot({ prefix: 'laji-', separator: '' }),
+    Ng2Webstorage.forRoot({prefix: 'laji-', separator: ''}),
     AppRoutingModule,
-    ViewerModule,
-    BrowserModule
+    ViewerModule
   ],
   exports: [
     TranslateModule
@@ -90,8 +89,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
       useFactory: createLoggerLoader
     }
   ],
-  bootstrap: [
-    AppComponent
-  ]
 })
-export class AppModule { }
+export class AppModule {
+}

@@ -7,8 +7,8 @@ import { Document } from '../../../shared/model/Document';
 import * as MapUtil from 'laji-map/lib/utils';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
-import { Map3Component } from '../../map/map.component';
-import { LajiMapOptions } from '../../map/map-options.interface';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { LajiMap } from '../../laji-map/laji-map.interface';
 import { Units } from '../../../shared/model/Units';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { Observable, of as ObservableOf } from 'rxjs';
@@ -36,8 +36,8 @@ interface LineTransectCount {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
-  @ViewChild(Map3Component)
-  lajiMap: Map3Component;
+  @ViewChild(LajiMapComponent)
+  lajiMap: LajiMapComponent;
 
   @Input() document: Document;
   @Input() namedPlace: NamedPlace;
@@ -45,7 +45,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
   @Output() onNamedPlaceChange = new EventEmitter();
 
   counts: LineTransectCount;
-  lajiMapOptions: LajiMapOptions;
+  lajiMapOptions: LajiMap.Options;
   perKmTerms: LineTransectChartTerms = {
     upper: {
       slope: -0.279,
@@ -125,11 +125,11 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   initMapZoom() {
-    if (!this.isAdmin || !this.placesDiff || !this.lajiMap.lajiMap || this.mapZoomInitialized) {
+    if (!this.isAdmin || !this.placesDiff || !this.lajiMap.map || this.mapZoomInitialized) {
       return;
     }
 
-    this.lajiMap.lajiMap.zoomToData({paddingInMeters: 100});
+    this.lajiMap.map.zoomToData({paddingInMeters: 100});
     this.mapZoomInitialized = true;
   }
 
@@ -230,7 +230,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
 
   private initMapOptions() {
     this.lajiMapOptions = {
-      tileLayerName: 'maastokartta',
+      tileLayerName: LajiMap.TileLayer.maastokartta,
       lineTransect: {
         feature: {geometry: this.getGeometry(this.activeMapLine)},
         editable: false
@@ -278,7 +278,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
 
   setActiveMapLine(activeMapLine) {
     this.activeMapLine = activeMapLine;
-    this.lajiMap.lajiMap.setLineTransect({...this.lajiMapOptions.lineTransect, feature: {geometry: this.getGeometry(this.activeMapLine)}})
+    this.lajiMap.map.setLineTransect({...this.lajiMapOptions.lineTransect, feature: {geometry: this.getGeometry(this.activeMapLine)}})
   }
 
   acceptNamedPlaceChanges() {
@@ -288,7 +288,9 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
       this.userSerivce.getToken()
     ).subscribe((np: NamedPlace) => {
       this.onNamedPlaceChange.emit(np);
-      this.toastsService.showSuccess('Linjan päivitys onnistui. Tämän laskennan karttaa käytetään pohjana tämän linjan laskennoille jatkossa');
+      this.toastsService.showSuccess(
+        'Linjan päivitys onnistui. Tämän laskennan karttaa käytetään pohjana tämän linjan laskennoille jatkossa'
+      );
     });
   }
 }

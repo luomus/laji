@@ -1,4 +1,5 @@
-import { Component, ElementRef, HostListener, Input, OnChanges, OnInit } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
+import { Component, ElementRef, HostListener, Input, OnChanges, OnInit , Inject} from '@angular/core';
 
 @Component({
   selector: 'iucn',
@@ -41,7 +42,7 @@ export class IUCNComponent implements OnInit, OnChanges {
     }
   ];
 
-  constructor(private el: ElementRef) {
+  constructor(@Inject(WINDOW) private window: Window,private el: ElementRef) {
   }
 
   @HostListener('window:resize')

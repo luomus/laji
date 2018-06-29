@@ -1,3 +1,5 @@
+import { Inject } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef,
   Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
@@ -91,6 +93,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('deleteModal') public deleteModal: ModalDirective;
 
   constructor(
+    @Inject(WINDOW) private window: Window,
     private translate: TranslateService,
     private router: Router,
     private userService: UserService,
@@ -100,7 +103,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     private documentExportService: DocumentExportService,
     private documentService: DocumentService,
     private toastService: ToastsService,
-    private window: WindowRef,
     private logger: Logger,
     private cd: ChangeDetectorRef,
     private labelService: TriplestoreLabelService
@@ -164,7 +166,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateDisplayMode() {
-    const width = this.window.nativeWindow.innerWidth;
+    const width = this.window.innerWidth;
 
     if (width > 1150) {
       if (this.table) {

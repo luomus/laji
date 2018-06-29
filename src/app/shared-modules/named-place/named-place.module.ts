@@ -1,7 +1,6 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
-import { NamedPlacesService } from './named-places.service';
 import { NamedPlaceComponent } from './named-place/named-place.component';
 import { NpChooseComponent } from './np-choose/np-choose.component';
 import { NpListComponent } from './np-choose/np-list/np-list.component';
@@ -14,22 +13,22 @@ import { NpInfoMapComponent } from './np-edit/np-info/np-info-map/np-info-map.co
 import { NpPrintComponent } from './np-print/np-print.component';
 import { LineTransectComponent } from './np-print/line-transect/line-transect.component';
 import { AreaSelectComponent } from './area-select/area-select.component';
-import { LajiMapModule } from '../map/laji-map.module';
+import { LajiMapModule } from '@laji-map/laji-map.module';
 import { DatatableModule } from '../datatable/datatable.module';
 import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module';
 import { LajiSelectModule } from '../select/select.module';
-import { LajiFormModule } from '../laji-form/laji-form.module';
+import { LajiFormModule } from '@laji-form/laji-form.module';
 
 @NgModule({
   providers: [],
   imports: [
     CommonModule,
     SharedModule,
-    LajiMapModule,
     DatatableModule,
     OwnSubmissionsModule,
     LajiSelectModule,
-    LajiFormModule
+    LajiFormModule,
+    LajiMapModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,

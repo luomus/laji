@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Logger } from '../../shared/logger/logger.service';
 import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
-import { ObservationMapComponent } from '../../+observation/map/observation-map.component';
+import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { Title } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
 

@@ -19,13 +19,15 @@ import { FactsComponent } from './facts/facts.component';
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { AnnotationsModule } from '../shared-modules/annotations/annotations.module';
 import { EditLinkComponent } from './edit-link/edit-link.component';
+import { LajiMapModule } from '@laji-map/laji-map.module';
 
 @NgModule({
   imports: [
     SharedModule,
     TypeaheadModule,
     LangModule,
-    AnnotationsModule
+    AnnotationsModule,
+    LajiMapModule
   ],
   providers: [ToQNamePipe, AnnotationService],
   declarations: [ViewerComponent, DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,

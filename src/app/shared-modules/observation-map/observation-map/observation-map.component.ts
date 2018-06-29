@@ -11,17 +11,18 @@ import {
   Output, SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Util } from '../../shared/service/util.service';
+import { WarehouseApi } from '../../../shared/api/WarehouseApi';
+import { Util } from '../../../shared/service/util.service';
 import { TranslateService } from '@ngx-translate/core';
-import { ValueDecoratorService } from '../result-list/value-decorator.sevice';
-import { Logger } from '../../shared/logger/logger.service';
-import { LabelPipe } from '../../shared/pipe/label.pipe';
-import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
-import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { MapComponent } from '../../shared/map/map.component';
-import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
-import { CoordinateService } from '../../shared/service/coordinate.service';
+import { ValueDecoratorService } from '../../../+observation/result-list/value-decorator.sevice';
+import { Logger } from '../../../shared/logger/logger.service';
+import { LabelPipe } from '../../../shared/pipe/label.pipe';
+import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
+import { CoordinateService } from '../../../shared/service/coordinate.service';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { LajiMap } from '../../laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-observation-map',
@@ -31,7 +32,7 @@ import { CoordinateService } from '../../shared/service/coordinate.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationMapComponent implements OnInit, OnChanges {
-  @ViewChild(MapComponent) lajiMap: MapComponent;
+  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
 
   @Input() visible = false;
   @Input() query: any;
@@ -43,11 +44,22 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   // when active level is higher or equal to this will be using viewport coordinates to show grid
   @Input() onlyViewPortThreshold = 1;
   @Input() size = 10000;
-  @Input() initWithWorldMap = false;
+  @Input() set initWithWorldMap(world: boolean) {
+    this._mapOptions = {...this._mapOptions, tileLayerName: world ? LajiMap.TileLayer.openStreetMap : LajiMap.TileLayer.taustakartta}
+  }
   @Input() lastPage = 0; // 0 = no page limit
-  @Input() draw: any = false;
-  @Input() center: [number, number];
-  @Input() showControls = true;
+  @Input() set draw(draw: any) {
+    this._mapOptions = {...this._mapOptions, draw}
+  }
+  @Input() set center(center: [number, number]) {
+    this._mapOptions = {...this._mapOptions, center}
+  }
+  @Input() set showControls(show: boolean) {
+    this._mapOptions = {...this._mapOptions, controls: show ? { draw: false } : false}
+  }
+  set lang(lang: string) {
+    this._mapOptions = {...this._mapOptions, lang}
+  }
   @Input() height;
   @Input() selectColor = '#00aa00';
   @Input() color: any;
@@ -68,13 +80,22 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   ];
   limitResults = false;
 
-  public mapData;
-  public drawData: any = {featureCollection: {type: 'featureCollection', features: []}};
-  public loading = false;
-  public lang: string;
-  public reloading = false;
-  public topMargin = '0';
-  public legendList: {color: string, range: string}[] = [];
+  mapData;
+  drawData: any = {featureCollection: {type: 'featureCollection', features: []}};
+  loading = false;
+  reloading = false;
+  topMargin = '0';
+  legendList: {color: string, range: string}[] = [];
+
+  _mapOptions: LajiMap.Options = {
+    controls: {
+      draw: false
+    },
+    zoom: 1,
+    draw: false,
+    tileLayerName: LajiMap.TileLayer.openStreetMap
+  };
+
   private prev = '';
   private subDataFetch: Subscription;
   private subLang: Subscription;
@@ -406,7 +427,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       undefined, this.size, page, true
     ).subscribe(data => {
       if (data.featureCollection) {
-        this.lajiMap.addData([{
+        this.lajiMap.map.addData([{
           featureCollection: data.featureCollection,
           getFeatureStyle: this.getStyle.bind(this),
           getClusterStyle: this.getClusterStyle.bind(this),

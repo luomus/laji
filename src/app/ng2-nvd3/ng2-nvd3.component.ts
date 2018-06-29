@@ -1,4 +1,5 @@
-import { Component, ElementRef, Input, OnChanges, OnInit } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
+import { Component, ElementRef, Input, OnChanges, OnInit , Inject} from '@angular/core';
 import { ScriptService } from '../shared/service/script.service';
 declare const d3, nv: any;
 
@@ -15,7 +16,7 @@ export class nvD3 implements OnInit, OnChanges {
   svg: any;
   scriptsLoaded = false;
 
-  constructor(private elementRef: ElementRef, private scriptService: ScriptService) {
+  constructor(@Inject(WINDOW) private window: Window,private elementRef: ElementRef, private scriptService: ScriptService) {
     this.el = elementRef.nativeElement;
   }
 

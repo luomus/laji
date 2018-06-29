@@ -14,7 +14,6 @@ import {
 import { FormApiClient } from '../../../shared/api/FormApiClient';
 import { UserService } from '../../../shared/service/user.service';
 import { Logger } from '../../../shared/logger/logger.service';
-import { LajiExternalService } from '../../../shared/service/laji-external.service';
 import { environment } from '../../../../environments/environment';
 import LajiForm from 'laji-form/lib/laji-form';
 
@@ -43,7 +42,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   constructor(@Inject(ElementRef) elementRef: ElementRef,
               private apiClient: FormApiClient,
               private userService: UserService,
-              private lajiExternalService: LajiExternalService,
               private logger: Logger,
               private ngZone: NgZone,
               private cd: ChangeDetectorRef

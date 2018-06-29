@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiExternalService } from '../../../shared/service/laji-external.service';
 import { FormField, VALUE_IGNORE } from '../model/form-field';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
@@ -83,11 +82,8 @@ export class MappingService {
 
   constructor(
     private translationService: TranslateService,
-    private lajiExternalService: LajiExternalService,
     private coordinateService: CoordinateService
-  ) {
-    this.lajiExternalService.getMap({})
-  }
+  ) { }
 
 
   rawValueToArray(value, field: FormField) {

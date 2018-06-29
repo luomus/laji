@@ -1,6 +1,6 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
+import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener , Inject} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { WindowRef } from '../../shared/windows-ref';
 import { Subscription } from 'rxjs';
 import { TaxonomySearchQuery } from './taxonomy-search-query.model';
 import { FooterService } from '../../shared/service/footer.service';
@@ -22,9 +22,9 @@ export class TaxonBrowseComponent implements OnInit, AfterViewInit, OnDestroy {
   private subQuery: Subscription;
 
   constructor(
+    @Inject(WINDOW) private window: Window,
     private route: ActivatedRoute,
     public searchQuery: TaxonomySearchQuery,
-    private window: WindowRef,
     private cd: ChangeDetectorRef,
     private footerService: FooterService
   ) { }
@@ -76,7 +76,7 @@ export class TaxonBrowseComponent implements OnInit, AfterViewInit, OnDestroy {
   private setFiltersSize() {
     const headerHeight = this.headerRef.nativeElement.offsetHeight;
 
-    if (this.window.nativeWindow.scrollY < headerHeight) {
+    if (this.window.scrollY < headerHeight) {
       this.filtersNgStyle = {
         position: 'absolute',
         top: headerHeight + 'px',

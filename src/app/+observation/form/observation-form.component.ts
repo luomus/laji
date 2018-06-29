@@ -8,7 +8,6 @@ import { Observable ,  Subject ,  Subscription, of as ObservableOf } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
 import { LocalStorage } from 'ng2-webstorage';
-import { MapService } from '../../shared/map/map.service';
 import { WindowRef } from '../../shared/windows-ref';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { AreaType } from '../../shared/service/area.service';
@@ -73,7 +72,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
               private formService: FormService,
               private formPermissionService: FormPermissionService,
               private coordinateService: CoordinateService,
-              private mapService: MapService,
               private winRef: WindowRef) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.formQuery.taxon);
@@ -139,15 +137,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
           this.onSubmit();
         }
       });
-    this.subMap = this.mapService.map$.subscribe((event) => {
-      if (event === 'drawstart') {
-        this.drawing = true;
-        this.showPlace = true;
-      }
-      if (event === 'drawstop') {
-        this.drawing = false;
-      }
-    });
   }
 
   ngOnDestroy() {

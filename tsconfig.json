@@ -9,6 +9,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+    "paths": {
+      "@laji-map/*": ["app/shared-modules/laji-map/*"],
+      "@laji-form/*": ["app/shared-modules/laji-form/*"]
+    },
     "typeRoots": [
       "node_modules/@types"
     ],

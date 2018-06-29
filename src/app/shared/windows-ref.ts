@@ -6,6 +6,10 @@ function _window(): any {
 
 @Injectable({providedIn: 'root'})
 export class WindowRef {
+  /**
+   * @deprecated Use WINDOW token provided by ng-toolkit/universal instead
+   * @returns {any}
+   */
   get nativeWindow(): any {
     return _window();
   }

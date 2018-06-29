@@ -2,8 +2,8 @@ import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, In
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import * as MapUtil from 'laji-map/lib/utils';
 import { Person } from '../../../../shared/model/Person';
-import { LajiMapOptions } from '../../../../shared-modules/map/map-options.interface';
-import { Map3Component } from '../../../../shared-modules/map/map.component';
+import { LajiMap } from '../../../laji-map/laji-map.interface';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { CoordinateService } from '../../../../shared/service/coordinate.service';
 
 @Component({
@@ -14,14 +14,14 @@ import { CoordinateService } from '../../../../shared/service/coordinate.service
 })
 export class LineTransectComponent implements OnChanges, AfterViewInit {
 
-  @ViewChild(Map3Component)
-  public lajiMap: Map3Component;
+  @ViewChild(LajiMapComponent)
+  public lajiMap: LajiMapComponent;
   @Input()
   public namedPlace: NamedPlace;
   @Input()
   public person: Person;
 
-  public lajiMapOptions: LajiMapOptions;
+  public lajiMapOptions: LajiMap.Options;
   public biotopes: {[distRow: number]: string[]};
   public pages: number[][] = [];
   public total: number;
@@ -99,9 +99,9 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     let startPoint = {lat: 0, lng: 0};
     geometries.coordinates.forEach((coord, idx) => {
       if (Array.isArray(coord) && coord.length > 0) {
-        coord.forEach((coord, coodIdx) => {
-          const ykjPoint = this.getYkj(coord[1], coord[0]);
-          if (idx === 0 && coodIdx === 0) {
+        coord.forEach((val, coordIdx) => {
+          const ykjPoint = this.getYkj(val[1], val[0]);
+          if (idx === 0 && coordIdx === 0) {
             startPoint = ykjPoint;
           }
           if (ykjPoint.lng < minLng) {
@@ -151,15 +151,15 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
       }
     }
     this.biotopes = biotopes;
-    this.lajiMap.lajiMap.zoomToData({paddingInMeters: 200});
-    this.lajiMap.lajiMap.map.dragging.disable();
-    this.lajiMap.lajiMap.map.touchZoom.disable();
-    this.lajiMap.lajiMap.map.doubleClickZoom.disable();
-    this.lajiMap.lajiMap.map.scrollWheelZoom.disable();
-    this.lajiMap.lajiMap.map.boxZoom.disable();
-    this.lajiMap.lajiMap.map.keyboard.disable();
-    if (this.lajiMap.lajiMap.map.tap) {
-      this.lajiMap.lajiMap.map.tap.disable();
+    this.lajiMap.map.zoomToData({paddingInMeters: 200});
+    this.lajiMap.map.map.dragging.disable();
+    this.lajiMap.map.map.touchZoom.disable();
+    this.lajiMap.map.map.doubleClickZoom.disable();
+    this.lajiMap.map.map.scrollWheelZoom.disable();
+    this.lajiMap.map.map.boxZoom.disable();
+    this.lajiMap.map.map.keyboard.disable();
+    if (this.lajiMap.map.map.tap) {
+      this.lajiMap.map.map.tap.disable();
     }
     setTimeout(() => {
       this.pages = pages;
@@ -173,7 +173,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
     const geometry = this.getGeometry();
     this.checkOrientation(geometry);
     this.lajiMapOptions = {
-      tileLayerName: 'maastokartta',
+      tileLayerName: LajiMap.TileLayer.maastokartta,
       tileLayerOpacity: 0.5,
       lineTransect: {
         printMode: true,
@@ -183,7 +183,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
   }
 
   private getYkj(lat, lng): {lat: number, lng: number} {
-    const coord = this.coordinateService.convertWgs84ToYkj(lat, lng).map(coord => Math.round(coord / 10) * 10);
+    const coord = this.coordinateService.convertWgs84ToYkj(lat, lng).map(val => Math.round(val / 10) * 10);
     return {
       lat: coord[1],
       lng: coord[0]

@@ -1,9 +1,10 @@
+import { Inject } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output,
+  ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output,
   SimpleChanges
 } from '@angular/core';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
-import { WindowRef } from '../../../shared/windows-ref';
 import { ExtendedNamedPlace } from '../model/extended-named-place';
 
 @Component({
@@ -33,9 +34,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
   private seasonStart;
   private seasonEnd;
 
-  constructor(
-    private window: WindowRef
-  ) {}
+  constructor(@Inject(WINDOW) private window: Window) {}
 
   ngOnInit() {
     this.updateHeight();
@@ -69,7 +68,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
   }
 
   updateHeight() {
-    this.height = Math.min(this.window.nativeWindow.innerHeight - 70, 490) + 'px';
+    this.height = Math.min(this.window.innerHeight - 70, 490) + 'px';
   }
 
   setActive(newActive: string) {

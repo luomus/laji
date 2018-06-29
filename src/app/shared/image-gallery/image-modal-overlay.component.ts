@@ -1,4 +1,5 @@
-import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
+import { Component, EventEmitter, HostListener, OnInit, Output , Inject} from '@angular/core';
 import { Image } from './image.interface';
 
 @Component({
@@ -14,7 +15,7 @@ export class ImageModalOverlayComponent implements OnInit {
   public loading;
   @Output('cancelEvent') cancelEvent = new EventEmitter<any>();
 
-  constructor() {
+  constructor(@Inject(WINDOW) private window: Window,) {
 
   }
 

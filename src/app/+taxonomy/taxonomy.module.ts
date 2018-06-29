@@ -32,10 +32,12 @@ import { InformalGroupSelectComponent } from './informal-group-select/informal-g
 import { InformalGroupRedirectComponent } from './informal-group-redirect/informal-group-redirect.component';
 import { SpeciesImagesComponent } from './taxon-browse/species-images/species-images.component';
 import { TaxonConceptInfoComponent } from './info-card/taxon-concept-info/taxon-concept-info.component';
+import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, TreeModule, LangModule, DatatableModule, HttpClientModule,
-    TypeaheadModule, ButtonsModule, SearchFiltersModule, LajiSelectModule, JWBootstrapSwitchModule, ObservationResultModule ],
+    TypeaheadModule, ButtonsModule, SearchFiltersModule, LajiSelectModule, JWBootstrapSwitchModule, ObservationResultModule,
+    ObservationMapModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
