@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "laji-front": {
+    "laji": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -108,27 +108,27 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "laji-front:build"
+            "browserTarget": "laji:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "laji-front:build:production"
+              "browserTarget": "laji:build:production"
             },
             "embedded": {
-              "browserTarget": "laji-front:build:embedded"
+              "browserTarget": "laji:build:embedded"
             },
             "vir": {
-              "browserTarget": "laji-front:build:vir"
+              "browserTarget": "laji:build:vir"
             },
             "local": {
-              "browserTarget": "laji-front:build:local"
+              "browserTarget": "laji:build:local"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "laji-front:build"
+            "browserTarget": "laji:build"
           }
         },
         "test": {
@@ -166,10 +166,18 @@
             ],
             "exclude": []
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/laji-server",
+            "main": "src/main.server.ts",
+            "tsConfig": "src/tsconfig.server.json"
+          }
         }
       }
     },
-    "laji-front-e2e": {
+    "laji-e2e": {
       "root": "",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -178,7 +186,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "laji-front:serve"
+            "devServerTarget": "laji:serve"
           }
         },
         "lint": {
@@ -193,7 +201,7 @@
       }
     }
   },
-  "defaultProject": "laji-front",
+  "defaultProject": "laji",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "laji",
