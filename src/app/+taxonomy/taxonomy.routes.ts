@@ -1,9 +1,18 @@
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, UrlSegment } from '@angular/router';
 import { TaxonComponent } from './taxon.component';
 import { TaxonBrowseComponent } from './taxon-browse/taxon-browse.component';
 import { InfoCardComponent } from './info-card/info-card.component';
 import { ModuleWithProviders } from '@angular/core';
 import { InformalGroupRedirectComponent } from './informal-group-redirect/informal-group-redirect.component';
+
+export function decideTaxonTab(url: UrlSegment[]) {
+  if (url.length === 1) {
+    if (url[0].path === 'list' || url[0].path === 'images' || url[0].path === 'tree') {
+      return { consumed: url, posParams: {tab: url[0]} };
+    }
+  }
+  return null;
+}
 
 export const taxonomyRoutes: Routes = [
   {
@@ -12,28 +21,8 @@ export const taxonomyRoutes: Routes = [
     component: TaxonComponent
   },
   {
-    path: 'list',
-    pathMatch: 'full',
-    component: TaxonBrowseComponent,
-    data: {
-      type: 'list'
-    }
-  },
-  {
-    path: 'images',
-    pathMatch: 'full',
-    component: TaxonBrowseComponent,
-    data: {
-      type: 'images'
-    }
-  },
-  {
-    path: 'tree',
-    pathMatch: 'full',
-    component: TaxonBrowseComponent,
-    data: {
-      type: 'tree'
-    }
+    matcher: decideTaxonTab,
+    component: TaxonBrowseComponent
   },
   {
     path: 'informal',

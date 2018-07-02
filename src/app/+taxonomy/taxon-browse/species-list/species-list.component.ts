@@ -184,7 +184,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     this.userService.getItem<any>(UserService.SETTINGS_TAXONOMY_LIST)
       .subscribe(data => {
         if (data && data.selected) {
-          this.searchQuery.selected = data.selected;
+          this.searchQuery.listOptions.selected = data.selected;
         }
         this.settingsLoaded = true;
         this.refreshSpeciesList();
@@ -192,7 +192,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
 
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
-        this.searchQuery.page = 1;
+        this.searchQuery.listOptions.page = 1;
         this.refreshSpeciesList();
       }
     );
@@ -209,21 +209,19 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(event) {
-    this.searchQuery.page = event.offset + 1;
+    this.searchQuery.listOptions.page = event.offset + 1;
     this.refreshSpeciesList();
   }
 
   sortOrderChanged(event) {
-    this.searchQuery.sortOrder = event;
+    this.searchQuery.listOptions.sortOrder = event;
     this.refreshSpeciesList();
   }
 
   refreshSpeciesList() {
     const cacheKey = JSON.stringify({
       query: this.searchQuery.query,
-      page: this.searchQuery.page,
-      sortOrder: this.searchQuery.sortOrder,
-      selected: this.searchQuery.selected
+      listOptions: this.searchQuery.listOptions
     });
     if (this.lastQuery === cacheKey || !this.settingsLoaded) {
       return;
@@ -235,9 +233,9 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     }
     this.loading = true;
 
-    this.subFetch = this.fetchPage(this.searchQuery.page)
+    this.subFetch = this.fetchPage(this.searchQuery.listOptions.page)
       .subscribe(data => {
-          this.columns = this.searchQuery.selected.map(name => {
+          this.columns = this.searchQuery.listOptions.selected.map(name => {
             return this.columnLookup[name];
           });
 
@@ -260,7 +258,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   }
 
   initColumns() {
-    this._selected = [...this.searchQuery.selected];
+    this._selected = [...this.searchQuery.listOptions.selected];
     this.allColumns = this.allColumns
       .map(column => {
         this.columnLookup[column.name] = column;
@@ -288,13 +286,13 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   }
 
   openModal() {
-    this._selected = [...this.searchQuery.selected];
+    this._selected = [...this.searchQuery.listOptions.selected];
     this.modalRef.show();
   }
 
   closeOkModal() {
-    this.searchQuery.selected = [...this._selected];
-    this.searchQuery.page = 1;
+    this.searchQuery.listOptions.selected = [...this._selected];
+    this.searchQuery.listOptions.page = 1;
     this.refreshSpeciesList();
     this.saveSettings();
     this.modalRef.hide();
@@ -303,7 +301,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   download(fileType: string) {
     this.downloadLoading = true;
 
-    const columns = this.searchQuery.selected.map(name => {
+    const columns = this.searchQuery.listOptions.selected.map(name => {
       return this.columnLookup[name];
     });
     this.fetchAllPages()
@@ -347,7 +345,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
         undefined,
         '' + page,
         '1000',
-        this.searchQuery.sortOrder,
+        this.searchQuery.listOptions.sortOrder,
         query.extraParameters
       )
   }
@@ -367,7 +365,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   }
 
   private getSelectedFields() {
-    const selects = this.searchQuery.selected.reduce((arr, field) => {
+    const selects = this.searchQuery.listOptions.selected.reduce((arr, field) => {
       let addedField = field;
       if (this.columnLookup[field] && this.columnLookup[field].selectField) {
         addedField = this.columnLookup[field].selectField;
@@ -386,7 +384,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
 
   private saveSettings() {
     this.userService.setItem(UserService.SETTINGS_TAXONOMY_LIST, {
-      selected: this.searchQuery.selected
+      selected: this.searchQuery.listOptions.selected
     }).subscribe(() => {}, () => {});
   }
 }

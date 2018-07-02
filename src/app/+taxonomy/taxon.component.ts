@@ -18,7 +18,8 @@ export class TaxonComponent {
       this.localizeRouterService.translateRoute(['/taxon/list']),
       {queryParams: {
         informalGroupFilters: groupId,
-        onlyFinnish: true
+        onlyFinnish: true,
+        reset: true
       }}
     );
   }

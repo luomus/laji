@@ -2,6 +2,7 @@ import { WINDOW } from '@ng-toolkit/universal';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener , Inject} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { withLatestFrom, map } from 'rxjs/operators';
 import { TaxonomySearchQuery } from './taxonomy-search-query.model';
 import { FooterService } from '../../shared/service/footer.service';
 
@@ -31,20 +32,22 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.footerService.footerVisible = false;
-    this.searchQuery.empty();
 
-    this.subQuery = this.route.queryParams.subscribe(params => {
-      const changed = this.searchQuery.setQueryFromParams(params);
+    this.subQuery = this.route.params.pipe(
+      map(data => data['tab']),
+      withLatestFrom(this.route.queryParams)
+    )
+      .subscribe(([type, params]) => {
+        if (type !== 'tree') {
+          if (params['reset']) {
+              this.searchQuery.empty();
+          }
+          this.searchQuery.setQueryFromParams(params);
+        }
 
-      if (changed) {
-        this.searchQuery.queryUpdate({formSubmit: true});
+        this.type = type;
         this.cd.markForCheck();
-      }
-    });
-    this.subData = this.route.data.subscribe(data => {
-      this.type = data['type'];
-      this.cd.markForCheck();
-    });
+      });
 
     this.setFilterPosition();
   }

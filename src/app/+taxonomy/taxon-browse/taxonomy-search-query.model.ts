@@ -9,11 +9,20 @@ export class TaxonomySearchQuery {
   public queryUpdatedSource = new Subject<any>();
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
 
-  public page: number;
-  public sortOrder: string;
-  public selected: string[];
-
   public query: TaxonomySearchQueryInterface;
+
+  public listOptions: {
+    page: number,
+    sortOrder: string,
+    selected: string[]
+  };
+  public imageOptions: {
+    page: number
+  };
+  public treeOptions: {
+    onlyFinnish: boolean,
+    showOnlySpecies: boolean
+  };
 
   constructor(
     private router: Router
@@ -41,37 +50,38 @@ export class TaxonomySearchQuery {
 
   public empty(): void {
     this.query = {};
-    this.page = 1;
-    this.sortOrder = 'taxonomic';
-    this.selected = ['vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
-      'latestRedListStatusFinland', 'administrativeStatuses', 'synonymNames'];
+    this.listOptions = {
+      page: 1,
+      sortOrder: 'taxonomic',
+      selected: ['vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
+        'latestRedListStatusFinland', 'administrativeStatuses', 'synonymNames']
+    };
+    this.imageOptions = {
+      page: 1
+    };
+    this.treeOptions = {
+      onlyFinnish: true,
+      showOnlySpecies: false
+    };
   }
 
-  public setQueryFromParams(params: Params): boolean {
-    const newQuery: TaxonomySearchQueryInterface = {};
-    newQuery.informalGroupFilters = params['informalGroupFilters'];
-    newQuery.target = params['target'];
-    newQuery.onlyFinnish = params['onlyFinnish'] === 'true' ? true : undefined;
+  public setQueryFromParams(params: Params) {
+    this.query.informalGroupFilters = params['informalGroupFilters'];
+    this.query.target = params['target'];
+    this.query.onlyFinnish = params['onlyFinnish'] === 'true' ? true : undefined;
 
     if (params['invasiveSpeciesFilter'] === 'true') {
-      newQuery.invasiveSpeciesFilter = true;
+      this.query.invasiveSpeciesFilter = true;
     }
     if (params['invasiveSpeciesFilter'] === 'false') {
-      newQuery.invasiveSpeciesFilter = false;
+      this.query.invasiveSpeciesFilter = false;
     }
 
     const arrayKeys = ['redListStatusFilters', 'adminStatusFilters', 'typesOfOccurrenceFilters', 'typesOfOccurrenceNotFilters'];
     for (let i = 0; i < arrayKeys.length; i++) {
       const key = arrayKeys[i];
-      newQuery[key] = this.getArrayParam(params, key);
+      this.query[key] = this.getArrayParam(params, key);
     }
-
-    if (this.queryAsString(this.query) !== this.queryAsString(newQuery)) {
-      this.query = newQuery;
-      return true;
-    }
-
-    return false;
   }
 
   private getArrayParam(params, key) {
@@ -80,19 +90,6 @@ export class TaxonomySearchQuery {
       value = [value];
     }
     return value;
-  }
-
-  private queryAsString(query) {
-    return JSON.stringify({
-      informalGroupFilters: query.informalGroupFilters,
-      target: query.target,
-      onlyFinnish: query.onlyFinnish,
-      invasiveSpeciesFilter: query.invasiveSpeciesFilter,
-      redListStatusFilters: query.redListStatusFilters,
-      adminStatusFilters: query.adminStatusFilters,
-      typesOfOccurrenceFilters: query.typesOfOccurrenceFilters,
-      typesOfNotOccurrenceFilters: query.typesOfNotOccurrenceFilters
-    });
   }
 
   public queryUpdate(data = {}): void {
