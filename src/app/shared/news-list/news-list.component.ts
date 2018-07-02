@@ -43,7 +43,9 @@ export class NewsListComponent implements OnInit, OnDestroy {
     if (this.subNews) {
       this.subNews.unsubscribe();
     }
-    this.subLang.unsubscribe();
+    if (this.subLang) {
+      this.subLang.unsubscribe();
+    }
   }
 
   gotoPage(page: number): void {

@@ -26,7 +26,7 @@ export class NewsComponent implements OnInit, OnDestroy {
     this.subTrans = this.route.params.subscribe(params => {
       this.newsService.get(params['id']).subscribe(
         newsItem => {
-          this.newsItem = newsItem
+          this.newsItem = newsItem;
           this.cd.markForCheck();
         },
         err => {
@@ -38,6 +38,8 @@ export class NewsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subTrans.unsubscribe();
+    if (this.subTrans) {
+      this.subTrans.unsubscribe();
+    }
   }
 }
