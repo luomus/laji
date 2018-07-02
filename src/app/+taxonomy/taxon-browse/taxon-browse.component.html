@@ -2,10 +2,12 @@
   <h1 style="margin: 0">{{ 'species.search' | translate }}<br><small>{{ 'species.title.short' | translate }}</small></h1>
   <div>{{ 'species.title.long' | translate }}</div>
 </div>
-<div id="content-container" class="container">
-  <div class="form-horizontal">
-    <div class="row">
-      <div *ngIf="type !== 'tree'" [ngStyle]="filtersNgStyle" class="form-filters col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10">
+<div id="content-container" class="container full-height">
+  <div class="full-height">
+    <div class="row full-height" style="position: relative">
+      <div *ngIf="type !== 'tree'"
+           class="form-filters col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10"
+           [ngClass]="{'sticky-filter': stickyFilter}">
         <laji-species-form [searchQuery]="searchQuery"
                            [showFilter]="showFilter"
                            (onShowFilterChange)="showFilter = $event"></laji-species-form>
