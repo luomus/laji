@@ -10,7 +10,8 @@ import {Subscription} from 'rxjs/Subscription';
 export class LineTransectResultComponent implements OnInit, OnDestroy {
   public tab: string;
   informalTaxonGroup = 'MVL.1';
-  collectionId = 'HR.61';
+  collectionId = 'HR.61,HR.2691';
+  // collectionId = 'HR.61';
 
   private subParam: Subscription;
 

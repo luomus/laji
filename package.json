@@ -42,6 +42,7 @@
     "@angular/platform-server": "^5.2.0",
     "@angular/router": "^5.2.0",
     "@ngx-translate/core": "^9.1.1",
+    "@swimlane/ngx-charts": "^7.4.0",
     "@swimlane/ngx-datatable": "vixriihi/ngx-datatable.git#dev",
     "angular-tree-component": "^7.0.1",
     "angular2-moment": "^1.8.0",
