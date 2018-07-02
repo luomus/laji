@@ -27,10 +27,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { PagedResult } from '../model/PagedResult';
 import { Collection } from '../model/Collection';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class CollectionApi {
-  protected basePath = '/api';
+  protected basePath = environment.apiBase;
   public defaultHeaders: Headers = new Headers();
 
   constructor(protected http: Http) {

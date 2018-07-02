@@ -29,6 +29,7 @@ import { Taxonomy, TaxonomyImage } from '../model/Taxonomy';
 import { HttpClient } from '@angular/common/http';
 import { Util } from '../service/util.service';
 import { LajiTaxonSearch } from '../model/LajiTaxonSearch';
+import { environment } from '../../../environments/environment';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
@@ -36,7 +37,7 @@ import { LajiTaxonSearch } from '../model/LajiTaxonSearch';
 
 @Injectable({providedIn: 'root'})
 export class TaxonomyApi {
-  protected basePath = '/api';
+  protected basePath = environment.apiBase;
 
   constructor(protected http: HttpClient) {
   }

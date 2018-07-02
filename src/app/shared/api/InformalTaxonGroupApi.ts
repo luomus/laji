@@ -28,13 +28,14 @@ import { PagedResult } from '../model/PagedResult';
 import { HttpClient } from '@angular/common/http';
 import { Util } from '../service/util.service';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
+import { environment } from '../../../environments/environment';
 
 
 'use strict';
 
 @Injectable({providedIn: 'root'})
 export class InformalTaxonGroupApi {
-  protected basePath = '/api';
+  protected basePath = environment.apiBase;
 
   constructor(protected http: HttpClient) {
   }

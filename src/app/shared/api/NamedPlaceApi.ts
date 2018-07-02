@@ -28,6 +28,7 @@ import { PagedResult } from '../model/PagedResult';
 import { NamedPlace } from '../model/NamedPlace';
 import { HttpClient } from '@angular/common/http';
 import { Util } from '../service/util.service';
+import { environment } from '../../../environments/environment';
 
 export interface NamedPlaceQuery {
   userToken?: string;
@@ -40,7 +41,7 @@ export interface NamedPlaceQuery {
 
 @Injectable({providedIn: 'root'})
 export class NamedPlaceApi {
-  protected basePath = '/api';
+  protected basePath = environment.apiBase;
 
   constructor(protected http: HttpClient) {
   }

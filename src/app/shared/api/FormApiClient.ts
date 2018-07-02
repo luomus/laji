@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Util } from '../service/util.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class FormApiClient {
-  protected basePath = '/api';
+  protected basePath = environment.apiBase;
   private _lang: string;
   private _personToken: string;
 

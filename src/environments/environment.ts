@@ -29,7 +29,7 @@ export const environment = {
   lineTransectKartoitusForm: 'MHL.28',
   whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'JX.123608',
-  apiBase: '/api',
+  apiBase: 'https://dev.laji.fi/api',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
   externalViewers: {

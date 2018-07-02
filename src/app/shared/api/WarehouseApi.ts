@@ -30,6 +30,7 @@ import { SearchQuery } from '../../+observation/search-query.model';
 import { WarehouseCountResultInterface } from '../model/WarehouseCountResultInterface';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Util } from '../service/util.service';
+import { environment } from '../../../environments/environment';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
@@ -38,7 +39,7 @@ import { Util } from '../service/util.service';
 @Injectable({providedIn: 'root'})
 export class WarehouseApi {
   public static readonly longTimeout = 10000;
-  protected basePath = '/api';
+  protected basePath = environment.apiBase;
 
   constructor(protected http: HttpClient, private queryService: SearchQuery) {
     this.warehouseQueryAggregateGet = this.warehouseQueryAggregateGet.bind(this);

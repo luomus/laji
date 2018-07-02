@@ -28,12 +28,13 @@ import { HttpClient } from '@angular/common/http';
 import { Util } from '../service/util.service';
 import { Profile } from '../model/Profile';
 import { Person } from '../model/Person';
+import { environment } from '../../../environments/environment';
 
 'use strict';
 
 @Injectable({providedIn: 'root'})
 export class PersonApi {
-  protected basePath = '/api';
+  protected basePath = environment.apiBase;
 
   constructor(protected http: HttpClient) {
   }

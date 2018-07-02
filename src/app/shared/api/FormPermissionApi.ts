@@ -19,12 +19,13 @@ import { Observable } from 'rxjs';
 import { FormPermission } from '../model/FormPermission';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Util } from '../service/util.service';
+import { environment } from '../../../environments/environment';
 
 
 
 @Injectable({providedIn: 'root'})
 export class FormPermissionApi {
-    protected basePath = '/api';
+    protected basePath = environment.apiBase;
 
     constructor(protected http: HttpClient) {
     }
