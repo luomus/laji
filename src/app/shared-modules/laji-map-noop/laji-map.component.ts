@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'laji-map3',
+  selector: 'laji-map',
   template: ''
 })
 export class LajiMapComponent {

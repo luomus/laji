@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs';
 import LajiMap from 'laji-map/lib/map';
 
 @Component({
-  selector: 'laji-map3',
+  selector: 'laji-map',
   template: `
 <div class="laji-map-wrap" [ngClass]="{'no-controls': !showControls}">
   <div #lajiMap class="laji-map"></div>
