@@ -24,8 +24,7 @@
     "e2e": "protractor",
     "postinstall": "node ./scripts/remove-extras.js",
     "build:server:prod": "ng run laji:server && webpack --config webpack.server.config.js --progress --colors",
-    "build:browser:prod": "ng build --prod",
-    "build:prod": "npm run build:server:prod && npm run build:browser:prod",
+    "build:ssr:prod": "yarn run build:server:prod && yarn run build",
     "server": "node local.js"
   },
   "contributors": [
