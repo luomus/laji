@@ -37,7 +37,9 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
   }
 
   ngOnDestroy() {
-    this.subTrans.unsubscribe();
+    if (this.subTrans) {
+      this.subTrans.unsubscribe();
+    }
   }
 
   private refreshInformalGroups() {
