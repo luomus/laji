@@ -1,7 +1,8 @@
 import { WINDOW } from '@ng-toolkit/universal';
-import { Component, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener , Inject} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener , Inject} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { withLatestFrom, map } from 'rxjs/operators';
 import { TaxonomySearchQuery } from './taxonomy-search-query.model';
 import { FooterService } from '../../shared/service/footer.service';
 
@@ -10,12 +11,12 @@ import { FooterService } from '../../shared/service/footer.service';
   templateUrl: './taxon-browse.component.html',
   styleUrls: ['./taxon-browse.component.css']
 })
-export class TaxonBrowseComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TaxonBrowseComponent implements OnInit, OnDestroy {
   @ViewChild('header') headerRef: ElementRef;
 
   public type: string;
 
-  public filtersNgStyle = {};
+  public stickyFilter = false;
   public showFilter = true;
 
   private subData: Subscription;
@@ -31,25 +32,24 @@ export class TaxonBrowseComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.footerService.footerVisible = false;
-    this.searchQuery.empty();
 
-    this.subQuery = this.route.queryParams.subscribe(params => {
-      const changed = this.searchQuery.setQueryFromParams(params);
+    this.subQuery = this.route.params.pipe(
+      map(data => data['tab']),
+      withLatestFrom(this.route.queryParams)
+    )
+      .subscribe(([type, params]) => {
+        if (type !== 'tree') {
+          if (params['reset']) {
+              this.searchQuery.empty();
+          }
+          this.searchQuery.setQueryFromParams(params);
+        }
 
-      if (changed) {
-        this.searchQuery.queryUpdate({formSubmit: true});
+        this.type = type;
         this.cd.markForCheck();
-      }
-    });
-    this.subData = this.route.data.subscribe(data => {
-      this.type = data['type'];
-      this.setFiltersSize();
-      this.cd.markForCheck();
-    });
-  }
+      });
 
-  ngAfterViewInit() {
-    this.setFiltersSize();
+    this.setFilterPosition();
   }
 
   ngOnDestroy() {
@@ -70,25 +70,11 @@ export class TaxonBrowseComponent implements OnInit, AfterViewInit, OnDestroy {
   @HostListener('window:scroll')
   @HostListener('window:resize')
   onResize() {
-    this.setFiltersSize();
+    this.setFilterPosition();
   }
 
-  private setFiltersSize() {
+  private setFilterPosition() {
     const headerHeight = this.headerRef.nativeElement.offsetHeight;
-
-    if (this.window.scrollY < headerHeight) {
-      this.filtersNgStyle = {
-        position: 'absolute',
-        top: headerHeight + 'px',
-        right: 0,
-        height: 'calc(100% - ' + headerHeight + 'px)'
-      }
-    } else {
-      this.filtersNgStyle = {
-        position: 'fixed',
-        top: '50px',
-        height: '100%'
-      }
-    }
+    this.stickyFilter = !(this.window.scrollY < headerHeight);
   }
 }

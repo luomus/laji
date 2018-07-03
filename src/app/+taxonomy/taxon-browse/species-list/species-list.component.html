@@ -3,7 +3,7 @@
     <label class="col-sm-12">
       {{'species.order' | translate}}:
     </label>
-    <select class="form-control" style="width: auto; margin-left: 15px;" [ngModel]="searchQuery.sortOrder" (ngModelChange)="sortOrderChanged($event)">
+    <select class="form-control" style="width: auto; margin-left: 15px;" [ngModel]="searchQuery.listOptions.sortOrder" (ngModelChange)="sortOrderChanged($event)">
       <option [value]="'taxonomic'">
         {{'species.order.taxonomicOrder' | translate}}
       </option>
