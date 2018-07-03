@@ -30,14 +30,22 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
 
   public updateUrl(): void {
     const extra = {skipLocationChange: false};
-    if (Object.keys(this.query).length > 0) {
-      for (const key in this.query) {
-        if (this.skippedQueryParams.indexOf(key) !== -1 ||
-            this.query[key] === '' || (Array.isArray(this.query[key]) && this.query[key].length === 0)) {
-          this.query[key] = undefined;
-        }
+    const queryParams = {};
+
+    for (const key in this.query) {
+      if (!this.query.hasOwnProperty(key)) {
+        continue;
       }
-      extra['queryParams'] = this.query;
+      if (this.query[key] === '' || (Array.isArray(this.query[key]) && this.query[key].length === 0)) {
+        this.query[key] = undefined;
+      }
+      if (this.skippedQueryParams.indexOf(key) === -1) {
+        queryParams[key] = this.query[key];
+      }
+    }
+
+    if (Object.keys(this.query).length > 0) {
+      extra['queryParams'] = queryParams;
     } else {
       extra['preserveQueryParams'] = false;
     }
