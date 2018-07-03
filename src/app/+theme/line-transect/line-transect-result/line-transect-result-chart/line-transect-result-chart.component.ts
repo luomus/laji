@@ -150,7 +150,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   }
 
   updateBirdAssociationArea(value) {
-    this.birdAssociationAreas = value;
+    this.birdAssociationAreas = Array.isArray(value) ? value : [];
     this.update();
   }
 

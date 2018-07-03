@@ -27,6 +27,7 @@
     <laji-spinner [spinning]="loading" [overlay]="true">
       <div class="chart-container">
         <ngx-charts-line-chart
+          [view]="[500, 300]"
           [results]="line"
           [scheme]="colorScheme"
           [animations]="false"
