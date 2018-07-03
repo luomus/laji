@@ -4,10 +4,11 @@ import { URLSearchParams } from '@angular/http';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../locale/localize-router.service';
+import { SearchQueryInterface } from '../shared-modules/search-filters/search-query.interface';
 
 @Injectable({providedIn: 'root'})
-export class SearchQuery {
-
+export class SearchQuery implements SearchQueryInterface {
+  public queryType = 'observation';
   public queryUpdatedSource = new Subject<any>();
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
   public tack = 0;

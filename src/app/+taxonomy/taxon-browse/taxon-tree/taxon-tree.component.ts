@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { of as ObservableOf } from 'rxjs';
+import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 import { TREE_ACTIONS, TreeComponent, TreeNode } from 'angular-tree-component';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { ITreeNode } from 'angular-tree-component/dist/defs/api';
@@ -12,7 +13,8 @@ import { ITreeNode } from 'angular-tree-component/dist/defs/api';
 export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {
   private static cache;
 
-  @Input() openId: string;
+  @Input() searchQuery: TaxonomySearchQuery;
+  openId: string;
 
   public options = null;
   public nodes = [];

@@ -2,14 +2,16 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Router, Params } from '@angular/router';
 import { TaxonomySearchQueryInterface } from './taxonomy-search-query.interface';
+import { SearchQueryInterface } from '../../shared-modules/search-filters/search-query.interface';
 
 @Injectable()
-export class TaxonomySearchQuery {
-
-  public queryUpdatedSource = new Subject<any>();
+export class TaxonomySearchQuery implements SearchQueryInterface {
+  public queryType = 'taxonomy';
+  private queryUpdatedSource = new Subject<any>();
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
 
   public query: TaxonomySearchQueryInterface;
+  public skippedQueryParams = [];
 
   public listOptions: {
     page: number,
@@ -19,10 +21,6 @@ export class TaxonomySearchQuery {
   public imageOptions: {
     page: number
   };
-  public treeOptions: {
-    onlyFinnish: boolean,
-    showOnlySpecies: boolean
-  };
 
   constructor(
     private router: Router
@@ -30,11 +28,12 @@ export class TaxonomySearchQuery {
     this.empty();
   }
 
-  public updateUrl(skipHistory: boolean = false): void {
-    const extra = {skipLocationChange: skipHistory};
+  public updateUrl(): void {
+    const extra = {skipLocationChange: false};
     if (Object.keys(this.query).length > 0) {
       for (const key in this.query) {
-        if (this.query[key] === '' || (Array.isArray(this.query[key]) && this.query[key].length === 0)) {
+        if (this.skippedQueryParams.indexOf(key) !== -1 ||
+            this.query[key] === '' || (Array.isArray(this.query[key]) && this.query[key].length === 0)) {
           this.query[key] = undefined;
         }
       }
@@ -59,32 +58,31 @@ export class TaxonomySearchQuery {
     this.imageOptions = {
       page: 1
     };
-    this.treeOptions = {
-      onlyFinnish: true,
-      showOnlySpecies: false
-    };
   }
 
   public setQueryFromParams(params: Params) {
-    this.query.informalGroupFilters = params['informalGroupFilters'];
-    this.query.target = params['target'];
-    this.query.onlyFinnish = params['onlyFinnish'] === 'true' ? true : undefined;
+    this.setQueryValue('informalGroupFilters', params['informalGroupFilters']);
+    this.setQueryValue('target', params['target']);
+    this.setQueryValue('onlyFinnish', params['onlyFinnish'] === 'true' ? true : undefined);
 
-    if (params['invasiveSpeciesFilter'] === 'true') {
-      this.query.invasiveSpeciesFilter = true;
-    }
-    if (params['invasiveSpeciesFilter'] === 'false') {
-      this.query.invasiveSpeciesFilter = false;
-    }
+    this.setQueryValue('invasiveSpeciesFilter',
+      params['invasiveSpeciesFilter'] === 'true' ? true : (params['invasiveSpeciesFilter'] === 'false' ? false : undefined)
+    );
 
     const arrayKeys = ['redListStatusFilters', 'adminStatusFilters', 'typesOfOccurrenceFilters', 'typesOfOccurrenceNotFilters'];
     for (let i = 0; i < arrayKeys.length; i++) {
       const key = arrayKeys[i];
-      this.query[key] = this.getArrayParam(params, key);
+      this.setQueryValue(key, this.getArrayParam(params, key));
     }
   }
 
-  private getArrayParam(params, key) {
+  private setQueryValue(key: string, value: any) {
+    if (this.skippedQueryParams.indexOf(key) === -1) {
+      this.query[key] = value;
+    }
+  }
+
+  private getArrayParam(params: Params, key: string) {
     let value = params[key];
     if (value && !Array.isArray(value)) {
       value = [value];
