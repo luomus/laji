@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
-import { of as ObservableOf } from 'rxjs';
+import { AfterViewInit, Component, Input, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { of as ObservableOf, Observable, Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 import { TREE_ACTIONS, TreeComponent, TreeNode } from 'angular-tree-component';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
@@ -10,11 +11,10 @@ import { ITreeNode } from 'angular-tree-component/dist/defs/api';
   templateUrl: './taxon-tree.component.html',
   styleUrls: ['./taxon-tree.component.css']
 })
-export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {
+export class TaxonTreeComponent implements OnInit, AfterViewInit, OnDestroy {
   private static cache;
 
   @Input() searchQuery: TaxonomySearchQuery;
-  openId: string;
 
   public options = null;
   public nodes = [];
@@ -23,8 +23,11 @@ export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {
   private tree: TreeComponent;
   private selectedFields  = 'id,hasChildren,scientificName,vernacularName,taxonRank';
 
+  private subQueryUpdate: Subscription;
+
   constructor(
-    private taxonService: TaxonomyApi
+    private taxonService: TaxonomyApi,
+    private cd: ChangeDetectorRef
   ) {
     this.options = {
       actionMapping: {
@@ -37,43 +40,55 @@ export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {
     };
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['openId'] && this.openId) {
-      this.openTreeById(this.openId);
-    }
+  ngOnInit() {
+    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
+      () => {
+        this.getRoot().subscribe(() => {
+          this.cd.markForCheck();
+        });
+      }
+    );
   }
 
   ngOnDestroy() {
     TaxonTreeComponent.cache = this.getOpenNodesFromTree(this.tree.treeModel.roots);
+    this.subQueryUpdate.unsubscribe();
   }
 
   ngAfterViewInit() {
     (TaxonTreeComponent.cache ?
-      ObservableOf(TaxonTreeComponent.cache).delay(100) :
-      this.taxonService
-        .taxonomyFindBySubject('MX.37600', 'multi', {selectedFields: this.selectedFields})
-        .map(data => [data] ))
-      .do((data) => {
+      ObservableOf(TaxonTreeComponent.cache).delay(100).pipe(tap((data) => {
         this.nodes = data;
         this.tree.treeModel.update();
-      })
+      })) :
+      this.getRoot())
       .delay(100)
       .subscribe(() => {
         if (TaxonTreeComponent.cache) {
           this.openTree(this.tree.treeModel.roots);
         }
-        if (this.openId) {
-          this.openTreeById(this.openId);
-        }
+        this.cd.markForCheck();
       }, (error) => {
         console.error(error);
       });
   }
 
+  getRoot(): Observable<any[]> {
+    return this.taxonService
+      .taxonomyFindBySubject('MX.37600', 'multi', {selectedFields: this.selectedFields, onlyFinnish: this.searchQuery.query.onlyFinnish})
+      .pipe(
+        map(data => [data]),
+        tap((data) => {
+          this.nodes = data;
+          this.tree.treeModel.update();
+        })
+      );
+  }
+
   openTreeById(id: string) {
     if (!id) { return; }
     this.taxonService
-      .taxonomyFindParents(id)
+      .taxonomyFindParents(id, undefined, {onlyFinnish: this.searchQuery.query.onlyFinnish})
       .map(taxa => taxa.map(taxon => taxon.id))
       .subscribe(taxa => {
         this.goTo([...taxa, id]);
@@ -157,7 +172,7 @@ export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {
 
   getChildren(node: TreeNode) {
     return this.taxonService
-      .taxonomyFindChildren(node.id, 'multi', undefined, {selectedFields: this.selectedFields})
+      .taxonomyFindChildren(node.id, 'multi', undefined, {selectedFields: this.selectedFields, onlyFinnish: this.searchQuery.query.onlyFinnish})
       .toPromise();
   }
 
