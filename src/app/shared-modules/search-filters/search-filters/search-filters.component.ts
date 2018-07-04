@@ -1,8 +1,7 @@
 import { WINDOW } from '@ng-toolkit/universal';
 import { Component, OnInit, Input, Output, EventEmitter , Inject} from '@angular/core';
-import { SearchQuery } from '../../../+observation/search-query.model';
-import { TaxonomySearchQuery } from '../../../+taxonomy/taxon-browse/taxonomy-search-query.model';
 import { WindowRef } from '../../../shared/windows-ref';
+import { SearchQueryInterface } from '../search-query.interface';
 
 @Component({
   selector: 'laji-search-filters',
@@ -11,7 +10,7 @@ import { WindowRef } from '../../../shared/windows-ref';
 })
 export class SearchFiltersComponent implements OnInit {
   @Input() showFilter = true;
-  @Input() searchQuery: SearchQuery|TaxonomySearchQuery;
+  @Input() searchQuery: SearchQueryInterface;
 
   @Input() hasInvasiveControlRights = false;
   @Output() onShowFilterChange = new EventEmitter<boolean>();

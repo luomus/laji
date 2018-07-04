@@ -1,6 +1,5 @@
 import { Component, HostListener, Input, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
-import { SearchQuery } from '../../../+observation/search-query.model';
-import { TaxonomySearchQuery } from '../../../+taxonomy/taxon-browse/taxonomy-search-query.model';
+import { SearchQueryInterface } from '../search-query.interface';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -9,10 +8,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./observation-active.component.css']
 })
 export class ObservationActiveComponent implements OnInit, OnDestroy {
+  @Input() searchQuery: SearchQueryInterface;
 
-  @Input() skip: string[] = [];
-  @Input() searchQuery: SearchQuery|TaxonomySearchQuery;
-  public searchQueryType: 'observation'|'taxonomy';
   public active: ActiveList[] = [];
   public showList = false;
 
@@ -24,11 +21,6 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.searchQuery instanceof SearchQuery) {
-      this.searchQueryType = 'observation';
-    } else {
-      this.searchQueryType = 'taxonomy';
-    }
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => this.updateSelectedList()
     );
@@ -70,9 +62,10 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   }
 
   removeAll() {
+    const skip = this.searchQuery.skippedQueryParams ? this.searchQuery.skippedQueryParams : [];
     const query = this.searchQuery.query;
     Object.keys(query).map((key) => {
-      if (this.skip.indexOf(key) === -1 && typeof query[key] !== 'undefined') {
+      if (skip.indexOf(key) === -1 && typeof query[key] !== 'undefined') {
         query[key] = undefined;
       }
     });
@@ -82,6 +75,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   }
 
   updateSelectedList() {
+    const skip = this.searchQuery.skippedQueryParams ? this.searchQuery.skippedQueryParams : [];
     const query = this.searchQuery.query;
     this.active = [];
     const keys = Object.keys(query);
@@ -89,7 +83,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
       return;
     }
     keys.map((i) => {
-      if (this.skip.indexOf(i) > -1) {
+      if (skip.indexOf(i) > -1) {
         return;
       }
       const type = typeof query[i];

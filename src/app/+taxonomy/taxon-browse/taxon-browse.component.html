@@ -5,8 +5,7 @@
 <div id="content-container" class="container full-height">
   <div class="full-height">
     <div class="row full-height" style="position: relative">
-      <div [hidden]="type === 'tree'"
-           class="form-filters col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10"
+      <div class="form-filters col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10"
            [ngClass]="{'sticky-filter': stickyFilter}">
         <laji-species-form [searchQuery]="searchQuery"
                            [showFilter]="showFilter"
@@ -29,7 +28,7 @@
             </a>
           </li>
           <li role="presentation" [ngClass]="{active: type === 'tree'}">
-            <a [routerLink]="'/taxon/tree' | localize">
+            <a [routerLink]="'/taxon/tree' | localize" [queryParams]="{'onlyFinnish': searchQuery.query.onlyFinnish}">
               {{"species.taxa" | translate}}
             </a>
           </li>
@@ -41,7 +40,7 @@
                                     (onInformalGroupSelect)="informalGroupSelect($event)"></laji-informal-group-select>
         <laji-species-list *ngIf="type === 'list'" [searchQuery]="searchQuery"></laji-species-list>
         <laji-species-images *ngIf="type === 'images'" [searchQuery]="searchQuery"></laji-species-images>
-        <laji-tree *ngIf="type === 'tree'"></laji-tree>
+        <laji-tree *ngIf="type === 'tree'" [searchQuery]="searchQuery"></laji-tree>
       </div>
     </div>
   </div>

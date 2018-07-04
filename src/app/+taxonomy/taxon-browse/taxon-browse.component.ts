@@ -38,12 +38,25 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
       withLatestFrom(this.route.queryParams)
     )
       .subscribe(([type, params]) => {
-        if (type !== 'tree') {
-          if (params['reset']) {
-              this.searchQuery.empty();
-          }
-          this.searchQuery.setQueryFromParams(params);
+        if (type === 'tree') {
+          this.searchQuery.skippedQueryParams = [
+            'informalGroupFilters',
+            'target',
+            'invasiveSpeciesFilter',
+            'redListStatusFilters',
+            'adminStatusFilters',
+            'typesOfOccurrenceFilters',
+            'typesOfOccurrenceNotFilters'
+          ];
+        } else {
+          this.searchQuery.skippedQueryParams = [];
         }
+
+        if (params['reset']) {
+          this.searchQuery.empty();
+        }
+        this.searchQuery.setQueryFromParams(params);
+        this.searchQuery.queryUpdate();
 
         this.type = type;
         this.cd.markForCheck();
