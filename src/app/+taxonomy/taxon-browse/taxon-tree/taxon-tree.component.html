@@ -1,4 +1,11 @@
 <div id="taxon-tree">
+  <label>
+    <input type="checkbox"
+           [(ngModel)]="hideLowerRanks"
+           (ngModelChange)="onHideLowerRanksClick()"
+           name="hideLowerRanks">
+    {{'species.tree.hideLowerRanks' | translate}}
+  </label>
   <tree-root #tree
         (toggleExpanded)="onToggle($event)"
         [nodes]="nodes"

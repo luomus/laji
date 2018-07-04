@@ -434,6 +434,7 @@
   "species.download": "Lataa lajiluettelo",
   "species.download.textFile": "Tekstitiedosto",
   "species.browse": "Selaa havaintoja",
+  "species.tree.hideLowerRanks": "Piilota alaheimot/suvut",
   "feedback": "Palaute",
   "email": "Sähköpostiosoitte",
   "feedback.intro": "Jos kirjaudut portaaliin, sähköpostiosoitteesi liitetään automaattisesti tähän palautteeseen. Jos lähetät palautetta kirjautumatta, lisääthän sähköpostiosoitteesi, mikäli haluat vastauksen.",

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { of as ObservableOf, Observable, Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { of as ObservableOf, Observable, Subscription, forkJoin as ObservableForkJoin } from 'rxjs';
+import { map, tap, switchMap } from 'rxjs/operators';
 import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 import { TREE_ACTIONS, TreeComponent, TreeNode } from 'angular-tree-component';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
@@ -22,6 +22,8 @@ export class TaxonTreeComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(TreeComponent)
   private tree: TreeComponent;
   private selectedFields  = 'id,hasChildren,scientificName,vernacularName,taxonRank';
+
+  public hideLowerRanks = false;
 
   private subQueryUpdate: Subscription;
 
@@ -89,7 +91,9 @@ export class TaxonTreeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!id) { return; }
     this.taxonService
       .taxonomyFindParents(id, undefined, {onlyFinnish: this.searchQuery.query.onlyFinnish})
-      .map(taxa => taxa.map(taxon => taxon.id))
+      .pipe(
+        map(taxa => taxa.map(taxon => taxon.id))
+      )
       .subscribe(taxa => {
         this.goTo([...taxa, id]);
       });
@@ -172,8 +176,47 @@ export class TaxonTreeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getChildren(node: TreeNode) {
     return this.taxonService
-      .taxonomyFindChildren(node.id, 'multi', undefined, {selectedFields: this.selectedFields, onlyFinnish: this.searchQuery.query.onlyFinnish})
+      .taxonomyFindChildren(node.id, 'multi', undefined, {
+        selectedFields: this.selectedFields,
+        onlyFinnish: this.searchQuery.query.onlyFinnish
+      })
+      .pipe(
+        switchMap(children => {
+          return this.skipTaxonRanks(children);
+        }),
+        map(result => {console.log(result); console.log([].concat(...result)); return [].concat(...result)})
+      )
       .toPromise();
   }
 
+  private skipTaxonRanks(children) {
+    if (children.length < 1) {
+      return ObservableOf([children]);
+    }
+
+    return ObservableForkJoin(children.map(child => {
+      if (!this.hideLowerRanks || (child.taxonRank !== 'MX.subfamily' && child.taxonRank !== 'MX.genus')) {
+        return ObservableOf([child]);
+      } else if (!child.hasChildren) {
+        return ObservableOf([]);
+      } else {
+        return this.taxonService
+          .taxonomyFindChildren(child.id, 'multi', undefined, {
+            selectedFields: this.selectedFields,
+            onlyFinnish: this.searchQuery.query.onlyFinnish
+          })
+          .pipe(switchMap(children2 => {
+            return this.skipTaxonRanks(children2)
+              .pipe(map(result => ([].concat(...result))));
+          }));
+      }
+    }));
+  }
+
+  onHideLowerRanksClick() {
+    this.getRoot().subscribe(() => {
+        this.cd.markForCheck();
+      }
+    )
+  }
 }
