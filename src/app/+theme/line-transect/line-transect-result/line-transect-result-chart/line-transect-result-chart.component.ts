@@ -1,13 +1,12 @@
 import {Component, Input, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import { AreaType } from '../../../../shared/service/area.service';
-import { WarehouseApi } from '../../../../shared/api';
-import {PagedResult, WarehouseQueryInterface} from '../../../../shared/model';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription, of as ObservableOf} from 'rxjs';
 import {ObservationListService} from '../../../../shared-modules/observation-result/service/observation-list.service';
 import {Logger} from '../../../../shared/logger';
 import { combineLatest, map, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { PagedResult } from '../../../../shared/model/PagedResult';
+import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 
 @Component({
   selector: 'laji-line-transect-result-chart',
@@ -119,7 +118,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
             });
             this.yearLineLengths = yearLineLengths;
           })
-        ) : Observable.of(null)
+        ) : ObservableOf(null)
       ),
       map(value => value[0])
     )
