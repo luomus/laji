@@ -11,3 +11,6 @@ table th:first-of-type {
 .speed-ok {
   color: #2e921c;
 }
+.edit-container {
+  margin-bottom: 15px;
+}

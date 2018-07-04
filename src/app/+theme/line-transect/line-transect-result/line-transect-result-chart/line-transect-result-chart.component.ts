@@ -1,11 +1,13 @@
 import {Component, Input, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import { AreaType } from '../../../../shared/service/area.service';
-import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
-import {PagedResult } from '../../../../shared/model/PagedResult';
+import { WarehouseApi } from '../../../../shared/api';
+import {PagedResult, WarehouseQueryInterface} from '../../../../shared/model';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
+import {Subscription} from 'rxjs/Subscription';
 import {ObservationListService} from '../../../../shared-modules/observation-result/service/observation-list.service';
 import {Logger} from '../../../../shared/logger';
+import { combineLatest, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-line-transect-result-chart',
@@ -21,6 +23,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   loading = false;
   areaTypes = AreaType;
   birdAssociationAreas: string[] = [];
+  currentArea;
   taxon: string;
   taxonId: string;
   private subQuery: Subscription;
@@ -35,9 +38,10 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   private yearLineLengths: any;
   minYear: number;
   maxYear: number;
-  minPairCountSum: number;
-  maxPairCountSum: number;
-  line: number[][];
+  colorScheme = {
+    domain: ['steelblue']
+  };
+  line: {name: string, series: {name: string, value: number}[]}[] = [];
   private afterBothFetched: any;
 
   constructor(
@@ -54,42 +58,6 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       if (taxonId) { this.taxonId = taxonId; }
       if (birdAssociationAreas) { this.birdAssociationAreas = birdAssociationAreas.split(','); }
       this.fetch();
-    });
-    this.loading = true;
-    this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-      {
-        collectionId: [this.collectionId],
-        includeSubCollections: false,
-      },
-      ['gathering.conversions.year'],
-      ['gathering.conversions.year DESC'],
-      100,
-      1,
-      false,
-      false
-    ).subscribe(data => {
-      const yearLineLengths = {};
-      let minYear, maxYear;
-      data.results.forEach(result => {
-        const {'gathering.conversions.year': year} = result.aggregateBy;
-        if (!year) {
-          return;
-        }
-        yearLineLengths[year] = result.lineLengthSum / 1000;
-        if (minYear === undefined || year < minYear) {
-          minYear = +year;
-        }
-        if (maxYear === undefined || year > maxYear) {
-          maxYear = +year;
-        }
-      });
-      this.yearLineLengths = yearLineLengths;
-      this.minYear = minYear;
-      this.maxYear = maxYear;
-      if (this.afterBothFetched) {
-        this.afterBothFetched();
-        this.afterBothFetched = undefined;
-      }
     });
   }
 
@@ -110,6 +78,9 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
   private fetch() {
     this.loading = true;
+
+    const currentArea = this.birdAssociationAreas.join(',');
+
     this.fetchSub = this.warehouseApi.warehouseQueryStatisticsGet(
       {
         collectionId: [this.collectionId],
@@ -119,27 +90,52 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
         includeSubCollections: false
       },
       ['gathering.conversions.year'],
-        ['gathering.conversions.year DESC'],
+      ['gathering.conversions.year DESC'],
       100,
       1
-    ).subscribe(data => {
+    ).pipe(
+      combineLatest(currentArea !== this.currentArea ? this.warehouseApi.warehouseQueryGatheringStatisticsGet(
+        {
+          collectionId: [this.collectionId],
+          includeSubCollections: false,
+          birdAssociationAreaId: this.birdAssociationAreas
+        },
+        ['gathering.conversions.year'],
+        ['gathering.conversions.year DESC'],
+        100,
+        1,
+        false,
+        false
+      ).pipe(
+          tap(data => {
+            this.currentArea = currentArea;
+            const yearLineLengths = {};
+            data.results.forEach(result => {
+              const {'gathering.conversions.year': year} = result.aggregateBy;
+              if (!year) {
+                return;
+              }
+              yearLineLengths[year] = result.lineLengthSum / 1000;
+            });
+            this.yearLineLengths = yearLineLengths;
+          })
+        ) : Observable.of(null)
+      ),
+      map(value => value[0])
+    )
+      .subscribe(data => {
         this.result = data;
         const yearsToPairCounts = {};
         data.results.forEach(result => {
           const {'gathering.conversions.year': year} = result.aggregateBy;
-          if (!year) { return; }
+          if (!year) return;
           yearsToPairCounts[year] = result.pairCountSum;
         });
         this.afterBothFetched = () => {
-          let min, max;
-          this.line = Object.keys(yearsToPairCounts).map(year => {
+          this.line = [{name: 'Parim./km', series: Object.keys(yearsToPairCounts).map(year => {
             const value = yearsToPairCounts[year] / this.yearLineLengths[year];
-            if (min === undefined || value < min) { min = value; }
-            if (max === undefined || value > max) { max = value; }
-            return [+year, value];
-          });
-          this.minPairCountSum = min;
-          this.maxPairCountSum = max;
+            return {name: year, value: value};
+          })}];
           this.loading = false;
           this.cdr.markForCheck();
         };
@@ -154,7 +150,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   }
 
   updateBirdAssociationArea(value) {
-    this.birdAssociationAreas = value;
+    this.birdAssociationAreas = Array.isArray(value) ? value : [];
     this.update();
   }
 

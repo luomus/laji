@@ -17,6 +17,7 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { NamedPlacesService } from '../../named-place/named-places.service';
 import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
 import * as equals from 'deep-equal';
+import { FormService } from '../../../shared/service/form.service';
 
 interface LineTransectCount {
   psCouples: number;
@@ -87,6 +88,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
   ykj10kmN = 0;
   ykj10kmE = 0;
   missingNS = false;
+  path = '';
 
   constructor(
     private lajiApiService: LajiApiService,
@@ -94,6 +96,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     private namedPlacesService: NamedPlacesService,
     private formPermissionService: FormPermissionService,
     private toastsService: ToastsService,
+    private formService: FormService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -102,6 +105,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     this.initWarnings();
     this.initMapOptions();
     this.initYkj();
+    this.initEditLink();
     this.initIsAdmin()
       .subscribe(data => {
         if (data === null) {
@@ -131,6 +135,10 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
 
     this.lajiMap.map.zoomToData({paddingInMeters: 100});
     this.mapZoomInitialized = true;
+  }
+
+  private initEditLink() {
+    this.path = this.formService.getEditUrlPath(this.document.formID, this.document.id)
   }
 
   private initCounts() {

@@ -49,6 +49,7 @@ import { LineTransectFormEiVakioComponent } from './line-transect/line-transect-
 import { LineTransectFormKartoitusComponent } from './line-transect/line-transect-form-kartoitus/line-transect-form-kartoitus.component';
 import { LajiFormModule } from '@laji-form/laji-form.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   imports: [
@@ -65,7 +66,8 @@ import { ObservationMapModule } from '../shared-modules/observation-map/observat
     DatatableModule,
     TaxonAutocompleteModule,
     LajiFormModule,
-    ObservationMapModule
+    ObservationMapModule,
+    NgxChartsModule
   ],
   declarations: [
     NafiComponent,

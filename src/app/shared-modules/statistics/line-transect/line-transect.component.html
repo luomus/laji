@@ -6,6 +6,9 @@
 <alert *ngIf="missingNS" [type]="'danger'">
   Havaintoerässä käytettyä nimettyä paikkaa ei löytynyt!
 </alert>
+<div class="edit-container">
+  <a [routerLink]="path | localize" class="btn btn-primary">Siirry muokkaamaan <i class="glyphicon glyphicon-edit"></i></a>
+</div>
 <div class="row">
   <div class="col-sm-6">
     <table class="table">
