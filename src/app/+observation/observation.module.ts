@@ -12,7 +12,6 @@ import { ObservationDownloadComponent } from './download/observation-download.co
 import { routing } from './observation.routes';
 import { ObservationComponent } from './observation.component';
 import { ViewerModule } from '../+viewer/viewer.module';
-import { NvD3Module } from '../ng2-nvd3/ng2-nvd3.module';
 import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { MainResultComponent } from './main-result/main-result.component';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
@@ -22,11 +21,11 @@ import { PillListComponent } from './pill-list/pill-list.component';
 import { LajiSelectModule } from '../shared-modules/select/select.module';
 import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   imports: [
     routing,
-    NvD3Module,
     SharedModule,
     TypeaheadModule,
     ViewerModule,
@@ -36,7 +35,8 @@ import { ObservationMapModule } from '../shared-modules/observation-map/observat
     SearchFiltersModule,
     LajiSelectModule,
     ObservationMapModule,
-    InfoModule
+    InfoModule,
+    NgxChartsModule
   ],
   declarations: [ObservationComponent, ObservationChartComponent,
     ObservationFormComponent,

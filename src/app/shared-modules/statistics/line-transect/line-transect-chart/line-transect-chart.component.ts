@@ -3,8 +3,11 @@ import {
   OnDestroy
 } from '@angular/core';
 import { ScriptService } from '../../../../shared/service/script.service';
-
-declare const d3: any;
+import { axisLeft, axisBottom } from 'd3-axis';
+import { select } from 'd3-selection';
+import { scaleLinear } from 'd3-scale';
+import { line as d3Line } from 'd3-shape';
+import { format } from 'd3-format';
 
 interface LineTerms {
   slope: number;
@@ -34,7 +37,6 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   @Input() yLabel: string;
   @Input() title: string;
   @Input() margin: { top: number, bottom: number, left: number, right: number} = { top: 30, bottom: 40, left: 40, right: 10};
-  @Input() line: number[][];
   @Input() xTickFormat: any;
   @Input() yLabelAnchor: string;
 
@@ -47,38 +49,6 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   private yScale: any;
   private xAxis: any;
   private yAxis: any;
-  private d3Loaded = false;
-
-  // Add stuff here from createChart() that need to be updated dynamically.
-  // TODO transition animations
-  private updates = {
-    'axis axis-y': () => this.chart.append('g')
-      .call(d3.svg.axis().scale(this.yScale).orient('left')),
-    '_grid-lines': () => {
-      const yGridlinesAxis = d3.svg.axis().scale(this.yScale).orient('left');
-      const yGridlineNodes = this.chart.append('g')
-        .call(yGridlinesAxis.tickSize(-this.width, 0, 0).tickFormat(''));
-      this.styleGridlineNodes(yGridlineNodes);
-      return yGridlineNodes;
-    },
-    'line-data': () => {
-      if (!this.line) {
-        return;
-      }
-      const line = d3.svg.line()
-        .x(([column]) => this.xScale(column))
-        .y(([column, value]) => this.yScale(value));
-      return this.chart.append('path')
-        .attr({
-          'fill': 'none',
-          'stroke': 'steelblue',
-          'stroke-linejoin': 'round',
-          'stroke-linecap': 'round',
-          'stroke-width': 1.5,
-          'd': line(this.line)
-        });
-    }
-  };
 
   constructor(
     element: ElementRef,
@@ -89,22 +59,15 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   }
 
   ngAfterViewInit() {
-    this.scriptService.load('d3')
-      .then(
-        () => {
-          this.d3Loaded = true;
-          this.createChart();
-          if (this.yValue && this.xValue || this.line) {
-            this.updateChart();
-          }
-          this.cd.markForCheck();
-        }
-      )
-      .catch((err) => console.log(err));
+    this.createChart();
+    if (this.yValue && this.xValue) {
+      this.updateChart();
+    }
+    this.cd.markForCheck();
   }
 
   ngOnChanges() {
-    if (this.d3Loaded && this.chart) {
+    if (this.chart) {
       this.updateChart();
     }
   }
@@ -119,7 +82,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
     const element = this.nativeElement;
     this.width = element.offsetWidth - (this.margin.left + this.margin.right);
     this.height = element.offsetHeight - (this.margin.top + this.margin.bottom);
-    const svg = this.svg = d3.select(element).append('svg')
+    const svg = this.svg = select(element).append('svg')
       .attr('width', element.offsetWidth)
       .attr('height', element.offsetHeight);
     const g = svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
@@ -130,27 +93,46 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
     // create scales
-    this.xScale = d3.scale.linear().domain([this.xRange[0], this.xRange[1]]).range([0, this.width]);
-    this.yScale = d3.scale.linear().domain([this.yRange[1], this.yRange[0]]).range([0, this.height]);
+    this.xScale = scaleLinear().domain([this.xRange[0], this.xRange[1]]).range([0, this.width]);
+    this.yScale = scaleLinear().domain([this.yRange[1], this.yRange[0]]).range([0, this.height]);
+
+    // grid lines
+    const yGridlinesAxis = axisLeft(this.yScale);
+    const yGridlineNodes = svg.append('g')
+      .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
+      .call(yGridlinesAxis.tickSize(-this.width).tickFormat(null));
+    this.styleGridlineNodes(yGridlineNodes);
+
 
     // create guide lines
-    const line = d3.svg.line()
+    const line = d3Line()
       .x((d) => this.xScale(d[0]) + this.margin.left)
       .y((d) => this.yScale(d[1]) + this.margin.top);
 
     if (this.terms) {
       svg.append('path')
         .datum([this.getLine(this.terms.upper, this.xRange[0]), this.getLine(this.terms.upper, this.xRange[1])])
-        .attr({d: line, stroke: 'red', 'stroke-dasharray': '7,7', 'stroke-width': 2, fill: 'none'});
+        .attr('d', line)
+        .attr('stroke', 'red')
+        .attr('stroke-dasharray', '7,7')
+        .attr('stroke-width', 2)
+        .attr('fill', 'none');
 
       svg.append('path')
         .datum([this.getLine(this.terms.lower, this.xRange[0]), this.getLine(this.terms.lower, this.xRange[1])])
-        .attr({d: line, stroke: 'red', 'stroke-dasharray': '7,7', 'stroke-width': 2, fill: 'none'});
+        .attr('d', line)
+        .attr('stroke', 'red')
+        .attr('stroke-dasharray', '7,7')
+        .attr('stroke-width', 2)
+        .attr('fill', 'none');
 
 
       svg.append('path')
         .datum([this.getLine(this.terms.middle, this.xRange[0]), this.getLine(this.terms.middle, this.xRange[1])])
-        .attr({d: line, stroke: 'black', 'stroke-width': 2, fill: 'none'});
+        .attr('d', line)
+        .attr('stroke', 'black')
+        .attr('stroke-width', 2)
+        .attr('fill', 'none');
     }
 
     if (this.xLabel) {
@@ -181,9 +163,9 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
     }
 
     // x & y axis
-    const svgXAxis = d3.svg.axis().scale(this.xScale).orient('bottom');
+    const svgXAxis = axisBottom(this.xScale);
     if (this.xTickFormat) {
-      svgXAxis.tickFormat(d3.format(this.xTickFormat));
+      svgXAxis.tickFormat(format(this.xTickFormat));
     }
     this.xAxis = svg.append('g')
       .attr('class', 'axis axis-x')
@@ -192,59 +174,39 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   }
 
   updateChart() {
-    this.yScale = d3.scale.linear().domain([this.yRange[1], this.yRange[0]]).range([0, this.height]);
-    Object.keys(this.updates).forEach(className => {
-      const fn = this.updates[className];
-      let update = this.chart.selectAll(className.split(' ').map(s => `.${s}`).join(''));
-      if (update) {
-        if (update.exit) { update = update.exit(); }
-        update.remove();
-      }
-      const svg = fn();
-      svg && svg.attr('class', className);
-    });
+    const update = this.chart.selectAll('.mark')
+      .data([[this.xValue, this.yValue]]);
 
-    if (this.xValue && this.yValue) {
-      const update = this.chart.selectAll('.mark')
-        .data([[this.xValue, this.yValue]]);
+    // remove exiting bars
+    update.exit().remove();
 
-      // remove exiting point
-      update.exit().remove();
+    // update existing bars
+    this.chart.selectAll('.mark').transition()
+      .attr({
+        cx: (d) => this.xScale(d[0]),
+        cy: (d) => this.yScale(d[1])
+      });
 
-      // update existing point
-      this.chart.selectAll('.mark').transition()
-        .attr({
-          cx: (d) => this.xScale(d[0]),
-          cy: (d) => this.yScale(d[1])
-        });
-
-      // add new pint
-      update
-        .enter()
-        .append('circle')
-        .attr({
-          'class': 'mark',
-          cx: (d) => this.xScale(d[0]),
-          cy: (d) => this.yScale(d[1]),
-          r: 3,
-          fill: 'red',
-          stroke: 'black'
-        });
-    }
+    // add new bars
+    update
+      .enter()
+      .append('circle')
+      .attr('class', 'mark')
+      .attr('cx', (d) => this.xScale(d[0]))
+      .attr('cy', (d) => this.yScale(d[1]))
+      .attr('r', 3)
+      .attr('fill', 'red')
+      .attr('stroke', 'black');
   }
 
   styleGridlineNodes(axisNodes) {
     axisNodes.selectAll('.domain')
-      .attr({
-        fill: 'none',
-        stroke: 'none'
-      });
+      .attr('fill', 'none')
+      .attr('stroke', 'none');
     axisNodes.selectAll('.tick line')
-      .attr({
-        fill: 'none',
-        'stroke-width': 1,
-        stroke: 'lightgray'
-      });
+      .attr('fill', 'none')
+      .attr('stroke-width', 1)
+      .attr('stroke', 'lightgray');
   }
 
   getLine(terms: LineTerms, x: number) {

@@ -1,18 +1,26 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
-  ViewChild
+  ChangeDetectionStrategy, Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { nvD3 } from '../../../ng2-nvd3/ng2-nvd3.component';
 
 @Component({
   selector: 'laji-pie-chart',
-  template: '<nvd3 *ngIf="innerVisibility" [options]="options" [data]="data"></nvd3>',
+  template: `
+  <ngx-charts-pie-chart
+    [view]="[500, height]"
+    (select)="select($event)"
+    [legendTitle]="''"
+    [results]="data"
+    [labels]="false"
+    [legend]="true"
+    [labels]="true"
+    [doughnut]="false"
+    [gradient]="false">
+    </ngx-charts-pie-chart>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PieChartComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild(nvD3)
-  public nvD3: nvD3;
-  @Input() data: {label: string, value: number}[];
+export class PieChartComponent {
+  @Input() data: {name: string, value: number}[];
   @Input() height = 100;
   @Input() showLegend = false;
   @Input() visible = false;
@@ -20,72 +28,15 @@ export class PieChartComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output() sectionSelect = new EventEmitter();
 
-  public innerVisibility = true;
   public options: any;
 
-  constructor(
-    private cd: ChangeDetectorRef
-  ) {
-  }
-
-  ngOnInit() {
-    this.refreshOptions();
-  }
-
-  ngOnChanges(changes) {
-    if (changes.visible) {
-      setTimeout(() => {
-        this.innerVisibility = changes.visible.currentValue;
-        if (!this.innerVisibility) {
-          this.nvD3.clearElement();
-        }
-        this.cd.markForCheck();
-      }, 100);
-    } else {
-      this.refreshOptions();
+  select(event) {
+    if (event && event.name && Array.isArray(this.data)) {
+      const idx = this.data.findIndex((item) => item.name === event.name);
+      if (idx > -1) {
+        this.sectionSelect.emit(this.data[idx]);
+      }
     }
-  }
-
-  ngOnDestroy() {
-    try {
-      if (this.nvD3) {
-        this.nvD3.clearElement();
-      }
-    } catch (e) {}
-  }
-
-  public refreshOptions() {
-    this.options = {
-      chart: {
-        callback: (chart) => {
-          chart.pie.dispatch.on('elementClick', (e) => {
-            this.sectionSelect.emit(e.data || {});
-          });
-        },
-        type: 'pieChart',
-        height: this.height,
-        margin: {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        },
-        legendPosition: this.legendPosition,
-        valueFormat: function (d) {
-          return d3.format(',.0f')(d).replace(/,/g, ' ');
-        },
-        x: function (d) {
-          return d.label;
-        },
-        y: function (d) {
-          return d.value;
-        },
-        showLegend: this.showLegend,
-        showValues: true,
-        showLabels: false,
-        duration: 500,
-      }
-    };
   }
 
 }
