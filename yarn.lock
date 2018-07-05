@@ -2486,7 +2486,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@^15.5.3, create-react-class@^15.6.0:
+create-react-class@^15.5.3:
   version "15.6.3"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
   dependencies:
@@ -2973,7 +2973,7 @@ dom-helpers@^2.2.4:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-2.4.0.tgz#9bb4b245f637367b1fa670274272aa28fe06c367"
 
-dom-helpers@^3.2.0, dom-helpers@^3.2.1:
+dom-helpers@^3.2.0, dom-helpers@^3.2.1, dom-helpers@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.3.1.tgz#fc1a4e15ffdf60ddde03a480a9c0fece821dd4a6"
 
@@ -5369,25 +5369,23 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-laji-form@^0.0.467:
-  version "0.0.467"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.467.tgz#b50d625166b3cf35fc099ea71556a5316ae37c9d"
+laji-form@^0.0.469:
+  version "0.0.469"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.469.tgz#b0987df1d763a16ed352687c127c811cce3937e4"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.380"
-    laji-validate "0.0.65"
+    laji-map "^1.0.381"
+    laji-validate "0.0.66"
     moment "*"
     prop-types "^15.5.8"
-    react "^15.5.0"
     react-addons-css-transition-group "*"
     react-addons-shallow-compare "*"
     react-autosuggest "^9.3.2"
-    react-bootstrap "^0.31.0"
+    react-bootstrap "^0.32.1"
     react-bootstrap-switch "^15.0.4"
-    react-dom "^15.5.0"
     react-dropzone "^3.12.3"
     react-inlinesvg "^0.6.0"
     react-jsonschema-form "git+https://git@github.com/olzraiti/react-jsonschema-form.git#453552e958aa42bea1daaac8ba14e177c7825494"
@@ -5396,9 +5394,9 @@ laji-form@^0.0.467:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@^1.0.380:
-  version "1.0.380"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.380.tgz#48e9e74988cdd93136e21c5e15f0e90ecf14fc7c"
+laji-map@^1.0.381:
+  version "1.0.381"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.381.tgz#dd5a88bbbca6151329b0d4d5590c0acd8d3f408c"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     babel-runtime "6.18.0"
@@ -5413,12 +5411,13 @@ laji-map@^1.0.380:
     proj4 "2.3.16"
     proj4leaflet "1.0.2"
 
-laji-validate@0.0.65:
-  version "0.0.65"
-  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.65.tgz#25ebc035a4f724f0dc23be889294674b258da7c8"
+laji-validate@0.0.66:
+  version "0.0.66"
+  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.66.tgz#5bbb16f548e88937f8ecb556fdc1e48eed3f572d"
   dependencies:
     "@mapbox/geojson-area" "^0.2.2"
     geojson-bounds "^1.0.1"
+    laji-map "^1.0.381"
     moment "*"
     validate.js "github:vixriihi/validate.js#dev"
 
@@ -5725,7 +5724,7 @@ longest@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
 
-loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0, loose-envify@^1.3.1:
+loose-envify@^1.0.0, loose-envify@^1.2.0, loose-envify@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.3.1.tgz#d1a8ad33fa9ce0e713d65fdd0ac8b748d478c848"
   dependencies:
@@ -7084,7 +7083,7 @@ prop-types-extra@^1.0.1:
     react-is "^16.3.2"
     warning "^3.0.0"
 
-prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8:
+prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
   dependencies:
@@ -7321,9 +7320,9 @@ react-bootstrap-switch@^15.0.4:
   version "15.5.3"
   resolved "https://registry.yarnpkg.com/react-bootstrap-switch/-/react-bootstrap-switch-15.5.3.tgz#97287791d4ec0d1892d142542e7e5248002b1251"
 
-react-bootstrap@^0.31.0:
-  version "0.31.5"
-  resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-0.31.5.tgz#57040fa8b1274e1e074803c21a1b895fdabea05a"
+react-bootstrap@^0.32.1:
+  version "0.32.1"
+  resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-0.32.1.tgz#60624c1b48a39d773ef6cce6421a4f33ecc166bb"
   dependencies:
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
@@ -7332,18 +7331,11 @@ react-bootstrap@^0.31.0:
     keycode "^2.1.2"
     prop-types "^15.5.10"
     prop-types-extra "^1.0.1"
-    react-overlays "^0.7.4"
+    react-overlays "^0.8.0"
+    react-prop-types "^0.4.0"
+    react-transition-group "^2.0.0"
     uncontrollable "^4.1.0"
     warning "^3.0.0"
-
-react-dom@^15.5.0:
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.2.tgz#41cfadf693b757faf2708443a1d1fd5a02bef730"
-  dependencies:
-    fbjs "^0.8.9"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
 
 react-dropzone@^3.12.3:
   version "3.13.4"
@@ -7372,14 +7364,25 @@ react-is@^16.3.2:
     prop-types "^15.5.8"
     setimmediate "^1.0.5"
 
-react-overlays@^0.7.4:
-  version "0.7.4"
-  resolved "https://registry.yarnpkg.com/react-overlays/-/react-overlays-0.7.4.tgz#ef2ec652c3444ab8aa014262b18f662068e56d5c"
+react-lifecycles-compat@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+
+react-overlays@^0.8.0:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/react-overlays/-/react-overlays-0.8.3.tgz#fad65eea5b24301cca192a169f5dddb0b20d3ac5"
   dependencies:
     classnames "^2.2.5"
     dom-helpers "^3.2.1"
     prop-types "^15.5.10"
     prop-types-extra "^1.0.1"
+    react-transition-group "^2.2.0"
+    warning "^3.0.0"
+
+react-prop-types@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-prop-types/-/react-prop-types-0.4.0.tgz#f99b0bfb4006929c9af2051e7c1414a5c75b93d0"
+  dependencies:
     warning "^3.0.0"
 
 react-sortable-hoc@^0.6.3:
@@ -7411,6 +7414,15 @@ react-transition-group@^1.1.1, react-transition-group@^1.2.0:
     prop-types "^15.5.6"
     warning "^3.0.0"
 
+react-transition-group@^2.0.0, react-transition-group@^2.2.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.4.0.tgz#1d9391fabfd82e016f26fabd1eec329dbd922b5a"
+  dependencies:
+    dom-helpers "^3.3.1"
+    loose-envify "^1.3.1"
+    prop-types "^15.6.2"
+    react-lifecycles-compat "^3.0.4"
+
 react-widgets@^3.4.8:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/react-widgets/-/react-widgets-3.5.0.tgz#e8285ff966e50d5999a1160f42d7253084f285db"
@@ -7427,16 +7439,6 @@ react-widgets@^3.4.8:
   optionalDependencies:
     deconstruct-number-format "0.0.1"
     format-number-with-string "0.0.2"
-
-react@^15.5.0:
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
-  dependencies:
-    create-react-class "^15.6.0"
-    fbjs "^0.8.9"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.0"
-    prop-types "^15.5.10"
 
 read-cache@^1.0.0:
   version "1.0.0"
