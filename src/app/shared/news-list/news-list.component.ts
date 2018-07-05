@@ -54,20 +54,10 @@ export class NewsListComponent implements OnInit, OnDestroy {
   }
 
   private initNews() {
-    if (this.subNews) {
-      this.subNews.unsubscribe();
-    }
-    this.subNews = this.newsService
-      .getPage(this.translate.currentLang, this.currentPage, this.pageSize)
-      .subscribe(
-        news => {
-          this.news = news;
-          this.cd.markForCheck();
-        },
-        err => {
-          this.logger.warn('Failed to fetch news', err);
-          this.cd.markForCheck();
-        }
-      );
+    this.newsService.getPage(this.translate.currentLang, this.currentPage, this.pageSize)
+      .subscribe(data => {
+        this.news = data;
+        this.cd.markForCheck();
+      });
   }
 }

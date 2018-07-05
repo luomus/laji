@@ -60,9 +60,7 @@ export class UserService extends LocalDb {
               private localizeRouterService: LocalizeRouterService,
               @Inject(WINDOW) private window: Window) {
     super('settings');
-    console.log('USER SERVICE');
     if (this.token) {
-      console.log('HAS TOKEN');
       this.loadUserInfo(this.token);
       this.isLoggedIn = true;
     }
@@ -72,7 +70,6 @@ export class UserService extends LocalDb {
     if (this.token === userToken) {
       return;
     }
-    console.log('LOGIN');
     if (this.subUser) {
       this.subUser.unsubscribe();
     }
@@ -86,7 +83,6 @@ export class UserService extends LocalDb {
     if (this.token === '' || this.subLogout) {
       return;
     }
-    console.log('LOGOUT');
     this.subLogout = this.lajiApi.remove(LajiApi.Endpoints.personToken, this.token)
       .catch(err => {
         if (err.status === 404) {

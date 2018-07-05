@@ -1,33 +1,35 @@
 <div class="news-wrapper">
   <h3>{{ 'home.news-list.current' | translate }}</h3>
-  <div *ngFor="let item of news?.results" class="media">
-    <div class="media-body">
-      <div *ngIf="item.external">
-        <a href="{{item.externalURL}}" target="_blank">
-          <h4 class="media-heading">{{item.title}} <i class="glyphicon glyphicon-new-window small"></i></h4>
+  <ng-container *ngIf="news">
+    <div *ngFor="let item of news.results" class="media">
+      <div class="media-body">
+        <div *ngIf="item.external">
+          <a href="{{item.externalURL}}" target="_blank">
+            <h4 class="media-heading">{{item.title}} <i class="glyphicon glyphicon-new-window small"></i></h4>
+          </a>
+        </div>
+        <div *ngIf="!item.external">
+          <a [routerLink]="['/news/' + item.id | localize]">
+            <h4 class="media-heading">{{item.title}}</h4>
+          </a>
+        </div>
+        <div>
+          <span class="label label-default">{{item.tag | translate}}</span>
+          <span class="pull-right">{{ item.posted | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY' }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6" *ngIf="news.nextPage">
+        <a (click)="gotoPage(news.nextPage)" class="link">
+          <h5><i class="glyphicon glyphicon-arrow-left"></i> {{ 'news.earlier' | translate }}</h5>
         </a>
       </div>
-      <div *ngIf="!item.external">
-        <a [routerLink]="['/news/' + item.id | localize]">
-          <h4 class="media-heading">{{item.title}}</h4>
+      <div class="col-xs-6" *ngIf="news.prevPage" style="text-align: right">
+        <a (click)="gotoPage(news.prevPage)" class="link">
+          <h5>{{ 'news.newer' | translate }} <i class="glyphicon glyphicon-arrow-right"></i></h5>
         </a>
       </div>
-      <div>
-        <span class="label label-default">{{item.tag | translate}}</span>
-        <span class="pull-right">{{ item.posted | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY' }}</span>
-      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-6" *ngIf="news?.nextPage">
-      <a (click)="gotoPage(news.nextPage)" class="link">
-        <h5><i class="glyphicon glyphicon-arrow-left"></i> {{ 'news.earlier' | translate }}</h5>
-      </a>
-    </div>
-    <div class="col-xs-6" *ngIf="news?.prevPage" style="text-align: right">
-      <a (click)="gotoPage(news.prevPage)" class="link">
-        <h5>{{ 'news.newer' | translate }} <i class="glyphicon glyphicon-arrow-right"></i></h5>
-      </a>
-    </div>
-  </div>
+  </ng-container>
 </div>

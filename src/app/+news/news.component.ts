@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { NewsService } from '../shared/service/news.service';
 import { Logger } from '../shared/logger/logger.service';
 import { News } from '../shared/model/News';
+import { map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-news',
@@ -23,18 +24,19 @@ export class NewsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subTrans = this.route.params.subscribe(params => {
-      this.newsService.get(params['id']).subscribe(
-        newsItem => {
-          this.newsItem = newsItem;
-          this.cd.markForCheck();
-        },
-        err => {
-          this.logger.warn('Failed to fetch news by id', err);
-          this.cd.markForCheck();
-        }
-      );
-    });
+    this.subTrans = this.route.params.pipe(
+      map(params => params['id']),
+      switchMap(id => this.newsService.get(id))
+    ).subscribe(
+      newsItem => {
+        this.newsItem = newsItem;
+        this.cd.markForCheck();
+      },
+      err => {
+        this.logger.warn('Failed to fetch news by id', err);
+        this.cd.markForCheck();
+      }
+    );
   }
 
   ngOnDestroy() {

@@ -65,6 +65,7 @@ const routesWithLang: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routesWithLang, {enableTracing: false, preloadingStrategy: PreloadSelectedModulesList})],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [PreloadSelectedModulesList]
 })
 export class AppRoutingModule { }
