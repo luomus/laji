@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit,
   ViewChild
 } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
@@ -8,7 +8,6 @@ import { Observable ,  Subject ,  Subscription, of as ObservableOf } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
 import { LocalStorage } from 'ng2-webstorage';
-import { WindowRef } from '../../shared/windows-ref';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { AreaType } from '../../shared/service/area.service';
 import { UserService } from '../../shared/service/user.service';
@@ -18,6 +17,7 @@ import { environment } from '../../../environments/environment';
 import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
 import { CoordinateService } from '../../shared/service/coordinate.service';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
+import { WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'laji-observation-form',
@@ -63,7 +63,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   private delayedSearch = this.delayedSearchSource.asObservable();
   private subSearch: Subscription;
 
-  constructor(public searchQuery: SearchQuery,
+  constructor(@Inject(WINDOW) private window: Window,
+              public searchQuery: SearchQuery,
               public translate: TranslateService,
               private route: Router,
               private cd: ChangeDetectorRef,
@@ -71,8 +72,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
               private lajiApi: LajiApiService,
               private formService: FormService,
               private formPermissionService: FormPermissionService,
-              private coordinateService: CoordinateService,
-              private winRef: WindowRef) {
+              private coordinateService: CoordinateService) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.formQuery.taxon);
     })
@@ -376,7 +376,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   toInvasiveControlForm() {
     this.formService.populate({
-      URL: this.winRef.nativeWindow.document.location.href,
+      URL: this.window.document.location.href,
       gatherings: [
         {
           geometry: this.coordinateService.convertLajiEtlCoordinatesToGeometry(this.searchQuery.query.coordinates)

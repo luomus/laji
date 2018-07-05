@@ -3,7 +3,6 @@ import { Component, OnInit , Inject} from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import { WindowRef } from '../../shared/windows-ref';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -14,8 +13,7 @@ export class UserLogoutComponent implements OnInit {
   constructor(@Inject(WINDOW) private window: Window,
     private userService: UserService,
     private router: Router,
-    private localizeRouterService: LocalizeRouterService,
-    private windowRef: WindowRef
+    private localizeRouterService: LocalizeRouterService
   ) {
   }
 
@@ -24,7 +22,7 @@ export class UserLogoutComponent implements OnInit {
       this.userService.logout();
     }
     if (environment.forceLogin) {
-      this.windowRef.nativeWindow.location = UserService.getLoginUrl();
+      this.window.location.href = UserService.getLoginUrl();
     } else {
       this.router.navigate(this.localizeRouterService.translateRoute(['/']), {queryParams: {}});
     }

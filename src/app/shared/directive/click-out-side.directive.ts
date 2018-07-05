@@ -1,9 +1,9 @@
 
 import {fromEvent as observableFromEvent,  Subscription ,  Observable } from 'rxjs';
 import {
-  Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output
+  Directive, ElementRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
-import { WindowRef } from '../windows-ref';
+import { WINDOW } from '@ng-toolkit/universal';
 
 @Directive({
   selector: '[lajiClickOutSide]'
@@ -17,13 +17,13 @@ export class ClickOutSideDirective implements OnInit, OnDestroy {
   @Output() lajiClickOutSide = new EventEmitter<MouseEvent>();
 
   constructor(
-    private _elementRef: ElementRef,
-    private _windowRef: WindowRef
+    @Inject(WINDOW) private window: Window,
+    private _elementRef: ElementRef
   ) { }
 
   ngOnInit() {
     this.init = false;
-    this.sub = observableFromEvent(this._windowRef.nativeWindow.document, 'click').subscribe((e: MouseEvent) => {
+    this.sub = observableFromEvent(this.window.document, 'click').subscribe((e: MouseEvent) => {
       if (!this.init || !this.clickOutSideActive) {
         this.init = true;
         return;

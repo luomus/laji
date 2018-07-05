@@ -13,7 +13,6 @@ import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
 import { UserService } from '../../../../shared/service/user.service';
 import { NamedPlacesService } from '../../named-places.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
-import { WindowRef } from '../../../../shared/windows-ref';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 
 @Component({
@@ -40,7 +39,6 @@ export class NpEditFormComponent {
   constructor(@Inject(WINDOW) private window: Window,
     private  userService: UserService,
     private namedPlaceService: NamedPlacesService,
-    private winRef: WindowRef,
     private translate: TranslateService,
     private toastsService: ToastsService
   ) { }
@@ -115,7 +113,7 @@ export class NpEditFormComponent {
       (confirm) => {
         if (!this.hasChanges) {
           this.onEditReady.emit();
-        } else if (this.winRef.nativeWindow.confirm(confirm)) {
+        } else if (this.window.confirm(confirm)) {
           this.onEditReady.emit();
         }
       }

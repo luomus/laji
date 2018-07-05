@@ -2,14 +2,12 @@ import { WINDOW } from '@ng-toolkit/universal';
 import { Component, ViewContainerRef , Inject} from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { WindowRef } from './shared/windows-ref';
 import { environment } from '../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { LocalizeRouterService } from './locale/localize-router.service';
-import {ToastrService} from 'ngx-toastr';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 
 declare const ga: Function;
 
