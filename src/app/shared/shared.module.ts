@@ -50,7 +50,9 @@ import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
 import { DatePickerComponent } from './datepicker/datepicker.component'
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { FactNotInPipe } from './pipe/fact-not-in.pipe';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ServerOnlyDirective } from './directive/server-only.directive';
+import { BrowserOnlyDirective } from './directive/browser-only.directive';
 
 
 @NgModule({
@@ -64,7 +66,7 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
     PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
     AuthoritiesDirective, ImageComponent, NlToBrPipe,
     NotificationComponent, HideScrollDirective, LoggedInDirective, FixedBelowDirective, ClickOutSideDirective,
-    ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DatePickerComponent,
+    ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DatePickerComponent, ServerOnlyDirective, BrowserOnlyDirective,
     TaxonNameComponent,
     FactNotInPipe,
   ],
@@ -88,7 +90,7 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
     ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule, ProgressbarModule,
     FormattedNumber, ObservationCountComponent, GalleryComponent,
     PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
-    AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective,
+    AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, ServerOnlyDirective, BrowserOnlyDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent,
     FactNotInPipe

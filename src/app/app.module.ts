@@ -22,7 +22,7 @@ import {
   ProgressbarModule,
   PopoverModule,
   TooltipModule,
-  TypeaheadModule
+  TypeaheadModule, CarouselModule
 } from 'ngx-bootstrap';
 import { Ng2Webstorage } from 'ng2-webstorage';
 import { ViewerModule } from './+viewer/viewer.module';
@@ -63,6 +63,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
         useClass: TranslateFileLoader
       }
     }),
+    CarouselModule.forRoot(),
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
     PaginationModule.forRoot(),

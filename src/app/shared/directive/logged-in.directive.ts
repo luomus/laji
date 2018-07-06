@@ -25,7 +25,9 @@ export class LoggedInDirective implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.userActions.unsubscribe();
+    if (this.userActions) {
+      this.userActions.unsubscribe();
+    }
   }
 
   private checkLogin() {
