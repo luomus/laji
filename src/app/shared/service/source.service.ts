@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable,  Observer, of as ObservableOf } from 'rxjs';
 import { LajiApi, LajiApiService } from './laji-api.service';
+import { map, share, tap } from 'rxjs/operators';
 
 
 @Injectable({providedIn: 'root'})
@@ -32,23 +33,24 @@ export class SourceService {
         });
       }
     }
-    this.pending = this.lajiApi
-      .getList(LajiApi.Endpoints.sources, {lang, page: 1, pageSize: 1000})
-      .map(paged => paged.results)
-      .map(sources => {
+    this.pending = this.lajiApi.getList(LajiApi.Endpoints.sources, {lang, page: 1, pageSize: 1000}).pipe(
+      map(paged => paged.results),
+      map(sources => {
         const lkObject = {};
         sources.map(source => { lkObject[source['id']] = source['name']; });
         return lkObject;
-      })
-      .do(locations => { this.sources = locations; })
-      .share();
+      }),
+      tap(locations => { this.sources = locations; }),
+      share()
+    );
     this.currentLang = lang;
 
     return this.pending;
   }
 
   getName(id: string, lang) {
-    return this.getAllAsLookUp(lang)
-      .map(data => data[id] || id );
+    return this.getAllAsLookUp(lang).pipe(
+      map(data => data[id] || id )
+    );
   }
 }

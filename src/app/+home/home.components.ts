@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {environment} from '../../environments/environment.vir';
 import {WarehouseQueryInterface} from '../shared/model/WarehouseQueryInterface';
 import {SourceService} from '../shared/service/source.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-home',
@@ -31,8 +32,9 @@ export class HomeComponent implements OnInit {
     const start = moment();
     start.subtract(1, 'd');
     this.mapStartDate = start.format('YYYY-MM-DD');
-    this.sourceService.getAllAsLookUp()
-      .map(sources => Object.keys(sources).filter((source) => source !== environment.sources.kotka))
+    this.sourceService.getAllAsLookUp().pipe(
+      map(sources => Object.keys(sources).filter((source) => source !== environment.sources.kotka))
+    )
       .subscribe(sources => {
         this.query = {
           sourceId: sources,
