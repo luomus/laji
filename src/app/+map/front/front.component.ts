@@ -144,7 +144,6 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onCreate(e) {
-    console.log(this.lajiMap.map)
     this.router.navigate([], {
       queryParams: {coordinates: geoJSONToISO6709(this.lajiMap.map.getDraw().featureCollection.features)},
       relativeTo: this.route

@@ -1,6 +1,6 @@
 <div class="news-wrapper">
   <h3>{{ 'home.news-list.current' | translate }}</h3>
-  <ng-container *ngIf="news">
+  <ng-container *ngIf="news$ | async; let news">
     <div *ngFor="let item of news.results" class="media">
       <div class="media-body">
         <div *ngIf="item.external">

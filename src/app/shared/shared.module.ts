@@ -50,7 +50,7 @@ import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
 import { DatePickerComponent } from './datepicker/datepicker.component'
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { FactNotInPipe } from './pipe/fact-not-in.pipe';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
 
 
 @NgModule({
@@ -71,7 +71,6 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
   imports: [
     FormsModule,
     CommonModule,
-    HttpClientModule,
     RouterModule,
     LangModule,
     TranslateModule,
@@ -83,7 +82,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
   ],
   providers: [ ], // keep this empty!
   exports: [
-    CommonModule, HttpClientModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent,
+    CommonModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent,
     AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
     ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe,
     ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule, ProgressbarModule,

@@ -1,7 +1,7 @@
 <footer *ngIf="footerService.footerVisible">
   <div class="container-fluid info-footer" *lajiAuthorities="false">
     <div class="row">
-      <div *ngFor="let item of tree; let i=index" class="{{columns[i] || ''}}">
+      <div *ngFor="let item of tree$ | async; let i=index" class="{{columns[i] || ''}}">
         <h3><a [routerLink]="'/about/' + item.id | localize">{{item.title}}</a></h3>
         <p *ngIf="i === 0"><strong>{{'footer.intro1' | translate}}</strong></p>
         <ul *ngIf="item.children">

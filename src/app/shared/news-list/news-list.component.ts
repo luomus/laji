@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { News } from '../model/News';
 import { PagedResult } from '../model/PagedResult';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { NewsService } from '../service/news.service';
 import { Logger } from '../logger/logger.service';
+import { NewsStore } from '../../+news/news.store';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-news-list',
@@ -13,7 +15,7 @@ import { Logger } from '../logger/logger.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewsListComponent implements OnInit, OnDestroy {
-  public news: PagedResult<News>;
+  public news$: Observable<PagedResult<News>>;
 
   private pageSize = 5;
   private currentPage = 1;
@@ -25,11 +27,15 @@ export class NewsListComponent implements OnInit, OnDestroy {
     private newsService: NewsService,
     private translate: TranslateService,
     private logger: Logger,
-    private cd: ChangeDetectorRef
+    private store: NewsStore
   ) {
   }
 
   ngOnInit() {
+    this.news$ = this.store.state$.pipe(
+      map(state => state.list),
+      distinctUntilChanged()
+    );
     this.subLang = this.translate.onLangChange.subscribe(
       () => {
         this.currentPage = 1;
@@ -54,10 +60,11 @@ export class NewsListComponent implements OnInit, OnDestroy {
   }
 
   private initNews() {
+    const list = [this.translate.currentLang, this.currentPage, this.pageSize].join('_');
+    if (this.store.state.currentList === list) {
+      return;
+    }
     this.newsService.getPage(this.translate.currentLang, this.currentPage, this.pageSize)
-      .subscribe(data => {
-        this.news = data;
-        this.cd.markForCheck();
-      });
+      .subscribe(data => this.store.setList(list, data));
   }
 }

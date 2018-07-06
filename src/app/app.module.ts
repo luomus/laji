@@ -34,6 +34,7 @@ import { LocalizeRouterService } from './locale/localize-router.service';
 import { environment } from '../environments/environment';
 import { DocumentService } from './shared-modules/own-submissions/service/document.service';
 import { ToastrModule } from 'ngx-toastr';
+import { HttpClientModule } from '@angular/common/http';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -54,6 +55,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   ],
   imports: [
     CommonModule,
+    HttpClientModule,
     WindowModule,
     TranslateModule.forRoot({
       loader: {

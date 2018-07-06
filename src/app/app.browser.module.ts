@@ -12,7 +12,7 @@ import { TransferHttpCacheModule } from '@nguniversal/common';
     BrowserAnimationsModule,
     BrowserTransferStateModule,
     // There is a bug that prevent's sending request on browser when only query parameter changes
-    // TransferHttpCacheModule,,
+    // TransferHttpCacheModule,
     AppModule,
 
   ]
