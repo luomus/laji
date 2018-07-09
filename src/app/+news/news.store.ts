@@ -1,7 +1,6 @@
 import { News } from '../shared/model/News';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Store } from '../store/store';
-import { TransferState } from '@angular/platform-browser';
 import { PagedResult } from '../shared/model/PagedResult';
 
 export class NewsState {
@@ -12,8 +11,8 @@ export class NewsState {
 
 @Injectable({providedIn: 'root'})
 export class NewsStore extends Store<NewsState> {
-  constructor (transferState: TransferState, @Inject(PLATFORM_ID) platformId: Object) {
-    super('news', new NewsState(), transferState, platformId);
+  constructor () {
+    super('news', new NewsState());
   }
 
   setCurrent(news: News) {

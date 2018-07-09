@@ -1,5 +1,4 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
+import { Injectable } from '@angular/core';
 import { Information } from '../model/Information';
 import { Store } from '../../store/store';
 
@@ -10,8 +9,8 @@ export class GlobalState {
 
 @Injectable({providedIn: 'root'})
 export class GlobalStore extends Store<GlobalState> {
-  constructor (transferState: TransferState, @Inject(PLATFORM_ID) platformId: Object) {
-    super('global', new GlobalState(), transferState, platformId);
+  constructor () {
+    super('global', new GlobalState());
   }
 
   setCurrentLang(lang: string) {

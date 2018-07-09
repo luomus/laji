@@ -6,6 +6,7 @@ import { LangModule } from '../lang/lang.module';
 import { SpinnerModule } from '../spinner/spinner.module';
 import { SharedModule } from '../../shared/shared.module';
 import { PublicationPipe } from './pipe/publication.pipe';
+import { DataTableFooterComponent } from './data-table-footer/data-table-footer.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,7 @@ import { PublicationPipe } from './pipe/publication.pipe';
     SpinnerModule,
     SharedModule
   ],
-  declarations: [DatatableComponent, PublicationPipe],
+  declarations: [DatatableComponent, PublicationPipe, DataTableFooterComponent],
   exports: [DatatableComponent]
 })
 export class DatatableModule { }

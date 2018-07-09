@@ -14,15 +14,9 @@ export class WarehouseValueMappingService implements OnInit {
   constructor(private warehouseService: WarehouseApi) { };
 
   ngOnInit() {
-    this.pending = this.warehouseService.warehouseEnumerationLabels().pipe(
-      timeout(WarehouseApi.longTimeout),
-      retryWhen(errors => errors.pipe(
-        delay(1000),
-        take(3)
-      )),
-      map(data => this.parseResult(data)),
-      share()
-    );
+    if (!this.pending) {
+      this.pending = this.fetchLabels();
+    }
   }
 
   public getOriginalKey(value): Observable<string> {
@@ -34,7 +28,10 @@ export class WarehouseValueMappingService implements OnInit {
   }
 
   public get(value, list): Observable<string> {
-    if (!this[list] && this.pending) {
+    if (!this[list]) {
+      if (!this.pending) {
+        this.pending = this.fetchLabels();
+      }
       return Observable.create((observer: Observer<string>) => {
         const onComplete = (res: string) => {
           observer.next(res);
@@ -59,5 +56,17 @@ export class WarehouseValueMappingService implements OnInit {
       this.mapping[key] = value;
       this.reverse[value] = key;
     });
+  }
+
+  private fetchLabels() {
+    return this.warehouseService.warehouseEnumerationLabels().pipe(
+      timeout(WarehouseApi.longTimeout),
+      retryWhen(errors => errors.pipe(
+        delay(1000),
+        take(3)
+      )),
+      map(data => this.parseResult(data)),
+      share()
+    );
   }
 }

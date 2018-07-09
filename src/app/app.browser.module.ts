@@ -8,7 +8,6 @@ import { TransferHttpCacheModule } from '@nguniversal/common';
 @NgModule({
   bootstrap: [AppComponent],
   imports: [
-    BrowserModule.withServerTransition({appId: 'laji-app'}),
     BrowserAnimationsModule,
     BrowserTransferStateModule,
     // There is a bug that prevent's sending request on browser when only query parameter changes

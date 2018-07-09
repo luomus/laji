@@ -41,7 +41,9 @@ export class TriplestoreLabelService implements OnInit {
   ) { };
 
   ngOnInit() {
-    this.getAllLabels();
+    if (!this.pending) {
+      this.pending = this.getAllLabels();
+    }
   }
 
   public get(key, lang): Observable<string> {
@@ -108,8 +110,11 @@ export class TriplestoreLabelService implements OnInit {
     }
 
     if (this.labels) {
-      return ObservableOf(MultiLangService.getValue(this.labels[key], lang));
-    } else if (this.pending) {
+      return ObservableOf(MultiLangService.getValue(this.labels[key] || '', lang));
+    } else {
+      if (!this.pending) {
+        this.pending = this.getAllLabels();
+      }
       return Observable.create((observer: Observer<string>) => {
         this.pending.subscribe(
           (labels) => {
@@ -119,8 +124,6 @@ export class TriplestoreLabelService implements OnInit {
           () => observer.complete()
         );
       });
-    } else {
-      return ObservableOf(MultiLangService.getValue(this.labels[key], lang));
     }
   }
 
@@ -178,7 +181,7 @@ export class TriplestoreLabelService implements OnInit {
       )
     );
 
-    this.pending = fromApi$.pipe(
+    return fromApi$.pipe(
       map(data => this.parseResult(data)),
       share()
     );

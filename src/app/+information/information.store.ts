@@ -1,5 +1,4 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { TransferState } from '@angular/platform-browser';
+import { Injectable } from '@angular/core';
 import { Store } from '../store/store';
 import { Information } from '../shared/model/Information';
 
@@ -9,8 +8,8 @@ export class InformationState {
 
 @Injectable()
 export class InformationStore extends Store<InformationState> {
-  constructor (transferState: TransferState, @Inject(PLATFORM_ID) platformId: Object) {
-    super('information', new InformationState(), transferState, platformId);
+  constructor () {
+    super('information', new InformationState());
   }
 
   setInformation(information: Information) {

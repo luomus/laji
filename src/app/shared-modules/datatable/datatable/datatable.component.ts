@@ -74,6 +74,7 @@ export class DatatableComponent {
   annotationClass = Annotation.AnnotationClassEnum;
 
   _rows: any[];
+  _page: number;
   _count: number;
   _offset: number;
   _columns: DatatableColumn[];
@@ -92,6 +93,7 @@ export class DatatableComponent {
   }
 
   @Input() set page(page: number) {
+    this._page = page;
     this._offset = page - 1;
   };
 
