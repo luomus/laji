@@ -1,20 +1,20 @@
 
 import {throwError as observableThrowError,  Observer ,  Observable ,  Subscription ,  Subject, of as ObservableOf } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Response } from '@angular/http';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
 import { LocalStorage } from 'ng2-webstorage';
 import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
-import { WindowRef } from '../windows-ref';
 import { ToastsService } from './toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { LocalDb } from '../local-db/local-db.abstract';
 import { environment } from '../../../environments/environment';
 import { LajiApi, LajiApiService } from './laji-api.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { WINDOW } from '@ng-toolkit/universal';
 
 export const USER_INFO = '[user]: info';
 export const USER_LOGOUT_ACTION = '[user]: logout';
@@ -58,7 +58,7 @@ export class UserService extends LocalDb {
               private toastsService: ToastsService,
               private translate: TranslateService,
               private localizeRouterService: LocalizeRouterService,
-              private winRef: WindowRef) {
+              @Inject(WINDOW) private window: Window) {
     super('settings');
     if (this.token) {
       this.loadUserInfo(this.token);
@@ -121,8 +121,8 @@ export class UserService extends LocalDb {
   public getUser(id?: string): Observable<Person> {
     if (!id) {
       return this.getCurrentUser()
-        .catch((err: Response | any) => {
-          if (err instanceof Response && err.status !== 404) {
+        .catch((err: HttpErrorResponse | any) => {
+          if (err instanceof HttpErrorResponse && err.status !== 404) {
             this.logger.error('Failed to fetch current users information', err);
           }
           this.logout(false);
@@ -153,7 +153,7 @@ export class UserService extends LocalDb {
 
   public doLogin(returnUrl?: string): void {
     this.returnUrl = returnUrl || this.location.path(true);
-    this.winRef.nativeWindow.location.href = UserService.getLoginUrl(this.returnUrl, this.translate.currentLang);
+    this.window.location.href = UserService.getLoginUrl(this.returnUrl, this.translate.currentLang);
   }
 
   public returnToPageBeforeLogin(): void {

@@ -6,7 +6,6 @@ import { SessionStorage } from 'ng2-webstorage';
 import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
-import { WindowRef } from '../windows-ref';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
 
 @Component({
@@ -34,8 +33,7 @@ export class FeedbackComponent {
     public translate: TranslateService,
     private lajiApi: LajiApiService,
     private toastsService: ToastsService,
-    private location: Location,
-    private windowsRef: WindowRef
+    private location: Location
 ) {
   }
 
@@ -80,7 +78,7 @@ export class FeedbackComponent {
   private getMeta(): string {
     let agent = '';
     try {
-      agent = this.windowsRef.nativeWindow.navigator.userAgent;
+      agent = this.window.navigator.userAgent;
     } catch (e) {
     }
     return this.location.prepareExternalUrl(this.location.path())

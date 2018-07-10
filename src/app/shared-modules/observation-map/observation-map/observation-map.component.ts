@@ -4,11 +4,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
+  EventEmitter, Inject,
   Input,
   OnChanges,
   OnInit,
-  Output, SimpleChanges,
+  Output, PLATFORM_ID, SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
@@ -23,6 +23,7 @@ import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMap } from '../../laji-map/laji-map.interface';
+import { isPlatformServer } from '@angular/common';
 
 @Component({
   selector: 'laji-observation-map',
@@ -124,13 +125,16 @@ export class ObservationMapComponent implements OnInit, OnChanges {
               private decorator: ValueDecoratorService,
               private coordinateService: CoordinateService,
               private logger: Logger,
-              private changeDetector: ChangeDetectorRef
-  ) {
-    this.viewBound = L.latLngBounds;
-    this.activeBounds = L.latLngBounds;
-  }
+              private changeDetector: ChangeDetectorRef,
+              @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   ngOnInit() {
+    if (isPlatformServer(this.platformId)) {
+      return;
+    }
+    this.viewBound = L.latLngBounds;
+    this.activeBounds = L.latLngBounds;
     if (!this.color) {
       this.color = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
     }
@@ -144,6 +148,9 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (isPlatformServer(this.platformId)) {
+      return;
+    }
     this.decorator.lang = this.translate.currentLang;
     // First change is triggered by tile layer change event from the laji-map
     if (changes['query'] && !changes['query'].firstChange) {

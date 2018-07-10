@@ -145,7 +145,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
                     return {
                       id: IdService.getId(item.aggregateBy['unit.linkings.taxon.informalTaxonGroups']),
                       value: item.count,
-                      label: ''
+                      name: ''
                     };
                   })
                   .filter(item => groups.indexOf(item.id) !== -1);
@@ -165,7 +165,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
               return {
                 id: IdService.getId(item.aggregateBy['unit.linkings.taxon.informalTaxonGroups']),
                 value: item.count,
-                label: ''
+                name: ''
               };
             })
             .filter(item => groups.indexOf(item.id) !== -1);
@@ -201,7 +201,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
         return {
           id: value.id,
           value: value.value,
-          label: this.getInformalGroupName(value.id)
+          name: this.getInformalGroupName(value.id)
         };
       });
     this.cd.markForCheck();

@@ -1,24 +1,24 @@
 <div class="container-fluid">
-  <div id="wrapper" class="row">
+  <div id="wrapper" class="row" *ngIf="information$ | async; let information">
     <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
       <ol class="breadcrumb">
-        <li *ngFor="let parent of information?.parents">
+        <li *ngFor="let parent of information.parents">
           <a [routerLink]="['/about/' + parent.id] | localize">
             {{parent.menuTitle}}
           </a>
         </li>
-        <li class="active">{{information?.title}}</li>
+        <li class="active">{{information.title}}</li>
       </ol>
-      <div class="about" [innerHtml]="information?.content"></div>
+      <div class="about" [innerHtml]="information.content"></div>
     </div>
-    <div class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1 more-info" *ngIf="information?.children">
+    <div class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1 more-info" *ngIf="information.children">
       <div class="media">
         <div class="media-body">
           <h4 class="media-heading">
             {{'information.more' | translate }}
           </h4>
           <ul>
-            <li *ngFor="let child of information?.children">
+            <li *ngFor="let child of information.children">
               <a [routerLink]="['/about/' + child.id] | localize">
                 {{child.menuTitle}}
               </a>

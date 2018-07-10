@@ -9,6 +9,7 @@ import { Util } from '../../shared/service/util.service';
 import { TaxonomyImage } from '../../shared/model/Taxonomy';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Logger } from '../../shared/logger/logger.service';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-gallery',
@@ -32,7 +33,7 @@ export class GalleryComponent implements OnChanges {
   @Output() selected = new EventEmitter<boolean>();
   @Output() hasData = new EventEmitter<boolean>();
 
-  images: TaxonomyImage[] = [];
+  images$: Observable<TaxonomyImage[]>;
   page = 1;
   total = 0;
   loading = false;
@@ -64,18 +65,15 @@ export class GalleryComponent implements OnChanges {
     }
     this.loading = true;
     query.hasUnitMedia = true;
-    this.cd.markForCheck();
-    this.warehouseApi.warehouseQueryListGet(query, [
+    this.images$ = this.warehouseApi.warehouseQueryListGet(query, [
         'unit.taxonVerbatim,unit.linkings.taxon.vernacularName,unit.linkings.taxon.scientificName,unit.reportedInformalTaxonGroup',
         'unit.media',
         // 'gathering.media',
         // 'document.media',
         'document.documentId,unit.unitId',
         this.extendedInfo ? '' : ''
-      ], this.sort, this.pageSize, this.page)
-      .timeout(WarehouseApi.longTimeout)
-      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
-      .map((data) => {
+      ], this.sort, this.pageSize, this.page).pipe(
+      map((data) => {
         const images = [];
         this.total = Math.min(data.total, this.limit);
         if (data.results) {
@@ -105,17 +103,15 @@ export class GalleryComponent implements OnChanges {
           });
         }
         return images;
-      })
-      .subscribe((images) => {
-        this.loading = false;
-        this.images = images;
-        this.hasData.emit(images.length > 0);
-        this.cd.markForCheck();
-      }, (err) => {
-        this.loading = false;
-        this.hasData.emit(false);
+      }),
+      catchError(err => {
         this.logger.error('Unable to fetch image from warehouse', err);
-        this.cd.markForCheck();
-      });
+        return [];
+      }),
+      tap(images => {
+        this.loading = false;
+        this.hasData.emit(images.length > 0);
+      })
+    );
   }
 }

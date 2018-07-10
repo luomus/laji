@@ -1,0 +1,10 @@
+<div class="datatable-footer">
+  <div class="datatable-footer-inner">
+    <div class="page-count ng-star-inserted">
+      <span [innerHtml]="_start | formattedNumber:'&nbsp;'"></span> -
+      <span [innerHtml]="_end | formattedNumber:'&nbsp;'"></span> /
+      <span [innerHtml]="_count | formattedNumber:'&nbsp;'"></span>
+    </div>
+    <laji-paginator [page]="_page" [size]="_pageSize" [count]="_count" (change)="onChange($event)"></laji-paginator>
+  </div>
+</div>

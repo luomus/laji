@@ -1,22 +1,23 @@
 
-import {throwError as observableThrowError,  Observable ,  Observer, of as ObservableOf } from 'rxjs';
+import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { WarehouseApi } from '../api/WarehouseApi';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
+import { delay, map, retryWhen, share, take, timeout } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
-export class WarehouseValueMappingService {
+export class WarehouseValueMappingService implements OnInit {
 
   private mapping;
   private reverse;
   private pending: Observable<any>;
 
-  constructor(private warehouseService: WarehouseApi) {
-    this.pending = this.warehouseService.warehouseEnumerationLabels()
-      .timeout(WarehouseApi.longTimeout)
-      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
-      .map(data => this.parseResult(data))
-      .share();
-  };
+  constructor(private warehouseService: WarehouseApi) { };
+
+  ngOnInit() {
+    if (!this.pending) {
+      this.pending = this.fetchLabels();
+    }
+  }
 
   public getOriginalKey(value): Observable<string> {
     return this.get(value, 'mapping');
@@ -27,7 +28,10 @@ export class WarehouseValueMappingService {
   }
 
   public get(value, list): Observable<string> {
-    if (!this[list] && this.pending) {
+    if (!this[list]) {
+      if (!this.pending) {
+        this.pending = this.fetchLabels();
+      }
       return Observable.create((observer: Observer<string>) => {
         const onComplete = (res: string) => {
           observer.next(res);
@@ -52,5 +56,17 @@ export class WarehouseValueMappingService {
       this.mapping[key] = value;
       this.reverse[value] = key;
     });
+  }
+
+  private fetchLabels() {
+    return this.warehouseService.warehouseEnumerationLabels().pipe(
+      timeout(WarehouseApi.longTimeout),
+      retryWhen(errors => errors.pipe(
+        delay(1000),
+        take(3)
+      )),
+      map(data => this.parseResult(data)),
+      share()
+    );
   }
 }

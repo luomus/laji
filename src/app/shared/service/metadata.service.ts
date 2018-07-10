@@ -4,6 +4,7 @@ import { MetadataApi } from '../api/MetadataApi';
 import { CacheService } from './cache.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 import { Util } from './util.service';
+import { delay, filter, map, merge, retryWhen, share, take, tap } from 'rxjs/operators';
 
 
 @Injectable({providedIn: 'root'})
@@ -19,8 +20,9 @@ export class MetadataService {
   }
 
   getClassProperties(className: string) {
-    return this.metadataApi.metadataFindClassProperties(className, 'multi')
-      .map(result => result.results);
+    return this.metadataApi.metadataFindClassProperties(className, 'multi').pipe(
+      map(result => result.results)
+    );
   }
 
   /**
@@ -43,21 +45,26 @@ export class MetadataService {
       });
     }
     this.pendingRanges = this.source
-      .asObservable()
-      .share();
+      .asObservable().pipe(
+        share()
+      );
 
-    this.cacheService.getItem(MetadataService.rangesCacheKey)
-      .merge(this.metadataApi.metadataFindAllRanges('multi')
-        .retryWhen(errors => errors.delay(1000).take(2).concat(ObservableOf(false)))
-        .do(ranges =>  {
+    this.cacheService.getItem(MetadataService.rangesCacheKey).pipe(
+      merge(this.metadataApi.metadataFindAllRanges('multi').pipe(
+        retryWhen(errors => errors.pipe(
+          delay(1000),
+          take(3)
+        )),
+        tap(ranges =>  {
           if (!Util.isEmptyObj(ranges)) {
             this.cacheService.setItem(MetadataService.rangesCacheKey, ranges).subscribe(() => {}, () => {});
           }
         })
-      )
-      .filter(ranges => {
+      )),
+      filter(ranges => {
         return !Util.isEmptyObj(ranges);
       })
+    )
       .subscribe(ranges => {
         this.ranges = ranges;
         this.source.next(ranges);
@@ -74,16 +81,18 @@ export class MetadataService {
    * @returns {Observable<T>}
    */
   getAllRangesAsLookUp(lang: string) {
-    return this.getAllRanges()
-      .map(ranges => Object
+    return this.getAllRanges().pipe(
+      map(ranges => Object
         .keys(ranges || {})
         .reduce((total, key) => {
           ranges[key].map(range => {
             total[range['id']] = MultiLangService.getValue(range['value'], lang, range['id']);
           });
           return total;
-        }, {}))
-      .share();
+        }, {})
+      ),
+      share()
+    );
   }
 
   /**
@@ -92,8 +101,9 @@ export class MetadataService {
    * @param range
    */
   getRange(range: string) {
-    return this.getAllRanges()
-      .map(data => data[range] || [] );
+    return this.getAllRanges().pipe(
+      map(data => data[range] || [] )
+    );
   }
 
 }

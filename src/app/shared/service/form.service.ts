@@ -6,7 +6,7 @@ import { Util } from './util.service';
 import { DocumentApi } from '../api/DocumentApi';
 import { Document } from '../model/Document';
 import { environment } from '../../../environments/environment';
-import * as deepmerge from 'deepmerge';
+import merge from 'deepmerge'
 import { DocumentService } from '../../shared-modules/own-submissions/service/document.service';
 import { LajiApi, LajiApiService } from './laji-api.service';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -249,7 +249,7 @@ export class FormService {
               form.formData = current;
               form.currentId = this.currentKey;
               if (!documentId && form.prepopulatedDocument) {
-                form.formData = deepmerge(form.formData || {}, form.prepopulatedDocument);
+                form.formData = merge(form.formData || {}, form.prepopulatedDocument);
               }
               this.currentData = Util.clone(form.formData);
               return form;
@@ -276,7 +276,7 @@ export class FormService {
   }
 
   populate(data: any) {
-    this._populate = deepmerge(this._populate || {}, data || {});
+    this._populate = merge(this._populate || {}, data || {});
   }
 
   getAddUrlPath(formId) {
@@ -379,7 +379,7 @@ export class FormService {
     this.currentKey = this.generateTmpId();
     return this.userService.getDefaultFormData().pipe(
       map((data: Document) => ({...(data || {}), formID: formId})),
-      map((data: Document) => this._populate ? deepmerge(data, this._populate) : data),
+      map((data: Document) => this._populate ? merge(data, this._populate) : data),
       tap(() => delete this._populate)
     );
   }

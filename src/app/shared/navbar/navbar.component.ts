@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
@@ -10,6 +10,7 @@ import { DialogService } from '../service/dialog.service';
 import {LajiApi, LajiApiService} from '../service/laji-api.service';
 import {PagedResult} from '../model/PagedResult';
 import {Notification} from '../model/Notification';
+import { isPlatformServer } from '@angular/common';
 
 @Component({
   selector: 'laji-navbar',
@@ -39,6 +40,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private subNotificationPage: Subscription;
 
   constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
     public userService: UserService,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
@@ -52,6 +54,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (isPlatformServer(this.platformId)) {
+      return;
+    }
     this.subUser = this.userService.action$
       .debounceTime(50)
       .subscribe(() => {

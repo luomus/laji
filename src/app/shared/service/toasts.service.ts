@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
-import {ToastrService} from 'ngx-toastr';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { isPlatformServer } from '@angular/common';
 
 @Injectable({providedIn: 'root'})
 export class ToastsService {
 
   constructor(
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   getToests() {
@@ -29,6 +31,9 @@ export class ToastsService {
   }
 
   private toast(type, message, title?: string, options?: Object) {
+    if (isPlatformServer(this.platformId)) {
+      return;
+    }
     if (!options) {
       const time = 4000 + ((message + title).length * 100);
       options = {toastLife: time, showCloseButton: true};

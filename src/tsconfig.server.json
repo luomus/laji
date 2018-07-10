@@ -9,7 +9,8 @@
     ],
     "paths": {
       "@laji-map/*": ["app/shared-modules/laji-map-noop/*"],
-      "@laji-form/*": ["app/shared-modules/laji-form-noop/*"]
+      "@laji-form/*": ["app/shared-modules/laji-form-noop/*"],
+      "@swimlane/ngx-charts": ["app/shared-modules/ngx-charts-module-noop/ngx-charts.module"]
     }
   },
   "exclude": [

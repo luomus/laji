@@ -23,21 +23,23 @@
           [multiselect]="true"
     ></laji-area-select>
   </div>
-  <div class="col-xs-12 col-sm-6">
+  <div class="col-xs-12 col-sm-5" style="position: relative">
     <laji-spinner [spinning]="loading" [overlay]="true">
-      <laji-line-transect-chart *ngIf="minYear"
-        style="height: 250px;"
-        [xValue]="0"
-        [yValue]="0"
-        [xRange]="[minYear, maxYear]"
-        [yRange]="[minPairCountSum, maxPairCountSum]"
-        [title]="''"
-        [line]="line"
-        [xLabel]="'Vuodet'"
-        [yLabel]="'Parim./km'"
-        [xTickFormat]="'d'"
-		[yLabelAnchor]="'start'"
-      ></laji-line-transect-chart>
+      <div class="chart-container">
+        <ngx-charts-line-chart
+          [view]="[500, 300]"
+          [results]="line"
+          [scheme]="colorScheme"
+          [animations]="false"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="false"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          [xAxisLabel]="'Vuodet'"
+          [yAxisLabel]="'Parim./km'">
+        </ngx-charts-line-chart>
+      </div>
     </laji-spinner>
   </div>
 </div>

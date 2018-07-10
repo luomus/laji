@@ -1,6 +1,6 @@
 
-import {throwError as observableThrowError,  Observable ,  Observer ,  forkJoin, of as ObservableOf } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Observable, Observer, forkJoin, of as ObservableOf } from 'rxjs';
+import { Injectable, OnInit } from '@angular/core';
 import { MetadataApi } from '../api/MetadataApi';
 import { Logger } from '../logger/logger.service';
 import { MetadataService } from './metadata.service';
@@ -11,13 +11,14 @@ import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { Taxonomy } from '../model/Taxonomy';
 import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 import { SourceService } from './source.service';
-import {UserService} from './user.service';
+import { UserService } from './user.service';
 import { NamedPlacesService } from '../../shared-modules/named-place/named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
 import { LajiApi, LajiApiService } from './laji-api.service';
+import { catchError, delay, filter, map, merge, retryWhen, share, take, tap } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
-export class TriplestoreLabelService {
+export class TriplestoreLabelService implements OnInit {
 
   static cache = {};
   static requestCache: any = {};
@@ -37,16 +38,21 @@ export class TriplestoreLabelService {
               private cacheService: CacheService,
               private lajiApi: LajiApiService,
               private userService: UserService
-  ) {
-    this.getAllLabels();
-  };
+  ) { };
+
+  ngOnInit() {
+    if (!this.pending) {
+      this.pending = this.getAllLabels();
+    }
+  }
 
   public get(key, lang): Observable<string> {
-    return this._get(key, lang)
-      .catch(err => {
+    return this._get(key, lang).pipe(
+      catchError(err => {
         this.logger.warn('Failed to fetch label for ' + key, err);
         return ObservableOf(key);
       })
+    );
   }
 
   private _get(key, lang): Observable<string> {
@@ -61,47 +67,54 @@ export class TriplestoreLabelService {
       switch (parts[0]) {
         case 'MNP':
           if (typeof TriplestoreLabelService.requestCache[key] === 'undefined') {
-            TriplestoreLabelService.requestCache[key] = this.namedPlacesService.getNamedPlace(key, this.userService.getToken())
-              .map((np: NamedPlace) => np.name)
-              .catch(() => ObservableOf(''))
-              .do(name => TriplestoreLabelService.cache[key] = name)
-              .share();
+            TriplestoreLabelService.requestCache[key] = this.namedPlacesService.getNamedPlace(key, this.userService.getToken()).pipe(
+              map((np: NamedPlace) => np.name),
+              catchError(() => ObservableOf('')),
+              tap(name => TriplestoreLabelService.cache[key] = name),
+              share()
+            );
           }
           return TriplestoreLabelService.requestCache[key];
         case 'MVL':
           if (!TriplestoreLabelService.requestCache[key]) {
-            TriplestoreLabelService.requestCache[key] = this.informalTaxonService.informalTaxonGroupFindById(key, 'multi')
-              .map((group: InformalTaxonGroup) => group.name)
-              .do(name => TriplestoreLabelService.cache[key] = name)
-              .map(name => MultiLangService.getValue((name as any), lang))
-              .share();
+            TriplestoreLabelService.requestCache[key] = this.informalTaxonService.informalTaxonGroupFindById(key, 'multi').pipe(
+              map((group: InformalTaxonGroup) => group.name),
+              tap(name => TriplestoreLabelService.cache[key] = name),
+              map(name => MultiLangService.getValue((name as any), lang)),
+              share()
+            );
           }
           return TriplestoreLabelService.requestCache[key];
         case 'MA':
           if (!TriplestoreLabelService.requestCache[key]) {
-            TriplestoreLabelService.requestCache[key] = this.userService.getUser(key)
-              .map(person => person.fullName)
-              .do(name => TriplestoreLabelService.cache[key] = name)
-              .share();
+            TriplestoreLabelService.requestCache[key] = this.userService.getUser(key).pipe(
+              map(person => person.fullName),
+              tap(name => TriplestoreLabelService.cache[key] = name),
+              share()
+            );
           }
           return TriplestoreLabelService.requestCache[key];
         case 'KE':
           return this.sourceService.getName(key, lang);
         case 'MX':
           if (!TriplestoreLabelService.requestCache[key]) {
-            TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.taxon, key, {lang: 'multi'})
-              .map((taxon: Taxonomy) => taxon.vernacularName || taxon.scientificName)
-              .do(name => TriplestoreLabelService.cache[key] = name)
-              .map(name => MultiLangService.getValue((name as any), lang))
-              .share();
+            TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.taxon, key, {lang: 'multi'}).pipe(
+              map((taxon: Taxonomy) => taxon.vernacularName || taxon.scientificName),
+              tap(name => TriplestoreLabelService.cache[key] = name),
+              map(name => MultiLangService.getValue((name as any), lang)),
+              share()
+            );
           }
           return TriplestoreLabelService.requestCache[key];
       }
     }
 
     if (this.labels) {
-      return ObservableOf(MultiLangService.getValue(this.labels[key], lang));
-    } else if (this.pending) {
+      return ObservableOf(MultiLangService.getValue(this.labels[key] || '', lang));
+    } else {
+      if (!this.pending) {
+        this.pending = this.getAllLabels();
+      }
       return Observable.create((observer: Observer<string>) => {
         this.pending.subscribe(
           (labels) => {
@@ -111,33 +124,36 @@ export class TriplestoreLabelService {
           () => observer.complete()
         );
       });
-    } else {
-      return ObservableOf(MultiLangService.getValue(this.labels[key], lang));
     }
   }
 
   private getAllLabels() {
     const cached = (cacheKey, apiCall: Observable<any>) => {
-      return this.cacheService.getItem(cacheKey)
-        .merge(apiCall
-          .do(data => {
-            if (!Util.isEmptyObj(data)) {
-              this.cacheService.setItem(cacheKey, data).subscribe(() => {}, () => {})
-            }
-          })
-        )
-        .filter(result => {
+      return this.cacheService.getItem(cacheKey).pipe(
+        merge(apiCall.pipe(
+            tap(data => {
+              if (!Util.isEmptyObj(data)) {
+                this.cacheService.setItem(cacheKey, data).subscribe(() => {}, () => {})
+              }
+            })
+          )
+        ),
+        filter(result => {
           return !Util.isEmptyObj(result)
         })
+      )
     };
 
     const fromApi$ = forkJoin(
       this.metadataService.getAllRangesAsLookUp('multi'),
       cached(
         TriplestoreLabelService.cacheProps,
-        this.metadataApi.metadataAllProperties('multi')
-          .retryWhen(errors => errors.delay(1000).take(2).concat(observableThrowError(errors)))
-          .map(data => {
+        this.metadataApi.metadataAllProperties('multi').pipe(
+          retryWhen(errors => errors.pipe(
+            delay(1000),
+            take(3)
+          )),
+          map(data => {
             const props = {};
             if (data && data.results) {
               data.results.map(property => {
@@ -145,14 +161,14 @@ export class TriplestoreLabelService {
                 props[property['property']] = property.label || '';
               });
             }
-
             return props;
           })
+        )
       ),
       cached(
         TriplestoreLabelService.cacheClasses,
-        this.metadataApi.metadataAllClasses('multi')
-          .map(data => {
+        this.metadataApi.metadataAllClasses('multi').pipe(
+          map(data => {
             const classes = {};
             if (data && data.results) {
               data.results.map(classData => {
@@ -161,12 +177,14 @@ export class TriplestoreLabelService {
             }
             return classes;
           })
+        )
       )
     );
 
-    this.pending = fromApi$
-      .map(data => this.parseResult(data))
-      .share();
+    return fromApi$.pipe(
+      map(data => this.parseResult(data)),
+      share()
+    );
   }
 
   private parseResult(result) {

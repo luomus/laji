@@ -128,14 +128,14 @@
   <div [hidden]="active !== 'stats'" *ngIf="activated['stats']">
     <div *ngIf="activated['stats']">
       <div class="form-group spacer">
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <laji-observation-chart
-                  [height]="300"
+                  [height]="400"
                   [showLegend]="true"
                   [visible]="active === 'stats'"
           ></laji-observation-chart>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <laji-observation-filters [visible]="active === 'stats'" [query]="searchQuery.query" (queryChange)="onFilterSelect.emit($event)"></laji-observation-filters>
         </div>
       </div>

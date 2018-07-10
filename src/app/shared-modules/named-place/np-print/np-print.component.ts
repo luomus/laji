@@ -9,8 +9,8 @@ import { NamedPlacesService } from '../named-places.service';
 import { UserService } from '../../../shared/service/user.service';
 import { FooterService } from '../../../shared/service/footer.service';
 import { Person } from '../../../shared/model/Person';
-import {isPlatformBrowser} from '@angular/common';
-import {LajiApi, LajiApiService} from '../../../shared/service/laji-api.service';
+import { isPlatformBrowser } from '@angular/common';
+import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 @Component({

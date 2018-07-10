@@ -7,12 +7,9 @@ import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
 
-export class CustomPreloadingStrategy implements PreloadingStrategy {
-  preload(route: Route, load: () => Observable<boolean>): Observable<boolean> {
-    if (route.data && route.data['noPreload']) {
-      return ObservableOf(null);
-    }
-    return load();
+export class PreloadSelectedModulesList implements PreloadingStrategy {
+  preload(route: Route, load: Function): Observable<any> {
+    return route.data && route.data.noPreload ? ObservableOf(null) : load();
   }
 }
 
@@ -67,8 +64,11 @@ const routesWithLang: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routesWithLang, {enableTracing: false})],
+  imports: [RouterModule.forRoot(routesWithLang, {
+    enableTracing: false,
+    preloadingStrategy: PreloadSelectedModulesList
+  })],
   exports: [RouterModule],
-  providers: [CustomPreloadingStrategy]
+  providers: [PreloadSelectedModulesList]
 })
 export class AppRoutingModule { }

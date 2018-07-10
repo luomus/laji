@@ -29,6 +29,22 @@ module.exports = {
           },
           replaceWith:'[]'
         }
+      },
+      {
+        test: /\.(ts|js)$/, use: {
+          loader: 'string-replace-loader', options: {
+            multiple: [{
+              search: '(window || global)',
+              replace: '((typeof window !== \'undefined\' && window) || global)'
+            }, {
+              search: '(window || global)',
+              replace: '((typeof window !== \'undefined\' && window) || global)'
+            }, {
+              search: '(window || global)',
+              replace: '((typeof window !== \'undefined\' && window) || global)'
+            }]
+          }
+        }
       }
     ]
   },

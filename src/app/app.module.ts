@@ -1,4 +1,4 @@
-import { WindowModule } from '@ng-toolkit/universal';
+import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { LocationStrategy, PathLocationStrategy, CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
@@ -22,7 +22,7 @@ import {
   ProgressbarModule,
   PopoverModule,
   TooltipModule,
-  TypeaheadModule
+  TypeaheadModule, CarouselModule
 } from 'ngx-bootstrap';
 import { Ng2Webstorage } from 'ng2-webstorage';
 import { ViewerModule } from './+viewer/viewer.module';
@@ -34,6 +34,9 @@ import { LocalizeRouterService } from './locale/localize-router.service';
 import { environment } from '../environments/environment';
 import { DocumentService } from './shared-modules/own-submissions/service/document.service';
 import { ToastrModule } from 'ngx-toastr';
+import { HttpClientModule } from '@angular/common/http';
+import { TransferHttpCacheModule } from '@nguniversal/common';
+import { BrowserModule } from '@angular/platform-browser';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -53,14 +56,18 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     LocaleSvComponent
   ],
   imports: [
+    BrowserModule.withServerTransition({appId: 'laji-app'}),
+    // TransferHttpCacheModule,
     CommonModule,
-    WindowModule,
+    HttpClientModule,
+    NgtUniversalModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useClass: TranslateFileLoader
       }
     }),
+    CarouselModule.forRoot(),
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
     PaginationModule.forRoot(),

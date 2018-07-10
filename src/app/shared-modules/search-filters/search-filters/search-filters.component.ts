@@ -1,6 +1,5 @@
 import { WINDOW } from '@ng-toolkit/universal';
 import { Component, OnInit, Input, Output, EventEmitter , Inject} from '@angular/core';
-import { WindowRef } from '../../../shared/windows-ref';
 import { SearchQueryInterface } from '../search-query.interface';
 
 @Component({
@@ -16,8 +15,7 @@ export class SearchFiltersComponent implements OnInit {
   @Output() onShowFilterChange = new EventEmitter<boolean>();
   @Output() onInvasiveControlClick = new EventEmitter();
 
-  constructor(@Inject(WINDOW) private window: Window,
-    private winRef: WindowRef
+  constructor(@Inject(WINDOW) private window: Window
   ) { }
 
   ngOnInit() {
@@ -29,11 +27,11 @@ export class SearchFiltersComponent implements OnInit {
     try {
       setTimeout(() => {
         try {
-          this.winRef.nativeWindow.dispatchEvent(new Event('resize'));
+          this.window.dispatchEvent(new Event('resize'));
         } catch (e) {
-          const evt = this.winRef.nativeWindow.document.createEvent('UIEvents');
+          const evt = this.window.document.createEvent('UIEvents');
           evt.initUIEvent('resize', true, false, window, 0);
-          this.winRef.nativeWindow.dispatchEvent(evt);
+          this.window.dispatchEvent(evt);
         }
       }, 50);
     } catch (e) {}

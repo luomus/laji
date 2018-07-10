@@ -13,30 +13,27 @@
         }"
     [messages]="{ emptyMessage: '', totalMessage: '' }"
     [rows]='_rows'
-    [disablePagingOnScroll]="true"
     [externalPaging]="true"
     [externalSorting]="!clientSideSorting"
-    [preFetchY]="300"
     [sortType]="sortType"
-    [count]="0"
+    [count]="_rows.length"
     [offset]="_offset"
-    [limit]="pageSize"
     [columns]="_columns"
     [columnMode]="columnMode"
     [scrollbarH]="true"
     [sorts]="sorts"
     [scrollbarV]="virtualScrolling"
     [headerHeight]="showHeader ? 38 : 0"
-    [footerHeight]="showFooter ? 50 : 0"
+    [footerHeight]="0"
     [rowHeight]="virtualScrolling ? rowHeight : 'auto'"
     (sort)="sortChange.emit($event)"
     (reorder)="reorder.emit($event)"
     (resize)="onResize($event)"
-    (page)="onPage($event)"
     [rowClass]="_getRowClass.bind(this)"
     (activate)="onRowSelect($event)"
   >
   </ngx-datatable>
+  <laji-data-table-footer *ngIf="showFooter" [page]="_page" [pageSize]="pageSize" [count]="_count" (change)="onPage($event)"></laji-data-table-footer>
 </laji-spinner>
 
 <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template #headerTpl>

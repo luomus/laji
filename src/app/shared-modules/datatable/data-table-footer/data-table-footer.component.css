@@ -1,0 +1,26 @@
+.datatable-footer {
+  display: block;
+  width: 100%;
+}
+
+.datatable-footer-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.page-count {
+  white-space: nowrap;
+  line-height: 50px;
+  height: 50px;
+  padding: 0 1.2rem;
+  flex: 1 1 20%;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+laji-paginator {
+  flex: 1 1 80%;
+  text-align: right;
+}
