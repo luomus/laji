@@ -406,7 +406,7 @@
   "species.download": "Ladda ner artlistan",
   "species.download.textFile": "Textfil",
   "species.browse": "Bläddra observationer",
-  "species.tree.hideLowerRanks": "Göm familjer/släkten",
+  "species.tree.hideLowerRanks": "Göm familjer och släkten",
   "email": "E-postadress",
   "feedback": "Feedback",
   "feedback.intro": "Om du loggar in, är din e-postadress bifogad till det här meddelandet. Om du skickar feedback utan att logga in, lägg till din e-postadress om du vill ha svar.",

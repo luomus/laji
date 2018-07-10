@@ -6,22 +6,11 @@
            name="hideLowerRanks">
     {{'species.tree.hideLowerRanks' | translate}}
   </label>
-  <tree-root #tree
-        (toggleExpanded)="onToggle($event)"
-        [nodes]="nodes"
-        [focused]="true"
-        [options]="options">
-    <ng-template #treeNodeTemplate let-node>
-      <span class="rank">
-        [{{node.data.taxonRank | label}}]
-      </span>
-      <span class="name">
-        <span class="scientificName" [class.cursive]="node.data.cursiveName">{{node.data.scientificName}}</span>
-        {{ node.data.vernacularName ? ' - ' + (node.data.vernacularName | multiLang) : '' }}
-      </span>
-      <a [routerLink]="'/taxon/' + node.data.id | localize">
-        <i class="glyphicon glyphicon-tag"></i>
-      </a>
-    </ng-template>
-  </tree-root>
+  <laji-tree-table
+    #treeTable
+    [columns]="columns"
+    [nodes]="nodes"
+    [expanderVariable]="'taxonRank'"
+    [getChildren]="getChildrenFunc">
+  </laji-tree-table>
 </div>

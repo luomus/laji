@@ -1,0 +1,29 @@
+<ngx-datatable
+  #dataTable
+  class='material striped laji-datatable'
+  [cssClasses]="{
+          sortAscending: 'glyphicon glyphicon-chevron-down',
+          sortDescending: 'glyphicon glyphicon-chevron-up',
+          pagerLeftArrow: 'glyphicon glyphicon-chevron-left',
+          pagerRightArrow: 'glyphicon glyphicon-chevron-right',
+          pagerPrevious: 'glyphicon glyphicon-step-backward',
+          pagerNext: 'glyphicon glyphicon-step-forward'
+        }"
+  [messages]="{ emptyMessage: '', totalMessage: '' }"
+  [rows]="rows"
+  [columns]="_columns">
+</ngx-datatable>
+
+<ng-template let-value="value" #expander>
+  <span (click)="toggle(value)" [ngStyle]="{'padding-left': (10 * value.level) + 'px'}">
+    <span *ngIf="!value.isRoot"
+          class="tree-side-line"
+          [ngClass]="{'first-child': value.isFirstChild}"
+          [ngStyle]="{'left': (10 * value.level + 7) + 'px'}"></span>
+    <i class="glyphicon glyphicon-triangle-right" [ngStyle]="{visibility: value.hasChildren ? 'visible' : 'hidden'}" *ngIf="!value.isExpanded"></i>
+    <i class="glyphicon glyphicon-triangle-bottom" *ngIf="value.isExpanded"></i>
+    [{{value[expanderVariable] | label}}]
+  </span>
+</ng-template>
+
+<laji-datatable-templates #datatableTemplates></laji-datatable-templates>

@@ -1,0 +1,13 @@
+.tree-side-line {
+  content: "";
+  position: absolute;
+  border-bottom: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+  width: 5px !important;
+  height: 30px;
+  top: -12px;
+}
+.tree-side-line.first-child {
+  height: 20px;
+  top: -2px;
+}

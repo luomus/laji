@@ -409,7 +409,7 @@
   "species.download": "Download species list",
   "species.download.textFile": "Text file",
   "species.browse": "Browse observations",
-  "species.tree.hideLowerRanks": "Hide families/genera",
+  "species.tree.hideLowerRanks": "Hide families and genera",
   "email": "Email",
   "feedback": "Feedback",
   "feedback.intro": "If you login, your e-mail address is attached to this message. If you send feedback without log in, add your e-mail address, if you want response.",

@@ -14,7 +14,6 @@ import { ChildrenListComponent } from './info-card/children-list/children-list.c
 import { TaxonomyApi } from '../shared/api/TaxonomyApi';
 import { InformalTaxonGroupApi } from '../shared/api/InformalTaxonGroupApi';
 import { TaxonInfoComponent } from './info-card/taxon-info/taxon-info.component';
-import { TreeModule } from 'angular-tree-component';
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { DatatableModule } from '../shared-modules/datatable/datatable.module';
 import {BoldSequenceComponent} from './info-card/taxon-info/bold-sequence/bold-sequence.component';
@@ -33,17 +32,19 @@ import { InformalGroupRedirectComponent } from './informal-group-redirect/inform
 import { SpeciesImagesComponent } from './taxon-browse/species-images/species-images.component';
 import { TaxonConceptInfoComponent } from './info-card/taxon-concept-info/taxon-concept-info.component';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
+import { TreeTableComponent } from './taxon-browse/taxon-tree/tree-table/tree-table.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, TreeModule, LangModule, DatatableModule, HttpClientModule,
+  imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, HttpClientModule,
     TypeaheadModule, ButtonsModule, SearchFiltersModule, LajiSelectModule, JWBootstrapSwitchModule, ObservationResultModule,
-    ObservationMapModule ],
+    ObservationMapModule, NgxDatatableModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
     ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent, SpeciesToolsComponent,
     InformalGroupRedirectComponent,
-    InformalGroupSelectComponent, SpeciesImagesComponent, TaxonConceptInfoComponent
+    InformalGroupSelectComponent, SpeciesImagesComponent, TaxonConceptInfoComponent, TreeTableComponent
   ],
 })
 export class TaxonomyModule {

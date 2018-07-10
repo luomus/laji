@@ -7,6 +7,7 @@ import { DatatableComponent as NgxDatatableComponent } from '@swimlane/ngx-datat
 import { Observable, of as ObservableOf, interval as ObservableInterval } from 'rxjs';
 import { CacheService } from '../../../shared/service/cache.service';
 import { Annotation } from '../../../shared/model/Annotation';
+import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
 
 const CACHE_COLUMN_SETINGS = 'datatable-col-width';
 
@@ -23,31 +24,7 @@ export class DatatableComponent {
   private static settings: Settings;
 
   @ViewChild('dataTable') public datatable: NgxDatatableComponent;
-
-  @ViewChild('taxon') taxonTpl: TemplateRef<any>;
-  @ViewChild('originalTaxon') originalTaxonTpl: TemplateRef<any>;
-  @ViewChild('species') speciesTpl: TemplateRef<any>;
-  @ViewChild('headerTpl') headerTpl: TemplateRef<any>;
-  @ViewChild('eventDate') eventDateTpl: TemplateRef<any>;
-  @ViewChild('multiLang') multiLangTpl: TemplateRef<any>;
-  @ViewChild('multiLangAll') multiLangAllTpl: TemplateRef<any>;
-  @ViewChild('vernacularName') vernacularNameTpl: TemplateRef<any>;
-  @ViewChild('scientificName') scientificNameTpl: TemplateRef<any>;
-  @ViewChild('taxonScientificName') taxonScientificNameTpl: TemplateRef<any>;
-  @ViewChild('cursive') cursiveTpl: TemplateRef<any>;
-  @ViewChild('boolean') booleanTpl: TemplateRef<any>;
-  @ViewChild('label') labelTpl: TemplateRef<any>;
-  @ViewChild('labelArray') labelArrayTpl: TemplateRef<any>;
-  @ViewChild('warehouseLabel') warehouseLabelTpl: TemplateRef<any>;
-  @ViewChild('toSemicolon') toSemicolonTpl: TemplateRef<any>;
-  @ViewChild('numeric') numericTpl: TemplateRef<any>;
-  @ViewChild('date') dateTpl: TemplateRef<any>;
-  @ViewChild('user') userTpl: TemplateRef<any>;
-  @ViewChild('publication') publicationTpl: TemplateRef<any>;
-  @ViewChild('publicationArray') publicationArrayTpl: TemplateRef<any>;
-  @ViewChild('iucnStatus') iucnStatusTpl: TemplateRef<any>;
-  @ViewChild('annotation') annotationTpl: TemplateRef<any>;
-  @ViewChild('image') imageTpl: TemplateRef<any>;
+  @ViewChild('dataTableTemplates') public datatableTemplates: DatatableTemplatesComponent;
 
   @Input() loading = false;
   @Input() pageSize: number;
@@ -105,25 +82,8 @@ export class DatatableComponent {
         .do(value => DatatableComponent.settings = value);
 
     settings$.subscribe(settings => {
-      this._columns = columns.map((column) => {
-        if (!column.headerTemplate) {
-          column.headerTemplate = this.headerTpl;
-        }
-        if (typeof column.cellTemplate === 'string') {
-          column.cellTemplate = this[column.cellTemplate + 'Tpl'];
-        }
-        if (!column.prop) {
-          column.prop = column.name;
-        }
-        if (settings[column.name] && settings[column.name].width) {
-          column.width = settings[column.name].width;
-        }
-        if (this.resizable === false) {
-          column.resizeable = false;
-        }
-        return column;
-      });
-
+      this._columns = this.datatableTemplates.getColumns(columns, settings, this.resizable);
+      console.log(this._columns);
       this.changeDetectorRef.markForCheck();
     });
   }

@@ -1,0 +1,226 @@
+<ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template #headerTpl>
+  <span class="datatable-header-cell-wrapper sort-full-width"
+        (click)="sort()" title="{{column.label | translate}}">
+    <span class="datatable-header-cell-label draggable">
+      {{column.label | translate}}
+    </span>
+  </span>
+</ng-template>
+
+<ng-template let-value="value" let-column="column" #taxon>
+  <span *ngIf="value">
+    <span style="display: inline"
+          *ngIf="value.linkings && value.linkings.taxon && (value.linkings.taxon.id || value.linkings.taxon.qname); else taxonVerbatim"
+          title="{{(value.linkings.taxon.vernacularName ? (value.linkings.taxon.vernacularName | multiLang) : '')
+                + (value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName ? ' &mdash; ': '')
+                + (value.linkings.taxon.scientificName ? value.linkings.taxon.scientificName : '')}}"
+    >
+      {{value.linkings.taxon.vernacularName | multiLang}}
+      <span class="inline" *ngIf="value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName"> &mdash; </span>
+      <span style="display: inline" [class.cursive]="value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.scientificName">
+          {{value.linkings.taxon.scientificName}}
+      </span>
+      <a
+        [tooltip]="'showSpeciesCard' | translate"
+        [placement]="'right'"
+        target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings.taxon.id || value.linkings.taxon.qname) | toQName)] | localize">
+        <i class="glyphicon glyphicon-tag"></i>
+      </a>
+    </span>
+    <ng-template #taxonVerbatim>
+      <span *ngIf="value.taxonVerbatim; else reportedInformalTaxonGroup" title="{{value.taxonVerbatim}}">{{value.taxonVerbatim}}</span>
+    </ng-template>
+    <ng-template #reportedInformalTaxonGroup>
+      <span title="{{value.reportedInformalTaxonGroup | toQName | label}}">{{value.reportedInformalTaxonGroup | toQName | label}}</span>
+    </ng-template>
+  </span>
+</ng-template>
+<ng-template let-value="value" let-column="column" #originalTaxon>
+  <span *ngIf="value">
+    <ng-container *ngTemplateOutlet="taxonLinkings; context: {$implicit: value.linkings && value.linkings.originalTaxon ? 'originalTaxon': 'taxon'}"></ng-container>
+
+    <ng-template #taxonLinkings let-taxon>
+      <span class="inline"
+            *ngIf="value.linkings && value.linkings[taxon] && (value.linkings[taxon].id || value.linkings[taxon].qname); else originalTaxonVerbatim"
+            title="{{(value.linkings[taxon].vernacularName ? (value.linkings[taxon].vernacularName | multiLang) : '')
+                + (value.linkings[taxon].vernacularName && value.linkings[taxon].scientificName ? ' &mdash; ': '')
+                + (value.linkings[taxon].scientificName ? value.linkings[taxon].scientificName : '')}}"
+      >
+        {{value.linkings[taxon].vernacularName | multiLang}}
+        <span class="inline" *ngIf="value.linkings[taxon].vernacularName && value.linkings[taxon].scientificName"> &mdash; </span>
+        <span class="inline" [class.cursive]="value.linkings[taxon].cursiveName" *ngIf="value.linkings[taxon].scientificName">
+          {{value.linkings[taxon].scientificName}}
+        </span>
+        <a
+          [tooltip]="'showSpeciesCard' | translate"
+          [placement]="'right'"
+          target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings[taxon].id || value.linkings[taxon].qname) | toQName)] | localize">
+          <i class="glyphicon glyphicon-tag"></i>
+        </a>
+      </span>
+    </ng-template>
+    <ng-template #originalTaxonVerbatim>
+      <span *ngIf="value.taxonVerbatim; else originalReportedInformalTaxonGroup" title="{{value.taxonVerbatim}}">{{value.taxonVerbatim}}</span>
+    </ng-template>
+    <ng-template #originalReportedInformalTaxonGroup>
+      <span title="{{value.reportedInformalTaxonGroup | toQName | label}}">{{value.reportedInformalTaxonGroup | toQName | label}}</span>
+    </ng-template>
+  </span>
+</ng-template>
+<ng-template let-value="value" let-column="column" #species>
+  <span *ngIf="value" title="{{value.taxonVerbatim}}">
+    <span class="inline"
+          *ngIf="value.linkings && value.linkings.taxon && value.linkings.taxon.speciesId; else taxonVerbatim"
+          title="{{(value.linkings.taxon.speciesVernacularName ? (value.linkings.taxon.speciesVernacularName | multiLang) : '')
+                + (value.linkings.taxon.speciesVernacularName && value.linkings.taxon.speciesScientificName ? ' &mdash; ': '')
+                + (value.linkings.taxon.speciesScientificName ? value.linkings.taxon.speciesScientificName : '')}}"
+    >
+      {{value.linkings.taxon.speciesVernacularName | multiLang}}
+      <span class="inline" *ngIf="value.linkings.taxon.speciesVernacularName && value.linkings.taxon.speciesScientificName"> &mdash; </span>
+      <span class="inline" [class.cursive]="true || value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.speciesScientificName">
+          {{value.linkings.taxon.speciesScientificName}}
+      </span>
+      <a
+        [tooltip]="'showSpeciesCard' | translate"
+        [placement]="'right'"
+        target="{{column.target || '_self'}}" [routerLink]="['/taxon', (value.linkings.taxon.speciesId | toQName)] | localize">
+        <i class="glyphicon glyphicon-tag"></i>
+      </a>
+    </span>
+    <ng-template #taxonVerbatim>
+      {{value.taxonVerbatim}}
+    </ng-template>
+  </span>
+</ng-template>
+<ng-template let-value="value" #label>
+  <span *ngIf="value" title="{{value | label}}">
+    {{value | label}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #labelArray>
+  <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | label}"></ng-container>
+</ng-template>
+<ng-template let-value="value" #warehouseLabel>
+  <span *ngIf="value" title="{{value | label: 'warehouse'}}">
+    {{value | label: 'warehouse'}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #toSemicolon>
+  <span *ngIf="value" title="{{value.join('; ')}}">
+    {{value.join('; ')}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #numeric>
+  <span *ngIf="'' + value" title="{{value | formattedNumber:' '}}">
+    <span [innerHtml]="value | formattedNumber:'&nbsp;'"></span>
+  </span>
+</ng-template>
+<ng-template let-value="value" #multiLang>
+  <span *ngIf="value" title="{{value | multiLang}}">
+    {{value | multiLang}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #multiLangAll>
+  <span *ngIf="value" title="{{value | multiLangAll}}">
+    {{value | multiLangAll}}
+  </span>
+</ng-template>
+<ng-template let-row="row" #taxonScientificName>
+  <span *ngIf="row.scientificName" title="{{row.scientificName}}" [class.cursive]="row.cursiveName">
+    {{row.scientificName}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #scientificName>
+  <span *ngIf="value.scientificName" title="{{value.scientificName}}" [class.cursive]="value.cursiveName">
+    {{value.scientificName}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #cursive>
+  <span *ngIf="value" title="{{value}}" class="cursive">
+    {{value}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #boolean>
+  <span *ngIf="value === true" title="{{'datatable.yes' | translate}}">
+    {{'datatable.yes' | translate}}
+  </span>
+  <span *ngIf="value === false" title="{{'datatable.no' | translate}}">
+    {{'datatable.no' | translate}}
+  </span>
+</ng-template>
+<ng-template let-value="value" ngx-datatable-cell-template #eventDate>
+  <span *ngIf="value && value.end && value.begin">
+    <span *ngIf="value.begin === value.end; else dateRange" title="{{value.begin}}">{{value.begin}}</span>
+    <ng-template #dateRange><span title="{{value.begin}} - {{value.end}}">{{value.begin}} - {{value.end}}</span></ng-template>
+  </span>
+</ng-template>
+<ng-template let-value="value" #date>
+  <span *ngIf="value" title="{{value | amDateFormat: 'DD.MM.YYYY HH:mm'}}">
+    {{value | amDateFormat: 'DD.MM.YYYY HH:mm'}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #user>
+    <span *ngIf="value" title="{{value | users}}">
+    {{value | users}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #publication>
+  <span *ngIf="value" title="{{value | publication}}">
+    {{value | publication}}
+  </span>
+</ng-template>
+<ng-template let-value="value" #publicationArray>
+  <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | publication}"></ng-container>
+</ng-template>
+<ng-template let-value="value" #iucnStatus>
+  <span *ngIf="value" title="{{value.status.replace('MX.iucn', '')}} ({{value.year}})">
+    {{value.status.replace('MX.iucn', '')}} ({{value.year}})
+  </span>
+</ng-template>
+<ng-template let-value="value" #annotation>
+  <span [ngSwitch]="value.annotationClass | toQName" [tooltip]="value.annotationClass | toQName | label"
+        [container]="'body'" class="inline">
+    <span *ngSwitchCase="annotationClass.AnnotationClassAcknowledged">
+      <i class="fa fa-check-square-o"></i>
+    </span>
+    <span *ngSwitchCase="annotationClass.AnnotationClassReliable" class="annotation-positive">
+      <i class="fa fa-check-circle-o"></i>
+      <i class="fa fa-check-circle-o"></i>
+    </span>
+    <span *ngSwitchCase="annotationClass.AnnotationClassLikely"  class="annotation-positive">
+      <i class="fa fa-check-circle-o"></i>
+    </span>
+    <span *ngSwitchCase="annotationClass.AnnotationClassSuspicious"  class="annotation-negative">
+      <i class="fa fa-exclamation-circle"></i>
+    </span>
+    <span *ngSwitchCase="annotationClass.AnnotationClassUnreliable"  class="annotation-negative">
+      <i class="fa fa-exclamation-circle"></i>
+      <i class="fa fa-exclamation-circle"></i>
+    </span>
+    <span *ngSwitchDefault="">
+      <i class="fa fa-comment-o"></i>
+    </span>
+  </span>
+  <small class="inline">
+    <span *ngIf="(value.type | toQName) === annotationTypes.TypeUnidentifiable">
+      {{'MAN.typeUnidentifiable' | label }}
+    </span>
+    <span *ngIf="value.annotationClass">{{value.annotationClass | toQName | label}}</span>
+  </small>
+  <span title="{{(value.opinion ? ('MAN.opinion' | label) + ': ' + value.opinion + '\n' : '')
+                + (value.notes ? value.notes : '')}}">
+    <span *ngIf="value.opinion">
+      {{'MAN.opinion' | label}}:
+      {{value.opinion}}
+    </span>
+    <span *ngIf="value.notes">
+      {{value.notes}}
+    </span>
+  </span>
+</ng-template>
+<ng-template let-value="value" #image>
+  <span *ngIf="value">
+    <img class="compact" src="{{value.thumbnailURL}}" alt="Image">
+  </span>
+</ng-template>
+
