@@ -1,19 +1,31 @@
 <div class="row">
-  <div class="col-xs-12 col-sm-6 ">
-    <label for="taxon-select">Valitse laji:</label>
-    <laji-taxon-autocomplete
-      id="taxon-select"
-      [placeholder]="'Etsi haluttu laji'"
-      [taxon]="taxonId"
-      (taxonSelect)="onTaxonSelect($event)"
-      [informalTaxonGroup]="'MVL.1'"
-      [onlyFinnish]="true"
-      [showResult]="false"
-      [clearValueOnSelect]="false"
-      [allowInvalid]="true"
-      [allowEmpty]="true"
-      [renderButton]="false"
-    ></laji-taxon-autocomplete>
+  <div class="col-xs-12 col-sm-6">
+    <div class="row row-spacer">
+      <div class="col-sm-12">
+        <label for="taxon-select">Valitse laji:</label>
+        <laji-taxon-autocomplete
+          id="taxon-select"
+          [placeholder]="'Etsi haluttu laji'"
+          [taxon]="taxonId"
+          (taxonSelect)="onTaxonSelect($event)"
+          [informalTaxonGroup]="'MVL.1'"
+          [onlyFinnish]="true"
+          [showResult]="false"
+          [clearValueOnSelect]="false"
+          [allowInvalid]="true"
+          [allowEmpty]="true"
+          [renderButton]="false"
+        ></laji-taxon-autocomplete>
+      </div>
+    </div>
+    <div class="row row-spacer">
+      <div class="col-sm-12">
+        <label>
+          Vakiolinjakausi:
+          <input type="checkbox" [checked]="fromYear === 2006" (change)="toggleFromYear()">
+        </label>
+      </div>
+    </div>
     <label for="area-select">Valitse lintualueyhdistys:</label>
     <laji-area-select
           id="area-select"
@@ -24,22 +36,37 @@
     ></laji-area-select>
   </div>
   <div class="col-xs-12 col-sm-5" style="position: relative">
-    <laji-spinner [spinning]="loading" [overlay]="true">
-      <div class="chart-container">
-        <ngx-charts-line-chart
-          [view]="[500, 300]"
-          [results]="line"
-          [scheme]="colorScheme"
-          [animations]="false"
-          [xAxis]="true"
-          [yAxis]="true"
-          [legend]="false"
-          [showXAxisLabel]="true"
-          [showYAxisLabel]="true"
-          [xAxisLabel]="'Vuodet'"
-          [yAxisLabel]="'Parim./km'">
-        </ngx-charts-line-chart>
+    <div class="row">
+      <div class="col-sm-12">
+        <p>Tuloskuvaajissa esitetään sekä vakiolinjojen että niin sanottujen ei-vakiolinjojen paritiheyden vuosivaihtelua.</p>
       </div>
-    </laji-spinner>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <laji-spinner [spinning]="loading" [overlay]="true">
+          <div class="chart-container">
+            <ngx-charts-line-chart
+              [view]="[500, 300]"
+              [results]="line"
+              [scheme]="colorScheme"
+              [animations]="false"
+              [xAxis]="true"
+              [yAxis]="true"
+              [legend]="false"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="true"
+              [xAxisLabel]="'Vuodet'"
+              [yAxisLabel]="'Parim./km'">
+            </ngx-charts-line-chart>
+          </div>
+        </laji-spinner>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <p>Huomaathan, että valitsemalla pienen tarkastelualueen (esimerkiksi yksittäisen lintuyhdistyksen) alueella vuosittain laskettujen linjojen määrä on vähäinen ja se, millaisia elinympäristöjä linjat kattavat voi vaihdella voimakkaasti vuosien välillä. Tällöin paritiheyksien vaihtelu ei välttämättä kuvaa todellista vaihtelua lintukannoissa edes yleisimmillä lajeilla.</p>
+        <p>Vakiolinjakaudella (vuodesta 2006 alkaen) laskennat ovat sijoittuneet tasaisemmin eri elinympäristöihin ja niitä on tehty vuosittain enemmän verrattuna tätä aikaisempiin vuosiin. Huomaathan, että ennen 1980-lukua laskentoja tehtiin vähän. Varhaisimpien vuosikymmenten voimakas vaihtelu paritiheyksissä aiheutuu siitä, että eri vuosina linjoja on laskettu erilaisissa elinympäristöissä.</p>
+      </div>
+    </div>
   </div>
 </div>

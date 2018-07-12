@@ -77,7 +77,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   displayMode: string;
   defaultSort: any;
 
-  subTrans: Subscription;
   rowData$: Subscription;
   saveTemplate$: Subscription;
   delete$: Subscription;
@@ -111,11 +110,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.initColumns();
     this.updateTranslations();
 
-    this.subTrans = this.translate.onLangChange.subscribe(() => {
-      this.formsById = {};
-      this.initRows();
-    });
-
     this.updateDisplayMode();
     this.usersId$ = this.userService.getUser()
       .map(user => user.id)
@@ -126,15 +120,14 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy() {
-    this.subTrans.unsubscribe();
     this.usersId$.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['documents']) {
+    if (changes['documents'] && !changes['documents'].isFirstChange()) {
       this.updateRows();
     }
-    if (changes['column']) {
+    if (changes['column'] && !changes['column'].isFirstChange()) {
       this.initColumns();
     }
   }
@@ -354,6 +347,22 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.table.rowDetail.toggleExpandRow(row);
   }
 
+  onSort(event) {
+    const rows = [...this.rows];
+    event.sorts.forEach((sort) => {
+      const comparator = this.comparator(sort.prop);
+      const dir = sort.dir === 'asc' ? 1 : -1;
+      rows.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]))
+    });
+    this.rows = rows;
+  }
+
+  /**
+   * When using comparator input these functions are called all the time! Preventing buttons and events from firing
+   *
+   * @param prop
+   * @returns {any}
+   */
   comparator(prop) {
     if (prop === 'dateObserved') {
       return (a, b) => {
