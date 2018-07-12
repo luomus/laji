@@ -26,6 +26,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   currentArea;
   taxon: string;
   taxonId: string;
+  fromYear = 2006;
   private subQuery: Subscription;
   private fetchSub: Subscription;
   result: PagedResult<any> = {
@@ -54,9 +55,14 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.subQuery = this.route.queryParams.subscribe(({taxonId, birdAssociationAreas}) => {
-      if (taxonId) this.taxonId = taxonId;
-      if (birdAssociationAreas) this.birdAssociationAreas = birdAssociationAreas.split(',');
+    this.subQuery = this.route.queryParams.subscribe(({taxonId, birdAssociationAreas, fromYear}) => {
+      if (taxonId) {
+        this.taxonId = taxonId;
+      }
+      if (birdAssociationAreas) {
+        this.birdAssociationAreas = birdAssociationAreas.split(',');
+      }
+      this.fromYear = parseInt(fromYear, 10);
       this.fetch();
     });
   }
@@ -65,27 +71,29 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     this.subQuery.unsubscribe();
   }
 
-  private navigate(taxonId: string, birdAssociationAreas: string[]) {
+  private navigate(taxonId: string, birdAssociationAreas: string[], fromYear: number) {
     this.router.navigate([], {queryParams: {
       taxonId: taxonId,
-      birdAssociationAreas: birdAssociationAreas.join(',')
+      birdAssociationAreas: birdAssociationAreas.join(','),
+      fromYear: fromYear
     }});
   }
 
   private update() {
-    this.navigate(this.taxonId, this.birdAssociationAreas);
+    this.navigate(this.taxonId, this.birdAssociationAreas, this.fromYear);
   }
 
   private fetch() {
     this.loading = true;
 
-    const currentArea = this.birdAssociationAreas.join(',');
+    const currentSearch = this.birdAssociationAreas.join(',');
 
     this.fetchSub = this.warehouseApi.warehouseQueryStatisticsGet(
       {
         collectionId: [this.collectionId],
         birdAssociationAreaId: this.birdAssociationAreas,
         taxonId: [this.taxonId],
+        yearMonth: this.fromYear ? this.fromYearToYearMonth(this.fromYear) : undefined,
         pairCounts: true,
         includeSubCollections: false
       },
@@ -94,7 +102,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       100,
       1
     ).pipe(
-      combineLatest(currentArea !== this.currentArea ? this.warehouseApi.warehouseQueryGatheringStatisticsGet(
+      combineLatest(currentSearch !== this.currentArea ? this.warehouseApi.warehouseQueryGatheringStatisticsGet(
         {
           collectionId: [this.collectionId],
           includeSubCollections: false,
@@ -108,7 +116,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
         false
       ).pipe(
           tap(data => {
-            this.currentArea = currentArea;
+            this.currentArea = currentSearch;
             const yearLineLengths = {};
             data.results.forEach(result => {
               const {'gathering.conversions.year': year} = result.aggregateBy;
@@ -128,12 +136,17 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
         const yearsToPairCounts = {};
         data.results.forEach(result => {
           const {'gathering.conversions.year': year} = result.aggregateBy;
-          if (!year) return;
+          if (!year) {
+            return;
+          }
           yearsToPairCounts[year] = result.pairCountSum;
         });
         this.afterBothFetched = () => {
-          this.line = [{name: 'Parim./km', series: Object.keys(yearsToPairCounts).map(year => {
-            const value = yearsToPairCounts[year] / this.yearLineLengths[year];
+          const resultsYears = Object.keys(yearsToPairCounts);
+          const years = this.fromYearToYearMonth(resultsYears[0]);
+          this.line = [{name: 'Parim./km', series: years.map(year => {
+            const value = yearsToPairCounts[year] && this.yearLineLengths[year] ?
+              (yearsToPairCounts[year] / this.yearLineLengths[year]) : 0;
             return {name: year, value: value};
           })}];
           this.loading = false;
@@ -150,12 +163,30 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   }
 
   updateBirdAssociationArea(value) {
-    this.birdAssociationAreas = Array.isArray(value) ? value : [];
+    this.birdAssociationAreas = Array.isArray(value) ? value : [];
     this.update();
   }
 
   onTaxonSelect(result) {
     this.taxonId = result.key;
     this.update();
+  }
+
+  toggleFromYear() {
+    this.fromYear = this.fromYear === 2006 ? undefined : 2006;
+    this.update();
+  }
+
+  private fromYearToYearMonth(year) {
+    const years = ['' + year];
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    let curIter = 0;
+    while (year < currentYear && curIter < 150) {
+      year++;
+      curIter++;
+      years.push('' + year);
+    }
+    return years;
   }
 }

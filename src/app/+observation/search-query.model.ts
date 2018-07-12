@@ -47,7 +47,8 @@ export class SearchQuery {
     'taxonReliability',
     'annotationType',
     'namedPlaceId',
-    'birdAssociationAreaId'
+    'birdAssociationAreaId',
+    'yearMonth'
   ];
 
   booleanTypes = [
