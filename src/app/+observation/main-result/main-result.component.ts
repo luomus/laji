@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Input, OnChanges, OnInit, SimpleChanges,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Inject, Input, OnChanges, OnInit, SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -8,6 +8,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { UserService } from '../../shared/service/user.service';
 import { ObservationTableComponent } from '../../shared-modules/observation-result/observation-table/observation-table.component';
 import { ObservationTableQueryService } from '../../shared-modules/observation-result/service/observation-table-query.service';
+import { WINDOW } from '@ng-toolkit/universal';
 
 const DEFAULT_PAGE_SIZE = 1000;
 
@@ -59,6 +60,7 @@ export class MainResultComponent implements OnInit, OnChanges {
   ];
 
   constructor(
+    @Inject(WINDOW) private window,
     private userService: UserService,
     private cd: ChangeDetectorRef
   ) { }
@@ -139,7 +141,9 @@ export class MainResultComponent implements OnInit, OnChanges {
 
   closeList() {
     this.showObservationList = false;
-    this.aggregatedDataTable.refreshTable();
+    setTimeout(() => {
+      this.window.dispatchEvent(new Event('resize'));
+    }, 100);
   }
 
   onGridSelect(event) {

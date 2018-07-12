@@ -24,13 +24,16 @@
       }"
       [rows]="rows"
       [rowIdentity]="rowIdentity"
+      [externalSorting]="true"
       [sorts]="defaultSort"
       [columnMode]="'flex'"
       [headerHeight]="38"
       [rowHeight]="'auto'"
       [limit]="20"
       [footerHeight]="30"
-      [messages]="{emptyMessage: loadError, totalMessage: totalMessage}">
+      [messages]="{emptyMessage: loadError, totalMessage: totalMessage}"
+      (sort)="onSort($event)"
+    >
 
       <ngx-datatable-row-detail [rowHeight]="'auto'">
         <ng-template let-row="row" ngx-datatable-row-detail-template>
@@ -97,7 +100,6 @@
                             [draggable]="false"
                             [name]="'haseka.submissions.' + col.prop | translate"
                             [flexGrow]="3"
-                            [comparator]="comparator(col.prop)"
                             [cellClass]="'break-word'">
         <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
           <span class="datatable-header-cell-wrapper"

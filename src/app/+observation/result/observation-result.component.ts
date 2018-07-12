@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { Subscription } from 'rxjs';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { WINDOW } from '@ng-toolkit/universal';
 
 
 @Component({
@@ -26,16 +27,25 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
   private subQueryUpdate: Subscription;
   private _active;
 
-  constructor(public searchQuery: SearchQuery,
-              public userService: UserService,
-              public translate: TranslateService) {
+  constructor(
+    @Inject(WINDOW) private window,
+    public searchQuery: SearchQuery,
+    public userService: UserService,
+    public translate: TranslateService
+  ) {
   }
 
   @Input() set active(value) {
+    if (this._active === value) {
+      return;
+    }
     this._active = value;
     if (value !== 'finnish') {
       this.lastAllActive = value;
     }
+    setTimeout(() => {
+      this.window.dispatchEvent(new Event('resize'));
+    }, 100);
   }
 
   get active() {

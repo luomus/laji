@@ -48,7 +48,8 @@ export class SearchQuery implements SearchQueryInterface {
     'taxonReliability',
     'annotationType',
     'namedPlaceId',
-    'birdAssociationAreaId'
+    'birdAssociationAreaId',
+    'yearMonth'
   ];
 
   booleanTypes = [
