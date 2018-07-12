@@ -11,3 +11,12 @@
   height: 20px;
   top: -2px;
 }
+
+:host >>> .ngx-datatable .datatable-header .datatable-row-left .datatable-header-cell {
+  padding: 0;
+  height: 100%;
+  border-right: none;
+}
+:host >>> .ngx-datatable.material.striped .datatable-body .datatable-row-odd:not(:hover) .datatable-row-left {
+  background-color: #f9f9f9;
+}

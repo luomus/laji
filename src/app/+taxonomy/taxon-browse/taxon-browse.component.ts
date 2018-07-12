@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { withLatestFrom, map } from 'rxjs/operators';
 import { TaxonomySearchQuery } from './taxonomy-search-query.model';
+import { TaxonomyColumns } from './taxonomy-columns.model';
 import { FooterService } from '../../shared/service/footer.service';
 
 @Component({
@@ -26,6 +27,7 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
     @Inject(WINDOW) private window: Window,
     private route: ActivatedRoute,
     public searchQuery: TaxonomySearchQuery,
+    public columnService: TaxonomyColumns,
     private cd: ChangeDetectorRef,
     private footerService: FooterService
   ) { }

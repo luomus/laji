@@ -82,8 +82,24 @@ export class DatatableComponent {
         .do(value => DatatableComponent.settings = value);
 
     settings$.subscribe(settings => {
-      this._columns = this.datatableTemplates.getColumns(columns, settings, this.resizable);
-      console.log(this._columns);
+      this._columns = columns.map((column) => {
+        if (!column.headerTemplate) {
+          column.headerTemplate = this.datatableTemplates.header;
+        }
+        if (typeof column.cellTemplate === 'string') {
+          column.cellTemplate = this.datatableTemplates[column.cellTemplate];
+        }
+        if (!column.prop) {
+          column.prop = column.name;
+        }
+        if (settings && settings[column.name] && settings[column.name].width) {
+          column.width = settings[column.name].width;
+        }
+        if (this.resizable === false) {
+          column.resizeable = false;
+        }
+        return column;
+      });
       this.changeDetectorRef.markForCheck();
     });
   }

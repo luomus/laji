@@ -34,17 +34,20 @@ import { TaxonConceptInfoComponent } from './info-card/taxon-concept-info/taxon-
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { TreeTableComponent } from './taxon-browse/taxon-tree/tree-table/tree-table.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { SpeciesListOptionsModalComponent } from './taxon-browse/species-list-options-modal/species-list-options-modal.component';
+import { TaxonomyColumns } from './taxon-browse/taxonomy-columns.model';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, HttpClientModule,
     TypeaheadModule, ButtonsModule, SearchFiltersModule, LajiSelectModule, JWBootstrapSwitchModule, ObservationResultModule,
     ObservationMapModule, NgxDatatableModule ],
-  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery],
+  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
     ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent, SpeciesToolsComponent,
     InformalGroupRedirectComponent,
-    InformalGroupSelectComponent, SpeciesImagesComponent, TaxonConceptInfoComponent, TreeTableComponent
+    InformalGroupSelectComponent, SpeciesImagesComponent, TaxonConceptInfoComponent, TreeTableComponent,
+    SpeciesListOptionsModalComponent
   ],
 })
 export class TaxonomyModule {

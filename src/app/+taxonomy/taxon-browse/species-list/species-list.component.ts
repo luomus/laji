@@ -2,17 +2,16 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef, Input, ViewChild } fro
 import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
-import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { Logger } from '../../../shared/logger/logger.service';
 import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
-import { ModalDirective } from 'ngx-bootstrap';
-import { UserService } from '../../../shared/service/user.service';
 import { TaxonExportService } from './taxon-export.service';
-
+import { SpeciesToolsComponent } from './species-tools/species-tools.component';
+import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/species-list-options-modal.component';
+import { TaxonomyColumns } from '../taxonomy-columns.model';
 
 @Component({
   selector: 'laji-species-list',
@@ -21,12 +20,15 @@ import { TaxonExportService } from './taxon-export.service';
   providers: [TaxonExportService]
 })
 export class SpeciesListComponent implements OnInit, OnDestroy {
-  @ViewChild('settingsModal') modalRef: ModalDirective;
-  @ViewChild('speciesTools') speciesTools;
+  @ViewChild('speciesTools') speciesTools: SpeciesToolsComponent;
+  @ViewChild('settingsModal') settingsModal: SpeciesListOptionsModalComponent;
   @Input() searchQuery: TaxonomySearchQuery;
+  @Input() columnService: TaxonomyColumns;
 
   loading = false;
   downloadLoading = false;
+
+  columns: ObservationTableColumn[] = [];
   speciesPage: PagedResult<Taxonomy> = {
     currentPage: 1,
     lastPage: 1,
@@ -34,131 +36,6 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     total: 0,
     pageSize: 0
   };
-
-  _selected: string[];
-  columns: ObservationTableColumn[] = [];
-  allColumns: ObservationTableColumn[] = [
-    {
-      name: 'id',
-      label: 'taxonomy.card.id',
-      width: 95
-    },
-    {
-      name: 'taxonRank',
-      label: 'taxonomy.rank',
-      cellTemplate: 'label',
-      width: 90
-    },
-    {
-      name: 'scientificName',
-      selectField: 'scientificName,cursiveName',
-      label: 'taxonomy.scientific.name',
-      cellTemplate: 'taxonScientificName',
-      width: 200
-    },
-    {
-      name: 'scientificNameAuthorship',
-      label: 'taxonomy.author',
-      width: 200
-    },
-    {
-      name: 'vernacularName',
-      label: 'taxonomy.vernacular.name',
-      cellTemplate: 'multiLang',
-      width: 200
-    },
-    {
-      name: 'synonymNames',
-      cellTemplate: 'cursive',
-      width: 200
-    },
-    {
-      name: 'vernacularName.fi',
-      label: 'taxonomy.vernacular.name.fi',
-      selectField: 'vernacularName',
-      width: 200
-    },
-    {
-      name: 'vernacularName.sv',
-      label: 'taxonomy.vernacular.name.sv',
-      selectField: 'vernacularName',
-      width: 200
-    },
-    {
-      name: 'vernacularName.en',
-      label: 'taxonomy.vernacular.name.en',
-      selectField: 'vernacularName',
-      width: 200
-    },
-    {
-      name: 'alternativeVernacularName',
-      label: 'taxonomy.alternative.vernacular.names',
-      cellTemplate: 'multiLangAll',
-      width: 200
-    },
-    {
-      name: 'obsoleteVernacularName',
-      label: 'taxonomy.obsolete.vernacular.name',
-      cellTemplate: 'multiLangAll',
-      width: 200
-    },
-    {
-      name: 'tradeName',
-      label: 'taxonomy.trade.name',
-      cellTemplate: 'multiLangAll',
-      width: 200
-    },
-    {
-      name: 'finnish',
-      cellTemplate: 'boolean',
-      width: 90
-    },
-    {
-      name: 'typeOfOccurrenceInFinland',
-      cellTemplate: 'labelArray'
-    },
-    {
-      name: 'typeOfOccurrenceInFinlandNotes'
-    },
-    {
-      name: 'occurrenceInFinlandPublication',
-      cellTemplate: 'publicationArray',
-      width: 200
-    },
-    {
-      name: 'originalPublication',
-      cellTemplate: 'publication',
-      width: 200
-    },
-    {
-      name: 'latestRedListStatusFinland',
-      cellTemplate: 'iucnStatus',
-      width: 90
-    },
-    {
-      name: 'informalTaxonGroups',
-      cellTemplate: 'labelArray',
-      width: 200
-    },
-    {
-      name: 'invasiveSpecies',
-      cellTemplate: 'boolean',
-      width: 90
-    },
-    {
-      name: 'administrativeStatuses',
-      cellTemplate: 'labelArray',
-      width: 200
-    },
-    {
-      name: 'taxonExpert',
-      cellTemplate: 'user'
-    },
-    {
-      name: 'notes'
-    }
-  ];
-  columnLookup = {};
 
   private lastQuery: string;
   private subQueryUpdate: Subscription;
@@ -168,27 +45,15 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
 
   constructor(
     private taxonomyService: TaxonomyApi,
-    private translate: TranslateService,
     private logger: Logger,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private cd: ChangeDetectorRef,
-    private userService: UserService,
     private taxonExportService: TaxonExportService
   ) { }
 
   ngOnInit() {
     this.loading = true;
-    this.initColumns();
-
-    this.userService.getItem<any>(UserService.SETTINGS_TAXONOMY_LIST)
-      .subscribe(data => {
-        if (data && data.selected) {
-          this.searchQuery.listOptions.selected = data.selected;
-        }
-        this.settingsLoaded = true;
-        this.refreshSpeciesList();
-      });
 
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
@@ -200,6 +65,11 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subQueryUpdate.unsubscribe();
+  }
+
+  onSettingsLoaded() {
+    this.settingsLoaded = true;
+    this.refreshSpeciesList();
   }
 
   onRowSelect(event) {
@@ -235,9 +105,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
 
     this.subFetch = this.fetchPage(this.searchQuery.listOptions.page)
       .subscribe(data => {
-          this.columns = this.searchQuery.listOptions.selected.map(name => {
-            return this.columnLookup[name];
-          });
+          this.columns = this.columnService.getColumns(this.searchQuery.listOptions.selected);
 
           if (data.lastPage && data.lastPage === 1) {
             this.columns = this.columns.map(column => ({...column, sortable: true}));
@@ -257,53 +125,10 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       );
   }
 
-  initColumns() {
-    this._selected = [...this.searchQuery.listOptions.selected];
-    this.allColumns = this.allColumns
-      .map(column => {
-        this.columnLookup[column.name] = column;
-        if (!column.label) {
-          column.label = 'taxonomy.' + column.name;
-        }
-        return column;
-      });
-  }
-
-  clear() {
-    this._selected = [];
-  }
-
-  toggleSelectedField(field: string) {
-    const idx = this._selected.indexOf(field);
-    if (idx === -1) {
-      this._selected = [...this._selected, field];
-    } else {
-      this._selected = [
-        ...this._selected.slice(0, idx),
-        ...this._selected.slice(idx + 1)
-      ]
-    }
-  }
-
-  openModal() {
-    this._selected = [...this.searchQuery.listOptions.selected];
-    this.modalRef.show();
-  }
-
-  closeOkModal() {
-    this.searchQuery.listOptions.selected = [...this._selected];
-    this.searchQuery.listOptions.page = 1;
-    this.refreshSpeciesList();
-    this.saveSettings();
-    this.modalRef.hide();
-  }
-
   download(fileType: string) {
     this.downloadLoading = true;
 
-    const columns = this.searchQuery.listOptions.selected.map(name => {
-      return this.columnLookup[name];
-    });
+    const columns = this.columnService.getColumns(this.searchQuery.listOptions.selected);
     this.fetchAllPages()
       .subscribe(data =>  {
         this.taxonExportService.downloadTaxons(columns, data, fileType)
@@ -313,6 +138,15 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
             this.cd.markForCheck();
           });
       });
+  }
+
+  openModal() {
+    this.settingsModal.openModal();
+  }
+
+  onCloseModal() {
+    this.searchQuery.listOptions.page = 1;
+    this.refreshSpeciesList();
   }
 
   private fetchAllPages(page = 1, data = []): Observable<any> {
@@ -337,7 +171,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     return this.taxonomyService
       .taxonomyFindSpecies(
         query.target,
-        this.translate.currentLang,
+        'multi',
         undefined,
         undefined,
         undefined,
@@ -356,7 +190,6 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     const extraParameters = {...query};
     extraParameters['target'] = undefined;
     extraParameters['selectedFields'] = this.getSelectedFields();
-    extraParameters['lang'] = 'multi';
 
     return {
       target,
@@ -367,8 +200,8 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   private getSelectedFields() {
     const selects = this.searchQuery.listOptions.selected.reduce((arr, field) => {
       let addedField = field;
-      if (this.columnLookup[field] && this.columnLookup[field].selectField) {
-        addedField = this.columnLookup[field].selectField;
+      if (this.columnService.columnLookup[field] && this.columnService.columnLookup[field].selectField) {
+        addedField = this.columnService.columnLookup[field].selectField;
       }
       if (arr.indexOf(addedField) === -1) {
         arr.push(addedField);
@@ -380,11 +213,5 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       selects.push('id');
     }
     return selects.join(',');
-  }
-
-  private saveSettings() {
-    this.userService.setItem(UserService.SETTINGS_TAXONOMY_LIST, {
-      selected: this.searchQuery.listOptions.selected
-    }).subscribe(() => {}, () => {});
   }
 }

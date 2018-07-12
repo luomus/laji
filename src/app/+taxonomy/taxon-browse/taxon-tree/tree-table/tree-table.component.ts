@@ -1,6 +1,10 @@
-import { Component, OnChanges, Input, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/core';
+import {
+  Component, OnChanges, Input, Output, ViewChild, TemplateRef, ChangeDetectorRef, ContentChild,
+  EventEmitter
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { DatatableTemplatesComponent } from '../../../../shared-modules/datatable/datatable-templates/datatable-templates.component';
+import { TreeNode } from './tree-node.interface';
 
 @Component({
   selector: 'laji-tree-table',
@@ -8,8 +12,7 @@ import { DatatableTemplatesComponent } from '../../../../shared-modules/datatabl
   styleUrls: ['./tree-table.component.css']
 })
 export class TreeTableComponent implements OnChanges {
-  @Input() nodes = [];
-  @Input() expanderVariable: string;
+  @Input() nodes: TreeNode[] = [];
   @Input() getChildren: (id: string) => Observable<any[]>;
 
   loading = {};
@@ -18,27 +21,41 @@ export class TreeTableComponent implements OnChanges {
   _columns = [];
 
   @ViewChild('expander') expanderTpl: TemplateRef<any>;
+  @ContentChild('expanderLabel') expanderLabel: TemplateRef<any>;
   @ViewChild('datatableTemplates') datatableTemplates: DatatableTemplatesComponent;
 
+  @Output() rowSelect = new EventEmitter<any>();
+
   @Input() set columns(columns: any) {
-    this._columns = this.datatableTemplates.getColumns(columns);
-    this._columns.unshift({
-        prop: 'node',
-        name: '',
-        cellTemplate: this.expanderTpl
+    this._columns = [{
+      prop: 'node',
+      name: '',
+      cellTemplate: this.expanderTpl,
+      frozenLeft: true,
+      width: 165
+    }];
+
+    columns.map(column => {
+      if (!column.headerTemplate) {
+        column.headerTemplate = this.datatableTemplates.header;
+      }
+      if (typeof column.cellTemplate === 'string') {
+        column.cellTemplate = this.datatableTemplates[column.cellTemplate];
+      }
+      column.sortable = false;
+      this._columns.push(column);
     });
   }
 
   constructor(
     private cd: ChangeDetectorRef
-  ) {
-  }
+  ) { }
 
   ngOnChanges() {
-    this.setRowsFromNodes();
+    this.updateRowsAndNodes();
   }
 
-  toggle(node: any) {
+  toggle(node: TreeNode) {
     node.isExpanded = !node.isExpanded;
     if (!node.isExpanded) {
       this.hideChildren(node.children);
@@ -51,16 +68,16 @@ export class TreeTableComponent implements OnChanges {
         .subscribe((children) => {
           node.children = children;
 
-          this.setRowsFromNodes();
+          this.updateRowsAndNodes();
           this.loading[node.id] = false;
           this.cd.markForCheck();
         });
     } else {
-      this.setRowsFromNodes();
+      this.updateRowsAndNodes();
     }
   }
 
-  private hideChildren(nodes) {
+  private hideChildren(nodes: TreeNode[]) {
     if (!nodes) {
       return;
     }
@@ -73,15 +90,15 @@ export class TreeTableComponent implements OnChanges {
     }
   }
 
-  private setRowsFromNodes() {
+  private updateRowsAndNodes() {
     this.rows = [];
     if (this.nodes.length > 0) {
       this.nodes[0].isRoot = true;
     }
-    this.rowsFromNodes(this.nodes, this.rows, 0);
+    this.update(this.nodes, this.rows, 0);
   }
 
-  private rowsFromNodes(nodes, rows, level) {
+  private update(nodes: TreeNode[], rows: any[], level: number) {
     for (let i = 0; i < nodes.length; i++) {
       if (i === 0) {
         nodes[i].isFirstChild = true;
@@ -91,8 +108,24 @@ export class TreeTableComponent implements OnChanges {
       rows.push({...nodes[i], node: nodes[i]});
 
       if (nodes[i].isExpanded) {
-        this.rowsFromNodes(nodes[i].children, rows, level + 1);
+        this.update(nodes[i].children, rows, level + 1);
       }
     }
+  }
+
+  onRowSelect(event) {
+    if (event.type !== 'click' || event.type === 'dblClick') {
+      return;
+    }
+
+    if (event.column.prop === 'node') {
+      this.toggle(event.row.node);
+    } else {
+      this.rowSelect.emit(event);
+    }
+  }
+
+  rowClass() {
+    return 'link';
   }
 }

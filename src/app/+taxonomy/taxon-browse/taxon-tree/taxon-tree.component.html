@@ -6,11 +6,26 @@
            name="hideLowerRanks">
     {{'species.tree.hideLowerRanks' | translate}}
   </label>
-  <laji-tree-table
-    #treeTable
-    [columns]="columns"
-    [nodes]="nodes"
-    [expanderVariable]="'taxonRank'"
-    [getChildren]="getChildrenFunc">
-  </laji-tree-table>
+  <div class="species-table-wrapper">
+    <laji-tree-table #treeTable
+                     [columns]="columns"
+                     [nodes]="nodes"
+                     [getChildren]="getChildrenFunc"
+                     (rowSelect)="onRowSelect($event)">
+      <ng-template let-value="value" #expanderLabel>
+        [{{value.taxonRank | label}}]
+      </ng-template>
+    </laji-tree-table>
+    <div class="setting-menu link" (click)="openSettingsModal()">
+      <i class="glyphicon glyphicon-cog"></i>
+    </div>
+  </div>
 </div>
+
+<laji-species-list-options-modal #settingsModal
+                                 (close)="onCloseSettingsModal()"
+                                 (settingsLoaded)="onSettingsLoaded()"
+                                 [searchQuery]="searchQuery"
+                                 [columnLookup]="columnService.columnLookup"
+                                 [listType]="'tree'">
+</laji-species-list-options-modal>

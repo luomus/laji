@@ -38,9 +38,9 @@
                                     [id]="searchQuery.query.informalGroupFilters"
                                     [compact]="true"
                                     (onInformalGroupSelect)="informalGroupSelect($event)"></laji-informal-group-select>
-        <laji-species-list *ngIf="type === 'list'" [searchQuery]="searchQuery"></laji-species-list>
+        <laji-species-list *ngIf="type === 'list'" [searchQuery]="searchQuery" [columnService]="columnService"></laji-species-list>
         <laji-species-images *ngIf="type === 'images'" [searchQuery]="searchQuery"></laji-species-images>
-        <laji-tree *ngIf="type === 'tree'" [searchQuery]="searchQuery"></laji-tree>
+        <laji-tree *ngIf="type === 'tree'" [searchQuery]="searchQuery" [columnService]="columnService"></laji-tree>
       </div>
     </div>
   </div>

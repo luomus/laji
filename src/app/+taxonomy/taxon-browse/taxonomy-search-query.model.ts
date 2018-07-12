@@ -21,6 +21,9 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
   public imageOptions: {
     page: number
   };
+  public treeOptions: {
+    selected: string[];
+  };
 
   constructor(
     private router: Router
@@ -65,6 +68,10 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
     };
     this.imageOptions = {
       page: 1
+    };
+    this.treeOptions = {
+      selected: ['vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
+        'latestRedListStatusFinland', 'administrativeStatuses', 'synonymNames']
     };
   }
 
