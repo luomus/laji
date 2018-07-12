@@ -3,6 +3,7 @@ import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ObservationTableColumn } from '../../../../shared-modules/observation-result/model/observation-table-column';
 import { DatatableComponent } from '../../../../shared-modules/datatable/datatable/datatable.component';
 import {DatatableColumn} from '../../../datatable/model/datatable-column';
+import JSONPath from 'jsonpath/jsonpath.min'; // See https://github.com/dchester/jsonpath/issues/89
 
 @Component({
   selector: 'laji-np-list',
@@ -96,7 +97,7 @@ export class NpListComponent {
     for (const namedPlace of this._namedPlaces) {
       const row = {};
       for (const path of this._fields) {
-        let value = JSONPath({json: namedPlace, path: path});
+        let value = JSONPath.query(namedPlace, path);
         if (value && value.length) {
           if (path === '$.prepopulatedDocument.gatheringEvent.dateBegin' || path === '$.prepopulatedDocument.gatheringEvent.dateEnd') {
             value = value.map(val => val.split('.').reverse().join('-'));
