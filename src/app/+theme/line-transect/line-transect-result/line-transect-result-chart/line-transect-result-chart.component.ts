@@ -74,7 +74,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     this.router.navigate([], {queryParams: {
       taxonId: taxonId,
       birdAssociationAreas: birdAssociationAreas.join(','),
-      fromYear: fromYear
+      fromYear: fromYear || ''
     }});
   }
 
