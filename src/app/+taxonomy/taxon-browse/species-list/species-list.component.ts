@@ -8,19 +8,18 @@ import { ObservationTableColumn } from '../../../shared-modules/observation-resu
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
-import { TaxonExportService } from './taxon-export.service';
-import { SpeciesToolsComponent } from './species-tools/species-tools.component';
+import { SpeciesDownloadComponent } from '../species-download/species-download.component';
 import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/species-list-options-modal.component';
 import { TaxonomyColumns } from '../taxonomy-columns.model';
+import { TaxonExportService } from '../taxon-export.service';
 
 @Component({
   selector: 'laji-species-list',
   templateUrl: './species-list.component.html',
-  styleUrls: ['./species-list.component.css'],
-  providers: [TaxonExportService]
+  styleUrls: ['./species-list.component.css']
 })
 export class SpeciesListComponent implements OnInit, OnDestroy {
-  @ViewChild('speciesTools') speciesTools: SpeciesToolsComponent;
+  @ViewChild('speciesDownload') speciesDownload: SpeciesDownloadComponent;
   @ViewChild('settingsModal') settingsModal: SpeciesListOptionsModalComponent;
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() columnService: TaxonomyColumns;
@@ -108,9 +107,9 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
           this.columns = this.columnService.getColumns(this.searchQuery.listOptions.selected);
 
           if (data.lastPage && data.lastPage === 1) {
-            this.columns = this.columns.map(column => ({...column, sortable: true}));
+            this.columns.map(column => {column.sortable = true});
           } else {
-            this.columns = this.columns.map(column => ({...column, sortable: false}));
+            this.columns.map(column => {column.sortable = false});
           }
 
           this.speciesPage = data;
@@ -134,7 +133,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
         this.taxonExportService.downloadTaxons(columns, data, fileType)
           .subscribe(() => {
             this.downloadLoading = false;
-            this.speciesTools.modal.hide();
+            this.speciesDownload.modal.hide();
             this.cd.markForCheck();
           });
       });

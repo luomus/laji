@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy, ViewChild, ChangeDetectorRef, TemplateRef } from '@angular/core';
-import { of as ObservableOf, Observable, Subscription, forkJoin as ObservableForkJoin } from 'rxjs';
+import { of as ObservableOf, Subscription, forkJoin as ObservableForkJoin } from 'rxjs';
 import { map, tap, switchMap } from 'rxjs/operators';
 import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
@@ -9,6 +9,8 @@ import { ObservationTableColumn } from '../../../shared-modules/observation-resu
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { TaxonomyColumns } from '../taxonomy-columns.model';
+import { SpeciesDownloadComponent } from '../species-download/species-download.component';
+import { TaxonExportService } from '../taxon-export.service';
 
 @Component({
   selector: 'laji-tree',
@@ -27,8 +29,10 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
 
   @ViewChild('treeTable') private tree: TreeTableComponent;
   @ViewChild('settingsModal') settingsModal: SpeciesListOptionsModalComponent;
+  @ViewChild('speciesDownload') speciesDownload: SpeciesDownloadComponent;
 
   public hideLowerRanks = false;
+  public downloadLoading = false;
 
   private subQueryUpdate: Subscription;
 
@@ -36,7 +40,8 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
     private taxonService: TaxonomyApi,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private taxonExportService: TaxonExportService
   ) {}
 
   ngOnInit() {
@@ -132,6 +137,19 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
     if (event.row && event.row.id) {
       this.router.navigate(this.localizeRouterService.translateRoute(['/taxon', event.row.id]));
     }
+  }
+
+  download(fileType: string) {
+    this.downloadLoading = true;
+
+    const columns = this.columnService.getColumns(this.searchQuery.listOptions.selected);
+
+    this.taxonExportService.downloadTaxons(columns, this.tree.rows, fileType)
+      .subscribe(() => {
+        this.downloadLoading = false;
+        this.speciesDownload.modal.hide();
+        this.cd.markForCheck();
+    });
   }
 
   private getSelectedFields() {

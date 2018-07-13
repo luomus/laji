@@ -26,7 +26,8 @@ import { LajiSelectModule } from '../shared-modules/select/select.module';
 import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { TaxonomySearchQuery } from './taxon-browse/taxonomy-search-query.model';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
-import { SpeciesToolsComponent } from './taxon-browse/species-list/species-tools/species-tools.component';
+import { SpeciesDownloadComponent } from './taxon-browse/species-download/species-download.component';
+import { SpeciesBrowseObservationsComponent } from './taxon-browse/species-browse-observations/species-browse-observations.component';
 import { InformalGroupSelectComponent } from './informal-group-select/informal-group-select.component';
 import { InformalGroupRedirectComponent } from './informal-group-redirect/informal-group-redirect.component';
 import { SpeciesImagesComponent } from './taxon-browse/species-images/species-images.component';
@@ -36,16 +37,17 @@ import { TreeTableComponent } from './taxon-browse/taxon-tree/tree-table/tree-ta
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SpeciesListOptionsModalComponent } from './taxon-browse/species-list-options-modal/species-list-options-modal.component';
 import { TaxonomyColumns } from './taxon-browse/taxonomy-columns.model';
+import { TaxonExportService } from './taxon-browse/taxon-export.service';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, HttpClientModule,
     TypeaheadModule, ButtonsModule, SearchFiltersModule, LajiSelectModule, JWBootstrapSwitchModule, ObservationResultModule,
     ObservationMapModule, NgxDatatableModule ],
-  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns],
+  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns, TaxonExportService],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
-    ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent, SpeciesToolsComponent,
-    InformalGroupRedirectComponent,
+    ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent,
+    InformalGroupRedirectComponent, SpeciesDownloadComponent, SpeciesBrowseObservationsComponent,
     InformalGroupSelectComponent, SpeciesImagesComponent, TaxonConceptInfoComponent, TreeTableComponent,
     SpeciesListOptionsModalComponent
   ],

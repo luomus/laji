@@ -13,7 +13,7 @@ export class TaxonComponent {
     private localizeRouterService: LocalizeRouterService
   ) { }
 
-  goToBrowsePage(groupId: string) {
+  goToBrowsePage(groupId?: string) {
     this.router.navigate(
       this.localizeRouterService.translateRoute(['/taxon/list']),
       {queryParams: {

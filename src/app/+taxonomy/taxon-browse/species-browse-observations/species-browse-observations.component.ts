@@ -1,29 +1,18 @@
-import { Component, Input, Output, ViewChild, EventEmitter } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap';
-import { TaxonomySearchQuery } from '../../taxonomy-search-query.model';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router'
+import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 
 @Component({
-  selector: 'laji-species-tools',
-  templateUrl: './species-tools.component.html',
-  styleUrls: ['./species-tools.component.css'],
+  selector: 'laji-species-browse-observations',
+  templateUrl: './species-browse-observations.component.html',
+  styleUrls: ['./species-browse-observations.component.css']
 })
-export class SpeciesToolsComponent {
+export class SpeciesBrowseObservationsComponent {
   @Input() searchQuery: TaxonomySearchQuery;
-  @Input() downloadLoading = false;
-
-  fileType = 'tsv';
-
-  @Output() onDownload = new EventEmitter<string>();
-  @ViewChild('chooseFileTypeModal') public modal: ModalDirective;
 
   constructor(
     private router: Router
   ) { }
-
-  download() {
-    this.onDownload.emit(this.fileType);
-  }
 
   browse() {
     const query = this.searchQuery.query;

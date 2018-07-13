@@ -3,12 +3,12 @@ import { TranslateService } from '@ngx-translate/core';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { Observable, forkJoin as ObservableForkJoin } from 'rxjs';
-import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
-import { MultiLangService } from '../../../shared-modules/lang/service/multi-lang.service';
-import { PublicationService } from '../../../shared/service/publication.service';
-import { Publication } from '../../../shared/model/Publication';
-import { UserService } from '../../../shared/service/user.service';
-import { Person } from '../../../shared/model/Person';
+import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
+import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
+import { PublicationService } from '../../shared/service/publication.service';
+import { Publication } from '../../shared/model/Publication';
+import { UserService } from '../../shared/service/user.service';
+import { Person } from '../../shared/model/Person';
 import { map, tap } from 'rxjs/operators';
 
 @Injectable()
@@ -82,7 +82,7 @@ export class TaxonExportService {
     for (let i = 0; i < data.length; i++) {
       aoa.push([]);
       for (let j = 0; j < cols.length; j++) {
-        const value = data[i][cols[j].name];
+        const value = JSONPath({json: data[i], path: cols[j].name})[0];
         const template = cols[j].cellTemplate;
         aoa[i + 1].push(value);
 

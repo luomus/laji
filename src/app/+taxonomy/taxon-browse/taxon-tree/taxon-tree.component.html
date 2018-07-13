@@ -22,6 +22,11 @@
   </div>
 </div>
 
+<laji-species-download #speciesDowload
+                       [downloadLoading]="downloadLoading"
+                       (onDownload)="download($event)">
+</laji-species-download>
+
 <laji-species-list-options-modal #settingsModal
                                  (close)="onCloseSettingsModal()"
                                  (settingsLoaded)="onSettingsLoaded()"

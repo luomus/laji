@@ -140,7 +140,7 @@ export class TaxonomyColumns {
 
   getColumns(selected) {
     return selected.map(name => {
-      return this.columnLookup[name];
+      return {...this.columnLookup[name]};
     });
   }
 }

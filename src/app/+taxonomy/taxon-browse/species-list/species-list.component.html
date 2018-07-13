@@ -1,4 +1,4 @@
-<div>
+<div id="species-table">
   <div class="form-group">
     <label class="col-sm-12">
       {{'species.order' | translate}}:
@@ -36,12 +36,12 @@
     </div>
   </div>
 </div>
-<br/>
-<laji-species-tools #speciesTools
-                    [searchQuery]="searchQuery"
-                    [downloadLoading]="downloadLoading"
-                    (onDownload)="download($event)">
-</laji-species-tools>
+
+<laji-species-download #speciesDownload
+                       [downloadLoading]="downloadLoading"
+                       (onDownload)="download($event)">
+</laji-species-download>
+<laji-species-browse-observations [searchQuery]="searchQuery"></laji-species-browse-observations>
 
 <laji-species-list-options-modal #settingsModal
                                  (close)="onCloseModal()"
