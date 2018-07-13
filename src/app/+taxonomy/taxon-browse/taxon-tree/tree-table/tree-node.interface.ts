@@ -2,8 +2,9 @@ export interface TreeNode {
   id: string;
   hasChildren: boolean;
   isExpanded?: boolean;
-  isRoot?: boolean;
+  isLoading?: boolean;
+  isSkipped?: boolean;
   isFirstChild?: boolean;
   children?: TreeNode[];
-  level?: number;
+  level: number;
 }

@@ -2,7 +2,7 @@
   <label>
     <input type="checkbox"
            [(ngModel)]="hideLowerRanks"
-           (ngModelChange)="onHideLowerRanksClick()"
+           (ngModelChange)="onHideLowerRanksClick($)"
            name="hideLowerRanks">
     {{'species.tree.hideLowerRanks' | translate}}
   </label>
@@ -11,6 +11,7 @@
                      [columns]="columns"
                      [nodes]="nodes"
                      [getChildren]="getChildrenFunc"
+                     [skipParams]="skipParams"
                      (rowSelect)="onRowSelect($event)">
       <ng-template let-value="value" #expanderLabel>
         [{{value.taxonRank | label}}]

@@ -17,6 +17,6 @@
   height: 100%;
   border-right: none;
 }
-:host >>> .ngx-datatable.material.striped .datatable-body .datatable-row-odd:not(:hover) .datatable-row-left {
+:host >>> .ngx-datatable.material.striped .datatable-body .datatable-row-odd:not(:hover):not(:focus) .datatable-row-left {
   background-color: #f9f9f9;
 }

@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, OnDestroy, ViewChild, ChangeDetectorRef, TemplateRef } from '@angular/core';
-import { of as ObservableOf, Subscription, forkJoin as ObservableForkJoin } from 'rxjs';
-import { map, tap, switchMap } from 'rxjs/operators';
+import { Component, Input, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TreeTableComponent } from './tree-table/tree-table.component'
@@ -26,6 +26,7 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
   public nodes = [];
   public columns: ObservationTableColumn[] = [];
   public getChildrenFunc = this.getChildren.bind(this);
+  public skipParams: {key: string, values: string[]}[];
 
   @ViewChild('treeTable') private tree: TreeTableComponent;
   @ViewChild('settingsModal') settingsModal: SpeciesListOptionsModalComponent;
@@ -45,15 +46,20 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    if (TaxonTreeComponent.cache) {
-      this.nodes = TaxonTreeComponent.cache;
-    }
-
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
         this.getRoot();
       }
     );
+  }
+
+  onSettingsLoaded() {
+    if (TaxonTreeComponent.cache) {
+      this.nodes = TaxonTreeComponent.cache;
+      this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
+    } else {
+      this.getRoot();
+    }
   }
 
   ngOnDestroy() {
@@ -85,16 +91,6 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
         selectedFields: this.getSelectedFields(),
         onlyFinnish: this.searchQuery.query.onlyFinnish
       })
-      .pipe(
-        switchMap(children => {
-          return this.skipTaxonRanks(children);
-        }),
-        map(result => [].concat(...result))
-      )
-  }
-
-  onSettingsLoaded() {
-    this.getRoot();
   }
 
   openSettingsModal() {
@@ -105,32 +101,12 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
     this.getRoot();
   }
 
-  private skipTaxonRanks(children) {
-    if (children.length < 1) {
-      return ObservableOf([children]);
-    }
-
-    return ObservableForkJoin(children.map(child => {
-      if (!this.hideLowerRanks || (child.taxonRank !== 'MX.subfamily' && child.taxonRank !== 'MX.genus')) {
-        return ObservableOf([child]);
-      } else if (!child.hasChildren) {
-        return ObservableOf([]);
-      } else {
-        return this.taxonService
-          .taxonomyFindChildren(child.id, 'multi', undefined, {
-            selectedFields: this.getSelectedFields(),
-            onlyFinnish: this.searchQuery.query.onlyFinnish
-          })
-          .pipe(switchMap(children2 => {
-            return this.skipTaxonRanks(children2)
-              .pipe(map(result => ([].concat(...result))));
-          }));
-      }
-    }));
-  }
-
   onHideLowerRanksClick() {
-    this.getRoot();
+    if (this.hideLowerRanks) {
+      this.skipParams = [{key: 'taxonRank', values: ['MX.subfamily', 'MX.genus']}];
+    } else {
+      this.skipParams = undefined;
+    }
   }
 
   onRowSelect(event: any) {
