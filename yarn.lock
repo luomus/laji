@@ -5406,15 +5406,15 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-laji-form@^0.0.473:
-  version "0.0.473"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.473.tgz#c8ff2c80857dd196dedc184a120bcbfa35662bb2"
+laji-form@^0.0.474:
+  version "0.0.474"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.474.tgz#a6010742237f32622b27f8647cb7c613f0c11a38"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.381"
+    laji-map "^1.0.382"
     laji-validate "0.0.66"
     moment "*"
     prop-types "^15.5.8"
@@ -5436,6 +5436,23 @@ laji-form@^0.0.473:
 laji-map@^1.0.381:
   version "1.0.381"
   resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.381.tgz#dd5a88bbbca6151329b0d4d5590c0acd8d3f408c"
+  dependencies:
+    Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
+    babel-runtime "6.18.0"
+    leaflet "1.3.1"
+    leaflet-contextmenu "1.4.0"
+    leaflet-draw "1.0.0"
+    leaflet-geometryutil "0.8.0"
+    leaflet-mml-layers "2.0.1"
+    leaflet-textpath "git+https://git@github.com/olzraiti/Leaflet.textPath.git#7fd168f22e2b1a52bdf62d473237f01caaa01e95"
+    leaflet.markercluster "1.3.0"
+    nouislider "10.0.0"
+    proj4 "2.3.16"
+    proj4leaflet "1.0.2"
+
+laji-map@^1.0.382:
+  version "1.0.382"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.382.tgz#e73eaca41076a9a76758c2c4bed076853b060b0f"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     babel-runtime "6.18.0"
