@@ -150,7 +150,7 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
   download(fileType: string) {
     this.downloadLoading = true;
 
-    const columns = this.columnService.getColumns(this.searchQuery.listOptions.selected);
+    const columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
 
     this.taxonExportService.downloadTaxons(columns, this.tree.rows, fileType)
       .subscribe(() => {
