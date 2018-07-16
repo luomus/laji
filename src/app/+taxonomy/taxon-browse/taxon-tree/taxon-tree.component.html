@@ -1,17 +1,42 @@
 <div id="taxon-tree">
-  <label>
-    <input type="checkbox"
-           [(ngModel)]="hideLowerRanks"
-           (ngModelChange)="onHideLowerRanksClick($)"
-           name="hideLowerRanks">
-    {{'species.tree.hideLowerRanks' | translate}}
-  </label>
+  <div style="position: relative">
+    <label>
+      {{'species.tree.taxonSearch' | translate}}:
+      <input
+        [ngClass]="{loading: typeaheadLoading}"
+        type="text"
+        class="form-control input-sm"
+        name="target"
+        [(ngModel)]="openTaxon"
+        [typeahead]="dataSource"
+        [typeaheadOptionsLimit]="typeaheadLimit"
+        [typeaheadWaitMs]="200"
+        [typeaheadMinLength]="3"
+        [typeaheadFocusFirst]="false"
+        [typeaheadOptionField]="'value'"
+        (typeaheadLoading)="changeTypeaheadLoading($event)"
+        (typeaheadOnSelect)="onTaxonSelect($event)"
+        (keyup)="onTaxonSelect($event)"
+        autocomplete="off"
+        autocorrect="off">
+    </label>
+    <label style="position: absolute; bottom: 0; right: 0">
+      <input type="checkbox"
+             [(ngModel)]="hideLowerRanks"
+             (ngModelChange)="onHideLowerRanksClick()"
+             name="hideLowerRanks">
+      {{'species.tree.hideLowerRanks' | translate}}
+    </label>
+  </div>
+
   <div class="species-table-wrapper">
     <laji-tree-table #treeTable
                      [columns]="columns"
                      [nodes]="nodes"
                      [getChildren]="getChildrenFunc"
+                     [getParents]="getParentsFunc"
                      [skipParams]="skipParams"
+                     [openId]="openId"
                      (rowSelect)="onRowSelect($event)">
       <ng-template let-value="value" #expanderLabel>
         [{{value.taxonRank | label}}]

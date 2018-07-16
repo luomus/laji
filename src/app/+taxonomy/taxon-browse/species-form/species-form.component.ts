@@ -77,31 +77,15 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public getTaxa(token: string, onlyFirstMatch = false): Observable<any> {
+  public getTaxa(token: string): Observable<any> {
     return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
-      limit: onlyFirstMatch ? '1' : '' + this.limit,
+      limit: '' + this.limit,
       includePayload: true,
       lang: this.translate.currentLang,
       informalTaxonGroup: this.searchQuery.query.informalGroupFilters,
       onlyFinnish: this.formQuery.onlyFinnish
-    })
-      .map(data => {
-        if (onlyFirstMatch) {
-          return data[0] || {};
-        }
-
-        return data.map(item => {
-          let groups = '';
-          if (item.payload && item.payload.informalTaxonGroups) {
-            groups = item.payload.informalTaxonGroups.reduce((prev, curr) => {
-              return prev + ' ' + curr.id;
-            }, groups);
-          }
-          item['groups'] = groups;
-          return item;
-        });
-      });
+    });
   }
 
   changeTypeaheadLoading(e: boolean): void {

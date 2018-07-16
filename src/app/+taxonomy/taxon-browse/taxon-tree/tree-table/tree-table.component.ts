@@ -15,7 +15,9 @@ import { TreeNode } from './tree-node.interface';
 export class TreeTableComponent implements OnChanges {
   @Input() nodes: TreeNode[] = [];
   @Input() getChildren: (id: string) => Observable<any[]>;
+  @Input() getParents: (id: string) => Observable<any[]>;
   @Input() skipParams: {key: string, values: string[]}[];
+  @Input() openId: string;
 
   rows = [];
   _columns = [];
@@ -61,6 +63,13 @@ export class TreeTableComponent implements OnChanges {
       for (let i = 0; i < this.missingChildren.length; i++) {
         this.toggleChildrenOpen(this.missingChildren[i]);
       }
+    }
+
+    if (changes.openId && this.openId) {
+      this.getParents(this.openId)
+        .subscribe(res => {
+          this.toggleOpenChain(this.nodes, res);
+        });
     }
   }
 
@@ -234,5 +243,21 @@ export class TreeTableComponent implements OnChanges {
 
   rowClass() {
     return 'link';
+  }
+
+  private toggleOpenChain(nodes: TreeNode[], chain: any[]) {
+    for (let i = 0; i < nodes.length; i++) {
+      if (nodes[i].id === chain[0].id) {
+        nodes[i].isLoading = true;
+        this.updateChildren(nodes[i])
+          .subscribe(() => {
+            nodes[i].isExpanded = true;
+            nodes[i].isLoading = false;
+            this.updateRows();
+            this.cd.markForCheck();
+            this.toggleOpenChain(nodes[i].children, chain.slice(1));
+          });
+      }
+    }
   }
 }
