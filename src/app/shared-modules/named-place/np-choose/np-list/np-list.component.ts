@@ -3,7 +3,6 @@ import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ObservationTableColumn } from '../../../../shared-modules/observation-result/model/observation-table-column';
 import { DatatableComponent } from '../../../../shared-modules/datatable/datatable/datatable.component';
 import {DatatableColumn} from '../../../datatable/model/datatable-column';
-import { query as JSONPath } from 'jsonpath';
 
 @Component({
   selector: 'laji-np-list',
@@ -90,6 +89,13 @@ export class NpListComponent {
   }
 
   private initData() {
+    function parseJSONPointer(object, jsonPointer) {
+      const splitPath = String(jsonPointer).split("/").filter(s => s !== undefined && s !== "");
+      return splitPath.reduce((o, s)=> {
+        return o[s];
+      }, object);
+    }
+
     if (!this._fields || !this._namedPlaces) {
       return;
     }
@@ -97,7 +103,17 @@ export class NpListComponent {
     for (const namedPlace of this._namedPlaces) {
       const row = {};
       for (const path of this._fields) {
-        let value = JSONPath(namedPlace, path);
+        // Both jsonpath and jsonpath-plus cause problems with the production build,
+        // so we convert to json paths to json pointers.
+        let pathAsJSONPointer = path
+          .substring(1, path.length) // Remove first '$'
+          .replace('.', '/')
+          .replace(/\[/g, '/')
+          .replace(/\]/g, '/');
+        if (pathAsJSONPointer[pathAsJSONPointer.length - 1] === '/') {
+          pathAsJSONPointer = pathAsJSONPointer.substring(0, pathAsJSONPointer.length - 1);
+        }
+        let value = parseJSONPointer(namedPlace, pathAsJSONPointer);
         if (value && value.length) {
           if (path === '$.prepopulatedDocument.gatheringEvent.dateBegin' || path === '$.prepopulatedDocument.gatheringEvent.dateEnd') {
             value = value.map(val => val.split('.').reverse().join('-'));
