@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { ModalDirective } from 'ngx-bootstrap';
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'laji-own-submissions',
@@ -209,8 +210,18 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
     if (!this.formID) {
       return documents;
     }
+    const lineTransectFormIds = {
+      [environment.lineTransectForm]: true,
+      [environment.lineTransectEiVakioForm]: true,
+      [environment.lineTransectKartoitusForm]: true
+    };
     return documents.filter((document) => {
-      return document.formID === this.formID;
+      if (lineTransectFormIds[this.formID]) {
+        return lineTransectFormIds[document.formID]
+
+      } else {
+        return document.formID === this.formID;
+      }
     });
   }
 
