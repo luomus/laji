@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ObservationChartComponent } from './chart/observation-chart.component';
-import { ObservationFormComponent } from './form/observation-form.component';
+import { ObservationViewComponent } from './view/observation-view.component';
 import { MultiRadioComponent } from './multi-radio/multi-radio.component';
 import { ObservationResultComponent } from './result/observation-result.component';
 import { ObservationResultListComponent } from './result-list/observation-result-list.component';
@@ -22,6 +22,7 @@ import { LajiSelectModule } from '../shared-modules/select/select.module';
 import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ObservationFormComponent } from './form/observation-form.component';
 
 @NgModule({
   imports: [
@@ -39,11 +40,12 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     NgxChartsModule
   ],
   declarations: [ObservationComponent, ObservationChartComponent,
-    ObservationFormComponent,
+    ObservationViewComponent,
     MultiRadioComponent, ObservationResultComponent,
     ObservationResultListComponent,
     PieChartComponent, ObservationDownloadComponent, MainResultComponent, ObservationFiltersComponent,
-    PillListComponent
+    PillListComponent,
+    ObservationFormComponent
   ]
 })
 export class ObservationModule {
