@@ -3,7 +3,7 @@ export * from './observation.component';
 export * from './observation.routes';
 export * from './result/observation-result.component';
 export * from './result-list/observation-result-list.component';
-export * from './form/observation-form.component';
+export * from './view/observation-view.component';
 export * from './count/observation-count.component';
 export * from './download/observation-download.component';
 export * from '../shared-modules/observation-map/observation-map/observation-map.component';

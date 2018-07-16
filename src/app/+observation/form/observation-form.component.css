@@ -14,42 +14,6 @@ hr {
   margin: -15px;
   padding: 15px;
 }
-:host {
-  flex: 1 0 auto;
-  display: flex;
-  flex-direction: column;
-  z-index: auto;
-}
-:host >>> .alert.alert-info {
-  margin-right: 10px;
-}
 .lj-input-wrap {
   padding: 0 15px;
-}
-.toggle-intro {
-  position: absolute;
-  right: 0;
-  margin-top: -5px;
-  padding: 0 30px 0 0;
-  z-index: 2;
-  font-size: 13px;
-  color: #3498DB;
-}
-:host >>> .alert-warning {
-  margin-right: 10px;
-}
-
-.form-filters {
-  z-index: 1029;
-  position: fixed;
-  top: 50px;
-  height: calc(100vh - 50px);
-  padding: 0;
-}
-@media only screen and (max-width : 767px) {
-  .form-filters {
-    top: 0;
-    height: auto;
-    position: relative;
-  }
 }
