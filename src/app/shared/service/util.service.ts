@@ -32,4 +32,25 @@ export class Util {
     }
     return Object.keys(value).length === 0
   }
+
+  public static parseJSONPath(object: any, jsonPath: string) {
+    // Both jsonpath and jsonpath-plus cause problems with the production build,
+    // so we convert to json paths to json pointers.
+    let pathAsJSONPointer = jsonPath
+      .substring(1, jsonPath.length) // Remove first '$'
+      .replace('.', '/')
+      .replace(/\[/g, '/')
+      .replace(/\]/g, '/');
+    if (pathAsJSONPointer[pathAsJSONPointer.length - 1] === '/') {
+      pathAsJSONPointer = pathAsJSONPointer.substring(0, pathAsJSONPointer.length - 1);
+    }
+    return this.parseJSONPointer(object, pathAsJSONPointer);
+  }
+
+  public static parseJSONPointer(object: any, jsonPointer: string) {
+    const splitPath = String(jsonPointer).split("/").filter(s => s !== undefined && s !== "");
+    return splitPath.reduce((o, s)=> {
+      return o[s];
+    }, object);
+  }
 }
