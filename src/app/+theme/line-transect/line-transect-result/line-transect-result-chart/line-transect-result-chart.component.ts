@@ -17,6 +17,7 @@ import { Observable } from 'rxjs/Observable';
 export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
   @Input() informalTaxonGroup: string;
+  @Input() defaultTaxonId: string;
   @Input() collectionId: string;
   @Input() lang = 'fi';
 
@@ -92,7 +93,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       {
         collectionId: [this.collectionId],
         birdAssociationAreaId: this.birdAssociationAreas,
-        taxonId: [this.taxonId],
+        taxonId: [this.taxonId || this.defaultTaxonId],
         yearMonth: this.fromYear ? this.fromYearToYearMonth(this.fromYear) : undefined,
         pairCounts: true,
         includeSubCollections: false
