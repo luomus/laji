@@ -20,6 +20,7 @@ export class ObservationFormComponent implements OnInit {
   @Input() dateFormat = 'YYYY-MM-DD';
 
   @Output() queryUpdate = new EventEmitter<WarehouseQueryInterface>();
+  @Output() mapDraw = new EventEmitter<string>();
 
 
   showPlace = false;
