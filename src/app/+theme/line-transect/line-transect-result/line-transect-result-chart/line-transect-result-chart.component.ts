@@ -55,16 +55,15 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.subQuery = this.route.queryParams.subscribe(({taxonId, birdAssociationAreas, fromYear}) => {
-      if (taxonId) {
-        this.taxonId = taxonId;
-      }
-      if (birdAssociationAreas) {
-        this.birdAssociationAreas = birdAssociationAreas.split(',');
-      }
-      this.fromYear = parseInt(fromYear, 10);
-      this.fetch();
-    });
+    const {taxonId, birdAssociationAreas, fromYear} = this.route.snapshot.queryParams;
+    if (taxonId) {
+      this.taxonId = taxonId;
+    }
+    if (birdAssociationAreas) {
+      this.birdAssociationAreas = birdAssociationAreas.split(',');
+    }
+    this.fromYear = parseInt(fromYear, 10);
+    this.fetch();
   }
 
   ngOnDestroy() {
@@ -81,6 +80,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
   private update() {
     this.navigate(this.taxonId, this.birdAssociationAreas, this.fromYear);
+    this.fetch();
   }
 
   private fetch() {
@@ -168,8 +168,10 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   }
 
   onTaxonSelect(result) {
-    this.taxonId = result.key;
-    this.update();
+    if (this.taxonId !== result.key) {
+      this.taxonId = result.key;
+      this.update();
+    }
   }
 
   toggleFromYear() {
