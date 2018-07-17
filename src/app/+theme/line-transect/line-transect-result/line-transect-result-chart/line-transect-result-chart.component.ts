@@ -14,7 +14,7 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: './line-transect-result-chart.component.html',
   styleUrls: ['./line-transect-result-chart.component.css']
 })
-export class LineTransectResultChartComponent implements OnInit, OnDestroy {
+export class LineTransectResultChartComponent implements OnInit {
 
   @Input() informalTaxonGroup: string;
   @Input() collectionId: string;
@@ -27,7 +27,6 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   taxon: string;
   taxonId: string;
   fromYear = 2006;
-  private subQuery: Subscription;
   private fetchSub: Subscription;
   result: PagedResult<any> = {
     currentPage: 1,
@@ -55,20 +54,15 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.subQuery = this.route.queryParams.subscribe(({taxonId, birdAssociationAreas, fromYear}) => {
-      if (taxonId) {
-        this.taxonId = taxonId;
-      }
-      if (birdAssociationAreas) {
-        this.birdAssociationAreas = birdAssociationAreas.split(',');
-      }
-      this.fromYear = parseInt(fromYear, 10);
-      this.fetch();
-    });
-  }
-
-  ngOnDestroy() {
-    this.subQuery.unsubscribe();
+    const {taxonId, birdAssociationAreas, fromYear} = this.route.snapshot.queryParams;
+    if (taxonId) {
+      this.taxonId = taxonId;
+    }
+    if (birdAssociationAreas) {
+      this.birdAssociationAreas = birdAssociationAreas.split(',');
+    }
+    this.fromYear = parseInt(fromYear, 10);
+    this.fetch();
   }
 
   private navigate(taxonId: string, birdAssociationAreas: string[], fromYear: number) {
@@ -81,6 +75,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
   private update() {
     this.navigate(this.taxonId, this.birdAssociationAreas, this.fromYear);
+    this.fetch();
   }
 
   private fetch() {
@@ -168,8 +163,10 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   }
 
   onTaxonSelect(result) {
-    this.taxonId = result.key;
-    this.update();
+    if (this.taxonId !== result.key) {
+      this.taxonId = result.key;
+      this.update();
+    }
   }
 
   toggleFromYear() {
