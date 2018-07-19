@@ -54,7 +54,6 @@
     "@ngx-translate/core": "^10.0.2",
     "@swimlane/ngx-charts": "^7.4.0",
     "@swimlane/ngx-datatable": "^13.0.1",
-    "angular-tree-component": "^7.2.0",
     "angular2-moment": "^1.8.0",
     "core-js": "^2.5.7",
     "cors": "~2.8.4",

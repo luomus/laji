@@ -1,4 +1,4 @@
-import {
+/*import {
   ChangeDetectionStrategy,
   Component,
   Input,
@@ -158,3 +158,4 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
 }
+*/
