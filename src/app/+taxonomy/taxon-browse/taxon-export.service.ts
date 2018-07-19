@@ -1,27 +1,24 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as XLSX from 'xlsx';
-import * as FileSaver from 'file-saver';
 import { Observable, forkJoin as ObservableForkJoin } from 'rxjs';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 import { PublicationService } from '../../shared/service/publication.service';
 import { Publication } from '../../shared/model/Publication';
 import { UserService } from '../../shared/service/user.service';
+import { ExportService } from '../../shared/service/export.service';
 import { Person } from '../../shared/model/Person';
 import { switchMap, map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class TaxonExportService {
-  private tsvMimeType = 'text/tab-separated-values';
-  private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
-  private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-
   constructor(
     private translate: TranslateService,
     private labelService: TriplestoreLabelService,
     private publicationService: PublicationService,
-    private userService: UserService
+    private userService: UserService,
+    private exportService: ExportService
   ) {}
 
   public downloadTaxons(columns, data, type = 'tsv'): Observable<boolean> {
@@ -31,31 +28,12 @@ export class TaxonExportService {
           return this.translate.get('taxon-export')
             .pipe(
               map((fileName) => {
-                this.downloadData(buffer, fileName, type);
+                this.exportService.exportBuffer(buffer, fileName, type);
                 return true;
               })
             )
         })
       );
-  }
-
-  private downloadData(buffer: any, fileName: string, fileExtension: string) {
-    fileName = fileName.replace('ä', 'a');
-
-    let type;
-    if (fileExtension === 'ods') {
-      type = this.odsMimeType;
-    } else if (fileExtension === 'xlsx') {
-      type = this.xlsxMimeType;
-    } else {
-      type = this.tsvMimeType;
-    }
-
-    const data: Blob = new Blob([buffer], {
-      type: type
-    });
-
-    FileSaver.saveAs(data, fileName + '.' + fileExtension);
   }
 
   private getBuffer(cols, data, type): Observable<string> {

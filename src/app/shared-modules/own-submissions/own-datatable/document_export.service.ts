@@ -8,9 +8,9 @@ import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { geoJSONToISO6709 } from 'laji-map/lib/utils';
 import * as XLSX from 'xlsx';
-import * as FileSaver from 'file-saver';
 import { Observable, from as ObservableFrom, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
 import { DocumentInfoService } from '../service/document-info.service';
+import { ExportService } from '../../../shared/service/export.service';
 
 
 @Injectable()
@@ -19,23 +19,20 @@ export class DocumentExportService {
   private readonly classPrefixes = {formID: 'MY', dateCreated: 'MZ', dateEdited: 'MZ'};
   private readonly valuePrefixes = {collection: 'HR', person: 'MA'};
 
-  private csvMimeType = 'text/csv;charset=utf-8';
-  private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
-  private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-
   constructor(
     private translate: TranslateService,
     private labelService: TriplestoreLabelService,
     private userService: UserService,
     private collectionService: CollectionService,
-    private formService: FormService
+    private formService: FormService,
+    private exportService: ExportService
   ) {}
 
   public downloadDocuments(docs: Document[], year: number, type: string) {
     this.getBuffer(docs, type).subscribe((buffer) => {
       this.translate.get('haseka.submissions.submissions').subscribe((msg) => {
         const fileName = msg + '_' + year;
-        this.downloadData(buffer, fileName, type);
+        this.exportService.exportBuffer(buffer, fileName, type);
       });
     });
   }
@@ -44,28 +41,9 @@ export class DocumentExportService {
     this.getBuffer([doc], type).subscribe((buffer) => {
       this.translate.get('haseka.submissions.submission').subscribe((msg) => {
         const fileName = msg + '_' + doc.id.split('.')[1];
-        this.downloadData(buffer, fileName, type);
+        this.exportService.exportBuffer(buffer, fileName, type);
       });
     });
-  }
-
-  private downloadData(buffer: any, fileName: string, fileExtension: string) {
-    fileName = fileName.replace('ä', 'a');
-
-    let type;
-    if (fileExtension === 'ods') {
-      type = this.odsMimeType;
-    } else if (fileExtension === 'xlsx') {
-      type = this.xlsxMimeType;
-    } else {
-      type = this.csvMimeType;
-    }
-
-    const data: Blob = new Blob([buffer], {
-      type: type
-    });
-
-    FileSaver.saveAs(data, fileName + '.' + fileExtension);
   }
 
   private getBuffer(docs: Document[], type): Observable<string> {
@@ -83,6 +61,8 @@ export class DocumentExportService {
 
                 if (type === 'csv') {
                   return XLSX.utils.sheet_to_csv(sheet);
+                } else if (type === 'tsv') {
+                  return XLSX.utils.sheet_to_csv(sheet, {FS: '\t'});
                 }
 
                 const book = XLSX.utils.book_new();

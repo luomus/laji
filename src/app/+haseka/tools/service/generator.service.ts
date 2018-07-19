@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
-import * as FileSaver from 'file-saver';
 import {FormField} from '../model/form-field';
 import { UserService} from '../../../shared/service/user.service';
 import {MappingService, SpecialTypes} from './mapping.service';
@@ -11,13 +10,11 @@ import {NamedPlacesService} from '../../../shared-modules/named-place/named-plac
 import {NamedPlace} from '../../../shared/model/NamedPlace';
 import { TranslateService } from '@ngx-translate/core';
 import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
+import { ExportService } from '../../../shared/service/export.service';
 import { map } from 'rxjs/operators';
 
 @Injectable()
 export class GeneratorService {
-
-  private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
-  private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
   private sheetNames = {
     'base': 'Tallennuspohja',
@@ -47,7 +44,8 @@ export class GeneratorService {
     private userService: UserService,
     private namedPlaces: NamedPlacesService,
     private translateService: TranslateService,
-    private informalTaxonApi: InformalTaxonGroupApi
+    private informalTaxonApi: InformalTaxonGroupApi,
+    private exportService: ExportService
   ) { }
 
   generate(filename: string, fields: FormField[], useLabels = true, type: 'ods' | 'xlsx' = 'xlsx', next: () => void = () => {}) {
@@ -81,7 +79,7 @@ export class GeneratorService {
         XLSX.utils.book_append_sheet(book, this.getInstructionSheet(fields, data.translations), this.sheetNames.info);
         XLSX.utils.book_append_sheet(book, validationSheet, this.sheetNames.vars);
 
-        this.downloadData(XLSX.write(book, {bookType: type, type: 'buffer'}), filename, type);
+        this.exportService.exportBuffer(XLSX.write(book, {bookType: type, type: 'buffer'}), filename, type);
         next();
       }, () => next());
 
@@ -225,15 +223,5 @@ export class GeneratorService {
       vSheet[current][vColumn] = validItem;
       current++;
     }
-  }
-
-  private downloadData(buffer: any, fileName: string, fileExtension: string) {
-    const type = fileExtension === 'ods' ? this.odsMimeType : this.xlsxMimeType;
-
-    const data: Blob = new Blob([buffer], {
-      type: type
-    });
-
-    FileSaver.saveAs(data, fileName + '.' + fileExtension);
   }
 }
