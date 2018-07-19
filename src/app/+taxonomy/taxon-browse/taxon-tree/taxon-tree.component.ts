@@ -20,12 +20,10 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./taxon-tree.component.css']
 })
 export class TaxonTreeComponent implements OnInit, OnDestroy {
-  private static cache;
-
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() columnService: TaxonomyColumns;
 
-  public nodes = [];
+  public root = [];
   public columns: ObservationTableColumn[] = [];
   public getChildrenFunc = this.getChildren.bind(this);
   public getParentsFunc = this.getParents.bind(this);
@@ -72,22 +70,16 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
-        this.getRoot();
+        this.root = [...this.root];
       }
     );
   }
 
   onSettingsLoaded() {
-    if (TaxonTreeComponent.cache) {
-      this.nodes = TaxonTreeComponent.cache;
-      this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
-    } else {
-      this.getRoot();
-    }
+    this.getRoot();
   }
 
   ngOnDestroy() {
-    TaxonTreeComponent.cache = this.tree.nodes;
     this.subQueryUpdate.unsubscribe();
   }
 
@@ -100,7 +92,7 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
       .pipe(
         map(data => [data]),
         tap((data) => {
-          this.nodes = data;
+          this.root = data;
           this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
         })
       )
