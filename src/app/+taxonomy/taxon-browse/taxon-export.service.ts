@@ -9,7 +9,7 @@ import { PublicationService } from '../../shared/service/publication.service';
 import { Publication } from '../../shared/model/Publication';
 import { UserService } from '../../shared/service/user.service';
 import { Person } from '../../shared/model/Person';
-import { map, tap } from 'rxjs/operators';
+import { switchMap, map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class TaxonExportService {
@@ -25,12 +25,18 @@ export class TaxonExportService {
   ) {}
 
   public downloadTaxons(columns, data, type = 'tsv'): Observable<boolean> {
-    return this.getBuffer(columns, data, type).switchMap((buffer) => {
-      return this.translate.get('taxon-export').map((fileName) => {
-        this.downloadData(buffer, fileName, type);
-        return true;
-      });
-    });
+    return this.getBuffer(columns, data, type)
+      .pipe(
+        switchMap((buffer) => {
+          return this.translate.get('taxon-export')
+            .pipe(
+              map((fileName) => {
+                this.downloadData(buffer, fileName, type);
+                return true;
+              })
+            )
+        })
+      );
   }
 
   private downloadData(buffer: any, fileName: string, fileExtension: string) {
@@ -53,18 +59,21 @@ export class TaxonExportService {
   }
 
   private getBuffer(cols, data, type): Observable<string> {
-    return this.getAoa(cols, data).map((aoa) => {
-      const sheet = XLSX.utils.aoa_to_sheet(aoa);
+    return this.getAoa(cols, data)
+      .pipe(
+        map((aoa) => {
+          const sheet = XLSX.utils.aoa_to_sheet(aoa);
 
-      if (type === 'tsv') {
-        return XLSX.utils.sheet_to_csv(sheet, {FS: '\t'});
-      }
+          if (type === 'tsv') {
+            return XLSX.utils.sheet_to_csv(sheet, {FS: '\t'});
+          }
 
-      const book = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(book, sheet);
+          const book = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(book, sheet);
 
-      return XLSX.write(book, {bookType: type, type: 'buffer'});
-    });
+          return XLSX.write(book, {bookType: type, type: 'buffer'});
+        })
+      );
   }
 
   private getAoa(cols, data): Observable<string[][]> {
@@ -173,6 +182,7 @@ export class TaxonExportService {
 
 
   private getUserName(value): Observable<string> {
-    return this.userService.getUser(value).map((user: Person) => (user.fullName || ''));
+    return this.userService.getUser(value)
+      .pipe(map((user: Person) => (user.fullName || '')));
   }
 }

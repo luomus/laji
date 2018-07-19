@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Subscription, Observable, of as ObservableOf } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TreeTableComponent } from './tree-table/tree-table.component'
@@ -57,14 +57,16 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.openTaxon);
     })
-      .distinctUntilChanged()
-      .switchMap((token: string) => this.getTaxa(token))
-      .switchMap((data) => {
-        if (this.openTaxon) {
-          return ObservableOf(data);
-        }
-        return ObservableOf([]);
-      });
+      .pipe(
+        distinctUntilChanged(),
+        switchMap((token: string) => this.getTaxa(token)),
+        switchMap((data) => {
+          if (this.openTaxon) {
+            return ObservableOf(data);
+          }
+          return ObservableOf([]);
+        })
+      );
   }
 
   ngOnInit() {

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable ,  Subscription, of as ObservableOf } from 'rxjs';
+import { Observable, Subscription, of as ObservableOf } from 'rxjs';
+import { switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
 import { SpeciesFormQuery } from './species-form-query.interface';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
@@ -49,14 +50,16 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.formQuery.taxon);
     })
-      .distinctUntilChanged()
-      .switchMap((token: string) => this.getTaxa(token))
-      .switchMap((data) => {
-        if (this.formQuery.taxon) {
-          return ObservableOf(data);
-        }
-        return ObservableOf([]);
-      });
+      .pipe(
+        distinctUntilChanged(),
+        switchMap((token: string) => this.getTaxa(token)),
+        switchMap((data) => {
+          if (this.formQuery.taxon) {
+            return ObservableOf(data);
+          }
+          return ObservableOf([]);
+        })
+      );
   }
 
   ngOnInit() {
