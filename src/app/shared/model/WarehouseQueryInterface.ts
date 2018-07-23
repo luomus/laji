@@ -121,6 +121,7 @@ export interface WarehouseQueryInterface {
   finnishMunicipalityId?: Array<string>;
   biogeographicalProvinceId?: Array<string>;
   area?: Array<string>;
+  season?: string;
   time?: Array<string>;
   firstLoadedLaterThan?: string;
   firstLoadedBefore?: string;

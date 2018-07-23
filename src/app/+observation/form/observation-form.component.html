@@ -50,7 +50,7 @@
       </ng-template>
       <laji-pill-list
         [list]="searchQuery.target || []"
-        (updateList)="updateTargetList($event)"
+        (updateList)="updateSearchQuery('target', $event)"
       ></laji-pill-list>
     </div>
   </div>
@@ -157,6 +157,14 @@
             {{'observation.form.thisYear' | translate}}
           </button>
         </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <label>
+          {{'observation.form.season' | translate}}:<laji-info>{{'observation.info.season' | translate}}</laji-info>
+        </label>
+        <laji-season [season]="searchQuery.season" (seasonChange)="updateSearchQuery('season', $event)"></laji-season>
       </div>
     </div>
     <div class="row">

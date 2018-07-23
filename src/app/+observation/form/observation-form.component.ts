@@ -165,7 +165,7 @@ export class ObservationFormComponent implements OnInit {
         typeof value === 'undefined' ||  value !==  selectValue ?
           selectValue : undefined;
     }
-    this.onIndirectChange();
+    this.onQueryChange();
   }
 
   onCountChange() {
@@ -187,11 +187,6 @@ export class ObservationFormComponent implements OnInit {
       this.searchQuery.individualCountMin = undefined;
       this.searchQuery.individualCountMax = undefined;
     }
-    this.onQueryChange();
-  }
-
-  onIndirectChange() {
-    // this.queryToFormQuery(this.searchQuery);
     this.onQueryChange();
   }
 
@@ -220,8 +215,8 @@ export class ObservationFormComponent implements OnInit {
     }
   }
 
-  updateTargetList(list) {
-    this.searchQuery.target = list;
+  updateSearchQuery(field, value) {
+    this.searchQuery[field] = value;
     this.onQueryChange();
   }
 

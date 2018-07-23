@@ -1,0 +1,19 @@
+.s-wrap {
+  padding-right: 3px;
+  padding-left: 3px;
+}
+.s-select {
+  padding: 6px 0 6px 2px;
+}
+.s-elem-wrap {
+  margin-right: 0;
+  margin-left: -3px;
+}
+.s-end-start:before {
+  content: '-';
+  position: absolute;
+  left: -3px;
+  top: 6px;
+  width: 6px;
+  text-align: center;
+}

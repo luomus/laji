@@ -85,7 +85,8 @@ export class SearchQuery implements SearchQueryInterface {
     'annotatedBefore',
     'annotatedLaterThan',
     'firstLoadedLaterThan',
-    'firstLoadedBefore'
+    'firstLoadedBefore',
+    'season',
   ];
 
   obscure = [

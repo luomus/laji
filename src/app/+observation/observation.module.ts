@@ -23,6 +23,7 @@ import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ObservationFormComponent } from './form/observation-form.component';
+import { SeasonComponent } from './form/season/season.component';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import { ObservationFormComponent } from './form/observation-form.component';
     ObservationResultListComponent,
     PieChartComponent, ObservationDownloadComponent, MainResultComponent, ObservationFiltersComponent,
     PillListComponent,
-    ObservationFormComponent
+    ObservationFormComponent,
+    SeasonComponent
   ]
 })
 export class ObservationModule {
