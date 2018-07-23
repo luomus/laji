@@ -54,6 +54,12 @@ export class SeasonComponent {
   }
 
   onChange() {
+    if (this.startMonth && !this.startDay) {
+      this.startDay = '01';
+    }
+    if (this.endMonth && !this.endDay) {
+      this.endDay = '01';
+    }
     if (!this.startDay || !this.startMonth || !this.endDay || !this.endMonth) {
       return;
     }
