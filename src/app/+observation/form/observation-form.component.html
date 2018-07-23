@@ -130,8 +130,8 @@
           [viewFormat]="'DD.MM.YYYY'"
           [otherFormats]="['D.M.YYYY', 'YYYY']"
           [format]="dateFormat"
-          (onSelect)="onQueryChange()"
-          (change)="onQueryChange()"
+          (onSelect)="onFormQueryChange()"
+          (change)="onFormQueryChange()"
           name="timeStart"></laji-datepicker>
       </div>
     </div>
@@ -143,8 +143,8 @@
           [otherFormats]="['D.M.YYYY', 'YYYY']"
           [toLastOfYear]="true"
           [format]="dateFormat"
-          (onSelect)="onQueryChange()"
-          (change)="onQueryChange()"
+          (onSelect)="onFormQueryChange()"
+          (change)="onFormQueryChange()"
           name="timeEnd"></laji-datepicker>
       </div>
     </div>
