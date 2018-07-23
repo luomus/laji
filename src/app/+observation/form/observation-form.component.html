@@ -159,6 +159,47 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="lj-input-wrap">
+        <label>
+          {{'observation.form.loaded' | translate}}:<laji-info>
+          {{'observation.info.loaded' | translate}}
+        </laji-info>
+        </label>
+        <laji-datepicker
+          [(ngModel)]="searchQuery.firstLoadedLaterThan"
+          [viewFormat]="'DD.MM.YYYY'"
+          [otherFormats]="['D.M.YYYY', 'YYYY']"
+          [format]="dateFormat"
+          (onSelect)="onFormQueryChange()"
+          (change)="onFormQueryChange()"
+          name="timeStart"></laji-datepicker>
+      </div>
+    </div>
+    <div class="row">
+      <div class="lj-input-wrap">
+        <laji-datepicker
+          [(ngModel)]="searchQuery.firstLoadedBefore"
+          [viewFormat]="'DD.MM.YYYY'"
+          [otherFormats]="['D.M.YYYY', 'YYYY']"
+          [toLastOfYear]="true"
+          [format]="dateFormat"
+          (onSelect)="onFormQueryChange()"
+          (change)="onFormQueryChange()"
+          name="timeEnd"></laji-datepicker>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-12">
+        <div class="btn-group">
+          <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1, 'loaded')">{{'observations.form.1d' | translate}}</button>
+          <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7, 'loaded')">{{'observations.form.7d' | translate}}</button>
+          <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365, 'loaded')">
+            {{'observation.form.thisYear' | translate}}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
   <div laji-panel
        [open]="showPlace"

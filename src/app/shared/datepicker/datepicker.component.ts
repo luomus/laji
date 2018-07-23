@@ -104,7 +104,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
       }
     }
     if (value == null || !date.isValid()) {
-      this.viewDate = value;
+      this.viewDate = value || '';
     } else {
       this.viewDate = date.format(this.viewFormat);
       this.date = date;

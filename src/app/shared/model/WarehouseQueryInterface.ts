@@ -122,6 +122,8 @@ export interface WarehouseQueryInterface {
   biogeographicalProvinceId?: Array<string>;
   area?: Array<string>;
   time?: Array<string>;
+  firstLoadedLaterThan?: string;
+  firstLoadedBefore?: string;
   yearMonth?: Array<string>;
   dayOfYearBegin?: number;
   dayOfYearEnd?: number;

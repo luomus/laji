@@ -79,16 +79,24 @@ export class ObservationFormComponent implements OnInit {
       });
   }
 
-  updateTime(dates) {
+  updateTime(dates, target = 'time') {
     if (dates === 365) {
       const today = new Date();
       const oneJan = new Date(today.getFullYear(), 0, 1);
       dates = Math.ceil(((+today) - (+oneJan)) / 86400000) - 1;
     }
     const now = moment();
-    this.formQuery.timeStart = now.subtract(dates, 'days').format('YYYY-MM-DD');
-    this.formQuery.timeEnd = '';
-    this.onQueryChange();
+    if (target === 'time') {
+      this.formQuery.timeStart = now.subtract(dates, 'days').format('YYYY-MM-DD');
+      this.formQuery.timeEnd = '';
+      this.onFormQueryChange();
+    } else if (target === 'loaded') {
+      this.searchQuery.firstLoadedLaterThan = now.subtract(dates, 'days').format('YYYY-MM-DD');
+      this.searchQuery.firstLoadedBefore = '';
+      this.onQueryChange();
+    } else {
+      console.error('invalid target for updateTime');
+    }
   }
 
   changeTypeaheadLoading(e: boolean): void {

@@ -83,7 +83,9 @@ export class SearchQuery implements SearchQueryInterface {
     'ykj10kmCenter',
     'qualityIssues',
     'annotatedBefore',
-    'annotatedLaterThan'
+    'annotatedLaterThan',
+    'firstLoadedLaterThan',
+    'firstLoadedBefore'
   ];
 
   obscure = [
@@ -230,7 +232,7 @@ export class SearchQuery implements SearchQueryInterface {
         if (skipParams.indexOf(i) > -1) {
           continue;
         }
-        if (this.query[i] !== undefined) {
+        if (this.query[i] !== undefined && this.query[i] !== '') {
           result[i] =  this.query[i];
         }
       }
