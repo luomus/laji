@@ -111,6 +111,9 @@ export interface WarehouseQueryInterface {
   includeNonValidTaxa?: boolean;
   taxonId?: Array<string>;
   target?: Array<string>;
+  originalTarget?: Array<string>;
+  exactTarget?: Array<string>;
+  originalExactTarget?: Array<string>;
   taxonRankId?: string;
   informalTaxonGroupId?: Array<string>;
   administrativeStatusId?: Array<string>;

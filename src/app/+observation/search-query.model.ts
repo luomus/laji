@@ -24,6 +24,9 @@ export class SearchQuery implements SearchQueryInterface {
   arrayTypes = [
     'taxonId',
     'target',
+    'originalTarget',
+    'exactTarget',
+    'originalExactTarget',
     'informalTaxonGroupId',
     'administrativeStatusId',
     'redListStatusId',
