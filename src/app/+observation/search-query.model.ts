@@ -34,8 +34,11 @@ export class SearchQuery implements SearchQueryInterface {
     'time',
     'keyword',
     'collectionId',
+    'typeOfOccurrenceId',
+    'typeOfOccurrenceIdNot',
     'coordinates',
     'sourceId',
+    'secureLevel',
     'superRecordBasis',
     'recordBasis',
     'lifeStage',
@@ -49,7 +52,10 @@ export class SearchQuery implements SearchQueryInterface {
     'annotationType',
     'namedPlaceId',
     'birdAssociationAreaId',
-    'yearMonth'
+    'yearMonth',
+    'reliabilityOfCollection',
+    'teamMember',
+    'teamMemberId',
   ];
 
   booleanTypes = [
@@ -66,7 +72,10 @@ export class SearchQuery implements SearchQueryInterface {
     'reliable',
     'unidentified',
     'pairCounts',
-    'includeSubCollections'
+    'includeSubCollections',
+    'nativeOccurrence',
+    'breedingSite',
+    'annotated'
   ];
 
   numericTypes = [

@@ -165,7 +165,16 @@ export interface WarehouseQueryInterface {
   annotatedBefore?: Date;
   annotatedLaterThan?: Date;
   namedPlaceId?: Array<string>;
+  typeOfOccurrenceId?: Array<string>;
+  typeOfOccurrenceIdNot?: Array<string>;
   pairCounts?: boolean;
   birdAssociationAreaId?: Array<string>;
+  reliabilityOfCollection?: Array<string>;
+  secureLevel?: Array<string>;
   includeSubCollections?: boolean;
+  nativeOccurrence?: boolean;
+  breedingSite?: boolean;
+  annotated?: boolean;
+  teamMember?: Array<string>;
+  teamMemberId?: Array<string>;
 }
