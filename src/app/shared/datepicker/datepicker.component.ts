@@ -68,9 +68,9 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
 
   public validDate = true;
   public viewDate: string = null;
-  private date: any = moment();
+  public  date: any = moment();
+  public days: CalendarDate[] = [];
   private el: Element;
-  private days: CalendarDate[] = [];
   private currentValue;
 
   private valueSource = new Subject();

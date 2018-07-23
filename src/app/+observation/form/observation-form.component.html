@@ -124,15 +124,15 @@
           {{'observation.form.time' | translate}}:<laji-info>
           {{'observation.info.time' | translate}}
         </laji-info>
-          <laji-datepicker
-            [(ngModel)]="formQuery.timeStart"
-            [viewFormat]="'DD.MM.YYYY'"
-            [otherFormats]="['D.M.YYYY', 'YYYY']"
-            [format]="dateFormat"
-            (onSelect)="onQueryChange()"
-            (change)="onQueryChange()"
-            name="timeStart"></laji-datepicker>
         </label>
+        <laji-datepicker
+          [(ngModel)]="formQuery.timeStart"
+          [viewFormat]="'DD.MM.YYYY'"
+          [otherFormats]="['D.M.YYYY', 'YYYY']"
+          [format]="dateFormat"
+          (onSelect)="onQueryChange()"
+          (change)="onQueryChange()"
+          name="timeStart"></laji-datepicker>
       </div>
     </div>
     <div class="row">
