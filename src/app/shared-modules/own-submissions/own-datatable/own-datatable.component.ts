@@ -16,7 +16,7 @@ import { Person } from '../../../shared/model/Person';
 import { FormService } from '../../../shared/service/form.service';
 import { RouterChildrenEventService } from '../service/router-children-event.service';
 import { Router } from '@angular/router';
-import { DocumentExportService } from './document_export.service';
+import { DocumentExportService } from '../service/document-export.service';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import { ToastsService } from '../../../shared/service/toasts.service';

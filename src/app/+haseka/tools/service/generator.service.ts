@@ -79,7 +79,7 @@ export class GeneratorService {
         XLSX.utils.book_append_sheet(book, this.getInstructionSheet(fields, data.translations), this.sheetNames.info);
         XLSX.utils.book_append_sheet(book, validationSheet, this.sheetNames.vars);
 
-        this.exportService.exportBuffer(XLSX.write(book, {bookType: type, type: 'buffer'}), filename, type);
+        this.exportService.exportArrayBuffer(XLSX.write(book, {bookType: type, type: 'array'}), filename, type);
         next();
       }, () => next());
 

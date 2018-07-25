@@ -10,9 +10,7 @@ export class ExportService {
 
   constructor() { }
 
-  exportBuffer(buffer: any, fileName: string, fileExtension: string) {
-    fileName = fileName.replace('ä', 'a');
-
+  exportArrayBuffer(buffer: any, fileName: string, fileExtension: string) {
     let type;
     if (fileExtension === 'ods') {
       type = this.odsMimeType;
