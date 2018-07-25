@@ -1,5 +1,5 @@
 <ng-container *ngFor="let category of categories; trackBy: trackCategory">
-  <ng-container *ngIf="surveyCategory.includes(category.category); else otherCategory">
+  <ng-container *ngIf="surveyCategory.indexOf(category.category) > -1; else otherCategory">
     <laji-form-category-survey
       [title]="category.category | label:'emptyWhenMissing'"
       [formList]="category.forms"
