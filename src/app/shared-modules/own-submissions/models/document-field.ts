@@ -1,4 +1,4 @@
-export interface DocumentColumn {
+export interface DocumentField {
   value: string,
   label: string,
   used: boolean,

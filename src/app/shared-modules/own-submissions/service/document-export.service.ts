@@ -12,12 +12,12 @@ import { Observable, of as ObservableOf, forkJoin as ObservableForkJoin } from '
 import { map, switchMap, tap } from 'rxjs/operators';
 import { DocumentInfoService } from './document-info.service';
 import { ExportService } from '../../../shared/service/export.service';
-import { DocumentColumn } from '../models/document-column';
+import { DocumentField } from '../models/document-field';
 
 
 @Injectable()
 export class DocumentExportService {
-  private readonly unwindKeys = ['gatherings', 'units', 'identifications'];
+  private readonly unwindPaths = ['gatherings', 'gatherings.units', 'gatherings.units.identifications'];
   private readonly extraFields = ['id', 'formID', 'dateCreated', 'dateEdited'];
   private readonly classPrefixes = {formID: 'MY', dateCreated: 'MZ', dateEdited: 'MZ'};
   private readonly valuePrefixes = {collection: 'HR', person: 'MA'};
@@ -58,7 +58,7 @@ export class DocumentExportService {
               switchMap(fields => {
                 const dataObservables = [];
                 docs.reduce((arr: Observable<any>[], doc: any) => {
-                  if (!this.isEmpty('document', doc, jsonForms[doc.formID])) {
+                  if (!this.isEmpty('', doc, jsonForms[doc.formID])) {
                     arr.push(this.getData(Util.clone(doc), jsonForms[doc.formID], fields));
                   }
                   return arr;
@@ -109,18 +109,7 @@ export class DocumentExportService {
       );
   }
 
-  private convertDataToAoA(fields: DocumentColumn[], data: any) {
-    const getValueByPath = (o: any, path: string) => {
-      const splits = path.split('.');
-      for (let i = 0; i < splits.length; i++) {
-        o = o[splits[i]];
-
-        if (!o) { return null; }
-      }
-
-      return o;
-    };
-
+  private convertDataToAoA(fields: DocumentField[], data: any) {
     if (fields.length < 1) { return []; }
 
     const aoa = [[]];
@@ -134,23 +123,37 @@ export class DocumentExportService {
       aoa.push([]);
 
       for (let j = 0; j < fields.length; j++) {
-        aoa[i + 1].push(getValueByPath(obj, fields[j].value));
+        aoa[i + 1].push(
+          fields[j].value.split('.').reduce((o, s) => {
+            if (o) {
+              return o[s];
+            }
+          }, obj)
+        );
       }
     }
 
     return aoa;
   }
 
-  private getData(obj: any, form: any, fields: DocumentColumn[], path = ''): Observable<any> {
+  private getData(obj: any, form: any, fields: DocumentField[], path = ''): Observable<any> {
     const observables = [];
     let unwindKey: string;
 
     for (const key in obj) {
       if (!obj.hasOwnProperty(key)) { continue; }
+
       const child = obj[key];
+      const fieldName = path + key;
+
       if (child == null || child === '' || (Array.isArray(child) && child.length < 1)) { continue; }
 
-      const fieldArray = fields.filter((f) => (f.value === path + key));
+      if (this.unwindPaths.indexOf(fieldName) !== -1) {
+        unwindKey = key;
+        continue;
+      }
+
+      const fieldArray = fields.filter((f) => (f.value === fieldName));
 
       if (fieldArray.length > 0) {
         const field = fieldArray[0];
@@ -163,10 +166,8 @@ export class DocumentExportService {
             })
           )
         );
-      } else if (this.unwindKeys.indexOf(key) !== -1) {
-        unwindKey = key;
       } else if (typeof child === 'object' && key !== 'geometry') {
-        observables.push(this.getData(child, form, fields, path + key + '.'));
+        observables.push(this.getData(child, form, fields, fieldName + '.'));
       }
     }
 
@@ -178,7 +179,7 @@ export class DocumentExportService {
               const getDataObservables = [];
 
               for (let i = 0; i < obj[unwindKey].length; i++) {
-                if (!this.isEmpty(unwindKey, obj[unwindKey][i], form)) {
+                if (!this.isEmpty(path + unwindKey, obj[unwindKey][i], form)) {
                   getDataObservables.push(this.getData(obj[unwindKey][i], form, fields, path + unwindKey + '.'));
                 }
               }
@@ -210,7 +211,7 @@ export class DocumentExportService {
     return result;
   }
 
-  private getUsedFields(fields: DocumentColumn[]): DocumentColumn[] {
+  private getUsedFields(fields: DocumentField[]): DocumentField[] {
     return fields.reduce((arr, field) => {
       if (field.used) {
         arr.push(field);
@@ -219,7 +220,7 @@ export class DocumentExportService {
     }, []);
   }
 
-  private getAllFields(jsonForms: any): Observable<DocumentColumn[]> {
+  private getAllFields(jsonForms: any): Observable<DocumentField[]> {
     const fieldObservables = this.extraFields.map(field => (
       this.getFieldLabel(field)
         .pipe(
@@ -229,7 +230,7 @@ export class DocumentExportService {
 
     return ObservableForkJoin(fieldObservables)
       .pipe(
-        map((fields: DocumentColumn[]) => {
+        map((fields: DocumentField[]) => {
           let queue = [];
 
           for (const formId in jsonForms) {
@@ -247,9 +248,9 @@ export class DocumentExportService {
             let next = queue.shift();
             const fieldName = next.path + next.name;
 
-            if (this.unwindKeys.indexOf(next.name) === -1 && next.type !== 'fieldset') {
+            if (this.unwindPaths.indexOf(fieldName) === -1 && next.type !== 'fieldset') {
               if (fields.filter((f) => (f.value === fieldName)).length === 0) {
-                const field: DocumentColumn = {
+                const field: DocumentField = {
                   value: fieldName,
                   label: next.label,
                   used: false
@@ -286,10 +287,10 @@ export class DocumentExportService {
 
   private sortQueue(queue: any[]) {
     return queue.sort((a, b) => {
-      if (this.unwindKeys.indexOf(a.name) !== -1) {
+      if (this.unwindPaths.indexOf(a.path + a.name) !== -1) {
         return 1;
       }
-      if (this.unwindKeys.indexOf(b.name) !== -1) {
+      if (this.unwindPaths.indexOf(b.path + b.name) !== -1) {
         return -1;
       }
       if (a.type === 'fieldset') {
@@ -370,8 +371,8 @@ export class DocumentExportService {
     return ObservableOf(fieldName.charAt(0).toUpperCase() + fieldName.slice(1))
   }
 
-  private isEmpty(key: string, obj: any, form: any): boolean {
-    if (key === 'document') {
+  private isEmpty(path: string, obj: any, form: any): boolean {
+    if (path === '') {
       if (!obj.gatherings || obj.gatherings.length < 1) { return true; }
 
       for (let i = 0; i < obj.gatherings.length; i++) {
@@ -379,15 +380,15 @@ export class DocumentExportService {
       }
 
       return true;
-    } else if (key === 'gatherings') {
+    } else if (path === 'gatherings') {
       if (!obj.units || obj.units.length < 1) { return true; }
 
       for (let i = 0; i < obj.units.length; i++) {
-        if (!this.isEmpty('units', obj.units[i], form)) { return false; }
+        if (!this.isEmpty('gatherings.units', obj.units[i], form)) { return false; }
       }
 
       return true;
-    } else if (key === 'units') {
+    } else if (path === 'gatherings.units') {
       return DocumentInfoService.isEmptyUnit(obj, form);
     }
 

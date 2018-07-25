@@ -69,9 +69,12 @@ export class TaxonExportService {
     for (let i = 0; i < data.length; i++) {
       aoa.push([]);
       for (let j = 0; j < cols.length; j++) {
-        const value = cols[j].name.split('/').reduce((o, s) => {
-          return o[s];
+        const value = cols[j].name.split('.').reduce((o, s) => {
+          if (o) {
+            return o[s];
+          }
         }, data[i]);
+
         const template = cols[j].cellTemplate;
         aoa[i + 1].push(value);
 
