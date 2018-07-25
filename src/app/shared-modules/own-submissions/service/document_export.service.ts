@@ -1,0 +1,396 @@
+import { Injectable } from '@angular/core';
+import { Document } from '../../../shared/model/Document';
+import { Util } from '../../../shared/service/util.service';
+import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
+import { UserService } from '../../../shared/service/user.service';
+import { CollectionService } from '../../../shared/service/collection.service';
+import { FormService } from '../../../shared/service/form.service';
+import { TranslateService } from '@ngx-translate/core';
+import { geoJSONToISO6709 } from 'laji-map/lib/utils';
+import { write as XLSXWrite, utils as XLSXUtils } from 'xlsx';
+import { Observable, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { DocumentInfoService } from './document-info.service';
+import { ExportService } from '../../../shared/service/export.service';
+import { DocumentColumn } from '../models/document-column';
+
+
+@Injectable()
+export class DocumentExportService {
+  private readonly unwindKeys = ['gatherings', 'units', 'identifications'];
+  private readonly extraFields = ['id', 'formID', 'dateCreated', 'dateEdited'];
+  private readonly classPrefixes = {formID: 'MY', dateCreated: 'MZ', dateEdited: 'MZ'};
+  private readonly valuePrefixes = {collection: 'HR', person: 'MA'};
+
+  constructor(
+    private translate: TranslateService,
+    private labelService: TriplestoreLabelService,
+    private userService: UserService,
+    private collectionService: CollectionService,
+    private formService: FormService,
+    private exportService: ExportService
+  ) {}
+
+  public downloadDocuments(docs: Document[], year: number, type: string) {
+    this.getBuffer(docs, type).subscribe((buffer) => {
+      this.translate.get('haseka.submissions.submissions').subscribe((msg) => {
+        const fileName = msg + '_' + year;
+        this.exportService.exportArrayBuffer(buffer, fileName, type);
+      });
+    });
+  }
+
+  public downloadDocument(doc: Document, type: string) {
+    this.getBuffer([doc], type).subscribe((buffer) => {
+      this.translate.get('haseka.submissions.submission').subscribe((msg) => {
+        const fileName = msg + '_' + doc.id.split('.')[1];
+        this.exportService.exportArrayBuffer(buffer, fileName, type);
+      });
+    });
+  }
+
+  private getBuffer(docs: Document[], type: any): Observable<string> {
+    return this.getJsonForms(docs)
+      .pipe(
+        switchMap(jsonForms => {
+          return this.getAllFields(jsonForms)
+            .pipe(
+              switchMap(fields => {
+                const dataObservables = [];
+                docs.reduce((arr: Observable<any>[], doc: any) => {
+                  if (!this.isEmpty('document', doc, jsonForms[doc.formID])) {
+                    arr.push(this.getData(Util.clone(doc), jsonForms[doc.formID], fields));
+                  }
+                  return arr;
+                }, dataObservables);
+
+                return (dataObservables.length > 0 ? ObservableForkJoin(dataObservables) : ObservableOf([]))
+                  .pipe(
+                    map(data => {
+                      const mergedData = [].concat.apply([], data);
+
+                      const aoa = this.convertDataToAoA(this.getUsedFields(fields), mergedData);
+                      const sheet = XLSXUtils.aoa_to_sheet(aoa);
+
+                      if (type === 'csv') {
+                        return XLSXUtils.sheet_to_csv(sheet);
+                      } else if (type === 'tsv') {
+                        return XLSXUtils.sheet_to_csv(sheet, {FS: '\t'});
+                      }
+
+                      const book = XLSXUtils.book_new();
+                      XLSXUtils.book_append_sheet(book, sheet);
+                      return XLSXWrite(book, {bookType: type, type: 'array'});
+                    })
+                  );
+              })
+            );
+        })
+      );
+  }
+
+  private getJsonForms(docs: Document[], jsonForms = {}, idx = 0): Observable<any> {
+    if (idx >= docs.length) {
+      return ObservableOf(jsonForms);
+    }
+
+    const formId = docs[idx].formID;
+
+    if (jsonForms[formId]) {
+      return this.getJsonForms(docs, jsonForms, idx + 1);
+    }
+
+    return this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
+      .pipe(
+        switchMap((jsonForm) => {
+          jsonForms[formId] = jsonForm;
+          return this.getJsonForms(docs, jsonForms, idx + 1);
+        })
+      );
+  }
+
+  private convertDataToAoA(fields: DocumentColumn[], data: any) {
+    const getValueByPath = (o: any, path: string) => {
+      const splits = path.split('.');
+      for (let i = 0; i < splits.length; i++) {
+        o = o[splits[i]];
+
+        if (!o) { return null; }
+      }
+
+      return o;
+    };
+
+    if (fields.length < 1) { return []; }
+
+    const aoa = [[]];
+
+    for (let i = 0; i < fields.length; i++) {
+      aoa[0].push(fields[i].label);
+    }
+
+    for (let i = 0; i < data.length; i++) {
+      const obj = data[i];
+      aoa.push([]);
+
+      for (let j = 0; j < fields.length; j++) {
+        aoa[i + 1].push(getValueByPath(obj, fields[j].value));
+      }
+    }
+
+    return aoa;
+  }
+
+  private getData(obj: any, form: any, fields: DocumentColumn[], path = ''): Observable<any> {
+    const observables = [];
+    let unwindKey: string;
+
+    for (const key in obj) {
+      if (!obj.hasOwnProperty(key)) { continue; }
+      const child = obj[key];
+      if (child == null || child === '' || (Array.isArray(child) && child.length < 1)) { continue; }
+
+      const fieldArray = fields.filter((f) => (f.value === path + key));
+
+      if (fieldArray.length > 0) {
+        const field = fieldArray[0];
+        field.used = true;
+
+        observables.push(this.getLabelToValue(key, child, field)
+          .pipe(
+            tap((label) => {
+              obj[key] = label;
+            })
+          )
+        );
+      } else if (this.unwindKeys.indexOf(key) !== -1) {
+        unwindKey = key;
+      } else if (typeof child === 'object' && key !== 'geometry') {
+        observables.push(this.getData(child, form, fields, path + key + '.'));
+      }
+    }
+
+    return (observables.length > 0 ? ObservableForkJoin(observables) : ObservableOf([]))
+      .pipe(
+        switchMap(
+          () => {
+            if (unwindKey) {
+              const getDataObservables = [];
+
+              for (let i = 0; i < obj[unwindKey].length; i++) {
+                if (!this.isEmpty(unwindKey, obj[unwindKey][i], form)) {
+                  getDataObservables.push(this.getData(obj[unwindKey][i], form, fields, path + unwindKey + '.'));
+                }
+              }
+
+              return (getDataObservables.length > 0 ? ObservableForkJoin(getDataObservables) : ObservableOf([]))
+                .pipe(
+                  map((arrays) => {
+                    obj[unwindKey] = [].concat.apply([], arrays);
+                    return this.unwind(unwindKey, obj);
+                  })
+                );
+            } else {
+              return ObservableOf([obj]);
+            }
+        })
+      );
+  }
+
+  private unwind(key: string, obj: any) {
+    if (obj[key].length < 1) {
+      return [obj];
+    }
+
+    const result = [];
+    for (let i = 0; i < obj[key].length; i++) {
+      result.push(Util.clone(obj));
+      result[i][key] = obj[key][i];
+    }
+    return result;
+  }
+
+  private getUsedFields(fields: DocumentColumn[]): DocumentColumn[] {
+    return fields.reduce((arr, field) => {
+      if (field.used) {
+        arr.push(field);
+      }
+      return arr;
+    }, []);
+  }
+
+  private getAllFields(jsonForms: any): Observable<DocumentColumn[]> {
+    const fieldObservables = this.extraFields.map(field => (
+      this.getFieldLabel(field)
+        .pipe(
+          map(label => ({value: field, label: label, used: false}))
+        )
+    ));
+
+    return ObservableForkJoin(fieldObservables)
+      .pipe(
+        map((fields: DocumentColumn[]) => {
+          let queue = [];
+
+          for (const formId in jsonForms) {
+            if (!jsonForms.hasOwnProperty(formId)) {
+              continue;
+            }
+            const form = jsonForms[formId];
+            for (let i = 0; i < form.fields.length; i++) {
+              queue.push({...form.fields[i], path: ''});
+            }
+          }
+          queue = this.sortQueue(queue);
+
+          while (queue.length > 0) {
+            let next = queue.shift();
+            const fieldName = next.path + next.name;
+
+            if (this.unwindKeys.indexOf(next.name) === -1 && next.type !== 'fieldset') {
+              if (fields.filter((f) => (f.value === fieldName)).length === 0) {
+                const field: DocumentColumn = {
+                  value: fieldName,
+                  label: next.label,
+                  used: false
+                };
+                if (next.options && next.options.value_options) {
+                  field.enums = next.options.value_options;
+                }
+                fields.push(field);
+              }
+            } else {
+              while (true) {
+                for (let i = 0; i < next.fields.length; i++) {
+                  queue.push({...next.fields[i], path: fieldName + '.'})
+                }
+
+                if (queue.length < 1) {
+                  break;
+                }
+
+                const upNext = queue[0];
+                if (upNext.name === next.name) {
+                  next = queue.shift();
+                } else {
+                  break;
+                }
+              }
+              queue = this.sortQueue(queue);
+            }
+          }
+          return fields;
+        })
+      );
+  }
+
+  private sortQueue(queue: any[]) {
+    return queue.sort((a, b) => {
+      if (this.unwindKeys.indexOf(a.name) !== -1) {
+        return 1;
+      }
+      if (this.unwindKeys.indexOf(b.name) !== -1) {
+        return -1;
+      }
+      if (a.type === 'fieldset') {
+        return 1;
+      }
+      if (b.type === 'fieldset') {
+        return -1;
+      }
+      return 0;
+    });
+  }
+
+  private getLabelToValue(key: string, obj: any, fieldData: any): Observable<any> {
+    let value = '';
+
+    if (key === 'geometry') {
+      value += geoJSONToISO6709({
+        type: 'FeatureCollection',
+        features: [{
+          type: 'Feature',
+          geometry: obj,
+        }]}).replace(/\n$/, '');
+    } else if (Array.isArray(obj)) {
+      return ObservableForkJoin(obj.map((labelKey) => {
+        return this.getDataLabel(labelKey, fieldData);
+      }))
+        .pipe(map(array => array.join(', ')));
+    } else {
+      return this.getDataLabel(obj, fieldData);
+    }
+
+    return ObservableOf(value);
+  }
+
+  private getDataLabel(key: string, fieldData: any): Observable<string> {
+    if (typeof key !== 'string') {
+      return ObservableOf(JSON.stringify(key));
+    }
+
+    if (fieldData && fieldData.enums && fieldData.enums[key]) {
+      return ObservableOf(fieldData.enums[key]);
+    }
+
+    if (key.match(new RegExp('^' + this.valuePrefixes.person + '\.[0-9]+$'))) {
+      return this.userService
+        .getUser(key)
+        .pipe(
+          map((user) => {
+            return user.fullName || key;
+          })
+        );
+    }
+
+    if (key.match(new RegExp('^' + this.valuePrefixes.collection + '\.[0-9]+$'))) {
+      return this.collectionService
+        .getName(key, this.translate.currentLang)
+        .pipe(
+          map((name: any[]) => {
+            return name.length > 0 && name[0].value ? name[0].value : key;
+          })
+        );
+    }
+
+    return ObservableOf(key);
+  }
+
+  private getFieldLabel(fieldName: string): Observable<string> {
+    if (this.classPrefixes[fieldName]) {
+      return this.labelService
+        .get(this.classPrefixes[fieldName] + '.' + fieldName, this.translate.currentLang)
+        .pipe(
+          map((label) => {
+            return label || fieldName;
+          })
+        );
+    }
+
+    return ObservableOf(fieldName.charAt(0).toUpperCase() + fieldName.slice(1))
+  }
+
+  private isEmpty(key: string, obj: any, form: any): boolean {
+    if (key === 'document') {
+      if (!obj.gatherings || obj.gatherings.length < 1) { return true; }
+
+      for (let i = 0; i < obj.gatherings.length; i++) {
+        if (!this.isEmpty('gatherings', obj.gatherings[i], form)) { return false; }
+      }
+
+      return true;
+    } else if (key === 'gatherings') {
+      if (!obj.units || obj.units.length < 1) { return true; }
+
+      for (let i = 0; i < obj.units.length; i++) {
+        if (!this.isEmpty('units', obj.units[i], form)) { return false; }
+      }
+
+      return true;
+    } else if (key === 'units') {
+      return DocumentInfoService.isEmptyUnit(obj, form);
+    }
+
+    return false;
+  }
+}

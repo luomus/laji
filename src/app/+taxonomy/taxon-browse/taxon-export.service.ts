@@ -28,7 +28,7 @@ export class TaxonExportService {
           return this.translate.get('taxon-export')
             .pipe(
               map((fileName) => {
-                this.exportService.exportBuffer(buffer, fileName, type);
+                this.exportService.exportArrayBuffer(buffer, fileName, type);
                 return true;
               })
             )
@@ -49,7 +49,7 @@ export class TaxonExportService {
           const book = XLSX.utils.book_new();
           XLSX.utils.book_append_sheet(book, sheet);
 
-          return XLSX.write(book, {bookType: type, type: 'buffer'});
+          return XLSX.write(book, {bookType: type, type: 'array'});
         })
       );
   }
