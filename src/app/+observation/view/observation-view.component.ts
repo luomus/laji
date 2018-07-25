@@ -148,7 +148,8 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
       zeroObservations: undefined,
       onlyFromCollectionSystems: undefined,
       asEditor: false,
-      asObserver: false
+      asObserver: false,
+      coordinateIntersection: undefined
     };
 
     if (refresh) {
@@ -221,6 +222,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
       onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3'], true),
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
       asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
+      coordinateIntersection: true
     };
   }
 

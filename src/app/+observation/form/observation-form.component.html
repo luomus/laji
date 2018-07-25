@@ -56,7 +56,7 @@
   </div>
   <div class="form-group">
     <div class="col-sm-12 link" (click)="taxonExtra = !taxonExtra">
-      {{'observation.extra' | translate}}
+      {{'observation.extra.taxon' | translate}} <i class="glyphicon glyphicon-cog"></i>
     </div>
   </div>
   <ng-container *ngIf="taxonExtra">
@@ -254,6 +254,19 @@
       </div>
     </div>
     <div class="form-group">
+      <label class="col-lg-12">
+        {{'observation.form.area' | translate}}:
+      </label>
+      <div class="col-lg-12">
+        <input
+          class="form-control input-sm"
+          type="text"
+          name="documentId"
+          (ngModelChange)="onQueryChange()"
+          [(ngModel)]="searchQuery.area">
+      </div>
+    </div>
+    <div class="form-group">
       <div class="col-sm-12">
         {{'observation.form.map.intro'|translate}}
       </div>
@@ -275,39 +288,70 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-12">
-        {{'observation.form.coordinateAccuracyMax' | translate}}:
-        <div class="input-group" style="max-width: 110px;">
-          <input type="number" name="coordinateAccuracyMax"
-                 style="padding: 3px 7px;"
-                 class="form-control input-sm"
-                 (change)="onAccuracyValueChange()"
-                 [(ngModel)]="searchQuery.coordinateAccuracyMax">
-          <span class="input-group-addon">m</span>
-        </div>
-      </label>
+      <div class="col-sm-12 link" (click)="areaExtra = !areaExtra">
+        {{'observation.extra.area' | translate}} <i class="glyphicon glyphicon-cog"></i>
+      </div>
     </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <input id="logCoordinateAccuracyMax"
-               [ngClass]="{faded: !searchQuery.coordinateAccuracyMax}"
-               type="range" name="logCoordinateAccuracyMax"
-               class="form-control input-sm"
-               step="1"
-               min="0"
-               max="5"
-               list="accuracyPowers"
-               (click)="enableAccuracySlider()"
-               (change)="onAccuracySliderChange()"
-               [(ngModel)]="logCoordinateAccuracyMax">
-        <datalist id="accuracyPowers">
-          <option value="0">
-          <option value="1">
-          <option value="2">
-          <option value="3">
-          <option value="4">
-          <option value="5">
-        </datalist>
+    <div *ngIf="areaExtra">
+      <div class="form-group">
+        <label class="col-lg-12">
+          <input type="checkbox"
+                 [ngModel]="formQuery.coordinateIntersection"
+                 (ngModelChange)="onFormQueryChange()"
+                 name="onlyPreservedSpecimen">
+          {{'observation.form.coordinateIntersectionn' | translate}}
+        </label>
+      </div>
+      <div class="row">
+        <label class="col-sm-12">
+          {{'observation.form.coordinateAccuracyMax' | translate}}:
+          <div class="input-group" style="max-width: 110px;">
+            <input type="number" name="coordinateAccuracyMax"
+                   style="padding: 3px 7px;"
+                   class="form-control input-sm"
+                   (change)="onAccuracyValueChange()"
+                   [(ngModel)]="searchQuery.coordinateAccuracyMax">
+            <span class="input-group-addon">m</span>
+          </div>
+        </label>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <input id="logCoordinateAccuracyMax"
+                 [ngClass]="{faded: !searchQuery.coordinateAccuracyMax}"
+                 type="range" name="logCoordinateAccuracyMax"
+                 class="form-control input-sm"
+                 step="1"
+                 min="0"
+                 max="5"
+                 list="accuracyPowers"
+                 (click)="enableAccuracySlider()"
+                 (change)="onAccuracySliderChange()"
+                 [(ngModel)]="logCoordinateAccuracyMax">
+          <datalist id="accuracyPowers">
+            <option value="0">
+            <option value="1">
+            <option value="2">
+            <option value="3">
+            <option value="4">
+            <option value="5">
+          </datalist>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true">
+    <div class="form-group">
+      <label class="col-lg-12">
+        {{'observation.form.team' | translate}}:
+      </label>
+      <div class="col-lg-12">
+        <input
+          class="form-control input-sm"
+          type="text"
+          name="documentId"
+          (ngModelChange)="onQueryChange()"
+          [(ngModel)]="searchQuery.teamMember">
       </div>
     </div>
   </div>
@@ -454,6 +498,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <laji-metadata-select
+          [info]="'observation.info.adminStatus' | translate"
           [(ngModel)]="searchQuery.administrativeStatusId"
           (ngModelChange)="onAdministrativeStatusChange()"
           [multiple]="true"
@@ -466,6 +511,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <laji-metadata-select
+          [info]="'observation.info.redListStatus' | translate"
           [(ngModel)]="searchQuery.redListStatusId"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
@@ -480,33 +526,13 @@
       <div class="col-sm-12">
         <label>
           <input type="checkbox"
-                 [ngModel]="searchQuery.finnish"
-                 (ngModelChange)="onCheckBoxToggle('finnish')"
-                 name="finnish">
-          {{'observation.form.finnish' | translate}}
-        </label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <label>
-          <input type="checkbox"
-                 [ngModel]="formQuery.isNotFinnish"
-                 (ngModelChange)="onCheckBoxToggle('finnish', false, false)"
-                 name="isNotFinnish">
-          {{'observation.form.nonFinnish' | translate}}
-        </label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <label>
-          <input type="checkbox"
                  [ngModel]="searchQuery.invasive"
                  (ngModelChange)="onCheckBoxToggle('invasive')"
                  name="invasive">
           {{'observation.form.invasive' | translate}}
-        </label>
+        </label><laji-info>
+        {{'observation.info.invasive' | translate}}
+      </laji-info>
       </div>
     </div>
     <div class="row">
@@ -517,6 +543,31 @@
                  (ngModelChange)="onCheckBoxToggle('invasive', false, false)"
                  name="isNotInvasive">
           {{'observation.form.nonInvasive' | translate}}
+        </label>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-sm-12">
+        <label>
+          <input type="checkbox"
+                 [ngModel]="searchQuery.finnish"
+                 (ngModelChange)="onCheckBoxToggle('finnish')"
+                 name="finnish">
+          {{'observation.form.finnish' | translate}}
+        </label><laji-info>
+        {{'observation.info.finnish' | translate}}
+      </laji-info>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <label>
+          <input type="checkbox"
+                 [ngModel]="formQuery.isNotFinnish"
+                 (ngModelChange)="onCheckBoxToggle('finnish', false, false)"
+                 name="isNotFinnish">
+          {{'observation.form.nonFinnish' | translate}}
         </label>
       </div>
     </div>
@@ -578,29 +629,53 @@
       </div>
     </div>
   </div>
-  <div laji-panel [title]="'observation.form.other' | translate" [autoToggle]="true">
+  <div laji-panel [title]="'observation.form.images' | translate" [autoToggle]="true">
     <div class="row">
       <div class="col-sm-12">
         <label>
           <input type="checkbox"
-                 [ngModel]="searchQuery.hasMedia"
-                 (ngModelChange)="onCheckBoxToggle('hasMedia')"
+                 [ngModel]="searchQuery.hasUnitMedia"
+                 (ngModelChange)="onCheckBoxToggle('hasUnitMedia')"
                  name="hasMedia">
-          {{'observation.form.hasMedia' | translate}}
+          {{'observation.form.hasUnitMedia' | translate}}
         </label>
       </div>
     </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <label>
+          <input type="checkbox"
+                 [ngModel]="searchQuery.hasGatheringMedia"
+                 (ngModelChange)="onCheckBoxToggle('hasGatheringMedia')"
+                 name="hasMedia">
+          {{'observation.form.hasGatheringMedia' | translate}}
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <label>
+          <input type="checkbox"
+                 [ngModel]="searchQuery.hasDocumentMedia"
+                 (ngModelChange)="onCheckBoxToggle('hasDocumentMedia')"
+                 name="hasMedia">
+          {{'observation.form.hasDocumentMedia' | translate}}
+        </label>
+      </div>
+    </div>
+    <hr>
     <div class="row">
       <div class="col-sm-12">
         <label>
           <input type="checkbox"
                  [ngModel]="formQuery.hasNotMedia"
-                 (ngModelChange)="onCheckBoxToggle('hasMedia', false, false)"
+                 (ngModelChange)="onCheckBoxToggle('hasUnitMedia', false, false)"
                  name="hasNotMedia">
           {{'observation.form.hasNotMedia' | translate}}
         </label>
       </div>
     </div>
+    <!--
     <div class="row">
       <div class="col-sm-12">
         <laji-metadata-select
@@ -657,6 +732,53 @@
                  (change)="onCheckBoxToggle('qualityIssues', 'ONLY_ISSUES')"
                  name="qualityIssues">
           {{'observation.form.issueOnly' | translate}}
+        </label>
+      </div>
+    </div>
+    -->
+  </div>
+  <div laji-panel [title]="'observation.form.securedPanel' | translate" [autoToggle]="true">
+    <div class="form-group">
+      <div class="col-sm-12">
+        <label>
+          <input type="checkbox"
+                 [checked]="searchQuery.secured"
+                 (change)="onCheckBoxToggle('secured', true)"
+                 name="qualityIssues">
+          {{'observation.form.secured' | translate}}<laji-info>
+          {{'observation.info.secured' | translate}}
+        </laji-info>
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [info]="'observation.info.secureLevel' | translate"
+          [(ngModel)]="searchQuery.secureLevel"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [useFilter]="false"
+          [mapToWarehouse]="true"
+          [skip]="['MX.secureLevelNoShow']"
+          [placeholder]="'observation.form.secureLevel'"
+          name="secureLevel"
+          [alt]="'MX.secureLevels'"
+          [lang]="lang"></laji-metadata-select>
+      </div>
+    </div>
+  </div>
+  <div laji-panel [title]="'observation.form.identify' | translate" [autoToggle]="true">
+    <div class="form-group">
+      <div class="col-sm-12">
+        <label>
+          <input type="checkbox"
+                 [checked]="searchQuery.unidentified"
+                 (change)="onCheckBoxToggle('unidentified', true)"
+                 name="qualityIssues">
+          {{'observation.form.unidentified' | translate}}<laji-info>
+          {{'observation.info.unidentified' | translate}}
+        </laji-info>
         </label>
       </div>
     </div>

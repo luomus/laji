@@ -29,7 +29,8 @@ export class ObservationFormComponent implements OnInit {
 
   areaType = AreaType;
   dataSource: Observable<any>;
-  taxonExtra = true;
+  taxonExtra = false;
+  areaExtra = false;
   typeaheadLoading = false;
   autocompleteLimit = 10;
   logCoordinateAccuracyMax = 4;
@@ -250,8 +251,9 @@ export class ObservationFormComponent implements OnInit {
     query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? [formQuery.informalTaxonGroupId] : undefined;
     query.invasive = formQuery.isNotInvasive ? false : query.invasive;
     query.finnish = formQuery.isNotFinnish ? false : query.finnish;
-    query.hasMedia = formQuery.hasNotMedia ? false : query.hasMedia;
+    query.hasMedia = formQuery.hasNotMedia ? false : query.hasUnitMedia;
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
+    query._coordinatesIntersection = formQuery.coordinateIntersection ? ':1' : ':0';
     if (formQuery.allInvasiveSpecies) {
       query.administrativeStatusId = this.invasiveStatuses.map(val => 'MX.' + val);
     }

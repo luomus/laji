@@ -151,6 +151,10 @@ export class SearchQuery implements SearchQueryInterface {
       }
     }
 
+    if (query['_coordinatesIntersection'] && this.query['coordinates']) {
+      this.query['coordinates'] = this.query['coordinates'].map(coordinate => coordinate + query['_coordinatesIntersection']);
+    }
+
     if (typeof query['page'] !== 'undefined') {
       this.page = +query['page'];
     }
@@ -256,6 +260,19 @@ export class SearchQuery implements SearchQueryInterface {
         }
         if (this.query[i] !== undefined) {
           result[i] = obscure ? 'true' : this.query[i];
+        }
+      }
+    }
+
+    if (result.coordinates) {
+      for (let i = 0; i < result.coordinates.length; i++) {
+        const coordinate = result.coordinates[i];
+        const parts = coordinate.split(':');
+        const last = parts.pop();
+        if (parts.length > 1 && (last === '0' || last === '1')) {
+          console.log(coordinate, parts, last);
+          result.coordinates[i] = parts.join(':');
+          result._coordinatesIntersection = ':' + last;
         }
       }
     }

@@ -1,4 +1,5 @@
 export interface ObservationFormQuery {
+  coordinateIntersection: boolean;
   taxon: string;
   timeStart: string;
   timeEnd: string;

@@ -11,6 +11,7 @@ import { AreaService, AreaType } from '../../../shared/service/area.service';
 import { SourceService } from '../../../shared/service/source.service';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
+import { map } from 'rxjs/operators';
 
 export interface MetadataSelectPick {
   [field: string]: string;
@@ -41,6 +42,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   @Input() useFilter = true;
   @Input() firstOptions = [];
   @Input() info: string;
+  @Input() skip: string[];
 
   _options: {id: string, value: string}[] = [];
   active = [];
@@ -230,8 +232,10 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
       }
     }
     this.shouldSort = false;
-    return this.metadataService.getRange(this.alt)
-      .map(range => range.map(options => ({id: options.id, value: MultiLangService.getValue(options.value, this.lang)})));
+    return this.metadataService.getRange(this.alt).pipe(
+      map(range => range.map(options => ({id: options.id, value: MultiLangService.getValue(options.value, this.lang)}))),
+      map(options => this.skip ? options.filter(option => this.skip.indexOf(option.id) === -1) : options)
+    );
   }
 
   private pickValue(data) {

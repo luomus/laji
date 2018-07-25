@@ -100,7 +100,7 @@ export class MetadataService {
    *
    * @param range
    */
-  getRange(range: string) {
+  getRange(range: string): Observable<any[]> {
     return this.getAllRanges().pipe(
       map(data => data[range] || [] )
     );
