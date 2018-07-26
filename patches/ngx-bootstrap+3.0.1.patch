@@ -1,4 +1,5 @@
-patch-package
+diff --git a/node_modules/ngx-bootstrap/typeahead/typeahead-container.component.js b/node_modules/ngx-bootstrap/typeahead/typeahead-container.component.js
+index 72dc51e..2b0c7dc 100644
 --- a/node_modules/ngx-bootstrap/typeahead/typeahead-container.component.js
 +++ b/node_modules/ngx-bootstrap/typeahead/typeahead-container.component.js
 @@ -5,6 +5,7 @@ var TypeaheadContainerComponent = /** @class */ (function () {
@@ -28,6 +29,8 @@ patch-package
      };
      TypeaheadContainerComponent.prototype.prevActiveMatch = function () {
          var index = this.matches.indexOf(this._active);
+diff --git a/node_modules/ngx-bootstrap/typeahead/typeahead.directive.js b/node_modules/ngx-bootstrap/typeahead/typeahead.directive.js
+index 20047a9..bc3ffb9 100644
 --- a/node_modules/ngx-bootstrap/typeahead/typeahead.directive.js
 +++ b/node_modules/ngx-bootstrap/typeahead/typeahead.directive.js
 @@ -43,6 +43,8 @@ var TypeaheadDirective = /** @class */ (function () {
@@ -83,7 +86,9 @@ patch-package
          "typeaheadLoading": [{ type: Output },],
          "typeaheadNoResults": [{ type: Output },],
          "typeaheadOnSelect": [{ type: Output },],
+diff --git a/node_modules/ngx-bootstrap/typeahead/typeahead.directive.js.orig b/node_modules/ngx-bootstrap/typeahead/typeahead.directive.js.orig
 new file mode 100644
+index 0000000..20047a9
 --- /dev/null
 +++ b/node_modules/ngx-bootstrap/typeahead/typeahead.directive.js.orig
 @@ -0,0 +1,383 @@
@@ -471,6 +476,8 @@ new file mode 100644
 +export { TypeaheadDirective };
 +//# sourceMappingURL=typeahead.directive.js.map
 \ No newline at end of file
+diff --git a/node_modules/ngx-bootstrap/typeahead/typeahead.directive.metadata.json b/node_modules/ngx-bootstrap/typeahead/typeahead.directive.metadata.json
+index 43dd9de..e61343c 100644
 --- a/node_modules/ngx-bootstrap/typeahead/typeahead.directive.metadata.json
 +++ b/node_modules/ngx-bootstrap/typeahead/typeahead.directive.metadata.json
 @@ -1 +1 @@

@@ -112,7 +112,7 @@
     "karma-coverage-istanbul-reporter": "2.0.1",
     "karma-jasmine": "1.1.2",
     "karma-jasmine-html-reporter": "1.1.0",
-    "patch-package": "^5.0.0",
+    "patch-package": "^6.0.0-9",
     "postinstall-prepare": "^1.0.1",
     "protractor": "5.3.2",
     "regexp-replace-loader": "^1.0.1",
