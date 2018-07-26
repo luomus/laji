@@ -12,7 +12,7 @@ import { Observable, of as ObservableOf, forkJoin as ObservableForkJoin } from '
 import { map, switchMap, tap } from 'rxjs/operators';
 import { DocumentInfoService } from './document-info.service';
 import { ExportService } from '../../../shared/service/export.service';
-import { DocumentField } from '../models/document-field';
+import { DocumentFieldNode, DocumentField } from '../models/document-field';
 
 
 @Injectable()
@@ -49,17 +49,17 @@ export class DocumentExportService {
     });
   }
 
-  private getBuffer(docs: Document[], type: any): Observable<string> {
+  private getBuffer(docs: Document[], type: any): Observable<any> {
     return this.getJsonForms(docs)
       .pipe(
         switchMap(jsonForms => {
           return this.getAllFields(jsonForms)
             .pipe(
-              switchMap(fields => {
+              switchMap(({fields: fields, fieldStructure: fieldStructure}) => {
                 const dataObservables = [];
                 docs.reduce((arr: Observable<any>[], doc: any) => {
                   if (!this.isEmpty('', doc, jsonForms[doc.formID])) {
-                    arr.push(this.getData(Util.clone(doc), jsonForms[doc.formID], fields));
+                    arr.push(this.getData(Util.clone(doc), jsonForms[doc.formID], fieldStructure));
                   }
                   return arr;
                 }, dataObservables);
@@ -136,38 +136,43 @@ export class DocumentExportService {
     return aoa;
   }
 
-  private getData(obj: any, form: any, fields: DocumentField[], path = ''): Observable<any> {
+  private getData(obj: any, form: any, fieldData: DocumentFieldNode, path = ''): Observable<any> {
     const observables = [];
     let unwindKey: string;
 
     for (const key in obj) {
-      if (!obj.hasOwnProperty(key)) { continue; }
+      if (!obj.hasOwnProperty(key) || key.charAt(0) === '@') {
+        continue;
+      }
 
       const child = obj[key];
       const fieldName = path + key;
 
-      if (child == null || child === '' || (Array.isArray(child) && child.length < 1)) { continue; }
+      if (child == null || child === '' || (Array.isArray(child) && child.length < 1)) {
+        continue;
+      }
 
       if (this.unwindPaths.indexOf(fieldName) !== -1) {
         unwindKey = key;
         continue;
       }
 
-      const fieldArray = fields.filter((f) => (f.value === fieldName));
+      const field = this.getValueByPath(fieldName, fieldData);
 
-      if (fieldArray.length > 0) {
-        const field = fieldArray[0];
-        field.used = true;
+      if (field) {
+        if (field.value === fieldName) {
+          field.used = true;
 
-        observables.push(this.getLabelToValue(key, child, field)
-          .pipe(
-            tap((label) => {
-              obj[key] = label;
-            })
-          )
-        );
-      } else if (typeof child === 'object' && key !== 'geometry') {
-        observables.push(this.getData(child, form, fields, fieldName + '.'));
+          observables.push(this.getLabelToValue(key, child, field)
+            .pipe(
+              tap((label) => {
+                obj[key] = label;
+              })
+            )
+          );
+        } else {
+          observables.push(this.getData(child, form, fieldData, fieldName + '.'));
+        }
       }
     }
 
@@ -180,7 +185,7 @@ export class DocumentExportService {
 
               for (let i = 0; i < obj[unwindKey].length; i++) {
                 if (!this.isEmpty(path + unwindKey, obj[unwindKey][i], form)) {
-                  getDataObservables.push(this.getData(obj[unwindKey][i], form, fields, path + unwindKey + '.'));
+                  getDataObservables.push(this.getData(obj[unwindKey][i], form, fieldData, path + unwindKey + '.'));
                 }
               }
 
@@ -198,17 +203,23 @@ export class DocumentExportService {
       );
   }
 
-  private unwind(key: string, obj: any) {
+  private unwind(key: string, obj: any): any {
     if (obj[key].length < 1) {
       return [obj];
     }
 
-    const result = [];
-    for (let i = 0; i < obj[key].length; i++) {
-      result.push(Util.clone(obj));
-      result[i][key] = obj[key][i];
-    }
-    return result;
+    return obj[key].map(child => {
+      const res = {};
+
+      for (const j in obj) {
+        if (obj.hasOwnProperty(j) && j !== key) {
+          res[j] = obj[j];
+        }
+      }
+      res[key] = child;
+
+      return res;
+    });
   }
 
   private getUsedFields(fields: DocumentField[]): DocumentField[] {
@@ -220,17 +231,24 @@ export class DocumentExportService {
     }, []);
   }
 
-  private getAllFields(jsonForms: any): Observable<DocumentField[]> {
-    const fieldObservables = this.extraFields.map(field => (
-      this.getFieldLabel(field)
-        .pipe(
-          map(label => ({value: field, label: label, used: false}))
-        )
-    ));
+  private getAllFields(jsonForms: any): Observable<{fields: DocumentField[], fieldStructure: DocumentFieldNode}> {
+    const fieldStructure: DocumentFieldNode = {};
+    const fields: DocumentField[] = [];
 
-    return ObservableForkJoin(fieldObservables)
+    const labelObservables = this.extraFields.map(value => {
+      return this.getFieldLabel(value)
+        .pipe(
+          tap(label => {
+            const field: DocumentField = {value: value, label: label, used: false};
+            fieldStructure[value] = field;
+            fields.push(field);
+          })
+        );
+      });
+
+    return ObservableForkJoin(labelObservables)
       .pipe(
-        map((fields: DocumentField[]) => {
+        map(() => {
           let queue = [];
 
           for (const formId in jsonForms) {
@@ -247,9 +265,10 @@ export class DocumentExportService {
           while (queue.length > 0) {
             let next = queue.shift();
             const fieldName = next.path + next.name;
+            const parent = this.getValueByPath(next.path, fieldStructure);
 
             if (this.unwindPaths.indexOf(fieldName) === -1 && next.type !== 'fieldset') {
-              if (fields.filter((f) => (f.value === fieldName)).length === 0) {
+              if (!parent[next.name]) {
                 const field: DocumentField = {
                   value: fieldName,
                   label: next.label,
@@ -258,9 +277,11 @@ export class DocumentExportService {
                 if (next.options && next.options.value_options) {
                   field.enums = next.options.value_options;
                 }
+                parent[next.name] = field;
                 fields.push(field);
               }
             } else {
+              parent[next.name] = {};
               while (true) {
                 for (let i = 0; i < next.fields.length; i++) {
                   queue.push({...next.fields[i], path: fieldName + '.'})
@@ -280,7 +301,8 @@ export class DocumentExportService {
               queue = this.sortQueue(queue);
             }
           }
-          return fields;
+
+          return {fields: fields, fieldStructure: fieldStructure};
         })
       );
   }
@@ -393,5 +415,16 @@ export class DocumentExportService {
     }
 
     return false;
+  }
+
+  private getValueByPath(path: string, data: any): any {
+    return path.split('.').reduce((o, s) => {
+      if (s === '') {
+        return o;
+      }
+      if (o) {
+        return o[s];
+      }
+    }, data);
   }
 }
