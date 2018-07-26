@@ -50,7 +50,7 @@ export class Util {
     // so we convert to json paths to json pointers.
     let pathAsJSONPointer = jsonPath
       .substring(1, jsonPath.length) // Remove first '$'
-      .replace('.', '/')
+      .replace(/\./g, '/')
       .replace(/\[/g, '/')
       .replace(/\]/g, '/');
     if (pathAsJSONPointer[pathAsJSONPointer.length - 1] === '/') {
@@ -60,9 +60,9 @@ export class Util {
   }
 
   public static parseJSONPointer(object: any, jsonPointer: string) {
-    const splitPath = String(jsonPointer).split("/").filter(s => s !== undefined && s !== "");
-    return splitPath.reduce((o, s)=> {
-      return o[s];
+    const splitPath = String(jsonPointer).split('/').filter(s => s !== undefined && s !== '');
+    return splitPath.reduce((o, s) => {
+      return o && o[s] || undefined;
     }, object);
   }
 }

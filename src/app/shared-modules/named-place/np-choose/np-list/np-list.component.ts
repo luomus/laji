@@ -100,7 +100,7 @@ export class NpListComponent {
         let value = Util.parseJSONPath(namedPlace, path);
         if (value && value.length) {
           if (path === '$.prepopulatedDocument.gatheringEvent.dateBegin' || path === '$.prepopulatedDocument.gatheringEvent.dateEnd') {
-            value = value.map(val => val.split('.').reverse().join('-'));
+            value = value.split('.').reverse().join('-');
           }
         }
         row[path] = value;
