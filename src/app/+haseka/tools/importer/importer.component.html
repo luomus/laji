@@ -44,7 +44,7 @@
       <div class="col-sm-9">
         <span *ngIf="hasUserMapping" [innerHtml]="'excel.import.step1.hasUserMapping' | translate"></span>
         <input type="file" class="form-control" (change)="onFileChange($event)" />
-        <span *ngIf="fileLoading">{{'laoding' | translate}}</span>
+        <span *ngIf="fileLoading">{{'loading' | translate}}</span>
       </div>
       <div class="col-sm-3 map-buttons">
         <div class="btn btn-default pull-right" *ngIf="hasUserMapping" (click)="clearUserMapping()" [tooltip]="'excel.import.step1.removeUserMapping' | translate" placement="left">

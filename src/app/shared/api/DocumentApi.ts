@@ -25,7 +25,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { PagedResult } from '../model/PagedResult';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Util } from '../service/util.service';
 import { Document } from '../model/Document';
 import { environment } from '../../../environments/environment';
@@ -180,12 +180,12 @@ export class DocumentApi {
 
     const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
 
-    return this.http.post(path, data, {params: queryParameters})
-      .map((response: Response) => {
+    return this.http.post(path, data, {params: queryParameters, observe: 'response'})
+      .map((response: HttpResponse<any>) => {
         if (response.status === 204) {
           return undefined;
         } else {
-          return response.json();
+          return response.body;
         }
       });
   }
