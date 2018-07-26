@@ -53,7 +53,7 @@ export class NpListComponent {
   }
 
   getRowClass(row) {
-    const status = (row['$._status'] || [])[0];
+    const status = row['$._status'];
     if (status !== 'free') { return status; }
   }
 
