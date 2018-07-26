@@ -1,4 +1,5 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { Annotation } from '../../../shared/model/Annotation';
 
 @Component({
   selector: 'laji-datatable-templates',
@@ -30,6 +31,9 @@ export class DatatableTemplatesComponent {
   @ViewChild('iucnStatus') iucnStatus: TemplateRef<any>;
   @ViewChild('annotation') annotation: TemplateRef<any>;
   @ViewChild('image') image: TemplateRef<any>;
+
+  annotationClass = Annotation.AnnotationClassEnum;
+  annotationTypes = Annotation.TypeEnum;
 
   constructor() { }
 
