@@ -282,10 +282,10 @@ export class ImporterComponent implements OnInit {
       mergeMap(data => this.augmentService.augmentDocument(data.document, this.excludedFromCopy).pipe(
         concatMap(document => this.importService.validateData(document).pipe(
           switchMap(result => ObservableOf({result: result, source: data})),
-          catchError(err => ObservableOf(typeof err.json === 'function' ? err.json() : err).pipe(
-            map(body => body.error && body.error.details || body),
-            map(error => ({result: {_error: error}, source: data}))
-          ))
+          catchError(err => ObservableOf(typeof err.error !== 'undefined' ? err.error : err).pipe(
+              map(body => body.error && body.error.details || body.error || body),
+              map(error => ({result: {_error: error}, source: data}))
+            ))
         )),
         tap(() => {
           this.current++;
