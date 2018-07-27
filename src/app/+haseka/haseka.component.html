@@ -4,13 +4,15 @@
       <div class="col-sm-9 col-md-9 col-lg-10" id="content-container">
         <div>
           <h1>{{'haseka.title' | translate}}</h1>
-          <div class="row" *lajiLoggedIn="false">
-            <div class="col-sm-8">
-              <alert [type]="'danger'">
-                {{'haseka.pleaseLogin' | translate}}
-              </alert>
+          <ng-container *lajiBrowserOnly>
+            <div class="row" *lajiLoggedIn="false">
+              <div class="col-sm-8">
+                <alert [type]="'danger'">
+                  {{'haseka.pleaseLogin' | translate}}
+                </alert>
+              </div>
             </div>
-          </div>
+          </ng-container>
           <div [innerHtml]="'haseka.intro' | translate" *ngIf="isFront"></div>
           <div class="pull-right toggle-intro" *ngIf="!vihkoSettings.showIntro && isFront">
             <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>

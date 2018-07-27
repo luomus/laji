@@ -62,8 +62,9 @@ export class UserService extends LocalDb {
               @Inject(WINDOW) private window: Window) {
     super('settings');
     if (this.token) {
-      this.loadUserInfo(this.token);
-      this.isLoggedIn = true;
+      this.loadUserInfo(this.token).subscribe(value => {
+        this.isLoggedIn = !!value;
+      });
     }
   }
 
@@ -74,14 +75,13 @@ export class UserService extends LocalDb {
     if (this.subUser) {
       this.subUser.unsubscribe();
     }
-    setTimeout(() => {
-      this.isLoggedIn = true;
-      this.loadUserInfo(userToken);
-    }, 10);
+    this.subUser = this.loadUserInfo(userToken).subscribe(value => {
+      this.isLoggedIn = !!value;
+    });
   }
 
   public logout(showError = true) {
-    if (this.token === '' || this.subLogout) {
+    if (!this.token || this.subLogout) {
       return;
     }
     this.subLogout = this.lajiApi.remove(LajiApi.Endpoints.personToken, this.token)
@@ -201,20 +201,21 @@ export class UserService extends LocalDb {
       .subscribe(() => {}, () => {});
   };
 
-  private loadUserInfo(token: string) {
+  private loadUserInfo(token: string): Observable<any> {
     this.token = token;
-    this.subUser = this.getUser()
+    return this.getUser()
       .do((person: Person) => this.addUser(person, true))
       .switchMap((person: Person) => this.getItem(person.id))
-      .subscribe(settings => {
-          this.userSettings = settings;
-          this.actionSource.next(USER_INFO);
-        },
-        err => {
-          this.logout();
-          this.logger.warn('Failed to load user info with token', err);
-        }
-      );
+      .do(settings => {
+        this.userSettings = settings;
+        this.actionSource.next(USER_INFO);
+      })
+      .catch(err => {
+        this.logout();
+        this.logger.warn('Failed to load user info with token', err);
+
+        return ObservableOf(null)
+      })
   }
 
   private getCurrentUser() {

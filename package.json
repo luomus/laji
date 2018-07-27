@@ -23,8 +23,8 @@
     "pree2e": "webdriver-manager update --standalone false --gecko false",
     "e2e": "protractor",
     "postinstall": "node ./scripts/remove-extras.js",
-    "build:server:prod": "ng run laji:server && webpack --config webpack.server.config.js --progress --colors",
-    "build:server:local": "ng run laji:server --configuration=local && webpack --config webpack.server.config.js --progress --colors",
+    "build:server:prod": "ng run laji:server && webpack --config webpack.server.config.js --progress --colors --mode production",
+    "build:server:local": "ng run laji:server:local && webpack --config webpack.server.config.js --progress --colors --mode development",
     "build:ssr:prod": "yarn run build:server:prod && yarn run build",
     "build:ssr:local": "yarn run build:server:local && yarn run build:local",
     "server": "node local.js"
