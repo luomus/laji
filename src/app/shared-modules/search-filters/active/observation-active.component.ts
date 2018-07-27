@@ -83,7 +83,7 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
       return;
     }
     keys.map((i) => {
-      if (skip.indexOf(i) > -1) {
+      if (skip.indexOf(i) > -1 || i.substr(0, 1) === '_') {
         return;
       }
       const type = typeof query[i];

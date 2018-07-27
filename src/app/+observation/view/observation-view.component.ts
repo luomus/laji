@@ -145,11 +145,12 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
       otherInvasiveSpeciesList: undefined,
       nationalInvasiveSpeciesStrategy: undefined,
       allInvasiveSpecies: undefined,
-      zeroObservations: undefined,
       onlyFromCollectionSystems: undefined,
       asEditor: false,
       asObserver: false,
-      coordinateIntersection: undefined
+      coordinateIntersection: undefined,
+      taxonUseAnnotated: true,
+      taxonIncludeLower: true
     };
 
     if (refresh) {
@@ -212,7 +213,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
       isNotInvasive: query.invasive === false ? true : undefined,
       includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
       hasNotMedia: query.hasMedia === false ? true : undefined,
-      zeroObservations: query.individualCountMax === 0 && query.individualCountMax === 0 ? true : undefined,
       nationallySignificantInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.nationallySignificantInvasiveSpecies'),
       euInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.euInvasiveSpeciesList'),
       quarantinePlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.quarantinePlantPest'),
@@ -222,7 +222,9 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
       onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3'], true),
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
       asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
-      coordinateIntersection: true
+      coordinateIntersection: true,
+      taxonIncludeLower: true,
+      taxonUseAnnotated: true
     };
   }
 

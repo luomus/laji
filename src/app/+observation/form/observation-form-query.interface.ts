@@ -1,6 +1,8 @@
 export interface ObservationFormQuery {
   coordinateIntersection: boolean;
   taxon: string;
+  taxonIncludeLower: boolean;
+  taxonUseAnnotated: boolean;
   timeStart: string;
   timeEnd: string;
   informalTaxonGroupId: string;
@@ -14,7 +16,6 @@ export interface ObservationFormQuery {
   otherInvasiveSpeciesList: boolean;
   nationalInvasiveSpeciesStrategy: boolean;
   allInvasiveSpecies: boolean;
-  zeroObservations: boolean;
   onlyFromCollectionSystems: boolean;
   asObserver: boolean;
   asEditor: boolean;

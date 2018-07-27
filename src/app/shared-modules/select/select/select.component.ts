@@ -72,6 +72,9 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
 
   add(id: string) {
     if (this.multiple) {
+      if (!Array.isArray(this.selected)) {
+        this.selected = [];
+      }
       this.selected.push(id);
     } else {
       this.selected = [id];

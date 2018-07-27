@@ -1,7 +1,5 @@
 <div class="lj-select" [ngClass]="{'lj-close': open, 'lj-open': !open}">
-  <strong *ngIf="title !== undefined && title !== ''" class="lj-title link" (click)="toggle($event, filter)">{{title}}<laji-info *ngIf="info">
-    {{info}}
-  </laji-info></strong>
+  <strong *ngIf="title !== undefined && title !== ''" class="lj-title link" (click)="toggle($event, filter)">{{title}}<laji-info *ngIf="info">{{info}}</laji-info></strong>
   <ng-container *ngIf="multiple; else select">
     <label class="lj-item selected" *ngFor="let option of selectedOptions; trackBy: track">
       <input type="checkbox" checked (change)="remove(option.id)">

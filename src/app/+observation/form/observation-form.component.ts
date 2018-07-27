@@ -179,13 +179,11 @@ export class ObservationFormComponent implements OnInit {
     this.onQueryChange();
   }
 
-  toggleZeroCheckBox() {
-    this.formQuery['zeroObservations'] = !this.formQuery['zeroObservations'];
-    if (this.formQuery['zeroObservations']) {
-      this.searchQuery.individualCountMin = 0;
+  zeroObservations(only = true) {
+    this.searchQuery.individualCountMin = 0;
+    if (only) {
       this.searchQuery.individualCountMax = 0;
-    } else {
-      this.searchQuery.individualCountMin = undefined;
+    } else if (this.searchQuery.individualCountMax === 0) {
       this.searchQuery.individualCountMax = undefined;
     }
     this.onQueryChange();
@@ -235,6 +233,12 @@ export class ObservationFormComponent implements OnInit {
 
   onAccuracyValueChange() {
     this.logCoordinateAccuracyMax = Math.log10(this.searchQuery.coordinateAccuracyMax);
+    this.onQueryChange();
+  }
+
+  indirectQueryChange(field, value) {
+    console.log(field, value);
+    this.searchQuery[field] = value;
     this.onQueryChange();
   }
 

@@ -67,6 +67,8 @@ export class GalleryComponent implements OnChanges {
     //TODO: think about this little more units are still basic search for this so might have to drop this
     // or target gathering and document endpoints
     let imgField = 'unit.media';
+    query.hasUnitMedia = true;
+    /*
     if (query.hasUnitMedia) {
       // pass
     } else if (query.hasGatheringMedia) {
@@ -76,6 +78,7 @@ export class GalleryComponent implements OnChanges {
     } else {
       query.hasUnitMedia = true;
     }
+    */
     this.images$ = this.warehouseApi.warehouseQueryListGet(query, [
         'unit.taxonVerbatim,unit.linkings.taxon.vernacularName,unit.linkings.taxon.scientificName,unit.reportedInformalTaxonGroup',
         imgField,

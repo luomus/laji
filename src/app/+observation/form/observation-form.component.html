@@ -56,19 +56,33 @@
   </div>
   <div class="form-group">
     <div class="col-sm-12 link" (click)="taxonExtra = !taxonExtra">
-      {{'observation.extra.taxon' | translate}} <i class="glyphicon glyphicon-cog"></i>
+      {{'observation.extra' | translate}} <i class="glyphicon glyphicon-cog"></i>
     </div>
   </div>
   <ng-container *ngIf="taxonExtra">
-    <div class="form-group">
-      <div class="col-sm-12">
+    <div class="row">
+      <label class="col-lg-12">
+        <input type="checkbox"
+               [ngModel]="formQuery.taxonIncludeLower"
+               (ngModelChange)="onOnlyFromCollectionCheckBoxToggle()"
+               name="taxonIncludeLower">
         {{'observation.keepSsp' | translate}}
-      </div>
+      </label>
+      <laji-info>
+        {{'observation.info.keepSsp' | translate}}
+      </laji-info>
     </div>
-    <div class="form-group">
-      <div class="col-sm-12">
+    <div class="row">
+      <label class="col-lg-12">
+        <input type="checkbox"
+               [ngModel]="formQuery.taxonUseAnnotated"
+               (ngModelChange)="onOnlyFromCollectionCheckBoxToggle()"
+               name="taxonIncludeLower">
         {{'observation.changedNames' | translate}}
-      </div>
+      </label>
+      <laji-info>
+        {{'observation.info.changedNames' | translate}}
+      </laji-info>
     </div>
   </ng-container>
 </div>
@@ -83,9 +97,10 @@
                    (ngModelChange)="ownItemSelected()"
                    name="asObserver">
             {{'observation.form.asObserver' | translate}}
-          </label><laji-info>
-          {{'observation.info.asObserver' | translate}}
-        </laji-info>
+          </label>
+          <laji-info>
+            {{'observation.info.asObserver' | translate}}
+          </laji-info>
         </div>
       </div>
       <div class="row">
@@ -95,24 +110,27 @@
                    [(ngModel)]="formQuery.asEditor"
                    (ngModelChange)="ownItemSelected()"
                    name="asEditor">
-            {{'observation.form.asEditor' | translate}}</label><laji-info>
-          {{'observation.info.asEditor' | translate}}
-        </laji-info>
+            {{'observation.form.asEditor' | translate}}
+          </label>
+          <laji-info>
+            {{'observation.info.asEditor' | translate}}
+          </laji-info>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <laji-metadata-select
-            [info]="'observation.info.issues' | translate"
-            [(ngModel)]="searchQuery.qualityIssues"
-            (ngModelChange)="onQueryChange()"
-            [placeholder]="'observation.form.issues'"
-            name="qualityIssues"
-            [useFilter]="false"
+          <laji-select
+            [selected]="[searchQuery.qualityIssues]"
+            (selectedChanged)="indirectQueryChange('qualityIssues', $event[0])"
             [multiple]="false"
-            [mapToWarehouse]="true"
-            [alt]="'MZ.qualityIssueFilterEnum'"
-            [lang]="lang"></laji-metadata-select>
+            [title]="'observation.form.qualityIssues' | translate"
+            [info]="'observation.info.qualityIssues' | translate"
+            [options]="[
+            {id: 'BOTH', value: ('observation.form.qualityIssuesBOTH' | translate)},
+            {id: 'NO_ISSUES', value: ('observation.form.qualityIssuesNO_ISSUES' | translate)},
+            {id: 'ONLY_ISSUES', value: ('observation.form.qualityIssuesONLY_ISSUES' | translate)}
+          ]"
+            [lang]="lang"></laji-select>
         </div>
       </div>
     </div>
@@ -289,7 +307,7 @@
     </div>
     <div class="form-group">
       <div class="col-sm-12 link" (click)="areaExtra = !areaExtra">
-        {{'observation.extra.area' | translate}} <i class="glyphicon glyphicon-cog"></i>
+        {{'observation.extra' | translate}} <i class="glyphicon glyphicon-cog"></i>
       </div>
     </div>
     <div *ngIf="areaExtra">
@@ -299,7 +317,7 @@
                  [ngModel]="formQuery.coordinateIntersection"
                  (ngModelChange)="onFormQueryChange()"
                  name="onlyPreservedSpecimen">
-          {{'observation.form.coordinateIntersectionn' | translate}}
+          {{'observation.form.coordinateIntersection' | translate}}
         </label>
       </div>
       <div class="row">
@@ -343,7 +361,9 @@
   <div laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true">
     <div class="form-group">
       <label class="col-lg-12">
-        {{'observation.form.team' | translate}}:
+        {{'observation.form.team' | translate}}:<laji-info>
+        {{'observation.info.team' | translate}}
+      </laji-info>
       </label>
       <div class="col-lg-12">
         <input
@@ -363,7 +383,7 @@
       </laji-info>
       </label>
       <div class="col-lg-12">
-        <div class="form-group">
+        <div class="row">
           <div class="col-sm-6">
             <input type="number" name="individualCountMin"
                    class="form-control input-sm"
@@ -379,15 +399,18 @@
                    [(ngModel)]="searchQuery.individualCountMax">
           </div>
         </div>
+        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+          <div class="col-sm-12">
+            <button type="button" class="btn btn-default btn-xs" (click)="zeroObservations()">
+              {{'observation.form.onlyZeroObservations' | translate}}
+            </button>
+          </div>
+        </div>
         <div class="row">
           <div class="col-sm-12">
-            <label>
-              <input type="checkbox"
-                     [ngModel]="formQuery.zeroObservations"
-                     (ngModelChange)="toggleZeroCheckBox()"
-                     name="zeroObservations">
+            <button type="button" class="btn btn-default btn-xs" (click)="zeroObservations(false)">
               {{'observation.form.zeroObservations' | translate}}
-            </label>
+            </button>
           </div>
         </div>
       </div>
@@ -433,30 +456,130 @@
           [lang]="lang"></laji-metadata-select>
       </div>
     </div>
-  </div>
-  <div laji-panel [title]="'observation.form.collection' | translate" [autoToggle]="true">
     <div class="form-group">
-      <label class="col-lg-12">
-        {{'observation.form.documentId' | translate}}:
-      </label>
-      <div class="col-lg-12">
-        <input
-          class="form-control input-sm"
-          type="text"
-          name="documentId"
+      <div class="col-sm-12">
+        <laji-select
+          [selected]="[searchQuery.nativeOccurrence]"
+          (selectedChanged)="indirectQueryChange('nativeOccurrence', $event[0])"
+          [multiple]="false"
+          [title]="'observation.form.nativeOccurrence' | translate"
+          [info]="'observation.info.nativeOccurrence' | translate"
+          [options]="[
+            {id: true, value: ('observation.form.nativeOccurrenceTrue' | translate)},
+            {id: false, value: ('observation.form.nativeOccurrenceFalse' | translate)}
+          ]"
+          [lang]="lang"></laji-select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-select
+          [selected]="[searchQuery.breedingSite]"
+          (selectedChanged)="indirectQueryChange('breedingSite', $event[0])"
+          [multiple]="false"
+          [title]="'observation.form.breedingSite' | translate"
+          [info]="'observation.info.breedingSite' | translate"
+          [options]="[
+            {id: true, value: ('observation.form.breedingSiteTrue' | translate)},
+            {id: false, value: ('observation.form.breedingSiteFalse' | translate)}
+          ]"
+          [lang]="lang"></laji-select>
+      </div>
+    </div>
+  </div>
+  <div laji-panel [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true">
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [(ngModel)]="searchQuery.taxonReliability"
+          [info]="'observation.info.reliability' | translate"
           (ngModelChange)="onQueryChange()"
-          [(ngModel)]="searchQuery.documentId">
+          [multiple]="true"
+          [useFilter]="false"
+          name="taxonReliability"
+          [mapToWarehouse]="true"
+          [placeholder]="'reliability' | translate"
+          [alt]="'MAN.annotationClassEnum'"
+          [lang]="lang"></laji-metadata-select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [(ngModel)]="searchQuery.collectionId"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [field]="'MY.collectionID'"
+          [placeholder]="'observation.form.dataset' | translate"
+          [info]="'observation.info.dataset' | translate"
+          [mapToWarehouse]="false"
+          name="collectionID"
+          [lang]="lang"></laji-metadata-select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-select
+          [selected]="searchQuery.reliabilityOfCollection"
+          (selectedChanged)="indirectQueryChange('reliabilityOfCollection', $event)"
+          [multiple]="true"
+          [title]="'observation.form.reliabilityOfCollection' | translate"
+          [info]="'observation.info.reliabilityOfCollection' | translate"
+          [options]="[
+            {id: '1', value: '★'},
+            {id: '2', value: '★★'},
+            {id: '3', value: '★★★'},
+            {id: '4', value: '★★★★'},
+            {id: '5', value: '★★★★★'}
+          ]"
+          [lang]="lang"></laji-select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-select
+          [selected]="[searchQuery.annotated]"
+          (selectedChanged)="indirectQueryChange('annotated', $event[0])"
+          [multiple]="false"
+          [title]="'observation.form.annotated' | translate"
+          [options]="[
+            {id: true, value: ('observation.form.annotatedTrue' | translate)},
+            {id: false, value: ('observation.form.annotatedFalse' | translate)}
+          ]"
+          [lang]="lang"></laji-select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-select
+          [selected]="[searchQuery.qualityIssues]"
+          (selectedChanged)="indirectQueryChange('qualityIssues', $event[0])"
+          [multiple]="false"
+          [title]="'observation.form.qualityIssues' | translate"
+          [info]="'observation.info.qualityIssues' | translate"
+          [options]="[
+            {id: 'BOTH', value: ('observation.form.qualityIssuesBOTH' | translate)},
+            {id: 'NO_ISSUES', value: ('observation.form.qualityIssuesNO_ISSUES' | translate)},
+            {id: 'ONLY_ISSUES', value: ('observation.form.qualityIssuesONLY_ISSUES' | translate)}
+          ]"
+          [lang]="lang"></laji-select>
       </div>
     </div>
     <div class="row">
-      <label class="col-lg-12">
-        <input type="checkbox"
-               [ngModel]="searchQuery.typeSpecimen"
-               (ngModelChange)="onCheckBoxToggle('typeSpecimen')"
-               name="typeSpecimen">
-        {{'observation.form.typeSpecimen' | translate}}
-      </label>
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [(ngModel)]="searchQuery.sourceId"
+          [info]="'observation.info.system' | translate"
+          (ngModelChange)="onSystemIDChange()"
+          [placeholder]="'observation.form.system'"
+          [multiple]="true"
+          name="sourceId"
+          [field]="'KE.informationSystem'"
+          [lang]="lang"></laji-metadata-select>
+      </div>
     </div>
+  </div>
+  <div laji-panel [title]="'observation.form.collectionTitle' | translate" [autoToggle]="true">
     <div class="row">
       <label class="col-lg-12">
         <input type="checkbox"
@@ -465,10 +588,23 @@
                name="onlyPreservedSpecimen">
         {{'observation.form.collection' | translate}}
       </label>
+      <laji-info>
+        {{'observation.info.collection' | translate}}
+      </laji-info>
     </div>
-  </div>
-  <div laji-panel [title]="'observation.form.source' | translate" [autoToggle]="true">
     <div class="form-group">
+      <label class="col-lg-12">
+        <input type="checkbox"
+               [ngModel]="searchQuery.typeSpecimen"
+               (ngModelChange)="onCheckBoxToggle('typeSpecimen')"
+               name="typeSpecimen">
+        {{'observation.form.typeSpecimen' | translate}}
+      </label>
+      <laji-info>
+        {{'observation.info.typeSpecimen' | translate}}
+      </laji-info>
+    </div>
+    <div class="row">
       <div class="col-sm-12">
         <laji-metadata-select
           [(ngModel)]="searchQuery.collectionId"
@@ -481,16 +617,36 @@
           [lang]="lang"></laji-metadata-select>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <laji-metadata-select
-          [(ngModel)]="searchQuery.sourceId"
-          (ngModelChange)="onSystemIDChange()"
-          [placeholder]="'observation.form.system'"
-          [multiple]="true"
-          name="sourceId"
-          [field]="'KE.informationSystem'"
-          [lang]="lang"></laji-metadata-select>
+  </div>
+  <div laji-panel [title]="'observation.form.keywords' | translate" [autoToggle]="true">
+    <div class="form-group">
+      <label class="col-lg-12">
+        {{'observation.form.documentId' | translate}}:<laji-info>
+        {{'observation.info.documentId' | translate}}
+      </laji-info>
+      </label>
+      <div class="col-lg-12">
+        <input
+          class="form-control input-sm"
+          type="text"
+          name="documentId"
+          (ngModelChange)="onQueryChange()"
+          [(ngModel)]="searchQuery.documentId">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-lg-12">
+        {{'observation.form.keyword' | translate}}:<laji-info>
+        {{'observation.info.keyword' | translate}}
+      </laji-info>
+      </label>
+      <div class="col-lg-12">
+        <input
+          class="form-control input-sm"
+          type="text"
+          name="documentId"
+          (ngModelChange)="onQueryChange()"
+          [(ngModel)]="searchQuery.keyword">
       </div>
     </div>
   </div>
@@ -522,6 +678,32 @@
           [lang]="lang"></laji-metadata-select>
       </div>
     </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [(ngModel)]="searchQuery.typesOfOccurrenceFilters"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [useFilter]="false"
+          name="typeOfOccurrence"
+          [placeholder]="'observation.form.typeOfOccurrenceId' | translate"
+          [alt]="'MX.typeOfOccurrenceEnum'"
+          [lang]="lang"></laji-metadata-select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <laji-metadata-select
+          [(ngModel)]="searchQuery.typesOfOccurrenceNotFilters"
+          (ngModelChange)="onQueryChange()"
+          [multiple]="true"
+          [useFilter]="false"
+          name="typeOfOccurrence"
+          [placeholder]="'observation.form.typeOfOccurrenceIdNot' | translate"
+          [alt]="'MX.typeOfOccurrenceEnum'"
+          [lang]="lang"></laji-metadata-select>
+      </div>
+    </div>
     <div class="row">
       <div class="col-sm-12">
         <label>
@@ -530,9 +712,10 @@
                  (ngModelChange)="onCheckBoxToggle('invasive')"
                  name="invasive">
           {{'observation.form.invasive' | translate}}
-        </label><laji-info>
-        {{'observation.info.invasive' | translate}}
-      </laji-info>
+        </label>
+        <laji-info>
+          {{'observation.info.invasive' | translate}}
+        </laji-info>
       </div>
     </div>
     <div class="row">
@@ -555,9 +738,10 @@
                  (ngModelChange)="onCheckBoxToggle('finnish')"
                  name="finnish">
           {{'observation.form.finnish' | translate}}
-        </label><laji-info>
-        {{'observation.info.finnish' | translate}}
-      </laji-info>
+        </label>
+        <laji-info>
+          {{'observation.info.finnish' | translate}}
+        </laji-info>
       </div>
     </div>
     <div class="row">
@@ -650,6 +834,9 @@
                  name="hasMedia">
           {{'observation.form.hasGatheringMedia' | translate}}
         </label>
+        <laji-info>
+          {{'observation.info.hasGatheringMedia' | translate}}
+        </laji-info>
       </div>
     </div>
     <div class="row">
@@ -661,6 +848,9 @@
                  name="hasMedia">
           {{'observation.form.hasDocumentMedia' | translate}}
         </label>
+        <laji-info>
+          {{'observation.info.hasDocumentMedia' | translate}}
+        </laji-info>
       </div>
     </div>
     <hr>
@@ -675,67 +865,6 @@
         </label>
       </div>
     </div>
-    <!--
-    <div class="row">
-      <div class="col-sm-12">
-        <laji-metadata-select
-          [(ngModel)]="searchQuery.taxonReliability"
-          (ngModelChange)="onQueryChange()"
-          [multiple]="true"
-          name="taxonReliability"
-          [mapToWarehouse]="true"
-          [placeholder]="'reliability' | translate"
-          [alt]="'MAN.annotationClassEnum'"
-          [lang]="lang"></laji-metadata-select>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <hr>
-        <label>
-          <input type="checkbox"
-                 [ngModel]="searchQuery.unidentified"
-                 (ngModelChange)="onCheckBoxToggle('unidentified')"
-                 name="unidentified">
-          {{'filter.unidentified' | translate}}
-        </label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <label>
-          <input type="checkbox"
-                 [ngModel]="searchQuery.reliable"
-                 (ngModelChange)="onCheckBoxToggle('reliable')"
-                 name="reliable">
-          {{'observation.form.reliable' | translate}}
-        </label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <hr>
-        <label>
-          <input type="checkbox"
-                 [checked]="searchQuery.qualityIssues === 'BOTH'"
-                 (change)="onCheckBoxToggle('qualityIssues', 'BOTH')"
-                 name="qualityIssues">
-          {{'observation.form.issueBoth' | translate}}
-        </label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <label>
-          <input type="checkbox"
-                 [checked]="searchQuery.qualityIssues === 'ONLY_ISSUES'"
-                 (change)="onCheckBoxToggle('qualityIssues', 'ONLY_ISSUES')"
-                 name="qualityIssues">
-          {{'observation.form.issueOnly' | translate}}
-        </label>
-      </div>
-    </div>
-    -->
   </div>
   <div laji-panel [title]="'observation.form.securedPanel' | translate" [autoToggle]="true">
     <div class="form-group">
@@ -745,10 +874,11 @@
                  [checked]="searchQuery.secured"
                  (change)="onCheckBoxToggle('secured', true)"
                  name="qualityIssues">
-          {{'observation.form.secured' | translate}}<laji-info>
+          {{'observation.form.secured' | translate}}
+        </label>
+        <laji-info>
           {{'observation.info.secured' | translate}}
         </laji-info>
-        </label>
       </div>
     </div>
     <div class="form-group">
@@ -776,10 +906,11 @@
                  [checked]="searchQuery.unidentified"
                  (change)="onCheckBoxToggle('unidentified', true)"
                  name="qualityIssues">
-          {{'observation.form.unidentified' | translate}}<laji-info>
+          {{'observation.form.unidentified' | translate}}
+        </label>
+        <laji-info>
           {{'observation.info.unidentified' | translate}}
         </laji-info>
-        </label>
       </div>
     </div>
   </div>

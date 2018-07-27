@@ -37,8 +37,10 @@
 }
 .lj-title:after {
   font-family: "Glyphicons Halflings";
-  float: right;
   color: #ccc;
+  position: absolute;
+  right: 3px;
+  top: 7px;
 }
 
 .lj-open .lj-title:after {
@@ -46,6 +48,9 @@
 }
 .lj-close .lj-title:after {
   content:"\e260";
+}
+.lj-select {
+  position: relative;
 }
 @media only screen and (max-width : 767px) {
   .lj-item {

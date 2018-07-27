@@ -180,5 +180,7 @@ export interface WarehouseQueryInterface {
   annotated?: boolean;
   teamMember?: Array<string>;
   teamMemberId?: Array<string>;
+  typesOfOccurrenceFilters?: Array<string>;
+  typesOfOccurrenceNotFilters?: Array<string>;
   _coordinatesIntersection?: string;
 }
