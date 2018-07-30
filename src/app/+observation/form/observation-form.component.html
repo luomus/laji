@@ -52,6 +52,18 @@
         [list]="searchQuery.target || []"
         (updateList)="updateSearchQuery('target', $event)"
       ></laji-pill-list>
+      <laji-pill-list
+        [list]="searchQuery.originalTarget || []"
+        (updateList)="updateSearchQuery('originalTarget', $event)"
+      ></laji-pill-list>
+      <laji-pill-list
+        [list]="searchQuery.exactTarget || []"
+        (updateList)="updateSearchQuery('exactTarget', $event)"
+      ></laji-pill-list>
+      <laji-pill-list
+        [list]="searchQuery.originalExactTarget || []"
+        (updateList)="updateSearchQuery('originalExactTarget', $event)"
+      ></laji-pill-list>
     </div>
   </div>
   <div class="form-group">
@@ -59,32 +71,36 @@
       {{'observation.extra' | translate}} <i class="glyphicon glyphicon-cog"></i>
     </div>
   </div>
-  <ng-container *ngIf="taxonExtra">
+  <div class="taxon-extra" *ngIf="taxonExtra">
     <div class="row">
-      <label class="col-lg-12">
-        <input type="checkbox"
-               [ngModel]="formQuery.taxonIncludeLower"
-               (ngModelChange)="onOnlyFromCollectionCheckBoxToggle()"
-               name="taxonIncludeLower">
-        {{'observation.keepSsp' | translate}}
-      </label>
-      <laji-info>
-        {{'observation.info.keepSsp' | translate}}
-      </laji-info>
+      <div class="col-lg-12">
+        <label>
+          <input type="checkbox"
+                 [(ngModel)]="formQuery.taxonIncludeLower"
+                 (change)="onTaxonTargetChange()"
+                 name="taxonIncludeLower">
+          {{'observation.keepSsp' | translate}}
+        </label>
+        <laji-info>
+          {{'observation.info.keepSsp' | translate}}
+        </laji-info>
+      </div>
     </div>
     <div class="row">
-      <label class="col-lg-12">
-        <input type="checkbox"
-               [ngModel]="formQuery.taxonUseAnnotated"
-               (ngModelChange)="onOnlyFromCollectionCheckBoxToggle()"
-               name="taxonIncludeLower">
-        {{'observation.changedNames' | translate}}
-      </label>
-      <laji-info>
-        {{'observation.info.changedNames' | translate}}
-      </laji-info>
+      <div class="col-lg-12">
+        <label>
+          <input type="checkbox"
+                 [(ngModel)]="formQuery.taxonUseAnnotated"
+                 (change)="onTaxonTargetChange()"
+                 name="taxonIncludeLower">
+          {{'observation.changedNames' | translate}}
+        </label>
+        <laji-info>
+          {{'observation.info.changedNames' | translate}}
+        </laji-info>
+      </div>
     </div>
-  </ng-container>
+  </div>
 </div>
 <div class="row">
   <div *lajiLoggedIn="true">
@@ -581,28 +597,32 @@
   </div>
   <div laji-panel [title]="'observation.form.collectionTitle' | translate" [autoToggle]="true">
     <div class="row">
-      <label class="col-lg-12">
-        <input type="checkbox"
-               [ngModel]="formQuery.onlyFromCollectionSystems"
-               (ngModelChange)="onOnlyFromCollectionCheckBoxToggle()"
-               name="onlyPreservedSpecimen">
-        {{'observation.form.collection' | translate}}
-      </label>
-      <laji-info>
-        {{'observation.info.collection' | translate}}
-      </laji-info>
+      <div class="col-lg-12">
+        <label>
+          <input type="checkbox"
+                 [ngModel]="formQuery.onlyFromCollectionSystems"
+                 (ngModelChange)="onOnlyFromCollectionCheckBoxToggle()"
+                 name="onlyPreservedSpecimen">
+          {{'observation.form.collection' | translate}}
+        </label>
+        <laji-info>
+          {{'observation.info.collection' | translate}}
+        </laji-info>
+      </div>
     </div>
     <div class="form-group">
-      <label class="col-lg-12">
-        <input type="checkbox"
-               [ngModel]="searchQuery.typeSpecimen"
-               (ngModelChange)="onCheckBoxToggle('typeSpecimen')"
-               name="typeSpecimen">
-        {{'observation.form.typeSpecimen' | translate}}
-      </label>
-      <laji-info>
-        {{'observation.info.typeSpecimen' | translate}}
-      </laji-info>
+      <div class="col-lg-12">
+        <label>
+          <input type="checkbox"
+                 [ngModel]="searchQuery.typeSpecimen"
+                 (ngModelChange)="onCheckBoxToggle('typeSpecimen')"
+                 name="typeSpecimen">
+          {{'observation.form.typeSpecimen' | translate}}
+        </label>
+        <laji-info>
+          {{'observation.info.typeSpecimen' | translate}}
+        </laji-info>
+      </div>
     </div>
     <div class="row">
       <div class="col-sm-12">

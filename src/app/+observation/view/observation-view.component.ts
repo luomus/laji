@@ -3,10 +3,8 @@ import {
   ViewChild
 } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
-import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Observable ,  Subject ,  Subscription, of as ObservableOf } from 'rxjs';
+import { Subject,  Subscription, of as ObservableOf } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { ObservationFormQuery } from '../form/observation-form-query.interface';
 import { LocalStorage } from 'ng2-webstorage';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { AreaType } from '../../shared/service/area.service';
@@ -16,8 +14,9 @@ import { FormService } from '../../shared/service/form.service';
 import { environment } from '../../../environments/environment';
 import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
 import { CoordinateService } from '../../shared/service/coordinate.service';
-import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
+import { LajiApiService } from '../../shared/service/laji-api.service';
 import { WINDOW } from '@ng-toolkit/universal';
+import { ObservationFormComponent } from '../form/observation-form.component';
 
 @Component({
   selector: 'laji-observation-view',
@@ -31,17 +30,14 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   @Input() activeTab: string;
   @ViewChild('tabs') tabs;
   @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
+  @ViewChild(ObservationFormComponent) form: ObservationFormComponent;
 
   hasInvasiveControleRights = false;
   debouchAfterChange = 500;
   limit = 10;
-  formQuery: ObservationFormQuery;
   typeaheadLoading = false;
-  logCoordinateAccuracyMax = 4;
-  showPlace = false;
   showFilter = true;
   areaType = AreaType;
-  taxonExtra = false;
   dateFormat = 'YYYY-MM-DD';
 
   drawing = false;
@@ -71,7 +67,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
               private formService: FormService,
               private formPermissionService: FormPermissionService,
               private coordinateService: CoordinateService) {
-
   }
 
   ngOnInit() {
@@ -92,11 +87,10 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     if (!this.observationSettings) {
       this.observationSettings = { showIntro: true };
     }
-    this.empty(false, this.searchQuery.query);
     this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
       res => {
+        console.log('GOT EVENT1');
         if (res.formSubmit) {
-          this.queryToFormQuery(this.searchQuery.query);
           this.onSubmit();
         }
       });
@@ -124,34 +118,9 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-  empty(refresh: boolean, query?: WarehouseQueryInterface) {
-    if (query) {
-      this.queryToFormQuery(query);
-      return;
-    }
+  empty(refresh: boolean) {
     Object.keys(this.searchQuery.query).map(key => this.searchQuery.query[key] = undefined);
-    this.formQuery = {
-      taxon: '',
-      timeStart: '',
-      timeEnd: '',
-      informalTaxonGroupId: '',
-      isNotFinnish: undefined,
-      isNotInvasive: undefined,
-      hasNotMedia: undefined,
-      includeOnlyValid: undefined,
-      euInvasiveSpeciesList: undefined,
-      nationallySignificantInvasiveSpecies: undefined,
-      quarantinePlantPest: undefined,
-      otherInvasiveSpeciesList: undefined,
-      nationalInvasiveSpeciesStrategy: undefined,
-      allInvasiveSpecies: undefined,
-      onlyFromCollectionSystems: undefined,
-      asEditor: false,
-      asObserver: false,
-      coordinateIntersection: undefined,
-      taxonUseAnnotated: true,
-      taxonIncludeLower: true
-    };
+    this.form.empty();
 
     if (refresh) {
       this.onSubmit();
@@ -168,9 +137,12 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     const cacheKey = JSON.stringify(this.searchQuery.query);
+    console.log('SUBMIT');
     if (this.lastQuery === cacheKey) {
+      console.log('SAME', this.lastQuery, cacheKey);
       return;
     }
+    console.log('FETCHING!!');
     this.searchQuery.query = {...this.searchQuery.query};
     this.lastQuery = cacheKey;
     this.searchQuery.tack++;
@@ -198,53 +170,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
       ]
     });
     this.route.navigate(['/vihko', environment.invasiveControlForm]);
-  }
-
-  private queryToFormQuery(query: WarehouseQueryInterface) {
-    // this.onAccuracyValueChange();
-    const time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
-    this.formQuery = {
-      taxon: '',
-      timeStart: this.getValidDate(time[0]),
-      timeEnd: this.getValidDate(time[1]),
-      informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
-        query.informalTaxonGroupId[0] : '',
-      isNotFinnish: query.finnish === false ? true : undefined,
-      isNotInvasive: query.invasive === false ? true : undefined,
-      includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
-      hasNotMedia: query.hasMedia === false ? true : undefined,
-      nationallySignificantInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.nationallySignificantInvasiveSpecies'),
-      euInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.euInvasiveSpeciesList'),
-      quarantinePlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.quarantinePlantPest'),
-      otherInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.otherInvasiveSpeciesList'),
-      nationalInvasiveSpeciesStrategy: this.hasInMulti(query.administrativeStatusId, 'MX.nationalInvasiveSpeciesStrategy'),
-      allInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
-      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3'], true),
-      asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
-      asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
-      coordinateIntersection: true,
-      taxonIncludeLower: true,
-      taxonUseAnnotated: true
-    };
-  }
-
-  private hasInMulti(multi, value, noOther = false) {
-    if (Array.isArray(value)) {
-      return value.filter(val => !this.hasInMulti(multi, val, noOther)).length === 0;
-    }
-    if (Array.isArray(multi) && multi.indexOf(value) > -1) {
-      return noOther ? multi.length === (Array.isArray(value) ? value.length : 1) : true;
-    }
-    return false;
-  }
-
-
-
-  private getValidDate(date) {
-    if (!date || !moment(date, this.dateFormat, true).isValid()) {
-      return '';
-    }
-    return date;
   }
 
 }

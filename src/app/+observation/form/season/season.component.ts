@@ -19,8 +19,8 @@ export class SeasonComponent {
   @Output() seasonChange = new EventEmitter<string>();
 
   constructor() {
-    this.days = [];
-    this.months = [];
+    this.days = [''];
+    this.months = [''];
     for (let i = 1; i <= 31; i ++) {
       const value = i < 10 ? '0' + i : '' + i;
       this.days.push(value);

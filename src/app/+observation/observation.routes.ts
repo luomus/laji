@@ -1,6 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 import { ObservationComponent } from './observation.component';
 import { ModuleWithProviders } from '@angular/core';
+import { ResetComponent } from './reset/reset.component';
 
 export const observationRoutes: Routes = [
   {
@@ -9,7 +10,7 @@ export const observationRoutes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'map'
+        component: ResetComponent
       },
       {
         path: ':tab',

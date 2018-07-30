@@ -55,7 +55,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
     );
     this.subDataQuery = this.searchQuery.queryUpdated$.subscribe(
       (data) => {
-        if (data && data['newData']) {
+        if (data && data['submit']) {
           this.updateData();
         }
       }
