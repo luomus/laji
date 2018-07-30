@@ -28,6 +28,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   startMonth = 3;
   fromYear;
   fromMonth;
+  allTime = '';
 
   private subTrans: Subscription;
   private subQuery: Subscription;
@@ -54,11 +55,13 @@ export class NafiResultComponent implements OnInit, OnDestroy {
         params['time'][0] : params['time'];
       const taxonId = (params['taxonId'] && Array.isArray(params['taxonId'])) ?
         params['taxonId'][0] : params['taxonId'];
+      this.emptyTime();
       this.query = {
-        time: [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
+        yearMonth: time ===  'all' ? undefined : [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
         collectionId: [this.collectionId],
         informalTaxonGroupId: [this.informalTaxonGroup],
-        countryId: ['ML.206']
+        // TODO: uncomment this when statistics endpoint allows Finland's country code
+        //countryId: ['ML.206']
       };
       this.resultQuery = this.clone(this.query);
       if (taxonId) {
@@ -100,7 +103,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   private navigate(query: WarehouseQueryInterface) {
     this.router.navigate([], {queryParams: {
       grid: query.ykj10kmCenter,
-      time: query.time,
+      time: query.yearMonth || 'all',
       taxonId: query.taxonId,
       page: this.page
     }});
@@ -111,7 +114,6 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   }
 
   private parseDateTimeRange(date) {
-    this.emptyTime();
     if (!date || typeof date !== 'string') {
       return date;
     }

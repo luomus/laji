@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ElementRef,
@@ -32,7 +33,7 @@ import LajiMap from 'laji-map/lib/map';
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LajiMapComponent implements OnInit, OnDestroy, OnChanges {
+export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
 
   @Input() data: any = [];
   @Input() loading = false;
@@ -59,6 +60,12 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges {
     private userService: UserService,
     private cd: ChangeDetectorRef
   ) { }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.invalidateSize();
+    }, 100);
+  }
 
   @Input()
   set options(options: Map.Options) {
