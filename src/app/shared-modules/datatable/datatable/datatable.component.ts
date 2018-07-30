@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, TemplateRef,
   ViewChild
 } from '@angular/core';
@@ -19,7 +20,7 @@ interface Settings {[key: string]: DatatableColumn}
   styleUrls: ['./datatable.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatatableComponent {
+export class DatatableComponent implements AfterViewInit {
 
   private static settings: Settings;
 
@@ -102,6 +103,12 @@ export class DatatableComponent {
       });
       this.changeDetectorRef.markForCheck();
     });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.datatable.recalculate();
+    }, 100);
   }
 
   onRowSelect(event) {
