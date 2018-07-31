@@ -164,6 +164,10 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     this.create.emit(e);
   }
 
+  clearDrawData() {
+    this.lajiMap.map.clearDrawData();
+  }
+
   drawToMap(type) {
     this.lajiMap.drawToMap(type);
   }
@@ -391,6 +395,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       .delay(100)
       .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .subscribe((data: any) => {
+          this.clearDrawData();
           if (data.featureCollection) {
             if (this.reset) {
               this.reset = false;
@@ -410,7 +415,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
               getClusterStyle: this.getClusterStyle.bind(this),
               getPopup: this.getPopup.bind(this),
               cluster: data.cluster || false
-            }];
+            }, this.drawData];
             this.loading = false;
             this.changeDetector.markForCheck();
           }

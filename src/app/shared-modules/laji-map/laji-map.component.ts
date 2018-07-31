@@ -243,8 +243,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     if (type === 'Coordinates') {
       this.map.openCoordinatesInputDialog();
     } else if (['Rectangle'].indexOf(type) > -1) {
-      new (L as any).Draw[type](this.map.map, this.getDrawingDraftStyle(type))
-        .enable();
+      this.map.triggerDrawing('Rectangle');
     }
   }
 
