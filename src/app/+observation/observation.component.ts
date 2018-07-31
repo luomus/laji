@@ -40,26 +40,21 @@ export class ObservationComponent implements OnInit, OnDestroy {
     this.subParam = this.route.params.subscribe(params => {
       this.tab = params['tab'] || 'map';
     });
-    this.subQuery = this.route.queryParams.subscribe(params => {
-      this.searchQuery.setQueryFromQueryObject(params);
-      if (params['reset']) {
-        this.searchQuery.query = {};
-      }
-      if (params['target']) {
-        this.searchQuery.query.target = [params['target']];
-      }
-      if (this.searchQuery.query.editorPersonToken === 'true') {
-        this.searchQuery.query.editorPersonToken = this.userService.getToken();
-      }
-      if (this.searchQuery.query.observerPersonToken === 'true') {
-        this.searchQuery.query.observerPersonToken = this.userService.getToken();
-      }
-      if (this.searchQuery.query.editorOrObserverPersonToken === 'true') {
-        this.searchQuery.query.editorOrObserverPersonToken = this.userService.getToken();
-      }
-      this.searchQuery.queryUpdate({formSubmit: !!params['reset'], newData: true});
-      this.cd.markForCheck();
-    });
+    const params = this.route.snapshot.queryParams;
+    this.searchQuery.setQueryFromQueryObject(params);
+    if (params['target']) {
+      this.searchQuery.query.target = [params['target']];
+    }
+    if (this.searchQuery.query.editorPersonToken === 'true') {
+      this.searchQuery.query.editorPersonToken = this.userService.getToken();
+    }
+    if (this.searchQuery.query.observerPersonToken === 'true') {
+      this.searchQuery.query.observerPersonToken = this.userService.getToken();
+    }
+    if (this.searchQuery.query.editorOrObserverPersonToken === 'true') {
+      this.searchQuery.query.editorOrObserverPersonToken = this.userService.getToken();
+    }
+    this.searchQuery.queryUpdate({formSubmit: true});
   }
 
   ngOnDestroy() {

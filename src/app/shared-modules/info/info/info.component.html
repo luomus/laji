@@ -1,8 +1,22 @@
-<span class="label label-info laji-form-help-glyph link no-propagation"
-      [popover]="popOver"
-      [outsideClick]="true"
-      [placement]="placement"
-      containerClass="popover-lg"
-      container="body"
-><strong class="no-propagation">?</strong></span>
-<ng-template #popOver><ng-content></ng-content></ng-template>
+<span
+  (click)="show()"
+  class="label label-info laji-form-help-glyph link no-propagation"
+><strong
+  [popover]="content"
+  [outsideClick]="true"
+  [placement]="placement"
+  triggers=""
+  #pop="bs-popover"
+  containerClass="popover-lg"
+  container="body"
+  class="no-propagation">?</strong></span>
+<div class="modal fade no-propagation" bsModal #modal="bs-modal" [config]="{backdrop: false}" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <ng-container *ngTemplateOutlet="content"></ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #content><ng-content></ng-content></ng-template>

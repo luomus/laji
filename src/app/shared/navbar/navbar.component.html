@@ -26,7 +26,7 @@
               <a (click)="closeMenu()" [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']">
-              <a (click)="closeMenu()" [routerLink]="['/observation'] | localize" [queryParams]="{reset: true}">{{ 'navigation.observation' | translate }}</a>
+              <a (click)="closeMenu()" [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiAuthorities="true">
               <a (click)="closeMenu()" [routerLink]="['/invasive'] | localize">{{ 'navigation.invasive' | translate }}</a>

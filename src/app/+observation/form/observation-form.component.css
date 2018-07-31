@@ -17,3 +17,6 @@ hr {
 .lj-input-wrap {
   padding: 0 15px;
 }
+label {
+  display: inline;
+}

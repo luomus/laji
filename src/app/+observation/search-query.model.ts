@@ -272,7 +272,6 @@ export class SearchQuery implements SearchQueryInterface {
         const parts = coordinate.split(':');
         const last = parts.pop();
         if (parts.length > 1 && (last === '0' || last === '1')) {
-          console.log(coordinate, parts, last);
           result.coordinates[i] = parts.join(':');
           result._coordinatesIntersection = ':' + last;
         }

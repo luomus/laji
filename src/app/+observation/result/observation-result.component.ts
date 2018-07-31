@@ -55,9 +55,9 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
   ngOnInit() {
     this.updateQueryParams();
     this.activated[this._active] = true;
-    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(() => {
-      this.updateQueryParams();
-    });
+    this.subQueryUpdate = this.searchQuery.queryUpdated$
+      .filter(data => !(data && data.formSubmit))
+      .subscribe(() => this.updateQueryParams());
   }
 
   ngOnDestroy() {
@@ -74,10 +74,12 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
 
 
   pickLocation(e) {
+    if (!e) {
+      return;
+    }
     if (e.coordinateVerbatim) {
       this.searchQuery.query.coordinates = [e.coordinateVerbatim + ':YKJ'];
     } else if (
-      e &&
       e.type === 'Polygon' &&
       e.coordinates && e.coordinates.length === 1 && e.coordinates[0].length === 5
     ) {

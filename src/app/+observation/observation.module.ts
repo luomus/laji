@@ -24,6 +24,7 @@ import { ObservationMapModule } from '../shared-modules/observation-map/observat
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ObservationFormComponent } from './form/observation-form.component';
 import { SeasonComponent } from './form/season/season.component';
+import { ResetComponent } from './reset/reset.component';
 
 @NgModule({
   imports: [
@@ -42,6 +43,7 @@ import { SeasonComponent } from './form/season/season.component';
   ],
   declarations: [ObservationComponent, ObservationChartComponent,
     ObservationViewComponent,
+    ResetComponent,
     MultiRadioComponent, ObservationResultComponent,
     ObservationResultListComponent,
     PieChartComponent, ObservationDownloadComponent, MainResultComponent, ObservationFiltersComponent,

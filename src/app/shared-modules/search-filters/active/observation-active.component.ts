@@ -1,11 +1,21 @@
-import { Component, HostListener, Input, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewContainerRef
+} from '@angular/core';
 import { SearchQueryInterface } from '../search-query.interface';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-observation-active',
   templateUrl: './observation-active.component.html',
-  styleUrls: ['./observation-active.component.css']
+  styleUrls: ['./observation-active.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationActiveComponent implements OnInit, OnDestroy {
   @Input() searchQuery: SearchQueryInterface;
@@ -16,14 +26,20 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   private subQueryUpdate: Subscription;
   private el: Element;
 
-  constructor(viewContainerRef: ViewContainerRef) {
+  constructor(
+    viewContainerRef: ViewContainerRef,
+    private cdr: ChangeDetectorRef
+  ) {
     this.el = viewContainerRef.element.nativeElement;
   }
 
   ngOnInit() {
-    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
-      () => this.updateSelectedList()
-    );
+    this.subQueryUpdate = this.searchQuery.queryUpdated$
+      .filter(data => !(data && data.formSubmit))
+      .subscribe(() => {
+        this.updateSelectedList();
+        this.cdr.markForCheck();
+      });
     this.updateSelectedList();
   }
 

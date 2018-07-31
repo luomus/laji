@@ -53,13 +53,9 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
     this.subTrans = this.translate.onLangChange.subscribe(
       () => this.updateInformalGroups()
     );
-    this.subDataQuery = this.searchQuery.queryUpdated$.subscribe(
-      (data) => {
-        if (data && data['newData']) {
-          this.updateData();
-        }
-      }
-    );
+    this.subDataQuery = this.searchQuery.queryUpdated$
+      .filter(data => !(data && data.formSubmit))
+      .subscribe(() => this.updateData());
     this.updateData();
   }
 

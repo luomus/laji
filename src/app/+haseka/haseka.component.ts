@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../shared/service/user.service';
-import { LocalStorage } from 'ng2-webstorage';
+import { LocalStorage } from 'ngx-webstorage';
 import { NavigationEnd, Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';

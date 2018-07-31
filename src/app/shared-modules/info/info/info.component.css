@@ -5,3 +5,11 @@
   padding: 0 4px;
   font-size: 13px;
 }
+.modal {
+  font-weight: normal;
+}
+@media only screen and (max-width : 767px) {
+  .modal {
+    margin-top: 60px;
+  }
+}

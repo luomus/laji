@@ -24,7 +24,7 @@ import { ToQNamePipe } from './pipe/to-qname.pipe';
 import { ToFullUriPipe } from './pipe/to-full-uri';
 import { GalleryComponent } from '../+observation/gallery/gallery.component';
 import { AuthoritiesDirective } from './authorities/authorities.directive';
-import { Ng2Webstorage } from 'ng2-webstorage';
+import { Ng2Webstorage } from 'ngx-webstorage';
 import { AuthenticatedHttpInterceptor } from './service/authenticated-http.interceptor';
 import { ImageComponent } from './image/image.component';
 import { ValuesPipe } from './pipe/values.pipe';
