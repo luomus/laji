@@ -92,12 +92,9 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     if (!this.observationSettings) {
       this.observationSettings = { showIntro: true };
     }
-    this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
-      res => {
-        if (res.formSubmit) {
-          this.onSubmit();
-        }
-      });
+    this.subUpdate = this.searchQuery.queryUpdated$
+      .filter(data => data && data.formSubmit)
+      .subscribe(() => this.onSubmit());
   }
 
   ngOnDestroy() {

@@ -55,7 +55,9 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
   ngOnInit() {
     this.updateQueryParams();
     this.activated[this._active] = true;
-    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(() => this.updateQueryParams());
+    this.subQueryUpdate = this.searchQuery.queryUpdated$
+      .filter(data => !(data && data.formSubmit))
+      .subscribe(() => this.updateQueryParams());
   }
 
   ngOnDestroy() {
