@@ -73,9 +73,13 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     if (environment.invasiveControlForm) {
       this.formService
         .load(environment.invasiveControlForm, this.translate.currentLang)
+        .delay(500)
         .switchMap((form) => this.formPermissionService.hasEditAccess(form))
         .catch(() => ObservableOf(false))
-        .subscribe(hasPermission => this.hasInvasiveControleRights = hasPermission);
+        .subscribe(hasPermission => {
+          this.hasInvasiveControleRights = hasPermission;
+          this.cd.markForCheck();
+        });
     }
 
     this.subSearch = this.delayedSearch
@@ -84,22 +88,13 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
         this.onSubmit();
         this.cd.markForCheck();
       });
+
     if (!this.observationSettings) {
       this.observationSettings = { showIntro: true };
     }
-    this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
-      res => {
-        console.log('GOT EVENT1');
-        if (res.formSubmit) {
-          this.onSubmit();
-        }
-      });
   }
 
   ngOnDestroy() {
-    if (this.subUpdate) {
-      this.subUpdate.unsubscribe();
-    }
     if (this.subMap) {
       this.subMap.unsubscribe();
     }
@@ -137,12 +132,9 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     const cacheKey = JSON.stringify(this.searchQuery.query);
-    console.log('SUBMIT');
     if (this.lastQuery === cacheKey) {
-      console.log('SAME', this.lastQuery, cacheKey);
       return;
     }
-    console.log('FETCHING!!');
     this.searchQuery.query = {...this.searchQuery.query};
     this.lastQuery = cacheKey;
     this.searchQuery.tack++;

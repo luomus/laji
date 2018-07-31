@@ -289,7 +289,6 @@ export class ObservationFormComponent implements OnInit {
   }
 
   indirectQueryChange(field, value) {
-    console.log(field, value);
     this.searchQuery[field] = value;
     this.onQueryChange();
   }
