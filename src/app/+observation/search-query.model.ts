@@ -342,7 +342,7 @@ export class SearchQuery implements SearchQueryInterface {
     );
   }
 
-  public queryUpdate(): void {
-    this.queryUpdatedSource.next();
+  public queryUpdate(data = {}): void {
+    this.queryUpdatedSource.next(data);
   }
 }
