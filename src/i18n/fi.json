@@ -311,7 +311,7 @@
   "observation.form.time": "Havaintoaika",
   "observation.form.issues": "Näytetäänkö ongelmalliset",
   "observation.info.issues": "Lajitietokeskus tekee havainnoille automaattisia tarkistuksia, kuten esimerkiksi että Suomen kunnasta ilmoitettujen havaintojen koordinaattien on oltava jotakuinkin lähellä ilmoitettua kuntaa. Havaintojen, jotka eivät läpäise näitä tarkistuksia, katsotaan sisältävän \"ongelmia\", eikä niitä näytetä oletuksena havaintojen haussa. Kun käytät Omat havainnot -rajauksia, ongelmia sisältävät havainnot näytetään oletuksena. Voit säätää ongelmallisten havaintojen näkyvyyttää tällä rajauksella. (Ongelmalliset havainnot on värjätty luettelossa punaisella taustalla. Lisätietoa ongelmasta saat avaamalla havaintoerän kokonaan näkyville.)",
-  "observation.extra": "Näytä lisärajaukset",
+  "observation.extra": "Näytä lisärajaukset <i class=\"glyphicon glyphicon-cog\"></i>",
   "observation.keepSsp": "Sisällytä alemmat taksonit",
   "observation.changedNames": "Käytä laadunvalvonnassa annettuja määrityksiä",
   "observation.info.informalTaxonGroup": "Voit rajata havaintoja lajiryhmällä. Lajiryhmät ovat osittain taksonomisia ryhmiä (esimerkiksi sammakot) mutta osittain epätaksonomisia (esimerkiksi tatit). Mikäli lajiryhmien joukosta ei löydy toivomaasi taksonomista ryhmää, voit käyttää Taksonin nimi -rajausta, johon voi syöttää minkä tahansa Lajitietokeskuksen tunteman ylemmän taksonomisen ryhmän nimen.",

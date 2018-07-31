@@ -289,7 +289,7 @@
   "observation.form.zeroObservations": "Ingen observation",
   "observations.form.1d": "1d",
   "observations.form.7d": "7d",
-  "observation.extra": "Näytä lisärajaukset",
+  "observation.extra": "Näytä lisärajaukset <i class=\"glyphicon glyphicon-cog\"></i>",
   "observation.form.target": "Lajin nimi / Taksonin nimi",
   "observation.info.target": "<p>Voit rajata havaintoja taksonomian mukaisesti. Voit antaa minkä tahansa Lajitietokeskuksen tiedossa olevan nimen (suomenkielisen, tieteellisen, synonyymin tai muun käytössä olevan nimen). Jos nimi löytyy Lajitietokeskuksesta, saat kaikki havainnot jotka on liitetty kyseiseen taksoniin. Voit myös antaa ylemmän taksonin nimen, jolloin saat myös alataksonien havainnot. (Esimerkiksi jos annat suvun nimen, saat kaikki suvun ja suvun lajien havainnot.)</p><p>Mikäli antamaasi nimeä ei löydy Lajitietokeskuksessa, saat tulokseksi havainnot, jotka on ilmoitettu käyttäen täsmälleen antamaasi nimeä.</p><p>Voit myös antaa useita nimiä. Syötettyäsi yhden nimen, se ilmestyy syöttökentän alapuolelle. Voit sen jälkeen syöttää toisen nimen.</p><p>Nimen lisäksi voit myös syöttää taksonin tunnisteen (esim. MX.1234).</p>",
   "observation.form.collectionTitle": "Tieteelliset kokoelmat",
