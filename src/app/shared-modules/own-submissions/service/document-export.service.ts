@@ -12,7 +12,7 @@ import { Observable, of as ObservableOf, forkJoin as ObservableForkJoin } from '
 import { map, switchMap, tap } from 'rxjs/operators';
 import { DocumentInfoService } from './document-info.service';
 import { ExportService } from '../../../shared/service/export.service';
-import { DocumentFieldNode, DocumentField } from '../models/document-field';
+import { DocumentField } from '../models/document-field';
 
 
 @Injectable()
@@ -115,7 +115,7 @@ export class DocumentExportService {
     const aoa = [[]];
 
     for (let i = 0; i < fields.length; i++) {
-      aoa[0].push(fields[i].label);
+      aoa[0].push(fields[i]['label']);
     }
 
     for (let i = 0; i < data.length; i++) {
@@ -124,7 +124,7 @@ export class DocumentExportService {
 
       for (let j = 0; j < fields.length; j++) {
         aoa[i + 1].push(
-          fields[j].value.split('.').reduce((o, s) => {
+          fields[j]['value'].split('.').reduce((o, s) => {
             if (o) {
               return o[s];
             }
@@ -136,44 +136,19 @@ export class DocumentExportService {
     return aoa;
   }
 
-  private getData(obj: any, form: any, fieldData: DocumentFieldNode, path = ''): Observable<any> {
+  private getData(obj: any, form: any, fieldData: DocumentField, path = ''): Observable<any> {
     const observables = [];
     let unwindKey: string;
 
-    for (const key in obj) {
-      if (!obj.hasOwnProperty(key) || key.charAt(0) === '@') {
-        continue;
+    if (Array.isArray(obj)) {
+      for (let i = 0; i < obj.length; i++) {
+        this.processData(obj[i], form, fieldData, path, observables);
       }
-
-      const child = obj[key];
-      const fieldName = path + key;
-
-      if (child == null || child === '' || (Array.isArray(child) && child.length < 1)) {
-        continue;
+      if (obj.length > fieldData['@multipleBy']) {
+        fieldData['@multipleBy'] = obj.length;
       }
-
-      if (this.unwindPaths.indexOf(fieldName) !== -1) {
-        unwindKey = key;
-        continue;
-      }
-
-      const field = this.getValueByPath(fieldName, fieldData);
-
-      if (field) {
-        if (field.value === fieldName) {
-          field.used = true;
-
-          observables.push(this.getLabelToValue(key, child, field)
-            .pipe(
-              tap((label) => {
-                obj[key] = label;
-              })
-            )
-          );
-        } else {
-          observables.push(this.getData(child, form, fieldData, fieldName + '.'));
-        }
-      }
+    } else {
+      unwindKey = this.processData(obj, form, fieldData, path, observables);
     }
 
     return (observables.length > 0 ? ObservableForkJoin(observables) : ObservableOf([]))
@@ -185,7 +160,9 @@ export class DocumentExportService {
 
               for (let i = 0; i < obj[unwindKey].length; i++) {
                 if (!this.isEmpty(path + unwindKey, obj[unwindKey][i], form)) {
-                  getDataObservables.push(this.getData(obj[unwindKey][i], form, fieldData, path + unwindKey + '.'));
+                  getDataObservables.push(
+                    this.getData(obj[unwindKey][i], form, fieldData[unwindKey], path + unwindKey + '.')
+                  );
                 }
               }
 
@@ -201,6 +178,48 @@ export class DocumentExportService {
             }
         })
       );
+  }
+
+  private processData(obj: any, form: any, fieldData: DocumentField, path: string, observables: Observable<any>[]) {
+    let unwindKey: string;
+
+    for (const key in obj) {
+      if (!obj.hasOwnProperty(key) || key.charAt(0) === '@') {
+        continue;
+      }
+
+      const child = obj[key];
+      const fieldName = path + key;
+
+      if (child == null || child === '') {
+        continue;
+      }
+
+      if (this.unwindPaths.indexOf(fieldName) !== -1) {
+        unwindKey = key;
+        continue;
+      }
+
+      const field = fieldData[key];
+
+      if (field) {
+        if (field['value'] === fieldName) {
+          field['used'] = true;
+
+          observables.push(this.getLabelToValue(key, child, field)
+            .pipe(
+              tap((label) => {
+                obj[key] = label;
+              })
+            )
+          );
+        } else {
+          observables.push(this.getData(child, form, field, fieldName + '.'));
+        }
+      }
+    }
+
+    return unwindKey;
   }
 
   private unwind(key: string, obj: any): any {
@@ -223,16 +242,33 @@ export class DocumentExportService {
   }
 
   private getUsedFields(fields: DocumentField[]): DocumentField[] {
-    return fields.reduce((arr, field) => {
-      if (field.used) {
+    const result: DocumentField[] = [];
+
+    fields.reduce((arr: DocumentField[], field: DocumentField) => {
+      if (field['@multipleBy']) {
+        for (let i = 0; i < field['@multipleBy']; i++) {
+          for (const key in field) {
+            if (field[key]['used']) {
+              const lastIdx = field[key].value.lastIndexOf('.');
+              arr.push({
+                value: field[key].value.substring(0, lastIdx + 1) + i + field[key].value.substring(lastIdx),
+                label: field['@multipleBy'] > 1 ? field[key].label + ' (' + (i + 1) + ')' : field[key].label,
+                used: true
+              });
+            }
+          }
+        }
+      } else if (field['used']) {
         arr.push(field);
       }
       return arr;
-    }, []);
+    }, result);
+
+    return result;
   }
 
-  private getAllFields(jsonForms: any): Observable<{fields: DocumentField[], fieldStructure: DocumentFieldNode}> {
-    const fieldStructure: DocumentFieldNode = {};
+  private getAllFields(jsonForms: any): Observable<{fields: DocumentField[], fieldStructure: DocumentField}> {
+    const fieldStructure: DocumentField = {};
     const fields: DocumentField[] = [];
 
     const labelObservables = this.extraFields.map(value => {
@@ -267,7 +303,7 @@ export class DocumentExportService {
             const fieldName = next.path + next.name;
             const parent = this.getValueByPath(next.path, fieldStructure);
 
-            if (this.unwindPaths.indexOf(fieldName) === -1 && next.type !== 'fieldset') {
+            if (!next.fields) {
               if (!parent[next.name]) {
                 const field: DocumentField = {
                   value: fieldName,
@@ -275,13 +311,21 @@ export class DocumentExportService {
                   used: false
                 };
                 if (next.options && next.options.value_options) {
-                  field.enums = next.options.value_options;
+                  field['enums'] = next.options.value_options;
                 }
                 parent[next.name] = field;
-                fields.push(field);
+                if (!parent['@multipleBy']) {
+                  fields.push(field);
+                }
               }
             } else {
-              parent[next.name] = {};
+              const field: DocumentField = {};
+              if (next.type === 'collection' && this.unwindPaths.indexOf(fieldName) === -1) {
+                field['@multipleBy'] = 1;
+                fields.push(field);
+              }
+              parent[next.name] = field;
+
               while (true) {
                 for (let i = 0; i < next.fields.length; i++) {
                   queue.push({...next.fields[i], path: fieldName + '.'})
@@ -309,33 +353,35 @@ export class DocumentExportService {
 
   private sortQueue(queue: any[]) {
     return queue.sort((a, b) => {
-      if (this.unwindPaths.indexOf(a.path + a.name) !== -1) {
-        return 1;
-      }
-      if (this.unwindPaths.indexOf(b.path + b.name) !== -1) {
-        return -1;
-      }
-      if (a.type === 'fieldset') {
-        return 1;
-      }
-      if (b.type === 'fieldset') {
-        return -1;
-      }
-      return 0;
+      return this.getSortIdx(a) - this.getSortIdx(b);
     });
   }
 
+  private getSortIdx(queueItem: any) {
+    if (this.unwindPaths.indexOf(queueItem.path + queueItem.name) !== -1) {
+      return 3;
+    } else if (queueItem.fields && queueItem.type === 'collection') {
+      return 2;
+    } else if (queueItem.type === 'fieldSet') {
+      return 1;
+    }
+    return 0;
+  }
+
   private getLabelToValue(key: string, obj: any, fieldData: any): Observable<any> {
-    let value = '';
+    let value: string;
 
     if (key === 'geometry') {
-      value += geoJSONToISO6709({
+      value = geoJSONToISO6709({
         type: 'FeatureCollection',
         features: [{
           type: 'Feature',
           geometry: obj,
         }]}).replace(/\n$/, '');
     } else if (Array.isArray(obj)) {
+      if (obj.length < 1) {
+        return ObservableOf(undefined);
+      }
       return ObservableForkJoin(obj.map((labelKey) => {
         return this.getDataLabel(labelKey, fieldData);
       }))

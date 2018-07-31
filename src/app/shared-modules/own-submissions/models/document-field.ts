@@ -1,8 +1,16 @@
-export interface DocumentFieldNode {
-  [key: string]: DocumentFieldNode | DocumentField
+export type DocumentField = DocumentFieldNode | DocumentFieldLeaf;
+
+type DocumentFieldNode = DocumentFieldNodeKnownProps & DocumentFieldNodeUnknownProps;
+
+interface DocumentFieldNodeKnownProps {
+  '@multipleBy'?: number
 }
 
-export interface DocumentField {
+interface DocumentFieldNodeUnknownProps {
+  [key: string]: DocumentFieldNode | DocumentFieldLeaf;
+}
+
+interface DocumentFieldLeaf {
   value: string,
   label: string,
   used: boolean,
