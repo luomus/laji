@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { LocalStorage } from 'ng2-webstorage';
+import { LocalStorage } from 'ngx-webstorage';
 
 @Component({
   selector: 'laji-templates',

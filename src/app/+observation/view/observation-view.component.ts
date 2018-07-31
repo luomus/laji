@@ -5,7 +5,7 @@ import {
 import { SearchQuery } from '../search-query.model';
 import { Subject,  Subscription, of as ObservableOf } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { LocalStorage } from 'ng2-webstorage';
+import { LocalStorage } from 'ngx-webstorage';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { AreaType } from '../../shared/service/area.service';
 import { UserService } from '../../shared/service/user.service';

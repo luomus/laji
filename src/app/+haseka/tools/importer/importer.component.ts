@@ -12,7 +12,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { AugmentService } from '../service/augment.service';
 import { DialogService } from '../../../shared/service/dialog.service';
-import { LocalStorage } from 'ng2-webstorage';
+import { LocalStorage } from 'ngx-webstorage';
 import * as Hash from 'object-hash';
 import { ImportTableColumn } from '../model/import-table-column';
 import { catchError, concatMap, map, mergeMap, switchMap, tap } from 'rxjs/operators';

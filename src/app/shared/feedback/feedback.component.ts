@@ -2,7 +2,7 @@ import { WINDOW } from '@ng-toolkit/universal';
 import { Component, Input, ViewChild , Inject} from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { UserService } from '../service/user.service';
-import { SessionStorage } from 'ng2-webstorage';
+import { SessionStorage } from 'ngx-webstorage';
 import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';

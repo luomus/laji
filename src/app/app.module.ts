@@ -24,7 +24,7 @@ import {
   TooltipModule,
   TypeaheadModule, CarouselModule
 } from 'ngx-bootstrap';
-import { Ng2Webstorage } from 'ng2-webstorage';
+import { Ng2Webstorage } from 'ngx-webstorage';
 import { ViewerModule } from './+viewer/viewer.module';
 import { ForumComponent } from './forum/forum.component';
 import { LocaleEnComponent } from './locale/locale-en.component';

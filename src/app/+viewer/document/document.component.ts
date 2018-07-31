@@ -12,7 +12,7 @@ import {
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable,  Subscription, interval as ObservableInterval } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
-import { SessionStorage } from 'ng2-webstorage';
+import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../shared/service/id.service';
 import { UserService } from '../../shared/service/user.service';
 import { environment } from '../../../environments/environment';

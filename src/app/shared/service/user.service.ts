@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
-import { LocalStorage } from 'ng2-webstorage';
+import { LocalStorage } from 'ngx-webstorage';
 import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
 import { ToastsService } from './toasts.service';

@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Observable ,  Observer, of as ObservableOf } from 'rxjs';
-import { LocalStorage } from 'ng2-webstorage';
+import { LocalStorage } from 'ngx-webstorage';
 import { UserService } from './user.service';
 import { Util } from './util.service';
 import { DocumentApi } from '../api/DocumentApi';
