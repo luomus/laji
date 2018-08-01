@@ -339,8 +339,8 @@
     d3-time-format "^2.1.0"
 
 "@swimlane/ngx-datatable@^13.0.1":
-  version "13.0.1"
-  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-13.0.1.tgz#6e949e19130b2054e2715d30d158751c4fbaa502"
+  version "13.1.0"
+  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-13.1.0.tgz#a79edc7eaed762a2f7868209a2ff597bbfc7137b"
 
 "@types/d3-axis@^1.0.10":
   version "1.0.10"
@@ -407,8 +407,8 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.4.tgz#c74e8aec19e555df44609b8057311052a2c84d9e"
 
 "@types/node@^6.0.46":
-  version "6.0.114"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.114.tgz#c42cd56479f32bc1576a5cb19f8a208da9a2b052"
+  version "6.0.115"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.115.tgz#2ebbd6e57589484c043a25ec3b75799c32f67520"
 
 "@types/object-hash@^1.2.0":
   version "1.2.0"
@@ -1808,8 +1808,8 @@ browserslist@^3.2.8:
     electron-to-chromium "^1.3.47"
 
 buffer-from@^1.0.0, buffer-from@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.0.tgz#87fcaa3a298358e0ade6e442cfce840740d1ad04"
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
 
 buffer-indexof@^1.0.0:
   version "1.1.1"
@@ -5430,16 +5430,16 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.480:
-  version "0.0.480"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.480.tgz#dd0c06080b3169adec527dffb2a2808962c3861c"
+laji-form@^0.0.481:
+  version "0.0.481"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.481.tgz#03cdab2e63935b9e0e465ae72657c170f1da076e"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.391"
-    laji-validate "0.0.66"
+    laji-map "^1.0.392"
+    laji-validate "0.0.67"
     moment "*"
     prop-types "^15.5.8"
     react "^16.4.1"
@@ -5457,12 +5457,12 @@ laji-form@^0.0.480:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@^1.0.381, laji-map@^1.0.391:
-  version "1.0.391"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.391.tgz#8b1d491a060b6c3a9082e6b36b0fbdc141a2284f"
+laji-map@^1.0.392:
+  version "1.0.392"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.392.tgz#65095d69dfdc79279811e14d3bba3cecffe166bb"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
-    leaflet "1.3.1"
+    leaflet "1.3.3"
     leaflet-contextmenu "1.4.0"
     leaflet-draw "1.0.0"
     leaflet-geometryutil "0.8.0"
@@ -5478,13 +5478,13 @@ laji-map@^1.0.381, laji-map@^1.0.391:
     "@types/leaflet-draw" "*"
     "@types/leaflet.markercluster" "*"
 
-laji-validate@0.0.66:
-  version "0.0.66"
-  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.66.tgz#5bbb16f548e88937f8ecb556fdc1e48eed3f572d"
+laji-validate@0.0.67:
+  version "0.0.67"
+  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.67.tgz#b4133b986a8845b5dca37014dfbcd9a3d210f2e4"
   dependencies:
     "@mapbox/geojson-area" "^0.2.2"
     geojson-bounds "^1.0.1"
-    laji-map "^1.0.381"
+    laji-map "^1.0.392"
     moment "*"
     validate.js "github:vixriihi/validate.js#dev"
 
@@ -5534,13 +5534,9 @@ leaflet.markercluster@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.3.0.tgz#58eb0654e90bd3274a660390ab0bc734212b204d"
 
-leaflet@*, leaflet@>=0.7.0, leaflet@^1.0.1:
+leaflet@*, leaflet@1.3.3, leaflet@>=0.7.0, leaflet@^1.0.1:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.3.3.tgz#5c8f2fd50e4a41ead93ab850dcd9e058811da9b9"
-
-leaflet@1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.3.1.tgz#86f336d2fb0e2d0ff446677049a5dc34cf0ea60e"
 
 leb@^0.3.0:
   version "0.3.0"
