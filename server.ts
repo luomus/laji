@@ -4,6 +4,7 @@ import {enableProdMode} from '@angular/core';
 import {ngExpressEngine} from '@nguniversal/express-engine';
 import {provideModuleMap} from '@nguniversal/module-map-ngfactory-loader';
 
+import * as redis from 'redis';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
@@ -14,6 +15,8 @@ import {join} from 'path';
 enableProdMode();
 
 export const app = express();
+
+const RedisClient = redis.createClient();
 
 app.use(compression());
 app.use(cors());
@@ -44,12 +47,43 @@ app.get('*.*', express.static('./dist/browser', {
 }));
 
 app.get('/*', (req, res) => {
-  res.render('index', {req, res}, (err, html) => {
-    if (html) {
-      res.send(html);
-    } else {
-      console.error(err);
-      res.send(err);
+
+  // Skip cache for these requests
+  if (req.originalUrl.indexOf('/user') === 0) {
+    res.render('index', {req, res}, (err, html) => {
+      if (html) {
+        res.send(html);
+      } else {
+        console.error(err);
+        res.send(err);
+      }
+    });
+    return;
+  }
+
+  // Cache these responses for 1min
+  const redisKey = 'LajiPage:' + req.originalUrl;
+  RedisClient.get(redisKey, (errRedis: any, resultRedis: string) => {
+    if (resultRedis) {
+      res.send(resultRedis);
+      // TODO: consider letting this run through so that the cache would be updated on request.
+      // Return response here and mark to a variable and send responses bellow only if this variable
+      // was not set
+      return;
     }
+
+    res.render('index', {req, res}, (err, html) => {
+      if (err) {
+        console.error(err);
+        return (req as any).next(err);
+      }
+      res.send(html);
+
+      if (!err) {
+        if (res.statusCode === 200) {
+          RedisClient.set(redisKey, html, 'EX', 60);
+        }
+      }
+    });
   });
 });
