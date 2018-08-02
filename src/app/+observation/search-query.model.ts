@@ -110,8 +110,7 @@ export class SearchQuery implements SearchQueryInterface {
   ];
 
   constructor(
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService,
+    private router: Router
   ) {
   }
 
@@ -153,8 +152,17 @@ export class SearchQuery implements SearchQueryInterface {
       }
     }
 
-    if (query['_coordinatesIntersection'] && this.query['coordinates']) {
-      this.query['coordinates'] = this.query['coordinates'].map(coordinate => coordinate + query['_coordinatesIntersection']);
+    if (this.query.coordinates) {
+      this.query.coordinates = this.query.coordinates.map(coordinate => {
+        const parts = coordinate.split(':');
+        const last = parts[parts.length - 1];
+        if (last === '0' || last === '1') {
+          this.query._coordinatesIntersection = ':' + parts.pop();
+        } else {
+          this.query._coordinatesIntersection = ':1';
+        }
+        return parts.join(':');
+      });
     }
 
     if (typeof query['page'] !== 'undefined') {
@@ -162,51 +170,8 @@ export class SearchQuery implements SearchQueryInterface {
     }
   }
 
-  public setQueryFromURLSearchParams(queryParameters: URLSearchParams) {
-    for (const i of this.arrayTypes) {
-      if (queryParameters.has(i)) {
-        this.query[i] = decodeURIComponent(queryParameters.get(i))
-          .split(',')
-          .map(value => value);
-      } else {
-        this.query[i] = undefined;
-      }
-    }
-
-    for (const i of this.booleanTypes) {
-      if (queryParameters.has(i)) {
-        this.query[i] = queryParameters.get(i) === 'true';
-      } else {
-        this.query[i] = undefined;
-      }
-    }
-
-    for (const i of this.numericTypes) {
-      if (queryParameters.has(i)) {
-        const value = +queryParameters.get(i);
-        if (!isNaN(value)) {
-          this.query[i] = value;
-        }
-      } else {
-        this.query[i] = undefined;
-      }
-    }
-
-    for (const i of [...this.stringTypes, ...this.obscure]) {
-      if (queryParameters.has(i)) {
-        this.query[i] = queryParameters.get(i);
-      } else {
-        this.query[i] = undefined;
-      }
-    }
-
-    if (queryParameters.has('page')) {
-      this.page = +queryParameters.get('page');
-    }
-  }
-
   public getQueryObject(skipParams: string[] = [], obscure = true) {
-    const result: WarehouseQueryInterface = {};
+    const result: {[field: string]: string | string[]}  = {};
     if (this.query) {
       for (const i of this.arrayTypes) {
         if (skipParams.indexOf(i) > -1) {
@@ -267,19 +232,11 @@ export class SearchQuery implements SearchQueryInterface {
     }
 
     if (result.coordinates) {
-      for (let i = 0; i < result.coordinates.length; i++) {
-        const coordinate = result.coordinates[i];
-        const parts = coordinate.split(':');
-        const last = parts.pop();
-        if (parts.length > 1 && (last === '0' || last === '1')) {
-          result.coordinates[i] = parts.join(':');
-          result._coordinatesIntersection = ':' + last;
-        }
-      }
+      result.coordinates += this.query._coordinatesIntersection;
     }
 
     if (result['target'] && Array.isArray(result['target'])) {
-      result['target'] = result['target'].map(target => target.replace(/http:\/\/tun\.fi\//g, ''));
+      result['target'] = (result['target'] as string[]).map(target => target.replace(/http:\/\/tun\.fi\//g, ''));
     }
 
     if (this.query && this.query.loadedLaterThan !== undefined) {

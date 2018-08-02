@@ -52,8 +52,6 @@ export class ObservationFormComponent implements OnInit {
 
   areaType = AreaType;
   dataSource: Observable<any>;
-  taxonExtra = false;
-  areaExtra = false;
   typeaheadLoading = false;
   autocompleteLimit = 10;
   logCoordinateAccuracyMax = 4;
@@ -150,10 +148,7 @@ export class ObservationFormComponent implements OnInit {
   }
 
   onOnlyFromCollectionCheckBoxToggle() {
-    this.formQuery.onlyFromCollectionSystems = !this.formQuery.onlyFromCollectionSystems;
-    if (this.formQuery.onlyFromCollectionSystems === false) {
-      this.searchQuery.sourceId = [];
-    }
+    this.searchQuery.sourceId = this.formQuery.onlyFromCollectionSystems ? ['KE.3', 'KE.167'] : [];
     this.onQueryChange();
   }
 
@@ -305,14 +300,11 @@ export class ObservationFormComponent implements OnInit {
     }
   }
 
-  private hasInMulti(multi, value, noOther = false) {
+  private hasInMulti(multi, value) {
     if (Array.isArray(value)) {
-      return value.filter(val => !this.hasInMulti(multi, val, noOther)).length === 0;
+      return value.filter(val => !this.hasInMulti(multi, val)).length === 0;
     }
-    if (Array.isArray(multi) && multi.indexOf(value) > -1) {
-      return noOther ? multi.length === (Array.isArray(value) ? value.length : 1) : true;
-    }
-    return false;
+    return Array.isArray(multi) && multi.indexOf(value) > -1;
   }
 
   private getValidDate(date) {
@@ -340,10 +332,10 @@ export class ObservationFormComponent implements OnInit {
       otherInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.otherInvasiveSpeciesList'),
       nationalInvasiveSpeciesStrategy: this.hasInMulti(query.administrativeStatusId, 'MX.nationalInvasiveSpeciesStrategy'),
       allInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
-      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3'], true),
+      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3']) && query.sourceId.length === 2,
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
       asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
-      coordinateIntersection: true,
+      coordinateIntersection: query._coordinatesIntersection !== ':0',
       taxonIncludeLower: undefined,
       taxonUseAnnotated: undefined
     };

@@ -140,8 +140,8 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   updateCsvLink() {
     const queryParams = this.searchQuery.getQueryObject();
     queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang];
-    queryParams['includeNonValidTaxa'] = false;
-    queryParams['pageSize'] = this.taxaLimit;
+    queryParams['includeNonValidTaxa'] = 'false';
+    queryParams['pageSize'] = '' + this.taxaLimit;
     if (queryParams['editorPersonToken']) {
       delete queryParams['editorPersonToken'];
     }

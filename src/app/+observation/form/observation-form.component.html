@@ -323,9 +323,9 @@
         <div class="form-group">
           <label class="col-lg-12">
             <input type="checkbox"
-                   [ngModel]="formQuery.coordinateIntersection"
-                   (ngModelChange)="onFormQueryChange()"
-                   name="onlyPreservedSpecimen">
+                   [(ngModel)]="formQuery.coordinateIntersection"
+                   (change)="onFormQueryChange()"
+                   name="coordinateIntersection">
             {{'observation.form.coordinateIntersection' | translate}}
           </label>
         </div>
@@ -594,8 +594,8 @@
       <div class="col-lg-12">
         <label>
           <input type="checkbox"
-                 [ngModel]="formQuery.onlyFromCollectionSystems"
-                 (ngModelChange)="onOnlyFromCollectionCheckBoxToggle()"
+                 [(ngModel)]="formQuery.onlyFromCollectionSystems"
+                 (change)="onOnlyFromCollectionCheckBoxToggle()"
                  name="onlyPreservedSpecimen">
           {{'observation.form.collection' | translate}}
         </label>
