@@ -9,11 +9,11 @@
     "@angular-devkit/core" "0.6.8"
     rxjs "^6.0.0"
 
-"@angular-devkit/architect@0.7.1":
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/architect/-/architect-0.7.1.tgz#c1e999f6565e4596d0912ea30c190981f79a9481"
+"@angular-devkit/architect@0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/architect/-/architect-0.7.2.tgz#b630f201f338c2b145c360b2b816185e1994b2c0"
   dependencies:
-    "@angular-devkit/core" "0.7.1"
+    "@angular-devkit/core" "0.7.2"
     rxjs "^6.0.0"
 
 "@angular-devkit/build-angular@~0.6.8":
@@ -91,9 +91,9 @@
     rxjs "^6.0.0"
     source-map "^0.5.6"
 
-"@angular-devkit/core@0.7.1":
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-0.7.1.tgz#a8c2ef8cca34d6918ebe618317fee5b0ec84a1e9"
+"@angular-devkit/core@0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-0.7.2.tgz#f86c65c70daa8fccf67f4f5767a4ade7a5975caf"
   dependencies:
     ajv "~6.4.0"
     chokidar "^2.0.3"
@@ -107,11 +107,11 @@
     "@angular-devkit/core" "0.6.8"
     rxjs "^6.0.0"
 
-"@angular-devkit/schematics@0.7.1":
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.7.1.tgz#4b805c66e38f09553ee953e4c81f993432a582fe"
+"@angular-devkit/schematics@0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.7.2.tgz#809d62a264265cf345228aabead42695aa96dc64"
   dependencies:
-    "@angular-devkit/core" "0.7.1"
+    "@angular-devkit/core" "0.7.2"
     rxjs "^6.0.0"
 
 "@angular/animations@^6.0.9":
@@ -121,14 +121,14 @@
     tslib "^1.9.0"
 
 "@angular/cli@^6.0.8":
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-6.1.1.tgz#a5d56ad2fbff71bead6b62d0000b1dda4099613d"
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-6.1.2.tgz#febc2635173ff7d6e3dc6744b4df49459e6f13d6"
   dependencies:
-    "@angular-devkit/architect" "0.7.1"
-    "@angular-devkit/core" "0.7.1"
-    "@angular-devkit/schematics" "0.7.1"
-    "@schematics/angular" "0.7.1"
-    "@schematics/update" "0.7.1"
+    "@angular-devkit/architect" "0.7.2"
+    "@angular-devkit/core" "0.7.2"
+    "@angular-devkit/schematics" "0.7.2"
+    "@schematics/angular" "0.7.2"
+    "@schematics/update" "0.7.2"
     opn "^5.3.0"
     rxjs "^6.0.0"
     semver "^5.1.0"
@@ -290,12 +290,12 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@schematics/angular@0.7.1":
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-0.7.1.tgz#29db78d148d3260e9bb545c86a4c6bfbaed9e933"
+"@schematics/angular@0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-0.7.2.tgz#f51f9391519050aabd43752cb97c28d878d69990"
   dependencies:
-    "@angular-devkit/core" "0.7.1"
-    "@angular-devkit/schematics" "0.7.1"
+    "@angular-devkit/core" "0.7.2"
+    "@angular-devkit/schematics" "0.7.2"
     typescript ">=2.6.2 <2.8"
 
 "@schematics/angular@^0.6.0", "@schematics/angular@^0.6.3":
@@ -306,14 +306,13 @@
     "@angular-devkit/schematics" "0.6.8"
     typescript ">=2.6.2 <2.8"
 
-"@schematics/update@0.7.1":
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/@schematics/update/-/update-0.7.1.tgz#56cf82df0bf8f5a0ef75aef94b7a9bc9598d7f51"
+"@schematics/update@0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@schematics/update/-/update-0.7.2.tgz#2d2db1e1235ba44d309529292373a5d0ff23e352"
   dependencies:
-    "@angular-devkit/core" "0.7.1"
-    "@angular-devkit/schematics" "0.7.1"
+    "@angular-devkit/core" "0.7.2"
+    "@angular-devkit/schematics" "0.7.2"
     npm-registry-client "^8.5.1"
-    rc "^1.2.8"
     rxjs "^6.0.0"
     semver "^5.3.0"
     semver-intersect "^1.1.2"
@@ -401,6 +400,10 @@
   resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.2.9.tgz#ed0857fb41c5769cf4f385332c9edfa398715f85"
   dependencies:
     "@types/geojson" "*"
+
+"@types/node@*":
+  version "10.5.5"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.5.5.tgz#8e84d24e896cd77b0d4f73df274027e3149ec2ba"
 
 "@types/node@10.3.4":
   version "10.3.4"
@@ -2210,8 +2213,8 @@ clone@^1.0.0:
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
 
 clone@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/clone/-/clone-2.1.1.tgz#d217d1e961118e3ac9a4b8bba3285553bf647cdb"
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/clone/-/clone-2.1.2.tgz#1b7f4b9f591f1e8f83670401600345a02887435f"
 
 cloneable-readable@^1.0.0:
   version "1.1.2"
@@ -3111,8 +3114,8 @@ ejs@^2.5.7, ejs@^2.5.9:
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.6.1.tgz#498ec0d495655abc6f23cd61868d926464071aa0"
 
 electron-to-chromium@^1.3.47:
-  version "1.3.52"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.52.tgz#d2d9f1270ba4a3b967b831c40ef71fb4d9ab5ce0"
+  version "1.3.55"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.55.tgz#f150e10b20b77d9d41afcca312efe0c3b1a7fdce"
 
 elegant-spinner@^1.0.1:
   version "1.0.1"
@@ -3717,8 +3720,8 @@ follow-redirects@1.0.0:
     debug "^2.2.0"
 
 follow-redirects@^1.0.0:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.1.tgz#67a8f14f5a1f67f962c2c46469c79eaec0a90291"
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.2.tgz#5a9d80e0165957e5ef0c1210678fc5c4acb9fb03"
   dependencies:
     debug "^3.1.0"
 
@@ -5458,8 +5461,8 @@ laji-form@^0.0.482:
     react-widgets "^3.4.8"
 
 laji-map@^1.0.393:
-  version "1.0.393"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.393.tgz#035b3ab9ed85548f383c923adf65767ae7717112"
+  version "1.0.395"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.395.tgz#72ba9d6ced810cfd97a7cce390d8c689327cb352"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.3.3"
@@ -5477,6 +5480,7 @@ laji-map@^1.0.393:
     "@types/leaflet" "*"
     "@types/leaflet-draw" "*"
     "@types/leaflet.markercluster" "*"
+    "@types/node" "*"
 
 laji-validate@0.0.68:
   version "0.0.68"
@@ -7314,7 +7318,7 @@ raw-loader@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/raw-loader/-/raw-loader-0.5.1.tgz#0c3d0beaed8a01c966d9787bf778281252a979aa"
 
-rc@^1.0.1, rc@^1.1.6, rc@^1.2.7, rc@^1.2.8:
+rc@^1.0.1, rc@^1.1.6, rc@^1.2.7:
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/rc/-/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"
   dependencies:
@@ -7374,8 +7378,8 @@ react-bootstrap@^0.32.1:
     warning "^3.0.0"
 
 react-dom@^16.4.1:
-  version "16.4.1"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.4.1.tgz#7f8b0223b3a5fbe205116c56deb85de32685dad6"
+  version "16.4.2"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.4.2.tgz#4afed569689f2c561d2b8da0b819669c38a0bda4"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
@@ -7397,8 +7401,8 @@ react-inlinesvg@^0.6.0:
     once "^1.4"
 
 react-is@^16.3.2:
-  version "16.4.1"
-  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.4.1.tgz#d624c4650d2c65dbd52c72622bbf389435d9776e"
+  version "16.4.2"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.4.2.tgz#84891b56c2b6d9efdee577cc83501dfc5ecead88"
 
 "react-jsonschema-form@git+https://git@github.com/olzraiti/react-jsonschema-form.git#453552e958aa42bea1daaac8ba14e177c7825494":
   version "1.0.0"
@@ -7486,8 +7490,8 @@ react-widgets@^3.4.8:
     format-number-with-string "0.0.2"
 
 react@^16.4.1:
-  version "16.4.1"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.4.1.tgz#de51ba5764b5dbcd1f9079037b862bd26b82fe32"
+  version "16.4.2"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.4.2.tgz#2cd90154e3a9d9dd8da2991149fdca3c260e129f"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
@@ -8007,14 +8011,15 @@ sass-graph@^2.2.4:
     yargs "^7.0.0"
 
 sass-loader@^7.0.1:
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-7.0.3.tgz#6ca10871a1cc7549f8143db5a9958242c4e4ca2a"
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-7.1.0.tgz#16fd5138cb8b424bf8a759528a1972d72aad069d"
   dependencies:
     clone-deep "^2.0.1"
     loader-utils "^1.0.1"
     lodash.tail "^4.1.1"
     neo-async "^2.5.0"
     pify "^3.0.0"
+    semver "^5.5.0"
 
 saucelabs@^1.5.0:
   version "1.5.0"
@@ -8814,8 +8819,8 @@ tar@^2.0.0:
     inherits "2"
 
 tar@^4:
-  version "4.4.4"
-  resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.4.tgz#ec8409fae9f665a4355cc3b4087d0820232bb8cd"
+  version "4.4.6"
+  resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.6.tgz#63110f09c00b4e60ac8bcfe1bf3c8660235fbc9b"
   dependencies:
     chownr "^1.0.1"
     fs-minipass "^1.2.5"
@@ -9600,8 +9605,8 @@ webpack-log@^1.0.1, webpack-log@^1.1.2:
     uuid "^3.1.0"
 
 webpack-merge@^4.1.2:
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/webpack-merge/-/webpack-merge-4.1.3.tgz#8aaff2108a19c29849bc9ad2a7fd7fce68e87c4a"
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/webpack-merge/-/webpack-merge-4.1.4.tgz#0fde38eabf2d5fd85251c24a5a8c48f8a3f4eb7b"
   dependencies:
     lodash "^4.17.5"
 
