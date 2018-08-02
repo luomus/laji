@@ -182,7 +182,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
           });
         }
       });
-      const dist = MapUtil.getLineTransectStartEndDistancesForIdx({geometry: geometries}, geometries.coordinates.length - 1, 10);
+      const dist = MapUtil.getLineTransectStartEndDistancesForIdx({geometry: geometries} as any, geometries.coordinates.length - 1, 10);
       count.routeLength = dist[1];
       count.couplesPerKm = (count.tsCouples + count.psCouples) / (count.routeLength / 1000);
     }

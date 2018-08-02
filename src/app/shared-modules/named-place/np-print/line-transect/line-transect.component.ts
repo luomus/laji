@@ -118,7 +118,7 @@ export class LineTransectComponent implements OnChanges, AfterViewInit {
           }
         });
       }
-      const dist = MapUtil.getLineTransectStartEndDistancesForIdx({geometry: geometries}, idx, 10);
+      const dist = MapUtil.getLineTransectStartEndDistancesForIdx({geometry: geometries} as any, idx, 10);
       const biotopeSlot = current === dist[0] ? current : current - this.formSplit;
       if (!biotopes[biotopeSlot]) {
         biotopes[biotopeSlot] = [];

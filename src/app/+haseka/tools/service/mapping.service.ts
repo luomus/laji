@@ -391,7 +391,7 @@ export class MappingService {
         }
       }
       try {
-        const data = convertAnyToWGS84GeoJSON(value);
+        const data: any = convertAnyToWGS84GeoJSON(value);
         if (data && data.features && data.features[0] && data.features[0].geometry) {
           value = data.features[0].geometry;
         }

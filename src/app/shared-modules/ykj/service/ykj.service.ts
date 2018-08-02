@@ -108,7 +108,7 @@ export class YkjService {
     return MapUtil.convertLatLng([lat, lng], 'WGS84', 'EPSG:2393');
   }
 
-  private convertYkjToWgs(latLng: [string, string]): [string, string] {
+  private convertYkjToWgs(latLng: [any, any]): [string, string] {
     return MapUtil.convertLatLng(latLng, 'EPSG:2393', 'WGS84');
   }
 

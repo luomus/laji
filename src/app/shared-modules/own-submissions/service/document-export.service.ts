@@ -13,6 +13,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { DocumentInfoService } from './document-info.service';
 import { ExportService } from '../../../shared/service/export.service';
 import { DocumentField } from '../models/document-field';
+import { FeatureCollection } from 'geojson';
 
 
 @Injectable()
@@ -377,7 +378,7 @@ export class DocumentExportService {
         features: [{
           type: 'Feature',
           geometry: obj,
-        }]}).replace(/\n$/, '');
+        }]} as FeatureCollection).replace(/\n$/, '');
     } else if (Array.isArray(obj)) {
       if (obj.length < 1) {
         return ObservableOf(undefined);

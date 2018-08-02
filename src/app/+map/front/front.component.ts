@@ -45,7 +45,7 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
     en: '/about/1807'
   };
 
-  drawData = {
+  drawData: any = {
     editable: true,
     featureCollection: {
       type: 'FeatureCollection',

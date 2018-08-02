@@ -181,7 +181,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     if (this.map) {
       this.map.destroy();
     }
-    const options = {...this._options, ...(this.userSettings || {}), rootElem: this.elemRef.nativeElement};
+    const options: any = {...this._options, ...(this.userSettings || {}), rootElem: this.elemRef.nativeElement};
     this.map = new LajiMap(options);
     if (this.data) {
       this.map.setData(this.data);
