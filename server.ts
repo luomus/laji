@@ -61,27 +61,27 @@ app.get('/*', (req, res) => {
     return;
   }
 
-  // Cache these responses for 1min
+  // Cache these responses for 10min, update cache on every request
   const redisKey = 'LajiPage:' + req.originalUrl;
   RedisClient.get(redisKey, (errRedis: any, resultRedis: string) => {
+    let hit = false;
     if (resultRedis) {
       res.send(resultRedis);
-      // TODO: consider letting this run through so that the cache would be updated on request.
-      // Return response here and mark to a variable and send responses bellow only if this variable
-      // was not set
-      return;
+      hit = true;
     }
 
     res.render('index', {req, res}, (err, html) => {
       if (err) {
         console.error(err);
-        return (req as any).next(err);
+        return hit ? undefined : (req as any).next(err);
       }
-      res.send(html);
+      if (!hit) {
+        res.send(html);
+      }
 
       if (!err) {
         if (res.statusCode === 200) {
-          RedisClient.set(redisKey, html, 'EX', 60);
+          RedisClient.set(redisKey, html, 'EX', 60 * 10);
         }
       }
     });
