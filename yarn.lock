@@ -5455,16 +5455,16 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.482:
-  version "0.0.482"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.482.tgz#f20c616b4c521778609d8f7edf1ebde673ebed40"
+laji-form@^0.0.483:
+  version "0.0.483"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.483.tgz#45a289bd6d9530428f383edbc83389faaf2d6765"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.393"
-    laji-validate "0.0.68"
+    laji-map "^1.0.395"
+    laji-validate "0.0.69"
     moment "*"
     prop-types "^15.5.8"
     react "^16.4.1"
@@ -5482,7 +5482,7 @@ laji-form@^0.0.482:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@^1.0.393:
+laji-map@^1.0.395:
   version "1.0.395"
   resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.395.tgz#72ba9d6ced810cfd97a7cce390d8c689327cb352"
   dependencies:
@@ -5504,13 +5504,13 @@ laji-map@^1.0.393:
     "@types/leaflet.markercluster" "*"
     "@types/node" "*"
 
-laji-validate@0.0.68:
-  version "0.0.68"
-  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.68.tgz#ee132be0e3f418b57eb125f74be971635cd824b8"
+laji-validate@0.0.69:
+  version "0.0.69"
+  resolved "https://registry.yarnpkg.com/laji-validate/-/laji-validate-0.0.69.tgz#52b69a8c61d8224c258c887953e65d420d816b7a"
   dependencies:
     "@mapbox/geojson-area" "^0.2.2"
     geojson-bounds "^1.0.1"
-    laji-map "^1.0.393"
+    laji-map "^1.0.395"
     moment "*"
     validate.js "github:vixriihi/validate.js#dev"
 
