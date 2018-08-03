@@ -5,7 +5,7 @@ import { FormPermission } from '../../shared/model/FormPermission';
 import { Person } from '../../shared/model/Person';
 import { Form } from '../../shared/model/Form';
 import { UserService } from '../../shared/service/user.service';
-import {catchError, map, switchMap} from 'rxjs/operators';
+import { catchError, map, switchMap, take } from 'rxjs/operators';
 
 export interface Rights {
   edit: boolean;
@@ -103,6 +103,7 @@ export class FormPermissionService {
 
   private access(form: any, notLoggedIn: any, notRestricted: any, cb: (formPermission: FormPermission, person: Person) => any) {
     return this.userSerivce.isLoggedIn$.pipe(
+      take(1),
       switchMap(login => {
         if (!login) {
           return ObservableOf(notLoggedIn);
