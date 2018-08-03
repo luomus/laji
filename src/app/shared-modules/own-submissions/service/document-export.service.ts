@@ -14,7 +14,6 @@ import { DocumentInfoService } from './document-info.service';
 import { ExportService } from '../../../shared/service/export.service';
 import { DocumentField } from '../models/document-field';
 import { FeatureCollection } from 'geojson';
-import { Util } from '../../../shared/service/util.service';
 
 
 @Injectable()
