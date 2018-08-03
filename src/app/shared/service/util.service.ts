@@ -48,8 +48,8 @@ export class Util {
   public static parseJSONPath(object: any, jsonPath: string) {
     // Both jsonpath and jsonpath-plus cause problems with the production build,
     // so we convert to json paths to json pointers.
-    let pathAsJSONPointer = jsonPath
-      .substring(1, jsonPath.length) // Remove first '$'
+    let pathAsJSONPointer = jsonPath[0] === '$' ? jsonPath.substring(1, jsonPath.length) : jsonPath; // Remove first '$'
+    pathAsJSONPointer = pathAsJSONPointer
       .replace(/\./g, '/')
       .replace(/\[/g, '/')
       .replace(/\]/g, '/');
