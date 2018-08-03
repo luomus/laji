@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Router, Params } from '@angular/router';
-import { TaxonomySearchQueryInterface } from './taxonomy-search-query.interface';
-import { SearchQueryInterface } from '../../shared-modules/search-filters/search-query.interface';
+import { TaxonomySearchQueryInterface } from '../model/taxonomy-search-query.interface';
+import { SearchQueryInterface } from '../../../shared-modules/search-filters/search-query.interface';
 
 @Injectable()
 export class TaxonomySearchQuery implements SearchQueryInterface {

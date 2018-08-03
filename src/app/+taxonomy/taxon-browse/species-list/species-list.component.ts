@@ -7,11 +7,12 @@ import { Logger } from '../../../shared/logger/logger.service';
 import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
+import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { SpeciesDownloadComponent } from '../species-download/species-download.component';
 import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/species-list-options-modal.component';
-import { TaxonomyColumns } from '../taxonomy-columns.model';
-import { TaxonExportService } from '../taxon-export.service';
+import { TaxonomyColumns } from '../service/taxonomy-columns';
+import { TaxonExportService } from '../service/taxon-export.service';
+import { DatatableUtil } from '../service/datatable-util.service';
 
 @Component({
   selector: 'laji-species-list',
@@ -85,6 +86,10 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   sortOrderChanged(event) {
     this.searchQuery.listOptions.sortOrder = event;
     this.refreshSpeciesList();
+  }
+
+  onSort(event) {
+
   }
 
   refreshSpeciesList() {
