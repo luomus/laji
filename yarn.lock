@@ -5455,15 +5455,15 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.483:
-  version "0.0.483"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.483.tgz#45a289bd6d9530428f383edbc83389faaf2d6765"
+laji-form@^0.0.484:
+  version "0.0.484"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.484.tgz#27a025882a14f77193cef7f529e521b905ec5277"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.395"
+    laji-map "^1.0.397"
     laji-validate "0.0.69"
     moment "*"
     prop-types "^15.5.8"
@@ -5483,8 +5483,8 @@ laji-form@^0.0.483:
     react-widgets "^3.4.8"
 
 laji-map@^1.0.395:
-  version "1.0.395"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.395.tgz#72ba9d6ced810cfd97a7cce390d8c689327cb352"
+  version "1.0.396"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.396.tgz#be98c798181322e9ec6d1320135cc526e6d5123b"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.3.3"
@@ -5497,6 +5497,30 @@ laji-map@^1.0.395:
     nouislider "10.0.0"
     proj4 "2.3.16"
     proj4leaflet "1.0.2"
+    webpack-bundle-analyzer "^2.13.1"
+  optionalDependencies:
+    "@types/geojson" "*"
+    "@types/leaflet" "*"
+    "@types/leaflet-draw" "*"
+    "@types/leaflet.markercluster" "*"
+    "@types/node" "*"
+
+laji-map@^1.0.397:
+  version "1.0.397"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.397.tgz#ff9c4f14bb77b8acd67ca5c61d2a53727c0a54c5"
+  dependencies:
+    Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
+    leaflet "1.3.3"
+    leaflet-contextmenu "1.4.0"
+    leaflet-draw "1.0.0"
+    leaflet-geometryutil "0.8.0"
+    leaflet-mml-layers "2.0.1"
+    leaflet-textpath "git+https://git@github.com/olzraiti/Leaflet.textPath.git#7fd168f22e2b1a52bdf62d473237f01caaa01e95"
+    leaflet.markercluster "1.3.0"
+    nouislider "10.0.0"
+    proj4 "2.3.16"
+    proj4leaflet "1.0.2"
+    webpack-bundle-analyzer "^2.13.1"
   optionalDependencies:
     "@types/geojson" "*"
     "@types/leaflet" "*"
