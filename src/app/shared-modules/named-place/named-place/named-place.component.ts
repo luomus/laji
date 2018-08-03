@@ -14,7 +14,7 @@ import { AreaType } from '../../../shared/service/area.service';
 import { NpEditComponent } from '../np-edit/np-edit.component';
 import {FormPermissionService, Rights} from '../../../+haseka/form-permission/form-permission.service';
 import * as moment from 'moment';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-named-place',
@@ -204,6 +204,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     };
     this.allowCreate = false;
     return this.userService.isLoggedIn$.pipe(
+      take(1),
       switchMap(login => {
         if (!formData || !formData.collectionID || !login) {
           return ObservableOf(null);

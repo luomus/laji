@@ -135,6 +135,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       return ObservableOf(false);
     }
     return this.userService.isLoggedIn$
+      .take(1)
       .switchMap(loggedIn => loggedIn ?
         this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken())
           .combineLatest(
