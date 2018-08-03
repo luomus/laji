@@ -14,7 +14,7 @@ import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/
 import { TaxonomyColumns } from '../service/taxonomy-columns';
 import { TaxonExportService } from '../service/taxon-export.service';
 import { DatatableUtil } from '../service/datatable-util.service';
-import { Util } from '../../../shared/service/util.service':
+import { Util } from '../../../shared/service/util.service';
 
 @Component({
   selector: 'laji-species-list',
