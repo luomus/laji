@@ -3,8 +3,8 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef,
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { withLatestFrom, map } from 'rxjs/operators';
-import { TaxonomySearchQuery } from './taxonomy-search-query.model';
-import { TaxonomyColumns } from './taxonomy-columns.model';
+import { TaxonomySearchQuery } from './service/taxonomy-search-query';
+import { TaxonomyColumns } from './service/taxonomy-columns';
 import { FooterService } from '../../shared/service/footer.service';
 
 @Component({

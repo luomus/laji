@@ -24,7 +24,7 @@ import { TypeaheadModule, ButtonsModule } from 'ngx-bootstrap';
 import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
 import { LajiSelectModule } from '../shared-modules/select/select.module';
 import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
-import { TaxonomySearchQuery } from './taxon-browse/taxonomy-search-query.model';
+import { TaxonomySearchQuery } from './taxon-browse/service/taxonomy-search-query';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
 import { SpeciesDownloadComponent } from './taxon-browse/species-download/species-download.component';
 import { SpeciesBrowseObservationsComponent } from './taxon-browse/species-browse-observations/species-browse-observations.component';
@@ -36,14 +36,15 @@ import { ObservationMapModule } from '../shared-modules/observation-map/observat
 import { TreeTableComponent } from './taxon-browse/taxon-tree/tree-table/tree-table.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SpeciesListOptionsModalComponent } from './taxon-browse/species-list-options-modal/species-list-options-modal.component';
-import { TaxonomyColumns } from './taxon-browse/taxonomy-columns.model';
-import { TaxonExportService } from './taxon-browse/taxon-export.service';
+import { TaxonomyColumns } from './taxon-browse/service/taxonomy-columns';
+import { TaxonExportService } from './taxon-browse/service/taxon-export.service';
+import { DatatableUtil } from './taxon-browse/service/datatable-util.service';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, HttpClientModule,
     TypeaheadModule, ButtonsModule, SearchFiltersModule, LajiSelectModule, JWBootstrapSwitchModule, ObservationResultModule,
     ObservationMapModule, NgxDatatableModule ],
-  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns, TaxonExportService],
+  providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns, TaxonExportService, DatatableUtil],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
     ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent,

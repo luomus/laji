@@ -21,7 +21,8 @@
       class="observation-table"
       (rowSelect)="onRowSelect($event)"
       [virtualScrolling]="true"
-      [clientSideSorting]="true"
+      [clientSideSorting]="false"
+      (sortChange)="onSort($event)"
       [height]="'calc(70vh - 30px)'"
       [rows]='speciesPage.results'
       (pageChange)="pageChanged($event)"

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angu
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription, of as ObservableOf } from 'rxjs';
 import { switchMap, distinctUntilChanged } from 'rxjs/operators';
-import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
+import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { SpeciesFormQuery } from './species-form-query.interface';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 

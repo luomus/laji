@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ObservationTableColumn } from '../../shared-modules/observation-result/model/observation-table-column';
+import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
 
 @Injectable()
 export class TaxonomyColumns {
