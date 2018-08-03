@@ -129,17 +129,20 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
   }
 
   hasAdminRight(form: Form.List): Observable<boolean> {
-    if (!this.userService.isLoggedIn || !form.collectionID || !form.features ||
+    if (!form.collectionID || !form.features ||
       (form.features.indexOf(Form.Feature.Restricted) === -1 && form.features.indexOf(Form.Feature.Administer) === -1)
     ) {
       return ObservableOf(false);
     }
-    return this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken())
-      .combineLatest(
-        this.person ? ObservableOf(this.person) : this.userService.getUser(),
-        (permission, person) => ({permission, person})
-      )
-      .map(data => this.formPermissionService.isAdmin(data.permission, data.person));
+    return this.userService.isLoggedIn$
+      .switchMap(loggedIn => loggedIn ?
+        this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken())
+          .combineLatest(
+            this.person ? ObservableOf(this.person) : this.userService.getUser(),
+            (permission, person) => ({permission, person})
+          )
+          .map(data => this.formPermissionService.isAdmin(data.permission, data.person)) :
+        ObservableOf(false));
   }
 
   trackCategory(idx, category) {

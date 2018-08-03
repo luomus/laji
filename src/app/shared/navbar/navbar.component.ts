@@ -59,8 +59,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
     this.subUser = this.userService.action$
       .debounceTime(50)
-      .subscribe(() => {
-        this.isLoggedIn = this.userService.isLoggedIn;
+      .switchMap(() => this.userService.isLoggedIn$)
+      .subscribe((login) => {
+        this.isLoggedIn = login;
         this.changeDetector.markForCheck();
       });
     this.subParams = this.router.events.subscribe((event) => {
@@ -72,7 +73,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.subNotification = ObservableInterval(60000)
       .startWith(0)
       .delay(5000)
-      .filter(() => this.userService.isLoggedIn)
+      .switchMap(() => this.userService.isLoggedIn$)
+      .filter((loggedIn) => loggedIn)
       .switchMap(() => this.lajiApi.getList(LajiApi.Endpoints.notifications, {
           personToken: this.userService.getToken(),
           page: this.currentNotificationPage,
@@ -103,7 +105,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     let notificationsCache;
     this.sublangChange = this.translate.onLangChange
       .filter(() => !!this.notifications)
-      .filter(() => this.userService.isLoggedIn)
+      .switchMap(() => this.userService.isLoggedIn$)
+      .filter((loggedIn) => loggedIn)
       .do(() => notificationsCache = [...this.notifications.results])
       .do(() => this.notifications.results = [])
       .do(() => this.changeDetector.markForCheck())

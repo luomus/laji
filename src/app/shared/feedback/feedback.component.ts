@@ -43,10 +43,8 @@ export class FeedbackComponent {
 
   sendFeedback() {
     this.error = false;
-    const subject = (['other', ''].indexOf(this.feedback.subject) > -1 ?  '' : (this.feedback.subject + ': ')) +
-      this.feedback.other;
-    const message = this.userService.isLoggedIn ? this.feedback.message : this.feedback.message + '\n\n---\n' + this.feedback.email;
-    if (!this.feedback.other || !message) {
+    const subject = (['other', ''].indexOf(this.feedback.subject) > -1 ?  '' : (this.feedback.subject + ': ')) + this.feedback.other;
+    if (!this.feedback.other || !this.feedback.message) {
       this.error = true;
       return;
     }
@@ -54,8 +52,12 @@ export class FeedbackComponent {
     this.userService.getUser()
       .switchMap(user => this.lajiApi.post(
         LajiApi.Endpoints.feedback,
-        {subject, message, meta},
-        {personToken: user.emailAddress ? this.userService.getToken() : undefined})
+        {
+          subject,
+          message: !!user ? this.feedback.message : this.feedback.message + '\n\n---\n' + this.feedback.email,
+          meta
+        },
+        {personToken: user && user.emailAddress ? this.userService.getToken() : undefined})
       )
       .subscribe(
         () => {

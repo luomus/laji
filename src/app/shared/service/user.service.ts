@@ -1,5 +1,14 @@
 
-import {throwError as observableThrowError,  Observer ,  Observable ,  Subscription ,  Subject, of as ObservableOf } from 'rxjs';
+import {
+  throwError as observableThrowError,
+  Observer,
+  Observable,
+  Subscription,
+  Subject,
+  of as ObservableOf,
+  BehaviorSubject,
+  ReplaySubject
+} from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Person } from '../model/Person';
@@ -15,6 +24,7 @@ import { environment } from '../../../environments/environment';
 import { LajiApi, LajiApiService } from './laji-api.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { WINDOW } from '@ng-toolkit/universal';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 
 export const USER_INFO = '[user]: info';
 export const USER_LOGOUT_ACTION = '[user]: logout';
@@ -27,9 +37,9 @@ export class UserService extends LocalDb {
   public static readonly SETTINGS_TAXONOMY_LIST = 'taxonomy-list';
   public static readonly SETTINGS_TAXONOMY_TREE = 'taxonomy-tree';
 
+  private _isLoggedIn$ = new ReplaySubject<boolean>(1);
   private actionSource = new Subject<any>();
   public action$ = this.actionSource.asObservable();
-  public isLoggedIn = false;
 
   @LocalStorage() private token;
   @LocalStorage() private returnUrl;
@@ -65,7 +75,22 @@ export class UserService extends LocalDb {
       this.loadUserInfo(this.token).subscribe(value => {
         this.isLoggedIn = !!value;
       });
+    } else {
+      this.isLoggedIn = false;
     }
+  }
+
+  public set isLoggedIn(isIn: boolean) {
+    this._isLoggedIn$.next(isIn);
+  }
+
+  public get isLoggedIn() {
+    console.error('Use observable isLoggedIn$ instead of this isLoggedIn');
+    return false;
+  }
+
+  public get isLoggedIn$() {
+    return this._isLoggedIn$.asObservable();
   }
 
   public login(userToken: string) {
@@ -119,9 +144,9 @@ export class UserService extends LocalDb {
     return this.token;
   }
 
-  public getUser(id?: string): Observable<Person> {
+  public getUser(id?: string, token?: string): Observable<Person> {
     if (!id) {
-      return this.getCurrentUser()
+      return this.getCurrentUser(token)
         .catch((err: HttpErrorResponse | any) => {
           if (err instanceof HttpErrorResponse && err.status !== 404) {
             this.logger.error('Failed to fetch current users information', err);
@@ -203,23 +228,25 @@ export class UserService extends LocalDb {
 
   private loadUserInfo(token: string): Observable<any> {
     this.token = token;
-    return this.getUser()
-      .do((person: Person) => this.addUser(person, true))
-      .switchMap((person: Person) => this.getItem(person.id))
-      .do(settings => {
-        this.userSettings = settings;
-        this.actionSource.next(USER_INFO);
-      })
-      .catch(err => {
+    return this.getUser(null, token).pipe(
+      tap((person: Person) => this.addUser(person, true)),
+      switchMap((person: Person) => this.getItem(person.id).pipe(
+        tap((settings: any) => this.userService = settings),
+        switchMap(() => ObservableOf(person))
+      )),
+      tap(() => this.actionSource.next(USER_INFO)),
+      catchError(err => {
         this.logout();
         this.logger.warn('Failed to load user info with token', err);
 
         return ObservableOf(null)
       })
+    );
   }
 
-  private getCurrentUser() {
-    if (!this.token) {
+  private getCurrentUser(token?: string) {
+    const userToken = token || this.token;
+    if (!userToken) {
       return ObservableOf({});
     }
     if (this.currentUserId && this.users[this.currentUserId]) {
@@ -227,7 +254,7 @@ export class UserService extends LocalDb {
     } else if (this.observable) {
       return this.observable;
     }
-    this.observable = this.userService.personFindByToken(this.token)
+    this.observable = this.userService.personFindByToken(userToken)
       .do(u => this.addUser(u, true))
       .share();
     return this.observable;
