@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { UserService } from '../../../shared/service/user.service';
-import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
+import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 
 @Component({
   selector: 'laji-species-list-options-modal',

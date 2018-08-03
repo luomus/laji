@@ -102,18 +102,21 @@ export class FormPermissionService {
   }
 
   private access(form: any, notLoggedIn: any, notRestricted: any, cb: (formPermission: FormPermission, person: Person) => any) {
-    if (!this.userSerivce.isLoggedIn) {
-      return ObservableOf(notLoggedIn);
-    }
-    if (!form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
-      return ObservableOf(notRestricted);
-    }
-    return this.userSerivce.getUser().pipe(
-      switchMap((person: Person) => this.getFormPermission(form.collectionID, this.userSerivce.getToken()).pipe(
-        map((formPermission: FormPermission) => ({person, formPermission}))
-      )),
-      switchMap(data => ObservableOf(cb(data.formPermission, data.person))),
-      catchError(() => ObservableOf(notLoggedIn))
+    return this.userSerivce.isLoggedIn$.pipe(
+      switchMap(login => {
+        if (!login) {
+          return ObservableOf(notLoggedIn);
+        } else if (!form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
+          return ObservableOf(notRestricted);
+        }
+        return this.userSerivce.getUser().pipe(
+          switchMap((person: Person) => this.getFormPermission(form.collectionID, this.userSerivce.getToken()).pipe(
+            map((formPermission: FormPermission) => ({person, formPermission}))
+          )),
+          switchMap(data => ObservableOf(cb(data.formPermission, data.person))),
+          catchError(() => ObservableOf(notLoggedIn))
+        );
+      })
     );
   }
 }

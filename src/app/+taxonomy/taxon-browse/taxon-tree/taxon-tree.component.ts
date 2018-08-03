@@ -1,16 +1,16 @@
 import { Component, Input, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Subscription, Observable, of as ObservableOf } from 'rxjs';
 import { map, tap, switchMap, distinctUntilChanged } from 'rxjs/operators';
-import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
+import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TreeTableComponent } from './tree-table/tree-table.component'
 import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/species-list-options-modal.component';
 import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { TaxonomyColumns } from '../taxonomy-columns.model';
+import { TaxonomyColumns } from '../service/taxonomy-columns';
 import { SpeciesDownloadComponent } from '../species-download/species-download.component';
-import { TaxonExportService } from '../taxon-export.service';
+import { TaxonExportService } from '../service/taxon-export.service';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { TranslateService } from '@ngx-translate/core';
 

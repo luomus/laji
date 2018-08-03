@@ -302,7 +302,7 @@ export class DocumentExportService {
           while (queue.length > 0) {
             let next = queue.shift();
             const fieldName = next.path + next.name;
-            const parent = this.getValueByPath(next.path, fieldStructure);
+            const parent = Util.parseJSONPath(fieldStructure, next.path);
 
             if (!next.fields) {
               if (!parent[next.name]) {
@@ -462,16 +462,5 @@ export class DocumentExportService {
     }
 
     return false;
-  }
-
-  private getValueByPath(path: string, data: any): any {
-    return path.split('.').reduce((o, s) => {
-      if (s === '') {
-        return o;
-      }
-      if (o) {
-        return o[s];
-      }
-    }, data);
   }
 }
