@@ -70,7 +70,7 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
       page: 1
     };
     this.treeOptions = {
-      selected: ['vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
+      selected: ['taxonRank', 'vernacularName', 'typeOfOccurrenceInFinland',
         'latestRedListStatusFinland', 'administrativeStatuses', 'synonymNames']
     };
   }

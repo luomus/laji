@@ -18,7 +18,9 @@
     <i class="glyphicon glyphicon-triangle-right" [ngStyle]="{visibility: value.hasChildren ? 'visible' : 'hidden'}" *ngIf="!value.isExpanded && !value.isLoading"></i>
     <laji-spinner *ngIf="value.isLoading"></laji-spinner>
     <i class="glyphicon glyphicon-triangle-bottom" *ngIf="value.isExpanded && !value.isLoading"></i>
-    <ng-container *ngTemplateOutlet="expanderLabel; context: {'value': value}"></ng-container>
+    <span class="inline">
+      <ng-container *ngTemplateOutlet="expanderLabel; context: {'value': value}"></ng-container>
+    </span>
   </span>
 </ng-template>
 

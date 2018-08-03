@@ -155,7 +155,7 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
   }
 
   private getSelectedFields() {
-    const compulsory = ['id', 'taxonRank', 'hasChildren'];
+    const compulsory = ['id', 'scientificName', 'cursiveName', 'hasChildren'];
 
     const selects = this.searchQuery.treeOptions.selected.reduce((arr, field) => {
       let addedField = field;

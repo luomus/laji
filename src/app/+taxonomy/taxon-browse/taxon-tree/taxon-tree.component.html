@@ -39,7 +39,7 @@
                      [openId]="openId"
                      (rowSelect)="onRowSelect($event)">
       <ng-template let-value="value" #expanderLabel>
-        [{{value.taxonRank | label}}]
+        <span [class.cursive]="value.cursiveName" title="{{value.scientificName}}"> {{value.scientificName}}</span>
       </ng-template>
     </laji-tree-table>
     <div class="setting-menu link" (click)="openSettingsModal()">

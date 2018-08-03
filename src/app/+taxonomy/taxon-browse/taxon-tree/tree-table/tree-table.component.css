@@ -1,3 +1,10 @@
+.inline {
+  display: inline !important;
+}
+:host >>> .inline span {
+  display: inline !important;
+}
+
 .tree-side-line {
   content: "";
   position: absolute;
