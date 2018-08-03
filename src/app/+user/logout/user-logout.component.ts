@@ -4,6 +4,7 @@ import { UserService } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-logout',
@@ -18,7 +19,9 @@ export class UserLogoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.isLoggedIn$.subscribe(login => {
+    this.userService.isLoggedIn$.pipe(
+      take(1)
+    ).subscribe(login => {
       if (login) {
         this.userService.logout();
       }
