@@ -18,9 +18,11 @@ export class UserLogoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.userService.isLoggedIn) {
-      this.userService.logout();
-    }
+    this.userService.isLoggedIn$.subscribe(login => {
+      if (login) {
+        this.userService.logout();
+      }
+    });
     if (environment.forceLogin) {
       this.window.location.href = UserService.getLoginUrl();
     } else {

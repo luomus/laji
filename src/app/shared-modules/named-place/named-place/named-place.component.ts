@@ -14,6 +14,7 @@ import { AreaType } from '../../../shared/service/area.service';
 import { NpEditComponent } from '../np-edit/np-edit.component';
 import {FormPermissionService, Rights} from '../../../+haseka/form-permission/form-permission.service';
 import * as moment from 'moment';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-named-place',
@@ -202,17 +203,21 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       edit: false
     };
     this.allowCreate = false;
-    if (!formData || !formData.collectionID || !this.userService.isLoggedIn) {
-      return ObservableOf(null);
-    }
-    return this.formPermissionService
-      .getRights(formData)
-      .take(1)
-      .switchMap(rights => {
-        this.formRights = rights;
-        this.allowCreate = !formData.features || formData.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1 || rights.admin;
-        return ObservableOf(null);
-      });
+    return this.userService.isLoggedIn$.pipe(
+      switchMap(login => {
+        if (!formData || !formData.collectionID || !login) {
+          return ObservableOf(null);
+        }
+        return this.formPermissionService
+          .getRights(formData)
+          .take(1)
+          .switchMap(rights => {
+            this.formRights = rights;
+            this.allowCreate = !formData.features || formData.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1 || rights.admin;
+            return ObservableOf(null);
+          })
+      })
+    );
   }
 
   private getFormInfo(): Observable<any> {

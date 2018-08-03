@@ -3,6 +3,7 @@ import {Autocomplete} from '../model/Autocomplete';
 import {Observable, of as ObservableOf} from 'rxjs';
 import {UserService} from './user.service';
 import { LajiApi, LajiApiService } from './laji-api.service';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class FriendService {
@@ -18,15 +19,16 @@ export class FriendService {
     if (this.friends) {
       return ObservableOf(this.friends);
     }
-    if (!this.userService.isLoggedIn) {
-      return ObservableOf([]);
-    }
-    return this.lajiApi
-      .get(LajiApi.Endpoints.autocomplete, 'friends', {
-        includeSelf: true,
-        personToken: this.userService.getToken()
+    return this.userService.isLoggedIn$.pipe(
+      switchMap(login => {
+        if (!login) {
+          return ObservableOf([]);
+        }
+        return this.lajiApi
+          .get(LajiApi.Endpoints.autocomplete, 'friends', {includeSelf: true,personToken: this.userService.getToken()})
+          .pipe(tap(data => this.friends = data))
       })
-      .do(data => this.friends = data);
+    );
   }
 
 }

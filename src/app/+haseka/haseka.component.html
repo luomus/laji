@@ -25,7 +25,7 @@
           <router-outlet></router-outlet>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 col-lg-2 more-info flex-column" *ngIf="userService.isLoggedIn">
+      <div class="col-sm-3 col-md-3 col-lg-2 more-info flex-column" *ngIf="userService.isLoggedIn$ | async">
         <ul class="sidebar-nav">
           <li><a class="link" [routerLink]="['/vihko', 'forms'] | localize">{{'haseka.forms.title' | translate}}</a></li>
           <li><a class="link" [routerLink]="['/vihko', 'ownSubmissions'] | localize">{{'haseka.ownSubmissions.title' | translate}}</a></li>
