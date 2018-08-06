@@ -231,7 +231,7 @@ export class UserService extends LocalDb {
     return this.getUser(null, token).pipe(
       tap((person: Person) => this.addUser(person, true)),
       switchMap((person: Person) => this.getItem(person.id).pipe(
-        tap((settings: any) => this.userService = settings),
+        tap((settings: any) => this.userSettings = settings),
         switchMap(() => ObservableOf(person))
       )),
       tap(() => this.actionSource.next(USER_INFO)),
