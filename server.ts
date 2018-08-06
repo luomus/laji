@@ -71,18 +71,16 @@ app.get('/*', (req, res) => {
     }
 
     res.render('index', {req, res}, (err, html) => {
-      if (err) {
-        console.error(err);
-        return hit ? undefined : (req as any).next(err);
-      }
       if (!hit) {
+        if (err) {
+          console.error(err);
+          return (req as any).next(err);
+        }
         res.send(html);
       }
 
-      if (!err) {
-        if (res.statusCode === 200) {
-          RedisClient.set(redisKey, html, 'EX', 60 * 10);
-        }
+      if (!err && res.statusCode === 200) {
+        RedisClient.set(redisKey, html, 'EX', 60 * 10);
       }
     });
   });
