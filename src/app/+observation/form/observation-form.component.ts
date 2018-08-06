@@ -6,6 +6,7 @@ import { Observable, of as ObservableOf } from 'rxjs';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { UserService } from '../../shared/service/user.service';
 import { Util } from '../../shared/service/util.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'laji-observation-form',

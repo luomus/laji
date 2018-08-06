@@ -25,6 +25,7 @@ import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 
 
 @Component({

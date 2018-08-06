@@ -5,6 +5,7 @@ import { Taxonomy } from '../shared/model/Taxonomy';
 import { IdService } from '../shared/service/id.service';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import * as moment from 'moment';
 
 @Component({
   selector: 'laji-invasive',

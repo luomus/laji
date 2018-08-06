@@ -28,9 +28,7 @@
               "node_modules/ngx-toastr/toastr.css",
               "src/styles/laji.css"
             ],
-            "scripts": [
-              "node_modules/moment/moment.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -136,9 +134,7 @@
             "karmaConfig": "./karma.conf.js",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
-            "scripts": [
-              "node_modules/moment/moment.js"
-            ],
+            "scripts": [],
             "styles": [
               "node_modules/laji-form/dist/styles.css",
               "node_modules/@swimlane/ngx-datatable/release/index.css",

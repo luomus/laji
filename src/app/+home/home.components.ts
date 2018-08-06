@@ -6,6 +6,7 @@ import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface
 import { SourceService } from '../shared/service/source.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
   selector: 'laji-home',
