@@ -14,6 +14,7 @@ import {
 import { LajiMap as Map } from './laji-map.interface';
 import { USER_INFO, UserService } from '../../shared/service/user.service';
 import { Subscription } from 'rxjs';
+import { Logger } from '../../shared/logger/logger.service';
 import LajiMap from 'laji-map/lib/map';
 
 @Component({
@@ -58,7 +59,8 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
 
   constructor(
     private userService: UserService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private logger: Logger
   ) { }
 
   ngAfterViewInit() {
@@ -142,18 +144,6 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
   }
 
   ngOnInit() {
-    if (this.settingsKey) {
-      this.userService.getUserSetting(this.settingsKey)
-        .merge(this.userService.action$
-          .filter(action => action === USER_INFO)
-          .switchMap(() => this.userService.getUserSetting(this.settingsKey))
-        )
-        .subscribe(settings => {
-          this.userSettings = settings;
-          this.initMap();
-          this.cd.markForCheck();
-        });
-    }
   }
 
   ngOnDestroy() {
@@ -182,23 +172,27 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
       this.map.destroy();
     }
     const options: any = {...this._options, ...(this.userSettings || {}), rootElem: this.elemRef.nativeElement};
-    this.map = new LajiMap(options);
-    if (this.data) {
-      this.map.setData(this.data);
-    }
-    if (this.maxBounds) {
-      this.map.map.setMaxBounds(this.maxBounds);
-    }
-    if (this.tileLayerOpacity) {
-      this.map.setTileLayerOpacity(this.tileLayerOpacity);
-    }
-    this.map.map.on('moveend', _ => {
+    try {
+      this.map = new LajiMap(options);
+      if (this.data) {
+        this.map.setData(this.data);
+      }
+      if (this.maxBounds) {
+        this.map.map.setMaxBounds(this.maxBounds);
+      }
+      if (this.tileLayerOpacity) {
+        this.map.setTileLayerOpacity(this.tileLayerOpacity);
+      }
+      this.map.map.on('moveend', _ => {
+        this.moveEvent('moveend');
+      });
+      this.map.map.on('movestart', _ => {
+        this.moveEvent('movestart');
+      });
       this.moveEvent('moveend');
-    });
-    this.map.map.on('movestart', _ => {
-      this.moveEvent('movestart');
-    });
-    this.moveEvent('moveend');
+    } catch (e) {
+      this.logger.error('Map initialization failed', e);
+    }
   }
 
   moveEvent(type: string) {
