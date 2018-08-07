@@ -6,10 +6,14 @@ import { Observable, of as ObservableOf } from 'rxjs';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
+import { timer as ObservableTimer } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
-  preload(route: Route, load: Function): Observable<any> {
-    return route.data && route.data.noPreload ? ObservableOf(null) : load();
+  preload(route: Route, load: () => Observable<any>): Observable<any> {
+    return route.data && route.data.noPreload ? ObservableOf(null) : ObservableTimer(10000).pipe(
+      mergeMap(() => load())
+    );
   }
 }
 
@@ -66,7 +70,8 @@ const routesWithLang: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routesWithLang, {
     enableTracing: false,
-    preloadingStrategy: PreloadSelectedModulesList
+    preloadingStrategy: PreloadSelectedModulesList,
+    initialNavigation: 'enabled'
   })],
   exports: [RouterModule],
   providers: [PreloadSelectedModulesList]

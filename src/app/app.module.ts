@@ -57,7 +57,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'laji-app'}),
-    // TransferHttpCacheModule,
+    TransferHttpCacheModule,
     CommonModule,
     HttpClientModule,
     NgtUniversalModule,
