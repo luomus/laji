@@ -15,7 +15,7 @@ import { LajiMap as Map } from './laji-map.interface';
 import { USER_INFO, UserService } from '../../shared/service/user.service';
 import { Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
-import LajiMap from 'laji-map/lib/map';
+import LajiMap from 'laji-map';
 
 @Component({
   selector: 'laji-map',
