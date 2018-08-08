@@ -169,8 +169,6 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
   }
 
   onTaxonSelect(key: string) {
-    if (key) {
-      this.tree.openTreeById(key);
-    }
+    this.tree.openTreeById(key);
   }
 }

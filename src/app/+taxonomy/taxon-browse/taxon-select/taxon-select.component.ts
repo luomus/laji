@@ -23,6 +23,8 @@ export class TaxonSelectComponent {
   public typeaheadLoading = false;
   public dataSource: Observable<any>;
 
+  private prevSelected: string;
+
   constructor(
     private lajiApi: LajiApiService,
     private translate: TranslateService
@@ -41,7 +43,7 @@ export class TaxonSelectComponent {
             if (data.length > 0 && (data[0].value.toLowerCase() === searchTerm || data[0].key.toLowerCase() === searchTerm)) {
               this.typeaheadMatch = {id: data[0].key, match: this.openTaxon};
               if (this.selectedValue === this.openTaxon) {
-                this.onSelect.emit(data[0].key);
+                this.setSelected(data[0].key, true);
                 return ObservableOf([]);
               }
             }
@@ -63,21 +65,30 @@ export class TaxonSelectComponent {
       this.onSelect.emit(event.item.key);
     } else if (event.key === 'Enter') {
       if (this.typeaheadMatch && this.typeaheadMatch.match === this.openTaxon) {
-        this.onSelect.emit(this.typeaheadMatch.id);
+        this.setSelected(this.typeaheadMatch.id, true);
       } else {
         this.selectedValue = this.openTaxon;
       }
     }
     if (this.openTaxon === '') {
+      this.prevSelected = undefined;
       this.onSelect.emit(undefined);
     }
   }
 
-  onBlur(event) {
-    if (this.typeaheadMatch && this.typeaheadMatch.match === this.openTaxon) {
-      this.onSelect.emit(this.typeaheadMatch.id);
+  onBlur() {
+    if (this.typeaheadMatch && this.typeaheadMatch.match === this.openTaxon && this.prevSelected !== this.typeaheadMatch.id) {
+      this.setSelected(this.typeaheadMatch.id, false);
     } else {
       this.selectedValue = this.openTaxon;
+    }
+  }
+
+  private setSelected(value: string, blur?: boolean) {
+    this.prevSelected = value;
+    this.onSelect.emit(value);
+    if (blur) {
+      this.typeahead.nativeElement.blur();
     }
   }
 

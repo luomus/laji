@@ -21,12 +21,14 @@ export class TreeTableComponent implements OnChanges {
   rows = [];
   _columns = [];
 
+  private activeId: string;
   private missingChildren = [];
 
   @ViewChild('expander') expanderTpl: TemplateRef<any>;
   @ContentChild('expanderLabel') expanderLabel: TemplateRef<any>;
   @ViewChild('datatableTemplates') datatableTemplates: DatatableTemplatesComponent;
 
+  rowClass = this._rowClass();
   @Output() rowSelect = new EventEmitter<any>();
 
   @Input() set columns(columns: any) {
@@ -66,20 +68,24 @@ export class TreeTableComponent implements OnChanges {
   }
 
   openTreeById(openId: string) {
-    this.getParents(openId)
-      .subscribe(res => {
-        res.push({id: openId});
-        this.toggleOpenChain(this.nodes, res);
-      });
+    this.activeId = openId;
+    this.rowClass = this._rowClass(openId);
+
+    if (openId) {
+      this.getParents(openId)
+        .subscribe(res => {
+          res.push({id: openId});
+          this.toggleOpenChain(this.nodes, res);
+        });
+    }
   }
 
   private getUpdatedNodes(nodes: any, parent?: TreeNode, virtualParent?: TreeNode): TreeNode[] {
     const result = [];
 
     for (let i = 0; i < nodes.length; i++) {
-      const node = nodes[i];
-
-      result.push(this.getChildNode(node, i, parent));
+      const node = this.getChildNode(nodes[i], i, parent);
+      result.push(node);
 
       if (node.children) {
         result[i].children = this.getUpdatedNodes(node.children, result[i], result[i].isSkipped ? parent : result[i]);
@@ -247,8 +253,13 @@ export class TreeTableComponent implements OnChanges {
     }
   }
 
-  rowClass() {
-    return 'link';
+  private _rowClass(activeId?: string) {
+    return (row) => {
+      if (row.id === activeId) {
+        return 'active link';
+      }
+      return 'link';
+    }
   }
 
   private toggleOpenChain(nodes: TreeNode[], chain: any[]) {
