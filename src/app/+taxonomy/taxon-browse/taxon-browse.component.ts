@@ -34,6 +34,7 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.footerService.footerVisible = false;
+    this.searchQuery.empty();
 
     this.subQuery = this.route.params.pipe(
       map(data => data['tab']),
@@ -54,9 +55,6 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
           this.searchQuery.skippedQueryParams = [];
         }
 
-        if (params['reset']) {
-          this.searchQuery.empty();
-        }
         this.searchQuery.setQueryFromParams(params);
         this.searchQuery.queryUpdate();
 

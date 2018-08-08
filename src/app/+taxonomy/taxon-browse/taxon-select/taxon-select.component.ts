@@ -74,6 +74,14 @@ export class TaxonSelectComponent {
     }
   }
 
+  onBlur(event) {
+    if (this.typeaheadMatch && this.typeaheadMatch.match === this.openTaxon) {
+      this.onSelect.emit(this.typeaheadMatch.id);
+    } else {
+      this.selectedValue = this.openTaxon;
+    }
+  }
+
   public getTaxa(token: string): Observable<any> {
     return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
