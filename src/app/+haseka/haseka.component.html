@@ -14,18 +14,20 @@
             </div>
           </ng-container>
           <div [innerHtml]="'haseka.intro' | translate" *ngIf="isFront"></div>
-          <div class="pull-right toggle-intro" *ngIf="!vihkoSettings.showIntro && isFront">
-            <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
-          </div>
-          <alert *ngIf="vihkoSettings.showIntro && isFront" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-            <div [innerHtml]="'haseka.intro2' | translate"></div>
-          </alert>
+          <ng-container *lajiBrowserOnly>
+            <div class="pull-right toggle-intro" *ngIf="!vihkoSettings.showIntro && isFront">
+              <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+            </div>
+            <alert *ngIf="vihkoSettings.showIntro && isFront" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+              <div [innerHtml]="'haseka.intro2' | translate"></div>
+            </alert>
+          </ng-container>
           <a [routerLink]="'/about/2336' | localize" target="_blank">{{'haseka.instructions' | translate}}</a> |
           <a [routerLink]="'/vihko/terms-of-service' | localize" target="_blank">{{'haseka.termsOfService' | translate}}</a>
           <router-outlet></router-outlet>
         </div>
       </div>
-      <div class="col-sm-3 col-md-3 col-lg-2 more-info flex-column" *ngIf="userService.isLoggedIn$ | async">
+      <div class="col-sm-3 col-md-3 col-lg-2 more-info flex-column">
         <ul class="sidebar-nav">
           <li><a class="link" [routerLink]="['/vihko', 'forms'] | localize">{{'haseka.forms.title' | translate}}</a></li>
           <li><a class="link" [routerLink]="['/vihko', 'ownSubmissions'] | localize">{{'haseka.ownSubmissions.title' | translate}}</a></li>
@@ -35,6 +37,7 @@
         </ul>
 
         <laji-haseka-latest [userToken]="userService.getToken()"
+                            *ngIf="userService.isLoggedIn$ | async"
                             (onShowViewer)="showDocumentViewer($event)"></laji-haseka-latest>
       </div>
     </div>
