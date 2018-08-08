@@ -2,23 +2,10 @@
   <div style="position: relative">
     <label>
       {{'species.tree.taxonSearch' | translate}}:
-      <input
-        [ngClass]="{loading: typeaheadLoading}"
-        type="text"
-        class="form-control input-sm"
-        name="target"
-        [(ngModel)]="openTaxon"
-        [typeahead]="dataSource"
-        [typeaheadOptionsLimit]="typeaheadLimit"
-        [typeaheadWaitMs]="200"
-        [typeaheadMinLength]="3"
-        [typeaheadFocusFirst]="false"
-        [typeaheadOptionField]="'value'"
-        (typeaheadLoading)="changeTypeaheadLoading($event)"
-        (typeaheadOnSelect)="onTaxonSelect($event)"
-        (keyup)="onTaxonSelect($event)"
-        autocomplete="off"
-        autocorrect="off">
+      <laji-taxon-select
+        (onSelect)="onTaxonSelect($event)"
+        [searchParams]="taxonSelectFilters">
+      </laji-taxon-select>
     </label>
     <label style="position: absolute; bottom: 0; right: 0">
       <input type="checkbox"
