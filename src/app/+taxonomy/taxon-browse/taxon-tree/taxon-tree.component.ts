@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { Subscription, Observable, of as ObservableOf } from 'rxjs';
-import { map, tap, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TreeTableComponent } from './tree-table/tree-table.component'
@@ -11,8 +11,6 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { TaxonomyColumns } from '../service/taxonomy-columns';
 import { SpeciesDownloadComponent } from '../species-download/species-download.component';
 import { TaxonExportService } from '../service/taxon-export.service';
-import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-tree',
@@ -27,19 +25,15 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
   public columns: ObservationTableColumn[] = [];
   public getChildrenFunc = this.getChildren.bind(this);
   public getParentsFunc = this.getParents.bind(this);
-  public skipParams: {key: string, values: string[]}[];
+  public skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
 
   @ViewChild('treeTable') private tree: TreeTableComponent;
   @ViewChild('settingsModal') settingsModal: SpeciesListOptionsModalComponent;
   @ViewChild('speciesDownload') speciesDownload: SpeciesDownloadComponent;
 
-  public hideLowerRanks = false;
+  public taxonSelectFilters: {onlyFinnish: boolean};
 
-  public openTaxon: string;
-  public openId: string;
-  public typeaheadLimit = 10;
-  public typeaheadLoading = false;
-  public dataSource: Observable<any>;
+  public hideLowerRanks = false;
 
   public downloadLoading = false;
 
@@ -50,28 +44,15 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private cd: ChangeDetectorRef,
-    private taxonExportService: TaxonExportService,
-    private lajiApi: LajiApiService,
-    private translate: TranslateService
-  ) {
-    this.dataSource = Observable.create((observer: any) => {
-      observer.next(this.openTaxon);
-    })
-      .pipe(
-        distinctUntilChanged(),
-        switchMap((token: string) => this.getTaxa(token)),
-        switchMap((data) => {
-          if (this.openTaxon) {
-            return ObservableOf(data);
-          }
-          return ObservableOf([]);
-        })
-      );
-  }
+    private taxonExportService: TaxonExportService
+  ) {}
 
   ngOnInit() {
+    this.taxonSelectFilters = {onlyFinnish: this.searchQuery.query.onlyFinnish};
+
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
+        this.taxonSelectFilters = {onlyFinnish: this.searchQuery.query.onlyFinnish};
         this.root = [...this.root];
       }
     );
@@ -129,7 +110,17 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
 
   onHideLowerRanksClick() {
     if (this.hideLowerRanks) {
-      this.skipParams = [{key: 'taxonRank', values: ['MX.subfamily', 'MX.genus']}];
+      this.skipParams = [{key: 'taxonRank', isWhiteList: true, values: [
+        'MX.superdomain',
+        'MX.domain',
+        'MX.kingdom',
+        'MX.phylum',
+        'MX.class',
+        'MX.order',
+        'MX.family',
+        'MX.genus',
+        'MX.species'
+      ]}];
     } else {
       this.skipParams = undefined;
     }
@@ -177,25 +168,9 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
     return selects.join(',');
   }
 
-  changeTypeaheadLoading(e: boolean): void {
-    this.typeaheadLoading = e;
-  }
-
-  onTaxonSelect(event) {
-    if (event.item && event.item.key) {
-      this.openId = event.item.key;
+  onTaxonSelect(key: string) {
+    if (key) {
+      this.tree.openTreeById(key);
     }
-    if (this.openTaxon === '') {
-      this.openId = undefined;
-    }
-  }
-
-  public getTaxa(token: string): Observable<any> {
-    return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
-      q: token,
-      limit: '' + this.typeaheadLimit,
-      lang: this.translate.currentLang,
-      onlyFinnish: this.searchQuery.query.onlyFinnish
-    });
   }
 }

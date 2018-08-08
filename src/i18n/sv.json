@@ -492,7 +492,7 @@
   "species.download.textFile": "Textfil",
   "species.browse": "Bläddra observationer",
   "species.tree.taxonSearch": "Taxon sökning",
-  "species.tree.hideLowerRanks": "Göm familjer och släkten",
+  "species.tree.hideLowerRanks": "Visa bara huvudnivåerna",
   "species.settings.list": "Inställningar för listan",
   "species.settings.tree": "Inställningar för trä",
   "email": "E-postadress",

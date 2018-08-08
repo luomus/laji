@@ -1,10 +1,8 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subscription, of as ObservableOf } from 'rxjs';
-import { switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { SpeciesFormQuery } from './species-form-query.interface';
-import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 
 @Component({
   selector: 'laji-species-form',
@@ -13,14 +11,14 @@ import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.servic
 })
 export class SpeciesFormComponent implements OnInit, OnDestroy {
   @Input() searchQuery: TaxonomySearchQuery;
-  @Input() showFilter = true;
 
+  @Input() showFilter = true;
   @Output() onShowFilterChange = new EventEmitter<boolean>();
 
-  public dataSource: Observable<any>;
-
-  public typeaheadLoading = false;
-  public limit = 10;
+  public taxonSelectFilters: {
+    informalTaxonGroup: string,
+    onlyFinnish: boolean
+  };
 
   public formQuery: SpeciesFormQuery = {
     onlyFinnish: true,
@@ -44,29 +42,22 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   ];
 
   constructor(
-    public translate: TranslateService,
-    private lajiApi: LajiApiService
-  ) {
-    this.dataSource = Observable.create((observer: any) => {
-      observer.next(this.formQuery.taxon);
-    })
-      .pipe(
-        distinctUntilChanged(),
-        switchMap((token: string) => this.getTaxa(token)),
-        switchMap((data) => {
-          if (this.formQuery.taxon) {
-            return ObservableOf(data);
-          }
-          return ObservableOf([]);
-        })
-      );
-  }
+    public translate: TranslateService
+  ) {}
 
   ngOnInit() {
+    this.taxonSelectFilters = {
+      informalTaxonGroup: this.searchQuery.query.informalGroupFilters,
+      onlyFinnish: this.searchQuery.query.onlyFinnish
+    };
     this.queryToFormQuery();
 
     this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
       res => {
+        this.taxonSelectFilters = {
+          informalTaxonGroup: this.searchQuery.query.informalGroupFilters,
+          onlyFinnish: this.searchQuery.query.onlyFinnish
+        };
         if (res.formSubmit) {
           this.queryToFormQuery();
           this.onSubmit();
@@ -80,29 +71,8 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public getTaxa(token: string): Observable<any> {
-    return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
-      q: token,
-      limit: '' + this.limit,
-      includePayload: true,
-      lang: this.translate.currentLang,
-      informalTaxonGroup: this.searchQuery.query.informalGroupFilters,
-      onlyFinnish: this.formQuery.onlyFinnish
-    });
-  }
-
-  changeTypeaheadLoading(e: boolean): void {
-    this.typeaheadLoading = e;
-  }
-
-  onTaxonSelect(event) {
-    if (event.item && event.item.key) {
-      this.searchQuery.query.target = event.item.key;
-    }
-    if (this.formQuery.taxon === '') {
-      this.searchQuery.query.target = undefined;
-    }
-
+  onTaxonSelect(key: string) {
+    this.searchQuery.query.target = key;
     this.onQueryChange();
   }
 

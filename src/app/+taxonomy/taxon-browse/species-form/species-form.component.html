@@ -7,24 +7,11 @@
         {{'species.form.specimen' | translate}}:
       </label>
       <div class="col-sm-12">
-        <input
-          [ngClass]="{loading: typeaheadLoading}"
-          type="text"
-          class="form-control input-sm"
-          name="target"
-          [(ngModel)]="formQuery.taxon"
-          [typeahead]="dataSource"
-          [typeaheadOptionsLimit]="limit"
-          [typeaheadWaitMs]="200"
-          [typeaheadMinLength]="3"
-          [typeaheadFocusFirst]="false"
-          [typeaheadOptionField]="'value'"
-          (typeaheadLoading)="changeTypeaheadLoading($event)"
-          (typeaheadOnSelect)="onTaxonSelect($event)"
-          (keyup)="onTaxonSelect($event)"
-          autocomplete="off"
-          autocorrect="off"
-        >
+        <laji-taxon-select
+          (onSelect)="onTaxonSelect($event)"
+          [openTaxon]="formQuery.taxon"
+          [searchParams]="taxonSelectFilters">
+        </laji-taxon-select>
       </div>
     </div>
 

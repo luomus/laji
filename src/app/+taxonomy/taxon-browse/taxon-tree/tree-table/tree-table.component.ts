@@ -16,8 +16,7 @@ export class TreeTableComponent implements OnChanges {
   @Input() nodes: TreeNode[] = [];
   @Input() getChildren: (id: string) => Observable<any[]>;
   @Input() getParents: (id: string) => Observable<any[]>;
-  @Input() skipParams: {key: string, values: string[]}[];
-  @Input() openId: string;
+  @Input() skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
 
   rows = [];
   _columns = [];
@@ -64,13 +63,14 @@ export class TreeTableComponent implements OnChanges {
         this.toggleChildrenOpen(this.missingChildren[i]);
       }
     }
+  }
 
-    if (changes.openId && this.openId) {
-      this.getParents(this.openId)
-        .subscribe(res => {
-          this.toggleOpenChain(this.nodes, res);
-        });
-    }
+  openTreeById(openId: string) {
+    this.getParents(openId)
+      .subscribe(res => {
+        res.push({id: openId});
+        this.toggleOpenChain(this.nodes, res);
+      });
   }
 
   private getUpdatedNodes(nodes: any, parent?: TreeNode, virtualParent?: TreeNode): TreeNode[] {
@@ -110,10 +110,16 @@ export class TreeTableComponent implements OnChanges {
       for (let i = 0; i < this.skipParams.length; i++) {
         const key = this.skipParams[i].key;
         const values = this.skipParams[i].values;
+        const isWhiteList = this.skipParams[i].isWhiteList;
+
         for (let j = 0; j < values.length; j++) {
           if (node[key] === values[j]) {
-            return true;
+            return !isWhiteList;
           }
+        }
+
+        if (isWhiteList) {
+          return true;
         }
       }
     }
@@ -156,7 +162,7 @@ export class TreeTableComponent implements OnChanges {
           const obs = [];
           for (let i = 0; i < children.length; i++) {
             if (children[i].isSkipped) {
-              obs.push(this.fetchChildren(children[i]));
+              obs.push(this.updateChildren(children[i]));
             }
           }
 
@@ -247,7 +253,7 @@ export class TreeTableComponent implements OnChanges {
 
   private toggleOpenChain(nodes: TreeNode[], chain: any[]) {
     for (let i = 0; i < nodes.length; i++) {
-      if (nodes[i].id === chain[0].id) {
+      if (nodes[i].id === chain[0].id && nodes[i].hasChildren) {
         nodes[i].isLoading = true;
         this.updateChildren(nodes[i])
           .subscribe(() => {
