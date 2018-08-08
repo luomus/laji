@@ -10,12 +10,11 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./taxon-select.component.css']
 })
 export class TaxonSelectComponent {
+  @Input() openTaxon: string;
   @Input() searchParams = {};
   @Output() onSelect = new EventEmitter<string>();
 
   @ViewChild('typeahead') typeahead;
-
-  public openTaxon: string;
 
   public typeaheadMatch: {id: string, match: string};
   public selectedValue: string;

@@ -25,7 +25,7 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
   public columns: ObservationTableColumn[] = [];
   public getChildrenFunc = this.getChildren.bind(this);
   public getParentsFunc = this.getParents.bind(this);
-  public skipParams: {key: string, values: string[]}[];
+  public skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
 
   @ViewChild('treeTable') private tree: TreeTableComponent;
   @ViewChild('settingsModal') settingsModal: SpeciesListOptionsModalComponent;
@@ -110,7 +110,17 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
 
   onHideLowerRanksClick() {
     if (this.hideLowerRanks) {
-      this.skipParams = [{key: 'taxonRank', values: ['MX.subfamily', 'MX.genus']}];
+      this.skipParams = [{key: 'taxonRank', isWhiteList: true, values: [
+        'MX.superdomain',
+        'MX.domain',
+        'MX.kingdom',
+        'MX.phylum',
+        'MX.class',
+        'MX.order',
+        'MX.family',
+        'MX.genus',
+        'MX.species'
+      ]}];
     } else {
       this.skipParams = undefined;
     }

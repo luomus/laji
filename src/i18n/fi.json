@@ -519,7 +519,7 @@
   "species.download.textFile": "Tekstitiedosto",
   "species.browse": "Selaa havaintoja",
   "species.tree.taxonSearch": "Taksoni-haku",
-  "species.tree.hideLowerRanks": "Piilota alaheimot ja suvut",
+  "species.tree.hideLowerRanks": "Näytä vain päätasot",
   "species.settings.list": "Luettelon asetukset",
   "species.settings.tree": "Sukupuun asetukset",
   "feedback": "Palaute",

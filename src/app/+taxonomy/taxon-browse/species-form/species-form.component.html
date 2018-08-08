@@ -9,6 +9,7 @@
       <div class="col-sm-12">
         <laji-taxon-select
           (onSelect)="onTaxonSelect($event)"
+          [openTaxon]="formQuery.taxon"
           [searchParams]="taxonSelectFilters">
         </laji-taxon-select>
       </div>

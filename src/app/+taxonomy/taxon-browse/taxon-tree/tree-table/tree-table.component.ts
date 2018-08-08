@@ -16,7 +16,7 @@ export class TreeTableComponent implements OnChanges {
   @Input() nodes: TreeNode[] = [];
   @Input() getChildren: (id: string) => Observable<any[]>;
   @Input() getParents: (id: string) => Observable<any[]>;
-  @Input() skipParams: {key: string, values: string[]}[];
+  @Input() skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
 
   rows = [];
   _columns = [];
@@ -110,10 +110,16 @@ export class TreeTableComponent implements OnChanges {
       for (let i = 0; i < this.skipParams.length; i++) {
         const key = this.skipParams[i].key;
         const values = this.skipParams[i].values;
+        const isWhiteList = this.skipParams[i].isWhiteList;
+
         for (let j = 0; j < values.length; j++) {
           if (node[key] === values[j]) {
-            return true;
+            return !isWhiteList;
           }
+        }
+
+        if (isWhiteList) {
+          return true;
         }
       }
     }
@@ -156,7 +162,7 @@ export class TreeTableComponent implements OnChanges {
           const obs = [];
           for (let i = 0; i < children.length; i++) {
             if (children[i].isSkipped) {
-              obs.push(this.fetchChildren(children[i]));
+              obs.push(this.updateChildren(children[i]));
             }
           }
 
