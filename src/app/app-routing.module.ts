@@ -11,7 +11,7 @@ import { mergeMap } from 'rxjs/operators';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
-    return route.data && route.data.noPreload ? ObservableOf(null) : ObservableTimer(10000).pipe(
+    return route.data && route.data.noPreload ? ObservableOf(null) : ObservableTimer(1000).pipe(
       mergeMap(() => load())
     );
   }
