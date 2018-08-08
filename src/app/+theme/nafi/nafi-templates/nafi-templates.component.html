@@ -1,10 +1,12 @@
 <h3>{{'haseka.templates.title' | translate}}</h3>
-<div class="pull-right toggle-intro" *ngIf="!showTemplateIntro">
-  <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
-</div>
-<alert *ngIf="showTemplateIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-  <p>{{'haseka.templates.intro' | translate}}</p>
-</alert>
+<ng-container *lajiBrowserOnly>
+  <div class="pull-right toggle-intro" *ngIf="!showTemplateIntro">
+    <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+  </div>
+  <alert *ngIf="showTemplateIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+    <p>{{'haseka.templates.intro' | translate}}</p>
+  </alert>
+</ng-container>
 <laji-own-submissions   [templateColumns]="['templateName', 'templateDescription', 'dateEdited', 'id']"
                         [formID]="formId"
                         [useInternalDocumentViewer]="true"

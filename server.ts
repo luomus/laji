@@ -5,6 +5,7 @@ import {ngExpressEngine} from '@nguniversal/express-engine';
 import {provideModuleMap} from '@nguniversal/module-map-ngfactory-loader';
 
 import * as redis from 'redis';
+import * as Redlock from 'redlock';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
@@ -17,6 +18,7 @@ enableProdMode();
 export const app = express();
 
 const RedisClient = redis.createClient();
+const Lock = new Redlock([RedisClient]);
 
 app.use(compression());
 app.use(cors());
@@ -70,18 +72,46 @@ app.get('/*', (req, res) => {
       hit = true;
     }
 
-    res.render('index', {req, res}, (err, html) => {
-      if (!hit) {
+    const CACHE_TIME = 60 * 30; // This is time in sec for how long will the content be stored in cache
+    const CACHE_UPDATE = 60;    // this is time when the content will be updated even if there is already one in the cache
+
+    const updateLock = function(key, cb: () => void) {
+      const lockKey = '_lock:' + key;
+      Lock.lock(lockKey, CACHE_UPDATE * 1000, (err, lock) => {
+        if (lock) {
+          cb();
+        }
+      })
+    };
+
+    if (hit) {
+      RedisClient.TTL(redisKey, (error, ttl) => {
+        if (CACHE_TIME - ttl > CACHE_UPDATE || ttl < 0 || error) {
+          updateLock(redisKey, () => {
+            res.render('index', {req, res}, (err, html) => {
+              if (err) {
+                console.error(err);
+                return;
+              }
+              if (res.statusCode === 200 || res.statusCode === 304) {
+                RedisClient.set(redisKey, html, 'EX', CACHE_TIME);
+              }
+            });
+          });
+        }
+      });
+    } else {
+      res.render('index', {req, res}, (err, html) => {
         if (err) {
           console.error(err);
           return (req as any).next(err);
         }
         res.send(html);
-      }
 
-      if (!err && res.statusCode === 200) {
-        RedisClient.set(redisKey, html, 'EX', 60 * 10);
-      }
-    });
+        if (res.statusCode === 200 || res.statusCode === 304) {
+          RedisClient.set(redisKey, html, 'EX', CACHE_TIME);
+        }
+      });
+    }
   });
 });

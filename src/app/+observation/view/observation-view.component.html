@@ -24,16 +24,18 @@
        'col-sm-12': !showFilter
      }"
     >
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="pull-right toggle-intro" *ngIf="!observationSettings.showIntro">
-            <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+      <ng-container *lajiBrowserOnly>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="pull-right toggle-intro" *ngIf="!observationSettings.showIntro">
+              <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+            </div>
           </div>
         </div>
-      </div>
-      <alert *ngIf="observationSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-        <div [innerHtml]="'observation.intro' | translate"></div>
-      </alert>
+        <alert *ngIf="observationSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+          <div [innerHtml]="'observation.intro' | translate"></div>
+        </alert>
+      </ng-container>
       <div #tabs>
         <laji-observation-result [active]="activeTab"
                                  (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>

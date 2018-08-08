@@ -70,7 +70,6 @@ export class UsersLatestComponent implements OnChanges {
       this.docUpdateSub.unsubscribe();
     }
     this.docUpdateSub = ObservableOf(null)
-      .delay(1000)
       .switchMap(() => this.documentService.findAll(this.userToken, String(this.page), String(this.pageSize)))
       .switchMap(response => ObservableOf(response)
         .combineLatest(

@@ -176,6 +176,9 @@
                 }
               ]
             },
+            "dev": {
+
+            },
             "embedded": {
               "fileReplacements": [
                 {
