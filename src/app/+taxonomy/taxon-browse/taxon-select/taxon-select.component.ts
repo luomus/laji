@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
@@ -9,12 +9,17 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './taxon-select.component.html',
   styleUrls: ['./taxon-select.component.css']
 })
-export class TaxonSelectComponent implements OnInit {
+export class TaxonSelectComponent {
   @Input() searchParams = {};
   @Output() onSelect = new EventEmitter<string>();
 
+  @ViewChild('typeahead') typeahead;
+
   public openTaxon: string;
-  public typeaheadMatch: string;
+
+  public typeaheadMatch: {id: string, match: string};
+  public selectedValue: string;
+
   public typeaheadLimit = 10;
   public typeaheadLoading = false;
   public dataSource: Observable<any>;
@@ -35,7 +40,11 @@ export class TaxonSelectComponent implements OnInit {
           if (this.openTaxon) {
             const searchTerm = this.openTaxon.toLowerCase();
             if (data.length > 0 && (data[0].value.toLowerCase() === searchTerm || data[0].key.toLowerCase() === searchTerm)) {
-              this.typeaheadMatch = data[0].key;
+              this.typeaheadMatch = {id: data[0].key, match: this.openTaxon};
+              if (this.selectedValue === this.openTaxon) {
+                this.onSelect.emit(data[0].key);
+                return ObservableOf([]);
+              }
             }
             return ObservableOf(data);
           }
@@ -44,18 +53,21 @@ export class TaxonSelectComponent implements OnInit {
       );
   }
 
-  ngOnInit() {
-  }
-
   changeTypeaheadLoading(e: boolean): void {
     this.typeaheadLoading = e;
   }
 
   onTaxonSelect(event) {
+    this.selectedValue = undefined;
+
     if (event.item && event.item.key) {
       this.onSelect.emit(event.item.key);
-    } else if (event.key === 'Enter' && this.typeaheadMatch) {
-      this.onSelect.emit(this.typeaheadMatch);
+    } else if (event.key === 'Enter') {
+      if (this.typeaheadMatch && this.typeaheadMatch.match === this.openTaxon) {
+        this.onSelect.emit(this.typeaheadMatch.id);
+      } else {
+        this.selectedValue = this.openTaxon;
+      }
     }
     if (this.openTaxon === '') {
       this.onSelect.emit(undefined);

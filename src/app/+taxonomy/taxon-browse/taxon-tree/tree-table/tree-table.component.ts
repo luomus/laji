@@ -17,7 +17,6 @@ export class TreeTableComponent implements OnChanges {
   @Input() getChildren: (id: string) => Observable<any[]>;
   @Input() getParents: (id: string) => Observable<any[]>;
   @Input() skipParams: {key: string, values: string[]}[];
-  @Input() openId: string;
 
   rows = [];
   _columns = [];
@@ -64,13 +63,14 @@ export class TreeTableComponent implements OnChanges {
         this.toggleChildrenOpen(this.missingChildren[i]);
       }
     }
+  }
 
-    if (changes.openId && this.openId) {
-      this.getParents(this.openId)
-        .subscribe(res => {
-          this.toggleOpenChain(this.nodes, res);
-        });
-    }
+  openTreeById(openId: string) {
+    this.getParents(openId)
+      .subscribe(res => {
+        res.push({id: openId});
+        this.toggleOpenChain(this.nodes, res);
+      });
   }
 
   private getUpdatedNodes(nodes: any, parent?: TreeNode, virtualParent?: TreeNode): TreeNode[] {
@@ -247,7 +247,7 @@ export class TreeTableComponent implements OnChanges {
 
   private toggleOpenChain(nodes: TreeNode[], chain: any[]) {
     for (let i = 0; i < nodes.length; i++) {
-      if (nodes[i].id === chain[0].id) {
+      if (nodes[i].id === chain[0].id && nodes[i].hasChildren) {
         nodes[i].isLoading = true;
         this.updateChildren(nodes[i])
           .subscribe(() => {

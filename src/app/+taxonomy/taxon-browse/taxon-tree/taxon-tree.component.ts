@@ -34,7 +34,6 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
   public taxonSelectFilters: {onlyFinnish: boolean};
 
   public hideLowerRanks = false;
-  public openId: string;
 
   public downloadLoading = false;
 
@@ -160,6 +159,8 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
   }
 
   onTaxonSelect(key: string) {
-    this.openId = key;
+    if (key) {
+      this.tree.openTreeById(key);
+    }
   }
 }

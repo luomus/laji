@@ -23,7 +23,6 @@
                      [getChildren]="getChildrenFunc"
                      [getParents]="getParentsFunc"
                      [skipParams]="skipParams"
-                     [openId]="openId"
                      (rowSelect)="onRowSelect($event)">
       <ng-template let-value="value" #expanderLabel>
         <span [class.cursive]="value.cursiveName" title="{{value.scientificName}}"> {{value.scientificName}}</span>
