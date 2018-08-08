@@ -71,8 +71,8 @@
     "ie-shim": "^0.1.0",
     "intl": "^1.2.5",
     "jw-bootstrap-switch-ng2": "^1.0.10",
-    "laji-form": "^0.0.484",
-    "laji-map": "^1.0.397",
+    "laji-form": "^0.0.485",
+    "laji-map": "^1.0.398",
     "localforage": "^1.7.2",
     "moment": "^2.22.2",
     "ngx-bootstrap": "^3.0.1",
@@ -131,7 +131,8 @@
     "webpack-bundle-analyzer": "^2.13.1"
   },
   "resolutions": {
-    "proj4": "2.3.16"
+    "proj4": "2.3.16",
+    "laji-map": "^1.0.398"
   },
   "keywords": [
     "laji.fi"
