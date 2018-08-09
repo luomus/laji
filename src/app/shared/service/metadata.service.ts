@@ -32,15 +32,18 @@ export class MetadataService {
    */
   getAllRanges() {
     if (this.ranges) {
+      if (!this.source.isStopped) {
+        this.source.complete();
+      }
       return ObservableOf(this.ranges);
     } else if (this.pendingRanges) {
       return Observable.create((observer: Observer<any>) => {
         this.pendingRanges.subscribe(
           (ranges) => {
             observer.next(ranges);
+            observer.complete();
           },
-          (err) => console.log(err),
-          () => observer.complete()
+          (err) => console.log(err)
         );
       });
     }
@@ -68,7 +71,6 @@ export class MetadataService {
       .subscribe(ranges => {
         this.ranges = ranges;
         this.source.next(ranges);
-        this.source.complete();
       });
 
     return this.pendingRanges;

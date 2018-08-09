@@ -133,7 +133,7 @@ export class TriplestoreLabelService implements OnInit {
         merge(apiCall.pipe(
             tap(data => {
               if (!Util.isEmptyObj(data)) {
-                this.cacheService.setItem(cacheKey, data).subscribe(() => {}, () => {})
+                this.cacheService.setItem(cacheKey, data).subscribe()
               }
             })
           )
@@ -145,10 +145,13 @@ export class TriplestoreLabelService implements OnInit {
     };
 
     const fromApi$ = forkJoin(
-      this.metadataService.getAllRangesAsLookUp('multi'),
+      this.metadataService.getAllRangesAsLookUp('multi').pipe(
+        take(1)
+      ),
       cached(
         TriplestoreLabelService.cacheProps,
         this.metadataApi.metadataAllProperties('multi').pipe(
+          take(1),
           retryWhen(errors => errors.pipe(
             delay(1000),
             take(3)
@@ -168,6 +171,7 @@ export class TriplestoreLabelService implements OnInit {
       cached(
         TriplestoreLabelService.cacheClasses,
         this.metadataApi.metadataAllClasses('multi').pipe(
+          take(1),
           map(data => {
             const classes = {};
             if (data && data.results) {
