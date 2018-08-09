@@ -83,7 +83,7 @@
                 [visible]="showSearch"
                 [expand]="'right'"></laji-omni-search>
             </li>
-            <li [routerLinkActive]="['active']" *ngIf="isLoggedIn" dropdown #userMenu="bs-dropdown">
+            <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown #userMenu="bs-dropdown">
               <a dropdownToggle class="link user">
                 <span class="hidden-sm name"><small>{{(userService.getUser()|async)?.id | users:'fullname'}}</small></span>
                 <i class="glyphicon glyphicon-user"></i>
@@ -125,7 +125,7 @@
                 </li>
               </ul>
             </li>
-            <li *ngIf="!isLoggedIn">
+            <li *ngIf="!(userService.isLoggedIn$ | async)">
               <a href="#login" (click)="doLogin($event)">
                 <small class="hidden-sm">
                   {{ 'navigation.user.login' | translate }}

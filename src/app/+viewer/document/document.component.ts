@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterViewInit, ApplicationRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -10,12 +10,13 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Observable,  Subscription, interval as ObservableInterval } from 'rxjs';
+import { Subscription, interval as ObservableInterval } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../shared/service/id.service';
 import { UserService } from '../../shared/service/user.service';
 import { environment } from '../../../environments/environment';
+import { filter, switchMap, take } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-document',
@@ -56,7 +57,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   constructor(
     private warehouseApi: WarehouseApi,
     private userService: UserService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private appRef: ApplicationRef
   ) { }
 
   ngOnInit() {
@@ -174,8 +176,11 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
         this.interval.unsubscribe();
       }
     } else if (!this.interval) {
-      this.interval = ObservableInterval(this.recheckIterval)
-        .subscribe(() => this.updateDocument());
+      this.interval = this.appRef.isStable.pipe(
+          filter(stable => stable),
+          take(1),
+          switchMap(() => ObservableInterval(this.recheckIterval))
+    ).subscribe(() => this.updateDocument());
     }
     this.cd.markForCheck();
   }
