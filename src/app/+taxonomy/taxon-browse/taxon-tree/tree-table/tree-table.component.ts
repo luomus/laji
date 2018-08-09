@@ -22,6 +22,7 @@ export class TreeTableComponent implements OnChanges {
   _columns = [];
 
   private activeId: string;
+  private deepestLevel = 0;
   private missingChildren = [];
 
   @ViewChild('expander') expanderTpl: TemplateRef<any>;
@@ -54,7 +55,7 @@ export class TreeTableComponent implements OnChanges {
 
   constructor(
     private cd: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.nodes || changes.skipParams) {
@@ -224,7 +225,14 @@ export class TreeTableComponent implements OnChanges {
 
   private updateRows() {
     this.rows = [];
+    this.deepestLevel = 0;
+
     this.update(this.nodes, this.rows);
+
+    if (this._columns.length > 0) {
+      this._columns[0].width = 200 + (10 * this.deepestLevel);
+      this._columns = [...this._columns];
+    }
   }
 
   private update(nodes: TreeNode[], rows: any[]) {
@@ -233,6 +241,9 @@ export class TreeTableComponent implements OnChanges {
 
       if (!nodes[i].isSkipped) {
         rows.push({...node, node: node});
+        if (node.level > this.deepestLevel) {
+          this.deepestLevel = node.level;
+        }
       }
 
       if (node.isExpanded && node.children) {
