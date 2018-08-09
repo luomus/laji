@@ -30,6 +30,9 @@
             {{formPermission.admins.length}}
           </span>
         </a></li>
+        <li *ngIf="back"><a [routerLink]="[back]">
+          Takaisin
+        </a></li>
       </ul>
     </div>
     <div class="col-sm-9 col-md-10 col-lg-10 nafi-content">

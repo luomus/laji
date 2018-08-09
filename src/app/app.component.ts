@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { LocalizeRouterService } from './locale/localize-router.service';
 import {map, switchMap} from 'rxjs/operators';
+import { RoutingStateService } from './shared/service/routing-state.service';
 
 declare const ga: Function;
 
@@ -38,7 +39,8 @@ export class AppComponent {
     title: Title,
     translateService: TranslateService,
     localizeRouterService: LocalizeRouterService,
-    metaService: Meta
+    metaService: Meta,
+    routingStateService: RoutingStateService // Need to include this here so that history recording starts
   ) {
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
