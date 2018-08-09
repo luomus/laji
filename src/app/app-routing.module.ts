@@ -6,10 +6,14 @@ import { Observable, of as ObservableOf } from 'rxjs';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
+import { timer as ObservableTimer } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
-    return route.data && route.data.noPreload ? ObservableOf(null) : load();
+    return route.data && route.data.noPreload ? ObservableOf(null) : ObservableTimer(50).pipe(
+      mergeMap(() => load())
+    );
   }
 }
 
