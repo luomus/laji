@@ -94,6 +94,7 @@
             },
             "dev": {
               "extractCss": true,
+              "outputHashing": "all",
               "namedChunks": true,
               "aot": true,
               "extractLicenses": true,
@@ -169,6 +170,9 @@
           },
           "configurations": {
             "production": {
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -177,9 +181,14 @@
               ]
             },
             "dev": {
-
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true
             },
             "embedded": {
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -188,6 +197,9 @@
               ]
             },
             "vir": {
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -196,6 +208,9 @@
               ]
             },
             "local": {
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
