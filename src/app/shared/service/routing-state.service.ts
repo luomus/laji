@@ -20,6 +20,10 @@ export class RoutingStateService {
     return this.history;
   }
 
+  public removeLast(): void {
+    this.history.pop();
+  }
+
   public getPreviousUrl(): string {
     return this.history[this.history.length - 2] || '';
   }
