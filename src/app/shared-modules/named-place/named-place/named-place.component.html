@@ -19,7 +19,7 @@
     <laji-spinner [spinning]="loading" [overlay]="true">
       <div *ngIf="namedPlaces && formData && !errorMsg">
         <div class="row np-row">
-          <div [ngClass]="{'col-sm-12 col-md-6': !editMode}">
+          <div [ngClass]="{'col-sm-12 col-md-12 col-lg-6': !editMode}">
             <laji-np-choose [namedPlaces]="namedPlaces"
                             [formData]="formData"
                             [userID]="userID"
@@ -28,7 +28,7 @@
                             (onActivePlaceChange)="setActiveNP($event)"
                             (onCreateButtonClick)="toEditMode(true)"></laji-np-choose>
           </div>
-          <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-md-6 nav-margin'">
+          <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-lg-6 nav-margin'">
             <laji-np-edit [editMode]="editMode"
                           [formId]="formId"
                           [loading]="loading"
