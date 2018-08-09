@@ -6,6 +6,7 @@ import { FooterService } from '../../shared/service/footer.service';
 import { ComponentCanDeactivate } from '../../shared/guards/document-de-activate.guard';
 import { DocumentFormComponent } from '@laji-form/document-form/document-form.component';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { RoutingStateService } from '../../shared/service/routing-state.service';
 
 @Component({
   selector: 'laji-haseka-form',
@@ -15,8 +16,9 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 })
 export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
-  public formId: string;
-  public documentId: string;
+  formId: string;
+  documentId: string;
+  back: string;
 
   private subParam: Subscription;
 
@@ -25,11 +27,13 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
               private footerService: FooterService,
               private localizeRouterService: LocalizeRouterService,
               private cd: ChangeDetectorRef,
+              private routingStateService: RoutingStateService,
               public translate: TranslateService
   ) {
   }
 
   ngOnInit() {
+    this.back = this.routingStateService.getPreviousUrl();
     this.footerService.footerVisible = false;
     this.subParam = this.route.params.subscribe(params => {
       this.formId = params['formId'];
@@ -57,14 +61,15 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
       );
     }
     this.router.navigate(
-      this.localizeRouterService.translateRoute(['/vihko/'])
+      this.localizeRouterService.translateRoute([this.back || '/vihko/'])
     );
   }
 
   onTmlLoad(data) {
+    this.routingStateService.removeLast();
     this.router.navigate(
       this.localizeRouterService.translateRoute(['/vihko', data.formID, data.tmpID]),
-      { replaceUrl: true }
+      { replaceUrl: true, skipLocationChange: true }
     );
   }
 

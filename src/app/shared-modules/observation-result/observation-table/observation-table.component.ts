@@ -414,6 +414,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   private setLangParams(value: string) {
     return (value || '')
-      .replace('%longLang%', this.langMap[this.lang] || 'Finnish')
+      .replace(/%longLang%/g, this.langMap[this.lang] || 'Finnish')
   }
 }

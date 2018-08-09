@@ -60,8 +60,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
         yearMonth: time ===  'all' ? undefined : [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
         collectionId: [this.collectionId],
         informalTaxonGroupId: [this.informalTaxonGroup],
-        // TODO: uncomment this when statistics endpoint allows Finland's country code
-        //countryId: ['ML.206']
+        countryId: ['ML.206']
       };
       this.resultQuery = this.clone(this.query);
       if (taxonId) {

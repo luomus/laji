@@ -86,7 +86,7 @@ export class UserService extends LocalDb {
 
   public get isLoggedIn() {
     console.error('Use observable isLoggedIn$ instead of this isLoggedIn');
-    return false;
+    return true;
   }
 
   public get isLoggedIn$() {

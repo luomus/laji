@@ -57,7 +57,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'laji-app'}),
-    TransferHttpCacheModule,
     CommonModule,
     HttpClientModule,
     NgtUniversalModule,
@@ -80,7 +79,8 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     ProgressbarModule.forRoot(),
     Ng2Webstorage.forRoot({prefix: 'laji-', separator: ''}),
     AppRoutingModule,
-    ViewerModule
+    ViewerModule,
+    TransferHttpCacheModule
   ],
   exports: [
     TranslateModule
