@@ -73,7 +73,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     if (environment.invasiveControlForm) {
       this.formService
         .load(environment.invasiveControlForm, this.translate.currentLang)
-        .delay(500)
         .switchMap((form) => this.formPermissionService.hasEditAccess(form))
         .catch(() => ObservableOf(false))
         .subscribe(hasPermission => {

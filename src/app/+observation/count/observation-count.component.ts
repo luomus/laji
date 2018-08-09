@@ -72,7 +72,6 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
       .warehouseQueryCountGet(query)
       .timeout(this.timeout)
       .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
-      .delay(10)
       .subscribe(result => {
           this.loading = false;
           this.count = '' + (result.total || 0);
@@ -97,7 +96,6 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
       .warehouseQueryAggregateGet(query, [this.field], undefined, pageSize)
       .timeout(this.timeout)
       .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
-      .delay(100)
       .subscribe(
         result => {
           if (this.pick) {
