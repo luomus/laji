@@ -17,13 +17,11 @@ export class TaxonSelectComponent {
   @ViewChild('typeahead') typeahead;
 
   public typeaheadMatch: {id: string, match: string};
-  public selectedValue: string;
+  public enteredValue: string;
 
   public typeaheadLimit = 10;
   public typeaheadLoading = false;
   public dataSource: Observable<any>;
-
-  private prevSelected: string;
 
   constructor(
     private lajiApi: LajiApiService,
@@ -42,8 +40,8 @@ export class TaxonSelectComponent {
             const searchTerm = this.openTaxon.toLowerCase();
             if (data.length > 0 && (data[0].value.toLowerCase() === searchTerm || data[0].key.toLowerCase() === searchTerm)) {
               this.typeaheadMatch = {id: data[0].key, match: this.openTaxon};
-              if (this.selectedValue === this.openTaxon) {
-                this.setSelected(data[0].key, true);
+              if (this.enteredValue === this.openTaxon) {
+                this.selectValue(this.typeaheadMatch.id, true);
                 return ObservableOf([]);
               }
             }
@@ -59,37 +57,37 @@ export class TaxonSelectComponent {
   }
 
   onTaxonSelect(event) {
-    this.selectedValue = undefined;
+    this.enteredValue = undefined;
 
     if (event.item && event.item.key) {
-      this.onSelect.emit(event.item.key);
+      this.typeaheadMatch = {id: event.item.key, match: event.item.value};
+      this.selectValue(event.item.key, true);
     } else if (event.key === 'Enter') {
-      if (this.typeaheadMatch && this.typeaheadMatch.match === this.openTaxon) {
-        this.setSelected(this.typeaheadMatch.id, true);
+      if (this.openTaxon === '') {
+        this.blur();
+      } else if (this.typeaheadMatch && this.typeaheadMatch.match === this.openTaxon) {
+        this.selectValue(this.typeaheadMatch.id, true);
       } else {
-        this.selectedValue = this.openTaxon;
+        this.enteredValue = this.openTaxon;
       }
-    }
-    if (this.openTaxon === '') {
-      this.prevSelected = undefined;
-      this.onSelect.emit(undefined);
     }
   }
 
   onBlur() {
-    if (this.typeaheadMatch && this.typeaheadMatch.match === this.openTaxon && this.prevSelected !== this.typeaheadMatch.id) {
-      this.setSelected(this.typeaheadMatch.id, false);
-    } else {
-      this.selectedValue = this.openTaxon;
+    if (this.openTaxon === '') {
+      this.selectValue(undefined, false);
     }
   }
 
-  private setSelected(value: string, blur?: boolean) {
-    this.prevSelected = value;
-    this.onSelect.emit(value);
+  private selectValue(key: string, blur?: boolean) {
+    this.onSelect.emit(key);
     if (blur) {
-      this.typeahead.nativeElement.blur();
+      this.blur();
     }
+  }
+
+  private blur() {
+    this.typeahead.nativeElement.blur();
   }
 
   public getTaxa(token: string): Observable<any> {
