@@ -1,5 +1,5 @@
 <div [ngClass]="{'hidden': editButtonVisible === undefined && useButton === undefined}">
-  <div class="hidden-xs hidden-sm" #infoBox id="info-box">
+  <div class="hidden-xs hidden-sm hidden-md" #infoBox id="info-box">
     <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{isModal: false}"></ng-template>
   </div>
 
