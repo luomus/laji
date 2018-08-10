@@ -63,7 +63,6 @@ export class ObservationCountComponent implements OnDestroy, OnChanges {
       this.subCount.unsubscribe();
     }
     this.loading = true;
-    this.changeDetectorRef.markForCheck();
     this.field ? this.updateAggregated(query) : this.updateCount(query);
   }
 
