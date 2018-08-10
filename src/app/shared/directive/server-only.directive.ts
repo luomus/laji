@@ -1,5 +1,5 @@
 import { Directive, Inject, OnInit, PLATFORM_ID, TemplateRef, ViewContainerRef } from '@angular/core';
-import { isPlatformServer } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 
 @Directive({ selector: '[lajiServerOnly]' })
 export class ServerOnlyDirective implements OnInit {
@@ -10,7 +10,7 @@ export class ServerOnlyDirective implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (isPlatformServer(this.platformId)) {
+    if (!isPlatformBrowser(this.platformId)) {
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
       this.viewContainer.clear();

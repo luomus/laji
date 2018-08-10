@@ -1,5 +1,3 @@
-import { Inject } from '@angular/core';
-import { WINDOW } from '@ng-toolkit/universal';
 import {
   AfterViewInit,
   Component,
@@ -34,7 +32,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
   private resize: any;
   private viewIsInitialized = false;
 
-  constructor(@Inject(WINDOW) private window: Window,) { }
+  constructor() { }
 
   ngOnInit() {
     this.initData();

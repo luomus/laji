@@ -1,6 +1,7 @@
 import { WINDOW } from '@ng-toolkit/universal';
-import { Component, OnInit, Input, Output, EventEmitter , Inject} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Inject, PLATFORM_ID } from '@angular/core';
 import { SearchQueryInterface } from '../search-query.interface';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'laji-search-filters',
@@ -15,7 +16,9 @@ export class SearchFiltersComponent implements OnInit {
   @Output() onShowFilterChange = new EventEmitter<boolean>();
   @Output() onInvasiveControlClick = new EventEmitter();
 
-  constructor(@Inject(WINDOW) private window: Window
+  constructor(
+    @Inject(WINDOW) private window: Window,
+    @Inject(PLATFORM_ID) private platformID: object
   ) { }
 
   ngOnInit() {
@@ -24,6 +27,9 @@ export class SearchFiltersComponent implements OnInit {
   toggleFilters() {
     this.showFilter = !this.showFilter;
     this.onShowFilterChange.emit(this.showFilter);
+    if (!isPlatformBrowser(this.platformID)) {
+      return;
+    }
     try {
       setTimeout(() => {
         try {

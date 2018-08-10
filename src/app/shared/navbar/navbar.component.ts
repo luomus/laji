@@ -20,7 +20,7 @@ import { DialogService } from '../service/dialog.service';
 import {LajiApi, LajiApiService} from '../service/laji-api.service';
 import {PagedResult} from '../model/PagedResult';
 import {Notification} from '../model/Notification';
-import { isPlatformServer } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { filter, switchMap, take } from 'rxjs/operators';
 
 @Component({
@@ -65,7 +65,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (isPlatformServer(this.platformId)) {
+    if (!isPlatformBrowser(this.platformId)) {
       return;
     }
     this.subParams = this.router.events.subscribe((event) => {

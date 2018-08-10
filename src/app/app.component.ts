@@ -1,7 +1,7 @@
 import { WINDOW } from '@ng-toolkit/universal';
-import { Component, ViewContainerRef , Inject} from '@angular/core';
+import { Component, ViewContainerRef, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { isPlatformBrowser, Location } from '@angular/common';
 import { environment } from '../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
@@ -33,6 +33,7 @@ export class AppComponent {
 
   constructor(
     @Inject(WINDOW) private window: Window,
+    @Inject(PLATFORM_ID) private platformID: object,
     router: Router,
     location: Location,
     viewContainerRef: ViewContainerRef,
@@ -53,7 +54,11 @@ export class AppComponent {
         const newRoute = location.path() || '/';
         if (this.currentRoute !== newRoute) {
           // Check if on page that should be scrolled to top
-          if (!newRoute.match(/^\/(en\/|sv\/)?(taxon\/list|taxon\/images|taxon\/tree)|((observation|theme\/nafi)\/)/)) {
+          if (
+            event.id !== 1 && // landing page this is not needed
+            isPlatformBrowser(this.platformID) && // this is only needed in browser
+            !newRoute.match(/^\/(en\/|sv\/)?(taxon\/list|taxon\/images|taxon\/tree)|((observation|theme\/nafi)\/)/)
+          ) {
             this.window.scroll(0, 0); // remove when container scrolling is supported by the form
             /*
             const content = this.window.document.getElementById('content');

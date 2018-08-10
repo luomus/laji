@@ -1,5 +1,3 @@
-import { Inject } from '@angular/core';
-import { WINDOW } from '@ng-toolkit/universal';
 import {
   AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
@@ -58,7 +56,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   resizeCanOpenModal = false;
   useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther'|'accessRequested';
 
-  constructor(@Inject(WINDOW) private window: Window,private userService: UserService,
+  constructor(private userService: UserService,
               private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {

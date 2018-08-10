@@ -23,7 +23,7 @@ import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMap } from '../../laji-map/laji-map.interface';
-import { isPlatformServer } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'laji-observation-map',
@@ -130,7 +130,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    if (isPlatformServer(this.platformId)) {
+    if (!isPlatformBrowser(this.platformId)) {
       return;
     }
     this.viewBound = L.latLngBounds;
@@ -148,7 +148,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (isPlatformServer(this.platformId)) {
+    if (!isPlatformBrowser(this.platformId)) {
       return;
     }
     this.decorator.lang = this.translate.currentLang;

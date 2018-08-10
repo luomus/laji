@@ -1,11 +1,12 @@
 import { WINDOW } from '@ng-toolkit/universal';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener , Inject} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { withLatestFrom, map } from 'rxjs/operators';
 import { TaxonomySearchQuery } from './service/taxonomy-search-query';
 import { TaxonomyColumns } from './service/taxonomy-columns';
 import { FooterService } from '../../shared/service/footer.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'laji-taxon-browse',
@@ -25,6 +26,7 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(WINDOW) private window: Window,
+    @Inject(PLATFORM_ID) private platformID: object,
     private route: ActivatedRoute,
     public searchQuery: TaxonomySearchQuery,
     public columnService: TaxonomyColumns,
@@ -89,7 +91,9 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
   }
 
   private setFilterPosition() {
-    const headerHeight = this.headerRef.nativeElement.offsetHeight;
-    this.stickyFilter = !(this.window.scrollY < headerHeight);
+    if (isPlatformBrowser(this.platformID)) {
+      const headerHeight = this.headerRef.nativeElement.offsetHeight;
+      this.stickyFilter = !(this.window.scrollY < headerHeight);
+    }
   }
 }

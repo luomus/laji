@@ -1,8 +1,9 @@
-import { WINDOW } from '@ng-toolkit/universal';
-import { Directive, ElementRef, HostListener , Inject} from '@angular/core';
+import { Directive, ElementRef, HostListener} from '@angular/core';
 
 /**
  * Fixes the element to view when scrolling relative to parent container
+ *
+ * DO NOT USE THIS! ATM (will trigger change detection on very scroll)
  */
 @Directive({
   selector: '[lajiHideScroll]',
@@ -13,7 +14,7 @@ export class HideScrollDirective {
   private isTouching = false;
   private el: any;
 
-  constructor(@Inject(WINDOW) private window: Window,ref: ElementRef) {
+  constructor(ref: ElementRef) {
     this.el = ref.nativeElement;
   }
 
