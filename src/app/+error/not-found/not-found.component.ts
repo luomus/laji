@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Optional, PLATFORM_ID } from '@angular/core';
+import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { isPlatformServer } from '@angular/common';
 
 @Component({
   selector: 'laji-not-found',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotFoundComponent implements OnInit {
 
-  constructor() { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object,
+              @Optional() @Inject(RESPONSE) private response: any) { }
 
   ngOnInit() {
+    if (isPlatformServer(this.platformId)) {
+      this.response.status(404);
+    }
   }
 
 }
