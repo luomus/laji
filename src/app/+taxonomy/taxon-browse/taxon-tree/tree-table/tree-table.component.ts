@@ -6,6 +6,10 @@ import { Observable, of, forkJoin, Subscription } from 'rxjs';
 import { tap, map, switchMap, share } from 'rxjs/operators';
 import { DatatableTemplatesComponent } from '../../../../shared-modules/datatable/datatable-templates/datatable-templates.component';
 import { TreeNode, TreeNodeState } from './tree-node.interface';
+import { CacheService } from '../../../../shared/service/cache.service';
+
+const CACHE_COLUMN_SETINGS = 'tree-table-col-width';
+interface Settings {[key: string]: {width: string}}
 
 @Component({
   selector: 'laji-tree-table',
@@ -13,6 +17,8 @@ import { TreeNode, TreeNodeState } from './tree-node.interface';
   styleUrls: ['./tree-table.component.css']
 })
 export class TreeTableComponent implements OnChanges {
+  private static settings: Settings;
+
   @Input() nodes: TreeNode[] = [];
   @Input() getChildren: (id: string) => Observable<any[]>;
   @Input() getParents: (id: string) => Observable<any[]>;
@@ -37,27 +43,43 @@ export class TreeTableComponent implements OnChanges {
   @Output() rowSelect = new EventEmitter<any>();
 
   @Input() set columns(columns: any) {
-    this._columns = [{
-      prop: 'node',
-      name: '',
-      cellTemplate: this.expanderTpl,
-      frozenLeft: true,
-      width: 165
-    }];
+    const settings$ = TreeTableComponent.settings ?
+      of(TreeTableComponent.settings) :
+      this.cacheService.getItem<Settings>(CACHE_COLUMN_SETINGS)
+        .pipe(
+          map(value => value || {}),
+          tap(value => TreeTableComponent.settings = value)
+        );
 
-    columns.map(column => {
-      if (!column.headerTemplate) {
-        column.headerTemplate = this.datatableTemplates.header;
-      }
-      if (typeof column.cellTemplate === 'string') {
-        column.cellTemplate = this.datatableTemplates[column.cellTemplate];
-      }
-      column.sortable = false;
-      this._columns.push(column);
+    settings$.subscribe(settings => {
+      this._columns = [{
+        prop: 'node',
+        name: '',
+        cellTemplate: this.expanderTpl,
+        frozenLeft: true,
+        width: 165
+      }];
+
+      columns.map(column => {
+        if (!column.headerTemplate) {
+          column.headerTemplate = this.datatableTemplates.header;
+        }
+        if (typeof column.cellTemplate === 'string') {
+          column.cellTemplate = this.datatableTemplates[column.cellTemplate];
+        }
+        if (settings && settings[column.name] && settings[column.name].width) {
+          column.width = settings[column.name].width;
+        }
+        column.sortable = false;
+        this._columns.push(column);
+      });
+
+      this.cd.markForCheck();
     });
   }
 
   constructor(
+    private cacheService: CacheService,
     private cd: ChangeDetectorRef
   ) {}
 
@@ -281,6 +303,14 @@ export class TreeTableComponent implements OnChanges {
           })
         );
       }
+    }
+  }
+
+  onResize(event) {
+    if (event && event.column && event.column.name && event.newValue) {
+      TreeTableComponent.settings[event.column.name] = {width: event.newValue};
+      this.cacheService.setItem<Settings>(CACHE_COLUMN_SETINGS, TreeTableComponent.settings)
+        .subscribe(() => {}, () => {});
     }
   }
 }

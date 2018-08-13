@@ -71,6 +71,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   @Input() showPaginator: number;
   @Input() showViewSwitch = false;
   @Input() showPopover = false;
+  @Input() showLinkToSpeciesCard = false;
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() select = new EventEmitter<{taxonId: string, documentId: string, unitId: string}>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
@@ -121,6 +122,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
     this.overlay.instance.close = () => {
       this.closeImage();
     };
+    this.overlay.instance.showLinkToSpeciesCard = this.showLinkToSpeciesCard;
   }
 
   closeImage() {

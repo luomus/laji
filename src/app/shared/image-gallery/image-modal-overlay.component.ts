@@ -12,6 +12,7 @@ export class ImageModalOverlayComponent implements OnInit {
   public close: Function;
   public modalImages: Image[];
   public loading;
+  public showLinkToSpeciesCard: boolean;
   @Output('cancelEvent') cancelEvent = new EventEmitter<any>();
 
   constructor() {

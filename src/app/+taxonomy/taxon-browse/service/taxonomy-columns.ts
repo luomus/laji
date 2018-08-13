@@ -13,7 +13,7 @@ export class TaxonomyColumns {
       name: 'taxonRank',
       label: 'taxonomy.rank',
       cellTemplate: 'label',
-      width: 90
+      width: 130
     },
     {
       name: 'scientificName',
@@ -99,7 +99,7 @@ export class TaxonomyColumns {
     {
       name: 'latestRedListStatusFinland',
       cellTemplate: 'iucnStatus',
-      width: 90
+      width: 140
     },
     {
       name: 'informalTaxonGroups',

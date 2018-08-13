@@ -273,3 +273,7 @@ uiload > div {
   width: 100px;
   height: 100px;
 }
+
+a:focus em, a:hover em {
+  text-decoration: underline;
+}

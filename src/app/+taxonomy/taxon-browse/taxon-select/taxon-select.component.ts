@@ -16,8 +16,8 @@ export class TaxonSelectComponent {
 
   @ViewChild('typeahead') typeahead;
 
-  public typeaheadMatch: {id: string, match: string};
-  public enteredValue: string;
+  private typeaheadMatch: {id: string, match: string};
+  private enteredValue: string;
 
   public typeaheadLimit = 10;
   public typeaheadLoading = false;
@@ -62,20 +62,14 @@ export class TaxonSelectComponent {
     if (event.item && event.item.key) {
       this.typeaheadMatch = {id: event.item.key, match: event.item.value};
       this.selectValue(event.item.key, true);
+    } else if (this.openTaxon === '') {
+      this.selectValue(undefined, false);
     } else if (event.key === 'Enter') {
-      if (this.openTaxon === '') {
-        this.blur();
-      } else if (this.typeaheadMatch && this.typeaheadMatch.match === this.openTaxon) {
+      if (this.typeaheadMatch && this.typeaheadMatch.match === this.openTaxon) {
         this.selectValue(this.typeaheadMatch.id, true);
       } else {
         this.enteredValue = this.openTaxon;
       }
-    }
-  }
-
-  onBlur() {
-    if (this.openTaxon === '') {
-      this.selectValue(undefined, false);
     }
   }
 

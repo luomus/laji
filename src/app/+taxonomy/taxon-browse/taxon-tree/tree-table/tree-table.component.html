@@ -8,6 +8,7 @@
   [columns]="_columns"
   [headerHeight]="38"
   [rowClass]="rowClass"
+  (resize)="onResize($event)"
   (activate)="onRowSelect($event)">
 </ngx-datatable>
 
