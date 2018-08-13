@@ -10,16 +10,18 @@
 </ngx-datatable>
 
 <ng-template let-value="value" #expander>
-  <span [ngStyle]="{'padding-left': (10 * value.level) + 'px'}">
-    <span *ngIf="value.level !== 0"
+  <span [ngStyle]="{'padding-left': (10 * value.state.level) + 'px'}">
+    <span *ngIf="value.state.level !== 0"
           class="tree-side-line"
-          [ngClass]="{'first-child': value.isFirstChild}"
-          [ngStyle]="{'left': (10 * value.level + 7) + 'px'}"></span>
-    <i class="glyphicon glyphicon-triangle-right" [ngStyle]="{visibility: value.hasChildren ? 'visible' : 'hidden'}" *ngIf="!value.isExpanded && !value.isLoading"></i>
-    <laji-spinner *ngIf="value.isLoading"></laji-spinner>
-    <i class="glyphicon glyphicon-triangle-bottom" *ngIf="value.isExpanded && !value.isLoading"></i>
+          [ngClass]="{'first-child': value.state.isFirstChild}"
+          [ngStyle]="{'left': (10 * value.state.level + 7) + 'px'}"></span>
+    <i class="glyphicon glyphicon-triangle-right"
+       [ngStyle]="{visibility: value.data.hasChildren ? 'visible' : 'hidden'}"
+       *ngIf="!value.state.isExpanded"></i>
+    <laji-spinner *ngIf="value.state.isExpanded && value.state.isLoading"></laji-spinner>
+    <i class="glyphicon glyphicon-triangle-bottom" *ngIf="value.state.isExpanded && !value.state.isLoading"></i>
     <span class="inline">
-      <ng-container *ngTemplateOutlet="expanderLabel; context: {'value': value}"></ng-container>
+      <ng-container *ngTemplateOutlet="expanderLabel; context: {'value': value.data}"></ng-container>
     </span>
   </span>
 </ng-template>

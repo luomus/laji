@@ -21,7 +21,7 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() columnService: TaxonomyColumns;
 
-  public root = [];
+  public nodes = [];
   public columns: ObservationTableColumn[] = [];
   public getChildrenFunc = this.getChildren.bind(this);
   public getParentsFunc = this.getParents.bind(this);
@@ -53,7 +53,7 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
         this.taxonSelectFilters = {onlyFinnish: this.searchQuery.query.onlyFinnish};
-        this.root = [...this.root];
+        this.nodes = [{...this.nodes[0], children: undefined}];
       }
     );
   }
@@ -75,7 +75,7 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
       .pipe(
         map(data => [data]),
         tap((data) => {
-          this.root = data;
+          this.nodes = data;
           this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
         })
       )

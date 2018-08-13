@@ -1,10 +1,13 @@
 export interface TreeNode {
   id: string;
   hasChildren: boolean;
-  isExpanded?: boolean;
-  isLoading?: boolean;
-  isSkipped?: boolean;
-  isFirstChild?: boolean;
   children?: TreeNode[];
+}
+
+export interface TreeNodeState {
   level: number;
+  isExpanded: boolean;
+  isFirstChild: boolean;
+  isSkipped: boolean;
+  isLoading: boolean;
 }

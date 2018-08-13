@@ -2,10 +2,10 @@ import {
   Component, OnChanges, Input, Output, ViewChild, TemplateRef, ChangeDetectorRef, ContentChild,
   EventEmitter, SimpleChanges
 } from '@angular/core';
-import { Observable, of, forkJoin } from 'rxjs';
-import { tap, map, switchMap } from 'rxjs/operators';
+import { Observable, of, forkJoin, Subscription } from 'rxjs';
+import { tap, map, switchMap, share } from 'rxjs/operators';
 import { DatatableTemplatesComponent } from '../../../../shared-modules/datatable/datatable-templates/datatable-templates.component';
-import { TreeNode } from './tree-node.interface';
+import { TreeNode, TreeNodeState } from './tree-node.interface';
 
 @Component({
   selector: 'laji-tree-table',
@@ -21,9 +21,13 @@ export class TreeTableComponent implements OnChanges {
   rows = [];
   _columns = [];
 
+  private nodeStates: {[key: string]: TreeNodeState} = {};
+  private pendingChildren: {[key: string]: Observable<TreeNode[]>} = {};
+  private subs: Subscription[] = [];
+  private missingChildren: TreeNode[] = [];
+
   private activeId: string;
   private deepestLevel = 0;
-  private missingChildren = [];
 
   @ViewChild('expander') expanderTpl: TemplateRef<any>;
   @ContentChild('expanderLabel') expanderLabel: TemplateRef<any>;
@@ -59,12 +63,22 @@ export class TreeTableComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.nodes || changes.skipParams) {
+      if (changes.nodes) {
+        this.subs.map((sub) => {
+          sub.unsubscribe();
+        });
+        this.subs = [];
+        this.nodeStates = {};
+        this.pendingChildren = {};
+      }
+
       this.missingChildren = [];
-      this.nodes = this.getUpdatedNodes(this.nodes);
-      this.updateRows();
+      this.updateNodeStates(this.nodes);
       for (let i = 0; i < this.missingChildren.length; i++) {
         this.toggleChildrenOpen(this.missingChildren[i]);
       }
+
+      this.updateRows();
     }
   }
 
@@ -73,46 +87,43 @@ export class TreeTableComponent implements OnChanges {
     this.rowClass = this._rowClass(openId);
 
     if (openId) {
-      this.getParents(openId)
+      this.subs.push(this.getParents(openId)
         .subscribe(res => {
           res.push({id: openId});
           this.toggleOpenChain(this.nodes, res);
-        });
+        })
+      );
     }
   }
 
-  private getUpdatedNodes(nodes: any, parent?: TreeNode, virtualParent?: TreeNode): TreeNode[] {
-    const result = [];
-
+  private updateNodeStates(nodes: TreeNode[], parentState?: TreeNodeState, virtualParent?: TreeNode) {
     for (let i = 0; i < nodes.length; i++) {
-      const node = this.getChildNode(nodes[i], i, parent);
-      result.push(node);
+      const state = this.updateNodeState(nodes[i], i, parentState);
 
-      if (node.children) {
-        result[i].children = this.getUpdatedNodes(node.children, result[i], result[i].isSkipped ? parent : result[i]);
-      } else if (node.isExpanded && this.missingChildren.indexOf(virtualParent) === -1) {
+      if (nodes[i].children) {
+        this.updateNodeStates(nodes[i].children, state, state.isSkipped ? virtualParent : nodes[i]);
+      } else if (state.isExpanded && this.missingChildren.indexOf(virtualParent) === -1) {
         this.missingChildren.push(virtualParent);
       }
     }
-
-    return result;
   }
 
-  private getChildNode(data: any, childNbr, parent?: TreeNode): TreeNode {
-    const skipped = this.getSkipped(data);
+  private updateNodeState(node: TreeNode, childNbr, parentState?: TreeNodeState): TreeNodeState {
+    const skipped = this.getSkipped(node);
+    const expanded = this.nodeStates[node.id] ? this.nodeStates[node.id].isExpanded : false;
 
-    return {
-      ...data,
-      id: data.id,
-      hasChildren: data.hasChildren,
-      level: !parent ? 0 : (parent.isSkipped ? parent.level : parent.level + 1),
-      isFirstChild: childNbr === 0 && (!parent || !parent.isSkipped || parent.isFirstChild),
-      isExpanded: skipped && parent.isExpanded ? true : data.isExpanded,
-      isSkipped: skipped
-    }
+    this.nodeStates[node.id] = {
+      level: !parentState ? 0 : (parentState.isSkipped ? parentState.level : parentState.level + 1),
+      isFirstChild: childNbr === 0 && (!parentState || !parentState.isSkipped || parentState.isFirstChild),
+      isExpanded: skipped && parentState.isExpanded ? true : expanded,
+      isSkipped: skipped,
+      isLoading: false
+    };
+
+    return this.nodeStates[node.id];
   }
 
-  private getSkipped(node: any): boolean {
+  private getSkipped(node: TreeNode): boolean {
     if (this.skipParams && this.skipParams.length > 0) {
       for (let i = 0; i < this.skipParams.length; i++) {
         const key = this.skipParams[i].key;
@@ -137,88 +148,73 @@ export class TreeTableComponent implements OnChanges {
     if (!node.hasChildren) {
       return;
     }
-    node.isExpanded = !node.isExpanded;
-    if (!node.isExpanded) {
-      this.hideChildren(node.children);
-    } else {
-      this.expandSkippedChildren(node.children);
-    }
 
-    if (node.isExpanded && node.hasChildren && !node.children) {
-      this.toggleChildrenOpen(node);
-    } else {
+    if (this.nodeStates[node.id].isExpanded) {
+      this.hideChildren(node);
       this.updateRows();
+    } else {
+      this.toggleChildrenOpen(node);
     }
   }
 
   private toggleChildrenOpen(node: TreeNode) {
-    node.isLoading = true;
-
-    this.updateChildren(node)
-      .subscribe(() => {
-        this.updateRows();
-        node.isLoading = false;
-        this.cd.markForCheck();
-      });
+    this.subs.push(
+      this.setNodeOpen(node)
+        .subscribe(() => {
+          this.updateRows();
+          this.cd.markForCheck();
+        })
+    );
   }
 
-  private updateChildren(node: TreeNode): Observable<any> {
-    return this.fetchChildren(node)
-      .pipe(
-        switchMap((children) => {
-          const obs = [];
-          for (let i = 0; i < children.length; i++) {
-            if (children[i].isSkipped) {
-              obs.push(this.updateChildren(children[i]));
-            }
-          }
+  private setNodeOpen(node: TreeNode): Observable<TreeNode> {
+    const nodeState = this.nodeStates[node.id];
+    nodeState.isExpanded = true;
+    nodeState.isLoading = true;
 
-          return (obs.length > 0 ? forkJoin(obs) : of(children));
-        })
-      );
+    return this.fetchChildren(node)
+      .pipe(switchMap((children) => {
+        const obs = [];
+        for (let i = 0; i < children.length; i++) {
+          if (this.nodeStates[children[i].id].isSkipped) {
+            obs.push(this.setNodeOpen(children[i]));
+          }
+        }
+
+        return (obs.length > 0 ?  forkJoin(obs).pipe(map(() => (node))) : of(node))
+          .pipe(tap(() => {
+            nodeState.isLoading = false;
+          }))
+      }))
   }
 
   private fetchChildren(node: TreeNode): Observable<TreeNode[]> {
     if (node.children) {
       return of(node.children);
+    } else if (this.pendingChildren[node.id]) {
+      return this.pendingChildren[node.id];
     }
-    return this.getChildren(node.id)
+
+    this.pendingChildren[node.id] = this.getChildren(node.id)
       .pipe(
-        map(children => {
-          const nodes = [];
-          for (let i = 0; i < children.length; i++) {
-            nodes.push(this.getChildNode(children[i], i, node));
-          }
-          return nodes;
-        }),
         tap(nodes => {
+          for (let i = 0; i < nodes.length; i++) {
+            this.updateNodeState(nodes[i], i, this.nodeStates[node.id]);
+          }
           node.children = nodes;
-        })
+        }),
+        share()
       );
+
+    return this.pendingChildren[node.id];
   }
 
-  private hideChildren(nodes: TreeNode[]) {
-    if (!nodes) {
-      return;
-    }
+  private hideChildren(node: TreeNode) {
+    this.nodeStates[node.id].isExpanded = false;
 
-    for (let i = 0; i < nodes.length; i++) {
-      if (nodes[i].isExpanded) {
-        nodes[i].isExpanded = false;
-        this.hideChildren(nodes[i].children);
-      }
-    }
-  }
-
-  private expandSkippedChildren(nodes: TreeNode[]) {
-    if (!nodes) {
-      return;
-    }
-
-    for (let i = 0; i < nodes.length; i++) {
-      if (nodes[i].isSkipped) {
-        nodes[i].isExpanded = true;
-        this.expandSkippedChildren(nodes[i].children);
+    if (node.children) {
+      for (let i = 0; i < node.children.length; i++) {
+        this.hideChildren(node.children[i]);
       }
     }
   }
@@ -238,15 +234,16 @@ export class TreeTableComponent implements OnChanges {
   private update(nodes: TreeNode[], rows: any[]) {
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
+      const nodeState = this.nodeStates[node.id];
 
-      if (!nodes[i].isSkipped) {
-        rows.push({...node, node: node});
-        if (node.level > this.deepestLevel) {
-          this.deepestLevel = node.level;
+      if (!nodeState.isSkipped) {
+        rows.push({...node, node: {data: node, state: nodeState}});
+        if (nodeState.level > this.deepestLevel) {
+          this.deepestLevel = nodeState.level;
         }
       }
 
-      if (node.isExpanded && node.children) {
+      if (nodeState.isExpanded && !nodeState.isLoading && node.children) {
         this.update(node.children, rows);
       }
     }
@@ -258,7 +255,7 @@ export class TreeTableComponent implements OnChanges {
     }
 
     if (event.column.prop === 'node') {
-      this.toggle(event.row.node);
+      this.toggle(event.row.node.data);
     } else {
       this.rowSelect.emit(event);
     }
@@ -276,15 +273,13 @@ export class TreeTableComponent implements OnChanges {
   private toggleOpenChain(nodes: TreeNode[], chain: any[]) {
     for (let i = 0; i < nodes.length; i++) {
       if (nodes[i].id === chain[0].id && nodes[i].hasChildren) {
-        nodes[i].isLoading = true;
-        this.updateChildren(nodes[i])
+        this.subs.push(this.setNodeOpen(nodes[i])
           .subscribe(() => {
-            nodes[i].isExpanded = true;
-            nodes[i].isLoading = false;
             this.updateRows();
             this.cd.markForCheck();
             this.toggleOpenChain(nodes[i].children, chain.slice(1));
-          });
+          })
+        );
       }
     }
   }
