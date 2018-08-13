@@ -33,8 +33,3 @@
 :host >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-right {
   background-color: #ddd !important;
 }
-:host >>> .ngx-datatable .datatable-body {
-  max-height: calc(70vh - 30px - 38px); /* 38 = header height */
-  overflow-y: auto;
-  width: auto !important;
-}
