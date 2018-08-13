@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges,
   Output
@@ -124,9 +124,10 @@ export class GalleryComponent implements OnChanges {
         this.logger.error('Unable to fetch image from warehouse', err);
         return [];
       }),
-      tap(images => {
+      tap((images) => {
         this.loading = false;
         this.hasData.emit(images.length > 0);
+        this.cd.detectChanges();
       })
     );
   }

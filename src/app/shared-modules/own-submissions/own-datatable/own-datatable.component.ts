@@ -1,4 +1,4 @@
-import { Inject } from '@angular/core';
+import { Inject, PLATFORM_ID } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef,
@@ -26,6 +26,7 @@ import { Logger } from '../../../shared/logger/logger.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
+import { isPlatformBrowser } from '@angular/common';
 
 
 @Component({
@@ -93,6 +94,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     @Inject(WINDOW) private window: Window,
+    @Inject(PLATFORM_ID) private platformID: object,
     private translate: TranslateService,
     private router: Router,
     private userService: UserService,
@@ -159,6 +161,9 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateDisplayMode() {
+    if (!isPlatformBrowser(this.platformID)) {
+      return;
+    }
     const width = this.window.innerWidth;
 
     if (width > 1150) {

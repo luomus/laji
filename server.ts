@@ -1,8 +1,10 @@
 import 'zone.js/dist/zone-node';
 import 'reflect-metadata';
-import {enableProdMode} from '@angular/core';
-import {ngExpressEngine} from '@nguniversal/express-engine';
-import {provideModuleMap} from '@nguniversal/module-map-ngfactory-loader';
+import { enableProdMode } from '@angular/core';
+import { ngExpressEngine } from '@nguniversal/express-engine';
+import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
+import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
+import { Response } from 'express';
 
 import * as redis from 'redis';
 import * as Redlock from 'redlock';
@@ -10,8 +12,6 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import * as compression from 'compression';
-
-import {join} from 'path';
 
 enableProdMode();
 
@@ -28,27 +28,36 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // const DIST_FOLDER = join(process.cwd(), 'dist');
 
 const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./dist/server/main');
+const BROWSER_PATH = './dist/browser';
 
-app.engine('html', ngExpressEngine({
+app.engine('html', (_, options, callback) => ngExpressEngine({
   bootstrap: AppServerModuleNgFactory,
   providers: [
-    provideModuleMap(LAZY_MODULE_MAP)
+    provideModuleMap(LAZY_MODULE_MAP),
+    {
+      provide: REQUEST,
+      useValue: options.req,
+    },
+    {
+      provide: RESPONSE,
+      useValue: options.req.res,
+    },
   ]
-}));
+})(_, options, callback));
 
 app.set('view engine', 'html');
-app.set('views', './dist/browser');
+app.set('views', BROWSER_PATH);
 
 app.get('/redirect/**', (req, res) => {
   const location = req.url.substring(10);
   res.redirect(301, location);
 });
 
-app.get('*.*', express.static('./dist/browser', {
+app.get('*.*', express.static(BROWSER_PATH, {
   maxAge: '1y'
 }));
 
-app.get('/*', (req, res) => {
+app.get('*', (req, res) => {
 
   // Skip cache for these requests
   if (req.originalUrl.indexOf('/user') === 0) {
@@ -63,6 +72,10 @@ app.get('/*', (req, res) => {
     return;
   }
 
+
+  const CACHE_TIME = 60 * 30; // This is time in sec for how long will the content be stored in cache
+  const CACHE_UPDATE = 60;    // This is time when the content will be updated even if there is already one in the cache
+
   // Cache these responses for 10min, update cache on every request
   const redisKey = 'LajiPage:' + req.originalUrl;
   RedisClient.get(redisKey, (errRedis: any, resultRedis: string) => {
@@ -71,9 +84,6 @@ app.get('/*', (req, res) => {
       res.send(resultRedis);
       hit = true;
     }
-
-    const CACHE_TIME = 60 * 30; // This is time in sec for how long will the content be stored in cache
-    const CACHE_UPDATE = 60;    // this is time when the content will be updated even if there is already one in the cache
 
     const updateLock = function(key, cb: () => void) {
       const lockKey = '_lock:' + key;
@@ -104,7 +114,7 @@ app.get('/*', (req, res) => {
       res.render('index', {req, res}, (err, html) => {
         if (err) {
           console.error(err);
-          return (req as any).next(err);
+          return res.send(err);
         }
         res.send(html);
 

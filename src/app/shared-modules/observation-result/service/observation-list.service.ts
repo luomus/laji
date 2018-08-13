@@ -6,6 +6,7 @@ import { PagedResult } from '../../../shared/model/PagedResult';
 import { SourceService } from '../../../shared/service/source.service';
 import { CollectionService } from '../../../shared/service/collection.service';
 import { IdService } from '../../../shared/service/id.service';
+import { Util } from '../../../shared/service/util.service';
 
 @Injectable()
 export class ObservationListService {
@@ -65,7 +66,9 @@ export class ObservationListService {
       page,
       false,
       false
-    ).retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
+    )
+      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
+      .map(data => Util.clone(data))
       .map(data => this.convertAggregateResult(data))
       .switchMap(data => this.openValues(data, aggregateBy, lang))
       .do(data => {
@@ -108,6 +111,7 @@ export class ObservationListService {
       page
     )
       .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
+      .map(data => Util.clone(data))
       .switchMap(data => this.openValues(data, selected, lang))
       .do(data => {
         this.data = data;

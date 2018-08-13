@@ -1,5 +1,3 @@
-import { Inject } from '@angular/core';
-import { WINDOW } from '@ng-toolkit/universal';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -79,7 +77,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   private publicityRestrictions;
   private current;
 
-  constructor(@Inject(WINDOW) private window: Window,private documentService: DocumentApi,
+  constructor(private documentService: DocumentApi,
               private formService: FormService,
               private userService: UserService,
               private footerService: FooterService,

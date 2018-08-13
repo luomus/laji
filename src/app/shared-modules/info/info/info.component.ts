@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, HostListener, Inject, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Inject, Input, PLATFORM_ID, ViewChild } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
 import { ModalDirective, PopoverDirective } from 'ngx-bootstrap';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'laji-info',
@@ -15,7 +16,8 @@ export class InfoComponent {
   @ViewChild('pop') public popover: PopoverDirective;
 
   constructor(
-    @Inject(WINDOW) private window
+    @Inject(WINDOW) private window,
+    @Inject(PLATFORM_ID) private platformID: object
   ) { }
 
   @HostListener('window:resize')
@@ -26,6 +28,9 @@ export class InfoComponent {
   }
 
   show() {
+    if (!isPlatformBrowser(this.platformID)) {
+      return;
+    }
     let useModal = this.window.innerWidth <= 767;
     if (this.isVisible() && ((useModal && this.modal.isShown) || (!useModal && this.popover.isOpen))) {
       return;

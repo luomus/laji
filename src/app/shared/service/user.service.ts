@@ -6,15 +6,14 @@ import {
   Subscription,
   Subject,
   of as ObservableOf,
-  BehaviorSubject,
   ReplaySubject
 } from 'rxjs';
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
 import { LocalStorage } from 'ngx-webstorage';
-import { Location } from '@angular/common';
+import { isPlatformBrowser, Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
 import { ToastsService } from './toasts.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -69,6 +68,7 @@ export class UserService extends LocalDb {
               private toastsService: ToastsService,
               private translate: TranslateService,
               private localizeRouterService: LocalizeRouterService,
+              @Inject(PLATFORM_ID) private platformId: object,
               @Inject(WINDOW) private window: Window) {
     super('settings');
     if (this.token) {
@@ -178,8 +178,10 @@ export class UserService extends LocalDb {
   }
 
   public doLogin(returnUrl?: string): void {
-    this.returnUrl = returnUrl || this.location.path(true);
-    this.window.location.href = UserService.getLoginUrl(this.returnUrl, this.translate.currentLang);
+    if (isPlatformBrowser(this.platformId)) {
+      this.returnUrl = returnUrl || this.location.path(true);
+      this.window.location.href = UserService.getLoginUrl(this.returnUrl, this.translate.currentLang);
+    }
   }
 
   public returnToPageBeforeLogin(): void {

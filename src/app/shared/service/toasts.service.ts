@@ -1,6 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { isPlatformServer } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({providedIn: 'root'})
 export class ToastsService {
@@ -31,7 +31,7 @@ export class ToastsService {
   }
 
   private toast(type, message, title?: string, options?: Object) {
-    if (isPlatformServer(this.platformId)) {
+    if (!isPlatformBrowser(this.platformId)) {
       return;
     }
     if (!options) {
