@@ -24,9 +24,6 @@
                      [getParents]="getParentsFunc"
                      [skipParams]="skipParams"
                      (rowSelect)="onRowSelect($event)">
-      <ng-template let-value="value" #expanderLabel>
-        <span [class.cursive]="value.cursiveName" title="{{value.scientificName}}"> {{value.scientificName}}</span>
-      </ng-template>
     </laji-tree-table>
     <div class="setting-menu link" (click)="openSettingsModal()">
       <i class="glyphicon glyphicon-cog"></i>
@@ -44,5 +41,6 @@
                                  (settingsLoaded)="onSettingsLoaded()"
                                  [searchQuery]="searchQuery"
                                  [columnLookup]="columnService.columnLookup"
+                                 [requiredFields]="['scientificName']"
                                  [listType]="'tree'">
 </laji-species-list-options-modal>

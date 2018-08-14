@@ -13,7 +13,7 @@ export class SpeciesListOptionsModalComponent implements OnInit {
 
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() columnLookup: any;
-
+  @Input() requiredFields: string[] = [];
   @Input() listType: 'list'|'tree';
 
   private optionsKey: string;
@@ -47,7 +47,7 @@ export class SpeciesListOptionsModalComponent implements OnInit {
   }
 
   clear() {
-    this._selected = [];
+    this._selected = [...this.requiredFields]
   }
 
   toggleSelectedField(field: string) {

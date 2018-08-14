@@ -36,7 +36,8 @@ export class TreeTableComponent implements OnChanges {
   private deepestLevel = 0;
 
   @ViewChild('expander') expanderTpl: TemplateRef<any>;
-  @ContentChild('expanderLabel') expanderLabel: TemplateRef<any>;
+  expanderLabelTpl: TemplateRef<any>;
+  expanderLabelProp: string;
   @ViewChild('datatableTemplates') datatableTemplates: DatatableTemplatesComponent;
 
   rowClass = this._rowClass();
@@ -52,26 +53,39 @@ export class TreeTableComponent implements OnChanges {
         );
 
     settings$.subscribe(settings => {
-      this._columns = [{
-        prop: 'node',
-        name: '',
-        cellTemplate: this.expanderTpl,
-        frozenLeft: true,
-        width: 165
-      }];
+      this.expanderLabelTpl = undefined;
+      this.expanderLabelProp = undefined;
 
-      columns.map(column => {
+      this._columns = columns.map((column, i) => {
         if (!column.headerTemplate) {
           column.headerTemplate = this.datatableTemplates.header;
         }
         if (typeof column.cellTemplate === 'string') {
           column.cellTemplate = this.datatableTemplates[column.cellTemplate];
         }
+        if (!column.prop) {
+          column.prop = column.name;
+        }
         if (settings && settings[column.name] && settings[column.name].width) {
           column.width = settings[column.name].width;
         }
         column.sortable = false;
-        this._columns.push(column);
+
+        if (i === 0) {
+          if (column.cellTemplate) {
+            this.expanderLabelTpl = column.cellTemplate;
+          }
+          this.expanderLabelProp = column.prop;
+
+          column = {
+            ...column,
+            cellTemplate: this.expanderTpl,
+            frozenLeft: true,
+            width: 165
+          };
+        }
+
+        return column;
       });
 
       this.cd.markForCheck();
@@ -259,7 +273,7 @@ export class TreeTableComponent implements OnChanges {
       const nodeState = this.nodeStates[node.id];
 
       if (!nodeState.isSkipped) {
-        rows.push({...node, node: {data: node, state: nodeState}});
+        rows.push({...node, node: node, state: nodeState});
         if (nodeState.level > this.deepestLevel) {
           this.deepestLevel = nodeState.level;
         }
@@ -276,8 +290,8 @@ export class TreeTableComponent implements OnChanges {
       return;
     }
 
-    if (event.column.prop === 'node') {
-      this.toggle(event.row.node.data);
+    if (event.column.prop === this.expanderLabelProp) {
+      this.toggle(event.row.node);
     } else {
       this.rowSelect.emit(event);
     }
@@ -307,7 +321,7 @@ export class TreeTableComponent implements OnChanges {
   }
 
   onResize(event) {
-    if (event && event.column && event.column.name && event.newValue) {
+    if (event && event.column && event.column.name && event.column.name !== this.expanderLabelProp && event.newValue) {
       TreeTableComponent.settings[event.column.name] = {width: event.newValue};
       this.cacheService.setItem<Settings>(CACHE_COLUMN_SETINGS, TreeTableComponent.settings)
         .subscribe(() => {}, () => {});
