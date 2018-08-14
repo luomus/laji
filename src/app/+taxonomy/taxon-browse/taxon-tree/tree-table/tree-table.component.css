@@ -20,8 +20,6 @@
 }
 
 :host >>> .ngx-datatable .datatable-header .datatable-row-left .datatable-header-cell {
-  padding: 0;
-  height: 100%;
   border-right: none;
 }
 :host >>> .ngx-datatable.material.striped .datatable-body .datatable-row-odd:not(:hover):not(:focus) .datatable-row-left {
