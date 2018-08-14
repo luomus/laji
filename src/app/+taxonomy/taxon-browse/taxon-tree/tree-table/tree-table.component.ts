@@ -321,7 +321,7 @@ export class TreeTableComponent implements OnChanges {
   }
 
   onResize(event) {
-    if (event && event.column && event.column.name && event.column.name !== this.expanderLabelProp && event.newValue) {
+    if (event && event.column && event.column.name && event.column.prop !== this.expanderLabelProp && event.newValue) {
       TreeTableComponent.settings[event.column.name] = {width: event.newValue};
       this.cacheService.setItem<Settings>(CACHE_COLUMN_SETINGS, TreeTableComponent.settings)
         .subscribe(() => {}, () => {});

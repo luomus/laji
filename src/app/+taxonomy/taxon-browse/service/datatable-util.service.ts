@@ -26,10 +26,10 @@ export class DatatableUtil {
         observable = this.getLabels(value);
         break;
       case 'multiLang':
-        ObservableOf(MultiLangService.getValue(value, this.translate.currentLang, '%value% (%lang%)'));
+        observable = ObservableOf(MultiLangService.getValue(value, this.translate.currentLang, '%value% (%lang%)'));
         break;
       case 'multiLangAll':
-        ObservableOf(MultiLangService.valueToString(value));
+        observable = ObservableOf(MultiLangService.valueToString(value));
         break;
       case 'boolean':
         if (value === true) {
@@ -43,7 +43,7 @@ export class DatatableUtil {
         observable = this.getPublications(value);
         break;
       case 'iucnStatus':
-        ObservableOf(value.status.replace('MX.iucn', '') + ' (' + value.year + ')');
+        observable = ObservableOf(value.status.replace('MX.iucn', '') + ' (' + value.year + ')');
         break;
       case 'user':
         observable = this.getUserName(value);
