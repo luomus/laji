@@ -1,16 +1,10 @@
 <ol class="breadcrumb">
   <li *ngFor="let taxon of parents$ | async"><span class="taxon-rank">{{taxon.taxonRank | label}}</span>
     <a [routerLink]="['/taxon/' + taxon.id] | localize">
-      <strong>
-        {{ taxon.vernacularName }}
-      </strong>
-      <span class="scientificName" [class.cursive]="taxon.cursiveName">({{taxon.scientificName}})</span>
+      <laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name>
     </a>
   </li>
   <li *ngIf="includeCurrent"><span class="taxon-rank">{{current.taxonRank | label}}</span>
-    <strong>
-      {{ current.vernacularName }}
-    </strong>
-    <span class="scientificName" [class.cursive]="current.cursiveName">({{current.scientificName}})</span>
+    <laji-taxon-name [taxon]="current" [addLink]="false"></laji-taxon-name>
   </li>
 </ol>
