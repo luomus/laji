@@ -459,6 +459,7 @@
           [(ngModel)]="searchQuery.recordBasis"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
+          [useFilter]="false"
           name="recordBasis"
           [mapToWarehouse]="true"
           [placeholder]="'MY.recordBasis' | label"
@@ -472,6 +473,7 @@
           [selected]="[searchQuery.nativeOccurrence]"
           (selectedChanged)="indirectQueryChange('nativeOccurrence', $event[0])"
           [multiple]="false"
+          [useFilter]="false"
           [title]="'observation.form.nativeOccurrence' | translate"
           [info]="'observation.info.nativeOccurrence' | translate"
           [options]="[
@@ -487,6 +489,7 @@
           [selected]="[searchQuery.breedingSite]"
           (selectedChanged)="indirectQueryChange('breedingSite', $event[0])"
           [multiple]="false"
+          [useFilter]="false"
           [title]="'observation.form.breedingSite' | translate"
           [info]="'observation.info.breedingSite' | translate"
           [options]="[

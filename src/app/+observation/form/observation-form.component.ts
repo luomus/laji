@@ -392,7 +392,7 @@ export class ObservationFormComponent implements OnInit {
           }
           return;
         }
-        const administrativeStatusId = [...query.administrativeStatusId];
+        const administrativeStatusId = [...query.administrativeStatusId || []];
         if (administrativeStatusId.indexOf(value) === -1) {
           administrativeStatusId.push(value);
         }
