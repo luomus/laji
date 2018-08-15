@@ -26,8 +26,8 @@ export class SpeciesBrowseObservationsComponent {
       finnish: query.onlyFinnish,
       invasive: query.invasiveSpeciesFilter,
       redListStatusId: query.redListStatusFilters,
-      typesOfOccurrenceFilters: query.typesOfOccurrenceFilters,
-      typesOfOccurrenceNotFilters: query.typesOfOccurrenceNotFilters
+      typeOfOccurrenceId: query.typesOfOccurrenceFilters,
+      typeOfOccurrenceIdNot: query.typesOfOccurrenceNotFilters
     };
 
     this.router.navigate(

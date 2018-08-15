@@ -33,8 +33,6 @@ export class SearchQuery implements SearchQueryInterface {
     'countryId',
     'finnishMunicipalityId',
     'biogeographicalProvinceId',
-    'typesOfOccurrenceFilters',
-    'typesOfOccurrenceNotFilters',
     'area',
     'time',
     'keyword',

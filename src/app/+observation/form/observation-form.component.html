@@ -695,7 +695,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <laji-metadata-select
-          [(ngModel)]="searchQuery.typesOfOccurrenceFilters"
+          [(ngModel)]="searchQuery.typeOfOccurrenceId"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
           [useFilter]="false"
@@ -708,7 +708,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <laji-metadata-select
-          [(ngModel)]="searchQuery.typesOfOccurrenceNotFilters"
+          [(ngModel)]="searchQuery.typeOfOccurrenceIdNot"
           (ngModelChange)="onQueryChange()"
           [multiple]="true"
           [useFilter]="false"
