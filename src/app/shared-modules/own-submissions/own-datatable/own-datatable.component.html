@@ -225,10 +225,10 @@
         <h4 class="modal-title" [innerHtml]="(onlyTemplates ? 'haseka.delete.template' : 'haseka.delete.description') | translate:{id: deleteRow?.id, name: deleteRow?.templateName}"></h4>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success pull-left" (click)="deleteModal.hide()">
+        <button type="button" class="btn btn-success pull-left" [disabled]="deleting" (click)="deleteModal.hide()">
           <span>{{"haseka.delete.cancel" | translate}}</span>
         </button>
-        <button type="button" class="btn btn-danger" (click)="deleteDocument()">
+        <button type="button" class="btn btn-danger" [disabled]="deleting" (click)="deleteDocument()">
           <span>{{"haseka.delete.ok" | translate}}</span>
         </button>
       </div>

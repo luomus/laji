@@ -50,6 +50,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   formsById = {};
   namedPlaceNames = {};
   deleteRow: any;
+  deleting = false;
 
   templateForm: TemplateForm = {
     name: '',
@@ -259,6 +260,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     const document: any = this.documents[row.index] || {};
     if (document.id && row.id === document.id) {
       this.deleteRow = row;
+      this.deleting = false;
       this.deleteModal.show();
     } else {
       this.translate.get('delete.noId')
@@ -270,6 +272,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     if (this.delete$) {
       return;
     }
+    this.deleting = true;
     this.delete$ = this.documentService.deleteDocument(this.deleteRow.id)
       .subscribe(
         () => {
