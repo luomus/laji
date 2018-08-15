@@ -16,8 +16,9 @@
   font-weight: normal;
 }
 .lj-item input {
-  margin-bottom: 0;
-  margin-left: -16px;
+  position: relative;
+  margin: 0 3px 0 -16px;
+  bottom: -2px;
 }
 .lj-item span {
 }

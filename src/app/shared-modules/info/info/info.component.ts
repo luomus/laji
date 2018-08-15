@@ -12,6 +12,7 @@ import { isPlatformBrowser } from '@angular/common';
 export class InfoComponent {
 
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' | 'auto' = 'left';
+  @Input() html: string;
   @ViewChild('modal') public modal: ModalDirective;
   @ViewChild('pop') public popover: PopoverDirective;
 
