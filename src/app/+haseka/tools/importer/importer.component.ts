@@ -470,6 +470,9 @@ export class ImporterComponent implements OnInit {
         this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true),
         field
       );
+      if (!this.importService.hasValue(value)) {
+        return;
+      }
       if (typeof value === 'object' && value[MappingService.mergeKey]) {
         result[col] = value[MappingService.mergeKey][Object.keys(value[MappingService.mergeKey])[0]];
       } else {

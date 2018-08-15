@@ -107,19 +107,19 @@
     </div>
 
     <div class="data-container" *ngIf="status !== 'validating'">
-    <laji-datatable
-        #dataTable
-        class="import-table"
-        [showRowAsLink]="false"
-        [showFooter]="false"
-        [virtualScrolling]="true"
-        [clientSideSorting]="false"
-        [height]="'50vh'"
-        [rows]='mappedData'
-        [count]="mappedData.length"
-        [page]="1"
-        [pageSize]="mappedData.length"
-        [columns]="dataColumns">
+      <laji-datatable
+          #dataTable
+          class="import-table"
+          [showRowAsLink]="false"
+          [showFooter]="false"
+          [virtualScrolling]="true"
+          [clientSideSorting]="false"
+          [height]="'50vh'"
+          [rows]='mappedData'
+          [count]="mappedData.length"
+          [page]="1"
+          [pageSize]="mappedData.length"
+          [columns]="dataColumns">
       </laji-datatable>
     </div>
   </ng-container>

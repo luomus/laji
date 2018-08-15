@@ -85,6 +85,14 @@ export class ImportService {
     return this.rowsToDocument(data, mapping, fields, spot, formID);
   }
 
+  hasValue(value): boolean {
+    if (Array.isArray(value)) {
+      value = value.filter(this.hasValue);
+      return value.filter(this.hasValue).length !== 0;
+    }
+    return value !== VALUE_IGNORE && value !== '' && value !== null;
+  }
+
   private resetPreviousValue(fields: {[key: string]: FormField}, level?: string) {
     Object.keys(fields).map(key => {
       if ((level && fields[key].parent === level) || !level) {
@@ -246,14 +254,6 @@ export class ImportService {
 
   private hasNewLevel(field, value, newLevels, parent): boolean {
     return field.previousValue !== null && field.previousValue !== value && newLevels.indexOf(parent) === -1;
-  }
-
-  private hasValue(value): boolean {
-    if (Array.isArray(value)) {
-      value = value.filter(this.hasValue);
-      return value.filter(this.hasValue).length !== 0;
-    }
-    return value !== VALUE_IGNORE && value !== '';
   }
 
   private valuesToDocument(values: {[key: string]: any}, document: any) {
