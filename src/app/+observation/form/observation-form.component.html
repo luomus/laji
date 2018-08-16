@@ -136,13 +136,14 @@
             [selected]="[searchQuery.qualityIssues]"
             (selectedChanged)="indirectQueryChange('qualityIssues', $event[0])"
             [multiple]="false"
+            [useFilter]="false"
             [title]="'observation.form.qualityIssues' | translate"
             [info]="'observation.info.qualityIssues' | translate"
             [options]="[
-            {id: 'BOTH', value: ('observation.form.qualityIssuesBOTH' | translate)},
-            {id: 'NO_ISSUES', value: ('observation.form.qualityIssuesNO_ISSUES' | translate)},
-            {id: 'ONLY_ISSUES', value: ('observation.form.qualityIssuesONLY_ISSUES' | translate)}
-          ]"
+              {id: 'BOTH', value: ('observation.form.qualityIssuesBOTH' | translate)},
+              {id: 'NO_ISSUES', value: ('observation.form.qualityIssuesNO_ISSUES' | translate)},
+              {id: 'ONLY_ISSUES', value: ('observation.form.qualityIssuesONLY_ISSUES' | translate)}
+            ]"
             [lang]="lang"></laji-select>
         </div>
       </div>
@@ -536,6 +537,7 @@
           [selected]="searchQuery.reliabilityOfCollection"
           (selectedChanged)="indirectQueryChange('reliabilityOfCollection', $event)"
           [multiple]="true"
+          [useFilter]="false"
           [title]="'observation.form.reliabilityOfCollection' | translate"
           [info]="'observation.info.reliabilityOfCollection' | translate"
           [options]="[
@@ -554,6 +556,7 @@
           [selected]="[searchQuery.annotated]"
           (selectedChanged)="indirectQueryChange('annotated', $event[0])"
           [multiple]="false"
+          [useFilter]="false"
           [title]="'observation.form.annotated' | translate"
           [options]="[
             {id: true, value: ('observation.form.annotatedTrue' | translate)},
@@ -568,6 +571,7 @@
           [selected]="[searchQuery.qualityIssues]"
           (selectedChanged)="indirectQueryChange('qualityIssues', $event[0])"
           [multiple]="false"
+          [useFilter]="false"
           [title]="'observation.form.qualityIssues' | translate"
           [info]="'observation.info.qualityIssues' | translate"
           [options]="[
