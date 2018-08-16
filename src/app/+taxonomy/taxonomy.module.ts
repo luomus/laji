@@ -17,7 +17,6 @@ import { TaxonInfoComponent } from './info-card/taxon-info/taxon-info.component'
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { DatatableModule } from '../shared-modules/datatable/datatable.module';
 import {BoldSequenceComponent} from './info-card/taxon-info/bold-sequence/bold-sequence.component';
-import {HttpClientModule} from '@angular/common/http';
 import { SpeciesFormComponent } from './taxon-browse/species-form/species-form.component';
 import { TaxonBrowseComponent } from './taxon-browse/taxon-browse.component';
 import { TypeaheadModule, ButtonsModule } from 'ngx-bootstrap';
@@ -42,8 +41,8 @@ import { DatatableUtil } from './taxon-browse/service/datatable-util.service';
 import { TaxonSelectComponent } from './taxon-browse/taxon-select/taxon-select.component';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, HttpClientModule,
-    TypeaheadModule, ButtonsModule, SearchFiltersModule, LajiSelectModule, JWBootstrapSwitchModule, ObservationResultModule,
+  imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
+    SearchFiltersModule, LajiSelectModule, JWBootstrapSwitchModule, ObservationResultModule,
     ObservationMapModule, NgxDatatableModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns, TaxonExportService, DatatableUtil],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
