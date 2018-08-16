@@ -1,22 +1,22 @@
 <div class="row s-elem-wrap">
   <div class="col-sm-3 s-wrap">
     <select class="form-control s-select" [(ngModel)]="startDay" (change)="onChange()">
-      <option *ngFor="let value of days" [value]="value">{{value}}</option>
+      <option *ngFor="let value of days" [value]="value">{{value || 'pp'}}</option>
     </select>
   </div>
   <div class="col-sm-3 s-wrap">
     <select class="form-control s-select" [(ngModel)]="startMonth" (change)="onChange()">
-      <option *ngFor="let value of months" [value]="value">{{value}}</option>
+      <option *ngFor="let value of months" [value]="value">{{value || 'kk'}}</option>
     </select>
   </div>
   <div class="col-sm-3 s-wrap s-end-start">
     <select class="form-control s-select" [(ngModel)]="endDay" (change)="onChange()">
-      <option *ngFor="let value of days" [value]="value">{{value}}</option>
+      <option *ngFor="let value of days" [value]="value">{{value || 'pp'}}</option>
     </select>
   </div>
   <div class="col-sm-3 s-wrap" style="padding-right: 0">
     <select class="form-control s-select" [(ngModel)]="endMonth" (change)="onChange()">
-      <option *ngFor="let value of months" [value]="value">{{value}}</option>
+      <option *ngFor="let value of months" [value]="value">{{value || 'kk'}}</option>
     </select>
   </div>
 </div>

@@ -362,7 +362,7 @@
   "observation.form.annotatedTrue": "Näytä havainnot joita on kommentoitu",
   "observation.form.annotatedFalse": "Näytä havainnot joita ei ole kommentoitu",
   "observation.info.system": "Rajaa havainnot yhteen tai useampaan tietolähteeseen (tietojärjestelmään)",
-  "observation.form.keywords": "Tunnisteet ja avainsanat",
+  "observation.form.keywords": "Avainsanat, projektinimet, lisätunnisteet",
   "observation.info.keyword": "Hae tietyssä havaintoerässä tai useissa havaintoerissä käytetyllä lisätunnisteella, mm. Vihkon avainsanalla tai Kotkan datasetin tunnisteella. Tämä rajaus löytää myös eräissä vanhoissa tietojärjestelmissä havainnoille/näytteille annetuilla vanhoilla tunnisteilla, diarionumeroilla yms. Jos haluat etsiä usealla lisätunnisteella, erottele ne pilkulla.",
   "observation.form.keyword": "Tunnisteet ja avainsanat",
   "observation.info.adminStatus": "Rajaa havainnot yhteen tai useampaan hallinnoliseen asemaan. Voit saada lisää tietoa täältä LINKKI.",
