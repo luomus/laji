@@ -24,10 +24,11 @@ export class SpeciesBrowseObservationsComponent {
       informalTaxonGroupId: query.informalGroupFilters ? [query.informalGroupFilters] : undefined,
       target: query.target ? [query.target] : undefined,
       finnish: query.onlyFinnish,
-      invasive: query.invasiveSpeciesFilter,
       redListStatusId: query.redListStatusFilters,
+      administrativeStatusId: query.adminStatusFilters,
       typeOfOccurrenceId: query.typesOfOccurrenceFilters,
-      typeOfOccurrenceIdNot: query.typesOfOccurrenceNotFilters
+      typeOfOccurrenceIdNot: query.typesOfOccurrenceNotFilters,
+      invasive: query.invasiveSpeciesFilter
     };
 
     this.router.navigate(
