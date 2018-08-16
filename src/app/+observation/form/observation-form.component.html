@@ -390,45 +390,6 @@
   </div>
   <div laji-panel [title]="'observation.form.unit' | translate" [autoToggle]="true">
     <div class="form-group">
-      <label class="col-lg-12">
-        {{'observation.form.count' | translate}}:<laji-info>
-        {{'observation.info.count' | translate}}
-      </laji-info>
-      </label>
-      <div class="col-lg-12">
-        <div class="row">
-          <div class="col-sm-6">
-            <input type="number" name="individualCountMin"
-                   class="form-control input-sm"
-                   placeholder="{{'observation.form.countMin' | translate}}"
-                   (ngModelChange)="onCountChange()"
-                   [(ngModel)]="searchQuery.individualCountMin">
-          </div>
-          <div class="col-sm-6">
-            <input type="number" name="individualCountMax"
-                   class="form-control input-sm"
-                   placeholder="{{'observation.form.countMax' | translate}}"
-                   (ngModelChange)="onCountChange()"
-                   [(ngModel)]="searchQuery.individualCountMax">
-          </div>
-        </div>
-        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-          <div class="col-sm-12">
-            <button type="button" class="btn btn-default btn-xs" (click)="zeroObservations()">
-              {{'observation.form.onlyZeroObservations' | translate}}
-            </button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <button type="button" class="btn btn-default btn-xs" (click)="zeroObservations(false)">
-              {{'observation.form.zeroObservations' | translate}}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
       <div class="col-lg-12">
         <laji-metadata-select
           [(ngModel)]="searchQuery.sex"
@@ -502,6 +463,45 @@
           [lang]="lang"></laji-select>
       </div>
     </div>
+    <div class="row-container">
+      <label class="col-lg-12">
+        {{'observation.form.count' | translate}}:<laji-info>
+        {{'observation.info.count' | translate}}
+      </laji-info>
+      </label>
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-sm-6">
+            <input type="number" name="individualCountMin"
+                   class="form-control input-sm"
+                   placeholder="{{'observation.form.countMin' | translate}}"
+                   (ngModelChange)="onCountChange()"
+                   [(ngModel)]="searchQuery.individualCountMin">
+          </div>
+          <div class="col-sm-6">
+            <input type="number" name="individualCountMax"
+                   class="form-control input-sm"
+                   placeholder="{{'observation.form.countMax' | translate}}"
+                   (ngModelChange)="onCountChange()"
+                   [(ngModel)]="searchQuery.individualCountMax">
+          </div>
+        </div>
+        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+          <div class="col-sm-12">
+            <button type="button" class="btn btn-default btn-xs" (click)="zeroObservations()">
+              {{'observation.form.onlyZeroObservations' | translate}}
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <button type="button" class="btn btn-default btn-xs" (click)="zeroObservations(false)">
+              {{'observation.form.zeroObservations' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div laji-panel [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true">
     <div class="form-group">
@@ -515,6 +515,7 @@
           name="taxonReliability"
           [mapToWarehouse]="true"
           [placeholder]="'reliability' | translate"
+          [skip]="['MAN.annotationClassAcknowledged']"
           [alt]="'MAN.annotationClassEnum'"
           [lang]="lang"></laji-metadata-select>
       </div>
