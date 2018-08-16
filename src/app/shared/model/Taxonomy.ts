@@ -204,7 +204,7 @@ export interface Taxonomy {
 
   descriptions?: any[];
 
-
+  additionalIds?: string[];
 }
 
 export interface LatestRedListStatusFinland {

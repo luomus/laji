@@ -2,7 +2,7 @@
   <tbody>
   <tr>
     <th>TaxonID-{{'taxonomy.taxonConcept.id' | translate}}</th>
-    <td>{{taxon['skosExactMatch']}}</td>
+    <td>{{taxonConceptId}}</td>
   </tr>
   <tr *ngFor="let match of matches; let i = index">
     <th *ngIf="i === 0" [attr.rowspan]="matches.length">{{'taxonomy.taxonConcept.otherLists' | translate}}</th>
