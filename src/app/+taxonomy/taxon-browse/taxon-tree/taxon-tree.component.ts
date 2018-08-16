@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
-import { TreeTableComponent } from './tree-table/tree-table.component'
+import { TreeTableComponent } from './tree-table/tree-table.component';
 import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/species-list-options-modal.component';
 import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
 import { Router } from '@angular/router';
@@ -18,26 +18,27 @@ import { TaxonExportService } from '../service/taxon-export.service';
   styleUrls: ['./taxon-tree.component.css']
 })
 export class TaxonTreeComponent implements OnInit, OnDestroy {
+  private static nodesCache: any[];
+
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() columnService: TaxonomyColumns;
 
-  public nodes = [];
+  public nodes: any[] = [];
   public columns: ObservationTableColumn[] = [];
   public getChildrenFunc = this.getChildren.bind(this);
   public getParentsFunc = this.getParents.bind(this);
   public skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
+  public hideLowerRanks = false;
 
   @ViewChild('treeTable') private tree: TreeTableComponent;
   @ViewChild('settingsModal') settingsModal: SpeciesListOptionsModalComponent;
   @ViewChild('speciesDownload') speciesDownload: SpeciesDownloadComponent;
 
   public taxonSelectFilters: {onlyFinnish: boolean};
-
-  public hideLowerRanks = false;
-
   public downloadLoading = false;
 
   private subQueryUpdate: Subscription;
+  private lastQuery: string;
 
   constructor(
     private taxonService: TaxonomyApi,
@@ -53,21 +54,42 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
         this.taxonSelectFilters = {onlyFinnish: this.searchQuery.query.onlyFinnish};
-        this.nodes = [{...this.nodes[0], children: undefined}];
+        this.getRoot();
       }
     );
   }
 
   onSettingsLoaded() {
-    this.getRoot();
+    this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
+
+    if (TaxonTreeComponent.nodesCache) {
+      this.nodes = TaxonTreeComponent.nodesCache;
+    } else {
+      this.getRoot();
+    }
   }
 
   ngOnDestroy() {
+    TaxonTreeComponent.nodesCache = this.tree.getVisibleNodes();
     this.subQueryUpdate.unsubscribe();
   }
 
   getRoot(): Subscription {
-    return this.taxonService
+    const cacheKey = JSON.stringify({
+      query: this.searchQuery.query,
+      treeOptions: this.searchQuery.treeOptions
+    });
+    if (this.lastQuery === cacheKey) {
+      return;
+    }
+    this.lastQuery = cacheKey;
+
+    if (this.nodes && this.nodes.length > 0) {
+      this.nodes = [{...this.nodes[0], children: undefined}];
+      return;
+    }
+
+    this.taxonService
       .taxonomyFindBySubject('MX.37600', 'multi', {
         selectedFields: this.getSelectedFields(),
         onlyFinnish: this.searchQuery.query.onlyFinnish
@@ -76,7 +98,6 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
         map(data => [data]),
         tap((data) => {
           this.nodes = data;
-          this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
         })
       )
       .subscribe(() => {
@@ -105,6 +126,7 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
   }
 
   onCloseSettingsModal() {
+    this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
     this.getRoot();
   }
 

@@ -39,6 +39,7 @@ import { TaxonomyColumns } from './taxon-browse/service/taxonomy-columns';
 import { TaxonExportService } from './taxon-browse/service/taxon-export.service';
 import { DatatableUtil } from './taxon-browse/service/datatable-util.service';
 import { TaxonSelectComponent } from './taxon-browse/taxon-select/taxon-select.component';
+import { ExpandableDatatableComponent } from './taxon-browse/taxon-tree/tree-table/expandable-datatable/expandable-datatable.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
@@ -50,8 +51,7 @@ import { TaxonSelectComponent } from './taxon-browse/taxon-select/taxon-select.c
     ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent,
     InformalGroupRedirectComponent, SpeciesDownloadComponent, SpeciesBrowseObservationsComponent,
     InformalGroupSelectComponent, SpeciesImagesComponent, TaxonConceptInfoComponent, TreeTableComponent,
-    SpeciesListOptionsModalComponent,
-    TaxonSelectComponent
+    SpeciesListOptionsModalComponent, TaxonSelectComponent, ExpandableDatatableComponent
   ],
 })
 export class TaxonomyModule {

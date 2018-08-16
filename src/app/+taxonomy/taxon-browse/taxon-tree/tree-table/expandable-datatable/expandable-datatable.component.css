@@ -1,0 +1,33 @@
+.inline {
+  display: inline !important;
+}
+:host >>> .inline span {
+  display: inline !important;
+}
+
+.tree-side-line {
+  content: "";
+  position: absolute;
+  border-bottom: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+  width: 5px !important;
+  height: 30px;
+  top: -12px;
+}
+.tree-side-line.first-child {
+  height: 20px;
+  top: -2px;
+}
+
+:host >>> .ngx-datatable .datatable-header .datatable-row-left .datatable-header-cell {
+  border-right: none;
+}
+:host >>> .ngx-datatable.material.striped .datatable-body .datatable-row-odd:not(:hover):not(:focus) .datatable-row-left {
+  background-color: #f9f9f9;
+}
+:host >>> .ngx-datatable.material .datatable-body .datatable-body-row.active,
+:host >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-left,
+:host >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-center,
+:host >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-right {
+  background-color: #ddd !important;
+}
