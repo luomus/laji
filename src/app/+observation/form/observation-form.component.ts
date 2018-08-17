@@ -308,6 +308,12 @@ export class ObservationFormComponent implements OnInit {
     this.updateVisibleSections();
   }
 
+  updateTypeOfOccurrence(event) {
+    this.searchQuery.typeOfOccurrenceId = event.true;
+    this.searchQuery.typeOfOccurrenceIdNot = event.false;
+    this.onQueryChange();
+  }
+
   private updateVisibleSections() {
     Object.keys(this.advancedSections).forEach(section => {
       let visible = false;

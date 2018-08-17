@@ -1,0 +1,12 @@
+<div class="lj-select" [ngClass]="{'lj-close': open, 'lj-open': !open}">
+  <strong *ngIf="title !== undefined && title !== ''" class="lj-title link" (click)="open = !open">{{title}}</strong>
+  <div [hidden]="!open">
+    <laji-switch-row
+      *ngFor="let option of options$ | async"
+      [option]="option"
+      [falseValue]="falseValue"
+      [trueValue]="trueValue"
+      (update)="changeValue($event)"
+    ></laji-switch-row>
+  </div>
+</div>

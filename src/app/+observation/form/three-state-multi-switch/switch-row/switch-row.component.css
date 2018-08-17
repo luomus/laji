@@ -1,0 +1,20 @@
+.lj-item {
+  display: block;
+  padding-left: 15px;
+  font-size: 0.90em;
+  margin-bottom: 0;
+  font-weight: normal;
+}
+
+::ng-deep .lj-item input {
+  position: relative;
+  margin: 0 3px 0 -16px;
+  bottom: -2px;
+}
+
+@media only screen and (max-width : 767px) {
+  .lj-item {
+    font-size: 1em;
+    min-height: 32px;
+  }
+}

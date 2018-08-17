@@ -764,15 +764,14 @@
     <div class="form-group">
       <div class="col-sm-12">
         <p>Rajaa havaintojan lajin aseman perusteella.</p>
-        <laji-metadata-select
-          [(ngModel)]="searchQuery.typeOfOccurrenceId"
-          (ngModelChange)="onQueryChange()"
-          [multiple]="true"
-          [useFilter]="false"
-          name="typeOfOccurrence"
-          [placeholder]="'observation.form.typeOfOccurrenceId' | translate"
+        <laji-three-state-multi-switch
+          [title]="'observation.form.typeOfOccurrenceId' | translate"
+          [lang]="lang"
+          [trueValue]="searchQuery.typeOfOccurrenceId"
+          [falseValue]="searchQuery.typeOfOccurrenceIdNot"
           [alt]="'MX.typeOfOccurrenceEnum'"
-          [lang]="lang"></laji-metadata-select>
+          (update)="updateTypeOfOccurrence($event)"
+        ></laji-three-state-multi-switch>
       </div>
     </div>
     <div class="form-group">

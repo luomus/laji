@@ -152,7 +152,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
       return;
     }
     this.decorator.lang = this.translate.currentLang;
-    // First change is triggered by tile layer change event from the laji-map
+    // First update is triggered by tile layer update event from the laji-map
     if (changes['query'] && !changes['query'].firstChange) {
       this.updateMapData();
     }

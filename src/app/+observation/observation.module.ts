@@ -27,6 +27,9 @@ import { SeasonComponent } from './form/season/season.component';
 import { ResetComponent } from './reset/reset.component';
 import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { ThreeStateSwitchComponent } from './form/three-state-switch/three-state-switch.component';
+import { ThreeStateMultiSwitchComponent } from './form/three-state-multi-switch/three-state-multi-switch.component';
+import { SwitchRowComponent } from './form/three-state-multi-switch/switch-row/switch-row.component';
+import { IndeterminateCheckboxComponent } from './form/three-state-multi-switch/switch-row/indeterminate-checkbox/indeterminate-checkbox.component';
 
 @NgModule({
   imports: [
@@ -53,7 +56,10 @@ import { ThreeStateSwitchComponent } from './form/three-state-switch/three-state
     PillListComponent,
     ObservationFormComponent,
     SeasonComponent,
-    ThreeStateSwitchComponent
+    ThreeStateSwitchComponent,
+    ThreeStateMultiSwitchComponent,
+    SwitchRowComponent,
+    IndeterminateCheckboxComponent
   ]
 })
 export class ObservationModule {
