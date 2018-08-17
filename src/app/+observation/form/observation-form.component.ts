@@ -6,6 +6,7 @@ import { Observable, of as ObservableOf } from 'rxjs';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { UserService } from '../../shared/service/user.service';
 import { Util } from '../../shared/service/util.service';
+import { LocalStorage } from 'ngx-webstorage';
 import * as moment from 'moment';
 
 @Component({
@@ -22,14 +23,14 @@ export class ObservationFormComponent implements OnInit {
   @Output() queryUpdate = new EventEmitter<WarehouseQueryInterface>();
   @Output() mapDraw = new EventEmitter<string>();
 
+  @LocalStorage('observationAdvancedMode', false) advancedMode;
+
   formQuery: ObservationFormQuery;
   emptyFormQuery: ObservationFormQuery = {
     taxon: '',
     timeStart: '',
     timeEnd: '',
     informalTaxonGroupId: '',
-    isNotFinnish: undefined,
-    isNotInvasive: undefined,
     hasNotMedia: undefined,
     includeOnlyValid: undefined,
     euInvasiveSpeciesList: undefined,
@@ -55,6 +56,20 @@ export class ObservationFormComponent implements OnInit {
   typeaheadLoading = false;
   autocompleteLimit = 10;
   logCoordinateAccuracyMax = 4;
+
+  visible: {[key: string]: boolean} = {};
+
+  advancedSections = {
+    taxon: ['exactTarget', 'originalExactTarget', 'originalTarget'],
+    coordinate: ['coordinates' , 'coordinateAccuracyMax'],
+    individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
+    dataset: ['collectionId', 'reliabilityOfCollection', 'sourceId'],
+    collection: ['collectionId', 'typeSpecimen'],
+    keywords: ['documentId', 'keyword'],
+    image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia'],
+    secure: ['secureLevel', 'secured'],
+    identify: ['unidentified'],
+  };
 
   constructor(
     private lajiApi: LajiApiService,
@@ -93,18 +108,15 @@ export class ObservationFormComponent implements OnInit {
     return this._searchQuery;
   }
 
-  getTaxa(token: string, onlyFirstMatch = false): Observable<any> {
+  getTaxa(token: string): Observable<any> {
     return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
-      limit: onlyFirstMatch ? '1' : '' + this.autocompleteLimit,
+      limit: '' + this.autocompleteLimit,
       includePayload: true,
       lang: this.lang,
       informalTaxonGroup: this.formQuery.informalTaxonGroupId
     } as LajiApi.Query.AutocompleteQuery)
       .map(data => {
-        if (onlyFirstMatch) {
-          return data[0] || {};
-        }
         return data.map(item => {
           let groups = '';
           if (item.payload && item.payload.informalTaxonGroups) {
@@ -293,6 +305,21 @@ export class ObservationFormComponent implements OnInit {
 
   onQueryChange() {
     this.queryUpdate.emit(this.searchQuery);
+    this.updateVisibleSections();
+  }
+
+  private updateVisibleSections() {
+    Object.keys(this.advancedSections).forEach(section => {
+      let visible = false;
+      for (let i = 0; i < this.advancedSections[section].length; i++) {
+        const value = this.searchQuery[this.advancedSections[section][i]];
+        if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
+          visible = true;
+          break;
+        }
+      }
+      this.visible[section] = visible;
+    });
   }
 
   private getTaxonTarget() {
@@ -325,8 +352,6 @@ export class ObservationFormComponent implements OnInit {
       timeEnd: this.getValidDate(time[1]),
       informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
         query.informalTaxonGroupId[0] : '',
-      isNotFinnish: query.finnish === false ? true : undefined,
-      isNotInvasive: query.invasive === false ? true : undefined,
       includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
       hasNotMedia: query.hasMedia === false ? true : undefined,
       nationallySignificantInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.nationallySignificantInvasiveSpecies'),
@@ -365,8 +390,6 @@ export class ObservationFormComponent implements OnInit {
 
     query.time = time.length > 0 ? [time] : undefined;
     query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? [formQuery.informalTaxonGroupId] : undefined;
-    query.invasive = formQuery.isNotInvasive ? false : query.invasive;
-    query.finnish = formQuery.isNotFinnish ? false : query.finnish;
     query.hasMedia = formQuery.hasNotMedia ? false : query.hasUnitMedia;
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
     if (formQuery.allInvasiveSpecies) {

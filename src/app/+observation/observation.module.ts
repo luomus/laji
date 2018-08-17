@@ -25,6 +25,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ObservationFormComponent } from './form/observation-form.component';
 import { SeasonComponent } from './form/season/season.component';
 import { ResetComponent } from './reset/reset.component';
+import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+import { ThreeStateSwitchComponent } from './form/three-state-switch/three-state-switch.component';
 
 @NgModule({
   imports: [
@@ -39,7 +41,8 @@ import { ResetComponent } from './reset/reset.component';
     LajiSelectModule,
     ObservationMapModule,
     InfoModule,
-    NgxChartsModule
+    NgxChartsModule,
+    JWBootstrapSwitchModule
   ],
   declarations: [ObservationComponent, ObservationChartComponent,
     ObservationViewComponent,
@@ -49,7 +52,8 @@ import { ResetComponent } from './reset/reset.component';
     PieChartComponent, ObservationDownloadComponent, MainResultComponent, ObservationFiltersComponent,
     PillListComponent,
     ObservationFormComponent,
-    SeasonComponent
+    SeasonComponent,
+    ThreeStateSwitchComponent
   ]
 })
 export class ObservationModule {
