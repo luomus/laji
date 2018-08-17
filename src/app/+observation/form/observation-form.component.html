@@ -141,7 +141,7 @@
           </laji-info>
         </div>
       </div>
-      <div class="row">
+      <div class="row" *ngIf="formQuery.asEditor || formQuery.asObserver || searchQuery.qualityIssues">
         <div class="col-sm-12">
           <laji-select
             [selected]="[searchQuery.qualityIssues]"
