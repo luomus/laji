@@ -179,7 +179,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
     this.cd.markForCheck();
   }
 
-  public refreshValue(value: any): void {
+  refreshValue(value: any): void {
     if (value.id) {
       this.value = value.id;
     } else if (typeof value === 'string') {
