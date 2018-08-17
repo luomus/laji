@@ -1,5 +1,4 @@
 export interface ObservationFormQuery {
-  coordinateIntersection: boolean;
   taxon: string;
   taxonIncludeLower: boolean;
   taxonUseAnnotated: boolean;

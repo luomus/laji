@@ -41,7 +41,6 @@ export class ObservationFormComponent implements OnInit {
     onlyFromCollectionSystems: undefined,
     asEditor: false,
     asObserver: false,
-    coordinateIntersection: undefined,
     taxonUseAnnotated: true,
     taxonIncludeLower: true
   };
@@ -84,6 +83,9 @@ export class ObservationFormComponent implements OnInit {
 
   @Input() set searchQuery(query: WarehouseQueryInterface) {
     this._searchQuery = query;
+    if (typeof this._searchQuery._coordinatesIntersection === 'undefined') {
+      this._searchQuery._coordinatesIntersection = 100;
+    }
     this.formQuery = this.searchQueryToFormQuery(query);
   }
 
@@ -336,7 +338,6 @@ export class ObservationFormComponent implements OnInit {
       onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3']) && query.sourceId.length === 2,
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
       asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
-      coordinateIntersection: query._coordinatesIntersection !== ':0',
       taxonIncludeLower: undefined,
       taxonUseAnnotated: undefined
     };
@@ -368,7 +369,6 @@ export class ObservationFormComponent implements OnInit {
     query.finnish = formQuery.isNotFinnish ? false : query.finnish;
     query.hasMedia = formQuery.hasNotMedia ? false : query.hasUnitMedia;
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
-    query._coordinatesIntersection = formQuery.coordinateIntersection ? ':1' : ':0';
     if (formQuery.allInvasiveSpecies) {
       query.administrativeStatusId = this.invasiveStatuses.map(val => 'MX.' + val);
     }

@@ -153,11 +153,12 @@ export class SearchQuery implements SearchQueryInterface {
     if (this.query.coordinates) {
       this.query.coordinates = this.query.coordinates.map(coordinate => {
         const parts = coordinate.split(':');
-        const last = parts[parts.length - 1];
-        if (last === '0' || last === '1') {
-          this.query._coordinatesIntersection = ':' + parts.pop();
+        const last = parseFloat(parts[parts.length - 1]);
+        if (!isNaN(last)) {
+          parts.pop();
+          this.query._coordinatesIntersection = Math.floor(last * 100);
         } else {
-          this.query._coordinatesIntersection = ':1';
+          this.query._coordinatesIntersection = 100;
         }
         return parts.join(':');
       });
@@ -229,8 +230,8 @@ export class SearchQuery implements SearchQueryInterface {
       }
     }
 
-    if (result.coordinates) {
-      result.coordinates += this.query._coordinatesIntersection;
+    if (result.coordinates && typeof this.query._coordinatesIntersection !== 'undefined') {
+      result.coordinates += ':' + this.query._coordinatesIntersection / 100;
     }
 
     if (result['target'] && Array.isArray(result['target'])) {
