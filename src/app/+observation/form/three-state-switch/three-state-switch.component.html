@@ -1,0 +1,9 @@
+<bSwitch
+  [switch-off-text]="offText"
+  [switch-on-text]="onText"
+  [switch-on-color]="onColor"
+  [switch-size]="size"
+  [(ngModel)]="_switchState"
+  [switch-base-class]="'bootstrap-switch'"
+  (onChangeState)="switch($event)">
+</bSwitch>
