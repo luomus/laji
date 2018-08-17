@@ -14,6 +14,9 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-body">
+        <button class="close pull-right" type="button" (click)="modal.hide()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
         <ng-container *ngTemplateOutlet="content"></ng-container>
       </div>
     </div>

@@ -24,7 +24,7 @@
     <div class="modal-content">
       <div class="modal-body" *ngIf="documentModalVisible">
         <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
-          <span aria-hidden="true">&times;</span>
+          <i class="glyphicon glyphicon-remove"></i>
         </button>
         <laji-document [uri]="shownDocument" [own]="true"></laji-document>
       </div>
