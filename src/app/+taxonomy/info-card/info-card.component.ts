@@ -26,6 +26,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   public taxon: Taxonomy;
   public taxonDescription: Array<TaxonomyDescription>;
   public taxonImages: Array<TaxonomyImage>;
+  public taxonConceptId: string;
   public activePanel = 0;
   public activeImage = 1;
   public activeImageTab: string;
@@ -127,8 +128,6 @@ export class InfoCardComponent implements OnInit, OnDestroy {
       tap(data => {
         this.loading = false;
         this.taxon = data.taxon;
-        // this.taxon['skosExactMatch'] = '2627C0';
-        // this.taxon['skosExactMatch'] = 'B2B21A';
         this.taxonDescription = data.descriptions;
         this.hasDescription = data.descriptions.length > 0;
         this.hasTaxonImages = data.media.length > 0;
@@ -138,6 +137,12 @@ export class InfoCardComponent implements OnInit, OnDestroy {
         this.taxonDescription.map((description, idx) => {
           if (description.id === this.context) {
             this.activeDescription = idx;
+          }
+        });
+        (this.taxon.additionalIds || []).map(id => {
+          const parts = id.split(':');
+          if (parts[0] === 'taxonid') {
+            this.taxonConceptId = parts[1];
           }
         });
         this.setTitle();

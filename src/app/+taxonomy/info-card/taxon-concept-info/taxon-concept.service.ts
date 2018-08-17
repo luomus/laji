@@ -89,7 +89,7 @@ export class TaxonConceptService {
 
   private makeRdfRequest(path: string): Observable<any> {
     return this.http.get(path, {
-      headers: new HttpHeaders({'Accept': 'application/rdf+xml'}),
+      headers: new HttpHeaders({'Accept': 'application/skos+rdf+xml'}),
       responseType: 'text',
       params: {format: 'skos'}
     })

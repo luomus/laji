@@ -1,7 +1,6 @@
-import { Component, Input, OnInit, OnChanges, ChangeDetectorRef, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { TaxonConceptService } from './taxon-concept.service';
 import { TaxonMatch } from './taxon-match.model';
-import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -10,9 +9,10 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./taxon-concept-info.component.css'],
   providers: [TaxonConceptService]
 })
-export class TaxonConceptInfoComponent implements OnInit, OnChanges {
+export class TaxonConceptInfoComponent implements OnChanges {
+  @Input() taxonId: string;
+  @Input() taxonConceptId: string;
 
-  @Input() taxon: Taxonomy;
   matches: TaxonMatch[];
 
   private subs: Subscription[] = [];
@@ -22,14 +22,8 @@ export class TaxonConceptInfoComponent implements OnInit, OnChanges {
     private cd: ChangeDetectorRef
   ) { }
 
-  ngOnInit() {
+  ngOnChanges() {
     this.fetchList();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['taxon'] && !changes['taxon'].firstChange) {
-      this.fetchList();
-    }
   }
 
   fetchList() {
@@ -41,7 +35,7 @@ export class TaxonConceptInfoComponent implements OnInit, OnChanges {
     this.matches = [];
     this.subs = [];
 
-    this.subs.push(this.taxonConceptService.getMatches(this.taxon.id, this.taxon['skosExactMatch']).subscribe(matches => {
+    this.subs.push(this.taxonConceptService.getMatches(this.taxonId, this.taxonConceptId).subscribe(matches => {
       if (matches.length === 0) {
         this.cd.markForCheck();
       }
