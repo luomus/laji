@@ -1,19 +1,20 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { TeamMemberService } from '../team-member.service';
 
 @Component({
-  selector: 'laji-pill-list',
-  templateUrl: './pill-list.component.html',
-  styleUrls: ['./pill-list.component.css'],
+  selector: 'laji-member-id-pill-list',
+  templateUrl: './member-id-pill-list.component.html',
+  styleUrls: ['./member-id-pill-list.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: true
 })
-export class PillListComponent implements OnInit {
+export class MemberIdPillListComponent implements OnInit {
 
   @Output() updateList = new EventEmitter();
 
   _list;
 
-  constructor() { }
+  constructor(private teamMemberService: TeamMemberService) { }
 
   ngOnInit() {
   }
@@ -30,6 +31,10 @@ export class PillListComponent implements OnInit {
 
   remove(item) {
     this.updateList.emit(this._list.filter(value => value !== item))
+  }
+
+  getName(id) {
+    return this.teamMemberService.getName(id);
   }
 
 }

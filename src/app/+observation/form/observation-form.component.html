@@ -433,12 +433,11 @@
       </laji-info>
       </label>
       <div class="col-lg-12">
-        <input
-          class="form-control input-sm"
-          type="text"
-          name="documentId"
-          (ngModelChange)="onQueryChange()"
-          [(ngModel)]="searchQuery.teamMember">
+        <laji-team
+          [(memberIds)]="searchQuery.teamMemberId"
+          [(members)]="searchQuery.teamMember"
+          (update)="onQueryChange()"
+        ></laji-team>
       </div>
     </div>
   </div>

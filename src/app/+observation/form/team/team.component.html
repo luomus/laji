@@ -1,0 +1,32 @@
+<input
+  [ngClass]="{loading: typeaheadLoading}"
+  type="text"
+  class="form-control input-sm"
+  name="target"
+  [(ngModel)]="value"
+  [typeahead]="dataSource"
+  [typeaheadOptionsLimit]="30"
+  [typeaheadWaitMs]="200"
+  [typeaheadMinLength]="3"
+  [typeaheadFocusFirst]="false"
+  [typeaheadOptionField]="'id'"
+  [typeaheadItemTemplate]="taxonItem"
+  (typeaheadLoading)="changeTypeaheadLoading($event)"
+  (typeaheadOnSelect)="onMemberSelect($event)"
+  (keyup)="onMemberSelect($event)"
+  autocomplete="off"
+  autocorrect="off"
+>
+<ng-template #taxonItem let-model="item">
+  <h5 class="autosuggest-value">
+    {{model.name}}
+  </h5>
+</ng-template>
+<laji-pill-list
+  [list]="_members || []"
+  (updateList)="updateMembers('_members', $event)"
+></laji-pill-list>
+<laji-member-id-pill-list
+  [list]="_memberIds || []"
+  (updateList)="updateMembers('_memberIds', $event)"
+></laji-member-id-pill-list>
