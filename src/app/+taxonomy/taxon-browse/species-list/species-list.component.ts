@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, ChangeDetectorRef, Input, ViewChild, SimpleChanges } from '@angular/core';
 import { Subscription ,  Observable, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
@@ -14,6 +14,7 @@ import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/
 import { TaxonomyColumns } from '../service/taxonomy-columns';
 import { TaxonExportService } from '../service/taxon-export.service';
 import { DatatableUtil } from '../service/datatable-util.service';
+import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
 import { Util } from '../../../shared/service/util.service';
 
 @Component({
@@ -21,11 +22,14 @@ import { Util } from '../../../shared/service/util.service';
   templateUrl: './species-list.component.html',
   styleUrls: ['./species-list.component.css']
 })
-export class SpeciesListComponent implements OnInit, OnDestroy {
+export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('speciesDownload') speciesDownload: SpeciesDownloadComponent;
   @ViewChild('settingsModal') settingsModal: SpeciesListOptionsModalComponent;
+  @ViewChild('dataTable') public datatable: DatatableComponent;
+
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() columnService: TaxonomyColumns;
+  @Input() visible: boolean;
 
   loading = false;
   downloadLoading = false;
@@ -68,6 +72,12 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
         this.refreshSpeciesList();
       }
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.visible && this.visible) {
+      this.datatable.refreshTable();
+    }
   }
 
   ngOnDestroy() {

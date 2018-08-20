@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./taxon-select.component.css']
 })
 export class TaxonSelectComponent {
-  @Input() openTaxon: string;
+  @Input() taxonId: string;
   @Input() searchParams = {};
   @Output() onSelect = new EventEmitter<string>();
 
@@ -28,7 +28,7 @@ export class TaxonSelectComponent {
     private translate: TranslateService
   ) {
     this.dataSource = Observable.create((observer: any) => {
-      observer.next(this.openTaxon);
+      observer.next(this.taxonId);
     })
       .pipe(
         distinctUntilChanged(),
@@ -36,11 +36,11 @@ export class TaxonSelectComponent {
         switchMap((data: any[]) => {
           this.typeaheadMatch = undefined;
 
-          if (this.openTaxon) {
-            const searchTerm = this.openTaxon.toLowerCase();
+          if (this.taxonId) {
+            const searchTerm = this.taxonId.toLowerCase();
             if (data.length > 0 && (data[0].value.toLowerCase() === searchTerm || data[0].key.toLowerCase() === searchTerm)) {
-              this.typeaheadMatch = {id: data[0].key, match: this.openTaxon};
-              if (this.enteredValue === this.openTaxon) {
+              this.typeaheadMatch = {id: data[0].key, match: this.taxonId};
+              if (this.enteredValue === this.taxonId) {
                 this.selectValue(this.typeaheadMatch.id, true);
                 return ObservableOf([]);
               }
@@ -62,13 +62,13 @@ export class TaxonSelectComponent {
     if (event.item && event.item.key) {
       this.typeaheadMatch = {id: event.item.key, match: event.item.value};
       this.selectValue(event.item.key, true);
-    } else if (this.openTaxon === '') {
+    } else if (this.taxonId === '') {
       this.selectValue(undefined, false);
     } else if (event.key === 'Enter') {
-      if (this.typeaheadMatch && this.typeaheadMatch.match === this.openTaxon) {
+      if (this.typeaheadMatch && this.typeaheadMatch.match === this.taxonId) {
         this.selectValue(this.typeaheadMatch.id, true);
       } else {
-        this.enteredValue = this.openTaxon;
+        this.enteredValue = this.taxonId;
       }
     }
   }

@@ -2,20 +2,20 @@
                      [showFilter]="showFilter"
                      (onShowFilterChange)="showFilterChange($event)">
   <div class="taxon-panel">
-    <div class="form-group" *ngIf="searchQuery.skippedQueryParams.indexOf('target') === -1">
+    <div class="form-group" [hidden]="searchQuery.skippedQueryParams.indexOf('target') > -1">
       <label class="col-sm-12">
         {{'species.form.specimen' | translate}}:
       </label>
       <div class="col-sm-12">
         <laji-taxon-select
           (onSelect)="onTaxonSelect($event)"
-          [openTaxon]="formQuery.taxon"
+          [taxonId]="formQuery.taxon"
           [searchParams]="taxonSelectFilters">
         </laji-taxon-select>
       </div>
     </div>
 
-    <div class="form-group" *ngIf="searchQuery.skippedQueryParams.indexOf('onlyFinnish') === -1">
+    <div class="form-group" [hidden]="searchQuery.skippedQueryParams.indexOf('onlyFinnish') > -1">
       <div class="col-sm-12">
         <bSwitch
           name="onlyFinnish"
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="form-group" *ngIf="searchQuery.skippedQueryParams.indexOf('redListStatusFilters') === -1">
+    <div class="form-group" [hidden]="searchQuery.skippedQueryParams.indexOf('redListStatusFilters') > -1">
       <div class="col-sm-12">
         <laji-metadata-select
           [(ngModel)]="searchQuery.query.redListStatusFilters"
@@ -44,7 +44,7 @@
       </div>
     </div>
 
-    <div class="form-group" *ngIf="searchQuery.skippedQueryParams.indexOf('adminStatusFilters') === -1">
+    <div class="form-group" [hidden]="searchQuery.skippedQueryParams.indexOf('adminStatusFilters') > -1">
       <div class="col-sm-12">
         <laji-metadata-select
           [(ngModel)]="searchQuery.query.adminStatusFilters"
@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    <div class="form-group" *ngIf="searchQuery.skippedQueryParams.indexOf('typesOfOccurrenceFilters') === -1">
+    <div class="form-group" [hidden]="searchQuery.skippedQueryParams.indexOf('typesOfOccurrenceFilters') > -1">
       <div class="col-sm-12">
         <laji-metadata-select
           [(ngModel)]="searchQuery.query.typesOfOccurrenceFilters"
@@ -71,7 +71,7 @@
       </div>
     </div>
 
-    <div class="form-group" *ngIf="searchQuery.skippedQueryParams.indexOf('typesOfOccurrenceNotFilters') === -1">
+    <div class="form-group" [hidden]="searchQuery.skippedQueryParams.indexOf('typesOfOccurrenceNotFilters') > -1">
       <div class="col-sm-12">
         <laji-metadata-select
           [(ngModel)]="searchQuery.query.typesOfOccurrenceNotFilters"
@@ -85,7 +85,7 @@
       </div>
     </div>
 
-    <div class="form-group" *ngIf="searchQuery.skippedQueryParams.indexOf('invasiveSpeciesFilter') === -1">
+    <div class="form-group" [hidden]="searchQuery.skippedQueryParams.indexOf('invasiveSpeciesFilter') > -1">
       <div class="col-sm-12">
         <laji-select [options]="[
                         {id: 'onlyInvasive', value: 'observation.form.invasive' | translate},

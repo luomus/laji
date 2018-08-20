@@ -22,7 +22,7 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
     page: number
   };
   public treeOptions: {
-    selected: string[];
+    selected: string[]
   };
 
   constructor(

@@ -7,6 +7,7 @@ import { TaxonomySearchQuery } from './service/taxonomy-search-query';
 import { TaxonomyColumns } from './service/taxonomy-columns';
 import { FooterService } from '../../shared/service/footer.service';
 import { isPlatformBrowser } from '@angular/common';
+import { TaxonTreeComponent } from './taxon-tree/taxon-tree.component';
 
 @Component({
   selector: 'laji-taxon-browse',
@@ -16,7 +17,8 @@ import { isPlatformBrowser } from '@angular/common';
 export class TaxonBrowseComponent implements OnInit, OnDestroy {
   @ViewChild('header') headerRef: ElementRef;
 
-  public type: string;
+  public active: string;
+  public activated = {};
 
   public stickyFilter = false;
   public showFilter = true;
@@ -41,8 +43,8 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
       map(data => data['tab']),
       withLatestFrom(this.route.queryParams)
     )
-      .subscribe(([type, params]) => {
-        if (type === 'tree') {
+      .subscribe(([tab, params]) => {
+        if (tab === 'tree') {
           this.searchQuery.skippedQueryParams = [
             'informalGroupFilters',
             'target',
@@ -58,11 +60,13 @@ export class TaxonBrowseComponent implements OnInit, OnDestroy {
 
         if (params['reset']) {
           this.searchQuery.empty();
+          TaxonTreeComponent.emptyCache();
         }
         this.searchQuery.setQueryFromParams(params);
         this.searchQuery.queryUpdate();
 
-        this.type = type;
+        this.active = tab;
+        this.activated[tab] = true;
         this.cd.markForCheck();
       });
 
