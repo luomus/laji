@@ -22,9 +22,9 @@ export class IndeterminateCheckboxComponent {
     if (value === true) {
       this.checkbox.nativeElement.checked = true;
     } else if (value === false) {
-      this.checkbox.nativeElement.checked = false;
-    } else {
       this.checkbox.nativeElement.indeterminate = true;
+    } else {
+      this.checkbox.nativeElement.checked = false;
     }
   }
 
