@@ -22,7 +22,7 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
   private static cache: {
     nodes: TreeNode[],
     activeId: string,
-    hideLowerRanks: boolean
+    showMainLevels: boolean
   };
 
   @Input() searchQuery: TaxonomySearchQuery;
@@ -35,7 +35,7 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
   public getParentsFunc = this.getParents.bind(this);
   public skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
 
-  public hideLowerRanks = false;
+  public showMainLevels = false;
   public taxon: string;
   public activeId: string;
 
@@ -79,7 +79,7 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
       this.nodes = TaxonTreeComponent.cache.nodes;
       this.activeId = TaxonTreeComponent.cache.activeId;
       this.taxon = this.activeId;
-      this.hideLowerRanks = TaxonTreeComponent.cache.hideLowerRanks;
+      this.showMainLevels = TaxonTreeComponent.cache.showMainLevels;
       this.setSkipParams();
     } else {
       this.getRoot();
@@ -96,7 +96,7 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
     TaxonTreeComponent.cache = {
       nodes: this.tree.getVisibleNodes(),
       activeId: this.activeId,
-      hideLowerRanks: this.hideLowerRanks
+      showMainLevels: this.showMainLevels
     };
     this.subQueryUpdate.unsubscribe();
   }
@@ -158,7 +158,7 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   setSkipParams() {
-    if (this.hideLowerRanks) {
+    if (this.showMainLevels) {
       this.skipParams = [{key: 'taxonRank', isWhiteList: true, values: [
         'MX.superdomain',
         'MX.domain',

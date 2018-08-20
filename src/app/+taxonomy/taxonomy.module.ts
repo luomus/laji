@@ -40,11 +40,12 @@ import { TaxonExportService } from './taxon-browse/service/taxon-export.service'
 import { DatatableUtil } from './taxon-browse/service/datatable-util.service';
 import { TaxonSelectComponent } from './taxon-browse/taxon-select/taxon-select.component';
 import { ExpandableDatatableComponent } from './taxon-browse/taxon-tree/tree-table/expandable-datatable/expandable-datatable.component';
+import { InfoModule } from '../shared-modules/info/info.module';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
     SearchFiltersModule, LajiSelectModule, JWBootstrapSwitchModule, ObservationResultModule,
-    ObservationMapModule, NgxDatatableModule ],
+    ObservationMapModule, NgxDatatableModule, InfoModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns, TaxonExportService, DatatableUtil],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,

@@ -81,7 +81,7 @@ export class TreeTableComponent implements OnChanges {
 
     for (let i = 0; i < nodes.length; i++) {
       let children;
-      if (this.treeState.state[nodes[i].id].isExpanded && nodes[i].children) {
+      if (this.treeState.state[nodes[i].id].isExpanded && nodes[i].children && !this.treeState.state[nodes[i].id].isLoading) {
         children = this.getVisibleNodes(nodes[i].children);
       }
       result.push({
