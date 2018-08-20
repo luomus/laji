@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 })
 export class PillListComponent implements OnInit {
 
+  @Input() isLabel;
   @Output() updateList = new EventEmitter();
 
   _list;

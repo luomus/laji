@@ -62,18 +62,22 @@
         </h5>
       </ng-template>
       <laji-pill-list
+        [isLabel]="true"
         [list]="searchQuery.target || []"
         (updateList)="updateSearchQuery('target', $event)"
       ></laji-pill-list>
       <laji-pill-list
+        [isLabel]="true"
         [list]="searchQuery.originalTarget || []"
         (updateList)="updateSearchQuery('originalTarget', $event)"
       ></laji-pill-list>
       <laji-pill-list
+        [isLabel]="true"
         [list]="searchQuery.exactTarget || []"
         (updateList)="updateSearchQuery('exactTarget', $event)"
       ></laji-pill-list>
       <laji-pill-list
+        [isLabel]="true"
         [list]="searchQuery.originalExactTarget || []"
         (updateList)="updateSearchQuery('originalExactTarget', $event)"
       ></laji-pill-list>
