@@ -28,6 +28,7 @@ export class ExpandableDatatableComponent implements OnInit, OnChanges {
 
   @Output() toggle = new EventEmitter<TreeNode>();
   @Output() rowSelect = new EventEmitter<any>();
+  @Output() toggleAll = new EventEmitter<TreeNode>();
 
   @ViewChild('expander') expanderTpl: TemplateRef<any>;
   expanderLabelTpl: TemplateRef<any>;
@@ -120,6 +121,11 @@ export class ExpandableDatatableComponent implements OnInit, OnChanges {
       this.cacheService.setItem<Settings>(CACHE_COLUMN_SETINGS, ExpandableDatatableComponent.settings)
         .subscribe(() => {}, () => {});
     }
+  }
+
+  onToggleAllClick(event, node: TreeNode) {
+    this.toggleAll.emit(node);
+    event.stopPropagation();
   }
 
   private _rowClass(activeId?: string) {

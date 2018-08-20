@@ -19,10 +19,10 @@
           [ngClass]="{'first-child': row.state.isFirstChild}"
           [ngStyle]="{'left': (10 * row.state.level + 7) + 'px'}"></span>
     <i class="glyphicon glyphicon-triangle-right"
+       [ngClass]="{'glyphicon-triangle-right': !row.state.isExpanded, 'glyphicon-triangle-bottom': row.state.isExpanded}"
        [ngStyle]="{visibility: row.node.hasChildren ? 'visible' : 'hidden'}"
-       *ngIf="!row.state.isExpanded"></i>
-    <laji-spinner *ngIf="row.state.isExpanded && row.state.isLoading"></laji-spinner>
-    <i class="glyphicon glyphicon-triangle-bottom" *ngIf="row.state.isExpanded && !row.state.isLoading"></i>
+       *ngIf="!row.state.isLoading"></i>
+    <laji-spinner *ngIf="row.state.isLoading"></laji-spinner>
     <span class="inline">
       <ng-container *ngIf="expanderLabelTpl; else defaultExpanderLabel">
         <ng-container *ngTemplateOutlet="expanderLabelTpl; context: {'row': row, 'column': column, 'value': value}"></ng-container>
@@ -30,6 +30,13 @@
       <ng-template #defaultExpanderLabel>
           <span *ngIf="value" title="{{value}}">{{value}}</span>
       </ng-template>
+      <i class="glyphicon glyphicon-plus pull-right text-primary"
+         *ngIf="row.node.leafCount < 1000 && row.node.hasChildren && !row.state.isExpanded"
+         (click)="onToggleAllClick($event, row.node)"
+         [tooltip]="'treeTable.expandAll' | translate"
+         [placement]="'right'"
+         [container]="'body'">
+      </i>
     </span>
   </span>
 </ng-template>

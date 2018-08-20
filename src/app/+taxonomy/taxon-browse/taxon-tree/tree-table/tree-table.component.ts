@@ -17,6 +17,7 @@ export class TreeTableComponent implements OnChanges {
   @Input() nodes: TreeNode[] = [];
   @Input() getChildren: (id: string) => Observable<any[]>;
   @Input() getParents: (id: string) => Observable<any[]>;
+
   @Input() skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
   @Input() activeId: string;
   @Input() initialExpanderWidth = 200;
@@ -63,6 +64,10 @@ export class TreeTableComponent implements OnChanges {
     }
   }
 
+  toggleAll(node: TreeNode) {
+    this.toggleAllChildrenOpen(node, this.treeState);
+  }
+
   openTreeById(openId: string) {
     if (openId) {
       const nodes = this.nodes;
@@ -104,6 +109,14 @@ export class TreeTableComponent implements OnChanges {
       });
   }
 
+  private toggleAllChildrenOpen(node: TreeNode, treeState: TreeState) {
+    this.setNodeOpen(node, treeState, true)
+      .subscribe(() => {
+        this.updateRows();
+        this.cd.markForCheck();
+      })
+  }
+
   private toggleChildrenOpen(node: TreeNode, treeState: TreeState) {
     this.setNodeOpen(node, treeState)
       .subscribe(() => {
@@ -125,7 +138,7 @@ export class TreeTableComponent implements OnChanges {
     }
   }
 
-  private setNodeOpen(node: TreeNode, treeState: TreeState): Observable<TreeNode> {
+  private setNodeOpen(node: TreeNode, treeState: TreeState, setChildrenOpen = false): Observable<TreeNode> {
     treeState.state[node.id].isExpanded = true;
     treeState.state[node.id].isLoading = true;
 
@@ -133,8 +146,8 @@ export class TreeTableComponent implements OnChanges {
       .pipe(switchMap((children) => {
         const obs = [];
         for (let i = 0; i < children.length; i++) {
-          if (treeState.state[children[i].id].isSkipped) {
-            obs.push(this.setNodeOpen(children[i], treeState));
+          if ((setChildrenOpen || treeState.state[children[i].id].isSkipped) && children[i].hasChildren) {
+            obs.push(this.setNodeOpen(children[i], treeState, setChildrenOpen));
           }
         }
 

@@ -2,6 +2,7 @@ export interface TreeNode {
   id: string;
   hasChildren: boolean;
   children?: TreeNode[];
+  leafCount?: number;
 }
 
 export interface TreeNodeState {

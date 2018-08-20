@@ -12,6 +12,7 @@ import { TaxonomyColumns } from '../service/taxonomy-columns';
 import { SpeciesDownloadComponent } from '../species-download/species-download.component';
 import { TaxonExportService } from '../service/taxon-export.service';
 import { TreeNode } from './tree-table/model/tree-node.interface';
+import { Taxonomy } from '../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-tree',
@@ -122,7 +123,7 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
         onlyFinnish: this.searchQuery.query.onlyFinnish
       })
       .pipe(
-        map(data => [data]),
+        map(data => this.mapSpeciesCountsToLeafCounts([data])),
         tap((data) => {
           this.nodes = data;
         })
@@ -137,7 +138,10 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
       .taxonomyFindChildren(id, 'multi', undefined, {
         selectedFields: this.getSelectedFields(),
         onlyFinnish: this.searchQuery.query.onlyFinnish
-      });
+      })
+      .pipe(
+        map(data => this.mapSpeciesCountsToLeafCounts(data))
+      )
   }
 
   getParents(id: string) {
@@ -194,8 +198,17 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
+  private mapSpeciesCountsToLeafCounts(taxons: Taxonomy[]) {
+    return taxons.map(taxon => ({
+      ...taxon,
+      leafCount: this.searchQuery.query.onlyFinnish ? taxon.countOfFinnishSpecies : taxon.countOfSpecies,
+      countOfSpecies: undefined,
+      countOfFinnishSpecies: undefined
+    }));
+  }
+
   private getSelectedFields() {
-    const compulsory = ['id', 'taxonRank', 'hasChildren'];
+    const compulsory = ['id', 'taxonRank', 'hasChildren', this.searchQuery.query.onlyFinnish ? 'countOfFinnishSpecies' : 'countOfSpecies'];
 
     const selects = this.searchQuery.treeOptions.selected.reduce((arr, field) => {
       let addedField = field;

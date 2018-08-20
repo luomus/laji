@@ -502,6 +502,7 @@
   "species.tree.info.showMainLevels": "Piilottaa sukupuusta taksonit, joiden taksonominen taso ei kuulu päätasoihin. Päätasoja ovat luonto, yläkunta, kunta, pääjakso, luokka, lahko, heimo, suku ja laji.",
   "species.settings.list": "Settings for the list",
   "species.settings.tree": "Settings for the tree",
+  "treeTable.expandAll": "Expand all",
   "email": "Email",
   "feedback": "Feedback",
   "feedback.intro": "If you login, your e-mail address is attached to this message. If you send feedback without log in, add your e-mail address, if you want response.",
