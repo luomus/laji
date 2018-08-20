@@ -244,7 +244,7 @@
           name="timeEnd"></laji-datepicker>
       </div>
     </div>
-    <div class="form-group">
+    <div class="row">
       <div class="col-lg-12">
         <div class="btn-group">
           <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1, 'loaded')">{{'observations.form.1d' | translate}}</button>
@@ -430,7 +430,7 @@
     </div>
   </div>
   <div laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true">
-    <div class="form-group">
+    <div class="row">
       <label class="col-lg-12">
         {{'observation.form.team' | translate}}:<laji-info>
         {{'observation.info.team' | translate}}
@@ -717,7 +717,7 @@
           [(ngModel)]="searchQuery.documentId">
       </div>
     </div>
-    <div class="form-group">
+    <div class="row">
       <label class="col-lg-12">
         {{'observation.form.keyword' | translate}}:<laji-info>
         {{'observation.info.keyword' | translate}}
@@ -737,7 +737,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <p>
-          Rajaa havainnot lajeihin, joille on määritelty jokin valitsemistasi lajin ominaisuuksista
+          {{'observation.intro.adminStatus' | translate}}
         </p>
         <laji-metadata-select
           [info]="'observation.info.adminStatus' | translate"
@@ -766,7 +766,9 @@
     </div>
     <div class="form-group">
       <div class="col-sm-12">
-        <p>Rajaa havaintojan lajin aseman perusteella.</p>
+        <p>
+          {{'observation.intro.typeOfOccurrenceId' | translate}}
+        </p>
         <laji-three-state-multi-switch
           [title]="'observation.form.typeOfOccurrenceId' | translate"
           [lang]="lang"
@@ -860,7 +862,9 @@
   <div laji-panel  *ngIf="advancedMode || visible['image']" [title]="'observation.form.images' | translate" [autoToggle]="true">
     <div class="row">
       <div class="col-sm-12">
-        <p>Rajaa niihin havaintoihin, joissa on</p>
+        <p>
+          {{'observation.intro.images' | translate }}
+        </p>
         <label>
           <input type="checkbox"
                  [ngModel]="searchQuery.hasUnitMedia"
@@ -901,7 +905,7 @@
     <hr>
     <div class="row">
       <div class="col-sm-12">
-        <p>Rajaa niihin havaintoihin, joissa</p>
+        <p>{{'observation.intro.noImages' | translate}}</p>
         <label>
           <input type="checkbox"
                  [ngModel]="formQuery.hasNotMedia"
@@ -925,7 +929,7 @@
         <laji-info [html]="'observation.info.secured' | translate"></laji-info>
       </div>
     </div>
-    <div class="form-group">
+    <div class="row">
       <div class="col-sm-12">
         <laji-metadata-select
           [info]="'observation.info.secureLevel' | translate"
