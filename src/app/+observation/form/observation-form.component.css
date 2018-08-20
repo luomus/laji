@@ -24,3 +24,6 @@ label {
 ::ng-deep p {
   font-size: small;
 }
+.switch-label {
+  margin-left: 5px;
+}

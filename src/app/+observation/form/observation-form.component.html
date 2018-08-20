@@ -776,37 +776,24 @@
     </div>
     <div class="form-group">
       <div class="col-sm-12">
-        <laji-metadata-select
-          [(ngModel)]="searchQuery.typeOfOccurrenceIdNot"
-          (ngModelChange)="onQueryChange()"
-          [multiple]="true"
-          [useFilter]="false"
-          name="typeOfOccurrence"
-          [placeholder]="'observation.form.typeOfOccurrenceIdNot' | translate"
-          [alt]="'MX.typeOfOccurrenceEnum'"
-          [lang]="lang"></laji-metadata-select>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-12">
-        <label>{{'observation.form.invasive' | translate}}<laji-info>{{'observation.info.invasive' | translate}}</laji-info></label>
         <laji-three-state-switch
           (change)="onQueryChange()"
           [onText]="'datatable.yes' | translate"
           [offText]="'datatable.no' | translate"
           [(value)]="searchQuery.invasive">
         </laji-three-state-switch>
+        <label class="switch-label">{{'observation.form.invasive' | translate}}<laji-info>{{'observation.info.invasive' | translate}}</laji-info></label>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <label>{{'observation.form.finnish' | translate}}<laji-info>{{'observation.info.finnish' | translate}}</laji-info></label>
         <laji-three-state-switch
           (change)="onQueryChange()"
           [onText]="'datatable.yes' | translate"
           [offText]="'datatable.no' | translate"
           [(value)]="searchQuery.finnish">
         </laji-three-state-switch>
+        <label class="switch-label">{{'observation.form.finnish' | translate}}<laji-info>{{'observation.info.finnish' | translate}}</laji-info></label>
       </div>
     </div>
   </div>
