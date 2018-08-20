@@ -16,7 +16,7 @@ export class SpreadSheetService {
 
   private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
   private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-  private csvMimeTypes = ['text/csv', 'text/plain', 'application/vnd.ms-excel'];
+  private csvMimeTypes = ['text/csv', 'text/tsv', 'text/plain', 'application/vnd.ms-excel'];
 
   private translations = {};
 
