@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, OnDestroy, ViewChild, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
@@ -11,24 +11,33 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { TaxonomyColumns } from '../service/taxonomy-columns';
 import { SpeciesDownloadComponent } from '../species-download/species-download.component';
 import { TaxonExportService } from '../service/taxon-export.service';
+import { TreeNode } from './tree-table/model/tree-node.interface';
 
 @Component({
   selector: 'laji-tree',
   templateUrl: './taxon-tree.component.html',
   styleUrls: ['./taxon-tree.component.css']
 })
-export class TaxonTreeComponent implements OnInit, OnDestroy {
-  private static nodesCache: any[];
+export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
+  private static cache: {
+    nodes: TreeNode[],
+    activeId: string,
+    hideLowerRanks: boolean
+  };
 
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() columnService: TaxonomyColumns;
+  @Input() visible: boolean;
 
   public nodes: any[] = [];
   public columns: ObservationTableColumn[] = [];
   public getChildrenFunc = this.getChildren.bind(this);
   public getParentsFunc = this.getParents.bind(this);
   public skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
+
   public hideLowerRanks = false;
+  public taxon: string;
+  public activeId: string;
 
   @ViewChild('treeTable') private tree: TreeTableComponent;
   @ViewChild('settingsModal') settingsModal: SpeciesListOptionsModalComponent;
@@ -39,6 +48,10 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
 
   private subQueryUpdate: Subscription;
   private lastQuery: string;
+
+  static emptyCache() {
+    TaxonTreeComponent.cache = undefined;
+  }
 
   constructor(
     private taxonService: TaxonomyApi,
@@ -62,22 +75,36 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
   onSettingsLoaded() {
     this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
 
-    if (TaxonTreeComponent.nodesCache) {
-      this.nodes = TaxonTreeComponent.nodesCache;
+    if (TaxonTreeComponent.cache) {
+      this.nodes = TaxonTreeComponent.cache.nodes;
+      this.activeId = TaxonTreeComponent.cache.activeId;
+      this.taxon = this.activeId;
+      this.hideLowerRanks = TaxonTreeComponent.cache.hideLowerRanks;
+      this.setSkipParams();
     } else {
       this.getRoot();
     }
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.visible && this.visible) {
+      this.tree.refreshTable();
+    }
+  }
+
   ngOnDestroy() {
-    TaxonTreeComponent.nodesCache = this.tree.getVisibleNodes();
+    TaxonTreeComponent.cache = {
+      nodes: this.tree.getVisibleNodes(),
+      activeId: this.activeId,
+      hideLowerRanks: this.hideLowerRanks
+    };
     this.subQueryUpdate.unsubscribe();
   }
 
   getRoot(): Subscription {
     const cacheKey = JSON.stringify({
-      query: this.searchQuery.query,
-      treeOptions: this.searchQuery.treeOptions
+      onlyFinnish: this.searchQuery.query.onlyFinnish,
+      selected: this.searchQuery.treeOptions.selected
     });
     if (this.lastQuery === cacheKey) {
       return;
@@ -130,7 +157,7 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
     this.getRoot();
   }
 
-  onHideLowerRanksClick() {
+  setSkipParams() {
     if (this.hideLowerRanks) {
       this.skipParams = [{key: 'taxonRank', isWhiteList: true, values: [
         'MX.superdomain',
@@ -191,6 +218,7 @@ export class TaxonTreeComponent implements OnInit, OnDestroy {
   }
 
   onTaxonSelect(key: string) {
+    this.activeId = key;
     this.tree.openTreeById(key);
   }
 }

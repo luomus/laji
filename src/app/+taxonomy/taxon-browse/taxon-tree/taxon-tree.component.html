@@ -4,13 +4,14 @@
       {{'species.tree.taxonSearch' | translate}}:
       <laji-taxon-select
         (onSelect)="onTaxonSelect($event)"
+        [taxonId]="taxon"
         [searchParams]="taxonSelectFilters">
       </laji-taxon-select>
     </label>
     <label style="position: absolute; bottom: 0; right: 0">
       <input type="checkbox"
              [(ngModel)]="hideLowerRanks"
-             (ngModelChange)="onHideLowerRanksClick()"
+             (ngModelChange)="setSkipParams()"
              name="hideLowerRanks">
       {{'species.tree.hideLowerRanks' | translate}}
     </label>
@@ -23,6 +24,7 @@
                      [getChildren]="getChildrenFunc"
                      [getParents]="getParentsFunc"
                      [skipParams]="skipParams"
+                     [activeId]="activeId"
                      (rowSelect)="onRowSelect($event)">
     </laji-tree-table>
     <div class="setting-menu link" (click)="openSettingsModal()">

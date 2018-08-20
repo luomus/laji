@@ -1,8 +1,8 @@
 import {
   Component, OnChanges, Input, Output, ChangeDetectorRef, EventEmitter, SimpleChanges
 } from '@angular/core';
-import { Observable, of, forkJoin } from 'rxjs';
-import { tap, map, switchMap, share } from 'rxjs/operators';
+import { Observable, of, forkJoin , interval } from 'rxjs';
+import { tap, map, switchMap, share, take } from 'rxjs/operators';
 import { TreeNode } from './model/tree-node.interface';
 import { TreeState } from './service/tree-state';
 import { ObservationTableColumn } from '../../../../shared-modules/observation-result/model/observation-table-column';
@@ -18,10 +18,10 @@ export class TreeTableComponent implements OnChanges {
   @Input() getChildren: (id: string) => Observable<any[]>;
   @Input() getParents: (id: string) => Observable<any[]>;
   @Input() skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
+  @Input() activeId: string;
   @Input() initialExpanderWidth = 200;
 
   rows = [];
-  activeId: string;
   expanderColWidth: number;
 
   private treeState = new TreeState([]);
@@ -64,8 +64,6 @@ export class TreeTableComponent implements OnChanges {
   }
 
   openTreeById(openId: string) {
-    this.activeId = openId;
-
     if (openId) {
       const nodes = this.nodes;
       const treeState = this.treeState;
@@ -93,6 +91,17 @@ export class TreeTableComponent implements OnChanges {
     }
 
     return result;
+  }
+
+  refreshTable() {
+    interval()
+      .pipe(take(1))
+      .subscribe(() => {
+        if (this.rows) {
+          this.rows = [...this.rows];
+          this.cd.markForCheck();
+        }
+      });
   }
 
   private toggleChildrenOpen(node: TreeNode, treeState: TreeState) {

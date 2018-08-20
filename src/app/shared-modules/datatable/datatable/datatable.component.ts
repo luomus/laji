@@ -128,8 +128,8 @@ export class DatatableComponent implements AfterViewInit {
     ObservableInterval()
       .take(1)
       .subscribe(() => {
-        if (this.rows) {
-          this.rows = [...this.rows];
+        if (this._rows) {
+          this._rows = [...this._rows];
           this.changeDetectorRef.markForCheck();
         }
       });
