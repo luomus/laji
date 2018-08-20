@@ -47,6 +47,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     'document.sourceId',
     'unit.superRecordBasis',
     'unit.media.mediaType',
+    'gathering.interpretations.biogeographicalProvinceDisplayname',
+    'gathering.interpretations.municipalityDisplayname',
+    'gathering.team.memberName',
     'pairCountSum'
   ];
   @Input() useStatistics: boolean;
@@ -158,8 +161,20 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'unit.quality.taxon.source', cellTemplate: 'warehouseLabel', label: 'result.unit.quality.source' },
     { name: 'gathering.team', cellTemplate: 'toSemicolon' },
     { name: 'gathering.interpretations.countryDisplayname', label: 'result.gathering.country' },
-    { name: 'gathering.interpretations.biogeographicalProvinceDisplayname', label: 'result.gathering.biogeographicalProvince' },
-    { name: 'gathering.interpretations.municipalityDisplayname', label: 'observation.form.municipality' },
+    { name: 'gathering.interpretations.biogeographicalProvinceDisplayname',
+      cellTemplate: 'warehouseLabel',
+      label: 'result.gathering.biogeographicalProvince',
+      aggregateBy: 'gathering.interpretations.biogeographicalProvince,gathering.interpretations.biogeographicalProvinceDisplayname'
+    },
+    { name: 'gathering.interpretations.municipalityDisplayname',
+      cellTemplate: 'warehouseLabel',
+      label: 'observation.form.municipality',
+      aggregateBy: 'gathering.interpretations.finnishMunicipality,gathering.interpretations.municipalityDisplayname'
+    },
+    { name: 'gathering.team.memberName',
+      label: 'observation.form.team',
+      aggregateBy: 'gathering.team.memberId,gathering.team.memberName'
+    },
     { name: 'gathering.locality' },
     { name: 'gathering.displayDateTime' },
     { name: 'gathering.interpretations.coordinateAccuracy', cellTemplate: 'numeric' },
