@@ -30,6 +30,8 @@ import { ThreeStateSwitchComponent } from './form/three-state-switch/three-state
 import { ThreeStateMultiSwitchComponent } from './form/three-state-multi-switch/three-state-multi-switch.component';
 import { SwitchRowComponent } from './form/three-state-multi-switch/switch-row/switch-row.component';
 import { IndeterminateCheckboxComponent } from './form/three-state-multi-switch/switch-row/indeterminate-checkbox/indeterminate-checkbox.component';
+import { TeamComponent } from './form/team/team.component';
+import { MemberIdPillListComponent } from './form/team/member-id-pill-list/member-id-pill-list.component';
 
 @NgModule({
   imports: [
@@ -59,7 +61,9 @@ import { IndeterminateCheckboxComponent } from './form/three-state-multi-switch/
     ThreeStateSwitchComponent,
     ThreeStateMultiSwitchComponent,
     SwitchRowComponent,
-    IndeterminateCheckboxComponent
+    IndeterminateCheckboxComponent,
+    TeamComponent,
+    MemberIdPillListComponent
   ]
 })
 export class ObservationModule {
