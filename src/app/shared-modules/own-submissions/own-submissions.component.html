@@ -26,7 +26,13 @@
         <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
-        <laji-document [uri]="shownDocument" [own]="true"></laji-document>
+        <laji-document *ngIf="shownDocument.publicityRestrictions === publicity.publicityRestrictionsPublic"
+                       [uri]="shownDocument.id"
+                       [own]="true">
+        </laji-document>
+        <laji-document-local *ngIf="shownDocument.publicityRestrictions !== publicity.publicityRestrictionsPublic"
+                             [document]="shownDocument">
+        </laji-document-local>
       </div>
     </div>
   </div>

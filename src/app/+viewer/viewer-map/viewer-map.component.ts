@@ -69,16 +69,30 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
           fillOpacity: 0.3,
           color: '#00aa00'
         }),
-        featureCollection: {
-          type: set.type,
-          features: set.features.map(feat => ({
-            type: feat.type,
-            geometry: feat.geometry,
-            properties: {}
-          }))
-        }
+        featureCollection: this.getFeatureCollection(set)
       }));
     } catch (e) { }
   }
 
+  private getFeatureCollection(data: any) {
+    if (data.features) {
+      return {
+        type: data.type,
+        features: data.features.map(feat => ({
+          type: feat.type,
+          geometry: feat.geometry,
+          properties: {}
+        }))
+
+      }
+    } else {
+      return {
+        type: 'FeatureCollection',
+        features: [{
+          type: 'Feature',
+          geometry: data,
+        }]
+      }
+    }
+  }
 }

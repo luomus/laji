@@ -5,7 +5,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
 import { RouterChildrenEventService } from '../shared-modules/own-submissions/service/router-children-event.service';
-import { environment } from '../../environments/environment';
+import { Document } from '../shared/model/Document';
 
 @Component({
   selector: 'haseka',
@@ -19,7 +19,8 @@ export class HasekaComponent implements OnInit, OnDestroy {
   public isFront = false;
   public documentModalVisible = false;
 
-  public shownDocument: string;
+  public shownDocument: Document;
+  public publicity = Document.PublicityRestrictionsEnum;
   @ViewChild('documentModal') public modal: ModalDirective;
 
   private showViewerClick$: Subscription;
@@ -37,8 +38,8 @@ export class HasekaComponent implements OnInit, OnDestroy {
     if (!this.vihkoSettings) {
       this.vihkoSettings = { showIntro: true };
     }
-    this.showViewerClick$ = this.eventService.showViewerClick$.subscribe((docId) => {
-        this.showDocumentViewer(docId);
+    this.showViewerClick$ = this.eventService.showViewerClick$.subscribe((doc) => {
+        this.showDocumentViewer(doc);
     });
     this.subRoute = this.router.events
       .filter(event => event instanceof NavigationEnd)
@@ -58,8 +59,8 @@ export class HasekaComponent implements OnInit, OnDestroy {
     this.vihkoSettings = {showIntro: !this.vihkoSettings.showIntro};
   }
 
-  showDocumentViewer(docId: string) {
-    this.shownDocument = docId;
+  showDocumentViewer(doc: Document) {
+    this.shownDocument = doc;
     this.modal.show();
   }
 }

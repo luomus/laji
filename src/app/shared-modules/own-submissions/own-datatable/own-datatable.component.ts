@@ -45,7 +45,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
   @Input() onlyTemplates = false;
   @Input() actions: string[]|false = ['edit', 'view', 'template', 'download', 'stats', 'delete'];
-  @Output() documentClicked = new EventEmitter();
+  @Output() documentClicked = new EventEmitter<Document>();
 
   formsById = {};
   namedPlaceNames = {};
@@ -241,11 +241,12 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     return row.id;
   }
 
-  showViewer(docId: string) {
+  showViewer(row: any) {
+    const doc = this.documents[row.index];
     if (!this.useInternalDocumentViewer) {
-      this.eventService.showViewerClicked(docId);
+      this.eventService.showViewerClicked(doc);
     } else {
-      this.documentClicked.emit(docId);
+      this.documentClicked.emit(doc);
     }
   }
 

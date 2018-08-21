@@ -63,17 +63,18 @@
         </ng-template>
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
           <span *ngIf="actions.indexOf('view') > -1 && onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
-            <span class="label label-primary link inline-block"
+            <span class="label label-success link inline-block"
                   [tooltip]="'result.showViewer' | translate"
                   [placement]="'right'"
-                  (click)="showViewer(row.id)">
+                  (click)="showViewer(row)">
               <i class="glyphicon glyphicon-eye-open"></i>
             </span>
           </span>
           <span *ngIf="actions.indexOf('view') > -1 && onlyTemplates === false && value === publicity.publicityRestrictionsPrivate">
-            <span class="label label-warning inline-block"
+            <span class="label label-warning link inline-block"
                   [tooltip]="'haseka.form.private' | translate"
-                  [placement]="'right'">
+                  [placement]="'right'"
+                  (click)="showViewer(row)">
               <i class="glyphicon glyphicon-eye-close"></i>
             </span>
           </span>

@@ -1,0 +1,49 @@
+<ng-container *ngIf="document">
+  <div class="row">
+    <div class="col-sm-7">
+      <div class="page-header">
+        <h3>
+          {{'viewer.document' | translate }}
+          <small>
+            <!--a [routerLink]="['/view']" [queryParams]="{uri: document.id}" target="_blank">
+              {{document.id}}
+            </a-->
+            {{document.id}}
+          </small>
+          <laji-edit-link
+            [editors]="document.editors"
+            [personID]="personID"
+            [documentID]="document.id"
+            [formID]="document.formID"
+          ></laji-edit-link>
+        </h3>
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <div class="row">
+        <div class="col-sm-12 doc-meta">
+          <ng-template #docMeta>
+            <laji-row [title]="'MZ.dateCreated' | label" [value]="document.dateCreated | amDateFormat:'DD.MM.YYYY'"></laji-row>
+            <laji-row [title]="'MZ.dateEdited' | label" [value]="document.dateEdited | amDateFormat:'DD.MM.YYYY'"></laji-row>
+          </ng-template>
+          <button class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
+                  [popover]="docMeta"
+                  placement="left"
+                  triggers="click mouseenter:mouseleave"><i class="glyphicon glyphicon-user"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-7">
+      <ng-container *ngFor="let gathering of document.gatherings; let i=index">
+      </ng-container>
+    </div>
+    <div class="col-sm-5">
+      <laji-viewer-map [useWorldMap]="useWorldMap" [active]="active" *ngIf="hasMapData" [data]="mapData"></laji-viewer-map>
+      <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media"></laji-image-gallery>
+    </div>
+  </div>
+</ng-container>

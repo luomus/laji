@@ -20,6 +20,7 @@ import { LangModule } from '../shared-modules/lang/lang.module';
 import { AnnotationsModule } from '../shared-modules/annotations/annotations.module';
 import { EditLinkComponent } from './edit-link/edit-link.component';
 import { LajiMapModule } from '@laji-map/laji-map.module';
+import { DocumentLocalComponent } from './document-local/document-local.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,7 @@ import { LajiMapModule } from '@laji-map/laji-map.module';
   providers: [ToQNamePipe, AnnotationService],
   declarations: [ViewerComponent, DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
     GatheringComponent, UnitComponent, LcFirstPipe,
-    SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent, EditLinkComponent],
-  exports: [ViewerComponent, DocumentComponent]
+    SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent, EditLinkComponent, DocumentLocalComponent],
+  exports: [ViewerComponent, DocumentComponent, DocumentLocalComponent]
 })
 export class ViewerModule { }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Document } from '../../../shared/model/Document';
 
 @Injectable()
 export class RouterChildrenEventService {
@@ -7,7 +8,7 @@ export class RouterChildrenEventService {
 
   showViewerClick$ = this.showViewerClick.asObservable();
 
-  showViewerClicked(docId: any) {
-    this.showViewerClick.next(docId);
+  showViewerClicked(doc: Document) {
+    this.showViewerClick.next(doc);
   }
 }

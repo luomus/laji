@@ -19,7 +19,7 @@ import { map } from 'rxjs/operators';
 })
 export class UsersLatestComponent implements OnChanges {
   @Input() userToken: string;
-  @Output() onShowViewer = new EventEmitter<string>();
+  @Output() onShowViewer = new EventEmitter<Document>();
 
   public unpublishedDocuments: Document[] = [];
   public documents: Document[] = [];
@@ -109,8 +109,8 @@ export class UsersLatestComponent implements OnChanges {
     }
   }
 
-  showDocumentViewer(docId: string) {
-    this.onShowViewer.emit(docId);
+  showDocumentViewer(doc: Document) {
+    this.onShowViewer.emit(doc);
   }
 
   private processDocuments(docs: Document[]) {
