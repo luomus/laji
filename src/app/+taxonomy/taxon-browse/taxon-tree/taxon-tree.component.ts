@@ -23,7 +23,8 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
   private static cache: {
     nodes: TreeNode[],
     activeId: string,
-    showMainLevels: boolean
+    showMainLevels: boolean,
+    lastQuery: string
   };
 
   @Input() searchQuery: TaxonomySearchQuery;
@@ -76,12 +77,18 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
   onSettingsLoaded() {
     this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
 
-    if (TaxonTreeComponent.cache) {
+    const cacheKey = JSON.stringify({
+      onlyFinnish: this.searchQuery.query.onlyFinnish,
+      selected: this.searchQuery.treeOptions.selected
+    });
+
+    if (TaxonTreeComponent.cache && TaxonTreeComponent.cache.lastQuery === cacheKey) {
       this.nodes = TaxonTreeComponent.cache.nodes;
       this.activeId = TaxonTreeComponent.cache.activeId;
       this.taxon = this.activeId;
       this.showMainLevels = TaxonTreeComponent.cache.showMainLevels;
       this.setSkipParams();
+      this.lastQuery = cacheKey;
     } else {
       this.getRoot();
     }
@@ -97,7 +104,8 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
     TaxonTreeComponent.cache = {
       nodes: this.tree.getVisibleNodes(),
       activeId: this.activeId,
-      showMainLevels: this.showMainLevels
+      showMainLevels: this.showMainLevels,
+      lastQuery: this.lastQuery
     };
     this.subQueryUpdate.unsubscribe();
   }
