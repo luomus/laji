@@ -124,13 +124,7 @@ export class DocumentExportService {
       aoa.push([]);
 
       for (let j = 0; j < fields.length; j++) {
-        aoa[i + 1].push(
-          fields[j]['value'].split('.').reduce((o, s) => {
-            if (o) {
-              return o[s];
-            }
-          }, obj)
-        );
+        aoa[i + 1].push(Util.parseJSONPath(obj, fields[j]['value']));
       }
     }
 
@@ -192,7 +186,7 @@ export class DocumentExportService {
       const child = obj[key];
       const fieldName = path + key;
 
-      if (child == null || child === '') {
+      if (child == null || child === '' || (Array.isArray(child) && child.length < 1)) {
         continue;
       }
 
@@ -380,9 +374,6 @@ export class DocumentExportService {
           geometry: obj,
         }]} as FeatureCollection).replace(/\n$/, '');
     } else if (Array.isArray(obj)) {
-      if (obj.length < 1) {
-        return ObservableOf(undefined);
-      }
       return ObservableForkJoin(obj.map((labelKey) => {
         return this.getDataLabel(labelKey, fieldData);
       }))
