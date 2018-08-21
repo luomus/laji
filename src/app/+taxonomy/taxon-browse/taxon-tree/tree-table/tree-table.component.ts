@@ -86,7 +86,7 @@ export class TreeTableComponent implements OnChanges {
 
     for (let i = 0; i < nodes.length; i++) {
       let children;
-      if (this.treeState.state[nodes[i].id].isExpanded && nodes[i].children && !this.treeState.state[nodes[i].id].isLoading) {
+      if (this.treeState.state[nodes[i].id].isExpanded && nodes[i].children && this.treeState.state[nodes[i].id].loadingCount === 0) {
         children = this.getVisibleNodes(nodes[i].children);
       }
       result.push({
@@ -125,37 +125,72 @@ export class TreeTableComponent implements OnChanges {
       })
   }
 
-  private toggleOpenChain(nodes: TreeNode[], state: TreeState, chain: any[]) {
+  private toggleOpenChain(nodes: TreeNode[], treeState: TreeState, chain: any[]) {
+    this.setChainOpen(nodes, treeState, chain)
+      .subscribe(() => {
+        this.updateRows();
+        this.cd.markForCheck();
+      });
+  }
+
+  private setNodeOpen(node: TreeNode, treeState: TreeState, setAllChildrenOpen?): Observable<TreeNode> {
+    treeState.state[node.id].loadingCount++;
+
+    return this.setOpen(node, treeState, setAllChildrenOpen).pipe(tap(() => {
+      treeState.state[node.id].loadingCount--;
+    }))
+  }
+
+  private setChainOpen(nodes: TreeNode[], treeState: TreeState, chain: any[]): Observable<TreeNode> {
+    if (chain.length === 0) {
+      return of(undefined);
+    }
+
     for (let i = 0; i < nodes.length; i++) {
-      if (nodes[i].id === chain[0].id && nodes[i].hasChildren) {
-        this.setNodeOpen(nodes[i], state)
-          .subscribe(() => {
-            this.updateRows();
-            this.cd.markForCheck();
-            this.toggleOpenChain(nodes[i].children, state, chain.slice(1));
-          });
+      const node = nodes[i];
+      if (!node.hasChildren) { continue; }
+
+      if (node.id === chain[0].id) {
+        chain = chain.slice(1);
+
+        if (node.children && treeState.state[node.id].isExpanded && treeState.state[node.id].loadingCount === 0) {
+          return this.setChainOpen(node.children, treeState, chain)
+            .pipe(map(() => (node)));
+        } else {
+          treeState.state[node.id].loadingCount++;
+
+          return this.setOpen(node, treeState)
+            .pipe(switchMap(() => {
+              return this.setChainOpen(node.children, treeState, chain)
+                .pipe(
+                  map(() => (node)),
+                  tap(() => {
+                    treeState.state[node.id].loadingCount--;
+                  })
+                )
+            }));
+        }
       }
     }
   }
 
-  private setNodeOpen(node: TreeNode, treeState: TreeState, setChildrenOpen = false): Observable<TreeNode> {
+  private setOpen(node: TreeNode, treeState: TreeState, setAllChildrenOpen?) {
     treeState.state[node.id].isExpanded = true;
-    treeState.state[node.id].isLoading = true;
 
     return this.fetchChildren(node, treeState)
       .pipe(switchMap((children) => {
         const obs = [];
         for (let i = 0; i < children.length; i++) {
-          if ((setChildrenOpen || treeState.state[children[i].id].isSkipped) && children[i].hasChildren) {
-            obs.push(this.setNodeOpen(children[i], treeState, setChildrenOpen));
+          const child = children[i];
+          if (!child.hasChildren) { continue; }
+
+          if (setAllChildrenOpen || treeState.state[child.id].isSkipped) {
+            obs.push(this.setOpen(child, treeState, setAllChildrenOpen));
           }
         }
 
-        return (obs.length > 0 ?  forkJoin(obs).pipe(map(() => (node))) : of(node))
-          .pipe(tap(() => {
-            treeState.state[node.id].isLoading = false;
-          }))
-      }))
+        return (obs.length > 0 ?  forkJoin(obs).pipe(map(() => (node))) : of(node));
+      }));
   }
 
   private fetchChildren(node: TreeNode, treeState: TreeState): Observable<TreeNode[]> {
@@ -210,7 +245,7 @@ export class TreeTableComponent implements OnChanges {
         }
       }
 
-      if (nodeState.isExpanded && !nodeState.isLoading && node.children) {
+      if (nodeState.isExpanded && nodeState.loadingCount === 0 && node.children) {
         this.update(node.children, treeState, rows);
       }
     }

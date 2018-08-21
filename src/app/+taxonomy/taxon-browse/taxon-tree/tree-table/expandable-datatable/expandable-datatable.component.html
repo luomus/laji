@@ -21,8 +21,8 @@
     <i class="glyphicon glyphicon-triangle-right"
        [ngClass]="{'glyphicon-triangle-right': !row.state.isExpanded, 'glyphicon-triangle-bottom': row.state.isExpanded}"
        [ngStyle]="{visibility: row.node.hasChildren ? 'visible' : 'hidden'}"
-       *ngIf="!row.state.isLoading"></i>
-    <laji-spinner *ngIf="row.state.isLoading"></laji-spinner>
+       *ngIf="row.state.loadingCount === 0"></i>
+    <laji-spinner *ngIf="row.state.loadingCount > 0"></laji-spinner>
     <span class="inline">
       <ng-container *ngIf="expanderLabelTpl; else defaultExpanderLabel">
         <ng-container *ngTemplateOutlet="expanderLabelTpl; context: {'row': row, 'column': column, 'value': value}"></ng-container>

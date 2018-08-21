@@ -31,7 +31,3 @@
 :host >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-right {
   background-color: #ddd !important;
 }
-
-.tooltip {
-  z-index: 10;
-}

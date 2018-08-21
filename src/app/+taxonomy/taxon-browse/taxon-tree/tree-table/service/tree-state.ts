@@ -34,7 +34,7 @@ export class TreeState {
       isFirstChild: childNbr === 0 && (!parentState || !parentState.isSkipped || parentState.isFirstChild),
       isExpanded: skipped && parentState.isExpanded ? true : expanded,
       isSkipped: skipped,
-      isLoading: false
+      loadingCount: this.state[node.id] ? this.state[node.id].loadingCount : 0
     };
 
     return this.state[node.id];
