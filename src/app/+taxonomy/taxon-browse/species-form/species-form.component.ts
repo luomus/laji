@@ -86,6 +86,12 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateTypesOfOccurrence(event) {
+    this.searchQuery.query.typesOfOccurrenceFilters = event.true;
+    this.searchQuery.query.typesOfOccurrenceNotFilters = event.false;
+    this.onQueryChange();
+  }
+
   private updateInvasiveSelected() {
     const invasiveSelected = [];
     const allFields = [

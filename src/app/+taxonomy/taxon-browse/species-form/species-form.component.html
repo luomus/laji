@@ -59,29 +59,14 @@
 
     <div class="form-group" [hidden]="searchQuery.skippedQueryParams.indexOf('typesOfOccurrenceFilters') > -1">
       <div class="col-sm-12">
-        <laji-metadata-select
-          [(ngModel)]="searchQuery.query.typesOfOccurrenceFilters"
-          (ngModelChange)="onQueryChange()"
-          [multiple]="true"
-          [useFilter]="false"
-          name="typeOfOccurrence"
-          [placeholder]="'observation.form.typeOfOccurrenceId' | translate"
+        <laji-three-state-multi-switch
+          [title]="'observation.form.typeOfOccurrenceId' | translate"
+          [lang]="translate.currentLang"
+          [trueValue]="searchQuery.query.typesOfOccurrenceFilters"
+          [falseValue]="searchQuery.query.typesOfOccurrenceNotFilters"
           [alt]="'MX.typeOfOccurrenceEnum'"
-          [lang]="translate.currentLang"></laji-metadata-select>
-      </div>
-    </div>
-
-    <div class="form-group" [hidden]="searchQuery.skippedQueryParams.indexOf('typesOfOccurrenceNotFilters') > -1">
-      <div class="col-sm-12">
-        <laji-metadata-select
-          [(ngModel)]="searchQuery.query.typesOfOccurrenceNotFilters"
-          (ngModelChange)="onQueryChange()"
-          [multiple]="true"
-          [useFilter]="false"
-          name="typeOfOccurrence"
-          [placeholder]="'observation.form.typeOfOccurrenceIdNot' | translate"
-          [alt]="'MX.typeOfOccurrenceEnum'"
-          [lang]="translate.currentLang"></laji-metadata-select>
+          (update)="updateTypesOfOccurrence($event)"
+        ></laji-three-state-multi-switch>
       </div>
     </div>
 
