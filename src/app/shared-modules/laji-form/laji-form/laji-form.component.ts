@@ -16,6 +16,7 @@ import { UserService } from '../../../shared/service/user.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import { environment } from '../../../../environments/environment';
 import LajiForm from 'laji-form/lib/laji-form';
+import { ToastsService } from '../../../shared/service/toasts.service';
 
 @Component({
   selector: 'laji-form',
@@ -44,7 +45,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               private userService: UserService,
               private logger: Logger,
               private ngZone: NgZone,
-              private cd: ChangeDetectorRef
+              private cd: ChangeDetectorRef,
+              private toastsService: ToastsService,
   ) {
     this.elem = elementRef.nativeElement;
   }
@@ -135,7 +137,13 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               renderSubmit: false,
               topOffset: 50,
               bottomOffset: 50,
-              googleApiKey: environment.googleApiKey
+              googleApiKey: environment.googleApiKey,
+              notifier: {
+                success: msg => this.toastsService.showSuccess(msg),
+                info: msg => this.toastsService.showInfo(msg),
+                warning: msg => this.toastsService.showWarning(msg),
+                error: msg => this.toastsService.showError(msg),
+              }
             });
           });
         } catch (err) {
@@ -144,7 +152,11 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
       });
   }
 
-  _onSettingsChange(settings: object) {
+  _onSettingsChange(settings: object, global = false) {
+    // TODO
+    if (global) {
+        return;
+    }
     this.userService.setUserSetting(this.settingsKey, settings);
   }
 
