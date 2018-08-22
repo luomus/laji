@@ -18,6 +18,10 @@
           ></laji-edit-link>
         </h3>
       </div>
+      <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionID | collectionName">
+        <!--span><a target="_blank" href="{{document.collectionID}}">{{document.collectionID}}</a></span-->
+      </laji-row>
+      <laji-document-object *ngIf="documentFields" [object]="document" [fields]="documentFields"></laji-document-object>
     </div>
     <div class="col-sm-5">
       <div class="row">
@@ -31,19 +35,51 @@
                   placement="left"
                   triggers="click mouseenter:mouseleave"><i class="glyphicon glyphicon-user"></i>
           </button>
+          <div style="margin-top: 35px;">
+            <alert [type]="'warning'">
+              <span>
+                Havaintoerää ei ole vielä julkaistu.
+              </span>
+            </alert>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="documentImageData">
+        <div class="col-sm-12">
+          <laji-image-gallery [modalImages]="documentImageData"></laji-image-gallery>
         </div>
       </div>
     </div>
   </div>
 
+  <div *ngIf="document.gatherings && document.gatherings.length > 1" class="gatherings">
+    <ul class="nav nav-tabs link">
+      <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
+        <a (click)="setActive(i)">
+          {{i + 1}}
+        </a>
+      </li>
+    </ul>
+  </div>
+
   <div class="row">
     <div class="col-sm-7">
       <ng-container *ngFor="let gathering of document.gatherings; let i=index">
+        <div [hidden]="active !== i">
+          <laji-document-object *ngIf="gatheringsFields" [object]="gathering" [fields]="gatheringsFields"></laji-document-object>
+          <ng-container *ngFor="let unit of gathering.units; let j=index">
+            <hr>
+            <ng-container *ngFor="let identification of unit.identifications; let j=index">
+              <laji-document-object *ngIf="identificationsFields" [object]="identification" [fields]="identificationsFields"></laji-document-object>
+            </ng-container>
+            <laji-document-object *ngIf="unitsFields" [object]="unit" [fields]="unitsFields"></laji-document-object>
+          </ng-container>
+        </div>
       </ng-container>
     </div>
     <div class="col-sm-5">
       <laji-viewer-map [useWorldMap]="useWorldMap" [active]="active" *ngIf="hasMapData" [data]="mapData"></laji-viewer-map>
-      <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media"></laji-image-gallery>
+      <laji-image-gallery *ngIf="gatheringImageData[active]" [modalImages]="gatheringImageData[active]"></laji-image-gallery>
     </div>
   </div>
 </ng-container>

@@ -33,9 +33,9 @@ export class DatatableUtil {
         break;
       case 'boolean':
         if (value === true) {
-          observable = this.translate.get('datatable.yes');
+          observable = this.translate.get('yes');
         } else {
-          observable = this.translate.get('datatable.no');
+          observable = this.translate.get('no');
         }
         break;
       case 'publication':

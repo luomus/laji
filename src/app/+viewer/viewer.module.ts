@@ -21,6 +21,7 @@ import { AnnotationsModule } from '../shared-modules/annotations/annotations.mod
 import { EditLinkComponent } from './edit-link/edit-link.component';
 import { LajiMapModule } from '@laji-map/laji-map.module';
 import { DocumentLocalComponent } from './document-local/document-local.component';
+import { DocumentObjectComponent } from './document-local/document-object/document-object.component';
 
 @NgModule({
   imports: [
@@ -33,7 +34,7 @@ import { DocumentLocalComponent } from './document-local/document-local.componen
   providers: [ToQNamePipe, AnnotationService],
   declarations: [ViewerComponent, DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
     GatheringComponent, UnitComponent, LcFirstPipe,
-    SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent, EditLinkComponent, DocumentLocalComponent],
+    SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent, EditLinkComponent, DocumentLocalComponent, DocumentObjectComponent],
   exports: [ViewerComponent, DocumentComponent, DocumentLocalComponent]
 })
 export class ViewerModule { }

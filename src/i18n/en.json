@@ -806,8 +806,8 @@
   "error": "Error",
   "asIs": "Value as is",
   "ignore": "ignore",
-  "datatable.yes": "Yes",
-  "datatable.no": "No",
+  "yes": "Yes",
+  "no": "No",
   "line-transect-result.chart": "Progress of species amount",
   "line-transect-result.grid": "Statistics by grid squares and species",
   "theme.pairCount": "Pair count"
