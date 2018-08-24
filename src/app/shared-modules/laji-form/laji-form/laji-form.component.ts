@@ -19,6 +19,9 @@ import { Logger } from '../../../shared/logger/logger.service';
 import { environment } from '../../../../environments/environment';
 import LajiForm from 'laji-form/lib/laji-form';
 import { ToastsService } from '../../../shared/service/toasts.service';
+import { concatMap, map } from 'rxjs/operators';
+
+const GLOBAL_SETTINGS = '_global_form_settings_';
 
 @Component({
   selector: 'laji-form',
@@ -113,7 +116,11 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (!this.formData || !this.formData.formData || !this.lang) {
       return;
     }
-    this.userService.getUserSetting(this.settingsKey)
+    this.userService.getUserSetting(this.settingsKey).pipe(
+      concatMap(globalSettings => this.userService.getUserSetting(GLOBAL_SETTINGS).pipe(
+        map(settings => ({...globalSettings, ...settings}))
+      ))
+    )
       .subscribe(settings => {
         try {
           this.ngZone.runOutsideAngular(() => {
@@ -155,11 +162,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   _onSettingsChange(settings: object, global = false) {
-    // TODO
-    if (global) {
-        return;
-    }
-    this.userService.setUserSetting(this.settingsKey, settings);
+    this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, settings);
   }
 
   _onChange(formData) {
