@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, from as ObservableFrom, of as ObservableOf } from 'rxjs';
+import { from as ObservableFrom, of as ObservableOf } from 'rxjs';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';

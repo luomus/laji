@@ -1,5 +1,5 @@
 import * as localForage from 'localforage';
-import { Observable, of as ObservableOf, from as ObservableFrom } from 'rxjs';
+import { from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 export abstract class LocalDb {

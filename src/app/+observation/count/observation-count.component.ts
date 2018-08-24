@@ -1,5 +1,4 @@
-
-import {throwError as observableThrowError,  Subscription ,  Observable } from 'rxjs';
+import { Subscription, throwError as observableThrowError } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Util } from '../../shared/service/util.service';

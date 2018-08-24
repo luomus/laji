@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
+import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { ResultService } from '../../../service/result.service';

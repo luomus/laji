@@ -1,19 +1,8 @@
-import {
-  ApplicationRef,
-  ChangeDetectionStrategy, ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  forwardRef,
-  HostListener,
-  Input,
-  OnChanges,
-  Output,
-  ViewContainerRef
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, forwardRef, Input, OnChanges, Output } from '@angular/core';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { of as ObservableOf } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 
 export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {

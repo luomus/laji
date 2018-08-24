@@ -1,7 +1,4 @@
-import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit,
-  Output
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AreaService, AreaType } from '../../../shared/service/area.service';
 import { CollectionService } from '../../../shared/service/collection.service';
 import { Observable } from 'rxjs';

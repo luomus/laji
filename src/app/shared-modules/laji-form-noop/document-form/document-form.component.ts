@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { LajiFormComponent } from '../laji-form/laji-form.component';
 import { Document } from '../../../shared/model/Document';

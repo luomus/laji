@@ -1,11 +1,8 @@
-import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy,
-  OnInit
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Observable,  Subscription, forkJoin as ObservableForkJoin } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, Subscription } from 'rxjs';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { IdService } from '../../shared/service/id.service';

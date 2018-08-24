@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -11,7 +10,7 @@ import {
   Output,
   ViewContainerRef
 } from '@angular/core';
-import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
+import { of as ObservableOf, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';

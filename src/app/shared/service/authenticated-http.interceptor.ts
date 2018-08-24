@@ -1,8 +1,8 @@
-import {throwError as observableThrowError,  Observable } from 'rxjs';
+import { Observable, throwError as observableThrowError } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { UserService } from './user.service';
-import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { WINDOW } from '@ng-toolkit/universal';
 import { tap } from 'rxjs/operators';
 

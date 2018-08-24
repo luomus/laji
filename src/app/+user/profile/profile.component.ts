@@ -3,7 +3,7 @@ import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
 import { Profile } from '../../shared/model/Profile';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription ,  Observable, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
+import { forkJoin as ObservableForkJoin, of as ObservableOf, Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import { environment } from '../../../environments/environment';
 import { Person } from '../../shared/model/Person';

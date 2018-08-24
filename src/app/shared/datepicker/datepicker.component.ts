@@ -26,11 +26,21 @@
  * SOFTWARE.
  */
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, forwardRef, Inject, Input, OnDestroy, OnInit, Output, PLATFORM_ID,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  PLATFORM_ID,
   ViewContainerRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject ,  Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import * as moment from 'moment';
 
 export interface CalendarDate {

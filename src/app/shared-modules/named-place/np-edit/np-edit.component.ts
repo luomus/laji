@@ -1,6 +1,14 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
-  Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,11 +21,11 @@ import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
 import { NpInfoComponent } from './np-info/np-info.component';
-import {FormPermissionService, Rights} from '../../../+haseka/form-permission/form-permission.service';
-import {FormPermission} from '../../../shared/model/FormPermission';
+import { FormPermissionService, Rights } from '../../../+haseka/form-permission/form-permission.service';
+import { FormPermission } from '../../../shared/model/FormPermission';
 import { UserService } from '../../../shared/service/user.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
-import {Logger} from '../../../shared/logger/logger.service';
+import { Logger } from '../../../shared/logger/logger.service';
 
 @Component({
   selector: 'laji-np-edit',

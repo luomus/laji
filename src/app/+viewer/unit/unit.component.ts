@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';

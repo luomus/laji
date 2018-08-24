@@ -1,4 +1,3 @@
-
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { PagedResult } from '../model/PagedResult';

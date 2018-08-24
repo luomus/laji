@@ -1,9 +1,6 @@
-import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy,
-  OnInit
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subscription, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
+import { forkJoin as ObservableForkJoin, of as ObservableOf, Subscription } from 'rxjs';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import { CollectionService } from '../../../shared/service/collection.service';

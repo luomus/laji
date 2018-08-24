@@ -1,5 +1,4 @@
-
-import {throwError as observableThrowError,  Observable ,  Observer, of as ObservableOf } from 'rxjs';
+import { Observable, Observer, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as MapUtil from 'laji-map/lib/utils';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';

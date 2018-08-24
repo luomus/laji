@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserService } from '../../../shared/service/user.service';
 import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
 

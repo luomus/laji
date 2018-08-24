@@ -1,6 +1,13 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit,
-  SimpleChange, ViewChild
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChange,
+  ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';

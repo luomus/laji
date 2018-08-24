@@ -5,7 +5,7 @@ import { PersonApi } from '../../shared/api/PersonApi';
 import { Logger } from '../../shared/logger/logger.service';
 import { DialogService } from '../../shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { of as ObservableOf } from 'rxjs';
 
 @Component({
   selector: 'friends',

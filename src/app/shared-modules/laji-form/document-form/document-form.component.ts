@@ -12,7 +12,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription ,  Subject ,  Observable, of as ObservableOf, merge as ObservableMerge, forkJoin as ObservableForkJoin } from 'rxjs';
+import { forkJoin as ObservableForkJoin, merge as ObservableMerge, Observable, of as ObservableOf, Subject, Subscription } from 'rxjs';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { UserService } from '../../../shared/service/user.service';
 import { FooterService } from '../../../shared/service/footer.service';
@@ -26,8 +26,8 @@ import { DialogService } from '../../../shared/service/dialog.service';
 import { ComponentCanDeactivate } from '../../../shared/guards/document-de-activate.guard';
 import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
 import { NamedPlacesService } from '../../named-place/named-places.service';
-import {LajiApi, LajiApiService} from '../../../shared/service/laji-api.service';
-import {Annotation} from '../../../shared/model/Annotation';
+import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { Annotation } from '../../../shared/model/Annotation';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 
 /*

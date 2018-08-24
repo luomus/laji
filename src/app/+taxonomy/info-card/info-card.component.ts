@@ -1,7 +1,13 @@
-
-import { throwError as observableThrowError, Subscription, Observable, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, PLATFORM_ID,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';

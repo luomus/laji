@@ -1,12 +1,18 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
   ViewChild
 } from '@angular/core';
 import { LajiMap } from '../../../../../shared-modules/laji-map/laji-map.interface';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import {FormField, VALUE_IGNORE} from '../../../model/form-field';
-import {CoordinateService} from '../../../../../shared/service/coordinate.service';
-import {TranslateService} from '@ngx-translate/core';
+import { FormField, VALUE_IGNORE } from '../../../model/form-field';
+import { CoordinateService } from '../../../../../shared/service/coordinate.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-special-geometry',

@@ -1,4 +1,4 @@
-import { Directive, TemplateRef, ViewContainerRef, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Directive, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { Observable, Subscription } from 'rxjs';
 import { startWith, switchMap, tap } from 'rxjs/operators';

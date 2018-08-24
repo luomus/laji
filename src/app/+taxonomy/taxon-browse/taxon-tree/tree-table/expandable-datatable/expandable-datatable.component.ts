@@ -1,9 +1,17 @@
 import {
-  Component, OnInit, OnChanges, Input, ViewChild, TemplateRef, ChangeDetectorRef, SimpleChanges,
-  Output, EventEmitter
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild
 } from '@angular/core';
 import { of } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { DatatableTemplatesComponent } from '../../../../../shared-modules/datatable/datatable-templates/datatable-templates.component';
 import { CacheService } from '../../../../../shared/service/cache.service';
 import { TreeNode } from '../model/tree-node.interface';

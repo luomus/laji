@@ -1,5 +1,5 @@
 import { WINDOW } from '@ng-toolkit/universal';
-import { Component, OnInit , Inject} from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';

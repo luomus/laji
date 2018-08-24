@@ -7,7 +7,8 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Output, Renderer, Renderer2,
+  Output,
+  Renderer2,
   ViewContainerRef
 } from '@angular/core';
 import { Image } from './image.interface';

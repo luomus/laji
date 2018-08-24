@@ -1,8 +1,8 @@
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TaxonAutocompleteComponent } from './taxon-autocomplete.component';
 import { TypeaheadModule } from 'ngx-bootstrap';
-import {SharedModule} from '../../shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [

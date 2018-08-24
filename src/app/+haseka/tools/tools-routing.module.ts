@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { ToolsComponent } from './tools.component';
 import { ImporterComponent } from './importer/importer.component';
 import { ExcelGeneratorComponent } from './excel-generator/excel-generator.component';

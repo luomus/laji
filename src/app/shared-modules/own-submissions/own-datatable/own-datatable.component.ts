@@ -1,17 +1,27 @@
-import { Inject, PLATFORM_ID } from '@angular/core';
-import { WINDOW } from '@ng-toolkit/universal';
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
-  Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  HostListener,
+  Inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  PLATFORM_ID,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
 import { environment } from '../../../../environments/environment';
 import { Document } from '../../../shared/model/Document';
 import { DocumentInfoService } from '../service/document-info.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { UserService } from '../../../shared/service/user.service';
-import { Observable, from as ObservableFrom ,  Subscription, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
+import { forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { Person } from '../../../shared/model/Person';
 import { FormService } from '../../../shared/service/form.service';
 import { RouterChildrenEventService } from '../service/router-children-event.service';

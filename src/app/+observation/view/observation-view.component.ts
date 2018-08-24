@@ -1,9 +1,6 @@
-import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
-import { Subject,  Subscription, of as ObservableOf } from 'rxjs';
+import { of as ObservableOf, Subject, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { ObservationResultComponent } from '../result/observation-result.component';

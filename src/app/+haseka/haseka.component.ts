@@ -5,7 +5,6 @@ import { NavigationEnd, Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
 import { RouterChildrenEventService } from '../shared-modules/own-submissions/service/router-children-event.service';
-import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'haseka',

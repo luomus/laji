@@ -2,11 +2,10 @@ import { NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
 import { ViewerComponent } from './+viewer/viewer.component';
 import { ForumComponent } from './forum/forum.component';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
-import { timer as ObservableTimer } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {

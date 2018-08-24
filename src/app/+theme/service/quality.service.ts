@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Observable ,  Observer, of as ObservableOf } from 'rxjs';
+import { Observable, Observer, of as ObservableOf } from 'rxjs';
 
 @Injectable()
 export class QualityService {

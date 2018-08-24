@@ -1,8 +1,7 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import { PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as FileSaver from 'file-saver';
-import { Subscription, of as ObservableOf, combineLatest as ObservableCombineLatest } from 'rxjs';
+import { combineLatest as ObservableCombineLatest, of as ObservableOf, Subscription } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TranslateService } from '@ngx-translate/core';
 import { NamedPlacesService } from '../named-places.service';

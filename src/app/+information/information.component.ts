@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import { Observable, Subscription, of as ObservableOf } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../shared/logger/logger.service';
 import { Information } from '../shared/model/Information';
 import { Title } from '@angular/platform-browser';
-import {LocalizeRouterService} from '../locale/localize-router.service';
-import {LajiApi, LajiApiService} from '../shared/service/laji-api.service';
+import { LocalizeRouterService } from '../locale/localize-router.service';
+import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
 import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import { InformationStore } from './information.store';
 

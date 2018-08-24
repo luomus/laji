@@ -6,8 +6,8 @@ import { DocumentFormComponent } from '@laji-form/document-form/document-form.co
 import { ComponentCanDeactivate } from '../../../shared/guards/document-de-activate.guard';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { FormService } from '../../../shared/service/form.service';
-import {ToastsService} from '../../../shared/service/toasts.service';
-import {TranslateService} from '@ngx-translate/core';
+import { ToastsService } from '../../../shared/service/toasts.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-line-transect-form-kartoitus',

@@ -3,13 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DateFormatPipe } from 'angular2-moment/date-format.pipe';
-import {
-  AlertModule,
-  BsDropdownModule,
-  ModalModule,
-  PopoverModule, ProgressbarModule,
-  TooltipModule
-} from 'ngx-bootstrap';
+import { AlertModule, BsDropdownModule, ModalModule, PopoverModule, ProgressbarModule, TooltipModule } from 'ngx-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';
 import { UsersPipe } from './pipe/users.pipe';

@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Observable ,  Observer, of as ObservableOf } from 'rxjs';
+import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { LocalStorage } from 'ngx-webstorage';
 import { UserService } from './user.service';
 import { Util } from './util.service';

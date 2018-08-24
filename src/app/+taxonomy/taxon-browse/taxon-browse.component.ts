@@ -1,8 +1,8 @@
 import { WINDOW } from '@ng-toolkit/universal';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, HostListener, Inject, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { withLatestFrom, map } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs/operators';
 import { TaxonomySearchQuery } from './service/taxonomy-search-query';
 import { TaxonomyColumns } from './service/taxonomy-columns';
 import { FooterService } from '../../shared/service/footer.service';

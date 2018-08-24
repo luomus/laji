@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output} from '@angular/core';
-import {Observable, of as ObservableOf} from 'rxjs';
-import {TranslateService} from '@ngx-translate/core';
-import {Autocomplete} from '../../shared/model/Autocomplete';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Observable, of as ObservableOf } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { Autocomplete } from '../../shared/model/Autocomplete';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 
 @Component({

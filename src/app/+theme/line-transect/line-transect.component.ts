@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
+import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';

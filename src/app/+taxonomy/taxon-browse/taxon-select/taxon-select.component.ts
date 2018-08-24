@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
-import { switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { TranslateService } from '@ngx-translate/core';
 

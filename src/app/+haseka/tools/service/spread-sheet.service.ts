@@ -3,10 +3,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { forkJoin as ObservableForkJoin } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { environment } from '../../../../environments/environment';
-import {TriplestoreLabelService} from '../../../shared/service/triplestore-label.service';
+import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 
 import { DOCUMENT_LEVEL, FormField, VALUE_IGNORE } from '../model/form-field';
-import {MappingService} from './mapping.service';
+import { MappingService } from './mapping.service';
 import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
 
 @Injectable()

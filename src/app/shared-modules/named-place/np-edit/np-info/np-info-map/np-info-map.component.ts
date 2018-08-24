@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  HostListener,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMap } from '../../../../laji-map/laji-map.interface';

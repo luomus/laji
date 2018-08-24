@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { MultiLangService } from '../../../shared-modules/lang/service/multi-lang.service';

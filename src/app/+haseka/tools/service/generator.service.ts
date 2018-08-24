@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
-import {FormField} from '../model/form-field';
-import { UserService} from '../../../shared/service/user.service';
-import {MappingService, SpecialTypes} from './mapping.service';
+import { FormField } from '../model/form-field';
+import { UserService } from '../../../shared/service/user.service';
+import { MappingService, SpecialTypes } from './mapping.service';
 import { Person } from '../../../shared/model/Person';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { forkJoin as ObservableForkJoin } from 'rxjs';
-import {NamedPlacesService} from '../../../shared-modules/named-place/named-places.service';
-import {NamedPlace} from '../../../shared/model/NamedPlace';
+import { NamedPlacesService } from '../../../shared-modules/named-place/named-places.service';
+import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TranslateService } from '@ngx-translate/core';
 import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
 import { ExportService } from '../../../shared/service/export.service';

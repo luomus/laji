@@ -14,12 +14,12 @@ import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription, of as ObservableOf, interval as ObservableInterval } from 'rxjs';
+import { interval as ObservableInterval, of as ObservableOf, Subscription } from 'rxjs';
 import { BsDropdownDirective } from 'ngx-bootstrap';
 import { DialogService } from '../service/dialog.service';
-import {LajiApi, LajiApiService} from '../service/laji-api.service';
-import {PagedResult} from '../model/PagedResult';
-import {Notification} from '../model/Notification';
+import { LajiApi, LajiApiService } from '../service/laji-api.service';
+import { PagedResult } from '../model/PagedResult';
+import { Notification } from '../model/Notification';
 import { isPlatformBrowser } from '@angular/common';
 import { filter, switchMap, take } from 'rxjs/operators';
 

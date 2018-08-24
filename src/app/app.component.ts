@@ -1,5 +1,5 @@
 import { WINDOW } from '@ng-toolkit/universal';
-import { Component, ViewContainerRef, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, ViewContainerRef } from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { isPlatformBrowser, Location } from '@angular/common';
 import { environment } from '../environments/environment';

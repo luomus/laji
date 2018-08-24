@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ObservationTableColumn } from '../../../observation-result/model/observation-table-column';
 import { DatatableComponent } from '../../../datatable/datatable/datatable.component';
-import {DatatableColumn} from '../../../datatable/model/datatable-column';
+import { DatatableColumn } from '../../../datatable/model/datatable-column';
 import { Util } from '../../../../shared/service/util.service';
 
 @Component({

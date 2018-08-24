@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
 /**
  * Format a numeric string
  * Takes the numeric string and adds spaces to it.

@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {FormField} from '../../model/form-field';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { FormField } from '../../model/form-field';
 
 @Component({
   selector: 'laji-status-cell',

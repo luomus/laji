@@ -1,9 +1,15 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
   OnDestroy
 } from '@angular/core';
 import { ScriptService } from '../../../../shared/service/script.service';
-import { axisLeft, axisBottom } from 'd3-axis';
+import { axisBottom, axisLeft } from 'd3-axis';
 import { select } from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
 import { line as d3Line } from 'd3-shape';

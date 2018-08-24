@@ -2,7 +2,7 @@
  * Created by mjtahtin on 18.4.2017.
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Subscription ,  Observable, forkJoin as ObservableForkJoin } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxonomy, TaxonomyImage } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';

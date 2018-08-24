@@ -1,6 +1,6 @@
 import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { LocationStrategy, PathLocationStrategy, CommonModule } from '@angular/common';
+import { CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -17,12 +17,13 @@ import { WhatsNewComponent } from './shared/whats-new/whats-new.component';
 import {
   AlertModule,
   BsDropdownModule,
+  CarouselModule,
   ModalModule,
   PaginationModule,
-  ProgressbarModule,
   PopoverModule,
+  ProgressbarModule,
   TooltipModule,
-  TypeaheadModule, CarouselModule
+  TypeaheadModule
 } from 'ngx-bootstrap';
 import { Ng2Webstorage } from 'ngx-webstorage';
 import { ViewerModule } from './+viewer/viewer.module';
