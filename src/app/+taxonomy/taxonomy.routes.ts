@@ -22,7 +22,10 @@ export const taxonomyRoutes: Routes = [
   },
   {
     matcher: decideTaxonTab,
-    component: TaxonBrowseComponent
+    component: TaxonBrowseComponent,
+    data: {
+      noScrollToTop: true
+    }
   },
   {
     path: 'informal',

@@ -36,7 +36,7 @@ const routes: Routes = [
     component: WbcComponent,
     children: [
       {path: '', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' }},
-      {path: 'stats', pathMatch: 'full', component: WbcResultComponent, data: { title: 'wbc.title' }},
+      {path: 'stats', pathMatch: 'full', component: WbcResultComponent, data: { title: 'wbc.title', noScrollToTop: true }},
       {path: 'form', pathMatch: 'full', component: WbcFormComponent, canActivate: [OnlyLoggedIn]},
       {
         path: 'form/:id',
@@ -55,7 +55,7 @@ const routes: Routes = [
     component: NafiComponent,
     children: [
       {path: '', pathMatch: 'full', component: NafiInstructionsComponent, data: { title: 'nafi.stats.title' }},
-      {path: 'stats', pathMatch: 'full', component: NafiResultComponent, data: { title: 'nafi.stats.title' }},
+      {path: 'stats', pathMatch: 'full', component: NafiResultComponent, data: { title: 'nafi.stats.title', noScrollToTop: true}},
       {path: 'form', pathMatch: 'full', component: NafiFormComponent, canActivate: [OnlyLoggedIn]},
       {
         path: 'form/:id',
@@ -76,6 +76,7 @@ const routes: Routes = [
       {path: '', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' }},
       {
         path: 'stats',
+        data: { noScrollToTop: true },
         children: [
           {
             path: '',
