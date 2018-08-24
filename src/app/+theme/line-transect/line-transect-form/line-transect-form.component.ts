@@ -36,7 +36,8 @@ export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCa
       this.documentId = params['id'] || null;
       if (!this.formService.hasNamedPlace() && !this.documentId) {
         this.router.navigate(
-          this.localizeRouterService.translateRoute(['/theme/linjalaskenta/places/HR.61', environment.lineTransectForm])
+          this.localizeRouterService.translateRoute(['/theme/linjalaskenta/places/HR.61', environment.lineTransectForm]),
+          { replaceUrl: true }
         );
       } else {
         this.hasNS = true;
