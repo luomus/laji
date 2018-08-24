@@ -5505,15 +5505,15 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.496:
-  version "0.0.496"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.496.tgz#564bb7eb695a063226f38dfece2ce03691fc68ba"
+laji-form@^0.0.497:
+  version "0.0.497"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.497.tgz#9105b9a0158893452d4322661eb07bc4d402543a"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.398"
+    laji-map "^1.0.401"
     laji-validate "0.0.69"
     moment "*"
     prop-types "^15.5.8"
@@ -5532,12 +5532,12 @@ laji-form@^0.0.496:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@^1.0.395, laji-map@^1.0.398, laji-map@^1.0.399:
-  version "1.0.399"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.399.tgz#1b404511795a06d1f95add3047e9ebf6c961fb00"
+laji-map@1.0.401, laji-map@^1.0.395, laji-map@^1.0.401:
+  version "1.0.401"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.401.tgz#fe73c600e0e7d98d33a9ae610f873d65e245027f"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
-    leaflet "1.3.3"
+    leaflet "1.3.4"
     leaflet-contextmenu "1.4.0"
     leaflet-draw "1.0.0"
     leaflet-geometryutil "0.8.0"
@@ -5610,9 +5610,9 @@ leaflet.markercluster@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.3.0.tgz#58eb0654e90bd3274a660390ab0bc734212b204d"
 
-leaflet@*, leaflet@1.3.3, leaflet@>=0.7.0, leaflet@^1.0.1:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.3.3.tgz#5c8f2fd50e4a41ead93ab850dcd9e058811da9b9"
+leaflet@*, leaflet@1.3.4, leaflet@>=0.7.0, leaflet@^1.0.1:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.3.4.tgz#7f006ea5832603b53d7269ef5c595fd773060a40"
 
 leb@^0.3.0:
   version "0.3.0"
