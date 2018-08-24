@@ -249,7 +249,7 @@ export class FormService {
               form.formData = current;
               form.currentId = this.currentKey;
               if (!documentId && form.prepopulatedDocument) {
-                form.formData = merge(form.formData || {}, form.prepopulatedDocument);
+                form.formData = merge(form.formData || {}, form.prepopulatedDocument, { arrayMerge: Util.arrayCombineMerge });
               }
               this.currentData = Util.clone(form.formData);
               return form;
@@ -276,7 +276,7 @@ export class FormService {
   }
 
   populate(data: any) {
-    this._populate = merge(this._populate || {}, data || {});
+    this._populate = merge(this._populate || {}, data || {}, { arrayMerge: Util.arrayCombineMerge });
   }
 
   getAddUrlPath(formId) {

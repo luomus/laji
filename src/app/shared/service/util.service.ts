@@ -1,3 +1,5 @@
+import merge from 'deepmerge'
+
 export class Util {
   /**
    * Clones the object using JSON stringify
@@ -64,5 +66,30 @@ export class Util {
     return splitPath.reduce((o, s) => {
       return o && o[s] || undefined;
     }, object);
+  }
+
+  public static arrayCombineMerge(target, source, options) {
+    const destination = target.slice();
+
+    source.forEach(function(e, i) {
+      if (typeof destination[i] === 'undefined') {
+        const cloneRequested = options.clone !== false;
+        const shouldClone = cloneRequested && options.isMergeableObject(e);
+        destination[i] = shouldClone ? Util.mergeClone(e, options) : e
+      } else if (options.isMergeableObject(e)) {
+        destination[i] = merge(target[i], e, options);
+      } else if (target.indexOf(e) === -1) {
+        destination.push(e);
+      }
+    });
+    return destination
+  }
+
+  private static mergeClone(value, options) {
+    return merge(Util.mergeEmptyTarget(value), value, options);
+  }
+
+  private static mergeEmptyTarget(value) {
+    return Array.isArray(value) ? [] : {};
   }
 }
