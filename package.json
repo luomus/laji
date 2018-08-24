@@ -132,7 +132,7 @@
   },
   "resolutions": {
     "proj4": "2.3.16",
-    "laji-map": "^1.0.399"
+    "laji-map": "1.0.399"
   },
   "keywords": [
     "laji.fi"
