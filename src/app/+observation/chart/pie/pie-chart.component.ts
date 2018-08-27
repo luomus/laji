@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   <ngx-charts-advanced-pie-chart
     [view]="[760, height]"
     (select)="select($event)"
-    [scheme]="'air'"
+    [scheme]="'fire'"
     [label]="'observation.results.observation' | translate"
     [results]="data"
     [gradient]="false">
