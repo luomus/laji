@@ -313,9 +313,9 @@
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
 
-"@swimlane/ngx-charts@^7.4.0":
-  version "7.4.0"
-  resolved "https://registry.yarnpkg.com/@swimlane/ngx-charts/-/ngx-charts-7.4.0.tgz#336b00c79e85ba6045e78c8d9cc4016bd053476c"
+"@swimlane/ngx-charts@^9.0.0":
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/@swimlane/ngx-charts/-/ngx-charts-9.0.0.tgz#16eb1199d1a154b32d2c7fd9e0af32dccd9f2fdd"
   dependencies:
     d3-array "^1.2.1"
     d3-brush "^1.0.4"
