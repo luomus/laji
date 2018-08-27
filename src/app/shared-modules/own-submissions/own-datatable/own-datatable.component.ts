@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -237,6 +238,10 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
         this.temp = array;
         this.rows = this.temp;
         this.cd.markForCheck();
+        // Table is not sorted with external sorter on initial load. So this is here to make sure that when data is received it's sorted.
+        setTimeout(() => {
+          this.table.onColumnSort({sorts: this.defaultSort});
+        });
       });
   }
 
