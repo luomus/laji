@@ -15,7 +15,7 @@ import { DocumentDeActivateGuard } from '../shared/guards/document-de-activate.g
 import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
 import { TemplatesComponent } from './templates/templates.component';
 import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';
-import {OnlyLoggedIn} from '../shared/route/only-logged-in';
+import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 
 export const hasekaRoutes: Routes = [
   {

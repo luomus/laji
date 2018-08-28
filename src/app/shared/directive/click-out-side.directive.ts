@@ -1,8 +1,5 @@
-
-import {fromEvent as observableFromEvent,  Subscription ,  Observable } from 'rxjs';
-import {
-  Directive, ElementRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, PLATFORM_ID
-} from '@angular/core';
+import { fromEvent as observableFromEvent, Subscription } from 'rxjs';
+import { Directive, ElementRef, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
 import { isPlatformBrowser } from '@angular/common';
 

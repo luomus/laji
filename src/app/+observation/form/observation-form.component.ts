@@ -59,6 +59,25 @@ export class ObservationFormComponent implements OnInit {
 
   visible: {[key: string]: boolean} = {};
 
+  visibleAdvanced: {[key: string]: boolean} = {};
+
+  section = {
+    own: ['observerPersonToken', 'editorOrObserverPersonToken', 'editorPersonToken'],
+    time: ['time', 'season', 'firstLoadedLaterThan', 'firstLoadedBefore'],
+    place: ['countryId', 'biogeographicalProvinceId', 'finnishMunicipalityId', 'area', 'coordinates', 'coordinateAccuracyMax'],
+    observer: ['teamMember', 'teamMemberId'],
+    individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
+    quality: ['taxonReliability', 'annotated', 'qualityIssues'],
+    dataset: ['collectionId', 'reliabilityOfCollection', 'sourceId'],
+    collection: ['collectionId', 'typeSpecimen'],
+    keywords: ['documentId', 'keyword'],
+    features: ['administrativeStatusId', 'redListStatusId', 'typeOfOccurrenceId', 'typeOfOccurrenceIdNot', 'invasive', 'finnish'],
+    invasive: [],
+    image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia'],
+    secret: ['secured', 'secureLevel'],
+    identify: ['unidentified'],
+  };
+
   advancedSections = {
     taxon: ['exactTarget', 'originalExactTarget', 'originalTarget'],
     coordinate: ['coordinates' , 'coordinateAccuracyMax'],
@@ -90,6 +109,7 @@ export class ObservationFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.updateVisibleSections();
   }
 
   empty() {
@@ -305,7 +325,7 @@ export class ObservationFormComponent implements OnInit {
 
   onQueryChange() {
     this.queryUpdate.emit(this.searchQuery);
-    this.updateVisibleSections();
+    this.updateVisibleAdvancedSections();
   }
 
   updateTypeOfOccurrence(event) {
@@ -315,6 +335,21 @@ export class ObservationFormComponent implements OnInit {
   }
 
   private updateVisibleSections() {
+    Object.keys(this.section).forEach(section => {
+      let visible = false;
+      for (let i = 0; i < this.section[section].length; i++) {
+        const value = this.searchQuery[this.section[section][i]];
+        if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
+          visible = true;
+          break;
+        }
+      }
+      this.visible[section] = visible;
+    })
+  }
+
+
+  private updateVisibleAdvancedSections() {
     Object.keys(this.advancedSections).forEach(section => {
       let visible = false;
       for (let i = 0; i < this.advancedSections[section].length; i++) {
@@ -324,7 +359,7 @@ export class ObservationFormComponent implements OnInit {
           break;
         }
       }
-      this.visible[section] = visible;
+      this.visibleAdvanced[section] = visible;
     });
   }
 

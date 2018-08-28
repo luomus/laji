@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormField, VALUE_IGNORE } from '../../../model/form-field';
-import {MappingService} from '../../../service/mapping.service';
+import { MappingService } from '../../../service/mapping.service';
 
 @Component({
   selector: 'laji-special-taxon-name',

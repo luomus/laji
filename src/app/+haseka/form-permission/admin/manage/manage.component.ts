@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription,  combineLatest as ObservableCombineLatest } from 'rxjs';
+import { combineLatest as ObservableCombineLatest, Subscription } from 'rxjs';
 import { FormPermissionService } from '../../form-permission.service';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import { FormPermission } from '../../../../shared/model/FormPermission';

@@ -1,5 +1,5 @@
 import { WINDOW } from '@ng-toolkit/universal';
-import { Component, Input, ViewChild , Inject} from '@angular/core';
+import { Component, Inject, Input, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { UserService } from '../service/user.service';
 import { SessionStorage } from 'ngx-webstorage';

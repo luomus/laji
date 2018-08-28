@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener} from '@angular/core';
+import { Directive, ElementRef, HostListener } from '@angular/core';
 
 /**
  * Fixes the element to view when scrolling relative to parent container

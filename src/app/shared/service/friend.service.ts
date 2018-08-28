@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {Autocomplete} from '../model/Autocomplete';
-import {Observable, of as ObservableOf} from 'rxjs';
-import {UserService} from './user.service';
+import { Autocomplete } from '../model/Autocomplete';
+import { Observable, of as ObservableOf } from 'rxjs';
+import { UserService } from './user.service';
 import { LajiApi, LajiApiService } from './laji-api.service';
 import { switchMap, take, tap } from 'rxjs/operators';
 

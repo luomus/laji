@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as XLSX from 'xlsx';
-import { Observable, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
 import { ExportService } from '../../../shared/service/export.service';
-import { switchMap, map, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { DatatableUtil } from './datatable-util.service';
 import { Util } from '../../../shared/service/util.service';
 

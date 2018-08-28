@@ -1,9 +1,9 @@
-import {Component, Input, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { AreaType } from '../../../../shared/service/area.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription, of as ObservableOf} from 'rxjs';
-import {ObservationListService} from '../../../../shared-modules/observation-result/service/observation-list.service';
-import {Logger} from '../../../../shared/logger';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of as ObservableOf, Subscription } from 'rxjs';
+import { ObservationListService } from '../../../../shared-modules/observation-result/service/observation-list.service';
+import { Logger } from '../../../../shared/logger';
 import { combineLatest, map, tap } from 'rxjs/operators';
 import { PagedResult } from '../../../../shared/model/PagedResult';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';

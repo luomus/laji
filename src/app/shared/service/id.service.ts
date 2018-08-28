@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 export const DEFAULT_DOMAIN = 'http://tun.fi/';
 
 

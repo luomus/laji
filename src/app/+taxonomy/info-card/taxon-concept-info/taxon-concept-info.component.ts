@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
 import { TaxonConceptService } from './taxon-concept.service';
 import { TaxonMatch } from './taxon-match.model';
 import { Subscription } from 'rxjs';

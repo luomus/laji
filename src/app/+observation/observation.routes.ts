@@ -15,7 +15,10 @@ export const observationRoutes: Routes = [
       {
         path: ':tab',
         pathMatch: 'full',
-        component: ObservationComponent
+        component: ObservationComponent,
+        data: {
+          noScrollToTop: true
+        }
       }
     ]
   }

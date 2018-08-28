@@ -7,7 +7,7 @@ import { Document } from '../../shared/model/Document';
 import { forkJoin as ObservableForkJoin, of as ObservableOf } from 'rxjs';
 import { NamedPlacesService } from '../named-place/named-places.service';
 import { NamedPlace } from '../../shared/model/NamedPlace';
-import {map, switchMap} from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-statistics',

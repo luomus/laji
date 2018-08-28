@@ -22,7 +22,6 @@ import { Util } from '../service/util.service';
 import { environment } from '../../../environments/environment';
 
 
-
 @Injectable({providedIn: 'root'})
 export class FormPermissionApi {
     protected basePath = environment.apiBase;

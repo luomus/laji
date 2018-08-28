@@ -1,21 +1,16 @@
-import {
-  ChangeDetectionStrategy, Component, EventEmitter, Input, Output
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'laji-pie-chart',
   template: `
-  <ngx-charts-pie-chart
-    [view]="[500, height]"
+  <ngx-charts-advanced-pie-chart
+    [view]="[760, height]"
     (select)="select($event)"
-    [legendTitle]="''"
+    [scheme]="'fire'"
+    [label]="'observation.results.observation' | translate"
     [results]="data"
-    [labels]="false"
-    [legend]="true"
-    [labels]="true"
-    [doughnut]="false"
     [gradient]="false">
-    </ngx-charts-pie-chart>
+    </ngx-charts-advanced-pie-chart>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

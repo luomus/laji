@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { FormField } from '../model/form-field';
 import { SpreadSheetService } from '../service/spread-sheet.service';
-import {GeneratorService} from '../service/generator.service';
+import { GeneratorService } from '../service/generator.service';
 
 @Component({
   selector: 'laji-excel-generator',

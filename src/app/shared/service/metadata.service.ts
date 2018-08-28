@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable ,  Observer ,  Subject, of as ObservableOf } from 'rxjs';
+import { Observable, Observer, of as ObservableOf, Subject } from 'rxjs';
 import { MetadataApi } from '../api/MetadataApi';
 import { CacheService } from './cache.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';

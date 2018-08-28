@@ -1,5 +1,4 @@
-
-import { Observable, Observer, forkJoin, of as ObservableOf } from 'rxjs';
+import { forkJoin, Observable, Observer, of as ObservableOf } from 'rxjs';
 import { Injectable, OnInit } from '@angular/core';
 import { MetadataApi } from '../api/MetadataApi';
 import { Logger } from '../logger/logger.service';

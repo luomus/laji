@@ -110,7 +110,7 @@ export class WarehouseApi {
     return this.http.get(path, {params: queryParameters});
   }
 
-  private warehouseQueryAggregateOrStatisticsGet(target: string, query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
+  private warehouseQueryGet(target: string, query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
     const path = this.basePath + `/warehouse/query/${target}`;
 
     let queryParameters = {};
@@ -132,7 +132,6 @@ export class WarehouseApi {
   /**
    * Perform aggregation query using given filter and aggregation
    * Aggregates the results of the query based on given \&quot;aggregateBy\&quot; parameter or parameters. Returns count of units, individual count sum and maximum and min and max date.
-   * @param target should be 'aggregate' or 'statistics'
    * @param query to make to the warehouse
    * @param aggregateBy Define fields to aggregate by. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
    * @param orderBy Define order of fields. Defaults to count of units (desc). Give number of the column, first is 1. aggregateBy -fields are first, followed by count of units, individual count sum and maximum and min and max date. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
@@ -142,21 +141,30 @@ export class WarehouseApi {
    * @param onlyCount return only count in result items (default true).
    */
   public warehouseQueryAggregateGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
-    return this.warehouseQueryAggregateOrStatisticsGet('aggregate', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
+    return this.warehouseQueryGet('aggregate', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
+  }
+
+  /**
+   * Aggregates based on annotation
+   *
+   * @see warehouseQueryAggregateGet
+   */
+  public warehouseQueryAnnotationAggregateGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
+    return this.warehouseQueryGet('annotation/aggregate', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }
 
   /**
    * Same as aggrate query, but performs the query on private data also.
    */
   public warehouseQueryStatisticsGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
-    return this.warehouseQueryAggregateOrStatisticsGet('statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
+    return this.warehouseQueryGet('statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }
 
   /**
    * Same as aggrate query, but performs the query on private data also.
    */
   public warehouseQueryGatheringStatisticsGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
-    return this.warehouseQueryAggregateOrStatisticsGet('gathering/statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
+    return this.warehouseQueryGet('gathering/statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }
 
   public downloadApprovalRequest(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, description: string, extraHttpRequestParams?: any): Observable<string> {

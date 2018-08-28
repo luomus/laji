@@ -1,4 +1,3 @@
-
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Injectable, OnInit } from '@angular/core';

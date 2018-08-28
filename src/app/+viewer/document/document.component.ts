@@ -1,5 +1,6 @@
 import {
-  AfterViewInit, ApplicationRef,
+  AfterViewInit,
+  ApplicationRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -10,7 +11,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Subscription, interval as ObservableInterval } from 'rxjs';
+import { interval as ObservableInterval, Subscription } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../shared/service/id.service';

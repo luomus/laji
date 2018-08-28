@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as MapUtil from 'laji-map/lib/utils';
-import {GeometryCollection} from 'geojson';
+import { GeometryCollection } from 'geojson';
 
 @Injectable({providedIn: 'root'})
 export class CoordinateService {

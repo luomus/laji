@@ -1,8 +1,6 @@
-import {
-  Component, OnChanges, Input, Output, ChangeDetectorRef, EventEmitter, SimpleChanges
-} from '@angular/core';
-import { Observable, of, forkJoin , interval } from 'rxjs';
-import { tap, map, switchMap, share, take } from 'rxjs/operators';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { forkJoin, interval, Observable, of } from 'rxjs';
+import { map, share, switchMap, take, tap } from 'rxjs/operators';
 import { TreeNode } from './model/tree-node.interface';
 import { TreeState } from './service/tree-state';
 import { ObservationTableColumn } from '../../../../shared-modules/observation-result/model/observation-table-column';

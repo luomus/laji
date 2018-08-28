@@ -83,7 +83,7 @@
       ></laji-pill-list>
     </div>
   </div>
-  <div *ngIf="advancedMode || visible['taxon']">
+  <div *ngIf="advancedMode || visibleAdvanced['taxon']">
     <div class="row">
       <div class="col-lg-12">
         <label>
@@ -116,7 +116,7 @@
 </div>
 <div class="row">
   <div *lajiLoggedIn="true">
-    <div laji-panel [title]="'observation.form.own' | translate" [autoToggle]="true">
+    <div laji-panel [title]="'observation.form.own' | translate" [autoToggle]="true" [open]="visible['own']">
       <div class="row">
         <div class="col-sm-12">
           <label>
@@ -164,7 +164,7 @@
       </div>
     </div>
   </div>
-  <div laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true">
+  <div laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true"  [open]="visible['time']">
     <div class="row">
       <div class="lj-input-wrap">
         <label>
@@ -257,7 +257,7 @@
     </div>
   </div>
   <div laji-panel
-       [open]="showPlace"
+       [open]="showPlace || visible['place']"
        (activate)="togglePlace($event)"
        [title]="'observation.form.place' | translate">
     <div class="form-group">
@@ -336,7 +336,7 @@
         {{'observation.form.map.coordinates'|translate}}
       </div>
     </div>
-    <div *ngIf="advancedMode || visible['coordinate']">
+    <div *ngIf="advancedMode || visibleAdvanced['coordinate']">
       <div class="row">
         <label class="col-sm-12">{{'observation.form.coordinateIntersection' | translate}}<laji-info>{{'observation.info.coordinateIntersection' | translate}}</laji-info>
           <div class="input-group" style="max-width: 110px;">
@@ -429,7 +429,7 @@
       </div>
     </div>
   </div>
-  <div laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true">
+  <div laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true"  [open]="visible['observer']">
     <div class="row">
       <label class="col-lg-12">
         {{'observation.form.team' | translate}}:<laji-info>
@@ -445,7 +445,7 @@
       </div>
     </div>
   </div>
-  <div laji-panel  *ngIf="advancedMode || visible['individual']" [title]="'observation.form.unit' | translate" [autoToggle]="true">
+  <div laji-panel *ngIf="advancedMode || visibleAdvanced['individual']" [title]="'observation.form.unit' | translate" [autoToggle]="true"  [open]="visible['individual']">
     <div class="form-group">
       <div class="col-lg-12">
         <laji-metadata-select
@@ -560,7 +560,7 @@
       </div>
     </div>
   </div>
-  <div laji-panel [title]="'observation.form.qualityTitle' | translate" [autoToggle]="true">
+  <div laji-panel [title]="'observation.form.qualityTitle' | translate" [autoToggle]="true" [open]="visible['quality']">
     <div class="form-group">
       <div class="col-sm-12">
         <laji-metadata-select
@@ -610,7 +610,7 @@
       </div>
     </div>
   </div>
-  <div laji-panel  *ngIf="advancedMode || visible['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true">
+  <div laji-panel *ngIf="advancedMode || visibleAdvanced['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
     <div class="form-group">
       <div class="col-sm-12">
         <laji-metadata-select
@@ -658,7 +658,7 @@
       </div>
     </div>
   </div>
-  <div laji-panel  *ngIf="advancedMode || visible['collection']" [title]="'observation.form.collectionTitle' | translate" [autoToggle]="true">
+  <div laji-panel *ngIf="advancedMode || visibleAdvanced['collection']" [title]="'observation.form.collectionTitle' | translate" [autoToggle]="true"  [open]="visible['collection']">
     <div class="row">
       <div class="col-lg-12">
         <label>
@@ -701,7 +701,7 @@
       </div>
     </div>
   </div>
-  <div laji-panel  *ngIf="advancedMode || visible['keywords']" [title]="'observation.form.keywords' | translate" [autoToggle]="true">
+  <div laji-panel *ngIf="advancedMode || visibleAdvanced['keywords']" [title]="'observation.form.keywords' | translate" [autoToggle]="true" [open]="visible['keywords']">
     <div class="form-group">
       <label class="col-lg-12">
         {{'observation.form.documentId' | translate}}:<laji-info>
@@ -733,7 +733,7 @@
       </div>
     </div>
   </div>
-  <div laji-panel [title]="'observation.form.speciesFeatures' | translate" [autoToggle]="true">
+  <div laji-panel [title]="'observation.form.speciesFeatures' | translate" [autoToggle]="true" [open]="visible['features']">
     <div class="form-group">
       <div class="col-sm-12">
         <p>
@@ -802,7 +802,7 @@
       </div>
     </div>
   </div>
-  <div laji-panel [title]="'observation.form.invasiveClassification' | translate" [autoToggle]="true">
+  <div laji-panel [title]="'observation.form.invasiveClassification' | translate" [autoToggle]="true"  [open]="visible['invasive']">
     <div class="row" *lajiAuthorities="true">
       <div class="col-sm-12">
         <laji-metadata-select
@@ -859,7 +859,7 @@
       </div>
     </div>
   </div>
-  <div laji-panel  *ngIf="advancedMode || visible['image']" [title]="'observation.form.images' | translate" [autoToggle]="true">
+  <div laji-panel *ngIf="advancedMode || visibleAdvanced['image']" [title]="'observation.form.images' | translate" [autoToggle]="true" [open]="visible['image']">
     <div class="row">
       <div class="col-sm-12">
         <p>
@@ -916,7 +916,7 @@
       </div>
     </div>
   </div>
-  <div laji-panel  *ngIf="advancedMode || visible['secure']" [title]="'observation.form.securedPanel' | translate" [autoToggle]="true">
+  <div laji-panel *ngIf="advancedMode || visibleAdvanced['secure']" [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secret']">
     <div class="form-group">
       <div class="col-sm-12">
         <label>
@@ -946,7 +946,7 @@
       </div>
     </div>
   </div>
-  <div laji-panel *ngIf="advancedMode || visible['identify']" [title]="'observation.form.identify' | translate" [autoToggle]="true">
+  <div laji-panel *ngIf="advancedMode || visibleAdvanced['identify']" [title]="'observation.form.identify' | translate" [autoToggle]="true" [open]="visible['identify']">
     <div class="form-group">
       <div class="col-sm-12">
         <label>

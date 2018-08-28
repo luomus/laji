@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MappingService } from './service/mapping.service';
-import {TypeaheadModule} from 'ngx-bootstrap';
+import { TypeaheadModule } from 'ngx-bootstrap';
 
 import { DatatableModule } from '../../shared-modules/datatable/datatable.module';
 import { ToolsRoutingModule } from './tools-routing.module';
@@ -20,7 +20,7 @@ import { ImportService } from './service/import.service';
 import { CellValueSelectComponent } from './importer/cell-value-mapping/cell-value-select/cell-value-select.component';
 import { LajiMapModule } from '@laji-map/laji-map.module';
 import { SpecialGeometryComponent } from './importer/cell-value-mapping/special-geometry/special-geometry.component';
-import {GeneratorService} from './service/generator.service';
+import { GeneratorService } from './service/generator.service';
 import { SpecialFriendComponent } from './importer/cell-value-mapping/special-friend/special-friend.component';
 import { SpecialTaxonIdComponent } from './importer/cell-value-mapping/special-taxon-id/special-taxon-id.component';
 import { SpecialNamedPlacesComponent } from './importer/cell-value-mapping/special-named-places/special-named-places.component';

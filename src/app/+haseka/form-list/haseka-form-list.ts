@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription,  Observable, merge as ObservableMerge, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
+import { forkJoin as ObservableForkJoin, merge as ObservableMerge, Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import { Logger } from '../../shared/logger/logger.service';
 import { FormService } from '../../shared/service/form.service';
@@ -8,6 +8,7 @@ import { UserService } from '../../shared/service/user.service';
 import { FormPermissionService } from '../form-permission/form-permission.service';
 import { Person } from '../../shared/model/Person';
 import { environment } from '../../../environments/environment';
+import { map } from 'rxjs/operators';
 
 const DEFAULT_CATEFORY = 'MHL.categoryGeneric';
 
@@ -90,42 +91,26 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     }
     this.loadedLang = lang;
     this.subFetch = this.formService.getAllForms(this.loadedLang)
-      .switchMap((forms) => {
-        if (forms.length === 0) {
-          return ObservableOf(forms);
-        }
-        const subs = [];
-        forms.forEach(form => {
-          subs.push(
-            this.hasAdminRight(form)
-              .map(hasAdminRight => ({...form, hasAdminRight: hasAdminRight}))
-          )
-        });
-        return ObservableForkJoin(subs);
-      })
       .subscribe(
         forms => {
-          const categories: FormCategory[] = [];
-          const idxRef = {};
-          let idx = 0;
-          forms.sort((a, b) => environment.formWhitelist.indexOf(a.id) - environment.formWhitelist.indexOf(b.id));
-          forms.forEach((form: FormList) => {
-            const category = form.category || DEFAULT_CATEFORY;
-            if (typeof idxRef[category] === 'undefined') {
-              categories.push({
-                category: category,
-                forms: []
-              });
-              idxRef[category] = idx;
-              idx++;
-            }
-            categories[idxRef[category]].forms.push(form);
-          });
-          this.categories = categories;
-          this.changeDetector.markForCheck();
+          this.updateCategories(forms);
+          this.updateAdminRigths();
         },
         err => this.logger.log('Failed to fetch all forms', err)
       );
+  }
+
+  updateAdminRigths() {
+    if (!this.categories) {
+      return;
+    }
+    const formsSub = [];
+    this.categories.forEach(category => {
+      category.forms.forEach(form => {
+        formsSub.push(this.hasAdminRight(form).pipe(map(hasAdminRight => ({...form, hasAdminRight: hasAdminRight}))));
+      })
+    });
+    ObservableForkJoin(formsSub).subscribe(forms => this.updateCategories(forms));
   }
 
   hasAdminRight(form: Form.List): Observable<boolean> {
@@ -148,6 +133,27 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
 
   trackCategory(idx, category) {
     return category ? category.category : undefined;
+  }
+
+  private updateCategories(forms) {
+    const categories: FormCategory[] = [];
+    const idxRef = {};
+    let idx = 0;
+    forms.sort((a, b) => environment.formWhitelist.indexOf(a.id) - environment.formWhitelist.indexOf(b.id));
+    forms.forEach((form: FormList) => {
+      const category = form.category || DEFAULT_CATEFORY;
+      if (typeof idxRef[category] === 'undefined') {
+        categories.push({
+          category: category,
+          forms: []
+        });
+        idxRef[category] = idx;
+        idx++;
+      }
+      categories[idxRef[category]].forms.push(form);
+    });
+    this.categories = categories;
+    this.changeDetector.markForCheck();
   }
 
 }

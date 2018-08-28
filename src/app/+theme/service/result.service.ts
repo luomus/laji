@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Observable ,  Observer, of as ObservableOf } from 'rxjs';
+import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { CoordinateService } from '../../shared/service/coordinate.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';

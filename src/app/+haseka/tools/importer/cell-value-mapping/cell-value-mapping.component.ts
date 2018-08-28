@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormField } from '../../model/form-field';
 import { ImportService } from '../../service/import.service';
 import { MappingService, SpecialTypes } from '../../service/mapping.service';

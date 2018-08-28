@@ -3,8 +3,8 @@ import { FooterService } from '../service/footer.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import {Logger} from '../logger/logger.service';
-import {LajiApi, LajiApiService} from '../service/laji-api.service';
+import { Logger } from '../logger/logger.service';
+import { LajiApi, LajiApiService } from '../service/laji-api.service';
 import { GlobalStore } from '../store/global.store';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 

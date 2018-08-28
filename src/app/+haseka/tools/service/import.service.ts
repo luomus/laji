@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { Document } from '../../../shared/model/Document';
 import { UserService } from '../../../shared/service/user.service';
-import {DOCUMENT_LEVEL, GATHERING_LEVEL, FormField, VALUE_IGNORE} from '../model/form-field';
+import { DOCUMENT_LEVEL, FormField, GATHERING_LEVEL, VALUE_IGNORE } from '../model/form-field';
 import { MappingService } from './mapping.service';
-import {Util} from '../../../shared/service/util.service';
+import { Util } from '../../../shared/service/util.service';
 
 @Injectable()
 export class ImportService {

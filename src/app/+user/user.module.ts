@@ -1,13 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {
-  FriendsComponent,
-  ProfileComponent,
-  routing,
-  UserComponent,
-  UserLoginComponent,
-  UserLogoutComponent
-} from './index';
+import { FriendsComponent, ProfileComponent, routing, UserComponent, UserLoginComponent, UserLogoutComponent } from './index';
 import { TypeaheadModule } from 'ngx-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { FindPersonModule } from '../shared-modules/find-person/find-person.module';

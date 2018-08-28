@@ -1,6 +1,6 @@
-import { Component, OnInit, OnChanges, OnDestroy, ChangeDetectorRef, Input, ViewChild, SimpleChanges } from '@angular/core';
-import { Subscription ,  Observable, of as ObservableOf, forkJoin as ObservableForkJoin } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { PagedResult } from '../../../shared/model/PagedResult';

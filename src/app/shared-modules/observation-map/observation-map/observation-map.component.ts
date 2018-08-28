@@ -1,14 +1,16 @@
-
-import {throwError as observableThrowError,  Observable ,  Subscription, of as ObservableOf } from 'rxjs';
+import { of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter, Inject,
+  EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnInit,
-  Output, PLATFORM_ID, SimpleChanges,
+  Output,
+  PLATFORM_ID,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';

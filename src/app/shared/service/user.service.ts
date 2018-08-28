@@ -1,13 +1,4 @@
-
-import {
-  throwError as observableThrowError,
-  Observer,
-  Observable,
-  Subscription,
-  Subject,
-  of as ObservableOf,
-  ReplaySubject
-} from 'rxjs';
+import { Observable, Observer, of as ObservableOf, ReplaySubject, Subject, Subscription, throwError as observableThrowError } from 'rxjs';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Person } from '../model/Person';

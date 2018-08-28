@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable ,  Observer, of as ObservableOf } from 'rxjs';
+import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { Publication } from '../model/Publication';
 import { LajiApi, LajiApiService } from './laji-api.service';
 

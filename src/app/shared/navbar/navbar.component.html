@@ -35,41 +35,7 @@
               <a (click)="closeMenu()" [routerLink]="['/vihko'] | localize">{{ 'navigation.haseka' | translate }}</a>
             </li>
             <li [routerLinkActive]="['active']" *lajiAuthorities="false" dropdown>
-              <a dropdownToggle class="link themes">
-                {{ 'navigation.theme' | translate }}
-              </a>
-              <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu">
-                <li role="menuitem">
-                  <a (click)="closeMenu()" [routerLink]="['/theme/quality'] | localize" class="navbar-link link">{{'navigation.quality' | translate}}</a>
-                </li>
-                <li role="menuitem">
-                  <a (click)="closeMenu()" [routerLink]="['/theme/identify'] | localize" class="navbar-link link">{{ 'navigation.identify' | translate }}</a>
-                </li>
-                <li role="menuitem">
-                  <a (click)="closeMenu()" [routerLink]="['/map'] | localize" class="navbar-link link">{{ 'navigation.map' | translate }}</a>
-                </li>
-                <li role="menuitem">
-                  <a (click)="closeMenu()" [routerLink]="['/ykj'] | localize" class="navbar-link link">{{ 'navigation.ykj' | translate }}</a>
-                </li>
-                <li role="menuitem">
-                  <a (click)="closeMenu()" [routerLink]="['/emk'] | localize" class="navbar-link link">{{ 'navigation.emk' | translate }}</a>
-                </li>
-                <li role="menuitem">
-                  <a (click)="closeMenu()" [routerLink]="['/nafi'] | localize" class="navbar-link link">{{ 'nafi.stats.title' | translate }}</a>
-                </li>
-                <li role="menuitem">
-                  <a (click)="closeMenu()" [routerLink]="['/theme/herpetology'] | localize" class="navbar-link link">{{ 'navigation.herpetology' | translate }}</a>
-                </li>
-                <li role="menuitem">
-                  <a (click)="closeMenu()" [routerLink]="['/linjalaskenta'] | localize" class="navbar-link link">{{ 'lineTransect.title' | translate }}</a>
-                </li>
-                <li role="menuitem">
-                  <a (click)="closeMenu()" [routerLink]="['/about/2272'] | localize" class="navbar-link link">{{ 'navigation.research' | translate }}</a>
-                </li>
-                <li role="menuitem">
-                  <a (click)="closeMenu()" href="https://satelliitti.laji.fi" class="navbar-link link">{{ 'navigation.satelliitti' | translate }}</a>
-                </li>
-              </ul>
+              <a (click)="closeMenu()" [routerLink]="['/theme'] | localize">{{ 'navigation.theme' | translate }}</a>
             </li>
             <li *lajiAuthorities="false" [ngClass]="{'hidden-sm': showSearch}">
               <a (click)="goToForum($event)" class="link" href="http://foorumi.laji.fi/">{{'Forum' | translate}}</a>

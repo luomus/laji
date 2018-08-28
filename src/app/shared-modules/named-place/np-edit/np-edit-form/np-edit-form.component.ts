@@ -1,13 +1,5 @@
-import { Inject } from '@angular/core';
+import { Component, EventEmitter, HostListener, Inject, Input, Output, ViewChild } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
-import {
-  Component,
-  EventEmitter,
-  HostListener,
-  Input,
-  Output,
-  ViewChild
-} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
 import { UserService } from '../../../../shared/service/user.service';

@@ -1,9 +1,17 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
-  Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
   ViewChild
 } from '@angular/core';
-import { Observable,  Subject,  Subscription, interval as ObservableInterval } from 'rxjs';
+import { interval as ObservableInterval, Subject, Subscription } from 'rxjs';
 import { debounceTime, take } from 'rxjs/operators';
 
 interface SelectOptions {

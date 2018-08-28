@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription ,  Observable, of as ObservableOf } from 'rxjs';
+import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { NamedPlacesService } from '../named-places.service';
 import { FormService } from '../../../shared/service/form.service';
@@ -12,7 +12,7 @@ import { NamedPlaceQuery } from '../../../shared/api/NamedPlaceApi';
 import { Form } from '../../../shared/model/Form';
 import { AreaType } from '../../../shared/service/area.service';
 import { NpEditComponent } from '../np-edit/np-edit.component';
-import {FormPermissionService, Rights} from '../../../+haseka/form-permission/form-permission.service';
+import { FormPermissionService, Rights } from '../../../+haseka/form-permission/form-permission.service';
 import * as moment from 'moment';
 import { switchMap, take } from 'rxjs/operators';
 

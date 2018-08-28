@@ -1,5 +1,7 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -16,6 +18,10 @@ import { UserService } from '../../../shared/service/user.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import { environment } from '../../../../environments/environment';
 import LajiForm from 'laji-form/lib/laji-form';
+import { ToastsService } from '../../../shared/service/toasts.service';
+import { concatMap, map } from 'rxjs/operators';
+
+const GLOBAL_SETTINGS = '_global_form_settings_';
 
 @Component({
   selector: 'laji-form',
@@ -44,7 +50,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               private userService: UserService,
               private logger: Logger,
               private ngZone: NgZone,
-              private cd: ChangeDetectorRef
+              private cd: ChangeDetectorRef,
+              private toastsService: ToastsService,
   ) {
     this.elem = elementRef.nativeElement;
   }
@@ -109,7 +116,11 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (!this.formData || !this.formData.formData || !this.lang) {
       return;
     }
-    this.userService.getUserSetting(this.settingsKey)
+    this.userService.getUserSetting(this.settingsKey).pipe(
+      concatMap(globalSettings => this.userService.getUserSetting(GLOBAL_SETTINGS).pipe(
+        map(settings => ({...globalSettings, ...settings}))
+      ))
+    )
       .subscribe(settings => {
         try {
           this.ngZone.runOutsideAngular(() => {
@@ -135,7 +146,13 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               renderSubmit: false,
               topOffset: 50,
               bottomOffset: 50,
-              googleApiKey: environment.googleApiKey
+              googleApiKey: environment.googleApiKey,
+              notifier: {
+                success: msg => this.toastsService.showSuccess(msg),
+                info: msg => this.toastsService.showInfo(msg),
+                warning: msg => this.toastsService.showWarning(msg),
+                error: msg => this.toastsService.showError(msg),
+              }
             });
           });
         } catch (err) {
@@ -144,8 +161,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
       });
   }
 
-  _onSettingsChange(settings: object) {
-    this.userService.setUserSetting(this.settingsKey, settings);
+  _onSettingsChange(settings: object, global = false) {
+    this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, settings);
   }
 
   _onChange(formData) {

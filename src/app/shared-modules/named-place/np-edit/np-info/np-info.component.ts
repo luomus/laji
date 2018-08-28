@@ -1,5 +1,7 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   HostListener,
@@ -13,8 +15,8 @@ import {
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { UserService } from '../../../../shared/service/user.service';
 import { ModalDirective } from 'ngx-bootstrap';
-import {Rights} from '../../../../+haseka/form-permission/form-permission.service';
-import {Form} from '../../../../shared/model/Form';
+import { Rights } from '../../../../+haseka/form-permission/form-permission.service';
+import { Form } from '../../../../shared/model/Form';
 
 @Component({
   selector: 'laji-np-info',
