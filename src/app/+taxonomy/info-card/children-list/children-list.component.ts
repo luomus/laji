@@ -50,7 +50,6 @@ export class ChildrenListComponent implements OnInit, OnChanges, OnDestroy {
   ];
 
   private subFetch: Subscription;
-  private subLang: Subscription;
 
   constructor(
     private translate: TranslateService,
@@ -68,21 +67,17 @@ export class ChildrenListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.subLang = this.translate.onLangChange.pipe(
-      mergeMap(() => this.taxonService.taxonomyFindChildren(this.parentId, this.translate.currentLang, undefined, query))
-    )
+    this.subFetch = this.taxonService
+      .taxonomyFindChildren(this.parentId, this.translate.currentLang, undefined, query)
       .subscribe((data) => {
         this.children = data;
         this.size = data.length;
         this.cd.markForCheck();
-        setTimeout(() => {
-          this.datatable.refreshTable();
-        }, 100);
       });
   }
 
   ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
-    if (changes['parentId']) {
+    if (changes['parentId'] && !changes['parentId'].isFirstChange()) {
       if (this.subFetch) {
         this.subFetch.unsubscribe();
       }
@@ -92,9 +87,6 @@ export class ChildrenListComponent implements OnInit, OnChanges, OnDestroy {
           this.children = data;
           this.size = data.length;
           this.cd.markForCheck();
-          setTimeout(() => {
-            this.datatable.refreshTable();
-          }, 100);
         });
     }
   }
@@ -102,9 +94,6 @@ export class ChildrenListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     if (this.subFetch) {
       this.subFetch.unsubscribe();
-    }
-    if (this.subLang) {
-      this.subLang.unsubscribe();
     }
   }
 }
