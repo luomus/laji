@@ -2,9 +2,7 @@
   <div class="container" *ngIf="taxon">
     <laji-parents [includeCurrent]="false" [current]="taxon"></laji-parents>
     <h1>
-      {{taxon.vernacularName | multiLang}}
-      <span class="scientificName" *ngIf="taxon.vernacularName" [class.cursive]="taxon.cursiveName">({{taxon.scientificName}})</span>
-      <span class="scientificName" *ngIf="!taxon.vernacularName" [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
+      <laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name>
     </h1>
       <div class="row">
       <div class="col-sm-6 descriptions" *ngIf="hasDescription">
