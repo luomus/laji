@@ -63,7 +63,7 @@ export class QualityService {
     const cacheKey = JSON.stringify({maxLength, informalTaxonGroup, lastDate});
 
     return this._fetch('users', cacheKey,
-      this.warehouseApi.warehouseQueryAggregateGet(
+      this.warehouseApi.warehouseQueryAnnotationAggregateGet(
         query,
         ['unit.annotations.annotationByPerson', 'unit.annotations.annotationByPersonName'],
         undefined,
