@@ -8,7 +8,8 @@ import { UserService } from '../../shared/service/user.service';
 import { FormPermissionService } from '../form-permission/form-permission.service';
 import { Person } from '../../shared/model/Person';
 import { environment } from '../../../environments/environment';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
+import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 
 const DEFAULT_CATEFORY = 'MHL.categoryGeneric';
 
@@ -19,6 +20,7 @@ export interface FormList extends Form.List {
 interface FormCategory {
   forms: FormList[],
   category: string;
+  label: string;
 }
 
 @Component({
@@ -36,12 +38,14 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
   private subTmp: Subscription;
   private person: Person;
   private loadedLang: string;
+  private categoryLabels: {[key: string]: string} = {};
 
   constructor(private formService: FormService,
               private translate: TranslateService,
               private logger: Logger,
               private userService: UserService,
               private formPermissionService: FormPermissionService,
+              private triplestoreLabelService: TriplestoreLabelService,
               private changeDetector: ChangeDetectorRef) {
   }
 
@@ -90,8 +94,14 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       this.subFetch.unsubscribe();
     }
     this.loadedLang = lang;
-    this.subFetch = this.formService.getAllForms(this.loadedLang)
-      .subscribe(
+    this.subFetch = this.formService.getAllForms(this.loadedLang).pipe(
+      switchMap(forms => this.triplestoreLabelService.getAll([...forms.map(form => form.category)], lang).pipe(
+        map(labels => {
+          this.categoryLabels = labels;
+          return forms;
+        })
+      ))
+    ).subscribe(
         forms => {
           this.updateCategories(forms);
           this.updateAdminRigths();
@@ -145,6 +155,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       if (typeof idxRef[category] === 'undefined') {
         categories.push({
           category: category,
+          label: this.categoryLabels[category],
           forms: []
         });
         idxRef[category] = idx;

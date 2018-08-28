@@ -1,4 +1,4 @@
-import { forkJoin, Observable, Observer, of as ObservableOf } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, Observer, of as ObservableOf } from 'rxjs';
 import { Injectable, OnInit } from '@angular/core';
 import { MetadataApi } from '../api/MetadataApi';
 import { Logger } from '../logger/logger.service';
@@ -45,7 +45,23 @@ export class TriplestoreLabelService implements OnInit {
     }
   }
 
-  public get(key, lang): Observable<string> {
+  public getAll(keys: string[], lang): Observable<{[key: string]: string}> {
+    const set = new Set(keys);
+    const subs = [];
+    set.forEach(val => {
+      subs.push(this.get(val, lang).pipe(map(result => ({key: val, value: result}))));
+    });
+    return ObservableForkJoin(subs).pipe(
+      map(results => results.reduce((cumulative, current) => {
+        if (!cumulative[current.key]) {
+          cumulative[current.key] = current.value;
+        }
+        return cumulative;
+      }, {}))
+    );
+  }
+
+  public get(key: string, lang: string): Observable<string> {
     return this._get(key, lang).pipe(
       catchError(err => {
         this.logger.warn('Failed to fetch label for ' + key, err);
@@ -143,7 +159,7 @@ export class TriplestoreLabelService implements OnInit {
       )
     };
 
-    const fromApi$ = forkJoin(
+    const fromApi$ = ObservableForkJoin(
       this.metadataService.getAllRangesAsLookUp('multi').pipe(
         take(1)
       ),
