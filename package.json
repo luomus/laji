@@ -56,7 +56,7 @@
     "@nguniversal/module-map-ngfactory-loader": "^6.0.0",
     "@ngx-translate/core": "^10.0.2",
     "@swimlane/ngx-charts": "^9.0.0",
-    "@swimlane/ngx-datatable": "13.1.0",
+    "@swimlane/ngx-datatable": "13.0.1",
     "angular2-moment": "^1.8.0",
     "core-js": "^2.5.7",
     "cors": "~2.8.4",
@@ -84,7 +84,6 @@
     "rxjs-compat": "^6.2.1",
     "ts-loader": "4.2.0",
     "web-animations-js": "^2.3.1",
-    "webpack-cli": "^2.1.4",
     "xlsx": "0.13.2",
     "zone.js": "^0.8.18"
   },
@@ -128,7 +127,9 @@
     "ts-node": "6.1.2",
     "tslint": "5.10.0",
     "typescript": "2.9.2",
-    "webpack-bundle-analyzer": "^2.13.1"
+    "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-cli": "^2.1.4",
+    "webpack-node-externals": "^1.7.2"
   },
   "resolutions": {
     "proj4": "2.3.16",
