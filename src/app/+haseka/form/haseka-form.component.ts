@@ -33,7 +33,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   }
 
   ngOnInit() {
-    this.back = this.routingStateService.getPreviousUrl();
+    this.back = this.getBack();
     this.footerService.footerVisible = false;
     this.subParam = this.route.params.subscribe(params => {
       this.formId = params['formId'];
@@ -89,5 +89,16 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
 
   onCancel() {
     this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']));
+  }
+
+  private getBack() {
+    const history = this.routingStateService.getHistory();
+    for (let i = history.length - 2; i >= 0; i--) {
+      if (history[i].match(/^\/user/)) {
+        continue;
+      }
+      return history[i];
+    }
+    return '';
   }
 }

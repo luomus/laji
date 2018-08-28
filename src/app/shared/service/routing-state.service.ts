@@ -17,7 +17,7 @@ export class RoutingStateService {
   }
 
   public getHistory(): string[] {
-    return this.history;
+    return [...this.history];
   }
 
   public removeLast(): void {
