@@ -19,6 +19,7 @@ export const app = express();
 
 const RedisClient = redis.createClient();
 const Lock = new Redlock([RedisClient]);
+const path = require('path');
 
 app.use(compression());
 app.use(cors());
@@ -28,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // const DIST_FOLDER = join(process.cwd(), 'dist');
 
 const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./dist/server/main');
-const BROWSER_PATH = './dist/browser';
+const BROWSER_PATH = path.join(__dirname, 'browser');
 
 app.engine('html', (_, options, callback) => ngExpressEngine({
   bootstrap: AppServerModuleNgFactory,
@@ -66,7 +67,7 @@ app.get('*', (req, res) => {
         res.send(html);
       } else {
         console.error(err);
-        res.send(err);
+        return res.sendFile(path.join(BROWSER_PATH, 'index.html'));
       }
     });
     return;
@@ -113,7 +114,7 @@ app.get('*', (req, res) => {
       res.render('index', {req, res}, (err, html) => {
         if (err) {
           console.error(err);
-          return res.send(err);
+          return res.sendFile(path.join(BROWSER_PATH, 'index.html'));
         }
         res.send(html);
 
