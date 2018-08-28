@@ -14,6 +14,15 @@ export function decideTaxonTab(url: UrlSegment[]) {
   return null;
 }
 
+export function decideTaxon(url: UrlSegment[]) {
+  if (url.length === 1) {
+    if (typeof url[0].path === 'string' && url[0].path.indexOf('MX.') === 0) {
+      return { consumed: url, posParams: {id: url[0]} };
+    }
+  }
+  return null;
+}
+
 export const taxonomyRoutes: Routes = [
   {
     path: '',
@@ -36,7 +45,7 @@ export const taxonomyRoutes: Routes = [
     component: InformalGroupRedirectComponent
   },
   {
-    path: ':id',
+    matcher: decideTaxon,
     pathMatch: 'full',
     component: InfoCardComponent
   },

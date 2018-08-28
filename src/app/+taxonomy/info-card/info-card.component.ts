@@ -66,7 +66,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
         combineLatest(this.route.queryParams),
         map(data => {
           this.taxonId = data[0]['id'];
-          this.context = data[0]['context'] || 'default';
+          this.context = data[0]['context'] || data[1]['context'] || 'default';
           this.activeImage = 1;
           return {...data[1], ...data[0]}
         }),
