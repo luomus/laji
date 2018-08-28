@@ -60,9 +60,10 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
         this.localizeRouterService.translateRoute(['/vihko/statistics/', data.document.id])
       );
     }
-    this.router.navigate(
-      this.localizeRouterService.translateRoute([this.back || '/vihko/'])
-    );
+    if (this.back) {
+      return this.router.navigateByUrl(this.back);
+    }
+    this.router.navigate(this.localizeRouterService.translateRoute(['/vihko/']));
   }
 
   onTmlLoad(data) {
