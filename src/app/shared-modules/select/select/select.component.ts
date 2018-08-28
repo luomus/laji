@@ -67,7 +67,9 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.filterSub.unsubscribe();
+    if (this.filterSub) {
+      this.filterSub.unsubscribe();
+    }
   }
 
   toggleValue(id: string) {
