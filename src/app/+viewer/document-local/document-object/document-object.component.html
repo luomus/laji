@@ -10,9 +10,16 @@
 <ng-template #select let-value="value" let-label="label" let-field="field">
   <laji-row [title]="label" [value]="field.enums[value]"></laji-row>
 </ng-template>
+<ng-template #taxonCensus let-value="value">
+  <laji-row [title]="'MY.taxonCensus' | label">
+    <ul class="comma-list">
+      <li *ngFor="let census of value" [tooltip]="census.taxonCensusType | label">{{census.censusTaxonID | taxon}}</li>
+    </ul>
+  </laji-row>
+</ng-template>
 <ng-template #fieldset let-value="value" let-field="field">
   <laji-document-object [object]="value" [fields]="field.fields"></laji-document-object>
 </ng-template>
 <ng-template #default let-value="value" let-label="label">
-  <laji-row [title]="label" [value]="value"></laji-row>
+  <laji-row [title]="label" [value]="value | label"></laji-row>
 </ng-template>

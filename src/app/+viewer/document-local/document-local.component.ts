@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, OnChanges, OnDestroy, SimpleChanges, Input, ChangeDetectorRef } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 import { UserService } from '../../shared/service/user.service';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
@@ -7,6 +7,7 @@ import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
+import { SessionStorage } from 'ngx-webstorage';
 
 @Component({
   selector: 'laji-document-local',
@@ -20,20 +21,16 @@ export class DocumentLocalComponent implements OnInit, OnChanges, OnDestroy {
   @Input() useWorldMap = true;
 
   personID: string;
-
   active = 0;
-  activeGathering: any;
 
-  mapData = [];
+  mapData: any[] = [];
   hasMapData = false;
-  documentImageData: any;
-  gatheringImageData = [];
+  imageData: {[key: string]: any} = {};
 
-  documentFields: any[];
-  gatheringsFields: any[];
-  unitsFields: any[];
-  identificationsFields: any[];
+  loadingFields = false;
+  fields = {};
 
+  @SessionStorage() showFacts = false;
   private metaFetch: Subscription;
   private imageFetches: Subscription[] = [];
 
@@ -71,88 +68,109 @@ export class DocumentLocalComponent implements OnInit, OnChanges, OnDestroy {
 
   setActive(i) {
     this.active = i;
-    if (this.document && this.document.gatherings) {
-      this.activeGathering = this.document.gatherings[i] || undefined;
-    }
     if (this.map) {
       this.map.setActiveIndex(i);
     }
   }
 
+  toggleFacts() {
+    this.showFacts = !this.showFacts;
+  }
+
   private parseDocument(doc: Document) {
-    console.log(doc);
     for (let i = 0; i < this.imageFetches.length; i++) {
       if (this.imageFetches[i]) {
         this.imageFetches[i].unsubscribe();
       }
     }
     this.imageFetches = [];
-    this.documentImageData = undefined;
-    this.gatheringImageData = [];
+    this.imageData = {};
     this.hasMapData = false;
     this.mapData = [];
 
     if (doc) {
-      if (doc.images && doc.images.length > 0) {
-        this.imageFetches.push(
-          this.getImages(doc.images)
-            .subscribe((res) => {
-              this.documentImageData = res.results;
-            })
-        );
-      }
+      this.getImages(doc);
 
       doc.gatherings.map((gathering, i) => {
         if (gathering.geometry) {
           this.hasMapData = true;
           this.mapData[i] = gathering.geometry;
         }
-        if (gathering.images && gathering.images.length > 0) {
-          this.imageFetches.push(
-            this.getImages(gathering.images)
-              .subscribe((res) => {
-                this.gatheringImageData[i] = res.results;
-              })
-          );
-        }
+        this.getImages(gathering);
+        gathering.units.map((unit) => {
+          this.getImages(unit);
+        });
       });
     }
   }
 
-  private getImages(idList: string[]) {
-    return this.lajiApi.getList(LajiApi.Endpoints.images, {
-      lang: this.translate.currentLang,
-      page: 1,
-      pageSize: 1000,
-      idIn: idList.join(',')
-    });
+  private getImages(obj) {
+    if (obj.images && obj.images.length > 0) {
+      this.imageFetches.push(
+        this.lajiApi.getList(LajiApi.Endpoints.images, {
+          lang: this.translate.currentLang,
+          page: 1,
+          pageSize: 1000,
+          idIn: obj.images.join(',')
+        }).subscribe((res) => {
+          this.imageData[obj.id] = res.results;
+        })
+      );
+    }
   }
 
   private setFields(formId: string) {
-    this.documentFields = undefined;
-    this.gatheringsFields = undefined;
-    this.unitsFields = undefined;
-    this.identificationsFields = undefined;
+    this.loadingFields = false;
+    this.fields = {};
 
     this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
       .subscribe(form => {
-        console.log(form);
-        this.setAllFields(form.fields, ['document', 'gatherings', 'units', 'identifications']);
+        this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications']);
+        this.loadingFields = false;
+        this.cd.markForCheck();
       });
   }
 
-  private setAllFields(fields: any[], fieldNames: string[]) {
-    this[fieldNames[0] + 'Fields'] = fields;
-    fieldNames = fieldNames.slice(1);
+  private setAllFields(fields: any[], uiSchema: any, queue: string[]) {
+    const res = this.processFields(fields, uiSchema, queue.length > 1 ? queue[1] : undefined);
+    this.fields[queue[0]] = res.fields;
 
-    if (fieldNames.length < 1) {
-      return;
+    const next = res.next;
+
+    if (next) {
+      this.setAllFields(next.fields, uiSchema && uiSchema[next.name] ? uiSchema[next.name].items : undefined, queue.slice(1));
     }
+  }
 
-    for (let i = 0; i < fields.length; i++) {
-      if (fields[i].name === fieldNames[0]) {
-        this.setAllFields(fields[i].fields, fieldNames);
+  private processFields(fields: any[], uiSchema: any, nextName?: string) {
+    let next;
+
+    fields = fields.reduce((arr, field) => {
+      if (field.name === nextName) {
+        next = field;
+        return arr;
       }
-    }
+
+      if (field.name === 'geometry' || field.name === 'images') {
+        return arr;
+      }
+
+      if (uiSchema && uiSchema[field.name] && (
+        uiSchema[field.name]['ui:field'] === 'HiddenField' || uiSchema[field.name]['ui:widget'] === 'HiddenWidget')) {
+        return arr;
+      }
+
+      if (field.type === 'fieldset' && uiSchema && uiSchema[field.name]) {
+        field.fields = this.processFields(field.fields, uiSchema[field.name]).fields;
+      }
+
+      arr.push(field);
+      return arr;
+    }, []);
+
+    return {
+      fields: fields,
+      next: next
+    };
   }
 }

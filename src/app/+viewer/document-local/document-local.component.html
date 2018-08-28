@@ -1,4 +1,4 @@
-<ng-container *ngIf="document">
+<ng-container *ngIf="document && !loadingFields">
   <div class="row">
     <div class="col-sm-7">
       <div class="page-header">
@@ -18,15 +18,17 @@
           ></laji-edit-link>
         </h3>
       </div>
-      <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionID | collectionName">
-        <!--span><a target="_blank" href="{{document.collectionID}}">{{document.collectionID}}</a></span-->
+      <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionID | collectionName" ngPreserveWhitespaces>
+        <span *ngIf="showFacts"><a target="_blank" href="http://tun.fi/{{document.collectionID}}">http://tun.fi/{{document.collectionID}}</a></span>
       </laji-row>
-      <laji-document-object *ngIf="documentFields" [object]="document" [fields]="documentFields"></laji-document-object>
+      <laji-document-object *ngIf="fields['document']" [object]="document" [fields]="fields['document']"></laji-document-object>
     </div>
     <div class="col-sm-5">
       <div class="row">
         <div class="col-sm-12 doc-meta">
           <ng-template #docMeta>
+            <laji-row [title]="'MZ.creator' | label" [value]="document.creator | users"></laji-row>
+            <laji-row [title]="'MZ.editor' | label" [value]="document.editor | users"></laji-row>
             <laji-row [title]="'MZ.dateCreated' | label" [value]="document.dateCreated | amDateFormat:'DD.MM.YYYY'"></laji-row>
             <laji-row [title]="'MZ.dateEdited' | label" [value]="document.dateEdited | amDateFormat:'DD.MM.YYYY'"></laji-row>
           </ng-template>
@@ -35,6 +37,11 @@
                   placement="left"
                   triggers="click mouseenter:mouseleave"><i class="glyphicon glyphicon-user"></i>
           </button>
+          <!--button class="btn btn-default btn-xs pull-right"
+                  (click)="toggleFacts()">
+            {{showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate)}}
+            <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
+          </button-->
           <div style="margin-top: 35px;">
             <alert [type]="'warning'">
               <span>
@@ -44,9 +51,9 @@
           </div>
         </div>
       </div>
-      <div class="row" *ngIf="documentImageData">
+      <div class="row" *ngIf="imageData[document.id]">
         <div class="col-sm-12">
-          <laji-image-gallery [modalImages]="documentImageData"></laji-image-gallery>
+          <laji-image-gallery [modalImages]="imageData[document.id]"></laji-image-gallery>
         </div>
       </div>
     </div>
@@ -66,20 +73,22 @@
     <div class="col-sm-7">
       <ng-container *ngFor="let gathering of document.gatherings; let i=index">
         <div [hidden]="active !== i">
-          <laji-document-object *ngIf="gatheringsFields" [object]="gathering" [fields]="gatheringsFields"></laji-document-object>
-          <ng-container *ngFor="let unit of gathering.units; let j=index">
+          <laji-document-object *ngIf="fields['gatherings']" [object]="gathering" [fields]="fields['gatherings']"></laji-document-object>
+          <ng-container *ngFor="let unit of gathering.units">
             <hr>
-            <ng-container *ngFor="let identification of unit.identifications; let j=index">
-              <laji-document-object *ngIf="identificationsFields" [object]="identification" [fields]="identificationsFields"></laji-document-object>
+            <ng-container *ngFor="let identification of unit.identifications">
+              <laji-document-object *ngIf="fields['identifications']" [object]="identification" [fields]="fields['identifications']"></laji-document-object>
             </ng-container>
-            <laji-document-object *ngIf="unitsFields" [object]="unit" [fields]="unitsFields"></laji-document-object>
+            <laji-document-object *ngIf="fields['units']" [object]="unit" [fields]="fields['units']"></laji-document-object>
+            <laji-image-gallery *ngIf="imageData[unit.id]" [modalImages]="imageData[unit.id]"></laji-image-gallery>
           </ng-container>
         </div>
       </ng-container>
     </div>
     <div class="col-sm-5">
       <laji-viewer-map [useWorldMap]="useWorldMap" [active]="active" *ngIf="hasMapData" [data]="mapData"></laji-viewer-map>
-      <laji-image-gallery *ngIf="gatheringImageData[active]" [modalImages]="gatheringImageData[active]"></laji-image-gallery>
+      <laji-image-gallery *ngIf="document.gatherings.length > active && imageData[document.gatherings[active].id]"
+                          [modalImages]="imageData[document.gatherings[active].id]"></laji-image-gallery>
     </div>
   </div>
 </ng-container>

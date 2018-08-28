@@ -8,34 +8,31 @@ import { DocumentObjectField } from './document-object-field';
 })
 export class DocumentObjectComponent implements OnInit {
   @Input() object: any;
+  @Input() fields: any;
 
   _fields: DocumentObjectField[];
-  ignoredFields = ['gatherings', 'units', 'identifications', 'geometry', 'images'];
 
-  @ViewChild('checkbox') checkbox: TemplateRef<any>;
-  @ViewChild('select') select: TemplateRef<any>;
-  @ViewChild('fieldset') fieldset: TemplateRef<any>;
-  @ViewChild('default') defaultTemplate: TemplateRef<any>;
+  @ViewChild('checkbox') checkboxTpl: TemplateRef<any>;
+  @ViewChild('select') selectTpl: TemplateRef<any>;
+  @ViewChild('taxonCensus') taxonCensusTpl: TemplateRef<any>;
+  @ViewChild('fieldset') fieldsetTpl: TemplateRef<any>;
+  @ViewChild('default') defaultTpl: TemplateRef<any>;
 
   constructor() { }
 
-  @Input() set fields(fields: any) {
-    this._fields = fields.reduce((res, field) => {
-      if (this.ignoredFields.indexOf(field.name) === -1) {
-        res.push({
-          name: field.name,
-          label: field.label,
-          type: field.type,
-          enums: field.type === 'select' ? field.options.value_options : undefined,
-          fields: field.fields,
-          template: this[field.type] ? this[field.type] : this.defaultTemplate
-        });
-      }
+  ngOnInit() {
+    this._fields = this.fields.reduce((res, field) => {
+      res.push({
+        name: field.name,
+        label: field.label,
+        type: field.type,
+        enums: field.type === 'select' ? field.options.value_options : undefined,
+        fields: field.fields,
+        template: this[field.name + 'Tpl'] ? this[field.name + 'Tpl'] : (
+          this[field.type + 'Tpl'] ? this[field.type + 'Tpl'] : this.defaultTpl
+        )
+      });
       return res;
     }, []);
-  }
-
-  ngOnInit() {
-
   }
 }

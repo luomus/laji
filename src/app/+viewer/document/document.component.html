@@ -20,7 +20,7 @@
         </h3>
       </div>
       <laji-issues [data]="document"></laji-issues>
-      <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionId | toQName | collectionName">
+      <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionId | toQName | collectionName" ngPreserveWhitespaces>
         <span *ngIf="showFacts"><a target="_blank" href="{{document.collectionId}}">{{document.collectionId}}</a></span>
       </laji-row>
       <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>

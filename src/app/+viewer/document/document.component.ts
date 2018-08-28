@@ -183,7 +183,6 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
           switchMap(() => ObservableInterval(this.recheckIterval))
     ).subscribe(() => this.updateDocument());
     }
-    console.log(this.document);
     this.cd.markForCheck();
   }
 
