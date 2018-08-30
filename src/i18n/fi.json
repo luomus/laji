@@ -407,6 +407,7 @@
   "haseka.form.savePrivate": "Tallenna julkaisematta",
   "haseka.form.localData": "Tästä lomakkeesta on tallentamaton havaintoerä. Klikkaa tästä palataksesi siihen.",
   "haseka.instructions": "Ohjeet",
+  "haseka.reload": "Jotain meni pieleen. Lataamme lomakkeen uudelleen (dataa ei menetetä).",
   "haseka.form.unsaved": "Viimeksi tallennettu {{saveTime}}",
   "haseka.form.unsavedNever": "Muutoksia ei ole vielä tallennettu",
   "haseka.form.hasChanges": "Havaintoerässä on muutoksia, joita ei ole vielä tallennettu",

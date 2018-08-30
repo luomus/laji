@@ -393,6 +393,7 @@
   "haseka.form.unsaved2": "osparad inlämning ",
   "haseka.form.unsaved3": "av detta formulär.",
   "haseka.instructions": "Bruksanvisningar",
+  "haseka.reload": "Något gick fel. Blanketten kommer att laddas om (ingen data kommer att gå vilse)",
   "haseka.users.latest.gathered": "observationer",
   "haseka.users.latest.gathered.singular": "observation",
   "haseka.users.latest.localityMissing": "Plats saknas",
