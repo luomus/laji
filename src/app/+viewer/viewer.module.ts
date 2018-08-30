@@ -22,6 +22,9 @@ import { EditLinkComponent } from './edit-link/edit-link.component';
 import { LajiMapModule } from '@laji-map/laji-map.module';
 import { DocumentLocalComponent } from './document-local/document-local.component';
 import { DocumentObjectComponent } from './document-local/document-object/document-object.component';
+import { ViewerPrintComponent } from './viewer-print/viewer-print.component';
+import { DocumentLocalViewerViewComponent } from './document-local/document-local-viewer-view/document-local-viewer-view.component';
+import { DocumentLocalPrintViewComponent } from './document-local/document-local-print-view/document-local-print-view.component';
 
 @NgModule({
   imports: [
@@ -33,8 +36,8 @@ import { DocumentObjectComponent } from './document-local/document-object/docume
   ],
   providers: [ToQNamePipe, AnnotationService],
   declarations: [ViewerComponent, DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
-    GatheringComponent, UnitComponent, LcFirstPipe,
-    SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent, EditLinkComponent, DocumentLocalComponent, DocumentObjectComponent],
+    GatheringComponent, UnitComponent, LcFirstPipe, SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent,
+    EditLinkComponent, DocumentLocalComponent, DocumentObjectComponent, ViewerPrintComponent, DocumentLocalViewerViewComponent, DocumentLocalPrintViewComponent],
   exports: [ViewerComponent, DocumentComponent, DocumentLocalComponent]
 })
 export class ViewerModule { }

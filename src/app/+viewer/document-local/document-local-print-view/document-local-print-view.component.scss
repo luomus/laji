@@ -1,0 +1,21 @@
+$rowHeight: 25mm;
+$perPage: 10;
+$baseFontSize: 12pt;
+
+@page {
+  size: A4;
+  margin: 0;
+}
+.page {
+  position: relative;
+  margin: 10mm;
+  width: 190mm;
+  height: 277mm;
+  padding-top: 5mm;
+  font-size: $baseFontSize;
+}
+@media not print {
+  .page {
+    margin: 20px auto;
+  }
+}

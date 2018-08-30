@@ -9,6 +9,7 @@ import { DocumentObjectField } from './document-object-field';
 export class DocumentObjectComponent implements OnInit {
   @Input() object: any;
   @Input() fields: any;
+  @Input() hideTooltips = false;
 
   _fields: DocumentObjectField[];
 

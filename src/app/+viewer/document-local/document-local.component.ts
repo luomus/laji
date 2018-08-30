@@ -1,80 +1,42 @@
-import { Component, ViewChild, OnInit, OnChanges, OnDestroy, SimpleChanges, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, Input, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { startWith, switchMap } from 'rxjs/operators';
-import { UserService } from '../../shared/service/user.service';
-import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
-import { SessionStorage } from 'ngx-webstorage';
 
 @Component({
   selector: 'laji-document-local',
   templateUrl: './document-local.component.html',
   styleUrls: ['./document-local.component.css']
 })
-export class DocumentLocalComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
-
+export class DocumentLocalComponent implements OnInit, OnChanges {
   @Input() document: Document;
   @Input() useWorldMap = true;
-
-  personID: string;
-  active = 0;
+  @Input() view: 'viewer'|'print' = 'viewer';
 
   mapData: any[] = [];
-  hasMapData = false;
   imageData: {[key: string]: any} = {};
 
-  loadingFields = false;
   fields = {};
 
-  @SessionStorage() showFacts = false;
-  private metaFetch: Subscription;
+  private formFetch: Subscription;
   private imageFetches: Subscription[] = [];
 
   constructor(
     private cd: ChangeDetectorRef,
-    private userService: UserService,
     private lajiApi: LajiApiService,
     private formService: FormService,
     private translate: TranslateService
   ) { }
 
-  ngOnInit() {
-    this.metaFetch = this.userService.action$
-      .pipe(
-        startWith(''),
-        switchMap(() => this.userService.getUser())
-      )
-      .subscribe(person => {
-        this.personID = person.id;
-        this.cd.markForCheck();
-      });
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.document) {
-      this.setFields(this.document.formID);
+      this.setFields(this.document ? this.document.formID : undefined);
       this.parseDocument(this.document);
-      this.setActive(0);
     }
-  }
-
-  ngOnDestroy() {
-    this.metaFetch.unsubscribe();
-  }
-
-  setActive(i) {
-    this.active = i;
-    if (this.map) {
-      this.map.setActiveIndex(i);
-    }
-  }
-
-  toggleFacts() {
-    this.showFacts = !this.showFacts;
   }
 
   private parseDocument(doc: Document) {
@@ -85,7 +47,6 @@ export class DocumentLocalComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.imageFetches = [];
     this.imageData = {};
-    this.hasMapData = false;
     this.mapData = [];
 
     if (doc) {
@@ -93,7 +54,6 @@ export class DocumentLocalComponent implements OnInit, OnChanges, OnDestroy {
 
       doc.gatherings.map((gathering, i) => {
         if (gathering.geometry) {
-          this.hasMapData = true;
           this.mapData[i] = gathering.geometry;
         }
         this.getImages(gathering);
@@ -120,15 +80,19 @@ export class DocumentLocalComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private setFields(formId: string) {
-    this.loadingFields = false;
+    if (this.formFetch) {
+      this.formFetch.unsubscribe();
+    }
+
     this.fields = {};
 
-    this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
-      .subscribe(form => {
-        this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications']);
-        this.loadingFields = false;
-        this.cd.markForCheck();
-      });
+    if (formId) {
+      this.formFetch = this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
+        .subscribe(form => {
+          this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications']);
+          this.cd.markForCheck();
+        });
+    }
   }
 
   private setAllFields(fields: any[], uiSchema: any, queue: string[]) {
