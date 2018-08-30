@@ -1,50 +1,52 @@
 <div class="page" *ngIf="document && fields">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="page-header">
-        <h3>
-          {{'viewer.document' | translate }}
-          <small>
-            {{document.id}}
-          </small>
-        </h3>
-      </div>
-      <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionID | collectionName" ngPreserveWhitespaces></laji-row>
-      <laji-document-object *ngIf="fields['document']"
-                            [object]="document"
-                            [fields]="fields['document']"
-                            [hideTooltips]="true"
-      ></laji-document-object>
+  <div>
+    <div class="page-header">
+      <h3>
+        {{'viewer.document' | translate }}
+        <small>
+          {{document.id}}
+        </small>
+      </h3>
     </div>
+    <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionID | collectionName" ngPreserveWhitespaces></laji-row>
+    <laji-document-object *ngIf="fields['document']"
+                          [object]="document"
+                          [fields]="fields['document']"
+                          [hideTooltips]="true"
+    ></laji-document-object>
   </div>
 
-  <div class="row">
-    <div class="col-sm-12">
-      <ng-container *ngFor="let gathering of document.gatherings">
+  <ng-container *ngFor="let gathering of document.gatherings; let i=index">
+    <h4 class="page-header">Paikka {{i + 1}}</h4>
+    <div>
+      <div class="image-block">
+        <laji-document-object *ngIf="fields['gatherings']"
+                              [object]="gathering"
+                              [fields]="fields['gatherings']"
+                              [hideTooltips]="true"
+        ></laji-document-object>
+      </div>
+      <div class="image-block">
+        <laji-print-map [data]="mapData[i]"></laji-print-map>
+      </div>
+    </div>
+
+    <div>
+      <ng-container *ngFor="let unit of gathering.units">
         <hr>
-        <div>
-          <laji-document-object *ngIf="fields['gatherings']"
-                                [object]="gathering"
-                                [fields]="fields['gatherings']"
+        <ng-container *ngFor="let identification of unit.identifications">
+          <laji-document-object *ngIf="fields['identifications']"
+                                [object]="identification"
+                                [fields]="fields['identifications']"
                                 [hideTooltips]="true"
           ></laji-document-object>
-          <ng-container *ngFor="let unit of gathering.units">
-            <hr>
-            <ng-container *ngFor="let identification of unit.identifications">
-              <laji-document-object *ngIf="fields['identifications']"
-                                    [object]="identification"
-                                    [fields]="fields['identifications']"
-                                    [hideTooltips]="true"
-              ></laji-document-object>
-            </ng-container>
-            <laji-document-object *ngIf="fields['units']"
-                                  [object]="unit"
-                                  [fields]="fields['units']"
-                                  [hideTooltips]="true"
-            ></laji-document-object>
-          </ng-container>
-        </div>
+        </ng-container>
+        <laji-document-object *ngIf="fields['units']"
+                              [object]="unit"
+                              [fields]="fields['units']"
+                              [hideTooltips]="true"
+        ></laji-document-object>
       </ng-container>
     </div>
-  </div>
+  </ng-container>
 </div>

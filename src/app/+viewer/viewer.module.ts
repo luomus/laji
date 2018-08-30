@@ -25,6 +25,7 @@ import { DocumentObjectComponent } from './document-local/document-object/docume
 import { ViewerPrintComponent } from './viewer-print/viewer-print.component';
 import { DocumentLocalViewerViewComponent } from './document-local/document-local-viewer-view/document-local-viewer-view.component';
 import { DocumentLocalPrintViewComponent } from './document-local/document-local-print-view/document-local-print-view.component';
+import { PrintMapComponent } from './print-map/print-map.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,7 @@ import { DocumentLocalPrintViewComponent } from './document-local/document-local
   providers: [ToQNamePipe, AnnotationService],
   declarations: [ViewerComponent, DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
     GatheringComponent, UnitComponent, LcFirstPipe, SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent,
-    EditLinkComponent, DocumentLocalComponent, DocumentObjectComponent, ViewerPrintComponent, DocumentLocalViewerViewComponent, DocumentLocalPrintViewComponent],
+    EditLinkComponent, DocumentLocalComponent, DocumentObjectComponent, ViewerPrintComponent, DocumentLocalViewerViewComponent, DocumentLocalPrintViewComponent, PrintMapComponent],
   exports: [ViewerComponent, DocumentComponent, DocumentLocalComponent]
 })
 export class ViewerModule { }

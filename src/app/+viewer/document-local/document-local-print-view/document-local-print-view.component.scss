@@ -10,12 +10,24 @@ $baseFontSize: 12pt;
   position: relative;
   margin: 10mm;
   width: 190mm;
-  height: 277mm;
   padding-top: 5mm;
-  font-size: $baseFontSize;
+}
+.image-block {
+  width: 95mm;
+  height: 70mm;
+  display: inline-block;
 }
 @media not print {
   .page {
     margin: 20px auto;
+  }
+}
+@media print {
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+
+  .page-break-after {
+    page-break-after: always;
   }
 }
