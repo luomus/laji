@@ -60,9 +60,9 @@ export class GalleryComponent implements OnChanges {
       query.cache = true;
     }
     this.loading = true;
-    //TODO: think about this little more units are still basic search for this so might have to drop this
+    // TODO: think about this little more units are still basic search for this so might have to drop this
     // or target gathering and document endpoints
-    let imgField = 'unit.media';
+    const imgField = 'unit.media';
     query.hasUnitMedia = true;
     /*
     if (query.hasUnitMedia) {

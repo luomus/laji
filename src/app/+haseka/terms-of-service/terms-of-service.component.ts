@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'terms-of-service',
+  selector: 'laji-terms-of-service',
   templateUrl: './terms-of-service-of-service.component.html',
   styleUrls: ['./terms-of-service-of-service.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush

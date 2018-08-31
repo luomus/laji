@@ -25,21 +25,6 @@ export class MappingService {
   public static readonly mergeKey = '_merge_';
   public static readonly valueSplitter = ';';
 
-  static namedPlacesToList(namedPlaces: NamedPlace[]) {
-    return namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)
-  }
-
-  static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result = [], parent = ''): string[] {
-    groups.forEach(group => {
-      const name = parent ? `${parent} — ${group.name}` : group.name;
-      result.push(`${name} (${group.id})`);
-      if (Array.isArray(group.hasSubGroup)) {
-        MappingService.informalTaxonGroupsToList(group.hasSubGroup as InformalTaxonGroup[], result, name);
-      }
-    });
-    return result;
-  }
-
   private readonly booleanMap = {
     'true': {
       'fi': 'Kyllä',
@@ -79,6 +64,21 @@ export class MappingService {
     'gatherings[*].units[*].identifications[*].detDate': SpecialTypes.dateOptionalTime,
     'gatherings[*].units[*].identifications[*].taxon': SpecialTypes.unitTaxon
   };
+
+  static namedPlacesToList(namedPlaces: NamedPlace[]) {
+    return namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)
+  }
+
+  static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result = [], parent = ''): string[] {
+    groups.forEach(group => {
+      const name = parent ? `${parent} — ${group.name}` : group.name;
+      result.push(`${name} (${group.id})`);
+      if (Array.isArray(group.hasSubGroup)) {
+        MappingService.informalTaxonGroupsToList(group.hasSubGroup as InformalTaxonGroup[], result, name);
+      }
+    });
+    return result;
+  }
 
   constructor(
     private translationService: TranslateService,

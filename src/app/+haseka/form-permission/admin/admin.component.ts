@@ -10,7 +10,7 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { RoutingStateService } from '../../../shared/service/routing-state.service';
 
 @Component({
-  selector: '[laji-form-admin]',
+  selector: 'laji-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })

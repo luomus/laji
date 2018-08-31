@@ -4,6 +4,9 @@ node {
     sh 'npm install -g yarn'
     sh 'yarn install --silent --frozen-lockfile'
   }
+  stage('Quality') {
+    sh 'yarn run lint'
+  }
   stage('Build') {
     milestone()
     sh 'yarn run --silent build:ssr:dev'

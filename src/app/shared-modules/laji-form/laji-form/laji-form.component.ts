@@ -20,7 +20,7 @@ import { environment } from '../../../../environments/environment';
 import LajiForm from 'laji-form/lib/laji-form';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { concatMap, map } from 'rxjs/operators';
-import {ModalDirective} from "ngx-bootstrap";
+import { ModalDirective } from 'ngx-bootstrap';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -47,7 +47,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   private settings: any;
 
   @ViewChild('errorModal') public errorModal: ModalDirective;
-  @ViewChild("lajiForm") lajiFormRoot: ElementRef;
+  @ViewChild('lajiForm') lajiFormRoot: ElementRef;
 
   constructor(private apiClient: FormApiClient,
               private userService: UserService,
