@@ -95,7 +95,7 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   private getBack() {
     const history = this.routingStateService.getHistory();
     for (let i = history.length - 2; i >= 0; i--) {
-      if (history[i].match(/^\/user/)) {
+      if (history[i].match(/\/user/)) {
         continue;
       }
       return history[i];
