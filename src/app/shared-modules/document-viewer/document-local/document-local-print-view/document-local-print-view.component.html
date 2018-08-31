@@ -14,6 +14,7 @@
                           [fields]="fields['document']"
                           [hideTooltips]="true"
     ></laji-document-object>
+    <laji-print-images *ngIf="imageData[document.id]" [images]="imageData[document.id]"></laji-print-images>
   </div>
 
   <ng-container *ngFor="let gathering of document.gatherings; let i=index">
@@ -29,6 +30,7 @@
       <div *ngIf="mapData[i]" class="half-page-block">
         <laji-print-map [data]="mapData[i]"></laji-print-map>
       </div>
+      <laji-print-images *ngIf="imageData[gathering.id]" [images]="imageData[gathering.id]"></laji-print-images>
     </div>
 
     <div>
@@ -46,6 +48,7 @@
                               [fields]="fields['units']"
                               [hideTooltips]="true"
         ></laji-document-object>
+        <laji-print-images *ngIf="imageData[unit.id]" [images]="imageData[unit.id]"></laji-print-images>
       </ng-container>
     </div>
   </ng-container>

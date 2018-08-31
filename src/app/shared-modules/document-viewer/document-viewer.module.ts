@@ -24,6 +24,7 @@ import { DocumentObjectComponent } from './document-local/document-object/docume
 import { DocumentLocalViewerViewComponent } from './document-local/document-local-viewer-view/document-local-viewer-view.component';
 import { DocumentLocalPrintViewComponent } from './document-local/document-local-print-view/document-local-print-view.component';
 import { PrintMapComponent } from './print-map/print-map.component';
+import { PrintImagesComponent} from './print-images/print-images.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,7 @@ import { PrintMapComponent } from './print-map/print-map.component';
   declarations: [DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
     GatheringComponent, UnitComponent, LcFirstPipe, SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent,
     EditLinkComponent, DocumentLocalComponent, DocumentObjectComponent, DocumentLocalViewerViewComponent,
-    DocumentLocalPrintViewComponent, PrintMapComponent],
+    DocumentLocalPrintViewComponent, PrintMapComponent, PrintImagesComponent],
   exports: [DocumentComponent, DocumentLocalComponent]
 })
 export class DocumentViewerModule { }
