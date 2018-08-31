@@ -66,21 +66,6 @@
         [list]="searchQuery.target || []"
         (updateList)="updateSearchQuery('target', $event)"
       ></laji-pill-list>
-      <laji-pill-list
-        [isLabel]="true"
-        [list]="searchQuery.originalTarget || []"
-        (updateList)="updateSearchQuery('originalTarget', $event)"
-      ></laji-pill-list>
-      <laji-pill-list
-        [isLabel]="true"
-        [list]="searchQuery.exactTarget || []"
-        (updateList)="updateSearchQuery('exactTarget', $event)"
-      ></laji-pill-list>
-      <laji-pill-list
-        [isLabel]="true"
-        [list]="searchQuery.originalExactTarget || []"
-        (updateList)="updateSearchQuery('originalExactTarget', $event)"
-      ></laji-pill-list>
     </div>
   </div>
   <div *ngIf="advancedMode || visibleAdvanced['taxon']">
@@ -89,7 +74,7 @@
         <label>
           <input type="checkbox"
                  [(ngModel)]="formQuery.taxonIncludeLower"
-                 (change)="onTaxonTargetChange()"
+                 (change)="onFormQueryChange()"
                  name="taxonIncludeLower">
           {{'observation.keepSsp' | translate}}
         </label>
@@ -103,7 +88,7 @@
         <label>
           <input type="checkbox"
                  [(ngModel)]="formQuery.taxonUseAnnotated"
-                 (change)="onTaxonTargetChange()"
+                 (change)="onFormQueryChange()"
                  name="taxonIncludeLower">
           {{'observation.changedNames' | translate}}
         </label>
