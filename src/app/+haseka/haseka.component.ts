@@ -1,3 +1,4 @@
+/* tslint:disable:component-selector */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../shared/service/user.service';
 import { LocalStorage } from 'ngx-webstorage';

@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { of as ObservableOf } from 'rxjs';
 
 @Component({
-  selector: 'friends',
+  selector: 'laji-friends',
   templateUrl: './friends.component.html'
 })
 export class FriendsComponent implements OnInit {

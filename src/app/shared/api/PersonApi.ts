@@ -30,8 +30,6 @@ import { Profile } from '../model/Profile';
 import { Person } from '../model/Person';
 import { environment } from '../../../environments/environment';
 
-'use strict';
-
 @Injectable({providedIn: 'root'})
 export class PersonApi {
   protected basePath = environment.apiBase;

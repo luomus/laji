@@ -1,14 +1,14 @@
 <div class="row">
   <div class="col-sm-4" id="group-select-container">
     <label>{{'filter.informalTaxonGroup' | translate}}:</label>
-    <observation-group-select
+    <laji-observation-group-select
       name="group'"
       (onSelect)="onSelectChange()"
       [position]="'left'"
       [(ngModel)]="filters.group"
       [lang]="translateService.currentLang">
       {{'observation.active.informalTaxonGroupAll'|translate}}
-    </observation-group-select>
+    </laji-observation-group-select>
   </div>
   <div class="col-sm-5 col-md-4 pull-right" id="datepicker-container">
     <label>{{'quality.filterByDate' | translate}}:</label>

@@ -1,3 +1,4 @@
+/* tslint:disable:max-line-length */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NafiComponent } from './nafi/nafi.component';
@@ -28,6 +29,7 @@ import { LineTransectMyDocumentListComponent } from './line-transect/line-transe
 import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 import { LineTransectFormEiVakioComponent } from './line-transect/line-transect-form-ei-vakio/line-transect-form-ei-vakio.component';
 import { LineTransectFormKartoitusComponent } from './line-transect/line-transect-form-kartoitus/line-transect-form-kartoitus.component';
+/* tslint:enable:max-line-length */
 
 const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},

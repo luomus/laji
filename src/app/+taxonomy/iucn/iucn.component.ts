@@ -1,3 +1,4 @@
+/* tslint:disable:component-selector */
 import { Component, ElementRef, HostListener, Input, OnChanges, OnInit } from '@angular/core';
 
 @Component({

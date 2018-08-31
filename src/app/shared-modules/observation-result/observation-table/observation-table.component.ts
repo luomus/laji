@@ -226,6 +226,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   private hasChanges = false;
   private aggregateBy: string[] = [];
 
+  @Input() showRowAsLink = true;
+
   constructor(
     private resultService: ObservationListService,
     private changeDetectorRef: ChangeDetectorRef,
@@ -250,8 +252,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this._originalSelected = [...selected];
     this._originalSelectedNumbers = [...selectedNumbers];
   };
-
-  @Input() showRowAsLink = true;
 
   ngOnInit() {
     this.initColumns();
@@ -290,8 +290,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this.aggregateBy = [];
     this.columns = selected.map(name => {
       const column = this.columnLookup[name];
-      column.aggregate !== false && this.aggregateBy.push((column.aggregateBy || column.name)
-       + (this.columnLookup[name].sortBy ? ',' + this.setLangParams(this.columnLookup[name].sortBy) : ''));
+      if (column.aggregate !== false) {
+        this.aggregateBy.push((column.aggregateBy || column.name)
+          + (this.columnLookup[name].sortBy ? ',' + this.setLangParams(this.columnLookup[name].sortBy) : ''));
+      }
       return this.columnLookup[name];
     });
   }

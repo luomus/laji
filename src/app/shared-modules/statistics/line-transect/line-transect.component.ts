@@ -178,8 +178,10 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
                   name: unit.identifications[0].taxon || ''
                 };
               }
-              const cntKey = unit.unitFact && unit.unitFact.lineTransectRouteFieldType === Units.LineTransectRouteFieldTypeEnum.LineTransectRouteFieldTypeOuter ?
-                'tsCouples' : 'psCouples';
+              const cntKey =
+                unit.unitFact &&
+                unit.unitFact.lineTransectRouteFieldType === Units.LineTransectRouteFieldTypeEnum.LineTransectRouteFieldTypeOuter ?
+                  'tsCouples' : 'psCouples';
               if (cntKey === 'psCouples') {
                 count.onPs++;
               }
@@ -207,7 +209,9 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
       this.document.gatheringEvent.timeEnd
     ) {
       const diff = +new Date(this.document.gatheringEvent.dateBegin + ' ' + this.document.gatheringEvent.timeEnd) -
-        +new Date((this.document.gatheringEvent.dateEnd || this.document.gatheringEvent.dateBegin) + ' ' + this.document.gatheringEvent.timeStart);
+        +new Date(
+          (this.document.gatheringEvent.dateEnd || this.document.gatheringEvent.dateBegin) + ' ' + this.document.gatheringEvent.timeStart
+        );
       count.minPerKm = Math.round((diff / 1000 / 60) / (count.routeLength / 1000));
     }
     this.counts = count;

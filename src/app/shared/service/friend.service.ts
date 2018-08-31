@@ -26,7 +26,7 @@ export class FriendService {
           return ObservableOf([]);
         }
         return this.lajiApi
-          .get(LajiApi.Endpoints.autocomplete, 'friends', {includeSelf: true,personToken: this.userService.getToken()})
+          .get(LajiApi.Endpoints.autocomplete, 'friends', {includeSelf: true, personToken: this.userService.getToken()})
           .pipe(tap(data => this.friends = data))
       })
     );

@@ -1,3 +1,4 @@
+/* tslint:disable:component-selector */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Notification } from '../../model/Notification';
 import { IdService } from '../../service/id.service';

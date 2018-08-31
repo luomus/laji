@@ -32,7 +32,7 @@ export class InfoComponent {
     if (!isPlatformBrowser(this.platformID)) {
       return;
     }
-    let useModal = this.window.innerWidth <= 767;
+    const useModal = this.window.innerWidth <= 767;
     if (this.isVisible() && ((useModal && this.modal.isShown) || (!useModal && this.popover.isOpen))) {
       return;
     }

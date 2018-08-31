@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LineTransectComponent } from './line-transect.component';
+import { LineTransectPrintComponent } from './line-transect-print.component';
 
-describe('LineTransectComponent', () => {
-  let component: LineTransectComponent;
-  let fixture: ComponentFixture<LineTransectComponent>;
+describe('LineTransectPrintComponent', () => {
+  let component: LineTransectPrintComponent;
+  let fixture: ComponentFixture<LineTransectPrintComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LineTransectComponent ]
+      declarations: [ LineTransectPrintComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LineTransectComponent);
+    fixture = TestBed.createComponent(LineTransectPrintComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
