@@ -76,6 +76,8 @@ export class SearchQuery implements SearchQueryInterface {
     'includeSubCollections',
     'nativeOccurrence',
     'breedingSite',
+    'useIdentificationAnnotations',
+    'includeSubTaxa',
     'annotated'
   ];
 
@@ -94,8 +96,12 @@ export class SearchQuery implements SearchQueryInterface {
     'qualityIssues',
     'annotatedBefore',
     'annotatedLaterThan',
-    'firstLoadedLaterThan',
-    'firstLoadedBefore',
+    'firstLoadedSameOrBefore',
+    'firstLoadedSameOrAfter',
+    'annotatedSameOrBefore',
+    'annotatedSameOrAfter',
+    'loadedSameOrBefore',
+    'loadedSameOrAfter',
     'season',
   ];
 
@@ -234,10 +240,6 @@ export class SearchQuery implements SearchQueryInterface {
 
     if (result['target'] && Array.isArray(result['target'])) {
       result['target'] = (result['target'] as string[]).map(target => target.replace(/http:\/\/tun\.fi\//g, ''));
-    }
-
-    if (this.query && this.query.loadedLaterThan !== undefined) {
-      // queryParameters.set('loadedLaterThan', this.query.loadedLaterThan);
     }
 
     // Non query parameters (these will not have effect on result count)

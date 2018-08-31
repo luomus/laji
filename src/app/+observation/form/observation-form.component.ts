@@ -162,8 +162,8 @@ export class ObservationFormComponent implements OnInit {
       this.formQuery.timeEnd = '';
       this.onFormQueryChange();
     } else if (target === 'loaded') {
-      this.searchQuery.firstLoadedLaterThan = now.subtract(dates, 'days').format('YYYY-MM-DD');
-      this.searchQuery.firstLoadedBefore = '';
+      this.searchQuery.firstLoadedSameOrAfter = now.subtract(dates, 'days').format('YYYY-MM-DD');
+      this.searchQuery.firstLoadedSameOrBefore = '';
       this.onQueryChange();
     } else {
       console.error('invalid target for updateTime');

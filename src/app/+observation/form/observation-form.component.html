@@ -222,7 +222,7 @@
         </laji-info>
         </label>
         <laji-datepicker
-          [(ngModel)]="searchQuery.firstLoadedLaterThan"
+          [(ngModel)]="searchQuery.firstLoadedSameOrAfter"
           [viewFormat]="'DD.MM.YYYY'"
           [otherFormats]="['D.M.YYYY', 'YYYY']"
           [format]="dateFormat"
@@ -234,7 +234,7 @@
     <div class="row">
       <div class="lj-input-wrap">
         <laji-datepicker
-          [(ngModel)]="searchQuery.firstLoadedBefore"
+          [(ngModel)]="searchQuery.firstLoadedSameOrBefore"
           [viewFormat]="'DD.MM.YYYY'"
           [otherFormats]="['D.M.YYYY', 'YYYY']"
           [toLastOfYear]="true"
