@@ -29,7 +29,11 @@ export class FormApiClient {
     return this._personToken;
   }
 
-  public fetch(resource: string, query: any, options?: {method?: string, body?: any, headers?: {[header: string]: string | string[]}}): Promise<any> {
+  public fetch(
+    resource: string,
+    query: any,
+    options?: {method?: string, body?: any, headers?: {[header: string]: string | string[]}}
+  ): Promise<any> {
     const path = this.basePath + resource;
 
     const queryParameters = {...Util.removeUndefinedFromObject(query)};

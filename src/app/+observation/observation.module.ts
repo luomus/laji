@@ -3,7 +3,6 @@ import { SharedModule } from '../shared/shared.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ObservationChartComponent } from './chart/observation-chart.component';
 import { ObservationViewComponent } from './view/observation-view.component';
-import { MultiRadioComponent } from './multi-radio/multi-radio.component';
 import { ObservationResultComponent } from './result/observation-result.component';
 import { ObservationResultListComponent } from './result-list/observation-result-list.component';
 import { PieChartComponent } from './chart/pie/pie-chart.component';
@@ -48,7 +47,7 @@ import { MemberIdPillListComponent } from './form/team/member-id-pill-list/membe
   declarations: [ObservationComponent, ObservationChartComponent,
     ObservationViewComponent,
     ResetComponent,
-    MultiRadioComponent, ObservationResultComponent,
+    ObservationResultComponent,
     ObservationResultListComponent,
     PieChartComponent, ObservationDownloadComponent, MainResultComponent, ObservationFiltersComponent,
     PillListComponent,

@@ -5,6 +5,7 @@ import { AfterViewInit, Directive, ElementRef, Input } from '@angular/core';
 })
 export class FixedTableDirective implements AfterViewInit {
 
+  // tslint:disable-next-line:no-input-rename
   @Input('lajiFixedTable') maxHeight: string;
 
   constructor(private el: ElementRef) {

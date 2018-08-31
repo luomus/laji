@@ -137,7 +137,7 @@ export class SpreadSheetService {
   }
 
   getColMapFromSheet(sheet: XLSX.WorkSheet, fields: {[key: string]: FormField}, len: number) {
-    const map = {};
+    const colMap = {};
     let idx = -1, col;
 
     this.mappingService.initColMap(fields);
@@ -153,7 +153,7 @@ export class SpreadSheetService {
           if (col.c.t) {
             const commentKey = this.mappingService.colMap(this.normalizeHeader(col.c.t));
             if (commentKey !== null) {
-              map[XLSX.utils.encode_col(idx)] = commentKey;
+              colMap[XLSX.utils.encode_col(idx)] = commentKey;
               found = true;
               break;
             }
@@ -166,11 +166,11 @@ export class SpreadSheetService {
       if (col.v) {
         const valueKey = this.mappingService.colMap(this.normalizeHeader(col.v));
         if (valueKey !== null) {
-          map[XLSX.utils.encode_col(idx)] = valueKey;
+          colMap[XLSX.utils.encode_col(idx)] = valueKey;
         }
       }
     }
-    return map;
+    return colMap;
   }
 
   findFormIdFromFilename(filename: string): string {
@@ -213,7 +213,16 @@ export class SpreadSheetService {
           let found = false;
           Object.keys(form.properties).map(key => {
             found = true;
-            this.parserFields(form.properties[key], validators.properties && validators.properties && validators.properties[key] || {}, result, root ? root + '.' + key : key, form.properties[key].type === 'object' && Object.keys(form.properties[key].properties).length > 0 ? key : parent, unitSubGroups, key, label, form.required || [])
+            this.parserFields(
+              form.properties[key],
+              validators.properties && validators.properties && validators.properties[key] || {},
+              result, root ? root + '.' + key : key,
+              form.properties[key].type === 'object' && Object.keys(form.properties[key].properties).length > 0 ? key : parent,
+              unitSubGroups,
+              key,
+              label,
+              form.required || []
+            )
           });
           if (!found) {
             if (this.hiddenFields.indexOf(root) > -1) {
@@ -238,7 +247,17 @@ export class SpreadSheetService {
       case 'array':
         if (form.items) {
           const newParent = ['object', 'array'].indexOf(form.items.type) > -1 ? lastKey : parent;
-          this.parserFields(form.items, validators.items || validators, result, root + '[*]', newParent, unitSubGroups, lastKey, label, required);
+          this.parserFields(
+            form.items,
+            validators.items || validators,
+            result,
+            root + '[*]',
+            newParent,
+            unitSubGroups,
+            lastKey,
+            label,
+            required
+          );
         }
         break;
       default:

@@ -61,7 +61,7 @@ export class UserService extends LocalDb {
               private localizeRouterService: LocalizeRouterService,
               @Inject(PLATFORM_ID) private platformId: object,
               @Inject(WINDOW) private window: Window) {
-    super('settings');
+    super('settings', isPlatformBrowser(platformId));
     if (this.token) {
       this.loadUserInfo(this.token).subscribe(value => {
         this.isLoggedIn = !!value;

@@ -1,3 +1,4 @@
+/* tslint:disable:max-line-length */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -50,6 +51,7 @@ import { LineTransectFormKartoitusComponent } from './line-transect/line-transec
 import { LajiFormModule } from '@laji-form/laji-form.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+/* tslint:enable:max-line-length */
 
 @NgModule({
   imports: [

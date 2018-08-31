@@ -31,6 +31,7 @@ import { SpecialTaxonNameComponent } from './importer/cell-value-mapping/special
 import { ToolSuccessComponent } from './shared/tool-success/tool-success.component';
 import { StepperComponent } from './shared/stepper/stepper.component';
 import { TaxonAutocompleteModule } from '../../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
+// tslint:disable-next-line:max-line-length
 import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mapping/special-informal-taxon-groups/special-informal-taxon-groups.component';
 
 @NgModule({

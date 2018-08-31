@@ -1,3 +1,4 @@
+/* tslint:disable:max-line-length */
 export const environment = {
   systemID: 'KE.601',
   formsTheme: {

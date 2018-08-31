@@ -7,12 +7,12 @@ import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { CoordinateService } from '../../../../shared/service/coordinate.service';
 
 @Component({
-  selector: 'laji-line-transect',
-  templateUrl: './line-transect.component.html',
-  styleUrls: ['./line-transect.component.scss'],
+  selector: 'laji-line-transect-print',
+  templateUrl: './line-transect-print.component.html',
+  styleUrls: ['./line-transect-print.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LineTransectComponent implements OnChanges, AfterViewInit {
+export class LineTransectPrintComponent implements OnChanges, AfterViewInit {
 
   @ViewChild(LajiMapComponent)
   public lajiMap: LajiMapComponent;

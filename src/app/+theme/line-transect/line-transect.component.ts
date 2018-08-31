@@ -1,3 +1,4 @@
+/* tslint:disable:component-selector */
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { NavigationEnd, Router } from '@angular/router';

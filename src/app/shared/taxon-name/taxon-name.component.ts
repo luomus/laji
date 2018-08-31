@@ -1,11 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'laji-taxon-name',
   templateUrl: './taxon-name.component.html',
-  styleUrls: ['./taxon-name.component.css']
+  styleUrls: ['./taxon-name.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonNameComponent implements OnInit {
+export class TaxonNameComponent {
 
   @Input() taxon: {
     id?: string;
@@ -18,10 +19,5 @@ export class TaxonNameComponent implements OnInit {
   @Input() taxonID: string;
   @Input() addLink = true;
   @Input() warningOnMissingTaxonID = false;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

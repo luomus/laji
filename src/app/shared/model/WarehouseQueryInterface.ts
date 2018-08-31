@@ -100,7 +100,9 @@
  * @property editorId Filter based on \&quot;owner\&quot; of records. Only available in private-query-API.
  * Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
  * When multiple values are given, this is an OR search.
- * @property annotationType Include only those units/annotations that are of the selected annotation type. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times. When multiple values are given, this is an OR search.
+ * @property annotationType Include only those units/annotations that are of the selected annotation type.
+ * Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times. When multiple values are given,
+ * this is an OR search.
  * @property annotatedBefore Include only those annotations that have been made before the given date, inclusive. Format is yyyy-MM-dd.
  * @property annotatedLaterThan Include only those annotations that have been made after the given date, inclusive. Format is yyyy-MM-dd.
  * @property namedPlaceId Filter by named place id.

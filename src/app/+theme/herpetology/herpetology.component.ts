@@ -10,7 +10,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { CacheService } from '../../shared/service/cache.service';
 
 @Component({
-  selector: '[laji-herpetology]',
+  selector: 'laji-herpetology',
   templateUrl: './herpetology.component.html',
   styleUrls: ['./herpetology.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
