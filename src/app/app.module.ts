@@ -26,7 +26,6 @@ import {
   TypeaheadModule
 } from 'ngx-bootstrap';
 import { Ng2Webstorage } from 'ngx-webstorage';
-import { ViewerModule } from './+viewer/viewer.module';
 import { ForumComponent } from './forum/forum.component';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
@@ -80,7 +79,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     ProgressbarModule.forRoot(),
     Ng2Webstorage.forRoot({prefix: 'laji-', separator: ''}),
     AppRoutingModule,
-    ViewerModule,
     TransferHttpCacheModule
   ],
   exports: [

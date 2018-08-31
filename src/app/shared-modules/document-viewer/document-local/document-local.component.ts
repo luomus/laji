@@ -1,8 +1,8 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
-import { FormService } from '../../shared/service/form.service';
-import { Document } from '../../shared/model/Document';
+import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { FormService } from '../../../shared/service/form.service';
+import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

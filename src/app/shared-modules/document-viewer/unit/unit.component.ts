@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
-import { IdService } from '../../shared/service/id.service';
+import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
+import { IdService } from '../../../shared/service/id.service';
 import { AnnotationService } from '../service/annotation.service';
 import { Observable } from 'rxjs';
-import { Annotation } from '../../shared/model/Annotation';
+import { Annotation } from '../../../shared/model/Annotation';
 
 @Component({
   selector: 'laji-unit',

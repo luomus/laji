@@ -10,13 +10,13 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import { WarehouseApi } from '../../shared/api/WarehouseApi';
+import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { interval as ObservableInterval, Subscription } from 'rxjs';
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
-import { IdService } from '../../shared/service/id.service';
-import { UserService } from '../../shared/service/user.service';
-import { environment } from '../../../environments/environment';
+import { IdService } from '../../../shared/service/id.service';
+import { UserService } from '../../../shared/service/user.service';
+import { environment } from '../../../../environments/environment';
 import { filter, switchMap, take } from 'rxjs/operators';
 
 @Component({

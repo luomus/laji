@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { IdService } from '../../shared/service/id.service';
-import { FormService } from '../../shared/service/form.service';
+import { IdService } from '../../../shared/service/id.service';
+import { FormService } from '../../../shared/service/form.service';
 
 @Component({
   selector: 'laji-edit-link',

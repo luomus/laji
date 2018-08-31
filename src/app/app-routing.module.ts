@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
-import { ViewerComponent } from './+viewer/viewer.component';
-import { ViewerPrintComponent } from './+viewer/viewer-print/viewer-print.component';
 import { ForumComponent } from './forum/forum.component';
 import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from './locale/locale-en.component';
@@ -22,8 +20,7 @@ const routes: Routes = [
   {path: 'news', loadChildren: './+news/news.module#NewsModule', data: {noPreload: true, title: 'news.title'}},
   {path: 'about', loadChildren: './+information/information.module#InformationModule'},
   {path: 'user', loadChildren: './+user/user.module#UserModule', data: {noPreload: true}},
-  {path: 'view', pathMatch: 'full', component: ViewerComponent, data: {title: 'viewer.document'} },
-  {path: 'view/print', pathMatch: 'full', component: ViewerPrintComponent, data: {title: 'viewer.document'} },
+  {path: 'view', loadChildren: './+viewer/viewer.module#ViewerModule', data: {title: 'viewer.document'}},
   {path: 'invasive', loadChildren: './+invasive/invasive.module#InvasiveModule', data: {noPreload: true}},
   {path: 'vihko', loadChildren: './+haseka/haseka.module#HasekaModule', data: {title: 'haseka.title'}},
   {path: 'observation', loadChildren: './+observation/observation.module#ObservationModule', data: {title: 'navigation.observation'}},

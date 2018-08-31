@@ -12,10 +12,11 @@ $baseFontSize: 12pt;
   width: 190mm;
   padding-top: 5mm;
 }
-.image-block {
+.half-page-block {
   width: 95mm;
-  height: 70mm;
+  min-height: 1mm;
   display: inline-block;
+  vertical-align: top;
 }
 @media not print {
   .page {

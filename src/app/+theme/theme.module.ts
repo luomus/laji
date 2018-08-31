@@ -14,7 +14,7 @@ import { NafiFormComponent } from './nafi/nafi-form/nafi-form.component';
 import { NafiMyDocumentListComponent } from './nafi/nafi-my-document-list/nafi-my-document-list.component';
 import { ThemeMyDocumentListComponent } from './theme-my-document-list/theme-my-document-list.component';
 import { NafiInstructionsComponent } from './nafi/nafi-instructions/nafi-instructions.component';
-import { ViewerModule } from '../+viewer/viewer.module';
+import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
 import { YkjComponent } from './ykj/ykj.component';
 import { EmkComponent } from './emk/emk.component';
 import { WbcComponent } from './wbc/wbc.component';
@@ -56,7 +56,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     CommonModule,
     ThemeRoutingModule,
     SharedModule,
-    ViewerModule,
+    DocumentViewerModule,
     LangModule,
     YkjModule,
     ObservationResultModule,

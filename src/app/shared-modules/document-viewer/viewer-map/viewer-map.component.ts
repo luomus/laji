@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMap } from '../../shared-modules/laji-map/laji-map.interface';
+import { LajiMap } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-viewer-map',

@@ -9,7 +9,7 @@ import { DocumentInfoService } from './service/document-info.service';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RouterModule } from '@angular/router';
 import { RouterChildrenEventService } from './service/router-children-event.service';
-import { ViewerModule } from '../../+viewer/viewer.module';
+import { DocumentViewerModule } from '../document-viewer/document-viewer.module';
 
 @NgModule({
   imports: [
@@ -17,7 +17,7 @@ import { ViewerModule } from '../../+viewer/viewer.module';
     RouterModule,
     SharedModule,
     NgxDatatableModule,
-    ViewerModule
+    DocumentViewerModule
   ],
   declarations: [
     OwnSubmissionsComponent,

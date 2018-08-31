@@ -8,7 +8,7 @@
         </small>
       </h3>
     </div>
-    <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionID | collectionName" ngPreserveWhitespaces></laji-row>
+    <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionID | collectionName"></laji-row>
     <laji-document-object *ngIf="fields['document']"
                           [object]="document"
                           [fields]="fields['document']"
@@ -19,14 +19,14 @@
   <ng-container *ngFor="let gathering of document.gatherings; let i=index">
     <h4 class="page-header">Paikka {{i + 1}}</h4>
     <div>
-      <div class="image-block">
+      <div [ngClass]="{'half-page-block': mapData[i]}">
         <laji-document-object *ngIf="fields['gatherings']"
                               [object]="gathering"
                               [fields]="fields['gatherings']"
                               [hideTooltips]="true"
         ></laji-document-object>
       </div>
-      <div class="image-block">
+      <div *ngIf="mapData[i]" class="half-page-block">
         <laji-print-map [data]="mapData[i]"></laji-print-map>
       </div>
     </div>

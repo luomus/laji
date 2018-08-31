@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { MetadataService } from '../../../shared/service/metadata.service';
-import { AnnotationService } from '../../../+viewer/service/annotation.service';
+import { AnnotationService } from '../../document-viewer/service/annotation.service';
 import { Observable } from 'rxjs';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
