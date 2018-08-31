@@ -1,13 +1,3 @@
-.tight {
-  margin-top: 0;
-}
-.gatherings {
-  padding-bottom: 5px;
-}
-.doc-meta {
-  padding-top: 20px;
-}
-
 :host >>> .popover {
   width: 430px;
   max-width: 430px;

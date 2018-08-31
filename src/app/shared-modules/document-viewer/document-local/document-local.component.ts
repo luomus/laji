@@ -1,9 +1,11 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input, ChangeDetectorRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, forkJoin } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { FormService } from '../../../shared/service/form.service';
 import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
+import { Image } from '../../../shared/image-gallery/image.interface';
 
 @Component({
   selector: 'laji-document-local',
@@ -14,14 +16,15 @@ export class DocumentLocalComponent implements OnInit, OnChanges {
   @Input() document: Document;
   @Input() useWorldMap = true;
   @Input() view: 'viewer'|'print' = 'viewer';
+  @Input() showSpinner = false;
 
   mapData: any[] = [];
   imageData: {[key: string]: any} = {};
 
   fields = {};
 
-  private formFetch: Subscription;
-  private imageFetches: Subscription[] = [];
+  loading = false;
+  private parseDocSub: Subscription;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -34,65 +37,69 @@ export class DocumentLocalComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.document) {
-      this.setFields(this.document ? this.document.formID : undefined);
-      this.parseDocument(this.document);
-    }
-  }
+      if (this.parseDocSub) {
+        this.parseDocSub.unsubscribe();
+      }
 
-  private parseDocument(doc: Document) {
-    for (let i = 0; i < this.imageFetches.length; i++) {
-      if (this.imageFetches[i]) {
-        this.imageFetches[i].unsubscribe();
+      this.fields = {};
+      this.imageData = {};
+      this.mapData = [];
+
+      if (this.document) {
+        this.loading = true;
+        this.parseDocSub = this.parseDocument(this.document)
+          .subscribe(() => {
+            this.loading = false;
+            this.cd.markForCheck();
+          });
       }
     }
-    this.imageFetches = [];
-    this.imageData = {};
-    this.mapData = [];
-
-    if (doc) {
-      this.getImages(doc);
-
-      doc.gatherings.map((gathering, i) => {
-        if (gathering.geometry) {
-          this.mapData[i] = gathering.geometry;
-        }
-        this.getImages(gathering);
-        gathering.units.map((unit) => {
-          this.getImages(unit);
-        });
-      });
-    }
   }
 
-  private getImages(obj) {
-    if (obj.images && obj.images.length > 0) {
-      this.imageFetches.push(
-        this.lajiApi.getList(LajiApi.Endpoints.images, {
-          lang: this.translate.currentLang,
-          page: 1,
-          pageSize: 1000,
-          idIn: obj.images.join(',')
-        }).subscribe((res) => {
-          this.imageData[obj.id] = res.results;
+  private parseDocument(doc: Document): Observable<any> {
+    const observables = [];
+    observables.push(this.getFields(doc.formID));
+    if (doc.images && doc.images.length > 0) {
+      observables.push(this.getImages(doc));
+    }
+
+    doc.gatherings.map((gathering, i) => {
+      if (gathering.geometry) {
+        this.mapData[i] = gathering.geometry;
+      }
+      if (gathering.images && gathering.images.length > 0) {
+        observables.push(this.getImages(gathering));
+      }
+
+      gathering.units.map((unit) => {
+        if (unit.images && unit.images.length > 0) {
+          observables.push(this.getImages(unit));
+        }
+      });
+    });
+    return forkJoin(observables);
+  }
+
+  private getImages(obj): Observable<Image[]> {
+    return this.lajiApi.getList(LajiApi.Endpoints.images, {
+      lang: this.translate.currentLang,
+      page: 1,
+      pageSize: 1000,
+      idIn: obj.images.join(',')
+    })
+      .pipe(
+        map(res => res.results),
+        tap(images => {
+          this.imageData[obj.id] = images;
         })
       );
-    }
   }
 
-  private setFields(formId: string) {
-    if (this.formFetch) {
-      this.formFetch.unsubscribe();
-    }
-
-    this.fields = {};
-
-    if (formId) {
-      this.formFetch = this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
-        .subscribe(form => {
-          this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications']);
-          this.cd.markForCheck();
-        });
-    }
+  private getFields(formId: string): Observable<any> {
+    return this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
+      .pipe(tap(form => {
+        this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications']);
+      }));
   }
 
   private setAllFields(fields: any[], uiSchema: any, queue: string[]) {
