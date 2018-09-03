@@ -31,7 +31,6 @@ export class ObservationFormComponent implements OnInit {
     timeStart: '',
     timeEnd: '',
     informalTaxonGroupId: '',
-    hasNotMedia: undefined,
     includeOnlyValid: undefined,
     euInvasiveSpeciesList: undefined,
     nationallySignificantInvasiveSpecies: undefined,
@@ -80,16 +79,13 @@ export class ObservationFormComponent implements OnInit {
 
   advancedSections = {
     taxon: ['useIdentificationAnnotations', 'includeSubTaxa'],
-    time: ['season', 'firstLoadedLaterThan', 'firstLoadedBefore'],
+    time: ['firstLoadedLaterThan', 'firstLoadedBefore'],
     coordinate: ['coordinates' , 'coordinateAccuracyMax'],
     individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
-    quality: ['annotated', 'qualityIssues'],
     dataset: ['collectionId', 'reliabilityOfCollection', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
     keywords: ['documentId', 'keyword'],
-    features: ['administrativeStatusId', 'typeOfOccurrenceId', 'typeOfOccurrenceIdNot', 'finnish'],
     image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia'],
-    invasive: [],
     secure: ['secureLevel', 'secured'],
     identify: ['unidentified'],
   };
@@ -374,7 +370,6 @@ export class ObservationFormComponent implements OnInit {
       informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
         query.informalTaxonGroupId[0] : '',
       includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
-      hasNotMedia: query.hasMedia === false ? true : undefined,
       nationallySignificantInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.nationallySignificantInvasiveSpecies'),
       euInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.euInvasiveSpeciesList'),
       quarantinePlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.quarantinePlantPest'),
@@ -397,7 +392,6 @@ export class ObservationFormComponent implements OnInit {
 
     query.time = time.length > 0 ? [time] : undefined;
     query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? [formQuery.informalTaxonGroupId] : undefined;
-    query.hasMedia = formQuery.hasNotMedia ? false : query.hasUnitMedia;
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
     if (formQuery.allInvasiveSpecies) {
       query.administrativeStatusId = this.invasiveStatuses.map(val => 'MX.' + val);

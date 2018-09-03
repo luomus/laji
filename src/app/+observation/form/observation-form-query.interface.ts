@@ -5,7 +5,6 @@ export interface ObservationFormQuery {
   timeStart: string;
   timeEnd: string;
   informalTaxonGroupId: string;
-  hasNotMedia: boolean;
   includeOnlyValid: boolean;
   nationallySignificantInvasiveSpecies: boolean;
   euInvasiveSpeciesList: boolean;

@@ -16,8 +16,8 @@ import { AreaSelectComponent } from './area-select/area-select.component';
 import { LajiMapModule } from '@laji-map/laji-map.module';
 import { DatatableModule } from '../datatable/datatable.module';
 import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module';
-import { LajiSelectModule } from '../select/select.module';
 import { LajiFormModule } from '@laji-form/laji-form.module';
+import { SearchFiltersModule } from '../search-filters/search-filters.module';
 
 @NgModule({
   providers: [],
@@ -26,7 +26,7 @@ import { LajiFormModule } from '@laji-form/laji-form.module';
     SharedModule,
     DatatableModule,
     OwnSubmissionsModule,
-    LajiSelectModule,
+    SearchFiltersModule,
     LajiFormModule,
     LajiMapModule
   ],

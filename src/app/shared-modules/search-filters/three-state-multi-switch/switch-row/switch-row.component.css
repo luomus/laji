@@ -4,12 +4,12 @@
   font-size: 0.90em;
   margin-bottom: 0;
   font-weight: normal;
+  position: relative;
 }
 
-::ng-deep .lj-item input {
+::ng-deep .lj-item laji-checkbox {
   position: relative;
-  margin: 0 3px 0 -16px;
-  bottom: -2px;
+  margin: 2px 3px -2px -16px;
 }
 
 @media only screen and (max-width : 767px) {

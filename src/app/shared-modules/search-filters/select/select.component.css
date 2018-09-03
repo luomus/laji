@@ -15,10 +15,9 @@
   margin-bottom: 0;
   font-weight: normal;
 }
-.lj-item input {
+.lj-item laji-checkbox {
   position: relative;
-  margin: 0 3px 0 -16px;
-  bottom: -2px;
+  margin: 2px 3px -2px -16px;
 }
 .lj-item span {
 }

@@ -1,7 +1,11 @@
 :host {
-  margin-top: 4px;
+  margin-top: 2px;
+  margin-bottom: -2px;
   display: inline-block;
   position: relative;
+  height: 13px;
+  width: 13px;
+  font-size: 12px;
 }
 .lj-cb-wrap input {
   position: absolute;
@@ -28,8 +32,8 @@
 }
 
 .lj-cb-marker.negative:after {
-  content: "–";
+  content: "✗";
   top: -3px;
-  left: 2px;
+  left: 1px;
   position: absolute;
 }

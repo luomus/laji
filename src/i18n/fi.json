@@ -241,6 +241,7 @@
   "observation.form.issueBoth": "Myös ongelmalliset",
   "observation.form.issueOnly": "Vain ongelmalliset",
   "observation.intro.typeOfOccurrenceId": "Rajaa havaintojan lajin aseman perusteella.",
+  "observation.info.typeOfOccurrenceId": "Valinta listassa voit...",
   "observation.form.typeOfOccurrenceId": "Asema Suomessa",
   "observations.form.1d": "1pv",
   "observations.form.7d": "7pv",

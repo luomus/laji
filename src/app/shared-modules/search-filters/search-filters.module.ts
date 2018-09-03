@@ -5,20 +5,22 @@ import { MetadataSelectComponent } from './metadata-select/metadata-select.compo
 import { ObservationActiveComponent } from './active/observation-active.component';
 import { SharedModule } from '../../shared/shared.module';
 import { SearchFiltersComponent } from './search-filters/search-filters.component';
-import { LajiSelectModule } from '../select/select.module';
 import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { ThreeStateSwitchComponent } from './three-state-switch/three-state-switch.component';
 import { ThreeStateMultiSwitchComponent } from './three-state-multi-switch/three-state-multi-switch.component';
 import { SwitchRowComponent } from './three-state-multi-switch/switch-row/switch-row.component';
 import { IndeterminateCheckboxComponent } from './three-state-multi-switch/switch-row/indeterminate-checkbox/indeterminate-checkbox.component';
+import { CheckboxComponent } from './checkbox/checkbox.component';
+import { SelectComponent } from './select/select.component';
+import { InfoModule } from '../info/info.module';
 /* tslint:enable:max-line-length */
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    LajiSelectModule,
-    JWBootstrapSwitchModule
+    JWBootstrapSwitchModule,
+    InfoModule
   ],
   declarations: [
     MetadataSelectComponent,
@@ -27,13 +29,17 @@ import { IndeterminateCheckboxComponent } from './three-state-multi-switch/switc
     SwitchRowComponent,
     IndeterminateCheckboxComponent,
     ObservationActiveComponent,
-    SearchFiltersComponent
+    SearchFiltersComponent,
+    SelectComponent,
+    CheckboxComponent
   ],
   exports: [
     MetadataSelectComponent,
     ThreeStateSwitchComponent,
     ThreeStateMultiSwitchComponent,
-    SearchFiltersComponent
+    SearchFiltersComponent,
+    SelectComponent,
+    CheckboxComponent
   ]
 })
 export class SearchFiltersModule { }

@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 export class ThreeStateMultiSwitchComponent implements OnInit {
 
   @Input() title;
+  @Input() info;
   @Input() lang: string;
   @Input() trueValue: string[];
   @Input() falseValue: string[];
@@ -43,6 +44,13 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
       falseValues.push(event.id);
     }
     this.update.emit({true: trueValues, false: falseValues});
+  }
+
+  toggle(event) {
+    if (event.target.classList.contains('no-propagation')) {
+      return;
+    }
+    this.open = !this.open;
   }
 
 }
