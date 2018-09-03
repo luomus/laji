@@ -41,7 +41,8 @@ import { GatheringRowsComponent } from './gathering-rows/gathering-rows.componen
   declarations: [DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
     GatheringComponent, UnitComponent, LcFirstPipe, SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent,
     EditLinkComponent, DocumentLocalComponent, DocumentObjectComponent, DocumentLocalViewerViewComponent,
-    DocumentLocalPrintViewComponent, PrintMapComponent, PrintImagesComponent, DocumentPrintComponent, UnitRowsComponent, GatheringRowsComponent],
+    DocumentLocalPrintViewComponent, PrintMapComponent, PrintImagesComponent, DocumentPrintComponent, UnitRowsComponent,
+    GatheringRowsComponent],
   exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent]
 })
 export class DocumentViewerModule { }

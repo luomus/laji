@@ -13,10 +13,10 @@
           </small>
           <a type="button"
              class="btn btn-sm btn-default"
-             [routerLink]="['/view/print']"
+             [routerLink]="['/view/print'] | localize"
              [queryParams]="{uri: document.documentId, own: own}"
              target="_blank"
-             [tooltip]="'Siirry tulostussivulle'">
+             [tooltip]="'haseka.submissions.toPrint' | translate">
             <i class="glyphicon glyphicon-file"></i>
           </a>
           <laji-edit-link

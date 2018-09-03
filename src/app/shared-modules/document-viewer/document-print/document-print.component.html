@@ -17,7 +17,7 @@
   </div>
 
   <ng-container *ngFor="let gathering of document.gatherings; let i=index">
-    <h4 class="page-header">Paikka {{i + 1}}</h4>
+    <h4 class="page-header">{{'viewer.print.place' | translate }} {{i + 1}}</h4>
     <div>
       <div [ngClass]="{'half-page-block padding-right': mapData[i]}">
         <div>
