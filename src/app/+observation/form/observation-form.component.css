@@ -27,3 +27,24 @@ label {
 .switch-label {
   margin-left: 5px;
 }
+.small-label {
+  font-weight: normal;
+  font-size: smaller;
+}
+.mode-select {
+  margin-top: -12px;
+  border-bottom: 1px solid #e1e1e1;
+}
+.badge {
+  background: none;
+  font-weight: normal;
+  color: #333;
+  margin-bottom: 3px;
+  margin-right: 5px;
+}
+
+.badge.active {
+  background: #777;
+  font-weight: normal;
+  color: #fff;
+}

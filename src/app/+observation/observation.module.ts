@@ -27,6 +27,7 @@ import { ResetComponent } from './reset/reset.component';
 import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { TeamComponent } from './form/team/team.component';
 import { MemberIdPillListComponent } from './form/team/member-id-pill-list/member-id-pill-list.component';
+import { RemoveLeadingPipe } from './pipe/remove-leading.pipe';
 
 @NgModule({
   imports: [
@@ -54,7 +55,8 @@ import { MemberIdPillListComponent } from './form/team/member-id-pill-list/membe
     ObservationFormComponent,
     SeasonComponent,
     TeamComponent,
-    MemberIdPillListComponent
+    MemberIdPillListComponent,
+    RemoveLeadingPipe
   ]
 })
 export class ObservationModule {

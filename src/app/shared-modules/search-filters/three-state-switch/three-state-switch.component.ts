@@ -1,9 +1,10 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'laji-three-state-switch',
   templateUrl: './three-state-switch.component.html',
-  styleUrls: ['./three-state-switch.component.css']
+  styleUrls: ['./three-state-switch.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ThreeStateSwitchComponent {
 
@@ -33,9 +34,11 @@ export class ThreeStateSwitchComponent {
     }
   }
 
-  switch(event) {
-    if (event.previousValue === false && event.currentValue === true) {
+  switch(value) {
+    if (this._switchState === value) {
       this._switchState = undefined;
+    } else {
+      this._switchState = value;
     }
     this.cdr.detectChanges();
     this.valueChange.emit(this._switchState === true ? this.onValue : (this._switchState === false ? this.offValue : undefined));

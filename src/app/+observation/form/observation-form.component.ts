@@ -80,12 +80,16 @@ export class ObservationFormComponent implements OnInit {
 
   advancedSections = {
     taxon: ['useIdentificationAnnotations', 'includeSubTaxa'],
+    time: ['season', 'firstLoadedLaterThan', 'firstLoadedBefore'],
     coordinate: ['coordinates' , 'coordinateAccuracyMax'],
     individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
+    quality: ['annotated', 'qualityIssues'],
     dataset: ['collectionId', 'reliabilityOfCollection', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
     keywords: ['documentId', 'keyword'],
+    features: ['administrativeStatusId', 'typeOfOccurrenceId', 'typeOfOccurrenceIdNot', 'finnish'],
     image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia'],
+    invasive: [],
     secure: ['secureLevel', 'secured'],
     identify: ['unidentified'],
   };

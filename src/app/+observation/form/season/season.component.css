@@ -17,3 +17,14 @@
   width: 6px;
   text-align: center;
 }
+
+
+.d-select:after {
+  content: '.';
+  position: absolute;
+  right: -3px;
+  top: 7px;
+  width: 6px;
+  text-align: center;
+  font-weight: bold;
+}
