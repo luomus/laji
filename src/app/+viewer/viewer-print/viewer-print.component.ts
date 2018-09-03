@@ -15,9 +15,13 @@ import * as FileSaver from 'file-saver';
   styleUrls: ['./viewer-print.component.css']
 })
 export class ViewerPrintComponent implements OnInit, OnDestroy {
-  document: Document;
-  loading = false;
+  uri: string;
+  own: boolean;
+  showFacts = false;
 
+  document: Document;
+
+  loading = false;
   private subQuery: Subscription;
 
   constructor(
@@ -39,6 +43,9 @@ export class ViewerPrintComponent implements OnInit, OnDestroy {
           .subscribe(doc => {
             this.document = doc;
           });
+      } else {
+        this.uri = params['uri'];
+        this.own = params['own'];
       }
     });
   }
@@ -63,6 +70,10 @@ export class ViewerPrintComponent implements OnInit, OnDestroy {
           this.cd.markForCheck();
         });
     }
+  }
+
+  toggleFacts() {
+    this.showFacts = !this.showFacts;
   }
 
   private stripHTML(s: string) {

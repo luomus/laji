@@ -14,7 +14,6 @@ import { Image } from '../../../shared/image-gallery/image.interface';
 })
 export class DocumentLocalComponent implements OnInit, OnChanges {
   @Input() document: Document;
-  @Input() useWorldMap = true;
   @Input() view: 'viewer'|'print' = 'viewer';
   @Input() showSpinner = false;
 

@@ -15,6 +15,7 @@ const QualityErrors = [
 export class IssuesComponent implements OnInit, OnChanges {
 
   @Input() data: any;
+  @Input() hideTooltips = false;
   hasIssue: boolean;
 
   constructor() { }

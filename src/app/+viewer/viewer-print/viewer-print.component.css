@@ -4,3 +4,8 @@
   height: 34px;
   position: fixed;
 }
+.settings-wrap {
+  margin-top: 49px;
+  margin-left: 10px;
+  position: fixed;
+}

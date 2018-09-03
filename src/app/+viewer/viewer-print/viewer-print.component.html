@@ -9,3 +9,19 @@
                        [showSpinner]="true"
   ></laji-document-local>
 </ng-container>
+
+<ng-container *ngIf="uri">
+  <div class="print-wrap no-print">
+    <laji-spinner [spinning]="loading" [overlay]="true">
+      <button type="button" [disabled]="loading" class="btn btn-default" (click)="print(uri)">PDF <i class="glyphicon glyphicon-file"></i></button>
+    </laji-spinner>
+  </div>
+  <!--div class="settings-wrap no-print">
+    <button class="btn btn-default btn-xs"
+            (click)="toggleFacts()">
+      {{showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate)}}
+      <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
+    </button>
+  </div-->
+  <laji-document-print [uri]="uri" [own]="own" [showFacts]="showFacts"></laji-document-print>
+</ng-container>

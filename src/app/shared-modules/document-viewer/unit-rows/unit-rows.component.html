@@ -1,0 +1,42 @@
+<laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon; else taxonVerbatim" [title]="'result.unit.taxonVerbatim' | translate">
+  <laji-taxon-name [taxon]="unit.linkings.originalTaxon" [addLink]="showLinks"></laji-taxon-name>
+</laji-row>
+<ng-template #taxonVerbatim>
+  <laji-row *ngIf="unit.taxonVerbatim; else reportedInformalTaxonGroup" [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
+</ng-template>
+<ng-template #reportedInformalTaxonGroup>
+  <laji-row [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.reportedInformalTaxonGroup | toQName | label"></laji-row>
+</ng-template>
+<laji-row
+  *ngIf="unit.linkings && unit.linkings.taxon && ((unit.linkings.originalTaxon && unit.linkings.taxon.qname !== unit.linkings.originalTaxon.qname) || !unit.linkings.originalTaxon)"
+  [title]="'viewer.fixedName'|translate">
+  <laji-taxon-name [taxon]="unit.linkings.taxon" [addLink]="showLinks"></laji-taxon-name>
+</laji-row>
+<laji-row *ngIf="showFacts" [title]="'viewer.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
+<laji-row *ngIf="showFacts" [title]="'MY.recordBasis' | label" [value]="unit.recordBasis | label: 'warehouse'"></laji-row>
+<laji-row [title]="'MY.det' | label" [value]="unit.det"></laji-row>
+<ng-container *ngIf="unit.reportedTaxonConfidence && (showFacts || unit.reportedTaxonConfidence !== 'SURE')">
+  <laji-row [title]="'result.unit.reportedTaxonConfidence' | translate" [value]="unit.reportedTaxonConfidence | label: 'warehouse'"></laji-row>
+</ng-container>
+<ng-container *ngIf="unit.quality && unit.quality.taxon && unit.quality.taxon.reliability && (showFacts || unit.quality.taxon.reliability !== 'NEUTRAL')">
+  <laji-row [title]="'result.unit.quality.taxon'|translate">
+    {{unit.quality.taxon.reliability | label: 'warehouse'}}
+    <span *ngIf="unit.quality.taxon.source">
+          ({{unit.quality.taxon.source | label: 'warehouse'}})
+        </span>
+  </laji-row>
+</ng-container>
+<laji-issues [data]="unit"></laji-issues>
+<laji-row [title]="'MY.count' | label" [value]="unit.abundanceString"></laji-row>
+<laji-row [title]="'MY.femaleIndividualCount' | label" [value]="unit.individualCountFemale"></laji-row>
+<laji-row [title]="'MY.maleIndividualCount' | label" [value]="unit.individualCountMale"></laji-row>
+<!--
+<ng-container *ngIf="unit.interpretations">
+  <ng-container *ngIf="unit.abundanceString !== '' + unit.interpretations.individualCount">
+    <laji-row [title]="'result.unit.interpretations.individualCount' | translate" [value]="unit.interpretations.individualCount"></laji-row>
+  </ng-container>
+</ng-container>
+-->
+<laji-row [title]="'MY.lifeStage' | label" [value]="unit.lifeStage | label: 'warehouse'"></laji-row>
+<laji-row [title]="'MY.sex' | label" [value]="unit.sex | label: 'warehouse'"></laji-row>
+<laji-row [title]="'MY.notes' | label" [value]="unit.notes"></laji-row>

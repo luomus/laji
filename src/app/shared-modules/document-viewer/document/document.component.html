@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-7">
       <div class="page-header" *ngIf="!hideHeader" [ngClass]="{tight: !showTitle}">
-        <h3>
+        <h3 ngPreserveWhitespaces>
           {{'viewer.document' | translate }}
           <small>
             <a [routerLink]="['/view']" [queryParams]="highlight ?
@@ -11,6 +11,14 @@
               {{document.documentId}}
             </a>
           </small>
+          <a type="button"
+             class="btn btn-sm btn-default"
+             [routerLink]="['/view/print']"
+             [queryParams]="{uri: document.documentId, own: own}"
+             target="_blank"
+             [tooltip]="'Siirry tulostussivulle'">
+            <i class="glyphicon glyphicon-file"></i>
+          </a>
           <laji-edit-link
             [editors]="editors"
             [personID]="personID"

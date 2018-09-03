@@ -10,7 +10,6 @@ export class DocumentLocalPrintViewComponent implements OnInit {
   @Input() fields: any;
   @Input() mapData: any[] = [];
   @Input() imageData: {[key: string]: any} = {};
-  @Input() useWorldMap = true;
 
   constructor() { }
 

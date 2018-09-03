@@ -1,7 +1,7 @@
 <ng-container *ngIf="error">
   {{error.issue | label: 'warehouse'}}
   <i class="link glyphicon glyphicon-info-sign"
-     [tooltip]="infoContent" placement="right">
+     [tooltip]="infoContent" placement="right" [isDisabled]="hideTooltip">
   </i>
   <br>
 </ng-container>

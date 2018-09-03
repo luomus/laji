@@ -20,14 +20,14 @@
   <ng-container *ngFor="let gathering of document.gatherings; let i=index">
     <h4 class="page-header">Paikka {{i + 1}}</h4>
     <div>
-      <div [ngClass]="{'half-page-block': mapData[i]}">
+      <div [ngClass]="{'half-page-block padding-right': mapData[i]}">
         <laji-document-object *ngIf="fields['gatherings']"
                               [object]="gathering"
                               [fields]="fields['gatherings']"
                               [hideTooltips]="true"
         ></laji-document-object>
       </div>
-      <div *ngIf="mapData[i]" class="half-page-block">
+      <div *ngIf="mapData[i]" class="half-page-block padding-left">
         <laji-print-map [data]="mapData[i]"></laji-print-map>
       </div>
       <laji-print-images *ngIf="imageData[gathering.id]" [images]="imageData[gathering.id]"></laji-print-images>

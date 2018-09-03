@@ -15,6 +15,7 @@ export interface Issue {
 export class IssueComponent implements OnInit, OnChanges {
 
   @Input() issue: any;
+  @Input() hideTooltip = false;
   error: Issue;
 
   constructor() { }
