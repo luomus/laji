@@ -1,11 +1,11 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'laji-checkbox',
   templateUrl: './checkbox.component.html',
   styleUrls: ['./checkbox.component.css']
 })
-export class CheckboxComponent implements OnInit {
+export class CheckboxComponent {
 
   @ViewChild('checkbox') checkbox: ElementRef<HTMLInputElement>;
 
@@ -13,7 +13,7 @@ export class CheckboxComponent implements OnInit {
   @Output() valueChange = new EventEmitter();
 
   _value: boolean;
-  stateClass: string = 'clear';
+  stateClass = 'clear';
 
   constructor() { }
 
