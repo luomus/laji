@@ -9,7 +9,6 @@ import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { ThreeStateSwitchComponent } from './three-state-switch/three-state-switch.component';
 import { ThreeStateMultiSwitchComponent } from './three-state-multi-switch/three-state-multi-switch.component';
 import { SwitchRowComponent } from './three-state-multi-switch/switch-row/switch-row.component';
-import { IndeterminateCheckboxComponent } from './three-state-multi-switch/switch-row/indeterminate-checkbox/indeterminate-checkbox.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { SelectComponent } from './select/select.component';
 import { InfoModule } from '../info/info.module';
@@ -27,7 +26,6 @@ import { InfoModule } from '../info/info.module';
     ThreeStateSwitchComponent,
     ThreeStateMultiSwitchComponent,
     SwitchRowComponent,
-    IndeterminateCheckboxComponent,
     ObservationActiveComponent,
     SearchFiltersComponent,
     SelectComponent,
