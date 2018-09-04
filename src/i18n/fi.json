@@ -183,6 +183,7 @@
   "observation.form.collection": "Rajaa kansallisiin tieteellisiin kokoelmanäytteisiin",
   "observation.info.collection": "Näytä vain kokoelmanäytteet jotka on tallennettu Kotka kokoelmanhallintajärjestelmään",
   "observation.form.coordinateAccuracyMax": "Havaintopaikan koordinaattien tarkkuus vähintään",
+  "observation.info.coordinateAccuracyMax": "",
   "observation.form.filter": "Rajaa",
   "observation.form.specimen": "Laji",
   "observation.form.target": "Lajin nimi / Taksonin nimi",
