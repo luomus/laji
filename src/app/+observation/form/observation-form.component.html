@@ -1,17 +1,16 @@
-<div class="taxon-panel">
+<div class="mode-select">
   <div class="form-group">
     <div class="col-sm-12">
-      <bSwitch
-        [switch-off-text]="'observation.form.modeBasic' | translate"
-        [switch-on-text]="'observation.form.modeAdvanced' | translate"
-        [switch-on-color]="'primary'"
-        [switch-size]="'small'"
-        [(ngModel)]="advancedMode"
-        [switch-base-class]="'bootstrap-switch'"
-        (onChangeState)="onQueryChange()">
-      </bSwitch>
+      <span class="badge" [class.active]="!advancedMode" (click)="advancedMode = false">
+        {{'observation.form.modeBasic' | translate}}
+      </span>
+      <span class="badge" [class.active]="advancedMode" (click)="advancedMode = true">
+        {{'observation.form.modeAdvanced' | translate}}
+      </span>
     </div>
   </div>
+</div>
+<div class="taxon-panel">
   <div class="row">
     <label class="col-lg-12">
       {{'observation.active.informalTaxonGroupId' | translate}}:<laji-info>
@@ -66,48 +65,21 @@
         [list]="searchQuery.target || []"
         (updateList)="updateSearchQuery('target', $event)"
       ></laji-pill-list>
-      <laji-pill-list
-        [isLabel]="true"
-        [list]="searchQuery.originalTarget || []"
-        (updateList)="updateSearchQuery('originalTarget', $event)"
-      ></laji-pill-list>
-      <laji-pill-list
-        [isLabel]="true"
-        [list]="searchQuery.exactTarget || []"
-        (updateList)="updateSearchQuery('exactTarget', $event)"
-      ></laji-pill-list>
-      <laji-pill-list
-        [isLabel]="true"
-        [list]="searchQuery.originalExactTarget || []"
-        (updateList)="updateSearchQuery('originalExactTarget', $event)"
-      ></laji-pill-list>
     </div>
   </div>
   <div *ngIf="advancedMode || visibleAdvanced['taxon']">
     <div class="row">
       <div class="col-lg-12">
-        <label>
-          <input type="checkbox"
-                 [(ngModel)]="formQuery.taxonIncludeLower"
-                 (change)="onTaxonTargetChange()"
-                 name="taxonIncludeLower">
-          {{'observation.keepSsp' | translate}}
-        </label>
-        <laji-info>
-          {{'observation.info.keepSsp' | translate}}
-        </laji-info>
+        <label class="small-label">
+          <laji-checkbox [(value)]="formQuery.taxonIncludeLower" (valueChange)="onFormQueryChange()"></laji-checkbox>
+          {{'observation.keepSsp' | translate}}</label><laji-info>{{'observation.info.keepSsp' | translate}}</laji-info>
       </div>
     </div>
-    <div class="row">
+    <div class="form-group">
       <div class="col-lg-12">
-        <label>
-          <input type="checkbox"
-                 [(ngModel)]="formQuery.taxonUseAnnotated"
-                 (change)="onTaxonTargetChange()"
-                 name="taxonIncludeLower">
-          {{'observation.changedNames' | translate}}
-        </label>
-        <laji-info>
+        <label class="small-label">
+          <laji-checkbox [(value)]="formQuery.taxonUseAnnotated" (valueChange)="onFormQueryChange()"></laji-checkbox>
+          {{'observation.changedNames' | translate}}</label><laji-info>
           {{'observation.info.changedNames' | translate}}
         </laji-info>
       </div>
@@ -120,10 +92,7 @@
       <div class="row">
         <div class="col-sm-12">
           <label>
-            <input type="checkbox"
-                   [(ngModel)]="formQuery.asObserver"
-                   (ngModelChange)="ownItemSelected()"
-                   name="asObserver">
+            <laji-checkbox [(value)]="formQuery.asObserver" (valueChange)="ownItemSelected()"></laji-checkbox>
             {{'observation.form.asObserver' | translate}}
           </label>
           <laji-info>
@@ -134,10 +103,7 @@
       <div class="row">
         <div class="col-sm-12">
           <label>
-            <input type="checkbox"
-                   [(ngModel)]="formQuery.asEditor"
-                   (ngModelChange)="ownItemSelected()"
-                   name="asEditor">
+            <laji-checkbox [(value)]="formQuery.asEditor" (valueChange)="ownItemSelected()"></laji-checkbox>
             {{'observation.form.asEditor' | translate}}
           </label>
           <laji-info>
@@ -206,57 +172,62 @@
         </div>
       </div>
     </div>
-    <div class="form-group">
-      <div class="col-lg-12">
-        <label>
-          {{'observation.form.season' | translate}}:<laji-info>{{'observation.info.season' | translate}}</laji-info>
-        </label>
-        <laji-season [season]="searchQuery.season" (seasonChange)="updateSearchQuery('season', $event)"></laji-season>
-      </div>
-    </div>
-    <div class="row">
-      <div class="lj-input-wrap">
-        <label>
-          {{'observation.form.loaded' | translate}}:<laji-info>
-          {{'observation.info.loaded' | translate}}
-        </laji-info>
-        </label>
-        <laji-datepicker
-          [(ngModel)]="searchQuery.firstLoadedLaterThan"
-          [viewFormat]="'DD.MM.YYYY'"
-          [otherFormats]="['D.M.YYYY', 'YYYY']"
-          [format]="dateFormat"
-          (onSelect)="onFormQueryChange()"
-          (change)="onFormQueryChange()"
-          name="timeStart"></laji-datepicker>
-      </div>
-    </div>
-    <div class="row">
-      <div class="lj-input-wrap">
-        <laji-datepicker
-          [(ngModel)]="searchQuery.firstLoadedBefore"
-          [viewFormat]="'DD.MM.YYYY'"
-          [otherFormats]="['D.M.YYYY', 'YYYY']"
-          [toLastOfYear]="true"
-          [format]="dateFormat"
-          (onSelect)="onFormQueryChange()"
-          (change)="onFormQueryChange()"
-          name="timeEnd"></laji-datepicker>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="btn-group">
-          <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1, 'loaded')">{{'observations.form.1d' | translate}}</button>
-          <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7, 'loaded')">{{'observations.form.7d' | translate}}</button>
-          <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365, 'loaded')">
-            {{'observation.form.thisYear' | translate}}
-          </button>
+    <ng-container *ngIf="advancedMode || searchQuery.season">
+      <div class="form-group">
+        <div class="col-lg-12">
+          <label>
+            {{'observation.form.season' | translate}}:<laji-info>{{'observation.info.season' | translate}}</laji-info>
+          </label>
+          <laji-season [season]="searchQuery.season" (seasonChange)="updateSearchQuery('season', $event)"></laji-season>
         </div>
       </div>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="advancedMode || visibleAdvanced['time']">
+      <div class="row">
+        <div class="lj-input-wrap">
+          <label>
+            {{'observation.form.loaded' | translate}}:<laji-info>
+            {{'observation.info.loaded' | translate}}
+          </laji-info>
+          </label>
+          <laji-datepicker
+            [(ngModel)]="searchQuery.firstLoadedSameOrAfter"
+            [viewFormat]="'DD.MM.YYYY'"
+            [otherFormats]="['D.M.YYYY', 'YYYY']"
+            [format]="dateFormat"
+            (onSelect)="onFormQueryChange()"
+            (change)="onFormQueryChange()"
+            name="timeStart"></laji-datepicker>
+        </div>
+      </div>
+      <div class="row">
+        <div class="lj-input-wrap">
+          <laji-datepicker
+            [(ngModel)]="searchQuery.firstLoadedSameOrBefore"
+            [viewFormat]="'DD.MM.YYYY'"
+            [otherFormats]="['D.M.YYYY', 'YYYY']"
+            [toLastOfYear]="true"
+            [format]="dateFormat"
+            (onSelect)="onFormQueryChange()"
+            (change)="onFormQueryChange()"
+            name="timeEnd"></laji-datepicker>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1, 'loaded')">{{'observations.form.1d' | translate}}</button>
+            <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7, 'loaded')">{{'observations.form.7d' | translate}}</button>
+            <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365, 'loaded')">
+              {{'observation.form.thisYear' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </div>
   <div laji-panel
+       [autoToggle]="true"
        [open]="showPlace || visible['place']"
        (activate)="togglePlace($event)"
        [title]="'observation.form.place' | translate">
@@ -315,9 +286,10 @@
           [(ngModel)]="searchQuery.area">
       </div>
     </div>
+    <hr>
     <div class="form-group">
       <div class="col-sm-12">
-        {{'observation.form.map.intro'|translate}}
+        <label>{{'observation.form.map.intro'|translate}}</label>
       </div>
     </div>
     <div class="form-group">
@@ -336,61 +308,64 @@
         {{'observation.form.map.coordinates'|translate}}
       </div>
     </div>
-    <div *ngIf="advancedMode || visibleAdvanced['coordinate']">
-      <div class="row">
-        <label class="col-sm-12">{{'observation.form.coordinateIntersection' | translate}}<laji-info>{{'observation.info.coordinateIntersection' | translate}}</laji-info>
-          <div class="input-group" style="max-width: 110px;">
-            <input type="number"
-                   name="coordinatesIntersection"
-                   style="padding: 3px 7px;"
+    <ng-container *ngIf="advancedMode || visibleAdvanced['coordinate']">
+      <ng-container *ngIf="searchQuery.coordinates">
+        <div class="row">
+          <label class="col-sm-12 small-label">{{'observation.form.coordinateIntersection' | translate}}<laji-info>{{'observation.info.coordinateIntersection' | translate}}</laji-info>
+            <div class="input-group" style="max-width: 110px;">
+              <input type="number"
+                     name="coordinatesIntersection"
+                     style="padding: 3px 7px;"
+                     class="form-control input-sm"
+                     (change)="onQueryChange()"
+                     [(ngModel)]="searchQuery._coordinatesIntersection">
+              <span class="input-group-addon">%</span>
+            </div>
+          </label>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <input id="coordinateIntersection"
+                   type="range"
+                   name="sliderCoordinatesIntersection"
                    class="form-control input-sm"
+                   step="10"
+                   min="0"
+                   max="100"
+                   list="coordinateIntersectionSrc"
                    (change)="onQueryChange()"
                    [(ngModel)]="searchQuery._coordinatesIntersection">
-            <span class="input-group-addon">%</span>
+            <datalist id="coordinateIntersectionSrc">
+              <option value="0">
+              <option value="10">
+              <option value="20">
+              <option value="30">
+              <option value="40">
+              <option value="50">
+              <option value="60">
+              <option value="70">
+              <option value="80">
+              <option value="90">
+              <option value="100">
+            </datalist>
           </div>
-        </label>
-      </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <input id="coordinateIntersection"
-                 type="range"
-                 name="sliderCoordinatesIntersection"
-                 class="form-control input-sm"
-                 step="10"
-                 min="0"
-                 max="100"
-                 list="coordinateIntersectionSrc"
-                 (change)="onQueryChange()"
-                 [(ngModel)]="searchQuery._coordinatesIntersection">
-          <datalist id="coordinateIntersectionSrc">
-            <option value="0">
-            <option value="10">
-            <option value="20">
-            <option value="30">
-            <option value="40">
-            <option value="50">
-            <option value="60">
-            <option value="70">
-            <option value="80">
-            <option value="90">
-            <option value="100">
-          </datalist>
         </div>
-      </div>
-      <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-        <div class="col-sm-12">
-          <button type="button" class="btn btn-default btn-xs" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
-            {{'observation.form.intersect100' | translate}}
-          </button>
+        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+          <div class="col-sm-12">
+            <button type="button" class="btn btn-default btn-xs" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
+              {{'observation.form.intersect100' | translate}}
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-12">
-          <button type="button" class="btn btn-default btn-xs" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
-            {{'observation.form.intersect0' | translate}}
-          </button>
+        <div class="form-group">
+          <div class="col-sm-12">
+            <button type="button" class="btn btn-default btn-xs" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
+              {{'observation.form.intersect0' | translate}}
+            </button>
+          </div>
         </div>
-      </div>
+      </ng-container>
+      <hr>
       <div class="row">
         <label class="col-sm-12">
           {{'observation.form.coordinateAccuracyMax' | translate}}:
@@ -427,7 +402,7 @@
           </datalist>
         </div>
       </div>
-    </div>
+    </ng-container>
   </div>
   <div laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true"  [open]="visible['observer']">
     <div class="row">
@@ -577,38 +552,42 @@
           [lang]="lang"></laji-metadata-select>
       </div>
     </div>
-    <div class="form-group">
-      <div class="col-sm-12">
-        <laji-select
-          [selected]="[searchQuery.annotated]"
-          (selectedChanged)="indirectQueryChange('annotated', $event[0])"
-          [multiple]="false"
-          [useFilter]="false"
-          [title]="'observation.form.annotated' | translate"
-          [options]="[
-            {id: true, value: ('observation.form.annotatedTrue' | translate)},
-            {id: false, value: ('observation.form.annotatedFalse' | translate)}
-          ]"
-          [lang]="lang"></laji-select>
+    <ng-container *ngIf="advancedMode || searchQuery.annotated">
+      <div class="form-group">
+        <div class="col-sm-12">
+          <laji-select
+            [selected]="[searchQuery.annotated]"
+            (selectedChanged)="indirectQueryChange('annotated', $event[0])"
+            [multiple]="false"
+            [useFilter]="false"
+            [title]="'observation.form.annotated' | translate"
+            [options]="[
+              {id: true, value: ('observation.form.annotatedTrue' | translate)},
+              {id: false, value: ('observation.form.annotatedFalse' | translate)}
+            ]"
+            [lang]="lang"></laji-select>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <laji-select
-          [selected]="[searchQuery.qualityIssues]"
-          (selectedChanged)="indirectQueryChange('qualityIssues', $event[0])"
-          [multiple]="false"
-          [useFilter]="false"
-          [title]="'observation.form.qualityIssues' | translate"
-          [info]="'observation.info.qualityIssues' | translate"
-          [options]="[
-            {id: 'BOTH', value: ('observation.form.qualityIssuesBOTH' | translate)},
-            {id: 'NO_ISSUES', value: ('observation.form.qualityIssuesNO_ISSUES' | translate)},
-            {id: 'ONLY_ISSUES', value: ('observation.form.qualityIssuesONLY_ISSUES' | translate)}
-          ]"
-          [lang]="lang"></laji-select>
+    </ng-container>
+    <ng-container *ngIf="advancedMode || searchQuery.qualityIssues">
+      <div class="row">
+        <div class="col-sm-12">
+          <laji-select
+            [selected]="[searchQuery.qualityIssues]"
+            (selectedChanged)="indirectQueryChange('qualityIssues', $event[0])"
+            [multiple]="false"
+            [useFilter]="false"
+            [title]="'observation.form.qualityIssues' | translate"
+            [info]="'observation.info.qualityIssues' | translate"
+            [options]="[
+              {id: 'BOTH', value: ('observation.form.qualityIssuesBOTH' | translate)},
+              {id: 'NO_ISSUES', value: ('observation.form.qualityIssuesNO_ISSUES' | translate)},
+              {id: 'ONLY_ISSUES', value: ('observation.form.qualityIssuesONLY_ISSUES' | translate)}
+            ]"
+            [lang]="lang"></laji-select>
+        </div>
       </div>
-    </div>
+    </ng-container>
   </div>
   <div laji-panel *ngIf="advancedMode || visibleAdvanced['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
     <div class="form-group">
@@ -662,10 +641,7 @@
     <div class="row">
       <div class="col-lg-12">
         <label>
-          <input type="checkbox"
-                 [(ngModel)]="formQuery.onlyFromCollectionSystems"
-                 (change)="onOnlyFromCollectionCheckBoxToggle()"
-                 name="onlyPreservedSpecimen">
+          <laji-checkbox [(value)]="formQuery.onlyFromCollectionSystems" (valueChange)="onOnlyFromCollectionCheckBoxToggle()"></laji-checkbox>
           {{'observation.form.collection' | translate}}
         </label>
         <laji-info>
@@ -676,10 +652,7 @@
     <div class="form-group">
       <div class="col-lg-12">
         <label>
-          <input type="checkbox"
-                 [ngModel]="searchQuery.typeSpecimen"
-                 (ngModelChange)="onCheckBoxToggle('typeSpecimen')"
-                 name="typeSpecimen">
+          <laji-checkbox [value]="searchQuery.typeSpecimen" (valueChange)="onCheckBoxToggle('typeSpecimen')"></laji-checkbox>
           {{'observation.form.typeSpecimen' | translate}}
         </label>
         <laji-info>
@@ -734,22 +707,24 @@
     </div>
   </div>
   <div laji-panel [title]="'observation.form.speciesFeatures' | translate" [autoToggle]="true" [open]="visible['features']">
-    <div class="form-group">
-      <div class="col-sm-12">
-        <p>
-          {{'observation.intro.adminStatus' | translate}}
-        </p>
-        <laji-metadata-select
-          [info]="'observation.info.adminStatus' | translate"
-          [(ngModel)]="searchQuery.administrativeStatusId"
-          (ngModelChange)="onAdministrativeStatusChange()"
-          [multiple]="true"
-          [placeholder]="'MX.hasAdminStatus' | label"
-          name="administrativeStatusId"
-          [alt]="'MX.adminStatusEnum'"
-          [lang]="lang"></laji-metadata-select>
+    <ng-container *ngIf="advancedMode || searchQuery.administrativeStatusId">
+      <div class="form-group">
+        <div class="col-sm-12">
+          <p>
+            {{'observation.intro.adminStatus' | translate}}
+          </p>
+          <laji-metadata-select
+            [info]="'observation.info.adminStatus' | translate"
+            [(ngModel)]="searchQuery.administrativeStatusId"
+            (ngModelChange)="onAdministrativeStatusChange()"
+            [multiple]="true"
+            [placeholder]="'MX.hasAdminStatus' | label"
+            name="administrativeStatusId"
+            [alt]="'MX.adminStatusEnum'"
+            [lang]="lang"></laji-metadata-select>
+        </div>
       </div>
-    </div>
+    </ng-container>
     <div class="form-group">
       <div class="col-sm-12">
         <laji-metadata-select
@@ -764,45 +739,50 @@
           [lang]="lang"></laji-metadata-select>
       </div>
     </div>
-    <div class="form-group">
-      <div class="col-sm-12">
-        <p>
-          {{'observation.intro.typeOfOccurrenceId' | translate}}
-        </p>
-        <laji-three-state-multi-switch
-          [title]="'observation.form.typeOfOccurrenceId' | translate"
-          [lang]="lang"
-          [trueValue]="searchQuery.typeOfOccurrenceId"
-          [falseValue]="searchQuery.typeOfOccurrenceIdNot"
-          [alt]="'MX.typeOfOccurrenceEnum'"
-          (update)="updateTypeOfOccurrence($event)"
-        ></laji-three-state-multi-switch>
+    <ng-container *ngIf="advancedMode || searchQuery.typeOfOccurrenceId">
+      <div class="form-group">
+        <div class="col-sm-12">
+          <p>
+            {{'observation.intro.typeOfOccurrenceId' | translate}}
+          </p>
+          <laji-three-state-multi-switch
+            [title]="'observation.form.typeOfOccurrenceId' | translate"
+            [info]="'observation.info.typeOfOccurrenceId' | translate"
+            [lang]="lang"
+            [trueValue]="searchQuery.typeOfOccurrenceId"
+            [falseValue]="searchQuery.typeOfOccurrenceIdNot"
+            [alt]="'MX.typeOfOccurrenceEnum'"
+            (update)="updateTypeOfOccurrence($event)"
+          ></laji-three-state-multi-switch>
+        </div>
       </div>
-    </div>
+    </ng-container>
     <div class="form-group">
       <div class="col-sm-12">
+        <label class="switch-label">{{'observation.form.invasive' | translate}}<laji-info>{{'observation.info.invasive' | translate}}</laji-info></label><br>
         <laji-three-state-switch
           (change)="onQueryChange()"
           [onText]="'yes' | translate"
           [offText]="'no' | translate"
           [(value)]="searchQuery.invasive">
         </laji-three-state-switch>
-        <label class="switch-label">{{'observation.form.invasive' | translate}}<laji-info>{{'observation.info.invasive' | translate}}</laji-info></label>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <laji-three-state-switch
-          (change)="onQueryChange()"
-          [onText]="'yes' | translate"
-          [offText]="'no' | translate"
-          [(value)]="searchQuery.finnish">
-        </laji-three-state-switch>
-        <label class="switch-label">{{'observation.form.finnish' | translate}}<laji-info>{{'observation.info.finnish' | translate}}</laji-info></label>
+    <ng-container *ngIf="advancedMode || (searchQuery.finnish | exists)">
+      <div class="row">
+        <div class="col-sm-12">
+          <label class="switch-label">{{'observation.form.finnish' | translate}}<laji-info>{{'observation.info.finnish' | translate}}</laji-info></label><br>
+          <laji-three-state-switch
+            (change)="onQueryChange()"
+            [onText]="'yes' | translate"
+            [offText]="'no' | translate"
+            [(value)]="searchQuery.finnish">
+          </laji-three-state-switch>
+        </div>
       </div>
-    </div>
+    </ng-container>
   </div>
-  <div laji-panel [title]="'observation.form.invasiveClassification' | translate" [autoToggle]="true"  [open]="visible['invasive']">
+  <div laji-panel *ngIf="advancedMode" [title]="'observation.form.invasiveClassification' | translate" [autoToggle]="true"  [open]="visible['invasive']">
     <div class="row" *lajiAuthorities="true">
       <div class="col-sm-12">
         <laji-metadata-select
@@ -816,44 +796,32 @@
     <hr *lajiAuthorities="true">
     <div class="row">
       <div class="col-sm-12">
-        <label>
-          <input type="checkbox"
-                 [ngModel]="formQuery.euInvasiveSpeciesList"
-                 (ngModelChange)="onInvasiveCheckBoxToggle('euInvasiveSpeciesList')"
-                 name="euInvasiveSpeciesList">
+        <label class="small-label">
+          <laji-checkbox [value]="formQuery.euInvasiveSpeciesList" (valueChange)="onInvasiveCheckBoxToggle('euInvasiveSpeciesList')"></laji-checkbox>
           {{'MX.euInvasiveSpeciesList' | label}}
         </label>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <label>
-          <input type="checkbox"
-                 [ngModel]="formQuery.nationallySignificantInvasiveSpecies"
-                 (ngModelChange)="onInvasiveCheckBoxToggle('nationallySignificantInvasiveSpecies')"
-                 name="nationallySignificantInvasiveSpecies">
+        <label class="small-label">
+          <laji-checkbox [value]="formQuery.nationallySignificantInvasiveSpecies" (valueChange)="onInvasiveCheckBoxToggle('nationallySignificantInvasiveSpecies')"></laji-checkbox>
           {{'MX.nationallySignificantInvasiveSpecies' | label}}
         </label>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <label>
-          <input type="checkbox"
-                 [ngModel]="formQuery.quarantinePlantPest"
-                 (ngModelChange)="onInvasiveCheckBoxToggle('quarantinePlantPest')"
-                 name="quarantinePlantPest">
+        <label class="small-label">
+          <laji-checkbox [value]="formQuery.quarantinePlantPest" (valueChange)="onInvasiveCheckBoxToggle('quarantinePlantPest')"></laji-checkbox>
           {{'MX.quarantinePlantPest' | label}}
         </label>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <label>
-          <input type="checkbox"
-                 [ngModel]="formQuery.allInvasiveSpecies"
-                 (ngModelChange)="onInvasiveCheckBoxToggle(invasiveStatuses)"
-                 name="allInvasiveSpecies">
+        <label class="small-label">
+          <laji-checkbox [value]="formQuery.allInvasiveSpecies" (valueChange)="onInvasiveCheckBoxToggle(invasiveStatuses)"></laji-checkbox>
           {{'observation.form.allInvasive' | translate}}
         </label>
       </div>
@@ -866,10 +834,7 @@
           {{'observation.intro.images' | translate }}
         </p>
         <label>
-          <input type="checkbox"
-                 [ngModel]="searchQuery.hasUnitMedia"
-                 (ngModelChange)="onCheckBoxToggle('hasUnitMedia')"
-                 name="hasMedia">
+          <laji-checkbox [value]="searchQuery.hasUnitMedia" (valueChange)="onCheckBoxToggle('hasUnitMedia')"></laji-checkbox>
           {{'observation.form.hasUnitMedia' | translate}}
         </label>
       </div>
@@ -877,24 +842,14 @@
     <div class="row">
       <div class="col-sm-12">
         <label>
-          <input type="checkbox"
-                 [ngModel]="searchQuery.hasGatheringMedia"
-                 (ngModelChange)="onCheckBoxToggle('hasGatheringMedia')"
-                 name="hasMedia">
-          {{'observation.form.hasGatheringMedia' | translate}}
-        </label>
-        <laji-info>
-          {{'observation.info.hasGatheringMedia' | translate}}
-        </laji-info>
+          <laji-checkbox [value]="searchQuery.hasGatheringMedia" (valueChange)="onCheckBoxToggle('hasGatheringMedia')"></laji-checkbox>
+          {{'observation.form.hasGatheringMedia' | translate}}</label><laji-info>{{'observation.info.hasGatheringMedia' | translate}}</laji-info>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-12">
         <label>
-          <input type="checkbox"
-                 [ngModel]="searchQuery.hasDocumentMedia"
-                 (ngModelChange)="onCheckBoxToggle('hasDocumentMedia')"
-                 name="hasMedia">
+          <laji-checkbox [value]="searchQuery.hasDocumentMedia" (valueChange)="onCheckBoxToggle('hasDocumentMedia')"></laji-checkbox>
           {{'observation.form.hasDocumentMedia' | translate}}
         </label>
         <laji-info>
@@ -907,28 +862,13 @@
       <div class="col-sm-12">
         <p>{{'observation.intro.noImages' | translate}}</p>
         <label>
-          <input type="checkbox"
-                 [ngModel]="formQuery.hasNotMedia"
-                 (ngModelChange)="onCheckBoxToggle('hasUnitMedia', false, false)"
-                 name="hasNotMedia">
+          <laji-checkbox [value]="searchQuery.hasUnitMedia === false" (valueChange)="onCheckBoxToggle('hasUnitMedia', false)"></laji-checkbox>
           {{'observation.form.hasNotMedia' | translate}}
         </label>
       </div>
     </div>
   </div>
   <div laji-panel *ngIf="advancedMode || visibleAdvanced['secure']" [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secret']">
-    <div class="form-group">
-      <div class="col-sm-12">
-        <label>
-          <input type="checkbox"
-                 [checked]="searchQuery.secured"
-                 (change)="onCheckBoxToggle('secured', true)"
-                 name="qualityIssues">
-          {{'observation.form.secured' | translate}}
-        </label>
-        <laji-info [html]="'observation.info.secured' | translate"></laji-info>
-      </div>
-    </div>
     <div class="row">
       <div class="col-sm-12">
         <laji-metadata-select
@@ -950,10 +890,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <label>
-          <input type="checkbox"
-                 [checked]="searchQuery.unidentified"
-                 (change)="onCheckBoxToggle('unidentified', true)"
-                 name="qualityIssues">
+          <laji-checkbox [value]="searchQuery.unidentified" (valueChange)="onCheckBoxToggle('unidentified', true)"></laji-checkbox>
           {{'observation.form.unidentified' | translate}}
         </label>
         <laji-info [html]="'observation.info.unidentified' | translate"></laji-info>

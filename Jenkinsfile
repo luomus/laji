@@ -10,7 +10,7 @@ node {
   stage('Build') {
     milestone()
     sh 'yarn run --silent build:ssr:dev'
-    sh 'pre-compress-web-assets dist'
+    sh 'pre-compress-web-assets dist/browser'
   }
   stage('Archive') {
     sh 'tar -cvzf dist.tar.gz --strip-components=1 dist'

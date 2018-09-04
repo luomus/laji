@@ -17,7 +17,6 @@ import { ObservationResultModule } from '../shared-modules/observation-result/ob
 import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
 import { ObservationFiltersComponent } from './observation-filters/observation-filters.component';
 import { PillListComponent } from './pill-list/pill-list.component';
-import { LajiSelectModule } from '../shared-modules/select/select.module';
 import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -27,6 +26,8 @@ import { ResetComponent } from './reset/reset.component';
 import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { TeamComponent } from './form/team/team.component';
 import { MemberIdPillListComponent } from './form/team/member-id-pill-list/member-id-pill-list.component';
+import { RemoveLeadingPipe } from './pipe/remove-leading.pipe';
+import { ExistsPipe } from './pipe/exists.pipe';
 
 @NgModule({
   imports: [
@@ -38,7 +39,6 @@ import { MemberIdPillListComponent } from './form/team/member-id-pill-list/membe
     NgxDatatableModule,
     ObservationResultModule,
     SearchFiltersModule,
-    LajiSelectModule,
     ObservationMapModule,
     InfoModule,
     NgxChartsModule,
@@ -54,7 +54,9 @@ import { MemberIdPillListComponent } from './form/team/member-id-pill-list/membe
     ObservationFormComponent,
     SeasonComponent,
     TeamComponent,
-    MemberIdPillListComponent
+    MemberIdPillListComponent,
+    RemoveLeadingPipe,
+    ExistsPipe
   ]
 })
 export class ObservationModule {

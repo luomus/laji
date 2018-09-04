@@ -31,7 +31,6 @@ export class ObservationFormComponent implements OnInit {
     timeStart: '',
     timeEnd: '',
     informalTaxonGroupId: '',
-    hasNotMedia: undefined,
     includeOnlyValid: undefined,
     euInvasiveSpeciesList: undefined,
     nationallySignificantInvasiveSpecies: undefined,
@@ -79,7 +78,8 @@ export class ObservationFormComponent implements OnInit {
   };
 
   advancedSections = {
-    taxon: ['exactTarget', 'originalExactTarget', 'originalTarget'],
+    taxon: ['useIdentificationAnnotations', 'includeSubTaxa'],
+    time: ['firstLoadedLaterThan', 'firstLoadedBefore'],
     coordinate: ['coordinates' , 'coordinateAccuracyMax'],
     individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
     dataset: ['collectionId', 'reliabilityOfCollection', 'sourceId'],
@@ -162,8 +162,8 @@ export class ObservationFormComponent implements OnInit {
       this.formQuery.timeEnd = '';
       this.onFormQueryChange();
     } else if (target === 'loaded') {
-      this.searchQuery.firstLoadedLaterThan = now.subtract(dates, 'days').format('YYYY-MM-DD');
-      this.searchQuery.firstLoadedBefore = '';
+      this.searchQuery.firstLoadedSameOrAfter = now.subtract(dates, 'days').format('YYYY-MM-DD');
+      this.searchQuery.firstLoadedSameOrBefore = '';
       this.onQueryChange();
     } else {
       console.error('invalid target for updateTime');
@@ -272,25 +272,10 @@ export class ObservationFormComponent implements OnInit {
     this.onQueryChange();
   }
 
-  onTaxonTargetChange() {
-    const currentTarget = this.getTaxonTarget();
-    const taxa = [];
-    const query = this.searchQuery;
-    ['target', 'originalTarget', 'exactTarget', 'originalExactTarget'].forEach((target) => {
-      if (query[target]) {
-        taxa.push(...query[target]);
-        delete query[target];
-      }
-    });
-    query[currentTarget] = taxa;
-    this.onQueryChange();
-  }
-
   onTaxonSelect(event) {
     if ((event.key === 'Enter' || (event.value && event.item)) && this.formQuery.taxon) {
-      const target = this.getTaxonTarget();
-      this.searchQuery[target] = this.searchQuery[target] ?
-        [...this.searchQuery[target], this.formQuery.taxon] : [this.formQuery.taxon];
+      this.searchQuery['target'] = this.searchQuery['target'] ?
+        [...this.searchQuery['target'], this.formQuery.taxon] : [this.formQuery.taxon];
       this.formQuery.taxon = '';
       this.onQueryChange();
     }
@@ -348,7 +333,6 @@ export class ObservationFormComponent implements OnInit {
     })
   }
 
-
   private updateVisibleAdvancedSections() {
     Object.keys(this.advancedSections).forEach(section => {
       let visible = false;
@@ -361,14 +345,6 @@ export class ObservationFormComponent implements OnInit {
       }
       this.visibleAdvanced[section] = visible;
     });
-  }
-
-  private getTaxonTarget() {
-    if (this.formQuery.taxonUseAnnotated) {
-      return this.formQuery.taxonIncludeLower ? 'target' : 'exactTarget';
-    } else {
-      return this.formQuery.taxonIncludeLower ? 'originalTarget' : 'originalExactTarget';
-    }
   }
 
   private hasInMulti(multi, value) {
@@ -394,7 +370,6 @@ export class ObservationFormComponent implements OnInit {
       informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
         query.informalTaxonGroupId[0] : '',
       includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
-      hasNotMedia: query.hasMedia === false ? true : undefined,
       nationallySignificantInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.nationallySignificantInvasiveSpecies'),
       euInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.euInvasiveSpeciesList'),
       quarantinePlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.quarantinePlantPest'),
@@ -404,23 +379,9 @@ export class ObservationFormComponent implements OnInit {
       onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3']) && query.sourceId.length === 2,
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
       asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
-      taxonIncludeLower: undefined,
-      taxonUseAnnotated: undefined
+      taxonIncludeLower: typeof query.includeSubTaxa !== 'undefined' ? query.includeSubTaxa : true,
+      taxonUseAnnotated: typeof query.useIdentificationAnnotations !== 'undefined' ? query.useIdentificationAnnotations : true,
     };
-
-    if (query.originalTarget) {
-      formQuery.taxonIncludeLower = true;
-      formQuery.taxonUseAnnotated = false;
-    } else if (query.exactTarget) {
-      formQuery.taxonIncludeLower = false;
-      formQuery.taxonUseAnnotated = true;
-    } else if (query.originalExactTarget) {
-      formQuery.taxonIncludeLower = false;
-      formQuery.taxonUseAnnotated = false;
-    } else {
-      formQuery.taxonIncludeLower = true;
-      formQuery.taxonUseAnnotated = true;
-    }
 
     return formQuery;
   }
@@ -431,7 +392,6 @@ export class ObservationFormComponent implements OnInit {
 
     query.time = time.length > 0 ? [time] : undefined;
     query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? [formQuery.informalTaxonGroupId] : undefined;
-    query.hasMedia = formQuery.hasNotMedia ? false : query.hasUnitMedia;
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
     if (formQuery.allInvasiveSpecies) {
       query.administrativeStatusId = this.invasiveStatuses.map(val => 'MX.' + val);
@@ -441,6 +401,8 @@ export class ObservationFormComponent implements OnInit {
     }
     query.editorPersonToken = formQuery.asEditor ? this.userService.getToken() : undefined;
     query.observerPersonToken = formQuery.asObserver ? this.userService.getToken() : undefined;
+    query.includeSubTaxa = formQuery.taxonIncludeLower ? undefined : false;
+    query.useIdentificationAnnotations = formQuery.taxonUseAnnotated ? undefined : false;
     this.invasiveStatuses
       .map((key) => {
         const value = 'MX.' + key;

@@ -113,9 +113,8 @@ export interface WarehouseQueryInterface {
   includeNonValidTaxa?: boolean;
   taxonId?: Array<string>;
   target?: Array<string>;
-  originalTarget?: Array<string>;
-  exactTarget?: Array<string>;
-  originalExactTarget?: Array<string>;
+  includeSubTaxa?: boolean;
+  useIdentificationAnnotations?: boolean;
   taxonRankId?: string;
   informalTaxonGroupId?: Array<string>;
   administrativeStatusId?: Array<string>;
@@ -128,8 +127,8 @@ export interface WarehouseQueryInterface {
   area?: Array<string>;
   season?: string;
   time?: Array<string>;
-  firstLoadedLaterThan?: string;
-  firstLoadedBefore?: string;
+  firstLoadedSameOrAfter?: string;
+  firstLoadedSameOrBefore?: string;
   yearMonth?: Array<string>;
   dayOfYearBegin?: number;
   dayOfYearEnd?: number;
@@ -147,7 +146,8 @@ export interface WarehouseQueryInterface {
   individualId?: Array<string>;
   individualCountMin?: number;
   individualCountMax?: number;
-  loadedLaterThan?: Date;
+  loadedSameOrAfter?: string;
+  loadedSameOrBefore?: string;
   coordinates?: Array<string>;
   typeSpecimen?: boolean;
   hasDocumentMedia?: boolean;
@@ -167,8 +167,8 @@ export interface WarehouseQueryInterface {
   editorOrObserverPersonToken?: string;
   qualityIssues?: string;
   annotationType?: Array<string>;
-  annotatedBefore?: Date;
-  annotatedLaterThan?: Date;
+  annotatedSameOrAfter?: string;
+  annotatedSameOrBefore?: string;
   namedPlaceId?: Array<string>;
   typeOfOccurrenceId?: Array<string>;
   typeOfOccurrenceIdNot?: Array<string>;

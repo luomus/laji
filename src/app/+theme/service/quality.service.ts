@@ -31,10 +31,10 @@ export class QualityService {
       query.informalTaxonGroupId = informalTaxonGroup;
     }
     if (timeStart) {
-      query.annotatedLaterThan = timeStart;
+      query.annotatedSameOrAfter = timeStart;
     }
     if (timeEnd) {
-      query.annotatedBefore = timeEnd;
+      query.annotatedSameOrBefore = timeEnd;
     }
 
     const cacheKey = JSON.stringify({page, pageSize, orderBy, informalTaxonGroup, timeStart, timeEnd});
@@ -57,7 +57,7 @@ export class QualityService {
       query.informalTaxonGroupId = informalTaxonGroup;
     }
     if (lastDate) {
-      query.annotatedLaterThan = lastDate;
+      query.annotatedSameOrAfter = lastDate;
     }
 
     const cacheKey = JSON.stringify({maxLength, informalTaxonGroup, lastDate});

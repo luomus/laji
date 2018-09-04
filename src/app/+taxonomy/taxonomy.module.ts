@@ -21,7 +21,6 @@ import { SpeciesFormComponent } from './taxon-browse/species-form/species-form.c
 import { TaxonBrowseComponent } from './taxon-browse/taxon-browse.component';
 import { ButtonsModule, TypeaheadModule } from 'ngx-bootstrap';
 import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
-import { LajiSelectModule } from '../shared-modules/select/select.module';
 import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { TaxonomySearchQuery } from './taxon-browse/service/taxonomy-search-query';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
@@ -44,7 +43,7 @@ import { InfoModule } from '../shared-modules/info/info.module';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
-    SearchFiltersModule, LajiSelectModule, JWBootstrapSwitchModule, ObservationResultModule,
+    SearchFiltersModule, JWBootstrapSwitchModule, ObservationResultModule,
     ObservationMapModule, NgxDatatableModule, InfoModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns, TaxonExportService, DatatableUtil],
   declarations: [TaxonComponent, TaxonInfoComponent, InfoCardComponent, ParentsComponent, IUCNComponent,

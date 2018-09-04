@@ -93,22 +93,42 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   updateSelectedList() {
     const skip = this.searchQuery.skippedQueryParams ? this.searchQuery.skippedQueryParams : [];
     const query = this.searchQuery.query;
-    this.active = [];
+    const active = [];
+    const doubles = {};
     const keys = Object.keys(query);
-    if (!keys || keys.length === 0) {
-      return;
-    }
-    keys.map((i) => {
-      if (skip.indexOf(i) > -1 || i.substr(0, 1) === '_') {
-        return;
-      }
-      const type = typeof query[i];
-      if (type !== 'undefined') {
-        if (type === 'boolean' || type === 'number' || (query[i] && query[i].length > 0)) {
-          this.active.push({field: i, value: query[i]});
+
+    if (keys && keys.length > 0) {
+      keys.map((i) => {
+        if (skip.indexOf(i) > -1 || i.substr(0, 1) === '_') {
+          return;
         }
-      }
-    });
+        const type = typeof query[i];
+        if (type !== 'undefined') {
+          if (type === 'boolean' || type === 'number' || (query[i] && query[i].length > 0)) {
+
+            // show only on teamMember text
+            if (['teamMember', 'teamMemberId'].indexOf(i) !== -1) {
+              if (doubles['teamMember']) {
+                return;
+              }
+              doubles['teamMember'] = true;
+            }
+
+            // show only on firstloaded text
+            if (['firstLoadedSameOrBefore', 'firstLoadedSameOrAfter'].indexOf(i) !== -1) {
+              if (doubles['firstLoaded']) {
+                return;
+              }
+              doubles['firstLoaded'] = true;
+            }
+
+            active.push({field: i, value: query[i]});
+          }
+        }
+      });
+    }
+
+    this.active = active;
   }
 
 }

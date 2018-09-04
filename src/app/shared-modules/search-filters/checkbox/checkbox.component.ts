@@ -1,18 +1,19 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'laji-indeterminate-checkbox',
-  templateUrl: './indeterminate-checkbox.component.html',
-  styleUrls: ['./indeterminate-checkbox.component.css']
+  selector: 'laji-checkbox',
+  templateUrl: './checkbox.component.html',
+  styleUrls: ['./checkbox.component.css']
 })
-export class IndeterminateCheckboxComponent {
+export class CheckboxComponent {
 
   @ViewChild('checkbox') checkbox: ElementRef<HTMLInputElement>;
 
+  @Input() threeState = false;
   @Output() valueChange = new EventEmitter();
-  @Output() update = new EventEmitter();
 
   _value: boolean;
+  stateClass = 'clear';
 
   constructor() { }
 
@@ -21,16 +22,18 @@ export class IndeterminateCheckboxComponent {
     this._value = value;
     if (value === true) {
       this.checkbox.nativeElement.checked = true;
-    } else if (value === false) {
+      this.stateClass = 'checked';
+    } else if (value === false && this.threeState) {
       this.checkbox.nativeElement.indeterminate = true;
+      this.stateClass = 'negative';
     } else {
       this.checkbox.nativeElement.checked = false;
+      this.stateClass = 'clear';
     }
   }
 
   changeValue() {
-    this.valueChange.emit(this._value === true ? false : (this._value === false ? undefined : true));
-    this.update.emit();
+    this.valueChange.emit(this._value === true ? false : (this._value === false ? (this.threeState ? undefined : true) : true));
   }
 
 }
