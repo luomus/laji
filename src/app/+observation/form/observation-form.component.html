@@ -12,11 +12,9 @@
 </div>
 <div class="taxon-panel">
   <div class="row">
-    <label class="col-lg-12">
-      {{'observation.active.informalTaxonGroupId' | translate}}:<laji-info>
-      {{'observation.info.informalTaxonGroup' | translate}}
-    </laji-info>
-    </label>
+    <div class="col-lg-12">
+      <label>{{'observation.active.informalTaxonGroupId' | translate}}</label><laji-info>{{'observation.info.informalTaxonGroup' | translate}}</laji-info>
+    </div>
   </div>
   <div class="row">
     <div class="lj-input-wrap">
@@ -30,11 +28,9 @@
     </div>
   </div>
   <div class="form-group">
-    <label class="col-lg-12">
-      {{'observation.form.target' | translate}}:<laji-info>
-      <span [innerHtml]="'observation.info.target' | translate"></span>
-    </laji-info>
-    </label>
+    <div class="col-lg-12">
+      <label>{{'observation.form.target' | translate}}</label><laji-info><span [innerHtml]="'observation.info.target' | translate"></span></laji-info>
+    </div>
     <div class="col-lg-12">
       <input
         [ngClass]="{loading: typeaheadLoading}"
@@ -132,12 +128,9 @@
   </div>
   <div laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true"  [open]="visible['time']">
     <div class="row">
-      <div class="lj-input-wrap">
-        <label>
-          {{'observation.form.time' | translate}}:<laji-info>
-          {{'observation.info.time' | translate}}
+      <div class="col-sm-12">
+        <label>{{'observation.form.time' | translate}}</label><laji-info>{{'observation.info.time' | translate}}
         </laji-info>
-        </label>
         <laji-datepicker
           [(ngModel)]="formQuery.timeStart"
           [viewFormat]="'DD.MM.YYYY'"
@@ -149,7 +142,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="lj-input-wrap">
+      <div class="col-sm-12">
         <laji-datepicker
           [(ngModel)]="formQuery.timeEnd"
           [viewFormat]="'DD.MM.YYYY'"
@@ -175,21 +168,15 @@
     <ng-container *ngIf="advancedMode || searchQuery.season">
       <div class="form-group">
         <div class="col-lg-12">
-          <label>
-            {{'observation.form.season' | translate}}:<laji-info>{{'observation.info.season' | translate}}</laji-info>
-          </label>
-          <laji-season [season]="searchQuery.season" (seasonChange)="updateSearchQuery('season', $event)"></laji-season>
+          <label>{{'observation.form.season' | translate}}</label><laji-info>{{'observation.info.season' | translate}}</laji-info>
+            <laji-season [season]="searchQuery.season" (seasonChange)="updateSearchQuery('season', $event)"></laji-season>
         </div>
       </div>
     </ng-container>
     <ng-container *ngIf="advancedMode || visibleAdvanced['time']">
       <div class="row">
         <div class="lj-input-wrap">
-          <label>
-            {{'observation.form.loaded' | translate}}:<laji-info>
-            {{'observation.info.loaded' | translate}}
-          </laji-info>
-          </label>
+          <label>{{'observation.form.loaded' | translate}}:</label><laji-info>{{'observation.info.loaded' | translate}}</laji-info>
           <laji-datepicker
             [(ngModel)]="searchQuery.firstLoadedSameOrAfter"
             [viewFormat]="'DD.MM.YYYY'"
@@ -272,11 +259,11 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-lg-12">
-        {{'observation.form.area' | translate}}:<laji-info>
+      <div class="col-lg-12">
+        <label>{{'observation.form.area' | translate}}</label><laji-info>
         {{'observation.info.area' | translate}}
       </laji-info>
-      </label>
+      </div>
       <div class="col-lg-12">
         <input
           class="form-control input-sm"
@@ -311,17 +298,19 @@
     <ng-container *ngIf="advancedMode || visibleAdvanced['coordinate']">
       <ng-container *ngIf="searchQuery.coordinates">
         <div class="row">
-          <label class="col-sm-12 small-label">{{'observation.form.coordinateIntersection' | translate}}<laji-info>{{'observation.info.coordinateIntersection' | translate}}</laji-info>
-            <div class="input-group" style="max-width: 110px;">
-              <input type="number"
-                     name="coordinatesIntersection"
-                     style="padding: 3px 7px;"
-                     class="form-control input-sm"
-                     (change)="onQueryChange()"
-                     [(ngModel)]="searchQuery._coordinatesIntersection">
-              <span class="input-group-addon">%</span>
-            </div>
-          </label>
+          <div class="col-sm-12">
+            <label class="small-label">{{'observation.form.coordinateIntersection' | translate}}<laji-info>{{'observation.info.coordinateIntersection' | translate}}</laji-info>
+              <div class="input-group" style="max-width: 110px;">
+                <input type="number"
+                       name="coordinatesIntersection"
+                       style="padding: 3px 7px;"
+                       class="form-control input-sm"
+                       (change)="onQueryChange()"
+                       [(ngModel)]="searchQuery._coordinatesIntersection">
+                <span class="input-group-addon">%</span>
+              </div>
+            </label>
+          </div>
         </div>
         <div class="row">
           <div class="col-sm-12">
@@ -369,17 +358,19 @@
       </ng-container>
       <hr>
       <div class="row">
-        <label class="col-sm-12">
-          {{'observation.form.coordinateAccuracyMax' | translate}}:
-          <div class="input-group" style="max-width: 110px;">
-            <input type="number" name="coordinateAccuracyMax"
-                   style="padding: 3px 7px;"
-                   class="form-control input-sm"
-                   (change)="onAccuracyValueChange()"
-                   [(ngModel)]="searchQuery.coordinateAccuracyMax">
-            <span class="input-group-addon">m</span>
-          </div>
-        </label>
+        <div class="col-sm-12">
+          <label>
+            {{'observation.form.coordinateAccuracyMax' | translate}}:
+            <div class="input-group" style="max-width: 110px;">
+              <input type="number" name="coordinateAccuracyMax"
+                     style="padding: 3px 7px;"
+                     class="form-control input-sm"
+                     (change)="onAccuracyValueChange()"
+                     [(ngModel)]="searchQuery.coordinateAccuracyMax">
+              <span class="input-group-addon">m</span>
+            </div>
+          </label>
+        </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
@@ -408,11 +399,10 @@
   </div>
   <div laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true"  [open]="visible['observer']">
     <div class="row">
-      <label class="col-lg-12">
-        {{'observation.form.team' | translate}}:<laji-info>
-        {{'observation.info.team' | translate}}
+      <div class="col-lg-12">
+        <label>{{'observation.form.team' | translate}}:</label><laji-info>{{'observation.info.team' | translate}}
       </laji-info>
-      </label>
+      </div>
       <div class="col-lg-12">
         <laji-team
           [(memberIds)]="searchQuery.teamMemberId"
@@ -498,11 +488,10 @@
       </div>
     </div>
     <div class="row">
-      <label class="col-lg-12">
-        {{'observation.form.count' | translate}}:<laji-info>
-        {{'observation.info.count' | translate}}
+      <div class="col-lg-12">
+        <label>{{'observation.form.count' | translate}}:</label><laji-info>{{'observation.info.count' | translate}}
       </laji-info>
-      </label>
+      </div>
       <div class="col-lg-12">
         <div class="row">
           <div class="col-sm-6">
@@ -678,11 +667,9 @@
   </div>
   <div laji-panel *ngIf="advancedMode || visibleAdvanced['keywords']" [title]="'observation.form.keywords' | translate" [autoToggle]="true" [open]="visible['keywords']">
     <div class="form-group">
-      <label class="col-lg-12">
-        {{'observation.form.documentId' | translate}}:<laji-info>
-        {{'observation.info.documentId' | translate}}
-      </laji-info>
-      </label>
+      <div class="col-lg-12">
+        <label>{{'observation.form.documentId' | translate}}</label><laji-info>{{'observation.info.documentId' | translate}}</laji-info>
+      </div>
       <div class="col-lg-12">
         <input
           class="form-control input-sm"
@@ -693,11 +680,9 @@
       </div>
     </div>
     <div class="row">
-      <label class="col-lg-12">
-        {{'observation.form.keyword' | translate}}:<laji-info>
-        {{'observation.info.keyword' | translate}}
-      </laji-info>
-      </label>
+      <div class="col-lg-12">
+        <label>{{'observation.form.keyword' | translate}}</label><laji-info>{{'observation.info.keyword' | translate}}</laji-info>
+      </div>
       <div class="col-lg-12">
         <input
           class="form-control input-sm"
@@ -761,7 +746,7 @@
     </ng-container>
     <div class="form-group">
       <div class="col-sm-12">
-        <label class="switch-label">{{'observation.form.invasive' | translate}}<laji-info>{{'observation.info.invasive' | translate}}</laji-info></label><br>
+        <label>{{'observation.form.invasive' | translate}}</label><laji-info>{{'observation.info.invasive' | translate}}</laji-info><br>
         <laji-three-state-switch
           (change)="onQueryChange()"
           [onText]="'yes' | translate"
@@ -773,7 +758,7 @@
     <ng-container *ngIf="advancedMode || (searchQuery.finnish | exists)">
       <div class="row">
         <div class="col-sm-12">
-          <label class="switch-label">{{'observation.form.finnish' | translate}}<laji-info>{{'observation.info.finnish' | translate}}</laji-info></label><br>
+          <label>{{'observation.form.finnish' | translate}}</label><laji-info>{{'observation.info.finnish' | translate}}</laji-info><br>
           <laji-three-state-switch
             (change)="onQueryChange()"
             [onText]="'yes' | translate"
