@@ -1,9 +1,10 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'laji-checkbox',
   templateUrl: './checkbox.component.html',
-  styleUrls: ['./checkbox.component.css']
+  styleUrls: ['./checkbox.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CheckboxComponent {
 

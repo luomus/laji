@@ -101,6 +101,9 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   }
 
   set value(value: any) {
+    if (typeof value === 'string') {
+      value = value.trim();
+    }
     let date = (value instanceof moment) ? value : moment(value, this.format, true);
     if (!date.isValid()) {
       this.validDate = !value;

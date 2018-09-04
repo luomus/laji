@@ -351,17 +351,19 @@
           </div>
         </div>
         <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-          <div class="col-sm-12">
-            <button type="button" class="btn btn-default btn-xs" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
-              {{'observation.form.intersect100' | translate}}
-            </button>
+          <div class="col-sm-12" style="padding-right: 3px">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
+                {{'observation.form.intersect0' | translate}}
+              </button>
+              <button type="button" class="btn btn-default btn-xs" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
+                {{'observation.form.intersect100' | translate}}
+              </button>
+            </div>
           </div>
         </div>
         <div class="form-group">
           <div class="col-sm-12">
-            <button type="button" class="btn btn-default btn-xs" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
-              {{'observation.form.intersect0' | translate}}
-            </button>
           </div>
         </div>
       </ng-container>
