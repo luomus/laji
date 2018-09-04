@@ -25,11 +25,13 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   @Input() namedPlace: string;
   @ViewChild('documentModal') public modal: ModalDirective;
 
+  publicity = Document.PublicityRestrictionsEnum;
+
   activeDocuments: Document[];
   documentCache = {};
   documents$: Subscription;
   templates$: Subscription;
-  shownDocument: string;
+  shownDocument: Document;
   loading: boolean;
 
   year: number;
@@ -75,8 +77,8 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
     this.getDocumentsByYear(this.year);
   }
 
-  onDocumentClick(docId) {
-    this.shownDocument = docId;
+  onDocumentClick(doc: Document) {
+    this.shownDocument = doc;
     this.modal.show();
   }
 

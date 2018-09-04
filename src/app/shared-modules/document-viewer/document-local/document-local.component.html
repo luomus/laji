@@ -1,0 +1,16 @@
+<laji-spinner [spinning]="loading && showSpinner" [overlay]="true">
+  <ng-container *ngIf="!loading">
+    <laji-document-local-viewer-view *ngIf="view === 'viewer'"
+                                     [document]="document"
+                                     [fields]="fields"
+                                     [imageData]="imageData"
+                                     [mapData]="mapData"
+    ></laji-document-local-viewer-view>
+    <laji-document-local-print-view *ngIf="view === 'print'"
+                                    [document]="document"
+                                    [fields]="fields"
+                                    [imageData]="imageData"
+                                    [mapData]="mapData"
+    ></laji-document-local-print-view>
+  </ng-container>
+</laji-spinner>

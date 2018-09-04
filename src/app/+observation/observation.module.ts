@@ -10,7 +10,7 @@ import { TypeaheadModule } from 'ngx-bootstrap';
 import { ObservationDownloadComponent } from './download/observation-download.component';
 import { routing } from './observation.routes';
 import { ObservationComponent } from './observation.component';
-import { ViewerModule } from '../+viewer/viewer.module';
+import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
 import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { MainResultComponent } from './main-result/main-result.component';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
@@ -34,7 +34,7 @@ import { ExistsPipe } from './pipe/exists.pipe';
     routing,
     SharedModule,
     TypeaheadModule,
-    ViewerModule,
+    DocumentViewerModule,
     YkjModule,
     NgxDatatableModule,
     ObservationResultModule,

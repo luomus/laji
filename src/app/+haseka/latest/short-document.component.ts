@@ -18,7 +18,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() document: Document;
   @Input() form: any;
   @Output() onDiscard = new EventEmitter();
-  @Output() onShowViewer = new EventEmitter();
+  @Output() onShowViewer = new EventEmitter<Document>();
 
   public unitList = [];
   public newUnitsLength: number;
@@ -98,7 +98,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
 
   showViewer(event) {
     event.stopPropagation();
-    this.onShowViewer.emit(this.document.id);
+    this.onShowViewer.emit(this.document);
   }
 
   showUnitList(event) {

@@ -1,0 +1,44 @@
+<div class="page" *ngIf="hasDoc && document">
+  <div>
+    <div class="page-header">
+      <h3>
+        {{'viewer.document' | translate }}
+        <small>
+          {{document.documentId}}
+        </small>
+      </h3>
+    </div>
+    <laji-issues [data]="document" [hideTooltips]="true"></laji-issues>
+    <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionId | toQName | collectionName" ngPreserveWhitespaces></laji-row>
+    <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
+    <laji-row [title]="'MY.keywords' | label" [value]="document.keywords"></laji-row>
+    <laji-facts [show]="showFacts" [facts]="document.facts | factNotIn:['http://tun.fi/MY.formID','http://tun.fi/MZ.publicityRestrictions']"></laji-facts>
+    <laji-print-images *ngIf="document.images" [images]="document-images"></laji-print-images>
+  </div>
+
+  <ng-container *ngFor="let gathering of document.gatherings; let i=index">
+    <h4 class="page-header">{{'viewer.print.place' | translate }} {{i + 1}}</h4>
+    <div>
+      <div [ngClass]="{'half-page-block padding-right': mapData[i]}">
+        <div>
+          <laji-issues [data]="gathering" [hideTooltips]="true"></laji-issues>
+          <laji-gathering-rows [gathering]="gathering" [hideTooltips]="true"></laji-gathering-rows>
+          <laji-facts [show]="showFacts" [facts]="gathering.facts | factNotIn:['http://tun.fi/MY.namedPlaceID']"></laji-facts>
+        </div>
+      </div>
+      <div *ngIf="mapData[i]" class="half-page-block padding-left">
+        <laji-print-map [data]="mapData[i]"></laji-print-map>
+      </div>
+      <laji-print-images *ngIf="gathering.images" [images]="gathering.images"></laji-print-images>
+    </div>
+
+    <div>
+      <ng-container *ngFor="let unit of gathering.units">
+        <hr>
+        <laji-unit-rows [unit]="unit" [showFacts]="showFacts" [showLinks]="false"></laji-unit-rows>
+        <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>
+        <laji-print-images *ngIf="unit.images" [images]="unit.images"></laji-print-images>
+      </ng-container>
+    </div>
+  </ng-container>
+</div>

@@ -16,6 +16,7 @@ import { Information } from '../model/Information';
 import { Publication } from '../model/Publication';
 import { Feedback } from '../model/Feedback';
 import { News } from '../model/News';
+import { Image } from '../model/Image';
 import { Util } from './util.service';
 
 @Injectable({providedIn: 'root'})
@@ -31,6 +32,7 @@ export class LajiApiService {
   getList(endpoint: LajiApi.Endpoints.news, query: LajiApi.Query.NewsQuery): Observable<LajiApi.Response.NewsListResponse>;
   getList(endpoint: LajiApi.Endpoints.notifications, query: LajiApi.Query.NotificationListQuery): Observable<LajiApi.Response.NotificationListResponse>;
   getList(endpoint: LajiApi.Endpoints.sources, query: LajiApi.Query.SourceQuery): Observable<LajiApi.Response.SourceListResponse>;
+  getList(endpoint: LajiApi.Endpoints.images, query: LajiApi.Query.ImageQuery): Observable<LajiApi.Response.ImageListResponse>;
   getList<T>(endpoint: LajiApi.Endpoints, query: object = {}): Observable<T> {
     const url = `${environment.apiBase}/${endpoint}`;
     const options = { params: {...Util.removeUndefinedFromObject(query)} };
@@ -107,6 +109,7 @@ export namespace LajiApi {
     publications = 'publications',
     sources = 'sources',
     taxon = 'taxa',
+    images = 'images'
   }
 
   export type AutocompleteField = 'taxon'|'collection'|'friends'|'unit'|'person';
@@ -218,6 +221,10 @@ export namespace LajiApi {
       onlyFinnish?: boolean;
       sortOrder?: 'taxonomic'|'scientific_name'|'finnish_name';
     }
+
+    export interface ImageQuery extends LangWithFallback, Paged {
+      idIn?: string;
+    }
   }
 
   export namespace Response {
@@ -244,6 +251,8 @@ export namespace LajiApi {
     export interface TaxonResponse extends Taxonomy {
 
     }
+
+    export interface ImageListResponse extends PagedResult<Image> { }
   }
 
 }

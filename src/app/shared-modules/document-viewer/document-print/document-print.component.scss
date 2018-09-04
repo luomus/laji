@@ -1,0 +1,37 @@
+@page {
+  size: A4;
+  margin: 0;
+}
+.page {
+  position: relative;
+  margin: 10mm;
+  width: 190mm;
+  padding-top: 5mm;
+}
+.half-page-block {
+  width: 50%;
+  min-height: 1mm;
+  display: inline-block;
+  vertical-align: top;
+}
+.padding-right {
+  padding-right: 0.5mm;
+}
+.padding-left {
+  padding-left: 0.5mm;
+}
+@media not print {
+  .page {
+    margin: 20px auto;
+  }
+}
+@media print {
+  ::ng-deep {
+    .no-page-break {
+      page-break-inside: avoid;
+    }
+  }
+}
+hr {
+  margin: 4px 0;
+}

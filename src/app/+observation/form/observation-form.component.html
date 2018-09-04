@@ -764,8 +764,8 @@
         <label class="switch-label">{{'observation.form.invasive' | translate}}<laji-info>{{'observation.info.invasive' | translate}}</laji-info></label><br>
         <laji-three-state-switch
           (change)="onQueryChange()"
-          [onText]="'datatable.yes' | translate"
-          [offText]="'datatable.no' | translate"
+          [onText]="'yes' | translate"
+          [offText]="'no' | translate"
           [(value)]="searchQuery.invasive">
         </laji-three-state-switch>
       </div>
@@ -776,8 +776,8 @@
           <label class="switch-label">{{'observation.form.finnish' | translate}}<laji-info>{{'observation.info.finnish' | translate}}</laji-info></label><br>
           <laji-three-state-switch
             (change)="onQueryChange()"
-            [onText]="'datatable.yes' | translate"
-            [offText]="'datatable.no' | translate"
+            [onText]="'yes' | translate"
+            [offText]="'no' | translate"
             [(value)]="searchQuery.finnish">
           </laji-three-state-switch>
         </div>
