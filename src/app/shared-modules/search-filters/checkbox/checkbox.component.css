@@ -33,7 +33,7 @@
 
 .lj-cb-marker.negative:after {
   content: "–";
-  top: -3px;
+  top: -2px;
   left: 2px;
   position: absolute;
 }
