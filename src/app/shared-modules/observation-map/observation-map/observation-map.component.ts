@@ -24,7 +24,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMap } from '../../laji-map/laji-map.interface';
+import * as LajiMap from 'laji-map';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
@@ -48,7 +48,12 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() onlyViewPortThreshold = 1;
   @Input() size = 10000;
   @Input() set initWithWorldMap(world: boolean) {
-    this._mapOptions = {...this._mapOptions, tileLayerName: world ? LajiMap.TileLayer.openStreetMap : LajiMap.TileLayer.taustakartta}
+    this._mapOptions = {
+      ...this._mapOptions,
+      tileLayerName: world
+        ? LajiMap.TileLayerName.openStreetMap
+        : LajiMap.TileLayerName.taustakartta
+    }
   }
   @Input() lastPage = 0; // 0 = no page limit
   @Input() set draw(draw: any) {
@@ -61,7 +66,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     this._mapOptions = {...this._mapOptions, controls: show ? { draw: false } : false}
   }
   set lang(lang: string) {
-    this._mapOptions = {...this._mapOptions, lang}
+    this._mapOptions = {...this._mapOptions, lang: <LajiMap.Lang> lang};
   }
   @Input() height;
   @Input() selectColor = '#00aa00';
@@ -96,7 +101,7 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     },
     zoom: 1,
     draw: false,
-    tileLayerName: LajiMap.TileLayer.openStreetMap
+    tileLayerName: LajiMap.TileLayerName.openStreetMap
   };
 
   private prev = '';

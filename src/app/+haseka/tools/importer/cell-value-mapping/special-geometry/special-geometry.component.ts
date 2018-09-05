@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { LajiMap } from '../../../../../shared-modules/laji-map/laji-map.interface';
+import * as LajiMap from 'laji-map';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { FormField, VALUE_IGNORE } from '../../../model/form-field';
 import { CoordinateService } from '../../../../../shared/service/coordinate.service';
@@ -31,13 +31,13 @@ export class SpecialGeometryComponent implements AfterViewInit {
 
   ignore = VALUE_IGNORE;
   lajiMapOptions: LajiMap.Options = {
-    drawIdx: 0,
     draw: {
       marker: true,
       polyline: true,
       polygon: true,
       circle: true,
-      rectangle: true
+      rectangle: true,
+      activeIdx: 0
     },
     controls: {
       draw: {
@@ -66,7 +66,7 @@ export class SpecialGeometryComponent implements AfterViewInit {
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef
   ) {
-    this.lajiMapOptions.lang = this.translateService.currentLang;
+    this.lajiMapOptions.lang = <LajiMap.Lang> this.translateService.currentLang;
   }
 
   ngAfterViewInit() {

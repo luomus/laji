@@ -2,8 +2,8 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, I
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import * as MapUtil from 'laji-map/lib/utils';
 import { Person } from '../../../../shared/model/Person';
-import { LajiMap } from '../../../laji-map/laji-map.interface';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
+import * as LajiMap from 'laji-map';
 import { CoordinateService } from '../../../../shared/service/coordinate.service';
 
 @Component({
@@ -173,11 +173,11 @@ export class LineTransectPrintComponent implements OnChanges, AfterViewInit {
     const geometry = this.getGeometry();
     this.checkOrientation(geometry);
     this.lajiMapOptions = {
-      tileLayerName: LajiMap.TileLayer.maastokartta,
+      tileLayerName: LajiMap.TileLayerName.maastokartta,
       tileLayerOpacity: 0.5,
       lineTransect: {
         printMode: true,
-        feature: {geometry: geometry}
+        feature: {type: 'Feature', properties: {}, geometry: geometry}
       }
     };
   }
