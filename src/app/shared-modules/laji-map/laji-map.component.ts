@@ -41,6 +41,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
   @Input() showControls = true;
   @Input() maxBounds: [[number, number], [number, number]];
   @Input() tileLayerOpacity: number;
+  @Input() lang: string;
   @Output() select = new EventEmitter();
 
   @Output() onCreate = new EventEmitter();
@@ -130,11 +131,6 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     }
   }
 
-  @Input()
-  set lang(lang: string) {
-    this._options = {...this._options, lang: <LajiMap.Lang> (lang || 'fi')};
-  }
-
   @Input() set legend(legend: {[color: string]: string}) {
     const leg = [];
     Object.keys(legend).forEach(color => {
@@ -165,13 +161,16 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     if (changes.tileLayerOpacity && this.map && this.map.tileLayer) {
       this.map.setTileLayerOpacity(typeof this.tileLayerOpacity === 'undefined' ? this.tileLayerOpacity : 1);
     }
+    if (changes.lang && this.map) {
+      this.map.setOption('lang', (this.lang || 'fi'));
+    }
   }
 
   initMap() {
     if (this.map) {
       this.map.destroy();
     }
-    const options: any = {...this._options, ...(this.userSettings || {}), rootElem: this.elemRef.nativeElement};
+    const options: any = {lang: (this.lang || 'fi'), ...this._options, ...(this.userSettings || {}), rootElem: this.elemRef.nativeElement};
     try {
       this.map = new LajiMap.LajiMap(options);
       if (this.data) {
