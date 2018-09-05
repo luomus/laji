@@ -71,10 +71,9 @@
             </span>
           </span>
           <span *ngIf="actions.indexOf('view') > -1 && onlyTemplates === false && value === publicity.publicityRestrictionsPrivate">
-            <span class="label label-warning link inline-block"
+            <span class="label label-warning inline-block"
                   [tooltip]="'haseka.form.private' | translate"
-                  [placement]="'right'"
-                  (click)="showViewer(row)">
+                  [placement]="'right'">
               <i class="glyphicon glyphicon-eye-close"></i>
             </span>
           </span>
