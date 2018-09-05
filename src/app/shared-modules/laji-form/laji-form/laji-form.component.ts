@@ -134,8 +134,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (this.errorSub) {
       this.errorSub.unsubscribe();
     }
-    this.errorSub = this.ngZone.onError.subscribe((e) => {
-      console.log(e);
+    this.errorSub = this.ngZone.onError.subscribe(() => {
       this.errorModal.show();
     });
   }
