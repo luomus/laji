@@ -21,6 +21,7 @@ import LajiForm from 'laji-form/lib/laji-form';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { concatMap, map } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap';
+import { Subscription } from 'rxjs';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -45,6 +46,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   renderElem: any;
   private _block = false;
   private settings: any;
+  private errorSub: Subscription;
 
   @ViewChild('errorModal') public errorModal: ModalDirective;
   @ViewChild('lajiForm') lajiFormRoot: ElementRef;
@@ -66,6 +68,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.unMount();
     this.reactElem = undefined;
     this.renderElem = undefined;
+    if (this.errorSub) {
+      this.errorSub.unsubscribe();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -126,7 +131,11 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
       this.settings = settings;
       this.createNewLajiForm();
     });
-    this.ngZone.onError.subscribe(() => {
+    if (this.errorSub) {
+      this.errorSub.unsubscribe();
+    }
+    this.errorSub = this.ngZone.onError.subscribe((e) => {
+      console.log(e);
       this.errorModal.show();
     });
   }
