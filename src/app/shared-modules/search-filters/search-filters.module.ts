@@ -12,6 +12,7 @@ import { SwitchRowComponent } from './three-state-multi-switch/switch-row/switch
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { SelectComponent } from './select/select.component';
 import { InfoModule } from '../info/info.module';
+import { IncludesPipe } from './includes.pipe';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -29,7 +30,8 @@ import { InfoModule } from '../info/info.module';
     ObservationActiveComponent,
     SearchFiltersComponent,
     SelectComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    IncludesPipe
   ],
   exports: [
     MetadataSelectComponent,
