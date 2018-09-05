@@ -6,7 +6,7 @@ import {
   EventEmitter,
   Inject,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy,
   OnInit,
   Output,
   PLATFORM_ID,
@@ -34,7 +34,7 @@ import { isPlatformBrowser } from '@angular/common';
   providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationMapComponent implements OnInit, OnChanges {
+export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
 
   @Input() visible = false;
@@ -156,6 +156,12 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     }
     this.initLegendTopMargin();
     this.initLegend();
+  }
+
+  ngOnDestroy() {
+    if (this.subDataFetch) {
+      this.subDataFetch.unsubscribe();
+    }
   }
 
   onCreate(e) {
