@@ -110,6 +110,24 @@ export class WarehouseApi {
     return this.http.get(path, {params: queryParameters});
   }
 
+  /**
+   * Fetch warehouse team member
+   * @param query
+   * @param extraHttpRequestParams
+   */
+  public warehouseTeamMemberFind(query: string, extraHttpRequestParams?: any): Observable<any> {
+    const path = this.basePath + `/warehouse/teamMember`;
+
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
+    // verify required parameter 'documentId' is not null or undefined
+    if (query === null || query === undefined) {
+      throw new Error('Required parameter query was null or undefined when calling warehouseTeamMemberFind.');
+    }
+    queryParameters['q'] = query;
+
+    return this.http.get(path, {params: queryParameters});
+  }
+
   private warehouseQueryGet(target: string, query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
     const path = this.basePath + `/warehouse/query/${target}`;
 

@@ -19,6 +19,10 @@ export class SearchQuery implements SearchQueryInterface {
   public orderBy: string[];
   public aggregateBy: string[];
 
+  separator = {
+    'teamMember': ';'
+  };
+
   arrayTypes = [
     'taxonId',
     'target',
@@ -120,7 +124,7 @@ export class SearchQuery implements SearchQueryInterface {
     for (const i of this.arrayTypes) {
       if (typeof query[i] !== 'undefined') {
         this.query[i] = decodeURIComponent(query[i])
-          .split(',')
+          .split(this.separator[i] || ',')
           .map(value => value);
       } else {
         this.query[i] = undefined;
@@ -189,7 +193,7 @@ export class SearchQuery implements SearchQueryInterface {
           }
           const query = this.query[i]
             .filter(val => typeof val === 'string' && val.trim().length > 0)
-            .join(',');
+            .join(this.separator[i] || ',');
           if (query.length > 0) {
             result[i] = query;
           }

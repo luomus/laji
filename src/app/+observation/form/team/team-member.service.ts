@@ -33,15 +33,8 @@ export class TeamMemberService {
     if (search && !search.endsWith('*')) {
       search += '*';
     }
-    return this.warehouseApi.warehouseQueryAggregateGet({
-      teamMember: [search]
-    }, [
-      'gathering.team.memberName,gathering.team.memberId'
-    ]).pipe(
-      map(result => result.results.map(item => ({
-        id: item.aggregateBy['gathering.team.memberId'],
-        name: item.aggregateBy['gathering.team.memberName']
-      }))),
+    return this.warehouseApi.warehouseTeamMemberFind(search).pipe(
+      map(result => result.results || []),
       tap(members => {
         this.memberCache = {...this.memberCache, ...members.reduce((cumulative, current) => {
           cumulative[current['id']] = current['name'];

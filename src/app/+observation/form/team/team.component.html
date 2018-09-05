@@ -23,6 +23,7 @@
   </h5>
 </ng-template>
 <laji-pill-list
+  [separator]="';'"
   [list]="_members || []"
   (updateList)="updateMembers('_members', $event)"
 ></laji-pill-list>
