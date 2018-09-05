@@ -3,7 +3,7 @@
           *ngIf="!reloading"
           [options]="_mapOptions"
           [data]="mapData"
-          [lang]="lang"
+          [lang]="translate.currentLang"
           [settingsKey]="settingsKey"
           (onCreate)="onCreate($event)"
           (onFailure)="refreshMap()"
