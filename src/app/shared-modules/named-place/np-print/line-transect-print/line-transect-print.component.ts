@@ -177,7 +177,7 @@ export class LineTransectPrintComponent implements OnChanges, AfterViewInit {
       tileLayerOpacity: 0.5,
       lineTransect: {
         printMode: true,
-        feature: {type: "Feature", properties: {}, geometry: geometry}
+        feature: {type: 'Feature', properties: {}, geometry: geometry}
       }
     };
   }

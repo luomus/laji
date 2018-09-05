@@ -48,7 +48,12 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() onlyViewPortThreshold = 1;
   @Input() size = 10000;
   @Input() set initWithWorldMap(world: boolean) {
-    this._mapOptions = {...this._mapOptions, tileLayerName: world ? LajiMap.TileLayerName.openStreetMap : LajiMap.TileLayerName.taustakartta}
+    this._mapOptions = {
+      ...this._mapOptions,
+      tileLayerName: world
+        ? LajiMap.TileLayerName.openStreetMap
+        : LajiMap.TileLayerName.taustakartta
+    }
   }
   @Input() lastPage = 0; // 0 = no page limit
   @Input() set draw(draw: any) {

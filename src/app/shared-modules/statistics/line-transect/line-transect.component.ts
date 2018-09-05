@@ -251,7 +251,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     this.lajiMapOptions = {
       tileLayerName: LajiMap.TileLayerName.maastokartta,
       lineTransect: {
-        feature: {type: "Feature", properties: {}, geometry: this.getGeometry(this.activeMapLine)},
+        feature: {type: 'Feature', properties: {}, geometry: this.getGeometry(this.activeMapLine)},
         editable: false
       },
       tileLayerOpacity: 0.5
