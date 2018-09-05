@@ -65,9 +65,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
   @Input() set showControls(show: boolean) {
     this._mapOptions = {...this._mapOptions, controls: show ? { draw: false } : false}
   }
-  set lang(lang: string) {
-    this._mapOptions = {...this._mapOptions, lang: <LajiMap.Lang> lang};
-  }
   @Input() height;
   @Input() selectColor = '#00aa00';
   @Input() color: any;
@@ -106,7 +103,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
 
   private prev = '';
   private subDataFetch: Subscription;
-  private subLang: Subscription;
   private style: (count: number) => string;
   private lastQuery: any;
   private viewBound: any;
@@ -147,11 +143,6 @@ export class ObservationMapComponent implements OnInit, OnChanges {
     }
     this.lastQuery = JSON.stringify(this.query);
     this.initColorScale();
-    this.lang = this.translate.currentLang;
-    this.subLang = this.translate.onLangChange.subscribe(() => {
-      this.lang = this.translate.currentLang;
-      this.changeDetector.markForCheck();
-    });
   }
 
   ngOnChanges(changes: SimpleChanges) {

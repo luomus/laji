@@ -2,6 +2,7 @@ import { AfterViewInit, Component, HostListener, Input, OnChanges, OnInit, Simpl
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import * as LajiMap from 'laji-map';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-np-info-map',
@@ -23,7 +24,9 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
   private resize: any;
   private viewIsInitialized = false;
 
-  constructor() { }
+  constructor(
+    private translate: TranslateService
+  ) { }
 
   ngOnInit() {
     this.initData();
