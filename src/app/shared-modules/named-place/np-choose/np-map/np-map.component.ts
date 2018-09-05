@@ -30,7 +30,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   private sentActiveColor = '#007700';
 
   constructor(
-    private translate: TranslateService
+    public translate: TranslateService
   ) { }
 
   ngOnInit() {

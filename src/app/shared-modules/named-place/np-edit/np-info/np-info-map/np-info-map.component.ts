@@ -25,7 +25,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
   private viewIsInitialized = false;
 
   constructor(
-    private translate: TranslateService
+    public translate: TranslateService
   ) { }
 
   ngOnInit() {

@@ -26,7 +26,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   };
 
   constructor(
-    private translate: TranslateService
+    public translate: TranslateService
   ) { }
 
   ngOnInit() {
