@@ -643,9 +643,7 @@
           <laji-checkbox [value]="searchQuery.typeSpecimen" (valueChange)="onCheckBoxToggle('typeSpecimen')"></laji-checkbox>
           {{'observation.form.typeSpecimen' | translate}}
         </label>
-        <laji-info>
-          {{'observation.info.typeSpecimen' | translate}}
-        </laji-info>
+        <laji-info [html]="'observation.info.typeSpecimen' | translate"></laji-info>
       </div>
     </div>
     <div class="row">
