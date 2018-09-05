@@ -32,8 +32,8 @@
 }
 
 .lj-cb-marker.negative:after {
-  content: "✗";
-  top: -3px;
-  left: 1px;
+  content: "–";
+  top: -2px;
+  left: 2px;
   position: absolute;
 }

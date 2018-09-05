@@ -1,3 +1,4 @@
+// This can be removed when laji-map exports it's options in reusable way
 export namespace LajiMap {
 
   export interface Options {

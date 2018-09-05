@@ -1,6 +1,6 @@
 import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -85,6 +85,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TranslateModule
   ],
   providers: [
+    {provide: APP_BASE_HREF, useValue: '/'},
     DocumentService,
     {provide: ErrorHandler, useClass: LajiErrorHandler},
     LocalizeRouterService,

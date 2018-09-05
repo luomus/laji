@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, Input, AfterViewInit, ViewChild, SimpleChanges } from '@angular/core';
-import { LajiMap } from '@laji-map/laji-map.interface';
+import * as LajiMap from 'laji-map';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 
 @Component({

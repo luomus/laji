@@ -1,18 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'laji-facts',
   templateUrl: './facts.component.html',
-  styleUrls: ['./facts.component.css']
+  styleUrls: ['./facts.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FactsComponent implements OnInit {
+export class FactsComponent {
 
   @Input() show = false;
   @Input() facts: {fact: string, value: string}[];
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }

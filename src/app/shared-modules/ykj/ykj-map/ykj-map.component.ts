@@ -15,7 +15,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMap } from '../../laji-map/laji-map.interface';
+import * as LajiMap from 'laji-map';
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -78,10 +78,10 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   ngOnInit() {
     this.subLang = this.translate.onLangChange.subscribe(() => {
-      this.mapOptions = {...this.mapOptions, lang: this.translate.currentLang};
+      this.mapOptions = {...this.mapOptions, lang: <LajiMap.Lang> this.translate.currentLang};
       this.cd.markForCheck();
     });
-    this.mapOptions['lang'] = this.translate.currentLang;
+    this.mapOptions['lang'] = <LajiMap.Lang> this.translate.currentLang;
     this.initMapdata();
   }
 
