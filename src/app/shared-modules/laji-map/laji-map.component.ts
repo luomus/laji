@@ -12,11 +12,10 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { LajiMap as Map } from './laji-map.interface';
 import { USER_INFO, UserService } from '../../shared/service/user.service';
 import { Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
-import LajiMap from 'laji-map';
+import * as LajiMap from 'laji-map';
 
 @Component({
   selector: 'laji-map',
@@ -51,12 +50,12 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
   @ViewChild('lajiMap') elemRef: ElementRef;
 
   map: any;
-  _options: Map.Options = {};
+  _options: LajiMap.Options = {};
   _legend: {color: string, label: string}[];
 
   private _settingsKey: string;
   private subSet: Subscription;
-  private userSettings: Map.Options = {};
+  private userSettings: LajiMap.Options = {};
 
   constructor(
     private userService: UserService,
@@ -71,25 +70,25 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
   }
 
   @Input()
-  set options(options: Map.Options) {
+  set options(options: LajiMap.Options) {
     if (!options.on) {
       options = {...options, on: {
           tileLayerChange: (event) => {
-            this.onTileLayerChange.emit(event.tileLayerName);
+            this.onTileLayerChange.emit((<any> event).tileLayerName);
 
             if (this._settingsKey) {
-              this.userSettings.tileLayerName = event.tileLayerName as Map.TileLayer;
+              this.userSettings.tileLayerName = (<any> event).tileLayerName as LajiMap.TileLayerName;
               this.userService.setUserSetting(this._settingsKey, this.userSettings);
             }
           },
           tileLayerOpacityChangeEnd: (event) => {
-            this.userSettings.tileLayerOpacity = event.tileLayerOpacity;
+            this.userSettings.tileLayerOpacity = (<any> event).tileLayerOpacity;
             if (this._settingsKey) {
               this.userService.setUserSetting(this._settingsKey, this.userSettings);
             }
           },
           overlaysChange: (event) => {
-            this.userSettings.overlayNames = event.overlayNames;
+            this.userSettings.overlayNames = (<any> event).overlayNames;
             if (this._settingsKey) {
               this.userService.setUserSetting(this._settingsKey, this.userSettings);
             }
@@ -133,7 +132,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
 
   @Input()
   set lang(lang: string) {
-    this._options = {...this._options, lang: lang || 'fi'};
+    this._options = {...this._options, lang: <LajiMap.Lang> (lang || 'fi')};
   }
 
   @Input() set legend(legend: {[color: string]: string}) {
@@ -174,7 +173,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     }
     const options: any = {...this._options, ...(this.userSettings || {}), rootElem: this.elemRef.nativeElement};
     try {
-      this.map = new LajiMap(options);
+      this.map = new LajiMap.LajiMap(options);
       if (this.data) {
         this.map.setData(this.data);
       }

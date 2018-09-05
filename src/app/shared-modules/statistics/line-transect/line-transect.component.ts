@@ -15,7 +15,7 @@ import * as MapUtil from 'laji-map/lib/utils';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMap } from '../../laji-map/laji-map.interface';
+import * as LajiMap from 'laji-map';
 import { Units } from '../../../shared/model/Units';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { Observable, of as ObservableOf } from 'rxjs';
@@ -249,9 +249,9 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
 
   private initMapOptions() {
     this.lajiMapOptions = {
-      tileLayerName: LajiMap.TileLayer.maastokartta,
+      tileLayerName: LajiMap.TileLayerName.maastokartta,
       lineTransect: {
-        feature: {geometry: this.getGeometry(this.activeMapLine)},
+        feature: {type: "Feature", properties: {}, geometry: this.getGeometry(this.activeMapLine)},
         editable: false
       },
       tileLayerOpacity: 0.5
@@ -273,7 +273,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     this.placesDiff = diff;
   }
 
-  private getGeometry(documentName = 'document') {
+  private getGeometry(documentName = 'document'): LajiMap.LineTransectGeometry {
     const document = documentName === 'document'
         ? this.document
         : this.namedPlace.acceptedDocument;
@@ -281,7 +281,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     if (document.gatherings) {
       return {type: 'MultiLineString', coordinates: document.gatherings.map(item => item.geometry.coordinates)};
     }
-    return {coordinates: []};
+    return {type: 'MultiLineString', coordinates: []};
   }
 
   initIsAdmin() {
