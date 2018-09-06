@@ -16,6 +16,7 @@ import { USER_INFO, UserService } from '../../shared/service/user.service';
 import { Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import * as LajiMap from 'laji-map';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'laji-map',
@@ -170,7 +171,13 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     if (this.map) {
       this.map.destroy();
     }
-    const options: any = {lang: (this.lang || 'fi'), ...this._options, ...(this.userSettings || {}), rootElem: this.elemRef.nativeElement};
+    const options: any = {
+      lang: (this.lang || 'fi'),
+      ...this._options,
+      ...(this.userSettings || {}),
+      rootElem: this.elemRef.nativeElement,
+      googleApiKey: environment.googleApiKey
+    };
     try {
       this.map = new LajiMap.LajiMap(options);
       if (this.data) {
