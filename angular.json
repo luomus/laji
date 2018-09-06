@@ -32,7 +32,6 @@
           },
           "configurations": {
             "production": {
-              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": false,
