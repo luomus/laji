@@ -151,7 +151,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.decorator.lang = this.translate.currentLang;
     // First update is triggered by tile layer update event from the laji-map
-    if (changes['query'] && !changes['query'].firstChange) {
+    if (changes['query']) {
       this.updateMapData();
     }
     this.initLegendTopMargin();
