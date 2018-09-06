@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { map, share, tap } from 'rxjs/operators';
-import { of as ObservableOf } from 'rxjs';
+import { Observable, of as ObservableOf } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,10 @@ export class TeamMemberService {
     private warehouseApi: WarehouseApi
   ) { }
 
-  getName(id: string) {
+  getName(id: string): Observable<string> {
+    if (!id) {
+      return ObservableOf('');
+    }
     if (this.memberCache[id]) {
       return ObservableOf(this.memberCache[id]);
     }
@@ -29,8 +32,11 @@ export class TeamMemberService {
     return this.fetcher[id];
   }
 
-  getMembers(search: string) {
-    if (search && !search.endsWith('*')) {
+  getMembers(search: string): Observable<{name: string, id: string}[]> {
+    if (!search) {
+      return ObservableOf([]);
+    }
+    if (!search.endsWith('*')) {
       search += '*';
     }
     return this.warehouseApi.warehouseTeamMemberFind(search).pipe(
