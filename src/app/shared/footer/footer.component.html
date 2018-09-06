@@ -1,7 +1,7 @@
 <footer *ngIf="footerService.footerVisible">
   <div class="container-fluid info-footer" *lajiAuthorities="false">
     <div class="row">
-      <div *ngFor="let item of tree; let i=index" class="{{columns[i] || ''}}">
+      <div *ngFor="let item of tree$ | async; let i=index" class="{{columns[i] || ''}}">
         <h3><a [routerLink]="'/about/' + item.id | localize">{{item.title}}</a></h3>
         <p *ngIf="i === 0"><strong>{{'footer.intro1' | translate}}</strong></p>
         <ul *ngIf="item.children">
@@ -19,11 +19,11 @@
           <!-- Talvi
           <a href="https://www.flickr.com/photos/timo_w2s/15517459434/">Timo Newton-Syms</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/"> Creative Commons BY-SA 2.0</a>
           -->
-          <!-- kevat -->
+          <!-- kevat
           <a href="https://www.biomi.org/">Mikko Heikkinen</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">Creative Commons BY-SA 4.0</a>
-          <!-- syksy
-          <a href="https://www.biomi.org/">Kari Lahti</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">Creative Commons BY-SA 4.0</a>
           -->
+          <!-- syksy -->
+          <a href="https://www.biomi.org/">Kari Lahti</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">Creative Commons BY-SA 4.0</a>
         </div>
       </div>
     </div>

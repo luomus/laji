@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { InformationComponent, routing } from './index';
 import { SharedModule } from '../shared/shared.module';
-import { InformationService } from './information.service';
+import { routing } from './information.routes';
+import { InformationComponent } from './information.component';
+import { InformationStore } from './information.store';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule],
-  providers: [InformationService],
+  providers: [InformationStore],
   declarations: [InformationComponent],
-  entryComponents: [InformationComponent]
 })
 export class InformationModule {
 }

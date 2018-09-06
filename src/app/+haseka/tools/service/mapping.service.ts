@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiExternalService } from '../../../shared/service/laji-external.service';
 import { FormField, VALUE_IGNORE } from '../model/form-field';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
-import { InformalTaxonGroup } from '../../../shared/model';
+import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 
 export enum SpecialTypes {
@@ -25,21 +24,6 @@ export class MappingService {
 
   public static readonly mergeKey = '_merge_';
   public static readonly valueSplitter = ';';
-
-  static namedPlacesToList(namedPlaces: NamedPlace[]) {
-    return namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)
-  }
-
-  static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result = [], parent = ''): string[] {
-    groups.forEach(group => {
-      const name = parent ? `${parent} — ${group.name}` : group.name;
-      result.push(`${name} (${group.id})`);
-      if (Array.isArray(group.hasSubGroup)) {
-        MappingService.informalTaxonGroupsToList(group.hasSubGroup as InformalTaxonGroup[], result, name);
-      }
-    });
-    return result;
-  }
 
   private readonly booleanMap = {
     'true': {
@@ -81,13 +65,25 @@ export class MappingService {
     'gatherings[*].units[*].identifications[*].taxon': SpecialTypes.unitTaxon
   };
 
+  static namedPlacesToList(namedPlaces: NamedPlace[]) {
+    return namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)
+  }
+
+  static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result = [], parent = ''): string[] {
+    groups.forEach(group => {
+      const name = parent ? `${parent} — ${group.name}` : group.name;
+      result.push(`${name} (${group.id})`);
+      if (Array.isArray(group.hasSubGroup)) {
+        MappingService.informalTaxonGroupsToList(group.hasSubGroup as InformalTaxonGroup[], result, name);
+      }
+    });
+    return result;
+  }
+
   constructor(
     private translationService: TranslateService,
-    private lajiExternalService: LajiExternalService,
     private coordinateService: CoordinateService
-  ) {
-    this.lajiExternalService.getMap({})
-  }
+  ) { }
 
 
   rawValueToArray(value, field: FormField) {
@@ -199,7 +195,7 @@ export class MappingService {
     return null;
   }
 
-  getLabel(value:any, field: FormField) {
+  getLabel(value: any, field: FormField) {
     if (Array.isArray(value)) {
       return value.map((val) => this.getLabel(val, field));
     }
@@ -395,7 +391,7 @@ export class MappingService {
         }
       }
       try {
-        const data = convertAnyToWGS84GeoJSON(value);
+        const data: any = convertAnyToWGS84GeoJSON(value);
         if (data && data.features && data.features[0] && data.features[0].geometry) {
           value = data.features[0].geometry;
         }

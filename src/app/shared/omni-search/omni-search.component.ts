@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -11,14 +10,13 @@ import {
   Output,
   ViewContainerRef
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { of as ObservableOf, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { AutocompleteApi, AutocompleteMatchType } from '../api/AutocompleteApi';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { LajiApi, LajiApiService } from '../service/laji-api.service';
 
 @Component({
   selector: 'laji-omni-search',
@@ -32,7 +30,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   @Input() limit = 10;
   @Input() delay = 200;
   @Input() selectTo = '/taxon';
-  @Input() matchType: AutocompleteMatchType;
+  @Input() matchType: LajiApi.AutocompleteMatchType;
   @Input() minLength = 3;
   @Input() expand = '';
   @Input() visible = true;
@@ -48,7 +46,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   private inputChange: Subscription;
   private el: Element;
 
-  constructor(private autocompleteService: AutocompleteApi,
+  constructor(private lajiApi: LajiApiService,
               private warehouseApi: WarehouseApi,
               private localizeRouterService: LocalizeRouterService,
               private router: Router,
@@ -94,7 +92,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         .map(group => group.name)
         .reverse();
       this.subCnt =
-        Observable.of(this.taxon.key).combineLatest(
+        ObservableOf(this.taxon.key).combineLatest(
           this.warehouseApi.warehouseQueryCountGet({taxonId: this.taxon.key}),
           (id, cnt) => {
             return {id: id, cnt: cnt.total};
@@ -147,9 +145,8 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
     this.loading = true;
-    this.subTaxa = this.autocompleteService
-      .autocompleteFindByField({
-        field: 'taxon',
+    this.subTaxa = this.lajiApi
+      .get(LajiApi.Endpoints.autocomplete, 'taxon', {
         q: this.search,
         limit: '' + this.limit,
         includePayload: true,

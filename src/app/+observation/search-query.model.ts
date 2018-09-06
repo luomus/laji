@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
-import { URLSearchParams } from '@angular/http';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import { LocalizeRouterService } from '../locale/localize-router.service';
+import { SearchQueryInterface } from '../shared-modules/search-filters/search-query.interface';
 
-@Injectable()
-export class SearchQuery {
-
+@Injectable({providedIn: 'root'})
+export class SearchQuery implements SearchQueryInterface {
+  public queryType = 'observation';
   public queryUpdatedSource = new Subject<any>();
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
   public tack = 0;
@@ -20,9 +19,16 @@ export class SearchQuery {
   public orderBy: string[];
   public aggregateBy: string[];
 
+  separator = {
+    'teamMember': ';'
+  };
+
   arrayTypes = [
     'taxonId',
     'target',
+    'originalTarget',
+    'exactTarget',
+    'originalExactTarget',
     'informalTaxonGroupId',
     'administrativeStatusId',
     'redListStatusId',
@@ -33,8 +39,11 @@ export class SearchQuery {
     'time',
     'keyword',
     'collectionId',
+    'typeOfOccurrenceId',
+    'typeOfOccurrenceIdNot',
     'coordinates',
     'sourceId',
+    'secureLevel',
     'superRecordBasis',
     'recordBasis',
     'lifeStage',
@@ -48,7 +57,10 @@ export class SearchQuery {
     'annotationType',
     'namedPlaceId',
     'birdAssociationAreaId',
-    'yearMonth'
+    'yearMonth',
+    'reliabilityOfCollection',
+    'teamMember',
+    'teamMemberId',
   ];
 
   booleanTypes = [
@@ -65,7 +77,12 @@ export class SearchQuery {
     'reliable',
     'unidentified',
     'pairCounts',
-    'includeSubCollections'
+    'includeSubCollections',
+    'nativeOccurrence',
+    'breedingSite',
+    'useIdentificationAnnotations',
+    'includeSubTaxa',
+    'annotated'
   ];
 
   numericTypes = [
@@ -82,7 +99,14 @@ export class SearchQuery {
     'ykj10kmCenter',
     'qualityIssues',
     'annotatedBefore',
-    'annotatedLaterThan'
+    'annotatedLaterThan',
+    'firstLoadedSameOrBefore',
+    'firstLoadedSameOrAfter',
+    'annotatedSameOrBefore',
+    'annotatedSameOrAfter',
+    'loadedSameOrBefore',
+    'loadedSameOrAfter',
+    'season',
   ];
 
   obscure = [
@@ -92,8 +116,7 @@ export class SearchQuery {
   ];
 
   constructor(
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService,
+    private router: Router
   ) {
   }
 
@@ -101,7 +124,7 @@ export class SearchQuery {
     for (const i of this.arrayTypes) {
       if (typeof query[i] !== 'undefined') {
         this.query[i] = decodeURIComponent(query[i])
-          .split(',')
+          .split(this.separator[i] || ',')
           .map(value => value);
       } else {
         this.query[i] = undefined;
@@ -135,56 +158,27 @@ export class SearchQuery {
       }
     }
 
+    if (this.query.coordinates) {
+      this.query.coordinates = this.query.coordinates.map(coordinate => {
+        const parts = coordinate.split(':');
+        const last = parseFloat(parts[parts.length - 1]);
+        if (!isNaN(last)) {
+          parts.pop();
+          this.query._coordinatesIntersection = Math.floor(last * 100);
+        } else {
+          this.query._coordinatesIntersection = 100;
+        }
+        return parts.join(':');
+      });
+    }
+
     if (typeof query['page'] !== 'undefined') {
       this.page = +query['page'];
     }
   }
 
-  public setQueryFromURLSearchParams(queryParameters: URLSearchParams) {
-    for (const i of this.arrayTypes) {
-      if (queryParameters.has(i)) {
-        this.query[i] = decodeURIComponent(queryParameters.get(i))
-          .split(',')
-          .map(value => value);
-      } else {
-        this.query[i] = undefined;
-      }
-    }
-
-    for (const i of this.booleanTypes) {
-      if (queryParameters.has(i)) {
-        this.query[i] = queryParameters.get(i) === 'true';
-      } else {
-        this.query[i] = undefined;
-      }
-    }
-
-    for (const i of this.numericTypes) {
-      if (queryParameters.has(i)) {
-        const value = +queryParameters.get(i);
-        if (!isNaN(value)) {
-          this.query[i] = value;
-        }
-      } else {
-        this.query[i] = undefined;
-      }
-    }
-
-    for (const i of [...this.stringTypes, ...this.obscure]) {
-      if (queryParameters.has(i)) {
-        this.query[i] = queryParameters.get(i);
-      } else {
-        this.query[i] = undefined;
-      }
-    }
-
-    if (queryParameters.has('page')) {
-      this.page = +queryParameters.get('page');
-    }
-  }
-
   public getQueryObject(skipParams: string[] = [], obscure = true) {
-    const result: WarehouseQueryInterface = {};
+    const result: {[field: string]: string | string[]}  = {};
     if (this.query) {
       for (const i of this.arrayTypes) {
         if (skipParams.indexOf(i) > -1) {
@@ -199,7 +193,7 @@ export class SearchQuery {
           }
           const query = this.query[i]
             .filter(val => typeof val === 'string' && val.trim().length > 0)
-            .join(',');
+            .join(this.separator[i] || ',');
           if (query.length > 0) {
             result[i] = query;
           }
@@ -229,7 +223,7 @@ export class SearchQuery {
         if (skipParams.indexOf(i) > -1) {
           continue;
         }
-        if (this.query[i] !== undefined) {
+        if (this.query[i] !== undefined && this.query[i] !== '') {
           result[i] =  this.query[i];
         }
       }
@@ -244,12 +238,12 @@ export class SearchQuery {
       }
     }
 
-    if (result['target'] && Array.isArray(result['target'])) {
-      result['target'] = result['target'].map(target => target.replace(/http:\/\/tun\.fi\//g, ''));
+    if (result.coordinates && typeof this.query._coordinatesIntersection !== 'undefined') {
+      result.coordinates += ':' + this.query._coordinatesIntersection / 100;
     }
 
-    if (this.query && this.query.loadedLaterThan !== undefined) {
-      // queryParameters.set('loadedLaterThan', this.query.loadedLaterThan);
+    if (result['target'] && Array.isArray(result['target'])) {
+      result['target'] = (result['target'] as string[]).map(target => target.replace(/http:\/\/tun\.fi\//g, ''));
     }
 
     // Non query parameters (these will not have effect on result count)
@@ -282,13 +276,13 @@ export class SearchQuery {
     return result;
   }
 
-  public getURLSearchParams(queryParameters?: URLSearchParams, skipParams: string[] = []): URLSearchParams {
+  public getURLSearchParams(queryParameters?: object, skipParams: string[] = []): object {
     if (!queryParameters) {
-      queryParameters = new URLSearchParams();
+      queryParameters = {};
     }
     const query = this.getQueryObject(skipParams, false);
     Object.keys(query).map((key) => {
-      queryParameters.set(key, query[key]);
+      queryParameters[key] = query[key];
     });
 
     return queryParameters;

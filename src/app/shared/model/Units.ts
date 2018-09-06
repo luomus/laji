@@ -6,8 +6,10 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-
-import * as models from './index';
+import { Identifications } from './Identifications';
+import { TypeSpecimens } from './TypeSpecimens';
+import { UnitFact } from './UnitFact';
+import { UnitGathering } from './UnitGathering';
 
 export interface Units {
 
@@ -88,7 +90,7 @@ export interface Units {
     /**
      * Array of identifications
      */
-    identifications?: Array<models.Identifications>;
+    identifications?: Array<Identifications>;
 
     /**
      * QName for MM.image
@@ -214,17 +216,17 @@ export interface Units {
     /**
      * Array of typeSpecimens
      */
-    typeSpecimens?: Array<models.TypeSpecimens>;
+    typeSpecimens?: Array<TypeSpecimens>;
 
     /**
      * instance of unitFact
      */
-    unitFact?: models.UnitFact;
+    unitFact?: UnitFact;
 
     /**
      * instance of unitGathering
      */
-    unitGathering?: models.UnitGathering;
+    unitGathering?: UnitGathering;
 
     unitType?: Array<string>;
 

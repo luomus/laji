@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FooterService } from '../../shared/service/footer.service';
-import { ComponentCanDeactivate } from '../../shared/document-form/document-de-activate.guard';
-import { DocumentFormComponent } from '../../shared/document-form/document-form.component';
+import { ComponentCanDeactivate } from '../../shared/guards/document-de-activate.guard';
+import { DocumentFormComponent } from '@laji-form/document-form/document-form.component';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { RoutingStateService } from '../../shared/service/routing-state.service';
 
 @Component({
   selector: 'laji-haseka-form',
@@ -15,8 +16,9 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 })
 export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
-  public formId: string;
-  public documentId: string;
+  formId: string;
+  documentId: string;
+  back: string;
 
   private subParam: Subscription;
 
@@ -25,11 +27,13 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
               private footerService: FooterService,
               private localizeRouterService: LocalizeRouterService,
               private cd: ChangeDetectorRef,
+              private routingStateService: RoutingStateService,
               public translate: TranslateService
   ) {
   }
 
   ngOnInit() {
+    this.back = this.getBack();
     this.footerService.footerVisible = false;
     this.subParam = this.route.params.subscribe(params => {
       this.formId = params['formId'];
@@ -56,15 +60,17 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
         this.localizeRouterService.translateRoute(['/vihko/statistics/', data.document.id])
       );
     }
-    this.router.navigate(
-      this.localizeRouterService.translateRoute(['/vihko/'])
-    );
+    if (this.back) {
+      return this.router.navigateByUrl(this.back);
+    }
+    this.router.navigate(this.localizeRouterService.translateRoute(['/vihko/']));
   }
 
   onTmlLoad(data) {
+    this.routingStateService.removeLast();
     this.router.navigate(
       this.localizeRouterService.translateRoute(['/vihko', data.formID, data.tmpID]),
-      { replaceUrl: true }
+      { replaceUrl: true, skipLocationChange: true }
     );
   }
 
@@ -84,5 +90,16 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
 
   onCancel() {
     this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']));
+  }
+
+  private getBack() {
+    const history = this.routingStateService.getHistory();
+    for (let i = history.length - 2; i >= 0; i--) {
+      if (history[i].match(/\/user/)) {
+        continue;
+      }
+      return history[i];
+    }
+    return '';
   }
 }

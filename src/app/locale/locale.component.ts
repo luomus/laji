@@ -1,17 +1,27 @@
 import { TranslateService } from '@ngx-translate/core';
-import { WindowRef } from '../shared/windows-ref';
+import { isPlatformBrowser } from '@angular/common';
+import { GlobalStore } from '../shared/store/global.store';
+
 export abstract class LocaleComponent {
 
   protected translateService: TranslateService;
-  protected windowRef: WindowRef;
+  protected window: any;
+  protected platformId: any;
+  protected store: GlobalStore;
 
   protected setLocale(lang) {
-    if (this.translateService.currentLang !== lang) {
-      this.translateService.use(lang);
+    this.store.setCurrentLang(lang);
+    if (this.translateService.getDefaultLang() !== 'fi' && lang !== 'fi') {
       this.translateService.setDefaultLang('fi');
     }
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    if (this.translateService.currentLang !== lang) {
+      this.translateService.use(lang);
+    }
     try {
-      this.windowRef.nativeWindow.document.documentElement.lang = lang;
+      this.window.document.documentElement.lang = lang;
     } catch (e) {
       console.log(e);
     }

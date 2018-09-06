@@ -1,23 +1,25 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from '../service/footer.service';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { InformationApi } from '../api/InformationApi';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import {Logger} from '../logger/logger.service';
+import { Logger } from '../logger/logger.service';
+import { LajiApi, LajiApiService } from '../service/laji-api.service';
+import { GlobalStore } from '../store/global.store';
+import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-footer',
   styleUrls: ['./footer.component.css'],
   templateUrl: './footer.component.html'
 })
-export class FooterComponent implements OnInit, OnDestroy{
+export class FooterComponent implements OnInit, OnDestroy {
 
   public onFrontPage = false;
   public onMapPage = false;
   public subRouteEvent: Subscription;
   public subLangChange: Subscription;
-  public tree;
+  public tree$;
   public columns = [
     'col-sm-offset-1 col-sm-6 col-md-3',
     'col-sm-5 col-md-2',
@@ -28,24 +30,28 @@ export class FooterComponent implements OnInit, OnDestroy{
   constructor(
     public footerService: FooterService,
     private router: Router,
-    private informationApi: InformationApi,
+    private lajiApi: LajiApiService,
     private translate: TranslateService,
-    private logger: Logger
+    private logger: Logger,
+    private store: GlobalStore
   ) {
   }
 
   ngOnInit() {
-    this.subRouteEvent = this.router.events
-      .startWith(null)
+    this.tree$ = this.store.state$.pipe(
+      map(state => state.informationIndex),
+      distinctUntilChanged()
+    );
+    this.fetchTreeData(false);
+    this.subRouteEvent = this.router.events.pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         this.onFrontPage = this.router.isActive('/', true)
           || this.router.isActive('/en', true)
           || this.router.isActive('/sv', true);
         this.onMapPage = this.router.isActive('/map', false);
       });
-    this.fetchTreeData();
     this.subLangChange = this.translate.onLangChange.subscribe(() => {
-      this.fetchTreeData(true);
+      this.fetchTreeData();
     });
   }
 
@@ -58,15 +64,14 @@ export class FooterComponent implements OnInit, OnDestroy{
     }
   }
 
-  fetchTreeData(force = false) {
-    if (force || !this.tree) {
-      this.informationApi
-        .informationIndex(this.translate.currentLang)
-        .map(tree => tree.children || [])
-        .subscribe(
-          tree => this.tree = tree,
-          err =>  this.logger.error('Failed to fetch information tree', err)
-        );
+  fetchTreeData(force = true) {
+    if (!force && this.store.state.informationIndex) {
+      return;
     }
+    this.lajiApi.get(LajiApi.Endpoints.information, 'index', {lang: this.translate.currentLang}).pipe(map(tree => tree.children || []))
+      .subscribe(
+        tree => this.store.setInformationIndex(tree),
+        err =>  this.logger.error('Failed to fetch information tree', err)
+      );
   }
 }

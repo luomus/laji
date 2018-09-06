@@ -1,6 +1,13 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit,
-  SimpleChange, ViewChild
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChange,
+  ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
@@ -9,7 +16,8 @@ import { ObservationTableColumn } from '../../../shared-modules/observation-resu
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 const query = {
   selectedFields: 'vernacularName,scientificName,cursiveName,id'
@@ -42,7 +50,6 @@ export class ChildrenListComponent implements OnInit, OnChanges, OnDestroy {
   ];
 
   private subFetch: Subscription;
-  private subLang: Subscription;
 
   constructor(
     private translate: TranslateService,
@@ -60,20 +67,17 @@ export class ChildrenListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.subLang = this.translate.onLangChange
-      .mergeMap(() => this.taxonService.taxonomyFindChildren(this.parentId, this.translate.currentLang, undefined, query))
+    this.subFetch = this.taxonService
+      .taxonomyFindChildren(this.parentId, this.translate.currentLang, undefined, query)
       .subscribe((data) => {
         this.children = data;
         this.size = data.length;
         this.cd.markForCheck();
-        setTimeout(() => {
-          this.datatable.refreshTable();
-        }, 100);
       });
   }
 
   ngOnChanges(changes: {[propertyName: string]: SimpleChange}) {
-    if (changes['parentId']) {
+    if (changes['parentId'] && !changes['parentId'].isFirstChange()) {
       if (this.subFetch) {
         this.subFetch.unsubscribe();
       }
@@ -83,9 +87,6 @@ export class ChildrenListComponent implements OnInit, OnChanges, OnDestroy {
           this.children = data;
           this.size = data.length;
           this.cd.markForCheck();
-          setTimeout(() => {
-            this.datatable.refreshTable();
-          }, 100);
         });
     }
   }
@@ -93,9 +94,6 @@ export class ChildrenListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     if (this.subFetch) {
       this.subFetch.unsubscribe();
-    }
-    if (this.subLang) {
-      this.subLang.unsubscribe();
     }
   }
 }

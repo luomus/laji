@@ -1,15 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { FormPermissionService } from '../form-permission.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { UserService } from '../../../shared/service/user.service';
 import { FormPermission } from '../../../shared/model/FormPermission';
 import { Logger } from '../../../shared/logger/logger.service';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
+import { RoutingStateService } from '../../../shared/service/routing-state.service';
 
 @Component({
-  selector: '[laji-form-admin]',
+  selector: 'laji-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
@@ -18,6 +19,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   formPermission: FormPermission;
   isAllowed = false;
   collectionId: string;
+  back: string;
 
   private subParam: Subscription;
   private subFPChanges: Subscription;
@@ -29,10 +31,12 @@ export class AdminComponent implements OnInit, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private toastsService: ToastsService,
     private userService: UserService,
-    private logger: Logger
+    private logger: Logger,
+    private routingStateService: RoutingStateService
   ) { }
 
   ngOnInit() {
+    this.back = this.routingStateService.getPreviousUrl();
     this.subParam = this.route.params.subscribe(params => {
       this.collectionId = params['collectionId'];
       this.initFormPermission();

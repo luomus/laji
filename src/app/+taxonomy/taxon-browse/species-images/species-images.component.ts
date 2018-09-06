@@ -1,14 +1,13 @@
-import { Component, OnInit, Input, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
+import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { Logger } from '../../../shared/logger/logger.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-species-images',
@@ -21,7 +20,6 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
 
   images = [];
   pageSize = 50;
-  page = 1;
   total = 0;
 
   private subFetch: Subscription;
@@ -43,7 +41,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
 
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
-        this.page = 1;
+        this.searchQuery.imageOptions.page = 1;
         this.refreshImages();
       }
     );
@@ -54,7 +52,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(event) {
-    this.page = event.page;
+    this.searchQuery.imageOptions.page = event.page;
     this.refreshImages();
   }
 
@@ -65,7 +63,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
   refreshImages() {
     const cacheKey = JSON.stringify({
       query: this.searchQuery.query,
-      page: this.page
+      imageOptions: this.searchQuery.imageOptions
     });
     if (this.lastQuery === cacheKey) {
       return;
@@ -77,7 +75,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
     }
     this.loading = true;
 
-    this.subFetch = this.fetchPage(this.page)
+    this.subFetch = this.fetchPage(this.searchQuery.imageOptions.page)
       .subscribe(data => {
           this.images = data.results.map(res => {
             const image = res['multimedia'][0];
@@ -110,9 +108,9 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
         undefined,
         undefined,
         undefined,
-        '' + page,
+        '' + this.searchQuery.imageOptions.page,
         '50',
-        this.searchQuery.sortOrder,
+        'taxonomic',
         {
           ...query,
           target: undefined,

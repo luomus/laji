@@ -1,0 +1,7 @@
+<div class="images-container">
+  <div class="image-container no-page-break" *ngFor ="let img of images; let index = index">
+    <img src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+         class="image"
+          alt="Image {{ index + 1 }}" />
+  </div>
+</div>

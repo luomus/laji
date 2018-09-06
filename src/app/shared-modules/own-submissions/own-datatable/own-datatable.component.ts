@@ -1,29 +1,43 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
-  Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  HostListener,
+  Inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  PLATFORM_ID,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
 import { environment } from '../../../../environments/environment';
 import { Document } from '../../../shared/model/Document';
 import { DocumentInfoService } from '../service/document-info.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { UserService } from '../../../shared/service/user.service';
-import { Observable } from 'rxjs/Observable';
+import { forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { Person } from '../../../shared/model/Person';
 import { FormService } from '../../../shared/service/form.service';
 import { RouterChildrenEventService } from '../service/router-children-event.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { DocumentExportService } from './document_export.service';
-import { WindowRef } from '../../../shared/windows-ref';
+import { DocumentExportService } from '../service/document-export.service';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { DocumentService } from '../service/document.service';
 import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
-import { TriplestoreLabelService } from '../../../shared/service';
+import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
+import { map } from 'rxjs/operators';
+import * as moment from 'moment';
+import { isPlatformBrowser } from '@angular/common';
 
 
 @Component({
@@ -42,11 +56,12 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
   @Input() onlyTemplates = false;
   @Input() actions: string[]|false = ['edit', 'view', 'template', 'download', 'stats', 'delete'];
-  @Output() documentClicked = new EventEmitter();
+  @Output() documentClicked = new EventEmitter<Document>();
 
   formsById = {};
   namedPlaceNames = {};
   deleteRow: any;
+  deleting = false;
 
   templateForm: TemplateForm = {
     name: '',
@@ -76,7 +91,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   displayMode: string;
   defaultSort: any;
 
-  subTrans: Subscription;
   rowData$: Subscription;
   saveTemplate$: Subscription;
   delete$: Subscription;
@@ -91,6 +105,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('deleteModal') public deleteModal: ModalDirective;
 
   constructor(
+    @Inject(WINDOW) private window: Window,
+    @Inject(PLATFORM_ID) private platformID: object,
     private translate: TranslateService,
     private router: Router,
     private userService: UserService,
@@ -100,7 +116,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     private documentExportService: DocumentExportService,
     private documentService: DocumentService,
     private toastService: ToastsService,
-    private window: WindowRef,
     private logger: Logger,
     private cd: ChangeDetectorRef,
     private labelService: TriplestoreLabelService
@@ -109,11 +124,6 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     this.initColumns();
     this.updateTranslations();
-
-    this.subTrans = this.translate.onLangChange.subscribe(() => {
-      this.formsById = {};
-      this.initRows();
-    });
 
     this.updateDisplayMode();
     this.usersId$ = this.userService.getUser()
@@ -125,15 +135,14 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy() {
-    this.subTrans.unsubscribe();
     this.usersId$.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['documents']) {
+    if (changes['documents'] && !changes['documents'].isFirstChange()) {
       this.updateRows();
     }
-    if (changes['column']) {
+    if (changes['column'] && !changes['column'].isFirstChange()) {
       this.initColumns();
     }
   }
@@ -164,7 +173,10 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateDisplayMode() {
-    const width = this.window.nativeWindow.innerWidth;
+    if (!isPlatformBrowser(this.platformID)) {
+      return;
+    }
+    const width = this.window.innerWidth;
 
     if (width > 1150) {
       if (this.table) {
@@ -217,7 +229,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       this.rowData$.unsubscribe();
     }
 
-    this.rowData$ = Observable.from(this.documents.map((doc, i) => {
+    this.rowData$ = ObservableFrom(this.documents.map((doc, i) => {
       return this.setRowData(doc, i);
     }))
       .mergeAll()
@@ -226,6 +238,10 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
         this.temp = array;
         this.rows = this.temp;
         this.cd.markForCheck();
+        // Table is not sorted with external sorter on initial load. So this is here to make sure that when data is received it's sorted.
+        setTimeout(() => {
+          this.table.onColumnSort({sorts: this.defaultSort});
+        });
       });
   }
 
@@ -240,11 +256,12 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     return row.id;
   }
 
-  showViewer(docId: string) {
+  showViewer(row: any) {
+    const doc = this.documents[row.index];
     if (!this.useInternalDocumentViewer) {
-      this.eventService.showViewerClicked(docId);
+      this.eventService.showViewerClicked(doc);
     } else {
-      this.documentClicked.emit(docId);
+      this.documentClicked.emit(doc);
     }
   }
 
@@ -259,6 +276,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     const document: any = this.documents[row.index] || {};
     if (document.id && row.id === document.id) {
       this.deleteRow = row;
+      this.deleting = false;
       this.deleteModal.show();
     } else {
       this.translate.get('delete.noId')
@@ -270,6 +288,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     if (this.delete$) {
       return;
     }
+    this.deleting = true;
     this.delete$ = this.documentService.deleteDocument(this.deleteRow.id)
       .subscribe(
         () => {
@@ -353,6 +372,22 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.table.rowDetail.toggleExpandRow(row);
   }
 
+  onSort(event) {
+    const rows = [...this.rows];
+    event.sorts.forEach((sort) => {
+      const comparator = this.comparator(sort.prop);
+      const dir = sort.dir === 'asc' ? 1 : -1;
+      rows.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]))
+    });
+    this.rows = rows;
+  }
+
+  /**
+   * When using comparator input these functions are called all the time! Preventing buttons and events from firing
+   *
+   * @param prop
+   * @returns {any}
+   */
   comparator(prop) {
     if (prop === 'dateObserved') {
       return (a, b) => {
@@ -391,11 +426,13 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     return this.getForm(document.formID).switchMap((form) => {
       const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
 
-      return Observable.forkJoin(
+      return ObservableForkJoin(
         this.getLocality(gatheringInfo, document.namedPlaceID),
         this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
-        this.getNamedPlaceName(document.namedPlaceID),
-        (locality, observers, npName) => {
+        this.getNamedPlaceName(document.namedPlaceID)
+      ).pipe(
+        map(data => {
+          const locality = data[0], observers = data[1], npName = data[2];
           let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
           dateObserved += gatheringInfo.dateEnd ? ' - ' + moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
 
@@ -415,13 +452,13 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
             id: document.id,
             index: idx
           };
-        }
-      );
+        })
+      )
     });
   }
 
   private getLocality(gatheringInfo: any, namedPlaceID): Observable<string> {
-    let locality$ = Observable.of(gatheringInfo);
+    let locality$ = ObservableOf(gatheringInfo);
     const npID = gatheringInfo.namedPlaceID || namedPlaceID;
 
     if (!gatheringInfo.locality && npID) {
@@ -435,14 +472,14 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private getObservers(userArray: string[] = []): Observable<string> {
-    return Observable.from(userArray.map((userId) => {
+    return ObservableFrom(userArray.map((userId) => {
       if (userId.indexOf('MA.') === 0) {
         return this.userService.getUser(userId)
           .map((user: Person) => {
             return user.fullName;
           });
       }
-      return Observable.of(userId);
+      return ObservableOf(userId);
     }))
       .mergeAll()
       .toArray()
@@ -452,7 +489,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private getForm(formId: string): Observable<any> {
-    if (this.formsById[formId]) { return Observable.of(this.formsById[formId]); }
+    if (this.formsById[formId]) { return ObservableOf(this.formsById[formId]); }
 
     return this.formService
       .getForm(formId, this.translate.currentLang)
@@ -462,9 +499,9 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private getNamedPlaceName(npId: string): Observable<string> {
-    if (!npId || this.columns.indexOf('namedPlaceName') === -1) {return Observable.of(''); }
+    if (!npId || this.columns.indexOf('namedPlaceName') === -1) {return ObservableOf(''); }
 
-    if (this.namedPlaceNames[npId]) { return Observable.of(this.namedPlaceNames[npId]); }
+    if (this.namedPlaceNames[npId]) { return ObservableOf(this.namedPlaceNames[npId]); }
 
     return this.labelService.get(npId, 'multi');
   }

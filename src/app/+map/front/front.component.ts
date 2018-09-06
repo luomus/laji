@@ -1,12 +1,13 @@
-import { Component, OnDestroy, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQuery } from '../../+observation/search-query.model';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Util } from '../../shared/service/util.service';
-import { MapComponent } from '../../shared/map/map.component';
 import { FooterService } from '../../shared/service/footer.service';
 import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
+import * as LajiMap from 'laji-map';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
 
 @Component({
   selector: 'laji-map-front',
@@ -14,7 +15,29 @@ import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
   styleUrls: ['./front.component.css']
 })
 export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild(MapComponent) lajiMap: MapComponent;
+  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+  mapOptions: LajiMap.Options = {
+    center: [64.209802, 24.912872],
+    zoom: 3,
+    tileLayerName: LajiMap.TileLayerName.maastokartta,
+    availableTileLayerNamesBlacklist: [LajiMap.TileLayerName.pohjakartta],
+    draw: {
+      marker: true,
+      polygon: true,
+      polyline: true
+    },
+    controls: {
+      draw: {
+        marker: true,
+        polygon: true,
+        polyline: true,
+        copy: true,
+        upload: true,
+        clear: true
+      },
+      coordinates: true
+    },
+  };
 
   readonly instructions = {
     fi: '/about/1785',
@@ -22,7 +45,8 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
     en: '/about/1807'
   };
 
-  drawData = {
+  drawData: any = {
+    editable: true,
     featureCollection: {
       type: 'FeatureCollection',
       features: []
@@ -66,16 +90,8 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   };
 
-  draw = {
-    editable: true,
-    marker: true,
-    polygon: true,
-    polyline: true,
-    hasActive: true
-  };
   hasQuery = false;
   showControls = false;
-  overlayNames: string[];
   color = undefined;
   query: WarehouseQueryInterface;
 
@@ -90,14 +106,15 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.footerService.footerVisible = false;
+    let options: LajiMap.Options = {lang: <LajiMap.Lang> this.translate.currentLang};
     const params = this.route.snapshot.queryParams;
     let len = Object.keys(params).length;
     if (params['overlayNames']) {
-      this.overlayNames = params['overlayNames'].split(',');
+      options = {...options, overlayNames: params['overlayNames'].split(',')};
       len--;
     }
-    if (params['coordinates']) {
-      this.drawData.featureCollection = ISO6709ToGeoJSON(params['coordinates']);
+    if (typeof params['coordinates'] !== 'undefined') {
+      this.drawData = {...this.drawData, featureCollection: ISO6709ToGeoJSON(params['coordinates'])};
       len--;
     }
     this.hasQuery = len > 0;
@@ -110,6 +127,7 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
     if (params['target']) {
       this.searchQuery.query.target = [params['target']];
     }
+    this.mapOptions = {...this.mapOptions, ...options};
     this.searchQuery.setQueryFromQueryObject(params);
     this.query = Util.clone(this.searchQuery.query);
   }
@@ -117,7 +135,6 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     const params = this.route.snapshot.queryParams;
     if (params['coordinates']) {
-      this.lajiMap.initDrawData();
       this.lajiMap.map.zoomToData();
     }
   }

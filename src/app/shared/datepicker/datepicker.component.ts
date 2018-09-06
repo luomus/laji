@@ -26,12 +26,22 @@
  * SOFTWARE.
  */
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  PLATFORM_ID,
   ViewContainerRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject, Subscription } from 'rxjs';
+import * as moment from 'moment';
 
 export interface CalendarDate {
   day: number;
@@ -63,15 +73,15 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   @Input() otherFormats: string[] = [];
   @Input() viewFormat: string;
   @Input() firstWeekdaySunday: boolean;
-  @Input() toLastOfYear= false;
+  @Input() toLastOfYear = false;
   @Input() addonText: string;
   @Output() onSelect = new EventEmitter();
 
   public validDate = true;
   public viewDate: string = null;
-  private date: any = moment();
+  public date: moment.Moment;
+  public days: CalendarDate[] = [];
   private el: Element;
-  private days: CalendarDate[] = [];
   private currentValue;
 
   private valueSource = new Subject();
@@ -79,9 +89,11 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
 
   constructor(
     private viewContainerRef: ViewContainerRef,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.el = viewContainerRef.element.nativeElement;
+    this.date = moment();
   }
 
   get value(): any {
@@ -89,6 +101,9 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   }
 
   set value(value: any) {
+    if (typeof value === 'string') {
+      value = value.trim();
+    }
     let date = (value instanceof moment) ? value : moment(value, this.format, true);
     if (!date.isValid()) {
       this.validDate = !value;
@@ -105,7 +120,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
       }
     }
     if (value == null || !date.isValid()) {
-      this.viewDate = value;
+      this.viewDate = value || '';
     } else {
       this.viewDate = date.format(this.viewFormat);
       this.date = date;
@@ -205,12 +220,12 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   }
 
   public prevYear(): void {
-    this.date = this.date.subtract(1, 'Y');
+    this.date = this.date.subtract(1, 'year');
     this.generateCalendar();
   }
 
   public nextYear(): void {
-    this.date = this.date.add(1, 'Y');
+    this.date = this.date.add(1, 'year');
     this.generateCalendar();
   }
 

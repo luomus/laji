@@ -2,7 +2,7 @@
  * Query interface for warehouse
  *
  * @property includeNonValidTaxa By default, query results include also entries where target name does not match taxonomy.
- * To get only entries where one and only one taxon matches given target name, set this parameter to false.
+ * To getList only entries where one and only one taxon matches given target name, set this parameter to false.
  * @property taxonId Filter based on URI or Qname identifier of a taxon. Use Taxonomy-API to find identifiers.
  * Will only return entries where reported target name matches one of the names given to this and only this taxon.
  * Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times. When multiple values
@@ -63,7 +63,7 @@
  * Use InformationSystem-API to resolve identifiers.
  * Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
  * When multiple values are given, this is an OR search.
- * @property recordBasis Filter using record basis. This can be used for example to get only preserved specimens.
+ * @property recordBasis Filter using record basis. This can be used for example to getList only preserved specimens.
  * Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
  * When multiple values are given, this is an OR search.
  * @property lifeStage Filter using life stage of an unit. Multiple values are seperated by a comma (,) or by giving
@@ -100,7 +100,9 @@
  * @property editorId Filter based on \&quot;owner\&quot; of records. Only available in private-query-API.
  * Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
  * When multiple values are given, this is an OR search.
- * @property annotationType Include only those units/annotations that are of the selected annotation type. Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times. When multiple values are given, this is an OR search.
+ * @property annotationType Include only those units/annotations that are of the selected annotation type.
+ * Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times. When multiple values are given,
+ * this is an OR search.
  * @property annotatedBefore Include only those annotations that have been made before the given date, inclusive. Format is yyyy-MM-dd.
  * @property annotatedLaterThan Include only those annotations that have been made after the given date, inclusive. Format is yyyy-MM-dd.
  * @property namedPlaceId Filter by named place id.
@@ -111,6 +113,8 @@ export interface WarehouseQueryInterface {
   includeNonValidTaxa?: boolean;
   taxonId?: Array<string>;
   target?: Array<string>;
+  includeSubTaxa?: boolean;
+  useIdentificationAnnotations?: boolean;
   taxonRankId?: string;
   informalTaxonGroupId?: Array<string>;
   administrativeStatusId?: Array<string>;
@@ -121,7 +125,10 @@ export interface WarehouseQueryInterface {
   finnishMunicipalityId?: Array<string>;
   biogeographicalProvinceId?: Array<string>;
   area?: Array<string>;
+  season?: string;
   time?: Array<string>;
+  firstLoadedSameOrAfter?: string;
+  firstLoadedSameOrBefore?: string;
   yearMonth?: Array<string>;
   dayOfYearBegin?: number;
   dayOfYearEnd?: number;
@@ -139,7 +146,8 @@ export interface WarehouseQueryInterface {
   individualId?: Array<string>;
   individualCountMin?: number;
   individualCountMax?: number;
-  loadedLaterThan?: Date;
+  loadedSameOrAfter?: string;
+  loadedSameOrBefore?: string;
   coordinates?: Array<string>;
   typeSpecimen?: boolean;
   hasDocumentMedia?: boolean;
@@ -159,10 +167,20 @@ export interface WarehouseQueryInterface {
   editorOrObserverPersonToken?: string;
   qualityIssues?: string;
   annotationType?: Array<string>;
-  annotatedBefore?: Date;
-  annotatedLaterThan?: Date;
+  annotatedSameOrAfter?: string;
+  annotatedSameOrBefore?: string;
   namedPlaceId?: Array<string>;
+  typeOfOccurrenceId?: Array<string>;
+  typeOfOccurrenceIdNot?: Array<string>;
   pairCounts?: boolean;
   birdAssociationAreaId?: Array<string>;
+  reliabilityOfCollection?: Array<string>;
+  secureLevel?: Array<string>;
   includeSubCollections?: boolean;
+  nativeOccurrence?: boolean;
+  breedingSite?: boolean;
+  annotated?: boolean;
+  teamMember?: Array<string>;
+  teamMemberId?: Array<string>;
+  _coordinatesIntersection?: number;
 }

@@ -1,18 +1,26 @@
 import {
   AfterViewInit,
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
   ViewChild
 } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import * as MapUtil from 'laji-map/lib/utils';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
-import { Map3Component } from '../../map/map.component';
-import { LajiMapOptions } from '../../map/map-options.interface';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import * as LajiMap from 'laji-map';
 import { Units } from '../../../shared/model/Units';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
-import { Observable } from 'rxjs/Observable';
-import {ToastsService, UserService} from '../../../shared/service';
+import { Observable, of as ObservableOf } from 'rxjs';
+import { UserService } from '../../../shared/service/user.service';
+import { ToastsService } from '../../../shared/service/toasts.service';
 import { NamedPlacesService } from '../../named-place/named-places.service';
 import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
 import * as equals from 'deep-equal';
@@ -36,8 +44,8 @@ interface LineTransectCount {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
-  @ViewChild(Map3Component)
-  lajiMap: Map3Component;
+  @ViewChild(LajiMapComponent)
+  lajiMap: LajiMapComponent;
 
   @Input() document: Document;
   @Input() namedPlace: NamedPlace;
@@ -45,7 +53,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
   @Output() onNamedPlaceChange = new EventEmitter();
 
   counts: LineTransectCount;
-  lajiMapOptions: LajiMapOptions;
+  lajiMapOptions: LajiMap.Options;
   perKmTerms: LineTransectChartTerms = {
     upper: {
       slope: -0.279,
@@ -128,11 +136,11 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   initMapZoom() {
-    if (!this.isAdmin || !this.placesDiff || !this.lajiMap.lajiMap || this.mapZoomInitialized) {
+    if (!this.isAdmin || !this.placesDiff || !this.lajiMap.map || this.mapZoomInitialized) {
       return;
     }
 
-    this.lajiMap.lajiMap.zoomToData({paddingInMeters: 100});
+    this.lajiMap.map.zoomToData({paddingInMeters: 100});
     this.mapZoomInitialized = true;
   }
 
@@ -153,10 +161,10 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
       minPerKm: 0
     };
     const species = {};
-    this.stats$ = this.lajiApiService.get(LajiApi.Endpoints.documentStats,
+    this.stats$ = this.lajiApiService.getList(LajiApi.Endpoints.documentStats,
       {personToken: this.userSerivce.getToken(), namedPlace: this.namedPlace.id})
       .map(stats => this.dateDiffFromDoc(stats.dateMedian))
-      .catch(() => Observable.of(''));
+      .catch(() => ObservableOf(''));
     if (this.document.gatherings) {
       this.document.gatherings.map(gathering => {
         if (gathering.units) {
@@ -170,8 +178,10 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
                   name: unit.identifications[0].taxon || ''
                 };
               }
-              const cntKey = unit.unitFact && unit.unitFact.lineTransectRouteFieldType === Units.LineTransectRouteFieldTypeEnum.LineTransectRouteFieldTypeOuter ?
-                'tsCouples' : 'psCouples';
+              const cntKey =
+                unit.unitFact &&
+                unit.unitFact.lineTransectRouteFieldType === Units.LineTransectRouteFieldTypeEnum.LineTransectRouteFieldTypeOuter ?
+                  'tsCouples' : 'psCouples';
               if (cntKey === 'psCouples') {
                 count.onPs++;
               }
@@ -181,7 +191,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
           });
         }
       });
-      const dist = MapUtil.getLineTransectStartEndDistancesForIdx({geometry: geometries}, geometries.coordinates.length - 1, 10);
+      const dist = MapUtil.getLineTransectStartEndDistancesForIdx({geometry: geometries} as any, geometries.coordinates.length - 1, 10);
       count.routeLength = dist[1];
       count.couplesPerKm = (count.tsCouples + count.psCouples) / (count.routeLength / 1000);
     }
@@ -199,7 +209,9 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
       this.document.gatheringEvent.timeEnd
     ) {
       const diff = +new Date(this.document.gatheringEvent.dateBegin + ' ' + this.document.gatheringEvent.timeEnd) -
-        +new Date((this.document.gatheringEvent.dateEnd || this.document.gatheringEvent.dateBegin) + ' ' + this.document.gatheringEvent.timeStart);
+        +new Date(
+          (this.document.gatheringEvent.dateEnd || this.document.gatheringEvent.dateBegin) + ' ' + this.document.gatheringEvent.timeStart
+        );
       count.minPerKm = Math.round((diff / 1000 / 60) / (count.routeLength / 1000));
     }
     this.counts = count;
@@ -237,9 +249,9 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
 
   private initMapOptions() {
     this.lajiMapOptions = {
-      tileLayerName: 'maastokartta',
+      tileLayerName: LajiMap.TileLayerName.maastokartta,
       lineTransect: {
-        feature: {geometry: this.getGeometry(this.activeMapLine)},
+        feature: {type: 'Feature', properties: {}, geometry: this.getGeometry(this.activeMapLine)},
         editable: false
       },
       tileLayerOpacity: 0.5
@@ -261,7 +273,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     this.placesDiff = diff;
   }
 
-  private getGeometry(documentName = 'document') {
+  private getGeometry(documentName = 'document'): LajiMap.LineTransectGeometry {
     const document = documentName === 'document'
         ? this.document
         : this.namedPlace.acceptedDocument;
@@ -269,12 +281,12 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     if (document.gatherings) {
       return {type: 'MultiLineString', coordinates: document.gatherings.map(item => item.geometry.coordinates)};
     }
-    return {coordinates: []};
+    return {type: 'MultiLineString', coordinates: []};
   }
 
   initIsAdmin() {
     if (!this.namedPlace || !this.namedPlace.collectionID) {
-      return Observable.of(null);
+      return ObservableOf(null);
     }
     return this.formPermissionService.getFormPermission(this.namedPlace.collectionID, this.userSerivce.getToken())
       .combineLatest(
@@ -285,7 +297,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
 
   setActiveMapLine(activeMapLine) {
     this.activeMapLine = activeMapLine;
-    this.lajiMap.lajiMap.setLineTransect({...this.lajiMapOptions.lineTransect, feature: {geometry: this.getGeometry(this.activeMapLine)}})
+    this.lajiMap.map.setLineTransect({...this.lajiMapOptions.lineTransect, feature: {geometry: this.getGeometry(this.activeMapLine)}})
   }
 
   acceptNamedPlaceChanges() {
@@ -295,7 +307,9 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
       this.userSerivce.getToken()
     ).subscribe((np: NamedPlace) => {
       this.onNamedPlaceChange.emit(np);
-      this.toastsService.showSuccess('Linjan päivitys onnistui. Tämän laskennan karttaa käytetään pohjana tämän linjan laskennoille jatkossa');
+      this.toastsService.showSuccess(
+        'Linjan päivitys onnistui. Tämän laskennan karttaa käytetään pohjana tämän linjan laskennoille jatkossa'
+      );
     });
   }
 }

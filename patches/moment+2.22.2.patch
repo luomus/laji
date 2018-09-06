@@ -1,0 +1,12 @@
+diff --git a/node_modules/moment/moment.d.ts b/node_modules/moment/moment.d.ts
+index 3256e2b..7300ff3 100644
+--- a/node_modules/moment/moment.d.ts
++++ b/node_modules/moment/moment.d.ts
+@@ -731,4 +731,6 @@ declare namespace moment {
+ 
+ }
+ 
+-export = moment;
++declare module 'moment' {
++  export = moment;
++}

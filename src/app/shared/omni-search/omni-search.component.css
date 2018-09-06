@@ -93,7 +93,6 @@
 .omni.expand {
   width: 90px;
   border-color: rgba(0, 0, 0, 0.2);
-  cursor: pointer;
 }
 
 .omni.expand.open,

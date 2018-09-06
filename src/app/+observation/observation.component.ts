@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { SearchQuery } from './search-query.model';
 import { UserService } from '../shared/service/user.service';
@@ -37,29 +37,24 @@ export class ObservationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.footerService.footerVisible = false;
-    this.subParam = this.route.params.subscribe(params => {
-      this.tab = params['tab'] || 'map';
+    this.subParam = this.route.params.subscribe(value => {
+      this.tab = value['tab'] || 'map';
     });
-    this.subQuery = this.route.queryParams.subscribe(params => {
-      this.searchQuery.setQueryFromQueryObject(params);
-      if (params['reset']) {
-        this.searchQuery.query = {};
-      }
-      if (params['target']) {
-        this.searchQuery.query.target = [params['target']];
-      }
-      if (this.searchQuery.query.editorPersonToken === 'true') {
-        this.searchQuery.query.editorPersonToken = this.userService.getToken();
-      }
-      if (this.searchQuery.query.observerPersonToken === 'true') {
-        this.searchQuery.query.observerPersonToken = this.userService.getToken();
-      }
-      if (this.searchQuery.query.editorOrObserverPersonToken === 'true') {
-        this.searchQuery.query.editorOrObserverPersonToken = this.userService.getToken();
-      }
-      this.searchQuery.queryUpdate({formSubmit: !!params['reset'], newData: true});
-      this.cd.markForCheck();
-    });
+    const params = this.route.snapshot.queryParams;
+    this.searchQuery.setQueryFromQueryObject(params);
+    if (params['target']) {
+      this.searchQuery.query.target = [params['target']];
+    }
+    if (this.searchQuery.query.editorPersonToken === 'true') {
+      this.searchQuery.query.editorPersonToken = this.userService.getToken();
+    }
+    if (this.searchQuery.query.observerPersonToken === 'true') {
+      this.searchQuery.query.observerPersonToken = this.userService.getToken();
+    }
+    if (this.searchQuery.query.editorOrObserverPersonToken === 'true') {
+      this.searchQuery.query.editorOrObserverPersonToken = this.userService.getToken();
+    }
+    this.searchQuery.queryUpdate({formSubmit: true});
   }
 
   ngOnDestroy() {

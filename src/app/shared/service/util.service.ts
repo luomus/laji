@@ -1,3 +1,5 @@
+import merge from 'deepmerge'
+
 export class Util {
   /**
    * Clones the object using JSON stringify
@@ -33,12 +35,24 @@ export class Util {
     return Object.keys(value).length === 0
   }
 
+  public static removeUndefinedFromObject(obj: object) {
+    if (typeof obj !== 'object') {
+      return obj;
+    }
+    return Object.keys(obj).reduce((cumulative, current) => {
+      if (typeof obj[current] !== 'undefined') {
+        cumulative[current] = obj[current];
+      }
+      return cumulative;
+    }, {})
+  }
+
   public static parseJSONPath(object: any, jsonPath: string) {
     // Both jsonpath and jsonpath-plus cause problems with the production build,
     // so we convert to json paths to json pointers.
-    let pathAsJSONPointer = jsonPath
-      .substring(1, jsonPath.length) // Remove first '$'
-      .replace('.', '/')
+    let pathAsJSONPointer = jsonPath[0] === '$' ? jsonPath.substring(1, jsonPath.length) : jsonPath; // Remove first '$'
+    pathAsJSONPointer = pathAsJSONPointer
+      .replace(/\./g, '/')
       .replace(/\[/g, '/')
       .replace(/\]/g, '/');
     if (pathAsJSONPointer[pathAsJSONPointer.length - 1] === '/') {
@@ -48,9 +62,34 @@ export class Util {
   }
 
   public static parseJSONPointer(object: any, jsonPointer: string) {
-    const splitPath = String(jsonPointer).split("/").filter(s => s !== undefined && s !== "");
-    return splitPath.reduce((o, s)=> {
-      return o[s];
+    const splitPath = String(jsonPointer).split('/').filter(s => s !== undefined && s !== '');
+    return splitPath.reduce((o, s) => {
+      return o && o[s] || undefined;
     }, object);
+  }
+
+  public static arrayCombineMerge(target, source, options) {
+    const destination = target.slice();
+
+    source.forEach(function(e, i) {
+      if (typeof destination[i] === 'undefined') {
+        const cloneRequested = options.clone !== false;
+        const shouldClone = cloneRequested && options.isMergeableObject(e);
+        destination[i] = shouldClone ? Util.mergeClone(e, options) : e
+      } else if (options.isMergeableObject(e)) {
+        destination[i] = merge(target[i], e, options);
+      } else if (target.indexOf(e) === -1) {
+        destination.push(e);
+      }
+    });
+    return destination
+  }
+
+  private static mergeClone(value, options) {
+    return merge(Util.mergeEmptyTarget(value), value, options);
+  }
+
+  private static mergeEmptyTarget(value) {
+    return Array.isArray(value) ? [] : {};
   }
 }

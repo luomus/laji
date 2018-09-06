@@ -1,12 +1,11 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { ResultService } from '../../../service/result.service';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
-import { Observable } from 'rxjs/Observable';
-import { WarehouseApi } from '../../../../shared/api/index';
+import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 
 @Component({
   selector: 'laji-line-transect-result-grid',
@@ -88,7 +87,7 @@ export class LineTransectResultGridComponent implements OnInit, OnDestroy {
         this.query.taxonId = [taxonId];
         this.taxon$ = this.resultService.getTaxon(taxonId);
       } else {
-        this.taxon$ = Observable.of(null);
+        this.taxon$ = ObservableOf(null);
       }
       this.mapQuery = this.clone(this.query);
       if (params['grid']) {

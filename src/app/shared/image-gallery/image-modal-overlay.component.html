@@ -1,6 +1,5 @@
 <div class="ng-overlay" *ngIf="modalImages">
   <div class="ng-gallery-content">
-    <div class="uil-ring-css" *ngIf="loading"><laji-spinner [spinning]="loading" [light]="true"></laji-spinner></div>
     <a href="{{img.fullURL || img.largeURL}}" target="_blank" download="{{img.fullURL || img.largeURL}}" class="download-img">
       <i class="glyphicon glyphicon-download-alt"></i>
     </a>
@@ -14,10 +13,15 @@
       class="effect"></laji-image>
     <a class="nav-right" *ngIf="modalImages.length > 1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
     <span class="info-text" *ngIf="img">
-      <ng-container *ngIf="img.vernacularName">{{img.vernacularName | multiLang}}</ng-container>
-      <ng-container *ngIf="img.vernacularName && img.scientificName">-</ng-container>
-      <ng-container *ngIf="img.scientificName"><em class="scientificName">{{img.scientificName | label:'fullUri'}}</em></ng-container>
-      <ng-container *ngIf="img.taxonId && !(img.vernacularName && img.scientificName)">{{img.taxonId | label}}</ng-container>
+      <ng-container *ngIf="showLinkToSpeciesCard; else name">
+        <a class="link" [routerLink]="'/taxon/' + img.taxonId | localize"><ng-container *ngTemplateOutlet="name"></ng-container></a>
+      </ng-container>
+      <ng-template #name>
+        <ng-container *ngIf="img.vernacularName">{{img.vernacularName | multiLang}}</ng-container>
+        <ng-container *ngIf="img.vernacularName && img.scientificName">-</ng-container>
+        <ng-container *ngIf="img.scientificName"><em class="scientificName">{{img.scientificName | label:'fullUri'}}</em></ng-container>
+        <ng-container *ngIf="img.taxonId && !img.vernacularName && !img.scientificName">{{img.taxonId | label}}</ng-container>
+      </ng-template>
       <br>
       <ng-container *ngIf="img.caption">
         {{img.caption | multiLang}}

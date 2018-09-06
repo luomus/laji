@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormField, VALUE_IGNORE} from '../../../model/form-field';
-import {Observable} from 'rxjs/Observable';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormField, VALUE_IGNORE } from '../../../model/form-field';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'laji-special-taxon-id',

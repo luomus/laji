@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { ResultService } from '../../service/result.service';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-nafi-result',
@@ -29,6 +28,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   startMonth = 3;
   fromYear;
   fromMonth;
+  allTime = '';
 
   private subTrans: Subscription;
   private subQuery: Subscription;
@@ -55,8 +55,9 @@ export class NafiResultComponent implements OnInit, OnDestroy {
         params['time'][0] : params['time'];
       const taxonId = (params['taxonId'] && Array.isArray(params['taxonId'])) ?
         params['taxonId'][0] : params['taxonId'];
+      this.emptyTime();
       this.query = {
-        time: [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
+        yearMonth: time ===  'all' ? undefined : [this.parseDateTimeRange(time || '' + this.getCurrentSeason())],
         collectionId: [this.collectionId],
         informalTaxonGroupId: [this.informalTaxonGroup],
         countryId: ['ML.206']
@@ -66,7 +67,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
         this.query.taxonId = [taxonId];
         this.taxon$ = this.resultService.getTaxon(taxonId);
       } else {
-        this.taxon$ = Observable.of(null);
+        this.taxon$ = ObservableOf(null);
       }
       this.mapQuery = this.clone(this.query);
       if (params['grid']) {
@@ -101,7 +102,7 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   private navigate(query: WarehouseQueryInterface) {
     this.router.navigate([], {queryParams: {
       grid: query.ykj10kmCenter,
-      time: query.time,
+      time: query.yearMonth || 'all',
       taxonId: query.taxonId,
       page: this.page
     }});
@@ -112,7 +113,6 @@ export class NafiResultComponent implements OnInit, OnDestroy {
   }
 
   private parseDateTimeRange(date) {
-    this.emptyTime();
     if (!date || typeof date !== 'string') {
       return date;
     }

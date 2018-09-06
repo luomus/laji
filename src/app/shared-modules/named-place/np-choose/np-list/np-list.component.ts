@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
-import { ObservationTableColumn } from '../../../../shared-modules/observation-result/model/observation-table-column';
-import { DatatableComponent } from '../../../../shared-modules/datatable/datatable/datatable.component';
-import {DatatableColumn} from '../../../datatable/model/datatable-column';
+import { ObservationTableColumn } from '../../../observation-result/model/observation-table-column';
+import { DatatableComponent } from '../../../datatable/datatable/datatable.component';
+import { DatatableColumn } from '../../../datatable/model/datatable-column';
 import { Util } from '../../../../shared/service/util.service';
 
 @Component({
@@ -46,6 +46,13 @@ export class NpListComponent {
   @Input() activeNP: number;
   @Input() height: string;
 
+  private widths = {
+    '$.name': 100,
+    '$.alternativeIDs[0]': 20,
+    '$.reserve.reserver': 100,
+    '$._status': 20
+  };
+
   constructor(private cd: ChangeDetectorRef) { }
 
   changeActivePlace(event) {
@@ -53,8 +60,8 @@ export class NpListComponent {
   }
 
   getRowClass(row) {
-    const status = (row['$._status'] || [])[0];
-    if (status !== 'free') return status;
+    const status = row['$._status'];
+    if (status !== 'free') { return status; }
   }
 
   @Input() set namedPlaces(nps: NamedPlace[]) {
@@ -69,16 +76,14 @@ export class NpListComponent {
     for (const path of this._fields) {
       const col: DatatableColumn = {
         name: path,
-        label: labels[path] || path,
-        width: path === '$.name' ? 100 : 50
+        label: labels[path] || path
       };
       if (path === '$.reserve.reserver') {
         col.cellTemplate = this.personIDTpl;
-        col.width = 100;
       } else if (path === '$._status') {
         col.cellTemplate = this.statusTpl;
-        col.width = 20;
       }
+      col.width = this.widths[path] ? this.widths[path] : 50;
       cols.push(col);
     }
     this.sorts = cols[0] ? [{prop: cols[0].name, dir: 'asc'}] : [];
@@ -100,7 +105,7 @@ export class NpListComponent {
         let value = Util.parseJSONPath(namedPlace, path);
         if (value && value.length) {
           if (path === '$.prepopulatedDocument.gatheringEvent.dateBegin' || path === '$.prepopulatedDocument.gatheringEvent.dateEnd') {
-            value = value.map(val => val.split('.').reverse().join('-'));
+            value = value.split('.').reverse().join('-');
           }
         }
         row[path] = value;

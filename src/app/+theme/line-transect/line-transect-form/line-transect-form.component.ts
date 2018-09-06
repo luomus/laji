@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DocumentFormComponent } from '../../../shared/document-form/document-form.component';
-import { ComponentCanDeactivate } from '../../../shared/document-form/document-de-activate.guard';
+import { DocumentFormComponent } from '@laji-form/document-form/document-form.component';
+import { ComponentCanDeactivate } from '../../../shared/guards/document-de-activate.guard';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { FormService } from '../../../shared/service/form.service';
-import {ToastsService} from '../../../shared/service';
-import {TranslateService} from '@ngx-translate/core';
+import { ToastsService } from '../../../shared/service/toasts.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-line-transect-form',
@@ -36,7 +36,8 @@ export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCa
       this.documentId = params['id'] || null;
       if (!this.formService.hasNamedPlace() && !this.documentId) {
         this.router.navigate(
-          this.localizeRouterService.translateRoute(['/theme/linjalaskenta/places/HR.61', environment.lineTransectForm])
+          this.localizeRouterService.translateRoute(['/theme/linjalaskenta/places/HR.61', environment.lineTransectForm]),
+          { replaceUrl: true }
         );
       } else {
         this.hasNS = true;

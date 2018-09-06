@@ -1,7 +1,7 @@
 /* tslint:disable */
 /**
  * API documentation
- * To use this api you need an access token. To get the token, send a post request with your email address to api-users resource and one will be send to your. See below for information on how to use this api and if you have any questions you can contact us at helpdesk@laji.fi.  Place refer to [schema.laji.fi](http://schema.laji.fi/) for more information about the used vocabulary
+ * To use this api you need an access token. To getList the token, send a post request with your email address to api-users resource and one will be send to your. See below for information on how to use this api and if you have any questions you can contact us at helpdesk@laji.fi.  Place refer to [schema.laji.fi](http://schema.laji.fi/) for more information about the used vocabulary
  *
  * OpenAPI spec version: 0.0.1
  *
@@ -25,12 +25,13 @@
 import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import * as models from '../model';
 import { PagedResult } from '../model/PagedResult';
+import { Collection } from '../model/Collection';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class CollectionApi {
-  protected basePath = '/api';
+  protected basePath = environment.apiBase;
   public defaultHeaders: Headers = new Headers();
 
   constructor(protected http: Http) {
@@ -44,7 +45,7 @@ export class CollectionApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findAll(lang?: string, idIn?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<models.Collection>> {
+  public findAll(lang?: string, idIn?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Collection>> {
     const path = this.basePath + '/collections';
 
     let queryParameters = new URLSearchParams();
@@ -87,7 +88,7 @@ export class CollectionApi {
    * @param id
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
    */
-  public findById(id: string, lang?: string, extraHttpRequestParams?: any): Observable<models.Collection> {
+  public findById(id: string, lang?: string, extraHttpRequestParams?: any): Observable<Collection> {
     const path = this.basePath + '/collections/{id}'
         .replace('{' + 'id' + '}', String(id));
 
@@ -125,7 +126,7 @@ export class CollectionApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findChildren(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Collection>>> {
+  public findChildren(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<Collection>>> {
     const path = this.basePath + '/collections/{id}/children'
         .replace('{' + 'id' + '}', String(id));
 
@@ -170,7 +171,7 @@ export class CollectionApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findRoots(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<models.Collection>>> {
+  public findRoots(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<Collection>>> {
     const path = this.basePath + '/collections/roots';
 
     let queryParameters = new URLSearchParams();

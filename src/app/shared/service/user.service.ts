@@ -1,36 +1,35 @@
-import { Injectable } from '@angular/core';
+import { Observable, Observer, of as ObservableOf, ReplaySubject, Subject, Subscription, throwError as observableThrowError } from 'rxjs';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { Response } from '@angular/http';
-import { PersonTokenApi } from '../api/PersonTokenApi';
-import { Observer } from 'rxjs/Observer';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
-import { LocalStorage } from 'ng2-webstorage';
-import { Location } from '@angular/common';
+import { LocalStorage } from 'ngx-webstorage';
+import { isPlatformBrowser, Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
-import { WindowRef } from '../windows-ref';
 import { ToastsService } from './toasts.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs/Subject';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { LocalDb } from '../local-db/local-db.abstract';
 import { environment } from '../../../environments/environment';
+import { LajiApi, LajiApiService } from './laji-api.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { WINDOW } from '@ng-toolkit/universal';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 
 export const USER_INFO = '[user]: info';
 export const USER_LOGOUT_ACTION = '[user]: logout';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class UserService extends LocalDb {
 
   public static readonly UNKOWN_USER = 'unknown';
   public static readonly SETTINGS_RESULT_LIST = 'result-list';
   public static readonly SETTINGS_TAXONOMY_LIST = 'taxonomy-list';
+  public static readonly SETTINGS_TAXONOMY_TREE = 'taxonomy-tree';
 
+  private _isLoggedIn$ = new ReplaySubject<boolean>(1);
   private actionSource = new Subject<any>();
   public action$ = this.actionSource.asObservable();
-  public isLoggedIn = false;
 
   @LocalStorage() private token;
   @LocalStorage() private returnUrl;
@@ -52,7 +51,7 @@ export class UserService extends LocalDb {
     + '&next=' + next).replace('%lang%', lang);
   }
 
-  constructor(private tokenService: PersonTokenApi,
+  constructor(private lajiApi: LajiApiService,
               private userService: PersonApi,
               private router: Router,
               private location: Location,
@@ -60,12 +59,29 @@ export class UserService extends LocalDb {
               private toastsService: ToastsService,
               private translate: TranslateService,
               private localizeRouterService: LocalizeRouterService,
-              private winRef: WindowRef) {
-    super('settings');
+              @Inject(PLATFORM_ID) private platformId: object,
+              @Inject(WINDOW) private window: Window) {
+    super('settings', isPlatformBrowser(platformId));
     if (this.token) {
-      this.loadUserInfo(this.token);
-      this.isLoggedIn = true;
+      this.loadUserInfo(this.token).subscribe(value => {
+        this.isLoggedIn = !!value;
+      });
+    } else {
+      this.isLoggedIn = false;
     }
+  }
+
+  public set isLoggedIn(isIn: boolean) {
+    this._isLoggedIn$.next(isIn);
+  }
+
+  public get isLoggedIn() {
+    console.error('Use observable isLoggedIn$ instead of this isLoggedIn');
+    return true;
+  }
+
+  public get isLoggedIn$() {
+    return this._isLoggedIn$.asObservable();
   }
 
   public login(userToken: string) {
@@ -75,22 +91,21 @@ export class UserService extends LocalDb {
     if (this.subUser) {
       this.subUser.unsubscribe();
     }
-    setTimeout(() => {
-      this.isLoggedIn = true;
-      this.loadUserInfo(userToken);
-    }, 10);
+    this.subUser = this.loadUserInfo(userToken).subscribe(value => {
+      this.isLoggedIn = !!value;
+    });
   }
 
   public logout(showError = true) {
-    if (this.token === '' || this.subLogout) {
+    if (!this.token || this.subLogout) {
       return;
     }
-    this.subLogout = this.tokenService.personTokenDeleteToken(this.token)
+    this.subLogout = this.lajiApi.remove(LajiApi.Endpoints.personToken, this.token)
       .catch(err => {
         if (err.status === 404) {
-          return Observable.of(null);
+          return ObservableOf(null);
         }
-        return Observable.throw(err);
+        return observableThrowError(err);
       })
       .retry(5)
       .subscribe(
@@ -120,19 +135,19 @@ export class UserService extends LocalDb {
     return this.token;
   }
 
-  public getUser(id?: string): Observable<Person> {
+  public getUser(id?: string, token?: string): Observable<Person> {
     if (!id) {
-      return this.getCurrentUser()
-        .catch((err: Response | any) => {
-          if (err instanceof Response && err.status !== 404) {
+      return this.getCurrentUser(token)
+        .catch((err: HttpErrorResponse | any) => {
+          if (err instanceof HttpErrorResponse && err.status !== 404) {
             this.logger.error('Failed to fetch current users information', err);
           }
           this.logout(false);
-          return Observable.of({});
+          return ObservableOf({});
         });
     }
     if (this.users[id]) {
-      return Observable.of(this.users[id]);
+      return ObservableOf(this.users[id]);
     } else if (!this.usersFetch[id]) {
       this.usersFetch[id] = Observable.create((observer: Observer<Person>) => {
         const onComplete = (user: Person) => {
@@ -141,7 +156,7 @@ export class UserService extends LocalDb {
           delete this.usersFetch[id];
         };
         this.userService.personFindByUserId(id)
-          .catch((e) => Observable.of({}))
+          .catch((e) => ObservableOf({}))
           .subscribe(
             (user: Person) => {
               this.addUser(user);
@@ -154,8 +169,10 @@ export class UserService extends LocalDb {
   }
 
   public doLogin(returnUrl?: string): void {
-    this.returnUrl = returnUrl || this.location.path(true);
-    this.winRef.nativeWindow.location.href = UserService.getLoginUrl(this.returnUrl, this.translate.currentLang);
+    if (isPlatformBrowser(this.platformId)) {
+      this.returnUrl = returnUrl || this.location.path(true);
+      this.window.location.href = UserService.getLoginUrl(this.returnUrl, this.translate.currentLang);
+    }
   }
 
   public returnToPageBeforeLogin(): void {
@@ -173,7 +190,7 @@ export class UserService extends LocalDb {
 
   public getDefaultFormData(): Observable<any> {
     if (this.defaultFormData) {
-      return Observable.of(this.defaultFormData);
+      return ObservableOf(this.defaultFormData);
     } else if (this.formDefaultObservable) {
       return this.formDefaultObservable;
     }
@@ -190,7 +207,7 @@ export class UserService extends LocalDb {
   }
 
   public getUserSetting(key): Observable<any> {
-    return Observable.of(this.userSettings && this.userSettings[key] ? this.userSettings[key] : undefined);
+    return ObservableOf(this.userSettings && this.userSettings[key] ? this.userSettings[key] : undefined);
   }
 
   public setUserSetting(key: string, value: any): void {
@@ -202,32 +219,35 @@ export class UserService extends LocalDb {
       .subscribe(() => {}, () => {});
   };
 
-  private loadUserInfo(token: string) {
+  private loadUserInfo(token: string): Observable<any> {
     this.token = token;
-    this.subUser = this.getUser()
-      .do((person: Person) => this.addUser(person, true))
-      .switchMap((person: Person) => this.getItem(person.id))
-      .subscribe(settings => {
-          this.userSettings = settings;
-          this.actionSource.next(USER_INFO);
-        },
-        err => {
-          this.logout();
-          this.logger.warn('Failed to load user info with token', err);
-        }
-      );
+    return this.getUser(null, token).pipe(
+      tap((person: Person) => this.addUser(person, true)),
+      switchMap((person: Person) => this.getItem(person.id).pipe(
+        tap((settings: any) => this.userSettings = settings),
+        switchMap(() => ObservableOf(person))
+      )),
+      tap(() => this.actionSource.next(USER_INFO)),
+      catchError(err => {
+        this.logout();
+        this.logger.warn('Failed to load user info with token', err);
+
+        return ObservableOf(null)
+      })
+    );
   }
 
-  private getCurrentUser() {
-    if (!this.token) {
-      return Observable.of({});
+  private getCurrentUser(token?: string) {
+    const userToken = token || this.token;
+    if (!userToken) {
+      return ObservableOf({});
     }
     if (this.currentUserId && this.users[this.currentUserId]) {
-      return Observable.of(this.users[this.currentUserId]);
+      return ObservableOf(this.users[this.currentUserId]);
     } else if (this.observable) {
       return this.observable;
     }
-    this.observable = this.userService.personFindByToken(this.token)
+    this.observable = this.userService.personFindByToken(userToken)
       .do(u => this.addUser(u, true))
       .share();
     return this.observable;

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
@@ -97,7 +96,7 @@ export class MainResultService {
 
   private _fetch(type: 'map'|'list'|'result'|'taxon', cacheKey: string, request): Observable<any> {
     if (this.state[type].key === cacheKey) {
-      return Observable.of(this.state[type].data);
+      return ObservableOf(this.state[type].data);
     } else if (this.state[type].pendingKey === cacheKey && this.state[type].pending) {
       return Observable.create((observer: Observer<any>) => {
         const onComplete = (res: any) => {

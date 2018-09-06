@@ -1,15 +1,11 @@
-import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { ModalDirective } from 'ngx-bootstrap';
-import {environment} from "../../../environments/environment";
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'laji-own-submissions',
@@ -29,11 +25,13 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   @Input() namedPlace: string;
   @ViewChild('documentModal') public modal: ModalDirective;
 
+  publicity = Document.PublicityRestrictionsEnum;
+
   activeDocuments: Document[];
   documentCache = {};
   documents$: Subscription;
   templates$: Subscription;
-  shownDocument: string;
+  shownDocument: Document;
   loading: boolean;
 
   year: number;
@@ -79,8 +77,8 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
     this.getDocumentsByYear(this.year);
   }
 
-  onDocumentClick(docId) {
-    this.shownDocument = docId;
+  onDocumentClick(doc: Document) {
+    this.shownDocument = doc;
     this.modal.show();
   }
 
@@ -96,8 +94,8 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
       .subscribe(
         (results) => {
           results = results.map(res => ({...res, year: parseInt(res.year, 10)}));
-          this.yearInfo = results;
           this.year = results.length > 0 ? results[results.length - 1].year : new Date().getFullYear();
+          this.yearInfo = results.reverse();
           this.getDocumentsByYear(this.year);
           this.cd.markForCheck();
         },
@@ -247,7 +245,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
           if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
             return this.getAllDocuments(query, result.currentPage + 1, documents);
           } else {
-            return Observable.of(documents);
+            return ObservableOf(documents);
           }
         }
       );

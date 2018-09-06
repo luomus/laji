@@ -2,8 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChange } from '@a
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, Subscription } from 'rxjs';
 
 
 @Component({

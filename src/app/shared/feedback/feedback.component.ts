@@ -1,12 +1,12 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
+import { Component, Inject, Input, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
-import { FeedbackApi } from '../api/FeedbackApi';
 import { UserService } from '../service/user.service';
-import { SessionStorage } from 'ng2-webstorage';
+import { SessionStorage } from 'ngx-webstorage';
 import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
-import { WindowRef } from '../windows-ref';
+import { LajiApi, LajiApiService } from '../service/laji-api.service';
 
 @Component({
   selector: 'laji-feedback',
@@ -28,13 +28,12 @@ export class FeedbackComponent {
 
   @ViewChild('childModal') public modal: ModalDirective;
 
-  constructor(
+  constructor(@Inject(WINDOW) private window: Window,
     public userService: UserService,
     public translate: TranslateService,
-    private feedbackApi: FeedbackApi,
+    private lajiApi: LajiApiService,
     private toastsService: ToastsService,
-    private location: Location,
-    private windowsRef: WindowRef
+    private location: Location
 ) {
   }
 
@@ -44,16 +43,22 @@ export class FeedbackComponent {
 
   sendFeedback() {
     this.error = false;
-    const subject = (['other', ''].indexOf(this.feedback.subject) > -1 ?  '' : (this.feedback.subject + ': ')) +
-      this.feedback.other;
-    const message = this.userService.isLoggedIn ? this.feedback.message : this.feedback.message + "\n\n---\n" + this.feedback.email;
-    if (!this.feedback.other || !message) {
+    const subject = (['other', ''].indexOf(this.feedback.subject) > -1 ?  '' : (this.feedback.subject + ': ')) + this.feedback.other;
+    if (!this.feedback.other || !this.feedback.message) {
       this.error = true;
       return;
     }
     const meta = this.getMeta();
     this.userService.getUser()
-      .switchMap(user => this.feedbackApi.send({subject, message, meta}, user.emailAddress ? this.userService.getToken() : undefined))
+      .switchMap(user => this.lajiApi.post(
+        LajiApi.Endpoints.feedback,
+        {
+          subject,
+          message: !!user ? this.feedback.message : this.feedback.message + '\n\n---\n' + this.feedback.email,
+          meta
+        },
+        {personToken: user && user.emailAddress ? this.userService.getToken() : undefined})
+      )
       .subscribe(
         () => {
           this.feedback = {
@@ -75,7 +80,7 @@ export class FeedbackComponent {
   private getMeta(): string {
     let agent = '';
     try {
-      agent = this.windowsRef.nativeWindow.navigator.userAgent;
+      agent = this.window.navigator.userAgent;
     } catch (e) {
     }
     return this.location.prepareExternalUrl(this.location.path())

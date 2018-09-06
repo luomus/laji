@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable, Observer, of as ObservableOf, Subject } from 'rxjs';
 import { MetadataApi } from '../api/MetadataApi';
 import { CacheService } from './cache.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 import { Util } from './util.service';
-import { Subject } from 'rxjs/Subject';
+import { delay, filter, map, merge, retryWhen, share, take, tap } from 'rxjs/operators';
 
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class MetadataService {
 
   static readonly rangesCacheKey = 'ranges';
@@ -21,8 +20,9 @@ export class MetadataService {
   }
 
   getClassProperties(className: string) {
-    return this.metadataApi.metadataFindClassProperties(className, 'multi')
-      .map(result => result.results);
+    return this.metadataApi.metadataFindClassProperties(className, 'multi').pipe(
+      map(result => result.results)
+    );
   }
 
   /**
@@ -32,38 +32,45 @@ export class MetadataService {
    */
   getAllRanges() {
     if (this.ranges) {
-      return Observable.of(this.ranges);
+      if (!this.source.isStopped) {
+        this.source.complete();
+      }
+      return ObservableOf(this.ranges);
     } else if (this.pendingRanges) {
       return Observable.create((observer: Observer<any>) => {
         this.pendingRanges.subscribe(
           (ranges) => {
             observer.next(ranges);
+            observer.complete();
           },
-          (err) => console.log(err),
-          () => observer.complete()
+          (err) => console.log(err)
         );
       });
     }
     this.pendingRanges = this.source
-      .asObservable()
-      .share();
+      .asObservable().pipe(
+        share()
+      );
 
-    this.cacheService.getItem(MetadataService.rangesCacheKey)
-      .merge(this.metadataApi.metadataFindAllRanges('multi')
-        .retryWhen(errors => errors.delay(1000).take(2).concat(Observable.of(false)))
-        .do(ranges =>  {
+    this.cacheService.getItem(MetadataService.rangesCacheKey).pipe(
+      merge(this.metadataApi.metadataFindAllRanges('multi').pipe(
+        retryWhen(errors => errors.pipe(
+          delay(1000),
+          take(3)
+        )),
+        tap(ranges =>  {
           if (!Util.isEmptyObj(ranges)) {
             this.cacheService.setItem(MetadataService.rangesCacheKey, ranges).subscribe(() => {}, () => {});
           }
         })
-      )
-      .filter(ranges => {
+      )),
+      filter(ranges => {
         return !Util.isEmptyObj(ranges);
       })
+    )
       .subscribe(ranges => {
         this.ranges = ranges;
         this.source.next(ranges);
-        this.source.complete();
       });
 
     return this.pendingRanges;
@@ -76,16 +83,18 @@ export class MetadataService {
    * @returns {Observable<T>}
    */
   getAllRangesAsLookUp(lang: string) {
-    return this.getAllRanges()
-      .map(ranges => Object
+    return this.getAllRanges().pipe(
+      map(ranges => Object
         .keys(ranges || {})
         .reduce((total, key) => {
           ranges[key].map(range => {
             total[range['id']] = MultiLangService.getValue(range['value'], lang, range['id']);
           });
           return total;
-        }, {}))
-      .share();
+        }, {})
+      ),
+      share()
+    );
   }
 
   /**
@@ -93,9 +102,10 @@ export class MetadataService {
    *
    * @param range
    */
-  getRange(range: string) {
-    return this.getAllRanges()
-      .map(data => data[range] || [] );
+  getRange(range: string): Observable<any[]> {
+    return this.getAllRanges().pipe(
+      map(data => data[range] || [] )
+    );
   }
 
 }

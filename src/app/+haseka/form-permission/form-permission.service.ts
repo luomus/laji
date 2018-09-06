@@ -1,17 +1,18 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { FormPermissionApi } from '../../shared/api/FormPermissionApi';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { FormPermission } from '../../shared/model/FormPermission';
 import { Person } from '../../shared/model/Person';
 import { Form } from '../../shared/model/Form';
 import { UserService } from '../../shared/service/user.service';
+import { catchError, map, switchMap, take } from 'rxjs/operators';
 
 export interface Rights {
   edit: boolean;
   admin: boolean;
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class FormPermissionService {
 
   private static formPermissions = {};
@@ -47,7 +48,7 @@ export class FormPermissionService {
 
   getFormPermission(collectionID: string, personToken?: string): Observable<FormPermission> {
     if (FormPermissionService.formPermissions[collectionID]) {
-      return Observable.of(FormPermissionService.formPermissions[collectionID]);
+      return ObservableOf(FormPermissionService.formPermissions[collectionID]);
     }
     return this.formPermissionApi
       .findByCollectionID(collectionID, personToken)
@@ -101,18 +102,22 @@ export class FormPermissionService {
   }
 
   private access(form: any, notLoggedIn: any, notRestricted: any, cb: (formPermission: FormPermission, person: Person) => any) {
-    if (!this.userSerivce.isLoggedIn) {
-      return Observable.of(notLoggedIn);
-    }
-    if (!form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
-      return Observable.of(notRestricted);
-    }
-    return this.userSerivce.getUser()
-      .switchMap(
-        () => this.getFormPermission(form.collectionID, this.userSerivce.getToken()),
-        (person: Person, formPermission: FormPermission) => ({person, formPermission})
-      )
-      .switchMap(data => Observable.of(cb(data.formPermission, data.person)))
-      .catch(() => Observable.of(notLoggedIn));
+    return this.userSerivce.isLoggedIn$.pipe(
+      take(1),
+      switchMap(login => {
+        if (!login) {
+          return ObservableOf(notLoggedIn);
+        } else if (!form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
+          return ObservableOf(notRestricted);
+        }
+        return this.userSerivce.getUser().pipe(
+          switchMap((person: Person) => this.getFormPermission(form.collectionID, this.userSerivce.getToken()).pipe(
+            map((formPermission: FormPermission) => ({person, formPermission}))
+          )),
+          switchMap(data => ObservableOf(cb(data.formPermission, data.person))),
+          catchError(() => ObservableOf(notLoggedIn))
+        );
+      })
+    );
   }
 }

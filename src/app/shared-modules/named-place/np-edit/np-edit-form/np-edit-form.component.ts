@@ -1,17 +1,10 @@
-import {
-  Component,
-  EventEmitter,
-  HostListener,
-  Input,
-  Output,
-  ViewChild
-} from '@angular/core';
+import { Component, EventEmitter, HostListener, Inject, Input, Output, ViewChild } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiFormComponent } from '../../../../shared/form/laji-form.component';
+import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
 import { UserService } from '../../../../shared/service/user.service';
 import { NamedPlacesService } from '../../named-places.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
-import { WindowRef } from '../../../../shared/windows-ref';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 
 @Component({
@@ -35,10 +28,9 @@ export class NpEditFormComponent {
 
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
 
-  constructor(
+  constructor(@Inject(WINDOW) private window: Window,
     private  userService: UserService,
     private namedPlaceService: NamedPlacesService,
-    private winRef: WindowRef,
     private translate: TranslateService,
     private toastsService: ToastsService
   ) { }
@@ -113,7 +105,7 @@ export class NpEditFormComponent {
       (confirm) => {
         if (!this.hasChanges) {
           this.onEditReady.emit();
-        } else if (this.winRef.nativeWindow.confirm(confirm)) {
+        } else if (this.window.confirm(confirm)) {
           this.onEditReady.emit();
         }
       }

@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
-import { Person } from '../../shared/model';
+import { Observable } from 'rxjs';
+import { Person } from '../../shared/model/Person';
+import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-find-person',
@@ -17,17 +18,18 @@ export class FindPersonComponent implements OnInit {
   typeaheadLoading = false;
   value = '';
 
-  constructor(private autocompleteService: AutocompleteApi) { }
+  constructor(private lajiApi: LajiApiService) { }
 
   ngOnInit() {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.value);
-    }).mergeMap((token: string) => this.getPerson(token));
+    }).pipe(
+      mergeMap((token: string) => this.getPerson(token))
+    );
   }
 
   public getPerson(token: string): Observable<any> {
-    return this.autocompleteService.autocompleteFindByField({
-        field: 'person',
+    return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'person', {
         q: token,
         limit: '' + this.limit
       });

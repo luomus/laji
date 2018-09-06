@@ -6,8 +6,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-
-import * as models from './index';
+import { Document } from './Document';
+import { Reserve } from './Reserve';
+import { Active } from './Active';
 
 export interface NamedPlace {
     /**
@@ -20,7 +21,7 @@ export interface NamedPlace {
     /**
      * instance of active
      */
-    active?: models.Active;
+    active?: Active;
 
     alternativeID?: string;
 
@@ -63,8 +64,8 @@ export interface NamedPlace {
     /**
      * instance of prepopulatedDocument
      */
-    prepopulatedDocument?: models.Document;
-    acceptedDocument?: models.Document;
+    prepopulatedDocument?: Document;
+    acceptedDocument?: Document;
 
     priority?: NamedPlace.PriorityEnum;
 
@@ -78,7 +79,7 @@ export interface NamedPlace {
     /**
      * instance of reserve
      */
-    reserve?: models.Reserve;
+    reserve?: Reserve;
 
     /**
      * QName for MX.taxon

@@ -24,13 +24,16 @@
       }"
       [rows]="rows"
       [rowIdentity]="rowIdentity"
+      [externalSorting]="true"
       [sorts]="defaultSort"
       [columnMode]="'flex'"
       [headerHeight]="38"
       [rowHeight]="'auto'"
       [limit]="20"
       [footerHeight]="30"
-      [messages]="{emptyMessage: loadError, totalMessage: totalMessage}">
+      [messages]="{emptyMessage: loadError, totalMessage: totalMessage}"
+      (sort)="onSort($event)"
+    >
 
       <ngx-datatable-row-detail [rowHeight]="'auto'">
         <ng-template let-row="row" ngx-datatable-row-detail-template>
@@ -54,16 +57,16 @@
       </ngx-datatable-column>
 
       <ngx-datatable-column *ngIf="actions" [prop]="'publicity'" [name]="'haseka.submissions.publicity' | translate" [cellClass]="'center-text'"
-                            [flexGrow]="1" [resizeable]="false" [draggable]="false" [headerClass]="'empty-header'">
+                            [flexGrow]="1" [resizeable]="false" [draggable]="false" [headerClass]="'empty-header'" ngPreserveWhitespaces>
         <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
           <span class="datatable-header-cell-wrapper link"><span></span></span>
         </ng-template>
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
           <span *ngIf="actions.indexOf('view') > -1 && onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
-            <span class="label label-primary link inline-block"
+            <span class="label label-success link inline-block"
                   [tooltip]="'result.showViewer' | translate"
                   [placement]="'right'"
-                  (click)="showViewer(row.id)">
+                  (click)="showViewer(row)">
               <i class="glyphicon glyphicon-eye-open"></i>
             </span>
           </span>
@@ -97,7 +100,6 @@
                             [draggable]="false"
                             [name]="'haseka.submissions.' + col.prop | translate"
                             [flexGrow]="3"
-                            [comparator]="comparator(col.prop)"
                             [cellClass]="'break-word'">
         <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
           <span class="datatable-header-cell-wrapper"
@@ -113,7 +115,7 @@
       <ngx-datatable-column *ngIf="actions && (actions.indexOf('download') > -1 || actions.indexOf('stats') > -1 || actions.indexOf('delete') > -1)" [flexGrow]="1" [draggable]="false" [resizeable]="false" [cellClass]="'center-text'">
         <ng-template ngx-datatable-header-template><span></span></ng-template>
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-          <div>
+          <div ngPreserveWhitespaces>
             <span *ngIf="actions.indexOf('download') > -1 && onlyTemplates === false" class="label label-default link inline-block"
                   [tooltip]="('haseka.submissions.download' | translate) + ' ' + ('haseka.submissions.submission' | translate)"
                   [placement]="'left'"
@@ -156,6 +158,9 @@
         <div>
           <div class="radio">
             <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="csv">.csv</label>
+          </div>
+          <div class="radio">
+            <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="tsv">.tsv</label>
           </div>
           <div class="radio">
             <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="ods">.ods</label>
@@ -220,10 +225,10 @@
         <h4 class="modal-title" [innerHtml]="(onlyTemplates ? 'haseka.delete.template' : 'haseka.delete.description') | translate:{id: deleteRow?.id, name: deleteRow?.templateName}"></h4>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success pull-left" (click)="deleteModal.hide()">
+        <button type="button" class="btn btn-success pull-left" [disabled]="deleting" (click)="deleteModal.hide()">
           <span>{{"haseka.delete.cancel" | translate}}</span>
         </button>
-        <button type="button" class="btn btn-danger" (click)="deleteDocument()">
+        <button type="button" class="btn btn-danger" [disabled]="deleting" (click)="deleteDocument()">
           <span>{{"haseka.delete.ok" | translate}}</span>
         </button>
       </div>

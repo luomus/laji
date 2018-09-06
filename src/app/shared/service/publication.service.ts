@@ -1,26 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
-import { PublicationApi } from '../api/PublicationApi';
+import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { Publication } from '../model/Publication';
+import { LajiApi, LajiApiService } from './laji-api.service';
 
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class PublicationService {
   private currentLang: string;
   private cache: {[key: string]: any} = {};
   private pending: {[key: string]: Observable<any>} = {};
 
-  constructor(private publicationApi: PublicationApi) {
+  constructor(private lajiApi: LajiApiService) {
   }
 
   public getPublication(id: string, lang: string): Observable<Publication> {
     this.setLang(lang);
 
     if (this.cache[id]) {
-      return Observable.of(this.cache[id]);
+      return ObservableOf(this.cache[id]);
     } else if (!this.pending[id]) {
-      this.pending[id] = this.publicationApi.publicationFindById(id, lang)
+      this.pending[id] = this.lajiApi.get(LajiApi.Endpoints.publications, id, {lang})
         .catch((err) => undefined)
         .do((res) => this.cache[id] = res)
         .share();

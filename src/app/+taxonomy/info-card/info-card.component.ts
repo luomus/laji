@@ -1,16 +1,24 @@
+import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Logger } from '../../shared/logger/logger.service';
 import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
-import { ObservationMapComponent } from '../../+observation/map/observation-map.component';
-import { Observable } from 'rxjs/Observable';
+import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { Title } from '@angular/platform-browser';
+import { combineLatest, map, switchMap, tap } from 'rxjs/operators';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'laji-info-card',
@@ -24,6 +32,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   public taxon: Taxonomy;
   public taxonDescription: Array<TaxonomyDescription>;
   public taxonImages: Array<TaxonomyImage>;
+  public taxonConceptId: string;
   public activePanel = 0;
   public activeImage = 1;
   public activeImageTab: string;
@@ -37,7 +46,6 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   public context: string;
 
   private subParam: Subscription;
-  private subTrans: Subscription;
 
   constructor(
     public translate: TranslateService,
@@ -46,49 +54,28 @@ export class InfoCardComponent implements OnInit, OnDestroy {
     private logger: Logger,
     private router: Router,
     private title: Title,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: object,
   ) { }
 
   ngOnInit() {
-    if (!this.taxonId) {
-      this.subParam = this.route.params
-        .combineLatest(
-          this.route.queryParams,
-          ((params, queryParams) => ({...queryParams, ...params}))
-        )
-        .subscribe(params => {
-          this.taxonId = params['id'];
-          this.context = params['context'] || 'default';
-          this.activeImage = 1;
-          this.initTaxon();
-        });
-    }
-
     this.taxonDescription = [];
     this.taxonImages = [];
-
-    this.subTrans = this.translate.onLangChange
-      .do(() => this.loading = true)
-      .delay(0)
-      .switchMap(() => {
-        return Observable.forkJoin(
-          this.getTaxonDescription(this.taxonId),
-          this.getTaxonMedia(this.taxonId)
-        );
-      })
-      .subscribe((data) => {
-        this.taxonDescription = data[0];
-        this.hasDescription = data[0].length > 0;
-        this.taxonImages = data[1];
-        this.loading = false;
-        this.taxonDescription.map((description, idx) => {
-          if (description.id === this.context) {
-            this.activeDescription = idx;
-          }
+    if (!this.taxonId) {
+      this.subParam = this.route.params.pipe(
+        combineLatest(this.route.queryParams),
+        map(data => {
+          this.taxonId = data[0]['id'];
+          this.context = data[0]['context'] || data[1]['context'] || 'default';
+          this.activeImage = 1;
+          return {...data[1], ...data[0]}
+        }),
+        switchMap(() => this.initTaxon())
+      )
+        .subscribe(() => {
+          this.cd.markForCheck();
         });
-        this.updateMap();
-      }
-    );
+    }
   }
 
   onCollectionImagesLoaded(event) {
@@ -108,7 +95,6 @@ export class InfoCardComponent implements OnInit, OnDestroy {
     if (this.subParam) {
       this.subParam.unsubscribe();
     }
-    this.subTrans.unsubscribe();
   }
 
   onDescriptionChange(context: string) {
@@ -126,7 +112,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   }
 
   private updateMap() {
-    if (!this.map) {
+    if (!this.map || !isPlatformBrowser(this.platformId)) {
       return;
     }
     setTimeout(() => {
@@ -137,15 +123,15 @@ export class InfoCardComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-  private initTaxon() {
+  private initTaxon(): Observable<any> {
     this.loading = true;
-    Observable.forkJoin(
+    return ObservableForkJoin(
       this.getTaxon(this.taxonId),
       this.getTaxonDescription(this.taxonId),
-      this.getTaxonMedia(this.taxonId),
-      (taxon, descriptions, media) => ({taxon, descriptions, media})
-    )
-      .subscribe(data => {
+      this.getTaxonMedia(this.taxonId)
+    ).pipe(
+      map(data => ({taxon: data[0], descriptions: data[1], media: data[2]})),
+      tap(data => {
         this.loading = false;
         this.taxon = data.taxon;
         this.taxonDescription = data.descriptions;
@@ -159,10 +145,16 @@ export class InfoCardComponent implements OnInit, OnDestroy {
             this.activeDescription = idx;
           }
         });
+        (this.taxon.additionalIds || []).map(id => {
+          const parts = id.split(':');
+          if (parts[0] === 'taxonid') {
+            this.taxonConceptId = parts[1];
+          }
+        });
         this.setTitle();
         this.updateMap();
-        this.cd.markForCheck();
-      });
+      })
+    )
   }
 
   private setTitle() {
@@ -174,10 +166,10 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   private getTaxon(id) {
     return this.taxonService
       .taxonomyFindBySubject(id, 'multi')
-      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
+      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .catch(err => {
         this.logger.warn('Failed to fetch taxon by id', err);
-        return Observable.of({});
+        return ObservableOf({});
       });
   }
 
@@ -186,7 +178,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
       .taxonomyFindDescriptions(id, this.translate.currentLang, false)
       .catch(err => {
         this.logger.warn('Failed to fetch taxon description by id', err);
-        return Observable.of([]);
+        return ObservableOf([]);
       })
       .map(descriptions => descriptions.reduce((prev, current) => {
           if (!current.title) {
@@ -204,7 +196,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
       .taxonomyFindMedia(id, this.translate.currentLang)
       .catch(err => {
         this.logger.warn('Failed to fetch taxon media by id', err);
-        return Observable.of([]);
+        return ObservableOf([]);
       });
   }
 }

@@ -2,14 +2,14 @@
 <ul class="list-group">
   <li class="list-group-item link"
       *ngFor="let field of fields"
-      (click)="toggle.emit(field)"
-      [ngClass]="{active: selected.indexOf(field) > -1}">
+      (click)="onToggle(field)"
+      [ngClass]="{active: selected.indexOf(field) > -1, disabled: disabled.indexOf(field) > -1}">
     <laji-selected-field-item
       [field]="field"
       [label]="columnsLookup[field].label | translate"
       [idx]="selected.indexOf(field)"
       [len]="selected.length"
-      (toggle)="toggle.emit($event)"
+      (toggle)="onToggle($event)"
       (moveUp)="moveUp.emit($event)"
       (moveDown)="moveDown.emit($event)"
     ></laji-selected-field-item>

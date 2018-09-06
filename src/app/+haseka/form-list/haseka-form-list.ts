@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { forkJoin as ObservableForkJoin, merge as ObservableMerge, Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import { Logger } from '../../shared/logger/logger.service';
 import { FormService } from '../../shared/service/form.service';
@@ -9,6 +8,8 @@ import { UserService } from '../../shared/service/user.service';
 import { FormPermissionService } from '../form-permission/form-permission.service';
 import { Person } from '../../shared/model/Person';
 import { environment } from '../../../environments/environment';
+import { map, switchMap } from 'rxjs/operators';
+import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 
 const DEFAULT_CATEFORY = 'MHL.categoryGeneric';
 
@@ -19,6 +20,7 @@ export interface FormList extends Form.List {
 interface FormCategory {
   forms: FormList[],
   category: string;
+  label: string;
 }
 
 @Component({
@@ -36,17 +38,19 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
   private subTmp: Subscription;
   private person: Person;
   private loadedLang: string;
+  private categoryLabels: {[key: string]: string} = {};
 
   constructor(private formService: FormService,
               private translate: TranslateService,
               private logger: Logger,
               private userService: UserService,
               private formPermissionService: FormPermissionService,
+              private triplestoreLabelService: TriplestoreLabelService,
               private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-    this.subTmp = Observable.merge(
+    this.subTmp = ObservableMerge(
       this.formService.getAllTempDocuments(),
       this.formService.localChanged
         .switchMap(() => this.formService.getAllTempDocuments())
@@ -90,61 +94,77 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       this.subFetch.unsubscribe();
     }
     this.loadedLang = lang;
-    this.subFetch = this.formService.getAllForms(this.loadedLang)
-      .switchMap((forms) => {
-        if (forms.length === 0) {
-          return Observable.of(forms);
-        }
-        const subs = [];
-        forms.forEach(form => {
-          subs.push(
-            this.hasAdminRight(form)
-              .map(hasAdminRight => ({...form, hasAdminRight: hasAdminRight}))
-          )
-        });
-        return Observable.forkJoin(subs);
-      })
-      .subscribe(
+    this.subFetch = this.formService.getAllForms(this.loadedLang).pipe(
+      switchMap(forms => this.triplestoreLabelService.getAll([...forms.map(form => form.category)], lang).pipe(
+        map(labels => {
+          this.categoryLabels = labels;
+          return forms;
+        })
+      ))
+    ).subscribe(
         forms => {
-          const categories: FormCategory[] = [];
-          const idxRef = {};
-          let idx = 0;
-          forms.sort((a, b) => environment.formWhitelist.indexOf(a.id) - environment.formWhitelist.indexOf(b.id));
-          forms.forEach((form: FormList) => {
-            const category = form.category || DEFAULT_CATEFORY;
-            if (typeof idxRef[category] === 'undefined') {
-              categories.push({
-                category: category,
-                forms: []
-              });
-              idxRef[category] = idx;
-              idx++;
-            }
-            categories[idxRef[category]].forms.push(form);
-          });
-          this.categories = categories;
-          this.changeDetector.markForCheck();
+          this.updateCategories(forms);
+          this.updateAdminRigths();
         },
         err => this.logger.log('Failed to fetch all forms', err)
       );
   }
 
+  updateAdminRigths() {
+    if (!this.categories) {
+      return;
+    }
+    const formsSub = [];
+    this.categories.forEach(category => {
+      category.forms.forEach(form => {
+        formsSub.push(this.hasAdminRight(form).pipe(map(hasAdminRight => ({...form, hasAdminRight: hasAdminRight}))));
+      })
+    });
+    ObservableForkJoin(formsSub).subscribe(forms => this.updateCategories(forms));
+  }
+
   hasAdminRight(form: Form.List): Observable<boolean> {
-    if (!this.userService.isLoggedIn || !form.collectionID || !form.features ||
+    if (!form.collectionID || !form.features ||
       (form.features.indexOf(Form.Feature.Restricted) === -1 && form.features.indexOf(Form.Feature.Administer) === -1)
     ) {
-      return Observable.of(false);
+      return ObservableOf(false);
     }
-    return this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken())
-      .combineLatest(
-        this.person ? Observable.of(this.person) : this.userService.getUser(),
-        (permission, person) => ({permission, person})
-      )
-      .map(data => this.formPermissionService.isAdmin(data.permission, data.person));
+    return this.userService.isLoggedIn$
+      .take(1)
+      .switchMap(loggedIn => loggedIn ?
+        this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken())
+          .combineLatest(
+            this.person ? ObservableOf(this.person) : this.userService.getUser(),
+            (permission, person) => ({permission, person})
+          )
+          .map(data => this.formPermissionService.isAdmin(data.permission, data.person)) :
+        ObservableOf(false));
   }
 
   trackCategory(idx, category) {
     return category ? category.category : undefined;
+  }
+
+  private updateCategories(forms) {
+    const categories: FormCategory[] = [];
+    const idxRef = {};
+    let idx = 0;
+    forms.sort((a, b) => environment.formWhitelist.indexOf(a.id) - environment.formWhitelist.indexOf(b.id));
+    forms.forEach((form: FormList) => {
+      const category = form.category || DEFAULT_CATEFORY;
+      if (typeof idxRef[category] === 'undefined') {
+        categories.push({
+          category: category,
+          label: this.categoryLabels[category],
+          forms: []
+        });
+        idxRef[category] = idx;
+        idx++;
+      }
+      categories[idxRef[category]].forms.push(form);
+    });
+    this.categories = categories;
+    this.changeDetector.markForCheck();
   }
 
 }

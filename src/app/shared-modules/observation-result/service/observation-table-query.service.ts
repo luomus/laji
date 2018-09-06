@@ -39,6 +39,18 @@ export class ObservationTableQueryService {
         if (key === 'unit.media.mediaType' && data.unit.media.mediaType) {
           query.hasUnitMedia = data.unit.media.mediaType === 'IMAGE';
         }
+        if (key === 'gathering.team.memberName' && data.gathering.team.memberId) {
+          query.teamMemberId = data.gathering.team.memberId;
+        }
+        if (key === 'gathering.interpretations.municipalityDisplayname' && data.gathering.interpretations.finnishMunicipality) {
+          query.finnishMunicipalityId = data.gathering.interpretations.finnishMunicipality;
+        }
+        if (
+          key === 'gathering.interpretations.biogeographicalProvinceDisplayname' &&
+          data.gathering.interpretations.biogeographicalProvince
+        ) {
+          query.biogeographicalProvinceId = data.gathering.interpretations.biogeographicalProvince;
+        }
       } catch (e) {console.log(e)}
     });
     return query;

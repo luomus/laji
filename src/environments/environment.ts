@@ -1,3 +1,4 @@
+/* tslint:disable:max-line-length */
 // The file contents for the current environment will overwrite these during build.
 // The build system defaults to the dev environment which uses `environment.ts`, but if you do
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
@@ -29,7 +30,7 @@ export const environment = {
   lineTransectKartoitusForm: 'MHL.28',
   whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'JX.123608',
-  apiBase: '/api',
+  apiBase: 'https://dev.laji.fi/api',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
   externalViewers: {

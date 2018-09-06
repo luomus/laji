@@ -1,37 +1,45 @@
-import { Component, HostListener, Input, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
-import { SearchQuery } from '../../../+observation/search-query.model';
-import { TaxonomySearchQuery } from '../../../+taxonomy/taxon-browse/taxonomy-search-query.model';
-import { Subscription } from 'rxjs/Subscription';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewContainerRef
+} from '@angular/core';
+import { SearchQueryInterface } from '../search-query.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-observation-active',
   templateUrl: './observation-active.component.html',
-  styleUrls: ['./observation-active.component.css']
+  styleUrls: ['./observation-active.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationActiveComponent implements OnInit, OnDestroy {
+  @Input() searchQuery: SearchQueryInterface;
 
-  @Input() skip: string[] = [];
-  @Input() searchQuery: SearchQuery|TaxonomySearchQuery;
-  public searchQueryType: 'observation'|'taxonomy';
   public active: ActiveList[] = [];
   public showList = false;
 
   private subQueryUpdate: Subscription;
   private el: Element;
 
-  constructor(viewContainerRef: ViewContainerRef) {
+  constructor(
+    viewContainerRef: ViewContainerRef,
+    private cdr: ChangeDetectorRef
+  ) {
     this.el = viewContainerRef.element.nativeElement;
   }
 
   ngOnInit() {
-    if (this.searchQuery instanceof SearchQuery) {
-      this.searchQueryType = 'observation';
-    } else {
-      this.searchQueryType = 'taxonomy';
-    }
-    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
-      () => this.updateSelectedList()
-    );
+    this.subQueryUpdate = this.searchQuery.queryUpdated$
+      .filter(data => !(data && data.formSubmit))
+      .subscribe(() => {
+        this.updateSelectedList();
+        this.cdr.markForCheck();
+      });
     this.updateSelectedList();
   }
 
@@ -70,9 +78,10 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   }
 
   removeAll() {
+    const skip = this.searchQuery.skippedQueryParams ? this.searchQuery.skippedQueryParams : [];
     const query = this.searchQuery.query;
     Object.keys(query).map((key) => {
-      if (this.skip.indexOf(key) === -1 && typeof query[key] !== 'undefined') {
+      if (skip.indexOf(key) === -1 && typeof query[key] !== 'undefined') {
         query[key] = undefined;
       }
     });
@@ -82,23 +91,44 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   }
 
   updateSelectedList() {
+    const skip = this.searchQuery.skippedQueryParams ? this.searchQuery.skippedQueryParams : [];
     const query = this.searchQuery.query;
-    this.active = [];
+    const active = [];
+    const doubles = {};
     const keys = Object.keys(query);
-    if (!keys || keys.length === 0) {
-      return;
-    }
-    keys.map((i) => {
-      if (this.skip.indexOf(i) > -1) {
-        return;
-      }
-      const type = typeof query[i];
-      if (type !== 'undefined') {
-        if (type === 'boolean' || type === 'number' || (query[i] && query[i].length > 0)) {
-          this.active.push({field: i, value: query[i]});
+
+    if (keys && keys.length > 0) {
+      keys.map((i) => {
+        if (skip.indexOf(i) > -1 || i.substr(0, 1) === '_') {
+          return;
         }
-      }
-    });
+        const type = typeof query[i];
+        if (type !== 'undefined') {
+          if (type === 'boolean' || type === 'number' || (query[i] && query[i].length > 0)) {
+
+            // show only on teamMember text
+            if (['teamMember', 'teamMemberId'].indexOf(i) !== -1) {
+              if (doubles['teamMember']) {
+                return;
+              }
+              doubles['teamMember'] = true;
+            }
+
+            // show only on firstloaded text
+            if (['firstLoadedSameOrBefore', 'firstLoadedSameOrAfter'].indexOf(i) !== -1) {
+              if (doubles['firstLoaded']) {
+                return;
+              }
+              doubles['firstLoaded'] = true;
+            }
+
+            active.push({field: i, value: query[i]});
+          }
+        }
+      });
+    }
+
+    this.active = active;
   }
 
 }

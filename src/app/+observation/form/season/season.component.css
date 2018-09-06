@@ -1,0 +1,30 @@
+.s-wrap {
+  padding-right: 4px;
+  padding-left: 4px;
+}
+.s-select {
+  padding: 6px 0 6px 2px;
+}
+.s-elem-wrap {
+  margin-right: 0;
+  margin-left: -3px;
+}
+.s-end-start:before {
+  content: '–';
+  position: absolute;
+  left: -5px;
+  top: 6px;
+  width: 6px;
+  text-align: center;
+}
+
+
+.d-select:after {
+  content: '.';
+  position: absolute;
+  right: -3px;
+  top: 7px;
+  width: 6px;
+  text-align: center;
+  font-weight: bold;
+}

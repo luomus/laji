@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'laji-selected-field-group',
@@ -11,6 +11,7 @@ export class SelectedFieldGroupComponent {
   @Input() header: string;
   @Input() fields: string[] = [];
   @Input() selected: string[] = [];
+  @Input() disabled: string[] = [];
   @Input() columnsLookup: any = {};
   @Output() toggle = new EventEmitter<string>();
   @Output() moveUp = new EventEmitter<string>();
@@ -18,4 +19,9 @@ export class SelectedFieldGroupComponent {
 
   constructor() { }
 
+  onToggle(field: string) {
+    if (this.disabled.indexOf(field) === -1) {
+      this.toggle.emit(field);
+    }
+  }
 }

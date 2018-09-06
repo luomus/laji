@@ -1,5 +1,12 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
@@ -8,7 +15,7 @@ import { ObservationListService } from '../service/observation-list.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
 import { BsModalService, ModalDirective } from 'ngx-bootstrap';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Logger } from '../../../shared/logger/logger.service';
 
@@ -47,6 +54,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     'document.sourceId',
     'unit.superRecordBasis',
     'unit.media.mediaType',
+    'gathering.interpretations.biogeographicalProvinceDisplayname',
+    'gathering.interpretations.municipalityDisplayname',
+    'gathering.team.memberName',
     'pairCountSum'
   ];
   @Input() useStatistics: boolean;
@@ -87,7 +97,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       target: '_blank',
       label: 'result.unit.taxonVerbatim',
       cellTemplate: 'taxon',
-      sortBy: 'unit.linkings.taxon.name%longLang%',
+      sortBy: 'unit.linkings.taxon.name%longLang%,unit.linkings.taxon.scientificName,unit.taxonVerbatim,unit.reportedInformalTaxonGroup',
       selectField: 'unit',
       aggregateBy: 'unit.linkings.taxon.id,' +
       'unit.linkings.taxon.nameFinnish,' +
@@ -158,8 +168,20 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     { name: 'unit.quality.taxon.source', cellTemplate: 'warehouseLabel', label: 'result.unit.quality.source' },
     { name: 'gathering.team', cellTemplate: 'toSemicolon' },
     { name: 'gathering.interpretations.countryDisplayname', label: 'result.gathering.country' },
-    { name: 'gathering.interpretations.biogeographicalProvinceDisplayname', label: 'result.gathering.biogeographicalProvince' },
-    { name: 'gathering.interpretations.municipalityDisplayname', label: 'observation.form.municipality' },
+    { name: 'gathering.interpretations.biogeographicalProvinceDisplayname',
+      cellTemplate: 'warehouseLabel',
+      label: 'result.gathering.biogeographicalProvince',
+      aggregateBy: 'gathering.interpretations.biogeographicalProvince,gathering.interpretations.biogeographicalProvinceDisplayname'
+    },
+    { name: 'gathering.interpretations.municipalityDisplayname',
+      cellTemplate: 'warehouseLabel',
+      label: 'observation.form.municipality',
+      aggregateBy: 'gathering.interpretations.finnishMunicipality,gathering.interpretations.municipalityDisplayname'
+    },
+    { name: 'gathering.team.memberName',
+      label: 'observation.form.team',
+      aggregateBy: 'gathering.team.memberId,gathering.team.memberName'
+    },
     { name: 'gathering.locality' },
     { name: 'gathering.displayDateTime' },
     { name: 'gathering.interpretations.coordinateAccuracy', cellTemplate: 'numeric' },
@@ -204,6 +226,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   private hasChanges = false;
   private aggregateBy: string[] = [];
 
+  @Input() showRowAsLink = true;
+
   constructor(
     private resultService: ObservationListService,
     private changeDetectorRef: ChangeDetectorRef,
@@ -228,8 +252,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this._originalSelected = [...selected];
     this._originalSelectedNumbers = [...selectedNumbers];
   };
-
-  @Input() showRowAsLink = true;
 
   ngOnInit() {
     this.initColumns();
@@ -268,8 +290,10 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this.aggregateBy = [];
     this.columns = selected.map(name => {
       const column = this.columnLookup[name];
-      column.aggregate !== false && this.aggregateBy.push((column.aggregateBy || column.name)
-       + (this.columnLookup[name].sortBy ? ',' + this.setLangParams(this.columnLookup[name].sortBy) : ''));
+      if (column.aggregate !== false) {
+        this.aggregateBy.push((column.aggregateBy || column.name)
+          + (this.columnLookup[name].sortBy ? ',' + this.setLangParams(this.columnLookup[name].sortBy) : ''));
+      }
       return this.columnLookup[name];
     });
   }
@@ -414,6 +438,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   private setLangParams(value: string) {
     return (value || '')
-      .replace('%longLang%', this.langMap[this.lang] || 'Finnish')
+      .replace(/%longLang%/g, this.langMap[this.lang] || 'Finnish')
   }
 }

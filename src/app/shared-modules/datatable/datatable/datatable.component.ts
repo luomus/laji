@@ -1,12 +1,19 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, TemplateRef,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
   ViewChild
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent } from '@swimlane/ngx-datatable';
-import { Observable } from 'rxjs/Observable';
+import { interval as ObservableInterval, of as ObservableOf } from 'rxjs';
 import { CacheService } from '../../../shared/service/cache.service';
 import { Annotation } from '../../../shared/model/Annotation';
+import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
 
 const CACHE_COLUMN_SETINGS = 'datatable-col-width';
 
@@ -18,40 +25,14 @@ interface Settings {[key: string]: DatatableColumn}
   styleUrls: ['./datatable.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatatableComponent {
+export class DatatableComponent implements AfterViewInit {
 
   private static settings: Settings;
 
   @ViewChild('dataTable') public datatable: NgxDatatableComponent;
+  @ViewChild('dataTableTemplates') public datatableTemplates: DatatableTemplatesComponent;
 
-  @ViewChild('taxon') taxonTpl: TemplateRef<any>;
-  @ViewChild('originalTaxon') originalTaxonTpl: TemplateRef<any>;
-  @ViewChild('species') speciesTpl: TemplateRef<any>;
-  @ViewChild('headerTpl') headerTpl: TemplateRef<any>;
-  @ViewChild('eventDate') eventDateTpl: TemplateRef<any>;
-  @ViewChild('multiLang') multiLangTpl: TemplateRef<any>;
-  @ViewChild('multiLangAll') multiLangAllTpl: TemplateRef<any>;
-  @ViewChild('vernacularName') vernacularNameTpl: TemplateRef<any>;
-  @ViewChild('scientificName') scientificNameTpl: TemplateRef<any>;
-  @ViewChild('taxonScientificName') taxonScientificNameTpl: TemplateRef<any>;
-  @ViewChild('cursive') cursiveTpl: TemplateRef<any>;
-  @ViewChild('boolean') booleanTpl: TemplateRef<any>;
-  @ViewChild('label') labelTpl: TemplateRef<any>;
-  @ViewChild('labelArray') labelArrayTpl: TemplateRef<any>;
-  @ViewChild('warehouseLabel') warehouseLabelTpl: TemplateRef<any>;
-  @ViewChild('toSemicolon') toSemicolonTpl: TemplateRef<any>;
-  @ViewChild('numeric') numericTpl: TemplateRef<any>;
-  @ViewChild('date') dateTpl: TemplateRef<any>;
-  @ViewChild('user') userTpl: TemplateRef<any>;
-  @ViewChild('publication') publicationTpl: TemplateRef<any>;
-  @ViewChild('publicationArray') publicationArrayTpl: TemplateRef<any>;
-  @ViewChild('iucnStatus') iucnStatusTpl: TemplateRef<any>;
-  @ViewChild('annotation') annotationTpl: TemplateRef<any>;
-  @ViewChild('image') imageTpl: TemplateRef<any>;
-
-  @Input() rows: any[];
   @Input() loading = false;
-  @Input() count: number;
   @Input() pageSize: number;
   @Input() height = '100%';
   @Input() showHeader = true;
@@ -75,6 +56,9 @@ export class DatatableComponent {
   annotationTypes = Annotation.TypeEnum;
   annotationClass = Annotation.AnnotationClassEnum;
 
+  _rows: any[];
+  _page: number;
+  _count: number;
   _offset: number;
   _columns: DatatableColumn[];
 
@@ -83,13 +67,22 @@ export class DatatableComponent {
     private cacheService: CacheService
   ) { }
 
+  @Input() set count(cnt: number) {
+    this._count = typeof cnt === 'number' ? cnt  : 0;
+  }
+
+  @Input() set rows(rows: any[]) {
+    this._rows = rows || [];
+  }
+
   @Input() set page(page: number) {
+    this._page = page;
     this._offset = page - 1;
   };
 
   @Input() set columns(columns: DatatableColumn[]) {
     const settings$ = DatatableComponent.settings ?
-      Observable.of(DatatableComponent.settings) :
+      ObservableOf(DatatableComponent.settings) :
       this.cacheService.getItem<Settings>(CACHE_COLUMN_SETINGS)
         .map(value => value || {})
         .do(value => DatatableComponent.settings = value);
@@ -97,15 +90,15 @@ export class DatatableComponent {
     settings$.subscribe(settings => {
       this._columns = columns.map((column) => {
         if (!column.headerTemplate) {
-          column.headerTemplate = this.headerTpl;
+          column.headerTemplate = this.datatableTemplates.header;
         }
         if (typeof column.cellTemplate === 'string') {
-          column.cellTemplate = this[column.cellTemplate + 'Tpl'];
+          column.cellTemplate = this.datatableTemplates[column.cellTemplate];
         }
         if (!column.prop) {
           column.prop = column.name;
         }
-        if (settings[column.name] && settings[column.name].width) {
+        if (settings && settings[column.name] && settings[column.name].width) {
           column.width = settings[column.name].width;
         }
         if (this.resizable === false) {
@@ -113,9 +106,14 @@ export class DatatableComponent {
         }
         return column;
       });
-
       this.changeDetectorRef.markForCheck();
     });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.datatable.recalculate();
+    }, 100);
   }
 
   onRowSelect(event) {
@@ -132,12 +130,11 @@ export class DatatableComponent {
   }
 
   refreshTable() {
-    Observable
-      .interval()
+    ObservableInterval()
       .take(1)
       .subscribe(() => {
-        if (this.rows) {
-          this.rows = [...this.rows];
+        if (this._rows) {
+          this._rows = [...this._rows];
           this.changeDetectorRef.markForCheck();
         }
       });

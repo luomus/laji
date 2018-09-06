@@ -3,13 +3,12 @@ import { SearchQuery } from '../search-query.model';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Subscription } from 'rxjs/Subscription';
+import { forkJoin as ObservableForkJoin, Subscription } from 'rxjs';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { Util } from '../../shared/service/util.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs/Observable';
 import { HttpParams } from '@angular/common/http';
 
 enum RequestStatus {
@@ -124,7 +123,7 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
     speciesQuery.taxonRankId = 'MX.species';
     speciesQuery.includeNonValidTaxa = false;
 
-    Observable.forkJoin(
+    ObservableForkJoin(
       this.warehouseService.warehouseQueryCountGet(this._query)
         .combineLatest(this.warehouseService.warehouseQueryCountGet(secretQuery),
           (count, priva) => ({'count': count.total, 'private': priva.total})),
@@ -141,8 +140,8 @@ export class ObservationDownloadComponent implements OnInit, OnDestroy {
   updateCsvLink() {
     const queryParams = this.searchQuery.getQueryObject();
     queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.currentLang];
-    queryParams['includeNonValidTaxa'] = false;
-    queryParams['pageSize'] = this.taxaLimit;
+    queryParams['includeNonValidTaxa'] = 'false';
+    queryParams['pageSize'] = '' + this.taxaLimit;
     if (queryParams['editorPersonToken']) {
       delete queryParams['editorPersonToken'];
     }

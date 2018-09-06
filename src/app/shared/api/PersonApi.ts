@@ -1,7 +1,7 @@
-/* tslint:disable */
+/* tslint:disable:no-unused-variable member-ordering max-line-length */
 /**
  * API documentation
- * To use this api you need an access token. To get the token, send a post request with your email address to api-users resource and one will be send to your. See below for information on how to use this api and if you have any questions you can contact us at helpdesk@laji.fi.  Place refer to [schema.laji.fi](http://schema.laji.fi/) for more information about the used vocabulary
+ * To use this api you need an access token. To getList the token, send a post request with your email address to api-users resource and one will be send to your. See below for information on how to use this api and if you have any questions you can contact us at helpdesk@laji.fi.  Place refer to [schema.laji.fi](http://schema.laji.fi/) for more information about the used vocabulary
  *
  * OpenAPI spec version: 0.0.1
  *
@@ -22,21 +22,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import * as models from '../model';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Util } from '../service/util.service';
+import { Profile } from '../model/Profile';
+import { Person } from '../model/Person';
+import { environment } from '../../../environments/environment';
 
-/* tslint:disable:no-unused-variable member-ordering */
-
-'use strict';
-
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class PersonApi {
-  protected basePath = '/api';
-  public defaultHeaders: Headers = new Headers({'Content-Type': 'application/json'});
+  protected basePath = environment.apiBase;
 
-  constructor(protected http: Http) {
+  constructor(protected http: HttpClient) {
   }
 
   /**
@@ -45,13 +43,12 @@ export class PersonApi {
    * @param token User token
    * @param userId Accept this user as a person
    */
-  public personAcceptFriendRequest(token: string, userId: string, extraHttpRequestParams?: any): Observable<models.Profile> {
+  public personAcceptFriendRequest(token: string, userId: string, extraHttpRequestParams?: any): Observable<Profile> {
     const path = this.basePath + '/person/{token}/friends/{userId}'
         .replace('{' + 'token' + '}', String(token))
         .replace('{' + 'userId' + '}', String(userId));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personAcceptFriendRequest.');
@@ -60,20 +57,8 @@ export class PersonApi {
     if (userId === null || userId === undefined) {
       throw new Error('Required parameter userId was null or undefined when calling personAcceptFriendRequest.');
     }
-    let requestOptions: RequestOptionsArgs = {
-      method: 'PUT',
-      headers: headerParams,
-      search: queryParameters
-    };
 
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.put(path, undefined, {params: queryParameters});
   }
 
   /**
@@ -87,8 +72,7 @@ export class PersonApi {
         .replace('{' + 'token' + '}', String(token))
         .replace('{' + 'profileKey' + '}', String(profileKey));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personAddFriendRequest.');
@@ -97,20 +81,8 @@ export class PersonApi {
     if (profileKey === null || profileKey === undefined) {
       throw new Error('Required parameter profileKey was null or undefined when calling personAddFriendRequest.');
     }
-    let requestOptions: RequestOptionsArgs = {
-      method: 'POST',
-      headers: headerParams,
-      search: queryParameters
-    };
 
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.post(path, undefined, {params: queryParameters});
   }
 
   /**
@@ -119,12 +91,11 @@ export class PersonApi {
    * @param profile
    * @param token
    */
-  public personCreateProfileByToken(profile: models.Profile, token: string, extraHttpRequestParams?: any): Observable<models.Profile> {
+  public personCreateProfileByToken(profile: Profile, token: string, extraHttpRequestParams?: any): Observable<Profile> {
     const path = this.basePath + '/person/{token}/profile'
         .replace('{' + 'token' + '}', String(token));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'profile' is not null or undefined
     if (profile === null || profile === undefined) {
       throw new Error('Required parameter profile was null or undefined when calling personCreateProfileByToken.');
@@ -133,21 +104,7 @@ export class PersonApi {
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personCreateProfileByToken.');
     }
-    let requestOptions: RequestOptionsArgs = {
-      method: 'POST',
-      headers: headerParams,
-      search: queryParameters
-    };
-    requestOptions.body = JSON.stringify(profile);
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.post(path, profile, {params: queryParameters});
   }
 
   /**
@@ -155,30 +112,17 @@ export class PersonApi {
    *
    * @param token
    */
-  public personFindByToken(token: string, extraHttpRequestParams?: any): Observable<models.Person> {
+  public personFindByToken(token: string, extraHttpRequestParams?: any): Observable<Person> {
     const path = this.basePath + '/person/{token}'
         .replace('{' + 'token' + '}', String(token));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personFindByToken.');
     }
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
 
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get(path, {params: queryParameters});
   }
 
   /**
@@ -186,30 +130,17 @@ export class PersonApi {
    *
    * @param id
    */
-  public personFindByUserId(id: string, extraHttpRequestParams?: any): Observable<models.Person> {
+  public personFindByUserId(id: string, extraHttpRequestParams?: any): Observable<Person> {
     const path = this.basePath + '/person/by-id/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling personFindByUserId.');
     }
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
 
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get(path, {params: queryParameters});
   }
 
   /**
@@ -217,30 +148,17 @@ export class PersonApi {
    *
    * @param id
    */
-  public personFindProfileByUserId(id: string, extraHttpRequestParams?: any): Observable<models.Profile> {
+  public personFindProfileByUserId(id: string, extraHttpRequestParams?: any): Observable<Profile> {
     const path = this.basePath + '/person/by-id/{id}/profile'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling personFindByUserId.');
     }
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
 
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get(path, {params: queryParameters});
   }
 
   /**
@@ -248,30 +166,17 @@ export class PersonApi {
    *
    * @param token
    */
-  public personFindProfileByToken(token: string, extraHttpRequestParams?: any): Observable<models.Profile> {
+  public personFindProfileByToken(token: string, extraHttpRequestParams?: any): Observable<Profile> {
     const path = this.basePath + '/person/{token}/profile'
         .replace('{' + 'token' + '}', String(token));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personFindProfileByToken.');
     }
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
 
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get(path, {params: queryParameters});
   }
 
   /**
@@ -281,13 +186,12 @@ export class PersonApi {
    * @param userId Accept this user as a person
    * @param block if the removed person should be blocked also
    */
-  public personRemoveFriend(token: string, userId: string, block: boolean = false, extraHttpRequestParams?: any): Observable<models.Profile> {
+  public personRemoveFriend(token: string, userId: string, block: boolean = false, extraHttpRequestParams?: any): Observable<Profile> {
     const path = this.basePath + '/person/{token}/friends/{userId}'
         .replace('{' + 'token' + '}', String(token))
         .replace('{' + 'userId' + '}', String(userId));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'token' is not null or undefined
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personRemoveFriend.');
@@ -297,23 +201,10 @@ export class PersonApi {
       throw new Error('Required parameter userId was null or undefined when calling personRemoveFriend.');
     }
     if (block !== undefined) {
-      queryParameters.set('block', block ? 'true' : 'false');
+      queryParameters['block'] = block;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'DELETE',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.delete(path, {params: queryParameters});
   }
 
   /**
@@ -322,12 +213,11 @@ export class PersonApi {
    * @param profile
    * @param token
    */
-  public personUpdateProfileByToken(profile: models.Profile, token: string, extraHttpRequestParams?: any): Observable<models.Profile> {
+  public personUpdateProfileByToken(profile: Profile, token: string, extraHttpRequestParams?: any): Observable<Profile> {
     const path = this.basePath + '/person/{token}/profile'
         .replace('{' + 'token' + '}', String(token));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'profile' is not null or undefined
     if (profile === null || profile === undefined) {
       throw new Error('Required parameter profile was null or undefined when calling personUpdateProfileByToken.');
@@ -336,21 +226,8 @@ export class PersonApi {
     if (token === null || token === undefined) {
       throw new Error('Required parameter token was null or undefined when calling personUpdateProfileByToken.');
     }
-    let requestOptions: RequestOptionsArgs = {
-      method: 'PUT',
-      headers: headerParams,
-      search: queryParameters
-    };
-    requestOptions.body = JSON.stringify(profile);
 
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.put(path, profile, {params: queryParameters});
   }
 
 }

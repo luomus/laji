@@ -1,10 +1,8 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AutocompleteApi } from '../../../shared/api/AutocompleteApi';
-import { Observable } from 'rxjs/Observable';
-import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
+import { Subscription } from 'rxjs';
+import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { SpeciesFormQuery } from './species-form-query.interface';
-import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'laji-species-form',
@@ -13,14 +11,14 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class SpeciesFormComponent implements OnInit, OnDestroy {
   @Input() searchQuery: TaxonomySearchQuery;
-  @Input() showFilter = true;
 
+  @Input() showFilter = true;
   @Output() onShowFilterChange = new EventEmitter<boolean>();
 
-  public dataSource: Observable<any>;
-
-  public typeaheadLoading = false;
-  public limit = 10;
+  public taxonSelectFilters: {
+    informalTaxonGroup: string,
+    onlyFinnish: boolean
+  };
 
   public formQuery: SpeciesFormQuery = {
     onlyFinnish: true,
@@ -44,27 +42,22 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   ];
 
   constructor(
-    public translate: TranslateService,
-    private autocompleteService: AutocompleteApi
-  ) {
-    this.dataSource = Observable.create((observer: any) => {
-      observer.next(this.formQuery.taxon);
-    })
-      .distinctUntilChanged()
-      .switchMap((token: string) => this.getTaxa(token))
-      .switchMap((data) => {
-        if (this.formQuery.taxon) {
-          return Observable.of(data);
-        }
-        return Observable.of([]);
-      });
-  }
+    public translate: TranslateService
+  ) {}
 
   ngOnInit() {
+    this.taxonSelectFilters = {
+      informalTaxonGroup: this.searchQuery.query.informalGroupFilters,
+      onlyFinnish: this.searchQuery.query.onlyFinnish
+    };
     this.queryToFormQuery();
 
     this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
       res => {
+        this.taxonSelectFilters = {
+          informalTaxonGroup: this.searchQuery.query.informalGroupFilters,
+          onlyFinnish: this.searchQuery.query.onlyFinnish
+        };
         if (res.formSubmit) {
           this.queryToFormQuery();
           this.onSubmit();
@@ -78,46 +71,8 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public getTaxa(token: string, onlyFirstMatch = false): Observable<any> {
-    return this.autocompleteService.autocompleteFindByField({
-      field: 'taxon',
-      q: token,
-      limit: onlyFirstMatch ? '1' : '' + this.limit,
-      includePayload: true,
-      lang: this.translate.currentLang,
-      informalTaxonGroup: this.searchQuery.query.informalGroupFilters,
-      onlyFinnish: this.formQuery.onlyFinnish
-    })
-      .map(data => {
-        if (onlyFirstMatch) {
-          return data[0] || {};
-        }
-
-        return data.map(item => {
-          let groups = '';
-          if (item.payload && item.payload.informalTaxonGroups) {
-            groups = item.payload.informalTaxonGroups.reduce((prev, curr) => {
-              return prev + ' ' + curr.id;
-            }, groups);
-          }
-          item['groups'] = groups;
-          return item;
-        });
-      });
-  }
-
-  changeTypeaheadLoading(e: boolean): void {
-    this.typeaheadLoading = e;
-  }
-
-  onTaxonSelect(event) {
-    if (event.item && event.item.key) {
-      this.searchQuery.query.target = event.item.key;
-    }
-    if (this.formQuery.taxon === '') {
-      this.searchQuery.query.target = undefined;
-    }
-
+  onTaxonSelect(key: string) {
+    this.searchQuery.query.target = key;
     this.onQueryChange();
   }
 
@@ -129,6 +84,12 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     } else {
       this.onInvasiveCheckBoxToggle(id);
     }
+  }
+
+  updateTypesOfOccurrence(event) {
+    this.searchQuery.query.typesOfOccurrenceFilters = event.true;
+    this.searchQuery.query.typesOfOccurrenceNotFilters = event.false;
+    this.onQueryChange();
   }
 
   private updateInvasiveSelected() {

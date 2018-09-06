@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { AnnotationService } from '../../+viewer/service/annotation.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AnnotationService } from '../document-viewer/service/annotation.service';
 import { Annotation } from '../../shared/model/Annotation';
 import { IdService } from '../../shared/service/id.service';
 

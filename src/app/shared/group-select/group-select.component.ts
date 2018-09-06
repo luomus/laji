@@ -1,19 +1,8 @@
-import {
-  ApplicationRef,
-  ChangeDetectionStrategy, ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  forwardRef,
-  HostListener,
-  Input,
-  OnChanges,
-  Output,
-  ViewContainerRef
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, forwardRef, Input, OnChanges, Output } from '@angular/core';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { of as ObservableOf } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 
 export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
@@ -23,7 +12,7 @@ export const OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'observation-group-select',
+  selector: 'laji-observation-group-select',
   templateUrl: './group-select.component.html',
   styleUrls: ['./group-select.component.css'],
   providers: [InformalTaxonGroupApi, OBSERVATION_GROUP_SELECT_VALUE_ACCESSOR],
@@ -84,7 +73,7 @@ export class ObservationGroupSelectComponent implements ControlValueAccessor, On
       .switchMap(data => {
         return (!data.results || data.results.length === 0) ?
           this.informalTaxonService.informalTaxonGroupGetWithSiblings(newValue, this.lang) :
-          Observable.of(data);
+          ObservableOf(data);
       })
       .map(data => data.results.map(item => ({id: item.id, name: item.name, hasSubGroup: item.hasSubGroup})))
       .subscribe(

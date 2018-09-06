@@ -1,20 +1,53 @@
 <div id="taxon-tree">
-  <tree-root #tree
-        (onToggleExpanded)="onToggle($event)"
-        [nodes]="nodes"
-        [focused]="true"
-        [options]="options">
-    <ng-template #treeNodeTemplate let-node>
-      <span class="rank">
-        [{{node.data.taxonRank | label}}]
-      </span>
-      <span class="name">
-        <span class="scientificName" [class.cursive]="node.data.cursiveName">{{node.data.scientificName}}</span>
-        {{ node.data.vernacularName ? ' - ' + (node.data.vernacularName | multiLang) : '' }}
-      </span>
-      <a [routerLink]="'/taxon/' + node.data.id | localize">
-        <i class="glyphicon glyphicon-tag"></i>
-      </a>
-    </ng-template>
-  </tree-root>
+  <div style="position: relative">
+    <div>
+      <label>
+        {{'species.tree.taxonSearch' | translate}}:
+        <laji-taxon-select
+          (onSelect)="onTaxonSelect($event)"
+          [taxonId]="taxon"
+          [searchParams]="taxonSelectFilters">
+        </laji-taxon-select>
+      </label>
+    </div>
+    <div class="show-main-levels-wrapper">
+      <label>
+        <input type="checkbox"
+               [(ngModel)]="showMainLevels"
+               (ngModelChange)="setSkipParams()"
+               name="showMainLevels">
+        {{'species.tree.showMainLevels' | translate}}
+      </label>
+      <laji-info>{{'species.tree.info.showMainLevels' | translate}}</laji-info>
+    </div>
+  </div>
+
+  <div class="species-table-wrapper">
+    <laji-tree-table #treeTable
+                     [columns]="columns"
+                     [nodes]="nodes"
+                     [getChildren]="getChildrenFunc"
+                     [getParents]="getParentsFunc"
+                     [skipParams]="skipParams"
+                     [activeId]="activeId"
+                     (rowSelect)="onRowSelect($event)">
+    </laji-tree-table>
+    <div class="setting-menu link" (click)="openSettingsModal()">
+      <i class="glyphicon glyphicon-cog"></i>
+    </div>
+  </div>
 </div>
+
+<laji-species-download #speciesDowload
+                       [downloadLoading]="downloadLoading"
+                       (onDownload)="download($event)">
+</laji-species-download>
+
+<laji-species-list-options-modal #settingsModal
+                                 (close)="onCloseSettingsModal()"
+                                 (settingsLoaded)="onSettingsLoaded()"
+                                 [searchQuery]="searchQuery"
+                                 [columnLookup]="columnService.columnLookup"
+                                 [requiredFields]="['scientificName']"
+                                 [listType]="'tree'">
+</laji-species-list-options-modal>

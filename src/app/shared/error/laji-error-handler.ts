@@ -19,7 +19,7 @@ export class LajiErrorHandler extends ErrorHandler {
   }
 
   handleError(error) {
-    if (this.pause || !error || (typeof error === 'object' && Object.keys(error).length === 0)) {
+    if (this.pause || !error || (typeof error === 'object' && error !== null && Object.keys(error).length === 0)) {
       return;
     }
     if (typeof error.message === 'string') {

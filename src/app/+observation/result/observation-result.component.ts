@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, PLATFORM_ID, ViewChild } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
-import { ObservationMapComponent } from '../map/observation-map.component';
-import { Subscription } from 'rxjs/Subscription';
+import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
+import { Subscription } from 'rxjs';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { WINDOW } from '@ng-toolkit/universal';
+import { isPlatformBrowser } from '@angular/common';
 
 
 @Component({
@@ -26,15 +28,27 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
   private subQueryUpdate: Subscription;
   private _active;
 
-  constructor(public searchQuery: SearchQuery,
-              public userService: UserService,
-              public translate: TranslateService) {
+  constructor(
+    @Inject(WINDOW) private window,
+    @Inject(PLATFORM_ID) private platformID: object,
+    public searchQuery: SearchQuery,
+    public userService: UserService,
+    public translate: TranslateService
+  ) {
   }
 
   @Input() set active(value) {
+    if (this._active === value) {
+      return;
+    }
     this._active = value;
     if (value !== 'finnish') {
       this.lastAllActive = value;
+    }
+    if (isPlatformBrowser(this.platformID)) {
+      setTimeout(() => {
+        this.window.dispatchEvent(new Event('resize'));
+      }, 100);
     }
   }
 
@@ -45,9 +59,9 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
   ngOnInit() {
     this.updateQueryParams();
     this.activated[this._active] = true;
-    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(() => {
-      this.updateQueryParams();
-    });
+    this.subQueryUpdate = this.searchQuery.queryUpdated$
+      .filter(data => !(data && data.formSubmit))
+      .subscribe(() => this.updateQueryParams());
   }
 
   ngOnDestroy() {
@@ -64,10 +78,12 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
 
 
   pickLocation(e) {
+    if (!e) {
+      return;
+    }
     if (e.coordinateVerbatim) {
       this.searchQuery.query.coordinates = [e.coordinateVerbatim + ':YKJ'];
     } else if (
-      e &&
       e.type === 'Polygon' &&
       e.coordinates && e.coordinates.length === 1 && e.coordinates[0].length === 5
     ) {

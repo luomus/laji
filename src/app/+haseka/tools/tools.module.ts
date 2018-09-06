@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MappingService } from './service/mapping.service';
-import {TypeaheadModule} from 'ngx-bootstrap';
+import { TypeaheadModule } from 'ngx-bootstrap';
 
 import { DatatableModule } from '../../shared-modules/datatable/datatable.module';
 import { ToolsRoutingModule } from './tools-routing.module';
@@ -18,9 +18,9 @@ import { MappingSelectComponent } from './shared/mapping-select/mapping-select.c
 import { CellValueMappingComponent } from './importer/cell-value-mapping/cell-value-mapping.component';
 import { ImportService } from './service/import.service';
 import { CellValueSelectComponent } from './importer/cell-value-mapping/cell-value-select/cell-value-select.component';
-import { LajiMapModule } from '../../shared-modules/map/laji-map.module';
+import { LajiMapModule } from '@laji-map/laji-map.module';
 import { SpecialGeometryComponent } from './importer/cell-value-mapping/special-geometry/special-geometry.component';
-import {GeneratorService} from './service/generator.service';
+import { GeneratorService } from './service/generator.service';
 import { SpecialFriendComponent } from './importer/cell-value-mapping/special-friend/special-friend.component';
 import { SpecialTaxonIdComponent } from './importer/cell-value-mapping/special-taxon-id/special-taxon-id.component';
 import { SpecialNamedPlacesComponent } from './importer/cell-value-mapping/special-named-places/special-named-places.component';
@@ -31,6 +31,7 @@ import { SpecialTaxonNameComponent } from './importer/cell-value-mapping/special
 import { ToolSuccessComponent } from './shared/tool-success/tool-success.component';
 import { StepperComponent } from './shared/stepper/stepper.component';
 import { TaxonAutocompleteModule } from '../../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
+// tslint:disable-next-line:max-line-length
 import { SpecialInformalTaxonGroupsComponent } from './importer/cell-value-mapping/special-informal-taxon-groups/special-informal-taxon-groups.component';
 
 @NgModule({

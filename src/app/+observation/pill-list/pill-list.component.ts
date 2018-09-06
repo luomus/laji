@@ -4,10 +4,13 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
   selector: 'laji-pill-list',
   templateUrl: './pill-list.component.html',
   styleUrls: ['./pill-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  preserveWhitespaces: true
 })
 export class PillListComponent implements OnInit {
 
+  @Input() separator = ',';
+  @Input() isLabel;
   @Output() updateList = new EventEmitter();
 
   _list;
@@ -19,10 +22,10 @@ export class PillListComponent implements OnInit {
 
   @Input() set list(data) {
     if (typeof data === 'string') {
-      this._list = data.split(',');
+      this._list = data.split(this.separator);
     } else if (Array.isArray(data)) {
       const items = [];
-      data.map(item => items.push(...item.split(',')));
+      data.map(item => items.push(...item.split(this.separator)));
       this._list = items;
     }
   }

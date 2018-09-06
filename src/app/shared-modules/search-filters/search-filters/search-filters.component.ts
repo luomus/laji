@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SearchQuery } from '../../../+observation/search-query.model';
-import { TaxonomySearchQuery } from '../../../+taxonomy/taxon-browse/taxonomy-search-query.model';
-import { WindowRef } from '../../../shared/windows-ref';
+import { WINDOW } from '@ng-toolkit/universal';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID } from '@angular/core';
+import { SearchQueryInterface } from '../search-query.interface';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'laji-search-filters',
@@ -10,14 +10,15 @@ import { WindowRef } from '../../../shared/windows-ref';
 })
 export class SearchFiltersComponent implements OnInit {
   @Input() showFilter = true;
-  @Input() searchQuery: SearchQuery|TaxonomySearchQuery;
+  @Input() searchQuery: SearchQueryInterface;
 
   @Input() hasInvasiveControlRights = false;
   @Output() onShowFilterChange = new EventEmitter<boolean>();
   @Output() onInvasiveControlClick = new EventEmitter();
 
   constructor(
-    private winRef: WindowRef
+    @Inject(WINDOW) private window: Window,
+    @Inject(PLATFORM_ID) private platformID: object
   ) { }
 
   ngOnInit() {
@@ -26,14 +27,17 @@ export class SearchFiltersComponent implements OnInit {
   toggleFilters() {
     this.showFilter = !this.showFilter;
     this.onShowFilterChange.emit(this.showFilter);
+    if (!isPlatformBrowser(this.platformID)) {
+      return;
+    }
     try {
       setTimeout(() => {
         try {
-          this.winRef.nativeWindow.dispatchEvent(new Event('resize'));
+          this.window.dispatchEvent(new Event('resize'));
         } catch (e) {
-          const evt = this.winRef.nativeWindow.document.createEvent('UIEvents');
+          const evt = this.window.document.createEvent('UIEvents');
           evt.initUIEvent('resize', true, false, window, 0);
-          this.winRef.nativeWindow.dispatchEvent(evt);
+          this.window.dispatchEvent(evt);
         }
       }, 50);
     } catch (e) {}

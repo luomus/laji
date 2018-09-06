@@ -1,0 +1,13 @@
+.images-container {
+  margin: 1mm -0.5mm 0 -0.5mm;
+}
+.image-container {
+  padding: 0.5mm;
+  width: calc(100% / 5);
+  display: inline-block;
+  vertical-align: top;
+}
+.image {
+  object-fit: cover;
+  height: 30mm;
+}

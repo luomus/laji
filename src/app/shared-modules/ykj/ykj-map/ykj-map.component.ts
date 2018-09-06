@@ -1,13 +1,21 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy,
-  OnInit, Output,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
   ViewChild
 } from '@angular/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
-import { Subscription } from 'rxjs/Subscription';
-import { Map3Component } from '../../map/map.component';
-import { LajiMapOptions } from '../../map/map-options.interface';
+import { Subscription } from 'rxjs';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import * as LajiMap from 'laji-map';
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -19,7 +27,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
-  @ViewChild(Map3Component) mapComponent: Map3Component;
+  @ViewChild(LajiMapComponent) mapComponent: LajiMapComponent;
 
   @Input() title: string;
   @Input() height = '605px';
@@ -35,7 +43,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() countLabel: string[] = ['1-', '10-', '100-', '1 000-', '10 000-', '100 000-'];
   @Input() timeLabel: string[] = ['2020', '2015-', '2010-', '2005-', '2000-', '1990-'];
   @Input() maxBounds: [[number, number], [number, number]] = [[58.0, 19.0], [72.0, 35.0]];
-  @Input() mapOptions: LajiMapOptions = {
+  @Input() mapOptions: LajiMap.Options = {
     controls: {
       draw: false
     },
@@ -70,10 +78,10 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   ngOnInit() {
     this.subLang = this.translate.onLangChange.subscribe(() => {
-      this.mapOptions = {...this.mapOptions, lang: this.translate.currentLang};
+      this.mapOptions = {...this.mapOptions, lang: <LajiMap.Lang> this.translate.currentLang};
       this.cd.markForCheck();
     });
-    this.mapOptions['lang'] = this.translate.currentLang;
+    this.mapOptions['lang'] = <LajiMap.Lang> this.translate.currentLang;
     this.initMapdata();
   }
 
@@ -256,14 +264,14 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   private initMap() {
-    if (this.mapInit || !this.mapComponent || !this.mapComponent.lajiMap || !this.mapComponent.lajiMap.map) {
+    if (this.mapInit || !this.mapComponent || !this.mapComponent.map || !this.mapComponent.map.map) {
       return;
     }
     this.mapInit = true;
-    this.mapComponent.lajiMap.map.options.maxZoom = 8;
-    this.mapComponent.lajiMap.map.options.minZoom = 2;
+    this.mapComponent.map.map.options.maxZoom = 8;
+    this.mapComponent.map.map.options.minZoom = 2;
     if (this.geoJsonLayer) {
-      this.geoJsonLayer.addTo(this.mapComponent.lajiMap.map);
+      this.geoJsonLayer.addTo(this.mapComponent.map.map);
     }
   }
 

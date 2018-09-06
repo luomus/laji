@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { isPlatformBrowser } from '@angular/common';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class ToastsService {
 
   constructor(
-    private toastr: ToastsManager
+    private toastr: ToastrService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   getToests() {
@@ -29,8 +31,11 @@ export class ToastsService {
   }
 
   private toast(type, message, title?: string, options?: Object) {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     if (!options) {
-      let time = 4000 + ((message + title).length * 100);
+      const time = 4000 + ((message + title).length * 100);
       options = {toastLife: time, showCloseButton: true};
     }
     this.toastr[type](message, title, options);

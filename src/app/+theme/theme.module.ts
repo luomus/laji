@@ -1,3 +1,4 @@
+/* tslint:disable:max-line-length */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -14,7 +15,7 @@ import { NafiFormComponent } from './nafi/nafi-form/nafi-form.component';
 import { NafiMyDocumentListComponent } from './nafi/nafi-my-document-list/nafi-my-document-list.component';
 import { ThemeMyDocumentListComponent } from './theme-my-document-list/theme-my-document-list.component';
 import { NafiInstructionsComponent } from './nafi/nafi-instructions/nafi-instructions.component';
-import { ViewerModule } from '../+viewer/viewer.module';
+import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
 import { YkjComponent } from './ykj/ykj.component';
 import { EmkComponent } from './emk/emk.component';
 import { WbcComponent } from './wbc/wbc.component';
@@ -47,14 +48,17 @@ import { QualityFiltersComponent } from './quality/quality-filters/quality-filte
 import { TaxonAutocompleteModule } from '../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
 import { LineTransectFormEiVakioComponent } from './line-transect/line-transect-form-ei-vakio/line-transect-form-ei-vakio.component';
 import { LineTransectFormKartoitusComponent } from './line-transect/line-transect-form-kartoitus/line-transect-form-kartoitus.component';
+import { LajiFormModule } from '@laji-form/laji-form.module';
+import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+/* tslint:enable:max-line-length */
 
 @NgModule({
   imports: [
     CommonModule,
     ThemeRoutingModule,
     SharedModule,
-    ViewerModule,
+    DocumentViewerModule,
     LangModule,
     YkjModule,
     ObservationResultModule,
@@ -63,6 +67,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     StatisticsModule,
     DatatableModule,
     TaxonAutocompleteModule,
+    LajiFormModule,
+    ObservationMapModule,
     NgxChartsModule
   ],
   declarations: [

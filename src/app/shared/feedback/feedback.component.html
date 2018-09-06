@@ -26,7 +26,7 @@
         <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
           {{'feedback.invalid' | translate}}
         </alert>
-        <div class="row email" *ngIf="!userService.isLoggedIn">
+        <div class="row email" *ngIf="!(userService.isLoggedIn$ | async)">
           <div class="col-sm-12">
             <input [(ngModel)]="feedback.email" type="text" placeholder="{{'email' | translate}}" class="form-control">
           </div>

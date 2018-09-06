@@ -1,84 +1,100 @@
-import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit,
-  ViewChild
-} from '@angular/core';
-import { SearchQuery } from '../search-query.model';
-import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { AutocompleteApi } from '../../shared/api/AutocompleteApi';
-import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
-import { CollectionApi } from '../../shared/api/CollectionApi';
-import { SourceApi } from '../../shared/api/SourceApi';
-import { LocalStorage } from 'ng2-webstorage';
-import { MapService } from '../../shared/map/map.service';
-import { WindowRef } from '../../shared/windows-ref';
-import { ObservationResultComponent } from '../result/observation-result.component';
 import { AreaType } from '../../shared/service/area.service';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { Observable, of as ObservableOf } from 'rxjs';
+import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { UserService } from '../../shared/service/user.service';
-import { Router } from '@angular/router';
-import { FormService } from '../../shared/service/form.service';
-import { environment } from '../../../environments/environment';
-import { FormPermissionService } from '../../+haseka/form-permission/form-permission.service';
-import { CoordinateService } from '../../shared/service/coordinate.service';
+import { Util } from '../../shared/service/util.service';
+import { LocalStorage } from 'ngx-webstorage';
+import * as moment from 'moment';
 
 @Component({
   selector: 'laji-observation-form',
   templateUrl: './observation-form.component.html',
   styleUrls: ['./observation-form.component.css'],
-  providers: [CollectionApi, SourceApi],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationFormComponent implements OnInit, OnDestroy {
+export class ObservationFormComponent implements OnInit {
 
-  @LocalStorage() public observationSettings: any;
-  @Input() activeTab: string;
-  @ViewChild('tabs') tabs;
-  @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
+  @Input() lang: string;
+  @Input() invasiveStatuses: string[] = [];
+  @Input() dateFormat = 'YYYY-MM-DD';
+  @Output() queryUpdate = new EventEmitter<WarehouseQueryInterface>();
+  @Output() mapDraw = new EventEmitter<string>();
 
-  public hasInvasiveControleRights = false;
-  public debouchAfterChange = 500;
-  public limit = 10;
-  public formQuery: ObservationFormQuery;
-  public dataSource: Observable<any>;
-  public typeaheadLoading = false;
-  public warehouseDateFormat = 'YYYY-MM-DD';
-  public logCoordinateAccuracyMax = 4;
-  public showPlace = false;
-  public showFilter = true;
-  public areaType = AreaType;
+  @LocalStorage('observationAdvancedMode', false) advancedMode;
 
-  public drawing = false;
-  public drawingShape: string;
-  public dateFormat = 'YYYY-MM-DD';
-  public invasiveStatuses: string[] = [
-    'nationallySignificantInvasiveSpecies',
-    'nationalInvasiveSpeciesStrategy',
-    'otherInvasiveSpeciesList',
-    'euInvasiveSpeciesList',
-    'quarantinePlantPest'
-  ];
+  formQuery: ObservationFormQuery;
+  emptyFormQuery: ObservationFormQuery = {
+    taxon: '',
+    timeStart: '',
+    timeEnd: '',
+    informalTaxonGroupId: '',
+    includeOnlyValid: undefined,
+    euInvasiveSpeciesList: undefined,
+    nationallySignificantInvasiveSpecies: undefined,
+    quarantinePlantPest: undefined,
+    otherInvasiveSpeciesList: undefined,
+    nationalInvasiveSpeciesStrategy: undefined,
+    allInvasiveSpecies: undefined,
+    onlyFromCollectionSystems: undefined,
+    asEditor: false,
+    asObserver: false,
+    taxonUseAnnotated: true,
+    taxonIncludeLower: true
+  };
 
-  private subUpdate: Subscription;
-  private subMap: Subscription;
-  private lastQuery: string;
-  private delayedSearchSource = new Subject<any>();
-  private delayedSearch = this.delayedSearchSource.asObservable();
-  private subSearch: Subscription;
+  _searchQuery: WarehouseQueryInterface;
+  showPlace = false;
+  drawing = false;
+  drawingShape: string;
 
-  constructor(public searchQuery: SearchQuery,
-              public translate: TranslateService,
-              private route: Router,
-              private cd: ChangeDetectorRef,
-              private userService: UserService,
-              private autocompleteService: AutocompleteApi,
-              private formService: FormService,
-              private formPermissionService: FormPermissionService,
-              private coordinateService: CoordinateService,
-              private mapService: MapService,
-              private winRef: WindowRef) {
+  areaType = AreaType;
+  dataSource: Observable<any>;
+  typeaheadLoading = false;
+  autocompleteLimit = 10;
+  logCoordinateAccuracyMax = 4;
+
+  visible: {[key: string]: boolean} = {};
+
+  visibleAdvanced: {[key: string]: boolean} = {};
+
+  section = {
+    own: ['observerPersonToken', 'editorOrObserverPersonToken', 'editorPersonToken'],
+    time: ['time', 'season', 'firstLoadedLaterThan', 'firstLoadedBefore'],
+    place: ['countryId', 'biogeographicalProvinceId', 'finnishMunicipalityId', 'area', 'coordinates', 'coordinateAccuracyMax'],
+    observer: ['teamMember', 'teamMemberId'],
+    individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
+    quality: ['taxonReliability', 'annotated', 'qualityIssues'],
+    dataset: ['collectionId', 'reliabilityOfCollection', 'sourceId'],
+    collection: ['collectionId', 'typeSpecimen'],
+    keywords: ['documentId', 'keyword'],
+    features: ['administrativeStatusId', 'redListStatusId', 'typeOfOccurrenceId', 'typeOfOccurrenceIdNot', 'invasive', 'finnish'],
+    invasive: [],
+    image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia'],
+    secret: ['secured', 'secureLevel'],
+    identify: ['unidentified'],
+  };
+
+  advancedSections = {
+    taxon: ['useIdentificationAnnotations', 'includeSubTaxa'],
+    time: ['firstLoadedLaterThan', 'firstLoadedBefore'],
+    coordinate: ['coordinates' , 'coordinateAccuracyMax'],
+    individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
+    dataset: ['collectionId', 'reliabilityOfCollection', 'sourceId'],
+    collection: ['collectionId', 'typeSpecimen'],
+    keywords: ['documentId', 'keyword'],
+    image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia'],
+    secure: ['secureLevel', 'secured'],
+    identify: ['unidentified'],
+  };
+
+  constructor(
+    private lajiApi: LajiApiService,
+    private userService: UserService,
+    private cdr: ChangeDetectorRef
+  ) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.formQuery.taxon);
     })
@@ -86,25 +102,41 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       .switchMap((token: string) => this.getTaxa(token))
       .switchMap((data) => {
         if (this.formQuery.taxon) {
-          return Observable.of(data);
+          return ObservableOf(data);
         }
-        return Observable.of([]);
+        return ObservableOf([]);
       });
   }
 
-  public getTaxa(token: string, onlyFirstMatch = false): Observable<any> {
-    return this.autocompleteService.autocompleteFindByField({
-        field: 'taxon',
-        q: token,
-        limit: onlyFirstMatch ? '1' : '' + this.limit,
-        includePayload: true,
-        lang: this.translate.currentLang,
-        informalTaxonGroup: this.formQuery.informalTaxonGroupId
-      })
+  ngOnInit() {
+    this.updateVisibleSections();
+  }
+
+  empty() {
+    this.formQuery = Util.clone(this.emptyFormQuery);
+  }
+
+  @Input() set searchQuery(query: WarehouseQueryInterface) {
+    this._searchQuery = query;
+    if (typeof this._searchQuery._coordinatesIntersection === 'undefined') {
+      this._searchQuery._coordinatesIntersection = 100;
+    }
+    this.formQuery = this.searchQueryToFormQuery(query);
+  }
+
+  get searchQuery() {
+    return this._searchQuery;
+  }
+
+  getTaxa(token: string): Observable<any> {
+    return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
+      q: token,
+      limit: '' + this.autocompleteLimit,
+      includePayload: true,
+      lang: this.lang,
+      informalTaxonGroup: this.formQuery.informalTaxonGroupId
+    } as LajiApi.Query.AutocompleteQuery)
       .map(data => {
-        if (onlyFirstMatch) {
-          return data[0] || {};
-        }
         return data.map(item => {
           let groups = '';
           if (item.payload && item.payload.informalTaxonGroups) {
@@ -118,111 +150,28 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnInit() {
-    if (environment.invasiveControlForm) {
-      this.formService
-        .load(environment.invasiveControlForm, this.translate.currentLang)
-        .switchMap((form) => this.formPermissionService.hasEditAccess(form))
-        .catch(() => Observable.of(false))
-        .subscribe(hasPermission => this.hasInvasiveControleRights = hasPermission);
-    }
-
-    this.subSearch = this.delayedSearch
-      .debounceTime(this.debouchAfterChange)
-      .subscribe(() => {
-        this.onSubmit();
-        this.cd.markForCheck();
-      });
-    if (!this.observationSettings) {
-      this.observationSettings = { showIntro: true };
-    }
-    this.empty(false, this.searchQuery.query);
-    this.subUpdate = this.searchQuery.queryUpdated$.subscribe(
-      res => {
-        if (res.formSubmit) {
-          this.queryToFormQuery(this.searchQuery.query);
-          this.onSubmit();
-        }
-      });
-    this.subMap = this.mapService.map$.subscribe((event) => {
-      if (event === 'drawstart') {
-        this.drawing = true;
-        this.showPlace = true;
-      }
-      if (event === 'drawstop') {
-        this.drawing = false;
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    if (this.subUpdate) {
-      this.subUpdate.unsubscribe();
-    }
-    if (this.subMap) {
-      this.subMap.unsubscribe();
-    }
-    if (this.subSearch) {
-      this.subSearch.unsubscribe();
-    }
-  }
-
-  draw(type: string) {
-    this.drawingShape = type;
-    if (this.activeTab !== 'map') {
-      this.route.navigate(['/observation/map'], {preserveQueryParams: true});
-    }
-    setTimeout(() => {
-      this.results.observationMap.drawToMap(type);
-    }, 100);
-  }
-
-  updateTime(dates) {
+  updateTime(dates, target = 'time') {
     if (dates === 365) {
       const today = new Date();
       const oneJan = new Date(today.getFullYear(), 0, 1);
       dates = Math.ceil(((+today) - (+oneJan)) / 86400000) - 1;
     }
     const now = moment();
-    this.formQuery.timeStart = now.subtract(dates, 'days').format('YYYY-MM-DD');
-    this.formQuery.timeEnd = '';
-    this.onQueryChange();
-  }
-
-  empty(refresh: boolean, query?: WarehouseQueryInterface) {
-    if (query) {
-      this.queryToFormQuery(query);
-      return;
-    }
-    Object.keys(this.searchQuery.query).map(key => this.searchQuery.query[key] = undefined);
-    this.formQuery = {
-      taxon: '',
-      timeStart: '',
-      timeEnd: '',
-      informalTaxonGroupId: '',
-      isNotFinnish: undefined,
-      isNotInvasive: undefined,
-      hasNotMedia: undefined,
-      includeOnlyValid: undefined,
-      euInvasiveSpeciesList: undefined,
-      nationallySignificantInvasiveSpecies: undefined,
-      quarantinePlantPest: undefined,
-      otherInvasiveSpeciesList: undefined,
-      nationalInvasiveSpeciesStrategy: undefined,
-      allInvasiveSpecies: undefined,
-      zeroObservations: undefined,
-      onlyFromCollectionSystems: undefined,
-      asEditor: false,
-      asObserver: false
-    };
-
-    if (refresh) {
-      this.onSubmit();
+    if (target === 'time') {
+      this.formQuery.timeStart = now.subtract(dates, 'days').format('YYYY-MM-DD');
+      this.formQuery.timeEnd = '';
+      this.onFormQueryChange();
+    } else if (target === 'loaded') {
+      this.searchQuery.firstLoadedSameOrAfter = now.subtract(dates, 'days').format('YYYY-MM-DD');
+      this.searchQuery.firstLoadedSameOrBefore = '';
+      this.onQueryChange();
+    } else {
+      console.error('invalid target for updateTime');
     }
   }
 
-  toggleInfo() {
-    this.observationSettings = {showIntro: !this.observationSettings.showIntro};
+  changeTypeaheadLoading(e: boolean): void {
+    this.typeaheadLoading = e;
   }
 
   togglePlace(event) {
@@ -234,10 +183,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   onOnlyFromCollectionCheckBoxToggle() {
-    this.formQuery.onlyFromCollectionSystems = !this.formQuery.onlyFromCollectionSystems;
-    if (this.formQuery.onlyFromCollectionSystems === false) {
-      this.searchQuery.query.sourceId = [];
-    }
+    this.searchQuery.sourceId = this.formQuery.onlyFromCollectionSystems ? ['KE.3', 'KE.167'] : [];
     this.onQueryChange();
   }
 
@@ -251,12 +197,12 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
         this.formQuery.allInvasiveSpecies = false;
       }
     }
-    this.formQueryToQuery(this.formQuery);
+    this.formQueryToSearchQuery(this.formQuery);
     this.onAdministrativeStatusChange();
   }
 
   onAdministrativeStatusChange() {
-    const admins = this.searchQuery.query.administrativeStatusId;
+    const admins = this.searchQuery.administrativeStatusId;
     let cnt = 0;
     this.invasiveStatuses.map(key => {
       const realKey = 'MX.' + key;
@@ -266,33 +212,34 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       }
     });
     this.formQuery.allInvasiveSpecies = cnt === this.invasiveStatuses.length;
+    this.cdr.markForCheck();
     this.onQueryChange();
   }
 
   onSystemIDChange() {
-    this.formQuery.onlyFromCollectionSystems = this.searchQuery.query.sourceId.length === 2
-      && this.searchQuery.query.sourceId.indexOf('KE.3') > -1
-      && this.searchQuery.query.sourceId.indexOf('KE.167') > -1;
+    this.formQuery.onlyFromCollectionSystems = this.searchQuery.sourceId.length === 2
+      && this.searchQuery.sourceId.indexOf('KE.3') > -1
+      && this.searchQuery.sourceId.indexOf('KE.167') > -1;
     this.onQueryChange();
   }
 
   onCheckBoxToggle(field, selectValue: any = true, isDirect = true) {
     if (isDirect) {
-      this.searchQuery.query[field] = typeof this.searchQuery.query[field] === 'undefined'
-      ||  this.searchQuery.query[field] !== selectValue
+      this.searchQuery[field] = typeof this.searchQuery[field] === 'undefined'
+      ||  this.searchQuery[field] !== selectValue
         ? selectValue : undefined;
     } else {
-      const value = this.searchQuery.query[field];
-      this.searchQuery.query[field] =
+      const value = this.searchQuery[field];
+      this.searchQuery[field] =
         typeof value === 'undefined' ||  value !==  selectValue ?
           selectValue : undefined;
     }
-    this.onIndirectChange();
+    this.onQueryChange();
   }
 
   onCountChange() {
-    if ( this.searchQuery.query.individualCountMin === 0
-      && this.searchQuery.query.individualCountMax === 0) {
+    if ( this.searchQuery.individualCountMin === 0
+      && this.searchQuery.individualCountMax === 0) {
       this.formQuery['zeroObservations'] = true;
     } else {
       this.formQuery['zeroObservations'] = false;
@@ -300,159 +247,151 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  toggleZeroCheckBox() {
-    this.formQuery['zeroObservations'] = !this.formQuery['zeroObservations'];
-    if (this.formQuery['zeroObservations']) {
-      this.searchQuery.query.individualCountMin = 0;
-      this.searchQuery.query.individualCountMax = 0;
-    } else {
-      this.searchQuery.query.individualCountMin = undefined;
-      this.searchQuery.query.individualCountMax = undefined;
+  zeroObservations(only = true) {
+    this.searchQuery.individualCountMin = 0;
+    if (only) {
+      this.searchQuery.individualCountMax = 0;
+    } else if (this.searchQuery.individualCountMax === 0) {
+      this.searchQuery.individualCountMax = undefined;
     }
-    this.delayedSearchSource.next();
-  }
-
-  onIndirectChange() {
-    this.queryToFormQuery(this.searchQuery.query);
     this.onQueryChange();
   }
 
   ownItemSelected() {
     if (!this.formQuery.asEditor || !this.formQuery.asObserver) {
-      delete this.searchQuery.query.editorOrObserverPersonToken;
+      delete this.searchQuery.editorOrObserverPersonToken;
     }
     if (this.formQuery.asEditor || this.formQuery.asObserver) {
-      this.searchQuery.query.qualityIssues = 'BOTH';
+      this.searchQuery.qualityIssues = 'BOTH';
     }
     this.onFormQueryChange();
   }
 
   onFormQueryChange() {
-    this.formQueryToQuery(this.formQuery);
+    this.formQueryToSearchQuery(this.formQuery);
     this.onQueryChange();
-  }
-
-  onQueryChange() {
-    this.delayedSearchSource.next(true);
   }
 
   onTaxonSelect(event) {
     if ((event.key === 'Enter' || (event.value && event.item)) && this.formQuery.taxon) {
-      this.searchQuery.query.target = this.searchQuery.query.target ?
-        [...this.searchQuery.query.target, this.formQuery.taxon] : [this.formQuery.taxon];
+      this.searchQuery['target'] = this.searchQuery['target'] ?
+        [...this.searchQuery['target'], this.formQuery.taxon] : [this.formQuery.taxon];
       this.formQuery.taxon = '';
       this.onQueryChange();
     }
   }
 
-  updateTargetList(list) {
-    this.searchQuery.query.target = list;
+  updateSearchQuery(field, value) {
+    this.searchQuery[field] = value;
     this.onQueryChange();
   }
 
   enableAccuracySlider() {
-    if (!this.searchQuery.query.coordinateAccuracyMax) {
-      this.searchQuery.query.coordinateAccuracyMax = 1000;
+    if (!this.searchQuery.coordinateAccuracyMax) {
+      this.searchQuery.coordinateAccuracyMax = 1000;
       this.onAccuracySliderChange();
     }
   }
 
   onAccuracySliderChange() {
-    this.searchQuery.query.coordinateAccuracyMax = Math.pow(10, this.logCoordinateAccuracyMax);
+    this.searchQuery.coordinateAccuracyMax = Math.pow(10, this.logCoordinateAccuracyMax);
     this.onQueryChange();
   }
 
   onAccuracyValueChange() {
-    this.logCoordinateAccuracyMax = Math.log10(this.searchQuery.query.coordinateAccuracyMax);
+    this.logCoordinateAccuracyMax = Math.log10(this.searchQuery.coordinateAccuracyMax);
     this.onQueryChange();
   }
 
-  onSubmit() {
-    this.formQueryToQuery(this.formQuery);
-    const cacheKey = JSON.stringify(this.searchQuery.query);
-    if (this.lastQuery === cacheKey) {
-      return;
-    }
-    this.searchQuery.query = {...this.searchQuery.query};
-    this.lastQuery = cacheKey;
-    this.searchQuery.tack++;
-    this.searchQuery.updateUrl([
-      'selected',
-      'pageSize',
-      'page'
-    ], false);
-    this.searchQuery.queryUpdate();
-    return false;
+  indirectQueryChange(field, value) {
+    this.searchQuery[field] = value;
+    this.onQueryChange();
   }
 
-  onFilterSelect(event) {
-    this.searchQuery.query = event;
-    this.delayedSearchSource.next();
+  onQueryChange() {
+    this.queryUpdate.emit(this.searchQuery);
+    this.updateVisibleAdvancedSections();
   }
 
-  toInvasiveControlForm() {
-    this.formService.populate({
-      URL: this.winRef.nativeWindow.document.location.href,
-      gatherings: [
-        {
-          geometry: this.coordinateService.convertLajiEtlCoordinatesToGeometry(this.searchQuery.query.coordinates)
+  updateTypeOfOccurrence(event) {
+    this.searchQuery.typeOfOccurrenceId = event.true;
+    this.searchQuery.typeOfOccurrenceIdNot = event.false;
+    this.onQueryChange();
+  }
+
+  private updateVisibleSections() {
+    Object.keys(this.section).forEach(section => {
+      let visible = false;
+      for (let i = 0; i < this.section[section].length; i++) {
+        const value = this.searchQuery[this.section[section][i]];
+        if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
+          visible = true;
+          break;
         }
-      ]
+      }
+      this.visible[section] = visible;
+    })
+  }
+
+  private updateVisibleAdvancedSections() {
+    Object.keys(this.advancedSections).forEach(section => {
+      let visible = false;
+      for (let i = 0; i < this.advancedSections[section].length; i++) {
+        const value = this.searchQuery[this.advancedSections[section][i]];
+        if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
+          visible = true;
+          break;
+        }
+      }
+      this.visibleAdvanced[section] = visible;
     });
-    this.route.navigate(['/vihko', environment.invasiveControlForm]);
   }
 
-  public changeTypeaheadLoading(e: boolean): void {
-    this.typeaheadLoading = e;
+  private hasInMulti(multi, value) {
+    if (Array.isArray(value)) {
+      return value.filter(val => !this.hasInMulti(multi, val)).length === 0;
+    }
+    return Array.isArray(multi) && multi.indexOf(value) > -1;
   }
 
-  private queryToFormQuery(query: WarehouseQueryInterface) {
-    this.onAccuracyValueChange();
+  private getValidDate(date) {
+    if (!date || !moment(date, this.dateFormat, true).isValid()) {
+      return '';
+    }
+    return date;
+  }
+
+  private searchQueryToFormQuery(query: WarehouseQueryInterface): ObservationFormQuery {
     const time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];
-    this.formQuery = {
+    const formQuery = {
       taxon: '',
       timeStart: this.getValidDate(time[0]),
       timeEnd: this.getValidDate(time[1]),
       informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
         query.informalTaxonGroupId[0] : '',
-      isNotFinnish: query.finnish === false ? true : undefined,
-      isNotInvasive: query.invasive === false ? true : undefined,
       includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
-      hasNotMedia: query.hasMedia === false ? true : undefined,
-      zeroObservations: query.individualCountMax === 0 && query.individualCountMax === 0 ? true : undefined,
       nationallySignificantInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.nationallySignificantInvasiveSpecies'),
       euInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.euInvasiveSpeciesList'),
       quarantinePlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.quarantinePlantPest'),
       otherInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.otherInvasiveSpeciesList'),
       nationalInvasiveSpeciesStrategy: this.hasInMulti(query.administrativeStatusId, 'MX.nationalInvasiveSpeciesStrategy'),
       allInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
-      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3'], true),
+      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3']) && query.sourceId.length === 2,
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
       asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
+      taxonIncludeLower: typeof query.includeSubTaxa !== 'undefined' ? query.includeSubTaxa : true,
+      taxonUseAnnotated: typeof query.useIdentificationAnnotations !== 'undefined' ? query.useIdentificationAnnotations : true,
     };
+
+    return formQuery;
   }
 
-  private hasInMulti(multi, value, noOther = false) {
-    if (Array.isArray(value)) {
-      return value.filter(val => !this.hasInMulti(multi, val, noOther)).length === 0;
-    }
-    if (Array.isArray(multi) && multi.indexOf(value) > -1) {
-      return noOther ? multi.length === (Array.isArray(value) ? value.length : 1) : true;
-    }
-    return false;
-  }
-
-  private formQueryToQuery(formQuery: ObservationFormQuery) {
-    const taxon = formQuery.taxon;
+  private formQueryToSearchQuery(formQuery: ObservationFormQuery) {
     const time = this.parseDate(formQuery.timeStart, formQuery.timeEnd);
-    const query = this.searchQuery.query;
+    const query = this.searchQuery;
 
-    // query.target = taxon.length > 0 ? [taxon] : undefined;
     query.time = time.length > 0 ? [time] : undefined;
     query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? [formQuery.informalTaxonGroupId] : undefined;
-    query.invasive = formQuery.isNotInvasive ? false : query.invasive;
-    query.finnish = formQuery.isNotFinnish ? false : query.finnish;
-    query.hasMedia = formQuery.hasNotMedia ? false : query.hasMedia;
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
     if (formQuery.allInvasiveSpecies) {
       query.administrativeStatusId = this.invasiveStatuses.map(val => 'MX.' + val);
@@ -462,6 +401,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
     query.editorPersonToken = formQuery.asEditor ? this.userService.getToken() : undefined;
     query.observerPersonToken = formQuery.asObserver ? this.userService.getToken() : undefined;
+    query.includeSubTaxa = formQuery.taxonIncludeLower ? undefined : false;
+    query.useIdentificationAnnotations = formQuery.taxonUseAnnotated ? undefined : false;
     this.invasiveStatuses
       .map((key) => {
         const value = 'MX.' + key;
@@ -469,25 +410,20 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
           if (query.administrativeStatusId) {
             const idx = query.administrativeStatusId.indexOf(value);
             if (idx > -1) {
-              query.administrativeStatusId.splice(idx, 1);
+              query.administrativeStatusId = [
+                ...query.administrativeStatusId.slice(0, idx),
+                ...query.administrativeStatusId.slice(idx + 1)
+              ];
             }
           }
           return;
         }
-        if (!query.administrativeStatusId) {
-          query.administrativeStatusId = [];
+        const administrativeStatusId = [...query.administrativeStatusId || []];
+        if (administrativeStatusId.indexOf(value) === -1) {
+          administrativeStatusId.push(value);
         }
-        if (query.administrativeStatusId.indexOf(value) === -1) {
-          query.administrativeStatusId.push(value);
-        }
+        query.administrativeStatusId = administrativeStatusId;
       });
-  }
-
-  private getValidDate(date) {
-    if (!date || !moment(date, this.dateFormat, true).isValid()) {
-      return '';
-    }
-    return date;
   }
 
   private parseDate(start, end) {
@@ -502,4 +438,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
     return (start || '') + '/' + (end || '');
   }
+
+
 }

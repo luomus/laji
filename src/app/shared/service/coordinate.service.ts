@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as MapUtil from 'laji-map/lib/utils';
-import {GeometryCollection} from 'geojson';
+import { GeometryCollection } from 'geojson';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class CoordinateService {
 
   constructor() { }
@@ -97,7 +97,7 @@ export class CoordinateService {
   }
 
   private convertYkjToWgs(latLng: [string, string]): [string, string] {
-    return MapUtil.convertLatLng(latLng, 'EPSG:2393', 'WGS84');
+    return MapUtil.convertLatLng([+latLng[0], +latLng[1]], 'EPSG:2393', 'WGS84');
   }
 
   private pad(value) {

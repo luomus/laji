@@ -2,17 +2,15 @@
  * Created by mjtahtin on 18.4.2017.
  */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { forkJoin as ObservableForkJoin, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxonomy, TaxonomyImage } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { Logger } from '../../shared/logger/logger.service';
-
-import { Observable } from 'rxjs/Observable';
 import { CacheService } from '../../shared/service/cache.service';
 
 @Component({
-  selector: '[laji-herpetology]',
+  selector: 'laji-herpetology',
   templateUrl: './herpetology.component.html',
   styleUrls: ['./herpetology.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -55,7 +53,7 @@ export class HerpetologyComponent implements OnInit {
 }
 
   updateTaxa() {
-    const fetchData$ = Observable.forkJoin(
+    const fetchData$ = ObservableForkJoin(
       this.taxonomyApi
         .taxonomyFindSpecies(
           'MX.37609', 'multi', 'MVL.26',  undefined, undefined, 'MX.typeOfOccurrenceStablePopulation', undefined, '1', '10', undefined,
@@ -63,7 +61,7 @@ export class HerpetologyComponent implements OnInit {
         )
         .map(species => species.results)
         .switchMap(data => {
-          return Observable.forkJoin(data.map(taxon => this.taxonomyApi
+          return ObservableForkJoin(data.map(taxon => this.taxonomyApi
             .taxonomyFindMedia(taxon.id, 'multi')
             .map(images => ({taxon: taxon, images: images[0] || {} }))
           ));
@@ -72,7 +70,7 @@ export class HerpetologyComponent implements OnInit {
         .taxonomyFindSpecies('MX.37610', 'multi', 'MVL.162',  undefined, undefined, 'MX.typeOfOccurrenceStablePopulation')
         .map(species => species.results)
         .switchMap(data => {
-          return Observable.forkJoin(data.map(taxon => this.taxonomyApi
+          return ObservableForkJoin(data.map(taxon => this.taxonomyApi
             .taxonomyFindMedia(taxon.id, 'multi')
             .map(images => ({taxon: taxon, images: images[0] || {}}))
           ));
@@ -82,7 +80,7 @@ export class HerpetologyComponent implements OnInit {
           'MX.typeOfOccurrenceAnthropogenic,MX.typeOfOccurrenceRareVagrant,MX.typeOfOccurrenceVagrant')
         .map(species => species.results)
         .switchMap(data => {
-          return Observable.forkJoin(data.map(taxon => this.taxonomyApi
+          return ObservableForkJoin(data.map(taxon => this.taxonomyApi
             .taxonomyFindMedia(taxon.id, 'multi')
             .map(images => ({taxon: taxon, images: images[0] || {}}))
           ));

@@ -2,6 +2,8 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 
 /**
  * Fixes the element to view when scrolling relative to parent container
+ *
+ * DO NOT USE THIS! ATM (will trigger change detection on very scroll)
  */
 @Directive({
   selector: '[lajiHideScroll]',

@@ -1,0 +1,18 @@
+<input
+  #typeahead
+  [ngClass]="{loading: typeaheadLoading}"
+  type="text"
+  class="form-control input-sm"
+  name="target"
+  [(ngModel)]="taxonId"
+  [typeahead]="dataSource"
+  [typeaheadOptionsLimit]="typeaheadLimit"
+  [typeaheadWaitMs]="200"
+  [typeaheadMinLength]="3"
+  [typeaheadFocusFirst]="false"
+  [typeaheadOptionField]="'value'"
+  (typeaheadLoading)="changeTypeaheadLoading($event)"
+  (typeaheadOnSelect)="onTaxonSelect($event)"
+  (keyup)="onTaxonSelect($event)"
+  autocomplete="off"
+  autocorrect="off">

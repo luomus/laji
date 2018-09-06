@@ -1,9 +1,8 @@
+import { Observable, Observer, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as MapUtil from 'laji-map/lib/utils';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
 
 type Grid = '100kmCenter'
   |'50kmCenter'
@@ -32,7 +31,7 @@ export class YkjService {
     }
     key += ':' + grid;
     if (this.key === key) {
-      return Observable.of(this.data);
+      return ObservableOf(this.data);
     } else if (this.pendingKey === key && this.pending) {
       return Observable.create((observer: Observer<any>) => {
         const onComplete = (res: any) => {
@@ -55,7 +54,7 @@ export class YkjService {
         false,
         false
       )
-      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
+      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .map(data => data.results)
       .map(data => this.resultToGeoJson(data, grid));
     return this.pending;
@@ -108,7 +107,7 @@ export class YkjService {
     return MapUtil.convertLatLng([lat, lng], 'WGS84', 'EPSG:2393');
   }
 
-  private convertYkjToWgs(latLng: [string, string]): [string, string] {
+  private convertYkjToWgs(latLng: [any, any]): [string, string] {
     return MapUtil.convertLatLng(latLng, 'EPSG:2393', 'WGS84');
   }
 

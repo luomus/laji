@@ -1,10 +1,20 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  HostListener,
+  Inject,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  PLATFORM_ID,
   SimpleChanges
 } from '@angular/core';
+import { WINDOW } from '@ng-toolkit/universal';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
-import { WindowRef } from '../../../shared/windows-ref';
 import { ExtendedNamedPlace } from '../model/extended-named-place';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'laji-np-choose',
@@ -34,7 +44,8 @@ export class NpChooseComponent implements OnInit, OnChanges {
   private seasonEnd;
 
   constructor(
-    private window: WindowRef
+    @Inject(WINDOW) private window: Window,
+    @Inject(PLATFORM_ID) private platformID: object
   ) {}
 
   ngOnInit() {
@@ -69,7 +80,9 @@ export class NpChooseComponent implements OnInit, OnChanges {
   }
 
   updateHeight() {
-    this.height = Math.min(this.window.nativeWindow.innerHeight - 70, 490) + 'px';
+    if (isPlatformBrowser(this.platformID)) {
+      this.height = Math.min(this.window.innerHeight - 70, 490) + 'px';
+    }
   }
 
   setActive(newActive: string) {

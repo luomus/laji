@@ -1,15 +1,8 @@
-import {
-  AfterViewInit,
-  Component,
-  HostListener,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
-import { MapComponent } from '../../../../../shared/map/map.component';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import * as LajiMap from 'laji-map';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-np-info-map',
@@ -17,15 +10,23 @@ import { MapComponent } from '../../../../../shared/map/map.component';
   styleUrls: ['./np-info-map.component.css']
 })
 export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild(MapComponent) lajiMap: MapComponent;
+  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
   @Input() visible: boolean;
   @Input() namedPlace: NamedPlace;
+
+  mapOptions: LajiMap.Options = {
+    tileLayerName: LajiMap.TileLayerName.maastokartta,
+    tileLayerOpacity: 0.5,
+    controls: {location: false}
+  };
 
   private _data: any;
   private resize: any;
   private viewIsInitialized = false;
 
-  constructor() { }
+  constructor(
+    public translate: TranslateService
+  ) { }
 
   ngOnInit() {
     this.initData();
@@ -47,7 +48,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
   onResize(event) {
     clearTimeout(this.resize);
     const that = this;
-    this.resize = setTimeout(function(){
+    this.resize = setTimeout(function() {
       that.setZoom();
     }, 500);
   }

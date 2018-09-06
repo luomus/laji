@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
+import { forkJoin as ObservableForkJoin } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { environment } from '../../../../environments/environment';
-import {TriplestoreLabelService} from '../../../shared/service';
+import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 
 import { DOCUMENT_LEVEL, FormField, VALUE_IGNORE } from '../model/form-field';
-import {MappingService} from './mapping.service';
+import { MappingService } from './mapping.service';
+import { distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class SpreadSheetService {
@@ -15,7 +16,7 @@ export class SpreadSheetService {
 
   private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
   private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-  private csvMimeTypes = ['text/csv', 'text/plain', 'application/vnd.ms-excel'];
+  private csvMimeTypes = ['text/csv', 'text/tsv', 'text/plain', 'application/vnd.ms-excel'];
 
   private translations = {};
 
@@ -39,47 +40,41 @@ export class SpreadSheetService {
     private labelService: TriplestoreLabelService,
     private translateService: TranslateService
   ) {
-    this.translateService.onLangChange
-      .map(() => this.translateService.currentLang)
-      .startWith(this.translateService.currentLang)
-      .distinctUntilChanged()
-      .switchMap((lang) => Observable.combineLatest(
-        this.labelService.get('MY.document', lang),
-        this.labelService.get('MZ.gatheringEvent', lang),
-        this.labelService.get('MY.taxonCensusClass', lang),
-        this.labelService.get('MY.gathering', lang),
-        this.labelService.get('MY.gatheringFactClass', lang),
-        this.labelService.get('MY.identification', lang),
-        this.labelService.get('MY.unit', lang),
-        this.labelService.get('MY.unitFactClass', lang),
-        this.labelService.get('MZ.unitGathering', lang),
-        (
-          document,
-          gatheringEvent,
-          taxonCensus,
-          gatherings,
-          gatheringFact,
-          identifications,
-          units,
-          unitFact,
-          unitGathering
-        ) => ({
-          document,
-          gatheringEvent,
-          taxonCensus,
-          gatherings,
-          gatheringFact,
-          identifications,
-          units,
-          unitFact,
-          unitGathering
-        })))
+    this.translateService.onLangChange.pipe(
+      map(() => this.translateService.currentLang),
+      startWith(this.translateService.currentLang),
+      distinctUntilChanged(),
+      switchMap(lang =>
+        ObservableForkJoin([
+          this.labelService.get('MY.document', lang),
+          this.labelService.get('MZ.gatheringEvent', lang),
+          this.labelService.get('MY.taxonCensusClass', lang),
+          this.labelService.get('MY.gathering', lang),
+          this.labelService.get('MY.gatheringFactClass', lang),
+          this.labelService.get('MY.identification', lang),
+          this.labelService.get('MY.unit', lang),
+          this.labelService.get('MY.unitFactClass', lang),
+          this.labelService.get('MZ.unitGathering', lang)
+        ])
+      ),
+      map(data => ({
+        document: data[0],
+        gatheringEvent: data[1],
+        taxonCensus: data[2],
+        gatherings: data[3],
+        gatheringFact: data[4],
+        identifications: data[5],
+        units: data[6],
+        unitFact: data[7],
+        unitGathering: data[8]
+      })
+      )
+    )
       .subscribe(translations => this.translations = translations)
 
   }
 
   isValidType(type) {
-    console.log(type);
     return [this.odsMimeType, this.xlsxMimeType, ...this.csvMimeTypes].indexOf(type) > -1;
   }
 
@@ -142,7 +137,7 @@ export class SpreadSheetService {
   }
 
   getColMapFromSheet(sheet: XLSX.WorkSheet, fields: {[key: string]: FormField}, len: number) {
-    const map = {};
+    const colMap = {};
     let idx = -1, col;
 
     this.mappingService.initColMap(fields);
@@ -158,7 +153,7 @@ export class SpreadSheetService {
           if (col.c.t) {
             const commentKey = this.mappingService.colMap(this.normalizeHeader(col.c.t));
             if (commentKey !== null) {
-              map[XLSX.utils.encode_col(idx)] = commentKey;
+              colMap[XLSX.utils.encode_col(idx)] = commentKey;
               found = true;
               break;
             }
@@ -171,11 +166,11 @@ export class SpreadSheetService {
       if (col.v) {
         const valueKey = this.mappingService.colMap(this.normalizeHeader(col.v));
         if (valueKey !== null) {
-          map[XLSX.utils.encode_col(idx)] = valueKey;
+          colMap[XLSX.utils.encode_col(idx)] = valueKey;
         }
       }
     }
-    return map;
+    return colMap;
   }
 
   findFormIdFromFilename(filename: string): string {
@@ -218,7 +213,16 @@ export class SpreadSheetService {
           let found = false;
           Object.keys(form.properties).map(key => {
             found = true;
-            this.parserFields(form.properties[key], validators.properties && validators.properties && validators.properties[key] || {}, result, root ? root + '.' + key : key, form.properties[key].type === 'object' && Object.keys(form.properties[key].properties).length > 0 ? key : parent, unitSubGroups, key, label, form.required || [])
+            this.parserFields(
+              form.properties[key],
+              validators.properties && validators.properties && validators.properties[key] || {},
+              result, root ? root + '.' + key : key,
+              form.properties[key].type === 'object' && Object.keys(form.properties[key].properties).length > 0 ? key : parent,
+              unitSubGroups,
+              key,
+              label,
+              form.required || []
+            )
           });
           if (!found) {
             if (this.hiddenFields.indexOf(root) > -1) {
@@ -243,7 +247,17 @@ export class SpreadSheetService {
       case 'array':
         if (form.items) {
           const newParent = ['object', 'array'].indexOf(form.items.type) > -1 ? lastKey : parent;
-          this.parserFields(form.items, validators.items || validators, result, root + '[*]', newParent, unitSubGroups, lastKey, label, required);
+          this.parserFields(
+            form.items,
+            validators.items || validators,
+            result,
+            root + '[*]',
+            newParent,
+            unitSubGroups,
+            lastKey,
+            label,
+            required
+          );
         }
         break;
       default:

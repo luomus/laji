@@ -1,3 +1,4 @@
+/* tslint:disable:max-line-length */
 export const environment = {
   production: true,
   isEmbedded: false,
@@ -17,7 +18,7 @@ export const environment = {
   defaultForm: 'JX.519',
   nafiForm: 'MHL.6',
   invasiveControlForm: '',
-  apiBase: '/api',
+  apiBase: 'https://laji.fi/api',
   wbcForm: 'MHL.3',
   lineTransectForm: 'MHL.1',
   lineTransectEiVakioForm: 'MHL.27',

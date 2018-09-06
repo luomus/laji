@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
-import { ViewerComponent } from './+viewer/viewer.component';
 import { ForumComponent } from './forum/forum.component';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
+import { mergeMap } from 'rxjs/operators';
 
-export class CustomPreloadingStrategy implements PreloadingStrategy {
-  preload(route: Route, load: () => Observable<boolean>): Observable<boolean> {
-    if (route.data && route.data['noPreload']) {
-      return Observable.of(null);
-    }
-    return load();
+export class PreloadSelectedModulesList implements PreloadingStrategy {
+  preload(route: Route, load: () => Observable<any>): Observable<any> {
+    return route.data && route.data.noPreload ? ObservableOf(null) : ObservableTimer(50).pipe(
+      mergeMap(() => load())
+    );
   }
 }
 
@@ -21,7 +20,7 @@ const routes: Routes = [
   {path: 'news', loadChildren: './+news/news.module#NewsModule', data: {noPreload: true, title: 'news.title'}},
   {path: 'about', loadChildren: './+information/information.module#InformationModule'},
   {path: 'user', loadChildren: './+user/user.module#UserModule', data: {noPreload: true}},
-  {path: 'view', component: ViewerComponent, data: {title: 'viewer.document'} },
+  {path: 'view', loadChildren: './+viewer/viewer.module#ViewerModule', data: {title: 'viewer.document'}},
   {path: 'invasive', loadChildren: './+invasive/invasive.module#InvasiveModule', data: {noPreload: true}},
   {path: 'vihko', loadChildren: './+haseka/haseka.module#HasekaModule', data: {title: 'haseka.title'}},
   {path: 'observation', loadChildren: './+observation/observation.module#ObservationModule', data: {title: 'navigation.observation'}},
@@ -67,8 +66,12 @@ const routesWithLang: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routesWithLang, {enableTracing: false})],
+  imports: [RouterModule.forRoot(routesWithLang, {
+    enableTracing: false,
+    preloadingStrategy: PreloadSelectedModulesList,
+    initialNavigation: 'enabled'
+  })],
   exports: [RouterModule],
-  providers: [CustomPreloadingStrategy]
+  providers: [PreloadSelectedModulesList]
 })
 export class AppRoutingModule { }

@@ -1,0 +1,522 @@
+diff --git a/node_modules/xlsx/node_modules/.bin/adler32 b/node_modules/xlsx/node_modules/.bin/adler32
+deleted file mode 120000
+index 7b1fa5e..0000000
+--- a/node_modules/xlsx/node_modules/.bin/adler32
++++ /dev/null
+@@ -1 +0,0 @@
+-../../../adler-32/bin/adler32.njs
+\ No newline at end of file
+diff --git a/node_modules/xlsx/node_modules/.bin/adler32 b/node_modules/xlsx/node_modules/.bin/adler32
+new file mode 100755
+index 0000000..2e31986
+--- /dev/null
++++ b/node_modules/xlsx/node_modules/.bin/adler32
+@@ -0,0 +1,87 @@
++#!/usr/bin/env node
++/* adler32.js (C) 2014-present SheetJS -- http://sheetjs.com */
++/* eslint-env node */
++/* vim: set ts=2 ft=javascript: */
++/*jshint node:true */
++
++var X/*:ADLER32Module*/;
++try { X = require('../'); } catch(e) { X = require('adler-32'); }
++
++function help()/*:number*/ {
++[
++"usage: adler32 [options] [filename]",
++"",
++"Options:",
++"    -h, --help           output usage information",
++"    -V, --version        output the version number",
++"    -S, --seed=<n>       use integer seed as starting value (default 1)",
++"    -H, --hex-seed=<h>   use hex seed as starting value (default 1)",
++"    -d, --signed         print result with format `%d` (default)",
++"    -u, --unsigned       print result with format `%u`",
++"    -x, --hex            print result with format `%0.8x`",
++"    -X, --HEX            print result with format `%0.8X`",
++"    -F, --format=<s>     use specified printf format",
++"",
++"Set filename = '-' or pipe data into adler32 to read from stdin",
++"Default output mode is signed (-d)",
++""
++].forEach(function(l) { console.log(l); });
++	return 0;
++}
++
++function version()/*:number*/ { console.log(X.version); return 0; }
++
++var fs = require('fs');
++require('exit-on-epipe');
++
++function die(msg/*:string*/, ec/*:?number*/)/*:void*/ { console.error(msg); process.exit(ec || 0); }
++
++var args/*:Array<string>*/ = process.argv.slice(2);
++var filename/*:string*/ = "";
++var fmt/*:string*/ = "";
++var seed = 1, r = 10;
++
++for(var i = 0; i < args.length; ++i) {
++	var arg = args[i];
++	if(arg.charCodeAt(0) != 45) { if(filename === "") filename = arg; continue; }
++	var m = arg.indexOf("=") == -1 ? arg : arg.substr(0, arg.indexOf("="));
++	switch(m) {
++		case "-": filename = "-"; break;
++
++		case "--help":     case "-h": process.exit(help()); break;
++		case "--version":  case "-V": process.exit(version()); break;
++
++		case "--signed":   case "-d": fmt = "%d"; break;
++		case "--unsigned": case "-u": fmt = "%u"; break;
++		case "--hex":      case "-x": fmt = "%0.8x"; break;
++		case "--HEX":      case "-X": fmt = "%0.8X"; break;
++		case "--format":   case "-F":
++			fmt = ((m!=arg) ? arg.substr(m.length+1) : args[++i])||""; break;
++
++		case "--hex-seed": case "-H": r = 16;
++		/* falls through */
++		case "--seed":     case "-S":
++			seed=parseInt((m!=arg) ? arg.substr(m.length+1) : args[++i], r)||1; break;
++
++		default: die("adler32: unrecognized option `" + arg + "'", 22);
++	}
++}
++
++if(!process.stdin.isTTY) filename = filename || "-";
++if(filename.length===0) die("adler32: must specify a filename ('-' for stdin)",1);
++
++var adler32 = seed;
++// $FlowIgnore -- Writable is callable but type sig disagrees
++var writable = require('stream').Writable();
++writable._write = function(chunk, e, cb) { adler32 = X.buf(chunk, adler32); cb(); };
++writable._writev = function(chunks, cb) {
++	chunks.forEach(function(c) { adler32 = X.buf(c.chunk, adler32);});
++	cb();
++};
++writable.on('finish', function() {
++	console.log(fmt === "" ? adler32 : require("printj").sprintf(fmt, adler32));
++});
++
++if(filename === "-") process.stdin.pipe(writable);
++else if(fs.existsSync(filename)) fs.createReadStream(filename).pipe(writable);
++else die("adler32: " + filename + ": No such file or directory", 2);
+diff --git a/node_modules/xlsx/node_modules/.bin/cfb b/node_modules/xlsx/node_modules/.bin/cfb
+deleted file mode 120000
+index 6129e49..0000000
+--- a/node_modules/xlsx/node_modules/.bin/cfb
++++ /dev/null
+@@ -1 +0,0 @@
+-../../../cfb/bin/cfb.njs
+\ No newline at end of file
+diff --git a/node_modules/xlsx/node_modules/.bin/cfb b/node_modules/xlsx/node_modules/.bin/cfb
+new file mode 100755
+index 0000000..2d69a59
+--- /dev/null
++++ b/node_modules/xlsx/node_modules/.bin/cfb
+@@ -0,0 +1,131 @@
++#!/usr/bin/env node
++/* cfb.js (C) 2013-present  SheetJS -- http://sheetjs.com */
++/* eslint-env node */
++/* vim: set ts=2 ft=javascript: */
++var n = "cfb";
++var X = require('../');
++var fs = require('fs');
++var program = require('commander');
++var PRINTJ = require("printj");
++var sprintf = PRINTJ.sprintf;
++program
++	.version(X.version)
++	.usage('[options] <file> [subfiles...]')
++	.option('-l, --list-files', 'list files')
++	.option('-r, --repair', 'attempt to repair and garbage-collect archive')
++	.option('-c, --create', 'create file')
++	.option('-a, --append', 'add files to CFB (overwrite existing data)')
++	.option('-d, --delete', 'delete files from CFB')
++	.option('-O, --to-stdout', 'extract raw contents to stdout')
++	.option('-z, --dump', 'dump internal representation but do not extract')
++	.option('-q, --quiet', 'process but do not report')
++	.option('--dev', 'development mode')
++	.option('--read', 'read but do not print out contents');
++
++program.parse(process.argv);
++
++var exit = process.exit;
++var die = function(errno/*:number*/, msg/*:string*/) { console.error(n + ": " + msg); exit(errno); };
++var logit = function(cmd/*:string*/, f/*:string*/) { console.error(sprintf("%-6s %s", cmd, f)); };
++
++if(program.args.length === 0) die(1, "must specify a filename");
++
++if(program.create) {
++	logit("create", program.args[0]);
++	var newcfb = X.utils.cfb_new();
++	X.writeFile(newcfb, program.args[0]);
++}
++
++if(!fs.existsSync(program.args[0])) die(1, "must specify a filename");
++
++var opts = ({type:'file'}/*:any*/);
++if(program.dev) opts.WTF = true;
++
++var cfb = X.read(program.args[0], opts);
++if(program.quiet) exit(0);
++
++if(program.dump) {
++	console.log("Full Paths:");
++	console.log(cfb.FullPaths.map(function(x/*:string*/) { return "  " + x; }).join("\n"));
++	console.log("File Index:");
++	console.log(cfb.FileIndex);
++	exit(0);
++}
++if(program.repair) { X.writeFile(cfb, program.args[0]); exit(0); }
++
++function fix_string(x/*:string*/)/*:string*/ { return x.replace(/[\u0000-\u001f]/g, function($$) { return sprintf("\\u%04X", $$.charCodeAt(0)); }); }
++var format_date = function(date/*:Date*/)/*:string*/ {
++	return sprintf("%02u-%02u-%02u %02u:%02u", date.getUTCMonth()+1, date.getUTCDate(), date.getUTCFullYear()%100, date.getUTCHours(), date.getUTCMinutes());
++};
++
++if(program.listFiles) {
++	var basetime = new Date(1980,0,1);
++	var cnt = 0, rootsize = 0, filesize = 0;
++	console.log("  Length     Date   Time    Name");
++	console.log(" --------    ----   ----    ----");
++	cfb.FileIndex.forEach(function(file/*:CFBEntry*/, i/*:number*/) {
++		switch(file.type) {
++			case 5:
++				basetime = file.ct || file.mt || basetime;
++				rootsize = file.size;
++				break;
++			case 2:
++				console.log(sprintf("%9lu  %s   %s", file.size, format_date(basetime), fix_string(cfb.FullPaths[i])));
++				filesize += file.size;
++				++cnt;
++		}
++	});
++	console.log(" --------                   -------");
++	console.log(sprintf("%9lu                   %lu file%s", rootsize || filesize, cnt, (cnt !== 1 ? "s" : "")));
++
++	exit(0);
++}
++
++function mkdirp(path/*:string*/) { path.split("/").reduce(function(acc/*:string*/, p/*:string*/) {
++	acc += p + "/";
++	if(!fs.existsSync(acc)) { logit("mkdir", acc); fs.mkdirSync(acc); }
++	return acc;
++}, ""); }
++
++function write(path/*:string*/, data/*:CFBEntry*/) {
++	logit("write", fix_string(path));
++	fs.writeFileSync(path, /*::new Buffer((*/data.content/*:: :any))*/ || new Buffer(0));
++}
++
++if(program.create || program.append) {
++	program.args.slice(1).forEach(function(x/*:string*/) {
++		logit("append", x);
++		X.utils.cfb_add(cfb, "/" + x, fs.readFileSync(x));
++	});
++	X.writeFile(cfb, program.args[0]);
++	exit(0);
++}
++
++if(program.delete) {
++	program.args.slice(1).forEach(function(x/*:string*/) {
++		logit("delete", x);
++		X.utils.cfb_del(cfb, "/" + x);
++	});
++	X.writeFile(cfb, program.args[0]);
++	exit(0);
++}
++
++if(program.args.length > 1) {
++	program.args.slice(1).forEach(function(x/*:string*/) {
++		var data/*:?CFBEntry*/ = X.find(cfb, x.replace(/\\u000\d/g,"!"));
++		if(!data) { console.error(x + ": file not found"); return; }
++		if(data.type !== 2) { console.error(x + ": not a file"); return; }
++		var idx = cfb.FileIndex.indexOf(data), path = cfb.FullPaths[idx];
++		if(program.toStdout) return process.stdout.write(/*::new Buffer((*/data.content/*:: :any))*/);
++		mkdirp(path.slice(0, path.lastIndexOf("/")));
++		write(path, data);
++	});
++	exit(0);
++}
++
++if(program.toStdout) exit(0);
++for(var i=0; i!==cfb.FullPaths.length; ++i) {
++	if(!cfb.FileIndex[i].name) continue;
++	if(cfb.FullPaths[i].slice(-1) === "/") mkdirp(cfb.FullPaths[i]);
++	else write(cfb.FullPaths[i], cfb.FileIndex[i]);
++}
+diff --git a/node_modules/xlsx/node_modules/.bin/codepage b/node_modules/xlsx/node_modules/.bin/codepage
+deleted file mode 120000
+index dd6ae49..0000000
+--- a/node_modules/xlsx/node_modules/.bin/codepage
++++ /dev/null
+@@ -1 +0,0 @@
+-../../../codepage/bin/codepage.njs
+\ No newline at end of file
+diff --git a/node_modules/xlsx/node_modules/.bin/codepage b/node_modules/xlsx/node_modules/.bin/codepage
+new file mode 100755
+index 0000000..d09e1b0
+--- /dev/null
++++ b/node_modules/xlsx/node_modules/.bin/codepage
+@@ -0,0 +1,98 @@
++#!/usr/bin/env node
++/* js-codepage (C) 2014-present SheetJS -- http://sheetjs.com */
++/* vim: set ts=2 ft=javascript: */
++/* eslint-env node */
++var codepage = require('../');
++require('exit-on-epipe');
++var fs = require('fs'), program/*:any*/ = (require('commander')/*:any*/);
++program
++	.version(codepage.version)
++	.usage('[options] <file>')
++	.option('-f, --from-code <code>', 'codepage of input (default 65001 utf8)')
++	.option('-t, --to-code <code>', 'codepage of output (default 65001 utf8)')
++	.option('-o, --output <file>', 'output file (<file>.<to> if specified)')
++	.option('-B, --bom', 'write BOM (for unicode codepages)')
++	.option('-F, --force', 'force writing to stdout for non-utf8 codepages')
++	.option('-l, --list', 'List supported codepages');
++
++program.on('--help', function() {
++	console.log('  Codepage descriptions can be found in the README');
++	console.log('      http://oss.sheetjs.com/js-codepage/README.md');
++	console.log('  Support email: dev.codepage@sheetjs.com');
++});
++
++program.parse(process.argv);
++
++if(program.list) {
++	var l/*:Array<number>*/ = [];
++	Object.keys(codepage).forEach(function(x) { if(parseInt(x, 10) == +x) l.push(+x); });
++	Object.keys(codepage.utils.magic).forEach(function(x) { if(parseInt(x, 10) == +x && +x != 16969) l.push(+x); });
++	l.sort(function(a,b) { return a-b; }).forEach(function(x) { console.log(x); });
++	process.exit();
++}
++
++var fr = +program.fromCode || 65001;
++var to = +program.toCode || 65001;
++var f = program.args[0];
++var o = program.output;
++
++if(!process.stdin.isTTY) f = f || "-";
++
++if(f !== "-" && !fs.existsSync(f)) {
++	console.error('codepage: must specify a filename');
++	process.exit(13);
++}
++
++function concat(func) {
++	// $FlowIgnore
++	var writable = require('stream').Writable();
++	var buf = [];
++	writable._write = function(chunk, e, cb) { buf.push(chunk); cb(); };
++	writable._writev = function(chunks, cb) { chunks.forEach(function(c) { buf.push(c.chunk); cb(); }); };
++	writable.on('finish', function() { func(Buffer.concat(buf)); });
++	return writable;
++}
++
++if(f === "-") process.stdin.pipe(concat(process_text));
++else process_text(fs.readFileSync(f));
++
++function process_text(text/*:Buffer*/) {
++	var dec/*:Buffer*/ = (codepage.utils.decode(fr, text)/*:any*/);
++
++	var bom/*:Array<Buffer>*/ = [];
++	bom[1200] = new Buffer([0xFF, 0xFE]);
++	bom[1201] = new Buffer([0xFE, 0xFF]);
++	bom[12000] = new Buffer([0xFF, 0xFE, 0x00, 0x00]);
++	bom[12001] = new Buffer([0x00, 0x00, 0xFE, 0xFF]);
++	bom[16969] = new Buffer([0x69, 0x69]);
++	bom[65000] = new Buffer([0x2B, 0x2F, 0x76, 0x2B]);
++	bom[65001] = new Buffer([0xEF, 0xBB, 0xBF]);
++
++	var mybom = (program.bom && bom[to] ? bom[to] : "");
++	var out/*:any*/ = to === 65001 ? dec.toString('utf8') : codepage.utils.encode(to, dec);
++
++	/* if output file is specified */
++	if(o) writefile(o, out, mybom);
++	/* utf8 -> print to stdout */
++	else if(to === 65001) logit(out, mybom);
++	/* stdout piped to process -> print */
++	else if(!process.stdout.isTTY) logit(out, mybom);
++	/* forced */
++	else if(program.force) logit(out, mybom);
++	/* input file specified -> write to file */
++	else if(f !== "-") writefile(f + "." + to, out, mybom);
++	else {
++		console.error('codepage: use force (-F, --force) to print ' + to + ' codes');
++		process.exit(14);
++	}
++}
++
++function logit(out/*:Buffer*/, bom) {
++	process.stdout.write(bom);
++	process.stdout.write(out);
++}
++
++function writefile(o, out/*:Buffer*/, bom) {
++	fs.writeFileSync(o, bom);
++	fs.appendFileSync(o, out);
++}
+diff --git a/node_modules/xlsx/node_modules/.bin/crc32 b/node_modules/xlsx/node_modules/.bin/crc32
+deleted file mode 120000
+index aa1fc22..0000000
+--- a/node_modules/xlsx/node_modules/.bin/crc32
++++ /dev/null
+@@ -1 +0,0 @@
+-../../../crc-32/bin/crc32.njs
+\ No newline at end of file
+diff --git a/node_modules/xlsx/node_modules/.bin/crc32 b/node_modules/xlsx/node_modules/.bin/crc32
+new file mode 100755
+index 0000000..657291a
+--- /dev/null
++++ b/node_modules/xlsx/node_modules/.bin/crc32
+@@ -0,0 +1,87 @@
++#!/usr/bin/env node
++/* crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
++/* eslint-env node */
++/* vim: set ts=2 ft=javascript: */
++/*jshint node:true */
++
++var X/*:CRC32Module*/;
++try { X = require('../'); } catch(e) { X = require('crc-32'); }
++
++function help()/*:number*/ {
++[
++"usage: crc32 [options] [filename]",
++"",
++"Options:",
++"    -h, --help           output usage information",
++"    -V, --version        output the version number",
++"    -S, --seed=<n>       use integer seed as starting value (rolling CRC)",
++"    -H, --hex-seed=<h>   use hex seed as starting value (rolling CRC)",
++"    -d, --signed         print result with format `%d` (default)",
++"    -u, --unsigned       print result with format `%u`",
++"    -x, --hex            print result with format `%0.8x`",
++"    -X, --HEX            print result with format `%0.8X`",
++"    -F, --format=<s>     use specified printf format",
++"",
++"Set filename = '-' or pipe data into crc32 to read from stdin",
++"Default output mode is signed (-d)",
++""
++].forEach(function(l) { console.log(l); });
++	return 0;
++}
++
++function version()/*:number*/ { console.log(X.version); return 0; }
++
++var fs = require('fs');
++require('exit-on-epipe');
++
++function die(msg/*:string*/, ec/*:?number*/)/*:void*/ { console.error(msg); process.exit(ec || 0); }
++
++var args/*:Array<string>*/ = process.argv.slice(2);
++var filename/*:string*/ = "";
++var fmt/*:string*/ = "";
++var seed = 0, r = 10;
++
++for(var i = 0; i < args.length; ++i) {
++	var arg = args[i];
++	if(arg.charCodeAt(0) != 45) { if(filename === "") filename = arg; continue; }
++	var m = arg.indexOf("=") == -1 ? arg : arg.substr(0, arg.indexOf("="));
++	switch(m) {
++		case "-": filename = "-"; break;
++
++		case "--help":     case "-h": process.exit(help()); break;
++		case "--version":  case "-V": process.exit(version()); break;
++
++		case "--signed":   case "-d": fmt = "%d"; break;
++		case "--unsigned": case "-u": fmt = "%u"; break;
++		case "--hex":      case "-x": fmt = "%0.8x"; break;
++		case "--HEX":      case "-X": fmt = "%0.8X"; break;
++		case "--format":   case "-F":
++			fmt = ((m!=arg) ? arg.substr(m.length+1) : args[++i])||""; break;
++
++		case "--hex-seed": case "-H": r = 16;
++		/* falls through */
++		case "--seed":     case "-S":
++			seed=parseInt((m!=arg) ? arg.substr(m.length+1) : args[++i], r)||0; break;
++
++		default: die("crc32: unrecognized option `" + arg + "'", 22);
++	}
++}
++
++if(!process.stdin.isTTY) filename = filename || "-";
++if(filename.length===0) die("crc32: must specify a filename ('-' for stdin)",1);
++
++var crc32 = seed;
++// $FlowIgnore -- Writable is callable but type sig disagrees
++var writable = require('stream').Writable();
++writable._write = function(chunk, e, cb) { crc32 = X.buf(chunk, crc32); cb(); };
++writable._writev = function(chunks, cb) {
++	chunks.forEach(function(c) { crc32 = X.buf(c.chunk, crc32);});
++	cb();
++};
++writable.on('finish', function() {
++	console.log(fmt === "" ? crc32 : require("printj").sprintf(fmt, crc32));
++});
++
++if(filename === "-") process.stdin.pipe(writable);
++else if(fs.existsSync(filename)) fs.createReadStream(filename).pipe(writable);
++else die("crc32: " + filename + ": No such file or directory", 2);
+diff --git a/node_modules/xlsx/node_modules/.bin/ssf b/node_modules/xlsx/node_modules/.bin/ssf
+deleted file mode 120000
+index 31d63f8..0000000
+--- a/node_modules/xlsx/node_modules/.bin/ssf
++++ /dev/null
+@@ -1 +0,0 @@
+-../../../ssf/bin/ssf.njs
+\ No newline at end of file
+diff --git a/node_modules/xlsx/node_modules/.bin/ssf b/node_modules/xlsx/node_modules/.bin/ssf
+new file mode 100755
+index 0000000..79610a5
+--- /dev/null
++++ b/node_modules/xlsx/node_modules/.bin/ssf
+@@ -0,0 +1,13 @@
++#!/usr/bin/env node
++/* ssf.js (C) 2013-present SheetJS -- http://sheetjs.com */
++/* eslint-env node */
++/* eslint no-console:0 */
++/*jshint node:true */
++var X = require('../');
++var argv = process.argv.slice(2);
++if(argv.length < 2 || argv[0] == "-h" || argv[0] == "--help") {
++	console.error("usage: ssf <format> <value>");
++	console.error("output: format_as_string|format_as_number|");
++	process.exit(0);
++}
++console.log(X.format(argv[0],argv[1]) + "|" + X.format(argv[0],+(argv[1])) + "|");
+diff --git a/node_modules/xlsx/xlsx.js b/node_modules/xlsx/xlsx.js
+index 1b68b6e..167dd6d 100644
+--- a/node_modules/xlsx/xlsx.js
++++ b/node_modules/xlsx/xlsx.js
+@@ -12460,6 +12460,19 @@ return function parse_ws_xml_data(sdata, s, opts, guess, themes, styles) {
+ 	if(rows.length > 0) s['!rows'] = rows;
+ }; })();
+ 
++function write_ws_xml_datavalidation(validations) {
++  var o = '<dataValidations count="' + validations.length + '">';
++  for(var i=0; i < validations.length; i++) {
++    var validation = validations[i];
++    o += '<dataValidation type="list" operator="equal" allowBlank="1" showInputMessage="1" sqref="' + validation.sqref + '">';
++    o += '<formula1>' + validation.sqtarget + '</formula1>';
++    o += '</dataValidation>';
++  }
++  o += '</dataValidations>';
++
++  return o;
++}
++
+ function write_ws_xml_data(ws, opts, idx, wb) {
+ 	var o = [], r = [], range = safe_decode_range(ws['!ref']), cell="", ref, rr = "", cols = [], R=0, C=0, rows = ws['!rows'];
+ 	var dense = Array.isArray(ws);
+@@ -12567,8 +12580,10 @@ function write_ws_xml(idx, opts, wb, rels) {
+ 	/* customSheetViews */
+ 
+ 	if(ws['!merges'] != null && ws['!merges'].length > 0) o[o.length] = (write_ws_xml_merges(ws['!merges']));
++  if(ws['!dataValidation']) o[o.length] = write_ws_xml_datavalidation(ws['!dataValidation']);
++
+ 
+-	/* phoneticPr */
++  /* phoneticPr */
+ 	/* conditionalFormatting */
+ 	/* dataValidations */
+ 

@@ -6,9 +6,10 @@ import { routing } from './home.routes';
 import { HomeComponent } from './home.components';
 import { ImageHeaderComponent } from './image-header/image-header.component';
 import { StatItemComponent } from './image-header/stat-item.component';
+import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 
 @NgModule({
-  imports: [routing, SharedModule, CarouselModule],
+  imports: [routing, SharedModule, CarouselModule, ObservationMapModule],
   declarations: [HomeComponent, ImageHeaderComponent, StatItemComponent, NavigationThumbnailComponent]
 })
 export class HomeModule {

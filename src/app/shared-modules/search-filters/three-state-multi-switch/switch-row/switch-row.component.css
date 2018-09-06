@@ -1,0 +1,20 @@
+.lj-item {
+  display: block;
+  padding-left: 15px;
+  font-size: 0.90em;
+  margin-bottom: 0;
+  font-weight: normal;
+  position: relative;
+}
+
+::ng-deep .lj-item laji-checkbox {
+  position: relative;
+  margin: 2px 3px -2px -16px;
+}
+
+@media only screen and (max-width : 767px) {
+  .lj-item {
+    font-size: 1em;
+    min-height: 32px;
+  }
+}

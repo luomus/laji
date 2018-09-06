@@ -1,0 +1,15 @@
+<div class="btn-group">
+  <button type="button" class="btn" [ngClass]="_switchState === onValue ? 'btn-' + onColor : 'btn-default'" (click)="switch(true)">{{onText}}</button>
+  <button type="button" class="btn" [ngClass]="_switchState === offValue ? 'btn-' + onColor : 'btn-default'" (click)="switch(false)">{{offText}}</button>
+</div>
+<!--
+<bSwitch
+  [switch-off-text]="offText"
+  [switch-on-text]="onText"
+  [switch-on-color]="onColor"
+  [switch-size]="size"
+  [(ngModel)]="_switchState"
+  [switch-base-class]="'bootstrap-switch'"
+  (onChangeState)="switch($event)">
+</bSwitch>
+-->

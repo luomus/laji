@@ -1,33 +1,40 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, Input, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
-import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { Logger } from '../../../shared/logger/logger.service';
 import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { TaxonomySearchQuery } from '../taxonomy-search-query.model';
-import { ModalDirective } from 'ngx-bootstrap';
-import { UserService } from '../../../shared/service/user.service';
-import { TaxonExportService } from './taxon-export.service';
-
+import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
+import { SpeciesDownloadComponent } from '../species-download/species-download.component';
+import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/species-list-options-modal.component';
+import { TaxonomyColumns } from '../service/taxonomy-columns';
+import { TaxonExportService } from '../service/taxon-export.service';
+import { DatatableUtil } from '../service/datatable-util.service';
+import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
+import { Util } from '../../../shared/service/util.service';
 
 @Component({
   selector: 'laji-species-list',
   templateUrl: './species-list.component.html',
-  styleUrls: ['./species-list.component.css'],
-  providers: [TaxonExportService]
+  styleUrls: ['./species-list.component.css']
 })
-export class SpeciesListComponent implements OnInit, OnDestroy {
-  @ViewChild('settingsModal') modalRef: ModalDirective;
-  @ViewChild('speciesTools') speciesTools;
+export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
+  @ViewChild('speciesDownload') speciesDownload: SpeciesDownloadComponent;
+  @ViewChild('settingsModal') settingsModal: SpeciesListOptionsModalComponent;
+  @ViewChild('dataTable') public datatable: DatatableComponent;
+
   @Input() searchQuery: TaxonomySearchQuery;
+  @Input() columnService: TaxonomyColumns;
+  @Input() visible: boolean;
 
   loading = false;
   downloadLoading = false;
+
+  columns: ObservationTableColumn[] = [];
   speciesPage: PagedResult<Taxonomy> = {
     currentPage: 1,
     lastPage: 1,
@@ -36,130 +43,9 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     pageSize: 0
   };
 
-  _selected: string[];
-  columns: ObservationTableColumn[] = [];
-  allColumns: ObservationTableColumn[] = [
-    {
-      name: 'id',
-      label: 'taxonomy.card.id',
-      width: 95
-    },
-    {
-      name: 'taxonRank',
-      label: 'taxonomy.rank',
-      cellTemplate: 'label',
-      width: 90
-    },
-    {
-      name: 'scientificName',
-      selectField: 'scientificName,cursiveName',
-      label: 'taxonomy.scientific.name',
-      cellTemplate: 'taxonScientificName',
-      width: 200
-    },
-    {
-      name: 'scientificNameAuthorship',
-      label: 'taxonomy.author',
-      width: 200
-    },
-    {
-      name: 'vernacularName',
-      label: 'taxonomy.vernacular.name',
-      cellTemplate: 'multiLang',
-      width: 200
-    },
-    {
-      name: 'synonymNames',
-      cellTemplate: 'cursive',
-      width: 200
-    },
-    {
-      name: 'vernacularName.fi',
-      label: 'taxonomy.vernacular.name.fi',
-      selectField: 'vernacularName',
-      width: 200
-    },
-    {
-      name: 'vernacularName.sv',
-      label: 'taxonomy.vernacular.name.sv',
-      selectField: 'vernacularName',
-      width: 200
-    },
-    {
-      name: 'vernacularName.en',
-      label: 'taxonomy.vernacular.name.en',
-      selectField: 'vernacularName',
-      width: 200
-    },
-    {
-      name: 'alternativeVernacularName',
-      label: 'taxonomy.alternative.vernacular.names',
-      cellTemplate: 'multiLangAll',
-      width: 200
-    },
-    {
-      name: 'obsoleteVernacularName',
-      label: 'taxonomy.obsolete.vernacular.name',
-      cellTemplate: 'multiLangAll',
-      width: 200
-    },
-    {
-      name: 'tradeName',
-      label: 'taxonomy.trade.name',
-      cellTemplate: 'multiLangAll',
-      width: 200
-    },
-    {
-      name: 'finnish',
-      cellTemplate: 'boolean',
-      width: 90
-    },
-    {
-      name: 'typeOfOccurrenceInFinland',
-      cellTemplate: 'labelArray'
-    },
-    {
-      name: 'typeOfOccurrenceInFinlandNotes'
-    },
-    {
-      name: 'occurrenceInFinlandPublication',
-      cellTemplate: 'publicationArray',
-      width: 200
-    },
-    {
-      name: 'originalPublication',
-      cellTemplate: 'publication',
-      width: 200
-    },
-    {
-      name: 'latestRedListStatusFinland',
-      cellTemplate: 'iucnStatus',
-      width: 90
-    },
-    {
-      name: 'informalTaxonGroups',
-      cellTemplate: 'labelArray',
-      width: 200
-    },
-    {
-      name: 'invasiveSpecies',
-      cellTemplate: 'boolean',
-      width: 90
-    },
-    {
-      name: 'administrativeStatuses',
-      cellTemplate: 'labelArray',
-      width: 200
-    },
-    {
-      name: 'taxonExpert',
-      cellTemplate: 'user'
-    },
-    {
-      name: 'notes'
-    }
-  ];
-  columnLookup = {};
+  private defaultSortOrder: string[];
+  private sortValues = {};
+  private prevSorts: any;
 
   private lastQuery: string;
   private subQueryUpdate: Subscription;
@@ -169,38 +55,38 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
 
   constructor(
     private taxonomyService: TaxonomyApi,
-    private translate: TranslateService,
     private logger: Logger,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private cd: ChangeDetectorRef,
-    private userService: UserService,
-    private taxonExportService: TaxonExportService
+    private taxonExportService: TaxonExportService,
+    private dtUtil: DatatableUtil
   ) { }
 
   ngOnInit() {
     this.loading = true;
-    this.initColumns();
-
-    this.userService.getItem<any>(UserService.SETTINGS_TAXONOMY_LIST)
-      .subscribe(data => {
-        if (data && data.selected) {
-          this.searchQuery.selected = data.selected;
-        }
-        this.settingsLoaded = true;
-        this.refreshSpeciesList();
-      });
 
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
-        this.searchQuery.page = 1;
+        this.searchQuery.listOptions.page = 1;
         this.refreshSpeciesList();
       }
     );
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.visible && this.visible) {
+      this.datatable.refreshTable();
+    }
+  }
+
   ngOnDestroy() {
     this.subQueryUpdate.unsubscribe();
+  }
+
+  onSettingsLoaded() {
+    this.settingsLoaded = true;
+    this.refreshSpeciesList();
   }
 
   onRowSelect(event) {
@@ -210,21 +96,97 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(event) {
-    this.searchQuery.page = event.offset + 1;
+    this.searchQuery.listOptions.page = event.offset + 1;
     this.refreshSpeciesList();
   }
 
   sortOrderChanged(event) {
-    this.searchQuery.sortOrder = event;
+    this.searchQuery.listOptions.sortOrder = event;
     this.refreshSpeciesList();
+  }
+
+  onSort(event) {
+    this.sort(event.sorts, this.speciesPage)
+      .subscribe(result => {
+        this.speciesPage = result;
+      });
+  }
+
+  private sort(sorts, page: PagedResult<Taxonomy>): Observable<PagedResult<Taxonomy>> {
+    this.prevSorts = sorts;
+    const rows = [...page.results];
+
+    return this.setSortValues(sorts, rows)
+      .pipe(map(() => {
+        if (sorts.length > 0) {
+          this.customSort(sorts, rows);
+        } else {
+          this.defaultSort(rows);
+        }
+
+        return {
+          currentPage: page.currentPage,
+          lastPage: page.lastPage,
+          results: rows,
+          total: page.total,
+          pageSize: page.pageSize
+        };
+      }));
+  }
+
+  private setSortValues(sorts, results: Taxonomy[]): Observable<any> {
+    const obs = sorts.reduce((arr, sort) => {
+      const template = this.columnService.columnLookup[sort.prop].cellTemplate;
+      results.forEach((row) => {
+        if (!this.sortValues[row.id]) {
+          this.sortValues[row.id] = {};
+        }
+
+        if (this.sortValues[row.id][sort.prop] == null) {
+          const rowValue = Util.parseJSONPath(row, sort.prop);
+
+          if (!template || rowValue == null) {
+            this.sortValues[row.id][sort.prop] = rowValue;
+          } else {
+            arr.push(
+              this.dtUtil.getVisibleValue(rowValue, template)
+                .pipe(tap(val => {
+                  this.sortValues[row.id][sort.prop] = val;
+                }))
+            );
+          }
+        }
+      });
+      return arr;
+    }, []);
+
+    return (obs.length > 0 ? ObservableForkJoin(obs) : ObservableOf([]))
+  }
+
+  private customSort(sorts, results: Taxonomy[]) {
+    sorts.forEach((sort) => {
+      const dir = sort.dir === 'asc' ? 1 : -1;
+      results.sort((a, b) => {
+        const aa = this.sortValues[a.id][sort.prop] != null ? this.sortValues[a.id][sort.prop] : '';
+        const bb = this.sortValues[b.id][sort.prop] != null ? this.sortValues[b.id][sort.prop] : '';
+        return dir * ('' + aa).localeCompare('' + bb);
+      });
+    });
+  }
+
+  private defaultSort(results: Taxonomy[]) {
+    const values = [...results];
+
+    values.forEach((val) => {
+      const newIdx = this.defaultSortOrder.indexOf(val.id);
+      results[newIdx] = val;
+    });
   }
 
   refreshSpeciesList() {
     const cacheKey = JSON.stringify({
       query: this.searchQuery.query,
-      page: this.searchQuery.page,
-      sortOrder: this.searchQuery.sortOrder,
-      selected: this.searchQuery.selected
+      listOptions: this.searchQuery.listOptions
     });
     if (this.lastQuery === cacheKey || !this.settingsLoaded) {
       return;
@@ -236,16 +198,26 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     }
     this.loading = true;
 
-    this.subFetch = this.fetchPage(this.searchQuery.page)
+    this.subFetch = this.fetchPage(this.searchQuery.listOptions.page)
       .subscribe(data => {
-          this.columns = this.searchQuery.selected.map(name => {
-            return this.columnLookup[name];
-          });
+          this.columns = this.columnService.getColumns(this.searchQuery.listOptions.selected);
+          this.sortValues = {};
 
           if (data.lastPage && data.lastPage === 1) {
-            this.columns = this.columns.map(column => ({...column, sortable: true}));
+            this.columns.map(column => {column.sortable = true});
+            this.defaultSortOrder = data.results.map(res => res.id);
+
+            if (this.prevSorts) {
+              this.sort(this.prevSorts, data)
+                .subscribe(page => {
+                  this.speciesPage = page;
+                  this.loading = false;
+                  this.cd.markForCheck();
+                });
+              return;
+            }
           } else {
-            this.columns = this.columns.map(column => ({...column, sortable: false}));
+            this.columns.map(column => {column.sortable = false});
           }
 
           this.speciesPage = data;
@@ -260,62 +232,28 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       );
   }
 
-  initColumns() {
-    this._selected = [...this.searchQuery.selected];
-    this.allColumns = this.allColumns
-      .map(column => {
-        this.columnLookup[column.name] = column;
-        if (!column.label) {
-          column.label = 'taxonomy.' + column.name;
-        }
-        return column;
-      });
-  }
-
-  clear() {
-    this._selected = [];
-  }
-
-  toggleSelectedField(field: string) {
-    const idx = this._selected.indexOf(field);
-    if (idx === -1) {
-      this._selected = [...this._selected, field];
-    } else {
-      this._selected = [
-        ...this._selected.slice(0, idx),
-        ...this._selected.slice(idx + 1)
-      ]
-    }
-  }
-
-  openModal() {
-    this._selected = [...this.searchQuery.selected];
-    this.modalRef.show();
-  }
-
-  closeOkModal() {
-    this.searchQuery.selected = [...this._selected];
-    this.searchQuery.page = 1;
-    this.refreshSpeciesList();
-    this.saveSettings();
-    this.modalRef.hide();
-  }
-
   download(fileType: string) {
     this.downloadLoading = true;
 
-    const columns = this.searchQuery.selected.map(name => {
-      return this.columnLookup[name];
-    });
+    const columns = this.columnService.getColumns(this.searchQuery.listOptions.selected);
     this.fetchAllPages()
       .subscribe(data =>  {
         this.taxonExportService.downloadTaxons(columns, data, fileType)
           .subscribe(() => {
             this.downloadLoading = false;
-            this.speciesTools.modal.hide();
+            this.speciesDownload.modal.hide();
             this.cd.markForCheck();
           });
       });
+  }
+
+  openModal() {
+    this.settingsModal.openModal();
+  }
+
+  onCloseModal() {
+    this.searchQuery.listOptions.page = 1;
+    this.refreshSpeciesList();
   }
 
   private fetchAllPages(page = 1, data = []): Observable<any> {
@@ -325,14 +263,14 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
         if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
           return this.fetchAllPages(result.currentPage + 1, data);
         } else {
-          return Observable.of(data);
+          return ObservableOf(data);
         }
       });
   }
 
   private fetchPage(page: number): Observable<PagedResult<Taxonomy>> {
     if (!this.loading && this.speciesPage.currentPage === page) {
-      return Observable.of(this.speciesPage);
+      return ObservableOf(this.speciesPage);
     }
 
     const query = this.searchQueryToTaxaQuery();
@@ -340,7 +278,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     return this.taxonomyService
       .taxonomyFindSpecies(
         query.target,
-        this.translate.currentLang,
+        'multi',
         undefined,
         undefined,
         undefined,
@@ -348,7 +286,7 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
         undefined,
         '' + page,
         '1000',
-        this.searchQuery.sortOrder,
+        this.searchQuery.listOptions.sortOrder,
         query.extraParameters
       )
   }
@@ -359,7 +297,6 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
     const extraParameters = {...query};
     extraParameters['target'] = undefined;
     extraParameters['selectedFields'] = this.getSelectedFields();
-    extraParameters['lang'] = 'multi';
 
     return {
       target,
@@ -368,10 +305,10 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
   }
 
   private getSelectedFields() {
-    const selects = this.searchQuery.selected.reduce((arr, field) => {
+    const selects = this.searchQuery.listOptions.selected.reduce((arr, field) => {
       let addedField = field;
-      if (this.columnLookup[field] && this.columnLookup[field].selectField) {
-        addedField = this.columnLookup[field].selectField;
+      if (this.columnService.columnLookup[field] && this.columnService.columnLookup[field].selectField) {
+        addedField = this.columnService.columnLookup[field].selectField;
       }
       if (arr.indexOf(addedField) === -1) {
         arr.push(addedField);
@@ -383,11 +320,5 @@ export class SpeciesListComponent implements OnInit, OnDestroy {
       selects.push('id');
     }
     return selects.join(',');
-  }
-
-  private saveSettings() {
-    this.userService.setItem(UserService.SETTINGS_TAXONOMY_LIST, {
-      selected: this.searchQuery.selected
-    }).subscribe(() => {}, () => {});
   }
 }

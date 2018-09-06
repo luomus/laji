@@ -3,12 +3,12 @@ import { InvasiveComponent } from './invasive.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { routing } from './invasive.routes';
-import { ViewerModule } from '../+viewer/viewer.module';
+import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
 import { LangModule } from '../shared-modules/lang/lang.module';
 
 @NgModule({
   imports: [
-    routing, SharedModule, RouterModule, ViewerModule, LangModule
+    routing, SharedModule, RouterModule, DocumentViewerModule, LangModule
   ],
   declarations: [InvasiveComponent, InvasiveComponent]
 })

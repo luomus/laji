@@ -1,0 +1,60 @@
+.lj-filter {
+  margin-top: 4px;
+}
+.lj-item-container {
+  max-height: 50vh;
+  overflow: auto;
+  margin: 0 -15px;
+  padding: 0 15px;
+  border-bottom: 1px solid #ccc;
+}
+.lj-item {
+  display: block;
+  padding-left: 15px;
+  font-size: 0.90em;
+  margin-bottom: 0;
+  font-weight: normal;
+}
+.lj-item laji-checkbox {
+  position: relative;
+  margin: 2px 3px -2px -16px;
+}
+.lj-item span {
+}
+.lj-active {
+  margin: 0 -15px;
+  padding: 0 15px;
+  background-color: #f1f1f1;
+}
+.lj-title {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin: 0 -15px;
+  padding: 6px 15px;
+  display: block;
+  min-height: 32px;
+  position: relative;
+}
+.lj-title:after {
+  font-family: "Glyphicons Halflings";
+  color: #ccc;
+  position: absolute;
+  right: 3px;
+  top: 7px;
+}
+
+.lj-open .lj-title:after {
+  content:"\e259";
+}
+.lj-close .lj-title:after {
+  content:"\e260";
+}
+.lj-select {
+  position: relative;
+}
+@media only screen and (max-width : 767px) {
+  .lj-item {
+    font-size: 1em;
+    min-height: 32px;
+  }
+}

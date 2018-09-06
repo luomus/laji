@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { MetadataService } from '../../../shared/service/metadata.service';
-import { AnnotationService } from '../../../+viewer/service/annotation.service';
-import { Observable } from 'rxjs/Observable';
+import { AnnotationService } from '../../document-viewer/service/annotation.service';
+import { Observable } from 'rxjs';
 import { Logger } from '../../../shared/logger/logger.service';
-import { AutocompleteApi } from '../../../shared/api/AutocompleteApi';
 import { TranslateService } from '@ngx-translate/core';
+import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { mergeMap } from 'rxjs/operators';
 
 
 @Component({
@@ -42,7 +43,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     private metadataService: MetadataService,
     private annotationService: AnnotationService,
     private loggerService: Logger,
-    private autocompleteService: AutocompleteApi,
+    private lajiApi: LajiApiService,
     private translate: TranslateService
   ) { }
 
@@ -50,12 +51,13 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     this.initAnnotation();
     this.taxonAutocomplete = Observable.create((observer: any) => {
       observer.next(this.annotation.opinion);
-    }).mergeMap((query: string) => this.getTaxa(query));
+    }).pipe(
+      mergeMap((query: string) => this.getTaxa(query))
+    );
   }
 
   public getTaxa(token: string): Observable<any> {
-    return this.autocompleteService.autocompleteFindByField({
-      field: 'taxon',
+    return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
       limit: '10',
       includePayload: true,

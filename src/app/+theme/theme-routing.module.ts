@@ -1,3 +1,4 @@
+/* tslint:disable:max-line-length */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NafiComponent } from './nafi/nafi.component';
@@ -7,7 +8,7 @@ import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 import { NafiMyDocumentListComponent } from './nafi/nafi-my-document-list/nafi-my-document-list.component';
 import { NafiInstructionsComponent } from './nafi/nafi-instructions/nafi-instructions.component';
 import { HerpetologyComponent } from './herpetology/herpetology.component';
-import { DocumentDeActivateGuard } from '../shared/document-form/document-de-activate.guard';
+import { DocumentDeActivateGuard } from '../shared/guards/document-de-activate.guard';
 import { YkjComponent } from './ykj/ykj.component';
 import { EmkComponent } from './emk/emk.component';
 import { WbcComponent } from './wbc/wbc.component';
@@ -28,6 +29,7 @@ import { LineTransectMyDocumentListComponent } from './line-transect/line-transe
 import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 import { LineTransectFormEiVakioComponent } from './line-transect/line-transect-form-ei-vakio/line-transect-form-ei-vakio.component';
 import { LineTransectFormKartoitusComponent } from './line-transect/line-transect-form-kartoitus/line-transect-form-kartoitus.component';
+/* tslint:enable:max-line-length */
 
 const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
@@ -36,7 +38,7 @@ const routes: Routes = [
     component: WbcComponent,
     children: [
       {path: '', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' }},
-      {path: 'stats', pathMatch: 'full', component: WbcResultComponent, data: { title: 'wbc.title' }},
+      {path: 'stats', pathMatch: 'full', component: WbcResultComponent, data: { title: 'wbc.title', noScrollToTop: true }},
       {path: 'form', pathMatch: 'full', component: WbcFormComponent, canActivate: [OnlyLoggedIn]},
       {
         path: 'form/:id',
@@ -55,7 +57,7 @@ const routes: Routes = [
     component: NafiComponent,
     children: [
       {path: '', pathMatch: 'full', component: NafiInstructionsComponent, data: { title: 'nafi.stats.title' }},
-      {path: 'stats', pathMatch: 'full', component: NafiResultComponent, data: { title: 'nafi.stats.title' }},
+      {path: 'stats', pathMatch: 'full', component: NafiResultComponent, data: { title: 'nafi.stats.title', noScrollToTop: true}},
       {path: 'form', pathMatch: 'full', component: NafiFormComponent, canActivate: [OnlyLoggedIn]},
       {
         path: 'form/:id',
@@ -76,6 +78,7 @@ const routes: Routes = [
       {path: '', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' }},
       {
         path: 'stats',
+        data: { noScrollToTop: true },
         children: [
           {
             path: '',

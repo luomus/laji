@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'laji-spinner',
@@ -11,18 +11,14 @@ import { Component, Input, OnInit } from '@angular/core';
   <div class="bounce3"></div>
 </div>
 <ng-content *ngIf="!hideContentWhileLoading || !spinning"></ng-content>`,
-  styleUrls: ['./spinner.component.css']
+  styleUrls: ['./spinner.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpinnerComponent implements OnInit {
+export class SpinnerComponent {
 
   @Input() spinning = true;
   @Input() overlay = false;
   @Input() light = false;
   @Input() hideContentWhileLoading = false;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

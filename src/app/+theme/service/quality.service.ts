@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable, Observer, of as ObservableOf } from 'rxjs';
 
 @Injectable()
 export class QualityService {
@@ -32,10 +31,10 @@ export class QualityService {
       query.informalTaxonGroupId = informalTaxonGroup;
     }
     if (timeStart) {
-      query.annotatedLaterThan = timeStart;
+      query.annotatedSameOrAfter = timeStart;
     }
     if (timeEnd) {
-      query.annotatedBefore = timeEnd;
+      query.annotatedSameOrBefore = timeEnd;
     }
 
     const cacheKey = JSON.stringify({page, pageSize, orderBy, informalTaxonGroup, timeStart, timeEnd});
@@ -58,13 +57,13 @@ export class QualityService {
       query.informalTaxonGroupId = informalTaxonGroup;
     }
     if (lastDate) {
-      query.annotatedLaterThan = lastDate;
+      query.annotatedSameOrAfter = lastDate;
     }
 
     const cacheKey = JSON.stringify({maxLength, informalTaxonGroup, lastDate});
 
     return this._fetch('users', cacheKey,
-      this.warehouseApi.warehouseQueryAggregateGet(
+      this.warehouseApi.warehouseQueryAnnotationAggregateGet(
         query,
         ['unit.annotations.annotationByPerson', 'unit.annotations.annotationByPersonName'],
         undefined,
@@ -84,7 +83,7 @@ export class QualityService {
 
   private _fetch(type: 'annotations'|'users', cacheKey: string, request): Observable<any> {
     if (this.state[type].key === cacheKey) {
-      return Observable.of(this.state[type].data);
+      return ObservableOf(this.state[type].data);
     } else if (this.state[type].pendingKey === cacheKey && this.state[type].pending) {
       return Observable.create((observer: Observer<any>) => {
         const onComplete = (res: any) => {

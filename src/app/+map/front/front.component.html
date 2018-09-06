@@ -15,23 +15,9 @@
   </div>
 
   <laji-map
-          [settingsKey]="''"
-          [draw]="draw"
-          [drawData]="drawData"
-          [overlayNames]="overlayNames"
-          [availableTileLayerNamesBlacklist]="['pohjakartta']"
-          [tileLayerName]="['maastokartta']"
-          [controls]="{
-           draw: {
-            copy: true,
-            upload: true,
-            clear: true
-           },
-           coordinates: true
-          }"
-          [lang]="translate.currentLang"
-          [initWithWorldMap]="false"
-          [zoom]="3"
-          (onCreate)="onCreate($event)"
-          [center]="[64.209802, 24.912872]"></laji-map>
+    [options]="mapOptions"
+    [settingsKey]="''"
+    [data]="drawData"
+    [lang]="translate.currentLang"
+    (onCreate)="onCreate($event)"></laji-map>
 </div>

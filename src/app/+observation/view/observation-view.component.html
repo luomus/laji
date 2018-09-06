@@ -1,0 +1,45 @@
+<form (ngSubmit)="onSubmit()" #observationForm="ngForm" id="wrapper">
+  <div class="row">
+    <div class="form-filters"
+         [ngClass]="{'col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10': showFilter}">
+      <laji-search-filters [searchQuery]="searchQuery"
+                           [hasInvasiveControlRights]="hasInvasiveControleRights"
+                           [showFilter]="showFilter"
+                           (onShowFilterChange)="showFilter = $event"
+                           (onInvasiveControlClick)="toInvasiveControlForm()">
+        <laji-observation-form
+          [searchQuery]="searchQuery.query"
+          [lang]="translate.currentLang"
+          [invasiveStatuses]="invasiveStatuses"
+          [dateFormat]="dateFormat"
+          (queryUpdate)="onQueryChange()"
+          (mapDraw)="draw($event)"
+        ></laji-observation-form>
+      </laji-search-filters>
+    </div>
+    <div
+      style="margin-top: 10px;"
+      [ngClass]="{
+       'result-list col-sm-8 col-md-9 col-lg-10': showFilter,
+       'col-sm-12': !showFilter
+     }"
+    >
+      <ng-container *lajiBrowserOnly>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="pull-right toggle-intro" *ngIf="!observationSettings.showIntro">
+              <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+            </div>
+          </div>
+        </div>
+        <alert *ngIf="observationSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+          <div [innerHtml]="'observation.intro' | translate"></div>
+        </alert>
+      </ng-container>
+      <div #tabs>
+        <laji-observation-result [active]="activeTab"
+                                 (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>
+      </div>
+    </div>
+  </div>
+</form>

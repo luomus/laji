@@ -1,7 +1,7 @@
 /* tslint:disable */
 /**
  * API documentation
- * To use this api you need an access token. To get the token, send a post request with your email address to api-users resource and one will be send to your. See below for information on how to use this api and if you have any questions you can contact us at helpdesk@laji.fi.  Place refer to [schema.laji.fi](http://schema.laji.fi/) for more information about the used vocabulary
+ * To use this api you need an access token. To getList the token, send a post request with your email address to api-users resource and one will be send to your. See below for information on how to use this api and if you have any questions you can contact us at helpdesk@laji.fi.  Place refer to [schema.laji.fi](http://schema.laji.fi/) for more information about the used vocabulary
  *
  * OpenAPI spec version: 0.0.1
  *
@@ -22,12 +22,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import * as models from '../model';
 import { PagedResult } from '../model/PagedResult';
 import { NamedPlace } from '../model/NamedPlace';
+import { HttpClient } from '@angular/common/http';
+import { Util } from '../service/util.service';
+import { environment } from '../../../environments/environment';
 
 export interface NamedPlaceQuery {
   userToken?: string;
@@ -38,12 +39,11 @@ export interface NamedPlaceQuery {
   includePublic?: boolean;
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NamedPlaceApi {
-  protected basePath = '/api';
-  public defaultHeaders: Headers = new Headers({'Content-Type': 'application/json'});
+  protected basePath = environment.apiBase;
 
-  constructor(protected http: Http) {
+  constructor(protected http: HttpClient) {
   }
 
   /**
@@ -55,8 +55,7 @@ export class NamedPlaceApi {
   public create(data: NamedPlace, userToken: string, extraHttpRequestParams?: any): Observable<NamedPlace> {
     const path = this.basePath + '/named-places';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'data' is not null or undefined
     if (data === null || data === undefined) {
       throw new Error('Required parameter data was null or undefined when calling createNamedPlace.');
@@ -66,24 +65,10 @@ export class NamedPlaceApi {
       throw new Error('Required parameter personToken was null or undefined when calling createNamedPlace.');
     }
     if (userToken !== undefined) {
-      queryParameters.set('personToken', userToken);
+      queryParameters['personToken'] = userToken;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'POST',
-      headers: headerParams,
-      search: queryParameters
-    };
-    requestOptions.body = JSON.stringify(data);
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.post<NamedPlace>(path, data, {params: queryParameters});
   }
 
   /**
@@ -96,31 +81,17 @@ export class NamedPlaceApi {
     const path = this.basePath + '/named-places/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling findById.');
     }
 
     if (userToken !== undefined) {
-      queryParameters.set('personToken', userToken);
+      queryParameters['personToken'] = userToken;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<NamedPlace>(path, {params: queryParameters});
   }
 
   /**
@@ -135,39 +106,25 @@ export class NamedPlaceApi {
   public findAll(query: NamedPlaceQuery, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<NamedPlace>> {
     const path = this.basePath + '/named-places';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'personToken' is not null or undefined
     if (page !== undefined) {
-      queryParameters.set('page', page);
+      queryParameters['page'] = page;
     }
     if (pageSize !== undefined) {
-      queryParameters.set('pageSize', pageSize);
+      queryParameters['pageSize'] = pageSize;
     }
 
     Object.keys(query).forEach(key => {
       if (typeof query[key] === 'string') {
         let targetKey = key === 'userToken' ? 'personToken' : key;
-        queryParameters.set(targetKey, query[key]);
+        queryParameters[targetKey] = query[key];
       } else if (typeof query[key] === 'boolean') {
-        queryParameters.set(key, query[key] ? 'true' : 'false');
+        queryParameters[key] = query[key] ? 'true' : 'false';
       }
     });
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<PagedResult<NamedPlace>>(path, {params: queryParameters});
   }
 
   /**
@@ -181,8 +138,7 @@ export class NamedPlaceApi {
     const path = this.basePath + '/named-places/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');
@@ -196,32 +152,17 @@ export class NamedPlaceApi {
       throw new Error('Required parameter personToken was null or undefined when calling documentUpdateWithUser.');
     }
     if (userToken !== undefined) {
-      queryParameters.set('personToken', userToken);
+      queryParameters['personToken'] = userToken;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'PUT',
-      headers: headerParams,
-      search: queryParameters
-    };
-    requestOptions.body = JSON.stringify(data);
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.put<NamedPlace>(path, data, {params: queryParameters});
   }
 
   public reserve(id: string, personToken: string, extraHttpRequestParams?: {until?: string, personID?: string}): Observable<NamedPlace> {
     const path = this.basePath + '/named-places/{id}/reservation'
       .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeUndefinedFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');
@@ -231,36 +172,17 @@ export class NamedPlaceApi {
       throw new Error('Required parameter personToken was null or undefined when calling documentUpdateWithUser.');
     }
     if (personToken !== undefined) {
-      queryParameters.set('personToken', personToken);
-    }
-    if (typeof extraHttpRequestParams === 'object') {
-      Object.keys(extraHttpRequestParams).map((key) => {
-        queryParameters.set(key, extraHttpRequestParams[key]);
-      })
+      queryParameters['personToken'] = personToken;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'POST',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.post<NamedPlace>(path, undefined, {params: queryParameters});
   }
 
   public releaseReservation(id: string, personToken: string): Observable<NamedPlace> {
     const path = this.basePath + '/named-places/{id}/reservation'
       .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    let queryParameters = {};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');
@@ -270,23 +192,10 @@ export class NamedPlaceApi {
       throw new Error('Required parameter personToken was null or undefined when calling documentUpdateWithUser.');
     }
     if (personToken !== undefined) {
-      queryParameters.set('personToken', personToken);
+      queryParameters['personToken'] = personToken;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'DELETE',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.delete<NamedPlace>(path, {params: queryParameters});
   }
 
 }

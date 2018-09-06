@@ -1,6 +1,7 @@
-import { Directive, TemplateRef, ViewContainerRef, Input, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Directive, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { UserService } from '../service/user.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, Subscription } from 'rxjs';
+import { startWith, switchMap, tap } from 'rxjs/operators';
 
 @Directive({
   selector: '[lajiLoggedIn]'
@@ -15,31 +16,37 @@ export class LoggedInDirective implements OnInit, OnDestroy {
   constructor(
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef,
-    private userService: UserService
+    private userService: UserService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    this.userActions = this.userService.action$
-      .startWith(true)
-      .subscribe(() => this.checkLogin());
+    this.userActions = this.userService.action$.pipe(
+      startWith(true),
+      switchMap(() => this.checkLogin())
+    ).subscribe();
   }
 
   ngOnDestroy() {
-    this.userActions.unsubscribe();
+    if (this.userActions) {
+      this.userActions.unsubscribe();
+    }
   }
 
-  private checkLogin() {
+  private checkLogin(): Observable<boolean> {
     const onlyLoggedIn = this.lajiLoggedIn === null || typeof this.lajiLoggedIn === 'undefined' ? true : this.lajiLoggedIn;
-    const shouldBeVisible =
-      (onlyLoggedIn && this.userService.isLoggedIn) ||
-      (!onlyLoggedIn && !this.userService.isLoggedIn);
-
-    if (shouldBeVisible && !this.visible) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
-    } else if (!shouldBeVisible && this.visible) {
-      this.viewContainer.clear();
-    }
-    this.visible = shouldBeVisible;
+    return this.userService.isLoggedIn$.pipe(
+      tap(isLoggedIn => {
+        const shouldBeVisible = (onlyLoggedIn && isLoggedIn) || (!onlyLoggedIn && !isLoggedIn);
+        if (shouldBeVisible && !this.visible) {
+          this.viewContainer.createEmbeddedView(this.templateRef);
+        } else if (!shouldBeVisible && this.visible) {
+          this.viewContainer.clear();
+        }
+        this.visible = shouldBeVisible;
+        this.cdr.markForCheck();
+      })
+    );
   }
 
 }

@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Document } from '../../shared/model/Document';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { WindowRef } from '../../shared/windows-ref';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { DocumentInfoService } from '../../shared-modules/own-submissions/service/document-info.service';
 
 import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { WINDOW } from '@ng-toolkit/universal';
 
 @Component({
   selector: 'laji-short-document',
@@ -18,7 +18,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() document: Document;
   @Input() form: any;
   @Output() onDiscard = new EventEmitter();
-  @Output() onShowViewer = new EventEmitter();
+  @Output() onShowViewer = new EventEmitter<Document>();
 
   public unitList = [];
   public newUnitsLength: number;
@@ -38,7 +38,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     private router: Router,
     private translate: TranslateService,
     private localizeRouterService: LocalizeRouterService,
-    private winRef: WindowRef
+    @Inject(WINDOW) private window: Window
   ) {}
 
   ngOnInit() {
@@ -86,7 +86,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     if (this.newUnitsLength > 0) {
       this.translate.get('haseka.users.latest.discardConfirm', {unitCount: this.newUnitsLength}).subscribe(
         (confirm) => {
-          if (this.winRef.nativeWindow.confirm(confirm)) {
+          if (this.window.confirm(confirm)) {
             this.onDiscard.emit();
           }
         }
@@ -98,7 +98,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
 
   showViewer(event) {
     event.stopPropagation();
-    this.onShowViewer.emit(this.document.id);
+    this.onShowViewer.emit(this.document);
   }
 
   showUnitList(event) {

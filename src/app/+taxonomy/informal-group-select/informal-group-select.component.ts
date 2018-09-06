@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 
@@ -37,7 +37,9 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
   }
 
   ngOnDestroy() {
-    this.subTrans.unsubscribe();
+    if (this.subTrans) {
+      this.subTrans.unsubscribe();
+    }
   }
 
   private refreshInformalGroups() {

@@ -1,13 +1,11 @@
-import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges,
-  Output
-} from '@angular/core';
+import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Util } from '../../shared/service/util.service';
 import { TaxonomyImage } from '../../shared/model/Taxonomy';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { Logger } from '../../shared/logger/logger.service';
-import { Observable } from 'rxjs/Observable';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-gallery',
@@ -31,7 +29,7 @@ export class GalleryComponent implements OnChanges {
   @Output() selected = new EventEmitter<boolean>();
   @Output() hasData = new EventEmitter<boolean>();
 
-  images: TaxonomyImage[] = [];
+  images$: Observable<TaxonomyImage[]>;
   page = 1;
   total = 0;
   loading = false;
@@ -62,26 +60,37 @@ export class GalleryComponent implements OnChanges {
       query.cache = true;
     }
     this.loading = true;
+    // TODO: think about this little more units are still basic search for this so might have to drop this
+    // or target gathering and document endpoints
+    const imgField = 'unit.media';
     query.hasUnitMedia = true;
-    this.cd.markForCheck();
-    this.warehouseApi.warehouseQueryListGet(query, [
+    /*
+    if (query.hasUnitMedia) {
+      // pass
+    } else if (query.hasGatheringMedia) {
+      imgField = 'gathering.media';
+    } else if (query.hasDocumentMedia) {
+      imgField = 'document.media';
+    } else {
+      query.hasUnitMedia = true;
+    }
+    */
+    this.images$ = this.warehouseApi.warehouseQueryListGet(query, [
         'unit.taxonVerbatim,unit.linkings.taxon.vernacularName,unit.linkings.taxon.scientificName,unit.reportedInformalTaxonGroup',
-        'unit.media',
+        imgField,
         // 'gathering.media',
         // 'document.media',
         'document.documentId,unit.unitId',
         this.extendedInfo ? '' : ''
-      ], this.sort, this.pageSize, this.page)
-      .timeout(WarehouseApi.longTimeout)
-      .retryWhen(errors => errors.delay(1000).take(3).concat(Observable.throw(errors)))
-      .map((data) => {
+      ], this.sort, this.pageSize, this.page).pipe(
+      map((data) => {
         const images = [];
         this.total = Math.min(data.total, this.limit);
         if (data.results) {
           data.results.map(items => {
             const group = (items['unit'] && items['unit']['reportedInformalTaxonGroup']) ? items['unit']['reportedInformalTaxonGroup'] : '';
             const verbatim = (items['unit'] && items['unit']['taxonVerbatim']) ? items['unit']['taxonVerbatim'] : '';
-            ['unit'].map((key) => {
+            ['unit', 'gathering', 'document'].map((key) => {
               if (items[key] && items[key].media) {
                 items[key].media.map(media => {
                   if (images.length >= this.limit) {
@@ -89,14 +98,16 @@ export class GalleryComponent implements OnChanges {
                   }
                   media['documentId'] = items['document']['documentId'];
                   media['unitId'] = items['unit']['unitId'];
-                  media['vernacularName'] = items.unit
-                    && items.unit.linkings
-                    && items.unit.linkings.taxon
-                    && items.unit.linkings.taxon.vernacularName || '';
-                  media['scientificName'] = items['unit']
-                    && items['unit']['linkings']
-                    && items['unit']['linkings']['taxon']
-                    && items['unit']['linkings']['taxon']['scientificName'] || verbatim || group || '';
+                  if (imgField === 'unit.media') {
+                    media['vernacularName'] = items.unit
+                      && items.unit.linkings
+                      && items.unit.linkings.taxon
+                      && items.unit.linkings.taxon.vernacularName || '';
+                    media['scientificName'] = items['unit']
+                      && items['unit']['linkings']
+                      && items['unit']['linkings']['taxon']
+                      && items['unit']['linkings']['taxon']['scientificName'] || verbatim || group || '';
+                  }
                   images.push(media);
                 });
               }
@@ -104,17 +115,16 @@ export class GalleryComponent implements OnChanges {
           });
         }
         return images;
-      })
-      .subscribe((images) => {
-        this.loading = false;
-        this.images = images;
-        this.hasData.emit(images.length > 0);
-        this.cd.markForCheck();
-      }, (err) => {
-        this.loading = false;
-        this.hasData.emit(false);
+      }),
+      catchError(err => {
         this.logger.error('Unable to fetch image from warehouse', err);
-        this.cd.markForCheck();
-      });
+        return [];
+      }),
+      tap((images) => {
+        this.loading = false;
+        this.hasData.emit(images.length > 0);
+        this.cd.detectChanges();
+      })
+    );
   }
 }

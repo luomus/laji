@@ -5,6 +5,7 @@
                       [modalImages]="images"
                       [eventOnClick]="false"
                       [showCompactInfo]="true"
+                      [showLinkToSpeciesCard]="true"
                       (select)="onImageSelect($event)"></laji-image-gallery>
-  <laji-paginator [page]="page" [count]="total" [size]="pageSize" (change)="pageChanged($event)"></laji-paginator>
+  <laji-paginator [page]="searchQuery.imageOptions.page" [count]="total" [size]="pageSize" (change)="pageChanged($event)"></laji-paginator>
 </laji-spinner>

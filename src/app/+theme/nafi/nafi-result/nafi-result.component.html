@@ -10,7 +10,7 @@
     <p>
       {{'nafi.stats.times' | translate}}
       <br>
-      <a [routerLink] [queryParams]="{time: '1991-01-01/'}">{{'theme.filterAll' | translate:{from: '1991', to: currentYear} }}</a>
+      <a [routerLink] [queryParams]="{time: 'all'}">{{'theme.filterAll' | translate:{from: '1991', to: currentYear} }}</a>
       <br>
       <a [routerLink] [queryParams]="{time: currentYear}">{{'wholeYear'| translate:{year:currentYear} }}</a>
       <a *ngIf="currentMonth > 2" > | </a>
@@ -46,6 +46,7 @@
   <div class="col-sm-5 col-sm-push-7 map-col">
     <laji-ykj-map
       (onGridClick)="showGridObservations($event)"
+      [useStatistics]="true"
       [taxon]="taxon$ | async"
       [height]="'calc(80vh - 50px)'"
       [individualBreak]="[0, null, 1, 5, 10, 50, 100, 500]"
@@ -59,13 +60,13 @@
     <laji-theme-result
             *ngIf="query && !query.ykj10kmCenter"
             (onNameClick)="navigate($event)"
+            [useStatistics]="true"
             [query]="resultQuery"
             [height]="'calc(80vh - 50px)'"
     ></laji-theme-result>
     <laji-theme-observation-list
             *ngIf="query && query.ykj10kmCenter"
             (onListClose)="closeList()"
-            (onPageChange)="goToPage($event)"
             [query]="query"
             [height]="'calc(80vh - 50px)'"
     ></laji-theme-observation-list>

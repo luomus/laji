@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
-import * as FileSaver from 'file-saver';
-import {FormField} from '../model/form-field';
-import { UserService} from '../../../shared/service';
-import {MappingService, SpecialTypes} from './mapping.service';
-import { InformalTaxonGroup, Person } from '../../../shared/model';
-import {Observable} from 'rxjs/Observable';
-import {NamedPlacesService} from '../../../shared-modules/named-place/named-places.service';
-import {NamedPlace} from '../../../shared/model/NamedPlace';
+import { FormField } from '../model/form-field';
+import { UserService } from '../../../shared/service/user.service';
+import { MappingService, SpecialTypes } from './mapping.service';
+import { Person } from '../../../shared/model/Person';
+import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
+import { forkJoin as ObservableForkJoin } from 'rxjs';
+import { NamedPlacesService } from '../../../shared-modules/named-place/named-places.service';
+import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TranslateService } from '@ngx-translate/core';
 import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
+import { ExportService } from '../../../shared/service/export.service';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class GeneratorService {
-
-  private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
-  private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
   private sheetNames = {
     'base': 'Tallennuspohja',
@@ -45,13 +44,14 @@ export class GeneratorService {
     private userService: UserService,
     private namedPlaces: NamedPlacesService,
     private translateService: TranslateService,
-    private informalTaxonApi: InformalTaxonGroupApi
+    private informalTaxonApi: InformalTaxonGroupApi,
+    private exportService: ExportService
   ) { }
 
   generate(filename: string, fields: FormField[], useLabels = true, type: 'ods' | 'xlsx' = 'xlsx', next: () => void = () => {}) {
     const allTranslations = Object.keys(this.instructionMapping).map(key => this.instructionMapping[key]);
     allTranslations.push(this.instructionArray);
-    Observable.forkJoin(
+    ObservableForkJoin(
       this.userService.getUser(),
       this.namedPlaces.getAllNamePlaces({
         userToken: this.userService.getToken(),
@@ -65,8 +65,8 @@ export class GeneratorService {
           }
           return cumulative;
         }, {[this.instructionArray]: translated[this.instructionArray]}))
-      ,
-      (person, namedPlaces, informalTaxonGroups, translations) => ({person, namedPlaces, informalTaxonGroups, translations})
+    ).pipe(
+      map((data) => ({person: data[0], namedPlaces: data[1], informalTaxonGroups: data[2], translations: data[3]}))
     )
       .subscribe((data) => {
         const sheet = XLSX.utils.aoa_to_sheet(this.fieldsToAOA(fields, useLabels, data));
@@ -79,7 +79,7 @@ export class GeneratorService {
         XLSX.utils.book_append_sheet(book, this.getInstructionSheet(fields, data.translations), this.sheetNames.info);
         XLSX.utils.book_append_sheet(book, validationSheet, this.sheetNames.vars);
 
-        this.downloadData(XLSX.write(book, {bookType: type, type: 'buffer'}), filename, type);
+        this.exportService.exportArrayBuffer(XLSX.write(book, {bookType: type, type: 'array'}), filename, type);
         next();
       }, () => next());
 
@@ -223,15 +223,5 @@ export class GeneratorService {
       vSheet[current][vColumn] = validItem;
       current++;
     }
-  }
-
-  private downloadData(buffer: any, fileName: string, fileExtension: string) {
-    const type = fileExtension === 'ods' ? this.odsMimeType : this.xlsxMimeType;
-
-    const data: Blob = new Blob([buffer], {
-      type: type
-    });
-
-    FileSaver.saveAs(data, fileName + '.' + fileExtension);
   }
 }

@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { FormField, VALUE_IGNORE, VALUE_AS_IS } from '../../../model/form-field';
-import {FriendService} from '../../../../../shared/service/friend.service';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormField, VALUE_AS_IS, VALUE_IGNORE } from '../../../model/form-field';
+import { FriendService } from '../../../../../shared/service/friend.service';
 
 @Component({
   selector: 'laji-special-friend',

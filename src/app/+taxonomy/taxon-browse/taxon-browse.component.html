@@ -2,13 +2,15 @@
   <h1 style="margin: 0">{{ 'species.search' | translate }}<br><small>{{ 'species.title.short' | translate }}</small></h1>
   <div>{{ 'species.title.long' | translate }}</div>
 </div>
-<div id="content-container" class="container">
-  <div class="form-horizontal">
-    <div class="row">
-      <div *ngIf="type !== 'tree'" [ngStyle]="filtersNgStyle" class="form-filters col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10">
+<div id="content-container" class="container full-height">
+  <div class="full-height">
+    <div class="row full-height" style="position: relative">
+      <div class="form-filters"
+           [ngClass]="{'sticky-filter': stickyFilter, 'col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10': showFilter}">
         <laji-species-form [searchQuery]="searchQuery"
                            [showFilter]="showFilter"
-                           (onShowFilterChange)="showFilter = $event"></laji-species-form>
+                           (onShowFilterChange)="showFilter = $event">
+        </laji-species-form>
       </div>
 
       <div id="species-list-container" [ngClass]="{
@@ -16,30 +18,47 @@
        'col-sm-12': !showFilter
       }">
         <ul style="margin-top: 24px;" class="nav nav-tabs nav-justified">
-          <li role="presentation"  [ngClass]="{active: type === 'list'}">
-            <a [routerLink]="'/taxon/list' | localize" [queryParamsHandling]="'merge'">
+          <li role="presentation"  [ngClass]="{active: active === 'list'}">
+            <a [routerLink]="'/taxon/list' | localize" [queryParams]="searchQuery.query">
               {{"species.list" | translate}}
             </a>
           </li>
-          <!--li role="presentation" [ngClass]="{active: type === 'images'}">
-            <a [routerLink]="'/taxon/images' | localize" [queryParamsHandling]="'merge'">
+          <li role="presentation" [ngClass]="{active: active === 'images'}">
+            <a [routerLink]="'/taxon/images' | localize" [queryParams]="searchQuery.query">
               {{"species.images" | translate}}
             </a>
-          </li-->
-          <li role="presentation" [ngClass]="{active: type === 'tree'}">
-            <a [routerLink]="'/taxon/tree' | localize" [queryParamsHandling]="'merge'">
+          </li>
+          <li role="presentation" [ngClass]="{active: active === 'tree'}">
+            <a [routerLink]="'/taxon/tree' | localize" [queryParams]="{'onlyFinnish': searchQuery.query.onlyFinnish}">
               {{"species.taxa" | translate}}
             </a>
           </li>
         </ul>
-        <laji-informal-group-select *ngIf="type !== 'tree'"
+
+        <laji-informal-group-select [hidden]="active === 'tree'"
+                                    *ngIf="activated['list'] || activated['images']"
                                     style="padding-bottom: 20px"
                                     [id]="searchQuery.query.informalGroupFilters"
                                     [compact]="true"
-                                    (onInformalGroupSelect)="informalGroupSelect($event)"></laji-informal-group-select>
-        <laji-species-list *ngIf="type === 'list'" [searchQuery]="searchQuery"></laji-species-list>
-        <laji-species-images *ngIf="type === 'images'" [searchQuery]="searchQuery"></laji-species-images>
-        <laji-tree *ngIf="type === 'tree'"></laji-tree>
+                                    (onInformalGroupSelect)="informalGroupSelect($event)">
+        </laji-informal-group-select>
+
+        <laji-species-list [hidden]="active !== 'list'"
+                           *ngIf="activated['list']"
+                           [visible]="active === 'list'"
+                           [searchQuery]="searchQuery"
+                           [columnService]="columnService">
+        </laji-species-list>
+        <laji-species-images [hidden]="active !== 'images'"
+                             *ngIf="activated['images']"
+                             [searchQuery]="searchQuery">
+        </laji-species-images>
+        <laji-tree [hidden]="active !== 'tree'"
+                   *ngIf="activated['tree']"
+                   [visible]="active === 'tree'"
+                   [searchQuery]="searchQuery"
+                   [columnService]="columnService">
+        </laji-tree>
       </div>
     </div>
   </div>

@@ -1,162 +1,245 @@
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { TREE_ACTIONS, TreeComponent, TreeNode } from 'angular-tree-component';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
-import { ITreeNode } from 'angular-tree-component/dist/defs/api';
+import { TreeTableComponent } from './tree-table/tree-table.component';
+import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/species-list-options-modal.component';
+import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
+import { Router } from '@angular/router';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
+import { TaxonomyColumns } from '../service/taxonomy-columns';
+import { SpeciesDownloadComponent } from '../species-download/species-download.component';
+import { TaxonExportService } from '../service/taxon-export.service';
+import { TreeNode } from './tree-table/model/tree-node.interface';
+import { Taxonomy } from '../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-tree',
   templateUrl: './taxon-tree.component.html',
   styleUrls: ['./taxon-tree.component.css']
 })
-export class TaxonTreeComponent implements AfterViewInit, OnDestroy, OnChanges {
-  private static cache;
+export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
+  private static cache: {
+    nodes: TreeNode[],
+    activeId: string,
+    showMainLevels: boolean,
+    lastQuery: string
+  };
 
-  @Input() openId: string;
+  @Input() searchQuery: TaxonomySearchQuery;
+  @Input() columnService: TaxonomyColumns;
+  @Input() visible: boolean;
 
-  public options = null;
-  public nodes = [];
+  public nodes: any[] = [];
+  public columns: ObservationTableColumn[] = [];
+  public getChildrenFunc = this.getChildren.bind(this);
+  public getParentsFunc = this.getParents.bind(this);
+  public skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
 
-  @ViewChild(TreeComponent)
-  private tree: TreeComponent;
-  private selectedFields  = 'id,hasChildren,scientificName,vernacularName,taxonRank';
+  public showMainLevels = false;
+  public taxon: string;
+  public activeId: string;
+
+  @ViewChild('treeTable') private tree: TreeTableComponent;
+  @ViewChild('settingsModal') settingsModal: SpeciesListOptionsModalComponent;
+  @ViewChild('speciesDownload') speciesDownload: SpeciesDownloadComponent;
+
+  public taxonSelectFilters: {onlyFinnish: boolean};
+  public downloadLoading = false;
+
+  private subQueryUpdate: Subscription;
+  private lastQuery: string;
+
+  static emptyCache() {
+    TaxonTreeComponent.cache = undefined;
+  }
 
   constructor(
-    private taxonService: TaxonomyApi
-  ) {
-    this.options = {
-      actionMapping: {
-        mouse: {
-          click: TREE_ACTIONS.TOGGLE_EXPANDED
-        }
-      },
-      displayField: 'scientificName',
-      getChildren: this.getChildren.bind(this)
-    };
+    private taxonService: TaxonomyApi,
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService,
+    private cd: ChangeDetectorRef,
+    private taxonExportService: TaxonExportService
+  ) {}
+
+  ngOnInit() {
+    this.taxonSelectFilters = {onlyFinnish: this.searchQuery.query.onlyFinnish};
+
+    this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
+      () => {
+        this.taxonSelectFilters = {onlyFinnish: this.searchQuery.query.onlyFinnish};
+        this.getRoot();
+      }
+    );
+  }
+
+  onSettingsLoaded() {
+    this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
+
+    const cacheKey = JSON.stringify({
+      onlyFinnish: this.searchQuery.query.onlyFinnish,
+      selected: this.searchQuery.treeOptions.selected
+    });
+
+    if (TaxonTreeComponent.cache && TaxonTreeComponent.cache.lastQuery === cacheKey) {
+      this.nodes = TaxonTreeComponent.cache.nodes;
+      this.activeId = TaxonTreeComponent.cache.activeId;
+      this.taxon = this.activeId;
+      this.showMainLevels = TaxonTreeComponent.cache.showMainLevels;
+      this.setSkipParams();
+      this.lastQuery = cacheKey;
+    } else {
+      this.getRoot();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['openId'] && this.openId) {
-      this.openTreeById(this.openId);
+    if (changes.visible && this.visible) {
+      this.tree.refreshTable();
     }
   }
 
   ngOnDestroy() {
-    TaxonTreeComponent.cache = this.getOpenNodesFromTree(this.tree.treeModel.roots);
+    TaxonTreeComponent.cache = {
+      nodes: this.tree.getVisibleNodes(),
+      activeId: this.activeId,
+      showMainLevels: this.showMainLevels,
+      lastQuery: this.lastQuery
+    };
+    this.subQueryUpdate.unsubscribe();
   }
 
-  ngAfterViewInit() {
-    (TaxonTreeComponent.cache ?
-      Observable.of(TaxonTreeComponent.cache).delay(100) :
-      this.taxonService
-        .taxonomyFindBySubject('MX.37600', 'multi', {selectedFields: this.selectedFields})
-        .map(data => [data] ))
-      .do((data) => {
-        this.nodes = data;
-        this.tree.treeModel.update();
-      })
-      .delay(100)
-      .subscribe(() => {
-        if (TaxonTreeComponent.cache) {
-          this.openTree(this.tree.treeModel.roots);
-        }
-        if (this.openId) {
-          this.openTreeById(this.openId);
-        }
-      }, (error) => {
-        console.error(error);
-      });
-  }
-
-  openTreeById(id: string) {
-    if (!id) { return; }
-    this.taxonService
-      .taxonomyFindParents(id)
-      .map(taxa => taxa.map(taxon => taxon.id))
-      .subscribe(taxa => {
-        this.goTo([...taxa, id]);
-      });
-  }
-
-  getOpenNodesFromTree(roots: TreeNode[]) {
-    return roots.map((root: TreeNode) => {
-      const data = root.data;
-      data['children'] = (root.children && data.isExpandedField) ? this.getOpenNodesFromTree(root.children) : undefined;
-      data['hasChildren'] = root.hasChildren;
-      return data;
+  getRoot(): Subscription {
+    const cacheKey = JSON.stringify({
+      onlyFinnish: this.searchQuery.query.onlyFinnish,
+      selected: this.searchQuery.treeOptions.selected
     });
-  }
-
-  openTree(roots: TreeNode[]) {
-    roots.map(root => {
-      if (root.data.isExpandedField) {
-        root.expand();
-      }
-      if (root.children) {
-        this.openTree(root.children);
-      }
-    });
-  }
-
-  onToggle(params: {eventName: string, node: ITreeNode, isExpanded: boolean}) {
-    params.node.data.isExpandedField = params.isExpanded;
-    if (!params.isExpanded) {
-      this.closeChildren(params.node.children);
-    }
-  }
-
-  closeChildren(nodes: ITreeNode[]) {
-    if (nodes) {
-      nodes.map(node => {
-        if (node.children) {
-          this.closeChildren(node.children);
-        }
-        node.collapse();
-      });
-    }
-  }
-
-  goTo(parents: string[]) {
-    const roots = this.tree.treeModel.roots;
-    this.travelTo(parents, roots);
-  }
-
-  travelTo(parents: string[], roots: TreeNode[]) {
-    if (!parents || parents.length === 0) {
+    if (this.lastQuery === cacheKey) {
       return;
     }
-    const id = parents.shift();
-    roots.map((elem: TreeNode) => {
-      if (elem.id === id) {
-        if (parents.length > 0) {
-          elem.expand()
-            .loadNodeChildren()
-            .then(() => {
-              this.tree.treeModel.update();
-              if (elem.children) {
-                this.travelTo(parents, elem.children);
-              } else if (elem.hasChildren) {
-                this.getChildren(elem)
-                  .then((children) => {
-                    elem.setField('children', children);
-                    elem._initChildren();
-                    this.travelTo(parents, elem.children);
-                  });
-              }
-            });
-        } else if (parents.length === 0) {
-          elem.focus();
-          elem.scrollIntoView();
-          this.tree.treeModel.update();
-        }
-      }
+    this.lastQuery = cacheKey;
+
+    if (this.nodes && this.nodes.length > 0) {
+      this.nodes = [{...this.nodes[0], children: undefined}];
+      return;
+    }
+
+    this.taxonService
+      .taxonomyFindBySubject('MX.37600', 'multi', {
+        selectedFields: this.getSelectedFields(),
+        onlyFinnish: this.searchQuery.query.onlyFinnish
+      })
+      .pipe(
+        map(data => this.mapSpeciesCountsToLeafCounts([data])),
+        tap((data) => {
+          this.nodes = data;
+        })
+      )
+      .subscribe(() => {
+        this.cd.markForCheck();
+      });
+  }
+
+  getChildren(id: string) {
+    return this.taxonService
+      .taxonomyFindChildren(id, 'multi', undefined, {
+        selectedFields: this.getSelectedFields(),
+        onlyFinnish: this.searchQuery.query.onlyFinnish
+      })
+      .pipe(
+        map(data => this.mapSpeciesCountsToLeafCounts(data))
+      )
+  }
+
+  getParents(id: string) {
+    return this.taxonService
+      .taxonomyFindParents(id, 'multi', {
+        selectedFields: 'id',
+        onlyFinnish: this.searchQuery.query.onlyFinnish
+      });
+  }
+
+  openSettingsModal() {
+    this.settingsModal.openModal();
+  }
+
+  onCloseSettingsModal() {
+    this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
+    this.getRoot();
+  }
+
+  setSkipParams() {
+    if (this.showMainLevels) {
+      this.skipParams = [{key: 'taxonRank', isWhiteList: true, values: [
+        'MX.superdomain',
+        'MX.domain',
+        'MX.kingdom',
+        'MX.phylum',
+        'MX.class',
+        'MX.order',
+        'MX.family',
+        'MX.genus',
+        'MX.species'
+      ]}];
+    } else {
+      this.skipParams = undefined;
+    }
+  }
+
+  onRowSelect(event: any) {
+    if (event.row && event.row.id) {
+      this.router.navigate(this.localizeRouterService.translateRoute(['/taxon', event.row.id]));
+    }
+  }
+
+  download(fileType: string) {
+    this.downloadLoading = true;
+
+    const columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
+
+    this.taxonExportService.downloadTaxons(columns, this.tree.rows, fileType)
+      .subscribe(() => {
+        this.downloadLoading = false;
+        this.speciesDownload.modal.hide();
+        this.cd.markForCheck();
     });
   }
 
-  getChildren(node: TreeNode) {
-    return this.taxonService
-      .taxonomyFindChildren(node.id, 'multi', undefined, {selectedFields: this.selectedFields})
-      .toPromise();
+  private mapSpeciesCountsToLeafCounts(taxons: Taxonomy[]) {
+    return taxons.map(taxon => ({
+      ...taxon,
+      leafCount: this.searchQuery.query.onlyFinnish ? taxon.countOfFinnishSpecies : taxon.countOfSpecies,
+      countOfSpecies: undefined,
+      countOfFinnishSpecies: undefined
+    }));
   }
 
+  private getSelectedFields() {
+    const compulsory = ['id', 'taxonRank', 'hasChildren', this.searchQuery.query.onlyFinnish ? 'countOfFinnishSpecies' : 'countOfSpecies'];
+
+    const selects = this.searchQuery.treeOptions.selected.reduce((arr, field) => {
+      let addedField = field;
+      if (this.columnService.columnLookup[field] && this.columnService.columnLookup[field].selectField) {
+        addedField = this.columnService.columnLookup[field].selectField;
+      }
+      if (arr.indexOf(addedField) === -1) {
+        arr.push(addedField);
+      }
+      return arr;
+    }, []);
+
+    for (let i = 0; i < compulsory.length; i++) {
+      if (selects.indexOf(compulsory[i]) === -1) {
+        selects.push(compulsory[i]);
+      }
+    }
+
+    return selects.join(',');
+  }
+
+  onTaxonSelect(key: string) {
+    this.activeId = key;
+    this.tree.openTreeById(key);
+  }
 }

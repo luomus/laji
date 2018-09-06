@@ -1,10 +1,6 @@
-import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy,
-  OnInit
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { forkJoin as ObservableForkJoin, of as ObservableOf, Subscription } from 'rxjs';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import { CollectionService } from '../../../shared/service/collection.service';
@@ -12,6 +8,7 @@ import { AreaService, AreaType } from '../../../shared/service/area.service';
 import { SourceService } from '../../../shared/service/source.service';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
+import { map } from 'rxjs/operators';
 
 export interface MetadataSelectPick {
   [field: string]: string;
@@ -41,6 +38,8 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
   @Input() options: string[];
   @Input() useFilter = true;
   @Input() firstOptions = [];
+  @Input() info: string;
+  @Input() skip: string[];
 
   _options: {id: string, value: string}[] = [];
   active = [];
@@ -102,10 +101,10 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
           lang: this.lang,
           err: err
         });
-        return Observable.of([]);
+        return ObservableOf([]);
       });
 
-    const byOptions$ = Observable.of(this.options)
+    const byOptions$ = ObservableOf(this.options)
       .map(options => options.map(option => ({id: option, value: option})));
 
     this.subOptions = (this.options ? byOptions$ : byField$)
@@ -115,8 +114,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
           options.map(item => {
             requests.push(this.warehouseMapper.getWarehouseKey(item.id));
           });
-          return Observable
-            .forkJoin(requests)
+          return ObservableForkJoin(requests)
             .map(mapping => options.reduce((prev, curr, idx) => {
                 if (mapping[idx] !== options[idx].id) {
                   prev.push({id: mapping[idx], value: curr.value});
@@ -127,7 +125,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
               }, [])
             );
         } else {
-          return Observable.of(options);
+          return ObservableOf(options);
         }
       })
       .subscribe(options => {
@@ -178,7 +176,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
     this.cd.markForCheck();
   }
 
-  public refreshValue(value: any): void {
+  refreshValue(value: any): void {
     if (value.id) {
       this.value = value.id;
     } else if (typeof value === 'string') {
@@ -231,8 +229,10 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
       }
     }
     this.shouldSort = false;
-    return this.metadataService.getRange(this.alt)
-      .map(range => range.map(options => ({id: options.id, value: MultiLangService.getValue(options.value, this.lang)})));
+    return this.metadataService.getRange(this.alt).pipe(
+      map(range => range.map(options => ({id: options.id, value: MultiLangService.getValue(options.value, this.lang)}))),
+      map(options => this.skip ? options.filter(option => this.skip.indexOf(option.id) === -1) : options)
+    );
   }
 
   private pickValue(data) {

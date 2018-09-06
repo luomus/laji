@@ -1,0 +1,18 @@
+<div>
+  <div #lajiForm></div>
+  <div class="modal" tabindex="-1" role="dialog" bsModal #errorModal="bs-modal">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span>{{"haseka.reload" | translate}}</span><br />
+          </div>
+          <button type="button" class="btn btn-default inline-block" (click)="reload()">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

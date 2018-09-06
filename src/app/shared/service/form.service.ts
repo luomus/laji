@@ -1,18 +1,24 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { LocalStorage } from 'ng2-webstorage';
+import { Observable, Observer, of as ObservableOf } from 'rxjs';
+import { LocalStorage } from 'ngx-webstorage';
 import { UserService } from './user.service';
 import { Util } from './util.service';
-import { FormApi } from '../api/FormApi';
 import { DocumentApi } from '../api/DocumentApi';
 import { Document } from '../model/Document';
 import { environment } from '../../../environments/environment';
-import * as deepmerge from 'deepmerge';
-import { Observer } from 'rxjs/Observer';
+import merge from 'deepmerge'
 import { DocumentService } from '../../shared-modules/own-submissions/service/document.service';
+import { LajiApi, LajiApiService } from './laji-api.service';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { FormList } from '../../+haseka/form-list/haseka-form-list';
 
 
-@Injectable()
+export interface LoadResponse extends FormList {
+  formData: Document;
+  currentId: string;
+}
+
+@Injectable({providedIn: 'root'})
 export class FormService {
 
   readonly forms = {
@@ -40,7 +46,7 @@ export class FormService {
   private _populate: any;
 
   constructor(
-    private formApi: FormApi,
+    private lajiApi: LajiApiService,
     private userService: UserService,
     private documentApi: DocumentApi,
     private documentService: DocumentService
@@ -75,7 +81,7 @@ export class FormService {
             this.localChanged.emit(true);
           }
         }
-        return Observable.of(true);
+        return ObservableOf(true);
       })
       .subscribe();
   }
@@ -89,10 +95,10 @@ export class FormService {
           }
           this.formDataStorage[userID][this.currentKey] = { 'formData': document, 'dateStored': new Date() };
           this.formDataStorage = {...this.formDataStorage};
-          return Observable.of(this.currentKey);
+          return ObservableOf(this.currentKey);
         });
     }
-    return Observable.of('');
+    return ObservableOf('');
   }
 
   hasUnsavedData(id?: string, document?: Document): Observable<boolean> {
@@ -103,15 +109,15 @@ export class FormService {
       .switchMap(userID => {
         const tmpDoc = this.getTmpDoc(userID, id);
         if (this.isTmpId(id)) {
-          return Observable.of(tmpDoc._hasChanges);
+          return ObservableOf(tmpDoc._hasChanges);
         }
 
         if (document && tmpDoc) {
-          return Observable.of(
+          return ObservableOf(
             this.isLocalNewest(tmpDoc, document)
           );
         }
-        return Observable.of(!!tmpDoc);
+        return ObservableOf(!!tmpDoc);
       });
   }
 
@@ -144,9 +150,9 @@ export class FormService {
     return this.getUserId()
       .switchMap(userID => {
         if (!this.formDataStorage[userID]) {
-          return Observable.of([]);
+          return ObservableOf([]);
         }
-        return Observable.of(
+        return ObservableOf(
           Object.keys(this.formDataStorage[userID])
             .filter((key) => this.isTmpId(key))
             .reduce((array, key) => {
@@ -166,13 +172,13 @@ export class FormService {
 
   getForm(formId: string, lang: string): Observable<any> {
     if (!formId) {
-      return Observable.of({});
+      return ObservableOf({});
     }
     this.setLang(lang);
     if (this.formCache[formId]) {
-      return Observable.of(this.formCache[formId]);
+      return ObservableOf(this.formCache[formId]);
     } else if (!this.formPending[formId]) {
-      this.formPending[formId] = this.formApi.formFindById(formId, lang)
+      this.formPending[formId] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang})
         .do((schema) => this.formCache[formId] = schema)
         .share();
     }
@@ -186,22 +192,30 @@ export class FormService {
 
   getFormInJSONFormat(formId: string, lang: string): Observable<any> {
     if (!formId) {
-      return Observable.of({});
+      return ObservableOf({});
     }
     this.setLang(lang);
     if (this.jsonFormCache[formId]) {
-      return Observable.of(this.jsonFormCache[formId]);
+      return ObservableOf(this.jsonFormCache[formId]);
     } else {
-      return this.formApi.formFindById(formId, lang, 'json')
+      return this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang, format: 'json'})
         .do((jsonForm) => this.formCache[formId] = jsonForm);
     }
   }
 
-  load(formId: string, lang: string, documentId?: string): Observable<any> {
+  /**
+   * Loads the form and populates the default data of the Document
+   *
+   * @param {string} formId
+   * @param {string} lang
+   * @param {string} documentId
+   * @returns {Observable<any>}
+   */
+  load(formId: string, lang: string, documentId?: string): Observable<LoadResponse> {
     this.setLang(lang);
     const form$ = this.formCache[formId] ?
-      Observable.of(this.formCache[formId]) :
-      this.formApi.formFindById(formId, lang)
+      ObservableOf(this.formCache[formId]) :
+      this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang})
         .do((schema) => {
           this.formCache[formId] = schema;
         });
@@ -209,18 +223,18 @@ export class FormService {
       this.getUserId().switchMap(userID => {
         const tmpDoc = this.getTmpDoc(userID, documentId);
         return this.isTmpId(documentId) && tmpDoc ?
-          Observable.of(tmpDoc) :
+          ObservableOf(tmpDoc) :
           this.documentApi.findById(documentId, this.userService.getToken())
             .switchMap((document: Document) => {
               if (!document.isTemplate) {
-                return Observable.of(document)
+                return ObservableOf(document)
                   .do(data => this.setCurrentData(data));
               }
               documentId = '';
               const newDocument = this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);
               newDocument._isTemplate = true;
               this.populate(newDocument);
-              return Observable.of(newDocument);
+              return ObservableOf(newDocument);
             });
       }) :
       this.userService.getDefaultFormData()
@@ -235,7 +249,7 @@ export class FormService {
               form.formData = current;
               form.currentId = this.currentKey;
               if (!documentId && form.prepopulatedDocument) {
-                form.formData = deepmerge(form.formData || {}, form.prepopulatedDocument || {});
+                form.formData = merge(form.formData || {}, form.prepopulatedDocument, { arrayMerge: Util.arrayCombineMerge });
               }
               this.currentData = Util.clone(form.formData);
               return form;
@@ -254,14 +268,15 @@ export class FormService {
   getAllForms(lang: string): Observable<any> {
     this.setLang(lang);
     return this.allForms ?
-      Observable.of(this.allForms) :
-      this.formApi.formFindAll(this.currentLang)
-        .map((forms) => forms.results.filter(form => this.isFormAllowed(form.id)))
-        .do((forms) => this.allForms = forms);
+      ObservableOf(this.allForms) :
+      this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang}).pipe(
+        map((forms) => forms.results.filter(form => this.isFormAllowed(form.id))),
+        tap(forms => this.allForms = forms)
+      );
   }
 
   populate(data: any) {
-    this._populate = deepmerge(this._populate || {}, data || {});
+    this._populate = merge(this._populate || {}, data || {}, { arrayMerge: Util.arrayCombineMerge });
   }
 
   getAddUrlPath(formId) {
@@ -280,33 +295,35 @@ export class FormService {
 
 
   getTmpDocumentStoreDate(id: string): Observable<Date> {
-    return this.getUserId()
-      .switchMap(userID => {
+    return this.getUserId().pipe(
+      switchMap(userID => {
         if (this.formDataStorage[userID] && this.formDataStorage[userID][id] && this.formDataStorage[userID][id].dateStored) {
-          return Observable.of(this.formDataStorage[userID][id].dateStored);
+          return ObservableOf(this.formDataStorage[userID][id].dateStored);
         }
-        return Observable.of(null);
-      });
+        return ObservableOf(null);
+      })
+    );
   }
 
   getTmpDocumentIfNewerThanCurrent(current: Document, documentId?: string): Observable<Document> {
     if (!documentId) { documentId = current.id; }
 
-    return this.getUserId()
-      .switchMap(userID => {
+    return this.getUserId().pipe(
+      switchMap(userID => {
         const tmpDoc = this.getTmpDoc(userID, documentId);
 
         if (!tmpDoc) {
-          return Observable.of(current);
+          return ObservableOf(current);
         }
 
         if (this.isLocalNewest(tmpDoc, current)) {
-          return Observable.of(tmpDoc);
+          return ObservableOf(tmpDoc);
         }
         delete this.formDataStorage[userID][documentId];
         this.formDataStorage = Util.clone(this.formDataStorage);
-        return Observable.of(current);
-      });
+        return ObservableOf(current);
+      })
+    );
   }
 
   private isFormAllowed(formId: string) {
@@ -351,17 +368,28 @@ export class FormService {
     return this.getTmpDocumentIfNewerThanCurrent(current, documentId);
   }
 
-  private defaultFormData(formId: string) {
+  /**
+   * Fetch current document and merges populate values into it
+   * After merge deletes the populate data
+   *
+   * @param {string} formId
+   * @returns {Observable<Document>}
+   */
+  private defaultFormData(formId: string): Observable<Document> {
     this.currentKey = this.generateTmpId();
-    return this.userService.getDefaultFormData()
-      .map((data: Document) => {
-        return deepmerge(deepmerge( data || {}, {formID: formId}), this._populate || {});
-      })
-      .do(() => {
-        delete this._populate;
-      });
+    return this.userService.getDefaultFormData().pipe(
+      map((data: Document) => ({...(data || {}), formID: formId})),
+      map((data: Document) => this._populate ? merge(data, this._populate) : data),
+      tap(() => delete this._populate)
+    );
   }
 
+  /**
+   * Return true if local dataEdited is newer than the remote dateEdited
+   * @param local
+   * @param remote
+   * @returns {boolean}
+   */
   private isLocalNewest(local, remote): boolean {
     if (remote.dateEdited) {
       if (!local.dateEdited ||

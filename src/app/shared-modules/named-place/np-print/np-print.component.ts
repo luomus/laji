@@ -1,17 +1,16 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import { PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as FileSaver from 'file-saver';
-import { Subscription } from 'rxjs/Subscription';
+import { combineLatest as ObservableCombineLatest, of as ObservableOf, Subscription } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
 import { NamedPlacesService } from '../named-places.service';
 import { UserService } from '../../../shared/service/user.service';
 import { FooterService } from '../../../shared/service/footer.service';
 import { Person } from '../../../shared/model/Person';
-import {isPlatformBrowser} from '@angular/common';
-import {LajiApi, LajiApiService} from '../../../shared/service/laji-api.service';
+import { isPlatformBrowser } from '@angular/common';
+import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-np-print',
@@ -41,26 +40,22 @@ export class NpPrintComponent implements OnInit, OnDestroy {
 
  ngOnInit() {
     this.footerService.footerVisible = false;
-    this.subData = Observable.combineLatest(
+    this.subData = ObservableCombineLatest(
       this.userService.getUser(),
       this.route.params,
       this.translate.onLangChange
-        .startWith({lang: this.translate.currentLang}),
-      (person, params, lang) => ({
-        person: person,
-        params: params,
-        lang: lang
-      }))
-      .switchMap(data => Observable.forkJoin(
-        this.namedPlaceService
-          .getNamedPlace(data.params['npId'], this.userService.getToken())
-          .catch(() => Observable.of({} as NamedPlace)),
-        (ns) => ({
-          person: data.person,
-          ns: ns,
-          params: data.params
-        })
-      ))
+        .startWith({lang: this.translate.currentLang}))
+      .pipe(
+        map(data => ({
+          person: data[0],
+          params: data[1],
+          lang: data[2]
+        })),
+        switchMap(data => this.namedPlaceService.getNamedPlace(data.params['npId'], this.userService.getToken()).pipe(
+          catchError(() => ObservableOf({} as NamedPlace)),
+          map(ns => ({...data, ns: ns}))
+        ))
+      )
       .subscribe(data => {
         this.namedPlace = data.ns;
         this.person = data.person;

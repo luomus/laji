@@ -1,15 +1,14 @@
-import { Component, ViewContainerRef } from '@angular/core';
-import { ToastsManager } from 'ng2-toastr';
-import { CollectionApi } from './shared/api/CollectionApi';
+import { WINDOW } from '@ng-toolkit/universal';
+import { Component, Inject, PLATFORM_ID, ViewContainerRef } from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { InformationApi } from './shared/api/InformationApi';
-import { WindowRef } from './shared/windows-ref';
+import { isPlatformBrowser, Location } from '@angular/common';
 import { environment } from '../environments/environment';
 import { Meta, Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { LocalizeRouterService } from './locale/localize-router.service';
+import { filter, map, switchMap } from 'rxjs/operators';
+import { RoutingStateService } from './shared/service/routing-state.service';
 
 declare const ga: Function;
 
@@ -22,10 +21,6 @@ const ALL_META_KEYS = [
 
 @Component({
   selector: 'laji-app',
-  providers: [
-    CollectionApi,
-    InformationApi
-  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -37,87 +32,93 @@ export class AppComponent {
   private currentRoute: string;
 
   constructor(
+    @Inject(WINDOW) private window: Window,
+    @Inject(PLATFORM_ID) private platformID: object,
     router: Router,
     location: Location,
-    toastr: ToastsManager,
     viewContainerRef: ViewContainerRef,
-    windowRef: WindowRef,
     title: Title,
     translateService: TranslateService,
     localizeRouterService: LocalizeRouterService,
-    metaService: Meta
+    metaService: Meta,
+    routingStateService: RoutingStateService // Need to include this here so that history recording starts
   ) {
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.isEmbedded || false;
-    toastr.setRootViewContainerRef(viewContainerRef);
 
     translateService.use(localizeRouterService.getLocationLang());
 
-    router.events.subscribe((event: any) => {
-      if (event instanceof NavigationEnd) {
-        const newRoute = location.path() || '/';
-        if (this.currentRoute !== newRoute) {
-          // Check if on page that should be scrolled to top
-          if (!newRoute.match(/^\/(en\/|sv\/)?(taxon\/list|taxon\/images|taxon\/tree)|((observation|theme\/nafi)\/)/)) {
-            windowRef.nativeWindow.scroll(0, 0); // remove when container scrolling is supported by the form
-            const content = windowRef.nativeWindow.document.getElementById('content');
-            if (content) {
-              // content.scrollTop = 0;
-            }
-          }
+    router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      const newRoute = location.path() || '/';
+      if (this.currentRoute !== newRoute) {
 
-          // Set page title
-          this.getDeepestTitle(router.routerState.snapshot.root)
-            .map(titles => [...titles, MAIN_TITLE])
-            .map(titles => Array.from(new Set<string>(titles)))
-            .switchMap(titles => translateService.get(titles))
-            .subscribe(pageTitle => {
-              title.setTitle(Object.keys(pageTitle).map(key => pageTitle[key]).join(' | '));
-            });
-
-          // Set page meta tags
-          this.getDeepestMeta(router.routerState.snapshot.root)
-            .map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
-            .switchMap(
-              meta => translateService.get(Object.keys(meta).map(key => meta[key])),
-              (meta, translations) => ({meta, translations})
-            )
-            .subscribe(data => {
-              ALL_META_KEYS.map((key) => {
-                const propertySelector = `property='${key}'`;
-                if (data.meta && data.meta[key] && data.translations && data.translations[data.meta[key]]) {
-                  metaService.updateTag({property: key, content: data.translations[data.meta[key]]}, propertySelector);
-                } else {
-                  metaService.removeTag(propertySelector);
+        // Check if should scroll to top
+        if (event.id !== 1 && isPlatformBrowser(this.platformID) ) {
+          this.getDeepest<boolean>(router.routerState.snapshot.root, 'noScrollToTop', false)
+            .subscribe(skip => {
+              if (!skip) {
+                this.window.scroll(0, 0); // remove when container scrolling is supported by the form
+                /*
+                const content = this.window.document.getElementById('content');
+                if (content) {
+                  content.scrollTop = 0;
                 }
-              });
+                */
+              }
             });
-          this.currentRoute = newRoute;
         }
-        // Use analytics
-        if (this.hasAnalytics && newRoute.indexOf('/user') !== 0) {
-          try {
-            ga('send', 'pageview', newRoute);
-          } catch (e) {}
-        }
-        const tree = router.parseUrl(router.url);
 
-        if (tree.fragment) {
-          const element = document.querySelector('#' + tree.fragment);
-          if (element) { element.scrollIntoView(true); }
-        }
+        // Set page title
+        this.getDeepestTitle(router.routerState.snapshot.root)
+          .map(titles => [...titles, MAIN_TITLE])
+          .map(titles => Array.from(new Set<string>(titles)))
+          .switchMap(titles => translateService.get(titles))
+          .subscribe(pageTitle => {
+            title.setTitle(Object.keys(pageTitle).map(key => pageTitle[key]).join(' | '));
+          });
+
+        // Set page meta tags
+        this.getDeepest<object>(router.routerState.snapshot.root).pipe(
+          map(meta => ({description: MAIN_DESCRIPTION, ...meta})),
+          switchMap(meta => translateService.get(Object.keys(meta).map(key => meta[key])).pipe(
+            map(translations => ({meta, translations}))
+          )))
+          .subscribe(data => {
+            ALL_META_KEYS.map((key) => {
+              const propertySelector = `property='${key}'`;
+              if (data.meta && data.meta[key] && data.translations && data.translations[data.meta[key]]) {
+                metaService.updateTag({property: key, content: data.translations[data.meta[key]]}, propertySelector);
+              } else {
+                metaService.removeTag(propertySelector);
+              }
+            });
+          });
+        this.currentRoute = newRoute;
+      }
+      // Use analytics
+      if (this.hasAnalytics && newRoute.indexOf('/user') !== 0) {
+        try {
+          ga('send', 'pageview', newRoute);
+        } catch (e) {}
+      }
+      const tree = router.parseUrl(router.url);
+
+      if (tree.fragment) {
+        const element = document.querySelector('#' + tree.fragment);
+        if (element) { element.scrollIntoView(true); }
       }
     });
   }
 
-  private getDeepestMeta(routeSnapshot: ActivatedRouteSnapshot): Observable<object> {
-    const meta = routeSnapshot.data && routeSnapshot.data['meta'] ? routeSnapshot.data['meta'] : {};
+  private getDeepest<T>(routeSnapshot: ActivatedRouteSnapshot, key = 'meta', empty: any = {}): Observable<T> {
+    const value = routeSnapshot.data && typeof routeSnapshot.data[key] !== 'undefined' ? routeSnapshot.data[key] : empty;
     if (routeSnapshot.firstChild) {
-      return this.getDeepestMeta(routeSnapshot.firstChild)
-        .map(childMeta => ({...meta, ...childMeta}));
+      return this.getDeepest(routeSnapshot.firstChild, key, value);
     }
-    return Observable.of(meta);
+    return ObservableOf(value);
   }
 
   private getDeepestTitle(routeSnapshot: ActivatedRouteSnapshot): Observable<string[]> {
@@ -129,6 +130,6 @@ export class AppComponent {
       return this.getDeepestTitle(routeSnapshot.firstChild)
         .map(label => [...label, ...title]);
     }
-    return Observable.of(title);
+    return ObservableOf(title);
   }
 }

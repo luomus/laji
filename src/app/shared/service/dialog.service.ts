@@ -1,16 +1,22 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { WindowRef } from '../windows-ref';
-import { Observer } from 'rxjs/Observer';
+import { WINDOW } from '@ng-toolkit/universal';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Observable, Observer, of as ObservableOf } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class DialogService {
 
-  constructor(private windowRef: WindowRef) { }
+  constructor(
+    @Inject(WINDOW) private window: Window,
+    @Inject(PLATFORM_ID) private platformID: object
+  ) { }
 
-  confirm(messsage: string): Observable<boolean> {
+  confirm(messsage: string, onServer = false): Observable<boolean> {
+    if (!isPlatformBrowser(this.platformID)) {
+      return ObservableOf(onServer)
+    }
     return Observable.create((observer: Observer<boolean>) => {
-      observer.next(this.windowRef.nativeWindow.confirm(messsage));
+      observer.next(this.window.confirm(messsage));
       observer.complete();
     });
   }

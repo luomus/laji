@@ -1,17 +1,7 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
-import { MapComponent } from '../../../../shared/map/map.component';
-import { NamedPlace } from '../../../../shared/model/NamedPlace';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { ExtendedNamedPlace } from '../../model/extended-named-place';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-np-map',
@@ -19,7 +9,7 @@ import { ExtendedNamedPlace } from '../../model/extended-named-place';
   styleUrls: ['./np-map.component.css']
 })
 export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild(MapComponent) lajiMap: MapComponent;
+  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
   @Input() visible = false;
   @Input() namedPlaces: ExtendedNamedPlace[];
   @Input() activeNP: number;
@@ -39,7 +29,9 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   private sentColor = '#00aa00';
   private sentActiveColor = '#007700';
 
-  constructor() { }
+  constructor(
+    public translate: TranslateService
+  ) { }
 
   ngOnInit() {
     this.initMapData();

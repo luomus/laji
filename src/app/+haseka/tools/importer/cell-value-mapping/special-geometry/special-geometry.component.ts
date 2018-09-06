@@ -1,12 +1,18 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
   ViewChild
 } from '@angular/core';
-import { LajiMapOptions } from '../../../../../shared-modules/map/map-options.interface';
-import { Map3Component } from '../../../../../shared-modules/map/map.component';
-import {FormField, VALUE_IGNORE} from '../../../model/form-field';
-import {CoordinateService} from '../../../../../shared/service/coordinate.service';
-import {TranslateService} from '@ngx-translate/core';
+import * as LajiMap from 'laji-map';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { FormField, VALUE_IGNORE } from '../../../model/form-field';
+import { CoordinateService } from '../../../../../shared/service/coordinate.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-special-geometry',
@@ -21,17 +27,17 @@ export class SpecialGeometryComponent implements AfterViewInit {
   @Input() field: FormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
   @Output() done = new EventEmitter();
-  @ViewChild(Map3Component) lajiMapComponent: Map3Component;
+  @ViewChild(LajiMapComponent) lajiMapComponent: LajiMapComponent;
 
   ignore = VALUE_IGNORE;
-  lajiMapOptions: LajiMapOptions = {
-    drawIdx: 0,
+  lajiMapOptions: LajiMap.Options = {
     draw: {
       marker: true,
       polyline: true,
       polygon: true,
       circle: true,
-      rectangle: true
+      rectangle: true,
+      activeIdx: 0
     },
     controls: {
       draw: {
@@ -60,13 +66,13 @@ export class SpecialGeometryComponent implements AfterViewInit {
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef
   ) {
-    this.lajiMapOptions.lang = this.translateService.currentLang;
+    this.lajiMapOptions.lang = <LajiMap.Lang> this.translateService.currentLang;
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
       this.lajiMapComponent.invalidateSize();
-      this.lajiMapComponent.lajiMap.setData([{}]);
+      this.lajiMapComponent.map.setData([{}]);
       this.setActive(0);
       this.initLast();
       this.cdr.markForCheck();
@@ -80,13 +86,13 @@ export class SpecialGeometryComponent implements AfterViewInit {
     this.active = idx;
     this.value = this.invalidValues[idx];
     if (this.mapping[this.value] && this.mapping[this.value] !== VALUE_IGNORE) {
-      this.lajiMapComponent.lajiMap.setDraw({
+      this.lajiMapComponent.map.setDraw({
         featureCollection: this.coordinateService.getFeatureCollectionFromGeometry(this.mapping[this.value]),
         onChange: this.onChange.bind(this)
       });
-      this.lajiMapComponent.lajiMap.focusToDrawLayer(0);
+      this.lajiMapComponent.map.focusToDrawLayer(0);
     } else {
-      this.lajiMapComponent.lajiMap.setDraw({
+      this.lajiMapComponent.map.setDraw({
         featureCollection: undefined,
         onChange: this.onChange.bind(this)
       });
@@ -95,7 +101,7 @@ export class SpecialGeometryComponent implements AfterViewInit {
 
   onChange() {
     this.initLast();
-    const drawnData = this.lajiMapComponent.lajiMap.getDraw();
+    const drawnData = this.lajiMapComponent.map.getDraw();
     this.valueMap(this.value, this.coordinateService.getGeometryFromFeatureCollection(drawnData.featureCollection));
   }
 

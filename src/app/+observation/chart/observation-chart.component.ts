@@ -1,12 +1,8 @@
-import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy,
-  OnInit
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SearchQuery } from '../search-query.model';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { forkJoin as ObservableForkJoin, Observable, Subscription } from 'rxjs';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { IdService } from '../../shared/service/id.service';
@@ -54,13 +50,9 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
     this.subTrans = this.translate.onLangChange.subscribe(
       () => this.updateInformalGroups()
     );
-    this.subDataQuery = this.searchQuery.queryUpdated$.subscribe(
-      (data) => {
-        if (data && data['newData']) {
-          this.updateData();
-        }
-      }
-    );
+    this.subDataQuery = this.searchQuery.queryUpdated$
+      .filter(data => !(data && data.formSubmit))
+      .subscribe(() => this.updateData());
     this.updateData();
   }
 
@@ -130,7 +122,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
         undefined,
         1000
       ));
-    this.subData = Observable.forkJoin(sources).subscribe(
+    this.subData = ObservableForkJoin(sources).subscribe(
       (data: any) => {
         if (data[0].total === 0 && this.group !== '') {
           this.subData = this
@@ -146,7 +138,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
                     return {
                       id: IdService.getId(item.aggregateBy['unit.linkings.taxon.informalTaxonGroups']),
                       value: item.count,
-                      label: ''
+                      name: ''
                     };
                   })
                   .filter(item => groups.indexOf(item.id) !== -1);
@@ -166,7 +158,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
               return {
                 id: IdService.getId(item.aggregateBy['unit.linkings.taxon.informalTaxonGroups']),
                 value: item.count,
-                label: ''
+                name: ''
               };
             })
             .filter(item => groups.indexOf(item.id) !== -1);
@@ -202,7 +194,7 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
         return {
           id: value.id,
           value: value.value,
-          label: this.getInformalGroupName(value.id)
+          name: this.getInformalGroupName(value.id)
         };
       });
     this.cd.markForCheck();

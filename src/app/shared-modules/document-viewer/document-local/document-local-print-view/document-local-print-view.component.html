@@ -1,0 +1,55 @@
+<div class="page" *ngIf="document && fields">
+  <div>
+    <div class="page-header">
+      <h3>
+        {{'viewer.document' | translate }}
+        <small>
+          {{document.id}}
+        </small>
+      </h3>
+    </div>
+    <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionID | collectionName"></laji-row>
+    <laji-document-object *ngIf="fields['document']"
+                          [object]="document"
+                          [fields]="fields['document']"
+                          [hideTooltips]="true"
+    ></laji-document-object>
+    <laji-print-images *ngIf="imageData[document.id]" [images]="imageData[document.id]"></laji-print-images>
+  </div>
+
+  <ng-container *ngFor="let gathering of document.gatherings; let i=index">
+    <h4 class="page-header">{{'viewer.print.place' | translate }} {{i + 1}}</h4>
+    <div>
+      <div [ngClass]="{'half-page-block padding-right': mapData[i]}">
+        <laji-document-object *ngIf="fields['gatherings']"
+                              [object]="gathering"
+                              [fields]="fields['gatherings']"
+                              [hideTooltips]="true"
+        ></laji-document-object>
+      </div>
+      <div *ngIf="mapData[i]" class="half-page-block padding-left">
+        <laji-print-map [data]="mapData[i]"></laji-print-map>
+      </div>
+      <laji-print-images *ngIf="imageData[gathering.id]" [images]="imageData[gathering.id]"></laji-print-images>
+    </div>
+
+    <div>
+      <ng-container *ngFor="let unit of gathering.units">
+        <hr>
+        <ng-container *ngFor="let identification of unit.identifications">
+          <laji-document-object *ngIf="fields['identifications']"
+                                [object]="identification"
+                                [fields]="fields['identifications']"
+                                [hideTooltips]="true"
+          ></laji-document-object>
+        </ng-container>
+        <laji-document-object *ngIf="fields['units']"
+                              [object]="unit"
+                              [fields]="fields['units']"
+                              [hideTooltips]="true"
+        ></laji-document-object>
+        <laji-print-images *ngIf="imageData[unit.id]" [images]="imageData[unit.id]"></laji-print-images>
+      </ng-container>
+    </div>
+  </ng-container>
+</div>

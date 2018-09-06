@@ -1,7 +1,7 @@
 /* tslint:disable */
 /**
  * API documentation
- * To use this api you need an access token. To get the token, send a post request with your email address to api-users resource and one will be send to your. See below for information on how to use this api and if you have any questions you can contact us at helpdesk@laji.fi.  Place refer to [schema.laji.fi](http://schema.laji.fi/) for more information about the used vocabulary
+ * To use this api you need an access token. To getList the token, send a post request with your email address to api-users resource and one will be send to your. See below for information on how to use this api and if you have any questions you can contact us at helpdesk@laji.fi.  Place refer to [schema.laji.fi](http://schema.laji.fi/) for more information about the used vocabulary
  *
  * OpenAPI spec version: 0.0.1
  *
@@ -24,7 +24,8 @@
  */
 
 'use strict';
-import * as models from './index';
+
+import { InformationItem } from './InformationItem';
 
 export interface Information {
 
@@ -43,7 +44,7 @@ export interface Information {
 
   modified?: string;
 
-  children?: Array<models.InformationItem>;
+  children?: Array<InformationItem>;
 
-  parents?: Array<models.InformationItem>;
+  parents?: Array<InformationItem>;
 }

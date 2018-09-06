@@ -3,7 +3,7 @@ import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { UserService } from '../../../shared/service/user.service';
 import { Document } from '../../../shared/model/Document';
 import { Util } from '../../../shared/service/util.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { TemplateForm } from '../models/template-form';
 
 @Injectable()

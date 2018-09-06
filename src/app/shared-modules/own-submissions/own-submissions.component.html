@@ -2,7 +2,7 @@
 
 
 <div *ngIf="!yearInfoError">
-  <laji-year-slider *ngIf="!onlyTemplates && !!yearInfo" [showCounts]="!formID" (onRangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo"></laji-year-slider>
+  <laji-year-slider *ngIf="!onlyTemplates && !!yearInfo" [year]="year" [showCounts]="!formID" (onRangeChange)="sliderRangeChange($event)" [yearInfo]="yearInfo"></laji-year-slider>
   <laji-own-datatable
     (documentClicked)="onDocumentClick($event)"
     [actions]="actions"
@@ -24,9 +24,15 @@
     <div class="modal-content">
       <div class="modal-body" *ngIf="documentModalVisible">
         <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
-          <span aria-hidden="true">&times;</span>
+          <i class="glyphicon glyphicon-remove"></i>
         </button>
-        <laji-document [uri]="shownDocument" [own]="true"></laji-document>
+        <laji-document *ngIf="shownDocument.publicityRestrictions === publicity.publicityRestrictionsPublic"
+                       [uri]="shownDocument.id"
+                       [own]="true">
+        </laji-document>
+        <laji-document-local *ngIf="shownDocument.publicityRestrictions !== publicity.publicityRestrictionsPublic"
+                             [document]="shownDocument">
+        </laji-document-local>
       </div>
     </div>
   </div>

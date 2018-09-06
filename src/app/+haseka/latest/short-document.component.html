@@ -1,4 +1,4 @@
-<div class="link" (click)="editDocument(document.formID, document.id)" id="short-document" tabIndex=0 *ngIf="!loading">
+<div class="link" (click)="editDocument(document.formID, document.id)" id="short-document" tabIndex=0 *ngIf="!loading" ngPreserveWhitespaces>
   <small *ngIf="!changingLocale">{{'haseka.users.edited' | translate}}: <span *ngIf="document.dateEdited">{{document.dateEdited | amTimeAgo}}</span></small>
 
   <span class="nowrap">
@@ -24,7 +24,7 @@
     </span>
 
     <span *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPublic">
-      <span class="label label-primary link inline-block"
+      <span class="label label-success link inline-block"
             [tooltip]="'result.showViewer' | translate"
             [placement]="'left'"
             (click)="showViewer($event)">
