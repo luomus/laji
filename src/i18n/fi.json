@@ -445,6 +445,7 @@
   "observation.filters.unit": "Näyte",
   "observation.form.administrativeStatus": "Hallinnollinen asema",
   "observation.form.allInvasive": "Kaikki vieraslajit",
+  "observation.form.nonInvasive": "Ei-vieraslajit",
   "observation.form.annotated": "Kommentoitu",
   "observation.form.annotatedFalse": "Kommentoimattomat havainnot",
   "observation.form.annotatedTrue": "Kommentoidut havainnot",
