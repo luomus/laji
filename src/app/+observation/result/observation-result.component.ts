@@ -47,7 +47,13 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
     }
     if (isPlatformBrowser(this.platformID)) {
       setTimeout(() => {
-        this.window.dispatchEvent(new Event('resize'));
+        try {
+          this.window.dispatchEvent(new Event('resize'));
+        } catch (e) {
+          const evt = this.window.document.createEvent('UIEvents');
+          evt.initUIEvent('resize', true, false, this.window, 0);
+          this.window.dispatchEvent(evt);
+        }
       }, 100);
     }
   }
