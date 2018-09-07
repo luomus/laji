@@ -1,6 +1,7 @@
 import * as LajiMap from 'laji-map';
 
-export interface LajiMapOptions extends LajiMap.Options {
+
+export interface LajiMapOptions extends LajiMap.Options { // tslint:disable-line
 
 }
 
