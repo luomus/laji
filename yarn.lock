@@ -5505,15 +5505,15 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.505:
-  version "0.0.505"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.505.tgz#96440b671f175f3299ee25b35e7599a5f7a19cfc"
+laji-form@^0.0.506:
+  version "0.0.506"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.506.tgz#45de16b6f00edba3338c2891d7a701b40c1f39ae"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.418"
+    laji-map "^1.0.419"
     laji-validate "0.0.69"
     moment "*"
     prop-types "^15.5.8"
@@ -5532,16 +5532,16 @@ laji-form@^0.0.505:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.418, laji-map@^1.0.395, laji-map@^1.0.418:
-  version "1.0.418"
-  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.418.tgz#f2d80426e4d15c265f48c25ec1113a8ed93e4c91"
+laji-map@1.0.419, laji-map@^1.0.395, laji-map@^1.0.419:
+  version "1.0.419"
+  resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.419.tgz#d789e27cb3ba02eff6d0ad1ea75e3b8977e473e1"
   dependencies:
     Leaflet.vector-markers "git+https://git@github.com/olzraiti/Leaflet.vector-markers.git#17601bee91f2dae098a0a76e96714d59ec958fe6"
     leaflet "1.3.4"
     leaflet-contextmenu "1.4.0"
     leaflet-draw "1.0.0"
     leaflet-geometryutil "0.8.0"
-    leaflet-geosearch "^2.7.0"
+    leaflet-geosearch "git+https://git@github.com/olzraiti/leaflet-geosearch.git#d0fb4384742e22799074355a99094adcc2416577"
     leaflet-mml-layers "2.0.1"
     leaflet-textpath "git+https://git@github.com/olzraiti/Leaflet.textPath.git#7fd168f22e2b1a52bdf62d473237f01caaa01e95"
     leaflet.markercluster "1.3.0"
@@ -5595,9 +5595,9 @@ leaflet-geometryutil@0.8.0:
   dependencies:
     leaflet ">=0.7.0"
 
-leaflet-geosearch@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/leaflet-geosearch/-/leaflet-geosearch-2.7.0.tgz#0f7b319486ea344b00639b84b338b4087bf6b839"
+"leaflet-geosearch@git+https://git@github.com/olzraiti/leaflet-geosearch.git#d0fb4384742e22799074355a99094adcc2416577":
+  version "2.6.0"
+  resolved "git+https://git@github.com/olzraiti/leaflet-geosearch.git#d0fb4384742e22799074355a99094adcc2416577"
   dependencies:
     lodash.debounce "^4.0.8"
     nodent-runtime "^3.0.4"
