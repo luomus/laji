@@ -15,7 +15,6 @@ import * as MapUtil from 'laji-map/lib/utils';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import * as LajiMap from 'laji-map';
 import { Units } from '../../../shared/model/Units';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { Observable, of as ObservableOf } from 'rxjs';
@@ -25,6 +24,7 @@ import { NamedPlacesService } from '../../named-place/named-places.service';
 import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
 import * as equals from 'deep-equal';
 import { FormService } from '../../../shared/service/form.service';
+import { LajiMapLineTransectGeometry, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 interface LineTransectCount {
   psCouples: number;
@@ -53,7 +53,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
   @Output() onNamedPlaceChange = new EventEmitter();
 
   counts: LineTransectCount;
-  lajiMapOptions: LajiMap.Options;
+  lajiMapOptions: LajiMapOptions;
   perKmTerms: LineTransectChartTerms = {
     upper: {
       slope: -0.279,
@@ -249,7 +249,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
 
   private initMapOptions() {
     this.lajiMapOptions = {
-      tileLayerName: LajiMap.TileLayerName.maastokartta,
+      tileLayerName: LajiMapTileLayerName.maastokartta,
       lineTransect: {
         feature: {type: 'Feature', properties: {}, geometry: this.getGeometry(this.activeMapLine)},
         editable: false
@@ -273,7 +273,7 @@ export class LineTransectComponent implements OnChanges, OnInit, AfterViewInit {
     this.placesDiff = diff;
   }
 
-  private getGeometry(documentName = 'document'): LajiMap.LineTransectGeometry {
+  private getGeometry(documentName = 'document'): LajiMapLineTransectGeometry {
     const document = documentName === 'document'
         ? this.document
         : this.namedPlace.acceptedDocument;

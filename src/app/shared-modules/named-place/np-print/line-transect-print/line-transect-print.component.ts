@@ -3,8 +3,8 @@ import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import * as MapUtil from 'laji-map/lib/utils';
 import { Person } from '../../../../shared/model/Person';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import * as LajiMap from 'laji-map';
 import { CoordinateService } from '../../../../shared/service/coordinate.service';
+import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-line-transect-print',
@@ -21,7 +21,7 @@ export class LineTransectPrintComponent implements OnChanges, AfterViewInit {
   @Input()
   public person: Person;
 
-  public lajiMapOptions: LajiMap.Options;
+  public lajiMapOptions: LajiMapOptions;
   public biotopes: {[distRow: number]: string[]};
   public pages: number[][] = [];
   public total: number;
@@ -173,7 +173,7 @@ export class LineTransectPrintComponent implements OnChanges, AfterViewInit {
     const geometry = this.getGeometry();
     this.checkOrientation(geometry);
     this.lajiMapOptions = {
-      tileLayerName: LajiMap.TileLayerName.maastokartta,
+      tileLayerName: LajiMapTileLayerName.maastokartta,
       tileLayerOpacity: 0.5,
       lineTransect: {
         printMode: true,

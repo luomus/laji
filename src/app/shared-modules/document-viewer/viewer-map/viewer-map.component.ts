@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import * as LajiMap from 'laji-map';
+import { LajiMapOptions } from '@laji-map/laji-map.interface';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -18,7 +18,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() useWorldMap = true;
 
   _data: any;
-  mapOptions: LajiMap.Options = {
+  mapOptions: LajiMapOptions = {
     controls: {
       coordinates: false
     },

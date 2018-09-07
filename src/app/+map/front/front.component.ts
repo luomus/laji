@@ -6,8 +6,8 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { Util } from '../../shared/service/util.service';
 import { FooterService } from '../../shared/service/footer.service';
 import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
-import * as LajiMap from 'laji-map';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { LajiMapOptions, LajiMapTileLayerName, LajiMapLang } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-map-front',
@@ -16,11 +16,11 @@ import { LajiMapComponent } from '@laji-map/laji-map.component';
 })
 export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
-  mapOptions: LajiMap.Options = {
+  mapOptions: LajiMapOptions = {
     center: [64.209802, 24.912872],
     zoom: 3,
-    tileLayerName: LajiMap.TileLayerName.maastokartta,
-    availableTileLayerNamesBlacklist: [LajiMap.TileLayerName.pohjakartta],
+    tileLayerName: LajiMapTileLayerName.maastokartta,
+    availableTileLayerNamesBlacklist: [LajiMapTileLayerName.pohjakartta],
     draw: {
       marker: true,
       polygon: true,
@@ -106,7 +106,7 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.footerService.footerVisible = false;
-    let options: LajiMap.Options = {lang: <LajiMap.Lang> this.translate.currentLang};
+    let options: LajiMapOptions = {lang: <LajiMapLang> this.translate.currentLang};
     const params = this.route.snapshot.queryParams;
     let len = Object.keys(params).length;
     if (params['overlayNames']) {

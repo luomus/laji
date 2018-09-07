@@ -24,8 +24,8 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import * as LajiMap from 'laji-map';
 import { isPlatformBrowser } from '@angular/common';
+import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-observation-map',
@@ -51,8 +51,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     this._mapOptions = {
       ...this._mapOptions,
       tileLayerName: world
-        ? LajiMap.TileLayerName.openStreetMap
-        : LajiMap.TileLayerName.taustakartta
+        ? LajiMapTileLayerName.openStreetMap
+        : LajiMapTileLayerName.taustakartta
     }
   }
   @Input() lastPage = 0; // 0 = no page limit
@@ -92,13 +92,13 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   topMargin = '0';
   legendList: {color: string, range: string}[] = [];
 
-  _mapOptions: LajiMap.Options = {
+  _mapOptions: LajiMapOptions = {
     controls: {
       draw: false
     },
     zoom: 1,
     draw: false,
-    tileLayerName: LajiMap.TileLayerName.openStreetMap
+    tileLayerName: LajiMapTileLayerName.openStreetMap
   };
 
   private prev = '';

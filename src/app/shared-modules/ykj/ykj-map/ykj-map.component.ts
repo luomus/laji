@@ -15,9 +15,9 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import * as LajiMap from 'laji-map';
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
+import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-ykj-map',
@@ -43,7 +43,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() countLabel: string[] = ['1-', '10-', '100-', '1 000-', '10 000-', '100 000-'];
   @Input() timeLabel: string[] = ['2020', '2015-', '2010-', '2005-', '2000-', '1990-'];
   @Input() maxBounds: [[number, number], [number, number]] = [[58.0, 19.0], [72.0, 35.0]];
-  @Input() mapOptions: LajiMap.Options = {
+  @Input() mapOptions: LajiMapOptions = {
     controls: {
       draw: false
     },
@@ -78,10 +78,10 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   ngOnInit() {
     this.subLang = this.translate.onLangChange.subscribe(() => {
-      this.mapOptions = {...this.mapOptions, lang: <LajiMap.Lang> this.translate.currentLang};
+      this.mapOptions = {...this.mapOptions, lang: <LajiMapLang> this.translate.currentLang};
       this.cd.markForCheck();
     });
-    this.mapOptions['lang'] = <LajiMap.Lang> this.translate.currentLang;
+    this.mapOptions['lang'] = <LajiMapLang> this.translate.currentLang;
     this.initMapdata();
   }
 

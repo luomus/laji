@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input, AfterViewInit, ViewChild, SimpleChanges } from '@angular/core';
-import * as LajiMap from 'laji-map';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { LajiMapOptions } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-print-map',
@@ -12,7 +12,7 @@ export class PrintMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() data: any;
 
   _data: any;
-  mapOptions: LajiMap.Options = {};
+  mapOptions: LajiMapOptions = {};
 
   constructor() { }
 

@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import * as LajiMap from 'laji-map';
 import { TranslateService } from '@ngx-translate/core';
+import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-np-info-map',
@@ -14,8 +14,8 @@ export class NpInfoMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() visible: boolean;
   @Input() namedPlace: NamedPlace;
 
-  mapOptions: LajiMap.Options = {
-    tileLayerName: LajiMap.TileLayerName.maastokartta,
+  mapOptions: LajiMapOptions = {
+    tileLayerName: LajiMapTileLayerName.maastokartta,
     tileLayerOpacity: 0.5,
     controls: {location: false}
   };
