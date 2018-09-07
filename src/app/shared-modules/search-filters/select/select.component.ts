@@ -118,7 +118,12 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     this.open = !this.open;
     if (this.open && this.useFilter) {
       ObservableInterval(10).pipe(take(1))
-        .subscribe(() => el.focus());
+        .subscribe(() => {
+          try {
+            // No IE support
+            el.focus();
+          } catch (e) { }
+        });
     }
   }
 
