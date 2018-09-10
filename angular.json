@@ -48,7 +48,6 @@
               ]
             },
             "embedded": {
-              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": false,
@@ -65,7 +64,6 @@
               ]
             },
             "vir": {
-              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": false,
