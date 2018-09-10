@@ -174,10 +174,6 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     query.onlyFinnish = this.formQuery.onlyFinnish ? true : undefined;
     query.invasiveSpeciesFilter = this.formQuery.onlyInvasive ? true : (this.formQuery.onlyNonInvasive ? false : undefined);
 
-    if (this.formQuery.allInvasiveSpecies) {
-      query.adminStatusFilters = this.invasiveStatuses.map(val => 'MX.' + val);
-    }
-
     if (query.adminStatusFilters) {
       query.adminStatusFilters = [...query.adminStatusFilters];
     }
