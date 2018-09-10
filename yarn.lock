@@ -5505,9 +5505,9 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.506:
-  version "0.0.506"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.506.tgz#45de16b6f00edba3338c2891d7a701b40c1f39ae"
+laji-form@^0.0.507:
+  version "0.0.507"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.507.tgz#ac18aacc74b8f2af4e3af4b345090054a81ebf9f"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
