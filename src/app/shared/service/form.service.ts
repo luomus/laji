@@ -379,7 +379,7 @@ export class FormService {
     this.currentKey = this.generateTmpId();
     return this.userService.getDefaultFormData().pipe(
       map((data: Document) => ({...(data || {}), formID: formId})),
-      map((data: Document) => this._populate ? merge(data, this._populate) : data),
+      map((data: Document) => this._populate ? merge(data, this._populate, { arrayMerge: Util.arrayCombineMerge }) : data),
       tap(() => delete this._populate)
     );
   }
