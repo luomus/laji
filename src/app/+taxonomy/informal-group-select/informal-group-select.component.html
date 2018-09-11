@@ -9,6 +9,7 @@
   <laji-informal-list *ngIf="selectedInformalGroup"
                       [tree]="selectedInformalGroup"
                       [compact]="compact"
+                      [showAll]="showAll"
                       (onInformalGroupSelect)="onInformalGroupSelect.emit($event)">
   </laji-informal-list>
 </laji-spinner>

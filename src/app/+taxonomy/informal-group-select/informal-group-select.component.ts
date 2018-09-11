@@ -14,6 +14,7 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
   @Input() id: string;
   @Input() compact = false;
   @Input() showBreadcrumb = true;
+  @Input() showAll = false;
   @Output() onInformalGroupSelect = new EventEmitter<string>();
 
   public selectedInformalGroup: InformalTaxonGroup;
