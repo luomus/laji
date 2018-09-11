@@ -40,6 +40,7 @@ export class DocumentObjectComponent implements OnChanges {
   private updateHasFacts(facts: any, fields: any[]) {
     if (!facts || !fields) {
       this.hasFacts = false;
+      return;
     }
 
     for (let i = 0; i < fields.length; i++) {
