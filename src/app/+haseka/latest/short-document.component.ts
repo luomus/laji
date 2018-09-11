@@ -4,7 +4,7 @@ import { Document } from '../../shared/model/Document';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { DocumentInfoService } from '../../shared-modules/own-submissions/service/document-info.service';
+import { DocumentInfoService } from '../../shared/service/document-info.service';
 
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { WINDOW } from '@ng-toolkit/universal';

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Document } from '../../../shared/model/Document';
+import { Document } from '../model/Document';
+import { Units } from '../model/Units';
 
 /**
- * Document service
+ * Document Info service
  */
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class DocumentInfoService {
   static getGatheringInfo(document: Document, form: any) {
     const info = {
@@ -32,7 +33,7 @@ export class DocumentInfoService {
       DocumentInfoService.updateMinMaxDates(info, gathering.dateEnd);
 
       if (gathering.units) {
-        gathering.units.reduce((result, unit) => {
+        gathering.units.reduce((result: string[], unit: Units) => {
           if (this.isEmptyUnit(unit, form)) { return result; }
 
           let taxon = unit.informalNameString || '';
@@ -73,7 +74,7 @@ export class DocumentInfoService {
     }
   }
 
-  public static isEmptyUnit(unit, form: any) {
+  public static isEmptyUnit(unit: Units, form: any) {
     if (form.features && (
         form.features.indexOf('MHL.featurePrepopulateWithInformalTaxonGroups') !== -1 ||
         form.features.indexOf('MHL.featureEmptyOnNoCount') !== -1

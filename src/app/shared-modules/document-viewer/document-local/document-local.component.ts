@@ -1,11 +1,13 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input, ChangeDetectorRef } from '@angular/core';
-import { Observable, Subscription, forkJoin } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, Subscription, forkJoin, of } from 'rxjs';
+import { map, tap, switchMap } from 'rxjs/operators';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { FormService } from '../../../shared/service/form.service';
 import { Document } from '../../../shared/model/Document';
+import { Units } from '../../../shared/model/Units';
 import { TranslateService } from '@ngx-translate/core';
 import { Image } from '../../../shared/image-gallery/image.interface';
+import { DocumentInfoService } from '../../../shared/service/document-info.service';
 
 @Component({
   selector: 'laji-document-local',
@@ -56,27 +58,38 @@ export class DocumentLocalComponent implements OnInit, OnChanges {
   }
 
   private parseDocument(doc: Document): Observable<any> {
-    const observables = [];
-    observables.push(this.getFields(doc.formID));
-    if (doc.images && doc.images.length > 0) {
-      observables.push(this.getImages(doc));
-    }
+    return this.getForm(doc.formID)
+      .pipe(
+        switchMap(form => {
+          const observables = [];
+          if (doc.images && doc.images.length > 0) {
+            observables.push(this.getImages(doc));
+          }
 
-    doc.gatherings.map((gathering, i) => {
-      if (gathering.geometry) {
-        this.mapData[i] = gathering.geometry;
-      }
-      if (gathering.images && gathering.images.length > 0) {
-        observables.push(this.getImages(gathering));
-      }
+          doc.gatherings.map((gathering, i) => {
+            if (gathering.geometry) {
+              this.mapData[i] = gathering.geometry;
+            }
+            if (gathering.images && gathering.images.length > 0) {
+              observables.push(this.getImages(gathering));
+            }
 
-      gathering.units.map((unit) => {
-        if (unit.images && unit.images.length > 0) {
-          observables.push(this.getImages(unit));
-        }
-      });
-    });
-    return forkJoin(observables);
+            const units: Units[] = [];
+            gathering.units.reduce((arr: Units[], unit: Units) => {
+              if (DocumentInfoService.isEmptyUnit(unit, form)) {
+                return arr;
+              }
+              if (unit.images && unit.images.length > 0) {
+                observables.push(this.getImages(unit));
+              }
+              arr.push(unit);
+              return arr;
+            }, units);
+            gathering.units = units;
+          });
+          return observables.length > 0 ? forkJoin(observables) : of(observables);
+        })
+      );
   }
 
   private getImages(obj): Observable<Image[]> {
@@ -94,7 +107,7 @@ export class DocumentLocalComponent implements OnInit, OnChanges {
       );
   }
 
-  private getFields(formId: string): Observable<any> {
+  private getForm(formId: string): Observable<any> {
     return this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
       .pipe(tap(form => {
         this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications']);

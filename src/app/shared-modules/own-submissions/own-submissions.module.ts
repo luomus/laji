@@ -5,7 +5,6 @@ import { OwnSubmissionsComponent } from './own-submissions.component';
 import { YearSliderComponent } from './year-slider/year-slider.component';
 import { OwnDatatableComponent } from './own-datatable/own-datatable.component';
 import { FilterColumnsPipe } from './own-datatable/filter-columns.pipe';
-import { DocumentInfoService } from './service/document-info.service';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RouterModule } from '@angular/router';
 import { RouterChildrenEventService } from './service/router-children-event.service';
@@ -26,7 +25,6 @@ import { DocumentViewerModule } from '../document-viewer/document-viewer.module'
     FilterColumnsPipe
   ],
   providers: [
-    DocumentInfoService,
     RouterChildrenEventService
   ],
   exports: [

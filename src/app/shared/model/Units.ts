@@ -109,6 +109,8 @@ export interface Units {
      */
     informalTaxonGroup?: string;
 
+    informalTaxonGroups?: string[];
+
     infrasubspecificSubdivision?: string;
 
     juvenileIndividualCount?: number;

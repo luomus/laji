@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
+import { Units } from '../../../shared/model/Units';
 import { Util } from '../../../shared/service/util.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { UserService } from '../../../shared/service/user.service';
@@ -10,7 +11,7 @@ import { geoJSONToISO6709 } from 'laji-map/lib/utils';
 import { utils as XLSXUtils, write as XLSXWrite } from 'xlsx';
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { DocumentInfoService } from './document-info.service';
+import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { ExportService } from '../../../shared/service/export.service';
 import { DocumentField } from '../models/document-field';
 import { FeatureCollection } from 'geojson';
