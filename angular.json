@@ -99,7 +99,9 @@
               "namedChunks": true,
               "aot": true,
               "extractLicenses": true,
-              "vendorChunk": false
+              "vendorChunk": false,
+              "sourceMap": false,
+              "buildOptimizer": true
             }
           }
         },
