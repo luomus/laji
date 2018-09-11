@@ -3,7 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 @Component({
   selector: 'laji-document-local-print-view',
   templateUrl: './document-local-print-view.component.html',
-  styleUrls: ['./document-local-print-view.component.scss']
+  styleUrls: ['../../styles/document-print.scss']
 })
 export class DocumentLocalPrintViewComponent implements OnInit {
   @Input() document: Document;

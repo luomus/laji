@@ -9,14 +9,13 @@ export const viewerRoutes: Routes = [
     path: '',
     pathMatch: 'full',
     component: ViewerComponent
-  }
-  /*,
+  },
   {
     path: 'print',
     pathMatch: 'full',
     canActivate: [OnlyLoggedIn],
     component: ViewerPrintComponent
-  }*/
+  }
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forChild(viewerRoutes);

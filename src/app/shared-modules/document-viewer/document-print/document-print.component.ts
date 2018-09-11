@@ -20,7 +20,7 @@ import { filter, switchMap, take, map } from 'rxjs/operators';
 @Component({
   selector: 'laji-document-print',
   templateUrl: './document-print.component.html',
-  styleUrls: ['./document-print.component.scss'],
+  styleUrls: ['../styles/document-print.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentPrintComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
