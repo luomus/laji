@@ -1,6 +1,6 @@
-<ng-container *ngFor="let field of _fields">
+<ng-container *ngFor="let field of fields">
   <ng-container *ngIf="object[field.name] && (field.type !== 'collection' || object[field.name].length > 0)">
-    <ng-container *ngTemplateOutlet="field.template; context: {'value': object[field.name], 'label': field.label, 'field': field}"></ng-container>
+    <ng-container *ngTemplateOutlet="templates[field.name]; context: {'value': object[field.name], 'label': field.label, 'field': field}"></ng-container>
   </ng-container>
 </ng-container>
 
@@ -8,7 +8,7 @@
   <laji-row [title]="label" [value]="value ? ('yes' | translate) : ('no' | translate)"></laji-row>
 </ng-template>
 <ng-template #select let-value="value" let-label="label" let-field="field">
-  <laji-row [title]="label" [value]="field.enums[value]"></laji-row>
+  <laji-row [title]="label" [value]="field.options.value_options[value]"></laji-row>
 </ng-template>
 <ng-template #taxonCensus let-value="value">
   <laji-row [title]="'MY.taxonCensus' | label">
@@ -24,6 +24,25 @@
                         [fields]="field.fields"
                         [hideTooltips]="hideTooltips"
   ></laji-document-object>
+</ng-template>
+<ng-template #facts let-value="value" let-field="field">
+  <div *ngIf="showFacts && hasFacts" class="facts">
+    <table class="table table-hover table-condensed">
+      <thead>
+      <tr>
+        <th colspan="2">Lisämuuttujat</th>
+      </tr>
+      </thead>
+      <ng-container *ngFor="let f of field.fields">
+        <tr *ngIf="value[f.name] && (f.type !== 'collection' || value[f.name].length > 0)">
+          <th class="title"><span>{{f.label}}</span></th>
+          <td *ngIf="f.type === 'checkbox'">{{value ? ('yes' | translate) : ('no' | translate)}}</td>
+          <td *ngIf="f.type === 'select'">{{f.options.value_options[value[f.name]] | values}}</td>
+          <td *ngIf="f.type !== 'select' && f.type !== 'checkbox'">{{value[f.name] | label | values}}</td>
+        </tr>
+      </ng-container>
+    </table>
+  </div>
 </ng-template>
 <ng-template #default let-value="value" let-label="label">
   <laji-row [title]="label" [value]="value | label"></laji-row>
