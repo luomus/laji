@@ -6,7 +6,7 @@
       [ngClass]="{active: selected.indexOf(field) > -1, disabled: disabled.indexOf(field) > -1}">
     <laji-selected-field-item
       [field]="field"
-      [label]="columnsLookup[field].label | translate"
+      [label]="columnsLookup[field]?.label | translate"
       [idx]="selected.indexOf(field)"
       [len]="selected.length"
       (toggle)="onToggle($event)"
