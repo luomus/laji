@@ -13,7 +13,7 @@
     <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
     <laji-row [title]="'MY.keywords' | label" [value]="document.keywords"></laji-row>
     <laji-facts [show]="showFacts" [facts]="document.facts | factNotIn:['http://tun.fi/MY.formID','http://tun.fi/MZ.publicityRestrictions']"></laji-facts>
-    <laji-print-images *ngIf="document.images" [images]="document-images"></laji-print-images>
+    <laji-print-images *ngIf="document.media" [images]="document.media"></laji-print-images>
   </div>
 
   <ng-container *ngFor="let gathering of document.gatherings; let i=index">
@@ -29,7 +29,7 @@
       <div *ngIf="mapData[i]" class="half-page-block padding-left">
         <laji-print-map [data]="mapData[i]"></laji-print-map>
       </div>
-      <laji-print-images *ngIf="gathering.images" [images]="gathering.images"></laji-print-images>
+      <laji-print-images *ngIf="gathering.media" [images]="gathering.media"></laji-print-images>
     </div>
 
     <div>
@@ -37,7 +37,7 @@
         <hr>
         <laji-unit-rows [unit]="unit" [showFacts]="showFacts" [showLinks]="false"></laji-unit-rows>
         <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>
-        <laji-print-images *ngIf="unit.images" [images]="unit.images"></laji-print-images>
+        <laji-print-images *ngIf="unit.media" [images]="unit.media"></laji-print-images>
       </ng-container>
     </div>
   </ng-container>
