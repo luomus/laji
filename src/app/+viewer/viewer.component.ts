@@ -20,7 +20,7 @@ export class ViewerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subQuery = this.route.queryParams.subscribe(params => {
       this.uri = params['uri'] || '';
-      this.highlight = (params['highlight'] || '').replace('_', '#');
+      this.highlight = (params['highlight'] || '').replace('%23', '#');
       this.own = params['own'] === 'true';
       this.openAnnotation = params['openAnnotation'] === 'true';
     });

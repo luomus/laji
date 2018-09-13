@@ -102,12 +102,36 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
           editorOrObserverPersonToken: this.userService.getToken()
         } : undefined)
         .map(doc => doc.document)
-        .do(() => this.showOnlyHighlighted = !!this.highlight);
+        .do((doc) => this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight));
     findDox$
       .subscribe(
         doc => this.parseDoc(doc, doc),
         err => this.parseDoc(undefined, false)
       );
+  }
+
+  shouldOnlyShowHighlighted(doc, highlight) {
+    if (!highlight) {
+      return false;
+    }
+    if (
+      (doc.gatheringId && doc.gatheringId === highlight) ||
+      (doc.unitId && doc.unitId === highlight)
+    ) {
+      return true;
+    }
+    let hasHighlight = false;
+    ['gatherings', 'units'].forEach(level => {
+      if (Array.isArray(doc[level])) {
+        doc[level].forEach(subLevel => {
+          if (hasHighlight) {
+            return hasHighlight;
+          }
+          hasHighlight = this.shouldOnlyShowHighlighted(subLevel, highlight);
+        })
+      }
+    });
+    return hasHighlight;
   }
 
   setActive(i) {
