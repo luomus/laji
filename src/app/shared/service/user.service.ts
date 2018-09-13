@@ -139,7 +139,7 @@ export class UserService extends LocalDb {
     if (!id) {
       return this.getCurrentUser(token)
         .catch((err: HttpErrorResponse | any) => {
-          if (err instanceof HttpErrorResponse && err.status !== 404) {
+          if (err instanceof HttpErrorResponse && err.status !== 404 && err.status !== 400) {
             this.logger.error('Failed to fetch current users information', err);
           }
           this.logout(false);
