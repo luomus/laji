@@ -524,7 +524,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
             description += '<a target="_blank" href="/view?uri=' +
               properties['documentId'] +
               '&highlight=' +
-              properties['unitId'].replace('#', '_') + '">' +
+              properties['unitId'].replace('#', '%23') + '">' +
               moreInfo + '</a>';
           }
           if (description) {
