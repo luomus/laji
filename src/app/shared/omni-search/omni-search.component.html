@@ -53,7 +53,7 @@
           {{ 'navigation.observation' | translate }}
           <div class="row">
             <div class="col-md-offset-1 col-md-11 observations" *ngIf="taxon">
-              <a [routerLink]="['/observation/map'] | localize" [queryParams]="{target: (taxon.key | toFullUri), reset: true }" (click)="close()">
+              <a [routerLink]="['/observation/map'] | localize" [queryParams]="{target: taxon.key, reset: true }" (click)="close()">
                 {{taxon?.count}}
                 {{'omniSearch.allObservation'|translate}}
               </a>
