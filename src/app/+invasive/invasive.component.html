@@ -18,7 +18,7 @@
       warning: aggr[taxon.id] && aggr[taxon.id]?.isNewThisYear
     }">
       <td>
-          <a [routerLink]="['/observation'] | localize" [queryParams]="{target: taxon.id}">
+          <a [routerLink]="['/observation/map'] | localize" [queryParams]="{target: taxon.id}">
             {{taxon.vernacularName | multiLang}}
             (<span class="scientificName" [ngClass]="{'cursive': taxon.cursiveName}">{{taxon.scientificName}}</span>)
           </a>
