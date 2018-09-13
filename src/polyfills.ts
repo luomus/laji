@@ -16,6 +16,7 @@ import 'core-js/es6/set';
 // If you need to support the browsers/features below, uncomment the import
 // and run `npm install import-name-here';
 // Learn more in https://angular.io/docs/ts/latest/guide/browser-support.html
+import 'core-js/es7/array';
 // Animations
 // Needed for: All but Chrome and Firefox, Not supported in IE9
 import 'web-animations-js';
