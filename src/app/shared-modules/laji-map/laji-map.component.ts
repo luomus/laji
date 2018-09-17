@@ -189,6 +189,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
       if (this.tileLayerOpacity) {
         this.map.setTileLayerOpacity(this.tileLayerOpacity);
       }
+
       this.map.map.on('moveend', _ => {
         this.moveEvent('moveend');
       });
