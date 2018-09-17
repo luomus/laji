@@ -80,7 +80,6 @@ export class LajiApiService {
 
 
   remove(endpoint: LajiApi.Endpoints.annotations, id: string, query: LajiApi.Query.AnnotationQuery): Observable<void>;
-  remove(endpoint: LajiApi.Endpoints.personToken, id: string): Observable<void>;
   remove(endpoint: LajiApi.Endpoints.notifications, id: string, query: LajiApi.Query.NotificationQuery): Observable<any>;
   remove(endpoint: LajiApi.Endpoints, id: string, query: object = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}/${id}`;
@@ -105,7 +104,6 @@ export namespace LajiApi {
     information = 'information',
     news = 'news',
     notifications = 'notifications',
-    personToken = 'person-token',
     publications = 'publications',
     sources = 'sources',
     taxon = 'taxa',

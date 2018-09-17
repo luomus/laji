@@ -33,13 +33,26 @@
         </div>
         <div class="row">
           <div class="col-lg-4 col-md-5">
-            <a [routerLink]="['/observation/map'] | localize" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}" class="thumbnail panel panel-default">
+            <a [routerLink]="['/observation/map'] | localize" [queryParams]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206'}" class="thumbnail panel panel-default">
               <div class="panel-heading">
                 <h2 class="panel-title caption">{{ 'home.main-page.recent' | translate }}</h2>
               </div>
               <div class="panel-body resent-map">
                 <div class="link blocking-overlay"></div>
-                <laji-observation-map [settingsKey]="'frontMap'" [height]="438" [showControls]="false" [initWithWorldMap]="false" [showItemsWhenLessThan]="2000" [draw]="false" [query]="{time: mapStartDate + '/', countryId: 'ML.206', cache: true}"></laji-observation-map>
+                <laji-observation-map [settingsKey]="'frontMap'" [height]="438" [showControls]="false" [initWithWorldMap]="false" [showItemsWhenLessThan]="2000" [draw]="false" [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}"></laji-observation-map>
+                <div class="numbers">
+                  <span class="no-break">
+                    <laji-observation-count [lightLoader]="true" [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}">
+                    </laji-observation-count>
+                    {{'viewer.unit' | translate}}
+                    </span>
+                  <span class="no-break">
+                    <laji-observation-count [lightLoader]="true" [field]="'unit.linkings.taxon.id'"
+                                            [query]="{taxonRankId: 'MX.species', firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}">
+                    </laji-observation-count>
+                    {{'observation.results.species' | translate}}
+                  </span>
+                </div>
               </div>
             </a>
           </div>

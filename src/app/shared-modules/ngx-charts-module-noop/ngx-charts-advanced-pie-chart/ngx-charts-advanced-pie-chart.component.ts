@@ -11,6 +11,7 @@ export class NgxChartsAdvancedPieChartComponent {
   @Input() results: any;
   @Input() label: any;
   @Input() legend: any;
+  @Input() valueFormatting: any;
   @Input() doughnut: any;
   @Input() gradient: any;
   @Input() scheme: any;
