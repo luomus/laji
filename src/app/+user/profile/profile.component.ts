@@ -5,10 +5,10 @@ import { Profile } from '../../shared/model/Profile';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin as ObservableForkJoin, of as ObservableOf, Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
-import { environment } from '../../../environments/environment';
 import { Person } from '../../shared/model/Person';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { concatMap, map, tap } from 'rxjs/operators';
+import { Global } from '../../../environments/global';
 
 @Component({
   selector: 'laji-user',
@@ -43,7 +43,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
               private router: Router,
               private logger: Logger
   ) {
-    this.personSelfUrl = environment.selfPage;
+    this.personSelfUrl = Global.selfPage;
   }
 
   ngOnInit() {

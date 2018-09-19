@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { SearchQuery } from '../+observation/search-query.model';
 import { TranslateService } from '@ngx-translate/core';
-import { environment } from '../../environments/environment.vir';
+import { environment } from '../../environments/environment';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { SourceService } from '../shared/service/source.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
+import { Global } from '../../environments/global';
 
 @Component({
   selector: 'laji-home',
@@ -34,7 +35,7 @@ export class HomeComponent implements OnInit {
     start.subtract(1, 'd');
     this.mapStartDate = start.format('YYYY-MM-DD');
     this.imagesQuery$ = this.sourceService.getAllAsLookUp().pipe(
-      map(sources => Object.keys(sources).filter((source) => source !== environment.sources.kotka)),
+      map(sources => Object.keys(sources).filter((source) => source !== Global.sources.kotka)),
       map(sources => ({
         sourceId: sources,
         unidentified: true,

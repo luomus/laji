@@ -1,5 +1,6 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { Global } from '../../../environments/global';
 
 @Directive({ selector: '[lajiAuthorities]' })
 export class AuthoritiesDirective {
@@ -9,7 +10,8 @@ export class AuthoritiesDirective {
   ) { }
 
   @Input() set lajiAuthorities(isAuthority: boolean) {
-    if (environment.forAuthorities === isAuthority) {
+    const forAuthorities = environment.type === Global.type.vir;
+    if (forAuthorities === isAuthority) {
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
       this.viewContainer.clear();

@@ -4,6 +4,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { environment } from '../../../environments/environment.vir';
 import { ModalDirective } from 'ngx-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
+import { Global } from '../../../environments/global';
 
 @Component({
   selector: 'laji-identify',
@@ -31,7 +32,7 @@ export class IdentifyComponent implements OnInit {
     this.formId = environment.whichSpeciesForm;
     this.modal.config = {animated: false};
     this.sourceService.getAllAsLookUp()
-      .map(sources => Object.keys(sources).filter((source) => source !== environment.sources.kotka))
+      .map(sources => Object.keys(sources).filter((source) => source !== Global.sources.kotka))
       .subscribe(sources => {
         this.query = {
           sourceId: sources,

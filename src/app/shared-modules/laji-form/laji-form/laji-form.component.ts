@@ -16,12 +16,12 @@ import {
 import { FormApiClient } from '../../../shared/api/FormApiClient';
 import { UserService } from '../../../shared/service/user.service';
 import { Logger } from '../../../shared/logger/logger.service';
-import { environment } from '../../../../environments/environment';
 import LajiForm from 'laji-form/lib/laji-form';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { concatMap, map } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
+import { Global } from '../../../../environments/global';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -168,7 +168,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           renderSubmit: false,
           topOffset: 50,
           bottomOffset: 50,
-          googleApiKey: environment.googleApiKey,
+          googleApiKey: Global.googleApiKey,
           notifier: {
             success: msg => this.toastsService.showSuccess(msg),
             info: msg => this.toastsService.showInfo(msg),

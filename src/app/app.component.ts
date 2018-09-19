@@ -9,6 +9,7 @@ import { Observable, of as ObservableOf } from 'rxjs';
 import { LocalizeRouterService } from './locale/localize-router.service';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { RoutingStateService } from './shared/service/routing-state.service';
+import { Global } from '../environments/global';
 
 declare const ga: Function;
 
@@ -45,7 +46,7 @@ export class AppComponent {
   ) {
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
-    this.isEmbedded = environment.isEmbedded || false;
+    this.isEmbedded = environment.type === Global.type.embedded;
 
     translateService.use(localizeRouterService.getLocationLang());
 

@@ -11,6 +11,7 @@ import { DocumentService } from '../../shared-modules/own-submissions/service/do
 import { LajiApi, LajiApiService } from './laji-api.service';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { FormList } from '../../+haseka/form-list/haseka-form-list';
+import { Global } from '../../../environments/global';
 
 
 export interface LoadResponse extends FormList {
@@ -281,7 +282,7 @@ export class FormService {
 
   getAddUrlPath(formId) {
     if (!formId) {
-      formId = environment.defaultForm;
+      formId = Global.forms.default;
     }
     if (this.forms[formId]) {
       return `${this.forms[formId]}`;

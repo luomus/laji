@@ -16,8 +16,8 @@ import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../../shared/service/id.service';
 import { UserService } from '../../../shared/service/user.service';
-import { environment } from '../../../../environments/environment';
 import { filter, switchMap, take } from 'rxjs/operators';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-document',
@@ -165,8 +165,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       this.document = doc;
       this.hasMapData = false;
       const mapData = [];
-      this.externalViewUrl = environment.externalViewers[doc.sourceId] ?
-        environment.externalViewers[doc.sourceId].replace('%uri%', doc.documentId) : '';
+      this.externalViewUrl = Global.externalViewers[doc.sourceId] ?
+        Global.externalViewers[doc.sourceId].replace('%uri%', doc.documentId) : '';
       if (doc.documentId) {
         this.documentID = IdService.getId(doc.documentId);
       }

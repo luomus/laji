@@ -16,7 +16,7 @@ import { USER_INFO, UserService } from '../../shared/service/user.service';
 import { Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import * as LajiMap from 'laji-map';
-import { environment } from '../../../environments/environment';
+import { Global } from '../../../environments/global';
 
 @Component({
   selector: 'laji-map',
@@ -176,7 +176,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
       ...this._options,
       ...(this.userSettings || {}),
       rootElem: this.elemRef.nativeElement,
-      googleApiKey: environment.googleApiKey
+      googleApiKey: Global.googleApiKey
     };
     try {
       this.map = new LajiMap.LajiMap(options);

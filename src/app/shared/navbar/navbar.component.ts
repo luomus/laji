@@ -22,6 +22,7 @@ import { PagedResult } from '../model/PagedResult';
 import { Notification } from '../model/Notification';
 import { isPlatformBrowser } from '@angular/common';
 import { filter, switchMap, take } from 'rxjs/operators';
+import { Global } from '../../../environments/global';
 
 @Component({
   selector: 'laji-navbar',
@@ -61,7 +62,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private appRef: ApplicationRef
   ) {
     this.isProd = environment.production;
-    this.isAuthority = environment.forAuthorities;
+    this.isAuthority = environment.type === Global.type.vir;
   }
 
   ngOnInit() {

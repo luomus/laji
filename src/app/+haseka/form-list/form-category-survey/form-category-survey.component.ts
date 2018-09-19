@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormList } from '../haseka-form-list';
-import { environment } from '../../../../environments/environment';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-form-category-survey',
@@ -10,7 +10,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class FormCategorySurveyComponent {
 
-  themes = environment.formsTheme;
+  themes = Global.formsTheme;
 
   @Input() title: string;
   @Input() formList: FormList[] = [];
