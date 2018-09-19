@@ -1,0 +1,45 @@
+.info-footer {
+  padding-bottom: 20px;
+}
+.info-footer a {
+  color: #fff;
+}
+
+.info-footer a:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+.partners-footer {
+  margin-top: 50px;
+  background-color: #fff;
+}
+
+.title {
+  display: inline-block;
+  margin: 10px 0 5px 13px;
+  color: #7d7d7d;
+}
+
+.partners ul, .partners li, .info-footer ul, .info-footer li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.partners img {
+  max-height: 25px;
+}
+
+.partners li {
+  padding: 0 8px 13px 8px;
+  display: inline-block;
+}
+
+.partners.front img {
+  max-height: 50px;
+}
+
+.partners.front li {
+  padding: 0 8px 25px 8px;
+}

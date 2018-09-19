@@ -765,7 +765,7 @@
     </ng-container>
   </div>
   <div laji-panel *ngIf="advancedMode" [title]="'observation.form.invasiveClassification' | translate" [autoToggle]="true"  [open]="visible['invasive']">
-    <div class="row" *lajiAuthorities="true">
+    <div class="row" *lajiForTypes="['vir']">
       <div class="col-sm-12">
         <laji-metadata-select
           [multiple]="true"
@@ -775,7 +775,7 @@
           [lang]="lang"></laji-metadata-select>
       </div>
     </div>
-    <hr *lajiAuthorities="true">
+    <hr *lajiForTypes="['vir']">
     <div class="row">
       <div class="col-sm-12">
         <label class="small-label">

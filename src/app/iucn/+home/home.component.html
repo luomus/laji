@@ -1,0 +1,65 @@
+<div class="header red">
+  <h1>Suomen lajien uhanalaisuus</h1>
+  <p>
+    Punaisessa kirjassa esitellään Suomen lajiston uhanalaisuusarvioinnin tuloksia.
+    Arviointi tehdään kansainvälisen luonnonsuojeluliiton IUCN:n luokittelun mukaisesti.
+  </p>
+</div>
+<div class="searchBar">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
+        <laji-omni-search
+          [placeholder]="'species.search' | translate"
+        ></laji-omni-search>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <h2>
+    Uhanalaisuustarkastelussa käytettävät IUCN -luokat
+  </h2>
+  <div class="row well">
+    <div class="col-sm-12">
+      <laji-iucn-class></laji-iucn-class>
+    </div>
+  </div>
+  <a href="/">Lue lisää arvioinnin toteutuksesta Suomessa</a>
+  <h2>
+    Tulokset
+  </h2>
+  <div class="row">
+    <div class="col-sm-3">
+      <laji-iucn-result-pie [year]="2019" [data]="iucnService.getResults(2019) | async"></laji-iucn-result-pie>
+    </div>
+    <div class="col-sm-3">
+      <laji-iucn-result-pie [year]="2015" [data]="iucnService.getResults(2015) | async"></laji-iucn-result-pie>
+    </div>
+    <div class="col-sm-3">
+      <laji-iucn-result-pie [year]="2010" [data]="iucnService.getResults(2010) | async"></laji-iucn-result-pie>
+    </div>
+    <div class="col-sm-3">
+      <laji-iucn-result-pie [year]="2000" [data]="iucnService.getResults(2000) | async"></laji-iucn-result-pie>
+    </div>
+  </div>
+  <a href="/">Selaa ja vertaile tuloksia</a>
+  <h2>
+    Julkaistut punaiset kirjat
+  </h2>
+  <div class="row">
+    <div class="col-sm-12">
+      PDF linkit
+    </div>
+  </div>
+  <a href="/">Selaile julkaisuja ja saatavilla olevia datalatauksia</a>
+  <h2>
+    Kiitokset
+  </h2>
+  <div class="row">
+    <div class="col-sm-12">
+      <p>Punainen kirja on toteutettu ympäristöministeriön rahoittamana...</p>
+    </div>
+  </div>
+  <a href="/">Tutustu työryhmiin</a>
+</div>

@@ -35,7 +35,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('userMenu') public dropDown: BsDropdownDirective;
 
   openMenu: Boolean = false;
-  isAuthority = false;
+  redTheme = false;
   isProd = false;
   showSearch = false;
   notifications: PagedResult<Notification>;
@@ -62,7 +62,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private appRef: ApplicationRef
   ) {
     this.isProd = environment.production;
-    this.isAuthority = environment.type === Global.type.vir;
+    this.redTheme = environment.type === Global.type.vir || environment.type === Global.type.iucn;
   }
 
   ngOnInit() {

@@ -1,0 +1,31 @@
+a {
+  padding: 0;
+}
+
+a:hover {
+  text-decoration: none;
+}
+.panel-body {
+  position: relative;
+  height: 300px;
+}
+.chart {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 30px;
+}
+.total {
+  position: absolute;;
+  bottom: 10px;
+}
+.caption {
+  text-align: center;
+  font-weight: bold;
+}
+
+.thumbnail, .panel {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}

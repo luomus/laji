@@ -1,4 +1,4 @@
-<div class="laji-news full-height" *lajiAuthorities="false">
+<div class="laji-news full-height" *lajiForTypes="['dev', 'prod', 'embedded']">
   <laji-image-header></laji-image-header>
   <div class="searchBar">
     <div class="container-fluid">
@@ -100,7 +100,7 @@
     </div>
   </div>
 </div>
-<div class="container-fluid" *lajiAuthorities="true">
+<div class="container-fluid" *lajiForTypes="['vir']">
   <h1>{{'home.authority.title' | translate}}</h1>
   <div class="row">
     <div class="col-sm-10 col-md-7 intro" [innerHtml]="'home.authority.text' | translate"></div>

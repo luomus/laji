@@ -4,5 +4,6 @@
     <router-outlet></router-outlet>
   </div>
 </div>
-<laji-footer id="footer" *ngIf="!isEmbedded"></laji-footer>
+<laji-footer class="footer" *lajiForTypes="['dev', 'prod']"></laji-footer>
+<laji-iucn-footer class="footer" *lajiForTypes="['iucn']"></laji-iucn-footer>
 <laji-feedback *ngIf="!isEmbedded" [iconOnly]="true"></laji-feedback>

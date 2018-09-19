@@ -28,7 +28,7 @@ p {
   flex-direction: column;
 }
 
-#footer, #navbar {
+.footer, #navbar {
   flex: none;
 }
 
@@ -55,6 +55,10 @@ laji-locale-sv > div,
 
 #content img {
   max-width: 100%;
+}
+
+.red {
+  background-color: #d62022;
 }
 
 .cursive {
@@ -90,7 +94,7 @@ laji-locale-sv > div,
   background-color: #ECF0F1;
 }
 
-#footer footer {
+.footer footer {
   flex: none;
   color: #fff;
   background-color: #3498DB;

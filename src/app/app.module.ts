@@ -37,6 +37,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 import { BrowserModule } from '@angular/platform-browser';
+import { Global } from '../environments/global';
+import { IucnRoutingModule } from './iucn-routing.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -78,7 +80,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),
     Ng2Webstorage.forRoot({prefix: 'laji-', separator: ''}),
-    AppRoutingModule,
+    environment.type === Global.type.iucn ? IucnRoutingModule : AppRoutingModule,
     TransferHttpCacheModule
   ],
   exports: [

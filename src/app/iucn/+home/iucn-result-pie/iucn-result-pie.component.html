@@ -1,0 +1,13 @@
+<a [routerLink]="['/']" class="thumbnail panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title caption">{{year}}</h2>
+  </div>
+  <div class="panel-body identifications">
+    <div class="chart">
+      <ngx-charts-pie-chart [results]="_data" [customColors]="colorSchema"></ngx-charts-pie-chart>
+    </div>
+    <div class="total">
+      Arvioituja lajeja <strong>{{total}}</strong>
+    </div>
+  </div>
+</a>

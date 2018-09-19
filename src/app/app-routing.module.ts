@@ -6,6 +6,8 @@ import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
 import { mergeMap } from 'rxjs/operators';
+import { environment } from '../environments/environment';
+import { Global } from '../environments/global';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
@@ -14,6 +16,8 @@ export class PreloadSelectedModulesList implements PreloadingStrategy {
     );
   }
 }
+
+const homeModule = environment.type === Global.type.iucn ? './iucn/+home/home.module#HomeModule' : './+home/home.module#HomeModule';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: './+home/home.module#HomeModule'},

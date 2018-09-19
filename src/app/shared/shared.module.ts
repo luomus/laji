@@ -47,6 +47,8 @@ import { FactNotInPipe } from './pipe/fact-not-in.pipe';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ServerOnlyDirective } from './directive/server-only.directive';
 import { BrowserOnlyDirective } from './directive/browser-only.directive';
+import { ForTypesDirective } from './directive/for-types.directive';
+import { IucnFooterComponent } from './iucn-footer/footer.component';
 
 
 @NgModule({
@@ -63,6 +65,8 @@ import { BrowserOnlyDirective } from './directive/browser-only.directive';
     ObservationGroupSelectComponent, SourcePipe, RemoveEmptyPipe, DatePickerComponent, ServerOnlyDirective, BrowserOnlyDirective,
     TaxonNameComponent,
     FactNotInPipe,
+    ForTypesDirective,
+    IucnFooterComponent
   ],
   imports: [
     FormsModule,
@@ -87,7 +91,7 @@ import { BrowserOnlyDirective } from './directive/browser-only.directive';
     AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, ServerOnlyDirective, BrowserOnlyDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent,
-    FactNotInPipe
+    FactNotInPipe, ForTypesDirective, IucnFooterComponent
   ]
 })
 export class SharedModule {

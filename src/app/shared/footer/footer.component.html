@@ -1,5 +1,5 @@
 <footer *ngIf="footerService.footerVisible">
-  <div class="container-fluid info-footer" *lajiAuthorities="false">
+  <div class="container-fluid info-footer">
     <div class="row">
       <div *ngFor="let item of tree$ | async; let i=index" class="{{columns[i] || ''}}">
         <h3><a [routerLink]="'/about/' + item.id | localize">{{item.title}}</a></h3>

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-fixed-top" [ngClass]="{authority: isAuthority}">
+<nav class="navbar navbar-inverse navbar-fixed-top" [ngClass]="{'red-theme': redTheme}">
   <div class="env" [ngClass]="{dev: !isProd}"></div>
   <div class="container-fluid">
     <div class="row">
@@ -11,7 +11,10 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" (click)="closeMenu()" [routerLink]="['/'] | localize">LAJI.FI</a>
+          <a class="navbar-brand" (click)="closeMenu()" [routerLink]="['/'] | localize">
+            <span *lajiForTypes="['dev', 'prod', 'vir']">LAJI.FI</span>
+            <span *lajiForTypes="['iucn']">PUNAINEN KIRJA</span>
+          </a>
           <div class="visible-xs-inline-block pull-right search">
             <laji-omni-search
               [placeholder]="'species.search' | translate"
@@ -22,22 +25,22 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
           <ul class="nav navbar-nav">
-            <li [routerLinkActive]="['active']" *lajiAuthorities="false">
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
               <a (click)="closeMenu()" [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']">
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
               <a (click)="closeMenu()" [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiAuthorities="true">
+            <li [routerLinkActive]="['active']" *lajiForTypes="['vir']">
               <a (click)="closeMenu()" [routerLink]="['/invasive'] | localize">{{ 'navigation.invasive' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']">
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'vir']">
               <a (click)="closeMenu()" [routerLink]="['/vihko'] | localize">{{ 'navigation.haseka' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiAuthorities="false" dropdown>
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
               <a (click)="closeMenu()" [routerLink]="['/theme'] | localize">{{ 'navigation.theme' | translate }}</a>
             </li>
-            <li *lajiAuthorities="false" [ngClass]="{'hidden-sm': showSearch}">
+            <li [ngClass]="{'hidden-sm': showSearch}" *lajiForTypes="['dev', 'prod']">
               <a (click)="goToForum($event)" class="link" href="http://foorumi.laji.fi/">{{'Forum' | translate}}</a>
             </li>
           </ul>
@@ -49,58 +52,60 @@
                 [visible]="showSearch"
                 [expand]="'right'"></laji-omni-search>
             </li>
-            <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown #userMenu="bs-dropdown">
-              <a dropdownToggle class="link user">
-                <span class="hidden-sm name"><small>{{(userService.getUser()|async)?.id | users:'fullname'}}</small></span>
-                <i class="glyphicon glyphicon-user"></i>
-                <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{notificationsNotSeen}}</span>
-              </a>
-              <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
-                <li role="menuitem">
-                  <a (click)="closeMenu()" [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
-                </li>
-                <li role="menuitem">
-                  <a (click)="closeMenu()" [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li class="dropdown-header">
-                  {{'notification.title' | translate}}:
-                  <span *ngIf="notifications?.lastPage > 1">
-                    ({{notifications?.currentPage}} / {{notifications?.lastPage}})
-                  </span>
-                </li>
-                <li role="menuitem"
-                    *ngFor="let notification of notifications?.results; trackBy: trackNotification"
-                    laji-notification
-                    (notificationSeen)="markAsSeen($event)"
-                    (removeNotification)="removeNotification($event)"
-                    [notification]="notification"></li>
-                <li *ngIf="notifications && notifications?.lastPage > 1">
-                  <div class="btn-group notification-pager" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-default"
-                            [disabled]="notifications.currentPage <= 1"
-                            (click)="prevNotificationPage()">
-                      <i class="glyphicon glyphicon-chevron-left"></i>
-                    </button>
-                    <button type="button" class="btn btn-default"
-                            [disabled]="notifications.currentPage >= notifications.lastPage"
-                            (click)="nextNotificationPage()">
-                      <i class="glyphicon glyphicon-chevron-right"></i>
-                    </button>
-                  </div>
-                </li>
-              </ul>
-            </li>
-            <li *ngIf="!(userService.isLoggedIn$ | async)">
-              <a href="#login" (click)="doLogin($event)">
-                <small class="hidden-sm">
-                  {{ 'navigation.user.login' | translate }}
-                </small>
-                <small class="visible-sm">
-                  {{ 'login' | translate }}
-                </small>
-              </a>
-            </li>
+            <ng-container *lajiForTypes="['dev', 'prod', 'vir']">
+              <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown #userMenu="bs-dropdown">
+                <a dropdownToggle class="link user">
+                  <span class="hidden-sm name"><small>{{(userService.getUser()|async)?.id | users:'fullname'}}</small></span>
+                  <i class="glyphicon glyphicon-user"></i>
+                  <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{notificationsNotSeen}}</span>
+                </a>
+                <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
+                  <li role="menuitem">
+                    <a (click)="closeMenu()" [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
+                  </li>
+                  <li role="menuitem">
+                    <a (click)="closeMenu()" [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
+                  </li>
+                  <li role="separator" class="divider"></li>
+                  <li class="dropdown-header">
+                    {{'notification.title' | translate}}:
+                    <span *ngIf="notifications?.lastPage > 1">
+                      ({{notifications?.currentPage}} / {{notifications?.lastPage}})
+                    </span>
+                  </li>
+                  <li role="menuitem"
+                      *ngFor="let notification of notifications?.results; trackBy: trackNotification"
+                      laji-notification
+                      (notificationSeen)="markAsSeen($event)"
+                      (removeNotification)="removeNotification($event)"
+                      [notification]="notification"></li>
+                  <li *ngIf="notifications && notifications?.lastPage > 1">
+                    <div class="btn-group notification-pager" role="group" aria-label="Basic example">
+                      <button type="button" class="btn btn-default"
+                              [disabled]="notifications.currentPage <= 1"
+                              (click)="prevNotificationPage()">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                      </button>
+                      <button type="button" class="btn btn-default"
+                              [disabled]="notifications.currentPage >= notifications.lastPage"
+                              (click)="nextNotificationPage()">
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                      </button>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li *ngIf="!(userService.isLoggedIn$ | async)">
+                <a href="#login" (click)="doLogin($event)">
+                  <small class="hidden-sm">
+                    {{ 'navigation.user.login' | translate }}
+                  </small>
+                  <small class="visible-sm">
+                    {{ 'login' | translate }}
+                  </small>
+                </a>
+              </li>
+            </ng-container>
             <li dropdown>
               <a dropdownToggle class="link language-toggle">
                 <i class="glyphicon glyphicon-globe"></i>
