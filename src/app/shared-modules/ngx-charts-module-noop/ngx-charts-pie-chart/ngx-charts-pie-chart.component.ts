@@ -13,6 +13,7 @@ export class NgxChartsPieChartComponent {
   @Input() legend: any;
   @Input() doughnut: any;
   @Input() gradient: any;
+  @Input() customColors: any;
 
   @Output() select = new EventEmitter();
 }
