@@ -6,6 +6,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   <ngx-charts-advanced-pie-chart
     [view]="[760, height]"
     (select)="select($event)"
+    [valueFormatting]="valueFormat"
     [scheme]="'fire'"
     [label]="'observation.results.observation' | translate"
     [results]="data"
@@ -32,6 +33,10 @@ export class PieChartComponent {
         this.sectionSelect.emit(this.data[idx]);
       }
     }
+  }
+
+  valueFormat(value) {
+    return ('' + value).replace(/(\d)(?=(\d{3})+(\.\d*)?$)/g, '$1 ');
   }
 
 }

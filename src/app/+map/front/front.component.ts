@@ -127,7 +127,7 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
     if (params['target']) {
       this.searchQuery.query.target = [params['target']];
     }
-    this.mapOptions = {...this.mapOptions, ...options};
+    this.mapOptions = {...this.mapOptions, ...options, draw: this.drawData};
     this.searchQuery.setQueryFromQueryObject(params);
     this.query = Util.clone(this.searchQuery.query);
   }

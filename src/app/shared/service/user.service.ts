@@ -11,7 +11,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { LocalDb } from '../local-db/local-db.abstract';
 import { environment } from '../../../environments/environment';
-import { LajiApi, LajiApiService } from './laji-api.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { WINDOW } from '@ng-toolkit/universal';
 import { catchError, switchMap, tap } from 'rxjs/operators';
@@ -31,6 +30,7 @@ export class UserService extends LocalDb {
   private actionSource = new Subject<any>();
   public action$ = this.actionSource.asObservable();
 
+  // Do not write to this variable in the server!
   @LocalStorage() private token;
   @LocalStorage() private returnUrl;
   private userSettings: {[key: string]: any};
@@ -51,8 +51,7 @@ export class UserService extends LocalDb {
     + '&next=' + next).replace('%lang%', lang);
   }
 
-  constructor(private lajiApi: LajiApiService,
-              private userService: PersonApi,
+  constructor(private userService: PersonApi,
               private router: Router,
               private location: Location,
               private logger: Logger,
@@ -62,12 +61,14 @@ export class UserService extends LocalDb {
               @Inject(PLATFORM_ID) private platformId: object,
               @Inject(WINDOW) private window: Window) {
     super('settings', isPlatformBrowser(platformId));
-    if (this.token) {
-      this.loadUserInfo(this.token).subscribe(value => {
-        this.isLoggedIn = !!value;
-      });
-    } else {
-      this.isLoggedIn = false;
+    if (isPlatformBrowser(platformId)) {
+      if (this.token) {
+        this.loadUserInfo(this.token).subscribe(value => {
+          this.isLoggedIn = !!value;
+        });
+      } else {
+        this.isLoggedIn = false;
+      }
     }
   }
 
@@ -85,7 +86,7 @@ export class UserService extends LocalDb {
   }
 
   public login(userToken: string) {
-    if (this.token === userToken) {
+    if (this.token === userToken || !isPlatformBrowser(this.platformId)) {
       return;
     }
     if (this.subUser) {
@@ -100,7 +101,7 @@ export class UserService extends LocalDb {
     if (!this.token || this.subLogout) {
       return;
     }
-    this.subLogout = this.lajiApi.remove(LajiApi.Endpoints.personToken, this.token)
+    this.subLogout = this.userService.removePersonToken(this.token)
       .catch(err => {
         if (err.status === 404) {
           return ObservableOf(null);
@@ -254,6 +255,9 @@ export class UserService extends LocalDb {
   }
 
   private addUser(user: Person, asCurrent = false) {
+    if (!user) {
+      return;
+    }
     if (asCurrent) {
       this.currentUserId = user.id;
     }

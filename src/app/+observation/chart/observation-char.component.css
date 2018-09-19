@@ -14,3 +14,10 @@
 .observation-chart-wrapper {
   position: relative;
 }
+
+.stat-info {
+  position: absolute;
+  z-index: 2;
+  top: 114px;
+  left: 303px;
+}
