@@ -29,8 +29,8 @@ import { LineTransectMyDocumentListComponent } from './line-transect/line-transe
 import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 import { LineTransectFormEiVakioComponent } from './line-transect/line-transect-form-ei-vakio/line-transect-form-ei-vakio.component';
 import { LineTransectFormKartoitusComponent } from './line-transect/line-transect-form-kartoitus/line-transect-form-kartoitus.component';
-import {InvasiveSpeciesComponent} from "./invasive-species/invasive-species.component";
-import {InvasiveSpeciesInstructionsComponent} from "./invasive-species/invasive-species-instructions/invasive-species-instructions.component";
+import {InvasiveSpeciesComponent} from './invasive-species/invasive-species.component';
+import {InvasiveSpeciesInstructionsComponent} from './invasive-species/invasive-species-instructions/invasive-species-instructions.component';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [

@@ -51,8 +51,8 @@ import { LineTransectFormKartoitusComponent } from './line-transect/line-transec
 import { LajiFormModule } from '@laji-form/laji-form.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import {InvasiveSpeciesComponent} from "./invasive-species/invasive-species.component";
-import {InvasiveSpeciesInstructionsComponent} from "./invasive-species/invasive-species-instructions/invasive-species-instructions.component";
+import {InvasiveSpeciesComponent} from './invasive-species/invasive-species.component';
+import {InvasiveSpeciesInstructionsComponent} from './invasive-species/invasive-species-instructions/invasive-species-instructions.component';
 /* tslint:enable:max-line-length */
 
 @NgModule({
