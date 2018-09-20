@@ -1,9 +1,11 @@
 <div class="header red">
-  <h1>Suomen lajien uhanalaisuus</h1>
-  <p>
-    Punaisessa kirjassa esitellään Suomen lajiston uhanalaisuusarvioinnin tuloksia.
-    Arviointi tehdään kansainvälisen luonnonsuojeluliiton IUCN:n luokittelun mukaisesti.
-  </p>
+  <div class="intro">
+    <h1>Suomen lajien uhanalaisuus</h1>
+    <p>
+      Punaisessa kirjassa esitellään Suomen lajiston uhanalaisuusarvioinnin tuloksia.
+      Arviointi tehdään kansainvälisen luonnonsuojeluliiton IUCN:n luokittelun mukaisesti.
+    </p>
+  </div>
 </div>
 <div class="searchBar">
   <div class="container-fluid">
@@ -30,20 +32,20 @@
     Tulokset
   </h2>
   <div class="row">
-    <div class="col-sm-3">
+    <div class="col-md-3 col-sm-6">
       <laji-iucn-result-pie [year]="2019" [data]="iucnService.getResults(2019) | async"></laji-iucn-result-pie>
     </div>
-    <div class="col-sm-3">
+    <div class="col-md-3 col-sm-6">
       <laji-iucn-result-pie [year]="2015" [data]="iucnService.getResults(2015) | async"></laji-iucn-result-pie>
     </div>
-    <div class="col-sm-3">
+    <div class="col-md-3 col-sm-6">
       <laji-iucn-result-pie [year]="2010" [data]="iucnService.getResults(2010) | async"></laji-iucn-result-pie>
     </div>
-    <div class="col-sm-3">
+    <div class="col-md-3 col-sm-6">
       <laji-iucn-result-pie [year]="2000" [data]="iucnService.getResults(2000) | async"></laji-iucn-result-pie>
     </div>
   </div>
-  <a href="/">Selaa ja vertaile tuloksia</a>
+  <a href="/">Selaa tuloksia</a>
   <h2>
     Julkaistut punaiset kirjat
   </h2>
@@ -61,5 +63,4 @@
       <p>Punainen kirja on toteutettu ympäristöministeriön rahoittamana...</p>
     </div>
   </div>
-  <a href="/">Tutustu työryhmiin</a>
 </div>
