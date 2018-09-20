@@ -46,6 +46,7 @@ const routesWithLang: Routes = [
     {path: 'emk', redirectTo: '/en/theme/emk', pathMatch: 'full'},
     {path: 'linjalaskenta', redirectTo: '/en/theme/linjalaskenta', pathMatch: 'full'},
     {path: 'talvilintu', redirectTo: '/en/theme/talvilintulaskenta', pathMatch: 'full'},
+    {path: 'vieraslajit', redirectTo: '/en/theme/vieraslajit', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/en/error/404'}
   ], component: LocaleEnComponent},
@@ -55,6 +56,7 @@ const routesWithLang: Routes = [
     {path: 'emk', redirectTo: '/sv/theme/emk', pathMatch: 'full'},
     {path: 'linjalaskenta', redirectTo: '/sv/theme/linjalaskenta', pathMatch: 'full'},
     {path: 'talvilintu', redirectTo: '/sv/theme/talvilintulaskenta', pathMatch: 'full'},
+    {path: 'vieraslajit', redirectTo: '/sv/theme/vieraslajit', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/sv/error/404'}
   ], component: LocaleSvComponent},
@@ -64,6 +66,7 @@ const routesWithLang: Routes = [
     {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
     {path: 'linjalaskenta', redirectTo: '/theme/linjalaskenta', pathMatch: 'full'},
     {path: 'talvilintu', redirectTo: '/theme/talvilintulaskenta', pathMatch: 'full'},
+    {path: 'vieraslajit', redirectTo: '/theme/vieraslajit', pathMatch: 'full'},
     ...routes,
     {path: '**', redirectTo: '/error/404'}
   ], component: LocaleFiComponent}
