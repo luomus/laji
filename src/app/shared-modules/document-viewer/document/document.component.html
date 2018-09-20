@@ -5,9 +5,7 @@
         <h3 ngPreserveWhitespaces>
           {{'viewer.document' | translate }}
           <small>
-            <a [routerLink]="['/view'] | localize" [queryParams]="highlight ?
-            {uri: document.documentId, highlight: highlight} :
-            {uri: document.documentId}" target="_blank">
+            <a [routerLink]="['/view'] | localize" [queryParams]="{uri: document.documentId}" target="_blank">
               {{document.documentId}}
             </a>
           </small>
