@@ -15,7 +15,7 @@
             <span *lajiForTypes="['dev', 'prod', 'vir']">LAJI.FI</span>
             <span *lajiForTypes="['iucn']">PUNAINEN KIRJA</span>
           </a>
-          <div class="visible-xs-inline-block pull-right search">
+          <div class="visible-xs-inline-block pull-right search" *lajiForTypes="['dev', 'prod', 'vir']">
             <laji-omni-search
               [placeholder]="'species.search' | translate"
               (visibleTaxon)="updateView()"
@@ -25,6 +25,17 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
           <ul class="nav navbar-nav">
+            <ng-container *lajiForTypes="['iucn']">
+              <li [routerLinkActive]="['active']">
+                <a (click)="closeMenu()" [routerLink]="['/taxon'] | localize">Lajit ja tulokset</a>
+              </li>
+              <li [routerLinkActive]="['active']">
+                <a (click)="closeMenu()" [routerLink]="['/publications'] | localize">Julkaisut ja lataukset</a>
+              </li>
+              <li [routerLinkActive]="['active']">
+                <a (click)="closeMenu()" [routerLink]="['/about'] | localize">Tietoa</a>
+              </li>
+            </ng-container>
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod']">
               <a (click)="closeMenu()" [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
@@ -44,7 +55,7 @@
               <a (click)="goToForum($event)" class="link" href="http://foorumi.laji.fi/">{{'Forum' | translate}}</a>
             </li>
           </ul>
-          <ul class="nav navbar-nav pull-right">
+          <ul class="nav navbar-nav pull-right" *lajiForTypes="['dev', 'prod', 'vir']">
             <li class="hidden-xs search">
               <laji-omni-search
                 [placeholder]="'species.search' | translate"

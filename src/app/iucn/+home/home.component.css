@@ -4,27 +4,31 @@ h2 {
   color: #727272;
 }
 .header {
-  height: 330px;
+  height: 250px;
   position: relative;
 }
-.header h1 {
+.header .intro {
   position: absolute;
+  top: 10px;
+  left: 10px;
+  min-width: 350px;
+}
+
+.header .intro h1 {
   margin: 0;
+}
+
+.header .intro h1, .header .intro p {
   color: #fff;
-  top: 60px;
-  left: 100px;
   text-shadow: 0 2px 5px #000;
 }
 
+
 .header p {
-  position: absolute;
-  top: 110px;
-  left: 120px;
-  color: #fff;
+  margin: 15px 0 0 30px;
   max-width: 550px;
   font-size: 18px;
   line-height: 30px;
-  text-shadow: 0 2px 5px #000;
 }
 
 .searchBar {
@@ -34,4 +38,13 @@ h2 {
 }
 .row {
   margin-bottom: 15px;
+}
+@media only screen and (min-width : 768px) {
+  .header .intro {
+    top: 60px;
+    left: 100px;
+  }
+  .header {
+    height: 330px;
+  }
 }

@@ -58,7 +58,7 @@ laji-locale-sv > div,
 }
 
 .red {
-  background-color: #d62022;
+  background-color: #d62022 !important;
 }
 
 .cursive {

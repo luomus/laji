@@ -1,13 +1,10 @@
 import { NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
-import { ForumComponent } from './forum/forum.component';
 import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
 import { mergeMap } from 'rxjs/operators';
-import { environment } from '../environments/environment';
-import { Global } from '../environments/global';
 
 export class PreloadSelectedModulesList implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
@@ -21,6 +18,7 @@ const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: './iucn/+home/home.module#HomeModule'},
   {path: 'news', loadChildren: './+news/news.module#NewsModule', data: {noPreload: true, title: 'news.title'}},
   {path: 'about', loadChildren: './+information/information.module#InformationModule'},
+  {path: 'publications', loadChildren: './iucn/+publications/publications.module#PublicationsModule'},
   {path: 'user', loadChildren: './+user/user.module#UserModule', data: {noPreload: true}},
   {path: 'view', loadChildren: './+viewer/viewer.module#ViewerModule', data: {title: 'viewer.document'}},
   {path: 'observation', loadChildren: './+observation/observation.module#ObservationModule', data: {title: 'navigation.observation'}},
