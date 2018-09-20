@@ -36,7 +36,7 @@ export class InvasiveControlFormComponent implements OnInit, OnDestroy, Componen
       this.documentId = params['id'] || null;
       if (!this.formService.hasNamedPlace() && !this.documentId) {
         this.router.navigate(
-          this.localizeRouterService.translateRoute(['/theme/vieraslajit/places/HR.2049', environment.invasiveControlForm),
+          this.localizeRouterService.translateRoute(['/theme/vieraslajit/places/HR.2049', environment.invasiveControlForm]),
           { replaceUrl: true }
         );
       } else {
