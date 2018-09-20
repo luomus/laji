@@ -313,6 +313,7 @@
   "navigation.research": "Research Tools",
   "navigation.satelliitti": "Satellite tracking",
   "navigation.taxonomy": "Species",
+  "navigation.invasiveSpecies": "Invasive species",
   "navigation.theme": "Themes",
   "navigation.user": "User settings",
   "navigation.user.login": "Login | Register",
@@ -563,7 +564,7 @@
   "observation.intro.adminStatus": "Filter observations to species that belong to at least one of the selected features",
   "observation.intro.images": "Filter to those observations that have",
   "observation.intro.noImages": "Filter to those observations that",
-  "observation.intro.typeOfOccurrenceId": "Filter observations according to status of species in Finland",  
+  "observation.intro.typeOfOccurrenceId": "Filter observations according to status of species in Finland",
   "observation.keepSsp": "Include subtaxa",
   "observation.results.observation": "hits of",
   "observation.results.species": "species",
@@ -798,6 +799,7 @@
   "theme.linetransect.intro": "Line-transect count survey is a method to get a representative image of birds nesting in the area. Explore out the results, reserve a line, and report results.",
   "theme.map.intro": "This service can be used to find out coordinates in different Finnish and global coordinate systems, calculate distances and areas, and look at different maps (topographic laser map, forest vegetation zones, etc.). You can also save the patterns you draw and bring your own patterns to the service in a variety of file formats.",
   "theme.nafi.intro": "National butterfly survey of Finland (NAFI). Explore results and report observations.",
+  "theme.invasiveSpecies.intro": "Service for terminating invasive species",
   "theme.newest": "Newest",
   "theme.noHits": "No observations found with the given criteria.",
   "theme.observation.title": "Observations",
@@ -850,5 +852,6 @@
   "whatsNew.acknowledge": "Thank you for the information!",
   "whatsNew.message": "laji.fi is a test portal for Finnish Biodiversity Information Facility. Information and properties will be improved continuously. Feedback is welcome - you can send it by feedback form or by e-mail to address info@laji.fi. Thank you!",
   "wholeYear": "Whole year {{year}}",
-  "yes": "Yes"
+  "yes": "Yes",
+  "invasiveSpecies.title": "Invasive species"
 }

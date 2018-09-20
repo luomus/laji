@@ -29,6 +29,8 @@ import { LineTransectMyDocumentListComponent } from './line-transect/line-transe
 import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 import { LineTransectFormEiVakioComponent } from './line-transect/line-transect-form-ei-vakio/line-transect-form-ei-vakio.component';
 import { LineTransectFormKartoitusComponent } from './line-transect/line-transect-form-kartoitus/line-transect-form-kartoitus.component';
+import {InvasiveSpeciesComponent} from "./invasive-species/invasive-species.component";
+import {InvasiveSpeciesInstructionsComponent} from "./invasive-species/invasive-species-instructions/invasive-species-instructions.component";
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -121,6 +123,14 @@ const routes: Routes = [
       {path: 'instructions', pathMatch: 'full', component: LineTransectInstructionsComponent, data: { title: 'lineTransect.title' } },
       {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent },
       {path: 'statistics/:documentID', pathMatch: 'full', component: StatisticsComponent, canActivate: [OnlyLoggedIn] }
+    ]
+  },
+  {
+    path: 'vieraslajit',
+    component: InvasiveSpeciesComponent,
+    children: [
+      {path: '', pathMatch: 'full', component: InvasiveSpeciesInstructionsComponent, data: { title: 'invasiveSpecies.title' }},
+      {path: 'instructions', pathMatch: 'full', component: InvasiveSpeciesInstructionsComponent, data: { title: 'invasiveSpecies.title' } }
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},

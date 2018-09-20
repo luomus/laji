@@ -316,6 +316,7 @@
   "navigation.research": "Forskningsverktyg",
   "navigation.satelliitti": "Satellitspårning",
   "navigation.taxonomy": "Artlista",
+  "navigation.invasiveSpecies": "Invasiva arter",
   "navigation.theme": "Teman",
   "navigation.user": "Användarinställning",
   "navigation.user.login": "Logga in | Registrera",
@@ -373,7 +374,7 @@
   "observation.active.hasMedia": "Bilder",
   "observation.active.hasUnitMedia": "Observationsbilder",
   "observation.active.includeNonValidTaxa": "Endast kända namn",
-  "observation.active.includeSubTaxa": "Udanta subtaxa",  
+  "observation.active.includeSubTaxa": "Udanta subtaxa",
   "observation.active.individualCountMax": "Max individsantal",
   "observation.active.individualCountMin": "Min individsantal",
   "observation.active.informalTaxonGroupAll": "Alla",
@@ -800,6 +801,7 @@
   "theme.linetransect.intro": "Linjetaxering undersökning är en metod för att få en representativ bild av fåglar som nestar i området. Utforska resultaten, boka en rad och rapportera resultat.",
   "theme.map.intro": "Denna tjänst kan användas för att ta reda på koordinater i olika koordinatsystem, beräkna avstånd och områden, och titta på olika kartor (topografisk laserkarta, vegetationszoner etc.).",
   "theme.nafi.intro": "Finlands nationella fjärilsundersökning (NAFI). Utforska resultat och rapportera observationer.",
+  "theme.invasiveSpecies.intro": "Service för att avsluta invasiva arter",
   "theme.newest": "Nyaste",
   "theme.noHits": "Inga kommentarer hittades med de givna kriterier.",
   "theme.observation.title": "Observationer",
@@ -852,5 +854,6 @@
   "whatsNew.acknowledge": "Tack för informationen",
   "whatsNew.message": "laji.fi är en testportal för Finlands Artdatacenter. Information och egenskaper kommer att förbättras kontinuerligt. Feedback är välkommen - du kan skicka den via feedbackblanketten eller via e-post till adress info@laji.fi. Tack!",
   "wholeYear": "Helt år {{year}}",
-  "yes": "Ja"
+  "yes": "Ja",
+  "invasiveSpecies.title": "Invasiva arter"
 }
