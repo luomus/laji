@@ -29,8 +29,9 @@ import { LineTransectMyDocumentListComponent } from './line-transect/line-transe
 import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 import { LineTransectFormEiVakioComponent } from './line-transect/line-transect-form-ei-vakio/line-transect-form-ei-vakio.component';
 import { LineTransectFormKartoitusComponent } from './line-transect/line-transect-form-kartoitus/line-transect-form-kartoitus.component';
-import {InvasiveSpeciesComponent} from './invasive-species/invasive-species.component';
-import {InvasiveSpeciesInstructionsComponent} from './invasive-species/invasive-species-instructions/invasive-species-instructions.component';
+import { InvasiveControlComponent } from './invasive-control/invasive-control.component';
+import { InvasiveControlInstructionsComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.component';
+import { InvasiveControlFormComponent } from './invasive-control/invasive-control-form/invasive-control-form.component';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -127,10 +128,19 @@ const routes: Routes = [
   },
   {
     path: 'vieraslajit',
-    component: InvasiveSpeciesComponent,
+    component: InvasiveControlComponent,
     children: [
-      {path: '', pathMatch: 'full', component: InvasiveSpeciesInstructionsComponent, data: { title: 'invasiveSpecies.title' }},
-      {path: 'instructions', pathMatch: 'full', component: InvasiveSpeciesInstructionsComponent, data: { title: 'invasiveSpecies.title' } }
+      {path: '', pathMatch: 'full', component: InvasiveControlInstructionsComponent, data: { title: 'invasiveSpecies.title' }},
+      {path: 'instructions', pathMatch: 'full', component: InvasiveControlInstructionsComponent, data: { title: 'invasiveSpecies.title' } },
+      {path: 'form', pathMatch: 'full', component: InvasiveControlFormComponent},
+      {
+        path: 'form/:id',
+        pathMatch: 'full',
+        component: InvasiveControlFormComponent,
+        canActivate: [OnlyLoggedIn],
+        canDeactivate: [DocumentDeActivateGuard]
+      },
+      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent }
     ]
   },
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},

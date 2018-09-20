@@ -5,11 +5,11 @@ import { ActivatedRoute } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
-  selector: 'laji-invasive-species-instructions',
-  templateUrl: './invasive-species-instructions.component.html',
-  styleUrls: ['./invasive-species-instructions.component.css']
+  selector: 'laji-invasive-control-instructions',
+  templateUrl: './invasive-control-instructions.component.html',
+  styleUrls: ['./invasive-control-instructions.component.css']
 })
-export class InvasiveSpeciesInstructionsComponent implements OnInit {
+export class InvasiveControlInstructionsComponent implements OnInit {
 
   constructor(
     @Inject(WINDOW) private window: Window,
