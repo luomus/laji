@@ -853,5 +853,6 @@
   "whatsNew.message": "laji.fi is a test portal for Finnish Biodiversity Information Facility. Information and properties will be improved continuously. Feedback is welcome - you can send it by feedback form or by e-mail to address info@laji.fi. Thank you!",
   "wholeYear": "Whole year {{year}}",
   "yes": "Yes",
-  "invasiveSpecies.title": "Invasive species"
+  "invasiveSpecies.title": "Invasive species",
+  "invasiveSpecies.form": "Record control actions"
 }

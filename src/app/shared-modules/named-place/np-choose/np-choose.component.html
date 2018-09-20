@@ -26,5 +26,5 @@
   <button *ngIf="allowCreate"
           class="btn btn-md btn-default"
           id="create-new-button"
-          (click)="createButtonClick()">{{'np.createNew' | translate}}</button>
+          (click)="createButtonClick()">{{formData.namedPlaceOptions?.createNewLabel ? formData.namedPlaceOptions.createNewLabel : 'np.createNew' | translate}}</button>
 </div>

@@ -855,5 +855,6 @@
   "whatsNew.message": "laji.fi är en testportal för Finlands Artdatacenter. Information och egenskaper kommer att förbättras kontinuerligt. Feedback är välkommen - du kan skicka den via feedbackblanketten eller via e-post till adress info@laji.fi. Tack!",
   "wholeYear": "Helt år {{year}}",
   "yes": "Ja",
-  "invasiveSpecies.title": "Invasiva arter"
+  "invasiveSpecies.title": "Invasiva arter",
+  "invasiveSpecies.form": "Spela in kontrol aktioner"
 }
