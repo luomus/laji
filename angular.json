@@ -65,6 +65,23 @@
                 }
               ]
             },
+            "iucn": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.iucn.ts"
+                }
+              ]
+            },
             "vir": {
               "optimization": true,
               "outputHashing": "all",
