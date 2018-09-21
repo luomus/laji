@@ -147,6 +147,18 @@ export interface Taxonomy {
 
   synonyms?: Array<Taxonomy>;
 
+  basionyms?: Array<Taxonomy>;
+
+  heterotypicSynonyms?: Array<Taxonomy>;
+
+  homotypicSynonyms?: Array<Taxonomy>;
+
+  objectiveSynonyms?: Array<Taxonomy>;
+
+  orthographicVariants?: Array<Taxonomy>;
+
+  subjectiveSynonyms?: Array<Taxonomy>;
+
   children?: Array<Taxonomy>;
 
   administrativeStatuses?: Array<string>;

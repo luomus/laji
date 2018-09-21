@@ -1,8 +1,8 @@
-<ng-container *ngIf="link">
+<div *ngIf="link" class="bold">
   <ng-container *ngIf="count > 0; else zero">
-    <a [href]="link" target="_blank" rel="noopener">{{count}}</a>
+    <a [href]="link" target="_blank" rel="noreferrer noopener">{{count}} (<span [class.cursive]="cursive">{{scientificName}}</span>)</a>
   </ng-container>
   <ng-template #zero>
-    {{count}}
+    {{count}} (<span [class.cursive]="cursive">{{scientificName}}</span>)
   </ng-template>
-</ng-container>
+</div>
