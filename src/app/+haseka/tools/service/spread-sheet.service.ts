@@ -119,19 +119,25 @@ export class SpreadSheetService {
     const sheetName: string = workBook.SheetNames[0];
     const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
 
-    this.setDateFormat(sheet);
+    this.setDateFormat(sheet, !!workBook.Workbook);
     return [
       <any>XLSX.utils.sheet_to_json<{[key: string]: string}>(sheet, {header: 'A'}),
       sheet
     ]
   }
 
-  setDateFormat(sheet: XLSX.WorkSheet) {
+  setDateFormat(sheet: XLSX.WorkSheet, hasWorkbook) {
     for (const i in sheet) {
-      if (!sheet.hasOwnProperty(i) || !sheet[i].t || sheet[i].t !== 'd') {
+      if (!sheet.hasOwnProperty(i) || !sheet[i].t || sheet[i].t !== 'd' || !(sheet[i].v instanceof Date)) {
         continue;
       }
-      sheet[i].z = sheet[i].w.length <= 10 ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss';
+      if (hasWorkbook) {
+        sheet[i].z = sheet[i].w.length <= 10 ? 'YYYY-MM-DD' : 'YYYY-MM-DD"T"hh:mm';
+      } else {
+        const len = sheet[i].v.getUTCHours() === 0 && sheet[i].v.getUTCMinutes() === 0 && sheet[i].v.getUTCSeconds() === 0 ? 10 : 16;
+        sheet[i].v = sheet[i].v.toISOString().substr(0, len);
+        sheet[i].t = 's';
+      }
       delete sheet[i].w;
     }
   }
