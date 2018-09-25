@@ -642,6 +642,20 @@ body > .ui-select-bootstrap.open {
   background-color: #898989;
 }
 
+.sidebar-nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar-nav ul li {
+  margin-right: 0;
+}
+
+.sidebar-nav ul li a {
+  padding-left: 55px;
+}
+
 .dropdown-menu {
   z-index: 1032;
 }

@@ -54,6 +54,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { InvasiveControlComponent } from './invasive-control/invasive-control.component';
 import { InvasiveControlInstructionsComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.component';
 import { InvasiveControlFormComponent } from './invasive-control/invasive-control-form/invasive-control-form.component';
+import { WbcSpeciesResultComponent } from './wbc/wbc-result/wbc-species-result/wbc-species-result.component';
+import { WbcRoutesResultComponent } from './wbc/wbc-result/wbc-routes-result/wbc-routes-result.component';
+import { WbcCensusesResultComponent } from './wbc/wbc-result/wbc-censuses-result/wbc-censuses-result.component';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -110,7 +113,10 @@ import { InvasiveControlFormComponent } from './invasive-control/invasive-contro
     LineTransectFormKartoitusComponent,
     InvasiveControlComponent,
     InvasiveControlInstructionsComponent,
-    InvasiveControlFormComponent
+    InvasiveControlFormComponent,
+    WbcSpeciesResultComponent,
+    WbcRoutesResultComponent,
+    WbcCensusesResultComponent
   ],
   providers: [ ResultService, QualityService ]
 })

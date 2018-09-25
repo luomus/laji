@@ -1,11 +1,35 @@
-<h3>
-  {{'wbc.title' | translate}}
-  <span *ngIf="fromYear">
-    {{fromMonth | translate}}
-    {{fromYear}}
-  </span>
-</h3>
-<div class="row">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8">
+      <h3>
+        {{'wbc.title' | translate}}
+      </h3>
+      <p>Talvilintulaskenta on Luonnontieteellisen keskusmuseon Luomuksen koordinoima valtakunnallinen linnustonseurantatutkimus,
+        joka on käynnistynyt talvella 1956/57. Laskentojen tulokset on siirretty tietokantaan, jonka sisältöä voi selailla näiden
+        verkkosivujen kautta. Tietokannan sisältöön tehdään ajoittain tarkistuksia ja korjauksia, ja siksi verkkosivuilla näytettävät
+        taulukot ja kartat on tarkoitettu ainoastaan henkilökohtaiseen käyttöön eikä niihin saa viitata julkaisuissa. Lähes
+        poikkeuksetta harvinaisimpien lajien havainnot ovat tarkastamattomia.</p>
+      <p>Tarkemmat tiedot laskentojen toteutuksesta sekä laskentaohjeet ja -lomakkeet löytyvät Luomuksen
+        <a href="https://www.luomus.fi/fi/talvilintulaskennat" target="_blank">talvilintulaskentasivuilta</a>.</p>
+      <p>Aineiston esittämisestä tai käyttämisestä tieteellisessä julkaisussa tai kaupallisessa tarkoituksessa on sovittava erikseen
+        Luonnontieteellisen keskusmuseon kanssa.</p>
+      <div class="row">
+        <laji-navigation-thumbnail [name]="'wbc.stats.species'" [icon]="'wb_icon_bird'" [iconType]="'png'" [path]="'theme/talvilintulaskenta/stats/species'"></laji-navigation-thumbnail>
+        <laji-navigation-thumbnail [name]="'wbc.stats.routes'" [icon]="'wb_icon_map_2'" [iconType]="'png'" [path]="'theme/talvilintulaskenta/stats/routes'"></laji-navigation-thumbnail>
+        <laji-navigation-thumbnail [name]="'wbc.stats.censuses'" [icon]="'wb_icon_laskennat'" [iconType]="'png'" [path]="'theme/talvilintulaskenta/stats/censuses'"></laji-navigation-thumbnail>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-logo pull-right">
+        <img *ngIf="formLogo" src="{{formLogo}}">
+      </div>
+    </div>
+  </div>
+  <hr style="width: 100%">
+  <router-outlet></router-outlet>
+</div>
+
+<!--div class="row">
   <div class="col-sm-12">
     {{'wbc.stats.seasons' | translate}}<br>
     <select
@@ -31,8 +55,8 @@
       </div>
     </div>
   </div>
-</div>
-<div class="row">
+</div-->
+<!--div class="row">
   <div class="col-sm-5 col-sm-push-7 map-col">
     <laji-ykj-map
       [taxon]="taxon$ | async"
@@ -64,5 +88,5 @@
     >
     </laji-theme-observation-list>
   </div>
-</div>
+</div-->
 
