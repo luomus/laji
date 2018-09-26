@@ -9,7 +9,7 @@ import {
   Input,
   NgZone,
   OnChanges,
-  OnDestroy, OnInit,
+  OnDestroy,
   Output,
   SimpleChanges, ViewChild
 } from '@angular/core';
@@ -22,7 +22,6 @@ import { concatMap, map } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
 import { Global } from '../../../../environments/global';
-import { AreaService } from '../../../shared/service/area.service';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -32,7 +31,7 @@ const GLOBAL_SETTINGS = '_global_form_settings_';
   providers: [FormApiClient],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, OnInit {
+export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input() lang: string;
   @Input() formData: any = {};
   @Input() tick: number;
@@ -57,16 +56,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
               private ngZone: NgZone,
               private cd: ChangeDetectorRef,
               private toastsService: ToastsService,
-              private areaService: AreaService
   ) {
-  }
-
-  ngOnInit() {
-    this.areaService.getMunicipalities(this.lang).subscribe(municipalities => {
-      console.log(municipalities);
-
-      return municipalities.map(({id, value}) => ({key: id, value}));
-    });
   }
 
   ngAfterViewInit() {
