@@ -68,10 +68,14 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   ngAfterViewInit() {
     this.modal.onShown.subscribe(() => { this.modalIsVisible = true; this.cdRef.markForCheck(); });
     this.modal.onHidden.subscribe(() => { this.modalIsVisible = false; this.cdRef.markForCheck(); });
-    if (this.infoBox.nativeElement.offsetParent === null) {
+    if (this.windowReadyForModal()) {
       this.modal.show();
     }
     this.viewIsInitialized = true;
+  }
+
+  windowReadyForModal(): boolean {
+    return window.innerWidth < 1200;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -85,7 +89,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   npClick() {
-    if (this.viewIsInitialized && this.infoBox.nativeElement.offsetParent === null) {
+    if (this.viewIsInitialized && this.windowReadyForModal()) {
       this.modal.show();
     }
   }
