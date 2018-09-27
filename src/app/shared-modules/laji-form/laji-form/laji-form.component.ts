@@ -65,7 +65,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   ngOnInit(): void {
     this.areaService.getMunicipalities(this.lang).subscribe(municipalities => {
       this.municipalityEnums = municipalities.reduce((enums, municipality) => {
-        enums.enums.push(municipality.id);
+        enums.enum.push(municipality.id);
         enums.enumNames.push(municipality.value);
         return enums;
       }, {
