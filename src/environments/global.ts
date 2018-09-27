@@ -9,7 +9,7 @@ export const Global = {
   forms: {
     default: 'JX.519',
     nafi: 'MHL.6',
-    invasiveControl: 'JX.520',
+    invasiveControl: 'MHL.33',
     wbc: 'MHL.3',
     lineTransect: 'MHL.1',
     lineTransectEiVakio: 'MHL.27',
