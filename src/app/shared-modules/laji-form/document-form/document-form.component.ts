@@ -187,7 +187,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   onSubmit(event) {
-    const doc$;
     this.saving = true;
     this.lajiForm.block();
     const data = event.data.formData;
@@ -198,7 +197,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       // const errors = this.errorsToPath(event.data.errorSchema);
       // data.acknowledgedWarnings = Object.keys(errors).map(key => ({location: key, messages: errors[key]}));
     }
-    doc$.subscribe(
+    this.documentService.create(data, this.userService.getToken()).subscribe(
       (result) => {
         this.lajiForm.unBlock();
         this.formService.discard();
