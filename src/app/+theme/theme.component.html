@@ -133,9 +133,9 @@
             {{'theme.satellite.intro' | translate}}
           </td>
         </tr>
-        <tr>
+        <tr *lajiForTypes="['dev']">
           <th>
-            <a [routerLink]="['/theme/vieraslajit'] | localize" *lajiForTypes="['dev']">
+            <a [routerLink]="['/theme/vieraslajit'] | localize">
               {{ 'navigation.invasiveSpecies' | translate }}
             </a>
           </th>
