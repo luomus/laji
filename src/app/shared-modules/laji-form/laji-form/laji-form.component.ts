@@ -69,7 +69,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
         enums.enumNames.push(municipality.value);
         return enums;
       }, {
-        enums: [],
+        enum: [],
         enumNames: []
       });
       this.mountLajiForm();
@@ -156,7 +156,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   }
 
   mountLajiForm() {
-    if (!this.municipalityEnums || !this.settings)  {
+    if (!this.municipalityEnums || !this.settings) {
       return;
     }
     this.createNewLajiForm();
