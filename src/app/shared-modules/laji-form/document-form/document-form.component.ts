@@ -187,7 +187,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   onSubmit(event) {
-    let doc$;
+    const doc$;
     this.saving = true;
     this.lajiForm.block();
     const data = event.data.formData;

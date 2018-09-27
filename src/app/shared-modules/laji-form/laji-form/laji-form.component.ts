@@ -22,7 +22,7 @@ import { concatMap, map } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Subscription } from 'rxjs';
 import { Global } from '../../../../environments/global';
-import {AreaService} from "../../../shared/service/area.service";
+import { AreaService } from '../../../shared/service/area.service';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
