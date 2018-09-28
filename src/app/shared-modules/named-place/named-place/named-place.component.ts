@@ -190,9 +190,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         data.sort(this.sortFunction);
         this.namedPlaces = data
         // Catch queryparams on first update, but don't keep listening afterwards
-        let subFrags = this.route.queryParams.subscribe((params) => {
-          this.setActiveNP(params["activeNP"]);
-          subFrags.unsubscribe();
+        const subQParams = this.route.queryParams.subscribe((params) => {
+          this.setActiveNP(params['activeNP']);
+          subQParams.unsubscribe();
         });
       });
   }
@@ -241,7 +241,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.activeNP = idx;
     if (this.activeNP >= 0) {
       this.namedPlace = this.namedPlaces[this.activeNP];
-      this.router.navigate([], { queryParams: {"activeNP": this.activeNP} });
+      this.router.navigate([], { queryParams: {'activeNP': this.activeNP} });
       this.editView.npClick();
     } else {
       this.namedPlace = null;
