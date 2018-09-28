@@ -1,6 +1,6 @@
 <ng-container *ngIf="!multiselect">
-    <select class="form-control" #areaSelect (change)="select.emit(areaSelect.value)" *ngIf="options.length > 0" [disabled]="disabled">
-      <option>{{'select' | translate}}</option>
+    <select class="form-control" #areaSelect (change)="select.emit(areaSelect.value !== '0' ? areaSelect.value : undefined)" *ngIf="options.length > 0" [disabled]="disabled">
+      <option [value]="0">{{'select' | translate}}</option>
       <option *ngFor="let option of options" [value]="option.id">{{option.value}}</option>
     </select>
 </ng-container>

@@ -57,6 +57,9 @@ import { InvasiveControlFormComponent } from './invasive-control/invasive-contro
 import { WbcSpeciesResultComponent } from './wbc/wbc-result/wbc-species-result/wbc-species-result.component';
 import { WbcRoutesResultComponent } from './wbc/wbc-result/wbc-routes-result/wbc-routes-result.component';
 import { WbcCensusesResultComponent } from './wbc/wbc-result/wbc-censuses-result/wbc-censuses-result.component';
+import { WbcSpeciesResultListComponent } from './wbc/wbc-result/wbc-species-result/wbc-species-result-list/wbc-species-result-list.component';
+import { WbcResultService } from './wbc/wbc-result/wbc-result.service';
+import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -75,7 +78,8 @@ import { WbcCensusesResultComponent } from './wbc/wbc-result/wbc-censuses-result
     TaxonAutocompleteModule,
     LajiFormModule,
     ObservationMapModule,
-    NgxChartsModule
+    NgxChartsModule,
+    JWBootstrapSwitchModule
   ],
   declarations: [
     NafiComponent,
@@ -116,8 +120,9 @@ import { WbcCensusesResultComponent } from './wbc/wbc-result/wbc-censuses-result
     InvasiveControlFormComponent,
     WbcSpeciesResultComponent,
     WbcRoutesResultComponent,
-    WbcCensusesResultComponent
+    WbcCensusesResultComponent,
+    WbcSpeciesResultListComponent
   ],
-  providers: [ ResultService, QualityService ]
+  providers: [ ResultService, QualityService, WbcResultService ]
 })
 export class ThemeModule { }

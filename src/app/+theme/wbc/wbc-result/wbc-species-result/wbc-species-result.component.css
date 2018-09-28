@@ -1,0 +1,7 @@
+.select-container {
+  margin-bottom: 20px;
+}
+.select-container > div {
+  display: inline-block;
+  margin-right: 10px;
+}

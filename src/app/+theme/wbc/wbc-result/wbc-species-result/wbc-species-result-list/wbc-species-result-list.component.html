@@ -1,0 +1,26 @@
+<div class="options-container">
+  <bSwitch
+    name="onlyFinnish"
+    [switch-off-text]="'Kaikki lajit'"
+    [switch-on-text]="'Yleiset lajit'"
+    [switch-on-color]="'primary'"
+    [switch-size]="'small'"
+    [(ngModel)]="onlyCommonSpecies"
+    [switch-base-class]="'bootstrap-switch'">
+  </bSwitch>
+</div>
+<laji-datatable
+  #dataTable
+  (rowSelect)="rowSelect.emit($event)"
+  [showRowAsLink]="true"
+  [showHeader]="true"
+  [showFooter]="false"
+  [height]="'calc(80vh - 40px)'"
+  [virtualScrolling]="true"
+  [rows]="onlyCommonSpecies ? filteredRows : allRows"
+  (pageChange)="setPage($event)"
+  [loading]="loading"
+  [columnMode]="'standard'"
+  [totalMessage]="'haseka.submissions.total' | translate"
+  [columns]="columns">
+</laji-datatable>
