@@ -82,7 +82,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       this.cd.markForCheck();
     });
     this.mapOptions['lang'] = <LajiMapLang> this.translate.currentLang;
-    this.initMapdata();
+    this.initGeoJsonLayer();
   }
 
   ngAfterViewInit() {

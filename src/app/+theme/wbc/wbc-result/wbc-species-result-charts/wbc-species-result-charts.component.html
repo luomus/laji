@@ -1,0 +1,16 @@
+<laji-spinner [spinning]="loading">
+  <ng-container *ngIf="!loading">
+    <h3>{{taxon.vernacularName | titlecase}} - {{taxon.scientificName}}</h3>
+    <laji-wbc-result-filters [showSeasonFilter]="compareMode === 'year'"
+                             [yearRequired]="true"
+                             (yearChange)="activeYear = $event"
+                             (seasonChange)="activeSeason = $event"
+                             (areaChange)="activeBirdAssociationArea = $event"
+    ></laji-wbc-result-filters>
+    <laji-wbc-species-result-maps [taxonId]="taxon.id"
+                                  [year]="activeYear"
+                                  [season]="activeSeason"
+                                  [birdAssociationArea]="activeBirdAssociationArea"
+    ></laji-wbc-species-result-maps>
+  </ng-container>
+</laji-spinner>

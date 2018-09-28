@@ -1,43 +1,10 @@
 <h3>{{'wbc.stats.species' | translate}}</h3>
-<div class="row">
-  <div class="col-sm-12 select-container">
-    <div>
-      <label for="year">{{'wbc.year' | translate}}</label>
-      <select
-        id="year"
-        (change)="yearChange($event.target.value !== '0' ? $event.target.value : undefined)"
-        name="year"
-        class="form-control"
-        style="width: 120px">
-        <option [value]="0">{{'select' | translate}}</option>
-        <option *ngFor="let year of years" [value]="year" [selected]="year === activeYear">
-          {{year + '/' + (year + 1)}}
-        </option>
-      </select>
-    </div>
-    <div>
-      <label for="season">{{'wbc.season' | translate}}</label>
-      <select
-        id="season"
-        (change)="seasonChange($event.target.value !== '0' ? $event.target.value : undefined)"
-        [disabled]="!activeYear"
-        name="season"
-        class="form-control"
-        style="width: 120px">
-        <option [value]="0">{{'select' | translate}}</option>
-        <option *ngFor="let season of seasons" [value]="season" [selected]="season === activeSeason">
-          {{'wbc.season.' + season | translate}}
-        </option>
-      </select>
-    </div>
-    <div>
-      <label for="birdAssociationArea">{{'MNP.birdAssociationArea' | label}}</label>
-      <laji-area-select id="birdAssociationArea" [field]="areaTypes.BirdAssociationArea" (select)="birdAssociationAreaChange($event)"></laji-area-select>
-    </div>
-  </div>
-</div>
-<div>
-  <laji-wbc-species-result-list [year]="activeYear"
-                                [season]="activeSeason"
-                                [birdAssociationArea]="activeBirdAssociationArea"></laji-wbc-species-result-list>
-</div>
+<laji-wbc-result-filters (yearChange)="activeYear = $event"
+                         (seasonChange)="activeSeason = $event"
+                         (areaChange)="activeBirdAssociationArea = $event"
+></laji-wbc-result-filters>
+<laji-wbc-species-result-list (rowSelect)="taxonSelect($event)"
+                              [year]="activeYear"
+                              [season]="activeSeason"
+                              [birdAssociationArea]="activeBirdAssociationArea"
+></laji-wbc-species-result-list>

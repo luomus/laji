@@ -60,6 +60,9 @@ import { WbcCensusesResultComponent } from './wbc/wbc-result/wbc-censuses-result
 import { WbcSpeciesResultListComponent } from './wbc/wbc-result/wbc-species-result/wbc-species-result-list/wbc-species-result-list.component';
 import { WbcResultService } from './wbc/wbc-result/wbc-result.service';
 import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+import { WbcResultFiltersComponent } from './wbc/wbc-result/wbc-result-filters/wbc-result-filters.component';
+import { WbcSpeciesResultChartsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-charts.component';
+import { WbcSpeciesResultMapsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-maps/wbc-species-result-maps.component';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -121,7 +124,10 @@ import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
     WbcSpeciesResultComponent,
     WbcRoutesResultComponent,
     WbcCensusesResultComponent,
-    WbcSpeciesResultListComponent
+    WbcSpeciesResultListComponent,
+    WbcResultFiltersComponent,
+    WbcSpeciesResultChartsComponent,
+    WbcSpeciesResultMapsComponent
   ],
   providers: [ ResultService, QualityService, WbcResultService ]
 })

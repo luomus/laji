@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, ChangeDetectorRef, Input, Output, EventEmitter, ViewChild, TemplateRef } from '@angular/core';
 import { WbcResultService, SEASON } from '../../wbc-result.service';
 import { Subscription } from 'rxjs';
 
@@ -11,32 +11,21 @@ export class WbcSpeciesResultListComponent implements OnInit, OnChanges {
   @Input() year: number;
   @Input() season: SEASON;
   @Input() birdAssociationArea: string;
+  @Output() rowSelect = new EventEmitter<string>();
+
+  @ViewChild('name') nameTpl: TemplateRef<any>;
+  @ViewChild('scientificName') scientificNameTpl: TemplateRef<any>;
 
   columns = [];
   loading = false;
 
   onlyCommonSpecies = true;
-
   private commonLimit = 50;
 
   private allRows: any[] = [];
   private filteredRows: any[] = [];
 
-  private defaultColumns = [
-    {
-      name: 'nameFinnish',
-      label: 'result.unit.taxonVerbatim'
-    },
-    {
-      name: 'scientificName',
-      cellTemplate: 'taxonScientificName',
-      label: 'result.scientificName'
-    },
-    {
-      name: 'count',
-      label: 'wbc.stats.count'
-    }
-  ];
+  private defaultColumns = [];
   private additionalColumns = [];
 
   private subList: Subscription;
@@ -48,6 +37,22 @@ export class WbcSpeciesResultListComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
+    this.defaultColumns = [
+      {
+        name: 'nameFinnish',
+        cellTemplate: this.nameTpl,
+        label: 'result.unit.taxonVerbatim'
+      },
+      {
+        name: 'scientificName',
+        cellTemplate: this.scientificNameTpl,
+        label: 'result.scientificName'
+      },
+      {
+        name: 'count',
+        label: 'wbc.stats.count'
+      }
+    ];
     this.columns = this.defaultColumns;
     this.updateSpeciesList();
   }

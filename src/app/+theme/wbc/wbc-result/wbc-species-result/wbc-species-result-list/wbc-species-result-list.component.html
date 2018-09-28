@@ -11,16 +11,31 @@
 </div>
 <laji-datatable
   #dataTable
-  (rowSelect)="rowSelect.emit($event)"
+  (rowSelect)="rowSelect.emit($event.row.id)"
   [showRowAsLink]="true"
   [showHeader]="true"
   [showFooter]="false"
   [height]="'calc(80vh - 40px)'"
   [virtualScrolling]="true"
   [rows]="onlyCommonSpecies ? filteredRows : allRows"
-  (pageChange)="setPage($event)"
   [loading]="loading"
   [columnMode]="'standard'"
   [totalMessage]="'haseka.submissions.total' | translate"
   [columns]="columns">
 </laji-datatable>
+
+<ng-template let-value="value" #name>
+  <a *ngIf="value" title="{{value}}">
+    <span>
+    {{value}}
+    </span>
+  </a>
+</ng-template>
+
+<ng-template let-row="row" #scientificName>
+  <a *ngIf="row.scientificName" title="{{row.scientificName}}">
+    <span [class.cursive]="row.cursiveName">
+    {{row.scientificName}}
+    </span>
+  </a>
+</ng-template>

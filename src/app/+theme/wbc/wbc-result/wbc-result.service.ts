@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { Observable } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export type SEASON = 'spring'|'fall'|'winter';
@@ -14,11 +14,24 @@ export class WbcResultService {
     'spring': [2, 3]
   };
 
+  private yearCache: number[];
+
   constructor(
     private warehouseApi: WarehouseApi
   ) { }
 
+  getFilterParams(year?: number, season?: SEASON, birdAssociationArea?: string) {
+    return {
+      collectionId: [this.collectionId],
+      birdAssociationAreaId: [birdAssociationArea],
+      yearMonth: this.getYearMonthParam(year, season)
+    }
+  }
+
   getYears(): Observable<number[]> {
+    if (this.yearCache) {
+      return of(this.yearCache);
+    }
     return this.warehouseApi.warehouseQueryGatheringStatisticsGet(
       {collectionId: [this.collectionId]},
       undefined,
@@ -36,25 +49,15 @@ export class WbcResultService {
           for (let i = endYear; i >= startYear; i--) {
             years.push(i);
           }
+          this.yearCache = years;
           return years;
         })
     );
   }
 
-  private getCensusStartYear(dateString: string): number {
-    const date = dateString.split('-');
-    const year = parseInt(date[0], 10);
-    const month = parseInt(date[1], 10);
-    return month <= this.seasonRanges['spring'][1] ? year - 1 : year;
-  }
-
   getSpeciesList(year?: number, season?: SEASON, birdAssociationArea?: string): Observable<any[]> {
     return this.warehouseApi.warehouseQueryStatisticsGet(
-      {
-        collectionId: [this.collectionId],
-        birdAssociationAreaId: [birdAssociationArea],
-        yearMonth: this.getYearMonthParam(year, season)
-      },
+      this.getFilterParams(year, season, birdAssociationArea),
       ['unit.linkings.taxon.id', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.scientificName',
         'unit.linkings.taxon.cursiveName', 'unit.linkings.taxon.taxonomicOrder'],
       ['unit.linkings.taxon.taxonomicOrder'],
@@ -70,6 +73,13 @@ export class WbcResultService {
         return {...aggregateBy, count: r.count}
       }))
     )
+  }
+
+  private getCensusStartYear(dateString: string): number {
+    const date = dateString.split('-');
+    const year = parseInt(date[0], 10);
+    const month = parseInt(date[1], 10);
+    return month <= this.seasonRanges['spring'][1] ? year - 1 : year;
   }
 
   private getYearMonthParam(year: number, season?: SEASON): string[] {

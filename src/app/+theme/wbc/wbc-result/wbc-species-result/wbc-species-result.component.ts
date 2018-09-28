@@ -1,6 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { AreaType } from '../../../../shared/service/area.service';
-import { WbcResultService, SEASON } from '../wbc-result.service';
+import { Component, OnInit } from '@angular/core';
+import { SEASON } from '../wbc-result.service';
+import { IdService } from '../../../../shared/service/id.service';
+import { Router } from '@angular/router';
+import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-wbc-species-result',
@@ -8,45 +10,21 @@ import { WbcResultService, SEASON } from '../wbc-result.service';
   styleUrls: ['./wbc-species-result.component.css']
 })
 export class WbcSpeciesResultComponent implements OnInit {
-  years: number[] = [];
-  seasons: SEASON[] = ['fall', 'winter', 'spring'];
-  areaTypes = AreaType;
-
   activeYear: number;
   activeSeason: SEASON;
   activeBirdAssociationArea: string;
 
   constructor(
-    private resultService: WbcResultService,
-    private cd: ChangeDetectorRef
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService
   ) { }
 
-  ngOnInit() {
-    this.resultService.getYears()
-      .subscribe(
-        years => {
-          this.years = years;
-          this.cd.markForCheck();
-        }
-      )
+  ngOnInit() { }
+
+  taxonSelect(fullId: string) {
+    const id = IdService.getId(fullId);
+    this.router.navigate(
+      this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/stats/species/' + id])
+    );
   }
-
-  yearChange(newYear: string) {
-    if (!newYear) {
-      this.activeYear = undefined;
-      this.seasonChange(undefined);
-      return;
-    }
-    this.activeYear = parseInt(newYear, 10);
-  }
-
-  seasonChange(newSeason: SEASON) {
-    this.activeSeason = newSeason;
-  }
-
-  birdAssociationAreaChange(newArea: string) {
-    this.activeBirdAssociationArea = newArea;
-  }
-
-
 }

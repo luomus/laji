@@ -15,6 +15,7 @@ import { WbcComponent } from './wbc/wbc.component';
 import { WbcInstructionsComponent } from './wbc/wbc-instructions/wbc-instructions.component';
 import { WbcResultComponent } from './wbc/wbc-result/wbc-result.component';
 import { WbcSpeciesResultComponent } from './wbc/wbc-result/wbc-species-result/wbc-species-result.component';
+import { WbcSpeciesResultChartsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-charts.component';
 import { WbcRoutesResultComponent } from './wbc/wbc-result/wbc-routes-result/wbc-routes-result.component';
 import { WbcCensusesResultComponent } from './wbc/wbc-result/wbc-censuses-result/wbc-censuses-result.component';
 import { WbcFormComponent } from './wbc/wbc-form/wbc-form.component';
@@ -46,11 +47,11 @@ const routes: Routes = [
       {path: '', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' }},
       {path: 'stats', component: WbcResultComponent, data: { title: 'wbc.title', noScrollToTop: true }, children: [
         {path: '', pathMatch: 'full', redirectTo: 'species'},
-        {path: 'species', pathMatch: 'full', component: WbcSpeciesResultComponent},
+        {path: 'species', component: WbcSpeciesResultComponent},
+        {path: 'species/:id', component: WbcSpeciesResultChartsComponent},
         {path: 'routes', pathMatch: 'full', component: WbcRoutesResultComponent},
         {path: 'censuses', pathMatch: 'full', component: WbcCensusesResultComponent},
-        ]
-      },
+      ]},
       {path: 'form', pathMatch: 'full', component: WbcFormComponent, canActivate: [OnlyLoggedIn]},
       {
         path: 'form/:id',
