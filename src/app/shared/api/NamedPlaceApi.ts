@@ -37,6 +37,7 @@ export interface NamedPlaceQuery {
   municipality?: string;
   birdAssociationArea?: string;
   includePublic?: boolean;
+  includeUnits?: boolean;
 }
 
 @Injectable({providedIn: 'root'})

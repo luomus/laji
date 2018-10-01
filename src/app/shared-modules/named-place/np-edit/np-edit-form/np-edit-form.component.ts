@@ -6,6 +6,9 @@ import { UserService } from '../../../../shared/service/user.service';
 import { NamedPlacesService } from '../../named-places.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ToastsService } from '../../../../shared/service/toasts.service';
+import { Util } from '../../../../shared/service/util.service';
+import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
+import { AreaService } from '../../../../shared/service/area.service';
 
 @Component({
   selector: 'laji-np-edit-form',
@@ -32,7 +35,9 @@ export class NpEditFormComponent {
     private  userService: UserService,
     private namedPlaceService: NamedPlacesService,
     private translate: TranslateService,
-    private toastsService: ToastsService
+    private toastsService: ToastsService,
+    private taxonomyApi: TaxonomyApi,
+    private areaService: AreaService
   ) { }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -56,38 +61,39 @@ export class NpEditFormComponent {
 
     this.saving = true;
     this.lajiForm.block();
-    const data = this.getNamedPlaceData(event);
-    data.public = this.isPublic;
+    this.getNamedPlaceData(event).then(data => {
+        data.public = this.isPublic;
 
-    let result$;
-    if (this.namedPlace) {
-      result$ = this.namedPlaceService.updateNamedPlace(data.id, data, this.userService.getToken());
-    } else {
-      result$ = this.namedPlaceService.createNamedPlace(data, this.userService.getToken());
-    }
+        let result$;
+        if (this.namedPlace) {
+          result$ = this.namedPlaceService.updateNamedPlace(data.id, data, this.userService.getToken());
+        } else {
+          result$ = this.namedPlaceService.createNamedPlace(data, this.userService.getToken());
+        }
 
-    result$.subscribe(
-      (result) => {
-        this.lajiForm.unBlock();
-        this.saving = false;
-        this.translate.get('np.form.success')
-          .subscribe(value => {
-            this.toastsService.showSuccess(value);
+        result$.subscribe(
+          (result) => {
+            this.lajiForm.unBlock();
+            this.saving = false;
+            this.translate.get('np.form.success')
+              .subscribe(value => {
+                this.toastsService.showSuccess(value);
+              });
+            this.onEditReady.emit(result);
+          },
+          (err) => {
+            this.lajiForm.unBlock();
+            this.saving = false;
+            this.status = 'error';
+            this.error = this.parseErrorMessage(err);
+
+            setTimeout(() => {
+              if (this.status === 'error') {
+                this.status = '';
+              }
+            }, 5000);
           });
-        this.onEditReady.emit(result);
-      },
-      (err) => {
-        this.lajiForm.unBlock();
-        this.saving = false;
-        this.status = 'error';
-        this.error = this.parseErrorMessage(err);
-
-        setTimeout(() => {
-          if (this.status === 'error') {
-            this.status = '';
-          }
-        }, 5000);
-      });
+    });
   }
 
   submitPublic() {
@@ -131,30 +137,100 @@ export class NpEditFormComponent {
 
     this.localityToPrepopulatedDocument(data, formData);
 
-    return data;
+    if (this.formData.namedPlaceOptions && this.formData.namedPlaceOptions.prepopulatedDocumentFields) {
+      return this.augmnentPrepopulatedDocument(data, formData, this.formData.namedPlaceOptions.prepopulatedDocumentFields);
+    }
+
+    return Promise.resolve(data);
+  }
+
+  private getPrepopulatedDocument(namedPlace) {
+    namedPlace.prepopulatedDocument =
+      (this.namedPlace && this.namedPlace.prepopulatedDocument) ? this.namedPlace.prepopulatedDocument : {};
+    return namedPlace;
+  }
+
+  /**
+   * options (form namedPlaceOptions.prepopulatedDocumentFields) structure is as follows:
+   * {[JSON Pointer to field in document]: [JSON Pointer to field in namedPlace] | {
+   *   fn: <oneof> "join"', "taxon", "area"
+   *   <...additional params for fn, see the fns below>
+   * }
+   */
+  private augmnentPrepopulatedDocument(namedPlace, formData, options) {
+    const fns = {
+      join: ({from, delimiter = ', '}) => {
+        return Util.parseJSONPointer(formData, from).join(delimiter);
+      },
+      taxon: ({from, taxonProp = 'vernacularName'}) =>
+        new Promise(resolve => {
+            this.taxonomyApi.taxonomyFindBySubject(
+              Util.parseJSONPointer(formData, from),
+              this.lang
+            ).subscribe(taxon => {
+              resolve(taxon[taxonProp]);
+            })
+      }),
+      area: ({type, key = 'value', from, delimiter}) =>
+        new Promise(resolve => {
+          const areaValue = Util.parseJSONPointer(formData, from);
+          this.areaService.getAreaType(this.lang, type).subscribe(areas => {
+            const idToArea = areas.reduce((dict, area) => {
+              dict[area.id] = area;
+              return dict;
+            }, {});
+            if (areaValue instanceof Array) {
+              resolve(areaValue.map(id => idToArea[id][key]).join(delimiter));
+            } else {
+              resolve(idToArea[areaValue][key]);
+            }
+          });
+        })
+    };
+    const prepopulatedDocument = this.getPrepopulatedDocument(namedPlace).prepopulatedDocument;
+    const fieldPointers = Object.keys(options);
+    return new Promise(resolve => Promise.all(fieldPointers.map(fieldPointer => {
+      let valueOrPromise = undefined;
+      if (typeof options[fieldPointer] === 'string') {
+        valueOrPromise = Util.parseJSONPointer(formData, options[fieldPointer]);
+      } else {
+        const {fn, ...params} = options[fieldPointer];
+        valueOrPromise = fns[fn](params);
+      }
+      return valueOrPromise && valueOrPromise.then
+        ? valueOrPromise
+        : Promise.resolve(valueOrPromise);
+    })).then(values => {
+      values.forEach((value, i) => {
+        Util.updateWithJSONPointer(prepopulatedDocument, fieldPointers[i], value);
+      });
+      return;
+      resolve(namedPlace);
+    }));
   }
 
   private localityToPrepopulatedDocument(data, formData) {
-    if (formData.locality || formData.localityDescription) {
-      data.prepopulatedDocument =
-        (this.namedPlace && this.namedPlace.prepopulatedDocument) ? this.namedPlace.prepopulatedDocument : {};
-
-      const populate = data.prepopulatedDocument;
-
-      if (!populate.gatherings) {
-        populate.gatherings = [{}];
-      } else if (!populate.gatherings[0]) {
-        populate.gatherings[0] = {};
-      }
-
-      if (formData.locality) {
-        populate.gatherings[0].locality = formData.locality;
-      }
-
-      if (formData.localityDescription) {
-        populate.gatherings[0].localityDescription = formData.localityDescription;
-      }
+    if (!formData.locality && !formData.localityDescription) {
+      return;
     }
+
+    this.getPrepopulatedDocument(data);
+
+    const populate = data.prepopulatedDocument;
+
+    if (!populate.gatherings) {
+      populate.gatherings = [{}];
+    } else if (!populate.gatherings[0]) {
+      populate.gatherings[0] = {};
+    }
+
+    if (formData.locality) {
+      populate.gatherings[0].locality = formData.locality;
+    }
+
+  if (formData.localityDescription) {
+    populate.gatherings[0].localityDescription = formData.localityDescription;
+  }
   }
 
   private parseErrorMessage(err) {

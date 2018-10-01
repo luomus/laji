@@ -85,7 +85,7 @@ export class AreaService {
       .map(data => data[id] && data[id].name || id );
   }
 
-  private getAreaType(lang: string, type: AreaType) {
+  public getAreaType(lang: string, type: AreaType) {
     return this.getAllAsLookUp(lang)
       .map(area => {
         if (!area) {

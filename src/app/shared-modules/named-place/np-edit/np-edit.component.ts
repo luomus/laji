@@ -81,8 +81,6 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     this.npFormId = this.formData.namedPlaceOptions
       && this.formData.namedPlaceOptions.formId
       || environment.namedPlaceForm;
-    console.log(this.formData);
-    console.log(this.npFormId);
     this.mapOptionsData = this.getMapOptions();
     this.fetchForm();
     this.subTrans = this.translate.onLangChange.subscribe(
@@ -257,8 +255,12 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       populate.gatheringEvent.namedPlaceNotes = this.namedPlace.notes;
     }
 
+    let removeList = this.formData.excludeFromCopy || DocumentService.removableGathering;
+    if (this.formData.namedPlaceOptions && this.formData.namedPlaceOptions.includeUnits) {
+      removeList = removeList.filter(item => item !== 'units');
+    }
     this.formService.populate(
-      this.documentService.removeMeta(populate, this.formData.excludeFromCopy || DocumentService.removableGathering)
+      this.documentService.removeMeta(populate, removeList);
     );
   }
 
