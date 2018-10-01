@@ -259,9 +259,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     if (this.formData.namedPlaceOptions && this.formData.namedPlaceOptions.includeUnits) {
       removeList = removeList.filter(item => item !== 'units');
     }
-    this.formService.populate(
-      this.documentService.removeMeta(populate, removeList);
-    );
+    this.formService.populate(this.documentService.removeMeta(populate, removeList));
   }
 
   private getMapOptions() {
