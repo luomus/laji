@@ -19,6 +19,7 @@ export class NpEditFormComponent {
   @Input() lang: string;
   @Input() formData: any;
   @Input() namedPlace: NamedPlace;
+  @Input() namedPlaceOptions: any;
   @Output() onEditReady = new EventEmitter<NamedPlace>();
 
   tick = 0;
@@ -137,8 +138,8 @@ export class NpEditFormComponent {
 
     this.localityToPrepopulatedDocument(data, formData);
 
-    if (this.formData.namedPlaceOptions && this.formData.namedPlaceOptions.prepopulatedDocumentFields) {
-      return this.augmnentPrepopulatedDocument(data, formData, this.formData.namedPlaceOptions.prepopulatedDocumentFields);
+    if (this.namedPlaceOptions && this.namedPlaceOptions.prepopulatedDocumentFields) {
+      return this.augmnentPrepopulatedDocument(data, formData, this.namedPlaceOptions.prepopulatedDocumentFields);
     }
 
     return Promise.resolve(data);
@@ -171,7 +172,7 @@ export class NpEditFormComponent {
               resolve(taxon[taxonProp]);
             })
       }),
-      area: ({type, key = 'value', from, delimiter}) =>
+      area: ({type, key = 'value', from, delimiter = ', '}) =>
         new Promise(resolve => {
           const areaValue = Util.parseJSONPointer(formData, from);
           this.areaService.getAreaType(this.lang, type).subscribe(areas => {
@@ -204,7 +205,6 @@ export class NpEditFormComponent {
       values.forEach((value, i) => {
         Util.updateWithJSONPointer(prepopulatedDocument, fieldPointers[i], value);
       });
-      return;
       resolve(namedPlace);
     }));
   }

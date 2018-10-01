@@ -39,6 +39,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Input() loading: boolean;
   @Input() prepopulatedNamedPlace: string;
   @Input() formData: any;
+  @Input() namedPlaceOptions: any;
   @Input() formRights: Rights = {
     edit: false,
     admin: false

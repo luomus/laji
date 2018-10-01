@@ -2,6 +2,7 @@
 <ng-container *ngIf="npFormData">
   <ng-container *ngIf="namedPlace && !editMode">
     <laji-np-info [namedPlace]="namedPlace"
+                  [namedPlaceOptions]="formData.namedPlaceOptions"
                   [formRights]="formRights"
                   [npFormData]="npFormData"
                   [targetForm]="formData"
@@ -18,6 +19,7 @@
   </ng-container>
   <ng-container *ngIf="editMode">
     <laji-np-edit-form *ngIf="npFormData"
+                       [namedPlaceOptions]="formData.namedPlaceOptions"
                        [lang]="lang"
                        [formData]="npFormData"
                        [namedPlace]="namedPlace"
