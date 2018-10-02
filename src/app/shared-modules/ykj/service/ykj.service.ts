@@ -26,7 +26,7 @@ export class YkjService {
   ) { }
 
   getGeoJson(query: WarehouseQueryInterface, grid: Grid = '10kmCenter', key?: string,
-             useStatistics = false, setCountsToZero = false): Observable<any> {
+             useStatistics = false, zeroObservations = false): Observable<any> {
     if (!key) {
       key = JSON.stringify(query);
     }
@@ -43,7 +43,8 @@ export class YkjService {
       });
     }
     this.pendingKey = key;
-    const sourceMethod = useStatistics
+    const sourceMethod = zeroObservations
+      ? this.warehouseApi.warehouseQueryGatheringStatisticsGet.bind(this.warehouseApi) : useStatistics
       ? this.warehouseApi.warehouseQueryStatisticsGet.bind(this.warehouseApi)
       : this.warehouseApi.warehouseQueryAggregateGet.bind(this.warehouseApi);
     this.pending = sourceMethod(
@@ -53,11 +54,11 @@ export class YkjService {
         10000,
         1,
         false,
-        !!setCountsToZero
+        !!zeroObservations
       )
       .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .map(data => data.results)
-      .map(data => this.resultToGeoJson(data, grid, setCountsToZero));
+      .map(data => this.resultToGeoJson(data, grid, zeroObservations));
     return this.pending;
   }
 
