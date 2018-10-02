@@ -9,6 +9,7 @@ import { WarehouseQueryInterface } from '../../../../../shared/model/WarehouseQu
 })
 export class WbcSpeciesResultMapsComponent implements OnInit, OnChanges {
   @Input() taxonId: string;
+  @Input() taxonCensusFilter = undefined;
   @Input() year: number;
   @Input() season: SEASON;
   @Input() birdAssociationArea: string;
@@ -17,6 +18,14 @@ export class WbcSpeciesResultMapsComponent implements OnInit, OnChanges {
   query2: WarehouseQueryInterface;
   query3: WarehouseQueryInterface;
 
+  zeroQuery1: WarehouseQueryInterface;
+  zeroQuery2: WarehouseQueryInterface;
+  zeroQuery3: WarehouseQueryInterface;
+
+  breaks = [0, 1, 32, 126, 512, 2048, 8192];
+  labels = ['0', '1-31', '32-127', '126-511', '512-2047', '2048-8191', '8192-'];
+  colorRange = ['#ffffff', '#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
+
   constructor(
     private resultService: WbcResultService
   ) { }
@@ -24,23 +33,26 @@ export class WbcSpeciesResultMapsComponent implements OnInit, OnChanges {
   ngOnInit() { }
 
   ngOnChanges() {
-    if (this.year) {
+    if (this.taxonId && this.year) {
       this.setQuerys();
     }
   }
 
   private setQuerys() {
-    this.query1 = {
-      ...this.resultService.getFilterParams(this.year, 'fall', this.birdAssociationArea),
-      taxonId: [this.taxonId],
+    this.setQuery(1, 'fall');
+    this.setQuery(2, 'winter');
+    this.setQuery(3, 'spring');
+  }
+
+  private setQuery(nbr: number, season: SEASON) {
+    const filterParams = this.resultService.getFilterParams(this.year, season, this.birdAssociationArea);
+    this['query' + nbr] = {
+      ...filterParams,
+      taxonId: [this.taxonId]
     };
-    this.query2 = {
-      ...this.resultService.getFilterParams(this.year, 'winter', this.birdAssociationArea),
-      taxonId: [this.taxonId],
-    };
-    this.query3 = {
-      ...this.resultService.getFilterParams(this.year, 'spring', this.birdAssociationArea),
-      taxonId: [this.taxonId],
+    this['zeroQuery' + nbr] = {
+      ...filterParams,
+      taxonCensus: this.taxonCensusFilter ? [this.taxonCensusFilter] : undefined
     };
   }
 }

@@ -818,6 +818,7 @@
   "theme.herpetology.intro": "Luonnontieteellinen keskusmuseo Luomus tutkii sammakkoeläinten ja matelijoiden levinneisyyttä ja siinä tapahtuneita muutoksia Suomessa keräämällä havaintoja koko maasta. Tutustu lajeihin ja tuloksiin. Voit myös osallistua kirjaamalla havaintosi.",
   "theme.identify.intro": "Auta tunnistamaan havaintoja! Selaa Lajitietokeskukseen tallennettuja kuvia havainnoista, joita ei ole kyetty tunnistamaan varmasti.",
   "theme.individualCount": "Yksilösumma",
+  "theme.individualCountSum": "Yksilömäärä",
   "theme.individualCountMax": "Yksilömaksimi",
   "theme.individualCountShort": "Ykslkm",
   "theme.intro": "Tähän sivustoon kootaan tietoa tärkeistä Lajitietokeskuksen toimintaan liittyvistä aiheista ja palveluista.",

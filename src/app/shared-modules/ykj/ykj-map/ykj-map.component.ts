@@ -13,11 +13,12 @@ import {
 } from '@angular/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
-import { Subscription } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-ykj-map',
@@ -32,6 +33,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() title: string;
   @Input() height = '605px';
   @Input() query: WarehouseQueryInterface;
+  @Input() zeroObservationQuery: WarehouseQueryInterface;
   @Input() type = 'count';
   @Input() types = ['count', 'individualCount', 'newest'];
   @Input() colorRange: string[] = ['#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
@@ -106,7 +108,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     if (!this.query) {
       return;
     }
-    const key = JSON.stringify(this.query);
+    const key = JSON.stringify({'query': this.query, 'zeroQuery': this.zeroObservationQuery});
     if (this.current === key) {
       const colorKey = this.getColorKey();
       if (this.currentColor !== colorKey  && this.geoJsonLayer) {
@@ -121,8 +123,13 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     if (this.subQuery) {
       this.subQuery.unsubscribe();
     }
-    this.subQuery = this.ykjService
-      .getGeoJson(this.query, undefined, undefined, this.useStatistics)
+    const geoJson$: Observable<any> = this.zeroObservationQuery ? forkJoin([
+      this.ykjService.getGeoJson(this.zeroObservationQuery, undefined, undefined, this.useStatistics, true),
+      this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics)
+    ]).pipe(map(geoJsons => geoJsons[0].concat(geoJsons[1]))) :
+      this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics);
+
+    this.subQuery = geoJson$
       .subscribe(geoJson => {
           this.geoJsonLayer.addData(geoJson);
           this.currentColor = '';

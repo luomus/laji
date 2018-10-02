@@ -20,7 +20,7 @@ export class WbcSpeciesResultChartsComponent implements OnInit, OnDestroy {
   compareMode: 'season'|'year' = 'season';
   loading = false;
 
-  private mammals = 'MX.37612';
+  mammals = 'MX.37612';
   private routeSub: Subscription;
 
   constructor(

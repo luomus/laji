@@ -182,5 +182,6 @@ export interface WarehouseQueryInterface {
   annotated?: boolean;
   teamMember?: Array<string>;
   teamMemberId?: Array<string>;
+  taxonCensus?: Array<string>;
   _coordinatesIntersection?: number;
 }
