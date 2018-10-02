@@ -63,6 +63,8 @@ import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { WbcResultFiltersComponent } from './wbc/wbc-result/wbc-result-filters/wbc-result-filters.component';
 import { WbcSpeciesResultChartsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-charts.component';
 import { WbcSpeciesResultMapsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-maps/wbc-species-result-maps.component';
+import { WbcSpeciesResultLinechartsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-linecharts/wbc-species-result-linecharts.component';
+import { LineChartWithPointsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-linecharts/line-chart-with-points/line-chart-with-points.component';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -127,7 +129,9 @@ import { WbcSpeciesResultMapsComponent } from './wbc/wbc-result/wbc-species-resu
     WbcSpeciesResultListComponent,
     WbcResultFiltersComponent,
     WbcSpeciesResultChartsComponent,
-    WbcSpeciesResultMapsComponent
+    WbcSpeciesResultMapsComponent,
+    WbcSpeciesResultLinechartsComponent,
+    LineChartWithPointsComponent
   ],
   providers: [ ResultService, QualityService, WbcResultService ]
 })

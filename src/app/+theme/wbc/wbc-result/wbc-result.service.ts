@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { of, Observable } from 'rxjs';
+import { of, forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
 export type SEASON = 'spring'|'fall'|'winter';
 
@@ -20,7 +21,7 @@ export class WbcResultService {
     private warehouseApi: WarehouseApi
   ) { }
 
-  getFilterParams(year?: number, season?: SEASON, birdAssociationArea?: string) {
+  getFilterParams(year?: number, season?: SEASON, birdAssociationArea?: string): WarehouseQueryInterface {
     return {
       collectionId: [this.collectionId],
       birdAssociationAreaId: [birdAssociationArea],
@@ -75,6 +76,69 @@ export class WbcResultService {
     )
   }
 
+  getCountPerCensusByYear(taxonId: string, birdAssociationArea?: string, taxonCensus?: string) {
+    return forkJoin([
+      this.warehouseApi.warehouseQueryGatheringStatisticsGet(
+        {...this.getFilterParams(undefined, undefined, birdAssociationArea), taxonCensus: [taxonCensus]},
+        ['gathering.conversions.year', 'gathering.conversions.month']
+      ),
+      this.warehouseApi.warehouseQueryStatisticsGet(
+        {...this.getFilterParams(undefined, undefined, birdAssociationArea), taxonId: [taxonId], taxonCensus: [taxonCensus]},
+        ['gathering.conversions.year', 'gathering.conversions.month'],
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        false
+      )
+    ]).pipe(map(data => {
+      const censusCounts = data[0].results;
+      const obsCounts = data[1].results;
+      const result = {'fall': {}, 'winter': {}, 'spring': {}};
+
+      obsCounts.map(count => {
+        const season = this.getSeason(parseInt(count.aggregateBy['gathering.conversions.month'], 10));
+        if (season) {
+          const year = count.aggregateBy['gathering.conversions.year'];
+          if (!result[season][year]) {
+            result[season][year] = {
+              'count': 0
+            }
+          }
+          result[season][year]['count'] += count.count;
+        }
+      });
+
+      censusCounts.map(count => {
+        const season = this.getSeason(parseInt(count.aggregateBy['gathering.conversions.month'], 10));
+        if (season) {
+          const year = count.aggregateBy['gathering.conversions.year'];
+          if (result[season][year]) {
+            if (!result[season][year]['censusCount']) {
+              result[season][year]['censusCount'] = 0;
+            }
+            result[season][year]['censusCount'] += count.count;
+          }
+        }
+      });
+
+      for (const season in result) {
+        if (result.hasOwnProperty(season)) {
+          const years = Object.keys(result[season]);
+          years.sort();
+          result[season] = years.map(year => ({
+            name: year,
+            count: result[season][year]['count'],
+            censusCount: result[season][year]['censusCount'],
+            value: result[season][year]['count'] / result[season][year]['censusCount']
+          }));
+        }
+      }
+
+      return result;
+    }))
+  }
+
   private getCensusStartYear(dateString: string): number {
     const date = dateString.split('-');
     const year = parseInt(date[0], 10);
@@ -95,5 +159,24 @@ export class WbcResultService {
 
   private padMonth(month: number): string {
     return month < 10 ? '0' + month : '' + month;
+  }
+
+  private getSeason(month: number): SEASON {
+    if (this.monthIsInSeasonRange(month, 'fall')) {
+      return 'fall';
+    } else if (this.monthIsInSeasonRange(month, 'winter')) {
+      return 'winter';
+    } else if (this.monthIsInSeasonRange(month, 'spring')) {
+      return 'spring';
+    }
+
+    return undefined;
+  }
+
+  private monthIsInSeasonRange(month: number, season: SEASON): boolean {
+    if (this.seasonRanges[season][0] > this.seasonRanges[season][1]) {
+      return month >= this.seasonRanges[season][0] || month <= this.seasonRanges[season][1];
+    }
+    return month >= this.seasonRanges[season][0] && month <= this.seasonRanges[season][1];
   }
 }

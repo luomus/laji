@@ -9,7 +9,7 @@ import { WarehouseQueryInterface } from '../../../../../shared/model/WarehouseQu
 })
 export class WbcSpeciesResultMapsComponent implements OnInit, OnChanges {
   @Input() taxonId: string;
-  @Input() taxonCensusFilter = undefined;
+  @Input() taxonCensus = undefined;
   @Input() year: number;
   @Input() season: SEASON;
   @Input() birdAssociationArea: string;
@@ -52,7 +52,7 @@ export class WbcSpeciesResultMapsComponent implements OnInit, OnChanges {
     };
     this['zeroQuery' + nbr] = {
       ...filterParams,
-      taxonCensus: this.taxonCensusFilter ? [this.taxonCensusFilter] : undefined
+      taxonCensus: [this.taxonCensus]
     };
   }
 }
