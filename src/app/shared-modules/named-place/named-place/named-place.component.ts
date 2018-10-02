@@ -268,6 +268,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       } else {
         this.namedPlaces.push(np);
         this.namedPlaces.sort(this.sortFunction);
+        this.namedPlaces = [...this.namedPlaces];
       }
     }
     this.editMode = false;
