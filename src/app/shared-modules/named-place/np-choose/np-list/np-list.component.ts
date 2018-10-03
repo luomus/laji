@@ -21,7 +21,8 @@ export class NpListComponent {
     '$._status': 'Tila',
     '$.geometry.coordinateVerbatim': 'result.gathering.conversions.ykj',
     '$.prepopulatedDocument.gatheringEvent.dateBegin': 'lastCensus',
-    '$.prepopulatedDocument.gatheringEvent.dateEnd': 'haseka.submissions.dateEnd'
+    '$.prepopulatedDocument.gatheringEvent.dateEnd': 'haseka.submissions.dateEnd',
+    '$.taxonIDs[0]': 'result.unit.taxonVerbatim',
   };
 
   _namedPlaces: NamedPlace[];
@@ -37,7 +38,7 @@ export class NpListComponent {
     {label: 'Ilmoitettu', color: '#00aa00'}
   ];
 
-  @ViewChild('personID') personIDTpl: TemplateRef<any>;
+  @ViewChild('label') labelIDTpl: TemplateRef<any>;
   @ViewChild('status') statusTpl: TemplateRef<any>;
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
@@ -78,10 +79,14 @@ export class NpListComponent {
         name: path,
         label: labels[path] || path
       };
-      if (path === '$.reserve.reserver') {
-        col.cellTemplate = this.personIDTpl;
-      } else if (path === '$._status') {
-        col.cellTemplate = this.statusTpl;
+      switch (path) {
+        case '$.reserve.reserver':
+        case '$.taxonIDs[0]':
+          col.cellTemplate = this.labelIDTpl;
+          break;
+        case '$._status':
+          col.cellTemplate = this.statusTpl;
+          break;
       }
       col.width = this.widths[path] ? this.widths[path] : 50;
       cols.push(col);
