@@ -5,6 +5,9 @@
       <ul class="sidebar-nav">
         <li><a [routerLink]="['../vieraslajit', 'instructions']">{{'instructions' | translate}}</a></li>
         <li><a [routerLink]="['../vieraslajit', 'form']">{{'invasiveSpecies.form' | translate}}</a></li>
+        <ng-container *ngIf="(rights | async)?.admin">
+          <li><a [routerLink]="['/vihko/fp/HR.2049/admin']">{{'form.administer' | translate}}</a></li>
+        </ng-container>
       </ul>
     </div>
     <div class="col-sm-9 col-md-10 col-lg-10 main-content" class="col-sm-9 col-md-10 col-lg-10">
