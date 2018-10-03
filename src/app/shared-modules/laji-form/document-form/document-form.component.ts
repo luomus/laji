@@ -72,6 +72,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   private subChanges: Subscription;
   private success = '';
   private error: any;
+  private isEdit = false;
   private leaveMsg;
   private publicityRestrictions;
   private current;
@@ -187,6 +188,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   onSubmit(event) {
+    let doc$;
     this.saving = true;
     this.lajiForm.block();
     const data = event.data.formData;
@@ -197,7 +199,12 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       // const errors = this.errorsToPath(event.data.errorSchema);
       // data.acknowledgedWarnings = Object.keys(errors).map(key => ({location: key, messages: errors[key]}));
     }
-    this.documentService.create(data, this.userService.getToken()).subscribe(
+    if (this.isEdit) {
+      doc$ = this.documentService.update(data.id || this.documentId, data, this.userService.getToken());
+    } else {
+      doc$ = this.documentService.create(data, this.userService.getToken());
+    }
+    doc$.subscribe(
       (result) => {
         this.lajiForm.unBlock();
         this.formService.discard();
@@ -324,6 +331,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
         result => {
           const data = result.data;
           this.namedPlace = result.namedPace;
+          this.isEdit = true;
           if (data.features) {
             if (data.features.indexOf(Form.Feature.NamedPlace) > -1 && !this.namedPlace) {
               this.onMissingNamedplace.emit({
@@ -339,6 +347,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           }
           if (this.formService.isTmpId(this.documentId)) {
             delete data.formData._isTemplate;
+            this.isEdit = false;
             data.formData.id = undefined;
           }
           if (typeof data.uiSchemaContext === 'undefined') {
@@ -347,6 +356,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           if (this.namedPlace && this.namedPlace.geometry) {
             data.uiSchemaContext.placeholderGeometry = this.namedPlace.geometry;
           }
+          data.uiSchemaContext.activeGatheringIdx = this.isEdit ? null : 0;
           data.uiSchemaContext.formID = this.formId;
           data.uiSchemaContext.isAdmin = result.rights.admin;
           data.uiSchemaContext.annotations = result.annotations;
