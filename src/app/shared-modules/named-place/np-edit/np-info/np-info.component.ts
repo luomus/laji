@@ -17,6 +17,7 @@ import { UserService } from '../../../../shared/service/user.service';
 import { ModalDirective } from 'ngx-bootstrap';
 import { Rights } from '../../../../+haseka/form-permission/form-permission.service';
 import { Form } from '../../../../shared/model/Form';
+import { NpInfoRow } from './np-info-row/np-info-row.component';
 
 @Component({
   selector: 'laji-np-info',
@@ -27,6 +28,7 @@ import { Form } from '../../../../shared/model/Form';
 export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace: NamedPlace;
   @Input() npFormData: any;
+  @Input() namedPlaceOptions: any;
   @Input() targetForm: any;
   @Input() collectionId: string;
   @Input() editMode: boolean;
@@ -49,9 +51,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('infoModal') public modal: ModalDirective;
   @ViewChild('infoBox') infoBox;
 
-  fields: any;
-  keys: any;
-  values: any;
+  listItems: NpInfoRow[] = [];
 
   modalIsVisible = false;
   viewIsInitialized = false;
@@ -68,10 +68,14 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   ngAfterViewInit() {
     this.modal.onShown.subscribe(() => { this.modalIsVisible = true; this.cdRef.markForCheck(); });
     this.modal.onHidden.subscribe(() => { this.modalIsVisible = false; this.cdRef.markForCheck(); });
-    if (this.infoBox.nativeElement.offsetParent === null) {
+    if (this.windowReadyForModal()) {
       this.modal.show();
     }
     this.viewIsInitialized = true;
+  }
+
+  windowReadyForModal(): boolean {
+    return window.innerWidth < 1200;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -85,7 +89,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   npClick() {
-    if (this.viewIsInitialized && this.infoBox.nativeElement.offsetParent === null) {
+    if (this.viewIsInitialized && this.windowReadyForModal()) {
       this.modal.show();
     }
   }
@@ -145,13 +149,16 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private updateFields() {
-    this.keys = [];
-    this.values = {};
-    this.fields = this.npFormData.schema.properties.namedPlace.items.properties;
+    const fields = this.npFormData.schema.properties.namedPlace.items.properties;
 
-    const displayedById =
-      this.npFormData.uiSchema.namedPlace.uiSchema.items['ui:options'].fieldScopes.collectionID;
-    const displayed = displayedById[this.collectionId] ? displayedById[this.collectionId] : displayedById['*'];
+    let displayed = [];
+    if (this.namedPlaceOptions.infoFields) {
+      displayed = this.namedPlaceOptions.infoFields || [];
+    } else {
+      const displayedById =
+        this.npFormData.uiSchema.namedPlace.uiSchema.items['ui:options'].fieldScopes.collectionID;
+      displayed = (displayedById[this.collectionId] ? displayedById[this.collectionId] : displayedById['*']).fields;
+    }
 
     let gData = null;
     const np = this.namedPlace;
@@ -160,15 +167,28 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       gData = np.prepopulatedDocument.gatherings[0];
     }
 
-    for (const field in this.fields) {
-      if (displayed.fields.indexOf(field) > -1 && (!this.isEmpty(this.namedPlace[field]) || (gData && !this.isEmpty(gData[field])))) {
-        this.keys.push(field);
-        if (!this.isEmpty(this.namedPlace[field])) {
-          this.values[field] = this.namedPlace[field];
-        } else {
-          this.values[field] = gData[field];
-        }
+    for (const field of displayed) {
+      if (!fields[field]) {
+        continue;
       }
+
+      let value = undefined;
+      if (!this.isEmpty(this.namedPlace[field])) {
+        value = this.namedPlace[field];
+      } else {
+        value = gData[field];
+      }
+
+      let label = false;
+      if (field === 'taxonIDs') {
+        label = true;
+      }
+
+      this.listItems.push({
+        title: fields[field].title,
+        value,
+        isLabel: label
+      });
     }
   }
 

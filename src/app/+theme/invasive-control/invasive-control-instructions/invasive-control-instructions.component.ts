@@ -3,6 +3,11 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { FormService } from '../../../shared/service/form.service';
+import { FormPermissionService, Rights } from '../../../+haseka/form-permission/form-permission.service';
+import { environment } from '../../../../environments/environment';
+import { Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { UserService } from '../../../shared/service/user.service';
 
 @Component({
   selector: 'laji-invasive-control-instructions',
@@ -11,10 +16,17 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class InvasiveControlInstructionsComponent implements OnInit {
 
+  rights: Observable<Rights>;
+  form: any;
+
   constructor(
     @Inject(WINDOW) private window: Window,
     public translate: TranslateService,
+    public userService: UserService,
     private route: ActivatedRoute,
+    private formService: FormService,
+    private formPermissionService: FormPermissionService,
+    private translateService: TranslateService,
     @Inject(PLATFORM_ID) private platformID: object
   ) {}
 
@@ -26,11 +38,11 @@ export class InvasiveControlInstructionsComponent implements OnInit {
         }
       });
     }
-  }
-
-  toFragment(fragment) {
-    if (isPlatformBrowser(this.platformID)) {
-      window.location.hash = fragment;
-    }
+    this.formService.getForm(environment.invasiveControlForm, this.translateService.currentLang).subscribe(form => {
+      this.rights = this.formPermissionService.getRights(form);
+      this.form = form;
+    }, () => {
+      this.rights = ObservableOf({edit: false, admin: false});
+    })
   }
 }

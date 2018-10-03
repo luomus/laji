@@ -20,7 +20,6 @@ export class LineTransectComponent implements OnInit, OnDestroy {
   routeSub: Subscription;
   rights: Observable<Rights>;
 
-
   constructor(
     public router: Router,
     private formService: FormService,

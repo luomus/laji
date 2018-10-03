@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
@@ -60,6 +60,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private namedPlaceService: NamedPlacesService,
     private formService: FormService,
     private footerService: FooterService,
@@ -179,6 +180,10 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       }
       query.birdAssociationArea = this.birdAssociationArea;
     }
+    const {namedPlaceOptions = {}} = this.formData;
+    if (namedPlaceOptions.hasOwnProperty('includeUnits')) {
+      query.includeUnits = namedPlaceOptions.includeUnits
+    }
     return this.namedPlaceService.getAllNamePlaces(query)
       .catch(() => {
         this.translate.get('np.loadError')
@@ -186,9 +191,13 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         return ObservableOf([]);
       })
       .do(data => {
-        this.setActiveNP(-1);
         data.sort(this.sortFunction);
-        this.namedPlaces = data
+        this.namedPlaces = data;
+        // Catch queryparams on first update, but don't keep listening afterwards
+        const subQParams = this.route.queryParams.subscribe((params) => {
+          this.setActiveNP(params['activeNP']);
+          subQParams.unsubscribe();
+        });
       });
   }
 
@@ -236,6 +245,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.activeNP = idx;
     if (this.activeNP >= 0) {
       this.namedPlace = this.namedPlaces[this.activeNP];
+      this.router.navigate([], { queryParams: {'activeNP': this.activeNP} });
       this.editView.npClick();
     } else {
       this.namedPlace = null;
@@ -258,6 +268,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       } else {
         this.namedPlaces.push(np);
         this.namedPlaces.sort(this.sortFunction);
+        this.namedPlaces = [...this.namedPlaces];
       }
     }
     this.editMode = false;
@@ -270,13 +281,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   private sortFunction(a, b) {
     let aa, bb;
 
-    if (Number(a.alternativeID) && Number(b.alternativeID)) {
-      aa = Number(a.alternativeID);
-      bb = Number(b.alternativeID);
-    } else {
-      aa = a.name.toLowerCase();
-      bb = b.name.toLowerCase();
-    }
+    aa = a.name.toLowerCase();
+    bb = b.name.toLowerCase();
 
     return aa < bb ? -1 : aa > bb ? 1 : 0;
   }

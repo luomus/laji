@@ -1,14 +1,13 @@
-<!--div class="row">
-  <div class="key col-sm-5">
-    <span>{{fields[key].title}}:</span>
+<ng-container *ngIf="value">
+  <div class="key">
+    <span>{{title}}:</span>
   </div>
-  <div class="value col-sm-7">
-      <span>{{nameOfValue}}</span>
+  <div class="value">
+    <ng-container *ngIf="isLabel; else noLabel">
+      <span [innerHtml]="value | label | nlToBr"></span>
+    </ng-container>
+    <ng-template #noLabel>
+      <span [innerHtml]="value | nlToBr"></span>
+    </ng-template>
   </div>
-</div-->
-<div class="key">
-  <span>{{fields[key].title}}:</span>
-</div>
-<div class="value">
-  <span [innerHtml]="nameOfValue | nlToBr"></span>
-</div>
+</ng-container>

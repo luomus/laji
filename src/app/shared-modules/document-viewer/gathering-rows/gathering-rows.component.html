@@ -31,8 +31,6 @@
 <laji-row [title]="'MY.notes' | label" [value]="gathering.notes"></laji-row>
 <laji-row [title]="'MY.taxonCensus' | label" *ngIf="gathering.taxonCensus">
   <ul class="comma-list">
-    <li *ngFor="let census of gathering.taxonCensus" [tooltip]="census.type | toQName | label" [isDisabled]="hideTooltips">
-      {{census.taxonId | toQName | taxon}}
-    </li>
+    <li *ngFor="let census of gathering.taxonCensus" [tooltip]="census.type | toQName | label" [isDisabled]="hideTooltips">{{census.taxonId | toQName | taxon}}</li>
   </ul>
 </laji-row>

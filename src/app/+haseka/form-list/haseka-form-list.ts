@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
 import { map, switchMap } from 'rxjs/operators';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 
-const DEFAULT_CATEFORY = 'MHL.categoryGeneric';
+const DEFAULT_CATEGORY = 'MHL.categoryGeneric';
 
 export interface FormList extends Form.List {
   hasAdminRight: boolean;
@@ -151,7 +151,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     let idx = 0;
     forms.sort((a, b) => environment.formWhitelist.indexOf(a.id) - environment.formWhitelist.indexOf(b.id));
     forms.forEach((form: FormList) => {
-      const category = form.category || DEFAULT_CATEFORY;
+      const category = form.category || DEFAULT_CATEGORY;
       if (typeof idxRef[category] === 'undefined') {
         categories.push({
           category: category,
