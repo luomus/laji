@@ -1,34 +1,18 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+export interface NpInfoRow {
+  title: string,
+  value: any,
+  isLabel?: boolean
+}
 
 @Component({
   selector: 'laji-np-info-row',
   templateUrl: './np-info-row.component.html',
   styleUrls: ['./np-info-row.component.css']
 })
-export class NpInfoRowComponent implements OnInit, OnChanges {
-  @Input() key: string;
+export class NpInfoRowComponent implements NpInfoRow {
+  @Input() title: string;
   @Input() value: any;
-  @Input() fields: any;
-
-  nameOfValue: string;
-
-  constructor() { }
-
-  ngOnInit() {
-    this.updateValueName();
-  }
-
-  ngOnChanges() {
-    this.updateValueName();
-  }
-
-  updateValueName() {
-    const prop = this.fields[this.key];
-    if ('enum' in prop) {
-      const idx = prop['enum'].indexOf(this.value);
-      this.nameOfValue = prop['enumNames'][idx];
-    } else {
-      this.nameOfValue = this.value;
-    }
-  }
+  @Input() isLabel?: boolean;
 }

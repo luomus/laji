@@ -36,11 +36,11 @@
         </legend>
         <laji-np-info-map [visible]="(isModal && modalIsVisible) || infoBox?.nativeElement?.offsetParent !== null"
                           [namedPlace]="namedPlace"></laji-np-info-map>
-        <ng-container *ngFor="let k of keys">
-          <laji-np-info-row [key]="k" [value]="values[k]" [fields]="fields"></laji-np-info-row>
+        <ng-container *ngFor="let i of listItems">
+          <laji-np-info-row [title]="i.title" [value]="i.value" [isLabel]="i.isLabel" ></laji-np-info-row>
         </ng-container>
         <ng-container *ngIf="namedPlace?.prepopulatedDocument?.gatheringEvent?.dateBegin">
-          <laji-np-info-row [key]="'dateBegin'" [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin" [fields]="{dateBegin: {title: ('lastCensus' | translate)}}"></laji-np-info-row>
+          <laji-np-info-row [title]="'lastCensus' | translate" [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin"></laji-np-info-row>
         </ng-container>
         <div *lajiLoggedIn="false" style="margin-top: 20px;">
           <strong>Sinun täytyy kirjautua sisälle varatakseksi reittejä</strong>
