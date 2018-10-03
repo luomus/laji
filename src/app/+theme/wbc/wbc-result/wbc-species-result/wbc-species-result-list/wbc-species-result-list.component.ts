@@ -22,8 +22,8 @@ export class WbcSpeciesResultListComponent implements OnInit, OnChanges {
   onlyCommonSpecies = true;
   private commonLimit = 50;
 
-  private allRows: any[] = [];
-  private filteredRows: any[] = [];
+  allRows: any[] = [];
+  filteredRows: any[] = [];
 
   private defaultColumns = [];
   private additionalColumns = [];

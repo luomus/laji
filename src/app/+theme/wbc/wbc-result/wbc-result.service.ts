@@ -6,6 +6,8 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 
 export type SEASON = 'spring'|'fall'|'winter';
 
+interface CountPerCensusResult {[s: string]: {name: number, value: number, count: number, censusCount: number}[]}
+
 @Injectable()
 export class WbcResultService {
   private collectionId = 'HR.39';
@@ -76,7 +78,7 @@ export class WbcResultService {
     )
   }
 
-  getCountPerCensusByYear(taxonId: string, birdAssociationArea?: string, taxonCensus?: string) {
+  getCountPerCensusByYear(taxonId: string, birdAssociationArea?: string, taxonCensus?: string): Observable<CountPerCensusResult> {
     return forkJoin([
       this.warehouseApi.warehouseQueryGatheringStatisticsGet(
         {...this.getFilterParams(undefined, undefined, birdAssociationArea), taxonCensus: [taxonCensus]},
@@ -122,12 +124,13 @@ export class WbcResultService {
         }
       });
 
+      const finalResult: CountPerCensusResult = {'fall': [], 'winter': [], 'spring': []};
       for (const season in result) {
         if (result.hasOwnProperty(season)) {
           const years = Object.keys(result[season]);
           years.sort();
-          result[season] = years.map(year => ({
-            name: year,
+          finalResult[season] = years.map(year => ({
+            name: parseInt(year, 10),
             count: result[season][year]['count'],
             censusCount: result[season][year]['censusCount'],
             value: result[season][year]['count'] / result[season][year]['censusCount']
@@ -135,7 +138,7 @@ export class WbcResultService {
         }
       }
 
-      return result;
+      return finalResult;
     }))
   }
 

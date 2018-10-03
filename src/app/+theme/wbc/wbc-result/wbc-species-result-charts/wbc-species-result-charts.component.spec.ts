@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WbcSpeciesResultsChartsComponent } from './wbc-species-result-charts.component';
+import { WbcSpeciesResultChartsComponent } from './wbc-species-result-charts.component';
 
 describe('WbcSpeciesResultsChartsComponent', () => {
-  let component: WbcSpeciesResultsChartsComponent;
-  let fixture: ComponentFixture<WbcSpeciesResultsChartsComponent>;
+  let component: WbcSpeciesResultChartsComponent;
+  let fixture: ComponentFixture<WbcSpeciesResultChartsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WbcSpeciesResultsChartsComponent ]
+      declarations: [ WbcSpeciesResultChartsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WbcSpeciesResultsChartsComponent);
+    fixture = TestBed.createComponent(WbcSpeciesResultChartsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

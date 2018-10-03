@@ -1,15 +1,32 @@
-<div class="row">
-  <div class="col-sm-12">
-    <laji-line-chart-with-points [data]="lines1"></laji-line-chart-with-points>
-  </div>
-</div>
-<div class="row">
-  <div class="col-sm-12">
-
-  </div>
-</div>
-<div class="row">
-  <div class="col-sm-12">
-
-  </div>
-</div>
+<laji-spinner [spinning]="loading">
+  <ng-container *ngIf="!loading">
+    <div class="row" *ngFor="let lines of [lines1, lines2, lines3]">
+      <div class="col-sm-12" *ngIf="lines.length > 0">
+        <h5 style="margin: auto">{{lines[0].name}}</h5>
+        <div class="chart-container" *ngIf="lines[0].series.length > 0">
+          <laji-line-chart-with-points [results]="lines"
+                                       [scheme]="colorScheme"
+                                       [animations]="false"
+                                       [xAxis]="true"
+                                       [yAxis]="true"
+                                       [legend]="false"
+                                       [showXAxisLabel]="true"
+                                       [showYAxisLabel]="true"
+                                       [xScaleMax]="xScaleMax"
+                                       [xScaleMin]="xScaleMin"
+                                       [yScaleMax]="yScaleMax"
+                                       [yScaleMin]="yScaleMin"
+                                       [xAxisTickFormatting]="tickFormatting"
+                                       [xAxisLabel]="'Vuodet'"
+                                       [yAxisLabel]="'Yksilöm./laskentoja'">
+            <ng-template #tooltipTemplate let-model="model">
+              <span class="tooltip-label">{{model.series}} • {{model.name}}</span>
+              <span class="tooltip-val">{{model.value.toLocaleString()}}</span>
+            </ng-template>
+          </laji-line-chart-with-points>
+        </div>
+        <div *ngIf="lines[0].series.length === 0" style="margin-bottom: 20px">{{'theme.noHits' | translate}}</div>
+      </div>
+    </div>
+  </ng-container>
+</laji-spinner>
