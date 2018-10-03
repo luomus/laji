@@ -18,7 +18,7 @@ export const environment = {
   nafiForm: 'MHL.6',
   invasiveControlForm: 'MHL.33',
   wbcForm: 'MHL.3',
-  apiBase: 'https://dev.laji.fi/api',
+  apiBase: 'http://localhost:3000/api',
   lineTransectForm: 'MHL.1',
   lineTransectEiVakioForm: 'MHL.27',
   lineTransectKartoitusForm: 'MHL.28',
