@@ -5,6 +5,7 @@ import { FormPermissionService, Rights } from '../../+haseka/form-permission/for
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../../shared/service/form.service';
+import { UserService } from '../../shared/service/user.service';
 
 @Component({
   selector: '[laji-invasive-control]',
@@ -18,12 +19,13 @@ export class InvasiveControlComponent implements OnInit {
   constructor(
     private formService: FormService,
     private formPermissionService: FormPermissionService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
     this.rights = this.formService.getForm(environment.invasiveControlForm, this.translateService.currentLang)
       .switchMap(form => this.formPermissionService.getRights(form))
-      .catch(() => ObservableOf({edit: false, admin: false}))
+      .catch(() => ObservableOf({edit: false, admin: false}));
   }
 }

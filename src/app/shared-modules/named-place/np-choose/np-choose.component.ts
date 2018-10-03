@@ -110,7 +110,6 @@ export class NpChooseComponent implements OnInit, OnChanges {
     );
   }
 
-
   isSent(np: NamedPlace) {
     if (this.seasonStart && this.seasonEnd) {
       if (np && np.prepopulatedDocument && np.prepopulatedDocument.gatheringEvent && np.prepopulatedDocument.gatheringEvent.dateBegin) {
@@ -137,7 +136,6 @@ export class NpChooseComponent implements OnInit, OnChanges {
     }
     return 'reserved';
   }
-
 
   private initEarliestAndLatest() {
     if (this.formData.options && this.formData.options.season && this.formData.options.season.start && this.formData.options.season.end) {

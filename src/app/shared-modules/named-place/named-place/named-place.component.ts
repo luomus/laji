@@ -281,13 +281,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   private sortFunction(a, b) {
     let aa, bb;
 
-    if (Number(a.alternativeID) && Number(b.alternativeID)) {
-      aa = Number(a.alternativeID);
-      bb = Number(b.alternativeID);
-    } else {
-      aa = a.name.toLowerCase();
-      bb = b.name.toLowerCase();
-    }
+    aa = a.name.toLowerCase();
+    bb = b.name.toLowerCase();
 
     return aa < bb ? -1 : aa > bb ? 1 : 0;
   }
