@@ -356,7 +356,6 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           if (this.namedPlace && this.namedPlace.geometry) {
             data.uiSchemaContext.placeholderGeometry = this.namedPlace.geometry;
           }
-          data.uiSchemaContext.activeGatheringIdx = this.isEdit ? null : 0;
           data.uiSchemaContext.formID = this.formId;
           data.uiSchemaContext.isAdmin = result.rights.admin;
           data.uiSchemaContext.annotations = result.annotations;
