@@ -22,11 +22,11 @@ export class InvasiveControlInstructionsComponent implements OnInit {
   constructor(
     @Inject(WINDOW) private window: Window,
     public translate: TranslateService,
+    public userService: UserService,
     private route: ActivatedRoute,
     private formService: FormService,
     private formPermissionService: FormPermissionService,
     private translateService: TranslateService,
-    private userService: UserService,
     @Inject(PLATFORM_ID) private platformID: object
   ) {}
 
