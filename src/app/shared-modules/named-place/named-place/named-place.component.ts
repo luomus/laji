@@ -180,6 +180,10 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       }
       query.birdAssociationArea = this.birdAssociationArea;
     }
+    const {namedPlaceOptions = {}} = this.formData;
+    if (namedPlaceOptions.hasOwnProperty('includeUnits')) {
+      query.includeUnits = namedPlaceOptions.includeUnits
+    }
     return this.namedPlaceService.getAllNamePlaces(query)
       .catch(() => {
         this.translate.get('np.loadError')
@@ -188,7 +192,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       })
       .do(data => {
         data.sort(this.sortFunction);
-        this.namedPlaces = data
+        this.namedPlaces = data;
         // Catch queryparams on first update, but don't keep listening afterwards
         const subQParams = this.route.queryParams.subscribe((params) => {
           this.setActiveNP(params['activeNP']);
@@ -264,6 +268,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       } else {
         this.namedPlaces.push(np);
         this.namedPlaces.sort(this.sortFunction);
+        this.namedPlaces = [...this.namedPlaces];
       }
     }
     this.editMode = false;

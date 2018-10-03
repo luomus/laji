@@ -47,9 +47,9 @@ export class Util {
     }, {})
   }
 
-  public static parseJSONPath(object: any, jsonPath: string) {
+  public static parseJSONPath(object: any, jsonPath: string): any {
     // Both jsonpath and jsonpath-plus cause problems with the production build,
-    // so we convert to json paths to json pointers.
+    // so we convert the json paths to json pointers.
     let pathAsJSONPointer = jsonPath[0] === '$' ? jsonPath.substring(1, jsonPath.length) : jsonPath; // Remove first '$'
     pathAsJSONPointer = pathAsJSONPointer
       .replace(/\./g, '/')
@@ -61,11 +61,30 @@ export class Util {
     return this.parseJSONPointer(object, pathAsJSONPointer);
   }
 
-  public static parseJSONPointer(object: any, jsonPointer: string) {
+  public static parseJSONPointer(object: any, jsonPointer: string, create = false): any {
     const splitPath = String(jsonPointer).split('/').filter(s => s !== undefined && s !== '');
-    return splitPath.reduce((o, s) => {
+    return splitPath.reduce((o, s, i) => {
+      if (create && !o[s]) {
+        if (!isNaN(+splitPath[i + 1])) {
+          o[s] = [];
+        } else {
+          o[s] = {};
+        }
+      }
       return o && o[s] || undefined;
     }, object);
+  }
+
+  public static updateWithJSONPointer(object: any, jsonPointer, value): any {
+    const splits = jsonPointer.split('/');
+    const last = splits.pop();
+
+    const lastContainerPointer = splits.join('/');
+    const lastContainer = this.parseJSONPointer(object, lastContainerPointer, true);
+    if (lastContainer) {
+      lastContainer[last] = value;
+    }
+    return object;
   }
 
   public static arrayCombineMerge(target, source, options) {

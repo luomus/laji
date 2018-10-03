@@ -27,6 +27,7 @@ import { Form } from '../../../../shared/model/Form';
 export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace: NamedPlace;
   @Input() npFormData: any;
+  @Input() namedPlaceOptions: any;
   @Input() targetForm: any;
   @Input() collectionId: string;
   @Input() editMode: boolean;
@@ -153,9 +154,14 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     this.values = {};
     this.fields = this.npFormData.schema.properties.namedPlace.items.properties;
 
-    const displayedById =
-      this.npFormData.uiSchema.namedPlace.uiSchema.items['ui:options'].fieldScopes.collectionID;
-    const displayed = displayedById[this.collectionId] ? displayedById[this.collectionId] : displayedById['*'];
+    let displayed = [];
+    if (this.namedPlaceOptions.formId) {
+      displayed = this.namedPlaceOptions.infoFields || [];
+    } else {
+      const displayedById =
+        this.npFormData.uiSchema.namedPlace.uiSchema.items['ui:options'].fieldScopes.collectionID;
+      displayed = (displayedById[this.collectionId] ? displayedById[this.collectionId] : displayedById['*']).fields;
+    }
 
     let gData = null;
     const np = this.namedPlace;
@@ -165,7 +171,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     for (const field in this.fields) {
-      if (displayed.fields.indexOf(field) > -1 && (!this.isEmpty(this.namedPlace[field]) || (gData && !this.isEmpty(gData[field])))) {
+      if (displayed.indexOf(field) > -1 && (!this.isEmpty(this.namedPlace[field]) || (gData && !this.isEmpty(gData[field])))) {
         this.keys.push(field);
         if (!this.isEmpty(this.namedPlace[field])) {
           this.values[field] = this.namedPlace[field];
