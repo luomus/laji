@@ -42,7 +42,8 @@ export class ObservationFormComponent implements OnInit {
     asEditor: false,
     asObserver: false,
     taxonUseAnnotated: true,
-    taxonIncludeLower: true
+    taxonIncludeLower: true,
+    coordinatesInSource: false,
   };
 
   _searchQuery: WarehouseQueryInterface;
@@ -63,7 +64,15 @@ export class ObservationFormComponent implements OnInit {
   section = {
     own: ['observerPersonToken', 'editorOrObserverPersonToken', 'editorPersonToken'],
     time: ['time', 'season', 'firstLoadedLaterThan', 'firstLoadedBefore'],
-    place: ['countryId', 'biogeographicalProvinceId', 'finnishMunicipalityId', 'area', 'coordinates', 'coordinateAccuracyMax'],
+    place: [
+      'countryId',
+      'biogeographicalProvinceId',
+      'finnishMunicipalityId',
+      'area',
+      'coordinates',
+      'coordinateAccuracyMax',
+      'sourceOfCoordinates'
+    ],
     observer: ['teamMember', 'teamMemberId'],
     individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
     quality: ['taxonReliability', 'annotated', 'qualityIssues'],
@@ -80,7 +89,7 @@ export class ObservationFormComponent implements OnInit {
   advancedSections = {
     taxon: ['useIdentificationAnnotations', 'includeSubTaxa'],
     time: ['firstLoadedLaterThan', 'firstLoadedBefore'],
-    coordinate: ['coordinates' , 'coordinateAccuracyMax'],
+    coordinate: ['coordinates' , 'coordinateAccuracyMax', 'sourceOfCoordinates'],
     individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
     dataset: ['collectionId', 'reliabilityOfCollection', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
@@ -381,6 +390,7 @@ export class ObservationFormComponent implements OnInit {
       asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
       taxonIncludeLower: typeof query.includeSubTaxa !== 'undefined' ? query.includeSubTaxa : true,
       taxonUseAnnotated: typeof query.useIdentificationAnnotations !== 'undefined' ? query.useIdentificationAnnotations : true,
+      coordinatesInSource: query.sourceOfCoordinates && query.sourceOfCoordinates === 'REPORTED_VALUE'
     };
 
     return formQuery;
@@ -403,6 +413,7 @@ export class ObservationFormComponent implements OnInit {
     query.observerPersonToken = formQuery.asObserver ? this.userService.getToken() : undefined;
     query.includeSubTaxa = formQuery.taxonIncludeLower ? undefined : false;
     query.useIdentificationAnnotations = formQuery.taxonUseAnnotated ? undefined : false;
+    query.sourceOfCoordinates = formQuery.coordinatesInSource ? 'REPORTED_VALUE' : undefined;
     this.invasiveStatuses
       .map((key) => {
         const value = 'MX.' + key;
