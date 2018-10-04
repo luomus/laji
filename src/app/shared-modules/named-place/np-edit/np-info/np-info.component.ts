@@ -167,6 +167,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       gData = np.prepopulatedDocument.gatherings[0];
     }
 
+    let listItems = [];
     for (const field of displayed) {
       if (!fields[field]) {
         continue;
@@ -175,7 +176,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       let value = undefined;
       if (!this.isEmpty(this.namedPlace[field])) {
         value = this.namedPlace[field];
-      } else {
+      } else if (gData && !this.isEmpty(gData[field])) {
         value = gData[field];
       }
 
@@ -184,12 +185,13 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
         label = true;
       }
 
-      this.listItems.push({
+      value && listItems.push({
         title: fields[field].title,
         value,
         isLabel: label
       });
     }
+    this.listItems = listItems;
   }
 
   private isEmpty(value: string) {
