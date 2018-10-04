@@ -10,7 +10,7 @@ import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
   styleUrls: ['./taxon-autocomplete.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonAutocompleteComponent implements AfterViewInit{
+export class TaxonAutocompleteComponent implements AfterViewInit {
 
   @Input() limit = 10;
   @Input() placeholder = '';
@@ -48,10 +48,10 @@ export class TaxonAutocompleteComponent implements AfterViewInit{
   }
 
   ngAfterViewInit() {
-    if(!this.renderButton && this.allowInvalid){
+    if (!this.renderButton && this.allowInvalid) {
       // emit empty string if input is deselected and value is empty
-      document.getElementById('autocomplete-input').addEventListener("blur", ()=>{
-        if(this.value.length < 1) {
+      document.getElementById('autocomplete-input').addEventListener('blur', () => {
+        if (this.value.length < 1) {
           this.useCurrentValue();
         }
       });
