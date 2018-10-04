@@ -25,6 +25,7 @@
                             [userID]="userID"
                             [visible]="!editMode"
                             [allowCreate]="allowCreate"
+                            [zoomToData]="formData.namedPlaceOptions?.zoomToData"
                             (onActivePlaceChange)="setActiveNP($event)"
                             (onCreateButtonClick)="toEditMode(true)"></laji-np-choose>
           </div>
