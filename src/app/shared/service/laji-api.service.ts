@@ -169,6 +169,7 @@ export namespace LajiApi {
       matchType?: LajiApi.AutocompleteMatchType;
       onlySpecies?: boolean;
       onlyFinnish?: boolean;
+      onlyInvasive?: boolean;
       excludeNameTypes?: string;
       formID?: string;
     }

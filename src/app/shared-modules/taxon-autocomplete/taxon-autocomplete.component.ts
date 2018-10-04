@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, AfterViewInit } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Autocomplete } from '../../shared/model/Autocomplete';
@@ -10,13 +10,14 @@ import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
   styleUrls: ['./taxon-autocomplete.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonAutocompleteComponent {
+export class TaxonAutocompleteComponent implements AfterViewInit{
 
   @Input() limit = 10;
   @Input() placeholder = '';
   @Input() allowInvalid = false;
   @Input() informalTaxonGroup = '';
   @Input() onlyFinnish = false;
+  @Input() onlyInvasive = false;
   @Input() showResult = true;
   @Input() clearValueOnSelect = true;
   @Input() allowEmpty = false;
@@ -46,6 +47,14 @@ export class TaxonAutocompleteComponent {
       });
   }
 
+  ngAfterViewInit() {
+    if(!this.renderButton && this.allowInvalid){
+      document.getElementById('autocomplete-input').addEventListener("blur", ()=>{
+        this.useCurrentValue();
+      });
+    }
+  }
+
   @Input()
   set taxon(value: string) {
     this.getTaxa(value, true)
@@ -69,7 +78,8 @@ export class TaxonAutocompleteComponent {
       lang: this.translateService.currentLang,
       matchType: LajiApi.AutocompleteMatchType.partial,
       informalTaxonGroup: this.informalTaxonGroup,
-      onlyFinnish: this.onlyFinnish
+      onlyFinnish: this.onlyFinnish,
+      onlyInvasive: this.onlyInvasive
     })
       .map(data => {
         if (onlyExact) {

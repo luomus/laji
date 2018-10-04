@@ -45,10 +45,12 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   };
 
   filterByMunicipality = false;
+  filterByTaxon = false;
   filterByBirdAssociationArea = false;
 
   birdAssociationArea = '';
   municipality = '';
+  taxonID = '';
 
   errorMsg = '';
 
@@ -114,6 +116,11 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.updateList();
   }
 
+  onTaxonSelect(e) {
+    this.taxonID = e.key;
+    this.updateList();
+  }
+
   release() {
     this.loading = true;
     this.namedPlaceService
@@ -169,10 +176,10 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       collectionID: this.collectionId
     };
     if (this.filterByMunicipality) {
-      if (!this.municipality) {
-        return ObservableOf([]);
-      }
       query.municipality = this.municipality;
+    }
+    if (this.filterByTaxon) {
+      query.taxonIDs = this.taxonID;
     }
     if (this.filterByBirdAssociationArea) {
       if (!this.birdAssociationArea) {
@@ -205,7 +212,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (formData && formData.features && Array.isArray(formData.features)) {
       this.filterByBirdAssociationArea = formData.features.indexOf(Form.Feature.FilterNamedPlacesByBirdAssociationArea) > -1;
       this.filterByMunicipality = formData.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality) > -1;
-      this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1
+      this.filterByTaxon = formData.features.indexOf(Form.Feature.FilterNamedPlacesByTaxonID) > -1;
+      this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1;
     }
     this.formRights = {
       admin: false,
