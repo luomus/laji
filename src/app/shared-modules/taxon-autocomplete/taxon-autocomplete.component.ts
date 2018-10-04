@@ -49,8 +49,11 @@ export class TaxonAutocompleteComponent implements AfterViewInit{
 
   ngAfterViewInit() {
     if(!this.renderButton && this.allowInvalid){
+      // emit empty string if input is deselected and value is empty
       document.getElementById('autocomplete-input').addEventListener("blur", ()=>{
-        this.useCurrentValue();
+        if(this.value.length < 1) {
+          this.useCurrentValue();
+        }
       });
     }
   }
