@@ -12,3 +12,7 @@
     display: flex;
   }
 }
+
+.laji-sidebar-active {
+  background: white;
+}
