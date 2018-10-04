@@ -118,6 +118,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   onTaxonSelect(e) {
     this.taxonID = e.key;
+    this.prepopulatedNamedPlace['taxonIDs'] = [this.taxonID];
     this.updateList();
   }
 
