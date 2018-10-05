@@ -14,7 +14,10 @@
     [sortType]="'single'"
     [page]="1"
     [pageSize]="data.length"
-    [columns]="columns">
+    [columns]="columns"
+    [selectionType]="'single'"
+    [selectedRowIndex]="activeNP"
+    >
   </laji-datatable>
   <div class="test"></div>
   <ul class="legend" *ngIf="showLegendList">

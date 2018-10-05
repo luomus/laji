@@ -43,12 +43,12 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
   @Output() onActivePlaceChange = new EventEmitter<number>();
   @Output() onCreateButtonClick = new EventEmitter();
 
-  activeNP = -1;
-
   sent = this.isSent.bind(this);
 
   private seasonStart;
   private seasonEnd;
+
+  _activeNP = -1;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -116,9 +116,13 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
     }
   }
 
+  @Input() set activeNP(idx: number) {
+    this._activeNP = idx;
+    this.onActivePlaceChange.emit(idx);
+  }
+
   setActiveNP(idx: number) {
     this.activeNP = idx;
-    this.onActivePlaceChange.emit(idx);
   }
 
   createButtonClick() {

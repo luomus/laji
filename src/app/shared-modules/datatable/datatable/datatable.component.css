@@ -1,0 +1,7 @@
+:host ::ng-deep .datatable-body-row.active {
+    background-color: #a0b6ce !important;
+}
+
+:host ::ng-deep .datatable-body-row.active .datatable-row-center {
+    background-color: #a0b6ce !important; 
+}

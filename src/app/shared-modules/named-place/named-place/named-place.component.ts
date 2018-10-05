@@ -284,7 +284,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (this.activeNP >= 0) {
       this.namedPlace = this.namedPlaces[this.activeNP];
       this.updateQueryParams();
-      this.editView.npClick();
+      if (this.editView) { this.editView.npClick() }
     } else {
       this.namedPlace = null;
     }

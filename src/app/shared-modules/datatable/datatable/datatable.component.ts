@@ -9,7 +9,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
-import { DatatableComponent as NgxDatatableComponent } from '@swimlane/ngx-datatable';
+import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
 import { interval as ObservableInterval, of as ObservableOf } from 'rxjs';
 import { CacheService } from '../../../shared/service/cache.service';
 import { Annotation } from '../../../shared/model/Annotation';
@@ -47,6 +47,10 @@ export class DatatableComponent implements AfterViewInit {
   @Input() rowHeight = 35;
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   @Input() getRowClass: (row: any) => any;
+  @Input() selectionType: SelectionType;
+
+  // Initialize datatable row selection with some index
+  @Input() selectedRowIndex: number;
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
@@ -61,6 +65,7 @@ export class DatatableComponent implements AfterViewInit {
   _count: number;
   _offset: number;
   _columns: DatatableColumn[];
+  selected: any[];
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -111,6 +116,8 @@ export class DatatableComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.selected = [this._rows[this.selectedRowIndex]] || [];
+
     setTimeout(() => {
       this.datatable.recalculate();
     }, 100);
