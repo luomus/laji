@@ -56,6 +56,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   private subParam: Subscription;
   private subTrans: Subscription;
+  private subQParams: Subscription;
+
+  private first = true;
 
   @ViewChild(NpChooseComponent) chooseView: NpChooseComponent;
   @ViewChild(NpEditComponent) editView: NpEditComponent;
@@ -73,21 +76,32 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    // Catch queryparams on first update, but don't keep listening afterwards
-    const subQParams = this.route.queryParams.subscribe((params) => {
+    this.subQParams = this.route.queryParams.subscribe((params) => {
       if (params.taxonID) {
         this.taxonID = params.taxonID;
+      } else {
+        this.taxonID = '';
       }
       if (params.municipality) {
         this.municipality = params.municipality;
+      } else {
+        this.municipality = '';
       }
       if (params.birdAssociationArea) {
         this.birdAssociationArea = params.birdAssociationArea;
+      } else {
+        this.birdAssociationArea = '';
       }
       if (params.activeNP) {
         this.activeNP = params.activeNP;
+      } else {
+        this.activeNP = -1;
       }
-      subQParams.unsubscribe();
+      if (this.first) {
+        this.first = false;
+      } else {
+        this.updateList();
+      }
     });
 
     this.loading = true;
@@ -117,6 +131,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     }
     if (this.subTrans) {
       this.subTrans.unsubscribe();
+    }
+    if (this.subQParams) {
+      this.subQParams.unsubscribe();
     }
     this.footerService.footerVisible = true;
   }

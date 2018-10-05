@@ -50,7 +50,7 @@ export class DatatableComponent implements AfterViewInit {
   @Input() selectionType: SelectionType;
 
   // Initialize datatable row selection with some index
-  @Input() selectedRowIndex: number;
+  _selectedRowIndex: number;
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
@@ -66,6 +66,8 @@ export class DatatableComponent implements AfterViewInit {
   _offset: number;
   _columns: DatatableColumn[];
   selected: any[];
+
+  initialized = false;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -115,16 +117,23 @@ export class DatatableComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-    this.selected = [this._rows[this.selectedRowIndex]] || [];
-
-    setTimeout(() => {
-      this.datatable.recalculate();
+  @Input() set selectedRowIndex (index: number) {
+    this._selectedRowIndex = index;
+    if (this.initialized) {
+      this.selected = [this._rows[this._selectedRowIndex]] || [];
       if (this.selected.length > 0) {
         // Calculate relative position of selected row and scroll to it
-        const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * this.selectedRowIndex;
+        const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * this._selectedRowIndex;
         this.datatable.bodyComponent.scroller.parentElement.scrollTop = scrollAmount;
       }
+    }
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.datatable.recalculate();
+      this.initialized = true;
+      this.selectedRowIndex = this._selectedRowIndex;
     }, 100)
   }
 
