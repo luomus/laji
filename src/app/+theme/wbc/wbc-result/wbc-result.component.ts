@@ -4,6 +4,7 @@ import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { ResultService } from '../../service/result.service';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
+import { Global } from '../../../../environments/global';
 
 type SEASON = 'spring'|'fall'|'winter';
 
@@ -15,7 +16,7 @@ type SEASON = 'spring'|'fall'|'winter';
 export class WbcResultComponent implements OnInit, OnDestroy {
 
   informalTaxonGroup = 'MVL.1';
-  collectionId = 'HR.39';
+  collectionId = Global.collections.wbc;
   page;
   type;
   query: WarehouseQueryInterface;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from '../../../../environments/environment';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-wbc-own-submissions',
@@ -8,11 +8,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class WbcOwnSubmissionsComponent implements OnInit {
 
-  formId: string;
-
-  constructor() {
-    this.formId = environment.wbcForm;
-  }
+  collectionID = Global.collections.wbc;
 
   ngOnInit() {
   }

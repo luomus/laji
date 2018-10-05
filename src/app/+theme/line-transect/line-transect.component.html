@@ -10,7 +10,7 @@
         <ng-container *ngIf="(rights | async)?.admin; else normalUsers">
           <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'kartoitus']">{{'linjalaskenta.form3' | translate}}</a></li>
           <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'ownSubmissions']">{{'theme.admin.submissions' | translate}}</a></li>
-          <li><a [routerLink]="['/vihko/fp/HR.61/admin']">{{'form.administer' | translate}}</a></li>
+          <li><a [routerLink]="['/vihko/fp/' + collectionID + '/admin']">{{'form.administer' | translate}}</a></li>
         </ng-container>
         <ng-template #normalUsers>
           <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>

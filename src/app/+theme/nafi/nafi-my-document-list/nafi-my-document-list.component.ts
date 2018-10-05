@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from '../../../../environments/environment';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-nafi-my-document-list',
@@ -8,11 +8,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class NafiMyDocumentListComponent implements OnInit {
 
-  formId: string;
-
-  constructor() {
-    this.formId = environment.nafiForm;
-  }
+  collectionID = Global.collections.nafi;
 
   ngOnInit() {
   }

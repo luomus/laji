@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { LocalStorage } from 'ngx-webstorage';
-import { environment } from '../../../../environments/environment';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-nafi-templates',
@@ -10,13 +10,9 @@ import { environment } from '../../../../environments/environment';
 })
 export class NafiTemplatesComponent implements OnInit {
 
-  formId: string;
+  collectionID = Global.collections.nafi;
 
   @LocalStorage() public showTemplateIntro;
-
-  constructor() {
-    this.formId = environment.nafiForm;
-  }
 
   ngOnInit() {
     if (this.showTemplateIntro === null) {

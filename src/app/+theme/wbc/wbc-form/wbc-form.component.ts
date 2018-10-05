@@ -6,6 +6,7 @@ import { DocumentFormComponent } from '@laji-form/document-form/document-form.co
 import { ComponentCanDeactivate } from '../../../shared/guards/document-de-activate.guard';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { FormService } from '../../../shared/service/form.service';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-wbc-form',
@@ -32,7 +33,7 @@ export class WbcFormComponent implements OnInit, OnDestroy, ComponentCanDeactiva
       this.documentId = params['id'] || null;
       if (!this.formService.hasNamedPlace() && !this.documentId) {
         this.router.navigate(
-          this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/places/HR.39', environment.wbcForm])
+          this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/places', Global.collections.wbc, environment.wbcForm])
         );
       } else {
         this.hasNS = true;

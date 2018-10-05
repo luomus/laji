@@ -5,7 +5,13 @@
         <li><a [routerLink]="['../talvilintulaskenta', 'instructions']">{{'instructions' | translate}}</a></li>
         <li><a [routerLink]="['../talvilintulaskenta', 'stats']">{{'nafi.stats' | translate}}</a></li>
         <li *ngIf="showForm"><a [routerLink]="['../talvilintulaskenta', 'form']">{{'nafi.form' | translate}}</a></li>
-        <li *ngIf="showForm"><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
+        <ng-container *ngIf="(rights | async)?.admin; else normalUsers">
+          <li *ngIf="showForm"><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{'theme.admin.submissions' | translate}}</a></li>
+          <li><a [routerLink]="['/vihko/fp/' + collectionID + '/admin']">{{'form.administer' | translate}}</a></li>
+        </ng-container>
+        <ng-template #normalUsers>
+          <li *ngIf="showForm"><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
+        </ng-template>
       </ul>
     </div>
     <div [ngClass]="{'col-sm-9 col-md-10 col-lg-10': router.url.indexOf('form') === -1}" class="wbc-content">
