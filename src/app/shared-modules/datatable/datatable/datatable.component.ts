@@ -120,7 +120,12 @@ export class DatatableComponent implements AfterViewInit {
 
     setTimeout(() => {
       this.datatable.recalculate();
-    }, 100);
+      if (this.selected.length > 0) {
+        // Calculate relative position of selected row and scroll to it
+        const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * this.selectedRowIndex;
+        this.datatable.bodyComponent.scroller.parentElement.scrollTop = scrollAmount;
+      }
+    }, 100)
   }
 
   onRowSelect(event) {
