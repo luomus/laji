@@ -333,6 +333,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       }
     }
     this.editMode = false;
+    this.updateQueryParams();
   }
 
   setErrorMessage(msg) {
