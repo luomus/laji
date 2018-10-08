@@ -58,6 +58,7 @@ export class ObservationComponent implements OnInit, OnDestroy {
     // Route snapshot is not populated with the latest info when this event is triggered. So we need to delay the execution little.
     setTimeout(() => {
       this.updateQuery(this.route.snapshot.queryParams);
+      this.cd.markForCheck();
     });
   }
 
