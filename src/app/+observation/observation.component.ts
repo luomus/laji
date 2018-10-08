@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { SearchQuery } from './search-query.model';
@@ -40,7 +40,28 @@ export class ObservationComponent implements OnInit, OnDestroy {
     this.subParam = this.route.params.subscribe(value => {
       this.tab = value['tab'] || 'map';
     });
-    const params = this.route.snapshot.queryParams;
+    this.updateQuery(this.route.snapshot.queryParams);
+  }
+
+  ngOnDestroy() {
+    this.footerService.footerVisible = true;
+    if (this.subParam) {
+      this.subParam.unsubscribe();
+    }
+    if (this.subQuery) {
+      this.subQuery.unsubscribe();
+    }
+  }
+
+  @HostListener('window:popstate')
+  onPopState() {
+    // Route snapshot is not populated with the latest info when this event is triggered. So we need to delay the execution little.
+    setTimeout(() => {
+      this.updateQuery(this.route.snapshot.queryParams);
+    });
+  }
+
+  private updateQuery(params) {
     this.searchQuery.setQueryFromQueryObject(params);
     if (params['target']) {
       this.searchQuery.query.target = [params['target']];
@@ -55,15 +76,5 @@ export class ObservationComponent implements OnInit, OnDestroy {
       this.searchQuery.query.editorOrObserverPersonToken = this.userService.getToken();
     }
     this.searchQuery.queryUpdate({formSubmit: true});
-  }
-
-  ngOnDestroy() {
-    this.footerService.footerVisible = true;
-    if (this.subParam) {
-      this.subParam.unsubscribe();
-    }
-    if (this.subQuery) {
-      this.subQuery.unsubscribe();
-    }
   }
 }
