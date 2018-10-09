@@ -6,7 +6,9 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewChild
+  ViewChild,
+  PLATFORM_ID,
+  Inject
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
@@ -14,6 +16,7 @@ import { interval as ObservableInterval, of as ObservableOf } from 'rxjs';
 import { CacheService } from '../../../shared/service/cache.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
+import { isPlatformBrowser } from '@angular/common';
 
 const CACHE_COLUMN_SETINGS = 'datatable-col-width';
 
@@ -71,7 +74,8 @@ export class DatatableComponent implements AfterViewInit {
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   @Input() set count(cnt: number) {
@@ -130,11 +134,13 @@ export class DatatableComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.datatable.recalculate();
-      this.initialized = true;
-      this.selectedRowIndex = this._selectedRowIndex;
-    }, 100)
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.datatable.recalculate();
+        this.initialized = true;
+        this.selectedRowIndex = this._selectedRowIndex;
+      }, 100);
+    }
   }
 
   onRowSelect(event) {
