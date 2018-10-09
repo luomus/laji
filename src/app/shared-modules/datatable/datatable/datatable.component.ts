@@ -75,7 +75,8 @@ export class DatatableComponent implements AfterViewInit {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private cacheService: CacheService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private logger: Logger
   ) { }
 
   @Input() set count(cnt: number) {
@@ -128,7 +129,11 @@ export class DatatableComponent implements AfterViewInit {
       if (this.selected.length > 0) {
         // Calculate relative position of selected row and scroll to it
         const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * this._selectedRowIndex;
-        this.datatable.bodyComponent.scroller.parentElement.scrollTop = scrollAmount;
+        try {
+          this.datatable.bodyComponent.scroller.parentElement.scrollTop = scrollAmount;
+        } catch (e) {
+          this.logger.debug('selected row index failed', e)
+        }
       }
     }
   }
@@ -138,7 +143,9 @@ export class DatatableComponent implements AfterViewInit {
       setTimeout(() => {
         this.datatable.recalculate();
         this.initialized = true;
-        this.selectedRowIndex = this._selectedRowIndex;
+        if (this._selectedRowIndex) {
+          this.selectedRowIndex = this._selectedRowIndex;
+        }
       }, 100);
     }
   }
