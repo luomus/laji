@@ -15,7 +15,8 @@ export class DocumentFormFooterComponent {
   @Output() onSubmitPublic = new EventEmitter();
   @Output() onSubmitPrivate = new EventEmitter();
   @Output() onCancel = new EventEmitter();
-  _form: any
+  _form: any;
+  _locked: false;
   show = {
     save: false,
     temp: false,
@@ -30,7 +31,9 @@ export class DocumentFormFooterComponent {
 
   @Input()
   set form(form: any) {
+    console.log(form);
     this._form = form;
+    this._locked = form && form.formData && form.formData.locked;
     ['save', 'temp', 'cancel'].forEach(place => {
       let show: boolean;
 

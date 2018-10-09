@@ -23,6 +23,7 @@
   "delete.error": "Failed to delete. Try again little later.",
   "delete.noId": "Could not find the id for observation. Try again little later.",
   "delete.success": "Observation removed successfully.",
+  "document.locked": "This observation is locked and cannot be modified.",
   "email": "Email",
   "error": "Error",
   "error.404.intro": "Please check that url is written correctly.",

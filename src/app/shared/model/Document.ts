@@ -197,6 +197,8 @@ export interface Document {
      */
     legID?: string;
 
+    locked?: boolean;
+
     /**
      * QName for MNP.namedPlace
      */

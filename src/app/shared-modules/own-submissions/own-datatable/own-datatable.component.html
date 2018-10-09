@@ -79,6 +79,10 @@
             </span>
           </span>
           <span *ngIf="actions.indexOf('edit') > -1" class="label label-primary link inline-block"
+                [ngClass]="{
+                  'label-primary': !row.locked,
+                  'label-default': row.locked
+                }"
                 [tooltip]="(onlyTemplates ? 'template.use' : 'haseka.submissions.toEdit') | translate"
                 (click)="toEditPage(row)"
                 [placement]="'right'">
