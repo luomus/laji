@@ -1,4 +1,7 @@
 <div>
+  <alert [type]="'danger'" *ngIf="formData && formData.formData && formData.formData.locked">
+    {{'document.locked' | translate}}
+  </alert>
   <div #lajiForm></div>
   <div class="modal" tabindex="-1" role="dialog" bsModal #errorModal="bs-modal">
     <div class="modal-dialog modal-md">
