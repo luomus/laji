@@ -6,7 +6,9 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewChild
+  ViewChild,
+  PLATFORM_ID,
+  Inject
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
@@ -14,6 +16,8 @@ import { interval as ObservableInterval, of as ObservableOf } from 'rxjs';
 import { CacheService } from '../../../shared/service/cache.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
+import { isPlatformBrowser } from '@angular/common';
+import { Logger } from '../../../shared/logger/logger.service';
 
 const CACHE_COLUMN_SETINGS = 'datatable-col-width';
 
@@ -71,7 +75,9 @@ export class DatatableComponent implements AfterViewInit {
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private logger: Logger
   ) { }
 
   @Input() set count(cnt: number) {
@@ -124,17 +130,25 @@ export class DatatableComponent implements AfterViewInit {
       if (this.selected.length > 0) {
         // Calculate relative position of selected row and scroll to it
         const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * this._selectedRowIndex;
-        this.datatable.bodyComponent.scroller.parentElement.scrollTop = scrollAmount;
+        try {
+          this.datatable.bodyComponent.scroller.parentElement.scrollTop = scrollAmount;
+        } catch (e) {
+          this.logger.info('selected row index failed', e)
+        }
       }
     }
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.datatable.recalculate();
-      this.initialized = true;
-      this.selectedRowIndex = this._selectedRowIndex;
-    }, 100)
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.datatable.recalculate();
+        this.initialized = true;
+        if (this._selectedRowIndex) {
+          this.selectedRowIndex = this._selectedRowIndex;
+        }
+      }, 100);
+    }
   }
 
   onRowSelect(event) {
