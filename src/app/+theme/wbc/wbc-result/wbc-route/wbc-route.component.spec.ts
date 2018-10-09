@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WbcRouteResultComponent } from './wbc-route-result.component';
+import { WbcRouteComponent } from './wbc-route.component';
 
-describe('WbcRouteResultComponent', () => {
-  let component: WbcRouteResultComponent;
-  let fixture: ComponentFixture<WbcRouteResultComponent>;
+describe('WbcRouteComponent', () => {
+  let component: WbcRouteComponent;
+  let fixture: ComponentFixture<WbcRouteComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WbcRouteResultComponent ]
+      declarations: [ WbcRouteComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WbcRouteResultComponent);
+    fixture = TestBed.createComponent(WbcRouteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

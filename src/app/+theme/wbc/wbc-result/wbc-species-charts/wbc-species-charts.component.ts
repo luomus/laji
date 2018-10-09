@@ -5,11 +5,11 @@ import { Subscription, forkJoin } from 'rxjs';
 import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
 
 @Component({
-  selector: 'laji-wbc-species-result-charts',
-  templateUrl: './wbc-species-result-charts.component.html',
-  styleUrls: ['./wbc-species-result-charts.component.css']
+  selector: 'laji-wbc-species-charts',
+  templateUrl: './wbc-species-charts.component.html',
+  styleUrls: ['./wbc-species-charts.component.css']
 })
-export class WbcSpeciesResultChartsComponent implements OnInit, OnDestroy {
+export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
   taxon: any;
   isMammal = false;
 

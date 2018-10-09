@@ -3,11 +3,11 @@ import { WbcResultService, SEASON } from '../../wbc-result.service';
 import { WarehouseQueryInterface } from '../../../../../shared/model/WarehouseQueryInterface';
 
 @Component({
-  selector: 'laji-wbc-species-result-maps',
-  templateUrl: './wbc-species-result-maps.component.html',
-  styleUrls: ['./wbc-species-result-maps.component.css']
+  selector: 'laji-wbc-species-maps',
+  templateUrl: './wbc-species-maps.component.html',
+  styleUrls: ['./wbc-species-maps.component.css']
 })
-export class WbcSpeciesResultMapsComponent implements OnInit, OnChanges {
+export class WbcSpeciesMapsComponent implements OnInit, OnChanges {
   @Input() taxonId: string;
   @Input() taxonCensus = undefined;
   @Input() year: number;

@@ -8,17 +8,17 @@
                              (areaChange)="activeBirdAssociationArea = $event"
     ></laji-wbc-result-filters>
     <h4>Kausivertailu</h4>
-    <laji-wbc-species-result-maps [taxonId]="taxon.id"
+    <laji-wbc-species-maps [taxonId]="taxon.id"
                                   [taxonCensus]="isMammal ? mammals : undefined"
                                   [year]="activeYear"
                                   [season]="activeSeason"
                                   [birdAssociationArea]="activeBirdAssociationArea"
-    ></laji-wbc-species-result-maps>
+    ></laji-wbc-species-maps>
     <hr>
     <h4>Runsauden kehitys vuosittain</h4>
-    <laji-wbc-species-result-linecharts [taxonId]="taxon.id"
+    <laji-wbc-species-linecharts [taxonId]="taxon.id"
                                         [taxonCensus]="isMammal ? mammals : undefined"
                                         [birdAssociationArea]="activeBirdAssociationArea"
-    ></laji-wbc-species-result-linecharts>
+    ></laji-wbc-species-linecharts>
   </ng-container>
 </laji-spinner>

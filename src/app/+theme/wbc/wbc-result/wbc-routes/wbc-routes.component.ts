@@ -6,11 +6,11 @@ import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 
 @Component({
-  selector: 'laji-wbc-routes-result',
-  templateUrl: './wbc-routes-result.component.html',
-  styleUrls: ['./wbc-routes-result.component.css']
+  selector: 'laji-wbc-routes',
+  templateUrl: './wbc-routes.component.html',
+  styleUrls: ['./wbc-routes.component.css']
 })
-export class WbcRoutesResultComponent implements OnInit {
+export class WbcRoutesComponent implements OnInit {
   columns: DatatableColumn[] = [
     {
       name: 'document.namedPlace.name',

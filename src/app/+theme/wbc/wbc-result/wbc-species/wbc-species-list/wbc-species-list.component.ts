@@ -4,11 +4,11 @@ import { Subscription } from 'rxjs';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 
 @Component({
-  selector: 'laji-wbc-species-result-list',
-  templateUrl: './wbc-species-result-list.component.html',
-  styleUrls: ['./wbc-species-result-list.component.css']
+  selector: 'laji-wbc-species-list',
+  templateUrl: './wbc-species-list.component.html',
+  styleUrls: ['./wbc-species-list.component.css']
 })
-export class WbcSpeciesResultListComponent implements OnInit, OnChanges {
+export class WbcSpeciesListComponent implements OnInit, OnChanges {
   @Input() year: number;
   @Input() season: SEASON;
   @Input() birdAssociationArea: string;

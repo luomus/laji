@@ -3,8 +3,8 @@
                          (seasonChange)="activeSeason = $event"
                          (areaChange)="activeBirdAssociationArea = $event"
 ></laji-wbc-result-filters>
-<laji-wbc-species-result-list (rowSelect)="taxonSelect($event)"
+<laji-wbc-species-list (rowSelect)="taxonSelect($event)"
                               [year]="activeYear"
                               [season]="activeSeason"
                               [birdAssociationArea]="activeBirdAssociationArea"
-></laji-wbc-species-result-list>
+></laji-wbc-species-list>

@@ -3,11 +3,11 @@ import { WbcResultService } from '../../wbc-result.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'laji-wbc-species-result-linecharts',
-  templateUrl: './wbc-species-result-linecharts.component.html',
-  styleUrls: ['./wbc-species-result-linecharts.component.css']
+  selector: 'laji-wbc-species-linecharts',
+  templateUrl: './wbc-species-linecharts.component.html',
+  styleUrls: ['./wbc-species-linecharts.component.css']
 })
-export class WbcSpeciesResultLinechartsComponent implements OnInit, OnChanges {
+export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
   @Input() taxonId: string;
   @Input() taxonCensus = undefined;
   @Input() birdAssociationArea: string;

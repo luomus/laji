@@ -7,11 +7,11 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { IdService } from '../../../../shared/service/id.service';
 
 @Component({
-  selector: 'laji-wbc-route-result',
-  templateUrl: './wbc-route-result.component.html',
-  styleUrls: ['./wbc-route-result.component.css']
+  selector: 'laji-wbc-route',
+  templateUrl: './wbc-route.component.html',
+  styleUrls: ['./wbc-route.component.css']
 })
-export class WbcRouteResultComponent implements OnInit, OnDestroy {
+export class WbcRouteComponent implements OnInit, OnDestroy {
   id: string;
   rows: any[] = [];
   columns: DatatableColumn[] = [

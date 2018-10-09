@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WbcCensusesResultComponent } from './wbc-censuses-result.component';
+import { WbcSpeciesMapsComponent } from './wbc-species-maps.component';
 
-describe('WbcCensusesResultComponent', () => {
-  let component: WbcCensusesResultComponent;
-  let fixture: ComponentFixture<WbcCensusesResultComponent>;
+describe('WbcSpeciesMapsComponent', () => {
+  let component: WbcSpeciesMapsComponent;
+  let fixture: ComponentFixture<WbcSpeciesMapsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WbcCensusesResultComponent ]
+      declarations: [ WbcSpeciesMapsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WbcCensusesResultComponent);
+    fixture = TestBed.createComponent(WbcSpeciesMapsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

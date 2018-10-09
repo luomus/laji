@@ -5,11 +5,11 @@ import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 
 @Component({
-  selector: 'laji-wbc-species-result',
-  templateUrl: './wbc-species-result.component.html',
-  styleUrls: ['./wbc-species-result.component.css']
+  selector: 'laji-wbc-species',
+  templateUrl: './wbc-species.component.html',
+  styleUrls: ['./wbc-species.component.css']
 })
-export class WbcSpeciesResultComponent implements OnInit {
+export class WbcSpeciesComponent implements OnInit {
   activeYear: number;
   activeSeason: SEASON;
   activeBirdAssociationArea: string;

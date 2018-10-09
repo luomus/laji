@@ -54,18 +54,19 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { InvasiveControlComponent } from './invasive-control/invasive-control.component';
 import { InvasiveControlInstructionsComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.component';
 import { InvasiveControlFormComponent } from './invasive-control/invasive-control-form/invasive-control-form.component';
-import { WbcSpeciesResultComponent } from './wbc/wbc-result/wbc-species-result/wbc-species-result.component';
-import { WbcRoutesResultComponent } from './wbc/wbc-result/wbc-routes-result/wbc-routes-result.component';
-import { WbcCensusesResultComponent } from './wbc/wbc-result/wbc-censuses-result/wbc-censuses-result.component';
-import { WbcSpeciesResultListComponent } from './wbc/wbc-result/wbc-species-result/wbc-species-result-list/wbc-species-result-list.component';
+import { WbcSpeciesComponent } from './wbc/wbc-result/wbc-species/wbc-species.component';
+import { WbcRoutesComponent } from './wbc/wbc-result/wbc-routes/wbc-routes.component';
+import { WbcCensusesComponent } from './wbc/wbc-result/wbc-censuses/wbc-censuses.component';
+import { WbcSpeciesListComponent } from './wbc/wbc-result/wbc-species/wbc-species-list/wbc-species-list.component';
 import { WbcResultService } from './wbc/wbc-result/wbc-result.service';
 import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
 import { WbcResultFiltersComponent } from './wbc/wbc-result/wbc-result-filters/wbc-result-filters.component';
-import { WbcSpeciesResultChartsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-charts.component';
-import { WbcSpeciesResultMapsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-maps/wbc-species-result-maps.component';
-import { WbcSpeciesResultLinechartsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-linecharts/wbc-species-result-linecharts.component';
-import { LineChartWithPointsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-linecharts/line-chart-with-points/line-chart-with-points.component';
-import { WbcRouteResultComponent } from './wbc/wbc-result/wbc-route-result/wbc-route-result.component';
+import { WbcSpeciesChartsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-charts.component';
+import { WbcSpeciesMapsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-maps/wbc-species-maps.component';
+import { WbcSpeciesLinechartsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-linecharts/wbc-species-linecharts.component';
+import { LineChartWithPointsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-linecharts/line-chart-with-points/line-chart-with-points.component';
+import { WbcRouteComponent } from './wbc/wbc-result/wbc-route/wbc-route.component';
+import { WbcRouteTableComponent } from './wbc/wbc-result/wbc-route-table/wbc-route-table.component';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -124,16 +125,17 @@ import { WbcRouteResultComponent } from './wbc/wbc-result/wbc-route-result/wbc-r
     InvasiveControlComponent,
     InvasiveControlInstructionsComponent,
     InvasiveControlFormComponent,
-    WbcSpeciesResultComponent,
-    WbcRoutesResultComponent,
-    WbcCensusesResultComponent,
-    WbcSpeciesResultListComponent,
+    WbcSpeciesComponent,
+    WbcRoutesComponent,
+    WbcCensusesComponent,
+    WbcSpeciesListComponent,
     WbcResultFiltersComponent,
-    WbcSpeciesResultChartsComponent,
-    WbcSpeciesResultMapsComponent,
-    WbcSpeciesResultLinechartsComponent,
+    WbcSpeciesChartsComponent,
+    WbcSpeciesMapsComponent,
+    WbcSpeciesLinechartsComponent,
     LineChartWithPointsComponent,
-    WbcRouteResultComponent
+    WbcRouteComponent,
+    WbcRouteTableComponent
   ],
   providers: [ ResultService, QualityService, WbcResultService ]
 })
