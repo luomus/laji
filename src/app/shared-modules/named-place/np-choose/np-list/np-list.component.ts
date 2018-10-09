@@ -38,6 +38,8 @@ export class NpListComponent {
     {label: 'Ilmoitettu', color: '#00aa00'}
   ];
 
+  @Input() preselectedNPIndex = -1;
+
   @ViewChild('label') labelIDTpl: TemplateRef<any>;
   @ViewChild('status') statusTpl: TemplateRef<any>;
   @ViewChild('dataTable') public datatable: DatatableComponent;

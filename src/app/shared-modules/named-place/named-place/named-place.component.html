@@ -43,8 +43,9 @@
                             [allowCreate]="allowCreate"
                             [zoomToData]="formData.namedPlaceOptions?.zoomToData"
                             [activeNP]="activeNP"
-                            (onActivePlaceChange)="setActiveNP($event)"
-                            (onCreateButtonClick)="toEditMode(true)"></laji-np-choose>
+                            (onActivePlaceChange)="onActivePlaceChange($event)"
+                            (onCreateButtonClick)="toEditMode(true)"
+                            [preselectedNPIndex]="preselectedNPIndex"></laji-np-choose>
           </div>
           <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-lg-6 nav-margin'">
             <laji-np-edit [editMode]="editMode"
