@@ -17,6 +17,7 @@ import { CacheService } from '../../../shared/service/cache.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
 import { isPlatformBrowser } from '@angular/common';
+import { Logger } from '../../../shared/logger/logger.service';
 
 const CACHE_COLUMN_SETINGS = 'datatable-col-width';
 
