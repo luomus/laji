@@ -6,18 +6,21 @@
     [switch-on-color]="'primary'"
     [switch-size]="'small'"
     [(ngModel)]="onlyCommonSpecies"
-    [switch-base-class]="'bootstrap-switch'">
+    [switch-base-class]="'bootstrap-switch'"
+    (onChangeState)="setRows()">
   </bSwitch>
 </div>
 <laji-datatable
   #dataTable
   (rowSelect)="rowSelect.emit($event.row.id)"
+  [clientSideSorting]="true"
+  (sortChange)="onSort($event)"
   [showRowAsLink]="true"
   [showHeader]="true"
   [showFooter]="false"
   [height]="'calc(80vh - 40px)'"
   [virtualScrolling]="true"
-  [rows]="onlyCommonSpecies ? filteredRows : allRows"
+  [rows]="rows"
   [loading]="loading"
   [columnMode]="'standard'"
   [totalMessage]="'haseka.submissions.total' | translate"

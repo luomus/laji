@@ -22,8 +22,9 @@ export class WbcSpeciesResultListComponent implements OnInit, OnChanges {
   onlyCommonSpecies = true;
   private commonLimit = 50;
 
-  allRows: any[] = [];
-  filteredRows: any[] = [];
+  rows: any[] = [];
+  private allRows: any[] = [];
+  private filteredRows: any[] = [];
 
   private defaultColumns = [];
   private additionalColumns = [];
@@ -61,6 +62,16 @@ export class WbcSpeciesResultListComponent implements OnInit, OnChanges {
     this.updateSpeciesList();
   }
 
+  setRows() {
+    this.rows = this.onlyCommonSpecies ? [...this.filteredRows] : [...this.allRows];
+  }
+
+  onSort(event) {
+    if (event.sorts.length < 1) {
+      this.setRows();
+    }
+  }
+
   private updateSpeciesList() {
     const queryKey = 'year:' + this.year + ',season:' + this.season + ',area:' + this.birdAssociationArea;
     if (this.loading && this.queryKey === queryKey) {
@@ -76,6 +87,7 @@ export class WbcSpeciesResultListComponent implements OnInit, OnChanges {
       .subscribe(list => {
         this.allRows = list;
         this.filteredRows = this.allRows.filter(val => (val.count >= this.commonLimit));
+        this.setRows();
         this.loading = false;
         this.cd.markForCheck();
       });

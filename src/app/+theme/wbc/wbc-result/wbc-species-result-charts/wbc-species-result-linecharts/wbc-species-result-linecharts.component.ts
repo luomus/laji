@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, Input, ChangeDetectorRef } from '@angular/core';
 import { WbcResultService } from '../../wbc-result.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-wbc-species-result-linecharts',
@@ -25,6 +26,7 @@ export class WbcSpeciesResultLinechartsComponent implements OnInit, OnChanges {
   };
 
   loading = false;
+  resultSub: Subscription;
 
   constructor(
     private resultService: WbcResultService,
@@ -37,7 +39,10 @@ export class WbcSpeciesResultLinechartsComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.loading = true;
     if (this.taxonId) {
-      this.resultService.getCountPerCensusByYear(this.taxonId, this.birdAssociationArea, this.taxonCensus)
+      if (this.resultSub) {
+        this.resultSub.unsubscribe();
+      }
+      this.resultSub = this.resultService.getCountPerCensusByYear(this.taxonId, this.birdAssociationArea, this.taxonCensus)
         .subscribe(data => {
           this.xScaleMin = undefined;
           this.xScaleMax = undefined;
