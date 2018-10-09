@@ -97,6 +97,11 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       } else {
         this.activeNP = -1;
       }
+      if (params.editMode === 'true') {
+        this.editMode = true;
+      } else {
+        this.editMode = false;
+      }
       if (this.first) {
         this.first = false;
       } else {
@@ -293,6 +298,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       : delete queryParams['taxonID'];
     this.birdAssociationArea.length > 0 ? queryParams['birdAssociationArea'] = this.birdAssociationArea
       : delete queryParams['birdAssociationArea'];
+    queryParams['editMode'] = this.editMode;
     this.router.navigate([], { queryParams: queryParams });
   }
 
@@ -311,8 +317,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (create) {
       this.chooseView.setActiveNP(-1);
     }
-
     this.editMode = true;
+    this.updateQueryParams();
   }
 
   toNormalMode(np: NamedPlace) {
@@ -327,6 +333,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       }
     }
     this.editMode = false;
+    this.updateQueryParams();
   }
 
   setErrorMessage(msg) {
