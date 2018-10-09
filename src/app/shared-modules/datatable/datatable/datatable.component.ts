@@ -133,7 +133,7 @@ export class DatatableComponent implements AfterViewInit {
         try {
           this.datatable.bodyComponent.scroller.parentElement.scrollTop = scrollAmount;
         } catch (e) {
-          this.logger.debug('selected row index failed', e)
+          this.logger.info('selected row index failed', e)
         }
       }
     }
