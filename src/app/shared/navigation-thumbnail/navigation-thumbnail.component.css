@@ -26,3 +26,7 @@
 .info .glyphicon {
   font-size: 1.5em;
 }
+
+h4 {
+  white-space: nowrap;
+}
