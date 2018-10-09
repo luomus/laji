@@ -142,7 +142,7 @@ const routes: Routes = [
     children: [
       {path: '', pathMatch: 'full', component: InvasiveControlInstructionsComponent, data: { title: 'invasiveSpecies.title' }},
       {path: 'instructions', pathMatch: 'full', component: InvasiveControlInstructionsComponent, data: { title: 'invasiveSpecies.title' } },
-      {path: 'form', pathMatch: 'full', component: InvasiveControlFormComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'places', pathMatch: 'full', component: InvasiveControlFormComponent, canActivate: [OnlyLoggedIn]},
       {
         path: 'form/:id',
         pathMatch: 'full',

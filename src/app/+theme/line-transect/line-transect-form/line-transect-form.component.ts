@@ -8,6 +8,7 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { FormService } from '../../../shared/service/form.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-line-transect-form',
@@ -36,7 +37,11 @@ export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCa
       this.documentId = params['id'] || null;
       if (!this.formService.hasNamedPlace() && !this.documentId) {
         this.router.navigate(
-          this.localizeRouterService.translateRoute(['/theme/linjalaskenta/places/HR.61', environment.lineTransectForm]),
+          this.localizeRouterService.translateRoute([
+            '/theme/linjalaskenta/places',
+            Global.collections.lineTransect,
+            environment.lineTransectForm
+          ]),
           { replaceUrl: true }
         );
       } else {

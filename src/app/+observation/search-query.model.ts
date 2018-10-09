@@ -107,6 +107,7 @@ export class SearchQuery implements SearchQueryInterface {
     'loadedSameOrBefore',
     'loadedSameOrAfter',
     'season',
+    'sourceOfCoordinates'
   ];
 
   obscure = [

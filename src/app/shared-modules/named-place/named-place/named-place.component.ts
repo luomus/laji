@@ -45,15 +45,20 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   };
 
   filterByMunicipality = false;
+  filterByTaxon = false;
   filterByBirdAssociationArea = false;
 
   birdAssociationArea = '';
   municipality = '';
+  taxonID = '';
 
   errorMsg = '';
 
   private subParam: Subscription;
   private subTrans: Subscription;
+  private subQParams: Subscription;
+
+  private first = true;
 
   @ViewChild(NpChooseComponent) chooseView: NpChooseComponent;
   @ViewChild(NpEditComponent) editView: NpEditComponent;
@@ -71,6 +76,39 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.subQParams = this.route.queryParams.subscribe((params) => {
+      if (params.taxonID) {
+        this.taxonID = params.taxonID;
+      } else {
+        this.taxonID = '';
+      }
+      if (params.municipality) {
+        this.municipality = params.municipality;
+      } else {
+        this.municipality = '';
+      }
+      if (params.birdAssociationArea) {
+        this.birdAssociationArea = params.birdAssociationArea;
+      } else {
+        this.birdAssociationArea = '';
+      }
+      if (params.activeNP) {
+        this.activeNP = params.activeNP;
+      } else {
+        this.activeNP = -1;
+      }
+      if (params.editMode === 'true') {
+        this.editMode = true;
+      } else {
+        this.editMode = false;
+      }
+      if (this.first) {
+        this.first = false;
+      } else {
+        this.updateList();
+      }
+    });
+
     this.loading = true;
     this.subParam = this.route.params
       .switchMap((params) => {
@@ -99,18 +137,30 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (this.subTrans) {
       this.subTrans.unsubscribe();
     }
+    if (this.subQParams) {
+      this.subQParams.unsubscribe();
+    }
     this.footerService.footerVisible = true;
   }
 
   updateBirdAssociationAreaFilter(value) {
     this.birdAssociationArea = value;
     this.prepopulatedNamedPlace['birdAssociationArea'] = [value];
+    this.updateQueryParams();
     this.updateList();
   }
 
   updateMunicipalityFilter(value) {
     this.municipality = value;
     this.prepopulatedNamedPlace['municipality'] = [value];
+    this.updateQueryParams();
+    this.updateList();
+  }
+
+  onTaxonSelect(e) {
+    this.taxonID = e.key;
+    this.updateQueryParams();
+    this.prepopulatedNamedPlace['taxonIDs'] = [this.taxonID];
     this.updateList();
   }
 
@@ -169,10 +219,10 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       collectionID: this.collectionId
     };
     if (this.filterByMunicipality) {
-      if (!this.municipality) {
-        return ObservableOf([]);
-      }
       query.municipality = this.municipality;
+    }
+    if (this.filterByTaxon) {
+      query.taxonIDs = this.taxonID;
     }
     if (this.filterByBirdAssociationArea) {
       if (!this.birdAssociationArea) {
@@ -193,11 +243,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       .do(data => {
         data.sort(this.sortFunction);
         this.namedPlaces = data;
-        // Catch queryparams on first update, but don't keep listening afterwards
-        const subQParams = this.route.queryParams.subscribe((params) => {
-          this.setActiveNP(params['activeNP']);
-          subQParams.unsubscribe();
-        });
+        this.namedPlace = this.namedPlaces[this.activeNP];
       });
   }
 
@@ -205,7 +251,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (formData && formData.features && Array.isArray(formData.features)) {
       this.filterByBirdAssociationArea = formData.features.indexOf(Form.Feature.FilterNamedPlacesByBirdAssociationArea) > -1;
       this.filterByMunicipality = formData.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality) > -1;
-      this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1
+      this.filterByTaxon = formData.features.indexOf(Form.Feature.FilterNamedPlacesByTaxonID) > -1;
+      this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1;
     }
     this.formRights = {
       admin: false,
@@ -241,12 +288,26 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       .do(form => this.formData = form);
   }
 
+  updateQueryParams() {
+    const queryParams = {};
+    this.activeNP >= 0 ? queryParams['activeNP'] = this.activeNP
+      : delete queryParams['activeNP'];
+    this.municipality.length > 0 ? queryParams['municipality'] = this.municipality
+      : delete queryParams['municipality'];
+    this.taxonID.length > 0 ? queryParams['taxonID'] = this.taxonID
+      : delete queryParams['taxonID'];
+    this.birdAssociationArea.length > 0 ? queryParams['birdAssociationArea'] = this.birdAssociationArea
+      : delete queryParams['birdAssociationArea'];
+    queryParams['editMode'] = this.editMode;
+    this.router.navigate([], { queryParams: queryParams });
+  }
+
   setActiveNP(idx: number) {
     this.activeNP = idx;
     if (this.activeNP >= 0) {
       this.namedPlace = this.namedPlaces[this.activeNP];
-      this.router.navigate([], { queryParams: {'activeNP': this.activeNP} });
-      this.editView.npClick();
+      this.updateQueryParams();
+      if (this.editView) { this.editView.npClick() }
     } else {
       this.namedPlace = null;
     }
@@ -256,8 +317,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (create) {
       this.chooseView.setActiveNP(-1);
     }
-
     this.editMode = true;
+    this.updateQueryParams();
   }
 
   toNormalMode(np: NamedPlace) {
@@ -272,6 +333,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       }
     }
     this.editMode = false;
+    this.updateQueryParams();
   }
 
   setErrorMessage(msg) {

@@ -392,6 +392,17 @@
           </datalist>
         </div>
       </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <label>
+            <laji-checkbox [(value)]="formQuery.coordinatesInSource" (valueChange)="onFormQueryChange()"></laji-checkbox>
+            {{'observation.form.sourceOfCoordinates' | translate}}
+          </label>
+          <laji-info>
+            {{'observation.info.sourceOfCoordinates' | translate}}
+          </laji-info>
+        </div>
+      </div>
     </ng-container>
   </div>
   <div laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true"  [open]="visible['observer']">

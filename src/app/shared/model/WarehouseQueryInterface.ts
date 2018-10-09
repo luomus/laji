@@ -183,5 +183,6 @@ export interface WarehouseQueryInterface {
   teamMember?: Array<string>;
   teamMemberId?: Array<string>;
   taxonCensus?: Array<string>;
+  sourceOfCoordinates?: string;
   _coordinatesIntersection?: number;
 }

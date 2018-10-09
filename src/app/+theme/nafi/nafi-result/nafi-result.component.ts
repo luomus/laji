@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { ResultService } from '../../service/result.service';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-nafi-result',
@@ -14,7 +15,7 @@ import { Taxonomy } from '../../../shared/model/Taxonomy';
 export class NafiResultComponent implements OnInit, OnDestroy {
 
   informalTaxonGroup = 'MVL.181';
-  collectionId = 'HR.175';
+  collectionId = Global.collections.nafi;
   page;
   lang;
   query: WarehouseQueryInterface;

@@ -6,6 +6,7 @@ import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Global } from '../../../environments/global';
 
 @Component({
   selector: '[laji-line-transect]',
@@ -19,6 +20,7 @@ export class LineTransectComponent implements OnInit, OnDestroy {
   showNav = true;
   routeSub: Subscription;
   rights: Observable<Rights>;
+  collectionID = Global.collections.lineTransect;
 
   constructor(
     public router: Router,

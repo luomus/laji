@@ -9,7 +9,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
-import { DatatableComponent as NgxDatatableComponent } from '@swimlane/ngx-datatable';
+import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
 import { interval as ObservableInterval, of as ObservableOf } from 'rxjs';
 import { CacheService } from '../../../shared/service/cache.service';
 import { Annotation } from '../../../shared/model/Annotation';
@@ -47,6 +47,10 @@ export class DatatableComponent implements AfterViewInit {
   @Input() rowHeight = 35;
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   @Input() getRowClass: (row: any) => any;
+  @Input() selectionType: SelectionType;
+
+  // Initialize datatable row selection with some index
+  _selectedRowIndex: number;
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
@@ -61,6 +65,9 @@ export class DatatableComponent implements AfterViewInit {
   _count: number;
   _offset: number;
   _columns: DatatableColumn[];
+  selected: any[];
+
+  initialized = false;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -110,10 +117,24 @@ export class DatatableComponent implements AfterViewInit {
     });
   }
 
+  @Input() set selectedRowIndex (index: number) {
+    this._selectedRowIndex = index;
+    if (this.initialized) {
+      this.selected = [this._rows[this._selectedRowIndex]] || [];
+      if (this.selected.length > 0) {
+        // Calculate relative position of selected row and scroll to it
+        const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * this._selectedRowIndex;
+        this.datatable.bodyComponent.scroller.parentElement.scrollTop = scrollAmount;
+      }
+    }
+  }
+
   ngAfterViewInit() {
     setTimeout(() => {
       this.datatable.recalculate();
-    }, 100);
+      this.initialized = true;
+      this.selectedRowIndex = this._selectedRowIndex;
+    }, 100)
   }
 
   onRowSelect(event) {

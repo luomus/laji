@@ -2,7 +2,11 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { Subscription } from 'rxjs';
+import { Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
+import { FormService } from '../../shared/service/form.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Global } from '../../../environments/global';
 
 @Component({
   selector: '[laji-wbc]',
@@ -16,8 +20,16 @@ export class WbcComponent implements OnInit, OnDestroy {
   showNav = true;
   routeSub: Subscription;
   showStatsLinks = false;
+  rights: Observable<Rights>;
+  collectionID = Global.collections.wbc;
 
-  constructor(public router: Router) {}
+
+  constructor(
+    public router: Router,
+    private formService: FormService,
+    private formPermissionService: FormPermissionService,
+    private translateService: TranslateService
+  ) {}
 
   ngOnInit() {
     this.showForm = !environment.production;
@@ -30,6 +42,9 @@ export class WbcComponent implements OnInit, OnDestroy {
           this.showStatsLinks = event.url.indexOf('stats') !== -1;
         }
       });
+    this.rights = this.formService.getForm(environment.wbcForm, this.translateService.currentLang)
+      .switchMap(form => this.formPermissionService.getRights(form))
+      .catch(() => ObservableOf({edit: false, admin: false}))
   }
 
   ngOnDestroy() {

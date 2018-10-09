@@ -18,6 +18,7 @@ import { DatatableModule } from '../datatable/datatable.module';
 import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module';
 import { LajiFormModule } from '@laji-form/laji-form.module';
 import { SearchFiltersModule } from '../search-filters/search-filters.module';
+import { TaxonAutocompleteModule } from '../taxon-autocomplete/taxon-autocomplete.module'
 
 @NgModule({
   providers: [],
@@ -28,7 +29,8 @@ import { SearchFiltersModule } from '../search-filters/search-filters.module';
     OwnSubmissionsModule,
     SearchFiltersModule,
     LajiFormModule,
-    LajiMapModule
+    LajiMapModule,
+    TaxonAutocompleteModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent, NpEditComponent,

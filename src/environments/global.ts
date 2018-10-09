@@ -17,6 +17,11 @@ export const Global = {
     whichSpecies: 'MHL.9',
     namedPlace: 'JX.123608'
   },
+  collections: {
+    nafi: 'HR.175',
+    wbc: 'HR.39',
+    lineTransect: 'HR.61'
+  },
   externalViewers: {
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'
   },

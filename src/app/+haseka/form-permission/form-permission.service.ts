@@ -29,7 +29,10 @@ export class FormPermissionService {
     return formPermission.permissionRequests && formPermission.permissionRequests.indexOf(person.id) > -1;
   }
 
-  isEditAllowed(formPermission: FormPermission, person: Person): boolean {
+  isEditAllowed(formPermission: FormPermission, person: Person, features?: Form.Feature[]): boolean {
+    if (features && features.indexOf(Form.Feature.Restricted) === -1) {
+      return true;
+    }
     if ((formPermission.editors && formPermission.editors.indexOf(person.id) > -1) ||
         (formPermission.admins && formPermission.admins.indexOf(person.id) > -1)) {
       return true;
@@ -96,7 +99,7 @@ export class FormPermissionService {
       {edit: false, admin: false},
       {edit: true, admin: false},
       (formPermission: FormPermission, person: Person) => ({
-        edit: this.isEditAllowed(formPermission, person),
+        edit: this.isEditAllowed(formPermission, person, form.features || []),
         admin: this.isAdmin(formPermission, person)
       }));
   }
@@ -107,7 +110,10 @@ export class FormPermissionService {
       switchMap(login => {
         if (!login) {
           return ObservableOf(notLoggedIn);
-        } else if (!form.collectionID || !form.features || form.features.indexOf(Form.Feature.Restricted) === -1) {
+        } else if (!form.collectionID || !form.features || (
+            form.features.indexOf(Form.Feature.Restricted) === -1 &&
+            form.features.indexOf(Form.Feature.Administer) === -1
+        )) {
           return ObservableOf(notRestricted);
         }
         return this.userSerivce.getUser().pipe(

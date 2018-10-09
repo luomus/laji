@@ -3,6 +3,7 @@ import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { of, forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+import { Global } from '../../../../environments/global';
 
 export type SEASON = 'spring'|'fall'|'winter';
 
@@ -10,7 +11,7 @@ interface CountPerCensusResult {[s: string]: {name: number, value: number, count
 
 @Injectable()
 export class WbcResultService {
-  private collectionId = 'HR.39';
+  private collectionId = Global.collections.wbc;
   private seasonRanges = {
     'fall': [10, 11],
     'winter': [12, 1],

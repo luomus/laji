@@ -517,7 +517,7 @@
   "observation.form.time": "Time of observation",
   "observation.form.thisYear": "This year",
   "observation.form.title": "Parameters",
-  "observation.form.typeOfOccurrenceId": "Status in Finland",
+  "observation.form.typeOfOccurrenceId": "Type of occurrence",
   "observation.form.typeSpecimen": "Only type specimens",
   "observation.form.unidentified": "Show observations with images that require identification help",
   "observation.form.unit": "Individual",
@@ -741,7 +741,7 @@
   "taxonomy.invasive.phrase": "This species is",
   "taxonomy.invasive.title": "invasive",
   "taxonomy.invasiveSpecies": "Invasive species",
-  "taxonomy.latestRedListStatusFinland": "IUCN category",
+  "taxonomy.latestRedListStatusFinland": "Finnish Red List category",
   "taxonomy.map": "Map of observations",
   "taxonomy.map.disclaimer": "The map represents observations of this taxon, but it may not be used as a distribution map.",
   "taxonomy.map.summary": "Summary map",
@@ -861,5 +861,5 @@
   "wholeYear": "Whole year {{year}}",
   "yes": "Yes",
   "invasiveSpecies.title": "Invasive species",
-  "invasiveSpecies.form": "Record control actions"
+  "invasiveSpecies.places": "Record control actions"
 }

@@ -408,6 +408,7 @@
   "observation.active.reliable": "Vain varmistetut",
   "observation.active.season": "Havainnon vuodenaika",
   "observation.active.secureLevel": "Karkeistustaso",
+  "observation.active.sourceOfCoordinates": "Koordinaatit alkuperäislähteessä",
   "observation.active.sex": "Sukupuoli",
   "observation.active.sourceId": "Tietolähde",
   "observation.active.superRecordBasis": "Havaintotapa",
@@ -529,6 +530,7 @@
   "observation.form.securedPanel": "Salaukset",
   "observation.form.sex": "Sukupuoli",
   "observation.form.source": "Lähde",
+  "observation.form.sourceOfCoordinates": "Koordinaatit alkuperäislähteessä",
   "observation.form.speciesFeatures": "Lajin ominaisuudet",
   "observation.form.specimen": "Laji",
   "observation.form.system": "Tietolähde",
@@ -573,6 +575,7 @@
   "observation.info.season": "Rajaa tiettynä vuodenaikana tehdyihin havaintohin, esimerkiksi 15.1. - 31.3. Tällöin mukaan tulevat havainnot, jotka on tehty minä vuonna tahansa kyseisen aikavälin sisällä. Jos haluat lisäksi rajata havaintoja vuosilla, anna myös vuosiväli Havaintoaika -rajauksessa.",
   "observation.info.secureLevel": "Rajaa niihin havaintoihin, joille on määritelty yksi tai useampi valituista karkeistustasoista.",
   "observation.info.secured": " Lajitietokeskuksen avoimessa datassa havaintoja on voitu karkeistaa useista syistä, joista voit lukea tarkemmin <a href=\"/about/1463\" target=\"_blank\">täältä</a>. Tämän rajauksen avulla voit halutessasi jättää hakutuloksista pois  havainnot joita on karkeistettu millään tavalla tai saada ainoastaan jollakin tavalla karkeistetut havainnot.",
+  "observation.info.sourceOfCoordinates": "info",
   "observation.info.stats": "Tilastossa osumien summa voi poiketa havaintojen lukumäärästä mm. siksi, että kaikkia havaintoja ei ole voitu luotettavasti liittää mihinkään tieteelliseen luokkaan eli taksoniin.",
   "observation.info.system": "Rajaa havainnot yhteen tai useampaan tietolähteeseen (tietojärjestelmään)",
   "observation.info.target": "<p>Voit rajata havaintoja taksonomian mukaisesti. Voit antaa minkä tahansa Lajitietokeskuksen tiedossa olevan nimen (suomenkielisen, tieteellisen, synonyymin tai muun käytössä olevan nimen). Jos nimi löytyy Lajitietokeskuksesta, saat kaikki havainnot, jotka on liitetty kyseiseen taksoniin. Voit myös antaa ylemmän taksonin nimen, jolloin saat myös alataksonien havainnot. (Esimerkiksi jos annat suvun nimen, saat kaikki suvun ja suvun lajien havainnot.)</p><p>Mikäli antamaasi nimeä ei löydy Lajitietokeskuksessa, saat tulokseksi havainnot, jotka on ilmoitettu käyttäen täsmälleen antamaasi nimeä.</p><p>Voit myös antaa useita nimiä. Syötettyäsi yhden nimen, se ilmestyy syöttökentän alapuolelle. Voit sen jälkeen syöttää toisen nimen.</p><p>Nimen lisäksi voit myös syöttää taksonin tunnisteen (esim. MX.1234).</p>",
@@ -885,5 +888,5 @@
   "wholeYear": "Koko vuosi {{year}}",
   "yes": "Kyllä",
   "invasiveSpecies.title": "Vieraslajit",
-  "invasiveSpecies.form": "Kirjaa torjuntatoimia"
+  "invasiveSpecies.places": "Kirjaa torjuntatoimia"
 }

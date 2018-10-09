@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from '../../../../environments/environment';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-line-transect-my-document-list',
@@ -8,11 +8,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class LineTransectMyDocumentListComponent implements OnInit {
 
-  formId: string;
-
-  constructor() {
-    this.formId = environment.lineTransectForm;
-  }
+  collectionID = Global.collections.lineTransect;
 
   ngOnInit() {
   }

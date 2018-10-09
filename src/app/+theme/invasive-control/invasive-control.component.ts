@@ -20,7 +20,6 @@ export class InvasiveControlComponent implements OnInit {
     private formService: FormService,
     private formPermissionService: FormPermissionService,
     private translateService: TranslateService,
-    private userService: UserService
   ) { }
 
   ngOnInit() {
