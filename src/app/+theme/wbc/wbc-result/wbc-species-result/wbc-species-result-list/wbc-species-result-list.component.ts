@@ -1,6 +1,7 @@
 import { Component, OnInit, OnChanges, ChangeDetectorRef, Input, Output, EventEmitter, ViewChild, TemplateRef } from '@angular/core';
 import { WbcResultService, SEASON } from '../../wbc-result.service';
 import { Subscription } from 'rxjs';
+import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 
 @Component({
   selector: 'laji-wbc-species-result-list',
@@ -16,7 +17,6 @@ export class WbcSpeciesResultListComponent implements OnInit, OnChanges {
   @ViewChild('name') nameTpl: TemplateRef<any>;
   @ViewChild('scientificName') scientificNameTpl: TemplateRef<any>;
 
-  columns = [];
   loading = false;
 
   onlyCommonSpecies = true;
@@ -26,8 +26,9 @@ export class WbcSpeciesResultListComponent implements OnInit, OnChanges {
   private allRows: any[] = [];
   private filteredRows: any[] = [];
 
-  private defaultColumns = [];
-  private additionalColumns = [];
+  columns: DatatableColumn[] = [];
+  private defaultColumns: DatatableColumn[] = [];
+  private additionalColumns: DatatableColumn[] = [];
 
   private subList: Subscription;
   private queryKey: string;
@@ -40,12 +41,12 @@ export class WbcSpeciesResultListComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.defaultColumns = [
       {
-        name: 'nameFinnish',
-        cellTemplate: this.nameTpl,
+        name: 'unit.linkings.taxon.nameFinnish',
+        cellTemplate: 'link',
         label: 'result.unit.taxonVerbatim'
       },
       {
-        name: 'scientificName',
+        name: 'unit.linkings.taxon.scientificName',
         cellTemplate: this.scientificNameTpl,
         label: 'result.scientificName'
       },

@@ -17,6 +17,7 @@ import { WbcResultComponent } from './wbc/wbc-result/wbc-result.component';
 import { WbcSpeciesResultComponent } from './wbc/wbc-result/wbc-species-result/wbc-species-result.component';
 import { WbcSpeciesResultChartsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-charts.component';
 import { WbcRoutesResultComponent } from './wbc/wbc-result/wbc-routes-result/wbc-routes-result.component';
+import { WbcRouteResultComponent } from './wbc/wbc-result/wbc-route-result/wbc-route-result.component';
 import { WbcCensusesResultComponent } from './wbc/wbc-result/wbc-censuses-result/wbc-censuses-result.component';
 import { WbcFormComponent } from './wbc/wbc-form/wbc-form.component';
 import { WbcOwnSubmissionsComponent } from './wbc/wbc-own-submissions/wbc-own-submissions.component';
@@ -50,6 +51,7 @@ const routes: Routes = [
         {path: 'species', component: WbcSpeciesResultComponent},
         {path: 'species/:id', component: WbcSpeciesResultChartsComponent},
         {path: 'routes', pathMatch: 'full', component: WbcRoutesResultComponent},
+        {path: 'routes/:id', pathMatch: 'full', component: WbcRouteResultComponent},
         {path: 'censuses', pathMatch: 'full', component: WbcCensusesResultComponent},
       ]},
       {path: 'form', pathMatch: 'full', component: WbcFormComponent, canActivate: [OnlyLoggedIn]},

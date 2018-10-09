@@ -46,7 +46,7 @@ export class WbcSpeciesResultChartsComponent implements OnInit, OnDestroy {
 
     forkJoin([
       this.taxonService.taxonomyFindBySubject(id, 'fi', {
-        selectedFields: 'id,vernacularName,scientificName'
+        selectedFields: 'id,vernacularName,scientificName,cursiveName'
       }),
       this.taxonService.taxonomyFindParents(id, undefined, {
         selectedFields: 'id'

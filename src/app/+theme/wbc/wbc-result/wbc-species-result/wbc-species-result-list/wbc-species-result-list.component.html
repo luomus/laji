@@ -12,7 +12,7 @@
 </div>
 <laji-datatable
   #dataTable
-  (rowSelect)="rowSelect.emit($event.row.id)"
+  (rowSelect)="rowSelect.emit($event.row['unit.linkings.taxon.id'])"
   [clientSideSorting]="true"
   (sortChange)="onSort($event)"
   [showRowAsLink]="true"
@@ -27,18 +27,10 @@
   [columns]="columns">
 </laji-datatable>
 
-<ng-template let-value="value" #name>
-  <a *ngIf="value" title="{{value}}">
-    <span>
-    {{value}}
-    </span>
-  </a>
-</ng-template>
-
 <ng-template let-row="row" #scientificName>
-  <a *ngIf="row.scientificName" title="{{row.scientificName}}">
-    <span [class.cursive]="row.cursiveName">
-    {{row.scientificName}}
+  <a *ngIf="row['unit.linkings.taxon.scientificName']" title="{{row['unit.linkings.taxon.scientificName']}}">
+    <span [class.cursive]="row['unit.linkings.taxon.cursiveName']">
+    {{row['unit.linkings.taxon.scientificName']}}
     </span>
   </a>
 </ng-template>

@@ -4,6 +4,7 @@ import { of, forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Global } from '../../../../environments/global';
+import { PagedResult } from '../../../shared/model/PagedResult';
 
 export type SEASON = 'spring'|'fall'|'winter';
 
@@ -37,11 +38,11 @@ export class WbcResultService {
       return of(this.yearCache);
     }
     return this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-      {collectionId: [this.collectionId]},
+      this.getFilterParams(),
       undefined,
       undefined,
-      undefined,
-      undefined,
+      1000,
+      1,
       undefined,
       false
     ).pipe(
@@ -60,37 +61,63 @@ export class WbcResultService {
   }
 
   getSpeciesList(year?: number, season?: SEASON, birdAssociationArea?: string): Observable<any[]> {
-    return this.warehouseApi.warehouseQueryStatisticsGet(
-      this.getFilterParams(year, season, birdAssociationArea),
-      ['unit.linkings.taxon.id', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.scientificName',
-        'unit.linkings.taxon.cursiveName', 'unit.linkings.taxon.taxonomicOrder'],
-      ['unit.linkings.taxon.taxonomicOrder'],
-      1000
-    ).pipe(
-      map(res => res.results),
-      map(res => res.map(r => {
-        const aggregateBy = {};
-        Object.keys(r.aggregateBy).map(key => {
-          const keyParts = key.split('.');
-          aggregateBy[keyParts[keyParts.length - 1]] = r.aggregateBy[key];
-        });
-        return {...aggregateBy, count: r.count}
-      }))
-    )
+    return this.getList(
+      this.warehouseApi.warehouseQueryStatisticsGet(
+        this.getFilterParams(year, season, birdAssociationArea),
+        ['unit.linkings.taxon.id', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.scientificName',
+          'unit.linkings.taxon.cursiveName', 'unit.linkings.taxon.taxonomicOrder'],
+        ['unit.linkings.taxon.taxonomicOrder'],
+        1000,
+        1
+      )
+    );
+  }
+
+  getRoutesList(): Observable<any[]> {
+    return this.getList(
+      this.warehouseApi.warehouseQueryStatisticsGet(
+        this.getFilterParams(),
+        ['document.namedPlace.id', 'document.namedPlace.name', 'document.namedPlace.ykj10km.lat',
+          'document.namedPlace.ykj10km.lon', 'document.namedPlace.municipalityDisplayName',
+          'document.namedPlace.birdAssociationAreaDisplayName'],
+        ['document.namedPlace.birdAssociationAreaDisplayName', 'document.namedPlace.name'],
+        1000,
+        1,
+        undefined,
+        false
+      )
+    );
+  }
+
+  getCensusListByRoute(routeId: string) {
+    return this.getList(
+      this.warehouseApi.warehouseQueryAggregateGet(
+        {...this.getFilterParams(), namedPlaceId: [routeId], secured: false},
+        ['document.documentId', 'gathering.eventDate.begin', 'gathering.team'],
+        ['gathering.eventDate.begin'],
+        1000,
+        1,
+        undefined,
+        false
+      )
+    );
   }
 
   getCountPerCensusByYear(taxonId: string, birdAssociationArea?: string, taxonCensus?: string): Observable<CountPerCensusResult> {
     return forkJoin([
       this.warehouseApi.warehouseQueryGatheringStatisticsGet(
         {...this.getFilterParams(undefined, undefined, birdAssociationArea), taxonCensus: [taxonCensus]},
-        ['gathering.conversions.year', 'gathering.conversions.month']
+        ['gathering.conversions.year', 'gathering.conversions.month'],
+        undefined,
+        1000,
+        1
       ),
       this.warehouseApi.warehouseQueryStatisticsGet(
         {...this.getFilterParams(undefined, undefined, birdAssociationArea), taxonId: [taxonId], taxonCensus: [taxonCensus]},
         ['gathering.conversions.year', 'gathering.conversions.month'],
         undefined,
-        undefined,
-        undefined,
+        1000,
+        1,
         undefined,
         false
       )
@@ -141,6 +168,15 @@ export class WbcResultService {
 
       return finalResult;
     }))
+  }
+
+  private getList(obs: Observable<PagedResult<any>>): Observable<any[]> {
+    return obs.pipe(
+      map(res => res.results),
+      map(res => res.map(r => {
+        return {...r, aggregateBy: undefined, ...r.aggregateBy};
+      }))
+    )
   }
 
   private getCensusStartYear(dateString: string): number {

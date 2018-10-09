@@ -65,6 +65,7 @@ import { WbcSpeciesResultChartsComponent } from './wbc/wbc-result/wbc-species-re
 import { WbcSpeciesResultMapsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-maps/wbc-species-result-maps.component';
 import { WbcSpeciesResultLinechartsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-linecharts/wbc-species-result-linecharts.component';
 import { LineChartWithPointsComponent } from './wbc/wbc-result/wbc-species-result-charts/wbc-species-result-linecharts/line-chart-with-points/line-chart-with-points.component';
+import { WbcRouteResultComponent } from './wbc/wbc-result/wbc-route-result/wbc-route-result.component';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -131,7 +132,8 @@ import { LineChartWithPointsComponent } from './wbc/wbc-result/wbc-species-resul
     WbcSpeciesResultChartsComponent,
     WbcSpeciesResultMapsComponent,
     WbcSpeciesResultLinechartsComponent,
-    LineChartWithPointsComponent
+    LineChartWithPointsComponent,
+    WbcRouteResultComponent
   ],
   providers: [ ResultService, QualityService, WbcResultService ]
 })
