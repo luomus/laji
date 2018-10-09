@@ -89,8 +89,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.taxon.informalTaxonGroupsClass = this.taxon.payload.informalTaxonGroups
         .reduce((p, c) => p + ' ' + c.id, '');
       this.taxon.informalTaxonGroups = this.taxon.payload.informalTaxonGroups
-        .map(group => group.name)
-        .reverse();
+        .map(group => group.name);
       this.subCnt =
         ObservableOf(this.taxon.key).combineLatest(
           this.warehouseApi.warehouseQueryCountGet({taxonId: this.taxon.key}),
