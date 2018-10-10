@@ -5502,15 +5502,15 @@ klaw-sync@^4.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-laji-form@^0.0.527:
-  version "0.0.527"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.527.tgz#30e82a74e948ba0bbf74eec9d60a25c107f75309"
+laji-form@^0.0.529:
+  version "0.0.529"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.529.tgz#615112f7ec0b4c6a058e458ef8a8dc440730b25c"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
     deepmerge "^1.1.1"
     immutability-helper "^2.1.2"
-    laji-map "^1.0.436"
+    laji-map "^1.0.439"
     laji-validate "0.0.72"
     moment "*"
     prop-types "^15.5.8"
@@ -5529,7 +5529,7 @@ laji-form@^0.0.527:
     react-transition-group "^1.1.1"
     react-widgets "^3.4.8"
 
-laji-map@1.0.439, laji-map@^1.0.395, laji-map@^1.0.436, laji-map@^1.0.439:
+laji-map@1.0.439, laji-map@^1.0.395, laji-map@^1.0.439:
   version "1.0.439"
   resolved "https://registry.yarnpkg.com/laji-map/-/laji-map-1.0.439.tgz#772d588ac3aae35676be5d424a1446f739e6dd97"
   dependencies:
