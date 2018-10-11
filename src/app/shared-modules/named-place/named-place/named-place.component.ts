@@ -95,15 +95,11 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           updateList = true;
         }
         if (params.activeNP) {
-          if (updateList) {
-            this.namedPlacesEvents.once('update', () => {
-              this.setActiveNP(this.findNPIndexById(params.activeNP));
-              this.preselectedNPIndex = this.findNPIndexById(params.activeNP);
-            });
-          } else {
+          this.namedPlacesEvents.once('update', () => {
             this.setActiveNP(this.findNPIndexById(params.activeNP));
             this.preselectedNPIndex = this.findNPIndexById(params.activeNP);
-          }
+          });
+          updateList = true;
         } else {
           this.setActiveNP(-1);
           this.preselectedNPIndex = -1;
