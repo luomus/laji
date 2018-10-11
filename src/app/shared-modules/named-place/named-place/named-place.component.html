@@ -8,14 +8,14 @@
       <label>{{'MNP.municipality' | label}}</label>
       <laji-area-select [disabled]="editMode" [field]="areaTypes.Municipality" (select)="updateMunicipalityFilter($event)"></laji-area-select>
     </ng-container>
-    <ng-container *ngIf="filterByTaxon">
+    <ng-container *ngIf="filterByTaxon && !editMode">
       <label for="taxon-select">Valitse laji:</label>
         <laji-taxon-autocomplete
           id="taxon-select"
           [placeholder]="'Etsi haluttu laji'"
           (taxonSelect)="onTaxonSelect($event)"
           [informalTaxonGroup]=""
-          [onlyFinnish]="true"
+          [onlyFinnish]="false"
           [onlyInvasive]="true"
           [showResult]="false"
           [clearValueOnSelect]="false"
