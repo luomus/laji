@@ -349,9 +349,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (create) {
       this.setActiveNP(-1);
       this.preselectedNPIndex = -1;
-    } else {
-      this.updateQueryParams();
     }
+    this.updateQueryParams();
   }
 
   toNormalMode(np: NamedPlace) {
