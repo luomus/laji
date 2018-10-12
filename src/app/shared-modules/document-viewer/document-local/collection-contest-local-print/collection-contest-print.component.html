@@ -15,8 +15,8 @@
                                  [autocompleteTaxonId]="gathering.units[0].unitFact?.autocompleteSelectedTaxonID"
         ></laji-print-taxon-header>
         <laji-print-row [value]="gathering.units[0].unitGathering.dateBegin.length === 10 ? (
-      gathering.units[0].unitGathering.dateBegin | amParse:'YYYY-MM-DD' | amDateFormat:'D.M.YYYY') : (
-      gathering.units[0].unitGathering.dateBegin | amParse:'YYYY-MM-DDTHH:mm' | amDateFormat:'D.M.YYYY, H.mm')"
+      gathering.units[0].unitGathering.dateBegin | amParse:'YYYY-MM-DD' | amDateFormat:'l') : (
+      gathering.units[0].unitGathering.dateBegin | amParse:'YYYY-MM-DDTHH:mm' | amDateFormat:'l, LT')"
         ></laji-print-row>
         <ng-container *ngFor="let field of fields.gatherings">
           <laji-print-row [title]="field.label" [value]="gathering[field.name]"></laji-print-row>
