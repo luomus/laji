@@ -219,8 +219,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
             const index = this.findNPIndexById(params['activeNP']);
             this.setActiveNP(index);
             this.preselectedNPIndex = index;
-            sub.unsubscribe();
           }
+          sub.unsubscribe();
         });
       });
   }
@@ -332,6 +332,17 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   onActivePlaceChange(idx: number) {
     this.setActiveNP(idx);
     this.updateQueryParams();
+  }
+
+  onTabChange(e) {
+    const sub = this.route.queryParams.subscribe((params) => {
+      if (params['activeNP']) {
+        const index = this.findNPIndexById(params['activeNP']);
+        this.setActiveNP(index);
+        this.preselectedNPIndex = index;
+      }
+      sub.unsubscribe();
+    });
   }
 
   setActiveNP(idx: number) {

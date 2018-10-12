@@ -45,6 +45,7 @@
                             [activeNP]="activeNP"
                             (onActivePlaceChange)="onActivePlaceChange($event)"
                             (onCreateButtonClick)="toEditMode(true)"
+                            (onTabChange)="onTabChange($event)"
                             [preselectedNPIndex]="preselectedNPIndex"></laji-np-choose>
           </div>
           <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-lg-6 nav-margin'">
