@@ -50,6 +50,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.setMapData();
+    this.setNewActivePlace(-1, this.activeNP);
   }
 
   setMapData() {

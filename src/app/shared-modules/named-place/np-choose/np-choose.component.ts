@@ -43,6 +43,7 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
 
   @Output() onActivePlaceChange = new EventEmitter<number>();
   @Output() onCreateButtonClick = new EventEmitter();
+  @Output() onTabChange = new EventEmitter();
 
   sent = this.isSent.bind(this);
 
@@ -115,6 +116,7 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
     if (newActive === 'map') {
       this.mapIsActivated = true;
     }
+    this.onTabChange.emit(newActive);
   }
 
   @Input() set activeNP(idx: number) {
