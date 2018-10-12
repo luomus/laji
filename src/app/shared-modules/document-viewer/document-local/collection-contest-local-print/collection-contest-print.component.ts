@@ -13,7 +13,7 @@ export class CollectionContestPrintComponent implements OnInit {
   @Input() imageData: {[key: string]: any} = {};
   @Input() formLogo: string;
 
-  constructor() {console.log(this.fields); }
+  constructor() { }
 
   ngOnInit() { }
 
