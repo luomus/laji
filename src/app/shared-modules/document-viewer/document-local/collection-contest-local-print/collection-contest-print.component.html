@@ -1,9 +1,9 @@
 <div class="page title-page">
   <div class="title-page-wrapper">
-    <h1>Kokoelmakilpailu 2018</h1>
-    <laji-print-row [title]="'Tekijä'" [value]="document.creator | users:'fullname'"></laji-print-row>
-    <laji-print-row [title]="'Ryhmä'" [value]="document.creator | users:'group'"></laji-print-row>
-    <laji-print-row [title]="'Lomakkeen tunnus'" [value]="document.formID"></laji-print-row>
+    <h1>{{'viewer.print.collectionContest' | translate}} 2018</h1>
+    <laji-print-row [title]="'viewer.print.creator' | translate" [value]="document.creator | users:'fullname'"></laji-print-row>
+    <laji-print-row [title]="'viewer.print.group' | translate" [value]="document.creator | users:'group'"></laji-print-row>
+    <laji-print-row [title]="'viewer.print.formId' | translate" [value]="document.formID"></laji-print-row>
     <img *ngIf="formLogo" src="{{formLogo}}">
   </div>
 </div>
@@ -18,8 +18,9 @@
       gathering.units[0].unitGathering.dateBegin | amParse:'YYYY-MM-DD' | amDateFormat:'D.M.YYYY') : (
       gathering.units[0].unitGathering.dateBegin | amParse:'YYYY-MM-DDTHH:mm' | amDateFormat:'D.M.YYYY, H.mm')"
         ></laji-print-row>
-        <laji-print-row [title]="'Paikannimet'" [value]="gathering.locality"></laji-print-row>
-        <laji-print-row [title]="'Paikan kuvaus'" [value]="gathering.localityDescription"></laji-print-row>
+        <ng-container *ngFor="let field of fields.gatherings">
+          <laji-print-row [title]="field.label" [value]="gathering[field.name]"></laji-print-row>
+        </ng-container>
       </div>
       <div class="half-page-block">
         <laji-print-map [data]="mapData[i]"></laji-print-map>
