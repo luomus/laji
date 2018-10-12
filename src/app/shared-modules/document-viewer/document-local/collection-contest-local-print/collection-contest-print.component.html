@@ -1,0 +1,40 @@
+<div class="page title-page">
+  <div class="title-page-wrapper">
+    <h1>Kokoelmakilpailu 2018</h1>
+    <laji-print-row [title]="'Tekijä'" [value]="document.creator | users:'fullname'"></laji-print-row>
+    <laji-print-row [title]="'Ryhmä'" [value]="document.creator | users:'group'"></laji-print-row>
+    <laji-print-row [title]="'Lomakkeen tunnus'" [value]="document.formID"></laji-print-row>
+    <img *ngIf="formLogo" src="{{formLogo}}">
+  </div>
+</div>
+<ng-container *ngFor="let gathering of document.gatherings; let i=index">
+  <div class="page content-page" *ngIf="gathering.units.length > 0">
+    <div class="content-container">
+      <div class="half-page-block">
+        <laji-print-taxon-header [taxonVerbatim]="gathering.units[0].identifications[0].taxon"
+                                 [autocompleteTaxonId]="gathering.units[0].unitFact?.autocompleteSelectedTaxonID"
+        ></laji-print-taxon-header>
+        <laji-print-row [value]="gathering.units[0].unitGathering.dateBegin.length === 10 ? (
+      gathering.units[0].unitGathering.dateBegin | amParse:'YYYY-MM-DD' | amDateFormat:'D.M.YYYY') : (
+      gathering.units[0].unitGathering.dateBegin | amParse:'YYYY-MM-DDTHH:mm' | amDateFormat:'D.M.YYYY, H.mm')"
+        ></laji-print-row>
+        <laji-print-row [title]="'Paikannimet'" [value]="gathering.locality"></laji-print-row>
+        <laji-print-row [title]="'Paikan kuvaus'" [value]="gathering.localityDescription"></laji-print-row>
+      </div>
+      <div class="half-page-block">
+        <laji-print-map [data]="mapData[i]"></laji-print-map>
+      </div>
+    </div>
+    <div class="images-container" *ngIf="imageData[gathering.units[0].id]">
+      <div *ngFor ="let img of imageData[gathering.units[0].id]; let index = index"
+           class="image-container"
+           [ngStyle]="{'height': (100 / imageData[gathering.units[0].id].length) + '%'}">
+        <img [ngStyle]="{'max-height': img.caption ? 'calc(100% - 7mm)' : '100%'}"
+             src="{{ img.fullURL }}"
+             class="image"
+             alt="Image {{ index + 1 }}">
+        <div class="image-caption" *ngIf="img.caption">{{img.caption}}</div>
+      </div>
+    </div>
+  </div>
+</ng-container>

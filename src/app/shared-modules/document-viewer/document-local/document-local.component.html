@@ -6,11 +6,18 @@
                                      [imageData]="imageData"
                                      [mapData]="mapData"
     ></laji-document-local-viewer-view>
-    <laji-document-local-print-view *ngIf="view === 'print'"
+    <laji-document-local-print-view *ngIf="view === 'print' && document.formID !== collectionContestFormId"
                                     [document]="document"
                                     [fields]="fields"
                                     [imageData]="imageData"
                                     [mapData]="mapData"
     ></laji-document-local-print-view>
+    <laji-collection-contest-print *ngIf="view === 'print' && document.formID === collectionContestFormId"
+                                         [document]="document"
+                                         [fields]="fields"
+                                         [imageData]="imageData"
+                                         [mapData]="mapData"
+                                         [formLogo]="formLogo">
+    </laji-collection-contest-print>
   </ng-container>
 </laji-spinner>
