@@ -126,7 +126,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     const geoJson$: Observable<any> = this.zeroObservationQuery ? forkJoin([
       this.ykjService.getGeoJson(this.zeroObservationQuery, undefined, undefined, this.useStatistics, true),
       this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics)
-    ]).pipe(map(geoJsons => geoJsons[0].concat(geoJsons[1]))) :
+    ]).pipe(map(geoJsons => (this.combineGeoJsons(geoJsons[1], geoJsons[0])))) :
       this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics);
 
     this.subQuery = geoJson$
@@ -284,5 +284,11 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   private getColorKey() {
     return JSON.stringify(this.query) + this.type;
+  }
+
+  private combineGeoJsons(geoJson, zeroObsGeoJson) {
+    const grids = geoJson.map(g => (g.properties.grid));
+    zeroObsGeoJson = zeroObsGeoJson.filter(z => (grids.indexOf(z.properties.grid) === -1));
+    return geoJson.concat(zeroObsGeoJson);
   }
 }
