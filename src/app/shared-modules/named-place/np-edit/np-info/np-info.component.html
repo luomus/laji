@@ -65,23 +65,10 @@
                       (click)="onReleaseButtonClick.emit()">{{targetForm.namedPlaceOptions?.releaseLabel ? targetForm.namedPlaceOptions.releaseLabel : 'np.release' | translate}}</button>
             </div>
           </ng-container>
-          <ng-container *ngSwitchCase="'nouse'">
-            <div class="row-container">
-              <p>{{'np.requestAccess-intro' | translate}}</p>
-              <button type="button"
-                 class="btn btn-md btn-primary btn-block use-button"
-                 [disabled]="loading"
-                 (click)="onRequestAccessButtonClick.emit()">{{targetForm.namedPlaceOptions?.accessLabel ? targetForm.namedPlaceOptions.accessLabel : 'np.requestAccess' | translate}}</button>
-            </div>
-          </ng-container>
-          <ng-container *ngSwitchCase="'accessRequested'">
-            <div class="row-container">
-              <p>{{'np.requestAccess-intro' | translate}}</p>
-              <button type="button"
-                      class="btn btn-md btn-primary btn-block use-button"
-                      [disabled]="true">{{targetForm.namedPlaceOptions?.requestSendLabel ? targetForm.namedPlaceOptions.requestSendLabel : 'np.requestSend' | translate}}</button>
-            </div>
-          </ng-container>
+         <laji-request *ngSwitchCase="'nouse'"
+          [collectionId]="collectionId"
+          [disableDescription]="true"
+         ></laji-request>
           <ng-container *ngSwitchCase="'reservable'">
             <div class="row-container">
               <button type="button"

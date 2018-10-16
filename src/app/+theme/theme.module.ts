@@ -54,6 +54,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { InvasiveControlComponent } from './invasive-control/invasive-control.component';
 import { InvasiveControlInstructionsComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.component';
 import { InvasiveControlFormComponent } from './invasive-control/invasive-control-form/invasive-control-form.component';
+import { FormPermissionModule } from './../+haseka/form-permission/form-permission.module';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -72,7 +73,8 @@ import { InvasiveControlFormComponent } from './invasive-control/invasive-contro
     TaxonAutocompleteModule,
     LajiFormModule,
     ObservationMapModule,
-    NgxChartsModule
+    NgxChartsModule,
+    FormPermissionModule
   ],
   declarations: [
     NafiComponent,
