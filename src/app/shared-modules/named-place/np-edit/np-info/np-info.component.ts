@@ -55,7 +55,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   modalIsVisible = false;
   viewIsInitialized = false;
   resizeCanOpenModal = false;
-  useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther'';
+  useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther';
 
   constructor(private userService: UserService,
               private cdRef: ChangeDetectorRef) { }
