@@ -24,7 +24,8 @@ export class WbcSpeciesComponent implements OnInit {
   taxonSelect(fullId: string) {
     const id = IdService.getId(fullId);
     this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/stats/species/' + id])
+      this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/stats/species/' + id]),
+      {queryParams: {year: this.activeYear, birdAssociationArea: this.activeBirdAssociationArea}}
     );
   }
 }

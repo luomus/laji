@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
 import { AreaType } from '../../../../shared/service/area.service';
 import { WbcResultService, SEASON } from '../wbc-result.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'laji-wbc-result-filters',
@@ -15,7 +16,9 @@ export class WbcResultFiltersComponent implements OnInit {
   seasons: SEASON[] = ['fall', 'winter', 'spring'];
   areaTypes = AreaType;
 
-  activeYear: string;
+  activeYear: number;
+  activeSeason: SEASON;
+  activeArea: string;
 
   @Output() yearChange = new EventEmitter<number>();
   @Output() seasonChange = new EventEmitter<SEASON>();
@@ -23,15 +26,22 @@ export class WbcResultFiltersComponent implements OnInit {
 
   constructor(
     private resultService: WbcResultService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    const params = this.route.snapshot.queryParams;
+    this.onYearChange(params['year']);
+    this.onSeasonChange(params['season']);
+    this.onAreaChange(params['birdAssociationArea']);
+
     this.resultService.getYears()
       .subscribe(
         years => {
           this.years = years;
-          if (this.yearRequired) {
+          if (this.yearRequired && !this.activeYear) {
             this.onYearChange('' + years[0]);
           }
           this.cd.markForCheck();
@@ -40,13 +50,31 @@ export class WbcResultFiltersComponent implements OnInit {
   }
 
   onYearChange(newYear: string) {
-    this.activeYear = newYear;
-
-    if (!newYear) {
-      this.yearChange.emit(undefined);
-      this.seasonChange.emit(undefined);
-      return;
+    this.activeYear = newYear ? parseInt(newYear, 10) : undefined;
+    this.yearChange.emit(this.activeYear);
+    if (!this.activeYear) {
+      this.onSeasonChange(undefined);
+    } else {
+      this.onFiltersChange();
     }
-    this.yearChange.emit(parseInt(newYear, 10));
+  }
+
+  onSeasonChange(newSeason: SEASON) {
+    this.activeSeason = newSeason;
+    this.seasonChange.emit(newSeason);
+    this.onFiltersChange();
+  }
+
+  onAreaChange(newArea: string) {
+    this.activeArea = newArea;
+    this.areaChange.emit(newArea);
+    this.onFiltersChange();
+  }
+
+  private onFiltersChange() {
+    this.router.navigate(
+      [],
+      {queryParams: {year: this.activeYear, season: this.activeSeason, birdAssociationArea: this.activeArea}}
+    );
   }
 }

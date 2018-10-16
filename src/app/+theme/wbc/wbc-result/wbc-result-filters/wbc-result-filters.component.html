@@ -18,7 +18,7 @@
       <label for="season">{{'wbc.season' | translate}}</label>
       <select
         id="season"
-        (change)="seasonChange.emit($event.target.value !== '0' ? $event.target.value : undefined)"
+        (change)="onSeasonChange($event.target.value !== '0' ? $event.target.value : undefined)"
         [disabled]="!activeYear"
         name="season"
         class="form-control"
@@ -31,7 +31,11 @@
     </div>
     <div>
       <label for="birdAssociationArea">{{'MNP.birdAssociationArea' | label}}</label>
-      <laji-area-select id="birdAssociationArea" [field]="areaTypes.BirdAssociationArea" (select)="areaChange.emit($event)"></laji-area-select>
+      <laji-area-select id="birdAssociationArea"
+                        [field]="areaTypes.BirdAssociationArea"
+                        [value]="activeArea"
+                        (select)="onAreaChange($event)"
+      ></laji-area-select>
     </div>
   </div>
 </div>
