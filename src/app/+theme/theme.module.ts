@@ -67,6 +67,9 @@ import { WbcSpeciesLinechartsComponent } from './wbc/wbc-result/wbc-species-char
 import { LineChartWithPointsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-linecharts/line-chart-with-points/line-chart-with-points.component';
 import { WbcRouteComponent } from './wbc/wbc-result/wbc-route/wbc-route.component';
 import { WbcRouteTableComponent } from './wbc/wbc-result/wbc-route-table/wbc-route-table.component';
+import { FormPermissionModule } from '../+haseka/form-permission/form-permission.module';
+import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
+
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -86,7 +89,9 @@ import { WbcRouteTableComponent } from './wbc/wbc-result/wbc-route-table/wbc-rou
     LajiFormModule,
     ObservationMapModule,
     NgxChartsModule,
-    JWBootstrapSwitchModule
+    JWBootstrapSwitchModule,
+    FormPermissionModule,
+    NavigationThumbnailModule
   ],
   declarations: [
     NafiComponent,

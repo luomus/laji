@@ -1,6 +1,6 @@
 <laji-spinner [spinning]="loading">
   <ng-container *ngIf="!loading">
-    <h3>{{taxon.vernacularName | titlecase}} - <span [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span></h3>
+    <h3>{{taxon.vernacularName | capitalize}} - <span [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span></h3>
     <laji-wbc-result-filters [showSeasonFilter]="compareMode === 'year'"
                              [yearRequired]="true"
                              (yearChange)="activeYear = $event"

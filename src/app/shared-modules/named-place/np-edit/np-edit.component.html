@@ -8,12 +8,10 @@
                   [targetForm]="formData"
                   [allowEdit]="allowEdit"
                   [loading]="loading"
-                  [accessRequested]="accessRequested"
                   [collectionId]="formData.collectionID"
                   [editMode]="editMode"
                   (onReleaseButtonClick)="onRelease.emit()"
                   (onReserveButtonClick)="onReserve.emit()"
-                  (onRequestAccessButtonClick)="requestAccessClick()"
                   (onEditButtonClick)="editClick()"
                   (onUseButtonClick)="useClick()"></laji-np-info>
   </ng-container>

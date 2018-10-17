@@ -49,7 +49,7 @@ import { ServerOnlyDirective } from './directive/server-only.directive';
 import { BrowserOnlyDirective } from './directive/browser-only.directive';
 import { ForTypesDirective } from './directive/for-types.directive';
 import { IucnFooterComponent } from './iucn-footer/footer.component';
-import { NavigationThumbnailComponent } from './navigation-thumbnail/navigation-thumbnail.component';
+import { CapitalizePipe } from './pipe/capitalize.pipe';
 
 
 @NgModule({
@@ -68,7 +68,7 @@ import { NavigationThumbnailComponent } from './navigation-thumbnail/navigation-
     FactNotInPipe,
     ForTypesDirective,
     IucnFooterComponent,
-    NavigationThumbnailComponent
+    CapitalizePipe
   ],
   imports: [
     FormsModule,
@@ -93,7 +93,7 @@ import { NavigationThumbnailComponent } from './navigation-thumbnail/navigation-
     AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, ServerOnlyDirective, BrowserOnlyDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent,
-    FactNotInPipe, ForTypesDirective, IucnFooterComponent, NavigationThumbnailComponent
+    FactNotInPipe, ForTypesDirective, IucnFooterComponent, CapitalizePipe
   ]
 })
 export class SharedModule {

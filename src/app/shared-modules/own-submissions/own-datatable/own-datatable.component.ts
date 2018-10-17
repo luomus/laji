@@ -450,6 +450,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
             formID: document.formID,
             form: form.title || document.formID,
             id: document.id,
+            locked: !!document.locked,
             index: idx
           };
         })

@@ -6,7 +6,9 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewChild
+  ViewChild,
+  PLATFORM_ID,
+  Inject
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
@@ -14,6 +16,8 @@ import { interval as ObservableInterval, of as ObservableOf } from 'rxjs';
 import { CacheService } from '../../../shared/service/cache.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
+import { isPlatformBrowser } from '@angular/common';
+import { Logger } from '../../../shared/logger/logger.service';
 
 const CACHE_COLUMN_SETINGS = 'datatable-col-width';
 
@@ -50,7 +54,7 @@ export class DatatableComponent implements AfterViewInit {
   @Input() selectionType: SelectionType;
 
   // Initialize datatable row selection with some index
-  _selectedRowIndex: number;
+  _preselectedRowIndex = -1;
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
@@ -65,13 +69,15 @@ export class DatatableComponent implements AfterViewInit {
   _count: number;
   _offset: number;
   _columns: DatatableColumn[];
-  selected: any[];
+  selected: any[] = [];
 
   initialized = false;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private logger: Logger
   ) { }
 
   @Input() set count(cnt: number) {
@@ -117,24 +123,32 @@ export class DatatableComponent implements AfterViewInit {
     });
   }
 
-  @Input() set selectedRowIndex (index: number) {
-    this._selectedRowIndex = index;
+  @Input() set preselectedRowIndex(index: number) {
+    this._preselectedRowIndex = index;
     if (this.initialized) {
-      this.selected = [this._rows[this._selectedRowIndex]] || [];
+      this.selected = [this._rows[this._preselectedRowIndex]] || [];
       if (this.selected.length > 0) {
         // Calculate relative position of selected row and scroll to it
-        const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * this._selectedRowIndex;
-        this.datatable.bodyComponent.scroller.parentElement.scrollTop = scrollAmount;
+        const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * this._preselectedRowIndex;
+        try {
+          this.datatable.bodyComponent.scroller.parentElement.scrollTop = scrollAmount;
+        } catch (e) {
+          this.logger.info('selected row index failed', e)
+        }
       }
     }
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.datatable.recalculate();
-      this.initialized = true;
-      this.selectedRowIndex = this._selectedRowIndex;
-    }, 100)
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        this.datatable.recalculate();
+        this.initialized = true;
+        if (this._preselectedRowIndex > -1) {
+          this.preselectedRowIndex = this._preselectedRowIndex;
+        }
+      }, 100);
+    }
   }
 
   onRowSelect(event) {

@@ -44,7 +44,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Output() onEditButtonClick = new EventEmitter();
   @Output() onUseButtonClick = new EventEmitter();
-  @Output() onRequestAccessButtonClick = new EventEmitter();
   @Output() onReserveButtonClick = new EventEmitter();
   @Output() onReleaseButtonClick = new EventEmitter();
 
@@ -56,7 +55,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   modalIsVisible = false;
   viewIsInitialized = false;
   resizeCanOpenModal = false;
-  useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther'|'accessRequested';
+  useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther';
 
   constructor(private userService: UserService,
               private cdRef: ChangeDetectorRef) { }
@@ -123,7 +122,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1);
       let btnStatus;
       if (!this.formRights.edit) {
-        btnStatus = this.accessRequested ? 'accessRequested' : 'nouse';
+        btnStatus = 'nouse';
       } else if (
         this.targetForm &&
         Array.isArray(this.targetForm.features) &&
@@ -141,7 +140,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
           this.namedPlace.public ||
           (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1) ||
           (this.namedPlace.editors && this.namedPlace.editors.indexOf(person.id) !== -1)
-        ) ? 'usable' : (this.accessRequested ? 'accessRequested' : 'nouse');
+        ) ? 'usable' : 'nouse';
       }
       this.useButton = btnStatus;
       this.cdRef.markForCheck();
