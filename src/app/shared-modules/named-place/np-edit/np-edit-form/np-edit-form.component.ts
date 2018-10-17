@@ -228,9 +228,9 @@ export class NpEditFormComponent {
       populate.gatherings[0].locality = formData.locality;
     }
 
-  if (formData.localityDescription) {
-    populate.gatherings[0].localityDescription = formData.localityDescription;
-  }
+    if (formData.localityDescription) {
+      populate.gatherings[0].localityDescription = formData.localityDescription;
+    }
   }
 
   private parseErrorMessage(err) {
