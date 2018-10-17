@@ -1,33 +1,41 @@
-<h3>{{id | label}}</h3>
-<div class="panel panel-default" style="max-width: 400px">
-  <div class="panel-heading">
-    <strong>Taulukko havaituista lajeista</strong>
-  </div>
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-xs-4" style="text-align: center"><a>syys</a></div>
-      <div class="col-xs-4" style="text-align: center"><a>talvi</a></div>
-      <div class="col-xs-4" style="text-align: center"><a>kevät</a></div>
+<h3>{{id | label}}<span *ngIf="season"> - {{'wbc.season.' + season | translate}}</span></h3>
+
+<ng-container *ngIf="!season">
+  <div class="panel panel-default" style="max-width: 400px">
+    <div class="panel-heading">
+      <strong>Taulukko havaituista lajeista</strong>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'fall'}">{{'wbc.season.fall' | translate}}</a></div>
+        <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'winter'}">{{'wbc.season.winter' | translate}}</a></div>
+        <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'spring'}">{{'wbc.season.spring' | translate}}</a></div>
+      </div>
     </div>
   </div>
-</div>
-<h4>Reitin laskennat</h4>
-<laji-datatable
-  #dataTable
-  (rowSelect)="openViewer($event.row['document.documentId'])"
-  [sorts]="sorts"
-  [clientSideSorting]="true"
-  [showRowAsLink]="true"
-  [showHeader]="true"
-  [showFooter]="false"
-  [height]="'calc(80vh - 40px)'"
-  [virtualScrolling]="true"
-  [rows]="rows"
-  [loading]="loading"
-  [columnMode]="'standard'"
-  [totalMessage]="'haseka.submissions.total' | translate"
-  [columns]="columns">
-</laji-datatable>
+  <h4>Reitin laskennat</h4>
+  <laji-datatable
+    #dataTable
+    (rowSelect)="openViewer($event.row['document.documentId'])"
+    [sorts]="sorts"
+    [clientSideSorting]="true"
+    [showRowAsLink]="true"
+    [showHeader]="true"
+    [showFooter]="false"
+    [height]="'calc(80vh - 40px)'"
+    [virtualScrolling]="true"
+    [rows]="rows"
+    [loading]="!rows"
+    [columnMode]="'standard'"
+    [totalMessage]="'haseka.submissions.total' | translate"
+    [columns]="columns">
+  </laji-datatable>
+</ng-container>
+
+<laji-wbc-route-table *ngIf="season"
+                      (onDocumentClick)="openViewer($event)"
+                      [data]="observationStats ? observationStats[season] : undefined"
+></laji-wbc-route-table>
 
 <div class="modal fade" bsModal #documentModal="bs-modal"
      (onHidden)="documentModalVisible = false"

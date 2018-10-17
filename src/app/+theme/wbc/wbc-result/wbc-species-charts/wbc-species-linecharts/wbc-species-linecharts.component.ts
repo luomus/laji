@@ -87,7 +87,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
     }
   }
 
-  tickFormatting(val): string {
-    return val + '';
+  tickFormatting(val: number): string {
+    return val + '/' + (val + 1);
   }
 }

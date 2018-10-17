@@ -3,3 +3,6 @@
   width: 100%;
   margin-bottom: 20px;
 }
+:host >>> svg:not(:root) {
+  overflow: visible;
+}

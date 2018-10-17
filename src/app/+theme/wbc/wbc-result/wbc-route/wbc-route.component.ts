@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { WbcResultService } from '../wbc-result.service';
+import { Subscription, combineLatest as ObservableCombineLatest } from 'rxjs';
+import { WbcResultService, SEASON } from '../wbc-result.service';
 import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
 import { ModalDirective } from 'ngx-bootstrap';
 import { IdService } from '../../../../shared/service/id.service';
@@ -13,7 +13,7 @@ import { IdService } from '../../../../shared/service/id.service';
 })
 export class WbcRouteComponent implements OnInit, OnDestroy {
   id: string;
-  rows: any[] = [];
+  rows: any[];
   columns: DatatableColumn[] = [
     {
       name: 'gathering.eventDate.begin',
@@ -41,6 +41,9 @@ export class WbcRouteComponent implements OnInit, OnDestroy {
   documentModalVisible = false;
   shownDocument: string;
 
+  season: SEASON;
+  observationStats: any;
+
   @ViewChild('documentModal') public modal: ModalDirective;
 
   private routeSub: Subscription;
@@ -52,15 +55,26 @@ export class WbcRouteComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.routeSub = this.route.params.subscribe(params => {
-      this.id = params['id'];
-      this.loading = true;
-      this.resultService.getCensusListByRoute(this.id)
-        .subscribe(censuses => {
-          this.rows = censuses;
-          this.loading = false;
-          this.cd.markForCheck();
-        })
+    this.routeSub = ObservableCombineLatest(
+      this.route.params,
+      this.route.queryParams
+    ).subscribe(params => {
+      this.id = params[0]['id'];
+      this.season = params[1]['season'];
+
+      if (!this.season && !this.rows && !this.loading) {
+        this.resultService.getCensusListForRoute(this.id)
+          .subscribe(censuses => {
+            this.rows = censuses;
+            this.cd.markForCheck();
+          })
+      } else if (!this.observationStats) {
+        this.resultService.getObservationStatsForRoute(this.id)
+          .subscribe(data => {
+            this.observationStats = data;
+            this.cd.markForCheck();
+          })
+      }
     });
   }
 

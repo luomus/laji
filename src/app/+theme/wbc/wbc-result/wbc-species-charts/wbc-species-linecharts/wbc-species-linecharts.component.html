@@ -20,7 +20,7 @@
                                        [xAxisLabel]="'Vuodet'"
                                        [yAxisLabel]="'Yksilöm./laskentoja'">
             <ng-template #tooltipTemplate let-model="model">
-              <span class="tooltip-label">{{model.series}} • {{model.name}}</span>
+              <span class="tooltip-label">{{model.series}} • {{model.name + '/' + (model.name + 1)}}</span>
               <span class="tooltip-val">{{model.value.toLocaleString()}}</span>
             </ng-template>
           </laji-line-chart-with-points>
