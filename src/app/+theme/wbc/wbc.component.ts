@@ -19,8 +19,10 @@ export class WbcComponent implements OnInit, OnDestroy {
   showForm =  false;
   showNav = true;
   routeSub: Subscription;
+  showStatsLinks = false;
   rights: Observable<Rights>;
   collectionID = Global.collections.wbc;
+
 
   constructor(
     public router: Router,
@@ -32,10 +34,12 @@ export class WbcComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.showForm = !environment.production;
     this.showNav = this.router.url.indexOf('form') === -1;
+    this.showStatsLinks = this.router.url.indexOf('stats') !== -1;
     this.routeSub = this.router.events
       .subscribe(event => {
         if (event instanceof NavigationEnd) {
           this.showNav = event.url.indexOf('form') === -1;
+          this.showStatsLinks = event.url.indexOf('stats') !== -1;
         }
       });
     this.rights = this.formService.getForm(environment.wbcForm, this.translateService.currentLang)

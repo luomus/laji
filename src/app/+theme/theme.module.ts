@@ -54,7 +54,22 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { InvasiveControlComponent } from './invasive-control/invasive-control.component';
 import { InvasiveControlInstructionsComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.component';
 import { InvasiveControlFormComponent } from './invasive-control/invasive-control-form/invasive-control-form.component';
-import { FormPermissionModule } from './../+haseka/form-permission/form-permission.module';
+import { WbcSpeciesComponent } from './wbc/wbc-result/wbc-species/wbc-species.component';
+import { WbcRoutesComponent } from './wbc/wbc-result/wbc-routes/wbc-routes.component';
+import { WbcCensusesComponent } from './wbc/wbc-result/wbc-censuses/wbc-censuses.component';
+import { WbcSpeciesListComponent } from './wbc/wbc-result/wbc-species/wbc-species-list/wbc-species-list.component';
+import { WbcResultService } from './wbc/wbc-result/wbc-result.service';
+import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+import { WbcResultFiltersComponent } from './wbc/wbc-result/wbc-result-filters/wbc-result-filters.component';
+import { WbcSpeciesChartsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-charts.component';
+import { WbcSpeciesMapsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-maps/wbc-species-maps.component';
+import { WbcSpeciesLinechartsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-linecharts/wbc-species-linecharts.component';
+import { LineChartWithPointsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-linecharts/line-chart-with-points/line-chart-with-points.component';
+import { WbcRouteComponent } from './wbc/wbc-result/wbc-route/wbc-route.component';
+import { WbcRouteTableComponent } from './wbc/wbc-result/wbc-route-table/wbc-route-table.component';
+import { FormPermissionModule } from '../+haseka/form-permission/form-permission.module';
+import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
+
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -74,7 +89,9 @@ import { FormPermissionModule } from './../+haseka/form-permission/form-permissi
     LajiFormModule,
     ObservationMapModule,
     NgxChartsModule,
-    FormPermissionModule
+    JWBootstrapSwitchModule,
+    FormPermissionModule,
+    NavigationThumbnailModule
   ],
   declarations: [
     NafiComponent,
@@ -112,8 +129,19 @@ import { FormPermissionModule } from './../+haseka/form-permission/form-permissi
     LineTransectFormKartoitusComponent,
     InvasiveControlComponent,
     InvasiveControlInstructionsComponent,
-    InvasiveControlFormComponent
+    InvasiveControlFormComponent,
+    WbcSpeciesComponent,
+    WbcRoutesComponent,
+    WbcCensusesComponent,
+    WbcSpeciesListComponent,
+    WbcResultFiltersComponent,
+    WbcSpeciesChartsComponent,
+    WbcSpeciesMapsComponent,
+    WbcSpeciesLinechartsComponent,
+    LineChartWithPointsComponent,
+    WbcRouteComponent,
+    WbcRouteTableComponent
   ],
-  providers: [ ResultService, QualityService ]
+  providers: [ ResultService, QualityService, WbcResultService ]
 })
 export class ThemeModule { }

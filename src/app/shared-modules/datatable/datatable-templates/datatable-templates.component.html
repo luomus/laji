@@ -223,4 +223,11 @@
     <img class="compact" src="{{value.thumbnailURL}}" alt="Image">
   </span>
 </ng-template>
+<ng-template let-value="value" #link>
+  <a *ngIf="value" title="{{value}}">
+    <span>
+    {{value}}
+    </span>
+  </a>
+</ng-template>
 

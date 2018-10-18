@@ -25,7 +25,8 @@ export class YkjService {
     private warehouseApi: WarehouseApi
   ) { }
 
-  getGeoJson(query: WarehouseQueryInterface, grid: Grid = '10kmCenter', key?: string, useStatistics = false): Observable<any> {
+  getGeoJson(query: WarehouseQueryInterface, grid: Grid = '10kmCenter', key?: string,
+             useStatistics = false, zeroObservations = false): Observable<any> {
     if (!key) {
       key = JSON.stringify(query);
     }
@@ -42,7 +43,8 @@ export class YkjService {
       });
     }
     this.pendingKey = key;
-    const sourceMethod = useStatistics
+    const sourceMethod = zeroObservations
+      ? this.warehouseApi.warehouseQueryGatheringStatisticsGet.bind(this.warehouseApi) : useStatistics
       ? this.warehouseApi.warehouseQueryStatisticsGet.bind(this.warehouseApi)
       : this.warehouseApi.warehouseQueryAggregateGet.bind(this.warehouseApi);
     this.pending = sourceMethod(
@@ -52,24 +54,24 @@ export class YkjService {
         10000,
         1,
         false,
-        false
+        !!zeroObservations
       )
       .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .map(data => data.results)
-      .map(data => this.resultToGeoJson(data, grid));
+      .map(data => this.resultToGeoJson(data, grid, zeroObservations));
     return this.pending;
   }
 
-  private resultToGeoJson(data, grid) {
+  private resultToGeoJson(data, grid, setCountsToZero) {
     const features = [];
     data.map(result => {
       features.push(this.convertYkjToGeoJsonFeature(
         result.aggregateBy[`gathering.conversions.ykj${grid}.lat`],
         result.aggregateBy[`gathering.conversions.ykj${grid}.lon`],
         {
-          count: result.count || 0,
-          individualCountSum: result.individualCountSum,
-          pairCountSum: result.pairCountSum,
+          count: setCountsToZero ? 0 : result.count || 0,
+          individualCountSum: setCountsToZero ? 0 : result.individualCountSum,
+          pairCountSum: setCountsToZero ? 0 : result.pairCountSum,
           newestRecord: result.newestRecord || '',
           oldestRecord: result.oldestRecord || '',
           grid: parseInt(result.aggregateBy[`gathering.conversions.ykj${grid}.lat`], 10) + ':'
