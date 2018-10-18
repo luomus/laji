@@ -41,7 +41,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   editMode = false;
   loading = false;
   allowEdit = false;
-  allowCreate = true;
+  allowCreate = false;
   formRights: Rights = {
     admin: false,
     edit: false
@@ -58,6 +58,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   taxonID = '';
 
   errorMsg = '';
+
+  _editModeInit: string;
+  _formRightsInit = false;
 
   private subParam: Subscription;
   private subTrans: Subscription;
@@ -104,11 +107,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           this.setActiveNP(-1);
           this.preselectedNPIndex = -1;
         }
-        if (params.edit === 'true') {
-          this.editMode = true;
-        } else {
-          this.editMode = false;
-        }
+        this._editModeInit = params.edit;
+        this.initEditMode();
         if (updateList) { this.updateList() }
         this.cd.markForCheck();
       }
@@ -147,6 +147,17 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       this.subQParams.unsubscribe();
     }
     this.footerService.footerVisible = true;
+  }
+
+  initEditMode() {
+    if (!this._editModeInit || !this._formRightsInit) {
+      return;
+    }
+    if (this._editModeInit === 'true') {
+      this.editMode = true;
+    } else {
+      this.editMode = false;
+    }
   }
 
   updateBirdAssociationAreaFilter(value) {
@@ -284,8 +295,10 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           .getRights(formData)
           .take(1)
           .switchMap(rights => {
+            this._formRightsInit = true;
+            this.initEditMode();
             this.formRights = rights;
-            this.allowCreate = !formData.features || formData.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1 || rights.admin;
+            this.allowCreate =  rights.admin && (!formData.features || formData.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1);
             return ObservableOf(null);
           })
       })
@@ -356,6 +369,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   toEditMode(create: boolean) {
+    if (!this.formRights.admin) {
+      return;
+    }
     this.editMode = true;
     if (create) {
       this.setActiveNP(-1);
