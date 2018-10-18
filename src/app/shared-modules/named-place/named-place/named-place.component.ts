@@ -153,7 +153,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (!this._editModeInit || !this._formRightsInit) {
       return;
     }
-    if (this._editModeInit === 'true') {
+    if (this.formRights.admin && this._editModeInit === 'true') {
       this.editMode = true;
     } else {
       this.editMode = false;
