@@ -19,10 +19,13 @@ export class WbcRouteTableComponent implements OnInit {
     if (!data) {
       this.rows = undefined;
       this.columns = [];
-      return;
+    } else if (data.speciesStats.length === 0) {
+      this.rows = [];
+      this.columns = [];
+    } else {
+      this.rows = data.speciesStats.concat(data.otherStats);
+      this.setColumns(data);
     }
-    this.rows = data.speciesStats.concat(data.otherStats);
-    this.setColumns(data);
   }
 
   constructor() { }

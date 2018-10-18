@@ -99,7 +99,7 @@ export class WbcResultService {
       this.warehouseApi.warehouseQueryAggregateGet(
         {...this.getFilterParams(), namedPlaceId: [routeId], secured: false},
         ['document.documentId', 'gathering.eventDate.begin', 'gathering.team'],
-        ['gathering.eventDate.begin'],
+        ['gathering.eventDate.begin DESC'],
         1000,
         1,
         undefined,
@@ -191,13 +191,13 @@ export class WbcResultService {
         }
       }
       if (counts.length === 0) {
-        obj.mean = 0;
-        obj.median = 0;
+        obj.mean = undefined;
+        obj.median = undefined;
       } else {
         obj.mean = sum / counts.length;
         obj.median = this.median(counts);
       }
-    }
+    };
 
     for (const season of ['fall', 'winter', 'spring']) {
       const speciesStats = result[season].speciesStats;

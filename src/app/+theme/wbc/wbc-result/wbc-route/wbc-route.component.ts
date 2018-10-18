@@ -34,7 +34,7 @@ export class WbcRouteComponent implements OnInit, OnDestroy {
     }
   ];
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [
-    {prop: 'gathering.eventData.begin', dir: 'asc'},
+    {prop: 'gathering.eventDate.begin', dir: 'desc'},
   ];
   loading = false;
 
