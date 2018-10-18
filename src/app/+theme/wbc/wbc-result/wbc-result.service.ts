@@ -190,9 +190,14 @@ export class WbcResultService {
           counts.push(obj[key]);
         }
       }
-      obj.mean = sum / counts.length;
-      obj.median = this.median(counts);
-    };
+      if (counts.length === 0) {
+        obj.mean = 0;
+        obj.median = 0;
+      } else {
+        obj.mean = sum / counts.length;
+        obj.median = this.median(counts);
+      }
+    }
 
     for (const season of ['fall', 'winter', 'spring']) {
       const speciesStats = result[season].speciesStats;

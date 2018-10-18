@@ -61,11 +61,14 @@ export class WbcRouteComponent implements OnInit, OnDestroy {
     ).subscribe(params => {
       this.id = params[0]['id'];
       this.season = params[1]['season'];
+      this.cd.markForCheck();
 
       if (!this.season && !this.rows && !this.loading) {
+        this.loading = true;
         this.resultService.getCensusListForRoute(this.id)
           .subscribe(censuses => {
             this.rows = censuses;
+            this.loading = false;
             this.cd.markForCheck();
           })
       } else if (!this.observationStats) {
