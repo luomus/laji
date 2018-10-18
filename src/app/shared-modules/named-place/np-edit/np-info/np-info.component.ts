@@ -62,6 +62,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnInit() {
     this.updateFields();
+    this.updateButtons();
   }
 
   ngAfterViewInit() {
