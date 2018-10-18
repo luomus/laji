@@ -6,7 +6,7 @@
       Tämän palvelun avulla tallennetaan vieraslajien torjuntatoimia, joita tehdään pääsääntöisesti viranomaistoimintana tai viranomaisten ohjauksessa. Lomakkeen avulla voidaan tallentaa torjuntatoimia kohdistaen niitä jo olemassa oleviin torjuntatoimipaikkoihin tai luomalla uusi torjuntatoimipaikka. Samalla käynnistyy torjuntatoimien vakutusten seuranta, josta raportointi on EU-direktiivien mukainen kansallinen velvollisuus.
     </p>
 
-    <laji-request *ngIf="(userService.isLoggedIn$ | async) && form && !(rights | async)?.edit && !(rights | async)?.admin"
+    <laji-request *ngIf="rights === Rights.NotAllowed"
                   [collectionId]="'HR.2049'">
     </laji-request>
   </div>
