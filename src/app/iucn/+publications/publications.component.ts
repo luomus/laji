@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'laji-publications',
-  templateUrl: './publications.component.html',
-  styleUrls: ['./publications.component.css']
+  template: `
+    <div class="container">
+      <laji-info-page [pages]="{'fi': 'r-13', 'en': 'r-15', 'sv': 'r-17'}"></laji-info-page>
+    </div>
+  `,
 })
-export class PublicationsComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+export class PublicationsComponent {
 
 }
