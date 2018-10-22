@@ -22,7 +22,7 @@ const routes: Routes = [
   {path: 'user', loadChildren: './+user/user.module#UserModule', data: {noPreload: true}},
   {path: 'view', loadChildren: './+viewer/viewer.module#ViewerModule', data: {title: 'viewer.document'}},
   {path: 'observation', loadChildren: './+observation/observation.module#ObservationModule', data: {title: 'navigation.observation'}},
-  {path: 'taxon', loadChildren: './+taxonomy/taxonomy.module#TaxonomyModule', data: {title: 'navigation.taxonomy'}},
+  {path: 'taxon', loadChildren: './iucn/+taxonomy/taxonomy.module#TaxonomyModule', data: {title: 'navigation.taxonomy'}},
   {path: 'error', loadChildren: './+error/error.module#ErrorModule', data: {noPreload: true}}
 ];
 

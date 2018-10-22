@@ -1,0 +1,8 @@
+<table>
+  <tr>
+    <td *ngFor="let s of statuses" [ngClass]="{'active red': s === status}" class="top"><span *ngIf="s === status" [innerHtml]="s | label | iucnStatus:(s !== status)"></span></td>
+  </tr>
+  <tr>
+    <td *ngFor="let s of statuses" [ngClass]="{'active red': s === status}" class="stat"><span [innerHtml]="s | label | iucnStatus:true"></span></td>
+  </tr>
+</table>
