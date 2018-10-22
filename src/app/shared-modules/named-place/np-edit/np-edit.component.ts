@@ -22,7 +22,6 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
 import { NpInfoComponent } from './np-info/np-info.component';
 import { FormPermissionService, Rights } from '../../../+haseka/form-permission/form-permission.service';
-import { FormPermission } from '../../../shared/model/FormPermission';
 import { UserService } from '../../../shared/service/user.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { Logger } from '../../../shared/logger/logger.service';
@@ -57,7 +56,6 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   @Output() onError = new EventEmitter();
 
   lang: string;
-  accessRequested = false;
 
   private npFormId: string;
   private npForm$: Subscription;
@@ -104,9 +102,6 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['namedPlace']) {
       this.setFormData();
-    }
-    if (changes['formData']) {
-      this.checkAccessRequested();
     }
   }
 
@@ -190,40 +185,6 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
   editClick() {
     this.onEditButtonClick.emit();
-  }
-
-  checkAccessRequested() {
-    if (!this.formData) {
-      return;
-    }
-    this.formPermissionService.hasPendingAccess(this.formData)
-      .subscribe(pending => {
-        this.accessRequested = pending;
-        this.cdr.markForCheck();
-      })
-  }
-
-  requestAccessClick() {
-    this.loading = true;
-    this.formPermissionService.makeAccessRequest(this.formData.collectionID, this.userService.getToken())
-      .subscribe(
-        (formPermission: FormPermission) => {
-          this.loading = false;
-          this.accessRequested = true;
-          this.toastsService.showSuccess('Pyyntösi on lähetetty eteenpäin');
-          this.cdr.markForCheck();
-        },
-        (err) => {
-          this.loading = false;
-          if (err.status !== 406) {
-            this.toastsService.showError('Pyyntöäsi lähetys epäonnistui');
-            this.logger.error('Failed to send formPermission request', {
-              collectionId: this.formData.collectionID
-            });
-          }
-          this.cdr.markForCheck();
-        }
-      );
   }
 
   useClick() {

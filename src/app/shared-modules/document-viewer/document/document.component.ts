@@ -36,6 +36,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   @Input() hideHeader = false;
   @Input() identifying = false;
 
+  collectionContestFormId = Global.forms.collectionContest;
+
   externalViewUrl: string;
   document: any;
   documentID: string;

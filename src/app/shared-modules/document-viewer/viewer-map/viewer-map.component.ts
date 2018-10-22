@@ -48,10 +48,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
     this.active = idx;
     if (this._data && this._data[idx]) {
       this.lajiMap.map.setData([this._data[idx] || {}]);
-      this.lajiMap.map.map.fitBounds(
-        this.lajiMap.map.data[0].group.getBounds(),
-        {maxZoom: this.lajiMap.map.map.getZoom()}
-      );
+      this.lajiMap.map.zoomToData({maxZoom: this.lajiMap.map.getNormalizedZoom()});
     } else {
       this.lajiMap.map.setData([]);
     }
@@ -83,7 +80,6 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
           geometry: feat.geometry,
           properties: {}
         }))
-
       }
     } else {
       return {

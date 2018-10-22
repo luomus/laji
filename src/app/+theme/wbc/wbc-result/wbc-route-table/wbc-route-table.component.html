@@ -1,0 +1,36 @@
+<laji-datatable
+  #dataTable
+  [showHeader]="true"
+  [showFooter]="false"
+  [height]="'calc(80vh - 40px)'"
+  [virtualScrolling]="true"
+  [rows]="rows"
+  [loading]="!rows"
+  [columnMode]="'standard'"
+  [totalMessage]="'haseka.submissions.total' | translate"
+  [columns]="columns">
+</laji-datatable>
+
+<ng-template let-value="value" let-row="row" #textOrTranslationKey>
+  <ng-container *ngIf="row.name !== 'speciesCount' && row.name !== 'individualCount' && row.name !== 'documentIds'; else translationKey">
+    <span *ngIf="value" [title]="value">{{value}}</span>
+  </ng-container>
+  <ng-template #translationKey>
+    <span *ngIf="value" [title]="'species.stats.route.' + value | translate">
+      {{'wbc.stats.route.' + value | translate}}
+    </span>
+  </ng-template>
+</ng-template>
+
+<ng-template let-value="value" let-row="row" #numberOrDocumentIds>
+  <ng-container *ngIf="row.name !== 'documentIds'; else documentIds">
+    <span *ngIf="value" [title]="value.toLocaleString()">{{value.toLocaleString()}}</span>
+  </ng-container>
+  <ng-template #documentIds>
+    <span *ngIf="value && value.length > 0" ngPreserveWhitespaces style="display: inline-block">
+      <ng-container *ngFor="let doc of value; let i = index">
+        <a (click)="onDocumentClick.emit(doc)" title="{{doc}}">[{{i + 1}}]</a>
+      </ng-container>
+    </span>
+  </ng-template>
+</ng-template>

@@ -1,0 +1,6 @@
+:host >>> .bootstrap-switch {
+  white-space: nowrap;
+}
+.options-container {
+  margin-bottom: 5px;
+}

@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-sm-12 select-container">
+    <div>
+      <label for="year">{{'wbc.year' | translate}}</label>
+      <select
+        id="year"
+        (change)="onYearChange($event.target.value !== '0' ? $event.target.value : undefined)"
+        name="year"
+        class="form-control"
+        style="width: 120px">
+        <option *ngIf="!yearRequired" [value]="0">{{'select' | translate}}</option>
+        <option *ngFor="let year of years" [value]="year" [selected]="year === activeYear">
+          {{year + '/' + (year + 1)}}
+        </option>
+      </select>
+    </div>
+    <div *ngIf="showSeasonFilter">
+      <label for="season">{{'wbc.season' | translate}}</label>
+      <select
+        id="season"
+        (change)="onSeasonChange($event.target.value !== '0' ? $event.target.value : undefined)"
+        [disabled]="!activeYear"
+        name="season"
+        class="form-control"
+        style="width: 120px">
+        <option [value]="0">{{'select' | translate}}</option>
+        <option *ngFor="let season of seasons" [value]="season" [selected]="season === activeSeason">
+          {{'wbc.season.' + season | translate}}
+        </option>
+      </select>
+    </div>
+    <div>
+      <label for="birdAssociationArea">{{'MNP.birdAssociationArea' | label}}</label>
+      <laji-area-select id="birdAssociationArea"
+                        [field]="areaTypes.BirdAssociationArea"
+                        [value]="activeArea"
+                        (select)="onAreaChange($event)"
+      ></laji-area-select>
+    </div>
+  </div>
+</div>

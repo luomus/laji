@@ -11,7 +11,6 @@ import { FormPermissionService } from '../../../+haseka/form-permission/form-per
 export class DocumentFormFooterComponent {
   @Input() status = '';
   @Input() saving = false;
-  @Input() restrictSubmitPublic = false;
   @Output() onSubmitPublic = new EventEmitter();
   @Output() onSubmitPrivate = new EventEmitter();
   @Output() onCancel = new EventEmitter();
@@ -31,7 +30,6 @@ export class DocumentFormFooterComponent {
 
   @Input()
   set form(form: any) {
-    console.log(form);
     this._form = form;
     this._locked = form && form.formData && form.formData.locked;
     ['save', 'temp', 'cancel'].forEach(place => {
@@ -44,16 +42,6 @@ export class DocumentFormFooterComponent {
       }
       this.show[place] = show;
     });
-
-    if (this.restrictSubmitPublic && this.show.save === true) {
-      this.show.save = false;
-      this.userService.getUser().map(user =>
-        this.formPermissionService.isAdmin({'id': ''}, user)
-      ).subscribe(showSave => {
-        this.show.save = showSave;
-        this.cdr.markForCheck();
-      })
-    }
   }
 
   buttonLabel(place: 'save'|'temp'|'cancel') {

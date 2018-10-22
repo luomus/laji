@@ -1,0 +1,10 @@
+<h3>{{'wbc.stats.species' | translate}}</h3>
+<laji-wbc-result-filters (yearChange)="activeYear = $event"
+                         (seasonChange)="activeSeason = $event"
+                         (areaChange)="activeBirdAssociationArea = $event"
+></laji-wbc-result-filters>
+<laji-wbc-species-list (rowSelect)="taxonSelect($event)"
+                       [year]="activeYear"
+                       [season]="activeSeason"
+                       [birdAssociationArea]="activeBirdAssociationArea"
+></laji-wbc-species-list>
