@@ -17,6 +17,15 @@ import { RedlistYearSelectComponent } from './info-card/redlist-year-select/redl
     CommonModule,
     SharedModule
   ],
-  declarations: [InfoCardComponent, TaxonomyComponent, ListComponent, TaxonImageComponent, TaxonStatusComponent, IucnStatusPipe, TaxonStatusHistoryComponent, RedlistYearSelectComponent]
+  declarations: [
+    InfoCardComponent,
+    TaxonomyComponent,
+    ListComponent,
+    TaxonImageComponent,
+    TaxonStatusComponent,
+    IucnStatusPipe,
+    TaxonStatusHistoryComponent,
+    RedlistYearSelectComponent
+  ]
 })
 export class TaxonomyModule { }
