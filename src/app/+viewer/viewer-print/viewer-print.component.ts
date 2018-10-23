@@ -57,7 +57,13 @@ export class ViewerPrintComponent implements OnInit, OnDestroy {
     this.footerService.footerVisible = true;
   }
 
-  print(fileName) {
+  print() {
+    if (isPlatformBrowser(this.platformId)) {
+      window.print();
+    }
+  }
+
+  pdf(fileName) {
     this.loading = true;
     if (isPlatformBrowser(this.platformId)) {
       this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, this.stripHTML(document.getElementsByTagName('html')[0].innerHTML))
