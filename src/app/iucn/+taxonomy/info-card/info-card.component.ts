@@ -40,8 +40,8 @@ export class InfoCardComponent implements OnInit {
   private mock(taxon: Taxonomy): Taxonomy {
     if (taxon.redListStatusesInFinland) {
       taxon.redListStatusesInFinland = taxon.redListStatusesInFinland.map((status, idx) => {
-        (status as any).criteria = ['D1', 'A2bf+F2s', 'D1 D2', 'C+3F3D', 'C3PO', 'R2-D2'][idx % 6];
-        (status as any).reasons = ['Pyynti\nRaketamine maalla', '', '', '', '', 'Piip piip'][idx % 6];
+        (status as any).criteria = ['D1', 'A2bf+F2s', 'R2 D2', 'C+3F3D', 'C3PO', 'R2-D2'][idx % 6];
+        (status as any).reasons = ['Pyynti\nRakentaminen maalla', '', '', '', '', 'Piip piip'][idx % 6];
         (status as any).threats = ['Pyynti', '', '', '', 'Eksyminen', 'Lyhyet jalat'][idx % 6];
         return status;
       })
