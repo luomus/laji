@@ -26,4 +26,5 @@ export const environment = {
   namedPlaceForm: 'JX.123608',
   apiBase: 'https://dev.laji.fi/api',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
+  selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self'
 };
