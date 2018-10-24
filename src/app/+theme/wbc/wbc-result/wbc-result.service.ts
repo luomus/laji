@@ -46,7 +46,7 @@ export class WbcResultService {
       this.getFilterParams(),
       undefined,
       undefined,
-      1000,
+      10000,
       1,
       undefined,
       false
@@ -72,13 +72,13 @@ export class WbcResultService {
         ['unit.linkings.taxon.id', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.scientificName',
           'unit.linkings.taxon.cursiveName', 'unit.linkings.taxon.taxonomicOrder'],
         ['unit.linkings.taxon.taxonomicOrder'],
-        1000,
+        10000,
         1
       )
     );
   }
 
-  getRoutesList(): Observable<any[]> {
+  getRouteList(): Observable<any[]> {
     return this.getList(
       this.warehouseApi.warehouseQueryStatisticsGet(
         this.getFilterParams(),
@@ -86,12 +86,27 @@ export class WbcResultService {
           'document.namedPlace.ykj10km.lon', 'document.namedPlace.municipalityDisplayName',
           'document.namedPlace.birdAssociationAreaDisplayName'],
         ['document.namedPlace.birdAssociationAreaDisplayName', 'document.namedPlace.name'],
-        1000,
+        10000,
         1,
         undefined,
         false
       )
     );
+  }
+
+  getCensusList(year?: number, season?: SEASON): Observable<any[]> {
+    return this.getList(
+      this.warehouseApi.warehouseQueryAggregateGet(
+        {...this.getFilterParams(year, season), secured: false},
+        ['document.documentId', 'document.namedPlace.name', 'document.namedPlace.municipalityDisplayName',
+          'document.namedPlace.birdAssociationAreaDisplayName', 'gathering.eventDate.begin', 'gathering.team'],
+        ['document.namedPlace.birdAssociationAreaDisplayName', 'gathering.eventDate.begin DESC'],
+        10000,
+        1,
+        undefined,
+        false
+      )
+    )
   }
 
   getCensusListForRoute(routeId: string): Observable<any[]> {
@@ -100,7 +115,7 @@ export class WbcResultService {
         {...this.getFilterParams(), namedPlaceId: [routeId], secured: false},
         ['document.documentId', 'gathering.eventDate.begin', 'gathering.team'],
         ['gathering.eventDate.begin DESC'],
-        1000,
+        10000,
         1,
         undefined,
         false
@@ -114,7 +129,7 @@ export class WbcResultService {
       ['unit.linkings.taxon.id', 'unit.linkings.taxon.nameFinnish', 'gathering.conversions.year',
         'gathering.conversions.month', 'document.documentId', 'unit.linkings.taxon.taxonomicOrder'],
       ['unit.linkings.taxon.taxonomicOrder'],
-      1000,
+      10000,
       1,
       undefined,
       false
@@ -217,14 +232,14 @@ export class WbcResultService {
         {...this.getFilterParams(undefined, undefined, birdAssociationArea), taxonCensus: [taxonCensus]},
         ['gathering.conversions.year', 'gathering.conversions.month'],
         undefined,
-        1000,
+        10000,
         1
       ),
       this.warehouseApi.warehouseQueryStatisticsGet(
         {...this.getFilterParams(undefined, undefined, birdAssociationArea), taxonId: [taxonId], taxonCensus: [taxonCensus]},
         ['gathering.conversions.year', 'gathering.conversions.month'],
         undefined,
-        1000,
+        10000,
         1,
         undefined,
         false
