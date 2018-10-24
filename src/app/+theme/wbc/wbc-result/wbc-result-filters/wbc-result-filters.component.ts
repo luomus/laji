@@ -11,6 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class WbcResultFiltersComponent implements OnInit {
   @Input() yearRequired = false;
   @Input() showSeasonFilter = true;
+  @Input() showAreaFilter = true;
 
   years: number[] = [];
   seasons: SEASON[] = ['fall', 'winter', 'spring'];
