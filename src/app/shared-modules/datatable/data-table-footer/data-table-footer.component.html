@@ -1,10 +1,25 @@
 <div class="datatable-footer">
   <div class="datatable-footer-inner">
-    <div class="page-count ng-star-inserted">
-      <span [innerHtml]="_start | formattedNumber:'&nbsp;'"></span> -
-      <span [innerHtml]="_end | formattedNumber:'&nbsp;'"></span> /
+    <div class="page-count ng-star-inserted"
+         [ngStyle]="{
+          'height': (_page && _pageSize) ? '50px' : '30px',
+          'line-height': (_page && _pageSize) ? '50px' : '30px'
+         }"
+    >
+      <ng-container *ngIf="_page && _pageSize">
+        <span [innerHtml]="_start | formattedNumber:'&nbsp;'"></span> -
+        <span [innerHtml]="_end | formattedNumber:'&nbsp;'"></span> /
+      </ng-container>
       <span [innerHtml]="_count | formattedNumber:'&nbsp;'"></span>
+      <ng-container *ngIf="!(_page && _pageSize)">
+        <span> {{totalMessage}}</span>
+      </ng-container>
     </div>
-    <laji-paginator [page]="_page" [size]="_pageSize" [count]="_count" (change)="onChange($event)"></laji-paginator>
+    <laji-paginator *ngIf="_page && _pageSize"
+                    [page]="_page"
+                    [size]="_pageSize"
+                    [count]="_count"
+                    (change)="onChange($event)"
+    ></laji-paginator>
   </div>
 </div>
