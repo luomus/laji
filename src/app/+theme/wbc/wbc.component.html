@@ -20,6 +20,10 @@
           <li *ngIf="showForm"><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
         </ng-template>
       </ul>
+      <laji-haseka-latest [userToken]="userService.getToken()"
+                          [forms]="[formID]"
+                          [tmpOnly]="true"
+                          *ngIf="userService.isLoggedIn$ | async"></laji-haseka-latest>
     </div>
     <div [ngClass]="{'col-sm-9 col-md-10 col-lg-10': router.url.indexOf('form') === -1}" class="wbc-content">
       <router-outlet></router-outlet>
