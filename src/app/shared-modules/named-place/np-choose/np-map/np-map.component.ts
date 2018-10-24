@@ -2,6 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Outpu
 import { ExtendedNamedPlace } from '../../model/extended-named-place';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { TranslateService } from '@ngx-translate/core';
+import { Logger } from 'app/shared/logger';
 
 @Component({
   selector: 'laji-np-map',
@@ -30,7 +31,8 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   private sentActiveColor = '#007700';
 
   constructor(
-    public translate: TranslateService
+    public translate: TranslateService,
+    private logger: Logger
   ) { }
 
   ngOnInit() {
@@ -121,9 +123,18 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
             type: 'Feature',
             geometry: np.geometry,
             properties: {
-              reserved: np._status
+              reserved: np._status,
+              name: np.name
             }
           }))
+        },
+        getPopup: (idx: number, geo, cb: Function) => {
+          try {
+            const properties = this._data.featureCollection.features[idx].properties;
+            cb(properties.name);
+          } catch (e) {
+            this.logger.log('Failed to display popup for the map', e);
+          }
         }
       };
     } catch (e) { }

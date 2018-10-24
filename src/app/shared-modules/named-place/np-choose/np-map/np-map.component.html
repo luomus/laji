@@ -1,6 +1,7 @@
 <div [ngStyle]="{height: height}">
   <laji-map [legend]="legend"
-            [options]="{zoom: 2, tileLayerName: 'maastokartta', tileLayerOpacity: 0.5, controls: {location: false}}"
+            [options]="{zoom: 2, tileLayerName: 'maastokartta', tileLayerOpacity: 0.5,
+                       controls: {location: false}, popupOnHover: true}"
             [lang]="translate.currentLang"
   ></laji-map>
 </div>
