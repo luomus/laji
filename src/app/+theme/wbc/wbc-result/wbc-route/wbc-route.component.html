@@ -47,9 +47,9 @@
         <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
-        <laji-document [uri]="shownDocument"
-                       [own]="true">
-        </laji-document>
+        <laji-document [useWorldMap]="false"
+                       [uri]="shownDocument"
+        ></laji-document>
       </div>
     </div>
   </div>
