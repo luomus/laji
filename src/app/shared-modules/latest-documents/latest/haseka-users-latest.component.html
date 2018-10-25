@@ -1,0 +1,42 @@
+<div id="haseka-latest">
+  <div>
+    <div *ngIf="unpublishedDocuments && unpublishedDocuments.length > 0">
+      <h4>{{'haseka.users.unsaved' | translate}}</h4>
+      <table class="table table-striped table-bordered table-condensed dataTable">
+        <tbody>
+        <ng-container *ngFor="let document of unpublishedDocuments; let i = index">
+          <tr *ngIf="!document.removed">
+            <td>
+              <laji-short-document [document]="document"
+                                   [form]="formsById[document.formID]"
+                                   (onDiscard)="discardDocument(unpublishedDocuments, i)"
+                                   (onShowViewer)="showDocumentViewer($event)"></laji-short-document>
+            </td>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+    <ng-container *ngIf="!tmpOnly">
+      <h4>{{'haseka.users.latest' | translate}}</h4>
+      <div class="row">
+        <div class="col-xs-12">
+          <laji-spinner [spinning]="loading" [overlay]="true">
+            <table class="table table-striped table-bordered table-condensed dataTable">
+              <tbody>
+              <tr *ngFor="let document of documents; let i = index">
+                <td>
+                  <laji-short-document [document]="document"
+                                       [form]="formsById[document.formID]"
+                                       (onDiscard)="discardDocument(documents, i)"
+                                       (onShowViewer)="showDocumentViewer($event)"></laji-short-document>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </laji-spinner>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

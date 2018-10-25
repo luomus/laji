@@ -6,12 +6,12 @@
   [clientSideSorting]="true"
   [showRowAsLink]="true"
   [showHeader]="true"
-  [showFooter]="false"
   [height]="'calc(80vh - 40px)'"
   [virtualScrolling]="true"
   [rows]="rows"
   [loading]="loading"
   [columnMode]="'standard'"
   [totalMessage]="'haseka.submissions.total' | translate"
-  [columns]="columns">
+  [columns]="columns"
+  [count]="rows?.length">
 </laji-datatable>

@@ -1,14 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {
-  HasekaComponent,
-  HaSeKaFormComponent,
-  HaSeKaFormListComponent,
-  HaSeKaTermsOfServiceComponent,
-  routing,
-  ShortDocumentComponent,
-  UsersLatestComponent
-} from './index';
 import { SharedModule } from '../shared/shared.module';
 import { AlertModule } from 'ngx-bootstrap';
 import { DocumentApi } from '../shared/api/DocumentApi';
@@ -25,18 +16,30 @@ import { StatisticsModule } from '../shared-modules/statistics/statistics.module
 import { FormCategoryComponent } from './form-list/form-category/form-category.component';
 import { FormCategorySurveyComponent } from './form-list/form-category-survey/form-category-survey.component';
 import { LajiFormModule } from '@laji-form/laji-form.module';
+import { HasekaComponent } from './haseka.component';
+import { HaSeKaFormListComponent } from './form-list/haseka-form-list';
+import { routing } from './haseka.routes';
+import { HaSeKaFormComponent } from './form/haseka-form.component';
+import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
+import { LatestDocumentsModule } from '../shared-modules/latest-documents/latest-documents.module';
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, AlertModule, NamedPlaceModule, DocumentViewerModule,
+  imports: [
+    routing,
+    SharedModule,
+    RouterModule,
+    AlertModule,
+    NamedPlaceModule,
+    DocumentViewerModule,
     LajiMapModule,
     LajiFormModule,
     OwnSubmissionsModule,
     StatisticsModule,
-    FormPermissionModule],
-  providers: [ DocumentApi ],
+    FormPermissionModule,
+    LatestDocumentsModule
+  ],
   declarations: [
-    HasekaComponent, HaSeKaFormListComponent, UsersLatestComponent,
-    ShortDocumentComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent,
+    HasekaComponent, HaSeKaFormListComponent, HaSeKaFormComponent, HaSeKaTermsOfServiceComponent,
     FormRowComponent, OwnSubmissionsComponent, TemplatesComponent,
     NamedPlaceWrapperComponent,
     FormCategoryComponent,

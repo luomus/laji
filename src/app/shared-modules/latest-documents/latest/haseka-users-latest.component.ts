@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { Logger } from '../../shared/logger/logger.service';
-import { DocumentApi } from '../../shared/api/DocumentApi';
-import { FormService } from '../../shared/service/form.service';
-import { Document } from '../../shared/model/Document';
-import { Util } from '../../shared/service/util.service';
+import { Logger } from '../../../shared/logger/logger.service';
+import { DocumentApi } from '../../../shared/api/DocumentApi';
+import { FormService } from '../../../shared/service/form.service';
+import { Document } from '../../../shared/model/Document';
+import { Util } from '../../../shared/service/util.service';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,6 +16,8 @@ import { map } from 'rxjs/operators';
 })
 export class UsersLatestComponent implements OnChanges {
   @Input() userToken: string;
+  @Input() tmpOnly = false;
+  @Input() forms: string[];
   @Output() onShowViewer = new EventEmitter<Document>();
 
   public unpublishedDocuments: Document[] = [];
@@ -42,11 +44,6 @@ export class UsersLatestComponent implements OnChanges {
     this.updateTempDocumentList();
   }
 
-  pageChanged(page) {
-    this.page = page.page;
-    this.loading = true;
-    this.updateDocumentList();
-  }
   updateTempDocumentList() {
     if (!this.userToken) {
       return;
@@ -54,7 +51,7 @@ export class UsersLatestComponent implements OnChanges {
     this.formService.getAllTempDocuments()
       .switchMap(documents => this.processDocuments(documents))
       .subscribe((documents) => {
-        this.unpublishedDocuments.push(...documents);
+        this.unpublishedDocuments = this.forms ? documents.filter(doc => this.forms.indexOf(doc.formID) > -1) : [...documents];
         this.cd.markForCheck();
       });
   }
@@ -91,19 +88,23 @@ export class UsersLatestComponent implements OnChanges {
 
   discardDocument(documents, i) {
     const id = documents[i].id;
-    this.formService.discard(id);
-    if (this.formService.isTmpId(id)) {
-      documents.splice(i, 1);
-    } else {
-      this.documentService.findById(id, this.userToken)
-        .subscribe(
-          doc => {
-            documents[i] = doc;
-            documents.sort(this.compareEditDate);
-            this.cd.markForCheck();
-          }
-        );
-    }
+    this.translate.get('haseka.delete.description', {id: id}).subscribe(msg => {
+      if (confirm(msg)) {
+        this.formService.discard(id);
+        if (this.formService.isTmpId(id)) {
+          documents.splice(i, 1);
+        } else {
+          this.documentService.findById(id, this.userToken)
+            .subscribe(
+              doc => {
+                documents[i] = doc;
+                documents.sort(this.compareEditDate);
+                this.cd.markForCheck();
+              }
+            );
+        }
+      }
+    });
   }
 
   showDocumentViewer(doc: Document) {

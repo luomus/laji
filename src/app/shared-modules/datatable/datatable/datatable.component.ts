@@ -86,6 +86,12 @@ export class DatatableComponent implements AfterViewInit {
 
   @Input() set rows(rows: any[]) {
     this._rows = rows || [];
+
+    // record the original indexes of each row element so that when the table is sorted
+    // we can find out how the indexes were mapped
+    this._rows.forEach((element, idx) => {
+      element.preSortIndex = idx;
+    });
   }
 
   @Input() set page(page: number) {
@@ -128,13 +134,21 @@ export class DatatableComponent implements AfterViewInit {
     if (this.initialized) {
       this.selected = [this._rows[this._preselectedRowIndex]] || [];
       if (this.selected.length > 0) {
-        // Calculate relative position of selected row and scroll to it
-        const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * this._preselectedRowIndex;
-        try {
-          this.datatable.bodyComponent.scroller.parentElement.scrollTop = scrollAmount;
-        } catch (e) {
-          this.logger.info('selected row index failed', e)
-        }
+        // wait until datatable initialization is complete (monkey patched) before scrolling
+        const sub = this.datatable.initializationState.subscribe({complete: () => {
+          // find the index in datatable internal sorted array that corresponds to selected index in input data
+          const postSortIndex = this.datatable._internalRows.findIndex((element) => {
+            return element.preSortIndex === this._preselectedRowIndex;
+          });
+          // Calculate relative position of selected row and scroll to it
+          const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * postSortIndex;
+          try {
+            this.datatable.bodyComponent.scroller.parentElement.scrollTop = scrollAmount;
+          } catch (e) {
+            this.logger.info('selected row index failed', e)
+          }
+          sub.unsubscribe();
+        }});
       }
     }
   }
@@ -144,6 +158,8 @@ export class DatatableComponent implements AfterViewInit {
       setTimeout(() => {
         this.datatable.recalculate();
         this.initialized = true;
+
+        // Make sure that preselected row index setter is called after initialization
         if (this._preselectedRowIndex > -1) {
           this.preselectedRowIndex = this._preselectedRowIndex;
         }

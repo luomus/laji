@@ -34,7 +34,6 @@ export const Global = {
     'MHL.3': '/talvilintu',
   },
   googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
-  selfPage: 'https://login.laji.fi/self',
   sources: {
     kotka: 'KE.3'
   }

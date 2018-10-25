@@ -26,12 +26,16 @@
   </div>
   <div class="container-fluid info-footer">
     <div class="row">
-      <div *ngFor="let item of tree$ | async; let i=index" class="{{columns[i] || ''}}">
-        <h3><a [routerLink]="'/about/' + item.id | localize">{{item.title}}</a></h3>
-        <ul *ngIf="item.children">
-          <li *ngFor="let child of item.children">
-            <a [routerLink]="'/about/' + child.id | localize">{{child.title}}</a>
-          </li>
+      <div class="col-sm-4">
+        <h3>Sisältö suunnittelematta</h3>
+        <ul>
+          <li>Yhteystiedot</li>
+          <li>Blaa blaa</li>
+          <li>Blaa blaa</li>
+          <li>&nbsp;</li>
+          <li>&nbsp;</li>
+          <li>&nbsp;</li>
+          <li>&nbsp;</li>
         </ul>
       </div>
     </div>

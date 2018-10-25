@@ -7,6 +7,7 @@ import { FormPermissionService, Rights } from '../../+haseka/form-permission/for
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Global } from '../../../environments/global';
+import { UserService } from '../../shared/service/user.service';
 
 @Component({
   selector: '[laji-wbc]',
@@ -22,10 +23,12 @@ export class WbcComponent implements OnInit, OnDestroy {
   showStatsLinks = false;
   rights: Observable<Rights>;
   collectionID = Global.collections.wbc;
+  formID = environment.wbcForm;
 
 
   constructor(
     public router: Router,
+    public userService: UserService,
     private formService: FormService,
     private formPermissionService: FormPermissionService,
     private translateService: TranslateService

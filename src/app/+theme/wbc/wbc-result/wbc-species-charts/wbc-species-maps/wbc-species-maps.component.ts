@@ -24,7 +24,7 @@ export class WbcSpeciesMapsComponent implements OnInit, OnChanges {
 
   breaks = [0, 1, 32, 126, 512, 2048, 8192];
   labels = ['0', '1-31', '32-127', '126-511', '512-2047', '2048-8191', '8192-'];
-  colorRange = ['#ffffff', '#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
+  colorRange = ['#ffffff', 'violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
 
   constructor(
     private resultService: WbcResultService

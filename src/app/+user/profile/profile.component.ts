@@ -8,7 +8,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import { Person } from '../../shared/model/Person';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { concatMap, map, tap } from 'rxjs/operators';
-import { Global } from '../../../environments/global';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'laji-user',
@@ -43,7 +43,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
               private router: Router,
               private logger: Logger
   ) {
-    this.personSelfUrl = Global.selfPage;
+    this.personSelfUrl = environment.selfPage;
   }
 
   ngOnInit() {

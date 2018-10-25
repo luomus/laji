@@ -16,6 +16,7 @@ export const environment = {
   namedPlaceForm: 'JX.6668',
   invasiveControlForm: '',
   loginUrl: '/user/viranomaiset',
+  selfPage: 'https://login.laji.fi/self',
   apiBase: '/api',
   production: true,
   forceLogin: true,

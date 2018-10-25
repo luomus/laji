@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { PublicationsRoutingModule } from './publications-routing.module';
 import { PublicationsComponent } from './publications.component';
+import { IucnSharedModule } from '../iucn-shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    PublicationsRoutingModule
+    PublicationsRoutingModule,
+    IucnSharedModule
   ],
   declarations: [PublicationsComponent]
 })

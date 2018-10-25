@@ -69,6 +69,7 @@ import { WbcRouteComponent } from './wbc/wbc-result/wbc-route/wbc-route.componen
 import { WbcRouteTableComponent } from './wbc/wbc-result/wbc-route-table/wbc-route-table.component';
 import { FormPermissionModule } from '../+haseka/form-permission/form-permission.module';
 import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
+import { LatestDocumentsModule } from '../shared-modules/latest-documents/latest-documents.module';
 
 /* tslint:enable:max-line-length */
 
@@ -91,7 +92,8 @@ import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnai
     NgxChartsModule,
     JWBootstrapSwitchModule,
     FormPermissionModule,
-    NavigationThumbnailModule
+    NavigationThumbnailModule,
+    LatestDocumentsModule
   ],
   declarations: [
     NafiComponent,

@@ -1,8 +1,11 @@
-.print-wrap {
+.pdf-wrap, .print-wrap {
   margin: 10px;
   width: 70px;
   height: 34px;
   position: fixed;
+}
+.print-wrap {
+  margin-left: 100px;
 }
 .settings-wrap {
   margin-top: 49px;
