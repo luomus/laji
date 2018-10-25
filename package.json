@@ -19,7 +19,7 @@
     "build:embedded": "ng build --configuration=embedded --prod",
     "build:iucn": "ng build --configuration=iucn --prod",
     "build:vir": "ng build --configuration=vir --prod",
-    "build:dev": "yarn run ng-high-memory build --configuration=dev --prod --base-href https://dev.laji.fi",
+    "build:dev": "ng build --configuration=dev --prod --base-href https://dev.laji.fi",
     "bundle-report": "ng build --prod --aot --stats-json --named-chunks=true && webpack-bundle-analyzer dist/browser/stats.json",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test",
