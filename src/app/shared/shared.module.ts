@@ -51,6 +51,7 @@ import { ForTypesDirective } from './directive/for-types.directive';
 import { IucnFooterComponent } from './iucn-footer/footer.component';
 import { CapitalizePipe } from './pipe/capitalize.pipe';
 import { CoordinatePipe } from './pipe/coordinate.pipe';
+import { FilterPipe } from './pipe/filter.pipe';
 
 
 @NgModule({
@@ -70,7 +71,8 @@ import { CoordinatePipe } from './pipe/coordinate.pipe';
     ForTypesDirective,
     IucnFooterComponent,
     CapitalizePipe,
-    CoordinatePipe
+    CoordinatePipe,
+    FilterPipe
   ],
   imports: [
     FormsModule,
@@ -95,7 +97,8 @@ import { CoordinatePipe } from './pipe/coordinate.pipe';
     AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, ServerOnlyDirective, BrowserOnlyDirective,
     LoggedInDirective, FixedBelowDirective, ClickOutSideDirective, ObservationGroupSelectComponent,
     SourcePipe, RemoveEmptyPipe, DatePickerComponent, TaxonNameComponent,
-    FactNotInPipe, ForTypesDirective, IucnFooterComponent, CapitalizePipe, CoordinatePipe
+    FactNotInPipe, ForTypesDirective, IucnFooterComponent, CapitalizePipe, CoordinatePipe,
+    FilterPipe
   ]
 })
 export class SharedModule {

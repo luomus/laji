@@ -31,6 +31,7 @@ export class NpListComponent {
   columns: ObservationTableColumn[];
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   showLegendList = false;
+  filterBy: string;
   legendList = [
     {label: 'Vapaa', color: '#ffffff'},
     {label: 'Varattu', color: '#d1c400'},
@@ -99,6 +100,10 @@ export class NpListComponent {
       this.showLegendList = formData.namedPlaceOptions.showLegendList;
     }
     this.initData();
+  }
+
+  updateFilter(event) {
+    this.filterBy = event.target.value;
   }
 
   private initData() {

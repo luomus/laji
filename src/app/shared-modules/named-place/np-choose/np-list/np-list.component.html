@@ -1,3 +1,13 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="filterBy">
+      <input class="form-control inline-block"
+             type='text'
+             placeholder="{{'haseka.submissions.filter' | translate}}"
+             (keyup)="updateFilter($event)">
+    </div>
+  </div>
+</div>
 <div class="table-responsive np-list">
   <laji-datatable
     #dataTable
@@ -7,7 +17,8 @@
     [virtualScrolling]="true"
     [clientSideSorting]="true"
     [height]="height"
-    [rows]='data'
+    [rows]="data"
+    [filterBy]="filterBy"
     [loading]="false"
     [count]="data.length"
     [sorts]="sorts"
@@ -16,6 +27,7 @@
     [pageSize]="data.length"
     [columns]="columns"
     [selectionType]="'single'"
+    (sortChange)="test()"
     [preselectedRowIndex]="preselectedNPIndex"
     >
   </laji-datatable>
