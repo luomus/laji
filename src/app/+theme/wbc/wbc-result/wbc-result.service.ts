@@ -9,7 +9,7 @@ import { PagedResult } from '../../../shared/model/PagedResult';
 export type SEASON = 'spring'|'fall'|'winter';
 
 interface ObservationStats {
-  [s: string]: {speciesStats: any[], otherStats: any[], newestYear?: number, oldestYear?: number}
+  [s: string]: {speciesStats: any[], otherStats: any[], years: number[]}
 }
 interface CountPerCensusResult {
   [s: string]: {name: number, value: number, count: number, censusCount: number}[]
@@ -80,7 +80,7 @@ export class WbcResultService {
 
   getRouteList(): Observable<any[]> {
     return this.getList(
-      this.warehouseApi.warehouseQueryStatisticsGet(
+      this.warehouseApi.warehouseQueryGatheringStatisticsGet(
         this.getFilterParams(),
         ['document.namedPlace.id', 'document.namedPlace.name', 'document.namedPlace.ykj10km.lat',
           'document.namedPlace.ykj10km.lon', 'document.namedPlace.municipalityDisplayName',
@@ -137,7 +137,7 @@ export class WbcResultService {
       map(result => result.results),
       map(resultList => {
         const result = this.parseObservationStatsList(resultList);
-        this.addMeanAndMedianToObservationStats(result);
+        this.addStatisticsToObservationStats(result);
         return result;
       })
     )
@@ -152,7 +152,8 @@ export class WbcResultService {
           {'name': 'speciesCount'},
           {'name': 'individualCount'},
           {'name': 'documentIds'}
-        ]
+        ],
+        'years': []
       };
     }
 
@@ -169,11 +170,9 @@ export class WbcResultService {
         return;
       }
 
-      if (!result[season].oldestYear || year < result[season].oldestYear) {
-        result[season].oldestYear = year;
-      }
-      if (!result[season].newestYear || year > result[season].newestYear) {
-        result[season].newestYear = year;
+      if (result[season].years.indexOf(year) === -1) {
+        result[season].years.push(year);
+        result[season].years.sort();
       }
 
       const speciesStats = result[season].speciesStats;
@@ -195,34 +194,44 @@ export class WbcResultService {
     return result;
   }
 
-  private addMeanAndMedianToObservationStats(result: ObservationStats) {
-    const addMeanAndMedianToObj = (obj) => {
+  private addStatisticsToObservationStats(result: ObservationStats) {
+    const addStatisticsToObj = (obj, years) => {
+      let min = Number.MAX_VALUE;
+      let max = 0;
+
       let sum = 0;
       const counts = [];
-      for (const key in obj) {
-        if (obj.hasOwnProperty(key) && !isNaN(parseInt(key, 10))) {
-          sum += obj[key];
-          counts.push(obj[key]);
+      for (let i = 0; i < years.length; i++) {
+        const key = years[i] + '';
+        if (!obj[key]) {
+          obj[key] = 0;
         }
+        sum += obj[key];
+        counts.push(obj[key]);
+
+        min = Math.min(min, obj[key]);
+        max = Math.max(max, obj[key]);
       }
-      if (counts.length === 0) {
-        obj.mean = undefined;
-        obj.median = undefined;
-      } else {
+
+      if (counts.length !== 0) {
         obj.mean = sum / counts.length;
         obj.median = this.median(counts);
+        obj.min = min;
+        obj.max = max;
       }
     };
 
     for (const season of ['fall', 'winter', 'spring']) {
+      const years = result[season].years;
+
       const speciesStats = result[season].speciesStats;
       for (let j = 0; j < speciesStats.length; j++) {
-        addMeanAndMedianToObj(speciesStats[j]);
+        addStatisticsToObj(speciesStats[j], years);
       }
 
       const otherStats = result[season].otherStats;
-      addMeanAndMedianToObj(otherStats[0]);
-      addMeanAndMedianToObj(otherStats[1]);
+      addStatisticsToObj(otherStats[0], years);
+      addStatisticsToObj(otherStats[1], years);
     }
   }
 

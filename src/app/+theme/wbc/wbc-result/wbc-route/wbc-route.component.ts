@@ -36,7 +36,9 @@ export class WbcRouteComponent implements OnInit, OnDestroy {
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [
     {prop: 'gathering.eventDate.begin', dir: 'desc'},
   ];
-  loading = false;
+
+  loadingCensusList = false;
+  loadingObservationStats = false;
 
   documentModalVisible = false;
   shownDocument: string;
@@ -63,18 +65,22 @@ export class WbcRouteComponent implements OnInit, OnDestroy {
       this.season = params[1]['season'];
       this.cd.markForCheck();
 
-      if (!this.season && !this.rows && !this.loading) {
-        this.loading = true;
+      if (!this.season && !this.rows && !this.loadingCensusList) {
+        this.loadingCensusList = true;
         this.resultService.getCensusListForRoute(this.id)
           .subscribe(censuses => {
             this.rows = censuses;
-            this.loading = false;
+            this.loadingCensusList = false;
             this.cd.markForCheck();
           })
-      } else if (!this.observationStats) {
+      }
+
+      if (this.season && !this.observationStats && !this.loadingObservationStats) {
+        this.loadingObservationStats = true;
         this.resultService.getObservationStatsForRoute(this.id)
           .subscribe(data => {
             this.observationStats = data;
+            this.loadingObservationStats = false;
             this.cd.markForCheck();
           })
       }
