@@ -80,7 +80,7 @@ export class WbcResultService {
 
   getRouteList(): Observable<any[]> {
     return this.getList(
-      this.warehouseApi.warehouseQueryStatisticsGet(
+      this.warehouseApi.warehouseQueryGatheringStatisticsGet(
         this.getFilterParams(),
         ['document.namedPlace.id', 'document.namedPlace.name', 'document.namedPlace.ykj10km.lat',
           'document.namedPlace.ykj10km.lon', 'document.namedPlace.municipalityDisplayName',
