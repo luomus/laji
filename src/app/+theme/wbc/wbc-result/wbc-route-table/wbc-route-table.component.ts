@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, ViewChild, TemplateRef, EventEmitter } from '@angular/core';
 import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
 import { LocalStorage } from 'ngx-webstorage';
+import { orderByComparator } from '@swimlane/ngx-datatable/src/utils/sort';
 
 @Component({
   selector: 'laji-wbc-route-table',
@@ -46,8 +47,20 @@ export class WbcRouteTableComponent implements OnInit {
     this.showWbcRouteTableInfo = !this.showWbcRouteTableInfo;
   }
 
+  onSort(event) {
+    const speciesStats = this.rows.slice(0, -3);
+    const otherStats = this.rows.slice(-3);
+    event.sorts.forEach((sort) => {
+      const comparator = this.getSortingComparator(sort.prop);
+      const dir = sort.dir === 'asc' ? 1 : -1;
+      speciesStats.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]))
+    });
+    this.rows = speciesStats.concat(otherStats);
+  }
+
   setColumns(data) {
     this.columns = [{name: 'name', label: 'result.unit.taxonVerbatim', cellTemplate: this.textOrTranslationKeyTpl}];
+
     for (let i = data.years[0]; i <= data.years[data.years.length - 1]; i++) {
       this.columns.push({
         name: i + '',
@@ -57,8 +70,22 @@ export class WbcRouteTableComponent implements OnInit {
         cellClass: this._getCellClass
       });
     }
-    this.columns.push({name: 'mean', label: 'wbc.stats.route.mean', width: 85, cellTemplate: this.numberOrDocumentIdsTpl, cellClass: 'mean'});
-    this.columns.push({name: 'median', label: 'wbc.stats.route.median', width: 85, cellTemplate: this.numberOrDocumentIdsTpl, cellClass: 'median'});
+
+    this.columns.push({
+      name: 'mean',
+      label: 'wbc.stats.route.mean',
+      width: 85,
+      cellTemplate: this.numberOrDocumentIdsTpl,
+      cellClass: 'mean'
+    });
+    this.columns.push({
+      name: 'median',
+      label: 'wbc.stats.route.median',
+      width: 85,
+      cellTemplate: this.numberOrDocumentIdsTpl,
+      cellClass: 'median'
+    });
+
     this.columns.push({name: 'name', label: 'result.unit.taxonVerbatim', cellTemplate: this.textOrTranslationKeyTpl});
   }
 
@@ -93,5 +120,19 @@ export class WbcRouteTableComponent implements OnInit {
 
   private isLastRow(row: any) {
     return row.name === 'speciesCount' || row.name === 'individualCount' || row.name === 'documentIds';
+  }
+
+  private getSortingComparator(prop: string): (a, b) => number {
+    if (prop === 'name') {
+      return (a, b) => {
+        return (a).localeCompare(b);
+      }
+    }
+
+    return (a, b) => {
+      a = parseInt(a, 10);
+      b = parseInt(b, 10);
+      return a - b;
+    }
   }
 }

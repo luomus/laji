@@ -16,7 +16,8 @@
   [columnMode]="'standard'"
   [totalMessage]="'haseka.submissions.total' | translate"
   [columns]="columns"
-  [getRowClass]="_getRowClass">
+  [getRowClass]="_getRowClass"
+  (sortChange)="onSort($event)">
 </laji-datatable>
 
 <ng-template let-value="value" let-row="row" #textOrTranslationKey>
