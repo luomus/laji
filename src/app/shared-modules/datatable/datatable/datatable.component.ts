@@ -12,7 +12,8 @@ import {
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
-import { interval as ObservableInterval, of as ObservableOf } from 'rxjs';
+import { interval as ObservableInterval, of as ObservableOf, Observable } from 'rxjs';
+import { map, tap, share } from 'rxjs/operators';
 import { CacheService } from '../../../shared/service/cache.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
@@ -73,12 +74,23 @@ export class DatatableComponent implements AfterViewInit {
 
   initialized = false;
 
+  private settings$: Observable<Settings>;
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private cacheService: CacheService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private logger: Logger
-  ) { }
+  ) {
+    this.settings$ = DatatableComponent.settings ?
+      ObservableOf(DatatableComponent.settings).pipe(share()) :
+      this.cacheService.getItem<Settings>(CACHE_COLUMN_SETINGS)
+        .pipe(
+          map(value => value || {}),
+          tap(value => DatatableComponent.settings = value),
+          share()
+        )
+  }
 
   @Input() set count(cnt: number) {
     this._count = typeof cnt === 'number' ? cnt  : 0;
@@ -100,13 +112,7 @@ export class DatatableComponent implements AfterViewInit {
   };
 
   @Input() set columns(columns: DatatableColumn[]) {
-    const settings$ = DatatableComponent.settings ?
-      ObservableOf(DatatableComponent.settings) :
-      this.cacheService.getItem<Settings>(CACHE_COLUMN_SETINGS)
-        .map(value => value || {})
-        .do(value => DatatableComponent.settings = value);
-
-    settings$.subscribe(settings => {
+    this.settings$.subscribe(settings => {
       this._columns = columns.map((column) => {
         if (!column.headerTemplate) {
           column.headerTemplate = this.datatableTemplates.header;
