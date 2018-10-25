@@ -8,7 +8,7 @@ node {
     stage('Build production') {
       milestone()
       sh 'rm -rf dist'
-      sh 'yarn run --silent build:ssr:prod'
+      sh 'yarn run --silent build:prod'
       sh 'pre-compress-web-assets dist/browser'
       sh 'tar -cvzf prod.tar.gz --strip-components=1 dist'
     }
