@@ -2,9 +2,38 @@
 <laji-wbc-result-filters (yearChange)="activeYear = $event"
                          (seasonChange)="activeSeason = $event"
                          (areaChange)="activeBirdAssociationArea = $event"
+                         [yearRequired]="showStatistics"
 ></laji-wbc-result-filters>
+<div class="row options-container">
+  <div class="col-sm-6">
+    <bSwitch
+      name="onlyFinnish"
+      [switch-off-text]="'Kaikki lajit'"
+      [switch-on-text]="'Yleiset lajit'"
+      [switch-on-color]="'primary'"
+      [switch-size]="'small'"
+      [(ngModel)]="onlyCommonSpecies"
+      [switch-base-class]="'bootstrap-switch'">
+    </bSwitch>
+  </div>
+  <div class="col-sm-6" ngPreserveWhitespaces>
+    <label for="showStatistics">Tunnusluvut </label>
+    <bSwitch
+      id="showStatistics"
+      name="showStatistics"
+      [switch-off-text]="'no' | translate"
+      [switch-on-text]="'yes' | translate"
+      [switch-on-color]="'primary'"
+      [switch-size]="'small'"
+      [(ngModel)]="showStatistics"
+      [switch-base-class]="'bootstrap-switch'">
+    </bSwitch>
+  </div>
+</div>
 <laji-wbc-species-list (rowSelect)="taxonSelect($event)"
                        [year]="activeYear"
                        [season]="activeSeason"
                        [birdAssociationArea]="activeBirdAssociationArea"
+                       [onlyCommonSpecies]="onlyCommonSpecies"
+                       [showStatistics]="showStatistics"
 ></laji-wbc-species-list>

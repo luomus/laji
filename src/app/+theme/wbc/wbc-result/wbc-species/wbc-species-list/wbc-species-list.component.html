@@ -1,15 +1,3 @@
-<div class="options-container">
-  <bSwitch
-    name="onlyFinnish"
-    [switch-off-text]="'Kaikki lajit'"
-    [switch-on-text]="'Yleiset lajit'"
-    [switch-on-color]="'primary'"
-    [switch-size]="'small'"
-    [(ngModel)]="onlyCommonSpecies"
-    [switch-base-class]="'bootstrap-switch'"
-    (onChangeState)="setRows()">
-  </bSwitch>
-</div>
 <laji-datatable
   #dataTable
   (rowSelect)="rowSelect.emit($event.row['unit.linkings.taxon.id'])"

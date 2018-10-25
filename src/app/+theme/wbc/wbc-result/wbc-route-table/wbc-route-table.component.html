@@ -37,8 +37,8 @@
   </ng-container>
   <ng-template #documentIds>
     <span *ngIf="value && value.length > 0" ngPreserveWhitespaces style="display: inline-block">
-      <ng-container *ngFor="let doc of value; let i = index">
-        <a (click)="onDocumentClick.emit(doc)" title="{{doc}}">[{{i + 1}}]</a>
+      <ng-container *ngFor="let doc of value">
+        <a (click)="onDocumentClick.emit(doc)" title="{{doc}}">Linkki</a>
       </ng-container>
     </span>
   </ng-template>
