@@ -112,7 +112,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     });
 
     if (this._filterBy) {
-      this.updateFilter();
+      this.updateFilteredRows();
     } else {
       this._rows = this._originalRows;
     }
@@ -183,7 +183,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     this.filterByChange = this.filterChange$.pipe(
       debounceTime(400)
     ).subscribe(() => {
-      this.updateFilter();
+      this.updateFilteredRows();
       this.changeDetectorRef.markForCheck();
     })
   }
@@ -265,7 +265,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     }
   }
 
-  private updateFilter() {
+  private updateFilteredRows() {
     this._rows = this._filterBy ? this.filterService.filter(this._originalRows, this._filterBy) : this._originalRows;
     this._count = this._rows.length;
     this._page = 1;
