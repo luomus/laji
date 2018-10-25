@@ -2,5 +2,6 @@
 <laji-own-submissions
   [columns]="['dateEdited', 'dateObserved', 'namedPlaceName', 'unitCount', 'observer', 'id']"
   [collectionID]="collectionID"
+  [usePrivateDWViewer]="!((rights | async)?.admin)"
   [useInternalDocumentViewer]="true"
   [showDownloadAll]="false"></laji-own-submissions>
