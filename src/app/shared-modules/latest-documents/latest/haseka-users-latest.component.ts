@@ -51,7 +51,7 @@ export class UsersLatestComponent implements OnChanges {
     this.formService.getAllTempDocuments()
       .switchMap(documents => this.processDocuments(documents))
       .subscribe((documents) => {
-        this.unpublishedDocuments = this.forms ? documents.filter(doc => this.forms.indexOf(doc.formID) > -1) : [...this.forms];
+        this.unpublishedDocuments = this.forms ? documents.filter(doc => this.forms.indexOf(doc.formID) > -1) : [...documents];
         this.cd.markForCheck();
       });
   }
