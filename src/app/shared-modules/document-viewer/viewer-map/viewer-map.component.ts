@@ -11,7 +11,11 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
-  @Input() data: any;
+  @Input() data: {
+    geoJSON: any;
+    wgs84: any;
+    ykj: any;
+  }[];
   @Input() height = 300;
   @Input() visible = true;
   @Input() active = 0;
@@ -66,7 +70,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
           fillOpacity: 0.3,
           color: '#00aa00'
         }),
-        featureCollection: this.getFeatureCollection(set)
+        featureCollection: this.getFeatureCollection(set.geoJSON)
       }));
     } catch (e) { }
   }

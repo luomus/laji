@@ -1,5 +1,5 @@
 node {
-  nvm('v11.0.0') {
+  nvm('v8.12.0') {
     stage('Prepare environment') {
       git branch: 'development', url: 'https://bitbucket.org/luomus/laji.fi-front.git'
       sh 'npm install -g yarn'
@@ -10,7 +10,7 @@ node {
     }
     stage('Build') {
       milestone()
-      sh 'yarn run --silent build:ssr:dev'
+      sh 'yarn run --silent build:dev'
       sh 'pre-compress-web-assets dist/browser'
     }
     stage('Archive') {

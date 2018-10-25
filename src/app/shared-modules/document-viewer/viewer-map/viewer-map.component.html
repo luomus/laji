@@ -1,3 +1,8 @@
-<div style="max-width: 400px; height: 300px;">
-  <laji-map [options]="mapOptions" [lang]="translate.currentLang"></laji-map>
-</div>
+<ng-container>
+  <div style="max-width: 400px; height: 300px;">
+    <laji-map [options]="mapOptions" [lang]="translate.currentLang"></laji-map>
+  </div>
+  <ng-container *ngIf="data">
+    <laji-viewer-coordinates [wgs84]="data[active].wgs84" [ykj]="data[active].ykj"></laji-viewer-coordinates>
+  </ng-container>
+</ng-container>
