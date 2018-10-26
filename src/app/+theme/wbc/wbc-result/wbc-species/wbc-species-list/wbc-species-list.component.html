@@ -17,7 +17,7 @@
 
 <ng-template let-row="row" #scientificName>
   <a *ngIf="row['unit.linkings.taxon.scientificName']" title="{{row['unit.linkings.taxon.scientificName']}}">
-    <span [class.cursive]="row['unit.linkings.taxon.cursiveName']">
+    <span [class.cursive]="row['unit.linkings.taxon.cursiveName'] === 'true'">
     {{row['unit.linkings.taxon.scientificName']}}
     </span>
   </a>

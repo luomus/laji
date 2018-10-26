@@ -33,7 +33,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
   private defaultColumns: DatatableColumn[] = [];
   private additionalColumns: DatatableColumn[] = [];
 
-  private commonLimit = 50;
+  private commonLimit = 30;
   private subList: Subscription;
   private queryKey: string;
 
