@@ -23,6 +23,7 @@ export class NpListComponent {
     '$.prepopulatedDocument.gatheringEvent.dateBegin': 'lastCensus',
     '$.prepopulatedDocument.gatheringEvent.dateEnd': 'haseka.submissions.dateEnd',
     '$.taxonIDs[0]': 'result.unit.taxonVerbatim',
+    '$.municipality': 'np.municipality'
   };
 
   _namedPlaces: NamedPlace[];
@@ -43,6 +44,7 @@ export class NpListComponent {
 
   @ViewChild('label') labelIDTpl: TemplateRef<any>;
   @ViewChild('status') statusTpl: TemplateRef<any>;
+  @ViewChild('area') areaTpl: TemplateRef<any>;
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
   @Output() onActivePlaceChange = new EventEmitter<number>();
@@ -89,6 +91,9 @@ export class NpListComponent {
           break;
         case '$._status':
           col.cellTemplate = this.statusTpl;
+          break;
+        case '$.municipality':
+          col.cellTemplate = this.areaTpl;
           break;
       }
       col.width = this.widths[path] ? this.widths[path] : 50;
