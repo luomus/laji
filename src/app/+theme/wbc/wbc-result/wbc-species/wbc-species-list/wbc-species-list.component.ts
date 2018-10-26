@@ -1,6 +1,10 @@
-import { Component, OnInit, OnChanges, ChangeDetectorRef, Input, Output, EventEmitter, ViewChild, TemplateRef } from '@angular/core';
+import {
+  Component, OnInit, OnChanges, ChangeDetectorRef, Input, Output, EventEmitter, ViewChild, TemplateRef,
+  SimpleChanges
+} from '@angular/core';
 import { WbcResultService, SEASON } from '../../wbc-result.service';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 
 @Component({
@@ -12,15 +16,14 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
   @Input() year: number;
   @Input() season: SEASON;
   @Input() birdAssociationArea: string;
+  @Input() onlyCommonSpecies = true;
+  @Input() showStatistics = false;
   @Output() rowSelect = new EventEmitter<string>();
 
   @ViewChild('name') nameTpl: TemplateRef<any>;
   @ViewChild('scientificName') scientificNameTpl: TemplateRef<any>;
 
   loading = false;
-
-  onlyCommonSpecies = true;
-  private commonLimit = 50;
 
   rows: any[] = [];
   private allRows: any[] = [];
@@ -30,6 +33,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
   private defaultColumns: DatatableColumn[] = [];
   private additionalColumns: DatatableColumn[] = [];
 
+  private commonLimit = 50;
   private subList: Subscription;
   private queryKey: string;
 
@@ -52,14 +56,55 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
       },
       {
         name: 'count',
-        label: 'wbc.stats.count'
+        label: 'wbc.stats.count',
+        width: 110
+      }
+    ];
+    this.additionalColumns = [
+      {
+        name: 'individualCountSum',
+        label: 'observation.form.count',
+        width: 110
+      },
+      {
+        name: 'frequency',
+        label: 'wbc.stats.frequency',
+        cellTemplate: 'number',
+        width: 110
+      },
+      {
+        name: 'abundance',
+        label: 'wbc.stats.abundance',
+        cellTemplate: 'number',
+        width: 160
+      },
+      {
+        name: 'abundanceComparison',
+        label: 'wbc.stats.abundanceComparison',
+        cellTemplate: 'number',
+        width: 210
       }
     ];
     this.columns = this.defaultColumns;
     this.updateSpeciesList();
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.onlyCommonSpecies) {
+      this.setRows();
+    }
+
+    if (changes.showStatistics) {
+      if (this.showStatistics) {
+        this.columns = this.defaultColumns.concat(this.additionalColumns);
+      } else {
+        this.columns = this.defaultColumns;
+        if (!(changes.year || changes.season || changes.birdAssociationArea)) {
+          return;
+        }
+      }
+    }
+
     this.updateSpeciesList();
   }
 
@@ -74,8 +119,10 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
   }
 
   private updateSpeciesList() {
-    const queryKey = 'year:' + this.year + ',season:' + this.season + ',area:' + this.birdAssociationArea;
-    if (this.loading && this.queryKey === queryKey) {
+    const queryKey = 'year:' + this.year + ',season:' + this.season + ',area:' + this.birdAssociationArea
+      + ',showStatistics:' + this.showStatistics;
+
+    if (this.queryKey === queryKey) {
       return;
     }
     this.queryKey = queryKey;
@@ -84,13 +131,47 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
       this.subList.unsubscribe();
     }
     this.loading = true;
-    this.subList = this.resultService.getSpeciesList(this.year, this.season, this.birdAssociationArea)
+    this.subList = this.resultService.getSpeciesList(this.year, this.season, this.birdAssociationArea, !this.showStatistics)
+      .pipe(switchMap(list => (this.showStatistics ? this.addAdditionalStatistics(list) : of(list))))
       .subscribe(list => {
         this.allRows = list;
         this.filteredRows = this.allRows.filter(val => (val.count >= this.commonLimit));
         this.setRows();
         this.loading = false;
         this.cd.markForCheck();
-      });
+      })
+  }
+
+  private addAdditionalStatistics(list: any[]) {
+    const previousTenYears = [];
+    for (let i = this.year - 10; i < this.year; i++) {
+      previousTenYears.push(i);
+    }
+
+    return forkJoin([
+      this.resultService.getRouteCountBySpecies(this.year, this.season, this.birdAssociationArea),
+      this.resultService.getRouteCount(this.year, this.season, this.birdAssociationArea),
+      this.resultService.getRouteLengthSum(this.year, this.season, this.birdAssociationArea),
+      this.resultService.getCountBySpecies(previousTenYears, this.season, this.birdAssociationArea),
+      this.resultService.getRouteLengthSum(previousTenYears, this.season, this.birdAssociationArea)
+    ])
+      .pipe(
+        map(data => {
+          const routeCountBySpecies = data[0];
+          const routeCount = data[1];
+          const routeLengthSum = data[2] / 10000;
+          const countBySpeciesPrevTenYears = data[3];
+          const routeLengthSumPrevTenYears = data[4] / 10000;
+
+          list.map((l) => {
+            const taxonId = l['unit.linkings.taxon.id'];
+            l['frequency'] = ((routeCountBySpecies[taxonId] || 0) / routeCount) * 100;
+            l['abundance'] = l.count / routeLengthSum;
+            l['abundanceComparison'] = l['abundance'] - ((countBySpeciesPrevTenYears[taxonId] || 0) / routeLengthSumPrevTenYears);
+          });
+
+          return list;
+        })
+      )
   }
 }
