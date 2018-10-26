@@ -17,6 +17,7 @@
   <laji-document-form-footer
           [form]="form"
           [status]="status"
+          (onLock)="lock($event)"
           (onSubmitPublic)="submitPublic()"
           (onSubmitPrivate)="submitPrivate()"
           (onCancel)="onCancel.emit()"></laji-document-form-footer>

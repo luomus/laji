@@ -1,6 +1,14 @@
-<div class="form-footer" *ngIf="_form && !_locked">
+<div class="form-footer" *ngIf="_admin || (_form && !_locked)">
   <div class="row">
     <div class="col-xs-3 col-sm-2" *ngIf="show.save">
+      <div class="lock-button" *ngIf="_admin">
+        <ng-container *ngIf="_locked; else open">
+          <button type="button" class="btn btn-danger" (click)="onLock.emit(false)"><i class="fa fa-lock"></i></button>
+        </ng-container>
+        <ng-template #open>
+          <button type="button" class="btn btn-success" (click)="onLock.emit(true)"><i class="fa fa-unlock"></i></button>
+        </ng-template>
+      </div>
       <button class="btn btn-success btn-sm" [disabled]="saving" type="submit" (click)="onSubmitPublic.emit()">{{buttonLabel('save') | translate}}</button>
     </div>
     <div [ngClass]="{'col-xs-3 col-sm-2': show.save, 'col-xs-5 col-sm-3': !show.save}">

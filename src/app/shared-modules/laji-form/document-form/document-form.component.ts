@@ -187,6 +187,10 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       });
   }
 
+  lock(lock) {
+    this.form = {...this.form, formData: {...this.form.formData, locked: lock}};
+  }
+
   onSubmit(event) {
     let doc$;
     if (this.saving) {

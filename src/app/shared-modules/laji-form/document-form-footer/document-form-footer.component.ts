@@ -1,6 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
-import { UserService } from '../../../shared/service/user.service';
-import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'laji-document-form-footer',
@@ -14,23 +12,22 @@ export class DocumentFormFooterComponent {
   @Output() onSubmitPublic = new EventEmitter();
   @Output() onSubmitPrivate = new EventEmitter();
   @Output() onCancel = new EventEmitter();
+  @Output() onLock = new EventEmitter<boolean>();
   _form: any;
   _locked: false;
+  _admin: false;
   show = {
     save: false,
     temp: false,
     cancel: false
   };
 
-  constructor(
-    private  userService: UserService,
-    private formPermissionService: FormPermissionService,
-    private cdr: ChangeDetectorRef
-  ) { }
+  constructor() { }
 
   @Input()
   set form(form: any) {
     this._form = form;
+    this._admin = form && form.uiSchemaContext && form.uiSchemaContext.isAdmin;
     this._locked = form && form.formData && form.formData.locked;
     ['save', 'temp', 'cancel'].forEach(place => {
       let show: boolean;
