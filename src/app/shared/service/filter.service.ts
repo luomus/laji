@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 
 type FilterBaseType = number|boolean|string;
-export type FilterByType = FilterBaseType|{by: FilterBaseType, properties: string[]};
+
+interface FilterObjType {by: FilterBaseType, properties: string[]}
+
+export type FilterByType = FilterBaseType|FilterObjType;
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +20,18 @@ export class FilterService {
     if (!Array.isArray(value) || !filterBy) {
       return value;
     }
-    const needle = typeof filterBy === 'object' ? filterBy.by : filterBy;
-    const properties = typeof filterBy === 'object' ? filterBy.properties : null;
-    return value.filter(val => this.contains(needle, val, properties));
+    let needle = filterBy;
+    let properties = null;
+    switch (typeof filterBy) {
+      case 'object':
+        needle = (filterBy as FilterObjType).by;
+        properties = (filterBy as FilterObjType).properties;
+        break;
+      case 'string':
+        needle = (needle as string).toLocaleLowerCase();
+        break;
+    }
+    return value.filter(val => this.contains(needle as FilterBaseType, val, properties));
   }
 
   /**
@@ -31,7 +43,7 @@ export class FilterService {
   private contains(needle: FilterBaseType, haystack: any, properties: string[]) {
     switch (typeof haystack) {
       case 'string':
-        return haystack.indexOf(needle) > -1;
+        return haystack.toLocaleLowerCase().indexOf(needle as string) > -1;
       case 'number':
         return haystack === needle;
       case 'boolean':
