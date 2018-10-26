@@ -3,11 +3,14 @@ import { ExtendedNamedPlace } from '../../model/extended-named-place';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from 'app/shared/logger';
+import { LabelPipe } from 'app/shared/pipe';
+import { AreaNamePipe } from 'app/shared/pipe/area-name.pipe';
 
 @Component({
   selector: 'laji-np-map',
   templateUrl: './np-map.component.html',
-  styleUrls: ['./np-map.component.css']
+  styleUrls: ['./np-map.component.css'],
+  providers: [ LabelPipe, AreaNamePipe ]
 })
 export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
@@ -32,7 +35,9 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor(
     public translate: TranslateService,
-    private logger: Logger
+    private logger: Logger,
+    private labelPipe: LabelPipe,
+    private areaNamePipe: AreaNamePipe
   ) { }
 
   ngOnInit() {
@@ -124,14 +129,26 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
             geometry: np.geometry,
             properties: {
               reserved: np._status,
-              name: np.name
+              name: np.name,
+              municipality: np.municipality,
+              taxon: np.taxonIDs
             }
           }))
         },
         getPopup: (idx: number, geo, cb: Function) => {
           try {
             const properties = this._data.featureCollection.features[idx].properties;
-            cb(properties.name);
+            let s = '';
+            if (properties.name) {
+              s += '<div>' + capitalizeFirst(properties.name) + '</div>';
+            }
+            if (properties.municipality) {
+              s += '<div>' + capitalizeFirst(this.areaNamePipe.transform(properties.municipality, 'name')) + '</div>';
+            }
+            if (properties.taxon) {
+              s += '<div>' + capitalizeFirst(this.labelPipe.transform(properties.taxon)) + '</div>';
+            }
+            cb(s);
           } catch (e) {
             this.logger.log('Failed to display popup for the map', e);
           }
@@ -153,4 +170,11 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
+}
+
+function capitalizeFirst(s: string | Array<string>) {
+  if (Array.isArray(s)) {
+    return s.map(u => capitalizeFirst(u));
+  }
+  return s.substring(0, 1).toUpperCase().concat(s.substring(1, s.length));
 }
