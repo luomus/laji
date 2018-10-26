@@ -52,6 +52,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() documents: Document[];
   @Input() loadError = '';
   @Input() showDownloadAll = true;
+  @Input() admin = false;
   @Input() useInternalDocumentViewer = false;
   @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
   @Input() onlyTemplates = false;

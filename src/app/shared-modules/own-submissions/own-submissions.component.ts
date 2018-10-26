@@ -16,13 +16,13 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
 
   @Input() collectionID;
   @Input() showDownloadAll = true;
+  @Input() admin = false;
   @Input() useInternalDocumentViewer = false;
   @Input() actions: string[]|false = ['edit', 'view', 'template', 'download', 'stats', 'delete'];
   @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
   @Input() templateColumns = ['templateName', 'templateDescription', 'dateEdited', 'form', 'id'];
   @Input() onlyTemplates = false;
   @Input() namedPlace: string;
-  @Input() usePrivateDWViewer = true;
   @ViewChild('documentModal') public modal: ModalDirective;
 
   publicity = Document.PublicityRestrictionsEnum;

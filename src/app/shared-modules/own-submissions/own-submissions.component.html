@@ -6,6 +6,7 @@
   <laji-own-datatable
     (documentClicked)="onDocumentClick($event)"
     [actions]="actions"
+    [admin]="admin"
     [columns]="onlyTemplates ? templateColumns : columns"
     [showDownloadAll]="showDownloadAll && !onlyTemplates"
     [useInternalDocumentViewer]="useInternalDocumentViewer"
@@ -28,7 +29,7 @@
         </button>
         <laji-document *ngIf="shownDocument.publicityRestrictions === publicity.publicityRestrictionsPublic"
                        [uri]="shownDocument.id"
-                       [own]="usePrivateDWViewer">
+                       [own]="!admin">
         </laji-document>
         <laji-document-local *ngIf="shownDocument.publicityRestrictions !== publicity.publicityRestrictionsPublic"
                              [document]="shownDocument">
