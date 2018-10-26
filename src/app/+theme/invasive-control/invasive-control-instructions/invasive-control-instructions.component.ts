@@ -47,7 +47,7 @@ export class InvasiveControlInstructionsComponent implements OnInit {
     }
     this.formService.getForm(environment.invasiveControlForm, this.translateService.currentLang).subscribe(form => {
       this.formPermissionService.getRights(form).subscribe((rights) => {
-        if (rights.admin === true && rights.edit === true) {
+        if (rights.admin === true || rights.edit === true) {
           this.rights = Rights.Allowed;
         } else {
           this.rights = Rights.NotAllowed;
