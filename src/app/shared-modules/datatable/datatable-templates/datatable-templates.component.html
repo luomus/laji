@@ -4,6 +4,7 @@
     <span class="datatable-header-cell-label draggable">
       {{column.label | translate}}
     </span>
+    <laji-info *ngIf="column.info">{{column.info | translate}}</laji-info>
   </span>
 </ng-template>
 
