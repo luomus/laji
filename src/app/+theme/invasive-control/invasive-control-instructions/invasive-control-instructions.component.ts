@@ -7,6 +7,8 @@ import { FormService } from '../../../shared/service/form.service';
 import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
 import { environment } from '../../../../environments/environment';
 import { UserService } from '../../../shared/service/user.service';
+import { of } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 
 enum Rights {
   Allowed,
@@ -45,20 +47,21 @@ export class InvasiveControlInstructionsComponent implements OnInit {
         }
       });
     }
-    this.formService.getForm(environment.invasiveControlForm, this.translateService.currentLang).subscribe(form => {
-      this.formPermissionService.getRights(form).subscribe((rights) => {
-        if (rights.admin === true || rights.edit === true) {
+    this.formService.getForm(environment.invasiveControlForm, this.translateService.currentLang)
+      .switchMap(form => this.formPermissionService.getRights(form))
+      .pipe(
+        catchError(() => {
+          this.rights = Rights.NotDefined;
+          return of({edit: false, admin: false})
+        })
+      )
+      .subscribe((rights) => {
+        if (rights.edit === true) {
           this.rights = Rights.Allowed;
         } else {
-          this.rights = Rights.NotAllowed;
+          this.rights = Rights.NotAllowed
         }
         this.cd.markForCheck();
-      }, () => {
-        this.rights = Rights.NotDefined;
       })
-      this.form = form;
-    }, () => {
-      this.rights = Rights.NotDefined;
-    })
   }
 }
