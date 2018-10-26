@@ -70,19 +70,22 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
         name: 'frequency',
         label: 'wbc.stats.frequency',
         cellTemplate: 'number',
-        width: 110
+        width: 110,
+        info: 'wbc.stats.frequency.info'
       },
       {
         name: 'abundance',
         label: 'wbc.stats.abundance',
         cellTemplate: 'number',
-        width: 160
+        width: 180,
+        info: 'wbc.stats.abundance.info'
       },
       {
         name: 'abundanceComparison',
         label: 'wbc.stats.abundanceComparison',
         cellTemplate: 'number',
-        width: 210
+        width: 240,
+        info: 'wbc.stats.abundanceComparison.info'
       }
     ];
     this.columns = this.defaultColumns;
@@ -131,8 +134,9 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
       this.subList.unsubscribe();
     }
     this.loading = true;
-    this.subList = this.resultService.getSpeciesList(this.year, this.season, this.birdAssociationArea, !this.showStatistics)
-      .pipe(switchMap(list => (this.showStatistics ? this.addAdditionalStatistics(list) : of(list))))
+    const showStatistics = this.showStatistics;
+    this.subList = this.resultService.getSpeciesList(this.year, this.season, this.birdAssociationArea, !showStatistics)
+      .pipe(switchMap(list => (showStatistics ? this.addAdditionalStatistics(list) : of(list))))
       .subscribe(list => {
         this.allRows = list;
         this.filteredRows = this.allRows.filter(val => (val.count >= this.commonLimit));
@@ -152,7 +156,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
       this.resultService.getRouteCountBySpecies(this.year, this.season, this.birdAssociationArea),
       this.resultService.getRouteCount(this.year, this.season, this.birdAssociationArea),
       this.resultService.getRouteLengthSum(this.year, this.season, this.birdAssociationArea),
-      this.resultService.getCountBySpecies(previousTenYears, this.season, this.birdAssociationArea),
+      this.resultService.getIndividualCountSumBySpecies(previousTenYears, this.season, this.birdAssociationArea),
       this.resultService.getRouteLengthSum(previousTenYears, this.season, this.birdAssociationArea)
     ])
       .pipe(
@@ -160,14 +164,14 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
           const routeCountBySpecies = data[0];
           const routeCount = data[1];
           const routeLengthSum = data[2] / 10000;
-          const countBySpeciesPrevTenYears = data[3];
+          const individualCountBySpeciesPrevTenYears = data[3];
           const routeLengthSumPrevTenYears = data[4] / 10000;
 
           list.map((l) => {
             const taxonId = l['unit.linkings.taxon.id'];
             l['frequency'] = ((routeCountBySpecies[taxonId] || 0) / routeCount) * 100;
-            l['abundance'] = l.count / routeLengthSum;
-            l['abundanceComparison'] = l['abundance'] - ((countBySpeciesPrevTenYears[taxonId] || 0) / routeLengthSumPrevTenYears);
+            l['abundance'] = l.individualCountSum / routeLengthSum;
+            l['abundanceComparison'] = l['abundance'] - ((individualCountBySpeciesPrevTenYears[taxonId] || 0) / routeLengthSumPrevTenYears);
           });
 
           return list;

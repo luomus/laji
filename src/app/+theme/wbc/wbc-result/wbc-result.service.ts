@@ -111,19 +111,21 @@ export class WbcResultService {
     )
   }
 
-  getCountBySpecies(year: number|number[], season?: SEASON, birdAssociationArea?: string) {
+  getIndividualCountSumBySpecies(year: number|number[], season?: SEASON, birdAssociationArea?: string) {
     return this.warehouseApi.warehouseQueryStatisticsGet(
       this.getFilterParams(year, season, birdAssociationArea),
       ['unit.linkings.taxon.id'],
       undefined,
       10000,
-      1
+      1,
+      undefined,
+      false
     ).pipe(
       map(res => res.results),
       map(res => {
         const result = {};
         for (let i = 0; i < res.length; i++) {
-          this.addCount(result, res[i].aggregateBy['unit.linkings.taxon.id'], res[i].count);
+          this.addCount(result, res[i].aggregateBy['unit.linkings.taxon.id'], res[i].individualCountSum);
         }
         return result;
       })

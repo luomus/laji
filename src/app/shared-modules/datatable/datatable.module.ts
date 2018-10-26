@@ -8,6 +8,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { PublicationPipe } from './pipe/publication.pipe';
 import { DataTableFooterComponent } from './data-table-footer/data-table-footer.component';
 import { DatatableTemplatesComponent } from './datatable-templates/datatable-templates.component';
+import { InfoModule } from '../info/info.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { DatatableTemplatesComponent } from './datatable-templates/datatable-tem
     NgxDatatableModule,
     LangModule,
     SpinnerModule,
-    SharedModule
+    SharedModule,
+    InfoModule
   ],
   declarations: [DatatableComponent, DatatableTemplatesComponent, PublicationPipe, DataTableFooterComponent],
   exports: [DatatableComponent, DatatableTemplatesComponent]
