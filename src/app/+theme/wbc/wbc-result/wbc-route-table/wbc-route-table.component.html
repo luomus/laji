@@ -17,6 +17,7 @@
   [totalMessage]="'haseka.submissions.total' | translate"
   [columns]="columns"
   [getRowClass]="_getRowClass"
+  [showRowAsLink]="false"
   (sortChange)="onSort($event)">
 </laji-datatable>
 
@@ -38,7 +39,7 @@
   <ng-template #documentIds>
     <span *ngIf="value && value.length > 0" ngPreserveWhitespaces style="display: inline-block">
       <ng-container *ngFor="let doc of value">
-        <a (click)="onDocumentClick.emit(doc)" title="{{doc}}">Linkki</a>
+        <a (click)="onDocumentClick.emit(doc)" title="{{doc}}" class="link">Katso</a>
       </ng-container>
     </span>
   </ng-template>
