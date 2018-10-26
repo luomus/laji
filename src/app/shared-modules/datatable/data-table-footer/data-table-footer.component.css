@@ -1,6 +1,8 @@
 .datatable-footer {
   display: block;
   width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: none;
 }
 
 .datatable-footer-inner {
@@ -11,8 +13,6 @@
 
 .page-count {
   white-space: nowrap;
-  line-height: 50px;
-  height: 50px;
   padding: 0 1.2rem;
   flex: 1 1 20%;
   font-size: 12px;

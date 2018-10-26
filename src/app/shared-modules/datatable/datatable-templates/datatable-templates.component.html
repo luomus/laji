@@ -230,4 +230,6 @@
     </span>
   </a>
 </ng-template>
-
+<ng-template let-value="value" #number>
+  <span title="{{value.toLocaleString()}}">{{value.toLocaleString()}}</span>
+</ng-template>

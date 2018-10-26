@@ -36,8 +36,8 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() zeroObservationQuery: WarehouseQueryInterface;
   @Input() type = 'count';
   @Input() types = ['count', 'individualCount', 'newest'];
-  @Input() colorRange: string[] = ['#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
-  @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', '#c0ffff', '#80ff40', '#ffff00', '#ff8000', '#ff0000', '#c00000'];
+  @Input() colorRange: string[] = ['violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
+  @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', 'violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
   @Input() individualBreak: number[] = [0, null, 1, 10, 100, 1000, 10000, 100000];
   @Input() countBreak: number[] = [1, 10, 100, 1000, 10000, 100000];
   @Input() timeBreak: string[] = ['2020-01-01', '2015-01-01', '2010-01-01', '2005-01-01', '2000-01-01', '1991-01-01'];

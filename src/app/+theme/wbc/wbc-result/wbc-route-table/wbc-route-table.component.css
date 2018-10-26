@@ -1,0 +1,33 @@
+::ng-deep .datatable-body-row.last-rows {
+  background-color: #eee !important;
+}
+::ng-deep .datatable-body-row.last-rows .datatable-row-center {
+  background-color: #eee !important;
+}
+::ng-deep .datatable-body-cell.mean {
+  background-color: #fdb;
+}
+::ng-deep .datatable-body-cell.median {
+  background-color: #dfb;
+}
+::ng-deep .datatable-body-cell.min {
+  font-weight: bold !important;
+  color: red !important;
+}
+::ng-deep .datatable-body-cell.max {
+  font-weight: bold !important;
+  color: green !important;
+}
+::ng-deep .datatable-body-cell.significantly-less {
+  background-color: #fcc;
+}
+::ng-deep .datatable-body-cell.significantly-more {
+  background-color: #cfc;
+}
+
+.toggle-intro {
+  padding: 10px;
+  text-align: end;
+  font-size: 13px;
+  color: #3498DB;
+}

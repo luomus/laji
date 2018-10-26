@@ -1,18 +1,19 @@
 <h3>{{id | label}}<span *ngIf="season"> - {{'wbc.season.' + season | translate}}</span></h3>
 
-<ng-container *ngIf="!season">
-  <div class="panel panel-default" style="max-width: 400px">
-    <div class="panel-heading">
-      <strong>Taulukko havaituista lajeista</strong>
-    </div>
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'fall'}">{{'wbc.season.fall' | translate}}</a></div>
-        <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'winter'}">{{'wbc.season.winter' | translate}}</a></div>
-        <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'spring'}">{{'wbc.season.spring' | translate}}</a></div>
-      </div>
+<div class="panel panel-default" style="max-width: 400px">
+  <div class="panel-heading">
+    <strong>Taulukko havaituista lajeista</strong>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'fall'}">{{'wbc.season.fall' | translate}}</a></div>
+      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'winter'}">{{'wbc.season.winter' | translate}}</a></div>
+      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'spring'}">{{'wbc.season.spring' | translate}}</a></div>
     </div>
   </div>
+</div>
+
+<ng-container *ngIf="!season">
   <h4>Reitin laskennat</h4>
   <laji-datatable
     #dataTable
@@ -21,14 +22,14 @@
     [clientSideSorting]="true"
     [showRowAsLink]="true"
     [showHeader]="true"
-    [showFooter]="false"
     [height]="'calc(80vh - 40px)'"
     [virtualScrolling]="true"
     [rows]="rows"
     [loading]="!rows"
     [columnMode]="'standard'"
     [totalMessage]="'haseka.submissions.total' | translate"
-    [columns]="columns">
+    [columns]="columns"
+    [count]="rows?.length">
   </laji-datatable>
 </ng-container>
 
@@ -47,9 +48,9 @@
         <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
-        <laji-document [uri]="shownDocument"
-                       [own]="true">
-        </laji-document>
+        <laji-document [useWorldMap]="false"
+                       [uri]="shownDocument"
+        ></laji-document>
       </div>
     </div>
   </div>

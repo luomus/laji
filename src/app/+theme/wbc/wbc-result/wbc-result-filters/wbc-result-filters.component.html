@@ -29,7 +29,7 @@
         </option>
       </select>
     </div>
-    <div>
+    <div *ngIf="showAreaFilter">
       <label for="birdAssociationArea">{{'MNP.birdAssociationArea' | label}}</label>
       <laji-area-select id="birdAssociationArea"
                         [field]="areaTypes.BirdAssociationArea"

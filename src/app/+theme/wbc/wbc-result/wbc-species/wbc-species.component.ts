@@ -14,6 +14,9 @@ export class WbcSpeciesComponent implements OnInit {
   activeSeason: SEASON;
   activeBirdAssociationArea: string;
 
+  onlyCommonSpecies = true;
+  showStatistics = false;
+
   constructor(
     private router: Router,
     private localizeRouterService: LocalizeRouterService

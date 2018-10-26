@@ -31,6 +31,7 @@ import { GatheringRowsComponent } from './gathering-rows/gathering-rows.componen
 import { CollectionContestPrintComponent } from './document-local/collection-contest-local-print/collection-contest-print.component';
 import { PrintRowComponent } from './document-local/collection-contest-local-print/print-row/print-row.component';
 import { PrintTaxonHeaderComponent } from './document-local/collection-contest-local-print/print-taxon-header/print-taxon-header.component';
+import { CoordinatesViewerComponent } from './viewer-coordinates/viewer-coordinates.component';
 
 @NgModule({
   imports: [
@@ -48,7 +49,9 @@ import { PrintTaxonHeaderComponent } from './document-local/collection-contest-l
     GatheringRowsComponent,
     CollectionContestPrintComponent,
     PrintRowComponent,
-    PrintTaxonHeaderComponent],
+    PrintTaxonHeaderComponent,
+    CoordinatesViewerComponent
+  ],
   exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent]
 })
 export class DocumentViewerModule { }

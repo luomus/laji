@@ -73,7 +73,7 @@ export class DocumentLocalComponent implements OnInit, OnChanges {
 
           doc.gatherings.map((gathering, i) => {
             if (gathering.geometry) {
-              this.mapData[i] = gathering.geometry;
+              this.mapData[i] = {geoJSON: gathering.geometry};
             }
             if (gathering.images && gathering.images.length > 0) {
               observables.push(this.getImages(gathering));

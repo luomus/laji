@@ -35,7 +35,14 @@
     [selectionType]="selectionType"
   >
   </ngx-datatable>
-  <laji-data-table-footer *ngIf="showFooter" [page]="_page" [pageSize]="pageSize" [count]="_count" (change)="onPage($event)"></laji-data-table-footer>
+  <laji-data-table-footer
+    *ngIf="showFooter"
+    [totalMessage]="totalMessage"
+    [page]="_page"
+    [pageSize]="pageSize"
+    [count]="_count"
+    (change)="onPage($event)"
+  ></laji-data-table-footer>
 </laji-spinner>
 
 <laji-datatable-templates #dataTableTemplates></laji-datatable-templates>

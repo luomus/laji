@@ -28,7 +28,7 @@
         </button>
         <laji-document *ngIf="shownDocument.publicityRestrictions === publicity.publicityRestrictionsPublic"
                        [uri]="shownDocument.id"
-                       [own]="true">
+                       [own]="usePrivateDWViewer">
         </laji-document>
         <laji-document-local *ngIf="shownDocument.publicityRestrictions !== publicity.publicityRestrictionsPublic"
                              [document]="shownDocument">

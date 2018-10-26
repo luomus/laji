@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { Document } from '../../shared/model/Document';
-import { FormService } from '../../shared/service/form.service';
+import { Document } from '../../../shared/model/Document';
+import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { DocumentInfoService } from '../../shared/service/document-info.service';
+import { DocumentInfoService } from '../../../shared/service/document-info.service';
 
-import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { WINDOW } from '@ng-toolkit/universal';
 
 @Component({

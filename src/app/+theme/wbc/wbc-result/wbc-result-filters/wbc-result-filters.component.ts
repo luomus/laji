@@ -1,4 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component, OnInit, OnChanges, ChangeDetectorRef, Input, Output, EventEmitter,
+  SimpleChanges
+} from '@angular/core';
 import { AreaType } from '../../../../shared/service/area.service';
 import { WbcResultService, SEASON } from '../wbc-result.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -8,9 +11,10 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './wbc-result-filters.component.html',
   styleUrls: ['./wbc-result-filters.component.css']
 })
-export class WbcResultFiltersComponent implements OnInit {
+export class WbcResultFiltersComponent implements OnInit, OnChanges {
   @Input() yearRequired = false;
   @Input() showSeasonFilter = true;
+  @Input() showAreaFilter = true;
 
   years: number[] = [];
   seasons: SEASON[] = ['fall', 'winter', 'spring'];
@@ -47,6 +51,12 @@ export class WbcResultFiltersComponent implements OnInit {
           this.cd.markForCheck();
         }
       )
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.yearRequired && this.yearRequired && !this.activeYear && this.years.length > 0) {
+      this.onYearChange('' + this.years[0]);
+    }
   }
 
   onYearChange(newYear: string) {
