@@ -5,244 +5,191 @@
 </ng-template>
 <div class="row">
   <div class="col-md-8">
-    <h3>{{'wbc.instructions.title' | translate}}</h3>
+    <h2>Talvilintulaskenta</h2>
     <div *ngIf="translate.currentLang === 'fi'; else todo">
       <div class="text-container">
-        <h4>Rekisteröityminen ja kirjautuminen</h4>
-        <div>
-          <p>1. Pääset Suomen lajitietokeskuksen sivuille osoitteessa: <a href="https://laji.fi">www.laji.fi</a></p>
-          <p>Käyttääksesi Vihko-järjestelmää sinun on rekisteröidyttävä ja kirjauduttava laji.fi-sivuille oikeasta
-            ylänurkasta löytyvän painikkeen: <strong>”Kirjaudu/Rekisteröidy”</strong> kautta. Rekisteröitymistapoja on monia. Voit luoda
-            joko laji.fi-tunnuksen tai käyttää olemassa olevaa tiliäsi (esim. Google tai Facebook) rekisteröitymiseen. Jos
-            luot laji.fi tunnuksen, niin valitse vasemmasta reunasta vihreä painike <strong>”Luo Tunnus”</strong>. Syötä sähköpostiosoitteesi,
-            nimesi ja itse valitsemasi salasana (salasanan minimivaatimukset näet sivun oikeassa laidassa) ja paina painiketta
-            ”Luo tunnus”. Syöttämäsi nimi tulee näkyviin tulospalveluun. Luotuasi tunnuksen, järjestelmä lähettää vahvistusviestin
-            sähköpostiisi. Jos kirjaudut muilla tavoilla, sinulta pyydetään vahvistamaan sähköpostiosoitteesi ja syöttämään nimesi,
-            minkä jälkeen järjestelmä lähettää vahvistusviestin sähköpostiisi. Älä luo itsellesi useita eri tunnuksia, vaan liitä
-            muut tunnistautumiset samaan tiliin (ks. kohta 3. alla), ellet erityisesti halua toimia kahdella eri tunnuksella.</p>
-        </div>
 
-        <div>
-          <p>2. Avaa vahvistussähköpostin linkki, jolloin laji.fi -tunnuksesi aktivoituu, paina <strong>”Jatka eteenpäin”</strong> tai jos tämä
-            ei toimi kirjaudu osoitteessa <a href="https://login.laji.fi">https://login.laji.fi</a>. Jos et saa vahvistussähköpostia,
-            muista tarkistaa roskapostilaatikkosi.</p>
-        </div>
+        <p>
+          Tämä on Luonnontieteellisen keskusmuseon Linnustonseurannan talvilintulaskentojen havaintojen ilmoitusjärjestelmä. Täällä voit tarkastella laskentareittien sijaintia ja tietoja, ilmoittaa laskennan havainnot ja tarkastella laskentojen tuloksia. Ohjeita talvilintulaskennan tekemiseen löydät
+          <a href="https://www.luomus.fi/fi/talvilintulaskennat">Linnustonseurannan sivuilta</a>.
+        </p>
 
-        <div>
-          <p>3. Kirjautuaksesi mene laji.fi-etusivun oikeaan ylänurkkaan kohtaan: <strong>”Kirjaudu/Rekisteröidy”</strong>. Voit kirjautua joko
-            laji.fi-tunnuksella tai muilla tunnistautumistavoilla esim. Google-tunnuksilla. Halutessasi voit liittää tunnukseesi
-            useamman tunnistautumistavan. Voit kytkeä Laji.fi-tunnukseesi esim. Google-tunnuksesi ja käyttää sitä tunnistautumiseen
-            kirjautuessasi Laji.fi-portaaliin. Kytkemistä varten valitse laji.fi sivustolla oikeasta ylänurkasta nimesi, jota
-            klikkaamalla aukeaa valikko, josta valitaan <strong>”Profiili”</strong>. Profiililisivulla on vihreä ”Käyttäjätilini” painike, jota
-            klikkaamalla pääset sivulle, jossa kirjaudut Lajitietokeskuksen käyttäjänhallintaan valitsemallasi kirjautumistavalla
-            (sillä kirjautumistavalla, jonka haluat kytkeä ensimmäiseen kirjautumistapaan). Kun olet kirjautunut, voit valita
-            <strong>”Liitä uusi tunnistautuminen”</strong>.</p>
-          <div>
-            <p>Jos unohdat salasanasi laji.fi-sivustolle, valitse kirjautumissivulta <a href="https://login.laji.fi">https://login.laji.fi</a>
-              <strong>”Laji.fi-kirjautuminen”</strong> ja sieltä kohta <strong>”Unohtuiko salasana?”</strong> ja anna sähköpostiosoitteesi sekä
-              <strong>”Lähetä vaihtopyyntö”</strong>, jolloin järjestelmä lähettää sähköpostiisi linkin salasanan uusimista varten.</p>
-            <p>Laskijanumerot ja mahdolliset hatikkatunnukset tullaan linkittämään talvilintulaskennan ilmoittajien tietoihin myöhemmin.
-              Tämän jälkeen omalla Vihko-tilillään pääsee katsomaan myös vanhoja talvilintulaskennan havaintojaan.</p>
-          </div>
-        </div>
-      </div>
+        <h4>Pikaohje havaintojen ilmoitukseen</h4>
+        <ol>
+          <li>
+            Valitse oikeasta yläkulmasta rekisteröidy/kirjaudu. <a href="https://laji.fi/about/2189">Linkki lisäohjeeseen</a>.  Reittien tietoja ja tuloksia voi tarkastella myös kirjautumatta, mutta tulosten ilmoitus vaatii kirjautumisen.
+          </li>
+          <li>
+            Kirjauduttuasi valitse <strong>Ilmoita</strong>. Valitse listalta <strong>paikallisyhdistys ja oikea talvilintulaskentareitti</strong> ja edelleen Ilmoita havainnot tältä reitiltä. Jos perustat uuden reitin, ole ensin yhteydessä <a href="mailto:linnustonseuranta@luomus.fi">linnustonseuranta@luomus.fi</a>
+          </li>
+          <li>
+            Lomakkeella siirrytään kentästä toiseen joko <strong>hiiren avulla</strong> tai <strong>tab -näppäimellä</strong>. Havaintoriviltä toiselle voi siirtyä: Alt + nuoli alas/ylös = seuraavalle/edelliselle havaintoriville.
+          </li>
+          <li>
+            Saat <strong>lisäohjeita ? -kuvakkeista</strong> tai avaamalla ohjeet.
+          </li>
+          <li>
+            Jos laskentaa teki useampi henkilö, voit lisätä yhteisiä havaintoja myös muiden laskijoiden Vihko-tileille käyttämällä <strong>profiili-sivulta</strong> (kirjautumisen jälkeen oikea yläkulma) löytyvää <strong>kaverihakua</strong> (ks. <a href="https://laji.fi/about/2189">kaverin lisääminen</a>). Toimii vain, jos henkilöt ovat rekisteröityneet Laji.fi –sivuille ja linkitys tehty ennen havaintojen ilmoitusta.
+          </li>
+          <li>
+            <strong>Tarkista reitin kulku kartalta tai piirrä</strong> reitti kartalle. Jos reitin kartta on aiemmin toimitettu Linnustonseurantaan, mutta sitä ei näy lomakkeella, ei reittiä ole välttämätöntä piirtää.
+          </li>
+          <li>
+            Ilmoita lomakkeella <strong>laskennan ja reitin perustiedot sekä havaitut lintu- ja nisäkäsmäärät</strong> biotoopeittain.
+          </li>
+          <li>
+            Kun olet syöttänyt havainnot, ja haluat tallentaa ja lähettää tiedot eteenpäin Linnustonseurannalle, paina: <strong>Tallenna julkisena</strong>. Jos jätät laskennan havaintojen tallennuksen kesken, valitse Tallenna julkaisematta. Jos pakollisia tietoja puuttuu tai niissä on virheitä, tulee lista virheilmoituksista. Korjaa nämä ja tallenna uudelleen.
+          </li>
+          <li>
+            Voit <strong>muokata</strong> tallennettua havaintoerää Omat havaintoeräni -kohdasta. Listassa kunkin havaintoerän vasemmassa laidassa on valittavana Näytä havaintoerä ja Siirry muokkaussivulle -kuvakkeet.
+          </li>
+          <li>
+            Jotta vanhat havaintosi voidaan yhdistää Vihko-tiliisi, <strong>linkitä mahdolliset hatikka- ja lintuvaaratunnuksesi</strong> profiilisivun käyttäjätilien kautta. Katso lisäohjeesta
+            <a href="https://laji.fi/about/2189">Muun tunnuksen lisääminen</a>.
+          </li>
+        </ol>
 
-      <div class="text-container">
-        <h4>Talvilintulaskennan havaintojen ilmoittaminen</h4>
-        <p>Kirjauduttuasi laji.fi-sivustolle valitse sinisestä yläpalkista kohta <strong>”Vihko”</strong>. Tämän jälkeen valitse
-          <strong>”Talvilintulaskenta”</strong> sivun vasemman reunan lomakelistasta.</p>
-        <div class="child-text-container">
-          <h4 class="italic-title">Reitin valinta</h4>
-          <p>Valitse ensin BirdLife Suomen paikallisyhdistys, jonka alueella reittisi sijaitsee. Tämän jälkeen aukeaa luettelo, jossa on listattu
-            kaikki kyseisen yhdistyksen alueella lasketut reitit muodossa ”kunta, reitin nimi, reitin numero, 10 × 10 km ruutu ja reitin edellisen
-            laskennan ajankohta”. Valitse reittisi listasta ja valitse <strong>”Ilmoita havainnot tältä reitiltä”</strong>. Karttaikkunassa voit
-            tarkastella reittien karkeaa sijaintia YKJ-kymppiruuduilla (valitse karttaikkunan yläpuolelta vaihtoehto <strong>”Kartta”</strong>).
-            Kartalla näkyvät valitun lintuyhdistyksen alueella olevat 10x10 km ruudut, joissa on laskettu talvilintulaskentareittejä. Huomaathan,
-            että kymppiruudulla voi olla useampi reitti. Reitin valinta on helpointa tehdä luettelosta. Listassa on tällä hetkellä näkyvissä reitit
-            kautta aikain. Tarkistathan että olet ilmoittamassa havaintoja oikealta reitiltä.</p>
-          <p>Jos olet perustamassa uutta talvilintulaskentareittiä, niin ole yhteyksissä Linnustonseurantaan
-            (<a href='mailto:linnustonseuranta@luomus.fi'>linnustonseuranta@luomus.fi</a>) ennen laskentaa, varmistaaksesi ettei reittisi mene
-            päällekkäin aktiivisten olemassa olevien reittien kanssa. Linnustonseurannasta saat uudelle reitillesi reittinumeron ja itsellesi
-            havainnoijanumeron (jos sinulla ei sellaista ennestään ole). Kun olet saanut reittinumeron, voit valita reitin luettelosta ja ilmoittaa
-            reitin tarkemmat tiedot, reitin kulun ja havainnot.</p>
-        </div>
 
-        <div class="child-text-container">
-          <h4 class="italic-title">Havaintojen ilmoitus</h4>
-          <p>Kun olet valinnut vanhan laskentareitin, laskentojen tiedot kuten reitin nimi, reitin ja biotooppien pituudet siirretään Vihko-järjestelmään
-            automaattisesti viimeisimmästä kyseisen reitin laskennasta. Pääosa lomakkeen tiedoista kirjataan kuten aiempinakin talvina.</p>
-          <p>Lomakkeella voit siirtyä kentästä toiseen joko hiiren avulla tai pikanäppäimillä. Pikanäppäimistä <strong><em>Tabulaattori</em></strong>
-            (Tab-näppäin, merkitty kahdella vastakkaisella nuolella, ks. kuva alla) siirtää kursorin seuraavaan kenttään, <strong><em>Alt + nuoli ylös</em></strong>
-            näppäimet samaan aikaan painettuina siirtyy edelliselle riville, <strong><em>Alt + nuoli alas</em></strong> siirtää seuraavalle riville.</p>
-          <p>Syötä laskijoiden nimet <strong>Laskijat</strong> -kenttään, yksi henkilö per kenttä, järjestyksessä: etunimi sukunimi.</p>
-          <p>Jos muilla reitin laskijoilla on tunnukset laji.fi -sivuille, voit linkittää laskennan tiedot myös heidän Vihko-tileilleen, jolloin he
-            pääsevät tarkastelemaan havaintoja omilta tileiltään. Voit pyytää toista käyttäjää kaveriksesi <strong>profiili</strong>sivullasi. Profiilisi aukeaa
-            klikkaamalla omaa käyttäjätunnustasi oikealla yläpalkissa. Etsi kaverisi kirjoittamalla nimi profiilisivun hakukenttään jonka jälkeen
-            valitse <strong>”Lisää kaveriksi”</strong>. Sen jälkeen kun hän on vahvistanut pyyntösi omassa profiilissaan, olette kavereita ja voitte esim.
-            Vihko-palvelussa tallentaa yhteisiä havaintoja, jotka näkyvät molempien omalla tilillä.</p>
-          <p>Kirjoita laskijakaverisi käyttäjätunnus laskijat-kenttään. Automaattinen tekstinsyöttö ehdottaa vahvistettujen laskijakavereidesi nimiä.
-            Jos lisäät laskijat-kenttään henkilön, joka ei ole kaverisi Vihko-järjestelmässä, nimen vierellä näkyy punainen kolmio.</p>
-          <p>Voit halutessasi salata laskijoiden nimet tulospalvelusta. Linnustonseurannassa kuitenkin toivotaan, että nimien salausta käytettäisiin
-            vain erityistapauksissa.</p>
-          <p><strong>Laskijoiden lukumäärä</strong> -kenttä päivittyy automaattisesti syötettyjen havainnoijien nimien lukumäärän perusteella, mutta tarvittaessa
-            lukumäärää pääsee myös muokkaamaan.</p>
-          <p><strong>Päivämäärän</strong> voit joko kirjoittaa suoraan kenttään muodossa p-.k-.vvvv tai valita sen kentän oikean reunan kalenterikuvaketta
-            klikkaamalla avautuvasta kalenterista. Kentän oikealla puolella on lisäksi pikanäppäimet, joista voit valita laskennan päivämääräksi joko
-            saman <strong>”Tänään”</strong> tai edeltävän päivän <strong>”Eilen”</strong>. <strong>Aloitus- ja lopetusajan</strong>voi ilmoittaa
-            minuutin tarkkuudella eli aiempina vuosina tehtyä pyöristystä lähimpään kymmeneen minuuttiin ei enää tarvitse tehdä.</p>
+        <h3>Havaintojen ilmoittaminen</h3>
 
-          <div>
-            <h5 class="italic-title">Laskennan tiedot</h5>
-            <p>Uutena lomakkeella on mahdollisuus kirjata tietoja sekä reittiin että tiettyyn laskentakertaan liittyvistä seikoista. <strong>Reitin
-              vapaamuotoiseen kuvaukseen</strong> voi halutessaan kirjata tarkentavia tietoja laskennan vakiona pysyvästä toteutustavasta, jotka auttavat
-              reitin toistamisessa vuosikymmentenkin päästä: esimerkiksi: ”vesistöt tähystetty kaukoputken avulla”. <strong>Laskennan vapaamuotoiseen
-                kuvaukseen</strong> voi taas halutessaan kirjata tietoja juuri kyseiseen laskentaan liittyvistä seikoista, jotka eivät pysy vakiona laskennasta
-              toiseen, esimerkiksi: ”kesken laskennan sattunut lumipyry esti näkyvyyden järvenselälle”. Sekä reitin että laskennan vapaamuotoisista
-              kuvauksista toivotaan olevan iloa havaintojen tarkastelussa.</p>
-            <p>Voit halutessasi liittää <strong>reittiin liittyviä kuvia</strong>, jotka tallentuvat osaksi talvilintulaskennan havaintoerää.
-              <strong>Kulkutapa</strong> valitaan alasvetovalikosta. Jos valitse kulkutavaksi vaihtoehdon ”muu, mikä”, kentän viereen ilmestyy toinen kenttä,
-              johon voit kuvata kulkutavan. Reitin tietoihin kirjataan myös <strong>”Mitä biotooppiin Muu (F) kuuluu”</strong>. Yleisesti ottaen ”Muu” -biotooppiin
-              sijoitetaan mm. vedet, rantaniityt, suot, sekä kaikki epämääräiset maastolaikut, joiden luokittelu on ongelmallista. Sinne kuuluvat myös selvästi
-              matkalennossa nähdyt linnut (esim. korkealla lentävä korppi). Lyhyitä matkoja siirtyilevät tai kiertelevät linnut merkitään siihen biotooppiin,
-              missä ne on havaittu (esim. pellon yllä kiertelevä tai paikasta toiseen siirtyilevä keltasirkkuparvi). Valitse <strong>Vesistöt</strong> -kenttään,
-              mitä vesistöjä tai niiden yhdistelmiä reittiisi sisältyy.</p>
-            <p>Ensimmäisellä Vihko-ilmoituskerralla reitin tiedot on syötettävä itse. Myöhemmin ”Reitin vapaamuotoinen kuvaus”, ”Vesistöt” ja ”Mitä biotooppiin
-              Muu (F) kuuluu” kopioituvat lomakkeelle automaattisesti edellisestä Vihkoon ilmoitetusta laskennasta. Automaattisena kopioituvia kentän arvoja
-              pääsee kuitenkin halutessaan muokkaamaan.</p>
-          </div>
+        <ol>
+          <li>
+            <a href="javascript:void(0)" (click)="toFragment('wbc-route')">Reitin valinta</a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" (click)="toFragment('wbc-send')">Havaintojen ilmoitus</a>
+            <ol style="list-style-type: lower-alpha">
+              <li><a href="javascript:void(0)" (click)="toFragment('wbc-info')">Laskennan tiedot</a></li>
+              <li><a href="javascript:void(0)" (click)="toFragment('wbc-weather')">Sää- ja ravintotiedot ja marjalintuhuippu</a></li>
+              <li><a href="javascript:void(0)" (click)="toFragment('wbc-mammals')">Nisäkäshavainnot</a></li>
+              <li><a href="javascript:void(0)" (click)="toFragment('wbc-map')">Karttatyökalu</a></li>
+              <li><a href="javascript:void(0)" (click)="toFragment('wbc-biotope')">Biotoopit, lintulaudat ja ruokinnat</a></li>
+              <li><a href="javascript:void(0)" (click)="toFragment('wbc-obs')">Havainnot</a></li>
+              <li><a href="javascript:void(0)" (click)="toFragment('wbc-save')">Tallennus</a></li>
+            </ol>
+          </li>
+          <li>
+            <a href="javascript:void(0)" (click)="toFragment('wbc-edit')">Havaintoerän muokkaus</a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" (click)="toFragment('wbc-link')">Vanhojen havaintojen linkitys</a>
+          </li>
+        </ol>
 
-          <div>
-            <h5 class="italic-title">Säätiedot</h5>
-            <p>Säätiedoista ilmoitetaan laskennan aikaista tilannetta parhaiten kuvaava vaihtoehto. Laskennan <strong>keskilämpötilaa</strong> ei ole pakko
-              ilmoittaa, sillä tutkimuskäyttöön lämpötilatiedot saadaan myös muualta. Säätiedot valitaan alasvetovalikosta (tai kirjoittamalla vaihtoehdon
-              alkukirjain) sen mukaan mikä vastaa keskimääräistä tilannetta laskennan aikaan.</p>
-          </div>
 
-          <div>
-            <h5 class="italic-title">Ravintotiedot</h5>
-            <p>Ravintotiedot ovat tärkeää taustatietoa lintujen talvisille runsauksille. Pihlajanmarjojen suhteellinen runsaus ilmoitetaan sekä alkusyksyltä
-              että laskennan aikana, lintujen jo syötyä osan marjasadosta. Myös kuusen- ja männynkäpyjen runsaus laskenta-aikaan arvioidaan. Tuoreet kuusenkävyt
-              ovat sileitä ja lähellä oksankärkeä (ei oteta huomioon puussa mahdollisesti olevia edellisvuotisia käpyjä, jotka ovat pörröisiä ja riippuvat sisempänä
-              oksissa). Männynkäpyjen runsaudesta on hyvä saada käsitys jo syysretkillä, sillä puissa oleva lumi usein peittää kävyt talvella. Puissa olevasta
-              lumesta ja jääkarstasta sekä maassa olevan lumen laadusta valitaan laskennan aikaista tilannetta parhaiten kuvaavat vaihtoehdot.</p>
-          </div>
+        <h3 id="wbc-route">Reitin valinta</h3>
 
-          <div>
-            <h5 class="italic-title">Marjalintuhuippu</h5>
-            <p>Marjalintuhuippu-kenttään ilmoitetaan tilhen, taviokuurnan ja räkättirastaan osalta oma arvio siitä onko lajin huippuesiintyminen kyseisenä
-              syksynä/talvena laskentareitin seudulla jo ohi, samanaikainen vai nähtävästi vasta tulossa.</p>
-          </div>
+        <p>Valitse ensin paikallisyhdistys, jonka alueella reittisi sijaitsee. Valitse reittisi listasta ja valitse <strong>Ilmoita havainnot tältä reitiltä</strong>. Listassa on näkyvissä reitit kautta aikain, tarkistathan että olet ilmoittamassa havaintoja oikealta reitiltä. Voit hakea reittiä klikkaamalla otsikkoriviä.</p>
 
-          <div>
-            <h5 class="italic-title">Puiden siemensadon käyttäjät</h5>
-            <p>Puiden siemensadosta saadaan tietoa urpiaisten, vihervarpusten ja käpylintujen avulla laskemalla, paljonko kutakin lajia tai lajiryhmää
-              ruokaili koivuissa, lepissä, kuusissa, männyissä sekä maassa tai hangella. Tästä tilastosta jätetään pois ruokailemattomat linnut ja muualla
-              kuten ruokintapaikoilla ravintoaan etsivät yksilöt.</p>
-          </div>
+        <p>Jos olet perustamassa uutta talvilintulaskentareittiä, niin ole <a href="mailto:linnustonseuranta@luomus.fi">yhteyksissä Linnustonseurantaan</a> ennen laskentaa. Kun olet saanut reittinumeron, voit valita reitin luettelosta ja ilmoittaa reitin kulun ja havainnot.</p>
 
-          <div>
-            <h5 class="italic-title">   Lisätiedot laskentatulokseen vaikuttaneista tekijöistä</h5>
-            <p>Lisätietoina laskentatulokseen vaikuttaneista tekijöistä ilmoitetaan laskennan aikaista tilannetta parhaiten kuvaava vaihtoehto puissa oleva
-              lumen ja jääkarstan määrästä sekä maassa olevan lumen laadusta.</p>
-          </div>
+        <h3 id="wbc-send">Havaintojen ilmoitus</h3>
 
-          <div>
-            <h5 class="italic-title">Kaikki havaitut nisäkkäät kirjattu</h5>
-            <p>Jos kaikki laskennassa havaitut nisäkkäät on kirjattu, valitse ”kyllä” kohtaan <strong>”Kaikki havaitut nisäkkäät kirjattu”</strong>. Lomakkeelle
-              kirjataan vain nähdyt ja kuullut nisäkkäät, ei jälkiä. On myös tärkeätä valita ”kaikki havaitut nisäkkäät kirjattu”, vaikka reitillä ei olisi
-              havaittu yhtään nisäkästä, koska vain silloin nisäkäshavaintojen puuttuminen voidaan erottaa siitä, ettei niitä kirjattu lomakkeelle.</p>
-          </div>
+        <p>Vanhojen laskentareittien tiedot kuten reitin nimi, reitin ja biotooppien pituudet on siirretty uuteen järjestelmään automaattisesti edellisestä kyseisen reitin laskennasta.</p>
 
-          <div>
-            <h5 class="italic-title">Karttatyökalu</h5>
-            <p>Lähes kaikki Linnustonseurannan tiedossa olevat reittikartat on siirretty Vihkoon. Jos reitin kulku on piirretty Hatikkaan, Vihkoon on kopioitu
-              automaattisesti viimeisin piirretty kartta. Reitin kulku pyritään pitämään vuodesta toiseen samana, mutta pienet pakon sanelemat muutokset
-              (esimerkiksi uusien rakennusten kierto yms.) on helppo päivittää reitin tietoihin sisältyvään karttaan heti tuoreeltaan. Jos reitti on uusi, kartan
-              piirtäminen Vihkoon on suositeltu tapa toimittaa reitin kartta samalla Linnustonseurannan tietoon. Vihko-järjestelmässä kartta kopioituu seuraavaan
-              ilmoituskertaan.</p>
-            <p>Karttatyökalujen selitteet: <img src="/static/images/wbcInstructions/map1.jpg" class="img-responsive"/></p>
-            <p><strong><em>Taustakartan valinta</em></strong>: Taustan karttaa voit muuttaa karttaikkunan vasemmasta yläkulmasta, josta avautuvasta valikosta
-              talvilintulaskennan kartaksi soveltuvat parhaiten oletuskarttana oleva Suomen maastokartta tai satelliittikartta.</p>
-            <p><strong><em>Paikanna sijaintisi</em></strong>: Paikanna tämänhetkinen sijaintisi kartalle. Työkalu on hyödyllinen, jos tallennat havaintoja
-              lähellä reitin sijaintia.</p>
-            <p><strong><em>+</em></strong>: Lähennä karttaa.</p>
-            <p><strong><em>-</em></strong>: Loitonna karttaa.</p>
-            <p><strong><em>Piirrä viiva</em></strong>: Piirrä viivatyökalulla laskentareittisi kulkusuuntaan. Valitse työkalu klikkaamalla hiiren vasemmalla,
-              minkä jälkeen siirrä kursori kartalle pisteeseen, josta haluat aloittaa reitin piirron. Aloita reittiviivan piirto klikkaamalla hiiren
-              vasemmalla kuljettaen kursoria kartalla. Klikkaa vasemmalla vähintään kun reitin kulkusuunnassa tapahtuu muutos. Kun olet piirtänyt reitin tai
-              sen osan valmiiksi, klikkaa viimeistä pistettä kaksi kertaa, jolloin viiva on valmis. Viivatyökalun ollessa käytössä, se näyttää yhtenäisen viivan
-              siihenastisen pituuden metreinä kursorin vieressä. Voit muokata viivaa tuplaklikkaamalla viivaa, jolloin ns. kulmakohdat tulevat näkyviin. Tartu
-              hiirellä kulmakohtaan ja siirrä sitä haluamaasi suuntaan (vie kursori kulmakohdan päälle, paina vasenta ja pidä näppäin alhaalla siirron ajan).
-              Kun siirrät kulmakohtaa, sen molemmille puolille ilmestyy uudet kulmakohdat, joiden avulla voit tehdä hienovaraisempia muutoksia.</p>
-            <p><strong><em>Lisää nasta</em></strong>: Voit lisätä nastan esimerkiksi kohtiin, joissa käydään tähystämässä vesistöt.</p>
-            <p><strong><em>Tyhjennä kartta</em></strong>: Tyhjennä KAIKKI kuviot kartalta. Valittuasi tämän vaihtoehdon tulee vielä varmistuskysymys että
-              todella haluat poistaa KAIKKI kuviot kartalta.</p>
-            <p><strong><em>Poista kuvio</em></strong>: Poista VALITSEMASI kuvio kartalta. Valitse työkalu valikosta, jonka jälkeen vie kursori kartalle haluamasi
-              reitin osan päälle ja klikkaa.</p>
-            <p><strong><em>Käännä linjan suunta</em></strong>: Voit kääntää reitin tai sen osan kulkusuuntanuolet. Valitse työkalu, jonka jälkeen vie kursori
-              haluamasi reitin osan päälle ja klikkaa.</p>
-            <p>Aloita reitin piirtäminen tai olemassa olevan reitin kulun muokkaaminen zoomaamalla karttaa halutulta alueelta joko + -työkalun avulla tai
-              hiirellä rullaamalla. Reitti piirretään viivamaisena <strong>Piirrä viiva</strong> -työkalulla. Valitse työkalu viemällä kursori viivan päälle
-              ikkunan oikean reunan työkaluvalikossa ja klikkaamalla hiiren vasenta. Tämän jälkeen vie kursori hiirellä kartalle reitin lähtöpisteeseen ja
-              etene reittiä kartalla tämän tästä hiiren vasenta klikkaamalla. Jokaisen klikkauksen kohdalle viivaan muodostuu piste, joiden sijaintia voit
-              muokata kun reitti on jo piirretty. Mitä enemmän reitissä on mutkia ja käännöksiä, sitä useammin pitää klikata hiirellä. Kun olet piirtämässä viivaa,
-              karttaikkunan yläosaan tulee kolme piirtoa koskevaa vaihtoehtoa: <strong>”Lopeta”</strong> lopettaa viivan piirron (toinen klikkaus hiirellä halutussa
-              lopetuspisteessä ajaa saman asian); <strong>”Poista viimeinen piste”</strong> nimensä mukaisesti poistaa viivan viimeisimmän pisteen;
-              <strong>”Peru” poistaa koko</strong> aktiivisen viivan. Kun olet saanut reitin (tai moniosaisen reitin tietyn osan) piirrettyä, tuplaklikkaa reitin
-              lopetuskohtaa, jolloin viivan piirto loppuu. Huomaa, että viivatyökalun ollessa käytössä, se näyttää yhtenäisen viivan siihenastisen pituuden
-              metreinä kursorin vieressä. Tätä työkalua kannattaa käyttää reitin kokonaispituuden ja eri biotooppien pituuksien mittaamiseen.</p>
-            <img src="/static/images/wbcInstructions/map2.jpg" class="img-responsive"/>
-            <p>Voit muokata viivaa tuplaklikkaamalla sitä, minkä jälkeen klikkaa solmukohtaa ja vedä sitä (hiiren vasen painettuna) haluamaasi suuntaan.
-              Jos haluat poistaa kartalle piirtämäsi kuvion, valitse <strong>Poista kuvio</strong> -työkalu valikosta, minkä jälkeen vie kursori kartalle
-              poistettavan kuvion päälle ja klikkaa. Jos haluat poistaa KAIKKI kartalle piirretyt kuviot, valitse valikosta <strong>”Tyhjennä kartta”</strong>, jonka
-              jälkeen vastaa varmistuskysymykseen.</p>
-            <img src="/static/images/wbcInstructions/map3.jpg" class="img-responsive"/>
-          </div>
+        <p>Lomakkeella voit siirtyä kentästä toiseen joko hiiren avulla tai pikanäppäimillä. <strong>Tabulaattori</strong> siirtää kursorin seuraavaan kenttään, havaintoriveillä <strong>Alt + nuoli alas/ylös</strong> siirtyy seuraavalle/edelliselle riville.</p>
 
-          <div>
-            <h5 class="italic-title">Biotoopit, lintulaudat ja ruokinnat</h5>
-            <p>Reitin pituus kirjataan biotooppikohtaisiin sarakkeisiin <strong><u>metreinä</u></strong> (huom: ei kilometri). Lomake laskee näiden summan
-              eli reitin pituuden automaattisesti. Reittien biotooppijakaumat muuttuvat joskus ihmistoiminnan vaikutuksesta (esimerkiksi rakentaminen ja hakkuut).
-              Kirjaa biotooppien pituuksien muutos metreinä kohtaan ”Reitin muutokset” (esim +100m tai -350m). Jos reittisi muuttuu olennaisesti, on hyvä olla
-              yhteydessä Linnustonseurantaan, jolloin voimme yhdessä arvioida, säilyykö laskennan vertailukelpoisuus olemassa oleviin aineistoihin eli voidaanko
-              reittiä edelleen pitää samana.</p>
-            <p>Lintulautojen ja ruokintojen lukumäärät kirjataan biotoopeittain. Ruokintapaikalla tarkoitetaan runsasta tai monipuolista lintujen ruokintaa.
-              Lintulauta on vaatimaton ruokintapiste, kuten yksittäinen siemenautomaatti, talikimpale tai lyhde. Vain ne lintulaudat ja ruokintapaikat lasketaan,
-              jotka helposti erottuvat normaalin kulkureitin varrelta ja joiden linnut ovat reitiltä laskettavissa.</p>
-          </div>
+        <p>Syötä laskijoiden nimet <strong>Laskijat</strong> -kenttään, yksi henkilö per kenttä, järjestyksessä: etunimi sukunimi. Jos olet linkittänyt muiden laskijoiden profiilit omaasi (ks. <a href="https://laji.fi/about/2189">Kaverin lisääminen</a>), voit linkittää havainnot myös heidän Vihko-tileilleen, jolloin he näkevät havainnot omissa havaintoerissään. Huomaathan että linkitys pitää tehdä ennen havaintojen tallennusta. Jos lisäät laskijat-kenttään henkilön, joka ei ole kaverisi Vihko-järjestelmässä, nimen vierellä näkyy punainen kolmio. Voit halutessasi salata laskijoiden nimet julkisilta tulossivuilta. Salausta toivotaan käytettävän vain erityistapauksissa. <strong>Laskijoiden lukumäärä</strong> -kenttä päivittyy automaattisesti syötettyjen havainnoijien nimien lukumäärän perusteella.</p>
 
-          <div>
-            <h5 class="italic-title">Havainnot</h5>
-            <p>Lajiluettelossa ovat yleisimmät talvilintumme ja useimmin havaittavat nisäkkäämme. Kustakin lajista jaotellaan havaitut yksilömäärät biotoopeittain.
-              Jos havaitset lajin, jota ei ole listalla, lisää laji lomakkeen alareunan painikkeesta ”Lisää laji”. Lisälajeille voi käyttää suomenkielisiä nimiä,
-              tieteellisiä nimiä tai tieteellisiin nimiin perustuvia kuuden kirjaimen lajilyhenteitä. Kirjoitettaessa lisälajin nimeä, järjestelmä tarjoaa
-              vaihtoehdoiksi järjestelmän tuntemia lajinimiä ja lyhenteitä. Kun lisälajikenttään on kirjattu järjestelmän tuntema lajinimi, ilmestyy kentän oikeaan
-              laitaan pieni lipukkeen kuva.</p>
-            <p>Yksilömäärien lisäksi lomakkeelle voi ilmoittaa havaittujen lintujen ikä- ja sukupuolijakaumia. Havaittujen lintujen ikäjakauman avulla saadaan
-              tietoa talvehtivan populaation osan ikärakenteesta. Aiemmin ikäjakaumatietoa on kerätty laulu- ja kyhmyjoutsenesta, mutta Vihkon käyttöönoton myötä
-              tietoja toivotaan kaikilta lajeilta, joilta määritys kyetään luotettavasti maastossa tekemään (joutsenten ohella esimerkiksi kanahaukan, lokkien ja
-              mustarastaan ikämääritykseen kannattaa kiinnittää huomiota). Valtaosa ikämäärityskentistä jää tyhjiksi maastomäärityksen mahdottomuuden tai vaikeuden
-              vuoksi. Lisäksi ikämääritys tulee luonnollisesti tehdä vain yksilöistä, jotka on nähty riittävän hyvin. Lomakkeen kohdilla ”Vanhat” tarkoitetaan
-              selkeästi ad-pukuisia lintuja ja sitä nuoremmat esiaikuiset ja nuoret kirjataan luokkaan ”Nuoret/esiaikuiset”. Määritettyjen koiraiden ja naaraiden
-              lukumäärät kirjataan omiin sarakkeisiinsa. Sukupuolijakaumia kannattaa määrittää mm. vesi- ja kanalinnuilta, tikoilta, mustarastaalta, varpuselta,
-              peipolta, käpylinnuilta sekä punatulkulta. Osalla lajeista nuoret koiraat ovat vielä naaraan näköisiä, joten ne kirjataan naaraspukuisten (”naaraat”)
-              luokkaan. Kaikkia talvilintulaskennassa havaittuja lintuja ei tarvitse määrittää sukupuolelleen, mutta yhdenkin parven otos voi edistää tietämystä
-              mm. koiraiden ja naaraiden eroista talvehtimisalueissa.</p>
-          </div>
-        </div>
+        <p><strong>Aloitus- ja lopetusajan</strong> voi ilmoittaa minuutin tarkkuudella eli aiempina vuosina tehtyä pyöristystä lähimpään kymmeneen minuuttiin ei enää tarvitse tehdä.</p>
 
-        <div class="child-text-container">
-          <h4 class="italic-title">Tallennus</h4>
-          <p>Kun olet syöttänyt havainnot, ja haluat tallentaa ja lähettää tiedot eteenpäin, paina: <strong>”Tallenna julkisena”</strong>. Täyttäessäsi lomaketta,
-            se on tallentunut väliaikaisesti selaimesi muistiin. Jos esimerkiksi nettiyhteys katkeaa hetkellisesti tai joudut muuten jättämään tallennuksen kesken,
-            avaa lomake samalla tietokoneella ja samalla selaimella (esimerkiksi Firefox, Internet Explorer, Google Chrome), niin voit jatkaa tallennusta. Jos
-            valitset ”Tallenna julkaisematta”, havainnot tallentuvat omalle Vihko-tilillesi, mutta eivät välity Linnustonseurantaan tai näy tulospalvelussa. Käytä
-            ”Tallenna julkaisematta” -vaihtoehtoa vain poikkeustapauksissa, jos esimerkiksi et pysty syöttämään kaikkia havaintoja kerralla ja haluat palata
-            täydentämään havaintoerää myöhemmin.</p>
-          <p>Jos haluat muokata tallentamasi laskennan tietoja, niin valitse Laji.fi-etusivun yläpalkista Vihko, minkä jälkeen valitse oikean reunan harmaasta
-            palkista ”Omat havaintoeräni”. Omat havaintoeräni näytöllä näet tallentamasi havaintoerät ja voit valita ”Siirry muokkaussivulle”. Täällä voit myös
-            julkaista (valitsemalla ”Tallenna julkisena”) aiemmin vain omalle tilillesi tallentaman (”Tallenna julkaisematta”) laskennan tiedot.</p>
-        </div>
+        <h4 id="wbc-info">Laskennan tiedot</h4>
+
+        <p><strong>Reitin vapaamuotoiseen kuvaukseen</strong> voi halutessaan kirjata tarkentavia tietoja laskennan vakiona pysyvästä toteutustavasta, jotka auttavat reitin toistamisessa vuosikymmentenkin päästä: esimerkiksi: ”vesistöt tähystetty kaukoputken avulla”. <strong>Laskennan vapaamuotoiseen kuvaukseen</strong> voi taas halutessaan kirjata tietoja</p>
+
+        <p>juuri kyseiseen laskentaan liittyvistä seikoista, jotka eivät pysy vakiona laskennasta toiseen, esimerkiksi: ”kesken laskennan sattunut lumipyry esti näkyvyyden järvenselälle”.</p>
+
+        <p>Voit halutessasi liittää reittiin liittyviä kuvia, jotka tallentuvat osaksi talvilintulaskennan havaintoerää.</p>
+
+        <p>Ensimmäisellä Vihko-ilmoituskerralla reitin tiedot on syötettävä itse. Myöhemmin Reitin vapaamuotoinen kuvaus, Vesistöt ja Mitä biotooppiin Muu (F) kuuluu kopioituvat lomakkeelle automaattisesti edellisestä Vihkoon ilmoitetusta laskennasta, mutta kentän arvoja pääsee kuitenkin halutessaan muokkaamaan.</p>
+
+        <h4 id="wbc-weather">Sää- ja ravintotiedot ja marjalintuhuippu</h4>
+
+        <p>Sää- ja ravintotiedoista ilmoitetaan laskennan aikaista tilannetta parhaiten kuvaava vaihtoehto. Laskennan keskilämpötilaa ei ole pakko ilmoittaa. Marjalintuhuippu-kenttään ilmoitetaan oma arvio siitä, onko kyseisen lajin huippuesiintyminen kyseisenä syksynä/talvena laskentareitin seudulla jo ohi, samanaikainen vai nähtävästi vasta tulossa. Puiden siemensatoa käyttävien urpiaisten, vihervarpusten ja käpylintujen lukumäärät kirjataan. Kenttiin kirjattavat luvut sisällytetään alla lajikohtaisiin yksilömääriin.</p>
+
+        <h4 id="wbc-mammals">Nisäkäshavainnot</h4>
+
+        <p>Jos kaikki laskennassa havaitut nisäkkäät on kirjattu, valitse kyllä kohtaan <strong>Kaikki havaitut nisäkkäät kirjattu</strong>. Valinta on tärkeä, vaikka reitillä ei olisi havaittu yhtään nisäkästä, koska ainoastaan näin nisäkäshavaintojen puuttuminen voidaan erottaa siitä, ettei niitä kirjattu lomakkeelle. Lomakkeelle kirjataan vain nähdyt ja kuullut nisäkkäät, ei jälkiä.</p>
+
+        <h4 id="wbc-map">Karttatyökalu</h4>
+
+        <p>
+          Lähes kaikki Linnustonseurannan tiedossa olevat reittikartat on siirretty Vihkoon. Jos reitin kulku oli piirretty Hatikkaan, Vihkoon on kopioitu viimeisin piirretty kartta. Laskija päivittää mahdolliset pakon sanelemat muutokset (esimerkiksi uusien rakennusten kierto yms.) karttaan heti tuoreeltaan. Jos reitti on uusi, kartta piirretään Vihkoon eikä sitä tarvitse muulla tavoin lähettää Linnustonseurantaan. Kartta kopioituu seuraavaan ilmoituskertaan.
+          <a href="javascript:void(0)" (click)="showMapInfo = !showMapInfo">Lisäohjeita karttatyökalun käytöstä</a>.
+        </p>
+        <ng-container *ngIf="showMapInfo">
+
+          Karttatyökalujen selitteet:
+
+          <img src="https://cdn.laji.fi/images/wbc/intro-1.png">
+
+          <p><strong>Taustakartan valinta:</strong> Muuttaa taustan karttaa. Talvilintulaskennan kartaksi soveltuu parhaiten oletuskarttana oleva Suomen maastokartta. Yksityiskohtia voi kätevästi tarkastella ortokuvasta.</p>
+
+          <p><strong>Paikanna sijaintisi:</strong> Paikanna senhetkinen sijaintisi kartalle. Työkalu on hyödyllinen aloitus kartan piirrolle, jos tallennat havaintoja lähellä reitin sijaintia.</p>
+
+          <p><strong>Kirjoita paikannimi:</strong> Etsi paikannimen perusteella kartalta piirrettävän reitin karkea sijainti.</p>
+
+          <p>+ / - : Lähennä/loitonna karttaa.</p>
+
+          <p><strong>Piirrä viiva:</strong> Piirrä viivatyökalulla laskentareittisi kulkusuuntaan.</p>
+
+          <p><strong>Lisää nasta:</strong> Voit halutessasi lisätä nastan esimerkiksi kohtiin, joissa käydään tähystämässä vesistöt.</p>
+
+          <p><strong>Tyhjennä kartta:</strong> Tyhjennä KAIKKI kuviot kartalta.</p>
+
+          <p><strong>Poista kuvio:</strong> Poista VALITSEMASI kuvio kartalta. Valitse työkalu valikosta, jonka jälkeen vie kursori kartalle haluamasi reitin osan päälle ja klikkaa.</p>
+
+          <p><strong>Käännä linjan suunta:</strong> Voit kääntää reitin tai sen osan kulkusuuntanuolet. Valitse työkalu, jonka jälkeen vie kursori haluamasi reitin osan päälle ja klikkaa.</p>
+
+          <p><strong>Kumoa:</strong> poista edellinen kartalle tekemäsi muutos</p>
+
+          <p><strong>Tee uudelleen:</strong> tee uudelleen edellinen kumoamasi muutos</p>
+
+          <p>Aloita reitin piirtäminen tai olemassa olevan reitin kulun muokkaaminen zoomaamalla karttaa halutulta alueelta joko + -työkalun avulla tai hiirellä rullaamalla. Reitti piirretään viivamaisena <strong>Piirrä viiva</strong> -työkalulla. Valitse työkalu valikosta ja aloita reittiviivan piirto klikkaamalla ja etene reittiä kartalla tämän tästä hiiren klikkaamalla. Mitä enemmän reitissä on mutkia ja käännöksiä, sitä useammin pitää klikata. Kun olet piirtämässä viivaa, karttaikkunan yläosaan tulee kolme piirtoa koskevaa vaihtoehtoa: <strong>Lopeta</strong> lopettaa viivan piirron (toinen klikkaus hiirellä halutussa lopetuspisteessä ajaa saman asian); <strong>Peru viimeinen piste</strong> nimensä mukaisesti poistaa viivan viimeisimmän pisteen; <strong>Peru</strong> poistaa koko aktiivisen viivan. Kun olet piirtänyt reitin tai sen osan valmiiksi, klikkaa viimeistä pistettä kaksi kertaa, jolloin viiva on valmis. Viivatyökalun ollessa käytössä se näyttää yhtenäisen viivan siihenastisen pituuden metreinä kursorin vieressä. Voit muokata viivaa tuplaklikkaamalla viivaa, jolloin ns. solmukohdat tulevat näkyviin. Tartu hiirellä solmukohtaan ja raahaa sitä haluamaasi suuntaan. Kun siirrät solmukohtaa, sen molemmille puolille ilmestyy uudet solmukohdat, joiden avulla voit tehdä lisää muutoksia.</p>
+
+          <img src="https://cdn.laji.fi/images/wbc/intro-2.png">
+
+          <p>Jos haluat poistaa kartalle piirtämäsi kuvion, valitse <strong>Poista kuvio</strong> -työkalu valikosta, minkä jälkeen vie kursori kartalle poistettavan kuvion päälle ja klikkaa. Jos haluat poistaa KAIKKI kartalle piirretyt kuviot, valitse valikosta <strong>Tyhjennä kartta</strong>, jonka jälkeen vastaa varmistuskysymykseen.</p>
+
+          <img src="https://cdn.laji.fi/images/wbc/intro-3.png">
+
+        </ng-container>
+
+        <h4 id="wbc-biotope">Biotoopit, lintulaudat ja ruokinnat</h4>
+
+        <p>Reitin pituus kirjataan biotooppikohtaisiin sarakkeisiin <strong>metreinä</strong>. Lomake laskee näiden summan eli reitin pituuden automaattisesti. Kirjaa biotooppien pituuksien mahdollinen muutos metreinä kohtaan Reitin muutokset (esim +100 tai -350). Jos reittisi muuttuu olennaisesti, on hyvä olla yhteydessä Linnustonseurantaan, jolloin voimme yhdessä arvioida, säilyykö laskennan vertailukelpoisuus olemassa oleviin aineistoihin. Lintulautojen ja ruokintojen lukumäärät kirjataan biotoopeittain.</p>
+
+
+        <h4 id="wbc-obs">Havainnot</h4>
+
+        <p>Kustakin lajista jaotellaan havaitut yksilömäärät biotoopeittain. Jos havaitset lajin, jota ei ole listalla, lisää laji lomakkeen alareunan painikkeesta Lisää laji. Lisälajeille voi käyttää suomenkielisiä nimiä, tieteellisiä nimiä tai tieteellisiin nimiin perustuvia kuuden kirjaimen lajilyhenteitä. Kun lisälajikenttään on kirjattu järjestelmän tuntema lajinimi, ilmestyy kentän oikeaan laitaan pieni lipukkeen kuva. Jos haluat tallentaa havainnon lajilleen määrittämättömästä taksonista esim. kuikkalajista, valitse lajinimeksi Gavia sp (ei pelkkä Gavia).</p>
+
+        <p>Yksilömäärien lisäksi lomakkeelle voi ilmoittaa havaittujen lintujen ikä- ja sukupuolijakaumia. Aiemmin ikäjakaumatietoa on kerätty laulu- ja kyhmyjoutsenesta, mutta Vihkon käyttöönoton myötä tietoja toivotaan kaikilta lajeilta, joilta määritys kyetään luotettavasti maastossa tekemään (joutsenten ohella esimerkiksi kanahaukan, lokkien ja mustarastaan ikämääritykseen kannattaa kiinnittää huomiota). Valtaosa ikämäärityskentistä jää tyhjiksi maastomäärityksen mahdottomuuden tai vaikeuden vuoksi. Lomakkeen kohdilla Vanhat tarkoitetaan selkeästi ad-pukuisia lintuja ja sitä nuoremmat esiaikuiset ja nuoret kirjataan luokkaan Nuoret/esiaikuiset. Määritettyjen koiraiden ja naaraiden lukumäärät kirjataan omiin sarakkeisiinsa. Osalla lajeista nuoret koiraat ovat vielä naaraan näköisiä, joten ne kirjataan naaraspukuisten (Naaraat) luokkaan.</p>
+
+
+
+        <h4 id="wbc-save">Tallennus</h4>
+
+        <p>Kun olet syöttänyt havainnot paina: <strong>Tallenna julkisena</strong>. Jos pakollisia tietoja puuttuu tai niissä on virheitä, tulee lista virheilmoituksista. Korjaa nämä ja tallenna uudelleen.</p>
+
+        <p>Jos joudut jättämään laskennat tallennuksen kesken, valitse Tallenna julkaisematta. Tarvittaessa korjaa virheilmoitukset ja tallenna uudelleen. Kun tallennat julkaisematta, havainnot tallentuvat omalle Vihko-tilillesi, mutta eivät välity Linnustonseurantaan tai näy tulospalvelussa.</p>
+
+        <p>Täyttäessäsi lomaketta, se on tallentunut väliaikaisesti selaimesi muistiin. Varsinaista välitallennusta ei valita. Jos tallennus jostain syystä epäonnistuu, katso näkyykö tallennusyritys talvilintulaskentasivun vasemmassa</p>
+
+        <p>sivupalkissa tallentamattomana havaintoeränä. Jos ei näy, älä aloita tallennusta uudestaan vaan <a href="mailto:linnustonseuranta@luomus.fi">ota yhteyttä</a> ja raportoi tilanne (ainakin reitti ja tallennusaika).</p>
+
+        <h3 id="wbc-edit">Havaintoerän muokkaus</h3>
+
+        <p>Muokataksesi tallentamasi laskennan tietoja, valitse vasemman reunan palkista Omat havaintoeräni. Omat havaintoeräni näytöllä näet tallentamasi havaintoerät ja voit valita Siirry muokkaussivulle. Täällä voit myös julkaista aiemmin vain omalle tilillesi tallentaman laskennan tiedot. Kuluvaa talvea vanhempien laskentatietojen muokkaamiseksi ole yhteydessä Linnustonseurantaan.</p>
+
+        <h3 id="wbc-link">Vanhojen havaintojen linkitys</h3>
+
+        <p>Jotta vanhat talvilintulaskentahavaintosi voidaan yhdistää Vihko-tiliisi, linkitä mahdolliset hatikka- ja lintuvaaratunnuksesi profiilisivun käyttäjätilien kautta. Katso lisäohjeesta
+          <a href="https://laji.fi/about/2189">Muun tunnuksen lisääminen</a>.
+          Huomaa että linkityksen jälkeen havainnot näkyvät omissa havaintoerissäsi vaihtelevalla viiveellä.
+        </p>
+
+
       </div>
     </div>
   </div>
