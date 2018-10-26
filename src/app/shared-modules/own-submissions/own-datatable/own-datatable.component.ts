@@ -434,8 +434,12 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       ).pipe(
         map(data => {
           const locality = data[0], observers = data[1], npName = data[2];
+          const dateObservedEnd = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
           let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
-          dateObserved += gatheringInfo.dateEnd ? ' - ' + moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
+
+          if (dateObservedEnd && dateObservedEnd !== dateObserved) {
+            dateObserved += ' - ' + dateObservedEnd;
+          }
 
           return {
             creator: document.creator,
