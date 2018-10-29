@@ -359,6 +359,8 @@
   "np.earlier": "Ilmoitukset",
   "np.edit": "Muokkaa",
   "np.form.success": "Paikka tallennettu!",
+  "np.infoNoLogin": "Sinun täytyy kirjautua sisälle ilmoittaaksesi havaintosi",
+  "np.infoNoLoginReservable": "Sinun täytyy kirjautua sisälle varatakseksi reittejä",
   "np.list": "Luettelo",
   "np.loadError": "Paikkojen lataus epäonnistui. Yritä hetken kuluttua uudelleen.",
   "np.map": "Kartta",
