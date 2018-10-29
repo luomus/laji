@@ -176,20 +176,13 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
       ...this._options,
       ...(this.userSettings || {}),
       rootElem: this.elemRef.nativeElement,
-      googleApiKey: Global.googleApiKey
+      googleApiKey: Global.googleApiKey,
+      maxBounds: this.maxBounds,
+      tileLayerOpacity: this.tileLayerOpacity,
+      data: this.data
     };
     try {
       this.map = new LajiMap.LajiMap(options);
-      if (this.data) {
-        this.map.setData(this.data);
-      }
-      if (this.maxBounds) {
-        this.map.map.setMaxBounds(this.maxBounds);
-      }
-      if (this.tileLayerOpacity) {
-        this.map.setTileLayerOpacity(this.tileLayerOpacity);
-      }
-
       this.map.map.on('moveend', _ => {
         this.moveEvent('moveend');
       });
