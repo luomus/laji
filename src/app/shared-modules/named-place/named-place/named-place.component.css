@@ -32,3 +32,11 @@
   padding: 1px 5px;
   font-size: 13px;
 }
+
+.choose-label {
+  padding: 1em 0em;
+}
+
+.choose-label span {
+  margin-right: 0.5em;
+}

@@ -347,6 +347,8 @@
   "np.loadError": "Failed to load the places. Please try again a little later.",
   "np.map": "Map",
   "np.municipality": "Municipality",
+  "np.chooseLabel": "Choose from the list below or",
+  "np.chooseLabel.button": "create a new place",
   "np.myEarlier": "Underneath you'll see only your own observations not everyone's",
   "np.print": "Print",
   "np.requestAccess": "Request access",
