@@ -225,14 +225,12 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.loading = false;
         this.cd.markForCheck();
-        const sub = this.route.queryParams.subscribe((params) => {
-          if (params['activeNP']) {
-            const index = this.findNPIndexById(params['activeNP']);
-            this.setActiveNP(index);
-            this.preselectedNPIndex = index;
-          }
-          sub.unsubscribe();
-        });
+        const params = this.route.snapshot.queryParams;
+        if (params['activeNP']) {
+          const index = this.findNPIndexById(params['activeNP']);
+          this.setActiveNP(index);
+          this.preselectedNPIndex = index;
+        }
       });
   }
 
