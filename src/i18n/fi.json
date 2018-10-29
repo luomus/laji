@@ -710,6 +710,7 @@
   "search.result.species": "Lajit",
   "search.result.stats": "Tilastot",
   "select": "Valitse",
+  "area-select.all": "Kaikki",
   "selfUrl.introEnd": "Täällä voit hallita muiden järjestelmien tunnuksia yms.",
   "selfUrl.introStart": "Käyttäjätilin tietojen katselu ja muokkaus vaativat tietoturvasyistä uudelleenkirjautumisen. Painettuasi alla olevaa Käyttäjätilini painiketta, ole hyvä ja kirjaudu uudelleen sisään.",
   "sending": "Lähetetään",

@@ -90,8 +90,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           updateList = true;
         }
         if (params.municipality) {
-          this.municipality = params.municipality;
-          updateList = true;
+          this.updateMunicipalityFilter(params.municipality);
         }
         if (params.birdAssociationArea) {
           this.birdAssociationArea = params.birdAssociationArea;
@@ -125,7 +124,13 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         return this.getFormInfo();
       })
       .switchMap((form) => this.updateSettings(form))
-      .switchMap(() => this.updateNP())
+      .switchMap(() => {
+        if (!(this.filterByMunicipality && !this.municipality)) {
+          return this.updateNP();
+        } else {
+          return ObservableOf([]);
+        }
+      })
       .subscribe(() => {
         this.loading = false;
         this.cd.markForCheck();
@@ -167,9 +172,17 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.updateQueryParams();
   }
 
-  updateMunicipalityFilter(value) {
+  updateMunicipalityFilter(value: string) {
+    if (value === undefined) {
+      this.namedPlaces = undefined;
+      this.municipality = '';
+      this.updateMunicipalityParam();
+      return;
+    }
     this.municipality = value;
-    this.prepopulatedNamedPlace['municipality'] = [value];
+    if (value.slice(0, 1) === 'ML') {
+      this.prepopulatedNamedPlace['municipality'] = [value];
+    }
     this.updateMunicipalityParam();
     this.updateList();
   }
@@ -319,12 +332,12 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   updateMunicipalityParam() {
-    const queryParams = {};
-    this.municipality.length > 0 ? queryParams['municipality'] = this.municipality
-      : delete queryParams['municipality'];
-    this.listenToNextParamChange = false;
     const sub = this.route.queryParams.subscribe((params) => {
-      this.router.navigate([], { queryParams: { ...params, ...queryParams } });
+      const queryParams = {...params};
+      this.municipality.length > 0 ? queryParams['municipality'] = this.municipality
+      : delete queryParams['municipality'];
+      this.listenToNextParamChange = false;
+      this.router.navigate([], { queryParams: queryParams });
       sub.unsubscribe();
     });
   }

@@ -6,7 +6,8 @@
 
     <ng-container *ngIf="filterByMunicipality">
       <label>{{'MNP.municipality' | label}}</label>
-      <laji-area-select [disabled]="editMode" [field]="areaTypes.Municipality" (select)="updateMunicipalityFilter($event)"></laji-area-select>
+      <laji-area-select [disabled]="editMode" [field]="areaTypes.Municipality"
+      [allOptionEnabled]='true' (select)="updateMunicipalityFilter($event)" [value]='municipality'></laji-area-select>
     </ng-container>
     <ng-container *ngIf="filterByTaxon && !editMode">
       <label for="taxon-select">Valitse laji:</label>
