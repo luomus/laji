@@ -64,7 +64,7 @@ const routes: Routes = [
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: WbcOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' } },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent }
+      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent, canActivate: [OnlyLoggedIn]}
     ]
   },
   {
