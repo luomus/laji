@@ -54,7 +54,7 @@ const routes: Routes = [
         {path: 'routes/:id', pathMatch: 'full', component: WbcRouteComponent},
         {path: 'censuses', pathMatch: 'full', component: WbcCensusesComponent},
       ]},
-      {path: 'form', pathMatch: 'full', component: WbcFormComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'form', pathMatch: 'full', component: WbcFormComponent},
       {
         path: 'form/:id',
         pathMatch: 'full',
@@ -64,7 +64,7 @@ const routes: Routes = [
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: WbcOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' } },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent, canActivate: [OnlyLoggedIn]}
+      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent}
     ]
   },
   {

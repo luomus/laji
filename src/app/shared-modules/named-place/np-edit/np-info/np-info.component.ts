@@ -56,6 +56,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   viewIsInitialized = false;
   resizeCanOpenModal = false;
   useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther';
+  formReservable = false;
 
   constructor(private userService: UserService,
               private cdRef: ChangeDetectorRef) { }
@@ -121,14 +122,13 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     }
     this.userService.getUser().subscribe(person => {
       this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1);
+      this.formReservable = this.targetForm &&
+        Array.isArray(this.targetForm.features) &&
+        this.targetForm.features.indexOf(Form.Feature.Reserve) > -1;
       let btnStatus;
       if (!this.formRights.edit) {
         btnStatus = 'nouse';
-      } else if (
-        this.targetForm &&
-        Array.isArray(this.targetForm.features) &&
-        this.targetForm.features.indexOf(Form.Feature.Reserve) > -1
-      ) {
+      } else if (this.formReservable) {
         if (!this.namedPlace.reserve || new Date() > new Date(this.namedPlace.reserve.until)) {
           btnStatus = 'reservable';
         } else if (this.namedPlace.reserve.reserver === person.id) {
