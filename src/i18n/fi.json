@@ -365,6 +365,8 @@
   "np.loadError": "Paikkojen lataus epäonnistui. Yritä hetken kuluttua uudelleen.",
   "np.map": "Kartta",
   "np.municipality": "Kunta",
+  "np.chooseLabel": "Valitse alla olevasta luettelosta tai ",
+  "np.chooseLabel.button": "luo uusi paikka",
   "np.myEarlier": "Alla näkyvät vain sinun tunnuksellasi tallennetut laskennat, ei kaikkia reitin laskentoja",
   "np.print": "Tulosta",
   "np.release": "Vapauta varaus",

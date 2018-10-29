@@ -32,6 +32,10 @@
       </label>
       <laji-area-select [disabled]="editMode" [field]="areaTypes.BirdAssociationArea" (select)="updateBirdAssociationAreaFilter($event)"></laji-area-select>
     </div>
+    <div *ngIf='allowCreate && !editMode && namedPlaces' class="choose-label">
+      <span>{{'np.chooseLabel' | translate}}</span>
+      <button class='btn btn-default' (click)='toEditMode(true)'>{{'np.chooseLabel.button' | translate}}</button>
+    </div>
     <laji-spinner [spinning]="loading" [overlay]="true">
       <div *ngIf="namedPlaces && formData && !errorMsg">
         <div class="row np-row">
