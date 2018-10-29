@@ -166,7 +166,7 @@ export class WbcResultService {
   getCensusList(year?: number, season?: SEASON): Observable<any[]> {
     return this.getList(
       this.warehouseApi.warehouseQueryAggregateGet(
-        {...this.getFilterParams(year, season), secured: false},
+        {...this.getFilterParams(year, season)},
         ['document.documentId', 'document.namedPlace.name', 'document.namedPlace.municipalityDisplayName',
           'document.namedPlace.birdAssociationAreaDisplayName', 'gathering.eventDate.begin', 'gathering.team'],
         ['document.namedPlace.birdAssociationAreaDisplayName', 'gathering.eventDate.begin DESC'],
@@ -181,7 +181,7 @@ export class WbcResultService {
   getCensusListForRoute(routeId: string): Observable<any[]> {
     return this.getList(
       this.warehouseApi.warehouseQueryAggregateGet(
-        {...this.getFilterParams(), namedPlaceId: [routeId], secured: false},
+        {...this.getFilterParams(), namedPlaceId: [routeId]},
         ['document.documentId', 'gathering.eventDate.begin', 'gathering.team'],
         ['gathering.eventDate.begin DESC'],
         10000,
