@@ -107,11 +107,12 @@
       <div class="own-submissions-container" *lajiLoggedIn="true">
         <strong>{{(formRights.admin ? 'np.earlier' : 'np.myEarlier') | translate}}</strong>:
         <laji-own-submissions
-          [actions]="['edit']"
+          [actions]="formRights.admin ? ['edit', 'delete'] : ['edit']"
           [columns]="['dateObserved', 'observer', 'dateEdited']"
           [collectionID]="targetForm.collectionID"
           [namedPlace]="namedPlace.id"
           [showDownloadAll]="false"
+          [admin]="formRights.admin"
         ></laji-own-submissions>
       </div>
     </div>
