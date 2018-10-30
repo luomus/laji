@@ -1,0 +1,11 @@
+:host >>> .bootstrap-switch {
+  white-space: nowrap;
+}
+.wbc-maps-title {
+  height: 30px;
+  line-height: 30px;
+  vertical-align: middle;
+}
+.wbc-maps-title > bSwitch {
+  font-weight: normal;
+}

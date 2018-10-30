@@ -17,7 +17,7 @@ export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
   activeSeason: SEASON;
   activeBirdAssociationArea: string;
 
-  compareMode: 'season'|'year' = 'season';
+  showSeasonComparison = true;
   loading = false;
 
   mammals = 'MX.37612';

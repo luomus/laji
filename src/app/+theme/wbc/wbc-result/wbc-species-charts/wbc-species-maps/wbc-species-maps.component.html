@@ -1,41 +1,19 @@
 <div class="row">
-  <div class="col-sm-4 map-wrapper">
-    <laji-ykj-map [title]="'Syys'"
-                  [query]="query1"
-                  [zeroObservationQuery]="zeroQuery1"
+  <div class="col-sm-4 map-wrapper" *ngFor="let idx of [0, 1, 2]">
+    <laji-ykj-map [title]="idx === 0 ? (showSeasonComparison ? 'Syys' : 'Valittu laskenta') :
+                           idx === 1 ? (showSeasonComparison ? 'Talvi' : 'Keskiarvo') :
+                           showSeasonComparison ? 'Kevät' : 'Ero'"
+                  [query]="querys[idx]"
+                  [zeroObservationQuery]="zeroQuerys[idx]"
+                  [data]="data[idx]"
                   [useStatistics]="true"
+                  [loading]="loading"
                   [height]="'calc(80vh - 50px)'"
                   [type]="'individualCountSum'"
                   [types]="['individualCountSum']"
-                  [individualBreak]="breaks"
-                  [individualLabel]="labels"
-                  [individualColorRange]="colorRange"
-    ></laji-ykj-map>
-  </div>
-  <div class="col-sm-4 map-wrapper">
-    <laji-ykj-map [title]="'Talvi'"
-                  [query]="query2"
-                  [zeroObservationQuery]="zeroQuery2"
-                  [useStatistics]="true"
-                  [height]="'calc(80vh - 50px)'"
-                  [type]="'individualCountSum'"
-                  [types]="['individualCountSum']"
-                  [individualBreak]="breaks"
-                  [individualLabel]="labels"
-                  [individualColorRange]="colorRange"
-    ></laji-ykj-map>
-  </div>
-  <div class="col-sm-4 map-wrapper">
-    <laji-ykj-map [title]="'Kevät'"
-                  [query]="query3"
-                  [zeroObservationQuery]="zeroQuery3"
-                  [useStatistics]="true"
-                  [height]="'calc(80vh - 50px)'"
-                  [type]="'individualCountSum'"
-                  [types]="['individualCountSum']"
-                  [individualBreak]="breaks"
-                  [individualLabel]="labels"
-                  [individualColorRange]="colorRange"
+                  [individualBreak]="(!showSeasonComparison && idx == 2) ? differenceBreaks : breaks"
+                  [individualLabel]="(!showSeasonComparison && idx == 2) ? differenceLabels : labels"
+                  [individualColorRange]="(!showSeasonComparison && idx == 2) ? differenceColorRange : colorRange"
     ></laji-ykj-map>
   </div>
 </div>
