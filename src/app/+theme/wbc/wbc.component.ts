@@ -17,7 +17,6 @@ import { UserService } from '../../shared/service/user.service';
 })
 export class WbcComponent implements OnInit, OnDestroy {
 
-  showForm =  false;
   showNav = true;
   routeSub: Subscription;
   showStatsLinks = false;
@@ -35,7 +34,6 @@ export class WbcComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.showForm = !environment.production;
     this.showNav = this.router.url.indexOf('form') === -1;
     this.showStatsLinks = this.router.url.indexOf('stats') !== -1;
     this.routeSub = this.router.events
