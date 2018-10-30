@@ -11,13 +11,13 @@
             <li><a [routerLink]="['../talvilintulaskenta/stats', 'censuses']">{{'wbc.stats.censuses' | translate}}</a></li>
           </ul>
         </li>
-        <li *ngIf="showForm"><a [routerLink]="['../talvilintulaskenta', 'form']">{{'nafi.form' | translate}}</a></li>
+        <li><a [routerLink]="['../talvilintulaskenta', 'form']">{{'nafi.form' | translate}}</a></li>
         <ng-container *ngIf="(rights | async)?.admin; else normalUsers">
-          <li *ngIf="showForm"><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{'theme.admin.submissions' | translate}}</a></li>
+          <li><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{'theme.admin.submissions' | translate}}</a></li>
           <li><a [routerLink]="['/vihko/fp/' + collectionID + '/admin']">{{'form.administer' | translate}}</a></li>
         </ng-container>
         <ng-template #normalUsers>
-          <li *ngIf="showForm"><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
+          <li><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
         </ng-template>
       </ul>
       <laji-haseka-latest [userToken]="userService.getToken()"

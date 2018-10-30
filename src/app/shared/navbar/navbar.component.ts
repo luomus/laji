@@ -156,7 +156,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.notifications = notifications;
         this.visibleNotificationPage = notifications.currentPage;
         this.changeDetector.markForCheck();
-      });
+      }, () => {});
   }
 
   ngOnDestroy() {
