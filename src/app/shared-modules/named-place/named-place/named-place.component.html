@@ -9,22 +9,6 @@
       <laji-area-select [disabled]="editMode" [field]="areaTypes.Municipality"
       [allOptionEnabled]='true' (select)="updateMunicipalityFilter($event)" [value]='municipality'></laji-area-select>
     </ng-container>
-    <ng-container *ngIf="filterByTaxon && !editMode">
-      <label for="taxon-select">Valitse laji:</label>
-        <laji-taxon-autocomplete
-          id="taxon-select"
-          [placeholder]="'Etsi haluttu laji'"
-          (taxonSelect)="onTaxonSelect($event)"
-          [informalTaxonGroup]=""
-          [onlyFinnish]="false"
-          [onlyInvasive]="true"
-          [showResult]="false"
-          [clearValueOnSelect]="false"
-          [allowInvalid]="true"
-          [allowEmpty]="true"
-          [renderButton]="false"
-        ></laji-taxon-autocomplete>
-    </ng-container>
     <div *ngIf="filterByBirdAssociationArea">
       <label [tooltip]="birdAssociationAreaHelp"
              [placement]="'right'"
