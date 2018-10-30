@@ -1,16 +1,21 @@
-import { Component, OnInit, OnChanges, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnChanges, Input, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { WbcResultService, SEASON } from '../../wbc-result.service';
 import { WarehouseQueryInterface } from '../../../../../shared/model/WarehouseQueryInterface';
 import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.service';
+import { YkjMapComponent } from '../../../../../shared-modules/ykj/ykj-map/ykj-map.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
+import 'leaflet.sync';
 
 @Component({
   selector: 'laji-wbc-species-maps',
   templateUrl: './wbc-species-maps.component.html',
   styleUrls: ['./wbc-species-maps.component.css']
 })
-export class WbcSpeciesMapsComponent implements OnInit, OnChanges {
+export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
+  @ViewChild('syys') syysMapComponent: YkjMapComponent;
+  @ViewChild('talvi') talviMapComponent: YkjMapComponent;
+  @ViewChild('kevat') kevatMapComponent: YkjMapComponent;
   @Input() taxonId: string;
   @Input() taxonCensus = undefined;
   @Input() showSeasonComparison = true;
@@ -26,10 +31,11 @@ export class WbcSpeciesMapsComponent implements OnInit, OnChanges {
   breaks = [0, 1, 2, 8, 32, 128, 512];
   labels = ['0', '1', '2-7', '8-31', '32-127', '128-511', '512-'];
   colorRange = ['#ffffff', 'violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
+  differenceBreaks = [-51, -1, 0, 1, 51];
+  differenceLabels = ['< -50', '< -1', '0', '> 1', '> 50'];
+  differenceColorRange = ['blue', '#9999ff', 'white', '#ff9999', 'red'];
 
-  differenceBreaks = [-31, -1, 0, 1, 31];
-  differenceLabels = ['< -30', '< -1', '0', '> 1', '> 30'];
-  differenceColorRange = ['blue', 'violet', 'white', 'orange', 'red'];
+  private maps: any[];
 
   constructor(
     private resultService: WbcResultService,
@@ -37,12 +43,17 @@ export class WbcSpeciesMapsComponent implements OnInit, OnChanges {
     private cd: ChangeDetectorRef
   ) { }
 
-  ngOnInit() { }
-
   ngOnChanges() {
     if (this.taxonId && this.year) {
       this.updateMapData();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.maps = [this.syysMapComponent, this.talviMapComponent, this.kevatMapComponent].map(mapComponent => {
+      return mapComponent.mapComponent.map;
+    });
+    this.maps.forEach(m => this.initEventListeners(m));
   }
 
   private updateMapData() {
@@ -98,14 +109,20 @@ export class WbcSpeciesMapsComponent implements OnInit, OnChanges {
     const result = this.ykjService.combineGeoJsons(tenYearsZeroData, zeroData);
     result.map(r => {
       const grid = r.properties.grid;
-      const dataPoint = data.find(d => d.properties.grid === grid);
-      const tenYearsDataPoint = tenYearsData.find(d => d.properties.grid === grid);
-      r.properties.count = (dataPoint ? dataPoint.properties.count : 0) - (tenYearsDataPoint ? tenYearsDataPoint.properties.count : 0);
-      r.properties.individualCountSum = (dataPoint ? dataPoint.properties.individualCountSum : 0) - (tenYearsDataPoint ? tenYearsDataPoint.properties.individualCountSum : 0);
+      const dataCounts = this.getCountsForGrid(data, grid);
+      const tenYearsDataCounts = this.getCountsForGrid(tenYearsData, grid);
+      r.properties.count = dataCounts.count - tenYearsDataCounts.count;
+      r.properties.individualCountSum = dataCounts.individualCountSum - tenYearsDataCounts.individualCountSum;
     });
-    // const grids = geoJson.map(g => (g.properties.grid));
-    // zeroObsGeoJson = zeroObsGeoJson.filter(z => (grids.indexOf(z.properties.grid) === -1));
     return result;
+  }
+
+  private getCountsForGrid(data, grid) {
+    const dataPoint = data.find(d => d.properties.grid === grid);
+    if (dataPoint) {
+      return {count: dataPoint.properties.count || 0, individualCountSum: dataPoint.properties.individualCountSum || 0}
+    }
+    return {count: 0, individualCountSum: 0};
   }
 
   private getData(year: number|number[]) {
@@ -119,5 +136,31 @@ export class WbcSpeciesMapsComponent implements OnInit, OnChanges {
   private getQuerys(season = this.season, year: number|number[] = this.year) {
     const filterParams = this.resultService.getFilterParams(year, season, this.birdAssociationArea);
     return {query: {...filterParams, taxonId: [this.taxonId]}, zeroQuery: {...filterParams, taxonCensus: [this.taxonCensus]}};
+  }
+
+  private initEventListeners(lajiMap) {
+    const otherMaps = this.maps.filter(_map => lajiMap !== _map);
+    otherMaps.forEach(otherMap => {
+      lajiMap.map.sync(otherMap.map);
+    });
+    lajiMap._handling = {};
+    const sync = (fn) => (e) => {
+      const name = e.type;
+      const wasHandling = lajiMap._handling[name];
+      if (wasHandling) {
+        return;
+      }
+      lajiMap._handling[name] = true;
+      otherMaps.forEach(otherMap => {
+        otherMap._handling[name] = true;
+        fn(otherMap, e);
+      });
+      lajiMap._handling[name] = false;
+    };
+    lajiMap.map.addEventListener({
+      tileLayerChange: sync((_map) => _map.setTileLayerByName(lajiMap.tileLayerName)),
+      tileLayerOpacityChange: sync((_map) => _map.setTileLayerOpacity(lajiMap.tileLayerOpacity)),
+      overlaysChange: sync((_map, e) => _map.setOverlaysByName(e.overlayNames))
+    });
   }
 }

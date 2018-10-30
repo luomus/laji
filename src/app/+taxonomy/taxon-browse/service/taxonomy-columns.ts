@@ -6,30 +6,30 @@ export class TaxonomyColumns {
   allColumns: ObservationTableColumn[] = [
     {
       name: 'id',
-      label: '+taxonomy.card.id',
+      label: 'taxonomy.card.id',
       width: 95
     },
     {
       name: 'taxonRank',
-      label: '+taxonomy.rank',
+      label: 'taxonomy.rank',
       cellTemplate: 'label',
       width: 130
     },
     {
       name: 'scientificName',
       selectField: 'scientificName,cursiveName',
-      label: '+taxonomy.scientific.name',
+      label: 'taxonomy.scientific.name',
       cellTemplate: 'taxonScientificName',
       width: 200
     },
     {
       name: 'scientificNameAuthorship',
-      label: '+taxonomy.author',
+      label: 'taxonomy.author',
       width: 200
     },
     {
       name: 'vernacularName',
-      label: '+taxonomy.vernacular.name',
+      label: 'taxonomy.vernacular.name',
       cellTemplate: 'multiLang',
       width: 200
     },
@@ -40,37 +40,37 @@ export class TaxonomyColumns {
     },
     {
       name: 'vernacularName.fi',
-      label: '+taxonomy.vernacular.name.fi',
+      label: 'taxonomy.vernacular.name.fi',
       selectField: 'vernacularName',
       width: 200
     },
     {
       name: 'vernacularName.sv',
-      label: '+taxonomy.vernacular.name.sv',
+      label: 'taxonomy.vernacular.name.sv',
       selectField: 'vernacularName',
       width: 200
     },
     {
       name: 'vernacularName.en',
-      label: '+taxonomy.vernacular.name.en',
+      label: 'taxonomy.vernacular.name.en',
       selectField: 'vernacularName',
       width: 200
     },
     {
       name: 'alternativeVernacularName',
-      label: '+taxonomy.alternative.vernacular.names',
+      label: 'taxonomy.alternative.vernacular.names',
       cellTemplate: 'multiLangAll',
       width: 200
     },
     {
       name: 'obsoleteVernacularName',
-      label: '+taxonomy.obsolete.vernacular.name',
+      label: 'taxonomy.obsolete.vernacular.name',
       cellTemplate: 'multiLangAll',
       width: 200
     },
     {
       name: 'tradeName',
-      label: '+taxonomy.trade.name',
+      label: 'taxonomy.trade.name',
       cellTemplate: 'multiLangAll',
       width: 200
     },
@@ -132,7 +132,7 @@ export class TaxonomyColumns {
       .map(column => {
         this.columnLookup[column.name] = column;
         if (!column.label) {
-          column.label = '+taxonomy.' + column.name;
+          column.label = 'taxonomy.' + column.name;
         }
         return column;
       });
