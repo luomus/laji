@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-sm-4 map-wrapper">
-    <laji-ykj-map [title]="'Syys'"
+    <laji-ykj-map #syys
+                  [title]="'Syys'"
                   [query]="query1"
                   [zeroObservationQuery]="zeroQuery1"
                   [useStatistics]="true"
@@ -10,10 +11,17 @@
                   [individualBreak]="breaks"
                   [individualLabel]="labels"
                   [individualColorRange]="colorRange"
+                  [mapOptions]="{
+                    clickBeforeZoomAndPan: true,
+                    controls: {
+                      location: false
+                    }
+                  }"
     ></laji-ykj-map>
   </div>
   <div class="col-sm-4 map-wrapper">
-    <laji-ykj-map [title]="'Talvi'"
+    <laji-ykj-map #talvi
+                  [title]="'Talvi'"
                   [query]="query2"
                   [zeroObservationQuery]="zeroQuery2"
                   [useStatistics]="true"
@@ -23,10 +31,15 @@
                   [individualBreak]="breaks"
                   [individualLabel]="labels"
                   [individualColorRange]="colorRange"
+                  [mapOptions]="{
+                    clickBeforeZoomAndPan: true,
+                    controls: false
+                  }"
     ></laji-ykj-map>
   </div>
   <div class="col-sm-4 map-wrapper">
-    <laji-ykj-map [title]="'Kevät'"
+    <laji-ykj-map #kevat
+                  [title]="'Kevät'"
                   [query]="query3"
                   [zeroObservationQuery]="zeroQuery3"
                   [useStatistics]="true"
@@ -36,6 +49,10 @@
                   [individualBreak]="breaks"
                   [individualLabel]="labels"
                   [individualColorRange]="colorRange"
+                  [mapOptions]="{
+                    clickBeforeZoomAndPan: true,
+                    controls: false
+                  }"
     ></laji-ykj-map>
   </div>
 </div>

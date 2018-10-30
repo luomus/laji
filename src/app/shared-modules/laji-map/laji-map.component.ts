@@ -156,9 +156,6 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     if (changes.data) {
       this.setData(this.data);
     }
-    if (changes.maxBounds && this.map) {
-      // this.initMap();
-    }
     if (changes.tileLayerOpacity && this.map && this.map.tileLayer) {
       this.map.setTileLayerOpacity(typeof this.tileLayerOpacity === 'undefined' ? this.tileLayerOpacity : 1);
     }
@@ -177,7 +174,6 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
       ...(this.userSettings || {}),
       rootElem: this.elemRef.nativeElement,
       googleApiKey: Global.googleApiKey,
-      //maxBounds: this.maxBounds,
       tileLayerOpacity: this.tileLayerOpacity,
       data: this.data
     };

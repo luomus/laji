@@ -45,13 +45,15 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() countLabel: string[] = ['1-', '10-', '100-', '1 000-', '10 000-', '100 000-'];
   @Input() timeLabel: string[] = ['2020', '2015-', '2010-', '2005-', '2000-', '1990-'];
   @Input() maxBounds: [[number, number], [number, number]] = [[58.0, 19.0], [72.0, 35.0]];
-  @Input() mapOptions: LajiMapOptions = {
-    controls: {
-      draw: false
-    },
-    center: [64.709804, 25],
-    zoom: 2
-  };
+  @Input() set mapOptions(mapOptions: LajiMapOptions) {
+    this._mapOptions = {
+      ...this._mapOptions,
+      ...(mapOptions || {})
+    }
+  }
+  get mapOptions() {
+    return this._mapOptions;
+  }
   @Input() taxon: Taxonomy;
   @Input() useStatistics = false;
 
@@ -67,6 +69,13 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   private current;
   private subQuery: Subscription;
   private subLang: Subscription;
+  private _mapOptions: LajiMapOptions = {
+    controls: {
+      draw: false
+    },
+    center: [64.709804, 25],
+    zoom: 2
+  }
 
   constructor(
     public translate: TranslateService,
@@ -80,10 +89,10 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   ngOnInit() {
     this.subLang = this.translate.onLangChange.subscribe(() => {
-      this.mapOptions = {...this.mapOptions, lang: <LajiMapLang> this.translate.currentLang};
+      this._mapOptions = {...this._mapOptions, lang: <LajiMapLang> this.translate.currentLang};
       this.cd.markForCheck();
     });
-    this.mapOptions['lang'] = <LajiMapLang> this.translate.currentLang;
+    this._mapOptions['lang'] = <LajiMapLang> this.translate.currentLang;
     this.initGeoJsonLayer();
   }
 

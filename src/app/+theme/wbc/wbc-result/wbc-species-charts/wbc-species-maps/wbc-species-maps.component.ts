@@ -1,13 +1,18 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnChanges, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { WbcResultService, SEASON } from '../../wbc-result.service';
 import { WarehouseQueryInterface } from '../../../../../shared/model/WarehouseQueryInterface';
+import { YkjMapComponent } from '../../../../../shared-modules/ykj/ykj-map/ykj-map.component';
+import 'leaflet.sync';
 
 @Component({
   selector: 'laji-wbc-species-maps',
   templateUrl: './wbc-species-maps.component.html',
   styleUrls: ['./wbc-species-maps.component.css']
 })
-export class WbcSpeciesMapsComponent implements OnInit, OnChanges {
+export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
+  @ViewChild('syys') syysMapComponent: YkjMapComponent;
+  @ViewChild('talvi') talviMapComponent: YkjMapComponent;
+  @ViewChild('kevat') kevatMapComponent: YkjMapComponent;
   @Input() taxonId: string;
   @Input() taxonCensus = undefined;
   @Input() year: number;
@@ -26,16 +31,23 @@ export class WbcSpeciesMapsComponent implements OnInit, OnChanges {
   labels = ['0', '1-31', '32-127', '128-511', '512-2047', '2048-8191', '8192-'];
   colorRange = ['#ffffff', 'violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
 
+  private maps: any[];
+
   constructor(
     private resultService: WbcResultService
   ) { }
-
-  ngOnInit() { }
 
   ngOnChanges() {
     if (this.taxonId && this.year) {
       this.setQuerys();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.maps = [this.syysMapComponent, this.talviMapComponent, this.kevatMapComponent].map(mapComponent => {
+      return mapComponent.mapComponent.map;
+    });
+    this.maps.forEach(map => this.initEventListeners(map));
   }
 
   private setQuerys() {
@@ -54,5 +66,31 @@ export class WbcSpeciesMapsComponent implements OnInit, OnChanges {
       ...filterParams,
       taxonCensus: [this.taxonCensus]
     };
+  }
+
+  private initEventListeners(lajiMap) {
+    const otherMaps = this.maps.filter(_map => lajiMap !== _map);
+    otherMaps.forEach(otherMap => {
+      lajiMap.map.sync(otherMap.map);
+    });
+    lajiMap._handling = {};
+    const sync = (fn) => (e) => {
+      const name = e.type;
+      const wasHandling = lajiMap._handling[name];
+      if (wasHandling) {
+        return;
+      }
+      lajiMap._handling[name] = true;
+      otherMaps.forEach(otherMap => {
+        otherMap._handling[name] = true;
+        fn(otherMap, e);
+      });
+      lajiMap._handling[name] = false;
+    };
+    lajiMap.map.addEventListener({
+      tileLayerChange: sync((_map) => _map.setTileLayerByName(lajiMap.tileLayerName)),
+      tileLayerOpacityChange: sync((_map) => _map.setTileLayerOpacity(lajiMap.tileLayerOpacity)),
+      overlaysChange: sync((_map, e) => _map.setOverlaysByName(e.overlayNames))
+    });
   }
 }
