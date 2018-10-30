@@ -36,6 +36,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   @Input() hideHeader = false;
   @Input() identifying = false;
 
+  collectionContestFormId = Global.forms.collectionContest;
+
   externalViewUrl: string;
   document: any;
   documentID: string;
@@ -179,7 +181,11 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       if (doc && doc.gatherings) {
         doc.gatherings.map((gathering, idx) => {
           if (gathering.conversions && gathering.conversions.wgs84Geo) {
-            mapData[idx] = gathering.conversions.wgs84Geo;
+            mapData[idx] = {
+              geoJSON: gathering.conversions.wgs84Geo,
+              wgs84: gathering.conversions.wgs84,
+              ykj: gathering.conversions.ykj
+            }
             this.hasMapData = true;
           }
           if (this.highlight && gathering.gatheringId === this.highlight) {

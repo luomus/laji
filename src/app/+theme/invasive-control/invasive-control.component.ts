@@ -2,10 +2,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
-import { Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../../shared/service/form.service';
-import { UserService } from '../../shared/service/user.service';
 
 @Component({
   selector: '[laji-invasive-control]',

@@ -6,7 +6,7 @@ import { StatisticsComponent } from '../shared-modules/statistics/statistics.com
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { HaSeKaFormComponent } from './form/haseka-form.component';
 import { NpPrintComponent } from '../shared-modules/named-place/np-print/np-print.component';
-import { RequestComponent } from './form-permission/request/request.component';
+import { RequestWrapperComponent } from './form-permission/request/request-wrapper.component';
 import { AdminComponent } from './form-permission/admin/admin.component';
 import { IntroComponent } from './form-permission/admin/intro/intro.component';
 import { AcceptComponent } from './form-permission/admin/accept/accept.component';
@@ -59,7 +59,7 @@ export const hasekaRoutes: Routes = [
     path: 'fp/:collectionId',
     pathMatch: 'full',
     canActivate: [OnlyLoggedIn],
-    component: RequestComponent
+    component: RequestWrapperComponent
   },
   {
     path: ':formId',

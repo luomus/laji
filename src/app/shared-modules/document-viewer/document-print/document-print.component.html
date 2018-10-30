@@ -16,7 +16,7 @@
     <laji-print-images *ngIf="document.media" [images]="document.media"></laji-print-images>
   </div>
 
-  <ng-container *ngFor="let gathering of document.gatherings; let i=index">
+  <div class="gathering" *ngFor="let gathering of document.gatherings; let i=index">
     <h4 class="page-header">{{'viewer.print.place' | translate }} {{i + 1}}</h4>
     <div>
       <div [ngClass]="{'half-page-block padding-right': mapData[i]}">
@@ -40,5 +40,5 @@
         <laji-print-images *ngIf="unit.media" [images]="unit.media"></laji-print-images>
       </ng-container>
     </div>
-  </ng-container>
+  </div>
 </div>

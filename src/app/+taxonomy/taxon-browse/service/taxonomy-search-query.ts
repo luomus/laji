@@ -6,7 +6,7 @@ import { SearchQueryInterface } from '../../../shared-modules/search-filters/sea
 
 @Injectable()
 export class TaxonomySearchQuery implements SearchQueryInterface {
-  public queryType = 'taxonomy';
+  public queryType = '+taxonomy';
   private queryUpdatedSource = new Subject<any>();
   public queryUpdated$ = this.queryUpdatedSource.asObservable();
 

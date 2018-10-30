@@ -1,4 +1,4 @@
-<div [ngClass]="{'hidden': editButtonVisible === undefined && useButton === undefined}">
+<div [ngClass]="{'hidden': namedPlace === undefined}">
   <div class="hidden-xs hidden-sm hidden-md" #infoBox id="info-box">
     <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{isModal: false}"></ng-template>
   </div>
@@ -43,7 +43,14 @@
           <laji-np-info-row [title]="'lastCensus' | translate" [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin"></laji-np-info-row>
         </ng-container>
         <div *lajiLoggedIn="false" style="margin-top: 20px;">
-          <strong>Sinun täytyy kirjautua sisälle varatakseksi reittejä</strong>
+          <strong>
+            <ng-container *ngIf="formReservable; else noReserve">
+              {{'np.infoNoLoginReservable' | translate}}
+            </ng-container>
+            <ng-template #noReserve>
+              {{'np.infoNoLogin' | translate}}
+            </ng-template>
+          </strong>
         </div>
         <div *lajiLoggedIn="true" id="use-button-container" [ngSwitch]="useButton">
           <ng-container *ngSwitchCase="'usable'">
@@ -65,23 +72,10 @@
                       (click)="onReleaseButtonClick.emit()">{{targetForm.namedPlaceOptions?.releaseLabel ? targetForm.namedPlaceOptions.releaseLabel : 'np.release' | translate}}</button>
             </div>
           </ng-container>
-          <ng-container *ngSwitchCase="'nouse'">
-            <div class="row-container">
-              <p>{{'np.requestAccess-intro' | translate}}</p>
-              <button type="button"
-                 class="btn btn-md btn-primary btn-block use-button"
-                 [disabled]="loading"
-                 (click)="onRequestAccessButtonClick.emit()">{{targetForm.namedPlaceOptions?.accessLabel ? targetForm.namedPlaceOptions.accessLabel : 'np.requestAccess' | translate}}</button>
-            </div>
-          </ng-container>
-          <ng-container *ngSwitchCase="'accessRequested'">
-            <div class="row-container">
-              <p>{{'np.requestAccess-intro' | translate}}</p>
-              <button type="button"
-                      class="btn btn-md btn-primary btn-block use-button"
-                      [disabled]="true">{{targetForm.namedPlaceOptions?.requestSendLabel ? targetForm.namedPlaceOptions.requestSendLabel : 'np.requestSend' | translate}}</button>
-            </div>
-          </ng-container>
+         <laji-request *ngSwitchCase="'nouse'"
+          [collectionId]="collectionId"
+          [disableDescription]="true"
+         ></laji-request>
           <ng-container *ngSwitchCase="'reservable'">
             <div class="row-container">
               <button type="button"
@@ -113,11 +107,12 @@
       <div class="own-submissions-container" *lajiLoggedIn="true">
         <strong>{{(formRights.admin ? 'np.earlier' : 'np.myEarlier') | translate}}</strong>:
         <laji-own-submissions
-          [actions]="['edit']"
+          [actions]="formRights.admin ? ['edit', 'delete'] : ['edit']"
           [columns]="['dateObserved', 'observer', 'dateEdited']"
           [collectionID]="targetForm.collectionID"
           [namedPlace]="namedPlace.id"
           [showDownloadAll]="false"
+          [admin]="formRights.admin"
         ></laji-own-submissions>
       </div>
     </div>

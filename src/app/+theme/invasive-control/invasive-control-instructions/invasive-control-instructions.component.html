@@ -5,12 +5,9 @@
     <p>
       Tämän palvelun avulla tallennetaan vieraslajien torjuntatoimia, joita tehdään pääsääntöisesti viranomaistoimintana tai viranomaisten ohjauksessa. Lomakkeen avulla voidaan tallentaa torjuntatoimia kohdistaen niitä jo olemassa oleviin torjuntatoimipaikkoihin tai luomalla uusi torjuntatoimipaikka. Samalla käynnistyy torjuntatoimien vakutusten seuranta, josta raportointi on EU-direktiivien mukainen kansallinen velvollisuus.
     </p>
-    <p *ngIf="(userService.isLoggedIn$ | async) && form && !(rights | async)?.edit && !(rights | async)?.admin">
-      <button type="button"
-              class="btn btn-md btn-primary btn-block use-button"
-              [disabled]="loading"
-              (click)="onRequestAccessButtonClick.emit()">{{form.namedPlaceOptions?.accessLabel ? form.namedPlaceOptions.accessLabel : 'np.requestAccess' | translate}}</button>
-    </p>
 
+    <laji-request *ngIf="rights === Rights.NotAllowed"
+                  [collectionId]="'HR.2049'">
+    </laji-request>
   </div>
 </div>

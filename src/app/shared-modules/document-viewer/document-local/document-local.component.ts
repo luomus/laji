@@ -8,6 +8,7 @@ import { Units } from '../../../shared/model/Units';
 import { TranslateService } from '@ngx-translate/core';
 import { Image } from '../../../shared/image-gallery/image.interface';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
+import { Global } from '../../../../environments/global';
 
 @Component({
   selector: 'laji-document-local',
@@ -19,10 +20,12 @@ export class DocumentLocalComponent implements OnInit, OnChanges {
   @Input() view: 'viewer'|'print' = 'viewer';
   @Input() showSpinner = false;
 
+  collectionContestFormId = Global.forms.collectionContest;
+
   mapData: any[] = [];
   imageData: {[key: string]: any} = {};
-
   fields = {};
+  formLogo: string;
 
   loading = false;
   private parseDocSub: Subscription;
@@ -61,6 +64,8 @@ export class DocumentLocalComponent implements OnInit, OnChanges {
     return this.getForm(doc.formID)
       .pipe(
         switchMap(form => {
+          this.formLogo = form.logo;
+
           const observables = [];
           if (doc.images && doc.images.length > 0) {
             observables.push(this.getImages(doc));
@@ -68,7 +73,7 @@ export class DocumentLocalComponent implements OnInit, OnChanges {
 
           doc.gatherings.map((gathering, i) => {
             if (gathering.geometry) {
-              this.mapData[i] = gathering.geometry;
+              this.mapData[i] = {geoJSON: gathering.geometry};
             }
             if (gathering.images && gathering.images.length > 0) {
               observables.push(this.getImages(gathering));

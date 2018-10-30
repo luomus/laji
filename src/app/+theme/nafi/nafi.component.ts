@@ -1,5 +1,7 @@
 /* tslint:disable:component-selector */
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../shared/service/user.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: '[laji-nafi]',
@@ -8,7 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NafiComponent implements OnInit {
 
-  constructor() { }
+  formID = environment.nafiForm;
+
+  constructor(
+    public userService: UserService
+  ) { }
 
   ngOnInit() {
   }

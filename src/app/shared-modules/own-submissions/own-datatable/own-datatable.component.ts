@@ -52,6 +52,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() documents: Document[];
   @Input() loadError = '';
   @Input() showDownloadAll = true;
+  @Input() admin = false;
   @Input() useInternalDocumentViewer = false;
   @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
   @Input() onlyTemplates = false;
@@ -433,8 +434,12 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
       ).pipe(
         map(data => {
           const locality = data[0], observers = data[1], npName = data[2];
+          const dateObservedEnd = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
           let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
-          dateObserved += gatheringInfo.dateEnd ? ' - ' + moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
+
+          if (dateObservedEnd && dateObservedEnd !== dateObserved) {
+            dateObserved += ' - ' + dateObservedEnd;
+          }
 
           return {
             creator: document.creator,
@@ -450,6 +455,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
             formID: document.formID,
             form: form.title || document.formID,
             id: document.id,
+            locked: !!document.locked,
             index: idx
           };
         })

@@ -1,0 +1,57 @@
+<h3>{{id | label}}<span *ngIf="season"> - {{'wbc.season.' + season | translate}}</span></h3>
+
+<div class="panel panel-default" style="max-width: 400px">
+  <div class="panel-heading">
+    <strong>Taulukko havaituista lajeista</strong>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'fall'}">{{'wbc.season.fall' | translate}}</a></div>
+      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'winter'}">{{'wbc.season.winter' | translate}}</a></div>
+      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'spring'}">{{'wbc.season.spring' | translate}}</a></div>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="!season">
+  <h4>Reitin laskennat</h4>
+  <laji-datatable
+    #dataTable
+    (rowSelect)="openViewer($event.row['document.documentId'])"
+    [sorts]="sorts"
+    [clientSideSorting]="true"
+    [showRowAsLink]="true"
+    [showHeader]="true"
+    [height]="'calc(80vh - 40px)'"
+    [virtualScrolling]="true"
+    [rows]="rows"
+    [loading]="!rows"
+    [columnMode]="'standard'"
+    [totalMessage]="'haseka.submissions.total' | translate"
+    [columns]="columns"
+    [count]="rows?.length">
+  </laji-datatable>
+</ng-container>
+
+<laji-wbc-route-table *ngIf="season"
+                      (onDocumentClick)="openViewer($event)"
+                      [data]="observationStats ? observationStats[season] : undefined"
+></laji-wbc-route-table>
+
+<div class="modal fade" bsModal #documentModal="bs-modal"
+     (onHidden)="documentModalVisible = false"
+     (onShow)="documentModalVisible = true"
+     tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" *ngIf="documentModalVisible">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <laji-document [useWorldMap]="false"
+                       [uri]="shownDocument"
+        ></laji-document>
+      </div>
+    </div>
+  </div>
+</div>

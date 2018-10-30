@@ -8,16 +8,18 @@ import {
   Output,
   ViewChild,
   PLATFORM_ID,
-  Inject
+  Inject, OnDestroy, OnInit
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
-import { interval as ObservableInterval, of as ObservableOf } from 'rxjs';
+import { interval as ObservableInterval, of as ObservableOf, Subject, Subscription, Observable } from 'rxjs';
+import { map, tap, share, debounceTime } from 'rxjs/operators';
 import { CacheService } from '../../../shared/service/cache.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
 import { isPlatformBrowser } from '@angular/common';
 import { Logger } from '../../../shared/logger/logger.service';
+import { FilterByType, FilterService } from '../../../shared/service/filter.service';
 
 const CACHE_COLUMN_SETINGS = 'datatable-col-width';
 
@@ -29,7 +31,7 @@ interface Settings {[key: string]: DatatableColumn}
   styleUrls: ['./datatable.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatatableComponent implements AfterViewInit {
+export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private static settings: Settings;
 
@@ -54,7 +56,8 @@ export class DatatableComponent implements AfterViewInit {
   @Input() selectionType: SelectionType;
 
   // Initialize datatable row selection with some index
-  _selectedRowIndex: number;
+  _preselectedRowIndex = -1;
+  _filterBy: FilterByType;
 
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
@@ -64,28 +67,55 @@ export class DatatableComponent implements AfterViewInit {
   annotationTypes = Annotation.TypeEnum;
   annotationClass = Annotation.AnnotationClassEnum;
 
+  filterByChange: Subscription;
+
+  _originalRows: any[];
   _rows: any[];
   _page: number;
   _count: number;
   _offset: number;
   _columns: DatatableColumn[];
-  selected: any[];
+  selected: any[] = [];
 
   initialized = false;
+  private filterChange$ = new Subject();
+  private settings$: Observable<Settings>;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private cacheService: CacheService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private logger: Logger
-  ) { }
+    private logger: Logger,
+    private filterService: FilterService
+  ) {
+    this.settings$ = DatatableComponent.settings ?
+      ObservableOf(DatatableComponent.settings).pipe(share()) :
+      this.cacheService.getItem<Settings>(CACHE_COLUMN_SETINGS)
+        .pipe(
+          map(value => value || {}),
+          tap(value => DatatableComponent.settings = value),
+          share()
+        )
+  }
 
   @Input() set count(cnt: number) {
     this._count = typeof cnt === 'number' ? cnt  : 0;
   }
 
   @Input() set rows(rows: any[]) {
-    this._rows = rows || [];
+    this._originalRows = rows || [];
+
+    // record the original indexes of each row element so that when the table is sorted
+    // we can find out how the indexes were mapped
+    this._originalRows.forEach((element, idx) => {
+      element.preSortIndex = idx;
+    });
+
+    if (this._filterBy) {
+      this.updateFilteredRows();
+    } else {
+      this._rows = this._originalRows;
+    }
   }
 
   @Input() set page(page: number) {
@@ -94,13 +124,7 @@ export class DatatableComponent implements AfterViewInit {
   };
 
   @Input() set columns(columns: DatatableColumn[]) {
-    const settings$ = DatatableComponent.settings ?
-      ObservableOf(DatatableComponent.settings) :
-      this.cacheService.getItem<Settings>(CACHE_COLUMN_SETINGS)
-        .map(value => value || {})
-        .do(value => DatatableComponent.settings = value);
-
-    settings$.subscribe(settings => {
+    this.settings$.subscribe(settings => {
       this._columns = columns.map((column) => {
         if (!column.headerTemplate) {
           column.headerTemplate = this.datatableTemplates.header;
@@ -123,20 +147,45 @@ export class DatatableComponent implements AfterViewInit {
     });
   }
 
-  @Input() set selectedRowIndex (index: number) {
-    this._selectedRowIndex = index;
+  @Input() set preselectedRowIndex(index: number) {
+    this._preselectedRowIndex = index;
     if (this.initialized) {
-      this.selected = [this._rows[this._selectedRowIndex]] || [];
+      this.selected = [this._rows[this._preselectedRowIndex]] || [];
       if (this.selected.length > 0) {
-        // Calculate relative position of selected row and scroll to it
-        const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * this._selectedRowIndex;
-        try {
-          this.datatable.bodyComponent.scroller.parentElement.scrollTop = scrollAmount;
-        } catch (e) {
-          this.logger.info('selected row index failed', e)
-        }
+        // wait until datatable initialization is complete (monkey patched) before scrolling
+        const sub = this.datatable.initializationState.subscribe({complete: () => {
+          // find the index in datatable internal sorted array that corresponds to selected index in input data
+          const postSortIndex = this.datatable._internalRows.findIndex((element) => {
+            return element.preSortIndex === this._preselectedRowIndex;
+          });
+          // Calculate relative position of selected row and scroll to it
+          const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * postSortIndex;
+          this.scrollTo(scrollAmount);
+          sub.unsubscribe();
+        }});
       }
     }
+  }
+
+  /**
+   * Filters data in the table.
+   *
+   * Please note that this should not be used when external pagination is used!
+   *
+   * @param filterBy
+   */
+  @Input() set filterBy(filterBy: FilterByType) {
+    this._filterBy = filterBy;
+    this.filterChange$.next();
+  }
+
+  ngOnInit() {
+    this.filterByChange = this.filterChange$.pipe(
+      debounceTime(400)
+    ).subscribe(() => {
+      this.updateFilteredRows();
+      this.changeDetectorRef.markForCheck();
+    })
   }
 
   ngAfterViewInit() {
@@ -144,10 +193,18 @@ export class DatatableComponent implements AfterViewInit {
       setTimeout(() => {
         this.datatable.recalculate();
         this.initialized = true;
-        if (this._selectedRowIndex) {
-          this.selectedRowIndex = this._selectedRowIndex;
+
+        // Make sure that preselected row index setter is called after initialization
+        if (this._preselectedRowIndex > -1) {
+          this.preselectedRowIndex = this._preselectedRowIndex;
         }
       }, 100);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.filterByChange) {
+      this.filterByChange.unsubscribe();
     }
   }
 
@@ -165,14 +222,15 @@ export class DatatableComponent implements AfterViewInit {
   }
 
   refreshTable() {
-    ObservableInterval()
-      .take(1)
-      .subscribe(() => {
-        if (this._rows) {
-          this._rows = [...this._rows];
-          this.changeDetectorRef.markForCheck();
-        }
-      });
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    setTimeout(() => {
+      if (this._rows) {
+        this._rows = [...this._rows];
+        this.changeDetectorRef.markForCheck();
+      }
+    });
   }
 
   _getRowClass(row) {
@@ -205,5 +263,26 @@ export class DatatableComponent implements AfterViewInit {
       this.cacheService.setItem<Settings>(CACHE_COLUMN_SETINGS, DatatableComponent.settings)
         .subscribe(() => {}, () => {});
     }
+  }
+
+  private updateFilteredRows() {
+    this._rows = this._filterBy ? this.filterService.filter(this._originalRows, this._filterBy) : this._originalRows;
+    this._count = this._rows.length;
+    this._page = 1;
+    this.scrollTo();
+  }
+
+  private scrollTo(offsetY: number = 0) {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    setTimeout(() => {
+      try {
+        this.datatable.bodyComponent.scroller.setOffset(offsetY);
+        this.datatable.bodyComponent.scroller.updateOffset();
+      } catch (e) {
+        this.logger.info('selected row index failed', e)
+      }
+    });
   }
 }

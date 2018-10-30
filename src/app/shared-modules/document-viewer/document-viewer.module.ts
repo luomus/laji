@@ -28,6 +28,10 @@ import { PrintImagesComponent} from './print-images/print-images.component';
 import { DocumentPrintComponent } from './document-print/document-print.component';
 import { UnitRowsComponent } from './unit-rows/unit-rows.component';
 import { GatheringRowsComponent } from './gathering-rows/gathering-rows.component';
+import { CollectionContestPrintComponent } from './document-local/collection-contest-local-print/collection-contest-print.component';
+import { PrintRowComponent } from './document-local/collection-contest-local-print/print-row/print-row.component';
+import { PrintTaxonHeaderComponent } from './document-local/collection-contest-local-print/print-taxon-header/print-taxon-header.component';
+import { CoordinatesViewerComponent } from './viewer-coordinates/viewer-coordinates.component';
 
 @NgModule({
   imports: [
@@ -42,7 +46,12 @@ import { GatheringRowsComponent } from './gathering-rows/gathering-rows.componen
     GatheringComponent, UnitComponent, LcFirstPipe, SecureInfoComponent, IssueComponent, IssuesComponent, FactsComponent,
     EditLinkComponent, DocumentLocalComponent, DocumentObjectComponent, DocumentLocalViewerViewComponent,
     DocumentLocalPrintViewComponent, PrintMapComponent, PrintImagesComponent, DocumentPrintComponent, UnitRowsComponent,
-    GatheringRowsComponent],
+    GatheringRowsComponent,
+    CollectionContestPrintComponent,
+    PrintRowComponent,
+    PrintTaxonHeaderComponent,
+    CoordinatesViewerComponent
+  ],
   exports: [DocumentComponent, DocumentPrintComponent, DocumentLocalComponent]
 })
 export class DocumentViewerModule { }

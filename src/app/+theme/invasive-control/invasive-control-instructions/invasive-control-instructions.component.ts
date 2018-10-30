@@ -1,13 +1,20 @@
 import { WINDOW } from '@ng-toolkit/universal';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { FormService } from '../../../shared/service/form.service';
-import { FormPermissionService, Rights } from '../../../+haseka/form-permission/form-permission.service';
+import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
 import { environment } from '../../../../environments/environment';
-import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { UserService } from '../../../shared/service/user.service';
+import { of } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
+
+enum Rights {
+  Allowed,
+  NotAllowed,
+  NotDefined
+}
 
 @Component({
   selector: 'laji-invasive-control-instructions',
@@ -15,8 +22,9 @@ import { UserService } from '../../../shared/service/user.service';
   styleUrls: ['./invasive-control-instructions.component.css']
 })
 export class InvasiveControlInstructionsComponent implements OnInit {
+  Rights = Rights;
 
-  rights: Observable<Rights>;
+  rights: Rights = Rights.NotDefined;
   form: any;
 
   constructor(
@@ -27,7 +35,8 @@ export class InvasiveControlInstructionsComponent implements OnInit {
     private formService: FormService,
     private formPermissionService: FormPermissionService,
     private translateService: TranslateService,
-    @Inject(PLATFORM_ID) private platformID: object
+    @Inject(PLATFORM_ID) private platformID: object,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -38,11 +47,21 @@ export class InvasiveControlInstructionsComponent implements OnInit {
         }
       });
     }
-    this.formService.getForm(environment.invasiveControlForm, this.translateService.currentLang).subscribe(form => {
-      this.rights = this.formPermissionService.getRights(form);
-      this.form = form;
-    }, () => {
-      this.rights = ObservableOf({edit: false, admin: false});
-    })
+    this.formService.getForm(environment.invasiveControlForm, this.translateService.currentLang)
+      .switchMap(form => this.formPermissionService.getRights(form))
+      .pipe(
+        catchError(() => {
+          this.rights = Rights.NotDefined;
+          return of({edit: false, admin: false})
+        })
+      )
+      .subscribe((rights) => {
+        if (rights.edit === true) {
+          this.rights = Rights.Allowed;
+        } else {
+          this.rights = Rights.NotAllowed
+        }
+        this.cd.markForCheck();
+      })
   }
 }

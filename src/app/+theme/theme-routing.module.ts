@@ -14,6 +14,11 @@ import { EmkComponent } from './emk/emk.component';
 import { WbcComponent } from './wbc/wbc.component';
 import { WbcInstructionsComponent } from './wbc/wbc-instructions/wbc-instructions.component';
 import { WbcResultComponent } from './wbc/wbc-result/wbc-result.component';
+import { WbcSpeciesComponent } from './wbc/wbc-result/wbc-species/wbc-species.component';
+import { WbcSpeciesChartsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-charts.component';
+import { WbcRoutesComponent } from './wbc/wbc-result/wbc-routes/wbc-routes.component';
+import { WbcRouteComponent } from './wbc/wbc-result/wbc-route/wbc-route.component';
+import { WbcCensusesComponent } from './wbc/wbc-result/wbc-censuses/wbc-censuses.component';
 import { WbcFormComponent } from './wbc/wbc-form/wbc-form.component';
 import { WbcOwnSubmissionsComponent } from './wbc/wbc-own-submissions/wbc-own-submissions.component';
 import { IdentifyComponent } from './identify/identify.component';
@@ -41,8 +46,15 @@ const routes: Routes = [
     component: WbcComponent,
     children: [
       {path: '', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' }},
-      {path: 'stats', pathMatch: 'full', component: WbcResultComponent, data: { title: 'wbc.title', noScrollToTop: true }},
-      {path: 'form', pathMatch: 'full', component: WbcFormComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'stats', component: WbcResultComponent, data: { title: 'wbc.title', noScrollToTop: true }, children: [
+        {path: '', pathMatch: 'full', redirectTo: 'species'},
+        {path: 'species', component: WbcSpeciesComponent},
+        {path: 'species/:id', component: WbcSpeciesChartsComponent},
+        {path: 'routes', pathMatch: 'full', component: WbcRoutesComponent},
+        {path: 'routes/:id', pathMatch: 'full', component: WbcRouteComponent},
+        {path: 'censuses', pathMatch: 'full', component: WbcCensusesComponent},
+      ]},
+      {path: 'form', pathMatch: 'full', component: WbcFormComponent},
       {
         path: 'form/:id',
         pathMatch: 'full',
@@ -52,7 +64,7 @@ const routes: Routes = [
       },
       {path: 'ownSubmissions', pathMatch: 'full', component: WbcOwnSubmissionsComponent, canActivate: [OnlyLoggedIn]},
       {path: 'instructions', pathMatch: 'full', component: WbcInstructionsComponent, data: { title: 'wbc.title' } },
-      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent }
+      {path: 'places/:collectionId/:formId', pathMatch: 'full', component: NamedPlaceComponent}
     ]
   },
   {

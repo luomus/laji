@@ -16,6 +16,10 @@
           <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
         </ng-template>
       </ul>
+      <laji-haseka-latest [userToken]="userService.getToken()"
+                          [forms]="forms"
+                          [tmpOnly]="true"
+                          *ngIf="userService.isLoggedIn$ | async"></laji-haseka-latest>
     </div>
     <div class="col-sm-9 col-md-10 col-lg-10 main-content" [ngClass]="{
       'col-sm-9 col-md-10 col-lg-10': showNav,

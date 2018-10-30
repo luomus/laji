@@ -1,0 +1,33 @@
+.icon {
+  width: 80px;
+  height: 80px;
+  background-repeat: no-repeat;
+  margin: 0 auto;
+  background-size: cover;
+}
+
+.thumbnail {
+  text-decoration: none;
+  text-align: center;
+  padding: 0;
+  position: relative;
+}
+
+/** Angular takes care of that this will stay within the component! **/
+.glyphicon {
+  font-size: 4em;
+}
+
+.info {
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
+}
+
+.info .glyphicon {
+  font-size: 1.5em;
+}
+
+h4 {
+  white-space: nowrap;
+}

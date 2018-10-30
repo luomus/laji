@@ -5,7 +5,7 @@ import { FormPermission } from '../../shared/model/FormPermission';
 import { Person } from '../../shared/model/Person';
 import { Form } from '../../shared/model/Form';
 import { UserService } from '../../shared/service/user.service';
-import { catchError, map, switchMap, take } from 'rxjs/operators';
+import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 
 export interface Rights {
   edit: boolean;
@@ -21,7 +21,7 @@ export class FormPermissionService {
 
   constructor(
     private formPermissionApi: FormPermissionApi,
-    private userSerivce: UserService
+    private userService: UserService
   ) {}
 
 
@@ -105,7 +105,7 @@ export class FormPermissionService {
   }
 
   private access(form: any, notLoggedIn: any, notRestricted: any, cb: (formPermission: FormPermission, person: Person) => any) {
-    return this.userSerivce.isLoggedIn$.pipe(
+    return this.userService.isLoggedIn$.pipe(
       take(1),
       switchMap(login => {
         if (!login) {
@@ -116,8 +116,8 @@ export class FormPermissionService {
         )) {
           return ObservableOf(notRestricted);
         }
-        return this.userSerivce.getUser().pipe(
-          switchMap((person: Person) => this.getFormPermission(form.collectionID, this.userSerivce.getToken()).pipe(
+        return this.userService.getUser().pipe(
+          switchMap((person: Person) => this.getFormPermission(form.collectionID, this.userService.getToken()).pipe(
             map((formPermission: FormPermission) => ({person, formPermission}))
           )),
           switchMap(data => ObservableOf(cb(data.formPermission, data.person))),

@@ -15,7 +15,8 @@ export const Global = {
     lineTransectEiVakio: 'MHL.27',
     lineTransectKartoitus: 'MHL.28',
     whichSpecies: 'MHL.9',
-    namedPlace: 'JX.123608'
+    namedPlace: 'JX.123608',
+    collectionContest: 'MHL.25'
   },
   collections: {
     nafi: 'HR.175',
@@ -33,7 +34,6 @@ export const Global = {
     'MHL.3': '/talvilintu',
   },
   googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
-  selfPage: 'https://login.laji.fi/self',
   sources: {
     kotka: 'KE.3'
   }

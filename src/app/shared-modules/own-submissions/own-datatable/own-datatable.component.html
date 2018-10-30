@@ -79,6 +79,10 @@
             </span>
           </span>
           <span *ngIf="actions.indexOf('edit') > -1" class="label label-primary link inline-block"
+                [ngClass]="{
+                  'label-primary': !row.locked,
+                  'label-default': row.locked
+                }"
                 [tooltip]="(onlyTemplates ? 'template.use' : 'haseka.submissions.toEdit') | translate"
                 (click)="toEditPage(row)"
                 [placement]="'right'">
@@ -132,7 +136,7 @@
                   (click)="toStatisticsPage(row.id)">
               <i class="glyphicon glyphicon-stats"></i>
             </span>
-            <span *ngIf="actions.indexOf('delete') > -1 && row.creator === userId" class="label label-danger link inline-block"
+            <span *ngIf="actions.indexOf('delete') > -1 && (row.creator === userId || admin)" class="label label-danger link inline-block"
                   [tooltip]="'friend.remove' | translate"
                   [placement]="'left'"
                   [container]="'body'"

@@ -31,3 +31,13 @@
 .error {
   color: #fd8d8d;
 }
+
+.lock-button {
+  display: inline-block;
+  margin-left: -5px;
+  margin-right: 5px;
+}
+
+.lock-button button {
+  width: 35px;
+}

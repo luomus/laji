@@ -47,6 +47,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subParam.unsubscribe();
+    this.subFPChanges.unsubscribe();
   }
 
   private initFormPermission() {

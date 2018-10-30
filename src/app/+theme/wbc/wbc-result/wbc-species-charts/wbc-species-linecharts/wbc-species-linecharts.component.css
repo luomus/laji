@@ -1,0 +1,8 @@
+.chart-container {
+  height: 200px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+:host >>> svg:not(:root) {
+  overflow: visible;
+}

@@ -1,0 +1,46 @@
+<div class="toggle-intro" *ngIf="!showWbcRouteTableInfo">
+  <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
+</div>
+<alert *ngIf="showWbcRouteTableInfo" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+  <p>Punainen tausta: lintuja ainakin 50 % vähemmän kuin keskimäärin (lasketaan vain lajeille, joita keskimäärin ainakin 5 yksilöä); vihreä tausta: lintuja ainakin 100 % enemmän kuin keskimäärin; vihreä numero: ennätys; punainen numero: vähyysennätys.</p>
+</alert>
+
+<laji-datatable
+  #dataTable
+  [showHeader]="true"
+  [showFooter]="false"
+  [height]="'calc(80vh - 40px)'"
+  [virtualScrolling]="true"
+  [rows]="rows"
+  [loading]="!rows"
+  [columnMode]="'standard'"
+  [totalMessage]="'haseka.submissions.total' | translate"
+  [columns]="columns"
+  [getRowClass]="_getRowClass"
+  [showRowAsLink]="false"
+  (sortChange)="onSort($event)">
+</laji-datatable>
+
+<ng-template let-value="value" let-row="row" #textOrTranslationKey>
+  <ng-container *ngIf="row.name !== 'speciesCount' && row.name !== 'individualCount' && row.name !== 'documentIds'; else translationKey">
+    <span *ngIf="value" [title]="value">{{value}}</span>
+  </ng-container>
+  <ng-template #translationKey>
+    <span *ngIf="value" [title]="'species.stats.route.' + value | translate">
+      {{'wbc.stats.route.' + value | translate}}
+    </span>
+  </ng-template>
+</ng-template>
+
+<ng-template let-value="value" let-row="row" #numberOrDocumentIds>
+  <ng-container *ngIf="row.name !== 'documentIds'; else documentIds">
+    <span *ngIf="value || value == 0" [title]="value.toLocaleString()">{{value.toLocaleString()}}</span>
+  </ng-container>
+  <ng-template #documentIds>
+    <span *ngIf="value && value.length > 0" ngPreserveWhitespaces style="display: inline-block">
+      <ng-container *ngFor="let doc of value">
+        <a (click)="onDocumentClick.emit(doc)" title="{{doc}}" class="link">Katso</a>
+      </ng-container>
+    </span>
+  </ng-template>
+</ng-template>

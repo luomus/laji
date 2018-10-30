@@ -9,6 +9,10 @@
         <li><a [routerLink]="['../nafi', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
         <li><a [routerLink]="['../nafi', 'templates']">{{'haseka.templates.title' | translate}}</a></li>
       </ul>
+      <laji-haseka-latest [userToken]="userService.getToken()"
+                          [forms]="[formID]"
+                          [tmpOnly]="true"
+                          *ngIf="userService.isLoggedIn$ | async"></laji-haseka-latest>
     </div>
     <div class="col-sm-9 col-md-10 col-lg-10 nafi-content">
       <router-outlet></router-outlet>

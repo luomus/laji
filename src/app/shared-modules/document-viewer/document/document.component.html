@@ -12,10 +12,11 @@
           <a type="button"
              class="btn btn-sm btn-default"
              [routerLink]="['/view/print'] | localize"
-             [queryParams]="{uri: document.documentId, own: own}"
+             [queryParams]="(document.formId | toQName) === collectionContestFormId ? {id: (document.documentId | toQName)} : {uri: document.documentId, own: own}"
              target="_blank"
              [tooltip]="'haseka.submissions.toPrint' | translate">
-            <i class="glyphicon glyphicon-file"></i>
+            {{'print' | translate}}
+            <img src="/static/images/icons/pdf_16x16.png">
           </a>
           <laji-edit-link
             [editors]="editors"

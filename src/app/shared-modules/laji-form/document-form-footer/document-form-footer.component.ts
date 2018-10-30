@@ -1,6 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
-import { UserService } from '../../../shared/service/user.service';
-import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'laji-document-form-footer',
@@ -11,26 +9,26 @@ import { FormPermissionService } from '../../../+haseka/form-permission/form-per
 export class DocumentFormFooterComponent {
   @Input() status = '';
   @Input() saving = false;
-  @Input() restrictSubmitPublic = false;
   @Output() onSubmitPublic = new EventEmitter();
   @Output() onSubmitPrivate = new EventEmitter();
   @Output() onCancel = new EventEmitter();
-  _form: any
+  @Output() onLock = new EventEmitter<boolean>();
+  _form: any;
+  _locked: false;
+  _admin: false;
   show = {
     save: false,
     temp: false,
     cancel: false
   };
 
-  constructor(
-    private  userService: UserService,
-    private formPermissionService: FormPermissionService,
-    private cdr: ChangeDetectorRef
-  ) { }
+  constructor() { }
 
   @Input()
   set form(form: any) {
     this._form = form;
+    this._admin = form && form.uiSchemaContext && form.uiSchemaContext.isAdmin;
+    this._locked = form && form.formData && form.formData.locked;
     ['save', 'temp', 'cancel'].forEach(place => {
       let show: boolean;
 
@@ -41,16 +39,6 @@ export class DocumentFormFooterComponent {
       }
       this.show[place] = show;
     });
-
-    if (this.restrictSubmitPublic && this.show.save === true) {
-      this.show.save = false;
-      this.userService.getUser().map(user =>
-        this.formPermissionService.isAdmin({'id': ''}, user)
-      ).subscribe(showSave => {
-        this.show.save = showSave;
-        this.cdr.markForCheck();
-      })
-    }
   }
 
   buttonLabel(place: 'save'|'temp'|'cancel') {

@@ -23,6 +23,7 @@ export class NpListComponent {
     '$.prepopulatedDocument.gatheringEvent.dateBegin': 'lastCensus',
     '$.prepopulatedDocument.gatheringEvent.dateEnd': 'haseka.submissions.dateEnd',
     '$.taxonIDs[0]': 'result.unit.taxonVerbatim',
+    '$.municipality': 'np.municipality'
   };
 
   _namedPlaces: NamedPlace[];
@@ -31,6 +32,7 @@ export class NpListComponent {
   columns: ObservationTableColumn[];
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   showLegendList = false;
+  filterBy: string;
   legendList = [
     {label: 'Vapaa', color: '#ffffff'},
     {label: 'Varattu', color: '#d1c400'},
@@ -38,8 +40,11 @@ export class NpListComponent {
     {label: 'Ilmoitettu', color: '#00aa00'}
   ];
 
+  @Input() preselectedNPIndex = -1;
+
   @ViewChild('label') labelIDTpl: TemplateRef<any>;
   @ViewChild('status') statusTpl: TemplateRef<any>;
+  @ViewChild('area') areaTpl: TemplateRef<any>;
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
   @Output() onActivePlaceChange = new EventEmitter<number>();
@@ -87,6 +92,9 @@ export class NpListComponent {
         case '$._status':
           col.cellTemplate = this.statusTpl;
           break;
+        case '$.municipality':
+          col.cellTemplate = this.areaTpl;
+          break;
       }
       col.width = this.widths[path] ? this.widths[path] : 50;
       cols.push(col);
@@ -97,6 +105,10 @@ export class NpListComponent {
       this.showLegendList = formData.namedPlaceOptions.showLegendList;
     }
     this.initData();
+  }
+
+  updateFilter(event) {
+    this.filterBy = event.target.value;
   }
 
   private initData() {

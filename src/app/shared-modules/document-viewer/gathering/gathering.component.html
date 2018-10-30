@@ -1,4 +1,4 @@
-<div [hidden]="!visible">
+<div [hidden]="!visible" class="gathering">
   <laji-issues [data]="gathering"></laji-issues>
   <laji-gathering-rows [gathering]="gathering"></laji-gathering-rows>
   <laji-facts [show]="showFacts" [facts]="gathering.facts | factNotIn:['http://tun.fi/MY.namedPlaceID']"></laji-facts>

@@ -8,6 +8,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 })
 export class DataTableFooterComponent {
 
+  @Input() totalMessage = '';
   @Output() change = new EventEmitter();
 
   _count: number;

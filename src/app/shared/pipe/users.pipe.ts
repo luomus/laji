@@ -49,10 +49,12 @@ export class UsersPipe implements PipeTransform {
             this.value = (user.fullName || '') + (user.group ? ' (' + user.group + ')' : '');
           } else if (format === 'fullname') {
             this.value = (user.fullName || '');
+          } else if (format === 'group') {
+            this.value = (user.group || '');
           } else {
             this.value = '';
           }
-          if (this.value === '') {
+          if (format !== 'group' && this.value === '') {
             this.value = id;
           }
           this._ref.markForCheck();

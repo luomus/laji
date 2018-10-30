@@ -1,0 +1,12 @@
+<ng-container *ngIf="taxon; else noTaxon">
+  <div class="taxon-header" *ngIf="taxon.vernacularName; else noVernacularName">
+    <h3>{{taxon.vernacularName | capitalize}}</h3>
+    <ng-container *ngIf="taxon.scientificName">(<span [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>)</ng-container>
+  </div>
+</ng-container>
+<ng-template #noVernacularName>
+  <h3 [class.cursive]="taxon.cursiveName" class="taxon-header">{{taxon.scientificName}}</h3>
+</ng-template>
+<ng-template #noTaxon>
+  <h3 class="taxon-header">{{taxonVerbatim | capitalize}}</h3>
+</ng-template>

@@ -1,0 +1,24 @@
+<laji-datatable
+  #dataTable
+  (rowSelect)="rowSelect.emit($event.row['unit.linkings.taxon.id'])"
+  [clientSideSorting]="true"
+  (sortChange)="onSort($event)"
+  [showRowAsLink]="true"
+  [showHeader]="true"
+  [height]="'calc(80vh - 40px)'"
+  [virtualScrolling]="true"
+  [rows]="rows"
+  [loading]="loading"
+  [columnMode]="'standard'"
+  [totalMessage]="'haseka.submissions.total' | translate"
+  [columns]="columns"
+  [count]="rows?.length">
+</laji-datatable>
+
+<ng-template let-row="row" #scientificName>
+  <a *ngIf="row['unit.linkings.taxon.scientificName']" title="{{row['unit.linkings.taxon.scientificName']}}">
+    <span [class.cursive]="row['unit.linkings.taxon.cursiveName'] === 'true'">
+    {{row['unit.linkings.taxon.scientificName']}}
+    </span>
+  </a>
+</ng-template>

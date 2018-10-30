@@ -1,0 +1,19 @@
+a:hover {
+  text-decoration: none;
+}
+
+.to-laji {
+  border: 1px solid #ddd;
+  margin: 10px;
+  text-align: center;
+  padding: 15px;
+}
+
+.to-laji h1 {
+  color: #2e6da4;
+}
+
+ul {
+  margin: 0;
+  padding-left: 1em;
+}

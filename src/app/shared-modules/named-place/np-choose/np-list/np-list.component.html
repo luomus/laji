@@ -1,3 +1,13 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="filterBy">
+      <input class="form-control inline-block"
+             type='text'
+             placeholder="{{'haseka.submissions.filter' | translate}}"
+             (keyup)="updateFilter($event)">
+    </div>
+  </div>
+</div>
 <div class="table-responsive np-list">
   <laji-datatable
     #dataTable
@@ -7,7 +17,8 @@
     [virtualScrolling]="true"
     [clientSideSorting]="true"
     [height]="height"
-    [rows]='data'
+    [rows]="data"
+    [filterBy]="filterBy"
     [loading]="false"
     [count]="data.length"
     [sorts]="sorts"
@@ -16,7 +27,7 @@
     [pageSize]="data.length"
     [columns]="columns"
     [selectionType]="'single'"
-    [selectedRowIndex]="activeNP"
+    [preselectedRowIndex]="preselectedNPIndex"
     >
   </laji-datatable>
   <div class="test"></div>
@@ -30,6 +41,12 @@
 <ng-template let-value="value" ngx-datatable-cell-template #label>
   <span *ngIf="value">
     {{value | label}}
+  </span>
+</ng-template>
+
+<ng-template let-value="value" ngx-datatable-cell-template #area>
+  <span *ngIf="value">
+    {{value | area }}
   </span>
 </ng-template>
 

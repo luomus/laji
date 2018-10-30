@@ -1,0 +1,39 @@
+<laji-wbc-result-filters (yearChange)="activeYear = $event; onFilterChange()"
+                         (seasonChange)="activeSeason = $event; onFilterChange()"
+                         [yearRequired]="true"
+                         [showAreaFilter]="false"
+></laji-wbc-result-filters>
+<laji-datatable
+  #dataTable
+  (rowSelect)="openViewer($event.row['document.documentId'])"
+  [clientSideSorting]="true"
+  [showRowAsLink]="true"
+  [showHeader]="true"
+  [height]="'calc(80vh - 40px)'"
+  [virtualScrolling]="true"
+  [rows]="rows"
+  [loading]="loading"
+  [columnMode]="'standard'"
+  [totalMessage]="'haseka.submissions.total' | translate"
+  [columns]="columns"
+  [count]="rows?.length"
+  [sorts]="sorts"
+></laji-datatable>
+
+<div class="modal fade" bsModal #documentModal="bs-modal"
+     (onHidden)="documentModalVisible = false"
+     (onShow)="documentModalVisible = true"
+     tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" *ngIf="documentModalVisible">
+      <div class="modal-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="documentModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <laji-document [useWorldMap]="false"
+                       [uri]="shownDocument"
+        ></laji-document>
+      </div>
+    </div>
+  </div>
+</div>

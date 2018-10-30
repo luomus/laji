@@ -44,7 +44,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Output() onEditButtonClick = new EventEmitter();
   @Output() onUseButtonClick = new EventEmitter();
-  @Output() onRequestAccessButtonClick = new EventEmitter();
   @Output() onReserveButtonClick = new EventEmitter();
   @Output() onReleaseButtonClick = new EventEmitter();
 
@@ -56,13 +55,15 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   modalIsVisible = false;
   viewIsInitialized = false;
   resizeCanOpenModal = false;
-  useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther'|'accessRequested';
+  useButton: 'nouse'|'usable'|'reservable'|'reservedByYou'|'reservedByOther';
+  formReservable = false;
 
   constructor(private userService: UserService,
               private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.updateFields();
+    this.updateButtons();
   }
 
   ngAfterViewInit() {
@@ -121,14 +122,13 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     }
     this.userService.getUser().subscribe(person => {
       this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1);
+      this.formReservable = this.targetForm &&
+        Array.isArray(this.targetForm.features) &&
+        this.targetForm.features.indexOf(Form.Feature.Reserve) > -1;
       let btnStatus;
       if (!this.formRights.edit) {
-        btnStatus = this.accessRequested ? 'accessRequested' : 'nouse';
-      } else if (
-        this.targetForm &&
-        Array.isArray(this.targetForm.features) &&
-        this.targetForm.features.indexOf(Form.Feature.Reserve) > -1
-      ) {
+        btnStatus = 'nouse';
+      } else if (this.formReservable) {
         if (!this.namedPlace.reserve || new Date() > new Date(this.namedPlace.reserve.until)) {
           btnStatus = 'reservable';
         } else if (this.namedPlace.reserve.reserver === person.id) {
@@ -141,7 +141,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
           this.namedPlace.public ||
           (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1) ||
           (this.namedPlace.editors && this.namedPlace.editors.indexOf(person.id) !== -1)
-        ) ? 'usable' : (this.accessRequested ? 'accessRequested' : 'nouse');
+        ) ? 'usable' : 'nouse';
       }
       this.useButton = btnStatus;
       this.cdRef.markForCheck();

@@ -19,5 +19,6 @@ export const environment = {
   lineTransectKartoitusForm: 'MHL.28',
   whichSpeciesForm: 'MHL.9',
   namedPlaceForm: 'JX.6668',
-  loginUrl: 'https://login.laji.fi/login'
+  loginUrl: 'https://login.laji.fi/login',
+  selfPage: 'https://login.laji.fi/self'
 };

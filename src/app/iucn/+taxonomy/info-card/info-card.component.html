@@ -1,0 +1,57 @@
+<ng-container *ngIf="taxon">
+  <h1><laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name></h1>
+  <div class="row">
+    <div class="col-sm-4">
+      <laji-taxon-image [images]="taxon.multimedia"></laji-taxon-image>
+      <a href="https://laji.fi/taxon/{{taxon.id}}" target="_blank" rel="noreferrer noopener">
+        <div class="to-laji">
+          Lisää lajitietoa tästä lajista löytyy
+          <h1>LAJI.FI</h1>
+          -portaalista
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-8">
+      <div class="panel panel-default">
+        <div class="panel-heading">Uhanalaisuus</div>
+        <div class="panel-body">
+          <laji-taxon-status [status]="taxon.latestRedListStatusFinland?.status"></laji-taxon-status>
+          <label>Luokan perustelut</label><br>
+          <p>D1 - Arvioitu populaatiokoko on alle 1 000 lisääntymiskykyistä yksilöä</p>
+
+          <label>Lajia koskevat hallinnolliset lajitiedot</label>
+          <ul>
+            <li *ngFor="let status of taxon.administrativeStatuses">
+              {{status | label}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">Arviointihistoria</div>
+        <div class="panel-body">
+          <laji-taxon-status-history [history]="taxon.redListStatusesInFinland || []"></laji-taxon-status-history>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">Arviointi <laji-redlist-year-select [active]="activeIucnYear" [history]="taxon.redListStatusesInFinland || []"></laji-redlist-year-select>
+        </div>
+        <div style="padding: 15px">
+          TODO: big list of things
+        </div>
+      </div>
+    </div>
+  </div>
+  <h1>DEBUG:</h1>
+  <pre>
+  {{taxon | json}}
+  </pre>
+</ng-container>

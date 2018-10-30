@@ -18,5 +18,26 @@ export class NgxChartsLineChartComponent {
   @Input() showYAxisLabel: any;
   @Input() xAxisLabel: any;
   @Input() yAxisLabel: any;
+  @Input() xScaleMax: any;
+  @Input() xScaleMin: any;
+  @Input() yScaleMax: any;
+  @Input() yScaleMin: any;
+  @Input() xAxisTickFormatting: any;
+
+  width: any;
+  height: any;
+  tooltipDisabled: any;
+  legendOptions: any;
+  activeEntries: any;
+  clipPathId: any;
+  dims: any;
+  transform: any;
+  clipPath: any;
+  trackBy: any;
+  timeline: any;
+  scaleType: any;
+  onClick: any;
+  onActivate: any;
+  onDeactivate: any;
 
 }

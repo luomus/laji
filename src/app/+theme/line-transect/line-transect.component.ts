@@ -7,6 +7,7 @@ import { FormPermissionService, Rights } from '../../+haseka/form-permission/for
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Global } from '../../../environments/global';
+import { UserService } from '../../shared/service/user.service';
 
 @Component({
   selector: '[laji-line-transect]',
@@ -16,6 +17,7 @@ import { Global } from '../../../environments/global';
 })
 export class LineTransectComponent implements OnInit, OnDestroy {
 
+  forms = [environment.lineTransectForm, environment.lineTransectEiVakioForm, environment.lineTransectKartoitusForm];
   showForm = true;
   showNav = true;
   routeSub: Subscription;
@@ -24,6 +26,7 @@ export class LineTransectComponent implements OnInit, OnDestroy {
 
   constructor(
     public router: Router,
+    public userService: UserService,
     private formService: FormService,
     private formPermissionService: FormPermissionService,
     private translateService: TranslateService

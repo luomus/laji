@@ -11,7 +11,11 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
-  @Input() data: any;
+  @Input() data: {
+    geoJSON: any;
+    wgs84: any;
+    ykj: any;
+  }[];
   @Input() height = 300;
   @Input() visible = true;
   @Input() active = 0;
@@ -48,10 +52,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
     this.active = idx;
     if (this._data && this._data[idx]) {
       this.lajiMap.map.setData([this._data[idx] || {}]);
-      this.lajiMap.map.map.fitBounds(
-        this.lajiMap.map.data[0].group.getBounds(),
-        {maxZoom: this.lajiMap.map.map.getZoom()}
-      );
+      this.lajiMap.map.zoomToData({maxZoom: this.lajiMap.map.getNormalizedZoom()});
     } else {
       this.lajiMap.map.setData([]);
     }
@@ -69,7 +70,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
           fillOpacity: 0.3,
           color: '#00aa00'
         }),
-        featureCollection: this.getFeatureCollection(set)
+        featureCollection: this.getFeatureCollection(set.geoJSON)
       }));
     } catch (e) { }
   }
@@ -83,7 +84,6 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
           geometry: feat.geometry,
           properties: {}
         }))
-
       }
     } else {
       return {

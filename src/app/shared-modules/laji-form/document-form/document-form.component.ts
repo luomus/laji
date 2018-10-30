@@ -187,8 +187,15 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       });
   }
 
+  lock(lock) {
+    this.form = {...this.form, formData: {...this.form.formData, locked: lock}};
+  }
+
   onSubmit(event) {
     let doc$;
+    if (this.saving) {
+      return;
+    }
     this.saving = true;
     this.lajiForm.block();
     const data = event.data.formData;
@@ -207,6 +214,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
     doc$.subscribe(
       (result) => {
         this.lajiForm.unBlock();
+        this.saving = false;
         this.formService.discard();
         this.form.formData._hasChanges = false;
         this.formService.setCurrentData(result, true);

@@ -1,0 +1,27 @@
+<laji-spinner [spinning]="loading">
+  <ng-container *ngIf="!loading">
+    <h3>{{taxon.vernacularName | capitalize}}
+      <span *ngIf="taxon.vernacularName && taxon.scientificName"> - </span>
+      <span [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
+    </h3>
+    <laji-wbc-result-filters [showSeasonFilter]="compareMode === 'year'"
+                             [yearRequired]="true"
+                             (yearChange)="activeYear = $event"
+                             (seasonChange)="activeSeason = $event"
+                             (areaChange)="activeBirdAssociationArea = $event"
+    ></laji-wbc-result-filters>
+    <h4>Kausivertailu</h4>
+    <laji-wbc-species-maps [taxonId]="taxon.id"
+                                  [taxonCensus]="isMammal ? mammals : undefined"
+                                  [year]="activeYear"
+                                  [season]="activeSeason"
+                                  [birdAssociationArea]="activeBirdAssociationArea"
+    ></laji-wbc-species-maps>
+    <hr>
+    <h4>Runsauden kehitys vuosittain</h4>
+    <laji-wbc-species-linecharts [taxonId]="taxon.id"
+                                        [taxonCensus]="isMammal ? mammals : undefined"
+                                        [birdAssociationArea]="activeBirdAssociationArea"
+    ></laji-wbc-species-linecharts>
+  </ng-container>
+</laji-spinner>

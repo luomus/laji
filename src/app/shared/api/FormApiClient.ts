@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Util } from '../service/util.service';
 import { environment } from '../../../environments/environment';
+import { of } from 'rxjs';
 
 @Injectable()
 export class FormApiClient {
@@ -59,7 +60,8 @@ export class FormApiClient {
       path,
       {headers: options['headers'], params: queryParameters, body: options['body'] || undefined, observe: 'response'}
     ).pipe(
-      map((response) => ({...response, json: () => response.body}))
+      map((response) => ({...response, json: () => response.body})),
+      catchError(err => of({...err, json: () => err.error}))
     ).toPromise(Promise);
   }
 }

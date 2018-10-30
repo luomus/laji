@@ -1,0 +1,8 @@
+<div>
+  <ng-container *ngIf="ykj">
+    <strong>YKJ:</strong> {{ykj | coordinate: 'ykj'}}<br />
+  </ng-container>
+  <ng-container *ngIf="wgs84">
+    <strong>WGS84:</strong> {{wgs84 | coordinate: 'wgs84'}}
+  </ng-container>
+</div>

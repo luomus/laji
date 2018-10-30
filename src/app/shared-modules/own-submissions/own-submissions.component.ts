@@ -5,7 +5,6 @@ import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { ModalDirective } from 'ngx-bootstrap';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'laji-own-submissions',
@@ -17,6 +16,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
 
   @Input() collectionID;
   @Input() showDownloadAll = true;
+  @Input() admin = false;
   @Input() useInternalDocumentViewer = false;
   @Input() actions: string[]|false = ['edit', 'view', 'template', 'download', 'stats', 'delete'];
   @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'unitCount', 'observer', 'form', 'id'];
