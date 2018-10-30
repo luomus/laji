@@ -9,7 +9,7 @@
           <button type="button" class="btn btn-success btn-sm" (click)="onLock.emit(true)"><i class="fa fa-unlock"></i></button>
         </ng-template>
       </div>
-      <button class="btn btn-success btn-sm" [disabled]="saving" type="submit" (click)="onSubmitPublic.emit()">{{buttonLabel('save') | translate}}</button>
+      <button class="btn btn-success btn-sm" [class.admin-success]="_admin" [disabled]="saving" type="submit" (click)="onSubmitPublic.emit()">{{buttonLabel('save') | translate}}</button>
     </div>
     <div [ngClass]="{'col-xs-3 col-sm-2': show.save, 'col-xs-5 col-sm-3': !show.save}">
       <button *ngIf="show.temp" class="btn btn-warning btn-sm" [disabled]="saving" type="submit" (click)="onSubmitPrivate.emit()">{{buttonLabel('temp') | translate}}</button>
