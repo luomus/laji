@@ -31,8 +31,9 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
   breaks = [0, 1, 2, 8, 32, 128, 512];
   labels = ['0', '1', '2-7', '8-31', '32-127', '128-511', '512-'];
   colorRange = ['#ffffff', 'violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
-  differenceBreaks = [-51, -1, 0, 1, 51];
-  differenceLabels = ['< -50', '< -1', '0', '> 1', '> 50'];
+  private epsilon = Math.pow(2, -52);
+  differenceBreaks = [-Number.MAX_VALUE, -50, 0, this.epsilon, 50 + this.epsilon];
+  differenceLabels = ['< -50', '< 0', '0', '> 0', '> 50'];
   differenceColorRange = ['blue', '#9999ff', 'white', '#ff9999', 'red'];
 
   private maps: any[];

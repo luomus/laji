@@ -78,7 +78,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     },
     center: [64.709804, 25],
     zoom: 2
-  }
+  };
 
   constructor(
     public translate: TranslateService,
@@ -120,7 +120,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     if (!this.query && !this.data) {
       return;
     }
-    const key = JSON.stringify({'query': this.query, 'zeroQuery': this.zeroObservationQuery, 'data': this.data});
+    const key = JSON.stringify({'query': this.query, 'zeroQuery': this.zeroObservationQuery});
     if (!dataIsChanged && this.current === key) {
       const colorKey = this.getColorKey();
       if (this.currentColor !== colorKey  && this.geoJsonLayer) {
@@ -303,6 +303,6 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   private getColorKey() {
-    return JSON.stringify(this.query) + JSON.stringify(this.zeroObservationQuery) + JSON.stringify(this.data) + this.type;
+    return JSON.stringify(this.query) + JSON.stringify(this.zeroObservationQuery) + this.type;
   }
 }
