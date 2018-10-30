@@ -38,3 +38,5 @@ import 'zone.js/dist/zone'; // Included with Angular CLI.
  */
 // import 'intl';
 import 'core-js/es6/promise';
+import 'core-js/es6/weak-set';
+import 'core-js/es6/weak-map';
