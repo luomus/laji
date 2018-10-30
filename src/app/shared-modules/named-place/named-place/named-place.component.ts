@@ -50,7 +50,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   listenToNextParamChange = true;
 
   filterByMunicipality = false;
-  filterByTaxon = false;
   filterByBirdAssociationArea = false;
 
   birdAssociationArea = '';
@@ -90,8 +89,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           updateList = true;
         }
         if (params.municipality) {
-          this.municipality = params.municipality;
-          updateList = true;
+          this.updateMunicipalityFilter(params.municipality);
         }
         if (params.birdAssociationArea) {
           this.birdAssociationArea = params.birdAssociationArea;
@@ -125,7 +123,13 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         return this.getFormInfo();
       })
       .switchMap((form) => this.updateSettings(form))
-      .switchMap(() => this.updateNP())
+      .switchMap(() => {
+        if (!(this.filterByMunicipality && !this.municipality)) {
+          return this.updateNP();
+        } else {
+          return ObservableOf([]);
+        }
+      })
       .subscribe(() => {
         this.loading = false;
         this.cd.markForCheck();
@@ -167,9 +171,17 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.updateQueryParams();
   }
 
-  updateMunicipalityFilter(value) {
+  updateMunicipalityFilter(value: string) {
+    if (value === undefined) {
+      this.namedPlaces = undefined;
+      this.municipality = '';
+      this.updateMunicipalityParam();
+      return;
+    }
     this.municipality = value;
-    this.prepopulatedNamedPlace['municipality'] = [value];
+    if (value.slice(0, 1) === 'ML') {
+      this.prepopulatedNamedPlace['municipality'] = [value];
+    }
     this.updateMunicipalityParam();
     this.updateList();
   }
@@ -244,9 +256,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (this.filterByMunicipality) {
       query.municipality = this.municipality;
     }
-    if (this.filterByTaxon) {
-      query.taxonIDs = this.taxonID;
-    }
     if (this.filterByBirdAssociationArea) {
       if (!this.birdAssociationArea) {
         return ObservableOf([]);
@@ -275,7 +284,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (formData && formData.features && Array.isArray(formData.features)) {
       this.filterByBirdAssociationArea = formData.features.indexOf(Form.Feature.FilterNamedPlacesByBirdAssociationArea) > -1;
       this.filterByMunicipality = formData.features.indexOf(Form.Feature.FilterNamedPlacesByMunicipality) > -1;
-      this.filterByTaxon = formData.features.indexOf(Form.Feature.FilterNamedPlacesByTaxonID) > -1;
       this.allowEdit = formData.features.indexOf(Form.Feature.NoEditingNamedPlaces) === -1;
     }
     this.formRights = {
@@ -319,12 +327,12 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   updateMunicipalityParam() {
-    const queryParams = {};
-    this.municipality.length > 0 ? queryParams['municipality'] = this.municipality
-      : delete queryParams['municipality'];
-    this.listenToNextParamChange = false;
     const sub = this.route.queryParams.subscribe((params) => {
-      this.router.navigate([], { queryParams: { ...params, ...queryParams } });
+      const queryParams = {...params};
+      this.municipality.length > 0 ? queryParams['municipality'] = this.municipality
+      : delete queryParams['municipality'];
+      this.listenToNextParamChange = false;
+      this.router.navigate([], { queryParams: queryParams });
       sub.unsubscribe();
     });
   }

@@ -39,5 +39,10 @@
 }
 
 .lock-button button {
-  width: 35px;
+  position: absolute;
+  top: 0;
+}
+
+.admin-success {
+  margin-left: 35px;
 }

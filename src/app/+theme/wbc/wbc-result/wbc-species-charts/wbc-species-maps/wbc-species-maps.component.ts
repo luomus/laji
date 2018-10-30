@@ -27,8 +27,8 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
   zeroQuery2: WarehouseQueryInterface;
   zeroQuery3: WarehouseQueryInterface;
 
-  breaks = [0, 1, 32, 128, 512, 2048, 8192];
-  labels = ['0', '1-31', '32-127', '128-511', '512-2047', '2048-8191', '8192-'];
+  breaks = [0, 1, 2, 8, 32, 128, 512];
+  labels = ['0', '1', '2-7', '8-31', '32-127', '128-511', '512-'];
   colorRange = ['#ffffff', 'violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
 
   private maps: any[];

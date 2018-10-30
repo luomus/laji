@@ -6,7 +6,6 @@ export namespace Form {
     NoNewNamedPlaces = <any> 'MHL.featureAddingNamedPlacesNotAllowed',
     NoEditingNamedPlaces = <any> 'MHL.featureEditingNamedPlacesNotAllowed',
     FilterNamedPlacesByMunicipality = <any> 'MHL.featureFilterNamedPlacesByMunicipality',
-    FilterNamedPlacesByTaxonID = <any> 'MHL.featureFilterNamedPlacesByTaxonID',
     FilterNamedPlacesByBirdAssociationArea = <any> 'MHL.featureFilterNamedPlacesByBirdAssociationArea',
     NamedPlace = <any> 'MHL.featureNamedPlace',
     NoPrivate = <any> 'MHL.featureNoPrivate',

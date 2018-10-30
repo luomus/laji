@@ -20,6 +20,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
 import { map } from 'rxjs/operators';
 
+export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'individualCountMax'|'oldest'|'newest'|'pairCount';
+
 @Component({
   selector: 'laji-ykj-map',
   templateUrl: './ykj-map.component.html',
@@ -34,7 +36,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() height = '605px';
   @Input() query: WarehouseQueryInterface;
   @Input() zeroObservationQuery: WarehouseQueryInterface;
-  @Input() type = 'count';
+  @Input() type: MapBoxTypes = 'count';
   @Input() types = ['count', 'individualCount', 'newest'];
   @Input() colorRange: string[] = ['violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
   @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', 'violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
@@ -108,7 +110,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.subLang.unsubscribe();
   }
 
-  changeType(type: string) {
+  changeType(type: MapBoxTypes) {
     this.type = type;
     this.initMapdata();
   }
@@ -206,8 +208,11 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     let col;
     switch (this.type) {
       case 'individualCount':
+      case 'individualCountSum':
+      case 'individualCountMax':
         col = this.individualsColor.bind(this);
         break;
+      case 'oldest':
       case 'newest':
         col = this.newestColor.bind(this);
         break;
