@@ -71,7 +71,7 @@ export class DocumentService {
 
   removeMeta(document: any, remove = []): any {
     if (remove.indexOf('id') === -1) {
-      remove = remove.concat(['id', 'dateEdited', 'dateCreated', 'publicityRestrictions']);
+      remove = remove.concat(['id', 'dateEdited', 'dateCreated', 'publicityRestrictions', 'locked']);
     }
     if (Array.isArray(document)) {
       return document.map((value) => this.removeMeta(value, remove));
