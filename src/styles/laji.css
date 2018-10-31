@@ -417,11 +417,11 @@ body > .select2-container.open {
 
 /* Bootstrap theme */
 
-.btn {
+.raised-1 {
   box-shadow: 1px 1px 2px -1px #000
 }
 
-.btn :active {
+.raised-1 :active {
   box-shadow: none;
 }
 
