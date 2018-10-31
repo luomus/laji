@@ -18,6 +18,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
   @Input() birdAssociationArea: string;
   @Input() onlyCommonSpecies = true;
   @Input() showStatistics = false;
+  @Input() filterBy = '';
   @Output() rowSelect = new EventEmitter<string>();
 
   @ViewChild('name') nameTpl: TemplateRef<any>;
