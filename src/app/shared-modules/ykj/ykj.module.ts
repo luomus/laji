@@ -16,7 +16,7 @@ import { BsDropdownModule } from 'ngx-bootstrap';
     BsDropdownModule
   ],
   declarations: [YkjMapComponent],
-  providers: [YkjService, WarehouseApi, TaxonomyApi, YkjService],
+  providers: [YkjService, WarehouseApi, TaxonomyApi],
   exports: [YkjMapComponent]
 })
 export class YkjModule { }

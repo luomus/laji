@@ -179,7 +179,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       return;
     }
     this.municipality = value;
-    if (value.slice(0, 1) === 'ML') {
+    if (value.match(/^ML\..+/)) {
       this.prepopulatedNamedPlace['municipality'] = [value];
     }
     this.updateMunicipalityParam();

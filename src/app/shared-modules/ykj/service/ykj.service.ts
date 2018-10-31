@@ -62,6 +62,12 @@ export class YkjService {
     return this.pending;
   }
 
+  combineGeoJsons(geoJson, zeroObsGeoJson) {
+    const grids = geoJson.map(g => (g.properties.grid));
+    zeroObsGeoJson = zeroObsGeoJson.filter(z => (grids.indexOf(z.properties.grid) === -1));
+    return geoJson.concat(zeroObsGeoJson);
+  }
+
   private resultToGeoJson(data, grid, setCountsToZero) {
     const features = [];
     data.map(result => {

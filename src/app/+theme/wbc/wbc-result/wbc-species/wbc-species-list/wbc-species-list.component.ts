@@ -147,10 +147,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
   }
 
   private addAdditionalStatistics(list: any[]) {
-    const previousTenYears = [];
-    for (let i = this.year - 10; i < this.year; i++) {
-      previousTenYears.push(i);
-    }
+    const previousTenYears = this.resultService.getPreviousTenYears(this.year);
 
     return forkJoin([
       this.resultService.getRouteCountBySpecies(this.year, this.season, this.birdAssociationArea),

@@ -39,6 +39,14 @@ export class WbcResultService {
     }
   }
 
+  getPreviousTenYears(year: number): number[] {
+    const previousTenYears = [];
+    for (let i = year - 10; i < year; i++) {
+      previousTenYears.push(i);
+    }
+    return previousTenYears;
+  }
+
   getYears(): Observable<number[]> {
     if (this.yearCache) {
       return of(this.yearCache);
