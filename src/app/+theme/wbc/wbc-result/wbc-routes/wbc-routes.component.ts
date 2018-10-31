@@ -48,6 +48,7 @@ export class WbcRoutesComponent implements OnInit {
   ];
 
   loading = false;
+  filterBy = '';
 
   constructor(
     private resultService: WbcResultService,

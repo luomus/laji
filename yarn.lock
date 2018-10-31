@@ -5604,9 +5604,9 @@ klaw@^1.0.0:
   optionalDependencies:
     graceful-fs "^4.1.9"
 
-laji-form@^0.0.537:
-  version "0.0.537"
-  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.537.tgz#f12dd7a059fec717f2ba950d88c0021a99f8bdc7"
+laji-form@^0.0.538:
+  version "0.0.538"
+  resolved "https://registry.yarnpkg.com/laji-form/-/laji-form-0.0.538.tgz#d5e1ebca7a10232ff54d9eea5a51f5eafd134ef0"
   dependencies:
     babel-runtime "^6.18.0"
     deep-equal "^1.0.1"
@@ -5720,6 +5720,10 @@ leaflet-mml-layers@2.0.1:
 leaflet.markercluster@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.3.0.tgz#58eb0654e90bd3274a660390ab0bc734212b204d"
+
+leaflet.sync@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/leaflet.sync/-/leaflet.sync-0.2.4.tgz#76d4095a61470882d72e092190090d0a1fa55ca2"
 
 leaflet@*, leaflet@1.3.4, leaflet@>=0.7.0, leaflet@^1.0.1:
   version "1.3.4"

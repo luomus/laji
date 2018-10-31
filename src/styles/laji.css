@@ -417,6 +417,14 @@ body > .select2-container.open {
 
 /* Bootstrap theme */
 
+.raised-1 {
+  box-shadow: 1px 1px 2px -1px #000
+}
+
+.raised-1 :active {
+  box-shadow: none;
+}
+
 /* Helper class to show styles when focus */
 .btn-default-focus {
   color: #333;

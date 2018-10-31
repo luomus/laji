@@ -5,8 +5,10 @@
                          [yearRequired]="showStatistics"
 ></laji-wbc-result-filters>
 <div class="row options-container">
-  <div class="col-sm-6">
+  <div class="col-sm-12">
+    <laji-wbc-table-filter (onValueChange)="filterBy = $event"></laji-wbc-table-filter>
     <bSwitch
+      style="margin-right: 15px;"
       name="onlyFinnish"
       [switch-off-text]="'Kaikki lajit'"
       [switch-on-text]="'Yleiset lajit'"
@@ -15,9 +17,7 @@
       [(ngModel)]="onlyCommonSpecies"
       [switch-base-class]="'bootstrap-switch'">
     </bSwitch>
-  </div>
-  <div class="col-sm-6" ngPreserveWhitespaces>
-    <label for="showStatistics">Tunnusluvut </label>
+    <label for="showStatistics">Tunnusluvut&nbsp;</label>
     <bSwitch
       id="showStatistics"
       name="showStatistics"
@@ -30,9 +30,11 @@
     </bSwitch>
   </div>
 </div>
+
 <laji-wbc-species-list (rowSelect)="taxonSelect($event)"
                        [year]="activeYear"
                        [season]="activeSeason"
+                       [filterBy]="filterBy"
                        [birdAssociationArea]="activeBirdAssociationArea"
                        [onlyCommonSpecies]="onlyCommonSpecies"
                        [showStatistics]="showStatistics"
