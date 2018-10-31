@@ -61,6 +61,7 @@ export class WbcCensusesComponent implements OnInit  {
   loading = false;
   queryKey: string;
   resultSub: Subscription;
+  filterBy = '';
 
   constructor(
     private resultService: WbcResultService,

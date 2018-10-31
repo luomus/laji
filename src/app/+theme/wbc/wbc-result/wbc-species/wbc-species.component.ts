@@ -13,6 +13,7 @@ export class WbcSpeciesComponent implements OnInit {
   activeYear: number;
   activeSeason: SEASON;
   activeBirdAssociationArea: string;
+  filterBy: string;
 
   onlyCommonSpecies = true;
   showStatistics = false;

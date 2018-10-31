@@ -3,12 +3,14 @@
                          [yearRequired]="true"
                          [showAreaFilter]="false"
 ></laji-wbc-result-filters>
+<laji-wbc-table-filter (onValueChange)="filterBy = $event"></laji-wbc-table-filter>
 <laji-datatable
   #dataTable
   (rowSelect)="openViewer($event.row['document.documentId'])"
   [clientSideSorting]="true"
   [showRowAsLink]="true"
   [showHeader]="true"
+  [filterBy]="filterBy"
   [height]="'calc(80vh - 40px)'"
   [virtualScrolling]="true"
   [rows]="rows"

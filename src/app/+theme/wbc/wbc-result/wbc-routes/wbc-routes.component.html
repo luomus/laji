@@ -1,4 +1,7 @@
 <h3>Reitit</h3>
+<div class="filters">
+  <laji-wbc-table-filter (onValueChange)="filterBy = $event"></laji-wbc-table-filter>
+</div>
 <laji-datatable
   #dataTable
   (rowSelect)="routeSelect($event.row['document.namedPlace.id'])"
@@ -6,6 +9,7 @@
   [clientSideSorting]="true"
   [showRowAsLink]="true"
   [showHeader]="true"
+  [filterBy]="filterBy"
   [height]="'calc(80vh - 40px)'"
   [virtualScrolling]="true"
   [rows]="rows"

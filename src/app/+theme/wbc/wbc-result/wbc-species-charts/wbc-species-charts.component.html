@@ -4,24 +4,37 @@
       <span *ngIf="taxon.vernacularName && taxon.scientificName"> - </span>
       <span [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
     </h3>
-    <laji-wbc-result-filters [showSeasonFilter]="compareMode === 'year'"
+    <laji-wbc-result-filters [showSeasonFilter]="!showSeasonComparison"
                              [yearRequired]="true"
                              (yearChange)="activeYear = $event"
                              (seasonChange)="activeSeason = $event"
                              (areaChange)="activeBirdAssociationArea = $event"
     ></laji-wbc-result-filters>
-    <h4>Kausivertailu</h4>
+    <h4 class="wbc-maps-title">
+      {{'wbc.stats.' + (showSeasonComparison ? 'season' : 'year') + 'Comparison' | translate}}
+      <bSwitch
+        class="pull-right"
+        name="comparisonMode"
+        [switch-on-text]="'wbc.stats.seasonComparison' | translate"
+        [switch-off-text]="'wbc.stats.yearComparison' | translate"
+        [switch-on-color]="'primary'"
+        [switch-size]="'small'"
+        [(ngModel)]="showSeasonComparison"
+        [switch-base-class]="'bootstrap-switch'">
+      </bSwitch>
+    </h4>
     <laji-wbc-species-maps [taxonId]="taxon.id"
-                                  [taxonCensus]="isMammal ? mammals : undefined"
-                                  [year]="activeYear"
-                                  [season]="activeSeason"
-                                  [birdAssociationArea]="activeBirdAssociationArea"
+                           [taxonCensus]="isMammal ? mammals : undefined"
+                           [showSeasonComparison]="showSeasonComparison"
+                           [year]="activeYear"
+                           [season]="activeSeason"
+                           [birdAssociationArea]="activeBirdAssociationArea"
     ></laji-wbc-species-maps>
     <hr>
     <h4>Runsauden kehitys vuosittain</h4>
     <laji-wbc-species-linecharts [taxonId]="taxon.id"
-                                        [taxonCensus]="isMammal ? mammals : undefined"
-                                        [birdAssociationArea]="activeBirdAssociationArea"
+                                 [taxonCensus]="isMammal ? mammals : undefined"
+                                 [birdAssociationArea]="activeBirdAssociationArea"
     ></laji-wbc-species-linecharts>
   </ng-container>
 </laji-spinner>

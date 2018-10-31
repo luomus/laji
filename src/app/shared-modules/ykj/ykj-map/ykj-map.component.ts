@@ -8,12 +8,12 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
+  Output, SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
-import { forkJoin, Observable, Subscription } from 'rxjs';
+import { forkJoin, of, Observable, Subscription } from 'rxjs';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -36,6 +36,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() height = '605px';
   @Input() query: WarehouseQueryInterface;
   @Input() zeroObservationQuery: WarehouseQueryInterface;
+  @Input() data: any;
   @Input() type: MapBoxTypes = 'count';
   @Input() types = ['count', 'individualCount', 'newest'];
   @Input() colorRange: string[] = ['violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
@@ -47,20 +48,22 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() countLabel: string[] = ['1-', '10-', '100-', '1 000-', '10 000-', '100 000-'];
   @Input() timeLabel: string[] = ['2020', '2015-', '2010-', '2005-', '2000-', '1990-'];
   @Input() maxBounds: [[number, number], [number, number]] = [[58.0, 19.0], [72.0, 35.0]];
-  @Input() mapOptions: LajiMapOptions = {
-    controls: {
-      draw: false
-    },
-    center: [64.709804, 25],
-    zoom: 2
-  };
+  @Input() set mapOptions(mapOptions: LajiMapOptions) {
+    this._mapOptions = {
+      ...this._mapOptions,
+      ...(mapOptions || {})
+    }
+  }
+  get mapOptions() {
+    return this._mapOptions;
+  }
   @Input() taxon: Taxonomy;
   @Input() useStatistics = false;
+  @Input() loading = false;
 
   @Output() onGridClick = new EventEmitter<WarehouseQueryInterface>();
 
   geoJsonLayer;
-  loading = false;
   mapInit = false;
   count: {[k: string]: number} = {};
   legendList: {color: string, label: string}[] = [];
@@ -69,6 +72,13 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   private current;
   private subQuery: Subscription;
   private subLang: Subscription;
+  private _mapOptions: LajiMapOptions = {
+    controls: {
+      draw: false
+    },
+    center: [64.709804, 25],
+    zoom: 2
+  };
 
   constructor(
     public translate: TranslateService,
@@ -82,10 +92,10 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
 
   ngOnInit() {
     this.subLang = this.translate.onLangChange.subscribe(() => {
-      this.mapOptions = {...this.mapOptions, lang: <LajiMapLang> this.translate.currentLang};
+      this._mapOptions = {...this._mapOptions, lang: <LajiMapLang> this.translate.currentLang};
       this.cd.markForCheck();
     });
-    this.mapOptions['lang'] = <LajiMapLang> this.translate.currentLang;
+    this._mapOptions['lang'] = <LajiMapLang> this.translate.currentLang;
     this.initGeoJsonLayer();
   }
 
@@ -93,8 +103,8 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.initMap();
   }
 
-  ngOnChanges() {
-    this.initMapdata();
+  ngOnChanges(changes: SimpleChanges) {
+    this.initMapdata(!!changes.data);
   }
 
   ngOnDestroy() {
@@ -106,12 +116,12 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.initMapdata();
   }
 
-  initMapdata() {
-    if (!this.query) {
+  initMapdata(dataIsChanged = false) {
+    if (!this.query && !this.data) {
       return;
     }
     const key = JSON.stringify({'query': this.query, 'zeroQuery': this.zeroObservationQuery});
-    if (this.current === key) {
+    if (!dataIsChanged && this.current === key) {
       const colorKey = this.getColorKey();
       if (this.currentColor !== colorKey  && this.geoJsonLayer) {
         this.initColor();
@@ -125,11 +135,16 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     if (this.subQuery) {
       this.subQuery.unsubscribe();
     }
-    const geoJson$: Observable<any> = this.zeroObservationQuery ? forkJoin([
-      this.ykjService.getGeoJson(this.zeroObservationQuery, undefined, undefined, this.useStatistics, true),
-      this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics)
-    ]).pipe(map(geoJsons => (this.combineGeoJsons(geoJsons[1], geoJsons[0])))) :
-      this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics);
+    let geoJson$:  Observable<any>;
+    if (this.data) {
+      geoJson$ = of(this.data);
+    } else {
+      geoJson$ = this.zeroObservationQuery ? forkJoin([
+        this.ykjService.getGeoJson(this.zeroObservationQuery, undefined, undefined, this.useStatistics, true),
+        this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics)
+      ]).pipe(map(geoJsons => (this.ykjService.combineGeoJsons(geoJsons[1], geoJsons[0])))) :
+        this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics);
+    }
 
     this.subQuery = geoJson$
       .subscribe(geoJson => {
@@ -288,12 +303,6 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   private getColorKey() {
-    return JSON.stringify(this.query) + this.type;
-  }
-
-  private combineGeoJsons(geoJson, zeroObsGeoJson) {
-    const grids = geoJson.map(g => (g.properties.grid));
-    zeroObsGeoJson = zeroObsGeoJson.filter(z => (grids.indexOf(z.properties.grid) === -1));
-    return geoJson.concat(zeroObsGeoJson);
+    return JSON.stringify(this.query) + JSON.stringify(this.zeroObservationQuery) + this.type;
   }
 }
