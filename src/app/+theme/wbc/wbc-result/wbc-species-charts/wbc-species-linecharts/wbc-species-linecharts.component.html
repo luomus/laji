@@ -1,10 +1,10 @@
-<laji-spinner [spinning]="loading">
-  <ng-container *ngIf="!loading">
-    <div class="row" *ngFor="let lines of [lines1, lines2, lines3]">
-      <div class="col-sm-12" *ngIf="lines.length > 0">
-        <h5 style="margin: auto">{{lines[0].name}}</h5>
-        <div class="chart-container" *ngIf="lines[0].series.length > 0">
-          <laji-line-chart-with-points [results]="lines"
+<laji-spinner [spinning]="!counts">
+  <ng-container *ngIf="counts">
+    <div class="row" *ngFor="let season of ['fall', 'winter', 'spring']">
+      <div class="col-sm-12" *ngIf="lines[season] && lines[season].length > 0">
+        <h5 style="margin: auto">{{lines[season][0].name}}</h5>
+        <div class="chart-container" *ngIf="lines[season][0].series.length > 0">
+          <laji-line-chart-with-points [results]="lines[season]"
                                        [scheme]="colorScheme"
                                        [animations]="false"
                                        [xAxis]="true"
@@ -25,7 +25,7 @@
             </ng-template>
           </laji-line-chart-with-points>
         </div>
-        <div *ngIf="lines[0].series.length === 0" style="margin-bottom: 20px">{{'wbc.stats.noHits' | translate}}</div>
+        <div *ngIf="lines[season][0].series.length === 0" style="margin-bottom: 20px">{{'wbc.stats.noHits' | translate}}</div>
       </div>
     </div>
   </ng-container>
