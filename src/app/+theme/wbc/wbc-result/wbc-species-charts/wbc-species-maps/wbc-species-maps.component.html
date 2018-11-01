@@ -5,7 +5,7 @@
       [title]="(idx === 0 ? (showSeasonComparison ? 'wbc.season.fall' : 'wbc.stats.chosenYear')
                : idx === 1 ? (showSeasonComparison ? 'wbc.season.winter' : 'wbc.stats.average')
                : (showSeasonComparison ? 'wbc.season.spring' : 'wbc.stats.difference'))
-               | translate | capitalize"
+               | translate"
       [titleInfo]="(showSeasonComparison ? undefined
                    : idx === 0 ? 'wbc.stats.chosenYear.info'
                    : idx === 1 ? 'wbc.stats.average.info'
