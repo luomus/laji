@@ -153,7 +153,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       this.selected = [this._rows[this._preselectedRowIndex]] || [];
       if (this.selected.length > 0) {
         // wait until datatable initialization is complete (monkey patched) before scrolling
-        const sub = this.datatable.initializationState.subscribe({complete: () => {
+        this.datatable.initializationState.take(1).subscribe({next: () => {
           // find the index in datatable internal sorted array that corresponds to selected index in input data
           const postSortIndex = this.datatable._internalRows.findIndex((element) => {
             return element.preSortIndex === this._preselectedRowIndex;
@@ -161,7 +161,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
           // Calculate relative position of selected row and scroll to it
           const scrollAmount = (this.datatable.bodyComponent.scrollHeight / this._rows.length) * postSortIndex;
           this.scrollTo(scrollAmount);
-          sub.unsubscribe();
         }});
       }
     }
