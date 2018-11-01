@@ -46,6 +46,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() sortType = 'multi';
   @Input() virtualScrolling = true;
   @Input() totalMessage = '';
+  @Input() emptyMessage = '';
   @Input() clientSideSorting = false;
   @Input() columnMode = 'force';
   @Input() resizable = true;
