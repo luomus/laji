@@ -33,6 +33,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @ViewChild(LajiMapComponent) mapComponent: LajiMapComponent;
 
   @Input() title: string;
+  @Input() titleInfo: string;
   @Input() height = '605px';
   @Input() query: WarehouseQueryInterface;
   @Input() zeroObservationQuery: WarehouseQueryInterface;
@@ -104,6 +105,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log(this.titleInfo);
     this.initMapdata(!!changes.data);
   }
 

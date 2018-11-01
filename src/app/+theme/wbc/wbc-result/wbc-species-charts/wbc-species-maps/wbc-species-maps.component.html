@@ -1,29 +1,36 @@
 <div class="row">
   <div class="col-sm-4 map-wrapper" *ngFor="let idx of [0, 1, 2]">
     <laji-ykj-map
-      #maps [title]="idx === 0 ? (showSeasonComparison ? 'Syys' : 'Valittu laskenta')
-                     : idx === 1 ? (showSeasonComparison ? 'Talvi' : 'Keskiarvo')
-                     : (showSeasonComparison ? 'Kevät' : 'Ero')"
-                  [query]="querys[idx]"
-                  [zeroObservationQuery]="zeroQuerys[idx]"
-                  [useStatistics]="true"
-                  [data]="data[idx]"
-                  [loading]="loading"
-                  [height]="'calc(80vh - 50px)'"
-                  [type]="'individualCountSum'"
-                  [types]="['individualCountSum']"
-                  [individualBreak]="(showSeasonComparison || idx != 2) ? breaks : differenceBreaks"
-                  [individualLabel]="(showSeasonComparison || idx != 2) ? labels : differenceLabels"
-                  [individualColorRange]="(showSeasonComparison || idx != 2) ? colorRange : differenceColorRange"
-                  [mapOptions]="{
-                    clickBeforeZoomAndPan: true,
-                    controls: idx === 0 ? {controls: false} : false,
-                    availableTileLayerNamesBlacklist: [
-                      'pohjakartta',
-                      'openStreetMap',
-                      'googleSatellite'
-                    ]
-                  }"
+      #maps
+      [title]="(idx === 0 ? (showSeasonComparison ? 'wbc.season.fall' : 'wbc.stats.chosenYear')
+               : idx === 1 ? (showSeasonComparison ? 'wbc.season.winter' : 'wbc.stats.average')
+               : (showSeasonComparison ? 'wbc.season.spring' : 'wbc.stats.difference'))
+               | translate | capitalize"
+      [titleInfo]="(showSeasonComparison ? undefined
+                   : idx === 0 ? 'wbc.stats.chosenYear.info'
+                   : idx === 1 ? 'wbc.stats.average.info'
+                   : 'wbc.stats.difference.info')
+                   | translate"
+      [query]="querys[idx]"
+      [zeroObservationQuery]="zeroQuerys[idx]"
+      [useStatistics]="true"
+      [data]="data[idx]"
+      [loading]="loading"
+      [height]="'calc(80vh - 50px)'"
+      [type]="'individualCountSum'"
+      [types]="['individualCountSum']"
+      [individualBreak]="(showSeasonComparison || idx != 2) ? breaks : differenceBreaks"
+      [individualLabel]="(showSeasonComparison || idx != 2) ? labels : differenceLabels"
+      [individualColorRange]="(showSeasonComparison || idx != 2) ? colorRange : differenceColorRange"
+      [mapOptions]="{
+        clickBeforeZoomAndPan: true,
+        controls: idx === 0 ? {controls: false} : false,
+        availableTileLayerNamesBlacklist: [
+          'pohjakartta',
+          'openStreetMap',
+          'googleSatellite'
+        ]
+      }"
     ></laji-ykj-map>
   </div>
 </div>
