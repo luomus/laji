@@ -105,7 +105,6 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.titleInfo);
     this.initMapdata(!!changes.data);
   }
 
