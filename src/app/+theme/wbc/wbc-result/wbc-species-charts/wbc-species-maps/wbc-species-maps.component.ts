@@ -1,4 +1,13 @@
-import { Component, OnChanges, Input, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnChanges,
+  Input,
+  ViewChild,
+  AfterViewInit,
+  ChangeDetectorRef,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
 import { WbcResultService, SEASON } from '../../wbc-result.service';
 import { WarehouseQueryInterface } from '../../../../../shared/model/WarehouseQueryInterface';
 import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.service';
@@ -13,9 +22,7 @@ import 'leaflet.sync';
   styleUrls: ['./wbc-species-maps.component.css']
 })
 export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
-  @ViewChild('syys') syysMapComponent: YkjMapComponent;
-  @ViewChild('talvi') talviMapComponent: YkjMapComponent;
-  @ViewChild('kevat') kevatMapComponent: YkjMapComponent;
+  @ViewChildren('maps') mapComponents: QueryList<YkjMapComponent>;
   @Input() taxonId: string;
   @Input() taxonCensus = undefined;
   @Input() showSeasonComparison = true;
@@ -51,7 +58,7 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.maps = [this.syysMapComponent, this.talviMapComponent, this.kevatMapComponent].map(mapComponent => {
+    this.maps = this.mapComponents.map(mapComponent => {
       return mapComponent.mapComponent.map;
     });
     this.maps.forEach(m => this.initEventListeners(m));

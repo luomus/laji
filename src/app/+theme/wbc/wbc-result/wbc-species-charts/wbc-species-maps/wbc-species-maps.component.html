@@ -1,12 +1,14 @@
 <div class="row">
-  <div class="col-sm-4 map-wrapper">
-    <laji-ykj-map #syys
-                  [title]="showSeasonComparison ? 'Syys' : 'Valittu laskenta'"
-                  [query]="querys[0]"
-                  [zeroObservationQuery]="zeroQuerys[0]"
+  <div class="col-sm-4 map-wrapper" *ngFor="let idx of [0, 1, 2]">
+    <laji-ykj-map #maps [title]="idx === 0
+                             ? (showSeasonComparison ? 'Syys' : 'Valittu laskenta')
+                             : idx === 1
+                               ? (showSeasonComparison ? 'Talvi' : 'Keskiarvo')
+                               : (showSeasonComparison ? 'Kevät' : 'Ero')"
+                  [query]="querys[idx]"
+                  [zeroObservationQuery]="zeroQuerys[idx]"
+                  [data]="data[idx]"
                   [useStatistics]="true"
-                  [data]="data[0]"
-                  [loading]="loading"
                   [height]="'calc(80vh - 50px)'"
                   [type]="'individualCountSum'"
                   [types]="['individualCountSum']"
@@ -15,47 +17,12 @@
                   [individualColorRange]="colorRange"
                   [mapOptions]="{
                     clickBeforeZoomAndPan: true,
-                    controls: false
-                  }"
-    ></laji-ykj-map>
-  </div>
-  <div class="col-sm-4 map-wrapper">
-    <laji-ykj-map #talvi
-                  [title]="showSeasonComparison ? 'Talvi' : 'Keskiarvo'"
-                  [query]="querys[1]"
-                  [zeroObservationQuery]="zeroQuerys[1]"
-                  [useStatistics]="true"
-                  [data]="data[1]"
-                  [loading]="loading"
-                  [height]="'calc(80vh - 50px)'"
-                  [type]="'individualCountSum'"
-                  [types]="['individualCountSum']"
-                  [individualBreak]="breaks"
-                  [individualLabel]="labels"
-                  [individualColorRange]="colorRange"
-                  [mapOptions]="{
-                    clickBeforeZoomAndPan: true,
-                    controls: false
-                  }"
-    ></laji-ykj-map>
-  </div>
-  <div class="col-sm-4 map-wrapper">
-    <laji-ykj-map #kevat
-                  [title]="showSeasonComparison ? 'Kevät' : 'Ero'"
-                  [query]="querys[2]"
-                  [zeroObservationQuery]="zeroQuerys[2]"
-                  [useStatistics]="true"
-                  [data]="data[2]"
-                  [loading]="loading"
-                  [height]="'calc(80vh - 50px)'"
-                  [type]="'individualCountSum'"
-                  [types]="['individualCountSum']"
-                  [individualBreak]="showSeasonComparison ? breaks : differenceBreaks"
-                  [individualLabel]="showSeasonComparison ? labels : differenceLabels"
-                  [individualColorRange]="showSeasonComparison ? colorRange : differenceColorRange"
-                  [mapOptions]="{
-                    clickBeforeZoomAndPan: true,
-                    controls: false
+                    controls: idx === 0 ? {controls: false} : false,
+                    availableTileLayerNamesBlacklist: [
+                      'pohjakartta',
+                      'openStreetMap',
+                      'googleSatellite'
+                    ]
                   }"
     ></laji-ykj-map>
   </div>
