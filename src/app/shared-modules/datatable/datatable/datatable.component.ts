@@ -116,6 +116,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       this.updateFilteredRows();
     } else {
       this._rows = this._originalRows;
+      this.scrollTo();
     }
   }
 
