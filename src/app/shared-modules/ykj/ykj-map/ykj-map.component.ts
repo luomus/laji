@@ -33,6 +33,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @ViewChild(LajiMapComponent) mapComponent: LajiMapComponent;
 
   @Input() title: string;
+  @Input() titleInfo: string;
   @Input() height = '605px';
   @Input() query: WarehouseQueryInterface;
   @Input() zeroObservationQuery: WarehouseQueryInterface;

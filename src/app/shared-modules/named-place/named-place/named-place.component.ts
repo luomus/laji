@@ -24,6 +24,8 @@ import { EventEmitter } from 'events';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NamedPlaceComponent implements OnInit, OnDestroy {
+  @ViewChild(NpEditComponent) npEdit: NpEditComponent;
+
   formId;
   collectionId;
 
@@ -382,6 +384,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     if (!this.formRights.admin) {
       return;
     }
+    this.npEdit.setIsEdit(!create);
     this.editMode = true;
     if (create) {
       this.setActiveNP(-1);

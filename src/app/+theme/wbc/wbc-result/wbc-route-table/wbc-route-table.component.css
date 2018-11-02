@@ -1,6 +1,5 @@
-::ng-deep .datatable-body-row.last-rows {
-  background-color: #eee !important;
-}
+::ng-deep .datatable-body-row.last-rows,
+::ng-deep .datatable-body-row.last-rows .datatable-row-left,
 ::ng-deep .datatable-body-row.last-rows .datatable-row-center {
   background-color: #eee !important;
 }
@@ -30,4 +29,18 @@
   text-align: end;
   font-size: 13px;
   color: #3498DB;
+}
+
+
+::ng-deep .ngx-datatable .datatable-header .datatable-row-left .datatable-header-cell {
+  border-right: none;
+}
+::ng-deep .ngx-datatable.material.striped .datatable-body .datatable-row-odd:not(:hover):not(:focus) .datatable-row-left {
+  background-color: #f9f9f9;
+}
+::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active,
+::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-left,
+::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-center,
+::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-right {
+  background-color: #ddd !important;
 }

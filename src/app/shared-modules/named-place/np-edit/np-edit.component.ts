@@ -258,4 +258,14 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     }
     return foundObject;
   }
+
+  setIsEdit(b: boolean) {
+    if (!this.npFormData) {
+      return;
+    }
+    if (!this.npFormData.uiSchemaContext) {
+      this.npFormData.uiSchemaContext = {};
+    }
+    this.npFormData.uiSchemaContext.isEdit = b;
+  }
 }

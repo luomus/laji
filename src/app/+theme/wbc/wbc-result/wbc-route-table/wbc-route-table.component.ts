@@ -59,7 +59,12 @@ export class WbcRouteTableComponent implements OnInit {
   }
 
   setColumns(data) {
-    this.columns = [{name: 'name', label: 'result.unit.taxonVerbatim', cellTemplate: this.textOrTranslationKeyTpl}];
+    this.columns = [{
+      name: 'name',
+      label: 'result.unit.taxonVerbatim',
+      cellTemplate: this.textOrTranslationKeyTpl,
+      frozenLeft: true
+    }];
 
     for (let i = data.years[0]; i <= data.years[data.years.length - 1]; i++) {
       this.columns.push({
@@ -85,8 +90,6 @@ export class WbcRouteTableComponent implements OnInit {
       cellTemplate: this.numberOrDocumentIdsTpl,
       cellClass: 'median'
     });
-
-    this.columns.push({name: 'name', label: 'result.unit.taxonVerbatim', cellTemplate: this.textOrTranslationKeyTpl});
   }
 
   private getRowClass(row: any) {

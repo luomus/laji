@@ -76,6 +76,9 @@ export class WbcResultFiltersComponent implements OnInit, OnChanges {
   }
 
   onAreaChange(newArea: string) {
+    if (newArea === 'all') {
+      newArea = undefined;
+    }
     this.activeArea = newArea;
     this.areaChange.emit(newArea);
     this.onFiltersChange();
