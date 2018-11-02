@@ -120,6 +120,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     if (!this.namedPlace) {
       return;
     }
+    console.log('IE DEBUG DEV', this.namedPlace, this.targetForm);
     this.userService.getUser().subscribe(person => {
       this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1);
       this.formReservable = this.targetForm &&
