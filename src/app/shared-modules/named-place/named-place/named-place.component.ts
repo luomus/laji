@@ -430,6 +430,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   private findNPIndexById(id: string) {
+    if (!this.namedPlaces) {
+      return -1;
+    }
     return this.namedPlaces.findIndex((np) => {
       return np.id === id;
     });

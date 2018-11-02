@@ -5,6 +5,7 @@
       <br>{{taxon.vernacularName | multiLang}}
     </span>
     <span *ngIf="title" [innerHtml]="title"></span>
+    <laji-info *ngIf="titleInfo">{{titleInfo | translate}}</laji-info>
   </div>
   <laji-map
     [options]="mapOptions"

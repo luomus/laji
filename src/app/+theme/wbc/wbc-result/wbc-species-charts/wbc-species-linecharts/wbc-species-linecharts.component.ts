@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, Input, ChangeDetectorRef } from '@angular/core';
-import { WbcResultService } from '../../wbc-result.service';
+import { WbcResultService, SEASON } from '../../wbc-result.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -12,9 +12,8 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
   @Input() taxonCensus = undefined;
   @Input() birdAssociationArea: string;
 
-  lines1: {name: string, series: {name: number, value: number}[]}[] = [];
-  lines2: {name: string, series: {name: number, value: number}[]}[] = [];
-  lines3: {name: string, series: {name: number, value: number}[]}[] = [];
+  lines: {[s: string]: {name: string, series: {name: number, value: number}[]}[]} = {};
+  counts: any;
 
   xScaleMin: number;
   xScaleMax: number;
@@ -25,7 +24,6 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
     domain: ['steelblue']
   };
 
-  loading = false;
   resultSub: Subscription;
 
   constructor(
@@ -37,45 +35,50 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.loading = true;
+    this.counts = undefined;
     if (this.taxonId) {
       if (this.resultSub) {
         this.resultSub.unsubscribe();
       }
-      this.resultSub = this.resultService.getCountPerCensusByYear(this.taxonId, this.birdAssociationArea, this.taxonCensus)
+      this.resultSub = this.resultService.getCountsByYearByTaxon(this.taxonId, this.birdAssociationArea, this.taxonCensus)
         .subscribe(data => {
           this.xScaleMin = undefined;
           this.xScaleMax = undefined;
           this.yScaleMax = 0;
 
-          this.setLines(1, data['fall'], 'Syksy');
-          this.setLines(2, data['winter'], 'Talvi');
-          this.setLines(3, data['spring'], 'Kevät');
+          this.counts = data;
+          this.setLines(data['fall'], 'fall', 'Syksy');
+          this.setLines(data['winter'], 'winter', 'Talvi');
+          this.setLines(data['spring'], 'spring', 'Kevät');
 
-          this.loading = false;
           this.cd.markForCheck();
         })
     }
   }
 
-  private setLines(nbr: number, data: any[], label: string) {
-    this['lines' + nbr] = [];
+  private setLines(data: any, season: SEASON, label: string) {
+    this.lines[season] = [];
+
+    const years = Object.keys(data);
+    years.sort();
 
     let prevYear;
     let series = [];
-    for (let i = 0; i < data.length; i++) {
-      const year = data[i].name;
+    for (let i = 0; i < years.length; i++) {
+      const year = parseInt(years[i], 10);
+      const value = data[years[i]].count / data[years[i]].censusCount;
+
       if (prevYear && year > prevYear + 1) {
-        this['lines' + nbr].push({name: label, series: series});
+        this.lines[season].push({name: label, series: series});
         series = [];
       }
-      series.push(data[i]);
-      if (data[i].value > this.yScaleMax) {
-        this.yScaleMax = data[i].value;
+      series.push({name: year, value: value});
+      if (value > this.yScaleMax) {
+        this.yScaleMax = value;
       }
       prevYear = year;
     }
-    this['lines' + nbr].push({name: label, series: series});
+    this.lines[season].push({name: label, series: series});
 
     if (data.length > 0) {
       if (!this.xScaleMin || data[0].name < this.xScaleMin) {

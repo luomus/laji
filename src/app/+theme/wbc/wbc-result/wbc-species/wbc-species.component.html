@@ -8,7 +8,7 @@
   <div class="col-sm-12">
     <laji-wbc-table-filter (onValueChange)="filterBy = $event"></laji-wbc-table-filter>
     <bSwitch
-      style="margin-right: 15px;"
+      style="margin-right: 15px"
       name="onlyFinnish"
       [switch-off-text]="'Kaikki lajit'"
       [switch-on-text]="'Yleiset lajit'"
@@ -17,17 +17,19 @@
       [(ngModel)]="onlyCommonSpecies"
       [switch-base-class]="'bootstrap-switch'">
     </bSwitch>
-    <label for="showStatistics">Tunnusluvut&nbsp;</label>
-    <bSwitch
-      id="showStatistics"
-      name="showStatistics"
-      [switch-off-text]="'no' | translate"
-      [switch-on-text]="'yes' | translate"
-      [switch-on-color]="'primary'"
-      [switch-size]="'small'"
-      [(ngModel)]="showStatistics"
-      [switch-base-class]="'bootstrap-switch'">
-    </bSwitch>
+    <div class="show-statistics-wrapper">
+      <label for="showStatistics">Tunnusluvut&nbsp;</label>
+      <bSwitch
+        id="showStatistics"
+        name="showStatistics"
+        [switch-off-text]="'no' | translate"
+        [switch-on-text]="'yes' | translate"
+        [switch-on-color]="'primary'"
+        [switch-size]="'small'"
+        [(ngModel)]="showStatistics"
+        [switch-base-class]="'bootstrap-switch'">
+      </bSwitch>
+    </div>
   </div>
 </div>
 

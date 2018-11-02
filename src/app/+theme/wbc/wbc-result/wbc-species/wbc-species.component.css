@@ -1,3 +1,8 @@
 :host >>> .bootstrap-switch {
   white-space: nowrap;
 }
+.show-statistics-wrapper {
+  display: inline-block;
+  white-space: nowrap;
+  margin-bottom: 20px;
+}

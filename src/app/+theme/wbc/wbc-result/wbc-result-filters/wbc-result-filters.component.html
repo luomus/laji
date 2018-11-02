@@ -8,7 +8,7 @@
         name="year"
         class="form-control"
         style="width: 120px">
-        <option *ngIf="!yearRequired" [value]="0">{{'select' | translate}}</option>
+        <option *ngIf="!yearRequired" [value]="0">{{'all' | translate}}</option>
         <option *ngFor="let year of years" [value]="year" [selected]="year === activeYear">
           {{year + '/' + (year + 1)}}
         </option>
@@ -23,7 +23,7 @@
         name="season"
         class="form-control"
         style="width: 120px">
-        <option [value]="0">{{'select' | translate}}</option>
+        <option [value]="0">{{'all' | translate}}</option>
         <option *ngFor="let season of seasons" [value]="season" [selected]="season === activeSeason">
           {{'wbc.season.' + season | translate}}
         </option>
@@ -32,6 +32,8 @@
     <div *ngIf="showAreaFilter">
       <label for="birdAssociationArea">{{'MNP.birdAssociationArea' | label}}</label>
       <laji-area-select id="birdAssociationArea"
+                        [selectOptionEnabled]="false"
+                        [allOptionEnabled]="true"
                         [field]="areaTypes.BirdAssociationArea"
                         [value]="activeArea"
                         (select)="onAreaChange($event)"
