@@ -64,4 +64,8 @@ export class InvasiveControlInstructionsComponent implements OnInit {
         this.cd.markForCheck();
       })
   }
+
+  isLoggedIn() {
+    return this.userService.isLoggedIn$.take(1);
+  }
 }
