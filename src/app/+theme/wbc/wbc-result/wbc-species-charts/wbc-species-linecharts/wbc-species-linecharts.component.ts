@@ -40,7 +40,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
       if (this.resultSub) {
         this.resultSub.unsubscribe();
       }
-      this.resultSub = this.resultService.getCountsByYearByTaxon(this.taxonId, this.birdAssociationArea, this.taxonCensus)
+      this.resultSub = this.resultService.getCountsByYearForSpecies(this.taxonId, this.birdAssociationArea, this.taxonCensus)
         .subscribe(data => {
           this.xScaleMin = undefined;
           this.xScaleMax = undefined;

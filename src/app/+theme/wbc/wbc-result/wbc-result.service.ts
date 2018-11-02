@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { of, forkJoin, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, share } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Global } from '../../../../environments/global';
 import { PagedResult } from '../../../shared/model/PagedResult';
@@ -25,6 +25,7 @@ export class WbcResultService {
   };
 
   private yearCache: number[];
+  private yearObs: Observable<number[]>;
 
   constructor(
     private warehouseApi: WarehouseApi
@@ -50,8 +51,10 @@ export class WbcResultService {
   getYears(): Observable<number[]> {
     if (this.yearCache) {
       return of(this.yearCache);
+    } else if (this.yearObs) {
+      return this.yearObs;
     }
-    return this.warehouseApi.warehouseQueryGatheringStatisticsGet(
+    this.yearObs = this.warehouseApi.warehouseQueryGatheringStatisticsGet(
       this.getFilterParams(),
       undefined,
       undefined,
@@ -70,8 +73,10 @@ export class WbcResultService {
           }
           this.yearCache = years;
           return years;
-        })
+        }),
+        share()
     );
+    return this.yearObs;
   }
 
   getRouteCountBySpecies(year: number, season?: SEASON, birdAssociationArea?: string): Observable<any> {
@@ -119,7 +124,7 @@ export class WbcResultService {
     )
   }
 
-  getIndividualCountSumBySpecies(year: number|number[], season?: SEASON, birdAssociationArea?: string) {
+  getIndividualCountSumBySpecies(year?: number|number[], season?: SEASON, birdAssociationArea?: string) {
     return this.warehouseApi.warehouseQueryStatisticsGet(
       this.getFilterParams(year, season, birdAssociationArea),
       ['unit.linkings.taxon.id'],
@@ -220,7 +225,7 @@ export class WbcResultService {
     )
   }
 
-  getCountsByYearByTaxon(taxonId: string, birdAssociationArea?: string, taxonCensus?: string): Observable<CountsPerYearForTaxon> {
+  getCountsByYearForSpecies(taxonId: string, birdAssociationArea?: string, taxonCensus?: string): Observable<CountsPerYearForTaxon> {
     return forkJoin([
       this.warehouseApi.warehouseQueryGatheringStatisticsGet(
         {...this.getFilterParams(undefined, undefined, birdAssociationArea), taxonCensus: [taxonCensus]},

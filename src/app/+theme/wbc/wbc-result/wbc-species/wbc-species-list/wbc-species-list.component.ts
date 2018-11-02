@@ -3,7 +3,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { WbcResultService, SEASON } from '../../wbc-result.service';
-import { Subscription, forkJoin, of } from 'rxjs';
+import { Observable, Subscription, forkJoin, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 
@@ -21,10 +21,9 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
   @Input() filterBy = '';
   @Output() rowSelect = new EventEmitter<string>();
 
-  @ViewChild('name') nameTpl: TemplateRef<any>;
   @ViewChild('scientificName') scientificNameTpl: TemplateRef<any>;
 
-  loading = false;
+  loading = true;
 
   rows: any[] = [];
   private allRows: any[] = [];
@@ -34,7 +33,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
   private defaultColumns: DatatableColumn[] = [];
   private additionalColumns: DatatableColumn[] = [];
 
-  private commonLimit = 30;
+  private averageCounts: any;
   private subList: Subscription;
   private queryKey: string;
 
@@ -90,7 +89,10 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
       }
     ];
     this.columns = this.defaultColumns;
-    this.updateSpeciesList();
+    this.getAverageCounts().subscribe(counts => {
+      this.averageCounts = counts;
+      this.updateSpeciesList();
+    })
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -122,7 +124,30 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
     }
   }
 
+  private getAverageCounts(): Observable<any> {
+    return forkJoin([
+      this.resultService.getYears(),
+      this.resultService.getIndividualCountSumBySpecies()
+    ])
+      .pipe(
+        map(data => {
+          const yearCount = data[0].length;
+          const countBySpecies = data[1];
+          for (const key in countBySpecies) {
+            if (countBySpecies.hasOwnProperty(key)) {
+              countBySpecies[key] = countBySpecies[key] / yearCount;
+            }
+          }
+          return countBySpecies;
+        })
+      )
+  }
+
   private updateSpeciesList() {
+    if (!this.averageCounts) {
+      return;
+    }
+
     const queryKey = 'year:' + this.year + ',season:' + this.season + ',area:' + this.birdAssociationArea
       + ',showStatistics:' + this.showStatistics;
 
@@ -140,7 +165,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
       .pipe(switchMap(list => (showStatistics ? this.addAdditionalStatistics(list) : of(list))))
       .subscribe(list => {
         this.allRows = list;
-        this.filteredRows = this.allRows.filter(val => (val.count >= this.commonLimit));
+        this.filteredRows = this.allRows.filter(val => (this.averageCounts[val['unit.linkings.taxon.id']] >= 1));
         this.setRows();
         this.loading = false;
         this.cd.markForCheck();
