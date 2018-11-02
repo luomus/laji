@@ -11,7 +11,7 @@
           pagerPrevious: 'glyphicon glyphicon-step-backward',
           pagerNext: 'glyphicon glyphicon-step-forward'
         }"
-    [messages]="{ emptyMessage: emptyMessage, totalMessage: '' }"
+    [messages]="{ emptyMessage: loading ? '' : emptyMessage, totalMessage: '' }"
     [rows]='_rows'
     [externalPaging]="true"
     [externalSorting]="!clientSideSorting"
