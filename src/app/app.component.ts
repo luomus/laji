@@ -108,8 +108,10 @@ export class AppComponent {
       const tree = router.parseUrl(router.url);
 
       if (tree.fragment) {
-        const element = document.querySelector('#' + tree.fragment);
-        if (element) { element.scrollIntoView(true); }
+        try {
+          const element = document.querySelector('#' + tree.fragment);
+          if (element) { element.scrollIntoView(true); }
+        } catch (e) { }
       }
     });
   }
