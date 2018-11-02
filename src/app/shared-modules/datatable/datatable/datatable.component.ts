@@ -274,13 +274,16 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private scrollTo(offsetY: number = 0) {
-    if (!isPlatformBrowser(this.platformId)) {
+    if (!isPlatformBrowser(this.platformId) || !this._rows) {
       return;
     }
     setTimeout(() => {
       try {
-        this.datatable.bodyComponent.scroller.setOffset(offsetY);
-        this.datatable.bodyComponent.scroller.updateOffset();
+        if (this.datatable && this.datatable.bodyComponent && this.datatable.bodyComponent.scroller) {
+          this.datatable.bodyComponent.scroller.setOffset(offsetY);
+          this.datatable.bodyComponent.scroller.updateOffset();
+          this.datatable.bodyComponent.onBodyScroll({scrollYPos: offsetY, scrollXPos: this.datatable.bodyComponent.offsetX || 0});
+        }
       } catch (e) {
         this.logger.info('selected row index failed', e)
       }
