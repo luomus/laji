@@ -29,7 +29,7 @@ export class WbcSpeciesComponent implements OnInit {
     const id = IdService.getId(fullId);
     this.router.navigate(
       this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/stats/species/' + id]),
-      {queryParams: {year: this.activeYear, birdAssociationArea: this.activeBirdAssociationArea}}
+      {queryParams: {year: this.activeYear, season: this.activeSeason, birdAssociationArea: this.activeBirdAssociationArea}}
     );
   }
 }
