@@ -253,6 +253,8 @@ export class WbcResultService {
 
   private parseObservationStatsList(resultList): ObservationStats {
     const result: ObservationStats = {};
+    const currentState = {};
+
     for (const season of ['fall', 'winter', 'spring']) {
       result[season] = {
         'speciesStats': [],
@@ -263,6 +265,7 @@ export class WbcResultService {
         ],
         'years': []
       };
+      currentState[season] = {taxonId: '', foundYears: [], row: undefined};
     }
 
     resultList.map(data => {
@@ -287,11 +290,16 @@ export class WbcResultService {
       const otherStats = result[season].otherStats;
       const yearString = year + '';
 
-      const lastResult = speciesStats.length > 0 ? speciesStats[speciesStats.length - 1] : undefined;
-      if (lastResult && lastResult.taxonId === taxonId) {
-        this.addCount(lastResult, yearString, individualCount);
+      if (currentState[season].taxonId === taxonId) {
+        this.addCount(currentState[season].row, yearString, individualCount);
       } else {
-        speciesStats.push({'taxonId': taxonId, 'name': taxonName, [yearString]: individualCount});
+        const row = {'name': taxonName, [yearString]: individualCount};
+        currentState[season] = {taxonId: taxonId, foundYears: [], row: row};
+        speciesStats.push(row);
+      }
+
+      if (currentState[season].foundYears.indexOf(yearString) === -1) {
+        currentState[season].foundYears.push(yearString);
         this.addCount(otherStats[0], yearString, 1);
       }
 
