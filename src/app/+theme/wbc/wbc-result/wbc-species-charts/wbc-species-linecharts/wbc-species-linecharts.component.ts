@@ -73,21 +73,20 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
         series = [];
       }
       series.push({name: year, value: value});
+
+      if (!this.xScaleMin || year < this.xScaleMin) {
+        this.xScaleMin = year;
+      }
+      if (!this.xScaleMax || year > this.xScaleMax) {
+        this.xScaleMax = year;
+      }
       if (value > this.yScaleMax) {
         this.yScaleMax = value;
       }
+
       prevYear = year;
     }
     this.lines[season].push({name: label, series: series});
-
-    if (data.length > 0) {
-      if (!this.xScaleMin || data[0].name < this.xScaleMin) {
-        this.xScaleMin = data[0].name;
-      }
-      if (!this.xScaleMax || data[data.length - 1].name > this.xScaleMax) {
-        this.xScaleMax = data[data.length - 1].name;
-      }
-    }
   }
 
   tickFormatting(val: number): string {
