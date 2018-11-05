@@ -21,6 +21,10 @@
                                        [yAxisLabel]="'Yksilöm./laskentoja'">
             <ng-template #tooltipTemplate let-model="model">
               <span class="tooltip-label">{{model.series}} • {{model.name + '/' + (model.name + 1)}}</span>
+              <span class="tooltip-label">
+                <span class="tooltip-item">{{'wbc.stats.individualCountSum' | translate}}: {{counts[season][model.name].count}}</span><br/>
+                <span class="tooltip-item">{{'wbc.stats.censusCount' | translate}}: {{counts[season][model.name].censusCount}}</span>
+              </span>
               <span class="tooltip-val">{{model.value.toLocaleString()}}</span>
             </ng-template>
           </laji-line-chart-with-points>

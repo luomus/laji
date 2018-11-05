@@ -94,6 +94,6 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
     if (val % 1 !== 0) {
       return '';
     }
-    return val + '/' + (val + 1);
+    return '' + val;
   }
 }
