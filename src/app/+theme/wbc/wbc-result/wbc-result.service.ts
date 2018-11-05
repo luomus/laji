@@ -148,7 +148,7 @@ export class WbcResultService {
   getSpeciesList(year?: number, season?: SEASON, birdAssociationArea?: string, onlyCount = true): Observable<any[]> {
     return this.getList(
       this.warehouseApi.warehouseQueryStatisticsGet(
-        this.getFilterParams(year, season, birdAssociationArea),
+        {...this.getFilterParams(year, season, birdAssociationArea), taxonId: ['MX.37580', 'MX.37612']},
         ['unit.linkings.taxon.id', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.scientificName',
           'unit.linkings.taxon.cursiveName', 'unit.linkings.taxon.taxonomicOrder'],
         ['unit.linkings.taxon.taxonomicOrder'],
