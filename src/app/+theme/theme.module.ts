@@ -71,6 +71,8 @@ import { FormPermissionModule } from '../+haseka/form-permission/form-permission
 import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
 import { LatestDocumentsModule } from '../shared-modules/latest-documents/latest-documents.module';
 import { WbcTableFilterComponent } from './wbc/wbc-result/wbc-table-filter/wbc-table-filter.component';
+import { WbcRoutesListComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-list/wbc-routes-list.component';
+import { WbcRoutesMapComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-map/wbc-routes-map.component';
 
 /* tslint:enable:max-line-length */
 
@@ -144,7 +146,9 @@ import { WbcTableFilterComponent } from './wbc/wbc-result/wbc-table-filter/wbc-t
     LineChartWithPointsComponent,
     WbcRouteComponent,
     WbcRouteTableComponent,
-    WbcTableFilterComponent
+    WbcTableFilterComponent,
+    WbcRoutesListComponent,
+    WbcRoutesMapComponent
   ],
   providers: [ ResultService, QualityService, WbcResultService ]
 })

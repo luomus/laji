@@ -40,6 +40,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() data: any;
   @Input() type: MapBoxTypes = 'count';
   @Input() types = ['count', 'individualCount', 'newest'];
+  @Input() typeLabels: any;
   @Input() colorRange: string[] = ['violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
   @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', 'violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
   @Input() individualBreak: number[] = [0, null, 1, 10, 100, 1000, 10000, 100000];
@@ -97,7 +98,9 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       this.cd.markForCheck();
     });
     this._mapOptions['lang'] = <LajiMapLang> this.translate.currentLang;
-    this.initGeoJsonLayer();
+    if (!this.geoJsonLayer) {
+      this.initGeoJsonLayer();
+    }
   }
 
   ngAfterViewInit() {
@@ -198,7 +201,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
         if (!evt.layer.feature.properties || !evt.layer.feature.properties.grid) {
           return;
         }
-        const query = JSON.parse(JSON.stringify(this.query));
+        const query = JSON.parse(JSON.stringify(this.query || {}));
         query.ykj10kmCenter = evt.layer.feature.properties.grid;
         this.onGridClick.emit(query);
       });

@@ -1,0 +1,17 @@
+<laji-datatable
+  #dataTable
+  (rowSelect)="onRouteSelect.emit($event.row['document.namedPlace.id'])"
+  [sorts]="sorts"
+  [clientSideSorting]="true"
+  [showRowAsLink]="true"
+  [showHeader]="true"
+  [filterBy]="filterBy"
+  [height]="'calc(80vh - 40px)'"
+  [virtualScrolling]="true"
+  [rows]="rows"
+  [loading]="!rows"
+  [columnMode]="'standard'"
+  [totalMessage]="'haseka.submissions.total' | translate"
+  [columns]="columns"
+  [count]="rows?.length">
+</laji-datatable>

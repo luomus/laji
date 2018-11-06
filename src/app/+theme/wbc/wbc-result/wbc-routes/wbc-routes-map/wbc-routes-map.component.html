@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-sm-9">
+    <laji-ykj-map
+      [data]="geoJsons"
+      [loading]="!geoJsons"
+      [height]="'calc(80vh - 50px)'"
+      [type]="'count'"
+      [types]="['count']"
+      [typeLabels]="{'count': ('wbc.stats.routeCount' | translate)}"
+      [countBreak]="breaks"
+      [countLabel]="labels"
+      [colorRange]="colorRange"
+      [mapOptions]="{
+        clickBeforeZoomAndPan: false,
+        controls: false,
+        availableTileLayerNamesBlacklist: [
+        'pohjakartta',
+        'openStreetMap',
+        'googleSatellite'
+       ]
+      }"
+      (onGridClick)="gridClick($event.ykj10kmCenter)"
+    ></laji-ykj-map>
+  </div>
+</div>

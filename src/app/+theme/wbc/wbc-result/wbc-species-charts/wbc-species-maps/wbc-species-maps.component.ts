@@ -2,7 +2,6 @@ import {
   Component,
   OnChanges,
   Input,
-  ViewChild,
   AfterViewInit,
   ChangeDetectorRef,
   QueryList,

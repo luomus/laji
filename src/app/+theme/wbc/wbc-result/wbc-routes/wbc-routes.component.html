@@ -2,20 +2,25 @@
 <div class="filters">
   <laji-wbc-table-filter (onValueChange)="filterBy = $event"></laji-wbc-table-filter>
 </div>
-<laji-datatable
-  #dataTable
-  (rowSelect)="routeSelect($event.row['document.namedPlace.id'])"
-  [sorts]="sorts"
-  [clientSideSorting]="true"
-  [showRowAsLink]="true"
-  [showHeader]="true"
-  [filterBy]="filterBy"
-  [height]="'calc(80vh - 40px)'"
-  [virtualScrolling]="true"
-  [rows]="rows"
-  [loading]="loading"
-  [columnMode]="'standard'"
-  [totalMessage]="'haseka.submissions.total' | translate"
-  [columns]="columns"
-  [count]="rows?.length">
-</laji-datatable>
+
+<!--div id="navbar">
+  <ul class="nav nav-tabs nav-justified">
+    <li role="presentation" [ngClass]="{active: active === 'list'}">
+      <a (click)="setActive('list')">{{'np.list' | translate}}</a>
+    </li>
+    <li role="presentation" [ngClass]="{active: active === 'map'}">
+      <a (click)="setActive('map')">{{'np.map' | translate}}</a>
+    </li>
+  </ul>
+</div-->
+
+<laji-wbc-routes-list
+  *ngIf="active === 'list'"
+  [rows]="data"
+  (onRouteSelect)="routeSelect($event)"
+></laji-wbc-routes-list>
+
+<laji-wbc-routes-map
+  *ngIf="active === 'map'"
+  [data]="data"
+></laji-wbc-routes-map>

@@ -88,7 +88,7 @@ export class YkjService {
     return features;
   }
 
-  private convertYkjToGeoJsonFeature(lat: any, lng: any, properties: {[k: string]: any} = {}) {
+  convertYkjToGeoJsonFeature(lat: any, lng: any, properties: {[k: string]: any} = {}) {
     lat = parseInt(lat, 10);
     lng = parseInt(lng, 10);
     const latStart = this.pad(lat);

@@ -22,18 +22,18 @@
         <ng-container *ngIf="types.length > 1">
           <a href dropdownToggle (click)="false">
             <span>
-              {{'theme.' + type | translate}}
+              {{(typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate}}
             </span>
           </a>
           <ul *dropdownMenu class="dropdown-menu" role="menu">
               <ng-container *ngFor="let type of types">
-                <li><a class="link" (click)="changeType(type)">{{'theme.' + type | translate}}</a></li>
+                <li><a class="link" (click)="changeType(type)">{{(typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate}}</a></li>
               </ng-container>
           </ul>
         </ng-container>
         <ng-container *ngIf="types.length <= 1">
           <span>
-            {{'theme.' + type | translate}}
+            {{(typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate}}
           </span>
         </ng-container>
       </span>

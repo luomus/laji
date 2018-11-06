@@ -911,6 +911,7 @@
   "wbc.stats.difference.info": "Ero lasketaan valitun talven ja sitä edeltävien 10 talven keskiarvon väliltä.",
   "wbc.stats.individualCountSum": "Yksilömäärä",
   "wbc.stats.censusCount": "Laskentojen määrä",
+  "wbc.stats.routeCount": "Reittien määrä",
   "wbc.stats.routes.name": "Reitin nimi",
   "wbc.stats.routes.municipalityDisplayName": "Kunta",
   "wbc.stats.routes.birdAssociationAreaDisplayName": "Lintuyhdistys",
