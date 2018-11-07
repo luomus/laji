@@ -88,23 +88,19 @@ export class UsersLatestComponent implements OnChanges {
 
   discardDocument(documents, i) {
     const id = documents[i].id;
-    this.translate.get('haseka.delete.description', {id: id}).subscribe(msg => {
-      if (confirm(msg)) {
-        this.formService.discard(id);
-        if (this.formService.isTmpId(id)) {
-          documents.splice(i, 1);
-        } else {
-          this.documentService.findById(id, this.userToken)
-            .subscribe(
-              doc => {
-                documents[i] = doc;
-                documents.sort(this.compareEditDate);
-                this.cd.markForCheck();
-              }
-            );
-        }
-      }
-    });
+    this.formService.discard(id);
+    if (this.formService.isTmpId(id)) {
+      documents.splice(i, 1);
+    } else {
+      this.documentService.findById(id, this.userToken)
+        .subscribe(
+          doc => {
+            documents[i] = doc;
+            documents.sort(this.compareEditDate);
+            this.cd.markForCheck();
+          }
+        );
+    }
   }
 
   showDocumentViewer(doc: Document) {
