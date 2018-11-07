@@ -3,7 +3,7 @@
   <laji-wbc-table-filter (onValueChange)="filterBy = $event"></laji-wbc-table-filter>
 </div>
 
-<!--div id="navbar">
+<div id="navbar">
   <ul class="nav nav-tabs nav-justified">
     <li role="presentation" [ngClass]="{active: active === 'list'}">
       <a (click)="setActive('list')">{{'np.list' | translate}}</a>
@@ -12,7 +12,7 @@
       <a (click)="setActive('map')">{{'np.map' | translate}}</a>
     </li>
   </ul>
-</div-->
+</div>
 
 <laji-wbc-routes-list
   *ngIf="active === 'list'"

@@ -8,13 +8,16 @@ import { DatatableColumn } from '../../../../../shared-modules/datatable/model/d
 })
 export class WbcRoutesListComponent implements OnInit {
   @Input() rows: any[] = [];
+  @Input() height = 'calc(80vh - 40px)';
+  @Input() columnMode = 'standard';
 
-  columns: DatatableColumn[] = [
+  allColumns: DatatableColumn[] = [
     {
       name: 'document.namedPlace.name',
       label: 'wbc.stats.routes.name',
       cellTemplate: 'link',
-      width: 300
+      width: 300,
+      flexGrow: 1
     },
     {
       name: 'document.namedPlace.municipalityDisplayName',
@@ -39,6 +42,7 @@ export class WbcRoutesListComponent implements OnInit {
       label: 'wbc.stats.routes.count'
     }
   ];
+  columns = this.allColumns;
 
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [
     {prop: 'document.namedPlace.birdAssociationAreaDisplayName', dir: 'asc'},
@@ -48,6 +52,12 @@ export class WbcRoutesListComponent implements OnInit {
   filterBy = '';
 
   @Output() onRouteSelect = new EventEmitter<string>();
+
+  @Input() set selected(selected: string[]) {
+    this.columns = this.allColumns.filter(val => {
+      return selected.indexOf(val.name) !== -1;
+    })
+  }
 
   constructor() { }
 

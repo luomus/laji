@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class WbcRoutesMapComponent implements OnInit {
   geoJsons: any[];
   _data: any;
+  selectedGrid: string;
 
   breaks = [1, 2, 5, 10, 20];
   labels = ['1', '2-4', '5-9', '10-19', '20-'];
@@ -45,6 +46,6 @@ export class WbcRoutesMapComponent implements OnInit {
   }
 
   gridClick(grid) {
-    console.log(this._data[grid]);
+    this.selectedGrid = grid;
   }
 }

@@ -1,25 +1,34 @@
-<div class="row">
-  <div class="col-sm-9">
-    <laji-ykj-map
-      [data]="geoJsons"
-      [loading]="!geoJsons"
-      [height]="'calc(80vh - 50px)'"
-      [type]="'count'"
-      [types]="['count']"
-      [typeLabels]="{'count': ('wbc.stats.routeCount' | translate)}"
-      [countBreak]="breaks"
-      [countLabel]="labels"
-      [colorRange]="colorRange"
-      [mapOptions]="{
+<div class="map-container">
+  <laji-ykj-map
+    [data]="geoJsons"
+    [loading]="!geoJsons"
+    [height]="'calc(80vh - 9px)'"
+    [type]="'count'"
+    [types]="['count']"
+    [typeLabels]="{'count': ('wbc.stats.routeCount' | translate)}"
+    [countBreak]="breaks"
+    [countLabel]="labels"
+    [colorRange]="colorRange"
+    [mapOptions]="{
         clickBeforeZoomAndPan: false,
-        controls: false,
         availableTileLayerNamesBlacklist: [
         'pohjakartta',
         'openStreetMap',
         'googleSatellite'
        ]
       }"
-      (onGridClick)="gridClick($event.ykj10kmCenter)"
-    ></laji-ykj-map>
+    (onGridClick)="gridClick($event.ykj10kmCenter)"
+  ></laji-ykj-map>
+</div>
+<div class="list-container">
+  <div style="height: 37px; line-height: 37px; border: 1px solid rgba(0, 0, 0, 0.12); border-bottom: 0; padding: 0 1.2rem;">
+    <h5 *ngIf="selectedGrid">Ruudun {{selectedGrid}} reitit</h5>
+    <h5 *ngIf="!selectedGrid">Ei valittua ruutua</h5>
   </div>
+  <laji-wbc-routes-list
+    [rows]="selectedGrid ? this._data[selectedGrid].data : []"
+    [selected]="'document.namedPlace.name'"
+    [columnMode]="'flex'"
+    [height]="'calc(80vh - 77px)'"
+  ></laji-wbc-routes-list>
 </div>
