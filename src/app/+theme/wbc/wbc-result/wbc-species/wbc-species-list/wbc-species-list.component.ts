@@ -194,7 +194,8 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
             const taxonId = l['unit.linkings.taxon.speciesId'];
             l['frequency'] = ((routeCountBySpecies[taxonId] || 0) / routeCount) * 100;
             l['abundance'] = l.individualCountSum / routeLengthSum;
-            l['abundanceComparison'] = l['abundance'] - ((individualCountBySpeciesPrevTenYears[taxonId] || 0) / routeLengthSumPrevTenYears);
+            const abundancePrev10Years = ((individualCountBySpeciesPrevTenYears[taxonId] || 0) / routeLengthSumPrevTenYears);
+            l['abundanceComparison'] = (l['abundance'] - abundancePrev10Years) / abundancePrev10Years * 100;
           });
 
           return list;

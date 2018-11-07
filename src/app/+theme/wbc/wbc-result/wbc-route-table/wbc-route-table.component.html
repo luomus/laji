@@ -35,7 +35,7 @@
 
 <ng-template let-value="value" let-row="row" #numberOrDocumentIds>
   <ng-container *ngIf="row.name !== 'documentIds'; else documentIds">
-    <span *ngIf="value || value == 0" [title]="value.toLocaleString()">{{value.toLocaleString()}}</span>
+    <span *ngIf="value || value === 0" [title]="roundNumber(value)">{{roundNumber(value)}}</span>
   </ng-container>
   <ng-template #documentIds>
     <span *ngIf="value && value.length > 0" ngPreserveWhitespaces style="display: inline-block">

@@ -39,4 +39,7 @@ export class DatatableTemplatesComponent {
 
   constructor() { }
 
+  roundNumber(value: number) {
+    return Math.round(value * 10 ) / 10;
+  }
 }

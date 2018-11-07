@@ -232,5 +232,7 @@
   </a>
 </ng-template>
 <ng-template let-value="value" #number>
-  <span title="{{value.toLocaleString()}}">{{value.toLocaleString()}}</span>
+  <span *ngIf="value || value === 0" title="{{roundNumber(value)}}">
+    {{roundNumber(value)}}
+  </span>
 </ng-template>
