@@ -1,14 +1,10 @@
 .map-container {
   width: calc(100% - 300px);
   float: left;
-  position: relative;
-  min-height: 1px;
 }
 .list-container {
   width: 300px;
   float:left;
-  position: relative;
-  min-height: 1px;
 
   .list-header {
     height: 37px;

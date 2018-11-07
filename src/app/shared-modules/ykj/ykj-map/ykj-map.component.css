@@ -1,3 +1,7 @@
+.map-wrap {
+  position: relative;
+}
+
 .title {
   position: absolute;
   z-index: 401;
@@ -21,7 +25,7 @@
   padding: 10px;
   position: absolute;
   border: 0;
-  left: 21px;
+  left: 6px;
   z-index: 400;
   top: 205px;
   background-color: rgba(255, 255, 255, 0.8);
