@@ -1,12 +1,15 @@
 <div class="map-wrap" [style.height]="height">
-  <div class="title">
-    <span *ngIf="taxon" class="scientificName" [ngClass]="{cursive: taxon.cursiveName}">{{taxon.scientificName}}</span>
-    <span *ngIf="taxon && taxon.vernacularName">
-      <br>{{taxon.vernacularName | multiLang}}
-    </span>
-    <span *ngIf="title" [innerHtml]="title"></span>
-    <laji-info *ngIf="titleInfo">{{titleInfo | translate}}</laji-info>
+  <div class="title" *ngIf="taxon || title">
+    <h5>
+      <span *ngIf="taxon" class="scientificName" [ngClass]="{cursive: taxon.cursiveName}">{{taxon.scientificName}}</span>
+      <ng-container *ngIf="taxon && taxon.vernacularName">
+        <br>{{taxon.vernacularName | multiLang}}
+      </ng-container>
+      <ng-container *ngIf="title">{{title}}</ng-container>
+      <laji-info *ngIf="titleInfo">{{titleInfo | translate}}</laji-info>
+    </h5>
   </div>
+
   <laji-map
     [options]="mapOptions"
     [loading]="loading"

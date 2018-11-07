@@ -1,11 +1,17 @@
 .title {
   position: absolute;
   z-index: 401;
-  width: 200px;
   left: 0;
   right: 0;
   text-align: center;
   margin: 0 auto;
+}
+.title h5 {
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  display: inline-block;
+  margin: 6px 0;
 }
 
 .legend {
