@@ -8,14 +8,17 @@ import { DatatableColumn } from '../../../../../shared-modules/datatable/model/d
 })
 export class WbcRoutesListComponent implements OnInit {
   @Input() rows: any[] = [];
-  @Input() height = 'calc(80vh - 40px)';
+  @Input() height = 'calc(80vh - 100px)';
   @Input() columnMode = 'standard';
+  @Input() showFilter = true;
+  @Input() showNameAsLink = true;
+  @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
+  @Input() loading = true;
 
   allColumns: DatatableColumn[] = [
     {
       name: 'document.namedPlace.name',
       label: 'wbc.stats.routes.name',
-      cellTemplate: 'link',
       width: 300,
       flexGrow: 1
     },
@@ -30,6 +33,15 @@ export class WbcRoutesListComponent implements OnInit {
 
     },
     {
+      name: 'gathering.eventDate.begin',
+      label: 'wbc.stats.route.begin'
+    },
+    {
+      name: 'gathering.team',
+      label: 'wbc.stats.route.team',
+      width: 300
+    },
+    {
       name: 'oldestRecord',
       label: 'wbc.stats.routes.oldestRecord'
     },
@@ -40,21 +52,23 @@ export class WbcRoutesListComponent implements OnInit {
     {
       name: 'count',
       label: 'wbc.stats.routes.count'
+    },
+    {
+      name: 'individualCountSum',
+      label: 'wbc.stats.route.individualCountSum'
     }
   ];
-  columns = this.allColumns;
-
-  sorts: {prop: string, dir: 'asc'|'desc'}[] = [
-    {prop: 'document.namedPlace.birdAssociationAreaDisplayName', dir: 'asc'},
-    {prop: 'document.namedPlace.name', dir: 'asc'}
-  ];
+  columns = [];
 
   filterBy = '';
 
-  @Output() onRouteSelect = new EventEmitter<string>();
+  @Output() onRowSelect = new EventEmitter<string>();
 
   @Input() set selected(selected: string[]) {
     this.columns = this.allColumns.filter(val => {
+      if (val.name === 'document.namedPlace.name' && this.showNameAsLink) {
+        val.cellTemplate = 'link';
+      }
       return selected.indexOf(val.name) !== -1;
     })
   }

@@ -13,42 +13,20 @@ import { Subscription } from 'rxjs';
 export class WbcCensusesComponent implements OnInit  {
   @ViewChild('documentModal') public modal: ModalDirective;
 
+  active: 'list'|'map' = 'list';
+
   activeYear: number;
   activeSeason: SEASON;
 
   rows: any[];
-  columns: DatatableColumn[] = [
-    {
-      name: 'document.namedPlace.name',
-      label: 'wbc.stats.routes.name',
-      width: 300
-    },
-    {
-      name: 'document.namedPlace.municipalityDisplayName',
-      label: 'wbc.stats.routes.municipalityDisplayName'
-    },
-    {
-      name: 'document.namedPlace.birdAssociationAreaDisplayName',
-      label: 'wbc.stats.routes.birdAssociationAreaDisplayName',
-      width: 300
-    },
-    {
-      name: 'gathering.eventDate.begin',
-      label: 'wbc.stats.route.begin'
-    },
-    {
-      name: 'gathering.team',
-      label: 'wbc.stats.route.team',
-      width: 300
-    },
-    {
-      name: 'count',
-      label: 'wbc.stats.route.count'
-    },
-    {
-      name: 'individualCountSum',
-      label: 'wbc.stats.route.individualCountSum'
-    }
+  selected = [
+    'document.namedPlace.name',
+    'document.namedPlace.municipalityDisplayName',
+    'document.namedPlace.birdAssociationAreaDisplayName',
+    'gathering.eventDate.begin',
+    'gathering.team',
+    'count',
+    'individualCountSum'
   ];
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [
     {prop: 'document.namedPlace.birdAssociationAreaDisplayName', dir: 'asc'},
@@ -97,5 +75,9 @@ export class WbcCensusesComponent implements OnInit  {
   openViewer(fullId: string) {
     this.shownDocument = IdService.getId(fullId);
     this.modal.show();
+  }
+
+  setActive(newActive: 'list'|'map') {
+    this.active = newActive;
   }
 }

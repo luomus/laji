@@ -9,6 +9,14 @@
   float:left;
   position: relative;
   min-height: 1px;
+
+  .list-header {
+    height: 37px;
+    line-height: 37px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom: 0;
+    padding: 0 1.2rem;
+  }
 }
 @media only screen and (max-width : 991px) {
   .map-container {

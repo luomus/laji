@@ -12,6 +12,19 @@ import { LocalizeRouterService } from '../../../../locale/localize-router.servic
 export class WbcRoutesComponent implements OnInit {
   active: 'list'|'map' = 'list';
   data: any;
+  selected = [
+    'document.namedPlace.name',
+    'document.namedPlace.municipalityDisplayName',
+    'document.namedPlace.birdAssociationAreaDisplayName',
+    'oldestRecord',
+    'newestRecord',
+    'count'
+  ];
+  sorts: {prop: string, dir: 'asc'|'desc'}[] = [
+    {prop: 'document.namedPlace.birdAssociationAreaDisplayName', dir: 'asc'},
+    {prop: 'document.namedPlace.name', dir: 'asc'}
+  ];
+
 
   constructor(
     private resultService: WbcResultService,
@@ -28,8 +41,8 @@ export class WbcRoutesComponent implements OnInit {
       })
   }
 
-  routeSelect(fullId: string) {
-    const id = IdService.getId(fullId);
+  rowSelect(row: any) {
+    const id = IdService.getId(row['document.namedPlace.id']);
     this.router.navigate(
       this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/stats/routes/' + id])
     );

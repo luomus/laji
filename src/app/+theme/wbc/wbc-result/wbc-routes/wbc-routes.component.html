@@ -1,7 +1,4 @@
-<h3>Reitit</h3>
-<div class="filters">
-  <laji-wbc-table-filter (onValueChange)="filterBy = $event"></laji-wbc-table-filter>
-</div>
+<h3>{{'wbc.stats.routes' | translate}}</h3>
 
 <div id="navbar">
   <ul class="nav nav-tabs nav-justified">
@@ -17,10 +14,15 @@
 <laji-wbc-routes-list
   *ngIf="active === 'list'"
   [rows]="data"
-  (onRouteSelect)="routeSelect($event)"
+  [loading]="!data"
+  [selected]="selected"
+  [sorts]="sorts"
+  (onRowSelect)="rowSelect($event)"
 ></laji-wbc-routes-list>
 
 <laji-wbc-routes-map
   *ngIf="active === 'map'"
   [data]="data"
+  [loading]="!data"
+  (onRowSelect)="rowSelect($event)"
 ></laji-wbc-routes-map>

@@ -1,11 +1,11 @@
 <div class="map-container">
   <laji-ykj-map
     [data]="geoJsons"
-    [loading]="!geoJsons"
+    [loading]="loading"
     [height]="'calc(80vh - 9px)'"
     [type]="'count'"
     [types]="['count']"
-    [typeLabels]="{'count': ('wbc.stats.routeCount' | translate)}"
+    [typeLabels]="{'count': (countLabel | translate)}"
     [countBreak]="breaks"
     [countLabel]="labels"
     [colorRange]="colorRange"
@@ -21,8 +21,8 @@
   ></laji-ykj-map>
 </div>
 <div class="list-container">
-  <div style="height: 37px; line-height: 37px; border: 1px solid rgba(0, 0, 0, 0.12); border-bottom: 0; padding: 0 1.2rem;">
-    <h5 *ngIf="selectedGrid">Ruudun {{selectedGrid}} reitit</h5>
+  <div class="list-header">
+    <h5 *ngIf="selectedGrid">Ruutu {{selectedGrid}}</h5>
     <h5 *ngIf="!selectedGrid">Ei valittua ruutua</h5>
   </div>
   <laji-wbc-routes-list
@@ -30,5 +30,9 @@
     [selected]="'document.namedPlace.name'"
     [columnMode]="'flex'"
     [height]="'calc(80vh - 77px)'"
+    [showFilter]="false"
+    [showNameAsLink]="showNameAsLink"
+    [loading]="false"
+    (onRowSelect)="onRowSelect.emit($event)"
   ></laji-wbc-routes-list>
 </div>

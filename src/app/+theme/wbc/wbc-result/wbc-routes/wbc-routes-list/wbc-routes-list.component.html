@@ -1,6 +1,9 @@
+<div class="filters" *ngIf="showFilter">
+  <laji-wbc-table-filter (onValueChange)="filterBy = $event"></laji-wbc-table-filter>
+</div>
 <laji-datatable
   #dataTable
-  (rowSelect)="onRouteSelect.emit($event.row['document.namedPlace.id'])"
+  (rowSelect)="onRowSelect.emit($event.row)"
   [sorts]="sorts"
   [clientSideSorting]="true"
   [showRowAsLink]="true"
@@ -9,7 +12,7 @@
   [height]="height"
   [virtualScrolling]="true"
   [rows]="rows"
-  [loading]="!rows"
+  [loading]="loading"
   [columnMode]="columnMode"
   [totalMessage]="'haseka.submissions.total' | translate"
   [columns]="columns"

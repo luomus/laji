@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -8,6 +8,10 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./wbc-routes-map.component.scss']
 })
 export class WbcRoutesMapComponent implements OnInit {
+  @Input() loading = true;
+  @Input() showNameAsLink = true;
+  @Input() countLabel = 'wbc.stats.routeCount';
+
   geoJsons: any[];
   _data: any;
   selectedGrid: string;
@@ -16,9 +20,12 @@ export class WbcRoutesMapComponent implements OnInit {
   labels = ['1', '2-4', '5-9', '10-19', '20-'];
   colorRange = ['violet', 'blue', 'lime', 'yellow', 'orange'];
 
+  @Output() onRowSelect = new EventEmitter<string>();
+
   @Input() set data(data) {
     this.geoJsons = [];
     this._data = {};
+    this.selectedGrid = undefined;
 
     data.map(item => {
       const grid =  parseInt(item['document.namedPlace.ykj10km.lat'], 10) + ':'

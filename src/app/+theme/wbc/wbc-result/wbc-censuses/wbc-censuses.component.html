@@ -1,26 +1,39 @@
+<h3>{{'wbc.stats.censuses' | translate}}</h3>
+
 <laji-wbc-result-filters (yearChange)="activeYear = $event; onFilterChange()"
                          (seasonChange)="activeSeason = $event; onFilterChange()"
                          [yearRequired]="true"
                          [showAreaFilter]="false"
 ></laji-wbc-result-filters>
-<laji-wbc-table-filter (onValueChange)="filterBy = $event"></laji-wbc-table-filter>
-<laji-datatable
-  #dataTable
-  (rowSelect)="openViewer($event.row['document.documentId'])"
-  [clientSideSorting]="true"
-  [showRowAsLink]="true"
-  [showHeader]="true"
-  [filterBy]="filterBy"
-  [height]="'calc(80vh - 40px)'"
-  [virtualScrolling]="true"
+
+<div id="navbar">
+  <ul class="nav nav-tabs nav-justified">
+    <li role="presentation" [ngClass]="{active: active === 'list'}">
+      <a (click)="setActive('list')">{{'np.list' | translate}}</a>
+    </li>
+    <li role="presentation" [ngClass]="{active: active === 'map'}">
+      <a (click)="setActive('map')">{{'np.map' | translate}}</a>
+    </li>
+  </ul>
+</div>
+
+<laji-wbc-routes-list
+  *ngIf="active === 'list'"
   [rows]="rows"
-  [loading]="loading"
-  [columnMode]="'standard'"
-  [totalMessage]="'haseka.submissions.total' | translate"
-  [columns]="columns"
-  [count]="rows?.length"
+  [selected]="selected"
   [sorts]="sorts"
-></laji-datatable>
+  [showNameAsLink]="false"
+  [loading]="loading"
+  (onRowSelect)="openViewer($event['document.documentId'])"
+></laji-wbc-routes-list>
+<laji-wbc-routes-map
+  *ngIf="active === 'map'"
+  [data]="rows"
+  [showNameAsLink]="false"
+  [loading]="loading"
+  [countLabel]="'wbc.stats.censusCount'"
+  (onRowSelect)="openViewer($event['document.documentId'])"
+></laji-wbc-routes-map>
 
 <div class="modal fade" bsModal #documentModal="bs-modal"
      (onHidden)="documentModalVisible = false"

@@ -181,6 +181,7 @@ export class WbcResultService {
       this.warehouseApi.warehouseQueryAggregateGet(
         {...this.getFilterParams(year, season)},
         ['document.documentId', 'document.namedPlace.name', 'document.namedPlace.municipalityDisplayName',
+          'document.namedPlace.ykj10km.lat', 'document.namedPlace.ykj10km.lon',
           'document.namedPlace.birdAssociationAreaDisplayName', 'gathering.eventDate.begin', 'gathering.team'],
         ['document.namedPlace.birdAssociationAreaDisplayName', 'gathering.eventDate.begin DESC'],
         10000,
