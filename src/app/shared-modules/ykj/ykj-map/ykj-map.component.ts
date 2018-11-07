@@ -40,7 +40,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() data: any;
   @Input() type: MapBoxTypes = 'count';
   @Input() types = ['count', 'individualCount', 'newest'];
-  @Input() typeLabels: any;
+  @Input() typeLabels: any = {};
   @Input() colorRange: string[] = ['violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
   @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', 'violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
   @Input() individualBreak: number[] = [0, null, 1, 10, 100, 1000, 10000, 100000];
