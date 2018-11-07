@@ -45,12 +45,12 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.defaultColumns = [
       {
-        name: 'unit.linkings.taxon.nameFinnish',
+        name: 'unit.linkings.taxon.speciesNameFinnish',
         cellTemplate: 'link',
         label: 'result.unit.taxonVerbatim'
       },
       {
-        name: 'unit.linkings.taxon.scientificName',
+        name: 'unit.linkings.taxon.speciesScientificName',
         cellTemplate: this.scientificNameTpl,
         label: 'result.scientificName'
       },
@@ -165,7 +165,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
       .pipe(switchMap(list => (showStatistics ? this.addAdditionalStatistics(list) : of(list))))
       .subscribe(list => {
         this.allRows = list;
-        this.filteredRows = this.allRows.filter(val => (this.averageCounts[val['unit.linkings.taxon.id']] >= 1));
+        this.filteredRows = this.allRows.filter(val => (this.averageCounts[val['unit.linkings.taxon.speciesId']] >= 1));
         this.setRows();
         this.loading = false;
         this.cd.markForCheck();
@@ -191,7 +191,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
           const routeLengthSumPrevTenYears = data[4] / 10000;
 
           list.map((l) => {
-            const taxonId = l['unit.linkings.taxon.id'];
+            const taxonId = l['unit.linkings.taxon.speciesId'];
             l['frequency'] = ((routeCountBySpecies[taxonId] || 0) / routeCount) * 100;
             l['abundance'] = l.individualCountSum / routeLengthSum;
             l['abundanceComparison'] = l['abundance'] - ((individualCountBySpeciesPrevTenYears[taxonId] || 0) / routeLengthSumPrevTenYears);

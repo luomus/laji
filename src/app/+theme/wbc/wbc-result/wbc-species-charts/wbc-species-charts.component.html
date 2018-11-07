@@ -2,7 +2,7 @@
   <ng-container *ngIf="!loading">
     <h3>{{taxon.vernacularName | capitalize}}
       <span *ngIf="taxon.vernacularName && taxon.scientificName"> - </span>
-      <span [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
+      <span class="cursive">{{taxon.scientificName}}</span>
     </h3>
     <laji-wbc-result-filters [showSeasonFilter]="!showSeasonComparison"
                              [yearRequired]="true"

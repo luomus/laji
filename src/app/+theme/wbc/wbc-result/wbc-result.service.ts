@@ -18,6 +18,7 @@ interface CountsPerYearForTaxon {
 @Injectable()
 export class WbcResultService {
   private collectionId = Global.collections.wbc;
+  private birdsAndMammals = ['MX.37580', 'MX.37612'];
   private seasonRanges = {
     'fall': [10, 11],
     'winter': [12, 1],
@@ -31,12 +32,14 @@ export class WbcResultService {
     private warehouseApi: WarehouseApi
   ) { }
 
-  getFilterParams(year?: number|number[], season?: SEASON, birdAssociationArea?: string): WarehouseQueryInterface {
+  getFilterParams(year?: number|number[], season?: SEASON, birdAssociationArea?: string, onlyBirdsAndMammals?: boolean)
+  : WarehouseQueryInterface {
     const yearMonth = year ? (Array.isArray(year) ? year : [year]).map(y => this.getYearMonthParam(y, season)) : [];
     return {
       collectionId: [this.collectionId],
       birdAssociationAreaId: [birdAssociationArea],
-      yearMonth: yearMonth
+      yearMonth: yearMonth,
+      taxonId: onlyBirdsAndMammals ? this.birdsAndMammals : []
     }
   }
 
@@ -81,8 +84,8 @@ export class WbcResultService {
 
   getRouteCountBySpecies(year: number, season?: SEASON, birdAssociationArea?: string): Observable<any> {
     return this.warehouseApi.warehouseQueryStatisticsGet(
-      this.getFilterParams(year, season, birdAssociationArea),
-      ['unit.linkings.taxon.id', 'document.namedPlaceId'],
+      this.getFilterParams(year, season, birdAssociationArea, true),
+      ['unit.linkings.taxon.speciesId', 'document.namedPlaceId'],
       undefined,
       10000,
       1
@@ -91,7 +94,7 @@ export class WbcResultService {
       map(res => {
         const result = {};
         for (let i = 0; i < res.length; i++) {
-          this.addCount(result, res[i].aggregateBy['unit.linkings.taxon.id'], 1);
+          this.addCount(result, res[i].aggregateBy['unit.linkings.taxon.speciesId'], 1);
         }
         return result;
       })
@@ -126,8 +129,8 @@ export class WbcResultService {
 
   getIndividualCountSumBySpecies(year?: number|number[], season?: SEASON, birdAssociationArea?: string) {
     return this.warehouseApi.warehouseQueryStatisticsGet(
-      this.getFilterParams(year, season, birdAssociationArea),
-      ['unit.linkings.taxon.id'],
+      this.getFilterParams(year, season, birdAssociationArea, true),
+      ['unit.linkings.taxon.speciesId'],
       undefined,
       10000,
       1,
@@ -138,7 +141,7 @@ export class WbcResultService {
       map(res => {
         const result = {};
         for (let i = 0; i < res.length; i++) {
-          this.addCount(result, res[i].aggregateBy['unit.linkings.taxon.id'], res[i].individualCountSum);
+          this.addCount(result, res[i].aggregateBy['unit.linkings.taxon.speciesId'], res[i].individualCountSum);
         }
         return result;
       })
@@ -148,10 +151,10 @@ export class WbcResultService {
   getSpeciesList(year?: number, season?: SEASON, birdAssociationArea?: string, onlyCount = true): Observable<any[]> {
     return this.getList(
       this.warehouseApi.warehouseQueryStatisticsGet(
-        {...this.getFilterParams(year, season, birdAssociationArea), taxonId: ['MX.37580', 'MX.37612']},
-        ['unit.linkings.taxon.id', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.scientificName',
-          'unit.linkings.taxon.cursiveName', 'unit.linkings.taxon.taxonomicOrder'],
-        ['unit.linkings.taxon.taxonomicOrder'],
+        this.getFilterParams(year, season, birdAssociationArea, true),
+        ['unit.linkings.taxon.speciesId', 'unit.linkings.taxon.speciesNameFinnish', 'unit.linkings.taxon.speciesScientificName',
+          'unit.linkings.taxon.speciesTaxonomicOrder'],
+        ['unit.linkings.taxon.speciesTaxonomicOrder'],
         10000,
         1,
         undefined,
@@ -179,7 +182,7 @@ export class WbcResultService {
   getCensusList(year?: number, season?: SEASON): Observable<any[]> {
     return this.getList(
       this.warehouseApi.warehouseQueryAggregateGet(
-        {...this.getFilterParams(year, season)},
+        this.getFilterParams(year, season),
         ['document.documentId', 'document.namedPlace.name', 'document.namedPlace.municipalityDisplayName',
           'document.namedPlace.ykj10km.lat', 'document.namedPlace.ykj10km.lon',
           'document.namedPlace.birdAssociationAreaDisplayName', 'gathering.eventDate.begin', 'gathering.team'],
@@ -208,10 +211,10 @@ export class WbcResultService {
 
   getObservationStatsForRoute(routeId: string): Observable<ObservationStats> {
     return this.warehouseApi.warehouseQueryAggregateGet(
-      {...this.getFilterParams(), namedPlaceId: [routeId]},
-      ['unit.linkings.taxon.id', 'unit.linkings.taxon.nameFinnish', 'gathering.conversions.year',
-        'gathering.conversions.month', 'document.documentId', 'unit.linkings.taxon.taxonomicOrder'],
-      ['unit.linkings.taxon.taxonomicOrder'],
+      {...this.getFilterParams(undefined, undefined, undefined, true), namedPlaceId: [routeId]},
+      ['unit.linkings.taxon.speciesId', 'unit.linkings.taxon.speciesNameFinnish', 'gathering.conversions.year',
+        'gathering.conversions.month', 'document.documentId', 'unit.linkings.taxon.speciesTaxonomicOrder'],
+      ['unit.linkings.taxon.speciesTaxonomicOrder'],
       10000,
       1,
       undefined,
@@ -270,8 +273,8 @@ export class WbcResultService {
     }
 
     resultList.map(data => {
-      const taxonId = data.aggregateBy['unit.linkings.taxon.id'];
-      const taxonName = data.aggregateBy['unit.linkings.taxon.nameFinnish'];
+      const taxonId = data.aggregateBy['unit.linkings.taxon.speciesId'];
+      const taxonName = data.aggregateBy['unit.linkings.taxon.speciesNameFinnish'];
       const documentId = data.aggregateBy['document.documentId'];
       const month = parseInt(data.aggregateBy['gathering.conversions.month'], 10);
       const year = this.getCensusStartYear(parseInt(data.aggregateBy['gathering.conversions.year'], 10), month);

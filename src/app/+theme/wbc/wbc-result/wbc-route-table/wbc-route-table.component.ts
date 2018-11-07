@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, ViewChild, TemplateRef, EventEmitter } from '@angular/core';
 import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
 import { LocalStorage } from 'ngx-webstorage';
-import { orderByComparator } from '@swimlane/ngx-datatable/src/utils/sort';
 
 @Component({
   selector: 'laji-wbc-route-table',
