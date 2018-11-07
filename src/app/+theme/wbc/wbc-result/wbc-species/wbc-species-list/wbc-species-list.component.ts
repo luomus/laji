@@ -195,7 +195,11 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
             l['frequency'] = ((routeCountBySpecies[taxonId] || 0) / routeCount) * 100;
             l['abundance'] = l.individualCountSum / routeLengthSum;
             const abundancePrev10Years = ((individualCountBySpeciesPrevTenYears[taxonId] || 0) / routeLengthSumPrevTenYears);
-            l['abundanceComparison'] = (l['abundance'] - abundancePrev10Years) / abundancePrev10Years * 100;
+            if (abundancePrev10Years === 0) {
+              l['abundanceComparison'] = NaN;
+            } else {
+              l['abundanceComparison'] = (l['abundance'] - abundancePrev10Years) / abundancePrev10Years * 100;
+            }
           });
 
           return list;
