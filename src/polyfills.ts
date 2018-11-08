@@ -15,6 +15,12 @@ import 'classlist.js';
 /***************************************************************************************************
  * Zone JS is required by Angular itself.
  */
+
+// fix for IE bug https://github.com/angular/zone.js/issues/933
+if (document['documentMode'] || /Edge/.test(navigator.userAgent)) {
+  (window as any).__Zone_enable_cross_context_check = true;
+}
+
 import 'zone.js/dist/zone'; // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
