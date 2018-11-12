@@ -1,3 +1,23 @@
-<p>
-  list works!
-</p>
+<div class="container" *ngIf="queryParams">
+  <h1>Lajit ja tulokset</h1>
+  <div class="year-select">
+    <laji-select2 [options]="years" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></laji-select2>
+  </div>
+
+
+  <div class="row" style="margin: 30px -15px;">
+    <div class="col-sm-12">
+      <label>Valitse tarkasteltava tieto</label>
+      <div class="type-select">
+        <laji-select2 [options]="types" [value]="queryParams.type" (valueChange)="queryParamChange('type', $event)"></laji-select2>
+      </div>
+    </div>
+  </div>
+
+  <div class="well">
+    <laji-filters [query]="queryParams" (queryChange)="queryChange($event)"></laji-filters>
+  </div>
+  <laji-results [type]="queryParams.type" [query]="queryParams"></laji-results>
+
+
+</div>

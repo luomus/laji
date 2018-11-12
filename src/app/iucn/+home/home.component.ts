@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IucnService } from '../iucn-shared/service/iucn.service';
+import { ResultService } from '../iucn-shared/service/result.service';
 
 @Component({
   selector: 'laji-home',
@@ -8,7 +8,7 @@ import { IucnService } from '../iucn-shared/service/iucn.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(public iucnService: IucnService) { }
+  constructor(public iucnService: ResultService) { }
 
   ngOnInit() {
   }

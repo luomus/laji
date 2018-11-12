@@ -1,0 +1,11 @@
+<ng-container [ngSwitch]="type">
+  <ng-container *ngSwitchCase="'status'">
+    <laji-red-list-status></laji-red-list-status>
+  </ng-container>
+  <ng-container *ngSwitchCase="'species'">
+    <laji-red-list-species></laji-red-list-species>
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    TODO
+  </ng-container>
+</ng-container>

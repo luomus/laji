@@ -10,6 +10,12 @@ import { TaxonStatusComponent } from './info-card/taxon-status/taxon-status.comp
 import { IucnStatusPipe } from './pipe/iucn-status.pipe';
 import { TaxonStatusHistoryComponent } from './info-card/taxon-status-history/taxon-status-history.component';
 import { RedlistYearSelectComponent } from './info-card/redlist-year-select/redlist-year-select.component';
+import { FiltersComponent } from './list/filters/filters.component';
+import { SelectComponent } from './list/select/select.component';
+import { ResultsComponent } from './list/results/results.component';
+import { RedListClassFilterComponent } from './list/filters/red-list-class-filter/red-list-class-filter.component';
+import { RedListStatusComponent } from './list/results/red-list-status/red-list-status.component';
+import { RedListSpeciesComponent } from './list/results/red-list-species/red-list-species.component';
 
 @NgModule({
   imports: [
@@ -25,7 +31,13 @@ import { RedlistYearSelectComponent } from './info-card/redlist-year-select/redl
     TaxonStatusComponent,
     IucnStatusPipe,
     TaxonStatusHistoryComponent,
-    RedlistYearSelectComponent
+    RedlistYearSelectComponent,
+    FiltersComponent,
+    SelectComponent,
+    ResultsComponent,
+    RedListClassFilterComponent,
+    RedListStatusComponent,
+    RedListSpeciesComponent
   ]
 })
 export class TaxonomyModule { }

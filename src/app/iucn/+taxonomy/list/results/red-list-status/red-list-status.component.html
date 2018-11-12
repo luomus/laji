@@ -1,0 +1,18 @@
+<div class="table-responsive">
+  <table class="table table-hover">
+    <tr class="title">
+      <th></th>
+      <th>Arvioitujen lajien määrä</th>
+      <th *ngFor="let status of statuses">{{status}}</th>
+      <th>Punaisen listan lajeja</th>
+      <th>Punaisen listan lajien osuus arvioidusta</th>
+    </tr>
+    <tr *ngFor="let data of _data; let l=last" [class.title]="l">
+      <th>{{data.species}}</th>
+      <td>{{data.count}}</td>
+      <td *ngFor="let status of statuses">{{data[status] || 0}}</td>
+      <td>{{data.redListCnt}}</td>
+      <td>{{data.redListPct}}</td>
+    </tr>
+  </table>
+</div>

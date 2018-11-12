@@ -7,7 +7,8 @@ export const taxonomyRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: ListComponent
+    component: ListComponent,
+    data: { noScrollToTop: true }
   },
   {
     path: ':id',
