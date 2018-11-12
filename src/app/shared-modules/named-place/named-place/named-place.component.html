@@ -4,7 +4,7 @@
 
     <alert *ngIf="errorMsg" type="danger">{{errorMsg}}</alert>
 
-    <ng-container *ngIf="filterByMunicipality">
+    <ng-container *ngIf="filterByMunicipality && !editMode">
       <label>{{'MNP.municipality' | label}}</label>
       <laji-area-select [disabled]="editMode" [field]="areaTypes.Municipality"
       [allOptionEnabled]='true' (select)="updateMunicipalityFilter($event)" [value]='municipality'></laji-area-select>
