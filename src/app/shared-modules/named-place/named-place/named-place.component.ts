@@ -306,7 +306,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
             this._formRightsInit = true;
             this.initEditMode();
             this.formRights = rights;
-            if (this.formData && this.formData.namedPlaceOptions && this.formData.namedPlaceOptions.requireAdmin === false) {
+            if (this.formData && this.formData.namedPlaceOptions
+                && this.formData.namedPlaceOptions.requireAdmin === false) {
               this.allowCreate = true;
             } else {
               this.allowCreate =  rights.admin && (!formData.features || formData.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1);
@@ -381,7 +382,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   toEditMode(create: boolean) {
-    if (!this.formRights.admin) {
+    if (!this.allowCreate) {
       return;
     }
     this.npEdit.setIsEdit(!create);
