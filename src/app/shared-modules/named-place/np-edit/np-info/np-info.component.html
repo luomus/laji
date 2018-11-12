@@ -109,6 +109,7 @@
         <laji-own-submissions
           [actions]="formRights.admin ? ['edit', 'delete'] : ['edit']"
           [columns]="['dateObserved', 'observer', 'dateEdited']"
+          [columnNameMapping]="namedPlaceOptions?.columnNameMapping"
           [collectionID]="targetForm.collectionID"
           [namedPlace]="namedPlace.id"
           [showDownloadAll]="false"

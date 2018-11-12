@@ -103,7 +103,9 @@
                             [prop]="col.prop"
                             [resizeable]="false"
                             [draggable]="false"
-                            [name]="'haseka.submissions.' + col.prop | translate"
+                            [name]="(columnNameMapping && columnNameMapping[col.prop])
+                                    ? columnNameMapping[col.prop]
+                                    : 'haseka.submissions.' + col.prop | translate"
                             [flexGrow]="3"
                             [cellClass]="'break-word'">
         <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
