@@ -65,7 +65,13 @@ export class RedListClassFilterComponent implements OnInit {
         return cumulative;
       }, []));
     } else {
-      this.valueChange.emit([...this.groups[group]]);
+      const selected = [...this.groups[group]];
+      ['NA', 'NE'].forEach(status => {
+        if (this.selected[status]) {
+          selected.push(status);
+        }
+      });
+      this.valueChange.emit(selected);
     }
   }
 

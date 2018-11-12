@@ -15,7 +15,7 @@
   </div>
 
   <div class="well">
-    <laji-filters [query]="queryParams" (queryChange)="queryChange($event)"></laji-filters>
+    <laji-filters [lang]="translate.currentLang" [query]="queryParams" (queryChange)="queryChange($event)"></laji-filters>
   </div>
   <laji-results [type]="queryParams.type" [query]="queryParams"></laji-results>
 

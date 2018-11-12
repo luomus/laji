@@ -16,12 +16,15 @@ import { ResultsComponent } from './list/results/results.component';
 import { RedListClassFilterComponent } from './list/filters/red-list-class-filter/red-list-class-filter.component';
 import { RedListStatusComponent } from './list/results/red-list-status/red-list-status.component';
 import { RedListSpeciesComponent } from './list/results/red-list-species/red-list-species.component';
+import { RedListChartComponent } from './list/results/red-list-chart/red-list-chart.component';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
 
 @NgModule({
   imports: [
     routing,
     CommonModule,
-    SharedModule
+    SharedModule,
+    NgxChartsModule
   ],
   declarations: [
     InfoCardComponent,
@@ -37,7 +40,8 @@ import { RedListSpeciesComponent } from './list/results/red-list-species/red-lis
     ResultsComponent,
     RedListClassFilterComponent,
     RedListStatusComponent,
-    RedListSpeciesComponent
+    RedListSpeciesComponent,
+    RedListChartComponent
   ]
 })
 export class TaxonomyModule { }

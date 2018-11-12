@@ -2,15 +2,10 @@
   <div class="form-group">
     <label class="col-sm-1 control-label">Rajaa</label>
     <div class="col-sm-5 col-md-4">
-      <laji-select2 [value]="query?.redListGroup" (valueChange)="change('redListGroup', $event)" [options]="[
-      {label:'Linnut', value:'MVL.1'},
-      {label:'Nisäkkäät', value:'MVL.2'},
-      {label:'Sienet', value:'MVL.3'},
-      {label:'Kalat', value:'MVL.4'},
-      {label:'Tuhatjalkaiset', value:'MVL.5'},
-      {label:'Perhoset', value:'MVL.6'},
-      {label:'Pistiäiset', value:'MVL.7'}
-      ]" [placeholder]="'Lajiryhmä'"></laji-select2>
+      <laji-select2 [value]="query?.redListGroup" (valueChange)="change('redListGroup', $event)"
+                    [options]="redListStatuses$ | async"
+                    [placeholder]="'Lajiryhmä'"
+      ></laji-select2>
     </div>
     <div class="col-sm-5 col-md-4">
       <laji-select2 [value]="query?.habitat" (valueChange)="change('habitat', $event)" [options]="[

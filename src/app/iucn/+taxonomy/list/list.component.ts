@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FilterQuery, ResultService } from '../../iucn-shared/service/result.service';
+import {TranslateService} from '@ngx-translate/core';
 
 export type ListType = 'status'|'species'|'reasons'|'threads'|'habitat';
 
@@ -30,13 +31,14 @@ export class ListComponent implements OnInit, OnDestroy {
   private querySub: Subscription;
 
   constructor(
+    public translate: TranslateService,
     private route: ActivatedRoute,
     private router: Router,
-    private iucnService: ResultService
+    private resultService: ResultService
   ) {}
 
   ngOnInit() {
-    this.years = this.iucnService.years.map(year => ({label: year, value: year}));
+    this.years = this.resultService.years.map(year => ({label: year, value: year}));
     this.querySub = this.route.queryParams.pipe(
       startWith(this.route.snapshot.queryParams),
       map(params => {

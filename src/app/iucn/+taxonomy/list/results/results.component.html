@@ -5,6 +5,13 @@
   <ng-container *ngSwitchCase="'species'">
     <laji-red-list-species></laji-red-list-species>
   </ng-container>
+  <ng-container *ngSwitchCase="'reasons'">
+    <div class="row">
+      <div class="col-sm-10">
+        <laji-red-list-chart></laji-red-list-chart>
+      </div>
+    </div>
+  </ng-container>
   <ng-container *ngSwitchDefault>
     TODO
   </ng-container>
