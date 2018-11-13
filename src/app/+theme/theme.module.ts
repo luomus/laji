@@ -73,6 +73,7 @@ import { LatestDocumentsModule } from '../shared-modules/latest-documents/latest
 import { WbcTableFilterComponent } from './wbc/wbc-result/wbc-table-filter/wbc-table-filter.component';
 import { WbcRoutesListComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-list/wbc-routes-list.component';
 import { WbcRoutesMapComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-map/wbc-routes-map.component';
+import { SidebarComponent } from './common/sidebar.component';
 
 /* tslint:enable:max-line-length */
 
@@ -148,7 +149,8 @@ import { WbcRoutesMapComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-ma
     WbcRouteTableComponent,
     WbcTableFilterComponent,
     WbcRoutesListComponent,
-    WbcRoutesMapComponent
+    WbcRoutesMapComponent,
+    SidebarComponent
   ],
   providers: [ ResultService, QualityService, WbcResultService ]
 })
