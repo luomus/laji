@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class RedListSpeciesComponent implements OnInit {
 
   // @Input()
+  /* tslint:disable */
   species = [
     {vernacularName: 'mustakotilokuoriainen', scientificName: 'Drilus concolor', status: 'VU', critery: 'D2', note: 'Peter Piper picked a peck of pickled peppers.'},
     {vernacularName: 'kijokonnakas', scientificName: 'Epuraea gutata', status: 'NT', critery: 'R2', note: 'A peck of pickled peppers Peter Piper picked.'},

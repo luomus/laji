@@ -41,6 +41,7 @@ export class RedListChartComponent implements OnInit, AfterViewInit {
     ];
   }
 
+  /* tslint:disable */
   private mock = [
       {
         'name': 'Juoksujlkaiset',

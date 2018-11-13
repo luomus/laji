@@ -52,6 +52,7 @@ export class ResultService {
     return ObservableOf(this.dataMock[year]);
   }
 
+  /* tslint:disable */
   dataMock = {
     '2000': [
       {name: 'lc', value: 1000},
