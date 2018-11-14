@@ -5,6 +5,7 @@
   height: 30px;
   line-height: 30px;
   vertical-align: middle;
+  margin-top: 0;
 }
 .wbc-maps-title > bSwitch {
   font-weight: normal;

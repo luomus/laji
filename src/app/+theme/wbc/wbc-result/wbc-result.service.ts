@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { of, forkJoin, Observable } from 'rxjs';
-import { map, share } from 'rxjs/operators';
+import { map, tap, share } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Global } from '../../../../environments/global';
 import { PagedResult } from '../../../shared/model/PagedResult';
@@ -27,6 +27,7 @@ export class WbcResultService {
 
   private yearCache: number[];
   private yearObs: Observable<number[]>;
+  private speciesListCache: any[];
 
   constructor(
     private warehouseApi: WarehouseApi
@@ -148,7 +149,11 @@ export class WbcResultService {
     )
   }
 
-  getSpeciesList(year?: number, season?: SEASON, birdAssociationArea?: string, onlyCount = true): Observable<any[]> {
+  getSpeciesList(year?: number, season?: SEASON, birdAssociationArea?: string, onlyCount = true, useCache = false): Observable<any[]> {
+    if (useCache && this.speciesListCache) {
+      return of(this.speciesListCache);
+    }
+
     return this.getList(
       this.warehouseApi.warehouseQueryStatisticsGet(
         this.getFilterParams(year, season, birdAssociationArea, true),
@@ -160,7 +165,7 @@ export class WbcResultService {
         undefined,
         onlyCount
       )
-    );
+    ).pipe(tap(list => { if (useCache) { this.speciesListCache = list } }));
   }
 
   getRouteList(): Observable<any[]> {

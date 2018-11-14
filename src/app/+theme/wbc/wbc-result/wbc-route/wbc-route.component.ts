@@ -13,26 +13,9 @@ import { IdService } from '../../../../shared/service/id.service';
 })
 export class WbcRouteComponent implements OnInit, OnDestroy {
   id: string;
+
   rows: any[];
-  columns: DatatableColumn[] = [
-    {
-      name: 'gathering.eventDate.begin',
-      label: 'wbc.stats.route.begin'
-    },
-    {
-      name: 'gathering.team',
-      label: 'wbc.stats.route.team',
-      width: 300
-    },
-    {
-      name: 'count',
-      label: 'wbc.stats.route.count'
-    },
-    {
-      name: 'individualCountSum',
-      label: 'wbc.stats.route.individualCountSum'
-    }
-  ];
+  selected = ['gathering.eventDate.begin', 'gathering.team', 'count', 'individualCountSum'];
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [
     {prop: 'gathering.eventDate.begin', dir: 'desc'},
   ];

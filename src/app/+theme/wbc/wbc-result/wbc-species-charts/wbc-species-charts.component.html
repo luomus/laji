@@ -1,8 +1,20 @@
-<laji-spinner [spinning]="loading">
-  <ng-container *ngIf="!loading">
-    <h3>{{taxon.vernacularName | capitalize}}
-      <span *ngIf="taxon.vernacularName && taxon.scientificName"> - </span>
-      <span class="cursive">{{taxon.scientificName}}</span>
+<div *ngIf="speciesList">
+  <select class="form-control" id="species" style="width: auto" (change)="onSpeciesChange(speciesSelect.value)" #speciesSelect>
+    <option
+      *ngFor="let species of speciesList"
+      [value]="species['unit.linkings.taxon.speciesId']"
+      [selected]="species['unit.linkings.taxon.speciesId'] === activeSpecies['unit.linkings.taxon.speciesId']
+        ">
+      <ng-container [ngTemplateOutlet]="speciesName" [ngTemplateOutletContext]="{species: species}"></ng-container>
+    </option>
+  </select>
+  <hr>
+</div>
+
+<laji-spinner [spinning]="loading || !speciesList">
+  <ng-container *ngIf="!loading && speciesList">
+    <h3 style="margin-bottom: 30px">
+      <ng-container [ngTemplateOutlet]="speciesName" [ngTemplateOutletContext]="{species: activeSpecies}"></ng-container>
     </h3>
     <laji-wbc-result-filters [showSeasonFilter]="!showSeasonComparison"
                              [yearRequired]="true"
@@ -23,7 +35,7 @@
         [switch-base-class]="'bootstrap-switch'">
       </bSwitch>
     </h4>
-    <laji-wbc-species-maps [taxonId]="taxon.id"
+    <laji-wbc-species-maps [taxonId]="activeSpecies['unit.linkings.taxon.speciesId']"
                            [taxonCensus]="isMammal ? mammals : undefined"
                            [showSeasonComparison]="showSeasonComparison"
                            [year]="activeYear"
@@ -31,10 +43,16 @@
                            [birdAssociationArea]="activeBirdAssociationArea"
     ></laji-wbc-species-maps>
     <hr>
-    <h4>Runsauden kehitys vuosittain</h4>
-    <laji-wbc-species-linecharts [taxonId]="taxon.id"
+    <h4>{{'wbc.stats.abundanceGraphs' | translate}}</h4>
+    <laji-wbc-species-linecharts [taxonId]="activeSpecies['unit.linkings.taxon.speciesId']"
                                  [taxonCensus]="isMammal ? mammals : undefined"
                                  [birdAssociationArea]="activeBirdAssociationArea"
     ></laji-wbc-species-linecharts>
   </ng-container>
 </laji-spinner>
+
+<ng-template let-species="species" #speciesName>
+  {{species['unit.linkings.taxon.speciesNameFinnish'] | capitalize}}
+  <span *ngIf="species['unit.linkings.taxon.speciesNameFinnish'] && species['unit.linkings.taxon.speciesScientificName']"> - </span>
+  <span class="cursive">{{species['unit.linkings.taxon.speciesScientificName']}}</span>
+</ng-template>

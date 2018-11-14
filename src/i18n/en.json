@@ -886,6 +886,7 @@
   "wbc.stats.individualCountSum": "Yksilömäärä",
   "wbc.stats.censusCount": "Laskentojen määrä",
   "wbc.stats.routeCount": "Reittien määrä",
+  "wbc.stats.abundanceGraphs": "Runsauden kehitys vuosittain",
   "wbc.stats.routes.name": "Name",
   "wbc.stats.routes.municipalityDisplayName": "Municipality",
   "wbc.stats.routes.birdAssociationAreaDisplayName": "Bird association area",

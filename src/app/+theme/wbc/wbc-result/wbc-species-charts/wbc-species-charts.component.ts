@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
-import { SEASON } from '../wbc-result.service';
-import { ActivatedRoute } from '@angular/router';
+import { WbcResultService, SEASON } from '../wbc-result.service';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, forkJoin } from 'rxjs';
 import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
+import { IdService } from '../../../../shared/service/id.service';
 
 @Component({
   selector: 'laji-wbc-species-charts',
@@ -10,8 +11,10 @@ import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
   styleUrls: ['./wbc-species-charts.component.css']
 })
 export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
-  taxon: any;
+  activeSpecies: any;
   isMammal = false;
+
+  speciesList: any[];
 
   activeYear: number;
   activeSeason: SEASON;
@@ -25,7 +28,9 @@ export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private taxonService: TaxonomyApi,
+    private resultService: WbcResultService,
     private cd: ChangeDetectorRef
   ) { }
 
@@ -44,17 +49,18 @@ export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
   updateTaxonInfo(id: string) {
     this.loading = true;
 
-    forkJoin([
-      this.taxonService.taxonomyFindBySubject(id, 'fi', {
-        selectedFields: 'id,vernacularName,scientificName'
-      }),
-      this.taxonService.taxonomyFindParents(id, undefined, {
-        selectedFields: 'id'
-      })
-    ]).subscribe(data => {
-      this.taxon = data[0];
+    this.resultService.getSpeciesList(undefined, undefined, undefined, true, true).subscribe(data => {
+      this.speciesList = data;
+      this.activeSpecies = data.filter(d => (d['unit.linkings.taxon.speciesId'] === IdService.getUri(id)))[0];
+      this.cd.markForCheck();
+    });
+
+    this.taxonService.taxonomyFindParents(id, undefined, {
+      selectedFields: 'id'
+    })
+    .subscribe(data => {
       this.isMammal = false;
-      data[1].map(parent => {
+      data.map(parent => {
         if (parent.id === this.mammals) {
           this.isMammal = true;
         }
@@ -63,5 +69,12 @@ export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
       this.loading = false;
       this.cd.markForCheck();
     })
+  }
+
+  onSpeciesChange(id: string) {
+    this.router.navigate(
+      ['../', IdService.getId(id)],
+      {queryParams: this.route.snapshot.queryParams, relativeTo: this.route}
+    );
   }
 }

@@ -12,6 +12,7 @@ export class WbcRoutesListComponent implements OnInit {
   @Input() columnMode = 'standard';
   @Input() showFilter = true;
   @Input() showNameAsLink = true;
+  @Input() countLabel: string;
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   @Input() loading = true;
 
@@ -68,6 +69,8 @@ export class WbcRoutesListComponent implements OnInit {
     this.columns = this.allColumns.filter(val => {
       if (val.name === 'document.namedPlace.name' && this.showNameAsLink) {
         val.cellTemplate = 'link';
+      } else if (val.name === 'count' && this.countLabel) {
+        val.label = this.countLabel;
       }
       return selected.indexOf(val.name) !== -1;
     })
