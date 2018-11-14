@@ -1,4 +1,5 @@
 import { Observable, Observer, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import * as MapUtil from 'laji-map/lib/utils';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
@@ -27,6 +28,13 @@ export class YkjService {
 
   getGeoJson(query: WarehouseQueryInterface, grid: Grid = '10kmCenter', key?: string,
              useStatistics = false, zeroObservations = false): Observable<any> {
+    return this.getList(query, grid, key, useStatistics, zeroObservations).pipe(
+      map(data => this.resultToGeoJson(data, grid, zeroObservations))
+    );
+  }
+
+  getList(query: WarehouseQueryInterface, grid: Grid = '10kmCenter', key?: string,
+             useStatistics = false, zeroObservations = false, selected = []): Observable<any> {
     if (!key) {
       key = JSON.stringify(query);
     }
@@ -49,16 +57,15 @@ export class YkjService {
       : this.warehouseApi.warehouseQueryAggregateGet.bind(this.warehouseApi);
     this.pending = sourceMethod(
         {...query, cache: (query.cache || WarehouseApi.isEmptyQuery(query))},
-        [`gathering.conversions.ykj${grid}.lat,gathering.conversions.ykj${grid}.lon`],
-        undefined,
+        [`gathering.conversions.ykj${grid}.lat,gathering.conversions.ykj${grid}.lon`, ...selected],
+        selected.length > 0 ? [`gathering.conversions.ykj${grid}.lat,gathering.conversions.ykj${grid}.lon`] : undefined,
         10000,
         1,
         false,
         !!zeroObservations
       )
       .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
-      .map(data => data.results)
-      .map(data => this.resultToGeoJson(data, grid, zeroObservations));
+      .map(data => data.results);
     return this.pending;
   }
 
@@ -68,7 +75,7 @@ export class YkjService {
     return geoJson.concat(zeroObsGeoJson);
   }
 
-  private resultToGeoJson(data, grid, setCountsToZero) {
+  resultToGeoJson(data, grid, setCountsToZero = false) {
     const features = [];
     data.map(result => {
       features.push(this.convertYkjToGeoJsonFeature(

@@ -38,8 +38,8 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
   labels = ['0', '1', '2-7', '8-31', '32-127', '128-511', '512-'];
   colorRange = ['#ffffff', 'violet', 'blue', 'lime', 'yellow', 'orange', 'red'];
   private epsilon = Math.pow(2, -52);
-  differenceBreaks = [-Number.MAX_VALUE, -50 + this.epsilon, -1 + this.epsilon, 1, 50];
-  differenceLabels = ['≤ -50', '≤ -1', '0', '≥ 1', '≥ 50'];
+  differenceBreaks = [-Number.MAX_VALUE, -50 + this.epsilon, -1 + this.epsilon, 1, 100];
+  differenceLabels = ['≤ -50%', '≤ -1%', '~0%', '≥ 1%', '≥ 100%'];
   differenceColorRange = ['blue', '#9999ff', 'white', '#ff9999', 'red'];
 
   private maps: any[];
@@ -92,19 +92,23 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
       map(data => ({
         data: data[0][0],
         zeroData: data[0][1],
-        previousTenYearsData: data[1][0],
-        previousTenYearsZeroData: data[1][1]
+        prevTenYearsData: data[1][0],
+        prevTenYearsZeroData: data[1][1]
       }))
     ).subscribe(data => {
-      this.data[0] = this.ykjService.combineGeoJsons(data.data, data.zeroData);
-      this.data[1] = this.ykjService.combineGeoJsons(this.getAverageData(data.previousTenYearsData), data.previousTenYearsZeroData);
-      this.data[2] = this.getDifferenceData(this.data[0], this.data[1], data.zeroData, data.previousTenYearsZeroData);
+      this.data[0] = this.ykjService.combineGeoJsons(this.dataToGeoJson(data.data), this.dataToGeoJson(data.zeroData, true));
+      this.data[1] = this.ykjService.combineGeoJsons(
+        this.getAverageGeoJson(data.prevTenYearsData),
+        this.dataToGeoJson(data.prevTenYearsZeroData, true)
+      );
+      this.data[2] = this.getDifferenceGeoJson(data.data, data.prevTenYearsData, data.zeroData);
       this.loading = false;
       this.cd.markForCheck();
     })
   }
 
-  private getAverageData(data: any, years = 10) {
+  private getAverageGeoJson(data: any, years = 10) {
+    data = this.dataToGeoJson(data);
     data.map(d => {
       d.properties.count /= years;
       d.properties.individualCountSum /= years;
@@ -112,32 +116,69 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
     return data;
   }
 
-  private getDifferenceData(data, tenYearsData, zeroData, tenYearsZeroData) {
-    const result = this.ykjService.combineGeoJsons(tenYearsZeroData, zeroData);
-    result.map(r => {
-      const grid = r.properties.grid;
-      const dataCounts = this.getCountsForGrid(data, grid);
-      const tenYearsDataCounts = this.getCountsForGrid(tenYearsData, grid);
-      r.properties.count = dataCounts.count - tenYearsDataCounts.count;
-      r.properties.individualCountSum = dataCounts.individualCountSum - tenYearsDataCounts.individualCountSum;
-    });
-    return result;
+  private getDifferenceGeoJson(data, tenYearsData, zeroData) {
+    const censusList = zeroData.map(d => (d.aggregateBy['document.namedPlaceId']));
+    const tenYearsCensusList = tenYearsData.map(d => (d.aggregateBy['document.namedPlaceId']));
+    const commonCensuses = censusList.filter((c) => (tenYearsCensusList.indexOf(c) > -1));
+
+    const filteredData = data.filter((d) => (commonCensuses.indexOf(d.aggregateBy['document.namedPlaceId']) > -1));
+    const filteredTenYearsData = tenYearsData.filter((d) => (commonCensuses.indexOf(d.aggregateBy['document.namedPlaceId']) > -1));
+    const filteredZeroData = zeroData.filter((d) => (commonCensuses.indexOf(d.aggregateBy['document.namedPlaceId']) > -1));
+
+    let geoJson = this.ykjService.combineGeoJsons(this.dataToGeoJson(filteredData), this.dataToGeoJson(filteredZeroData, true));
+    const tenYearsGeoJson = this.getAverageGeoJson(filteredTenYearsData);
+
+    geoJson = geoJson.reduce((arr, g) => {
+      const grid = g.properties.grid;
+      const tenYearsDataCounts = this.getCountsForGrid(tenYearsGeoJson, grid);
+
+      if (tenYearsDataCounts) {
+        g.properties.count = (g.properties.count - tenYearsDataCounts.count) / tenYearsDataCounts.count * 100;
+        g.properties.individualCountSum = (g.properties.individualCountSum - tenYearsDataCounts.individualCountSum)
+          / tenYearsDataCounts.individualCountSum * 100;
+        arr.push(g);
+      }
+
+      return arr;
+    }, []);
+
+    return geoJson;
   }
 
   private getCountsForGrid(data, grid) {
     const dataPoint = data.find(d => d.properties.grid === grid);
-    if (dataPoint) {
-      return {count: dataPoint.properties.count || 0, individualCountSum: dataPoint.properties.individualCountSum || 0}
+    if (!dataPoint) {
+      return undefined;
     }
-    return {count: 0, individualCountSum: 0};
+    return {count: dataPoint.properties.count, individualCountSum: dataPoint.properties.individualCountSum};
   }
 
   private getData(year: number|number[]) {
     const querys = this.getQuerys(this.season, year);
     return forkJoin([
-      this.ykjService.getGeoJson(querys.query, undefined, undefined, true),
-      this.ykjService.getGeoJson(querys.zeroQuery, undefined, undefined, true, true)
+      this.ykjService.getList(querys.query, '10kmCenter', undefined, true, false, ['document.namedPlaceId']),
+      this.ykjService.getList(querys.zeroQuery, '10kmCenter', undefined, true, true, ['document.namedPlaceId']),
     ]);
+  }
+
+  private dataToGeoJson(data: any[], zeroObservations = false) {
+    const lat = 'gathering.conversions.ykj10kmCenter.lat';
+    const lon = 'gathering.conversions.ykj10kmCenter.lon';
+    const result = [];
+
+    data.map(d => {
+      const lastResult = result.length > 0 ? result[result.length - 1] : undefined;
+      if (lastResult && lastResult.aggregateBy[lat] === d.aggregateBy[lat] && lastResult.aggregateBy[lon] === d.aggregateBy[lon]) {
+        if (!zeroObservations) {
+          lastResult.count += d.count;
+          lastResult.individualCountSum += d.individualCountSum;
+        }
+      } else {
+        result.push({...d});
+      }
+    });
+
+    return this.ykjService.resultToGeoJson(result, '10kmCenter', zeroObservations);
   }
 
   private getQuerys(season = this.season, year: number|number[] = this.year) {
