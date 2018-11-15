@@ -1,10 +1,9 @@
 /* tslint:disable:component-selector */
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
-import { Observable, of as ObservableOf } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
-import { FormService } from '../../shared/service/form.service';
+import { Rights } from '../../+haseka/form-permission/form-permission.service';
+import { Observable } from 'rxjs';
+import { MonitoringThemeBaseComponent } from '../common/monitoring-theme-base.component';
 
 @Component({
   selector: '[laji-invasive-control]',
@@ -12,18 +11,12 @@ import { FormService } from '../../shared/service/form.service';
   styleUrls: ['./invasive-control.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InvasiveControlComponent implements OnInit {
+export class InvasiveControlComponent
+       extends MonitoringThemeBaseComponent
+       implements OnInit {
   rights: Observable<Rights>;
 
-  constructor(
-    private formService: FormService,
-    private formPermissionService: FormPermissionService,
-    private translateService: TranslateService,
-  ) { }
-
   ngOnInit() {
-    this.rights = this.formService.getForm(environment.invasiveControlForm, this.translateService.currentLang)
-      .switchMap(form => this.formPermissionService.getRights(form))
-      .catch(() => ObservableOf({edit: false, admin: false}));
+    this.rights = this.getRights(environment.invasiveControlForm);
   }
 }

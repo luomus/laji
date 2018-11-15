@@ -74,6 +74,7 @@ import { WbcTableFilterComponent } from './wbc/wbc-result/wbc-table-filter/wbc-t
 import { WbcRoutesListComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-list/wbc-routes-list.component';
 import { WbcRoutesMapComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-map/wbc-routes-map.component';
 import { SidebarComponent } from './common/sidebar.component';
+import { MonitoringThemeBaseComponent } from './common/monitoring-theme-base.component';
 
 /* tslint:enable:max-line-length */
 
@@ -150,7 +151,8 @@ import { SidebarComponent } from './common/sidebar.component';
     WbcTableFilterComponent,
     WbcRoutesListComponent,
     WbcRoutesMapComponent,
-    SidebarComponent
+    SidebarComponent,
+    MonitoringThemeBaseComponent
   ],
   providers: [ ResultService, QualityService, WbcResultService ]
 })
