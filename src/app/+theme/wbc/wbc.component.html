@@ -1,32 +1,31 @@
-<div class="container-fluid wbc">
-  <div [ngClass]="{'row': router.url.indexOf('form') === -1}" id="wrapper">
-    <div *ngIf="showNav" style="background-color: #ECF0F1;" class="col-sm-3 col-md-2 col-lg-2">
-      <ul class="sidebar-nav">
-        <li><a [routerLink]="['../talvilintulaskenta', 'instructions']">{{'instructions' | translate}}</a></li>
-        <li>
-          <a [routerLink]="['../talvilintulaskenta', 'stats']">{{'nafi.stats' | translate}}</a>
-          <ul *ngIf="showStatsLinks">
-            <li><a [routerLink]="['../talvilintulaskenta/stats', 'species']">{{'wbc.stats.species' | translate}}</a></li>
-            <li><a [routerLink]="['../talvilintulaskenta/stats', 'routes']">{{'wbc.stats.routes' | translate}}</a></li>
-            <li><a [routerLink]="['../talvilintulaskenta/stats', 'censuses']">{{'wbc.stats.censuses' | translate}}</a></li>
-          </ul>
-        </li>
-        <li><a [routerLink]="['../talvilintulaskenta', 'form']">{{'nafi.form' | translate}}</a></li>
-        <ng-container *ngIf="(rights | async)?.admin; else normalUsers">
-          <li><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{'theme.admin.submissions' | translate}}</a></li>
-          <li><a [routerLink]="['/vihko/fp/' + collectionID + '/admin']">{{'form.administer' | translate}}</a></li>
-        </ng-container>
-        <ng-template #normalUsers>
-          <li><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
-        </ng-template>
-      </ul>
-      <laji-haseka-latest [userToken]="userService.getToken()"
-                          [forms]="[formID]"
-                          [tmpOnly]="true"
-                          *ngIf="userService.isLoggedIn$ | async"></laji-haseka-latest>
-    </div>
-    <div [ngClass]="{'col-sm-9 col-md-10 col-lg-10': router.url.indexOf('form') === -1}" class="wbc-content">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-</div>
+<laji-sidebar *ngIf="router.url.indexOf('form') === -1">
+  <nav>
+    <ul>
+      <li><a [routerLink]="['../talvilintulaskenta', 'instructions']">{{'instructions' | translate}}</a></li>
+      <li>
+        <a [routerLink]="['../talvilintulaskenta', 'stats']">{{'nafi.stats' | translate}}</a>
+        <ul *ngIf="showStatsLinks" class="nested">
+          <li><a [routerLink]="['../talvilintulaskenta/stats', 'species']">{{'wbc.stats.species' | translate}}</a></li>
+          <li><a [routerLink]="['../talvilintulaskenta/stats', 'routes']">{{'wbc.stats.routes' | translate}}</a></li>
+          <li><a [routerLink]="['../talvilintulaskenta/stats', 'censuses']">{{'wbc.stats.censuses' | translate}}</a></li>
+        </ul>
+      </li>
+      <li><a [routerLink]="['../talvilintulaskenta', 'form']">{{'nafi.form' | translate}}</a></li>
+      <ng-container *ngIf="(rights | async)?.admin; else normalUsers">
+        <li><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{'theme.admin.submissions' | translate}}</a></li>
+        <li><a [routerLink]="['/vihko/fp/' + collectionID + '/admin']">{{'form.administer' | translate}}</a></li>
+      </ng-container>
+      <ng-template #normalUsers>
+        <li><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
+      </ng-template>
+    </ul>
+    <laji-haseka-latest [userToken]="userService.getToken()"
+                        [forms]="[formID]"
+                        [tmpOnly]="true"
+                        *ngIf="userService.isLoggedIn$ | async">
+    </laji-haseka-latest>
+  </nav>
+  <router-outlet></router-outlet>
+</laji-sidebar>
+
+<router-outlet *ngIf="router.url.indexOf('form') !== -1"></router-outlet>
