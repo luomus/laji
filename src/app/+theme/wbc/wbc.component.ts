@@ -2,12 +2,13 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Global } from '../../../environments/global';
 import { UserService } from '../../shared/service/user.service';
+import { MonitoringThemeBaseComponent } from '../common/monitoring-theme-base.component';
 
 @Component({
   selector: '[laji-wbc]',
@@ -15,7 +16,9 @@ import { UserService } from '../../shared/service/user.service';
   styleUrls: ['./wbc.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class WbcComponent implements OnInit, OnDestroy {
+export class WbcComponent
+       extends MonitoringThemeBaseComponent
+       implements OnInit, OnDestroy {
 
   showNav = true;
   routeSub: Subscription;
@@ -28,10 +31,12 @@ export class WbcComponent implements OnInit, OnDestroy {
   constructor(
     public router: Router,
     public userService: UserService,
-    private formService: FormService,
-    private formPermissionService: FormPermissionService,
-    private translateService: TranslateService
-  ) {}
+    protected formService: FormService,
+    protected formPermissionService: FormPermissionService,
+    protected translateService: TranslateService
+  ) {
+    super(formService, formPermissionService, translateService);
+  }
 
   ngOnInit() {
     this.showNav = this.router.url.indexOf('form') === -1;
@@ -43,9 +48,7 @@ export class WbcComponent implements OnInit, OnDestroy {
           this.showStatsLinks = event.url.indexOf('stats') !== -1;
         }
       });
-    this.rights = this.formService.getForm(environment.wbcForm, this.translateService.currentLang)
-      .switchMap(form => this.formPermissionService.getRights(form))
-      .catch(() => ObservableOf({edit: false, admin: false}))
+    this.rights = this.getRights(environment.wbcForm);
   }
 
   ngOnDestroy() {
