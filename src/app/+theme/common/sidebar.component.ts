@@ -3,35 +3,38 @@ import { Component, Input } from '@angular/core';
 @Component({
     selector: 'laji-sidebar',
     template: `
-    <div class="container-fluid">
+<div class="container-fluid">
     <div class="row" id="wrapper">
-      <div style="background-color: #ECF0F1;" class="col-sm-3 col-md-2 col-lg-2">
-        <h1>{{title}}</h1>
-        <ul class="sidebar-nav">
+        <div class="col-sm-3 col-md-2 col-lg-2 sidebar-nav">
+            <h1>{{title}}</h1>
             <ng-content select='nav'></ng-content>
-        </ul>
-      </div>
-      <div class="col-sm-9 col-md-10 col-lg-10 main-content" class="col-sm-9 col-md-10 col-lg-10">
-        <ng-content select='*'></ng-content>
-      </div>
+        </div>
+        <div class="col-sm-9 col-md-10 col-lg-10 content">
+            <ng-content select='*'></ng-content>
+        </div>
     </div>
-  </div>
+</div>
     `,
     styles: [`
     :host {
         display: flex;
-        flex: 1 0 auto;
+        flex-direction: column;
+        flex-grow: 1;
     }
-    .main-content {
-        margin-bottom: 20px !important;
+    h1 {
+        padding-left: 10px;
+    }
+    .sidebar-nav {
+        background-color: #ECF0F1;
+    }
+    .content {
+        padding: 2em 5em;
+        padding-top: 1em;
     }
     @media only screen and (min-width : 768px) {
         #wrapper {
             display: flex;
         }
-    }
-    .laji-sidebar-active {
-        background: white;
     }
     `]
 })
