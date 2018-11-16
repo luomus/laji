@@ -142,12 +142,11 @@ const routes: Routes = [
     path: 'vieraslajit',
     component: InvasiveControlContainerComponent,
     children: [
-      {path: '', pathMatch: 'full', component: InvasiveControlInstructionsContainerComponent, data: { title: 'invasiveSpecies.title' }},
+      {path: '', pathMatch: 'full', component: InvasiveControlInstructionsContainerComponent},
       {
         path: 'instructions',
         pathMatch: 'full',
-        component: InvasiveControlInstructionsContainerComponent,
-        data: { title: 'invasiveSpecies.title' }
+        component: InvasiveControlInstructionsContainerComponent
       },
       {path: 'places', pathMatch: 'full', component: InvasiveControlFormComponent, canActivate: [OnlyLoggedIn]},
       {
