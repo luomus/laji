@@ -76,6 +76,7 @@ import { WbcRoutesMapComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-ma
 import { SidebarComponent } from './common/sidebar.component';
 import { MonitoringThemeBaseComponent } from './common/monitoring-theme-base.component';
 import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container';
+import { InvasiveControlInstructionsContainerComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.container';
 
 /* tslint:enable:max-line-length */
 
@@ -137,6 +138,7 @@ import { InvasiveControlContainerComponent } from './invasive-control/invasive-c
     LineTransectFormKartoitusComponent,
     InvasiveControlContainerComponent,
     InvasiveControlComponent,
+    InvasiveControlInstructionsContainerComponent,
     InvasiveControlInstructionsComponent,
     InvasiveControlFormComponent,
     WbcSpeciesComponent,
