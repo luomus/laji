@@ -36,7 +36,7 @@ import { LineTransectFormEiVakioComponent } from './line-transect/line-transect-
 import { LineTransectFormKartoitusComponent } from './line-transect/line-transect-form-kartoitus/line-transect-form-kartoitus.component';
 import { InvasiveControlInstructionsComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.component';
 import { InvasiveControlFormComponent } from './invasive-control/invasive-control-form/invasive-control-form.component';
-import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container.component';
+import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [

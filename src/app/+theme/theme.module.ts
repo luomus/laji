@@ -75,7 +75,7 @@ import { WbcRoutesListComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-l
 import { WbcRoutesMapComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-map/wbc-routes-map.component';
 import { SidebarComponent } from './common/sidebar.component';
 import { MonitoringThemeBaseComponent } from './common/monitoring-theme-base.component';
-import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container.component';
+import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container';
 
 /* tslint:enable:max-line-length */
 
