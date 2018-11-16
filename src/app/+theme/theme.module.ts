@@ -75,6 +75,7 @@ import { WbcRoutesListComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-l
 import { WbcRoutesMapComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-map/wbc-routes-map.component';
 import { SidebarComponent } from './common/sidebar.component';
 import { MonitoringThemeBaseComponent } from './common/monitoring-theme-base.component';
+import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container.component';
 
 /* tslint:enable:max-line-length */
 
@@ -134,6 +135,7 @@ import { MonitoringThemeBaseComponent } from './common/monitoring-theme-base.com
     QualityFiltersComponent,
     LineTransectFormEiVakioComponent,
     LineTransectFormKartoitusComponent,
+    InvasiveControlContainerComponent,
     InvasiveControlComponent,
     InvasiveControlInstructionsComponent,
     InvasiveControlFormComponent,
