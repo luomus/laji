@@ -26,8 +26,6 @@ export class TreeTableComponent implements OnChanges {
   private treeState = new TreeState([]);
   private deepestLevel = 0;
 
-  @Output() rowSelect = new EventEmitter<any>();
-
   constructor(
     private cd: ChangeDetectorRef
   ) {}

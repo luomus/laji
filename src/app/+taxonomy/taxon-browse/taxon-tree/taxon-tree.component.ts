@@ -75,7 +75,7 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onSettingsLoaded() {
-    this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
+    this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected, true);
 
     const cacheKey = JSON.stringify({
       onlyFinnish: this.searchQuery.query.onlyFinnish,
@@ -165,7 +165,7 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onCloseSettingsModal() {
-    this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected);
+    this.columns = this.columnService.getColumns(this.searchQuery.treeOptions.selected, true);
     this.getRoot();
   }
 

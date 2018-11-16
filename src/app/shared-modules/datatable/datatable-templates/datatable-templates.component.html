@@ -131,6 +131,11 @@
     {{row.scientificName}}
   </span>
 </ng-template>
+<ng-template let-row="row" #taxonScientificNameLink>
+  <a *ngIf="row.scientificName" title="{{row.scientificName}}" [routerLink]="['/taxon/' + row.id] | localize">
+    <span [class.cursive]="row.cursiveName">{{row.scientificName}}</span>
+  </a>
+</ng-template>
 <ng-template let-value="value" #scientificName>
   <span *ngIf="value.scientificName" title="{{value.scientificName}}" [class.cursive]="value.cursiveName">
     {{value.scientificName}}

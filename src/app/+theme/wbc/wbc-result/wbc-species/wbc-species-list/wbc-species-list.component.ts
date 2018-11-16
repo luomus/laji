@@ -85,7 +85,8 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
         label: 'wbc.stats.abundanceComparison',
         cellTemplate: 'number',
         width: 240,
-        info: 'wbc.stats.abundanceComparison.info'
+        info: 'wbc.stats.abundanceComparison.info',
+        cellClass: this.getComparisonCellClass
       }
     ];
     this.columns = this.defaultColumns;
@@ -205,5 +206,19 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
           return list;
         })
       )
+  }
+
+  getComparisonCellClass(data: any) {
+    const classes = [''];
+
+    /*if (typeof data.value === 'number') {
+      if (data.value > 0) {
+        classes.push('more');
+      } else if (data.value < 0) {
+        classes.push('less');
+      }
+    }*/
+
+    return classes.join(' ');
   }
 }

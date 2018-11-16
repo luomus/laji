@@ -18,6 +18,9 @@
   height: 20px;
   top: -2px;
 }
+.triangle {
+  margin-right: 2px;
+}
 
 :host >>> .ngx-datatable .datatable-header .datatable-row-left .datatable-header-cell {
   border-right: none;

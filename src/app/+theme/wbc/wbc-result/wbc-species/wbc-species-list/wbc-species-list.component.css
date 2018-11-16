@@ -1,0 +1,6 @@
+::ng-deep .datatable-body-cell.less {
+  background-color: #fcc;
+}
+::ng-deep .datatable-body-cell.more {
+  background-color: #cfc;
+}

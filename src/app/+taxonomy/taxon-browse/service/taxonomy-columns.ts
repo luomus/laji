@@ -138,9 +138,10 @@ export class TaxonomyColumns {
       });
   }
 
-  getColumns(selected) {
+  getColumns(selected, showLink = false) {
     return selected.map(name => {
-      return {...this.columnLookup[name]};
+      const cellTemplate = (name === 'scientificName' && showLink) ? 'taxonScientificNameLink' : this.columnLookup[name].cellTemplate;
+      return {...this.columnLookup[name], cellTemplate: cellTemplate};
     });
   }
 }

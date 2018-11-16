@@ -18,7 +18,7 @@
           class="tree-side-line"
           [ngClass]="{'first-child': row.state.isFirstChild}"
           [ngStyle]="{'left': (10 * row.state.level + 7) + 'px'}"></span>
-    <i class="glyphicon glyphicon-triangle-right"
+    <i class="glyphicon triangle"
        [ngClass]="{'glyphicon-triangle-right': !row.state.isExpanded, 'glyphicon-triangle-bottom': row.state.isExpanded}"
        [ngStyle]="{visibility: row.node.hasChildren ? 'visible' : 'hidden'}"
        *ngIf="row.state.loadingCount === 0"></i>

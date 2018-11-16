@@ -5,5 +5,5 @@
   [expanderColWidth]="expanderColWidth"
   (toggle)="toggle($event)"
   (toggleAll)="toggleAll($event)"
-  (rowSelect)="rowSelect.emit($event)">
+  (rowSelect)="toggle($event.row.node)">
 </laji-expandable-datatable>

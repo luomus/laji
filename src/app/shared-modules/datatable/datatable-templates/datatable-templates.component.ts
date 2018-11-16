@@ -17,6 +17,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('vernacularName') vernacularName: TemplateRef<any>;
   @ViewChild('scientificName') scientificName: TemplateRef<any>;
   @ViewChild('taxonScientificName') taxonScientificName: TemplateRef<any>;
+  @ViewChild('taxonScientificNameLink') taxonScientificNameLink: TemplateRef<any>;
   @ViewChild('cursive') cursive: TemplateRef<any>;
   @ViewChild('boolean') boolean: TemplateRef<any>;
   @ViewChild('label') label: TemplateRef<any>;
