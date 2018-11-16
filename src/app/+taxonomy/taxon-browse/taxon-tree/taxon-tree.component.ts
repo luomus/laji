@@ -6,8 +6,6 @@ import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { TreeTableComponent } from './tree-table/tree-table.component';
 import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/species-list-options-modal.component';
 import { ObservationTableColumn } from '../../../shared-modules/observation-result/model/observation-table-column';
-import { Router } from '@angular/router';
-import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { TaxonomyColumns } from '../service/taxonomy-columns';
 import { SpeciesDownloadComponent } from '../species-download/species-download.component';
 import { TaxonExportService } from '../service/taxon-export.service';
@@ -57,8 +55,6 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private taxonService: TaxonomyApi,
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService,
     private cd: ChangeDetectorRef,
     private taxonExportService: TaxonExportService
   ) {}
@@ -184,12 +180,6 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
       ]}];
     } else {
       this.skipParams = undefined;
-    }
-  }
-
-  onRowSelect(event: any) {
-    if (event.row && event.row.id) {
-      this.router.navigate(this.localizeRouterService.translateRoute(['/taxon', event.row.id]));
     }
   }
 
