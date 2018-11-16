@@ -6,15 +6,14 @@ import { Observable } from 'rxjs';
 import { MonitoringThemeBaseComponent } from '../common/monitoring-theme-base.component';
 
 @Component({
-  selector: '[laji-invasive-control-container]',
   template: `
   <laji-invasive-control
-    [rights]="rights | async"
-    class="container-fluid">
+    [rights]="rights | async">
   </laji-invasive-control>`,
   styles: [`
-    .container-fluid {
-        padding: 0;
+    :host {
+        display: flex;
+        flex: 1 0 auto;
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
