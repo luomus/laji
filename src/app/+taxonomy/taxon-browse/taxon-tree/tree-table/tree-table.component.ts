@@ -17,6 +17,7 @@ export class TreeTableComponent implements OnChanges {
   @Input() getParents: (id: string) => Observable<any[]>;
 
   @Input() skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
+  @Input() hideParams: {key: string, values: string[], isWhiteList?: boolean}[];
   @Input() activeId: string;
   @Input() initialExpanderWidth = 200;
 
@@ -31,11 +32,13 @@ export class TreeTableComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.nodes || changes.skipParams) {
+    if (changes.nodes || changes.skipParams || changes.hideParams) {
       if (changes.nodes) {
-        this.treeState = new TreeState(this.nodes, this.skipParams);
+        this.treeState = new TreeState(this.nodes, this.skipParams, this.hideParams);
       } else {
         this.treeState.setSkipParams(this.skipParams);
+        this.treeState.setHideParams(this.hideParams);
+
         const missingChildren = this.treeState.update(this.nodes);
 
         for (let i = 0; i < missingChildren.length; i++) {
@@ -199,9 +202,7 @@ export class TreeTableComponent implements OnChanges {
     treeState.pendingChildren[node.id] = this.getChildren(node.id)
       .pipe(
         tap(nodes => {
-          for (let i = 0; i < nodes.length; i++) {
-            treeState.updateNodeState(nodes[i], i, node.id);
-          }
+          this.treeState.updateNodeStates(nodes, node.id);
           node.children = nodes;
         }),
         share()
@@ -234,14 +235,14 @@ export class TreeTableComponent implements OnChanges {
       const node = nodes[i];
       const nodeState = treeState.state[node.id];
 
-      if (!nodeState.isSkipped) {
+      if (!(nodeState.isSkipped || nodeState.isHidden)) {
         rows.push({...node, node: node, state: nodeState});
         if (nodeState.level > this.deepestLevel) {
           this.deepestLevel = nodeState.level;
         }
       }
 
-      if (nodeState.isExpanded && nodeState.loadingCount === 0 && node.children) {
+      if (nodeState.isExpanded && nodeState.loadingCount === 0 && node.children && !nodeState.isHidden) {
         this.update(node.children, treeState, rows);
       }
     }

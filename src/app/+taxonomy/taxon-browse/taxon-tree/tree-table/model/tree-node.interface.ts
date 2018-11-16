@@ -10,5 +10,6 @@ export interface TreeNodeState {
   isExpanded: boolean;
   isFirstChild: boolean;
   isSkipped: boolean;
+  isHidden: boolean;
   loadingCount: number;
 }

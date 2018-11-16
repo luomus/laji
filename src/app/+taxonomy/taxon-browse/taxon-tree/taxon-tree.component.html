@@ -9,6 +9,8 @@
           [searchParams]="taxonSelectFilters">
         </laji-taxon-select>
       </label>
+      <!--button class="btn btn-default" (click)="hideUnopenedNodes()">Piilota</button>
+      <button class="btn btn-default" (click)="showAllNodes()">Näytä</button-->
     </div>
     <div class="show-main-levels-wrapper">
       <label>
@@ -29,6 +31,7 @@
                      [getChildren]="getChildrenFunc"
                      [getParents]="getParentsFunc"
                      [skipParams]="skipParams"
+                     [hideParams]="hideParams"
                      [activeId]="activeId">
     </laji-tree-table>
     <div class="setting-menu link" (click)="openSettingsModal()">

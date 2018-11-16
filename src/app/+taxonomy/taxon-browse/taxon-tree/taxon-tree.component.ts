@@ -34,6 +34,7 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
   public getChildrenFunc = this.getChildren.bind(this);
   public getParentsFunc = this.getParents.bind(this);
   public skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
+  public hideParams: {key: string, values: string[], isWhiteList?: boolean}[] = [{key: 'id', values: []}];
 
   public showMainLevels = false;
   public taxon: string;
@@ -64,6 +65,7 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
 
     this.subQueryUpdate = this.searchQuery.queryUpdated$.subscribe(
       () => {
+        this.showAllNodes();
         this.taxonSelectFilters = {onlyFinnish: this.searchQuery.query.onlyFinnish};
         this.getRoot();
       }
@@ -194,6 +196,28 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
         this.speciesDownload.modal.hide();
         this.cd.markForCheck();
     });
+  }
+
+  hideUnopenedNodes() {
+    this.hideUnopened(this.tree.getVisibleNodes());
+    this.hideParams = [...this.hideParams];
+  }
+
+  showAllNodes() {
+    this.hideParams = [{key: 'id', values: []}];
+  }
+
+  private hideUnopened(nodes: TreeNode[]) {
+    const someOpen = nodes.some((node) => !!node.children);
+    for (let i = 0; i < nodes.length; i++) {
+      if (!nodes[i].children) {
+        if (someOpen && this.hideParams[0].values.indexOf(nodes[i].id) === -1) {
+          this.hideParams[0].values.push(nodes[i].id);
+        }
+      } else {
+        this.hideUnopened(nodes[i].children);
+      }
+    }
   }
 
   private mapSpeciesCountsToLeafCounts(taxons: Taxonomy[]) {
