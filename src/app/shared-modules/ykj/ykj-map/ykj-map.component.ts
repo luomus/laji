@@ -64,6 +64,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() loading = false;
 
   @Output() onGridClick = new EventEmitter<WarehouseQueryInterface>();
+  @Output() onBoundsChange = new EventEmitter<any>();
 
   geoJsonLayer;
   mapInit = false;
@@ -153,6 +154,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.subQuery = geoJson$
       .subscribe(geoJson => {
           this.geoJsonLayer.addData(geoJson);
+          this.onBoundsChange.emit(this.geoJsonLayer.getBounds());
           this.currentColor = '';
           this.loading = false;
           this.initColor();

@@ -33,6 +33,7 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
   zeroQuerys: WarehouseQueryInterface[] = [];
   data: any = [];
   loading = false;
+  bounds = [];
 
   breaks = [0, 1, 2, 8, 32, 128, 512];
   labels = ['0', '1', '2-7', '8-31', '32-127', '128-511', '512-'];
@@ -67,6 +68,7 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
     this.querys = [];
     this.zeroQuerys = [];
     this.data = [];
+    this.bounds = [];
 
     if (this.showSeasonComparison) {
       this.setQuery(0, 'fall');
@@ -210,5 +212,15 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
       tileLayerOpacityChange: sync((_map) => _map.setTileLayerOpacity(lajiMap.tileLayerOpacity)),
       overlaysChange: sync((_map, e) => _map.setOverlaysByName(e.overlayNames))
     });
+  }
+
+  boundsChange(bounds: any) {
+    this.bounds.push(bounds);
+    if (this.bounds.length === 3) {
+      const finalBounds = this.bounds[0].extend(this.bounds[1]).extend(this.bounds[2]);
+      if (finalBounds.isValid()) {
+        this.maps[0].map.fitBounds(finalBounds, {maxZoom: 4, padding: [50, 50]});
+      }
+    }
   }
 }
