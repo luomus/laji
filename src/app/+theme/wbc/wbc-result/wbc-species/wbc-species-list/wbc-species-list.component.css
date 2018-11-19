@@ -1,6 +1,6 @@
-::ng-deep .datatable-body-cell.less {
+::ng-deep .datatable-body-cell.significantly-less {
   background-color: #fcc;
 }
-::ng-deep .datatable-body-cell.more {
+::ng-deep .datatable-body-cell.significantly-more {
   background-color: #cfc;
 }

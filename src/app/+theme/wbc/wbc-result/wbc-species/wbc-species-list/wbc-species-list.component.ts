@@ -211,13 +211,13 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
   getComparisonCellClass(data: any) {
     const classes = [''];
 
-    /*if (typeof data.value === 'number') {
-      if (data.value > 0) {
-        classes.push('more');
-      } else if (data.value < 0) {
-        classes.push('less');
+    if (typeof data.value === 'number') {
+      if (data.value >= 100) {
+        classes.push('significantly-more');
+      } else if (data.value <= -50) {
+        classes.push('significantly-less');
       }
-    }*/
+    }
 
     return classes.join(' ');
   }
