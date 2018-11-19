@@ -12,6 +12,7 @@ import { mergeMap } from 'rxjs/operators';
 export class FindPersonComponent implements OnInit {
 
   @Input() limit = 10;
+  @Input() showUserID = false;
   @Output() select = new EventEmitter<Person>();
 
   dataSource: Observable<any>;

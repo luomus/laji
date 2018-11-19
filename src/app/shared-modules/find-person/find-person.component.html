@@ -19,5 +19,6 @@
 <ng-template #person let-model="item">
   <h5 class="autosuggest-value">
     {{model.value}}
+    <ng-container *ngIf="showUserID"> ({{model.key}})</ng-container>
   </h5>
 </ng-template>
