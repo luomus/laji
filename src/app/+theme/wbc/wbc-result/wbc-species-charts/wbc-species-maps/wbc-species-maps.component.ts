@@ -216,12 +216,12 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
     });
   }
 
-  boundsChange(bounds: any) {
-    this.bounds.push(bounds);
-    if (this.bounds.length === 3 && this.lastZoomedArea !== this.birdAssociationArea) {
-      const finalBounds = this.bounds[0].extend(this.bounds[1]).extend(this.bounds[2]);
-      if (finalBounds.isValid()) {
-        this.maps[0].map.fitBounds(finalBounds, {maxZoom: 4, padding: [50, 50]});
+  boundsChange(data: any) {
+    this.bounds.push(data);
+    if (this.bounds.length === 3) {
+      const bounds = this.bounds[0].extend(this.bounds[1]).extend(this.bounds[2]);
+      if (bounds.isValid() && (this.lastZoomedArea !== this.birdAssociationArea || !this.maps[0].map.getBounds().contains(bounds))) {
+        this.maps[0].map.fitBounds(bounds, {maxZoom: 4, padding: [50, 50]});
         this.lastZoomedArea = this.birdAssociationArea;
       }
     }
