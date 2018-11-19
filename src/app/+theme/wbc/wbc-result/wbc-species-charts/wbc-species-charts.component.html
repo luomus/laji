@@ -35,7 +35,7 @@
         [switch-base-class]="'bootstrap-switch'">
       </bSwitch>
     </h4>
-    <laji-wbc-species-maps [taxonId]="activeSpecies['unit.linkings.taxon.speciesId']"
+    <laji-wbc-species-maps [taxonId]="activeSpeciesId"
                            [taxonCensus]="isMammal ? mammals : undefined"
                            [showSeasonComparison]="showSeasonComparison"
                            [year]="activeYear"
@@ -44,7 +44,7 @@
     ></laji-wbc-species-maps>
     <hr>
     <h4>{{'wbc.stats.abundanceGraphs' | translate}}</h4>
-    <laji-wbc-species-linecharts [taxonId]="activeSpecies['unit.linkings.taxon.speciesId']"
+    <laji-wbc-species-linecharts [taxonId]="activeSpeciesId"
                                  [taxonCensus]="isMammal ? mammals : undefined"
                                  [birdAssociationArea]="activeBirdAssociationArea"
     ></laji-wbc-species-linecharts>

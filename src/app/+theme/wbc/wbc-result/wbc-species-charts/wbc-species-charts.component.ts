@@ -11,6 +11,7 @@ import { IdService } from '../../../../shared/service/id.service';
   styleUrls: ['./wbc-species-charts.component.css']
 })
 export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
+  activeSpeciesId: string;
   activeSpecies: any;
   isMammal = false;
 
@@ -47,6 +48,7 @@ export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
   }
 
   updateTaxonInfo(id: string) {
+    this.activeSpeciesId = id;
     this.loading = true;
 
     this.resultService.getSpeciesList(undefined, undefined, undefined, true, true).subscribe(data => {
