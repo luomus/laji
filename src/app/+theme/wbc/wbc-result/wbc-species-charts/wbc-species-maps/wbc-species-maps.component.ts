@@ -5,7 +5,8 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   QueryList,
-  ViewChildren
+  ViewChildren,
+  SimpleChanges
 } from '@angular/core';
 import { WbcResultService, SEASON } from '../../wbc-result.service';
 import { WarehouseQueryInterface } from '../../../../../shared/model/WarehouseQueryInterface';
@@ -34,6 +35,7 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
   data: any = [];
   loading = false;
   bounds = [];
+  lastZoomedArea: string;
 
   breaks = [0, 1, 2, 8, 32, 128, 512];
   labels = ['0', '1', '2-7', '8-31', '32-127', '128-511', '512-'];
@@ -51,7 +53,7 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
     private cd: ChangeDetectorRef
   ) { }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.taxonId && this.year) {
       this.updateMapData();
     }
@@ -216,10 +218,11 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
 
   boundsChange(bounds: any) {
     this.bounds.push(bounds);
-    if (this.bounds.length === 3) {
+    if (this.bounds.length === 3 && this.lastZoomedArea !== this.birdAssociationArea) {
       const finalBounds = this.bounds[0].extend(this.bounds[1]).extend(this.bounds[2]);
       if (finalBounds.isValid()) {
         this.maps[0].map.fitBounds(finalBounds, {maxZoom: 4, padding: [50, 50]});
+        this.lastZoomedArea = this.birdAssociationArea;
       }
     }
   }
