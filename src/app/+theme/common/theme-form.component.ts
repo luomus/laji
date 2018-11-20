@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalizeRouterService } from 'app/locale/localize-router.service';
-import { FormService } from 'app/shared/service/form.service';
 
 @Component({
     template: ''
@@ -10,10 +9,7 @@ export class ThemeFormComponent {
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
-    protected localizeRouterService: LocalizeRouterService,
-    protected formService: FormService) {
-
-  }
+    protected localizeRouterService: LocalizeRouterService) {}
 
   onTmlLoad(data, url: string) {
     this.router.navigate(

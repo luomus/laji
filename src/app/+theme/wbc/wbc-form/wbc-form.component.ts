@@ -27,9 +27,9 @@ export class WbcFormComponent
     protected route: ActivatedRoute,
     protected router: Router,
     protected localizeRouterService: LocalizeRouterService,
-    protected formService: FormService
+    private formService: FormService
   ) {
-    super(route, router, localizeRouterService, formService);
+    super(route, router, localizeRouterService);
   }
 
   ngOnInit() {
