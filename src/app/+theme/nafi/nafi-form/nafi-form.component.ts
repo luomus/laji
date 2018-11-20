@@ -5,23 +5,28 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentFormComponent } from '@laji-form/document-form/document-form.component';
 import { ComponentCanDeactivate } from '../../../shared/guards/document-de-activate.guard';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
+import { ThemeFormComponent } from 'app/+theme/common/theme-form.component';
 
 @Component({
   selector: 'laji-nafi-form',
   templateUrl: './nafi-form.component.html',
   styleUrls: ['./nafi-form.component.css']
 })
-export class NafiFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
+export class NafiFormComponent
+       extends ThemeFormComponent
+       implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
   formId;
   documentId;
   private subParam: Subscription;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService,
-  ) { }
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected localizeRouterService: LocalizeRouterService,
+  ) {
+    super(route, router, localizeRouterService)
+  }
 
   ngOnInit() {
     this.formId = environment.nafiForm;
@@ -42,21 +47,18 @@ export class NafiFormComponent implements OnInit, OnDestroy, ComponentCanDeactiv
   }
 
   onTmlLoad(data) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/nafi/form/', data.tmpID]),
-      { replaceUrl: true }
-    );
+    super.onTmlLoad(data, '/theme/nafi/form/');
   }
 
-  onSuccess(data) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/nafi/ownSubmissions']));
+  onSuccess() {
+    super.onSuccess('/theme/nafi/ownSubmissions');
   }
 
   onError() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/nafi/stats']));
+    super.onError('/theme/nafi/stats');
   }
 
   onCancel() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/nafi/stats']));
+    super.onCancel('/theme/nafi/stats');
   }
 }
