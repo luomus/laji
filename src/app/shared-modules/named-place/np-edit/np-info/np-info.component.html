@@ -107,8 +107,8 @@
       <div class="own-submissions-container" *lajiLoggedIn="true">
         <strong>{{
 		        formRights.admin
-		          ? targetForm.namedPlaceOptions?.earlierLabel || 'np.earlier'
-		          : targetForm.namedPlaceOptions?.myEarlierLabel || 'np.myEarlier' | translate
+		          ? targetForm.namedPlaceOptions?.earlierLabel || ('np.earlier' | translate)
+		          : targetForm.namedPlaceOptions?.myEarlierLabel || ('np.myEarlier' | translate)
           }}</strong>:
         <laji-own-submissions
           [actions]="formRights.admin ? ['edit', 'delete'] : ['edit']"
