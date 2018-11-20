@@ -8,13 +8,16 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { FormService } from '../../../shared/service/form.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ThemeFormComponent } from 'app/+theme/common/theme-form.component';
 
 @Component({
   selector: 'laji-invasive-control-form',
   templateUrl: './invasive-control-form.component.html',
   styleUrls: ['./invasive-control-form.component.css']
 })
-export class InvasiveControlFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
+export class InvasiveControlFormComponent
+       extends ThemeFormComponent
+       implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
   formId;
   documentId;
@@ -22,13 +25,15 @@ export class InvasiveControlFormComponent implements OnInit, OnDestroy, Componen
   private subParam: Subscription;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService,
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected localizeRouterService: LocalizeRouterService,
     private formService: FormService,
     private toastService: ToastsService,
     private translateService: TranslateService
-  ) { }
+  ) {
+    super(route, router, localizeRouterService);
+  }
 
   ngOnInit() {
     this.formId = environment.invasiveControlForm;
@@ -57,17 +62,11 @@ export class InvasiveControlFormComponent implements OnInit, OnDestroy, Componen
   }
 
   onTmlLoad(data) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/vieraslajit/form/', data.tmpID]),
-      { replaceUrl: true }
-    );
+    super.onTmlLoad(data, '');
   }
 
-  onMissingNamedplace(data) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/vieraslajit/form']),
-      { replaceUrl: true }
-    );
+  onMissingNamedplace() {
+    super.onMissingNamedplace('');
   }
 
   onAccessDenied() {
@@ -80,21 +79,15 @@ export class InvasiveControlFormComponent implements OnInit, OnDestroy, Componen
         );
       });
   }
-  onSuccess(data) {
-    console.warn('invasive control form onSuccess TODO');
-    // TODO Doesn't exist yet
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/vieraslajit/ownSubmissions']));
+  onSuccess() {
+    super.onSuccess('');
   }
 
   onError() {
-    console.warn('invasive control form onError TODO');
-    // TODO Doesn't exist yet
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/vieraslajit/stats']));
+    super.onError('');
   }
 
   onCancel() {
-    console.warn('invasive control form onCancel TODO');
-    // TODO Doesn't exist yet
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/vieraslajit/stats']));
+    super.onCancel('');
   }
 }
