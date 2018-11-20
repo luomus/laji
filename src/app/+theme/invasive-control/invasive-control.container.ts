@@ -8,7 +8,7 @@ import { MonitoringThemeBaseComponent } from '../common/monitoring-theme-base.co
 @Component({
   template: `
   <laji-invasive-control
-    [rights]="rights | async">
+    [rights]="rights$ | async">
   </laji-invasive-control>`,
   styles: [`
     :host {
@@ -21,9 +21,9 @@ import { MonitoringThemeBaseComponent } from '../common/monitoring-theme-base.co
 export class InvasiveControlContainerComponent
       extends MonitoringThemeBaseComponent
       implements OnInit {
-  rights: Observable<Rights>;
+  rights$: Observable<Rights>;
 
   ngOnInit() {
-    this.rights = this.getRights(environment.invasiveControlForm);
+    this.rights$ = this.getRights(environment.invasiveControlForm);
   }
 }
