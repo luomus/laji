@@ -277,7 +277,7 @@
   "identify.report": "LÄHETÄ HAVAINTO",
   "identify.reportIntro": "Vihko-palvelun kautta voit lähettää tunnistamattomia kuvallisia havaintoja muille Lajitietokeskuksen käyttäjille määritettäväksi. Huomaathan, että palvelun nopeus ja toimivuus riippuvat vapaaehtoisten asiantuntijoiden aktiivisuudesta!",
   "identify.requiresAuthentication": "vaatii sisäänkirjautumisen",
-  "identify.selectIntro": "Voit rajata kuvia eliöryhmittäin, mutta eliöryhmään kuuluvat vain ne havainnot, jotka on ilmoitetut nimellä, joka voidaan liittää kyseiseen eliöryhmään. Esimerkiksi ilmoitettu nimi \"sieni\" voidaan liittää ryhmään \"sienet\" mutta ilmoitettua nimeä \"jokin sieni\" ei voida.",
+  "identify.selectIntro": "Voit rajata kuvia eliöryhmittäin. Huomaathan, että eliöryhmään voidaan liittää ne havainnot, jotka on ilmoitettu tunnistettavalla nimellä: esim. nimellä \"sieni\" ilmoitetut havainnot liitetään Sienet-eliöryhmään, mutta \"jokin sieni\" -nimeä ilmoitettua havaintoa ei.",
   "identify.toQualityPage": "Selaa kaikkia määrityksiä ja laatumerkintöjä",
   "ignore": "jätä huomiomatta",
   "information.more": "Lisätietoa",
