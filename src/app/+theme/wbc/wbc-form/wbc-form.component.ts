@@ -7,13 +7,16 @@ import { ComponentCanDeactivate } from '../../../shared/guards/document-de-activ
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { FormService } from '../../../shared/service/form.service';
 import { Global } from '../../../../environments/global';
+import { ThemeFormComponent } from 'app/+theme/common/theme-form.component';
 
 @Component({
   selector: 'laji-wbc-form',
   templateUrl: './wbc-form.component.html',
   styleUrls: ['./wbc-form.component.css']
 })
-export class WbcFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
+export class WbcFormComponent
+       extends ThemeFormComponent
+       implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
   formId;
   documentId;
@@ -21,11 +24,13 @@ export class WbcFormComponent implements OnInit, OnDestroy, ComponentCanDeactiva
   private subParam: Subscription;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService,
-    private formService: FormService
-  ) { }
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected localizeRouterService: LocalizeRouterService,
+    protected formService: FormService
+  ) {
+    super(route, router, localizeRouterService, formService);
+  }
 
   ngOnInit() {
     this.formId = environment.wbcForm;
@@ -53,28 +58,22 @@ export class WbcFormComponent implements OnInit, OnDestroy, ComponentCanDeactiva
   }
 
   onTmlLoad(data) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/form/', data.tmpID]),
-      { replaceUrl: true }
-    );
+    super.onTmlLoad(data, '/theme/talvilintulaskenta/form/');
   }
 
-  onSuccess(data) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/ownSubmissions']));
+  onSuccess() {
+    super.onSuccess('/theme/talvilintulaskenta/ownSubmissions');
   }
 
   onError() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/stats']));
+    super.onError('/theme/talvilintulaskenta/stats');
   }
 
   onCancel() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/stats']));
+    super.onCancel('/theme/talvilintulaskenta/stats');
   }
 
-  onMissingNamedplace(data) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/talvilintulaskenta/form']),
-      { replaceUrl: true }
-    );
+  onMissingNamedplace() {
+    super.onMissingNamedplace('/theme/talvilintulaskenta/form');
   }
 }

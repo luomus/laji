@@ -77,6 +77,7 @@ import { SidebarComponent } from './common/sidebar.component';
 import { MonitoringThemeBaseComponent } from './common/monitoring-theme-base.component';
 import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container';
 import { InvasiveControlInstructionsContainerComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.container';
+import { ThemeFormComponent } from './common/theme-form.component';
 
 /* tslint:enable:max-line-length */
 
@@ -156,7 +157,8 @@ import { InvasiveControlInstructionsContainerComponent } from './invasive-contro
     WbcRoutesListComponent,
     WbcRoutesMapComponent,
     SidebarComponent,
-    MonitoringThemeBaseComponent
+    MonitoringThemeBaseComponent,
+    ThemeFormComponent
   ],
   providers: [ ResultService, QualityService, WbcResultService ]
 })
