@@ -9,13 +9,16 @@ import { FormService } from '../../../shared/service/form.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Global } from '../../../../environments/global';
+import { ThemeFormComponent } from 'app/+theme/common/theme-form.component';
 
 @Component({
   selector: 'laji-line-transect-form',
   templateUrl: './line-transect-form.component.html',
   styleUrls: ['./line-transect-form.component.css']
 })
-export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
+export class LineTransectFormComponent
+       extends ThemeFormComponent
+       implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
   formId;
   documentId;
@@ -23,13 +26,15 @@ export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCa
   private subParam: Subscription;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService,
+    protected route: ActivatedRoute,
+    protected router: Router,
+    protected localizeRouterService: LocalizeRouterService,
     private formService: FormService,
     private toastService: ToastsService,
     private translateService: TranslateService
-  ) { }
+  ) {
+    super(route, router, localizeRouterService);
+  }
 
   ngOnInit() {
     this.formId = environment.lineTransectForm;
@@ -62,29 +67,23 @@ export class LineTransectFormComponent implements OnInit, OnDestroy, ComponentCa
   }
 
   onTmlLoad(data) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/linjalaskenta/form/', data.tmpID]),
-      { replaceUrl: true }
-    );
+    super.onTmlLoad(data, '/theme/linjalaskenta/form/');
   }
 
-  onSuccess(data) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/linjalaskenta/statistics', data.document.id]));
+  onSuccess() {
+    super.onSuccess('/theme/linjalaskenta/statistics');
   }
 
   onError() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/linjalaskenta/stats']));
+    super.onError('/theme/linjalaskenta/stats');
   }
 
   onCancel() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/linjalaskenta/stats']));
+    super.onCancel('/theme/linjalaskenta/stats');
   }
 
-  onMissingNamedplace(data) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/linjalaskenta/form']),
-      { replaceUrl: true }
-    );
+  onMissingNamedplace() {
+    super.onMissingNamedplace('/theme/linjalaskenta/form');
   }
 
   onAccessDenied() {
