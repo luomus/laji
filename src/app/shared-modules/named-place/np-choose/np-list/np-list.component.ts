@@ -13,17 +13,45 @@ import { Util } from '../../../../shared/service/util.service';
 })
 export class NpListComponent {
 
-  labelMap = {
-    '$.alternativeIDs[0]': 'route.nro',
-    '$.reserve.reserver': 'result.gathering.team',
-    '$.reserve.until': 'result.reserve.until',
-    '$.name': 'observation.form.placeName',
-    '$._status': 'Tila',
-    '$.geometry.coordinateVerbatim': 'result.gathering.conversions.ykj',
-    '$.prepopulatedDocument.gatheringEvent.dateBegin': 'lastCensus',
-    '$.prepopulatedDocument.gatheringEvent.dateEnd': 'haseka.submissions.dateEnd',
-    '$.taxonIDs[0]': 'result.unit.taxonVerbatim',
-    '$.municipality': 'np.municipality'
+  columnsMetaData = {
+    '$.alternativeIDs[0]': {
+      label: 'route.nro',
+      width: 20
+    },
+    '$.reserve.reserver': {
+      label: 'result.gathering.team',
+      width: 100,
+      cellTemplate: 'labelIDTpl'
+    },
+    '$.reserve.until': {
+      label: 'result.reserve.until'
+    },
+    '$.name': {
+      label: 'observation.form.placeName',
+      width: 100
+    },
+    '$._status': {
+      label: 'Tila',
+      width: 20,
+      cellTemplate: 'statusTpl'
+    },
+    '$.geometry.coordinateVerbatim': {
+      label: 'result.gathering.conversions.ykj'
+    },
+    '$.prepopulatedDocument.gatheringEvent.dateBegin': {
+      label: 'lastCensus'
+    },
+    '$.prepopulatedDocument.gatheringEvent.dateEnd': {
+      label: 'haseka.submissions.dateEnd'
+    },
+    '$.taxonIDs[0]': {
+      label: 'result.unit.taxonVerbatim',
+      cellTemplate: 'labelIDTpl'
+    },
+    '$.municipality': {
+      label: 'np.municipality',
+      cellTemplate: 'areaTpl'
+    }
   };
 
   _namedPlaces: NamedPlace[];
@@ -52,13 +80,6 @@ export class NpListComponent {
   @Input() activeNP: number;
   @Input() height: string;
 
-  private widths = {
-    '$.name': 100,
-    '$.alternativeIDs[0]': 20,
-    '$.reserve.reserver': 100,
-    '$._status': 20
-  };
-
   constructor(private cd: ChangeDetectorRef) { }
 
   changeActivePlace(event) {
@@ -77,26 +98,18 @@ export class NpListComponent {
 
   @Input() set formData(formData: any) {
     this._fields = formData.options && formData.options.namedPlaceList ? formData.options.namedPlaceList : ['$.name'];
-    const labels = this.labelMap;
     const cols: ObservationTableColumn[] = [];
     for (const path of this._fields) {
+      const {cellTemplate = undefined, ...columnMetadata} = this.columnsMetaData[path] || {};
       const col: DatatableColumn = {
         name: path,
-        label: labels[path] || path
+        width: 50,
+        label: path,
+        ...columnMetadata
       };
-      switch (path) {
-        case '$.reserve.reserver':
-        case '$.taxonIDs[0]':
-          col.cellTemplate = this.labelIDTpl;
-          break;
-        case '$._status':
-          col.cellTemplate = this.statusTpl;
-          break;
-        case '$.municipality':
-          col.cellTemplate = this.areaTpl;
-          break;
+      if (cellTemplate && this[cellTemplate]) {
+        col.cellTemplate = this[cellTemplate];
       }
-      col.width = this.widths[path] ? this.widths[path] : 50;
       cols.push(col);
     }
     this.sorts = cols[0] ? [{prop: cols[0].name, dir: 'asc'}] : [];
@@ -120,10 +133,11 @@ export class NpListComponent {
       const row = {};
       for (const path of this._fields) {
         let value = Util.parseJSONPath(namedPlace, path);
-        if (value && value.length) {
-          if (path === '$.prepopulatedDocument.gatheringEvent.dateBegin' || path === '$.prepopulatedDocument.gatheringEvent.dateEnd') {
-            value = value.split('.').reverse().join('-');
-          }
+        if (value && value.length && (
+          path === '$.prepopulatedDocument.gatheringEvent.dateBegin'
+          || path === '$.prepopulatedDocument.gatheringEvent.dateEnd'
+        )) {
+          value = value.split('.').reverse().join('-');
         }
         row[path] = value;
       }
@@ -132,10 +146,9 @@ export class NpListComponent {
     if (this.data.length === 0) {
       setTimeout(() => {
         this.datatable.refreshTable();
-      }, 500)
+      }, 500);
     }
     this.data = results;
     this.cd.markForCheck();
   }
-
 }
