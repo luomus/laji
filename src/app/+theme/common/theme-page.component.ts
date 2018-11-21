@@ -28,7 +28,7 @@ import { Component, Input } from '@angular/core';
         background-color: #ECF0F1;
     }
     .content {
-        padding: 2em 5em;
+        padding: 2em 2em;
         padding-top: 1em;
     }
     @media only screen and (min-width : 768px) {
