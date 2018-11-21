@@ -1,4 +1,4 @@
-import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
+import { Observable, of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -105,10 +105,14 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   }
 
   get isFromMasterChecklist() {
-    if (!this.taxon || !this.taxon.checklist) {
+    const masterChecklist = 'MR.1';
+    if (!this.taxon) {
       return false;
     }
-    return this.taxon.checklist.indexOf('MR.1') > -1;
+    if (this.taxon.checklist) {
+      return this.taxon.checklist.indexOf(masterChecklist) > -1;
+    }
+    return this.taxon.nameAccordingTo === masterChecklist;
   }
 
   private updateMap() {
@@ -125,22 +129,22 @@ export class InfoCardComponent implements OnInit, OnDestroy {
 
   private initTaxon(): Observable<any> {
     this.loading = true;
-    return ObservableForkJoin(
-      this.getTaxon(this.taxonId),
-      this.getTaxonDescription(this.taxonId),
-      this.getTaxonMedia(this.taxonId)
-    ).pipe(
-      map(data => ({taxon: data[0], descriptions: data[1], media: data[2]})),
-      tap(data => {
+    return this.getTaxon(this.taxonId).pipe(
+      tap(taxon => {
         this.loading = false;
-        this.taxon = data.taxon;
-        this.taxonDescription = data.descriptions;
-        this.hasDescription = data.descriptions.length > 0;
-        this.hasTaxonImages = data.media.length > 0;
+        this.taxon = taxon;
+        this.taxonImages = taxon.multimedia || [];
+        this.taxonDescription = (taxon.descriptions || []).reduce((prev, current) => {
+          if (current.title) {
+            prev.push(current);
+          }
+          return prev;
+        }, []);
+        this.hasDescription = this.taxonDescription.length > 0;
+        this.hasTaxonImages = this.taxonImages.length > 0;
         this.activeImageTab = this.hasTaxonImages ? 'taxon' : 'collection';
-        this.taxonImages = data.media;
         this.hasCollectionImages = false;
-        this.taxonDescription.map((description, idx) => {
+        this.taxonDescription.forEach((description, idx) => {
           if (description.id === this.context) {
             this.activeDescription = idx;
           }
@@ -165,38 +169,11 @@ export class InfoCardComponent implements OnInit, OnDestroy {
 
   private getTaxon(id) {
     return this.taxonService
-      .taxonomyFindBySubject(id, 'multi')
+      .taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true})
       .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
       .catch(err => {
         this.logger.warn('Failed to fetch taxon by id', err);
         return ObservableOf({});
-      });
-  }
-
-  private getTaxonDescription(id) {
-    return this.taxonService
-      .taxonomyFindDescriptions(id, this.translate.currentLang, false)
-      .catch(err => {
-        this.logger.warn('Failed to fetch taxon description by id', err);
-        return ObservableOf([]);
-      })
-      .map(descriptions => descriptions.reduce((prev, current) => {
-          if (!current.title) {
-            return prev;
-          }
-          prev.push(current);
-          return prev;
-        }, [])
-      );
-
-  }
-
-  private getTaxonMedia(id) {
-    return this.taxonService
-      .taxonomyFindMedia(id, this.translate.currentLang)
-      .catch(err => {
-        this.logger.warn('Failed to fetch taxon media by id', err);
-        return ObservableOf([]);
       });
   }
 }
