@@ -1,4 +1,4 @@
-<laji-sidebar *ngIf="showNav"
+<laji-theme-page *ngIf="showNav"
   [title]="'Linja&shy;laskenta'">
   <nav>
     <ul>
@@ -37,6 +37,6 @@
     </laji-haseka-latest>
   </nav>
   <router-outlet></router-outlet>
-</laji-sidebar>
+</laji-theme-page>
 
 <router-outlet *ngIf="!showNav"></router-outlet>

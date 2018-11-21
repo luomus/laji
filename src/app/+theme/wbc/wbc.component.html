@@ -1,4 +1,4 @@
-<laji-sidebar *ngIf="router.url.indexOf('form') === -1">
+<laji-theme-page *ngIf="router.url.indexOf('form') === -1">
   <nav>
     <ul>
       <li><a [routerLink]="['../talvilintulaskenta', 'instructions']">{{'instructions' | translate}}</a></li>
@@ -26,6 +26,6 @@
     </laji-haseka-latest>
   </nav>
   <router-outlet></router-outlet>
-</laji-sidebar>
+</laji-theme-page>
 
 <router-outlet *ngIf="router.url.indexOf('form') !== -1"></router-outlet>

@@ -73,7 +73,7 @@ import { LatestDocumentsModule } from '../shared-modules/latest-documents/latest
 import { WbcTableFilterComponent } from './wbc/wbc-result/wbc-table-filter/wbc-table-filter.component';
 import { WbcRoutesListComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-list/wbc-routes-list.component';
 import { WbcRoutesMapComponent } from './wbc/wbc-result/wbc-routes/wbc-routes-map/wbc-routes-map.component';
-import { SidebarComponent } from './common/sidebar.component';
+import { ThemePageComponent } from './common/theme-page.component';
 import { MonitoringThemeBaseComponent } from './common/monitoring-theme-base.component';
 import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container';
 import { InvasiveControlInstructionsContainerComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.container';
@@ -156,7 +156,7 @@ import { ThemeFormComponent } from './common/theme-form.component';
     WbcTableFilterComponent,
     WbcRoutesListComponent,
     WbcRoutesMapComponent,
-    SidebarComponent,
+    ThemePageComponent,
     MonitoringThemeBaseComponent,
     ThemeFormComponent
   ],

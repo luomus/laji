@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-    selector: 'laji-sidebar',
+    selector: 'laji-theme-page',
     template: `
 <div class="container-fluid">
     <div class="row" id="wrapper">
@@ -38,6 +38,6 @@ import { Component, Input } from '@angular/core';
     }
     `]
 })
-export class SidebarComponent {
+export class ThemePageComponent {
     @Input() title: string;
 }
