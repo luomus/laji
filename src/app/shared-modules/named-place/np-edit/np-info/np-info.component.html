@@ -27,7 +27,7 @@
               <a *ngSwitchCase="'MHL.printTypeLineTransect'"
                  class="btn btn-sm btn-default"
                  target="_blank"
-                 [routerLink]="['/vihko/places/', namedPlace.id, 'print', targetForm.printType] | localize">{{targetForm.namedPlaceOptions?.printLabel ? targetForm.namedPlaceOptions?.printLabel : 'np.print' | translate}}</a>
+                 [routerLink]="['/vihko/places/', namedPlace.id, 'print', targetForm.printType] | localize">{{targetForm.namedPlaceOptions?.printLabel || 'np.print' | translate}}</a>
             </span>
             <button *ngIf="allowEdit && editButtonVisible"
                     class="btn btn-sm btn-default"
@@ -40,7 +40,7 @@
           <laji-np-info-row [title]="i.title" [value]="i.value" [isLabel]="i.isLabel" ></laji-np-info-row>
         </ng-container>
         <ng-container *ngIf="namedPlace?.prepopulatedDocument?.gatheringEvent?.dateBegin">
-          <laji-np-info-row [title]="'lastCensus' | translate" [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin"></laji-np-info-row>
+          <laji-np-info-row [title]="targetForm.namedPlaceOptions?.lastCensusLabel || 'lastCensus' | translate" [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin"></laji-np-info-row>
         </ng-container>
         <div *lajiLoggedIn="false" style="margin-top: 20px;">
           <strong>
@@ -57,7 +57,7 @@
             <div class="row-container">
               <button type="button"
                  class="btn btn-md btn-primary btn-block use-button"
-                 (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</button>
+                 (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel || 'np.defaultUse' | translate}}</button>
             </div>
           </ng-container>
           <ng-container *ngSwitchCase="'reservedByYou'">
@@ -65,11 +65,11 @@
               <button type="button"
                       [disabled]="loading"
                       class="btn btn-md btn-primary btn-block use-button"
-                      (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel ? targetForm.namedPlaceOptions.useLabel : 'np.defaultUse' | translate}}</button>
+                      (click)="useClick()">{{targetForm.namedPlaceOptions?.useLabel || 'np.defaultUse' | translate}}</button>
               <button type="button"
                       [disabled]="loading"
                       class="btn btn-md btn-primary btn-block use-button"
-                      (click)="onReleaseButtonClick.emit()">{{targetForm.namedPlaceOptions?.releaseLabel ? targetForm.namedPlaceOptions.releaseLabel : 'np.release' | translate}}</button>
+                      (click)="onReleaseButtonClick.emit()">{{targetForm.namedPlaceOptions?.releaseLabel || 'np.release' | translate}}</button>
             </div>
           </ng-container>
          <laji-request *ngSwitchCase="'nouse'"
@@ -81,13 +81,13 @@
               <button type="button"
                       class="btn btn-md btn-primary btn-block use-button"
                       [disabled]="loading"
-                      (click)="onReserveButtonClick.emit()">{{targetForm.namedPlaceOptions?.reservableLabel ? targetForm.namedPlaceOptions.reservableLabel : 'np.reserve' | translate}}</button>
+                      (click)="onReserveButtonClick.emit()">{{targetForm.namedPlaceOptions?.reservableLabel || 'np.reserve' | translate}}</button>
             </div>
           </ng-container>
           <ng-container *ngSwitchCase="'reservedByOther'">
             <div class="row-container">
               <button type="button"
-                 class="btn btn-md btn-primary btn-block use-button" [disabled]="true">{{targetForm.namedPlaceOptions?.reservedLabel ? targetForm.namedPlaceOptions.reservedLabel : 'np.reserved' | translate}}</button>
+                 class="btn btn-md btn-primary btn-block use-button" [disabled]="true">{{targetForm.namedPlaceOptions?.reservedLabel || 'np.reserved' | translate}}</button>
               <ng-container *ngIf="formRights.admin">
                 <div class="key">
                   <strong>Varauksen omistaja:</strong>
@@ -98,14 +98,18 @@
                 <button type="button"
                         [disabled]="loading"
                         class="btn btn-md btn-primary btn-block use-button"
-                        (click)="onReleaseButtonClick.emit()">{{targetForm.namedPlaceOptions?.releaseLabel ? targetForm.namedPlaceOptions.releaseLabel : 'np.release' | translate}} (admin)</button>
+                        (click)="onReleaseButtonClick.emit()">{{targetForm.namedPlaceOptions?.releaseLabel || 'np.release' | translate}} (admin)</button>
               </ng-container>
             </div>
           </ng-container>
         </div>
       </fieldset>
       <div class="own-submissions-container" *lajiLoggedIn="true">
-        <strong>{{(formRights.admin ? 'np.earlier' : 'np.myEarlier') | translate}}</strong>:
+        <strong>{{
+		        formRights.admin
+		          ? targetForm.namedPlaceOptions?.earlierLabel || ('np.earlier' | translate)
+		          : targetForm.namedPlaceOptions?.myEarlierLabel || ('np.myEarlier' | translate)
+          }}</strong>:
         <laji-own-submissions
           [actions]="formRights.admin ? ['edit', 'delete'] : ['edit']"
           [columns]="['dateObserved', 'observer', 'dateEdited']"

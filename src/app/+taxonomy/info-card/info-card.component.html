@@ -12,22 +12,22 @@
           <option *ngFor="let description of taxonDescription; let i = index"
                   [value]="description.id"
                   [selected]="activeDescription === i">
-            {{ description.title ? description.title : description.id }}
+            {{ description.title ? (description.title | multiLang) : description.id }}
           </option>
         </select>
         <div class="panel-group" role="tablist" aria-multiselectable="true">
           <div class="panel panel-default"
                *ngFor="let group of taxonDescription[activeDescription]?.groups; let i = index"
-               [title]="group.title"
+               [title]="group.title | multiLang"
                [open]="true"
                [index]="i"
                [headerLink]="false"
                laji-panel>
             <div *ngFor="let variable of group.variables">
               <h4 *ngIf="variable.title !== 'Ingressi'">
-                {{ variable.title }}
+                {{ variable.title | multiLang }}
               </h4>
-              <span [innerHTML]="variable.content"></span>
+              <span [innerHTML]="variable.content | multiLang"></span>
             </div>
           </div>
         </div>
@@ -35,8 +35,8 @@
           {{ 'taxonomy.source' | translate }}: {{taxonDescription[activeDescription]?.title}}
         </ng-container>
         <div *ngIf="taxonDescription[activeDescription]?.speciesCardAuthors">
-          {{taxonDescription[activeDescription]?.speciesCardAuthors.title}}:
-          <span [innerHTML]="taxonDescription[activeDescription]?.speciesCardAuthors.content"></span>
+          {{taxonDescription[activeDescription]?.speciesCardAuthors.title | multiLang}}:
+          <span [innerHTML]="taxonDescription[activeDescription]?.speciesCardAuthors.content | multiLang"></span>
         </div>
       </div>
       <div [class.col-sm-6]="hasDescription">

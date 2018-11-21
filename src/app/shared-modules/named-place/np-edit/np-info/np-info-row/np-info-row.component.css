@@ -3,10 +3,6 @@
   font-weight: bold;
 }
 .value {
-  overflow: scroll;
+  overflow: hidden;
   -ms-overflow-style: none;
-  overflow: -moz-scrollbars-none;
-}
-.value::-webkit-scrollbar {
-  display: none;
 }
