@@ -149,6 +149,7 @@ const routes: Routes = [
         component: InvasiveControlInstructionsContainerComponent
       },
       {path: 'places', pathMatch: 'full', component: InvasiveControlFormComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'form', pathMatch: 'full', component: InvasiveControlFormComponent},
       {
         path: 'form/:id',
         pathMatch: 'full',

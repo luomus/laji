@@ -18,8 +18,9 @@ export class ThemeFormComponent {
     );
   }
 
-  onSuccess(url: string) {
-    this.router.navigate(this.localizeRouterService.translateRoute([url]));
+  onSuccess(url: string, queryParams?) {
+    this.router.navigate(this.localizeRouterService.translateRoute([url]),
+                         {queryParams: queryParams});
   }
 
   onError(url: string) {
