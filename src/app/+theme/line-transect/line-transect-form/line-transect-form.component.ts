@@ -13,8 +13,7 @@ import { ThemeFormComponent } from 'app/+theme/common/theme-form.component';
 
 @Component({
   selector: 'laji-line-transect-form',
-  templateUrl: './line-transect-form.component.html',
-  styleUrls: ['./line-transect-form.component.css']
+  templateUrl: './../../common/theme-form.component.html'
 })
 export class LineTransectFormComponent
        extends ThemeFormComponent
@@ -24,6 +23,12 @@ export class LineTransectFormComponent
   documentId;
   hasNS = false;
   private subParam: Subscription;
+
+  onSuccessUrl = '/theme/linjalaskenta/statistics';
+  onTmlLoadUrl = '/theme/linjalaskenta/form/';
+  onMissingNamedPlaceUrl = this.onTmlLoadUrl;
+  onErrorUrl = '/theme/linjalaskenta/stats';
+  onCancelUrl = this.onErrorUrl;
 
   constructor(
     protected route: ActivatedRoute,
@@ -64,26 +69,6 @@ export class LineTransectFormComponent
       return true;
     }
     return this.documentForm.canDeactivate();
-  }
-
-  onTmlLoad(data) {
-    super.onTmlLoad(data, '/theme/linjalaskenta/form/');
-  }
-
-  onSuccess() {
-    super.onSuccess('/theme/linjalaskenta/statistics');
-  }
-
-  onError() {
-    super.onError('/theme/linjalaskenta/stats');
-  }
-
-  onCancel() {
-    super.onCancel('/theme/linjalaskenta/stats');
-  }
-
-  onMissingNamedplace() {
-    super.onMissingNamedplace('/theme/linjalaskenta/form');
   }
 
   onAccessDenied() {

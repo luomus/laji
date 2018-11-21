@@ -11,8 +11,7 @@ import { ThemeFormComponent } from 'app/+theme/common/theme-form.component';
 
 @Component({
   selector: 'laji-wbc-form',
-  templateUrl: './wbc-form.component.html',
-  styleUrls: ['./wbc-form.component.css']
+  templateUrl: './../../common/theme-form.component.html'
 })
 export class WbcFormComponent
        extends ThemeFormComponent
@@ -22,6 +21,12 @@ export class WbcFormComponent
   documentId;
   hasNS = false;
   private subParam: Subscription;
+
+  onSuccessUrl = '/theme/talvilintulaskenta/ownSubmissions';
+  onTmlLoadUrl = '/theme/talvilintulaskenta/form/';
+  onMissingNamedPlaceUrl = this.onTmlLoadUrl;
+  onErrorUrl = '/theme/talvilintulaskenta/stats';
+  onCancelUrl = this.onErrorUrl;
 
   constructor(
     protected route: ActivatedRoute,
@@ -55,25 +60,5 @@ export class WbcFormComponent
       return true;
     }
     return this.documentForm.canDeactivate();
-  }
-
-  onTmlLoad(data) {
-    super.onTmlLoad(data, '/theme/talvilintulaskenta/form/');
-  }
-
-  onSuccess() {
-    super.onSuccess('/theme/talvilintulaskenta/ownSubmissions');
-  }
-
-  onError() {
-    super.onError('/theme/talvilintulaskenta/stats');
-  }
-
-  onCancel() {
-    super.onCancel('/theme/talvilintulaskenta/stats');
-  }
-
-  onMissingNamedplace() {
-    super.onMissingNamedplace('/theme/talvilintulaskenta/form');
   }
 }

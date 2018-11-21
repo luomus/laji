@@ -13,8 +13,7 @@ import { NamedPlacesService } from 'app/shared-modules/named-place/named-places.
 
 @Component({
   selector: 'laji-invasive-control-form',
-  templateUrl: './invasive-control-form.component.html',
-  styleUrls: ['./invasive-control-form.component.css']
+  templateUrl: './../../common/theme-form.component.html'
 })
 export class InvasiveControlFormComponent
        extends ThemeFormComponent
@@ -24,6 +23,13 @@ export class InvasiveControlFormComponent
   documentId;
   hasNS = false;
   private subParam: Subscription;
+
+  onSuccessUrl = '/theme/vieraslajit/places/HR.2049/'
+               + environment.invasiveControlForm;
+  onTmlLoadUrl = '/theme/vieraslajit/form/';
+  onMissingNamedPlaceUrl = this.onSuccessUrl;
+  onErrorUrl = this.onSuccessUrl;
+  onCancelUrl = this.onSuccessUrl;
 
   constructor(
     protected route: ActivatedRoute,
@@ -63,15 +69,6 @@ export class InvasiveControlFormComponent
     return this.documentForm.canDeactivate();
   }
 
-  onTmlLoad(data) {
-    super.onTmlLoad(data, '/theme/vieraslajit/form/');
-  }
-
-  onMissingNamedplace() {
-    super.onMissingNamedplace('/theme/vieraslajit/places/HR.2049/'
-                              + environment.invasiveControlForm);
-  }
-
   onAccessDenied() {
     this.translateService.get('form.permission.no-access')
       .subscribe(msg => {
@@ -82,23 +79,13 @@ export class InvasiveControlFormComponent
         );
       });
   }
+
   onSuccess(event) {
     this.namedplacesService.getNamedPlace(event.document.namedPlaceID)
     .subscribe((np) => {
-      super.onSuccess('/theme/vieraslajit/places/HR.2049/'
-                      + environment.invasiveControlForm,
-                      {activeNP: event.document.namedPlaceID,
-                       municipality: np.municipality});
+      super.navigate([this.onSuccessUrl],
+                     {queryParams: {activeNP: event.document.namedPlaceID,
+                      municipality: np.municipality}});
     });
-  }
-
-  onError() {
-    super.onError('/theme/vieraslajit/places/HR.2049/'
-                   + environment.invasiveControlForm);
-  }
-
-  onCancel() {
-    super.onCancel('/theme/vieraslajit/places/HR.2049/'
-                    + environment.invasiveControlForm);
   }
 }

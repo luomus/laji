@@ -1,39 +1,50 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { LocalizeRouterService } from 'app/locale/localize-router.service';
 
 @Component({
-    template: ''
+    templateUrl: './theme-form.component.html'
 })
-export class ThemeFormComponent {
+export abstract class ThemeFormComponent {
+  abstract onSuccessUrl: string;
+  abstract onErrorUrl: string;
+  abstract onCancelUrl: string;
+  abstract onTmlLoadUrl: string;
+  abstract onMissingNamedPlaceUrl: string;
+
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
     protected localizeRouterService: LocalizeRouterService) {}
 
-  onTmlLoad(data, url: string) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute([url, data.tmpID]),
+  protected navigate(route: any[], extras?: NavigationExtras) {
+    return this.router.navigate(
+      this.localizeRouterService.translateRoute(route), extras
+    );
+  }
+
+  onTmlLoad(data) {
+    this.navigate(
+      [this.onTmlLoadUrl, data.tmpID],
       { replaceUrl: true }
     );
   }
 
-  onSuccess(url: string, queryParams?) {
-    this.router.navigate(this.localizeRouterService.translateRoute([url]),
-                         {queryParams: queryParams});
+  onSuccess(event) {
+    this.navigate([this.onSuccessUrl]);
   }
 
-  onError(url: string) {
-    this.router.navigate(this.localizeRouterService.translateRoute([url]));
+  onError() {
+    this.navigate([this.onErrorUrl]);
   }
 
-  onCancel(url: string) {
-    this.router.navigate(this.localizeRouterService.translateRoute([url]));
+  onCancel() {
+    this.navigate([this.onCancelUrl]);
   }
 
-  onMissingNamedplace(url: string) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute([url]),
+  onMissingNamedplace() {
+    this.navigate(
+      [this.onMissingNamedPlaceUrl],
       { replaceUrl: true }
     );
   }

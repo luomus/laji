@@ -9,8 +9,7 @@ import { ThemeFormComponent } from 'app/+theme/common/theme-form.component';
 
 @Component({
   selector: 'laji-nafi-form',
-  templateUrl: './nafi-form.component.html',
-  styleUrls: ['./nafi-form.component.css']
+  templateUrl: './../../common/theme-form.component.html'
 })
 export class NafiFormComponent
        extends ThemeFormComponent
@@ -18,7 +17,14 @@ export class NafiFormComponent
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
   formId;
   documentId;
+  hasNS = true;
   private subParam: Subscription;
+
+  onSuccessUrl = '/theme/nafi/ownSubmissions';
+  onTmlLoadUrl = '/theme/nafi/form/';
+  onMissingNamedPlaceUrl = '';
+  onErrorUrl = '/theme/nafi/stats';
+  onCancelUrl = this.onErrorUrl;
 
   constructor(
     protected route: ActivatedRoute,
@@ -44,21 +50,5 @@ export class NafiFormComponent
       return true;
     }
     return this.documentForm.canDeactivate();
-  }
-
-  onTmlLoad(data) {
-    super.onTmlLoad(data, '/theme/nafi/form/');
-  }
-
-  onSuccess() {
-    super.onSuccess('/theme/nafi/ownSubmissions');
-  }
-
-  onError() {
-    super.onError('/theme/nafi/stats');
-  }
-
-  onCancel() {
-    super.onCancel('/theme/nafi/stats');
   }
 }

@@ -157,8 +157,7 @@ import { ThemeFormComponent } from './common/theme-form.component';
     WbcRoutesListComponent,
     WbcRoutesMapComponent,
     ThemePageComponent,
-    MonitoringThemeBaseComponent,
-    ThemeFormComponent
+    MonitoringThemeBaseComponent
   ],
   providers: [ ResultService, QualityService, WbcResultService ]
 })
