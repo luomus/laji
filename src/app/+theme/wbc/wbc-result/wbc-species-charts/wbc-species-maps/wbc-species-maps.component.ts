@@ -159,10 +159,11 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
           lastResult.count += d.count;
           lastResult.individualCountSum += d.individualCountSum;
         } else {
-          lastResult.lineLengthSum += d.lineLengthSum;
+          lastResult.lineLengthSum += d.lineLengthSum || 0;
         }
       } else {
-        result.push({...d});
+        const res = zeroObservations ? {...d, lineLengthSum: d.lineLengthSum || 0} : {...d};
+        result.push(res);
       }
     });
 
