@@ -133,7 +133,12 @@ export class InfoCardComponent implements OnInit, OnDestroy {
       tap(taxon => {
         this.loading = false;
         this.taxon = taxon;
-        this.taxonImages = taxon.multimedia || [];
+        this.taxonImages = (taxon.multimedia || []).map(img => {
+          if (img.taxon) {
+            img = {...img.taxon, ...img};
+          }
+          return img;
+        });
         this.taxonDescription = (taxon.descriptions || []).reduce((prev, current) => {
           if (current.title) {
             prev.push(current);
