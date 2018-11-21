@@ -22,8 +22,8 @@
 </div>
 <div class="list-container">
   <div class="list-header">
-    <h5 *ngIf="selectedGrid">Ruutu {{selectedGrid}}</h5>
-    <h5 *ngIf="!selectedGrid">Ei valittua ruutua</h5>
+    <h5 *ngIf="selectedGrid">{{'wbc.stats.routes.grid' | translate}} {{selectedGrid}}</h5>
+    <h5 *ngIf="!selectedGrid">{{'wbc.stats.routes.noGrid' | translate}}</h5>
   </div>
   <laji-wbc-routes-list
     [rows]="selectedGrid ? this._data[selectedGrid].data : []"

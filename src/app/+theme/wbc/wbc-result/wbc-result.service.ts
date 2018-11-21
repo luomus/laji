@@ -186,7 +186,7 @@ export class WbcResultService {
 
   getCensusList(year?: number, season?: SEASON): Observable<any[]> {
     return this.getList(
-      this.warehouseApi.warehouseQueryAggregateGet(
+      this.warehouseApi.warehouseQueryStatisticsGet(
         this.getFilterParams(year, season),
         ['document.documentId', 'document.namedPlace.name', 'document.namedPlace.municipalityDisplayName',
           'document.namedPlace.ykj10km.lat', 'document.namedPlace.ykj10km.lon',
