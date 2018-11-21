@@ -832,6 +832,7 @@
   "theme.identify.intro": "Auta tunnistamaan havaintoja! Selaa Lajitietokeskukseen tallennettuja kuvia havainnoista, joita ei ole kyetty tunnistamaan varmasti.",
   "theme.individualCount": "Yksilösumma",
   "theme.individualCountSum": "Yksilömäärä",
+  "theme.individualCountSumPer10km": "Yksilöä/10 km",
   "theme.individualCountMax": "Yksilömaksimi",
   "theme.individualCountShort": "Ykslkm",
   "theme.intro": "Tähän sivustoon kootaan tietoa tärkeistä Lajitietokeskuksen toimintaan liittyvistä aiheista ja palveluista.",

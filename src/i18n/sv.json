@@ -799,6 +799,7 @@
   "theme.herpetology.intro": "Naturhistoriska centralmuseet Luomus undersöker Finlands grod- och kräldjurs utbredning genom att samla observationer från hela landet. Granska arten och resultaten. Du kan också rapportera dina egna observationer.",
   "theme.identify.intro": "Hjälp att identifiera observationer! Visa bilderna av observationer som inte identifierades med säkerhet.",
   "theme.individualCount": "individuell räkning",
+  "theme.individualCountSumPer10km": "Individuell räkning/10 km",
   "theme.individualCountSum": "Individuell räkning summa",
   "theme.individualCountMax": "Individuell räkning max",
   "theme.individualCountShort": "Ind.r",

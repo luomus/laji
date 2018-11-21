@@ -102,59 +102,41 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
     ).subscribe(data => {
       this.data[0] = this.ykjService.combineGeoJsons(this.dataToGeoJson(data.data), this.dataToGeoJson(data.zeroData, true));
       this.data[1] = this.ykjService.combineGeoJsons(
-        this.getAverageGeoJson(data.prevTenYearsData),
+        this.dataToGeoJson(data.prevTenYearsData),
         this.dataToGeoJson(data.prevTenYearsZeroData, true)
       );
-      this.data[2] = this.getDifferenceGeoJson(data.data, data.prevTenYearsData, data.zeroData);
+      this.data[2] = this.getDifferenceGeoJson(data.data, data.zeroData, data.prevTenYearsData, data.prevTenYearsZeroData);
       this.loading = false;
       this.cd.markForCheck();
     })
   }
 
-  private getAverageGeoJson(data: any, years = 10) {
-    data = this.dataToGeoJson(data);
-    data.map(d => {
-      d.properties.count /= years;
-      d.properties.individualCountSum /= years;
-    });
-    return data;
-  }
-
-  private getDifferenceGeoJson(data, tenYearsData, zeroData) {
+  private getDifferenceGeoJson(data, zeroData, tenYearsData, tenYearsZeroData) {
     const censusList = zeroData.map(d => (d.aggregateBy['document.namedPlaceId']));
     const tenYearsCensusList = tenYearsData.map(d => (d.aggregateBy['document.namedPlaceId']));
     const commonCensuses = censusList.filter((c) => (tenYearsCensusList.indexOf(c) > -1));
 
-    const filteredData = data.filter((d) => (commonCensuses.indexOf(d.aggregateBy['document.namedPlaceId']) > -1));
-    const filteredTenYearsData = tenYearsData.filter((d) => (commonCensuses.indexOf(d.aggregateBy['document.namedPlaceId']) > -1));
-    const filteredZeroData = zeroData.filter((d) => (commonCensuses.indexOf(d.aggregateBy['document.namedPlaceId']) > -1));
+    const filterFunc = (d) => (commonCensuses.indexOf(d.aggregateBy['document.namedPlaceId']) > -1);
+    data = data.filter(d => filterFunc(d));
+    zeroData = zeroData.filter(d => filterFunc(d));
+    tenYearsData = tenYearsData.filter(d => filterFunc(d));
+    tenYearsZeroData = tenYearsZeroData.filter(d => filterFunc(d));
 
-    let geoJson = this.ykjService.combineGeoJsons(this.dataToGeoJson(filteredData), this.dataToGeoJson(filteredZeroData, true));
-    const tenYearsGeoJson = this.getAverageGeoJson(filteredTenYearsData);
+    const geoJson = this.ykjService.combineGeoJsons(this.dataToGeoJson(data), this.dataToGeoJson(zeroData, true));
+    const tenYearsGeoJson = this.ykjService.combineGeoJsons(this.dataToGeoJson(tenYearsData), this.dataToGeoJson(tenYearsZeroData, true));
 
-    geoJson = geoJson.reduce((arr, g) => {
+    const result = [];
+    geoJson.map(g => {
       const grid = g.properties.grid;
-      const tenYearsDataCounts = this.getCountsForGrid(tenYearsGeoJson, grid);
+      const tenYearsDataPoint = tenYearsGeoJson.find(d => d.properties.grid === grid);
 
-      if (tenYearsDataCounts) {
-        g.properties.count = (g.properties.count - tenYearsDataCounts.count) / tenYearsDataCounts.count * 100;
-        g.properties.individualCountSum = (g.properties.individualCountSum - tenYearsDataCounts.individualCountSum)
-          / tenYearsDataCounts.individualCountSum * 100;
-        arr.push(g);
+      if (tenYearsDataPoint && tenYearsDataPoint.properties.individualCountSum !== 0) {
+        const value = g.properties.individualCountSum / g.properties.lineLengthSum;
+        const oldValue = tenYearsDataPoint.properties.individualCountSum / tenYearsDataPoint.properties.lineLengthSum;
+        result.push({...g, properties: {grid: g.properties.grid, individualCountSum: (value - oldValue) / oldValue * 100}});
       }
-
-      return arr;
-    }, []);
-
-    return geoJson;
-  }
-
-  private getCountsForGrid(data, grid) {
-    const dataPoint = data.find(d => d.properties.grid === grid);
-    if (!dataPoint) {
-      return undefined;
-    }
-    return {count: dataPoint.properties.count, individualCountSum: dataPoint.properties.individualCountSum};
+    });
+    return result;
   }
 
   private getData(year: number|number[]) {
@@ -176,6 +158,8 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
         if (!zeroObservations) {
           lastResult.count += d.count;
           lastResult.individualCountSum += d.individualCountSum;
+        } else {
+          lastResult.lineLengthSum += d.lineLengthSum;
         }
       } else {
         result.push({...d});

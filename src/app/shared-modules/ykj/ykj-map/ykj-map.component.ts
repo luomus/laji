@@ -20,7 +20,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
 import { map } from 'rxjs/operators';
 
-export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'individualCountMax'|'oldest'|'newest'|'pairCount';
+export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'individualCountMax'|'oldest'|'newest'|'pairCount'|
+  'individualCountSumPer10km';
 
 @Component({
   selector: 'laji-ykj-map',
@@ -178,6 +179,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
         break;
       case 'individualCount':
       case 'individualCountSum':
+      case 'individualCountSumPer10km':
       case 'individualCountMax':
         labelSrc = 'individualLabel';
         rangeSrc = 'individualBreak';
@@ -224,6 +226,9 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
       case 'individualCountMax':
         col = this.individualsColor.bind(this);
         break;
+      case 'individualCountSumPer10km':
+        col = this.individualsPer10kmColor.bind(this);
+        break;
       case 'oldest':
       case 'newest':
         col = this.newestColor.bind(this);
@@ -265,13 +270,18 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     return this.countColor(feature, 'individualCountSum', this.individualBreak, this.individualColorRange);
   }
 
+  individualsPer10kmColor(feature) {
+    const divisor = feature.properties.lineLengthSum / 10000;
+    return this.countColor(feature, 'individualCountSum', this.individualBreak, this.individualColorRange, divisor);
+  }
+
   pairCountColor(feature) {
     return this.countColor(feature, 'pairCountSum');
   }
 
-  countColor(feature, prop = 'count', breaks = this.countBreak, range = this.colorRange) {
+  countColor(feature, prop = 'count', breaks = this.countBreak, range = this.colorRange, divisor = 1) {
     const isDefined = typeof feature.properties[prop] !== 'undefined';
-    const cnt = isDefined ? feature.properties[prop] : 1;
+    const cnt = (isDefined ? feature.properties[prop] : 1) / divisor;
     let newColor = '#ffffff';
     for (const idx in breaks) {
       if (!breaks.hasOwnProperty(idx)) {

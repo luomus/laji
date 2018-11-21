@@ -805,6 +805,7 @@
   "theme.herpetology.intro": "Finnish Museum of Natural History (LUOMUS) coordinates a research project ´Atlas of amphibians and reptiles in Finland´. Examine the species and the results. You can also report your own observations.",
   "theme.identify.intro": "Help to identify observations! Browse observation images send to FinBIF, where the species has not been identified.",
   "theme.individualCount": "Individual count",
+  "theme.individualCountSumPer10km": "Individual count/10 km",
   "theme.individualCountSum": "Individual count sum",
   "theme.individualCountMax": "Individual count max",
   "theme.individualCountShort": "Ind.count",
