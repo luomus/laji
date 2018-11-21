@@ -2,7 +2,7 @@
   <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
 </div>
 <alert *ngIf="showWbcRouteTableInfo" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-  <p>Punainen tausta: lintuja ainakin 50 % vähemmän kuin keskimäärin (lasketaan vain lajeille, joita keskimäärin ainakin 5 yksilöä); vihreä tausta: lintuja ainakin 100 % enemmän kuin keskimäärin; vihreä numero: ennätys; punainen numero: vähyysennätys.</p>
+  <p>{{'wbc.stats.route.table.info' | translate}}</p>
 </alert>
 
 <laji-datatable
@@ -40,7 +40,7 @@
   <ng-template #documentIds>
     <span *ngIf="value && value.length > 0" ngPreserveWhitespaces style="display: inline-block">
       <ng-container *ngFor="let doc of value">
-        <a (click)="onDocumentClick.emit(doc)" title="{{doc}}" class="link">Katso</a>
+        <a (click)="onDocumentClick.emit(doc)" title="{{doc}}" class="link">{{'wbc.stats.route.table.link' | translate}}</a>
       </ng-container>
     </span>
   </ng-template>
