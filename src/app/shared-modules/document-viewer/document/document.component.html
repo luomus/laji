@@ -90,7 +90,7 @@
                   [secureLevel]="document.secureLevel"
                   [secureReasons]="document.secureReasons"
                 ></laji-secure-info>
-                <ng-container *ngIf="document.secureReasons.indexOf('DEFAULT_TAXON_CONSERVATION') > -1">
+                <ng-container *ngIf="document.secureReasons && document.secureReasons.indexOf('DEFAULT_TAXON_CONSERVATION') > -1">
                   <br><a [routerLink]="'/about/709'" target="_blank">{{'information.more' | translate}}</a>
                 </ng-container>
               </div>
