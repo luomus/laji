@@ -47,9 +47,9 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
           this.yScaleMax = 0;
 
           this.counts = data;
-          this.setLines(data['fall'], 'fall', 'Syksy');
-          this.setLines(data['winter'], 'winter', 'Talvi');
-          this.setLines(data['spring'], 'spring', 'Kevät');
+          this.setLines(data['fall'], 'fall', 'wbc.season.fall');
+          this.setLines(data['winter'], 'winter', 'wbc.season.winter');
+          this.setLines(data['spring'], 'spring', 'wbc.season.spring');
 
           this.cd.markForCheck();
         })

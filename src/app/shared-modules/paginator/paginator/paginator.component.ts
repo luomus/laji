@@ -35,8 +35,11 @@ export class PaginatorComponent {
 
   @Input()
   set page(val: number) {
-    this._page = val;
-    this.pages = this.calcPages();
+    const page = Number(val);
+    if (page !== this._page) {
+      this._page = page;
+      this.pages = this.calcPages();
+    }
   }
 
   get page(): number {
