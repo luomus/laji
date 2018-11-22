@@ -52,7 +52,9 @@ export class WbcFormComponent
   }
 
   ngOnDestroy() {
-    this.subParam.unsubscribe();
+    if (this.subParam) {
+      this.subParam.unsubscribe();
+    }
   }
 
   canDeactivate() {
