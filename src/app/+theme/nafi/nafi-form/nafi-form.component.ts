@@ -26,14 +26,6 @@ export class NafiFormComponent
   onErrorUrl = '/theme/nafi/stats';
   onCancelUrl = this.onErrorUrl;
 
-  constructor(
-    protected route: ActivatedRoute,
-    protected router: Router,
-    protected localizeRouterService: LocalizeRouterService,
-  ) {
-    super(route, router, localizeRouterService)
-  }
-
   ngOnInit() {
     this.formId = environment.nafiForm;
     this.subParam = this.route.params.subscribe(params => {
