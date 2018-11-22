@@ -1,18 +1,5 @@
 :host {
-  display: flex;
-  flex: 1 0 auto;
-}
-
-.main-content {
-  margin-bottom: 20px !important;
-}
-
-@media only screen and (min-width : 768px) {
-  #wrapper {
     display: flex;
-  }
-}
-
-.laji-sidebar-active {
-  background: white;
+    flex: 1 0 auto;
+    flex-direction: column;
 }

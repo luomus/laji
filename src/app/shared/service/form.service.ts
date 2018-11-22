@@ -25,6 +25,7 @@ export class FormService {
   readonly forms = {
     [environment.nafiForm]: '/theme/nafi/form',
     [environment.wbcForm]: '/theme/talvilintulaskenta/form',
+    [environment.invasiveControlForm]: '/theme/vieraslajit/form',
     [environment.lineTransectForm]: '/theme/linjalaskenta/form',
     [environment.lineTransectEiVakioForm]: '/theme/linjalaskenta/ei-vakiolinjat',
     [environment.lineTransectKartoitusForm]: '/theme/linjalaskenta/kartoitus',

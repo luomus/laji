@@ -8,6 +8,7 @@ import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Global } from '../../../environments/global';
 import { UserService } from '../../shared/service/user.service';
+import { MonitoringThemeBaseComponent } from '../common/monitoring-theme-base.component';
 
 @Component({
   selector: '[laji-line-transect]',
@@ -15,7 +16,9 @@ import { UserService } from '../../shared/service/user.service';
   styleUrls: ['./line-transect.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LineTransectComponent implements OnInit, OnDestroy {
+export class LineTransectComponent
+       extends MonitoringThemeBaseComponent
+       implements OnInit, OnDestroy {
 
   forms = [environment.lineTransectForm, environment.lineTransectEiVakioForm, environment.lineTransectKartoitusForm];
   showForm = true;
@@ -27,10 +30,12 @@ export class LineTransectComponent implements OnInit, OnDestroy {
   constructor(
     public router: Router,
     public userService: UserService,
-    private formService: FormService,
-    private formPermissionService: FormPermissionService,
-    private translateService: TranslateService
-  ) { }
+    protected formService: FormService,
+    protected formPermissionService: FormPermissionService,
+    protected translateService: TranslateService
+  ) {
+    super(formService, formPermissionService, translateService);
+  }
 
   ngOnInit() {
     this.showNav = this.shouldShowNav(this.router.url);
@@ -41,9 +46,7 @@ export class LineTransectComponent implements OnInit, OnDestroy {
           this.showNav = this.shouldShowNav(event.url);
         }
       });
-    this.rights = this.formService.getForm(environment.lineTransectForm, this.translateService.currentLang)
-      .switchMap(form => this.formPermissionService.getRights(form))
-      .catch(() => ObservableOf({edit: false, admin: false}))
+    this.rights = this.getRights(environment.lineTransectForm);
   }
 
   shouldShowNav(url) {
