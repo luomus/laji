@@ -632,10 +632,6 @@ body > .ui-select-bootstrap.open {
   list-style: none;
 }
 
-.sidebar-nav li {
-  margin: 0 -15px;
-}
-
 .sidebar-nav li a {
   padding: 10px 10px 10px 20px;
   display: block;
@@ -656,12 +652,8 @@ body > .ui-select-bootstrap.open {
   list-style: none;
 }
 
-.sidebar-nav ul li {
-  margin-right: 0;
-}
-
-.sidebar-nav ul li a {
-  padding-left: 55px;
+.laji-sidebar-active {
+  background: white;
 }
 
 .dropdown-menu {

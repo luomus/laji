@@ -34,9 +34,9 @@ import { LineTransectMyDocumentListComponent } from './line-transect/line-transe
 import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 import { LineTransectFormEiVakioComponent } from './line-transect/line-transect-form-ei-vakio/line-transect-form-ei-vakio.component';
 import { LineTransectFormKartoitusComponent } from './line-transect/line-transect-form-kartoitus/line-transect-form-kartoitus.component';
-import { InvasiveControlComponent } from './invasive-control/invasive-control.component';
-import { InvasiveControlInstructionsComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.component';
 import { InvasiveControlFormComponent } from './invasive-control/invasive-control-form/invasive-control-form.component';
+import { InvasiveControlContainerComponent } from './invasive-control/invasive-control.container';
+import { InvasiveControlInstructionsContainerComponent } from './invasive-control/invasive-control-instructions/invasive-control-instructions.container';
 /* tslint:enable:max-line-length */
 
 const routes: Routes = [
@@ -140,11 +140,16 @@ const routes: Routes = [
   },
   {
     path: 'vieraslajit',
-    component: InvasiveControlComponent,
+    component: InvasiveControlContainerComponent,
     children: [
-      {path: '', pathMatch: 'full', component: InvasiveControlInstructionsComponent, data: { title: 'invasiveSpecies.title' }},
-      {path: 'instructions', pathMatch: 'full', component: InvasiveControlInstructionsComponent, data: { title: 'invasiveSpecies.title' } },
+      {path: '', pathMatch: 'full', component: InvasiveControlInstructionsContainerComponent},
+      {
+        path: 'instructions',
+        pathMatch: 'full',
+        component: InvasiveControlInstructionsContainerComponent
+      },
       {path: 'places', pathMatch: 'full', component: InvasiveControlFormComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'form', pathMatch: 'full', component: InvasiveControlFormComponent},
       {
         path: 'form/:id',
         pathMatch: 'full',

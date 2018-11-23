@@ -5,23 +5,26 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentFormComponent } from '@laji-form/document-form/document-form.component';
 import { ComponentCanDeactivate } from '../../../shared/guards/document-de-activate.guard';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
+import { ThemeFormComponent } from 'app/+theme/common/theme-form.component';
 
 @Component({
   selector: 'laji-nafi-form',
-  templateUrl: './nafi-form.component.html',
-  styleUrls: ['./nafi-form.component.css']
+  templateUrl: './../../common/theme-form.component.html'
 })
-export class NafiFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
+export class NafiFormComponent
+       extends ThemeFormComponent
+       implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild(DocumentFormComponent) documentForm: DocumentFormComponent;
   formId;
   documentId;
+  hasNS = true;
   private subParam: Subscription;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService,
-  ) { }
+  onSuccessUrl = '/theme/nafi/ownSubmissions';
+  onTmlLoadUrl = '/theme/nafi/form/';
+  onMissingNamedPlaceUrl = '';
+  onErrorUrl = '/theme/nafi/stats';
+  onCancelUrl = this.onErrorUrl;
 
   ngOnInit() {
     this.formId = environment.nafiForm;
@@ -39,24 +42,5 @@ export class NafiFormComponent implements OnInit, OnDestroy, ComponentCanDeactiv
       return true;
     }
     return this.documentForm.canDeactivate();
-  }
-
-  onTmlLoad(data) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute(['/theme/nafi/form/', data.tmpID]),
-      { replaceUrl: true }
-    );
-  }
-
-  onSuccess(data) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/nafi/ownSubmissions']));
-  }
-
-  onError() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/nafi/stats']));
-  }
-
-  onCancel() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['/theme/nafi/stats']));
   }
 }

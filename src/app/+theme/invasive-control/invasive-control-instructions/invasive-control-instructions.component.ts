@@ -1,71 +1,14 @@
-import { WINDOW } from '@ng-toolkit/universal';
-import { Component, Inject, OnInit, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
-import { FormService } from '../../../shared/service/form.service';
-import { FormPermissionService } from '../../../+haseka/form-permission/form-permission.service';
-import { environment } from '../../../../environments/environment';
-import { UserService } from '../../../shared/service/user.service';
-import { of } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
-
-enum Rights {
-  Allowed,
-  NotAllowed,
-  NotDefined
-}
+import { Component, Input } from '@angular/core';
+import { Rights } from './invasive-control-instructions.container';
 
 @Component({
   selector: 'laji-invasive-control-instructions',
   templateUrl: './invasive-control-instructions.component.html',
   styleUrls: ['./invasive-control-instructions.component.css']
 })
-export class InvasiveControlInstructionsComponent implements OnInit {
+export class InvasiveControlInstructionsComponent {
   Rights = Rights;
 
-  rights: Rights = Rights.NotDefined;
-  form: any;
-
-  constructor(
-    @Inject(WINDOW) private window: Window,
-    public translate: TranslateService,
-    public userService: UserService,
-    private route: ActivatedRoute,
-    private formService: FormService,
-    private formPermissionService: FormPermissionService,
-    private translateService: TranslateService,
-    @Inject(PLATFORM_ID) private platformID: object,
-    private cd: ChangeDetectorRef
-  ) {}
-
-  ngOnInit() {
-    if (isPlatformBrowser(this.platformID)) {
-      this.route.fragment.subscribe((frag) => {
-        if (frag) {
-          window.location.hash = frag;
-        }
-      });
-    }
-    this.formService.getForm(environment.invasiveControlForm, this.translateService.currentLang)
-      .switchMap(form => this.formPermissionService.getRights(form))
-      .pipe(
-        catchError(() => {
-          this.rights = Rights.NotDefined;
-          return of({edit: false, admin: false})
-        })
-      )
-      .subscribe((rights) => {
-        if (rights.edit === true) {
-          this.rights = Rights.Allowed;
-        } else {
-          this.rights = Rights.NotAllowed
-        }
-        this.cd.markForCheck();
-      })
-  }
-
-  isLoggedIn() {
-    return this.userService.isLoggedIn$.take(1);
-  }
+  @Input() rights: Rights = Rights.NotDefined;
+  @Input() loggedIn: boolean;
 }
