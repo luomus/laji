@@ -35,13 +35,12 @@
           </li>
         </ul>
 
-        <laji-informal-group-select [hidden]="active === 'tree'"
-                                    *ngIf="activated['list'] || activated['images']"
-                                    style="padding-bottom: 20px"
-                                    [id]="searchQuery.query.informalGroupFilters"
-                                    [compact]="true"
-                                    (onInformalGroupSelect)="informalGroupSelect($event)">
-        </laji-informal-group-select>
+        <div [hidden]="active === 'tree'" *ngIf="activated['list'] || activated['images']" style="margin-bottom: 20px">
+          <laji-informal-group-select [id]="searchQuery.query.informalGroupFilters"
+                                      [compact]="true"
+                                      (onInformalGroupSelect)="informalGroupSelect($event)">
+          </laji-informal-group-select>
+        </div>
 
         <laji-species-list [hidden]="active !== 'list'"
                            *ngIf="activated['list']"

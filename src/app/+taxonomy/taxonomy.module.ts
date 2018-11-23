@@ -41,6 +41,7 @@ import { TaxonSelectComponent } from './taxon-browse/taxon-select/taxon-select.c
 import { ExpandableDatatableComponent } from './taxon-browse/taxon-tree/tree-table/expandable-datatable/expandable-datatable.component';
 import { InfoModule } from '../shared-modules/info/info.module';
 import { BoldSynonymComponent } from './info-card/taxon-info/bold-synonym/bold-synonym.component';
+import { SpeciesCountComponent } from './taxon-browse/species-count/species-count.component';
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
@@ -52,7 +53,7 @@ import { BoldSynonymComponent } from './info-card/taxon-info/bold-synonym/bold-s
     ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent,
     InformalGroupRedirectComponent, SpeciesDownloadComponent, SpeciesBrowseObservationsComponent,
     InformalGroupSelectComponent, SpeciesImagesComponent, TaxonConceptInfoComponent, TreeTableComponent,
-    SpeciesListOptionsModalComponent, TaxonSelectComponent, ExpandableDatatableComponent, BoldSynonymComponent
+    SpeciesListOptionsModalComponent, TaxonSelectComponent, ExpandableDatatableComponent, BoldSynonymComponent, SpeciesCountComponent
   ],
 })
 export class TaxonomyModule {
