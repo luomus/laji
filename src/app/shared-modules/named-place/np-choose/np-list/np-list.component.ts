@@ -4,56 +4,18 @@ import { ObservationTableColumn } from '../../../observation-result/model/observ
 import { DatatableComponent } from '../../../datatable/datatable/datatable.component';
 import { DatatableColumn } from '../../../datatable/model/datatable-column';
 import { Util } from '../../../../shared/service/util.service';
+import { AreaNamePipe } from '../../../../shared/pipe/area-name.pipe';
+import { LabelPipe } from '../../../../shared/pipe';
+import { zip } from 'rxjs';
 
 @Component({
   selector: 'laji-np-list',
   templateUrl: './np-list.component.html',
   styleUrls: ['./np-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ AreaNamePipe, LabelPipe ]
 })
 export class NpListComponent {
-
-  columnsMetaData = {
-    '$.alternativeIDs[0]': {
-      label: 'route.nro',
-      width: 20
-    },
-    '$.reserve.reserver': {
-      label: 'result.gathering.team',
-      width: 100,
-      cellTemplate: 'labelIDTpl'
-    },
-    '$.reserve.until': {
-      label: 'result.reserve.until'
-    },
-    '$.name': {
-      label: 'observation.form.placeName',
-      width: 100
-    },
-    '$._status': {
-      label: 'Tila',
-      width: 20,
-      cellTemplate: 'statusTpl'
-    },
-    '$.geometry.coordinateVerbatim': {
-      label: 'result.gathering.conversions.ykj'
-    },
-    '$.prepopulatedDocument.gatheringEvent.dateBegin': {
-      label: 'lastCensus'
-    },
-    '$.prepopulatedDocument.gatheringEvent.dateEnd': {
-      label: 'haseka.submissions.dateEnd'
-    },
-    '$.taxonIDs[0]': {
-      label: 'result.unit.taxonVerbatim',
-      cellTemplate: 'labelIDTpl'
-    },
-    '$.municipality': {
-      label: 'np.municipality',
-      cellTemplate: 'areaTpl'
-    }
-  };
-
   _namedPlaces: NamedPlace[];
   _fields: any[];
   data: any[] = [];
@@ -67,12 +29,11 @@ export class NpListComponent {
     {label: 'Itselle varattu', color: '#d16e04'},
     {label: 'Ilmoitettu', color: '#00aa00'}
   ];
+  columnsMetaData: {[columnName: string]: DatatableColumn};
 
   @Input() preselectedNPIndex = -1;
 
-  @ViewChild('label') labelIDTpl: TemplateRef<any>;
   @ViewChild('status') statusTpl: TemplateRef<any>;
-  @ViewChild('area') areaTpl: TemplateRef<any>;
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
   @Output() onActivePlaceChange = new EventEmitter<number>();
@@ -80,7 +41,54 @@ export class NpListComponent {
   @Input() activeNP: number;
   @Input() height: string;
 
-  constructor(private cd: ChangeDetectorRef) { }
+  constructor(private cd: ChangeDetectorRef,
+              private areaNamePipe: AreaNamePipe,
+              private labelPipe: LabelPipe
+  ) {
+    this.columnsMetaData = {
+      '$.alternativeIDs[0]': {
+        label: 'route.nro',
+        width: 20
+      },
+      '$.reserve.reserver': {
+        label: 'result.gathering.team',
+        width: 100,
+        pipe: this.labelPipe
+      },
+      '$.reserve.until': {
+        label: 'result.reserve.until'
+      },
+      '$.name': {
+        label: 'observation.form.placeName',
+        width: 100
+      },
+      '$._status': {
+        label: 'Tila',
+        width: 20,
+        cellTemplate: 'statusTpl'
+      },
+      '$.geometry.coordinateVerbatim': {
+        label: 'result.gathering.conversions.ykj'
+      },
+      '$.prepopulatedDocument.gatheringEvent.dateBegin': {
+        label: 'lastCensus'
+      },
+      '$.prepopulatedDocument.gatheringEvent.dateEnd': {
+        label: 'haseka.submissions.dateEnd'
+      },
+      '$.taxonIDs[0]': {
+        label: 'result.unit.taxonVerbatim',
+        pipe: this.labelPipe,
+        sortWithPipe: true
+      },
+      '$.municipality': {
+        label: 'np.municipality',
+        pipe: this.areaNamePipe,
+        sortWithPipe: true
+      }
+    };
+
+  }
 
   changeActivePlace(event) {
     this.onActivePlaceChange.emit(this.data.indexOf(event.row));
@@ -97,7 +105,9 @@ export class NpListComponent {
   }
 
   @Input() set formData(formData: any) {
-    this._fields = formData.options && formData.options.namedPlaceList ? formData.options.namedPlaceList : ['$.name'];
+    this._fields = formData.options && formData.options.namedPlaceList
+      ? formData.options.namedPlaceList
+      : ['$.name'];
     const cols: ObservationTableColumn[] = [];
     for (const path of this._fields) {
       const {cellTemplate = undefined, ...columnMetadata} = this.columnsMetaData[path] || {};
@@ -107,8 +117,12 @@ export class NpListComponent {
         label: path,
         ...columnMetadata
       };
-      if (cellTemplate && this[cellTemplate]) {
-        col.cellTemplate = this[cellTemplate];
+      if (cellTemplate) {
+        if (this[cellTemplate]) {
+          col.cellTemplate = this[cellTemplate];
+        } else {
+          console.warn(`Unknown cellTemplate ${cellTemplate} for column ${col.name} (${col.label})`);
+        }
       }
       cols.push(col);
     }
@@ -129,6 +143,7 @@ export class NpListComponent {
       return;
     }
     const results = [];
+    const municipalities$ = [];
     for (const namedPlace of this._namedPlaces) {
       const row = {};
       for (const path of this._fields) {
@@ -141,6 +156,9 @@ export class NpListComponent {
         }
         row[path] = value;
       }
+      if (row['$.municipality']) {
+        municipalities$.push(this.areaNamePipe.updateValue(row['$.municipality']))
+      }
       results.push(row);
     }
     if (this.data.length === 0) {
@@ -148,7 +166,10 @@ export class NpListComponent {
         this.datatable.refreshTable();
       }, 500);
     }
-    this.data = results;
-    this.cd.markForCheck();
+    // Warm up municipality pipes before initial sorting.
+    zip(...municipalities$).subscribe(() => {
+      this.data = results;
+      this.cd.markForCheck();
+    });
   }
 }

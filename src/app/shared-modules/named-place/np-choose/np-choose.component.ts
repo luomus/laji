@@ -182,5 +182,4 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
     const now = new Date();
     return date.replace('${year}', '' + now.getFullYear())
   }
-
 }

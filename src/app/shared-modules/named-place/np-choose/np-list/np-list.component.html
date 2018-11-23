@@ -38,18 +38,6 @@
   </ul>
 </div>
 
-<ng-template let-value="value" ngx-datatable-cell-template #label>
-  <span *ngIf="value">
-    {{value | label}}
-  </span>
-</ng-template>
-
-<ng-template let-value="value" ngx-datatable-cell-template #area>
-  <span *ngIf="value">
-    {{value | area }}
-  </span>
-</ng-template>
-
 <ng-template let-value="value" ngx-datatable-cell-template #status>
   <ng-container *ngIf="value">
     <ng-container [ngSwitch]="value">

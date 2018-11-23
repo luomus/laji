@@ -20,6 +20,7 @@ import { DatatableTemplatesComponent } from '../datatable-templates/datatable-te
 import { isPlatformBrowser } from '@angular/common';
 import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
+import { orderByComparator } from '@swimlane/ngx-datatable/release/utils';
 
 const CACHE_COLUMN_SETTINGS = 'datatable-col-width';
 
@@ -142,6 +143,12 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
         }
         if (this.resizable === false) {
           column.resizeable = false;
+        }
+        if (column.pipe && column.sortWithPipe) {
+          column.comparator = (a, b) => {
+            const [pipedA, pipedB] = [a, b].map(value => column.pipe.transform(value));
+            return orderByComparator(pipedA, pipedB);
+          };
         }
         return column;
       });

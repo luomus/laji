@@ -275,7 +275,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         return ObservableOf([]);
       })
       .do(data => {
-        data.sort(this.sortFunction);
         this.namedPlaces = data;
         this.namedPlace = this.namedPlaces[this.activeNP];
         this.namedPlacesEvents.emit('update');
@@ -401,8 +400,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         this.namedPlace = np;
       } else {
         this.namedPlaces.push(np);
-        this.namedPlaces.sort(this.sortFunction);
-        this.namedPlaces = [...this.namedPlaces];
       }
     }
     this.editMode = false;
@@ -415,15 +412,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   setErrorMessage(msg) {
     this.errorMsg = msg;
-  }
-
-  private sortFunction(a, b) {
-    let aa, bb;
-
-    aa = a.name.toLowerCase();
-    bb = b.name.toLowerCase();
-
-    return aa < bb ? -1 : aa > bb ? 1 : 0;
   }
 
   private findNPIdByIndex(idx: number) {
