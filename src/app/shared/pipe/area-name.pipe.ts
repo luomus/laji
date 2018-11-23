@@ -1,19 +1,20 @@
 import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AreaService } from '../service/area.service';
-import { AbsractLabelPipe } from './abstract-label.pipe';
+import { AbstractLabelPipe } from './abstract-label.pipe';
+import { Observable } from 'rxjs';
 
 @Pipe({
   name: 'area',
   pure: false
 })
-export class AreaNamePipe extends AbsractLabelPipe implements PipeTransform {
+export class AreaNamePipe extends AbstractLabelPipe implements PipeTransform {
   private type;
 
   constructor(protected translate: TranslateService,
               protected _ref: ChangeDetectorRef,
               protected areaService: AreaService) {
-    super(translate);
+    super(translate, _ref);
   }
 
   transform(value: string, type: 'name'|'provinceCode' = 'name'): any {
@@ -21,14 +22,13 @@ export class AreaNamePipe extends AbsractLabelPipe implements PipeTransform {
     return super.transform(value);
   }
 
-  protected _updateValue(key: string): void {
-    const value$ = this.type === 'provinceCode' ?
+  protected _updateValue(key: string): Observable<string> {
+    return this.type === 'provinceCode' ?
       this.areaService.getProvinceCode(key, this.translate.currentLang) :
       this.areaService.getName(key, this.translate.currentLang);
+  }
 
-    value$.subscribe((res: string) => {
-      this.value = res ? res : key;
-      this._ref.markForCheck();
-    });
+  protected _parseValue(res: string): string {
+    return res || this.key;
   }
 }
