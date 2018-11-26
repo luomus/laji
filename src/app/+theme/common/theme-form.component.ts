@@ -1,10 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { LocalizeRouterService } from 'app/locale/localize-router.service';
 
-@Component({
-    templateUrl: './theme-form.component.html'
-})
+@Injectable()
 export abstract class ThemeFormComponent {
   abstract onSuccessUrl: string;
   abstract onErrorUrl: string;
