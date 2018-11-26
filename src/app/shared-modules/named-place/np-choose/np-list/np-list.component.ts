@@ -167,9 +167,14 @@ export class NpListComponent {
       }, 500);
     }
     // Warm up municipality pipes before initial sorting.
-    zip(...municipalities$).subscribe(() => {
+    if (municipalities$.length) {
+      zip(...municipalities$).subscribe(() => {
+        this.data = results;
+        this.cd.markForCheck();
+      });
+    } else {
       this.data = results;
       this.cd.markForCheck();
-    });
+    }
   }
 }
