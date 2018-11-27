@@ -44,7 +44,9 @@ export class LineTransectFormKartoitusComponent implements OnInit, OnDestroy, Co
   }
 
   ngOnDestroy() {
-    this.subParam.unsubscribe();
+    if (this.subParam) {
+      this.subParam.unsubscribe();
+    }
   }
 
   canDeactivate() {
