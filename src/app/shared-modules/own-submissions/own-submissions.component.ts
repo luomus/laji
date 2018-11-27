@@ -15,6 +15,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 export class OwnSubmissionsComponent implements OnInit, OnChanges {
 
   @Input() collectionID;
+  @Input() formID;
   @Input() showDownloadAll = true;
   @Input() admin = false;
   @Input() useInternalDocumentViewer = false;
@@ -84,21 +85,24 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   }
 
   private getCacheKey(extra = '') {
-    return [this.namedPlace, this.collectionID, this.onlyTemplates, extra].join(':');
+    return [this.namedPlace, this.collectionID, this.formID, this.onlyTemplates, extra].join(':');
   }
 
   private initDocuments() {
+    console.log(this.formID);
     if (this.namedPlace) {
       this.getDocumentsByQuery({
         year: this.year,
         namedPlace: this.namedPlace,
-        collectionID: this.collectionID
+        collectionID: this.collectionID,
+        formID: this.formID
       });
       return;
     }
     this.documentService.countByYear(this.userService.getToken(), {
       namedPlace: this.namedPlace,
-      collectionID: this.collectionID
+      collectionID: this.collectionID,
+      formID: this.formID
     })
       .subscribe(
         (results) => {
@@ -133,7 +137,8 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
     this.documents$ = this.getAllDocuments({
       onlyTemplates: true,
       namedPlace: this.namedPlace,
-      collectionID: this.collectionID
+      collectionID: this.collectionID,
+      formID: this.formID
     })
       .subscribe(
         result => {
@@ -154,7 +159,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
       );
   }
 
-  private getDocumentsByQuery(query?: {year?: number, namedPlace?: string, collectionID?: string}) {
+  private getDocumentsByQuery(query?: {year?: number, namedPlace?: string, collectionID?: string, formID?: string}) {
     if (this.documents$) {
       this.documents$.unsubscribe();
     }
@@ -198,7 +203,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
 
     if (!year) { return; }
     this.loading = true;
-    this.documents$ = this.getAllDocuments({year: year, collectionID: this.collectionID, namedPlace: this.namedPlace})
+    this.documents$ = this.getAllDocuments({year: year, collectionID: this.collectionID, formID: this.formID, namedPlace: this.namedPlace})
       .subscribe(
         result => {
           this.documentCache[cacheKey] = result;
@@ -219,7 +224,7 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   }
 
   private getAllDocuments(
-    query: {year?: number, onlyTemplates?: boolean, namedPlace?: string, collectionID?: string} = {},
+    query: {year?: number, onlyTemplates?: boolean, namedPlace?: string, collectionID?: string, formID?: string} = {},
     page = 1,
     documents = []
   ): Observable<Document[]> {
@@ -232,7 +237,8 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
         {
           templates: query.onlyTemplates ? 'true' : undefined,
           namedPlace: query.namedPlace,
-          collectionID: query.collectionID
+          collectionID: query.collectionID,
+          formID: query.formID
         }
       )
       .switchMap(
