@@ -1,12 +1,32 @@
-<laji-theme-page [title]="'NAFI'">
+<laji-theme-page [title]="'NAFI'"
+  [navLinks]="[
+    {
+      routerLink: ['../nafi', 'instructions'],
+      label: 'instructions' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../nafi', 'stats'],
+      label: 'nafi.stats' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../nafi', 'form'],
+      label: 'nafi.form' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../nafi', 'ownSubmissions'],
+      label: 'haseka.ownSubmissions.title' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../nafi', 'templates'],
+      label: 'haseka.templates.title' | translate,
+      visible: true
+    }
+  ]">
   <nav>
-    <ul>
-      <li><a [routerLink]="['../nafi', 'instructions']">{{'instructions' | translate}}</a></li>
-      <li><a [routerLink]="['../nafi', 'stats']">{{'nafi.stats' | translate}}</a></li>
-      <li><a [routerLink]="['../nafi', 'form']">{{'nafi.form' | translate}}</a></li>
-      <li><a [routerLink]="['../nafi', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
-      <li><a [routerLink]="['../nafi', 'templates']">{{'haseka.templates.title' | translate}}</a></li>
-    </ul>
     <laji-haseka-latest [userToken]="userService.getToken()"
                         [forms]="[formID]"
                         [tmpOnly]="true"

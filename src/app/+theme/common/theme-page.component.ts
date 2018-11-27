@@ -7,6 +7,16 @@ import { Component, Input } from '@angular/core';
     <div class="row" id="wrapper">
         <div class="col-sm-3 col-md-2 col-lg-2 sidebar-nav">
             <h1>{{title}}</h1>
+            <ul *ngIf="navLinks">
+                <ng-container *ngFor="let link of navLinks">
+                    <li *ngIf="link.visible">
+                        <a routerLinkActive="laji-sidebar-active"
+                           [routerLink]="link.routerLink">
+                            {{link.label}}
+                        </a>
+                    </li>
+                </ng-container>
+            </ul>
             <ng-content select='nav'></ng-content>
         </div>
         <div class="col-sm-9 col-md-10 col-lg-10 content">
@@ -17,6 +27,7 @@ import { Component, Input } from '@angular/core';
     `,
     styles: [`
     :host {
+        height: 100%;
         display: flex;
         flex-direction: column;
         flex-grow: 1;
@@ -40,4 +51,8 @@ import { Component, Input } from '@angular/core';
 })
 export class ThemePageComponent {
     @Input() title: string;
+    @Input() navLinks?:
+        {
+            routerLink: string[], label: string, visible: boolean
+        }[];
 }

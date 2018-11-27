@@ -1,35 +1,45 @@
 <laji-theme-page *ngIf="showNav"
-  [title]="'Linja&shy;laskenta'">
+  [title]="'Linja&shy;laskenta'"
+  [navLinks]="[
+    {
+      routerLink: ['../linjalaskenta', 'instructions'],
+      label: 'instructions' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../linjalaskenta', 'stats'],
+      label: 'nafi.stats' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../linjalaskenta', 'form'],
+      label: 'linjalaskenta.form1' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../linjalaskenta', 'ei-vakiolinjat'],
+      label: 'linjalaskenta.form2' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../linjalaskenta', 'kartoitus'],
+      label: 'linjalaskenta.form3' | translate,
+      visible: (rights | async)?.admin && showForm
+    },
+    {
+      routerLink: ['../linjalaskenta', 'ownSubmissions'],
+      label: (rights | async)?.admin ?
+             ('theme.admin.submissions' | translate):
+             ('haseka.ownSubmissions.title' | translate),
+      visible: showForm
+    },
+    {
+      routerLink: ['/vihko/fp/' + collectionID + '/admin'],
+      label: 'form.administer' | translate,
+      visible: (rights | async)?.admin
+    }
+  ]">
   <nav>
-    <ul>
-      <li>
-        <a [routerLink]="['../linjalaskenta', 'instructions']">
-          {{'instructions' | translate}}</a></li>
-      <li>
-        <a [routerLink]="['../linjalaskenta', 'stats']">
-          {{'nafi.stats' | translate}}</a></li>
-      <li>
-        <a [routerLink]="['../linjalaskenta', 'form']">
-          {{'linjalaskenta.form1' | translate}}</a></li>
-      <li *ngIf="showForm">
-        <a [routerLink]="['../linjalaskenta', 'ei-vakiolinjat']">
-          {{'linjalaskenta.form2' | translate}}</a></li>
-      <ng-container *ngIf="(rights | async)?.admin; else normalUsers">
-        <li *ngIf="showForm">
-          <a [routerLink]="['../linjalaskenta', 'kartoitus']">
-            {{'linjalaskenta.form3' | translate}}</a></li>
-        <li *ngIf="showForm">
-          <a [routerLink]="['../linjalaskenta', 'ownSubmissions']">
-            {{'theme.admin.submissions' | translate}}</a></li>
-        <li>
-          <a [routerLink]="['/vihko/fp/' + collectionID + '/admin']">
-            {{'form.administer' | translate}}</a></li>
-      </ng-container>
-      <ng-template #normalUsers>
-        <li *ngIf="showForm"><a [routerLink]="['../linjalaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
-      </ng-template>
-    </ul>
-
     <laji-haseka-latest [userToken]="userService.getToken()"
                         [forms]="forms"
                         [tmpOnly]="true"

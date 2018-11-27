@@ -1,21 +1,20 @@
-<laji-theme-page [title]="'Vieras&shy;lajit'">
-  <nav>
-    <ul>
-      <li>
-        <a routerLinkActive="laji-sidebar-active"
-          [routerLink]="['../vieraslajit', 'instructions']">
-          {{'instructions' | translate}}</a>
-      </li>
-      <li *ngIf="rights?.edit || rights?.admin">
-        <a routerLinkActive="laji-sidebar-active"
-          [routerLink]="['../vieraslajit', 'places']">
-          {{'invasiveSpecies.places' | translate}}</a>
-      </li>
-      <li *ngIf="rights?.admin">
-        <a [routerLink]="['/vihko/fp/HR.2049/admin']">
-          {{'form.administer' | translate}}</a>
-      </li>
-    </ul>
-  </nav>
+<laji-theme-page [title]="'Vieras&shy;lajit'"
+  [navLinks]="[
+    {
+      routerLink: ['../vieraslajit', 'instructions'],
+      label: 'instructions' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../vieraslajit', 'places'],
+      label: 'invasiveSpecies.places' | translate,
+      visible: rights?.edit || rights?.admin
+    },
+    {
+      routerLink: ['/vihko/fp/HR.2049/admin'],
+      label: 'form.administer' | translate,
+      visible: rights?.admin
+    }
+  ]">
   <router-outlet></router-outlet>
 </laji-theme-page>
