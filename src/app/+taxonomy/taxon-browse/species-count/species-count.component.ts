@@ -10,11 +10,14 @@ import {Subscription} from 'rxjs';
 })
 export class SpeciesCountComponent implements OnInit {
   @Input() searchQuery: TaxonomySearchQuery;
+  @Input() hasMediaFilter: boolean;
 
   count: number;
   loading = false;
 
+  private subFetch: Subscription;
   private subQueryUpdate: Subscription;
+  private lastQuery: string;
 
   constructor(
     private taxonomyService: TaxonomyApi
@@ -30,8 +33,21 @@ export class SpeciesCountComponent implements OnInit {
   }
 
   private updateCount() {
+    const cacheKey = JSON.stringify({
+      query: this.searchQuery.query,
+      hasMediaFilter: this.hasMediaFilter
+    });
+    if (this.lastQuery === cacheKey) {
+      return;
+    }
+    this.lastQuery = cacheKey;
+
+    if (this.subFetch) {
+      this.subFetch.unsubscribe();
+    }
+
     this.loading = true;
-    this.taxonomyService
+    this.subFetch = this.taxonomyService
       .taxonomyFindSpecies(
         this.searchQuery.query.target ? this.searchQuery.query.target : 'MX.37600',
         'multi',
@@ -46,7 +62,8 @@ export class SpeciesCountComponent implements OnInit {
         {
           ...this.searchQuery.query,
           target: undefined,
-          taxonRanks: ['MX.species']
+          taxonRanks: ['MX.species'],
+          hasMediaFilter: this.hasMediaFilter
         }
       )
       .subscribe(res => {
