@@ -25,7 +25,7 @@ export class DocumentFormFooterComponent {
 
   constructor() { }
 
-  isString(val) { return typeof val === 'string';}
+  isString(val) { return typeof val === 'string'; }
 
   displaysSaveContainer() { return this._admin || this.show.save}
 
