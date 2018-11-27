@@ -1,6 +1,6 @@
 <div class="form-footer" *ngIf="_admin || (_form && !_locked)">
   <div class="row">
-    <div class="col-xs-3 col-sm-2" *ngIf="show.save">
+    <div class="col-xs-3 col-sm-2" *ngIf="displaysSaveContainer()">
       <div class="lock-button" *ngIf="_admin">
         <ng-container *ngIf="_locked; else open">
           <button type="button" class="btn btn-danger btn-sm" (click)="onLock.emit(false)"><i class="fa fa-lock"></i></button>
@@ -9,9 +9,9 @@
           <button type="button" class="btn btn-success btn-sm" (click)="onLock.emit(true)"><i class="fa fa-unlock"></i></button>
         </ng-template>
       </div>
-      <button class="btn btn-success btn-sm" [class.admin-success]="_admin" [disabled]="saving" type="submit" (click)="onSubmitPublic.emit()">{{buttonLabel('save') | translate}}</button>
+      <button *ngIf="show.save" class="btn btn-success btn-sm" [class.admin-success]="_admin" [disabled]="saving" type="submit" (click)="onSubmitPublic.emit()">{{buttonLabel('save') | translate}}</button>
     </div>
-    <div [ngClass]="{'col-xs-3 col-sm-2': show.save, 'col-xs-5 col-sm-3': !show.save}">
+    <div [ngClass]="{'col-xs-3 col-sm-2': displaysSaveContainer(), 'col-xs-5 col-sm-3': !displaysSaveContainer()}">
       <button *ngIf="show.temp" class="btn btn-warning btn-sm" [disabled]="saving" type="submit" (click)="onSubmitPrivate.emit()">{{buttonLabel('temp') | translate}}</button>
     </div>
     <div class="col-xs-3 col-sm-6 info" [ngSwitch]="status">
@@ -29,11 +29,13 @@
             {{'haseka.form.unsavedNever' | translate}}
           </span>
         <span class="pull-right">
-
         </span>
       </div>
+      <span *ngIf="isString(readonly)">
+        {{readonly | translate}}
+      </span>
     </div>
-    <div [ngClass]="{'col-xs-3 col-sm-2': show.save, 'col-xs-4 col-sm-3': !show.save}">
+    <div [ngClass]="{'col-xs-3 col-sm-2': displaysSaveContainer(), 'col-xs-4 col-sm-3': !displaysSaveContainer()}">
       <button *ngIf="show.cancel" class="btn btn-danger btn-sm pull-right" [disabled]="saving" type="submit" (click)="onCancel.emit()">{{buttonLabel('cancel') | translate}}</button>
     </div>
   </div>

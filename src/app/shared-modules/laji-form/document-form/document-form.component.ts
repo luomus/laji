@@ -65,6 +65,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   public errorMsg: string;
   public namedPlace;
   public readyForForm = false;
+  public readonly: boolean | string;
 
   private subTrans: Subscription;
   private subFetch: Subscription;
@@ -189,6 +190,9 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
 
   lock(lock) {
     this.form = {...this.form, formData: {...this.form.formData, locked: lock}};
+    this.updateReadonly().subscribe(() => {
+      this.changeDetector.markForCheck();
+    });
   }
 
   onSubmit(event) {
@@ -282,6 +286,22 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       );
   }
 
+  updateReadonly(): Observable<any> {
+    return Observable.create(observer => {
+      this.userService.getUser().subscribe(user => {
+        const {formData = {}} = this.form || {};
+        if ((user.role || []).indexOf('MA.admin') === -1
+          && (formData.creator !== user.id
+            || formData.editors.indexOf(user.id) === -1)) {
+          this.readonly = 'haseka.form.readonly';
+        } else {
+          this.readonly = formData.locked;
+        }
+        observer.next();
+      });
+    });
+  }
+
   fetchFormAndDocument() {
     const key = this.formId + this.translate.currentLang + this.documentId;
     if (this.current === key) {
@@ -368,13 +388,15 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           data.uiSchemaContext.isAdmin = result.rights.admin;
           data.uiSchemaContext.annotations = result.annotations;
           this.form = data;
-          this.lang = this.translate.currentLang;
-          this.readyForForm = true;
-          if (this.hasChanges()) {
-            this.saveVisibility = 'shown';
-            this.status = 'unsaved';
-          }
-          this.changeDetector.markForCheck();
+          this.updateReadonly().subscribe(() => {
+            this.lang = this.translate.currentLang;
+            this.readyForForm = true;
+            if (this.hasChanges()) {
+              this.saveVisibility = 'shown';
+              this.status = 'unsaved';
+            }
+            this.changeDetector.markForCheck();
+          });
         },
         err => {
           this.formService.isTmpId(this.documentId) ?

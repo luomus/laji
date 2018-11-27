@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 export class DocumentFormFooterComponent {
   @Input() status = '';
   @Input() saving = false;
+  @Input() readonly = false;
   @Output() onSubmitPublic = new EventEmitter();
   @Output() onSubmitPrivate = new EventEmitter();
   @Output() onCancel = new EventEmitter();
@@ -24,6 +25,10 @@ export class DocumentFormFooterComponent {
 
   constructor() { }
 
+  isString(val) { return typeof val === 'string';}
+
+  displaysSaveContainer() { return this._admin || this.show.save}
+
   @Input()
   set form(form: any) {
     this._form = form;
@@ -36,6 +41,9 @@ export class DocumentFormFooterComponent {
         show = true;
       } else {
         show = place in form.actions;
+      }
+      if (this.readonly && (place === 'save' || place === 'temp')) {
+        show = false;
       }
       this.show[place] = show;
     });
