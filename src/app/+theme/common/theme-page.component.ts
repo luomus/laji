@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
     template: `
 <div class="container-fluid">
     <div class="row" id="wrapper">
-        <div class="col-sm-3 col-md-2 col-lg-2 sidebar-nav">
+        <div *ngIf='showNav' class="col-sm-3 col-md-2 col-lg-2 sidebar-nav">
             <h1>{{title}}</h1>
             <ul *ngIf="navLinks">
                 <ng-container *ngFor="let link of navLinks">
@@ -19,7 +19,8 @@ import { Component, Input } from '@angular/core';
             </ul>
             <ng-content select='nav'></ng-content>
         </div>
-        <div class="col-sm-9 col-md-10 col-lg-10 content">
+        <div class="content"
+        [ngClass]="{'col-sm-9 col-md-10 col-lg-10': showNav}">
             <ng-content select='*'></ng-content>
         </div>
     </div>
@@ -55,4 +56,6 @@ export class ThemePageComponent {
         {
             routerLink: string[], label: string, visible: boolean
         }[];
+    // tslint:disable-next-line:whitespace
+    @Input() showNav? = true;
 }
