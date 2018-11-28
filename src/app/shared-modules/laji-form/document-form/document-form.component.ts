@@ -189,7 +189,11 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
   }
 
   lock(lock) {
-    this.form = {...this.form, formData: {...this.form.formData, locked: lock}};
+    this.form = {
+      ...this.form,
+      formData: {...this.form.formData, locked: lock},
+      uiSchema: {...this.form.uiSchema, 'ui:disabled': lock}
+    };
     this.updateReadonly().subscribe(() => {
       this.changeDetector.markForCheck();
     });
@@ -390,6 +394,7 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           this.form = data;
           this.updateReadonly().subscribe(() => {
             this.lang = this.translate.currentLang;
+            this.form.uiSchema['ui:disabled'] = this.readonly;
             this.readyForForm = true;
             if (this.hasChanges()) {
               this.saveVisibility = 'shown';
