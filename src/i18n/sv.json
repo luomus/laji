@@ -781,6 +781,8 @@
   "taxonomy.vernacular.name.fi": "Finska namn",
   "taxonomy.vernacular.name.sv": "Svenska namn",
   "taxonomy.vernacular.names": "Triviala namn",
+  "taxonomy.species": "arter",
+  "taxonomy.species.singular": "art",
   "technical": "technical",
   "template.chooseType": "Store",
   "template.description": "Beskrivning",

@@ -787,6 +787,8 @@
   "taxonomy.vernacular.name.fi": "Finnish name",
   "taxonomy.vernacular.name.sv": "Swedish name",
   "taxonomy.vernacular.names": "Vernacular names",
+  "taxonomy.species": "species",
+  "taxonomy.species.singular": "species",
   "technical": "technical",
   "template.chooseType": "Store",
   "template.description": "Description",

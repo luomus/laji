@@ -814,6 +814,8 @@
   "taxonomy.vernacular.name.fi": "Suomenkielinen nimi",
   "taxonomy.vernacular.name.sv": "Ruotsinkielinen nimi",
   "taxonomy.vernacular.names": "Yleiskieliset nimet",
+  "taxonomy.species": "lajia",
+  "taxonomy.species.singular": "laji",
   "technical": "tekninen",
   "template.chooseType": "Talteen",
   "template.description": "Kuvaus",

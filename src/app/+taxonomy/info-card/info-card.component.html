@@ -156,6 +156,9 @@
       <div class="col-xs-12">
         <h3>{{ 'taxonomy.belongs.to' | translate }}</h3>
         <laji-children-list [parentId]="taxon.id"></laji-children-list>
+        <laji-species-pie
+          [taxonId]="taxon.id"
+        ></laji-species-pie>
       </div>
     </div>
   </div>

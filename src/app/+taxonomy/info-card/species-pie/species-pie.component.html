@@ -1,0 +1,28 @@
+<div *ngIf="data && data.length > 0" style="margin-top: 20px">
+  <h4>Lajien määrän jakautuminen alemmille taksoneille (yhteensä {{total}} lajia)</h4>
+  <div class="species-pie-chart-container">
+    <div class="species-pie-chart">
+      <ngx-charts-pie-chart
+        [results]="data"
+        [labels]="true"
+        [trimLabels]="false"
+        [labelFormatting]="labelFormatting"
+        (select)="onSelect($event)"
+      >
+        <ng-template #tooltipTemplate let-model="model">
+          <span *ngIf="dataById[model.name].vernacularName" class="tooltip-label">
+            {{dataById[model.name].vernacularName}}
+          </span>
+                <span *ngIf="!dataById[model.name].vernacularName" class="tooltip-label" [class.cursive]="dataById[model.name].cursiveName">
+            {{dataById[model.name].scientificName}}
+          </span>
+                <span class="tooltip-val">
+            {{model.value}}
+            <ng-container *ngIf="model.value === 1"> {{'taxonomy.species.singular' | translate}}</ng-container>
+            <ng-container *ngIf="model.value !== 1"> {{'taxonomy.species' | translate}}</ng-container>
+          </span>
+        </ng-template>
+      </ngx-charts-pie-chart>
+    </div>
+  </div>
+</div>
