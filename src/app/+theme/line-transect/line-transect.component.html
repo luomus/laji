@@ -1,5 +1,6 @@
-<laji-theme-page *ngIf="showNav"
+<laji-theme-page
   [title]="'Linja&shy;laskenta'"
+  [showNav]="showNav"
   [navLinks]="[
     {
       routerLink: ['../linjalaskenta', 'instructions'],
@@ -48,5 +49,3 @@
   </nav>
   <router-outlet></router-outlet>
 </laji-theme-page>
-
-<router-outlet *ngIf="!showNav"></router-outlet>
