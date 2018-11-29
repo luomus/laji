@@ -1,5 +1,9 @@
 <div *ngIf="data && data.length > 0" style="margin-top: 20px">
-  <h4>Lajien määrän jakautuminen alemmille taksoneille (yhteensä {{total}} lajia)</h4>
+  <h4>
+    {{'taxonomy.speciesPieChartTitle' | translate}}
+    ({{'taxonomy.total' | translate}} {{total}}
+    {{total === 1 ? 'taxonomy.species.singular' : 'taxonomy.species' | translate}})
+  </h4>
   <div class="species-pie-chart-container">
     <div class="species-pie-chart">
       <ngx-charts-pie-chart

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnChanges, Input } from '@angular/core';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,14 +10,12 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
   templateUrl: './species-pie.component.html',
   styleUrls: ['./species-pie.component.scss']
 })
-export class SpeciesPieComponent implements OnInit, OnChanges {
+export class SpeciesPieComponent implements OnChanges {
   @Input() taxonId: string;
   data: any;
   labelFormatting = this.formatLabel.bind(this);
   total = 0;
 
-  private speciesText = '';
-  private speciesSingularText = '';
   private dataById: {[key: string]: Taxonomy} = {};
 
   constructor(
@@ -26,17 +24,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
     private router: Router,
     private localizeRouterService: LocalizeRouterService
   ) { }
-
-  ngOnInit() {
-    this.translate.get('taxonomy.species')
-      .subscribe(speciesText => {
-        this.speciesText = speciesText;
-      });
-    this.translate.get('taxonomy.species.singular')
-      .subscribe(speciesSingularText => {
-        this.speciesSingularText = speciesSingularText;
-      });
-  }
 
   ngOnChanges() {
     this.data = undefined;
@@ -73,7 +60,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
 
   private formatLabel(id: string) {
     const data = this.dataById[id];
-    const speciesText = data.countOfFinnishSpecies === 1 ? this.speciesSingularText : this.speciesText;
     return data.vernacularName || data.scientificName;
   }
 }
