@@ -55,7 +55,7 @@ export class NpEditFormComponent {
   }
 
   onSubmit(event) {
-    if (!('namedPlace' in event.data.formData) || event.data.formData.namedPlace.length < 1) {
+    if (!event.data.formData) {
       this.lajiForm.unBlock();
       return;
     }
@@ -122,7 +122,7 @@ export class NpEditFormComponent {
   private getNamedPlaceData(event) {
     const filteredKeys = ['geometry', 'locality', 'localityDescription', 'placeWrapper'];
 
-    const formData = event.data.formData.namedPlace;
+    const formData = event.data.formData;
     const data: any = {};
 
     const keys = Object.keys(formData);
