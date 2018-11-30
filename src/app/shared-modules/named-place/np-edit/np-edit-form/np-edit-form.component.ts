@@ -136,8 +136,6 @@ export class NpEditFormComponent {
 
     data.geometry = formData.geometry.geometries[0];
 
-    this.localityToPrepopulatedDocument(data, formData);
-
     if (this.namedPlaceOptions && this.namedPlaceOptions.prepopulatedDocumentFields) {
       return this.augmnentPrepopulatedDocument(data, formData, this.namedPlaceOptions.prepopulatedDocumentFields);
     }
@@ -146,8 +144,7 @@ export class NpEditFormComponent {
   }
 
   private getPrepopulatedDocument(namedPlace) {
-    namedPlace.prepopulatedDocument =
-      (this.namedPlace && this.namedPlace.prepopulatedDocument) ? this.namedPlace.prepopulatedDocument : {};
+    namedPlace.prepopulatedDocument = this.namedPlace && this.namedPlace.prepopulatedDocument || {};
     return namedPlace;
   }
 
@@ -207,30 +204,6 @@ export class NpEditFormComponent {
       });
       resolve(namedPlace);
     }));
-  }
-
-  private localityToPrepopulatedDocument(data, formData) {
-    if (!formData.locality && !formData.localityDescription) {
-      return;
-    }
-
-    this.getPrepopulatedDocument(data);
-
-    const populate = data.prepopulatedDocument;
-
-    if (!populate.gatherings) {
-      populate.gatherings = [{}];
-    } else if (!populate.gatherings[0]) {
-      populate.gatherings[0] = {};
-    }
-
-    if (formData.locality) {
-      populate.gatherings[0].locality = formData.locality;
-    }
-
-    if (formData.localityDescription) {
-      populate.gatherings[0].localityDescription = formData.localityDescription;
-    }
   }
 
   private parseErrorMessage(err) {
