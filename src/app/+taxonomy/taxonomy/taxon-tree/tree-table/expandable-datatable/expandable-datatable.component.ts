@@ -32,6 +32,7 @@ export class ExpandableDatatableComponent implements OnInit, OnChanges {
 
   @Input() activeId: string;
   @Input() expanderColWidth = 200;
+  @Input() showHeader = true;
   rowClass = this._rowClass();
 
   @Output() toggle = new EventEmitter<TreeNode>();
@@ -80,7 +81,6 @@ export class ExpandableDatatableComponent implements OnInit, OnChanges {
           column = {
             ...column,
             cellTemplate: this.expanderTpl,
-            frozenLeft: true,
             width: this.expanderColWidth
           };
         }

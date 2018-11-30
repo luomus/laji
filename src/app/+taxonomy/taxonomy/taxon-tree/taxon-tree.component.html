@@ -1,0 +1,24 @@
+<div class="show-main-levels-wrapper">
+  <label>
+    <input
+      type="checkbox"
+      [(ngModel)]="showMainLevels"
+      (ngModelChange)="setSkipParams()"
+      name="showMainLevels"
+    >
+    {{'species.tree.showMainLevels' | translate}}
+  </label>
+  <laji-info>{{'species.tree.info.showMainLevels' | translate}}</laji-info>
+</div>
+<laji-tree-table
+  id="taxon-tree-table"
+  #treeTable
+  [columns]="columns"
+  [nodes]="nodes"
+  [getChildren]="getChildrenFunc"
+  [getParents]="getParentsFunc"
+  [skipParams]="skipParams"
+  [hideParams]="hideParams"
+  [showHeader]="false"
+>
+</laji-tree-table>

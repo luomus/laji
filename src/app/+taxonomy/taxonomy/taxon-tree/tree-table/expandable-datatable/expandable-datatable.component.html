@@ -1,12 +1,10 @@
 <ngx-datatable
-  [style.height]="'calc(70vh - 30px)'"
   class='material striped laji-datatable'
   [messages]="{ emptyMessage: '', totalMessage: '' }"
   [scrollbarH]="true"
-  [scrollbarV]="true"
   [rows]="rows"
   [columns]="_columns"
-  [headerHeight]="38"
+  [headerHeight]="showHeader ? 38 : 0"
   [rowClass]="rowClass"
   (resize)="onResize($event)"
   (activate)="onRowSelect($event)">
@@ -30,13 +28,13 @@
       <ng-template #defaultExpanderLabel>
           <span *ngIf="value" title="{{value}}">{{value}}</span>
       </ng-template>
-      <i class="glyphicon glyphicon-plus pull-right text-primary"
+      <!--i class="glyphicon glyphicon-plus pull-right text-primary"
          *ngIf="row.node.leafCount < 1000 && row.node.hasChildren && !row.state.isExpanded"
          (click)="onToggleAllClick($event, row.node)"
          [tooltip]="'treeTable.expandAll' | translate"
          [placement]="'right'"
          [container]="'body'">
-      </i>
+      </i-->
     </span>
   </span>
 </ng-template>

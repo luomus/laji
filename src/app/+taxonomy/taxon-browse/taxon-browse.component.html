@@ -28,11 +28,6 @@
               {{"species.images" | translate}}
             </a>
           </li>
-          <li role="presentation" [ngClass]="{active: active === 'tree'}">
-            <a [routerLink]="'/taxon/tree' | localize" [queryParams]="{'onlyFinnish': searchQuery.query.onlyFinnish}">
-              {{"species.taxa" | translate}}
-            </a>
-          </li>
         </ul>
 
         <div [hidden]="active === 'tree'" *ngIf="activated['list'] || activated['images']" style="margin-bottom: 20px">
@@ -52,12 +47,6 @@
                              *ngIf="activated['images']"
                              [searchQuery]="searchQuery">
         </laji-species-images>
-        <laji-tree [hidden]="active !== 'tree'"
-                   *ngIf="activated['tree']"
-                   [visible]="active === 'tree'"
-                   [searchQuery]="searchQuery"
-                   [columnService]="columnService">
-        </laji-tree>
       </div>
     </div>
   </div>

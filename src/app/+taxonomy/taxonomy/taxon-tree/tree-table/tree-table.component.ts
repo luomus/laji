@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { forkJoin, interval, Observable, of } from 'rxjs';
 import { map, share, switchMap, take, tap } from 'rxjs/operators';
 import { TreeNode } from './model/tree-node.interface';
@@ -20,6 +20,7 @@ export class TreeTableComponent implements OnChanges {
   @Input() hideParams: {key: string, values: string[], isWhiteList?: boolean}[];
   @Input() activeId: string;
   @Input() initialExpanderWidth = 200;
+  @Input() showHeader = true;
 
   rows = [];
   expanderColWidth: number;

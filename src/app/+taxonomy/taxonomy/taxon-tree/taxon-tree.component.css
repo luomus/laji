@@ -1,0 +1,13 @@
+::ng-deep #taxon-tree-table .ngx-datatable.material,
+::ng-deep #taxon-tree-table .ngx-datatable.material .datatable-body-row,
+::ng-deep #taxon-tree-table .ngx-datatable.material .datatable-body-row:hover .datatable-row-group {
+    border: none;
+    background-color: #ECF0F1 !important;
+}
+
+.show-main-levels-wrapper {
+  padding: 15px;
+}
+.show-main-levels-wrapper label {
+  display: inline;
+}

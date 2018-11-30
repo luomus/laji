@@ -12,10 +12,10 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Logger } from '../../shared/logger/logger.service';
-import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../shared/model/Taxonomy';
-import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
-import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
+import { Logger } from '../../../shared/logger/logger.service';
+import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../../shared/model/Taxonomy';
+import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
+import { ObservationMapComponent } from '../../../shared-modules/observation-map/observation-map/observation-map.component';
 import { Title } from '@angular/platform-browser';
 import { combineLatest, map, switchMap, tap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
@@ -23,7 +23,7 @@ import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'laji-info-card',
   templateUrl: './info-card.component.html',
-  styleUrls: ['./info-card.component.css'],
+  styleUrls: ['./info-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoCardComponent implements OnInit, OnDestroy {
@@ -182,3 +182,4 @@ export class InfoCardComponent implements OnInit, OnDestroy {
       });
   }
 }
+

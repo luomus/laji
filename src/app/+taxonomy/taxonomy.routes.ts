@@ -1,7 +1,7 @@
 import { RouterModule, Routes, UrlSegment } from '@angular/router';
 import { TaxonComponent } from './taxon.component';
 import { TaxonBrowseComponent } from './taxon-browse/taxon-browse.component';
-import { InfoCardComponent } from './info-card/info-card.component';
+import { TaxonomyComponent } from './taxonomy/taxonomy.component';
 import { ModuleWithProviders } from '@angular/core';
 import { InformalGroupRedirectComponent } from './informal-group-redirect/informal-group-redirect.component';
 
@@ -47,7 +47,7 @@ export const taxonomyRoutes: Routes = [
   {
     matcher: decideTaxon,
     pathMatch: 'full',
-    component: InfoCardComponent
+    component: TaxonomyComponent
   },
 ];
 export const routing: ModuleWithProviders = RouterModule.forChild(taxonomyRoutes);
