@@ -15,7 +15,7 @@ export const Global = {
     lineTransectEiVakio: 'MHL.27',
     lineTransectKartoitus: 'MHL.28',
     whichSpecies: 'MHL.9',
-    namedPlace: 'JX.123608',
+    namedPlace: 'MHL.36',
     collectionContest: 'MHL.25'
   },
   collections: {
