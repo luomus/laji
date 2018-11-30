@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input } from '@angular/core';
+import { Component, OnChanges, Input, ChangeDetectorRef } from '@angular/core';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
@@ -22,7 +22,8 @@ export class SpeciesPieComponent implements OnChanges {
     private taxonomyService: TaxonomyApi,
     private translate: TranslateService,
     private router: Router,
-    private localizeRouterService: LocalizeRouterService
+    private localizeRouterService: LocalizeRouterService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnChanges() {
@@ -45,6 +46,8 @@ export class SpeciesPieComponent implements OnChanges {
 
             return arr;
           }, []);
+
+          this.cd.markForCheck();
         });
     }
   }
