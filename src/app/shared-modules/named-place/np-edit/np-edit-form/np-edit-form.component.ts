@@ -122,7 +122,7 @@ export class NpEditFormComponent {
   private getNamedPlaceData(event) {
     const filteredKeys = ['geometry', 'locality', 'localityDescription', 'placeWrapper'];
 
-    const formData = event.data.formData.namedPlace[0];
+    const formData = event.data.formData.namedPlace;
     const data: any = {};
 
     const keys = Object.keys(formData);
@@ -188,7 +188,7 @@ export class NpEditFormComponent {
           });
         })
     };
-    const prepopulatedDocument = this.getPrepopulatedDocument(namedPlace).prepopulatedDocument;
+    const {prepopulatedDocument} = this.getPrepopulatedDocument(namedPlace);
     const fieldPointers = Object.keys(options);
     return new Promise(resolve => Promise.all(fieldPointers.map(fieldPointer => {
       let valueOrPromise = undefined;
