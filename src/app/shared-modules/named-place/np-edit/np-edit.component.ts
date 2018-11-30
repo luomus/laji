@@ -122,7 +122,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(form => {
         form['formData'] = data;
         if (this.mapOptionsData) {
-          form['uiSchema']['namedPlace']['ui:options']['mapOptions'] = this.mapOptionsData;
+          form['uiSchema']['geometry']['ui:options']['mapOptions'] = this.mapOptionsData;
         }
         this.lang = this.translate.currentLang;
         this.npFormData = form;
@@ -140,7 +140,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(
         data => {
           if (this.mapOptionsData) {
-            data['uiSchema']['namedPlace']['ui:options']['mapOptions'] = this.mapOptionsData;
+            data['uiSchema']['geometry']['ui:options']['mapOptions'] = this.mapOptionsData;
           }
           this.npFormData = data;
           this.setFormData();
@@ -177,9 +177,9 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
 
-      this.npFormData.formData.namedPlace = [npData];
+      this.npFormData.formData = npData;
     } else {
-      this.npFormData.formData.namedPlace = [this.prepopulatedNamedPlace];
+      this.npFormData.formData = this.prepopulatedNamedPlace;
     }
   }
 

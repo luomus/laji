@@ -149,15 +149,15 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private updateFields() {
-    const fields = this.npFormData.schema.properties.namedPlace.items.properties;
+    const fields = this.npFormData.schema.properties;
 
     let displayed = [];
     if (this.namedPlaceOptions.infoFields) {
       displayed = this.namedPlaceOptions.infoFields || [];
     } else {
       const displayedById =
-        this.npFormData.uiSchema.namedPlace.uiSchema.items['ui:options'].fieldScopes.collectionID;
-      displayed = (displayedById[this.collectionId] ? displayedById[this.collectionId] : displayedById['*']).fields;
+        this.npFormData.uiSchema['ui:options'].fieldScopes.collectionID;
+      displayed = (displayedById[this.collectionId] || displayedById['*'] || []).fields;
     }
 
     let gData = null;

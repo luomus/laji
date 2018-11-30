@@ -89,7 +89,6 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
   }
 
   private initDocuments() {
-    console.log(this.formID);
     if (this.namedPlace) {
       this.getDocumentsByQuery({
         year: this.year,
