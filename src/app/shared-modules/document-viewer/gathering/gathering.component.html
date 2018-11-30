@@ -9,7 +9,7 @@
   </ng-container>
   <laji-row [showWithoutValue]="true" *ngIf="showOnlyHighlightedUnit && unitCnt > 1">
     <button type="button" (click)="showAllUnits.emit()" class="btn btn-default btn-sm all-units-btn">
-      {{'viewer.otherUnits' | translate:{cnt: unitCnt - 1} }}
+      {{ 'viewer.otherUnits' | translate:{cnt: unitCnt - 1} }}
     </button>
   </laji-row>
 </div>

@@ -27,7 +27,7 @@ export class InfoPageComponent implements OnChanges {
   private updatePage() {
     this.content$ = this.lajiApiService.get(LajiApi.Endpoints.information, this.pages[this.translateService.currentLang], {}).pipe(
       map(result => result.content)
-    )
+    );
   }
 
 }

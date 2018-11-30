@@ -1,12 +1,12 @@
 <ul class="nav nav-pills">
   <li role="presentation" [ngClass]="{active: ['map', 'list', 'images', 'species', 'stats', 'load'].indexOf(active) > -1}">
     <a [routerLink]="['/observation', this.lastAllActive] | localize" [queryParams]="queryParams">
-      <strong>{{'search.result.all' | translate}}</strong>
+      <strong>{{ 'search.result.all' | translate }}</strong>
     </a>
   </li>
   <li role="presentation" class="beta" [ngClass]="{active: active === 'finnish'}">
     <a [routerLink]="'/observation/finnish' | localize" [queryParams]="queryParams">
-      <strong>{{'search.result.finnish' | translate}}</strong>
+      <strong>{{ 'search.result.finnish' | translate }}</strong>
     </a>
   </li>
   <li class="counts">
@@ -15,7 +15,7 @@
         [timeout]="30000"
         [query]="searchQuery.query"
         [tick]="searchQuery.tack"></laji-observation-count>
-      {{'observation.results.observation' | translate}}
+      {{ 'observation.results.observation' | translate }}
       <laji-observation-count
         [timeout]="30000"
         [query]="searchQuery.query"
@@ -23,7 +23,7 @@
         [field]="'unit.linkings.taxon.speciesId'"
         [overrideInQuery]="{includeNonValidTaxa: false}">
       </laji-observation-count>
-      {{'observation.results.species' | translate}}
+      {{ 'observation.results.species' | translate }}
     </strong>
     <strong [hidden]="active !== 'finnish'">
       <laji-observation-count
@@ -31,7 +31,7 @@
         [overrideInQuery]="{countryId: 'ML.206'}"
         [query]="searchQuery.query"
         [tick]="searchQuery.tack"></laji-observation-count>
-      {{'observation.results.observation' | translate}}
+      {{ 'observation.results.observation' | translate }}
       <laji-observation-count
         [timeout]="30000"
         [overrideInQuery]="{countryId: 'ML.206', includeNonValidTaxa: false}"
@@ -39,7 +39,7 @@
         [tick]="searchQuery.tack"
         [field]="'unit.linkings.taxon.speciesId'">
       </laji-observation-count>
-      {{'observation.results.species' | translate}}
+      {{ 'observation.results.species' | translate }}
     </strong>
   </li>
 </ul>
@@ -138,7 +138,7 @@
       </div>
       <div class="form-group spacer">
         <div class="col-lg-12">
-          <laji-observation-filters [visible]="active === 'stats'" [query]="searchQuery.query" (queryChange)="onFilterSelect.emit($event)"></laji-observation-filters>
+          <laji-observation-filters [visible]="active === 'stats'" [query]="searchQuery.query" (queryChange)="filterSelect.emit($event)"></laji-observation-filters>
         </div>
       </div>
     </div>

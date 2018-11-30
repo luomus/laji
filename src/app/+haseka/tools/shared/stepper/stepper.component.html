@@ -6,7 +6,7 @@
         'active': i === active,
         'incomplete': i > active
       }">
-    <span class="bubble">{{i < active ? '✓' : (i + 1) }}</span>
-    <strong>{{step.label | translate}}</strong>
+    <span class="bubble">{{ i < active ? '✓' : (i + 1) }}</span>
+    <strong>{{ step.label | translate }}</strong>
   </li>
 </ul>

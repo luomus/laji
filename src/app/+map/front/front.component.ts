@@ -54,7 +54,7 @@ export class FrontComponent implements OnInit, OnDestroy, AfterViewInit {
     getTooltip: (i, {geometry}) => {
       switch (geometry.type) {
           case 'LineString': {
-            let prevLatLng = undefined;
+            let prevLatLng;
             let length = geometry.coordinates.slice(0).reduce((cumulative, coords) => {
               const latLng = L.latLng(coords.reverse());
               cumulative += prevLatLng ? L.latLng(latLng).distanceTo(prevLatLng) : 0;

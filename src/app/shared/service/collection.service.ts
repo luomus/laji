@@ -1,3 +1,4 @@
+import { tap, share } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { MetadataApi } from '../api/MetadataApi';
@@ -32,9 +33,10 @@ export class CollectionService {
       }
     }
     this.pending = this.metadataService
-      .metadataFindPropertiesRanges('MY.collectionID', lang, false, true)
-      .do(collections => { this.collectionsLookup = collections; })
-      .share();
+      .metadataFindPropertiesRanges('MY.collectionID', lang, false, true).pipe(
+        tap(collections => { this.collectionsLookup = collections; }),
+        share()
+      );
     this.currentLang = lang;
 
     return this.pending;

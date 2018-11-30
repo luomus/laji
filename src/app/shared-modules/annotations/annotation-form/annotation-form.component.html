@@ -1,6 +1,6 @@
 <form *lajiLoggedIn="true" class="annotation-form" #annotationForm="ngForm" (ngSubmit)="saveAnnotation()">
   <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
-    {{'haseka.form.error' | translate}}
+    {{ 'haseka.form.error' | translate }}
   </alert>
   <div class="row annotation-unidentifiable" *ngIf="!isEditor && identifying">
     <div class="col-sm-12">
@@ -11,26 +11,26 @@
           [(ngModel)]="unIdentifyable"
           [disabled]="!!annotation.opinion || annotation.annotationClass !== emptyAnnotationClass"
         >
-        {{'MAN.typeUnidentifiable' | label}}
+        {{ 'MAN.typeUnidentifiable' | label }}
       </label>
     </div>
   </div>
   <div class="row annotation-class">
     <div class="col-sm-12">
-      {{'MAN.annotationClass' | label}}:
+      {{ 'MAN.annotationClass' | label }}:
       <select [(ngModel)]="annotation.annotationClass"
               [disabled]="unIdentifyable"
               name="annotationClass"
               class="form-control input-sm">
         <option *ngFor="let option of annotationOptions$ | async" [value]="option.id">
-          {{option.value | multiLang}}
+          {{ option.value | multiLang }}
         </option>
       </select>
     </div>
   </div>
   <div class="row">
     <div class="col-sm-12" *ngIf="!isEditor">
-      {{'MAN.opinion' | label}}:
+      {{ 'MAN.opinion' | label }}:
       <input
         [ngClass]="{loading: typeaheadLoading}"
         type="text"
@@ -49,14 +49,14 @@
       >
       <ng-template #taxonItem let-model="item">
         <h5 class="autosuggest-value {{model.groups}} informal-group-image">
-          {{model.value}}
+          {{ model.value }}
         </h5>
       </ng-template>
     </div>
   </div>
   <div class="row message">
     <div class="col-sm-12">
-      {{'MAN.notes' | label}}:
+      {{ 'MAN.notes' | label }}:
       <textarea #notes="ngModel"
                 name="notes"
                 [required]="annotation.annotationClass === emptyAnnotationClass && !annotation.opinion && !unIdentifyable"
@@ -65,10 +65,10 @@
     </div>
   </div>
   <div class="actions">
-    <button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{'feedback.cancel' | translate}}</button>
-    <button type="submit" [disabled]="annotationForm.form.pristine || !annotationForm.form.valid || sending" class="btn btn-success btn-sm">{{'feedback.send' | translate}}</button>
+    <button type="button" class="btn btn-danger btn-sm" (click)="cancel.emit()">{{ 'feedback.cancel' | translate }}</button>
+    <button type="submit" [disabled]="annotationForm.form.pristine || !annotationForm.form.valid || sending" class="btn btn-success btn-sm">{{ 'feedback.send' | translate }}</button>
   </div>
 </form>
 <div *lajiLoggedIn="false" class="annotation-form">
-  {{'force.login' | translate}}
+  {{ 'force.login' | translate }}
 </div>

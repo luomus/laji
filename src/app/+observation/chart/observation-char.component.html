@@ -2,7 +2,7 @@
   <div class="observation-chart" style="min-height: 100px">
     <laji-spinner [spinning]="loading" [overlay]="true">
       <div class="stat-info" *ngIf="data">
-        <laji-info [placement]="'right'">{{'observation.info.stats' | translate}}</laji-info>
+        <laji-info [placement]="'right'">{{ 'observation.info.stats' | translate }}</laji-info>
       </div>
       <laji-pie-chart
             *ngIf="data"

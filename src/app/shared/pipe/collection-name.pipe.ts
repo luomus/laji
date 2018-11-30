@@ -22,7 +22,7 @@ export class CollectionNamePipe extends AbstractLabelPipe implements PipeTransfo
     return Observable.create(observer => {
       this.collectionService
         .getName(key, this.translate.currentLang)
-        .map(col => (col[0] || {value: ''}).value)
+        .map(col => (col[0] || {value: ''}).value);
     });
   }
 

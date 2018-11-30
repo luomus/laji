@@ -1,3 +1,5 @@
+
+import {map,  mergeMap } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { MetadataService } from '../../../shared/service/metadata.service';
@@ -6,7 +8,6 @@ import { Observable } from 'rxjs';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
-import { mergeMap } from 'rxjs/operators';
 
 
 @Component({
@@ -62,8 +63,8 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
       limit: '10',
       includePayload: true,
       lang: this.translate.currentLang
-    })
-      .map(data => data.map(item => {
+    }).pipe(
+      map(data => data.map(item => {
         let groups = '';
         if (item.payload && item.payload.informalTaxonGroups) {
           groups = item.payload.informalTaxonGroups.reduce((prev, curr) => {
@@ -72,7 +73,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
         }
         item['groups'] = groups;
         return item;
-      }));
+      })));
   }
 
   ngOnChanges() {
@@ -85,8 +86,8 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
     if (!this.annotation.annotationClass) {
       this.annotation.annotationClass = this.emptyAnnotationClass;
     }
-    this.annotationOptions$ = this.metadataService.getRange('MAN.annotationClassEnum')
-      .map(annotationOptions => annotationOptions.filter(annotation => this.isEditor ?
+    this.annotationOptions$ = this.metadataService.getRange('MAN.annotationClassEnum').pipe(
+      map(annotationOptions => annotationOptions.filter(annotation => this.isEditor ?
           this.ownerTypes.indexOf(annotation.id) > -1 :
           ((
             this.ownerTypes.indexOf(annotation.id) === -1 ||
@@ -94,7 +95,7 @@ export class AnnotationFormComponent implements OnInit, OnChanges {
           ) &&
            annotation.id !== Annotation.AnnotationClassEnum.AnnotationClassSpam)
           )
-      );
+      ));
   }
 
   closeError() {

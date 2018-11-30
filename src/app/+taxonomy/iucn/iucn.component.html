@@ -6,15 +6,15 @@
       <g *ngIf="item.value !== selected">
         <text [attr.x]="(i + 0.5) * (width / 7)" [attr.y]="height / 5" fill="#FFFFFF" text-anchor="middle"
               font-size="10">
-          {{item.title.first}}
+          {{ item.title.first }}
         </text>
         <text [attr.x]="(i + 0.5) * (width / 7)" [attr.y]="2 * (height / 5)" fill="#FFFFFF" text-anchor="middle"
               font-size="10">
-          {{item.title.last}}
+          {{ item.title.last }}
         </text>
         <text [attr.x]="(i + 0.5) * (width / 7)" [attr.y]="3 * (height / 4)" [attr.fill]="color" text-anchor="middle"
               font-size="12">
-          {{item.value}}
+          {{ item.value }}
         </text>
       </g>
       <g *ngIf="item.value === selected">
@@ -46,7 +46,7 @@
         </g>
         <text [attr.x]="(i + 0.5) * (width / 7)" [attr.y]="3 * (height / 5)" fill="#FFFFFF" text-anchor="middle"
               font-size="18">
-          {{item.value}}
+          {{ item.value }}
         </text>
       </g>
     </g>

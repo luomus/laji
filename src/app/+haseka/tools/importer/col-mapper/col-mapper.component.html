@@ -1,18 +1,18 @@
 <ng-container *ngIf="missingMapping.length > 0; else allMapped">
-  <p>{{'excel.map.col-intro' | translate}}</p>
+  <p>{{ 'excel.map.col-intro' | translate }}</p>
   <table class="table">
     <tr>
       <th>
-        {{'excel.map.col-user' | translate}}
+        {{ 'excel.map.col-user' | translate }}
       </th>
       <th>
-        {{'excel.map.col-mapped' | translate}}
+        {{ 'excel.map.col-mapped' | translate }}
       </th>
     </tr>
     <tr *ngFor="let col of missingMapping">
       <td class="field-col">
         <div class="form-control-static">
-          <small>{{col}}:</small>&nbsp;{{headers[col] || ''}}
+          <small>{{col}}:</small>&nbsp;{{ headers[col] || '' }}
         </div>
       </td>
       <td class="mapping-col">
@@ -23,7 +23,7 @@
 </ng-container>
 <ng-template #allMapped>
   <alert type="success">
-    {{'excel.map.col-ok' | translate}}
+    {{ 'excel.map.col-ok' | translate }}
   </alert>
 </ng-template>
 <div class="row">

@@ -12,12 +12,12 @@ export class DocumentFormComponent {
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
   @Input() formId: string;
   @Input() documentId: string;
-  @Output() onSuccess = new EventEmitter<{document: Document, form: any}>();
-  @Output() onError = new EventEmitter();
-  @Output() onCancel = new EventEmitter();
-  @Output() onAccessDenied = new EventEmitter();
-  @Output() onMissingNamedplace = new EventEmitter();
-  @Output() onTmpLoad = new EventEmitter();
+  @Output() success = new EventEmitter<{document: Document, form: any}>();
+  @Output() error = new EventEmitter();
+  @Output() cancel = new EventEmitter();
+  @Output() accessDenied = new EventEmitter();
+  @Output() missingNamedplace = new EventEmitter();
+  @Output() tmpLoad = new EventEmitter();
 
   private changeSource = new Subject<any>();
   private changeEvent$ = this.changeSource.asObservable();

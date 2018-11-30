@@ -3,12 +3,12 @@
     <div class="col-sm-7">
       <div class="page-header">
         <h3 ngPreserveWhitespaces>
-          {{'viewer.document' | translate }}
+          {{ 'viewer.document' | translate }}
           <small>
             <!--a [routerLink]="['/view']" [queryParams]="{uri: document.id}" target="_blank">
               {{document.id}}
             </a-->
-            {{document.id}}
+            {{ document.id }}
           </small>
           <a type="button"
              class="btn btn-sm btn-default"
@@ -16,7 +16,7 @@
              [queryParams]="{id: document.id}"
              target="_blank"
              [tooltip]="'haseka.submissions.toPrint' | translate">
-            {{'print' | translate}}
+            {{ 'print' | translate }}
             <img src="/static/images/icons/pdf_16x16.png">
           </a>
           <laji-edit-link
@@ -28,7 +28,7 @@
         </h3>
       </div>
       <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionID | collectionName" ngPreserveWhitespaces>
-        <span *ngIf="showFacts"><a target="_blank" href="http://tun.fi/{{document.collectionID}}">http://tun.fi/{{document.collectionID}}</a></span>
+        <span *ngIf="showFacts"><a target="_blank" href="http://tun.fi/{{document.collectionID}}">http://tun.fi/{{ document.collectionID }}</a></span>
       </laji-row>
       <laji-document-object *ngIf="fields['document']" [object]="document" [fields]="fields['document']" [showFacts]="showFacts"></laji-document-object>
     </div>
@@ -48,13 +48,13 @@
           </button>
           <button class="btn btn-default btn-xs pull-right"
                   (click)="toggleFacts()">
-            {{showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate)}}
+            {{ showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate) }}
             <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
           </button>
           <div style="margin-top: 35px;">
             <alert [type]="'warning'">
               <span>
-                {{'viewer.notPublished' | translate}}
+                {{ 'viewer.notPublished' | translate }}
               </span>
             </alert>
           </div>
@@ -72,7 +72,7 @@
     <ul class="nav nav-tabs link">
       <li *ngFor="let gathering of document.gatherings; let i=index" [ngClass]="{active: active === i}">
         <a (click)="setActive(i)">
-          {{i + 1}}
+          {{ i + 1 }}
         </a>
       </li>
     </ul>

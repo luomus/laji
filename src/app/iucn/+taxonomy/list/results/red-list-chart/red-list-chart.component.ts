@@ -24,7 +24,7 @@ export class RedListChartComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.resize();
-    })
+    });
   }
 
   set data(data: any) {

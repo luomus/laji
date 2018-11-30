@@ -3,14 +3,14 @@
     [formData]="formData"
     [lang]="lang"
     [tick]="tick"
-    (onChange)="onChange($event)"
-    (onSubmit)="onSubmit($event)"></laji-form>
+    (dataChange)="onChange($event)"
+    (dataSubmit)="onSubmit($event)"></laji-form>
   <laji-document-form-footer
     [form]="formData"
     [status]="status"
     [saving]="saving"
-    (onSubmitPublic)="submitPublic()"
-    (onSubmitPrivate)="submitPrivate()"
-    (onCancel)="discard()"
+    (submitPublic)="submitPublic()"
+    (submitPrivate)="submitPrivate()"
+    (cancel)="discard()"
     ></laji-document-form-footer>
 </div>

@@ -1,3 +1,5 @@
+
+import {startWith, tap, map,  filter, switchMap, take } from 'rxjs/operators';
 import {
   AfterViewInit,
   ApplicationRef,
@@ -16,8 +18,8 @@ import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../../shared/service/id.service';
 import { UserService } from '../../../shared/service/user.service';
-import { filter, switchMap, take } from 'rxjs/operators';
 import { Global } from '../../../../environments/global';
+
 
 @Component({
   selector: 'laji-document',
@@ -65,9 +67,9 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   ) { }
 
   ngOnInit() {
-    this.metaFetch = this.userService.action$
-      .startWith('')
-      .switchMap(() => this.userService.getUser())
+    this.metaFetch = this.userService.action$.pipe(
+      startWith('')).pipe(
+      switchMap(() => this.userService.getUser()))
       .subscribe(person => {
         this.personID = person.id;
         this.cd.markForCheck();
@@ -102,9 +104,9 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     const findDox$ = this.warehouseApi
         .warehouseQuerySingleGet(this.uri, this.own ? {
           editorOrObserverPersonToken: this.userService.getToken()
-        } : undefined)
-        .map(doc => doc.document)
-        .do((doc) => this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight));
+        } : undefined).pipe(
+        map(doc => doc.document)).pipe(
+        tap((doc) => this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight)));
     findDox$
       .subscribe(
         doc => this.parseDoc(doc, doc),
@@ -130,7 +132,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
             return hasHighlight;
           }
           hasHighlight = this.shouldOnlyShowHighlighted(subLevel, highlight);
-        })
+        });
       }
     });
     return hasHighlight;
@@ -185,7 +187,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
               geoJSON: gathering.conversions.wgs84Geo,
               wgs84: gathering.conversions.wgs84,
               ykj: gathering.conversions.ykj
-            }
+            };
             this.hasMapData = true;
           }
           if (this.highlight && gathering.gatheringId === this.highlight) {

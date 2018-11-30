@@ -26,7 +26,7 @@ export class ErrorListComponent implements OnInit {
         errors.push({
           field: this.pathToKey(field),
           errors: Array.isArray(data[field]) ? data[field] : this.pickErrors(data[field])
-        })
+        });
       });
       this._errors = errors;
     }

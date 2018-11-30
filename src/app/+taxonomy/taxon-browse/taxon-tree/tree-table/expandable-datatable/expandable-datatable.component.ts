@@ -17,7 +17,7 @@ import { CacheService } from '../../../../../shared/service/cache.service';
 import { TreeNode } from '../model/tree-node.interface';
 
 const CACHE_COLUMN_SETINGS = 'tree-table-col-width';
-interface Settings {[key: string]: {width: string}}
+interface Settings {[key: string]: {width: string}; }
 
 @Component({
   selector: 'laji-expandable-datatable',
@@ -142,6 +142,6 @@ export class ExpandableDatatableComponent implements OnInit, OnChanges {
         return 'active link';
       }
       return 'link';
-    }
+    };
   }
 }

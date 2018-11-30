@@ -5,8 +5,8 @@
       <laji-search-filters [searchQuery]="searchQuery"
                            [hasInvasiveControlRights]="hasInvasiveControleRights"
                            [showFilter]="showFilter"
-                           (onShowFilterChange)="showFilter = $event"
-                           (onInvasiveControlClick)="toInvasiveControlForm()">
+                           (showFilterChange)="showFilter = $event"
+                           (invasiveControlClick)="toInvasiveControlForm()">
         <laji-observation-form
           [searchQuery]="searchQuery.query"
           [lang]="translate.currentLang"
@@ -38,7 +38,7 @@
       </ng-container>
       <div #tabs>
         <laji-observation-result [active]="activeTab"
-                                 (onFilterSelect)="onFilterSelect($event)"></laji-observation-result>
+                                 (filterSelect)="onFilterSelect($event)"></laji-observation-result>
       </div>
     </div>
   </div>

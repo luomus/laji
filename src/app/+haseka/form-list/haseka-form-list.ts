@@ -1,3 +1,5 @@
+
+import {take, combineLatest,  map, switchMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin as ObservableForkJoin, merge as ObservableMerge, Observable, of as ObservableOf, Subscription } from 'rxjs';
@@ -8,8 +10,8 @@ import { UserService } from '../../shared/service/user.service';
 import { FormPermissionService } from '../form-permission/form-permission.service';
 import { Person } from '../../shared/model/Person';
 import { environment } from '../../../environments/environment';
-import { map, switchMap } from 'rxjs/operators';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
+
 
 const DEFAULT_CATEGORY = 'MHL.categoryGeneric';
 
@@ -18,7 +20,7 @@ export interface FormList extends Form.List {
 }
 
 interface FormCategory {
-  forms: FormList[],
+  forms: FormList[];
   category: string;
   label: string;
 }
@@ -52,16 +54,16 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subTmp = ObservableMerge(
       this.formService.getAllTempDocuments(),
-      this.formService.localChanged
-        .switchMap(() => this.formService.getAllTempDocuments())
-    ).map(documents => documents.reduce(
+      this.formService.localChanged.pipe(
+        switchMap(() => this.formService.getAllTempDocuments()))
+    ).pipe(map(documents => documents.reduce(
       (cumulative, current) => {
         if (current.formID && !cumulative[current.formID]) {
           cumulative[current.formID] = current.id;
         }
         return cumulative;
       }, {})
-    ).subscribe((data: any) => {
+    )).subscribe((data: any) => {
       this.tmpDocument = data;
       this.changeDetector.markForCheck();
     });
@@ -118,7 +120,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     this.categories.forEach(category => {
       category.forms.forEach(form => {
         formsSub.push(this.hasAdminRight(form).pipe(map(hasAdminRight => ({...form, hasAdminRight: hasAdminRight}))));
-      })
+      });
     });
     ObservableForkJoin(formsSub).subscribe(forms => this.updateCategories(forms));
   }
@@ -129,16 +131,16 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     ) {
       return ObservableOf(false);
     }
-    return this.userService.isLoggedIn$
-      .take(1)
-      .switchMap(loggedIn => loggedIn ?
-        this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken())
-          .combineLatest(
+    return this.userService.isLoggedIn$.pipe(
+      take(1)).pipe(
+      switchMap(loggedIn => loggedIn ?
+        this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken()).pipe(
+          combineLatest(
             this.person ? ObservableOf(this.person) : this.userService.getUser(),
             (permission, person) => ({permission, person})
-          )
-          .map(data => this.formPermissionService.isAdmin(data.permission, data.person)) :
-        ObservableOf(false));
+          )).pipe(
+          map(data => this.formPermissionService.isAdmin(data.permission, data.person))) :
+        ObservableOf(false)));
   }
 
   trackCategory(idx, category) {

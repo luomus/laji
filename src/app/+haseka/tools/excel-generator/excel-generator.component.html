@@ -1,13 +1,13 @@
 <h3>
-  {{'excel.generate' | translate}}
+  {{ 'excel.generate' | translate }}
 </h3>
 <p>
-  {{'excel.generate.intro'| translate}}
+  {{ 'excel.generate.intro'| translate }}
 </p>
 <ol>
-  <li>{{'excel.generate.intro1'| translate}}</li>
-  <li>{{'excel.generate.intro2'| translate}}</li>
-  <li>{{'excel.generate.intro3'| translate}}</li>
+  <li>{{ 'excel.generate.intro1'| translate }}</li>
+  <li>{{ 'excel.generate.intro2'| translate }}</li>
+  <li>{{ 'excel.generate.intro3'| translate }}</li>
 </ol>
 <div class="row form-meta">
   <div class="col-sm-5">
@@ -15,16 +15,16 @@
   </div>
   <div class="col-sm-5">
     <button (click)="selectAll()" type="button" class="btn btn-default" [class.disabled]="!formID || generating">
-      {{'checkAll' | translate}}
+      {{ 'checkAll' | translate }}
     </button>
     <button (click)="clearSelected()" type="button" class="btn btn-default" [class.disabled]="!formID || selected.length === 0 || generating">
-      {{'uncheckAll' | translate}}
+      {{ 'uncheckAll' | translate }}
     </button>
   </div>
   <div class="col-sm-2">
     <laji-spinner [spinning]="generating" [overlay]="true">
       <button (click)="generate()" [disabled]="generating" type="button" class="btn btn-default pull-right" [class.disabled]="!formID || generating">
-        {{'excel.generate.button' | translate}}
+        {{ 'excel.generate.button' | translate }}
       </button>
     </laji-spinner>
     <!--
@@ -54,7 +54,7 @@
     </div>
   </div>
   <p>
-    <span class="required">*</span> {{'required' | translate}}
+    <span class="required">*</span> {{ 'required' | translate }}
   </p>
 </ng-container>
 <!--

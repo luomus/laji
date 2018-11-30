@@ -32,10 +32,10 @@
           </div>
         </div>
         <ng-container *ngIf="taxonDescription[activeDescription]?.id !== 'default'">
-          {{ 'taxonomy.source' | translate }}: {{taxonDescription[activeDescription]?.title}}
+          {{ 'taxonomy.source' | translate }}: {{ taxonDescription[activeDescription]?.title }}
         </ng-container>
         <div *ngIf="taxonDescription[activeDescription]?.speciesCardAuthors">
-          {{taxonDescription[activeDescription]?.speciesCardAuthors.title | multiLang}}:
+          {{ taxonDescription[activeDescription]?.speciesCardAuthors.title | multiLang }}:
           <span [innerHTML]="taxonDescription[activeDescription]?.speciesCardAuthors.content | multiLang"></span>
         </div>
       </div>
@@ -164,7 +164,7 @@
   </div>
   <div class="container" *ngIf="taxon === false">
     <h1>
-      {{'taxonomy.notFound' | translate}}
+      {{ 'taxonomy.notFound' | translate }}
     </h1>
   </div>
 </laji-spinner>

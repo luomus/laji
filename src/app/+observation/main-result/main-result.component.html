@@ -5,7 +5,7 @@
       [title]="title"
       [height]="'calc(80vh - 30px)'"
       [query]="mapQuery"
-      (onGridClick)="onGridSelect($event)"></laji-ykj-map>
+      (gridClick)="onGridSelect($event)"></laji-ykj-map>
     <div class="close-list top-button" *ngIf="showQueryOnMap">
       <a class="label label-danger pull-right link" (click)="closeMap()">x</a>
     </div>
@@ -47,7 +47,7 @@
         <a class="label label-danger pull-right link" (click)="closeList()">x</a>
       </div>
       <div class="close-list top-info" *ngIf="listQuery.ykj10kmCenter">
-        <span class="label label-warning pull-right link" (click)="removeGridFromList()">{{listQuery.ykj10kmCenter}} x</span>
+        <span class="label label-warning pull-right link" (click)="removeGridFromList()">{{ listQuery.ykj10kmCenter }} x</span>
       </div>
     </div>
   </div>

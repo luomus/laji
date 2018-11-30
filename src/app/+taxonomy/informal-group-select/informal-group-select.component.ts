@@ -1,8 +1,11 @@
+
+import {map,  combineLatest } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
+
 
 
 @Component({
@@ -15,7 +18,7 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
   @Input() compact = false;
   @Input() showBreadcrumb = true;
   @Input() showAll = false;
-  @Output() onInformalGroupSelect = new EventEmitter<string>();
+  @Output() informalGroupSelect = new EventEmitter<string>();
 
   public selectedInformalGroup: InformalTaxonGroup;
   public groups: Array<InformalTaxonGroup> = [];
@@ -52,9 +55,9 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
         .informalTaxonGroupFindRoots(this.translate.currentLang)
         .subscribe(this.setSelectedInformalGroup.bind(this));
     } else {
-      this.informalTaxonService.informalTaxonGroupGetChildren(this.id, this.translate.currentLang)
-        .combineLatest(this.informalTaxonService.informalTaxonGroupFindById(this.id, this.translate.currentLang))
-        .map(this.parseInformalTaxonGroup.bind(this))
+      this.informalTaxonService.informalTaxonGroupGetChildren(this.id, this.translate.currentLang).pipe(
+        combineLatest(this.informalTaxonService.informalTaxonGroupFindById(this.id, this.translate.currentLang))).pipe(
+        map(this.parseInformalTaxonGroup.bind(this)))
         .subscribe(this.setSelectedInformalGroup.bind(this), () => {});
       this.informalTaxonService.informalTaxonGroupGetParents(this.id, this.translate.currentLang)
         .subscribe(data => {
@@ -69,7 +72,7 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
     const { results } = data[0];
     const { id, name } = data[1];
     return { results, id, name };
-  };
+  }
 
   private setSelectedInformalGroup(data: InformalTaxonGroup) {
     this.selectedInformalGroup = data;

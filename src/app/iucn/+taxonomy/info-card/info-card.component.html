@@ -22,7 +22,7 @@
           <label>Lajia koskevat hallinnolliset lajitiedot</label>
           <ul>
             <li *ngFor="let status of taxon.administrativeStatuses">
-              {{status | label}}
+              {{ status | label }}
             </li>
           </ul>
         </div>
@@ -52,6 +52,6 @@
   </div>
   <h1>DEBUG:</h1>
   <pre>
-  {{taxon | json}}
+ {{ {taxon | jso }}}
   </pre>
 </ng-container>

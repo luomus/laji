@@ -1,51 +1,51 @@
 <h3>
-  {{'nafi.stats.title' | translate}}
+  {{ 'nafi.stats.title' | translate }}
   <span *ngIf="fromYear">
-    {{fromMonth | translate}}
-    {{fromYear}}
+    {{ fromMonth | translate }}
+    {{ fromYear }}
   </span>
 </h3>
 <div class="row">
   <div class="col-sm-12">
     <p>
-      {{'nafi.stats.times' | translate}}
+      {{ 'nafi.stats.times' | translate }}
       <br>
-      <a [routerLink] [queryParams]="{time: 'all'}">{{'theme.filterAll' | translate:{from: '1991', to: currentYear} }}</a>
+      <a [routerLink] [queryParams]="{time: 'all'}">{{ 'theme.filterAll' | translate:{from: '1991', to: currentYear} }}</a>
       <br>
-      <a [routerLink] [queryParams]="{time: currentYear}">{{'wholeYear'| translate:{year:currentYear} }}</a>
+      <a [routerLink] [queryParams]="{time: currentYear}">{{ 'wholeYear'| translate:{year:currentYear} }}</a>
       <a *ngIf="currentMonth > 2" > | </a>
-      <a *ngIf="currentMonth >= 3" [routerLink] [queryParams]="{time: currentYear + '-03'}">{{'m-03' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 3" [routerLink] [queryParams]="{time: currentYear + '-03'}">{{ 'm-03' | translate }}&{{ sp;{{curren }}ear}}</a>
       <a *ngIf="currentMonth > 3" > | </a>
-      <a *ngIf="currentMonth >= 4" [routerLink] [queryParams]="{time: currentYear + '-04'}">{{'m-04' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 4" [routerLink] [queryParams]="{time: currentYear + '-04'}">{{ 'm-04' | translate }}&{{ sp;{{curren }}ear}}</a>
       <a *ngIf="currentMonth > 4" > | </a>
-      <a *ngIf="currentMonth >= 5" [routerLink] [queryParams]="{time: currentYear + '-05'}">{{'m-05' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 5" [routerLink] [queryParams]="{time: currentYear + '-05'}">{{ 'm-05' | translate }}&{{ sp;{{curren }}ear}}</a>
       <a *ngIf="currentMonth > 5" > | </a>
-      <a *ngIf="currentMonth >= 6" [routerLink] [queryParams]="{time: currentYear + '-06'}">{{'m-06' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 6" [routerLink] [queryParams]="{time: currentYear + '-06'}">{{ 'm-06' | translate }}&{{ sp;{{curren }}ear}}</a>
       <a *ngIf="currentMonth > 6" > | </a>
-      <a *ngIf="currentMonth >= 7" [routerLink] [queryParams]="{time: currentYear + '-07'}">{{'m-07' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 7" [routerLink] [queryParams]="{time: currentYear + '-07'}">{{ 'm-07' | translate }}&{{ sp;{{curren }}ear}}</a>
       <a *ngIf="currentMonth > 7" > | </a>
-      <a *ngIf="currentMonth >= 8" [routerLink] [queryParams]="{time: currentYear + '-08'}">{{'m-08' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 8" [routerLink] [queryParams]="{time: currentYear + '-08'}">{{ 'm-08' | translate }}&{{ sp;{{curren }}ear}}</a>
       <a *ngIf="currentMonth > 8" > | </a>
-      <a *ngIf="currentMonth >= 9" [routerLink] [queryParams]="{time: currentYear + '-09'}">{{'m-09' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 9" [routerLink] [queryParams]="{time: currentYear + '-09'}">{{ 'm-09' | translate }}&{{ sp;{{curren }}ear}}</a>
       <a *ngIf="currentMonth > 9" > | </a>
-      <a *ngIf="currentMonth >= 10" [routerLink] [queryParams]="{time: currentYear + '-10'}">{{'m-10' | translate}}&nbsp;{{currentYear}}</a>
+      <a *ngIf="currentMonth >= 10" [routerLink] [queryParams]="{time: currentYear + '-10'}">{{ 'm-10' | translate }}&{{ sp;{{curren }}ear}}</a>
       <br>
-      <a [routerLink] [queryParams]="{time: year}">{{'wholeYear'| translate:{year:year} }}</a> |
-      <a [routerLink] [queryParams]="{time: year + '-03'}">{{'m-03' | translate}}&nbsp;{{year}}</a> |
-      <a [routerLink] [queryParams]="{time: year + '-04'}">{{'m-04' | translate}}&nbsp;{{year}}</a> |
-      <a [routerLink] [queryParams]="{time: year + '-05'}">{{'m-05' | translate}}&nbsp;{{year}}</a> |
-      <a [routerLink] [queryParams]="{time: year + '-06'}">{{'m-06' | translate}}&nbsp;{{year}}</a> |
-      <a [routerLink] [queryParams]="{time: year + '-07'}">{{'m-07' | translate}}&nbsp;{{year}}</a> |
-      <a [routerLink] [queryParams]="{time: year + '-08'}">{{'m-08' | translate}}&nbsp;{{year}}</a> |
-      <a [routerLink] [queryParams]="{time: year + '-09'}">{{'m-09' | translate}}&nbsp;{{year}}</a> |
-      <a [routerLink] [queryParams]="{time: year + '-10'}">{{'m-10' | translate}}&nbsp;{{year}}</a>
+      <a [routerLink] [queryParams]="{time: year}">{{ 'wholeYear'| translate:{year:year} }}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-03'}">{{ 'm-03' | translate }}&{{ sp;{ }}ear}}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-04'}">{{ 'm-04' | translate }}&{{ sp;{ }}ear}}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-05'}">{{ 'm-05' | translate }}&{{ sp;{ }}ear}}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-06'}">{{ 'm-06' | translate }}&{{ sp;{ }}ear}}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-07'}">{{ 'm-07' | translate }}&{{ sp;{ }}ear}}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-08'}">{{ 'm-08' | translate }}&{{ sp;{ }}ear}}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-09'}">{{ 'm-09' | translate }}&{{ sp;{ }}ear}}</a> |
+      <a [routerLink] [queryParams]="{time: year + '-10'}">{{ 'm-10' | translate }}&{{ sp;{ }}ear}}</a>
     </p>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-5 col-sm-push-7 map-col">
     <laji-ykj-map
-      (onGridClick)="showGridObservations($event)"
+      (gridClick)="showGridObservations($event)"
       [useStatistics]="true"
       [taxon]="taxon$ | async"
       [height]="'calc(80vh - 50px)'"
@@ -59,14 +59,14 @@
   <div class="col-sm-7 col-sm-pull-5 table-col">
     <laji-theme-result
             *ngIf="query && !query.ykj10kmCenter"
-            (onNameClick)="navigate($event)"
+            (nameClick)="navigate($event)"
             [useStatistics]="true"
             [query]="resultQuery"
             [height]="'calc(80vh - 50px)'"
     ></laji-theme-result>
     <laji-theme-observation-list
             *ngIf="query && query.ykj10kmCenter"
-            (onListClose)="closeList()"
+            (listClose)="closeList()"
             [query]="query"
             [height]="'calc(80vh - 50px)'"
     ></laji-theme-observation-list>

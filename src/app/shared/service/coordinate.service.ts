@@ -33,7 +33,7 @@ export class CoordinateService {
       return {
         type: 'GeometryCollection',
         geometries: featureCollection.features.map(feature => feature.geometry)
-      }
+      };
     }
     return undefined;
   }
@@ -46,7 +46,7 @@ export class CoordinateService {
       return {
         type: 'GeometryCollection',
         geometries: coordinate.map(coord => this.convertLajiEtlCoordinatesToGeometry(coord))
-      }
+      };
     }
     const parts = coordinate.split(':');
     const system = parts.pop();

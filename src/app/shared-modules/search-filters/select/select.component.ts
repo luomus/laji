@@ -15,8 +15,8 @@ import { interval as ObservableInterval, Subject, Subscription } from 'rxjs';
 import { debounceTime, take } from 'rxjs/operators';
 
 interface SelectOptions {
-  id: string,
-  value: string
+  id: string;
+  value: string;
 }
 
 @Component({
@@ -162,7 +162,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
       default:
         this.selectedIdx = -1;
     }
-    this.filterInput.next(value)
+    this.filterInput.next(value);
   }
 
   track(idx, item) {

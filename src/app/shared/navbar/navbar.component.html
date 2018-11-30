@@ -52,7 +52,7 @@
               <a (click)="closeMenu()" [routerLink]="['/theme'] | localize">{{ 'navigation.theme' | translate }}</a>
             </li>
             <li [ngClass]="{'hidden-sm': showSearch}" *lajiForTypes="['dev', 'prod']">
-              <a (click)="goToForum($event)" class="link" href="http://foorumi.laji.fi/">{{'Forum' | translate}}</a>
+              <a (click)="goToForum($event)" class="link" href="http://foorumi.laji.fi/">{{ 'Forum' | translate }}</a>
             </li>
           </ul>
           <ul class="nav navbar-nav pull-right">
@@ -66,9 +66,9 @@
             <ng-container *lajiForTypes="['dev', 'prod', 'vir']">
               <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown #userMenu="bs-dropdown">
                 <a dropdownToggle class="link user">
-                  <span class="hidden-sm name"><small>{{(userService.getUser()|async)?.id | users:'fullname'}}</small></span>
+                  <span class="hidden-sm name"><small>{{ (userService.getUser()|async)?.id | users:'fullname' }}</small></span>
                   <i class="glyphicon glyphicon-user"></i>
-                  <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{notificationsNotSeen}}</span>
+                  <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{ notificationsNotSeen }}</span>
                 </a>
                 <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
                   <li role="menuitem">
@@ -79,9 +79,9 @@
                   </li>
                   <li role="separator" class="divider"></li>
                   <li class="dropdown-header">
-                    {{'notification.title' | translate}}:
+                    {{ 'notification.title' | translate }}:
                     <span *ngIf="notifications?.lastPage > 1">
-                      ({{notifications?.currentPage}} / {{notifications?.lastPage}})
+                      ({{ notifications?.currentPage }} / {{ notifications?.lastPage }})
                     </span>
                   </li>
                   <li role="menuitem"

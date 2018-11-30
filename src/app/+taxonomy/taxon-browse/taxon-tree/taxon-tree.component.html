@@ -2,9 +2,9 @@
   <div style="position: relative">
     <div>
       <label>
-        {{'species.tree.taxonSearch' | translate}}:
+        {{ 'species.tree.taxonSearch' | translate }}:
         <laji-taxon-select
-          (onSelect)="onTaxonSelect($event)"
+          (select)="onTaxonSelect($event)"
           [taxonId]="taxon"
           [searchParams]="taxonSelectFilters">
         </laji-taxon-select>
@@ -18,9 +18,9 @@
                [(ngModel)]="showMainLevels"
                (ngModelChange)="setSkipParams()"
                name="showMainLevels">
-        {{'species.tree.showMainLevels' | translate}}
+        {{ 'species.tree.showMainLevels' | translate }}
       </label>
-      <laji-info>{{'species.tree.info.showMainLevels' | translate}}</laji-info>
+      <laji-info>{{ 'species.tree.info.showMainLevels' | translate }}</laji-info>
     </div>
   </div>
 
@@ -42,7 +42,7 @@
 
 <laji-species-download #speciesDowload
                        [downloadLoading]="downloadLoading"
-                       (onDownload)="download($event)">
+                       (download)="download($event)">
 </laji-species-download>
 
 <laji-species-list-options-modal #settingsModal

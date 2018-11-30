@@ -21,7 +21,7 @@ export class PublicationPipe implements PipeTransform, OnDestroy {
 
   transform(value: any): any {
     if (Array.isArray(value)) {
-      return value.map(v => this.transform(v))
+      return value.map(v => this.transform(v));
     }
     if (!value || typeof value !== 'string' || value.length === 0) {
       return value;

@@ -4,15 +4,13 @@ import { Injectable, OnInit } from '@angular/core';
 import { delay, map, retryWhen, share, take, timeout } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
-export class WarehouseValueMappingService implements OnInit {
+export class WarehouseValueMappingService {
 
   private mapping;
   private reverse;
   private pending: Observable<any>;
 
-  constructor(private warehouseService: WarehouseApi) { };
-
-  ngOnInit() {
+  constructor(private warehouseService: WarehouseApi) {
     if (!this.pending) {
       this.pending = this.fetchLabels();
     }

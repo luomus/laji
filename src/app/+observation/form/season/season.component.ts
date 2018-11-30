@@ -63,6 +63,6 @@ export class SeasonComponent {
     if (!this.startDay || !this.startMonth || !this.endDay || !this.endMonth) {
       return;
     }
-    this.seasonChange.emit(`${this.startMonth}${this.startDay}/${this.endMonth}${this.endDay}`)
+    this.seasonChange.emit(`${this.startMonth}${this.startDay}/${this.endMonth}${this.endDay}`);
   }
 }

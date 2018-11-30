@@ -1,3 +1,5 @@
+
+import {tap, map} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, AfterViewInit } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -83,8 +85,8 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
       informalTaxonGroup: this.informalTaxonGroup,
       onlyFinnish: this.onlyFinnish,
       onlyInvasive: this.onlyInvasive
-    })
-      .map(data => {
+    }).pipe(
+      map(data => {
         if (onlyExact) {
           if (data[0] && data[0].payload.matchType && data[0].payload.matchType === 'exactMatches' && (
             !data[1] || data[1].payload.matchType && data[1].payload.matchType !== 'exactMatches'
@@ -103,11 +105,11 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
           item['groups'] = groups;
           return item;
         });
-      })
-      .do(() => {
+      })).pipe(
+      tap(() => {
         this.loading = false;
         this.cdr.markForCheck();
-      });
+      }));
   }
 
   onTaxonSelect(result: any, keepValue = false) {

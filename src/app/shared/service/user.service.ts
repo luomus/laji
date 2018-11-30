@@ -1,3 +1,4 @@
+import { map, catchError, switchMap, tap, share, retry } from 'rxjs/operators';
 import { Observable, Observer, of as ObservableOf, ReplaySubject, Subject, Subscription, throwError as observableThrowError } from 'rxjs';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
@@ -13,7 +14,10 @@ import { LocalDb } from '../local-db/local-db.abstract';
 import { environment } from '../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { WINDOW } from '@ng-toolkit/universal';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+
+
+
+
 
 export const USER_INFO = '[user]: info';
 export const USER_LOGOUT_ACTION = '[user]: logout';
@@ -101,14 +105,14 @@ export class UserService extends LocalDb {
     if (!this.token || this.subLogout) {
       return;
     }
-    this.subLogout = this.userService.removePersonToken(this.token)
-      .catch(err => {
+    this.subLogout = this.userService.removePersonToken(this.token).pipe(
+      catchError(err => {
         if (err.status === 404) {
           return ObservableOf(null);
         }
         return observableThrowError(err);
-      })
-      .retry(5)
+      })).pipe(
+      retry(5))
       .subscribe(
         () => {
           this.token = '';
@@ -138,14 +142,14 @@ export class UserService extends LocalDb {
 
   public getUser(id?: string, token?: string): Observable<Person> {
     if (!id) {
-      return this.getCurrentUser(token)
-        .catch((err: HttpErrorResponse | any) => {
+      return this.getCurrentUser(token).pipe(
+        catchError((err: HttpErrorResponse | any) => {
           if (err instanceof HttpErrorResponse && err.status !== 404 && err.status !== 400) {
             this.logger.error('Failed to fetch current users information', err);
           }
           this.logout(false);
           return ObservableOf({});
-        });
+        }));
     }
     if (this.users[id]) {
       return ObservableOf(this.users[id]);
@@ -156,8 +160,8 @@ export class UserService extends LocalDb {
           observer.complete();
           delete this.usersFetch[id];
         };
-        this.userService.personFindByUserId(id)
-          .catch((e) => ObservableOf({}))
+        this.userService.personFindByUserId(id).pipe(
+          catchError((e) => ObservableOf({})))
           .subscribe(
             (user: Person) => {
               this.addUser(user);
@@ -195,15 +199,16 @@ export class UserService extends LocalDb {
     } else if (this.formDefaultObservable) {
       return this.formDefaultObservable;
     }
-    this.formDefaultObservable = this.getUser()
-      .map(data => ({
+    this.formDefaultObservable = this.getUser().pipe(
+      map(data => ({
         'creator': data.id,
         'gatheringEvent': {
           'leg': [data.id]
         }
-      }))
-      .do(data => this.defaultFormData = data)
-      .share();
+      }))).pipe(
+      tap(data => this.defaultFormData = data),
+      share()
+    );
     return this.formDefaultObservable;
   }
 
@@ -215,10 +220,10 @@ export class UserService extends LocalDb {
     if (!this.currentUserId) {
       return;
     }
-    this.setItem(this.currentUserId, {...this.userSettings, [key]: value})
-      .do((settings) => this.userSettings = settings)
+    this.setItem(this.currentUserId, {...this.userSettings, [key]: value}).pipe(
+      tap((settings) => this.userSettings = settings))
       .subscribe(() => {}, () => {});
-  };
+  }
 
   private loadUserInfo(token: string): Observable<any> {
     this.token = token;
@@ -233,7 +238,7 @@ export class UserService extends LocalDb {
         this.logout();
         this.logger.warn('Failed to load user info with token', err);
 
-        return ObservableOf(null)
+        return ObservableOf(null);
       })
     );
   }
@@ -248,9 +253,10 @@ export class UserService extends LocalDb {
     } else if (this.observable) {
       return this.observable;
     }
-    this.observable = this.userService.personFindByToken(userToken)
-      .do(u => this.addUser(u, true))
-      .share();
+    this.observable = this.userService.personFindByToken(userToken).pipe(
+      tap(u => this.addUser(u, true)),
+      share()
+    );
     return this.observable;
   }
 

@@ -54,27 +54,27 @@ export class FormPermissionService {
       return ObservableOf(FormPermissionService.formPermissions[collectionID]);
     }
     return this.formPermissionApi
-      .findByCollectionID(collectionID, personToken)
-      .do(data => FormPermissionService.formPermissions[data.collectionID] = data);
+      .findByCollectionID(collectionID, personToken).pipe(
+      tap(data => FormPermissionService.formPermissions[data.collectionID] = data));
   }
 
   makeAccessRequest(collectionID: string, personToken: string) {
     FormPermissionService.formPermissions[collectionID] = false;
     return this.formPermissionApi
-      .requestAccess(collectionID, personToken)
-      .do(fp => this.changes$.emit(fp));
+      .requestAccess(collectionID, personToken).pipe(
+      tap(fp => this.changes$.emit(fp)));
   }
 
   acceptRequest(collectionID: string, personToken: string, personID: string, type?: FormPermission.Type) {
     FormPermissionService.formPermissions[collectionID] = false;
-    return this.formPermissionApi.acceptRequest(collectionID, personID, personToken, type)
-      .do(fp => this.changes$.emit(fp));
+    return this.formPermissionApi.acceptRequest(collectionID, personID, personToken, type).pipe(
+      tap(fp => this.changes$.emit(fp)));
   }
 
   revokeAccess(collectionID: string, personToken: string, personID: string) {
     FormPermissionService.formPermissions[collectionID] = false;
-    return this.formPermissionApi.revokeAccess(collectionID, personID, personToken)
-      .do(fp => this.changes$.emit(fp));
+    return this.formPermissionApi.revokeAccess(collectionID, personID, personToken).pipe(
+      tap(fp => this.changes$.emit(fp)));
   }
 
   hasEditAccess(form: Form.List): Observable<boolean> {

@@ -1,3 +1,4 @@
+import {toArray, mergeAll, tap, switchMap,  map } from 'rxjs/operators';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -35,9 +36,9 @@ import { DocumentService } from '../service/document.service';
 import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
-import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { isPlatformBrowser } from '@angular/common';
+
 
 
 @Component({
@@ -128,8 +129,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     this.updateTranslations();
 
     this.updateDisplayMode();
-    this.usersId$ = this.userService.getUser()
-      .map(user => user.id)
+    this.usersId$ = this.userService.getUser().pipe(
+      map(user => user.id))
       .subscribe(userId => {
         this.userId = userId;
         this.cd.markForCheck();
@@ -233,9 +234,9 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
 
     this.rowData$ = ObservableFrom(this.documents.map((doc, i) => {
       return this.setRowData(doc, i);
-    }))
-      .mergeAll()
-      .toArray()
+    })).pipe(
+      mergeAll(),
+      toArray(), )
       .subscribe((array) => {
         this.temp = array;
         this.rows = this.temp;
@@ -313,7 +314,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
           this.delete$ = null;
           this.cd.markForCheck();
         }
-      )
+      );
   }
 
   makeTemplate(row: any) {
@@ -379,7 +380,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     event.sorts.forEach((sort) => {
       const comparator = this.comparator(sort.prop);
       const dir = sort.dir === 'asc' ? 1 : -1;
-      rows.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]))
+      rows.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]));
     });
     this.rows = rows;
   }
@@ -387,8 +388,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   /**
    * When using comparator input these functions are called all the time! Preventing buttons and events from firing
    *
-   * @param prop
-   * @returns {any}
+   * @returns any
    */
   comparator(prop) {
     if (prop === 'dateObserved') {
@@ -425,7 +425,7 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private setRowData(document: Document, idx: number): Observable<any> {
-    return this.getForm(document.formID).switchMap((form) => {
+    return this.getForm(document.formID).pipe(switchMap((form) => {
       const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
 
       return ObservableForkJoin(
@@ -460,8 +460,8 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
             index: idx
           };
         })
-      )
-    });
+      );
+    }));
   }
 
   private getLocality(gatheringInfo: any, namedPlaceID): Observable<string> {
@@ -469,40 +469,41 @@ export class OwnDatatableComponent implements OnInit, OnDestroy, OnChanges {
     const npID = gatheringInfo.namedPlaceID || namedPlaceID;
 
     if (!gatheringInfo.locality && npID) {
-      locality$ = this.labelService.get(npID, 'multi')
-        .map(namedPlace => ({...gatheringInfo, locality: namedPlace}));
+      locality$ = this.labelService.get(npID, 'multi').pipe(
+        map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
     }
 
-    return locality$
-      .switchMap((gathering) => this.translate.get('haseka.users.latest.localityMissing')
-        .map(missing => gathering.locality || missing));
+    return locality$.pipe(
+      switchMap((gathering) => this.translate.get('haseka.users.latest.localityMissing').pipe(
+        map(missing => gathering.locality || missing))));
   }
 
   private getObservers(userArray: string[] = []): Observable<string> {
     return ObservableFrom(userArray.map((userId) => {
       if (userId.indexOf('MA.') === 0) {
-        return this.userService.getUser(userId)
-          .map((user: Person) => {
+        return this.userService.getUser(userId).pipe(
+          map((user: Person) => {
             return user.fullName;
-          });
+          }));
       }
       return ObservableOf(userId);
-    }))
-      .mergeAll()
-      .toArray()
-      .map((array) => {
+    })).pipe(
+      mergeAll(),
+      toArray()
+    ).pipe(
+      map((array) => {
         return array.join(', ');
-      });
+      }));
   }
 
   private getForm(formId: string): Observable<any> {
     if (this.formsById[formId]) { return ObservableOf(this.formsById[formId]); }
 
     return this.formService
-      .getForm(formId, this.translate.currentLang)
-      .do((res: any) => {
+      .getForm(formId, this.translate.currentLang).pipe(
+      tap((res: any) => {
         this.formsById[formId] = res;
-      });
+      }));
   }
 
   private getNamedPlaceName(npId: string): Observable<string> {

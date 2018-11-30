@@ -1,6 +1,6 @@
 <select class="form-control" [ngModel]="formID" (ngModelChange)="formSelected($event)" [disabled]="forms.length === 0 || disabled">
-  <option value="" selected disabled>{{'excel.select-form' | translate}}</option>
+  <option value="" selected disabled>{{ 'excel.select-form' | translate }}</option>
   <option *ngFor="let form of forms" [value]="form.id">
-    {{form.title}}
+    {{ form.title }}
   </option>
 </select>

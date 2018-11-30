@@ -5,7 +5,7 @@
       <ng-content></ng-content>
     </span>
     <span *ngIf="innerValue">
-      {{label}}
+      {{ label }}
     </span>
     <span *ngIf="open">
       <br>
@@ -26,7 +26,7 @@
             (click)="onClick(groups[(idx * 2)])"
             class="item link informal-group-image {{groups[(idx * 2)].id}}">
           <span [ngClass]="{active: groups[(idx * 2)] && groups[(idx * 2)].id && groups[(idx * 2)].id === innerValue}">
-            {{groups[(idx * 2)]?.name}}
+            {{ groups[(idx * 2)]?.name }}
           </span>
             <span *ngIf="groups[(idx * 2)] && groups[(idx * 2)].hasSubGroup && groups[(idx * 2)].hasSubGroup.length > 0">
             <i class="glyphicon glyphicon-triangle-right"></i>
@@ -37,7 +37,7 @@
             (click)="onClick(groups[(idx * 2 + 1)])"
             class="item link informal-group-image {{groups[(idx * 2 + 1)].id}}">
           <span [ngClass]="{active: groups[(idx * 2 + 1)] && groups[(idx * 2 + 1)].id && groups[(idx * 2 + 1)].id === innerValue}">
-            {{groups[(idx * 2 + 1)]?.name}}
+            {{ groups[(idx * 2 + 1)]?.name }}
           </span>
             <span *ngIf="groups[(idx * 2 + 1)] && groups[(idx * 2 + 1)].hasSubGroup && groups[(idx * 2 + 1)].hasSubGroup.length > 0">
             <i class="glyphicon glyphicon-triangle-right"></i>
@@ -56,7 +56,7 @@
             (click)="onClick(groups[(idx * 2)])"
             class="item link informal-group-image {{groups[(idx * 2)].id}}">
           <span [ngClass]="{active: groups[(idx * 2)] && groups[(idx * 2)].id && groups[(idx * 2)].id === innerValue}">
-            {{groups[(idx * 2)]?.name}}
+            {{ groups[(idx * 2)]?.name }}
           </span>
             <span *ngIf="groups[(idx * 2)] && groups[(idx * 2)].hasSubGroup && groups[(idx * 2)].hasSubGroup.length > 0">
             <i class="glyphicon glyphicon-triangle-right"></i>
@@ -67,7 +67,7 @@
             (click)="onClick(groups[(idx * 2 + 1)])"
             class="item link informal-group-image {{groups[(idx * 2 + 1)].id}}">
           <span [ngClass]="{active: groups[(idx * 2 + 1)] && groups[(idx * 2 + 1)].id && groups[(idx * 2 + 1)].id === innerValue}">
-            {{groups[(idx * 2 + 1)]?.name}}
+            {{ groups[(idx * 2 + 1)]?.name }}
           </span>
             <span *ngIf="groups[(idx * 2 + 1)] && groups[(idx * 2 + 1)].hasSubGroup && groups[(idx * 2 + 1)].hasSubGroup.length > 0">
             <i class="glyphicon glyphicon-triangle-right"></i>

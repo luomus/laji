@@ -55,19 +55,18 @@ export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
     return this.value;
   }
 
+  ngOnDestroy(): void {
+    this._dispose();
+  }
+
   /**
    * Clean any existing subscription to onLangChange events
-   * @private
    */
-  _dispose(): void {
+  protected _dispose(): void {
     if (this.onLangChange) {
       this.onLangChange.unsubscribe();
       this.onLangChange = undefined;
     }
-  }
-
-  ngOnDestroy(): void {
-    this._dispose();
   }
 
   protected abstract _updateValue(key: string): Observable<any>;

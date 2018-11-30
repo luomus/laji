@@ -1,3 +1,4 @@
+import { filter } from 'rxjs/operators';
 import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, PLATFORM_ID, ViewChild } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
 import { UserService } from '../../shared/service/user.service';
@@ -17,7 +18,7 @@ import { isPlatformBrowser } from '@angular/common';
 export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output() activeChange: EventEmitter<string> = new EventEmitter<string>();
-  @Output() onFilterSelect: EventEmitter<WarehouseQueryInterface> = new EventEmitter<WarehouseQueryInterface>();
+  @Output() filterSelect: EventEmitter<WarehouseQueryInterface> = new EventEmitter<WarehouseQueryInterface>();
 
   @ViewChild(ObservationMapComponent) observationMap: ObservationMapComponent;
 
@@ -67,7 +68,7 @@ export class ObservationResultComponent implements OnInit, OnChanges, OnDestroy 
     this.updateQueryParams();
     this.activated[this._active] = true;
     this.subQueryUpdate = this.searchQuery.queryUpdated$
-      .filter(data => !(data && data.formSubmit))
+      .pipe(filter(data => !(data && data.formSubmit)))
       .subscribe(() => this.updateQueryParams());
   }
 

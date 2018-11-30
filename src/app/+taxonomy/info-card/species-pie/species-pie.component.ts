@@ -58,7 +58,7 @@ export class SpeciesPieComponent implements OnChanges {
       this.localizeRouterService.translateRoute(
         ['/taxon', id]
       )
-    )
+    );
   }
 
   private formatLabel(id: string) {

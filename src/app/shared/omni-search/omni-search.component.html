@@ -1,5 +1,5 @@
 <div class="form-group omni-search" *ngIf="visible" (keyup)="keyEvent($event)">
-  <label class="sr-only" for="search-box">{{placeholder}}</label>
+  <label class="sr-only" for="search-box">{{ placeholder }}</label>
   <input type="text"
          class="form-control input-sm omni"
          id="search-box"
@@ -30,21 +30,21 @@
                   *ngFor="let taxon of taxa; let i=index"
                   [ngClass]="{active: i === active, link: i !== active}"
                   (click)="activate(i)">
-            {{taxon.value}}
+            {{ taxon.value }}
           </h5>
         </div>
         <hr class="hidden-md hidden-lg">
         <div class="col-md-5 first-col">
-          {{'omniSearch.matches' | translate}}
+          {{ 'omniSearch.matches' | translate }}
           <div class="row">
             <div class="col-md-12 taxon-match informal-group-image {{taxon.informalTaxonGroupsClass}}">
-              <a [routerLink]="['/taxon/' + taxon.key] | localize" (click)="close()"><span class="vernacularName">{{taxon.payload.vernacularName | multiLang}}</span></a><br>
+              <a [routerLink]="['/taxon/' + taxon.key] | localize" (click)="close()"><span class="vernacularName">{{ taxon.payload.vernacularName | multiLang }}</span></a><br>
               <a [routerLink]="['/taxon/' + taxon.key] | localize" (click)="close()"><span
-                      class="scientificName" [ngClass]="{cursive: taxon.payload.cursiveName}">{{taxon.payload.scientificName}}</span></a><br>
-              {{'omniSearch.rank'|translate}}: {{taxon.payload.taxonRankId | label}}<br>
-              {{'omniSearch.groups'|translate}}:<br>
+                      class="scientificName" [ngClass]="{cursive: taxon.payload.cursiveName}">{{ taxon.payload.scientificName }}</span></a><br>
+              {{ 'omniSearch.rank'|translate }}: {{ taxon.payload.taxonRankId | label }}<br>
+              {{ 'omniSearch.groups'|translate }}:<br>
               <ul>
-                <li *ngFor="let group of taxon.informalTaxonGroups">{{group | multiLang}}</li>
+                <li *ngFor="let group of taxon.informalTaxonGroups">{{ group | multiLang }}</li>
               </ul>
             </div>
           </div>
@@ -54,8 +54,8 @@
           <div class="row">
             <div class="col-md-offset-1 col-md-11 observations" *ngIf="taxon">
               <a [routerLink]="['/observation/map'] | localize" [queryParams]="{target: taxon.key }" (click)="close()">
-                {{taxon?.count}}
-                {{'omniSearch.allObservation'|translate}}
+                {{ taxon?.count }}
+                {{ 'omniSearch.allObservation'|translate }}
               </a>
             </div>
           </div>

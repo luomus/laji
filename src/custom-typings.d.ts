@@ -39,7 +39,7 @@ declare module 'angular2/http' {
 }
 
 declare module 'angular2/platform/browser' {
-  export * from '@angular/platform-browser'
+  export * from '@angular/platform-browser';
 }
 
 declare module 'angular2/testing' {

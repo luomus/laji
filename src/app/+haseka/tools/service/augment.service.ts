@@ -1,3 +1,5 @@
+
+import {share,  map, mergeMap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
@@ -5,7 +7,6 @@ import { NamedPlaceApi } from '../../../shared/api/NamedPlaceApi';
 import { UserService } from '../../../shared/service/user.service';
 import { Document } from '../../../shared/model/Document';
 import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
-import { map, mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class AugmentService {
@@ -39,7 +40,7 @@ export class AugmentService {
     return ObservableFrom(namedPlaces).pipe(
       mergeMap(id => this.getNamedPlace(id)),
       map(namedPlace => this.addNamedPlaceData(document, namedPlace, idxLookup, excluded))
-    )
+    );
   }
 
   private addNamedPlaceData(document: Document, namedPlace: NamedPlace, idxs: {[key: string]: number[]}, excluded: string[]) {
@@ -54,7 +55,7 @@ export class AugmentService {
         if (document.gatherings && document.gatherings[idx]) {
           this.augment(document.gatherings[idx], this.documentService.removeMeta(namedPlace.prepopulatedDocument.gatherings[0], excluded));
         }
-      })
+      });
     }
     return document;
   }
@@ -69,8 +70,8 @@ export class AugmentService {
     }
     if (!this.requests[id]) {
       return this.requests[id] = this.namedPlaceApi
-        .findById(id, this.userService.getToken())
-        .share();
+        .findById(id, this.userService.getToken()).pipe(
+        share());
     }
     return this.requests[id];
   }

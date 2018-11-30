@@ -28,7 +28,7 @@
         <ng-container *ngTemplateOutlet="expanderLabelTpl; context: {'row': row, 'column': column, 'value': value}"></ng-container>
       </ng-container>
       <ng-template #defaultExpanderLabel>
-          <span *ngIf="value" title="{{value}}">{{value}}</span>
+          <span *ngIf="value" title="{{value}}">{{ value }}</span>
       </ng-template>
       <i class="glyphicon glyphicon-plus pull-right text-primary"
          *ngIf="row.node.leafCount < 1000 && row.node.hasChildren && !row.state.isExpanded"

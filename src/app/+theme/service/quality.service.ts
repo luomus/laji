@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -47,7 +49,7 @@ export class QualityService {
         orderBy,
         pageSize,
         page
-    ))
+    ));
   }
 
   getMostActiveUsers(maxLength = 50, informalTaxonGroup?, lastDate?): Observable<any> {
@@ -71,14 +73,14 @@ export class QualityService {
         1,
         false,
         true
-    ))
-      .map(data => data.results)
-      .map(data => {
+    )).pipe(
+      map(data => data.results),
+      map(data => {
         return data.map(row => {
           row.userId = row.aggregateBy['unit.annotations.annotationByPersonName'] || '';
           return row;
         });
-      });
+      }), );
   }
 
   private _fetch(type: 'annotations'|'users', cacheKey: string, request): Observable<any> {

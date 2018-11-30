@@ -1,20 +1,20 @@
-<h3>{{id | label}}<span *ngIf="season"> - {{'wbc.season.' + season | translate}}</span></h3>
+<h3>{{ id | label }}<span *ngIf="season"> - {{ 'wbc.season.' + season | translate }}</span></h3>
 
 <div class="panel panel-default" style="max-width: 400px">
   <div class="panel-heading">
-    <strong>{{'wbc.stats.route.table' | translate}}</strong>
+    <strong>{{ 'wbc.stats.route.table' | translate }}</strong>
   </div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'fall'}">{{'wbc.season.fall' | translate}}</a></div>
-      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'winter'}">{{'wbc.season.winter' | translate}}</a></div>
-      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'spring'}">{{'wbc.season.spring' | translate}}</a></div>
+      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'fall'}">{{ 'wbc.season.fall' | translate }}</a></div>
+      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'winter'}">{{ 'wbc.season.winter' | translate }}</a></div>
+      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'spring'}">{{ 'wbc.season.spring' | translate }}</a></div>
     </div>
   </div>
 </div>
 
 <ng-container *ngIf="!season">
-  <h4>{{'wbc.stats.route.censuses' | translate}}</h4>
+  <h4>{{ 'wbc.stats.route.censuses' | translate }}</h4>
   <laji-wbc-routes-list
     [showFilter]="false"
     [rows]="rows"
@@ -24,12 +24,12 @@
     [height]="'calc(80vh - 40px)'"
     [selected]="selected"
     [countLabel]="'wbc.stats.route.count'"
-    (onRowSelect)="openViewer($event['document.documentId'])"
+    (rowSelect)="openViewer($event['document.documentId'])"
   ></laji-wbc-routes-list>
 </ng-container>
 
 <laji-wbc-route-table *ngIf="season"
-                      (onDocumentClick)="openViewer($event)"
+                      (documentClick)="openViewer($event)"
                       [data]="observationStats ? observationStats[season] : undefined"
 ></laji-wbc-route-table>
 

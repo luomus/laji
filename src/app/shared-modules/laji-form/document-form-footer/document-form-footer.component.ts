@@ -10,10 +10,10 @@ export class DocumentFormFooterComponent {
   @Input() status = '';
   @Input() saving = false;
   @Input() readonly = false;
-  @Output() onSubmitPublic = new EventEmitter();
-  @Output() onSubmitPrivate = new EventEmitter();
-  @Output() onCancel = new EventEmitter();
-  @Output() onLock = new EventEmitter<boolean>();
+  @Output() submitPublic = new EventEmitter();
+  @Output() submitPrivate = new EventEmitter();
+  @Output() cancel = new EventEmitter();
+  @Output() lock = new EventEmitter<boolean>();
   _form: any;
   _locked: false;
   _admin: false;
@@ -27,7 +27,7 @@ export class DocumentFormFooterComponent {
 
   isString(val) { return typeof val === 'string'; }
 
-  displaysSaveContainer() { return this._admin || this.show.save}
+  displaysSaveContainer() { return this._admin || this.show.save; }
 
   @Input()
   set form(form: any) {

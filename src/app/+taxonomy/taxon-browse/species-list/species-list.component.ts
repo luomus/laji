@@ -1,6 +1,7 @@
+
+import {switchMap,  map, tap } from 'rxjs/operators';
 import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { PagedResult } from '../../../shared/model/PagedResult';
@@ -160,7 +161,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       return arr;
     }, []);
 
-    return (obs.length > 0 ? ObservableForkJoin(obs) : ObservableOf([]))
+    return (obs.length > 0 ? ObservableForkJoin(obs) : ObservableOf([]));
   }
 
   private customSort(sorts, results: Taxonomy[]) {
@@ -204,7 +205,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
           this.sortValues = {};
 
           if (data.lastPage && data.lastPage === 1) {
-            this.columns.map(column => {column.sortable = true});
+            this.columns.map(column => {column.sortable = true; });
             this.defaultSortOrder = data.results.map(res => res.id);
 
             if (this.prevSorts) {
@@ -217,7 +218,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
               return;
             }
           } else {
-            this.columns.map(column => {column.sortable = false});
+            this.columns.map(column => {column.sortable = false; });
           }
 
           this.speciesPage = data;
@@ -257,15 +258,15 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private fetchAllPages(page = 1, data = []): Observable<any> {
-    return this.fetchPage(page)
-      .switchMap(result => {
+    return this.fetchPage(page).pipe(
+      switchMap(result => {
         data.push(...result.results);
         if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
           return this.fetchAllPages(result.currentPage + 1, data);
         } else {
           return ObservableOf(data);
         }
-      });
+      }));
   }
 
   private fetchPage(page: number): Observable<PagedResult<Taxonomy>> {
@@ -288,7 +289,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
         '1000',
         this.searchQuery.listOptions.sortOrder,
         query.extraParameters
-      )
+      );
   }
 
   private searchQueryToTaxaQuery() {
@@ -301,7 +302,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     return {
       target,
       extraParameters
-    }
+    };
   }
 
   private getSelectedFields() {

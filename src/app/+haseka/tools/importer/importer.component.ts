@@ -209,7 +209,7 @@ export class ImporterComponent implements OnInit {
             sortable: false,
             cellTemplate: this.valueColTpl,
             externalLabel: this.externalLabel.indexOf(this.colMap[address]) !== -1
-          })
+          });
         });
         this.dataColumns = columns;
         setTimeout(() => {
@@ -257,7 +257,7 @@ export class ImporterComponent implements OnInit {
         const docNum = idx + 1;
         Object.keys(data.rows).forEach(row => {
           docs[row] = docNum;
-        })
+        });
       });
     }
     this.mappedData = [
@@ -330,7 +330,7 @@ export class ImporterComponent implements OnInit {
     let hadSuccess = false;
     this.total = this.parsedData.length;
     this.current = 1;
-    ObservableFrom(this.parsedData)
+    ObservableFrom(this.parsedData);
     ObservableFrom(this.parsedData).pipe(
       mergeMap(data => this.augmentService.augmentDocument(data.document).pipe(
         concatMap(document => this.importService.sendData(document, publicityRestrictions).pipe(
@@ -374,7 +374,7 @@ export class ImporterComponent implements OnInit {
             this.valid = true;
             this.uploadedFiles = [...this.partiallyUploadedFiles, this.hash];
             this.translateService.get('excel.import.done')
-              .subscribe(msg => this.toastsService.showSuccess(msg))
+              .subscribe(msg => this.toastsService.showSuccess(msg));
           } else {
             if (hadSuccess) {
               this.partiallyUploadedFiles = [...this.partiallyUploadedFiles, this.hash];

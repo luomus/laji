@@ -1,3 +1,5 @@
+
+import {switchMap} from 'rxjs/operators';
 import { WINDOW } from '@ng-toolkit/universal';
 import { Component, Inject, Input, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
@@ -49,8 +51,8 @@ export class FeedbackComponent {
       return;
     }
     const meta = this.getMeta();
-    this.userService.getUser()
-      .switchMap(user => this.lajiApi.post(
+    this.userService.getUser().pipe(
+      switchMap(user => this.lajiApi.post(
         LajiApi.Endpoints.feedback,
         {
           subject,
@@ -58,7 +60,7 @@ export class FeedbackComponent {
           meta
         },
         {personToken: user && user.emailAddress ? this.userService.getToken() : undefined})
-      )
+      ))
       .subscribe(
         () => {
           this.feedback = {

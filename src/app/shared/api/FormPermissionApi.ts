@@ -1,5 +1,7 @@
 /* tslint:disable:no-unused-variable member-ordering max-line-length */
 
+
+import {map} from 'rxjs/operators';
 /**
  * API documentation
  * To use this api you need an access token.  To getList the token, send a post request with your email address to api-users resource and one will be send to your. Each endpoint bellow has more information on how to use this API. If you have any questions you can contact us at helpdesk@laji.fi.  You can find more documentation here: [in Finnish](https://beta.laji.fi/about/806), in English (todo). Please refer to [schema.laji.fi](http://schema.laji.fi/) for information about the used vocabulary.  Endpoints Observations and collections * Warehouse - Warehouse API * Collection - Collection metadata * Source - Informatin sources (IT systems) * Annotation - Quality control   Taxonomy * Taxa - Taxonomy API * InformalTaxonGroup - Informal taxon groups are used in taxa and warehouse endpoints * Publication - Scientific publications * Checklist - Mainly you only work with one checklits: the FinBIF master checklist. There are others.   Other master data * Metadata - Variable descriptions * Area - Countries, Finnish municipalities, biogeographical provinces, etc. * Person - Information about people.   Helpers * APIUser - Register as an API user * Autocomplete - For making an autocomplete filed for taxa, collections or persons (friends) * PersonToken - Information about an authorized person   Vihko observation system * Form - Form definition * Document - Document instance of a form * Image - Image of a document   Laji.fi portal * Feedback - Feedback form API * Information - CMS content of information pages * Logger - Error logging from user's browsers to FinBIF * News - News
@@ -37,14 +39,14 @@ export class FormPermissionApi {
      * @param personToken person token who is authorised to accept requests
      */
     public acceptRequest(collectionID: string, personID: string, personToken: string, type?: FormPermission.Type, extraHttpRequestParams?: any): Observable<FormPermission> {
-        return this.acceptRequestWithHttpInfo(collectionID, personID, personToken, type, extraHttpRequestParams)
-            .map((response: HttpResponse<FormPermission>) => {
+        return this.acceptRequestWithHttpInfo(collectionID, personID, personToken, type, extraHttpRequestParams).pipe(
+            map((response: HttpResponse<FormPermission>) => {
                 if (response.status === 204) {
                     return undefined;
                 } else {
                     return response.body;
                 }
-            });
+            }));
     }
 
     /**
@@ -54,14 +56,14 @@ export class FormPermissionApi {
      * @param personToken person token
      */
     public findByCollectionID(collectionID: string, personToken?: string, extraHttpRequestParams?: any): Observable<FormPermission> {
-        return this.findByCollectionIDWithHttpInfo(collectionID, personToken, extraHttpRequestParams)
-            .map((response: HttpResponse<FormPermission>) => {
+        return this.findByCollectionIDWithHttpInfo(collectionID, personToken, extraHttpRequestParams).pipe(
+            map((response: HttpResponse<FormPermission>) => {
                 if (response.status === 204) {
                     return undefined;
                 } else {
                     return response.body;
                 }
-            });
+            }));
     }
 
     /**
@@ -71,14 +73,14 @@ export class FormPermissionApi {
      * @param personToken person token for the one who is requesting access
      */
     public requestAccess(collectionID: string, personToken: string, extraHttpRequestParams?: any): Observable<FormPermission> {
-        return this.requestAccessWithHttpInfo(collectionID, personToken, extraHttpRequestParams)
-            .map((response: HttpResponse<FormPermission>) => {
+        return this.requestAccessWithHttpInfo(collectionID, personToken, extraHttpRequestParams).pipe(
+            map((response: HttpResponse<FormPermission>) => {
                 if (response.status === 204) {
                     return undefined;
                 } else {
                     return response.body;
                 }
-            });
+            }));
     }
 
     /**
@@ -89,14 +91,14 @@ export class FormPermissionApi {
      * @param personToken person token who is authorised to revoke access to form
      */
     public revokeAccess(collectionID: string, personID: string, personToken: string, extraHttpRequestParams?: any): Observable<FormPermission> {
-        return this.revokeAccessWithHttpInfo(collectionID, personID, personToken, extraHttpRequestParams)
-            .map((response: HttpResponse<FormPermission>) => {
+        return this.revokeAccessWithHttpInfo(collectionID, personID, personToken, extraHttpRequestParams).pipe(
+            map((response: HttpResponse<FormPermission>) => {
                 if (response.status === 204) {
                     return undefined;
                 } else {
                     return response.body;
                 }
-            });
+            }));
     }
 
 

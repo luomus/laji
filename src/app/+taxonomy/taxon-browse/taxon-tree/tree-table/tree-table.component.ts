@@ -113,7 +113,7 @@ export class TreeTableComponent implements OnChanges {
       .subscribe(() => {
         this.updateRows();
         this.cd.markForCheck();
-      })
+      });
   }
 
   private toggleChildrenOpen(node: TreeNode, treeState: TreeState) {
@@ -121,7 +121,7 @@ export class TreeTableComponent implements OnChanges {
       .subscribe(() => {
         this.updateRows();
         this.cd.markForCheck();
-      })
+      });
   }
 
   private toggleOpenChain(nodes: TreeNode[], treeState: TreeState, chain: any[]) {
@@ -137,7 +137,7 @@ export class TreeTableComponent implements OnChanges {
 
     return this.setOpen(node, treeState, setAllChildrenOpen).pipe(tap(() => {
       treeState.state[node.id].loadingCount--;
-    }))
+    }));
   }
 
   private setChainOpen(nodes: TreeNode[], treeState: TreeState, chain: any[]): Observable<TreeNode> {
@@ -166,7 +166,7 @@ export class TreeTableComponent implements OnChanges {
                   tap(() => {
                     treeState.state[node.id].loadingCount--;
                   })
-                )
+                );
             }));
         }
       }

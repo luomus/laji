@@ -3,7 +3,7 @@
     'col-sm-8': form.logo,
     'col-sm-12': !(form.logo)
   }">
-    <h3>{{form.title}}</h3>
+    <h3>{{ form.title }}</h3>
     <ng-container *ngIf="onlyNpDescription && form.namedPlaceOptions && form.namedPlaceOptions.description; else description">
       <div [innerHtml]="form.namedPlaceOptions?.description ? form.namedPlaceOptions.description : 'np.defaultDescription' | translate"></div>
       <br>
@@ -12,10 +12,10 @@
       <div [innerHtml]="form.description"></div><br>
     </ng-template>
     <span *ngIf="form.instructions && form.instructions[translate.currentLang]">
-      <a href="{{form.instructions[translate.currentLang]}}" target="_blank">{{'haseka.instructions' | translate}}</a>
+      <a href="{{form.instructions[translate.currentLang]}}" target="_blank">{{ 'haseka.instructions' | translate }}</a>
       |
     </span>
-    <a [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank">{{'haseka.termsOfService' | translate}}</a>
+    <a [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
   </div>
   <div class="col-sm-4" *ngIf="form.logo">
     <div class="form-logo pull-right" *ngIf="form.logo">

@@ -1,3 +1,4 @@
+/* tslint:disable:max-classes-per-file */
 import { NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
 import { ForumComponent } from './forum/forum.component';

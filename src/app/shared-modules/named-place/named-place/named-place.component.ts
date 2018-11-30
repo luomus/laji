@@ -1,3 +1,5 @@
+
+import {tap, catchError,  switchMap, take } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -14,7 +16,6 @@ import { AreaType } from '../../../shared/service/area.service';
 import { NpEditComponent } from '../np-edit/np-edit.component';
 import { FormPermissionService, Rights } from '../../../+haseka/form-permission/form-permission.service';
 import * as moment from 'moment';
-import { switchMap, take } from 'rxjs/operators';
 import { EventEmitter } from 'events';
 
 @Component({
@@ -109,29 +110,29 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         }
         this._editModeInit = params.edit;
         this.initEditMode();
-        if (updateList) { this.updateList() }
+        if (updateList) { this.updateList(); }
         this.cd.markForCheck();
       }
       this.listenToNextParamChange = true;
     });
 
     this.loading = true;
-    this.subParam = this.route.params
-      .switchMap((params) => {
+    this.subParam = this.route.params.pipe(
+      switchMap((params) => {
         this.formId = params['formId'];
         this.collectionId = params['collectionId'];
         this.prepopulatedNamedPlace['collectionID'] = this.collectionId;
 
         return this.getFormInfo();
-      })
-      .switchMap((form) => this.updateSettings(form))
-      .switchMap(() => {
+      }),
+      switchMap((form) => this.updateSettings(form)),
+      switchMap(() => {
         if (!(this.filterByMunicipality && !this.municipality)) {
           return this.updateNP();
         } else {
           return ObservableOf([]);
         }
-      })
+      }), )
       .subscribe(() => {
         this.loading = false;
         this.cd.markForCheck();
@@ -206,7 +207,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
         this.cd.markForCheck();
       }, () => {
         this.loading = false;
-      })
+      });
   }
 
   reserve() {
@@ -266,19 +267,19 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     }
     const {namedPlaceOptions = {}} = this.formData;
     if (namedPlaceOptions.hasOwnProperty('includeUnits')) {
-      query.includeUnits = namedPlaceOptions.includeUnits
+      query.includeUnits = namedPlaceOptions.includeUnits;
     }
-    return this.namedPlaceService.getAllNamePlaces(query)
-      .catch(() => {
+    return this.namedPlaceService.getAllNamePlaces(query).pipe(
+      catchError(() => {
         this.translate.get('np.loadError')
           .subscribe(msg => (this.setErrorMessage(msg)));
         return ObservableOf([]);
-      })
-      .do(data => {
+      })).pipe(
+      tap(data => {
         this.namedPlaces = data;
         this.namedPlace = this.namedPlaces[this.activeNP];
         this.namedPlacesEvents.emit('update');
-      });
+      }));
   }
 
   private updateSettings(formData: any) {
@@ -299,9 +300,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           return ObservableOf(null);
         }
         return this.formPermissionService
-          .getRights(formData)
-          .take(1)
-          .switchMap(rights => {
+          .getRights(formData).pipe(
+          take(1)).pipe(
+          switchMap(rights => {
             this._formRightsInit = true;
             this.initEditMode();
             this.formRights = rights;
@@ -312,20 +313,20 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
               this.allowCreate =  rights.admin && (!formData.features || formData.features.indexOf(Form.Feature.NoNewNamedPlaces) === -1);
             }
             return ObservableOf(null);
-          })
+          }));
       })
     );
   }
 
   private getFormInfo(): Observable<any> {
-    return this.formService.getForm(this.formId, this.translate.currentLang)
-      .catch((err) => {
+    return this.formService.getForm(this.formId, this.translate.currentLang).pipe(
+      catchError((err) => {
         const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
         this.translate.get(msgKey, {formId: this.formId})
           .subscribe(msg => this.setErrorMessage(msg));
         return ObservableOf({});
-      })
-      .do(form => this.formData = form);
+      })).pipe(
+      tap(form => this.formData = form));
   }
 
   updateMunicipalityParam() {
@@ -373,8 +374,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   setActiveNP(idx: number) {
     this.activeNP = idx;
     if (this.activeNP >= 0) {
-      if (this.namedPlaces) { this.namedPlace = this.namedPlaces[this.activeNP] }
-      if (this.editView) { this.editView.npClick() }
+      if (this.namedPlaces) { this.namedPlace = this.namedPlaces[this.activeNP]; }
+      if (this.editView) { this.editView.npClick(); }
     } else {
       this.namedPlace = null;
     }

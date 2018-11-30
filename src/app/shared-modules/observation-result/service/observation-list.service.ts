@@ -1,3 +1,5 @@
+
+import {share, tap, switchMap, concat, take, delay, retryWhen, map} from 'rxjs/operators';
 import { forkJoin as ObservableForkJoin, Observable, Observer, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
@@ -67,16 +69,16 @@ export class ObservationListService {
       page,
       false,
       false
-    )
-      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
-      .map(data => Util.clone(data))
-      .map(data => this.convertAggregateResult(data))
-      .switchMap(data => this.openValues(data, aggregateBy, lang))
-      .do(data => {
+    ).pipe(
+      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
+      map(data => Util.clone(data)),
+      map(data => this.convertAggregateResult(data)), ).pipe(
+      switchMap(data => this.openValues(data, aggregateBy, lang)),
+      tap(data => {
         this.aggregateData = data;
         this.aggregateKey = key;
-      })
-      .share();
+      }),
+      share(), );
     return this.aggregatePending;
   }
 
@@ -110,15 +112,15 @@ export class ObservationListService {
       orderBy,
       pageSize,
       page
-    )
-      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
-      .map(data => Util.clone(data))
-      .switchMap(data => this.openValues(data, selected, lang))
-      .do(data => {
+    ).pipe(
+      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
+      map(data => Util.clone(data))).pipe(
+      switchMap(data => this.openValues(data, selected, lang)),
+      tap(data => {
         this.data = data;
         this.key = key;
-      })
-      .share();
+      }),
+      share(), );
     return this.pending;
   }
 
@@ -179,7 +181,7 @@ export class ObservationListService {
     const openWgs84 = selected.indexOf('gathering.conversions.wgs84') > -1;
 
     if (selected.indexOf('document.sourceId') > -1) {
-      allMappers.push(this.sourceService.getAllAsLookUp(lang).map(sources => ({'document.sourceId': sources})));
+      allMappers.push(this.sourceService.getAllAsLookUp(lang).pipe(map(sources => ({'document.sourceId': sources}))));
     }
     if (selected.indexOf('document.collectionId') > -1) {
       allMappers.push(this.collectionService.getAllAsLookUp(lang)
@@ -191,10 +193,10 @@ export class ObservationListService {
         .map(collections => ({'document.collectionId': collections})));
     }
 
-    const mappers$ = allMappers.length === 0 ? ObservableOf({}) : ObservableForkJoin(allMappers)
-      .map(mappers => mappers.reduce((cumulative, current) => {
+    const mappers$ = allMappers.length === 0 ? ObservableOf({}) : ObservableForkJoin(allMappers).pipe(
+      map(mappers => mappers.reduce((cumulative, current) => {
         return {...cumulative, ...current};
-      }, {}));
+      }, {})));
 
     return ObservableForkJoin(
       ObservableOf(data),

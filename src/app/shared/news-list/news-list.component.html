@@ -5,16 +5,16 @@
       <div class="media-body">
         <div *ngIf="item.external">
           <a href="{{item.externalURL}}" target="_blank">
-            <h4 class="media-heading">{{item.title}} <i class="glyphicon glyphicon-new-window small"></i></h4>
+            <h4 class="media-heading">{{ item.title }} <i class="glyphicon glyphicon-new-window small"></i></h4>
           </a>
         </div>
         <div *ngIf="!item.external">
           <a [routerLink]="['/news/' + item.id | localize]">
-            <h4 class="media-heading">{{item.title}}</h4>
+            <h4 class="media-heading">{{ item.title }}</h4>
           </a>
         </div>
         <div>
-          <span class="label label-default">{{item.tag | translate}}</span>
+          <span class="label label-default">{{ item.tag | translate }}</span>
           <span class="pull-right">{{ item.posted | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY' }}</span>
         </div>
       </div>

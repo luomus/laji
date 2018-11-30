@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-12">
-    <h3 *ngIf="showTitle">{{level}}</h3>
+    <h3 *ngIf="showTitle">{{ level }}</h3>
     <div class="level {{level}}">
       <ng-container *ngFor="let curr of items">
         <ng-container [ngSwitch]="curr.type">
@@ -22,10 +22,10 @@
           </div>
           <div *ngSwitchDefault class="row">
             <div class="key-{{curr.key}} key col-sm-4">
-              {{curr.key | label: 'warehouse'}}<span *ngIf="curr.key">:</span>
+              {{ curr.key | label: 'warehouse' }}<span *ngIf="curr.key">:</span>
             </div>
             <div class="value col-sm-8">
-              {{curr.value | label: 'warehouse'}}
+              {{ curr.value | label: 'warehouse' }}
             </div>
           </div>
         </ng-container>
