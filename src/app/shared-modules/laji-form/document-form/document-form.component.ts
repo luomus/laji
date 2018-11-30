@@ -290,18 +290,20 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
       );
   }
 
-  updateReadonly(): Observable<any> {
+  updateReadonly(): Observable<boolean> {
+    const {formData = {}} = this.form || {};
     return Observable.create(observer => {
+      if (this.form.uiSchemaContext.isAdmin) {
+        this.readonly = false;
+        return observer.next(this.readonly);
+      }
       this.userService.getUser().subscribe(user => {
-        const {formData = {}} = this.form || {};
-        if ((user.role || []).indexOf('MA.admin') === -1
-          && (formData.creator !== user.id
-            || formData.editors.indexOf(user.id) === -1)) {
+        if (formData.creator !== user.id && formData.editors.indexOf(user.id) === -1) {
           this.readonly = 'haseka.form.readonly';
         } else {
           this.readonly = formData.locked;
         }
-        observer.next();
+        observer.next(this.readonly || false);
       });
     });
   }
@@ -392,9 +394,9 @@ export class DocumentFormComponent implements AfterViewInit, OnChanges, OnDestro
           data.uiSchemaContext.isAdmin = result.rights.admin;
           data.uiSchemaContext.annotations = result.annotations;
           this.form = data;
-          this.updateReadonly().subscribe(() => {
+          this.updateReadonly().subscribe((readonly) => {
             this.lang = this.translate.currentLang;
-            this.form.uiSchema['ui:disabled'] = this.readonly;
+            this.form.uiSchema['ui:disabled'] = readonly;
             this.readyForForm = true;
             if (this.hasChanges()) {
               this.saveVisibility = 'shown';
