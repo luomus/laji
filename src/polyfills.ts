@@ -9,7 +9,7 @@ import 'core-js/es7/array';
 // Needed for: All but Chrome and Firefox, Not supported in IE9
 import 'web-animations-js';
 /** Evergreen browsers require these. **/
-import 'core-js/es7/reflect';
+
 
 import 'classlist.js';
 /***************************************************************************************************

@@ -25,7 +25,7 @@ import {
   TooltipModule,
   TypeaheadModule
 } from 'ngx-bootstrap';
-import { Ng2Webstorage } from 'ngx-webstorage';
+import { NgxWebstorageModule } from 'ngx-webstorage';
 import { ForumComponent } from './forum/forum.component';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleFiComponent } from './locale/locale-fi.component';
@@ -79,7 +79,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),
-    Ng2Webstorage.forRoot({prefix: 'laji-', separator: ''}),
+    NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
     environment.type === Global.type.iucn ? IucnRoutingModule : AppRoutingModule,
     TransferHttpCacheModule
   ],

@@ -59,7 +59,7 @@ import { WbcRoutesComponent } from './wbc/wbc-result/wbc-routes/wbc-routes.compo
 import { WbcCensusesComponent } from './wbc/wbc-result/wbc-censuses/wbc-censuses.component';
 import { WbcSpeciesListComponent } from './wbc/wbc-result/wbc-species/wbc-species-list/wbc-species-list.component';
 import { WbcResultService } from './wbc/wbc-result/wbc-result.service';
-import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { WbcResultFiltersComponent } from './wbc/wbc-result/wbc-result-filters/wbc-result-filters.component';
 import { WbcSpeciesChartsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-charts.component';
 import { WbcSpeciesMapsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-maps/wbc-species-maps.component';
@@ -98,7 +98,7 @@ import { ThemeFormComponent } from './common/theme-form.component';
     LajiFormModule,
     ObservationMapModule,
     NgxChartsModule,
-    JWBootstrapSwitchModule,
+    JwBootstrapSwitchNg2Module,
     FormPermissionModule,
     NavigationThumbnailModule,
     LatestDocumentsModule

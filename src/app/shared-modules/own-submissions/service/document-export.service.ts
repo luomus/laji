@@ -125,7 +125,7 @@ export class DocumentExportService {
       aoa.push([]);
 
       for (let j = 0; j < fields.length; j++) {
-        aoa[i + 1].push(Util.parseJSONPath(obj, fields[j]['value']));
+        aoa[i + 1].push(Util.parseJSONPath(obj, fields[j]['value'] as string));
       }
     }
 

@@ -18,7 +18,7 @@ import { ToQNamePipe } from './pipe/to-qname.pipe';
 import { ToFullUriPipe } from './pipe/to-full-uri';
 import { GalleryComponent } from '../+observation/gallery/gallery.component';
 import { AuthoritiesDirective } from './authorities/authorities.directive';
-import { Ng2Webstorage } from 'ngx-webstorage';
+import { NgxWebstorageModule } from 'ngx-webstorage';
 import { AuthenticatedHttpInterceptor } from './service/authenticated-http.interceptor';
 import { ImageComponent } from './image/image.component';
 import { ValuesPipe } from './pipe/values.pipe';
@@ -84,7 +84,7 @@ import { FilterPipe } from './pipe/filter.pipe';
     MomentModule,
     SpinnerModule,
     PaginatorModule,
-    TooltipModule, BsDropdownModule, AlertModule, ModalModule, Ng2Webstorage, PopoverModule, ProgressbarModule
+    TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule, ProgressbarModule
   ],
   providers: [ ], // keep this empty!
   exports: [
@@ -106,7 +106,7 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
-        Ng2Webstorage,
+        NgxWebstorageModule,
         DateFormatPipe,
         FormattedNumber,
         ToQNamePipe,

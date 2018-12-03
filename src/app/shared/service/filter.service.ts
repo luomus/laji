@@ -20,7 +20,7 @@ export class FilterService {
     if (!Array.isArray(value) || !filterBy) {
       return value;
     }
-    let needle = filterBy;
+    let needle: any = filterBy;
     let properties = null;
     switch (typeof filterBy) {
       case 'object':
