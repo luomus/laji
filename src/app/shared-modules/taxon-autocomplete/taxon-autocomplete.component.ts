@@ -1,10 +1,12 @@
 
-import {tap, map} from 'rxjs/operators';
+import {switchMap, distinctUntilChanged, tap, map} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, AfterViewInit } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Autocomplete } from '../../shared/model/Autocomplete';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
+import 'rxjs-compat/add/operator/distinctUntilChanged';
+import 'rxjs-compat/add/operator/switchMap';
 
 @Component({
   selector: 'laji-taxon-autocomplete',
@@ -38,15 +40,16 @@ export class TaxonAutocompleteComponent implements AfterViewInit {
   ) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.value);
-    })
-      .distinctUntilChanged()
-      .switchMap((token: string) => this.getTaxa(token))
-      .switchMap((data) => {
+    });
+    this.dataSource = this.dataSource.pipe(
+      distinctUntilChanged(),
+      switchMap((token: string) => this.getTaxa(token)),
+      switchMap((data) => {
         if (this.value) {
           return ObservableOf(data);
         }
         return ObservableOf([]);
-      });
+      }), );
   }
 
   ngAfterViewInit() {

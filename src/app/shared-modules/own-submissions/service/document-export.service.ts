@@ -57,7 +57,6 @@ export class DocumentExportService {
         switchMap(jsonForms => {
           return this.getAllFields(jsonForms)
             .pipe(
-              tap(data => console.log(data)),
               switchMap(({fields: fields, fieldStructure: fieldStructure}) => {
                 const dataObservables = [];
                 docs.reduce((arr: Observable<any>[], doc: any) => {

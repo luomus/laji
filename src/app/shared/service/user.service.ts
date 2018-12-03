@@ -160,15 +160,15 @@ export class UserService extends LocalDb {
           observer.complete();
           delete this.usersFetch[id];
         };
-        this.userService.personFindByUserId(id).pipe(
-          catchError((e) => ObservableOf({})))
+        this.userService.personFindByUserId(id).pipe(catchError((e) => ObservableOf({})))
           .subscribe(
             (user: Person) => {
               this.addUser(user);
               onComplete(user);
             }
           );
-      }).share();
+      });
+      this.usersFetch[id] = this.usersFetch[id].pipe(share());
     }
     return this.usersFetch[id];
   }

@@ -11,6 +11,8 @@ import { IdService } from '../../../shared/service/id.service';
 import { Util } from '../../../shared/service/util.service';
 import { CoordinatePipe } from '../../../shared/pipe/coordinate.pipe';
 
+
+
 @Injectable()
 export class ObservationListService {
 
@@ -72,7 +74,7 @@ export class ObservationListService {
     ).pipe(
       retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
       map(data => Util.clone(data)),
-      map(data => this.convertAggregateResult(data)), ).pipe(
+      map(data => this.convertAggregateResult(data))).pipe(
       switchMap(data => this.openValues(data, aggregateBy, lang)),
       tap(data => {
         this.aggregateData = data;
@@ -172,25 +174,18 @@ export class ObservationListService {
   private openValues(data, selected: string[], lang: string): Observable<any> {
     const allMappers = [];
     const uriCache = {};
-    const openYkj = selected.indexOf('gathering.conversions.ykj') > -1;
-    const openYkj10Km = selected.indexOf('gathering.conversions.ykj10km') > -1;
-    const openYkj10KmCenter = selected.indexOf('gathering.conversions.ykj10kmCenter') > -1;
-    const openYkj1Km = selected.indexOf('gathering.conversions.ykj1km') > -1;
-    const openYkj1KmCenter = selected.indexOf('gathering.conversions.ykj1kmCenter') > -1;
-    const openEuref = selected.indexOf('gathering.conversions.euref') > -1;
-    const openWgs84 = selected.indexOf('gathering.conversions.wgs84') > -1;
 
     if (selected.indexOf('document.sourceId') > -1) {
       allMappers.push(this.sourceService.getAllAsLookUp(lang).pipe(map(sources => ({'document.sourceId': sources}))));
     }
     if (selected.indexOf('document.collectionId') > -1) {
-      allMappers.push(this.collectionService.getAllAsLookUp(lang)
-        .map(collections => {
+      allMappers.push(this.collectionService.getAllAsLookUp(lang).pipe(
+        map(collections => {
           const lookUp = {};
           collections.map(collection => lookUp[collection.id] = collection.value);
           return lookUp;
-        })
-        .map(collections => ({'document.collectionId': collections})));
+        }),
+        map(collections => ({'document.collectionId': collections})), ));
     }
 
     const mappers$ = allMappers.length === 0 ? ObservableOf({}) : ObservableForkJoin(allMappers).pipe(

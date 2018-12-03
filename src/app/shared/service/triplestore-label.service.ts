@@ -165,10 +165,6 @@ export class TriplestoreLabelService {
         TriplestoreLabelService.cacheProps,
         this.metadataApi.metadataAllProperties('multi').pipe(
           take(1),
-          retryWhen(errors => errors.pipe(
-            delay(1000),
-            take(3)
-          )),
           map(data => {
             const props = {};
             if (data && data.results) {
