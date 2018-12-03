@@ -34,18 +34,18 @@ export class DocumentFormFooterComponent {
     this._form = form;
     this._admin = form && form.uiSchemaContext && form.uiSchemaContext.isAdmin;
     this._locked = form && form.formData && form.formData.locked;
-    ['save', 'temp', 'cancel'].forEach(place => {
+    ['save', 'temp', 'cancel'].forEach(prop => {
       let show: boolean;
 
       if (!form || !form.actions) {
         show = true;
       } else {
-        show = place in form.actions;
+        show = prop in form.actions;
       }
-      if (this.readonly && (place === 'save' || place === 'temp')) {
+      if (this.readonly && (prop === 'save' || prop === 'temp')) {
         show = false;
       }
-      this.show[place] = show;
+      this.show[prop] = show;
     });
   }
 

@@ -23,7 +23,7 @@ export const environment = {
   lineTransectEiVakioForm: 'MHL.27',
   lineTransectKartoitusForm: 'MHL.28',
   whichSpeciesForm: 'MHL.9',
-  namedPlaceForm: 'JX.123608',
+  namedPlaceForm: 'MHL.36',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self'
 };

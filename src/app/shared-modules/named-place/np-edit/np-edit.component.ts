@@ -78,7 +78,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.npFormId = this.formData.namedPlaceOptions
-      && this.formData.namedPlaceOptions.formId
+      && this.formData.namedPlaceOptions.formID
       || environment.namedPlaceForm;
     this.mapOptionsData = this.getMapOptions();
     this.fetchForm();
