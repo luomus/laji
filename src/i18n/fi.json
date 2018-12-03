@@ -356,6 +356,7 @@
   "np.country": "Maa",
   "np.createNew": "Luo uusi",
   "np.defaultDescription": "Aloita valitsemalla paikka.",
+  "np.defaultCreateDescription": "<h3>Luo uusi paikka<h3>",
   "np.defaultUse": "Käytä tätä paikkaa",
   "np.earlier": "Ilmoitukset",
   "np.edit": "Muokkaa",

@@ -1,6 +1,6 @@
 <div class="container-fluid" style="width: 100%">
   <div id="container" class="row np-row">
-    <laji-document-form-header *ngIf="formData && !editMode" [formID]="formId" [onlyNpDescription]="true" class="no-flex"></laji-document-form-header>
+    <laji-document-form-header *ngIf="formData" [formID]="formId" [type]="editMode ? 'npCreate' : 'np'" class="no-flex"></laji-document-form-header>
 
     <alert *ngIf="errorMsg" type="danger">{{ errorMsg }}</alert>
 
@@ -39,7 +39,7 @@
                           (tabChange)="onTabChange($event)"
                           [preselectedNPIndex]="preselectedNPIndex"></laji-np-choose>
         </div>
-        <div [ngClass]="editMode? 'col-xs-12 nav-margin' : 'col-lg-6 nav-margin'">
+        <div [ngClass]="editMode ? 'col-xs-12 nav-margin' : 'col-lg-6 nav-margin'">
           <laji-np-edit [editMode]="editMode"
                         [formId]="formId"
                         [loading]="loading"
