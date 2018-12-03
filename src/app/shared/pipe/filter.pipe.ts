@@ -12,7 +12,7 @@ export class FilterPipe implements PipeTransform {
   /**
    * Filters the given value so that the r
    * @param value array of values
-   * @param filterBy
+   * @param filterBy filter by these values
    */
   transform(value: any, filterBy: FilterByType): any {
     return this.filterService.filter(value, filterBy);

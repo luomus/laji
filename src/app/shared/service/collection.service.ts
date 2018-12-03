@@ -1,3 +1,4 @@
+import { tap, share, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { MetadataApi } from '../api/MetadataApi';
@@ -15,7 +16,7 @@ export class CollectionService {
   ) {
   }
 
-  getAllAsLookUp(lang: string) {
+  getAllAsLookUp(lang: string): Observable<any> {
     if (lang === this.currentLang) {
       if (this.collectionsLookup) {
         return ObservableOf(this.collectionsLookup);
@@ -32,16 +33,18 @@ export class CollectionService {
       }
     }
     this.pending = this.metadataService
-      .metadataFindPropertiesRanges('MY.collectionID', lang, false, true)
-      .do(collections => { this.collectionsLookup = collections; })
-      .share();
+      .metadataFindPropertiesRanges('MY.collectionID', lang, false, true).pipe(
+        tap(collections => { this.collectionsLookup = collections; }),
+        share()
+      );
     this.currentLang = lang;
 
     return this.pending;
   }
 
-  getName(id: string, lang) {
-    return this.getAllAsLookUp(lang)
-      .map(data => data.filter(col => col.id === id));
+  getName(id: string, lang): Observable<any> {
+    return this.getAllAsLookUp(lang).pipe(
+      map(data => data.filter(col => col.id === id))
+    );
   }
 }

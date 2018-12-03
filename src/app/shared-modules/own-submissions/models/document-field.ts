@@ -3,7 +3,7 @@ export type DocumentField = DocumentFieldNode | DocumentFieldLeaf;
 type DocumentFieldNode = DocumentFieldNodeKnownProps & DocumentFieldNodeUnknownProps;
 
 interface DocumentFieldNodeKnownProps {
-  '@multipleBy'?: number
+  '@multipleBy'?: number;
 }
 
 interface DocumentFieldNodeUnknownProps {
@@ -11,8 +11,8 @@ interface DocumentFieldNodeUnknownProps {
 }
 
 interface DocumentFieldLeaf {
-  value: string,
-  label: string,
-  used: boolean,
-  enums?: any
+  value: string;
+  label: string;
+  used: boolean;
+  enums?: any;
 }

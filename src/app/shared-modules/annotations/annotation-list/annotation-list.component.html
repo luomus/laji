@@ -8,7 +8,7 @@
           <button
             type="button"
             class="btn btn-danger btn-xs"
-            (click)="onDelete.emit(annotation)"
+            (click)="remove.emit(annotation)"
             *ngIf="(annotation.annotationByPerson | toQName) === personID">
             <i class="glyphicon glyphicon-remove"></i>
           </button>
@@ -40,29 +40,29 @@
         </ng-container>
         <small>
           <span class="annotation-title" *ngIf="annotation.annotationBySystem">
-            {{'annotationBySystem' | translate}}
+            {{ 'annotationBySystem' | translate }}
             <!--{{annotation.annotationBySystem | toQName | source}}-->
           </span>
           <span class="annotation-title" *ngIf="(annotation.type | toQName) === types.TypeUnidentifiable">
-            {{'MAN.typeUnidentifiable' | label }}
+            {{ 'MAN.typeUnidentifiable' | label }}
           </span>
-          <span class="annotation-title" *ngIf="annotation.annotationClass">{{annotation.annotationClass | toQName | label}}</span>
-          <span class="annotation-title" *ngIf="annotation.annotationByPerson">{{annotation.annotationByPerson | toQName | users}}</span>
-          <span *ngIf="!changingLocale">{{annotation.created | amTimeAgo}}</span>
+          <span class="annotation-title" *ngIf="annotation.annotationClass">{{ annotation.annotationClass | toQName | label }}</span>
+          <span class="annotation-title" *ngIf="annotation.annotationByPerson">{{ annotation.annotationByPerson | toQName | users }}</span>
+          <span *ngIf="!changingLocale">{{ annotation.created | amTimeAgo }}</span>
         </small>
       </div>
     </div>
     <div class="row" *ngIf="annotation.opinion">
       <div class="col-xs-12">
-        {{'MAN.opinion' | label}}:
-        {{annotation.opinion}}
+        {{ 'MAN.opinion' | label }}:
+        {{ annotation.opinion }}
       </div>
     </div>
     <p class="content" *ngIf="annotation.notes">
-      {{annotation.notes}}
+      {{ annotation.notes }}
     </p>
   </div>
   <div *ngIf="annotations && annotations.length === 0">
-    {{'annotation.none' | translate}}
+    {{ 'annotation.none' | translate }}
   </div>
 </div>

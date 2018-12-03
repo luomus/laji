@@ -24,4 +24,4 @@ import {
 })
 export class NgxChartsModule { }
 
-export { NgxChartsLineChartComponent as LineChartComponent }
+export { NgxChartsLineChartComponent as LineChartComponent };

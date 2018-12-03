@@ -1,4 +1,4 @@
-<h3>{{'wbc.stats.species' | translate}}</h3>
+<h3>{{ 'wbc.stats.species' | translate }}</h3>
 <laji-wbc-result-filters (yearChange)="activeYear = $event"
                          (seasonChange)="activeSeason = $event"
                          (areaChange)="activeBirdAssociationArea = $event"
@@ -6,7 +6,7 @@
 ></laji-wbc-result-filters>
 <div class="row options-container">
   <div class="col-sm-12">
-    <laji-wbc-table-filter (onValueChange)="filterBy = $event"></laji-wbc-table-filter>
+    <laji-wbc-table-filter (valueChange)="filterBy = $event"></laji-wbc-table-filter>
     <bSwitch
       style="margin-right: 15px"
       name="onlyFinnish"
@@ -18,7 +18,7 @@
       [switch-base-class]="'bootstrap-switch'">
     </bSwitch>
     <div class="show-statistics-wrapper">
-      <label for="showStatistics">{{'wbc.stats.statistics' | translate}}&nbsp;</label>
+      <label for="showStatistics">{{ 'wbc.stats.statistics' | translate }}&nbsp;</label>
       <bSwitch
         id="showStatistics"
         name="showStatistics"

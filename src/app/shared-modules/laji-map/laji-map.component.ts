@@ -1,3 +1,5 @@
+
+import {merge, switchMap, filter} from 'rxjs/operators';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -18,6 +20,7 @@ import { Logger } from '../../shared/logger/logger.service';
 import * as LajiMap from 'laji-map';
 import { Global } from '../../../environments/global';
 
+
 @Component({
   selector: 'laji-map',
   template: `
@@ -27,7 +30,7 @@ import { Global } from '../../../environments/global';
   <ng-content></ng-content>
   <ul class="legend" *ngIf="_legend && _legend.length > 0" [ngStyle]="{'margin-top': 0 }">
     <li *ngFor="let leg of _legend">
-      <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{leg.label}}
+      <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{ leg.label }}
     </li>
   </ul>
 </div>`,
@@ -45,10 +48,10 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
   @Input() lang: string;
   @Output() select = new EventEmitter();
 
-  @Output() onCreate = new EventEmitter();
-  @Output() onMove = new EventEmitter();
-  @Output() onFailure =  new EventEmitter();
-  @Output() onTileLayerChange =  new EventEmitter();
+  @Output() create = new EventEmitter();
+  @Output() move = new EventEmitter();
+  @Output() failure =  new EventEmitter();
+  @Output() tileLayerChange =  new EventEmitter();
   @ViewChild('lajiMap') elemRef: ElementRef;
 
   map: any;
@@ -76,7 +79,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     if (!options.on) {
       options = {...options, on: {
           tileLayerChange: (event) => {
-            this.onTileLayerChange.emit((<any> event).tileLayerName);
+            this.tileLayerChange.emit((<any> event).tileLayerName);
 
             if (this._settingsKey) {
               this.userSettings.tileLayerName = (<any> event).tileLayerName as LajiMap.TileLayerName;
@@ -95,7 +98,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
               this.userService.setUserSetting(this._settingsKey, this.userSettings);
             }
           }
-        }}
+        }};
     }
     if (typeof options.draw === 'object' && !options.draw.onChange) {
       options = {
@@ -104,7 +107,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
           ...options.draw,
           onChange: e => this.onChange(e)
         }
-      }
+      };
     }
     this._options = options;
     this.initMap();
@@ -116,15 +119,15 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
       this.subSet.unsubscribe();
     }
     if (key) {
-      this.subSet = this.userService.getUserSetting(this._settingsKey)
-        .merge(this.userService.action$
-          .filter(action => action === USER_INFO)
-          .switchMap(() => this.userService.getUserSetting(this._settingsKey))
-        )
+      this.subSet = this.userService.getUserSetting(this._settingsKey).pipe(
+        merge(this.userService.action$.pipe(
+          filter(action => action === USER_INFO),
+          switchMap(() => this.userService.getUserSetting(this._settingsKey)), )
+        ))
         .subscribe(settings => {
           this.userSettings = settings || {};
           if (this.userSettings.tileLayerName) {
-            this.onTileLayerChange.emit(this.userSettings.tileLayerName);
+            this.tileLayerChange.emit(this.userSettings.tileLayerName);
           }
           this.initMap();
           this.cd.markForCheck();
@@ -192,7 +195,7 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
   }
 
   moveEvent(type: string) {
-    this.onMove.emit({
+    this.move.emit({
       zoom: this.map.getNormalizedZoom(),
       bounds: this.map.map.getBounds(),
       type: type
@@ -219,10 +222,10 @@ export class LajiMapComponent implements OnInit, OnDestroy, OnChanges, AfterView
     events.map(event => {
       switch (event.type) {
         case 'create':
-          this.onCreate.emit(event.feature.geometry);
+          this.create.emit(event.feature.geometry);
           break;
         case 'delete':
-          this.onCreate.emit();
+          this.create.emit();
           break;
         default:
       }

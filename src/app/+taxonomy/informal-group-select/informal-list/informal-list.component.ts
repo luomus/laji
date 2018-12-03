@@ -13,6 +13,6 @@ export class InformalListComponent {
   @Input() tree: PagedResult<InformalTaxonGroup>;
   @Input() compact = false;
   @Input() showAll = false;
-  @Output() onInformalGroupSelect = new EventEmitter<string>();
+  @Output() informalGroupSelect = new EventEmitter<string>();
 
 }

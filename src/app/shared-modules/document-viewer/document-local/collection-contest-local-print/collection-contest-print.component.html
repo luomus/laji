@@ -1,6 +1,6 @@
 <div class="page title-page">
   <div class="title-page-wrapper">
-    <h1>{{'viewer.print.collectionContest' | translate}} 2018</h1>
+    <h1>{{ 'viewer.print.collectionContest' | translate }} 2018</h1>
     <laji-print-row [title]="'viewer.print.creator' | translate" [value]="document.creator | users:'fullname'"></laji-print-row>
     <laji-print-row [title]="'viewer.print.group' | translate" [value]="document.creator | users:'group'"></laji-print-row>
     <laji-print-row [title]="'viewer.print.formId' | translate" [value]="document.formID"></laji-print-row>
@@ -34,7 +34,7 @@
              src="{{ img.fullURL }}"
              class="image"
              alt="Image {{ index + 1 }}">
-        <div class="image-caption" *ngIf="img.caption">{{img.caption}}</div>
+        <div class="image-caption" *ngIf="img.caption">{{ img.caption }}</div>
       </div>
     </div>
   </div>

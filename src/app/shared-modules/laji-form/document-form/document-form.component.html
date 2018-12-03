@@ -2,7 +2,7 @@
 <laji-document-form-header *ngIf="form" [formID]="form.id"></laji-document-form-header>
 <div class="row" *ngIf="namedPlace" style="margin-top: 10px">
   <div class="col-sm-12">
-    <strong>{{namedPlace.name}}</strong>
+    <strong>{{ namedPlace.name }}</strong>
   </div>
 </div>
 <div class="clear"></div>
@@ -12,14 +12,14 @@
           [lang]="lang"
           [tick]="tick"
           [settingsKey]="formId"
-          (onChange)="onChange($event)"
-          (onSubmit)="onSubmit($event)"></laji-form>
+          (dataChange)="onChange($event)"
+          (dataSubmit)="onSubmit($event)"></laji-form>
   <laji-document-form-footer
           [form]="form"
           [status]="status"
           [readonly]="readonly"
-          (onLock)="lock($event)"
-          (onSubmitPublic)="submitPublic()"
-          (onSubmitPrivate)="submitPrivate()"
-          (onCancel)="onCancel.emit()"></laji-document-form-footer>
+          (lock)="lock($event)"
+          (submitPublic)="submitPublic()"
+          (submitPrivate)="submitPrivate()"
+          (cancel)="cancel.emit()"></laji-document-form-footer>
 </div>

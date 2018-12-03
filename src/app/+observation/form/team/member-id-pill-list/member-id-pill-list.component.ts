@@ -30,7 +30,7 @@ export class MemberIdPillListComponent implements OnInit {
   }
 
   remove(item) {
-    this.updateList.emit(this._list.filter(value => value !== item))
+    this.updateList.emit(this._list.filter(value => value !== item));
   }
 
   getName(id) {

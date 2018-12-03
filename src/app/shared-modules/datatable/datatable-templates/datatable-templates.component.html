@@ -2,9 +2,9 @@
   <span class="datatable-header-cell-wrapper sort-full-width"
         (click)="$event.target.classList.contains('no-propagation') ? return : sort()" title="{{column.label | translate}}">
     <span class="datatable-header-cell-label draggable">
-      {{column.label | translate}}
+      {{ column.label | translate }}
     </span>
-    <laji-info *ngIf="column.info">{{column.info | translate}}</laji-info>
+    <laji-info *ngIf="column.info">{{ column.info | translate }}</laji-info>
   </span>
 </ng-template>
 
@@ -16,10 +16,10 @@
                 + (value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName ? ' &mdash; ': '')
                 + (value.linkings.taxon.scientificName ? value.linkings.taxon.scientificName : '')}}"
     >
-      {{value.linkings.taxon.vernacularName | multiLang}}
+      {{ value.linkings.taxon.vernacularName | multiLang }}
       <span class="inline" *ngIf="value.linkings.taxon.vernacularName && value.linkings.taxon.scientificName"> &mdash; </span>
       <span style="display: inline" [class.cursive]="value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.scientificName">
-          {{value.linkings.taxon.scientificName}}
+          {{ value.linkings.taxon.scientificName }}
       </span>
       <a
         [tooltip]="'showSpeciesCard' | translate"
@@ -29,10 +29,10 @@
       </a>
     </span>
     <ng-template #taxonVerbatim>
-      <span *ngIf="value.taxonVerbatim; else reportedInformalTaxonGroup" title="{{value.taxonVerbatim}}">{{value.taxonVerbatim}}</span>
+      <span *ngIf="value.taxonVerbatim; else reportedInformalTaxonGroup" title="{{value.taxonVerbatim}}">{{ value.taxonVerbatim }}</span>
     </ng-template>
     <ng-template #reportedInformalTaxonGroup>
-      <span title="{{value.reportedInformalTaxonGroup | toQName | label}}">{{value.reportedInformalTaxonGroup | toQName | label}}</span>
+      <span title="{{value.reportedInformalTaxonGroup | toQName | label}}">{{ value.reportedInformalTaxonGroup | toQName | label }}</span>
     </ng-template>
   </span>
 </ng-template>
@@ -47,10 +47,10 @@
                 + (value.linkings[taxon].vernacularName && value.linkings[taxon].scientificName ? ' &mdash; ': '')
                 + (value.linkings[taxon].scientificName ? value.linkings[taxon].scientificName : '')}}"
       >
-        {{value.linkings[taxon].vernacularName | multiLang}}
+        {{ value.linkings[taxon].vernacularName | multiLang }}
         <span class="inline" *ngIf="value.linkings[taxon].vernacularName && value.linkings[taxon].scientificName"> &mdash; </span>
         <span class="inline" [class.cursive]="value.linkings[taxon].cursiveName" *ngIf="value.linkings[taxon].scientificName">
-          {{value.linkings[taxon].scientificName}}
+          {{ value.linkings[taxon].scientificName }}
         </span>
         <a
           [tooltip]="'showSpeciesCard' | translate"
@@ -61,10 +61,10 @@
       </span>
     </ng-template>
     <ng-template #originalTaxonVerbatim>
-      <span *ngIf="value.taxonVerbatim; else originalReportedInformalTaxonGroup" title="{{value.taxonVerbatim}}">{{value.taxonVerbatim}}</span>
+      <span *ngIf="value.taxonVerbatim; else originalReportedInformalTaxonGroup" title="{{value.taxonVerbatim}}">{{ value.taxonVerbatim }}</span>
     </ng-template>
     <ng-template #originalReportedInformalTaxonGroup>
-      <span title="{{value.reportedInformalTaxonGroup | toQName | label}}">{{value.reportedInformalTaxonGroup | toQName | label}}</span>
+      <span title="{{value.reportedInformalTaxonGroup | toQName | label}}">{{ value.reportedInformalTaxonGroup | toQName | label }}</span>
     </ng-template>
   </span>
 </ng-template>
@@ -76,10 +76,10 @@
                 + (value.linkings.taxon.speciesVernacularName && value.linkings.taxon.speciesScientificName ? ' &mdash; ': '')
                 + (value.linkings.taxon.speciesScientificName ? value.linkings.taxon.speciesScientificName : '')}}"
     >
-      {{value.linkings.taxon.speciesVernacularName | multiLang}}
+      {{ value.linkings.taxon.speciesVernacularName | multiLang }}
       <span class="inline" *ngIf="value.linkings.taxon.speciesVernacularName && value.linkings.taxon.speciesScientificName"> &mdash; </span>
       <span class="inline" [class.cursive]="true || value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.speciesScientificName">
-          {{value.linkings.taxon.speciesScientificName}}
+          {{ value.linkings.taxon.speciesScientificName }}
       </span>
       <a
         [tooltip]="'showSpeciesCard' | translate"
@@ -89,13 +89,13 @@
       </a>
     </span>
     <ng-template #taxonVerbatim>
-      {{value.taxonVerbatim}}
+      {{ value.taxonVerbatim }}
     </ng-template>
   </span>
 </ng-template>
 <ng-template let-value="value" #label>
   <span *ngIf="value" title="{{value | label}}">
-    {{value | label}}
+    {{ value | label }}
   </span>
 </ng-template>
 <ng-template let-value="value" #labelArray>
@@ -103,12 +103,12 @@
 </ng-template>
 <ng-template let-value="value" #warehouseLabel>
   <span *ngIf="value" title="{{value | label: 'warehouse'}}">
-    {{value | label: 'warehouse'}}
+    {{ value | label: 'warehouse' }}
   </span>
 </ng-template>
 <ng-template let-value="value" #toSemicolon>
   <span *ngIf="value" title="{{value.join('; ')}}">
-    {{value.join('; ')}}
+    {{ value.join('; ') }}
   </span>
 </ng-template>
 <ng-template let-value="value" #numeric>
@@ -118,61 +118,61 @@
 </ng-template>
 <ng-template let-value="value" #multiLang>
   <span *ngIf="value" title="{{value | multiLang}}">
-    {{value | multiLang}}
+    {{ value | multiLang }}
   </span>
 </ng-template>
 <ng-template let-value="value" #multiLangAll>
   <span *ngIf="value" title="{{value | multiLangAll}}">
-    {{value | multiLangAll}}
+    {{ value | multiLangAll }}
   </span>
 </ng-template>
 <ng-template let-row="row" #taxonScientificName>
   <span *ngIf="row.scientificName" title="{{row.scientificName}}" [class.cursive]="row.cursiveName">
-    {{row.scientificName}}
+    {{ row.scientificName }}
   </span>
 </ng-template>
 <ng-template let-row="row" #taxonScientificNameLink>
   <a *ngIf="row.scientificName" title="{{row.scientificName}}" [routerLink]="['/taxon/' + row.id] | localize">
-    <span [class.cursive]="row.cursiveName">{{row.scientificName}}</span>
+    <span [class.cursive]="row.cursiveName">{{ row.scientificName }}</span>
   </a>
 </ng-template>
 <ng-template let-value="value" #scientificName>
   <span *ngIf="value.scientificName" title="{{value.scientificName}}" [class.cursive]="value.cursiveName">
-    {{value.scientificName}}
+    {{ value.scientificName }}
   </span>
 </ng-template>
 <ng-template let-value="value" #cursive>
   <span *ngIf="value" title="{{value}}" class="cursive">
-    {{value}}
+    {{ value }}
   </span>
 </ng-template>
 <ng-template let-value="value" #boolean>
   <span *ngIf="value === true" title="{{'yes' | translate}}">
-    {{'yes' | translate}}
+    {{ 'yes' | translate }}
   </span>
   <span *ngIf="value === false" title="{{'no' | translate}}">
-    {{'no' | translate}}
+    {{ 'no' | translate }}
   </span>
 </ng-template>
 <ng-template let-value="value" ngx-datatable-cell-template #eventDate>
   <span *ngIf="value && value.end && value.begin">
-    <span *ngIf="value.begin === value.end; else dateRange" title="{{value.begin}}">{{value.begin}}</span>
-    <ng-template #dateRange><span title="{{value.begin}} - {{value.end}}">{{value.begin}} - {{value.end}}</span></ng-template>
+    <span *ngIf="value.begin === value.end; else dateRange" title="{{value.begin}}">{{ value.begin }}</span>
+    <ng-template #dateRange><span title="{{value.begin}} - {{value.end}}">{{ value.begin }} - {{ value.end }}</span></ng-template>
   </span>
 </ng-template>
 <ng-template let-value="value" #date>
   <span *ngIf="value" title="{{value | amDateFormat: 'DD.MM.YYYY HH:mm'}}">
-    {{value | amDateFormat: 'DD.MM.YYYY HH:mm'}}
+    {{ value | amDateFormat: 'DD.MM.YYYY HH:mm' }}
   </span>
 </ng-template>
 <ng-template let-value="value" #user>
     <span *ngIf="value" title="{{value | users}}">
-    {{value | users}}
+    {{ value | users }}
   </span>
 </ng-template>
 <ng-template let-value="value" #publication>
   <span *ngIf="value" title="{{value | publication}}">
-    {{value | publication}}
+    {{ value | publication }}
   </span>
 </ng-template>
 <ng-template let-value="value" #publicationArray>
@@ -180,7 +180,7 @@
 </ng-template>
 <ng-template let-value="value" #iucnStatus>
   <span *ngIf="value" title="{{value.status.replace('MX.iucn', '')}} ({{value.year}})">
-    {{value.status.replace('MX.iucn', '')}} ({{value.year}})
+    {{ value.status.replace('MX.iucn', '') }} ({{ value.year }})
   </span>
 </ng-template>
 <ng-template let-value="value" #annotation>
@@ -209,18 +209,18 @@
   </span>
   <small class="inline">
     <span *ngIf="(value.type | toQName) === annotationTypes.TypeUnidentifiable">
-      {{'MAN.typeUnidentifiable' | label }}
+      {{ 'MAN.typeUnidentifiable' | label }}
     </span>
-    <span *ngIf="value.annotationClass">{{value.annotationClass | toQName | label}}</span>
+    <span *ngIf="value.annotationClass">{{ value.annotationClass | toQName | label }}</span>
   </small>
   <span title="{{(value.opinion ? ('MAN.opinion' | label) + ': ' + value.opinion + '\n' : '')
                 + (value.notes ? value.notes : '')}}">
     <span *ngIf="value.opinion">
-      {{'MAN.opinion' | label}}:
-      {{value.opinion}}
+      {{ 'MAN.opinion' | label }}:
+      {{ value.opinion }}
     </span>
     <span *ngIf="value.notes">
-      {{value.notes}}
+      {{ value.notes }}
     </span>
   </span>
 </ng-template>
@@ -232,12 +232,12 @@
 <ng-template let-value="value" #link>
   <a *ngIf="value" title="{{value}}">
     <span>
-    {{value}}
+    {{ value }}
     </span>
   </a>
 </ng-template>
 <ng-template let-value="value" #number>
   <span *ngIf="value || value === 0" title="{{roundNumber(value)}}">
-    {{roundNumber(value)}}
+    {{ roundNumber(value) }}
   </span>
 </ng-template>

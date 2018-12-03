@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
       </div>
         <div class="panel-body">
           <div class="icon" [style.background-image]="'url(/static/images/icons/' + icon + '.' + iconType + ')'"></div>
-          <h4 *ngIf="intro">{{intro}}</h4>
+          <h4 *ngIf="intro">{{ intro }}</h4>
           <div *ngIf="info" class="info" [tooltip]="info" placement="bottom"><i class="glyphicon glyphicon-info-sign"></i></div>
         </div>
     </a>

@@ -1,16 +1,16 @@
 <div class="container-fluid">
-  <h1>{{'navigation.quality' | translate}}</h1>
+  <h1>{{ 'navigation.quality' | translate }}</h1>
 
   <div>
-    <h2>{{'quality.annotations.title' | translate}}</h2>
-    <laji-quality-filters (onSelect)="setFilters($event)"></laji-quality-filters>
+    <h2>{{ 'quality.annotations.title' | translate }}</h2>
+    <laji-quality-filters (select)="setFilters($event)"></laji-quality-filters>
     <laji-annotation-table [group]="group"
                            [timeStart]="timeStart"
                            [timeEnd]="timeEnd"></laji-annotation-table>
   </div>
 
   <div>
-    <h2>{{'quality.mostActive.title' | translate}}</h2>
+    <h2>{{ 'quality.mostActive.title' | translate }}</h2>
     <laji-most-active-users-table [group]="group" [maxLength]="50"></laji-most-active-users-table>
   </div>
 </div>

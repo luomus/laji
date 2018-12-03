@@ -187,7 +187,7 @@ export class LineTransectPrintComponent implements OnChanges, AfterViewInit {
     return {
       lat: coord[1],
       lng: coord[0]
-    }
+    };
   }
 
   private checkOrientation(geometries) {
@@ -207,7 +207,7 @@ export class LineTransectPrintComponent implements OnChanges, AfterViewInit {
           if (point[1] < minY) {
             minY = point[1];
           }
-        })
+        });
       }
     });
 

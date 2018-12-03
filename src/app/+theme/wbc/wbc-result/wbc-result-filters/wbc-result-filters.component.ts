@@ -50,7 +50,7 @@ export class WbcResultFiltersComponent implements OnInit, OnChanges {
           }
           this.cd.markForCheck();
         }
-      )
+      );
   }
 
   ngOnChanges(changes: SimpleChanges) {

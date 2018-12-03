@@ -76,6 +76,6 @@ export class IUCNComponent implements OnInit, OnChanges {
       default:
         this.color = '#FFCC5C';
     }
-  };
+  }
 
 }

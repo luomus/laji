@@ -19,7 +19,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() activeNP: number;
   @Input() height: string;
   @Input() userID: string;
-  @Output() onActivePlaceChange = new EventEmitter<number>();
+  @Output() activePlaceChange = new EventEmitter<number>();
   legend;
 
   private _data: any;
@@ -119,7 +119,7 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
         },
         on: {
           click: (e, o) => {
-            this.onActivePlaceChange.emit(o.idx);
+            this.activePlaceChange.emit(o.idx);
           }
         },
         featureCollection: {

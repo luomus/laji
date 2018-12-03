@@ -2,11 +2,11 @@
   *ngIf="hasNS"
   [formId]="formId"
   [documentId]="documentId"
-  (onSuccess)="onSuccess($event)"
-  (onTmpLoad)="onTmlLoad($event)"
-  (onMissingNamedplace)="onMissingNamedplace($event)"
-  (onAccessDenied)="onAccessDenied($event)"
-  (onError)="onError()"
-  (onCancel)="onCancel()"
+  (success)="onSuccess($event)"
+  (tmpLoad)="onTmlLoad($event)"
+  (missingNamedplace)="onMissingNamedplace($event)"
+  (accessDenied)="onAccessDenied($event)"
+  (error)="onError()"
+  (cancel)="onCancel()"
 >
 </laji-document-form>

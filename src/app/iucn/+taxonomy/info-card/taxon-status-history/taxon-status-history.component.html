@@ -7,10 +7,10 @@
     <th>Uhkatekijät</th>
   </tr>
   <tr *ngFor="let row of history">
-    <td>{{row.year}}</td>
-    <td>{{row.status | label}}</td>
-    <td>{{row.criteria}}</td>
+    <td>{{ row.year }}</td>
+    <td>{{ row.status | label }}</td>
+    <td>{{ row.criteria }}</td>
     <td [innerHtml]="row.reasons | nlToBr"></td>
-    <td>{{row.threats}}</td>
+    <td>{{ row.threats }}</td>
   </tr>
 </table>

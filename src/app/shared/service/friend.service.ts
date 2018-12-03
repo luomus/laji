@@ -27,7 +27,7 @@ export class FriendService {
         }
         return this.lajiApi
           .get(LajiApi.Endpoints.autocomplete, 'friends', {includeSelf: true, personToken: this.userService.getToken()})
-          .pipe(tap(data => this.friends = data))
+          .pipe(tap(data => this.friends = data));
       })
     );
   }

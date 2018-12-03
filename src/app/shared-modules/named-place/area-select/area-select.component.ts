@@ -40,7 +40,7 @@ export class AreaSelectComponent implements OnInit {
     this.getDataObservable()
       .subscribe((data) => {
         this.options = data.sort((a, b) => {
-          return a.value.localeCompare(b.value)
+          return a.value.localeCompare(b.value);
         });
         this.cd.markForCheck();
       });

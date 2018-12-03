@@ -1,6 +1,6 @@
 <div *ngFor="let data of _errors">
-  <strong *ngIf="fields[data.field]">{{fields[data.field].fullLabel}}</strong>
+  <strong *ngIf="fields[data.field]">{{ fields[data.field].fullLabel }}</strong>
   <ul class="errors">
-    <li *ngFor="let error of data.errors">{{error}}</li>
+    <li *ngFor="let error of data.errors">{{ error }}</li>
   </ul>
 </div>

@@ -47,7 +47,7 @@ export class SpecialFriendComponent implements OnInit {
         this.validIds = validIds;
         this.validValues = validValues;
         this.initCurrentValue();
-      })
+      });
   }
 
   initCurrentValue() {

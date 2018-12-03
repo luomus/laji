@@ -1,3 +1,5 @@
+
+import {catchError,  concatMap, map, tap } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
@@ -7,8 +9,8 @@ import { forkJoin as ObservableForkJoin, of as ObservableOf, Subscription } from
 import { Logger } from '../../shared/logger/logger.service';
 import { Person } from '../../shared/model/Person';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import { concatMap, map, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'laji-user',
@@ -58,8 +60,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
         const empty$ = ObservableOf({});
         const false$ = ObservableOf(false);
         return ObservableForkJoin(
-          data.currentUser.id ? this.personService.personFindProfileByToken(this.userService.getToken()).catch((e) => false$) : empty$,
-          currentActive ? false$ : this.personService.personFindProfileByUserId(data.id).catch((e) => empty$)
+          data.currentUser.id ?
+            this.personService.personFindProfileByToken(this.userService.getToken()).pipe(catchError((e) => false$)) :
+            empty$,
+          currentActive ?
+            false$ :
+            this.personService.personFindProfileByUserId(data.id).pipe(catchError((e) => empty$))
         ).pipe(
           map(profiles => ({
             id: data.id,
@@ -67,7 +73,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             currentProfile: profiles[0],
             profile: profiles[1] || profiles[0]
           }))
-        )
+        );
       })
     )
       .subscribe(

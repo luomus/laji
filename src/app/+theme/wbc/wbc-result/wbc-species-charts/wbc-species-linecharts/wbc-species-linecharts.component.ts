@@ -52,7 +52,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
           this.setLines(data['spring'], 'spring', 'wbc.season.spring');
 
           this.cd.markForCheck();
-        })
+        });
     }
   }
 

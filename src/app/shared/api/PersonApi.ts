@@ -98,8 +98,8 @@ export class PersonApi {
   /**
    * Create profile
    *
-   * @param profile
-   * @param token
+   * @param profile object to be updated
+   * @param token users personToken
    */
   public personCreateProfileByToken(profile: Profile, token: string, extraHttpRequestParams?: any): Observable<Profile> {
     if (!isPlatformBrowser(this.platformId)) {
@@ -123,7 +123,7 @@ export class PersonApi {
   /**
    * Find person by user token
    *
-   * @param token
+   * @param token users personToken
    */
   public personFindByToken(token: string, extraHttpRequestParams?: any): Observable<Person> {
     if (!isPlatformBrowser(this.platformId)) {
@@ -144,7 +144,7 @@ export class PersonApi {
   /**
    * Find person by user id
    *
-   * @param id
+   * @param id users id
    */
   public personFindByUserId(id: string, extraHttpRequestParams?: any): Observable<Person> {
     const path = this.basePath + '/person/by-id/{id}'
@@ -162,7 +162,7 @@ export class PersonApi {
   /**
    * Find persons profile by user id
    *
-   * @param id
+   * @param id users id
    */
   public personFindProfileByUserId(id: string, extraHttpRequestParams?: any): Observable<Profile> {
     const path = this.basePath + '/person/by-id/{id}/profile'
@@ -180,7 +180,7 @@ export class PersonApi {
   /**
    * Show persons profile
    *
-   * @param token
+   * @param token users personToken
    */
   public personFindProfileByToken(token: string, extraHttpRequestParams?: any): Observable<Profile> {
     if (!isPlatformBrowser(this.platformId)) {
@@ -232,8 +232,8 @@ export class PersonApi {
   /**
    * Update profile
    *
-   * @param profile
-   * @param token
+   * @param profile users profile object
+   * @param token users personToken
    */
   public personUpdateProfileByToken(profile: Profile, token: string, extraHttpRequestParams?: any): Observable<Profile> {
     if (!isPlatformBrowser(this.platformId)) {

@@ -1,6 +1,9 @@
+
+import {switchMap, catchError,  map } from 'rxjs/operators';
+/* tslint:disable:no-use-before-declare */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { forkJoin as ObservableForkJoin, of as ObservableOf, Subscription } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import { CollectionService } from '../../../shared/service/collection.service';
@@ -8,7 +11,9 @@ import { AreaService, AreaType } from '../../../shared/service/area.service';
 import { SourceService } from '../../../shared/service/source.service';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
-import { map } from 'rxjs/operators';
+
+
+
 
 export interface MetadataSelectPick {
   [field: string]: string;
@@ -92,9 +97,9 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
       return;
     }
 
-    const byField$ = this.getDataObservable()
-      .map(result => this.pickValue(result))
-      .catch(err => {
+    const byField$ = this.getDataObservable().pipe(
+      map(result => this.pickValue(result)),
+      catchError(err => {
         this.logger.warn('Failed to fetch metadata select', {
           field: this.field,
           alt: this.alt,
@@ -102,20 +107,20 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
           err: err
         });
         return ObservableOf([]);
-      });
+      }), );
 
-    const byOptions$ = ObservableOf(this.options)
-      .map(options => options.map(option => ({id: option, value: option})));
+    const byOptions$ = ObservableOf(this.options).pipe(
+      map(options => options.map(option => ({id: option, value: option}))));
 
-    this.subOptions = (this.options ? byOptions$ : byField$)
-      .switchMap(options => {
+    this.subOptions = (this.options ? byOptions$ : byField$).pipe(
+      switchMap(options => {
         if (this.mapToWarehouse) {
           const requests = [];
           options.map(item => {
             requests.push(this.warehouseMapper.getWarehouseKey(item.id));
           });
-          return ObservableForkJoin(requests)
-            .map(mapping => options.reduce((prev, curr, idx) => {
+          return ObservableForkJoin(requests).pipe(
+            map(mapping => options.reduce((prev, curr, idx) => {
                 if (mapping[idx] !== options[idx].id) {
                   prev.push({id: mapping[idx], value: curr.value});
                 } else {
@@ -123,11 +128,11 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
                 }
                 return prev;
               }, [])
-            );
+            ));
         } else {
           return ObservableOf(options);
         }
-      })
+      }))
       .subscribe(options => {
         if (this.firstOptions.length > 0) {
           this._options = options.sort((a, b) => {
@@ -135,12 +140,12 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
             const hasB = this.firstOptions.indexOf(b.id) > -1;
             if (hasA || hasB) {
               if (hasA && hasB) {
-                return a.value.localeCompare(b.value)
+                return a.value.localeCompare(b.value);
               } else {
                 return hasA ? -1 : 1;
               }
             }
-            return a.value.localeCompare(b.value)
+            return a.value.localeCompare(b.value);
           });
         } else {
           this._options = this.shouldSort ? options.sort((a, b) => a.value.localeCompare(b.value)) : options;
@@ -206,7 +211,7 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
     this.onTouched = fn;
   }
 
-  private getDataObservable() {
+  private getDataObservable(): Observable<any> {
     if (this.field) {
       this.shouldSort = true;
       switch (this.field) {
@@ -219,11 +224,11 @@ export class MetadataSelectComponent implements OnInit, OnChanges, OnDestroy, Co
         case <any>AreaType.Country:
           return this.areaService.getCountries(this.lang);
         case 'KE.informationSystem':
-          return this.sourceService.getAllAsLookUp(this.lang)
-            .map(system => Object.keys(system).reduce((total, current) => {
+          return this.sourceService.getAllAsLookUp(this.lang).pipe(
+            map(system => Object.keys(system).reduce((total, current) => {
               total.push({id: current, value: system[current]});
               return total;
-            }, []));
+            }, [])));
         default:
           throw new Error('Could not find mapping for ' + this.field);
       }

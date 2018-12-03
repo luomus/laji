@@ -20,7 +20,7 @@ export class NpEditFormComponent {
   @Input() formData: any;
   @Input() namedPlace: NamedPlace;
   @Input() namedPlaceOptions: any;
-  @Output() onEditReady = new EventEmitter<NamedPlace>();
+  @Output() editReady = new EventEmitter<NamedPlace>();
 
   tick = 0;
   saving = false;
@@ -80,7 +80,7 @@ export class NpEditFormComponent {
               .subscribe(value => {
                 this.toastsService.showSuccess(value);
               });
-            this.onEditReady.emit(result);
+            this.editReady.emit(result);
           },
           (err) => {
             this.lajiForm.unBlock();
@@ -111,9 +111,9 @@ export class NpEditFormComponent {
     this.translate.get('haseka.form.discardConfirm').subscribe(
       (confirm) => {
         if (!this.hasChanges) {
-          this.onEditReady.emit();
+          this.editReady.emit();
         } else if (this.window.confirm(confirm)) {
-          this.onEditReady.emit();
+          this.editReady.emit();
         }
       }
     );
@@ -167,7 +167,7 @@ export class NpEditFormComponent {
               this.lang
             ).subscribe(taxon => {
               resolve(taxon[taxonProp]);
-            })
+            });
       }),
       area: ({type, key = 'value', from, delimiter = ', '}) =>
         new Promise(resolve => {
@@ -188,7 +188,7 @@ export class NpEditFormComponent {
     const {prepopulatedDocument} = this.getPrepopulatedDocument(namedPlace);
     const fieldPointers = Object.keys(options);
     return new Promise(resolve => Promise.all(fieldPointers.map(fieldPointer => {
-      let valueOrPromise = undefined;
+      let valueOrPromise;
       if (typeof options[fieldPointer] === 'string') {
         valueOrPromise = Util.parseJSONPointer(formData, options[fieldPointer]);
       } else {

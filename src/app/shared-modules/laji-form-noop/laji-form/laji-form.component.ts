@@ -12,8 +12,8 @@ export class LajiFormComponent {
   @Input() tick: number;
   @Input() settingsKey = '';
 
-  @Output() onSubmit = new EventEmitter();
-  @Output() onChange = new EventEmitter();
+  @Output() dataSubmit = new EventEmitter();
+  @Output() dataChange = new EventEmitter();
 
   elem: ElementRef;
   lajiFormWrapper: any;

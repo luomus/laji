@@ -2,22 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { ResultService } from '../../../../iucn-shared/service/result.service';
 
 export interface RedListStatusData {
-  species: string,
-  count: number,
-  RE: number,
-  CR: number,
-  EN: number,
-  VU: number,
-  NT: number,
-  DD: number,
-  LC: number,
-  NA: number,
-  NE: number
+  species: string;
+  count: number;
+  RE: number;
+  CR: number;
+  EN: number;
+  VU: number;
+  NT: number;
+  DD: number;
+  LC: number;
+  NA: number;
+  NE: number;
 }
 
 interface RedListStatusDataInternal extends RedListStatusData {
-  redListPct: number,
-  redListCnt: number
+  redListPct: number;
+  redListCnt: number;
 }
 
 @Component({
@@ -67,7 +67,7 @@ export class RedListStatusComponent implements OnInit {
   private dataToInternal(data: RedListStatusData): RedListStatusDataInternal {
     let cnt = 0;
     this.resultService.redListStatuses.forEach(status => cnt += data[status] || 0);
-    return {...data, redListCnt: cnt, redListPct: data.count > 0 ? Math.round((cnt / data.count) * 100 * 10) / 10 : 0}
+    return {...data, redListCnt: cnt, redListPct: data.count > 0 ? Math.round((cnt / data.count) * 100 * 10) / 10 : 0};
   }
 
 }

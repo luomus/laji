@@ -49,11 +49,11 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() editMode = false;
   @Input() allowEdit = true;
-  @Output() onReserve = new EventEmitter();
-  @Output() onRelease = new EventEmitter();
-  @Output() onEditButtonClick = new EventEmitter();
-  @Output() onEditReady = new EventEmitter();
-  @Output() onError = new EventEmitter();
+  @Output() reserve = new EventEmitter();
+  @Output() release = new EventEmitter();
+  @Output() editButtonClick = new EventEmitter();
+  @Output() editReady = new EventEmitter();
+  @Output() error = new EventEmitter();
 
   lang: string;
 
@@ -150,7 +150,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
           const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
            this.translate.get(msgKey, {formId: this.npFormId})
            .subscribe(msg => {
-             this.onError.emit(msg);
+             this.error.emit(msg);
              this.cdr.markForCheck();
            });
         }
@@ -184,7 +184,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   editClick() {
-    this.onEditButtonClick.emit();
+    this.editButtonClick.emit();
   }
 
   useClick() {
@@ -192,10 +192,6 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     this.router.navigate(this.localizeRouterService.translateRoute([
       this.formService.getAddUrlPath(this.formId)
     ]));
-  }
-
-  editReady(np: NamedPlace) {
-    this.onEditReady.emit(np);
   }
 
   private populateForm() {

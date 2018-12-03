@@ -1,3 +1,4 @@
+/* tslint:disable:max-classes-per-file */
 import { News } from '../shared/model/News';
 import { Injectable } from '@angular/core';
 import { Store } from '../store/store';

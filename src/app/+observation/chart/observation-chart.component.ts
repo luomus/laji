@@ -1,3 +1,5 @@
+
+import {filter} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SearchQuery } from '../search-query.model';
@@ -9,6 +11,7 @@ import { IdService } from '../../shared/service/id.service';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { Logger } from '../../shared/logger/logger.service';
 import { Util } from '../../shared/service/util.service';
+
 
 @Component({
   selector: 'laji-observation-chart',
@@ -50,8 +53,8 @@ export class ObservationChartComponent implements OnInit, OnDestroy, OnChanges {
     this.subTrans = this.translate.onLangChange.subscribe(
       () => this.updateInformalGroups()
     );
-    this.subDataQuery = this.searchQuery.queryUpdated$
-      .filter(data => !(data && data.formSubmit))
+    this.subDataQuery = this.searchQuery.queryUpdated$.pipe(
+      filter(data => !(data && data.formSubmit)))
       .subscribe(() => this.updateData());
     this.updateData();
   }

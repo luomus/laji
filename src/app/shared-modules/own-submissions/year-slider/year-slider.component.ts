@@ -17,7 +17,7 @@ export class YearSliderComponent implements OnInit {
   pcString: string;
   subTrans: Subscription;
 
-  @Output() onRangeChange = new EventEmitter();
+  @Output() rangeChange = new EventEmitter();
 
   @ViewChild('sliderRef') sliderRef;
 
@@ -30,7 +30,7 @@ export class YearSliderComponent implements OnInit {
   }
 
   yearSelectChange(val: string) {
-    this.onRangeChange.emit(parseInt(val, 10));
+    this.rangeChange.emit(parseInt(val, 10));
   }
 
   private updateTranslations() {

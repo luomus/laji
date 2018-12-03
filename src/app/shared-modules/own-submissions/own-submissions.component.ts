@@ -1,3 +1,5 @@
+
+import {switchMap} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
@@ -239,8 +241,8 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
           collectionID: query.collectionID,
           formID: query.formID
         }
-      )
-      .switchMap(
+      ).pipe(
+      switchMap(
         result => {
           documents.push(...result.results);
           if ('currentPage' in result && 'lastPage' in result && result.currentPage !== result.lastPage) {
@@ -249,6 +251,6 @@ export class OwnSubmissionsComponent implements OnInit, OnChanges {
             return ObservableOf(documents);
           }
         }
-      );
+      ));
   }
 }

@@ -147,7 +147,7 @@ export class TaxonTreeComponent implements OnInit, OnChanges, OnDestroy {
       })
       .pipe(
         map(data => this.mapSpeciesCountsToLeafCounts(data))
-      )
+      );
   }
 
   getParents(id: string) {

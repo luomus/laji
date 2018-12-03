@@ -2,10 +2,10 @@
   <div class="form-group">
     <div class="col-sm-12">
       <span class="badge link" [class.active]="!advancedMode" (click)="advancedMode = false">
-        {{'observation.form.modeBasic' | translate}}
+        {{ 'observation.form.modeBasic' | translate }}
       </span>
       <span class="badge link" [class.active]="advancedMode" (click)="advancedMode = true">
-        {{'observation.form.modeAdvanced' | translate}}
+        {{ 'observation.form.modeAdvanced' | translate }}
       </span>
     </div>
   </div>
@@ -13,7 +13,7 @@
 <div class="taxon-panel">
   <div class="row">
     <div class="col-lg-12">
-      <label>{{'observation.active.informalTaxonGroupId' | translate}}</label><laji-info>{{'observation.info.informalTaxonGroup' | translate}}</laji-info>
+      <label>{{ 'observation.active.informalTaxonGroupId' | translate }}</label><laji-info>{{ 'observation.info.informalTaxonGroup' | translate }}</laji-info>
     </div>
   </div>
   <div class="row">
@@ -22,14 +22,14 @@
         [(ngModel)]="formQuery.informalTaxonGroupId"
         name="informalTaxonGroupId"
         [lang]="lang"
-        (onSelect)="onFormQueryChange()">
-        {{'observation.active.informalTaxonGroupAll'|translate}}
+        (select)="onFormQueryChange()">
+        {{ 'observation.active.informalTaxonGroupAll'|translate }}
       </laji-observation-group-select>
     </div>
   </div>
   <div class="form-group">
     <div class="col-lg-12">
-      <label>{{'observation.form.target' | translate}}</label><laji-info><span [innerHtml]="'observation.info.target' | translate"></span></laji-info>
+      <label>{{ 'observation.form.target' | translate }}</label><laji-info><span [innerHtml]="'observation.info.target' | translate"></span></laji-info>
     </div>
     <div class="col-lg-12">
       <input
@@ -53,7 +53,7 @@
       >
       <ng-template #taxonItem let-model="item">
         <h5 class="autosuggest-value {{model.groups}} informal-group-image">
-          {{model.value}}
+          {{ model.value }}
         </h5>
       </ng-template>
       <laji-pill-list
@@ -68,15 +68,15 @@
       <div class="col-lg-12">
         <label class="small-label">
           <laji-checkbox [(value)]="formQuery.taxonIncludeLower" (valueChange)="onFormQueryChange()"></laji-checkbox>
-          {{'observation.keepSsp' | translate}}</label><laji-info>{{'observation.info.keepSsp' | translate}}</laji-info>
+          {{ 'observation.keepSsp' | translate }}</label><laji-info>{{ 'observation.info.keepSsp' | translate }}</laji-info>
       </div>
     </div>
     <div class="form-group">
       <div class="col-lg-12">
         <label class="small-label">
           <laji-checkbox [(value)]="formQuery.taxonUseAnnotated" (valueChange)="onFormQueryChange()"></laji-checkbox>
-          {{'observation.changedNames' | translate}}</label><laji-info>
-          {{'observation.info.changedNames' | translate}}
+          {{ 'observation.changedNames' | translate }}</label><laji-info>
+          {{ 'observation.info.changedNames' | translate }}
         </laji-info>
       </div>
     </div>
@@ -89,10 +89,10 @@
         <div class="col-sm-12">
           <label>
             <laji-checkbox [(value)]="formQuery.asObserver" (valueChange)="ownItemSelected()"></laji-checkbox>
-            {{'observation.form.asObserver' | translate}}
+            {{ 'observation.form.asObserver' | translate }}
           </label>
           <laji-info>
-            {{'observation.info.asObserver' | translate}}
+            {{ 'observation.info.asObserver' | translate }}
           </laji-info>
         </div>
       </div>
@@ -100,10 +100,10 @@
         <div class="col-sm-12">
           <label>
             <laji-checkbox [(value)]="formQuery.asEditor" (valueChange)="ownItemSelected()"></laji-checkbox>
-            {{'observation.form.asEditor' | translate}}
+            {{ 'observation.form.asEditor' | translate }}
           </label>
           <laji-info>
-            {{'observation.info.asEditor' | translate}}
+            {{ 'observation.info.asEditor' | translate }}
           </laji-info>
         </div>
       </div>
@@ -129,14 +129,14 @@
   <div laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true"  [open]="visible['time']">
     <div class="row">
       <div class="col-sm-12">
-        <label>{{'observation.form.time' | translate}}</label><laji-info>{{'observation.info.time' | translate}}
+        <label>{{ 'observation.form.time' | translate }}</label><laji-info>{{ 'observation.info.time' | translate }}
         </laji-info>
         <laji-datepicker
           [(ngModel)]="formQuery.timeStart"
           [viewFormat]="'DD.MM.YYYY'"
           [otherFormats]="['D.M.YYYY', 'YYYY']"
           [format]="dateFormat"
-          (onSelect)="onFormQueryChange()"
+          (select)="onFormQueryChange()"
           (change)="onFormQueryChange()"
           name="timeStart"></laji-datepicker>
       </div>
@@ -149,7 +149,7 @@
           [otherFormats]="['D.M.YYYY', 'YYYY']"
           [toLastOfYear]="true"
           [format]="dateFormat"
-          (onSelect)="onFormQueryChange()"
+          (select)="onFormQueryChange()"
           (change)="onFormQueryChange()"
           name="timeEnd"></laji-datepicker>
       </div>
@@ -157,10 +157,10 @@
     <div class="form-group">
       <div class="col-lg-12">
         <div class="btn-group">
-          <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1)">{{'observations.form.1d' | translate}}</button>
-          <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7)">{{'observations.form.7d' | translate}}</button>
+          <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1)">{{ 'observations.form.1d' | translate }}</button>
+          <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7)">{{ 'observations.form.7d' | translate }}</button>
           <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365)">
-            {{'observation.form.thisYear' | translate}}
+            {{ 'observation.form.thisYear' | translate }}
           </button>
         </div>
       </div>
@@ -168,7 +168,7 @@
     <ng-container *ngIf="advancedMode || searchQuery.season">
       <div class="form-group">
         <div class="col-lg-12">
-          <label>{{'observation.form.season' | translate}}</label><laji-info>{{'observation.info.season' | translate}}</laji-info>
+          <label>{{ 'observation.form.season' | translate }}</label><laji-info>{{ 'observation.info.season' | translate }}</laji-info>
             <laji-season [season]="searchQuery.season" (seasonChange)="updateSearchQuery('season', $event)"></laji-season>
         </div>
       </div>
@@ -176,13 +176,13 @@
     <ng-container *ngIf="advancedMode || visibleAdvanced['time']">
       <div class="row">
         <div class="lj-input-wrap">
-          <label>{{'observation.form.loaded' | translate}}</label><laji-info>{{'observation.info.loaded' | translate}}</laji-info>
+          <label>{{ 'observation.form.loaded' | translate }}</label><laji-info>{{ 'observation.info.loaded' | translate }}</laji-info>
           <laji-datepicker
             [(ngModel)]="searchQuery.firstLoadedSameOrAfter"
             [viewFormat]="'DD.MM.YYYY'"
             [otherFormats]="['D.M.YYYY', 'YYYY']"
             [format]="dateFormat"
-            (onSelect)="onFormQueryChange()"
+            (select)="onFormQueryChange()"
             (change)="onFormQueryChange()"
             name="timeStart"></laji-datepicker>
         </div>
@@ -195,7 +195,7 @@
             [otherFormats]="['D.M.YYYY', 'YYYY']"
             [toLastOfYear]="true"
             [format]="dateFormat"
-            (onSelect)="onFormQueryChange()"
+            (select)="onFormQueryChange()"
             (change)="onFormQueryChange()"
             name="timeEnd"></laji-datepicker>
         </div>
@@ -203,10 +203,10 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1, 'loaded')">{{'observations.form.1d' | translate}}</button>
-            <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7, 'loaded')">{{'observations.form.7d' | translate}}</button>
+            <button type="button" class="btn btn-sm btn-default" (click)="updateTime(1, 'loaded')">{{ 'observations.form.1d' | translate }}</button>
+            <button type="button" class="btn btn-sm btn-default" (click)="updateTime(7, 'loaded')">{{ 'observations.form.7d' | translate }}</button>
             <button type="button" class="btn btn-sm btn-default" (click)="updateTime(365, 'loaded')">
-              {{'observation.form.thisYear' | translate}}
+              {{ 'observation.form.thisYear' | translate }}
             </button>
           </div>
         </div>
@@ -260,8 +260,8 @@
     </div>
     <div class="form-group">
       <div class="col-lg-12">
-        <label>{{'observation.form.area' | translate}}</label><laji-info>
-        {{'observation.info.area' | translate}}
+        <label>{{ 'observation.form.area' | translate }}</label><laji-info>
+        {{ 'observation.info.area' | translate }}
       </laji-info>
       </div>
       <div class="col-lg-12">
@@ -276,7 +276,7 @@
     <hr>
     <div class="form-group">
       <div class="col-sm-12">
-        <label>{{'observation.form.map.intro'|translate}}</label>
+        <label>{{ 'observation.form.map.intro'|translate }}</label>
       </div>
     </div>
     <div class="form-group">
@@ -284,7 +284,7 @@
         <button type="button" class="lji-btn-sm btn btn-sm btn-default" (click)="mapDraw.emit('Rectangle')">
           <i class="lji-icon lji-crop"></i>
         </button>
-        {{ (drawing && drawingShape === 'Rectangle' ?  'observation.form.map.rectangle.active' : 'observation.form.map.rectangle') | translate}}
+        {{ (drawing && drawingShape === 'Rectangle' ?  'observation.form.map.rectangle.active' : 'observation.form.map.rectangle') | translate }}
       </div>
     </div>
     <div class="form-group">
@@ -292,14 +292,14 @@
         <button type="button" class="lji-btn-sm btn btn-sm btn-default" (click)="mapDraw.emit('Coordinates')">
           YKJ
         </button>
-        {{'observation.form.map.coordinates'|translate}}
+        {{ 'observation.form.map.coordinates'|translate }}
       </div>
     </div>
     <ng-container *ngIf="advancedMode || visibleAdvanced['coordinate']">
       <ng-container *ngIf="searchQuery.coordinates">
         <div class="row">
           <div class="col-sm-12">
-            <label class="small-label">{{'observation.form.coordinateIntersection' | translate}}</label><laji-info>{{'observation.info.coordinateIntersection' | translate}}</laji-info>
+            <label class="small-label">{{ 'observation.form.coordinateIntersection' | translate }}</label><laji-info>{{ 'observation.info.coordinateIntersection' | translate }}</laji-info>
             <div class="input-group" style="max-width: 110px;">
               <input type="number"
                      name="coordinatesIntersection"
@@ -342,10 +342,10 @@
           <div class="col-sm-12" style="padding-right: 3px">
             <div class="btn-group">
               <button type="button" class="btn btn-default btn-xs" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
-                {{'observation.form.intersect0' | translate}}
+                {{ 'observation.form.intersect0' | translate }}
               </button>
               <button type="button" class="btn btn-default btn-xs" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
-                {{'observation.form.intersect100' | translate}}
+                {{ 'observation.form.intersect100' | translate }}
               </button>
             </div>
           </div>
@@ -358,7 +358,7 @@
       <hr>
       <div class="row">
         <div class="col-sm-12">
-          <label>{{'observation.form.coordinateAccuracyMax' | translate}}</label><laji-info>{{'observation.info.coordinateAccuracyMax' | translate}}</laji-info>
+          <label>{{ 'observation.form.coordinateAccuracyMax' | translate }}</label><laji-info>{{ 'observation.info.coordinateAccuracyMax' | translate }}</laji-info>
             <div class="input-group" style="max-width: 110px;">
               <input type="number" name="coordinateAccuracyMax"
                      style="padding: 3px 7px;"
@@ -396,10 +396,10 @@
         <div class="col-lg-12">
           <label>
             <laji-checkbox [(value)]="formQuery.coordinatesInSource" (valueChange)="onFormQueryChange()"></laji-checkbox>
-            {{'observation.form.sourceOfCoordinates' | translate}}
+            {{ 'observation.form.sourceOfCoordinates' | translate }}
           </label>
           <laji-info>
-            {{'observation.info.sourceOfCoordinates' | translate}}
+            {{ 'observation.info.sourceOfCoordinates' | translate }}
           </laji-info>
         </div>
       </div>
@@ -408,7 +408,7 @@
   <div laji-panel [title]="'observation.form.observer' | translate" [autoToggle]="true"  [open]="visible['observer']">
     <div class="row">
       <div class="col-lg-12">
-        <label>{{'observation.form.team' | translate}}</label><laji-info>{{'observation.info.team' | translate}}
+        <label>{{ 'observation.form.team' | translate }}</label><laji-info>{{ 'observation.info.team' | translate }}
       </laji-info>
       </div>
       <div class="col-lg-12">
@@ -497,7 +497,7 @@
     </div>
     <div class="row">
       <div class="col-lg-12">
-        <label>{{'observation.form.count' | translate}}</label><laji-info>{{'observation.info.count' | translate}}
+        <label>{{ 'observation.form.count' | translate }}</label><laji-info>{{ 'observation.info.count' | translate }}
       </laji-info>
       </div>
       <div class="col-lg-12">
@@ -520,14 +520,14 @@
         <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
           <div class="col-sm-12">
             <button type="button" class="btn btn-default btn-xs" (click)="zeroObservations()">
-              {{'observation.form.onlyZeroObservations' | translate}}
+              {{ 'observation.form.onlyZeroObservations' | translate }}
             </button>
           </div>
         </div>
         <div class="row">
           <div class="col-sm-12">
             <button type="button" class="btn btn-default btn-xs" (click)="zeroObservations(false)">
-              {{'observation.form.zeroObservations' | translate}}
+              {{ 'observation.form.zeroObservations' | translate }}
             </button>
           </div>
         </div>
@@ -641,10 +641,10 @@
       <div class="col-lg-12">
         <label>
           <laji-checkbox [(value)]="formQuery.onlyFromCollectionSystems" (valueChange)="onOnlyFromCollectionCheckBoxToggle()"></laji-checkbox>
-          {{'observation.form.collection' | translate}}
+          {{ 'observation.form.collection' | translate }}
         </label>
         <laji-info>
-          {{'observation.info.collection' | translate}}
+          {{ 'observation.info.collection' | translate }}
         </laji-info>
       </div>
     </div>
@@ -652,7 +652,7 @@
       <div class="col-lg-12">
         <label>
           <laji-checkbox [value]="searchQuery.typeSpecimen" (valueChange)="onCheckBoxToggle('typeSpecimen')"></laji-checkbox>
-          {{'observation.form.typeSpecimen' | translate}}
+          {{ 'observation.form.typeSpecimen' | translate }}
         </label>
         <laji-info [html]="'observation.info.typeSpecimen' | translate"></laji-info>
       </div>
@@ -674,7 +674,7 @@
   <div laji-panel *ngIf="advancedMode || visibleAdvanced['keywords']" [title]="'observation.form.keywords' | translate" [autoToggle]="true" [open]="visible['keywords']">
     <div class="form-group">
       <div class="col-lg-12">
-        <label>{{'observation.form.documentId' | translate}}</label><laji-info>{{'observation.info.documentId' | translate}}</laji-info>
+        <label>{{ 'observation.form.documentId' | translate }}</label><laji-info>{{ 'observation.info.documentId' | translate }}</laji-info>
       </div>
       <div class="col-lg-12">
         <input
@@ -687,7 +687,7 @@
     </div>
     <div class="row">
       <div class="col-lg-12">
-        <label>{{'observation.form.keyword' | translate}}</label><laji-info>{{'observation.info.keyword' | translate}}</laji-info>
+        <label>{{ 'observation.form.keyword' | translate }}</label><laji-info>{{ 'observation.info.keyword' | translate }}</laji-info>
       </div>
       <div class="col-lg-12">
         <input
@@ -704,7 +704,7 @@
       <div class="form-group">
         <div class="col-sm-12">
           <p>
-            {{'observation.intro.adminStatus' | translate}}
+            {{ 'observation.intro.adminStatus' | translate }}
           </p>
           <laji-metadata-select
             [info]="'observation.info.adminStatus' | translate"
@@ -736,7 +736,7 @@
       <div class="form-group">
         <div class="col-sm-12">
           <p>
-            {{'observation.intro.typeOfOccurrenceId' | translate}}
+            {{ 'observation.intro.typeOfOccurrenceId' | translate }}
           </p>
           <laji-three-state-multi-switch
             [title]="'observation.form.typeOfOccurrenceId' | translate"
@@ -752,7 +752,7 @@
     </ng-container>
     <div class="form-group">
       <div class="col-sm-12">
-        <label>{{'observation.form.invasive' | translate}}</label><laji-info>{{'observation.info.invasive' | translate}}</laji-info><br>
+        <label>{{ 'observation.form.invasive' | translate }}</label><laji-info>{{ 'observation.info.invasive' | translate }}</laji-info><br>
         <laji-three-state-switch
           (change)="onQueryChange()"
           [onText]="'yes' | translate"
@@ -764,7 +764,7 @@
     <ng-container *ngIf="advancedMode || (searchQuery.finnish | exists)">
       <div class="row">
         <div class="col-sm-12">
-          <label>{{'observation.form.finnish' | translate}}</label><laji-info>{{'observation.info.finnish' | translate}}</laji-info><br>
+          <label>{{ 'observation.form.finnish' | translate }}</label><laji-info>{{ 'observation.info.finnish' | translate }}</laji-info><br>
           <laji-three-state-switch
             (change)="onQueryChange()"
             [onText]="'yes' | translate"
@@ -791,7 +791,7 @@
       <div class="col-sm-12">
         <label class="small-label">
           <laji-checkbox [value]="formQuery.euInvasiveSpeciesList" (valueChange)="onInvasiveCheckBoxToggle('euInvasiveSpeciesList')"></laji-checkbox>
-          {{'MX.euInvasiveSpeciesList' | label}}
+          {{ 'MX.euInvasiveSpeciesList' | label }}
         </label>
       </div>
     </div>
@@ -799,7 +799,7 @@
       <div class="col-sm-12">
         <label class="small-label">
           <laji-checkbox [value]="formQuery.nationallySignificantInvasiveSpecies" (valueChange)="onInvasiveCheckBoxToggle('nationallySignificantInvasiveSpecies')"></laji-checkbox>
-          {{'MX.nationallySignificantInvasiveSpecies' | label}}
+          {{ 'MX.nationallySignificantInvasiveSpecies' | label }}
         </label>
       </div>
     </div>
@@ -807,7 +807,7 @@
       <div class="col-sm-12">
         <label class="small-label">
           <laji-checkbox [value]="formQuery.quarantinePlantPest" (valueChange)="onInvasiveCheckBoxToggle('quarantinePlantPest')"></laji-checkbox>
-          {{'MX.quarantinePlantPest' | label}}
+          {{ 'MX.quarantinePlantPest' | label }}
         </label>
       </div>
     </div>
@@ -815,7 +815,7 @@
       <div class="col-sm-12">
         <label class="small-label">
           <laji-checkbox [value]="formQuery.allInvasiveSpecies" (valueChange)="onInvasiveCheckBoxToggle(invasiveStatuses)"></laji-checkbox>
-          {{'observation.form.allInvasive' | translate}}
+          {{ 'observation.form.allInvasive' | translate }}
         </label>
       </div>
     </div>
@@ -824,11 +824,11 @@
     <div class="row">
       <div class="col-sm-12">
         <p>
-          {{'observation.intro.images' | translate }}
+          {{ 'observation.intro.images' | translate }}
         </p>
         <label>
           <laji-checkbox [value]="searchQuery.hasUnitMedia" (valueChange)="onCheckBoxToggle('hasUnitMedia')"></laji-checkbox>
-          {{'observation.form.hasUnitMedia' | translate}}
+          {{ 'observation.form.hasUnitMedia' | translate }}
         </label>
       </div>
     </div>
@@ -836,27 +836,27 @@
       <div class="col-sm-12">
         <label>
           <laji-checkbox [value]="searchQuery.hasGatheringMedia" (valueChange)="onCheckBoxToggle('hasGatheringMedia')"></laji-checkbox>
-          {{'observation.form.hasGatheringMedia' | translate}}</label><laji-info>{{'observation.info.hasGatheringMedia' | translate}}</laji-info>
+          {{ 'observation.form.hasGatheringMedia' | translate }}</label><laji-info>{{ 'observation.info.hasGatheringMedia' | translate }}</laji-info>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-12">
         <label>
           <laji-checkbox [value]="searchQuery.hasDocumentMedia" (valueChange)="onCheckBoxToggle('hasDocumentMedia')"></laji-checkbox>
-          {{'observation.form.hasDocumentMedia' | translate}}
+          {{ 'observation.form.hasDocumentMedia' | translate }}
         </label>
         <laji-info>
-          {{'observation.info.hasDocumentMedia' | translate}}
+          {{ 'observation.info.hasDocumentMedia' | translate }}
         </laji-info>
       </div>
     </div>
     <hr>
     <div class="row">
       <div class="col-sm-12">
-        <p>{{'observation.intro.noImages' | translate}}</p>
+        <p>{{ 'observation.intro.noImages' | translate }}</p>
         <label>
           <laji-checkbox [value]="searchQuery.hasUnitMedia === false" (valueChange)="onCheckBoxToggle('hasUnitMedia', false)"></laji-checkbox>
-          {{'observation.form.hasNotMedia' | translate}}
+          {{ 'observation.form.hasNotMedia' | translate }}
         </label>
       </div>
     </div>
@@ -884,7 +884,7 @@
       <div class="col-sm-12">
         <label>
           <laji-checkbox [value]="searchQuery.unidentified" (valueChange)="onCheckBoxToggle('unidentified', true)"></laji-checkbox>
-          {{'observation.form.unidentified' | translate}}
+          {{ 'observation.form.unidentified' | translate }}
         </label>
         <laji-info [html]="'observation.info.unidentified' | translate"></laji-info>
       </div>

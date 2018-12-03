@@ -84,7 +84,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
           geometry: feat.geometry,
           properties: {}
         }))
-      }
+      };
     } else {
       return {
         type: 'FeatureCollection',
@@ -92,7 +92,7 @@ export class ViewerMapComponent implements OnInit, OnChanges, AfterViewInit {
           type: 'Feature',
           geometry: data,
         }]
-      }
+      };
     }
   }
 }

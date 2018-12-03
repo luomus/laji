@@ -1,3 +1,5 @@
+
+import {catchError, switchMap} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Global } from '../../../../environments/global';
 import { environment } from '../../../../environments/environment';
@@ -23,9 +25,9 @@ export class WbcOwnSubmissionsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.rights = this.formService.getForm(environment.wbcForm, this.translateService.currentLang)
-      .switchMap(form => this.formPermissionService.getRights(form))
-      .catch(() => ObservableOf({edit: false, admin: false}))
+    this.rights = this.formService.getForm(environment.wbcForm, this.translateService.currentLang).pipe(
+      switchMap(form => this.formPermissionService.getRights(form))).pipe(
+      catchError(() => ObservableOf({edit: false, admin: false})));
   }
 
 }

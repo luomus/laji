@@ -47,7 +47,7 @@ export class TeamMemberService {
           return cumulative;
         }, {})};
       })
-    )
+    );
   }
 
 }

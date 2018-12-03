@@ -1,3 +1,5 @@
+
+import {switchMap, distinctUntilChanged, map} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ObservationFormQuery } from './observation-form-query.interface';
 import { AreaType } from '../../shared/service/area.service';
@@ -8,6 +10,9 @@ import { UserService } from '../../shared/service/user.service';
 import { Util } from '../../shared/service/util.service';
 import { LocalStorage } from 'ngx-webstorage';
 import * as moment from 'moment';
+
+
+
 
 @Component({
   selector: 'laji-observation-form',
@@ -106,15 +111,16 @@ export class ObservationFormComponent implements OnInit {
   ) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.formQuery.taxon);
-    })
-      .distinctUntilChanged()
-      .switchMap((token: string) => this.getTaxa(token))
-      .switchMap((data) => {
+    });
+    this.dataSource = this.dataSource.pipe(
+      distinctUntilChanged(),
+      switchMap((token: string) => this.getTaxa(token)),
+      switchMap((data) => {
         if (this.formQuery.taxon) {
           return ObservableOf(data);
         }
         return ObservableOf([]);
-      });
+      }));
   }
 
   ngOnInit() {
@@ -144,8 +150,8 @@ export class ObservationFormComponent implements OnInit {
       includePayload: true,
       lang: this.lang,
       informalTaxonGroup: this.formQuery.informalTaxonGroupId
-    } as LajiApi.Query.AutocompleteQuery)
-      .map(data => {
+    } as LajiApi.Query.AutocompleteQuery).pipe(
+      map(data => {
         return data.map(item => {
           let groups = '';
           if (item.payload && item.payload.informalTaxonGroups) {
@@ -156,7 +162,7 @@ export class ObservationFormComponent implements OnInit {
           item['groups'] = groups;
           return item;
         });
-      });
+      }));
   }
 
   updateTime(dates, target = 'time') {
@@ -339,7 +345,7 @@ export class ObservationFormComponent implements OnInit {
         }
       }
       this.visible[section] = visible;
-    })
+    });
   }
 
   private updateVisibleAdvancedSections() {

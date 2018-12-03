@@ -9,7 +9,8 @@ export class DocumentFormFooterComponent {
   @Input() form: any;
   @Input() status = '';
   @Input() saving = false;
-  @Output() onSubmitPublic = new EventEmitter();
-  @Output() onSubmitPrivate = new EventEmitter();
-  @Output() onCancel = new EventEmitter();
+  @Output() submitPublic = new EventEmitter();
+  @Output() submitPrivate = new EventEmitter();
+  @Output() cancel = new EventEmitter();
+  @Output() lock = new EventEmitter();
 }

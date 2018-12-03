@@ -3,5 +3,5 @@ export interface TaxonMatch {
   scientificName: string;
   scientificNameAuthorship?: string;
   inScheme: string;
-  inSchemeLabel: any
+  inSchemeLabel: any;
 }

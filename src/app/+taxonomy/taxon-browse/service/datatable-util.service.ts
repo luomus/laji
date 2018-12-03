@@ -64,7 +64,7 @@ export class DatatableUtil {
     for (let i = 0; i < values.length; i++) {
       labelObservables.push(
         this.labelService.get(values[i], this.translate.currentLang)
-      )
+      );
     }
     return ObservableForkJoin(labelObservables).pipe(
       map(labels => labels.join('; '))
@@ -78,11 +78,11 @@ export class DatatableUtil {
     const labelObservables = [];
     for (let i = 0; i < values.length; i++) {
       labelObservables.push(
-        this.publicationService.getPublication(values[i], this.translate.currentLang)
-          .map((res: Publication) => {
+        this.publicationService.getPublication(values[i], this.translate.currentLang).pipe(
+          map((res: Publication) => {
             return res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : values[i];
-          })
-      )
+          }))
+      );
     }
     return ObservableForkJoin(labelObservables).pipe(
       map(labels => labels.join('; '))

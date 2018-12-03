@@ -39,7 +39,7 @@ import { LineTransectFormComponent } from './line-transect/line-transect-form/li
 import { LineTransectInstructionsComponent } from './line-transect/line-transect-instructions/line-transect-instructions.component';
 import { LineTransectMyDocumentListComponent } from './line-transect/line-transect-my-document-list/line-transect-my-document-list.component';
 import { StatisticsModule } from '../shared-modules/statistics/statistics.module';
-import { DatatableModule } from '../shared-modules/datatable/datatable.module'
+import { DatatableModule } from '../shared-modules/datatable/datatable.module';
 import { QualityService } from './service/quality.service';
 import { QualityComponent } from './quality/quality.component';
 import { MostActiveUsersTableComponent } from './quality/most-active-users-table/most-active-users-table.component';

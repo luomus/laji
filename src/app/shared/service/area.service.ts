@@ -1,3 +1,4 @@
+import { share, tap, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { LajiApi, LajiApiService } from './laji-api.service';
@@ -41,9 +42,9 @@ export class AreaService {
       }
     }
     this.pending = this.lajiApi
-      .getList(LajiApi.Endpoints.areas, {lang, page: 1, pageSize: 1000})
-      .map(paged => paged.results)
-      .map(areas => {
+      .getList(LajiApi.Endpoints.areas, {lang, page: 1, pageSize: 1000}).pipe(
+      map(paged => paged.results),
+      map(areas => {
         const lkObject = {};
         areas.map(area => { lkObject[area['id']] = {
           name: area['name'],
@@ -51,9 +52,9 @@ export class AreaService {
           provinceCodeAlpha: area['provinceCodeAlpha']
         }; });
         return lkObject;
-      })
-      .do(locations => { this.areas = locations; })
-      .share();
+      })).pipe(
+      tap(locations => { this.areas = locations; }),
+      share());
     this.currentLang = lang;
 
     return this.pending;
@@ -64,8 +65,9 @@ export class AreaService {
   }
 
   getProvinceCode(id: string, lang: string) {
-    return this.getAllAsLookUp(lang)
-      .map(data => data[id] && data[id].provinceCodeAlpha || '');
+    return this.getAllAsLookUp(lang).pipe(
+      map(data => data[id] && data[id].provinceCodeAlpha || '')
+    );
   }
 
   getMunicipalities(lang: string) {
@@ -81,13 +83,14 @@ export class AreaService {
   }
 
   getName(id: string, lang) {
-    return this.getAllAsLookUp(lang)
-      .map(data => data[id] && data[id].name || id );
+    return this.getAllAsLookUp(lang).pipe(
+      map(data => data[id] && data[id].name || id )
+    );
   }
 
   public getAreaType(lang: string, type: AreaType) {
-    return this.getAllAsLookUp(lang)
-      .map(area => {
+    return this.getAllAsLookUp(lang).pipe(
+      map(area => {
         if (!area) {
           return [];
         }
@@ -97,6 +100,6 @@ export class AreaService {
           }
           return total;
         }, []);
-      });
+      }));
   }
 }

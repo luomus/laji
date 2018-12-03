@@ -6,10 +6,10 @@ import { Util } from './util.service';
 import { DocumentApi } from '../api/DocumentApi';
 import { Document } from '../model/Document';
 import { environment } from '../../../environments/environment';
-import merge from 'deepmerge'
+import merge from 'deepmerge';
 import { DocumentService } from '../../shared-modules/own-submissions/service/document.service';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, map, share, switchMap, tap } from 'rxjs/operators';
 import { FormList } from '../../+haseka/form-list/haseka-form-list';
 import { Global } from '../../../environments/global';
 
@@ -66,16 +66,16 @@ export class FormService {
   }
 
   getUserId(): Observable<string> {
-    return this.userService.getUser()
-      .map(person => person.id);
+    return this.userService.getUser().pipe(
+      map(person => person.id));
   }
 
   discard(id?: string): void {
     if (!id) {
       id = this.currentKey;
     }
-    this.getUserId()
-      .switchMap(userID => {
+    this.getUserId().pipe(
+      switchMap(userID => {
         if (this.formDataStorage[userID] && this.formDataStorage[userID][id]) {
           if (!this.formDataStorage[userID][id].formData || !this.formDataStorage[userID][id].formData._isTemplate) {
             delete this.formDataStorage[userID][id];
@@ -84,21 +84,21 @@ export class FormService {
           }
         }
         return ObservableOf(true);
-      })
+      }))
       .subscribe();
   }
 
   store(document: Document): Observable<string> {
     if (this.currentKey) {
-      return this.getUserId()
-        .switchMap(userID => {
+      return this.getUserId().pipe(
+        switchMap(userID => {
           if (!this.formDataStorage[userID]) {
             this.formDataStorage[userID] = {};
           }
           this.formDataStorage[userID][this.currentKey] = { 'formData': document, 'dateStored': new Date() };
           this.formDataStorage = {...this.formDataStorage};
           return ObservableOf(this.currentKey);
-        });
+        }));
     }
     return ObservableOf('');
   }
@@ -107,8 +107,8 @@ export class FormService {
     if (!id) {
       id = this.currentKey;
     }
-    return this.getUserId()
-      .switchMap(userID => {
+    return this.getUserId().pipe(
+      switchMap(userID => {
         const tmpDoc = this.getTmpDoc(userID, id);
         if (this.isTmpId(id)) {
           return ObservableOf(tmpDoc._hasChanges);
@@ -120,7 +120,7 @@ export class FormService {
           );
         }
         return ObservableOf(!!tmpDoc);
-      });
+      }));
   }
 
   getDataWithoutChanges() {
@@ -149,8 +149,8 @@ export class FormService {
   }
 
   getAllTempDocuments(): Observable<Document[]> {
-    return this.getUserId()
-      .switchMap(userID => {
+    return this.getUserId().pipe(
+      switchMap(userID => {
         if (!this.formDataStorage[userID]) {
           return ObservableOf([]);
         }
@@ -169,7 +169,7 @@ export class FormService {
             }, [])
             .reverse()
         );
-      });
+      }));
   }
 
   getForm(formId: string, lang: string): Observable<any> {
@@ -180,9 +180,10 @@ export class FormService {
     if (this.formCache[formId]) {
       return ObservableOf(this.formCache[formId]);
     } else if (!this.formPending[formId]) {
-      this.formPending[formId] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang})
-        .do((schema) => this.formCache[formId] = schema)
-        .share();
+      this.formPending[formId] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang}).pipe(
+        tap((schema) => this.formCache[formId] = schema),
+        share()
+      );
     }
     return Observable.create((observer: Observer<string>) => {
       this.formPending[formId].subscribe(data => {
@@ -200,52 +201,52 @@ export class FormService {
     if (this.jsonFormCache[formId]) {
       return ObservableOf(this.jsonFormCache[formId]);
     } else {
-      return this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang, format: 'json'})
-        .do((jsonForm) => this.formCache[formId] = jsonForm);
+      return this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang, format: 'json'}).pipe(
+        tap((jsonForm) => this.formCache[formId] = jsonForm));
     }
   }
 
   /**
    * Loads the form and populates the default data of the Document
    *
-   * @param {string} formId
-   * @param {string} lang
-   * @param {string} documentId
-   * @returns {Observable<any>}
+   * @param formId id for the form
+   * @param lang land to be used in the form
+   * @param documentId document id to be loaded
+   * @returns Observable<any>
    */
   load(formId: string, lang: string, documentId?: string): Observable<LoadResponse> {
     this.setLang(lang);
     const form$ = this.formCache[formId] ?
       ObservableOf(this.formCache[formId]) :
-      this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang})
-        .do((schema) => {
+      this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang}).pipe(
+        tap((schema) => {
           this.formCache[formId] = schema;
-        });
+        }));
     const data$ = documentId ?
-      this.getUserId().switchMap(userID => {
+      this.getUserId().pipe(switchMap(userID => {
         const tmpDoc = this.getTmpDoc(userID, documentId);
         return this.isTmpId(documentId) && tmpDoc ?
           ObservableOf(tmpDoc) :
-          this.documentApi.findById(documentId, this.userService.getToken())
-            .switchMap((document: Document) => {
+          this.documentApi.findById(documentId, this.userService.getToken()).pipe(
+            switchMap((document: Document) => {
               if (!document.isTemplate) {
-                return ObservableOf(document)
-                  .do(data => this.setCurrentData(data));
+                return ObservableOf(document).pipe(
+                  tap(data => this.setCurrentData(data)));
               }
               documentId = '';
               const newDocument = this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);
               newDocument._isTemplate = true;
               this.populate(newDocument);
               return ObservableOf(newDocument);
-            });
-      }) :
-      this.userService.getDefaultFormData()
-        .do(data => this.setCurrentData(data));
+            }));
+      })) :
+      this.userService.getDefaultFormData().pipe(
+        tap(data => this.setCurrentData(data)));
 
-    return data$
-      .switchMap(data => {
-        return form$
-          .combineLatest(
+    return data$.pipe(
+      switchMap(data => {
+        return form$.pipe(
+          combineLatest(
             this.getDefaultData(formId, documentId, data),
             (form, current) => {
               form.formData = current;
@@ -256,8 +257,8 @@ export class FormService {
               this.currentData = Util.clone(form.formData);
               return form;
             }
-          );
-      });
+          ));
+      }));
   }
 
   getDefaultData(formId: string, documentId?: string, current?: any): Observable<any> {
@@ -374,8 +375,8 @@ export class FormService {
    * Fetch current document and merges populate values into it
    * After merge deletes the populate data
    *
-   * @param {string} formId
-   * @returns {Observable<Document>}
+   * @param formId id for the form
+   * @returns Observable<Document>
    */
   private defaultFormData(formId: string): Observable<Document> {
     this.currentKey = this.generateTmpId();
@@ -388,9 +389,9 @@ export class FormService {
 
   /**
    * Return true if local dataEdited is newer than the remote dateEdited
-   * @param local
-   * @param remote
-   * @returns {boolean}
+   * @param local local copy of the document
+   * @param remote remote copy of the document
+   * @returns boolean
    */
   private isLocalNewest(local, remote): boolean {
     if (remote.dateEdited) {

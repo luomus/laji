@@ -46,16 +46,16 @@
 </ng-template>
 <ng-template #fullInfo let-data>
   <ng-container *ngIf="data.vernacularName">
-    <strong>{{data.vernacularName | multiLang}}</strong><br>
+    <strong>{{ data.vernacularName | multiLang }}</strong><br>
   </ng-container>
   <ng-container *ngIf="data.scientificName">
-    <strong class="scientificName cursive">{{data.scientificName | label:'fullUri'}}</strong><br>
+    <strong class="scientificName cursive">{{ data.scientificName | label:'fullUri' }}</strong><br>
   </ng-container>
   <ng-container *ngIf="data.caption">
-    {{data.caption}}<br>
+    {{ data.caption }}<br>
   </ng-container>
   <ng-container *ngIf="data.author">
-    {{data.author}}<br>
+    {{ data.author }}<br>
   </ng-container>
 </ng-template>
 <ng-template #fullImageView>
@@ -68,9 +68,9 @@
 </ng-template>
 <ng-template #compactInfo let-data>
   <ng-container *ngIf="data.vernacularName">
-    <strong>{{data.vernacularName | multiLang}}</strong><br>
+    <strong>{{ data.vernacularName | multiLang }}</strong><br>
   </ng-container>
   <ng-container *ngIf="data.scientificName">
-    <strong class="scientificName cursive">{{data.scientificName | label:'fullUri'}}</strong><br>
+    <strong class="scientificName cursive">{{ data.scientificName | label:'fullUri' }}</strong><br>
   </ng-container>
 </ng-template>

@@ -8,7 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class WbcTableFilterComponent {
 
   _value = '';
-  @Output() onValueChange = new EventEmitter<string>();
+  @Output() valueChange = new EventEmitter<string>();
 
   constructor() { }
 
@@ -19,6 +19,6 @@ export class WbcTableFilterComponent {
 
 
   update(event: KeyboardEvent) {
-    this.onValueChange.emit((event.target as HTMLInputElement).value);
+    this.valueChange.emit((event.target as HTMLInputElement).value);
   }
 }

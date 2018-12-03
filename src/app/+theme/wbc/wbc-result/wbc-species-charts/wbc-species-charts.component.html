@@ -23,7 +23,7 @@
                              (areaChange)="activeBirdAssociationArea = $event"
     ></laji-wbc-result-filters>
     <h4 class="wbc-maps-title">
-      {{'wbc.stats.' + (showSeasonComparison ? 'season' : 'year') + 'Comparison' | translate}}
+      {{ 'wbc.stats.' + (showSeasonComparison ? 'season' : 'year') + 'Comparison' | translate }}
       <bSwitch
         class="pull-right"
         name="comparisonMode"
@@ -43,7 +43,7 @@
                            [birdAssociationArea]="activeBirdAssociationArea"
     ></laji-wbc-species-maps>
     <hr>
-    <h4>{{'wbc.stats.abundanceGraphs' | translate}}</h4>
+    <h4>{{ 'wbc.stats.abundanceGraphs' | translate }}</h4>
     <laji-wbc-species-linecharts [taxonId]="activeSpeciesId"
                                  [taxonCensus]="isMammal ? mammals : undefined"
                                  [birdAssociationArea]="activeBirdAssociationArea"
@@ -52,7 +52,7 @@
 </laji-spinner>
 
 <ng-template let-species="species" #speciesName>
-  {{species['unit.linkings.taxon.speciesNameFinnish'] | capitalize}}
+  {{ species['unit.linkings.taxon.speciesNameFinnish'] | capitalize }}
   <span *ngIf="species['unit.linkings.taxon.speciesNameFinnish'] && species['unit.linkings.taxon.speciesScientificName']"> - </span>
-  <span class="cursive">{{species['unit.linkings.taxon.speciesScientificName']}}</span>
+  <span class="cursive">{{ species['unit.linkings.taxon.speciesScientificName'] }}</span>
 </ng-template>

@@ -1,5 +1,5 @@
 <div class="input-group" [ngClass]="{'has-error': !validDate}">
-  <span *ngIf="addonText" class="input-group-addon">{{addonText}}</span>
+  <span *ngIf="addonText" class="input-group-addon">{{ addonText }}</span>
   <input type="text"
          class="ng-datepicker-input form-control input-sm"
          [value]="value"
@@ -18,7 +18,7 @@
         <i class="glyphicon glyphicon-chevron-left" (click)="prevMonth()"></i>
       </div>
       <span class="date">
-        {{('m-' + date.format('MM')) | translate}} {{ date.format('YYYY') }}
+        {{ ('m-' + date.format('MM')) | translate }} {{ date.format('YYYY') }}
       </span>
       <div class="right">
         <i class="glyphicon glyphicon-chevron-right" (click)="nextMonth()"></i>
@@ -27,13 +27,13 @@
       </div>
     </div>
     <div class="day-names">
-      <span>{{'Mon' | translate}}</span>
-      <span>{{'Tue' | translate}}</span>
-      <span>{{'Wed' | translate}}</span>
-      <span>{{'Thu' | translate}}</span>
-      <span>{{'Fri' | translate}}</span>
-      <span>{{'Sat' | translate}}</span>
-      <span>{{'Sun' | translate}}</span>
+      <span>{{ 'Mon' | translate }}</span>
+      <span>{{ 'Tue' | translate }}</span>
+      <span>{{ 'Wed' | translate }}</span>
+      <span>{{ 'Thu' | translate }}</span>
+      <span>{{ 'Fri' | translate }}</span>
+      <span>{{ 'Sat' | translate }}</span>
+      <span>{{ 'Sun' | translate }}</span>
     </div>
     <div class="calendar">
         <span *ngFor="let d of days; let i = index">

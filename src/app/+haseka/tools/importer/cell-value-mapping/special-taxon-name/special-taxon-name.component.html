@@ -1,18 +1,18 @@
-<button class="btn btn-default toggle-linked" (click)="toggleLinkedVisible()">{{linkedVisible ? 'Piilota' : 'Näytä'}} linkitetyt</button><br>
+<button class="btn btn-default toggle-linked" (click)="toggleLinkedVisible()">{{ linkedVisible ? 'Piilota' : 'Näytä' }} linkitetyt</button><br>
 <table class="table">
   <tr>
     <th colspan="2">
-      {{'excel.map.value-user' | translate}}
+      {{ 'excel.map.value-user' | translate }}
     </th>
     <th colspan="2">
-      {{'excel.map.value-mapped' | translate}}
+      {{ 'excel.map.value-mapped' | translate }}
     </th>
   </tr>
   <ng-container *ngFor="let value of invalidValues">
     <tr [ngClass]="{'hidden': hiddenValues[value]}">
       <td class="value-col">
         <div class="form-control-static">
-          {{value}}
+          {{ value }}
         </div>
       </td>
       <td class="mapping-col">
@@ -24,7 +24,7 @@
         ></laji-taxon-autocomplete>
       </td>
       <td class="result-col">
-        {{lajiValue(value)}}
+        {{ lajiValue(value) }}
       </td>
       <td class="ok-col">
         <laji-tool-success [success]="mapping[value]"></laji-tool-success>
