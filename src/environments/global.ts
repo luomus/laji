@@ -10,6 +10,7 @@ export const Global = {
     default: 'JX.519',
     nafi: 'MHL.6',
     invasiveControl: 'MHL.33',
+    municipalityMonitoringForm: 'MHL.35',
     wbc: 'MHL.3',
     lineTransect: 'MHL.1',
     lineTransectEiVakio: 'MHL.27',
