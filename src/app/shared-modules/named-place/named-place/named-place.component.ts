@@ -394,20 +394,23 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.updateQueryParams();
   }
 
-  toNormalMode(np: NamedPlace) {
+  toNormalMode({np, isEdit}: {np: NamedPlace, isEdit: boolean} = {}) {
+    let idx = undefined;
     if (np) {
-      if (this.activeNP >= 0) {
-        this.namedPlaces[this.activeNP] = np;
+      if (isEdit && this.activeNP >= 0) {
+        idx = this.findNPIndexById(np.id);
+        this.namedPlaces[idx] = np;
         this.namedPlace = np;
       } else {
-        this.namedPlaces.push(np);
+        this.namedPlaces = [...this.namedPlaces, np];
+        idx = this.namedPlaces.length - 1;
       }
     }
     this.editMode = false;
     this.updateQueryParams();
     if (np) {
-      this.setActiveNP(this.findNPIndexById(np.id));
-      this.preselectedNPIndex = this.findNPIndexById(np.id);
+      this.setActiveNP(idx);
+      this.preselectedNPIndex = idx;
     }
   }
 

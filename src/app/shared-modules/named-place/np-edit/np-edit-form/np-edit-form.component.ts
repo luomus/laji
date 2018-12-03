@@ -80,7 +80,7 @@ export class NpEditFormComponent {
               .subscribe(value => {
                 this.toastsService.showSuccess(value);
               });
-            this.editReady.emit(result);
+            this.editReady.emit({np: result, isEdit: !!this.namedPlace});
           },
           (err) => {
             this.lajiForm.unBlock();
@@ -110,9 +110,7 @@ export class NpEditFormComponent {
   discard() {
     this.translate.get('haseka.form.discardConfirm').subscribe(
       (confirm) => {
-        if (!this.hasChanges) {
-          this.editReady.emit();
-        } else if (this.window.confirm(confirm)) {
+        if (!this.hasChanges || this.window.confirm(confirm)) {
           this.editReady.emit();
         }
       }
