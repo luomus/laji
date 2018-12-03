@@ -394,7 +394,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.updateQueryParams();
   }
 
-  toNormalMode({np, isEdit}: {np: NamedPlace, isEdit: boolean} = {}) {
+  toNormalMode({np, isEdit}: {np?: NamedPlace, isEdit?: boolean} = {}) {
     let idx = undefined;
     if (np) {
       if (isEdit && this.activeNP >= 0) {
