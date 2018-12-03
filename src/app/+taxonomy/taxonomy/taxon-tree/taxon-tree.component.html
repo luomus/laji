@@ -8,17 +8,23 @@
     >
     {{ 'species.tree.showMainLevels' | translate }}
   </label>
-  <laji-info>{{ 'species.tree.info.showMainLevels' | translate }}</laji-info>
+  <laji-info [placement]="'right'">{{ 'species.tree.info.showMainLevels' | translate }}</laji-info>
 </div>
-<laji-tree-table
-  id="taxon-tree-table"
-  #treeTable
-  [columns]="columns"
+<laji-tree
+  [activeId]="activeId"
   [nodes]="nodes"
   [getChildren]="getChildrenFunc"
   [getParents]="getParentsFunc"
   [skipParams]="skipParams"
-  [hideParams]="hideParams"
-  [showHeader]="false"
 >
-</laji-tree-table>
+  <ng-template #label let-node="node">
+    <ng-container *ngIf="node.id !== activeId; else labelContent">
+      <a [routerLink]="['..', node.id]">
+        <ng-container *ngTemplateOutlet="labelContent"></ng-container>
+      </a>
+    </ng-container>
+    <ng-template #labelContent>
+      <laji-taxon-name [taxon]="node" [addLink]="false"></laji-taxon-name>
+    </ng-template>
+  </ng-template>
+</laji-tree>

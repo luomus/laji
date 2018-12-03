@@ -3,8 +3,8 @@
 }
 
 .taxon-tree-container {
+  padding: 15px;
   border-right: 1px solid #e1e1e1;
   background-color: #ECF0F1;
-  padding: 0;
   flex: 1 0 auto;
 }

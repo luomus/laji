@@ -32,7 +32,7 @@ import { InformalGroupRedirectComponent } from './informal-group-redirect/inform
 import { SpeciesImagesComponent } from './taxon-browse/species-images/species-images.component';
 import { TaxonConceptInfoComponent } from './taxonomy/taxon-concept-info/taxon-concept-info.component';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
-import { TreeTableComponent } from './taxonomy/taxon-tree/tree-table/tree-table.component';
+import { TreeComponent } from './taxonomy/taxon-tree/tree/tree.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SpeciesListOptionsModalComponent } from './taxon-browse/species-list-options-modal/species-list-options-modal.component';
@@ -40,7 +40,6 @@ import { TaxonomyColumns } from './taxon-browse/service/taxonomy-columns';
 import { TaxonExportService } from './taxon-browse/service/taxon-export.service';
 import { DatatableUtil } from './taxon-browse/service/datatable-util.service';
 import { TaxonSelectComponent } from './taxon-browse/taxon-select/taxon-select.component';
-import { ExpandableDatatableComponent } from './taxonomy/taxon-tree/tree-table/expandable-datatable/expandable-datatable.component';
 import { InfoModule } from '../shared-modules/info/info.module';
 import { BoldSynonymComponent } from './taxonomy/taxon-info/bold-synonym/bold-synonym.component';
 import { SpeciesCountComponent } from './taxon-browse/species-count/species-count.component';
@@ -55,8 +54,8 @@ import { SpeciesPieComponent } from './taxonomy/species-pie/species-pie.componen
     InformalListComponent, InformalListBreadcrumbComponent, TaxonTreeComponent, SpeciesListComponent,
     ChildrenListComponent, BoldSequenceComponent, SpeciesFormComponent, TaxonBrowseComponent,
     InformalGroupRedirectComponent, SpeciesDownloadComponent, SpeciesBrowseObservationsComponent,
-    InformalGroupSelectComponent, SpeciesImagesComponent, TaxonConceptInfoComponent, TreeTableComponent,
-    SpeciesListOptionsModalComponent, TaxonSelectComponent, ExpandableDatatableComponent, BoldSynonymComponent,
+    InformalGroupSelectComponent, SpeciesImagesComponent, TaxonConceptInfoComponent, TreeComponent,
+    SpeciesListOptionsModalComponent, TaxonSelectComponent, BoldSynonymComponent,
     SpeciesCountComponent, SpeciesPieComponent, InfoCardComponent
   ],
 })

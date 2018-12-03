@@ -12,35 +12,27 @@ export class TreeState {
 
   constructor(
     nodes: TreeNode[],
-    skipParams?: {key: string, values: string[], isWhiteList?: boolean}[],
-    hideParams?: {key: string, values: string[], isWhiteList?: boolean}[]
+    skipParams?: {key: string, values: string[], isWhiteList?: boolean}[]
   ) {
     this.skipParams = skipParams;
-    this.hideParams = hideParams;
     this.initNodeStates(nodes);
   }
 
-  update(nodes: TreeNode[]): TreeNode[] {
+  setSkipParams(nodes: TreeNode[], skipParams: {key: string, values: string[], isWhiteList?: boolean}[]) {
+    this.skipParams = skipParams;
     const missingChildren = [];
     this.updateAndCheckMissing(nodes, missingChildren);
     return missingChildren;
   }
 
-  setSkipParams(skipParams: {key: string, values: string[], isWhiteList?: boolean}[]) {
-    this.skipParams = skipParams;
-  }
-
-  setHideParams(hideParams: {key: string, values: string[], isWhiteList?: boolean}[]) {
+  setHideParams(nodes: TreeNode[], hideParams: {key: string, values: string[], isWhiteList?: boolean}[]) {
     this.hideParams = hideParams;
+    this.updateAndCheckMissing(nodes, []);
   }
 
   updateNodeStates(nodes: TreeNode[], parentId?: string, afterStateUpdate?: (node: TreeNode, state: TreeNodeState) => void) {
-    let firstChildFound = false;
     for (let i = 0; i < nodes.length; i++) {
-      const state = this.updateNodeState(nodes[i], !firstChildFound, parentId);
-      if (!state.isHidden) {
-        firstChildFound = true;
-      }
+      const state = this.updateNodeState(nodes[i], parentId);
 
       if (afterStateUpdate) {
         afterStateUpdate(nodes[i], state);
@@ -67,15 +59,13 @@ export class TreeState {
     });
   }
 
-  private updateNodeState(node: TreeNode, isFirstChild: boolean, parentId?: string): TreeNodeState {
+  private updateNodeState(node: TreeNode, parentId?: string): TreeNodeState {
     const skipped = this.checkConditions(node, this.skipParams);
     const hidden = this.checkConditions(node, this.hideParams);
     const expanded = this.state[node.id] ? this.state[node.id].isExpanded : false;
     const parentState = parentId ? this.state[parentId] : undefined;
 
     this.state[node.id] = {
-      level: !parentState ? 0 : (parentState.isSkipped ? parentState.level : parentState.level + 1),
-      isFirstChild: isFirstChild && (!parentState || !parentState.isSkipped || parentState.isFirstChild),
       isExpanded: skipped && parentState.isExpanded ? true : expanded,
       isSkipped: skipped,
       isHidden: hidden,
