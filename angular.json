@@ -265,6 +265,41 @@
           }
         }
       }
+    },
+    "generic-label-maker": {
+      "root": "projects/generic-label-maker",
+      "sourceRoot": "projects/generic-label-maker/src",
+      "projectType": "library",
+      "prefix": "ll",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/generic-label-maker/tsconfig.lib.json",
+            "project": "projects/generic-label-maker/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/generic-label-maker/src/test.ts",
+            "tsConfig": "projects/generic-label-maker/tsconfig.spec.json",
+            "karmaConfig": "projects/generic-label-maker/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/generic-label-maker/tsconfig.lib.json",
+              "projects/generic-label-maker/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "laji",
