@@ -36,7 +36,7 @@ export class NpListComponent {
   @ViewChild('status') statusTpl: TemplateRef<any>;
   @ViewChild('dataTable') public datatable: DatatableComponent;
 
-  @Output() onActivePlaceChange = new EventEmitter<number>();
+  @Output() activePlaceChange = new EventEmitter<number>();
 
   @Input() activeNP: number;
   @Input() height: string;
@@ -91,7 +91,7 @@ export class NpListComponent {
   }
 
   changeActivePlace(event) {
-    this.onActivePlaceChange.emit(this.data.indexOf(event.row));
+    this.activePlaceChange.emit(this.data.indexOf(event.row));
   }
 
   getRowClass(row) {
@@ -110,7 +110,7 @@ export class NpListComponent {
       : ['$.name'];
     const cols: ObservationTableColumn[] = [];
     for (const path of this._fields) {
-      const {cellTemplate = undefined, ...columnMetadata} = this.columnsMetaData[path] || {};
+      const {cellTemplate, ...columnMetadata} = this.columnsMetaData[path] || {} as DatatableColumn;
       const col: DatatableColumn = {
         name: path,
         width: 50,
@@ -157,7 +157,7 @@ export class NpListComponent {
         row[path] = value;
       }
       if (row['$.municipality']) {
-        municipalities$.push(this.areaNamePipe.updateValue(row['$.municipality']))
+        municipalities$.push(this.areaNamePipe.updateValue(row['$.municipality']));
       }
       results.push(row);
     }

@@ -1,3 +1,4 @@
+import {delay, tap} from 'rxjs/operators';
 import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Document } from '../../../shared/model/Document';
@@ -9,6 +10,7 @@ import { DocumentInfoService } from '../../../shared/service/document-info.servi
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { WINDOW } from '@ng-toolkit/universal';
 
+
 @Component({
   selector: 'laji-short-document',
   templateUrl: './short-document.component.html',
@@ -17,8 +19,8 @@ import { WINDOW } from '@ng-toolkit/universal';
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Input() document: Document;
   @Input() form: any;
-  @Output() onDiscard = new EventEmitter();
-  @Output() onShowViewer = new EventEmitter<Document>();
+  @Output() discard = new EventEmitter();
+  @Output() showViewer = new EventEmitter<Document>();
 
   public unitList = [];
   public newUnitsLength: number;
@@ -43,11 +45,11 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.changingLocale = false;
-    this.subTrans = this.translate.onLangChange
-      .do(() => {
+    this.subTrans = this.translate.onLangChange.pipe(
+      tap(() => {
         this.changingLocale = true;
-      })
-      .delay(0)
+      })).pipe(
+      delay(0))
       .subscribe(() => {
         this.changingLocale = false;
       });
@@ -87,18 +89,18 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
       this.translate.get('haseka.users.latest.discardConfirm', {unitCount: this.newUnitsLength}).subscribe(
         (confirm) => {
           if (this.window.confirm(confirm)) {
-            this.onDiscard.emit();
+            this.discard.emit();
           }
         }
       );
     } else {
-      this.onDiscard.emit();
+      this.discard.emit();
     }
   }
 
-  showViewer(event) {
+  onShowViewer(event) {
     event.stopPropagation();
-    this.onShowViewer.emit(this.document);
+    this.showViewer.emit(this.document);
   }
 
   showUnitList(event) {

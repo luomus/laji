@@ -1,8 +1,8 @@
 <div *ngIf="data && data.length > 0" style="margin-top: 20px">
   <h4>
-    {{'taxonomy.speciesPieChartTitle' | translate}}
-    ({{'taxonomy.total' | translate}} {{total}}
-    {{total === 1 ? 'taxonomy.species.singular' : 'taxonomy.species' | translate}})
+    {{ 'taxonomy.speciesPieChartTitle' | translate }}
+    ({{ 'taxonomy.total' | translate }} {{ total }}
+    {{ total === 1 ? 'taxonomy.species.singular' : 'taxonomy.species' | translate }})
   </h4>
   <div class="species-pie-chart-container">
     <div class="species-pie-chart">
@@ -15,15 +15,15 @@
       >
         <ng-template #tooltipTemplate let-model="model">
           <span *ngIf="dataById[model.name].vernacularName" class="tooltip-label">
-            {{dataById[model.name].vernacularName}}
+            {{ dataById[model.name].vernacularName }}
           </span>
                 <span *ngIf="!dataById[model.name].vernacularName" class="tooltip-label" [class.cursive]="dataById[model.name].cursiveName">
-            {{dataById[model.name].scientificName}}
+            {{ dataById[model.name].scientificName }}
           </span>
                 <span class="tooltip-val">
-            {{model.value}}
-            <ng-container *ngIf="model.value === 1"> {{'taxonomy.species.singular' | translate}}</ng-container>
-            <ng-container *ngIf="model.value !== 1"> {{'taxonomy.species' | translate}}</ng-container>
+            {{ model.value }}
+            <ng-container *ngIf="model.value === 1"> {{ 'taxonomy.species.singular' | translate }}</ng-container>
+            <ng-container *ngIf="model.value !== 1"> {{ 'taxonomy.species' | translate }}</ng-container>
           </span>
         </ng-template>
       </ngx-charts-pie-chart>

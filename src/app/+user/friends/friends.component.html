@@ -1,53 +1,53 @@
-<h3>{{'profile.friends' | translate}}</h3>
+<h3>{{ 'profile.friends' | translate }}</h3>
 <div *ngIf="isCurrentUser()">
   <div *ngIf="usersProfile.friends && usersProfile.friends.length > 0" class="friends">
     <ul>
       <li *ngFor="let id of usersProfile.friends">
-        <a [routerLink]="['/user/' + id] | localize">{{id|users:'fullname'}}</a>
-        <button class="btn btn-default btn-xs" (click)="removeFriend(id)">{{'friend.remove' | translate}} <i class="glyphicon glyphicon-remove"></i></button>
+        <a [routerLink]="['/user/' + id] | localize">{{ id|users:'fullname' }}</a>
+        <button class="btn btn-default btn-xs" (click)="removeFriend(id)">{{ 'friend.remove' | translate }} <i class="glyphicon glyphicon-remove"></i></button>
       </li>
     </ul>
   </div>
   <div *ngIf="usersProfile.friendRequests && usersProfile.friendRequests.length > 0" class="friendRequests">
     <h4>
-      {{'friend.requests' | translate}}
+      {{ 'friend.requests' | translate }}
     </h4>
     <ul>
       <li *ngFor="let id of usersProfile.friendRequests">
-        <a [routerLink]="['/user/' + id] | localize">{{id|users:'fullname'}}</a>
+        <a [routerLink]="['/user/' + id] | localize">{{ id|users:'fullname' }}</a>
         <div class="btn-group">
-          <button class="btn btn-default btn-xs" (click)="acceptFriendRequest(id)">{{'friend.accept'  | translate}} <i class="glyphicon glyphicon-ok"></i></button>
-          <button class="btn btn-default btn-xs" (click)="removeFriend(id)">{{'friend.remove' | translate}} <i class="glyphicon glyphicon-remove"></i></button>
-          <button class="btn btn-default btn-xs" (click)="removeFriend(id, true)">{{'friend.block' | translate}} <i class="glyphicon glyphicon-ban-circle"></i></button>
+          <button class="btn btn-default btn-xs" (click)="acceptFriendRequest(id)">{{ 'friend.accept'  | translate }} <i class="glyphicon glyphicon-ok"></i></button>
+          <button class="btn btn-default btn-xs" (click)="removeFriend(id)">{{ 'friend.remove' | translate }} <i class="glyphicon glyphicon-remove"></i></button>
+          <button class="btn btn-default btn-xs" (click)="removeFriend(id, true)">{{ 'friend.block' | translate }} <i class="glyphicon glyphicon-ban-circle"></i></button>
         </div>
       </li>
     </ul>
   </div>
   <div *ngIf="usersProfile.blocked && usersProfile.blocked.length > 0" class="friendRequests">
     <h4>
-      {{'friend.blocked' | translate}}
-      <small>({{usersProfile.blocked.length}})</small>
+      {{ 'friend.blocked' | translate }}
+      <small>({{ usersProfile.blocked.length }})</small>
     </h4>
     <ul>
       <li *ngFor="let id of usersProfile.blocked">
-        <a [routerLink]="['/user/' + id] | localize">{{id|users:'fullname'}}</a>
-        <button class="btn btn-default btn-xs" (click)="removeBlock(id)">{{'friend.removeBlock' | translate}} <i class="glyphicon glyphicon-remove"></i></button>
+        <a [routerLink]="['/user/' + id] | localize">{{ id|users:'fullname' }}</a>
+        <button class="btn btn-default btn-xs" (click)="removeBlock(id)">{{ 'friend.removeBlock' | translate }} <i class="glyphicon glyphicon-remove"></i></button>
       </li>
     </ul>
   </div>
-  <p>{{'profile.friendsInfo'|translate}}</p>
+  <p>{{ 'profile.friendsInfo'|translate }}</p>
 </div>
 <div *ngIf="!isCurrentUser() && hasProfile()">
   <div *ngIf="alreadyFriends()">
-    {{'friend.alreadyFriends' | translate}}
+    {{ 'friend.alreadyFriends' | translate }}
   </div>
   <div *ngIf="requestSend">
-    {{'friend.requestSent' | translate}}
+    {{ 'friend.requestSent' | translate }}
   </div>
   <div *ngIf="!requestSend && !alreadyFriends()">
-    <a class="btn btn-success" (click)="sendFriendRequest(profile.profileKey)">{{'friend.ask'|translate}}</a>
+    <a class="btn btn-success" (click)="sendFriendRequest(profile.profileKey)">{{ 'friend.ask'|translate }}</a>
   </div>
 </div>
 <div *ngIf="!hasProfile()">
-  {{'profile.friends.needProfile' | translate}}
+  {{ 'profile.friends.needProfile' | translate }}
 </div>

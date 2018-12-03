@@ -1,6 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { ViewerComponent } from './viewer.component';
-import { ViewerPrintComponent } from './viewer-print/viewer-print.component'
+import { ViewerPrintComponent } from './viewer-print/viewer-print.component';
 import { ModuleWithProviders } from '@angular/core';
 import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 

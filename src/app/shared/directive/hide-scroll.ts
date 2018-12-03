@@ -82,6 +82,6 @@ export class HideScrollDirective {
           event.preventDefault();
         }
       }
-    } catch (e) {console.log(e)}
+    } catch (e) {console.log(e); }
   }
 }

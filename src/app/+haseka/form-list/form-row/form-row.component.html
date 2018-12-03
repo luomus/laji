@@ -1,5 +1,5 @@
 <a [routerLink]="['/vihko', form.id] | localize" class="link btn btn-default btn-sm">
-  {{form.title}}
+  {{ form.title }}
 </a>
 <span *ngIf="tmpDocuments[form.id]" class="unsaved" [tooltip]="'haseka.form.localData' | translate">
   <a [routerLink]="['/vihko', form.id, tmpDocuments[form.id]] | localize" class="btn btn-danger btn-sm">
@@ -12,5 +12,5 @@
   </a>
 </span>
 <span class="shortDescription">
-  {{form.shortDescription}}
+  {{ form.shortDescription }}
 </span>

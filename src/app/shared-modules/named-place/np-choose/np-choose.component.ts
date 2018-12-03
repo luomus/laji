@@ -41,9 +41,9 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
   @Input() zoomToData: boolean;
   @Input() preselectedNPIndex = -1;
 
-  @Output() onActivePlaceChange = new EventEmitter<number>();
-  @Output() onCreateButtonClick = new EventEmitter();
-  @Output() onTabChange = new EventEmitter();
+  @Output() activePlaceChange = new EventEmitter<number>();
+  @Output() createButtonClick = new EventEmitter();
+  @Output() tabChange = new EventEmitter();
 
   sent = this.isSent.bind(this);
 
@@ -94,7 +94,7 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
     }
     const extendedNamedPlaces: ExtendedNamedPlace[] = [];
     for (const namedPlace of namedPlaces) {
-      extendedNamedPlaces.push({...namedPlace, _status: this.getNamedPlaceStatus(namedPlace)})
+      extendedNamedPlaces.push({...namedPlace, _status: this.getNamedPlaceStatus(namedPlace)});
     }
     this._namedPlaces = extendedNamedPlaces;
   }
@@ -116,7 +116,7 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
     if (newActive === 'map') {
       this.mapIsActivated = true;
     }
-    this.onTabChange.emit(newActive);
+    this.tabChange.emit(newActive);
   }
 
   @Input() set activeNP(idx: number) {
@@ -125,11 +125,7 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
 
   setActiveNP(idx: number) {
     this.activeNP = idx;
-    this.onActivePlaceChange.emit(this._activeNP);
-  }
-
-  createButtonClick() {
-    this.onCreateButtonClick.emit();
+    this.activePlaceChange.emit(this._activeNP);
   }
 
   showMap() {
@@ -156,14 +152,14 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
       return 'sent';
     }
     if (!np.reserve) {
-      return 'free'
+      return 'free';
     }
     const now = new Date();
     const until = new Date(np.reserve.until);
     if (now > until) {
       return 'free';
     } else if (np.reserve.reserver === this.userID) {
-      return 'mine'
+      return 'mine';
     }
     return 'reserved';
   }
@@ -180,6 +176,6 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
 
   private analyseData(date: string): string {
     const now = new Date();
-    return date.replace('${year}', '' + now.getFullYear())
+    return date.replace('${year}', '' + now.getFullYear());
   }
 }

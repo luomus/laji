@@ -1,61 +1,61 @@
 <div class="well" *ngIf="collection">
-  <h3>{{collection.longName | multiLang}}</h3>
-  <p>{{collection.description | multiLang}}</p>
+  <h3>{{ collection.longName | multiLang }}</h3>
+  <p>{{ collection.description | multiLang }}</p>
   <table class="table table-condensed">
     <tr *ngIf="collection.collectionType">
-      <th>{{'MY.collectionType' | label}}</th>
-      <td>{{collection.collectionType | label}}</td>
+      <th>{{ 'MY.collectionType' | label }}</th>
+      <td>{{ collection.collectionType | label }}</td>
     </tr>
     <tr *ngIf="collection.geographicCoverage">
-      <th>{{'MY.geographicCoverage' | label}}</th>
-      <td>{{collection.geographicCoverage}}</td>
+      <th>{{ 'MY.geographicCoverage' | label }}</th>
+      <td>{{ collection.geographicCoverage }}</td>
     </tr>
     <tr *ngIf="collection.temporalCoverage">
-      <th>{{'MY.temporalCoverage' | label}}</th>
-      <td>{{collection.temporalCoverage}}</td>
+      <th>{{ 'MY.temporalCoverage' | label }}</th>
+      <td>{{ collection.temporalCoverage }}</td>
     </tr>
     <tr *ngIf="collection.personResponsible">
-      <th>{{'MY.personResponsible' | label}}</th>
-      <td>{{collection.personResponsible}}</td>
+      <th>{{ 'MY.personResponsible' | label }}</th>
+      <td>{{ collection.personResponsible }}</td>
     </tr>
     <tr *ngIf="collection.metadataStatus">
-      <th>{{'MY.metadataStatus' | label}}</th>
-      <td>{{collection.metadataStatus | label}}</td>
+      <th>{{ 'MY.metadataStatus' | label }}</th>
+      <td>{{ collection.metadataStatus | label }}</td>
     </tr>
     <tr *ngIf="collection.dataQuality">
-      <th>{{'MY.dataQuality' | label}}</th>
-      <td>{{collection.dataQuality | label}}</td>
+      <th>{{ 'MY.dataQuality' | label }}</th>
+      <td>{{ collection.dataQuality | label }}</td>
     </tr>
     <tr *ngIf="collection.publicationTerms">
-      <th>{{'MY.publicationTerms' | label}}</th>
-      <td>{{collection.publicationTerms | label}}</td>
+      <th>{{ 'MY.publicationTerms' | label }}</th>
+      <td>{{ collection.publicationTerms | label }}</td>
     </tr>
     <tr *ngIf="collection.publicationDescription">
-      <th>{{'MY.publicationDescription' | label}}</th>
-      <td>{{collection.publicationDescription}}</td>
+      <th>{{ 'MY.publicationDescription' | label }}</th>
+      <td>{{ collection.publicationDescription }}</td>
     </tr>
     <tr *ngIf="collection.intellectualRights">
-      <th>{{'MY.intellectualRights' | label}}</th>
-      <td>{{collection.intellectualRights | label}}</td>
+      <th>{{ 'MY.intellectualRights' | label }}</th>
+      <td>{{ collection.intellectualRights | label }}</td>
     </tr>
     <tr *ngIf="collection.intellectualDescription">
-      <th>{{'MY.intellectualDescription' | label}}</th>
-      <td>{{collection.intellectualDescription | label}}</td>
+      <th>{{ 'MY.intellectualDescription' | label }}</th>
+      <td>{{ collection.intellectualDescription | label }}</td>
     </tr>
     <tr *ngIf="collection.intellectualOwner">
-      <th>{{'MY.intellectualOwner' | label}}</th>
-      <td>{{collection.intellectualOwner}}</td>
+      <th>{{ 'MY.intellectualOwner' | label }}</th>
+      <td>{{ collection.intellectualOwner }}</td>
     </tr>
     <tr *ngIf="collection.intellectualDescription">
-      <th>{{'MY.intellectualDescription' | label}}</th>
-      <td>{{collection.intellectualDescription}}</td>
+      <th>{{ 'MY.intellectualDescription' | label }}</th>
+      <td>{{ collection.intellectualDescription }}</td>
     </tr>
     <tr>
       <th>URI</th>
-      <td>{{idService.getUri(collection.id)}}</td>
+      <td>{{ idService.getUri(collection.id) }}</td>
     </tr>
     <tr>
-      <th>{{'omniSearch.allObservation' | translate | titlecase}}</th>
+      <th>{{ 'omniSearch.allObservation' | translate | titlecase }}</th>
       <td>
         <a [routerLink]="['/observation' | localize]" [queryParams]="{collectionId: collection.id}">
           <laji-observation-count [query]="{collectionId: collection.id}"></laji-observation-count>
@@ -63,7 +63,7 @@
       </td>
     </tr>
     <tr>
-      <th>{{'typeSpecimens' | translate}}</th>
+      <th>{{ 'typeSpecimens' | translate }}</th>
       <td>
         <a [routerLink]="['/observation' | localize]" [queryParams]="{collectionId: collection.id, typeSpecimen: true}">
           <laji-observation-count [query]="{collectionId: collection.id, typeSpecimen: true}"></laji-observation-count>
@@ -75,6 +75,6 @@
     href="{{collection.onlineUrl[translate.currentLang] || collection.onlineUrl['en'] || collection.onlineUrl['fi']}}"
     rel="noopener"
     target="_blank">
-    {{'information.more' | translate}} <i class="glyphicon glyphicon-new-window small"></i>
+    {{ 'information.more' | translate }} <i class="glyphicon glyphicon-new-window small"></i>
   </a>
 </div>

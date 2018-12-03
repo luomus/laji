@@ -13,7 +13,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   @Input() searchQuery: TaxonomySearchQuery;
 
   @Input() showFilter = true;
-  @Output() onShowFilterChange = new EventEmitter<boolean>();
+  @Output() showFilterChange = new EventEmitter<boolean>();
 
   public taxonSelectFilters: {
     informalTaxonGroup: string,
@@ -164,9 +164,9 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  showFilterChange(showFilter: boolean) {
+  onShowFilterChange(showFilter: boolean) {
     this.showFilter = showFilter;
-    this.onShowFilterChange.emit(showFilter);
+    this.showFilterChange.emit(showFilter);
   }
 
   private formQueryToQuery() {

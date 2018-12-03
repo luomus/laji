@@ -1,5 +1,5 @@
 export interface MostActiveUsersTable {
-  prop: string,
-  date?: string,
-  data?: any
+  prop: string;
+  date?: string;
+  data?: any;
 }

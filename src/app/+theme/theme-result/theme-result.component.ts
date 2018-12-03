@@ -16,7 +16,7 @@ export class ThemeResultComponent {
   @Input() height;
   @Input() fields = ['unit.linkings.species.vernacularName', 'unit.linkings.species.scientificName', 'individualCountSum'];
   @Input() useStatistics;
-  @Output() onNameClick = new EventEmitter<WarehouseQueryInterface>();
+  @Output() nameClick = new EventEmitter<WarehouseQueryInterface>();
   @Output() selectChange = new EventEmitter();
 
   constructor(public translate: TranslateService) { }
@@ -27,13 +27,13 @@ export class ThemeResultComponent {
       && event.row.unit.linkings
       && event.row.unit.linkings.taxon
       && event.row.unit.linkings.taxon.id) {
-      this.onNameClick.emit({...this.query, taxonId: IdService.getId(event.row.unit.linkings.taxon.id)});
+      this.nameClick.emit({...this.query, taxonId: IdService.getId(event.row.unit.linkings.taxon.id)});
     } else if (event.row
       && event.row.unit
       && event.row.unit.linkings
       && event.row.unit.linkings.taxon
       && event.row.unit.linkings.taxon.speciesId) {
-      this.onNameClick.emit({...this.query, taxonId: IdService.getId(event.row.unit.linkings.taxon.speciesId)});
+      this.nameClick.emit({...this.query, taxonId: IdService.getId(event.row.unit.linkings.taxon.speciesId)});
     }
   }
 

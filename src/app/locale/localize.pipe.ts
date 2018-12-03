@@ -35,9 +35,8 @@ export class LocalizePipe implements PipeTransform, OnDestroy {
 
   /**
    * Transform current url to localized one
-   * @param query
-   * @param lang
-   * @returns {string | any[]}
+   *
+   * @returns string | any[]
    */
   transform(query: string | any[], lang?: string): string | any[] {
     if (!lang) {

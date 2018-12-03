@@ -41,7 +41,7 @@ export class FindPersonComponent implements OnInit {
     this.select.emit({
       id: event.item.key || '',
       fullName: event.item.value || ''
-    })
+    });
   }
 
   changeTypeaheadLoading(loading) {

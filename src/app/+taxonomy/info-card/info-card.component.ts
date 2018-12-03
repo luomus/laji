@@ -1,3 +1,5 @@
+
+import {catchError, concat, take, delay, retryWhen,  combineLatest, map, switchMap, tap } from 'rxjs/operators';
 import { Observable, of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
 import {
   ChangeDetectionStrategy,
@@ -17,7 +19,6 @@ import { Taxonomy, TaxonomyDescription, TaxonomyImage } from '../../shared/model
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { Title } from '@angular/platform-browser';
-import { combineLatest, map, switchMap, tap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
@@ -68,7 +69,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
           this.taxonId = data[0]['id'];
           this.context = data[0]['context'] || data[1]['context'] || 'default';
           this.activeImage = 1;
-          return {...data[1], ...data[0]}
+          return {...data[1], ...data[0]};
         }),
         switchMap(() => this.initTaxon())
       )
@@ -163,7 +164,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
         this.setTitle();
         this.updateMap();
       })
-    )
+    );
   }
 
   private setTitle() {
@@ -174,11 +175,11 @@ export class InfoCardComponent implements OnInit, OnDestroy {
 
   private getTaxon(id) {
     return this.taxonService
-      .taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true})
-      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
-      .catch(err => {
+      .taxonomyFindBySubject(id, 'multi', {includeMedia: true, includeDescriptions: true}).pipe(
+      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
+      catchError(err => {
         this.logger.warn('Failed to fetch taxon by id', err);
         return ObservableOf({});
-      });
+      }));
   }
 }

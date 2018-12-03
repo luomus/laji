@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class TaxonSelectComponent {
   @Input() taxonId: string;
   @Input() searchParams = {};
-  @Output() onSelect = new EventEmitter<string>();
+  @Output() select = new EventEmitter<string>();
 
   @ViewChild('typeahead') typeahead;
 
@@ -74,7 +74,7 @@ export class TaxonSelectComponent {
   }
 
   private selectValue(key: string, blur?: boolean) {
-    this.onSelect.emit(key);
+    this.select.emit(key);
     if (blur) {
       this.blur();
     }

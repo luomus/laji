@@ -39,7 +39,7 @@ export class FiltersComponent implements OnInit {
   private mapStatusesToOptions(groups: RedListTaxonGroup[], result: SelectOption[] = [], level = 0): SelectOption[] {
     groups.forEach(group => {
       if (typeof group === 'string') {
-        group = {name: group, id: group}
+        group = {name: group, id: group};
       }
       const label = '&nbsp;'.repeat(level * 4) + (group.name || group.id);
       result.push({value: group.id, label: label});

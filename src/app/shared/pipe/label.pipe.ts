@@ -1,9 +1,16 @@
+
+import {concat, take, delay, retryWhen, timeout, map} from 'rxjs/operators';
 import { throwError as observableThrowError } from 'rxjs';
 import { ChangeDetectorRef, EventEmitter, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../service/triplestore-label.service';
 import { IdService } from '../service/id.service';
+import 'rxjs-compat/add/operator/timeout';
+import 'rxjs-compat/add/operator/retryWhen';
+import 'rxjs-compat/add/operator/delay';
+import 'rxjs-compat/add/operator/take';
+import 'rxjs-compat/add/operator/concat';
 
 type labelType = 'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
 
@@ -30,9 +37,9 @@ export class LabelPipe implements PipeTransform, OnDestroy {
 
   updateValue(key: string, type?: labelType): void {
     if (type === 'warehouse') {
-      this.warehouseService.getOriginalKey(key)
-        .timeout(10000)
-        .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
+      this.warehouseService.getOriginalKey(key).pipe(
+        timeout(10000),
+        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), )), )
         .subscribe(
           (res: string) => {
             if (res) {
@@ -51,7 +58,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
 
   transform(value: string, type?: labelType, joinBy = '; '): any {
     if (Array.isArray(value)) {
-      return value.map(v => this.transform(v, type))
+      return value.map(v => this.transform(v, type));
     }
     if (!value || typeof value !== 'string' || value.length === 0 ||
        (type === 'fullUri' && value.indexOf('http') !== 0)) {
@@ -80,19 +87,18 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     return this.value;
   }
 
+  ngOnDestroy(): void {
+    this._dispose();
+  }
+
   /**
    * Clean any existing subscription to onLangChange events
-   * @private
    */
-  _dispose(): void {
+  protected _dispose(): void {
     if (this.onLangChange) {
       this.onLangChange.unsubscribe();
       this.onLangChange = undefined;
     }
-  }
-
-  ngOnDestroy(): void {
-    this._dispose();
   }
 
   private _updateValue(key: string, type?: labelType): void {
@@ -102,8 +108,8 @@ export class LabelPipe implements PipeTransform, OnDestroy {
         obs = this.triplestoreLabelService.get(IdService.getId(key), this.translate.currentLang);
         break;
       case 'withKey':
-        obs = this.triplestoreLabelService.get(key, this.translate.currentLang)
-          .map(value => value !== key ? value + ' (' + key + ')' : value);
+        obs = this.triplestoreLabelService.get(key, this.translate.currentLang).pipe(
+          map(value => value !== key ? value + ' (' + key + ')' : value));
         break;
       default:
         obs = this.triplestoreLabelService.get(key, this.translate.currentLang);

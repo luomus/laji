@@ -12,12 +12,12 @@ export class SpeciesDownloadComponent {
 
   fileType = 'tsv';
 
-  @Output() onDownload = new EventEmitter<string>();
+  @Output() download = new EventEmitter<string>();
   @ViewChild('chooseFileTypeModal') public modal: ModalDirective;
 
   constructor() { }
 
-  download() {
-    this.onDownload.emit(this.fileType);
+  onDownload() {
+    this.download.emit(this.fileType);
   }
 }

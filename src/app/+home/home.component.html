@@ -44,13 +44,13 @@
                   <span class="no-break">
                     <laji-observation-count [lightLoader]="true" [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}">
                     </laji-observation-count>
-                    {{'viewer.unit' | translate}}
+                    {{ 'viewer.unit' | translate }}
                     </span>
                   <span class="no-break">
                     <laji-observation-count [lightLoader]="true" [field]="'unit.linkings.taxon.id'"
                                             [query]="{taxonRankId: 'MX.species', firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}">
                     </laji-observation-count>
-                    {{'observation.results.species' | translate}}
+                    {{ 'observation.results.species' | translate }}
                   </span>
                 </div>
               </div>
@@ -61,13 +61,13 @@
               <div class="col-sm-12">
                 <a [routerLink]="['/vihko/' + formId | localize]" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}" class="thumbnail panel panel-default">
                   <div class="panel-heading">
-                    <h2 class="panel-title caption">{{'home.identify-title' | translate}}</h2>
+                    <h2 class="panel-title caption">{{ 'home.identify-title' | translate }}</h2>
                   </div>
                   <div class="panel-body identifications">
                     <p>
-                      {{'identify.reportIntro' | translate}}<br>
-                      <a class="link btn btn-primary identify-form" [routerLink]="['/vihko/' + formId | localize]">{{'identify.report' | translate}}</a>
-                      <span *lajiLoggedIn="false">({{'identify.requiresAuthentication' | translate}})</span>
+                      {{ 'identify.reportIntro' | translate }}<br>
+                      <a class="link btn btn-primary identify-form" [routerLink]="['/vihko/' + formId | localize]">{{ 'identify.report' | translate }}</a>
+                      <span *lajiLoggedIn="false">({{ 'identify.requiresAuthentication' | translate }})</span>
                     </p>
                   </div>
                 </a>
@@ -77,10 +77,10 @@
               <div class="col-sm-12">
                 <a [routerLink]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/', countryId: 'ML.206'}" class="thumbnail panel panel-default">
                   <div class="panel-heading">
-                    <h2 class="panel-title caption">{{'home.identify-help-title' | translate}}</h2>
+                    <h2 class="panel-title caption">{{ 'home.identify-help-title' | translate }}</h2>
                   </div>
                   <div class="panel-body identifications">
-                    <p>{{'home.identify-help-intro' | translate}}</p>
+                    <p>{{ 'home.identify-help-intro' | translate }}</p>
                     <div class="identification-images">
                       <div class="link blocking-overlay"></div>
                       <laji-gallery [showPaginator]="false" [limit]="12" [showPopover]="false" [view]="'compact'" [sort]="['document.firstLoadDate DESC']" [showViewSwitch]="false" [query]="imagesQuery$ | async" [pageSize]="20"></laji-gallery>
@@ -101,7 +101,7 @@
   </div>
 </div>
 <div class="container-fluid" *lajiForTypes="['vir']">
-  <h1>{{'home.authority.title' | translate}}</h1>
+  <h1>{{ 'home.authority.title' | translate }}</h1>
   <div class="row">
     <div class="col-sm-10 col-md-7 intro" [innerHtml]="'home.authority.text' | translate"></div>
   </div>

@@ -79,8 +79,7 @@ export class MetadataService {
   /**
    * Gets all ranges as lookup object
    *
-   * @param lang
-   * @returns {Observable<T>}
+   * @returns Observable<T>
    */
   getAllRangesAsLookUp(lang: string) {
     return this.getAllRanges().pipe(
@@ -100,7 +99,6 @@ export class MetadataService {
   /**
    * Gets a specific range of all the ranges
    *
-   * @param range
    */
   getRange(range: string): Observable<any[]> {
     return this.getAllRanges().pipe(

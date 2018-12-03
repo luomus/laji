@@ -70,7 +70,7 @@ export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
 
       this.loading = false;
       this.cd.markForCheck();
-    })
+    });
   }
 
   onSpeciesChange(id: string) {

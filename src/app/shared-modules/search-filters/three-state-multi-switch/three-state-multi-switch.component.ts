@@ -32,7 +32,7 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
   set alt(alt: string) {
     this.options$ = this.metadataService.getRange(alt).pipe(
       map(range => range.map(options => ({id: options.id, value: MultiLangService.getValue(options.value, this.lang)})))
-    )
+    );
   }
 
   changeValue(event) {

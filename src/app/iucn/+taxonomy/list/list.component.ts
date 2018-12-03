@@ -8,8 +8,8 @@ import {TranslateService} from '@ngx-translate/core';
 export type ListType = 'status'|'species'|'reasons'|'threads'|'habitat';
 
 export interface QueryParams extends FilterQuery {
-  year?: string,
-  type?: ListType
+  year?: string;
+  type?: ListType;
 }
 
 @Component({

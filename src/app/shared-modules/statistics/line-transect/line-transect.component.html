@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-12">
-    <h3>Laskennan tulokset linjalta {{namedPlace.name}}</h3>
+    <h3>Laskennan tulokset linjalta {{ namedPlace.name }}</h3>
   </div>
 </div>
 <alert *ngIf="missingNS" [type]="'danger'">
@@ -14,31 +14,31 @@
     <table class="table">
       <tr>
         <th>Lajimäärä</th>
-        <td>{{counts.species.length}}</td>
+        <td>{{ counts.species.length }}</td>
       </tr>
       <tr>
         <th>Pääsaran parisumma</th>
-        <td>{{counts.psCouples}}</td>
+        <td>{{ counts.psCouples }}</td>
       </tr>
       <tr>
         <th>Parisumma yhteensä</th>
-        <td>{{counts.tsCouples + counts.psCouples}}</td>
+        <td>{{ counts.tsCouples + counts.psCouples }}</td>
       </tr>
       <tr>
         <th>Pääsarkaprosentti</th>
-        <td>{{counts.onPsPros}}%</td>
+        <td>{{ counts.onPsPros }}%</td>
       </tr>
       <tr>
         <th>Laskentanopeus</th>
         <td>
-          {{counts.minPerKm}}min/km
+          {{ counts.minPerKm }}min/km
           (<span class="speed-warning" *ngIf="counts.minPerKm > 50; else slowSpeed">keskimääräistä hitaampi</span><ng-template #slowSpeed><span class="speed-warning" *ngIf="counts.minPerKm < 35; else normalSpeed">kesimääräistä nopeampi</span></ng-template><ng-template #normalSpeed><span class="speed-ok">normaali</span></ng-template>)
         </td>
       </tr>
       <tr *ngIf="stats$ | async let diff">
         <th>Poikkeama laskentapäivän mediaanista</th>
         <td>
-          {{diff}}
+          {{ diff }}
         </td>
       </tr>
     </table>
@@ -52,9 +52,9 @@
       </thead>
       <tbody>
       <tr *ngFor="let species of counts.species">
-        <td>{{species.name || species.id}}</td>
-        <td>{{species.psCouples}}</td>
-        <td>{{species.tsCouples + species.psCouples}}</td>
+        <td>{{ species.name || species.id }}</td>
+        <td>{{ species.psCouples }}</td>
+        <td>{{ species.tsCouples + species.psCouples }}</td>
       </tr>
       </tbody>
     </table>
@@ -98,8 +98,8 @@
       </thead>
       <tbody>
       <tr *ngFor="let warning of warnings">
-        <td>{{warning.message}}</td>
-        <td>{{warning.cnt}}</td>
+        <td>{{ warning.message }}</td>
+        <td>{{ warning.cnt }}</td>
       </tr>
       </tbody>
     </table>

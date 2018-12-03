@@ -20,7 +20,7 @@ export class WbcRoutesMapComponent implements OnInit {
   labels = ['1', '2-4', '5-9', '10-19', '20-'];
   colorRange = ['violet', 'blue', 'lime', 'yellow', 'orange'];
 
-  @Output() onRowSelect = new EventEmitter<string>();
+  @Output() rowSelect = new EventEmitter<string>();
 
   @Input() set data(data) {
     this.geoJsons = [];
@@ -42,7 +42,7 @@ export class WbcRoutesMapComponent implements OnInit {
         this.geoJsons.push({type: 'Feature', geometry: geometry, properties: {grid: grid, count: 1}});
       }
     });
-  };
+  }
 
   constructor(
     public translate: TranslateService,

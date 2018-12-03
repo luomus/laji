@@ -108,7 +108,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
           taxonId: this.modalImages[index].taxonId,
           documentId: this.modalImages[index].documentId,
           unitId: this.modalImages[index].unitId
-        })
+        });
       }
       return;
     }

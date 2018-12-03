@@ -1,6 +1,6 @@
+/* tslint:disable */
 import { Injectable } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
-import { Units } from '../../../shared/model/Units';
 import { Util } from '../../../shared/service/util.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { UserService } from '../../../shared/service/user.service';
@@ -324,7 +324,7 @@ export class DocumentExportService {
 
               while (true) {
                 for (let i = 0; i < next.fields.length; i++) {
-                  queue.push({...next.fields[i], path: fieldName + '.'})
+                  queue.push({...next.fields[i], path: fieldName + '.'});
                 }
 
                 if (queue.length < 1) {
@@ -429,7 +429,7 @@ export class DocumentExportService {
         );
     }
 
-    return ObservableOf(fieldName.charAt(0).toUpperCase() + fieldName.slice(1))
+    return ObservableOf(fieldName.charAt(0).toUpperCase() + fieldName.slice(1));
   }
 
   private isEmpty(path: string, obj: any, form: any): boolean {

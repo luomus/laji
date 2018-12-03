@@ -1,3 +1,5 @@
+
+import {startWith, map, filter} from 'rxjs/operators';
 /* tslint:disable:component-selector */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../shared/service/user.service';
@@ -42,10 +44,10 @@ export class HasekaComponent implements OnInit, OnDestroy {
     this.showViewerClick$ = this.eventService.showViewerClick$.subscribe((doc) => {
         this.showDocumentViewer(doc);
     });
-    this.subRoute = this.router.events
-      .filter(event => event instanceof NavigationEnd)
-      .map(event => true)
-      .startWith(true)
+    this.subRoute = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      map(event => true), ).pipe(
+      startWith(true))
       .subscribe(() => {
         this.isFront = this.router.isActive('/vihko', true);
       });

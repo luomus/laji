@@ -41,7 +41,7 @@ import { ObservationGroupSelectComponent } from './group-select/group-select.com
 import { SourcePipe } from './pipe/source.pipe';
 import { TaxonNamePipe } from './pipe/taxon-name.pipe';
 import { RemoveEmptyPipe } from './pipe/remove-empty.pipe';
-import { DatePickerComponent } from './datepicker/datepicker.component'
+import { DatePickerComponent } from './datepicker/datepicker.component';
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { FactNotInPipe } from './pipe/fact-not-in.pipe';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';

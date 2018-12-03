@@ -66,7 +66,7 @@ export class PrintMapComponent implements OnInit, OnChanges, AfterViewInit {
           properties: {}
         }))
 
-      }
+      };
     } else {
       return {
         type: 'FeatureCollection',
@@ -74,7 +74,7 @@ export class PrintMapComponent implements OnInit, OnChanges, AfterViewInit {
           type: 'Feature',
           geometry: data,
         }]
-      }
+      };
     }
   }
 }

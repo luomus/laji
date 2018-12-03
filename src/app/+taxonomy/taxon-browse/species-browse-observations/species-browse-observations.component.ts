@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
@@ -35,6 +35,6 @@ export class SpeciesBrowseObservationsComponent {
       this.localizeRouterService.translateRoute(
         ['/observation/map']
       ), {queryParams: parameters}
-    )
+    );
   }
 }

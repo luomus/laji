@@ -1,3 +1,5 @@
+
+import {filter, catchError, debounceTime, switchMap} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SearchQuery } from '../search-query.model';
 import { of as ObservableOf, Subject, Subscription } from 'rxjs';
@@ -14,6 +16,8 @@ import { CoordinateService } from '../../shared/service/coordinate.service';
 import { LajiApiService } from '../../shared/service/laji-api.service';
 import { WINDOW } from '@ng-toolkit/universal';
 import { ObservationFormComponent } from '../form/observation-form.component';
+
+
 
 @Component({
   selector: 'laji-observation-view',
@@ -69,17 +73,17 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (environment.invasiveControlForm) {
       this.formService
-        .load(environment.invasiveControlForm, this.translate.currentLang)
-        .switchMap((form) => this.formPermissionService.hasEditAccess(form))
-        .catch(() => ObservableOf(false))
+        .load(environment.invasiveControlForm, this.translate.currentLang).pipe(
+        switchMap((form) => this.formPermissionService.hasEditAccess(form))).pipe(
+        catchError(() => ObservableOf(false)))
         .subscribe(hasPermission => {
           this.hasInvasiveControleRights = hasPermission;
           this.cd.markForCheck();
         });
     }
 
-    this.subSearch = this.delayedSearch
-      .debounceTime(this.debouchAfterChange)
+    this.subSearch = this.delayedSearch.pipe(
+      debounceTime(this.debouchAfterChange))
       .subscribe(() => {
         this.onSubmit();
         this.cd.markForCheck();
@@ -88,8 +92,8 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     if (!this.observationSettings) {
       this.observationSettings = { showIntro: true };
     }
-    this.subUpdate = this.searchQuery.queryUpdated$
-      .filter(data => data && data.formSubmit)
+    this.subUpdate = this.searchQuery.queryUpdated$.pipe(
+      filter(data => data && data.formSubmit))
       .subscribe(() => this.onSubmit());
   }
 

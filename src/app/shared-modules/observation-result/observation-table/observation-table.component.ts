@@ -251,7 +251,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     this._selectedNumbers = selectedNumbers;
     this._originalSelected = [...selected];
     this._originalSelectedNumbers = [...selectedNumbers];
-  };
+  }
 
   ngOnInit() {
     this.initColumns();
@@ -307,7 +307,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
         this._selectedNumbers = [...this._originalSelectedNumbers];
       }
       this.modalSub.unsubscribe();
-    })
+    });
   }
 
   closeOkModal() {
@@ -327,7 +327,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       this._selectedNumbers = [
         ...this._selectedNumbers.slice(0, idx),
         ...this._selectedNumbers.slice(idx + 1)
-      ]
+      ];
     }
   }
 
@@ -354,7 +354,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       this._selected = [
         ...this._selected.slice(0, idx),
         ...this._selected.slice(idx + 1)
-      ]
+      ];
     }
   }
 
@@ -365,7 +365,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   setPage(pageInfo) {
-    this.fetchPage(pageInfo.offset + 1)
+    this.fetchPage(pageInfo.offset + 1);
   }
 
   onSort(event) {
@@ -438,6 +438,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   private setLangParams(value: string) {
     return (value || '')
-      .replace(/%longLang%/g, this.langMap[this.lang] || 'Finnish')
+      .replace(/%longLang%/g, this.langMap[this.lang] || 'Finnish');
   }
 }

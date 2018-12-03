@@ -13,7 +13,7 @@ export class DialogService {
 
   confirm(messsage: string, onServer = false): Observable<boolean> {
     if (!isPlatformBrowser(this.platformID)) {
-      return ObservableOf(onServer)
+      return ObservableOf(onServer);
     }
     return Observable.create((observer: Observer<boolean>) => {
       observer.next(this.window.confirm(messsage));

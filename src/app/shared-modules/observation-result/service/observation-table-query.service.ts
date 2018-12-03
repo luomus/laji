@@ -51,7 +51,7 @@ export class ObservationTableQueryService {
         ) {
           query.biogeographicalProvinceId = data.gathering.interpretations.biogeographicalProvince;
         }
-      } catch (e) {console.log(e)}
+      } catch (e) {console.log(e); }
     });
     return query;
   }

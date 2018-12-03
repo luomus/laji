@@ -18,7 +18,7 @@ export class UserComponent implements OnInit {
       user => {
         this.router.navigate(
           this.localizeRouterService.translateRoute((!user || !user.id) ? ['/'] : ['/user', user.id])
-        )
+        );
       }
     );
   }

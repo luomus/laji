@@ -4,10 +4,10 @@
       <ol class="breadcrumb">
         <li *ngFor="let parent of information.parents">
           <a [routerLink]="['/about/' + parent.id] | localize">
-            {{parent.menuTitle}}
+            {{ parent.menuTitle }}
           </a>
         </li>
-        <li class="active">{{information.title}}</li>
+        <li class="active">{{ information.title }}</li>
       </ol>
       <div class="about" [innerHtml]="information.content"></div>
     </div>
@@ -15,12 +15,12 @@
       <div class="media">
         <div class="media-body">
           <h4 class="media-heading">
-            {{'information.more' | translate }}
+            {{ 'information.more' | translate }}
           </h4>
           <ul>
             <li *ngFor="let child of information.children">
               <a [routerLink]="['/about/' + child.id] | localize">
-                {{child.menuTitle}}
+                {{ child.menuTitle }}
               </a>
             </li>
           </ul>

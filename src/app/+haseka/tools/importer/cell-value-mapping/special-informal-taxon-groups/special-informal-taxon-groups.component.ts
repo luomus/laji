@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormField, VALUE_IGNORE } from '../../../model/form-field';
 import { MappingService } from '../../../service/mapping.service';
@@ -28,13 +30,13 @@ export class SpecialInformalTaxonGroupsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.currentLang)
-      .map(results => results.results)
+    this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.currentLang).pipe(
+      map(results => results.results))
       .subscribe(groups => {
         const list = Array.isArray(groups) ?  MappingService.informalTaxonGroupsToList(groups) : [];
         this.informalTaxonGroups = [VALUE_IGNORE, ...list];
         this.cdr.markForCheck();
-      })
+      });
   }
 
   valueMapped(value, to) {

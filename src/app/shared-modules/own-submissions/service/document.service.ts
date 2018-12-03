@@ -93,7 +93,7 @@ export class DocumentService {
         if (typeof to[key] === 'undefined') {
           to[key] = from[key];
         }
-      })
+      });
     }
     return to;
   }

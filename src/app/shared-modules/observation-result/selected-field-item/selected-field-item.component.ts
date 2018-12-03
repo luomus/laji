@@ -21,12 +21,12 @@ export class SelectedFieldItemComponent {
 
   moveFieldDown(field, event) {
     event.stopPropagation();
-    this.moveDown.emit(field)
+    this.moveDown.emit(field);
   }
 
   moveFieldUp(field, event) {
     event.stopPropagation();
-    this.moveUp.emit(field)
+    this.moveUp.emit(field);
   }
 
 }

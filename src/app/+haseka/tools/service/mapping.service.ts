@@ -66,7 +66,7 @@ export class MappingService {
   };
 
   static namedPlacesToList(namedPlaces: NamedPlace[]) {
-    return namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)
+    return namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`);
   }
 
   static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result = [], parent = ''): string[] {
@@ -157,7 +157,7 @@ export class MappingService {
 
   colMap(value: string) {
     if (!this.colMapping) {
-      throw new ErrorEvent('Column map is not initialized!')
+      throw new ErrorEvent('Column map is not initialized!');
     }
     value = ('' + value).toLowerCase();
     return this.colMapping[value] || this.userColMappings[value] || null;
@@ -172,7 +172,7 @@ export class MappingService {
     return {
       col: this.userColMappings,
       value: this.userValueMappings
-    }
+    };
   }
 
   setUserMapping(mapping: {col: any, value: any}) {
@@ -185,7 +185,7 @@ export class MappingService {
   }
 
   hasUserMapping() {
-    return Object.keys(this.userColMappings).length > 0 || Object.keys(this.userValueMappings).length > 0
+    return Object.keys(this.userColMappings).length > 0 || Object.keys(this.userValueMappings).length > 0;
   }
 
   getSpecial(field: FormField): SpecialTypes|null {
@@ -388,7 +388,7 @@ export class MappingService {
         return {
           type: 'Point',
           coordinates: [+wgsParts[1], +wgsParts[0]]
-        }
+        };
       }
       try {
         const data: any = convertAnyToWGS84GeoJSON(value);

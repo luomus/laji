@@ -93,7 +93,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
     this.getAverageCounts().subscribe(counts => {
       this.averageCounts = counts;
       this.updateSpeciesList();
-    })
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -141,7 +141,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
           }
           return countBySpecies;
         })
-      )
+      );
   }
 
   private updateSpeciesList() {
@@ -170,7 +170,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
         this.setRows();
         this.loading = false;
         this.cd.markForCheck();
-      })
+      });
   }
 
   private addAdditionalStatistics(list: any[]) {
@@ -205,7 +205,7 @@ export class WbcSpeciesListComponent implements OnInit, OnChanges {
 
           return list;
         })
-      )
+      );
   }
 
   getComparisonCellClass(data: any) {

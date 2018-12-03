@@ -1,7 +1,7 @@
 import { TreeNode, TreeNodeState } from '../model/tree-node.interface';
 import { Observable } from 'rxjs';
 
-interface TreeStateInterface {[key: string]: TreeNodeState}
+interface TreeStateInterface {[key: string]: TreeNodeState; }
 
 export class TreeState {
   state: TreeStateInterface = {};

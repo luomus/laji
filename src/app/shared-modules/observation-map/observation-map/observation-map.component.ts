@@ -1,3 +1,5 @@
+
+import {concat, take, retryWhen, delay, timeout, switchMap, tap, map} from 'rxjs/operators';
 import { of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
 import {
   ChangeDetectionStrategy,
@@ -53,17 +55,17 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       tileLayerName: world
         ? LajiMapTileLayerName.openStreetMap
         : LajiMapTileLayerName.taustakartta
-    }
+    };
   }
   @Input() lastPage = 0; // 0 = no page limit
   @Input() set draw(draw: any) {
-    this._mapOptions = {...this._mapOptions, draw}
+    this._mapOptions = {...this._mapOptions, draw};
   }
   @Input() set center(center: [number, number]) {
-    this._mapOptions = {...this._mapOptions, center}
+    this._mapOptions = {...this._mapOptions, center};
   }
   @Input() set showControls(show: boolean) {
-    this._mapOptions = {...this._mapOptions, controls: show ? { draw: false } : false}
+    this._mapOptions = {...this._mapOptions, controls: show ? { draw: false } : false};
   }
   @Input() height;
   @Input() selectColor = '#00aa00';
@@ -325,13 +327,13 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
 
   private addToMap(query: WarehouseQueryInterface, page = 1) {
     if (this.limitResults && !query.coordinates) {
-      query = {...query, coordinates: ['51.692882:72.887912:-6.610917:60.892721:WGS84']}
+      query = {...query, coordinates: ['51.692882:72.887912:-6.610917:60.892721:WGS84']};
     }
     const items$ = this.warehouseService.warehouseQueryListGet(query, [
       'gathering.conversions.wgs84CenterPoint.lon',
       'gathering.conversions.wgs84CenterPoint.lat',
       ...this.itemFields
-    ], undefined, this.showItemsWhenLessThan).map(data => {
+    ], undefined, this.showItemsWhenLessThan).pipe(map(data => {
       const features = [];
       if (data.results) {
         data.results.map(row => {
@@ -370,15 +372,15 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
           maxClusterRadius: 20
         }
       };
-    }).do(() => {
+    })).pipe(tap(() => {
       if (this.activeLevel < this.onlyViewPortThreshold) {
         this.showingItems = true;
       }
-    });
+    }));
 
     const count$ = this.warehouseService
-      .warehouseQueryCountGet(query)
-      .switchMap(cnt => {
+      .warehouseQueryCountGet(query).pipe(
+      switchMap(cnt => {
         if (cnt.total < this.showItemsWhenLessThan) {
           return items$;
         } else {
@@ -387,17 +389,17 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
             undefined, this.size, page, true
           ));
         }
-      });
-    this.subDataFetch = ObservableOf(this.showItemsWhenLessThan)
-      .switchMap((less) => {
+      }));
+    this.subDataFetch = ObservableOf(this.showItemsWhenLessThan).pipe(
+      switchMap((less) => {
         return less > 0 ? count$ : this.warehouseService.warehouseQueryAggregateGet(
           this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
           undefined, this.size, page, true
         );
-      })
-      .timeout(WarehouseApi.longTimeout * 3)
-      .delay(100)
-      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
+      })).pipe(
+      timeout(WarehouseApi.longTimeout * 3),
+      delay(100),
+      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), )), )
       .subscribe((data: any) => {
           this.clearDrawData();
           if (data.featureCollection) {
@@ -434,8 +436,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
 
   /**
    * This cannot be used at the moment since addData method in the map is working like set data
-   * @param query
-   * @param page
    */
   private addData(query: WarehouseQueryInterface, page) {
     this.warehouseService.warehouseQueryAggregateGet(

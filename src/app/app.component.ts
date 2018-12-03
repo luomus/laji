@@ -11,6 +11,8 @@ import { filter, map, switchMap } from 'rxjs/operators';
 import { RoutingStateService } from './shared/service/routing-state.service';
 import { Global } from '../environments/global';
 
+
+
 declare const ga: Function;
 
 const MAIN_TITLE = 'home.main-page.title';
@@ -73,11 +75,11 @@ export class AppComponent {
         }
 
         // Set page title
-        this.getDeepestTitle(router.routerState.snapshot.root)
-          .map(titles => [...titles, MAIN_TITLE])
-          .map(titles => Array.from(new Set<string>(titles)))
-          .switchMap(titles => translateService.get(titles))
-          .subscribe(pageTitle => {
+        this.getDeepestTitle(router.routerState.snapshot.root).pipe(
+          map(titles => [...titles, MAIN_TITLE]),
+          map(titles => Array.from(new Set<string>(titles))),
+          switchMap(titles => translateService.get(titles))
+        ).subscribe(pageTitle => {
             title.setTitle(Object.keys(pageTitle).map(key => pageTitle[key]).join(' | '));
           });
 
@@ -130,8 +132,9 @@ export class AppComponent {
       title.push(routeSnapshot.data['title'] || '');
     }
     if (routeSnapshot.firstChild) {
-      return this.getDeepestTitle(routeSnapshot.firstChild)
-        .map(label => [...label, ...title]);
+      return this.getDeepestTitle(routeSnapshot.firstChild).pipe(
+        map(label => [...label, ...title])
+      );
     }
     return ObservableOf(title);
   }

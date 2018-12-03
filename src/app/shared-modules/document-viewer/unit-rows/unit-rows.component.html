@@ -20,9 +20,9 @@
 </ng-container>
 <ng-container *ngIf="unit.quality && unit.quality.taxon && unit.quality.taxon.reliability && (showFacts || unit.quality.taxon.reliability !== 'NEUTRAL')">
   <laji-row [title]="'result.unit.quality.taxon'|translate">
-    {{unit.quality.taxon.reliability | label: 'warehouse'}}
+    {{ unit.quality.taxon.reliability | label: 'warehouse' }}
     <span *ngIf="unit.quality.taxon.source">
-          ({{unit.quality.taxon.source | label: 'warehouse'}})
+          ({{ unit.quality.taxon.source | label: 'warehouse' }})
         </span>
   </laji-row>
 </ng-container>

@@ -2,25 +2,25 @@
   <div class="form-group">
     <div>
       <label for="speciesOrder">
-        {{'species.order' | translate}}:
+        {{ 'species.order' | translate }}:
       </label>
       <select id="speciesOrder" class="form-control" style="width: auto" [ngModel]="searchQuery.listOptions.sortOrder" (ngModelChange)="sortOrderChanged($event)">
         <option [value]="'taxonomic'">
-          {{'species.order.taxonomicOrder' | translate}}
+          {{ 'species.order.taxonomicOrder' | translate }}
         </option>
         <option [value]="'scientific_name'">
-          {{'species.order.scientificName' | translate}}
+          {{ 'species.order.scientificName' | translate }}
         </option>
         <option [value]="'finnish_name'">
-          {{'species.order.finnishName' | translate}}
+          {{ 'species.order.finnishName' | translate }}
         </option>
       </select>
     </div>
     <div class="counts">
       <strong>
-        {{'species.list.count1' | translate}}
+        {{ 'species.list.count1' | translate }}
         <laji-species-count [searchQuery]="searchQuery"></laji-species-count>
-        {{'species.list.count2' | translate}}
+        {{ 'species.list.count2' | translate }}
       </strong>
     </div>
   </div>
@@ -49,7 +49,7 @@
 
 <laji-species-download #speciesDownload
                        [downloadLoading]="downloadLoading"
-                       (onDownload)="download($event)">
+                       (download)="download($event)">
 </laji-species-download>
 <laji-species-browse-observations [searchQuery]="searchQuery"></laji-species-browse-observations>
 

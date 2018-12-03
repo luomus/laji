@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CollectionService } from '../service/collection.service';
@@ -21,8 +23,8 @@ export class CollectionNamePipe extends AbstractLabelPipe implements PipeTransfo
     this.key = key;
     return Observable.create(observer => {
       this.collectionService
-        .getName(key, this.translate.currentLang)
-        .map(col => (col[0] || {value: ''}).value)
+        .getName(key, this.translate.currentLang).pipe(
+        map(col => (col[0] || {value: ''}).value));
     });
   }
 

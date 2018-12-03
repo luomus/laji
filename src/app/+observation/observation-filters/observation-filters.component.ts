@@ -30,17 +30,17 @@ export class ObservationFiltersComponent implements OnInit {
         this.queryChange.emit({...this.query, superRecordBasis: [
           ...allBasis.slice(0, idx),
           ...allBasis.slice(idx + 1)
-        ]})
+        ]});
       } else {
         allBasis.push(recordBasis);
-        this.queryChange.emit({...this.query, superRecordBasis: allBasis})
+        this.queryChange.emit({...this.query, superRecordBasis: allBasis});
       }
     }
 
   }
 
   onMediaSelect(event) {
-    this.queryChange.emit({...this.query, hasUnitMedia: (this.query.hasUnitMedia ? undefined : true)})
+    this.queryChange.emit({...this.query, hasUnitMedia: (this.query.hasUnitMedia ? undefined : true)});
   }
 
   onCollectionSelect(event) {
@@ -52,10 +52,10 @@ export class ObservationFiltersComponent implements OnInit {
         this.queryChange.emit({...this.query, collectionId: [
           ...collections.slice(0, idx),
           ...collections.slice(idx + 1)
-        ]})
+        ]});
       } else {
         collections.push(collectionID);
-        this.queryChange.emit({...this.query, collectionId: collections})
+        this.queryChange.emit({...this.query, collectionId: collections});
       }
     }
   }

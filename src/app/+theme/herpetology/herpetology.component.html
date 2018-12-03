@@ -1,6 +1,6 @@
 <div id="all-content">
 
-  <h2 class="herpetology-title">{{'herpetology.title' | translate}}</h2>
+  <h2 class="herpetology-title">{{ 'herpetology.title' | translate }}</h2>
 
   <div class="herpetology-content">
 
@@ -14,19 +14,18 @@
       </div>
     </div>
     <div class="page-content">
-      <p>{{'herpetology.intro' | translate}} </p>
-      <h2>{{'herpetology.observate' | translate}}</h2>
-      <p>{{'herpetology.observation' | translate}}</p>
+      <p>{{ 'herpetology.intro' | translate }} </p>
+      <h2>{{ 'herpetology.observate' | translate }}</h2>
+      <p>{{ 'herpetology.observation' | translate }}</p>
     </div>
 
 
     <div class="button">
       <a class="btn herbButton btn-primary center-block"
-         [href]="'http://loydos.luomus.fi/forms/sammakot-ja-matelijat?language=' + lang" role="button">{{
-        'herpetology.form' | translate }}</a>
+         [href]="'http://loydos.luomus.fi/forms/sammakot-ja-matelijat?language=' + lang" role="button">{{ 'herpetology.form' | translate }}</a>
     </div>
 
-    <h2>{{'herpetology.search' | translate}}</h2>
+    <h2>{{ 'herpetology.search' | translate }}</h2>
 
     <div class="button">
       <a class="btn herbButton btn-primary center-block" [routerLink]="'/observation/map' | localize"
@@ -34,16 +33,16 @@
         translate }}</a>
     </div>
 
-    <h2>{{'herpetology.amphibians' | translate}}</h2>
+    <h2>{{ 'herpetology.amphibians' | translate }}</h2>
 
     <div class="row">
       <div *ngFor="let taxon of amphibianTaxa" class="taxonCard">
         <a [routerLink]="['/taxon', taxon.taxon.id] | localize">
           <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
           <h4>
-            {{taxon.taxon.vernacularName | multiLang}}
+            {{ taxon.taxon.vernacularName | multiLang }}
             <span *ngIf="lang === 'fi'">
-          <br> {{taxon.taxon.alternativeVernacularName | multiLang}}
+          <br> {{ taxon.taxon.alternativeVernacularName | multiLang }}
         </span>
           </h4>
         </a>
@@ -51,39 +50,39 @@
     </div>
 
 
-    <h2>{{'herpetology.reptiles' | translate}}</h2>
+    <h2>{{ 'herpetology.reptiles' | translate }}</h2>
     <div class="row">
       <div *ngFor="let taxon of reptileTaxa" class="taxonCard">
         <a [routerLink]="['/taxon', taxon.taxon.id] | localize">
           <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
           <h4>
-            {{taxon.taxon.vernacularName | multiLang}}
+            {{ taxon.taxon.vernacularName | multiLang }}
             <span *ngIf="lang === 'fi'">
-              <br> {{taxon.taxon.alternativeVernacularName | multiLang}}
+              <br> {{ taxon.taxon.alternativeVernacularName | multiLang }}
             </span>
           </h4>
         </a>
       </div>
     </div>
 
-    <h2>{{'herpetology.occasionalSpecies' | translate}}</h2>
+    <h2>{{ 'herpetology.occasionalSpecies' | translate }}</h2>
     <div class="row align-items-start">
       <div *ngFor="let taxon of occasionalTaxa" class="taxonCard">
         <a [routerLink]="['/taxon', taxon.taxon.id] | localize">
           <img class="taxon-img" *ngIf="taxon.images.thumbnailURL" src="{{taxon.images.thumbnailURL}}">
           <h4>
-            {{taxon.taxon.vernacularName | multiLang}}
+            {{ taxon.taxon.vernacularName | multiLang }}
             <span *ngIf="lang === 'fi'">
-              <br> {{taxon.taxon.alternativeVernacularName | multiLang}}
+              <br> {{ taxon.taxon.alternativeVernacularName | multiLang }}
             </span>
           </h4>
         </a>
       </div>
     </div>
 
-    <h2>{{'herpetology.background' | translate}}</h2>
+    <h2>{{ 'herpetology.background' | translate }}</h2>
 
-    <p>{{'herpetology.backgroundText' | translate}}</p>
+    <p>{{ 'herpetology.backgroundText' | translate }}</p>
 
     <div class="partners-footer">
       <div class="container-fluid">
@@ -108,7 +107,7 @@
       </div>
     </div>
   </div>
-  <div id="header-author">{{'herpetology.cover' | translate}}</div>
+  <div id="header-author">{{ 'herpetology.cover' | translate }}</div>
 </div>
 
 
