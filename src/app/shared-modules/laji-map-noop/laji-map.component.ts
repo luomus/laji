@@ -17,10 +17,10 @@ export class LajiMapComponent {
   @Input() tileLayerOpacity: number;
   @Output() select = new EventEmitter();
 
-  @Output() onCreate = new EventEmitter();
-  @Output() onMove = new EventEmitter();
-  @Output() onFailure =  new EventEmitter();
-  @Output() onTileLayerChange =  new EventEmitter();
+  @Output() create = new EventEmitter();
+  @Output() move = new EventEmitter();
+  @Output() failure =  new EventEmitter();
+  @Output() tileLayerChange =  new EventEmitter();
 
   map: any;
 

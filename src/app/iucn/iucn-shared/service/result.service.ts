@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 
 export interface FilterQuery {
-  redListGroup?: string,
-  habitat?: string,
-  threads?: string,
-  reasons?: string,
-  status?: string[]
+  redListGroup?: string;
+  habitat?: string;
+  threads?: string;
+  reasons?: string;
+  status?: string[];
 }
 
 @Injectable({

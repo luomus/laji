@@ -3,12 +3,12 @@
     <div class="row flex-column flex-row">
       <div class="col-sm-9 col-md-9 col-lg-10" id="content-container">
         <div>
-          <h1>{{'haseka.title' | translate}}</h1>
+          <h1>{{ 'haseka.title' | translate }}</h1>
           <ng-container *lajiBrowserOnly>
             <div class="row" *lajiLoggedIn="false">
               <div class="col-sm-8">
                 <alert [type]="'warning'">
-                  {{'haseka.pleaseLogin' | translate}}
+                  {{ 'haseka.pleaseLogin' | translate }}
                 </alert>
               </div>
             </div>
@@ -22,23 +22,23 @@
               <div [innerHtml]="'haseka.intro2' | translate"></div>
             </alert>
           </ng-container>
-          <a [routerLink]="'/about/2336' | localize" target="_blank">{{'haseka.instructions' | translate}}</a> |
-          <a [routerLink]="'/vihko/terms-of-service' | localize" target="_blank">{{'haseka.termsOfService' | translate}}</a>
+          <a [routerLink]="'/about/2336' | localize" target="_blank">{{ 'haseka.instructions' | translate }}</a> |
+          <a [routerLink]="'/vihko/terms-of-service' | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
           <router-outlet></router-outlet>
         </div>
       </div>
       <div class="col-sm-3 col-md-3 col-lg-2 more-info flex-column">
         <ul class="sidebar-nav">
-          <li><a class="link" [routerLink]="['/vihko', 'forms'] | localize">{{'haseka.forms.title' | translate}}</a></li>
-          <li><a class="link" [routerLink]="['/vihko', 'ownSubmissions'] | localize">{{'haseka.ownSubmissions.title' | translate}}</a></li>
-          <li><a class="link" [routerLink]="['/vihko', 'templates'] | localize">{{'haseka.templates.title' | translate}}</a></li>
-          <li><a class="link" [routerLink]="['/vihko', 'statistics'] | localize">{{'haseka.statistics.title' | translate}}</a></li>
-          <li><a class="link" [routerLink]="['/vihko', 'tools'] | localize">{{'haseka.tools' | translate}}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'forms'] | localize">{{ 'haseka.forms.title' | translate }}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'ownSubmissions'] | localize">{{ 'haseka.ownSubmissions.title' | translate }}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'templates'] | localize">{{ 'haseka.templates.title' | translate }}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'statistics'] | localize">{{ 'haseka.statistics.title' | translate }}</a></li>
+          <li><a class="link" [routerLink]="['/vihko', 'tools'] | localize">{{ 'haseka.tools' | translate }}</a></li>
         </ul>
 
         <laji-haseka-latest [userToken]="userService.getToken()"
                             *ngIf="userService.isLoggedIn$ | async"
-                            (onShowViewer)="showDocumentViewer($event)"></laji-haseka-latest>
+                            (showViewer)="showDocumentViewer($event)"></laji-haseka-latest>
       </div>
     </div>
   </div>

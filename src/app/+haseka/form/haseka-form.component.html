@@ -1,16 +1,16 @@
 <div class="container-fluid">
     <div class="container"  *lajiLoggedIn="false">
-      <h1>{{'haseka.title' | translate}}</h1>
-      <p>{{'haseka.pleaseLogin' | translate}}</p>
+      <h1>{{ 'haseka.title' | translate }}</h1>
+      <p>{{ 'haseka.pleaseLogin' | translate }}</p>
     </div>
     <div *lajiLoggedIn>
       <laji-document-form
-        (onSuccess)="onSuccess($event)"
-        (onTmpLoad)="onTmlLoad($event)"
-        (onAccessDenied)="onAccessDenied($event)"
-        (onMissingNamedplace)="onMissingNamedplace($event)"
-        (onError)="onError()"
-        (onCancel)="onCancel()"
+        (success)="onSuccess($event)"
+        (tmpLoad)="onTmlLoad($event)"
+        (accessDenied)="onAccessDenied($event)"
+        (missingNamedplace)="onMissingNamedplace($event)"
+        (error)="onError()"
+        (cancel)="onCancel()"
         [formId]="formId"
         [documentId]="documentId"></laji-document-form>
     </div>

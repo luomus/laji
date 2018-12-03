@@ -1,22 +1,22 @@
 <laji-theme-page [showNav]="router.url.indexOf('form') === -1">
   <nav>
     <ul>
-      <li><a [routerLink]="['../talvilintulaskenta', 'instructions']">{{'instructions' | translate}}</a></li>
+      <li><a [routerLink]="['../talvilintulaskenta', 'instructions']">{{ 'instructions' | translate }}</a></li>
       <li>
-        <a [routerLink]="['../talvilintulaskenta', 'stats']">{{'nafi.stats' | translate}}</a>
+        <a [routerLink]="['../talvilintulaskenta', 'stats']">{{ 'nafi.stats' | translate }}</a>
         <ul *ngIf="showStatsLinks" class="nested">
-          <li><a [routerLink]="['../talvilintulaskenta/stats', 'species']">{{'wbc.stats.species' | translate}}</a></li>
-          <li><a [routerLink]="['../talvilintulaskenta/stats', 'routes']">{{'wbc.stats.routes' | translate}}</a></li>
-          <li><a [routerLink]="['../talvilintulaskenta/stats', 'censuses']">{{'wbc.stats.censuses' | translate}}</a></li>
+          <li><a [routerLink]="['../talvilintulaskenta/stats', 'species']">{{ 'wbc.stats.species' | translate }}</a></li>
+          <li><a [routerLink]="['../talvilintulaskenta/stats', 'routes']">{{ 'wbc.stats.routes' | translate }}</a></li>
+          <li><a [routerLink]="['../talvilintulaskenta/stats', 'censuses']">{{ 'wbc.stats.censuses' | translate }}</a></li>
         </ul>
       </li>
-      <li><a [routerLink]="['../talvilintulaskenta', 'form']">{{'nafi.form' | translate}}</a></li>
+      <li><a [routerLink]="['../talvilintulaskenta', 'form']">{{ 'nafi.form' | translate }}</a></li>
       <ng-container *ngIf="(rights | async)?.admin; else normalUsers">
-        <li><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{'theme.admin.submissions' | translate}}</a></li>
-        <li><a [routerLink]="['/vihko/fp/' + collectionID + '/admin']">{{'form.administer' | translate}}</a></li>
+        <li><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{ 'theme.admin.submissions' | translate }}</a></li>
+        <li><a [routerLink]="['/vihko/fp/' + collectionID + '/admin']">{{ 'form.administer' | translate }}</a></li>
       </ng-container>
       <ng-template #normalUsers>
-        <li><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{'haseka.ownSubmissions.title' | translate}}</a></li>
+        <li><a [routerLink]="['../talvilintulaskenta', 'ownSubmissions']">{{ 'haseka.ownSubmissions.title' | translate }}</a></li>
       </ng-template>
     </ul>
     <laji-haseka-latest [userToken]="userService.getToken()"

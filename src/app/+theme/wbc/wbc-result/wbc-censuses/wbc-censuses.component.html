@@ -1,4 +1,4 @@
-<h3>{{'wbc.stats.censuses' | translate}}</h3>
+<h3>{{ 'wbc.stats.censuses' | translate }}</h3>
 
 <laji-wbc-result-filters (yearChange)="activeYear = $event; onFilterChange()"
                          (seasonChange)="activeSeason = $event; onFilterChange()"
@@ -9,10 +9,10 @@
 <div id="navbar">
   <ul class="nav nav-tabs nav-justified">
     <li role="presentation" [ngClass]="{active: active === 'list'}">
-      <a (click)="setActive('list')">{{'np.list' | translate}}</a>
+      <a (click)="setActive('list')">{{ 'np.list' | translate }}</a>
     </li>
     <li role="presentation" [ngClass]="{active: active === 'map'}">
-      <a (click)="setActive('map')">{{'np.map' | translate}}</a>
+      <a (click)="setActive('map')">{{ 'np.map' | translate }}</a>
     </li>
   </ul>
 </div>
@@ -25,7 +25,7 @@
   [showNameAsLink]="false"
   [loading]="loading"
   [countLabel]="'wbc.stats.route.count'"
-  (onRowSelect)="openViewer($event['document.documentId'])"
+  (rowSelect)="openViewer($event['document.documentId'])"
 ></laji-wbc-routes-list>
 <laji-wbc-routes-map
   *ngIf="active === 'map'"
@@ -33,7 +33,7 @@
   [showNameAsLink]="false"
   [loading]="loading"
   [countLabel]="'wbc.stats.censusCount'"
-  (onRowSelect)="openViewer($event['document.documentId'])"
+  (rowSelect)="openViewer($event['document.documentId'])"
 ></laji-wbc-routes-map>
 
 <div class="modal fade" bsModal #documentModal="bs-modal"

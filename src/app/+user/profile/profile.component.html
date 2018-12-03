@@ -1,12 +1,12 @@
 <div class="container container-relative">
-  <h1>{{'navigation.user.profile' | translate}}</h1>
+  <h1>{{ 'navigation.user.profile' | translate }}</h1>
   <laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
     <div class="row" *ngIf="!profile.profileKey">
-      {{'profile.missing'|translate}}
+      {{ 'profile.missing'|translate }}
     </div>
     <div class="row" *ngIf="profile.profileKey || isCurrentUser">
       <div class="col-md-8 col-xs-12">
-        <h3>{{profile.userID | users}}</h3>
+        <h3>{{ profile.userID | users }}</h3>
         <div class="profile-image">
           <img *ngIf="profile.image" [src]="profile.image" alt="profile image" class="img-rounded">
         </div>
@@ -15,19 +15,19 @@
              (click)="toggleEditing()"><i class="glyphicon glyphicon-cog"></i>
         </div>
         <div *ngIf="!editing">
-          <p>{{profile.profileDescription}}</p>
+          <p>{{ profile.profileDescription }}</p>
         </div>
         <div *ngIf="editing" class="profile-edit">
           <div class="profile-edit-row">
-            {{'profile.image' | translate}}
+            {{ 'profile.image' | translate }}
             <input class="form-control" placeholder="{{'profile.imagePlaceholder' | translate}}" [(ngModel)]="profile.image">
           </div>
           <div class="profile-edit-row">
-            {{'profile.description' | translate}}
+            {{ 'profile.description' | translate }}
             <textarea class="form-control" [(ngModel)]="profile.profileDescription"></textarea>
           </div>
           <div class="profile-edit-row">
-            <div class="btn btn-default" (click)="saveProfile()">{{'profile.save' | translate}}</div>
+            <div class="btn btn-default" (click)="saveProfile()">{{ 'profile.save' | translate }}</div>
           </div>
         </div>
       </div>
@@ -40,9 +40,9 @@
         </div>
         <div class="form-group" *ngIf="(getCurrentUser() | async).id === userId">
           <div class="col-sm-12 well">
-            <p>{{'selfUrl.introStart' | translate}}</p>
-            <a [href]="personSelfUrl | safe:'url'" class="btn btn-success self-link">{{'profile.accountSettings'|translate}}</a>
-            <p>{{'selfUrl.introEnd' | translate}}</p>
+            <p>{{ 'selfUrl.introStart' | translate }}</p>
+            <a [href]="personSelfUrl | safe:'url'" class="btn btn-success self-link">{{ 'profile.accountSettings'|translate }}</a>
+            <p>{{ 'selfUrl.introEnd' | translate }}</p>
           </div>
         </div>
       </div>

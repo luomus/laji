@@ -1,14 +1,14 @@
 <laji-search-filters [searchQuery]="searchQuery"
                      [showFilter]="showFilter"
-                     (onShowFilterChange)="showFilterChange($event)">
+                     (showFilterChange)="onShowFilterChange($event)">
   <div class="taxon-panel">
     <div class="form-group" [hidden]="searchQuery.skippedQueryParams.indexOf('target') > -1">
       <label class="col-sm-12">
-        {{'species.form.specimen' | translate}}:
+        {{ 'species.form.specimen' | translate }}:
       </label>
       <div class="col-sm-12">
         <laji-taxon-select
-          (onSelect)="onTaxonSelect($event)"
+          (select)="onTaxonSelect($event)"
           [taxonId]="formQuery.taxon"
           [searchParams]="taxonSelectFilters">
         </laji-taxon-select>

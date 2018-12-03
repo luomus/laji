@@ -1,12 +1,12 @@
-<h3>{{'wbc.stats.routes' | translate}}</h3>
+<h3>{{ 'wbc.stats.routes' | translate }}</h3>
 
 <div id="navbar">
   <ul class="nav nav-tabs nav-justified">
     <li role="presentation" [ngClass]="{active: active === 'list'}">
-      <a (click)="setActive('list')">{{'np.list' | translate}}</a>
+      <a (click)="setActive('list')">{{ 'np.list' | translate }}</a>
     </li>
     <li role="presentation" [ngClass]="{active: active === 'map'}">
-      <a (click)="setActive('map')">{{'np.map' | translate}}</a>
+      <a (click)="setActive('map')">{{ 'np.map' | translate }}</a>
     </li>
   </ul>
 </div>
@@ -17,12 +17,12 @@
   [loading]="!data"
   [selected]="selected"
   [sorts]="sorts"
-  (onRowSelect)="rowSelect($event)"
+  (rowSelect)="rowSelect($event)"
 ></laji-wbc-routes-list>
 
 <laji-wbc-routes-map
   *ngIf="active === 'map'"
   [data]="data"
   [loading]="!data"
-  (onRowSelect)="rowSelect($event)"
+  (rowSelect)="rowSelect($event)"
 ></laji-wbc-routes-map>

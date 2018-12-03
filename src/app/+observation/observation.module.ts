@@ -23,7 +23,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ObservationFormComponent } from './form/observation-form.component';
 import { SeasonComponent } from './form/season/season.component';
 import { ResetComponent } from './reset/reset.component';
-import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { TeamComponent } from './form/team/team.component';
 import { MemberIdPillListComponent } from './form/team/member-id-pill-list/member-id-pill-list.component';
 import { RemoveLeadingPipe } from './pipe/remove-leading.pipe';
@@ -42,7 +42,7 @@ import { ExistsPipe } from './pipe/exists.pipe';
     ObservationMapModule,
     InfoModule,
     NgxChartsModule,
-    JWBootstrapSwitchModule
+    JwBootstrapSwitchNg2Module
   ],
   declarations: [ObservationComponent, ObservationChartComponent,
     ObservationViewComponent,

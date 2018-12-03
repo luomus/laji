@@ -1,3 +1,4 @@
+/* tslint:disable:max-classes-per-file */
 import { Injectable } from '@angular/core';
 import { Information } from '../model/Information';
 import { Store } from '../../store/store';
@@ -17,7 +18,7 @@ export class GlobalStore extends Store<GlobalState> {
     this.setState({
       ...this.state,
       currentLang: lang
-    })
+    });
   }
 
   setInformationIndex(index: Information[]) {

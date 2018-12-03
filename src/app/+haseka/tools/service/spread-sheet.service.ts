@@ -70,7 +70,7 @@ export class SpreadSheetService {
       })
       )
     )
-      .subscribe(translations => this.translations = translations)
+      .subscribe(translations => this.translations = translations);
 
   }
 
@@ -123,7 +123,7 @@ export class SpreadSheetService {
     return [
       <any>XLSX.utils.sheet_to_json<{[key: string]: string}>(sheet, {header: 'A'}),
       sheet
-    ]
+    ];
   }
 
   setDateFormat(sheet: XLSX.WorkSheet, hasWorkbook) {
@@ -228,7 +228,7 @@ export class SpreadSheetService {
               key,
               label,
               form.required || []
-            )
+            );
           });
           if (!found) {
             if (this.hiddenFields.indexOf(root) > -1) {
@@ -322,7 +322,7 @@ export class SpreadSheetService {
         if (Array.isArray(groups[key].additionalFields)) {
           groups[key].additionalFields.forEach(field => {
             subGroups[field] = key;
-          })
+          });
         }
       });
     }

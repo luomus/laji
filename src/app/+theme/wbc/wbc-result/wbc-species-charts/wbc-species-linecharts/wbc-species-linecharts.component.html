@@ -2,7 +2,7 @@
   <ng-container *ngIf="counts">
     <div class="row" *ngFor="let season of ['fall', 'winter', 'spring']">
       <div class="col-sm-12" *ngIf="lines[season] && lines[season].length > 0">
-        <h5 style="margin: auto">{{lines[season][0].name | translate}}</h5>
+        <h5 style="margin: auto">{{ lines[season][0].name | translate }}</h5>
         <div class="chart-container" *ngIf="lines[season][0].series.length > 0">
           <laji-line-chart-with-points [results]="lines[season]"
                                        [scheme]="colorScheme"
@@ -23,21 +23,21 @@
               <div class="area-tooltip-container">
                 <div *ngFor="let tooltipItem of model" class="tooltip-item">
                   <span class="tooltip-item-color" [style.background-color]="tooltipItem.color"></span>
-                  {{tooltipItem.series | translate}}: {{tooltipItem.value.toLocaleString()}}
+                  {{ tooltipItem.series | translate }}: {{ tooltipItem.value.toLocaleString() }}
                 </div>
               </div>
             </ng-template>
             <ng-template #tooltipTemplate let-model="model">
-              <span class="tooltip-label">{{model.series | translate}} • {{model.name + '/' + (model.name + 1)}}</span>
+              <span class="tooltip-label">{{ model.series | translate }} • {{ model.name + '/' + (model.name + 1) }}</span>
               <span class="tooltip-label">
-                <span class="tooltip-item">{{'wbc.stats.individualCountSum' | translate}}: {{counts[season][model.name].count}}</span><br/>
-                <span class="tooltip-item">{{'wbc.stats.censusCount' | translate}}: {{counts[season][model.name].censusCount}}</span>
+                <span class="tooltip-item">{{ 'wbc.stats.individualCountSum' | translate }}: {{ counts[season][model.name].count }}</span><br/>
+                <span class="tooltip-item">{{ 'wbc.stats.censusCount' | translate }}: {{ counts[season][model.name].censusCount }}</span>
               </span>
-              <span class="tooltip-val">{{model.value.toLocaleString()}}</span>
+              <span class="tooltip-val">{{ model.value.toLocaleString() }}</span>
             </ng-template>
           </laji-line-chart-with-points>
         </div>
-        <div *ngIf="lines[season][0].series.length === 0" style="margin-bottom: 20px">{{'wbc.stats.noHits' | translate}}</div>
+        <div *ngIf="lines[season][0].series.length === 0" style="margin-bottom: 20px">{{ 'wbc.stats.noHits' | translate }}</div>
       </div>
     </div>
   </ng-container>

@@ -18,7 +18,7 @@ import { DatatableModule } from '../datatable/datatable.module';
 import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module';
 import { LajiFormModule } from '@laji-form/laji-form.module';
 import { SearchFiltersModule } from '../search-filters/search-filters.module';
-import { TaxonAutocompleteModule } from '../taxon-autocomplete/taxon-autocomplete.module'
+import { TaxonAutocompleteModule } from '../taxon-autocomplete/taxon-autocomplete.module';
 import { FormPermissionModule } from 'app/+haseka/form-permission/form-permission.module';
 
 @NgModule({

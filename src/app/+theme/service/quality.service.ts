@@ -1,3 +1,5 @@
+
+import { map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
@@ -47,7 +49,7 @@ export class QualityService {
         orderBy,
         pageSize,
         page
-    ))
+    ));
   }
 
   getMostActiveUsers(maxLength = 50, informalTaxonGroup?, lastDate?): Observable<any> {
@@ -71,17 +73,17 @@ export class QualityService {
         1,
         false,
         true
-    ))
-      .map(data => data.results)
-      .map(data => {
+    )).pipe(
+      map(data => data.results),
+      map(data => {
         return data.map(row => {
           row.userId = row.aggregateBy['unit.annotations.annotationByPersonName'] || '';
           return row;
         });
-      });
+      }), );
   }
 
-  private _fetch(type: 'annotations'|'users', cacheKey: string, request): Observable<any> {
+  private _fetch(type: 'annotations'|'users', cacheKey: string, request: Observable<any>): Observable<any> {
     if (this.state[type].key === cacheKey) {
       return ObservableOf(this.state[type].data);
     } else if (this.state[type].pendingKey === cacheKey && this.state[type].pending) {
@@ -96,11 +98,12 @@ export class QualityService {
       });
     }
     this.state[type].pendingKey = cacheKey;
-    this.state[type].pending    = request
-      .do(data => {
+    this.state[type].pending    = request.pipe(
+      tap(data => {
         this.state[type].data = data;
         this.state[type].key  = cacheKey;
-      });
+      })
+    );
     return this.state[type].pending ;
   }
 }

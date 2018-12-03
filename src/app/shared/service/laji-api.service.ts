@@ -19,78 +19,6 @@ import { News } from '../model/News';
 import { Image } from '../model/Image';
 import { Util } from './util.service';
 
-@Injectable({providedIn: 'root'})
-export class LajiApiService {
-
-  constructor(private httpClient: HttpClient) { }
-
-  getList(endpoint: LajiApi.Endpoints.annotations, query: LajiApi.Query.AnnotationListQuery): Observable<LajiApi.Response.AnnotationListResponse>;
-  getList(endpoint: LajiApi.Endpoints.areas, query: LajiApi.Query.AreaQuery): Observable<LajiApi.Response.AreaListResponse>;
-  getList(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
-  getList(endpoint: LajiApi.Endpoints.forms, query: LajiApi.Query.FormsListQuery): Observable<LajiApi.Response.FormsListResponse>;
-  getList(endpoint: LajiApi.Endpoints.information, query: LajiApi.Query.InformationQuery): Observable<Information>;
-  getList(endpoint: LajiApi.Endpoints.news, query: LajiApi.Query.NewsQuery): Observable<LajiApi.Response.NewsListResponse>;
-  getList(endpoint: LajiApi.Endpoints.notifications, query: LajiApi.Query.NotificationListQuery): Observable<LajiApi.Response.NotificationListResponse>;
-  getList(endpoint: LajiApi.Endpoints.sources, query: LajiApi.Query.SourceQuery): Observable<LajiApi.Response.SourceListResponse>;
-  getList(endpoint: LajiApi.Endpoints.images, query: LajiApi.Query.ImageQuery): Observable<LajiApi.Response.ImageListResponse>;
-  getList<T>(endpoint: LajiApi.Endpoints, query: object = {}): Observable<T> {
-    const url = `${environment.apiBase}/${endpoint}`;
-    const options = { params: {...Util.removeUndefinedFromObject(query)} };
-    return this.httpClient.get<T>(url, options);
-  }
-
-  get(endpoint: LajiApi.Endpoints.autocomplete, id: LajiApi.AutocompleteField, query: LajiApi.Query.AutocompleteQuery): Observable<Autocomplete[]>;
-  get(endpoint: LajiApi.Endpoints.forms, id: string, query: LajiApi.Query.FormsQuery): Observable<any>;
-  get(endpoint: LajiApi.Endpoints.information, id: string, query: LajiApi.Query.InformationQuery): Observable<Information>;
-  get(endpoint: LajiApi.Endpoints.news, id: string): Observable<News>;
-  get(endpoint: LajiApi.Endpoints.publications, id: string, query: LajiApi.Query.PublicationQuery): Observable<Publication>;
-  get(endpoint: LajiApi.Endpoints.taxon, id: string, query: LajiApi.Query.TaxaQuery): Observable<Taxonomy>
-  get<T>(endpoint: LajiApi.Endpoints, id: string, query: object = {}): Observable<T> {
-    const url = `${environment.apiBase}/${endpoint}/${id}`;
-    const options = { params: {...Util.removeUndefinedFromObject(query)} };
-    return this.httpClient.get<T>(url, options);
-  }
-
-  post(endpoint: LajiApi.Endpoints.annotations, data: Annotation, query: LajiApi.Query.AnnotationQuery): Observable<Annotation>;
-  post(endpoint: LajiApi.Endpoints.feedback, data: Feedback, query: LajiApi.Query.FeedbackQuery): Observable<void>;
-  post(endpoint: LajiApi.Endpoints.htmlToPdf, data: any): Observable<LajiApi.Response.HtmlToPdf>;
-  post(endpoint: LajiApi.Endpoints, data: any, query: object = {}): Observable<any> {
-    const url = `${environment.apiBase}/${endpoint}`;
-    const options = { params: {...Util.removeUndefinedFromObject(query)} };
-    if (endpoint === LajiApi.Endpoints.htmlToPdf) {
-      options['responseType'] = 'blob';
-    }
-    return this.httpClient.post(
-      url,
-      data,
-      options
-    );
-  }
-
-  update(endpoint: LajiApi.Endpoints.notifications, data: Notification, query: LajiApi.Query.NotificationQuery): Observable<Notification>;
-  update(endpoint: LajiApi.Endpoints, data: any, query: object = {}): Observable<any> {
-    const url = `${environment.apiBase}/${endpoint}/${data.id}`;
-    const options = { params: {...Util.removeUndefinedFromObject(query)} };
-    return this.httpClient.put(
-      url,
-      data,
-      options
-    );
-  }
-
-
-  remove(endpoint: LajiApi.Endpoints.annotations, id: string, query: LajiApi.Query.AnnotationQuery): Observable<void>;
-  remove(endpoint: LajiApi.Endpoints.notifications, id: string, query: LajiApi.Query.NotificationQuery): Observable<any>;
-  remove(endpoint: LajiApi.Endpoints, id: string, query: object = {}): Observable<any> {
-    const url = `${environment.apiBase}/${endpoint}/${id}`;
-    const options = { params: {...Util.removeUndefinedFromObject(query)} };
-    return this.httpClient.delete(
-      url,
-      options
-    );
-  }
-}
-
 export namespace LajiApi {
 
   export enum Endpoints {
@@ -153,7 +81,7 @@ export namespace LajiApi {
     }
 
     export interface AreaQuery extends Lang, Paged {
-      type?: LajiApi.AreaType,
+      type?: LajiApi.AreaType;
       idIn?: string;
     }
 
@@ -232,7 +160,7 @@ export namespace LajiApi {
     }
 
     export interface HtmlToPdf {
-      base64pdf: string
+      base64pdf: string;
     }
 
     export interface AnnotationListResponse extends PagedResult<Annotation> { }
@@ -254,4 +182,76 @@ export namespace LajiApi {
     export interface ImageListResponse extends PagedResult<Image> { }
   }
 
+}
+
+@Injectable({providedIn: 'root'})
+export class LajiApiService {
+
+  constructor(private httpClient: HttpClient) { }
+
+  getList(endpoint: LajiApi.Endpoints.annotations, query: LajiApi.Query.AnnotationListQuery): Observable<LajiApi.Response.AnnotationListResponse>;
+  getList(endpoint: LajiApi.Endpoints.areas, query: LajiApi.Query.AreaQuery): Observable<LajiApi.Response.AreaListResponse>;
+  getList(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
+  getList(endpoint: LajiApi.Endpoints.forms, query: LajiApi.Query.FormsListQuery): Observable<LajiApi.Response.FormsListResponse>;
+  getList(endpoint: LajiApi.Endpoints.information, query: LajiApi.Query.InformationQuery): Observable<Information>;
+  getList(endpoint: LajiApi.Endpoints.news, query: LajiApi.Query.NewsQuery): Observable<LajiApi.Response.NewsListResponse>;
+  getList(endpoint: LajiApi.Endpoints.notifications, query: LajiApi.Query.NotificationListQuery): Observable<LajiApi.Response.NotificationListResponse>;
+  getList(endpoint: LajiApi.Endpoints.sources, query: LajiApi.Query.SourceQuery): Observable<LajiApi.Response.SourceListResponse>;
+  getList(endpoint: LajiApi.Endpoints.images, query: LajiApi.Query.ImageQuery): Observable<LajiApi.Response.ImageListResponse>;
+  getList<T>(endpoint: LajiApi.Endpoints, query: object = {}): Observable<T> {
+    const url = `${environment.apiBase}/${endpoint}`;
+    const options = { params: {...Util.removeUndefinedFromObject(query)} };
+    return this.httpClient.get<T>(url, options);
+  }
+
+  get(endpoint: LajiApi.Endpoints.autocomplete, id: LajiApi.AutocompleteField, query: LajiApi.Query.AutocompleteQuery): Observable<Autocomplete[]>;
+  get(endpoint: LajiApi.Endpoints.forms, id: string, query: LajiApi.Query.FormsQuery): Observable<any>;
+  get(endpoint: LajiApi.Endpoints.information, id: string, query: LajiApi.Query.InformationQuery): Observable<Information>;
+  get(endpoint: LajiApi.Endpoints.news, id: string): Observable<News>;
+  get(endpoint: LajiApi.Endpoints.publications, id: string, query: LajiApi.Query.PublicationQuery): Observable<Publication>;
+  get(endpoint: LajiApi.Endpoints.taxon, id: string, query: LajiApi.Query.TaxaQuery): Observable<Taxonomy>;
+  get<T>(endpoint: LajiApi.Endpoints, id: string, query: object = {}): Observable<T> {
+    const url = `${environment.apiBase}/${endpoint}/${id}`;
+    const options = { params: {...Util.removeUndefinedFromObject(query)} };
+    return this.httpClient.get<T>(url, options);
+  }
+
+  post(endpoint: LajiApi.Endpoints.annotations, data: Annotation, query: LajiApi.Query.AnnotationQuery): Observable<Annotation>;
+  post(endpoint: LajiApi.Endpoints.feedback, data: Feedback, query: LajiApi.Query.FeedbackQuery): Observable<void>;
+  post(endpoint: LajiApi.Endpoints.htmlToPdf, data: any): Observable<LajiApi.Response.HtmlToPdf>;
+  post(endpoint: LajiApi.Endpoints, data: any, query: object = {}): Observable<any> {
+    const url = `${environment.apiBase}/${endpoint}`;
+    const options = { params: {...Util.removeUndefinedFromObject(query)} };
+    if (endpoint === LajiApi.Endpoints.htmlToPdf) {
+      options['responseType'] = 'blob';
+    }
+    return this.httpClient.post(
+      url,
+      data,
+      options
+    );
+  }
+
+  update(endpoint: LajiApi.Endpoints.notifications, data: Notification, query: LajiApi.Query.NotificationQuery): Observable<Notification>;
+  update(endpoint: LajiApi.Endpoints, data: any, query: object = {}): Observable<any> {
+    const url = `${environment.apiBase}/${endpoint}/${data.id}`;
+    const options = { params: {...Util.removeUndefinedFromObject(query)} };
+    return this.httpClient.put(
+      url,
+      data,
+      options
+    );
+  }
+
+
+  remove(endpoint: LajiApi.Endpoints.annotations, id: string, query: LajiApi.Query.AnnotationQuery): Observable<void>;
+  remove(endpoint: LajiApi.Endpoints.notifications, id: string, query: LajiApi.Query.NotificationQuery): Observable<any>;
+  remove(endpoint: LajiApi.Endpoints, id: string, query: object = {}): Observable<any> {
+    const url = `${environment.apiBase}/${endpoint}/${id}`;
+    const options = { params: {...Util.removeUndefinedFromObject(query)} };
+    return this.httpClient.delete(
+      url,
+      options
+    );
+  }
 }

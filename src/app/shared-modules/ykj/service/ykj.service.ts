@@ -1,5 +1,5 @@
+import { concat, take, delay, retryWhen,  map } from 'rxjs/operators';
 import { Observable, Observer, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import * as MapUtil from 'laji-map/lib/utils';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
@@ -51,7 +51,7 @@ export class YkjService {
       });
     }
     this.pendingKey = key;
-    const sourceMethod = zeroObservations
+    const sourceMethod: (query, aggregate, orderBy, pageSize, page, geoJson, onlyCount) => Observable<any> = zeroObservations
       ? this.warehouseApi.warehouseQueryGatheringStatisticsGet.bind(this.warehouseApi) : useStatistics
       ? this.warehouseApi.warehouseQueryStatisticsGet.bind(this.warehouseApi)
       : this.warehouseApi.warehouseQueryAggregateGet.bind(this.warehouseApi);
@@ -63,9 +63,10 @@ export class YkjService {
         1,
         false,
         false
-      )
-      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
-      .map(data => data.results);
+      ).pipe(
+        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
+        map(data => data.results)
+      );
     return this.pending;
   }
 

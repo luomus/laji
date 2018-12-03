@@ -1,3 +1,5 @@
+
+import {catchError,  map, switchMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DocumentApi } from '../../shared/api/DocumentApi';
@@ -7,7 +9,6 @@ import { Document } from '../../shared/model/Document';
 import { forkJoin as ObservableForkJoin, of as ObservableOf } from 'rxjs';
 import { NamedPlacesService } from '../named-place/named-places.service';
 import { NamedPlace } from '../../shared/model/NamedPlace';
-import { map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-statistics',
@@ -39,8 +40,8 @@ export class StatisticsComponent implements OnInit {
           this.formService.getForm(document.formID, 'fi'),
           document.namedPlaceID ?
             this.namedPlacesService
-              .getNamedPlace(document.namedPlaceID, this.userService.getToken())
-              .catch(() => ObservableOf({})) :
+              .getNamedPlace(document.namedPlaceID, this.userService.getToken()).pipe(
+              catchError(() => ObservableOf({}))) :
             ObservableOf({})
         ).pipe(
           map(data => ({form: data[0], ns: data[1], document}))

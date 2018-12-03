@@ -5,14 +5,14 @@
           [data]="mapData"
           [lang]="translate.currentLang"
           [settingsKey]="settingsKey"
-          (onCreate)="onCreate($event)"
-          (onFailure)="refreshMap()"
-          (onTileLayerChange)="onTileLayerChange($event)"
-          (onMove)="onMove($event)">
+          (create)="onCreate($event)"
+          (failure)="refreshMap()"
+          (tileLayerChange)="onTileLayerChange($event)"
+          (move)="onMove($event)">
     <div class="loading-map loading" *ngIf="loading"></div>
     <ul class="legend" *ngIf="legend" [ngStyle]="{'margin-top': topMargin }">
       <li *ngFor="let leg of legendList">
-        <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{leg.range}}
+        <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{ leg.range }}
       </li>
     </ul>
   </laji-map>

@@ -1,3 +1,5 @@
+
+import {toArray, mergeAll, tap, combineLatest, switchMap,  map } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Logger } from '../../../shared/logger/logger.service';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
@@ -6,7 +8,9 @@ import { Document } from '../../../shared/model/Document';
 import { Util } from '../../../shared/service/util.service';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+
+
+
 
 @Component({
   selector: 'laji-haseka-latest',
@@ -18,7 +22,7 @@ export class UsersLatestComponent implements OnChanges {
   @Input() userToken: string;
   @Input() tmpOnly = false;
   @Input() forms: string[];
-  @Output() onShowViewer = new EventEmitter<Document>();
+  @Output() showViewer = new EventEmitter<Document>();
 
   public unpublishedDocuments: Document[] = [];
   public documents: Document[] = [];
@@ -48,8 +52,8 @@ export class UsersLatestComponent implements OnChanges {
     if (!this.userToken) {
       return;
     }
-    this.formService.getAllTempDocuments()
-      .switchMap(documents => this.processDocuments(documents))
+    this.formService.getAllTempDocuments().pipe(
+      switchMap(documents => this.processDocuments(documents)))
       .subscribe((documents) => {
         this.unpublishedDocuments = this.forms ? documents.filter(doc => this.forms.indexOf(doc.formID) > -1) : [...documents];
         this.cd.markForCheck();
@@ -63,14 +67,14 @@ export class UsersLatestComponent implements OnChanges {
     if (this.docUpdateSub) {
       this.docUpdateSub.unsubscribe();
     }
-    this.docUpdateSub = ObservableOf(null)
-      .switchMap(() => this.documentService.findAll(this.userToken, String(this.page), String(this.pageSize)))
-      .switchMap(response => ObservableOf(response)
-        .combineLatest(
+    this.docUpdateSub = ObservableOf(null).pipe(
+      switchMap(() => this.documentService.findAll(this.userToken, String(this.page), String(this.pageSize))),
+      switchMap(response => ObservableOf(response).pipe(
+        combineLatest(
           response.results ? this.processDocuments(response.results) : ObservableOf([]),
           ((result, docs) => ({...result, docs: docs}))
-        )
-      )
+        ))
+      ), )
       .subscribe(
         result => {
           this.documents = result.docs;
@@ -104,7 +108,7 @@ export class UsersLatestComponent implements OnChanges {
   }
 
   showDocumentViewer(doc: Document) {
-    this.onShowViewer.emit(doc);
+    this.showViewer.emit(doc);
   }
 
   private processDocuments(docs: Document[]) {
@@ -113,7 +117,7 @@ export class UsersLatestComponent implements OnChanges {
         this.formService.hasUnsavedData(doc.id),
         this.getForm(doc.formID),
         (hasUnsavedData, form) => (hasUnsavedData)
-      ).switchMap(
+      ).pipe(switchMap(
         (hasUnsavedData) => {
           if (hasUnsavedData) {
             return ObservableForkJoin(
@@ -134,23 +138,23 @@ export class UsersLatestComponent implements OnChanges {
           } else {
             return ObservableOf(doc);
           }
-        });
-    }))
-      .mergeAll()
-      .toArray()
-      .do((array) => {
+        }));
+    })).pipe(
+      mergeAll(),
+      toArray(),
+      tap((array) => {
         array.sort(this.compareEditDate);
-      });
+      }), );
   }
 
   private getForm(formId: string): Observable<any> {
     if (this.formsById[formId]) { return ObservableOf(this.formsById[formId]); }
 
     return this.formService
-      .getForm(formId, this.translate.currentLang)
-      .do((res: any) => {
+      .getForm(formId, this.translate.currentLang).pipe(
+      tap((res: any) => {
         this.formsById[formId] = res;
-      });
+      }));
   }
 
   private compareEditDate(a: Document, b: Document) {

@@ -10,10 +10,10 @@ export class DocumentFormFooterComponent {
   @Input() status = '';
   @Input() saving = false;
   @Input() readonly = false;
-  @Output() onSubmitPublic = new EventEmitter();
-  @Output() onSubmitPrivate = new EventEmitter();
-  @Output() onCancel = new EventEmitter();
-  @Output() onLock = new EventEmitter<boolean>();
+  @Output() submitPublic = new EventEmitter();
+  @Output() submitPrivate = new EventEmitter();
+  @Output() cancel = new EventEmitter();
+  @Output() lock = new EventEmitter<boolean>();
   _form: any;
   _locked: false;
   _admin: false;
@@ -27,25 +27,25 @@ export class DocumentFormFooterComponent {
 
   isString(val) { return typeof val === 'string'; }
 
-  displaysSaveContainer() { return this._admin || this.show.save}
+  displaysSaveContainer() { return this._admin || this.show.save; }
 
   @Input()
   set form(form: any) {
     this._form = form;
     this._admin = form && form.uiSchemaContext && form.uiSchemaContext.isAdmin;
     this._locked = form && form.formData && form.formData.locked;
-    ['save', 'temp', 'cancel'].forEach(place => {
+    ['save', 'temp', 'cancel'].forEach(prop => {
       let show: boolean;
 
       if (!form || !form.actions) {
         show = true;
       } else {
-        show = place in form.actions;
+        show = prop in form.actions;
       }
-      if (this.readonly && (place === 'save' || place === 'temp')) {
+      if (this.readonly && (prop === 'save' || prop === 'temp')) {
         show = false;
       }
-      this.show[place] = show;
+      this.show[prop] = show;
     });
   }
 

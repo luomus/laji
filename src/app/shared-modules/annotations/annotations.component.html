@@ -5,7 +5,7 @@
     </button>
     <h4>
       <span class="comment-title">
-        {{'annotation.title' | translate}}
+        {{ 'annotation.title' | translate }}
       </span>
       <span *ngIf="!adding">
         <button class="btn btn-xs btn-success" (click)="toggleAddForm()"><i class="glyphicon glyphicon-plus"></i></button>
@@ -24,6 +24,6 @@
   <laji-annotation-list
     [personID]="personID"
     [annotations]="annotations"
-    (onDelete)="onDelete($event)">
+    (remove)="onDelete($event)">
   </laji-annotation-list>
 </div>

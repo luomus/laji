@@ -108,7 +108,7 @@ export class WbcSpeciesMapsComponent implements OnChanges, AfterViewInit {
       this.data[2] = this.getDifferenceGeoJson(data.data, data.zeroData, data.prevTenYearsData, data.prevTenYearsZeroData);
       this.loading = false;
       this.cd.markForCheck();
-    })
+    });
   }
 
   private getDifferenceGeoJson(data, zeroData, tenYearsData, tenYearsZeroData) {

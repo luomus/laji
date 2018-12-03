@@ -28,7 +28,7 @@ export class DocumentObjectComponent implements OnChanges {
       this.fields.map(field => {
         this.templates[field.name] = this[field.name + 'Tpl'] ? this[field.name + 'Tpl'] : (
           field.type === 'fieldset' && field.name.slice(-4) === 'Fact' ? this.factsTpl : (
-          this[field.type + 'Tpl'] ? this[field.type + 'Tpl'] : this.defaultTpl))
+          this[field.type + 'Tpl'] ? this[field.type + 'Tpl'] : this.defaultTpl));
 
         if (this.templates[field.name] === this.factsTpl) {
           this.updateHasFacts(this.object[field.name], field.fields);

@@ -1,9 +1,9 @@
 <ng-container *ngIf="secureLevel !== 'NONE'">
-  <strong>{{'secureLevel' | label: 'warehouse'}}:</strong>
-  {{secureLevel | label: 'warehouse'}}
+  <strong>{{ 'secureLevel' | label: 'warehouse' }}:</strong>
+  {{ secureLevel | label: 'warehouse' }}
   <br>
 </ng-container>
 <ng-container *ngIf="secureReasons">
-  <strong>{{'result.document.secureReasons' | translate}}:</strong>
-  <span *ngFor="let reason of secureReasons; let i=index"><span *ngIf="i > 0">,</span> {{reason | label: 'warehouse'}}</span>
+  <strong>{{ 'result.document.secureReasons' | translate }}:</strong>
+  <span *ngFor="let reason of secureReasons; let i=index"><span *ngIf="i > 0">,</span> {{ reason | label: 'warehouse' }}</span>
 </ng-container>

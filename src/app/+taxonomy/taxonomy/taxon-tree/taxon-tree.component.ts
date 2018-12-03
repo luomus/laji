@@ -70,7 +70,7 @@ export class TaxonTreeComponent implements OnInit {
       })
       .pipe(
         map(data => this.mapSpeciesCountsToLeafCounts(data))
-      )
+      );
   }
 
   getParents(id: string) {

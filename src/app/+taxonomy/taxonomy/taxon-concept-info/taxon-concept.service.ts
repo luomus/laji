@@ -58,10 +58,10 @@ export class TaxonConceptService {
             }
           }
 
-          return this.getSchemeInfo(result.inScheme).map(schemeInfo => {
+          return this.getSchemeInfo(result.inScheme).pipe(map(schemeInfo => {
             result.inSchemeLabel = schemeInfo;
             return result;
-          });
+          }));
         })
       );
   }

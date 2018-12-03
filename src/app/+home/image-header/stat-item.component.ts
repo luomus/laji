@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
     </span>
     <br />
     <span class="stat-item-description">
-      {{description}}
+      {{ description }}
     </span>
   </div>
 `,

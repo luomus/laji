@@ -3,32 +3,32 @@
   <tr>
     <th>{{ 'taxonomy.scientific.name' | translate }}</th>
     <td>
-      <span class="scientificName" [class.cursive]="taxon.cursiveName">{{taxon.scientificName}}</span>
+      <span class="scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}</span>
     </td>
   </tr>
   <tr *ngIf="taxon.scientificNameAuthorship">
     <th>{{ 'taxonomy.author' | translate }}</th>
-    <td>{{taxon.scientificNameAuthorship}}</td>
+    <td>{{ taxon.scientificNameAuthorship }}</td>
   </tr>
   <tr *ngIf="taxon.vernacularName">
     <th>{{ 'taxonomy.vernacular.name' | translate }}</th>
-    <td>{{taxon.vernacularName | multiLang}}</td>
+    <td>{{ taxon.vernacularName | multiLang }}</td>
   </tr>
   <tr *ngIf="taxon.synonyms">
     <th>{{ 'taxonomy.synonyms' | translate }}</th>
     <td>
       <ul class="comma-list">
-        <li *ngFor="let synonym of taxon.synonyms"><span class="scientificName" [class.cursive]="synonym.cursiveName">{{synonym.scientificName}}</span></li>
+        <li *ngFor="let synonym of taxon.synonyms"><span class="scientificName" [class.cursive]="synonym.cursiveName">{{ synonym.scientificName }}</span></li>
       </ul>
     </td>
   </tr>
   <tr>
-    <th>{{ 'MX.taxonRank' | label}}</th>
-    <td>{{taxon.taxonRank | label}}</td>
+    <th>{{ 'MX.taxonRank' | label }}</th>
+    <td>{{ taxon.taxonRank | label }}</td>
   </tr>
   <tr *ngIf="taxon.occurrenceInFinland">
     <th>{{ 'taxonomy.occurrenceInFinland' | translate }}</th>
-    <td>{{taxon.occurrenceInFinland | label}}</td>
+    <td>{{ taxon.occurrenceInFinland | label }}</td>
   </tr>
   <tr *ngIf="taxon.invasiveSpecies">
     <th>
@@ -41,7 +41,7 @@
         <tbody>
         <tr>
           <th>{{ 'MX.invasiveSpeciesEstablishment' | label }}</th>
-          <td>{{taxon.invasiveSpeciesEstablishment | label}}</td>
+          <td>{{ taxon.invasiveSpeciesEstablishment | label }}</td>
         </tr>
         </tbody>
       </table>
@@ -60,7 +60,7 @@
     <td>
       <ul>
         <li *ngFor="let status of taxon.redListStatusesInFinland">
-         {{status.year}} {{status.status | label}}
+         {{ status.year }} {{ status.status | label }}
         </li>
       </ul>
     </td>
@@ -68,7 +68,7 @@
   <tr>
     <th>{{ 'taxonomy.card.id' | translate }}</th>
     <td>
-      http://tun.fi/{{taxon.id}}
+      http://tun.fi/{{ taxon.id }}
       <div class="download-formats">
         <a href="/api/taxa/{{taxon.id}}?locale={{translate.currentLang}}" rel="noopener" target="_blank">
           <span class="label label-default">json</span>
@@ -86,7 +86,7 @@
     <th>{{ (taxon.taxonExpert.length > 1 ? 'taxonomy.experts' : 'taxonomy.expert') | translate }}</th>
     <td>
       <ul class="comma-list">
-        <li *ngFor="let export of taxon.taxonExpert">{{export | users:'fullname'}}</li>
+        <li *ngFor="let export of taxon.taxonExpert">{{ export | users:'fullname' }}</li>
       </ul>
     </td>
   </tr>

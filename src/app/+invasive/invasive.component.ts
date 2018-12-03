@@ -1,3 +1,5 @@
+
+import {tap, map} from 'rxjs/operators';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TaxonomyApi } from '../shared/api/TaxonomyApi';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
@@ -48,9 +50,9 @@ export class InvasiveComponent implements OnInit {
       this.taxa = ObservableOf(InvasiveComponent.taxa);
     } else {
       this.taxa = this.taxonomyApi
-        .taxonomyFindSpecies('MX.37600', 'multi', undefined, 'MX.euInvasiveSpeciesList')
-        .map(species => species.results)
-        .do(taxa => InvasiveComponent.taxa = taxa);
+        .taxonomyFindSpecies('MX.37600', 'multi', undefined, 'MX.euInvasiveSpeciesList').pipe(
+        map(species => species.results)).pipe(
+        tap(taxa => InvasiveComponent.taxa = taxa));
     }
   }
 
@@ -63,8 +65,8 @@ export class InvasiveComponent implements OnInit {
       undefined,
       undefined,
       false
-    )
-      .map(data => data.results)
+    ).pipe(
+      map(data => data.results))
       .subscribe(data => {
         data.map(item => {
           item.isNew = moment(item.oldestRecord) > this.daysBack;
@@ -76,7 +78,7 @@ export class InvasiveComponent implements OnInit {
 
   showLatestDocument(taxonID) {
     this.warehouseApi.warehouseQueryListGet({...this.invasiveQuery, taxonId: taxonID}, ['document.documentId', 'unit.unitId'], undefined, 1)
-      .map(data => data.results[0])
+      .pipe(map(data => data.results[0]))
       .subscribe(result => {
         this.shownDocument = result.document && result.document.documentId || '';
         this.highlightId = result.unit && result.unit.unitId || '';

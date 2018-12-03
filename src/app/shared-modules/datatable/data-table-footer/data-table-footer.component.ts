@@ -46,7 +46,7 @@ export class DataTableFooterComponent {
       limit: this.pageSize,
       offset: event.page - 1,
       page: event.page
-    })
+    });
   }
 
 }

@@ -118,6 +118,6 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
           hasMediaFilter: true,
           includeMedia: true
         }
-      )
+      );
   }
 }

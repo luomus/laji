@@ -20,7 +20,7 @@ export class NpEditFormComponent {
   @Input() formData: any;
   @Input() namedPlace: NamedPlace;
   @Input() namedPlaceOptions: any;
-  @Output() onEditReady = new EventEmitter<NamedPlace>();
+  @Output() editReady = new EventEmitter<NamedPlace>();
 
   tick = 0;
   saving = false;
@@ -55,7 +55,7 @@ export class NpEditFormComponent {
   }
 
   onSubmit(event) {
-    if (!('namedPlace' in event.data.formData) || event.data.formData.namedPlace.length < 1) {
+    if (!event.data.formData) {
       this.lajiForm.unBlock();
       return;
     }
@@ -80,7 +80,7 @@ export class NpEditFormComponent {
               .subscribe(value => {
                 this.toastsService.showSuccess(value);
               });
-            this.onEditReady.emit(result);
+            this.editReady.emit(result);
           },
           (err) => {
             this.lajiForm.unBlock();
@@ -111,9 +111,9 @@ export class NpEditFormComponent {
     this.translate.get('haseka.form.discardConfirm').subscribe(
       (confirm) => {
         if (!this.hasChanges) {
-          this.onEditReady.emit();
+          this.editReady.emit();
         } else if (this.window.confirm(confirm)) {
-          this.onEditReady.emit();
+          this.editReady.emit();
         }
       }
     );
@@ -122,7 +122,7 @@ export class NpEditFormComponent {
   private getNamedPlaceData(event) {
     const filteredKeys = ['geometry', 'locality', 'localityDescription', 'placeWrapper'];
 
-    const formData = event.data.formData.namedPlace[0];
+    const formData = event.data.formData;
     const data: any = {};
 
     const keys = Object.keys(formData);
@@ -136,8 +136,6 @@ export class NpEditFormComponent {
 
     data.geometry = formData.geometry.geometries[0];
 
-    this.localityToPrepopulatedDocument(data, formData);
-
     if (this.namedPlaceOptions && this.namedPlaceOptions.prepopulatedDocumentFields) {
       return this.augmnentPrepopulatedDocument(data, formData, this.namedPlaceOptions.prepopulatedDocumentFields);
     }
@@ -146,8 +144,7 @@ export class NpEditFormComponent {
   }
 
   private getPrepopulatedDocument(namedPlace) {
-    namedPlace.prepopulatedDocument =
-      (this.namedPlace && this.namedPlace.prepopulatedDocument) ? this.namedPlace.prepopulatedDocument : {};
+    namedPlace.prepopulatedDocument = this.namedPlace && this.namedPlace.prepopulatedDocument || {};
     return namedPlace;
   }
 
@@ -170,7 +167,7 @@ export class NpEditFormComponent {
               this.lang
             ).subscribe(taxon => {
               resolve(taxon[taxonProp]);
-            })
+            });
       }),
       area: ({type, key = 'value', from, delimiter = ', '}) =>
         new Promise(resolve => {
@@ -188,10 +185,10 @@ export class NpEditFormComponent {
           });
         })
     };
-    const prepopulatedDocument = this.getPrepopulatedDocument(namedPlace).prepopulatedDocument;
+    const {prepopulatedDocument} = this.getPrepopulatedDocument(namedPlace);
     const fieldPointers = Object.keys(options);
     return new Promise(resolve => Promise.all(fieldPointers.map(fieldPointer => {
-      let valueOrPromise = undefined;
+      let valueOrPromise;
       if (typeof options[fieldPointer] === 'string') {
         valueOrPromise = Util.parseJSONPointer(formData, options[fieldPointer]);
       } else {
@@ -207,30 +204,6 @@ export class NpEditFormComponent {
       });
       resolve(namedPlace);
     }));
-  }
-
-  private localityToPrepopulatedDocument(data, formData) {
-    if (!formData.locality && !formData.localityDescription) {
-      return;
-    }
-
-    this.getPrepopulatedDocument(data);
-
-    const populate = data.prepopulatedDocument;
-
-    if (!populate.gatherings) {
-      populate.gatherings = [{}];
-    } else if (!populate.gatherings[0]) {
-      populate.gatherings[0] = {};
-    }
-
-    if (formData.locality) {
-      populate.gatherings[0].locality = formData.locality;
-    }
-
-    if (formData.localityDescription) {
-      populate.gatherings[0].localityDescription = formData.localityDescription;
-    }
   }
 
   private parseErrorMessage(err) {

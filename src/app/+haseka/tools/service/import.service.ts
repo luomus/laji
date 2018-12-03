@@ -54,7 +54,7 @@ export class ImportService {
       personToken: this.userService.getToken(),
       lang: this.translateService.currentLang,
       validationErrorFormat: 'jsonPath'
-    })
+    });
   }
 
   sendData(document: Document, publicityRestrictions: Document.PublicityRestrictionsEnum): Observable<any> {
@@ -62,7 +62,7 @@ export class ImportService {
     return this.documentApi.create(document, this.userService.getToken(), {
       lang: this.translateService.currentLang,
       validationErrorFormat: 'jsonPath'
-    })
+    });
   }
 
   flatFieldsToDocuments(
@@ -284,7 +284,7 @@ export class ImportService {
       if (level === DOCUMENT_LEVEL || level === '') {
         return;
       }
-      replaces.push({from: `\\b${level}\\[\\*\\]`, to: `${level}[${spot[level]}]`})
+      replaces.push({from: `\\b${level}\\[\\*\\]`, to: `${level}[${spot[level]}]`});
     });
     Object.keys(values).map(key => {
       let targetKey = key;

@@ -1,3 +1,5 @@
+
+import {filter} from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -34,8 +36,8 @@ export class ObservationActiveComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subQueryUpdate = this.searchQuery.queryUpdated$
-      .filter(data => !(data && data.formSubmit))
+    this.subQueryUpdate = this.searchQuery.queryUpdated$.pipe(
+      filter(data => !(data && data.formSubmit)))
       .subscribe(() => {
         this.updateSelectedList();
         this.cdr.markForCheck();

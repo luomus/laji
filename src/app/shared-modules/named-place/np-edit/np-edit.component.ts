@@ -49,11 +49,11 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() editMode = false;
   @Input() allowEdit = true;
-  @Output() onReserve = new EventEmitter();
-  @Output() onRelease = new EventEmitter();
-  @Output() onEditButtonClick = new EventEmitter();
-  @Output() onEditReady = new EventEmitter();
-  @Output() onError = new EventEmitter();
+  @Output() reserve = new EventEmitter();
+  @Output() release = new EventEmitter();
+  @Output() editButtonClick = new EventEmitter();
+  @Output() editReady = new EventEmitter();
+  @Output() error = new EventEmitter();
 
   lang: string;
 
@@ -78,7 +78,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.npFormId = this.formData.namedPlaceOptions
-      && this.formData.namedPlaceOptions.formId
+      && this.formData.namedPlaceOptions.formID
       || environment.namedPlaceForm;
     this.mapOptionsData = this.getMapOptions();
     this.fetchForm();
@@ -122,7 +122,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(form => {
         form['formData'] = data;
         if (this.mapOptionsData) {
-          form['uiSchema']['namedPlace']['ui:options']['mapOptions'] = this.mapOptionsData;
+          form['uiSchema']['geometry']['ui:options']['mapOptions'] = this.mapOptionsData;
         }
         this.lang = this.translate.currentLang;
         this.npFormData = form;
@@ -140,7 +140,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(
         data => {
           if (this.mapOptionsData) {
-            data['uiSchema']['namedPlace']['ui:options']['mapOptions'] = this.mapOptionsData;
+            data['uiSchema']['geometry']['ui:options']['mapOptions'] = this.mapOptionsData;
           }
           this.npFormData = data;
           this.setFormData();
@@ -150,7 +150,7 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
           const msgKey = err.status === 404 ? 'haseka.form.formNotFound' : 'haseka.form.genericError';
            this.translate.get(msgKey, {formId: this.npFormId})
            .subscribe(msg => {
-             this.onError.emit(msg);
+             this.error.emit(msg);
              this.cdr.markForCheck();
            });
         }
@@ -177,14 +177,14 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
 
-      this.npFormData.formData.namedPlace = [npData];
+      this.npFormData.formData = npData;
     } else {
-      this.npFormData.formData.namedPlace = [this.prepopulatedNamedPlace];
+      this.npFormData.formData = this.prepopulatedNamedPlace;
     }
   }
 
   editClick() {
-    this.onEditButtonClick.emit();
+    this.editButtonClick.emit();
   }
 
   useClick() {
@@ -192,10 +192,6 @@ export class NpEditComponent implements OnInit, OnChanges, OnDestroy {
     this.router.navigate(this.localizeRouterService.translateRoute([
       this.formService.getAddUrlPath(this.formId)
     ]));
-  }
-
-  editReady(np: NamedPlace) {
-    this.onEditReady.emit(np);
   }
 
   private populateForm() {

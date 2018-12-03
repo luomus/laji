@@ -36,7 +36,7 @@ export class FieldListComponent implements OnInit {
       if (group.subGroup === subGroup) {
         this.toggle.emit(group.fields);
       }
-    })
+    });
   }
 
   onTitleClick() {
@@ -72,7 +72,7 @@ export class FieldListComponent implements OnInit {
         cumulative[subGroup] = {
           subGroup: subGroup,
           fields: []
-        }
+        };
       }
       cumulative[subGroup].fields.push(current);
       return cumulative;

@@ -13,6 +13,6 @@ export class InformalListBreadcrumbComponent {
   @Input() groups: Array<InformalTaxonGroup>;
   @Input() compact = false;
 
-  @Output() onInformalGroupSelect = new EventEmitter<string>();
+  @Output() informalGroupSelect = new EventEmitter<string>();
 
 }

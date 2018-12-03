@@ -38,8 +38,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   @Input() tick: number;
   @Input() settingsKey = '';
 
-  @Output() onSubmit = new EventEmitter();
-  @Output() onChange = new EventEmitter();
+  @Output() dataSubmit = new EventEmitter();
+  @Output() dataChange = new EventEmitter();
 
   lajiFormWrapper: any;
   reactElem: any;
@@ -211,12 +211,12 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   }
 
   _onChange(formData) {
-    this.onChange.emit(formData);
+    this.dataChange.emit(formData);
   }
 
   _onSubmit(data) {
     this.ngZone.run(() => {
-      this.onSubmit.emit({
+      this.dataSubmit.emit({
         data: data,
         makeBlock: this.lajiFormWrapper.pushBlockingLoader,
         clearBlock: this.lajiFormWrapper.popBlockingLoader

@@ -1,25 +1,25 @@
 <select [ngModel]="_value" (ngModelChange)="selected.emit($event)" class="form-control" [disabled]="disabled">
   <ng-container *ngIf="_fields; else valueOption">
-    <option value="" disabled>{{'excel.map.col-select' | translate}}</option>
-    <option [value]="skipValue">{{'ignore'| translate}}</option>
+    <option value="" disabled>{{ 'excel.map.col-select' | translate }}</option>
+    <option [value]="skipValue">{{ 'ignore'| translate }}</option>
     <optgroup *ngFor="let group of fieldGroups | removeEmpty" [label]="fieldGroupsLabel[group]">
       <option *ngFor="let key of groups[group] | removeEmpty" [value]="key">
-        {{key === skipValue ? ('ignore'| translate) : (_fields[key] && _fields[key].label || key)}}
+        {{ key === skipValue ? ('ignore'| translate) : (_fields[key] && _fields[key].label || key) }}
       </option>
     </optgroup>
   </ng-container>
   <ng-template #valueOption>
-    <option value="" disabled>{{'excel.map.value-select' | translate}}</option>
+    <option value="" disabled>{{ 'excel.map.value-select' | translate }}</option>
     <option *ngFor="let key of options | removeEmpty" [value]="key">
       <ng-container [ngSwitch]="key">
         <ng-container *ngSwitchCase="skipValue">
-          {{'ignore'| translate}}
+          {{ 'ignore'| translate }}
         </ng-container>
         <ng-container *ngSwitchCase="asIsValue">
-          {{'asIs'| translate}}
+          {{ 'asIs'| translate }}
         </ng-container>
         <ng-container *ngSwitchDefault>
-          {{key}}
+          {{ key }}
         </ng-container>
       </ng-container>
     </option>

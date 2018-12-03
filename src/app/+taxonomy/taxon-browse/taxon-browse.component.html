@@ -9,7 +9,7 @@
            [ngClass]="{'sticky-filter': stickyFilter, 'col-sm-4 col-md-3 col-lg-2 col-sm-push-8 col-md-push-9 col-lg-push-10': showFilter}">
         <laji-species-form [searchQuery]="searchQuery"
                            [showFilter]="showFilter"
-                           (onShowFilterChange)="showFilter = $event">
+                           (showFilterChange)="showFilter = $event">
         </laji-species-form>
       </div>
 
@@ -20,12 +20,12 @@
         <ul style="margin-top: 24px;" class="nav nav-tabs nav-justified">
           <li role="presentation"  [ngClass]="{active: active === 'list'}">
             <a [routerLink]="'/taxon/list' | localize" [queryParams]="searchQuery.query">
-              {{"species.list" | translate}}
+              {{ "species.list" | translate }}
             </a>
           </li>
           <li role="presentation" [ngClass]="{active: active === 'images'}">
             <a [routerLink]="'/taxon/images' | localize" [queryParams]="searchQuery.query">
-              {{"species.images" | translate}}
+              {{ "species.images" | translate }}
             </a>
           </li>
         </ul>
@@ -33,7 +33,7 @@
         <div [hidden]="active === 'tree'" *ngIf="activated['list'] || activated['images']" style="margin-bottom: 20px">
           <laji-informal-group-select [id]="searchQuery.query.informalGroupFilters"
                                       [compact]="true"
-                                      (onInformalGroupSelect)="informalGroupSelect($event)">
+                                      (informalGroupSelect)="informalGroupSelect($event)">
           </laji-informal-group-select>
         </div>
 

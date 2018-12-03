@@ -1,6 +1,6 @@
 <div class="btn-group">
-  <button type="button" class="btn" [ngClass]="_switchState === onValue ? 'btn-' + onColor : 'btn-default'" (click)="switch(true)">{{onText}}</button>
-  <button type="button" class="btn" [ngClass]="_switchState === offValue ? 'btn-' + onColor : 'btn-default'" (click)="switch(false)">{{offText}}</button>
+  <button type="button" class="btn" [ngClass]="_switchState === onValue ? 'btn-' + onColor : 'btn-default'" (click)="switch(true)">{{ onText }}</button>
+  <button type="button" class="btn" [ngClass]="_switchState === offValue ? 'btn-' + onColor : 'btn-default'" (click)="switch(false)">{{ offText }}</button>
 </div>
 <!--
 <bSwitch

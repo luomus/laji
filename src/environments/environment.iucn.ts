@@ -13,7 +13,7 @@ export const environment = {
   lineTransectEiVakioForm: 'MHL.27',
   lineTransectKartoitusForm: 'MHL.28',
   whichSpeciesForm: 'MHL.9',
-  namedPlaceForm: 'JX.6668',
+  namedPlaceForm: 'MHL.36',
   invasiveControlForm: '',
   loginUrl: '/user/viranomaiset',
   selfPage: 'https://login.laji.fi/self',

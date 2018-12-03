@@ -6,13 +6,13 @@ import { Component, Input } from '@angular/core';
 <div class="container-fluid">
     <div class="row" id="wrapper">
         <div *ngIf='showNav' class="col-sm-3 col-md-2 col-lg-2 sidebar-nav">
-            <h1>{{title}}</h1>
+            <h1>{{ title }}</h1>
             <ul *ngIf="navLinks">
                 <ng-container *ngFor="let link of navLinks">
                     <li *ngIf="link.visible">
                         <a routerLinkActive="laji-sidebar-active"
                            [routerLink]="link.routerLink">
-                            {{link.label}}
+                            {{ link.label }}
                         </a>
                     </li>
                 </ng-container>

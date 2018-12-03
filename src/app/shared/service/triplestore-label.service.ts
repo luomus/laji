@@ -17,7 +17,7 @@ import { LajiApi, LajiApiService } from './laji-api.service';
 import { catchError, delay, filter, map, merge, retryWhen, share, take, tap } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
-export class TriplestoreLabelService implements OnInit {
+export class TriplestoreLabelService {
 
   static cache = {};
   static requestCache: any = {};
@@ -37,9 +37,7 @@ export class TriplestoreLabelService implements OnInit {
               private cacheService: CacheService,
               private lajiApi: LajiApiService,
               private userService: UserService
-  ) { };
-
-  ngOnInit() {
+  ) {
     if (!this.pending) {
       this.pending = this.getAllLabels();
     }
@@ -148,15 +146,15 @@ export class TriplestoreLabelService implements OnInit {
         merge(apiCall.pipe(
             tap(data => {
               if (!Util.isEmptyObj(data)) {
-                this.cacheService.setItem(cacheKey, data).subscribe()
+                this.cacheService.setItem(cacheKey, data).subscribe();
               }
             })
           )
         ),
         filter(result => {
-          return !Util.isEmptyObj(result)
+          return !Util.isEmptyObj(result);
         })
-      )
+      );
     };
 
     const fromApi$ = ObservableForkJoin(
@@ -167,10 +165,6 @@ export class TriplestoreLabelService implements OnInit {
         TriplestoreLabelService.cacheProps,
         this.metadataApi.metadataAllProperties('multi').pipe(
           take(1),
-          retryWhen(errors => errors.pipe(
-            delay(1000),
-            take(3)
-          )),
           map(data => {
             const props = {};
             if (data && data.results) {

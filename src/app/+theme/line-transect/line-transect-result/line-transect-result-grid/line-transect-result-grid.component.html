@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col-sm-12">
     <p>
-      {{'nafi.stats.times' | translate}}
+      {{ 'nafi.stats.times' | translate }}
       <br>
       <small>
-      <a [routerLink] [queryParams]="{time: '1991-01-01/'}">{{'theme.filterAll' | translate:{from: startYear, to: endYear} }}</a>
+      <a [routerLink] [queryParams]="{time: '1991-01-01/'}">{{ 'theme.filterAll' | translate:{from: startYear, to: endYear} }}</a>
       <br>
         <span *ngFor="let year of years">
-          <a [routerLink] [queryParams]="{time: year}">{{'wholeYear'| translate:{year:year} }}</a>
+          <a [routerLink] [queryParams]="{time: year}">{{ 'wholeYear'| translate:{year:year} }}</a>
           <br>
         </span>
       <br>
@@ -18,7 +18,7 @@
 <div class="row">
   <div class="col-sm-5 col-sm-push-7 map-col">
     <laji-ykj-map
-      (onGridClick)="showGridObservations($event)"
+      (gridClick)="showGridObservations($event)"
       [taxon]="taxon$ | async"
       [height]="'calc(80vh - 50px)'"
       [individualBreak]="[0, null, 1, 5, 10, 50, 100, 500]"
@@ -34,7 +34,7 @@
   <div class="col-sm-7 col-sm-pull-5 table-col">
     <laji-theme-result
             *ngIf="query && !query.ykj10kmCenter"
-            (onNameClick)="navigate($event)"
+            (nameClick)="navigate($event)"
             [query]="resultQuery"
             [height]="'calc(80vh - 50px)'"
             [fields]="['unit.linkings.species.vernacularName', 'unit.linkings.species.scientificName', 'pairCountSum']"
@@ -42,8 +42,7 @@
     ></laji-theme-result>
     <laji-theme-observation-list
             *ngIf="query && query.ykj10kmCenter"
-            (onListClose)="closeList()"
-            (onPageChange)="goToPage($event)"
+            (listClose)="closeList()"
             [query]="query"
             [height]="'calc(80vh - 50px)'"
     ></laji-theme-observation-list>

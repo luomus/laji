@@ -63,7 +63,7 @@ export class WbcRoutesListComponent implements OnInit {
 
   filterBy = '';
 
-  @Output() onRowSelect = new EventEmitter<string>();
+  @Output() rowSelect = new EventEmitter<string>();
 
   @Input() set selected(selected: string[]) {
     this.columns = this.allColumns.filter(val => {
@@ -73,7 +73,7 @@ export class WbcRoutesListComponent implements OnInit {
         val.label = this.countLabel;
       }
       return selected.indexOf(val.name) !== -1;
-    })
+    });
   }
 
   constructor() { }

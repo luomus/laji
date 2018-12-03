@@ -55,7 +55,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this._mapOptions = {
       ...this._mapOptions,
       ...(mapOptions || {})
-    }
+    };
   }
   get mapOptions() {
     return this._mapOptions;
@@ -64,8 +64,8 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
   @Input() useStatistics = false;
   @Input() loading = false;
 
-  @Output() onGridClick = new EventEmitter<WarehouseQueryInterface>();
-  @Output() onBoundsChange = new EventEmitter<any>();
+  @Output() gridClick = new EventEmitter<WarehouseQueryInterface>();
+  @Output() boundsChange = new EventEmitter<any>();
 
   geoJsonLayer;
   mapInit = false;
@@ -155,7 +155,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
     this.subQuery = geoJson$
       .subscribe(geoJson => {
           this.geoJsonLayer.addData(geoJson);
-          this.onBoundsChange.emit(this.geoJsonLayer.getBounds());
+          this.boundsChange.emit(this.geoJsonLayer.getBounds());
           this.currentColor = '';
           this.loading = false;
           this.initColor();
@@ -207,7 +207,7 @@ export class YkjMapComponent implements OnInit, OnChanges, AfterViewInit, OnDest
         }
         const query = JSON.parse(JSON.stringify(this.query || {}));
         query.ykj10kmCenter = evt.layer.feature.properties.grid;
-        this.onGridClick.emit(query);
+        this.gridClick.emit(query);
       });
     }
   }

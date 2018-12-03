@@ -39,7 +39,7 @@ import { LineTransectFormComponent } from './line-transect/line-transect-form/li
 import { LineTransectInstructionsComponent } from './line-transect/line-transect-instructions/line-transect-instructions.component';
 import { LineTransectMyDocumentListComponent } from './line-transect/line-transect-my-document-list/line-transect-my-document-list.component';
 import { StatisticsModule } from '../shared-modules/statistics/statistics.module';
-import { DatatableModule } from '../shared-modules/datatable/datatable.module'
+import { DatatableModule } from '../shared-modules/datatable/datatable.module';
 import { QualityService } from './service/quality.service';
 import { QualityComponent } from './quality/quality.component';
 import { MostActiveUsersTableComponent } from './quality/most-active-users-table/most-active-users-table.component';
@@ -59,7 +59,7 @@ import { WbcRoutesComponent } from './wbc/wbc-result/wbc-routes/wbc-routes.compo
 import { WbcCensusesComponent } from './wbc/wbc-result/wbc-censuses/wbc-censuses.component';
 import { WbcSpeciesListComponent } from './wbc/wbc-result/wbc-species/wbc-species-list/wbc-species-list.component';
 import { WbcResultService } from './wbc/wbc-result/wbc-result.service';
-import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { WbcResultFiltersComponent } from './wbc/wbc-result/wbc-result-filters/wbc-result-filters.component';
 import { WbcSpeciesChartsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-charts.component';
 import { WbcSpeciesMapsComponent } from './wbc/wbc-result/wbc-species-charts/wbc-species-maps/wbc-species-maps.component';
@@ -98,7 +98,7 @@ import { ThemeFormComponent } from './common/theme-form.component';
     LajiFormModule,
     ObservationMapModule,
     NgxChartsModule,
-    JWBootstrapSwitchModule,
+    JwBootstrapSwitchNg2Module,
     FormPermissionModule,
     NavigationThumbnailModule,
     LatestDocumentsModule

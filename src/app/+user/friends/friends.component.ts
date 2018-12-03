@@ -1,3 +1,5 @@
+
+import {switchMap} from 'rxjs/operators';
 import { Component, Input, OnInit } from '@angular/core';
 import { Profile } from '../../shared/model/Profile';
 import { UserService } from '../../shared/service/user.service';
@@ -55,12 +57,12 @@ export class FriendsComponent implements OnInit {
   }
 
   removeFriend(userId, block = false) {
-    this.translateService.get(block ? 'friend.blockConfirm' : 'friend.removeConfirm')
-      .switchMap(confirmMessage => this.dialogService.confirm(confirmMessage))
-      .switchMap((confirm) => confirm ?
+    this.translateService.get(block ? 'friend.blockConfirm' : 'friend.removeConfirm').pipe(
+      switchMap(confirmMessage => this.dialogService.confirm(confirmMessage)),
+      switchMap((confirm) => confirm ?
         this.personService.personRemoveFriend(this.userService.getToken(), userId, block) :
         ObservableOf(this.usersProfile)
-      )
+      ), )
       .subscribe(
         profile => this.usersProfile = profile,
         err => this.logger.warn('Failed remove friend', err)

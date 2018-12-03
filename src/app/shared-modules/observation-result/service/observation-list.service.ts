@@ -1,3 +1,5 @@
+
+import {share, tap, switchMap, concat, take, delay, retryWhen, map} from 'rxjs/operators';
 import { forkJoin as ObservableForkJoin, Observable, Observer, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
@@ -8,6 +10,8 @@ import { CollectionService } from '../../../shared/service/collection.service';
 import { IdService } from '../../../shared/service/id.service';
 import { Util } from '../../../shared/service/util.service';
 import { CoordinatePipe } from '../../../shared/pipe/coordinate.pipe';
+
+
 
 @Injectable()
 export class ObservationListService {
@@ -67,16 +71,16 @@ export class ObservationListService {
       page,
       false,
       false
-    )
-      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
-      .map(data => Util.clone(data))
-      .map(data => this.convertAggregateResult(data))
-      .switchMap(data => this.openValues(data, aggregateBy, lang))
-      .do(data => {
+    ).pipe(
+      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
+      map(data => Util.clone(data)),
+      map(data => this.convertAggregateResult(data))).pipe(
+      switchMap(data => this.openValues(data, aggregateBy, lang)),
+      tap(data => {
         this.aggregateData = data;
         this.aggregateKey = key;
-      })
-      .share();
+      }),
+      share(), );
     return this.aggregatePending;
   }
 
@@ -110,15 +114,15 @@ export class ObservationListService {
       orderBy,
       pageSize,
       page
-    )
-      .retryWhen(errors => errors.delay(1000).take(3).concat(observableThrowError(errors)))
-      .map(data => Util.clone(data))
-      .switchMap(data => this.openValues(data, selected, lang))
-      .do(data => {
+    ).pipe(
+      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)), ))).pipe(
+      map(data => Util.clone(data))).pipe(
+      switchMap(data => this.openValues(data, selected, lang)),
+      tap(data => {
         this.data = data;
         this.key = key;
-      })
-      .share();
+      }),
+      share(), );
     return this.pending;
   }
 
@@ -170,31 +174,24 @@ export class ObservationListService {
   private openValues(data, selected: string[], lang: string): Observable<any> {
     const allMappers = [];
     const uriCache = {};
-    const openYkj = selected.indexOf('gathering.conversions.ykj') > -1;
-    const openYkj10Km = selected.indexOf('gathering.conversions.ykj10km') > -1;
-    const openYkj10KmCenter = selected.indexOf('gathering.conversions.ykj10kmCenter') > -1;
-    const openYkj1Km = selected.indexOf('gathering.conversions.ykj1km') > -1;
-    const openYkj1KmCenter = selected.indexOf('gathering.conversions.ykj1kmCenter') > -1;
-    const openEuref = selected.indexOf('gathering.conversions.euref') > -1;
-    const openWgs84 = selected.indexOf('gathering.conversions.wgs84') > -1;
 
     if (selected.indexOf('document.sourceId') > -1) {
-      allMappers.push(this.sourceService.getAllAsLookUp(lang).map(sources => ({'document.sourceId': sources})));
+      allMappers.push(this.sourceService.getAllAsLookUp(lang).pipe(map(sources => ({'document.sourceId': sources}))));
     }
     if (selected.indexOf('document.collectionId') > -1) {
-      allMappers.push(this.collectionService.getAllAsLookUp(lang)
-        .map(collections => {
+      allMappers.push(this.collectionService.getAllAsLookUp(lang).pipe(
+        map(collections => {
           const lookUp = {};
           collections.map(collection => lookUp[collection.id] = collection.value);
           return lookUp;
-        })
-        .map(collections => ({'document.collectionId': collections})));
+        }),
+        map(collections => ({'document.collectionId': collections})), ));
     }
 
-    const mappers$ = allMappers.length === 0 ? ObservableOf({}) : ObservableForkJoin(allMappers)
-      .map(mappers => mappers.reduce((cumulative, current) => {
+    const mappers$ = allMappers.length === 0 ? ObservableOf({}) : ObservableForkJoin(allMappers).pipe(
+      map(mappers => mappers.reduce((cumulative, current) => {
         return {...cumulative, ...current};
-      }, {}));
+      }, {})));
 
     return ObservableForkJoin(
       ObservableOf(data),

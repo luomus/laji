@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
@@ -67,8 +69,8 @@ export class UnitComponent implements OnInit {
       this.unit.annotations = annotations;
     }
     this.annotationClass$ = this.annotationService
-      .getAnnotationClassInEffect(annotations)
-      .map(annotationClass => {
+      .getAnnotationClassInEffect(annotations).pipe(
+      map(annotationClass => {
         this.annotationIcon = annotationClass ? 'fa-comments' : 'fa-comment-o';
         switch (annotationClass) {
           case Annotation.AnnotationClassEnum.AnnotationClassUnreliable:
@@ -81,14 +83,14 @@ export class UnitComponent implements OnInit {
           default:
             return 'btn-default';
         }
-      });
+      }));
     if (this.unit.annotations) {
       this.annotations = this.unit.annotations.reverse();
     }
     this.annotationVisible =
       this.openAnnotation ||
       this.highlight === this.unit.unitId ||
-      (Array.isArray(this.annotations) && this.annotations.length > 0)
+      (Array.isArray(this.annotations) && this.annotations.length > 0);
   }
 
   toggleAnnotations() {

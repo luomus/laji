@@ -41,7 +41,7 @@ export class TaxonService {
         (status as any).reasons = ['Pyynti\nRakentaminen maalla', '', '', '', '', 'Piip piip'][idx % 6];
         (status as any).threats = ['Pyynti', '', '', '', 'Eksyminen', 'Lyhyet jalat'][idx % 6];
         return status;
-      })
+      });
     }
     return taxon;
   }

@@ -42,10 +42,10 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
   editButtonVisible: boolean;
 
-  @Output() onEditButtonClick = new EventEmitter();
-  @Output() onUseButtonClick = new EventEmitter();
-  @Output() onReserveButtonClick = new EventEmitter();
-  @Output() onReleaseButtonClick = new EventEmitter();
+  @Output() editButtonClick = new EventEmitter();
+  @Output() useButtonClick = new EventEmitter();
+  @Output() reserveButtonClick = new EventEmitter();
+  @Output() releaseButtonClick = new EventEmitter();
 
   @ViewChild('infoModal') public modal: ModalDirective;
   @ViewChild('infoBox') infoBox;
@@ -109,11 +109,11 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   editClick() {
-    this.onEditButtonClick.emit();
+    this.editButtonClick.emit();
   }
 
   useClick() {
-    this.onUseButtonClick.emit();
+    this.useButtonClick.emit();
   }
 
   private updateButtons() {
@@ -149,15 +149,15 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private updateFields() {
-    const fields = this.npFormData.schema.properties.namedPlace.items.properties;
+    const fields = this.npFormData.schema.properties;
 
     let displayed = [];
     if (this.namedPlaceOptions.infoFields) {
       displayed = this.namedPlaceOptions.infoFields || [];
     } else {
       const displayedById =
-        this.npFormData.uiSchema.namedPlace.uiSchema.items['ui:options'].fieldScopes.collectionID;
-      displayed = (displayedById[this.collectionId] ? displayedById[this.collectionId] : displayedById['*']).fields;
+        this.npFormData.uiSchema['ui:options'].fieldScopes.collectionID;
+      displayed = (displayedById[this.collectionId] || displayedById['*'] || []).fields;
     }
 
     let gData = null;
@@ -173,7 +173,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
         continue;
       }
 
-      let value = undefined;
+      let value;
       if (!this.isEmpty(this.namedPlace[field])) {
         value = this.namedPlace[field];
       } else if (gData && !this.isEmpty(gData[field])) {

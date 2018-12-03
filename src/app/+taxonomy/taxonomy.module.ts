@@ -22,7 +22,7 @@ import { SpeciesFormComponent } from './taxon-browse/species-form/species-form.c
 import { TaxonBrowseComponent } from './taxon-browse/taxon-browse.component';
 import { ButtonsModule, TypeaheadModule } from 'ngx-bootstrap';
 import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
-import { JWBootstrapSwitchModule } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { TaxonomySearchQuery } from './taxon-browse/service/taxonomy-search-query';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
 import { SpeciesDownloadComponent } from './taxon-browse/species-download/species-download.component';
@@ -48,7 +48,7 @@ import { SpeciesPieComponent } from './taxonomy/species-pie/species-pie.componen
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
-    SearchFiltersModule, JWBootstrapSwitchModule, ObservationResultModule,
+    SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule,
     ObservationMapModule, NgxDatatableModule, NgxChartsModule, InfoModule ],
   providers: [TaxonomyApi, InformalTaxonGroupApi, TaxonomySearchQuery, TaxonomyColumns, TaxonExportService, DatatableUtil],
   declarations: [TaxonComponent, TaxonInfoComponent, TaxonomyComponent, ParentsComponent, IUCNComponent,

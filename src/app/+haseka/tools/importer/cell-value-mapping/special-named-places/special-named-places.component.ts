@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormField, VALUE_IGNORE } from '../../../model/form-field';
 import { NamedPlacesService } from '../../../../../shared-modules/named-place/named-places.service';
@@ -30,8 +32,8 @@ export class SpecialNamedPlacesComponent implements OnInit {
     this.namedPlacesService.getAllNamePlaces({
       userToken: this.userService.getToken(),
       includePublic: false
-    })
-      .map(namedPlaces => namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`))
+    }).pipe(
+      map(namedPlaces => namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)))
       .subscribe(places => {
         places.sort();
         this.namedPlaces = [VALUE_IGNORE, ...places];

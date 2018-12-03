@@ -38,7 +38,7 @@ export class WbcRoutesComponent implements OnInit {
       .subscribe(routes => {
         this.data = routes;
         this.cd.markForCheck();
-      })
+      });
   }
 
   rowSelect(row: any) {

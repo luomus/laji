@@ -19,7 +19,7 @@ export class WbcRouteTableComponent implements OnInit {
   @ViewChild('textOrTranslationKey') textOrTranslationKeyTpl: TemplateRef<any>;
   @ViewChild('numberOrDocumentIds') numberOrDocumentIdsTpl: TemplateRef<any>;
 
-  @Output() onDocumentClick = new EventEmitter<string>();
+  @Output() documentClick = new EventEmitter<string>();
 
   @Input() set data(data: any) {
     if (!data) {
@@ -52,7 +52,7 @@ export class WbcRouteTableComponent implements OnInit {
     event.sorts.forEach((sort) => {
       const comparator = this.getSortingComparator(sort.prop);
       const dir = sort.dir === 'asc' ? 1 : -1;
-      speciesStats.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]))
+      speciesStats.sort((a, b) => dir * comparator(a[sort.prop], b[sort.prop]));
     });
     this.rows = speciesStats.concat(otherStats);
   }
@@ -96,7 +96,7 @@ export class WbcRouteTableComponent implements OnInit {
       return 'last-rows';
     }
     return '';
-  };
+  }
 
   private getCellClass(data: any) {
     const classes = [''];
@@ -128,14 +128,14 @@ export class WbcRouteTableComponent implements OnInit {
     if (prop === 'name') {
       return (a, b) => {
         return (a).localeCompare(b);
-      }
+      };
     }
 
     return (a, b) => {
       a = parseInt(a, 10);
       b = parseInt(b, 10);
       return a - b;
-    }
+    };
   }
 
   roundNumber(value: number) {

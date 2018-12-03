@@ -25,7 +25,7 @@ export class TaxonExportService {
                 this.exportService.exportArrayBuffer(buffer, fileName, type);
                 return true;
               })
-            )
+            );
         })
       );
   }
@@ -55,9 +55,9 @@ export class TaxonExportService {
     for (let i = 0; i < cols.length; i++) {
       aoa[0].push(cols[i].label);
       observables.push(
-        this.translate.get(cols[i].label).do((label) => {
+        this.translate.get(cols[i].label).pipe(tap((label) => {
           aoa[0][i] = label;
-        })
+        }))
       );
     }
     for (let i = 0; i < data.length; i++) {

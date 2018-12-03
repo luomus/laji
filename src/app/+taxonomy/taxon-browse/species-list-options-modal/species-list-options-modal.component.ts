@@ -47,7 +47,7 @@ export class SpeciesListOptionsModalComponent implements OnInit {
   }
 
   clear() {
-    this._selected = [...this.requiredFields]
+    this._selected = [...this.requiredFields];
   }
 
   toggleSelectedField(field: string) {
@@ -58,7 +58,7 @@ export class SpeciesListOptionsModalComponent implements OnInit {
       this._selected = [
         ...this._selected.slice(0, idx),
         ...this._selected.slice(idx + 1)
-      ]
+      ];
     }
   }
 

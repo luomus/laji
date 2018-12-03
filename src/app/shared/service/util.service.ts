@@ -1,10 +1,9 @@
-import merge from 'deepmerge'
+import merge from 'deepmerge';
 
 export class Util {
   /**
    * Clones the object using JSON stringify
-   * @param object
-   * @returns {any}
+   * @returns any
    */
   public static clone(object) {
     return JSON.parse(JSON.stringify(object));
@@ -12,9 +11,7 @@ export class Util {
 
   /**
    * Checks the equality using JSON stringify
-   * @param o1
-   * @param o2
-   * @returns {boolean}
+   * @returns boolean
    */
   public static equals(o1, o2) {
     return JSON.stringify(o1) === JSON.stringify(o2);
@@ -25,14 +22,13 @@ export class Util {
    *
    * Values that are not objects are considered to be empty objects
    *
-   * @param value
-   * @returns {boolean}
+   * @returns boolean
    */
   public static isEmptyObj(value: any) {
     if (!value || typeof value !== 'object' || Array.isArray(value)) {
       return true;
     }
-    return Object.keys(value).length === 0
+    return Object.keys(value).length === 0;
   }
 
   public static removeUndefinedFromObject(obj: object) {
@@ -44,7 +40,7 @@ export class Util {
         cumulative[current] = obj[current];
       }
       return cumulative;
-    }, {})
+    }, {});
   }
 
   public static parseJSONPath(object: any, jsonPath: string): any {
@@ -94,14 +90,14 @@ export class Util {
       if (typeof destination[i] === 'undefined') {
         const cloneRequested = options.clone !== false;
         const shouldClone = cloneRequested && options.isMergeableObject(e);
-        destination[i] = shouldClone ? Util.mergeClone(e, options) : e
+        destination[i] = shouldClone ? Util.mergeClone(e, options) : e;
       } else if (options.isMergeableObject(e)) {
         destination[i] = merge(target[i], e, options);
       } else if (target.indexOf(e) === -1) {
         destination.push(e);
       }
     });
-    return destination
+    return destination;
   }
 
   private static mergeClone(value, options) {

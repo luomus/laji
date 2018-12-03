@@ -67,7 +67,7 @@ export class LoggerApi {
       }
 
       return value;
-    }
+    };
   }
 
   /**
