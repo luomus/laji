@@ -341,6 +341,7 @@
   "np.createNew": "Skapa nu",
   "np.defaultDescription": "Börja med att välja en plats.",
   "np.defaultCreateDescription": "<h3>Skapa en ny plats</h3>",
+  "np.defaultEditDescription": "<h3>Redigera plats</h3>",
   "np.defaultUse": "Använd denna plats",
   "np.earlier": "Observationer",
   "np.edit": "Redigera",

@@ -1,6 +1,13 @@
 <div class="container-fluid" style="width: 100%">
   <div id="container" class="row np-row">
-    <laji-document-form-header *ngIf="formData" [formID]="formId" [type]="editMode ? 'npCreate' : 'np'" class="no-flex"></laji-document-form-header>
+    <laji-document-form-header *ngIf="formData"
+                               [formID]="formId"
+                               [type]="editMode
+                                 ? activeNP >= 0
+                                   ? 'npCreate'
+                                   : 'npEdit'
+                                 : 'np'"
+    class="no-flex"></laji-document-form-header>
 
     <alert *ngIf="errorMsg" type="danger">{{ errorMsg }}</alert>
 

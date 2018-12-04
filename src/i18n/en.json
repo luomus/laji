@@ -341,6 +341,7 @@
   "np.createNew": "Create new",
   "np.defaultDescription": "Start by choosing a place.",
   "np.defaultCreateDescription": "<h3>Create a new place</h3>",
+  "np.defaultEditDescription": "<h3>Edit place</h3>",
   "np.defaultUse": "Use this place",
   "np.earlier": "Observations",
   "np.edit": "Edit",

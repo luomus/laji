@@ -3,7 +3,7 @@
     'col-sm-8': form.logo,
     'col-sm-12': !(form.logo)
   }">
-    <ng-container *ngIf="type !== 'npCreate'">
+    <ng-container *ngIf="type !== 'npCreate' && type !== 'npEdit'">
 		  <h3>{{ form.title }}</h3>
     </ng-container>
     <ng-container *ngIf="type === 'np'">
@@ -12,6 +12,10 @@
     </ng-container>
     <ng-container *ngIf="type === 'npCreate'">
       <div [innerHtml]="form.namedPlaceOptions?.createDescription ? form.namedPlaceOptions.createDescription : 'np.defaultCreateDescription' | translate"></div>
+      <br>
+    </ng-container>
+    <ng-container *ngIf="type === 'npEdit'">
+      <div [innerHtml]="form.namedPlaceOptions?.editDescription ? form.namedPlaceOptions.editDescription : 'np.defaultEditDescription' | translate"></div>
       <br>
     </ng-container>
     <ng-container *ngIf="type === 'form' && form.description">
