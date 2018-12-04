@@ -20,7 +20,7 @@ export class NpEditFormComponent {
   @Input() formData: any;
   @Input() namedPlace: NamedPlace;
   @Input() namedPlaceOptions: any;
-  @Output() editReady = new EventEmitter<NamedPlace>();
+  @Output() editReady = new EventEmitter<{np, isEdit}>();
 
   tick = 0;
   saving = false;
