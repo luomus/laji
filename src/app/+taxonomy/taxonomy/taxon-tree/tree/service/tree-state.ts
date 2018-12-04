@@ -66,7 +66,7 @@ export class TreeState {
     const parentState = parentId ? this.state[parentId] : undefined;
 
     this.state[node.id] = {
-      isExpanded: skipped && parentState.isExpanded ? true : expanded,
+      isExpanded: hidden ? false : (skipped && parentState.isExpanded ? true : expanded),
       isSkipped: skipped,
       isHidden: hidden,
       loadingCount: this.state[node.id] ? this.state[node.id].loadingCount : 0
