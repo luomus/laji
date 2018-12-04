@@ -66,7 +66,10 @@ export class TreeComponent implements OnChanges {
       const nodes = this.nodes;
       const treeState = this.treeState;
 
-      this.initialViewSubs = this.getParents(openId)
+      const getParents: Observable<{id: string}[]> =
+        treeState.state[openId] ? of(this.findParents(openId, nodes)) : this.getParents(openId);
+
+      this.initialViewSubs = getParents
         .pipe(
           switchMap(res => {
             res.push({id: openId});
@@ -85,6 +88,21 @@ export class TreeComponent implements OnChanges {
     }
   }
 
+  findParents(id: string, nodes: TreeNode[], path = []): {id: string}[] {
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      if (node.id === id) {
+        return path;
+      }
+      if (node.children) {
+        const newPath = [...path, {id: node.id}];
+        const found = this.findParents(id, node.children, newPath);
+        if (found) {
+          return found;
+        }
+      }
+    }
+  }
 
   private toggleChildrenOpen(node: TreeNode, treeState: TreeState) {
     treeState.state[node.id].loadingCount++;
