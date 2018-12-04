@@ -6,7 +6,6 @@ node {
       sh 'yarn install --silent --frozen-lockfile'
     }
     stage('Quality') {
-      #sh 'yarn run lint'
     }
     stage('Build') {
       milestone()
