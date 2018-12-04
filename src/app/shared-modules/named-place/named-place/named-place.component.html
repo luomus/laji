@@ -36,6 +36,7 @@
         <div [ngClass]="{'col-sm-12 col-md-12 col-lg-6': !editMode}">
           <laji-np-choose [namedPlaces]="namedPlaces"
                           [formData]="formData"
+                          [npFormData]="npFormData"
                           [userID]="userID"
                           [visible]="!editMode"
                           [allowCreate]="allowCreate"
@@ -55,11 +56,13 @@
                         [formRights]="formRights"
                         [formData]="formData"
                         [allowEdit]="allowEdit"
+                        [npFormData]="npFormData"
+                        [mapOptionsData]="mapOptionsData"
+                        [lang]="lang"
                         (reserve)="reserve()"
                         (release)="release()"
                         (editButtonClick)="toEditMode(false)"
-                        (editReady)="toNormalMode($event)"
-                        (error)="setErrorMessage($event)"></laji-np-edit>
+                        (editReady)="toNormalMode($event)"></laji-np-edit>
         </div>
       </div>
     </laji-spinner>

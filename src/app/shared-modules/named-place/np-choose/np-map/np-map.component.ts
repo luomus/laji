@@ -1,10 +1,23 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit, ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import { ExtendedNamedPlace } from '../../model/extended-named-place';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Logger } from 'app/shared/logger';
 import { LabelPipe } from 'app/shared/pipe';
 import { AreaNamePipe } from 'app/shared/pipe/area-name.pipe';
+import { NpInfoComponent } from '../../np-edit/np-info/np-info.component';
+import { NpInfoRow } from '../../np-edit/np-info/np-info-row/np-info-row.component';
 
 @Component({
   selector: 'laji-np-map',
@@ -12,18 +25,23 @@ import { AreaNamePipe } from 'app/shared/pipe/area-name.pipe';
   styleUrls: ['./np-map.component.css'],
   providers: [ LabelPipe, AreaNamePipe ]
 })
-export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
+export class NpMapComponent implements OnInit, OnChanges, AfterViewInit, AfterViewChecked {
   @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+  @ViewChild('popup') popupComponent;
   @Input() visible = false;
   @Input() namedPlaces: ExtendedNamedPlace[];
   @Input() activeNP: number;
   @Input() height: string;
   @Input() userID: string;
   @Input() reservable: boolean;
+  @Input() npFormData: any;
+  @Input() formData: any;
   @Output() activePlaceChange = new EventEmitter<number>();
-  legend;
 
+  private legend;
+  private listItems: NpInfoRow[] = [];
   private _data: any;
+  private _popupCallback: (elemOrString: HTMLElement | string) => void;
 
   private placeColor = '#5294cc';
   private placeActiveColor = '#375577';
@@ -38,7 +56,8 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
     public translate: TranslateService,
     private logger: Logger,
     private labelPipe: LabelPipe,
-    private areaNamePipe: AreaNamePipe
+    private areaNamePipe: AreaNamePipe,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
@@ -59,6 +78,11 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
   ngAfterViewInit() {
     this.setMapData();
     this.setNewActivePlace(-1, this.activeNP);
+  }
+
+  ngAfterViewChecked() {
+    const {nativeElement: popup} = this.popupComponent || {nativeElement: undefined};
+    popup && this._popupCallback && this._popupCallback(popup);
   }
 
   setMapData() {
@@ -138,26 +162,17 @@ export class NpMapComponent implements OnInit, OnChanges, AfterViewInit {
             }
           }))
         },
-        getPopup: (idx: number, geo, cb: Function) => {
-          try {
-            const properties = this._data.featureCollection.features[idx].properties;
-            let s = '';
-            if (properties.name) {
-              s += '<div>' + capitalizeFirst(properties.name) + '</div>';
-            }
-            if (properties.municipality) {
-              s += '<div>' + capitalizeFirst(this.areaNamePipe.transform(properties.municipality, 'name')) + '</div>';
-            }
-            if (properties.taxon) {
-              s += '<div>' + capitalizeFirst(this.labelPipe.transform(properties.taxon)) + '</div>';
-            }
-            cb(s);
-          } catch (e) {
-            this.logger.log('Failed to display popup for the map', e);
-          }
+        getPopup: (idx: number, geo, cb: (elem: string | HTMLElement) => void) => {
+          this.listItems = NpInfoComponent.getListItems(this.npFormData, this.namedPlaces[idx], this.formData);
+          this._popupCallback = cb;
+          this.cdr.markForCheck();
         }
       };
     } catch (e) { }
+  }
+
+  onPopupClose() {
+    this._popupCallback = undefined;
   }
 
   private getFeatureColor(feature, active?) {

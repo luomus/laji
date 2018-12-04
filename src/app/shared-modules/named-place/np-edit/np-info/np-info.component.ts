@@ -29,7 +29,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() namedPlace: NamedPlace;
   @Input() npFormData: any;
   @Input() namedPlaceOptions: any;
-  @Input() targetForm: any;
+  @Input() formData: any;
   @Input() collectionId: string;
   @Input() editMode: boolean;
   @Input() allowEdit: boolean;
@@ -122,9 +122,9 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
     }
     this.userService.getUser().subscribe(person => {
       this.editButtonVisible = (this.namedPlace.owners && this.namedPlace.owners.indexOf(person.id) !== -1);
-      this.formReservable = this.targetForm &&
-        Array.isArray(this.targetForm.features) &&
-        this.targetForm.features.indexOf(Form.Feature.Reserve) > -1;
+      this.formReservable = this.formData &&
+        Array.isArray(this.formData.features) &&
+        this.formData.features.indexOf(Form.Feature.Reserve) > -1;
       let btnStatus;
       if (!this.formRights.edit) {
         btnStatus = 'nouse';
@@ -149,19 +149,22 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private updateFields() {
-    const fields = this.npFormData.schema.properties;
+    this.listItems = NpInfoComponent.getListItems(this.npFormData, this.namedPlace, this.formData);
+  }
 
+  public static getListItems(npFormData: any, np: NamedPlace, form: any): any[] {
+    const {namedPlaceOptions, collectionID: collectionId} = form;
+    const fields = npFormData.schema.properties;
     let displayed = [];
-    if (this.namedPlaceOptions.infoFields) {
-      displayed = this.namedPlaceOptions.infoFields || [];
+    if (namedPlaceOptions.infoFields) {
+      displayed = namedPlaceOptions.infoFields || [];
     } else {
       const displayedById =
-        this.npFormData.uiSchema['ui:options'].fieldScopes.collectionID;
-      displayed = (displayedById[this.collectionId] || displayedById['*'] || []).fields;
+        npFormData.uiSchema['ui:options'].fieldScopes.collectionID;
+      displayed = (displayedById[collectionId] || displayedById['*'] || []).fields;
     }
 
     let gData = null;
-    const np = this.namedPlace;
 
     if (np.prepopulatedDocument && np.prepopulatedDocument.gatherings && np.prepopulatedDocument.gatherings.length >= 0) {
       gData = np.prepopulatedDocument.gatherings[0];
@@ -174,13 +177,13 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       }
 
       let value;
-      if (!this.isEmpty(this.namedPlace[field])) {
-        value = this.namedPlace[field];
-      } else if (gData && !this.isEmpty(gData[field])) {
+      if (!isEmpty(np[field])) {
+        value = np[field];
+      } else if (gData && !isEmpty(gData[field])) {
         value = gData[field];
       }
 
-      let pipe = undefined;
+      let pipe;
       if (field === 'taxonIDs') {
         pipe = 'label';
       } else if (field === 'municipality') {
@@ -195,10 +198,11 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
         });
       }
     }
-    this.listItems = listItems;
+    return listItems;
+
+    function isEmpty(value: string) {
+      return value == null || value === '';
+    }
   }
 
-  private isEmpty(value: string) {
-    return value == null || value === '';
-  }
 }

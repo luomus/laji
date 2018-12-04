@@ -3,5 +3,13 @@
             [options]="{zoom: 2, tileLayerName: 'maastokartta', tileLayerOpacity: 0.5,
                        controls: {location: false}, popupOnHover: true}"
             [lang]="translate.currentLang"
+            [onPopupClose]="onPopupClose"
   ></laji-map>
+  <div style="display: none;">
+    <div #popup>
+	    <ng-container *ngFor="let i of listItems">
+	  	  <laji-np-info-row [title]="i.title" [value]="i.value" [pipe]="i.pipe"></laji-np-info-row>
+	    </ng-container>
+    </div>
+  </div>
 </div>

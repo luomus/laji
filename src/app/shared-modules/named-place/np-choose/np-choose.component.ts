@@ -35,6 +35,8 @@ export class NpChooseComponent implements OnInit, OnChanges, AfterViewChecked {
   _prevActive: string;
 
   @Input() formData: any;
+  @Input() npFormData: any;
+  @Input() namedPlaceOptions: any;
   @Input() visible = true;
   @Input() allowCreate = true;
   @Input() userID: string;
