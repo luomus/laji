@@ -143,6 +143,16 @@
             {{ 'theme.invasiveSpecies.intro' | translate }}
           </td>
         </tr>
+        <tr *lajiForTypes="['dev']">
+          <th>
+            <a [routerLink]="['/theme/kunnat'] | localize">
+              {{ 'navigation.municipalityControl' | translate }}
+            </a>
+          </th>
+          <td>
+            {{'theme.municipalityControl.intro' | translate}}
+          </td>
+        </tr>
       </table>
     </div>
   </div>

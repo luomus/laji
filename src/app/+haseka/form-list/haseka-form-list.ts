@@ -106,13 +106,13 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     ).subscribe(
         forms => {
           this.updateCategories(forms);
-          this.updateAdminRigths();
+          this.updateAdminRights();
         },
         err => this.logger.log('Failed to fetch all forms', err)
       );
   }
 
-  updateAdminRigths() {
+  updateAdminRights() {
     if (!this.categories) {
       return;
     }

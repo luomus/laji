@@ -1,0 +1,20 @@
+<laji-theme-page [title]="'Vieras&shy;lajit'"
+  [navLinks]="[
+    {
+      routerLink: ['../kunnat', 'instructions'],
+      label: 'instructions' | translate,
+      visible: true
+    },
+    {
+      routerLink: ['../kunnat', 'places'],
+      label: 'nafi.form' | translate,
+      visible: rights?.edit || rights?.admin
+    },
+    {
+      routerLink: ['/vihko/fp/HR.2049/admin'],
+      label: 'form.administer' | translate,
+      visible: rights?.admin
+    }
+  ]">
+  <router-outlet></router-outlet>
+</laji-theme-page>
