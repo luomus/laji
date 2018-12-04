@@ -3,11 +3,14 @@
     <span>{{ title }}:</span>
   </div>
   <div class="value">
-    <ng-container *ngIf="isLabel; else noLabel">
+    <ng-container *ngIf="pipe === 'area'">
+      <span [innerHtml]="value | area | nlToBr"></span>
+    </ng-container>
+    <ng-container *ngIf="pipe === 'label'">
       <span [innerHtml]="value | label | nlToBr"></span>
     </ng-container>
-    <ng-template #noLabel>
+    <ng-container *ngIf="!pipe">
       <span [innerHtml]="value | nlToBr"></span>
-    </ng-template>
+    </ng-container>
   </div>
 </ng-container>

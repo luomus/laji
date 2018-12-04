@@ -37,7 +37,7 @@
         <laji-np-info-map [visible]="(isModal && modalIsVisible) || infoBox?.nativeElement?.offsetParent !== null"
                           [namedPlace]="namedPlace"></laji-np-info-map>
         <ng-container *ngFor="let i of listItems">
-          <laji-np-info-row [title]="i.title" [value]="i.value" [isLabel]="i.isLabel" ></laji-np-info-row>
+          <laji-np-info-row [title]="i.title" [value]="i.value" [pipe]="i.pipe"></laji-np-info-row>
         </ng-container>
         <ng-container *ngIf="namedPlace?.prepopulatedDocument?.gatheringEvent?.dateBegin">
           <laji-np-info-row [title]="targetForm.namedPlaceOptions?.lastCensusLabel || 'lastCensus' | translate" [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin"></laji-np-info-row>

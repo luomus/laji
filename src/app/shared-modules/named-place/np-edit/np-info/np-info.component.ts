@@ -180,16 +180,18 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
         value = gData[field];
       }
 
-      let label = false;
+      let pipe = undefined;
       if (field === 'taxonIDs') {
-        label = true;
+        pipe = 'label';
+      } else if (field === 'municipality') {
+        pipe = 'area';
       }
 
       if (value) {
         listItems.push({
           title: fields[field].title,
           value,
-          isLabel: label
+          pipe
         });
       }
     }
